@@ -13,9 +13,7 @@ object FormMain: TFormMain
   Font.Name = 'Arial'
   Font.Style = []
   Menu = MainMenu1
-  OldCreateOrder = False
   OnCloseQuery = FormCloseQuery
-  PixelsPerInch = 96
   TextHeight = 14
   object Label1: TLabel
     Left = 24

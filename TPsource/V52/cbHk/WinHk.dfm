@@ -192,12 +192,10 @@ object FormMain: TFormMain
     0000000007FFFFF8000000001FFFFFFC000000003FFFFFFF00000000FFFFFFFF
     80000001FFFFFFFFE0000007FFFFFFFFFC00003FFFFFFFFFFFC003FFFFFF}
   Menu = MainMenu1
-  OldCreateOrder = False
   Position = poDesigned
   Visible = True
   OnCloseQuery = FormCloseQuery
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 14
   object Label1: TLabel
     Left = 24

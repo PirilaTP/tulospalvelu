@@ -1,5 +1,5 @@
 // Pekka Pirila's sports timekeeping program (Finnish: tulospalveluohjelma)
-// Copyright (C) 2015 Pekka Pirila 
+// Copyright (C) 2015 Pekka Pirila
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -305,9 +305,20 @@ TShiftState IntShiftState(int state)
 	return(SS);
 }
 
+/* Avoid System.SysUtils.hpp Win32MajorVersion — across RTL versions it can break C++ resolution (E2034). */
+static bool cbTpApu_IsOsVistaOrLater(void)
+{
+	OSVERSIONINFO osvi;
+	memset(&osvi, 0, sizeof(osvi));
+	osvi.dwOSVersionInfoSize = sizeof(osvi);
+	if (!GetVersionEx(&osvi))
+		return true;
+	return osvi.dwMajorVersion >= 6;
+}
+
 int ValitseHakemisto(wchar_t *Hakemisto, int len)
 {
-	if (Win32MajorVersion >= 6) {
+	if (cbTpApu_IsOsVistaOrLater()) {
 		TFileOpenDialog *Dlg = new TFileOpenDialog(FormMain);
 		if (Dlg) {
 			Dlg->Title = L"Valitse hakemisto";
@@ -626,4 +637,5 @@ void setBrowserEmulation(void)
 	if (DeveloperMode && msg[0])
 		wkirjloki(msg);
 }
+
 
