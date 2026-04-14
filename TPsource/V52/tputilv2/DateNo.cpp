@@ -20,6 +20,8 @@
 
 const int mm[12] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
 
+// Laskee juliaanis-gregoriaanisen päivänumeron päivämäärästä y/m/d (vuosi, kuukausi, päivä).
+// Palauttaa kokonaisluvun (2 = 1.1.1900), joka kasvaa yhdellä joka päivä.
 int DateNo(int y, int m, int d)
 {
 	int dt = y - 1900;
@@ -33,6 +35,7 @@ int DateNo(int y, int m, int d)
 	return(dt+2);
 }
 
+// Palauttaa päivänumerosta dd vastaavan vuosiluvun (esim. 2024).
 int yDateNo(int dd)
 {
 	dd -= 2;
@@ -41,6 +44,7 @@ int yDateNo(int dd)
 	return(dd);
 }
 
+// Palauttaa päivänumerosta dd vastaavan kuukauden (1–12).
 int mDateNo(int dd)
 {
 	int y, m;
@@ -55,6 +59,7 @@ int mDateNo(int dd)
 	return(12);
 }
 
+// Palauttaa päivänumerosta dd vastaavan kuukaudenpäivän (1–31); huomioi karkausvuodet.
 int dDateNo(int dd)
 {
 	int y, m;
@@ -79,6 +84,8 @@ int dDateNo(int dd)
 	return(dd);
 }
 
+// Muuntaa päivänumeron pvm merkkijonoksi muotoon L"vvvv-kk-pp" puskuriin st.
+// st = NULL käyttää sisäistä staattista puskuria; palauttaa osoittimen merkkijonoon.
 wchar_t *stDateNo(wchar_t *st, int pvm)
 {
 	static wchar_t st0[12];
@@ -92,6 +99,8 @@ wchar_t *stDateNo(wchar_t *st, int pvm)
 	return(st);
 }
 
+// Muuntaa päivämäärämerkkijonon st (muodot "vvvv-kk-pp", "pp.kk.vv" tai "pp.kk.vvvv") päivänumeroksi.
+// Palauttaa päivänumeron tai 0 jos merkkijono on virheellinen.
 int DateNoFromSt(wchar_t *st)
 {
 	unsigned int y, m, d, pvm = 0;

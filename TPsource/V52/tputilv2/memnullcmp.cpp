@@ -14,6 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Tarkistaa, onko muistialue kokonaan nollia.
+// Parametrit: buf=tarkistettava puskuri, len=tavujen lukumäärä.
+// Palauttaa 1 jos löytyy nollasta poikkeava tavu, muuten 0.
 int memnullcmp(char *buf, int len)
 {
 	for (; len; buf++, len--)

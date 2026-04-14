@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Apufunktiot: pisteytt√§minen, tekstin muotoilu, seuraluettelon luku ja lokikirjoitus.
+
 #ifdef _BORLAND_
 #include <vcl.h>
 #endif
@@ -252,7 +254,7 @@ int haeSeurVakantti(int alku)
 
 	// Jos alku == 0 jatketaan aiemmasta arvosta vakanttialku
 	// muuten alustetaan arvoon alku
-	// lis‰ksi varmistetaan alueella minkilpno .. maxkilpno pysyminen
+	// lisÔøΩksi varmistetaan alueella minkilpno .. maxkilpno pysyminen
 
 	if (alku > maxkilpno)
 		alku = minkilpno;

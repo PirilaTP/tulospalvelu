@@ -14,6 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Laskee kilpailunumeron tarkistusmerkin (0–9) painotettua summaa käyttäen.
+// Laskee kilpailunumeron tarkistusmerkin (0–9) Luhn-tyyppisen painotetun summan avulla.
+// kno: kilpailunumero; palauttaa tarkistusmerkin numeerisen arvon.
 int tarkno(int kno)
 {
    int t,k;

@@ -78,6 +78,8 @@ void selectopt(char *prompt, char *term, char *tc)
 
 extern int ySize;
 
+// Näyttää valintakehote ruudun alarivillä ja odottaa käyttäjän valintaa hyväksytyistä vaihtoehdoista.
+// prompt: kehoteteksti, term: hyväksytyt merkit, tc: valittu merkki palautetaan tähän.
 void selectopt(char *prompt, char *term, char *tc)
 {
 	selectxy(ySize-3, 0, prompt, term, tc);

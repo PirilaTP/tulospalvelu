@@ -16,6 +16,8 @@
 
 #include "tputil.h"
 
+// Tyhjentää nykyisen kursorin sijainnista rivin loppuun (80 merkkiin asti).
+// Ei parametreja eikä paluuarvoa.
 void clreol()
 {
    int y, x, h, l;

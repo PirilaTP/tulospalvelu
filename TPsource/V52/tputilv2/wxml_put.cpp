@@ -14,12 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Kirjoittaa XML-elementin wide-merkkijonoina TextFl-tiedostoon käyttäen XML-entiteettejä.
+
 #if defined(__BORLANDC__)
 #pragma -K -a1
 #endif
 #include <stdio.h>
 #include <tputil.h>
 
+// Kirjoittaa XML-merkkijono-elementin TextFl-tiedostoon; muuntaa &/</>-merkit entiteeteiksi.
+// fl: tiedosto-olio, tag: elementin nimi, value: tekstiarvo, level: sisennystaso (tabulaattorit).
 void wput_xml_s(TextFl *fl, wchar_t *tag, wchar_t *value, int level)
    {
 	wchar_t *p1, ch[2] = L" ", ln[300] = L"";
@@ -54,6 +58,8 @@ void wput_xml_s(TextFl *fl, wchar_t *tag, wchar_t *value, int level)
    fl->WriteLine(ln);
    }
 
+// Kirjoittaa XML-kokonaislukuelementin TextFl-tiedostoon muodossa <tag>value</tag>.
+// fl: tiedosto-olio, tag: elementin nimi, value: INT32-arvo, level: sisennystaso.
 void wput_xml_d(TextFl *fl, wchar_t *tag, INT32 value, int level)
    {
 	wchar_t ln[300]=L"";
@@ -65,6 +71,8 @@ void wput_xml_d(TextFl *fl, wchar_t *tag, INT32 value, int level)
    fl->WriteLine(ln);
    }
 
+// Kirjoittaa XML-liukulukuelementin TextFl-tiedostoon prec desimaalin tarkkuudella.
+// fl: tiedosto-olio, tag: elementin nimi, value: double-arvo, prec: desimaalit, level: sisennystaso.
 void wput_xml_f(TextFl *fl, wchar_t *tag, double value, int prec,  int level)
    {
 	wchar_t ln[300]=L"", fmt[20];
@@ -79,6 +87,8 @@ void wput_xml_f(TextFl *fl, wchar_t *tag, double value, int prec,  int level)
    fl->WriteLine(ln);
    }
 
+// Kirjoittaa XML-avaustunnisteen <tag> TextFl-tiedostoon annetulla sisennystasolla.
+// fl: tiedosto-olio, tag: elementin nimi, level: sisennystaso.
 void wput_tag(TextFl *fl, wchar_t *tag, int level)
    {
 	wchar_t ln[100]=L"";
@@ -90,6 +100,8 @@ void wput_tag(TextFl *fl, wchar_t *tag, int level)
    fl->WriteLine(ln);
    }
 
+// Kirjoittaa XML-lopetustunnisteen </tag> TextFl-tiedostoon annetulla sisennystasolla.
+// fl: tiedosto-olio, tag: elementin nimi, level: sisennystaso.
 void wput_antitag(TextFl *fl, wchar_t *tag, int level)
    {
 	wchar_t ln[100]=L"";
@@ -101,6 +113,8 @@ void wput_antitag(TextFl *fl, wchar_t *tag, int level)
    fl->WriteLine(ln);
    }
 
+// Kirjoittaa XML-avaustunnisteen attribuuteilla TextFl-tiedostoon; empty=true tuottaa itsesulkeutuvan tunnisteen.
+// fl: tiedosto-olio, tag: nimi, params: attribuuttimerkkijono, empty: suljettu tunniste, level: sisennystaso.
 void wput_tagparams(TextFl *fl, wchar_t *tag, wchar_t *params, bool empty, int level)
    {
 	wchar_t ln[100]=L"";
@@ -112,6 +126,8 @@ void wput_tagparams(TextFl *fl, wchar_t *tag, wchar_t *params, bool empty, int l
    fl->WriteLine(ln);
    }
 
+// Kirjoittaa XML-merkkijono-elementin attribuuteilla TextFl-tiedostoon; muuntaa &/</>-merkit entiteeteiksi.
+// fl: tiedosto-olio, tag: nimi, params: attribuuttimerkkijono, value: tekstiarvo, level: sisennystaso.
 void wput_xml_params_s(TextFl *fl, wchar_t *tag, wchar_t *params, wchar_t *value, int level)
    {
 	wchar_t *p1, ch[2] = L" ", ln[300] = L"";
@@ -146,6 +162,8 @@ void wput_xml_params_s(TextFl *fl, wchar_t *tag, wchar_t *params, wchar_t *value
    fl->WriteLine(ln);
    }
 
+// Kirjoittaa XML-kokonaislukuelementin attribuuteilla TextFl-tiedostoon.
+// fl: tiedosto-olio, tag: nimi, params: attribuutit, value: int-arvo, level: sisennystaso.
 void wput_xml_params_d(TextFl *fl, wchar_t *tag, wchar_t *params, int value, int level)
    {
 	wchar_t ln[300]=L"";
@@ -157,6 +175,8 @@ void wput_xml_params_d(TextFl *fl, wchar_t *tag, wchar_t *params, int value, int
    fl->WriteLine(ln);
    }
 
+// Kirjoittaa XML-liukulukuelementin attribuuteilla TextFl-tiedostoon prec desimaalin tarkkuudella.
+// fl: tiedosto-olio, tag: nimi, params: attribuutit, value: double-arvo, prec: desimaalit, level: sisennystaso.
 void wput_xml_params_f(TextFl *fl, wchar_t *tag, wchar_t *params, double value, int prec, int level)
    {
 	wchar_t ln[300]=L"", fmt[20];

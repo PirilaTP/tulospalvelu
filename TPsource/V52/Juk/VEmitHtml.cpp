@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// EMIT-leimatietojen HTML-tulostus viestikilpailussa sisÃ¤ltÃ¤en sarjan otsikkorivit.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <io.h>
@@ -74,13 +76,13 @@ void EmitHtmlTulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 			as[0] = 0;
 			if (wcswcind(kilp.Tark(Sarjat[kilp.sarja].osuusluku-1, 1), L"KHSE") >= 0) {
 				if (tulprm->language == 0)
-					wcscpy(as, L"Keskeyttänyt");
+					wcscpy(as, L"Keskeyttï¿½nyt");
 				else
 					wcscpy(as, L"DNF");
 				for (os = 0; os < Sarjat[kilp.sarja].osuusluku; os++) {
 					if (kilp.Tark(os, 1) == L'H') {
 						if (tulprm->language == 0)
-							wcscpy(as, L"Hylätty");
+							wcscpy(as, L"Hylï¿½tty");
 						else
 							wcscpy(as, L"DQ");
 						break;
@@ -107,7 +109,7 @@ void EmitHtmlTulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 			tulprm->writehtml(L"<tr><th>Osuus</th><th>Nimi</th><th>Rata</th><th>OsTls</th>");
 			tulprm->writehtml(stspan);
 			if (tulprm->rastivali)
-				tulprm->writehtml(L"<em>Rastikoodi:</em> Rastivälin aika</th>");
+				tulprm->writehtml(L"<em>Rastikoodi:</em> Rastivï¿½lin aika</th>");
 			else
 				tulprm->writehtml(L"<em>Rastikoodi:</em> Aika rastille</th>");
 			}
@@ -233,7 +235,7 @@ void EmitHtmlOsuus(kilptietue& kilp, int osuus, INT sj, tulostusparamtp *tulprm)
 //				wcscat(line, L"<th>Maali</th></tr>\n");
 				tulprm->writehtml(line);
 				if (tulprm->rastivali) {
-					tulprm->writehtml(L"<tr><th></th><th></th><th>Rastivälivertailu</th><th><em>Lkm</em> ja paras aika</th><th></th>");
+					tulprm->writehtml(L"<tr><th></th><th></th><th>Rastivï¿½livertailu</th><th><em>Lkm</em> ja paras aika</th><th></th>");
 					line[0] = 0;
 					for (int i = 0; i < emvaluku; i++) {
 						int n;

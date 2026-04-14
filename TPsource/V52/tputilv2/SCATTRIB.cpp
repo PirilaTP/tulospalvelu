@@ -18,6 +18,9 @@
 //#include "bscreens.h"
 #include "tputil.h"
 
+// Täyttää kohdistimen nykyisestä sijainnista alkaen cnt merkkiä annetulla merkillä ja värillä.
+// fore: etualan väri-indeksi, back: taustan väri-indeksi, ch: tulostettava merkki, cnt: kirjoitettavien merkkien lukumäärä.
+// Palauttaa 0 onnistuessaan tai -1 virhetilanteessa.
 int scattrib(int fore, int back, char ch, unsigned cnt)
 {
 	extern HANDLE hConOut;  // handle to a console screen buffer

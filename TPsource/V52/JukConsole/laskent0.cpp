@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Viestikilpailun pÃ¤Ã¤valikko ja kÃ¤yttÃ¶liittymÃ¤n perustoiminnot konsolikÃ¤ytÃ¶ssÃ¤.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <io.h>
@@ -120,7 +122,7 @@ void lukumaarat(void)
       if (ySize <= 25)
          {
          viwrrect(18,66,20,71," Saap:"
-                              " Läht:"
+                              " Lï¿½ht:"
                               " Yht.:",7,0,0);
          draw_vline2(17, 65, 4);
          vidint(17,78,2, dcom+1);
@@ -191,8 +193,8 @@ void lukumaarat(void)
    viwrrect(rl,66,5+rl,75," Ilmoitt. "
                       " Tulos    "
                       " Keskeytt."
-                      " Hylätty  "
-                      " Ei läht. "
+                      " Hylï¿½tty  "
+                      " Ei lï¿½ht. "
                       " Avoinna  ",7,0,0);
    viwrrect(8,66,9,75," TULOSTUS "
                       " Tausta   ",7,0,0);
@@ -324,7 +326,7 @@ void copydfile(datafile *datfb, int oldfile)
 	static char backfname[50] = "KILP.BAK";
 
 	if ((buf = (char *) malloc(CBUFL)) == 0) {
-      writeerror("Muisti ei riitä kopioinnille", 0);
+      writeerror("Muisti ei riitï¿½ kopioinnille", 0);
       return;
       }
 	memset(buf, 0, CBUFL);
@@ -416,7 +418,7 @@ void asetukset()
    clrscr();
    kehys(1);
    prscr(&asetusvalikko);
-   selectopt("T)arrat, A)jat, V)ar.-kynnys, L)ähdöt, U)DP, D)os, loK)i, "
+   selectopt("T)arrat, A)jat, V)ar.-kynnys, L)ï¿½hdï¿½t, U)DP, D)os, loK)i, "
       "<Esc>: Poistu", "TAVLUDKC\x1B",&ch);
    clrln(ySize-3);
    switch (ch) {
@@ -424,8 +426,8 @@ void asetukset()
 		  kaynnistatesti(0);
 		  break;
       case 'T' : ch = ' ';
-                 selectopt("K)eskeytä, L)ähetä toiselle PC:lle, T)ulosta"
-                    ", E)i-lähteneet","KLTE", &ch);
+                 selectopt("K)eskeytï¿½, L)ï¿½hetï¿½ toiselle PC:lle, T)ulosta"
+                    ", E)i-lï¿½hteneet","KLTE", &ch);
                  if (tarfl) tarfl0 = TRUE;
                  switch (ch) {
                     case 'K' :
@@ -440,7 +442,7 @@ void asetukset()
                           tarfl = FALSE;
                           tarfl = FALSE;
                           clrln(ySize-3);
-                          viwrrect(ySize-3,0,ySize-3,39,"Luettele tarralähetyksen "
+                          viwrrect(ySize-3,0,ySize-3,39,"Luettele tarralï¿½hetyksen "
                              "tiedonsiirrot: ",7,0,0);
 						  p = msg;
 						  for (l = 0; l < MAX_PORTTI; l++) {
@@ -454,13 +456,13 @@ void asetukset()
 								tarlahcom[*p - '1'] = 1;
 							 }
 						  }
-					   else writeerror("Tiedonsiirto ei käytössä",0);
+					   else writeerror("Tiedonsiirto ei kï¿½ytï¿½ssï¿½",0);
 					   break;
 					case 'T' :
 					   break;
                     case 'E' :
                        ch = ' ';
-                       selectopt("T)arrat ei-lähteneille,   "
+                       selectopt("T)arrat ei-lï¿½hteneille,   "
                           "E)i tarroja", "TE", &ch);
                        eiltarra = (ch == 'T');
                        break;
@@ -472,7 +474,7 @@ void asetukset()
                     if (_filelength(varfhandle) > 0) {
                        _lseek(varfhandle,0,0);
                        ch = ' ';
-                       selectopt("Luetaanko aiemmat kynnykset levyltä (K/E)"
+                       selectopt("Luetaanko aiemmat kynnykset levyltï¿½ (K/E)"
                           , "KE", &ch);
 
                        if (ch == 'K') _read(varfhandle, (char *)
@@ -490,7 +492,7 @@ void asetukset()
                        MINUUTTI));
                     }
                  vidspmsg(ySize-3,0,7,0,"<Tab>, <Shift-Tab>, \x19, \x18 : "
-                    "Siirry,  + : Hyväksy");
+                    "Siirry,  + : Hyvï¿½ksy");
                  srj = 0;
                  os = 0;
                  do {
@@ -538,13 +540,13 @@ void asetukset()
                  break;
       case 'L' :
          ch = ' ';
-         selectopt("L)ähtöajat vai Y)hteislähtö     Esc  : Peruuta",
+         selectopt("L)ï¿½htï¿½ajat vai Y)hteislï¿½htï¿½     Esc  : Peruuta",
             "LY\x1B", &ch);
          switch (ch) {
             case 'L' :
                if (sarjaluku == 1) {
                   clrln(ySize-3);
-                  viwrrect(ySize-3,0,ySize-3,16,"Anna lähtöaika : ",7,0,0);
+                  viwrrect(ySize-3,0,ySize-3,16,"Anna lï¿½htï¿½aika : ",7,0,0);
                   tl[0] = Sarjat[0].lahto;
 				  INPUTAIKA(&tl[0],t0,8,18,ySize-3,"\x0D\x1B",&ch);
                   if (ch == KB_CR) ch = '+';
@@ -559,7 +561,7 @@ void asetukset()
                      tl[l] = Sarjat[l].lahto;
                      VIDSPAIKA(r, m+10 , tl[l],t0);
                      }
-                  vidspmsg(ySize-3,0,7,0, "\x19\x18 : Siirry, + : Hyväksy "
+                  vidspmsg(ySize-3,0,7,0, "\x19\x18 : Siirry, + : Hyvï¿½ksy "
                      "kaikki, Esc : Peruuta muutokset");
                   for (l = 0; ; ) {
                      r = l % (ySize-6) + 3;
@@ -600,30 +602,30 @@ void asetukset()
                do {
                   for (r=2; r<21; r++) clrtxt(r,0,64);
                   vidspmsg(2,0,7,0,
-                     "Sarja     Yhteislähtö Vaihto kiinni");
+                     "Sarja     Yhteislï¿½htï¿½ Vaihto kiinni");
                   ylmsg =
 
-                     "Yhteislähtö merkitään au-"
+                     "Yhteislï¿½htï¿½ merkitï¿½ï¿½n au-"
                      "tomaattisesti, jos vaih- "
                      "don sulkemisaika annettu "
-                     "Kumoa 'Y' saman näppäimen"
+                     "Kumoa 'Y' saman nï¿½ppï¿½imen"
                      "toistolla.               "
                      "                         "
                      " P : Poista sulkemisaika "
-                     " C : Kopioi ensimmäisen  "
+                     " C : Kopioi ensimmï¿½isen  "
                      "     sarjan tiedot kai-  "
                      "     kille sarjoille     "
 
-                     " Y : Käsinmerkintä yksi  "
+                     " Y : Kï¿½sinmerkintï¿½ yksi  "
                      "     osuus kerrallaan (ei"
-                     "     automaattisesti myö-"
+                     "     automaattisesti myï¿½-"
                      "     hemmille osuuksille)"
                      " S : Seuraava sivu       "
-                     " + : Hyväksy valinnat    "
+                     " + : Hyvï¿½ksy valinnat    "
                      "                         "
-                     "Käsinmerk yksi os:       ";
+                     "Kï¿½sinmerk yksi os:       ";
                   viwrrect(2,40,19,64,ylmsg,7,0,0);
-                  viwrrect(19,60,19,64,ylm ? "Ei   " : "Kyllä",7,0,0);
+                  viwrrect(19,60,19,64,ylm ? "Ei   " : "Kyllï¿½",7,0,0);
                   paivita:
                   for (srj = l; srj < sarjaluku && srj < (l+ySize-7)/rk; srj++) {
                      r = rk*srj - l + 3;
@@ -639,7 +641,7 @@ void asetukset()
                         VIDSPAIKA(r, 24 , ylk[srj],t0);
                         }
                      }
-                  vidspmsg(ySize-3,0,7,0, "\x19\x18 : Siirry, + : Hyväksy "
+                  vidspmsg(ySize-3,0,7,0, "\x19\x18 : Siirry, + : Hyvï¿½ksy "
                      "kaikki, P: Poista, Esc : Peruuta muutokset");
                   for (srj = l; ; ) {
 					 r = rk*srj - l + 3;
@@ -676,7 +678,7 @@ void asetukset()
                         case 'Y' :
                            ylm = !ylm;
                            viwrrect(ySize-6,60,ySize-6,64,
-                              ylm ? "Ei   " : "Kyllä",7,0,0);
+                              ylm ? "Ei   " : "Kyllï¿½",7,0,0);
                            break;
                         case 'C' :
                            for (m = 1; m < sarjaluku; m++) {
@@ -727,17 +729,17 @@ void asetukset()
 		  switch (regnly[0]) {
 				case 1:
 				case 2:
-					selectopt("L)ähetys, A)jantarkkuus, M)aalikellon aika", "ALM", &ch);
+					selectopt("L)ï¿½hetys, A)jantarkkuus, M)aalikellon aika", "ALM", &ch);
 					break;
 				default:
-					selectopt("L)ähetys, A)jantarkkuus, M)aalikello, S)irit", "ALMS", &ch);
+					selectopt("L)ï¿½hetys, A)jantarkkuus, M)aalikello, S)irit", "ALMS", &ch);
 					break;
 				}
 			switch (ch) {
 				 case 'S':
 #ifdef LAJUNEN
 					 ch = ' ';
-					 selectopt("Käynnistä yhteydet uudelleen (K/E)", "KE", &ch);
+					 selectopt("Kï¿½ynnistï¿½ yhteydet uudelleen (K/E)", "KE", &ch);
 					 if (ch == 'K')
 						 reconnectSirit[0] = 1;
 #endif
@@ -768,7 +770,7 @@ void asetukset()
 						  }
 					   if (tc != ESC) {
 						  ch = ' ';
-						  selectopt("Vahvista lähetys (K/E)", "KE", &ch);
+						  selectopt("Vahvista lï¿½hetys (K/E)", "KE", &ch);
 						  if (ch == 'K') lah_kello_nyt[tc - '1'] = 1;
 						  }
 					   break;
@@ -791,7 +793,7 @@ void asetukset()
 					   break;
 					case 'A':
 					   ch = ' ';
-					   selectopt("Näytä sekunnin kymmenykset (K/E)", "KE", &ch);
+					   selectopt("Nï¿½ytï¿½ sekunnin kymmenykset (K/E)", "KE", &ch);
 					   kilpparam.laika = ch == 'K' ? 10 : 8;
 					   break;
                     }

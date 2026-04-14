@@ -17,6 +17,8 @@
 #include <string.h>
 #include <tputil.h>
 
+// Täyttää merkkijonon n ensimmäistä merkkiä merkillä ch ja asettaa nollaterminaattorin.
+// s: kohdepuskuri, ch: täyttömerkki, n: täytettävä pituus; palauttaa s:n.
 char *conststr(char *s, char ch, unsigned int n)
 {
 

@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Palauttaa nykyisen kellonajan merkkijonona muodossa hh.mm.ss, käyttää time()-funktiota.
+
 #if defined(__BORLANDC__)
 #pragma -K -a1
 #endif
@@ -21,6 +23,8 @@
 #include <time.h>
 #include <tputil.h>
 
+// Palauttaa nykyisen kellonajan merkkijonona muodossa "hh.mm.ss".
+// Palauttaa osoittimen staattiseen merkkijonoon.
 char *kello(void)
 {
    time_t clock;
@@ -35,6 +39,8 @@ char *kello(void)
    return(ct);
 }
 
+// Palauttaa nykyisen kellonajan laajamerkki-merkkijonona muodossa "hh.mm.ss".
+// Palauttaa osoittimen staattiseen laajamerkki-puskuriin.
 wchar_t *wkello(void)
 {
 	static wchar_t wct[20];

@@ -27,6 +27,9 @@
 extern int sarjaluku;
 extern wchar_t sarjanimi[][11];
 
+// Etsii sarjan nimen perusteella laajamerkki-sarjataulukosta ja palauttaa sen indeksin.
+// Parametri: snimi=sarjan nimi laajamerkkinä (muunnetaan isoksi ja lyhennetään 6 merkkiin).
+// Palauttaa sarjaindeksin tai -1, jos sarjaa ei löydy.
 int haesarja_w(wchar_t *snimi)
 {
    int i;

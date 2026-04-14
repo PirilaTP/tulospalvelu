@@ -16,6 +16,8 @@
 
 #include <ctype.h>
 
+// Muuntaa leveän merkin isoksi kirjaimeksi huomioiden Latin-1-lisämerkit (0xe0–0xfe).
+// ch: muunnettava leveä merkki; palauttaa isoksi muunnetun merkin.
 wchar_t towupper2(const wchar_t ch)
 {
 	wchar_t c;
@@ -25,6 +27,8 @@ wchar_t towupper2(const wchar_t ch)
 	return(c);
 }
 
+// Muuntaa leveän merkin pieneksi kirjaimeksi huomioiden Latin-1-lisämerkit (0xc0–0xde).
+// ch: muunnettava leveä merkki; palauttaa pieneksi muunnetun merkin.
 wchar_t towlower2(const wchar_t ch)
 {
 	wchar_t c;

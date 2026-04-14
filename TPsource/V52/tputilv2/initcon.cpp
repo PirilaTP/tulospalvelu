@@ -24,6 +24,9 @@
 
 HANDLE hStdIn, hStdOut, hConIn, hConOut; /* standard input, output handles */
 
+// Alustaa Windows-konsolin: asettaa koodisivun, hankkii käsittelijät ja konfiguroi syöttötilan.
+// Parametri: title=konsoli-ikkunan otsikko.
+// Palauttaa 0 onnistuessa tai 1, jos käyttöjärjestelmä ei ole tuettu.
 int initcon(TCHAR *title)
 {
   BOOL bSuccess;
@@ -39,8 +42,6 @@ int initcon(TCHAR *title)
 		L"Error: Windows NT Required to Run",  MB_OK );
 	return(1);
     }
-
-  bSuccess = SetConsoleOutputCP(850);
 
   /* Free the console and immediately allocate a new one. This is done so */
   /* that when debugging under ntsd, the application output will not be */
@@ -69,6 +70,11 @@ int initcon(TCHAR *title)
     bSuccess = AllocConsole();
     PERR(bSuccess, "AllocConsole");
     }
+  /* Set OEM code page 850 on the active console (must be after AllocConsole
+     so it applies to the correct console window; calling it before
+     FreeConsole/AllocConsole would set it on a console that is then
+     discarded, leaving the new console on the system default code page). */
+  bSuccess = SetConsoleOutputCP(850);
   /* let's put up a meaningful console title */
   bSuccess = SetConsoleTitle(title);
   PERR(bSuccess, "SetConsoleTitle");

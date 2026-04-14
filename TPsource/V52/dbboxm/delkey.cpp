@@ -18,6 +18,8 @@ void lopetus(void);
 
    extern int __dbbox__ok;
 
+// Korjaa B-puusivun alitäyttö prpgref2 yhdistämällä tai lainaamalla naapurisivulta prpgref, alkio r.
+// Asettaa *pagetoosmall = FALSE jos sivuliitos riitti, muuten TRUE (yläsivukin vaatii korjausta).
 static void underflow(indexfile *idxf, int prpgref, int prpgref2, int r,
                                                 int *pagetoosmall)
 {
@@ -97,6 +99,8 @@ tapageptr pagptr, pageptr2,l;
   }
 }
 
+// Hakee rekursiivisesti lehtisolmun oikeanpuoleisimman alkion prpgref2:sta ja nostaa sen
+// sivulle prpgref kohtaan k; kutsuu underflow() jos sivulle jää liian vähän alkioita.
 static void dela(indexfile *idxf, int prpgref, int prpgref2,
                                        int *pagetoosmall, int k)
 {
@@ -126,6 +130,8 @@ tapageptr  pageptr2, pagptr;
   }
 }
 
+// Hakee rekursiivisesti avain pkey (tietueviite *procdatref) B-puusta sivulta prpgref ja poistaa sen.
+// Kutsuu dela() sisäsolmuille ja underflow() alitäytön korjaamiseen; asettaa *pagetoosmall.
 static void delb(indexfile *idxf, int *procdatref, int prpgref,
                               int *pagetoosmall, UCHAR *pkey)
 {
@@ -184,6 +190,8 @@ tapageptr pagptr;
   }
 }
 
+// Poistaa avain pkey (tietueviite *procdatref) indeksistä idxf B-puu-algoritmilla.
+// Lyhentää juurta tarvittaessa; palauttaa 0 onnistuessaan, 1 avain ei löydy.
 int deletekey(indexfile *idxf, int *procdatref, UCHAR *pkey)
 {
 int  pagetoosmall ;

@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Ohjelman ohjetekstit (help-sivut) konsolipohjaista kÃ¤yttÃ¶liittymÃ¤Ã¤ varten.
+
 #include "HkDeclare.h"
 
 static scr *helps[10];
@@ -30,30 +32,30 @@ void prscr(scr *s)
 static scr help0 = {
     10,
     2,0,"HELP,    sivu 1",
-    4,0,"Sivu 2 :   KÄSITELTÄVÄN KILPAILIJAN VALINTA",
-    5,11,"SIIRTYMINEN KENTÄSTÄ TOISEEN",
-    7,0,"Sivu 3 :   TIETOJEN SYÖTTÖ JA MUUTTAMINEN",
+    4,0,"Sivu 2 :   Kï¿½SITELTï¿½Vï¿½N KILPAILIJAN VALINTA",
+    5,11,"SIIRTYMINEN KENTï¿½STï¿½ TOISEEN",
+    7,0,"Sivu 3 :   TIETOJEN SYï¿½TTï¿½ JA MUUTTAMINEN",
     9,0,"Sivu 4 :   TIEDONSIIRTO",
-    11,0,"Sivu 5 :   KÄYTTÖ MAALIKELLONA",
-	13, 0, "Sivu 6 :   KÄYTTÖ MAALIKELLONA, TOIMINTO 'MAALI'",
-	15, 0, "Sivu 7 :   LÄHTÖAJAT LÄHTÖPORTILTA",
+    11,0,"Sivu 5 :   Kï¿½YTTï¿½ MAALIKELLONA",
+	13, 0, "Sivu 6 :   Kï¿½YTTï¿½ MAALIKELLONA, TOIMINTO 'MAALI'",
+	15, 0, "Sivu 7 :   Lï¿½HTï¿½AJAT Lï¿½HTï¿½PORTILTA",
 	17, 0, "Sivu 8 :   EMIT-TOIMINTO",
-	19, 0, "Sivu 9 :   EMIT-TOIMINNON NÄPPÄIMET"
+	19, 0, "Sivu 9 :   EMIT-TOIMINNON Nï¿½PPï¿½IMET"
 };
 
-static char hr1[] = "KÄSITELTÄVÄN KILPAILIJAN VALINTA";
+static char hr1[] = "Kï¿½SITELTï¿½Vï¿½N KILPAILIJAN VALINTA";
 static char hr2[] = "Kilpailija valitaan normaalisti antamalla kilpaijanumero";
 static char hr3[] = "tarkistusnumeroineen.  Tarkistusnumeron sijasta voi painaa";
-static char hr4[] = "näppäintä '*', jolloin ohjelma laskee tarkistusnumeron";
-static char hr5[] = "Jos kilpailijanumeroa kysyttäessä painetaan suoraan <Return>";
-static char hr6[] = "siirrytään nimihakuun. Nimihaussa annetaan nimen alkuosa,";
-static char hr7[] = "painetaan <Return> ja täydennetään haku selaamalla tarvit-";
-static char hr8[] = "taessa näppäimillä 'S' ja 'E'. Lopuksi painetaan 'H'";
-static char hr9[] = "SIIRTYMINEN KENTÄSTÄ TOISEEN tietoja korjattaessa tapahtuu";
-static char hr10[] = "-  eteenpäin näppäimillä <Return>, '', <F9> ja <Tab>";
-static char hr11[] = "-  taaksepäin näppäimillä '' ja <F5>";
-static char hr12[] = "Ruutu hyväksytään näppäimellä '+'";
-static char hr13[] = "Ruudusta poistutaan tallentamatta muutoksia näppäimellä <Esc>";
+static char hr4[] = "nï¿½ppï¿½intï¿½ '*', jolloin ohjelma laskee tarkistusnumeron";
+static char hr5[] = "Jos kilpailijanumeroa kysyttï¿½essï¿½ painetaan suoraan <Return>";
+static char hr6[] = "siirrytï¿½ï¿½n nimihakuun. Nimihaussa annetaan nimen alkuosa,";
+static char hr7[] = "painetaan <Return> ja tï¿½ydennetï¿½ï¿½n haku selaamalla tarvit-";
+static char hr8[] = "taessa nï¿½ppï¿½imillï¿½ 'S' ja 'E'. Lopuksi painetaan 'H'";
+static char hr9[] = "SIIRTYMINEN KENTï¿½STï¿½ TOISEEN tietoja korjattaessa tapahtuu";
+static char hr10[] = "-  eteenpï¿½in nï¿½ppï¿½imillï¿½ <Return>, '', <F9> ja <Tab>";
+static char hr11[] = "-  taaksepï¿½in nï¿½ppï¿½imillï¿½ '' ja <F5>";
+static char hr12[] = "Ruutu hyvï¿½ksytï¿½ï¿½n nï¿½ppï¿½imellï¿½ '+'";
+static char hr13[] = "Ruudusta poistutaan tallentamatta muutoksia nï¿½ppï¿½imellï¿½ <Esc>";
 
 static scr help1 = {
     14,
@@ -73,20 +75,20 @@ static scr help1 = {
     18,0,hr13
     };
 
-static char h2r1[] = "HELP,    sivu 3     TIETOJEN SYÖTTÖ JA MUUTTAMINEN";
-static char h2r2[] = "Maaliajan syöttö tapahtuu laskentatoiminnossa käyttäen vain";
-static char h2r3[] = "numeronäppäimiä sekä näppäintä 'Askelpalautus', joka kumoaa";
-static char h2r4[] = "edellisen painalluksen vaikutuksen. Syötetyt numerot korvaavat";
-static char h2r5[] = "aiemmat viimeisestä alkaen. Kilpailijanumero syötetään samoin.";
-static char h2r6[] = "Aikoja korjattaessa käytetään numeronäppäimiä, nuolia  ja \x32";
-static char h2r7[] = "sekä näppäimä <Home> ja <End>. Korjaus tapahtuu korvaustoimin-";
-static char h2r8[] = "tana (Replace). Nuolien sijasta voidaan käyttää";
-static char h2r9[] = "näppäimiä <F7> ja <F8>";
-static char h2r10[] = "Muita tietoja korjattaessa voidaan käyttää lisäys (Insert) tai";
-static char h2r11[] = "korvaustoimintaa; toiminta vaihdetaan näppäimellä <Ins>";
-static char h2r12[] = "Kentän loppuosan poistaa yhdistelmä <Ctrl-End> tai <Ctrl-Del>";
-static char h2r13[] = "Käytettävissä on myös näppäimet , \x32 F7, F8, Del, Askelpal.";
-static char h2r14[] = "Poista tulos antamalla sellainen maaliaika, että tulos on 0.";
+static char h2r1[] = "HELP,    sivu 3     TIETOJEN SYï¿½TTï¿½ JA MUUTTAMINEN";
+static char h2r2[] = "Maaliajan syï¿½ttï¿½ tapahtuu laskentatoiminnossa kï¿½yttï¿½en vain";
+static char h2r3[] = "numeronï¿½ppï¿½imiï¿½ sekï¿½ nï¿½ppï¿½intï¿½ 'Askelpalautus', joka kumoaa";
+static char h2r4[] = "edellisen painalluksen vaikutuksen. Syï¿½tetyt numerot korvaavat";
+static char h2r5[] = "aiemmat viimeisestï¿½ alkaen. Kilpailijanumero syï¿½tetï¿½ï¿½n samoin.";
+static char h2r6[] = "Aikoja korjattaessa kï¿½ytetï¿½ï¿½n numeronï¿½ppï¿½imiï¿½, nuolia  ja \x32";
+static char h2r7[] = "sekï¿½ nï¿½ppï¿½imï¿½ <Home> ja <End>. Korjaus tapahtuu korvaustoimin-";
+static char h2r8[] = "tana (Replace). Nuolien sijasta voidaan kï¿½yttï¿½ï¿½";
+static char h2r9[] = "nï¿½ppï¿½imiï¿½ <F7> ja <F8>";
+static char h2r10[] = "Muita tietoja korjattaessa voidaan kï¿½yttï¿½ï¿½ lisï¿½ys (Insert) tai";
+static char h2r11[] = "korvaustoimintaa; toiminta vaihdetaan nï¿½ppï¿½imellï¿½ <Ins>";
+static char h2r12[] = "Kentï¿½n loppuosan poistaa yhdistelmï¿½ <Ctrl-End> tai <Ctrl-Del>";
+static char h2r13[] = "Kï¿½ytettï¿½vissï¿½ on myï¿½s nï¿½ppï¿½imet , \x32 F7, F8, Del, Askelpal.";
+static char h2r14[] = "Poista tulos antamalla sellainen maaliaika, ettï¿½ tulos on 0.";
 
 static scr help2 = {
     14,
@@ -109,110 +111,110 @@ static scr help2 = {
 static scr help3 = {
     10,
     2,0,"HELP,    sivu 4      TIEDONSIIRTO",
-    4,0,"Tiedonsiirron tilanne näkyy ruudulla sen ollessa käytössä.",
+    4,0,"Tiedonsiirron tilanne nï¿½kyy ruudulla sen ollessa kï¿½ytï¿½ssï¿½.",
     6,0,"  Jos jonot kasvavat on jossain vikaa. Saapuva jono kasvaa",
-    7,0,"kuitenkin, kun samaa kilpailijaa tarkastellaan pitkään.",
-    10,0,"Lähtevien jonon kasvu osoittaa, että tiedonsiirto ei toimi",
-    11,0,"kunnolla, vaikka yhteyshäiriöistä ei ilmoitettaisi.  Syynä",
-    12,0,"voi olla, että vastaanottava PC ei ole vastaanottotilassa.",
-	14, 0, "  Myös aikataulukon tiedot siirretään toiseen MAALI-ohjelmaa",
-	15, 0, "käyttävään koneeseen, jos käytetään käynnistysparametria",
-	16, 0, "LÄHAIKA1 tai LÄHAIKA2 molemmissa koneissa."
+    7,0,"kuitenkin, kun samaa kilpailijaa tarkastellaan pitkï¿½ï¿½n.",
+    10,0,"Lï¿½htevien jonon kasvu osoittaa, ettï¿½ tiedonsiirto ei toimi",
+    11,0,"kunnolla, vaikka yhteyshï¿½iriï¿½istï¿½ ei ilmoitettaisi.  Syynï¿½",
+    12,0,"voi olla, ettï¿½ vastaanottava PC ei ole vastaanottotilassa.",
+	14, 0, "  Myï¿½s aikataulukon tiedot siirretï¿½ï¿½n toiseen MAALI-ohjelmaa",
+	15, 0, "kï¿½yttï¿½vï¿½ï¿½n koneeseen, jos kï¿½ytetï¿½ï¿½n kï¿½ynnistysparametria",
+	16, 0, "Lï¿½HAIKA1 tai Lï¿½HAIKA2 molemmissa koneissa."
 };
 
 static scr help4 = {
    14,
-    2,0,"HELP,    sivu 5     KÄYTTÖ MAALIKELLONA",
-    4,0,"Ajanotto käynnistetään näppäimellä valitsemalla toiminto M)aali.",
-	6,0,"Käynnistyksen yhteydessä ohjelma kysyy aikojen tallennustiedostoa,",
-	7,0,"jota ei yleensä kannata muuttaa sekä ajanottoon käytettävää",
-	8,0,"näppäintä, jota ei tämän jälkeen voi käyttää mihinkään muuhun.",
+    2,0,"HELP,    sivu 5     Kï¿½YTTï¿½ MAALIKELLONA",
+    4,0,"Ajanotto kï¿½ynnistetï¿½ï¿½n nï¿½ppï¿½imellï¿½ valitsemalla toiminto M)aali.",
+	6,0,"Kï¿½ynnistyksen yhteydessï¿½ ohjelma kysyy aikojen tallennustiedostoa,",
+	7,0,"jota ei yleensï¿½ kannata muuttaa sekï¿½ ajanottoon kï¿½ytettï¿½vï¿½ï¿½",
+	8,0,"nï¿½ppï¿½intï¿½, jota ei tï¿½mï¿½n jï¿½lkeen voi kï¿½yttï¿½ï¿½ mihinkï¿½ï¿½n muuhun.",
     9,0,"  Toiminnossa 'Laskenta' saadaan aikamuistin vanhin aika kil-",
-    10,0,"pailijalle näppäimellä 'S'. Seuraavassa valikossa voidaan hakea",
-    11,0,"seuraava tai edellinen aika näppäimillä 'S' ja 'E' (toistettavia)",
-    12,0,"  Esillä olevalle kilpailijalle saadaan vastaavasti sen hetkinen",
-    13,0,"aika näppäimellä  'N', jota voidaan toistaa.",
-    14,0,"Huom: S, E ja N eivät toimi korjattaessa jo hyväksyttyä aikaa.",
-    15,0,"  Ruudun alakulmassa näkyy viimeinen tallennettu aika, sen jär-",
-    16,0,"jestysnumero sekä ensimmäisen käyttämättömän ajan järjestysnumero",
+    10,0,"pailijalle nï¿½ppï¿½imellï¿½ 'S'. Seuraavassa valikossa voidaan hakea",
+    11,0,"seuraava tai edellinen aika nï¿½ppï¿½imillï¿½ 'S' ja 'E' (toistettavia)",
+    12,0,"  Esillï¿½ olevalle kilpailijalle saadaan vastaavasti sen hetkinen",
+    13,0,"aika nï¿½ppï¿½imellï¿½  'N', jota voidaan toistaa.",
+    14,0,"Huom: S, E ja N eivï¿½t toimi korjattaessa jo hyvï¿½ksyttyï¿½ aikaa.",
+    15,0,"  Ruudun alakulmassa nï¿½kyy viimeinen tallennettu aika, sen jï¿½r-",
+    16,0,"jestysnumero sekï¿½ ensimmï¿½isen kï¿½yttï¿½mï¿½ttï¿½mï¿½n ajan jï¿½rjestysnumero",
     18,0,"TOIMINNON 'MAALI' OHJEET SIVULLA 6"
     };
 
 static scr help5 = {
     17,
-    2,0,"HELP,    sivu 6      KÄYTTÖ MAALIKELLONA, TOIMINTO 'MAALI'",
-    4,0,"  Käsiteltävää riviä vaihdetaan näppäimillä \x18, \x19, PgUp, PgDn,",
-    5,0,"Ctl-PgUp (alkuun) ja Ctl-PgDn (loppuun) sekä Alt-R (siirry",
+    2,0,"HELP,    sivu 6      Kï¿½YTTï¿½ MAALIKELLONA, TOIMINTO 'MAALI'",
+    4,0,"  Kï¿½siteltï¿½vï¿½ï¿½ riviï¿½ vaihdetaan nï¿½ppï¿½imillï¿½ \x18, \x19, PgUp, PgDn,",
+    5,0,"Ctl-PgUp (alkuun) ja Ctl-PgDn (loppuun) sekï¿½ Alt-R (siirry",
     6,0,"valittavalle riville).",
-    7,0," Aikakentän käsittelyyn siirrytään näppäimellä Tab.",
+    7,0," Aikakentï¿½n kï¿½sittelyyn siirrytï¿½ï¿½n nï¿½ppï¿½imellï¿½ Tab.",
     8,0," Alt-H on kilpailijanumerohaku (toisto Alt-G). Alt-0 hakee rivit",
-    9,0,"joilla ei ole numeroa ja Alt-X epäilyttävät rivit ('*'-merkki)",
+    9,0,"joilla ei ole numeroa ja Alt-X epï¿½ilyttï¿½vï¿½t rivit ('*'-merkki)",
     10,0,"  Aika tai kilpailunumero voidaan muuttaa kirjoittamalla uusi",
-    11,0,"tieto vanhan päälle. Aikakenttään voidaan merkitä myös keskeyttä-",
-    12,0,"minen tai hylkääminen näppäimillä 'K' ja 'H' sekä poistaa tällai-",
-    13,0,"nen merkintä näppäimellä '-'. Edelleen voidaan kilpailunumero",
-    14,0,"siirtää edelliseltä tai seuraavalta riviltä näppäimillä F8 ja F6",
-    15,0,"  Toimet tallennetaan muistiin vasta vahvistuksen jälkeen.",
-    16,0,"  Maalikellotiedostoon voidaan lisätä väliin tyhjä rivi näppäi-",
-    17,0,"mellä F2 ja poistaa rivi, jos kilpailunumero on 0, näppäimellä F3",
-    18,0,"  Maalikellotiedot voidaan tulostaa näppäimellä F10. Tulostus",
+    11,0,"tieto vanhan pï¿½ï¿½lle. Aikakenttï¿½ï¿½n voidaan merkitï¿½ myï¿½s keskeyttï¿½-",
+    12,0,"minen tai hylkï¿½ï¿½minen nï¿½ppï¿½imillï¿½ 'K' ja 'H' sekï¿½ poistaa tï¿½llai-",
+    13,0,"nen merkintï¿½ nï¿½ppï¿½imellï¿½ '-'. Edelleen voidaan kilpailunumero",
+    14,0,"siirtï¿½ï¿½ edelliseltï¿½ tai seuraavalta riviltï¿½ nï¿½ppï¿½imillï¿½ F8 ja F6",
+    15,0,"  Toimet tallennetaan muistiin vasta vahvistuksen jï¿½lkeen.",
+    16,0,"  Maalikellotiedostoon voidaan lisï¿½tï¿½ vï¿½liin tyhjï¿½ rivi nï¿½ppï¿½i-",
+    17,0,"mellï¿½ F2 ja poistaa rivi, jos kilpailunumero on 0, nï¿½ppï¿½imellï¿½ F3",
+    18,0,"  Maalikellotiedot voidaan tulostaa nï¿½ppï¿½imellï¿½ F10. Tulostus",
     19,0,"tapahtuu tulosluetteloille ilmoitettulla kirjoittimella."
     };
 
 static scr help6 = {
     14,
-    2,0,"HELP,    sivu 7      LÄHTÖAJAT LÄHTÖPORTILTA",
-    4,0,"Lähtöaikojen kirjaaminen automaattisesti lähtöportin ajanotosta",
-    5,0,"edellyttää, että käytettävä ajanottoliittymä tai maalikellon",
-    6,0,"sanomatyyppi on määritelty antamaan lähtöaikoja. Määrittely",
-    7,0,"tehdään joko käynnistysparametrilla PISTEET tai valinnassa",
+    2,0,"HELP,    sivu 7      Lï¿½HTï¿½AJAT Lï¿½HTï¿½PORTILTA",
+    4,0,"Lï¿½htï¿½aikojen kirjaaminen automaattisesti lï¿½htï¿½portin ajanotosta",
+    5,0,"edellyttï¿½ï¿½, ettï¿½ kï¿½ytettï¿½vï¿½ ajanottoliittymï¿½ tai maalikellon",
+    6,0,"sanomatyyppi on mï¿½ï¿½ritelty antamaan lï¿½htï¿½aikoja. Mï¿½ï¿½rittely",
+    7,0,"tehdï¿½ï¿½n joko kï¿½ynnistysparametrilla PISTEET tai valinnassa",
     8,0,"Asetukset/Ajat/Maalikello/Pisteen tunnistus.",
-    10,0,"Lähtöajat tallennetaan samaan tiedostoon ja näytetään samalla",
-    11,0,"näytöllä kuin muut ajat, ellei käytetä käynnistysparametria LAJAT",
-    13,0,"Jos parametri LAJAT on annettu, käsitellään lähtöajat erikseen.",
-    14,0,"Tällöin vaihdetaan ajanottonäyttöä käyttäen näppäinyhdistelmää",
-    15,0,"Alt-A. Näppäinyhdistelmällä Alt-L saadaan pieni viimeiset lähtö-",
-    16,0,"ajat sisältävä ikkuna lukumäärätietojen tilalle. Saman näppäilyn",
-    17,0,"toistaminen palauttaa lukumäärät.",
-    19,0,"Lähtöajan tunnus ajanottonäytöllä on 'L'."
+    10,0,"Lï¿½htï¿½ajat tallennetaan samaan tiedostoon ja nï¿½ytetï¿½ï¿½n samalla",
+    11,0,"nï¿½ytï¿½llï¿½ kuin muut ajat, ellei kï¿½ytetï¿½ kï¿½ynnistysparametria LAJAT",
+    13,0,"Jos parametri LAJAT on annettu, kï¿½sitellï¿½ï¿½n lï¿½htï¿½ajat erikseen.",
+    14,0,"Tï¿½llï¿½in vaihdetaan ajanottonï¿½yttï¿½ï¿½ kï¿½yttï¿½en nï¿½ppï¿½inyhdistelmï¿½ï¿½",
+    15,0,"Alt-A. Nï¿½ppï¿½inyhdistelmï¿½llï¿½ Alt-L saadaan pieni viimeiset lï¿½htï¿½-",
+    16,0,"ajat sisï¿½ltï¿½vï¿½ ikkuna lukumï¿½ï¿½rï¿½tietojen tilalle. Saman nï¿½ppï¿½ilyn",
+    17,0,"toistaminen palauttaa lukumï¿½ï¿½rï¿½t.",
+    19,0,"Lï¿½htï¿½ajan tunnus ajanottonï¿½ytï¿½llï¿½ on 'L'."
     };
 
 static scr help7 = {
     13,
     2,0,"HELP,    sivu 8      EMIT-TOIMINNOT",
-    4,3,"Näytettävä kilpailija vaihdetaan selaamalla näppäimillä",
+    4,3,"Nï¿½ytettï¿½vï¿½ kilpailija vaihdetaan selaamalla nï¿½ppï¿½imillï¿½",
     5,3,"PgDn/S: Seuraava",
 	 6,3,"PgUp/D: eDellinen",
     7,3,"V / A:  Viimeinen / Alkuun",
-    8,3,"G:      tietueen järjnro",
-	 9,3,"kilpailijanumero voidaan syöttää suoraan",
+    8,3,"G:      tietueen jï¿½rjnro",
+	 9,3,"kilpailijanumero voidaan syï¿½ttï¿½ï¿½ suoraan",
 	 10,3,"Tab:    Emit-koodin valintaan",
-    12,3,"Hylkäys- ja keskeyttämismerkinnät voidaan tehdä sekä leiman-",
-    13,3,"tarkastus että korjausnäytöllä",
-    15,3,"Raportteja ja tulosteita tehdään sekä leimantarkastusnäytön",
-	 16,3,"valinnasta R että tulosluetteloissa",
-    19,3,"Lisää seuraavalla sivulla"
+    12,3,"Hylkï¿½ys- ja keskeyttï¿½mismerkinnï¿½t voidaan tehdï¿½ sekï¿½ leiman-",
+    13,3,"tarkastus ettï¿½ korjausnï¿½ytï¿½llï¿½",
+    15,3,"Raportteja ja tulosteita tehdï¿½ï¿½n sekï¿½ leimantarkastusnï¿½ytï¿½n",
+	 16,3,"valinnasta R ettï¿½ tulosluetteloissa",
+    19,3,"Lisï¿½ï¿½ seuraavalla sivulla"
     };
 
 static scr help8 = {
     17,
     2,0,"HELP,    sivu 9      EMIT-TOIMINNOT - 2",
 	 4,3,"X     : Vaihda korttiin liitetty kilpailija", 
-	 5,3,"Z     : Etsi seuraava virheleimaus tai hyväksymätön tietue",
+	 5,3,"Z     : Etsi seuraava virheleimaus tai hyvï¿½ksymï¿½tï¿½n tietue",
     6,3,"Ctrl-S: Etsi leimoja vastaava sarja.",
     7,3,"Ctrl-T: Laske tulos viimeisen rastin ja lukemishetken ajoista.",
-    8,3,"Ctrl-E: Muokkaa Emit-koodeja tai väliaikoja",
+    8,3,"Ctrl-E: Muokkaa Emit-koodeja tai vï¿½liaikoja",
 	 9,3,"U     : Emit-tiedon poisto",
 	 10,3,"O     : Rastin leimasinkoodien muuttaminen",
 	 11,3,"Alt-K : Katsele ja muokkaa kilpailijatietoja",
 	 12,3,"M     : MTR-laitteen toiminnot",
 	 13,3,"N     : Seuraava tieto tiedostosta EMIT_IN.DAT",
     15,3,"Toimintoa AUTOKILP (korttia vastaavan kilpailijan automaatti-",
-    16,3,"nen liittäminen aikaan) ohjataan seuraavilla näppäimillä lei-",
-    17,3,"mantarkastusnäytöllä: Alt-M tuo esille ja piiloittaa aikojen",
-    18,3,"kohdistusnäytön, Alt-J ja Alt-U siirtävät seuraavan ajan",
-    19,3,"kohdistinta. Kohdistin voidaan siirtää myös maalitoiminnon",
-    20,3,"näytöllä korostetulle riville näppäimillä Ctrl-V."
+    16,3,"nen liittï¿½minen aikaan) ohjataan seuraavilla nï¿½ppï¿½imillï¿½ lei-",
+    17,3,"mantarkastusnï¿½ytï¿½llï¿½: Alt-M tuo esille ja piiloittaa aikojen",
+    18,3,"kohdistusnï¿½ytï¿½n, Alt-J ja Alt-U siirtï¿½vï¿½t seuraavan ajan",
+    19,3,"kohdistinta. Kohdistin voidaan siirtï¿½ï¿½ myï¿½s maalitoiminnon",
+    20,3,"nï¿½ytï¿½llï¿½ korostetulle riville nï¿½ppï¿½imillï¿½ Ctrl-V."
     };
 
 void help(INT ih)
@@ -259,32 +261,32 @@ scr paavalikko = {
 #ifdef MAKI
    13,
     2,0,"Valitse toiminto painamalla tunnuskirjainta",
-    3,0,"M)aali          Ajanottotoiminnot, lähtö, maali ja väliajat",
-    5,0,"K)orjaa         Kilpailijoiden lisäykset, poistot ja korjaukset",
-	 6,16,               "hylkäysten ja poissaolojen syöttö",
-	 8,0,"S)elostaja      Sarjan tilanteen seuranta valittavassa pisteessä",
-   10,0,"T)ulos          Tulostus näytölle tai paperille, automaattisen",
-   11,16,"tulostuksen käynnistys. 'O': Oikaise kysymyksiä",
+    3,0,"M)aali          Ajanottotoiminnot, lï¿½htï¿½, maali ja vï¿½liajat",
+    5,0,"K)orjaa         Kilpailijoiden lisï¿½ykset, poistot ja korjaukset",
+	 6,16,               "hylkï¿½ysten ja poissaolojen syï¿½ttï¿½",
+	 8,0,"S)elostaja      Sarjan tilanteen seuranta valittavassa pisteessï¿½",
+   10,0,"T)ulos          Tulostus nï¿½ytï¿½lle tai paperille, automaattisen",
+   11,16,"tulostuksen kï¿½ynnistys. 'O': Oikaise kysymyksiï¿½",
 	13,0,"taU)lu          Tulostaulun ohjaus",
    15,0,"A)setukset      Muuta ohjelman erilaisia asetuksia",
 	16,0,"Y)hteys         Tiedonsiirtoyhteyksien seuranta ja hallinta",
    17,0,"B)ackup         Tiedoston KILP.DAT kopiointi levykkeelle",
-   18,0,"P)oistu         Lopeta ohjelman käyttö",
-   20,0,"Ohjeita saa aina ruudulle painamalla näppäintä <F1>"
+   18,0,"P)oistu         Lopeta ohjelman kï¿½yttï¿½",
+   20,0,"Ohjeita saa aina ruudulle painamalla nï¿½ppï¿½intï¿½ <F1>"
 #else
    12,
     2,0,"Valitse toiminto painamalla tunnuskirjainta",
-    3,0,"M)aali          Käyttö tosiaikaiseen ajanottoon maalissa",
-    5,0,"L)askenta       Tulosten, käsinsyöttö esim. maalipöytäkirjoista",
-    7,0,"K)orjaukset     Kilpailijoiden lisäykset, poistot ja korjaukset",
-    9,0,"T)ulosluettelot Tulostus näytölle tai paperille, automaattisen",
-   10,16,"tulostuksen käynnistys. 'O': Oikaise kysymyksiä",
-   12,0,"lE)imat         EMIT-leimauskorttien tietojen käsittely,",
+    3,0,"M)aali          Kï¿½yttï¿½ tosiaikaiseen ajanottoon maalissa",
+    5,0,"L)askenta       Tulosten, kï¿½sinsyï¿½ttï¿½ esim. maalipï¿½ytï¿½kirjoista",
+    7,0,"K)orjaukset     Kilpailijoiden lisï¿½ykset, poistot ja korjaukset",
+    9,0,"T)ulosluettelot Tulostus nï¿½ytï¿½lle tai paperille, automaattisen",
+   10,16,"tulostuksen kï¿½ynnistys. 'O': Oikaise kysymyksiï¿½",
+   12,0,"lE)imat         EMIT-leimauskorttien tietojen kï¿½sittely,",
    14,0,"Y)hteys         Tiedonsiirron seuranta ja hallinta,",
    16,0,"A)setukset      Muuta ohjelman erilaisia asetuksia,",
    17,0,"B)ackup         Tiedoston KILP.DAT kopiointi levykkeelle,",
-   18,0,"P)oistu         Lopeta ohjelman käyttö",
-   20,0,"Ohjeita saa aina ruudulle painamalla näppäintä <F1>"
+   18,0,"P)oistu         Lopeta ohjelman kï¿½yttï¿½",
+   20,0,"Ohjeita saa aina ruudulle painamalla nï¿½ppï¿½intï¿½ <F1>"
 #endif
 };
 
@@ -293,61 +295,61 @@ scr asetusvalikko = {
     2,0,"S)arjat            Sarjakohtaiset muutokset, sprintin siirrot",
     4,0,"M)aaliajat         Vaihda eri maalien ajat, jotta avoinna",
     5,20, "olevat tulokset arvioitaisiin oikein",
-    7,0,"A)jat              Kellon käynti, kellonajan lähettäminen,",
-    8,20, "esitystarkkuus, väliaikojen syöttötapa,",
-    9,20, "väliaikapisteet, maaliaikojen näppäily,",
+    7,0,"A)jat              Kellon kï¿½ynti, kellonajan lï¿½hettï¿½minen,",
+    8,20, "esitystarkkuus, vï¿½liaikojen syï¿½ttï¿½tapa,",
+    9,20, "vï¿½liaikapisteet, maaliaikojen nï¿½ppï¿½ily,",
    10,20, "maalikellon pisteen tunnistus ja asetukset",
-   12, 0,"W                 Vaiheen vaihto ohjelman ollessa käynnissä",
+   12, 0,"W                 Vaiheen vaihto ohjelman ollessa kï¿½ynnissï¿½",
    14,0,"E)mit              Emittietojen tulostusasetukset"
    };
 
 scr modemohje = {
    6,
-   15,0,"    Modemiyhteys voidaan käynnistää, ellei sitä jo ole, lähettä-",
-   16,0,"    mällä toiselle modemille viesti 'ata' ja toiselle 'ath1o'.",
+   15,0,"    Modemiyhteys voidaan kï¿½ynnistï¿½ï¿½, ellei sitï¿½ jo ole, lï¿½hettï¿½-",
+   16,0,"    mï¿½llï¿½ toiselle modemille viesti 'ata' ja toiselle 'ath1o'.",
    17,0,"    Modemin sanomakaiutus, joka saa ohjelman virheellisesti",
-   18,0,"    uskomaan että yhteys toimii, lakkaa sanomalla 'ate0'.",
-   19,0,"    Toimivalta linjalta siirrytään komentomoodiin käskyllä K).",
+   18,0,"    uskomaan ettï¿½ yhteys toimii, lakkaa sanomalla 'ate0'.",
+   19,0,"    Toimivalta linjalta siirrytï¿½ï¿½n komentomoodiin kï¿½skyllï¿½ K).",
    20,0,"    Puhelu katkaistaan sitten komennolla 'ath0'"
    };
 
 scr korjvalikko = {
    11,
-   5,0,"L)isää    : Lisää kilpailijoita. Tuloksia ei voi antaa",
-   6,12,"lisäystoiminnossa",
+   5,0,"L)isï¿½ï¿½    : Lisï¿½ï¿½ kilpailijoita. Tuloksia ei voi antaa",
+   6,12,"lisï¿½ystoiminnossa",
    8,0,"K)orjaa   : Korjaa kilpailijatietoja tai tuloksia",
-  10,0,"P)oista   : Poista kilpailija. Poistoa ei voi tehdä, jos",
-  11,12,"tulos tai hylkäysmerkintä on jo tehty.",
-  12,12,"Merkintä 'Poissa' tai 'Ei lähtenyt' voidaan",
-  13,12,"tehdä toiminnossa K)orjaa",
-  15,0,"Kilpailija voidaan hakea käsiteltäväksi numeron tai nimen",
-  16,0,"perusteella. Nimihakuun päästään syöttämällä tyhjä numerokenttä",
-  17,0,"Nimihaussa voidaan antaa nimestä vain alkuosa ja täydentää",
-  18,0,"selaamalla näppäimillä 'S' ja 'E'"
+  10,0,"P)oista   : Poista kilpailija. Poistoa ei voi tehdï¿½, jos",
+  11,12,"tulos tai hylkï¿½ysmerkintï¿½ on jo tehty.",
+  12,12,"Merkintï¿½ 'Poissa' tai 'Ei lï¿½htenyt' voidaan",
+  13,12,"tehdï¿½ toiminnossa K)orjaa",
+  15,0,"Kilpailija voidaan hakea kï¿½siteltï¿½vï¿½ksi numeron tai nimen",
+  16,0,"perusteella. Nimihakuun pï¿½ï¿½stï¿½ï¿½n syï¿½ttï¿½mï¿½llï¿½ tyhjï¿½ numerokenttï¿½",
+  17,0,"Nimihaussa voidaan antaa nimestï¿½ vain alkuosa ja tï¿½ydentï¿½ï¿½",
+  18,0,"selaamalla nï¿½ppï¿½imillï¿½ 'S' ja 'E'"
   };
 
 scr tiedostoohje = {
    8,
    5,0,"Tiedostoon tulostus tapahtuu aina uuteen tiedostoon, joka",
    6,0,"korvaa aiemman saman nimisen tiedoston.",
-   8,0,"Tiedosto suljetaan, kun palataan päävalikkoon, minkä jälkeen",
+   8,0,"Tiedosto suljetaan, kun palataan pï¿½ï¿½valikkoon, minkï¿½ jï¿½lkeen",
    9,0,"voidaan levyke tai muistitikku poistaa, jos tiedosto on tehty",
-	10,0,"poistettavalle tallennusvälineelle",
+	10,0,"poistettavalle tallennusvï¿½lineelle",
    12,0,"Vaihtoehtoisesti voidaan tiedosto laatia kiintolevylle,",
-   13,0,"mistä se voidaan kopioida käyttöjärjestelmätoiminnoilla",
-   14,0,"päävalikkoon palaamisen jälkeen."
+   13,0,"mistï¿½ se voidaan kopioida kï¿½yttï¿½jï¿½rjestelmï¿½toiminnoilla",
+   14,0,"pï¿½ï¿½valikkoon palaamisen jï¿½lkeen."
    };
 
 scr tulostettava = {
   14,
    3,0,"Tulostus tapahtuu aina sarjoittain halutussa laajuudessa:",
-   5,0,"I)lmoittautuneet  Kaikki täksi päiväksi ilmoittautuneet",
-   6,0,"L)opettaneet      Hyväksytyt, keskeyttäneet ja hylätyt",
-   7,0,"T)ulokset         Hyväksytyt",
-   8,0,"P)arhaat          Seuraavaksi ilmoitettava määrä parhaita",
-   9,0,"H)ylätyt          Hylätyt",
-  10,0,"K)eskeyttäneet    Keskeyttäneet",
-  11,0,"E)i lähtennet     Ei lähteneet",
+   5,0,"I)lmoittautuneet  Kaikki tï¿½ksi pï¿½ivï¿½ksi ilmoittautuneet",
+   6,0,"L)opettaneet      Hyvï¿½ksytyt, keskeyttï¿½neet ja hylï¿½tyt",
+   7,0,"T)ulokset         Hyvï¿½ksytyt",
+   8,0,"P)arhaat          Seuraavaksi ilmoitettava mï¿½ï¿½rï¿½ parhaita",
+   9,0,"H)ylï¿½tyt          Hylï¿½tyt",
+  10,0,"K)eskeyttï¿½neet    Keskeyttï¿½neet",
+  11,0,"E)i lï¿½htennet     Ei lï¿½hteneet",
   12,0,"A)voimet          Avoinna olevat kilpailijat",
   13,0,"S)eura (piiri)    Seura- ja piiritulosten laadinta",
   15,0,"Ellei muotoilussa ole toisin pyydetty, aloittaa paperille",
@@ -358,79 +360,79 @@ scr tulostettava = {
 
 scr tulvalikko = {
    12,
-   4,0,"N)äytölle        Tulostus näytölle",
+   4,0,"N)ï¿½ytï¿½lle        Tulostus nï¿½ytï¿½lle",
    6,0,"P)aperille       Tulostus kirjoittimelle tai kirjoittimen",
    7,17,"korvaavaan tiedostoon",
    9,0,"A)utomaattinen   Muuttuneiden sarjojen tulostus paperille",
    10,17,"automaattisesti, kun muutoksia on kohta annet-",
-   11,17,"tava määrä. Sarjat tulostetaan kiireellisyys-",
-   12,17,"järjestyksessä. Käytä valintaa 'Automaattinen'",
-   13,17,"myös lopettaaksesi automaattinen tulostus",
+   11,17,"tava mï¿½ï¿½rï¿½. Sarjat tulostetaan kiireellisyys-",
+   12,17,"jï¿½rjestyksessï¿½. Kï¿½ytï¿½ valintaa 'Automaattinen'",
+   13,17,"myï¿½s lopettaaksesi automaattinen tulostus",
    15,0,"M)uotoilu        Muuta kirjoittimelle tulostettavien tulos-",
    16,17,"luetteloiden muotoilua",
-   18,0,"T)yhjennä jono   Tyhjennä taustatulostuksen tulostusjono",
+   18,0,"T)yhjennï¿½ jono   Tyhjennï¿½ taustatulostuksen tulostusjono",
 	20,0,"tI)edostoon      Tulokset, teksti-, XML- yms. tiedostoihin"
    };
 
 scr pistetunnistus = {
    12,
-   5,0,"Otetun ajan käyttökohde voidaan tunnistaa, joko oletusvalinnan,",
-   6,0,"ajanottotavan, maalikellon liitännän tai kilpailijan saaman",
+   5,0,"Otetun ajan kï¿½yttï¿½kohde voidaan tunnistaa, joko oletusvalinnan,",
+   6,0,"ajanottotavan, maalikellon liitï¿½nnï¿½n tai kilpailijan saaman",
    7,0,"ajan perusteella. Jos 'Oletusvalinnalle' annetaan muu arvo kuin",
-   8,0,"'A)utomaattinen', käytetään tässä tietokoneessa tätä oletusta.",
+   8,0,"'A)utomaattinen', kï¿½ytetï¿½ï¿½n tï¿½ssï¿½ tietokoneessa tï¿½tï¿½ oletusta.",
    9,0,"Muussa tapauksessa ratkaisee ajanottotapa, jos vastaava valinta",
-   10,0,"ei ole 'A)utomaattinen'. Jos sekä oletusvalinta, että käytetun",
-   11,0,"ajanototavan valinnat ovat 'A)utomaattinen', valitaan käyttc-",
-   12,0,"kohde ajan perusteella. Käyttökohteiden koodit ovat:",
+   10,0,"ei ole 'A)utomaattinen'. Jos sekï¿½ oletusvalinta, ettï¿½ kï¿½ytetun",
+   11,0,"ajanototavan valinnat ovat 'A)utomaattinen', valitaan kï¿½yttc-",
+   12,0,"kohde ajan perusteella. Kï¿½yttï¿½kohteiden koodit ovat:",
    14,4,"A)utomaattinen  : valinta muilla perusteilla",
-   15,4,"L)ähtö          : lähtöaika",
+   15,4,"L)ï¿½htï¿½          : lï¿½htï¿½aika",
    16,4,"M)aali          : maaliintuloaika",
-   17,4,"1, 2, 3 tai 4   : väliaikapisteen järjestysnumero"
+   17,4,"1, 2, 3 tai 4   : vï¿½liaikapisteen jï¿½rjestysnumero"
    };
 
 scr tulvalikko2 = {
    9,
    4,0,"K)ilpailijat      Tulostaa kilpailijaittaiset tulokset",
-   6,0,"Y)hteenveto       Sarjoittain tulosten, keskeyttäneitten,",
-   7,18,"hylättyjen ja avoinna olevien lukumäärät",
-   8,18,"sekä avoimille mahdolliset ajat ja sijat",
-  10,0,"V)äliajat         Väliajat sarjoittain näytölle tai paperille.",
-  12,0,"M)uut             Aakkos- ja numerojärjestys, lähtöajat,",
-  13,18,"suppeat tulokset lehdistölle käyttäjän muok-",
-  14,18,"kaamina. Huom. Laajemmat tiedot lehdistölle",
-  15,18,"tehdään tiedostotulostusvalinnassa.",
+   6,0,"Y)hteenveto       Sarjoittain tulosten, keskeyttï¿½neitten,",
+   7,18,"hylï¿½ttyjen ja avoinna olevien lukumï¿½ï¿½rï¿½t",
+   8,18,"sekï¿½ avoimille mahdolliset ajat ja sijat",
+  10,0,"V)ï¿½liajat         Vï¿½liajat sarjoittain nï¿½ytï¿½lle tai paperille.",
+  12,0,"M)uut             Aakkos- ja numerojï¿½rjestys, lï¿½htï¿½ajat,",
+  13,18,"suppeat tulokset lehdistï¿½lle kï¿½yttï¿½jï¿½n muok-",
+  14,18,"kaamina. Huom. Laajemmat tiedot lehdistï¿½lle",
+  15,18,"tehdï¿½ï¿½n tiedostotulostusvalinnassa.",
    };
 
 scr backupohje = {
    10,
    5,0,"Toiminnolla 'Backup' luodaan levylle uusi kopio kilpailun",
-   6,0,"tämänhetkisestä tilanteesta joko tulospalvelun varmistamiseksi",
-   7,0,"tai tilanteen siirtämiseksi toiselle tietokoneelle.",
-   9,0,"Ohjelman kysyessä ilmoitetaan luotavan tiedoston nimi, joka",
-   10,0,"voi sisältää polkumäärittelyn levyasematunnuksineen tai ilman.",
-   11,0,"Kun back-uptiedosto on luotu, voidaan se siirtää tai kopioida.",
-	12,0,"Polku voi sisältää myös verkkolevyn tunnuksen esim. muodossa:",
+   6,0,"tï¿½mï¿½nhetkisestï¿½ tilanteesta joko tulospalvelun varmistamiseksi",
+   7,0,"tai tilanteen siirtï¿½miseksi toiselle tietokoneelle.",
+   9,0,"Ohjelman kysyessï¿½ ilmoitetaan luotavan tiedoston nimi, joka",
+   10,0,"voi sisï¿½ltï¿½ï¿½ polkumï¿½ï¿½rittelyn levyasematunnuksineen tai ilman.",
+   11,0,"Kun back-uptiedosto on luotu, voidaan se siirtï¿½ï¿½ tai kopioida.",
+	12,0,"Polku voi sisï¿½ltï¿½ï¿½ myï¿½s verkkolevyn tunnuksen esim. muodossa:",
 	14,0,"\\\\192.168.1.10\\c\\kisa\\kilp.dat",
-	16,0,"mikä viittaa verkon koneen 192.168.1.10 nimellä C jaetun",
+	16,0,"mikï¿½ viittaa verkon koneen 192.168.1.10 nimellï¿½ C jaetun",
 	17,0,"levyaseman tiedostoon \\kisa\\kilp.dat"
    };
 scr valiaikaohje = {
    7,
-   14,0,"VÄLIAIKAPISTEET",
-   15,0,"Kaikista väliaikapisteistä on ilmoitettava sijainti sekä aika,",
+   14,0,"Vï¿½LIAIKAPISTEET",
+   15,0,"Kaikista vï¿½liaikapisteistï¿½ on ilmoitettava sijainti sekï¿½ aika,",
    16,0,"jota nopeammin kukaan ei varmasti ehdi kyseiseen pisteeseen.",
-   17,0,"Ohjelma päättelee tämän ajan perusteella, mikä väliaikapiste",
-   18,0,"on kyseessä, joten ajan on toisaalta ylitettävä edellisen",
+   17,0,"Ohjelma pï¿½ï¿½ttelee tï¿½mï¿½n ajan perusteella, mikï¿½ vï¿½liaikapiste",
+   18,0,"on kyseessï¿½, joten ajan on toisaalta ylitettï¿½vï¿½ edellisen",
    19,0,"pisteen huonoin aika.",
-   20,0,"Väliaikapisteiden määrää voi lisätä vain ohjelmalla ILMOITT."
+   20,0,"Vï¿½liaikapisteiden mï¿½ï¿½rï¿½ï¿½ voi lisï¿½tï¿½ vain ohjelmalla ILMOITT."
    };
 scr laskevaliaikaohje = {
    7,
-   4,0,"VÄLIAIKOJEN LASKENTA",
-   6,0,"Valittavaan väliaikapisteeseen voidaan tallentaa kaikkien,",
+   4,0,"Vï¿½LIAIKOJEN LASKENTA",
+   6,0,"Valittavaan vï¿½liaikapisteeseen voidaan tallentaa kaikkien,",
    7,0,"puuttuvien aikojen paikalle vakioaika sekunteina..",
-   8,0,"Erotuksena kahdesta väliajasta tai loppuajasta ja väliajasta",
-   9,0,"voidaan laskea ajat väliaikapisteeseen.",
-   10,0,"Molemmat toimet voidaan tehdä kaikille tai osalle sarjoista.",
+   8,0,"Erotuksena kahdesta vï¿½liajasta tai loppuajasta ja vï¿½liajasta",
+   9,0,"voidaan laskea ajat vï¿½liaikapisteeseen.",
+   10,0,"Molemmat toimet voidaan tehdï¿½ kaikille tai osalle sarjoista.",
    11,0,"Valitun pisteen aimmat tulokset muuttuvat peruuttamattomasti."
    };

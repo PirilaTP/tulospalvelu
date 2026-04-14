@@ -16,6 +16,7 @@
 
 #include <windows.h>
 
+// Toistaa lyhyen äänimerk in (4000 Hz, 50 ms) signaalina tapahtumasta.
 void tick(void)
 {
   Beep(4000,50);

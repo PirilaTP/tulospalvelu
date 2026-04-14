@@ -53,6 +53,9 @@ void ampujaPaikalle(int paikka, int kno) {}
 void Laukaus(int paikka, bool osuma, char *taulut) {}
 #endif
 
+// Tulkitsee ampumasankoman cbuf ja tallentaa kilpailijan ammunnan sakkotiedot kilptietue-tietueeseen.
+// sak_laji == 0: Kurvinen-protokolla, sak_laji != 0: muu protokolla.
+// Päivittää pv[k_pv].asakot ja kutsuu kilp.tallenna. Palauttaa 0 onnistuessa tai negatiivisen virhekoodin.
 static INT tall_sak(char *cbuf)
    {
    wchar_t buf[20], *p, sakstr[20];
@@ -102,6 +105,9 @@ static INT tall_sak(char *cbuf)
    return(0);
    }
 
+// Käsittelee ampumasanoman sakbuf sarjanumeron r_no mukaisesti.
+// Kutsuu tall_sak ampumasanoman tulkitsemiseksi ja näyttää virheilmoituksen epäonnistuessa.
+// r_no == 999: ei lähetetä Kurviselle edelleen.
 void tall_ampsakko(char *sakbuf, int r_no)
    {
    static INT inrec, valid = 1;
@@ -228,6 +234,8 @@ void tall_ampsakko(char *sakbuf, int r_no)
    inrec = 0;
    }
 
+// Tulkitsee Kurvinen-ampumalaitteen sanoman sanoma ja välittää sen tall_ampsakko-funktiolle.
+// kielto: lähetyssuuntakielto (ei käytetä tässä funktiossa suoraan).
 void tulkKurvinen(char *sanoma, int kielto)
 {
 	char buf[50] = "";
@@ -236,6 +244,7 @@ void tulkKurvinen(char *sanoma, int kielto)
 	tall_ampsakko(buf, 999);
 }
 
+// Sulkee ampumapaikkatiedoston (paikkafl), jos se on auki.
 void close_sakot(void)
 {
 	if (paikkafl)

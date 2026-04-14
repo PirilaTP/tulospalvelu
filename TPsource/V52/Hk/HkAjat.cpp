@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Aikajonojen hallinta: aikojen tallennus, poisto ja tiedostoon kirjoitus henkilÃ¶kilpailussa.
+
 #ifdef _BORLAND_
 #include <vcl.h>
 #endif
@@ -101,14 +103,14 @@ __int64 datetime64(aikatp *tm)
 // INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, aikatp_ptr *uptr, INT kysy,
 //    INT kielto, INT pakota_lah)
 //
-//    ino      ajanottojonon numero (1 : lähtöajat, 0: muu)
+//    ino      ajanottojonon numero (1 : lï¿½htï¿½ajat, 0: muu)
 //    utm      osoitin uuteen aikatietueeseen
 //    vtm      osoitin korvattavaan aikatietueeseen
-//    uptr     tässä palautetaan uusi osoitin aktiiviseen aikatietueeseen
-//    kysy     ilmoittaa, että on kysyttävä vahvistusta. kysy == 1, jos
-//             tietoja syötetään ko. tietokoneelta
+//    uptr     tï¿½ssï¿½ palautetaan uusi osoitin aktiiviseen aikatietueeseen
+//    kysy     ilmoittaa, ettï¿½ on kysyttï¿½vï¿½ vahvistusta. kysy == 1, jos
+//             tietoja syï¿½tetï¿½ï¿½n ko. tietokoneelta
 //    kielto   sen yhteyden numero, josta sanoma on tullut (kielto = 1 ... 3)
-//    pakota_lah  lähetä rivi, vaikka ei muutosta
+//    pakota_lah  lï¿½hetï¿½ rivi, vaikka ei muutosta
 //
 
 INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, INT *uptr, INT kysy,
@@ -119,7 +121,7 @@ INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, INT *uptr, INT kysy,
 	wchar_t ch;
 	wchar_t as[40],as2[40],as3[20],line[66];
 	INT errret = 0, tcomfl0, muutos = 0;
-   __int64 it1, it2;
+   __int64 it1, it2 = 0;
 
 
 	if (!aikajono[ino]->mxtime)
@@ -155,11 +157,11 @@ INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, INT *uptr, INT kysy,
 		wkirjloki(line);
 	  }
 
-   // Seuraava lohko käsitellään, jos vanhoja tietoja poistetaan tai korvataan
+   // Seuraava lohko kï¿½sitellï¿½ï¿½n, jos vanhoja tietoja poistetaan tai korvataan
 
    if (vtm && vtm->t != TMAALI0*AIKAJAK) {
 
-	  // Seuraavassa etsitään korvattava rivi alkaen viimeisestä
+	  // Seuraavassa etsitï¿½ï¿½n korvattava rivi alkaen viimeisestï¿½
 	  it1 = datetime64(vtm);
 	  for (rtm = aikajono[ino]->rwtime-1; rtm >= 0 &&
 		 (it2 = datetime64(gettm(rtm, &tm, ino))) >= it1; rtm--) {
@@ -170,8 +172,8 @@ INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, INT *uptr, INT kysy,
 
 #ifdef _CONSOLE
 
-		  // Tässä on löydetty tietue, jossa aika, kilpailija ja piste oikeat
-		  // Jos L'kysy' voimassa ja rivi vaihtuu kysytään vahvistusta
+		  // Tï¿½ssï¿½ on lï¿½ydetty tietue, jossa aika, kilpailija ja piste oikeat
+		  // Jos L'kysy' voimassa ja rivi vaihtuu kysytï¿½ï¿½n vahvistusta
 
 				if (kysy && utm && utm->t != TMAALI0*AIKAJAK && (
 				  (
@@ -187,7 +189,7 @@ INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, INT *uptr, INT kysy,
 				  )
 			   ) {
 				ch = L' ';
-				wselectopt(L"Aika ei vastaa riviä - vahvista tallennus (K/E)",
+				wselectopt(L"Aika ei vastaa riviï¿½ - vahvista tallennus (K/E)",
 					L"KE", &ch);
 				if (ch == L'E') {
 					if (loki)
@@ -210,7 +212,7 @@ INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, INT *uptr, INT kysy,
 			}
 		 }
 
-		// Tähän tullaan, jos looppi on käyty loppuun löytämättä oikeaa riviä
+		// Tï¿½hï¿½n tullaan, jos looppi on kï¿½yty loppuun lï¿½ytï¿½mï¿½ttï¿½ oikeaa riviï¿½
 
 	  if (!kielto) {
 		 writeerror_w(L"Tallennus ei onnistu. Aikataulukkoon tullut mahdollisesti "
@@ -225,13 +227,13 @@ INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, INT *uptr, INT kysy,
 	  }
    jatka:
 
-   // Seuraava lohko käsitellään, jos kirjataan uusia tietoja
+   // Seuraava lohko kï¿½sitellï¿½ï¿½n, jos kirjataan uusia tietoja
 
 	if (utm && utm->t != TMAALI0*AIKAJAK) {
 		utm->t = NORMKELLO_A(utm->t);
 	  if((aikajono[ino]->rwtime - aikajono[ino]->mxtime) >= 0) {
-			writeerror_w(L"AIKATAULUKKO TÄYSI",0);
-		 if (loki) wkirjloki(L"Aikataulukko täysi, tallennus peruutettu");
+			writeerror_w(L"AIKATAULUKKO Tï¿½YSI",0);
+		 if (loki) wkirjloki(L"Aikataulukko tï¿½ysi, tallennus peruutettu");
 		 errret = 1;
 		 goto poistu;
 			}
@@ -247,12 +249,12 @@ INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, INT *uptr, INT kysy,
 
 		//  Nyt on joko it2 < it1 tai aika on sama ja (uusi kilpailunumero on pienempi tai badge vahvistaa tiedon samaksi)
 
-		//  Tallenna uusi tietue, ellei sitä tulkita aiemman tiedon toistoksi
+		//  Tallenna uusi tietue, ellei sitï¿½ tulkita aiemman tiedon toistoksi
 
 		if (it2 != it1 || tm.kno != utm->kno || tm.badge != utm->badge ||
 			(tm.kno == 0 && tm.badge == 0 && memcmp(&tm, utm, sizeof(aikatp)))) {
 
-			// varmista, että aika poikkeaa aiemmista ajoista kasvattamalla aikaa, jos se on sama kuin aiemmin tallennettu
+			// varmista, ettï¿½ aika poikkeaa aiemmista ajoista kasvattamalla aikaa, jos se on sama kuin aiemmin tallennettu
 			while (it1 == it2) {
 				utm->t++;
 				it1 = datetime64(utm);
@@ -264,7 +266,7 @@ INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, INT *uptr, INT kysy,
 			lisaarivi(rtm, (aikatp *)utm, ino);
 			muutos = 1;
 			}
-	  //  Ilmoita, minkä rivin tulee jäädä aktiiviseksi
+	  //  Ilmoita, minkï¿½ rivin tulee jï¿½ï¿½dï¿½ aktiiviseksi
 
 	  if (uptr) {
 		 if (kysy) *uptr = rtm;
@@ -274,11 +276,11 @@ INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, INT *uptr, INT kysy,
 		 aikajono[ino]->fp1 = rtm;
 		}
 
-   // Näytä päivitetty aikataulukko
+   // Nï¿½ytï¿½ pï¿½ivitetty aikataulukko
 
    writeajat();
 
-   // Lähetä muutostieto toisille tietokoneille
+   // Lï¿½hetï¿½ muutostieto toisille tietokoneille
 
 	if (muutos) {
 		aikajono[ino]->haeAktAjat();

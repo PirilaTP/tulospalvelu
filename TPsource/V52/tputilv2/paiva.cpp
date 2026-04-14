@@ -19,6 +19,8 @@
 #include <time.h>
 #include <tputil.h>
 
+// Palauttaa nykyisen päivämäärän merkkijonona muodossa "pp.kk.vv".
+// Paluuarvo: osoitin staattiseen puskuriin, joka sisältää päivämäärän.
 char *paiva(void)
 {
 	time_t clock;
@@ -32,6 +34,8 @@ char *paiva(void)
 	return(ct);
 }
 
+// Palauttaa nykyisen päivämäärän leveänä merkkijonona (wchar_t) muodossa "pp.kk.vv".
+// Paluuarvo: osoitin staattiseen leveään puskuriin.
 wchar_t *wpaiva(void)
 {
 	static wchar_t wct[10];

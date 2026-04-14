@@ -27,6 +27,9 @@ static wchar_t altkey[25] = {104,105,106,107,108,109,110,111,112,113,
       69,70,151,152,153,74,155,76,157,78,159,160,161,162,163};
 static wchar_t shiftkey[10]= {84,85,86,87,88,89,89,91,92,93};
                       
+// Lukee näppäinpainalluksen konsolilta leveänä merkkinä; käsittelee erikoisnäppäimet.
+// ch2: skannauskoodi tai erikoisnäppäimen koodi palautetaan tähän; wait: 1=odota syötettä.
+// Paluuarvo: Unicode-merkki tai 0 jos erikoisnäppäin.
 wchar_t readkbd_w(wchar_t *ch2, int wait)
 {
 	INPUT_RECORD Buf;

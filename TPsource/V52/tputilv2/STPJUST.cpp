@@ -48,6 +48,8 @@
 #include "bstrings.h"
 
 
+// Tasaa merkkijonon psource kentässä fldsize: code ohjaa tasauksen (vasen/oikea/keskitys), fill on täytemerkki.
+// Kirjoittaa tuloksen ptarget:iin; palauttaa osoittimen ptarget:iin.
 char *stpjust(char  *ptarget, const char *psource, char  fill, int fldsize, int code)
 {
     int diff,i;

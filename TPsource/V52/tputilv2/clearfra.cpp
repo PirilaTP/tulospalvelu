@@ -16,6 +16,8 @@
 
 #include "tputil.h"
 
+// Tyhjentää näyttökehyksen sisältöalueen rivit 3–20 (80 merkkiä per rivi).
+// Ei parametreja eikä paluuarvoa.
 void clearframe(void)
 {
    int i;

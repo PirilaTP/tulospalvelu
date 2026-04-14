@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Tarkistaa onko tiedosto Unicode-muodossa (BOM-tarkistus) ja ilmoittaa virheestÃ¤.
+
 #include <stdio.h>
 #include <tputil.h>
 
@@ -25,7 +27,7 @@ int testunicode(FILE *tfile, UCHAR *flnm)
 		rewind(tfile);
 		if (buf[0] >= 254) {
 			if (flnm) {
-				sprintf(buf, "Tiedosto %s ilmeisesti Unicode-tekstiä, ohjelma ei tue", flnm);
+				sprintf(buf, "Tiedosto %s ilmeisesti Unicode-tekstiï¿½, ohjelma ei tue", flnm);
 				writeerror(buf, 0);
 				}
 			return(1);

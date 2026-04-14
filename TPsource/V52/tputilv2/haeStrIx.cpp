@@ -16,6 +16,9 @@
 
 #include <string.h>
 
+// Etsii laajamerkkijonon taulukosta ja palauttaa sen indeksin.
+// Parametrit: st=haettava jono, stArr=jonotaulukko, szArr=taulukon koko.
+// Palauttaa indeksin tai -1, jos jonoa ei löydy.
 int haeStrIx(const wchar_t *st, wchar_t *stArr[], int szArr)
 {
 	for (int i = 0; i < szArr; i++)

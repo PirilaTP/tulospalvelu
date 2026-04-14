@@ -26,6 +26,9 @@
 #define TRUE 1
 #define FALSE 0
 
+// Lukee aikasyötteen yhden sadasosasekunnin tarkkuudella (hh.mm.ss,s) INT32-muodossa.
+// t: aika (in/out), t0: vertailuaika INT32-muodossa, l: kentän leveys, x/y: näyttökoordinaatit, term: lopetusmerkit, tc: lopetusmerkki (out).
+// Muuttaa *t vain kun syöte on kelvollinen.
 void inputaika_l2(INT32 *t,INT32 t0, int l, int x, int y, char *term, char *tc)
    {
    long tt;
@@ -71,6 +74,8 @@ void inputaika_l2(INT32 *t,INT32 t0, int l, int x, int y, char *term, char *tc)
    if (ok)  *t = tt;
    }
 
+// Unicode-versio inputaika_l2:sta; muuntaa wide-merkkijonot OEM-merkistöön ennen kutsua.
+// wterm: wide-merkkinen lopetusmerkkijono, wtc: vastaanotettu lopetusmerkki wide-muodossa (out).
 void inputaika_l2w(INT32 *t, int t0, int l, int x, int y, wchar_t *wterm, wchar_t *wtc)
 {
 	char term[40] = "", tc;

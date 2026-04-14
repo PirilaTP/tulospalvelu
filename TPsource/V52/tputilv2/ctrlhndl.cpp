@@ -16,6 +16,8 @@
 
 #include <windows.h>
 
+// Käsittelee Windows-konsolisignaalit (CTRL+C, CTRL+BREAK, CTRL+CLOSE jne.) estämällä ohjelman lopetuksen.
+// fdwCtrlType: signaali-tunnus; palauttaa TRUE jos signaali käsitelty, FALSE muuten.
 BOOL CtrlHandler(DWORD fdwCtrlType) 
 {     
 	switch (fdwCtrlType) { 

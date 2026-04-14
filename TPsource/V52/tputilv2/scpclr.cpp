@@ -14,6 +14,7 @@
 **/
 #include <windows.h>
 
+// Tyhjentää koko konsolinäytön täyttämällä kaikki rivit välilyönneillä ja palauttamalla oletusvärimääritteet.
 void scpclr()
 {
 	extern HANDLE hConOut;

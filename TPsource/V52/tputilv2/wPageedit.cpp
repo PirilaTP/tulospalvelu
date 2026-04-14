@@ -36,6 +36,8 @@ wchar_t *wrivptr[NRMAX];
 static int rm, rl, rluku, rofs, rofs0;
 static int rivi, newline;
 
+// Laskee ja näyttää moniriivisen leveän tekstin rivityksen ruudulla (wide-versio).
+// s: wide-tekstipuskuri, y/x: näytön vasemman yläreunan koordinaatit, ch: viimeinen syötemerkki (255 = päivitä vain kohdistin).
 static void wrapstr(wchar_t *s, int y, int x, wchar_t ch)
    {
    static int l;
@@ -122,6 +124,8 @@ static void wrapstr(wchar_t *s, int y, int x, wchar_t ch)
    rofs0 = rofs;
    }
 
+// Siirtää kohdistinta ylöspäin nr riviä moniriivisessä wide-tekstissä.
+// s: wide-tekstipuskuri, nr: siirrettävien rivien määrä.
 static void wrylos(wchar_t *s, int nr)
    {
    int r,i;
@@ -135,6 +139,8 @@ static void wrylos(wchar_t *s, int nr)
 	  }
    }
 
+// Siirtää kohdistinta alaspäin nr riviä moniriivisessä wide-tekstissä.
+// s: wide-tekstipuskuri, nr: siirrettävien rivien määrä.
 static void wralas(wchar_t *s, int nr)
    {
    int r,i,len;
@@ -153,6 +159,8 @@ static void wralas(wchar_t *s, int nr)
    if (iscurpos >= wrivptr[r+1] - s) iscurpos = (wrivptr[r+1] - s) - 1;
    }
 
+// Moniriivinen leveä tekstieditori: muokkaa wide-merkkijonoa sivutetulla näkymällä (wide-versio pageedit:stä).
+// s: muokattava wide-puskuri (in/out), l: puskurin maksimipituus, y/x: vasemman yläreunan koordinaatit, y1/x1: oikean alareunan koordinaatit, term: wide-lopetusmerkit, tc: lopetusmerkki (out).
 wchar_t *wpageedit(wchar_t *s, unsigned l, int y, int x, int y1, int x1,
    const wchar_t *term, wchar_t *tc)
    {

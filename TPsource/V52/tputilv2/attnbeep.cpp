@@ -17,6 +17,8 @@
 #include <windows.h>
 extern int aani;
 
+// Toistaa huomioäänimerkin (400 Hz, 300 ms) jos ääniasetukset sen sallivat.
+// Ei parametreja eikä paluuarvoa; äänimerkki kuuluu vain kun aani >= 2.
 void attnbeep(void)
 {
   if (aani < 2) return;

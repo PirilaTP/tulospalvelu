@@ -16,6 +16,8 @@
 
 #include "tputil.h"
 
+// Laskee nimen kuuden ensimmäisen kirjaimen perusteella laajemman numeerisen tiivisteen aakkosjärjestystä varten.
+// nimi: OEM-merkistön mukainen nimi; palauttaa UINT32-arvon.
 UINT32 nimilong(char *nimi)
 {
    char *ns;
@@ -26,6 +28,8 @@ UINT32 nimilong(char *nimi)
       + chint(ns[6]));
 }
 
+// Laajamerkkiversio nimilong-funktiosta: muuntaa laajamerkki-nimen ensin OEM-merkistöön.
+// wnimi: laajamerkki-nimi; palauttaa saman tiivisteen kuin nimilong.
 UINT32 wnimilong(wchar_t *wnimi)
 {
 	char nimi[62];

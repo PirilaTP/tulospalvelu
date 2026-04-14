@@ -128,6 +128,7 @@ extern int n_emittallfile;
 #ifdef DBGFILE
 FILE *dbgfile[NREGNLY];
 
+// Avaa debug-tallennustiedostot (dbgfile00.dat jne.) kaikille aktiivisille lukijoille (DBGFILE-tilassa).
 void opendbgfile(void)
 {
 	int i;
@@ -142,6 +143,7 @@ void opendbgfile(void)
 	}
 }
 
+// Sulkee kaikki avoimet debug-tallennustiedostot ja nollaa tiedostokahvat.
 void closedbgfile(void)
 {
 	int i;
@@ -154,6 +156,8 @@ void closedbgfile(void)
 }
 #endif
 
+// Konstruktori: alustaa aikajonon lkm-alkioisella atime[]- ja aktrow[]-taulukolla.
+// Asettaa mxtime = lkm-2 (viimeiset kaksi paikkaa varattuna); atimemask = 0xFF.
 aikajonotp::aikajonotp(int lkm)
 {
 	memset(this, 0, sizeof(aikajonotp));
@@ -165,12 +169,15 @@ aikajonotp::aikajonotp(int lkm)
 	atimemask = '\xff';
 }
 
+// Destruktori: vapauttaa atime[]- ja aktrow[]-taulukot.
 aikajonotp::~aikajonotp(void)
 {
 	delete[] atime;
 	delete[] aktrow;
 }
 
+// Rakentaa aktrow[]-indeksitaulukon aktiivisista ajoista suodattamalla atimemask-bitillä.
+// Päivittää aktrows-laskurin ja rtime-osoittimen nykyistä sijaintia vastaavaan indeksiin.
 void aikajonotp::haeAktAjat(void)
 {
 	aikatp edtm;
@@ -194,6 +201,8 @@ void aikajonotp::haeAktAjat(void)
 		rtime = aktrows;
 }
 
+// Palauttaa aikajono-alkion rvno raika-osoittimeen (tai sisäiseen puskuriin jos raika==NULL).
+// Indeksin ylittyessä palauttaa tyhjän aikaa (t=AIKAJAK*TMAALI0).
 aikatp * aikajonotp::getTime(aikatp *raika, UINT32 rvno)
 {
 	static aikatp caika;
@@ -210,6 +219,8 @@ aikatp * aikajonotp::getTime(aikatp *raika, UINT32 rvno)
 	return(raika);
 }
 
+// Palauttaa aktrow[rvno]-indeksin osoittaman aktiivisen aikajonon alkion rtm-osoittimeen.
+// Indeksin ylittyessä palauttaa tyhjän ajan (t=AIKAJAK*TMAALI0).
 aikatp * aikajonotp::getAktTime(aikatp *rtm, UINT32 rvno)
 {
 	static aikatp caika;
@@ -225,6 +236,8 @@ aikatp * aikajonotp::getAktTime(aikatp *rtm, UINT32 rvno)
 	return(rtm);
 }
 
+// Laskee emit-protokollan tarkistussumman puskurille buf (pituus len).
+// xfl!=0: XOR-maski 0xDF käytetään ennen vähennystä (Sirit-protokolla). Palauttaa 0 jos summa täsmää.
 INT16 r_tarksum(char *buf, INT len, char sum, INT16 xfl)
 	{
 	char xch = 0;
@@ -238,6 +251,8 @@ INT16 r_tarksum(char *buf, INT len, char sum, INT16 xfl)
 	return(sum);
 	}
 
+// Muuntaa emit-lukijan aikamerkkijonon (TT:MM:SS) sisäiseksi ajaksi käyttäen t0-vertailuaikaa.
+// i_pv-osoittimeen tallennetaan vuorokausiosa jos ei NULL. Palauttaa ajan sisäisessä yksikössä.
 static INT32 ec_strtoaika(char *st, int t0, int *i_pv)
 	{
 	char *p, *p1, as[20] = "";
@@ -268,6 +283,9 @@ static INT32 ec_strtoaika(char *st, int t0, int *i_pv)
 	return(1000*(3600L*(t-t0)+60*m+s)+o);
 	}
 
+// Tulkitsee emit-TAG-lukijan raakadatan (buf) emittp-rakenteeseen; tallentaa ajan *emtm.
+// Jäsentää kontrollipistelistat, sirukooodit ja aikaleimat; rekisteröi kilpailijan tall_ec-funktiolla.
+// r_no on lukijanumero (0-pohjainen); palauttaa 1 onnistuessa, 0 jos data ei kelpaa.
 int tulk_emiTag(char *buf, emittp *em, INT32 *emtm, int r_no)
 {
 	aikatp ut;
@@ -479,6 +497,8 @@ int tulk_emiTag(char *buf, emittp *em, INT32 *emtm, int r_no)
 
 int valo_on;
 
+// Taustasäie: ohjaa RS-232-portin RTS/DTR-signaaleilla tulosvaloa (1=vihreä, 3=pois, muut=punainen).
+// Pitää valoa päällä valonaytto*100 ms, palauttaa sitten RTS+DTR aktiivisiksi.
 static void naytatulosTh(LPVOID lpCn)
    {
    DCB dcb;
@@ -505,6 +525,8 @@ static void naytatulosTh(LPVOID lpCn)
    valo_on = 0;
    }
 
+// Käynnistää naytatulosTh-säikeen näyttämään tulossignaalin (1=hyväksytty, 0=hylätty).
+// Ei käynnistä uutta säiettä jos valonaytto-asetus on 0 tai edellinen on vielä käynnissä.
 void naytatulos(int tulos)
    {
    HTHREAD hValoThread;
@@ -519,6 +541,8 @@ void naytatulos(int tulos)
 	  }
    }
 
+// Taustasäie: näyttää konsolinäytöllä "Viimeisin luettu kortti" -viestin ja badge-numeron.
+// Piirtää edistymispalkin (12 askelta * 200 ms) luennan visuaaliseksi palautteeksi.
 static void naytaluentaTh(LPVOID lpCn)
    {
 	int i;
@@ -537,6 +561,7 @@ static void naytaluentaTh(LPVOID lpCn)
 	   }
    }
    
+// Käynnistää naytaluentaTh-säikeen näyttämään luetun badge-tunnisteen numero.
 void naytaluenta(int badge)
    {
    HTHREAD hLuentaThread;
@@ -546,6 +571,8 @@ void naytaluenta(int badge)
 	hLuentaThread = _beginthread(naytaluentaTh, 20480, &bdg);
    }
 #ifndef LUENTA
+// Tarkistaa onko Sirit-lukijan korttinumero st suodatettava SiritMask-maskin perusteella.
+// Tukee X(täsmäys), Z(AND!=0), V(ei täsmäys), P(AND==0) -lajeja; palauttaa true jos ohitetaan.
 static bool ohitaSirit(char *st)
 {
 	int len, laji;
@@ -572,6 +599,8 @@ static bool ohitaSirit(char *st)
 
 #define NSIRITTAP 100
 
+// Poimii Sirit-protokollan sanomasta ajan *t, aikatp-rakenteen ut ja jonon jono.
+// r_no on lukijanumero; palauttaa 1 jos aika saatiin, 0 muuten.
 int siritaika(INT32 *t, san_type *vastaus, aikatp *ut, INT *jono, int r_no)
 	{
 	char *p, st[20];
@@ -640,6 +669,7 @@ int siritaika(INT32 *t, san_type *vastaus, aikatp *ut, INT *jono, int r_no)
 #define CRC_PRESET 0xffff
 #define CRC_POLYNOM 0x8408
 
+// Laskee CRC-16-CCITT tarkistussumman puskurille buf (pituus len) LAJUNEN-protokollaa varten.
 static UINT16 crc(char *buf, int len)
 {
 	UINT16 crc16 = CRC_PRESET;
@@ -660,6 +690,8 @@ static UINT16 crc(char *buf, int len)
 }
 #endif
 
+// Lukee ARES-protokollan sanomia lukijalta r_no kanavalta cn vastaus-puskuriin.
+// Etsii SOH-alkuisia 41-tavuisia sanomia; kutsuu tall_regnly rekisteröintiä varten.
 static int lue_ARES(int r_no, int cn, san_type *vastaus, int *nmsg)
 {
 	char chin, *p2;
@@ -703,6 +735,8 @@ static int lue_ARES(int r_no, int cn, san_type *vastaus, int *nmsg)
 	}
 
 #ifdef LAJUNEN
+// Käsittelee Sirit RFID -lukijalta saapuneet nch tavua vastaus-puskurista.
+// Etsii "event.tag."-alkuisia rivirivi kerrallaan; kutsuu siritaika-funktiota ajan ja kilpailijanumeron hakuun.
 static void lue_Sirit(int r_no, san_type *vastaus, int *nmsg, int nch)
 {
 	if (nch > 0) {
@@ -765,6 +799,8 @@ static void lue_Sirit(int r_no, san_type *vastaus, int *nmsg, int nch)
 		}
 }
 
+// Kyselee FEIG RFID -lukijalta r_no kanavalta cn InventoryRepeat-komennolla.
+// Tarkistaa CRC-16-summan; kutsuu tall_regnly jokaiselle löydetylle transponderille.
 static int lue_FEIG(int r_no, int cn, san_type *vastaus, int *nmsg)
 {
 	int er = 0, nq, nch, l, ndata;
@@ -814,6 +850,8 @@ static int lue_FEIG(int r_no, int cn, san_type *vastaus, int *nmsg)
 }
 #endif
 
+// Lukee emit-kellon sanomia (ASCII-protokolla) lukijalta r_no kanavalta cn.
+// Lähettää "?"-kyselysanoman; tulkitsee sanomatyypit ('+', '-', 'R', 'r', 'B'); kutsuu tall_regnly.
 static int lue_EmitKello(int r_no, int cn, san_type *vastaus, int *nmsg, int r_msg_len, int *od)
 {
 	char pyynto[8] = "?\r", kuittaus[3] = "+\r";
@@ -1082,6 +1120,8 @@ static int lue_LUKIJA(int r_no, int cn, san_type *vastaus, int *nmsg,
 	return(0);
 }
 
+// Lukee MTR-emit-lukijan sanomia lukijalta r_no kanavalta cn vastaus-puskuriin.
+// MTR-laite tarkistaa tarkistussummat kortilta; toistuva sama sanoma ohitetaan, oikea tallennetaan tall_regnly:llä.
 static int lue_MTR(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int *ntotviim, int *tyhjpuskuri, int r_buflen, int r_msg_len)
 {
@@ -1253,6 +1293,8 @@ static int lue_MTR(int r_no, int cn, san_type *vastaus, int *nmsg,
 	return(0);
 }
 
+// Lukee nilkka-anturin (emit-TAG vaihtoehto) sanomia lukijalta r_no kanavalta cn.
+// Tallentaa saapuvan datan tulk_emiTag-funktion avulla käsittelyä varten.
 static int lue_EMITAG(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int *ntotviim, int *tyhjpuskuri, int r_buflen)
 {
@@ -1329,6 +1371,7 @@ static int lue_EMITAG(int r_no, int cn, san_type *vastaus, int *nmsg,
 }
 
 
+// Tynkätoteutus CPower-laitteelle: tyhjentää sanomapuskurin ja palaa heti.
 static int lue_CPower(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int *ntotviim, int *tyhjpuskuri, int r_buflen)
 {
@@ -1337,6 +1380,7 @@ static int lue_CPower(int r_no, int cn, san_type *vastaus, int *nmsg,
 	return(0);
 }
 
+// Tynkätoteutus Rtnm-laitteelle: tyhjentää sanomapuskurin ja palaa heti.
 static int lue_Rtnm(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int *ntotviim, int *tyhjpuskuri, int r_buflen)
 {
@@ -1346,6 +1390,8 @@ static int lue_Rtnm(int r_no, int cn, san_type *vastaus, int *nmsg,
 }
 
 #ifdef SPORTIDENT
+// Lukee SportIdent SI5/SI6-lukijan sanomia lukijalta r_no kanavalta cn.
+// Lähettää kyselysanoman (SI5pyynto tai SI6pyynto); purkaa DLE-koodauksen ja kutsuu tulkSI-funktiota.
 static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int r_buflen, int r_msg_len)
 {
@@ -1439,6 +1485,8 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 }
 #endif
 
+// Vertaa kahta emit-sanomaa buf1 ja buf2 (pituus len): sallii viimeisen tavun arvon ±1 eron.
+// Palauttaa 0 jos sanomat ovat samat tai hyväksyttävästi samankaltaiset, muuten 1.
 static int emitcmp(char *buf1, char *buf2, int len) {
 	int i, c = 0, d;
 
@@ -1461,6 +1509,8 @@ static int emitcmp(char *buf1, char *buf2, int len) {
 	return(1);
 	}
 
+// Lukee yhden sykli-kutsun verran dataa lukijalta r_no oikealla protokollafunktiolla (LUKIJA/MTR/EMITAG/SI/ARES/FEIG/Sirit).
+// Kutsutaan toistuvasti lue_regnlyThread-säikeestä; valitsee lue_*-funktion lajitp[r_no]-tyypin mukaan.
 int lue_regnly(INT r_no)
 	{
 	char chin, *msg = NULL;
@@ -1691,6 +1741,8 @@ int lue_regnly(INT r_no)
    return(nmsg[r_no]);
    }
 
+// Taustasäie lukijalaitteelle r_no: avaa yhteyden (RS-232/UDP/TCP/Sirit) ja kutsuu lue_regnly-silmukassa.
+// Hoitaa myös Sirit-pollaustilassa TCP-yhteyden ylläpidon ja lähetyspyynnöt.
 void lue_regnlyThread(LPVOID lpCn)
 {
 	int cn, r_no;
@@ -1794,6 +1846,8 @@ void lue_regnlyThread(LPVOID lpCn)
 		writeerror_w(L"Häiriö. Ajanoton/leimantarkastuksen jatko vaatii uudelleenkäynnistyksen", 0);
 }
 
+// Käynnistää lukijalaitteen r_no: asettaa sarjaporttiparametrit laitteen tyypin mukaan ja avaa yhteyden.
+// Käynnistää lue_regnlyThread-säikeen; SPORTIDENT-laitetyypeillä lähettää alustuskomennon.
 INT start_regnly(INT r_no)
    {
 	   char parity = 'n';
@@ -2043,6 +2097,8 @@ INT start_regnly(INT r_no)
 	   return(0);
    }
 
+// Pysäyttää lukijalaitteen r_no: asettaa regnly_open[r_no]=0 ja sulkee portit.
+// Sirit-laitetyypillä sulkee myös ylimääräisen TCP-kanavan (cn_regnly[r_no + NREGNLY]).
 void rem_regnly(INT r_no)
 {
 	regnly_open[r_no] = 0;
@@ -2058,6 +2114,8 @@ void rem_regnly(INT r_no)
 
 #ifdef LAJUNEN
 
+// Lukee Sirit-komennin vastauspuskurin TCP-kanavalta (cn_regnly[r_no+NREGNLY]) ja kirjaa lokiin.
+// Päivittää LatestSirit[r_no]-aikamuuttujan ja SiritEiVastaa[r_no]-lipun.
 void lue_SiritCmd(int r_no)
 {
 	char buf[2000] = "";
@@ -2087,6 +2145,7 @@ void lue_SiritCmd(int r_no)
 		}
 }
 
+// Käynnistää Sirit RFID -lukijan r_no: asettaa comfl=1 ja käynnistää lue_regnlyThread-säikeen.
 void openSirit(int r_no)
 	{
 	static int acn;
@@ -2097,6 +2156,8 @@ void openSirit(int r_no)
 	hLuepakThread[cn_regnly[r_no]] = _beginthread(lue_regnlyThread, 40960, &acn);
 	}
 
+// Lähettää Sirit-lukijoille "gettime"/"settime"-komennon kellonajan synkronoimiseksi.
+// set_time=true lähettää "settime"-komennon, false vain "gettime"-kyselyn.
 void SiritSync(bool set_time)
 {
 	int r_no, nread;
@@ -2119,6 +2180,8 @@ void SiritSync(bool set_time)
 	wrt_st_x(cn_regnly[r_no+NREGNLY], strlen(line), line, &nread);
 }
 
+// Avaa Sirit-lukijalle r_no kaksi TCP-yhteyttä (data + komento) ja alustaa lukijan.
+// reconnect=true sulkee ensin vanhat yhteydet; palauttaa 0 onnistuessaan tai virhekoodin.
 int openSirit2(int r_no, bool reconnect)
 	{
 	char line[1000], *p;
@@ -2239,6 +2302,8 @@ int openSirit2(int r_no, bool reconnect)
 	}
 #endif
 
+// Käsittelee Windows-konsolin erikoisnäppäimen (INPUT_RECORD): muuntaa OEM-merkistöstä ISO-merkistöön.
+// Palauttaa näppäimen arvon tai 0 jos kyseessä ei ole näppäin- tai hiiritapahtuma.
 int ProcessSpecialKey(INPUT_RECORD *Buf)
    {
    int retval = 0;
@@ -2307,6 +2372,8 @@ int ProcessSpecialKey(INPUT_RECORD *Buf)
    }
 
 #if !defined(NOCOM_AIKA)
+// Taustasäie: kuuntelee RS-232-portin CTS-signaalia ajanottoa varten.
+// CTS-nouseva reuna kutsuu tee_aika(1)-funktiota; aika_esto-muuttuja estää liian tiheät kirjaukset.
 void comajanotto(LPVOID lpCn)
 	{
 	int err;
@@ -2342,6 +2409,8 @@ void comajanotto(LPVOID lpCn)
 #endif
 
 #ifdef SPORTIDENT
+// Tulkitsee SportIdent SI5 tai SI6 -korttidata (buf) san_type-rakenteeseen vastaus.
+// SIt on lukuaika, SItype on 5 tai 6; palauttaa 0 onnistuessaan, 1 epäonnistuessaan.
 static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
 	{
 	SI5tp *tp5;
@@ -2406,6 +2475,8 @@ static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
 #endif
    
 #ifdef _CONSOLE
+// Interaktiivinen asetusvalikko emit-TAG-lukijalle r_no: kello, ratakoodi, antenni- ja muut asetukset.
+// Lähettää komennot suoraan lukijalle sarjaportia pitkin; lukee ja näyttää lukijan vastauksen.
 void aseta_emitag(int r_no)
 {
 	wchar_t ch = L' ', ch2;
@@ -2541,6 +2612,8 @@ void aseta_emitag(int r_no)
 	//	in_aseta_mtr = 0;
 }
 
+// Interaktiivinen asetusvalikko MTR-emit-lukijalle: lähettää konfigurointikomennot lukijalle.
+// Tukee aikasynkronointia, antenniasetuksia, lukemistilan valintaa ja lukukellon tarkistusta.
 void aseta_mtr(void)
 {
 	wchar_t ch = L' ', msg[120], as[20], ist[40];
@@ -2778,6 +2851,7 @@ void aseta_mtr(void)
 	clearframe63();
 }
 
+// Interaktiivinen asetusvalikko S4/RTR2-lukijalle: pyytää tallennetut ajat tai lähettää konfigurointikomennon.
 void aseta_s4(void)
 {
 	wchar_t ch = L' ';

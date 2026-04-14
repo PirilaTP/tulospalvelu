@@ -16,6 +16,8 @@
 
 #include <stdlib.h>
 
+// Kääntää merkin *ch käyttäen taulukkoa in→out; päivittää *ch löydettyyn käännökseen.
+// in: lähtömerkkijono, out: kohdemerkkijono, ch: muunnettava merkki (päivitetään paikan päällä).
 void transl(char *in, char *out, char *ch)
    {
    for (; *in; in++, out++)
@@ -26,6 +28,8 @@ void transl(char *in, char *out, char *ch)
    }
 
 
+// Kääntää leveän merkin *ch käyttäen laajamerkki-taulukkoa in→out; päivittää *ch.
+// in: lähtömerkki-jono, out: kohdemerkki-jono, ch: muunnettava laajamerkki (päivitetään).
 void wtransl(wchar_t *in, wchar_t *out, wchar_t *ch)
    {
    for (; *in; in++, out++)

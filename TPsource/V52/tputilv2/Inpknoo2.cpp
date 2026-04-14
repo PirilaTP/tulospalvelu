@@ -32,6 +32,8 @@
 
 extern int spoolfl;
 
+// Lukee kilpailunumeron ja osuuden yksinkertaisessa muodossa (4+2 merkkiä).
+// kno: kilpailunumero (in/out), os: osuus (in/out), x/y: näyttökoordinaatit, term: lopetusmerkit, tc: lopetusmerkki (out).
 void inputkno_os2(int *kno, int *os, int x, int y, char *term, char *tc)
    {
    char ch;
@@ -56,6 +58,8 @@ void inputkno_os2(int *kno, int *os, int x, int y, char *term, char *tc)
    }
 
 
+// Unicode-versio inputkno_os2:sta; muuntaa wide-merkkijonot OEM-merkistöön ennen kutsua.
+// wterm: wide-merkkinen lopetusmerkkijono, wtc: vastaanotettu lopetusmerkki wide-muodossa (out).
 void inputkno_os2w(int *kno, int *os, int x, int y, wchar_t *wterm, wchar_t *wtc)
 {
 	char tc, term[40];

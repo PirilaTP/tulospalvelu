@@ -24,6 +24,8 @@
 
 #include <windows.h>
 
+// Asettaa konsolikursorin sijaintiin (row, col) SetConsoleCursorPosition-funktiolla.
+// Palauttaa 256*row+col onnistuessa tai -1 epäonnistuessa.
 int sccurset(int row, int col)
 {
 	extern HANDLE hConOut;

@@ -19,6 +19,10 @@
 #include <tptype.h>
 #define MAXLEVEL 500
 
+// Etsii kokonaisluvun x järjestetystä taulukosta binaarihakuna.
+// x: etsittävä arvo, base: taulukon alkuosoite, nelem: alkioiden määrä, width: alkion koko tavuina,
+// pos: avainkentän sijainti alkiossa, fl32: avaintyypin koko (0=INT16, 1=INT32, 2=UINT16, 3=UINT32);
+// palauttaa löydetyn indeksin tai negatiivisen arvon jos ei löydy.
 INT bsrchint(INT32 x, void *base, INT nelem, INT width, INT pos, INT fl32)
    {
    INT32 w, px;

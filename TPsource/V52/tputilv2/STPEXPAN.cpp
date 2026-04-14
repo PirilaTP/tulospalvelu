@@ -47,6 +47,8 @@
 #define  NUL	 '\0'
 
 
+// Korvaa tabulointimerkit (' ') välilyönneillä ptarget-puskurissa; incr on tabulointitiheys, tarsize maksimikoko.
+// Palauttaa NULL jos koko merkkijono mahtuи, muuten osoittimen psourcen jäljelle jääneeseen osaan.
 char *stpexpan(char *ptarget, char *psource, int incr, int tarsize)
 {
     char c;

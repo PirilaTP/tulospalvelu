@@ -161,6 +161,8 @@ public:
 map<AnsiString,cl_knt> kentat;
 typedef map<AnsiString,cl_knt>::const_iterator CI_knt;
 
+// cl_knt-kentän rakentaja: asettaa otsikko-, sijainti-, pituus-, lukumäärä-, tyyppi- ja tietokantakentät.
+// Käytetään kentat[]-hakemiston alustamiseen vanhan tiedostoformaatin kenttämääritteitä varten.
 __fastcall  cl_knt::cl_knt(AnsiString aots, int apos, int alen, int alkm,
    int atype, AnsiString adbtable, AnsiString adbcol, AnsiString adbid)
    {
@@ -174,6 +176,9 @@ __fastcall  cl_knt::cl_knt(AnsiString aots, int apos, int alen, int alkm,
    dbid = adbid;
    }
 
+// Alustaa kentat[]-hakemiston vanhan kilpailijatiedoston kenttämääriteistä.
+// mista on lähdetiedoston tyyppi (99999=ohita). Rakentaa kentat-map:n joka kuvaa
+// vanhan binääritietueen kentät uusiin kilptietue-kenttiin. Palauttaa 0.
 int luekentat_v(int mista)
    {
    int x = 0;
@@ -291,6 +296,9 @@ int luekentat_v(int mista)
 	return(0);
 	}
 
+// Purkaa vanhan binääritiedostoformaatin kilpailijatietue buf-puskurista tähän kilptietue-olioon.
+// Käy läpi kentat[]-hakemiston ja kopioi kentät tyyppikohtaisesti (nimi, seura, ajat, pisteet jne.).
+// Muuntaa OEM-merkistön Unicode-merkistöön ja siirtää pv[]-rakenteeseen.
 void kilptietue::unpack_v_kilp(char *buf)
 {
 	wchar_t wln[100];
@@ -491,6 +499,8 @@ void kilptietue::unpack_v_kilp(char *buf)
 
 static datafile datf2v;
 
+// Lukee yhden kilpailijan vanhan formaatin tietueen sijainnilta d tiedostosta datf2v.
+// kilp_v on kohde, mista=0 tarkoittaa tiedostoa. Palauttaa 0 onnistuessaan, 1 jos tietue on poistettu.
 int readkilp_v(kilptietue *kilp_v, int d, int mista)
 	{
 	char buf[KILPRECSIZE_V];
@@ -507,6 +517,8 @@ int readkilp_v(kilptietue *kilp_v, int d, int mista)
 	return(0);
 	}
 
+// Lukee vanhan kilpailijatiedoston dataf2nm ja lisää kilpailijat nykyiseen rekisteriin addtall()-funktiolla.
+// Alustaa kentat-hakemiston, avaa tiedoston ja käy läpi kaikki tietueet. Palauttaa luettujen lukumäärän.
 int luevanha(wchar_t *dataf2nm)
 {
 	INT  d = 0,ld, dd, n = 0;

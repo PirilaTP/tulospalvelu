@@ -28,6 +28,7 @@
 #include "bstrings.h"
 
 
+// Etsii merkin check merkkijonosta psearch; palauttaa löytöindeksin tai -1 jos ei löydy.
 int stschind (char check, const char *psearch)
 {
 	 const char *p;
@@ -40,6 +41,7 @@ int stschind (char check, const char *psearch)
 	 return ((int) (p - psearch));
 }
 
+// Etsii leveän merkin check leveästä merkkijonosta psearch; palauttaa löytöindeksin tai -1.
 int wcswcind (wchar_t check, const wchar_t *psearch)
 {
 	 const wchar_t *p;

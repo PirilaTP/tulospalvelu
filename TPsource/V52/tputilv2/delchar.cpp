@@ -16,6 +16,8 @@
 
 #include <string.h>
 
+// Poistaa merkkijonosta s positiosta pos alkaen n merkkiä siirtämällä loppua vasemmalle.
+// s: muokattava merkkijono, pos: aloitusindeksi, n: poistettavien merkkien määrä.
 void delchar(char *s, int pos, int n)
 {
 	int  i;
@@ -34,6 +36,8 @@ void delchar(char *s, int pos, int n)
 	}
 }
 
+// Poistaa leveästä merkkijonosta s positiosta pos alkaen n merkkiä siirtämällä loppua vasemmalle.
+// s: muokattava leveä merkkijono, pos: aloitusindeksi, n: poistettavien merkkien määrä.
 void delwchar(wchar_t *s, int pos, int n)
 {
 	int  i;

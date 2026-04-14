@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Win32-konsolipohjainen nÃ¤ppÃ¤imistÃ¶n kyselyfunktio kbready_w (PeekConsoleInput).
+
 #include <windows.h>
 
 //extern "C" {
@@ -27,8 +29,8 @@ static int altkey[25] = {104,105,106,107,108,109,110,111,112,113,
       69,70,151,152,153,74,155,76,157,78,159,160,161,162,163};
 static int shiftkey[10]= {84,85,86,87,88,89,89,91,92,93};
 
-/* kbready palauttaa arvon 1, jos näppäintä on painettu */
-/*               ja arvon 0, jos näppäintä ei ole painettu */
+/* kbready palauttaa arvon 1, jos nï¿½ppï¿½intï¿½ on painettu */
+/*               ja arvon 0, jos nï¿½ppï¿½intï¿½ ei ole painettu */
 
 int kbready_w(wchar_t *ch, int *key)
 {

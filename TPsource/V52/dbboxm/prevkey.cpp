@@ -18,6 +18,8 @@ void lopetus(void);
 
    extern int __dbbox__ok;
 
+// Siirtää indeksin idxf hakupositiota taaksepäin ja palauttaa edellisen avain pkey:hin.
+// Kirjoittaa tietueviitteen *procdatref:iin; palauttaa 0 onnistuessaan, 1 indeksin alussa.
 int prevkey(indexfile *idxf, int *procdatref, UCHAR *pkey)
 {
 int  r;

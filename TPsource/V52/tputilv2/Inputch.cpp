@@ -24,6 +24,9 @@
 #include <bvideo.h>
 #include <tputil.h>
 
+// Lukee yhden merkin näppäimistöltä ja näyttää sen ruudulla.
+// s: nykyinen merkki (in/out), x/y: näyttökoordinaatit, term: lopetusmerkit, tc: lopetusmerkki (out), numfl: nolla sallii kaikki merkit.
+// Palauttaa hyväksytyn merkin; jos ESC painetaan, *s ei muutu.
 char inputch(char *s, int x, int y, const char *term, char *tc,
                                                        int numfl)
    {

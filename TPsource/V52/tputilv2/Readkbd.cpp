@@ -24,6 +24,9 @@ static char altkey[25] = {104,105,106,107,108,109,110,111,112,113,
       69,70,151,152,153,74,155,76,157,78,159,160,161,162,163};
 static char shiftkey[10]= {84,85,86,87,88,89,89,91,92,93};
                       
+// Lukee yhden näppäinpainalluksen Windows-konsolista ja muuntaa sen DOS-tyyppiseksi merkkikoodiksi.
+// ch2: toissijainen koodi (skannauskoodit, funktionäppäimet) (out), wait: 1=odota näppäintä, 0=ei-blokkaava, dummy: ei käytetty.
+// Palauttaa ASCII-merkin tai 0 jos kyseessä on laajennuskoodi; ei-odottavassa tilassa 255 jos puskuri tyhjä.
 char readkbd(char  *ch2, int wait, int dummy)
 {
 	extern HANDLE hConIn;

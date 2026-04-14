@@ -25,6 +25,8 @@ int norm_back = 0;
 int inv_back = 7;
 int inv_fore = 0;
 
+// Kirjoittaa merkkijono-puskurin buf konsolinäytölle annettuun suorakaiteeseen värein fore/back.
+// option 0: ANSI→OEM-muunnos käytössä (ansitooemch), option 1: ansitooem koko puskurille; palauttaa merkkimäärän tai -1.
 int viwrrect(int u_row, int u_col, int l_row, int l_col,
 			const char *buf, int fore, int back, int option)
 {
@@ -85,6 +87,8 @@ int viwrrect(int u_row, int u_col, int l_row, int l_col,
 	return(bsize);
 }
 
+// Kirjoittaa merkkijonon msg konsolinäytölle sijaintiin (row, col) värein fore/back.
+// Palauttaa kirjoitettujen merkkien määrän.
 int vidspmsg(int row, int col, int fore, int back, const char *msg)
 {
 	viwrrect(row, col, row, col + strlen(msg) - 1, msg, fore, back, 0);

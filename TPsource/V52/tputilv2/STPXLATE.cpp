@@ -43,6 +43,8 @@
 #define NUL	'\0'
 
 
+// Muuntaa merkkijonon psource merkit ptable→ptrans-kääntötaulukon mukaan paikan päällä.
+// Palauttaa osoittimen muokattuun merkkijonoon psource.
 char *stpxlate(char *psource, const char *ptable, const char *ptrans)
 {
 	int tindex;

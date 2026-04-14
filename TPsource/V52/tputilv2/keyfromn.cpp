@@ -17,6 +17,9 @@
 #include <string.h>
 #include "tputil.h"
 
+// Muodostaa hakuavaimen henkilön nimen kirjaimista aakkosjärjestysnormalisoinnin avulla.
+// Parametrit: key=avainpuskuri, nimi=nimi, keylen=avaimen pituus, flags=bit 0: invertoi avain.
+// Palauttaa osoittimen avainpuskuriin.
 char *keyfromname(char *key, char *nimi, int keylen, int flags)
 {
 	char *ns, str[80];
@@ -48,6 +51,9 @@ char *keyfromname(char *key, char *nimi, int keylen, int flags)
 	return(key);
 }
 
+// Muodostaa hakuavaimen laajamerkki-nimestä muuntamalla sen ensin OEM-merkistöön.
+// Parametrit: key=avainpuskuri, wnimi=nimi laajamerkkinä, keylen=avaimen pituus, flags=bit 0: invertoi.
+// Palauttaa osoittimen avainpuskuriin.
 char *keyfromwname(char *key, wchar_t *wnimi, int keylen, int flags)
 {
 	char nimi[82];

@@ -57,6 +57,8 @@
 #define FALSE	   0
 #define BLANK	 ' '
 
+// Muuntaa merkkijonon psource conv-lipun mukaan (poistaa välilyönnit, muuntaa isoksi/pieneksi jne.).
+// Muokkaa psourcen paikan päällä; palauttaa osoittimen muokattuun merkkijonoon.
 char *stpcvt(char *psource, int conv)
 {
     char *pfrom        = psource;	/* Next character to get    */
@@ -177,6 +179,8 @@ char *stpcvt(char *psource, int conv)
     return (psource);
 }
 
+// Muuntaa leveän merkkijonon psource conv-lipun mukaan (Unicode-versio stpcvt:stä).
+// Muokkaa psourcen paikan päällä; palauttaa osoittimen muokattuun merkkijonoon.
 wchar_t *wstpcvt(wchar_t *psource, int conv)
 {
 	wchar_t *pfrom        = psource;	/* Next character to get    */

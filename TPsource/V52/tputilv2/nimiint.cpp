@@ -16,7 +16,9 @@
 
 #include "tputil.h"
 
-unsigned int nimiint(char *nimi) 
+// Laskee nimen kolmen ensimmäisen kirjaimen perusteella numeerisen tiivisteen aakkosjärjestystä varten.
+// nimi: OEM-merkistön mukainen nimi; palauttaa luvun väliltä 0–64000.
+unsigned int nimiint(char *nimi)
 {
    char *ns;
 
@@ -24,6 +26,8 @@ unsigned int nimiint(char *nimi)
    return(1600 * chint(ns[0]) + 40 * chint(ns[1]) + chint(ns[2]));
 }
 
+// Laajamerkkiversio nimiint-funktiosta: muuntaa laajamerkki-nimen ensin OEM-merkistöön.
+// wnimi: laajamerkki-nimi; palauttaa saman numeerisen tiivisteen kuin nimiint.
 unsigned int wnimiint(wchar_t *wnimi)
 {
 	char nimi[62];

@@ -17,6 +17,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Tarkistaa, löytyykö kokonaisluku wide-merkkijonona annetusta luettelosta.
+// val: etsittävä arvo, lst: välilyönti/pilkku/puolipiste/tabulaattori-eroteltu wide-merkkijono luvuista.
+// Palauttaa löydetyn alkion järjestysnumeron (0-pohjainen) tai -1 jos ei löydy.
 int IntInList(const int val, const wchar_t * const lst)
 {
 	wchar_t *p, list[200];

@@ -22,11 +22,13 @@
 
 int initcon(wchar_t *title);
 
+// Tyhjä virheenkäsittelijätoteutus testitilaa varten; palauttaa aina 0.
 int ioerr(UCHAR *fname, int oper, long iores)
 {
 	return(0);
 }
 
+// Lopettaa ohjelman exit(0):lla (testitoteutus).
 void lopetus(void)
 {
    exit(0);
@@ -53,11 +55,13 @@ void select(UCHAR *prompt, UCHAR *term, UCHAR *tc)
    listfl = FALSE;
 }
 */
+// Tyhjä ajastimen poistototeutus testitilaa varten.
 void remtimer(void)
 {
 
 }
 
+// Testipääohjelma: luo tiedoston ja indeksin, lisää tietueita, hakee ja poistaa avaimia nextkey/findkey/searchkey-funktioilla.
 void main()
 {
    static UCHAR fname[] = "test.dat";

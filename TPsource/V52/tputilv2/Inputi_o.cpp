@@ -28,6 +28,9 @@
 #define FALSE 0
 
 
+// Lukee kokonaisluvun oikein tasattuna näppäimistöltä.
+// i: luku int-muodossa (in/out), l: kentän leveys, x/y: näyttökoordinaatit, term: lopetusmerkit, tc: lopetusmerkki (out).
+// Näyttää luvun oikealle tasattuna; käyttää inputstr_oik-funktiota syöttöön.
 void inputint_oik(int *i, int l,int x,int y, char *term, char *tc)
 {
    char istr[15], *p;

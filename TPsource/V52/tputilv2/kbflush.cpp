@@ -16,6 +16,7 @@
 
 #include <tputil.h>
 
+// Tyhjentää näppäimistöpuskurin lukemalla kaikki odottavat näppäinpainallukset pois.
 void kbflush(void)
 {
 	UCHAR ch;

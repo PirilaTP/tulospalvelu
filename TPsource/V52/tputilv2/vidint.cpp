@@ -22,6 +22,8 @@
 #include <tputil.h>
 
 
+// Näyttää kokonaisluvun i konsoliruudulla sijainnissa (y,x) kentän leveydellä l.
+// l > 0: vasemmalle tasaus, l < 0: oikealle tasaus; ylitystilanteessa täyttää tähdillä.
 void vidint(int y, int x, int l, long i)
 {
    char s[20];

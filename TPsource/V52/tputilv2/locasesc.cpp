@@ -16,17 +16,20 @@
 
 #include <ctype.h>
 
+// Muuntaa yksittÃ¤isen merkin pienikirjaimiseksi huomioiden suomalaiset erikoismerkit.
+// Parametri: ch=muunnettava merkki.
+// Palauttaa pienentyneen merkin tai alkuperÃ¤isen, jos ei iso kirjain.
 char locasesc(char ch)
 {
    int i;
    char c;
 
    switch(ch) {
-	  case '' :  return('‚');
-	  case 'Ž' :  return('„');
-	  case '™' :  return('”');
-	  case '' :  return('†');
-	  case 'š' :  return('');
+	  case 142 :  return(132);   // OEM
+	  case 153 :  return(148);   // OEM
+	  case 143 :  return(134);   // OEM
+	  case 144 :  return(130);   // OEM
+	  case 154 :  return(129);   // OEM
    }
    i = ch;
    c = tolower(i);
@@ -35,6 +38,9 @@ char locasesc(char ch)
    return(c);
 }
 
+// Muuntaa yksittÃ¤isen laajamerkin pienikirjaimiseksi (Latin-1 ja perustaso).
+// Parametri: ch=muunnettava laajamerkki.
+// Palauttaa pienentyneen merkin tai alkuperÃ¤isen, jos ei iso kirjain.
 wchar_t locasewsc(wchar_t ch)
 {
 	if ((ch >= L'A' && ch <= L'Z') ||

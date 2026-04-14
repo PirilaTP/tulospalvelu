@@ -22,12 +22,15 @@ static unsigned int tarecbufsize;
 int ainauusirec = 1;
 
 #ifdef _BORLAND_
+// Palauttaa kahden kokonaisluvun pienemmän (Borland-versiossa puuttuvan std::min korvaaja).
 static int min(int i1, int i2)
 {
 	return((i1 < i2) ? i1 : i2);
 }
 #endif
 
+// Pakkaa n kokonaislukua buf-puskurissa 32-bitistä 16-bittiseen muotoon (lossless truncation).
+// Käytetään tiedostorakenteen otsikkotietueen tiivistämiseen levylle kirjoitettaessa.
 void tacompress(void *buf, int n)
 {
 	int i;
@@ -40,6 +43,8 @@ void tacompress(void *buf, int n)
 	for (i = 0; i < n; i++, pshort++) *pshort = 0;
 }
 
+// Laajentaa n tiivistettyä 16-bittistä arvoa buf-puskurista takaisin 32-bittisiksi.
+// Arvo 0xffff tulkitaan 0xffffffff:ksi (vapaan listan loppumerkki).
 void taexpand(void *buf, int n)
 {
 	int i;
@@ -54,6 +59,8 @@ void taexpand(void *buf, int n)
 	}
 }
 
+// Lukee tietueen r tiedostosta datf puskuriin buffer.
+// Palauttaa 0 onnistuessaan, -1 virhetilanteessa (perr() kirjaa virheen).
 int getrec(datafile *datf, DATAREF r, void *buffer)
 {
 unsigned long ls, lrecl;
@@ -72,6 +79,8 @@ unsigned long ls, lrecl;
   return(0);
 }
 
+// Kirjoittaa puskurin buffer tiedostoon datf tietueelle r.
+// Palauttaa 0 onnistuessaan, -1 virhetilanteessa.
 int putrec(datafile *datf, DATAREF r, void *buffer)
 {
 unsigned long ls, lrecl;
@@ -90,6 +99,8 @@ unsigned long ls, lrecl;
   return(0);
 }
 
+// Luo uuden tietokantatiedoston fname tietuepituudella reclen ja alustaa datafile-rakenteen datf.
+// Varaa tarecbuf-puskurin tarvittaessa; palauttaa 0 onnistuessaan, 1 epäonnistuessaan.
 int makefile(datafile *datf, char *fname, unsigned reclen)
 {
 	if (tarecbufsize && tarecbufsize < reclen) {
@@ -126,6 +137,8 @@ int makefile(datafile *datf, char *fname, unsigned reclen)
 	return(!__dbbox__ok);
 }
 
+// Kirjoittaa datafile-rakenteen otsikkotiedot (firstfree, numberfree, numrec, maaliajat) tiedostoon.
+// Kutsutaan aina kun tietueiden lukumäärä tai vapaan listan tila muuttuu.
 static void updatedescr(datafile *datf)
 {
 	datafile df;
@@ -143,6 +156,8 @@ static void updatedescr(datafile *datf)
   putrec(datf,0,tarecbuf);
 }
 
+// Avaa olemassa olevan tietokantatiedoston fname tietuepituudella reclen.
+// Lukee otsikkotietueen, tarkistaa eheyden ja täyttää datf-rakenteen. Palauttaa 0 ok, 1 virhe.
 int openfile(datafile *datf, char *fname, unsigned reclen)
    {
    unsigned flen;
@@ -195,6 +210,7 @@ int openfile(datafile *datf, char *fname, unsigned reclen)
 	return(!__dbbox__ok);
 }
 
+// Sulkee tietokantatiedoston datf: kirjoittaa otsikkotietueen ja sulkee tiedostokahvan.
 void closefile(datafile *datf)
 {
   if (datf->recl < 8) return;
@@ -206,6 +222,8 @@ void closefile(datafile *datf)
   CloseHandle(datf->hDatf);
 }
 
+// Varaa uuden tietuepaikan tiedostosta datf: käyttää vapaan listan alkiota tai lisää tiedoston loppuun.
+// Kirjoittaa varatun tietueindeksin *r:ään.
 void newrec(datafile *datf, DATAREF *r)
 {
   if(ainauusirec || datf->firstfree == 0xffffffff )
@@ -223,6 +241,8 @@ void newrec(datafile *datf, DATAREF *r)
   }
 }
 
+// Lisää uuden tietueen buffer tiedostoon datf; kirjoittaa otsikon päivityksen (updatedescr).
+// Kirjoittaa varatun indeksin *r:ään.
 void addrec(datafile *datf, DATAREF *r, void *buffer)
 {
   newrec(datf,r);
@@ -230,12 +250,15 @@ void addrec(datafile *datf, DATAREF *r, void *buffer)
   updatedescr(datf);
 }
 
+// Lisää uuden tietueen buffer tiedostoon datf ilman otsikon päivitystä (nopeampi kuin addrec).
+// Kirjoittaa varatun indeksin *r:ään.
 void addrec0(datafile *datf, DATAREF *r, void *buffer)
 {
   newrec(datf,r);
   putrec(datf,*r,buffer);
 }
 
+// Merkitsee tietueen r poistetuksi lisäämällä sen vapaaseen listaan datf-tiedostossa.
 void deleterec(datafile *datf, DATAREF r)
 {
    tarecbuf->ii.i = datf->firstfree;
@@ -246,11 +269,13 @@ void deleterec(datafile *datf, DATAREF r)
    datf->numberfree++;
 }
 
+// Palauttaa tiedoston datf tietueiden kokonaismäärän (ml. otsikko- ja poistetut tietueet).
 DATAREF  filelen(datafile *datf)
 {
   return(datf->numrec);
 }
 
+// Palauttaa aktiivisten (ei poistettujen) tietueiden lukumäärän tiedostossa datf.
 DATAREF usedrecs(datafile *datf)
 {
   return(datf->numrec - datf->numberfree - 1);

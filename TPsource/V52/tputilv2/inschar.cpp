@@ -16,6 +16,8 @@
 
 #include <string.h>
 
+// Lisää merkin ch merkkijonoon s annettuun kohtaan pos siirtäen loppujonoa eteenpäin.
+// Parametrit: ch=lisättävä merkki, s=kohdemerkkijono, pos=lisäyspaikka.
 void inschar(char ch, char *s, int pos)
 {
    int  i,l;
@@ -30,6 +32,8 @@ void inschar(char ch, char *s, int pos)
    if (pos < l) s[pos]=ch;
 }
 
+// Lisää laajamerkin ch laajamerkki-merkkijonoon s annettuun kohtaan pos.
+// Parametrit: ch=lisättävä laajamerkki, s=kohdelaajamerkki-jono, pos=lisäyspaikka.
 void inswchar(wchar_t ch, wchar_t *s, int pos)
 {
 	int  i,l;

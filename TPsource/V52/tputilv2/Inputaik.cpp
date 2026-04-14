@@ -26,6 +26,9 @@
 #define TRUE 1
 #define FALSE 0
 
+// Lukee aikasyötteen sekunnin tarkkuudella (hh.mm.ss) short-muodossa.
+// t: aika sekunteina short-muodossa (in/out), t0: vertailuaika, l: kentän leveys, x/y: näyttökoordinaatit, term: lopetusmerkit, tc: lopetusmerkki (out).
+// Muuttaa *t vain kun syöte on kelvollinen; sentinel-arvo on -32767.
 void inputaika(short *t,int t0, int l, int x, int y, char *term, char *tc)
 {
    int ok = 0, tt, i;
@@ -70,6 +73,8 @@ void inputaika(short *t,int t0, int l, int x, int y, char *term, char *tc)
 }
 
 
+// Unicode-versio inputaika:sta; muuntaa wide-merkkijonot OEM-merkistöön ennen kutsua.
+// wterm: wide-merkkinen lopetusmerkkijono, wtc: vastaanotettu lopetusmerkki wide-muodossa (out).
 void inputaika_w(short *t, int t0, int l, int x, int y, wchar_t *wterm, wchar_t *wtc)
 {
 	char term[40] = "", tc;

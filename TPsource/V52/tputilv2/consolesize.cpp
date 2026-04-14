@@ -27,6 +27,8 @@
 *           than the console window.                                 *
 *********************************************************************/
 
+// Muuttaa konsolin puskurin ja ikkunan koon (xSize × ySize) huomioiden kummankin maksimikoon.
+// hConsole: konsolin tulostelkäsittelyohje, xSize/ySize: haluttu uusi leveys/korkeus.
 void resizeConBufAndWindow(HANDLE hConsole, SHORT xSize, SHORT ySize)
 {
   CONSOLE_SCREEN_BUFFER_INFO csbi; /* hold current console buffer info */

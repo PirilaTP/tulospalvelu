@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Konsolipohjainen tuloslistojen tulostus sekÃ¤ teksti- ja HTML-tiedostoon tallennus.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <io.h>
@@ -154,7 +156,7 @@ INT avaa_tiedosto(tulostusparamtp *tulprm)
 		tulprm->merkit = L'A';
    else {
 		ch = L' ';
-		wselectopt(L"U)TF-8 vai I)SO-8858-1 merkistö", L"UI", &ch);
+		wselectopt(L"U)TF-8 vai I)SO-8858-1 merkistï¿½", L"UI", &ch);
 		tulprm->merkit = (ch == L'I' ? L'A' : L'8');
 		}
 
@@ -247,8 +249,8 @@ static int near iofots(tulostusparampt *tulprm)
 
    status_on = 0;
    vidspwmsg(6,0,7,0, L"Kilpailun nimi");
-   vidspwmsg(7,0,7,0, L"Järjestäjä(t)");
-	vidspwmsg(8,0,7,0, L"Kilpailupäivä (mm-pp-vvvv)");
+   vidspwmsg(7,0,7,0, L"Jï¿½rjestï¿½jï¿½(t)");
+	vidspwmsg(8,0,7,0, L"Kilpailupï¿½ivï¿½ (mm-pp-vvvv)");
    vidspwmsg(9,0,7,0, L"Kilpailumaa");
    vidspwmsg(3,0,7,0, L"Otsikkorivi");
    memset(iofkilp, 0, sizeof(iofkilp));
@@ -429,15 +431,15 @@ static void near lehdisto(void)
 	INT32 tulos0;
 	INT piste, day;
 
-	header=L"LEHDISTÖTULOSTEN EDITOINTI";
+	header=L"LEHDISTï¿½TULOSTEN EDITOINTI";
 	if ((buf = (wchar_t *) malloc(CBUFL)) == 0)
 		return;
 	ptr = buf;
 	ch = vaihda ? L'K' : L'E';
-	wselectopt(L"Vaihdetaanko etu- ja sukunimien järjestys (K/E)",L"KE",&ch);
+	wselectopt(L"Vaihdetaanko etu- ja sukunimien jï¿½rjestys (K/E)",L"KE",&ch);
 	vaihda = (ch == L'K');
 	ch = pitkat ? L'K' : L'E';
-	wselectopt(L"Kirjoitetaanko L)yhenne vai S)euranimikenttä",L"LS",&ch);
+	wselectopt(L"Kirjoitetaanko L)yhenne vai S)euranimikenttï¿½",L"LS",&ch);
    pitkat = (ch == L'S');
    if ( wcslen(paaots) > 0) {
       ptr = wcpcpy(ptr, paaots);
@@ -457,13 +459,13 @@ static void near lehdisto(void)
    do {
       do {
 			vidspwmsg(ySize-3,0,7,0,L"       Anna sarja :             "
-                                   L"  <Esc> : Poistu päävalintaan");
+                                   L"  <Esc> : Poistu pï¿½ï¿½valintaan");
          srj = luesarja(L"", &tc);
          if (tc == ESC) goto loppu;
          clrln(ySize-3);
          if (k_pv) {
             tc = day ? L'2' : L'Y';
-            wselectopt(L"2) päivä vai Y)hteistulokset", L"2Y", &tc);
+            wselectopt(L"2) pï¿½ivï¿½ vai Y)hteistulokset", L"2Y", &tc);
 			clrln(ySize-3);
 			if (tc == L'Y') {
                day = 0;
@@ -476,9 +478,9 @@ static void near lehdisto(void)
          if (!day) np = min(np, ntulos[srj][kilpparam.valuku+1]);
 			else
             np = min(np, ntulos[srj][0]);
-         if( np <= 0 ) writeerror_w(L"Ei tulostettavia, tyhjä sarja ?",0);
+         if( np <= 0 ) writeerror_w(L"Ei tulostettavia, tyhjï¿½ sarja ?",0);
          } while (np <= 0);
-      vidspwmsg(ySize-3,0,7,0,L" + : Hyväksy,   <Esc> : Peruuta sarja,   "
+      vidspwmsg(ySize-3,0,7,0,L" + : Hyvï¿½ksy,   <Esc> : Peruuta sarja,   "
          L"<Ret.> : Uusi rivi (ruudulla |)");
       clrln(ySize-2);
 	  vidspwmsg(ySize-2,0,7,0,L"\x1A  \x1B      Ctrl-\x1A  Ctrl-\x1B  Home  "
@@ -547,7 +549,7 @@ static void near lehdisto(void)
          if (!ontls) {
             initpage(tulostusparam, NULL);
             clrln(ySize-2);
-            wselectopt(L"Tulostuksen riviväli 1) vai 2)", L"12", &cr);
+            wselectopt(L"Tulostuksen rivivï¿½li 1) vai 2)", L"12", &cr);
             clrln(ySize-3);
             }
          else if (l * (cr-L'0') >= sivpit) {
@@ -599,14 +601,14 @@ static wchar_t tulostettavat(tulostusparamtp *tulprm)
    else {
 #ifdef SEURATUL
 #ifndef MPA
-      wselectopt(L"I)lmoitt, L)opett, T)ulos, P)arhaat, H)yl, K)esk, E)i läht,"
+      wselectopt(L"I)lmoitt, L)opett, T)ulos, P)arhaat, H)yl, K)esk, E)i lï¿½ht,"
 			L" A)voimet"
 			L" V)alitut",L"ILTPHKEAV-\x1b",&ct);
 		if (ct == ESC)
 			return(ESC);
 		if (ct == L'V') {
 			wchar _t ch = L' ';
-			wselectopt(L"S)euroittaiset vai P)iireittäiset tulokset, Esc: peruuta", L"SP\x1b", &ch);
+			wselectopt(L"S)euroittaiset vai P)iireittï¿½iset tulokset, Esc: peruuta", L"SP\x1b", &ch);
 			if (ch == ESC)
 				return(ESC);
 			if (ch == L'S')
@@ -617,7 +619,7 @@ static wchar_t tulostettavat(tulostusparamtp *tulprm)
 			tulprm->tulostettava = L'T';
 			}
 #else // MPA
-      wselectopt(L"I)lmoitt, L)opett, T)ulos, P)arhaat, H)yl, K)esk, E)i läht,"
+      wselectopt(L"I)lmoitt, L)opett, T)ulos, P)arhaat, H)yl, K)esk, E)i lï¿½ht,"
          L" A)voimet"
 			L", V)alitut",L"ILTPHKEAV",&ct);
 		if (ct == L'V') {
@@ -626,26 +628,26 @@ static wchar_t tulostettavat(tulostusparamtp *tulprm)
 			}
 #endif // MPA
 #else  // !SEURATUL
-      wselectopt(L"I)lmoitt, L)opett, T)ulos, P)arhaat, H)yl, K)esk, E)i läht,"
+      wselectopt(L"I)lmoitt, L)opett, T)ulos, P)arhaat, H)yl, K)esk, E)i lï¿½ht,"
          L" A)voimet"
 			,L"ILTPHKEA-",&ct);
 #endif // !SEURATUL
 		}
 #else // LANGSV_K
-	wtransl(L"ILTPHKEAV", L"AKRBDVEÖL", &ct);
+	wtransl(L"ILTPHKEAV", L"AKRBDVEï¿½L", &ct);
 	if (cy == L'V') {
 		if (ct != L'B') ct = L'R';
-		wselectopt(L"R)esultat, B)ästa", L"RB", &ct);
+		wselectopt(L"R)esultat, B)ï¿½sta", L"RB", &ct);
 		wtransl(L"RB", L"TP", &ct);
 		}
 	else {
-      wselectopt(L"A)nmälda, K)lara, R)esultat, B)ästa, D)isk, aV)br, E)j start,"
-         L" Ö)ppna"
-         L" vaL)da",L"AKRBDVEÖL-",&ct);
-      wtransl(L"AKRBDVEÖL", L"ILTPHKEAV", &ct);
+      wselectopt(L"A)nmï¿½lda, K)lara, R)esultat, B)ï¿½sta, D)isk, aV)br, E)j start,"
+         L" ï¿½)ppna"
+         L" vaL)da",L"AKRBDVEï¿½L-",&ct);
+      wtransl(L"AKRBDVEï¿½L", L"ILTPHKEAV", &ct);
       if (ct == L'V') {
          wchar_t ch = L' ';
-         wselectopt(L"F)örening- eller D)istriktresultater", L"FD", &ch);
+         wselectopt(L"F)ï¿½rening- eller D)istriktresultater", L"FD", &ch);
          wtransl(L"FD", L"SP", &ch);
          ct = (ch == L'P') ? L'D' : L'S';
          }
@@ -658,9 +660,9 @@ static wchar_t tulostettavat(tulostusparamtp *tulprm)
       INPUTINTW(&tulprm->enssija,4,17,ySize-3,L"\xD\x1b",&tc);
 	  if (tc == ESC)
 		  return(ESC);
-      vidspwmsg(ySize-3,24,7,0,L"Päättyen sijaan :");
+      vidspwmsg(ySize-3,24,7,0,L"Pï¿½ï¿½ttyen sijaan :");
 #else // LANGSV_K
-      vidspwmsg(ySize-3,0,7,0,L"Från placering :");
+      vidspwmsg(ySize-3,0,7,0,L"Frï¿½n placering :");
       INPUTINTW(&tulprm->enssija,4,17,ySize-3,L"\xD\x1b",&tc);
 	  if (tc == ESC)
 		  return(ESC);
@@ -724,17 +726,17 @@ static void near afasetukset(void)
       clrln(ySize-1);
       }
    if (aftulparam.kohde == L'X') {
-      wselectopt(L"Kirjoitetaanko E)mitväliajat, M)uut väliajat, I)lman väliaikoja", L"EMI", &autofileparam.af_xmlva);
+      wselectopt(L"Kirjoitetaanko E)mitvï¿½liajat, M)uut vï¿½liajat, I)lman vï¿½liaikoja", L"EMI", &autofileparam.af_xmlva);
       }
    if (aftulparam.kohde == L'H' && k_pv > 0) {
 	  ch = aftulparam.vaihelkm == 1 ? L'V' : L'Y';
-      wselectopt(L"V)ain tämä vaihe, myös Y)hteistulokset", L"VY", &ch);
+      wselectopt(L"V)ain tï¿½mï¿½ vaihe, myï¿½s Y)hteistulokset", L"VY", &ch);
 	  aftulparam.vaihelkm = ch == L'V' ? 1 : 2;
       }
 #ifndef LANGSV_K
-   vidspwmsg(ySize-3,0,7,0,L"Tulostusväli       sek");
+   vidspwmsg(ySize-3,0,7,0,L"Tulostusvï¿½li       sek");
 #else // LANGSV_K
-   vidspwmsg(ySize-3,0,7,0,L"Tulostusväli       sek");
+   vidspwmsg(ySize-3,0,7,0,L"Tulostusvï¿½li       sek");
 #endif // LANGSV_K
    vali = autofileparam.afvali / SEK;
    INPUTINTW(&vali, 4, 13, ySize-3, L"\r", &ch);
@@ -753,7 +755,7 @@ static void near afasetukset(void)
    if (!afvali) afvali = 60*SEK;
    clrln(ySize-3);
    clrln(ySize-1);
-   vidspwmsg(ySize-3,0,7,0,L"Tulostusväli      sek");
+   vidspwmsg(ySize-3,0,7,0,L"Tulostusvï¿½li      sek");
    vali = afvali/SEK;
    inputint(&vali, 4, 13, ySize-3, L"\r", &ch);
    afvali = SEK * vali;
@@ -766,7 +768,7 @@ static void near afasetukset(void)
       afvali = 0;
       return;
       }
-   vidspwmsg(ySize-3,0,7,0,L"Väliaika     (0 : osuuden loppu)");
+   vidspwmsg(ySize-3,0,7,0,L"Vï¿½liaika     (0 : osuuden loppu)");
    inputint(&afva, 1, 9, ySize-3, L"\r", &ch);
    vidspwmsg(ySize-3,0,7,0,L"Montako parasta                           ");
    inputint(&afnparas, 4, 16, ySize-3, L"\r", &ch);
@@ -799,7 +801,7 @@ static void autotulasetukset(void)
 #endif
    co = L'K';
 #ifndef LANGSV_K
-   wselectopt(L"K)äynnistä, L)opeta automaattinen tulostus",L"KL",&co);
+   wselectopt(L"K)ï¿½ynnistï¿½, L)opeta automaattinen tulostus",L"KL",&co);
 #else
    wselectopt(L"S)tarta, sL)uta automatisk utskrift",L"SL",&co);
    wtransl(L"S", L"K", &co);
@@ -819,7 +821,7 @@ static void autotulasetukset(void)
 	  if (!autotulostusparam.lstf)
 		  autotulostusparam = lsttulparam;
 	  if (!autotulostusparam.lstf) {
-		  writeerror_w(L"Kirjoitinta ei määritelty", 0);
+		  writeerror_w(L"Kirjoitinta ei mï¿½ï¿½ritelty", 0);
 		  return;
 		  }
 	  autotulostusparam.kohde = L'P';
@@ -840,7 +842,7 @@ static void autotulasetukset(void)
          autotulostusparam.automaali[i] = 0;
          }
       *p = 0;
-      vidspwmsg(ySize-5,0,7,0,L"Anna tulostettavat maalinumerot yhtenä numerosarjana :");
+      vidspwmsg(ySize-5,0,7,0,L"Anna tulostettavat maalinumerot yhtenï¿½ numerosarjana :");
       inputwstr(maalistr, 9, 55, ySize-5,L"\r", &co, TRUE);
       for (p = maalistr; *p; p++)
          if (*p > L'0' && *p <= L'9') autotulostusparam.automaali[*p - L'1'] = 1;
@@ -857,8 +859,8 @@ static void editkoodi(wchar_t *s, wchar_t *nimi)
    clrln(ySize-3);
    nml = wcslen(nimi);
    viwrrectw(ySize-3,0,ySize-3,nml-1,nimi,7,0,0);
-   vidspwmsg(ySize-1,0,7,0,L"Ascii-arvot huutomerkkien väliin "
-      L"(Esim. ESC: !27!), Ei välilyöntejä");
+   vidspwmsg(ySize-1,0,7,0,L"Ascii-arvot huutomerkkien vï¿½liin "
+      L"(Esim. ESC: !27!), Ei vï¿½lilyï¿½ntejï¿½");
    len = *s;
    p = ss;
    for (i = 1; i <= len; i++) {
@@ -922,24 +924,24 @@ static void near hpkoodit(void)
    if (initfont_emva[0])
       tulkhp(initfont_emva, NULL, vaas, NULL, NULL, &mlj[3],
          &mtasm[3], &mkoko[3], &mrivi[3]);
-   vidspwmsg(4,0,7,0,L"Mahdollinen lisäinitialisointi (ESC = \x1b) :");
-   vidspwmsg(6,10,7,0,L"Merkkilaji  täsmennys  koko (pistettä)   riviväli (1/48 tuumaa)");
+   vidspwmsg(4,0,7,0,L"Mahdollinen lisï¿½initialisointi (ESC = \x1b) :");
+   vidspwmsg(6,10,7,0,L"Merkkilaji  tï¿½smennys  koko (pistettï¿½)   rivivï¿½li (1/48 tuumaa)");
    viwrrectw(7,0,9,9,L"perus     "
-                     L"pääotsikko"
+                     L"pï¿½ï¿½otsikko"
                      L"alaotsikot" , 7, 0, 0);
-   vidspwmsg(10,0,7,0,L"emitväliajat");
+   vidspwmsg(10,0,7,0,L"emitvï¿½liajat");
    vidspwmsg(10,62,7,0,L"Asento");
    vidspwmsg(10,70,7,0,vaas);
    vidspwmsg(12,0,7,0, L"Merkkilajeja. 4099: Courier, 4101: Times, 4113: Omega, "
       L"4148: Univers");
-   vidspwmsg(13,0,7,0, L"Merkkilajitäsmennys: 1: lihav., 2: italic, "
+   vidspwmsg(13,0,7,0, L"Merkkilajitï¿½smennys: 1: lihav., 2: italic, "
       L"3: lihav. italic, 8: kapea");
    vidspwmsg(15,0,7,0,
-      L"Siirry:  Tab Shift-Tab   Hyväksy muutokset : +  Peruuta : Esc"); 
+      L"Siirry:  Tab Shift-Tab   Hyvï¿½ksy muutokset : +  Peruuta : Esc"); 
    i = 0;
    j = 0;
    do {
-      swprintf(st, L"Paperikoko %2.2s   asento (P/V) %1.1s  merkistö "
+      swprintf(st, L"Paperikoko %2.2s   asento (P/V) %1.1s  merkistï¿½ "
          L"(PC-8/Roman-8) %1.1s", pap, as, msto);
       vidspwmsg(3,0,7,0, st);
       clrtxt(4, 43, 63);
@@ -972,7 +974,7 @@ static void near hpkoodit(void)
             break;
          case 3:
             clrln(ySize-3);
-            editkoodi(extra, L"Lisäinitialisointi");
+            editkoodi(extra, L"Lisï¿½initialisointi");
             break;
          case 4:
          case 5:
@@ -1093,22 +1095,22 @@ static void GDIfontit(void)
 	fnt[1] = TitleFnt;
 	fnt[2] = HeaderFnt;
 	fnt[3] = CourFnt;
-   vidspwmsg(6,10,7,0,L"Merkkilaji  täsmennys  koko (pistettä)   riviväli (1/72 tuumaa)");
+   vidspwmsg(6,10,7,0,L"Merkkilaji  tï¿½smennys  koko (pistettï¿½)   rivivï¿½li (1/72 tuumaa)");
    viwrrectw(7,0,9,9, L"perus     "
-                     L"pääotsikko"
+                     L"pï¿½ï¿½otsikko"
                      L"alaotsikot" , 7, 0, 0);
 #ifndef MAKI
-   vidspwmsg(10,0,7,0,L"emitväliajat");
+   vidspwmsg(10,0,7,0,L"emitvï¿½liajat");
 	nr = 4;
 #else
    vidspwmsg(10,0,7,0,L"tuomarit");
 	nr = 4;
 #endif
    vidspwmsg(12,0,7,0, L"Merkkilajt 0:TimesNewRoman, 1:Arial, 2:ArialNarrow, 3:Calibri, 4:CourierNew");
-   vidspwmsg(13,0,7,0, L"Merkkilajitäsmennys: 1: lihav., 2: italic, "
+   vidspwmsg(13,0,7,0, L"Merkkilajitï¿½smennys: 1: lihav., 2: italic, "
       L"3: lihav. italic");
    vidspwmsg(15,0,7,0,
-      L"Siirry: .. Tab Shift-Tab   Hyväksy muutokset : +  Peruuta : Esc"); 
+      L"Siirry: .. Tab Shift-Tab   Hyvï¿½ksy muutokset : +  Peruuta : Esc"); 
    i = 0;
    j = 0;
    do {
@@ -1186,7 +1188,7 @@ static void near muotoilu(void)
    kehys(0);
    clrln(ySize - 3);
    ch = L' ';
-   wselectopt(L"Luetaanko muotoilu levyltä (K/E)", L"KE", &ch);
+   wselectopt(L"Luetaanko muotoilu levyltï¿½ (K/E)", L"KE", &ch);
    clrln(ySize - 3);
    if (ch == L'K') {
 	   vidspwmsg(ySize - 3, 0, 7, 0, L"Tiedoston nimi:");
@@ -1195,7 +1197,7 @@ static void near muotoilu(void)
 		   LueXMLMuotoilu(luetfnm);
 	   }
 	if (lsttulparam.printer == GDIPRINTER) {
-		vidspwmsg(12,0,7,0,L"Käytössä Windowsin kirjoitinajurit. Kohdistus rivin tuhannesosina");
+		vidspwmsg(12,0,7,0,L"Kï¿½ytï¿½ssï¿½ Windowsin kirjoitinajurit. Kohdistus rivin tuhannesosina");
 		}
 	else {
       viwrrectw(12,0,12,34,L"Valitse sarakkeiden kohdistustapa :",7,0,0);
@@ -1203,12 +1205,12 @@ static void near muotoilu(void)
       viwrrectw(13,4,18,51,
          L"1 : Merkkipohjainen kohdistus                   "
          L"2 : Matriisikirjoitintyyppinen tabulaattori     "
-         L"3 : HP Laserjet kohdistus yksiköissä 1/72 tuumaa"
-         L"4 : Postscript kohdistus yksiköissä 1/72 tuumaa "
+         L"3 : HP Laserjet kohdistus yksikï¿½issï¿½ 1/72 tuumaa"
+         L"4 : Postscript kohdistus yksikï¿½issï¿½ 1/72 tuumaa "
          L"5 : Proprinter emulointi                        "
          L"6 : Tekstitiedosto erottimina tabulaattori      "
          ,7,0,0);
-//      L"7 : Canon laser kohdistus yksiköissä 1/72 tuumaa"
+//      L"7 : Canon laser kohdistus yksikï¿½issï¿½ 1/72 tuumaa"
       ch = lsttulparam.printer + L'1';
       if (lsttulparam.printer == 1 && !lsttulparam.tulmuot.tabs) ch = L'1';
 //   wselectopt(L"Valitse kohdistustapa 1, 2, 3, 4, 5, 6 tai 7", L"1234567", &ch);
@@ -1248,17 +1250,17 @@ static void near muotoilu(void)
 	  tulosmuot.tabs = lsttulparam.tulmuot.tabs;
       }
 
-   vidspwmsg(2,0,7,0,L"Sivun pituus      riviä, joista alkuun tyhjiä");
+   vidspwmsg(2,0,7,0,L"Sivun pituus      riviï¿½, joista alkuun tyhjiï¿½");
    vidint(2,13,4,tulosmuot.sivpit);
    vidint(2,46,2,tulosmuot.esirivit);
-   viwrrectw(3,0,4,72,L"Pääotsikko tulostetaan kerran erikseen pyydet"
-      L"tävän tulosluettelon alussa,toistettavat otsikot jokaisen "
-      L"sarjan alussa ennen ja jälkeen sarjanimen. ",7,0,0);
-   viwrrectw(5,0,5,12,L"Pääotsikko :",7,0,0);
+   viwrrectw(3,0,4,72,L"Pï¿½ï¿½otsikko tulostetaan kerran erikseen pyydet"
+      L"tï¿½vï¿½n tulosluettelon alussa,toistettavat otsikot jokaisen "
+      L"sarjan alussa ennen ja jï¿½lkeen sarjanimen. ",7,0,0);
+   viwrrectw(5,0,5,12,L"Pï¿½ï¿½otsikko :",7,0,0);
    vidspwmsg(6,0,7,0,paaots);
-   viwrrectw(7,0,7,40,L"Sarjanimeä edeltävä toistettava otsikko :",7,0,0);
+   viwrrectw(7,0,7,40,L"Sarjanimeï¿½ edeltï¿½vï¿½ toistettava otsikko :",7,0,0);
    vidspwmsg(8,0,7,0,kilpailu);
-   viwrrectw(9,0,9,40,L"Sarjanimeä seuraava toistettava otsikko :",7,0,0);
+   viwrrectw(9,0,9,40,L"Sarjanimeï¿½ seuraava toistettava otsikko :",7,0,0);
    vidspwmsg(10,0,7,0,alaots);
 //   ch = uusisivu ? L'K' : L'E';
 //   wselectopt(L"Tulostetaanko jokainen sarja uudelle sivulle (K/E)", L"KE", &ch);
@@ -1267,7 +1269,7 @@ static void near muotoilu(void)
    wselectopt(L"Tulostetaanko otsikkotiedoissa sarjanimi (K/E)", L"KE", &ch);
    tulosmuot.snimifl = (ch == L'K');
    ch = tulosmuot.tpvafl ? L'K' : L'E';
-   wselectopt(L"Tulostetaanko otsikkotiedoissa tulostuspäivä (K/E)", L"KE", &ch);
+   wselectopt(L"Tulostetaanko otsikkotiedoissa tulostuspï¿½ivï¿½ (K/E)", L"KE", &ch);
    tulosmuot.tpvafl = (ch == L'K');
    ch = tulosmuot.tklofl ? L'K' : L'E';
    wselectopt(L"Tulostetaanko otsikkotiedoissa kellonaika (K/E)", L"KE", &ch);
@@ -1288,7 +1290,7 @@ static void near muotoilu(void)
    inputwstr(alaots,80,0,10,L"\r\x1B",&ch,FALSE);
    if (ch == ESC) goto loppu;
    ch = tulosmuot.vaihdanimet ? L'K' : L'E';
-   wselectopt(L"Vaihdetaanko etu- ja sukunimien järjestys (KE)", L"KE", &ch);
+   wselectopt(L"Vaihdetaanko etu- ja sukunimien jï¿½rjestys (KE)", L"KE", &ch);
    tulosmuot.vaihdanimet = (ch == L'K');
    ch = tulosmuot.nollakarki ? L'E' : L'K';
    wselectopt(L"Tulostetaanko erosarkakkeessa voittajalle kokonaisaika (KE)", L"KE", &ch);
@@ -1305,14 +1307,14 @@ static void near muotoilu(void)
 
    for (i = 2; i < ySize-4; i++) clrln(i);
    vidspwmsg(2,0,7,0,L"Anna paperitulostuksen kenttien sijainnit");
-   vidspwmsg(2,42,7,0,L"Yksi kilpailupäivä tai yhteisaika");
-   vidspwmsg(4,3,7,0,L"Kenttä     Sijainti Leveys Tasaus");
+   vidspwmsg(2,42,7,0,L"Yksi kilpailupï¿½ivï¿½ tai yhteisaika");
+   vidspwmsg(4,3,7,0,L"Kenttï¿½     Sijainti Leveys Tasaus");
 	if (lsttulparam.printer == GDIPRINTER)
-		wcscpy(ln,L"Sijainti 1/1000 rivistä, leveys merkkeinä");
+		wcscpy(ln,L"Sijainti 1/1000 rivistï¿½, leveys merkkeinï¿½");
 	else
-      swprintf(ln,L"Sijainti %s, leveys merkkeinä",
-         (lsttulparam.printer == LJETII || lsttulparam.printer == POSTSCRIPT) ? L"yksiköissä 1/72 in" :
-         L"merkkeinä");
+      swprintf(ln,L"Sijainti %s, leveys merkkeinï¿½",
+         (lsttulparam.printer == LJETII || lsttulparam.printer == POSTSCRIPT) ? L"yksikï¿½issï¿½ 1/72 in" :
+         L"merkkeinï¿½");
    vidspwmsg(20,0,7,0, ln);
    fld = prtflds;
    nfld = n_prtflds;
@@ -1327,7 +1329,7 @@ static void near muotoilu(void)
          else clrln(j+5);
          }
       for (j = 0, k = 0;;) {
-         vidspwmsg(ySize-3,0,7,0,L"Paina <Esc> lopettaaksesi tämän sivun muutokset");
+         vidspwmsg(ySize-3,0,7,0,L"Paina <Esc> lopettaaksesi tï¿½mï¿½n sivun muutokset");
          switch (k) {
             case 0:
                inputwstr(fld[j].name, 10, 3, j+5, term, &ch, 0); 
@@ -1364,7 +1366,7 @@ static void near muotoilu(void)
             }
          if (j >= nfld) {
             ch = L'K';
-            wselectopt(L"Poistutaanko tältä sivulta (K/E)", L"KE", &ch);
+            wselectopt(L"Poistutaanko tï¿½ltï¿½ sivulta (K/E)", L"KE", &ch);
             if (ch == L'K')
                break;
             j = 0;
@@ -1374,13 +1376,13 @@ static void near muotoilu(void)
          if (fld == prtflds) {
             fld = prtfldsm;
             nfld = n_prtfldsm;
-            vidspwmsg(2,42,7,0,L"Kilpailupäivä sekä yhteisaika    ");
+            vidspwmsg(2,42,7,0,L"Kilpailupï¿½ivï¿½ sekï¿½ yhteisaika    ");
             continue;
             }
          if (fld == prtfldsm) {
             fld = prtflds1;
             nfld = n_prtflds1;
-            vidspwmsg(2,42,7,0,L"1. ja 2. pv. sekä yhteisaika     ");
+            vidspwmsg(2,42,7,0,L"1. ja 2. pv. sekï¿½ yhteisaika     ");
             continue;
             }
          if (fld == prtflds1) {
@@ -1393,11 +1395,11 @@ static void near muotoilu(void)
          nfld = n_dspflds;
          clrln(2);
          clrln(20);
-         vidspwmsg(2,0,7,0,L"Anna näyttötulostuksen kenttien sijainnit");
+         vidspwmsg(2,0,7,0,L"Anna nï¿½yttï¿½tulostuksen kenttien sijainnit");
       }
 loppu:
    ch = L' ';
-   wselectopt(L"Muutetaanko käytettäviä fonttimäärittelyjä (K/E)",
+   wselectopt(L"Muutetaanko kï¿½ytettï¿½viï¿½ fonttimï¿½ï¿½rittelyjï¿½ (K/E)",
       L"KE", &ch);
    if (ch == L'K') {
 		if (lsttulparam.printer == GDIPRINTER) {
@@ -1432,9 +1434,9 @@ loppu:
                   case EPSON:
                      break;
                   }
-               editkoodi(pots_on,L"Pääotsikkofontin valinta");
+               editkoodi(pots_on,L"Pï¿½ï¿½otsikkofontin valinta");
                if (lsttulparam.printer != POSTSCRIPT)
-                  editkoodi(pots_pois,L"Pääotsikkofontin loppu");
+                  editkoodi(pots_pois,L"Pï¿½ï¿½otsikkofontin loppu");
                switch (lsttulparam.printer) {
                   case POSTSCRIPT:
                      wcscpy(aots_on, L"\x03of ");
@@ -1449,9 +1451,9 @@ loppu:
                }
             else {
                editkoodi(init_fnt,L"Perusfontin valinta");
-               editkoodi(pots_on,L"Pääotsikkofontin valinta");
+               editkoodi(pots_on,L"Pï¿½ï¿½otsikkofontin valinta");
                if (lsttulparam.printer != POSTSCRIPT)
-                  editkoodi(pots_pois,L"Pääotsikkofontin loppu");
+                  editkoodi(pots_pois,L"Pï¿½ï¿½otsikkofontin loppu");
                editkoodi(aots_on,L"Aliotsikkofontin valinta");
                if (lsttulparam.printer != POSTSCRIPT)
                   editkoodi(aots_pois,L"Aliotsikkofontin loppu");
@@ -1510,7 +1512,7 @@ void joukkuepistemaarittelyt(void)
 			}
 		srj = luesarja(NULL, &ch2);
 		if (ch2 != ESC && srj >= 0) {
-			vidspwmsg(ySize-3,40,7,0,L"Lukumäärä:");
+			vidspwmsg(ySize-3,40,7,0,L"Lukumï¿½ï¿½rï¿½:");
 			npiste = Sarjat[srj].npist[k_pv];
 			INPUTINTW(&npiste, 3, 52, ySize-3, L"\r", &ch2);
 			Sarjat[srj].npist[k_pv] = (wchar_t) npiste;
@@ -1554,7 +1556,7 @@ void seuralista(void)
       wselectopt(L"Hae T)iedostosta tai L)uettele seurat, M)uokkaa tiedostoa, Esc : Poistu", L"TLM\x1b", &ch);
 #endif
 #else
-      wselectopt(L"L)äs fråm fil eller F)örtäckna föreningar, B)earbeta fil, Esc : Avsluta", L"LFB\x1b", &ch);
+      wselectopt(L"L)ï¿½s frï¿½m fil eller F)ï¿½rtï¿½ckna fï¿½reningar, B)earbeta fil, Esc : Avsluta", L"LFB\x1b", &ch);
       wtransl(L"LFB", L"TLM", &ch);
 #endif
 #ifdef _CONSOLE
@@ -1566,7 +1568,7 @@ void seuralista(void)
 #ifndef LANGSV_K
             writeerror_w(L"Tiedoston SEURATUL.LST avaaminen ei onnistu", 0);
 #else // LANGSV_K
-            writeerror_w(L"Filet SEURATUL.LST kan inte öppnas", 0);
+            writeerror_w(L"Filet SEURATUL.LST kan inte ï¿½ppnas", 0);
 #endif // LANGSV_K
 			delete sralstf;
             return;
@@ -1580,10 +1582,10 @@ void seuralista(void)
 			 if (wcslen(linebuf) > 1) {
 	            if (wcslen(buf) + wcslen(linebuf) >= CBUFL-1) {
 #ifndef LANGSV_K
-               writeerror_w(L"Puskuritila ei riitä, osa tiedoista menetetään"
+               writeerror_w(L"Puskuritila ei riitï¿½, osa tiedoista menetetï¿½ï¿½n"
                   L" tallennettaessa", 0);
 #else // LANGSV_K
-               writeerror_w(L"Puskuritila ei riitä, osa tiedoista menetetään"
+               writeerror_w(L"Puskuritila ei riitï¿½, osa tiedoista menetetï¿½ï¿½n"
                   L" tallennettaessa", 0);
 #endif // LANGSV_K
                break;
@@ -1603,7 +1605,7 @@ void seuralista(void)
 #ifndef LANGSV_K
          wselectopt(L"Tallennetaanko muutokset (K/E)", L"KE", &tc);
 #else
-         wselectopt(L"Bevara ändringart (J/E)", L"JE", &tc);
+         wselectopt(L"Bevara ï¿½ndringart (J/E)", L"JE", &tc);
          wtransl(L"J", L"K", &tc);
 #endif
          if (tc == L'K') {
@@ -1618,9 +1620,9 @@ void seuralista(void)
    if (ch == L'L') {
       clrln(ySize-3);
 #ifndef LANGSV_K
-      vidspwmsg(ySize-3,0,7,0,L"Anna seurojen nimilyhenteet, lopuksi tyhjä");
+      vidspwmsg(ySize-3,0,7,0,L"Anna seurojen nimilyhenteet, lopuksi tyhjï¿½");
 #else // LANGSV_K
-      vidspwmsg(ySize-3,0,7,0,L"Ge in föreningförkortningar, sluta med tom");
+      vidspwmsg(ySize-3,0,7,0,L"Ge in fï¿½reningfï¿½rkortningar, sluta med tom");
 #endif // LANGSV_K
       for (i = 0; i < SEURALISTA; i++) {
          sra[0] = 0;
@@ -1639,7 +1641,7 @@ void seuralista(void)
 #ifndef LANGSV_K
       vidspwmsg(ySize-3,0,7,0,L"Anna seuralistan numero tai Esc lopettaaksesi");
 #else // LANGSV_K
-      vidspwmsg(ySize-3,0,7,0,L"Ge in föreninglistans nummer. Esc att sluta  ");
+      vidspwmsg(ySize-3,0,7,0,L"Ge in fï¿½reninglistans nummer. Esc att sluta  ");
 #endif // LANGSV_K
       lista = 0;
       INPUTINTW(&lista, 4, 46, ySize-3, L"\x0D\x1B", &ch);
@@ -1649,9 +1651,9 @@ void seuralista(void)
       sralstf = new TextFl(L"SEURATUL.LST", L"r");
 	  if (!sralstf->IsOpen()) {
 #ifndef LANGSV_K
-         writeerror_w(L"Seuralistatiedostoa SEURATUL.LST ei löydy", 0);
+         writeerror_w(L"Seuralistatiedostoa SEURATUL.LST ei lï¿½ydy", 0);
 #else // LANGSV_K
-         writeerror_w(L"Filet SEURATUL.LST kan inte öppnas", 0);
+         writeerror_w(L"Filet SEURATUL.LST kan inte ï¿½ppnas", 0);
 #endif // LANGSV_K
 		 delete sralstf;
          return;
@@ -1709,7 +1711,7 @@ int seuratulval_pohja(wchar_t *ss, int *ssrj, tulostusparamtp *tulostusparam)
 			L"YLK\x1B", ss);
 #else
 		wtransl(L"YLK", L"ELA", ss);
-		wselectopt(L"E)n, L)ista, A)lla föreningar,  <Esc> : ngra",
+		wselectopt(L"E)n, L)ista, A)lla fï¿½reningar,  <Esc> : ï¿½ngra",
 			L"ELA\x1B", &ss);
 		wtransl(L"ELA", L"YLK", ss);
 #endif
@@ -1767,18 +1769,18 @@ int seuratulval_pohja(wchar_t *ss, int *ssrj, tulostusparamtp *tulostusparam)
 		vidspwmsg(ySize-3,0,7,0,L"Kuinka monta parasta tulostetaan, "
 			L"vaikka seura/piiri ei ole pyydetty");
 #else // LANGSV_K
-		vidspwmsg(ySize-3,0,7,0,L"Antal bästa att skriva oberoende, "
-			L"av förening eller distrikt");
+		vidspwmsg(ySize-3,0,7,0,L"Antal bï¿½sta att skriva oberoende, "
+			L"av fï¿½rening eller distrikt");
 #endif // LANGSV_K
 		INPUTINTW(&tulostusparam->sj_raja, 2, 69, ySize-3, L"\r", &ch);
 		if (tulostusparam->sj_raja) {
 			ch = tulostusparam->karjet ? L'K' : L'E';
 #ifndef LANGSV_K
-			wselectopt(L"Tulostetaanko kärjet, vaikka sarjassa ei "
-				L"valintaehdon täyttäviä (K/E)", L"KE", &ch);
+			wselectopt(L"Tulostetaanko kï¿½rjet, vaikka sarjassa ei "
+				L"valintaehdon tï¿½yttï¿½viï¿½ (K/E)", L"KE", &ch);
 #else
-			wselectopt(L"Skall de bästa skrivas även om inga av "
-				L"valda föreningar (J/E)", L"JE", &ch);
+			wselectopt(L"Skall de bï¿½sta skrivas ï¿½ven om inga av "
+				L"valda fï¿½reningar (J/E)", L"JE", &ch);
 			wtransl(L"J", L"K", &ch);
 #endif
 			tulostusparam->karjet = ch == L'K';
@@ -1808,7 +1810,7 @@ int seuratulval_toist(wchar_t ss, int *is, int *piiri, tulostusparamtp *tulprm)
 #ifndef LANGSV_K
 		wcscpy(prs,L"Tulostaa seuraa :");
 #else // LANGSV_K
-		wcscpy(prs,L"Utskrift av föreningen :");
+		wcscpy(prs,L"Utskrift av fï¿½reningen :");
 #endif // LANGSV_K
 		for (i = 0; seuranimi[i][0] && i < SEURALISTA; i++) {
 			if (wcslen(prs) > 65) 
@@ -1831,7 +1833,7 @@ int seuratulval_toist(wchar_t ss, int *is, int *piiri, tulostusparamtp *tulprm)
 				vidspwmsg(r+2,34,7,0,piirinimi[r+18]);
 				}
 			vidspwmsg(ySize-3,0,7,0,L"Luettele piirien numerot ("
-				L"Lopuksi 0)     Esc : keskeytä");
+				L"Lopuksi 0)     Esc : keskeytï¿½");
 			r = 0;
 			do {
 				INPUTINTW(piiri, 2, 37, ySize-3,L"\r\x1B", &ch);
@@ -1853,7 +1855,7 @@ int seuratulval_toist(wchar_t ss, int *is, int *piiri, tulostusparamtp *tulprm)
 			return(1);
 			}
 		clrln(ySize-3);
-		viwrrectw(ySize-3,0,ySize-3,16,L"Tulostaa piiriä :", 7, 0, 0);
+		viwrrectw(ySize-3,0,ySize-3,16,L"Tulostaa piiriï¿½ :", 7, 0, 0);
 		if (ss == L'K') 
 			vidspwmsg(ySize-3,18,7,0,piirinimi[*piiri-1]);
 		}
@@ -1868,16 +1870,16 @@ static void tiedostovalinnat(tulostusparamtp *tulostusparam)
 	static bool lehtierot = true, lehtivaihdanm = true, lehtipitkat = true;
 #ifdef EMIT
 	if (pvparam[k_pv].laika > 8)
-		wcscpy(msg, L"K)ohdistettu, E)rottimin, L)ehteen, S)SL/SHL, H)TML, X)ML, V)äliajoin");
+		wcscpy(msg, L"K)ohdistettu, E)rottimin, L)ehteen, S)SL/SHL, H)TML, X)ML, V)ï¿½liajoin");
 	else
-      wcscpy(msg, L"K)ohdistettu, E)rottimin, L)ehteen, S)SL, H)TML, X)ML, V)äliajoin");
+      wcscpy(msg, L"K)ohdistettu, E)rottimin, L)ehteen, S)SL, H)TML, X)ML, V)ï¿½liajoin");
    wcscpy(opts, L"KELSHVX");
 #else
 #ifdef JOUKKUETUL
-      wcscpy(msg, L"K)ohdistettu, E)rottimin, L)ehteen, H)TML, X)ML, V)äliajoin, J)oukkueet");
+      wcscpy(msg, L"K)ohdistettu, E)rottimin, L)ehteen, H)TML, X)ML, V)ï¿½liajoin, J)oukkueet");
    wcscpy(opts, L"KELHVXJ");
 #else
-      wcscpy(msg, L"K)ohdistettu, E)rottimin, L)ehteen, S)HL, H)TML, X)ML, V)äliajoin");
+      wcscpy(msg, L"K)ohdistettu, E)rottimin, L)ehteen, S)HL, H)TML, X)ML, V)ï¿½liajoin");
    wcscpy(opts, L"KELSHVX");
 #endif
 #endif
@@ -1936,16 +1938,16 @@ static void tiedostovalinnat(tulostusparamtp *tulostusparam)
 //      wselectopt(L"Tulostetaanko kilpailunumero (K/E)", L"KE", &ch);
 //      lehtimuoto = ch == L'E';
       ch = lehtierot ? L'E' : L'K';
-      wselectopt(L"Tulostetaanko E)rot kärkeen vai K)okonaisajat", L"KE",
+      wselectopt(L"Tulostetaanko E)rot kï¿½rkeen vai K)okonaisajat", L"KE",
          &ch);
       lehtierot = ch == L'E';
       lehtivaihdanm = 0;
       lehtipitkat = 1;
       ch = lehtivaihdanm ? L'K' : L'E';
-      wselectopt(L"Vaihdetaanko etu- ja sukunimen järjestys (K/E)", L"KE", &ch);
+      wselectopt(L"Vaihdetaanko etu- ja sukunimen jï¿½rjestys (K/E)", L"KE", &ch);
       lehtivaihdanm = ch == L'K';
       ch = lehtipitkat ? L'K' : L'E';
-      wselectopt(L"Tulostetaanko L)yhenne vai S)euranimikenttä", L"LS", &ch);
+      wselectopt(L"Tulostetaanko L)yhenne vai S)euranimikenttï¿½", L"LS", &ch);
       lehtipitkat = ch == L'S';
 	  tulostusparam->optiot &= 0xfff8ffff;
 	  if (lehtierot)
@@ -1964,7 +1966,7 @@ int valitsekohde(wchar_t *co)
    wchar_t msg[90];
    wchar_t opts[20];
 
-      wcscpy(msg, L"N)äyttö, P)aperi, A)utomaattinen, M)uotoilu, "
+      wcscpy(msg, L"N)ï¿½yttï¿½, P)aperi, A)utomaattinen, M)uotoilu, "
          L"tI)edostoon");
       wcscpy(opts, L"NPAMI\x1b");
       if (taulu_com) {
@@ -1974,13 +1976,13 @@ int valitsekohde(wchar_t *co)
       wselectopt(msg, opts, co);
 #else
       if (spoolfl)
-         wselectopt(L"N)äytölle, P)aperille, A)utomaattinen, M)uotoilu, "
+         wselectopt(L"N)ï¿½ytï¿½lle, P)aperille, A)utomaattinen, M)uotoilu, "
             L"tI)edostoon", L"NPAMI\x1b",co);
       else {
 #if defined(TCPSIIRTO)
 		  if (aftulparam.kohde == L'X' && autofileparam.afvali == 0 && autofileparam.afname[0]) {
-            wselectopt(L"N)äytölle, P)aperille, A)utomaattinen, M)uotoilu"
-               L", tI)edostoon, L)ähetä",L"NPAMIL\x1b",co);
+            wselectopt(L"N)ï¿½ytï¿½lle, P)aperille, A)utomaattinen, M)uotoilu"
+               L", tI)edostoon, L)ï¿½hetï¿½",L"NPAMIL\x1b",co);
             if (*co == L'L') {
                wselectopt(L"T)uloksen saaneet, I)lmoittautuneet", L"TI", co);
                autofile(*co == L'I');
@@ -1990,7 +1992,7 @@ int valitsekohde(wchar_t *co)
             }
          else
 #endif
-            wselectopt(L"N)äytölle, P)aperille, A)utomaattinen, M)uotoilu"
+            wselectopt(L"N)ï¿½ytï¿½lle, P)aperille, A)utomaattinen, M)uotoilu"
                L", tI)edostoon",L"NPAMI\x1b",co);
          }
 #endif
@@ -2020,11 +2022,11 @@ int valitsesisalto(int oikaise, tulostusparamtp *tulprm)
 			}
 		else
 #else
-	       wselectopt(L"K)ilpailijat, Y)hteenveto, V)äliajat, Esc: Peruuta",
+	       wselectopt(L"K)ilpailijat, Y)hteenveto, V)ï¿½liajat, Esc: Peruuta",
 		       L"KYV\x1B", &cy);
 #endif
 #else     // JOUKKUEPISTEET
-         wselectopt(L"K)ilpailijat, Y)hteenveto, V)äliajat, P)isteet, "
+         wselectopt(L"K)ilpailijat, Y)hteenveto, V)ï¿½liajat, P)isteet, "
             L"Esc: Peruuta", L"KYVP\x1B", &cy);
 #endif
 
@@ -2037,7 +2039,7 @@ int valitsesisalto(int oikaise, tulostusparamtp *tulprm)
 #if defined(JOUKKUETUL)
       if (tulprm->kohde == L'P') 
 		   wselectopt(L"K)ilpailijat, J)oukkueet, Y)hteenveto, "
-				L"V)äliajat, M)uut, Esc: Peruuta",L"KJYVM\x1B",&cy);
+				L"V)ï¿½liajat, M)uut, Esc: Peruuta",L"KJYVM\x1B",&cy);
 #else
 #ifdef MAKI
 		if (k_pv == makipv) {
@@ -2057,29 +2059,29 @@ int valitsesisalto(int oikaise, tulostusparamtp *tulprm)
 #endif
 	      if (tulprm->kohde == L'P') 
 			  wselectopt(L"K)ilpailijat, Y)hteenveto, "
-				L"V)äliajat, M)uut, Esc: Peruuta",L"KYVM\x1B",&cy); 
+				L"V)ï¿½liajat, M)uut, Esc: Peruuta",L"KYVM\x1B",&cy); 
 #endif 
 #endif
 
 #if !defined(AMPUSUUNN) && defined(JOUKKUEPISTEET)
       if (tulprm->kohde == L'P') 
 		  wselectopt(L"K)ilpailijat, Y)hteenveto, "
-			L"V)äliajat, P)isteet, M)uut, Esc: Peruuta",L"KYLVMP\x1B",&cy);
+			L"V)ï¿½liajat, P)isteet, M)uut, Esc: Peruuta",L"KYLVMP\x1B",&cy);
 #endif 
 
 #if defined(AMPUSUUNN)
       if (tulprm->kohde == L'P') 
-		  wselectopt(L"K)ilpailijat, V)äliajat, Y)hteenveto, "
+		  wselectopt(L"K)ilpailijat, V)ï¿½liajat, Y)hteenveto, "
          L"J)oukkueet, Esc: Peruuta",L"KYJV\x1B",&cy);
 #endif 
 		
 		if (tulprm->kohde == L'P' && cy == L'M') {
 			cy = L' ';
-			wselectopt(L"A)akkostetut, N)umerojärjestyksessä",
+			wselectopt(L"A)akkostetut, N)umerojï¿½rjestyksessï¿½",
 				L"AN", &cy);
 			tulprm->ixjarj = 1 + 10 * (cy == L'N');
 			cy = L' ';
-			wselectopt(L"Tulokset I)lman sijoituksia, S)ijoituksin, L)ähtöajat",
+			wselectopt(L"Tulokset I)lman sijoituksia, S)ijoituksin, L)ï¿½htï¿½ajat",
 				L"ISL", &cy);
 			switch (cy) {
 				case L'I':
@@ -2110,7 +2112,7 @@ int valitsesisalto(int oikaise, tulostusparamtp *tulprm)
 				}
 			else
 #endif
-	         wselectopt(L"K)ilpailijat, V)äliajat, A)akkos, Esc: Peruuta", L"KVA\x1B",&cy);
+	         wselectopt(L"K)ilpailijat, V)ï¿½liajat, A)akkos, Esc: Peruuta", L"KVA\x1B",&cy);
 
 			}
 	  }
@@ -2153,10 +2155,10 @@ wchar_t  opts[20], ch, vali = 0;
 			}
 		else {
 			if (kilpparam.maxvaluku >= 10) {
-				wselectopt(L"Valitse E)mit, Y)ksi väliaikapiste tai K)aikki pisteet", L"EYK", &vali);
+				wselectopt(L"Valitse E)mit, Y)ksi vï¿½liaikapiste tai K)aikki pisteet", L"EYK", &vali);
 				if (vali == L'Y') {
 					clrln(ySize-3);
-					vidspwmsg(ySize-3,0,7,0,L"Väliaikapisteen numero:");
+					vidspwmsg(ySize-3,0,7,0,L"Vï¿½liaikapisteen numero:");
 					INPUTINTW(&tulprm->piste, 2, 25, ySize-3, L"\r", &vali);
 					vali = tulprm->piste + L'0';
 					}
@@ -2165,7 +2167,7 @@ wchar_t  opts[20], ch, vali = 0;
 				{
 				wcscpy(opts, L"EK123456789:;");
 				opts[kilpparam.maxvaluku+2] = 0;
-				wselectopt(L"Valitse E)mit, väliaikapisteen numero tai K)aikki pisteet", opts, &vali);
+				wselectopt(L"Valitse E)mit, vï¿½liaikapisteen numero tai K)aikki pisteet", opts, &vali);
 				if (vali <= L'9')
 					tulprm->piste = vali - L'0';
 				}
@@ -2174,7 +2176,7 @@ wchar_t  opts[20], ch, vali = 0;
 			}
 		if (vali == L'E' && tulprm->kohde == L'I') {
 			ch = L' ';
-			wselectopt(L"A)nalysoidut väliajat vai L)uetut tiedot jatkokäsittelyyn",
+			wselectopt(L"A)nalysoidut vï¿½liajat vai L)uetut tiedot jatkokï¿½sittelyyn",
 				L"AL", &ch);
 			if (ch == L'L') {
 				kirjvaliajat(0);
@@ -2189,7 +2191,7 @@ wchar_t  opts[20], ch, vali = 0;
 		if (vali == L'E') {
 			tulprm->tulostettava = L'E';	
 			ch = L' ';
-			wselectopt(L"K)okonaisajat rasteille, R)astivälien ajat, "
+			wselectopt(L"K)okonaisajat rasteille, R)astivï¿½lien ajat, "
 				L"M)olemmat", L"KRM", &ch);
 			tulprm->piste = wcswcind(ch, L"KRM");
 			}
@@ -2213,10 +2215,10 @@ wchar_t  opts[20], ch, vali = 0;
 				else {
 					vali = L' ';
 					if (kilpparam.maxvaluku >= 10) {
-						wselectopt(L"Valitse Y)ksi väliaikapiste tai K)aikki pisteet", L"YK", &vali);
+						wselectopt(L"Valitse Y)ksi vï¿½liaikapiste tai K)aikki pisteet", L"YK", &vali);
 						if (vali == L'Y') {
 							clrln(ySize-3);
-							vidspwmsg(ySize-3,0,7,0,L"Väliaikapisteen numero:");
+							vidspwmsg(ySize-3,0,7,0,L"Vï¿½liaikapisteen numero:");
 							INPUTINTW(&tulprm->piste, 3, 25, ySize-3, L"\r", &vali);
 							}
 						}
@@ -2224,7 +2226,7 @@ wchar_t  opts[20], ch, vali = 0;
 						{
 						wcscpy(opts, L"K123456789:;");
 						opts[kilpparam.maxvaluku+1] = 0;
-						wselectopt(L"Valitse väliaikapisteen numero, tai K)aikki", opts, &vali);
+						wselectopt(L"Valitse vï¿½liaikapisteen numero, tai K)aikki", opts, &vali);
 						if (vali <= L'9')
 							tulprm->piste = vali - L'0';
 						}
@@ -2233,7 +2235,7 @@ wchar_t  opts[20], ch, vali = 0;
 					}
 				}
 			else {
-				writeerror_w(L"Väliaikojen käsittelyä ei käynnistetty", 0);
+				writeerror_w(L"Vï¿½liaikojen kï¿½sittelyï¿½ ei kï¿½ynnistetty", 0);
 				return(1);
 				}
 			}
@@ -2248,7 +2250,7 @@ int xmlvalinnat(tulostusparamtp *tulprm)
 
 #ifdef EMITXML
 	if (emitfl || kilpparam.maxvaluku)
-		wselectopt(L"Kirjoitetaanko E)mitväliajat, M)uut väliajat, I)lman väliaikoja", L"EMI", &tulprm->xmlva);
+		wselectopt(L"Kirjoitetaanko E)mitvï¿½liajat, M)uut vï¿½liajat, I)lman vï¿½liaikoja", L"EMI", &tulprm->xmlva);
 	else
 		tulprm->xmlva = L'I';
 #else
@@ -2257,7 +2259,7 @@ int xmlvalinnat(tulostusparamtp *tulprm)
 	flatxml = 1;
 #else
 	if (kilpparam.maxvaluku)
-		wselectopt(L"Kirjoitetaanko V)äliajoin, I)lman väliaikoja", L"VI", &tulprm->xmlva);
+		wselectopt(L"Kirjoitetaanko V)ï¿½liajoin, I)lman vï¿½liaikoja", L"VI", &tulprm->xmlva);
 	else
 		tulprm->xmlva = L'I';
 	wtransl(L"V", L"M", &tulprm->xmlva);
@@ -2271,7 +2273,7 @@ int xmlvalinnat(tulostusparamtp *tulprm)
 		}
 #endif
     ch = L' ';
-    wselectopt(L"U)TF-8 vai I)SO-8858-1 merkistö", L"UI", &ch);
+    wselectopt(L"U)TF-8 vai I)SO-8858-1 merkistï¿½", L"UI", &ch);
 	tulprm->merkit = (ch == L'I' ? L'A' : L'8');
 	clrln(ySize-3);
 	vidspwmsg(ySize-3, 0, 7, 0, L"Anna tiedoston nimi ");
@@ -2321,7 +2323,7 @@ int valitsetulpv (tulostusparamtp *tulostusparam, int oikaise)
 			if (wcswcind(kilpparam.kilplaji, L"NP") >= 0) {
 				if (!oikaise) {
 					wtransl(L"2M", L"PK", &ch);
-					wselectopt(L"P)äivän aika ja pisteet, K)aikki pisteet",L"PK", &ch);
+					wselectopt(L"P)ï¿½ivï¿½n aika ja pisteet, K)aikki pisteet",L"PK", &ch);
 					wtransl(L"PK", L"2M", &ch);
 					}
 				switch (ch) {
@@ -2348,8 +2350,8 @@ int valitsetulpv (tulostusparamtp *tulostusparam, int oikaise)
 					else
 						ch = L"YYMK"[tulostusparam->vaihelkm];
 					wselectopt(
-						L"Tulosta Y)hteistulokset, T)ämä päivä, M)olemmat, K)aikki "
-						L"päivät",L"YTMK", &ch);
+						L"Tulosta Y)hteistulokset, T)ï¿½mï¿½ pï¿½ivï¿½, M)olemmat, K)aikki "
+						L"pï¿½ivï¿½t",L"YTMK", &ch);
 
 					switch (ch) {
 						case L'T':
@@ -2383,7 +2385,7 @@ int valitsetulpv (tulostusparamtp *tulostusparam, int oikaise)
 				else {
 					if (!oikaise && tulostusparam->vaihelkm > 1) {		 
 						ch = tulostusparam->yhttuljarj ? L'Y' : L'T';
-						wselectopt(L"Järjestys: Y)hteistulokset vai T)ämä päivä", L"YT", &ch);
+						wselectopt(L"Jï¿½rjestys: Y)hteistulokset vai T)ï¿½mï¿½ pï¿½ivï¿½", L"YT", &ch);
 						tulostusparam->yhttuljarj = ch == L'Y';
 						}
 					}
@@ -2460,7 +2462,7 @@ void tulostus(int oikaise)
 
 #if N_PV > 2000
 	if (k_pv > 2 && !oikaise) {
-		wselectopt(L"P)äivän tulokset, M)onipäivälistaukset", L"PM", &tc);
+		wselectopt(L"P)ï¿½ivï¿½n tulokset, M)onipï¿½ivï¿½listaukset", L"PM", &tc);
 		if (tc == L'M') {
 			list_pv();
 			return;
@@ -2479,7 +2481,7 @@ void tulostus(int oikaise)
 	if (kohde != L'P')
 		tulprm.lstf = NULL;
 	else if (tulprm.lstf == NULL) {
-		writeerror_w(L"Tulostinta ei ole määritelty", 0);
+		writeerror_w(L"Tulostinta ei ole mï¿½ï¿½ritelty", 0);
 		return;
 		}
 	tulprm.kohde = kohde;
@@ -2496,7 +2498,7 @@ void tulostus(int oikaise)
          return;
 #if defined(TAULU_2)
       case L'V' :
-         wselectopt(L"Näytä E)ro kärkeen, K)oko ajat", L"EK", &tauluval);
+         wselectopt(L"Nï¿½ytï¿½ E)ro kï¿½rkeen, K)oko ajat", L"EK", &tauluval);
          break;
 #endif
       case L'I' :
@@ -2522,7 +2524,7 @@ void tulostus(int oikaise)
    if (valitsesisalto(oikaise, &tulprm))
 	   return;
 
-   // tulostettava : T: tulokset, O: osanottajat ilman tuloksia, V: väliajat, J: joukkuetulokset, Q: joukkuepisteet, Y: yhteenveto
+   // tulostettava : T: tulokset, O: osanottajat ilman tuloksia, V: vï¿½liajat, J: joukkuetulokset, Q: joukkuepisteet, Y: yhteenveto
 
 
    if (tulprm.tulostettava == L'T') 
@@ -2557,7 +2559,7 @@ void tulostus(int oikaise)
 
       if (tulprm.kohde == L'H' && tulprm.tulostettava != L'E') {
          ch = htmlpitkat ? L'S' : L'L';
-	     wselectopt(L"Tulostetaanko L)yhenne vai S)euranimikenttä", L"LS", &ch);
+	     wselectopt(L"Tulostetaanko L)yhenne vai S)euranimikenttï¿½", L"LS", &ch);
          htmlpitkat = ch == L'S';
          }
 
@@ -2596,7 +2598,7 @@ void tulostus(int oikaise)
 
          if (tulprm.tulostettava == L'E') {
 			 ch = L' ';
-            wselectopt(L"H)yväksytyt, K)aikki vai P)arhaat", L"HKP", &ch);
+            wselectopt(L"H)yvï¿½ksytyt, K)aikki vai P)arhaat", L"HKP", &ch);
             switch (ch) {
 				case L'P':
 					tulprm.rajaus = L'T';
@@ -2697,7 +2699,7 @@ void tulostus(int oikaise)
          do {
 			if (wcswcind(kilpparam.kilplaji, L"NPU") >= 0 && tulera) {
                clrln(ySize-3);
-               vidspwmsg(ySize-3, 0, 7, 0, L"Erän numero :        Esc : poistu");
+               vidspwmsg(ySize-3, 0, 7, 0, L"Erï¿½n numero :        Esc : poistu");
                INPUTINTW(&tulera,3,15,ySize-3,L"\r\x1b",&tc);
                if (tc == ESC) {
                   tulera = -1;
@@ -2738,23 +2740,23 @@ void tulostus(int oikaise)
 				   if (wcswcind(tulprm.kohde, L"HIJRESFZ") >= 0 && !enssrj) {
 					  tc = L' ';
 #ifndef LANGSV_K
-					  wselectopt(L"Pyydetyt sarjat kirjoitettu, kirjoitetaanko lisää (K/E)",
+					  wselectopt(L"Pyydetyt sarjat kirjoitettu, kirjoitetaanko lisï¿½ï¿½ (K/E)",
 						 L"KE", &tc);
 					  if (tc == L'E')
 						 break;
 					  }
 				   clrln(ySize-3);
-				   vidspwmsg(ySize-3,0,7,0,L"Ensimmäinen sarja :               "
+				   vidspwmsg(ySize-3,0,7,0,L"Ensimmï¿½inen sarja :               "
 					  L"<F2>:Alusta, <Esc>:Poistu");
 #else // LANGSV_K
-					  wselectopt(L"Pyydetyt sarjat kirjoitettu, kirjoitetaanko lisää (K/E)",
+					  wselectopt(L"Pyydetyt sarjat kirjoitettu, kirjoitetaanko lisï¿½ï¿½ (K/E)",
 						 L"KE", &tc);
 					  if (tc == L'E')
 						 break;
 					  }
 				   clrln(ySize-3);
-				   vidspwmsg(ySize-3,0,7,0,L"Första klassen    :               "
-					  L"<F2>: Fr†n början, <Esc>: G† till huvudmeny");
+				   vidspwmsg(ySize-3,0,7,0,L"Fï¿½rsta klassen    :               "
+					  L"<F2>: Frï¿½n bï¿½rjan, <Esc>: Gï¿½ till huvudmeny");
 #endif // LANGSV_K
 				   sarjayhdfl = 0;
 				   srj = luesarja(L"", &tc, true);
@@ -2763,7 +2765,7 @@ void tulostus(int oikaise)
 						else {
 							clrln(ySize-3);
 							vidspwmsg(ySize-3,0,7,0,L"Viimeinen sarja :               " 
-								L"<F2>: Loppuun, <Esc>: Poistu päävalintaan");
+								L"<F2>: Loppuun, <Esc>: Poistu pï¿½ï¿½valintaan");
 							vsrj = luesarja((wchar_t *)Sarjat[srj].sarjanimi, &tc, true);
 							clrln(ySize-1);
 							if (tc == 202) {

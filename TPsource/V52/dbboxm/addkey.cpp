@@ -21,6 +21,8 @@ void lopetus(void);
    static tapageptr pageptr1, pageptr2;
    static taitem procitem1, procitem2;
 
+// Lisää procitem1-alkion B-puu-sivulle prpgref1 kohtaan *r; jakaa sivun tarvittaessa kahtia.
+// Asettaa passup = TRUE jos jako tuottaa ylöspäin nostettavan alkion procitem1:een.
 static void insert(indexfile *idxf, int prpgref1, int *r)
 {
 int i;
@@ -69,6 +71,8 @@ int prpgref2;
   }
 }
 
+// Hakee rekursiivisesti B-puusta lisäyspaikan avaimelle pkey (tietueviite procdatref) sivulta prpgref1.
+// Löytäessään oikean paikan kutsuu insert(); asettaa passup = TRUE jos sivujako on tarpeen.
 static void search(indexfile *idxf, int procdatref, UCHAR *pkey,
                                                    int prpgref1)
 {
@@ -117,6 +121,8 @@ static void search(indexfile *idxf, int procdatref, UCHAR *pkey,
   }
 }
 
+// Lisää avain pkey (tietueviite procdatref) indeksiin idxf B-puu-algoritmilla.
+// Palauttaa 0 onnistuessaan; luo tarvittaessa uuden juurisivun.
 int addkey(indexfile *idxf, int procdatref, UCHAR *pkey)
 {
 int prpgref1;

@@ -92,6 +92,8 @@
 	    }					  \
 	 }
 
+// Piirtää suorakulmaisen kehyksen näytölle IBM-merkkigrafiikalla; boxtype 0–15 valitsee viivayhdistelmän.
+// u_row/u_col: vasen yläkulma, l_row/l_col: oikea alakulma, attrib: värimäärite; palauttaa 0 tai 1 jos mitat virheelliset.
 int scbox(u_row,u_col,l_row,l_col,boxtype,boxchar,attrib)
 int  u_row,u_col,l_row,l_col,boxtype;
 char boxchar;

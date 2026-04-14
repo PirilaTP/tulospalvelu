@@ -16,6 +16,8 @@
 
 #include <windows.h>
 
+// Siirtää konsolikursorin annettuun sarakkeeseen ja riviin.
+// Parametrit: x=sarake, y=rivi.
 void gotoxy(int x, int y)
 {
 	extern HANDLE hConOut;
@@ -29,6 +31,8 @@ void gotoxy(int x, int y)
 	}
 }
 
+// Lukee konsolikursorin nykyisen sijainnin.
+// Parametrit: x=sarake (tulos), y=rivi (tulos).
 void getxy(int *x, int *y)
 {
 	extern HANDLE hConOut;
@@ -44,6 +48,7 @@ void getxy(int *x, int *y)
 	*y = ConsoleScreenBufferInfo.dwCursorPosition.Y;
 }
 
+// Palauttaa konsolikursorin nykyisen rivinumeron.
 int wherey(void)
 {
 	int x, y;
@@ -52,6 +57,7 @@ int wherey(void)
 	return(y);
 }
 
+// Palauttaa konsolikursorin nykyisen sarakenumeron.
 int wherex(void)
 {
 	int x, y;

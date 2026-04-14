@@ -17,6 +17,7 @@
 #include <string.h>
 #include <wchar.h>
 
+// Poistaa merkkijonon str alusta kaikki välilyönnit ja ohjausmerkit (< ' ') siirtämällä merkkijonoa.
 void elimbl1(char *str)
 	{
 	char *p;
@@ -25,6 +26,7 @@ void elimbl1(char *str)
 	memmove(str, p, strlen(p) + 1);
 	}
 
+// Poistaa leveämerkkisen merkkijonon str alusta kaikki välilyönnit ja ohjausmerkit.
 void elimwbl1(wchar_t *str)
 	{
 	wchar_t *p;
@@ -33,6 +35,7 @@ void elimwbl1(wchar_t *str)
 	wmemmove(str, p, wcslen(p) + 1);
 	}
 
+// Poistaa merkkijonon str alusta ja lopusta kaikki välilyönnit ja ohjausmerkit.
 void elimbl2(char *str)
 	{
 	char *p;
@@ -46,6 +49,7 @@ void elimbl2(char *str)
 	memmove(str, p, strlen(p) + 1);
 	}
 
+// Poistaa leveämerkkisen merkkijonon str alusta ja lopusta kaikki välilyönnit ja ohjausmerkit.
 void elimwbl2(wchar_t *str)
 	{
 	wchar_t *p;

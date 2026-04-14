@@ -27,6 +27,9 @@
 extern int sarjaluku;
 extern char sarjanimi[][11];
 
+// Etsii sarjan nimen perusteella sarjataulukosta ja palauttaa sen indeksin.
+// Parametri: snimi=sarjan nimi (muunnetaan isoksi ja lyhennetään 6 merkkiin).
+// Palauttaa sarjaindeksin tai -1, jos sarjaa ei löydy.
 int haesarja(char *snimi)
 {
    int i;

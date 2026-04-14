@@ -16,6 +16,9 @@
 
 #include <tputil.h>
 
+// Tallentaa suorakulmaisen näyttöalueen sisällön dynaamisesti varattuun puskuriin.
+// r0/c0: vasemman yläreunan rivi ja sarake, r1/c1: oikean alareunan rivi ja sarake.
+// Palauttaa osoittimen varattuun puskuriin tai NULL jos varaus epäonnistuu.
 char *savescr(int r0, int c0, int r1, int c1)
    {
    char *buf;
@@ -25,6 +28,8 @@ char *savescr(int r0, int c0, int r1, int c1)
    return(buf);
    }
 
+// Palauttaa aiemmin tallennetun näyttöalueen ruudulle ja vapauttaa puskurin.
+// r0/c0: vasemman yläreunan rivi ja sarake, r1/c1: oikean alareunan rivi ja sarake, buf: savescr:n palauttama puskuri.
 void restorescr(int r0, int c0, int r1, int c1, char *buf)
    {
    if (!buf)

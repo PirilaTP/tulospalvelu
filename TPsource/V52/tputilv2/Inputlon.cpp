@@ -27,6 +27,8 @@
 #define FALSE 0
 
 
+// Lukee pitkän kokonaisluvun (INT32) näppäimistöltä merkkijonon kautta.
+// i: luku INT32-muodossa (in/out), l: kentän leveys, x/y: näyttökoordinaatit, term: lopetusmerkit, tc: lopetusmerkki (out).
 void inputlong(INT32 *i, int l,int x,int y, char *term, char *tc)
 {
    char istr[14];
@@ -36,6 +38,8 @@ void inputlong(INT32 *i, int l,int x,int y, char *term, char *tc)
    *i = atol(istr);
 }
 
+// Unicode-versio inputlong:sta; muuntaa wide-merkkijonot OEM-merkistöön ennen kutsua.
+// wterm: wide-merkkinen lopetusmerkkijono, wtc: vastaanotettu lopetusmerkki wide-muodossa (out).
 void inputlongw(INT32 *i, int l,int x,int y, wchar_t *wterm, wchar_t *wtc)
 {
 	char term[40], tc;

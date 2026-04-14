@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Tiedonsiirtofunktiot viestikilpailulle: RS-232, UDP ja TCP-viestintÃ¤.
+
 #if defined(__BORLANDC__)
 #pragma option -K
 #endif
@@ -83,26 +85,26 @@ void buflah(int cn, combufrec *obuf);
 
 int alkut = ALKUT;
 HANDLE hComm[MAX_PORTTI];
-int ackreq[MAX_LAHPORTTI];              /* != 0 Ilmaisee, että yhteys toimii */
-int yhtfl[MAX_LAHPORTTI];              /* != 0 Ilmaisee, että yhteys toimii */
-int keyclose[MAX_LAHPORTTI];                   /* Käyttäjä sulkenut portin */
+int ackreq[MAX_LAHPORTTI];              /* != 0 Ilmaisee, ettï¿½ yhteys toimii */
+int yhtfl[MAX_LAHPORTTI];              /* != 0 Ilmaisee, ettï¿½ yhteys toimii */
+int keyclose[MAX_LAHPORTTI];                   /* Kï¿½yttï¿½jï¿½ sulkenut portin */
 int autoclose;               /* Ohjelma sulkenut vastaanoton */
 int  initid[MAX_LAHPORTTI];                    /* inpakid initialisoimatta */
-extern int intv[];                      /* Tiedonsiirron odotusväli     */
-//int intv[2];                      /* Tiedonsiirron odotusväli     */
+extern int intv[];                      /* Tiedonsiirron odotusvï¿½li     */
+//int intv[2];                      /* Tiedonsiirron odotusvï¿½li     */
 combufrec *inbuf;      /* Saapuvien jono */
-combufrec *outbuf[MAX_LAHPORTTI];     /* Lähtevien jono */
+combufrec *outbuf[MAX_LAHPORTTI];     /* Lï¿½htevien jono */
 int combufsize;
 char *combuf[MAX_LAHPORTTI];          /* IO-portin puskuri */
-int  lahfl[MAX_LAHPORTTI];            /* Lähetys käynnissä */
+int  lahfl[MAX_LAHPORTTI];            /* Lï¿½hetys kï¿½ynnissï¿½ */
 int  vkesken[MAX_LAHPORTTI];              /* Vastaanotto kesken */
-int  chcomkesto[MAX_LAHPORTTI];           /* Yhden merkin lähettämiskesko */
-int  hyvkesken[MAX_LAHPORTTI];            /* Hyväksyntä kesken */
-char outpakid[MAX_LAHPORTTI];    /* seuraava lähetettävä id */
+int  chcomkesto[MAX_LAHPORTTI];           /* Yhden merkin lï¿½hettï¿½miskesko */
+int  hyvkesken[MAX_LAHPORTTI];            /* Hyvï¿½ksyntï¿½ kesken */
+char outpakid[MAX_LAHPORTTI];    /* seuraava lï¿½hetettï¿½vï¿½ id */
 int vastcom0[MAX_LAHPORTTI];
 int lahcomserver[MAX_LAHPORTTI];
 int in_tark_kello[MAX_LAHPORTTI];
-int class_len[N_CLASS];     // Lähetettävän tiedon pituus mukaanlukien
+int class_len[N_CLASS];     // Lï¿½hetettï¿½vï¿½n tiedon pituus mukaanlukien
                                    // checksum ja itse tieto
 extern int timerfl, tbase, trate;
 extern INT vpiste[];
@@ -265,11 +267,11 @@ void laheta_yl(int srj, int kielto)
 		 while (ch != ESC && v == cjens[cn]) {
 			clrln(ySize-3);
 #ifndef LANGSV_K
-			vidspmsg(ySize-3,0,7,0,"Odottaa tiedonsiirron etenemistä.  'Esc' "
-			   "lopettaa yhteislähtöaikojen siirron");
+			vidspmsg(ySize-3,0,7,0,"Odottaa tiedonsiirron etenemistï¿½.  'Esc' "
+			   "lopettaa yhteislï¿½htï¿½aikojen siirron");
 #else // LANGSV_K
-			vidspmsg(ySize-3,0,7,0,"Odottaa tiedonsiirron etenemistä.  'Esc' "
-			   "lopettaa yhteislähtöaikojen siirron");
+			vidspmsg(ySize-3,0,7,0,"Odottaa tiedonsiirron etenemistï¿½.  'Esc' "
+			   "lopettaa yhteislï¿½htï¿½aikojen siirron");
 #endif // LANGSV_K
 			ch = readkbd(&ch2, FALSE, spoolfl);
 			Sleep(20);
@@ -340,12 +342,12 @@ static void tark_ylahto(int cn)
 
 //  viestin laheta()
 //
-// luokka == 1,   tietoja ei lähetetä koneelle, jolle
-//                lähetään aikataulukko; muuten vain aika
-// luokka == 2,   lähetään aika
-// luokka & 4,    lähetään osuustietoja, lisäkoodia kerrottuna 16:lla
-// luokka == 8,   lähetään muut osuustiedot
-//                paitsi, jos maalilähetysrajoitus
+// luokka == 1,   tietoja ei lï¿½hetetï¿½ koneelle, jolle
+//                lï¿½hetï¿½ï¿½n aikataulukko; muuten vain aika
+// luokka == 2,   lï¿½hetï¿½ï¿½n aika
+// luokka & 4,    lï¿½hetï¿½ï¿½n osuustietoja, lisï¿½koodia kerrottuna 16:lla
+// luokka == 8,   lï¿½hetï¿½ï¿½n muut osuustiedot
+//                paitsi, jos maalilï¿½hetysrajoitus
 //
 
 void laheta(int dkilp, int entno, int os, int piste, int comtarfl, int kielto,
@@ -437,12 +439,12 @@ static void tark_aika(int cn)
 
    if (!com_ajat[cn]) {
       writeerror("Vastaanotettu MAALI-ohjelman ajanottotieto."
-		 " LISÄÄ PARAMETRI LÄHAIKA", 0);
+		 " LISï¿½ï¿½ PARAMETRI Lï¿½HAIKA", 0);
 	  return;
       }
 
-   // Jos ajanottoa ei ole vielä käynnistetty, sijoitetaan saapuva tieto
-   // puskuriin initbuf odottamaan myöhempää käsittelyä ja poistutaan
+   // Jos ajanottoa ei ole vielï¿½ kï¿½ynnistetty, sijoitetaan saapuva tieto
+   // puskuriin initbuf odottamaan myï¿½hempï¿½ï¿½ kï¿½sittelyï¿½ ja poistutaan
    if (!timerfl) {
 	  if (initbufptr[cn] < MAXINITAJAT) {
          memcpy((char *) initbuf[cn][initbufptr[cn]++],
@@ -452,13 +454,13 @@ static void tark_aika(int cn)
       return;
       }
 
-   // Jos tähän tullaan, on ajanotto käynnistetty ja uusinta sanomaa ei ole
+   // Jos tï¿½hï¿½n tullaan, on ajanotto kï¿½ynnistetty ja uusinta sanomaa ei ole
    // pantu puskuriin initbuf
 
    do {
-      // ensin katsotaan onko puskurissa tietoja, jotka pitää käsitellä ensin
-      // jos on, käydään tätä looppia läpi, kunnes aiemmat on käsitelty ja
-      // sitten käsitellään se sanoma, jonka johdosta tähän aliohjelmaan tultiin
+      // ensin katsotaan onko puskurissa tietoja, jotka pitï¿½ï¿½ kï¿½sitellï¿½ ensin
+      // jos on, kï¿½ydï¿½ï¿½n tï¿½tï¿½ looppia lï¿½pi, kunnes aiemmat on kï¿½sitelty ja
+      // sitten kï¿½sitellï¿½ï¿½n se sanoma, jonka johdosta tï¿½hï¿½n aliohjelmaan tultiin
 
       if (!initca[cn]) {
          if (i == initbufptr[cn]) initca[cn] = 1;
@@ -486,8 +488,8 @@ static void tark_aika(int cn)
 
 	  tall_rivi(ino, &ia, &da, 0, 0, (com_ajat[cn] != 3)*(cn+1), !katkkierto[cn] && ibuf->d.a.pakota);
 
-	  //  Viestiohjelmassa tallennetaan uusi osuusaika myös kilpailija-
-	  //  tietoihin tämän sanoman perusteella.
+	  //  Viestiohjelmassa tallennetaan uusi osuusaika myï¿½s kilpailija-
+	  //  tietoihin tï¿½mï¿½n sanoman perusteella.
 
 	  if (!da.kno && ia.kno >= minkilpno && ia.kno <= maxkilpno &&
 			ia.piste < kilpparam.valuku+1 &&
@@ -591,14 +593,14 @@ static void tark_kilp(int cn)
    if (er > 0) {
 #ifndef LANGSV_K
 	  writeerror(
-		 "Tiedostot eri koneilla eivät ole yhtäpitäviä",0);
+		 "Tiedostot eri koneilla eivï¿½t ole yhtï¿½pitï¿½viï¿½",0);
 	  writeerror("Poistu ohjelmasta, kopioi KILP.DAT"
-		 "lähettävältä tälle koneelle",0);
+		 "lï¿½hettï¿½vï¿½ltï¿½ tï¿½lle koneelle",0);
 #else // LANGSV_K
 	  writeerror(
 		 "Okonsistent data mellan datorer",0);
 	  writeerror("Avsluta program, kopiera KILP.DAT"
-		 "fr†n den sändande dator till denna dator",0);
+		 "frï¿½n den sï¿½ndande dator till denna dator",0);
 #endif // LANGSV_K
 	  }
    }
@@ -665,14 +667,14 @@ static void tark_osuus(int cn)
    if (er) {
 #ifndef LANGSV_K
 	  writeerror(
-		 "Tiedostot eri koneilla eivät ole yhtäpitäviä",0);
+		 "Tiedostot eri koneilla eivï¿½t ole yhtï¿½pitï¿½viï¿½",0);
 	  writeerror("Poistu ohjelmasta, kopioi KILP.DAT"
-		 "lähettävältä tälle koneelle",0);
+		 "lï¿½hettï¿½vï¿½ltï¿½ tï¿½lle koneelle",0);
 #else // LANGSV_K
 	  writeerror(
 		 "Okonsistent data mellan datorer",0);
 	  writeerror("Avsluta program, kopiera KILP.DAT"
-		 "fr†n den sändande dator till denna dator",0);
+		 "frï¿½n den sï¿½ndande dator till denna dator",0);
 #endif // LANGSV_K
 	  }
    }
@@ -707,14 +709,14 @@ static void tark_trk(int cn)
    if (er) {
 #ifndef LANGSV_K
 	  writeerror(
-		 "Tiedostot eri koneilla eivät ole yhtäpitäviä",0);
+		 "Tiedostot eri koneilla eivï¿½t ole yhtï¿½pitï¿½viï¿½",0);
 	  writeerror("Poistu ohjelmasta, kopioi KILP.DAT"
-		 "lähettävältä tälle koneelle",0);
+		 "lï¿½hettï¿½vï¿½ltï¿½ tï¿½lle koneelle",0);
 #else // LANGSV_K
 	  writeerror(
 		 "Okonsistent data mellan datorer",0);
 	  writeerror("Avsluta program, kopiera KILP.DAT"
-		 "fr†n den sändande dator till denna dator",0);
+		 "frï¿½n den sï¿½ndande dator till denna dator",0);
 #endif // LANGSV_K
 	  }
    }
@@ -745,14 +747,14 @@ static void tark_tls(int cn)
    if (er) {
 #ifndef LANGSV_K
 	  writeerror(
-		 "Tiedostot eri koneilla eivät ole yhtäpitäviä",0);
+		 "Tiedostot eri koneilla eivï¿½t ole yhtï¿½pitï¿½viï¿½",0);
 	  writeerror("Poistu ohjelmasta, kopioi KILP.DAT"
-		 "lähettävältä tälle koneelle",0);
+		 "lï¿½hettï¿½vï¿½ltï¿½ tï¿½lle koneelle",0);
 #else // LANGSV_K
 	  writeerror(
 		 "Okonsistent data mellan datorer",0);
 	  writeerror("Avsluta program, kopiera KILP.DAT"
-		 "fr†n den sändande dator till denna dator",0);
+		 "frï¿½n den sï¿½ndande dator till denna dator",0);
 #endif // LANGSV_K
 	  }
    }
@@ -859,7 +861,7 @@ bool tark_alku(const combufrec * const cbuf, int cn)
 		return(false);
 	if (cbuf->d.alku.vaihe != 0) {
 		if (var[cn] == 0) {
-			swprintf(ln, L"Henkilökohtainsen kilpailun ohjelma pyytää yhteyttä", cn+1);
+			swprintf(ln, L"Henkilï¿½kohtainsen kilpailun ohjelma pyytï¿½ï¿½ yhteyttï¿½", cn+1);
 			writeerror_w(ln, 0);
 			}
 		var[cn]++;
@@ -867,7 +869,7 @@ bool tark_alku(const combufrec * const cbuf, int cn)
 		}
 	if (cbuf->d.alku.nrec != datf2.numrec) {
 		if (var[cn] == 0) {
-			swprintf(ln, L"Yhteyspyyntö koneelta, jonka KILP.DAT eri pituinen, yhteys %d", cn + 1);
+			swprintf(ln, L"Yhteyspyyntï¿½ koneelta, jonka KILP.DAT eri pituinen, yhteys %d", cn + 1);
 			writeerror_w(ln, 0);
 			}
 		var[cn]++;
@@ -939,7 +941,7 @@ void tarkcom(LPVOID lpCn)
 					 writeerror("Vastaanotettu MAALI-ohjelman ajanottotieto."
 						" Korjaa konfigurointi", 0);
 #else // LANGSV_K
-					 writeerror("Programmet MAALI har sänt tidtagningsdata."
+					 writeerror("Programmet MAALI har sï¿½nt tidtagningsdata."
 						" Korrigera konfiguration", 0);
 #endif // LANGSV_K
 #endif
@@ -969,7 +971,7 @@ void tarkcom(LPVOID lpCn)
 					 tark_tiedosto(cn);
 					 break;
                   default :
-                     writeerror("Tuntematon sanomalaji, ohjelmat eivät sovi yhteen", 1000);
+                     writeerror("Tuntematon sanomalaji, ohjelmat eivï¿½t sovi yhteen", 1000);
                      lisa = 0;
                      break;
 				  }
@@ -1411,7 +1413,7 @@ void uusintaTCP(int cn)
 
    selectopt("K)aikki sarjat, V)alitse sarjat, S)anomanumerot", "VKS", &cs);
    if (cs != 'S') {
-	  selectopt("T)ulokset, V)äliajat, M)olemmat, H)yl+kesk+avoimet, K)aikki", "TVMHK", &cp);
+	  selectopt("T)ulokset, V)ï¿½liajat, M)olemmat, H)yl+kesk+avoimet, K)aikki", "TVMHK", &cp);
 	  selectopt("K)oko kilpailu, V)alittava aikavali, Esc: peruuta", "KV\x1b", &ch);
 	  if (ch == 'V') {
 		 clrln(ySize-3);
@@ -1471,7 +1473,7 @@ void emitva_uusinta(int cn, int tietue)
 	if (tietue < 0 && cn >= 0) {
 		while (1) {
 			ch = ' ';
-			selectopt("Lähetä K)aikki tai valitse S)arja, O)suus, M)olemmat, Esc: lopeta", "KSOM\x1b", &ch);
+			selectopt("Lï¿½hetï¿½ K)aikki tai valitse S)arja, O)suus, M)olemmat, Esc: lopeta", "KSOM\x1b", &ch);
 			if (ch == ESC)
 				break;
 			if (ch == 'S' || ch == 'M') {

@@ -18,6 +18,8 @@
 #include <stdlib.h>
 #include <tputil.h>
 
+// Muuntaa yhden wide-merkin ch OEM-merkistön koodiksi ISO→OEM-kääntötaulukolla.
+// Palauttaa OEM-tavukoodin; tuntemattomille merkeille palauttaa 254.
 char wcrtooemch(wchar_t ch)
 	{
 	char chbuf[4];
@@ -58,6 +60,8 @@ char wcrtooemch(wchar_t ch)
    return(ISOtoOEM[chbuf[0]]);
    }
 
+// Muuntaa wide-merkkijonon in OEM-merkkijonoksi out käyttämällä wcrtooemch-funktiota merkki kerrallaan.
+// out: kohde OEM-puskuri, in: lähde wide-merkkijono, len: kohteen kapasiteetti; palauttaa out.
 char *wcstooem(char *out, wchar_t *in, int len)
    {
    char *p;

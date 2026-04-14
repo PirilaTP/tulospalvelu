@@ -27,6 +27,8 @@
 #define FALSE 0
 
 
+// Lukee kokonaisluvun näppäimistöltä merkkijonon kautta.
+// i: luku short-muodossa (in/out), l: kentän leveys, x/y: näyttökoordinaatit, term: lopetusmerkit, tc: lopetusmerkki (out).
 void inputint(short *i, int l,int x,int y, char *term, char *tc)
 {
    char istr[7];
@@ -36,6 +38,8 @@ void inputint(short *i, int l,int x,int y, char *term, char *tc)
    *i = (short) atoi(istr);
 }
 
+// Unicode-versio inputint:sta; muuntaa wide-merkkijonot OEM-merkistöön ennen kutsua.
+// wterm: wide-merkkinen lopetusmerkkijono, wtc: vastaanotettu lopetusmerkki wide-muodossa (out).
 void inputintw(short *i, int l,int x,int y, wchar_t *wterm, wchar_t *wtc)
 {
 	char term[40], tc;

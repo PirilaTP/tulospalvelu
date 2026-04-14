@@ -42,6 +42,8 @@ extern int norm_back;
 extern int inv_back;
 extern int inv_fore;
 
+// Laajamerkkiversio viwrrect:stä: kirjoittaa wchar_t-puskurin konsolinäytölle Unicode-tilassa.
+// option 0: merkkilähetys yksitellen, option 1: suora CHAR_INFO-kopiointi; palauttaa merkkimäärän tai -1.
 int viwrrectw(int u_row, int u_col, int l_row, int l_col,
 			const wchar_t *buf, int fore, int back, int option)
 {
@@ -103,6 +105,8 @@ int viwrrectw(int u_row, int u_col, int l_row, int l_col,
 	return(bsize);
 }
 
+// Kirjoittaa leveän merkkijonon msg konsolinäytölle sijaintiin (row, col) värein fore/back.
+// Palauttaa kirjoitettujen merkkien määrän.
 int vidspwmsg(int row, int col, int fore, int back, const wchar_t *msg)
 {
 	viwrrectw(row, col, row, col + wcslen(msg) - 1, msg, fore, back, 0);

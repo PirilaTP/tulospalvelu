@@ -22,11 +22,15 @@
 #include <string.h>
 #include <tputil.h>
 
+// Muodostaa XML-merkkijono-elementtimerkkijonon vastr:iin; kutsuu viisiparametristä versiota NULL-parstr:llä.
+// vastr: kohde wide-puskuri, tag: nimi, value: arvo, level: sisennystaso.
 void wset_xml_s(wchar_t *vastr, wchar_t *tag, wchar_t *value, int level)
 	{
 	wset_xml_s(vastr, tag, value, level, NULL);
 	}
 
+// Muodostaa XML-merkkijono-elementtimerkkijonon vastr:iin muuntaen &/</>-merkit entiteeteiksi.
+// vastr: kohde, tag: nimi, value: arvo, level: sisennystaso, parstr: lisäattribuutit tai NULL.
 void wset_xml_s(wchar_t *vastr, wchar_t *tag, wchar_t *value, int level, wchar_t *parstr)
 	{
 	wchar_t *p1, *p2, ch[2] = L" ", st[2] = L"";
@@ -67,11 +71,15 @@ void wset_xml_s(wchar_t *vastr, wchar_t *tag, wchar_t *value, int level, wchar_t
 	swprintf(p2, L"</%s>\n", tag);
 	}
 
+// Muodostaa XML-kokonaislukuelementtimerkkijonon vastr:iin; kutsuu viisiparametristä versiota NULL-parstr:llä.
+// vastr: kohde, tag: nimi, value: INT32-arvo, level: sisennystaso.
 void wset_xml_d(wchar_t *vastr, wchar_t *tag, INT32 value, int level)
 	{
 	wset_xml_d(vastr, tag, value, level, NULL);
 	}
 
+// Muodostaa XML-kokonaislukuelementtimerkkijonon vastr:iin attribuuteilla.
+// vastr: kohde, tag: nimi, value: INT32-arvo, level: sisennystaso, parstr: lisäattribuutit tai NULL.
 void wset_xml_d(wchar_t *vastr, wchar_t *tag, INT32 value, int level, wchar_t *parstr)
 	{
 	wchar_t st[2] = L"";
@@ -87,11 +95,15 @@ void wset_xml_d(wchar_t *vastr, wchar_t *tag, INT32 value, int level, wchar_t *p
 	swprintf(vastr+wcslen(vastr), L"<%s%s%s>%ld</%s>\n", tag, st, parstr, value, tag);
 	}
 
+// Muodostaa XML-liukulukuelementtimerkkijonon vastr:iin; kutsuu kuusiparametristä versiota NULL-parstr:llä.
+// vastr: kohde, tag: nimi, value: double-arvo, prec: desimaalit, level: sisennystaso.
 void wset_xml_f(wchar_t *vastr, wchar_t *tag, double value, int prec, int level)
    {
 	wset_xml_f(vastr, tag, value, prec, level, NULL);
    }
 
+// Muodostaa XML-liukulukuelementtimerkkijonon vastr:iin prec desimaalin tarkkuudella ja attribuuteilla.
+// vastr: kohde, tag: nimi, value: double, prec: desimaalit, level: sisennystaso, parstr: lisäattribuutit.
 void wset_xml_f(wchar_t *vastr, wchar_t *tag, double value, int prec, int level, wchar_t *parstr)
    {
 	wchar_t fmt[30];
@@ -112,6 +124,8 @@ void wset_xml_f(wchar_t *vastr, wchar_t *tag, double value, int prec, int level,
    swprintf(vastr+wcslen(vastr), fmt, tag, st, parstr, value, tag);
    }
 
+// Muodostaa XML-avaustunnisteen <tag> wide-merkkijonoksi vastr:iin annetulla sisennystasolla.
+// vastr: kohde, tag: elementin nimi, level: sisennystaso.
 void wset_tag(wchar_t *vastr, wchar_t *tag, int level)
 	{
 	for (int i = 0; i < level; i++)
@@ -120,6 +134,8 @@ void wset_tag(wchar_t *vastr, wchar_t *tag, int level)
 	swprintf(vastr+wcslen(vastr), L"<%s>\n", tag);
 	}
 
+// Muodostaa XML-lopetustunnisteen </tag> wide-merkkijonoksi vastr:iin annetulla sisennystasolla.
+// vastr: kohde, tag: elementin nimi, level: sisennystaso.
 void wset_antitag(wchar_t *vastr, wchar_t *tag, int level)
 	{
 	for (int i = 0; i < level; i++)
@@ -128,6 +144,8 @@ void wset_antitag(wchar_t *vastr, wchar_t *tag, int level)
 	swprintf(vastr+wcslen(vastr), L"</%s>\n", tag);
 	}
 
+// Muodostaa XML-avaustunnisteen attribuuteilla wide-merkkijonoksi vastr:iin; empty=true tuottaa itsesulkeutuvan.
+// vastr: kohde, tag: nimi, params: attribuuttimerkkijono, empty: suljettu tunniste, level: sisennystaso.
 void wset_tagparams(wchar_t *vastr, wchar_t *tag, wchar_t *params, bool empty, int level)
    {
 	for (int i = 0; i < level; i++) {

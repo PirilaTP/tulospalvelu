@@ -36,6 +36,8 @@
 
 #include <windows.h>
 
+// Lukee konsolikursorin nykyisen sijainnin ja koon; palauttaa 1 jos kursori näkyvissä, 0 jos piilotettu, -1 virheessä.
+// prow/pcol: sijainti (tulos), phigh/plow: kursorin korkeus- ja alatarkkuus (tulos).
 int sccurst(int *prow, int *pcol, int *phigh, int *plow)
 {
 	extern HANDLE hConOut;

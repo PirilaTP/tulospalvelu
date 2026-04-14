@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Viestikilpailun vakiomÃ¤Ã¤rittelyt, kÃ¤Ã¤ntÃ¶parametrit ja tietotyypit (MAXOSUUSLUKU, MAXJONO, jne.).
+
 #ifndef LASKDEFDEFINED
 #define LASKDEFDEFINED
 
@@ -79,7 +81,7 @@
 
 #ifndef MAXSARJALUKU
  
-//   Määritysten HALIKKO jne. merkitys:
+//   Mï¿½ï¿½ritysten HALIKKO jne. merkitys:
 //
 //   HALIKKO:  Rakenne 1 + 3 + 3 + 3 + 3 + 1 + 1
 //             Vain yksi sarja
@@ -91,7 +93,7 @@
 //             Useita sarjoja
 //             Oletusosuuden valinta
 //   SKMKV  :  Rakenne 1 + 3 + 2 + 1  tai 1 + 2 + 1 tai normaali
-//             3. osuus lähtee 2. osuuden valmistuttua
+//             3. osuus lï¿½htee 2. osuuden valmistuttua
 //             Useita sarjoja
 //             Oletusosuuden valinta
 //   MKV    :  Rakenne 3 + 3 + 3 + 1 + 1 tai normaali
@@ -345,7 +347,7 @@ typedef struct {
 	unsigned int laikasj;
 	unsigned int laika2;
 	unsigned int laikava;
-	int pyor[5];             // 0: ei, 1: tall, 2: jarj, 3: tuloste, 4: väliaika
+	int pyor[5];             // 0: ei, 1: tall, 2: jarj, 3: tuloste, 4: vï¿½liaika
 	bool sailhyl;
 	int lnimi;
 	int lseura;
@@ -480,7 +482,7 @@ public:
    int amarg;
    int tabs;
    int numlev;
-   int levunit;  // 0: merkkejä, 1: poins, 2: 1/1000 rivi
+   int levunit;  // 0: merkkejï¿½, 1: poins, 2: 1/1000 rivi
    int sivpit;
    int rivpit;
    int aikapari;
@@ -546,22 +548,22 @@ public:
 	int  vaihelkm;
 	int  osuus;
 	wchar_t  viimos;      // Kaikki, Viim,
-	int  piste;       // 0: maali, väliaika
+	int  piste;       // 0: maali, vï¿½liaika
 	int  enssija;      //
 	int  viimsija;     //
 	bool hksijafl;     //
-	int yhteislahdot;     // yhteislähtöön osallistuneet, 2: kaikista sarjoista
+	int yhteislahdot;     // yhteislï¿½htï¿½ï¿½n osallistuneet, 2: kaikista sarjoista
 	bool tarkastamattomat;  //
 	bool seuratulokset;     //
 	bool piiritulokset;     //
 	bool piirisijat;
 	bool hajontatulokset;   //
 	hajtp hajrata;
-	int  sj_raja;           // piiritulosten kärki
+	int  sj_raja;           // piiritulosten kï¿½rki
 	bool piilotatulos;      // ?
 	bool piilotasijat;      // ?
 	bool lahtoluettelo;     // ?
-	bool lahtoajat;        // partion ym. lähtöajat
+	bool lahtoajat;        // partion ym. lï¿½htï¿½ajat
 	bool nollaalaskuri;    // autotulostuksen laskurin nollaus
 	int	 ixjarj;           //  0: vaihto, 10: osuus, 1: aakkos, 11: numero
 	bool kaikkisijat;      //  ?
@@ -843,7 +845,7 @@ typedef struct {
 	wchar_t tunnus[12];
 	char rata[HAJONTA+1];
 	INT rastiluku;
-	INT ennakko;     // nollaus ennakko sek ennen lähtöä, -32767: vaihtelee
+	INT ennakko;     // nollaus ennakko sek ennen lï¿½htï¿½ï¿½, -32767: vaihtelee
 	INT maalilaji;
 	int viitmatka;
 	int ratapit;
@@ -1076,10 +1078,10 @@ typedef struct {
    } valmistp;
 
 #ifdef EMIT
-//  EMIT-määrityksiä
+//  EMIT-mï¿½ï¿½rityksiï¿½
 
-// maalilajit: 1: ajanotto erikseen, viim. rastiväli tuloksesta
-//             2: ajanotto erikseen, viim. rastiväli korjattu kortin aika
+// maalilajit: 1: ajanotto erikseen, viim. rastivï¿½li tuloksesta
+//             2: ajanotto erikseen, viim. rastivï¿½li korjattu kortin aika
 //             3: ajanotto RTR-2:lla
 //             4: lopputulos kortilta viimeisen rastin ajasta
 
@@ -1173,30 +1175,30 @@ typedef struct {                      /* Tiedonsiirtopaketti */
 		union {
 			struct {
 				char		tunn;			// avaussanoman tunnus (ascii-arvo 1)
-				char		konetunn[2];	// lähettävän koneen tunnuskoodi
-				UINT8		vaihe;			// kilpailun vaihe, viestissä 0
+				char		konetunn[2];	// lï¿½hettï¿½vï¿½n koneen tunnuskoodi
+				UINT8		vaihe;			// kilpailun vaihe, viestissï¿½ 0
 				UINT16		nrec;			// tietueiden lkm
 				UINT32		flags;			// flags
 			    } alku;
 			struct {
 			  char           tarf;
-			  char           pakota;      // Pakota tallennus ja lähetys
+			  char           pakota;      // Pakota tallennus ja lï¿½hetys
 			  INT16          dk;          /* Osoite taulukossa kilparr */
 			  INT16          entno;       /* Vanha kilpno, 0 : uusi */
 			  char           ckilp[KILPRECSIZE0];     /* Tiedot */
 			  } k;
 		   struct {
 			  char           tarf;
-			  char           pakota;      // Pakota tallennus ja lähetys
+			  char           pakota;      // Pakota tallennus ja lï¿½hetys
 			  INT16          dk;          // Osoite taulukossa kilparr */
 			  INT16          kno;         // kilpno
 			  INT16          osuus;       // Osuus (0 = perustiedot) */
-			  UINT32		 muutos;	  // flagit, jotka kertovat sanoman sisällön
+			  UINT32		 muutos;	  // flagit, jotka kertovat sanoman sisï¿½llï¿½n
 			  char           cos[OSRECSIZE0];     /* Tiedot */
 			  } os;
 		   struct {
 			  char           tarf;
-			  char           pakota;      // Pakota tallennus ja lähetys
+			  char           pakota;      // Pakota tallennus ja lï¿½hetys
 			  INT16          dk;          // Osoite taulukossa kilparr */
 			  INT16          kno;         // kilpno
 			  INT16          osuus;       // Osuus (0 = perustiedot) */
@@ -1206,7 +1208,7 @@ typedef struct {                      /* Tiedonsiirtopaketti */
 			  } trk;
 		   struct {
 			  char           tarf;
-			  char           pakota;      // Pakota tallennus ja lähetys
+			  char           pakota;      // Pakota tallennus ja lï¿½hetys
 			  INT16          dk;          /* Osoite taulukossa kilparr */
 			  INT16          kno;         // kilpno
 			  INT16          osuus;       /* Osuus (0 = perustiedot) */
@@ -1215,7 +1217,7 @@ typedef struct {                      /* Tiedonsiirtopaketti */
 			  UINT16         kone;
 			  } p;
 		   struct {
-			  char           pakota;      // Pakota tallennus ja lähetys
+			  char           pakota;      // Pakota tallennus ja lï¿½hetys
 			  aikatp         daika;
 			  aikatp         iaika;
 			  } a;
@@ -1249,8 +1251,8 @@ typedef struct {                      /* Tiedonsiirtopaketti */
 			  UINT32		  flags;
 			  UINT32		  koodi;
 			  INT32		  	  pos;			  // -1: alku, >= 0: positio, -2: datan loppu
-			  INT32			  len;			  // sisällön pituus
-			  char		     buf[2];          // Alussa tiedoston nimi (suhteellinen polku), lopussa ei sisältöä,
+			  INT32			  len;			  // sisï¿½llï¿½n pituus
+			  char		     buf[2];          // Alussa tiedoston nimi (suhteellinen polku), lopussa ei sisï¿½ltï¿½ï¿½,
 		   	 } fl;
 #if defined(EMIT)
 		   emittp            em;

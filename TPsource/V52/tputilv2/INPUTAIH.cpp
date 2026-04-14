@@ -26,6 +26,9 @@
 #define TRUE 1
 #define FALSE 0
 
+// Lukee aikasyötteen tunnin ja sekunnin sadasosien tarkkuudella (hh.mm.ss,hh).
+// t: aika INT32-muodossa (in/out), t0: vertailuaika, l: kentän leveys, x/y: näyttökoordinaatit, term: lopetusmerkit, tc: lopetusmerkki (out).
+// Muuttaa *t vain kun syöte on kelvollinen; palauttaa tyhjäarvon erityisellä sentinel-arvolla.
 void inputaika_h(INT32 *t, int t0, int l, int x, int y, char *term, char *tc)
    {
    long tt;
@@ -72,6 +75,8 @@ void inputaika_h(INT32 *t, int t0, int l, int x, int y, char *term, char *tc)
    if (ok)  *t = tt;
    }
 
+// Unicode-versio inputaika_h:sta; muuntaa wide-merkkijonot OEM-merkistöön ennen kutsua.
+// wterm: wide-merkkinen lopetusmerkkijono, wtc: vastaanotettu lopetusmerkki wide-muodossa (out).
 void inputaika_hw(INT32 *t, int t0, int l, int x, int y, wchar_t *wterm, wchar_t *wtc)
 {
 	char term[40] = "", tc;
@@ -88,6 +93,9 @@ void inputaika_hw(INT32 *t, int t0, int l, int x, int y, wchar_t *wterm, wchar_t
 		*wtc = oemtowchar(tc);
 }
 
+// Lukee aikasyötteen tuhannesosasekunnin tarkkuudella (hh.mm.ss,ttt).
+// t: aika INT32-muodossa (in/out), t0: vertailuaika, l: kentän leveys, x/y: näyttökoordinaatit, term: lopetusmerkit, tc: lopetusmerkki (out).
+// Muuttaa *t vain kun syöte on kelvollinen.
 void inputaika_t(INT32 *t, int t0, int l, int x, int y, char *term, char *tc)
    {
    long tt;
@@ -135,6 +143,8 @@ void inputaika_t(INT32 *t, int t0, int l, int x, int y, char *term, char *tc)
    if (ok)  *t = tt;
    }
 
+// Unicode-versio inputaika_t:sta; muuntaa wide-merkkijonot OEM-merkistöön ennen kutsua.
+// wterm: wide-merkkinen lopetusmerkkijono, wtc: vastaanotettu lopetusmerkki wide-muodossa (out).
 void inputaika_tw(INT32 *t, int t0, int l, int x, int y, wchar_t *wterm, wchar_t *wtc)
 {
 	char term[40] = "", tc;

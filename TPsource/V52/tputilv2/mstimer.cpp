@@ -19,6 +19,7 @@
 
 static time_t alkuaika;
 
+// Alustaa millisekuntilaskurin tallentamalla käynnistysajan.
 void initmstimer(void)
    {
    struct timeb tb;
@@ -27,6 +28,8 @@ void initmstimer(void)
    alkuaika = tb.time;
    }
 
+// Palauttaa kuluneen ajan millisekunteina initmstimer-kutsusta.
+// Palauttaa millisekuntimäärän pitkänä kokonaislukuna.
 long mstimer(void)
    {
    struct timeb tb;

@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Viestikilpailun tietokantaindeksien rakentaminen ja yllÃ¤pito.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <io.h>
@@ -172,7 +174,7 @@ int askellasarja(int srj, int osuus, int *aos, int piste, int p, int *lj)
 //	2	srjaakindex	keysa   	32	sarja:2 	nimi:30
 //	3	lahtoindex	keyla   	23	lno:1   	tlahto:4	sarja:2	kilpno:2
 //		- ilman aikoja		    	lno:1   	seura:20	kilpno:2
-//	4	ljarjindex	keyjrj  	16	sarja:2 	tlahto:4	tulos:4	edlahto:4	kilpno:2		jos takaa-ajo tai lähtövali != 0
+//	4	ljarjindex	keyjrj  	16	sarja:2 	tlahto:4	tulos:4	edlahto:4	kilpno:2		jos takaa-ajo tai lï¿½htï¿½vali != 0
 //									sarja:2 	kilpno:2								tulosfl=0
 //									sarja:2 	edtulos:4								tulosfl=1 tai -1
 //	5	aakkosindex	keyaak    	32	nimi:30 	sarja:2
@@ -548,13 +550,13 @@ char *keysrjnro(void *vkilp, char *key, int keylen, int flags)
    return(key);
 }
 
-//  entsija etsii kilpailijan sijan linkitetyllä listalla lähtien
-//  kilpailijasta *p seuraten jäsenen JarjSeur(yhd, piste, dKilp) mukaista linkkiä listan
-//  seuraavaan. Etsintä päättyy, kun seuraava on -1. Numerot viittaavat
+//  entsija etsii kilpailijan sijan linkitetyllï¿½ listalla lï¿½htien
+//  kilpailijasta *p seuraten jï¿½senen JarjSeur(yhd, piste, dKilp) mukaista linkkiï¿½ listan
+//  seuraavaan. Etsintï¿½ pï¿½ï¿½ttyy, kun seuraava on -1. Numerot viittaavat
 //  sijaintiin ketjussa JarjSeur. (Sijainti on sama kuin tiedostossa KILP.DAT).
-//  Jos kilpailijaa ei löydy on sija 9999.
-//  p osoittaa löytymistä edeltävään tietueeseen, paitsi tapauksessa sj=1
-//  itse tietueeseen (siis tällöin *p == d)
+//  Jos kilpailijaa ei lï¿½ydy on sija 9999.
+//  p osoittaa lï¿½ytymistï¿½ edeltï¿½vï¿½ï¿½n tietueeseen, paitsi tapauksessa sj=1
+//  itse tietueeseen (siis tï¿½llï¿½in *p == d)
 
 INT entsija(INT d, INT *p, int osuus, INT piste, INT yhd, int *keskeyta)
 	{
@@ -600,13 +602,13 @@ INT entossija(INT d, INT *p, int srj, int osuus, int *osseur, INT yhd, int *kesk
 	return(sj);
 	}
 
-//  intsija etsii kilpailijan sijan linkitetyllä listalla lähtien
-//  kilpailijasta *p seuraten jäsenen JarjSeur(yhd, piste, dKilp) mukaista linkkiä listan
-//  seuraavaan. Etsintä päättyy, kun on löytyy huonompi tulos. Numerot viittaavat
+//  intsija etsii kilpailijan sijan linkitetyllï¿½ listalla lï¿½htien
+//  kilpailijasta *p seuraten jï¿½senen JarjSeur(yhd, piste, dKilp) mukaista linkkiï¿½ listan
+//  seuraavaan. Etsintï¿½ pï¿½ï¿½ttyy, kun on lï¿½ytyy huonompi tulos. Numerot viittaavat
 //  sijaintiin ketjussa JarjSeur. (Sijainti on sama kuin tiedostossa KILP.DAT).
-//  Jos kilpailijaa ei löydy on sija 9999.
-//  p osoittaa löytymistä edeltävään tietueeseen, paitsi tapauksessa sj=1
-//  itse tietueeseen (siis tällöin *p == d)
+//  Jos kilpailijaa ei lï¿½ydy on sija 9999.
+//  p osoittaa lï¿½ytymistï¿½ edeltï¿½vï¿½ï¿½n tietueeseen, paitsi tapauksessa sj=1
+//  itse tietueeseen (siis tï¿½llï¿½in *p == d)
 
 INT intsija(__int64 tl, INT *p, int osuus, INT piste, INT yhd, int *keskeyta)
 	{
@@ -661,34 +663,34 @@ void paivJoukkLkm(int srj, int muutos)
 #define RAJA 12*TUNTI
 #define RAJA2 12*TUNTI
 
-//  Järjestystiedoista huolehditaan taulukoiden jarjtulos ja jrjseur avulla.
-//  Taulukoissa on maxrec+2 alkiota (viimeistä ei tarvita). Taulukko jrjseur
+//  Jï¿½rjestystiedoista huolehditaan taulukoiden jarjtulos ja jrjseur avulla.
+//  Taulukoissa on maxrec+2 alkiota (viimeistï¿½ ei tarvita). Taulukko jrjseur
 //  on
 //  Osuustulosta vastaava indeksi on aina kilpparam.valuku+1.
 //  Tietojen sijainti taulukoissa vastaa kilpailijan sijaintia kilpailija-
 //  tietotaulukossa ja se saadaan taulukosta posarr kilpailijanumeron
 //  perusteella.
-//  Taulukko jarjtulos sisältää kutakin tulosta ja väliaikaa vastaavat 64-bittisen
-//  järjestysmuuttujan ja taulukko jrjseur viittauksen järjestyksessä seuraavaan kilpailijaan.
+//  Taulukko jarjtulos sisï¿½ltï¿½ï¿½ kutakin tulosta ja vï¿½liaikaa vastaavat 64-bittisen
+//  jï¿½rjestysmuuttujan ja taulukko jrjseur viittauksen jï¿½rjestyksessï¿½ seuraavaan kilpailijaan.
 //  Jos seuraavaa kilpailijaa ei ole on viittaus -1.
 //  Taulukon jrjseur ketjulinkit on jaettu osajonoihin, joita on jokaiselle
 //  sarjalle korkeintaan 10+kilpparam.valuku. Kunkin jonon alkupiste kerrotaan
 //  taulukossa jalku seuraavassa annetun indeksin kohdalla.
 //  Osuuden tuloksille on varattu osajonot
-//    0 : hyväksytty tulos
-//    1 : keskeyttäneet
-//    2 : hylätyt
-//    3 : ei-lähteneet
+//    0 : hyvï¿½ksytty tulos
+//    1 : keskeyttï¿½neet
+//    2 : hylï¿½tyt
+//    3 : ei-lï¿½hteneet
 //    4 : muut eli avoimet
-//  Poissa olevia ei sisällytetä taulukkoon.
+//  Poissa olevia ei sisï¿½llytetï¿½ taulukkoon.
 //  Osuuden tulosten osalta vastaava tulos on tapauksessa
 //    0 : tulos kertaa AIKAJAK
 //    1, 2, 3 : aikaisempiin osuuksiin perustuva luku. Viimeisin hyv. vaihe ja sen tulos
 //    4 : Viimeisin hyv. vaihe ja sen tulos
 //
-//  Väliajoille jonot
+//  Vï¿½liajoille jonot
 //    5 .. kilpparam.valuku+4
-//  vastava järjestystulos on tulos. Ilman väliaikaa olevia ei indeksoida.
+//  vastava jï¿½rjestystulos on tulos. Ilman vï¿½liaikaa olevia ei indeksoida.
 //
 //  Osuustuloksille on varattu jono:
 //
@@ -769,7 +771,7 @@ void addjarjarr(kilptietue *kilp, int d, int osuus, INT piste, int *keskeyta)
 		if (tllj >= 0) {
 			p = jalku[srj][osuus][tllj];
 			sj = intsija(tl,&p,osuus, piste,yhd,keskeyta);
-				// p osoittaa alkuun tai uutta kilpailijaa paremmuudessa edeltävään
+				// p osoittaa alkuun tai uutta kilpailijaa paremmuudessa edeltï¿½vï¿½ï¿½n
 			if (d < 0 || d > maxrec || p < -1 || (p == -1 && sj > 1) || p > maxrec)
 				{
 				if (keskeyta)
@@ -780,28 +782,28 @@ void addjarjarr(kilptietue *kilp, int d, int osuus, INT piste, int *keskeyta)
 				kilp->settSija(osuus, piste, sj);
 			else
 				kilp->settSija(osuus, piste, 0);
-			if (sj == 1) {   // Jos tulos menee kärkeen, uudelle kilpailijalle tallentuu aiempi alkulinkki
+			if (sj == 1) {   // Jos tulos menee kï¿½rkeen, uudelle kilpailijalle tallentuu aiempi alkulinkki
 				SetJarjSeur(yhd, osuus, piste, d, p);
-						 // Jos tulos menee kärkeen, vaihtuu jalku osoittamaan uuteen kilpailijaan
+						 // Jos tulos menee kï¿½rkeen, vaihtuu jalku osoittamaan uuteen kilpailijaan
 				jalku[srj][osuus][tllj] = d;
-						 //  Kärkitulos tallennetaan hyväksytyn tuloksen saaneille
+						 //  Kï¿½rkitulos tallennetaan hyvï¿½ksytyn tuloksen saaneille
 				if (piste > 0 || tllj == 0) {
 					pkarki[srj][osuus][piste] = kilp->tTulos(osuus, piste);
 					}
 				}
-			else  {  // Jos tulos ei mene kärkeen, vaihdetaan edellisen jatkolinkki uudelle
+			else  {  // Jos tulos ei mene kï¿½rkeen, vaihdetaan edellisen jatkolinkki uudelle
 				SetJarjSeur(yhd, osuus, piste, d, JarjSeur(yhd, osuus, piste, p));
 					 // ja edellisellelinkki uuteen
 				SetJarjSeur(yhd, osuus, piste, p, d);
 				}
-				// tauluun jarjtulos tallennetaan järjestystulos.
+				// tauluun jarjtulos tallennetaan jï¿½rjestystulos.
 			SetJarjTulos(yhd, osuus, piste, d, tl);
 			}
 		if (yhd == 0 && tllj == (piste == 0 ? 0 : piste+4) && ntulosix[kilp->sarja][osuus][piste] >= sj && !lataus)
 			merk_sijat(kilp->sarja,osuus,piste,sj);
 		tlsmuutos[srj][osuus][piste] = 1;
-		if (ToimintaTila == 2 && piste == 0) {    //  Vaihdon ja maalin osuustulosten järjestys
-				// Vain hyväksytyt tulokset kirjataan
+		if (ToimintaTila == 2 && piste == 0) {    //  Vaihdon ja maalin osuustulosten jï¿½rjestys
+				// Vain hyvï¿½ksytyt tulokset kirjataan
 			for (int aos = Sarjat[srj].aosuus[osuus] + 1; aos <= Sarjat[srj].aosuus[osuus+1]; aos++) {
 				sj = 0;
 				if ((tl = jtulos(kilp, aos, kilpparam.valuku+1)) < kilpparam.jtulosaskel) {
@@ -810,20 +812,20 @@ void addjarjarr(kilptietue *kilp, int d, int osuus, INT piste, int *keskeyta)
 					ntulos[kilp->sarja][osuus][kilpparam.valuku+1]++;
 					p = JosAlku(srj, osuus, &osseur);
 					sj = intossija(tl, &p, srj, &osseur, yhd, keskeyta);
-					// p osoittaa alkuun tai uutta kilpailijaa paremmuudessa edeltävään
+					// p osoittaa alkuun tai uutta kilpailijaa paremmuudessa edeltï¿½vï¿½ï¿½n
 					if (d < 0 || d > maxrec || p < -1 || (p == -1 && sj > 1) ||
 						p > kilpparam.maxnosuus*maxrec) {
 						if (keskeyta)
 							*keskeyta = *keskeyta | 8;
 						return;
 						}
-					if (sj == 1) {   // Jos tulos menee kärkeen, uudelle kilpailijalle tallentuu aiempi alkulinkki
+					if (sj == 1) {   // Jos tulos menee kï¿½rkeen, uudelle kilpailijalle tallentuu aiempi alkulinkki
 						SetOsJarjSeur(yhd, srj, aos, d, osseur, p);
-							 // Jos tulos menee kärkeen, vaihtuu jalku osoittamaan uuteen kilpailijaan
+							 // Jos tulos menee kï¿½rkeen, vaihtuu jalku osoittamaan uuteen kilpailijaan
 						setJosAlku(srj, aos, d);
 						pkarki[srj][osuus][kilpparam.valuku+1] = kilp->osTulos(aos, 0, true);
 						}
-					else  {  // Jos tulos ei mene kärkeen, vaihdetaan edellisen jatkolinkki uudelle
+					else  {  // Jos tulos ei mene kï¿½rkeen, vaihdetaan edellisen jatkolinkki uudelle
 						int eos = osseur;
 						int p1 = OsJarjSeur(yhd, srj, &eos, p);
 						SetOsJarjSeur(yhd, srj, aos, d, eos, p1);
@@ -964,7 +966,7 @@ void remjarjarr(kilptietue *kilp, int d, int osuus, INT piste, int *keskeyta)
 					ntulos[kilp->sarja][osuus][kilpparam.valuku+1]--;
 					p = JosAlku(srj, osuus, &eos);
 					sj = entossija(d, &p, srj, aos, &eos, yhd, keskeyta);
-					// p osoittaa alkuun tai uutta kilpailijaa paremmuudessa edeltävään
+					// p osoittaa alkuun tai uutta kilpailijaa paremmuudessa edeltï¿½vï¿½ï¿½n
 					if (d < 0 || d > maxrec || p < -1 || (p == -1 && sj > 1) ||
 						p > maxrec) {
 						if (keskeyta)
@@ -973,7 +975,7 @@ void remjarjarr(kilptietue *kilp, int d, int osuus, INT piste, int *keskeyta)
 						}
 					eos1 = aos;
 					p1 = OsJarjSeur(yhd, srj, &eos1, d);
-					if (sj == 1) {   // Jos tulos menee kärkeen, uudelle kilpailijalle tallentuu aiempi alkulinkki
+					if (sj == 1) {   // Jos tulos menee kï¿½rkeen, uudelle kilpailijalle tallentuu aiempi alkulinkki
 	//					kilptietue tkilp;
 						setJosAlku(srj, eos1, p1);
 						if (p1 > 0) {
@@ -1034,7 +1036,7 @@ int teejarj(void)
    kilptietue vkilp,kilp;
    char ch, st[80], prs[100];
    char *ip;
-   char ppnimi[] = "Odjj`Ohqhkƒ";
+   char ppnimi[] = "Odjj`Ohqhkï¿½";
    INT32 bdg;
    int ok = 1;
 
@@ -1079,7 +1081,7 @@ int teejarj(void)
 			free(bdg_kno[0]);
 			bdg_kno[0] = NULL;
 			}
-		 writeerror("Muisti ei riitä leimantarkastukselle", 0);
+		 writeerror("Muisti ei riitï¿½ leimantarkastukselle", 0);
 		 emitfl = 0;
 		 }
 	  }

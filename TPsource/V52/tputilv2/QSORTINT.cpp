@@ -19,6 +19,8 @@
 #include <tptype.h>
 #define MAXLEVEL 1000
 
+// Lajittelee taulukon base (nelem alkiota, leveys width) quicksort-algoritmilla kentän pos mukaan.
+// fl32 ohjaa vertailutyypin: 0=INT16, 1=INT32, 2=UINT16, 3=UINT32.
 void qsortint(void *base, INT nelem, INT width, INT pos, INT fl32)
    {
    char *i1, *i2, *ir;

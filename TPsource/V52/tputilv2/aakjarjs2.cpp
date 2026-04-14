@@ -19,6 +19,8 @@
 #include "tputil.h"
 
 
+// Muuntaa OEM-merkkijonon nimen hakemistoj√§rjestysmerkkijonoksi (vaihtoehtoinen versio ilman W‚ÜíV-muunnosta).
+// knimi: kilpailijan nimi OEM-koodauksessa; poistaa aateliprefiksit ja muuntaa √§/√∂/√• vertailukelpoisiksi.
 char *aakjarjstr2(char *knimi)
    {
    char *p,*pmax,ch1,ch2;
@@ -48,24 +50,19 @@ char *aakjarjstr2(char *knimi)
 			   case 233 :
 			   case 234 :
 			   case 235 :
-               case 'Ç' :
-               case 'ê' : *p = 'E'; break;
+               *p = 'E'; break;
 			   case 220 :
 			   case 252 :
-               case 'Å' :
-               case 'ö' : *p = 'Y'; break;
+               *p = 'Y'; break;
 			   case 197 :
 			   case 229 :
-               case 'Ü' :
-               case 'è' : *p = 91; break;
+               *p = 91; break;
 			   case 196 :
 			   case 228 :
-               case 'Ñ' :
-               case 'é' : *p = 92; break;
+               *p = 92; break;
 			   case 214 :
 			   case 246 :
-               case 'î' :
-               case 'ô' : *p = 93; break;
+               *p = 93; break;
                default  : *p = 93;
                }
             }

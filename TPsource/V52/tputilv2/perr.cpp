@@ -23,6 +23,8 @@ extern void lopetus(void);
 /* maximum size of the buffer to be returned from FormatMessage */
 #define MAX_MSG_BUF_SIZE 512
 
+// Näyttää Windows API -virheen tiedot ja kysyy käyttäjältä jatketaanko.
+// szFileName: virheellinen tiedosto, line: rivinumero, szApiName: API-funktion nimi, dwError: virhekoodi.
 void perr(char *szFileName, int line, char *szApiName, unsigned long dwError)
 {
   char szTemp[1024];
@@ -57,6 +59,8 @@ void perr(char *szFileName, int line, char *szApiName, unsigned long dwError)
   return;
 }
 
+// Leveämerkkiversio perr-funktiosta: näyttää Windows API -virheen ja kysyy jatketaanko.
+// szFileName: tiedoston nimi (wchar_t), szApiName: API:n nimi (wchar_t), dwError: virhekoodi.
 void wperr(LPWSTR szFileName, int line, LPWSTR szApiName, DWORD dwError)
 {
   wchar_t szTemp[1024];

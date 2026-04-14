@@ -27,6 +27,8 @@
 extern char sgle[], dble[];
 extern int iobufr, nchdble, nchsgle;
 
+// Kirjoittaa merkkijonon s tulostusbufferiin buf annettuun sijaintiin (x, y) leveydellä w.
+// rf: tasaus oikeaan (1=oikea), df: täyttö char 240:llä ennen tekstiä.
 void putstr(char* buf, char *s, int x, int y, int w, int rf, int df)
    {
    int  l;
@@ -45,6 +47,8 @@ void putstr(char* buf, char *s, int x, int y, int w, int rf, int df)
    memcpy(to, s, l);
    }
 
+// Leveämerkkiversio putstr:sta: kirjoittaa wchar_t-merkkijonon leveään tulostusbufferiin.
+// rf: oikeatasaus, df: täyttö char 240:llä ennen tekstiä.
 void putwstr(wchar_t* buf, wchar_t *s, int x, int y, int w, int rf, int df)
 	{
 	int  l;
@@ -63,6 +67,8 @@ void putwstr(wchar_t* buf, wchar_t *s, int x, int y, int w, int rf, int df)
 	memcpy(to, s, 2*l);
 	}
 
+// Kirjoittaa kokonaisluvun i merkkijonona tulostusbufferiin buf sijaintiin (x, y).
+// rd: oikeatasaus, df: täyttömerkki ennen numeroa.
 void putint(char *buf, int i, int x, int y, int w, int rd, int df)
 	{
 	char  s[10];
@@ -71,6 +77,8 @@ void putint(char *buf, int i, int x, int y, int w, int rd, int df)
 	putstr(buf, s,x,y,w,rd,df);
 	}
 
+// Leveämerkkiversio putint:sta: kirjoittaa kokonaisluvun leveään tulostusbufferiin.
+// rd: oikeatasaus, df: täyttömerkki.
 void putintw(wchar_t *buf, int i, int x, int y, int w, int rd, int df)
 	{
 	wchar_t  s[20];
@@ -79,6 +87,8 @@ void putintw(wchar_t *buf, int i, int x, int y, int w, int rd, int df)
 	putwstr(buf, s,x,y,w,rd,df);
 	}
 
+// Lähettää tulostusbufferin rivit kirjoittimelle prtf; käsittelee double/single -merkit.
+// buf: tulostuspuskuri, nrivi: rivien lukumäärä; palauttaa 0 onnistuessa, 1 virheessä.
 int printbuf(PRFILE *prtf, char *buf, int nrivi)
 	{
 	int  i, nd;
@@ -116,6 +126,8 @@ int printbuf(PRFILE *prtf, char *buf, int nrivi)
 	return(0);
 	}
 
+// Leveämerkkiversio printbuf:sta: lähettää leveän tulostusbufferin rivit kirjoittimelle.
+// buf: leveä tulostuspuskuri, nrivi: rivien lukumäärä; palauttaa 0 onnistuessa, 1 virheessä.
 int printwbuf(PRFILE *prtf, wchar_t *buf, int nrivi)
 	{
 	int  i;

@@ -18,6 +18,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Lukee kuluvan vuoden päivän järjestysnumeron (1–366) järjestelmäajasta.
+// Palauttaa vuodenpäivän järjestysnumeron.
 unsigned lue_v_pv(void)
 {
 	time_t ltime;
@@ -28,6 +30,8 @@ unsigned lue_v_pv(void)
 	return(localtm->tm_yday+1);
 }
 
+// Asettaa järjestelmäpäivämäärän annettuun vuodenpäivään kutsumalla DATE-komentoa tarvittaessa.
+// Parametri: v_pv=haluttu vuodenpäivä (1–366).
 void as_v_pv(unsigned v_pv)
 {
 	time_t ltime;

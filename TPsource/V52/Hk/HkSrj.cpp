@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Sarjatietojen laskenta ja alustus: v√§liaikaluku, l√§ht√∂ajat ja sijoitusj√§rjestyksen perustiedot.
+
 #include <stdio.h>
 #include <stdlib.h>
 #ifndef __linux__
@@ -155,7 +157,7 @@ int luesarjat(void)
 			wcscpy(kilpparam.kilpkoodi, L"KOODI");
 			}
 		if (kilpparam.n_pv > N_PV || kilpparam.valuku > VALUKU) {
-			writeerror_w(L"Ohjelmaversio ei tue sarjatiedon mukaista p‰ivien tai v‰liaikojan m‰‰r‰‰", 0);
+			writeerror_w(L"Ohjelmaversio ei tue sarjatiedon mukaista pÔøΩivien tai vÔøΩliaikojan mÔøΩÔøΩrÔøΩÔøΩ", 0);
 			return(0);
 			}
 		switch (kilpparam.tarkkuus) {
@@ -491,10 +493,10 @@ int luesarjat(void)
 		clrln(18);
 		swprintf(prs,L"Tiedosto %s viallinen", sarjafname);
 		vidspwmsg(15,0,7,0,prs);
-		swprintf(prs,L"Virhe rivill‰ %d tai ennen sit‰", er);
+		swprintf(prs,L"Virhe rivillÔøΩ %d tai ennen sitÔøΩ", er);
 		vidspwmsg(16,0,7,0,prs);
 		vidspwmsg(17,0,7,0,
-			L"Poista tai korjaa tiedosto ennen uutta k‰ynnistyst‰");
+			L"Poista tai korjaa tiedosto ennen uutta kÔøΩynnistystÔøΩ");
 		writeerror_w(L"",0);
 		}
 	delete sarjaf;
@@ -519,7 +521,7 @@ void luesarjayhdistelmat(void)
 		p = wcstok(buf, L" \t\n");
 		if (p) {
 			if (n >= MAXYHD) {
-				swprintf(buf, L"Liikaa sarjayhdistelmi‰. Maksimim‰‰r‰ on %d.", MAXYHD);
+				swprintf(buf, L"Liikaa sarjayhdistelmiÔøΩ. MaksimimÔøΩÔøΩrÔøΩ on %d.", MAXYHD);
 				writeerror_w(buf, 0);
 				}
 //			wcsncpy(yhdnimet[n], p, LSARJA);
@@ -578,7 +580,7 @@ void luesarjayhdistelmat(void)
 		}
 	nsarjayhd = n;
 	if (n > 0) {
-		swprintf(buf, L"Tiedostosta %s luettu %d sarjayhdistelm‰‰", yhdfilename, n);
+		swprintf(buf, L"Tiedostosta %s luettu %d sarjayhdistelmÔøΩÔøΩ", yhdfilename, n);
 		vidspwmsg(1,5,7,0,buf);
 		}
 	delete yhdfile;

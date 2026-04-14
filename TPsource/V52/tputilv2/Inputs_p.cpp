@@ -21,6 +21,9 @@
 #include <bvideo.h>
 #include <tputil.h>
 
+// Näyttää kehotemerkkijonon ja lukee tekstisyötteen näppäimistöltä.
+// prompt: kehoteteksti, ss: syöttöpuskuri (in/out), l: kentän leveys, x/y: koordinaatit, term: lopetusmerkit, tc: lopetusmerkki (out), numfl: numeromodi.
+// Palauttaa osoittimen syöttöpuskuriin ss.
 char *inputstr_pr(char *prompt, char *ss, int l, int x, int y,
    const char *term, char *tc, int numfl)
    {
@@ -32,6 +35,9 @@ char *inputstr_pr(char *prompt, char *ss, int l, int x, int y,
    return(inputstr(ss, l, x, y, term, tc, numfl));
 	}
 
+// Unicode-versio inputstr_pr:sta; näyttää wide-kehotemerkkijonon ja lukee wide-merkkisyötteen.
+// wprompt: wide-kehoteteksti, wss: wide-syöttöpuskuri (in/out), wterm: wide-lopetusmerkit, wtc: lopetusmerkki wide-muodossa (out).
+// Palauttaa osoittimen wide-syöttöpuskuriin wss.
 wchar_t *inputwstr_pr(wchar_t *wprompt, wchar_t *wss, int l, int x, int y,
 	const wchar_t *wterm, wchar_t *wtc, int numfl)
 	{

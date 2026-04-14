@@ -25,6 +25,7 @@ extern INT32 maaliajat[10];
 extern int ok;
 int ainauusirec = 0;
 
+// Pakkaa n kokonaislukua buf-puskurissa 32-bitistä 16-bittiseen muotoon levykirjoitusta varten.
 void tacompress(void *buf, int n)
 {
 	int i;
@@ -37,6 +38,7 @@ void tacompress(void *buf, int n)
 	for (i = 0; i < n; i++, pshort++) *pshort = 0;
 }
 
+// Laajentaa n tiivistettyä 16-bittistä arvoa buf-puskurista takaisin 32-bittisiksi; 0xffff → 0xffffffff.
 void taexpand(void *buf, int n)
 {
 	int i;
@@ -51,6 +53,7 @@ void taexpand(void *buf, int n)
 	}
 }
 
+// Lukee tietueen r tiedostosta dataf puskuriin buffer; palauttaa 0 ok, -1 virhe.
 int getrec(datafile *dataf, DATAREF r, void *buffer)
 {
 DWORD ls, lrecl;
@@ -69,6 +72,7 @@ DWORD ls, lrecl;
   return(0);
 }
 
+// Kirjoittaa puskurin buffer tiedostoon dataf tietueelle r; palauttaa 0 ok, -1 virhe.
 int putrec(datafile *dataf, DATAREF r, void *buffer)
 {
 DWORD ls, lrecl;
@@ -87,6 +91,7 @@ DWORD ls, lrecl;
   return(0);
 }
 
+// Luo uuden tietokantatiedoston fname tietuepituudella reclen ja alustaa dataf-rakenteen.
 void makefile(datafile *dataf, char *fname, unsigned reclen)
 {
 
@@ -114,6 +119,7 @@ void makefile(datafile *dataf, char *fname, unsigned reclen)
 	}
 }
 
+// Avaa olemassa olevan tietokantatiedoston fname ja täyttää dataf-rakenteen; tarkistaa otsikon eheyden.
 void openfile(datafile *dataf, char *fname, unsigned reclen)
    {
    unsigned flen;
@@ -153,6 +159,7 @@ void openfile(datafile *dataf, char *fname, unsigned reclen)
     }
 }
 
+// Sulkee tietokantatiedoston dataf: kirjoittaa otsikkotietueen ja sulkee Windows-tiedostokahvan.
 void closefile(datafile *dataf)
 {
   if (dataf->recl < 8) return;
@@ -164,6 +171,7 @@ void closefile(datafile *dataf)
   CloseHandle(dataf->hDatf);
 }
 
+// Varaa uuden tietuepaikan tiedostosta dataf (vapaa lista tai tiedoston loppu); kirjoittaa indeksin *r:ään.
 void newrec(datafile *dataf, DATAREF *r)
 {
   if (ainauusirec || dataf->firstfree == 0xffffffff)
@@ -181,12 +189,14 @@ void newrec(datafile *dataf, DATAREF *r)
   }
 }
 
+// Lisää uuden tietueen buffer tiedostoon dataf; kirjoittaa varatun indeksin *r:ään.
 void addrec(datafile *dataf, DATAREF *r, void *buffer)
 {
   newrec(dataf,r);
   putrec(dataf,*r,buffer);
 }
 
+// Merkitsee tietueen r poistetuksi lisäämällä sen vapaaseen listaan tiedostossa dataf.
 void deleterec(datafile *dataf, DATAREF r)
 {
   tarecbuf.ii.i = dataf->firstfree;
@@ -197,11 +207,13 @@ void deleterec(datafile *dataf, DATAREF r)
   dataf->numberfree++;
 }
 
+// Palauttaa tiedoston dataf tietueiden kokonaismäärän (ml. otsikko- ja poistetut).
 DATAREF  filelen(datafile *dataf)
 {
   return(dataf->numrec);
 }
 
+// Palauttaa aktiivisten tietueiden lukumäärän tiedostossa dataf.
 DATAREF usedrecs(datafile *dataf)
 {
   return(dataf->numrec - dataf->numberfree - 1);
@@ -229,6 +241,7 @@ void pgdump(indexfile *idxf)
 }
 */
 
+// Alustaa sivuvälimuistin (tapagestk) ja sivukartan (tapgmap) B-puu-indeksejä varten.
 void initindex(void)
 {
 int  i ;
@@ -241,6 +254,7 @@ int  i ;
   }
 }
 
+// Pakkaa sivun page kentät tiiviiseen muotoon (avainpituus keyl) levykirjoitusta varten.
 static void tapack(tapage *page, unsigned keyl)
 {
 int  i ;
@@ -253,6 +267,7 @@ char *p;
       }
 }
 
+// Purkaa tiivistetyn sivun page muistimuotoon (avainpituus keyl) levyltä lukemisen jälkeen.
 static void taunpack(tapage *page, unsigned keyl)
 {
 int  i ;
@@ -265,6 +280,7 @@ char *p;
       }
 }
 
+// Luo uuden tiedostopohjaisen B-puu-indeksin idxf tiedostoon fname; keylen on avainpituus, s != 0 sallii duplikaatit.
 void makeindex(indexfile *idxf, char *fname, unsigned keylen, int s)
 {
 unsigned  k ;
@@ -277,6 +293,7 @@ unsigned  k ;
   idxf->pp = 0;
 }
 
+// Avaa olemassa olevan tiedostopohjaisen B-puu-indeksin idxf tiedostosta fname.
 void openindex(indexfile *idxf, char *fname, unsigned keylen, int s)
 {
 unsigned  k ;
@@ -289,6 +306,7 @@ unsigned  k ;
   idxf->pp = 0;
 }
 
+// Sulkee B-puu-indeksin idxf: kirjoittaa muokatut välimuistisivut levylle ja sulkee tiedoston.
 void closeindex(indexfile *idxf)
 {
 int  i ;
@@ -308,6 +326,7 @@ int  i ;
   closefile(&(idxf->dataf));
 }
 
+// Siirtää sivuvälimuistipaikan i tapgmap-listan loppuun (LRU-järjestys: i on viimeksi käytetty).
 static void talast(int i)
 {
 int  j,k ;
@@ -320,6 +339,7 @@ int  j,k ;
   tapgmap[PAGESTACKSIZE-1] = i;
 }
 
+// Hakee B-puu-sivun r indeksistä idxf välimuistista tai lukee levyltä; asettaa *pgptr osoittamaan sivuun.
 static void tagetpage(indexfile *idxf, DATAREF r, tapageptr *pgptr)
 {
 int  i     ;
@@ -352,6 +372,7 @@ int  found ;
   *pgptr = (tapageptr) &(tapagestk[i-1]);
 }
 
+// Varaa uuden B-puu-sivun indeksiin idxf välimuistista; kirjoittaa indeksin *r:ään ja osoittimen *pgptr:ään.
 static void tanewpage(indexfile *idxf, DATAREF *r, tapageptr *pgptr)
 {
 int  i ;
@@ -373,6 +394,7 @@ int  i ;
   *pgptr = (tapageptr) &(tapagestk[i]);
 }
 
+// Merkitsee välimuistisivun pgptr muokatuksi (updated = TRUE), jotta se kirjoitetaan levylle sulkiessa.
 static void taupdatepage(tapageptr pgptr)
 {
 tastackrecptr p;
@@ -381,6 +403,7 @@ tastackrecptr p;
   p->updated = TRUE;
 }
 
+// Vapauttaa välimuistisivun pgptr: merkitsee sen käyttämättömäksi ja poistaa tietueen tiedostosta.
 static void tareturnpage(tapageptr pgptr)
 {
 tastackrecptr p;
@@ -391,6 +414,7 @@ tastackrecptr p;
     p->updated = FALSE;
 }
 
+// Vertaa avaimia k1 ja k2 (pituus klen): palauttaa neg/0/pos; duplikaateilla käyttää tietueviitteitä dr1/dr2.
 static int tacompkeys(char *k1, char *k2, unsigned dr1, unsigned dr2,
    int dup, int klen)
 {
@@ -410,11 +434,13 @@ static int tacompkeys(char *k1, char *k2, unsigned dr1, unsigned dr2,
     else return(- 1);
 }
 
+// Nollaa indeksin idxf nykyisen hakuposition (asettaa pp = 0).
 void clearkey(indexfile *idxf)
 {
   idxf->pp = 0;
 }
 
+// Siirtää indeksin idxf positiota eteenpäin ja palauttaa seuraavan avain pkey:hin ja tietueviitteen *procdatref:iin.
 void nextkey(indexfile *idxf, DATAREF *procdatref, char *pkey)
 {
 DATAREF  r;
@@ -461,6 +487,7 @@ tapageptr pagptr;
   }
 }
 
+// Siirtää indeksin idxf positiota taaksepäin ja palauttaa edellisen avain pkey:hin ja tietueviitteen *procdatref:iin.
 void prevkey(indexfile *idxf, DATAREF *procdatref, char *pkey)
 {
 DATAREF  r;
@@ -507,6 +534,8 @@ tapageptr pagptr;
   }
 }
 
+// Hakee avain pkey B-puusta idxf binäärihaulla; tallentaa polun path-taulukkoon.
+// Asettaa ok = TRUE ja *procdatref löydetylle tietueviitteelle onnistuessaan.
 static void tafindkey(indexfile *idxf, DATAREF *procdatref, char *pkey)
 {
 int  c,k,l,r;
@@ -556,6 +585,8 @@ tapageptr pagptr;
   }
 }
 
+// Etsii tarkan avaimen pkey indeksistä idxf; duplikaattiavaimilla tarkistaa myös seuraavan.
+// Asettaa *procdatref löydetylle tietueviitteelle; ok = TRUE onnistuessaan.
 void findkey(indexfile *idxf, DATAREF *procdatref, char *pkey)
 {
 char tempkey[MAXKEYLEN];
@@ -569,6 +600,8 @@ char tempkey[MAXKEYLEN];
    }
 }
 
+// Hakee ensimmäisen avaimen >= pkey indeksistä idxf (osittainen/range-haku).
+// Asettaa *procdatref ja ok = TRUE onnistuessaan.
 void searchkey(indexfile *idxf, DATAREF *procdatref, char *pkey)
 {
 
@@ -576,6 +609,8 @@ void searchkey(indexfile *idxf, DATAREF *procdatref, char *pkey)
    if(!ok) nextkey(idxf,procdatref,pkey);
 }
 
+// Lisää procitem1-alkion B-puu-sivulle prpgref1 kohtaan r; jakaa sivun tarvittaessa kahtia.
+// Asettaa passup = TRUE jos jako nostaa alkion procitem1:een ylöspäin.
 static void insert(indexfile *idxf, DATAREF prpgref1, int r)
 {
 int i;
@@ -632,6 +667,8 @@ DATAREF prpgref2;
   taupdatepage(pageptr1);
 }
 
+// Hakee rekursiivisesti B-puusta lisäyspaikan avaimelle pkey (tietueviite procdatref) sivulta prpgref1.
+// Kutsuu insert() löydettyään paikan; asettaa passup = TRUE jos sivujako tarvitaan.
 static void search(indexfile *idxf, DATAREF procdatref, char *pkey,
    DATAREF prpgref1)
 {
@@ -680,6 +717,8 @@ static void search(indexfile *idxf, DATAREF procdatref, char *pkey,
   }
 }
 
+// Lisää avain pkey (tietueviite procdatref) indeksiin idxf B-puu-algoritmilla.
+// Luo tarvittaessa uuden juurisivun; asettaa ok = TRUE onnistuessaan.
 void addkey(indexfile *idxf, DATAREF procdatref, char *pkey)
 {
 DATAREF prpgref1;
@@ -698,6 +737,8 @@ DATAREF prpgref1;
     idxf->pp = 0;
 }
 
+// Korjaa B-puusivun alitäyttö prpgref2 yhdistämällä tai lainaamalla naapurisivulta prpgref, alkio r.
+// Asettaa *pagetoosmall = FALSE jos korjaus riitti, muuten TRUE.
 static void underflow(indexfile *idxf, DATAREF prpgref,
    DATAREF prpgref2, int r, int *pagetoosmall)
 {
@@ -793,6 +834,8 @@ tapageptr pagptr, pageptr2,l;
   taupdatepage(pagptr);
 }
 
+// Hakee rekursiivisesti lehtisolmun oikeanpuoleisimman alkion prpgref2:sta ja nostaa sen sivulle prpgref kohtaan k.
+// Kutsuu underflow() jos sivu jää liian pieneksi.
 static void dela(indexfile *idxf, DATAREF prpgref, DATAREF prpgref2,
    int *pagetoosmall, int k)
 {
@@ -825,6 +868,8 @@ tapageptr  pageptr2, pagptr;
   }
 }
 
+// Hakee rekursiivisesti avain pkey B-puusta sivulta prpgref ja poistaa sen.
+// Kutsuu dela() sisäsolmuille ja underflow() alitäytön korjaamiseen; asettaa *pagetoosmall.
 static void delb(indexfile *idxf, DATAREF *procdatref, DATAREF prpgref,
                               int *pagetoosmall, char *pkey)
 {
@@ -885,6 +930,8 @@ tapageptr pagptr;
   }
 }
 
+// Poistaa avain pkey (tietueviite procdatref) indeksistä idxf B-puu-algoritmilla.
+// Lyhentää juurta tarvittaessa; asettaa ok = TRUE onnistuessaan.
 void deletekey(indexfile *idxf, DATAREF procdatref, char *pkey)
 {
 int  pagetoosmall ;

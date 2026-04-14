@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Viestikilpailun konsoliohjelman kÃ¤ynnistys, pÃ¤Ã¤valikko ja yhteyksien hallinta.
+
 #include <stdio.h>
 #include <bvideo.h>
 #include "VDeclare.h"
@@ -32,7 +34,7 @@ void valikko(void)
    do {
       clrscr();
 	  status_on = 1;
-      header=L"PÄÄVALIKKO";
+      header=L"Pï¿½ï¿½VALIKKO";
       kehys(1);
       prscr(&paavalikko);
       listfl = TRUE;
@@ -101,6 +103,8 @@ int wmain(int argc, wchar_t *argv[])
 
 //   initcon(ansitowcs(wst, argv[0], 79));
    initcon(argv[0]);
+   SetConsoleOutputCP(850);
+   SetConsoleCP(850);
    SetConsoleCtrlHandler((PHANDLER_ROUTINE)ExitHandler, TRUE);
    GetCurrentDirectoryW(sizeof(WorkingDir) / 2, WorkingDir);
    if (aloitus(argc, argv, 0))

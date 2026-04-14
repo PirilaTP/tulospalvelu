@@ -19,6 +19,9 @@
 
 void wperr(LPWSTR szFileName, int line, LPWSTR szApiName, DWORD dwError);
 
+// Raportoi tiedosto-I/O-virheen kutsumalla perr-funktiota.
+// Parametrit: fname=tiedostonimi, oper=operaatiokoodi, iores=virhekoodi.
+// Palauttaa aina 0.
 int ioerr(char *fname, int oper, long iores)
 {
 	perr((char *)fname, iores, "ioerr", oper);
@@ -26,6 +29,9 @@ int ioerr(char *fname, int oper, long iores)
    return(0);
 }
 
+// Raportoi tiedosto-I/O-virheen laajamerkki-tiedostonimellä kutsumalla wperr-funktiota.
+// Parametrit: fname=tiedostonimi laajamerkkinä, oper=operaatiokoodi, iores=virhekoodi.
+// Palauttaa aina 0.
 int iowerr(wchar_t *fname, int oper, long iores)
 {
 	wperr(fname, iores, L"iowerr", oper);

@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Muodostaa XML-elementtimerkkijonon ANSI-puskuriin käyttäen XML-entiteettejä.
 
 #if defined(__BORLANDC__)
 #pragma -K -a1
@@ -22,6 +23,8 @@
 #include <string.h>
 #include <tputil.h>
 
+// Muodostaa XML-merkkijono-elementtimerkkijonon vastr:iin; muuntaa OEM→ANSI ja &/</>-merkit entiteeteiksi.
+// vastr: kohde ANSI-puskuri, tag: elementin nimi, value: tekstiarvo.
 void set_xml_s(char *vastr, char *tag, char *value)
    {
 	char *p1, *p2, ch[2] = " ";
@@ -51,21 +54,29 @@ void set_xml_s(char *vastr, char *tag, char *value)
    sprintf(p2, "</%s>\n", tag);
    }
 
+// Muodostaa XML-kokonaislukuelementtimerkkijonon vastr:iin muodossa <tag>value</tag>.
+// vastr: kohde ANSI-puskuri, tag: elementin nimi, value: INT32-arvo.
 void set_xml_d(char *vastr, char *tag, INT32 value)
    {
    sprintf(vastr, "<%s>%ld</%s>\n", tag, value, tag);
    }
 
+// Muodostaa XML-avaustunnisteen <tag> ANSI-merkkijonoksi vastr:iin.
+// vastr: kohde, tag: elementin nimi.
 void set_tag(char *vastr, char *tag)
    {
    sprintf(vastr, "<%s>\n", tag);
    }
 
+// Muodostaa XML-lopetustunnisteen </tag> ANSI-merkkijonoksi vastr:iin.
+// vastr: kohde, tag: elementin nimi.
 void set_antitag(char *vastr, char *tag)
    {
    sprintf(vastr, "</%s>\n", tag);
 	}
 
+// Muodostaa XML-merkkijono-elementtimerkkijonon vastr:iin wide-muodossa; muuntaa &/</>-merkit entiteeteiksi.
+// vastr: kohde wide-puskuri, tag: elementin nimi, value: wide-tekstiarvo.
 void set_wxml_s(wchar_t *vastr, wchar_t *tag, wchar_t *value)
 	{
 	wchar_t *p1, *p2, ch[2] = L" ";
@@ -94,16 +105,22 @@ void set_wxml_s(wchar_t *vastr, wchar_t *tag, wchar_t *value)
 	swprintf(p2, L"</%s>\n", tag);
 	}
 
+// Muodostaa XML-kokonaislukuelementtimerkkijonon vastr:iin wide-muodossa muodossa <tag>value</tag>.
+// vastr: kohde wide-puskuri, tag: elementin nimi, value: INT32-arvo.
 void set_wxml_d(wchar_t *vastr, wchar_t *tag, INT32 value)
 	{
 	swprintf(vastr, L"<%s>%ld</%s>\n", tag, value, tag);
 	}
 
+// Muodostaa XML-avaustunnisteen <tag> wide-merkkijonoksi vastr:iin.
+// vastr: kohde, tag: elementin nimi.
 void set_wtag(wchar_t *vastr, wchar_t *tag)
 	{
 	swprintf(vastr, L"<%s>\n", tag);
 	}
 
+// Muodostaa XML-lopetustunnisteen </tag> wide-merkkijonoksi vastr:iin.
+// vastr: kohde, tag: elementin nimi.
 void set_wantitag(wchar_t *vastr, wchar_t *tag)
 	{
 	swprintf(vastr, L"</%s>\n", tag);

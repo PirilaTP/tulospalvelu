@@ -23,6 +23,8 @@
 
 #define BLANK	' '
 
+// Tyhjentää näytöllä alueen (row, col) alkaen len merkin verran tallentamalla ja palauttamalla kursorin sijainnin.
+// Palauttaa aina 0.
 int scclrmsg(int row, int col, int len)
 {
     int c_row,c_col,high,low;

@@ -26,6 +26,8 @@
 
 extern int spoolfl;
 
+// Lukee kilpailunumeron (enintään 5 numeroa + tarkistusnumero) konsoliruudulta.
+// Parametrit: kno=tulos, x/y=ruutukoordinaatit, term=lopetusmerkit, tc=painettu lopetusavain.
 void inputkno(int *kno, int x, int y, char *term, char *tc)
 {
    char tarr[5];
@@ -133,6 +135,8 @@ void inputkno(int *kno, int x, int y, char *term, char *tc)
   *tc = ch;
 }
 
+// Laajamerkkiversio inputkno-funktiosta: lukee kilpailunumeron laajamerkki-lopetusmerkeillä.
+// Parametrit: kno=tulos, x/y=ruutukoordinaatit, wterm=lopetusmerkit, wtc=painettu lopetusavain.
 void inputknow(int *kno, int x, int y, wchar_t *wterm, wchar_t *wtc)
 {
 	char tc, term[40];

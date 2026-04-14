@@ -16,6 +16,8 @@
 
 #include <vcl.h>
 
+// Borland VCL -korvike WideCharToMultiByte:lle: muuntaa wide-merkkijonon UTF-8-merkkijonoksi.
+// lpWideCharStr: lähde, lpMultiByteStr/cbMultiByte: kohde ja kapasiteetti; palauttaa kohteen pituuden.
 int WideCharToMultiByte(UINT CodePage, DWORD dwFlags, LPCWSTR lpWideCharStr, int cchWideChar,
 	LPSTR lpMultiByteStr, int cbMultiByte, LPCSTR lpDefaultChar, LPBOOL lpUsedDefaultChar)
 {
@@ -26,6 +28,8 @@ int WideCharToMultiByte(UINT CodePage, DWORD dwFlags, LPCWSTR lpWideCharStr, int
 	return(strlen(lpMultiByteStr));
 }
 
+// Borland VCL -korvike MultiByteToWideChar:lle: muuntaa UTF-8-merkkijonon wide-merkkijonoksi.
+// lpMultiByteStr: UTF-8-lähde, lpWideCharStr/cchWideChar: kohde ja kapasiteetti merkkeinä.
 int MultiByteToWideChar(UINT CodePage, DWORD dwFlags, LPCSTR lpMultiByteStr, int cbMultiByte,
 	LPWSTR lpWideCharStr, int cchWideChar)
 {

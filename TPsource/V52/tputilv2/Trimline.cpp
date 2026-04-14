@@ -17,6 +17,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+// Poistaa merkkijonon lopusta rivinvaihdot (\n, \r) ja välilyönnit paikalla.
+// line: muokattava merkkijono; palauttaa osoittimen samaan jonoon.
 char *trimline(char *line)
 {
   char *p;
@@ -26,6 +28,8 @@ char *trimline(char *line)
   return(line);
 }
 
+// Laajamerkkiversio trimline:sta: poistaa leveän merkkijonon lopusta rivinvaihdot ja välilyönnit.
+// line: muokattava laajamerkki-jono; palauttaa osoittimen samaan jonoon.
 wchar_t *wtrimline(wchar_t *line)
 {
   wchar_t *p;

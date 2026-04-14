@@ -16,6 +16,8 @@
 
 #include <string.h>
 
+// Korvaa aikastrinnin alussa olevat turhat nollat välilyönneillä (tt.mm.ss-muoto).
+// aikastr: paikan päällä muokattava aikastring.
 void elimz(char *aikastr)
    {
    if (aikastr[0] == '0') {
@@ -37,6 +39,8 @@ void elimz(char *aikastr)
       }
 	}
 
+// Korvaa leveän aikastrinnin alussa olevat turhat nollat välilyönneillä (tt.mm.ss-muoto).
+// aikastr: paikan päällä muokattava leveä aikastring.
 void elimwz(wchar_t *aikastr)
 	{
 	if (aikastr[0] == L'0') {

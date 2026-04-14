@@ -17,6 +17,8 @@
 #include <memory.h>
 #include <string.h>
 
+// Poistaa johtavat "00:"-osat ja nollat aikamerkkijonon alusta.
+// st: muokattava aikamerkkijono muodossa "tt:mm:ss" tai vastaava.
 void poistanollat(char *st)
    {
    while(!memcmp(st, "00:", 3))
@@ -25,6 +27,8 @@ void poistanollat(char *st)
       memmove(st, st+1, strlen(st));
 	}
 
+// Leveämerkkiversio: poistaa johtavat "00:"-osat ja nollan aikamerkkijonon alusta.
+// st: muokattava leveä aikamerkkijono.
 void wpoistanollat(wchar_t *st)
 	{
 	while(!memcmp(st, L"00:", 6))

@@ -18,6 +18,8 @@
 #include <ctype.h>
 #include <tputil.h>
 
+// Käsittelee tiedoston BOM-merkin (Byte Order Mark) tekstitilassa; kirjoitustilassa kirjoittaa BOM ensin binääritilassa.
+// Lukutilassa ohittaa BOM:n; kirjoitustilassa kirjoittaa UTF-8 tai UTF-16 BOM tiedoston alkuun ennen tekstimodiavausta.
 void TextFl::BOM(void)
 {
 	if (ftell(File) != 0)
@@ -46,6 +48,8 @@ void TextFl::BOM(void)
 		}
 }
 
+// TextFl-luokan konstruktori (tekstitilaversio): avaa tiedoston FName annetulla Mode-avaustilalla ja merkistötyypillä TxtTp.
+// Tunnistaa merkistön BOM:n perusteella tai oletuksena ANSI; käyttää CRT:n tekstitilaa (fopen mode=rt/wt).
 TextFl::TextFl(wchar_t *FName, wchar_t *Mode, wchar_t TxtTp)
 {
 	File = NULL;
@@ -145,6 +149,7 @@ TextFl::TextFl(wchar_t *FName, wchar_t *Mode, wchar_t TxtTp)
 	BOM();
 }
 
+// TextFl-luokan destruktori: sulkee tiedoston ja vapauttaa tiedostonimen muistivarauksen.
 TextFl::~TextFl(void)
 {
 	if (File)
@@ -152,6 +157,8 @@ TextFl::~TextFl(void)
 	delete[] FileName;
 }
 
+// Avaa uudelleen jo luodun TextFl-olion tiedoston annetulla avaustilalla Mode.
+// Mode: "r"/"w"/"r+"/"w+"; palauttaa 0 jos onnistui tai 1 jos epäonnistui.
 int TextFl::Open(wchar_t *Mode)
 {
 	ReadFl = false;
@@ -201,6 +208,7 @@ int TextFl::Open(wchar_t *Mode)
 	return (File == NULL);
 }
 
+// Sulkee TextFl-olion tiedoston; asettaa File-osoittimen nollaksi.
 void TextFl::Close(void)
 {
 	if (File)
@@ -208,11 +216,14 @@ void TextFl::Close(void)
 	File = NULL;
 }
 
+// Tarkistaa, onko TextFl-olion tiedosto auki; palauttaa true jos File-osoitin on asetettu.
 bool TextFl::IsOpen(void)
 {
 	return(File != NULL);
 }
 
+// Lukee seuraavan rivin tiedostosta wide-merkkijonoksi Buf; käsittelee UTF-8/UTF-16 fgetws:llä ja ANSI/OEM muunnoksella.
+// Buf: kohde, len: kapasiteetti merkkeinä; palauttaa Buf tai NULL tiedoston lopussa.
 wchar_t	*TextFl::ReadLine(wchar_t *Buf, int len)
 {
 	wchar_t *rBuf = NULL;
@@ -244,6 +255,8 @@ wchar_t	*TextFl::ReadLine(wchar_t *Buf, int len)
 	return(rBuf);
 }
 
+// Lukee yhden merkin tiedostosta wide-merkkinä; käsittelee UTF-8/UTF-16 fgetwc:llä ja ANSI/OEM-muunnoksella.
+// Palauttaa luetun merkin tai WEOF tiedoston lopussa.
 wchar_t	TextFl::ReadChar(void)
 {
 	wchar_t Ch = 0;
@@ -281,6 +294,8 @@ wchar_t	TextFl::ReadChar(void)
 	return(Ch);
 }
 
+// Lukee count kappaletta size-tavuisia alkioita tiedostosta puskuriin buf.
+// Palauttaa luettujen alkioiden määrän tai 0 jos tiedosto ei ole auki.
 int	TextFl::ReadBytes(char *buf, int size, int count)
 {
 	if (File == NULL)
@@ -289,6 +304,8 @@ int	TextFl::ReadBytes(char *buf, int size, int count)
 	return(fread(buf, size, count, File));
 }
 
+// Kirjoittaa wide-merkkijonon Buf tiedostoon; muuntaa ANSI/OEM-merkistöön tarpeen mukaan.
+// Palauttaa kirjoitettujen merkkien määrän.
 int	TextFl::WriteLine(wchar_t *Buf)
 {
 	int nwritten;
@@ -314,6 +331,8 @@ int	TextFl::WriteLine(wchar_t *Buf)
 	return(nwritten);
 }
 
+// Kirjoittaa yhden wide-merkin Char tiedostoon; muuntaa ANSI/OEM-merkistöön tai käyttää fputwc:tä.
+// Palauttaa kirjoitettujen merkkien/tavujen määrän.
 int	TextFl::WriteChar(wchar_t Char)
 {
 	int nwritten;
@@ -337,6 +356,8 @@ int	TextFl::WriteChar(wchar_t Char)
 	return(nwritten);
 }
 
+// Kirjoittaa count kappaletta size-tavuisia alkioita puskurista buf tiedostoon.
+// Palauttaa kirjoitettujen alkioiden määrän tai 0 jos tiedosto ei ole auki.
 int	TextFl::WriteBytes(char *buf, int size, int count)
 {
 	if (File == NULL)
@@ -345,11 +366,14 @@ int	TextFl::WriteBytes(char *buf, int size, int count)
 	return(fwrite(buf, size, count, File));
 }
 
+// Tarkistaa, onko tiedoston loppu saavutettu; palauttaa feof-tilan.
 bool TextFl::Feof(void)
 	{
 	return(feof(File));
 	}
 
+// Kelaa tiedoston alkuun ja nollaa EOF-lipun; ohittaa BOM-merkin uudelleen.
+// Palauttaa fseek:n paluuarvon (0=OK).
 int TextFl::Rewind(void)
 {
 	int ret;
@@ -360,6 +384,8 @@ int TextFl::Rewind(void)
 	return(ret);
 }
 
+// Kirjoittaa XML-merkkijono-elementin tiedostoon muodossa <tag>value</tag>.
+// tag: elementin nimi, value: tekstiarvo.
 void TextFl::put_wxml_s(wchar_t *tag, wchar_t *value)
 	{
 	wchar_t *Buf = new wchar_t[2*wcslen(value) + 2*wcslen(tag) + 10];
@@ -369,6 +395,8 @@ void TextFl::put_wxml_s(wchar_t *tag, wchar_t *value)
 	delete[] Buf;
 	}
 
+// Kirjoittaa XML-kokonaislukuelementin tiedostoon muodossa <tag>value</tag>.
+// tag: elementin nimi, value: INT32-arvo.
 void TextFl::put_wxml_d(wchar_t *tag, INT32 value)
 	{
 	wchar_t *Buf = new wchar_t[2*wcslen(tag) + 30];
@@ -378,6 +406,8 @@ void TextFl::put_wxml_d(wchar_t *tag, INT32 value)
 	delete[] Buf;
 	}
 
+// Kirjoittaa XML-avaustunnisteen <tag> tiedostoon.
+// tag: elementin nimi.
 void TextFl::put_wtag(wchar_t *tag)
 	{
 	wchar_t *Buf = new wchar_t[wcslen(tag) + 10];
@@ -387,6 +417,8 @@ void TextFl::put_wtag(wchar_t *tag)
 	delete[] Buf;
 	}
 
+// Kirjoittaa XML-lopetustunnisteen </tag> tiedostoon.
+// tag: elementin nimi.
 void TextFl::put_wantitag(wchar_t *tag)
 	{
 	wchar_t *Buf = new wchar_t[wcslen(tag) + 10];
@@ -396,6 +428,7 @@ void TextFl::put_wantitag(wchar_t *tag)
 	delete[] Buf;
 	}
 
+// Palauttaa tiedoston koon tavuina tallentamatta nykyistä sijaintia.
 int TextFl::Length(void)
 	{
 	int pos, len;

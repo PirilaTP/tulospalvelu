@@ -17,6 +17,8 @@
 #include <windows.h>
 extern int aani;
 
+// Toistaa virheäänimerk in (600 Hz, 150 ms) jos ääniasetukset sen sallivat.
+// Ei parametreja eikä paluuarvoa; äänimerkki kuuluu vain kun aani != 0.
 void erbeep(void)
 {
   if (!aani) return;

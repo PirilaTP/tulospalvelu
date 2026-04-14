@@ -19,6 +19,8 @@
 
 #define DAYTICKS 1573040U
 
+// Palauttaa nykyisen ajan BIOS-tikku-yksikköinä (18.2 Hz:n mukaan skaalattu).
+// Palauttaa INT32-arvon, joka vastaa DAYTICKS-päivän täyttä tikkulukua.
 INT32 timeticks(void)
    {
    SYSTEMTIME stm;

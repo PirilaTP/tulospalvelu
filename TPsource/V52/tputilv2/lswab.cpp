@@ -16,6 +16,8 @@
 
 #include <string.h>
 
+// Kääntää 4-tavuisen long-arvon tavujärjestyksen (vaihtaa big-endian/little-endian).
+// Parametri: l=osoitin muunnettavaan long-arvoon (muokataan paikalla).
 void lswab(long *l)
    {
    char b[4], *p1, *p2;

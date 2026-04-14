@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Viestikilpailun kaikkien funktioiden esittelyt ja kÃ¤ytettyjen ulkoisten muuttujien esittelyt.
+
 #ifndef LASKENT_H_DEFINED
 #define LASKENT_H_DEFINED
 
@@ -408,7 +410,7 @@ extern	 bool ProsEmitOn;
 extern   wchar_t sulkusalasana[12];
 extern   INT  max_lahportti, max_portti;
 extern   int lahcomserver[];
-extern   int keyclose[];                   /* Käyttäjä sulkenut portin */
+extern   int keyclose[];                   /* Kï¿½yttï¿½jï¿½ sulkenut portin */
 extern   char tyhjarivi[];
 extern   int kaynnistysvaihe;
 extern   int chkstk;

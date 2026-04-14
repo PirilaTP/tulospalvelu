@@ -19,6 +19,8 @@
 #include <tputil.h>
 
 
+// Muuntaa wide-merkkisen nimen hakemistoj√§rjestysmerkkijonoksi ilman W‚ÜíV-muunnosta.
+// knimi: kilpailijan nimi wide-muodossa; poistaa aateliprefiksit, muuntaa √§/√∂/√•; k√§ytt√§√§ towupper2-funktiota.
 wchar_t *aakjarjwstr2(wchar_t *knimi)
 	{
 	wchar_t *p,*pmax,ch1,ch2;
@@ -41,9 +43,9 @@ wchar_t *aakjarjwstr2(wchar_t *knimi)
 					case L'…' :
 					case L'»' :
 					case L' ' :
+					case L'À' :
 					case L'È' :
 					case L'Ë' :
-					case L'Í' :
 						*p = 'E';
 						break;
 					case L'‹' :

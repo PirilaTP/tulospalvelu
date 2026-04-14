@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Pisteiden laskenta taulukkonÃ¤yttÃ¶Ã¤ varten viestikilpailussa (ALGETAULU-toiminto).
+
 #if defined(TAULU) || defined(ALGETAULU)
 #include <stdio.h>
 #include <stdlib.h>
@@ -228,7 +230,7 @@ void algetaulu(void)
    int t;
 
    if (!taulu_com) {
-      writeerror("Tiedonsiirtoa ei määritelty", 0);
+      writeerror("Tiedonsiirtoa ei mï¿½ï¿½ritelty", 0);
       return;
       }
    clrscr();   
@@ -246,11 +248,11 @@ void algetaulu(void)
          sprintf(msg, "%d. taulu   ", k+1);
          vidspmsg(11+k, 1, 7, 0, msg);
          AIKATOSTRS(st, tkarki[tosuus[k]-1], t0);
-         sprintf(msg, "%d. osuus   Kärki: %8.8s", tosuus[k], st);
+         sprintf(msg, "%d. osuus   Kï¿½rki: %8.8s", tosuus[k], st);
          vidspmsg(11+k, 11, 7, 0, msg);
          }
       ch = nosuus + '0';
-      selectopt("Anna näytettävien osuuksien lukumäärä (0 : Ei näytetä)  Esc: Poistu valinnoista", "012345\x1b", &ch);
+      selectopt("Anna nï¿½ytettï¿½vien osuuksien lukumï¿½ï¿½rï¿½ (0 : Ei nï¿½ytetï¿½)  Esc: Poistu valinnoista", "012345\x1b", &ch);
       if (ch == ESC) {
          break;
          }
@@ -265,14 +267,14 @@ void algetaulu(void)
          sprintf(msg, "%d. osuus   ", tosuus[k]);
          vidspmsg(11+k, 11, 7, 0, msg);
          cv = lkmaikana[k] ? 'K' : 'E';
-         selectopt("Kirjoitentaanko lukumäärä aikakentään (K/E)", "KE", &cv);
+         selectopt("Kirjoitentaanko lukumï¿½ï¿½rï¿½ aikakentï¿½ï¿½n (K/E)", "KE", &cv);
          lkmaikana[k] = cv == 'K';
          if (!lkmaikana[k]) {
             cv = 'E';
-            selectopt("Muutetaanko osuuden kärkiajan käsittelyä (K/E)", "KE", &cv);
+            selectopt("Muutetaanko osuuden kï¿½rkiajan kï¿½sittelyï¿½ (K/E)", "KE", &cv);
             if (cv == 'K') {
                cv = ' ';
-               selectopt("Kärkiaika T)uloslaskennasta, N)yt, S)yötä", "TNS", &cv);
+               selectopt("Kï¿½rkiaika T)uloslaskennasta, N)yt, S)yï¿½tï¿½", "TNS", &cv);
                clrln(ySize-3);
                t = tkarki[tosuus[k]-1];
                switch (cv) {
@@ -284,7 +286,7 @@ void algetaulu(void)
                   case 'N' :
                      t = KSEK*T_TIME(biostime(0,0));
                   case 'S' :
-                     vidspmsg(ySize-3,0,7,0,"Vahvista tai syötä aika, Esc: aikaa ei muuteta");
+                     vidspmsg(ySize-3,0,7,0,"Vahvista tai syï¿½tï¿½ aika, Esc: aikaa ei muuteta");
                      INPUTAIKA(&t, t0, 8, 48, ySize-3, "\r\x1b", &ch);
                      if (ch == '\r')
                         tkarki[tosuus[k]-1] = t;

@@ -28,6 +28,7 @@
 #pragma resource "*.dfm"
 TForm1 *Form1;
 //---------------------------------------------------------------------------
+// TForm1-lomakkeen konstruktori: asettaa lokaaliksi Windows-1252 ja monibytemerkistön.
 __fastcall TForm1::TForm1(TComponent* Owner)
 	: TForm(Owner)
 {
@@ -35,6 +36,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 	_setmbcp(_MB_CP_LOCALE);
 }
 //---------------------------------------------------------------------------
+// Avaa tiedoston ja lukee sen sisällön Memo1-kenttään valitulla merkistöllä ja lukutavalla.
 void __fastcall TForm1::Button1Click(TObject *Sender)
 {
 	TextFl *InFile;
@@ -69,6 +71,7 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
 	delete InFile;
 }
 //---------------------------------------------------------------------------
+// Tallentaa Memo1-kentän sisällön tiedostoon valitulla merkistöllä ja kirjoitustavalla.
 void __fastcall TForm1::Button2Click(TObject *Sender)
 {
 	TextFl *OutFile;

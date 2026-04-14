@@ -32,6 +32,8 @@
 
 USEFORM("UnitTest.cpp", Form1);
 //---------------------------------------------------------------------------
+// VCL-testisovelluksen käynnistysfunktio; alustaa ja käynnistää päälomakelomakkeen.
+// Palauttaa 0 normaalissa lopetuksessa; poikkeukset näytetään käyttäjälle virheilmoituksena.
 WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {
 	try

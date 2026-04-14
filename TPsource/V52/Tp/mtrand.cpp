@@ -25,6 +25,8 @@ unsigned long MTRand_int32::state[n] = {0x0UL};
 int MTRand_int32::p = 0;
 bool MTRand_int32::init = false;
 
+// Luo uuden Mersenne Twister -tilataulukon (state[]): soveltaa twiddle()-funktiota kaikille n solmulle.
+// Kutsutaan automaattisesti kun p saavuttaa taulukon loppun.
 void MTRand_int32::gen_state() { // generate new state vector
   for (int i = 0; i < (n - m); ++i)
     state[i] = state[i + m] ^ twiddle(state[i], state[i + 1]);
@@ -34,6 +36,8 @@ void MTRand_int32::gen_state() { // generate new state vector
   p = 0; // reset position
 }
 
+// Alustaa Mersenne Twister -generaattorin 32-bittisellä siemenarvolla s.
+// Käyttää Knuth TAOCP Vol.2 -kertojaa; p asetetaan n:ksi pakottamaan gen_state()-kutsu.
 void MTRand_int32::seed(unsigned long s) {  // init by 32 bit seed
   state[0] = s & 0xFFFFFFFFUL; // for > 32 bit machines
   for (int i = 1; i < n; ++i) {
@@ -46,6 +50,8 @@ void MTRand_int32::seed(unsigned long s) {  // init by 32 bit seed
   p = n; // force gen_state() to be called for next random number
 }
 
+// Alustaa Mersenne Twister -generaattorin taulukkosiemenellä array (pituus size).
+// Käyttää ei-lineaarista yhdistelmäalgoritmia parempaa satunnaisuutta varten.
 void MTRand_int32::seed(const unsigned long* array, int size) { // init by array
   seed(19650218UL);
   int i = 1, j = 0;

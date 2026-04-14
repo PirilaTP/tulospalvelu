@@ -16,6 +16,9 @@
 
 #include <stdlib.h>
 
+// Muuntaa kokonaisluvun n merkkijonoksi s kiinteään l-merkin pituiseen kenttään ilman nollatäyttöä.
+// Parametrit: s=kohdepuskuri, n=muunnettava luku, l=kentän leveys.
+// Palauttaa osoittimen puskuriin s.
 char *itoa1(char *s, int n, int l)
 	{
 	int k;
@@ -31,6 +34,9 @@ char *itoa1(char *s, int n, int l)
 	return(s);
 	}
 
+// Muuntaa kokonaisluvun n laajamerkki-merkkijonoksi s kiinteään l-merkin kenttään.
+// Parametrit: s=kohdepuskuri, n=muunnettava luku, l=kentän leveys.
+// Palauttaa osoittimen laajamerkki-puskuriin s.
 wchar_t *itow1(wchar_t *s, int n, int l)
 	{
 	int k;

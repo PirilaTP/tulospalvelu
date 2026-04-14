@@ -14,8 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Muuntaa BIOS-kellon tikut sekunneiksi käyttäen 18,2 Hz:n taajuutta suhteessa vertailutuntiin.
+
 #define DAYTICKS 1573040L
 
+// Muuntaa BIOS-kellon tikut ts (18.2 Hz) sekunneiksi suhteessa alkuaikaan t0 (tunnit).
+// ts: BIOS-tikut, t0: vertailutunti; palauttaa ajan sekunteina.
 long t_time(long ts, int t0)
    {
    long tics;

@@ -21,6 +21,8 @@
 #include <stdio.h>
 #endif
 
+// Muuntaa nimen muodosta "SUKUNIMI Etunimi" muotoon "Etunimi SUKUNIMI" huomioiden etuliitteet.
+// sti: syötenimi, sto: tulosnimi-puskuri.
 void vaihdanm(char *sti, char *sto)
    {
    char c1, c2, *p;
@@ -48,6 +50,8 @@ void vaihdanm(char *sti, char *sto)
    sto[len+(int)(p-sti)] = 0;
    }
 
+// Laajamerkkiversio vaihdanm:stä: muuntaa leveän nimen "SUKUNIMI Etunimi" → "Etunimi SUKUNIMI".
+// sti: syöte laajamerkkinä, sto: tuloslaajamerkki-puskuri.
 void vaihdawnm(wchar_t *sti, wchar_t *sto)
 	{
 	wchar_t c1, c2, *p;

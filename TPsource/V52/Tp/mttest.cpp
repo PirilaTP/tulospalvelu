@@ -18,6 +18,7 @@
 #include "mtrand.h"
 #include <cstdio>
 
+// Testaa Mersenne Twister -generaattoria: tulostaa 1000 satunnaislukua vertailua varten.
 int main() {
   unsigned long init[4] = {0x123, 0x234, 0x345, 0x456}, length = 4;
   MTRand_int32 irand(init, length); // 32-bit int generator

@@ -18,6 +18,8 @@
 #include <string.h>
 #include <tputil.h>
 
+// Muuntaa yksittäisen OEM-merkin vastaavaksi ANSI/ISO-merkiksi switch-taulukon avulla.
+// ch: muunnettava OEM-merkki; palauttaa ANSI-merkkikoodin.
 char oemtoansich(char ch)
 {
 	switch (ch) {
@@ -45,6 +47,8 @@ char oemtoansich(char ch)
 	return(ch);
 }
 
+// Muuntaa merkkijonon OEM-merkistöstä ANSI/ISO-merkistöön paikan päällä.
+// line: muunnettava merkkijono, ppiste != 0: muuntaa myös pisteet kaksoispisteiksi; palauttaa line:n.
 char *oemtoansi(char *line, int ppiste)
 	{
 	char *p;
@@ -68,6 +72,8 @@ char *oemtoansi(char *line, int ppiste)
 	return(line);
 	}
 
+// Muuntaa yksittäisen ANSI-tavun leveäksi merkiksi mbtowc-funktiolla.
+// ch: muunnettava ANSI-tavu; palauttaa vastaavan wchar_t-merkin tai L'?' jos muunnos epäonnistuu.
 wchar_t ansitowchar(char ch)
 {
 	wchar_t buf[3];
@@ -77,6 +83,8 @@ wchar_t ansitowchar(char ch)
 	return(buf[0]);
 }
 
+// Muuntaa ANSI-tavumerkkijonon leveäksi merkkijonoksi enintään len merkkiä.
+// wline: kohdepuskuri, line: lähde ANSI-merkkijono, len: enimmäismäärä merkkejä; palauttaa wline:n.
 wchar_t *ansitowcs(wchar_t *wline, char *line, int len)
 {
 	int i;
@@ -91,11 +99,15 @@ wchar_t *ansitowcs(wchar_t *wline, char *line, int len)
 	return(wline);
 }
 
+// Muuntaa yksittäisen OEM-merkin leveäksi merkiksi OEM→ANSI→wchar_t-ketjuna.
+// ch: muunnettava OEM-tavu; palauttaa vastaavan leveän merkin.
 wchar_t oemtowchar(char ch)
 {
 	return(ansitowchar(oemtoansich(ch)));
 }
 
+// Muuntaa OEM-merkkijonon leveäksi merkkijonoksi enintään len merkkiä OEM→ANSI→wcs-ketjuna.
+// wline: kohdepuskuri, line: lähde OEM-merkkijono, ppiste: muunnetaanko pisteet kaksoispisteiksi; palauttaa wline:n.
 wchar_t *oemtowcs(wchar_t *wline, char *line, int len, int ppiste)
 {
 	char *aline;

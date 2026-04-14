@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l C:/users/pol29/tulospalvelu/TPsource/V52/Hk/*.cpp C:/users/pol29/tulospalvelu/TPsource/V52/Hk/*.h C:/users/pol29/tulospalvelu/TPsource/V52/Juk/*.cpp C:/users/pol29/tulospalvelu/TPsource/V52/Juk/*.h C:/users/pol29/tulospalvelu/TPsource/V52/HkConsole/*.cpp C:/users/pol29/tulospalvelu/TPsource/V52/HkConsole/*.h C:/users/pol29/tulospalvelu/TPsource/V52/JukConsole/*.cpp C:/users/pol29/tulospalvelu/TPsource/V52/JukConsole/*.h C:/users/pol29/tulospalvelu/TPsource/V52/Tp/*.cpp C:/users/pol29/tulospalvelu/TPsource/V52/Tp/*.h)",
+      "Bash(grep -n \"^[a-zA-Z].*\\(.*\\)$\\\\|^static [a-zA-Z].*\\(.*\\)$\\\\|^void \\\\|^int \\\\|^INT \\\\|^BOOL \\\\|^bool \\\\|^char \\\\|^wchar\" \"C:\\\\users\\\\pol29\\\\tulospalvelu\\\\TPsource\\\\V52\\\\Hk\\\\HkInit.cpp\")",
+      "Bash(grep -n \"^[a-zA-Z_].*\\(.*\\)$\\\\|^static [a-zA-Z].*\\(.*\\)$\" \"C:\\\\users\\\\pol29\\\\tulospalvelu\\\\TPsource\\\\V52\\\\Hk\\\\HkMuotoilu.cpp\")",
+      "Bash(grep -v \"^\\\\s*//\")",
+      "Bash(grep -n \"^[a-zA-Z_].*\\(.*\\)$\\\\|^static [a-zA-Z].*\\(.*\\)$\" \"C:/users/pol29/tulospalvelu/TPsource/V52/Hk/HkTls.cpp\")",
+      "Bash(grep -v \"^[0-9]*:\t\\\\|include\\\\|define\\\\|extern\\\\|static\\\\|#\\\\|pragma\\\\|//\")",
+      "Bash(grep -v \"^[0-9]*:\t\\\\|include\\\\|define\\\\|extern\\\\|#\\\\|pragma\\\\|//\")",
+      "Bash(grep -l \"^// \" /c/users/pol29/tulospalvelu/TPsource/V52/Juk/*.cpp)",
+      "Bash(grep -L \"^// \" /c/users/pol29/tulospalvelu/TPsource/V52/Juk/*.cpp)",
+      "Bash(grep -n \"^[a-zA-Z].*[a-zA-Z0-9_]\\(.*\\)$\" /c/users/pol29/tulospalvelu/TPsource/V52/Juk/VInit.cpp)",
+      "Bash(grep -n \"^[a-zA-Z][a-zA-Z_0-9: *]*\\([^;]*$\" \"C:/users/pol29/tulospalvelu/TPsource/V52/Juk/VTulostus.cpp\")",
+      "Bash(grep -n \"^[a-zA-Z].*{$\\\\|^static [a-zA-Z].*{$\" \"C:\\\\users\\\\pol29\\\\tulospalvelu\\\\TPsource\\\\V52\\\\Juk\\\\VEmit.cpp\")",
+      "Bash(grep -rn \"^[a-zA-Z].*\\\\\\(.*\\\\\\)$\" \"C:\\\\users\\\\pol29\\\\tulospalvelu\\\\TPsource\\\\V52\\\\HkConsole\" --include=\"*.cpp\" -l)",
+      "Bash(ls \"C:/users/pol29/tulospalvelu/TPsource/V52/tputilv2/\"*.cpp)",
+      "Bash(ls C:/users/pol29/tulospalvelu/TPsource/V52/tputilv2/*.cpp)",
+      "Bash(ls *.cpp)",
+      "Bash(ls C:/users/pol29/tulospalvelu/TPsource/V52/Hk/*.cpp C:/users/pol29/tulospalvelu/TPsource/V52/Hk/*.h)",
+      "Bash(ls C:/users/pol29/tulospalvelu/TPsource/V52/HkConsole/*.cpp C:/users/pol29/tulospalvelu/TPsource/V52/HkConsole/*.h ls C:/users/pol29/tulospalvelu/TPsource/V52/Juk/*.cpp C:/users/pol29/tulospalvelu/TPsource/V52/Juk/*.h)",
+      "Bash(wc -l ls C:/users/pol29/tulospalvelu/TPsource/V52/JukConsole/*.cpp ls C:/users/pol29/tulospalvelu/TPsource/V52/Tp/*.cpp)",
+      "Bash(grep -n \"^[a-zA-Z].*\\(.*\\)$\" HkInit.cpp)",
+      "Bash(python3 -c ':*)",
+      "Bash(python3:*)"
+    ]
+  }
+}

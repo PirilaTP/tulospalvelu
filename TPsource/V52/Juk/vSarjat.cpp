@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Viestikilpailun sarja- ja kategoriatietojen hallinta sekÃ¤ lÃ¤htÃ¶aikojen laskenta.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <io.h>
@@ -226,7 +228,7 @@ int maaraaOsuusluku(bool kysy)
 		{
 		if (er) {
 			wchar_t ch = L' ';
-			wselectopt(L"Osuuslukumäärissä ristiriita. Yritetäänkö lukea tiedot? (K/E)", L"KE", &ch);
+			wselectopt(L"Osuuslukumï¿½ï¿½rissï¿½ ristiriita. Yritetï¿½ï¿½nkï¿½ lukea tiedot? (K/E)", L"KE", &ch);
 			if (ch == L'E')
 				lopetus();
 			}
@@ -256,7 +258,7 @@ void luesarjayhdistelmat(void)
 		p = wcstok(buf, L" \t\n");
 		if (p) {
 			if (n >= MAXYHD) {
-				swprintf(buf, L"Liikaa sarjayhdistelmiä. Maksimimäärä on %d.", MAXYHD);
+				swprintf(buf, L"Liikaa sarjayhdistelmiï¿½. Maksimimï¿½ï¿½rï¿½ on %d.", MAXYHD);
 				writeerror_w(buf, 0);
 				}
 //			wcsncpy(yhdnimet[n], p, LSARJA);
@@ -295,7 +297,7 @@ void luesarjayhdistelmat(void)
 		}
 	nsarjayhd = n;
 	if (n > 0) {
-		swprintf(buf, L"Tiedostosta %s luettu %d sarjayhdistelmää", yhdfilename, n);
+		swprintf(buf, L"Tiedostosta %s luettu %d sarjayhdistelmï¿½ï¿½", yhdfilename, n);
 		vidspwmsg(1,5,7,0,buf);
 		}
 	delete yhdfile;
@@ -452,17 +454,17 @@ error :
 			sccurset(15,0);
 			sprintf(prs,"Tiedosto %s viallinen", sarjafname);
 			vidspmsg(15,0,7,0,prs);
-			sprintf(prs,"Virhe rivillä %d tai ennen sitä", er);
+			sprintf(prs,"Virhe rivillï¿½ %d tai ennen sitï¿½", er);
 			vidspmsg(16,0,7,0,prs);
 			vidspmsg(17,0,7,0,
-				"Korjaa tiedosto ennen uutta käynnistystä");
+				"Korjaa tiedosto ennen uutta kï¿½ynnistystï¿½");
 			writeerror("Virhe vanhoja sarjatietoja (KILP.SRJ) luettaessa.", 0);
 			return(1);
 			}
 		fclose(sarjaf);
 		}
 	else {
-		strcpy(prs, "Sarjatietoja ei löydy, käyttö mahdotonta");
+		strcpy(prs, "Sarjatietoja ei lï¿½ydy, kï¿½yttï¿½ mahdotonta");
 		writeerror(prs, 0);
 		scpclr();
 		return(1);

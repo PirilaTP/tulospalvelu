@@ -19,6 +19,8 @@ void lopetus(void);
 
    extern int __dbbox__ok;
 
+// Hakee avain pkey B-puusta idxf binäärihaulla: tallentaa polun idxf->path-taulukkoon.
+// Asettaa __dbbox__ok = TRUE ja *procdatref löydetylle tietueviitteelle, muuten FALSE.
 static void tafindkey(indexfile *idxf, int *procdatref, UCHAR *pkey)
 {
 int  c,k,l,r,prpgref;
@@ -67,6 +69,8 @@ tapageptr pagptr;
   }
 }
 
+// Etsii avaimen pkey indeksistä idxf: duplikaattiavaimilla tarkistaa myös seuraavan avain.
+// Kirjoittaa tietueviitteen *procdatref:iin; palauttaa 0 löytyessä, 1 ei löydy.
 int findkey(indexfile *idxf, int *procdatref, UCHAR *pkey)
 {
 UCHAR tempkey[MAXKEYLEN];
@@ -81,6 +85,8 @@ UCHAR tempkey[MAXKEYLEN];
 	return(!__dbbox__ok);
 }
 
+// Hakee ensimmäisen avaimen >= pkey indeksistä idxf (osittainen haku / range-haku).
+// Kirjoittaa tietueviitteen *procdatref:iin; palauttaa 0 löytyessä, 1 ei löydy.
 int searchkey(indexfile *idxf, int *procdatref, UCHAR *pkey)
 {
 

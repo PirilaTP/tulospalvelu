@@ -31,6 +31,9 @@ int monirivi = FALSE;
 unsigned iscurpos = 0;
 extern INT16 ySize;
 
+// Interaktiivinen tekstikenttäeditori: lukee merkkijonon näppäimistöltä ruudulle.
+// s: muokattava merkkijono (in/out), l: kentän leveys, x/y: koordinaatit, term: lopetusmerkit, tc: lopetusmerkki (out), numfl: numeromodi tai -1 aikamodille.
+// Tukee lisäys-/korvausmoodia, nuolinäppäimiä, Delete/Backspace-toimintoja; palauttaa osoittimen s:ään.
 char *inputstr(char *s, unsigned l, int x, int y, const char *term, char *tc,
                                                        int numfl)
    {
@@ -170,6 +173,9 @@ char *inputstr(char *s, unsigned l, int x, int y, const char *term, char *tc,
    return(s);
 }
 
+// Unicode-versio inputstr:sta; muuntaa wide-merkkijonon OEM-merkistöön, kutsuu inputstr:n ja muuntaa tuloksen takaisin.
+// ws: wide-merkkijono (in/out), wterm: wide-lopetusmerkit, wtc: lopetusmerkki wide-muodossa (out).
+// Palauttaa osoittimen wide-merkkijonoon ws.
 wchar_t *inputwstr(wchar_t *ws, unsigned l, int x, int y, const wchar_t *wterm,
 		wchar_t *wtc, int numfl)
 {

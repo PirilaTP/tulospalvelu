@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Kaikki viestikilpailun globaalit muuttujat: sÃ¤ikeiden kriittiset alueet, asetusparametrit ja tilamuuttujat.
+
 #include <stdio.h>
 #include "VDef.h"
 
@@ -122,8 +124,8 @@ void ajanotto(void);
    char  tarstr[13][13] = {
 				  "",
 				  "Keskeytt.",
-				  "Hylätty",
-				  "Ei läht.",
+				  "Hylï¿½tty",
+				  "Ei lï¿½ht.",
 				  ". os",
 				  "Korj.",
 				  "Maali:",
@@ -382,8 +384,8 @@ void ajanotto(void);
    int valiajat = -1;
    int maxnvaika = MAXNVAIKA;
    int vainvaliajat;
-   char aika_int_mask = 17;    // Nämä kaksi riviä ovat aina mukana
-   int aika_esto=2;            // koska muuttujat esiintyvät ASYNCH:ssa
+   char aika_int_mask = 17;    // Nï¿½mï¿½ kaksi riviï¿½ ovat aina mukana
+   int aika_esto=2;            // koska muuttujat esiintyvï¿½t ASYNCH:ssa
    int va_mpiste[MAXJONO];
    int ol_osuus, os_raja = MAXOSUUSLUKU;
    int aika_com=0;

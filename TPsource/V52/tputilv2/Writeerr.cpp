@@ -29,6 +29,8 @@
 extern INT16 ySize, xSize, errMsgBox;
 int writeerrorOn;
 
+// Näyttää virheviestin msgin konsoliruudun alimmalla rivillä äänimerkillä; kesto ms tai 0=odota Enter, -1=jätä näkyviin.
+// Palauttaa heti kun käyttäjä kuittaa tai aikakatkaisu.
 void writeerror(char *msgin, int kesto)
 {
    char msg[81], save[500];
@@ -59,6 +61,8 @@ void writeerror(char *msgin, int kesto)
    writeerrorOn = 0;
 }
 
+// Laajamerkkiversio writeerror:sta: näyttää leveän virheviestin msgin konsoliruudun alimmalla rivillä.
+// kesto ms tai 0=odota Enter, -1=jätä näkyviin.
 void writeerror_w(wchar_t *msgin, int kesto)
 {
    char save[500], che;

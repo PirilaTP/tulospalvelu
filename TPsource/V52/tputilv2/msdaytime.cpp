@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <windows.h>
 
+// Palauttaa paikallisen ajan millisekunteina vuorokauden alusta (tunti*3600000 + ...).
 long msdaytime(void)
    {
    SYSTEMTIME stm;
@@ -27,6 +28,9 @@ long msdaytime(void)
 	  stm.wMilliseconds);
    }
 
+// Palauttaa nykyisen paikallisen ajan ISO 8601 -muodossa laajamerkki-jonona.
+// Parametrit: des=desimaalisekuntien määrä (0–3), zone=lisätäänkö aikavyöhyke.
+// Palauttaa osoittimen staattiseen laajamerkki-puskuriin.
 wchar_t *ISOdatetime(int des, bool zone)
 {
    SYSTEMTIME stm, sstm;

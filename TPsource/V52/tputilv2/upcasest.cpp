@@ -17,6 +17,8 @@
 #include <ctype.h>
 #include "tputil.h"
 
+// Muuntaa merkkijonon kaikki kirjaimet isoksi paikalla huomioiden suomalaiset erikoismerkit.
+// s: muokattava merkkijono; palauttaa osoittimen alkuperäiseen jonoon.
 char *upcasestr(char *s)
 {
    int p;
@@ -30,6 +32,8 @@ char *upcasestr(char *s)
    return(s);
 }
 
+// Laajamerkkiversio upcasestr:stä: muuntaa leveän merkkijonon kaikki kirjaimet isoksi paikalla.
+// s: muokattava laajamerkki-jono; palauttaa osoittimen alkuperäiseen jonoon.
 wchar_t *upcasewstr(wchar_t *s)
 {
 	int p;

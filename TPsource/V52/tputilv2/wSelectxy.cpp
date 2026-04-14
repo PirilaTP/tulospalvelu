@@ -29,6 +29,8 @@
 
 extern short ySize;
 
+// Näyttää valintakehotemerkkijonon prompt rivillä y sarakkeesta x ja lukee yhden valintamerkin.
+// term: sallitut valintamerkit (wide), tc: valittu merkki (in/out); odottaa kunnes term-merkki painetaan.
 void wselectxy(int y, int x, wchar_t *prompt, wchar_t *term, wchar_t *tc)
 {
 	wchar_t ch, ch2;
@@ -75,6 +77,8 @@ void wselectxy(int y, int x, wchar_t *prompt, wchar_t *term, wchar_t *tc)
 	if (*tc < 200) viwrrectw(y, x + l + 2, y, x + l + 2, tc, SEL_FORE, SEL_BACK, 0);
 }
 
+// Näyttää valintakehotemerkkijonon konsoliruudun kolmanneksi alimmalla rivillä (ySize-3).
+// wprompt: kehote, wterm: sallitut merkit, wtc: valittu merkki (in/out).
 void wselectopt(wchar_t *wprompt, wchar_t *wterm, wchar_t *wtc)
 {
 	wselectxy(ySize - 3, 0, wprompt, wterm, wtc);

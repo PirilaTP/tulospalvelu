@@ -32,6 +32,8 @@
 
 char ansitooemch(char ch);
 
+// Kirjoittaa cnt kappaletta merkkiä ch konsolinäytölle kursorin nykyisestä sijainnista alkaen.
+// Palauttaa 0 onnistuessa tai 1 virheessä.
 int scwrite(char ch, unsigned cnt)
 {
 	extern HANDLE hConOut;  // handle to a console screen buffer

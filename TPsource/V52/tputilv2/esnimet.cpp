@@ -20,6 +20,8 @@
 #ifdef TEST
 #include <stdio.h>
 #endif
+// Jakaa nimen (sukunimi etunimi) muodossa "SUKUNIMI Etunimi" erillisiksi etu- ja sukunimi-puskureiksi.
+// sti: syötenimen merkkijono, etu/suku: tulospitkät puskurit; tunnistaa Af/van von -etuliitteet.
 void esnimet(char *sti, char *etu, char *suku)
    {
    char c1, c2, *p;
@@ -48,6 +50,8 @@ void esnimet(char *sti, char *etu, char *suku)
    elimbl2(suku);
    }
 
+// Jakaa leveän nimen (sukunimi etunimi) muodossa "SUKUNIMI Etunimi" erillisiksi etu- ja sukunimi-puskureiksi.
+// sti: syötenimen leveä merkkijono, etu/suku: tulosleveät puskurit; tunnistaa Af/van von -etuliitteet.
 void wesnimet(wchar_t *sti, wchar_t *etu, wchar_t *suku)
 	{
 	wchar_t c1, c2, *p;

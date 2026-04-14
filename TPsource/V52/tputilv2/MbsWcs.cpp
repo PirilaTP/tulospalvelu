@@ -23,6 +23,9 @@
 #include <vcl.h>
 #endif
 
+// Muuntaa UTF-8-merkkijonon wide-merkkijonoksi (wchar_t).
+// wst: kohde-wide-merkkijono (out), st: lähde-UTF-8-merkkijono, len: kohteen kapasiteetti merkkeinä.
+// Palauttaa muunnetun wide-merkkijonon pituuden merkkeinä.
 int MbsToWcs(wchar_t *wst, char *st, int len)
 {
 //#ifdef _BORLAND_
@@ -33,6 +36,9 @@ int MbsToWcs(wchar_t *wst, char *st, int len)
 	return(wcslen(wst));
 }
 
+// Muuntaa wide-merkkijonon UTF-8-merkkijonoksi.
+// st: kohde-UTF-8-puskuri (out), wst: lähde-wide-merkkijono, len: kohteen kapasiteetti tavuina.
+// Palauttaa muunnetun UTF-8-merkkijonon pituuden tavuina.
 int WcsToMbs(char *st, wchar_t *wst, int len)
 {
 //#ifdef _BORLAND_

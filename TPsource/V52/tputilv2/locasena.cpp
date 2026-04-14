@@ -17,6 +17,9 @@
 #include <ctype.h>
 #include "tputil.h"
 
+// Muuntaa nimen kirjoitusasun siten, että jokaisen sanan ensimmäinen kirjain pysyy isona ja muut muuttuvat pieniksi.
+// Parametri: s=muokattava nimimerkkijono (muokataan paikalla).
+// Palauttaa osoittimen alkuperäiseen merkkijonoon.
 char *locasename(char *s)
    {
    char *p;
@@ -34,6 +37,9 @@ char *locasename(char *s)
    return(s); 
 	}
 
+// Laajamerkkiversio locasename-funktiosta: muuntaa nimen kirjoitusasun laajamerkki-jonossa.
+// Parametri: s=muokattava laajamerkki-nimimerkkijono (muokataan paikalla).
+// Palauttaa osoittimen alkuperäiseen laajamerkki-jonoon.
 wchar_t *locasewname(wchar_t *s)
 	{
 	wchar_t *p;

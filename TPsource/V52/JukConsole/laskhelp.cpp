@@ -33,6 +33,7 @@ extern scr help6;
 extern scr help7;
 extern scr help8;
 
+// Kirjoittaa scr-rakenteen s sisältämät rivit näytölle oikeisiin koordinaatteihin.
 void prscr(scr *s)
 {
    int i;
@@ -47,6 +48,7 @@ void prscr(scr *s)
       }
 }
 
+// Näyttää ohjesivuvalikon: käyttäjä valitsee sivun 1–9; ih: alkuinen sivu-indeksi.
 void help(int ih)
 {
    int i, x, y, h, l, tcomfl0;

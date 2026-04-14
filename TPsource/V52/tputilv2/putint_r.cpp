@@ -16,6 +16,8 @@
 
 #include <stdlib.h>
 
+// Kirjoittaa kokonaisluvun i oikealta vasemmalle merkkipuskuriin p alkaen osoittimen kohdalta.
+// i: kirjoitettava luku (>0), p: osoitin merkkijonon viimeiseen kirjoituspaikkaan.
 void putintright(int i, char *p)
    {
    if (i <= 0) return;
@@ -27,6 +29,8 @@ void putintright(int i, char *p)
       }
    }
 
+// Leveämerkkiversio putintright:sta: kirjoittaa kokonaisluvun oikealta wchar_t-puskuriin.
+// i: kirjoitettava luku (>0), p: osoitin leveään merkkijonon viimeiseen paikkaan.
 void putintrightw(int i, wchar_t *p)
 	{
 	if (i <= 0) return;

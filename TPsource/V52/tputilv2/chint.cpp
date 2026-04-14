@@ -16,6 +16,8 @@
 
 #include <string.h>
 
+// Muuntaa numeerisen tai kirjainmerkin kokonaisluvuksi (0–9 ja A–]).
+// ch: muunnettava merkki; palauttaa vastaavan kokonaisluvun tai nollan tunnistamattomalle merkille.
 int chint(char ch)
 {
    if (ch >= '0' && ch <= '9') return(ch - 47);
@@ -23,6 +25,8 @@ int chint(char ch)
    return(0);
 }
 
+// Muuntaa leveän numeerisen tai kirjainmerkin kokonaisluvuksi (0–9 ja A–]).
+// ch: muunnettava leveä merkki; palauttaa vastaavan kokonaisluvun tai nollan tunnistamattomalle merkille.
 int wchint(wchar_t ch)
 {
 	if (ch >= L'0' && ch <= L'9') return(ch - 47);

@@ -16,6 +16,8 @@
 
 #include <windows.h>
 
+// Lukee suorakaiteen muotoisen alueen konsolinäytöltä puskuriin buf.
+// u_row/u_col/l_row/l_col: alue, option 0: pelkkä ASCII, 1: koko CHAR_INFO; palauttaa luettujen merkkien määrän tai -1.
 int virdrect(int u_row, int u_col, int l_row, int l_col,
 			 char *buf, int option)
 {

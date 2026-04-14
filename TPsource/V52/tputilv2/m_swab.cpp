@@ -16,6 +16,8 @@
 
 #include <string.h>
 
+// Kopioi n tavua lähteestä kohteeseen tavujärjestys käännettynä (yleinen swab n tavulle).
+// Parametrit: src=lähde, dest=kohde, n=tavujen lukumäärä.
 void multiswab(char *src, char *dest, int n)
 {
 	char temp[80], *ps, *pd;

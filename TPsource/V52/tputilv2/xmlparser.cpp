@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Yksinkertainen DOM-tasoinen XML-jÃ¤sennin: puurakenteen luku, solmujen hallinta ja tekstin tulostus.
+
 #include <stdlib.h>
 #include <tputil.h>
 #include "xmlparser.h"
@@ -231,17 +233,17 @@ int xml_node::interpretXmlLine(wchar_t *linein, wchar_t *ptag)
 		}
 
 	p1 = wcsstr(line, L"<");
-	if (p1 && p1[1] == L'?') {       // <? -riviä ei käsitellä
+	if (p1 && p1[1] == L'?') {       // <? -riviï¿½ ei kï¿½sitellï¿½
 		memset(line, 0, sizeof(line));
 		return(-2);
 		}
-	while (p1 && p1[1] != L'/') {   // etsitään avaavan tagin alkua (<+kirjain)
+	while (p1 && p1[1] != L'/') {   // etsitï¿½ï¿½n avaavan tagin alkua (<+kirjain)
 		if (p1[1] < L'A' || p1[1] > L'z' || (p1[1] > L'Z' && p1[1] < L'_'))
 			p1 = wcsstr(p1+1, L"<");
 		else
 			break;
 		}
-	if (p1) {                        // etsitään avaavan tagin loppu->
+	if (p1) {                        // etsitï¿½ï¿½n avaavan tagin loppu->
 		for (p2 = p1+1; *p2 && *p2 != L'>'; p2++) ;
 		if (*p2 == 0) {
 			return(-5);
@@ -249,7 +251,7 @@ int xml_node::interpretXmlLine(wchar_t *linein, wchar_t *ptag)
 //			p2 = 0;
 			}
 		}
-	if (p1 && p1[1] != L'/') {          //  Käsitellään avaava tag
+	if (p1 && p1[1] != L'/') {          //  Kï¿½sitellï¿½ï¿½n avaava tag
 		type = 1;
 		*p2 = 0;
 		if (p2[-1] == L'/') {
@@ -260,7 +262,7 @@ int xml_node::interpretXmlLine(wchar_t *linein, wchar_t *ptag)
 		}
 	else
 		p2 = line-1;
-	// Etsitään sulkevaa tagia
+	// Etsitï¿½ï¿½n sulkevaa tagia
 
 	if ((p1 = wcsstr(p2+1, L"<")) != NULL && p1[1] == L'/') {
 		p3 = wcstok(p1+2, L" \t>");
@@ -269,7 +271,7 @@ int xml_node::interpretXmlLine(wchar_t *linein, wchar_t *ptag)
 			memset(line, 0, sizeof(line));
 			return(8);
 			}
-		if (wcscmp(ptag, this->tag)) {     // varmistetaan, että tag on oikea
+		if (wcscmp(ptag, this->tag)) {     // varmistetaan, ettï¿½ tag on oikea
 			memset(line, 0, sizeof(line));
 			return(-3);
 			}
@@ -319,7 +321,7 @@ int	xml_tree::loadbranch(TextFl *infile, int *inode, int depth, int *rv, wchar_t
 			}
 		if (*inode >= maxnode-1) {
 			er = 1;
-			swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Varattu puskuritila (%d solmua) ei riitä", maxnode);
+			swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Varattu puskuritila (%d solmua) ei riitï¿½", maxnode);
 
 			break;
 			}
@@ -332,39 +334,39 @@ int	xml_tree::loadbranch(TextFl *infile, int *inode, int depth, int *rv, wchar_t
 				*rv, node[*inode].tag);
 			break;
 			}
-		if (lntype < 0)     					// <? -rivit ja tyhjät rivit ohitetaan
+		if (lntype < 0)     					// <? -rivit ja tyhjï¿½t rivit ohitetaan
 			continue;
 		if (lntype > 0 && (lntype & 1)) {
 			for (int i = 0; i <= depth; i++)
-				nd.nodeno[i] = k[i];           // merkitään eri tasojen järjestysnumerot solmuun
-			nd.depth = depth;                  // merkitään taso
-			node[++*inode] = nd;                // siirretään tiedot solmupuuhun
+				nd.nodeno[i] = k[i];           // merkitï¿½ï¿½n eri tasojen jï¿½rjestysnumerot solmuun
+			nd.depth = depth;                  // merkitï¿½ï¿½n taso
+			node[++*inode] = nd;                // siirretï¿½ï¿½n tiedot solmupuuhun
 			if (lntype & 4) {
-				k[depth]++;                    // kasvatetaan tasokohtaista järjestysnumeroa tyhjän
-				continue;                      // tagin tapauksessa ja siirrytään seur. riville
+				k[depth]++;                    // kasvatetaan tasokohtaista jï¿½rjestysnumeroa tyhjï¿½n
+				continue;                      // tagin tapauksessa ja siirrytï¿½ï¿½n seur. riville
 				}
 			else {
-				txtbuf[depth][0] = 0;          // nollataan tekstimuisti käsiteltävällä tasolla
+				txtbuf[depth][0] = 0;          // nollataan tekstimuisti kï¿½siteltï¿½vï¿½llï¿½ tasolla
 				if (lntype & 2) {
 					if (*line) {
 						node[*inode].text = new wchar_t[wcslen(line)+1];
 						wcscpy(node[*inode].text, line);
 						}
-					k[depth]++;                            // kasvatetaan tasokohtaista järjestysnumroa
+					k[depth]++;                            // kasvatetaan tasokohtaista jï¿½rjestysnumroa
 					continue;
 					}
-				// Tähän tullaan, kun tag jää auki, seuraava tag on svemmällä tasolla
+				// Tï¿½hï¿½n tullaan, kun tag jï¿½ï¿½ auki, seuraava tag on svemmï¿½llï¿½ tasolla
 				depth++;
-				k[depth] = 0;           // seuraavan tason järjestysnumero alkaa nollasta
+				k[depth] = 0;           // seuraavan tason jï¿½rjestysnumero alkaa nollasta
 				}
 			}
-		else if (lntype == 8) {                  // sulkeva tag uudella rivillä
+		else if (lntype == 8) {                  // sulkeva tag uudella rivillï¿½
 			int jnode;
 			depth--;
-			k[depth]++;                 // kasvatetaan tason laskuria sulkevän tagin tasolla
-			// Etsitään vastaava avaava tag aiemmasta ketjusta
+			k[depth]++;                 // kasvatetaan tason laskuria sulkevï¿½n tagin tasolla
+			// Etsitï¿½ï¿½n vastaava avaava tag aiemmasta ketjusta
 			for (jnode = *inode; jnode > inode_in && node[jnode].depth > depth; jnode--) ;
-			if (wcscmp(tag, node[jnode].tag)) {      // Varmistetaan, että tagit ovat pari
+			if (wcscmp(tag, node[jnode].tag)) {      // Varmistetaan, ettï¿½ tagit ovat pari
 				er = 1;
 				swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
 					*rv, tag, node[jnode].tag);
@@ -379,9 +381,9 @@ int	xml_tree::loadbranch(TextFl *infile, int *inode, int depth, int *rv, wchar_t
 				}
 			continue;
 			}
-		else if (lntype == 0) {							// tekstiä
-			if (wcslen(line) > 0) {     // siirretään omalla rivillään oleva teksti tekstimuistiin lisäten
-				int dpth = depth - 1;   // eteen välilyönti, jos aiempaakin tekstiä
+		else if (lntype == 0) {							// tekstiï¿½
+			if (wcslen(line) > 0) {     // siirretï¿½ï¿½n omalla rivillï¿½ï¿½n oleva teksti tekstimuistiin lisï¿½ten
+				int dpth = depth - 1;   // eteen vï¿½lilyï¿½nti, jos aiempaakin tekstiï¿½
 				if (dpth < 0)
 					dpth = 0;
 				if (txtbuf[dpth][0] && XMLTXTBUFLEN-wcslen(txtbuf[dpth]) > 1)
@@ -445,7 +447,7 @@ int	xml_tree::loadtree(wchar_t *filename)
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto päättyi rivillä %d tasolla %d", rv, depth);
+		swprintf(msg, L"XML-tiedosto pï¿½ï¿½ttyi rivillï¿½ %d tasolla %d", rv, depth);
 		}
 	if (er)
 		writeerror_w(msg, 0);

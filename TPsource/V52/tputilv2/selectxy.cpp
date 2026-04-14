@@ -28,6 +28,8 @@
 #define FALSE 0
 
 
+// Näyttää valintakehote ruudun rivillä y, sarakkeessa x ja odottaa käyttäjän valintaa.
+// prompt: kehoteteksti, term: hyväksytyt merkit, tc: valittu merkki palautetaan tähän.
 void selectxy(int y, int x, char *prompt, char *term, char *tc)
 {
    char ch,ch2;

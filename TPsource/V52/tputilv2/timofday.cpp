@@ -14,9 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Palauttaa nykyisen paikallisen ajan 0,1 sekunneina käyttäen GetLocalTime-kutsua.
+
 #include <tptype.h>
 #include <windows.h>
 
+// Palauttaa nykyisen paikallisen ajan 0,1 sekunneina vuorokauden alusta.
+// Palauttaa INT32-arvon (36000*h + 600*min + 10*s + ms/100).
 INT32 timeofday(void)
    {
    SYSTEMTIME stm;

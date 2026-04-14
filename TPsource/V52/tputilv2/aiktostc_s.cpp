@@ -20,6 +20,8 @@
 #include <string.h>
 #include <tputil.h>
 
+// Muuntaa 1/10-sekunneissa annetun ajan merkkijonoksi muodossa tt:mm:ss,s (kaksoispiste erottimena) annettuun puskuriin.
+// as: kohdepuskuri, tl: aika 1/10-sekunteina, t0: tuntilisäys; palauttaa as:n.
 char *aikatostr_cols(char *as, INT32 tl, int t0)
    {
    aikatostr_ls(as, tl,t0);

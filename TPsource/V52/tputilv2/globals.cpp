@@ -29,7 +29,8 @@ int iobufr, nchdble, nchsgle;
 UCHAR sgle[20], dble[20];
 UCHAR savebox[2000];
 
-void lopetus(void) 
+// Lopettaa ohjelman suorituksen välittömästi kutsumalla exit(0).
+void lopetus(void)
 { 
 	exit(0);
 }

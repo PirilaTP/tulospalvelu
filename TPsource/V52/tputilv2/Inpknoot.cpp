@@ -40,6 +40,9 @@
 
 extern int spoolfl;
 
+// Lukee kilpailunumeron ja osuuden tarkistusnumeron kanssa (TARKNO aina aktiivisena).
+// kno: kilpailunumero (in/out), os: osuus (in/out), x/y: näyttökoordinaatit, term: lopetusmerkit, tc: lopetusmerkki (out).
+// Vaatii tarkistusnumeron täsmäävän; näyttää virhe-viestin jos tarkistus epäonnistuu.
 void inputkno_os_t(int *kno, int *os, int x, int y, char *term, char *tc)
    {
    char tarr[6];
@@ -178,6 +181,8 @@ void inputkno_os_t(int *kno, int *os, int x, int y, char *term, char *tc)
    *tc = ch;
    }
 
+// Unicode-versio inputkno_os_t:sta; muuntaa wide-merkkijonot OEM-merkistöön ennen kutsua.
+// wterm: wide-merkkinen lopetusmerkkijono, wtc: vastaanotettu lopetusmerkki wide-muodossa (out).
 void inputkno_os_tw(int *kno, int *os, int x, int y, wchar_t *wterm, wchar_t *wtc)
 {
 	char tc, term[40];

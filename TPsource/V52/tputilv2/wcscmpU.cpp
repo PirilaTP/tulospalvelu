@@ -14,8 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Kirjainkoosta riippumaton merkkijonovertailu sekä wide- että ANSI-merkkijonoille.
+
 #include "tputil.h"
 
+// Vertailee kahta wide-merkkijonoa kirjainkoosta riippumattomasti towupper2-funktiolla.
+// Palauttaa negatiivisen, nollan tai positiivisen arvon kuten wcscmp.
 int wcscmpU(const wchar_t *s1, const wchar_t *s2)
 {
 	for (; *s1 || *s2; s1++, s2++)
@@ -24,6 +28,8 @@ int wcscmpU(const wchar_t *s1, const wchar_t *s2)
 	return(0);
 }
 
+// Vertailee kahta wide-merkkijonoa kirjainkoosta riippumattomasti len merkin matkalta.
+// Palauttaa negatiivisen, nollan tai positiivisen arvon kuten memcmp.
 int wmemcmpU(const wchar_t *s1, const wchar_t *s2, int len)
 {
 	for (int i = 0; i < len; i++, s1++, s2++)
@@ -32,6 +38,8 @@ int wmemcmpU(const wchar_t *s1, const wchar_t *s2, int len)
 	return(0);
 }
 
+// Vertailee kahta ANSI/OEM-merkkijonoa kirjainkoosta riippumattomasti upcasesc-funktiolla.
+// Palauttaa negatiivisen, nollan tai positiivisen arvon kuten strcmp.
 int strcmpU(const char *s1, const char *s2)
 {
 	for (; *s1 || *s2; s1++, s2++)
@@ -40,6 +48,8 @@ int strcmpU(const char *s1, const char *s2)
 	return(0);
 }
 
+// Vertailee kahta ANSI/OEM-merkkijonoa kirjainkoosta riippumattomasti len merkin matkalta.
+// Palauttaa negatiivisen, nollan tai positiivisen arvon kuten memcmp.
 int memcmpU(const char *s1, const char *s2, int len)
 {
 	for (int i = 0; i < len; i++, s1++, s2++)

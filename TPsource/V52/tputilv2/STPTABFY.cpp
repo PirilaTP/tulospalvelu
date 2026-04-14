@@ -43,6 +43,8 @@
 #define  TAB	 '\t'
 
 
+// Muuntaa merkkijonon psource välilyönnit tabulointimerkeiksi; incr on tabulointitiheys.
+// Muokkaa psourcen paikan päällä; palauttaa osoittimen muokattuun merkkijonoon.
 char *stptabfy(char *psource, int incr)
 {
     char c;

@@ -17,6 +17,8 @@
 #include <string.h>
 #include <wchar.h>
 
+// Poistaa aikastrinnin alussa olevat nollat, pisteet ja kaksoispisteet siirtämällä jäljellä olevan osan alkuun.
+// aikastr: paikan päällä muokattava aikastring.
 void elimzb1(char *aikastr)
 	{
 	char *p;
@@ -29,6 +31,8 @@ void elimzb1(char *aikastr)
 	memmove(aikastr, p, strlen((char *)p)+1);
 	}
 
+// Poistaa leveän aikastrinnin alussa olevat nollat, pisteet ja kaksoispisteet siirtämällä jäljellä olevan osan alkuun.
+// aikastr: paikan päällä muokattava leveä aikastring.
 void elimwzb1(wchar_t *aikastr)
 	{
 	wchar_t *p;

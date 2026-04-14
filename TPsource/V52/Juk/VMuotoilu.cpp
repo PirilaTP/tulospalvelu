@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Viestikilpailun tuloslistojen kenttÃ¤mÃ¤Ã¤ritykset: nÃ¤yttÃ¶-, tiedosto- ja tulostuskenttien oletusarvot.
+
 //---------------------------------------------------------------------------
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,12 +49,12 @@ FldFrmtTp dspflds[] = {
 	F_RATA, L"Rata", L"Rata", 45,0, 0, 1,                  // 9: badge
 	F_OSSRA, L"Seura", L"Seura", 45,0, 0, 1,                 // 10: seura
 	F_TLS, L"Tulos", L"Tulos", 70,8, 1, 1,                 	// 11: tulos
-	F_ERO, L"Ero", L"Ero",  70,0, 1, 1,                  	// 12: ero kärkeen
+	F_ERO, L"Ero", L"Ero",  70,0, 1, 1,                  	// 12: ero kï¿½rkeen
 	F_SAK, L"Sakot", L"Sakot",70,0, 1, 1,                   	// 13: sakot
-	F_TARK, L"Hyväks.", L"T", 79, 1, 0, 1,               // 14: Leimantarkastus
+	F_TARK, L"Hyvï¿½ks.", L"T", 79, 1, 0, 1,               // 14: Leimantarkastus
 	F_PIST, L"Pisteet", L"Pisteet", 70, 0, 1, 1,              	// 15: pisteet
-	F_OSASJ, L"Os-sija", L"OsSj", 70, 0, 1, 1,              // 16: osuuden tai väliajan sija
-	F_OSATLS, L"Os-tulos", L"OsTls", 70,0, 1, 1,            // 17: osuuden tulos tai väliaika
+	F_OSASJ, L"Os-sija", L"OsSj", 70, 0, 1, 1,              // 16: osuuden tai vï¿½liajan sija
+	F_OSATLS, L"Os-tulos", L"OsTls", 70,0, 1, 1,            // 17: osuuden tulos tai vï¿½liaika
 	F_SEURSJ, L"Seur.sj.", L"Sj.", 70, 0, 0, 1,       		// 18: seuraava osatulos
 	0, 0, 0, 0, 0, 0
 	};
@@ -72,12 +74,12 @@ FldFrmtTp fileflds[] = {
 	F_RATA, L"Rata", L"Rata", 100,0, 0, 1,                 // 9: badge
 	F_OSSRA, L"OsSeura", L"OsSeura", 110,0, 0, 1,                 	// 10: seura
 	F_TLS, L"Tulos", L"Tulos", 110,10, 1, 1,                 	// 11: tulos
-	F_ERO, L"Ero", L"Ero",  121,10, 1, 1,                  	// 12: ero kärkeen
+	F_ERO, L"Ero", L"Ero",  121,10, 1, 1,                  	// 12: ero kï¿½rkeen
 	F_SAK, L"Sakot", L"Sakot",121,0, 1, 1,                   	// 13: sakot
-	F_TARK, L"Hyväks.", L"T", 133, 1, 0, 1,               // 14: Leimantarkastus
+	F_TARK, L"Hyvï¿½ks.", L"T", 133, 1, 0, 1,               // 14: Leimantarkastus
 	F_PIST, L"Pisteet", L"Pisteet", 133, 0, 1, 1,              	// 15: pisteet
-	F_OSASJ, L"Os-sija", L"OsSj", 136, 4, 1, 1,              // 16: osuuden tai väliajan sija
-	F_OSATLS, L"Os-tulos", L"OsTls", 142,10, 1, 1,            // 17: osuuden tulos tai väliaika
+	F_OSASJ, L"Os-sija", L"OsSj", 136, 4, 1, 1,              // 16: osuuden tai vï¿½liajan sija
+	F_OSATLS, L"Os-tulos", L"OsTls", 142,10, 1, 1,            // 17: osuuden tulos tai vï¿½liaika
 	F_SEURSJ, L"Seur.sj.", L"Sj.", 126, 0, 0, 1,       		// 18: seuraava osatulos
 	0, 0, 0, 0, 0, 0
 	};
@@ -97,12 +99,12 @@ FldFrmtTp fileflds_suunn[] = {
 	F_RATA, L"Rata", L"Rata", 110,0, 0, 1,                   // 11: rata
 	F_OSSRA, L"OsSeura", L"OsSeura", 110,0, 0, 1,                // 12: seura
 	F_TLS, L"Tulos", L"Tulos", 110,10, 1, 1,                 	// 11: tulos
-	F_ERO, L"Ero", L"Ero",  121,10, 1, 1,                  	// 12: ero kärkeen
+	F_ERO, L"Ero", L"Ero",  121,10, 1, 1,                  	// 12: ero kï¿½rkeen
 	F_SAK, L"Sakot", L"Sakot",121,0, 1, 1,                   	// 13: sakot
-	F_TARK, L"Hyväks.", L"T", 133, 1, 0, 1,               // 14: Leimantarkastus
+	F_TARK, L"Hyvï¿½ks.", L"T", 133, 1, 0, 1,               // 14: Leimantarkastus
 	F_PIST, L"Pisteet", L"Pisteet", 133, 0, 1, 1,              	// 15: pisteet
-	F_OSASJ, L"Os-sija", L"OsSj", 136, 4, 1, 1,              // 16: osuuden tai väliajan sija
-	F_OSATLS, L"Os-tulos", L"OsTls", 142,10, 1, 1,            // 17: osuuden tulos tai väliaika
+	F_OSASJ, L"Os-sija", L"OsSj", 136, 4, 1, 1,              // 16: osuuden tai vï¿½liajan sija
+	F_OSATLS, L"Os-tulos", L"OsTls", 142,10, 1, 1,            // 17: osuuden tulos tai vï¿½liaika
 	F_SEURSJ, L"Seur.sj.", L"Sj.", 126, 0, 0, 1,       		// 18: seuraava osatulos
 	0, 0, 0, 0, 0, 0
 	};
@@ -121,12 +123,12 @@ FldFrmtTp filefldsk[] = {
 	F_RATA, L"Rata", L"Rata", 110,0, 0, 1,                   // 9: badge
 	F_OSSRA, L"OsSeura", L"OsSeura", 110,0, 0, 1,              	// 10: seura
 	F_TLS, L"Tulos", L"Tulos", 66,10, 1, 3,                 	// 11: tulos
-	F_ERO, L"Ero", L"Ero",  80, 0, 1, 3,                  	// 12: ero kärkeen
+	F_ERO, L"Ero", L"Ero",  80, 0, 1, 3,                  	// 12: ero kï¿½rkeen
 	F_SAK, L"Sakot", L"Sakot",80, 0, 1, 1,                   	// 13: sakot
-	F_TARK, L"Hyväks.", L"T", 78, 0, 0, 1,               // 14: Leimantarkastus
+	F_TARK, L"Hyvï¿½ks.", L"T", 78, 0, 0, 1,               // 14: Leimantarkastus
 	F_PIST, L"Pisteet", L"Pisteet", 80, 0, 1, 1,              	// 15: pisteet
-	F_OSASJ, L"Os-sija", L"OsSj", 85, 4, 1, 1,              // 16: osuuden tai väliajan sija
-	F_OSATLS, L"Os-tulos", L"OsTls", 93,10, 1, 1,            // 17: osuuden tulos tai väliaika
+	F_OSASJ, L"Os-sija", L"OsSj", 85, 4, 1, 1,              // 16: osuuden tai vï¿½liajan sija
+	F_OSATLS, L"Os-tulos", L"OsTls", 93,10, 1, 1,            // 17: osuuden tulos tai vï¿½liaika
 	F_OSOTS, L"Os-ots", L"Osuus", 6, 8, 0, 1,       		    // 18: osuuden otsikko
 	F_VSJ, L"Vaihtosj", L"VaihtoSj", 60, 4, 1, 1,                // : sija vaihdossa
 	0, 0, 0, 0, 0, 0
@@ -147,12 +149,12 @@ FldFrmtTp prtflds_suunn[] = {
 	F_RATA, L"Rata", L"Rata", 600,0, 0, 1,                 // 9: badge
 	F_OSSRA, L"OsSeura", L"OsSeura", 600,0, 0, 1,              	// 10: seura
 	F_TLS, L"Tulos", L"Tulos", 650,10, 1, 1,                 	// 11: tulos
-	F_ERO, L"Ero", L"Ero",  730,10, 1, 1,                  	// 12: ero kärkeen
+	F_ERO, L"Ero", L"Ero",  730,10, 1, 1,                  	// 12: ero kï¿½rkeen
 	F_SAK, L"Sakot", L"Sakot",730,0, 1, 1,                   	// 13: sakot
-	F_TARK, L"Hyväks.", L"T", 835, 1, 0, 1,               // 14: Leimantarkastus
+	F_TARK, L"Hyvï¿½ks.", L"T", 835, 1, 0, 1,               // 14: Leimantarkastus
 	F_PIST, L"Pisteet", L"Pisteet", 840, 0, 1, 1,              	// 15: pisteet
-	F_OSASJ, L"Os-sija", L"OsSj", 825, 0, 1, 1,              // 16: osuuden tai väliajan sija
-	F_OSATLS, L"Os-tulos", L"OsTulos", 850, 8, 1, 1,            // 17: osuuden tulos tai väliaika
+	F_OSASJ, L"Os-sija", L"OsSj", 825, 0, 1, 1,              // 16: osuuden tai vï¿½liajan sija
+	F_OSATLS, L"Os-tulos", L"OsTulos", 850, 8, 1, 1,            // 17: osuuden tulos tai vï¿½liaika
 	F_SEURSJ, L"Seur.sj.", L"Sj.", 860, 0, 0, 1,       		// 18: seuraava osatulos
 	0, 0, 0, 0, 0, 0
 	};
@@ -172,12 +174,12 @@ FldFrmtTp prtflds[] = {
 	F_RATA, L"Rata", L"Rata", 600,0, 0, 1,                 // 9: badge
 	F_OSSRA, L"OsSeura", L"OsSeura", 600,0, 0, 1,              	// 10: seura
 	F_TLS, L"Tulos", L"Tulos", 650,10, 1, 1,                 	// 11: tulos
-	F_ERO, L"Ero", L"Ero",  730,10, 1, 1,                  	// 12: ero kärkeen
+	F_ERO, L"Ero", L"Ero",  730,10, 1, 1,                  	// 12: ero kï¿½rkeen
 	F_SAK, L"Sakot", L"Sakot",730,0, 1, 1,                   	// 13: sakot
-	F_TARK, L"Hyväks.", L"T", 835, 0, 0, 1,               // 14: Leimantarkastus
+	F_TARK, L"Hyvï¿½ks.", L"T", 835, 0, 0, 1,               // 14: Leimantarkastus
 	F_PIST, L"Pisteet", L"Pisteet", 840, 0, 1, 1,              	// 15: pisteet
-	F_OSASJ, L"Os-sija", L"OsSj", 825, 0, 1, 1,              // 16: osuuden tai väliajan sija
-	F_OSATLS, L"Os-tulos", L"OsTulos", 850, 8, 1, 1,            // 17: osuuden tulos tai väliaika
+	F_OSASJ, L"Os-sija", L"OsSj", 825, 0, 1, 1,              // 16: osuuden tai vï¿½liajan sija
+	F_OSATLS, L"Os-tulos", L"OsTulos", 850, 8, 1, 1,            // 17: osuuden tulos tai vï¿½liaika
 	F_SEURSJ, L"Seur.sj.", L"Sj.", 860, 0, 0, 1,       		// 18: seuraava osatulos
 	0, 0, 0, 0, 0, 0
 	};
@@ -196,12 +198,12 @@ FldFrmtTp prtfldsk[] = {
 	F_RATA, L"Rata", L"Rata", 450,0, 0, 1,                 // 9: badge
 	F_OSSRA, L"OsSeura", L"OsSeura", 400,0, 0, 1,              	// 10: seura
 	F_TLS, L"Tulos", L"Tulos", 590,10, 1, 3,                 	// 11: tulos
-	F_ERO, L"Ero", L"Ero",  710,0, 1, 3,                  	// 12: ero kärkeen
+	F_ERO, L"Ero", L"Ero",  710,0, 1, 3,                  	// 12: ero kï¿½rkeen
 	F_SAK, L"Sakot", L"Sakot",730,0, 1, 1,                   	// 13: sakot
-	F_TARK, L"Hyväks.", L"T", 840, 0, 0, 1,               // 14: Leimantarkastus
+	F_TARK, L"Hyvï¿½ks.", L"T", 840, 0, 0, 1,               // 14: Leimantarkastus
 	F_PIST, L"Pisteet", L"Pisteet", 840, 0, 1, 1,              	// 15: pisteet
-	F_OSASJ, L"Os-sija", L"OsSj", 770, 4, 1, 1,              // 16: osuuden tai väliajan sija
-	F_OSATLS, L"Os-tulos", L"OsTulos", 810,10, 1, 1,            // 17: osuuden tulos tai väliaika
+	F_OSASJ, L"Os-sija", L"OsSj", 770, 4, 1, 1,              // 16: osuuden tai vï¿½liajan sija
+	F_OSATLS, L"Os-tulos", L"OsTulos", 810,10, 1, 1,            // 17: osuuden tulos tai vï¿½liaika
 	F_OSOTS, L"Os-ots", L"Osuus", 50, 8, 0, 1,       		    // 18: osuuden otsikko
 	F_VSJ, L"Vaihtosj", L"VaihtoSj", 540, 4, 1, 1,                // : sija vaihdossa
 	0, 0, 0, 0, 0, 0
@@ -215,8 +217,8 @@ GDIfontTp CurrFnt = {
 	0,	 // italic
 	0,  // numwidth
 	12, // line = Linespacing
-	0,  // chwidth = merkkiä rivillä
-	0,  // rivejä sivulla
+	0,  // chwidth = merkkiï¿½ rivillï¿½
+	0,  // rivejï¿½ sivulla
 	0}; // hfont
 GDIfontTp DefFnt = {
 	0,  // fontfamily = TimesNewRoman
@@ -226,8 +228,8 @@ GDIfontTp DefFnt = {
 	0,	 // italic
 	0,  // numwidth
 	12, // line = Linespacing
-	0,  // chwidth = merkkiä rivillä
-	0,  // rivejä sivulla
+	0,  // chwidth = merkkiï¿½ rivillï¿½
+	0,  // rivejï¿½ sivulla
 	0}; // hfont
 GDIfontTp TitleFnt = {
 	0,  // fontfamily = TimesNewRoman
@@ -237,8 +239,8 @@ GDIfontTp TitleFnt = {
 	0,	 // italic
 	0,  // numwidth
 	16, // line = Linespacing
-	0,  // chwidth = merkkiä rivillä
-	0,  // rivejä sivulla
+	0,  // chwidth = merkkiï¿½ rivillï¿½
+	0,  // rivejï¿½ sivulla
 	0}; // hfont
 GDIfontTp HeaderFnt = {
 	0,  // fontfamily = TimesNewRoman
@@ -248,8 +250,8 @@ GDIfontTp HeaderFnt = {
 	0,	 // italic
 	0,  // numwidth
 	12, // line = Linespacing
-	0,  // chwidth = merkkiä rivillä
-	0,  // rivejä sivulla
+	0,  // chwidth = merkkiï¿½ rivillï¿½
+	0,  // rivejï¿½ sivulla
 	0}; // hfont
 GDIfontTp BoldFnt = {
 	0,  // fontfamily = TimesNewRoman
@@ -259,8 +261,8 @@ GDIfontTp BoldFnt = {
 	0,	 // italic
 	0,  // numwidth
 	12, // line = Linespacing
-	0,  // chwidth = merkkiä rivillä
-	0,  // rivejä sivulla
+	0,  // chwidth = merkkiï¿½ rivillï¿½
+	0,  // rivejï¿½ sivulla
 	0}; // hfont
 GDIfontTp SmallFnt = {
 	0,  // fontfamily = TimesNewRoman
@@ -270,8 +272,8 @@ GDIfontTp SmallFnt = {
 	0,	 // italic
 	0,  // numwidth
 	12, // line = Linespacing
-	0,  // chwidth = merkkiä rivillä
-	0,  // rivejä sivulla
+	0,  // chwidth = merkkiï¿½ rivillï¿½
+	0,  // rivejï¿½ sivulla
 	0}; // hfont
 GDIfontTp CourFnt = {
 	4,  // fontfamily = CourierNew
@@ -281,8 +283,8 @@ GDIfontTp CourFnt = {
 	0,	 // italic
 	0,  // numwidth
 	12, // line = Linespacing
-	0,  // chwidth = merkkiä rivillä
-	0,  // rivejä sivulla
+	0,  // chwidth = merkkiï¿½ rivillï¿½
+	0,  // rivejï¿½ sivulla
 	0}; // hfont
 GDIfontTp RastiVaHeaderFnt = {
 	1,  // fontfamily = Arial
@@ -292,8 +294,8 @@ GDIfontTp RastiVaHeaderFnt = {
 	0,	 // italic
 	0,  // numwidth
 	14, // line = Linespacing
-	0,  // chwidth = merkkiä rivillä
-	0,  // rivejä sivulla
+	0,  // chwidth = merkkiï¿½ rivillï¿½
+	0,  // rivejï¿½ sivulla
 	0}; // hfont
 GDIfontTp RastiVaFnt = {
 	1,  // fontfamily = Arial
@@ -303,8 +305,8 @@ GDIfontTp RastiVaFnt = {
 	0,	 // italic
 	0,  // numwidth
 	10, // line = Linespacing
-	0,  // chwidth = merkkiä rivillä
-	0,  // rivejä sivulla
+	0,  // chwidth = merkkiï¿½ rivillï¿½
+	0,  // rivejï¿½ sivulla
 	0}; // hfont
 
 tulosmuottp tulosmuot;
@@ -421,21 +423,21 @@ void tulosmuottp::operator=(tulosmuottp& muot)
 void tulosmuottp::nollaa(void)
 {
 	memset(this, 0, sizeof(tulosmuottp));
-	snimifl = 1;       // Ei käytössä
+	snimifl = 1;       // Ei kï¿½ytï¿½ssï¿½
 	knofl = 1;
 	tpvafl = 1;
 	tklofl = 1;
-	lkmfl = 1;         // Ei käytössä
+	lkmfl = 1;         // Ei kï¿½ytï¿½ssï¿½
 	otsikot = 0;
 	etusuku = -1;
-	nollakarki = 0;    // Ei käytössä
+	nollakarki = 0;    // Ei kï¿½ytï¿½ssï¿½
 	marg = 0;    // Kirjoitin : 20
 	omarg = 20;
 	ymarg = 30;
 	amarg = 30;
 	tabs = 0;
 	numlev = 1;
-	levunit = 0;  // 0: merkkejä, 1: poins, 2: 1/1000 rivi
+	levunit = 0;  // 0: merkkejï¿½, 1: poins, 2: 1/1000 rivi
 	sivpit = 99999;   // Kirjoitin : 60
 	rivpit = 999;     // Kirjoitin: 200
 	tiiv_len = 250;   // Kirjoitin: 120
@@ -822,7 +824,7 @@ void lue_muotoilu(wchar_t *luetfnm, int kysy)
 
    if (kysy) {
       ch = L' ';
-	  wselectopt(L"Luetaanko muotoilu levyltä (K/E)", L"KE", &ch);
+	  wselectopt(L"Luetaanko muotoilu levyltï¿½ (K/E)", L"KE", &ch);
       clrln(ySize-3);
 	  if (ch == L'K') {
          vidspwmsg(ySize-3,0,7,0,L"Tiedoston nimi:");
@@ -840,7 +842,7 @@ void lue_muotoilu(wchar_t *luetfnm, int kysy)
 				delete luetfmtf;
 				luetfmtf = NULL;
 			   erbeep();
-			   vidspwmsg(ySize-1,0,0,7,L"EI LÖYDY!");
+			   vidspwmsg(ySize-1,0,0,7,L"EI Lï¿½YDY!");
                }
 			else break;
             }
@@ -852,7 +854,7 @@ void lue_muotoilu(wchar_t *luetfnm, int kysy)
 	   luetfmtf = new TextFl(luetfnm,L"r");
 		if (!luetfmtf->IsOpen()) {
 			delete luetfmtf;
-			writeerror_w(L"Tulostusmuotoilutiedostoa ei löydy!",0, true);
+			writeerror_w(L"Tulostusmuotoilutiedostoa ei lï¿½ydy!",0, true);
 			return;
 			}
 		}
@@ -1217,7 +1219,7 @@ static tagListTp FrmTags[] = {
 
 static wchar_t *FRM_Kohteet[] = {L"None", L"Epson", L"HPLaserJet", L"Postscript", L"Proprinter",
 	L"TxtTab", L"Canon", L"GDIprinter"};
-static wchar_t *FRM_Lajit[] = {L"Kirjoitin_osuus", L"Kirjoitin_kaikki", L"Tiedosto_osuus", L"Tiedosto_kaikki", L"Näyttö"};
+static wchar_t *FRM_Lajit[] = {L"Kirjoitin_osuus", L"Kirjoitin_kaikki", L"Tiedosto_osuus", L"Tiedosto_kaikki", L"Nï¿½yttï¿½"};
 static wchar_t *FRM_Units[] = {L"Merkit", L"Points", L"Rivi/1000"};
 static wchar_t *FRM_FontKohde[] = {L"Perus", L"Otsikko", L"Alaots", L"Lihavoitu", L"Pieni", L"Vakiolev"};
 static wchar_t *FRM_FontFamilyName[] = {L"Times New Roman", L"Arial", L"Arial Narrow", L"Calibri", L"Courier New", L"Lucida Console"};
@@ -1995,7 +1997,7 @@ int LueXMLMuotoilu(wchar_t *MuotFile)
 				continue;
 			nd.depth = depth;
 			for (int i = 0; i <= depth; i++)
-				nd.nodeno[i] = k[i];           // merkitään eri tasojen järjestysnumerot solmuun
+				nd.nodeno[i] = k[i];           // merkitï¿½ï¿½n eri tasojen jï¿½rjestysnumerot solmuun
 			if (lntype > 0)
 				nd.tagid = XMLhae_tagid(nd.tag, FrmTags, nFrmTags);
 			if (lntype == 1) {
@@ -2020,13 +2022,13 @@ int LueXMLMuotoilu(wchar_t *MuotFile)
 					--depth;
 					}
 				}
-			else if (lntype == 8) {                  // sulkeva tag uudella rivillä
+			else if (lntype == 8) {                  // sulkeva tag uudella rivillï¿½
 				int jnode;
 				depth--;
-				k[depth]++;                 // kasvatetaan tason laskuria sulkevän tagin tasolla
-				// Etsitään vastaava avaava tag aiemmasta ketjusta
+				k[depth]++;                 // kasvatetaan tason laskuria sulkevï¿½n tagin tasolla
+				// Etsitï¿½ï¿½n vastaava avaava tag aiemmasta ketjusta
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
-				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, että tagit ovat pari
+				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ettï¿½ tagit ovat pari
 					er = 1;
 					swprintf(msg, L"XML-muotoilun tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
 						rv, tag, tree.node[jnode].tag);
@@ -2052,11 +2054,11 @@ int LueXMLMuotoilu(wchar_t *MuotFile)
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s päättyi rivillä %d tasolla %d", MuotFile, rv, depth);
+		swprintf(msg, L"XML-tiedosto %s pï¿½ï¿½ttyi rivillï¿½ %d tasolla %d", MuotFile, rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivillä %d tai aikaisemmin", MuotFile, rv);
+			swprintf(msg, L"Tiedostossa %s virhe rivillï¿½ %d tai aikaisemmin", MuotFile, rv);
 			}
 		writeerror_w(msg, 0, true);
 		}

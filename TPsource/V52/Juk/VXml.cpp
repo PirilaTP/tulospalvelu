@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Viestikilpailun tulosten XML-kirjoitus sisÃ¤ltÃ¤en IOF 2.0 ja oman XML-muodon.
+
 #include <stdio.h>
 #include <stdlib.h>
 #ifndef __linux__
@@ -1367,7 +1369,7 @@ int lueVainRadatXml(wchar_t *filename, IOFCourseData *CseData)
 			lntype = nd.interpretXmlLine(line, tag);
 			nd.depth = depth;
 			for (int i = 0; i <= depth; i++)
-				nd.nodeno[i] = k[i];           // merkitään eri tasojen järjestysnumerot solmuun
+				nd.nodeno[i] = k[i];           // merkitï¿½ï¿½n eri tasojen jï¿½rjestysnumerot solmuun
 			if (lntype > 0)
 				nd.tagid = hae_tagid(nd.tag);
 			if (lntype == 1) {
@@ -1436,13 +1438,13 @@ int lueVainRadatXml(wchar_t *filename, IOFCourseData *CseData)
 					--depth;
 					}
 				}
-			else if (lntype == 8) {                  // sulkeva tag uudella rivillä
+			else if (lntype == 8) {                  // sulkeva tag uudella rivillï¿½
 				int jnode;
 				depth--;
-				k[depth]++;                 // kasvatetaan tason laskuria sulkevän tagin tasolla
-				// Etsitään vastaava avaava tag aiemmasta ketjusta
+				k[depth]++;                 // kasvatetaan tason laskuria sulkevï¿½n tagin tasolla
+				// Etsitï¿½ï¿½n vastaava avaava tag aiemmasta ketjusta
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
-				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, että tagit ovat pari
+				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ettï¿½ tagit ovat pari
 					er = 1;
 					swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
 						rv, tag, tree.node[jnode].tag);
@@ -1471,16 +1473,16 @@ int lueVainRadatXml(wchar_t *filename, IOFCourseData *CseData)
 		}
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedoston %s lukeminen päättyi rivillä %d tasolla %d, node %d", filename, rv, depth, inode);
+		swprintf(msg, L"XML-tiedoston %s lukeminen pï¿½ï¿½ttyi rivillï¿½ %d tasolla %d, node %d", filename, rv, depth, inode);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivillä %d tai aikaisemmin", filename, rv);
+			swprintf(msg, L"Tiedostossa %s virhe rivillï¿½ %d tai aikaisemmin", filename, rv);
 			}
 		writeerror_w(msg, 0);
 		}
 #ifdef _DEBUG
-	swprintf(msg, L"XML-ratatiedostosta luettu %d riviä, 10000*%d nodea", rv, jt);
+	swprintf(msg, L"XML-ratatiedostosta luettu %d riviï¿½, 10000*%d nodea", rv, jt);
 	writeerror_w(msg, 0);
 #endif
 	tree.nodecount = inode+1;
@@ -1517,7 +1519,7 @@ int lueEventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueOsanot
 			lntype = nd.interpretXmlLine(line, tag);
 			nd.depth = depth;
 			for (int i = 0; i <= depth; i++)
-				nd.nodeno[i] = k[i];           // merkitään eri tasojen järjestysnumerot solmuun
+				nd.nodeno[i] = k[i];           // merkitï¿½ï¿½n eri tasojen jï¿½rjestysnumerot solmuun
 			if (lntype > 0)
 				nd.tagid = hae_tagid(nd.tag);
 			if (lntype == 1) {
@@ -1621,13 +1623,13 @@ int lueEventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueOsanot
 					--depth;
 					}
 				}
-			else if (lntype == 8) {                  // sulkeva tag uudella rivillä
+			else if (lntype == 8) {                  // sulkeva tag uudella rivillï¿½
 				int jnode;
 				depth--;
-				k[depth]++;                 // kasvatetaan tason laskuria sulkevän tagin tasolla
-				// Etsitään vastaava avaava tag aiemmasta ketjusta
+				k[depth]++;                 // kasvatetaan tason laskuria sulkevï¿½n tagin tasolla
+				// Etsitï¿½ï¿½n vastaava avaava tag aiemmasta ketjusta
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
-				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, että tagit ovat pari
+				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ettï¿½ tagit ovat pari
 					er = 1;
 					swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
 						rv, tag, tree.node[jnode].tag);
@@ -1656,11 +1658,11 @@ int lueEventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueOsanot
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s päättyi rivillä %d tasolla %d", filename, rv, depth);
+		swprintf(msg, L"XML-tiedosto %s pï¿½ï¿½ttyi rivillï¿½ %d tasolla %d", filename, rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivillä %d tai aikaisemmin", filename, rv);
+			swprintf(msg, L"Tiedostossa %s virhe rivillï¿½ %d tai aikaisemmin", filename, rv);
 			}
 		writeerror_w(msg, 0);
 		}

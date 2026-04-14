@@ -18,6 +18,8 @@
 
 // This is a dummy function to be used in absence of on active replacement.
 
+// Käsittelee erikoisnäppäimen konsoli-syötteestä (stub-versio, joka ei tee mitään).
+// Buf: konsolisyöte-tietue; palauttaa aina 0.
 int ProcessSpecialKey(INPUT_RECORD *Buf)
 {
    return(0);

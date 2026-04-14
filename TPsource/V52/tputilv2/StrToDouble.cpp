@@ -17,6 +17,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+// Muuntaa wide-merkkijonon liukuluvuksi hyväksyen sekä pisteen että pilkun desimaalierottimena.
+// str: muunnettava wide-merkkijono (max 99 merkkiä).
+// Palauttaa muunnetun liukulukuarvon.
 double StrToDouble(wchar_t *str)
 {
 	wchar_t st[100], *p;

@@ -31,6 +31,9 @@ static int monirivi = FALSE;
 static unsigned iscurpos = 0;
 extern INT16 ySize;
 
+// Interaktiivinen wide-merkkikenttäeditori: lukee wide-merkkijonon suoraan ilman OEM-muunnosta.
+// s: wide-merkkijono (in/out), l: kentän leveys, x/y: koordinaatit, term: wide-lopetusmerkit, tc: lopetusmerkki wide-muodossa (out), numfl: numeromodi.
+// Tukee lisäys-/korvausmoodia, nuolinäppäimiä ja Delete/Backspace-toimintoja; palauttaa osoittimen s:ään.
 wchar_t *inputwstr2(wchar_t *s, unsigned l, int x, int y, const wchar_t *term,
 		wchar_t *tc, int numfl)
    {

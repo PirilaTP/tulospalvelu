@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Kaikkien henkilÃ¶kilpailun funktioiden ja ulkoisten muuttujien esittelyt (function prototypes).
+
 #ifndef LASKENT_H_DEFINED
 #define LASKENT_H_DEFINED
 #include <stdio.h>
@@ -167,7 +169,7 @@ void lahetaMonitorille(int yhtlkm, int yhtavattu, int jonossa, int jonoja);
 int lah_tiedosto(wchar_t *tiednimi, int kielto, int flags);
 void tark_tiedosto(INT cn);
 
-// Käyttöliittymän funktioita
+// Kï¿½yttï¿½liittymï¿½n funktioita
 int parametrivirhe(wchar_t *sub, int intparam, wchar_t *strparam, wchar_t charparam);
 void Wselectopt(WCHAR *msg, WCHAR *opts, WCHAR *sel);
 int writeerrorkysy(WCHAR *msg);
@@ -756,7 +758,7 @@ extern   INT yhteys_on[];
 extern   int lah_tiedostot[MAX_LAHPORTTI];
 extern   bool lahkaikkitied;
 extern 	 int lahcomserver[];
-extern   int keyclose[];                   /* Käyttäjä sulkenut portin */
+extern   int keyclose[];                   /* Kï¿½yttï¿½jï¿½ sulkenut portin */
 extern   int jonokynnys;
 extern   INT dcom;
 extern   INT yhteysalku;

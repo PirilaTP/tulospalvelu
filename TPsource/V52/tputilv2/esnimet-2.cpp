@@ -19,6 +19,8 @@
 #ifdef TEST
 #include <stdio.h>
 #endif
+// Jakaa nimen etu- ja sukunimeksi; tukee alaviivaa välin sijasta ja etuliitteitä (van, von jne.).
+// sti: syötenimen merkkijono, etu/suku: tulospuskurit; muuntaa alaviivat välilyönneiksi tuloksessa.
 void esnimet2(char *sti, char *etu, char *suku)
    {
    char c1, c2, *p;

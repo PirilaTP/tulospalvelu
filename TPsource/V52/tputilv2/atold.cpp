@@ -18,6 +18,9 @@
 #include <ctype.h>
 #include <string.h>
 
+// Muuntaa desimaalilukumerkkijonon pitkäksi kokonaisluvuksi tuhannesosatarkkuudella.
+// str: merkkijono, joka sisältää desimaaliluvun (pilkku tai piste desimaalierotin).
+// Palauttaa luvun kerrottuna tuhannella (esim. "1.234" -> 1234).
 long atold(char *str)
 	{
 	char s1[40], *p;
@@ -50,6 +53,9 @@ long atold(char *str)
 	return(n);
 	}
 
+// Muuntaa laajamerkkisen desimaalilukumerkkijonon pitkäksi kokonaisluvuksi tuhannesosatarkkuudella.
+// str: laajamerkkijono, joka sisältää desimaaliluvun (pilkku tai piste desimaalierotin).
+// Palauttaa luvun kerrottuna tuhannella.
 long watold(wchar_t *str)
 	{
 	wchar_t s1[40], *p;

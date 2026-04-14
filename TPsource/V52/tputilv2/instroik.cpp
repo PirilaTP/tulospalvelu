@@ -24,6 +24,9 @@
 #define TRUE 1
 #define FALSE 0
 
+// Lukee merkkijonon konsoliruudulta oikealle tasattuna, tukee askelluspalautinta ja erikoisnäppäimiä.
+// Parametrit: ss=puskuri, l=kentän leveys, x/y=ruutukoordinaatit, term=lopetusmerkit, tc=lopetusavain, num_fl=vain numerot.
+// Palauttaa osoittimen syötettyyn merkkijonoon.
 char *inputstr_oik(char *ss, unsigned l, int x, int y, const char *term, char *tc,
    int num_fl)
    {

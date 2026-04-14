@@ -21,16 +21,20 @@
 
 int initcon(void);
 
+// Tyhjä virheenkäsittelijätoteutus testitilaa varten; palauttaa aina 0.
 int ioerr(char *fname, int oper, long iores)
 {
 	return(0);
 }
 
+// Lopettaa ohjelman exit(0):lla (testitoteutus).
 void lopetus(void)
 {
    exit(0);
 }
 
+// Näyttää viestin prompt konsoliruudulla ja odottaa käyttäjän näppäintä joka löytyy term-merkkijonosta.
+// Kirjoittaa valitun merkin *tc:hen.
 void select(char *prompt, char *term, char *tc)
 {
    char ch,ch2;
@@ -51,11 +55,14 @@ void select(char *prompt, char *term, char *tc)
    listfl = FALSE;
 }
 
+// Tyhjä ajastimen poistototeutus testitilaa varten.
 void remtimer(void)
 {
 
 }
 
+// Testipääohjelma (tiedostopohjainen B-puu): luo tiedoston ja indeksin, lisää tietueita,
+// hakee ja poistaa avaimia nextkey/findkey/searchkey-funktioilla; testaa uudelleenavaamista.
 void main()
 {
    static char fname[] = "test.dat";

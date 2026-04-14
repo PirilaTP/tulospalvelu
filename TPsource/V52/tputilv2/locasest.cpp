@@ -17,6 +17,9 @@
 #include <ctype.h>
 #include "tputil.h"
 
+// Muuntaa merkkijonon kaikki kirjaimet pieniksi kirjaimiksi paikalla.
+// Parametri: s=muokattava merkkijono.
+// Palauttaa osoittimen alkuperäiseen merkkijonoon.
 char *locasestr(char *s)
    {
    char *p;
@@ -26,6 +29,9 @@ char *locasestr(char *s)
 	return(s);
 	}
 
+// Laajamerkkiversio locasestr-funktiosta: muuntaa laajamerkki-jonon kaikki kirjaimet pieniksi.
+// Parametri: s=muokattava laajamerkki-jono.
+// Palauttaa osoittimen alkuperäiseen laajamerkki-jonoon.
 wchar_t *locasewstr(wchar_t *s)
 	{
 	wchar_t *p;

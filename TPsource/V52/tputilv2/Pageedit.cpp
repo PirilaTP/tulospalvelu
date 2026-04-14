@@ -36,6 +36,8 @@ char *rivptr[NRMAX];
 static int rm, rl, rluku, rofs, rofs0;
 static int rivi, newline;
 
+// Laskee ja näyttää moniriviisen tekstin rivityksen ruudulla.
+// s: tekstipuskuri, y/x: näytön vasemman yläreunan koordinaatit, ch: viimeinen syötemerkki (255 = päivitä vain kohdistin).
 static void wrapstr(char *s, int y, int x, char ch)
    {
    static int l;
@@ -122,6 +124,8 @@ static void wrapstr(char *s, int y, int x, char ch)
    rofs0 = rofs;
    }
 
+// Siirtää kohdistinta ylöspäin nr riviä moniriivisessä tekstissä.
+// s: tekstipuskuri, nr: siirrettävien rivien määrä.
 static void wrylos(char *s, int nr)
    {
    int r,i;
@@ -135,6 +139,8 @@ static void wrylos(char *s, int nr)
       }
    }
 
+// Siirtää kohdistinta alaspäin nr riviä moniriivisessä tekstissä.
+// s: tekstipuskuri, nr: siirrettävien rivien määrä.
 static void wralas(char *s, int nr)
    {
    int r,i,len;
@@ -153,6 +159,9 @@ static void wralas(char *s, int nr)
    if (iscurpos >= rivptr[r+1] - s) iscurpos = (rivptr[r+1] - s) - 1;
    }
 
+// Moniriivinen tekstieditori: muokkaa pitkää merkkijonoa sivutetulla näkymällä.
+// s: muokattava tekstipuskuri (in/out), l: puskurin maksimipituus, y/x: vasemman yläreunan koordinaatit, y1/x1: oikean alareunan koordinaatit, term: lopetusmerkit, tc: lopetusmerkki (out).
+// Palauttaa osoittimen s:ään kun käyttäjä painaa lopetusnäppäintä.
 char *pageedit(char *s, unsigned l, int y, int x, int y1, int x1,
    const char *term, char *tc)
    {

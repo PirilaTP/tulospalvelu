@@ -27,6 +27,8 @@
 
 extern int spoolfl;
 
+// Lukee enintään 4-numeroisen kokonaisluvun konsoliruudulta käyttäjältä.
+// Parametrit: kno=tulos, x/y=ruutukoordinaatit, term=lopetusmerkit, tc=painettu lopetusavain.
 void input_no(int *kno, int x, int y, char *term, char *tc)
    {
    char tarr[DIGS+1];
@@ -116,6 +118,8 @@ void input_no(int *kno, int x, int y, char *term, char *tc)
    }
 
 
+// Laajamerkkiversio input_no-funktiosta: lukee kokonaisluvun laajamerkki-lopetusmerkeillä.
+// Parametrit: kno=tulos, x/y=ruutukoordinaatit, wterm=lopetusmerkit, wtc=painettu lopetusavain.
 void input_now(int *kno, int x, int y, wchar_t *wterm, wchar_t *wtc)
 {
 	char term[40], tc;

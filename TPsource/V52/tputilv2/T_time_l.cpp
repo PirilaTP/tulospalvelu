@@ -16,6 +16,8 @@
 
 #define DAYTICKS 1573040L
 
+// Muuntaa BIOS-kellon tikut ts (18.2 Hz) 1/10-sekunteiksi suhteessa alkuaikaan t0 (tunnit).
+// Palauttaa kellon arvon 1/10-sekunteina; negatiiviset arvot normalisoidaan +/-12h:n sisälle.
 long t_time_l(long ts, int t0)
    {
    union {

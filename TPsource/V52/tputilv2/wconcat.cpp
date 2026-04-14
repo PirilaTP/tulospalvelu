@@ -17,6 +17,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Yhdistää 2–3 leveää merkkijonoa staattiseen 1000-merkin puskuriin.
+// s1, s2: pakollinen, s3: valinnainen; palauttaa osoittimen staattiseen yhdisteltyyn merkkijonoon.
 wchar_t *wconcat(const wchar_t *s1, const wchar_t *s2, const wchar_t *s3 /* = NULL */)
 {
 	static wchar_t str[1000];

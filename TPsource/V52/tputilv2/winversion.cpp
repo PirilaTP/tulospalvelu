@@ -20,6 +20,8 @@
 //#define TESTPRT
 #include <windows.h>
 
+// Tarkistaa Windows-käyttöjärjestelmän version GetVersionEx-kutsulla.
+// Palauttaa 0 (Win95/98/Me), 4 (NT4) tai 5 (Win2000/XP tai uudempi).
 int WinVersion(void)
    {
    OSVERSIONINFO osvi;

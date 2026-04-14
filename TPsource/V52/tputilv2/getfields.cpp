@@ -19,6 +19,9 @@
 #include <ctype.h>
 #include <tputil.h>
 
+// Jäsentää laajamerkkijonon kentiksi erottimien ja lainausmerkkien perusteella.
+// Parametrit: line=syöterivi, fields=tulostaulukko, maxfields=enimmäiskenttämäärä, sep=erotinmerkit, quotes=lainausmerkit, singlesep=yksi erotin kerrallaan, deleteold=poista vanhat kentät.
+// Palauttaa löydettyjen kenttien lukumäärän.
 int getfields(wchar_t *line, wchar_t *fields[], int maxfields, wchar_t *sep, wchar_t *quotes, bool singlesep, bool deleteold)
 {
 	int len, nfld = 0;
@@ -71,6 +74,8 @@ int getfields(wchar_t *line, wchar_t *fields[], int maxfields, wchar_t *sep, wch
 	return(nfld);
 }
 
+// Vapauttaa getfields-funktion varaamien kenttien muistin.
+// Parametrit: fields=kenttätaulukko, maxfields=taulukon koko.
 void deletefields(wchar_t *fields[], int maxfields)
 {
 	getfields(0, fields, maxfields, 0, 0, 0, true);
