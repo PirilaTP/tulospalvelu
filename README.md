@@ -28,9 +28,8 @@ under GPLv3. More information in Finnish at http://www.pirila.fi/ohj/index.html.
 
 ### Required tools
 The console program's project files are for Visual Studio. They were
-successfully compiled with Visual Studio Express 2013 for Windows Desktop,
-but Visual Studio 2010 and anything newer can probably be made to work. The 
-language is probably compliant with C++03.
+successfully compiled with Visual Studio 2022, but other recent versions
+should work as well. The language is C++03.
 
 ### Compile
 1. Open TPsource\V52\VS\Libs\tputilv2.sln
@@ -47,14 +46,8 @@ language is probably compliant with C++03.
 ### Required tools
 The Windows programs are made with
 [Embarcadero C++ Builder](https://www.embarcadero.com/app-development-tools-store/cbuilder).
-Version 10.1 Berlin was successfully used to compile and run the program.
-
-[SecureBridge 7.1 for RAD Studio 10.1 Berlin](https://www.devart.com/sbridge/download.html)
-is an add-on that is required to compile and run the program. NOTE: At least 
-in Windows 10 you must edit one of SecureBridge's header files to be able to 
-compile this program. Open 
-"Program Files (x86)\Devart\SecureBridge for RAD Studio 10\Include\Win32\ScSSHSocket.hpp"
-and change Winapi::Winsock::PSockAddrIn to Winapi::Winsock2::PSockAddrIn.
+The free Community Edition was successfully used to compile and run the program.
+No third-party add-ons are required.
 
 ### Compile
 1. Open TPsource\V52\RADStudio10\DBboxm-XE.cbproj
