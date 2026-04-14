@@ -1,7 +1,7 @@
 # Pekka Pirilän tulospalveluohjelma 2.0 (sports time keeping program)
 
 ## Briefly in Finnish / Lyhyesti suomeksi
-10 vuotta olemme menneet eteenpäin ja nyt vuonne 2026 aloimme kehittämään 2.0 versiota.
+10 vuotta olemme menneet eteenpäin ja nyt vuonna 2026 aloitimme kehittämään 2.0 versiota.
 
 Tässä ovat Pekka Pirilän (1945-2015) tulospalveluohjelmien lähdekoodit. Mukana 
 ovat kaikki muunnelmat: teksti- ja Windows-versio sekä henkilökohtaisesta että 
