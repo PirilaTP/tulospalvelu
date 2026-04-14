@@ -1,4 +1,4 @@
-﻿// Pekka Pirila's sports timekeeping program (Finnish: tulospalveluohjelma)
+// Pekka Pirila's sports timekeeping program (Finnish: tulospalveluohjelma)
 // Copyright (C) 2015 Pekka Pirila 
 
 // This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 #include <algorithm>
 #include <functional>
 using namespace std;
-#include <cstdlib>
+#include <stdlib>
 #include <io.h>
 #include <fcntl.h>
 #include <string>

@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// XML-tulostiedoston lukeminen ulkoisesta lÃ¤hteestÃ¤ ja tietojen tallennus viestikilpailuun.
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <io.h>
@@ -331,13 +329,13 @@ void xmltulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 			if (tulprm->language > 0)
 				wcscpy(as, L"DidNotFinish");
 			else
-				wcscpy(as, L"Keskeyttï¿½nyt");
+				wcscpy(as, L"Keskeyttänyt");
 			for (os = os_ala; os <= os_yla; os++) {
 				if (kilp.Tark(os, 1) == L'H') {
 					if (tulprm->language > 0)
 						wcscpy(as, L"Disqualified");
 					else
-						wcscpy(as, L"Hylï¿½tty");
+						wcscpy(as, L"Hylätty");
 					break;
 					}
 				}
@@ -435,7 +433,7 @@ void xmltulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 							if (tulprm->language > 0)
 								wcscpy(as, L"DQ");
 							else
-								wcscpy(as, L"Hylï¿½tty");
+								wcscpy(as, L"Hylätty");
 							break;
 						case L'K':
 							if (tulprm->language > 0)

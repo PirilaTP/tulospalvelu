@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Palauttaa nykyisen kellonajan merkkijonona muodossa hh.mm.ss, käyttää time()-funktiota.
-
 #if defined(__BORLANDC__)
 #pragma -K -a1
 #endif

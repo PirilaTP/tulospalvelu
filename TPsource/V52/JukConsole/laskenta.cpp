@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Viestikilpailun konsoliohjelman kÃ¤ynnistys, pÃ¤Ã¤valikko ja yhteyksien hallinta.
-
 #include <stdio.h>
 #include <bvideo.h>
 #include "VDeclare.h"
@@ -34,7 +32,7 @@ void valikko(void)
    do {
       clrscr();
 	  status_on = 1;
-      header=L"Pï¿½ï¿½VALIKKO";
+      header=L"PÄÄVALIKKO";
       kehys(1);
       prscr(&paavalikko);
       listfl = TRUE;

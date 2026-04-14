@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Kaikki henkil√∂kilpailun globaalit muuttujat: s√§ikeiden kriittiset alueet, asetusparametrit ja tilamuuttujat.
-
 #include <stdio.h>
 #include "HkDef.h"
 
@@ -140,8 +138,8 @@
 	wchar_t tarstr[14][13] = {
 						L"",
 						L"Keskeytt.",
-						L"HylÔøΩtty",
-						L"Ei lÔøΩht.",
+						L"Hyl‰tty",
+						L"Ei l‰ht.",
 						L"Tasoitus =",
 						L"Sakko =",
 						L"Korj.",
@@ -569,7 +567,7 @@
 	int maalileimasin;
 	ratatp *rata;
 	INT  nrata;
-	//  kaikki_ajat[0]=  0: ei emit-ajanottoa, 1: sekÔøΩ leimat ettÔøΩ ajanotto, 2: vain ajanotto
+	//  kaikki_ajat[0]=  0: ei emit-ajanottoa, 1: sek‰ leimat ett‰ ajanotto, 2: vain ajanotto
 	//  kaikki_ajat[r_no+1]= 0: laitteelta r_no+1 ei ajanottoa, >=1: laite r_no+1 ottaa aikoja
 	int  kaikki_ajat[NREGNLY+1];
 	int  vaadiaika, esitark, esiluenta, vainpiste[NREGNLY+1], luesuoraan;

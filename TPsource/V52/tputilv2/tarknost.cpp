@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Laskee merkkijonona annetun numeron tarkistusmerkin käyttäen 3-7-1-painotusta (tarknost).
-
 #include <string.h>
 
 // Laskee merkkijonona annetun numeron tarkistusmerkin painotuksilla 3,7,1 oikealta vasemmalle.

@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// IOF 3.0 XML -tulosten luku ja kirjoitus henkilÃ¶kilpailussa.
-
 #include <stdio.h>
 #include <stdlib.h>
 #pragma hdrstop
@@ -620,7 +618,7 @@ int lueIOF30VainRadatXml(wchar_t *filename, IOFCourseData *CseData)
 				continue;
 			nd.depth = depth;
 			for (int i = 0; i <= depth; i++)
-				nd.nodeno[i] = k[i];           // merkitï¿½ï¿½n eri tasojen jï¿½rjestysnumerot solmuun
+				nd.nodeno[i] = k[i];           // merkitään eri tasojen järjestysnumerot solmuun
 			if (lntype > 0)
 				nd.tagid = XMLhae_tagid(nd.tag, IOF3Tags, nIOF3Tags);
 
@@ -649,13 +647,13 @@ int lueIOF30VainRadatXml(wchar_t *filename, IOFCourseData *CseData)
 					--depth;
 					}
 				}
-			else if (lntype == 8) {                  // sulkeva tag uudella rivillï¿½
+			else if (lntype == 8) {                  // sulkeva tag uudella rivillä
 				int jnode;
 				depth--;
-				k[depth]++;                 // kasvatetaan tason laskuria sulkevï¿½n tagin tasolla
-				// Etsitï¿½ï¿½n vastaava avaava tag aiemmasta ketjusta
+				k[depth]++;                 // kasvatetaan tason laskuria sulkevän tagin tasolla
+				// Etsitään vastaava avaava tag aiemmasta ketjusta
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
-				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ettï¿½ tagit ovat pari
+				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, että tagit ovat pari
 					er = 1;
 					swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
 						rv, tag, tree.node[jnode].tag);
@@ -681,11 +679,11 @@ int lueIOF30VainRadatXml(wchar_t *filename, IOFCourseData *CseData)
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s pï¿½ï¿½ttyi rivillï¿½ %d tasolla %d", filename, rv, depth);
+		swprintf(msg, L"XML-tiedosto %s päättyi rivillä %d tasolla %d", filename, rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivillï¿½ %d tai aikaisemmin", filename, rv);
+			swprintf(msg, L"Tiedostossa %s virhe rivillä %d tai aikaisemmin", filename, rv);
 			}
 		writeerror_w(msg, 0, true);
 		}
@@ -724,7 +722,7 @@ int lueIOF30EventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueO
 				continue;
 			nd.depth = depth;
 			for (int i = 0; i <= depth; i++)
-				nd.nodeno[i] = k[i];           // merkitï¿½ï¿½n eri tasojen jï¿½rjestysnumerot solmuun
+				nd.nodeno[i] = k[i];           // merkitään eri tasojen järjestysnumerot solmuun
 			if (lntype > 0)
 				nd.tagid = XMLhae_tagid(nd.tag, IOF3Tags, nIOF3Tags);
 			if (lntype == 1) {
@@ -776,13 +774,13 @@ int lueIOF30EventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueO
 					--depth;
 					}
 				}
-			else if (lntype == 8) {                  // sulkeva tag uudella rivillï¿½
+			else if (lntype == 8) {                  // sulkeva tag uudella rivillä
 				int jnode;
 				depth--;
-				k[depth]++;                 // kasvatetaan tason laskuria sulkevï¿½n tagin tasolla
-				// Etsitï¿½ï¿½n vastaava avaava tag aiemmasta ketjusta
+				k[depth]++;                 // kasvatetaan tason laskuria sulkevän tagin tasolla
+				// Etsitään vastaava avaava tag aiemmasta ketjusta
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
-				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ettï¿½ tagit ovat pari
+				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, että tagit ovat pari
 					er = 1;
 					swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
 						rv, tag, tree.node[jnode].tag);
@@ -808,11 +806,11 @@ int lueIOF30EventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueO
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s pï¿½ï¿½ttyi rivillï¿½ %d tasolla %d", filename, rv, depth);
+		swprintf(msg, L"XML-tiedosto %s päättyi rivillä %d tasolla %d", filename, rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivillï¿½ %d tai aikaisemmin", filename, rv);
+			swprintf(msg, L"Tiedostossa %s virhe rivillä %d tai aikaisemmin", filename, rv);
 			}
 		writeerror_w(msg, 0, true);
 		}

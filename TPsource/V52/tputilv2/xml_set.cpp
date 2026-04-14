@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Muodostaa XML-elementtimerkkijonon ANSI-puskuriin käyttäen XML-entiteettejä.
 
 #if defined(__BORLANDC__)
 #pragma -K -a1

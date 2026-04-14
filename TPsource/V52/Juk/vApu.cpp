@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Apufunktiot viestikilpailulle: osuus- ja kilpailijatietojen yll√§pito sek√§ seuraluettelo.
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <io.h>
@@ -430,7 +428,7 @@ __int64 jtulos(kilptietue *kilp, int osuus, int va)
 
    int khi = 0, a = 0;
 
-   // osuusaikoihin liittyvÔøΩ jtulos on jtulosjak*ostulos
+   // osuusaikoihin liittyv‰ jtulos on jtulosjak*ostulos
    // kun osuusaika puuttu jtulos = 4*jtulosaskel
 
    if (va == kilpparam.valuku+1) {
@@ -633,7 +631,7 @@ void merk_yht_lahdot(int srj, bool nayta)
    if (os == Sarjat[srj].ntosuus)
 	   return;
    if (nayta) {
-	   vidspmsg(ySize-1,0,7,0,"Kirjaa yhteislÔøΩhtÔøΩjÔøΩ, sarja :");
+	   vidspmsg(ySize-1,0,7,0,"Kirjaa yhteisl‰htˆj‰, sarja :");
 	   vidspmsg(ySize-1,40,7,0,(char *)Sarjat[srj].sarjanimi);
 	   }
    EnterCriticalSection(&tall_CriticalSection);
@@ -655,8 +653,8 @@ void merk_yht_lahdot(int srj, bool nayta)
 			(cjseur[1] + OUTBUFL - cjens[1]) % OUTBUFL > (3*OUTBUFL)/4)) {
 #ifdef _CONSOLE
 			vidspmsg(ySize-3,0,7,0,"Odottaa tiedonsiirron "
-				"etenemistÔøΩ.  'Esc' lopettaa"
-				" yhteislÔøΩhtÔøΩjen kirjauksen");
+				"etenemist‰.  'Esc' lopettaa"
+				" yhteisl‰htˆjen kirjauksen");
 			if (readkbd(&ch, FALSE, spoolfl) == ESC)
 				goto escape;
 #endif
@@ -939,7 +937,7 @@ void lopetus1(void)
    // kaynnistysvaihe = 0    Ennen kaikkia initialiaointeja
    //                   1    Kun sarjat luettu
    //                   2    KILP.DAT luettu kokonaan ja indeksoitu
-   //                   3    ajanotto ja tiedonsiirto kÔøΩynnistetty
+   //                   3    ajanotto ja tiedonsiirto k‰ynnistetty
    //                   4    kaikki initialisoinnit tehty
 
 
@@ -958,7 +956,7 @@ void lopetus1(void)
    inkirjSQLThread = false;
 
    scpclr();
-   vidspmsg(3,3,7,0,"Odota hetki, tiedostoja ja yhteyksiÔøΩ suljetaan");
+   vidspmsg(3,3,7,0,"Odota hetki, tiedostoja ja yhteyksi‰ suljetaan");
    if (kaynnistysvaihe > 2) {
 #if defined(ALGETAULU) || defined(TAULU)
 	  if (taulu_com || udptaulu) {

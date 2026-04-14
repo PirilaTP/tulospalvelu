@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// EMIT/Sirit-sirukorttilukijoiden ja rastitunnusten leimausten kÃ¤sittely viestikilpailussa.
-
 #include <io.h>
 #include <process.h>
 #include <dos.h>
@@ -45,9 +43,9 @@
 #define RINNTUNNUS  5
 
 // Leimantarkastuksen pohjana on taulukko kuvio, johon on tallennettu
-// luettelo kaikista hyvï¿½ksyttï¿½vistï¿½ rastitunnus-leimasinkoodi -yhdistelmistï¿½
-// Luettelo on aina jï¿½rjestettynï¿½ rastitunnusten mukaiseen jï¿½rjestykseen.
-// Koodin arvo 1 tarkoittaa, ettï¿½ kaikki leimaukset hyvï¿½ksytï¿½ï¿½n.
+// luettelo kaikista hyväksyttävistä rastitunnus-leimasinkoodi -yhdistelmistä
+// Luettelo on aina järjestettynä rastitunnusten mukaiseen järjestykseen.
+// Koodin arvo 1 tarkoittaa, että kaikki leimaukset hyväksytään.
 
 //#pragma pack(push)
 //#pragma pack(1)
@@ -509,7 +507,7 @@ int IOFCourseData::siirraXmlRadat(ratatp **rt, int *nrata, wchar_t nimilaji, int
 	*nrata = (monirata < 2 ? sarjaluku : 0 ) + rno;
 
 	if (*nrata == 0) {
-		vidspwmsg(19, 0, 7, 0, L"Ohjelma ei lï¿½ytï¿½nyt ratoja xml-tiedostosta");
+		vidspwmsg(19, 0, 7, 0, L"Ohjelma ei löytänyt ratoja xml-tiedostosta");
 		return(1);
 		}
 	if (maxnrata == 0)
@@ -675,13 +673,13 @@ int IOFCourseData::siirraXmlRadat(ratatp **rt, int *nrata, wchar_t nimilaji, int
 	swprintf(msg, L"Siirretty %d rataa", nr);
 	vidspwmsg(ySize-6,5,7,0,msg);
 	if (puute > 0) {
-		writeerror_w(L"Kaikille rasteille ei tiedoissa emit-koodia. Kï¿½ytetï¿½ï¿½n rastien koodeja", 0);
+		writeerror_w(L"Kaikille rasteille ei tiedoissa emit-koodia. Käytetään rastien koodeja", 0);
 		}
 	return(0);
 esc:
 	if (maxnrata == 0 && *rt)
 		free(*rt);
-	swprintf(msg,L"Virhe ratatietoja kï¿½siteltï¿½essa. Rata %s", rnimi);
+	swprintf(msg,L"Virhe ratatietoja käsiteltäessa. Rata %s", rnimi);
 	kirj_err_file_w(msg, 1);
 	return(1);
 }
@@ -1003,8 +1001,8 @@ INT haebdg(INT32 badge, int *toinen)
    {
    int ibdg = -1;
 
-	// bsrchint palauttaa sijainnin kertovan negatiivisen arvon, ellei tarkkaa osumaa lï¿½ydy
-	// haebdg palauttaa tï¿½mï¿½n arvon ellei *toinen == -1, jolloin tarkkaa osumaa haetaan kummastakin 
+	// bsrchint palauttaa sijainnin kertovan negatiivisen arvon, ellei tarkkaa osumaa löydy
+	// haebdg palauttaa tämän arvon ellei *toinen == -1, jolloin tarkkaa osumaa haetaan kummastakin 
 	// jonosta ja palautettava arvo on >= 0 tai -1.
 
    if (toinen == NULL || *toinen <= 0) {
@@ -1149,7 +1147,7 @@ INT rembadge(INT kno, INT os, int toinen, INT d)
          if (i < 0 || i >= nbadge[toinen]) {
 /*
             if (loki && emitloki) {
-               sprintf(msg, "Ekoodia %ld ei indeksissï¿½\n", kilp.badge[0]);
+               sprintf(msg, "Ekoodia %ld ei indeksissä\n", kilp.badge[0]);
                sendline(msg, lokifile);
                }
 */
@@ -1338,8 +1336,8 @@ void aikaruutu(int ino)
    draw_grchar(1, 60, 14);
    draw_grchar(16, 60, 3);
    draw_grchar(16, 65, 13);
-//   viwrrect(0,60,16,60,"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",7,0,0);
-//   viwrrect(16,61,16,65,"ï¿½ï¿½ï¿½ï¿½ï¿½",7,0,0);
+//   viwrrect(0,60,16,60,"º¹ººººººººººººººÈ",7,0,0);
+//   viwrrect(16,61,16,65,"ÍÍÍÍË",7,0,0);
    for (r = 0; r < 16; r++) {
       memset(st, ' ', 19);
       fore = (r == 8) ? 0 : 7;
@@ -1631,7 +1629,7 @@ static void editkoodit(void)
                nkuvio++;
 			if (nkuvio > maxnkuvio) {
                nkuvio = maxnkuvio;
-               writeerror("Kooditaulu tï¿½ynnï¿½. Lisï¿½ï¿½minen ei onnistu", 0);
+               writeerror("Kooditaulu täynnä. Lisääminen ei onnistu", 0);
                continue;
 			   }
             kuvio[i].rasti = rasti;
@@ -1672,11 +1670,11 @@ void lueemitkoodit(void)
    kilptietue kilp;
 
    if ((emitkdfile = fopen(fname, "r")) == NULL) {
-      writeerror("Tiedostoa EMITKDI.LST ei lï¿½ydy", 0);
+      writeerror("Tiedostoa EMITKDI.LST ei löydy", 0);
       return;
       }
    ch = ' ';
-   selectopt("Merkitï¿½ï¿½nkï¿½ luetut koodit lainakorteiksi (K/E)", "KE", &ch);
+   selectopt("Merkitäänkö luetut koodit lainakorteiksi (K/E)", "KE", &ch);
    merklaina = ch == 'K';
    for (;;) {
       if (fscanf(emitkdfile, "%ld %d %u\n", &nro, &os, &kdi) < 2) break;
@@ -2004,7 +2002,7 @@ INT tarkista(emittp *em, kilptietue *pkilp, INT *tulkinta, int lukija, INT haku)
 	  rt = getrata(kilp.ostiet[em->osuus].hajonta);
 	  }
    else {
-	  // Tï¿½tï¿½ kï¿½ytetï¿½ï¿½n funktiossa etsiesarja(em)
+	  // Tätä käytetään funktiossa etsiesarja(em)
 
 	  if (tulkinta && *tulkinta >= 0 && *tulkinta < nrata) {
 		 rt = rata + *tulkinta;
@@ -2014,7 +2012,7 @@ INT tarkista(emittp *em, kilptietue *pkilp, INT *tulkinta, int lukija, INT haku)
    if (!rt || !rt->rastiluku)
 	   return(-1);
 
-   // Kortille luetut koodit kï¿½ydï¿½ï¿½n lï¿½pi lopusta alkaen.
+   // Kortille luetut koodit käydään läpi lopusta alkaen.
    // Aluksi ohitetaan nolla-koodit.
 //   j = 49;
 //   while (!em->ctrlcode[j] && j) j--;
@@ -2029,16 +2027,16 @@ INT tarkista(emittp *em, kilptietue *pkilp, INT *tulkinta, int lukija, INT haku)
 
    memset(oikeat, 0, sizeof(oikeat));
    
-   // Nyt j osoittaa viimeiseen kirjattuun koodiin, jonka pitï¿½isi olla 
-   // lukijan koodi (yleensï¿½ 250)
-   // Jos kortti luetaan toistuvasti voi loppuun tulla uusia rivejï¿½
-   // joilla on lukijan koodi, mutta aika nolla. Nï¿½mï¿½ ohitetaan.
+   // Nyt j osoittaa viimeiseen kirjattuun koodiin, jonka pitäisi olla 
+   // lukijan koodi (yleensä 250)
+   // Jos kortti luetaan toistuvasti voi loppuun tulla uusia rivejä
+   // joilla on lukijan koodi, mutta aika nolla. Nämä ohitetaan.
 
    while (j > (lukija+1)%50 && em->ctrlcode[j] == em->ctrlcode[(j+49)%50] && !em->ctrltime[j])
       j = (j+49)%50;
    m = j;
 
-   // Rata kï¿½ydï¿½ï¿½n lï¿½pi alkaen viimeisestï¿½ rastista
+   // Rata käydään läpi alkaen viimeisestä rastista
 
    i = rt->rastiluku + 1;
    for (;;) {
@@ -2067,22 +2065,22 @@ INT tarkista(emittp *em, kilptietue *pkilp, INT *tulkinta, int lukija, INT haku)
          continue;
          }
 
-	  // Seuraavassa loopissa kï¿½sitellï¿½ï¿½n virheelliset koodit. Loopista
+	  // Seuraavassa loopissa käsitellään virheelliset koodit. Loopista
       // poistutaan (ennen sen suoritusta), kun
-      // -  j == 0 (Tï¿½mï¿½ vastaa aina nollausleimausta) tai
-      // -  on lï¿½ydetty vuorossa oleva oikea koodi tai
+      // -  j == 0 (Tämä vastaa aina nollausleimausta) tai
+      // -  on löydetty vuorossa oleva oikea koodi tai
       // -  i vastaa rataan kuulumatonta lukijalaitetta
       //
       // Vuorossa olevalle koodille annetaan tulkinta (jos pyydetty)
       // seuraavasti.
-      // -  tulkinta annetaan negatiivisena (virheen merkkinï¿½)
+      // -  tulkinta annetaan negatiivisena (virheen merkkinä)
       // -  tulkinnan itseisarvo on rastiluku+1, jos lukija
-	  // -  jos koodi vastaa yhtï¿½ tai useampaa radan rastia, on tulkinnan
-      //    itseisarvo viimeisen tï¿½llaisen rastin jï¿½rjestysnumero
-      // -  muissa tapauksissa tulkinnaksi jï¿½ï¿½ 0
+	  // -  jos koodi vastaa yhtä tai useampaa radan rastia, on tulkinnan
+      //    itseisarvo viimeisen tällaisen rastin järjestysnumero
+      // -  muissa tapauksissa tulkinnaksi jää 0
       //
-	  // Virheellistï¿½ koodia kï¿½ï¿½nteisessï¿½ kï¿½sittelyjï¿½rjestyksessï¿½
-      // seuraavat nolla-koodit ohitetaan (tï¿½tï¿½ ei pitï¿½isi tapahtua
+	  // Virheellistä koodia käänteisessä käsittelyjärjestyksessä
+      // seuraavat nolla-koodit ohitetaan (tätä ei pitäisi tapahtua
       // muulloin kuin, kun on tavattu nollauslaite
 
       while (j != lukija && j != (lukija+1)%50 && !oikeakoodi(rt, i, em->ctrlcode[j], vapaajarj) &&
@@ -2121,12 +2119,12 @@ INT tarkista(emittp *em, kilptietue *pkilp, INT *tulkinta, int lukija, INT haku)
 //      if (j == (lukija+1) % 50) break;
       if ((j == (lukija+1) % 50) || (j == lukija && i < rt->rastiluku)) break;
 
-      // Tï¿½hï¿½n tullaan vain, kun j vastaa vuorossa olevaa oikeaa rastia
+      // Tähän tullaan vain, kun j vastaa vuorossa olevaa oikeaa rastia
       // tai kohdalla rastiluku+1 olevaa lukijalaitetta
 
-	  // i:n arvoa pienennetï¿½ï¿½n, jos kyseessï¿½ lukijalaite, jonka koodi
-      // lï¿½ytyy radan viimeiseltï¿½ ilmoitetulta rastilta eli kun lukija
-      // sisï¿½ltyy rataan
+	  // i:n arvoa pienennetään, jos kyseessä lukijalaite, jonka koodi
+      // löytyy radan viimeiseltä ilmoitetulta rastilta eli kun lukija
+      // sisältyy rataan
 
       if (i == rt->rastiluku && oikeakoodi(rt, i-1, em->ctrlcode[j], 0)) i--;
 
@@ -2163,8 +2161,8 @@ INT tarkista(emittp *em, kilptietue *pkilp, INT *tulkinta, int lukija, INT haku)
             }
          }
 
-      // Oikeaa koodia kï¿½ï¿½nteisessï¿½ kï¿½sittelyjï¿½rjestyksessï¿½ 
-      // seuraavat nolla-koodit ohitetaan (tï¿½tï¿½ ei pitï¿½isi tapahtua
+      // Oikeaa koodia käänteisessä käsittelyjärjestyksessä 
+      // seuraavat nolla-koodit ohitetaan (tätä ei pitäisi tapahtua
 	  // muulloin kuin, kun on tavattu nollauslaite)
 
       do {
@@ -2430,7 +2428,7 @@ INT tark_partio(tulostusparamtp *tulprm, kilptietue *kilp, INT partiorap, int va
 			if (tl > VRK)
 				tl = NORMKELLO(tl);
 			if (tulprm->language == 0)
-				swprintf(line, L"Lï¿½htï¿½aika          %8.8s", aikatowstr_ls(as, tl, t0));
+				swprintf(line, L"Lähtöaika          %8.8s", aikatowstr_ls(as, tl, t0));
 			else
 				swprintf(line, L"Start time         %8.8s", aikatowstr_ls(as, tl, t0));
 			putfld(tulprm, line, 4*tulprm->tulmuot.numlev, wcslen(line), 0, 0);
@@ -2466,9 +2464,9 @@ INT tark_partio(tulostusparamtp *tulprm, kilptietue *kilp, INT partiorap, int va
 			}
 		wcscpy(line, L"Tarkastuksen tulos : ");
 		if (k > 0)
-			wcscat(line, L"Virheitï¿½");
+			wcscat(line, L"Virheitä");
 		else
-			wcscat(line, L"Ei virheitï¿½");
+			wcscat(line, L"Ei virheitä");
 		if (partiorap == 2)
 			wcscat(line, L"  Tallennus: ");
 		else
@@ -2478,25 +2476,25 @@ INT tark_partio(tulostusparamtp *tulprm, kilptietue *kilp, INT partiorap, int va
 				if (tulprm->language > 0)
 					wcscat(line, L"Accepted");
 				else
-					wcscat(line, L"Hyvï¿½ksytty");
+					wcscat(line, L"Hyväksytty");
 				break;
 			case 'I':
 				if (tulprm->language > 0)
 					wcscat(line, L"DQ proposed");
 				else
-					wcscat(line, L"Hylkï¿½ysesitys");
+					wcscat(line, L"Hylkäysesitys");
 				break;
 			case 'H':
 				if (tulprm->language > 0)
 					wcscat(line, L"DQ");
 				else
-					wcscat(line, L"Hylï¿½tty");
+					wcscat(line, L"Hylätty");
 				break;
 			case 'K':
 				if (tulprm->language > 0)
 					wcscat(line, L"DNF");
 				else
-					wcscat(line, L"Keskeyttï¿½nyt");
+					wcscat(line, L"Keskeyttänyt");
 				break;
 			default:
 				if (tulprm->language > 0) {
@@ -2550,15 +2548,15 @@ INT tark_partio(tulostusparamtp *tulprm, kilptietue *kilp, INT partiorap, int va
 					switch (j) {
 						case 0 :
 							if (partiorap == 2)
-								wcscpy(line, L"Yhteisiï¿½ pak. jï¿½rj.");
+								wcscpy(line, L"Yhteisiä pak. järj.");
 							else
-								wcscpy(line, L"Yhteisiï¿½ rasteja pakollisessa jï¿½rjestyksessï¿½");
+								wcscpy(line, L"Yhteisiä rasteja pakollisessa järjestyksessä");
 							break;
 						case 1 :
 							if (partiorap == 2)
-								wcscpy(line, L"Yhteisiï¿½ vap. jï¿½rj.");
+								wcscpy(line, L"Yhteisiä vap. järj.");
 							else
-								wcscpy(line, L"Yhteisiï¿½ rasteja vapaassa jï¿½rjestyksessï¿½");
+								wcscpy(line, L"Yhteisiä rasteja vapaassa järjestyksessä");
 							break;
 						case 2 :
 							wcscpy(line, L"Valinnaisia rasteja");
@@ -2577,7 +2575,7 @@ INT tark_partio(tulostusparamtp *tulprm, kilptietue *kilp, INT partiorap, int va
 					if (tulprm->language > 0)
 						swprintf(line, L"    %2d  %3d  Ordinals of stamps :", ii+1, rt->rastikoodi[i]);
 					else
-						swprintf(line, L"    %2d  %3d  Leimausten jï¿½rjestysnumerot :", ii+1, rt->rastikoodi[i]);
+						swprintf(line, L"    %2d  %3d  Leimausten järjestysnumerot :", ii+1, rt->rastikoodi[i]);
 					}
 				for (j = 0; j <= os; j++) {
 					if (partiorap == 2 && ll == 2)
@@ -2601,7 +2599,7 @@ INT tark_partio(tulostusparamtp *tulprm, kilptietue *kilp, INT partiorap, int va
 						if (tulprm->language > 0)
 							swprintf(line, L"    %2d  %3d  %3d Ordinals of stamps :", ii+1, rt->rastikoodi[i], rogpisteet(rt,i));
 						else
-							swprintf(line, L"    %2d  %3d  %3d Leimausten jï¿½rjestysnumerot :", ii, rt->rastikoodi[i], rogpisteet(rt,i));
+							swprintf(line, L"    %2d  %3d  %3d Leimausten järjestysnumerot :", ii, rt->rastikoodi[i], rogpisteet(rt,i));
 						}
 					for (j = 0; j <= os; j++) {
 						if (partiorap == 2 && ll == 2)
@@ -2627,7 +2625,7 @@ INT tark_partio(tulostusparamtp *tulprm, kilptietue *kilp, INT partiorap, int va
 			}
 		if (partiorap == 2) {
 			clrln(ySize-3);
-			vidspmsg(ySize-3,0,7,0,"Paina jotain nï¿½ppï¿½intï¿½ jatkaaksesi");
+			vidspmsg(ySize-3,0,7,0,"Paina jotain näppäintä jatkaaksesi");
 			readkbd(&ch, 1, spoolfl);
 			clrln(3);
 			}
@@ -3468,7 +3466,7 @@ INT lue_radat(INT r)
 	  elimbl2(rnimi);
 	  upcasestr(rnimi);
 	  if (strlen(rnimi) >= sizeof(rata[i].rata)) {
-		  sprintf(msg, "Ratanimi %s liian pitkï¿½", rnimi);
+		  sprintf(msg, "Ratanimi %s liian pitkä", rnimi);
 		  kirj_err_file(msg, 1);
 		  }
 
@@ -3643,7 +3641,7 @@ INT lueemitfile(void)
    emitptr = emithead-1;
    if (kysy) {
 	  swprintf(msg,
-		 L"%s ja KILP.DAT eivï¿½t yhteensopivia (%d eroa)", emitfname, kysy);
+		 L"%s ja KILP.DAT eivät yhteensopivia (%d eroa)", emitfname, kysy);
 	  writeerror_w(msg, 0);
 	  }
 #ifndef _CONSOLE
@@ -3658,9 +3656,9 @@ INT32 haeennakko(emittp *em, kilptietue *kilp, INT osuus)
 //   INT i;
    int lkja, enn = 0;
 
-   // Jos sarjalla ei ennakkoa (eli ennakko 0) tai ennakko kiinteï¿½ ( > 0 )
-   // saa ennakko tï¿½mï¿½n arvon, muuten ennakko lasketaan lukuhetkestï¿½ ja
-   // viimeisestï¿½ lukijalaitteen antamasta emit-vï¿½liajasta.
+   // Jos sarjalla ei ennakkoa (eli ennakko 0) tai ennakko kiinteä ( > 0 )
+   // saa ennakko tämän arvon, muuten ennakko lasketaan lukuhetkestä ja
+   // viimeisestä lukijalaitteen antamasta emit-väliajasta.
 
    if ((lkja = haelukija(em)) < 0)
 	   return(0);
@@ -3736,7 +3734,7 @@ INT naytatiedot(emittp *em, kilptietue *kilp, INT os, int loppuosa)
 		 if ((viim = e_maaliaika(em, kilp, os)) != TMAALI0 &&
             kilp->Maali(os, 0) != TMAALI0) {
 			viim = ((kilp->Maali(os, 0) - viim)/SEK + 36*3600L)%86400L - 43200L;
-            sprintf(line, "V.vï¿½li%6d", viim);
+            sprintf(line, "V.väli%6d", viim);
             vidspmsg(3, 52, 7, 0, line);
             }
          }
@@ -3786,13 +3784,13 @@ void emit_tallenna(kilptietue *kilp, INT os, char trk, char *selitys, INT cn)
 
    if (!cn && (trk == 'H' || trk == 'K') && kilp->Tark(os, 0) != trk
 	  && kilp->Tark(os, 0) != 'I') {
-	  writeerror("Hylkï¿½ys vain esityksen jï¿½lkeen.", 0);
+	  writeerror("Hylkäys vain esityksen jälkeen.", 0);
 	  return;
 	  }
    if (!cn && (stschind(kilp->Tark(os, 0), "HK") >= 0) &&
 	  trk != kilp->Tark(os, 0)) {
 	  clrln(ySize-3);
-	  vidspmsg(ySize-3,20,7,0,"Hylkï¿½yksen poisto. Vahvista (K/E)");
+	  vidspmsg(ySize-3,20,7,0,"Hylkäyksen poisto. Vahvista (K/E)");
 	  mene(56, ySize-3);
 	  do {
 		 ch = readkbd(&che,1,spoolfl);
@@ -4021,7 +4019,7 @@ void vaihdakilp(INT ekno, INT eos, INT vainos)
          return;
       os--;
       if ((du = getpos(ekno)) <= 0) {
-         writeerror("Kilpailijaa ei lï¿½ydy", 0);
+         writeerror("Kilpailijaa ei löydy", 0);
          return;
          }
       GETREC(&kilp, du);
@@ -4058,11 +4056,11 @@ void vaihdakilp(INT ekno, INT eos, INT vainos)
          }
       clrln(ySize-3);
 	  vidspmsg(ySize-3,0,7,0,
-         "Kilpailijanumero, jolle tiedot siirretï¿½ï¿½n :         Esc : peruuta");
+         "Kilpailijanumero, jolle tiedot siirretään :         Esc : peruuta");
       INPUTINT(&kno,4, 44, ySize-3,"\r\x1B",&ch);
       if (ch == ESC || kno == ekno) return;
       if ((du = getpos(kno)) <= 0) {
-         writeerror("Kilpailijaa ei lï¿½ydy", 0);
+         writeerror("Kilpailijaa ei löydy", 0);
          return;
          }
       GETREC(&kilp, du);
@@ -4179,9 +4177,9 @@ void outleimat(kilptietue *kilp, INT os, emittp *em, INT selaus, int loppuosa)
       vidspmsg(2, 56, 7, 0, kilp->ostiet[os1].hajonta);
       vidspmsg(6, 41, 7, 0, "Tarkistuksen tulos");
       vidspmsg(7, 41, 7, 0, "T: T)arkistus ok");
-      vidspmsg(8, 41, 7, 0, "H: H)ylkï¿½ys");
+      vidspmsg(8, 41, 7, 0, "H: H)ylkäys");
       vidspmsg(9, 41, 7, 0, "K: K)eskeytys");
-      vidspmsg(10, 41, 7, 0, "I: hylkï¿½ysesI)tys");
+      vidspmsg(10, 41, 7, 0, "I: hylkäysesI)tys");
       vidspmsg(11, 41, 7, 0, "P: P)oissa");
 	  vidspmsg(13, 41, 0, 7, "Tark.tulos:");
       mene(54, 14);
@@ -4193,7 +4191,7 @@ void outleimat(kilptietue *kilp, INT os, emittp *em, INT selaus, int loppuosa)
       vidspmsg(14, 41, 0, 7, "Selitys:");
       vidspmsg(15, 41, 7, 0, kilp->ostiet[os1].selitys);
 		if (Sarjat[kilp->sarja].tsak[os1]) {
-		  vidspmsg(17, 41, 7, 0, "L)isï¿½aikalkm:");
+		  vidspmsg(17, 41, 7, 0, "L)isäaikalkm:");
 		   vidint(17, 55, 2, kilp->ostiet[os1].sakko/Sarjat[kilp->sarja].tsak[os1]/SEK);
 			}
 	  }
@@ -4243,7 +4241,7 @@ static void editemit(INT32 ep, emittp *em, kilptietue *kilp, int osuus)
       clrln(ySize-3);
       clrln(ySize-1);
       vidspmsg(ySize-1,0,7,0, 
-               "P)uolita ajat, L)isï¿½ï¿½ aikoihin vakiolisï¿½ys, +: Tallenna, Esc: Poistu");
+               "P)uolita ajat, L)isää aikoihin vakiolisäys, +: Tallenna, Esc: Poistu");
       for (r = 0; r < 50; r++) {
 		 sprintf(line, "%2d %3d %5d |", r, cd[r], tm[r]);
          x = r / (ySize-8);
@@ -4292,7 +4290,7 @@ static void editemit(INT32 ep, emittp *em, kilptietue *kilp, int osuus)
             case 'L' :
                tl = 0;
                clrln(ySize-3);
-               vidspmsg(ySize-3, 0, 7, 0, "Anna kaikkiin aikoihin tuleva lisï¿½ys (sek)");
+               vidspmsg(ySize-3, 0, 7, 0, "Anna kaikkiin aikoihin tuleva lisäys (sek)");
                inputlong(&tl, 6, 45, ySize-3, "\r", &ch);
                for (r = 1; r < 50; r++) {
                   if ((r == 1 || tm[r]) && (tl + (INT32)tm[r]) >= 0 && tl + tm[r] < 32768L) {
@@ -4438,7 +4436,7 @@ INT leimat(void)
       "Leimauskortin valinta, X : Kilpailijan vaihto";
 
    if (emitfl <= 0) {
-      writeerror("Leimantarkastustoimintoa ei ole kï¿½ynnistetty", 0);
+      writeerror("Leimantarkastustoimintoa ei ole käynnistetty", 0);
       return(0);
       }
    if (ySize < 33)
@@ -4509,8 +4507,8 @@ INT leimat(void)
          vidspmsg(ySize-3,0,7,0,valtxt);
          vidspmsg(ySize-1,0,7,0,numval);
 
-         // Tï¿½ssï¿½ loopissa odotetaan tarkastusnï¿½ppï¿½ilyï¿½ tai uuden tietueen
-         // valintaa. myï¿½s M)TR ja tU)hoa, kO)odit sekï¿½ Tab tunnistetaan.
+         // Tässä loopissa odotetaan tarkastusnäppäilyä tai uuden tietueen
+         // valintaa. myös M)TR ja tU)hoa, kO)odit sekä Tab tunnistetaan.
 
          for (;;) {
             if (!kbready(&ch, &key)) {
@@ -4519,7 +4517,7 @@ INT leimat(void)
                   Sleep(100);
                   }
 
-               // jos selaus ei ole kï¿½ytï¿½ssï¿½ ja emithead muuttuu, haetaan
+               // jos selaus ei ole käytössä ja emithead muuttuu, haetaan
                // viimeinen tietue
 
                if (!selaus && emithead2 != emithead0)
@@ -4565,7 +4563,7 @@ INT leimat(void)
             readkbd(&ch,0,spoolfl);
             }
 
-         // Loopista poistutaan, jos nï¿½ppï¿½in koskee tietueen vaihtoa,
+         // Loopista poistutaan, jos näppäin koskee tietueen vaihtoa,
          // tuhoamista tai MTR-ohjausta.
 
 #ifdef ESITARK
@@ -4647,15 +4645,15 @@ INT leimat(void)
                   break;
                }
 
-            // nï¿½ppï¿½inpainallus poistetaan, jos tullaan raporttivalinnasta
-			// tai ajan kirjauksesta, poistutaan lisï¿½ksi loopista
+            // näppäinpainallus poistetaan, jos tullaan raporttivalinnasta
+			// tai ajan kirjauksesta, poistutaan lisäksi loopista
 
             readkbd(&ch2,0,spoolfl);
             if (ch == 'R' || ch == 19 || ch == 20 || ch == 22) break;
             }
 
-         // Jos painallus koskee tarkastusta, luetaan myï¿½s selitys sekï¿½
-         // pyydetï¿½ï¿½n vahvistusta tietojen tallentamisesta
+         // Jos painallus koskee tarkastusta, luetaan myös selitys sekä
+         // pyydetään vahvistusta tietojen tallentamisesta
 
          if (trk) {
             viwrrect(13, 53, 13, 53, &trk, 7, 0, 0);
@@ -4681,25 +4679,25 @@ INT leimat(void)
             }
          } while(!ch);
 
-      // Tï¿½hï¿½n tullaan, kun tarkastustieto on vahvistettu tai nï¿½ppï¿½ily on
+      // Tähän tullaan, kun tarkastustieto on vahvistettu tai näppäily on
       // koskenut uuden tietueen valintaa, tuhoamista, MTR-ohjausta,
       // raporttia tai koodien editointia.
 
-      // Palataan pï¿½ï¿½loopin alkuun, jos tarakastustieto on hyvï¿½ksytty
+      // Palataan pääloopin alkuun, jos tarakastustieto on hyväksytty
       // tai on poistuttu raportti- tai koodieditointitoiminnosta
 
       if (ch == 'R' || ch == 'K' || ch == 'O' || ch == 19 || ch == 20) continue;
 
-      // Tuhoamisen jï¿½lkeen siirrytï¿½ï¿½n seuraavaan tietueseen.
-	  // Jos tuhottu tietue oli viimeinen, siirrtytï¿½ï¿½n viimeiseen
-      // jï¿½ljellï¿½olevaan.
+      // Tuhoamisen jälkeen siirrytään seuraavaan tietueseen.
+	  // Jos tuhottu tietue oli viimeinen, siirrtytään viimeiseen
+      // jäljelläolevaan.
 
       if (ch == 'U') {
          poista_emit(&em);
          ch = 'S';
 		 }
 
-      // MTR-ohjauksen jï¿½lkeen siirrytï¿½ï¿½n viimeiseen tietueeseen
+      // MTR-ohjauksen jälkeen siirrytään viimeiseen tietueeseen
 
       if (ch == 'M') {
          aseta_mtr();
@@ -4720,22 +4718,22 @@ INT leimat(void)
          ch = 'S';
 		 }
 
-      // Tï¿½ssï¿½ kï¿½sitellï¿½ï¿½n tietueen vaihto selaamalla tai hyppï¿½ï¿½mï¿½llï¿½
+      // Tässä käsitellään tietueen vaihto selaamalla tai hyppäämällä
       // viimeiseen
 
       if (emithead2 && (ch == 'S' || ch == 'D' || ch == 'V' || ch == 'L' || 
          ch == 'G' || ch == 'A' || ch == 'Z')) {
 
-         // Aluksi poistetaan nï¿½ppï¿½intieto
+         // Aluksi poistetaan näppäintieto
 
          readkbd(&ch2,0,spoolfl);
 
-         // Jos tiedot ovat muuttuneet, kysytï¿½ï¿½n vahvistusta tallentamisesta
+         // Jos tiedot ovat muuttuneet, kysytään vahvistusta tallentamisesta
 
 		 if (kilpno && ((trk && trk != kilp.Tark(os1, 0)) ||
 			strcmp(selitys, kilp.ostiet[os1].selitys))) {
             cs = ' ';
-            selectopt("T)allenna nï¿½ytï¿½n tiedot, O)hita muutokset, P)alaa tietoihin",
+            selectopt("T)allenna näytön tiedot, O)hita muutokset, P)alaa tietoihin",
                "TOP", &cs);
             switch (cs) {
                case 'T' :
@@ -4749,7 +4747,7 @@ INT leimat(void)
 		 switch (ch) {
 			case 'G':
                clrln(ySize-3);
-               vidspmsg(ySize-3,0,7,0,"Anna jï¿½rjestysnumero");
+               vidspmsg(ySize-3,0,7,0,"Anna järjestysnumero");
                INPUTINT(&emitptr, 5, 22, ySize-3, "\r", &ch);
                emitptr--;
                ch = 'S';
@@ -4789,8 +4787,8 @@ INT leimat(void)
                break;
             }
 
-		 // Seuraavan pitï¿½isi toteutua aina
-         // Pï¿½ï¿½looppi aloitetaan alusta
+		 // Seuraavan pitäisi toteutua aina
+         // Päälooppi aloitetaan alusta
 
          if (ch == 0) {
             continue;
@@ -4804,8 +4802,8 @@ INT leimat(void)
          readkbd(&ch2,0,spoolfl);
          }
 
-      // Tï¿½hï¿½n looppiin tullaan, kun on painettu numeroa tai tabulaattoria
-      // Nyt odotetaan numeron nï¿½ppï¿½ilyï¿½
+      // Tähän looppiin tullaan, kun on painettu numeroa tai tabulaattoria
+      // Nyt odotetaan numeron näppäilyä
 
       do {
          clrln(ySize-3);
@@ -4844,7 +4842,7 @@ INT leimat(void)
             continue;
             }
          if ((d = getpos(kilpno)) < 1) {
-			vidspmsg(3,0,7,0, "Kilpailijaa ei lï¿½ydy");
+			vidspmsg(3,0,7,0, "Kilpailijaa ei löydy");
 			ch = 0;
             }
          else {
@@ -4856,8 +4854,8 @@ INT leimat(void)
             selaus = 1;
             }
 
-		 // luupissa pysytï¿½ï¿½n, jos on painettu tabulaattoria tai
-		 // syï¿½tetty tuntematon numero
+		 // luupissa pysytään, jos on painettu tabulaattoria tai
+		 // syötetty tuntematon numero
 
 		 } while (!ch);
 	  }
@@ -4984,7 +4982,7 @@ void tulostaRastiVa(tulostusparamtp *tulprm, int kilpno, int osuus)
 	int edaika, tls, t1, karki, emvaluku, srj, sj, ero;
 	int xva[8] = {0, 60, 100, 160, 250, 265, 330, 430};
 	int xsrj[4] = {510, 560, 770, 855};
-	wchar_t *vaots[2][8] = {{L"Rasti", L"Kdi", L"Aika", L"Vï¿½li", L"Sija", L"Paras", L"Ero", L"M/km"},
+	wchar_t *vaots[2][8] = {{L"Rasti", L"Kdi", L"Aika", L"Väli", L"Sija", L"Paras", L"Ero", L"M/km"},
 						{L"Cntrl", L"Code", L"Time", L"Spilt", L"Rank", L"Best", L"Diff", L"M/km"}};
 	wchar_t *srjots[2][4] = {{L"Sj.", L"Joukkue", L"Aika", L"Ero"},
 							{L"Rank", L"Team", L"Time", L"Diff"}};
@@ -5047,7 +5045,7 @@ void tulostaRastiVa(tulostusparamtp *tulprm, int kilpno, int osuus)
 		laskeemitvaliajat(&em, &kilp, &eva, &rstva, &emvaluku);
 		if (eva) {
 			if (tulprm->language == 0)
-				swprintf(line, L"Vï¿½liaikatietoja %d", rvalit[eva[0].rvno].lkm[srj][yos]);
+				swprintf(line, L"Väliaikatietoja %d", rvalit[eva[0].rvno].lkm[srj][yos]);
 			else
 				swprintf(line, L"Split times %d", rvalit[eva[0].rvno].lkm[srj][yos]);
 			putfld(tulprm, line, xsrj[1], 27, 0, 0);
@@ -5258,7 +5256,7 @@ void emit_rap(tulostusparamtp *tulprm, INT kilpno, INT os)
 		if (tulprm->language > 0)
 			swprintf(line, L"Start time         %8.8s", AIKATOWSTRS(as, tl, t0));
 		else
-			swprintf(line, L"Lï¿½htï¿½aika          %8.8s", AIKATOWSTRS(as, tl, t0));
+			swprintf(line, L"Lähtöaika          %8.8s", AIKATOWSTRS(as, tl, t0));
 		putfld(tulprm,line, 4*tulprm->tulmuot.numlev, wcslen(line), 0, 0);
 		endline(tulprm,0);
 		}
@@ -5304,25 +5302,25 @@ void emit_rap(tulostusparamtp *tulprm, INT kilpno, INT os)
 		if (tulprm->language > 0)
 			wcscat(line, L"Accepted");
 		else
-			wcscat(line, L"Hyvï¿½ksytty");
+			wcscat(line, L"Hyväksytty");
 		 break;
 	  case L'I':
 		if (tulprm->language > 0)
 			wcscat(line, L"DQ proposed");
 		else
-			wcscat(line, L"Hylkï¿½ysesitys");
+			wcscat(line, L"Hylkäysesitys");
 		 break;
 	  case L'H':
 		if (tulprm->language > 0)
 			wcscat(line, L"DQ");
 		else
-			wcscat(line, L"Hylï¿½tty");
+			wcscat(line, L"Hylätty");
 		 break;
 	  case L'K':
 		if (tulprm->language > 0)
 			wcscat(line, L"DNF");
 		else
-			wcscat(line, L"Keskeyttï¿½nyt");
+			wcscat(line, L"Keskeyttänyt");
 		 break;
 	  default:
 		if (tulprm->language > 0)
@@ -5339,7 +5337,7 @@ void emit_rap(tulostusparamtp *tulprm, INT kilpno, INT os)
 		if (tulprm->language > 0)
 			wcscpy(line, L"   Control   Cntrlcode  Emit-code      Time  Leg time ");
 		else
-			wcscpy(line, L"   Rastinro  Rastikoodi Emitkoodi      Aika  Rastivï¿½li");
+			wcscpy(line, L"   Rastinro  Rastikoodi Emitkoodi      Aika  Rastiväli");
 	  putfld(tulprm,line, 4*tulprm->tulmuot.numlev, wcslen(line), 0, 0);
 	  endline(tulprm,1);
 	  for (i = 0; i < 50; i++) {
@@ -5534,12 +5532,12 @@ void tark_rap(tulostusparamtp *tulprm, INT kilpno, INT os)
    ch = L' ';
 #ifdef PARTIO
    if (kilpparam.partio) {
-      wselectopt(L"K)ortin tiedot, P)artio, L)uettelo tiedoista, T)iedostoon, H)ylkï¿½ysraportti",
+      wselectopt(L"K)ortin tiedot, P)artio, L)uettelo tiedoista, T)iedostoon, H)ylkäysraportti",
          L"KLPHT\x1b", &ch);
       }
    else
 #endif
-	  wselectopt(L"K)ortin tiedot, L)uettelo tiedoista, T)iedostoon tulostus, H)ylkï¿½ysraportti",
+	  wselectopt(L"K)ortin tiedot, L)uettelo tiedoista, T)iedostoon tulostus, H)ylkäysraportti",
          L"KLHT\x1b", &ch);
    clrln(ySize-3);
    switch (ch) {
@@ -5552,7 +5550,7 @@ void tark_rap(tulostusparamtp *tulprm, INT kilpno, INT os)
 #ifdef PARTIO
       case L'P' :
          if (!esitark || esitark == 2) {
-            wselectopt(L"N)ï¿½ytï¿½lle, P)aperille", L"NP", &cr);
+            wselectopt(L"N)äytölle, P)aperille", L"NP", &cr);
             tark_partio(tulprm, &kilp, cr == L'N' ? 2 : 1, 1);
             }
          return;
@@ -5563,7 +5561,7 @@ void tark_rap(tulostusparamtp *tulprm, INT kilpno, INT os)
          return;
       case L'L' :
          ch = L' ';
-         wselectopt(L"L)ista luetuista korteista, H)ylï¿½tyistï¿½, E)sityksistï¿½",
+         wselectopt(L"L)ista luetuista korteista, H)ylätyistä, E)sityksistä",
             L"LHE\x1b", &ch);
 		 clrln(ySize-3);
 		 cc = (char) ch;
@@ -5592,25 +5590,25 @@ void tark_rap(tulostusparamtp *tulprm, INT kilpno, INT os)
 		 wcscat(trk, L"Tarkastamatta");
 		 break;
 	  case L'T' :
-		 wcscat(trk, L"Hyvï¿½ksytty");
+		 wcscat(trk, L"Hyväksytty");
 		 break;
 	  case L'H' :
-		 wcscat(trk, L"Hylï¿½tty");
+		 wcscat(trk, L"Hylätty");
 		 break;
 	  case L'K' :
-		 wcscat(trk, L"Keskeyttï¿½nyt");
+		 wcscat(trk, L"Keskeyttänyt");
 		 break;
 	  case L'P' :
 		 wcscat(trk, L"Poissa");
 		 break;
 	  case L'I' :
-		 wcscat(trk, L"Hylkï¿½ysesitys");
+		 wcscat(trk, L"Hylkäysesitys");
 		 break;
 	  }
    vidspwmsg(7,0,7,0,trk);
    vidspwmsg(9,0,7,0,L"Selitys :");
    vidspmsg(9,12,7,0,kilp.ostiet[os].selitys);
-   vidspwmsg(11,0,7,0,L"Lisï¿½tietoja raporttiin (max 3 riviï¿½)");
+   vidspwmsg(11,0,7,0,L"Lisätietoja raporttiin (max 3 riviä)");
    inputwstr(l1, 65, 0, 13, L"\r", &ch, 0);
    inputwstr(l2, 65, 0, 14, L"\r", &ch, 0);
    inputwstr(l3, 65, 0, 15, L"\r", &ch, 0);
@@ -5667,7 +5665,7 @@ void tark_rap(tulostusparamtp *tulprm, INT kilpno, INT os)
 	  putfld(tulprm,line, 4*tulprm->tulmuot.numlev, wcslen(line), 0, 0);
 	  endline(tulprm,1);
 	  if (tulprm->language == 0)
-		  swprintf(line, L"Lisï¿½tietoja");
+		  swprintf(line, L"Lisätietoja");
 	  else
 		  swprintf(line, L"Additional");
 	  putfld(tulprm,line, 4*tulprm->tulmuot.numlev, wcslen(line), 0, 0);
@@ -5679,7 +5677,7 @@ void tark_rap(tulostusparamtp *tulprm, INT kilpno, INT os)
 	  putfld(tulprm,l3, 4*tulprm->tulmuot.numlev, wcslen(l3), 0, 0);
 	  endline(tulprm,2);
 	  if (tulprm->language == 0)
-		  swprintf(line, L"Kï¿½sittelyvaiheet (ratkaisu, aika, kï¿½sittelijï¿½)");
+		  swprintf(line, L"Käsittelyvaiheet (ratkaisu, aika, käsittelijä)");
 	  else
 		  swprintf(line, L"Processing steps (decision, time, official)");
 	  putfld(tulprm,line, 4*tulprm->tulmuot.numlev, wcslen(line), 0, 0);
@@ -5687,7 +5685,7 @@ void tark_rap(tulostusparamtp *tulprm, INT kilpno, INT os)
 	  putfld(tulprm,viiva, 4*tulprm->tulmuot.numlev, wcslen(viiva), 0, 0);
 	  endline(tulprm,0);
 	  if (tulprm->language == 0)
-		  swprintf(line, L"Pï¿½ï¿½tï¿½sesitys");
+		  swprintf(line, L"Päätösesitys");
 	  else
 		  swprintf(line, L"Proposed decision");
 	  putfld(tulprm,line, 4*tulprm->tulmuot.numlev, wcslen(line), 0, 0);
@@ -5695,7 +5693,7 @@ void tark_rap(tulostusparamtp *tulprm, INT kilpno, INT os)
 	  putfld(tulprm,viiva, 4*tulprm->tulmuot.numlev, wcslen(viiva), 0, 0);
 	  endline(tulprm,0);
 	  if (tulprm->language == 0)
-		  swprintf(line, L"Pï¿½ï¿½tï¿½s");
+		  swprintf(line, L"Päätös");
 	  else
 		  swprintf(line, L"Decision");
 	  putfld(tulprm,line, 4*tulprm->tulmuot.numlev, wcslen(line), 0, 0);
@@ -5711,7 +5709,7 @@ void tark_rap(tulostusparamtp *tulprm, INT kilpno, INT os)
 	  putfld(tulprm,viiva, 4*tulprm->tulmuot.numlev, wcslen(viiva), 0, 0);
 	  endline(tulprm,0);
 	  if (tulprm->language == 0)
-		  swprintf(line, L"Lopullinen pï¿½ï¿½tï¿½s");
+		  swprintf(line, L"Lopullinen päätös");
 	  else
 		  swprintf(line, L"Final decision");
 	  putfld(tulprm,line, 4*tulprm->tulmuot.numlev, wcslen(line), 0, 0);
@@ -5735,13 +5733,13 @@ void tarkraportit(tulostusparamtp *tulprm, char trk)
    int p, lj;
 
    co = L' ';
-   wselectopt(L"N)ï¿½ytï¿½lle, P)aperille", L"NP", &co);
+   wselectopt(L"N)äytölle, P)aperille", L"NP", &co);
    switch (trk) {
       case L'H':
-         wcscpy(st, L"Hylï¿½tyt");
+         wcscpy(st, L"Hylätyt");
          break;
 	  case L'I':
-		 wcscpy(st, L"Hylkï¿½ysesitykset");
+		 wcscpy(st, L"Hylkäysesitykset");
          break;
 	  }
    ch = os + L'1';
@@ -5758,7 +5756,7 @@ void tarkraportit(tulostusparamtp *tulprm, char trk)
       if( srj < vsrj ) srj++;
       else {
          clrln(ySize-3);
-		 vidspwmsg(ySize-3,0,7,0,L"Ensimmï¿½inen sarja :               "
+		 vidspwmsg(ySize-3,0,7,0,L"Ensimmäinen sarja :               "
 			L"<F2>: Alusta, <Esc>: Poistu");
 		 srj = luesarja("", &cc);
 		 if (cc == ESC) break;
@@ -5828,7 +5826,7 @@ void tarkraportit(tulostusparamtp *tulprm, char trk)
 		 if (co == L'N') {
 			if (r > ySize-5) {
 			   vidspwmsg(ySize-3,0,0,7,
-				  L"Paina nï¿½ppï¿½intï¿½ jatkaaksesi, Esc : Poistu");
+				  L"Paina näppäintä jatkaaksesi, Esc : Poistu");
 			   LeaveCriticalSection(&tall_CriticalSection);
 			   ch = readkbd_w(&che,1);
                EnterCriticalSection(&tall_CriticalSection);
@@ -5870,7 +5868,7 @@ void tarkraportit(tulostusparamtp *tulprm, char trk)
 			endpage(tulprm);
 	  if (co == L'N') {
 		 if (n > 0 && ch != ESC) {
-			vidspwmsg(ySize-3,0,0,7, L"Paina nï¿½ppï¿½intï¿½ jatkaaksesi");
+			vidspwmsg(ySize-3,0,0,7, L"Paina näppäintä jatkaaksesi");
 			ch = readkbd_w(&che,1);
 			n = 0;
 			}
@@ -5883,7 +5881,7 @@ void tarkraportit(tulostusparamtp *tulprm, char trk)
 	  enddoc(tulprm);
 	  LeaveCriticalSection(&print_CriticalSection);
 	  clrln(ySize-3);
-	  swprintf(line, L"Tulostettu %d kilpailijaa     Paina nï¿½ppï¿½intï¿½", n);
+	  swprintf(line, L"Tulostettu %d kilpailijaa     Paina näppäintä", n);
 	  vidspwmsg(ySize-3,0,7,0,line);
 	  readkbd_w(&che,1);
 	  clrln(ySize-3);
@@ -5988,7 +5986,7 @@ void kirjvaliajat(wchar_t *flnm)
    vafile = new TextFl(flnm, L"wb");
    if (!vafile->IsOpen()) {
 	  delete vafile;
-	  writeerror_w(L"Virhe vï¿½liaikatiedostoa avattaessa", 0, true);
+	  writeerror_w(L"Virhe väliaikatiedostoa avattaessa", 0, true);
 	  return;
 	  }
    if (!xml) {

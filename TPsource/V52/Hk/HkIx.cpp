@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Kilpailijatietokannan hakemistorakenteiden (indeksien) rakentaminen ja yllÃ¤pito.
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <io.h>
@@ -597,15 +595,15 @@ char *keyrata(void *vkilp, char *key, int keylen, int flags)
    return(key);
 }
 
-//  Pistejï¿½rjestys mï¿½ï¿½rï¿½tï¿½ï¿½n seuraavasti:
+//  Pistejärjestys määrätään seuraavasti:
 //
 //  flags & 1:  1: alhaiset pisteet parempia, 0: korkeat pisteet parempia
 //  flags & 6:  kahdella jaettuna indeksi pistetietoihin
 //  flags & 8:  0: kokonaispisteet, 8: vaiheen pisteet
-//  flags & 16: 0: 0 pistettï¿½ kï¿½sitellï¿½ï¿½n nollana, 16: 0 pistettï¿½ muutetaan huonoimmaksi.
-//  flags & 32: yhdistelmï¿½ 1000*piste[2]+piste[1]/100
+//  flags & 16: 0: 0 pistettä käsitellään nollana, 16: 0 pistettä muutetaan huonoimmaksi.
+//  flags & 32: yhdistelmä 1000*piste[2]+piste[1]/100
 //  flags & 64: poissaolevalle pisteet 0
-//  flags & 128: poissaolevalle pistelisï¿½ys 2^31
+//  flags & 128: poissaolevalle pistelisäys 2^31
 
 char *keysrjpst(void *vkilp, char *key, int keylen, int flags)
 {
@@ -687,13 +685,13 @@ int askellasarja(int srj, int piste, int p, int *lj)
 	return(p);
 }
 
-//  entsija etsii kilpailijan sijan linkitetyllï¿½ listalla lï¿½htien
-//  kilpailijasta *p seuraten jï¿½senen JarjSeur(yhd, piste, dKilp) mukaista linkkiï¿½ listan
-//  seuraavaan. Etsintï¿½ pï¿½ï¿½ttyy, kun seuraava on -1. Numerot viittaavat
+//  entsija etsii kilpailijan sijan linkitetyllä listalla lähtien
+//  kilpailijasta *p seuraten jäsenen JarjSeur(yhd, piste, dKilp) mukaista linkkiä listan
+//  seuraavaan. Etsintä päättyy, kun seuraava on -1. Numerot viittaavat
 //  sijaintiin ketjussa JarjSeur. (Sijainti on sama kuin tiedostossa KILP.DAT).
-//  Jos kilpailijaa ei lï¿½ydy on sija 9999.
-//  p osoittaa lï¿½ytymistï¿½ edeltï¿½vï¿½ï¿½n tietueeseen, paitsi tapauksessa sj=1
-//  itse tietueeseen (siis tï¿½llï¿½in *p == d)
+//  Jos kilpailijaa ei löydy on sija 9999.
+//  p osoittaa löytymistä edeltävään tietueeseen, paitsi tapauksessa sj=1
+//  itse tietueeseen (siis tällöin *p == d)
 
 INT entsija(INT i, INT *p, INT piste, INT yhd, int *keskeyta)
 	{
@@ -716,13 +714,13 @@ INT entsija(INT i, INT *p, INT piste, INT yhd, int *keskeyta)
 	return(sj);
 	}
 
-//  intsija etsii kilpailijan sijan linkitetyllï¿½ listalla lï¿½htien
-//  kilpailijasta *p seuraten jï¿½senen JarjSeur(yhd, piste, dKilp) mukaista linkkiï¿½ listan
-//  seuraavaan. Etsintï¿½ pï¿½ï¿½ttyy, kun on lï¿½ytyy huonompi tulos. Numerot viittaavat
+//  intsija etsii kilpailijan sijan linkitetyllä listalla lähtien
+//  kilpailijasta *p seuraten jäsenen JarjSeur(yhd, piste, dKilp) mukaista linkkiä listan
+//  seuraavaan. Etsintä päättyy, kun on löytyy huonompi tulos. Numerot viittaavat
 //  sijaintiin ketjussa JarjSeur. (Sijainti on sama kuin tiedostossa KILP.DAT).
-//  Jos kilpailijaa ei lï¿½ydy on sija 9999.
-//  p osoittaa lï¿½ytymistï¿½ edeltï¿½vï¿½ï¿½n tietueeseen, paitsi tapauksessa sj=1
-//  itse tietueeseen (siis tï¿½llï¿½in *p == d)
+//  Jos kilpailijaa ei löydy on sija 9999.
+//  p osoittaa löytymistä edeltävään tietueeseen, paitsi tapauksessa sj=1
+//  itse tietueeseen (siis tällöin *p == d)
 
 INT intsija(UINT32 *tl, INT *p, INT piste, INT yhd, int *keskeyta)
 	{
@@ -750,53 +748,53 @@ INT intsija(UINT32 *tl, INT *p, INT piste, INT yhd, int *keskeyta)
 #define RAJA 12*TUNTI
 #define RAJA2 12*TUNTI
 
-//  Jï¿½rjestystiedoista huolehditaan taulukoiden jarjtulos ja jrjseur
-//  avulla. Kumpiakin taulukoita on yksipï¿½ivï¿½isessï¿½ kisassa ja ensimmï¿½isenï¿½
-//  pï¿½ivï¿½nï¿½ kilpparam.valuku+1 ja muina pï¿½ivinï¿½ kilpparam.valuku+2 kappaletta. Taulukoissa
-//  on maxrec+2 alkiota (viimeistï¿½ ei tarvita). Jos vï¿½liaikoja ei oteta
+//  Järjestystiedoista huolehditaan taulukoiden jarjtulos ja jrjseur
+//  avulla. Kumpiakin taulukoita on yksipäiväisessä kisassa ja ensimmäisenä
+//  päivänä kilpparam.valuku+1 ja muina päivinä kilpparam.valuku+2 kappaletta. Taulukoissa
+//  on maxrec+2 alkiota (viimeistä ei tarvita). Jos väliaikoja ei oteta
 //  on taulukoita vain 1 tai 2, mutta yhteistulosta vastaava indeksi on
 //  aina kilpparam.valuku+1.
 //  Tietojen sijainti taulukoissa vastaa kilpailijan sijaintia kilpailija-
 //  tietotaulukossa ja se saadaan taulukosta posarr kilpailijanumeron
 //  perusteella.
-//  Taulukko jarjtulos sisï¿½ltï¿½ï¿½ tulosta vastaavat jï¿½rjestysmuuttujan ja
-//  taulukko jrjseur viittauksen jï¿½rjestyksessï¿½ seuraavaan kilpailijaan.
+//  Taulukko jarjtulos sisältää tulosta vastaavat järjestysmuuttujan ja
+//  taulukko jrjseur viittauksen järjestyksessä seuraavaan kilpailijaan.
 //  Jos seuraavaa kilpailijaa ei ole on viittaus -1.
 //  Taulukon jrjseur ketjulinkit on jaettu osajonoihin, joita on jokaiselle
 //  sarjalle korkeintaan 10+kilpparam.valuku. Kunkin jonon alkupiste kerrotaan
 //  taulukossa jalku seuraavassa annetun indeksin kohdalla.
-//  Pï¿½ivï¿½n tuloksille on varattu osajonot
-//    0 : hyvï¿½ksytty tulos
-//    1 : keskeyttï¿½neet
-//    2 : hylï¿½tyt
-//    3 : ei-lï¿½hteneet
+//  Päivän tuloksille on varattu osajonot
+//    0 : hyväksytty tulos
+//    1 : keskeyttäneet
+//    2 : hylätyt
+//    3 : ei-lähteneet
 //    4 : muut eli avoimet
-//  Poissa olevia ei sisï¿½llytetï¿½ taulukkoon.
-//  Pï¿½ivï¿½n tulosten osalta vastaava tulos on tapauksessa
-//    0 : tulos kertaa 4096 + lï¿½htï¿½aikaan perustuva lisï¿½ys, joka on korkein-
+//  Poissa olevia ei sisällytetä taulukkoon.
+//  Päivän tulosten osalta vastaava tulos on tapauksessa
+//    0 : tulos kertaa 4096 + lähtöaikaan perustuva lisäys, joka on korkein-
 //        taan 4095.
 //    1, 2, 3 : nimeen perustuva luku
-//    4 : lï¿½htï¿½aikaan perustuva luku (tulos klo 24.00 yï¿½llï¿½)
+//    4 : lähtöaikaan perustuva luku (tulos klo 24.00 yöllä)
 //
-//  Vï¿½liajoille jonot
+//  Väliajoille jonot
 //    5 .. kilpparam.valuku+4
-//  vastava jï¿½rjestystulos on tulos. Ilman vï¿½liaikaa olevia ei indeksoida.
+//  vastava järjestystulos on tulos. Ilman väliaikaa olevia ei indeksoida.
 //
 //  Yhteistuloksille on varattu jonot:
 //
 //    kilpparam.valuku+5 : on yhteistulos
-//    kilpparam.valuku+6 : aiempi yhteistulos, pï¿½ivï¿½ hylï¿½tty tai ei-lï¿½htenyt
-//    kilpparam.valuku+7 : ei yhteistulosta, mutta pï¿½ivï¿½n tulos
-//    kilpparam.valuku+8 : ei aiempaa tulosta eikï¿½ pï¿½ivï¿½n tulosta, pï¿½ivï¿½ voi olla
+//    kilpparam.valuku+6 : aiempi yhteistulos, päivä hylätty tai ei-lähtenyt
+//    kilpparam.valuku+7 : ei yhteistulosta, mutta päivän tulos
+//    kilpparam.valuku+8 : ei aiempaa tulosta eikä päivän tulosta, päivä voi olla
 //               avoinna
-//    kilpparam.valuku+9 : aiempien pï¿½ivien (yhteis)tulos, pï¿½ivï¿½ avoinna
+//    kilpparam.valuku+9 : aiempien päivien (yhteis)tulos, päivä avoinna
 //
 //  Vastaavat tulokset ovat
 //
 //    kilpparam.valuku+5 : yhteistulos
-//    kilpparam.valuku+6 : aiempi yhteistulos + lisï¿½ hylï¿½tyille ja ei-lï¿½hteneille
-//    kilpparam.valuku+7 : ei yhteistulosta, mutta pï¿½ivï¿½n tulos
-//    kilpparam.valuku+8 : perustuu nimeen + lisï¿½ hylï¿½tyille ja ei-lï¿½hteneille
+//    kilpparam.valuku+6 : aiempi yhteistulos + lisä hylätyille ja ei-lähteneille
+//    kilpparam.valuku+7 : ei yhteistulosta, mutta päivän tulos
+//    kilpparam.valuku+8 : perustuu nimeen + lisä hylätyille ja ei-lähteneille
 //    kilpparam.valuku+9 : aiempi yhteistulos + tulos klo 24.00
 
 void addjarjarr(kilptietue *kilp, int d, INT piste, int *keskeyta)
@@ -829,7 +827,7 @@ void addjarjarr(kilptietue *kilp, int d, INT piste, int *keskeyta)
 		}
 
 	// Poissaolevien osalta jatketaan tulospalvelutilassa vain jos parametri POISSAMUKAAN on
-	// kï¿½ytï¿½ssï¿½ tai sarjalle on mï¿½ï¿½ritelty yhteispisteiden kï¿½yttï¿½ yhteistuloksena sekï¿½ yhteospisteet
+	// käytössä tai sarjalle on määritelty yhteispisteiden käyttö yhteistuloksena sekä yhteospisteet
 	// poissaolevillekin
 	if (ToimintaTila == 2 && !onMukana(kilp, k_pv))
 		return;
@@ -881,7 +879,7 @@ void addjarjarr(kilptietue *kilp, int d, INT piste, int *keskeyta)
 								}
 							break;
 						}
-					return;        // Esivalmistelutilan kï¿½sittely loppuu tï¿½hï¿½n
+					return;        // Esivalmistelutilan käsittely loppuu tähän
 					}
 #if defined(UINTIxx)
 				for (p = 0; p < maxrec && erataul[p].kilpno > 0; p++) ;
@@ -1199,7 +1197,7 @@ void remjarjarr(kilptietue *kilp, int d, INT piste, int *keskeyta)
 		}
 
 	// Poissaolevien osalta jatketaan tulospalvelutilassa vain jos parametri POISSAMUKAAN on
-	// kï¿½ytï¿½ssï¿½ tai sarjalle on mï¿½ï¿½ritelty yhteispisteiden kï¿½yttï¿½ yhteistuloksena sekï¿½ yhteospisteet
+	// käytössä tai sarjalle on määritelty yhteispisteiden käyttö yhteistuloksena sekä yhteospisteet
 	// poissaolevillekin
 	if (ToimintaTila == 2 && !onMukana(kilp, k_pv))
 		return;
@@ -1249,7 +1247,7 @@ void remjarjarr(kilptietue *kilp, int d, INT piste, int *keskeyta)
 								}
 							break;
 						}
-					return;     // Esivalmistelutilan kï¿½sittely loppuu tï¿½hï¿½n
+					return;     // Esivalmistelutilan käsittely loppuu tähän
 					}
 				if (kilp->tark(ik_pv) == L'I') {
 					nesitt--;
@@ -1649,7 +1647,7 @@ INT teejarj(bool uusinta)
 					   free(bdg_kno);
 					   bdg_kno = NULL;
 					   }
-				   writeerror_w(L"Muisti ei riitï¿½ leimantarkastukselle", 0);
+				   writeerror_w(L"Muisti ei riitä leimantarkastukselle", 0);
 				   emitfl = 0;
 				   }
 				}
@@ -1710,7 +1708,7 @@ INT teejarj(bool uusinta)
 					}
 				if (!kilpparam.sarjavaihtelee && kilp.Sarja(ipv) != kilp.Sarja()) {
 					ok = FALSE;
-					swprintf(prs,L"Kilpailijan %s sarja vaihtelee vastoin kilpailun mï¿½ï¿½ritystï¿½",
+					swprintf(prs,L"Kilpailijan %s sarja vaihtelee vastoin kilpailun määritystä",
 						kilp.nimi(st, 38, false));
 					kirj_err_file(prs, 1);
 					}
@@ -1721,7 +1719,7 @@ INT teejarj(bool uusinta)
 				if( ch == L'P' )
 #else
 				if (select3(2, L"Jatketaanko kipailijatietojen lukemista?", L"Kilpailijatietojen lukeminen",
-					L"Jatka", L"Keskeytï¿½", L"", 0) == 2)
+					L"Jatka", L"Keskeytä", L"", 0) == 2)
 #endif
 					return(1);
 				else
@@ -1762,7 +1760,7 @@ INT teejarj(bool uusinta)
 				if (piste == 0 || kilp.p_aika(piste, 1))
 					addjarjarr(&kilp, d, piste, &keskeyta);
 
-			// Jos tunnusten kï¿½sittely on voimassa, lisï¿½tï¿½ï¿½n tunnus indeksiinsï¿½, ellei vaiheen merkintï¿½ P
+			// Jos tunnusten käsittely on voimassa, lisätään tunnus indeksiinsä, ellei vaiheen merkintä P
 
 			if (emitfl && kilp.tark(k_pv) != L'P' && kilp.pv[k_pv].badge[0]) {
 				bdg_kno[nbadge].badge = kilp.pv[k_pv].badge[0];
@@ -1816,11 +1814,11 @@ INT teejarj(bool uusinta)
 		teevuorotaulu(0, 0);
 #endif
 	if (yhtlahtoero)
-		writeerror_w(L"Yhteislï¿½htï¿½kisa - Jossain sarjassa useampia lï¿½htï¿½aikoja.", 0);
+		writeerror_w(L"Yhteislähtökisa - Jossain sarjassa useampia lähtöaikoja.", 0);
 #ifndef _CONSOLE
 	if (nrec < 2 && Sarjat[kilpparam.vakanttisarja].vakanttisarja) {
-		if (select3(2, (L"Kilpailussa vakanttisarja, mutta ei yhtï¿½ï¿½n kilpailijaa. Lisï¿½tï¿½ï¿½nkï¿½ " +
-			UnicodeString(minvakanttiluku) + L" vakanttia?").c_str(), L"Vakantit", L"Lisï¿½ï¿½", L"Jï¿½tï¿½ lisï¿½ï¿½mï¿½ttï¿½", L"", NULL) == 1)
+		if (select3(2, (L"Kilpailussa vakanttisarja, mutta ei yhtään kilpailijaa. Lisätäänkö " +
+			UnicodeString(minvakanttiluku) + L" vakanttia?").c_str(), L"Vakantit", L"Lisää", L"Jätä lisäämättä", L"", NULL) == 1)
 			lisaavakantit(minvakanttiluku);
 		}
 #endif
@@ -1872,7 +1870,7 @@ int vaihdavaihe(int vaihe, int kielto)
 	vaiheenvaihto = true;
 	for (int cn = 0; cn < maxyhteys; cn++) {
 		if (comopen[cn] && !keyclose[cn] && lahettamatta(cn)) {
-			writeerror_w(L"Avoimen yhteyden lï¿½hettï¿½mï¿½ttï¿½ olevat sanomat estï¿½vï¿½t vaihdon", 0, true);
+			writeerror_w(L"Avoimen yhteyden lähettämättä olevat sanomat estävät vaihdon", 0, true);
 			return(1);
 			}
 		}
@@ -1932,7 +1930,7 @@ int vaihdavaihe(int vaihe, int kielto)
 	memset((char *)nesit, 0, sizeof(nesit));
 	k_pv = vaihe;
 	arv_pv = k_pv;
-	vidspwmsg(6, 0, 7, 0, L"Kï¿½ynnistï¿½ï¿½ uuteen vaiheeseen");
+	vidspwmsg(6, 0, 7, 0, L"Käynnistää uuteen vaiheeseen");
 	luesarjat();
 	teejarj(true);
 	if (emitfl > 0 && !esitark && esiluenta != 1) {
@@ -2001,7 +1999,7 @@ int vaihdavaihe(int vaihe, int kielto)
 #ifndef _CONSOLE
 	haeIkkunat();
 #endif
-	swprintf(msg, L"Kï¿½ynnistys vaiheeseen %d valmis", k_pv+1);
+	swprintf(msg, L"Käynnistys vaiheeseen %d valmis", k_pv+1);
 	vidspwmsg(ySize - 5, 0, 7, 0, msg);
 	return(0);
 	}

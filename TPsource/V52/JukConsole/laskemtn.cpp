@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Viestikilpailun pisteiden laskenta ja suorituskaavat erillisessÃ¤ konsoliversiossa.
-
 #include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -49,9 +47,9 @@
 #define RINNTUNNUS  5
 
 // Leimantarkastuksen pohjana on taulukko kuvio, johon on tallennettu
-// luettelo kaikista hyvï¿½ksyttï¿½vistï¿½ rastitunnus-leimasinkoodi -yhdistelmistï¿½
-// Luettelo on aina jï¿½rjestettynï¿½ rastitunnusten mukaiseen jï¿½rjestykseen.
-// Koodin arvo 1 tarkoittaa, ettï¿½ kaikki leimaukset hyvï¿½ksytï¿½ï¿½n.
+// luettelo kaikista hyväksyttävistä rastitunnus-leimasinkoodi -yhdistelmistä
+// Luettelo on aina järjestettynä rastitunnusten mukaiseen järjestykseen.
+// Koodin arvo 1 tarkoittaa, että kaikki leimaukset hyväksytään.
 
 typedef struct {
    INT32 tm;
@@ -80,8 +78,8 @@ INT haebdg(INT32 badge, int *toinen)
    {
 	int ibdg = -1;
 
-	// bsrchint palauttaa sijainnin kertovan negatiivisen arvon, ellei tarkkaa osumaa lï¿½ydy
-	// haebdg palauttaa tï¿½mï¿½n arvon ellei *toinen == -1, jolloin tarkkaa osumaa haetaan kummastakin 
+	// bsrchint palauttaa sijainnin kertovan negatiivisen arvon, ellei tarkkaa osumaa löydy
+	// haebdg palauttaa tämän arvon ellei *toinen == -1, jolloin tarkkaa osumaa haetaan kummastakin 
 	// jonosta ja palautettava arvo on >= 0 tai -1.
 
 	if (toinen == NULL || *toinen <= 0) {
@@ -170,7 +168,7 @@ INT rembadge(INT kno, INT os, int toinen, INT d)
          if (i < 0 || i >= nbadge[toinen]) {
 /*
             if (loki && emitloki) {
-               sprintf(msg, "Ekoodia %ld ei indeksissï¿½\n", kilp.badge[0]);
+               sprintf(msg, "Ekoodia %ld ei indeksissä\n", kilp.badge[0]);
                sendline(msg, lokifile);
                }
 */
@@ -322,7 +320,7 @@ INT leimat(void)
 	  }
 
    if (emitfl <= 0) {
-      writeerror("Leimantarkastustoimintoa ei ole kï¿½ynnistetty", 0);
+      writeerror("Leimantarkastustoimintoa ei ole käynnistetty", 0);
       return(0);
       }
    if (ajat_on) status_on = 0;
@@ -345,17 +343,17 @@ INT leimat(void)
          ch = 'A';
          if (alkut) {
             ch = ' ';
-            selectopt("J)atka testiï¿½, A)loita testaus alusta", "JA", &ch);
+            selectopt("J)atka testiä, A)loita testaus alusta", "JA", &ch);
             }
          if (ch == 'A') {
             ch = ' ';
-            selectopt("A)loita heti ensimmï¿½isestï¿½ kilpailijasta, V)alitse aloitushetki", "AV", &ch);
+            selectopt("A)loita heti ensimmäisestä kilpailijasta, V)alitse aloitushetki", "AV", &ch);
             if (ch == 'A') {
                ch = ' ';
-               selectopt("T)iedoston EMITREK.LST mukaiset ajat, V)akiovï¿½liset ajat", "TV", &ch);
+               selectopt("T)iedoston EMITREK.LST mukaiset ajat, V)akioväliset ajat", "TV", &ch);
                if (ch == 'V') {
                   clrln(ySize-3);
-                  vidspmsg(ySize-3, 0, 7, 0, "Anna aikavï¿½li sekunnin kymmenyksinï¿½");
+                  vidspmsg(ySize-3, 0, 7, 0, "Anna aikaväli sekunnin kymmenyksinä");
                   INPUTINT(&aikaaskel, 5, 37, ySize-3, "\r", &ch);
                   }
                else
@@ -367,7 +365,7 @@ INT leimat(void)
                selectopt("T)iedoston EMITREK.LST mukainen aloitus, M)uu aloitusaika", "TM", &ch);
                if (ch == 'M') {
                   clrln(ySize-3);
-                  vidspmsg(ySize-3, 0, 7, 0, "Anna ensimmï¿½isen kilpailijan lukemisaika");
+                  vidspmsg(ySize-3, 0, 7, 0, "Anna ensimmäisen kilpailijan lukemisaika");
                   alkut = T_TIME(biostime(0,0));
                   INPUTAIKA(&alkut, t0, 8, 43, ySize-3, "\r", &ch);
                   }
@@ -382,7 +380,7 @@ INT leimat(void)
          clrtxt(r1,0,60);
          clrln(ySize-3);
          if (luentatesti != 2) {
-            vidspmsg(ySize-3,0,7,0, "Odottaa Emit-koodia - Esc: keskeytï¿½ odotus");
+            vidspmsg(ySize-3,0,7,0, "Odottaa Emit-koodia - Esc: keskeytä odotus");
             for (;;) {
                ch = readkbd(&ch, 0, spoolfl);
                if (ch == ESC) {
@@ -433,7 +431,7 @@ INT leimat(void)
             }
          if (luentatesti == 2) {
             badge = bdg;
-            vidspmsg(ySize-3,0,7,0, "Esc : Keskeytï¿½ testi");
+            vidspmsg(ySize-3,0,7,0, "Esc : Keskeytä testi");
             for (;;) {
                ch = readkbd(&ch, 0, spoolfl);
                if (ch == ESC) {
@@ -524,7 +522,7 @@ INT leimat(void)
 		              }
                   else {
 						naytatulos(0);
-						sprintf(msg, "Virheellinen merkkijono viivakoodista tai nï¿½ppï¿½imiltï¿½: %s", line);
+						sprintf(msg, "Virheellinen merkkijono viivakoodista tai näppäimiltä: %s", line);
 						writeerror(msg, 0);
 						}
 					}
@@ -554,13 +552,13 @@ INT leimat(void)
 					  }
                else {
 						naytatulos(0);
-						sprintf(msg, "Virheellinen merkkijono viivakoodista tai nï¿½ppï¿½imiltï¿½: %s", line);
+						sprintf(msg, "Virheellinen merkkijono viivakoodista tai näppäimiltä: %s", line);
 						writeerror(msg, 0);
 						}
                    }
                if (os < 1 || os > kilpparam.osuusluku || (d = getpos(kno)) <= 0) {
 						asetavalo(2);
-                  vidspmsg(r2, 27, 0, 7, "Joukkue tai osuus vï¿½ï¿½rï¿½ -lue uudelleen");
+                  vidspmsg(r2, 27, 0, 7, "Joukkue tai osuus väärä -lue uudelleen");
                   continue;
                   }
                clrtxt(r2, 23, 65);
@@ -569,7 +567,7 @@ INT leimat(void)
                os--;
                GETREC(&kilp, d);
                if (os >= Sarjat[kilp.sarja].osuusluku) {
-                  vidspmsg(r2, 27, 0, 7, "Osuus vï¿½ï¿½rï¿½ -lue uudelleen");
+                  vidspmsg(r2, 27, 0, 7, "Osuus väärä -lue uudelleen");
 				  asetavalo(2);
                   continue;
                   }
@@ -587,7 +585,7 @@ INT leimat(void)
 				if (toupper(kilp.ostiet[os].seuranta) == 'G') {
 					viwrrect(r5+kilpparam.osuusluku,0,r5+kilpparam.osuusluku+2,64,
 						"                                                                 "
-						"      KILPAILIJA OSALLISENA GPS-SEURANTAAN - HAE Lï¿½HETIN         "
+						"      KILPAILIJA OSALLISENA GPS-SEURANTAAN - HAE LÄHETIN         "
 						"                                                                 ", 0, 3, 0);
 					}
 /*
@@ -608,7 +606,7 @@ INT leimat(void)
 				  asetavalo(2);
 				  if (aukkovaroitus) {
 	                  erbeep();
-		              selectopt("Edellisellï¿½ osuudella ei korttia. K)irjaa, E)i kirjata, L)opeta varoitus",
+		              selectopt("Edellisellä osuudella ei korttia. K)irjaa, E)i kirjata, L)opeta varoitus",
 			             "KEL", &ch);
 					  if (ch == 'L') {
 						 aukkovaroitus = 0;
@@ -622,7 +620,7 @@ INT leimat(void)
                   ch = 'E';
 				  asetavalo(2);
                   erbeep();
-                  selectopt("Osuudella jo tulos tai muu suoritusmerkintï¿½. Kirjataanko silti (K/E)",
+                  selectopt("Osuudella jo tulos tai muu suoritusmerkintä. Kirjataanko silti (K/E)",
                      "KE", &ch);
                   if (ch == 'E')
                      continue;
@@ -635,18 +633,18 @@ INT leimat(void)
                   if (!salli_emit_ensin) {
                      uusi_emit = 0;
                      sprintf(line, "Lue uusi kortti tai P)oimi edellinen luettu:"
-                        " %ld, Esc: keskeytï¿½", ed_emit);
+                        " %ld, Esc: keskeytä", ed_emit);
                      vidspmsg(r1,0,0,7,line);
                      }
                   }
                else {
                   ed_emit = 0;
-                  vidspmsg(r1,0,0,7,"Lue Emit-kortti, K)orjaa tieto nï¿½ppï¿½imistï¿½ltï¿½, Esc: keskeytï¿½");
+                  vidspmsg(r1,0,0,7,"Lue Emit-kortti, K)orjaa tieto näppäimistöltä, Esc: keskeytä");
                   }
                clrln(ySize-3);
                if (!salli_emit_ensin || !ed_emit) {
 				  asetavalo(3);
-                  vidspmsg(ySize-3,0,7,0, "Odottaa Emit-koodia - Esc: keskeytï¿½ odotus");
+                  vidspmsg(ySize-3,0,7,0, "Odottaa Emit-koodia - Esc: keskeytä odotus");
                   for (;;) {
                      ch = toupper(readkbd(&ch, 0, spoolfl));
                      if (ch == 'K')
@@ -699,7 +697,7 @@ INT leimat(void)
 								"                                                                 "
 								"                                                                 "
 								"       SAMA KORTTI JO KIRJATTU KILPAILIJALLE. EI MUUTETTAVAA     "
-								"       PAINA ESC JA SIIRRY SEURAAVAN KILPAILIJAN Kï¿½SITTELYYN     "
+								"       PAINA ESC JA SIIRRY SEURAAVAN KILPAILIJAN KÄSITTELYYN     "
 								"                                                                 ", 0, 3, 0);
 							i = 0;
 							readkbd(&ch, TRUE,  spoolfl);
@@ -721,7 +719,7 @@ INT leimat(void)
 							}
 						}
 					if (vd > 0) {
-						sprintf(line, "          Kortti kï¿½ytï¿½ssï¿½ joukkueen %d osuudella %s                ", kno1, osuuskoodi(vkilp.sarja, vos, 0, 0));
+						sprintf(line, "          Kortti käytössä joukkueen %d osuudella %s                ", kno1, osuuskoodi(vkilp.sarja, vos, 0, 0));
 						viwrrect(r5+kilpparam.osuusluku,0,r5+kilpparam.osuusluku+4,64,
 							"                                                                 "
 							"                                                                 "
@@ -734,7 +732,7 @@ INT leimat(void)
 						}
 					}
                if (!esta_uusikaytto && kno1 && kno1 != kno) {
-                  sprintf(line, "Emit-kortti jo kï¿½ytï¿½ssï¿½ joukkueella %d.", kno1);
+                  sprintf(line, "Emit-kortti jo käytössä joukkueella %d.", kno1);
                   kbflush();
                   writeerror(line, 0);
                   ch = 'E';
@@ -763,7 +761,7 @@ INT leimat(void)
                if (ch != 'E')
                   kilp.ostiet[os].badge[0] = badge;
                if (ch == 'H')
-                  selectopt("H)yvï¿½ksy tiedot,  Esc: peruuta ja lue seuraava viivakoodi", "H\x1b", &ch);
+                  selectopt("H)yväksy tiedot,  Esc: peruuta ja lue seuraava viivakoodi", "H\x1b", &ch);
                if (ch == 'H' || ch == 'K') {
 //                  addbadge(badge, kno, d, 0);
                   tallenna(&kilp, d, 0, 0, 0, &entkilp);

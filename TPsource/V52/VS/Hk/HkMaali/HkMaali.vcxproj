@@ -124,7 +124,6 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>..\..\..\..\..\TPexe\lib\V52\VS\debug\tputilv2.lib;..\..\..\..\..\TPexe\lib\V52\VS\debug\dbboxm.lib;ws2_32.lib;winhttp.lib;commode.obj;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>LIBCMTD</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugV200|Win32'">
@@ -142,7 +141,6 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>..\..\..\..\..\TPexe\lib\V52\VS\debug\tputilv2.lib;..\..\..\..\..\TPexe\lib\V52\VS\debug\dbboxm.lib;ws2_32.lib;winhttp.lib;commode.obj;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>LIBCMTD</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

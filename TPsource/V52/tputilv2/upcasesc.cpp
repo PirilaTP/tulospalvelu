@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Muuntaa yksittÃ¤isen merkin suuraakkoseksi tukien CP437/Windows-1252-skandeja (upcasesc, upcasewsc).
-
 #if defined(__BORLANDC__)
 #pragma -K
 #endif
@@ -27,11 +25,11 @@ char upcasesc(char ch)
    char c;
 
    switch(ch) {
-      case 130 :  return('ï¿½');
-      case 132 :  return('ï¿½');
-      case 148 :  return('ï¿½');
-      case 134 :  return('ï¿½');
-      case 129 :  return('ï¿½');
+      case 130 :  return('');
+      case 132 :  return('');
+      case 148 :  return('™');
+      case 134 :  return('');
+      case 129 :  return('š');
    }
    i = ch;
    c = toupper(i);

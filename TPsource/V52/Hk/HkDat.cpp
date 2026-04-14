@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// KenttÃ¤rakenteiden ja tietuekenttÃ¤mÃ¤Ã¤ritysten alustus henkilÃ¶kilpailun tietokantaan (buf_fields-taulukot).
-
 #ifdef _BORLAND_
 #include <vcl.h>
 #endif
@@ -599,7 +597,7 @@ int kilptietue::write(int d, int mihin)
 void kilptietue::GETREC(INT d)
 	{
 	if (d < 0 || d > maxrec) {
-		writeerror_w(L"Virhe: Ohjelma yrittï¿½ï¿½ hakea olematonta kilpailijaa", 0);
+		writeerror_w(L"Virhe: Ohjelma yrittää hakea olematonta kilpailijaa", 0);
 		return;
 		}
 	this->nollaa();
@@ -681,7 +679,7 @@ void kilptietue::addtall(INT *dataf, INT kielto)
 
 //	EnterCriticalSection(&tall_CriticalSection);
 	if (nrec >= maxrec) {
-		writeerror_w(L"Yritys lisï¿½tï¿½ liikaa kilpailijoita", 0);
+		writeerror_w(L"Yritys lisätä liikaa kilpailijoita", 0);
 		return;
 		}
 	if (!kilpparam.sarjavaihtelee)
@@ -778,7 +776,7 @@ int haeseurvapaa(int seurvapaa)
 
 	i = haeSeurVapaaKno(k_pv, seurvapaa);
 	if (i == 0) {
-		writeerror_w(L"Ei vapaita kilpailijanumeroita, lisï¿½ys mahdotonta", 0);
+		writeerror_w(L"Ei vapaita kilpailijanumeroita, lisäys mahdotonta", 0);
 		}
 	return(i);
 	}
@@ -793,20 +791,20 @@ void lisaToimet(kilptietue *kilp, kilptietue *ekilp, int kcmp, int *m_pv, int *m
 //  kilpcmp vertaa tietueita *kilp ja *ekilp. Palautettava arvo on
 //   0   jos tietueet identtiset
 //   1   jos eroa vain tuloksiin vaikuttamattomissa tiedoissa
-//   2   jos eroa vain pï¿½ivï¿½n ajoissa, KHE-tiedossa ja/tai sakkotiedoissa
+//   2   jos eroa vain päivän ajoissa, KHE-tiedossa ja/tai sakkotiedoissa
 
-//   3   jos eroa molemmissa edellisissï¿½
-//   >3  jos sarja tai aiemman pï¿½ivï¿½n tulos tai hylkï¿½ys eroaa
+//   3   jos eroa molemmissa edellisissä
+//   >3  jos sarja tai aiemman päivän tulos tai hylkäys eroaa
 //	Taulukon m_pv alkio m_pv[0] = 1, kun perustiedot muuttuneet
-//  Taulukon m_pv alkio m_pv[i_pv+1] = 1, kun pï¿½ivï¿½tiedoissa muu muutos
-//  kuin erikseen lï¿½hetettï¿½vï¿½ pï¿½ivï¿½n tulostieto
+//  Taulukon m_pv alkio m_pv[i_pv+1] = 1, kun päivätiedoissa muu muutos
+//  kuin erikseen lähetettävä päivän tulostieto
 //  Samalla asetetaan taulukon m_ajat kaikki ne alkiot arvoon 1 tai 2,
 //  joita vastaa muuttunut aika (m_ajat[piste+1] = 1).
 //  Jos KHE-tieto muuttuu on m_ajat[kilpparam.valuku+2] = 1
 //  Jos ammunnan sakkotieto muuttuu on m_ajat[kilpparam.valuku+3] = 1
 //  Jos muu sakkotieto muuttuu on m_ajat[kilpparam.valuku+4] = 1
 //
-//  m_ajat[i] == 2, jos halutaan nï¿½yttï¿½ï¿½ seurannassa.
+//  m_ajat[i] == 2, jos halutaan näyttää seurannassa.
 
 static INT kilpcmp(kilptietue *kilp, kilptietue *ekilp, INT *m_ajat, int *m_pv)
 	{
@@ -890,10 +888,10 @@ static INT kilpcmp(kilptietue *kilp, kilptietue *ekilp, INT *m_ajat, int *m_pv)
 // Metodi: tallenna
 //
 // 		d			tietueen sijainti
-//      comtarfl	pyytï¿½ï¿½ tarran kirjoittamisen (vanhentunut)
-//		kielto		kertoo yhteyden, mistï¿½ muutos on tullut ja jonne ei lï¿½hetetï¿½
-//					kielto == 0 kertoo, ettï¿½ muutos on syntynyt tï¿½ssï¿½ instanssissa
-//		pakota_lah	pyytï¿½ï¿½ edelleenlï¿½hettï¿½mï¿½ï¿½n myï¿½s muuttumattomat tiedot verkon pï¿½ivittï¿½miseksi
+//      comtarfl	pyytää tarran kirjoittamisen (vanhentunut)
+//		kielto		kertoo yhteyden, mistä muutos on tullut ja jonne ei lähetetä
+//					kielto == 0 kertoo, että muutos on syntynyt tässä instanssissa
+//		pakota_lah	pyytää edelleenlähettämään myös muuttumattomat tiedot verkon päivittämiseksi
 //		entkilp		tietue, johon verrataaan muutoksia haettessa, jos NULL verrataan tallennettuun tietoon
 
 void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilptietue *entkilp)
@@ -975,7 +973,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 	if (!kilpparam.bibvaihtelee)
 		setIdAll(id());
 
-		// Mï¿½ï¿½ritetï¿½ï¿½n muutosten mï¿½ï¿½rï¿½ ja luonne ohjelmalla kilpcmp
+		// Määritetään muutosten määrä ja luonne ohjelmalla kilpcmp
 		// Ohitetaan kaikki, ellei muutoksia ole
 
 	for (int kierr = 0; kierr == 0 && ((kcmp = kilpcmp(entkilp, this, m_ajat, m_pv)) > 0 || pakota_lah || pak_ix); kierr++) {
@@ -1000,20 +998,20 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 			}
 */
 
-		// Pyytï¿½ï¿½ pï¿½ivittï¿½mï¿½ï¿½n sijoitustiedot
+		// Pyytää päivittämään sijoitustiedot
 
 		if (kcmp && kielto) {
 			merk_sijat();
 			}
 
-		// Asettaa muuttujan hyv_muutos, jos muutos koskee vain hyvï¿½ksymistï¿½
-		// aiemmin avoimesta (tai pï¿½invastoin). Estï¿½ï¿½ turhia rivejï¿½ viimeisten
-		// tapahtumien nï¿½ytï¿½llï¿½
+		// Asettaa muuttujan hyv_muutos, jos muutos koskee vain hyväksymistä
+		// aiemmin avoimesta (tai päinvastoin). Estää turhia rivejä viimeisten
+		// tapahtumien näytöllä
 
 		if (m_ajat[kilpparam.valuku+2] && hyv() == kilp.hyv())
 			hyv_muutos = 1;
 
-		// Asettaa muuttujan korjaus muutoslaskureiden mï¿½ï¿½rï¿½ï¿½mistï¿½ varten
+		// Asettaa muuttujan korjaus muutoslaskureiden määräämistä varten
 
 		if(kilp.tulos_pv(k_pv) || !kilp.hyv()) {
 			korjaus = TRUE;
@@ -1021,14 +1019,14 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 		pfl = FALSE;
 		innpfl = FALSE;
 
-		// Poistetaan muutoksissa vanhentuneet indeksoinnit sijoitusindekseistï¿½
+		// Poistetaan muutoksissa vanhentuneet indeksoinnit sijoitusindekseistä
 
 		for (piste = 0; piste <= Sarjat[kilp.Sarja()].valuku[k_pv]; piste++)
 			if (pak_ix || kcmp > 3 || m_ajat[piste+1] ||
 				(!piste  && (m_ajat[kilpparam.valuku+2] || m_ajat[kilpparam.valuku+3])))
 				remjarjarr(&kilp, d, piste, &keskeyta);
 
-		// Pï¿½ivitetï¿½ï¿½n nimi-indeksi, jos nimi on muuttunut
+		// Päivitetään nimi-indeksi, jos nimi on muuttunut
 
 		if (wcscmp(sukunimi, kilp.sukunimi) || wcscmp(etunimi, kilp.etunimi)) {
 			keyaak(&kilp, keyn, nameindex.keyl, 0);
@@ -1048,11 +1046,11 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 			if (emitfl && (ibdg == 0 || kilpparam.kaksibadge == 2) && ebadge[ibdg] != ubadge[ibdg]) {
 				INT16 jbdg = -1;
 
-			// Jos uusi badge on jo kï¿½ytï¿½ssï¿½, on bkno sitï¿½ kï¿½yttï¿½neen kilpailijanumero
-			// Koodimuutoksen tallennus peruutetaan, jos muutos tehty tï¿½llï¿½ koneella
-			// mutta hyvï¿½ksytï¿½ï¿½n tiedonsiirron tuoman muutoksen tapauksessa sekï¿½
+			// Jos uusi badge on jo käytössä, on bkno sitä käyttäneen kilpailijanumero
+			// Koodimuutoksen tallennus peruutetaan, jos muutos tehty tällä koneella
+			// mutta hyväksytään tiedonsiirron tuoman muutoksen tapauksessa sekä
 			// kun argumentti kielto == -1
-			// Tï¿½llï¿½in
+			// Tällöin
 
 				bkno = bdg2kno(ubadge[ibdg]);
 				getEmitJarr(bkno, &jbdg);
@@ -1075,7 +1073,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 					if (ep >= 0 && kysyfl) {
 						if (ubadge[ibdg]) {
 							if (!kuntosuunnmoodi)
-								writeerror_w(L"Kilpailijalle luetut Emit-tiedot sï¿½ilyvï¿½t "
+								writeerror_w(L"Kilpailijalle luetut Emit-tiedot säilyvät "
 									L"kilpailijalla", timerfl*2000, true);
 							}
 						else {
@@ -1083,14 +1081,14 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 							if (!timerfl) {
 								ch = L' ';
 								wselectopt(L"Yhteys kilpailijalle luettuihin Emit-tietoihin"
-								L"menetetï¿½ï¿½n. Vahvista (K/E)", L"KE", &ch);
+								L"menetetään. Vahvista (K/E)", L"KE", &ch);
 								}
 							else
 #endif
 								{
 //							if (tark(k_pv) != L'V')
 //								writeerror_w(L"Yhteys kilpailijalle luettuihin Emit-tietoihin"
-//									L"menetetï¿½ï¿½n.", 2000);
+//									L"menetetään.", 2000);
 								ch = L'K';
 								}
 							if (ch == L'E') {
@@ -1101,13 +1099,13 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 						}
 					}
 
-				// Seuraavassa edetï¿½ï¿½n, jos muutos on tapahtunut eikï¿½ sitï¿½ ole yllï¿½ peruttu
+				// Seuraavassa edetään, jos muutos on tapahtunut eikä sitä ole yllä peruttu
 
 				if (ubadge[ibdg] != ebadge[ibdg]) {
 
 				// Seuraava koskee tilannetta, jossa uusi koodi on toisella kilpailijalla bkno
 				// Ennen seuraavaa on em kilpailijan bkno emittietue, jonka badge on ubadge.
-				// Jos myï¿½s vanhaa koodia vastaa emitietue, poistetaan siitï¿½ kilpno
+				// Jos myös vanhaa koodia vastaa emitietue, poistetaan siitä kilpno
 				// Sitten luetaan takaisin kilpailijan bkno emittiedot
 
 					if (ebadge[ibdg] && bkno && em.kilpno == bkno) {
@@ -1127,7 +1125,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 						}
 
 				// Jos emittietue oli linkitetty toiseen kilpailijaan, poistetaan linkit
-				// taulusta bdg_kno ja emitjarr sekï¿½ lisï¿½tï¿½ï¿½n uusi linkki tauluun emitjarr
+				// taulusta bdg_kno ja emitjarr sekä lisätään uusi linkki tauluun emitjarr
 
 					if (bkno) {
 						rembadge(ubadge[ibdg], bkno, timerfl*kysyfl);
@@ -1138,12 +1136,12 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 							setEmitJarr(ep, id(), ibdg);
 						}
 
-				// Vaihdetaan uusi badge emittietueeseen. Tï¿½llï¿½ ei nï¿½yttï¿½isi olevan vaikutusta
+				// Vaihdetaan uusi badge emittietueeseen. Tällä ei näyttäisi olevan vaikutusta
 
 					em.badge = ubadge[ibdg];
 					em.osuus = ibdg;
 
-				// Tallennetaan emit-tietueeseen tulleet muutokset (lï¿½hinnï¿½ kilpno)
+				// Tallennetaan emit-tietueeseen tulleet muutokset (lähinnä kilpno)
 
 					putem(&em, ep, 1);
 					}
@@ -1161,7 +1159,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 				// Jos kilpailijalla oli emitkoodi poistetaan vanhentuneet linkit
 				// tauluista bdg_kno ja emitjarr, vaihdetaan kilpno emit-tietueessa (jos on)
 				// ja kirjoitetaan uudet linkit tauluihin emitjarr ja bdg_kno
-				// muutokset merkitï¿½ï¿½n tehdyiksi asettamalla ebadge = ubadge
+				// muutokset merkitään tehdyiksi asettamalla ebadge = ubadge
 
 				if (emitfl && ebadge[ibdg]) {
 					rembadge(ebadge[ibdg], kilp.id(), timerfl*kysyfl);
@@ -1182,8 +1180,8 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 					setpos(kilp.id(), 0);
 				}
 
-				// Poistetaan vanhentunut linkki taulusta emitjarr, kun sitï¿½ ei enï¿½ï¿½ tarvita
-				// myï¿½skï¿½ï¿½n kilpailijanumeromuutoksen tapauksessa
+				// Poistetaan vanhentunut linkki taulusta emitjarr, kun sitä ei enää tarvita
+				// myöskään kilpailijanumeromuutoksen tapauksessa
 
 			else if (emitfl && (ibdg == 0 || kilpparam.kaksibadge == 2) && ebadge[ibdg] && !ubadge[ibdg]) {
 				setEmitJarr(-1, kilp.id(), ibdg);
@@ -1199,7 +1197,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 
 //		kilp = *this;
 
-			// Pï¿½ivitetï¿½ï¿½n sijoitustiedot
+			// Päivitetään sijoitustiedot
 
 		for (p = 0; p <= kilpparam.valuku+1; p++) {
 			if (p > Sarjat[Sarja()].valuku[k_pv] && (!k_pv || p != kilpparam.valuku+1))
@@ -1208,11 +1206,11 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 				haesija(this, p, 0, &keskeyta);
 			}
 
-			// Tallennetaan uudet tiedot sekï¿½ taulukkoon kilparr ettï¿½ levylle (ja tietokantaan, jos kï¿½ytï¿½ssï¿½)
+			// Tallennetaan uudet tiedot sekä taulukkoon kilparr että levylle (ja tietokantaan, jos käytössä)
 
 		PUTREC(d, 1);
 
-			// Lisï¿½tï¿½ï¿½n linkki tauluun bdg_kno, jos taulu on kï¿½ytï¿½ssï¿½, badge != 0 ja muuttunut
+			// Lisätään linkki tauluun bdg_kno, jos taulu on käytössä, badge != 0 ja muuttunut
 
 		for (int ibdg = 0; kcmp && ibdg < (kilpparam.kaksibadge ? 2 : 1); ibdg++) {
 			ubadge[ibdg] = Badge(k_pv, ibdg);
@@ -1221,7 +1219,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 			}
 
 //		piste = 1;
-			// Lisï¿½tï¿½ï¿½n muutoksia vastaavat tietot sijoitusindekseihin
+			// Lisätään muutoksia vastaavat tietot sijoitusindekseihin
 
 		for (p = 0; p <= Sarjat[Sarja()].valuku[k_pv]; p++) {
 			if (pak_ix || kcmp > 3 || m_ajat[p+1] ||
@@ -1241,8 +1239,8 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 			}
 #endif
 
-			// Lisï¿½tï¿½ï¿½n tiedot HkKisaWinin tapahtumanï¿½yttï¿½ï¿½ varten
-			// (tyhjï¿½ funktio konsolisovelluksessa)
+			// Lisätään tiedot HkKisaWinin tapahtumanäyttöä varten
+			// (tyhjä funktio konsolisovelluksessa)
 
 		for (p = 0; p <= kilpparam.valuku+2; p++) {
 			if (m_ajat[p+1] > 1 && (!hyv_muutos || p > 0)) {
@@ -1262,47 +1260,47 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 
 		paivita_aikanaytto();
 
-			// Lï¿½hetetï¿½ï¿½n muutostiedot tiedonsiirtoon
+			// Lähetetään muutostiedot tiedonsiirtoon
 
 //
-//  piste = 0  :						Lï¿½hetï¿½ kaikki perustiedot
-//  piste < 0  :						Lï¿½hetï¿½ kaikki pï¿½ivï¿½n 1-piste tiedot
-//										aktiivinen pï¿½ivï¿½ ilman aikoja, muut aikoineen
-//  piste = 1 .. kilpparam.valuku+2     Lï¿½hetï¿½ pisteen piste-2 aika
-//								        (-1: lï¿½htï¿½, 0: maali, >0: vï¿½liaika)
-//  piste = kilpparam.valuku+3          Lï¿½hetï¿½ keskhyl
-//  piste = kilpparam.valuku+4          Lï¿½hetï¿½ ammunnan sakkotiedot
-//  piste = kilpparam.valuku+5          Lï¿½hetï¿½ muu sakkotieto
+//  piste = 0  :						Lähetä kaikki perustiedot
+//  piste < 0  :						Lähetä kaikki päivän 1-piste tiedot
+//										aktiivinen päivä ilman aikoja, muut aikoineen
+//  piste = 1 .. kilpparam.valuku+2     Lähetä pisteen piste-2 aika
+//								        (-1: lähtö, 0: maali, >0: väliaika)
+//  piste = kilpparam.valuku+3          Lähetä keskhyl
+//  piste = kilpparam.valuku+4          Lähetä ammunnan sakkotiedot
+//  piste = kilpparam.valuku+5          Lähetä muu sakkotieto
 //
 
 		if (comfl) {
 			int lahno;
 			lahno = entno;
 
-			// Lï¿½hetetï¿½ï¿½n kilpailijan perustiedot
-			// Kilpailijanumero muuttuu tarvittaessa tï¿½mï¿½n sanoman perusteella
-			// lahno sisï¿½ltï¿½ï¿½ tï¿½mï¿½n jï¿½lkeen oikean numeron seuraavien sanomien pohjaksi
+			// Lähetetään kilpailijan perustiedot
+			// Kilpailijanumero muuttuu tarvittaessa tämän sanoman perusteella
+			// lahno sisältää tämän jälkeen oikean numeron seuraavien sanomien pohjaksi
 
 			if ((kcmp & 1) && m_pv[0]) {
 				laheta(d, entno, 0 , 0, comtarfl && lahtarfl, kielto, pakota_lah);
 				lahno = kilpno;
 				}
 
-			// Lï¿½hetetï¿½ï¿½n kunkin pï¿½ivï¿½n pï¿½ivï¿½kohtaiset tiedot
+			// Lähetetään kunkin päivän päiväkohtaiset tiedot
 
 			for (p = 0; p < kilpparam.n_pv_akt; p++) {
 				if ((kcmp & 1) && m_pv[p+1])
 				laheta(d, lahno, -1-p, 0, 0, kielto, pakota_lah);
 				}
 
-			// Lï¿½hetetï¿½ï¿½n tarkistus- ja sakkotiedot
+			// Lähetetään tarkistus- ja sakkotiedot
 
 			for (p = kilpparam.valuku+1; p <= kilpparam.valuku+3; p++) {
 				if (m_ajat[p+1]) {
 					laheta(d, lahno, p+2, hyv_muutos ,comtarfl && lahtarfl, kielto,  pakota_lah);
 					}
 				}
-			// Lï¿½hetetï¿½ï¿½n tulostiedot
+			// Lähetetään tulostiedot
 
 			for (p = pvparam[k_pv].hiihtolahto ? -1 : 0; p < kilpparam.valuku+1; p++) {
 				if (m_ajat[p+1]) {
@@ -1311,12 +1309,12 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 				}
 			}
 
-			// Kertoo, ettï¿½ sarjaan on tullut muutoksia
+			// Kertoo, että sarjaan on tullut muutoksia
 
 		sjfl[Sarja()] = TRUE;
 
-			// Tallennetaan tieto maalin mno viimeisimmï¿½stï¿½ maaliajasta
-			// Tiedon merkitys on nykyisin vï¿½hï¿½inen
+			// Tallennetaan tieto maalin mno viimeisimmästä maaliajasta
+			// Tiedon merkitys on nykyisin vähäinen
 
 		if (!korjaus && m_ajat[1] && (maali(0) != TMAALI0))
 			maaliajat[Sarjat[Sarja()].mno[k_pv]-1] = maali(0);
@@ -1345,7 +1343,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 				}
 			}
 
-			// Kirjoitetaan mahdolliset lokitiedostomerkinnï¿½t
+			// Kirjoitetaan mahdolliset lokitiedostomerkinnät
 
 		if (loki) {
 			//       if (piste < 0 || piste > kilpparam.valuku) piste = 0;
@@ -1368,7 +1366,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 				Sarjat[Sarja()].sarjanimi,ss,tark(k_pv));
 			wkirjloki(line);
 			if (keskeyta) {
-				swprintf(line,L"Keskeytï¿½ = %d, kello %s", keskeyta, wkello());
+				swprintf(line,L"Keskeytä = %d, kello %s", keskeyta, wkello());
 				wkirjloki(line);
 				}
 			}
@@ -1376,7 +1374,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 			lisaToimet(this, &kilp, kcmp, m_pv, m_ajat);
 			}
 		if (keskeyta > 2) {
-			writeerror_w(L"Indeksointivirhe, Ohjelma keskeytetï¿½ï¿½n", 0, true);
+			writeerror_w(L"Indeksointivirhe, Ohjelma keskeytetään", 0, true);
 			inLopetus = 1;
 			lopetus();
 			}

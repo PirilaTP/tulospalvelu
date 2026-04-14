@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Konsolipohjainen nÃ¤yttÃ¶- ja syÃ¶ttÃ¶rutiinit: aikajonojen ja joukkuetietojen nÃ¤yttÃ¶ viestikilpailussa.
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <io.h>
@@ -108,8 +106,8 @@ static void vaihda_ajat(int ino);
 void naytaluenta(int badge);
 // aika_syy saa seuraavat arvot riippuen ajanottotavasta:
 //      0 : RS-portti
-//      1 : hiiri             EI Kï¿½YTï¿½SSï¿½
-//      2 : nï¿½ppï¿½imistï¿½       EI Kï¿½YTï¿½SSï¿½
+//      1 : hiiri             EI KÄYTÖSSÄ
+//      2 : näppäimistö       EI KÄYTÖSSÄ
 //
 int aika_syy[AIKA_LUKU];
 
@@ -711,7 +709,7 @@ static void tall_bdg_t(UINT32 badge, INT32 t, INT32 t1, int r_no, int lahde)
 	bdg_t[i].t = t;
 #ifndef _CONSOLE
 	if (ToimintaTila == 1)
-		i = 7; // Tï¿½ytettï¿½
+		i = 7; // Täytettä
 	else
 #endif
 	if (kaikki_ajat[r_no+1] && ohitatoisto) {
@@ -878,10 +876,10 @@ void seur_mtr(void)
 	  emitfiletest = 1;
    if (emitfiletest) {
 	  ch = ' ';
-	  selectopt("Lukemisajat T)iedostosta EMIT_IN.DAT vai V)akiovï¿½lein", "TV", &ch);
+	  selectopt("Lukemisajat T)iedostosta EMIT_IN.DAT vai V)akiovälein", "TV", &ch);
 	  if (ch == 'V') {
 		 clrln(ySize-3);
-		 vidspmsg(ySize-3, 0, 7, 0, "Anna aikavï¿½li sekunnin kymmenyksinï¿½");
+		 vidspmsg(ySize-3, 0, 7, 0, "Anna aikaväli sekunnin kymmenyksinä");
 		 INPUTINT(&lukuvali, 5, 37, ySize-3, "\r", &ch);
 		 }
 	  else
@@ -947,7 +945,7 @@ static emittp *ed_em[NREGNLY];
 	regnlyhetki[r_no] = T_TIME(biostime(0,0));
 	if (!ed_em[r_no]) {
 	  if ((ed_em[r_no] = (emittp *) malloc(sizeof(emittp))) == 0) {
-		 writeerror("Muisti ei riitï¿½ Emit-tiedoille", 0);
+		 writeerror("Muisti ei riitä Emit-tiedoille", 0);
 		 return(1);
 		 }
 	  }
@@ -1062,7 +1060,7 @@ static emittp *ed_em[NREGNLY];
 //			em.time = hae_bdg_t(em.badge, uusin)/KSEK;
 		if (!em.badge || kaikki_ajat[r_no+1] == 2)
 			return(0);
-		// Vaadi ettï¿½ leimojen lopussa on lukijakoodi
+		// Vaadi että leimojen lopussa on lukijakoodi
 		for (i = MAXNLEIMA-1; i > 1; i--)
 			if (em.ctrlcode[i] > 0)
 				break;
@@ -1222,7 +1220,7 @@ INT pros_emit(wchar_t *msg1)
 			   msg[4] = 0;
                kno = atol(msg);
                }
-			sprintf(msg, "Joukkue %d, osuus %d,  H)yvï¿½ksy, M)uuta, Esc: Peruuta", kno, os);
+			sprintf(msg, "Joukkue %d, osuus %d,  H)yväksy, M)uuta, Esc: Peruuta", kno, os);
             ch = 'H';
 			selectopt(msg, "HM\x1b", &ch);
             clrln(ySize-3);
@@ -1324,7 +1322,7 @@ INT pros_emit(wchar_t *msg1)
                      msg[4] = 0;
 					 j = atol(msg);
 					 }
-                  sprintf(msg, "Joukkue %d, osuus %d,  H)yvï¿½ksy, M)uuta, Esc: Peruuta", j, i );
+                  sprintf(msg, "Joukkue %d, osuus %d,  H)yväksy, M)uuta, Esc: Peruuta", j, i );
                   clrln(ySize-3);
                   ch = 'H';
                   selectopt(msg, "HM\x1b", &ch);
@@ -1418,7 +1416,7 @@ INT pros_emit(wchar_t *msg1)
             kbflush();
 			sprintf(msg,
                "Uusi Emit-koodi%6ld. Paina viestin poistuttua Enter "
-			   "kï¿½sitellï¿½ksesi", em.badge);
+			   "käsitelläksesi", em.badge);
 			writeerror(msg, 2000);
             utsleep(36);
 			ch = readkbd(&ch, 0, 0);
@@ -1440,7 +1438,7 @@ INT pros_emit(wchar_t *msg1)
 			   msg[4] = 0;
                kno = atol(msg);
 			   }
-			sprintf(msg, "Joukkue %d, osuus %d,  H)yvï¿½ksy, M)uuta, Esc: Peruuta", os, kno );
+			sprintf(msg, "Joukkue %d, osuus %d,  H)yväksy, M)uuta, Esc: Peruuta", os, kno );
             clrln(ySize-3);
             ch = 'H';
 			selectopt(msg, "HM\x1b", &ch);
@@ -1492,7 +1490,7 @@ INT pros_emit(wchar_t *msg1)
                      break;
                      }
                   kno = kilp.kilpno;
-				  sprintf(msg, "No %d, osuus %d.  H)yvï¿½ksy valinta, U)usi "
+				  sprintf(msg, "No %d, osuus %d.  H)yväksy valinta, U)usi "
 					 "valinta, Esc : Peruuta", kno, os+1);
 				  selectopt(msg, "HU\x1b", &ch);
 				  } while (ch == 'U');
@@ -1556,7 +1554,7 @@ INT pros_emit(wchar_t *msg1)
 	else {
 		bool jatka = true;
 		if ((em.kilpno = bdg2kno(em.badge, 0)) < minkilpno || (d = getpos(em.kilpno)) <= 0) {
-			sprintf(msg, "Korttia %ld vastaavaa kilpailijaa ei lï¿½ytynyt",
+			sprintf(msg, "Korttia %ld vastaavaa kilpailijaa ei löytynyt",
 				em.badge);
 			em.kilpno = 0;
 			writeerror(msg, 0);
@@ -1570,7 +1568,7 @@ INT pros_emit(wchar_t *msg1)
 
 			if ((kh = tark_badge(&em, &kilp, false)) < 0 && !emitfiletest) {
 				naytatulos(3);
-				sprintf(msg, "Korttia %ld vastaavaa rataa ei lï¿½ytynyt",
+				sprintf(msg, "Korttia %ld vastaavaa rataa ei löytynyt",
 					em.badge);
 				writeerror(msg, 0);
 				}
@@ -1583,7 +1581,7 @@ INT pros_emit(wchar_t *msg1)
 				if (em.maali == TMAALI0/KSEK) {
 					if (!emitfiletest) {
 						naytatulos(3);
-						writeerror("Maaliaikaa ei pystytty mï¿½ï¿½rï¿½ï¿½mï¿½ï¿½n", 0);
+						writeerror("Maaliaikaa ei pystytty määräämään", 0);
 						}
 					}
 				else
@@ -1724,16 +1722,16 @@ static int haejoustoosuus(kilptietue *kilp, aikatp ut)
 {
 	int osuus, os;
 
-	// Hae ensimmï¿½inen osuus, jolla ei aikaa
+	// Hae ensimmäinen osuus, jolla ei aikaa
 	for (osuus = Sarjat[kilp->sarja].osuusluku -2; osuus >= 0 && kilp->Maali(osuus, 0) == TMAALI0; osuus--);
 	osuus++;
 
-	// Jos edellinen aika poikkeaa vï¿½emmï¿½n kuin (ylimraja+1sek), valitse edellinen osuus
+	// Jos edellinen aika poikkeaa väemmän kuin (ylimraja+1sek), valitse edellinen osuus
 	if (osuus > 0 && NORMKELLO(purajak(ut.t) - kilp->Maali(osuus-1, 0)) < ylimraja+SEK) {
 		osuus--;
 		}
-	// Muussa tapauksessa valitse ensimmï¿½inen ilman aikaa ollut osuus ja etsi osuuksien lopusta alkaen
-	// badge ja poimi sieltï¿½ osanottajan nimi
+	// Muussa tapauksessa valitse ensimmäinen ilman aikaa ollut osuus ja etsi osuuksien lopusta alkaen
+	// badge ja poimi sieltä osanottajan nimi
 	else if (osuus < Sarjat[kilp->sarja].osuusluku) {
 		kilp->ostiet[osuus].badge[0] = ut.badge;
 		if (kilp->ostiet[osuus].nimi[0] == 0 || strcmp(kilp->ostiet[osuus].nimi, "|") == 0 || joustopakotavaihto) {
@@ -2022,7 +2020,7 @@ int tall_regnly(san_type *vastaus, int r_no)
 			return(1);
 		if (aikajono[ino]->rwtime - aikajono[ino]->mxtime >= 0) {
 #ifndef LANGSV_K
-			writeerror("AIKATAULUKKO Tï¿½YSI",0);
+			writeerror("AIKATAULUKKO TÄYSI",0);
 #else // LANGSV_K
 			writeerror("TIDTAVLAN FULL",0);
 #endif // LANGSV_K
@@ -2058,19 +2056,19 @@ int tall_regnly(san_type *vastaus, int r_no)
 			if (ylimraja) {
 				int ttm;
 				for (int os = 0; os < Sarjat[kilp.sarja].osuusluku; os++) {
-					// Ohita vï¿½ï¿½rï¿½t badget
+					// Ohita väärät badget
 					if (ut.badge && ut.badge != kilp.ostiet[os].badge[0] &&
 						(!kilpparam.kaksibadge || ut.badge != kilp.ostiet[os].badge[1]))
 						continue;
 
-					// Etsi aikaa, joka poikkeaa vï¿½hemmï¿½n kuin ylimraja
+					// Etsi aikaa, joka poikkeaa vähemmän kuin ylimraja
 					for (int va = 0; va <= Sarjat[kilp.sarja].valuku[os]; va++) {
-						// Katso ensin, lï¿½ytyykï¿½ eroaako aika vï¿½hemmï¿½n jostain kilpailijan (vï¿½li)ajasta
+						// Katso ensin, löytyykö eroaako aika vähemmän jostain kilpailijan (väli)ajasta
 						if ((ttm = kilp.Maali(os, va)) != TMAALI0 &&
 							abs((int) NORMTULOS(purajak(ut.t) - ttm)) < ylimraja) {
 							aikatp vertt;
-							// Jos tï¿½llainen piste lï¿½ytyi, etsi ajanottojonosta lopusta alkaen
-							// riviï¿½, jolla sama kilpailija ja piste. Jos on aseta ut.status = 2
+							// Jos tällainen piste löytyi, etsi ajanottojonosta lopusta alkaen
+							// riviä, jolla sama kilpailija ja piste. Jos on aseta ut.status = 2
 							for (int rtm = aikajono[ino]->aktrows - 1; rtm >= 0 &&
 								NORMKELLO(ttm - purajak(aikajono[ino]->getAktTime(&vertt, rtm)->t)) < ylimraja;
 								rtm--) {
@@ -2133,22 +2131,22 @@ int tall_regnly(san_type *vastaus, int r_no)
 					LeaveCriticalSection(&tall_CriticalSection);
 #ifdef _CONSOLE
 					vidspmsg(ySize - 4, 0, 0, 7, "Joukkueen      osuus on jo merkitty ei"
-						" lï¿½hteneeksi");
+						" lähteneeksi");
 					vidint(ySize - 4, 10, 4, kno);
 #endif
 					if (loki)
-						kirjloki("OSUUS ON JO MERKITTY EI Lï¿½HTENEEKSI\r\n");
+						kirjloki("OSUUS ON JO MERKITTY EI LÄHTENEEKSI\r\n");
 					EnterCriticalSection(&tall_CriticalSection);
 					}
 				else if (varkynnys[kilp.sarja][osat] && (osuustulos(&kilp, osat, 0) < varkynnys[kilp.sarja][osat]
 					|| osuustulos(&kilp, osat, 0) > 20 * TUNTI)) {
 					LeaveCriticalSection(&tall_CriticalSection);
 #ifdef _CONSOLE
-					vidspmsg(ySize - 4, 0, 0, 7, "Joukkueella      poikkeavan hyvï¿½ osuusaika");
+					vidspmsg(ySize - 4, 0, 0, 7, "Joukkueella      poikkeavan hyvä osuusaika");
 					vidint(ySize - 4, 12, 4, kno);
 #endif
 					if (loki) {
-						kirjloki("POIKKEAVAN HYVï¿½ OSUUSAIKA\r\n");
+						kirjloki("POIKKEAVAN HYVÄ OSUUSAIKA\r\n");
 						}
 					EnterCriticalSection(&tall_CriticalSection);
 					}
@@ -2215,9 +2213,9 @@ int tall_regnly(san_type *vastaus, int r_no)
 #endif // LANGSV_K
 		vidint(ySize-1,32,5,(int)(labs(bt) / 10));
 #ifndef LANGSV_K
-		as = (bt > 0) ? "edellï¿½" : "jï¿½ljessï¿½";
+		as = (bt > 0) ? "edellä" : "jäljessä";
 #else // LANGSV_K
-		as = (bt > 0) ? "edellï¿½" : "jï¿½ljessï¿½";
+		as = (bt > 0) ? "edellä" : "jäljessä";
 #endif // LANGSV_K
 		vidspmsg(ySize-1,40,7,0,as);
 #endif
@@ -2232,7 +2230,7 @@ int tall_regnly(san_type *vastaus, int r_no)
 
 //#endif
 //#endif
-/* Ensimmï¿½inen endif lopettaa regnly-mï¿½ï¿½rityksen, toinen MAALI-osat */
+/* Ensimmäinen endif lopettaa regnly-määrityksen, toinen MAALI-osat */
 #ifdef KUULDEMO
 extern int demofl;
 void demo(void);
@@ -2257,10 +2255,10 @@ int start_autova(void)
 #ifdef _CONSOLE
 	   clrln(ySize-3);
 	   viwrrectw(ySize-3,0,ySize-3,48,
-		  L"Anna poikkeama: kilpailuaika - vï¿½liaikojen aika :",7,0,0);
+		  L"Anna poikkeama: kilpailuaika - väliaikojen aika :",7,0,0);
 	   INPUTAIKAW(&t0_autova,t0,8,50,ySize-3,L"\xD",&ch);
 #else
-		inputaika_prompt(&t0_autova,t0,8,L"Anna poikkeama: kilpailuaika - vï¿½liaikojen aika",&ch);
+		inputaika_prompt(&t0_autova,t0,8,L"Anna poikkeama: kilpailuaika - väliaikojen aika",&ch);
 #endif
 		}
    return(0);
@@ -2334,7 +2332,7 @@ void tall_ec(UINT32 bdg, INT valeim, INT32 aika, INT kielto)
 			LeaveCriticalSection(&tall_CriticalSection);
 			}
 		else {
-			sprintf(msg, "Yli %d min aikaero saapuneen aikatiedon ja tï¿½mï¿½n koneen vï¿½lillï¿½", vaikavert);
+			sprintf(msg, "Yli %d min aikaero saapuneen aikatiedon ja tämän koneen välillä", vaikavert);
 			msg[80] = 0;
 			writeerror(msg, 4000);
 			}
@@ -2385,7 +2383,7 @@ void vahaku(LPVOID lpCn)
 	  swprintf(page+wcslen(page), L"&Mmin=%d", eTParam.msgno[keTSerial]);
 
   if ((er = httphaku(eTParam.eThost , eTParam.eTport, page, 0, eTParam.buf, eTParam.buflen, &eTParam.haettu)) != 0) {
-	  swprintf(msg, L"Virhe %d vï¿½liaikahaussa", er);
+	  swprintf(msg, L"Virhe %d väliaikahaussa", er);
 	  writeerror_w(msg, 2000, true);
 	  }
 	inhttpHaku = 0;
@@ -2546,7 +2544,7 @@ void tee_aika(int laji)
    if (maxjono)
 	   ino = aika_jono[0][laji - 1];
    if (aikajono[ino]->rwtime - aikajono[ino]->mxtime >= 0) {
-      writeerror("AIKATAULUKKO Tï¿½YSI",0);
+      writeerror("AIKATAULUKKO TÄYSI",0);
 	  return;
       }
    tm = AIKAJAK*(T_TIME(biostime(0,0))*KSEK + aikajono[ino]->aikakorjaus);
@@ -2708,18 +2706,18 @@ void initajat(int ino, int vaihda)
 #ifdef _CONSOLE
 			ch = L' ';
 #ifndef LANGSV_K
-			wselectopt(L"AJANOTTOTOIMINNON Kï¿½YNNISTYS - Luetaanko aiemmat "
-			   L"tiedot levyltï¿½ (K/E)", L"KE", &ch);
+			wselectopt(L"AJANOTTOTOIMINNON KÄYNNISTYS - Luetaanko aiemmat "
+			   L"tiedot levyltä (K/E)", L"KE", &ch);
 #else
-			wselectopt(L"STARTEN AV FUNKTIONEN Mï¿½L - Skall tidigare data  "
-			   L"lï¿½sas frï¿½n fil (J/E)", L"JE", &ch);
+			wselectopt(L"STARTEN AV FUNKTIONEN ML - Skall tidigare data  "
+			   L"läsas från fil (J/E)", L"JE", &ch);
 			wtransl(L"J", L"K", &ch);
 #endif
 #else
 			int i;
 			i = select3(2, L"AJANOTTOTIEDOSTON AVAAMINEN - Luetaanko aiemmat "
-				L"tiedot levyltï¿½", L"Valitse", L"Luetaan", L"Aiemmat tuhotaan",
-				L"Sï¿½ilytï¿½ vanhat ja poistu", 0);
+				L"tiedot levyltä", L"Valitse", L"Luetaan", L"Aiemmat tuhotaan",
+				L"Säilytä vanhat ja poistu", 0);
 			ch = (L"\x1bKE\x1b")[i];
 #endif
 			clrln(ySize-5);
@@ -2888,9 +2886,9 @@ void inittimer(void)
 			 clrln(ySize-3);
 
 #ifndef LANGSV_K
-			 vidspmsg(ySize-3,0,7,0,"Paina ajanottoon varattavaa nï¿½ppï¿½intï¿½");
+			 vidspmsg(ySize-3,0,7,0,"Paina ajanottoon varattavaa näppäintä");
 #else // LANGSV_K
-			 vidspmsg(ySize-3,0,7,0,"Tryck tangenten fï¿½r tidtagningen     ");
+			 vidspmsg(ySize-3,0,7,0,"Tryck tangenten för tidtagningen     ");
 #endif // LANGSV_K
 			 i = nivkeys;
 			 nivkeys = 0;
@@ -2898,7 +2896,7 @@ void inittimer(void)
 			 nivkeys = i;
 			 if (ch == '\r' || ch == 27 || (ch >= '0' && ch <= '9') || (toupper(ch) >= 'A' && toupper(ch) <= 'Z')) {
 #ifndef LANGSV_K
-				writeerror("Ajanottonï¿½ppï¿½in ei voi olla 'Enter', 'Esc', numero tai kirjain",0);
+				writeerror("Ajanottonäppäin ei voi olla 'Enter', 'Esc', numero tai kirjain",0);
 #else // LANGSV_K
 				writeerror("Tangentes kan inte vara 'Enter' eller 'Esc'",0);
 #endif // LANGSV_K
@@ -2910,12 +2908,12 @@ void inittimer(void)
 				}
 			 else st[0] = 0;
 #ifndef LANGSV_K
-			 sprintf(prs,"Nï¿½ppï¿½inkoodi (%d,%d) %s varattu ajanotolle, vahvista "
+			 sprintf(prs,"Näppäinkoodi (%d,%d) %s varattu ajanotolle, vahvista "
 				"(K/E)", (int) ch, (int) key, st);
 			 tc = ' ';
 			 selectopt(prs, "KE", &tc);
 #else // LANGSV_K
-			 sprintf(prs,"Tangentkod (%d,%d) %s reserverats fï¿½r tidtagningen, bekrï¿½fta "
+			 sprintf(prs,"Tangentkod (%d,%d) %s reserverats för tidtagningen, bekräfta "
 				"(J/E)", (int) ch, (int) key, st);
 			 tc = ' ';
 			 selectopt(prs, "JE", &tc);

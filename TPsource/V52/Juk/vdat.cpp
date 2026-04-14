@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Kentt√§rakenteiden ja tietuekentt√§m√§√§ritysten alustus viestikilpailun tietokantaan.
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <io.h>
@@ -542,7 +540,7 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
 		}
 
    //  Tarkastetaan osuuksittain, ovatko tiedot muuttuneet.
-   // struktuuri erot kertoo lÔøΩydetyt poikkeamat
+   // struktuuri erot kertoo lˆydetyt poikkeamat
 
    muutt = kilpcomp(ekilp, entkilp, &erot);
 
@@ -587,7 +585,7 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
 
 	if (muutt) {
 
-		// Aseta flag lahaika pois, jos aika on viimeisin ajanoton aika eivÔøΩtkÔøΩ osuuden perustiedot ole muuttunnet
+		// Aseta flag lahaika pois, jos aika on viimeisin ajanoton aika eiv‰tk‰ osuuden perustiedot ole muuttunnet
 
 		if (!erot.os[viim_time.osuus].perustiedot && erot.os[viim_time.osuus].ero &&
 			abs((int) NORMKELLO(purajak(viim_time.t) - ekilp->Maali(viim_time.osuus, viim_time.piste))) < kilpparam.pyor[1] &&
@@ -631,8 +629,8 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
 								}
 							}
 						}
-					// Hae muutokseen liittyvÔøΩ emit-tietue.
-					// TÔøΩmÔøΩ edellyttÔøΩÔøΩ, ettÔøΩ emitjarr-linkkiÔøΩ ei ole purettu aiemmin.
+					// Hae muutokseen liittyv‰ emit-tietue.
+					// T‰m‰ edellytt‰‰, ett‰ emitjarr-linkki‰ ei ole purettu aiemmin.
 					if (emitfl > 0 && ibdg == 0)
 						ep = getem(&em, kilp.kilpno, os);
 					else
@@ -643,12 +641,12 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
 								(kilp.kilpno == ekilp->kilpno && ekilp->ostiet[os1].badge[ibdg] == kilp.ostiet[os].badge[ibdg]))
 								break;
 							}
-						// Poista vanha koodi, jos se esiintyy vain yhdellÔøΩ osuudella
+						// Poista vanha koodi, jos se esiintyy vain yhdell‰ osuudella
 						if (os1 == Sarjat[ekilp->sarja].osuusluku) {
 							rembadge(kilp.kilpno, os, ibdg, d);
 
 							if (ekilp->ostiet[os].badge[ibdg] == 0 && ep >= 0) {
-								// Tee muutos myÔøΩs emittietueeseen, jos on lÔøΩydetty
+								// Tee muutos myˆs emittietueeseen, jos on lˆydetty
 								em.badge = 0;
 								setEmitJarr(kilp.kilpno, os, -1);
 								em.kilpno = 0;
@@ -658,11 +656,11 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
 							}
 						}
 					if (ekilp->ostiet[os].badge[ibdg]) {
-						// LisÔøΩÔøΩ uusi koodi/kilpno taulukkoon
+						// Lis‰‰ uusi koodi/kilpno taulukkoon
 						if (addbadge(ekilp->ostiet[os].badge[ibdg], ekilp->kilpno, d, ibdg, kysyfl))
 							{
-							// Peruuta koodimuutos, jos taulukkoon lisÔøΩÔøΩminen ei onnistu
-							// NÔøΩin kÔøΩy, jos koodi on jo toisella joukkueella
+							// Peruuta koodimuutos, jos taulukkoon lis‰‰minen ei onnistu
+							// N‰in k‰y, jos koodi on jo toisella joukkueella
 							ekilp->ostiet[os].badge[ibdg] = ebadge[ibdg];
 							if (ebadge[ibdg])
 								addbadge(ebadge[ibdg], kilp.kilpno, d, ibdg, kysyfl);
@@ -671,10 +669,10 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
 							}
 						else if (ep >= 0)
 							{
-							// Taulukon pÔøΩivitys onnistui. Tee muutos myÔøΩs emittietueeseen, jos on lÔøΩydetty
+							// Taulukon p‰ivitys onnistui. Tee muutos myˆs emittietueeseen, jos on lˆydetty
 							em.badge = ekilp->ostiet[os].badge[0];
 							if (kilp.kilpno != ekilp->kilpno) {
-								// PÔøΩivitÔøΩ myÔøΩs linkki kilpno -> tietue, jos kilpailijan numero vaihtuu
+								// P‰ivit‰ myˆs linkki kilpno -> tietue, jos kilpailijan numero vaihtuu
 								setEmitJarr(kilp.kilpno, os, -1);
 								setEmitJarr(ekilp->kilpno, os, ep);
 								em.kilpno = ekilp->kilpno;
@@ -775,10 +773,10 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
 
 						bool addtap = false;
 
-					// luokka ==  1,   tietoja ei lÔøΩhetetÔøΩ koneelle, jolle
-					//                   lÔøΩhetÔøΩÔøΩn aikataulukko; muuten vain aika
-					// luokka == 2,     lÔøΩhetÔøΩÔøΩn aika
-					// luokka & 4,     lÔøΩhetÔøΩÔøΩn muut osuustiedot, koodit sisÔøΩltÔøΩÔøΩ sisÔøΩltÔøΩmaskin
+					// luokka ==  1,   tietoja ei l‰hetet‰ koneelle, jolle
+					//                   l‰het‰‰n aikataulukko; muuten vain aika
+					// luokka == 2,     l‰het‰‰n aika
+					// luokka & 4,     l‰het‰‰n muut osuustiedot, koodit sis‰lt‰‰ sis‰ltˆmaskin
 
 						if (erot.os[os].perustiedot) {
 							luokka = 4 + 16 * erot.os[os].ero;
@@ -863,7 +861,7 @@ void addtall(kilptietue *kilp, int *dataf, int kielto)
 			 if (kilp->ostiet[os].badge[ibdg]) {
 				if (addbadge(kilp->ostiet[os].badge[ibdg],
 				   kilp->kilpno, *dataf, ibdg, 1)) {
-				   sprintf(msg,"Emit-koodi %ld jo kÔøΩytÔøΩssÔøΩ. Koodia ei tallennettu",
+				   sprintf(msg,"Emit-koodi %ld jo k‰ytˆss‰. Koodia ei tallennettu",
 					  kilp->ostiet[os].badge[ibdg]);
 				   kilp->ostiet[os].badge[ibdg] = 0;
 				   writeerror(msg, 0);

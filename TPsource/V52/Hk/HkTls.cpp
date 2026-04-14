@@ -14,70 +14,68 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Kilpailijan tuloskenttÃ¤funktiot: tuloksen laskenta, tallennus ja sijoitusten merkintÃ¤.
-
 #include <stdlib.h>
 #include <math.h>
 #include "HkDeclare.h"
 
 
 //  tulos1(piste, tm)       palauttaa maaliajasta lasketun tuloksen
-//                               kyseessï¿½ on pï¿½ivï¿½n tulos paitsi, 
+//                               kyseessä on päivän tulos paitsi, 
 //                               jos piste == kilpparam.valuku+1
 //
-//  k_tulos(piste, tm)     kuten tulos1 paitsi, ettï¿½ palauttaa
-//                               takaa-ajon vï¿½liajat kokonaisaikoina
+//  k_tulos(piste, tm)     kuten tulos1 paitsi, että palauttaa
+//                               takaa-ajon väliajat kokonaisaikoina
 //
 //  tall_tulos(piste, tls) tallentaa annetun tuloksen
 //                               kilpailijatietueeseen, ei kirjoita levylle
 //
-//  set_tulos(piste, tm)   mï¿½ï¿½rï¿½ï¿½ tuloksen funktion tulos1 avulla
+//  set_tulos(piste, tm)   määrää tuloksen funktion tulos1 avulla
 //                               ja tallentaa sen funktiolla tall_tulos
 //
-//  merk_sijat(void)             mï¿½ï¿½rï¿½ï¿½ sijat tietueen kilp tulosten perusteella
+//  merk_sijat(void)             määrää sijat tietueen kilp tulosten perusteella
 //                               ja tallentaa ne samaan tietueeseen, ei kirjoita
 //                               levylle
 //
 //  set_sija(piste, sj)    tallentaa annetun sijoituksen
 //                               kilpailijatietueeseen, ei kirjoita levylle
 //
-//  p_sija(piste)          palauttaa kilpailijan sijan. Kyseessï¿½ on
-//                               pï¿½ivï¿½n sija paitsi, jos piste == kilpparam.valuku+1
+//  p_sija(piste)          palauttaa kilpailijan sijan. Kyseessä on
+//                               päivän sija paitsi, jos piste == kilpparam.valuku+1
 //
-//  p_aika(piste)          palauttaa kilpailijan tuloksen. Kyseessï¿½ on
-//                               pï¿½ivï¿½n tulos paitsi, jos piste == kilpparam.valuku+1
-//								 pista == -1 antaa lï¿½htï¿½portin ajan
+//  p_aika(piste)          palauttaa kilpailijan tuloksen. Kyseessä on
+//                               päivän tulos paitsi, jos piste == kilpparam.valuku+1
+//								 pista == -1 antaa lähtöportin ajan
 //
-//  tulos2(piste)          kuten p_aika paitsi, ettï¿½ palauttaa
-//                               takaa-ajon vï¿½liajat kokonaisaikoina
+//  tulos2(piste)          kuten p_aika paitsi, että palauttaa
+//                               takaa-ajon väliajat kokonaisaikoina
 //
-//  ytulos_p(piste)          kuten tulos2 paitsi, ettï¿½ palauttaa
-//                               aina vï¿½liajat kokonaisaikoina
+//  ytulos_p(piste)          kuten tulos2 paitsi, että palauttaa
+//                               aina väliajat kokonaisaikoina
 //
-//  tulos_pv(i_pv)           palauttaa kilpailijan pï¿½ivï¿½kohtaisen
-//                               lopputuloksen, hylï¿½tyille 0
+//  tulos_pv(i_pv)           palauttaa kilpailijan päiväkohtaisen
+//                               lopputuloksen, hylätyille 0
 //
-//  tall_tulos_pv(tls, i_pv)     mestitsee kilpailijan pï¿½ivï¿½kohtaisen
+//  tall_tulos_pv(tls, i_pv)     mestitsee kilpailijan päiväkohtaisen
 //                               lopputuloksen
 //
 //  ytulos(i_pv)             palauttaa kilpailijan yhteistuloksen
 //
-//  sija(i_pv)                palauttaa kilpailijan sijoituksen pï¿½ivï¿½nï¿½ i_pv
+//  sija(i_pv)                palauttaa kilpailijan sijoituksen päivänä i_pv
 //
 //  y_sija(i_pv)              palauttaa kilpailijan yhteissijan
 //
-//  maali(piste)           palauttaa kilpailijan lï¿½htï¿½porttiajan, maaliajan, tai
-//                               vï¿½liajan ottohetken
+//  maali(piste)           palauttaa kilpailijan lähtöporttiajan, maaliajan, tai
+//                               väliajan ottohetken
 //
-//  hyv(void)                    tosi, jos kilpailija hyvï¿½ksytty
+//  hyv(void)                    tosi, jos kilpailija hyväksytty
 //
-//  hyv_pv(i_pv)             tosi, jos hyvï¿½ksytty pï¿½ivï¿½nï¿½ pv
+//  hyv_pv(i_pv)             tosi, jos hyväksytty päivänä pv
 //
-//  tark(i_pv)               tarkastusmerkintï¿½ pï¿½ivï¿½nï¿½ pv
+//  tark(i_pv)               tarkastusmerkintä päivänä pv
 //
-//  ytark(i_pv)              hyvï¿½ksymistilanne pï¿½ivï¿½n i_pv jï¿½lkeen
+//  ytark(i_pv)              hyväksymistilanne päivän i_pv jälkeen
 //
-//  set_tark(kh, pv)       tallentaa tarkastusmerkinnï¿½n kh
+//  set_tark(kh, pv)       tallentaa tarkastusmerkinnän kh
 //                               kilpailijatietueeseen, ei kirjoita levylle
 //
 
@@ -847,7 +845,7 @@ INT32 kilptietue::tall_tulos(INT piste, INT32 tls)
 		tls = NORMTULOS(tls0);
 	if (piste == -1 && tls != TMAALI0)
 		tls = NORMKELLO(tls);
-//	tls0 = pv[k_pv].va[piste+1].vatulos;   // Miksi tï¿½mï¿½ rivi oli mukana?
+//	tls0 = pv[k_pv].va[piste+1].vatulos;   // Miksi tämä rivi oli mukana?
 	if (piste >= -1 && Sarja() >= 0 && piste <= Sarjat[Sarja()].valuku[k_pv])
 		pv[k_pv].va[piste+1].vatulos = tls;
 	return(tls);
@@ -916,7 +914,7 @@ wchar_t *kilptietue::asakkoStr(int i_pv /* = -1 */)
 }
 //---------------------------------------------------------------------------
 
-// set_Asakot tulkitsee kï¿½yttï¿½liittymï¿½n merkkijonon ja kirjoittaa tulkitun jonon kilpailijatietoihin
+// set_Asakot tulkitsee käyttöliittymän merkkijonon ja kirjoittaa tulkitun jonon kilpailijatietoihin
 
 void kilptietue::set_Asakot(wchar_t *asakstr, int i_pv /* =-1 */)
 {
@@ -985,12 +983,12 @@ void kilptietue::tall_asakot(wchar_t *asakot, int i_pv /* =-1 */)
 				}
 			}
 		tm[0] = sakko_pv(i_pv);
-		// siirrï¿½ uudet sakot kilpailijatietoihin
+		// siirrä uudet sakot kilpailijatietoihin
 		set_Asakot(asakot, i_pv);
 //		wmemcpy(pv[i_pv].asakot, asakot, Sarjat[Sarja(i_pv)].lsak[i_pv]);
 //		pv[i_pv].asakot[Sarjat[Sarja()].lsak[i_pv]] = 0;
 
-		// mï¿½ï¿½rï¿½ï¿½ sakkomuutoksen vaikutukset tuloksiin
+		// määrää sakkomuutoksen vaikutukset tuloksiin
 		if (tulos_pv(i_pv, false, 0) != 0)
 			tall_tulos_pv(tulos_pv(i_pv, false, 0) + sakko_pv(i_pv) - tm[0], i_pv, 0);
 		if (i_pv == k_pv) {
@@ -1358,11 +1356,11 @@ INT32 HSprintYTulos(kilptietue *kilp)
 		else
 			tls += 500*20*10 * KSEK;
 		}
-	if (vaiheluku > 3) {                      // Finaaleihin pï¿½ï¿½sseet
+	if (vaiheluku > 3) {                      // Finaaleihin päässeet
 		if (kilp->tulos_pv(epv+3, true) > 0) {             // Finaalissa tulksen saaneet
 			tls = 500*40*20 * kilp->sija(epv+3) * KSEK;    // Kaikille finalisteille sijoitus
 			if (vaiheluku == 4 && kilp->pv[epv+2].qual < 'A')
-				tls += 500*40*20*10 * KSEK;            // B-finalisteille 10 sijaa lisï¿½ï¿½
+				tls += 500*40*20*10 * KSEK;            // B-finalisteille 10 sijaa lisää
 			}
 		else {
 			if (kilp->tulos_pv(epv+2, true) > 0) {         // Semifinaalissa tuloksen saaneet
@@ -1371,13 +1369,13 @@ INT32 HSprintYTulos(kilptietue *kilp)
 			else {
 				tls += 500*40 * 10 * KSEK;           // Ei semifinaalitulosta
 				if (kilp->pv[epv+1].qual < 'A')
-					tls += 500*40*5 * KSEK;          // Karsiutui semeistï¿½
+					tls += 500*40*5 * KSEK;          // Karsiutui semeistä
 				if (kilp->tulos_pv(epv+1, true) > 0)
-					tls += 500 * kilp->sija(epv+1) * KSEK;  // Alkuerï¿½ semesitï¿½ karsiutuneille
+					tls += 500 * kilp->sija(epv+1) * KSEK;  // Alkuerä semesitä karsiutuneille
 				else
-					tls += 500 * 20 * KSEK;           // Ei alkuerï¿½tulosta
+					tls += 500 * 20 * KSEK;           // Ei alkuerätulosta
 				}
-			tls += 500*40*20*19 * KSEK;              // Lisï¿½ kaikille, joilla ei finaalitulosta
+			tls += 500*40*20*19 * KSEK;              // Lisä kaikille, joilla ei finaalitulosta
 			}
 		}
 	return(tls);
@@ -1596,14 +1594,14 @@ void takaa_ajolahdot(void)
 		if (srj < 0 || ch == ESC)
 			break;
 		clrln(ySize-3);
-		vidspwmsg(ySize-3, 0, 7, 0, L"Takaa-ajovaiheen osanottajamï¿½ï¿½rï¿½");
+		vidspwmsg(ySize-3, 0, 7, 0, L"Takaa-ajovaiheen osanottajamäärä");
 		INPUTINTW(&n, 3, 34, ySize-3, L"\r\x1b", &ch);
 		if (n > ntulos[srj][VALUKU+1])
 			n = ntulos[srj][VALUKU+1];
 		p = jalku[srj][VALUKU+5];
 		if (n > 0) {
 			clrln(ySize-3);
-			vidspwmsg(ySize-3, 0, 7, 0, L"Ensimmï¿½inen lï¿½htï¿½aika");
+			vidspwmsg(ySize-3, 0, 7, 0, L"Ensimmäinen lähtöaika");
 			INPUTAIKAW(&enslahto, t0, 8, 34, ySize-3, L"\r\x1b", &ch);
 			vlahto = enslahto;
 			for (i = 0; i < n && p >= 0; i++) {
@@ -1622,7 +1620,7 @@ void takaa_ajolahdot(void)
 			}
 		if (n < ntulos[srj][VALUKU+1]) {
 			clrln(ySize-3);
-			vidspwmsg(ySize-3, 0, 7, 0, L"Muiden osanottajien mï¿½ï¿½rï¿½");
+			vidspwmsg(ySize-3, 0, 7, 0, L"Muiden osanottajien määrä");
 			n1 = ntulos[srj][VALUKU+1] - n;
 			INPUTINTW(&n1, 3, 34, ySize-3, L"\r\x1b", &ch);
 			if (n1 > 0 && ch != ESC) {
@@ -1631,14 +1629,14 @@ void takaa_ajolahdot(void)
 				clrln(ySize-3);
 				enslahto = vlahto + MINUUTTI;
 				enslahto = ((enslahto + 24*TUNTI)/SEK)*SEK-24*TUNTI;
-				vidspwmsg(ySize-3, 0, 7, 0, L"Ensimmï¿½inen jï¿½lkiosan lï¿½htï¿½aika");
+				vidspwmsg(ySize-3, 0, 7, 0, L"Ensimmäinen jälkiosan lähtöaika");
 				INPUTAIKAW(&enslahto, t0, 8, 44, ySize-3, L"\r\x1b", &ch);
 				vlahto = enslahto;
 				clrln(ySize-3);
-				vidspwmsg(ySize-3, 0, 7, 0, L"Jï¿½lkiosan lï¿½htï¿½vï¿½lit sekunteina");
+				vidspwmsg(ySize-3, 0, 7, 0, L"Jälkiosan lähtövälit sekunteina");
 				INPUTINTW(&lvali, 4, 44, ySize-3, L"\r\x1b", &ch);
 				clrln(ySize-3);
-				vidspwmsg(ySize-3, 0, 7, 0, L"Jï¿½lkiosan ryhmï¿½koko");
+				vidspwmsg(ySize-3, 0, 7, 0, L"Jälkiosan ryhmäkoko");
 				for (i = 0; i < n1 && p >= 0; i++) {
 					kilp.GETREC(p);
 					vlahto = enslahto + (i/nr) * lvali * SEK;

@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Kirjoittaa XML-elementin wide-merkkijonoina TextFl-tiedostoon käyttäen XML-entiteettejä.
-
 #if defined(__BORLANDC__)
 #pragma -K -a1
 #endif

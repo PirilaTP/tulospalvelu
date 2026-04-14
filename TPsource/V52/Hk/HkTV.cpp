@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// TV-taulunÃ¤ytÃ¶n ohjaus: sarjakommunikaatio ja tulosrivien lÃ¤hetys TV-nÃ¤yttÃ¶laitteelle.
-
 #include <stdio.h>
 #include <stdlib>
 #include <io.h>
@@ -124,7 +122,7 @@ static void near lah_tv(kilptietue *kilp, INT piste, INT sj)
 			if (n > 0)
 				kilp0.GETREC(n);
 			if (n <= 0 || kilp0.Sarja() != kilp->Sarja()) {
-				writeerror_w(L"Sarjatiedossa vï¿½ï¿½rï¿½ alkunumero, takaa-ajon ajat TV:lle vï¿½ï¿½rin", 0);
+				writeerror_w(L"Sarjatiedossa väärä alkunumero, takaa-ajon ajat TV:lle väärin", 0);
 				}
 			else {
 				edkarki = kilp0.ytulos(k_pv - 1);
@@ -171,7 +169,7 @@ void tv_asetus(void)
 	if (tv_com) tv_com0 = tv_com;
 	ch = L' ';
 	while (!nilm[srj]) srj++;
-	Wselectopt(L"K)ï¿½ynnista lï¿½hetys, L)opeta lï¿½hetys, U)usintalï¿½hetys", L"KLU", &ch);
+	Wselectopt(L"K)äynnista lähetys, L)opeta lähetys, U)usintalähetys", L"KLU", &ch);
 	clrln(ySize-3);
 	switch (ch) {
 		case L'K' :
@@ -182,7 +180,7 @@ void tv_asetus(void)
 			break;
 		case L'U':
 			ch = L' ';
-			Wselectopt(L"L)ï¿½htï¿½ajat, T)ulokset vai vï¿½liaika 12345", L"LT12345", &ch);
+			Wselectopt(L"L)ähtöajat, T)ulokset vai väliaika 12345", L"LT12345", &ch);
 			clrln(ySize-3);
 			tv0 = tv_com;
 			piste = wcswcind(ch, L"LT12345") -1;

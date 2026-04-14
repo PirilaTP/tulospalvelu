@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Laskee kilpailunumeron tarkistusmerkin osakilpailunumeroa käyttäen (tarkno_os).
 // Laskee kilpailunumeron tarkistusmerkin ottaen huomioon osakilpailunumeron os.
 // kno: kilpailunumero, os: osakilpailunumero; palauttaa tarkistusmerkin (0–9).
 int tarkno_os(int kno, int os)

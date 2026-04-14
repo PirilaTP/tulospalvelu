@@ -688,7 +688,7 @@ int TFormJakelu::LueJakeluMaaritykset(wchar_t *MaarFile)
 				continue;
 			nd.depth = depth;
 			for (int i = 0; i <= depth; i++)
-				nd.nodeno[i] = k[i];           // merkitùùn eri tasojen jùrjestysnumerot solmuun
+				nd.nodeno[i] = k[i];           // merkit‰‰n eri tasojen j‰rjestysnumerot solmuun
 			if (lntype > 0)
 				nd.tagid = XMLhae_tagid(nd.tag, JakTags, nJakTags);
 			if (lntype == 1) {
@@ -713,13 +713,13 @@ int TFormJakelu::LueJakeluMaaritykset(wchar_t *MaarFile)
 					--depth;
 					}
 				}
-			else if (lntype == 8) {                  // sulkeva tag uudella rivillù
+			else if (lntype == 8) {                  // sulkeva tag uudella rivill‰
 				int jnode;
 				depth--;
-				k[depth]++;                 // kasvatetaan tason laskuria sulkevùn tagin tasolla
-				// Etsitùùn vastaava avaava tag aiemmasta ketjusta
+				k[depth]++;                 // kasvatetaan tason laskuria sulkev‰n tagin tasolla
+				// Etsit‰‰n vastaava avaava tag aiemmasta ketjusta
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
-				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ettù tagit ovat pari
+				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ett‰ tagit ovat pari
 					er = 1;
 					swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
 						rv, tag, tree.node[jnode].tag);
@@ -745,11 +745,11 @@ int TFormJakelu::LueJakeluMaaritykset(wchar_t *MaarFile)
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s pùùttyi rivillù %d tasolla %d", MaarFile, rv, depth);
+		swprintf(msg, L"XML-tiedosto %s p‰‰ttyi rivill‰ %d tasolla %d", MaarFile, rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivillù %d tai aikaisemmin", MaarFile, rv);
+			swprintf(msg, L"Tiedostossa %s virhe rivill‰ %d tai aikaisemmin", MaarFile, rv);
 			}
 		writeerror_w(msg, 0, true);
 		}
@@ -771,7 +771,7 @@ void __fastcall TFormJakelu::Luouusiavaintiedostopari1Click(TObject *Sender)
 	wchar_t st[100] = L"", ch;
   TCursor OldCursor = Screen->Cursor;
 
-	inputstr_prompt(st, 99, L"Anna avaintiedoston nimi ilman pùùtettù", &ch, this);
+	inputstr_prompt(st, 99, L"Anna avaintiedoston nimi ilman p‰‰tett‰", &ch, this);
 	if (ch == ESC)
 		return;
 
@@ -799,8 +799,8 @@ void __fastcall TFormJakelu::Luouusiavaintiedostopari1Click(TObject *Sender)
 	  Key->ExportTo(Key->KeyName + L".pub", true, L"", saTripleDES_cbc, kfDefault, L"");
 
 	  String msg = L"Avaintiedosto on generoitu ohjelman datahakemistoon.\n";
-	  msg += L"Ota avain kùyttùùn siirtùmùllù julkinen avaintiedosto '" + Key->KeyName;
-	  msg += ".pub' palvelimelle kùytettùvùn SSH-palvelimen ohjeiden mukaisesti.";
+	  msg += L"Ota avain k‰yttˆˆn siirt‰m‰ll‰ julkinen avaintiedosto '" + Key->KeyName;
+	  msg += ".pub' palvelimelle k‰ytett‰v‰n SSH-palvelimen ohjeiden mukaisesti.";
 	  MessageDlg(msg, mtInformation, TMsgDlgButtons() << mbOK, 0);
 	}
 	catch (Exception &ex) {
@@ -834,7 +834,7 @@ void __fastcall TFormJakelu::ScSSHClientBeforeConnect(TObject *Sender)
 	ScSSHClient->PrivateKeyName = CBKeyFile->Text;
 
 	if (ScFileStorage->Keys->FindKey(ScSSHClient->PrivateKeyName) == NULL) {
-	   throw Exception("Avaintiedosto ei kùytettùvissù");
+	   throw Exception("Avaintiedosto ei k‰ytett‰viss‰");
 	   }
   }
 }

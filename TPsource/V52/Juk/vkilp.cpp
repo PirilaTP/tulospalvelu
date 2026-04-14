@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Joukkue- ja osuustietueiden alustus sekÃ¤ nollaustoiminnot viestikilpailussa.
-
 #ifdef ILMOITT
 #include "ilmoitt.h"
 #else
@@ -375,7 +373,7 @@ INT32 kilptietue::tTulos(int tosuus, int va, __int64 *tlslisa /* = NULL */)
    if (!tHyv(tosuus) && !kilpparam.sailhyl)
 	   return(0);
 
-   // Kï¿½ydï¿½ï¿½n lï¿½pi tosuus ja aiemmat osuudet ja
+   // Käydään läpi tosuus ja aiemmat osuudet ja
    // - kasvatetaan muuttujaa tlslisa, jos aika puuttuu
    // - kasvatetaan laskuria n_os, jos aika on otettu ja tulos
 
@@ -509,7 +507,7 @@ INT32 kilptietue::Tulos(int osuus, int va, bool sekvajaat /* = false */)
 	tls = 0;
 	if ( osuus >= 0 && Maali(osuus, va) != TMAALI0 &&
 		(Hyv(osuus) || kilpparam.sailhyl)) {
-		for (os = osuus; os >= 0; os--) {          // os == 0 lisï¿½tty 8.3.2010
+		for (os = osuus; os >= 0; os--) {          // os == 0 lisätty 8.3.2010
 			if (ostiet[os].ylahto != TMAALI0) {
 				yl = 1;
 				break;
@@ -531,8 +529,8 @@ INT32 kilptietue::Tulos(int osuus, int va, bool sekvajaat /* = false */)
 			tls = NORMTULOS(tls);
 			tls += SakkoAika(yosuus, true);
 			}
-		else {                //  yhteislï¿½htï¿½ tai partio
-			if (kilpparam.partio || osuus == 0) {            // osuus == 0 lisï¿½tty 8.3.2010
+		else {                //  yhteislähtö tai partio
+			if (kilpparam.partio || osuus == 0) {            // osuus == 0 lisätty 8.3.2010
 				tls = Maali(osuus, va) - ostiet[osuus].ylahto;
 				if (kilpparam.partio == 2) {
 					for (int os = 0; os < Sarjat[sarja].osuusluku; os++) {
@@ -1089,7 +1087,7 @@ wchar_t *kilptietue::TarkStr(int osuus, bool naytasulj /* = false */, int lang /
 			case L'K' :
 				return(L"Kesk.");
 			case L'E' :
-				return(L"Ei lï¿½ht.");
+				return(L"Ei läht.");
 			case L'P' :
 				return(L"Poissa");
 			case L'S' :
@@ -1161,7 +1159,7 @@ wchar_t *kilptietue::tTarkStr(int osuus, int lang /* = 0 */)
 			case L'K' :
 				return(L"Kesk.");
 			case L'E' :
-				return(L"Ei lï¿½ht.");
+				return(L"Ei läht.");
 			case L'P' :
 				return(L"Poissa");
 			case L'S' :

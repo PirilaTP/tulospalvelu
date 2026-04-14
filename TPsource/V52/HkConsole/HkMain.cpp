@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Konsoliohjelman main-funktio, kÃ¤ynnistys, lopetus ja Ctrl+C-kÃ¤sittelijÃ¤.
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <io.h>
@@ -59,7 +57,7 @@ void valikko(void)
    extern scr paavalikko;
 #ifdef MAKI
 	if (k_pv == makipv)
-		paavalikko.l[1].t = L"M)ï¿½ki           Mï¿½kikilpailun tulospalvelu";
+		paavalikko.l[1].t = L"M)äki           Mäkikilpailun tulospalvelu";
 #endif
 	if (bootfl & 8) {
 		int jj = (bootfl / 16) & 15;
@@ -69,7 +67,7 @@ void valikko(void)
 		}
 	do {
       clearscreen();
-      header=L"Pï¿½ï¿½VALIKKO";
+      header=L"PÄÄVALIKKO";
       ajat_on = 0;
       status_on = 1;
       kehys(1);
@@ -84,7 +82,7 @@ void valikko(void)
 #ifdef MAKI
       if (bootfl < 2) {
 			if (k_pv == makipv)
-				wselectopt(L"M)ï¿½ki, K)orjaa, S)elost., T)ulos, taU)lu, A)setus, Y)hteys, "
+				wselectopt(L"M)äki, K)orjaa, S)elost., T)ulos, taU)lu, A)setus, Y)hteys, "
 					L"B)ackup, P)ois", L"MKSTOAUYPB", &ch);
 			else
 				wselectopt(L"M)aali, K)orjaa, S)elost., T)ulos, taU)lu, A)setus, Y)hteys, "
@@ -165,7 +163,7 @@ void valikko(void)
 		if (ch == L'P') {
          ch = L' ';
 #if LANG == SV
-         wselectopt(L"Sluta och stï¿½nga av? (J/N)",
+         wselectopt(L"Sluta och stänga av? (J/N)",
             L"JN", &ch);
          if (ch == L'J') ch = L'P';
 #else

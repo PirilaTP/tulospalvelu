@@ -14,48 +14,46 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Viestikilpailun kÃ¤Ã¤nnÃ¶sversion numero ja muutoshistoria.
-
 #define VERSIOKDI L"5.20"
 #define BUILD L"5.20.043/2015-07-06"
 
 #ifdef KEHITYSLISTA
 
 Leimasin sammumassa poistuvaksi.
-automattisesti mï¿½ï¿½rï¿½ytyneet lï¿½htï¿½ajat vï¿½rikoodattuina?
-lï¿½htï¿½aikojen muuttamisen ohjeet
+automattisesti määräytyneet lähtöajat värikoodattuina?
+lähtöaikojen muuttamisen ohjeet
 hajontakoodin siirron ohjeet
-kenttien leveydet nï¿½ytï¿½llï¿½
-Yhteislï¿½htï¿½ï¿½n osallistuneet.
-Mahdollisuus kï¿½sitellï¿½ koodittomia ei-lï¿½hteneinï¿½
-Vï¿½liaikapisteiden nï¿½yttï¿½tasot
-uusintaTCP / muuttujan luokka kï¿½yttï¿½
+kenttien leveydet näytöllä
+Yhteislähtöön osallistuneet.
+Mahdollisuus käsitellä koodittomia ei-lähteneinä
+Väliaikapisteiden näyttötasot
+uusintaTCP / muuttujan luokka käyttö
 kierrokset
 vuorokaudet
-sarjojen lï¿½htï¿½ajat lï¿½htï¿½luettelon otsikoihin
+sarjojen lähtöajat lähtöluettelon otsikoihin
 
 Tehdyt muutokset
 
 2015-07-06:  VTulostus, Muotoilut: Mahdollisuus valita sarakeleveydet absoluuttisina
-2015-07-06:  VTulostus: Sarakeleveydet kï¿½yttï¿½ï¿½n myï¿½s hajontakohtaisille tuloksille
+2015-07-06:  VTulostus: Sarakeleveydet käyttöön myös hajontakohtaisille tuloksille
 2015-07-05:  VTulostus: Korjattu (poistettu) marginaalin vaikutus html-taulukoihin
 2015-06-17:  UnitJjVaihdot: Isojen alkukirjainten helppo toteutus
-2015-06-10:  Fontin vaihto aktivoidaan muotoilun lukemisen jï¿½lkeen
-2015-06-06:  Hylkï¿½ysraportti kahteen kohteeseen
-2015-06-06:  Tauluissa voidaan nï¿½yttï¿½ï¿½ myï¿½s kaksi saraketta
+2015-06-10:  Fontin vaihto aktivoidaan muotoilun lukemisen jälkeen
+2015-06-06:  Hylkäysraportti kahteen kohteeseen
+2015-06-06:  Tauluissa voidaan näyttää myös kaksi saraketta
 2015-06-05:  Taulujen ohjaus korjattu
-2015-05-26:  Tï¿½smennyksiï¿½ tiedostulostuksen merkistï¿½valintaan
-2015-06-25:  Otettu kï¿½yttï¿½ï¿½n funktio StrToDouble selvittï¿½mï¿½ï¿½n desimaalimerkin ongelmat
-2015-06-24:  UnitAjanotto: Pieniï¿½ parannuksia kï¿½yttï¿½liittymï¿½ï¿½n
-2015-06-24:  UnitJoukkueet: Suuren sarakemï¿½ï¿½rï¿½n kï¿½sittely korjattu
-2015-06-09:  TapUnit2: Valintoja toimimaan, hienosï¿½ï¿½tï¿½ï¿½ ulkonï¿½kï¿½ï¿½n.
-2015-05-03:	 TulostusUnit2, VTulostus, VMuotoilu - html-mï¿½ï¿½ritykset, hajontakohtaiset tulokset ja vï¿½liajat
-2015-04-20/034: UnitHylkRap - Toimitsija ja rata hylkï¿½ysraporttiin
-2015-04-19:  TulostusUnit2 - Automaattisen tulostuksen kï¿½ynnistï¿½minen vaatii valintojen tekemisen
+2015-05-26:  Täsmennyksiä tiedostulostuksen merkistövalintaan
+2015-06-25:  Otettu käyttöön funktio StrToDouble selvittämään desimaalimerkin ongelmat
+2015-06-24:  UnitAjanotto: Pieniä parannuksia käyttöliittymään
+2015-06-24:  UnitJoukkueet: Suuren sarakemäärän käsittely korjattu
+2015-06-09:  TapUnit2: Valintoja toimimaan, hienosäätöä ulkonäköön.
+2015-05-03:	 TulostusUnit2, VTulostus, VMuotoilu - html-määritykset, hajontakohtaiset tulokset ja väliajat
+2015-04-20/034: UnitHylkRap - Toimitsija ja rata hylkäysraporttiin
+2015-04-19:  TulostusUnit2 - Automaattisen tulostuksen käynnistäminen vaatii valintojen tekemisen
 2015-04-19:  UnitHylkRap - Pieni korjaus xml-tiedoston tulkintaan
 2015-04-17:  cbTpApu, UnitIlmoitus - Varoitussanoma toimimaan ongelmattomasti
-2015-04-17:  UnitEmit - poistettu jï¿½ljellï¿½ olleet suorat viittaukset taulukkoon emitjarr
-2015-04-17:  VEmit - lukijaleiman puuttumisvirheen hallinta lisï¿½tty
+2015-04-17:  UnitEmit - poistettu jäljellä olleet suorat viittaukset taulukkoon emitjarr
+2015-04-17:  VEmit - lukijaleiman puuttumisvirheen hallinta lisätty
 2015-04-14:  "Leimasin sammumassa" poistuvaksi.
 
 #endif

@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Tiedonsiirtofunktiot henkilÃ¶kilpailulle: RS-232, UDP ja TCP-yhteydet sekÃ¤ viestien lÃ¤hetys.
-
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -66,26 +64,26 @@
 
 int alkut = ALKUT;
 HANDLE hComm[MAX_PORTTI];
-int ackreq[MAX_LAHPORTTI];              /* != 0 Ilmaisee, ettï¿½ yhteys toimii */
-int yhtfl[MAX_LAHPORTTI];              /* != 0 Ilmaisee, ettï¿½ yhteys toimii */
-int keyclose[MAX_LAHPORTTI];                   /* Kï¿½yttï¿½jï¿½ sulkenut portin */
+int ackreq[MAX_LAHPORTTI];              /* != 0 Ilmaisee, että yhteys toimii */
+int yhtfl[MAX_LAHPORTTI];              /* != 0 Ilmaisee, että yhteys toimii */
+int keyclose[MAX_LAHPORTTI];                   /* Käyttäjä sulkenut portin */
 int autoclose;               /* Ohjelma sulkenut vastaanoton */
 int  initid[MAX_LAHPORTTI];                    /* inpakid initialisoimatta */
 extern int ivtime[];                    /* Seuraavan keskeytyksen hetki */
-extern int intv[];                      /* Tiedonsiirron odotusvï¿½li     */
-//int intv[2];                      /* Tiedonsiirron odotusvï¿½li     */
+extern int intv[];                      /* Tiedonsiirron odotusväli     */
+//int intv[2];                      /* Tiedonsiirron odotusväli     */
 combufrec *inbuf;      /* Saapuvien jono */
-combufrec *outbuf[MAX_LAHPORTTI];     /* Lï¿½htevien jono */
+combufrec *outbuf[MAX_LAHPORTTI];     /* Lähtevien jono */
 int  combufsize;
 char *combuf[MAX_LAHPORTTI];          /* IO-portin puskuri */
-int  lahfl[MAX_LAHPORTTI];            /* Lï¿½hetys kï¿½ynnissï¿½ */
+int  lahfl[MAX_LAHPORTTI];            /* Lähetys käynnissä */
 int  vkesken[MAX_LAHPORTTI];              /* Vastaanotto kesken */
-int  chcomkesto[MAX_LAHPORTTI];           /* Yhden merkin lï¿½hettï¿½miskesko */
-int  hyvkesken[MAX_LAHPORTTI];            /* Hyvï¿½ksyntï¿½ kesken */
-char outpakid[MAX_LAHPORTTI];    /* seuraava lï¿½hetettï¿½vï¿½ id */
+int  chcomkesto[MAX_LAHPORTTI];           /* Yhden merkin lähettämiskesko */
+int  hyvkesken[MAX_LAHPORTTI];            /* Hyväksyntä kesken */
+char outpakid[MAX_LAHPORTTI];    /* seuraava lähetettävä id */
 int vastcom0[MAX_LAHPORTTI];
 int lahcomserver[MAX_LAHPORTTI];
-int class_len[N_CLASS];     // Lï¿½hetettï¿½vï¿½n tiedon pituus mukaanlukien
+int class_len[N_CLASS];     // Lähetettävän tiedon pituus mukaanlukien
                                    // checksum ja itse tieto
 extern int timerfl, tbase, trate;
 extern INT vpiste[];
@@ -154,16 +152,16 @@ void broadcasttulos(kilptietue *kilp, int piste)
 	wrt_st_broadcast(strlen(line), line);
 }
 
-//  henkilï¿½kohtaisen lï¿½hetï¿½
+//  henkilökohtaisen lähetä
 //
-//  piste = 0  :              Lï¿½hetï¿½ kaikki perustiedot
-//  piste < 0  :              Lï¿½hetï¿½ kaikki pï¿½ivï¿½n 1-piste tiedot
-//							  aktiivinen pï¿½ivï¿½ ilman aikoja, muut aikoineen
-//  piste = 1 .. valuku+2     Lï¿½hetï¿½ pisteen piste-2 aika
-//                            (-1: lï¿½htï¿½, 0: maali, >0: vï¿½liaika)
-//  piste = valuku+3          Lï¿½hetï¿½ keskhyl
-//  piste = valuku+4          Lï¿½hetï¿½ ammunnan sakkotiedot
-//  piste = valuku+5          Lï¿½hetï¿½ muu sakkotieto
+//  piste = 0  :              Lähetä kaikki perustiedot
+//  piste < 0  :              Lähetä kaikki päivän 1-piste tiedot
+//							  aktiivinen päivä ilman aikoja, muut aikoineen
+//  piste = 1 .. valuku+2     Lähetä pisteen piste-2 aika
+//                            (-1: lähtö, 0: maali, >0: väliaika)
+//  piste = valuku+3          Lähetä keskhyl
+//  piste = valuku+4          Lähetä ammunnan sakkotiedot
+//  piste = valuku+5          Lähetä muu sakkotieto
 //
 
 void laheta(INT dkilp, INT entno, INT piste, int hyv_muutos, INT comtarfl, INT kielto,
@@ -174,7 +172,7 @@ void laheta(INT dkilp, INT entno, INT piste, int hyv_muutos, INT comtarfl, INT k
 	combufrec obuf;
 	kilptietue kilp;
 
-	// hyv_muutos == -1 pyytï¿½ï¿½ lï¿½hettï¿½mï¿½ï¿½n ajanottotiedot vaiheen tietojen mukana
+	// hyv_muutos == -1 pyytää lähettämään ajanottotiedot vaiheen tietojen mukana
 	if (hyv_muutos == -1) {
 		lah_kaikkiajat = 1;
 		hyv_muutos = 0;
@@ -239,7 +237,7 @@ void laheta(INT dkilp, INT entno, INT piste, int hyv_muutos, INT comtarfl, INT k
    //   in_com = FALSE;
 	}
 
-//  henkilï¿½kohtaisen tark_kilp
+//  henkilökohtaisen tark_kilp
 
 static void tark_kilp(INT cn, INT kaikki)
    {
@@ -342,12 +340,12 @@ static void tark_kilp(INT cn, INT kaikki)
    if (er) {
 #ifdef _CONSOLE
 		writeerror_w(
-		 L"Tiedostot eri koneilla eivï¿½t ole yhtï¿½pitï¿½viï¿½",0);
+		 L"Tiedostot eri koneilla eivät ole yhtäpitäviä",0);
 	  writeerror_w(L"Poistu ohjelmasta, kopioi KILP.DAT"
-		 L"lï¿½hettï¿½vï¿½ltï¿½ tï¿½lle koneelle",0);
+		 L"lähettävältä tälle koneelle",0);
 #else
-		writeerror_w(L"Tiedostot eri koneilla eivï¿½t ole yhtï¿½pitï¿½viï¿½"
-			L"Poistu ohjelmasta ja kopioi KILP.DAT lï¿½hettï¿½vï¿½ltï¿½ tï¿½lle koneelle",0);
+		writeerror_w(L"Tiedostot eri koneilla eivät ole yhtäpitäviä"
+			L"Poistu ohjelmasta ja kopioi KILP.DAT lähettävältä tälle koneelle",0);
 #endif
 	  }
    }
@@ -832,11 +830,11 @@ bool tark_alku(const combufrec * const cbuf, int cn)
 	if (cbuf->d.alku.nrec != datf2.numrec) {
 		erbeep();
 		if (cbuf->d.alku.flags & 1) {
-			swprintf(ln, L"Vaihen vaihtopyyntï¿½ koneelta, jonka KILP.DAT eri pituinen, yhteys %d", cn+1);
+			swprintf(ln, L"Vaihen vaihtopyyntö koneelta, jonka KILP.DAT eri pituinen, yhteys %d", cn+1);
 			writeerror_w(ln, 0);
 			}
 		else if (var[cn] == 0) {
-			swprintf(ln, L"Yhteyspyyntï¿½ koneelta, jonka KILP.DAT eri pituinen, yhteys %d", cn+1);
+			swprintf(ln, L"Yhteyspyyntö koneelta, jonka KILP.DAT eri pituinen, yhteys %d", cn+1);
 			writeerror_w(ln, 0);
 			}
 		var[cn]++;
@@ -852,7 +850,7 @@ bool tark_alku(const combufrec * const cbuf, int cn)
 	else if (cbuf->d.alku.vaihe != k_pv + 1) {
 		if (var[cn] == 0) {
 			erbeep();
-			swprintf(ln, L"Eri vaiheessa oleva kone pyytï¿½ï¿½ yhteyttï¿½, yhteys %d", cn+1);
+			swprintf(ln, L"Eri vaiheessa oleva kone pyytää yhteyttä, yhteys %d", cn+1);
 			writeerror_w(ln, 0);
 			}
 		var[cn]++;
@@ -1228,7 +1226,7 @@ void uusintaTCP(int cn)
 
    wselectopt(L"K)aikki sarjat, V)alitse sarjat, S)anomanumerot", L"VKS", &cs);
    if (cs != L'S') {
-      wselectopt(L"T)ulokset, V)ï¿½liajat, M)olemmat, H)yl+kesk+avoimet, L)ï¿½htï¿½ajat", L"TVMLH", &cp);
+      wselectopt(L"T)ulokset, V)äliajat, M)olemmat, H)yl+kesk+avoimet, L)ähtöajat", L"TVMLH", &cp);
       wselectopt(L"K)oko kilpailu, V)alittava aikavali, Esc: peruuta", L"KV\x1b", &ch);
       if (ch == L'V') {
       clrln(ySize-3);
@@ -1287,7 +1285,7 @@ void emitva_uusinta(int cn, int tietue)
 	if (cn >= 0 && tietue < 0) {
 		while (1) {
 			ch = L' ';
-			wselectopt(L"Lï¿½hetï¿½ K)aikki tai valitse S)arja, Esc: lopeta", L"KS\x1b", &ch);
+			wselectopt(L"Lähetä K)aikki tai valitse S)arja, Esc: lopeta", L"KS\x1b", &ch);
 			if (ch == ESC)
 				break;
 			if (ch == L'S' || ch == L'M') {
