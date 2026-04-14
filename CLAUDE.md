@@ -8,7 +8,7 @@ Pekka Pirilä's sports timekeeping suite ("tulospalvelu"), originally developed 
 
 ## Build instructions
 
-### Console programs (Visual Studio 2013+)
+### Console programs (Visual Studio 2022)
 
 Build order matters — the utility library must be built first:
 
@@ -18,11 +18,9 @@ Build order matters — the utility library must be built first:
 
 Language standard: C++03.
 
-### Windows GUI programs (Embarcadero C++ Builder 10.1 Berlin)
+### Windows GUI programs (Embarcadero C++ Builder Community Edition)
 
-Requires **SecureBridge 7.1 for RAD Studio 10.1 Berlin**. Before compiling, edit:
-`Program Files (x86)\Devart\SecureBridge for RAD Studio 10\Include\Win32\ScSSHSocket.hpp`
-and change `Winapi::Winsock::PSockAddrIn` → `Winapi::Winsock2::PSockAddrIn`.
+No third-party add-ons are required.
 
 Build order:
 1. `DBboxm-XE.cbproj` → right-click → Make
