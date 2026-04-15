@@ -1,0 +1,3 @@
+vaadin-app-layout {
+    padding-bottom: max(var(--_vaadin-app-layout-navbar-offset-size-bottom), var(--aura-app-layout-inset));
+}

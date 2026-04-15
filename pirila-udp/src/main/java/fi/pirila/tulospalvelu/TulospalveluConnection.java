@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
+import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.concurrent.CompletableFuture;
@@ -45,6 +46,7 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
 
     private final CountDownLatch connectedLatch = new CountDownLatch(1);
     private volatile boolean connected = false;
+    private volatile Instant lastMessageTime;
 
     // Packet ID: starts at 1, wraps 255->1 (skip 0)
     private byte outPacketId = 1;
@@ -84,6 +86,22 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
 
     public boolean isConnected() {
         return connected;
+    }
+
+    /**
+     * Returns true if the connection is established and KILPPVT messages
+     * have been exchanged (sent or received) at least once.
+     */
+    public boolean isActive() {
+        return connected && lastMessageTime != null;
+    }
+
+    /**
+     * Returns the time of the last KILPPVT message exchange (sent or received),
+     * or null if no messages have been exchanged yet.
+     */
+    public Instant getLastMessageTime() {
+        return lastMessageTime;
     }
 
     @Override
@@ -233,6 +251,7 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
 
         // KILPPVT ACK
         if (pendingFuture != null && ackId == pendingPacketId) {
+            lastMessageTime = Instant.now();
             pendingFuture.complete(true);
             pendingFuture = null;
         }
@@ -307,6 +326,9 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
         inPacketId = msgId;
 
         // Process KILPPVT
+        if (pkgclass == PKGCLASS_KILPPVT) {
+            lastMessageTime = Instant.now();
+        }
         if (pkgclass == PKGCLASS_KILPPVT && listener != null) {
             // KILPPVT data: tarf(1) + pakota(1) + dk(2) + pv(2) + valuku(2) + cpv(...)
             if (data.length >= 8) {
