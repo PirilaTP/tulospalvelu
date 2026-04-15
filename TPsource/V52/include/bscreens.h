@@ -70,4 +70,3 @@ int cdecl  scbox(int,int,int,int,     /* Draw a box		      */
 }
 #endif
 #endif				      /* Ends "#ifndef DEF_BSCREENS"  */
-

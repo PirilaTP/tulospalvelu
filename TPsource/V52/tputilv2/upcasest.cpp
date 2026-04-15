@@ -44,4 +44,3 @@ wchar_t *upcasewstr(wchar_t *s)
 }
 
 
-

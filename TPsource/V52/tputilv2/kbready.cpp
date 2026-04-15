@@ -24,8 +24,8 @@ static int altkey[25] = {104,105,106,107,108,109,110,111,112,113,
       69,70,151,152,153,74,155,76,157,78,159,160,161,162,163};
 static int shiftkey[10]= {84,85,86,87,88,89,89,91,92,93};
 
-/* kbready palauttaa arvon 1, jos n„pp„int„ on painettu */
-/*               ja arvon 0, jos n„pp„int„ ei ole painettu */
+/* kbready palauttaa arvon 1, jos nÂ„ppÂ„intÂ„ on painettu */
+/*               ja arvon 0, jos nÂ„ppÂ„intÂ„ ei ole painettu */
 
 int kbready(char *ch, int *key)
 {
@@ -35,7 +35,7 @@ int kbready(char *ch, int *key)
 	WORD KC;
 
 	do {
-		if (!PeekConsoleInputA(hConIn, &Buf, 1, &nRead)) {
+		if (!PeekConsoleInput(hConIn, &Buf, 1, &nRead)) {
 			GetLastError();
 			return(-1);
 		}
@@ -43,7 +43,7 @@ int kbready(char *ch, int *key)
 			!Buf.Event.KeyEvent.bKeyDown ||
 			((KC = Buf.Event.KeyEvent.wVirtualKeyCode) >= VK_SHIFT && KC <= VK_CAPITAL) || 
 			(KC > VK_F12 && KC < 0xBA) || KC >= VK_PROCESSKEY || ProcessSpecialKey(&Buf))) {
-			if (!ReadConsoleInputA(hConIn, &Buf, 1, &nRead)) {
+			if (!ReadConsoleInput(hConIn, &Buf, 1, &nRead)) {
 				GetLastError();
 				return(-1);
 			}

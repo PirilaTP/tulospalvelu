@@ -22,11 +22,11 @@ char locasesc(char ch)
    char c;
 
    switch(ch) {
-	  case '' :  return('‚');
-	  case '' :  return('„');
-	  case '™' :  return('”');
-	  case '' :  return('†');
-	  case 'š' :  return('');
+	  case 'Â' :  return('Â‚');
+	  case 'Â' :  return('Â„');
+	  case 'Â™' :  return('Â”');
+	  case 'Â' :  return('Â†');
+	  case 'Âš' :  return('Â');
    }
    i = ch;
    c = tolower(i);
@@ -45,4 +45,3 @@ wchar_t locasewsc(wchar_t ch)
 }
 
 
-

@@ -113,7 +113,7 @@ char siritdepart[80] = "event.tag.depart";
 char SiritMask[31];
 #endif
 int viimrivi;
-static INT pyyntoviive = 200;
+extern INT pyyntoviive;
 static int regnlystarted[NREGNLY];
 
 extern int lue_rno;

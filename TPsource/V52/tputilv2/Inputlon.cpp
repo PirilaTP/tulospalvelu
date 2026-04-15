@@ -53,4 +53,3 @@ void inputlongw(INT32 *i, int l,int x,int y, wchar_t *wterm, wchar_t *wtc)
 }
 
 
-

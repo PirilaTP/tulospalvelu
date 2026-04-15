@@ -151,8 +151,13 @@ int xmlsanoma(char *buf, int maxlen, kilptietue& kilp, int dkilp, int piste, int
 unsigned short chksum(char *bufptr, int len);
 int addseur(int cn, const combufrec * const cbuf);
 void tiedonsiirto(LPVOID lpCn);
+#ifndef __linux__
 void tiedonsiirtoUDP(LPVOID lpCn);
 void tiedonsiirtoTCP(LPVOID lpCn);
+#else
+void *tiedonsiirtoUDP(LPVOID lpCn);
+void *tiedonsiirtoTCP(LPVOID lpCn);
+#endif
 void lahetaXML_TCP(combufrec *obuf, int cn);
 void merk_uusinta(int cna, int cny, long ta, long ty, int autouusinta);
 void lahetanumerotTCP(int cn, INT32 alku, INT32 loppu);
@@ -167,7 +172,7 @@ void lahetaMonitorille(int yhtlkm, int yhtavattu, int jonossa, int jonoja);
 int lah_tiedosto(wchar_t *tiednimi, int kielto, int flags);
 void tark_tiedosto(INT cn);
 
-// K‰yttˆliittym‰n funktioita
+// K√§ytt√∂liittym√§n funktioita
 int parametrivirhe(wchar_t *sub, int intparam, wchar_t *strparam, wchar_t charparam);
 void Wselectopt(WCHAR *msg, WCHAR *opts, WCHAR *sel);
 int writeerrorkysy(WCHAR *msg);
@@ -485,23 +490,7 @@ extern	wchar_t sulkusalasana[12];
 extern   IV_KEY keytab[];
 extern  INT16 ySize, xSize;
 extern  int writeerrorOn;
-extern struct {
-	wchar_t afname[202];
-	int autokomentolaji;
-	wchar_t autokomento[202];
-	wchar_t jakelumaar[202];
-	bool vainMuutt;
-	int afvali;
-	bool af_kaikki;
-	bool af_flag;
-	wchar_t af_xmlva;
-	wchar_t aflstnm[202];
-	wchar_t sanafname[202];
-	wchar_t sanafchars;
-	int kopiofl;
-	wchar_t wtitlea[202];
-	wchar_t wheadera[202];
-	} autofileparam;
+extern autofileparam_t autofileparam;
 extern  HANDLE hStdIn, hStdOut, hConIn, hConOut;
 extern   int UDPviive_lue, UDPviive_lah, UDPviive_ts, UDPCliWait;
 #ifdef EMITLEIMAT
@@ -756,7 +745,7 @@ extern   INT yhteys_on[];
 extern   int lah_tiedostot[MAX_LAHPORTTI];
 extern   bool lahkaikkitied;
 extern 	 int lahcomserver[];
-extern   int keyclose[];                   /* K‰ytt‰j‰ sulkenut portin */
+extern   int keyclose[];                   /* K√§ytt√§j√§ sulkenut portin */
 extern   int jonokynnys;
 extern   INT dcom;
 extern   INT yhteysalku;

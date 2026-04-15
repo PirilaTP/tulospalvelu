@@ -61,7 +61,7 @@ void draw_vline2(int row, int col, int len)
 
 void draw_grchar2(int row, int col, int ch)
    {
-   char cgr[] = "   � ͼ� ɺ̻˹�";
+   char cgr[] = "   È Í¼Ê ÉºÌ»Ë¹Î";
    char st[2];
 
    st[0] = cgr[ch]-13;
@@ -69,7 +69,7 @@ void draw_grchar2(int row, int col, int ch)
 }
 void draw_grchar(int row, int col, int ch)
    {
-   char cgr[] = "   � ��� ڳÿ´�";
+   char cgr[] = "   À ÷ÙÁ Ú³Ã¿Â´Å";
    char st[2];
 
    st[0] = cgr[ch]-13;

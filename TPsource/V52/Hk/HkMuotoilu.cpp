@@ -49,9 +49,9 @@ FldFrmtTp dspflds[] = {
 	{F_JOUK, L"Joukkue", L"Joukkue", 56,0, 0, 0, 0},             // 11: joukkue
 	{F_ALISRJ, L"Alisarja", L"Alisarja", 56,0, 0, 0, 0},         // 12: alisarja
 	{F_TLS, L"Tulos", L"Tulos", 56, 10, 1, 0, 1},                 // 13: tulos
-	{F_ERO, L"Ero", L"Ero",  67, 10, 1, 0, 1},                  	// 14: ero k‰rkeen
+	{F_ERO, L"Ero", L"Ero",  67, 10, 1, 0, 1},                  	// 14: ero k√§rkeen
 	{F_SAK, L"Sakot", L"Sakot",72, 0, 1, 0, 0},                   // 15: sakot
-	{F_TARK, L"Hyv‰ks.", L"Hyv‰ks.", 79,1, 0, 0, 1},             // 16: Leimantarkastus
+	{F_TARK, L"Hyv√§ks.", L"Hyv√§ks.", 79,1, 0, 0, 1},             // 16: Leimantarkastus
 	{F_AIKA, L"Aika", L"Aika", 72, 0, 1, 0, 0},                 	// 17: Aika ilman sakkoa
 	{F_PIST, L"Pisteet", L"Pisteet", 72, 0, 1, 0, 0},            // 18: pisteet
 	{0, 0, 0, 0, 0, 0, 0}
@@ -74,13 +74,13 @@ FldFrmtTp fileflds[] = {
 	{F_JOUK, L"Joukkue", L"Joukkue", 78,0, 0, 0, 0},             // 11: joukkue
 	{F_ALISRJ, L"Alisarja", L"Alisarja", 56, 0, 0, 0, 0},        // 12: alisarja
 	{F_TLS, L"Tulos", L"Tulos", 78,10, 1, 0, 1},                 // 13: tulos
-	{F_ERO, L"Ero", L"Ero",  90,10, 1, 0, 1},                  	// 14: ero k‰rkeen
+	{F_ERO, L"Ero", L"Ero",  90,10, 1, 0, 1},                  	// 14: ero k√§rkeen
 	{F_SAK, L"Sakot", L"Sakot",90,0, 1, 0, 0},                   // 15: sakot
-	{F_TARK, L"Hyv‰ks.", L"Hyv‰ks.", 78, 0, 0, 0, 0},            // 16: Leimantarkastus
+	{F_TARK, L"Hyv√§ks.", L"Hyv√§ks.", 78, 0, 0, 0, 0},            // 16: Leimantarkastus
 	{F_AIKA, L"Aika", L"Aika", 102, 0, 1, 0, 0},                 // 17: Aika ilman sakkoa
 	{F_PIST, L"Pisteet", L"Pisteet", 102, 0, 1, 0, 0},           // 18: pisteet
-	{F_OSASJ, L"Osasija", L"Sj-2", 102, 3, 1, 18, 1},          // 19: vaiheen tai v‰liajan sija
-	{F_OSATLS, L"Osatulos", L"Tulos-2", 106,10, 1, 18, 1},       // 20: vaiheen tulos tai v‰liaika
+	{F_OSASJ, L"Osasija", L"Sj-2", 102, 3, 1, 18, 1},          // 19: vaiheen tai v√§liajan sija
+	{F_OSATLS, L"Osatulos", L"Tulos-2", 106,10, 1, 18, 1},       // 20: vaiheen tulos tai v√§liaika
 	{0, 0, 0, 0, 0, 0}
 	};
 
@@ -101,13 +101,13 @@ FldFrmtTp fileflds_suunn[] = {
 	{F_JOUK, L"Joukkue", L"Joukkue", 60,0, 0, 0, 0},             // 11: joukkue
 	{F_ALISRJ, L"Alisarja", L"Alisarja", 60, 0, 0, 0, 0},        // 12: alisarja
 	{F_TLS, L"Tulos", L"Tulos", 81,10, 1, 0, 1},                 // 13: tulos
-	{F_ERO, L"Ero", L"Ero",  93,10, 1, 0, 1},                  	// 14: ero k‰rkeen
+	{F_ERO, L"Ero", L"Ero",  93,10, 1, 0, 1},                  	// 14: ero k√§rkeen
 	{F_SAK, L"Sakot", L"Sakot",93,0, 1, 0, 0},                   // 15: sakot
-	{F_TARK, L"Hyv‰ks.", L"Hyv‰ks.", 105, 0, 0, 0, 0},           // 16: Leimantarkastus
+	{F_TARK, L"Hyv√§ks.", L"Hyv√§ks.", 105, 0, 0, 0, 0},           // 16: Leimantarkastus
 	{F_AIKA, L"Aika", L"Aika", 105, 0, 1, 0, 0},                 // 17: Aika ilman sakkoa
 	{F_PIST, L"Pisteet", L"Pisteet", 105, 0, 1, 0, 0},           // 18: pisteet
-	{F_OSASJ, L"Osasija", L"Sj-2", 108, 3, 1, 18, 1},          // 19: vaiheen tai v‰liajan sija
-	{F_OSATLS, L"Osatulos", L"Tulos-2", 112,10, 1, 18, 1},       // 20: vaiheen tulos tai v‰liaika
+	{F_OSASJ, L"Osasija", L"Sj-2", 108, 3, 1, 18, 1},          // 19: vaiheen tai v√§liajan sija
+	{F_OSATLS, L"Osatulos", L"Tulos-2", 112,10, 1, 18, 1},       // 20: vaiheen tulos tai v√§liaika
 	{0, 0, 0, 0, 0, 0, 0}
 	};
 
@@ -128,13 +128,13 @@ FldFrmtTp mobilflds[] = {
 	{F_JOUK, L"Joukkue", L"Joukkue", 78,0, 0, 0, 0},             // 11: joukkue
 	{F_ALISRJ, L"Alisarja", L"Alisarja", 56, 0, 0, 0, 0},        // 12: alisarja
 	{F_TLS, L"Tulos", L"Tulos", 54,10, 1, 0, 1},                 // 13: tulos
-	{F_ERO, L"Ero", L"Ero",  90, 0, 1, 0, 1},                  	// 14: ero k‰rkeen
+	{F_ERO, L"Ero", L"Ero",  90, 0, 1, 0, 1},                  	// 14: ero k√§rkeen
 	{F_SAK, L"Sakot", L"Sakot",90,0, 1, 0, 0},                   // 15: sakot
-	{F_TARK, L"Hyv‰ks.", L"Hyv‰ks.", 78, 0, 0, 0, 0},            // 16: Leimantarkastus
+	{F_TARK, L"Hyv√§ks.", L"Hyv√§ks.", 78, 0, 0, 0, 0},            // 16: Leimantarkastus
 	{F_AIKA, L"Aika", L"Aika", 102, 0, 1, 0, 0},                 // 17: Aika ilman sakkoa
 	{F_PIST, L"Pisteet", L"Pisteet", 102, 0, 1, 0, 0},           // 18: pisteet
-	{F_OSASJ, L"Osasija", L"Sj-2", 63, 3, 1, 16, 1},          // 19: vaiheen tai v‰liajan sija
-	{F_OSATLS, L"Osatulos", L"Tulos-2", 67,10, 1, 16, 1},       // 20: vaiheen tulos tai v‰liaika
+	{F_OSASJ, L"Osasija", L"Sj-2", 63, 3, 1, 16, 1},          // 19: vaiheen tai v√§liajan sija
+	{F_OSATLS, L"Osatulos", L"Tulos-2", 67,10, 1, 16, 1},       // 20: vaiheen tulos tai v√§liaika
 	{0, 0, 0, 0, 0, 0, 0}
 	};
 
@@ -155,7 +155,7 @@ FldFrmtTp prtflds_suunn[] = {
 	{F_JOUK, L"Joukkue", L"Joukkue", 440,0, 0, 0, 0},            // 11: joukkue
 	{F_ALISRJ, L"Alisarja", L"Alisarja", 440, 0, 0, 0, 0},       // 12: alisarja
 	{F_TLS, L"Tulos", L"Tulos",650,10, 1, 0, 1},                 // 13: tulos
-	{F_ERO, L"Ero", L"Ero", 760,9, 1, 0, 1},                   	// 14: ero k‰rkeen
+	{F_ERO, L"Ero", L"Ero", 760,9, 1, 0, 1},                   	// 14: ero k√§rkeen
 	{F_SAK, L"Sakot", L"Sakot",910,0, 1, 0, 0},                  // 15: sakot
 	{F_TARK, L"Leim.hyv", L"Leim.hyv", 860,1, 0, 0, 1},          // 16: Leimantarkastus
 	{F_AIKA, L"Aika", L"Aika", 860, 0, 1, 0, 0},                 // 17: Aika ilman sakkoa
@@ -180,7 +180,7 @@ FldFrmtTp prtflds[] = {
 	{F_JOUK, L"Joukkue", L"Joukkue", 440,0, 0, 0, 0},            // 11: joukkue
 	{F_ALISRJ, L"Alisarja", L"Alisarja", 440,0, 0, 0, 0},        // 12: alisarja
 	{F_TLS, L"Tulos", L"Tulos",725,10, 1, 0, 1},                 // 13: tulos
-	{F_ERO, L"Ero", L"Ero", 820,9, 1, 0, 1},                   	// 14: ero k‰rkeen
+	{F_ERO, L"Ero", L"Ero", 820,9, 1, 0, 1},                   	// 14: ero k√§rkeen
 	{F_SAK, L"Sakot", L"Sakot",820,0, 1, 0, 0},                  // 15: sakot
 	{F_TARK, L"Leim.hyv", L"Leim.hyv", 920,1, 0, 0, 1},          // 16: Leimantarkastus
 	{F_AIKA, L"Aika", L"Aika", 847, 0, 1, 0, 0},                 // 17: Aika ilman sakkoa
@@ -205,7 +205,7 @@ FldFrmtTp prtfldsm[] = {
 	{F_JOUK, L"Joukkue", L"Joukkue", 440,0, 0, 0, 0},            // 11: joukkue
 	{F_ALISRJ, L"Alisarja", L"Alisarja", 440,0, 0, 0, 0},        // 12: alisarja
 	{F_TLS, L"Tulos", L"Tulos",640,10, 1, 0, 1},                 // 13: tulos
-	{F_ERO, L"Ero", L"Ero", 730,0, 1, 0, 0},                   	// 14: ero k‰rkeen
+	{F_ERO, L"Ero", L"Ero", 730,0, 1, 0, 0},                   	// 14: ero k√§rkeen
 	{F_SAK, L"Sakot", L"Sakot",730,0, 1, 0, 0},                  // 15: sakot
 	{F_TARK, L"Leim.hyv", L"Leim.hyv", 910,0, 0, 0, 0},          // 16: Leimantarkastus
 	{F_AIKA, L"Aika", L"Aika", 730, 0, 1, 0, 0},                 // 17: Aika ilman sakkoa
@@ -232,7 +232,7 @@ FldFrmtTp prtfldsm_suunn[] = {
 	{F_JOUK, L"Joukkue", L"Joukkue", 440,0, 0, 0, 0},            // 11: joukkue
 	{F_ALISRJ, L"Alisarja", L"Alisarja", 440,0, 0, 0, 0},        // 12: alisarja
 	{F_TLS, L"Tulos", L"Tulos",630,10, 1, 0, 1},                 // 13: tulos
-	{F_ERO, L"Ero", L"Ero", 730,0, 1, 0, 0},                   	// 14: ero k‰rkeen
+	{F_ERO, L"Ero", L"Ero", 730,0, 1, 0, 0},                   	// 14: ero k√§rkeen
 	{F_SAK, L"Sakot", L"Sakot",730,0, 1, 0, 0},                  // 15: sakot
 	{F_TARK, L"Leim.hyv", L"Leim.hyv", 910,1, 0, 0, 1},          // 16: Leimantarkastus
 	{F_AIKA, L"Aika", L"Aika", 690, 0, 1, 0, 0},                 // 17: Aika ilman sakkoa
@@ -259,13 +259,13 @@ FldFrmtTp prtflds1[] = {
 	{F_JOUK, L"Joukkue", L"Joukkue", 325,0, 0, 0, 0},            // 11: seura
 	{F_ALISRJ, L"Alisarja", L"Alisarja", 325,0, 0, 0, 0},        // 12: alisarja
 	{F_TLS, L"Yht.tulos", L"Yht.tulos",560,8, 1, 80, 1},          // 13: tulos
-	{F_ERO, L"Ero", L"Ero", 670,0, 1, 0, 0},                   	// 14: ero k‰rkeen
+	{F_ERO, L"Ero", L"Ero", 670,0, 1, 0, 0},                   	// 14: ero k√§rkeen
 	{F_SAK, L"Sakot", L"Sakot",670,0, 1, 0, 0},                  // 15: sakot
 	{F_TARK, L"Leim.hyv", L"Leim.hyv", 560,0, 0, 0, 0},          // 16: Leimantarkastus
 	{F_AIKA, L"Aika", L"Aika", 650, 0, 1, 0, 0},                 // 17: Aika ilman sakkoa
 	{F_PIST, L"Pisteet", L"Pisteet", 650, 0, 1, 55, 0},           // 18: pisteet
-	{F_OSASJ, L"Osasija", L"Osasj", 650, 3, 1, 80, 1},          // 19: vaiheen tai v‰liajan sija
-	{F_OSATLS, L"Osatulos", L"Osatls", 690,8, 3, 80, 1},        // 20: vaiheen tulos tai v‰liaika
+	{F_OSASJ, L"Osasija", L"Osasj", 650, 3, 1, 80, 1},          // 19: vaiheen tai v√§liajan sija
+	{F_OSATLS, L"Osatulos", L"Osatls", 690,8, 3, 80, 1},        // 20: vaiheen tulos tai v√§liaika
 	{0, 0, 0, 0, 0, 0, 0}
 	};
 
@@ -282,17 +282,17 @@ FldFrmtTp fileflds_meri5[] = {
 	{F_SRA, L"3.laji", L"3.laji", 45, 0, 0, 0, 1},               // 7: seura
 	{F_SRALYH, L"4.laji", L"4.laji", 45, 0, 0, 0, 0},            // 8: lyhenne
 	{F_MAA, L"5.laji", L"5.laji", 45, 0, 0, 0, 0},               // 9: maa
-	{F_YHD, L"Yhteens‰", L"Yhteens‰", 60,0, 0, 0, 0},            // 10: yhdistys
+	{F_YHD, L"Yhteens√§", L"Yhteens√§", 60,0, 0, 0, 0},            // 10: yhdistys
 	{F_JOUK, L"Joukkue", L"Joukkue", 60,0, 0, 0, 0},             // 11: joukkue
 	{F_ALISRJ, L"Alisarja", L"Alisarja", 60, 0, 0, 0, 0},        // 12: alisarja
 	{F_TLS, L"Tulos", L"Tulos", 68,10, 1, 0, 1},                 // 13: tulos
-	{F_ERO, L"Ero", L"Ero",  80,0, 1, 0, 1},                  	// 14: ero k‰rkeen
+	{F_ERO, L"Ero", L"Ero",  80,0, 1, 0, 1},                  	// 14: ero k√§rkeen
 	{F_SAK, L"Sakot", L"Sakot",80,12, 1, 0, 1},                  // 15: sakot
-	{F_TARK, L"Hyv‰ks.", L"Hyv‰ks.", 92, 0, 0, 0, 0},            // 16: Leimantarkastus
+	{F_TARK, L"Hyv√§ks.", L"Hyv√§ks.", 92, 0, 0, 0, 0},            // 16: Leimantarkastus
 	{F_AIKA, L"Aika", L"Aika", 92, 0, 1, 0, 0},                 	// 17: Aika ilman sakkoa
 	{F_PIST, L"Pisteet", L"Pisteet", 92, 6, 1, 0, 1},           // 18: pisteet
-	{F_OSASJ, L"Osasija", L"Osasj", 95, 0, 1, 8, 0},           // 19: vaiheen tai v‰liajan sija
-	{F_OSATLS, L"Osatulos", L"Osa", 99,6, 1, 8, 0},         // 20: vaiheen tulos tai v‰liaika
+	{F_OSASJ, L"Osasija", L"Osasj", 95, 0, 1, 8, 0},           // 19: vaiheen tai v√§liajan sija
+	{F_OSATLS, L"Osatulos", L"Osa", 99,6, 1, 8, 0},         // 20: vaiheen tulos tai v√§liaika
 	{0, 0, 0, 0, 0, 0, 0}
 	};
 
@@ -313,7 +313,7 @@ FldFrmtTp prtflds_meri5[] = {
 	{F_JOUK, L"Joukkue", L"Joukkue", 440,0, 0, 0, 0},            // 11: joukkue
 	{F_ALISRJ, L"Alisarja", L"Alisarja", 440,0, 0, 0, 0},        // 12: alisarja
 	{F_TLS, L"Tulos", L"Tulos",620,10, 1, 0, 1},                 // 13: tulos
-	{F_ERO, L"Ero", L"Ero", 720,0, 1, 0, 0},                   	// 14: ero k‰rkeen
+	{F_ERO, L"Ero", L"Ero", 720,0, 1, 0, 0},                   	// 14: ero k√§rkeen
 	{F_SAK, L"Sakot", L"Sakot",720,12, 0, 0, 1},                 // 15: sakot
 	{F_TARK, L"Leim.hyv", L"Leim.hyv", 820,0, 0, 0, 0},          // 16: Leimantarkastus
 	{F_AIKA, L"Aika", L"Aika", 820, 0, 1, 0, 0},                 // 17: Aika ilman sakkoa
@@ -334,11 +334,11 @@ FldFrmtTp prtfldsm_meri5[] = {
 	{F_SRA, L"Seura", L"Seura", 480, 15, 0, 0, 1},                // 7: seura
 	{F_SRALYH, L"Lyhenne", L"Lyhenne", 440,0, 0, 0, 0},          // 8: lyhenne
 	{F_MAA, L"Maa", L"Maa", 560, 0, 0, 0, 0},					// 9: maa
-	{F_YHD, L"Yhteens‰", L"Yhteens‰", 440,0, 0, 0, 0},           // 10: yhdistys
+	{F_YHD, L"Yhteens√§", L"Yhteens√§", 440,0, 0, 0, 0},           // 10: yhdistys
 	{F_JOUK, L"Joukkue", L"Joukkue", 440,0, 0, 0, 0},            // 11: joukkue
 	{F_ALISRJ, L"Alisarja", L"Alisarja", 440,0, 0, 0, 0},        // 12: alisarja
 	{F_TLS, L"Tulos", L"Tulos",600,00, 1, 0, 0},                 // 13: tulos
-	{F_ERO, L"Ero", L"Ero", 720,0, 1, 0, 0},                   	// 14: ero k‰rkeen
+	{F_ERO, L"Ero", L"Ero", 720,0, 1, 0, 0},                   	// 14: ero k√§rkeen
 	{F_SAK, L"Sakot", L"Sakot",720,0, 1, 0, 0},                  // 15: sakot
 	{F_TARK, L"Leim.hyv", L"Leim.hyv", 820,0, 0, 0, 0},          // 16: Leimantarkastus
 	{F_AIKA, L"Aika", L"Aika", 820, 0, 1, 0, 0},                 // 17: Aika ilman sakkoa
@@ -365,13 +365,13 @@ FldFrmtTp prtflds1_meri5[] = {
 	{F_JOUK, L"Joukkue", L"Joukkue", 480,0, 0, 0, 0},            // 11: seura
 	{F_ALISRJ, L"Alisarja", L"Alisarja", 480,0, 0, 0, 0},        // 12: alisarja
 	{F_TLS, L"Yht.tulos", L"Yht.tulos",560, 0, 1, 80, 1},          // 13: tulos
-	{F_ERO, L"Ero", L"Ero", 670,0, 1, 0, 0},                   	// 14: ero k‰rkeen
+	{F_ERO, L"Ero", L"Ero", 670,0, 1, 0, 0},                   	// 14: ero k√§rkeen
 	{F_SAK, L"Sakot", L"Sakot",670,0, 1, 0, 0},                  // 15: sakot
 	{F_TARK, L"Leim.hyv", L"Leim.hyv", 560,0, 0, 0, 0},          // 16: Leimantarkastus
 	{F_AIKA, L"Aika", L"Aika", 650, 0, 1, 0, 0},                 // 17: Aika ilman sakkoa
 	{F_PIST, L"Pisteet", L"Pisteet", 650, 0, 1, 55, 0},           // 18: pisteet
-	{F_OSASJ, L"Osasija", L"Osasj", 650, 0, 1, 55, 1},          // 19: vaiheen tai v‰liajan sija
-	{F_OSATLS, L"Osatulos", L"Osat", 610, 6, 1, 55, 1},        // 20: vaiheen tulos tai v‰liaika
+	{F_OSASJ, L"Osasija", L"Osasj", 650, 0, 1, 55, 1},          // 19: vaiheen tai v√§liajan sija
+	{F_OSATLS, L"Osatulos", L"Osat", 610, 6, 1, 55, 1},        // 20: vaiheen tulos tai v√§liaika
 	{0, 0, 0, 0, 0, 0, 0}
 	};
 
@@ -473,8 +473,8 @@ GDIfontTp CurrFnt = {
 	0,	 // italic
 	0,  // numwidth
 	12, // line = Linespacing
-	0,  // chwidth = merkki‰ rivill‰
-	0,  // rivej‰ sivulla
+	0,  // chwidth = merkki√§ rivill√§
+	0,  // rivej√§ sivulla
 	0}; // hfont
 GDIfontTp DefFnt = {
 	0,  // fontfamily = TimesNewRoman
@@ -484,8 +484,8 @@ GDIfontTp DefFnt = {
 	0,	 // italic
 	0,  // numwidth
 	12, // line = Linespacing
-	0,  // chwidth = merkki‰ rivill‰
-	0,  // rivej‰ sivulla
+	0,  // chwidth = merkki√§ rivill√§
+	0,  // rivej√§ sivulla
 	0}; // hfont
 GDIfontTp TitleFnt = {
 	0,  // fontfamily = TimesNewRoman
@@ -495,8 +495,8 @@ GDIfontTp TitleFnt = {
 	0,	 // italic
 	0,  // numwidth
 	16, // line = Linespacing
-	0,  // chwidth = merkki‰ rivill‰
-	0,  // rivej‰ sivulla
+	0,  // chwidth = merkki√§ rivill√§
+	0,  // rivej√§ sivulla
 	0}; // hfont
 GDIfontTp HeaderFnt = {
 	0,  // fontfamily = TimesNewRoman
@@ -506,8 +506,8 @@ GDIfontTp HeaderFnt = {
 	0,	 // italic
 	0,  // numwidth
 	12, // line = Linespacing
-	0,  // chwidth = merkki‰ rivill‰
-	0,  // rivej‰ sivulla
+	0,  // chwidth = merkki√§ rivill√§
+	0,  // rivej√§ sivulla
 	0}; // hfont
 GDIfontTp CourFnt = {
 	4,  // fontfamily = CourierNew
@@ -517,8 +517,8 @@ GDIfontTp CourFnt = {
 	0,	 // italic
 	0,  // numwidth
 	12, // line = Linespacing
-	0,  // chwidth = merkki‰ rivill‰
-	0,  // rivej‰ sivulla
+	0,  // chwidth = merkki√§ rivill√§
+	0,  // rivej√§ sivulla
 	0}; // hfont
 GDIfontTp RastiVaHeaderFnt = {
 	1,  // fontfamily = Arial
@@ -528,8 +528,8 @@ GDIfontTp RastiVaHeaderFnt = {
 	0,	 // italic
 	0,  // numwidth
 	14, // line = Linespacing
-	0,  // chwidth = merkki‰ rivill‰
-	0,  // rivej‰ sivulla
+	0,  // chwidth = merkki√§ rivill√§
+	0,  // rivej√§ sivulla
 	0}; // hfont
 GDIfontTp RastiVaFnt = {
 	1,  // fontfamily = Arial
@@ -539,8 +539,8 @@ GDIfontTp RastiVaFnt = {
 	0,	 // italic
 	0,  // numwidth
 	10, // line = Linespacing
-	0,  // chwidth = merkki‰ rivill‰
-	0,  // rivej‰ sivulla
+	0,  // chwidth = merkki√§ rivill√§
+	0,  // rivej√§ sivulla
 	0}; // hfont
 
 /*
@@ -588,7 +588,7 @@ wchar_t initfont_emva[PRKOODIPIT+1] =
 INT valinelendef, vapagelendef, vapageskip, tarkrappageskip;
 INT valinelen = 75, vapagelen = 55;
 
-// K‰ytˆss‰ ovat luokat aa, ab, sarjalinkit, sarjanimi, sarjatiedot, tulokset, tulframe, runko
+// K√§yt√∂ss√§ ovat luokat aa, ab, sarjalinkit, sarjanimi, sarjatiedot, tulokset, tulframe, runko
 
 void suunn_lahtoluett(void)
 {
@@ -626,7 +626,7 @@ void tulosmuottp::nollaa(void)
 	amarg = 30;
 	tabs = 0;
 	numlev = 1;
-	levunit = 0;  // 0: merkkej‰, 1: poins, 2: 1/1000 rivi
+	levunit = 0;  // 0: merkkej√§, 1: poins, 2: 1/1000 rivi
 	sivpit = 99999;   // Kirjoitin : 62
 	esirivit = 0;
 	sarjalinkit = 2; // 0: Ei, mobil : 1: kerran, html : 2: toistuu
@@ -1153,7 +1153,7 @@ void lue_muotoilu(wchar_t *luetfnm, int kysy)
 
    if (kysy) {
 	  ch = L' ';
-	  wselectopt(L"Luetaanko muotoilu levylt‰ (K/E)", L"KE", &ch);
+	  wselectopt(L"Luetaanko muotoilu levylt√§ (K/E)", L"KE", &ch);
 	  clrln(ySize-3);
 	  if (ch == L'K') {
 		 vidspwmsg(ySize-3,0,7,0,L"Tiedoston nimi:");
@@ -1171,7 +1171,7 @@ void lue_muotoilu(wchar_t *luetfnm, int kysy)
 				delete luetfmtf;
 				luetfmtf = NULL;
 			   erbeep();
-			   vidspwmsg(ySize-1,0,0,7,L"EI L÷YDY!");
+			   vidspwmsg(ySize-1,0,0,7,L"EI L√ñYDY!");
 			   }
 			else break;
 			}
@@ -1183,7 +1183,7 @@ void lue_muotoilu(wchar_t *luetfnm, int kysy)
 	   luetfmtf = new TextFl(luetfnm,L"r");
 		if (!luetfmtf->IsOpen()) {
 			delete luetfmtf;
-			writeerror_w(L"Tulostusmuotoilutiedostoa ei lˆydy!",0, true);
+			writeerror_w(L"Tulostusmuotoilutiedostoa ei l√∂ydy!",0, true);
 			return;
 			}
 		}
@@ -1717,11 +1717,11 @@ static tagListTp FrmTags[] = {
 
 static wchar_t *FRM_Kohteet[] = {L"None", L"Epson", L"HPLaserJet", L"Postscript", L"Proprinter",
 	L"TxtTab", L"Canon", L"GDIprinter"};
-static wchar_t *FRM_Lajit[] = {L"Kirjoitin_1v", L"Kirjoitin_vy", L"Kirjoitin_kaikki", L"Tiedosto", L"Mobiili", L"N‰yttˆ"};
+static wchar_t *FRM_Lajit[] = {L"Kirjoitin_1v", L"Kirjoitin_vy", L"Kirjoitin_kaikki", L"Tiedosto", L"Mobiili", L"N√§ytt√∂"};
 static wchar_t *FRM_Units[] = {L"Merkit", L"Points", L"Rivi/1000"};
 static wchar_t *FRM_FontKohde[] = {L"Perus", L"Otsikko", L"Alaots", L"Vakiolev"};
 static wchar_t *FRM_FontFamilyName[] = {L"Times New Roman", L"Arial", L"Arial Narrow", L"Calibri", L"Courier New", L"Lucida Console"};
-static wchar_t *FRM_LlLajit[] = {L"Sarjat", L"Aakkos", L"Seurat", L"L‰hdˆt", L"Sarjat-2", L"Aakkos-2", L"Seurat-2"};
+static wchar_t *FRM_LlLajit[] = {L"Sarjat", L"Aakkos", L"Seurat", L"L√§hd√∂t", L"Sarjat-2", L"Aakkos-2", L"Seurat-2"};
 static wchar_t *FRM_LlKohde[] = {L"Kirjoitin", L"Tiedosto"};
 static wchar_t *FRM_LlKentta[] = {L"KilpNo", L"Sarja", L"AliSarja", L"Nimi", L"Aika", L"Seura", L"Maa", L"LisNo", L"KvId",
 	L"Badge", L"Badge2", L"Maksu", L"Ranki", L"Piste2", L"Lista", L"Aika2"};
@@ -2674,7 +2674,7 @@ int LueXMLMuotoilu(wchar_t *MuotFile)
 				continue;
 			nd.depth = depth;
 			for (int i = 0; i <= depth; i++)
-				nd.nodeno[i] = k[i];           // merkit‰‰n eri tasojen j‰rjestysnumerot solmuun
+				nd.nodeno[i] = k[i];           // merkit√§√§n eri tasojen j√§rjestysnumerot solmuun
 			if (lntype > 0)
 				nd.tagid = XMLhae_tagid(nd.tag, FrmTags, nFrmTags);
 			if (lntype == 1) {
@@ -2699,13 +2699,13 @@ int LueXMLMuotoilu(wchar_t *MuotFile)
 					--depth;
 					}
 				}
-			else if (lntype == 8) {                  // sulkeva tag uudella rivill‰
+			else if (lntype == 8) {                  // sulkeva tag uudella rivill√§
 				int jnode;
 				depth--;
-				k[depth]++;                 // kasvatetaan tason laskuria sulkev‰n tagin tasolla
-				// Etsit‰‰n vastaava avaava tag aiemmasta ketjusta
+				k[depth]++;                 // kasvatetaan tason laskuria sulkev√§n tagin tasolla
+				// Etsit√§√§n vastaava avaava tag aiemmasta ketjusta
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
-				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ett‰ tagit ovat pari
+				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ett√§ tagit ovat pari
 					er = 1;
 					swprintf(msg, L"XML-muotoilun tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
 						rv, tag, tree.node[jnode].tag);
@@ -2731,11 +2731,11 @@ int LueXMLMuotoilu(wchar_t *MuotFile)
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s p‰‰ttyi rivill‰ %d tasolla %d", MuotFile, rv, depth);
+		swprintf(msg, L"XML-tiedosto %s p√§√§ttyi rivill√§ %d tasolla %d", MuotFile, rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivill‰ %d tai aikaisemmin", MuotFile, rv);
+			swprintf(msg, L"Tiedostossa %s virhe rivill√§ %d tai aikaisemmin", MuotFile, rv);
 			}
 		writeerror_w(msg, 0, true);
 		}

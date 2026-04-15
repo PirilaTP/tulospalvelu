@@ -255,7 +255,7 @@ public:
 	int amarg;
 	int tabs;
 	int numlev;
-	int levunit;  // 0: merkkej‰, 1: poins, 2: 1/1000 rivi
+	int levunit;  // 0: merkkej√§, 1: poins, 2: 1/1000 rivi
 	int sivpit;
 	int esirivit;
 	int sarjalinkit; // 0: Ei, 1: kerran, 2: toistuu
@@ -355,7 +355,7 @@ public:
 	bool yksihtml;
 	bool htmlkno;
 	wchar_t xmlstd;	    // O: oma, I: IOF3.0, L: laajennettu, F: FIS
-	wchar_t xmlva;      // E: emitv‰liajat, M: Muut v‰liajat
+	wchar_t xmlva;      // E: emitv√§liajat, M: Muut v√§liajat
 	wchar_t muottied[202];
 //	bool lukumfl;
 //	bool af_flag;
@@ -545,7 +545,7 @@ public:
 	INT32 tall_tulos_pv(INT32 tls, int i_pv, int piste = 0);
 	INT32 tall_lajat(INT32 tls, bool molemmat = true);
 	INT32 tall_lajat_pv(INT32 tls, int i_pv, bool molemmat = true);
-	INT32 tall_laika(INT32 tls);    // Tallentaa aina aktiivisen ajan ja myˆs arvotun, jos ei hiihtolahto
+	INT32 tall_laika(INT32 tls);    // Tallentaa aina aktiivisen ajan ja my√∂s arvotun, jos ei hiihtolahto
 	wchar_t *asakkoStr(int i_pv = -1);
 	void tall_asakot(wchar_t *asakot, int i_pv=-1);
 	void tall_sakko(int sakko, int i_pv=-1);
@@ -613,9 +613,9 @@ public:
 // Kaavalajit:
 //   0: tuloksista tuloksiin jatkuvasti laskettava
 //   1: tuloksesta lineaarisesti pisteiksi vakioiden mukaan
-//   2: tuloksesta inverssin‰ pisteiksi vakioiden mukaan
+//   2: tuloksesta inverssin√§ pisteiksi vakioiden mukaan
 //   3: tuloksesta lineaarisesti pisteiksi suhteessa voittajaan
-//   4: tuloksesta inverssin‰ pisteiksi suhteessa voittajaan
+//   4: tuloksesta inverssin√§ pisteiksi suhteessa voittajaan
 
 typedef struct {
 	bool on;
@@ -787,11 +787,11 @@ typedef struct {
 	wchar_t alalaji;
 	wchar_t badgelaji;
 	int kaksibadge;
-	int kvlisno;			// 0: normaali, >= 4 : alkaa maakoodilla ja numeroiden minimim‰‰r‰
+	int kvlisno;			// 0: normaali, >= 4 : alkaa maakoodilla ja numeroiden minimim√§√§r√§
 	int n_pv_akt;
 	int maxvaluku;
 	bool pyorlahimpaan;
-	wchar_t yhttlslaji;    // S: summa, L: sarjan l‰hdˆst‰, P: paras, V: vaihtuva sarja sallitaan
+	wchar_t yhttlslaji;    // S: summa, L: sarjan l√§hd√∂st√§, P: paras, V: vaihtuva sarja sallitaan
 	int tarkkuus;
 	int lsnimi;
 	int lenimi;
@@ -837,7 +837,7 @@ typedef struct {
 	unsigned int laika2;
 	unsigned int laikava;
 	int asakkolaji;      // 0: ei, 1: ampumahiihdon (max/piste = 9), 2: muu
-	int pyor[6];             // 0: ei, 1: tall, 2: jarj, 3: tuloste, 4: takaa-ajol‰htˆ, 5: v‰liaika
+	int pyor[6];             // 0: ei, 1: tall, 2: jarj, 3: tuloste, 4: takaa-ajol√§ht√∂, 5: v√§liaika
 	int valuku;
 //	int takaaAjoLisa;
 	int fvalue;
@@ -1121,17 +1121,17 @@ class IOFCourse {
 	void nollaa(void);
 	};
 
-//  EMIT-m‰‰rityksi‰
+//  EMIT-m√§√§rityksi√§
 
-// maalilajit: 1: ajanotto erikseen, viim. rastiv‰li tuloksesta
-//             2: ajanotto erikseen, viim. rastiv‰li korjattu kortin aika
+// maalilajit: 1: ajanotto erikseen, viim. rastiv√§li tuloksesta
+//             2: ajanotto erikseen, viim. rastiv√§li korjattu kortin aika
 //             3: ajanotto RTR-2:lla
 //             4: lopputulos kortilta viimeisen rastin ajasta
 
 typedef struct {
 	wchar_t tunnus[12];
 	INT rastiluku;
-	INT ennakko;     // nollaus ennakko sek ennen l‰htˆ‰, -32767: vaihtelee
+	INT ennakko;     // nollaus ennakko sek ennen l√§ht√∂√§, -32767: vaihtelee
 	INT maalilaji;
 	int viitmatka;
 	int ratapit;
@@ -1247,29 +1247,29 @@ typedef struct {                      /* Tiedonsiirtopaketti */
 		  union {
 			  struct {
 				  char			tunn;			// avaussanoman tunnus (ascii-arvo 1)
-				  char			konetunn[2];	// l‰hett‰v‰n koneen tunnuskoodi
+				  char			konetunn[2];	// l√§hett√§v√§n koneen tunnuskoodi
 				  UINT8			vaihe;			// kilpailun vaihe (k_pv+1)
 				  UINT16		nrec;			// tietueiden lkm
 				  UINT32		flags;			// flags
 				  } alku;
 			  struct {
 				  char           tarf;
-				  char           pakota;      // Pakota tallennus ja l‰hetys
+				  char           pakota;      // Pakota tallennus ja l√§hetys
 				  INT16          dk;          /* Osoite taulukossa kilparr */
 				  INT16          entno;       /* Vanha kilpno, 0 : uusi */
 				  char           ckilp[400];             /* Tiedot */
 				  } k;
 			  struct {
 				  char           tarf;
-				  char           pakota;      // Pakota tallennus ja l‰hetys
+				  char           pakota;      // Pakota tallennus ja l√§hetys
 				  INT16          dk;          /* Osoite taulukossa kilparr */
 				  INT16          pv;         /* Vanha kilpno, 0 : uusi */
-				  INT16			 valuku;		// L‰hett‰vien v‰liakojen m‰‰r‰
+				  INT16			 valuku;		// L√§hett√§vien v√§liakojen m√§√§r√§
 				  char           cpv[KILPPVSIZE+(VALUKU+2)*VASIZE]; /* Tiedot */
 				  } pv;
 			  struct {
 				  char           tarf;
-				  char           pakota;      // Pakota tallennus ja l‰hetys
+				  char           pakota;      // Pakota tallennus ja l√§hetys
 				  INT16          dk;          /* Osoite taulukossa kilparr */
 				  INT16			 bib;
 				  INT16			 k_pv;
@@ -1277,12 +1277,12 @@ typedef struct {                      /* Tiedonsiirtopaketti */
 				  INT32          aika;
 				  } v;
 			struct {
-				  char           pakota;      // Pakota tallennus ja l‰hetys
+				  char           pakota;      // Pakota tallennus ja l√§hetys
 				  aikatp         daika;
 				  aikatp         iaika;
 				  } a;
 			  struct {
-				  char           pakota;      // Pakota tallennus ja l‰hetys
+				  char           pakota;      // Pakota tallennus ja l√§hetys
 				  INT16			 k_pv;
 				  wchar_t        keskhyl;
 				  } lm;
@@ -1307,8 +1307,8 @@ typedef struct {                      /* Tiedonsiirtopaketti */
 				  UINT32		  flags;
 				  UINT32		  koodi;
 				  INT32		  	  pos;			  // -1: alku, >= 0: positio, -2: datan loppu
-				  INT32			  len;			  // sis‰llˆn pituus
-				  char		     buf[2];          // Alussa tiedoston nimi (suhteellinen polku), lopussa ei sis‰ltˆ‰,
+				  INT32			  len;			  // sis√§ll√∂n pituus
+				  char		     buf[2];          // Alussa tiedoston nimi (suhteellinen polku), lopussa ei sis√§lt√∂√§,
 				 } fl;
 #if defined(EMIT)
 			emittp             em;
@@ -1696,6 +1696,24 @@ typedef struct {
 
 #pragma pack(pop)
 
+
+struct autofileparam_t {
+	wchar_t afname[202];
+	int autokomentolaji;
+	wchar_t autokomento[202];
+	wchar_t jakelumaar[202];
+	bool vainMuutt;
+	int afvali;
+	bool af_kaikki;
+	bool af_flag;
+	wchar_t af_xmlva;
+	wchar_t aflstnm[202];
+	wchar_t sanafname[202];
+	wchar_t sanafchars;
+	int kopiofl;
+	wchar_t wtitlea[202];
+	wchar_t wheadera[202];
+};
 
 #endif  // !LASKDEF_DEFINED
 

@@ -26,7 +26,7 @@ void khtostr(char kh, char *str)
 			strcpy(str, "Hyl.");
 		break;
 		case 'E' :
-			strcpy(str, "Ei l„ht.");
+			strcpy(str, "Ei lÂ„ht.");
 		break;
 		case 'P' :
 			strcpy(str, "Poissa");
@@ -49,7 +49,7 @@ void khtowstr(wchar_t kh, wchar_t *str)
 			wcscpy(str, L"Hyl.");
 		break;
 		case L'E' :
-			wcscpy(str, L"Ei läht.");
+			wcscpy(str, L"Ei lÃ¤ht.");
 		break;
 		case L'P' :
 			wcscpy(str, L"Poissa");

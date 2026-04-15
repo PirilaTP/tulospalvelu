@@ -225,7 +225,7 @@ wchar_t *wstpcvt(wchar_t *psource, int conv)
 		quote_on	 = TRUE;
 		quote_char	 = c;
 	}
-	else if (iswspace(c) && iswascii(c))
+	else if (iswspace(c) && isascii(c))
 	{
 		if (rwhite)
 		;	/* Do nothing with character c. 	    */
@@ -255,7 +255,7 @@ wchar_t *wstpcvt(wchar_t *psource, int conv)
 			/* Just copy normally . 		    */
 		*pto++ = c;
 	}
-	else if (iscntrl(c) && iswascii(c))
+	else if (iscntrl(c) && isascii(c))
 	{
 		in_white	 = FALSE;
 		hit_nonwhite = TRUE;
@@ -272,7 +272,7 @@ wchar_t *wstpcvt(wchar_t *psource, int conv)
 	    in_white	 = FALSE;	/* control character.	    */
 	    hit_nonwhite = TRUE;
 
-		if (iswascii(c))
+		if (isascii(c))
 		{
 		if (to_up)
 			c = towupper2(c);
@@ -290,11 +290,10 @@ wchar_t *wstpcvt(wchar_t *psource, int conv)
 
 	if (conv & RTWHITE)
 	for (c = *--pto;
-		 iswspace(c) && iswascii(c) && (pto >= psource);
+		 iswspace(c) && isascii(c) && (pto >= psource);
 		 c = *--pto)
 		*pto = '\0';
 
 	return (psource);
 }
 
-

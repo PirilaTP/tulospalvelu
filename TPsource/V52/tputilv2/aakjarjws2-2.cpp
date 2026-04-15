@@ -48,24 +48,24 @@ UCHAR *aakjarjstr2(UCHAR *knimi)
 			   case 233 :
 			   case 234 :
 			   case 235 :
-               case '‚' :
-               case '' : *p = 'E'; break;
+               case 'Â‚' :
+               case 'Â' : *p = 'E'; break;
 			   case 220 :
 			   case 252 :
-               case '' :
-               case 'š' : *p = 'Y'; break;
+               case 'Â' :
+               case 'Âš' : *p = 'Y'; break;
 			   case 197 :
 			   case 229 :
-               case '†' :
-               case '' : *p = 91; break;
+               case 'Â†' :
+               case 'Â' : *p = 91; break;
 			   case 196 :
 			   case 228 :
-               case '„' :
-               case '' : *p = 92; break;
+               case 'Â„' :
+               case 'Â' : *p = 92; break;
 			   case 214 :
 			   case 246 :
-               case '”' :
-               case '™' : *p = 93; break;
+               case 'Â”' :
+               case 'Â™' : *p = 93; break;
                default  : *p = 93;
                }
             }

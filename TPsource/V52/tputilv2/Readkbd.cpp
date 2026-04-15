@@ -34,7 +34,7 @@ char readkbd(char  *ch2, int wait, int dummy)
 
 	if (wait) {
 		do {
-			if(!ReadConsoleInputA(hConIn, &Buf, 1, &nRead)) {
+			if(!ReadConsoleInput(hConIn, &Buf, 1, &nRead)) {
 				GetLastError();
 				return(-1);
 				}
@@ -44,12 +44,12 @@ char readkbd(char  *ch2, int wait, int dummy)
 	}
 	else {
 		do {
-			if (!PeekConsoleInputA(hConIn, &Buf, 1, &nRead)) {
+			if (!PeekConsoleInput(hConIn, &Buf, 1, &nRead)) {
 				GetLastError();
 				return(255);
 				}
 			if (nRead) {
-				if (!ReadConsoleInputA(hConIn, &Buf, 1, &nRead)) {
+				if (!ReadConsoleInput(hConIn, &Buf, 1, &nRead)) {
 				GetLastError();
 				return(255);
 				}

@@ -52,4 +52,3 @@ void inputintw(short *i, int l,int x,int y, wchar_t *wterm, wchar_t *wtc)
 		*wtc = oemtowchar(tc);
 }
 
-

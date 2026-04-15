@@ -618,7 +618,7 @@ int lueIOF30VainRadatXml(wchar_t *filename, IOFCourseData *CseData)
 				continue;
 			nd.depth = depth;
 			for (int i = 0; i <= depth; i++)
-				nd.nodeno[i] = k[i];           // merkit‰‰n eri tasojen j‰rjestysnumerot solmuun
+				nd.nodeno[i] = k[i];           // merkit√§√§n eri tasojen j√§rjestysnumerot solmuun
 			if (lntype > 0)
 				nd.tagid = XMLhae_tagid(nd.tag, IOF3Tags, nIOF3Tags);
 
@@ -647,13 +647,13 @@ int lueIOF30VainRadatXml(wchar_t *filename, IOFCourseData *CseData)
 					--depth;
 					}
 				}
-			else if (lntype == 8) {                  // sulkeva tag uudella rivill‰
+			else if (lntype == 8) {                  // sulkeva tag uudella rivill√§
 				int jnode;
 				depth--;
-				k[depth]++;                 // kasvatetaan tason laskuria sulkev‰n tagin tasolla
-				// Etsit‰‰n vastaava avaava tag aiemmasta ketjusta
+				k[depth]++;                 // kasvatetaan tason laskuria sulkev√§n tagin tasolla
+				// Etsit√§√§n vastaava avaava tag aiemmasta ketjusta
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
-				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ett‰ tagit ovat pari
+				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ett√§ tagit ovat pari
 					er = 1;
 					swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
 						rv, tag, tree.node[jnode].tag);
@@ -679,11 +679,11 @@ int lueIOF30VainRadatXml(wchar_t *filename, IOFCourseData *CseData)
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s p‰‰ttyi rivill‰ %d tasolla %d", filename, rv, depth);
+		swprintf(msg, L"XML-tiedosto %s p√§√§ttyi rivill√§ %d tasolla %d", filename, rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivill‰ %d tai aikaisemmin", filename, rv);
+			swprintf(msg, L"Tiedostossa %s virhe rivill√§ %d tai aikaisemmin", filename, rv);
 			}
 		writeerror_w(msg, 0, true);
 		}
@@ -722,7 +722,7 @@ int lueIOF30EventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueO
 				continue;
 			nd.depth = depth;
 			for (int i = 0; i <= depth; i++)
-				nd.nodeno[i] = k[i];           // merkit‰‰n eri tasojen j‰rjestysnumerot solmuun
+				nd.nodeno[i] = k[i];           // merkit√§√§n eri tasojen j√§rjestysnumerot solmuun
 			if (lntype > 0)
 				nd.tagid = XMLhae_tagid(nd.tag, IOF3Tags, nIOF3Tags);
 			if (lntype == 1) {
@@ -774,13 +774,13 @@ int lueIOF30EventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueO
 					--depth;
 					}
 				}
-			else if (lntype == 8) {                  // sulkeva tag uudella rivill‰
+			else if (lntype == 8) {                  // sulkeva tag uudella rivill√§
 				int jnode;
 				depth--;
-				k[depth]++;                 // kasvatetaan tason laskuria sulkev‰n tagin tasolla
-				// Etsit‰‰n vastaava avaava tag aiemmasta ketjusta
+				k[depth]++;                 // kasvatetaan tason laskuria sulkev√§n tagin tasolla
+				// Etsit√§√§n vastaava avaava tag aiemmasta ketjusta
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
-				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ett‰ tagit ovat pari
+				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ett√§ tagit ovat pari
 					er = 1;
 					swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
 						rv, tag, tree.node[jnode].tag);
@@ -806,11 +806,11 @@ int lueIOF30EventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueO
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s p‰‰ttyi rivill‰ %d tasolla %d", filename, rv, depth);
+		swprintf(msg, L"XML-tiedosto %s p√§√§ttyi rivill√§ %d tasolla %d", filename, rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivill‰ %d tai aikaisemmin", filename, rv);
+			swprintf(msg, L"Tiedostossa %s virhe rivill√§ %d tai aikaisemmin", filename, rv);
 			}
 		writeerror_w(msg, 0, true);
 		}

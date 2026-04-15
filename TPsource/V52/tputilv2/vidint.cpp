@@ -44,4 +44,3 @@ void vidint(int y, int x, int l, long i)
 
 
 
-

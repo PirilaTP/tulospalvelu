@@ -58,7 +58,7 @@ int addix(kilpindex *idx, char *key, int d)
    __tputil__ok = 1;
    ip = bsrch(key, idx->ix, &(idx->nrec), idx->keyl, idx->recl);
 
-/* ip osoittaa 1. alkioon, joka on v„hint„„n key:n suuruinen        */
+/* ip osoittaa 1. alkioon, joka on vÂ„hintÂ„Â„n key:n suuruinen        */
 
    reclen = idx->recl;
    ip1 = ip - idx->nrec *reclen;
@@ -84,7 +84,7 @@ int delix(kilpindex *idx, char *key, int d)
 	   }
    ip = bsrch(key, idx->ix, &(idx->nrec), idx->keyl, idx->recl);
 
-/* ip osoittaa 1. alkioon, joka on v„hint„„n key:n suuruinen        */
+/* ip osoittaa 1. alkioon, joka on vÂ„hintÂ„Â„n key:n suuruinen        */
 
    if (!__tputil__ok) return(1);      /* poistu, jos key kaikkia alkioita suurempi */
    id = (int *) (ip+idx->keyl);

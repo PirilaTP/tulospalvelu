@@ -21,7 +21,7 @@
 #include <windows.h>
 #include <io.h>
 #include <fcntl.h>
-#include <sys\stat.h>
+#include <sys/stat.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -162,7 +162,7 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 		if (prf[nprf] == NULL)
 			break;
 	if (nprf == PRLKM) {
-		writeerror_w(L"Kaikki kirjoitinliit‰nn‰t k‰ytˆss‰. Tulostus ei onnstu", 0);
+		writeerror_w(L"Kaikki kirjoitinliit√§nn√§t k√§yt√∂ss√§. Tulostus ei onnstu", 0);
 		return(NULL);		
 		}
 	if ((prf[nprf] = (PRFILE *)malloc(sizeof(PRFILE))) != NULL) {
@@ -200,7 +200,7 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 					&cbNeeded,              // bytes received or required
 					&cReturned              // number of printers enumerated
 					)) {
-					swprintf(wmsg, L"Oletuskirjoitinta ei lˆytynyt, Virhe %d/%d", GetLastError(), cbNeeded);
+					swprintf(wmsg, L"Oletuskirjoitinta ei l√∂ytynyt, Virhe %d/%d", GetLastError(), cbNeeded);
 					writeerror_w(wmsg, 0);
 					oletuskirjoitin = -1;
 					}
@@ -215,9 +215,9 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 					if (!GetDefaultPrinterW(PrinterName, &bufSz)) {
 						err = GetLastError();
 						if (err == ERROR_INSUFFICIENT_BUFFER)
-							writeerror_w(L"Oletuskirjoittimen nimi liian pitk‰ (yli 79 merkki‰)", 0);
+							writeerror_w(L"Oletuskirjoittimen nimi liian pitk√§ (yli 79 merkki√§)", 0);
 						else
-							writeerror_w(L"Oletuskirjoitinta ei ole m‰‰ritelty", 0);
+							writeerror_w(L"Oletuskirjoitinta ei ole m√§√§ritelty", 0);
 						oletuskirjoitin = -1;
 						}
 					}
@@ -226,7 +226,7 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 // Retrieve the default string from Win.ini (the registry).
 // String will be in form "printername,drivername,portname".
 					if (GetProfileStringW(L"windows", L"device", L",,,", wcBuffer, MAXBUFFERSIZE) <= 0) {
-						writeerror_w(L"Oletuskirjoitinta ei ole m‰‰ritelty", 0);
+						writeerror_w(L"Oletuskirjoitinta ei ole m√§√§ritelty", 0);
 						oletuskirjoitin = -1;
 						}
 					else {
@@ -235,7 +235,7 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 
 // If given buffer too small, set required size and fail...
 						if (wcslen(wcBuffer) >= 120) {
-							writeerror_w(L"Oletuskirjoittimen nimi liian pitk‰ (yli 119 merkki‰)", 0);
+							writeerror_w(L"Oletuskirjoittimen nimi liian pitk√§ (yli 119 merkki√§)", 0);
 							oletuskirjoitin = -1;
 							}
 						else {
@@ -286,7 +286,7 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 			}
 		if (oletuskirjoitin) {
 			if (oletuskirjoitin == 1) {
-				writeerror_w(L"Oletuskirjoittimen k‰yttˆˆnotto ei onnistu",0);
+				writeerror_w(L"Oletuskirjoittimen k√§ytt√∂√∂notto ei onnistu",0);
 				wcscpy(prtfname, L"NUL");
 				}
 			if (!wcscmp(prtfname, L"NUL")) {
@@ -665,10 +665,10 @@ int selectfontGDI(PRFILE *pf, GDIfontTp *fnt)
 
 
 // putfldGDI sijoittaa tekstin paikkaan, jonka pystysijainti ilmoitetaan
-// 1/72 tuuman yksikˆiss‰ ja vaakasijainti yksikˆiss‰ tulostusalue/1000
-// ohjelma palauttaa tulostussijainnin yksikˆiss‰ 1/72 tuumaa
-// putwfldGDI jakaa, kun oik < 0, liian pitk‰t rivit usealle samasta vaakakohdasta 
-// alkavalle riville jakaen v‰lilyˆntien kohdilta
+// 1/72 tuuman yksik√∂iss√§ ja vaakasijainti yksik√∂iss√§ tulostusalue/1000
+// ohjelma palauttaa tulostussijainnin yksik√∂iss√§ 1/72 tuumaa
+// putwfldGDI jakaa, kun oik < 0, liian pitk√§t rivit usealle samasta vaakakohdasta 
+// alkavalle riville jakaen v√§lily√∂ntien kohdilta
 
 int putfldGDI(char *str, int pos, int oik, int vpos, PRFILE *pf)
 	{
@@ -760,7 +760,7 @@ int putwfldGDI(wchar_t *str, int pos, int oik, int vpos, PRFILE *pf)
 	return(ret ? (vpos - pf->u.wp.top) * 72 / pf->u.wp.yppi : -9999);
 	}
 
-// textlengthGDI palauttaa tekstikent‰n pituuden rivin yksikˆss‰ rivi/1000
+// textlengthGDI palauttaa tekstikent√§n pituuden rivin yksik√∂ss√§ rivi/1000
 
 int textlengthGDI(PRFILE *pf, wchar_t *st)
 {
@@ -794,7 +794,7 @@ int startdocGDI(PRFILE *pf)
 	 nError = StartDocW((HDC)pf->u.wp.hPrinter, &di); 
 	 if (nError == SP_ERROR)
 	 { 
-		  writeerror_w(L"Virhe kirjoitintulostusta k‰ynnistett‰ess‰", 0);
+		  writeerror_w(L"Virhe kirjoitintulostusta k√§ynnistett√§ess√§", 0);
 		  goto Error; 
 	 }
 	 pf->u.wp.DocOpen = 1;
@@ -831,7 +831,7 @@ int startpageGDI(PRFILE *pf)
     nError = StartPage((HDC)pf->u.wp.hPrinter); 
 	 if (nError <= 0)
     { 
-		  writeerror_w(L"Virhe sivun tulostusta k‰ynnistett‰ess‰", 0);
+		  writeerror_w(L"Virhe sivun tulostusta k√§ynnistett√§ess√§", 0);
 		  goto Error;
 	 }
 	SetTextAlign((HDC)pf->u.wp.hPrinter, TA_TOP | TA_LEFT);
@@ -900,8 +900,8 @@ int abortdocGDI(PRFILE *pf)
 	}
 
 // SendCharsToGDIPrinter
-// ohjelma palauttaa viel‰ sivulle mahtuvien rivien lukum‰‰r‰n
-// mukaanlukien keskener‰inen k‰sitelt‰v‰n‰ oleva rivi 
+// ohjelma palauttaa viel√§ sivulle mahtuvien rivien lukum√§√§r√§n
+// mukaanlukien keskener√§inen k√§sitelt√§v√§n√§ oleva rivi 
 // Virhetilanteessa palautetaa -999
 
 static int SendCharsToGDIPrinter(char *line, int len, PRFILE *pf)

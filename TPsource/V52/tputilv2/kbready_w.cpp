@@ -27,8 +27,8 @@ static int altkey[25] = {104,105,106,107,108,109,110,111,112,113,
       69,70,151,152,153,74,155,76,157,78,159,160,161,162,163};
 static int shiftkey[10]= {84,85,86,87,88,89,89,91,92,93};
 
-/* kbready palauttaa arvon 1, jos n‰pp‰int‰ on painettu */
-/*               ja arvon 0, jos n‰pp‰int‰ ei ole painettu */
+/* kbready palauttaa arvon 1, jos n√§pp√§int√§ on painettu */
+/*               ja arvon 0, jos n√§pp√§int√§ ei ole painettu */
 
 int kbready_w(wchar_t *ch, int *key)
 {

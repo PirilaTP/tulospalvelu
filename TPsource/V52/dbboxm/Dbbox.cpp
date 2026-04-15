@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include <string.h>
 #pragma hdrstop
-#include <sys\stat.h>
+#include <sys/stat.h>
 #include "boxf.h"
 #include <tputil.h>
 #define TRUE 1
@@ -905,4 +905,3 @@ tapageptr pagptr;
 }
 
 
-

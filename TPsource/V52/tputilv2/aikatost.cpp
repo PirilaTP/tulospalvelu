@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /*  aikatostr muuttaa sekunneissa annetun ajan muotoon tt.mm.ss */
-/*  tt0 on lis„ys tunteihin */
+/*  tt0 on lisÂ„ys tunteihin */
 
 #include <string.h>
 

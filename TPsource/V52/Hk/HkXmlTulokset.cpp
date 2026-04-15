@@ -150,7 +150,7 @@ int xmlots(tulostusparamtp *tulprm)
    ln[80] = 0;
    elimwbl(ln);
 #if !defined(MAKI) && N_PV > 1
-   swprintf(ln+wcslen(ln), L" - p‰iv‰ %d", k_pv+1);
+   swprintf(ln+wcslen(ln), L" - p√§iv√§ %d", k_pv+1);
    if (k_pv && tulprm->yhttuljarj) wcscat(ln, L"yht.");
 #endif
    tul_tied->put_wtag(tag_event, 0);
@@ -805,7 +805,7 @@ int xmlsanoma(char *buf, int maxlen, kilptietue& kilp, int dkilp, int piste, int
    str[80] = 0;
    elimwbl(str);
    if (kilpparam.n_pv_akt > 1) {
-		swprintf(str+wcslen(str), L" - p‰iv‰ %d", k_pv+1);
+		swprintf(str+wcslen(str), L" - p√§iv√§ %d", k_pv+1);
 	   if (k_pv && piste == kilpparam.valuku+1) wcscat(str, L"yht.");
 	   }
    set_wxml_s(ln, tag_evnm, str);
@@ -1268,14 +1268,14 @@ int xmlfissrjots(int sarja, tulostusparamtp *tulprm)
 	else if (wcswcind(towupper(Sarjat[sarja].sarjanimi[0]), L"MGHP") >= 0)
 		fissex[0] = L'M';
 	else {
-		writeerror_w(L"Sukupuolta ei voi p‰‰tell‰ sarjan nimest‰. Vaihda sarjan nimi", 0);
+		writeerror_w(L"Sukupuolta ei voi p√§√§tell√§ sarjan nimest√§. Vaihda sarjan nimi", 0);
 		return(1);
 		}
    swprintf(tag, L"Raceheader Sector=\"CC\" Sex=\"%c\"", fissex[0]);
    tul_tied->put_wtag(tag, 0);
    clrln(ySize-3);
 #ifdef _CONSOLE
-   vidspwmsg(ySize-3, 0, 7, 0, L"Kilpailun m‰‰ritystiedosto:");
+   vidspwmsg(ySize-3, 0, 7, 0, L"Kilpailun m√§√§ritystiedosto:");
    while (1) {
 	   inputwstr(kisaflnm, 45, 28, ySize-3, L"\r\x1b", &cs, FALSE);
 #else
@@ -1362,9 +1362,9 @@ int xmlfissrjots(int sarja, tulostusparamtp *tulprm)
 		   break;
 		   }
 #ifdef _CONSOLE
-	   writeerror_w(L"Tiedostoa ei lˆydy, peruuta painamalla Enter ja ESC", 0);
+	   writeerror_w(L"Tiedostoa ei l√∂ydy, peruuta painamalla Enter ja ESC", 0);
 #else
-	   writeerror_w(L"Kilpailun m‰‰ritystiedostoa ei ole valittu", 0, true);
+	   writeerror_w(L"Kilpailun m√§√§ritystiedostoa ei ole valittu", 0, true);
 	   return(1);
 #endif
 	   }

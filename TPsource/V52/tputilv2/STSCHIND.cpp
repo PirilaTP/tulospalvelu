@@ -53,4 +53,3 @@ int wcswcind (wchar_t check, const wchar_t *psearch)
 }
 
 
-

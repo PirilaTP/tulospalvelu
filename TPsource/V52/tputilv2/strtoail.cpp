@@ -25,7 +25,7 @@
 #define FALSE 0
 
 /*  Strtoaika muuttaa muodossa tt.mm.ss,s annetun ajan 0,1 sekunneiksi */
-/*  tt0 on lis„ys tunteihin */
+/*  tt0 on lisÂ„ys tunteihin */
 
 long strtoaika_l(char *straika,int tt0)
 

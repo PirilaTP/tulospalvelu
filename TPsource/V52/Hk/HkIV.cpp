@@ -109,8 +109,8 @@ static void vaihda_ajat(int ino, int era);
 
 // aika_syy saa seuraavat arvot riippuen ajanottotavasta:
 //      0 : RS-portti
-//      1 : hiiri             EI KÄYTÖSSÄ
-//      2 : näppäimistö       EI KÄYTÖSSÄ
+//      1 : hiiri             EI Kï¿½YTï¿½SSï¿½
+//      2 : nï¿½ppï¿½imistï¿½       EI Kï¿½YTï¿½SSï¿½
 //
 int aika_syy[AIKA_LUKU];
 
@@ -234,7 +234,7 @@ int auto_lahtija(INT32 tlahto)
 			if (srj >= 0 && (p = wcstok(NULL, L" ;\t\n")) != NULL) {
 				pst = _wtoi(p);
 				while (pst < kilpparam.valuku+2 && (p = wcstok(NULL, L" ;\t\n")) != NULL) {
-					if ((p1 = wcsstr(p, L"-")) > NULL) {
+					if ((p1 = wcsstr(p, L"-")) != NULL) {
 						*p1 = 0;
 						kdi = _wtoi(p);
 						kdi2 = _wtoi(p1+1);
@@ -283,7 +283,7 @@ int auto_lahtija(INT32 tlahto)
 						pst = kilpparam.valuku+1;
 					}
 				while (pst > 0 && (p = wcstok(NULL, L" ;\t\n")) != NULL) {
-					if ((p1 = wcsstr(p, L"-")) > NULL) {
+					if ((p1 = wcsstr(p, L"-")) != NULL) {
 						*p1 = 0;
 						kdi = _wtoi(p);
 						kdi2 = _wtoi(p1+1);
@@ -607,12 +607,12 @@ void tall_etulos(INT32 badge, INT32 t, INT32 tms, INT r_no, int Jono)
    itm.date = tm_date(itm.t);
    t = purajak(itm.t);
 	//
-	// Pisteen määrääminen
+	// Pisteen mï¿½ï¿½rï¿½ï¿½minen
 	//
-	// Katsotaan ensin, määrääkö AIKALUKIJAx=VAINy pisteen
-	// vainpiste[x] == -9 kertoo, että parametria ei ole annettu
-	// vainpiste[x] == -3 kertoo, että käytetään lähdepistehakua
-	// Jos lukijalahde[r_no] != käytetään aina lähdepsitehakua
+	// Katsotaan ensin, mï¿½ï¿½rï¿½ï¿½kï¿½ AIKALUKIJAx=VAINy pisteen
+	// vainpiste[x] == -9 kertoo, ettï¿½ parametria ei ole annettu
+	// vainpiste[x] == -3 kertoo, ettï¿½ kï¿½ytetï¿½ï¿½n lï¿½hdepistehakua
+	// Jos lukijalahde[r_no] != kï¿½ytetï¿½ï¿½n aina lï¿½hdepsitehakua
 	// Jos parametri on AIKALUKIJAx=VAINA, saa piste nyt arvon -2
 	//
 	if (lahdepistehaku)
@@ -640,8 +640,8 @@ void tall_etulos(INT32 badge, INT32 t, INT32 tms, INT r_no, int Jono)
 		itm.t += aikajono[jono]->aikakorjaus * AIKAJAK;
 		itm.date = tm_copydate(itm.t, tt, itm.date);
 
-		// Lähdepistehakua käytetään, ellei piste määräytynyt yllä tai
-		// arvolla piste == -2 ole ilmaistu, että lähdepistehakua ei käytetä
+		// Lï¿½hdepistehakua kï¿½ytetï¿½ï¿½n, ellei piste mï¿½ï¿½rï¿½ytynyt yllï¿½ tai
+		// arvolla piste == -2 ole ilmaistu, ettï¿½ lï¿½hdepistehakua ei kï¿½ytetï¿½
 
 		if (lahdepistehaku) {
 			if (piste < 0 && piste != -2)
@@ -650,7 +650,7 @@ void tall_etulos(INT32 badge, INT32 t, INT32 tms, INT r_no, int Jono)
 			}
 		itm.jono = jono;
 
-		// piste == -2, jos AIKALUKIJAx=VAINA on sitä pyytänyt
+		// piste == -2, jos AIKALUKIJAx=VAINA on sitï¿½ pyytï¿½nyt
 
 		if (piste == -2) {
 			piste = maaraa_piste(&kilp, t);
@@ -868,7 +868,7 @@ int file2emit(void)
 #ifdef _CONSOLE
    if (luesuoraan == 1) {
 	  clrln(ySize-3);
-	  vidspwmsg(ySize-3,0,7,0,L"Paina ESC keskeyttääksesi lukeminen");
+	  vidspwmsg(ySize-3,0,7,0,L"Paina ESC keskeyttï¿½ï¿½ksesi lukeminen");
 	  }
 #endif
    do {
@@ -941,7 +941,7 @@ INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
 	regnlyhetki[r_no] = t_time_l(biostime(0,0), t0);
 	if (!ed_em[r_no]) {
 	  if ((ed_em[r_no] = (emittp *) malloc(sizeof(emittp))) == 0) {
-		 writeerror_w(L"Muisti ei riitä Emit-tiedoille", 0);
+		 writeerror_w(L"Muisti ei riitï¿½ Emit-tiedoille", 0);
 		 return(1);
 		 }
 	  }
@@ -1052,7 +1052,7 @@ INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
 			em.time = hae_bdg_t(em.badge, uusin)/KSEK;
 		if (!em.badge || kaikki_ajat[r_no+1] == 2)
 			return(0);
-		// Vaadi että leimojen lopussa on lukijakoodi
+		// Vaadi ettï¿½ leimojen lopussa on lukijakoodi
 		for (i = MAXNLEIMA-1; i > 1; i--)
 			if (em.ctrlcode[i] > 0)
 				break;
@@ -1143,11 +1143,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
    char ch;
    char che;
    wchar_t msg[121], as[16], wch, wch2, tark = L'-';
-#ifndef __linux__
    char *svscr = 0;
-#else
-   USHORT *svscr = 0;
-#endif
    char savebuf[65*(MAXRIVI-3)];
    emittp em;
    kilptietue kilp, entkilp;
@@ -1179,10 +1175,10 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 	if (em.badge == 200 && memcmp(&em.sc, "emiTag", 6) != 0) {
 		kno = 0;
 		kbg = 0;
-		writeerror_w(L"Koodinsa menettänyt kortti (näyttää 200). Vastaa jatkokysymyksiin", 0);
+		writeerror_w(L"Koodinsa menettï¿½nyt kortti (nï¿½yttï¿½ï¿½ 200). Vastaa jatkokysymyksiin", 0);
 		for (;;) {
 			wch = L' ';
-			wselectopt(L"A)nna kortin koodi, anna kilpailijan N)umero, H)ae nimellä", L"ANH", &wch);
+			wselectopt(L"A)nna kortin koodi, anna kilpailijan N)umero, H)ae nimellï¿½", L"ANH", &wch);
 			if (wch == L'A') {
 				clrln(ySize-3);
 				vidspwmsg(ySize-3, 0, 7, 0, L"Kortin koodi :               Esc: peruuta valinta");
@@ -1191,13 +1187,13 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 					continue;
 				if ((kno = bdg2kno(kbg)) < minkilpno) {
 					wch2 = L' ';
-					wselectopt(L"Koodia vastaavaa kilpailijaa ei löydy. K)äytä silti, U)usi valinta", L"KU", &wch2);
+					wselectopt(L"Koodia vastaavaa kilpailijaa ei lï¿½ydy. K)ï¿½ytï¿½ silti, U)usi valinta", L"KU", &wch2);
 					if (wch2 == L'U')
 						continue;
 					}
 				else if (getEmitJarr(kno, &ibdg) > 0) {
 					wch2 = L' ';
-					wselectopt(L"Koodia vastaavalla kilpailijalla jo leimat. K)äytä silti, U)usi valinta", L"KU", &wch2);
+					wselectopt(L"Koodia vastaavalla kilpailijalla jo leimat. K)ï¿½ytï¿½ silti, U)usi valinta", L"KU", &wch2);
 					if (wch2 == L'U')
 						continue;
 					}
@@ -1227,7 +1223,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 					kno = kilp.id();
 					}
 				if (kilp.tark(k_pv) == L'P') {
-					writeerror_w(L"Kilpailija merkitty poissa olevaksi. Ei käytettävissä.", 0);
+					writeerror_w(L"Kilpailija merkitty poissa olevaksi. Ei kï¿½ytettï¿½vissï¿½.", 0);
 					continue;
 					}
 				if (kilp.pv[k_pv].badge[0] == 0) {
@@ -1263,14 +1259,14 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 			wch = L'T';
 			}
 		 else {
-			swprintf(msg, L"Käsittelyssä kortti %ld    ", em.badge);
+			swprintf(msg, L"Kï¿½sittelyssï¿½ kortti %ld    ", em.badge);
 				vidspwmsg(ySize-1, 0, 7, 0, msg);
 			   naytatulos(3);
 			if (getEmitJarr(bdg2kno(em.badge), &em.osuus) != -1)
 				swprintf(msg, L"Kortti %ld luettu jo kilpailijalle %d "
 				   L"lue S)amalle, T)oiselle, O)hita", em.badge, bdg2kno(em.badge));
 			else
-				swprintf(msg, L"Kortin %ld kilpailijalla %d jo merkintä %c."
+				swprintf(msg, L"Kortin %ld kilpailijalla %d jo merkintï¿½ %c."
 				   L"Lue S)amalle, T)oiselle, O)hita", em.badge, bdg2kno(em.badge), tark);
 			wch = L' ';
 			erbeep();
@@ -1295,7 +1291,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 //            em.kirjaus = t_time_l(biostime(0,0), t0);
 				if (emithead2 < emithead-1) {
 					wch = L'E';
-					swprintf(msg, L"Käsittelemättä %d tietuetta. J)atka seuraavasta, K)eskeytä", emithead-emithead2);
+					swprintf(msg, L"Kï¿½sittelemï¿½ttï¿½ %d tietuetta. J)atka seuraavasta, K)eskeytï¿½", emithead-emithead2);
 					wselectopt(msg, L"JK", &wch);
 					if (wch == L'K') {
 						in_pros_emit = 0;
@@ -1333,7 +1329,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 			if (kaikki_ajat[0]) {
 			   kbflush();
 			   swprintf(msg,
-				  L"Uusi Emit-koodi %ld. Paina viestin poistuttua Enter käsitelläksesi",
+				  L"Uusi Emit-koodi %ld. Paina viestin poistuttua Enter kï¿½sitellï¿½ksesi",
 				  em.badge);
 			   writeerror_w(msg, 2000);
 			   for (i = 0; i < 4; i++) {
@@ -1357,15 +1353,15 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 			   wch = L'L';
 			   }
 			else {
-				swprintf(msg, L"Käsittelyssä kortti %ld    ", em.badge);
+				swprintf(msg, L"Kï¿½sittelyssï¿½ kortti %ld    ", em.badge);
 				vidspwmsg(ySize-1, 0, 7, 0, msg);
 			   if (kysytty) {
-				  wcscpy(msg, L"Anna K)ilpailijanro, H)ae, L)isää uusi tietue, Esc: ohita");
+				  wcscpy(msg, L"Anna K)ilpailijanro, H)ae, L)isï¿½ï¿½ uusi tietue, Esc: ohita");
 				  }
 			   else {
 					   naytatulos(3);
 				  swprintf(msg, L"Uusi Emit-koodi %ld Anna K)ilpailijanro, H)ae, "
-					 L"L)isää, Esc: ohita", em.badge);
+					 L"L)isï¿½ï¿½, Esc: ohita", em.badge);
 						}
 			   wselectopt(msg, L"KHL\x1b", &wch);
 			   }
@@ -1409,16 +1405,16 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 								break;
 								}
 							kno = kilp.id();
-						swprintf(msg, L"Käsittelyssä kortti %ld    ", em.badge);
+						swprintf(msg, L"Kï¿½sittelyssï¿½ kortti %ld    ", em.badge);
 							vidspwmsg(ySize-1, 0, 7, 0, msg);
-							wselectopt(L"H)yväksy valinta, U)usi valinta, Esc : Peruuta",
+							wselectopt(L"H)yvï¿½ksy valinta, U)usi valinta, Esc : Peruuta",
 								L"HU\x1b", &wch);
 							} while (wch == L'U');
 						for (i = 2; i < ySize-4; i++)
 							clrtxt(i, 0, 64);
 						if (wch == ESC) {
 							wch = L' ';
-							wselectopt(L"Haku peruttu, L)isää tietue, U)usi haku, O)hita tieto", L"LUO", &wch);
+							wselectopt(L"Haku peruttu, L)isï¿½ï¿½ tietue, U)usi haku, O)hita tieto", L"LUO", &wch);
 							if (wch == L'O')
 								wch = ESC;
 							}
@@ -1441,7 +1437,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 			kno = 0;
 				if (emithead2 < emithead-1) {
 					wch = L'E';
-					swprintf(msg, L"Käsittelemättä %d tietuetta. J)atka seuraavasta, K)eskeytä", emithead-emithead2);
+					swprintf(msg, L"Kï¿½sittelemï¿½ttï¿½ %d tietuetta. J)atka seuraavasta, K)eskeytï¿½", emithead-emithead2);
 					wselectopt(msg, L"JK", &wch);
 					if (wch == L'K') {
 						in_pros_emit = 0;
@@ -1496,7 +1492,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 		kilp0->nollaa();
 	if (em.badge == 200 && memcmp(&em.sc, "emiTag", 6) != 0) {
 		if (esiluenta) {
-			wcscat(msgtxt, L"Viallinen kortti (koodi 200). Käyttö estetty. ");
+			wcscat(msgtxt, L"Viallinen kortti (koodi 200). Kï¿½yttï¿½ estetty. ");
 			em.badge = 0;
 			putem(&em, emithead2, 0);
 			emithead2++;
@@ -1533,7 +1529,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 			if (getEmitJarr(bdg2kno(em.badge), &em.osuus) != -1)
 				swprintf(msg, L"Kortti %ld luettu jo kilpailijalle %d. ", em.badge, bdg2kno(em.badge));
 			else
-				swprintf(msg, L"Kortin %ld kilpailijalla %d jo merkintä %c. ", em.badge, bdg2kno(em.badge), tark);
+				swprintf(msg, L"Kortin %ld kilpailijalla %d jo merkintï¿½ %c. ", em.badge, bdg2kno(em.badge), tark);
 			wch = L' ';
 			erbeep();
 			erbeep();
@@ -1553,7 +1549,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 			vaihda_badge(em.badge);
 		kno = haeSeurVakantti(0);
 		if (kno <= 0) {
-			wcscat(msgtxt, L"Kilpailija lisätty (ei vapaata vakanttipaikkaa) - käsittele");
+			wcscat(msgtxt, L"Kilpailija lisï¿½tty (ei vapaata vakanttipaikkaa) - kï¿½sittele");
 			kno = haeseurvapaa(seurvapaa);
 			kilp.nollaa();
 			kilp.setId(kno);
@@ -1569,7 +1565,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 			}
 		else {
 			if (kuntosuunnmoodi != 1 && kuntosuunnmoodi != 2 && kuntosuunnmoodi != 99)
-				wcscat(msgtxt, L"Kortti luettu vakanttipaikalle - käsittele");
+				wcscat(msgtxt, L"Kortti luettu vakanttipaikalle - kï¿½sittele");
 			d = getpos(kno);
 			kilp.GETREC(d);
 			if (kilp0)
@@ -1609,11 +1605,11 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 		 if (aika_err > 0) {
 			if (kuntosuunnmoodi != 1 && kuntosuunnmoodi != 3  && !autosarja) {
 #ifdef CONSOLE
-				swprintf(msg, L"Kortin %d kilpailijalla %d jo tark-merkintä tai rataa ei löytynyt.",
+				swprintf(msg, L"Kortin %d kilpailijalla %d jo tark-merkintï¿½ tai rataa ei lï¿½ytynyt.",
 					em.badge, kno1);
 #else
-				swprintf(msg, L"Kortin %d kilpailijalla %d jo tarkastusmerkintä tai vastaavaa rataa ei löytynyt."
-				L" Syötä muutoskaavakkeella oikea kilpailijanumero (aiempi tai uusi, jos toinen käyttäjä).",
+				swprintf(msg, L"Kortin %d kilpailijalla %d jo tarkastusmerkintï¿½ tai vastaavaa rataa ei lï¿½ytynyt."
+				L" Syï¿½tï¿½ muutoskaavakkeella oikea kilpailijanumero (aiempi tai uusi, jos toinen kï¿½yttï¿½jï¿½).",
 					em.badge, kno1);
 #endif
 				 writeerror_w(msg, 0, true);
@@ -1684,13 +1680,13 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 				}
 			 else if (kuntosuunnmoodi != 1 && kuntosuunnmoodi != 3) {
 				   naytatulos(3);
-				swprintf(msg, L"Kortin %ld maaliaikaa ei pystytty määräämään", em.badge);
+				swprintf(msg, L"Kortin %ld maaliaikaa ei pystytty mï¿½ï¿½rï¿½ï¿½mï¿½ï¿½n", em.badge);
 				writeerror_w(msg, luesuoraan ? 2000 : 0, true);
 				}
 			 if (rt->ennakko >= 0 && tlahto != TMAALI0) {
 				 if (lahtopoikk && kilp.pv[k_pv].tlahto != TMAALI0 && (kilp.pv[k_pv].tlahto - tlahto > SEK*lahtopoikk ||
 					kilp.pv[k_pv].tlahto - tlahto < -SEK*lahtopoikk)) {
-					swprintf(msg, L"Lasketun lähtöajan poikkeama %d sek",  (tlahto - kilp.pv[k_pv].tlahto)/SEK);
+					swprintf(msg, L"Lasketun lï¿½htï¿½ajan poikkeama %d sek",  (tlahto - kilp.pv[k_pv].tlahto)/SEK);
 					writeerror_w(msg, luesuoraan ? 2000 : 0, true);
 					}
 				tlahto = ((tlahto + 24*TUNTI)/SEK)*SEK - 24*TUNTI;
@@ -1706,7 +1702,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 				   kilp.tall_tulos(-1, 0);
 				   if (rt->ennakko < 0) {
 						naytatulos(3);
-						swprintf(msg, L"Kortin %ld lähtöaika puuttui - annettu 12.00.00", em.badge);
+						swprintf(msg, L"Kortin %ld lï¿½htï¿½aika puuttui - annettu 12.00.00", em.badge);
 						writeerror_w(msg, luesuoraan ? 2000 : 0, true);
 						}
 				   tallkilp = 1;
@@ -1714,7 +1710,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 				}
 #if !defined(EBA)
 //               if (rt->ennakko >= 0 && em.ctrltime[1] == 0)
-//                  writeerror_w(L"Kortti käynnistynyt ykkösrastilla", 0);
+//                  writeerror_w(L"Kortti kï¿½ynnistynyt ykkï¿½srastilla", 0);
 #endif
 #endif
 			 }
@@ -2618,7 +2614,7 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 					  LeaveCriticalSection(&tall_CriticalSection);
 				  }
                else {
-				  swprintf(msg, L"Kilpailijalle %d ylimääräinen ampumatieto %d sakkoa",
+				  swprintf(msg, L"Kilpailijalle %d ylimï¿½ï¿½rï¿½inen ampumatieto %d sakkoa",
                      kno, (int) (vastaus->r2.tuh-'0'));
 				  writeerror_w(msg, 0, true);
 				  }
@@ -2749,9 +2745,9 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 		 return(1);
 	  if (!aikajono[ino] || (aikajono[ino]->rwtime - aikajono[ino]->mxtime) >= 0) {
 		  if (!aikajono[ino] || !aikajono[ino]->mxtime)
-				writeerror_w(L"AJANOTTOA EI KÄYNNISTETTY, MUTTA YRITETÄÄN KÄYTTÄÄ",0, true);
+				writeerror_w(L"AJANOTTOA EI Kï¿½YNNISTETTY, MUTTA YRITETï¿½ï¿½N Kï¿½YTTï¿½ï¿½",0, true);
 			else
-				writeerror_w(L"AIKATAULUKKO TÄYSI",0);
+				writeerror_w(L"AIKATAULUKKO Tï¿½YSI",0);
          return(1);
 		 }
       wt = aikajono[ino]->aktrows;
@@ -2773,7 +2769,7 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 			ut.kno = kno;
 #ifdef _CONSOLE
 			vidint(ySize - 1, 54, 4, aikajono[ino]->getAktTime(0, aikajono[ino]->aktrows - 1)->kno);
-#endif 	//  Vaatii uuden käsittelyn
+#endif 	//  Vaatii uuden kï¿½sittelyn
 			if (loki)
 				wkirjloki(L"NOLLAUS");
 			}
@@ -2811,14 +2807,14 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 					switch (kilp.tark(k_pv)) {
 						case 'E':
 						case 'B':
-							wcscat(msg, L"EI-LÄHTENEEKSI");
+							wcscat(msg, L"EI-Lï¿½HTENEEKSI");
 							break;
 						case 'K':
 						case 'O':
-							wcscat(msg, L"KESKEYTTÄNEEKSI");
+							wcscat(msg, L"KESKEYTTï¿½NEEKSI");
 							break;
 						case 'H':
-							wcscat(msg, L"HYLÄTYKSI");
+							wcscat(msg, L"HYLï¿½TYKSI");
 							break;
 						}
 					if (!kilp.p_aika(kierrosva[piste+2])) {
@@ -2847,8 +2843,8 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 					tls0 = kilp.maali(kierrosva[piste+2]);
 					tls = purajak(t);
 
-					// Etsitään aiempaa ajanottotietoa, joka koskee samaa kilpailijaa ja pistettä. 
-					// Ellei löydy ja estaylim == 1 ja uusinaika == false, sallitaan aikarivin tallentaminen
+					// Etsitï¿½ï¿½n aiempaa ajanottotietoa, joka koskee samaa kilpailijaa ja pistettï¿½. 
+					// Ellei lï¿½ydy ja estaylim == 1 ja uusinaika == false, sallitaan aikarivin tallentaminen
 					// mutta ei tuloksen tallentamista kilpailijalle
 
 					if (estaylim) {
@@ -2864,12 +2860,12 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 							}
 						if (!osuma && estaylim < 2 && !uusinaika) {
 							olitulos = -1;
-							break;             // poistuu tästä tarkastelusta
+							break;             // poistuu tï¿½stï¿½ tarkastelusta
 							}
 						}
 
-					// Jos osuma tuli ja käytössä on ESTÄYLIM, mutta ei UUSINAIKA asetetaan olitulos = 1 rajoittamaan 
-					// sekä ajanottotiedon että tuloksen tallennusta
+					// Jos osuma tuli ja kï¿½ytï¿½ssï¿½ on ESTï¿½YLIM, mutta ei UUSINAIKA asetetaan olitulos = 1 rajoittamaan 
+					// sekï¿½ ajanottotiedon ettï¿½ tuloksen tallennusta
 
 					if (!uusinaika && estaylim && osuma) {
 						olitulos = 1;
@@ -2877,8 +2873,8 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 						}
 
 					// Kun estaylim == 0 tai uusinaika == true asetetaan olitulos = 1, jos uusi tulos on joko aiempaa 
-					// pienempi tai suurempi enemmän kuin ylimraja
-					// uusinaika siis voittaa, kun saatu aika on rajoitetusti myöhäisempi kuin aiemmin tallennettu
+					// pienempi tai suurempi enemmï¿½n kuin ylimraja
+					// uusinaika siis voittaa, kun saatu aika on rajoitetusti myï¿½hï¿½isempi kuin aiemmin tallennettu
 
 					if (tls - tls0 < 0 || tls - tls0 >= ylimraja) {
 
@@ -2894,9 +2890,9 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 						break;
 						}
 
-					// Jos käytössä on UUSINAIKA ja ESTÄYLIM=xxK, joka pyytää korvaamaan aiemman uudella aikarajan ylimraja 
-					// rajoissa haetaan aiempaa tunnistetta jonosta edeltävältä jaksolta ylimraja. 
-					// Ellei osumaa ole muutetaan vertailutietueen vt aika, jolloin mikään vanha tieto ei poistu, vaan uusi tulee
+					// Jos kï¿½ytï¿½ssï¿½ on UUSINAIKA ja ESTï¿½YLIM=xxK, joka pyytï¿½ï¿½ korvaamaan aiemman uudella aikarajan ylimraja 
+					// rajoissa haetaan aiempaa tunnistetta jonosta edeltï¿½vï¿½ltï¿½ jaksolta ylimraja. 
+					// Ellei osumaa ole muutetaan vertailutietueen vt aika, jolloin mikï¿½ï¿½n vanha tieto ei poistu, vaan uusi tulee
 					// eri riville
 
 					if (estaylim == 2 && tls - tls0 > 0) {
@@ -3035,7 +3031,7 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 	  writeerrorOn = 50;
 	  vidspwmsg(ySize-1,0,7,0,L"Maalikello on tietokoneen kelloa      s");
 	  vidint(ySize-1,32,5,(int)(labs(bt) / 10));
-	  wcscpy(wst, (bt > 0) ? L"edellä" : L"jäljessä");
+	  wcscpy(wst, (bt > 0) ? L"edellï¿½" : L"jï¿½ljessï¿½");
 	  vidspwmsg(ySize-1,40,7,0,wst);
 #endif
 	  }
@@ -3059,18 +3055,18 @@ void seur_mtr(void)
 #endif
    if (pkg_alku[lue_rno] <= pkg_loppu[lue_rno]) {
 #ifdef DBGEMIT
-	  writeerror_w(L"Pyyntö", 400);
+	  writeerror_w(L"Pyyntï¿½", 400);
 #endif
 	  memcpy(msg, "/GB", 3);
 	  *(INT32 *)(msg+3) = pkg_alku[lue_rno];
 	  wrt_st_x(cn_regnly[lue_rno],7,msg,&nch);
 	  }
    else
-	  writeerror_w(L"Kaikki pyydetyt tiedot käsitelty", 0, true);
+	  writeerror_w(L"Kaikki pyydetyt tiedot kï¿½sitelty", 0, true);
    }
 
 #endif
-/* Ensimmäinen endif lopettaa regnly-määrityksen, toinen MAALI-osat */
+/* Ensimmï¿½inen endif lopettaa regnly-mï¿½ï¿½rityksen, toinen MAALI-osat */
 
 #ifdef GAZ
 #define MAXGAZ 4
@@ -3136,7 +3132,7 @@ void val_gaz(void)
    kno = gaz_kno[0];
    for (;;) {
       clrln(ySize-3);
-	  vidspwmsg(ySize-3,0, 7, 0, L"Anna kilpailunumero          A)utomaattinen, N)äyttö ruudulla, Esc: peruuta");
+	  vidspwmsg(ySize-3,0, 7, 0, L"Anna kilpailunumero          A)utomaattinen, N)ï¿½yttï¿½ ruudulla, Esc: peruuta");
       INPUTINTW(&kno, 4, 20, ySize-3, L"aAnN\x1b\r", &wtc);
       if (wtc == ESC)
          break;
@@ -3155,7 +3151,7 @@ void val_gaz(void)
 	  gaz_kno[0] = kno;
 /*
 	  tc = nayta_gaz ? L'K' : L'E';
-	  wselectopt(L"Näytetäänkö tulostaulurivi ruudulla (K/E)", L"KE", &tc);
+	  wselectopt(L"Nï¿½ytetï¿½ï¿½nkï¿½ tulostaulurivi ruudulla (K/E)", L"KE", &tc);
       nayta_gaz = tc == L'K';
 */
       }
@@ -3369,10 +3365,10 @@ int start_autova(void)
 #ifdef _CONSOLE
 	   clrln(ySize-3);
 	   viwrrectw(ySize-3,0,ySize-3,48,
-		  L"Anna poikkeama: kilpailuaika - väliaikojen aika :",7,0,0);
+		  L"Anna poikkeama: kilpailuaika - vï¿½liaikojen aika :",7,0,0);
 	   INPUTAIKAW(&t0_autova,t0,8,50,ySize-3,L"\xD",&ch);
 #else
-		inputaika_prompt(&t0_autova,t0,8,L"Anna poikkeama: kilpailuaika - väliaikojen aika",&ch);
+		inputaika_prompt(&t0_autova,t0,8,L"Anna poikkeama: kilpailuaika - vï¿½liaikojen aika",&ch);
 #endif
 		}
    return(0);
@@ -3437,7 +3433,7 @@ void tall_ec(UINT32 bdg, INT valeim, INT32 aika, INT kielto)
 				}
 		 }
 	  else {
-		 swprintf(msg, L"Yli %d min aikaero saapuneen väliaikatiedon ja tämän koneen välillä", vaikavert);
+		 swprintf(msg, L"Yli %d min aikaero saapuneen vï¿½liaikatiedon ja tï¿½mï¿½n koneen vï¿½lillï¿½", vaikavert);
 		 writeerror_w(msg, 4000, true);
 		 }
 	  }
@@ -3465,7 +3461,7 @@ void vahaku(LPVOID lpCn)
 	int er = 0, keTserial;
 	static wchar_t *eMsg[] = {
 		L"Muistin varaaminen ei onnistunut",
-		L"Virhe pyyntöä lähetettäessä",
+		L"Virhe pyyntï¿½ï¿½ lï¿½hetettï¿½essï¿½",
 		L"Yhteyden avaaminen ei onnistunut",
 		L"Istunnon avaaminen ei onnistunut",
 		L""};
@@ -3499,18 +3495,18 @@ void vahaku(LPVOID lpCn)
 		}
 	if ((er = httphaku(eTParam.eThost , eTParam.eTport, page, 0, eTParam.buf, eTParam.buflen, &eTParam.haettu)) != 0) {
 		if (er <= -3) {
-			swprintf(msg, L"Virhe väliaikahaussa: %s", eMsg[-3-er]);
+			swprintf(msg, L"Virhe vï¿½liaikahaussa: %s", eMsg[-3-er]);
 			}
 		else {
 			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
 				NULL, er, 0, (LPWSTR) &pMsg, 0, 0);
-			swprintf(msg, L"Virhe väliaikahaussa: %s", pMsg);
+			swprintf(msg, L"Virhe vï¿½liaikahaussa: %s", pMsg);
 			}
 		writeerror_w(msg, 2000, true);
 		}
 	if (testi && loki) {
 		wchar_t msg[100];
-		swprintf(msg, L"%10d http-haku valmis, haettu %d merkkiä", mstimer(), eTParam.haettu);
+		swprintf(msg, L"%10d http-haku valmis, haettu %d merkkiï¿½", mstimer(), eTParam.haettu);
 		wkirjloki(msg);
 		}
 	inhttpHaku = 0;
@@ -3705,7 +3701,7 @@ void tee_aika(int laji)
    else
 	  ino = 0;
    if (!aikajono[ino]) {
-	   writeerror_w(L"AJANOTTOA EI KÄYNNISTETTY, MUTTA YRITETÄÄN KÄYTTÄÄ", 0, true);
+	   writeerror_w(L"AJANOTTOA EI Kï¿½YNNISTETTY, MUTTA YRITETï¿½ï¿½N Kï¿½YTTï¿½ï¿½", 0, true);
 	   return;
 	   }
    tm += aikajono[ino]->aikakorjaus;
@@ -3713,9 +3709,9 @@ void tee_aika(int laji)
    utime.date = tm_date(utime.t);
    if (aikajono[ino]->rwtime - aikajono[ino]->mxtime >= 0) {
 		if (lajatfl && ino == 1)
-			writeerror_w(L"LÄHTÖAIKATAULUKKO TÄYSI",0);
+			writeerror_w(L"Lï¿½HTï¿½AIKATAULUKKO Tï¿½YSI",0);
 		else
-			writeerror_w(L"AIKATAULUKKO TÄYSI",0);
+			writeerror_w(L"AIKATAULUKKO Tï¿½YSI",0);
 	    aika_tail = aika_head;
 	    return;
 		}
@@ -3852,7 +3848,7 @@ int kbdiv1(char ch,char ch2)
 				   sccurst(&y, &x, &h, &l);
 				   virdrect(ySize-3,0,ySize-3,79,saveline,0);
 				   clrln(ySize-3);
-				   vidspwmsg(ySize-3,0,7,0,L"Anna erän numero:");
+				   vidspwmsg(ySize-3,0,7,0,L"Anna erï¿½n numero:");
 				   inputintw(&era_akt, 3, 18, ySize-3, L"\r", &wtc);
 				   if (era_akt < 0 || era_akt >= MAXERA)
 					   era_akt = 0;
@@ -3861,7 +3857,7 @@ int kbdiv1(char ch,char ch2)
 						ratakno[k] = haeratakilp(era_akt, k+1);
 					if (gaz_com && ratakno[0] && eralahto[era_akt] == TMAALI0*AIKAJAK) {
 						wtc = L'E';
-						wselectopt(L"Onko erä jo lähtenyt? (K/E)", L"KE", &wtc);
+						wselectopt(L"Onko erï¿½ jo lï¿½htenyt? (K/E)", L"KE", &wtc);
 						if (wtc == L'K' && (d = getpos(ratakno[0])) > 0) {
 							kilp.GETREC(d);
 							eralahto[era_akt] = kilp.p_aika(-1);
@@ -3952,7 +3948,7 @@ void initajat(INT ino, INT vaihda)
 	  else if (!ino)
          wcscpy(msg, L"     Aikatiedosto :");
 	  else
-		 wcscpy(msg, L"Lähtöaikatiedosto :");
+		 wcscpy(msg, L"Lï¿½htï¿½aikatiedosto :");
 #ifdef _CONSOLE
 	  vidspwmsg(ySize-3,0,7,0,msg);
 	  inputwstr(aikajono[ino]->aikafname,37,20,ySize-3,L"\r",&ch,FALSE);
@@ -4003,24 +3999,24 @@ void initajat(INT ino, INT vaihda)
 				ch = L' ';
 				if (!ino || (!lajatfl && !chs)) {
 #ifdef _CONSOLE
-					wselectopt(L"AJANOTTOTIEDOSTON AVAAMINEN - Säilytetäänkö aiemmat "
+					wselectopt(L"AJANOTTOTIEDOSTON AVAAMINEN - Sï¿½ilytetï¿½ï¿½nkï¿½ aiemmat "
 						L"ajanottotiedot (K/E)", L"KE", &ch);
 #else
 					i = select3(2, L"AJANOTTOTIEDOSTON AVAAMINEN - Luetaanko aiemmat "
-						L"tiedot levyltä", L"Valitse", L"Luetaan", L"Aiemmat tuhotaan",
-						L"Säilytä vanhat ja poistu", 0);
+						L"tiedot levyltï¿½", L"Valitse", L"Luetaan", L"Aiemmat tuhotaan",
+						L"Sï¿½ilytï¿½ vanhat ja poistu", 0);
 					ch = (L"\x1bKE\x1b")[i];
 #endif
 					chs = ch;
 					}
 				else if (!maxjono) {
 #ifdef _CONSOLE
-					wselectopt(L"LÄHTÖAIKATIEDOSTON AVAAMINEN - Säilytetäänkö aiemmat "
-						L"lähtöaikatiedot (K/E)", L"KE", &ch);
+					wselectopt(L"Lï¿½HTï¿½AIKATIEDOSTON AVAAMINEN - Sï¿½ilytetï¿½ï¿½nkï¿½ aiemmat "
+						L"lï¿½htï¿½aikatiedot (K/E)", L"KE", &ch);
 #else
-					i = select3(2, L"LÄHTÖAIKATIEDOSTON AVAAMINEN - Luetaanko aiemmat "
-						L"lähtöajat levyltä", L"Valitse", L"Luetaan", L"Aiemmat tuhotaan",
-						L"Säilytä vanhat ja poistu", 0);
+					i = select3(2, L"Lï¿½HTï¿½AIKATIEDOSTON AVAAMINEN - Luetaanko aiemmat "
+						L"lï¿½htï¿½ajat levyltï¿½", L"Valitse", L"Luetaan", L"Aiemmat tuhotaan",
+						L"Sï¿½ilytï¿½ vanhat ja poistu", 0);
 					ch = (L"\x1bKE\x1b")[i];
 #endif
 					chs = ch;
@@ -4109,7 +4105,7 @@ static void vaihda_ajat(INT ino, INT era)
 			vanhanimi[22] = ino + L'1';
 		 }
 	  else
-		 wcscpy(vanhanimi, L"Uusi lähtöaikatiedosto :");
+		 wcscpy(vanhanimi, L"Uusi lï¿½htï¿½aikatiedosto :");
 	  wcsncpy(buf, aikajono[ino]->aikafname, 38);
 
 #ifdef _CONSOLE
@@ -4204,14 +4200,14 @@ void inittimer(void)
 		if (keytab[0].ch == KB_C_C_A && keytab[0].keycode == KB_S_C_A) {
 			do {
 				clrln(ySize-3);
-				vidspwmsg(ySize-3,0,7,0,L"Paina ajanottoon varattavaa näppäintä");
+				vidspwmsg(ySize-3,0,7,0,L"Paina ajanottoon varattavaa nï¿½ppï¿½intï¿½");
 				i = nivkeys;
 				nivkeys = 0;
 				che = readkbd(&key, 1, 0);
 				ch = oemtowchar(che);
 				nivkeys = i;
 				if (ch == L'\r' || ch == 27 || (towupper(ch) >= 'A' && towupper(ch) <= 'Z')) {
-					writeerror_w(L"Ajanottonäppäin ei voi olla kirjain, 'Enter' tai 'Esc'",0);
+					writeerror_w(L"Ajanottonï¿½ppï¿½in ei voi olla kirjain, 'Enter' tai 'Esc'",0);
 					tc = L'E';
 					continue;
 					}
@@ -4222,7 +4218,7 @@ void inittimer(void)
 				else
 					st[0] = 0;
 
-				swprintf(prs,L"Näppäinkoodi (%d,%d) %s varattu ajanotolle, vahvista "
+				swprintf(prs,L"Nï¿½ppï¿½inkoodi (%d,%d) %s varattu ajanotolle, vahvista "
 					L"(K/E)", (int) ch, (int) key, st);
 				tc = L' ';
 				wselectopt(prs, L"KE", &tc);

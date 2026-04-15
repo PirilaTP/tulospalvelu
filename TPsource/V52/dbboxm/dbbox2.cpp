@@ -26,7 +26,7 @@ int makedarr(dataarr *datf, int reclen, int maxnrec)
 	datf->ptr = (darrref *) malloc(4 * datf->maxnpage + 4);
 	if (datf->ptr == NULL) {
 	   writeerror(
-		  "Muisti ei riit„ indeksiosoitintaulukolle, ajo lopetetaan",
+		  "Muisti ei riitÂ„ indeksiosoitintaulukolle, ajo lopetetaan",
 		  2000);
 	   lopetus();
 	   }
@@ -57,7 +57,7 @@ void newdrec(dataarr *datf, int *r)
       }
    datf->ptr[*r].dp = (tapage *) malloc(datf->recl);
    if (datf->ptr[*r].dp == NULL) {
-      writeerror("Muisti ei riit„ indeksitaulukolle, ajo lopetetaan",
+      writeerror("Muisti ei riitÂ„ indeksitaulukolle, ajo lopetetaan",
             2000);
       lopetus();
       }

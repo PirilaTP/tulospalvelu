@@ -139,27 +139,27 @@ void merkisto(wchar_t merkit)
 
    for (i = 0; i < 256; i++) utrlate[i] = i;
    switch (merkit) {
-	  case L'A' : utrlate['ƒ'] = 91;
-				 utrlate['÷'] = 92;
-				 utrlate['è'] = 93;
-				 utrlate['‹'] = 94;
-				 utrlate['ê'] = L'E';
-				 utrlate['‰'] = 123;
-				 utrlate['ˆ'] = 124;
-				 utrlate['Â'] = 125;
-				 utrlate['Å'] = 126;
-				 utrlate['Ç'] = L'e';
+	  case L'A' : utrlate['√Ñ'] = 91;
+				 utrlate['√ñ'] = 92;
+				 utrlate['¬è'] = 93;
+				 utrlate['√ú'] = 94;
+				 utrlate['¬ê'] = L'E';
+				 utrlate['√§'] = 123;
+				 utrlate['√∂'] = 124;
+				 utrlate['√•'] = 125;
+				 utrlate['¬Å'] = 126;
+				 utrlate['¬Ç'] = L'e';
 				 break;
-	  case L'R' : utrlate['ƒ'] = 216;
-				 utrlate['÷'] = 218;
-				 utrlate['è'] = 208;
-				 utrlate['‹'] = 219;
-				 utrlate['ê'] = 220;
-				 utrlate['‰'] = 204;
-				 utrlate['ˆ'] = 206;
-				 utrlate['Â'] = 212;
-				 utrlate['Å'] = 207;
-				 utrlate['Ç'] = 197;
+	  case L'R' : utrlate['√Ñ'] = 216;
+				 utrlate['√ñ'] = 218;
+				 utrlate['¬è'] = 208;
+				 utrlate['√ú'] = 219;
+				 utrlate['¬ê'] = 220;
+				 utrlate['√§'] = 204;
+				 utrlate['√∂'] = 206;
+				 utrlate['√•'] = 212;
+				 utrlate['¬Å'] = 207;
+				 utrlate['¬Ç'] = 197;
 #if defined(EMITLEIMAT)
 				 wcscpy(initfont_emrap+wcslen(initfont_emrap)-3, L"8U");
 				 initfont_emrap[0]--;
@@ -194,18 +194,18 @@ void merkisto(wchar_t merkit)
 					L"tiedostosta POSTSCRI.INI ei onnistu", 0);
 				delete mf;
 				 pscr = 1;
-	  case L'W' :                    // myˆs 'P' jatkuu
-	  case L'G' :                    // myˆs 'P' jatkuu
-				 utrlate['ƒ'] = 196;
-				 utrlate['÷'] = 214;
-				 utrlate['è'] = 197;
-				 utrlate['‹'] = 220;
-				 utrlate['ê'] = 201;
-				 utrlate['‰'] = 228;
-				 utrlate['ˆ'] = 246;
-				 utrlate['Â'] = 229;
-				 utrlate['Å'] = 252;
-				 utrlate['Ç'] = 233;
+	  case L'W' :                    // my√∂s 'P' jatkuu
+	  case L'G' :                    // my√∂s 'P' jatkuu
+				 utrlate['√Ñ'] = 196;
+				 utrlate['√ñ'] = 214;
+				 utrlate['¬è'] = 197;
+				 utrlate['√ú'] = 220;
+				 utrlate['¬ê'] = 201;
+				 utrlate['√§'] = 228;
+				 utrlate['√∂'] = 246;
+				 utrlate['√•'] = 229;
+				 utrlate['¬Å'] = 252;
+				 utrlate['¬Ç'] = 233;
 				 utrlate['_'] = 32;
 				 break;
 	  }
@@ -240,7 +240,7 @@ void lueKorRajat(void)
 					 vipLaji[d] = (wchar_t) rj2;
 					 }
 				  }
-			   else if (!wcscmp(srjnm, L"VƒRI")) {
+			   else if (!wcscmp(srjnm, L"V√ÑRI")) {
 				  if (rj1 >= 1 && rj1 <= (int)(sizeof(korVari)/sizeof(korVari[0]))) {
 					 korVari[rj1-1] =
 						rj2%1000 + 256*((rj2/1000)%1000) + 65536*(rj2/1000000);
@@ -273,9 +273,9 @@ static void nimio(INT clear)
    vidspwmsg(7,51,7,0,VersioNo());
    vidspwmsg(8,42, 7, 0, L"Build");
    vidspwmsg(8, 48, 7, 0, Build());
-   viwrrectw(3,15,3,63,L"HENKIL÷KOHTAISEN KILPAILUN TULOSPALVELUOHJELMISTO",
+   viwrrectw(3,15,3,63,L"HENKIL√ñKOHTAISEN KILPAILUN TULOSPALVELUOHJELMISTO",
 	  7,0,0);
-   viwrrectw(5,34,5,45,L"Pekka Piril‰",7,0,0);
+   viwrrectw(5,34,5,45,L"Pekka Piril√§",7,0,0);
 #ifdef DEMO
    vidspwmsg(8,24,7,0,L"DEMO korkeintaan 30 osanottajaa");   /* DEMO */
 #endif
@@ -293,7 +293,7 @@ static int luevaihevalinta(void)
 		while (!cfgfile->Feof()) {
 			cfgfile->ReadLine(line, 78);
 			if ((p = wcstok(line, L"= \n")) != NULL) {
-				if (wcscmpU(p, L"VAIHE") == 0 || wcscmpU(p, L"PƒIVƒ") == 0) {
+				if (wcscmpU(p, L"VAIHE") == 0 || wcscmpU(p, L"P√ÑIV√Ñ") == 0) {
 					if ((p = wcstok(NULL, L"= \n")) != NULL) {
 						i_pv = _wtoi(p) - 1;
 						}
@@ -334,7 +334,7 @@ static INT readcfg(INT *nf, wchar_t *argptr[], int kierros)
 		if (!cfgfile->IsOpen()) {
 			delete cfgfile;
 			if (kierros > 0 && cfgparam) {
-				swprintf(line, L"Konfiguraatiotiedostoa %s ei lˆydy",
+				swprintf(line, L"Konfiguraatiotiedostoa %s ei l√∂ydy",
 					cfgflnm);
 				writeerror_w(line ,0);
 				}
@@ -575,26 +575,26 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			for (p = fld[ncl]; *p; p++) {
 				switch (*p) {
 					case 196 :
-						*p = L'ƒ';
+						*p = L'√Ñ';
 						break;
 					case 228 :
 					case 245 :
-						*p = L'‰';
+						*p = L'√§';
 						break;
 					case 214 :
 					case 205 :
-						*p = L'÷';
+						*p = L'√ñ';
 						break;
 					case 246 :
 					case 247 :
-						*p = L'ˆ';
+						*p = L'√∂';
 						break;
 					case 197 :
-						*p = L'è';
+						*p = L'¬è';
 						break;
 					case 229 :
 					case 213 :
-						*p = L'Â';
+						*p = L'√•';
 						break;
 						}
 					}
@@ -642,7 +642,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 					norm_fore = 15;
 					continue;
 					}
-			 if(!wmemcmpU(fldn, L"VƒRIT=", 6)) {
+			 if(!wmemcmpU(fldn, L"V√ÑRIT=", 6)) {
 				p = wcstok(fldn+6,L"/");
 				if (p) {
 					norm_fore = _wtoi(p);
@@ -676,20 +676,20 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				   kilpparam.sakkoyks = _wtoi(fldn+6);
 				continue;
 				}
-		 if(!wmemcmpU(fldn, L"NOLLAKƒRKI", 10)) {
+		 if(!wmemcmpU(fldn, L"NOLLAK√ÑRKI", 10)) {
 			tulosmuot.nollakarki = 1;
 			continue;
 			}
-		 if (!wmemcmpU(fldn, L"PƒIVIƒ=", 7)) {
+		 if (!wmemcmpU(fldn, L"P√ÑIVI√Ñ=", 7)) {
 			kilpparam.n_pv_akt = fldn[7] - L'0';
 			continue;
 			}
-		 if (!wmemcmpU(fldn, L"VƒLIAIKOJA=", 11)) {
+		 if (!wmemcmpU(fldn, L"V√ÑLIAIKOJA=", 11)) {
 			kilpparam.valuku = fldn[11] - L'0';
 			continue;
 			}
 */
-		 if (!wmemcmpU(fldn, L"PƒIVƒ=", 6) || !wmemcmpU(fldn, L"VAIHE=", 6)) {
+		 if (!wmemcmpU(fldn, L"P√ÑIV√Ñ=", 6) || !wmemcmpU(fldn, L"VAIHE=", 6)) {
 			 if (fldn[6] == L'V')
 				 vaihevalinta = 1;
 			 else {
@@ -755,7 +755,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				ilmkentat = 1;
 				continue;
 				}
-			 if(!wmemcmpU(fldn, L"HENKIL÷TIETOKANTA", 9)) {
+			 if(!wmemcmpU(fldn, L"HENKIL√ñTIETOKANTA", 9)) {
 				NimiHTHaku = 1;
 				if ((p = wcsstr(fldn, L"=")) != NULL) {
 					if (!wcscmp(p+1, L"0") || !wcscmp(p+1, L"E") || !wcscmp(p+1, L"EI"))
@@ -796,7 +796,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				KuntoMaali = 1;
 				continue;
 				}
-			 if(!wmemcmpU(fldn, L"KUNTOLƒHT÷", 8)) {
+			 if(!wmemcmpU(fldn, L"KUNTOL√ÑHT√ñ", 8)) {
 				KuntoMaali = -1;
 				continue;
 				}
@@ -828,7 +828,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 					seurVapaaBadge = vakanttialku;
 				continue;
 				}
-			 if(!wmemcmpU(fldn, L"LISƒVAKANTTIALKU=", 7)) {
+			 if(!wmemcmpU(fldn, L"LIS√ÑVAKANTTIALKU=", 7)) {
 				if ((p = wcsstr(fldn, L"=")) != NULL) {
 					lisavakanttialku = _wtoi(p+1);
 					seurvapaa = lisavakanttialku;
@@ -856,7 +856,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 					vahvistaaina = true;
 				continue;
 				}
-			if(!wmemcmpU(fldn, L"LISƒƒEDELLE", 8)) {
+			if(!wmemcmpU(fldn, L"LIS√Ñ√ÑEDELLE", 8)) {
 				lisaa_edelle = 1;
 				continue;
 			}
@@ -891,7 +891,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			vaaditarkastus = true;
 			continue;
 			}
-		 if(!wmemcmpU(fldn, L"LƒHETƒCR=EI", 10)) {
+		 if(!wmemcmpU(fldn, L"L√ÑHET√ÑCR=EI", 10)) {
 			lahetacr = 0;
 			continue;
 			}
@@ -960,7 +960,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			dec_sep = wchartoansi(wdec_sep);
 			continue;
 			}
-		 if(!wmemcmpU(fldn, L"ESTƒMUUTOS", 8)) {
+		 if(!wmemcmpU(fldn, L"EST√ÑMUUTOS", 8)) {
 			esta_tall = 1;
 			continue;
 				}
@@ -1064,7 +1064,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				immed = 0;
             continue;
             }
-		 if( !wmemcmpU(fldn, L"YHTEISLƒHT÷",7)) {
+		 if( !wmemcmpU(fldn, L"YHTEISL√ÑHT√ñ",7)) {
 			yhtlahto = 1;
             continue;
             }
@@ -1091,7 +1091,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				UDPvarmistamaton[ny-1] |= 2;
 			continue;
 			}
-		 if (!wmemcmpU(fldn, L"MONITORVƒLI=",12)) {
+		 if (!wmemcmpU(fldn, L"MONITORV√ÑLI=",12)) {
 			monitoriVali = 1000 * _wtoi(fldn+12);
 			continue;
 			}
@@ -1169,7 +1169,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			   maxyhteys = MAX_LAHPORTTI;
 			continue;
 			}
-		 if (!wmemcmpU(fldn, L"VƒLITƒ",6) && (pos = 6) != 0 &&
+		 if (!wmemcmpU(fldn, L"V√ÑLIT√Ñ",6) && (pos = 6) != 0 &&
 			(ny = yhteys_no(fldn, &pos)) != 0) {
 				if (pos == 6) {
 			   for (y = 0; y < MAX_LAHPORTTI; y++)
@@ -1302,15 +1302,15 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				ilmtunt = 0;
 			continue;
 			}
-		if( !wmemcmpU(fldn, L"ƒƒNI=",5)) {
+		if( !wmemcmpU(fldn, L"√Ñ√ÑNI=",5)) {
 			aani = fldn[5] - L'0';
 			continue;
 			}
-		 if( !wmemcmpU(fldn, L"LISƒƒ=",6)) {
+		 if( !wmemcmpU(fldn, L"LIS√Ñ√Ñ=",6)) {
             n_lisaa = _wtoi(fldn+6);
             continue;
 			}
-		 if (!wmemcmpU(fldn, L"KUNTO",5) || !wmemcmpU(fldn, L"SUORASY÷TT÷",5)) {
+		 if (!wmemcmpU(fldn, L"KUNTO",5) || !wmemcmpU(fldn, L"SUORASY√ñTT√ñ",5)) {
             if (!wmemcmpU(fldn, L"KUNTO",5))
                kunto = 2;
 			else
@@ -1443,7 +1443,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			if (wcslen(fldn) > 6) wcscpy(aikaflname[1], fldn+6);
             continue;
             }
-         if( !wmemcmpU(fldn, L"LƒHT÷RYHMƒ=",11)) {
+         if( !wmemcmpU(fldn, L"L√ÑHT√ñRYHM√Ñ=",11)) {
 			kilpparam.lahtoryhma = _wtoi(fldn+11);
             continue;
 			}
@@ -1459,7 +1459,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			continue;
 			}
 #ifdef _CONSOLE
-		 if(!wmemcmpU(fldn, L"NƒPPƒIN=", 8)) {
+		 if(!wmemcmpU(fldn, L"N√ÑPP√ÑIN=", 8)) {
 			if ((p = wcstok(fldn+8, L",/")) == NULL) continue;
 			y = _wtoi(p);
 				if ((p = wcstok(NULL, L",/")) == NULL || (ny = _wtoi(p)) == 0)
@@ -1470,7 +1470,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			continue;
 			}
 #endif
-		 if( !wmemcmpU(fldn, L"LƒHKELLO",8) && (pos = 8) != 0 &&
+		 if( !wmemcmpU(fldn, L"L√ÑHKELLO",8) && (pos = 8) != 0 &&
 			(ny = yhteys_no(fldn, &pos)) != 0) {
 			lahkello[ny-1] = 600000;
 			lahkelloraja[ny-1] = 1000;
@@ -1491,7 +1491,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 					lahkellovain[ny-1] = true;
 			continue;
 			}
-		 if( !wmemcmpU(fldn, L"LƒHAIKA",7) && (pos = 7) != 0 &&
+		 if( !wmemcmpU(fldn, L"L√ÑHAIKA",7) && (pos = 7) != 0 &&
 			(ny = yhteys_no(fldn, &pos)) != 0) {
 			ajanottofl = 1;
 			com_ajat[ny-1] = 1;
@@ -1499,14 +1499,14 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				com_ajat[ny-1] = 2;
 			continue;
 			}
-		 if( !wmemcmpU(fldn, L"LƒHECODE",8) && (pos = 8) != 0 &&
+		 if( !wmemcmpU(fldn, L"L√ÑHECODE",8) && (pos = 8) != 0 &&
 			(ny = yhteys_no(fldn, &pos)) != 0) {
 			lahec[ny-1] = 1;
 			if (fldn[pos+1] == L'V')
 				lahec[ny-1] = 2;
 			continue;
 			}
-		 if( !wmemcmpU(fldn, L"LƒHTIEDOSTOT",8)) {
+		 if( !wmemcmpU(fldn, L"L√ÑHTIEDOSTOT",8)) {
 			y = -1;
 
 			if ((p = wcsstr(fldn, L"/")) != NULL) {
@@ -1526,7 +1526,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 					lah_tiedostot[i] = y;
 			continue;
 			}
-		 if( !wmemcmpU(fldn, L"SY÷TT÷", 6)) {
+		 if( !wmemcmpU(fldn, L"SY√ñTT√ñ", 6)) {
 			ajanottofl = 1;
 				syotto = 1;
 			continue;
@@ -1564,18 +1564,18 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			kello_esto = _wtoi(&fldn[11]);
 			continue;
 			}
-		if (!wmemcmpU(fldn, L"ESTƒNEG",7)) {
+		if (!wmemcmpU(fldn, L"EST√ÑNEG",7)) {
 			estaneg = 1;
 			continue;
 			}
-		if (!wmemcmpU(fldn, L"ESTƒHAAMUT",7)) {
+		if (!wmemcmpU(fldn, L"EST√ÑHAAMUT",7)) {
 			estaneg = 1;
 			if (fldn[10] == L'=') {
 				estaneg = MINUUTTI * _wtoi(fldn+11);
 				}
 			continue;
 			}
-         if (!wmemcmpU(fldn, L"ESTƒYLIM",8)) {
+         if (!wmemcmpU(fldn, L"EST√ÑYLIM",8)) {
             estaylim = 1; 
 			if (fldn[8] == L'=') {
 				ylimraja = SEK * _wtoi(fldn+9);
@@ -1888,7 +1888,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			continue;
 			}
 #endif
-		 if (!wmemcmpU(fldn, L"LƒHT÷IKKUNA=", 12)) {
+		 if (!wmemcmpU(fldn, L"L√ÑHT√ñIKKUNA=", 12)) {
 			 tunn_raja = _wtoi(fldn + 12);
 			 continue;
 		 }
@@ -1955,7 +1955,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				continue;
 				}
 			}
-		 if( !wmemcmpU(fldn, L"LƒHDEPISTEET",8)) {
+		 if( !wmemcmpU(fldn, L"L√ÑHDEPISTEET",8)) {
 			lahdepistehaku = 1;
 			continue;
 			}
@@ -2070,7 +2070,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			   }
             continue;
 				}
-         if( !wmemcmpU(fldn, L"VAINVƒLIAJAT",12)) {
+         if( !wmemcmpU(fldn, L"VAINV√ÑLIAJAT",12)) {
 			vainvaliajat = 1;
 			continue;
             }
@@ -2086,7 +2086,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			 continue;
 		 }
 //#if defined(UINTI) || defined(MERI5)
-		 if( !wmemcmpU(fldn, L"TALL-LƒHD",6)) {
+		 if( !wmemcmpU(fldn, L"TALL-L√ÑHD",6)) {
             era_lahdot = 1;
             continue;
 			}
@@ -2207,7 +2207,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			ohitaleimat = 1;
 			continue;
 			}
-		 if( !wmemcmpU(fldn, L"EILƒHT=AVOIN", 8)) {
+		 if( !wmemcmpU(fldn, L"EIL√ÑHT=AVOIN", 8)) {
 			eilavoin = TRUE;
 			continue;
 			}
@@ -2218,14 +2218,14 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			ajanottofl = 1;
 			continue;
 			}
-		 if( !wmemcmpU(fldn, L"ELINKLƒHT÷",7)) {
+		 if( !wmemcmpU(fldn, L"ELINKL√ÑHT√ñ",7)) {
 			if (wcsstr(fldn, L"=E") != 0)
 				eNollausAjat = 1;
 			else
 				eNollausAjat = 2;
 			continue;
 			}
-		 if( !wmemcmpU(fldn, L"LƒHT÷VERT=",10)) {
+		 if( !wmemcmpU(fldn, L"L√ÑHT√ñVERT=",10)) {
 			lahtopoikk = _wtoi(fldn+10);
 			continue;
 			}
@@ -2291,11 +2291,11 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			   }
 			continue;
 			}
-			if (!wmemcmpU(fldn, L"EMITAGLISƒ=0", 12)) {
+			if (!wmemcmpU(fldn, L"EMITAGLIS√Ñ=0", 12)) {
 				emitaglisa = 0;
 				continue;
 				}
-			if (!wmemcmpU(fldn, L"EMITAGLISƒ", 9)) {
+			if (!wmemcmpU(fldn, L"EMITAGLIS√Ñ", 9)) {
 				emitaglisa = 1;
 				continue;
 				}
@@ -2375,7 +2375,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				   }
 				continue;
 				}
-			if (!wmemcmpU(fldn, L"ETHAKUVƒLI=",11)) {
+			if (!wmemcmpU(fldn, L"ETHAKUV√ÑLI=",11)) {
 				eTParam.eThakuvali = 2*_wtoi(fldn+11);
 				emitfl = 1;
 				if (wcsstr(fldn, L"/A") != NULL)
@@ -2553,7 +2553,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
                emitsivu = _wtoi(fldn+9) - 1;
             continue;
             }
-		 if (!wmemcmpU(fldn, L"HTMLSƒILNIMI",9)) {
+		 if (!wmemcmpU(fldn, L"HTMLS√ÑILNIMI",9)) {
             html_sail_nimi = 1;
             continue;
 			}
@@ -2561,7 +2561,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			origemvabadge = true;
             continue;
 			}
-         if (!wmemcmpU(fldn, L"ESTƒEMITTOISTO",10)) {
+         if (!wmemcmpU(fldn, L"EST√ÑEMITTOISTO",10)) {
 			estaemittoisto = (wmemcmpU(fldn+wcslen(fldn)-2, L"EI", 2) != 0);
 			continue;
             }
@@ -2625,7 +2625,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				kaikki_ajat[ny] = 1;
 			continue;
 			}
-		if( !wmemcmpU(fldn, L"SJBOX",5) || !wmemcmpU(fldn, L"LƒHDEPISTEET",8)) {
+		if( !wmemcmpU(fldn, L"SJBOX",5) || !wmemcmpU(fldn, L"L√ÑHDEPISTEET",8)) {
 			lahdepistehaku = 1;
 			continue;
 			}
@@ -2662,7 +2662,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			}
 #endif
 #if defined(EMIT) || defined(LAJUNEN)
-         if (!wmemcmpU(fldn, L"VALONƒYTT÷=",11)) {
+         if (!wmemcmpU(fldn, L"VALON√ÑYTT√ñ=",11)) {
             valonaytto = _wtoi(fldn+11);
             continue;
             }
@@ -2677,7 +2677,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 #endif
 #endif
 #if defined(EMIT) && (defined(MAALI) || defined(TALLEMIT))
-			if( !wmemcmpU(fldn, L"LƒHEMIT",7) && (pos = 7) != 0 &&
+			if( !wmemcmpU(fldn, L"L√ÑHEMIT",7) && (pos = 7) != 0 &&
 				(ny = yhteys_no(fldn, &pos)) != 0) {
 			emitfl = 1;
 			com_emit[ny-1] = 1;
@@ -2691,7 +2691,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			   }
 			continue;
 			}
-		 if( !wmemcmpU(fldn, L"LƒHEMVA",7) && (pos = 7) != 0 &&
+		 if( !wmemcmpU(fldn, L"L√ÑHEMVA",7) && (pos = 7) != 0 &&
 			(ny = yhteys_no(fldn, &pos)) != 0) {
             emitfl = 1;
             com_emitva[ny-1] = 1;
@@ -2823,11 +2823,11 @@ void lueeratiedot(wchar_t *fname)
             k++;
          }
 	  k--;
-      swprintf(msg, L"Tietoja kirjattu %d, puutteellisia rivej‰ %d", n, k);
+      swprintf(msg, L"Tietoja kirjattu %d, puutteellisia rivej√§ %d", n, k);
 	  writeerror_w(msg, 0, true);
 	  }
    else
-	  writeerror_w(L"Tiedostoa ERADAT.LST ei lˆydy", 0, true);
+	  writeerror_w(L"Tiedostoa ERADAT.LST ei l√∂ydy", 0, true);
    if (erafl != NULL)
 		delete erafl;
    }
@@ -2857,7 +2857,7 @@ korjval:
       clrln(ySize-3);
       viwrrect(ySize-3,5,ySize-3,24,"Anna tarratiedosto :",7,0,0);
       viwrrect(ySize-1,5,ySize-1,54,
-         "NUL : Ei tarroja,  LƒHETƒ : Toisella tietokoneella",7,0,0);
+         "NUL : Ei tarroja,  L√ÑHET√Ñ : Toisella tietokoneella",7,0,0);
 	  inputstr(tarfname,39,26,ySize-3,"\r",&ch2,FALSE);
       clrln(ySize-1);
 	  upcasestr(tarfname);
@@ -2868,7 +2868,7 @@ korjval:
       tarfl = FALSE;
       sprintf(prs,"Tarroja ei kirjoiteta");
       }
-   else if ( !memcmp(tarfname, "LƒHETƒ", 4) ) {
+   else if ( !memcmp(tarfname, "L√ÑHET√Ñ", 4) ) {
       tarfl = FALSE;
       lahtarfl = TRUE;
 	  if (strlen(tarfname) > 6) {
@@ -2888,18 +2888,18 @@ korjval:
    y = 16;
    if (tarfl && !ch && korkeat)
       {
-	  viwrrect(y,5,y,45,"Tarrakirjoitin kirjoittaa korkeaa teksti‰",
+	  viwrrect(y,5,y,45,"Tarrakirjoitin kirjoittaa korkeaa teksti√§",
          7,0,0);
       y++;
 	  }
    if (ch && tarfl) {
       ch2 = korkeat ? 'K' : 'E';
-      selectopt("Kirjoitetaanko leve‰t kirjasimet korkeina (K/E)","KE",
+      selectopt("Kirjoitetaanko leve√§t kirjasimet korkeina (K/E)","KE",
          &ch2);
       if (ch2 == 'K') {
          korkeat = TRUE;
          y = 16;
-         viwrrect(y,5,y,45,"Tarrakirjoitin kirjoittaa korkeaa teksti‰",
+         viwrrect(y,5,y,45,"Tarrakirjoitin kirjoittaa korkeaa teksti√§",
             7,0,0);
          y++;
          ch2 = star ? 'K' : 'E';
@@ -2910,7 +2910,7 @@ korjval:
       }
    if (ch && tarfl) {
 	  ch2 = tarra1 ? '1' : '2';
-      selectopt("1 vai 2 tarrarivi‰","12",&ch2);
+      selectopt("1 vai 2 tarrarivi√§","12",&ch2);
       tarra1 = (ch2 == '1');
       }
    if( tarra1 ) {
@@ -2929,32 +2929,32 @@ korjval:
 	swprintf(prs,L"Listakirjoitinportti tai -tiedosto = %s", listfname);
    vidspwmsg(*y,5,7,0,prs);
    if (ch) {
-		wselectopt(L"Merkistˆ: I)BM, A)scii-7, R)oman-8, P)ostscrpt"
-			L", W)indows,L)evylt‰", L"ARLIPWG",&merkit);
+		wselectopt(L"Merkist√∂: I)BM, A)scii-7, R)oman-8, P)ostscrpt"
+			L", W)indows,L)evylt√§", L"ARLIPWG",&merkit);
 		if (merkit == L'W') {
 			ch2 = L' ';
-			wselectopt(L"K‰ytet‰‰nkˆ Windowsin kirjoitinajureita (K/E)", L"KE", &ch2);
+			wselectopt(L"K√§ytet√§√§nk√∂ Windowsin kirjoitinajureita (K/E)", L"KE", &ch2);
 			if (ch2 == L'K')
 				merkit = L'G';
 			}
 		}
    clrln(ySize-3);
    switch (merkit) {
-      case L'A' : viwrrectw(*y,63,*y,78,L"Merkistˆ Ascii-7",7,0,0);
+      case L'A' : viwrrectw(*y,63,*y,78,L"Merkist√∂ Ascii-7",7,0,0);
                  break;
-      case L'R' : viwrrectw(*y,63,*y,78,L"Merkistˆ Roman-8",7,0,0);
+      case L'R' : viwrrectw(*y,63,*y,78,L"Merkist√∂ Roman-8",7,0,0);
                  break;
-      case L'P' : viwrrectw(*y,62,*y,79,L"Merkistˆ Postscript",7,0,0);
+      case L'P' : viwrrectw(*y,62,*y,79,L"Merkist√∂ Postscript",7,0,0);
                  break;
-	  case L'W' : viwrrectw(*y,63,*y,78,L"Merkistˆ Windows",7,0,0);
+	  case L'W' : viwrrectw(*y,63,*y,78,L"Merkist√∂ Windows",7,0,0);
                  break;
-      case L'L' : viwrrectw(*y,63,*y,78,L"Merkistˆ levylt‰",7,0,0);
+      case L'L' : viwrrectw(*y,63,*y,78,L"Merkist√∂ levylt√§",7,0,0);
                  break;
 #ifdef WIN32
       case L'G' : viwrrectw(*y,63,*y,78,L"Windowskirjoitin",7,0,0);
                  break;
 #endif
-      default  : viwrrectw(*y,63,*y,79,L"Merkistˆ IBM (PC)",7,0,0);
+      default  : viwrrectw(*y,63,*y,79,L"Merkist√∂ IBM (PC)",7,0,0);
       }
    (*y)++;
    if (ch) {
@@ -2963,7 +2963,7 @@ korjval:
          case  1 : ch2 = L'V'; break;
          default : ch2 = L'H';
          }
-      wselectopt(L"ƒ‰nimerkki: E)i k‰ytet‰,  vain V)irheist‰,  myˆs H)uomio‰‰ni"
+      wselectopt(L"√Ñ√§nimerkki: E)i k√§ytet√§,  vain V)irheist√§,  my√∂s H)uomio√§√§ni"
          ,L"EVH", &ch2);
       switch (ch2) {
 		 case L'E' : aani = 0; break;
@@ -2971,15 +2971,15 @@ korjval:
 		 case L'H' : aani = 2; break;
          }
       }
-   viwrrectw(*y,5,*y,16,L"ƒ‰nimerkki :",7,0,0);
+   viwrrectw(*y,5,*y,16,L"√Ñ√§nimerkki :",7,0,0);
    switch (aani) {
-      case 0  : viwrrectw(*y,18,*y,28,L"Ei k‰ytˆss‰", 7, 0, 0); break;
-      case 1  : viwrrectw(*y,18,*y,31,L"Vain virheist‰", 7, 0, 0); break;
+      case 0  : viwrrectw(*y,18,*y,28,L"Ei k√§yt√∂ss√§", 7, 0, 0); break;
+      case 1  : viwrrectw(*y,18,*y,31,L"Vain virheist√§", 7, 0, 0); break;
       default : viwrrectw(*y,18,*y,39,L"Virhe- ja huomiomerkit", 7, 0, 0);
       }
    ++*y;
 #ifndef COMOFF
-	wcscpy(msg, L"K‰ytˆss‰ yhteydet:");
+	wcscpy(msg, L"K√§yt√∂ss√§ yhteydet:");
 	for (int nc = 0; nc < MAX_LAHPORTTI; nc++) {
 		if( portparam[nc] != 0) {
 			lahcom[nc] = (comdir[nc] == L'I') ? FALSE : TRUE;
@@ -2988,7 +2988,7 @@ korjval:
 		if (ch && nc < 8) {
 			clrln(ySize-3);
 			vidspwmsg(ySize-3,5,7,0,
-				L"Anna portin   numero :    (0 : ei k‰ytet‰, -1 : UDP), Esc: pois yhteyksist‰");
+				L"Anna portin   numero :    (0 : ei k√§ytet√§, -1 : UDP), Esc: pois yhteyksist√§");
 			vidint(ySize-3,17,1,nc+1);
 			INPUTINTW(&portparam[nc],2,28,ySize-3,L"\r\x1b",&ch2);
 			if (ch2 == ESC)
@@ -3007,7 +3007,7 @@ korjval:
 			if (!lahcom[nc])
 				vidspwmsg(*y,53,7,0,L"Vain vastaanotto           ");
 			if (!vastcom[nc])
-				vidspwmsg(*y,53,7,0,L"Vain l‰hetys               ");
+				vidspwmsg(*y,53,7,0,L"Vain l√§hetys               ");
 #if MAX_LAHPORTTI > 22
 			if (wcslen(msg) < 73)
 #endif
@@ -3027,7 +3027,7 @@ korjval:
    if (!bootfl) {
 	  nimio(0);
       ch = L'H';
-	  wselectopt(L"H)yv‰ksy valinnat,  K)orjaa valintoja,  <Esc>: keskeyt‰",
+	  wselectopt(L"H)yv√§ksy valinnat,  K)orjaa valintoja,  <Esc>: keskeyt√§",
 		 L"HK\x1B", &ch);
 	  if (ch == 27) {
 		 scpclr();
@@ -3054,7 +3054,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 	INT maalit[10] = {0,0,0,0,0,0,0,0,0,0};
 	extern int naytajono;
 
-//  Pyyd‰ tietokantaohjelmaa olemaan k‰ytt‰m‰tt‰ uudelleen vapautettuja tietueita. Nyt oletuksena.
+//  Pyyd√§ tietokantaohjelmaa olemaan k√§ytt√§m√§tt√§ uudelleen vapautettuja tietueita. Nyt oletuksena.
 //	ainauusirec = 1;
 
 //	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
@@ -3167,7 +3167,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			}
 		}
 	if (minvakanttiluku > n_lisaa) {
-		writeerror_w(L"Parametrin VAKANTTILUKU arvo liian suuri. Parametri LISƒƒ ehk‰ syyn‰.", 0);
+		writeerror_w(L"Parametrin VAKANTTILUKU arvo liian suuri. Parametri LIS√Ñ√Ñ ehk√§ syyn√§.", 0);
 		return(1);
 		}
    InitializeCriticalSection(&print_CriticalSection);
@@ -3284,7 +3284,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 		  ch = L'1' + k_pv;
 		  wcscpy(prs, L"12345678");
 		  prs[kilpparam.n_pv_akt] = 0;
-		  wselectopt(L"Vahvista kilpailup‰iv‰ (tai vaihe) tai vaihda antamalla numero",
+		  wselectopt(L"Vahvista kilpailup√§iv√§ (tai vaihe) tai vaihda antamalla numero",
 			prs, &ch);
 		 k_pv = ch - L'1';
 		 }
@@ -3474,7 +3474,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 		   emitfl = 0;
 	   if (emitfl) {
 			int rno, ka = -1, emitfl_1 = -1;
-			// Katso, ovatko kaikki merkinn‰t yhdenmukaiset
+			// Katso, ovatko kaikki merkinn√§t yhdenmukaiset
 			for (rno = 0; rno < NREGNLY; rno++) {
 				if (IntInList(regnly[rno], L"11 12 13 14 21") >= 0 &&
 					kaikki_ajat[rno+1] >= 0 && kaikki_ajat[0] >= 0 &&
@@ -3482,7 +3482,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 					break;
 					}
 				}
-			// Jos merkinnˆiss‰ ei kirjattuja eroja, p‰ivit‰ tiedot, joita ei viel‰ kirjattu
+			// Jos merkinn√∂iss√§ ei kirjattuja eroja, p√§ivit√§ tiedot, joita ei viel√§ kirjattu
 			if (rno == NREGNLY) {
 				if (kaikki_ajat[0] >= 0)
 					ka = kaikki_ajat[0];
@@ -3506,7 +3506,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 					break;
 					}
 				}
-			// Aseta emitfl_1 = 1, jos leimoja siirret‰‰n verkossa
+			// Aseta emitfl_1 = 1, jos leimoja siirret√§√§n verkossa
 			if (emitfl_1 < 0) {
 				for (i = 0; i < MAX_LAHPORTTI; i++) {
 					if (com_emit[i]) {
@@ -3526,7 +3526,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 					}
 				}
 			// Poista suuremmat arvot kuin 2,
-			// Aseta kaikki_ajat[0] = 1, jos sek‰ ajanottoa ett‰ leimantarkastusta
+			// Aseta kaikki_ajat[0] = 1, jos sek√§ ajanottoa ett√§ leimantarkastusta
 			for (rno = 0; rno < NREGNLY; rno++) {
 				if (kaikki_ajat[rno+1] > 2)
 					kaikki_ajat[rno+1] = 2;
@@ -3591,7 +3591,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 		lueKorRajat();
 #endif
 		if (lajatfl && !pvparam[k_pv].hiihtolahto) {
-			writeerror_w(L"Parametri LAJAT, mutta l‰htˆportin aikojen k‰yttˆ‰ ei valittuna", 0);
+			writeerror_w(L"Parametri LAJAT, mutta l√§ht√∂portin aikojen k√§ytt√∂√§ ei valittuna", 0);
 			}
 		if (pvparam[k_pv].hiihtolahto && *tunn_srj_nimi) {
 			  if (!wcscmp(tunn_srj_nimi, L"KAIKKI"))
@@ -3624,7 +3624,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				continue;
 			if (portparam[nc] != 0) {
 				if (initcom(nc)) {
-					writeerror_w(L"Tiedonsiirtotoimintojen k‰ynnistys ei onnistunut.", 0);
+					writeerror_w(L"Tiedonsiirtotoimintojen k√§ynnistys ei onnistunut.", 0);
 					return(1);
 					}
 				}
@@ -3663,7 +3663,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 
 	if (loki) {
 		wchar_t lmsg[60];
-		swprintf(lmsg, L"Ohjelma k‰ynnistetty, klo %s", wkello());
+		swprintf(lmsg, L"Ohjelma k√§ynnistetty, klo %s", wkello());
 		wkirjloki(lmsg);
 		}
 
@@ -3702,7 +3702,7 @@ void lopetus1(void)
    // kaynnistysvaihe = 0    Ennen kaikkia initialiaointeja
 	//                   1    Kun sarjat luettu ja EMS initialisoitu
    //                   2    KILP.DAT luettu kokonaan ja indeksoitu
-   //                   3    ajanotto ja tiedonsiirto k‰ynnistetty
+   //                   3    ajanotto ja tiedonsiirto k√§ynnistetty
    //                   4    kaikki initialisoinnit tehty
 
 	lkmThreadOn = 0;

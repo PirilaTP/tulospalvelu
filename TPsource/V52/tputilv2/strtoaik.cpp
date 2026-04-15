@@ -25,7 +25,7 @@
 #define FALSE 0
 
 /*  Strtoaika muuttaa muodossa tt.mm.ss annetun ajan sekunneiksi */
-/*  tt0 on lis„ys tunteihin */
+/*  tt0 on lisÂ„ys tunteihin */
 
 long strtoaika(char *straika,int tt0)
 
@@ -39,7 +39,7 @@ long strtoaika(char *straika,int tt0)
   if ((tt0 != 0 && abs(60 * (tt-tt0) + tm) > 545) ||
       (tt0 == 0 && 60 * tt + tm > 1090))
   {
-    writeerror("Aika sallitun v„lin ulkopuolella", 2000);
+    writeerror("Aika sallitun vÂ„lin ulkopuolella", 2000);
     return(0);
   }
   if ((nf == 3) && (straika[2] == '.') && (straika[5] == '.') &&

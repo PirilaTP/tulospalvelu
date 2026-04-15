@@ -54,4 +54,3 @@ void delwchar(wchar_t *s, int pos, int n)
 
 
 
-

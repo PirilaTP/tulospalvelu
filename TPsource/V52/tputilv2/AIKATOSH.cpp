@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /*  aikatostr_h muuttaa 1/100 sekunneissa annetun ajan muotoon tt.mm.ss,ss */
-/*  tt0 on lis„ys tunteihin */
+/*  tt0 on lisÂ„ys tunteihin */
 #if defined(__BORLANDC__)
 #pragma -K -a1
 #endif

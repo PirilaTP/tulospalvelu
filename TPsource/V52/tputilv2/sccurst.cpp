@@ -57,4 +57,3 @@ int sccurst(int *prow, int *pcol, int *phigh, int *plow)
 
     return (CurInfo.bVisible);
 }
-

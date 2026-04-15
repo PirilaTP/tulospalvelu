@@ -47,9 +47,11 @@
 #define MAX_PORTTI  128
 
 #define HTHREAD int
-typedef struct sockaddr SA;
+#ifndef SA
 typedef struct sockaddr_in SAIN;
+#define SA struct sockaddr
 #define SAINSIZE   sizeof(SAIN)
+#endif
 
 static  HTHREAD TCPacceptThread[MAX_PORTTI];
 static  HTHREAD TCPrcvThread[MAX_PORTTI];
@@ -177,7 +179,7 @@ void writesocketerror(int source, int errcode, wchar_t *msg)
     wchar_t line[81], lahteet[3][8] = {L"", L"UDP", L"TCP"};
 
     if (loki && errcode != 10054) {
-		swprintf(line, L"%s: Socket-virhe %d: lähde%s. %s",
+		swprintf(line, L"%s: Socket-virhe %d: lÃ¤hde%s. %s",
             wkello(), errcode, lahteet[source], msg);
         wkirjloki(line);
         }
@@ -254,7 +256,7 @@ int openportUDP(HANDLE *hC, ipparamtp *ipparam)
    char st[102];
 
    EnterCriticalSection(&tcpip_CriticalSection);
-   // Käynnistetään SOCKET-toiminnot, ellei jo käynnistetty
+   // KÃ¤ynnistetÃ¤Ã¤n SOCKET-toiminnot, ellei jo kÃ¤ynnistetty
    if (!WSAstarted) {
 	  if (!WSAStartup(2, &WSAdata))
 		 WSAstarted = 1;
@@ -362,7 +364,7 @@ int openportBroadcast(ipparamtp *ipparam)
 	if (nBroadcast >= MAX_BROADCAST)
 		return(nBroadcast);
    EnterCriticalSection(&tcpip_CriticalSection);
-   // Käynnistetään SOCKET-toiminnot, ellei jo käynnistetty
+   // KÃ¤ynnistetÃ¤Ã¤n SOCKET-toiminnot, ellei jo kÃ¤ynnistetty
    if (!WSAstarted) {
 	  if (!WSAStartup(2, &WSAdata))
 		 WSAstarted = 1;
@@ -437,16 +439,16 @@ void i_flush_TCP(HANDLE hC)
 
 //  int read_TCP(HANDLE hC, int buflen, char *buf, int *nread)
 //     hC     TCP-yhteyden numero (HANDLE)
-//     buflen siirrettävien merkkien maksimimäärä
-//     buf    puskuri, johon merkit siiretään
+//     buflen siirrettÃ¤vien merkkien maksimimÃ¤Ã¤rÃ¤
+//     buf    puskuri, johon merkit siiretÃ¤Ã¤n
 //     nread  osoitin integer-muuttujaan, jossa palautetaan siirrettyjen merkkien luku
 //
 //     funktio palauttaa aika arvon 0
 //
-//     funktio katsoo onko TCP-yhteyden hC saapuvien merkkien jonossa merkkejä ja siirtää
-//     merkit puskuriin buf. Merkkejä siirretään korkeintaan buflen ja siirrettyjen merkkien määrä
+//     funktio katsoo onko TCP-yhteyden hC saapuvien merkkien jonossa merkkejÃ¤ ja siirtÃ¤Ã¤
+//     merkit puskuriin buf. MerkkejÃ¤ siirretÃ¤Ã¤n korkeintaan buflen ja siirrettyjen merkkien mÃ¤Ã¤rÃ¤
 //     palautetaan muuttujassa nread
-//     kun yhteys on client-yhteys ja yhteys on katkennut, käynnistää ohjelma yhteyden uudelleenkäynnistysyrityksen
+//     kun yhteys on client-yhteys ja yhteys on katkennut, kÃ¤ynnistÃ¤Ã¤ ohjelma yhteyden uudelleenkÃ¤ynnistysyrityksen
 
 int read_TCP(HANDLE hC, int buflen, char *buf, int *nread)
 {
@@ -479,17 +481,17 @@ int read_TCP(HANDLE hC, int buflen, char *buf, int *nread)
 
 //  int peek_TCP(HANDLE hC, int buflen, char *buf, int *nread)
 //     hC     TCP-yhteyden numero (HANDLE)
-//     buflen siirrettävien merkkien maksimimäärä
-//     buf    puskuri, johon merkit siiretään
+//     buflen siirrettÃ¤vien merkkien maksimimÃ¤Ã¤rÃ¤
+//     buf    puskuri, johon merkit siiretÃ¤Ã¤n
 //     nread  osoitin integer-muuttujaan, jossa palautetaan siirrettyjen merkkien luku
 //
 //     funktio palauttaa aika arvon 0
 //
-//     funktio katsoo onko TCP-yhteyden hC saapuvien merkkien jonossa merkkejä ja siirtää
-//     merkit puskuriin buf. Merkkejä siirretään korkeintaan buflen ja siirrettyjen merkkien määrä
+//     funktio katsoo onko TCP-yhteyden hC saapuvien merkkien jonossa merkkejÃ¤ ja siirtÃ¤Ã¤
+//     merkit puskuriin buf. MerkkejÃ¤ siirretÃ¤Ã¤n korkeintaan buflen ja siirrettyjen merkkien mÃ¤Ã¤rÃ¤
 //     palautetaan muuttujassa nread.
-//	   poiketen aliohjelmasta read_TCP, ei merkkejä poisteta tiedonsiirron puskurista.
-//     kun yhteys on client-yhteys ja yhteys on katkennut, käynnistää ohjelma yhteyden uudelleenkäynnistysyrityksen
+//	   poiketen aliohjelmasta read_TCP, ei merkkejÃ¤ poisteta tiedonsiirron puskurista.
+//     kun yhteys on client-yhteys ja yhteys on katkennut, kÃ¤ynnistÃ¤Ã¤ ohjelma yhteyden uudelleenkÃ¤ynnistysyrityksen
 
 int peek_TCP(HANDLE hC, int buflen, char *buf, int *nread)
 {
@@ -530,18 +532,18 @@ int peek_TCP(HANDLE hC, int buflen, char *buf, int *nread)
 }
 
 // void TCPrcvTh(LPVOID lpCn)
-//    funktio käynnistetään omana säikeenään jokaiselle TCP-yhteydelle, jonka on avannut TCP client funktiossa
-//    openportTCP tai TCP palvelin ohjelmassa TCPacceptTh saatuaan yhteyspyynnön clientilta
+//    funktio kÃ¤ynnistetÃ¤Ã¤n omana sÃ¤ikeenÃ¤Ã¤n jokaiselle TCP-yhteydelle, jonka on avannut TCP client funktiossa
+//    openportTCP tai TCP palvelin ohjelmassa TCPacceptTh saatuaan yhteyspyynnÃ¶n clientilta
 //
-//    lpCn  on integer-muuttujan osoite. Muuttuja sisältää TCP-yhteyden numeron väliltä 0 .. MAX_PORTTI-1
+//    lpCn  on integer-muuttujan osoite. Muuttuja sisÃ¤ltÃ¤Ã¤ TCP-yhteyden numeron vÃ¤liltÃ¤ 0 .. MAX_PORTTI-1
 //
-//    funktio käynnistää ikuisen loopin, joka odottaa, että vastapuoli lähettää merkkejä ja socket
-//    TCPyhteys[yhtno]->sockdata ilmoittaa vastaanottaneensa merkkejä. Funktio siirtää merkit puskuriin
-//    TCPyhteys[yhtno]->rcvbuf päivittäen seuraavaan vapaaseen paikkaan osoittavan arvon bufhead
-//    puskurin täyttyessä hävittää funktio merkkejä vanhimmasta päästä siirtämällä osoitinta buftail
-//    funktio on blocking-tilassa aina, kun uusia merkkejä ei ole käsiteltävänä.
-//    Kun funktiosta read palataan, vaikka merkkejä ei ole vastaanotettu, merkitsee ohjelma yhteyden suljetuksi
-//    ja sulkee säikeen. Näin tapahtuu myös, kun socket suljetaan ohjelmasta poistuttaessa
+//    funktio kÃ¤ynnistÃ¤Ã¤ ikuisen loopin, joka odottaa, ettÃ¤ vastapuoli lÃ¤hettÃ¤Ã¤ merkkejÃ¤ ja socket
+//    TCPyhteys[yhtno]->sockdata ilmoittaa vastaanottaneensa merkkejÃ¤. Funktio siirtÃ¤Ã¤ merkit puskuriin
+//    TCPyhteys[yhtno]->rcvbuf pÃ¤ivittÃ¤en seuraavaan vapaaseen paikkaan osoittavan arvon bufhead
+//    puskurin tÃ¤yttyessÃ¤ hÃ¤vittÃ¤Ã¤ funktio merkkejÃ¤ vanhimmasta pÃ¤Ã¤stÃ¤ siirtÃ¤mÃ¤llÃ¤ osoitinta buftail
+//    funktio on blocking-tilassa aina, kun uusia merkkejÃ¤ ei ole kÃ¤siteltÃ¤vÃ¤nÃ¤.
+//    Kun funktiosta read palataan, vaikka merkkejÃ¤ ei ole vastaanotettu, merkitsee ohjelma yhteyden suljetuksi
+//    ja sulkee sÃ¤ikeen. NÃ¤in tapahtuu myÃ¶s, kun socket suljetaan ohjelmasta poistuttaessa
 
 void TCPrcvTh(LPVOID lpCn)
 {
@@ -631,16 +633,16 @@ void TCPrcvTh(LPVOID lpCn)
 }
 
 // void TCPacceptTh(LPVOID lpCn)
-//    funktio käynnistetään omana säikeenään jokaiselle TCP-palvelimelle
+//    funktio kÃ¤ynnistetÃ¤Ã¤n omana sÃ¤ikeenÃ¤Ã¤n jokaiselle TCP-palvelimelle
 //
-//    lpCn  on integer-muuttujan osoite. Muuttuja sisältää TCP-yhteyden numeron väliltä 0 .. MAX_PORTTI-1
+//    lpCn  on integer-muuttujan osoite. Muuttuja sisÃ¤ltÃ¤Ã¤ TCP-yhteyden numeron vÃ¤liltÃ¤ 0 .. MAX_PORTTI-1
 //
-//    funktio käynnistää ikuisen loopin, joka kuuntelee yhteydelle määriteltyä porttia ja
-//	  vastaanotettuaan yhteyspyynnön socketiksi TCPyhteys[yhtno]->sockdata avaa yhteyden luomalla uuden säikeen
+//    funktio kÃ¤ynnistÃ¤Ã¤ ikuisen loopin, joka kuuntelee yhteydelle mÃ¤Ã¤riteltyÃ¤ porttia ja
+//	  vastaanotettuaan yhteyspyynnÃ¶n socketiksi TCPyhteys[yhtno]->sockdata avaa yhteyden luomalla uuden sÃ¤ikeen
 //    funktiolle TCPrcvTh antanen parametriksi TCP-yhteyden numeron.
 //    Ohjelma tallettaa vastapuolen osoitteen tekstimuotoisena muuttujaan TCPyhteys[yhtno]->str_ip.
-//    Säie on funktion accept odotustilassa aina paitsi vastaanotettuaan yhteyspyynnön ja avatessaan yhteyden
-//    Säikeestä poistutaan, kun socket suljetaan, jolloin accept palauttaa arvon INVALID_SOCKET ja säie suljetaan.
+//    SÃ¤ie on funktion accept odotustilassa aina paitsi vastaanotettuaan yhteyspyynnÃ¶n ja avatessaan yhteyden
+//    SÃ¤ikeestÃ¤ poistutaan, kun socket suljetaan, jolloin accept palauttaa arvon INVALID_SOCKET ja sÃ¤ie suljetaan.
 
 void TCPacceptTh(LPVOID lpCn)
 	{
@@ -685,21 +687,21 @@ void TCPacceptTh(LPVOID lpCn)
 
 //  int openportTCP(HANDLE *hC, ipparamtp *ipparam)
 //      hC         osoitin TCP-yhteydelle annettavaan numeroon (HANDLE)
-//		ipparam	   avattavaa yhteyttä koskevat parametrit (portit, vastapuolen osoite, yhteyden tyyppi)
+//		ipparam	   avattavaa yhteyttÃ¤ koskevat parametrit (portit, vastapuolen osoite, yhteyden tyyppi)
 //
-//	    ohjelma palauttaa arvon 0, kun käynnistys onnistuu tämän ohjelman osalta ja muulloin virhekoodin
+//	    ohjelma palauttaa arvon 0, kun kÃ¤ynnistys onnistuu tÃ¤mÃ¤n ohjelman osalta ja muulloin virhekoodin
 //
-//		Ohjelma käynnistää joko TCP clientin tai TCP palvelimen riippuen siitä, onko vastapuolen ip-osoite
+//		Ohjelma kÃ¤ynnistÃ¤Ã¤ joko TCP clientin tai TCP palvelimen riippuen siitÃ¤, onko vastapuolen ip-osoite
 //      ilmoitettu parametrissa ipparam vai ei (client, kun ip-osoite on annettu)
 //
-//      Vermistettuaan, että WSA on käynnissä, ohjelma määrää yhteyden numeroksi ensimmäisen vapaan numeron ja
+//      Vermistettuaan, ettÃ¤ WSA on kÃ¤ynnissÃ¤, ohjelma mÃ¤Ã¤rÃ¤Ã¤ yhteyden numeroksi ensimmÃ¤isen vapaan numeron ja
 //      tallentaa sen parametrin hC osoittamaan osoitteeseen.
 //
-//      Clientin tapauksessa yrittää ohjelma avata yhteyden osoitteeseen destaddr:destport ja se onnistuessa
-//      käynnistää yhteydelle uutena säikeenä funktion TCPrcvTh. Käytettävä socket on TCPyhteys[yhtno]->sockdata
+//      Clientin tapauksessa yrittÃ¤Ã¤ ohjelma avata yhteyden osoitteeseen destaddr:destport ja se onnistuessa
+//      kÃ¤ynnistÃ¤Ã¤ yhteydelle uutena sÃ¤ikeenÃ¤ funktion TCPrcvTh. KÃ¤ytettÃ¤vÃ¤ socket on TCPyhteys[yhtno]->sockdata
 //
-//	    Palvelimen tapauksessa ohjelma luo socketin TCPyhteys[yhtno]->sockmaster ja käynnistää uudessa säikeessä
-//      funktion TCPacceptTh ottamaan vastaan yhteyspyyntöjä.
+//	    Palvelimen tapauksessa ohjelma luo socketin TCPyhteys[yhtno]->sockmaster ja kÃ¤ynnistÃ¤Ã¤ uudessa sÃ¤ikeessÃ¤
+//      funktion TCPacceptTh ottamaan vastaan yhteyspyyntÃ¶jÃ¤.
 //
 
 int openportTCP(HANDLE *hC, ipparamtp *ipparam)
@@ -712,7 +714,7 @@ int openportTCP(HANDLE *hC, ipparamtp *ipparam)
 	yhtno = (int) *hC - 1;
 	*hC = 0;
 	EnterCriticalSection(&tcpip_CriticalSection);
-	// Käynnistetään SOCKET-toiminnot, ellei jo käynnistetty
+	// KÃ¤ynnistetÃ¤Ã¤n SOCKET-toiminnot, ellei jo kÃ¤ynnistetty
 	if (!WSAstarted) {
 		if (!WSAStartup(2, &WSAdata))
 			WSAstarted = 1;
@@ -867,7 +869,7 @@ int reconnectTCP(HANDLE hC)
 	  }
 #endif
    clrln(ySize-1);
-   sprintf(prs, "%s: TCP-yhteyden %15.15s uudelleenkäynnistys aloitettu",
+   sprintf(prs, "%s: TCP-yhteyden %15.15s uudelleenkÃ¤ynnistys aloitettu",
 	  kello(), TCPyhteys[yhtno]->str_ip);
    vidspmsg(ySize-1,0,0,7, prs);
    writeerrorOn = 30;
@@ -879,12 +881,12 @@ int reconnectTCP(HANDLE hC)
 	   clrln(ySize-1);
 	   if (!retcode) {
 		  TCPrcvThread[yhtno] = _beginthread(TCPrcvTh, 40960, yhtnot+yhtno);
-		  sprintf(prs, "%s: TCP-yhteyden %15.15s   uudelleenkäynnistys onnistui",
+		  sprintf(prs, "%s: TCP-yhteyden %15.15s   uudelleenkÃ¤ynnistys onnistui",
 			 kello(), TCPyhteys[yhtno]->str_ip);
 		  tcpkaynnistys[yhtno] = timeticks()+1;
 		  }
 	   else
-		  sprintf(prs, "%s: TCP-yhteyden %15.15s   uudelleenkäynnistys epäonnistui",
+		  sprintf(prs, "%s: TCP-yhteyden %15.15s   uudelleenkÃ¤ynnistys epÃ¤onnistui",
 			 kello(), TCPyhteys[yhtno]->str_ip);
 	   vidspmsg(ySize-1,0,0,7, prs);
 	   }

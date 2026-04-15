@@ -49,18 +49,18 @@ static char ISOtoOEM[256] =
 
 /*
 	switch (ch) {
-		case 196 : ch = ''; break;
-		case 214 : ch = '™'; break;
-		case 197 : ch = ''; break;
-		case 220 : ch = 'š'; break;
-		case 201 : ch = ''; break;
-		case 228 : ch = '„'; break;
-		case 246 : ch = '”'; break;
-		case 229 : ch = '†'; break;
-		case 252 : ch = ''; break;
-		case 233 : ch = '‚'; break;
-		case 176	: ch = 'Å'; break;
-		case 247 : ch = 'Ä'; break;
+		case 196 : ch = 'Â'; break;
+		case 214 : ch = 'Â™'; break;
+		case 197 : ch = 'Â'; break;
+		case 220 : ch = 'Âš'; break;
+		case 201 : ch = 'Â'; break;
+		case 228 : ch = 'Â„'; break;
+		case 246 : ch = 'Â”'; break;
+		case 229 : ch = 'Â†'; break;
+		case 252 : ch = 'Â'; break;
+		case 233 : ch = 'Â‚'; break;
+		case 176	: ch = 'Ã…'; break;
+		case 247 : ch = 'Ã„'; break;
 		}
 	return(ch);
 */

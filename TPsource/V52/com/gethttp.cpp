@@ -16,7 +16,7 @@
 
 #define _WININET_
 #define WininetHPP
-#include <Windows.h>
+#include <windows.h>
 #include <WinHTTP.h>
 #include <stdio.h>
 #include <string.h>
@@ -159,7 +159,7 @@ int httphaku(wchar_t *host, int port, wchar_t *page, int secure, char *buf, int 
 
 //  = -6: Istunnon avaaminen ei onnistunut
 // bResult = -5: Yhteyden avaaminen ei onnistunut
-// bResult = -4: Pyynnön lähettäminen ei onnistunut
+// bResult = -4: PyynnÃ¶n lÃ¤hettÃ¤minen ei onnistunut
 // bResult = -3: Muisti loppui
 // bResult = -2: Virhe tietoa luettaessa
-// bResult = -1: Virhe tiedon saatavuutta kysyttäessä
+// bResult = -1: Virhe tiedon saatavuutta kysyttÃ¤essÃ¤

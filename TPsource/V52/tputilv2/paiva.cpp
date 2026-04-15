@@ -40,4 +40,3 @@ wchar_t *wpaiva(void)
 	return(wct);
 }
 
-

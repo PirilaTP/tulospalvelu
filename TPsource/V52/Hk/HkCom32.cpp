@@ -64,26 +64,26 @@
 
 int alkut = ALKUT;
 HANDLE hComm[MAX_PORTTI];
-int ackreq[MAX_LAHPORTTI];              /* != 0 Ilmaisee, ett‰ yhteys toimii */
-int yhtfl[MAX_LAHPORTTI];              /* != 0 Ilmaisee, ett‰ yhteys toimii */
-int keyclose[MAX_LAHPORTTI];                   /* K‰ytt‰j‰ sulkenut portin */
+int ackreq[MAX_LAHPORTTI];              /* != 0 Ilmaisee, ett√§ yhteys toimii */
+int yhtfl[MAX_LAHPORTTI];              /* != 0 Ilmaisee, ett√§ yhteys toimii */
+int keyclose[MAX_LAHPORTTI];                   /* K√§ytt√§j√§ sulkenut portin */
 int autoclose;               /* Ohjelma sulkenut vastaanoton */
 int  initid[MAX_LAHPORTTI];                    /* inpakid initialisoimatta */
 extern int ivtime[];                    /* Seuraavan keskeytyksen hetki */
-extern int intv[];                      /* Tiedonsiirron odotusv‰li     */
-//int intv[2];                      /* Tiedonsiirron odotusv‰li     */
+extern int intv[];                      /* Tiedonsiirron odotusv√§li     */
+//int intv[2];                      /* Tiedonsiirron odotusv√§li     */
 combufrec *inbuf;      /* Saapuvien jono */
-combufrec *outbuf[MAX_LAHPORTTI];     /* L‰htevien jono */
+combufrec *outbuf[MAX_LAHPORTTI];     /* L√§htevien jono */
 int  combufsize;
 char *combuf[MAX_LAHPORTTI];          /* IO-portin puskuri */
-int  lahfl[MAX_LAHPORTTI];            /* L‰hetys k‰ynniss‰ */
+int  lahfl[MAX_LAHPORTTI];            /* L√§hetys k√§ynniss√§ */
 int  vkesken[MAX_LAHPORTTI];              /* Vastaanotto kesken */
-int  chcomkesto[MAX_LAHPORTTI];           /* Yhden merkin l‰hett‰miskesko */
-int  hyvkesken[MAX_LAHPORTTI];            /* Hyv‰ksynt‰ kesken */
-char outpakid[MAX_LAHPORTTI];    /* seuraava l‰hetett‰v‰ id */
+int  chcomkesto[MAX_LAHPORTTI];           /* Yhden merkin l√§hett√§miskesko */
+int  hyvkesken[MAX_LAHPORTTI];            /* Hyv√§ksynt√§ kesken */
+char outpakid[MAX_LAHPORTTI];    /* seuraava l√§hetett√§v√§ id */
 int vastcom0[MAX_LAHPORTTI];
 int lahcomserver[MAX_LAHPORTTI];
-int class_len[N_CLASS];     // L‰hetett‰v‰n tiedon pituus mukaanlukien
+int class_len[N_CLASS];     // L√§hetett√§v√§n tiedon pituus mukaanlukien
                                    // checksum ja itse tieto
 extern int timerfl, tbase, trate;
 extern INT vpiste[];
@@ -152,16 +152,16 @@ void broadcasttulos(kilptietue *kilp, int piste)
 	wrt_st_broadcast(strlen(line), line);
 }
 
-//  henkilˆkohtaisen l‰het‰
+//  henkil√∂kohtaisen l√§het√§
 //
-//  piste = 0  :              L‰het‰ kaikki perustiedot
-//  piste < 0  :              L‰het‰ kaikki p‰iv‰n 1-piste tiedot
-//							  aktiivinen p‰iv‰ ilman aikoja, muut aikoineen
-//  piste = 1 .. valuku+2     L‰het‰ pisteen piste-2 aika
-//                            (-1: l‰htˆ, 0: maali, >0: v‰liaika)
-//  piste = valuku+3          L‰het‰ keskhyl
-//  piste = valuku+4          L‰het‰ ammunnan sakkotiedot
-//  piste = valuku+5          L‰het‰ muu sakkotieto
+//  piste = 0  :              L√§het√§ kaikki perustiedot
+//  piste < 0  :              L√§het√§ kaikki p√§iv√§n 1-piste tiedot
+//							  aktiivinen p√§iv√§ ilman aikoja, muut aikoineen
+//  piste = 1 .. valuku+2     L√§het√§ pisteen piste-2 aika
+//                            (-1: l√§ht√∂, 0: maali, >0: v√§liaika)
+//  piste = valuku+3          L√§het√§ keskhyl
+//  piste = valuku+4          L√§het√§ ammunnan sakkotiedot
+//  piste = valuku+5          L√§het√§ muu sakkotieto
 //
 
 void laheta(INT dkilp, INT entno, INT piste, int hyv_muutos, INT comtarfl, INT kielto,
@@ -172,7 +172,7 @@ void laheta(INT dkilp, INT entno, INT piste, int hyv_muutos, INT comtarfl, INT k
 	combufrec obuf;
 	kilptietue kilp;
 
-	// hyv_muutos == -1 pyyt‰‰ l‰hett‰m‰‰n ajanottotiedot vaiheen tietojen mukana
+	// hyv_muutos == -1 pyyt√§√§ l√§hett√§m√§√§n ajanottotiedot vaiheen tietojen mukana
 	if (hyv_muutos == -1) {
 		lah_kaikkiajat = 1;
 		hyv_muutos = 0;
@@ -237,7 +237,7 @@ void laheta(INT dkilp, INT entno, INT piste, int hyv_muutos, INT comtarfl, INT k
    //   in_com = FALSE;
 	}
 
-//  henkilˆkohtaisen tark_kilp
+//  henkil√∂kohtaisen tark_kilp
 
 static void tark_kilp(INT cn, INT kaikki)
    {
@@ -340,12 +340,12 @@ static void tark_kilp(INT cn, INT kaikki)
    if (er) {
 #ifdef _CONSOLE
 		writeerror_w(
-		 L"Tiedostot eri koneilla eiv‰t ole yht‰pit‰vi‰",0);
+		 L"Tiedostot eri koneilla eiv√§t ole yht√§pit√§vi√§",0);
 	  writeerror_w(L"Poistu ohjelmasta, kopioi KILP.DAT"
-		 L"l‰hett‰v‰lt‰ t‰lle koneelle",0);
+		 L"l√§hett√§v√§lt√§ t√§lle koneelle",0);
 #else
-		writeerror_w(L"Tiedostot eri koneilla eiv‰t ole yht‰pit‰vi‰"
-			L"Poistu ohjelmasta ja kopioi KILP.DAT l‰hett‰v‰lt‰ t‰lle koneelle",0);
+		writeerror_w(L"Tiedostot eri koneilla eiv√§t ole yht√§pit√§vi√§"
+			L"Poistu ohjelmasta ja kopioi KILP.DAT l√§hett√§v√§lt√§ t√§lle koneelle",0);
 #endif
 	  }
    }
@@ -830,11 +830,11 @@ bool tark_alku(const combufrec * const cbuf, int cn)
 	if (cbuf->d.alku.nrec != datf2.numrec) {
 		erbeep();
 		if (cbuf->d.alku.flags & 1) {
-			swprintf(ln, L"Vaihen vaihtopyyntˆ koneelta, jonka KILP.DAT eri pituinen, yhteys %d", cn+1);
+			swprintf(ln, L"Vaihen vaihtopyynt√∂ koneelta, jonka KILP.DAT eri pituinen, yhteys %d", cn+1);
 			writeerror_w(ln, 0);
 			}
 		else if (var[cn] == 0) {
-			swprintf(ln, L"Yhteyspyyntˆ koneelta, jonka KILP.DAT eri pituinen, yhteys %d", cn+1);
+			swprintf(ln, L"Yhteyspyynt√∂ koneelta, jonka KILP.DAT eri pituinen, yhteys %d", cn+1);
 			writeerror_w(ln, 0);
 			}
 		var[cn]++;
@@ -850,7 +850,7 @@ bool tark_alku(const combufrec * const cbuf, int cn)
 	else if (cbuf->d.alku.vaihe != k_pv + 1) {
 		if (var[cn] == 0) {
 			erbeep();
-			swprintf(ln, L"Eri vaiheessa oleva kone pyyt‰‰ yhteytt‰, yhteys %d", cn+1);
+			swprintf(ln, L"Eri vaiheessa oleva kone pyyt√§√§ yhteytt√§, yhteys %d", cn+1);
 			writeerror_w(ln, 0);
 			}
 		var[cn]++;
@@ -1226,7 +1226,7 @@ void uusintaTCP(int cn)
 
    wselectopt(L"K)aikki sarjat, V)alitse sarjat, S)anomanumerot", L"VKS", &cs);
    if (cs != L'S') {
-      wselectopt(L"T)ulokset, V)‰liajat, M)olemmat, H)yl+kesk+avoimet, L)‰htˆajat", L"TVMLH", &cp);
+      wselectopt(L"T)ulokset, V)√§liajat, M)olemmat, H)yl+kesk+avoimet, L)√§ht√∂ajat", L"TVMLH", &cp);
       wselectopt(L"K)oko kilpailu, V)alittava aikavali, Esc: peruuta", L"KV\x1b", &ch);
       if (ch == L'V') {
       clrln(ySize-3);
@@ -1285,7 +1285,7 @@ void emitva_uusinta(int cn, int tietue)
 	if (cn >= 0 && tietue < 0) {
 		while (1) {
 			ch = L' ';
-			wselectopt(L"L‰het‰ K)aikki tai valitse S)arja, Esc: lopeta", L"KS\x1b", &ch);
+			wselectopt(L"L√§het√§ K)aikki tai valitse S)arja, Esc: lopeta", L"KS\x1b", &ch);
 			if (ch == ESC)
 				break;
 			if (ch == L'S' || ch == L'M') {

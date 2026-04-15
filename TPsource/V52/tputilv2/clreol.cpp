@@ -24,4 +24,3 @@ void clreol()
    scclrmsg(y, x, 80-x);
 }
 
-

@@ -77,7 +77,7 @@ int viwrrect(int u_row, int u_col, int l_row, int l_col,
 		ansitooem((char *) Buffer);
 	}
    if (memcmp(Buffer, BufOld, bsize * sizeof(CHAR_INFO)) && 
-		!WriteConsoleOutputA(hConOut, Buffer, dwBufferSize, dwBufferCoord,
+		!WriteConsoleOutputCharacterW(hConOut, Buffer, dwBufferSize, dwBufferCoord,
 		lpRR)) {
 		GetLastError();
 		return(-1);

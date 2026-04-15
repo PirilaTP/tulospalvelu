@@ -45,4 +45,3 @@ void inputint_oik(int *i, int l,int x,int y, char *term, char *tc)
 
 
 
-

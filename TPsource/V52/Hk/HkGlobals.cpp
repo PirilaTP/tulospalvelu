@@ -51,23 +51,7 @@
 #else
 	bool hav_virheet = false;
 #endif
-	struct {
-		wchar_t afname[202];
-		int autokomentolaji;
-		wchar_t autokomento[202];
-		wchar_t jakelumaar[202];
-		bool vainMuutt;
-		int afvali;
-		bool af_kaikki;
-		bool af_flag;
-		wchar_t af_xmlva;
-		wchar_t aflstnm[202];
-		wchar_t sanafname[202];
-		wchar_t sanafchars;
-		int kopiofl;
-		wchar_t wtitlea[202];
-		wchar_t wheadera[202];
-		} autofileparam;
+	autofileparam_t autofileparam;
 	wchar_t WorkingDir[200];
 	int nakviive = 1000;
 	int ohitavirheet;
@@ -138,8 +122,8 @@
 	wchar_t tarstr[14][13] = {
 						L"",
 						L"Keskeytt.",
-						L"Hylätty",
-						L"Ei läht.",
+						L"HylÃ¤tty",
+						L"Ei lÃ¤ht.",
 						L"Tasoitus =",
 						L"Sakko =",
 						L"Korj.",
@@ -567,7 +551,7 @@
 	int maalileimasin;
 	ratatp *rata;
 	INT  nrata;
-	//  kaikki_ajat[0]=  0: ei emit-ajanottoa, 1: sekä leimat että ajanotto, 2: vain ajanotto
+	//  kaikki_ajat[0]=  0: ei emit-ajanottoa, 1: sekÃ¤ leimat ettÃ¤ ajanotto, 2: vain ajanotto
 	//  kaikki_ajat[r_no+1]= 0: laitteelta r_no+1 ei ajanottoa, >=1: laite r_no+1 ottaa aikoja
 	int  kaikki_ajat[NREGNLY+1];
 	int  vaadiaika, esitark, esiluenta, vainpiste[NREGNLY+1], luesuoraan;

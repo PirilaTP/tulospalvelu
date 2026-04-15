@@ -104,27 +104,27 @@ void DSPQ(INT r, INT cn);
 
 extern int alkut;
 extern HANDLE hComm[];
-extern int ackreq[];              /* != 0 Ilmaisee, ett‰ yhteys toimii */
-extern int yhtfl[];              /* != 0 Ilmaisee, ett‰ yhteys toimii */
-extern int keyclose[];                   /* K‰ytt‰j‰ sulkenut portin */
+extern int ackreq[];              /* != 0 Ilmaisee, ett√§ yhteys toimii */
+extern int yhtfl[];              /* != 0 Ilmaisee, ett√§ yhteys toimii */
+extern int keyclose[];                   /* K√§ytt√§j√§ sulkenut portin */
 static int autoclose;               /* Ohjelma sulkenut vastaanoton */
 extern int  initid[];                    /* inpakid initialisoimatta */
 extern int ivtime[];                    /* Seuraavan keskeytyksen hetki */
-extern int intv[];                      /* Tiedonsiirron odotusv‰li     */
-//int intv[2];                      /* Tiedonsiirron odotusv‰li     */
+extern int intv[];                      /* Tiedonsiirron odotusv√§li     */
+//int intv[2];                      /* Tiedonsiirron odotusv√§li     */
 extern combufrec *inbuf;      /* Saapuvien jono */
-extern combufrec *outbuf[];     /* L‰htevien jono */
+extern combufrec *outbuf[];     /* L√§htevien jono */
 extern int  combufsize;
 extern char *combuf[];          /* IO-portin puskuri */
-extern int  lahfl[];            /* L‰hetys k‰ynniss‰ */
+extern int  lahfl[];            /* L√§hetys k√§ynniss√§ */
 extern int  vkesken[];              /* Vastaanotto kesken */
-extern int  chcomkesto[];           /* Yhden merkin l‰hett‰miskesko */
-extern int  hyvkesken[];            /* Hyv‰ksynt‰ kesken */
-extern char outpakid[];    /* seuraava l‰hetett‰v‰ id */
+extern int  chcomkesto[];           /* Yhden merkin l√§hett√§miskesko */
+extern int  hyvkesken[];            /* Hyv√§ksynt√§ kesken */
+extern char outpakid[];    /* seuraava l√§hetett√§v√§ id */
 extern int vastcom0[];
 extern int lahcomserver[];
 int varaserver;
-extern int class_len[];     // L‰hetett‰v‰n tiedon pituus mukaanlukien
+extern int class_len[];     // L√§hetett√§v√§n tiedon pituus mukaanlukien
                                    // checksum ja itse tieto
 extern int timerfl, tbase, trate;
 extern INT vpiste[];
@@ -468,10 +468,10 @@ void lahetaMonitorille(int yhtlkm, int yhtavattu, int jonossa, int jonoja)
 
 void buflah(int cn, combufrec *obuf)
    {
-	 static wchar_t tmsg[] = L"JONO   TƒYSI EI LƒHETETTY";
-    static wchar_t tmsg1[] = L"Tiedonsiirtojono t‰ynn‰, ei l‰hetet‰";
+	 static wchar_t tmsg[] = L"JONO   T√ÑYSI EI L√ÑHETETTY";
+    static wchar_t tmsg1[] = L"Tiedonsiirtojono t√§ynn√§, ei l√§hetet√§";
     static wchar_t tmsg2[] =
-        L"L‰htevien tietojen jono kasvaa, tarkista tiedonsiirto";
+        L"L√§htevien tietojen jono kasvaa, tarkista tiedonsiirto";
 	static int esto = 0, nj0 = 0;
     char *cb;
     int  v, nj;
@@ -696,7 +696,7 @@ static void luepaketti(INT cn)
    static INT  npak[MAX_LAHPORTTIY], sumerror[MAX_LAHPORTTIY];               /* Virhelaskuri */
    static INT  inq0[MAX_LAHPORTTIY] = {-10, -10};   /* saapuvan sanoman seuranta */
 #ifndef LANGSV_K
-   wchar_t tenerror[] = L"10 tiedonsiirtovirhett‰ paketin siirrossa";
+   wchar_t tenerror[] = L"10 tiedonsiirtovirhett√§ paketin siirrossa";
 	wchar_t vmsg[] = L"Virhe   tiedonsiirrossa";
 #else // LANGSV_K
    wchar_t tenerror[] = L"10 kommunkationfel";
@@ -759,13 +759,13 @@ static void luepaketti(INT cn)
 					}
 				else {
 #ifndef LANGSV_K
-					writeerror_w(L"Tiedonsiirtovirhe, v‰‰r‰ paketin numero",0);
+					writeerror_w(L"Tiedonsiirtovirhe, v√§√§r√§ paketin numero",0);
 #else // LANGSV_K
 					writeerror_w(L"Kommunikationsfel, nummer av paket fel",0);
 #endif // LANGSV_K
 					initid[cn] = TRUE;
 					if (loki) {
-				  wkirjloki(L"V‰‰r‰ tiedonsiirtopaketin numero");
+				  wkirjloki(L"V√§√§r√§ tiedonsiirtopaketin numero");
                   }
                }
 		    for (i = 0; i < 10; i++) {
@@ -816,7 +816,7 @@ static void luepaketti(INT cn)
       else {
          if (nch - class_len[pkgclass[cn]]-2) {
 			koodi = 6;
-			swprintf(emsg, L"Merkkej‰ luettu: %d, Vaadittu: %d, Luokka: %d",
+			swprintf(emsg, L"Merkkej√§ luettu: %d, Vaadittu: %d, Luokka: %d",
 			   (int) nch, (int) class_len[pkgclass[cn]]+2, pkgclass[cn]);
             }
          else if (chksum(id[cn]+8, class_len[pkgclass[cn]]) - *chks)
@@ -922,7 +922,7 @@ void *luepakettiUDP(LPVOID lpCn)
 	long  edyht, tm;
 	char inpakid = 0;  /* odotettava paketin id */
 	int  npak = 0, sumerror = 0;          /* Virhelaskuri */
-	wchar_t tenerror[] = L"10 tiedonsiirtovirhett‰ paketin siirrossa";
+	wchar_t tenerror[] = L"10 tiedonsiirtovirhett√§ paketin siirrossa";
 	wchar_t vmsg[] = L"Virhe   tiedonsiirrossa";
 	wchar_t emsg[80];
 #ifdef PROFILOI
@@ -958,7 +958,7 @@ void *luepakettiUDP(LPVOID lpCn)
         put_profile(profmsg, cn);
 #endif
 
-		// nch == 0 vain timeout-tilanteessa, joka osoittaa, ett‰ sanomaa ei ole
+		// nch == 0 vain timeout-tilanteessa, joka osoittaa, ett√§ sanomaa ei ole
 
         if (nch) {
 			yhtfl[cn] = 5;
@@ -1004,11 +1004,11 @@ void *luepakettiUDP(LPVOID lpCn)
 							  }
 							}
 					 else {
-						  writeerror_w(L"Tiedonsiirtovirhe, v‰‰r‰ paketin numero",0);
+						  writeerror_w(L"Tiedonsiirtovirhe, v√§√§r√§ paketin numero",0);
 						  initid[cn] = TRUE;
 						  koodi = 4;
 						  if (loki) {
-								wkirjloki(L"V‰‰r‰ tiedonsiirtopaketin numero");
+								wkirjloki(L"V√§√§r√§ tiedonsiirtopaketin numero");
 								}
 						  }
 					 }
@@ -1280,7 +1280,7 @@ void tiedonsiirtoTCP(LPVOID lpCn)
 				odaika = mstimer();
 				yhteys_on[cn] = 0;
 #ifndef LANGSV_K
-				WRITEYHT(L"H‰", cn);
+				WRITEYHT(L"H√§", cn);
 #else // LANGSV_K
 				WRITEYHT(L"Er", cn);
 #endif // LANGSV_K
@@ -1291,7 +1291,7 @@ void tiedonsiirtoTCP(LPVOID lpCn)
 			 } while (!er && inq > 0 && ch != SOH && ch != ACK && ch != NAK);
 		  if (er == 999)
 			 continue;
-		  if( er == IN_Q_EMPTY ) {                              /* tyhj‰ */
+		  if( er == IN_Q_EMPTY ) {                              /* tyhj√§ */
 				ch = 0;
 				if (mstimer()-odaika  >= maxodotus*1000) {
 					odaika = mstimer();
@@ -1302,7 +1302,7 @@ void tiedonsiirtoTCP(LPVOID lpCn)
 					WRITEYHT(L"Ej", cn);
 #endif // LANGSV_K
 					}
-				}                                                  /* tyhj‰ */
+				}                                                  /* tyhj√§ */
 		  else {                                                /* ok */
 			 odaika = mstimer();
 			 switch(ch) {
@@ -1632,7 +1632,7 @@ void tiedonsiirto(LPVOID lpCn)
 			}
 		if (outq) {
 			yhteys_on[cn] = 0;
-			WRITEYHT(L"H‰", cn);
+			WRITEYHT(L"H√§", cn);
 			continue;
 			}
 		Sleep(50);
@@ -1658,7 +1658,7 @@ void tiedonsiirto(LPVOID lpCn)
 				o_flush_x(cn);
 				yhteys_on[cn] = 0;
 #ifndef LANGSV_K
-				WRITEYHT(L"H‰", cn);
+				WRITEYHT(L"H√§", cn);
 #else // LANGSV_K
 				WRITEYHT(L"Er", cn);
 #endif // LANGSV_K
@@ -1669,7 +1669,7 @@ void tiedonsiirto(LPVOID lpCn)
 			} while (inq > 0 && ch != SOH && ch != ACK);
 		if (er == 999)
 			continue;
-		if( er == IN_Q_EMPTY ) {                              /* tyhj‰ */
+		if( er == IN_Q_EMPTY ) {                              /* tyhj√§ */
 			if( ++odaika >= MAXODOTUS ) {
 				odaika = 0;
 				o_flush_x(cn);
@@ -1681,7 +1681,7 @@ void tiedonsiirto(LPVOID lpCn)
 				WRITEYHT(L"Ej", cn);
 #endif // LANGSV_K
 				}
-			}                                                  /* tyhj‰ */
+			}                                                  /* tyhj√§ */
 		else {                                                /* ok */
 			odaika = 0;
 			switch(ch) {
@@ -1995,7 +1995,7 @@ void si_tcpimport(void)
 	if (!init) {
 		clrln(ySize-3);
       viwrrect(ySize-3,0,ySize-3,31,
-         L"Anna maalikellon k‰ynnistysaika:",7,0,0);
+         L"Anna maalikellon k√§ynnistysaika:",7,0,0);
       inputaika_l(&t0_regnly,t0,8,50,ySize-3,L"\xD",&ch);
       maaliajat[9] = t0_regnly;
 		init = 1;
@@ -2011,19 +2011,19 @@ void si_tcpimport(void)
 			if (comopen[siimport] && !keyclose[siimport])
 				wrt_st_TCP(hComm[siimport], 11, "gaterepeat\n", &nch);
 			else
-				writeerror_w(L"Yhteystt‰ ei ole avattu", 0);
+				writeerror_w(L"Yhteystt√§ ei ole avattu", 0);
 			break;
 		case L'J':
 			if (comopen[siimport] && !keyclose[siimport])
 				wrt_st_TCP(hComm[siimport], 16, "gatelisten\ttrue\n", &nch);
 			else
-				writeerror_w(L"Yhteystt‰ ei ole avattu", 0);
+				writeerror_w(L"Yhteystt√§ ei ole avattu", 0);
 			break;
 		case L'L':
 			if (comopen[siimport] && !keyclose[siimport])
 				wrt_st_TCP(hComm[siimport], 17, "gatelisten\tfalse\n", &nch);
 			else
-				writeerror_w(L"Yhteystt‰ ei ole avattu", 0);
+				writeerror_w(L"Yhteystt√§ ei ole avattu", 0);
 			break;
 		case L'S':
 			if (comopen[siimport] && !keyclose[siimport]) {
@@ -2130,12 +2130,12 @@ static void openTCPloki(int cn)
 	if (err != 0) {
 		wchar_t msg[100];
 
-		swprintf(msg, L"TCP-lokin k‰ynnistys ei onnistunut (%d)", err);
+		swprintf(msg, L"TCP-lokin k√§ynnistys ei onnistunut (%d)", err);
 		writeerror_w(msg, 2000);
 		lokiTCP = 0;
 		}
 	else {
-		vidspwmsg(ySize-8, 0, 7, 0, L"TCP-lokin k‰ynnistetty");
+		vidspwmsg(ySize-8, 0, 7, 0, L"TCP-lokin k√§ynnistetty");
 		lokiTCP = 1;
 		}  
 }
@@ -2199,12 +2199,12 @@ int initcom(int cn)
 #ifdef _CONSOLE
 											vidspwmsg(24,0,0,7,msg);
 											ch = L' ';
-											wselectopt(L"T)uhoa aiempi COMFILE.DAT tai K)eskeyt‰ ohjelman k‰ynnistys", L"TK", &ch);
+											wselectopt(L"T)uhoa aiempi COMFILE.DAT tai K)eskeyt√§ ohjelman k√§ynnistys", L"TK", &ch);
 											if (ch == L'K')
 												return(1);
 #else
 											if (select3(2, msg, L"Yhteensopimattomat asetukset", L"Tuhoa aiempi COMFILE.DAT",
-												L"Keskeyt‰ ohjelman k‰ynnistys", L"", 0) == 2)
+												L"Keskeyt√§ ohjelman k√§ynnistys", L"", 0) == 2)
 												return(1);
 #endif
 											}
@@ -2236,14 +2236,14 @@ int initcom(int cn)
 						if (av > 0) {
 							av -= lah;
 #ifdef _CONSOLE
-							swprintf(msg, L"Tiedostossa COMFILE %ld l‰hetetty‰ ja"
-								L" %ld l‰hetett‰v‰‰ tietoa S)‰ilyt‰ T)uhoa", lah, av);
+							swprintf(msg, L"Tiedostossa COMFILE %ld l√§hetetty√§ ja"
+								L" %ld l√§hetett√§v√§√§ tietoa S)√§ilyt√§ T)uhoa", lah, av);
 							ch = L' ';
 							wselectopt(msg, L"ST", &ch);
 #else
-							swprintf(msg, L"Tiedostossa COMFILE %ld l‰hetetty‰ ja"
-								L" %ld l‰hetett‰v‰‰ tietoa. S‰ilytet‰‰‰nkˆ?", lah, av);
-							if (Application->MessageBoxW(msg, L"Tietojen s‰ilytt‰minen", MB_YESNO) == IDYES)
+							swprintf(msg, L"Tiedostossa COMFILE %ld l√§hetetty√§ ja"
+								L" %ld l√§hetett√§v√§√§ tietoa. S√§ilytet√§√§√§nk√∂?", lah, av);
+							if (Application->MessageBoxW(msg, L"Tietojen s√§ilytt√§minen", MB_YESNO) == IDYES)
 								ch = L'S';
 							else
 								ch = L'T';
@@ -2291,7 +2291,7 @@ int initcom(int cn)
 		else
 			ok = 0;
 		}
-	if (!ok) writeerror_w(L"Muisti ei riit‰ tiedonsiirtopuskurille",0);
+	if (!ok) writeerror_w(L"Muisti ei riit√§ tiedonsiirtopuskurille",0);
 		vastcom0[cn] = vastcom[cn];
 	init = 0;
 	LeaveCriticalSection(&outb_CriticalSection);
@@ -2317,13 +2317,13 @@ void yhteysasetukset(void)
 			INPUTINTW(&yno, 3, 17, ySize-3, L"\r\x1b", &ch);
 			if (ch == ESC || yno < 1 || yno > maxyhteys) 
 				return;
-			wselectopt(L"K)‰ttely, KuittausO)dotus, S)anomav‰li, Esc: peruuta", L"KOS\x1b", &ch);
+			wselectopt(L"K)√§ttely, KuittausO)dotus, S)anomav√§li, Esc: peruuta", L"KOS\x1b", &ch);
 			clrln(ySize-3);
 			switch (ch) {
 
 				case L'S':
 					x = TCPviive_pak[yno-1];
-					vidspwmsg(ySize-3, 0, 7, 0, L"Per‰kk‰isten sanomien v‰li           ms.  Esc: peruuta");
+					vidspwmsg(ySize-3, 0, 7, 0, L"Per√§kk√§isten sanomien v√§li           ms.  Esc: peruuta");
 					INPUTINTW(&x, 7, 28, ySize-3, L"\r\x1b", &ch);
 					if (ch != ESC) {
 						TCPviive_pak[yno-1] = x;
@@ -2331,7 +2331,7 @@ void yhteysasetukset(void)
 					break;
 				case L'K':
 					x = TCPviive_nak[yno-1]/1000;
-					vidspwmsg(ySize-3, 0, 7, 0, L"K‰ttelysanomien v‰li         s.  Esc: peruuta");
+					vidspwmsg(ySize-3, 0, 7, 0, L"K√§ttelysanomien v√§li         s.  Esc: peruuta");
 					INPUTINTW(&x, 4, 23, ySize-3, L"\r\x1b", &ch);
 					if (ch != ESC) {
 						TCPviive_nak[yno-1] = 1000*x;
@@ -2350,18 +2350,18 @@ void yhteysasetukset(void)
 			}
 		else {
 		ch = L' ';
-	   wselectopt(L"K)‰ttely, KuittausO)dotus, UDP T)ime-out, V)ast.otto, L)‰hetys, Esc: peruuta", L"JYKTOVL\x1b", &ch);
+	   wselectopt(L"K)√§ttely, KuittausO)dotus, UDP T)ime-out, V)ast.otto, L)√§hetys, Esc: peruuta", L"JYKTOVL\x1b", &ch);
 		clrln(ySize-3);
       switch (ch) {
 			case L'Y':
 				udpnyt = 1;
 				break;
 			case L'J':
-		      vidspwmsg(ySize-3, 0, 7, 0, L"Per‰kk‰isten sanomien v‰li           ms.  Esc: peruuta");
+		      vidspwmsg(ySize-3, 0, 7, 0, L"Per√§kk√§isten sanomien v√§li           ms.  Esc: peruuta");
 				INPUTINTW(&udpjarru, 7, 28, ySize-3, L"\r\x1b", &ch);
 				break;
 			case L'K':
-		      vidspwmsg(ySize-3, 0, 7, 0, L"K‰ttelysanomien viive        ms.  Esc: peruuta");
+		      vidspwmsg(ySize-3, 0, 7, 0, L"K√§ttelysanomien viive        ms.  Esc: peruuta");
 				INPUTINTW(&nakviive, 4, 23, ySize-3, L"\r\x1b", &ch);
 				break;
 			case L'T':
@@ -2375,7 +2375,7 @@ void yhteysasetukset(void)
 				INPUTINTW(&UDPviive_lue, 3, 19, ySize-3, L"\r\x1b", &ch);
 				break;
 			case L'L':
-		      vidspwmsg(ySize-3, 0, 7, 0, L"L‰hetysv‰li        ms.  Esc: peruuta");
+		      vidspwmsg(ySize-3, 0, 7, 0, L"L√§hetysv√§li        ms.  Esc: peruuta");
 				INPUTINTW(&UDPviive_ts, 3, 12, ySize-3, L"\r\x1b", &ch);
 				break;
 			case L'O':
@@ -2401,28 +2401,28 @@ void yhteysasetukset(void)
    if (ch == ESC)
       return;
    lj = L' ';
-   wselectopt(L"AVAA: 1:l‰htev‰ 2:saapuva 3:molemmat  SULJE: 4:l‰htev‰ 5:saapuva 6:molemmat",
+   wselectopt(L"AVAA: 1:l√§htev√§ 2:saapuva 3:molemmat  SULJE: 4:l√§htev√§ 5:saapuva 6:molemmat",
       L"123456\x1b", &lj);
    switch (lj) {
       case ESC:
          return;
       case L'1':
-         wcscpy(msg, L"Avaa l‰htev‰ yhteys: ");
+         wcscpy(msg, L"Avaa l√§htev√§ yhteys: ");
          break;
       case L'2':
          wcscpy(msg, L"Avaa saapuva yhteys: ");
          break;
       case L'3':
-         wcscpy(msg, L"Avaa l‰htev‰ ja saapuva yhteys: ");
+         wcscpy(msg, L"Avaa l√§htev√§ ja saapuva yhteys: ");
          break;
       case L'4':
-         wcscpy(msg, L"Sulje l‰htev‰ yhteys: ");
+         wcscpy(msg, L"Sulje l√§htev√§ yhteys: ");
          break;
       case L'5':
          wcscpy(msg, L"Sulje saapuva yhteys: ");
          break;
 		case L'6':
-         wcscpy(msg, L"Sulje l‰htev‰ ja saapuva yhteys: ");
+         wcscpy(msg, L"Sulje l√§htev√§ ja saapuva yhteys: ");
          break;
       }
    if (yno < 0)
@@ -2519,7 +2519,7 @@ void uusintalahetys(void)
 		}
 	if (yht < maxyhteys) {
 	   ch = L' ';
-		wselectopt(L"Uusinta L)‰hetysajan perusteella, M)uu valinta yhteen yhteyteen, Esc: peruuta",
+		wselectopt(L"Uusinta L)√§hetysajan perusteella, M)uu valinta yhteen yhteyteen, Esc: peruuta",
 			L"LM\x1b", &ch);
 	   if (ch == ESC)
 		   return;
@@ -2528,13 +2528,13 @@ void uusintalahetys(void)
 		ch = L'L';
    if (ch == L'L') {
       clrln(ySize-3);
-      vidspwmsg(ySize-3, 0, 7, 0, L"L‰het‰ uudelleen viimeisten        minuutin sanomat");
+      vidspwmsg(ySize-3, 0, 7, 0, L"L√§het√§ uudelleen viimeisten        minuutin sanomat");
       INPUTINTW(&jakso, 5, 28, ySize-3, L"\r", &ch);
       ty = t_time_l(biostime(0, 0), t0);
       ta = ty - jakso * 600L;
       if (ta < -12*36000L)
 			ta += 24*36000L;
-      swprintf(msg, L"L‰het‰ %8.8s j‰lkeiset sanomat K)aikkiin, Y)hteen yhteyteen, Esc: peruuta",
+      swprintf(msg, L"L√§het√§ %8.8s j√§lkeiset sanomat K)aikkiin, Y)hteen yhteyteen, Esc: peruuta",
 		 aikatowstr_ls(as, ta, t0));
       ch = L' ';
       wselectopt(msg, L"KY\x1b", &ch);
@@ -2556,7 +2556,7 @@ void uusintalahetys(void)
 			if (com_emitva[yht] > 0) {
 				if (comtype[yht] & comtpTCP) {
 					ch = L' ';
-					wselectopt(L"E)mit-v‰liajat, M)uut tiedot, Esc: peruuta", L"EM\x1b", &ch);
+					wselectopt(L"E)mit-v√§liajat, M)uut tiedot, Esc: peruuta", L"EM\x1b", &ch);
 					}
 				else
 					ch = L'E';
@@ -2567,7 +2567,7 @@ void uusintalahetys(void)
 #endif
 		if (ch == L'M') {
          ch = L'U';
-         wselectopt(L"L‰het‰ Y)hten‰ tiedostona kaikki/U)seana sanomana valitut tiedot, Esc: peruuta", L"YU\x1b", &ch);
+         wselectopt(L"L√§het√§ Y)hten√§ tiedostona kaikki/U)seana sanomana valitut tiedot, Esc: peruuta", L"YU\x1b", &ch);
          switch (ch) {
             case L'Y':
                autofile(1);
@@ -2581,7 +2581,7 @@ void uusintalahetys(void)
 //#if defined(EMIT) && !defined(ESITARK)
 #if defined(EMIT)
 		else if (ch == L'E' && com_emitva[yht] > 0) {
-			vidspwmsg(ySize-5,0,7,0,L"Emit-v‰liaikojen uusintal‰hetys");
+			vidspwmsg(ySize-5,0,7,0,L"Emit-v√§liaikojen uusintal√§hetys");
 			emitva_uusinta(yht, -1);
 			clrtxt(ySize-5,0,64);
 			return;
@@ -2606,8 +2606,8 @@ void yhteydet(void)
    header = L"YHTEYDET";
    kehys(1);
    server_on = 1;
-   vidspwmsg(2,0,7,0, L"Nro Portti  Vastaosoite            Suunta Tila L‰htevi‰ Kirjattu");
-   vidspwmsg(ySize-3, 0, 7, 0, L"PgDn, PgUp : selaa, A)setukset, U)usintal‰hetys, Esc: poistu");
+   vidspwmsg(2,0,7,0, L"Nro Portti  Vastaosoite            Suunta Tila L√§htevi√§ Kirjattu");
+   vidspwmsg(ySize-3, 0, 7, 0, L"PgDn, PgUp : selaa, A)setukset, U)usintal√§hetys, Esc: poistu");
    for (;;) {
       ch = readkbd(&che, 0, 0);
       if (ch == ESC)
@@ -2619,13 +2619,13 @@ void yhteydet(void)
          case L'A' :
             yhteysasetukset();
             clrln(ySize-3);
-            vidspwmsg(ySize-3, 0, 7, 0, L"PgDn, PgUp : selaa, A)setukset, U)usintal‰hetys, Esc: poistu");
+            vidspwmsg(ySize-3, 0, 7, 0, L"PgDn, PgUp : selaa, A)setukset, U)usintal√§hetys, Esc: poistu");
             break;
          case L'u' :
          case L'U' :
             uusintalahetys();
             clrln(ySize-3);
-            vidspwmsg(ySize-3, 0, 7, 0, L"PgDn, PgUp : selaa, A)setukset, U)usintal‰hetys, Esc: poistu");
+            vidspwmsg(ySize-3, 0, 7, 0, L"PgDn, PgUp : selaa, A)setukset, U)usintal√§hetys, Esc: poistu");
             break;
 			case L's' :
 			case L'S' :
@@ -2640,7 +2640,7 @@ void yhteydet(void)
 						upcasewstr(line);
 						if (!wcscmp(sulkusalasana, line)) {
 							ch2 = L' ';
-							wselectopt(L"Sulkuk‰sky K)aikille koneelle, Y)hdelle koneelle, Esc: Peruuta", L"KY\x1b", &ch2);
+							wselectopt(L"Sulkuk√§sky K)aikille koneelle, Y)hdelle koneelle, Esc: Peruuta", L"KY\x1b", &ch2);
 							if (ch2 == ESC)
 								break;
 							memset(line, 0, 4);
@@ -2654,10 +2654,10 @@ void yhteydet(void)
 							lahetasulku((char *)wcstooem((char *)tunnus,line, 2), 0);
 							break;
 							}
-						writeerror_w(L"V‰‰r‰ salasana", 0);
+						writeerror_w(L"V√§√§r√§ salasana", 0);
 						}
 	            clrln(ySize-3);
-		         vidspwmsg(ySize-3, 0, 7, 0, L"PgDn, PgUp : selaa, A)setukset, U)usintal‰hetys, Esc: poistu");
+		         vidspwmsg(ySize-3, 0, 7, 0, L"PgDn, PgUp : selaa, A)setukset, U)usintal√§hetys, Esc: poistu");
 					}
 				break;
          case 0 :
@@ -2768,7 +2768,7 @@ void lueemit(LPVOID lpCn)
             if (mstimer() - edaika > 50 && p != buf)
 			   p = buf;
 			if (comtype[cn] == comtpTCP && mstimer() - edaika2 > nakvali) {
-					wrt_st_x(cn, 19, "Uudelleenk‰ynnistys", &nsent);
+					wrt_st_x(cn, 19, "Uudelleenk√§ynnistys", &nsent);
                edaika2 = mstimer();
                }
             }

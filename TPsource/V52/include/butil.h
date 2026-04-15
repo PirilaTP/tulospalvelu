@@ -66,14 +66,21 @@
 
 				/* Maximum of two values.	    */
 #define utmax(a,b) ((a) > (b) ? (a) : (b))
+#define utmin(a,b) ((a) <= (b) ? (a) : (b))
+
+#ifdef __linux__
+/* Include STL headers that use min/max BEFORE defining macros */
+#include <algorithm>
+#include <random>
+#define min(a,b) utmin(a,b)
+#define max(a,b) utmax(a,b)
+#else
 #ifndef max
 #define max(a,b) utmax(a,b)
 #endif
-
-				/* Minimum of two values.	    */
-#define utmin(a,b) ((a) <= (b) ? (a) : (b))
 #ifndef min
 #define min(a,b) utmin(a,b)
+#endif
 #endif
 
 #define utabs(x) ((x)<0 ? -(x) : (x))	/* Absolute value.	    */
@@ -114,4 +121,4 @@
 			/* definitions. 			    */
 
 #endif			/* Ends "#ifndef DEF_BUTIL".                */
-
+

@@ -23,7 +23,7 @@
 #define TMAALI0 -864000L
 
 /*  Strtoaika muuttaa muodossa tt.mm.ss,s annetun ajan 0,1 sekunneiksi */
-/*  tt0 on lis„ys tunteihin */
+/*  tt0 on lisÂ„ys tunteihin */
 
 long str2aika(char *straika,int tt0)
 

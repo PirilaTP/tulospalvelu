@@ -43,4 +43,3 @@ int haesarja_w(wchar_t *snimi)
 
 
 
-

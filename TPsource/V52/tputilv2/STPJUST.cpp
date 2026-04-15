@@ -100,4 +100,4 @@ char *stpjust(char  *ptarget, const char *psource, char  fill, int fldsize, int 
     *ptarget = '\0';
     return savetarget;
 }
-
+

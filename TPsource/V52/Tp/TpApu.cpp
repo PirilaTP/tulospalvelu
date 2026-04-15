@@ -68,6 +68,15 @@ int VersioInt(void)
 	return((int)(100*_wtof(VERSIOKDI)));
 }
 
+#ifdef __linux__
+void getWinVersion(void)
+{
+	EnvData.WinMajorVersion = 0;
+	EnvData.WinMinorVersion = 0;
+	EnvData.isWinServer = 0;
+	EnvData.isWow64_32 = 0;
+}
+#else
 typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
 
 void getWinVersion(void)
@@ -103,6 +112,7 @@ void getWinVersion(void)
 		wkirjloki(msg);
 		}
 }
+#endif /* !__linux__ */
 
 int tm_date(int t)
 {
@@ -277,36 +287,31 @@ char *keyfromU16name(char *key, wchar_t *name, int len, int flags)
 			case L'_':
 				*kp = ' ';
 				break;
-			case L'Å':
+			case L'\u00C5': // Ã…
 				*kp = 91;
 				break;
-			case L'Ä':
-			case L'Æ':
-			case L'æ':
+			case L'\u00C4': // Ã„
+			case L'\u00C6': // Ã†
 				*kp = 92;
 				break;
-			case L'Ö':
-			case L'ø':
-			case L'Ø':
+			case L'\u00D6': // Ã–
+			case L'\u00D8': // Ã˜
+			case L'\u00DC': // Ãœ
 				*kp = 93;
 				break;
-			case L'Ü':
+			case L'\u0178': // Å¸
 				*kp = 'Y';
 				break;
-			case L'É':
-			case L'È':
-			case L'Ê':
-			case L'Ë':
-			case L'ë':
-			case L'ê':
-			case L'é':
-			case L'è':
+			case L'\u00C9': // Ã‰
+			case L'\u00C8': // Ãˆ
+			case L'\u00CA': // ÃŠ
+			case L'\u00CB': // Ã‹
 				*kp = 'E';
 				break;
-			case L'Á':
-			case L'À':
-			case L'Â':
-			case L'Ã':
+			case L'\u00C0': // Ã€
+			case L'\u00C1': // Ã
+			case L'\u00C2': // Ã‚
+			case L'\u00C3': // Ãƒ
 				*kp = 'A';
 				break;
 			case L'W':
@@ -670,7 +675,7 @@ static wchar_t *maalista[][2] = {
 	{L"SOM", L"Somalia"},
 	{L"SRB", L"Serbia"},
 	{L"SRI", L"Sri Lanka"},
-	{L"STP", L"São Tomé and Príncipe"},
+	{L"STP", L"Sï¿½o Tomï¿½ and Prï¿½ncipe"},
 	{L"SUD", L"Sudan"},
 	{L"SUI", L"Switzerland"},
 	{L"SUR", L"Suriname"},
@@ -894,15 +899,15 @@ void kirj_err_file(wchar_t *msg, int nayta)
 		wchar_t ch = L'J';
 
 		vidspwmsg(ySize-1,0,0,7,msg);
-		wcscpy(msg2, L"J)atka, L)opeta nämä virheilmoitukset");
+		wcscpy(msg2, L"J)atka, L)opeta nï¿½mï¿½ virheilmoitukset");
 		wselectopt(msg2, L"JL", &ch);
 		if (ch == L'L')
 			lopilm = 1;
 #else
 		int vast;
 
-		swprintf(msg2, L"%s \nJatketaanko näiden virheilmoitusten näyttämistä", msg);
-		vast = select3(2, msg2, L"Toistuva virheilmoitus", L"Näytä edelleen", L"Ohita ilmoitukset jatkossa", L"", 0);
+		swprintf(msg2, L"%s \nJatketaanko nï¿½iden virheilmoitusten nï¿½yttï¿½mistï¿½", msg);
+		vast = select3(2, msg2, L"Toistuva virheilmoitus", L"Nï¿½ytï¿½ edelleen", L"Ohita ilmoitukset jatkossa", L"", 0);
 		if (vast == 2)
 			lopilm = 1;
 #endif
@@ -927,7 +932,7 @@ void close_err_file(void)
 #ifdef _CONSOLE
 		writeerror_w(msg, 0);
 #else
-		if (select3(2, msg, L"Virheitä tiedoissa", L"Näytä tiedot", L"Ohita", L"", 0) == 1)
+		if (select3(2, msg, L"Virheitï¿½ tiedoissa", L"Nï¿½ytï¿½ tiedot", L"Ohita", L"", 0) == 1)
 			nayta_virhesanomat();
 #endif
 		}
@@ -982,7 +987,7 @@ INT luesarja(wchar_t *snimi, wchar_t *tc, bool salliyhd)
 		srj = haesarja_w(sn, salliyhd);
 		}
 	do {
-		vidspwmsg(ySize-1,0,7,0, L"Sarjoja voi selata näppäimillä \x19 \x18 PgDn PgUp");
+		vidspwmsg(ySize-1,0,7,0, L"Sarjoja voi selata nï¿½ppï¿½imillï¿½ \x19 \x18 PgDn PgUp");
 		do {
 			if (srj >= 0 && srj < nn)
 				wcscpy(sn, Sarjat[srj].sarjanimi);
@@ -1034,7 +1039,7 @@ INT luesarja(char *snimi, char *tc)
 		srj = haesarja(sn, true);
 		}
 	do {
-		vidspmsg(ySize-1,0,7,0, "Sarjoja voi selata näppäimillä \x19 \x18 PgDn PgUp");
+		vidspmsg(ySize-1,0,7,0, "Sarjoja voi selata nï¿½ppï¿½imillï¿½ \x19 \x18 PgDn PgUp");
 		do {
 			if (srj >= 0 && srj < sarjaluku)
 				strcpy(sn, Sarjat[srj].sarjanimi);

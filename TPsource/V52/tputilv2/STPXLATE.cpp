@@ -66,4 +66,3 @@ char *stpxlate(char *psource, const char *ptable, const char *ptrans)
     return (ptemp);
 }
 
-

@@ -110,8 +110,8 @@ INT tall_seura(wchar_t *snimi, wchar_t *lyhenne, wchar_t *maa, int piiri, int ki
          return(1);
       }
    
-   // L‰hdet‰‰n taulukon alusta ja kasvatetaan osoitinta, kunnes
-   // osoittimen rivill‰ sama tai myˆhempi lyhenne
+   // L√§hdet√§√§n taulukon alusta ja kasvatetaan osoitinta, kunnes
+   // osoittimen rivill√§ sama tai my√∂hempi lyhenne
 
    for (sra = seurataul; sra - seurataul < nsrtaul; sra++) {
       if (strcmp(sra->nix, anm) >= 0)
@@ -199,8 +199,8 @@ INT hae_seura(wchar_t *snimi, wchar_t *lyhenne, UINT16 *piiri, INT etsi)
       do {
          clrln(ySize-5);
          vidspwmsg(ySize-5,0,7,0,
-            L"Selaa: Up Down PgUp PgDn, Enter : hyv‰ksy, Esc: Peruuta");
-//            L"Selaa: Up Down PgUp PgDn, Enter : hyv‰ksy, +: Lis‰‰, -: Poista, Esc: Peruuta");
+            L"Selaa: Up Down PgUp PgDn, Enter : hyv√§ksy, Esc: Peruuta");
+//            L"Selaa: Up Down PgUp PgDn, Enter : hyv√§ksy, +: Lis√§√§, -: Poista, Esc: Peruuta");
          for (i = -7; i < 8; i++) {
             if (sra - sraLuett.Seura >= -i && sra - sraLuett.Seura < sraLuett.NSeura - i) {
                swprintf(line, L"%-10.10s %-30.30s %2d",
@@ -219,7 +219,7 @@ INT hae_seura(wchar_t *snimi, wchar_t *lyhenne, UINT16 *piiri, INT etsi)
                wselectopt(L"Valitse korostettu rivi pohjaksi (K/E)", L"KE", &ch2);
                clrln(ySize-1);
                vidspwmsg(ySize-1,0,7,0,
-                  L"Lyhenne:             Pitk‰ nimi:              "
+                  L"Lyhenne:             Pitk√§ nimi:              "
                   L"                  Piiri:");
                if (ch2 == L'K') {
                   wcsncpy(sn, sra[0].lyhenne, LLYH);
@@ -236,7 +236,7 @@ INT hae_seura(wchar_t *snimi, wchar_t *lyhenne, UINT16 *piiri, INT etsi)
                inputwstr(line, LSEURA, 34, ySize-1, L"\r", &ch2, 0);
                INPUTINTW(&piiri, 2, 71, ySize-1, L"\r", &ch2);
                ch2 = L' ';
-               wselectopt(L"Vahvista lis‰ys (K/E)", L"KE", &ch2);
+               wselectopt(L"Vahvista lis√§ys (K/E)", L"KE", &ch2);
                if (ch2 == L'K') {
                   elimwbl(sn);
                   for (p = sn; *p; p++)
@@ -247,7 +247,7 @@ INT hae_seura(wchar_t *snimi, wchar_t *lyhenne, UINT16 *piiri, INT etsi)
                      &nsrtaul, sizeof(sra->nix), sizeof(sratp));
                   if (!strcmp(sra->nix, animi)) {
                      ch2 = L'E';
-                     wselectopt (L"Lyhenne jo k‰ytˆss‰, korvataanko vanha tieto (K/E)",
+                     wselectopt (L"Lyhenne jo k√§yt√∂ss√§, korvataanko vanha tieto (K/E)",
                         L"KE", &ch2);
                      }
                   else
@@ -354,8 +354,8 @@ INT hae_seura(wchar_t *snimi, wchar_t *lyhenne, UINT16 *piiri, INT etsi)
 			viwrrect(LUKUMY,67,LUKUMY,74,"Ilmoitt.",7,0,0);
 			viwrrect(LUKUMY+1,67,LUKUMY+1,71,"Tulos",7,0,0);
 			viwrrect(LUKUMY+2,67,LUKUMY+2,75,"Keskeytt.",7,0,0);
-			viwrrect(LUKUMY+3,67,LUKUMY+3,73,"Hyl‰tty",7,0,0);
-			viwrrect(LUKUMY+4,67,LUKUMY+4,74,"Ei l‰ht.",7,0,0);
+			viwrrect(LUKUMY+3,67,LUKUMY+3,73,"Hyl√§tty",7,0,0);
+			viwrrect(LUKUMY+4,67,LUKUMY+4,74,"Ei l√§ht.",7,0,0);
 			viwrrect(LUKUMY+5,67,LUKUMY+5,73,"Avoinna",7,0,0);
 #ifdef EMIT
 			viwrrect(LUKUMY+6,67,LUKUMY+6,72,"Esitys",7,0,0);
@@ -369,29 +369,29 @@ INT hae_seura(wchar_t *snimi, wchar_t *lyhenne, UINT16 *piiri, INT etsi)
 			viwrrect(12,67,12,79,"Auto       EI",7,0,0);
 			if (comfl) {
 				viwrrect(17,67,17,77,"TIED.SIIRTO",7,0,0);
-				viwrrect(19,67,19,71,"L‰ht:",7,0,0);
+				viwrrect(19,67,19,71,"L√§ht:",7,0,0);
 				viwrrect(18,67,18,71,"Saap:",7,0,0);
 				viwrrect(20,67,20,71,"Yht.:",7,0,0);
 				}
 #else  // LANGSV_K
-			viwrrect(LUKUMY,2,LUKUMY,8,"Anm‰lda",7,0,0);
+			viwrrect(LUKUMY,2,LUKUMY,8,"Anm√§lda",7,0,0);
 			viwrrect(LUKUMY+1,2,LUKUMY+1,6,"Tider",7,0,0);
 			viwrrect(LUKUMY+2,2,LUKUMY+2,9,"Avbrytna",7,0,0);
 			viwrrect(LUKUMY+3,2,LUKUMY+3,7,"Diskv.",7,0,0);
 			viwrrect(LUKUMY+4,2,LUKUMY+4,9,"Ej start",7,0,0);
-			viwrrect(LUKUMY+5,2,LUKUMY+5,6,"÷ppna",7,0,0);
+			viwrrect(LUKUMY+5,2,LUKUMY+5,6,"√ñppna",7,0,0);
 #ifdef EMIT
-			viwrrect(LUKUMY+6,2,LUKUMY+6,8,"Fˆrslag",7,0,0);
+			viwrrect(LUKUMY+6,2,LUKUMY+6,8,"F√∂rslag",7,0,0);
 #endif
 			viwrrect(8,2,8,12,"UTSKRIVNING",7,0,0);
 			if (spoolfl) {
-				viwrrect(9,2,9,14,"Bakgrund   PÂ",7,0,0);
+				viwrrect(9,2,9,14,"Bakgrund   P√•",7,0,0);
 				}
 			else
 				viwrrect(9,2,9,14,"Bakgrund   Av",7,0,0);
 			viwrrect(12,2,12,14,"Auto       Av",7,0,0);
 			if (comfl) {
-				viwrrect(17,2,17,11,"÷VERF÷RING",7,0,0);
+				viwrrect(17,2,17,11,"√ñVERF√ñRING",7,0,0);
 				viwrrect(19,2,19,6,"Ut  :",7,0,0);
 				viwrrect(18,2,18,10,"Mottagna:",7,0,0);
 				viwrrect(20,2,20,7,"Total:",7,0,0);
@@ -408,12 +408,12 @@ INT hae_seura(wchar_t *snimi, wchar_t *lyhenne, UINT16 *piiri, INT etsi)
 			if (wcswcind(kilpparam.kilplaji, L"NP") >= 0) {
 //#ifdef MERI5
 				viwrrect(tuy-2,1,tuy-2,62,
-					 "Pv | L‰htˆaika |   Tulos   | Tark | Pisteet   | Sija  | Yht.sj", 7,0,0);
+					 "Pv | L√§ht√∂aika |   Tulos   | Tark | Pisteet   | Sija  | Yht.sj", 7,0,0);
 				}
 			else {
 //#else
 				viwrrect(tuy-2,1,tuy-2,62,
- 					"Pv | L‰htˆaika |   Tulos   | Tark | Yht.tulos | Sija  | Yht.sj", 7,0,0);
+ 					"Pv | L√§ht√∂aika |   Tulos   | Tark | Yht.tulos | Sija  | Yht.sj", 7,0,0);
 				}
 //#endif
 			for (i = 0; i < n_pv; i++)
@@ -421,7 +421,7 @@ INT hae_seura(wchar_t *snimi, wchar_t *lyhenne, UINT16 *piiri, INT etsi)
 #else
 #ifndef LANGSV_K
 			viwrrect(TUY-2,1,TUY-2,62,
-			  "   | L‰htˆaika |   Tulos   | Tark |           | Sija  |       ",7,0,0);
+			  "   | L√§ht√∂aika |   Tulos   | Tark |           | Sija  |       ",7,0,0);
 #else
 			viwrrect(TUY-2,1,TUY-2,62,
 			  "   | Starttid  |  Resultat | Kntrl|           | Plats |       ",7,0,0);
@@ -460,7 +460,7 @@ INT hae_seura(wchar_t *snimi, wchar_t *lyhenne, UINT16 *piiri, INT etsi)
 				draw_vline(vay ,47, i);
 				draw_vline(vay ,55, i);
 #ifndef LANGSV_K
-				vidspmsg(vay,1,7,0,"V‰liaika");
+				vidspmsg(vay,1,7,0,"V√§liaika");
 #else
 				vidspmsg(vay,1,7,0,"Mellantid");
 #endif
@@ -608,7 +608,7 @@ void kilptietue::outkilp(INT ntlisa)
 	   vidspwmsg(editfld[RATAE-1].y, editfld[RATAE-1].x,7,0,pv[k_pv].rata);
 //		}
 //	else {
-//		vidspwmsg(editfld[ERE-1].y, editfld[ERE-1].xots,7,0, L"           Er‰ : ");
+//		vidspwmsg(editfld[ERE-1].y, editfld[ERE-1].xots,7,0, L"           Er√§ : ");
 	if (editfld[ERE-1].active)
 	    vidint(editfld[ERE-1].y, editfld[ERE-1].x, 2, pv[k_pv].era);
 //		if (editfld[RATAE-1].active)
@@ -736,7 +736,7 @@ void kilptietue::outkilp(INT ntlisa)
 #ifndef EBA
    wcscpy(strtmaali, L"00.00.00");
    if (pst) {
-      vidspwmsg(editfld[MAE-1].y, editfld[MAE-1].xots-7, 7, 0, L"V‰liajan    aika");
+      vidspwmsg(editfld[MAE-1].y, editfld[MAE-1].xots-7, 7, 0, L"V√§liajan    aika");
       vidint(editfld[MAE-1].y, editfld[MAE-1].xots+1, 3, pst);
       }
    else
@@ -930,8 +930,8 @@ INT kilptietue::inputkilp(INT addfl)
 		 l = SNME;
    clrln(ySize-3);
    do {
-      viwrrectw(ySize-3,0,ySize-3,72,L"<Return>, \x18 \x19  : Vaihda kentt‰‰,  "
-         L"+ : Hyv‰ksy,  <Esc> : Peruuta ja poistu",7,0,0);
+      viwrrectw(ySize-3,0,ySize-3,72,L"<Return>, \x18 \x19  : Vaihda kentt√§√§,  "
+         L"+ : Hyv√§ksy,  <Esc> : Peruuta ja poistu",7,0,0);
 	  efld = editfld+l-1;
 	  x = efld->x;
 	  y = efld->y;
@@ -965,8 +965,8 @@ INT kilptietue::inputkilp(INT addfl)
 					inputlongw(&pv[k_pv].badge[0],len , x, y,term,&tc);
 					if (tc == ESC) break;
 					if (!emitfl && bdg != pv[k_pv].badge[0])
-					   writeerror_w(L"Emit-toimintoa ei k‰ynnistetty - "
-						  L"haitallisia syˆttˆvirheit‰ ei estet‰", 0);
+					   writeerror_w(L"Emit-toimintoa ei k√§ynnistetty - "
+						  L"haitallisia sy√∂tt√∂virheit√§ ei estet√§", 0);
 					if (bdg != pv[k_pv].badge[0] && k_pv < kilpparam.n_pv_akt - 1) {
 						for (i_pv = k_pv+1; i_pv <= kilpparam.n_pv_akt; i_pv++)
 							pv[i_pv].badge[0] = pv[k_pv].badge[0];
@@ -976,8 +976,8 @@ INT kilptietue::inputkilp(INT addfl)
 						inputlongw(&pv[k_pv].badge[1],len , x, y+1,term,&tc);
 						if (tc == ESC) break;
 						if (!emitfl && bdg != pv[k_pv].badge[1])
-						   writeerror_w(L"Emit-toimintoa ei k‰ynnistetty - "
-							  L"haitallisia syˆttˆvirheit‰ ei estet‰", 0);
+						   writeerror_w(L"Emit-toimintoa ei k√§ynnistetty - "
+							  L"haitallisia sy√∂tt√∂virheit√§ ei estet√§", 0);
 						if (bdg != pv[k_pv].badge[1] && k_pv < Sarjat[Sarja()].viimpv) {
 							for (i_pv = k_pv+1; i_pv <= Sarjat[Sarja()].viimpv; i_pv++)
 								pv[i_pv].badge[1] = pv[k_pv].badge[1];
@@ -1180,7 +1180,7 @@ INT kilptietue::inputkilp(INT addfl)
 #endif            
 				if(tark(i_pv) != L'P') {
 					if (kilpparam.n_pv_akt > 1)
-						viwrrectw(ySize-3,48,ySize-3,72,L"PgUp, PgDn : Vaihda p‰iv‰",7,0,0);
+						viwrrectw(ySize-3,48,ySize-3,72,L"PgUp, PgDn : Vaihda p√§iv√§",7,0,0);
 					tm[0] = pv[i_pv].tlahto;
 					INPUTAIKAW(&pv[i_pv].tlahto,t0,pvparam[i_pv].laika,x,r,termp,&tc);
 					if (tm[0] != pv[i_pv].tlahto) {
@@ -1188,7 +1188,7 @@ INT kilptietue::inputkilp(INT addfl)
 							tm[0] = pv[i_pv].tlahto;
 							if (i_pv == k_pv && pv[i_pv].va[0].vatulos != pv[i_pv].tlahto) {
 								ch = L' ';
-								wselectopt(L"Muutetaanko myˆs toteutunut l‰htˆaika (K/E)",
+								wselectopt(L"Muutetaanko my√∂s toteutunut l√§ht√∂aika (K/E)",
 								L"KE", &ch);
 								if (ch == L'K') {
 									tm[0] = pv[i_pv].va[0].vatulos;
@@ -1203,7 +1203,7 @@ INT kilptietue::inputkilp(INT addfl)
 							for (va = 0; va <= Sarjat[Sarja()].valuku[k_pv]; va++) {
 								if ((tls = p_aika( va)) != 0) {
 									if (ch != L'K')
-									wselectopt(L"Muutetaanko myˆs tulokset vastaavasti (K/E)",
+									wselectopt(L"Muutetaanko my√∂s tulokset vastaavasti (K/E)",
 										L"KE", &ch);
 									if (ch == L'E') break;
 									tall_tulos(va, tls + tm[0] - pv[i_pv].tlahto);
@@ -1224,7 +1224,7 @@ INT kilptietue::inputkilp(INT addfl)
 							for (va = 0; va <= Sarjat[Sarja()].valuku[k_pv]; va++) {
 								if ((tls = p_aika( va)) != 0) {
 									if (ch != L'K')
-										wselectopt(L"Muutetaanko myˆs tulokset vastaavasti (K/E)",
+										wselectopt(L"Muutetaanko my√∂s tulokset vastaavasti (K/E)",
 											L"KE", &ch);
 									if (ch == L'E') 
 										break;
@@ -1248,7 +1248,7 @@ INT kilptietue::inputkilp(INT addfl)
 					}
 				else if(hyv_pv(i_pv)) {
 					if (kilpparam.n_pv_akt > 1)
-						viwrrectw(ySize-3,48,ySize-3,72,L"PgUp, PgDn : Vaihda p‰iv‰",7,0,0);
+						viwrrectw(ySize-3,48,ySize-3,72,L"PgUp, PgDn : Vaihda p√§iv√§",7,0,0);
 					tls = tulos_pv(i_pv);
 					INPUTAIKAW(&tls,0,pvparam[i_pv].laika,x,y+i_pv*RV,termp,&tc);
 					tall_tulos_pv(tls, i_pv);
@@ -1267,7 +1267,7 @@ INT kilptietue::inputkilp(INT addfl)
 				if(addfl && !kunto)
 				   break;
 				if (kilpparam.n_pv_akt > 1)
-					viwrrectw(ySize-3,48,ySize-3,72,L"PgUp, PgDn : Vaihda p‰iv‰",7,0,0);
+					viwrrectw(ySize-3,48,ySize-3,72,L"PgUp, PgDn : Vaihda p√§iv√§",7,0,0);
 				do {
 				   kh = tark(i_pv);
 					if (Sarjat[Sarja()].lsak[i_pv] == 0) {
@@ -1297,7 +1297,7 @@ INT kilptietue::inputkilp(INT addfl)
 					  || tark(k_pv) == L'H') && tc != ESC) {
 					  erbeep();
 					  ch = L'E';
-					  wselectopt(L"Tulos jo annettu, merkit‰‰nkˆ (K/E)", L"KE", &ch);
+					  wselectopt(L"Tulos jo annettu, merkit√§√§nk√∂ (K/E)", L"KE", &ch);
 					  if (ch == L'E') {
 						 tc = L' ';
 						 break;
@@ -1329,13 +1329,13 @@ INT kilptietue::inputkilp(INT addfl)
 				   inputintw(&kno, len, x, y,term,&tc);
 				   if((tc != ESC) && (kno != id())) {
 					  if (kno < minkilpno || kno > maxkilpno) {
-						 swprintf(msg, L"Anna kilp.numero v‰lilt‰ : %d ... %d",
+						 swprintf(msg, L"Anna kilp.numero v√§lilt√§ : %d ... %d",
 							minkilpno,maxkilpno);
 						 writeerror_w(msg,0);
 						 ok = 0;
 						 }
 					  else if (getpos(kno) > 0) {
-						 writeerror_w(L"Numero jo k‰ytˆss‰",0);
+						 writeerror_w(L"Numero jo k√§yt√∂ss√§",0);
 						 ok = 0;
 						 }
 					  }

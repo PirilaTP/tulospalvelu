@@ -29,7 +29,7 @@ int scattrib(int fore, int back, char ch, unsigned cnt)
 	Coord.X = x;
 	Coord.Y = y;
 	N = cnt;
-	if (!FillConsoleOutputCharacter(hConOut, ch, N, Coord, &N)) {
+	if (!FillConsoleOutputCharacterW(hConOut, ch, N, Coord, &N)) {
 		GetLastError();
 		return(-1);
 	}

@@ -43,4 +43,3 @@ int haesarja(char *snimi)
 
 
 
-

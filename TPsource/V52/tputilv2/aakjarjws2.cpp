@@ -38,28 +38,28 @@ wchar_t *aakjarjwstr2(wchar_t *knimi)
 		if (*knimi != L'-') {
 			if (*knimi > 127) {
 				switch (*knimi) {
-					case L'É' :
-					case L'È' :
-					case L'Ê' :
-					case L'é' :
-					case L'è' :
-					case L'ê' :
+					case L'\u00C9' : // Ã‰
+					case L'\u00C8' : // Ãˆ
+					case L'\u00CA' : // ÃŠ
+					case L'\u00CB' : // Ã‹
+					case L'\u00E9' : // Ã©
+					case L'\u00E8' : // Ã¨
 						*p = 'E';
 						break;
-					case L'Ü' :
-					case L'ü' :
+					case L'\u00DC' : // Ãœ
+					case L'\u00FC' : // Ã¼
 						*p = 'Y';
 						break;
-					case L'Å' :
-					case L'å' :
+					case L'\u00C5' : // Ã…
+					case L'\u00E5' : // Ã¥
 						*p = 91;
 						break;
-					case L'Ä' :
-					case L'ä' :
+					case L'\u00C4' : // Ã„
+					case L'\u00E4' : // Ã¤
 						*p = 92;
 						break;
-					case L'Ö' :
-					case L'ö' :
+					case L'\u00D6' : // Ã–
+					case L'\u00F6' : // Ã¶
 						*p = 93;
 						break;
 					default  :

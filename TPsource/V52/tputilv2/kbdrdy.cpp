@@ -16,8 +16,8 @@
 
 #include <bkeybrd.h>
 
-/* kbdrdy palauttaa arvon 1, jos n„pp„int„ on painettu */
-/*               ja arvon 0, jos n„pp„int„ ei ole painettu */
+/* kbdrdy palauttaa arvon 1, jos nÂ„ppÂ„intÂ„ on painettu */
+/*               ja arvon 0, jos nÂ„ppÂ„intÂ„ ei ole painettu */
 
 int kbdrdy(void)
 {

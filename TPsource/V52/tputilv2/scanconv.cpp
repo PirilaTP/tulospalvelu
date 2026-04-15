@@ -22,41 +22,41 @@ char *scanconv(char *line0)
       switch (*line) {
          case '\x5b':
          case '\xc4':
-            *line = '';
+            *line = 'Â';
             break;
          case '\x5c':
          case '\xd6':
-            *line = '™';
+            *line = 'Â™';
             break;
          case '\x5d':
          case '\xc5':
-            *line = '';
+            *line = 'Â';
             break;
          case '\x5e':
          case '\xdc':
-            *line = 'š';
+            *line = 'Âš';
             break;
          case '\xc9':
-            *line = '';
+            *line = 'Â';
             break;
          case '\x7b':
          case '\xe4':
-            *line = '„';
+            *line = 'Â„';
             break;
          case '\x7c':
          case '\xf6':
-            *line = '”';
+            *line = 'Â”';
             break;
          case '\x7d':
          case '\xe5':
-            *line = '†';
+            *line = 'Â†';
             break;
          case '\x7e':
          case '\xfc':
-            *line = '';
+            *line = 'Â';
             break;
          case '\xe9':
-            *line = '‚';
+            *line = 'Â‚';
             break;
          }
       }

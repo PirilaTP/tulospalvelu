@@ -25,11 +25,11 @@ char upcasesc(char ch)
    char c;
 
    switch(ch) {
-      case 130 :  return('');
-      case 132 :  return('');
-      case 148 :  return('™');
-      case 134 :  return('');
-      case 129 :  return('š');
+      case 130 :  return('Â');
+      case 132 :  return('Â');
+      case 148 :  return('Â™');
+      case 134 :  return('Â');
+      case 129 :  return('Âš');
    }
    i = ch;
    c = toupper(i);
@@ -48,4 +48,3 @@ wchar_t upcasewsc(wchar_t ch)
 	return(ch);
 }
 
-

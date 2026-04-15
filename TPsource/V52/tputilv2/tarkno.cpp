@@ -27,4 +27,3 @@ int tarkno(int kno)
 }
 
 
-

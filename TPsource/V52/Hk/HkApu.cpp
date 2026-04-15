@@ -252,7 +252,7 @@ int haeSeurVakantti(int alku)
 
 	// Jos alku == 0 jatketaan aiemmasta arvosta vakanttialku
 	// muuten alustetaan arvoon alku
-	// lisäksi varmistetaan alueella minkilpno .. maxkilpno pysyminen
+	// lisï¿½ksi varmistetaan alueella minkilpno .. maxkilpno pysyminen
 
 	if (alku > maxkilpno)
 		alku = minkilpno;
@@ -321,12 +321,12 @@ INT maaraa_piste(kilptietue *kilp, INT32 t)
 	if (ol_piste == -2 && t > TMAALI0) {
 		tls = kilp->tulos1(0, t, 0);
 		if (pvparam[k_pv].hiihtolahto && (tls > 23 * TUNTI || (
-			(Sarjat[kilp->Sarja()].valuku == 0 && Sarjat[kilp->Sarja()].tul_raja[k_pv] && tls <  Sarjat[kilp->Sarja()].tul_raja[k_pv]*SEK) ||
-			(Sarjat[kilp->Sarja()].valuku > 0 && Sarjat[kilp->Sarja()].va_raja[k_pv][0] && tls <  Sarjat[kilp->Sarja()].va_raja[k_pv][0]*SEK)
+			(Sarjat[kilp->Sarja()].valuku[k_pv] == 0 && Sarjat[kilp->Sarja()].tul_raja[k_pv] && tls <  Sarjat[kilp->Sarja()].tul_raja[k_pv]*SEK) ||
+			(Sarjat[kilp->Sarja()].valuku[k_pv] > 0 && Sarjat[kilp->Sarja()].va_raja[k_pv][0] && tls <  Sarjat[kilp->Sarja()].va_raja[k_pv][0]*SEK)
 			))) {
 			piste = -1;
 			}
-		else if (va_vuoro && vavuoro_yla && Sarjat[kilp->Sarja()].valuku)
+		else if (va_vuoro && vavuoro_yla && Sarjat[kilp->Sarja()].valuku[k_pv])
 			{
 			va_yla = Sarjat[kilp->Sarja()].valuku[k_pv];
 			if (va_yla > vavuoro_yla)

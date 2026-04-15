@@ -27,11 +27,7 @@
 typedef unsigned int DATAREF;
 
 typedef struct {
-#ifdef WIN32
    HANDLE hDatf;
-#else
-   HANDLE handle;
-#endif
    DATAREF firstfree;
    DATAREF numberfree;
    DATAREF int1;

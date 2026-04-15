@@ -26,9 +26,9 @@
 #define DAY (24*36000L)
 
 /*  Strtoaika_l2 muuttaa muodossa tt.mm.ss,s annetun ajan 0,1 sekunneiksi */
-/*  tt0 on lis„ys aikaan */
-/*  Palautettava aika on v„lill„ 0 <= aika < DAY, jos tt0 = 0 */
-/*                       v„lill„ -DAY/2 <= aika < DAY/2, jos tt0 != 0 */
+/*  tt0 on lisÂ„ys aikaan */
+/*  Palautettava aika on vÂ„lillÂ„ 0 <= aika < DAY, jos tt0 = 0 */
+/*                       vÂ„lillÂ„ -DAY/2 <= aika < DAY/2, jos tt0 != 0 */
 /*                       -DAY, jos merkkijono on virheellinen */
 
 long strtoaika_l2(char *straika,long tt0)

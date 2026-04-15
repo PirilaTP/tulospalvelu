@@ -122,7 +122,7 @@ static void near lah_tv(kilptietue *kilp, INT piste, INT sj)
 			if (n > 0)
 				kilp0.GETREC(n);
 			if (n <= 0 || kilp0.Sarja() != kilp->Sarja()) {
-				writeerror_w(L"Sarjatiedossa v‰‰r‰ alkunumero, takaa-ajon ajat TV:lle v‰‰rin", 0);
+				writeerror_w(L"Sarjatiedossa v√§√§r√§ alkunumero, takaa-ajon ajat TV:lle v√§√§rin", 0);
 				}
 			else {
 				edkarki = kilp0.ytulos(k_pv - 1);
@@ -169,7 +169,7 @@ void tv_asetus(void)
 	if (tv_com) tv_com0 = tv_com;
 	ch = L' ';
 	while (!nilm[srj]) srj++;
-	Wselectopt(L"K)‰ynnista l‰hetys, L)opeta l‰hetys, U)usintal‰hetys", L"KLU", &ch);
+	Wselectopt(L"K)√§ynnista l√§hetys, L)opeta l√§hetys, U)usintal√§hetys", L"KLU", &ch);
 	clrln(ySize-3);
 	switch (ch) {
 		case L'K' :
@@ -180,7 +180,7 @@ void tv_asetus(void)
 			break;
 		case L'U':
 			ch = L' ';
-			Wselectopt(L"L)‰htˆajat, T)ulokset vai v‰liaika 12345", L"LT12345", &ch);
+			Wselectopt(L"L)√§ht√∂ajat, T)ulokset vai v√§liaika 12345", L"LT12345", &ch);
 			clrln(ySize-3);
 			tv0 = tv_com;
 			piste = wcswcind(ch, L"LT12345") -1;

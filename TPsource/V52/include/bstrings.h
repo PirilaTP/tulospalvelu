@@ -12,6 +12,9 @@
 					/* of these definitions.    */
 
 #include <stdlib.h>
+#ifndef cdecl
+#define cdecl
+#endif
 
 /* Direction codes for STPJUST					    */
 
@@ -60,4 +63,3 @@ int    wcswcind(wchar_t, const wchar_t *);	/* Find a char in a string. */
 
 #endif					/* End "#ifndef DEF_BSTRING"*/
 
-

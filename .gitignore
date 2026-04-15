@@ -10,3 +10,6 @@ __history
 Debug_Build
 Release_Build
 obj
+TPsource/V52/build/
+TPsource/V52/HkMaali
+.DS_Store

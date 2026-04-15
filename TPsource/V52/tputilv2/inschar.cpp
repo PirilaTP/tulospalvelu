@@ -45,4 +45,3 @@ void inswchar(wchar_t ch, wchar_t *s, int pos)
 }
 
 
-

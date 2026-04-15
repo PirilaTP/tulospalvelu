@@ -17,6 +17,10 @@
 #ifndef _WINCOM_DEF_
 #define _WINCOM_DEF_
 
+#ifdef __linux__
+#include "tptype.h"
+#endif
+
 #define ipNONE 0
 #define ipUDPBOTH 1
 #define ipUDPSTREAM 2
@@ -36,7 +40,9 @@
 #define comtpTCPIMPORT 18
 
 
+#ifndef __linux__
 typedef void *HANDLE;
+#endif
 
 typedef struct {
 	int iptype;
