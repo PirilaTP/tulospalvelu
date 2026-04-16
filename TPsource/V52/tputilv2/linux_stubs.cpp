@@ -24,8 +24,26 @@ void shadow_put(int row, int col, char ch) {
         shadow[row][col] = ch;
 }
 static void shadow_puts(int row, int col, const char* s, int maxcols) {
-    for (int i = 0; s[i] && (maxcols < 0 || i < maxcols); i++)
-        shadow_put(row, col + i, s[i]);
+    /* Handle UTF-8: store first byte of each char, skip continuation bytes */
+    int c = 0;  /* column counter */
+    for (int i = 0; s[i] && (maxcols < 0 || c < maxcols); i++) {
+        unsigned char ch = (unsigned char)s[i];
+        if (ch < 0x80) {
+            shadow_put(row, col + c, ch);
+            c++;
+        } else if ((ch & 0xC0) == 0xC0) {
+            /* UTF-8 start byte — store the ISO-8859-1 equivalent if 2-byte */
+            /* Decode: 0xC3 0xA4 = ä = 0xE4 in ISO-8859-1 */
+            if ((ch & 0xE0) == 0xC0 && s[i+1]) {
+                unsigned char b2 = (unsigned char)s[i+1];
+                shadow_put(row, col + c, (char)(((ch & 0x1F) << 6) | (b2 & 0x3F)));
+            } else {
+                shadow_put(row, col + c, '?');
+            }
+            c++;
+        }
+        /* else: continuation byte (0x80-0xBF) — skip, don't increment column */
+    }
 }
 static void shadow_clear_row(int row, int c0, int c1) {
     for (int c = c0; c <= c1 && c < SHADOW_COLS; c++)
@@ -75,14 +93,27 @@ int viwrrect(int r0, int c0, int r1, int c1, const char* s, int f, int b, int m)
         ansi_goto(row, c0);
         int printed = 0;
         while (*src && printed < cols) {
-            unsigned char ch = (unsigned char)*src++;
-            if (ch >= 0x80 && ch < 0xC0) {
-                /* UTF-8 continuation byte — output but don't count as column */
-                putchar(ch);
+            unsigned char ch = (unsigned char)*src;
+            if (ch < 0x80) {
+                /* ASCII — same in both encodings */
+                putchar(ch); shadow_put(row, c0 + printed, ch);
+                src++; printed++;
+            } else if (ch >= 0xC0 && ch < 0xE0 && ((unsigned char)src[1] & 0xC0) == 0x80) {
+                /* Valid UTF-8 2-byte sequence — pass through, decode for shadow */
+                unsigned char b2 = (unsigned char)src[1];
+                putchar(ch); putchar(b2);
+                shadow_put(row, c0 + printed, (char)(((ch & 0x1F) << 6) | (b2 & 0x3F)));
+                src += 2; printed++;
+            } else if (ch >= 0xE0 && ch < 0xF0 && ((unsigned char)src[1] & 0xC0) == 0x80) {
+                /* Valid UTF-8 3-byte — pass through */
+                putchar(ch); putchar(src[1]); putchar(src[2]);
+                shadow_put(row, c0 + printed, '?');
+                src += 3; printed++;
             } else {
-                putchar(ch);
+                /* ISO-8859-1 byte — convert to UTF-8 */
+                putchar(0xC0 | (ch >> 6)); putchar(0x80 | (ch & 0x3F));
                 shadow_put(row, c0 + printed, ch);
-                printed++;
+                src++; printed++;
             }
         }
         while (printed < cols) { putchar(' '); shadow_put(row, c0 + printed, ' '); printed++; }
