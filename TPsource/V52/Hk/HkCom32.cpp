@@ -284,7 +284,7 @@ static void tark_kilp(INT cn, INT kaikki)
 		else if (ibuf->d.v.vali == kilpparam.valuku+1)
 			tkilp.set_tark(*(wchar_t *) &ibuf->d.v.aika, k_pv);
 		else if (ibuf->d.v.vali == kilpparam.valuku+2)
-			wcsncpy(tkilp.pv[k_pv].asakot, (wchar_t *)&ibuf->d.v.aika, sizeof(tkilp.pv[k_pv].asakot)/2);
+			wcsncpy(tkilp.pv[k_pv].asakot, (wchar_t *)&ibuf->d.v.aika, sizeof(tkilp.pv[k_pv].asakot)/sizeof(wchar_t));
 		else if (ibuf->d.v.vali == kilpparam.valuku+3)
 			tkilp.pv[k_pv].tasoitus = ibuf->d.v.aika;
 		}

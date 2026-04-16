@@ -1566,27 +1566,27 @@ void lue_ll_muotoilu(wchar_t *luetfnm, INT alku)
 				}
 			 }
 		  }
-	  if  (luetfmtf->ReadLine(llparam.luetots0, sizeof(llparam.luetots0)/2-1) == NULL) {
+	  if  (luetfmtf->ReadLine(llparam.luetots0, sizeof(llparam.luetots0)/sizeof(wchar_t)-1) == NULL) {
 		 iowerr(luetfnm, 1, 2L);
 		 goto sulje;
 		 }
 	  wtrimline(llparam.luetots0);
-	  if  (luetfmtf->ReadLine(llparam.luetots1, sizeof(llparam.luetots1)/2-1) == NULL) {
+	  if  (luetfmtf->ReadLine(llparam.luetots1, sizeof(llparam.luetots1)/sizeof(wchar_t)-1) == NULL) {
 		 iowerr(luetfnm, 1, 2L);
 		 goto sulje;
 		 }
 	  wtrimline(llparam.luetots1);
-	  if  (luetfmtf->ReadLine(llparam.luetots21, sizeof(llparam.luetots21)/2-1) == NULL) {
+	  if  (luetfmtf->ReadLine(llparam.luetots21, sizeof(llparam.luetots21)/sizeof(wchar_t)-1) == NULL) {
 		 iowerr(luetfnm, 1, 2L);
 		 goto sulje;
 		 }
 	  wtrimline(llparam.luetots21);
-	  if  (luetfmtf->ReadLine(llparam.luetots22, sizeof(llparam.luetots22)/2-1) == NULL) {
+	  if  (luetfmtf->ReadLine(llparam.luetots22, sizeof(llparam.luetots22)/sizeof(wchar_t)-1) == NULL) {
 		 iowerr(luetfnm, 1, 2L);
 		 goto sulje;
 		 }
 	  wtrimline(llparam.luetots22);
-	  if  (luetfmtf->ReadLine(llparam.luetots3, sizeof(llparam.luetots3)/2-1) == NULL) {
+	  if  (luetfmtf->ReadLine(llparam.luetots3, sizeof(llparam.luetots3)/sizeof(wchar_t)-1) == NULL) {
 		 iowerr(luetfnm, 1, 2L);
 		 goto sulje;
 		 }
@@ -1968,7 +1968,7 @@ static int tulkXMLTlKentta(int laji, wchar_t *knt, xml_node *node, int *inode, i
 			switch (node[*inode].tagid) {
 				case FRM_Otsikko:
 					node[*inode].gettext(frmflds[laji][kentta].ots,
-						sizeof(frmflds[laji][kentta].ots)/2-1);
+						sizeof(frmflds[laji][kentta].ots)/sizeof(wchar_t)-1);
 					break;
 				case FRM_Sijainti:
 					node[*inode].gettext_int(&frmflds[laji][kentta].pos);
@@ -2131,15 +2131,15 @@ static int tulkXMLTlMuotoilut(xml_node *node, int *inode, int nnode)
 				case FRM_PaaOts:
 					node[*inode].gettext(ln, 198);
 					if (wcslen(ln) > 1)
-						wcsncpy(paaots, ln, sizeof(paaots)/2-1);
+						wcsncpy(paaots, ln, sizeof(paaots)/sizeof(wchar_t)-1);
 					break;
 				case FRM_SarjaOts:
 					node[*inode].gettext(ln, 198);
-					wcsncpy(sarjaots, ln, sizeof(sarjaots)/2-1);
+					wcsncpy(sarjaots, ln, sizeof(sarjaots)/sizeof(wchar_t)-1);
 					break;
 				case FRM_AlaOts:
 					node[*inode].gettext(ln, 198);
-					wcsncpy(alaots, ln, sizeof(alaots)/2-1);
+					wcsncpy(alaots, ln, sizeof(alaots)/sizeof(wchar_t)-1);
 					break;
 				case FRM_TulosLuettelo :
 					node[*inode].getparam_text(L"laji", ln, 30);
@@ -2426,7 +2426,7 @@ static int tulkXMLLlKentta(int kohde, int laji, wchar_t *knt, xml_node *node, in
 			switch (node[*inode].tagid) {
 				case FRM_Otsikko:
 					node[*inode].gettext(tulkentta[kohde][kentta].ots,
-						sizeof(tulkentta[kohde][kentta].ots)/2-1);
+						sizeof(tulkentta[kohde][kentta].ots)/sizeof(wchar_t)-1);
 					break;
 				case FRM_Sijainti:
 					node[*inode].gettext_int(&tulkentta[kohde][kentta].pos[laji]);

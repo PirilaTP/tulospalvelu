@@ -25,8 +25,8 @@ int testunicode(FILE *tfile, UCHAR *flnm)
 		rewind(tfile);
 		if (buf[0] >= 254) {
 			if (flnm) {
-				sprintf(buf, "Tiedosto %s ilmeisesti Unicode-tekstiä, ohjelma ei tue", flnm);
-				writeerror(buf, 0);
+				sprintf((char*)buf, "Tiedosto %s ilmeisesti Unicode-tekstiä, ohjelma ei tue", flnm);
+				writeerror((char*)buf, 0);
 				}
 			return(1);
 			}

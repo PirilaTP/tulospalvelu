@@ -632,7 +632,7 @@ void TextFl::Flush(void)
 	fflush(File);
 }
 
-void TextFl::put_wxml_s(wchar_t *tag, wchar_t *value, int level, wchar_t *parstr /*= NULL*/)
+void TextFl::put_wxml_s(wchar_t *tag, const wchar_t *value, int level, wchar_t *parstr /*= NULL*/)
 	{
 	wchar_t *Buf;
 	int len = 100;
@@ -707,7 +707,7 @@ void TextFl::put_wxml_time(wchar_t *tag, int Date, INT32 value, int t0, int tark
 	if (len < 0) {
 		elimwzb1(st);
 		}
-	if (Date > 0 && wcslen(st) + 11 <= sizeof(st)/2-1) {
+	if (Date > 0 && wcslen(st) + 11 <= sizeof(st)/sizeof(wchar_t)-1) {
 		wmemmove(st+11, st, wcslen(st)+1);
 		stDateNo(st, Date);
 		st[10] = L'T';

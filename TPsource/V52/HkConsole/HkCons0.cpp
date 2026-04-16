@@ -108,12 +108,12 @@ void chgchar(char *buf, int len)
 	int i;
 
 	for (i = 0; i < len; i++) {
-		switch(buf[i]) {
-			case 'Ä': 
-				buf[i] = '÷';
+		switch((unsigned char)buf[i]) {
+			case 0xC4: // Ä
+				buf[i] = 0xF7; // ÷
 				break;
-			case 'Å': 
-				buf[i] = '°';
+			case 0xC5: // Å
+				buf[i] = 0xB0; // °
 				break;
 			}
 		}

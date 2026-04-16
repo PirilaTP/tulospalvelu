@@ -203,7 +203,7 @@ typedef struct { COORD dwSize; COORD dwCursorPosition; unsigned short wAttribute
 #define SetConsoleScreenBufferSize(h,s) (1)
 typedef struct { int dwSize; int bVisible; } CONSOLE_CURSOR_INFO;
 #define GetConsoleCursorInfo(h,p) (0)
-static int _linux_cursor_row = 0, _linux_cursor_col = 0;
+extern int _linux_cursor_row, _linux_cursor_col;
 static inline int linux_GetConsoleScreenBufferInfo(int h, CONSOLE_SCREEN_BUFFER_INFO* p) {
     memset(p, 0, sizeof(*p));
     p->dwSize.X = 80; p->dwSize.Y = 25;
@@ -215,6 +215,7 @@ static inline int linux_GetConsoleScreenBufferInfo(int h, CONSOLE_SCREEN_BUFFER_
 }
 #define GetConsoleScreenBufferInfo(h,p) linux_GetConsoleScreenBufferInfo(h,p)
 #define GetLargestConsoleWindowSize(h) ((COORD){80,25})
+extern void shadow_put(int row, int col, char ch);
 static inline int linux_WriteConsoleOutputCharacterW(int h, const wchar_t* b, int n, COORD c, unsigned long* w) {
     printf("\033[%d;%dH", c.Y+1, c.X+1);
     for (int i = 0; i < n; i++) {
@@ -222,6 +223,7 @@ static inline int linux_WriteConsoleOutputCharacterW(int h, const wchar_t* b, in
         if (ch < 0x80) putchar((char)ch);
         else if (ch < 0x800) { putchar(0xC0|(ch>>6)); putchar(0x80|(ch&0x3F)); }
         else { putchar(0xE0|(ch>>12)); putchar(0x80|((ch>>6)&0x3F)); putchar(0x80|(ch&0x3F)); }
+        shadow_put(c.Y, c.X + i, (char)(ch & 0xFF));
     }
     fflush(stdout);
     if (w) *w = n;
@@ -244,6 +246,7 @@ static inline int linux_FillConsoleOutputCharacterW(int h, wchar_t c, int n, COO
         if (c < 0x80) putchar((char)c);
         else if (c < 0x800) { putchar(0xC0|(c>>6)); putchar(0x80|(c&0x3F)); }
         else { putchar(0xE0|(c>>12)); putchar(0x80|((c>>6)&0x3F)); putchar(0x80|(c&0x3F)); }
+        shadow_put(co.Y, co.X + i, (char)(c & 0xFF));
     }
     fflush(stdout);
     if (w) *w = n;
@@ -254,8 +257,12 @@ static inline int linux_FillConsoleOutputCharacterW(int h, wchar_t c, int n, COO
 #define FillConsoleOutputAttribute(h,a,n,co,w) (1)
 #define SetConsoleTextAttribute(h,a)
 #include <termios.h>
+#include <poll.h>
 static inline int linux_ReadConsoleInput(int h, INPUT_RECORD* rec, int n, unsigned long* nr) {
     /* Terminal should already be in raw mode (set by main) */
+    /* Block until data is available using poll */
+    struct pollfd rpfd = { STDIN_FILENO, POLLIN, 0 };
+    while (poll(&rpfd, 1, 100) <= 0) { /* 100ms poll loop */ }
     unsigned char ch;
     int r = read(STDIN_FILENO, &ch, 1);
     if (r <= 0) { if (nr) *nr = 0; return 1; }
@@ -307,7 +314,6 @@ static inline int linux_ReadConsoleInput(int h, INPUT_RECORD* rec, int n, unsign
 }
 #define ReadConsoleInput(h,r,n,nr) linux_ReadConsoleInput(h,r,n,nr)
 #define ReadConsoleInputW ReadConsoleInput
-#include <poll.h>
 static inline int linux_PeekConsoleInput(int h, INPUT_RECORD* rec, int n, unsigned long* nr) {
     struct pollfd pfd = { STDIN_FILENO, POLLIN, 0 };
     int ready = poll(&pfd, 1, 10); /* 10ms wait to reduce CPU usage */
@@ -332,10 +338,15 @@ typedef pthread_mutex_t CRITICAL_SECTION;
 #define LeaveCriticalSection(cs) pthread_mutex_unlock(cs)
 #define DeleteCriticalSection(cs) pthread_mutex_destroy(cs)
 
-/* Threads */
+/* Threads - accept both void(*)(void*) and void*(*)(void*) signatures */
 static inline uintptr_t linux_beginthread(void (*func)(void*), unsigned stack, void* arg) {
     pthread_t tid;
     pthread_create(&tid, NULL, (void*(*)(void*))func, arg);
+    return (uintptr_t)tid;
+}
+static inline uintptr_t linux_beginthread(void* (*func)(void*), unsigned stack, void* arg) {
+    pthread_t tid;
+    pthread_create(&tid, NULL, func, arg);
     return (uintptr_t)tid;
 }
 #define _beginthread(func, stack, arg) linux_beginthread(func, stack, arg)
@@ -425,7 +436,13 @@ static inline int _wfopen_s(FILE** fp, const wchar_t* wn, const wchar_t* wm) {
 
 static inline char* wcstooem(char* d, const wchar_t* s, int n) { wcstombs(d,s,n); return d; }
 static inline char* wcstoansi(char* d, const wchar_t* s, int n) { wcstombs(d,s,n); return d; }
-static inline wchar_t* ansitowcs(wchar_t* d, const char* s, int n) { mbstowcs(d,s,n); return d; }
+static inline wchar_t* ansitowcs(wchar_t* d, const char* s, int n) {
+    /* Direct ISO-8859-1 byte to wchar_t (don't use mbstowcs - locale-dependent) */
+    int i;
+    for (i = 0; i < n && s[i]; i++) d[i] = (unsigned char)s[i];
+    d[i] = 0;
+    return d;
+}
 
 static inline int _wrename(const wchar_t* o, const wchar_t* n) {
     char oa[512], na[512];
@@ -568,8 +585,12 @@ static inline FILE* _wfdopen(int fd, const wchar_t* wm) {
     return fdopen(fd, m);
 }
 
-/* 64-bit seek */
+/* 64-bit seek - macOS lseek is already 64-bit, Linux needs lseek64 */
+#ifdef __APPLE__
+#define _lseeki64(fd, off, w) lseek(fd, off, w)
+#else
 #define _lseeki64(fd, off, w) lseek64(fd, off, w)
+#endif
 
 #define _snwprintf swprintf
 
@@ -585,23 +606,65 @@ static inline int swprintf_win(wchar_t* buf, const wchar_t* fmt, ...) {
     va_end(args);
     return ret;
 }
+/* C99 overload: swprintf(buf, size, fmt, ...) */
+static inline int swprintf_win(wchar_t* buf, size_t n, const wchar_t* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    int ret = vswprintf(buf, n, fmt, args);
+    va_end(args);
+    return ret;
+}
 #define swprintf swprintf_win
 #undef _snwprintf
 #define _snwprintf swprintf_win
 #define wsprintf swprintf_win
 #define wsprintfW swprintf_win
 
-/* Charset conversion */
+/* Charset conversion - own UTF-8 decoder, locale-independent */
 #define CP_UTF8 65001
 static inline int MultiByteToWideChar(unsigned cp, unsigned fl, const char* mb, int mblen,
     wchar_t* wc, int wclen) {
-    if (wclen == 0) { return mblen > 0 ? mblen : (int)strlen(mb)+1; }
-    return (int)mbstowcs(wc, mb, wclen);
+    const unsigned char* s = (const unsigned char*)mb;
+    int slen = (mblen == -1) ? (int)strlen(mb)+1 : mblen;
+    if (wclen == 0) return slen; /* rough estimate */
+    int i = 0, o = 0;
+    if (cp == CP_UTF8) {
+        /* UTF-8 decoding */
+        while (i < slen && o < wclen - 1) {
+            unsigned char c = s[i];
+            if (c == 0) { break; }
+            else if (c < 0x80) { wc[o++] = c; i++; }
+            else if ((c & 0xE0) == 0xC0 && i+1 < slen) {
+                wc[o++] = ((c & 0x1F) << 6) | (s[i+1] & 0x3F); i += 2;
+            } else if ((c & 0xF0) == 0xE0 && i+2 < slen) {
+                wc[o++] = ((c & 0x0F) << 12) | ((s[i+1] & 0x3F) << 6) | (s[i+2] & 0x3F); i += 3;
+            } else { wc[o++] = c; i++; }
+        }
+    } else {
+        /* ISO-8859-1 / single-byte: direct byte-to-wchar_t mapping */
+        while (i < slen && o < wclen - 1) {
+            unsigned char c = s[i++];
+            if (c == 0) break;
+            wc[o++] = c;
+        }
+    }
+    wc[o] = 0;
+    return o;
 }
 static inline int WideCharToMultiByte(unsigned cp, unsigned fl, const wchar_t* wc, int wclen,
     char* mb, int mblen, const char* def, int* used) {
     if (mblen == 0) { return wclen > 0 ? wclen*4 : (int)wcslen(wc)*4+1; }
-    return (int)wcstombs(mb, wc, mblen);
+    int i = 0, o = 0;
+    int slen = (wclen == -1) ? (int)wcslen(wc)+1 : wclen;
+    while (i < slen && o < mblen - 4) {
+        wchar_t ch = wc[i++];
+        if (ch == 0) break;
+        if (ch < 0x80) { mb[o++] = (char)ch; }
+        else if (ch < 0x800) { mb[o++] = 0xC0|(ch>>6); mb[o++] = 0x80|(ch&0x3F); }
+        else { mb[o++] = 0xE0|(ch>>12); mb[o++] = 0x80|((ch>>6)&0x3F); mb[o++] = 0x80|(ch&0x3F); }
+    }
+    mb[o] = 0;
+    return o;
 }
 
 static inline void Beep(int freq, int dur) { /* no-op on Linux */ }

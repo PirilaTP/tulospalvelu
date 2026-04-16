@@ -20,7 +20,6 @@
 #include <butil.h>
 #pragma hdrstop
 #include <time.h>
-#include <algorithm>
 #include "HkDeclare.h"
 #include "HkMuotoilu.h"
 
@@ -101,8 +100,8 @@ static wchar_t *sr_nimet;
 
 wchar_t seuranimi[SEURALISTA][LSEURA+1];
 wchar_t piirinimi[][41] = {
-   L"Etel�-Pohjanmaa",
-   L"H�me",
+   L"Etelä-Pohjanmaa",
+   L"Häme",
    L"Kaakko",
    L"Kainuu",
    L"Keski-Pohjanmaa",
@@ -311,13 +310,13 @@ void tulostusparamtp::setActFlds(int srj)
 */
 					{
 					if (ii > k_pv) { {
-						wcsncpy(aFld[k].title, language ? L"Total" : L"Yht.", sizeof(aFld[k].title)/2-1);
+						wcsncpy(aFld[k].title, language ? L"Total" : L"Yht.", sizeof(aFld[k].title)/sizeof(wchar_t)-1);
 						aFld[k].race = k_pv;
 						aFld[k].point = kilpparam.valuku + 1;
 						}
 					}
 					else {
-						wcsncpy(aFld[k].title, fld[aFld[k].id].ots, sizeof(aFld[k].title)/2-1);
+						wcsncpy(aFld[k].title, fld[aFld[k].id].ots, sizeof(aFld[k].title)/sizeof(wchar_t)-1);
 						if (isdigit(aFld[k].title[wcslen(aFld[k].title)-1]))
 							aFld[k].title[wcslen(aFld[k].title)-1] = 0;
 						if (aFld[k].title[wcslen(aFld[k].title)-1] >= L'A')
@@ -329,7 +328,7 @@ void tulostusparamtp::setActFlds(int srj)
 			else if (kaikkiva) {
 				aFld[k].point = ii + 1;
 				if (srj >= 0)
-					wcsncpy(aFld[k].title, Sarjat[srj].va_matka[k_pv][ii], sizeof(aFld[k].title)/2-1);
+					wcsncpy(aFld[k].title, Sarjat[srj].va_matka[k_pv][ii], sizeof(aFld[k].title)/sizeof(wchar_t)-1);
 				}
 			else if (tulostettava == L'Y') {
 				int j = 0;
@@ -338,13 +337,13 @@ void tulostusparamtp::setActFlds(int srj)
 						if (j == ii) {
 							aFld[k].point = *p - 2;
 							if (*p == 1)
-								wcsncpy(aFld[k].title, language ? L"Start" : L"L�ht�", sizeof(aFld[k].title)/2-1);
+								wcsncpy(aFld[k].title, language ? L"Start" : L"Lähtö", sizeof(aFld[k].title)/sizeof(wchar_t)-1);
 							if (*p == 2)
-								wcsncpy(aFld[k].title, language ? L"Time" : L"Tulos", sizeof(aFld[k].title)/2-1);
+								wcsncpy(aFld[k].title, language ? L"Time" : L"Tulos", sizeof(aFld[k].title)/sizeof(wchar_t)-1);
 							if (*p == kilpparam.valuku + 3)
-								wcsncpy(aFld[k].title, language ? L"Tot" : L"Yht.", sizeof(aFld[k].title)/2-1);
+								wcsncpy(aFld[k].title, language ? L"Tot" : L"Yht.", sizeof(aFld[k].title)/sizeof(wchar_t)-1);
 							if (*p > 2 && srj >= 0 && *p <= Sarjat[srj].valuku[k_pv] + 2)
-								wcsncpy(aFld[k].title, Sarjat[srj].va_matka[k_pv][*p-3], sizeof(aFld[k].title)/2-1);
+								wcsncpy(aFld[k].title, Sarjat[srj].va_matka[k_pv][*p-3], sizeof(aFld[k].title)/sizeof(wchar_t)-1);
 							break;
 							}
 						j++;
@@ -353,12 +352,12 @@ void tulostusparamtp::setActFlds(int srj)
 				}
 			}
 		else if (vaihelkm == 2 && !yhttuljarj && (aFld[k].id == F_OSATLS || aFld[k].id == F_OSASJ)) {
-			wcsncpy(aFld[k].title, fld[aFld[k].id].ots, sizeof(aFld[k].title)/2-1);
+			wcsncpy(aFld[k].title, fld[aFld[k].id].ots, sizeof(aFld[k].title)/sizeof(wchar_t)-1);
 			if (isdigit(aFld[k].title[wcslen(aFld[k].title)-1]))
 				aFld[k].title[wcslen(aFld[k].title)-1] = language ? L'T' : L'Y';
 			}
 		else
-			wcsncpy(aFld[k].title, fld[aFld[k].id].ots, sizeof(aFld[k].title)/2-1);
+			wcsncpy(aFld[k].title, fld[aFld[k].id].ots, sizeof(aFld[k].title)/sizeof(wchar_t)-1);
 		if (yhttuljarj && (aFld[k].id == F_TLS || aFld[k].id == F_SJ)) {
 			aFld[k].race = k_pv;
 			aFld[k].point = kilpparam.valuku + 1;
@@ -367,7 +366,7 @@ void tulostusparamtp::setActFlds(int srj)
 			aFld[k].race = k_pv;
 			aFld[k].point = piste;
 			if (aFld[k].point > 0 && aFld[k].id == F_TLS) {
-				wcsncpy(aFld[k].title, Sarjat[srj].va_matka[k_pv][aFld[k].point-1], sizeof(aFld[k].title)/2-1);
+				wcsncpy(aFld[k].title, Sarjat[srj].va_matka[k_pv][aFld[k].point-1], sizeof(aFld[k].title)/sizeof(wchar_t)-1);
 				}
 			}
 		if (yhttuljarj && vaihelkm == 2 && (aFld[k].id == F_OSATLS || aFld[k].id == F_OSASJ)) {
@@ -485,7 +484,7 @@ static INT saksum(kilptietue *kilp, INT i_pv)
 wchar_t *kilptietue::tarkstr(wchar_t *st, int i_pv, bool yhttul, int len, int lang)
 {
 	static wchar_t *strs[2][11] = {{L"Tark.", L"Avoin", L"Hyl.es.", L"Ohit.", L"Puuttuu",
-		L"Kesk.", L"Virhe", L"Hyl.", L"Ei l�ht.", L"Poissa", L"Ei aikaa"},
+		L"Kesk.", L"Virhe", L"Hyl.", L"Ei läht.", L"Poissa", L"Ei aikaa"},
 		{L"OK", L"Open", L"Recheck", L"Skip", L"DNF", L"DNF", L"Missing", L"DQ", L"DNS", L"Absent", L"Exclude"}};
 
 	if (i_pv < 0)
@@ -556,7 +555,7 @@ static wchar_t *asuunnStr(wchar_t *str, int len, kilptietue *kilp, int i_pv, int
 
 	if (str == NULL) {
 		str = st;
-		if (len > sizeof(st)/2-1)
+		if (len > sizeof(st)/sizeof(wchar_t)-1)
 			len = sizeof(st)/2-1;
 		}
 	str[0] = 0;
@@ -1441,7 +1440,7 @@ void initline(tulostusparamtp *tulprm)
 	  if ((tulprm->kohde == L'H' || tulprm->kohde == L'M') && tulprm->tulmuot.tauluhtml)
 		  memset(tulprm->sline, 0, sizeof(tulprm->sline));
 	  else if (!tulprm->tulmuot.tabs)
-		  wmemset(tulprm->sline, L' ', sizeof(tulprm->sline)/2-1);
+		  wmemset(tulprm->sline, L' ', sizeof(tulprm->sline)/sizeof(wchar_t)-1);
 	  else
 		  lastpos = 0;
 	  }
@@ -1551,7 +1550,7 @@ void init_ps(tulostusparamtp *tulprm)
 	  sendwline(L"\x04",tulprm->lstf);
 	  p = psinit+2;
 	  while (len) {
-		 n = (std::min)(len, (unsigned int)(sizeof(tulprm->sline)/2-1));
+		 n = (std::min)((unsigned int)len, (unsigned int)(sizeof(tulprm->sline)/sizeof(wchar_t)-1));
 		 wmemcpy(tulprm->sline, p, n);
 		 tulprm->sline[n] = 0;
 		 sendwline(tulprm->sline,tulprm->lstf);
@@ -1973,7 +1972,7 @@ void ssltulos(kilptietue *kilp, tulostusparamtp *tulprm)
    tulprm->writeline(st);
    }
 
-static void shltulos(kilptietue *kilp, int Sarja, tulostusparamtp *tulprm)
+void shltulos(kilptietue *kilp, int Sarja, tulostusparamtp *tulprm)
    {
    static wchar_t vak = L'K', srj = -1, kilptunnus[6] = L"", laji[3] = L"  ",
 		stsrj[11], stmatka[22] = L"";
@@ -1988,7 +1987,7 @@ static void shltulos(kilptietue *kilp, int Sarja, tulostusparamtp *tulprm)
    wcscpy(st, kilptunnus);
    st[wcslen(st)] = L';';
    if (srj == -1 || srj > kilp->Sarja()) {
-	   wselectopt(L"K�ytet��nk� rankisarjoille vakionimi�?", L"KE", &vak);
+	   wselectopt(L"Käytetäänkö rankisarjoille vakionimiä?", L"KE", &vak);
 	   }
    if (srj != kilp->Sarja()) {
 	  srj = kilp->Sarja();
@@ -1996,7 +1995,7 @@ static void shltulos(kilptietue *kilp, int Sarja, tulostusparamtp *tulprm)
 		  clrln(ySize-3);
 		  wcsncpy(stsrj, Sarjat[kilp->Sarja()].sarjanimi, 10);
 		  stsrj[10] = 0;
-		  swprintf(msg, L"Anna sarjalle %s k�ytett�v� nimi", Sarjat[kilp->Sarja()].sarjanimi);
+		  swprintf(msg, L"Anna sarjalle %s käytettävä nimi", Sarjat[kilp->Sarja()].sarjanimi);
 		  vidspwmsg(ySize-3,0,7,0,msg);
 		  inputwstr(stsrj, 10, 42, ySize-3, L"\r", &ch, 0);
 		  }
@@ -2043,7 +2042,7 @@ static void shltulos(kilptietue *kilp, int Sarja, tulostusparamtp *tulprm)
 		  }
 	  if (Sarjat[kilp->Sarja()].tapa[k_pv][0] >= L'P')
 		  wcsncpy(laji, Sarjat[kilp->Sarja()].tapa[k_pv], 2);
-	  wcsncpy(stmatka, Sarjat[kilp->Sarja()].matka[k_pv],sizeof(stmatka)/2-1);
+	  wcsncpy(stmatka, Sarjat[kilp->Sarja()].matka[k_pv],sizeof(stmatka)/sizeof(wchar_t)-1);
 	  if (stmatka[0] > 0) {
 		  if (stmatka[wcslen(stmatka)-1] >= L'P') {
 			 laji[k_pv] = stmatka[wcslen(stmatka)-1];
@@ -2297,7 +2296,7 @@ static void htmlmakitulos(kilptietue *kilp, int day, char cd, int piste, int sj)
 		 case L'V':
 		 case 'E' :
 		 case 'B' :
-			wcscpy(asy, "Ei l�ht.");
+			wcscpy(asy, "Ei läht.");
 			break;
 		 }
 		}
@@ -2462,7 +2461,7 @@ static INT prtmakitulos(kilptietue *kilp, INT sj, INT piste)
 		 case L'V':
 		 case L'B':
 		 case 'E' :
-			wcscpy(ase, "Ei l�");
+			wcscpy(ase, "Ei lä");
 			break;
 		 }
 		wcscpy(asy, ase);
@@ -2536,7 +2535,7 @@ void meri3pisteet(void)
 	INT32 tls;
 	kilptietue kilp;
 
-	vidspwmsg(ySize-6,5,7,0, L"Pisteiden laskenta k�ynniss�");
+	vidspwmsg(ySize-6,5,7,0, L"Pisteiden laskenta käynnissä");
 	for (srj = 0; srj < sarjaluku; srj++) {
 		if (vaiheLkm(srj) == 3) {
 			meri3on = 1;
@@ -2625,9 +2624,9 @@ static INT prttulos_5ott(kilptietue *kilp, tulostusparamtp *tulprm, INT sj,
    wchar_t asy[20],as1[20],ss[20],ssy[20],ss1[20];
    INT sj2 = 0;
    INT32 pst[N_PV], yhtpst = 0;
-   wchar_t *txts[MAXLANG][6] = {{L" Hyl.     ", L" Kesk.    ", L"Ei l�ht.  ", L"Sakko", L"Ammunta", L"V�liajat:"},
+   wchar_t *txts[MAXLANG][6] = {{L" Hyl.     ", L" Kesk.    ", L"Ei läht.  ", L"Sakko", L"Ammunta", L"Väliajat:"},
 								{L" DQ       ", L" DNF      ", L" DNS      ", L"Penalty", L"Shooting", L"Splits:  "}
-							 /*,{L" Diskv.   ", L" Avbr.    ", L"Ei startat", L"Till�gg"}*/};
+							 /*,{L" Diskv.   ", L" Avbr.    ", L"Ei startat", L"Tillägg"}*/};
 
    piste = tulprm->piste;
    if (piste > kilpparam.valuku) piste = 0;
@@ -2828,21 +2827,21 @@ static void outtulos_csv_5ott(kilptietue *kilp, INT sj, INT32 karkitls, tulostus
    if (tulprm->kohde == L'R' || tulprm->kohde == L'Z') {
 	  }
    else {
-	  wmemset(rivi, L' ', sizeof(rivi)/2-1);
+	  wmemset(rivi, L' ', sizeof(rivi)/sizeof(wchar_t)-1);
 	  rivi[sizeof(rivi)/2-1] = 0;
 	  if (sj) putintrightw(sj, rivi+dspflds[F_SJ].pos+dspflds[F_SJ].len-1);
       if (dspflds[F_KNO].len)
 		 putintrightw(kilp->id(), rivi+dspflds[F_KNO].pos+dspflds[F_KNO].len-1);
-	  len = (std::min)((int)wcslen(kilp->nimi(st, 60, false)), dspflds[F_NIMI].len);
+      len = min((int)wcslen(kilp->nimi(st, 60, false)), dspflds[F_NIMI].len);
       wmemcpy(rivi+dspflds[F_NIMI].pos, kilp->nimi(st, 60, false), len);
-	  len = (std::min)((int)wcslen(kilp->seuratieto(0)), dspflds[F_SRA].len);
+	  len = min((int)wcslen(kilp->seuratieto(0)), dspflds[F_SRA].len);
 	  wmemcpy(rivi+dspflds[F_SRA].pos, kilp->seuratieto(0), len);
 	  if ((tls = kilp->tulos2(tulprm->piste)) > 0 && kilp->hyv()) {
 			if (dspflds[F_TLS].len) {
 				AIKATOWSTRS(st,tls,0);
 				st[pvparam[k_pv].laika2] = 0;
 				elimwzb1(st);
-				len = (std::min)((int)wcslen(st), dspflds[F_TLS].len);
+				len = min((int)wcslen(st), dspflds[F_TLS].len);
 				wmemcpy(rivi+dspflds[F_TLS].pos+dspflds[F_TLS].len-len, st, len);
 				}
 			if (pst[k_pv] >= 0)
@@ -2878,21 +2877,21 @@ static void outtulos_5ott(int l, kilptietue *kilp, INT sj, int piste, INT32 kark
    if (tulprm->kohde == L'R' || tulprm->kohde == L'Z') {
       }
    else {
-	  wmemset(rivi, L' ', sizeof(rivi)/2-1);
+	  wmemset(rivi, L' ', sizeof(rivi)/sizeof(wchar_t)-1);
 	  rivi[sizeof(rivi)/2-1] = 0;
 	  if (sj) putintrightw(sj, rivi+dspflds[F_SJ].pos+dspflds[F_SJ].len-1);
       if (dspflds[F_KNO].len)
 		 putintrightw(kilp->id(), rivi+dspflds[F_KNO].pos+dspflds[F_KNO].len-1);
-	  len = (std::min)((int)wcslen(kilp->nimi(st, 60, false)), dspflds[F_NIMI].len);
+      len = min((int)wcslen(kilp->nimi(st, 60, false)), dspflds[F_NIMI].len);
 	  wmemcpy(rivi+dspflds[F_NIMI].pos, kilp->nimi(st, 60, false), len);
-	  len = (std::min)((int)wcslen(kilp->seuratieto(0)), dspflds[F_SRA].len);
+	  len = min((int)wcslen(kilp->seuratieto(0)), dspflds[F_SRA].len);
 	  wmemcpy(rivi+dspflds[F_SRA].pos, kilp->seuratieto(0), len);
 	  if ((tls = kilp->tulos2(tulprm->piste)) > 0 && kilp->hyv()) {
 			if (dspflds[F_TLS].len) {
 				AIKATOWSTRS(st,tls,0);
 				st[pvparam[k_pv].laika2] = 0;
 				elimwzb1(st);
-				len = (std::min)((int)wcslen(st), dspflds[F_TLS].len);
+				len = min((int)wcslen(st), dspflds[F_TLS].len);
 				wmemcpy(rivi+dspflds[F_TLS].pos+dspflds[F_TLS].len-len, st, len);
 				}
 			if (pst[k_pv] >= 0)
@@ -2946,9 +2945,9 @@ static INT prttulos(kilptietue *kilp, tulostusparamtp *tulprm, INT sj, INT32 tka
 	INT piste, i, nr = 1, pos;
 	INT ks, sj2 = 0;
 	INT32 tls1, ytls = 0;
-   wchar_t *txts[MAXLANG][11] = {{L"Hyl.", L"Kesk.", L"Ei l�ht.", L"Virhe", L"Puuttuu", L"Sakko", L"Tasoitus", L"Ohitettu", L"Poissa", L"V�liajat:", L"EiAikaa"},
+   wchar_t *txts[MAXLANG][11] = {{L"Hyl.", L"Kesk.", L"Ei läht.", L"Virhe", L"Puuttuu", L"Sakko", L"Tasoitus", L"Ohitettu", L"Poissa", L"Väliajat:", L"EiAikaa"},
 								{L"DQ", L"DNF", L"DNS", L"Missing", L"DNF", L"Penalty", L"Handicap", L"Skipped", L"Absent", L"Splits", L"Exclude"}
-							 /*,{L" Diskv.   ", L" Avbr.    ", L"Ei startat", L"Till�gg", L"respit"}*/};
+							 /*,{L" Diskv.   ", L" Avbr.    ", L"Ei startat", L"Tillägg", L"respit"}*/};
 
 #ifdef FISWC
 	wchar_t *wcpoint[] =
@@ -3386,11 +3385,11 @@ static INT prttulos(kilptietue *kilp, tulostusparamtp *tulprm, INT sj, INT32 tka
 #endif
 			}
 #endif // EI_LIENE
-		if (k_pv == 0) {   // 1-p�iv�inen
+		if (k_pv == 0) {   // 1-päiväinen
 			as[0] = 0;
 			as[pvparam[k_pv].laika2] = 0;
 			if (fld[F_TLS].len)
-				putfld(tulprm, as, aspos, (std::min)(aslen,(int)fld[F_TLS].len+2), fld[F_TLS].oik, 0);
+				putfld(tulprm, as, aspos, min(aslen,(int)fld[F_TLS].len+2), fld[F_TLS].oik, 0);
 			if (ase[0]) putfld(tulprm, ase, fld[F_ERO].pos, fld[F_ERO].len,
 				fld[F_ERO].oik, 0);
 			if (kilpparam.kilplaji == L'B') {
@@ -3426,7 +3425,7 @@ static INT prttulos(kilptietue *kilp, tulostusparamtp *tulprm, INT sj, INT32 tka
 			putfld(tulprm, st, fld[F_PIST].pos, fld[F_PIST].len, fld[F_PIST].oik, 0);
 			}
 #endif
-		}  // 1-p�iv�inen, loppu
+		}  // 1-päiväinen, loppu
 		if (tulprm->kaikkiva && Sarjat[kilp->Sarja()].valuku) {
 			endline(tulprm, 0);
 			nr++;
@@ -3651,7 +3650,7 @@ static void outtulos_txt(INT l, kilptietue *kilp, INT sj, INT piste, INT32 karki
 		if (tkarki == 1)
 			tkarki = 0;
 		}
-	  wmemset(rivi, L' ', sizeof(rivi)/2-1);
+	  wmemset(rivi, L' ', sizeof(rivi)/sizeof(wchar_t)-1);
 	  rivi[sizeof(rivi)/2-1] = 0;
 	  if (sj) putintrightw(sj, rivi+p_fld[0].pos+p_fld[0].len-1);
 	  if (p_fld[1].len)
@@ -3782,21 +3781,21 @@ static void outtulos(INT l, kilptietue *kilp, INT sj, INT piste, INT32 karkitls,
 		if (tkarki == 1)
 			tkarki = 0;
 		}
-	  wmemset(rivi, L' ', sizeof(rivi)/2-1);
+	  wmemset(rivi, L' ', sizeof(rivi)/sizeof(wchar_t)-1);
 	  rivi[sizeof(rivi)/2-1] = 0;
 	  if (sj) putintrightw(sj, rivi+dspflds[F_SJ].pos+dspflds[F_SJ].len-1);
 	  if (dspflds[F_KNO].len)
 		 putintrightw(kilp->id(), rivi+dspflds[F_KNO].pos+dspflds[F_KNO].len-1);
-		len = (std::min)((int)wcslen(kilp->nimi(st, 60, false)), dspflds[F_NIMI].len);
+		len = min((int)wcslen(kilp->nimi(st, 60, false)), dspflds[F_NIMI].len);
 		wmemcpy(rivi+dspflds[F_NIMI].pos, kilp->nimi(st, 60, false), len);
 		if (dspflds[F_LISNO].len) {
 			st[0] = 0;
 		 if (kilp->lisno[0] > 0 && kilp->lisno[0] < 1000000L)
 			_ltow(kilp->lisno[0], st, 10);
-		 len = (std::min)((int)wcslen(st), dspflds[F_LISNO].len);
+		 len = min((int)wcslen(st), dspflds[F_LISNO].len);
 		 wmemcpy(rivi+dspflds[F_LISNO].pos+dspflds[F_LISNO].len-len, st, len);
 		 }
-		len = (std::min)((int)wcslen(kilp->seuratieto(0)), dspflds[F_SRA].len);
+		len = min((int)wcslen(kilp->seuratieto(0)), dspflds[F_SRA].len);
 	  wmemcpy(rivi+dspflds[F_SRA].pos, kilp->seuratieto(0), len);
 	  if ((tls = kilp->tulos2(piste, 2)) > 0 && kilp->hyv()) {
 
@@ -3832,7 +3831,7 @@ static void outtulos(INT l, kilptietue *kilp, INT sj, INT piste, INT32 karkitls,
 		{
 
 		  if (dspflds[F_TLS].len) {
-			len = (std::min)((int)pvparam[k_pv].laika2, dspflds[F_TLS].len);
+			len = min((int)pvparam[k_pv].laika2, dspflds[F_TLS].len);
 			wmemcpy(rivi+dspflds[F_TLS].pos, AIKATOWSTRS(st, tls,0)+pvparam[k_pv].laika2-len, len);
 			}
 		 if (dspflds[F_ERO].len) {
@@ -3841,7 +3840,7 @@ static void outtulos(INT l, kilptietue *kilp, INT sj, INT piste, INT32 karkitls,
 			   pos = pvparam[k_pv].laika2-len-2;
 			   }
 			else {
-			   len = (std::min)((int)pvparam[k_pv].laika2, dspflds[F_ERO].len);
+			   len = min((int)pvparam[k_pv].laika2, dspflds[F_ERO].len);
 			   pos = pvparam[k_pv].laika2-len;
 			   }
 			if (sj == 1)
@@ -3861,7 +3860,7 @@ static void outtulos(INT l, kilptietue *kilp, INT sj, INT piste, INT32 karkitls,
 		 (tls = kilp->tulos1(piste, maaliajat[Sarjat[kilp->Sarja()].mno[k_pv]-1])) > 0) {
 		 rivi[dspflds[F_TLS].pos-1] = L'(';
 		 rivi[dspflds[F_TLS].pos+dspflds[F_TLS].len] = L')';
-		 len = (std::min)((int)pvparam[k_pv].laika2, dspflds[F_TLS].len);
+		 len = min((int)pvparam[k_pv].laika2, dspflds[F_TLS].len);
 		 wmemcpy(rivi+dspflds[F_TLS].pos, AIKATOWSTRS(st, tls, 0)+pvparam[k_pv].laika2-len, len);
 		 }
 	  if (kilpparam.lsakmax > 0 && dspflds[F_SAK].len) {
@@ -3932,7 +3931,7 @@ static void tekstitulos(tulostusparamtp *tulprm, wchar_t *prs, kilptietue *kilp,
 		as[0] = L'+';
 		}
 	kilp->nimi(st, 38, lehtivaihdanm);
-	wcsncpy(srastr, kilp->seuratieto(0, !lehtipitkat), sizeof(srastr)/2);
+	wcsncpy(srastr, kilp->seuratieto(0, !lehtipitkat), sizeof(srastr)/sizeof(wchar_t));
 	srastr[sizeof(srastr)/2-1] = 0;
 	skstr[0] = 0;
 	if (Sarjat[kilp->Sarja()].lsak[k_pv])
@@ -4115,7 +4114,7 @@ static void htmltulos(kilptietue *kilp, int sj1, int sarja, tulostusparamtp *tul
 
 	wchar_t *txts[MAXLANG][5] = {{L"Hyl.", L"Kesk.", L"Ohit.", L"Virhe", L"EiAikaa"},
 								{L"DQ", L"DNF", L"Skip", L"Miss", L"Excl."}
-							 /*,{L" Diskv.   ", L" Avbr.    ", L"Ei startat", L"Till�gg", L"respit"}*/};
+							 /*,{L" Diskv.   ", L" Avbr.    ", L"Ei startat", L"Tillägg", L"respit"}*/};
 
    if (tulprm->kohde == L'I') {
 	   vaslisa = 12;
@@ -4143,7 +4142,7 @@ static void htmltulos(kilptietue *kilp, int sj1, int sarja, tulostusparamtp *tul
 		wcscpy(prs, L"<tr>");
 		}
 	else {
-		wmemset(prs, L' ', sizeof(prs)/2);
+		wmemset(prs, L' ', sizeof(prs)/sizeof(wchar_t));
 		prs[sizeof(prs)/2-1] = 0;
 		}
 	st[199] = 0;
@@ -4254,7 +4253,7 @@ static void htmltulos(kilptietue *kilp, int sj1, int sarja, tulostusparamtp *tul
 			(Sarjat[kilp->Sarja()].piilotatulos && (id == F_SJ || id == F_OSASJ)))
 			st[0] = 0;
 		else
-			kilp->strval(tulprm, st, (std::min)(199, fld->len), (pistefl == 2 && id == F_OSATLS) ? F_PIST : id, race, pst, sj1, opt);
+			kilp->strval(tulprm, st, min(199, fld->len), (pistefl == 2 && id == F_OSATLS) ? F_PIST : id, race, pst, sj1, opt);
 		if (taulufl) {
 /*			if (fld->oik)
 				wcscat(prs, L"<td align=right>");
@@ -4302,7 +4301,7 @@ static void htmltulos(kilptietue *kilp, int sj1, int sarja, tulostusparamtp *tul
 
 	wchar_t *txts[MAXLANG][5] = {{L"Hyl.", L"Kesk.", L"Ohit.", L"Virhe", L"EiAikaa"},
 								{L"DQ", L"DNF", L"Skip", L"Miss", L"Excl."}
-							 /*,{L" Diskv.   ", L" Avbr.    ", L"Ei startat", L"Till�gg", L"respit"}*/};
+							 /*,{L" Diskv.   ", L" Avbr.    ", L"Ei startat", L"Tillägg", L"respit"}*/};
 
 	if (kilpparam.kilplaji == L'N' || kilpparam.kilplaji == L'P') {
 		meripisteet(kilp, pstm, &yhtpst);
@@ -4334,7 +4333,7 @@ static void htmltulos(kilptietue *kilp, int sj1, int sarja, tulostusparamtp *tul
 		wcscpy(prs, L"<tr>");
 		}
 	else {
-		wmemset(prs, L' ', sizeof(prs)/2);
+		wmemset(prs, L' ', sizeof(prs)/sizeof(wchar_t));
 		prs[sizeof(prs)/2-1] = 0;
 		}
 	st[199] = 0;
@@ -4770,7 +4769,7 @@ int srjtullkm(int srj, tulostusparamtp *tulprm)
 			n = ntulos[srj][piste];
 			break;
 		 case 'P' :
-			n = (std::min)(tulprm->viimsija ,ntulos[srj][tulprm->piste]);
+			n = min(tulprm->viimsija ,ntulos[srj][tulprm->piste]);
 			break;
 		 case 'H' :
 			n = nhyl[srj];
@@ -4899,7 +4898,7 @@ static void kirjhtmlotsikot(int *srj, tulostusparamtp *tulprm)
 {
 	int na, piste;
 	wchar_t prs[10000], stas[80];
-	static const wchar_t *txts[2][10] = {{L"Piiri", L"Seura", L"Tilanne", L"L�hti", L"Keskeytti", L"Hyl�tty", L"Tls", L"Yht.", L"Sj.", L"Avoinna" },
+	static const wchar_t *txts[2][10] = {{L"Piiri", L"Seura", L"Tilanne", L"Lähti", L"Keskeytti", L"Hylätty", L"Tls", L"Yht.", L"Sj.", L"Avoinna" },
 						  {L"District", L"Club", L"Status", L"Started", L"DNF", L"DQ", L"Race", L"Total", L"Pos", L"Open" }};
    FldFrmtTp *p_fld = (FldFrmtTp *)tulprm->p_fld;
 
@@ -5053,7 +5052,7 @@ static void kirjhtmlotsikot(int *srj, tulostusparamtp *tulprm)
 		if (tulprm->tulmuot.tauluhtml)
 			wcscpy(prs, L"<tr>");
 		else {
-			wmemset(prs, L' ', sizeof(prs)/2);
+			wmemset(prs, L' ', sizeof(prs)/sizeof(wchar_t));
 			prs[sizeof(prs)/2-1] = 0;
 			}
 		for (int i_knt = 0; i_knt < tulprm->n_aFlds; i_knt++) {
@@ -5221,7 +5220,7 @@ static void kirjoitinpaaotsikot(int *l, int *sv, int tark_mat, int enssivu, wcha
 			}
 		putfld(tulprm, prs, 0, 53, 0, 0);
 		}
-// Kellonaika ja p�iv�ys
+// Kellonaika ja päiväys
 	else if (tulprm->tulmuot.tpvafl || tulprm->tulmuot.tklofl) {
 		wcscpy(prs, txts[tulprm->language][2]);
 		if (tulprm->tulmuot.tpvafl)
@@ -5286,10 +5285,10 @@ static void kirjoitinsivuotsikot(int *l, int *srj, wchar_t *snimi, int tark_mat,
 	int len, na, psija;
 
 	wchar_t *txts[MAXLANG][18] = {
-		{L" ja ", L"Er�", L"Yht.aikoja", L"Aikoja", L"Kesk",
+		{L" ja ", L"Erä", L"Yht.aikoja", L"Aikoja", L"Kesk",
 		 L"Hyl", L"Avoinna", L"Paras mahd. puuttuva aika", L"ja sija", L"Vaihe",
-		 L"L�hti", L"Keskeytti", L"Hyl�tty", L"Tuloksia", L"Avoinna",
-		 L"Tilanne", L"osuuden j�lkeen", L"V�liajat"},
+		 L"Lähti", L"Keskeytti", L"Hylätty", L"Tuloksia", L"Avoinna",
+		 L"Tilanne", L"osuuden jälkeen", L"Väliajat"},
 		{L" and ", L"Heat", L"Overall rslts", L"Results", L"DNF",
 		 L"DQ", L"Open", L"Best possible new result", L"and position", L"Race",
 		 L"Started", L"DNF", L"DQ", L"Results", L"Open",
@@ -5370,13 +5369,13 @@ static void kirjoitinsivuotsikot(int *l, int *srj, wchar_t *snimi, int tark_mat,
 						}
 					}
 				if (tulprm->rajaus == L'A')
-					swprintf(prs+wcslen(prs), L" L�ht� %d", Sarjat[*srj].lno[k_pv]);
+					swprintf(prs+wcslen(prs), L" Lähtö %d", Sarjat[*srj].lno[k_pv]);
 				}
 			putfld(tulprm, prs, 0, 80, 0, 0);
 			endline(tulprm, -1);
 			(*l)++;
 			}
-//  Lukum��r�t
+//  Lukumäärät
 		if (tulprm->tulmuot.lkmfl && !tulprm->piilotatulos && !Sarjat[*srj].piilotatulos &&
 			((wcswcind(kilpparam.kilplaji, L"NP") >= 0 && !tulera) ||
 			(wcswcind(kilpparam.kilplaji, L"NP") < 0 && !tark_mat &&
@@ -5384,7 +5383,7 @@ static void kirjoitinsivuotsikot(int *l, int *srj, wchar_t *snimi, int tark_mat,
 			na = n_avoin(*srj);
 			(*l)++;
 			if (k_pv) {
-//  K�ynniss� olevan sarjan lukum��r�t monip�iv�inen kisa
+//  Käynnissä olevan sarjan lukumäärät monipäiväinen kisa
 				if (na != 0) {
 					swprintf(prs,L"%s :%4d %s :%4d  %s :%3d  %s :%3d %s :%4d",
 						txts[tulprm->language][2], ntulos[*srj][kilpparam.valuku+1],
@@ -5410,7 +5409,7 @@ static void kirjoitinsivuotsikot(int *l, int *srj, wchar_t *snimi, int tark_mat,
 						(*l)++;
 						}
 					}
-//  Valmistuneen sarjan lukumm�r�t
+//  Valmistuneen sarjan lukummärät
 				else {
 					swprintf(prs,L"%s %d   %s : %-4d   %s : %-3d"
 						L"   %s : %d",
@@ -5422,7 +5421,7 @@ static void kirjoitinsivuotsikot(int *l, int *srj, wchar_t *snimi, int tark_mat,
 					endline(tulprm, -1);
 					}
 				}
-// 1-p�iv�inen kisa tai 1. vaihe
+// 1-päiväinen kisa tai 1. vaihe
 			else
 				{
 #ifdef MAKI
@@ -5555,25 +5554,25 @@ static void kirjoitinsivuotsikot(int *l, int *srj, wchar_t *snimi, int tark_mat,
 //			tulostasarja - argumentit
 //
 //  srj		osoitin tulostettavaan sarjaan
-//  piste	tulostuksen ensisijainen kohdepiste, m��r�� yleens� j�rjestyksen
+//  piste	tulostuksen ensisijainen kohdepiste, määrää yleensä järjestyksen
 //  kohde	tulostuksen kohde
 //			P: kirjoitin
-//			N: n�ytt� (konsoliversiossa)
+//			N: näyttö (konsoliversiossa)
 //			H: html
 //			X: XML
 //			R: csv-tiedosto
-//			Z: csv-tiedosto kaikki v�liajat
+//			Z: csv-tiedosto kaikki väliajat
 //			I: kohdistettu tekstitiedosto
 //			S: SSL / SHL
 //			F: IOF / WRE
 //			E: jatkuva teksti (lehteen)
 //  ct      rajaus (ilmoittautuneet, lopettaneet, parhaat, seura, piiri, ..)
 //  cn      nollaa autamaattitulostuksen laskuri, jos cn == L'K'
-//  cd      M: tulosta sek� vaihe ett� yhteistulos, 1: tulosta lis�ksi aiemmat vaiheet
+//  cd      M: tulosta sekä vaihe että yhteistulos, 1: tulosta lisäksi aiemmat vaiheet
 //  cj		Y: yhteistulos ensisijainen, 2: vaiheen tulos ensisijainen
-//  day     0: yhteistuloksen mukainen j�rjestys, 1: vaiheen mukainen j�rjestys
+//  day     0: yhteistuloksen mukainen järjestys, 1: vaiheen mukainen järjestys
 //  np		laajuus tulostettaessa parhaat
-//  ixjarj  1: aakkosj�rj., 11: numeroj�rj., 4: laskevat pisteet, 5: nousevat pisteet
+//  ixjarj  1: aakkosjärj., 11: numerojärj., 4: laskevat pisteet, 5: nousevat pisteet
 //  l		osoitin rivinumeroon
 //  sv		osoitin sivunumeroon
 //	autotl	automaattitulostus
@@ -5768,7 +5767,7 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 #endif
 		if (tulprm->kohde == L'P') {
 			if (tulprm->rajaus == L'P')
-				n1 = (std::min)(n, tulprm->viimsija) - tulprm->enssija + 1;
+				n1 = min(n, tulprm->viimsija) - tulprm->enssija + 1;
 			else
 				n1 = n;
 			clrln(ySize-1);
@@ -5830,7 +5829,7 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 				kilp.lisno[1] == 0)
 				continue;
 			sj++;
-			//  kilpparam.poissamukaan vaikuttaa l�ht�luetteloihin
+			//  kilpparam.poissamukaan vaikuttaa lähtöluetteloihin
 			//  tulprm->optiot & 4 kertoo yhteispisteiden tulostuksesta
 			if (!kilpparam.poissamukaan && (tulprm->optiot & 4) == 0 && kilp.tark(k_pv) == L'V')
 				continue;
@@ -5924,11 +5923,11 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 					karkitls = kilp.tulos2(piste, 2);
 				}
 
-			if (!tulprm->yhttuljarj							 // monivaiheisessa vaihekoht. j�rjestys
+			if (!tulprm->yhttuljarj							 // monivaiheisessa vaihekoht. järjestys
 				|| tulprm->rajaus != L'L'                        // lopettaneet
-				|| (tulprm->vaihelkm == 3 && k_pv == 1 &&       // monivaiheisessa my�s 1. p�iv� ja vaiheen j�rj ja 1. pv osallistunut
+				|| (tulprm->vaihelkm == 3 && k_pv == 1 &&       // monivaiheisessa myös 1. päivä ja vaiheen järj ja 1. pv osallistunut
 					kilp.lasna(0))
-				|| ((kilp.tulos_pv(k_pv) && kilp.hyv())        // p�iv�n tulos ja hyv�ksytty tai kesk tai hyl.
+				|| ((kilp.tulos_pv(k_pv) && kilp.hyv())        // päivän tulos ja hyväksytty tai kesk tai hyl.
 					|| wcswcind(kilp.tark(k_pv), L"KOHM") >= 0)
 				) {
 
@@ -6041,7 +6040,7 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 							ntulos[*srj][0]+nkesk[*srj]+nhyl[*srj],
 							nkesk[*srj], nhyl[*srj]);
 					else
-						swprintf(prs, L" (L�hti: %d, Keskeytti: %d, Hyl�tty: %d)\n",
+						swprintf(prs, L" (Lähti: %d, Keskeytti: %d, Hylätty: %d)\n",
 							ntulos[*srj][0]+nkesk[*srj]+nhyl[*srj],
 							nkesk[*srj], nhyl[*srj]);
 					tulprm->puts_f(prs);
@@ -6215,7 +6214,7 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 			   clrln(ySize-3);
 			   vidspwmsg(ySize-3,0,7,0,Sarjat[*srj].sarjanimi);
 			   vidspwmsg(ySize-3,13,7,0,L"Paina <Return> jatkaaksesi tai "
-				  L"<Esc> keskeytt��ksesi");
+				  L"<Esc> keskeyttääksesi");
 			   sccurset(ySize-3,66);
 			   LeaveCriticalSection(&tall_CriticalSection);
 			   do {
@@ -6341,10 +6340,10 @@ void yhteenveto(tulostusparamtp *tulprm)
    INT psija2;
 
    if (k_pv)
-	  ots = L"Sarja      Ilm Yht.aika Aika Kesk  Hyl Auki K�rkiaika "
+	  ots = L"Sarja      Ilm Yht.aika Aika Kesk  Hyl Auki Kärkiaika "
 											L"Mahd.aika  Mahd.sija";
    else
-	  ots = L"  Sarja      Ilm   Aika  Kesk  Hyl   Auki  K�rkiaika  "
+	  ots = L"  Sarja      Ilm   Aika  Kesk  Hyl   Auki  Kärkiaika  "
 											L"Mahd.aika  Mahd.sija";
    kaika[8] = 0;
    if (tulprm->kohde == L'N') {
@@ -6397,7 +6396,7 @@ void yhteenveto(tulostusparamtp *tulprm)
             l = 4;
             do {
 			   vidspwmsg(ySize-3,0,7,0,
-				  L"Paina <Return> jatkaaksesi tai P merkit�ksesi palkintojenjako");
+				  L"Paina <Return> jatkaaksesi tai P merkitäksesi palkintojenjako");
 			   ch2 = readkbd(&ch2,TRUE,spoolfl);
 			   if (ch2 == 'P' || ch2 == 'p') {
 
@@ -6444,7 +6443,7 @@ void yhteenveto(tulostusparamtp *tulprm)
          putfld(tulprm, L"Kesk", 25*scale, 4, 1, 0);
 		 putfld(tulprm, L"Hyl", 32*scale, 3, 1, 0);
          putfld(tulprm, L"Auki", 37*scale, 4, 1, 0);
-		 putfld(tulprm, L"K�rkiaika", 43*scale, 9, 1, 0);
+		 putfld(tulprm, L"Kärkiaika", 43*scale, 9, 1, 0);
          putfld(tulprm, L"Mahd.aika", 54*scale, 9, 1, 0);
 		 putfld(tulprm, L"Mahd.sija", 64*scale, 9, 1, 0);
          }
@@ -6496,13 +6495,13 @@ void yhteenveto(tulostusparamtp *tulprm)
 		 }
       newline(tulprm, 1);
       if (k_pv) {
-		 swprintf(line,L"Yhteens�  %6d%6d%7d%5d%5d%5d",nilmt,nytulost,
+		 swprintf(line,L"Yhteensä  %6d%6d%7d%5d%5d%5d",nilmt,nytulost,
             ntulost,nkeskt,nhylt,(nilmt - ntulost - nkeskt - nhylt - neilt));
          putfld(tulprm, line, 0, 80, 0, 0);
          }
 	  else
          {
-         putfld(tulprm, L"Yhteens�", 2*scale, 11, 0, 0);
+         putfld(tulprm, L"Yhteensä", 2*scale, 11, 0, 0);
          putfld(tulprm, _itow(nilmt,line,10), 13*scale, 4, 1, 0);
          putfld(tulprm, _itow(ntulost,line,10), 19*scale, 4, 1, 0);
          putfld(tulprm, _itow(nkeskt,line,10), 25*scale, 4, 1, 0);
@@ -7109,7 +7108,7 @@ int luePisteSrj(wchar_t *flnm)
 		wcsncpy(filenm, flnm, 199);
 	psrjfile = new TextFl(filenm, L"rt");
 	if (!psrjfile || !psrjfile->IsOpen()) {
-	   swprintf(msg, L"Tiedostoa %s ei l�ydy", filenm);
+	   swprintf(msg, L"Tiedostoa %s ei löydy", filenm);
 	   ret = 1;
 //	   writeerror_w(msg, 0);
 	   }
@@ -7132,15 +7131,15 @@ int luePisteSrj(wchar_t *flnm)
 
 // joukkuepisteet() laskee sijoituksiin perustuvat pisteet kaikille sarjoille, tai
 // sarjoille, jotka luetellaan tiedostossa pistesrj.lst (luetaan aliohjelmassa luePisteSrj())
-// Laskenta perustuu pisteit� saavien lukum��r��n, joka voi olla kiinte� tai riippua
-// sarjan osanottajam��r�st�.
-// Jos tiedostoa luePisteSrj() ei ole, annetaan kaikille sarjoille sama m��r� tulostuskaavakkeella
-// ja v�litet��n parametrilla tulprm->optiot2
+// Laskenta perustuu pisteitä saavien lukumäärään, joka voi olla kiinteä tai riippua
+// sarjan osanottajamäärästä.
+// Jos tiedostoa luePisteSrj() ei ole, annetaan kaikille sarjoille sama määrä tulostuskaavakkeella
+// ja välitetään parametrilla tulprm->optiot2
 //
-// naytolle					kertoo, ett� tulokset n�ytet��n heti ikkunassa FormMsgs1->Memo1
-// tulprm->optiot & 0x1c0	kertoo, mik� tieto on joukkueen tunnus
-// tulprm->optiot & 0x200 	kertoo saako voittaja lis�pisteen
-// tulprm->optiot & 0x400 	kertoo riippuvatko voittajan pisteet osanottajam��r�st�
+// naytolle					kertoo, että tulokset näytetään heti ikkunassa FormMsgs1->Memo1
+// tulprm->optiot & 0x1c0	kertoo, mikä tieto on joukkueen tunnus
+// tulprm->optiot & 0x200 	kertoo saako voittaja lisäpisteen
+// tulprm->optiot & 0x400 	kertoo riippuvatko voittajan pisteet osanottajamäärästä
 
 
 void joukkuepisteet(bool naytolle, tulostusparamtp *tulprm)
@@ -7169,7 +7168,7 @@ void joukkuepisteet(bool naytolle, tulostusparamtp *tulprm)
    tunnlaji = tulprm ? ((tulprm->optiot & 0x1c0) / 64) : 3;
    for (srj = 0; srj < sarjaluku; srj++) {
 	  if (!tulprm || tulprm->optiot & 0x400) {
-		  npiste = (std::min)(ntulos[srj][0], Sarjat[srj].npist[k_pv]);
+		  npiste = min(ntulos[srj][0], Sarjat[srj].npist[k_pv]);
 		  }
 	  else
 		  npiste = Sarjat[srj].npist[k_pv];
@@ -7321,7 +7320,7 @@ void luepiirit(wchar_t *flname)
 		 if (k >= piiriluku)
 			continue;
 		 p = wcstok(NULL, L";\t\n");
-		 wcsncpy(piirinimi[k-1], p, sizeof(piirinimi[0])/2-1);
+		 wcsncpy(piirinimi[k-1], p, sizeof(piirinimi[0])/sizeof(wchar_t)-1);
 		 }
 	  }
    delete piirifile;
@@ -7386,7 +7385,7 @@ void joukkuetul(bool naytolle, int srj, tulostusparamtp *tulprm)
 		maxjoukk = ntulos[srj][0]/2+200;
 		joukk = (jluettp *) calloc(maxjoukk, sizeof(jluettp));
 		if (!joukk) {
-			writeerror_w(L"Muisti ei riit� joukkuetuloksille", 0);
+			writeerror_w(L"Muisti ei riitä joukkuetuloksille", 0);
 			return;
 			}
 		njoukk = 0;
@@ -7400,7 +7399,7 @@ void joukkuetul(bool naytolle, int srj, tulostusparamtp *tulprm)
 			if ((pistefile = new TextFl(pistefilenm, L"r")) != NULL) {
 				j = 0;
 				while (pistefile->IsOpen() && !pistefile->Feof()) {
-					pistefile->ReadLine(st, sizeof(st)/2-1);
+					pistefile->ReadLine(st, sizeof(st)/sizeof(wchar_t)-1);
 					if (wcslen(st) > 1)
 						sijapisteet[j++] = _wtoi(st);
 					if (j >= (int)(sizeof(sijapisteet) / sizeof(sijapisteet[0])))
@@ -7646,7 +7645,7 @@ INT avaa_tiedosto_nm(wchar_t *fname, tulostusparamtp *tulprm)
 		return(1);
 		}
    memset(tulprm->sline, 0, sizeof(tulprm->sline));
-   wmemset(tulprm->sline, L' ', sizeof(tulprm->sline)/2-1);
+   wmemset(tulprm->sline, L' ', sizeof(tulprm->sline)/sizeof(wchar_t)-1);
    return(0);
    }
 
@@ -7666,7 +7665,7 @@ void kirjLisaRivit(tulostusparamtp *tulprm, wchar_t *LisaRivit)
 		while (!LisaFile->Feof()) {
 			wchar_t line[1000] = L"";
 
-			LisaFile->ReadLine(line, sizeof(line)/2-1);
+			LisaFile->ReadLine(line, sizeof(line)/sizeof(wchar_t)-1);
 			tulprm->writeline(line);
 			}
 		}
@@ -7684,7 +7683,7 @@ INT htmlrunko(tulostusparamtp *tulprm, wchar_t *baseFName)
 #ifdef _CONSOLE
 	  {
 	  ch = tulprm->yksihtml ? L'Y' : L'S';
-	  wselectopt(L"Y)hten� tiedostona vai S)arjat erikseen",
+	  wselectopt(L"Y)htenä tiedostona vai S)arjat erikseen",
 		 L"YS", &ch);
 	  tulprm->yksihtml = ch == L'Y';
 	  }
@@ -7831,7 +7830,7 @@ void tulostahyppyjarj(void)
 
 	 EnterCriticalSection(&print_CriticalSection);
    initpage(tulprm, NULL);
-	swprintf(line, L"Hyppyj�rjestys  -  %skierros", 
+	swprintf(line, L"Hyppyjärjestys  -  %skierros", 
 		aktkierros ? (aktkierros == 1 ? L"1. " : L"2. ") : L"Koe");
    putfld(tulprm, line, prtflds[1].pos, 80, 0, 0);
    endline(tulprm, -2);
@@ -7863,14 +7862,14 @@ static int makivalinnat(wchar_t co, wchar_t *rajaus)
 	if (co == L'P') {
 		if (*rajaus == L'I') {
 			ch = L' ';
-			wselectopt(L"T)ulokset vai H)yppyj�rjestys", L"TH", &ch);
+			wselectopt(L"T)ulokset vai H)yppyjärjestys", L"TH", &ch);
 			if (ch == L'H')
 				*rajaus = L'J';
 			}
 		}
 	if (wcswcind(*rajaus, L"ILTP") >= 0) {
 		if (aktkierros != nkierros[0]) {
-			writeerror_w(L"T�m� valinta toimii vain, kun viimeinen kierros on aktiivinen", 0);
+			writeerror_w(L"Tämä valinta toimii vain, kun viimeinen kierros on aktiivinen", 0);
 			err = 1;
 			goto loppu;
 			}			
@@ -8064,7 +8063,7 @@ int list(wchar_t kohde, wchar_t tiedlaji, wchar_t tulostettava, wchar_t jarjesty
 	tulprm.optiot2 = options2;
 	tulprm.language = (options & 0x10000000) ? 1 : 0;
 
-	// T�st� alkaa koko tulosteen tekev� luuppi, joka toistetaan, jos tulostettava == L'F'
+	// Tästä alkaa koko tulosteen tekevä luuppi, joka toistetaan, jos tulostettava == L'F'
 
 	if (tulprm.kohde == L'X') {
 		wcscpy(tulprm.muottied, lsttulparam.muottied);
@@ -8212,7 +8211,7 @@ int list(wchar_t kohde, wchar_t tiedlaji, wchar_t tulostettava, wchar_t jarjesty
 									tulprm.n_fld = n_prtflds1;
 									}
 								tulprm.vaihelkm = 3;
-								break;   // tarkoituksella sulkujen sis�ll�.
+								break;   // tarkoituksella sulkujen sisällä.
 								}
 						case L'U':
 							if (tulprm.kohde == L'P') {
@@ -8474,7 +8473,7 @@ int list(wchar_t kohde, wchar_t tiedlaji, wchar_t tulostettava, wchar_t jarjesty
 				}
 			} while (0);
 
-		// Toinen tulostuskierros, jos tulostetaan sek� tulokset ett� Emit-v�liajat
+		// Toinen tulostuskierros, jos tulostetaan sekä tulokset että Emit-väliajat
 		if (TulosJaEmit && tulprm.tulostettava != L'E') {
 			tulprm.tulostettava = L'E';
 			}

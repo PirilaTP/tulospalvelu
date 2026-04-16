@@ -945,7 +945,7 @@ void *luepakettiUDP(LPVOID lpCn)
 	opencomUDP(cn);
 	if (!comopen[cn])
 #ifndef __linux__
-	   return;
+	   return NULL;
 #else
 	   return(0);
 #endif
@@ -1273,7 +1273,7 @@ void *tiedonsiirtoTCP(LPVOID lpCn)
 		TCPviive_pak[cn] = 100;
 	opencomTCP(cn);
 	if (!comopen[cn])
-	   return;
+	   return NULL;
 
 	while (comfl && !inLopetus) {
 		if(!comopen[cn] || keyclose[cn])
@@ -1974,7 +1974,7 @@ void *luepakettiTCPSI(LPVOID lpCn)
 	sifile = fopen(sifilenm, L"ab");
 	if (!comopen[cn])
 #ifndef __linux__
-		 return;
+		 return NULL;
 #else
 		 return(0);
 #endif
@@ -3008,7 +3008,7 @@ void tark_tiedosto(INT cn)
 			}
 		if (ibuf->d.fl.pos == -1) {
 			FileRcv[cn].koodi = ibuf->d.fl.koodi;
-			wcsncpy(FileRcv[cn].tiednimi, (wchar_t *)ibuf->d.fl.buf, sizeof(FileRcv[cn].tiednimi)/2-1);
+			wcsncpy(FileRcv[cn].tiednimi, (wchar_t *)ibuf->d.fl.buf, sizeof(FileRcv[cn].tiednimi)/sizeof(wchar_t)-1);
 			FileRcv[cn].tiedvast = _wfopen(FileRcv[cn].tiednimi, L"wb");
 			FileRcv[cn].pos = 0;
 			}

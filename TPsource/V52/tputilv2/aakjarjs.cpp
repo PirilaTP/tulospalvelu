@@ -48,24 +48,24 @@ char *aakjarjstr(char *knimi)
 			   case 233 :
 			   case 234 :
 			   case 235 :
-               case '' :
-               case '' : *p = 'E'; break;
+               case 0x82 :
+               case 0x90 : *p = 'E'; break;
 			   case 220 :
 			   case 252 :
-               case '' :
-               case '' : *p = 'Y'; break;
+               case 0x81 :
+               case 0x9A : *p = 'Y'; break;
 			   case 197 :
 			   case 229 :
-               case '' :
-               case '' : *p = 91; break;
+               case 0x86 :
+               case 0x8F : *p = 91; break;
 			   case 196 :
 			   case 228 :
-               case '' :
-               case '' : *p = 92; break;
+               case 0x84 :
+               case 0x8E : *p = 92; break;
 			   case 214 :
 			   case 246 :
-               case '' :
-               case '' : *p = 93; break;
+               case 0x94 :
+               case 0x99 : *p = 93; break;
                default  : *p = 93;
                }
             }

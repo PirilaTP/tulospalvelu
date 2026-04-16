@@ -2609,7 +2609,7 @@ static void naytavertrivi(INT ptime, INT r, INT r0, INT puoli)
 	INT32 td, t[2];
    aikatp pt;
 
-   wmemset(ln[0], L' ', sizeof(ln)/2);
+   wmemset(ln[0], L' ', sizeof(ln)/sizeof(wchar_t));
    if (ptime >= 0) {
       n = ptime;
 		vidint(r, 0, 4, n+1);

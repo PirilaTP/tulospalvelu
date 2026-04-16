@@ -132,7 +132,7 @@ int luesarjat(void)
 					kilpparam.valuku = valuku_vanha;
 				}
 			if (p && (p = wcstok(NULL, L" \t\n")) != NULL)
-				wcsncpy(kilpparam.kilpkoodi, p, sizeof(kilpparam.kilpkoodi)/2-1);
+				wcsncpy(kilpparam.kilpkoodi, p, sizeof(kilpparam.kilpkoodi)/sizeof(wchar_t)-1);
 		}
 		else {
 			if (p && (p = wcstok(NULL, L" \t\n")) != NULL)
@@ -140,7 +140,7 @@ int luesarjat(void)
 			if (p && (p = wcstok(NULL, L" \t\n")) != NULL)
 				kilpparam.valuku = _wtoi(p);
 			if (p && (p = wcstok(NULL, L" \t\n")) != NULL)
-				wcsncpy(kilpparam.kilpkoodi, p, sizeof(kilpparam.kilpkoodi)/2-1);
+				wcsncpy(kilpparam.kilpkoodi, p, sizeof(kilpparam.kilpkoodi)/sizeof(wchar_t)-1);
 			if (p && (p = wcstok(NULL, L" \t\n")) != NULL) {
 				kilpparam.kilplaji = *p;
 				if (p[1])
@@ -209,7 +209,7 @@ int luesarjat(void)
 			srjrno = kilpparam.n_pv_akt+2+(vanhat ? valuku_vanha : kilpparam.valuku);
 
 			if ((p = wcstok(NULL, L"\n")) != NULL && wcslen(p) > 2)
-				wcsncpy(Sarjat[i].psarjanimi, p, sizeof(Sarjat[0].psarjanimi)/2-1);
+				wcsncpy(Sarjat[i].psarjanimi, p, sizeof(Sarjat[0].psarjanimi)/sizeof(wchar_t)-1);
 			if (sarjaf->ReadLine(s, 100) == NULL) {
 				er = 4 + srjrno * i;
 				break;
@@ -515,7 +515,7 @@ void luesarjayhdistelmat(void)
 		}
 	n = 0;
 	while (!yhdfile->Feof()) {
-		yhdfile->ReadLine(buf, sizeof(buf)/2-1);
+		yhdfile->ReadLine(buf, sizeof(buf)/sizeof(wchar_t)-1);
 		p = wcstok(buf, L" \t\n");
 		if (p) {
 			if (n >= MAXYHD) {
@@ -678,7 +678,7 @@ void sarjatietue::nollaa(void)
 		if (kilpparam.kilplaji == L'B') {
 			kilpparam.lsakmax = 5;
 			lsak[i] = 5;
-			wcsncpy(asuunnlaji[i], kilpparam.asuunnlaji, sizeof(asuunnlaji[i])/2-1);
+			wcsncpy(asuunnlaji[i], kilpparam.asuunnlaji, sizeof(asuunnlaji[i])/sizeof(wchar_t)-1);
 			for (UINT j = 0; j < wcslen(asuunnlaji[i]); j++) {
 				switch (asuunnlaji[i][j]) {
 					case L'S':

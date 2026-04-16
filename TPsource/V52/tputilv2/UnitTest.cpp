@@ -44,7 +44,7 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
 	Memo1->Clear();
 	OpenDialog1->Execute();
 	InFile = new TextFl(OpenDialog1->FileName.c_str(), L"r", types[RadioGroup1->ItemIndex]);
-	while (InFile->IsOpen() && !InFile->Feof() && (p-Buf + 12) < sizeof(Buf)/2) {
+	while (InFile->IsOpen() && !InFile->Feof() && (p-Buf + 12) < sizeof(Buf)/sizeof(wchar_t)) {
 		switch(RadioGroup2->ItemIndex) {
 			case 0:
 				InFile->ReadLine(Buf, 500);

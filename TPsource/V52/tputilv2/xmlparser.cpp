@@ -223,7 +223,7 @@ int xml_node::interpretXmlLine(wchar_t *linein, wchar_t *ptag)
 
 	if (!linein || wcslen(linein) == 0)
 		return(-1);
-	if (wcslen(line) + wcslen(linein) < sizeof(line)/2-1)
+	if (wcslen(line) + wcslen(linein) < sizeof(line)/sizeof(wchar_t)-1)
 		wcscat(line, linein);
 	else {
 		memset(line, 0, sizeof(line));

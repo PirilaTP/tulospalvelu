@@ -19,7 +19,7 @@
 
 char ansitooemch(char ch)
 	{
-static char ISOtoOEM[256] =
+static unsigned char ISOtoOEM[256] =
 	{  0,   1,   2,   3,   4,   5,   6,   7,   8,   9,
 	  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,
 	  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,
@@ -49,16 +49,16 @@ static char ISOtoOEM[256] =
 
 /*
 	switch (ch) {
-		case 196 : ch = ''; break;
-		case 214 : ch = ''; break;
-		case 197 : ch = ''; break;
-		case 220 : ch = ''; break;
-		case 201 : ch = ''; break;
-		case 228 : ch = ''; break;
-		case 246 : ch = ''; break;
-		case 229 : ch = ''; break;
-		case 252 : ch = ''; break;
-		case 233 : ch = ''; break;
+		case 196 : ch = 0x8E; break;
+		case 214 : ch = 0x99; break;
+		case 197 : ch = 0x8F; break;
+		case 220 : ch = 0x9A; break;
+		case 201 : ch = 0x90; break;
+		case 228 : ch = 0x84; break;
+		case 246 : ch = 0x94; break;
+		case 229 : ch = 0x86; break;
+		case 252 : ch = 0x81; break;
+		case 233 : ch = 0x82; break;
 		case 176	: ch = 'Å'; break;
 		case 247 : ch = 'Ä'; break;
 		}

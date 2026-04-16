@@ -138,7 +138,10 @@ static inline char* wcstoansi(char* dst, const wchar_t* src, int len) {
     wcstombs(dst, src, len); return dst;
 }
 static inline wchar_t* ansitowcs(wchar_t* dst, const char* src, int len) {
-    mbstowcs(dst, src, len); return dst;
+    int i;
+    for (i = 0; i < len && src[i]; i++) dst[i] = (unsigned char)src[i];
+    dst[i] = 0;
+    return dst;
 }
 
 #define stricmp strcasecmp

@@ -22,14 +22,14 @@
 #include <string.h>
 #include <tputil.h>
 
-void wset_xml_s(wchar_t *vastr, wchar_t *tag, wchar_t *value, int level)
+void wset_xml_s(wchar_t *vastr, wchar_t *tag, const wchar_t *value, int level)
 	{
 	wset_xml_s(vastr, tag, value, level, NULL);
 	}
 
-void wset_xml_s(wchar_t *vastr, wchar_t *tag, wchar_t *value, int level, wchar_t *parstr)
+void wset_xml_s(wchar_t *vastr, wchar_t *tag, const wchar_t *value, int level, wchar_t *parstr)
 	{
-	wchar_t *p1, *p2, ch[2] = L" ", st[2] = L"";
+	const wchar_t *p1; wchar_t *p2, ch[2] = L" ", st[2] = L"";
 
 	if (!parstr) {
 		parstr = st;

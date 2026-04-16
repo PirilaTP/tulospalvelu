@@ -92,7 +92,7 @@ void getWinVersion(void)
 	GetVersionEx((OSVERSIONINFO *)&osvi);
 	EnvData.WinMajorVersion = osvi.dwMajorVersion;
 	EnvData.WinMinorVersion = osvi.dwMinorVersion;
-	wcsncpy(EnvData.CSDVersion, osvi.szCSDVersion, sizeof(EnvData.CSDVersion)/2-1);
+	wcsncpy(EnvData.CSDVersion, osvi.szCSDVersion, sizeof(EnvData.CSDVersion)/sizeof(wchar_t)-1);
 	EnvData.isWinServer = osvi.wProductType > 1;
 	fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(
 		GetModuleHandle(TEXT("kernel32")),"IsWow64Process");
@@ -836,7 +836,7 @@ void lueyhteysjonot(void)
 	yhtfile = new TextFl(filenm, L"rt");
 	if (yhtfile->IsOpen()) {
 		while (!yhtfile->Feof() && nyhtjono < 4*MAXJONO) {
-			if (yhtfile->ReadLine(line, sizeof(line)/2-1) != NULL) {
+			if (yhtfile->ReadLine(line, sizeof(line)/sizeof(wchar_t)-1) != NULL) {
 				p = wcstok(line, L" ,;\t\n");
 				if (p) {
 					if ((yhtj[nyhtjono].cn = _wtoi(p)) > 0)

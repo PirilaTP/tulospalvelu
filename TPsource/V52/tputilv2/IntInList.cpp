@@ -22,7 +22,7 @@ int IntInList(const int val, const wchar_t * const lst)
 	wchar_t *p, list[200];
 	int k = 0;
 
-	wcsncpy(list, lst, sizeof(list)/2-1);
+	wcsncpy(list, lst, sizeof(list)/sizeof(wchar_t)-1);
 	list[sizeof(list)/2-1] = 0;
 	p = wcstok(list, L" ,;\t");
 	while (p) {

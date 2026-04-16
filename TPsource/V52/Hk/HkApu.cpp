@@ -54,7 +54,7 @@ wchar_t *otsTeksti(wchar_t *out, wchar_t *in, int len, int i_pv)
 
 	if (out == NULL) {
 		out = buf;
-		if (len > sizeof(buf)/2)
+		if (len > sizeof(buf)/sizeof(wchar_t))
 			len = sizeof(buf)/2;
 		}
 	po = out;
@@ -252,7 +252,7 @@ int haeSeurVakantti(int alku)
 
 	// Jos alku == 0 jatketaan aiemmasta arvosta vakanttialku
 	// muuten alustetaan arvoon alku
-	// lis�ksi varmistetaan alueella minkilpno .. maxkilpno pysyminen
+	// lisäksi varmistetaan alueella minkilpno .. maxkilpno pysyminen
 
 	if (alku > maxkilpno)
 		alku = minkilpno;
@@ -664,7 +664,7 @@ int seuraLuettelo::lueSeurat(wchar_t *SraFName)
 {
 	EnterCriticalSection(&seura_CriticalSection);
 	if (SraFName[0]) {
-		wcsncpy(FName, SraFName, sizeof(FName)/2-1);
+		wcsncpy(FName, SraFName, sizeof(FName)/sizeof(wchar_t)-1);
 		TextFl *InFile = new TextFl(SraFName, L"t");
 		if (InFile->IsOpen()) {
 			wchar_t Buf[1000];

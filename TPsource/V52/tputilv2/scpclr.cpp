@@ -16,6 +16,11 @@
 
 void scpclr()
 {
+#ifdef __linux__
+	{ extern void shadow_clear(); shadow_clear(); }
+	printf("\033[2J\033[H");
+	fflush(stdout);
+#else
 	extern HANDLE hConOut;
 	CONSOLE_SCREEN_BUFFER_INFO ScBufInfo;
 	COORD  Pos;
@@ -37,6 +42,7 @@ void scpclr()
 			return;
 		}
 	}
+#endif
     return;
 }
 

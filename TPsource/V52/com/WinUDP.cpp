@@ -646,7 +646,7 @@ void TCPrcvTh(LPVOID lpCn)
 
 void TCPacceptTh(LPVOID lpCn)
 	{
-	int alen, yhtno;
+	socklen_t alen; int yhtno;
 	UINT32 addr;
 	SAIN *sain;
 
@@ -1094,7 +1094,7 @@ void UDPstreamrcvTh(LPVOID lpCn)
 
 int read_UDP_0(HANDLE hC, int len_t, char *pbuf, int *nread)
 {
-   int frlen, err = 0;
+   socklen_t frlen; int err = 0;
    SAIN *addr_in;
 
    *nread = 0;

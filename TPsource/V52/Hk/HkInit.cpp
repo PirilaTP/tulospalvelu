@@ -139,27 +139,27 @@ void merkisto(wchar_t merkit)
 
    for (i = 0; i < 256; i++) utrlate[i] = i;
    switch (merkit) {
-	  case L'A' : utrlate['Ä'] = 91;
-				 utrlate['Ö'] = 92;
-				 utrlate[''] = 93;
-				 utrlate['Ü'] = 94;
-				 utrlate[''] = L'E';
-				 utrlate['ä'] = 123;
-				 utrlate['ö'] = 124;
-				 utrlate['å'] = 125;
-				 utrlate[''] = 126;
-				 utrlate[''] = L'e';
+	  case L'A' : utrlate[0xC4] = 91;
+				 utrlate[0xD6] = 92;
+				 utrlate[0xC5] = 93;
+				 utrlate[0xDC] = 94;
+				 utrlate[0xC9] = L'E';
+				 utrlate[0xE4] = 123;
+				 utrlate[0xF6] = 124;
+				 utrlate[0xE5] = 125;
+				 utrlate[0xFC] = 126;
+				 utrlate[0xE9] = L'e';
 				 break;
-	  case L'R' : utrlate['Ä'] = 216;
-				 utrlate['Ö'] = 218;
-				 utrlate[''] = 208;
-				 utrlate['Ü'] = 219;
-				 utrlate[''] = 220;
-				 utrlate['ä'] = 204;
-				 utrlate['ö'] = 206;
-				 utrlate['å'] = 212;
-				 utrlate[''] = 207;
-				 utrlate[''] = 197;
+	  case L'R' : utrlate[0xC4] = 216;
+				 utrlate[0xD6] = 218;
+				 utrlate[0xC5] = 208;
+				 utrlate[0xDC] = 219;
+				 utrlate[0xC9] = 220;
+				 utrlate[0xE4] = 204;
+				 utrlate[0xF6] = 206;
+				 utrlate[0xE5] = 212;
+				 utrlate[0xFC] = 207;
+				 utrlate[0xE9] = 197;
 #if defined(EMITLEIMAT)
 				 wcscpy(initfont_emrap+wcslen(initfont_emrap)-3, L"8U");
 				 initfont_emrap[0]--;
@@ -196,16 +196,16 @@ void merkisto(wchar_t merkit)
 				 pscr = 1;
 	  case L'W' :                    // myös 'P' jatkuu
 	  case L'G' :                    // myös 'P' jatkuu
-				 utrlate['Ä'] = 196;
-				 utrlate['Ö'] = 214;
-				 utrlate[''] = 197;
-				 utrlate['Ü'] = 220;
-				 utrlate[''] = 201;
-				 utrlate['ä'] = 228;
-				 utrlate['ö'] = 246;
-				 utrlate['å'] = 229;
-				 utrlate[''] = 252;
-				 utrlate[''] = 233;
+				 utrlate[0xC4] = 196;
+				 utrlate[0xD6] = 214;
+				 utrlate[0xC5] = 197;
+				 utrlate[0xDC] = 220;
+				 utrlate[0xC9] = 201;
+				 utrlate[0xE4] = 228;
+				 utrlate[0xF6] = 246;
+				 utrlate[0xE5] = 229;
+				 utrlate[0xFC] = 252;
+				 utrlate[0xE9] = 233;
 				 utrlate['_'] = 32;
 				 break;
 	  }
@@ -590,7 +590,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 						*p = L'ö';
 						break;
 					case 197 :
-						*p = L'';
+						*p = L'Å';
 						break;
 					case 229 :
 					case 213 :
@@ -623,7 +623,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				if(!wmemcmpU(fldn, L"IKKUNAO", 7)) {
 					p = wcsstr(fldn+6,L"=");
 					if (p) {
-						wcsncpy(ikkunaots, p+1, sizeof(ikkunaots)/2-1);
+						wcsncpy(ikkunaots, p+1, sizeof(ikkunaots)/sizeof(wchar_t)-1);
 						}
 					continue;
 					}
@@ -702,35 +702,35 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 		 if (!wmemcmpU(fldn, L"SQLDRIVER", 7)) {
 			p = wcsstr(fldn, L"=");
 			if (p) {
-				wcsncpy(sqlparam.drivername, p+1, sizeof(sqlparam.drivername)/2-1);
+				wcsncpy(sqlparam.drivername, p+1, sizeof(sqlparam.drivername)/sizeof(wchar_t)-1);
 				}
 			continue;
 			}
 		 if (!wmemcmpU(fldn, L"SQLHOST", 7)) {
 			p = wcsstr(fldn, L"=");
 			if (p) {
-				wcsncpy(sqlparam.hostname, p+1, sizeof(sqlparam.hostname)/2-1);
+				wcsncpy(sqlparam.hostname, p+1, sizeof(sqlparam.hostname)/sizeof(wchar_t)-1);
 				}
 			continue;
 			}
 		 if (!wmemcmpU(fldn, L"SQLDATABASE", 7)) {
 			p = wcsstr(fldn, L"=");
 			if (p) {
-				wcsncpy(sqlparam.database, p+1, sizeof(sqlparam.database)/2-1);
+				wcsncpy(sqlparam.database, p+1, sizeof(sqlparam.database)/sizeof(wchar_t)-1);
 				}
 			continue;
 			}
 		 if (!wmemcmpU(fldn, L"SQLUSER", 7)) {
 			p = wcsstr(fldn, L"=");
 			if (p) {
-				wcsncpy(sqlparam.User_Name, p+1, sizeof(sqlparam.User_Name)/2-1);
+				wcsncpy(sqlparam.User_Name, p+1, sizeof(sqlparam.User_Name)/sizeof(wchar_t)-1);
 				}
 			continue;
 			}
 		 if (!wmemcmpU(fldn, L"SQLPASSWORD", 7)) {
 			p = wcsstr(fldn, L"=");
 			if (p) {
-				wcsncpy(sqlparam.Password, p+1, sizeof(sqlparam.Password)/2-1);
+				wcsncpy(sqlparam.Password, p+1, sizeof(sqlparam.Password)/sizeof(wchar_t)-1);
 				}
 			continue;
 			}
@@ -761,7 +761,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 					if (!wcscmp(p+1, L"0") || !wcscmp(p+1, L"E") || !wcscmp(p+1, L"EI"))
 						NimiHTHaku = 0;
 					else {
-						wcsncpy(HenkTKantaNm, p+1, sizeof(HenkTKantaNm)/2-1);
+						wcsncpy(HenkTKantaNm, p+1, sizeof(HenkTKantaNm)/sizeof(wchar_t)-1);
 						}
 					}
 				continue;
@@ -769,7 +769,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			 if(!wmemcmpU(fldn, L"SEURATIEDOSTO", 9)) {
 				seurahaku = 2;
 				if ((p = wcsstr(fldn, L"=")) != NULL) {
-					wcsncpy(seuraTiedNm, p+1, sizeof(seuraTiedNm)/2-1);
+					wcsncpy(seuraTiedNm, p+1, sizeof(seuraTiedNm)/sizeof(wchar_t)-1);
 					}
 				continue;
 				}
@@ -1009,7 +1009,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 		 if( !wmemcmpU(fldn, L"KOMENTO", 7)) {
 			p = wcsstr(fldn, L"=");
 			if (p && p[1]) {
-				wcsncpy(autofileparam.autokomento, p+1, sizeof(autofileparam.autokomento)/2-1);
+				wcsncpy(autofileparam.autokomento, p+1, sizeof(autofileparam.autokomento)/sizeof(wchar_t)-1);
 				autofileparam.autokomentolaji = 1;
 				}
 			continue;
@@ -1017,7 +1017,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 		 if( !wmemcmpU(fldn, L"AUTOJAKELU", 7)) {
 			p = wcsstr(fldn, L"=");
 			if (p && p[1]) {
-				wcsncpy(autofileparam.jakelumaar, p+1, sizeof(autofileparam.jakelumaar)/2-1);
+				wcsncpy(autofileparam.jakelumaar, p+1, sizeof(autofileparam.jakelumaar)/sizeof(wchar_t)-1);
 				}
 			autofileparam.autokomentolaji = 2;
 			continue;
@@ -2170,7 +2170,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 					*p2 = 0;
 					}
 				if (p[0] != 0 && p[1] != 0) {
-					wcsncpy(lainafname, p+1, sizeof(lainafname)/2-1);
+					wcsncpy(lainafname, p+1, sizeof(lainafname)/sizeof(wchar_t)-1);
 					}
 				}
             continue;
@@ -2230,7 +2230,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			continue;
 			}
 		 if( !wmemcmpU(fldn, L"KARTTA=",7)) {
-			wcsncpy(kilpparam.kartta, fldn+7, sizeof(kilpparam.kartta)/2-1);
+			wcsncpy(kilpparam.kartta, fldn+7, sizeof(kilpparam.kartta)/sizeof(wchar_t)-1);
 			continue;
 			}
 
@@ -2413,7 +2413,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				}
 			if (!wmemcmpU(fldn, L"ETHOST=",7)) {
 				if ((p = wcstok(fldn+7, L":")) != NULL) {
-					wcsncpy(eTParam.eThost, p, sizeof(eTParam.eThost)/2-1);
+					wcsncpy(eTParam.eThost, p, sizeof(eTParam.eThost)/sizeof(wchar_t)-1);
 					if ((p = wcstok(NULL, L":")) != NULL)
 						eTParam.eTport = _wtoi(p);
 					}
@@ -2806,7 +2806,7 @@ void lueeratiedot(wchar_t *fname)
    erafl = new TextFl(fname, L"rt");
    if (erafl != NULL && erafl->IsOpen()) {
       while (!erafl->Feof()) {
-		  erafl->ReadLine(ln, sizeof(ln)/2-1);
+		  erafl->ReadLine(ln, sizeof(ln)/sizeof(wchar_t)-1);
           if (swscanf(ln, L"%d %d %d\n", &kno, &era, &rata) == 3) {
             if ((d = getpos(kno)) > 0) {
 			   kilp.GETREC(d);
@@ -3297,8 +3297,8 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 		luesarjayhdistelmat();
 		}
 	if (kilpailu[0]) {
-		wcsncpy(paaots, kilpailu, sizeof(paaots)/2-1);
-		wcsncpy(sarjaots, kilpailu, sizeof(sarjaots)/2-1);
+		wcsncpy(paaots, kilpailu, sizeof(paaots)/sizeof(wchar_t)-1);
+		wcsncpy(sarjaots, kilpailu, sizeof(sarjaots)/sizeof(wchar_t)-1);
 		}
 #ifndef _CONSOLE
 	wcsncpy(llparam.luetots0, kilpailu, 82);

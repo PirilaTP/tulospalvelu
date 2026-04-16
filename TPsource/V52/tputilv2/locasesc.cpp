@@ -22,11 +22,11 @@ char locasesc(char ch)
    char c;
 
    switch(ch) {
-	  case '' :  return('');
-	  case '' :  return('');
-	  case '' :  return('');
-	  case '' :  return('');
-	  case '' :  return('');
+	  case 0x90 :  return(0x82);
+	  case 0x8E :  return(0x84);
+	  case 0x99 :  return(0x94);
+	  case 0x8F :  return(0x86);
+	  case 0x9A :  return(0x81);
    }
    i = ch;
    c = tolower(i);

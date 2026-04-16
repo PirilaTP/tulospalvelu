@@ -23,6 +23,22 @@
 #include <functional>
  using namespace std;
 #include <stdlib.h>
+
+/* Convert UTF-16LE bytes to native wchar_t (needed on Linux where wchar_t is 4 bytes) */
+static void utf16le_to_wchar(wchar_t* dst, const char* src, int count) {
+    const unsigned char* s = (const unsigned char*)src;
+    for (int i = 0; i < count; i++) {
+        dst[i] = s[i*2] | (s[i*2+1] << 8);
+    }
+    dst[count] = 0;
+}
+static void wchar_to_utf16le(char* dst, const wchar_t* src, int count) {
+    unsigned char* d = (unsigned char*)dst;
+    for (int i = 0; i < count; i++) {
+        d[i*2] = src[i] & 0xFF;
+        d[i*2+1] = (src[i] >> 8) & 0xFF;
+    }
+}
 #include <io.h>
 #include <fcntl.h>
 #include <string>
@@ -258,7 +274,7 @@ void kilppvtp::pack0(char *buf)
 	fld = pv_fields;
 	for (int i = 0; i < n_knt-1; i++, fld++) {
 		if (fld->size && !wcscmp(fld->name, L"txt"))
-			memcpy(buf + fld->bufpos, (char *) txt, fld->size*fld->count);
+			wchar_to_utf16le(buf + fld->bufpos, txt, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"tav"))
 			memcpy(buf + fld->bufpos, (char *) &tav, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"enn"))
@@ -270,7 +286,7 @@ void kilppvtp::pack0(char *buf)
 		if (fld->size && !wcscmp(fld->name, L"flags"))
 			memcpy(buf + fld->bufpos, (char *) flags, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"rata"))
-			memcpy(buf + fld->bufpos, (char *) rata, fld->size*fld->count);
+			wchar_to_utf16le(buf + fld->bufpos, rata, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"sarja"))
 			memcpy(buf + fld->bufpos, (char *) &sarja, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"era"))
@@ -282,7 +298,7 @@ void kilppvtp::pack0(char *buf)
 		if (fld->size && !wcscmp(fld->name, L"laina"))
 			memcpy(buf + fld->bufpos, (char *) laina, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"selitys"))
-			memcpy(buf + fld->bufpos, (char *) selitys, fld->size*fld->count);
+			wchar_to_utf16le(buf + fld->bufpos, selitys, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"pvpisteet"))
 			memcpy(buf + fld->bufpos, (char *) pvpisteet, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"tlahto_arv"))
@@ -317,7 +333,7 @@ void kilppvtp::unpack0(char *buf)
 	fld = pv_fields;
 	for (int i = 0; i < n_knt-1; i++, fld++) {
 		if (fld->size && !wcscmp(fld->name, L"txt"))
-			memcpy((char *) txt, buf + fld->bufpos, fld->size*fld->count);
+			utf16le_to_wchar(txt, buf + fld->bufpos, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"tav"))
 			memcpy((char *) &tav, buf + fld->bufpos, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"enn"))
@@ -329,7 +345,7 @@ void kilppvtp::unpack0(char *buf)
 		if (fld->size && !wcscmp(fld->name, L"flags"))
 			memcpy((char *) &flags, buf + fld->bufpos, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"rata"))
-			memcpy((char *) rata, buf + fld->bufpos, fld->size*fld->count);
+			utf16le_to_wchar(rata, buf + fld->bufpos, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"sarja"))
 			memcpy((char *) &sarja, buf + fld->bufpos, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"era"))
@@ -341,7 +357,7 @@ void kilppvtp::unpack0(char *buf)
 		if (fld->size && !wcscmp(fld->name, L"laina"))
 			memcpy((char *) laina, buf + fld->bufpos, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"selitys"))
-			memcpy((char *) selitys, buf + fld->bufpos, fld->size*fld->count);
+			utf16le_to_wchar(selitys, buf + fld->bufpos, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"pvpisteet"))
 			memcpy((char *) pvpisteet, buf + fld->bufpos, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"tlahto_arv"))
@@ -383,7 +399,7 @@ void kilptietue::pack0(char *buf)
 		if (fld->size && !wcscmp(fld->name, L"lisno"))
 			memcpy(buf + fld->bufpos, (char *) lisno, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"wrkoodi"))
-			memcpy(buf + fld->bufpos, (char *) wrkoodi, fld->size*fld->count);
+			wchar_to_utf16le(buf + fld->bufpos, wrkoodi, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"ilmlista"))
 			memcpy(buf + fld->bufpos, (char *) &ilmlista, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"piiri"))
@@ -391,21 +407,21 @@ void kilptietue::pack0(char *buf)
 		if (fld->size && !wcscmp(fld->name, L"piste"))
 			memcpy(buf + fld->bufpos, (char *) pisteet, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"sukunimi"))
-			memcpy(buf + fld->bufpos, (char *) sukunimi, fld->size*fld->count);
+			wchar_to_utf16le(buf + fld->bufpos, sukunimi, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"etunimi"))
-			memcpy(buf + fld->bufpos, (char *) etunimi, fld->size*fld->count);
+			wchar_to_utf16le(buf + fld->bufpos, etunimi, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"arvo"))
-			memcpy(buf + fld->bufpos, (char *) arvo, fld->size*fld->count);
+			wchar_to_utf16le(buf + fld->bufpos, arvo, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"seura"))
-			memcpy(buf + fld->bufpos, (char *) seura, fld->size*fld->count);
+			wchar_to_utf16le(buf + fld->bufpos, seura, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"seuralyh"))
-			memcpy(buf + fld->bufpos, (char *) seuralyh, fld->size*fld->count);
+			wchar_to_utf16le(buf + fld->bufpos, seuralyh, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"yhdistys"))
-			memcpy(buf + fld->bufpos, (char *) yhdistys, fld->size*fld->count);
+			wchar_to_utf16le(buf + fld->bufpos, yhdistys, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"joukkue"))
-			memcpy(buf + fld->bufpos, (char *) joukkue, fld->size*fld->count);
+			wchar_to_utf16le(buf + fld->bufpos, joukkue, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"maa"))
-			memcpy(buf + fld->bufpos, (char *) maa, fld->size*fld->count);
+			wchar_to_utf16le(buf + fld->bufpos, maa, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"sarja"))
 			memcpy(buf + fld->bufpos, (char *) &sarja, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"sukup"))
@@ -444,7 +460,7 @@ void kilptietue::unpack0(char *buf)
 		if (fld->size && !wcscmp(fld->name, L"lisno"))
 			memcpy((char *) lisno, buf + fld->bufpos, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"wrkoodi"))
-			memcpy((char *) wrkoodi, buf + fld->bufpos, fld->size*fld->count);
+				utf16le_to_wchar(wrkoodi, buf + fld->bufpos, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"ilmlista"))
 			memcpy((char *) &ilmlista, buf + fld->bufpos, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"piiri"))
@@ -452,21 +468,21 @@ void kilptietue::unpack0(char *buf)
 		if (fld->size && !wcscmp(fld->name, L"piste"))
 			memcpy((char *) pisteet, buf + fld->bufpos, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"sukunimi"))
-			memcpy((char *) sukunimi, buf + fld->bufpos, fld->size*fld->count);
+				utf16le_to_wchar(sukunimi, buf + fld->bufpos, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"etunimi"))
-			memcpy((char *) etunimi, buf + fld->bufpos, fld->size*fld->count);
+				utf16le_to_wchar(etunimi, buf + fld->bufpos, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"arvo"))
-			memcpy((char *) arvo, buf + fld->bufpos, fld->size*fld->count);
+				utf16le_to_wchar(arvo, buf + fld->bufpos, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"seura"))
-			memcpy((char *) seura, buf + fld->bufpos, fld->size*fld->count);
+				utf16le_to_wchar(seura, buf + fld->bufpos, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"seuralyh"))
-			memcpy((char *) seuralyh, buf + fld->bufpos, fld->size*fld->count);
+				utf16le_to_wchar(seuralyh, buf + fld->bufpos, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"yhdistys"))
-			memcpy((char *) yhdistys, buf + fld->bufpos, fld->size*fld->count);
+				utf16le_to_wchar(yhdistys, buf + fld->bufpos, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"joukkue"))
-			memcpy((char *) joukkue, buf + fld->bufpos, fld->size*fld->count);
+				utf16le_to_wchar(joukkue, buf + fld->bufpos, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"maa"))
-			memcpy((char *) maa, buf + fld->bufpos, fld->size*fld->count);
+				utf16le_to_wchar(maa, buf + fld->bufpos, fld->count);
 		if (fld->size && !wcscmp(fld->name, L"sarja"))
 			memcpy((char *) &sarja, buf + fld->bufpos, fld->size*fld->count);
 		if (fld->size && !wcscmp(fld->name, L"sukup"))

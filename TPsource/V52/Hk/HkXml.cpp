@@ -455,22 +455,22 @@ static int loadEventData(xml_node *node, int nnode)
 	for (inode = 1; inode <= nnode; inode++) {
 		switch (node[inode].tagid) {
 			case TAGEventCode :
-				node[inode].gettext(kilpparam.kilpkoodi, sizeof(kilpparam.kilpkoodi)/2);
+				node[inode].gettext(kilpparam.kilpkoodi, sizeof(kilpparam.kilpkoodi)/sizeof(wchar_t));
 				break;
 			case TAGTitle :
-				node[inode].gettext(ln, sizeof(kilpailu)/2);
+				node[inode].gettext(ln, sizeof(kilpailu)/sizeof(wchar_t));
 				if (wcslen(ln) > 1)
 					wcscpy(kilpailu, ln);
 				break;
 			case TAGSport :
 				break;
 			case TAGDiscipline :
-				if (node[inode].gettext(ln, sizeof(ln)/2))
+				if (node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 					kilpparam.kilplaji = haetunnus(ln, Dis, DisSt,
 						sizeof(DisSt)/sizeof(DisSt[0]));
 				break;
 			case TAGSubtype :
-				if (node[inode].gettext(ln, sizeof(ln)/2))
+				if (node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 					kilpparam.alalaji = haetunnus(ln, Sub, SubSt,
 						sizeof(SubSt)/sizeof(SubSt[0]));
 				break;
@@ -484,11 +484,11 @@ static int loadEventData(xml_node *node, int nnode)
 				node[inode].gettext_int(&sarjaluku);
 				break;
 			case TAGVariableClass :
-				node[inode].gettext(ln, sizeof(ln)/2);
+				node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t));
 				kilpparam.sarjavaihtelee = (towupper(ln[0]) == L'Y') ? 1 : 0;
 				break;
 			case TAGVariableBib :
-				node[inode].gettext(ln, sizeof(ln)/2);
+				node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t));
 				kilpparam.bibvaihtelee = (towupper(ln[0]) == L'Y') ? 1 : 0;
 				break;
 			case TAGIntIdLen :
@@ -496,11 +496,11 @@ static int loadEventData(xml_node *node, int nnode)
 				break;
 			case TAGUseClubId :
 			case TAGUseClassId :
-				node[inode].gettext(ln, sizeof(ln)/2);
+				node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t));
 				kilpparam.seuralyh_on = (towupper(ln[0]) == L'Y') ? 1 : 0;
 				break;
 			case TAGBadge :
-				if (node[inode].gettext(ln, sizeof(ln)/2)) {
+				if (node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t))) {
 					if ((p = wcsstr(ln, L"*2")) != 0) {
 						kilpparam.kaksibadge = 1;
 						*p = 0;
@@ -510,7 +510,7 @@ static int loadEventData(xml_node *node, int nnode)
 					}
 				break;
 			case TAGCombinedResult :
-				if (node[inode].gettext(ln, sizeof(ln)/2))
+				if (node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 					kilpparam.yhttlslaji = haetunnus(ln, YhtTls, YhtTlsSt,
 						sizeof(YhtTlsSt)/sizeof(YhtTlsSt[0]));
 				break;
@@ -536,31 +536,31 @@ static int loadRaceData(xml_node *node, int nnode)
 			haara = 0;
 			switch (node[inode].tagid) {
 				case TAGEventRaceId :
-					node[inode].gettext(pvparam[i_pv].RaceId, sizeof(pvparam[i_pv].RaceId)/2);
+					node[inode].gettext(pvparam[i_pv].RaceId, sizeof(pvparam[i_pv].RaceId)/sizeof(wchar_t));
 					break;
 				case TAGTitle :
-					node[inode].gettext(pvparam[i_pv].Title, sizeof(pvparam[i_pv].Title)/2);
+					node[inode].gettext(pvparam[i_pv].Title, sizeof(pvparam[i_pv].Title)/sizeof(wchar_t));
 					break;
 				case TAGDate :
-					node[inode].gettext(ln, sizeof(ln)/2);
+					node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t));
 					pvparam[i_pv].Date = DateNoFromSt(ln);
 					break;
 				case TAGDiscipline :
-					if (node[inode].gettext(ln, sizeof(ln)/2))
+					if (node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 						pvparam[i_pv].kilplaji = haetunnus(ln, Dis, DisSt,
 							sizeof(DisSt)/sizeof(DisSt[0]));
 					break;
 				case TAGSubtype :
-					if (node[inode].gettext(ln, sizeof(ln)/2))
+					if (node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 						pvparam[i_pv].alalaji = haetunnus(ln, Sub, SubSt,
 							sizeof(SubSt)/sizeof(SubSt[0]));
 					break;
 				case TAGStartGate :
-					if (node[inode].gettext(ln, sizeof(ln)/2))
+					if (node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 						pvparam[i_pv].hiihtolahto = (towupper(ln[0]) == L'Y' ? 1 : 0);
 					break;
 //				case TAGPursuitExtra :
-//					if (node[inode].gettext(ln, sizeof(ln)/2))
+//					if (node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 //						pvparam[i_pv].takaaAjoLisa = (towupper(ln[0]) == L'Y' ? 1 : 0);
 //					break;
 				case TAGPrecision :
@@ -573,7 +573,7 @@ static int loadRaceData(xml_node *node, int nnode)
 			if (haara == 1) {
 				switch (node[inode].tagid) {
 					case TAGInternal :
-						if (node[inode].gettext(ln, sizeof(ln)/2)) {
+						if (node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t))) {
 							if (wcslen(ln) > 2)
 								pvparam[i_pv].pyor[1] = SEK/powi(10, (wcslen(ln)-2));
 							else
@@ -582,7 +582,7 @@ static int loadRaceData(xml_node *node, int nnode)
 							}
 					break;
 					case TAGRank :
-						if (node[inode].gettext(ln, sizeof(ln)/2)) {
+						if (node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t))) {
 							if (wcslen(ln) > 2)
 								pvparam[i_pv].pyor[2] = SEK/powi(10, (wcslen(ln)-2));
 							else
@@ -591,7 +591,7 @@ static int loadRaceData(xml_node *node, int nnode)
 							}
 					break;
 					case TAGResults :
-						if (node[inode].gettext(ln, sizeof(ln)/2)) {
+						if (node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t))) {
 							if (wcslen(ln) > 2)
 								pvparam[i_pv].pyor[3] = SEK/powi(10, (wcslen(ln)-2));
 							else
@@ -600,7 +600,7 @@ static int loadRaceData(xml_node *node, int nnode)
 							}
 					break;
 					case TAGPursuit :
-						if (node[inode].gettext(ln, sizeof(ln)/2)) {
+						if (node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t))) {
 							if (wcslen(ln) > 2)
 								pvparam[i_pv].pyor[4] = SEK/powi(10, (wcslen(ln)-2));
 							else
@@ -608,7 +608,7 @@ static int loadRaceData(xml_node *node, int nnode)
 							}
 					break;
 					case TAGIntermediary :
-						if (node[inode].gettext(ln, sizeof(ln)/2)) {
+						if (node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t))) {
 							if (wcslen(ln) > 2)
 								pvparam[i_pv].pyor[5] = SEK/powi(10, (wcslen(ln)-2));
 							else
@@ -649,10 +649,10 @@ static int loadClassRaceData(sarjatietue *Sarja, xml_node *node, int *inode, int
 			haara = 0;
 			switch (node[*inode].tagid) {
 				case TAGName :
-					node[*inode].gettext(Sarja->pvsarjanimi[i_pv], sizeof(Sarja->pvsarjanimi[i_pv])/2);
+					node[*inode].gettext(Sarja->pvsarjanimi[i_pv], sizeof(Sarja->pvsarjanimi[i_pv])/sizeof(wchar_t));
 					break;
 				case TAGFlags :
-					node[*inode].gettext(Sarja->flags[i_pv], sizeof(Sarja->flags[i_pv])/2);
+					node[*inode].gettext(Sarja->flags[i_pv], sizeof(Sarja->flags[i_pv])/sizeof(wchar_t));
 					break;
 				case TAGBibStart :
 					node[*inode].gettext_int(&Sarja->bibalku[i_pv]);
@@ -661,7 +661,7 @@ static int loadClassRaceData(sarjatietue *Sarja, xml_node *node, int *inode, int
 					haara = 1;
 					break;
 				case TAGTechnique :
-					node[*inode].gettext(Sarja->tapa[i_pv], sizeof(Sarja->tapa[i_pv])/2);
+					node[*inode].gettext(Sarja->tapa[i_pv], sizeof(Sarja->tapa[i_pv])/sizeof(wchar_t));
 					wtransl(L"CF", L"PV", Sarja->tapa[i_pv]);
 					wtransl(L"CF", L"PV", Sarja->tapa[i_pv]+1);
 					break;
@@ -675,11 +675,11 @@ static int loadClassRaceData(sarjatietue *Sarja, xml_node *node, int *inode, int
 					node[*inode].gettext_int(&Sarja->mno[i_pv]);
 					break;
 				case TAGFirstStart :
-					if (node[*inode].gettext(ln, sizeof(ln)/2))
+					if (node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 						Sarja->enslahto[i_pv] = wstrtoaika_vap(ln, t0);
 					break;
 				case TAGFirstExtraStart :
-					if (node[*inode].gettext(ln, sizeof(ln)/2))
+					if (node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 						Sarja->ensjlahto[i_pv] = wstrtoaika_vap(ln, t0);
 					break;
 				case TAGStartInterval :
@@ -703,28 +703,28 @@ static int loadClassRaceData(sarjatietue *Sarja, xml_node *node, int *inode, int
 					node[*inode].gettext_int(&Sarja->tul_raja[i_pv]);
 					break;
 				case TAGResultFormula :
-					node[*inode].gettext(ln, sizeof(ln)/2-1);
+					node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)-1);
 					Sarja->tulkFormula(ln, i_pv, 0);
 					break;
 				case TAGPointFormula :
-					node[*inode].gettext(ln, sizeof(ln)/2-1);
+					node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)-1);
 					Sarja->tulkFormula(ln, i_pv, VALUKU+1);
 					break;
 				case TAGPointRules :
 					haara = 3;
 					break;
 				case TAGEmitToSplits :
-					node[*inode].gettext(ln, sizeof(ln)/2-1);
+					node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)-1);
 					Sarja->tulkMTB(ln, i_pv);
 					break;
 				case TAGIntermediaries :
 					haara = 2;
 					break;
 				case TAGBOOrder :
-					node[*inode].gettext(Sarja->asuunnlaji[i_pv], sizeof(Sarja->asuunnlaji[0])/2-1);
+					node[*inode].gettext(Sarja->asuunnlaji[i_pv], sizeof(Sarja->asuunnlaji[0])/sizeof(wchar_t)-1);
 					break;
 				case TAGBOPenalties :
-					node[*inode].gettext(ln, sizeof(ln)/2-1);
+					node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)-1);
 					for (UINT i = 0; i < sizeof(Sarja->asuunnsakot)/sizeof(Sarja->asuunnsakot[0]); i++) {
 						if (i == 0)
 							p = wcstok(ln, L";\n");
@@ -736,7 +736,7 @@ static int loadClassRaceData(sarjatietue *Sarja, xml_node *node, int *inode, int
 						}
 					break;
 				case TAGMultiRace :
-					node[*inode].gettext(ln, sizeof(ln)/2-1);
+					node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)-1);
 					Sarja->luonne[i_pv] = wcswcind(ln[0], L"SICP") - 1;
 					if (Sarja->luonne[i_pv] < -1)
 						Sarja->luonne[i_pv] = 0;
@@ -752,10 +752,10 @@ static int loadClassRaceData(sarjatietue *Sarja, xml_node *node, int *inode, int
 			if (haara == 1) {
 				switch (node[*inode].tagid) {
 					case TAGValue :
-						node[*inode].gettext(Sarja->matka[i_pv], sizeof(Sarja->matka[i_pv])/2);
+						node[*inode].gettext(Sarja->matka[i_pv], sizeof(Sarja->matka[i_pv])/sizeof(wchar_t));
 						break;
 					case TAGUnit :
-	//					node[*inode].gettext(Sarja->matka[i_pv], sizeof(Sarja->matka[i_pv])/2);
+	//					node[*inode].gettext(Sarja->matka[i_pv], sizeof(Sarja->matka[i_pv])/sizeof(wchar_t));
 						break;
 					}
 				continue;
@@ -775,15 +775,15 @@ static int loadClassRaceData(sarjatietue *Sarja, xml_node *node, int *inode, int
 			if (haara == 3) {
 				switch (node[*inode].tagid) {
 					case TAGRankBased :
-						node[*inode].gettext(ln, sizeof(ln)/2-1);
+						node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)-1);
 						Sarja->tulkPointFormula(ln, i_pv, iRule++);
 						break;
 					case TAGResultBased :
-						node[*inode].gettext(ln, sizeof(ln)/2-1);
+						node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)-1);
 						Sarja->tulkPointFormula(ln, i_pv, -1);
 						break;
 					case TAGTotal :
-						node[*inode].gettext(ln, sizeof(ln)/2-1);
+						node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)-1);
 						Sarja->tulkPointFormula(ln, i_pv, -2);
 						break;
 					}
@@ -796,7 +796,7 @@ static int loadClassRaceData(sarjatietue *Sarja, xml_node *node, int *inode, int
 				switch (node[*inode].tagid) {
 					case TAGDistance :
 						node[*inode].gettext(Sarja->va_matka[i_pv][i_va],
-							sizeof(Sarja->va_matka[i_pv][i_va])/2);
+							sizeof(Sarja->va_matka[i_pv][i_va])/sizeof(wchar_t));
 						if (Sarja->valuku[i_pv] < i_va + 1) {
 							Sarja->valuku[i_pv] = i_va + 1;
 							}
@@ -808,7 +808,7 @@ static int loadClassRaceData(sarjatietue *Sarja, xml_node *node, int *inode, int
 						node[*inode].gettext_int(&Sarja->va_sakot[i_pv][i_va+1]);
 						break;
 					case TAGPublic :
-						node[*inode].gettext(ln, sizeof(ln)/2-1);
+						node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)-1);
 						switch (towupper(ln[0])) {
 							case L'N':
 								Sarja->va_piilota[i_pv][i_va] = 0;
@@ -825,7 +825,7 @@ static int loadClassRaceData(sarjatietue *Sarja, xml_node *node, int *inode, int
 						node[*inode].gettext_int(&Sarja->va_raja[i_pv][i_va]);
 						break;
 					case TAGResultFormula :
-						node[*inode].gettext(ln, sizeof(ln)/2-1);
+						node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)-1);
 						Sarja->tulkFormula(ln, i_pv, i_va+1);
 						break;
 					}
@@ -856,10 +856,10 @@ static int loadClassData(xml_node *node, int nnode)
 			haara = 0;
 			switch (node[inode].tagid) {
 				case TAGClassId :
-					node[inode].gettext(Sarja->sarjanimi, sizeof(Sarja->sarjanimi)/2);
+					node[inode].gettext(Sarja->sarjanimi, sizeof(Sarja->sarjanimi)/sizeof(wchar_t));
 					break;
 				case TAGName :
-					node[inode].gettext(Sarja->psarjanimi, sizeof(Sarja->psarjanimi)/2);
+					node[inode].gettext(Sarja->psarjanimi, sizeof(Sarja->psarjanimi)/sizeof(wchar_t));
 					break;
 				case TAGIdStart :
 					node[inode].gettext_int(&Sarja->sarjaalku);
@@ -983,7 +983,7 @@ static int loadCourseControl(IOFCourseVariation *CVar, xml_node *node, int *inod
 					node[*inode].gettext_int(&CC.iPoint);
 					break;
 				case TAGControlCode :
-					node[*inode].gettext(CC.Code, sizeof(CC.Code)/2-1);
+					node[*inode].gettext(CC.Code, sizeof(CC.Code)/sizeof(wchar_t)-1);
 					break;
 				case TAGLegLength :
 					node[*inode].gettext_int(&CC.LegLength);
@@ -1013,10 +1013,10 @@ static int loadCourseVariation(IOFCourse *Cs, int iVar, xml_node *node, int *ino
 		if (node[*inode].depth == DepthIn) {
 			switch (node[*inode].tagid) {
 				case TAGName :
-					node[*inode].gettext(CVar.Name, sizeof(CVar.Name)/2-1);
+					node[*inode].gettext(CVar.Name, sizeof(CVar.Name)/sizeof(wchar_t)-1);
 					break;
 				case TAGCourseVariationId :
-					node[*inode].gettext(CVar.Id, sizeof(CVar.Id)/2-1);
+					node[*inode].gettext(CVar.Id, sizeof(CVar.Id)/sizeof(wchar_t)-1);
 					break;
 				case TAGCourseLength :
 					node[*inode].gettext_int(&CVar.Length);
@@ -1025,10 +1025,10 @@ static int loadCourseVariation(IOFCourse *Cs, int iVar, xml_node *node, int *ino
 					node[*inode].gettext_int(&CVar.Climb);
 					break;
 				case TAGStartPointCode :
-					node[*inode].gettext(CVar.Start, sizeof(CVar.Start)/2-1);
+					node[*inode].gettext(CVar.Start, sizeof(CVar.Start)/sizeof(wchar_t)-1);
 					break;
 				case TAGFinishPointCode :
-					node[*inode].gettext(CVar.Finish, sizeof(CVar.Finish)/2-1);
+					node[*inode].gettext(CVar.Finish, sizeof(CVar.Finish)/sizeof(wchar_t)-1);
 					break;
 				case TAGDistanceToFinish :
 					node[*inode].gettext_int(&CVar.FinLeg);
@@ -1037,7 +1037,7 @@ static int loadCourseVariation(IOFCourse *Cs, int iVar, xml_node *node, int *ino
 					node[*inode].gettext_int(&CVar.ennakko);
 					break;
 				case TAGAutoResult :
-					node[*inode].gettext(ARln, sizeof(ARln)/2-1);
+					node[*inode].gettext(ARln, sizeof(ARln)/sizeof(wchar_t)-1);
 					break;
 				case TAGCourseControl :
 					if ((er = loadCourseControl(&CVar, node, inode, nnode)) != 0)
@@ -1074,16 +1074,16 @@ static int loadCourse(IOFCourseData *CseData, int icourse, xml_node *node, int *
 		if (node[*inode].depth == DepthIn) {
 			switch (node[*inode].tagid) {
 				case TAGCourseName :
-					node[*inode].gettext(Cs.Name, sizeof(Cs.Name)/2-1);
+					node[*inode].gettext(Cs.Name, sizeof(Cs.Name)/sizeof(wchar_t)-1);
 					break;
 				case TAGCourseId :
-					node[*inode].gettext(Cs.Id, sizeof(Cs.Id)/2-1);
+					node[*inode].gettext(Cs.Id, sizeof(Cs.Id)/sizeof(wchar_t)-1);
 					break;
 				case TAGClassShortName :
 					for (ic = 0; ic < (int)(sizeof(Cs.ShortName)/sizeof(Cs.ShortName[0])) &&
 						Cs.ShortName[ic][0]; ic++) ;
 					if (ic < (int)(sizeof(Cs.ShortName)/sizeof(Cs.ShortName[0])))
-						node[*inode].gettext(Cs.ShortName[ic], sizeof(Cs.ShortName[0])/2-1);
+						node[*inode].gettext(Cs.ShortName[ic], sizeof(Cs.ShortName[0])/sizeof(wchar_t)-1);
 					break;
 				case TAGCourseVariation :
 					if ((er = loadCourseVariation(&Cs, iVar, node, inode, nnode)) != 0)
@@ -1097,10 +1097,10 @@ static int loadCourse(IOFCourseData *CseData, int icourse, xml_node *node, int *
 					node[*inode].gettext_int(&CVar.Climb);
 					break;
 				case TAGStartPointCode :
-					node[*inode].gettext(CVar.Start, sizeof(CVar.Start)/2-1);
+					node[*inode].gettext(CVar.Start, sizeof(CVar.Start)/sizeof(wchar_t)-1);
 					break;
 				case TAGFinishPointCode :
-					node[*inode].gettext(CVar.Finish, sizeof(CVar.Finish)/2-1);
+					node[*inode].gettext(CVar.Finish, sizeof(CVar.Finish)/sizeof(wchar_t)-1);
 					break;
 				case TAGDistanceToFinish :
 					node[*inode].gettext_int(&CVar.FinLeg);
@@ -1109,7 +1109,7 @@ static int loadCourse(IOFCourseData *CseData, int icourse, xml_node *node, int *
 					node[*inode].gettext_int(&CVar.ennakko);
 					break;
 				case TAGAutoResult :
-					node[*inode].gettext(ln, sizeof(ln)/2-1);
+					node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)-1);
 					break;
 				case TAGCourseControl :
 					if ((er = loadCourseControl(&CVar, node, inode, nnode)) != 0)
@@ -1144,15 +1144,15 @@ static int loadPointData(IOFCourseData *CseData, int ipoint, xml_node *node, int
 			switch (node[*inode].tagid) {
 				case TAGStartPointCode :
 					Pt.PointType = L'S';
-					node[*inode].gettext(Pt.Code, sizeof(Pt.Code)/2-1);
+					node[*inode].gettext(Pt.Code, sizeof(Pt.Code)/sizeof(wchar_t)-1);
 					break;
 				case TAGControlCode :
 					Pt.PointType = L'C';
-					node[*inode].gettext(Pt.Code, sizeof(Pt.Code)/2-1);
+					node[*inode].gettext(Pt.Code, sizeof(Pt.Code)/sizeof(wchar_t)-1);
 					break;
 				case TAGFinishPointCode :
 					Pt.PointType = L'F';
-					node[*inode].gettext(Pt.Code, sizeof(Pt.Code)/2-1);
+					node[*inode].gettext(Pt.Code, sizeof(Pt.Code)/sizeof(wchar_t)-1);
 					break;
 				case TAGControlPosition :
 					node[*inode].getparam_double(L"y", &Pt.CY);
@@ -1232,10 +1232,10 @@ static int loadCourseData(xml_node *node, int nnode, IOFCourseData *CseData)
 			if (haara == 1) {
 				switch (node[inode].tagid) {
 					case TAGDate :
-						node[inode].gettext(CseData->ModifyDate, sizeof(CseData->ModifyDate)/2-1);
+						node[inode].gettext(CseData->ModifyDate, sizeof(CseData->ModifyDate)/sizeof(wchar_t)-1);
 						break;
 					case TAGClock :
-						node[inode].gettext(CseData->ModifyTime, sizeof(CseData->ModifyTime)/2-1);
+						node[inode].gettext(CseData->ModifyTime, sizeof(CseData->ModifyTime)/sizeof(wchar_t)-1);
 						break;
 					}
 				continue;
@@ -1266,7 +1266,7 @@ static int loadCourseData(xml_node *node, int nnode, IOFCourseData *CseData)
 						node[inode].gettext(CseData->ClassAssignment[iassign]->Class, LSARJA);
 						break;
 					case TAGCourseName :
-						node[inode].gettext(CseData->ClassAssignment[iassign]->Course, sizeof(CseData->ClassAssignment[0]->Course)/2-1);
+						node[inode].gettext(CseData->ClassAssignment[iassign]->Course, sizeof(CseData->ClassAssignment[0]->Course)/sizeof(wchar_t)-1);
 						break;
 					}
 				continue;
@@ -1307,38 +1307,38 @@ static int loadParticipantRaceData(kilppvtp *Pv, int *ipv, xml_node *node, int *
 						Pv->badge[1] = i;
 					break;
 				case TAGClassId :
-					node[*inode].gettext(ln, sizeof(ln)/2);
+					node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t));
 					Pv->sarja = haesarja_w(ln, false);
 					break;
 				case TAGCourse :
-					node[*inode].gettext(Pv->rata, sizeof(Pv->rata)/2);
+					node[*inode].gettext(Pv->rata, sizeof(Pv->rata)/sizeof(wchar_t));
 					break;
 				case TAGStartTime :
-					if (node[*inode].gettext(ln, sizeof(ln)/2)) {
+					if (node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t))) {
 						Pv->tlahto = wstrtoaika_vap(ln, t0);
 						Pv->va[0].vatulos = Pv->tlahto;
 						}
 					break;
 				case TAGStartGateTime :
-					if (node[*inode].gettext(ln, sizeof(ln)/2))
+					if (node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 						Pv->va[0].vatulos = wstrtoaika_vap(ln, t0);
 					break;
 				case TAGResult :
-					if (node[*inode].gettext(ln, sizeof(ln)/2))
+					if (node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 						Pv->va[1].vatulos = wstrtoaika_vap(ln, 0);
 					break;
 				case TAGPersonalBest :
-					if (node[*inode].gettext(ln, sizeof(ln)/2))
+					if (node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 						Pv->enn = wstrtoaika_vap(ln, 0);
 					break;
 				case TAGGoal :
-					if (node[*inode].gettext(ln, sizeof(ln)/2))
+					if (node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 						Pv->tav = wstrtoaika_vap(ln, 0);
 					break;
 				case TAGRank :
 					break;
 				case TAGStatus :
-					if (node[*inode].gettext(ln, sizeof(ln)/2))
+					if (node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 						Pv->keskhyl = haetunnus(ln, Stat, StatSt,
 							sizeof(StatSt)/sizeof(StatSt[0]));
 					break;
@@ -1363,7 +1363,7 @@ static int loadParticipantRaceData(kilppvtp *Pv, int *ipv, xml_node *node, int *
 			if (haara == 1) {
 				switch (node[*inode].tagid) {
 					case TAGBiathlon :
-						if (node[*inode].gettext(Pv->asakot, sizeof(Pv->asakot)/2))
+						if (node[*inode].gettext(Pv->asakot, sizeof(Pv->asakot)/sizeof(wchar_t)))
 						break;
 					case TAGSecs :
 						node[*inode].gettext_int(&i);
@@ -1385,7 +1385,7 @@ static int loadParticipantRaceData(kilppvtp *Pv, int *ipv, xml_node *node, int *
 			if (haara2 > 10 && haara2 <= kilpparam.valuku+10) {
 				switch (node[*inode].tagid) {
 					case TAGResult :
-						if (node[*inode].gettext(ln, sizeof(ln)/2))
+						if (node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t)))
 							Pv->va[haara2-9].vatulos = wstrtoaika_vap(ln, 0);
 						break;
 					case TAGRank :
@@ -1434,10 +1434,10 @@ static int loadParticipantData(xml_node *node, int nnode)
 					Kilp.lisno[1] = i;
 					break;
 				case TAGPersonIdTxt :
-					node[inode].gettext(Kilp.wrkoodi, sizeof(Kilp.wrkoodi)/2);
+					node[inode].gettext(Kilp.wrkoodi, sizeof(Kilp.wrkoodi)/sizeof(wchar_t));
 					break;
 				case TAGClassId :
-					node[inode].gettext(ln, sizeof(ln)/2);
+					node[inode].gettext(ln, sizeof(ln)/sizeof(wchar_t));
 					Kilp.sarja = haesarja_w(ln, false);
 					if (Kilp.sarja < 0)
 						Kilp.sarja = 0;
@@ -1566,7 +1566,7 @@ int lueVainRadatXml(wchar_t *filename, IOFCourseData *CseData)
 					switch (nd.tagid) {
 						case TAGCourseData :
 							haara = 0;
-							tree.node[0].getparam_text(L"iofVersion", ln, sizeof(ln)/2);
+							tree.node[0].getparam_text(L"iofVersion", ln, sizeof(ln)/sizeof(wchar_t));
 							if (ln[0] == L'3') {
 								IOFVersion30 = true;
 								break;
@@ -1672,6 +1672,7 @@ int lueEventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueOsanot
 	memset(k, 0, sizeof(k));
 	infile = new TextFl(filename, L"rt");
 	if (infile->IsOpen()) {
+
 		for (int i = 0; i < MAXXMLDEPTH; i++) {
 			txtbuf[i] = new wchar_t[XMLTXTBUFLEN+1];
 			memset(txtbuf[i], 0, 2*(XMLTXTBUFLEN+1));
@@ -1681,6 +1682,10 @@ int lueEventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueOsanot
 		inode = -1;
 		rv = 0;
 		while (!er && !infile->Feof()) {
+
+#ifdef __linux__
+	if (rv <= 3 || rv % 200 == 0) fprintf(stderr, "DBG: XML line %d\n", rv);
+#endif
 			if (infile->ReadLine(line, 999) == NULL)
 				break;
 			rv++;
@@ -1717,16 +1722,18 @@ int lueEventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueOsanot
 							haara = 0;
 							er = tree.loadbranch(infile, &inode, depth, &rv, txtbuf, k);
 							--depth;
-							if (!er)
+							if (!er) {
 								er = loadSoftwareData(tree.node+inode_in, inode-inode_in);
+								}
 							inode = inode_in-1;
 							break;
 						case TAGEventData :
 							haara = 0;
 							er = tree.loadbranch(infile, &inode, depth, &rv, txtbuf, k);
 							--depth;
-							if (!er && lueSarjat)
+							if (!er && lueSarjat) {
 								er = loadEventData(tree.node+inode_in, inode-inode_in);
+								}
 							inode = inode_in-1;
 							break;
 						case TAGRaces :
@@ -1847,6 +1854,7 @@ int lueEventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueOsanot
 				}
 			}
 		}
+
 	return(er);
 }
 

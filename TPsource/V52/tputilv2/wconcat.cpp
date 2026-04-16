@@ -22,7 +22,7 @@ wchar_t *wconcat(const wchar_t *s1, const wchar_t *s2, const wchar_t *s3 /* = NU
 	static wchar_t str[1000];
 
 	memset(str, 0, sizeof(str));
-	wcsncpy(str, s1, sizeof(str)/2-1);
+	wcsncpy(str, s1, sizeof(str)/sizeof(wchar_t)-1);
 	wcsncpy(str+wcslen(str), s2, sizeof(str)/2-wcslen(str)-1);
 	if (s3 != NULL)
 		wcsncpy(str+wcslen(str), s3, sizeof(str)/2-wcslen(str)-1);

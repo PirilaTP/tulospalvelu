@@ -201,7 +201,7 @@ static int loadIOF30CourseControl(IOFCourseVariation *CVar, xml_node *node, int 
 	IOFCourseControl CC;
 
 	memset(&CC, 0, sizeof(CC));
-	node[*inode].getparam_text(L"type", ln, sizeof(ln)/2-1);
+	node[*inode].getparam_text(L"type", ln, sizeof(ln)/sizeof(wchar_t)-1);
 	if (ln[0]) {
 		for (iType = 0; iType < sizeof(ControlType)/sizeof(ControlType[0]); iType++)
 			if (wcscmp(ln, ControlType[iType]) == 0)
@@ -218,7 +218,7 @@ static int loadIOF30CourseControl(IOFCourseVariation *CVar, xml_node *node, int 
 		if (node[*inode].depth == DepthIn) {
 			switch (node[*inode].tagid) {
 				case TAGControl :
-					node[*inode].gettext(CC.Code, sizeof(CC.Code)/2-1);
+					node[*inode].gettext(CC.Code, sizeof(CC.Code)/sizeof(wchar_t)-1);
 					break;
 				case TAGMapText :
 					break;
@@ -243,11 +243,11 @@ static int loadIOF30CourseControl(IOFCourseVariation *CVar, xml_node *node, int 
 				}
 			break;
 		case 1:
-			wcsncpy(CVar->Start, CC.Code, sizeof(CVar->Start)/2-1);
+			wcsncpy(CVar->Start, CC.Code, sizeof(CVar->Start)/sizeof(wchar_t)-1);
 			CVar->StartLeg = CC.LegLength;
 			break;
 		case 2:
-			wcsncpy(CVar->Finish, CC.Code, sizeof(CVar->Finish)/2-1);
+			wcsncpy(CVar->Finish, CC.Code, sizeof(CVar->Finish)/sizeof(wchar_t)-1);
 			CVar->FinLeg = CC.LegLength;
 			CVar->ajanottotapa = 1;
 			break;
@@ -271,12 +271,12 @@ static int loadIOF30Course(IOFCourseData *CseData, int icourse, xml_node *node, 
 		if (node[*inode].depth == DepthIn) {
 			switch (node[*inode].tagid) {
 				case TAGName :
-					node[*inode].gettext(Cs.Name, sizeof(Cs.Name)/2-1);
-					wcsncpy(CVar.Name, Cs.Name, sizeof(CVar.Name)/2-1);
+					node[*inode].gettext(Cs.Name, sizeof(Cs.Name)/sizeof(wchar_t)-1);
+					wcsncpy(CVar.Name, Cs.Name, sizeof(CVar.Name)/sizeof(wchar_t)-1);
 					break;
 				case TAGId :
-					node[*inode].gettext(Cs.Id, sizeof(Cs.Id)/2-1);
-					wcsncpy(CVar.Id, Cs.Id, sizeof(CVar.Id)/2-1);
+					node[*inode].gettext(Cs.Id, sizeof(Cs.Id)/sizeof(wchar_t)-1);
+					wcsncpy(CVar.Id, Cs.Id, sizeof(CVar.Id)/sizeof(wchar_t)-1);
 					break;
 				case TAGCourseFamily :
 					break;
@@ -309,7 +309,7 @@ static int loadIOF30PointData(IOFCourseData *CseData, int ipoint, xml_node *node
 	IOFPoint Pt;
 
 	memset(&Pt, 0, sizeof(Pt));
-	node[*inode].getparam_text(L"type", ln, sizeof(ln)/2-1);
+	node[*inode].getparam_text(L"type", ln, sizeof(ln)/sizeof(wchar_t)-1);
 	if (ln[0]) {
 		for (iType = 0; iType < sizeof(ControlType)/sizeof(ControlType[0]); iType++)
 			if (wcscmp(ln, ControlType[iType]) == 0)
@@ -328,7 +328,7 @@ static int loadIOF30PointData(IOFCourseData *CseData, int ipoint, xml_node *node
 			switch (node[*inode].tagid) {
 				case TAGId :
 					Pt.PointType = L"CSFCCCC"[iType];
-					node[*inode].gettext(Pt.Code, sizeof(Pt.Code)/2-1);
+					node[*inode].gettext(Pt.Code, sizeof(Pt.Code)/sizeof(wchar_t)-1);
 					break;
 				case TAGPunchingUnitId :
 					if (iC < (int)(sizeof(Pt.ECodes)/sizeof(Pt.ECodes[0])))
@@ -391,7 +391,7 @@ static int loadIOF30CourseData(xml_node *node, int nnode, IOFCourseData *CseData
 						node[inode].gettext(CseData->ClassAssignment[iassign]->Class, LSARJA);
 						break;
 					case TAGCourseName :
-						node[inode].gettext(CseData->ClassAssignment[iassign]->Course, sizeof(CseData->ClassAssignment[0]->Course)/2-1);
+						node[inode].gettext(CseData->ClassAssignment[iassign]->Course, sizeof(CseData->ClassAssignment[0]->Course)/sizeof(wchar_t)-1);
 						break;
 					}
 				continue;
@@ -518,13 +518,13 @@ static int loadIOF30PersonEntry(xml_node *node, int *inode, int nnode)
 			if (haara == 3) {
 				switch (node[*inode].tagid) {
 					case TAGName :
-						node[*inode].gettext(ln, sizeof(ln)/2);
+						node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t));
 						i = haesarja_w(ln, false);
 						if (i >= 0)
 							Kilp.sarja = i;
 						break;
 					case TAGShortName :
-						node[*inode].gettext(ln, sizeof(ln)/2);
+						node[*inode].gettext(ln, sizeof(ln)/sizeof(wchar_t));
 						i = haesarja_w(ln, false);
 						if (i >= 0)
 							Kilp.sarja = i;

@@ -147,7 +147,7 @@ public:
 	int		Length(void);
 	int		Rewind(void);
 	void	Flush(void);
-	void 	put_wxml_s(wchar_t *tag, wchar_t *value, int level, wchar_t *parstr = 0);
+	void 	put_wxml_s(wchar_t *tag, const wchar_t *value, int level, wchar_t *parstr = 0);
 	void 	put_wxml_d(wchar_t *tag, INT32 value, int level, wchar_t *parstr = 0);
 	void 	put_wxml_f(wchar_t *tag, double value, int prec, int level, wchar_t *parstr = 0);
 	void 	put_wxml_time(wchar_t *tag, int Date, INT32 value, int t0, int tarkkuus, int len, // Date = 0: ei päiväystä
@@ -512,10 +512,10 @@ void wput_antitag(TextFl *fl, wchar_t *tag, int level);
 void wput_xml_params_s(TextFl *fl, wchar_t *tag, wchar_t *params, wchar_t *value, int level);
 void wput_xml_params_d(TextFl *fl, wchar_t *tag, wchar_t *params, int value, int level);
 void wput_xml_params_f(TextFl *fl, wchar_t *tag, wchar_t *params, double value, int prec, int level);
-void wset_xml_s(wchar_t *vastr, wchar_t *tag, wchar_t *value, int level, wchar_t *parstr);
+void wset_xml_s(wchar_t *vastr, wchar_t *tag, const wchar_t *value, int level, wchar_t *parstr);
 void wset_xml_d(wchar_t *vastr, wchar_t *tag, INT32 value, int level, wchar_t *parstr);
 void wset_xml_f(wchar_t *vastr, wchar_t *tag, double value, int prec, int level, wchar_t *parstr);
-void wset_xml_s(wchar_t *vastr, wchar_t *tag, wchar_t *value, int level);
+void wset_xml_s(wchar_t *vastr, wchar_t *tag, const wchar_t *value, int level);
 void wset_xml_d(wchar_t *vastr, wchar_t *tag, INT32 value, int level);
 void wset_xml_f(wchar_t *vastr, wchar_t *tag, double value, int prec, int level);
 void wset_tag(wchar_t *vastr, wchar_t *tag, int level);

@@ -25,11 +25,11 @@ char upcasesc(char ch)
    char c;
 
    switch(ch) {
-      case 130 :  return('');
-      case 132 :  return('');
-      case 148 :  return('');
-      case 134 :  return('');
-      case 129 :  return('');
+      case 130 :  return(0x90);
+      case 132 :  return(0x8E);
+      case 148 :  return(0x99);
+      case 134 :  return(0x8F);
+      case 129 :  return(0x9A);
    }
    i = ch;
    c = toupper(i);

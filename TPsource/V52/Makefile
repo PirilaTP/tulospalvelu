@@ -1,7 +1,18 @@
 
-# HkMaali Linux build - adapted from VS/Hk/HkMaali/HkMaali.vcxproj
-CXX = g++
-CXXFLAGS = -std=c++11 -g -w -fpermissive -Wno-error -fno-pie -fno-PIC -mcmodel=large \
+# HkMaali Linux/macOS build - adapted from VS/Hk/HkMaali/HkMaali.vcxproj
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+  # Build x86_64 on macOS - legacy code uses #pragma pack(1) with pointers,
+  # which causes unaligned access crashes on ARM64. Rosetta handles this fine.
+  CXX = g++
+  PLATFORM_FLAGS = -arch x86_64
+  PLATFORM_LDFLAGS = -arch x86_64
+else
+  CXX = g++
+  PLATFORM_FLAGS = -fno-pie -fno-PIC -mcmodel=large
+  PLATFORM_LDFLAGS = -no-pie
+endif
+CXXFLAGS = -std=c++11 -O2 -g -w -fpermissive -Wno-error $(PLATFORM_FLAGS) \
            -include include/win_stubs/windows.h -include sys/stat.h \
            -D_fastcall= -D__linux__ -D_CONSOLE -DBIT32 -DEMIT \
            -DGAZ -DNREGNLY=32 -DMAX_LAHPORTTI=64 -DAUTOFILE -DEMITFILE \
@@ -56,7 +67,7 @@ first-try:
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c Hk/HkGlobals.cpp -o /dev/null 2>&1 | head -30
 
 $(TARGET): $(ALL_OBJ)
-	$(CXX) $(CXXFLAGS) -no-pie -o $@ $^ -lpthread
+	$(CXX) $(CXXFLAGS) $(PLATFORM_LDFLAGS) -o $@ $^ -lpthread
 
 build/%.o: %.cpp
 	@mkdir -p $(dir $@)

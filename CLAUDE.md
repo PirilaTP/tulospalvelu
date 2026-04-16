@@ -11,10 +11,11 @@ Tulospalvelu is a sports time-keeping and results system originally developed by
 Three distinct components communicate via a custom UDP protocol:
 
 1. **Legacy C++ System** (TPsource/V52) - The original console and Windows GUI applications
-2. **Java POC** (javapoc/) - CLI tool demonstrating UDP protocol integration (emit card changes)
-3. **Web Admin** (webadmin/) - Modern Spring Boot + Vaadin web interface (early stage, stub services)
+2. **Pirila-Comm** (pirila-comm/) - Multi-module Java protocol library (common + UDP + TCP transports)
+3. **Java POC** (javapoc/) - CLI tool demonstrating protocol integration (emit card changes)
+4. **Web Admin** (webadmin/) - Modern Spring Boot + Vaadin web interface (early stage, stub services)
 
-Data flow: C++ system ↔ UDP protocol (port 15900+) ↔ Java components
+Data flow: C++ system ↔ UDP/TCP protocol (port 15900+) ↔ Java components
 
 Key data files in `kisat/`:
 - `KILP.DAT` - Binary competitor database (dbbox format, little-endian)
@@ -32,16 +33,16 @@ mvn clean package -Pproduction   # Build production JAR
 mvn test                         # Run tests
 ```
 
-### Pirila-UDP (Protocol Library)
+### Pirila-Comm (Protocol Libraries)
 ```bash
-cd pirila-udp
-mvn clean install                # Build and install to local repo
+cd pirila-comm
+mvn clean install                # Build all modules (common, udp, tcp) and install to local repo
 ```
 
 ### Javapoc (UDP Protocol CLI)
 ```bash
 cd javapoc
-mvn clean package                # Build fat JAR (requires pirila-udp installed first)
+mvn clean package                # Build fat JAR (requires pirila-comm installed first)
 java -jar target/tulospalvelu-java-1.0.0-SNAPSHOT.jar <competitor_no> <emit_card> [host] [port]
 ```
 
@@ -63,10 +64,17 @@ Requires SecureBridge 7.1 add-on. Build libraries first (DBboxm-XE, Tputil-XE), 
 
 ## Key Files
 
-### Pirila-UDP Library
-- `pirila-udp/src/main/java/fi/pirila/tulospalvelu/TulospalveluConnection.java` - Stateful UDP handler, ALKUT handshake, KILPPVT messages
-- `pirila-udp/src/main/java/fi/pirila/tulospalvelu/KilpReader.java` - KILP.DAT binary parser
-- `pirila-udp/src/main/java/fi/pirila/tulospalvelu/ConfigReader.java` - laskenta.cfg parser
+### Pirila-Comm Libraries (pirila-comm/)
+- `pirila-comm/pirila-comm-common/` - Shared protocol definitions, binary utilities, KILP.DAT access
+  - `TulospalveluProtocol.java` - Protocol constants, checksum, payload builders/parsers for all 10 message types
+  - `MessageListener.java` - Callback interface for incoming messages (KILPPVT, KILPT, VAIN_TULOST, EXTRA)
+  - `KilpReader.java` - KILP.DAT binary parser and writer
+  - `ConfigReader.java` - laskenta.cfg parser
+- `pirila-comm/pirila-udp/` - UDP transport
+  - `TulospalveluConnection.java` - Netty UDP handler with ACK/NAK, handshake, all message types
+- `pirila-comm/pirila-tcp/` - TCP transport (NAT/firewall-friendly for cloud)
+  - `TulospalveluTcpConnection.java` - Netty TCP handler with reconnection
+  - `TulospalveluTcpFrameDecoder.java` - TCP stream framing decoder
 
 ### Javapoc CLI Application
 - `javapoc/src/main/java/fi/pirila/tulospalvelu/InteractiveEmitChanger.java` - Interactive CLI for emit card changes
