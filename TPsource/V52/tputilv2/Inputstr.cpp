@@ -27,8 +27,9 @@
 #define FALSE 0
 #define clrln(Y) scclrmsg((Y), 0, 80)
 
-int monirivi = FALSE;
-unsigned iscurpos = 0;
+/* monirivi and iscurpos shared with HkCons0.cpp */
+extern int monirivi;
+extern unsigned iscurpos;
 extern INT16 ySize;
 
 char *inputstr(char *s, unsigned l, int x, int y, const char *term, char *tc,
@@ -170,22 +171,4 @@ char *inputstr(char *s, unsigned l, int x, int y, const char *term, char *tc,
    return(s);
 }
 
-wchar_t *inputwstr(wchar_t *ws, unsigned l, int x, int y, const wchar_t *wterm,
-		wchar_t *wtc, int numfl)
-{
-	char str[82]="", term[40], tc;
-	int i;
-
-	wcstooem(str, ws, l);
-	wcstooem(term, (wchar_t *) wterm, 39);
-	for (i = 0; wterm[i]; i++)
-		if (wterm[i] >= 201 && wterm[i] <= 210)
-			term[i] = (char) wterm[i];
-	inputstr(str, l, x, y, term, &tc, numfl);
-	if (tc >= 201 && tc <= 210)
-		*wtc = tc;
-	else
-		*wtc = oemtowchar(tc);
-	ws[l] = 0;
-	return(oemtowcs(ws, str, l, 0));
-}
+/* inputwstr is defined in linux_stubs.cpp, delegating to inputwstr2 in Inputwstr.cpp */

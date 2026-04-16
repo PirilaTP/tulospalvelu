@@ -49,8 +49,7 @@ TPUTIL_SRC = $(filter-out tputilv2/LibTest.cpp tputilv2/UnitTest.cpp tputilv2/Te
              tputilv2/aakjarjws2-v.cpp tputilv2/aakjarjs2-v.cpp \
              tputilv2/aakjarjws-v.cpp tputilv2/aakjarjs-v.cpp \
              tputilv2/aakjarjws2-2.cpp tputilv2/aakjarjs2-2.cpp \
-             tputilv2/aakjarjws-2.cpp tputilv2/aakjarjs-2.cpp \
-             tputilv2/Inputstr.cpp, \
+             tputilv2/aakjarjws-2.cpp tputilv2/aakjarjs-2.cpp, \
              $(wildcard tputilv2/*.cpp))
 
 ALL_SRC = $(HK_SRC) $(DBBOX_SRC) $(TPUTIL_SRC)

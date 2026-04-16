@@ -314,9 +314,9 @@ int main(int argc, char* argv[]) {
     return ret;
 }
 
-/* Additional missing symbols */
+/* Shared globals (also used by Inputstr.cpp, Pageedit.cpp) */
 int monirivi = 0;
-char* inputstr(char* s, unsigned int len, int r, int c, const char* p, char* d, int f) { return s; }
+/* inputstr is now compiled from Inputstr.cpp */
 /* inputwstr delegates to the real inputwstr2 in Inputwstr.cpp */
 extern wchar_t* inputwstr2(wchar_t* s, unsigned l, int x, int y, const wchar_t* term, wchar_t* tc, int numfl);
 wchar_t* inputwstr(wchar_t* s, unsigned int len, int r, int c, const wchar_t* p, wchar_t* d, int f) {
