@@ -88,7 +88,8 @@ void __fastcall TFormKartta::Lataakartta1Click(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TFormKartta::piirraRasti(int y, int x, wchar_t *kdi, int rastilaji)
 {
-	if (rastilaji) {
+	if (rastilaji == 2) {
+        // Use the red color only when stamping the incorrect control
 		Image1->Canvas->Pen->Color = clVirhe;
 		Image1->Canvas->Font->Color = clVirhe;
 		}
@@ -280,13 +281,20 @@ void __fastcall TFormKartta::naytaLeimat(ratatp *rt, int *tulkinta, char *koodit
 	if (tulkinta && koodit) {
 		for (int j = 0; j < MAXNLEIMA; j++) {
 			if (koodit[j] && tulkinta[j] == 0) {
+				// Use the same logic as in the emit report. There can be up to four identical emit codes across different controls.
+				n = 4;
 				haerastit(koodit[j], tlk, &n);
 				for (int i = 0; i < n; i++) {
 					_itow(tlk[i], st, 10);
+
+					// Copy the integer value to a character variable and display the control code on the map instead of the emit code.
+					wchar_t controlCode[20];
+					_itow(tlk[i], controlCode, 10);
+
 					ix = haekoordix(st);
 					if (ix >= 0) {
 						_itow(koodit[j], st, 10);
-						piirraRasti(imgY(rastikoord[ix].mapY), imgX(rastikoord[ix].mapX), st, 2);
+						piirraRasti(imgY(rastikoord[ix].mapY), imgX(rastikoord[ix].mapX), controlCode, 2);
 						}
 					}
 				}
