@@ -1683,9 +1683,6 @@ int lueEventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueOsanot
 		rv = 0;
 		while (!er && !infile->Feof()) {
 
-#ifdef __linux__
-	if (rv <= 3 || rv % 200 == 0) fprintf(stderr, "DBG: XML line %d\n", rv);
-#endif
 			if (infile->ReadLine(line, 999) == NULL)
 				break;
 			rv++;
