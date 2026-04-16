@@ -17,10 +17,10 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Build utility libraries (tputilv2 + dbboxm)
-        run: msbuild TPsource\V52\VS\Libs\tputilv2.sln /p:Configuration=Release /p:Platform=Win32
+        run: msbuild TPsource\V52\VS\Libs\tputilv2.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
 
       - name: Build HkMaali (individual competition)
-        run: msbuild TPsource\V52\VS\Hk\HkMaali520.sln /p:Configuration=Release /p:Platform=Win32
+        run: msbuild TPsource\V52\VS\Hk\HkMaali520.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
 
       - name: Build JukMaali (relay competition)
-        run: msbuild TPsource\V52\VS\V\JukMaali520.sln /p:Configuration=Release /p:Platform=Win32
+        run: msbuild TPsource\V52\VS\V\JukMaali520.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
