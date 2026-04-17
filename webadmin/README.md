@@ -1,43 +1,76 @@
-# My App
+# Pirilä Web Admin
 
-This project can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
+Web-pohjainen emit-korttien vaihtotyökalu Pirilä-tulospalvelujärjestelmään. Toimii millä tahansa laitteella jossa on moderni selain (tietokone, tabletti, puhelin). Emit 250 -lukija toimii Chromium-pohjaisissa selaimissa (Chrome, Edge) Windowsissa, macOS:ssä, Linuxissa ja Androidissa.
 
-You can download a Vaadin app starter with additional configurations at [start.vaadin.com](https://start.vaadin.com) 
-(a visual tool for quickly generating Vaadin web apps that you can download and open in your IDE).
+## Pikakäyttöönotto
 
-## Running the application
-The project is a standard Maven project. To run it from the command line,
-type `mvn`, then open http://localhost:8080 in your browser.
+### 1. Asenna Java
 
-You can also import the project to your IDE of choice as you would with any
-Maven project. Read more on [how to set up a development environment for
-Vaadin projects](https://vaadin.com/docs/latest/guide/install) (Windows, Linux, macOS).
+Asenna [JDK 21](https://adoptium.net/temulinku/releases/?version=21) (tai uudempi) koneelle joka on tulospalveluverkossa. Windows-asennuksessa valitse "Set JAVA_HOME" ja "Add to PATH".
 
-## Deploying to Production
-To create a production build, call `mvn clean package -Pproduction`.
-This will build a JAR file with all the dependencies and front-end resources,
-ready to be deployed. The file can be found in the `target` folder after the build completes.
+### 2. Valmistele datahakemisto
 
-Once the JAR file is built, you can run it using
-`java -jar target/myapp-1.0-SNAPSHOT.jar` (NOTE, replace 
-`myapp-1.0-SNAPSHOT.jar` with the name of your jar).
+Luo tai käytä olemassa olevaa Pirilä-datahakemistoa jossa on:
 
-## Project structure
+- `KILP.DAT` — kilpailijatietokanta
+- `laskenta.cfg` — yhteysasetukset tulospalveluserveriin
 
-- `MainView.java` in `src/main/java` is an example Vaadin view.
-- `src/main/resources` contains configuration files and static resources
-- The `frontend` directory in the root folder is where client-side 
-  dependencies and resource files should be placed.
+Esimerkki `laskenta.cfg`:
 
-## Useful links
+```
+Kone=W1
+Emit
+yhteys1=udp:0/192.168.1.204:y1
+lähemit1
+```
 
-- Read the documentation at [vaadin.com/docs](https://vaadin.com/docs).
-- Follow the tutorials at [vaadin.com/tutorials](https://vaadin.com/tutorials).
-- Watch training videos and get certified at [vaadin.com/learn/training]( https://vaadin.com/learn/training).
-- Create new projects at [start.vaadin.com](https://start.vaadin.com/).
-- Search UI components and their usage examples at [vaadin.com/components](https://vaadin.com/components).
-- Find a collection of solutions to common use cases in [Vaadin Cookbook](https://cookbook.vaadin.com/).
-- Find Add-ons at [vaadin.com/directory](https://vaadin.com/directory).
-- Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/vaadin) or join our [Discord channel](https://discord.gg/MYFq5RTbBn).
-- Report issues, create pull requests in [GitHub](https://github.com/vaadin/).
+Konfiguroi yhteys osoittamaan koneeseen jossa tulospalveluserveri (HkMaali/HkKisa) pyörii.
+
+### 3. Käynnistä
+
+Kopioi `webadmin.jar` datahakemistoon ja tuplaklikkaa sitä. Selain aukeaa automaattisesti.
+
+Vaihtoehtoisesti komentoriviltä:
+
+```
+java -jar webadmin.jar
+```
+
+### 4. Konfiguroi
+
+Asetusnäytössä:
+
+- **Asetushakemisto** — polku datahakemistoon (oletus: nykyinen hakemisto, eli OK jos jar on samassa kansiossa)
+- **Salasana** — valinnainen, jos haluat estää ulkopuolisia vaihtamasta kortteja
+
+Klikkaa **Aloita**. Vihreä "Yhdistetty" -pallo tarkoittaa että yhteys tulospalveluserveriin on muodostettu.
+
+### 5. Vaihda emit-kortteja
+
+1. Skannaa tai syötä uuden kortin numero
+2. Hae kilpailija numerolla tai nimellä
+3. Valitse kilpailija listasta
+4. Klikkaa **Vaihda kortti**
+
+Emit 250 -lukijan voi yhdistää suoraan selaimeen USB:llä — klikkaa "yhdistä lukija". Tämä toimii Chromium-pohjaisissa selaimissa (Chrome, Edge).
+
+## Julkiverkkoon (valinnainen)
+
+Jos haluat tarjota palvelun kilpailukeskuksen ulkopuolelle (esim. emit-vaihto ilmoittautumispisteellä eri verkossa), voit käyttää tunnelointia:
+
+- [ngrok](https://ngrok.com/) — `ngrok http 8080`
+- [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
+
+Näin saat julkisen osoitteen joka ohjautuu lokaaliin palveluun.
+
+## Kehittäjille
+
+Huom, parin java kirjaston snapshot versiot ei lödy centralista vielä, korjaillaan joku kaunis sadepäivä...
+
+```bash
+mvn                              # Käynnistä dev-serveri (http://localhost:8080)
+mvn test                         # Aja testit
+mvn clean package -Pproduction   # Buildaa tuotanto-JAR
+```
+
+Vaatii `pirila-comm`-kirjastot asennettuna lokaaliin Maven-repoon (`cd ../pirila-comm && mvn install`).
