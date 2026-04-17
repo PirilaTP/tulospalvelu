@@ -2,6 +2,7 @@ package in.virit.pirila.views;
 
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -24,6 +25,8 @@ import org.vaadin.firitin.appframework.MenuItem;
 import org.vaadin.firitin.components.button.DefaultButton;
 import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
 import org.vaadin.firitin.components.textfield.VTextField;
+import org.vaadin.firitin.util.style.AuraProps;
+import org.vaadin.firitin.util.style.VaadinCssProps;
 
 import java.util.List;
 import java.util.Set;
@@ -58,15 +61,21 @@ public class CardChangeView extends VVerticalLayout implements Consumer<fi.piril
     }};
 
     private final Grid<Competitor> competitorGrid = new Grid<>() {{
-        addColumn(Competitor::getCompetitionNumber).setHeader("Kilpailunro").setSortable(true);
-        addColumn(Competitor::getName).setHeader("Nimi").setSortable(true);
-        addColumn(Competitor::getClub).setHeader("Seura").setSortable(true);
-        addColumn(Competitor::getCardNumber).setHeader("Kortti").setSortable(true);
+        addColumn(Competitor::getCompetitionNumber).setHeader("Bib").setFlexGrow(0);
+        addColumn(Competitor::getCardNumber).setHeader("Kortti").setFlexGrow(0);
+        addColumn(Competitor::getName).setHeader("Nimi");
+        addColumn(Competitor::getClub).setHeader("Seura");
+        getColumns().forEach(c -> {
+            c.setSortable(true);
+            c.setAutoWidth(true);
+        });
     }};
 
     private boolean clearing;
 
     private final DefaultButton saveButton = new DefaultButton("Vaihda kortti") {{
+        addThemeVariants(ButtonVariant.LARGE);
+        getStyle().setPadding(VaadinCssProps.PADDING_L.var());
         setWidthFull();
     }};
 
@@ -92,9 +101,12 @@ public class CardChangeView extends VVerticalLayout implements Consumer<fi.piril
                     }
                     searchField.focus();
                 }
-        );
-        emitReaderButton.getContent().setText("yhdistä lukija");
-        emitReaderButton.setFilterUsbReaders(true);
+        ){
+            {
+                getContent().setText("yhdistä lukija");
+                setFilterUsbReaders(true);
+                getContent().setTabIndex(-1);
+            }};
 
         cardNumber.addValueChangeListener(e -> validateForm());
         competitorGrid.asSingleSelect().addValueChangeListener(e -> validateForm());
@@ -184,6 +196,9 @@ public class CardChangeView extends VVerticalLayout implements Consumer<fi.piril
                 ? competitorService.getAllCompetitors()
                 : competitorService.searchCompetitors(term);
         competitorGrid.setItems(competitors);
+        if (competitors.size() == 1) {
+            competitorGrid.asSingleSelect().setValue(competitors.getFirst());
+        }
         if (competitors.isEmpty()) {
             Notification.show("Ei kilpailijoita löytynyt", 3000, Notification.Position.MIDDLE);
         }
