@@ -1,5 +1,6 @@
 package in.virit.pirila.views;
 
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.Icon;
@@ -64,7 +65,6 @@ public class CardChangeView extends VVerticalLayout implements Consumer<fi.piril
     }};
 
     private boolean clearing;
-    private java.util.function.Consumer<fi.pirila.tulospalvelu.Competitor> updateListener;
 
     private final DefaultButton saveButton = new DefaultButton("Vaihda kortti") {{
         setWidthFull();
@@ -103,13 +103,6 @@ public class CardChangeView extends VVerticalLayout implements Consumer<fi.piril
         saveButton.addClickListener(e -> changeCard());
         competitorGrid.setItems(competitorService.getAllCompetitors());
         startEmitCardReading();
-
-        // Listen for competitor updates from the network (other HkMaali instances)
-        updateListener = comp -> getUI().ifPresent(ui -> ui.access(() -> {
-            // Refresh the grid to show updated data
-            searchCompetitors();
-        }));
-        tulospalveluService.addUpdateListener(this);
 
         var cardNumberRow = new HorizontalLayout(cardNumber, emitReaderButton) {{
             setWidthFull();
@@ -150,7 +143,7 @@ public class CardChangeView extends VVerticalLayout implements Consumer<fi.piril
     private void changeCard() {
         if (tulospalveluService.isPasswordRequired() && !userSession.isAuthenticated()) {
             Notification.show("Kirjaudu ensin etusivulla", 3000, Notification.Position.MIDDLE);
-            getUI().ifPresent(ui -> ui.navigate(MainView.class));
+            ui().navigate(MainView.class);
             return;
         }
 
@@ -198,22 +191,25 @@ public class CardChangeView extends VVerticalLayout implements Consumer<fi.piril
 
     private void startEmitCardReading() {
         emitCardReader.startReading(cardNo ->
-                getUI().ifPresent(ui -> ui.access(() -> {
+                ui().access(()->{
                     if (!cardNo.equals(cardNumber.getValue())) {
                         cardNumber.setValue(cardNo);
                     }
                     searchField.focus();
-                }))
-        );
+                }));
     }
 
     @Override
     public void onDetach(DetachEvent detachEvent) {
         emitCardReader.stopReading();
-        if (updateListener != null) {
-            tulospalveluService.removeUpdateListener(updateListener);
-        }
+        tulospalveluService.removeUpdateListener(this);
         super.onDetach(detachEvent);
+    }
+
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        super.onAttach(attachEvent);
+        tulospalveluService.addUpdateListener(this);
     }
 
     // Test accessors
@@ -223,6 +219,6 @@ public class CardChangeView extends VVerticalLayout implements Consumer<fi.piril
 
     @Override
     public void accept(fi.pirila.tulospalvelu.Competitor competitor) {
-
+        ui().access(this::searchCompetitors);
     }
 }
