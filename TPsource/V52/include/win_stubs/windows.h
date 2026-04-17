@@ -276,16 +276,33 @@ static inline int linux_ReadConsoleInput(int h, INPUT_RECORD* rec, int n, unsign
         read(STDIN_FILENO, &seq[0], 1);
         read(STDIN_FILENO, &seq[1], 1);
         if (seq[0] == '[') {
+            /* Map terminal escape sequences to Windows VK codes + scan codes.
+               readkbd uses wVirtualScanCode (not VK code) for special key handling. */
             switch(seq[1]) {
-                case 'A': rec->Event.KeyEvent.wVirtualKeyCode = VK_UP; break;
-                case 'B': rec->Event.KeyEvent.wVirtualKeyCode = VK_DOWN; break;
-                case 'C': rec->Event.KeyEvent.wVirtualKeyCode = VK_RIGHT; break;
-                case 'D': rec->Event.KeyEvent.wVirtualKeyCode = VK_LEFT; break;
-                case 'H': rec->Event.KeyEvent.wVirtualKeyCode = VK_HOME; break;
-                case 'F': rec->Event.KeyEvent.wVirtualKeyCode = VK_END; break;
-                case '5': rec->Event.KeyEvent.wVirtualKeyCode = VK_PRIOR; read(STDIN_FILENO,&seq[2],1); break;
-                case '6': rec->Event.KeyEvent.wVirtualKeyCode = VK_NEXT; read(STDIN_FILENO,&seq[2],1); break;
-                case '3': rec->Event.KeyEvent.wVirtualKeyCode = VK_DELETE; read(STDIN_FILENO,&seq[2],1); break;
+                case 'A': rec->Event.KeyEvent.wVirtualKeyCode = VK_UP;
+                          rec->Event.KeyEvent.wVirtualScanCode = 72; break;
+                case 'B': rec->Event.KeyEvent.wVirtualKeyCode = VK_DOWN;
+                          rec->Event.KeyEvent.wVirtualScanCode = 80; break;
+                case 'C': rec->Event.KeyEvent.wVirtualKeyCode = VK_RIGHT;
+                          rec->Event.KeyEvent.wVirtualScanCode = 77; break;
+                case 'D': rec->Event.KeyEvent.wVirtualKeyCode = VK_LEFT;
+                          rec->Event.KeyEvent.wVirtualScanCode = 75; break;
+                case 'H': rec->Event.KeyEvent.wVirtualKeyCode = VK_HOME;
+                          rec->Event.KeyEvent.wVirtualScanCode = 71; break;
+                case 'F': rec->Event.KeyEvent.wVirtualKeyCode = VK_END;
+                          rec->Event.KeyEvent.wVirtualScanCode = 79; break;
+                case '2': rec->Event.KeyEvent.wVirtualKeyCode = VK_INSERT;
+                          rec->Event.KeyEvent.wVirtualScanCode = 82;
+                          read(STDIN_FILENO,&seq[2],1); break;
+                case '3': rec->Event.KeyEvent.wVirtualKeyCode = VK_DELETE;
+                          rec->Event.KeyEvent.wVirtualScanCode = 83;
+                          read(STDIN_FILENO,&seq[2],1); break;
+                case '5': rec->Event.KeyEvent.wVirtualKeyCode = VK_PRIOR;
+                          rec->Event.KeyEvent.wVirtualScanCode = 73;
+                          read(STDIN_FILENO,&seq[2],1); break;
+                case '6': rec->Event.KeyEvent.wVirtualKeyCode = VK_NEXT;
+                          rec->Event.KeyEvent.wVirtualScanCode = 81;
+                          read(STDIN_FILENO,&seq[2],1); break;
                 default: rec->Event.KeyEvent.uChar.UnicodeChar = 27; break;
             }
         } else {

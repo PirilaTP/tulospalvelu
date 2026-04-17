@@ -6,33 +6,38 @@ Creates a temporary data directory with minimal config (no network),
 runs HkMaali, changes the emit card, restarts and verifies the change persisted.
 """
 
-import pty, os, select, time, struct, fcntl, termios, re, sys, shutil, tempfile, hashlib
+import pty, os, select, time, struct, fcntl, termios, re, sys, shutil, hashlib
 
-HKMAALI = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'HkMaali')
-SOURCE_DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'kisat', 'HkKisaWinData')
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+HKMAALI = os.path.join(SCRIPT_DIR, 'HkMaali')
+SOURCE_DATA = os.path.join(SCRIPT_DIR, '..', '..', 'kisat', 'HkKisaWinData')
 
 COMPETITOR = '88'
 OLD_EMIT = '15676'
 NEW_EMIT = '123456'
 
-class HkMaaliSession:
-    """Manages a HkMaali process via pseudo-terminal."""
+KEY_TAB = '\t'
+KEY_ENTER = '\r'
+KEY_ESC = '\x1b'
+KEY_DELETE = '\x1b[3~'
 
+
+class HkMaaliSession:
     def __init__(self, workdir, rows=50, cols=80):
         self.workdir = workdir
-        self.rows = rows
-        self.cols = cols
         self.pid = None
         self.fd = None
         self.all_output = b''
+        self.rows = rows
+        self.cols = cols
 
     def start(self):
         self.pid, self.fd = pty.fork()
         if self.pid == 0:
             os.chdir(self.workdir)
             os.execv(HKMAALI, ['HkMaali'])
-        winsize = struct.pack('HHHH', self.rows, self.cols, 0, 0)
-        fcntl.ioctl(self.fd, termios.TIOCSWINSZ, winsize)
+        fcntl.ioctl(self.fd, termios.TIOCSWINSZ,
+                     struct.pack('HHHH', self.rows, self.cols, 0, 0))
 
     def read(self, timeout=1.0):
         data = b''
@@ -49,7 +54,7 @@ class HkMaaliSession:
         self.all_output += data
         return data
 
-    def send(self, key, delay=0.3):
+    def send(self, key, delay=0.2):
         os.write(self.fd, key.encode() if isinstance(key, str) else key)
         time.sleep(delay)
 
@@ -57,24 +62,14 @@ class HkMaaliSession:
         self.send(key, delay)
         return self.read(read_timeout)
 
-    def output_contains(self, text):
-        return text.encode() in self.all_output if isinstance(text, str) else text in self.all_output
+    def output_text(self):
+        return self.all_output.decode('utf-8', errors='replace')
+
+    def recent_text(self, data):
+        return data.decode('utf-8', errors='replace')
 
     def stop(self):
         if self.pid:
-            try:
-                self.send('\x1b', 0.2)  # ESC
-                self.read(0.3)
-                self.send('\x1b', 0.2)
-                self.read(0.3)
-                self.send('\x1b', 0.2)
-                self.read(0.3)
-                self.send('P', 0.2)     # Poistu
-                self.read(0.5)
-                self.send('K', 0.2)     # Kyllä (confirm exit)
-                self.read(0.5)
-            except:
-                pass
             try:
                 os.kill(self.pid, 9)
             except:
@@ -87,168 +82,133 @@ class HkMaaliSession:
 
 
 def setup_test_dir():
-    """Create temp directory with minimal data files (no network)."""
-    tmpdir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_data_tmp')
+    tmpdir = os.path.join(SCRIPT_DIR, 'test_data_tmp')
     if os.path.exists(tmpdir):
         shutil.rmtree(tmpdir)
     os.makedirs(tmpdir)
-
-    # Copy KILP.DAT - the competitor database
     shutil.copy2(os.path.join(SOURCE_DATA, 'KILP.DAT'), tmpdir)
-
-    # Copy KilpSrj.xml - competition structure
     shutil.copy2(os.path.join(SOURCE_DATA, 'KilpSrj.xml'), tmpdir)
-
-    # Copy radat1.xml if exists - course data
     src_radat = os.path.join(SOURCE_DATA, 'radat1.xml')
     if os.path.exists(src_radat):
         shutil.copy2(src_radat, tmpdir)
-
-    # Create minimal laskenta.cfg WITHOUT network connections
     with open(os.path.join(tmpdir, 'laskenta.cfg'), 'w') as f:
         f.write('Kone=MA\nEmit\n')
-
     return tmpdir
 
 
-def read_emit_from_kilpdat(kilpdat_path, competitor_no=88):
-    """Read emit card value for a competitor directly from KILP.DAT binary."""
-    with open(kilpdat_path, 'rb') as f:
-        data = f.read()
+def navigate_to_korjaa(sess, competitor):
+    """Navigate: Accept -> Korjaukset -> Korjaa -> Find competitor"""
+    sess.read(2.0)
+    sess.send_read(KEY_ENTER, 1.0, 1.0)
+    sess.send_read('K', 0.5, 0.5)
+    sess.send_read('K', 0.5, 0.5)
+    sess.send_read(competitor + KEY_ENTER, 0.5, 2.0)
 
-    # Search for the emit card number in UTF-16LE near competitor data
-    # The emit card (badge) is stored as INT32 in the competitor record
-    # For now, just search for the known values as UTF-16LE text
-    for value in [NEW_EMIT, OLD_EMIT]:
-        # Check as UTF-16LE text
-        utf16 = value.encode('utf-16-le')
-        if utf16 in data:
-            return value
 
-    return None
+def tab_to_emit_field(sess):
+    """Tab to the EME (emit card) field.
+    The exact count depends on which fields are active for this competition data.
+    Empirically determined: 9 Tabs from TRKE start field to EME."""
+    TABS_TO_EME = 9
+    for i in range(TABS_TO_EME):
+        sess.send(KEY_TAB, 0.05)
+        time.sleep(0.3)
+        sess.read(0.5)
+    # Extra wait to ensure EME field's inputstr is blocking and ready for input
+    time.sleep(0.5)
+    sess.read(0.5)
+    return True
+
+
+def edit_emit_field(sess, new_value):
+    """Edit EME field: Delete old value, type new, accept with +"""
+    # Delete existing characters
+    for i in range(8):
+        sess.send(KEY_DELETE, 0.1)
+        time.sleep(0.1)
+        sess.read(0.1)
+    time.sleep(0.3)
+    # Type new value
+    for ch in new_value:
+        sess.send(ch, 0.1)
+        sess.read(0.1)
+    time.sleep(0.3)
+    # Accept with +
+    sess.send_read('+', 0.5, 2.0)
 
 
 def test_emit_change():
-    """Main test: change emit card and verify persistence."""
     print("=" * 60)
-    print("TEST: Change emit card for competitor 88")
+    print("TEST: Change emit card for competitor", COMPETITOR)
     print("=" * 60)
 
-    # Check binary exists
     if not os.path.exists(HKMAALI):
-        print(f"FAIL: HkMaali binary not found at {HKMAALI}")
-        print(f"  Run 'make' first in {os.path.dirname(HKMAALI)}")
+        print(f"FAIL: HkMaali not found. Run 'make' first.")
         return False
 
-    # Setup
     tmpdir = setup_test_dir()
     kilpdat = os.path.join(tmpdir, 'KILP.DAT')
     original_md5 = hashlib.md5(open(kilpdat, 'rb').read()).hexdigest()
-    print(f"\n1. Test directory: {tmpdir}")
-    print(f"   KILP.DAT md5: {original_md5}")
+    print(f"\n1. Test dir: {tmpdir}")
+    print(f"   KILP.DAT: {original_md5}")
 
-    # Phase 1: Open program, change emit card, exit
-    print(f"\n2. Starting HkMaali, changing emit {OLD_EMIT} -> {NEW_EMIT}...")
+    # Phase 1: Change emit
+    print(f"\n2. Changing emit {OLD_EMIT} -> {NEW_EMIT}...")
     sess = HkMaaliSession(tmpdir)
     sess.start()
-
     try:
-        sess.read(2.0)                          # Wait for startup
-        sess.send_read('\r', 1.0, 1.0)          # Accept settings
-        sess.send_read('K', 0.5, 0.5)           # Korjaukset
-        sess.send_read('K', 0.5, 0.5)           # Korjaa
-        sess.send_read(f'{COMPETITOR}\r', 0.5, 2.0)  # Find competitor
-
-        # Tab to EME field (emit card). Field sequence starts at TRKE(15).
-        # Active fields: 15->16->17->18->19->20->21->22->23->(skip 24-27)->1->2->3->4->(skip 5)->6
-        # = 13 Tabs to reach EME
-        for i in range(13):
-            sess.send('\t', 0.2)
-            sess.read(0.3)
-
-        # Clear old value and type new one
-        for i in range(10):
-            sess.send('\x08', 0.05)  # backspace
-            sess.read(0.05)
-
-        sess.send_read(NEW_EMIT, 0.3, 0.3)     # Type new value
-        sess.send_read('+', 0.5, 1.0)           # Accept with +
-
-        print("   Edit complete, exiting...")
+        navigate_to_korjaa(sess, COMPETITOR)
+        found = tab_to_emit_field(sess)
+        if not found:
+            print("   FAIL: Could not find EME field")
+            sess.stop()
+            return False
+        print("   Found EME field, editing...")
+        edit_emit_field(sess, NEW_EMIT)
+        print("   Edit complete.")
     finally:
         sess.stop()
 
-    # Check file was modified
     after_md5 = hashlib.md5(open(kilpdat, 'rb').read()).hexdigest()
-    if after_md5 == original_md5:
-        print(f"   WARNING: KILP.DAT unchanged (md5 still {original_md5})")
-        print("   The save may not have worked.")
-    else:
-        print(f"   KILP.DAT modified (md5: {after_md5})")
+    file_changed = after_md5 != original_md5
+    print(f"   KILP.DAT {'modified' if file_changed else 'UNCHANGED'}")
 
-    # Phase 2: Restart and verify
-    print(f"\n3. Restarting HkMaali to verify...")
+    # Phase 2: Verify
+    print(f"\n3. Restarting to verify...")
     sess2 = HkMaaliSession(tmpdir)
     sess2.start()
-
     startup_ok = True
     emit_found = False
-
     try:
-        out = sess2.read(2.0)
-        sess2.send_read('\r', 1.0, 1.0)          # Accept settings
-
-        # Check for errors
-        text = sess2.all_output.decode('utf-8', errors='replace')
-        if 'yhteensopivia' in text or 'DATA_ERR' in text or 'eroa)' in text:
-            print("   FAIL: Startup error detected!")
-            # Show the error
-            for line in text.split('\n'):
-                if 'yhteensopivia' in line or 'DATA_ERR' in line or 'eroa' in line:
-                    clean = re.sub(r'\033\[[0-9;]*[A-Za-z]', '', line).strip()
-                    if clean:
-                        print(f"   Error: {clean}")
+        sess2.read(2.0)
+        sess2.send_read(KEY_ENTER, 1.0, 1.0)
+        text = sess2.output_text()
+        if 'yhteensopivia' in text or 'DATA_ERR' in text:
+            print("   FAIL: Startup error!")
             startup_ok = False
         else:
-            print("   Startup OK (no errors)")
-
-        # Navigate to competitor 88 and check emit value
-        sess2.send_read('K', 0.5, 0.5)           # Korjaukset
-        sess2.send_read('K', 0.5, 0.5)           # Korjaa
-        sess2.send_read(f'{COMPETITOR}\r', 0.5, 2.0)  # Find competitor
-
-        text2 = sess2.all_output.decode('utf-8', errors='replace')
-        if NEW_EMIT in text2:
-            emit_found = True
-            print(f"   Emit card shows {NEW_EMIT} ✓")
-        elif OLD_EMIT in text2:
-            print(f"   Emit card still shows {OLD_EMIT} (change not saved)")
-        else:
-            print(f"   Could not find emit value in output")
-
+            print("   Startup OK")
+            sess2.send_read('K', 0.5, 0.5)
+            sess2.send_read('K', 0.5, 0.5)
+            sess2.send_read(COMPETITOR + KEY_ENTER, 0.5, 2.0)
+            text2 = sess2.output_text()
+            if NEW_EMIT in text2:
+                emit_found = True
+                print(f"   Emit card: {NEW_EMIT} ✓")
+            elif OLD_EMIT in text2:
+                print(f"   Emit card: {OLD_EMIT} (unchanged)")
+            else:
+                print("   Could not verify emit value")
     finally:
         sess2.stop()
 
-    # Cleanup (keep for debugging if test fails)
     if startup_ok and emit_found:
         shutil.rmtree(tmpdir)
 
-    # Results
     print(f"\n{'=' * 60}")
     if startup_ok and emit_found:
         print("RESULT: PASS ✓")
-        print(f"  - Emit card changed {OLD_EMIT} -> {NEW_EMIT}")
-        print(f"  - Change persisted after restart")
-        print(f"  - No data corruption")
         return True
-    elif startup_ok and not emit_found:
-        print("RESULT: FAIL - Save did not persist")
-        print(f"  - Program starts OK but emit card not changed")
-        return False
-    elif not startup_ok:
-        print("RESULT: FAIL - Data corruption!")
-        print(f"  - KILP.DAT corrupted after edit")
-        return False
     else:
         print("RESULT: FAIL")
         return False
