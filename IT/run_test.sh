@@ -1,15 +1,17 @@
 #!/bin/bash
-# Reset test data and run HkMaali
+# Reset test data and run HkMaali interactively
 # Usage: ./run_test.sh [--reset]
 #   --reset: always reset data files (default: only if missing)
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$SCRIPT_DIR/.."
 TEST_DIR="$SCRIPT_DIR/test_data"
-SOURCE_DIR="$SCRIPT_DIR/../../kisat/HkKisaWinData"
-BINARY="$SCRIPT_DIR/HkMaali"
+SOURCE_DIR="$PROJECT_ROOT/kisat/HkKisaWinData"
+BINARY="$PROJECT_ROOT/TPsource/V52/HkMaali"
 
 if [ ! -f "$BINARY" ]; then
-    echo "HkMaali not found. Run 'make' first."
+    echo "HkMaali not found at $BINARY"
+    echo "Run 'cd $PROJECT_ROOT/TPsource/V52 && make' first."
     exit 1
 fi
 

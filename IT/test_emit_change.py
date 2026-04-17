@@ -9,8 +9,9 @@ runs HkMaali, changes the emit card, restarts and verifies the change persisted.
 import pty, os, select, time, struct, fcntl, termios, re, sys, shutil, hashlib
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-HKMAALI = os.path.join(SCRIPT_DIR, 'HkMaali')
-SOURCE_DATA = os.path.join(SCRIPT_DIR, '..', '..', 'kisat', 'HkKisaWinData')
+PROJECT_ROOT = os.path.join(SCRIPT_DIR, '..')
+HKMAALI = os.path.join(PROJECT_ROOT, 'TPsource', 'V52', 'HkMaali')
+SOURCE_DATA = os.path.join(PROJECT_ROOT, 'kisat', 'HkKisaWinData')
 
 COMPETITOR = '88'
 OLD_EMIT = '15676'
