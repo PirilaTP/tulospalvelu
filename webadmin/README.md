@@ -6,7 +6,7 @@ Web-pohjainen emit-korttien vaihtotyökalu Pirilä-tulospalvelujärjestelmään.
 
 ### 1. Asenna Java
 
-Asenna [JDK 21](https://adoptium.net/temulinku/releases/?version=21) (tai uudempi) koneelle joka on tulospalveluverkossa. Windows-asennuksessa valitse "Set JAVA_HOME" ja "Add to PATH".
+Asenna [BellSoft Liberica JDK 21](https://bell-sw.com/pages/downloads/#jdk-21-lts) (tai muu JDK 21 tai uudempi) koneelle joka on tulospalveluverkossa. Liberica JDK:sta löytyy myös 32-bittinen Windows-versio. Windowsissa .msi-asennuspaketti hoitaa PATH-asetukset automaattisesti.
 
 ### 2. Valmistele datahakemisto
 
@@ -28,13 +28,17 @@ Konfiguroi yhteys osoittamaan koneeseen jossa tulospalveluserveri (HkMaali/HkKis
 
 ### 3. Käynnistä
 
-Kopioi `webadmin.jar` datahakemistoon ja tuplaklikkaa sitä. Selain aukeaa automaattisesti.
+Kopioi `webadmin.jar` datahakemistoon. Kaksi tapaa käynnistää:
 
-Vaihtoehtoisesti komentoriviltä:
+**Tuplaklikkaus** — helpoin tapa. Selain aukeaa automaattisesti. Huom: sammutus onnistuu tällä hetkellä vain Task Managerin kautta (Ctrl+Shift+Esc → etsi `java`/`javaw` → End Task).
+
+**Komentorivi** (suositeltu) — avaa komentokehote/terminaali datahakemistossa ja aja:
 
 ```
 java -jar webadmin.jar
 ```
+
+Selain aukeaa automaattisesti. Lokit näkyvät konsolissa ja sovelluksen voi sammuttaa siististi painamalla `Ctrl+C`.
 
 ### 4. Konfiguroi
 
