@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * Reads configuration from laskenta.cfg and competitors from KILP.DAT.
  * Listens for server-initiated KILPPVT messages to keep local data in sync.
  */
-public class InteractiveEmitChanger implements TulospalveluConnection.KilppvtListener {
+public class InteractiveEmitChanger implements MessageListener {
 
     private static final Logger log = LoggerFactory.getLogger(InteractiveEmitChanger.class);
 
@@ -32,7 +32,7 @@ public class InteractiveEmitChanger implements TulospalveluConnection.KilppvtLis
     private Channel channel;
     private TulospalveluConnection connection;
     private Scanner scanner;
-    private List<KilpReader.Competitor> competitors;
+    private List<Competitor> competitors;
     private String machineId = "J1";
     private int nrec = 0;
     private int srvPort = 0; // local port to bind to (from config, 0 = random)
@@ -77,7 +77,7 @@ public class InteractiveEmitChanger implements TulospalveluConnection.KilppvtLis
             try {
                 int competitorNumber = Integer.parseInt(input);
 
-                KilpReader.Competitor comp = findCompetitor(competitorNumber);
+                Competitor comp = findCompetitor(competitorNumber);
                 if (comp == null) {
                     System.out.println("Competitor " + competitorNumber + " not found");
                     continue;
@@ -126,7 +126,7 @@ public class InteractiveEmitChanger implements TulospalveluConnection.KilppvtLis
         return ok && connection.isConnected();
     }
 
-    private void sendEmitCardChange(KilpReader.Competitor comp, String newEmitCard) {
+    private void sendEmitCardChange(Competitor comp, String newEmitCard) {
         try {
             byte[] pvData = KilpReader.readPvData(kilpFile, comp.recordIndex);
             int kilppvtpsize = KilpReader.getKilppvtpsize();
@@ -161,7 +161,7 @@ public class InteractiveEmitChanger implements TulospalveluConnection.KilppvtLis
         int badge = (cpvData[68] & 0xFF) | ((cpvData[69] & 0xFF) << 8)
                 | ((cpvData[70] & 0xFF) << 16) | ((cpvData[71] & 0xFF) << 24);
 
-        KilpReader.Competitor comp = findByRecordIndex(dk);
+        Competitor comp = findByRecordIndex(dk);
         if (comp != null) {
             int oldBadge = comp.badge;
             comp.badge = badge;
@@ -190,23 +190,23 @@ public class InteractiveEmitChanger implements TulospalveluConnection.KilppvtLis
         }
         System.out.printf("%4s  %-20s %-15s %-20s %s%n", "No", "Sukunimi", "Etunimi", "Seura", "Emit");
         System.out.println("-".repeat(75));
-        for (KilpReader.Competitor c : competitors) {
+        for (Competitor c : competitors) {
             System.out.println(c);
         }
         System.out.println(competitors.size() + " competitors");
     }
 
-    private KilpReader.Competitor findCompetitor(int kilpno) {
+    private Competitor findCompetitor(int kilpno) {
         if (competitors == null) return null;
-        for (KilpReader.Competitor c : competitors) {
+        for (Competitor c : competitors) {
             if (c.kilpno == kilpno) return c;
         }
         return null;
     }
 
-    private KilpReader.Competitor findByRecordIndex(int dk) {
+    private Competitor findByRecordIndex(int dk) {
         if (competitors == null) return null;
-        for (KilpReader.Competitor c : competitors) {
+        for (Competitor c : competitors) {
             if (c.recordIndex == dk) return c;
         }
         return null;
@@ -252,7 +252,7 @@ public class InteractiveEmitChanger implements TulospalveluConnection.KilppvtLis
                     config.read(cfgFile);
                     System.out.println("Config loaded: machine=" + config.getMachineId()
                             + ", emit=" + config.isEmitEnabled());
-                    for (ConfigReader.Connection c : config.getConnections()) {
+                    for (Connection c : config.getConnections()) {
                         System.out.println("  " + c);
                     }
                 } catch (Exception e) {
@@ -262,19 +262,19 @@ public class InteractiveEmitChanger implements TulospalveluConnection.KilppvtLis
         }
 
         if (serverHost == null && config != null) {
-            ConfigReader.Connection conn = config.getEmitConnection();
+            Connection conn = config.getEmitConnection();
             if (conn != null) {
-                serverHost = conn.destAddr;
-                serverPort = conn.destPort;
+                serverHost = conn.destAddr();
+                serverPort = conn.destPort();
             }
         }
 
         // Get srvPort for local binding (so server can send back to us)
         int localSrvPort = 0;
         if (config != null) {
-            ConfigReader.Connection conn = config.getEmitConnection();
+            Connection conn = config.getEmitConnection();
             if (conn != null) {
-                localSrvPort = conn.srvPort;
+                localSrvPort = conn.srvPort();
             }
         }
 

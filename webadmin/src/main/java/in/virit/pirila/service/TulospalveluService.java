@@ -2,18 +2,18 @@ package in.virit.pirila.service;
 
 import fi.pirila.tulospalvelu.ConfigReader;
 import fi.pirila.tulospalvelu.KilpReader;
+import fi.pirila.tulospalvelu.MessageListener;
 import fi.pirila.tulospalvelu.TulospalveluConnection;
+import fi.pirila.tulospalvelu.TulospalveluTcpConnection;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
-import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -29,28 +29,35 @@ import java.util.concurrent.TimeUnit;
  * to the tulospalvelu server for real-time message exchange.
  */
 @Service
-public class TulospalveluService implements TulospalveluConnection.KilppvtListener {
+public class TulospalveluService implements MessageListener {
 
     private static final Logger log = LoggerFactory.getLogger(TulospalveluService.class);
 
-    @Value("${tulospalvelu.data-dir:}")
-    private String dataDir;
-
-    @Value("${tulospalvelu.connection-index:0}")
-    private int connectionIndex;
-
-    private volatile List<KilpReader.Competitor> competitors = List.of();
-    private TulospalveluConnection connection;
+    private volatile boolean started = false;
+    private volatile String password;
+    private volatile List<fi.pirila.tulospalvelu.Competitor> competitors = List.of();
+    private TulospalveluConnection udpConnection;
+    private TulospalveluTcpConnection tcpConnection;
     private EventLoopGroup eventLoopGroup;
     private Channel channel;
     private Path kilpFile;
 
-    @PostConstruct
-    public void init() {
-        Path dir = resolveDataDir();
-        if (dir == null) {
-            log.warn("Tulospalvelu data directory not found - running without data");
+    /**
+     * Starts the service by reading data from the given directory.
+     * @param dataDir path to directory containing KILP.DAT and laskenta.cfg
+     * @param password optional password required for card changes, null or blank to disable
+     */
+    public void start(String dataDir, String password) {
+        if (started) {
+            log.warn("Service already started, ignoring");
             return;
+        }
+
+        this.password = (password != null && !password.isBlank()) ? password : null;
+
+        Path dir = Path.of(dataDir);
+        if (!Files.isDirectory(dir)) {
+            throw new IllegalArgumentException("Hakemistoa ei löydy: " + dir.toAbsolutePath());
         }
         log.info("Using data directory: {}", dir);
 
@@ -60,10 +67,10 @@ public class TulospalveluService implements TulospalveluConnection.KilppvtListen
                 competitors = KilpReader.read(kilpFile);
                 log.info("Loaded {} competitors from KILP.DAT", competitors.size());
             } catch (IOException e) {
-                log.error("Failed to read KILP.DAT", e);
+                throw new RuntimeException("KILP.DAT lukeminen epäonnistui", e);
             }
         } else {
-            log.warn("KILP.DAT not found in {}", dir);
+            throw new IllegalArgumentException("KILP.DAT ei löydy hakemistosta: " + dir.toAbsolutePath());
         }
 
         Path cfgFile = dir.resolve("laskenta.cfg");
@@ -73,61 +80,50 @@ public class TulospalveluService implements TulospalveluConnection.KilppvtListen
                 config.read(cfgFile);
                 log.info("Config loaded: machine={}, emit={}", config.getMachineId(), config.isEmitEnabled());
 
-                ConfigReader.Connection conn;
-                if (connectionIndex > 0) {
-                    conn = config.getConnections().stream()
-                            .filter(c -> c.index == connectionIndex)
-                            .findFirst()
-                            .orElse(null);
-                    if (conn == null) {
-                        log.warn("Configured connection index {} not found in laskenta.cfg, available: {}",
-                                connectionIndex, config.getConnections());
+                log.info("laskenta.cfg connections: {}", config.getConnections());
+                fi.pirila.tulospalvelu.Connection conn = config.getEmitConnection();
+                if (conn != null) {
+                    int nrec = KilpReader.readNumrec(kilpFile);
+                    String machineId = config.getMachineId() != null ? config.getMachineId() : "W1";
+                    log.info("Selected connection: protocol={}, dest={}:{}, srvPort={}, machineId={}, nrec={}",
+                            conn.protocol(), conn.destAddr(), conn.destPort(), conn.srvPort(), machineId, nrec);
+                    if (conn.isTcp()) {
+                        setupTcpConnection(conn.destAddr(), conn.destPort(), machineId, nrec);
                     } else {
-                        log.info("Using configured connection: {}", conn);
+                        setupUdpConnection(conn.destAddr(), conn.destPort(), conn.srvPort(), machineId, nrec);
                     }
                 } else {
-                    conn = config.getEmitConnection();
-                    if (conn != null) {
-                        log.info("Using first emit connection: {}", conn);
-                    }
+                    log.warn("No suitable connection found in laskenta.cfg, available: {}", config.getConnections());
                 }
-                if (conn != null) {
-                    int nrec = Files.exists(kilpFile) ? KilpReader.readNumrec(kilpFile) : 0;
-                    String machineId = config.getMachineId() != null ? config.getMachineId() : "W1";
-                    setupConnection(conn.destAddr, conn.destPort, conn.srvPort, machineId, nrec);
-                }
+            } catch (RuntimeException e) {
+                throw e;
             } catch (Exception e) {
-                log.error("Failed to setup UDP connection", e);
+                throw new RuntimeException("Yhteyden muodostus epäonnistui", e);
             }
         }
+
+        started = true;
+        log.info("TulospalveluService started, competitors={}, password={}", competitors.size(), this.password != null ? "set" : "not set");
     }
 
-    private Path resolveDataDir() {
-        if (dataDir != null && !dataDir.isBlank()) {
-            Path dir = Path.of(dataDir);
-            if (Files.isDirectory(dir)) return dir;
-            log.warn("Configured data-dir not found: {}", dataDir);
-        }
-
-        // Auto-detect from common paths
-        for (String candidate : new String[]{
-                "kisat/J1Data", "kisat/HkMaaliData",
-                "../kisat/J1Data", "../kisat/HkMaaliData",
-                "kisat", "../kisat"
-        }) {
-            Path p = Path.of(candidate);
-            if (Files.isDirectory(p) && Files.exists(p.resolve("KILP.DAT"))) {
-                return p;
-            }
-        }
-        return null;
+    public boolean isStarted() {
+        return started;
     }
 
-    private void setupConnection(String host, int port, int srvPort, String machineId, int nrec) throws Exception {
+    public boolean checkPassword(String input) {
+        if (password == null) return true;
+        return password.equals(input);
+    }
+
+    public boolean isPasswordRequired() {
+        return password != null;
+    }
+
+    private void setupUdpConnection(String host, int port, int srvPort, String machineId, int nrec) throws Exception {
         log.info("Setting up UDP connection: host={}, port={}, srvPort={}, machineId={}, nrec={}",
                 host, port, srvPort, machineId, nrec);
-        connection = new TulospalveluConnection(host, port, machineId, nrec);
-        connection.setListener(this);
+        udpConnection = new TulospalveluConnection(host, port, machineId, nrec);
+        udpConnection.setListener(this);
         eventLoopGroup = new NioEventLoopGroup();
 
         Bootstrap bootstrap = new Bootstrap();
@@ -137,7 +133,7 @@ public class TulospalveluService implements TulospalveluConnection.KilppvtListen
                     @Override
                     protected void initChannel(NioDatagramChannel ch) {
                         log.info("Netty channel initialized: local={}", ch.localAddress());
-                        ch.pipeline().addLast(connection);
+                        ch.pipeline().addLast(udpConnection);
                     }
                 });
 
@@ -146,7 +142,7 @@ public class TulospalveluService implements TulospalveluConnection.KilppvtListen
                 channel.localAddress(), channel.isActive(), channel.isOpen());
 
         log.info("Waiting for ALKUT handshake (timeout 5s)...");
-        boolean connected = connection.awaitConnected(5, TimeUnit.SECONDS);
+        boolean connected = udpConnection.awaitConnected(5, TimeUnit.SECONDS);
         if (connected) {
             log.info("ALKUT handshake OK - connected to tulospalvelu server at {}:{}", host, port);
         } else {
@@ -155,50 +151,60 @@ public class TulospalveluService implements TulospalveluConnection.KilppvtListen
         }
     }
 
+    private void setupTcpConnection(String host, int port, String machineId, int nrec) throws Exception {
+        log.info("Setting up TCP connection: host={}, port={}, machineId={}, nrec={}",
+                host, port, machineId, nrec);
+        tcpConnection = new TulospalveluTcpConnection(host, port, machineId, nrec);
+        tcpConnection.setListener(this);
+        eventLoopGroup = new NioEventLoopGroup();
+
+        tcpConnection.connect(eventLoopGroup);
+
+        log.info("Waiting for TCP ALKUT handshake (timeout 5s)...");
+        boolean connected = tcpConnection.awaitConnected(5, TimeUnit.SECONDS);
+        if (connected) {
+            log.info("TCP ALKUT handshake OK - connected to tulospalvelu server at {}:{}", host, port);
+        } else {
+            log.warn("TCP ALKUT handshake timed out after 5s - server at {}:{} did not respond", host, port);
+        }
+    }
+
     @PreDestroy
     public void shutdown() {
-        log.info("Shutting down TulospalveluService, connected={}", connection != null ? connection.isConnected() : "null");
+        log.info("Shutting down TulospalveluService, connected={}", isConnected());
+        if (tcpConnection != null) tcpConnection.shutdown();
         if (channel != null) channel.close();
         if (eventLoopGroup != null) eventLoopGroup.shutdownGracefully();
     }
 
     // --- Public API ---
 
-    public List<KilpReader.Competitor> getCompetitors() {
+    public List<fi.pirila.tulospalvelu.Competitor> getCompetitors() {
         return competitors;
     }
 
-    public KilpReader.Competitor getCompetitorByRecordIndex(int recordIndex) {
-        for (KilpReader.Competitor c : competitors) {
+    public fi.pirila.tulospalvelu.Competitor getCompetitorByRecordIndex(int recordIndex) {
+        for (fi.pirila.tulospalvelu.Competitor c : competitors) {
             if (c.recordIndex == recordIndex) return c;
         }
         return null;
     }
 
     public boolean isConnected() {
-        boolean result = connection != null && connection.isConnected();
-        log.debug("isConnected() = {} (connection={}, channel.isActive={}, channel.isOpen={})",
-                result,
-                connection != null ? connection.isConnected() : "null",
-                channel != null ? channel.isActive() : "null",
-                channel != null ? channel.isOpen() : "null");
-        return result;
+        if (tcpConnection != null) return tcpConnection.isConnected();
+        return udpConnection != null && udpConnection.isConnected();
     }
 
     public boolean isActive() {
-        return connection != null && connection.isActive();
+        if (tcpConnection != null) return tcpConnection.isActive();
+        return udpConnection != null && udpConnection.isActive();
     }
 
     public boolean sendCardChange(int recordIndex, int newBadge) {
-        log.info("sendCardChange called: recordIndex={}, newBadge={}, connected={}, channelActive={}, channelOpen={}",
-                recordIndex, newBadge,
-                connection != null ? connection.isConnected() : "null",
-                channel != null ? channel.isActive() : "null",
-                channel != null ? channel.isOpen() : "null");
-        if (connection == null || !connection.isConnected()) {
-            log.warn("Cannot send card change - not connected to server (connection={}, isConnected={})",
-                    connection != null ? "exists" : "null",
-                    connection != null ? connection.isConnected() : "N/A");
+        log.info("sendCardChange called: recordIndex={}, newBadge={}, connected={}",
+                recordIndex, newBadge, isConnected());
+        if (!isConnected()) {
+            log.warn("Cannot send card change - not connected to server");
             return false;
         }
         if (kilpFile == null) {
@@ -210,13 +216,17 @@ public class TulospalveluService implements TulospalveluConnection.KilppvtListen
             byte[] pvData = KilpReader.readPvData(kilpFile, recordIndex);
             int kilppvtpsize = KilpReader.getKilppvtpsize();
 
-            CompletableFuture<Boolean> result = connection.sendKilppvt(
-                    recordIndex, pvData, kilppvtpsize, newBadge);
+            CompletableFuture<Boolean> result;
+            if (tcpConnection != null) {
+                result = tcpConnection.sendKilppvt(recordIndex, pvData, kilppvtpsize, newBadge);
+            } else {
+                result = udpConnection.sendKilppvt(recordIndex, pvData, kilppvtpsize, newBadge);
+            }
 
             Boolean success = result.get(10, TimeUnit.SECONDS);
             if (Boolean.TRUE.equals(success)) {
                 KilpReader.writeBadge(kilpFile, recordIndex, newBadge);
-                KilpReader.Competitor comp = getCompetitorByRecordIndex(recordIndex);
+                fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(recordIndex);
                 if (comp != null) comp.badge = newBadge;
                 log.info("Card change successful: record={}, newBadge={}", recordIndex, newBadge);
                 return true;
@@ -238,7 +248,7 @@ public class TulospalveluService implements TulospalveluConnection.KilppvtListen
         int badge = (cpvData[68] & 0xFF) | ((cpvData[69] & 0xFF) << 8)
                 | ((cpvData[70] & 0xFF) << 16) | ((cpvData[71] & 0xFF) << 24);
 
-        KilpReader.Competitor comp = getCompetitorByRecordIndex(dk);
+        fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(dk);
         if (comp != null) {
             comp.badge = badge;
             if (kilpFile != null) {

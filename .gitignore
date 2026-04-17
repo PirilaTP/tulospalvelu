@@ -13,3 +13,10 @@ obj
 TPsource/V52/build/
 TPsource/V52/HkMaali
 .DS_Store
+webadmin/target
+webadmin/src/main/frontend/generated
+webadmin/node_modules
+pirila-comm/pirila-tcp/target
+pirila-comm/pirila-udp/target
+pirila-comm/pirila-comm-common/target
+javapoc/target

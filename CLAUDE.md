@@ -109,3 +109,4 @@ Requires SecureBridge 7.1 add-on. Build libraries first (DBboxm-XE, Tputil-XE), 
 - Character encoding: ISO-8859-1 for C++ (Finnish language), UTF-8 for Java
 - Competition data uses little-endian binary format
 - Many webadmin services are stubs awaiting real implementation
+- **TCP transport is untested.** Webadmin has code to select TCP/UDP based on laskenta.cfg protocol field (e.g. `yhteys4=tcp:0/192.168.1.204:y4`), but TCP connection to the C++ server has not been verified to work. UDP is the tested and default transport. Example TCP config in `kisat/TcpData/`.

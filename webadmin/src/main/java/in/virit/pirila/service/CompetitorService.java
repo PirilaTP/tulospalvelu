@@ -1,6 +1,5 @@
 package in.virit.pirila.service;
 
-import fi.pirila.tulospalvelu.KilpReader;
 import in.virit.pirila.data.Competitor;
 import org.springframework.stereotype.Service;
 
@@ -32,11 +31,11 @@ public class CompetitorService {
     }
 
     public Competitor getCompetitorById(Long id) {
-        KilpReader.Competitor comp = tulospalveluService.getCompetitorByRecordIndex(id.intValue());
+        fi.pirila.tulospalvelu.Competitor comp = tulospalveluService.getCompetitorByRecordIndex(id.intValue());
         return comp != null ? toCompetitor(comp) : null;
     }
 
-    private Competitor toCompetitor(KilpReader.Competitor comp) {
+    private Competitor toCompetitor(fi.pirila.tulospalvelu.Competitor comp) {
         return new Competitor(
                 (long) comp.recordIndex,
                 String.valueOf(comp.kilpno),

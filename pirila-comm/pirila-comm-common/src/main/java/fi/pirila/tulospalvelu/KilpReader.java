@@ -48,36 +48,6 @@ public class KilpReader {
     private static final int PV_OFF_BADGE = 68;   // INT32[2]
     private static final int PV_OFF_BIB = 66;     // INT16
 
-    public static class Competitor {
-        public final int recordIndex;
-        public final int kilpno;
-        public final String sukunimi;
-        public final String etunimi;
-        public final String seura;
-        public final int sarja;
-        public int badge;   // emit card from pv[0]
-        public int badge2;  // second emit card from pv[0]
-
-        Competitor(int recordIndex, int kilpno, String sukunimi, String etunimi,
-                   String seura, int sarja, int badge, int badge2) {
-            this.recordIndex = recordIndex;
-            this.kilpno = kilpno;
-            this.sukunimi = sukunimi;
-            this.etunimi = etunimi;
-            this.seura = seura;
-            this.sarja = sarja;
-            this.badge = badge;
-            this.badge2 = badge2;
-        }
-
-        @Override
-        public String toString() {
-            String badgeStr = badge > 0 ? String.valueOf(badge) : "-";
-            return String.format("%4d  %-20s %-15s %-20s emit:%s",
-                    kilpno, sukunimi, etunimi, seura, badgeStr);
-        }
-    }
-
     /**
      * Read numrec (total record count including header) from KILP.DAT header.
      * This value must be sent in the ALKUT handshake message.
@@ -131,12 +101,94 @@ public class KilpReader {
 
         try (RandomAccessFile raf = new RandomAccessFile(kilpFile.toFile(), "rw")) {
             raf.seek(offset);
-            // Write INT32 little-endian
-            raf.writeByte(badge & 0xFF);
-            raf.writeByte((badge >> 8) & 0xFF);
-            raf.writeByte((badge >> 16) & 0xFF);
-            raf.writeByte((badge >> 24) & 0xFF);
+            writeInt32LEToFile(raf, badge);
         }
+    }
+
+    /**
+     * Write full stage (pv) data to KILP.DAT for a competitor.
+     * Used when receiving KILPPVT messages from the network.
+     * Corresponds to C++ tark_kilp(cn, 2) → pv[n].unpack0(cpv) → tallenna().
+     *
+     * @param kilpFile path to KILP.DAT
+     * @param recordIndex 1-based record index (dk)
+     * @param pvIndex stage number (0-based)
+     * @param pvData raw packed stage data (kilppvtpsize bytes)
+     */
+    public static void writePvData(Path kilpFile, int recordIndex, int pvIndex, byte[] pvData) throws IOException {
+        int reclen = detectRecordSize(kilpFile);
+        int kilprecsize0 = findKilprecsize0(reclen);
+        int kilppvtpsize = lastKilppvtpsize;
+        long offset = (long) recordIndex * reclen + kilprecsize0 + (long) pvIndex * kilppvtpsize;
+        int toWrite = Math.min(pvData.length, kilppvtpsize);
+
+        try (RandomAccessFile raf = new RandomAccessFile(kilpFile.toFile(), "rw")) {
+            raf.seek(offset);
+            raf.write(pvData, 0, toWrite);
+        }
+    }
+
+    /**
+     * Write full base record to KILP.DAT for a competitor.
+     * Used when receiving KILPT messages from the network.
+     * Corresponds to C++ tark_kilp(cn, 1) → unpack0(ckilp) → tallenna().
+     *
+     * @param kilpFile path to KILP.DAT
+     * @param recordIndex 1-based record index (dk)
+     * @param recordData raw packed base record data (kilprecsize0 bytes)
+     */
+    public static void writeFullRecord(Path kilpFile, int recordIndex, byte[] recordData) throws IOException {
+        int reclen = detectRecordSize(kilpFile);
+        int kilprecsize0 = findKilprecsize0(reclen);
+        long offset = (long) recordIndex * reclen;
+        int toWrite = Math.min(recordData.length, kilprecsize0);
+
+        try (RandomAccessFile raf = new RandomAccessFile(kilpFile.toFile(), "rw")) {
+            raf.seek(offset);
+            raf.write(recordData, 0, toWrite);
+        }
+    }
+
+    /**
+     * Write a single time result to KILP.DAT.
+     * Used when receiving VAIN_TULOST messages from the network.
+     * Corresponds to C++ tark_kilp(cn, 0) → tall_tulos(vali, aika) → tallenna().
+     *
+     * The time is stored in the vatp (split time) array within pv[currentStage].
+     * Split index mapping: -1=start time (tlahto at offset 124),
+     * 0=finish time (first vatp slot), >0=split times.
+     *
+     * @param kilpFile path to KILP.DAT
+     * @param recordIndex 1-based record index (dk)
+     * @param pvIndex stage number (0-based, typically k_pv)
+     * @param splitIndex split point (-1=start, 0=finish, >0=split)
+     * @param time time value in 1/100s
+     */
+    public static void writeTimeResult(Path kilpFile, int recordIndex, int pvIndex,
+                                        int splitIndex, int time) throws IOException {
+        int reclen = detectRecordSize(kilpFile);
+        int kilprecsize0 = findKilprecsize0(reclen);
+        int kilppvtpsize = lastKilppvtpsize;
+        long pvBase = (long) recordIndex * reclen + kilprecsize0 + (long) pvIndex * kilppvtpsize;
+
+        try (RandomAccessFile raf = new RandomAccessFile(kilpFile.toFile(), "rw")) {
+            if (splitIndex == -1) {
+                // Start time: tlahto at offset 124 within pv
+                raf.seek(pvBase + 124);
+            } else {
+                // vatp array starts at offset 152 within pv, each entry is 8 bytes
+                // splitIndex 0 = finish (first slot), >0 = intermediate times
+                raf.seek(pvBase + 152 + (long) splitIndex * 8);
+            }
+            writeInt32LEToFile(raf, time);
+        }
+    }
+
+    private static void writeInt32LEToFile(RandomAccessFile raf, int value) throws IOException {
+        raf.writeByte(value & 0xFF);
+        raf.writeByte((value >> 8) & 0xFF);
+        raf.writeByte((value >> 16) & 0xFF);
+        raf.writeByte((value >> 24) & 0xFF);
     }
 
     /**

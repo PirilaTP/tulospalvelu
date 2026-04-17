@@ -1,6 +1,8 @@
 package in.virit.pirila.views;
 
 import com.vaadin.browserless.SpringBrowserlessTest;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.textfield.TextField;
 import in.virit.pirila.data.Competitor;
 import in.virit.pirila.service.CompetitorService;
 import in.virit.pirila.service.CompetitionCardService;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,7 +52,9 @@ public class CardChangeViewBrowserlessTest extends SpringBrowserlessTest {
         if (withCard == null) return;
 
         test(view.getCardNumberField()).setValue(withCard.getCardNumber());
-        view.getCompetitorGrid().asSingleSelect().setValue(allCompetitors.getFirst());
+        test(view.getCompetitorGrid()).select(0);
+        // TODO API should support selecting by actual row item
+        //view.getCompetitorGrid().asSingleSelect().setValue(allCompetitors.getFirst());
 
         assertTrue(view.getCardNumberField().isInvalid(),
                 "Card number field should be invalid when card is in use");
@@ -62,12 +67,23 @@ public class CardChangeViewBrowserlessTest extends SpringBrowserlessTest {
     @Test
     public void testFreeCardAndCompetitorEnablesSaveButton() {
         List<Competitor> allCompetitors = competitorService.getAllCompetitors();
+
         if (allCompetitors.isEmpty()) return;
 
-        test(view.getCardNumberField()).setValue("88888888");
+        String randomUsedCard = "0" + new Random().nextInt(1000, 2000);
+
+        TextField cardNumberField = view.getCardNumberField();
+        test(cardNumberField).setValue(randomUsedCard);
+
+        // TODO can't find by label !?!
+        // TODO can't just focus field !?!
+        // Indexes start from 1 !?!
+        // Trying to type something for search field to get shit done..
+        test($(TextField.class).atIndex(2)).setValue("L");
+
         view.getCompetitorGrid().asSingleSelect().setValue(allCompetitors.getFirst());
 
-        assertFalse(view.getCardNumberField().isInvalid(),
+        assertFalse(cardNumberField.isInvalid(),
                 "Card number field should not be invalid for a free card");
         assertTrue(view.getSaveButton().isEnabled(),
                 "Save button should be enabled when card is free and competitor selected");
@@ -78,8 +94,9 @@ public class CardChangeViewBrowserlessTest extends SpringBrowserlessTest {
         List<Competitor> allCompetitors = competitorService.getAllCompetitors();
         if (allCompetitors.isEmpty()) return;
 
-        test(view.getCardNumberField()).setValue("88888888");
-        view.getCompetitorGrid().asSingleSelect().setValue(allCompetitors.getFirst());
+        int randomeCard = new Random().nextInt(10000, 50000);
+        test(view.getCardNumberField()).setValue("" + randomeCard);
+        test($(Grid.class).single()).select(0);
         assertTrue(view.getSaveButton().isEnabled(),
                 "Save button should be enabled with valid form data");
 

@@ -15,6 +15,8 @@ import in.virit.pirila.data.Competitor;
 import in.virit.pirila.emit.EmitCardReader;
 import in.virit.pirila.service.CompetitionCardService;
 import in.virit.pirila.service.CompetitorService;
+import in.virit.pirila.service.TulospalveluService;
+import in.virit.pirila.service.UserSession;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import org.vaadin.firitin.appframework.MenuItem;
@@ -31,6 +33,8 @@ public class CardChangeView extends VVerticalLayout {
 
     private final CompetitionCardService cardService;
     private final CompetitorService competitorService;
+    private final TulospalveluService tulospalveluService;
+    private final UserSession userSession;
     private final Validator validator;
     private final EmitCardReader emitCardReader;
 
@@ -57,16 +61,22 @@ public class CardChangeView extends VVerticalLayout {
         addColumn(Competitor::getClub).setHeader("Seura").setSortable(true);
     }};
 
+    private boolean clearing;
+
     private final DefaultButton saveButton = new DefaultButton("Vaihda kortti") {{
         setWidthFull();
     }};
 
     public CardChangeView(CompetitionCardService cardService,
                           CompetitorService competitorService,
+                          TulospalveluService tulospalveluService,
+                          UserSession userSession,
                           EmitCardReader emitCardReader,
                           Validator validator) {
         this.cardService = cardService;
         this.competitorService = competitorService;
+        this.tulospalveluService = tulospalveluService;
+        this.userSession = userSession;
         this.emitCardReader = emitCardReader;
         this.validator = validator;
 
@@ -111,6 +121,7 @@ public class CardChangeView extends VVerticalLayout {
     }
 
     private void validateForm() {
+        if (clearing) return;
         var violations = validator.validate(readForm());
         showViolations(violations);
         saveButton.setEnabled(violations.isEmpty());
@@ -127,6 +138,12 @@ public class CardChangeView extends VVerticalLayout {
     }
 
     private void changeCard() {
+        if (tulospalveluService.isPasswordRequired() && !userSession.isAuthenticated()) {
+            Notification.show("Kirjaudu ensin etusivulla", 3000, Notification.Position.MIDDLE);
+            getUI().ifPresent(ui -> ui.navigate(MainView.class));
+            return;
+        }
+
         var request = readForm();
         var violations = validator.validate(request);
         showViolations(violations);
@@ -146,12 +163,15 @@ public class CardChangeView extends VVerticalLayout {
     }
 
     private void clearForm() {
+        clearing = true;
         cardNumber.clear();
-        cardNumber.setInvalid(false);
         searchField.clear();
         competitorGrid.asSingleSelect().clear();
         competitorGrid.setItems(competitorService.getAllCompetitors());
         saveButton.setEnabled(false);
+        cardNumber.setInvalid(false);
+        cardNumber.setErrorMessage(null);
+        clearing = false;
         cardNumber.focus();
     }
 

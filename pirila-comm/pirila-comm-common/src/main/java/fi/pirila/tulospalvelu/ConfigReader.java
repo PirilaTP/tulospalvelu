@@ -21,28 +21,6 @@ public class ConfigReader {
     private final List<Connection> connections = new ArrayList<>();
     private boolean emitEnabled;
 
-    public static class Connection {
-        public final int index;
-        public final String destAddr;
-        public final int destPort;
-        public final int srvPort;
-        public final boolean sendEmit;
-
-        Connection(int index, String destAddr, int destPort, int srvPort, boolean sendEmit) {
-            this.index = index;
-            this.destAddr = destAddr;
-            this.destPort = destPort;
-            this.srvPort = srvPort;
-            this.sendEmit = sendEmit;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("yhteys%d: %s:%d (srv:%d, emit:%s)",
-                    index, destAddr, destPort, srvPort, sendEmit);
-        }
-    }
-
     public void read(Path cfgFile) throws IOException {
         // laskenta.cfg may be UTF-8 (with or without BOM) or Windows-1252
         List<String> lines = Files.readAllLines(cfgFile, java.nio.charset.StandardCharsets.UTF_8);
@@ -75,11 +53,11 @@ public class ConfigReader {
                 String numStr = line.replaceAll("[^0-9]", "");
                 if (!numStr.isEmpty()) {
                     int idx = Integer.parseInt(numStr);
-                    for (Connection c : connections) {
-                        if (c.index == idx) {
-                            // Mark as emit-sending (reconstruct since fields are final)
-                            connections.set(connections.indexOf(c),
-                                    new Connection(c.index, c.destAddr, c.destPort, c.srvPort, true));
+                    for (int i = 0; i < connections.size(); i++) {
+                        Connection c = connections.get(i);
+                        if (c.index() == idx) {
+                            connections.set(i,
+                                    new Connection(c.index(), c.protocol(), c.destAddr(), c.destPort(), c.srvPort(), true));
                         }
                     }
                 }
@@ -89,6 +67,7 @@ public class ConfigReader {
 
     private void parseConnection(String line) {
         // Format: yhteys<N>=udp:<srvport>/<destaddr>:<destport>
+        // or:     yhteys<N>=tcp:<srvport>/<destaddr>:<destport>
         int eqIdx = line.indexOf('=');
         if (eqIdx < 0) return;
 
@@ -100,9 +79,10 @@ public class ConfigReader {
 
         String value = line.substring(eqIdx + 1).trim();
 
-        // Strip protocol prefix (udp:, tcp:, etc.)
+        // Extract protocol prefix (udp:, tcp:, etc.)
         int colonIdx = value.indexOf(':');
         if (colonIdx < 0) return;
+        String protocol = value.substring(0, colonIdx).toLowerCase();
         value = value.substring(colonIdx + 1);
 
         // Parse: <srvport>/<destaddr>:<destport>
@@ -124,7 +104,7 @@ public class ConfigReader {
             destPort = parsePort(parts[2], ny);
         }
 
-        connections.add(new Connection(connIdx, destAddr, destPort, srvPort, false));
+        connections.add(new Connection(connIdx, protocol, destAddr, destPort, srvPort, false));
     }
 
     private int parsePort(String portStr, int ny) {
@@ -163,7 +143,7 @@ public class ConfigReader {
     /** Find the first connection that sends emit data (lähemit). */
     public Connection getEmitConnection() {
         for (Connection c : connections) {
-            if (c.sendEmit) return c;
+            if (c.sendEmit()) return c;
         }
         return connections.isEmpty() ? null : connections.get(0);
     }

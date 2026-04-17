@@ -14,7 +14,7 @@ public class CardNotInUseValidator implements ConstraintValidator<CardNotInUse, 
 
     @Override
     public boolean isValid(String cardNumber, ConstraintValidatorContext context) {
-        if (cardNumber == null || cardNumber.isBlank()) {
+        if (cardNumber == null || cardNumber.isBlank() || "0".equals(cardNumber.trim())) {
             return true;
         }
 

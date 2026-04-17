@@ -1,5 +1,7 @@
 package fi.pirila.tulospalvelu;
 
+import static fi.pirila.tulospalvelu.TulospalveluProtocol.*;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,50 +23,41 @@ import java.util.concurrent.TimeUnit;
 /**
  * Persistent connection handler for tulospalvelu UDP protocol.
  * Stays in the Netty pipeline for the application's lifetime.
- * Handles ALKUT handshake once at startup, then bidirectional KILPPVT traffic.
+ * Handles ALKUT handshake once at startup, then bidirectional message traffic.
+ *
+ * Supports all incoming message types: KILPT, KILPPVT, VAIN_TULOST, EXTRA.
  */
 public class TulospalveluConnection extends SimpleChannelInboundHandler<DatagramPacket> {
 
     private static final Logger log = LoggerFactory.getLogger(TulospalveluConnection.class);
 
-    private static final byte SOH = 0x01;
-    private static final byte STX = 0x02;
-    private static final byte ACK = 0x06;
-    private static final byte NAK = 0x15;
-
-    private static final byte PKGCLASS_ALKUT = 0;
-    private static final byte PKGCLASS_KILPPVT = 2;
-
-    private static final int ALKUT_DATA_SIZE = 10;
-    private static final int PV_OFF_BADGE = 68;
-
     private final String serverHost;
     private final int serverPort;
     private final String machineId;
     private final int nrec;
-    private int localPort; // our listening port, sent in UDP wrapper so server knows where to reach us
+    private int localPort;
 
     private final CountDownLatch connectedLatch = new CountDownLatch(1);
     private volatile boolean connected = false;
     private volatile Instant lastMessageTime;
 
-    // Packet ID: starts at 1, wraps 255->1 (skip 0)
     private byte outPacketId = 1;
-    // Expected incoming packet ID from server (for ACKing server-initiated messages)
     private byte inPacketId = 0;
     private boolean inPacketIdInit = true;
 
-    // Pending outbound request waiting for ACK
     private CompletableFuture<Boolean> pendingFuture;
     private byte pendingPacketId;
 
-    // Send queue with 500ms pacing (server input buffer holds 1 message)
     private final Deque<Runnable> sendQueue = new ArrayDeque<>();
     private boolean sendInFlight = false;
 
-    private KilppvtListener listener;
+    private MessageListener listener;
     private ChannelHandlerContext ctx;
 
+    /**
+     * @deprecated Use {@link MessageListener} instead.
+     */
+    @Deprecated
     public interface KilppvtListener {
         void onCompetitorUpdate(int dk, int pv, byte[] cpvData);
     }
@@ -76,8 +69,19 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
         this.nrec = nrec;
     }
 
-    public void setListener(KilppvtListener listener) {
+    public void setListener(MessageListener listener) {
         this.listener = listener;
+    }
+
+    /** @deprecated Use {@link #setListener(MessageListener)} instead. */
+    @Deprecated
+    public void setListener(KilppvtListener legacy) {
+        this.listener = new MessageListener() {
+            @Override
+            public void onCompetitorUpdate(int dk, int pv, byte[] cpvData) {
+                legacy.onCompetitorUpdate(dk, pv, cpvData);
+            }
+        };
     }
 
     public boolean awaitConnected(long timeout, TimeUnit unit) throws InterruptedException {
@@ -88,18 +92,10 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
         return connected;
     }
 
-    /**
-     * Returns true if the connection is established and KILPPVT messages
-     * have been exchanged (sent or received) at least once.
-     */
     public boolean isActive() {
         return connected && lastMessageTime != null;
     }
 
-    /**
-     * Returns the time of the last KILPPVT message exchange (sent or received),
-     * or null if no messages have been exchanged yet.
-     */
     public Instant getLastMessageTime() {
         return lastMessageTime;
     }
@@ -121,7 +117,7 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
     }
 
     private void resolveLocalPort(ChannelHandlerContext ctx) {
-        java.net.InetSocketAddress local = (java.net.InetSocketAddress) ctx.channel().localAddress();
+        InetSocketAddress local = (InetSocketAddress) ctx.channel().localAddress();
         if (local != null) {
             localPort = local.getPort();
         }
@@ -131,26 +127,14 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
         return new InetSocketAddress(serverHost, serverPort);
     }
 
-    // --- Outbound: user-initiated emit change ---
+    // --- Outbound ---
 
     public CompletableFuture<Boolean> sendKilppvt(int recordIndex, byte[] pvData,
                                                    int kilppvtpsize, int newBadge) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        // Marshal onto event loop
         ctx.executor().execute(() -> {
-            byte[] cpv = new byte[kilppvtpsize];
-            System.arraycopy(pvData, 0, cpv, 0, Math.min(pvData.length, kilppvtpsize));
-            writeInt32LE(cpv, PV_OFF_BADGE, newBadge);
-
-            int dataLen = 8 + kilppvtpsize;
-            byte[] data = new byte[dataLen];
-            data[0] = 0;                                   // tarf
-            data[1] = 1;                                   // pakota = force
-            writeInt16LE(data, 2, (short) recordIndex);    // dk
-            writeInt16LE(data, 4, (short) 0);              // pv = 0
-            writeInt16LE(data, 6, (short) 0);              // valuku = 0
-            System.arraycopy(cpv, 0, data, 8, kilppvtpsize);
+            byte[] data = buildKilppvtData(recordIndex, pvData, kilppvtpsize, newBadge);
 
             enqueueSend(() -> {
                 pendingFuture = future;
@@ -184,7 +168,6 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
     }
 
     private void onSendCompleted() {
-        // Schedule next send after 500ms to let server process
         ctx.executor().schedule(this::drainQueue, 500, TimeUnit.MILLISECONDS);
     }
 
@@ -218,30 +201,19 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
         byte firstByte = raw[payloadOffset];
 
         if (firstByte == ACK && raw.length >= payloadOffset + 4) {
-            handleAck(raw, payloadOffset);
+            AckResponse ack = parseAck(raw, payloadOffset);
+            if (ack != null) handleAck(ack);
         } else if (firstByte == NAK) {
             handleNak();
         } else if (firstByte == SOH && raw.length >= payloadOffset + 8) {
-            // Server data comes from sockcli (different port than socksrv)
-            // ACK must go back to the sender's address, not our configured serverHost:serverPort
             handleIncomingMessage(ctx, raw, payloadOffset, packet.sender());
         }
     }
 
-    private void handleAck(byte[] raw, int off) {
-        byte ackId = raw[off + 1];
-        byte ackIid = raw[off + 2];
-        byte ackId2 = raw[off + 3];
-
-        if (((ackId & 0xFF) + (ackIid & 0xFF)) != 255 || ackId != ackId2) {
-            log.warn("Invalid ACK format");
-            return;
-        }
-
-        log.info("ACK for id={}", ackId & 0xFF);
+    private void handleAck(AckResponse ack) {
+        log.info("ACK for id={}", ack.id() & 0xFF);
 
         if (!connected) {
-            // ALKUT ACK
             connected = true;
             connectedLatch.countDown();
             log.info("Connected to server (ALKUT acknowledged)");
@@ -249,8 +221,7 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
             return;
         }
 
-        // KILPPVT ACK
-        if (pendingFuture != null && ackId == pendingPacketId) {
+        if (pendingFuture != null && ack.id() == pendingPacketId) {
             lastMessageTime = Instant.now();
             pendingFuture.complete(true);
             pendingFuture = null;
@@ -270,88 +241,105 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
             pendingFuture = null;
             onSendCompleted();
         }
-        // Ignore NAK when no operation pending (server retransmission noise)
     }
 
     private void handleIncomingMessage(ChannelHandlerContext ctx, byte[] raw, int off,
                                        InetSocketAddress sender) {
-        // Parse: SOH(1) + id(1) + iid(1) + pkgclass(1) + len(2) + checksum(2) + data
-        byte msgId = raw[off + 1];
-        byte msgIid = raw[off + 2];
-        byte pkgclass = raw[off + 3];
-        int len = (raw[off + 4] & 0xFF) | ((raw[off + 5] & 0xFF) << 8);
-
-        log.info("Incoming message: pkgclass={}, id={}, len={}", pkgclass & 0xFF, msgId & 0xFF, len);
-
-        // Validate id+iid
-        if (((msgId & 0xFF) + (msgIid & 0xFF)) != 255) {
-            log.warn("Invalid message ID checksum");
+        SohFrame frame = parseSohFrame(raw, off);
+        if (frame == null) {
+            log.warn("Invalid SOH frame");
             sendNak(ctx, sender);
             return;
         }
 
-        // Verify data checksum
-        int dataStart = off + 8; // SOH(1) + id(1) + iid(1) + pkgclass(1) + len(2) + chk(2)
-        if (raw.length < dataStart + len) {
-            log.warn("Message too short");
-            sendNak(ctx, sender);
-            return;
-        }
-        byte[] data = new byte[len];
-        System.arraycopy(raw, dataStart, data, 0, len);
+        log.info("Incoming message: pkgclass={}, id={}, len={}",
+                frame.pkgclass() & 0xFF, frame.id() & 0xFF, frame.data().length);
 
-        int expectedChk = (raw[off + 6] & 0xFF) | ((raw[off + 7] & 0xFF) << 8);
-        int actualChk = checksum(data);
-        if (expectedChk != actualChk) {
-            log.warn("Checksum mismatch: expected 0x{}, got 0x{}",
-                    String.format("%04X", expectedChk), String.format("%04X", actualChk));
-            sendNak(ctx, sender);
-            return;
-        }
-
-        // Track incoming packet ID and detect retransmissions
         if (inPacketIdInit) {
-            inPacketId = (byte) (msgId - 1);
+            inPacketId = (byte) (frame.id() - 1);
             inPacketIdInit = false;
         }
 
         // Always ACK (even retransmissions)
-        sendAck(ctx, msgId, sender);
+        sendAck(ctx, frame.id(), sender);
 
-        // Skip duplicate messages (server retransmits when our ACK doesn't arrive)
-        if (msgId == inPacketId) {
-            log.debug("Duplicate message id={}, ACKed but not reprocessed", msgId & 0xFF);
+        if (frame.id() == inPacketId) {
+            log.debug("Duplicate message id={}, ACKed but not reprocessed", frame.id() & 0xFF);
             return;
         }
-        inPacketId = msgId;
+        inPacketId = frame.id();
 
-        // Process KILPPVT
-        if (pkgclass == PKGCLASS_KILPPVT) {
-            lastMessageTime = Instant.now();
-        }
-        if (pkgclass == PKGCLASS_KILPPVT && listener != null) {
-            // KILPPVT data: tarf(1) + pakota(1) + dk(2) + pv(2) + valuku(2) + cpv(...)
-            if (data.length >= 8) {
-                int dk = (data[2] & 0xFF) | ((data[3] & 0xFF) << 8);
-                int pv = (data[4] & 0xFF) | ((data[5] & 0xFF) << 8);
-                byte[] cpv = new byte[data.length - 8];
-                System.arraycopy(data, 8, cpv, 0, cpv.length);
-                log.info("Incoming KILPPVT: dk={}, pv={}", dk, pv);
-                listener.onCompetitorUpdate(dk, pv, cpv);
+        dispatchMessage(frame);
+    }
+
+    private void dispatchMessage(SohFrame frame) {
+        byte[] data = frame.data();
+
+        switch (frame.pkgclass()) {
+            case PKGCLASS_KILPPVT -> {
+                lastMessageTime = Instant.now();
+                if (listener != null) {
+                    KilppvtPayload p = parseKilppvtData(data);
+                    if (p != null) {
+                        log.info("Incoming KILPPVT: dk={}, pv={}", p.dk(), p.pv());
+                        listener.onCompetitorUpdate(p.dk(), p.pv(), p.cpvData());
+                    }
+                }
             }
+            case PKGCLASS_KILPT -> {
+                lastMessageTime = Instant.now();
+                if (listener != null) {
+                    KilptPayload p = parseKilptData(data);
+                    if (p != null) {
+                        log.info("Incoming KILPT: dk={}, entno={}", p.dk(), p.entno());
+                        listener.onFullCompetitorRecord(p.dk(), p.entno(), p.recordData());
+                    }
+                }
+            }
+            case PKGCLASS_VAIN_TULOST -> {
+                lastMessageTime = Instant.now();
+                if (listener != null) {
+                    VainTulostPayload p = parseVainTulostData(data);
+                    if (p != null) {
+                        log.info("Incoming VAIN_TULOST: dk={}, bib={}, split={}, time={}",
+                                p.dk(), p.bib(), p.splitIndex(), p.time());
+                        listener.onTimeResult(p.dk(), p.bib(), p.stage(), p.splitIndex(), p.time());
+                    }
+                }
+            }
+            case PKGCLASS_EXTRA -> {
+                if (listener != null) {
+                    ExtraPayload p = parseExtraData(data);
+                    if (p != null) {
+                        switch (p.subType()) {
+                            case EXTRA_CHECKPOINT ->
+                                listener.onCheckpoint(p.d3(), p.d4(), p.d2(), 0);
+                            case EXTRA_SHUTDOWN -> {
+                                // d2 contains 2-char machine ID as bytes
+                                byte[] tn = new byte[4];
+                                writeInt32LE(tn, 0, p.d2());
+                                String target = new String(tn, 0, 2).trim();
+                                log.warn("Shutdown command received, target: '{}'",
+                                        target.isEmpty() ? "ALL" : target);
+                                listener.onShutdown(target);
+                            }
+                            default ->
+                                log.debug("EXTRA sub-type {} not handled", p.subType());
+                        }
+                    }
+                }
+            }
+            case PKGCLASS_ALKUT ->
+                log.debug("ALKUT from server (handshake response)");
+            default ->
+                log.debug("Unhandled message type: {}", frame.pkgclass() & 0xFF);
         }
     }
 
     // --- Send helpers ---
 
     private void sendAlkut(ChannelHandlerContext ctx) {
-        byte[] data = new byte[ALKUT_DATA_SIZE];
-        data[0] = 1;
-        data[1] = (byte) machineId.charAt(0);
-        data[2] = (byte) machineId.charAt(1);
-        data[3] = 1; // vaihe
-        writeInt16LE(data, 4, (short) nrec);
-
+        byte[] data = buildAlkutData(machineId, nrec);
         enqueueSend(() -> {
             sendProtocolMessage(ctx, PKGCLASS_ALKUT, data, "ALKUT");
             advancePacketId();
@@ -364,7 +352,7 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
 
         ByteBuf buf = Unpooled.buffer(5 + 8 + data.length);
         buf.writeByte(STX);
-        buf.writeShortLE(localPort);  // OUR port, so server knows where to send back
+        buf.writeShortLE(localPort);
         buf.writeBytes(machineId.getBytes(CharsetUtil.US_ASCII));
         buf.writeByte(SOH);
         buf.writeByte(id);
@@ -380,15 +368,10 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
         ctx.writeAndFlush(new DatagramPacket(buf, remoteAddress()));
     }
 
-    /**
-     * Send ACK to server's sockcli.
-     * Uses 4-byte wrapper format (same as wrt_st_UDPsrv): 0x0000(2) + machineID(2)
-     * The server reads ACKs via read_UDPcli which strips this 4-byte wrapper.
-     */
     private void sendAck(ChannelHandlerContext ctx, byte msgId, InetSocketAddress target) {
         ByteBuf buf = Unpooled.buffer(4 + 4);
-        buf.writeShort(0);  // 0x0000 (2 bytes)
-        buf.writeBytes(machineId.getBytes(CharsetUtil.US_ASCII));  // machineID (2 bytes)
+        buf.writeShort(0);
+        buf.writeBytes(machineId.getBytes(CharsetUtil.US_ASCII));
         buf.writeByte(ACK);
         buf.writeByte(msgId);
         buf.writeByte((byte) (255 - (msgId & 0xFF)));
@@ -410,33 +393,7 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
 
     private void advancePacketId() {
         outPacketId++;
-        if (outPacketId == 0) outPacketId = 1; // skip 0, id=1 reserved for ALKUT reset
-    }
-
-    // --- Utility ---
-
-    static int checksum(byte[] data) {
-        int sum = 0;
-        int i;
-        for (i = 0; i + 1 < data.length; i += 2) {
-            sum += (data[i] & 0xFF) | ((data[i + 1] & 0xFF) << 8);
-        }
-        if (i < data.length) {
-            sum += data[i] & 0xFF;
-        }
-        return sum & 0xFFFF;
-    }
-
-    static void writeInt16LE(byte[] buf, int offset, short value) {
-        buf[offset] = (byte) (value & 0xFF);
-        buf[offset + 1] = (byte) ((value >> 8) & 0xFF);
-    }
-
-    static void writeInt32LE(byte[] buf, int offset, int value) {
-        buf[offset] = (byte) (value & 0xFF);
-        buf[offset + 1] = (byte) ((value >> 8) & 0xFF);
-        buf[offset + 2] = (byte) ((value >> 16) & 0xFF);
-        buf[offset + 3] = (byte) ((value >> 24) & 0xFF);
+        if (outPacketId == 0) outPacketId = 1;
     }
 
     private String bytesToHex(byte[] bytes) {
