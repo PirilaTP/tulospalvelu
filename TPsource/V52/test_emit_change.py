@@ -88,7 +88,10 @@ class HkMaaliSession:
 
 def setup_test_dir():
     """Create temp directory with minimal data files (no network)."""
-    tmpdir = tempfile.mkdtemp(prefix='hkmaali_test_')
+    tmpdir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'test_data_tmp')
+    if os.path.exists(tmpdir):
+        shutil.rmtree(tmpdir)
+    os.makedirs(tmpdir)
 
     # Copy KILP.DAT - the competitor database
     shutil.copy2(os.path.join(SOURCE_DATA, 'KILP.DAT'), tmpdir)
@@ -157,10 +160,11 @@ def test_emit_change():
         sess.send_read(f'{COMPETITOR}\r', 0.5, 2.0)  # Find competitor
 
         # Tab to EME field (emit card). Field sequence starts at TRKE(15).
-        # 15->16->...->27->1->2->3->4->5->6(EME) = 18 tabs
-        for i in range(18):
-            sess.send('\t', 0.15)
-            sess.read(0.2)
+        # Active fields: 15->16->17->18->19->20->21->22->23->(skip 24-27)->1->2->3->4->(skip 5)->6
+        # = 13 Tabs to reach EME
+        for i in range(13):
+            sess.send('\t', 0.2)
+            sess.read(0.3)
 
         # Clear old value and type new one
         for i in range(10):
@@ -225,8 +229,9 @@ def test_emit_change():
     finally:
         sess2.stop()
 
-    # Cleanup
-    shutil.rmtree(tmpdir)
+    # Cleanup (keep for debugging if test fails)
+    if startup_ok and emit_found:
+        shutil.rmtree(tmpdir)
 
     # Results
     print(f"\n{'=' * 60}")

@@ -628,12 +628,16 @@ void kilptietue::PUTREC(INT d, int tallenna)
 		writeerror_w(L"Yritys tallentaa liikaa klpailijoita", 2000);
 		return;
 		}
+	fprintf(stderr, "DBG PUTREC: d=%d tallenna=%d datatallfl[0]=%d datf2.hDatf=%d\n",
+		d, tallenna, datatallfl[0], datf2.hDatf);
 	EnterCriticalSection(&kilpdat_CriticalSection);
 	kilparr[d] = *this;
 	if (tallenna) {
 		for (int i = 0; i < 2; ++i) {
-		 if (datatallfl[i])
+		 if (datatallfl[i]) {
+				fprintf(stderr, "DBG PUTREC: calling write(d=%d, mihin=%d)\n", d, i);
 				this->write(d, i);
+				}
 			}
 		}
 	LeaveCriticalSection(&kilpdat_CriticalSection);

@@ -74,12 +74,16 @@ int putrec(datafile *dataf, DATAREF r, void *buffer)
 DWORD ls, lrecl;
 
   lrecl = r * dataf->recl;
+  fprintf(stderr, "DBG putrec: fd=%d rec=%u offset=%u recl=%u\n",
+    dataf->hDatf, r, lrecl, dataf->recl);
   ls = SetFilePointer(dataf->hDatf, lrecl, NULL, FILE_BEGIN);
   if (ls != lrecl) {
+     fprintf(stderr, "DBG putrec: SetFilePointer FAILED ls=%u expected=%u\n", ls, lrecl);
      perr(dataf->flnm, GetLastError(), "putrec", r);
      return(-1);
   }
   WriteFile(dataf->hDatf, buffer, dataf->recl, &ls, NULL);
+  fprintf(stderr, "DBG putrec: WriteFile wrote %u bytes (expected %u)\n", ls, dataf->recl);
   if (ls < dataf->recl){
      perr(dataf->flnm, GetLastError(), "putrec", r);
      return(-1);

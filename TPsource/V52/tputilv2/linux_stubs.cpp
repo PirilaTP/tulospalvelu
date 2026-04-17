@@ -316,6 +316,16 @@ int main(int argc, char* argv[]) {
 
 /* Shared globals (also used by Inputstr.cpp, Pageedit.cpp) */
 int monirivi = 0;
+
+/* Override InitializeCriticalSection to use recursive mutexes
+   (Windows CRITICAL_SECTION is reentrant, Linux pthread_mutex is not by default) */
+void linux_InitializeCriticalSection_recursive(pthread_mutex_t* cs) {
+    pthread_mutexattr_t attr;
+    pthread_mutexattr_init(&attr);
+    pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+    pthread_mutex_init(cs, &attr);
+    pthread_mutexattr_destroy(&attr);
+}
 /* inputstr is now compiled from Inputstr.cpp */
 /* inputwstr delegates to the real inputwstr2 in Inputwstr.cpp */
 extern wchar_t* inputwstr2(wchar_t* s, unsigned l, int x, int y, const wchar_t* term, wchar_t* tc, int numfl);

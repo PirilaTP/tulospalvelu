@@ -333,7 +333,9 @@ static inline int linux_PeekConsoleInput(int h, INPUT_RECORD* rec, int n, unsign
 
 /* Critical sections */
 typedef pthread_mutex_t CRITICAL_SECTION;
-#define InitializeCriticalSection(cs) pthread_mutex_init(cs, NULL)
+/* Use recursive mutex to match Windows CRITICAL_SECTION behavior */
+extern void linux_InitializeCriticalSection_recursive(pthread_mutex_t* cs);
+#define InitializeCriticalSection(cs) linux_InitializeCriticalSection_recursive(cs)
 #define EnterCriticalSection(cs) pthread_mutex_lock(cs)
 #define LeaveCriticalSection(cs) pthread_mutex_unlock(cs)
 #define DeleteCriticalSection(cs) pthread_mutex_destroy(cs)

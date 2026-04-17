@@ -59,6 +59,7 @@ char *inputstr(char *s, unsigned l, int x, int y, const char *term, char *tc,
       d = 1;
       if (!monirivi) sccurset(y,x + iscurpos);
       ch = readkbd(&che,1,0);
+      fprintf(stderr, "DBG inputstr: ch=%d(0x%02x) che=%d term[0]=%d\n", (int)(unsigned char)ch, (int)(unsigned char)ch, (int)(unsigned char)che, (int)(unsigned char)term[0]);
       if (monirivi && ch == 13) ch = '|';
       if (stschind('+',term) != -1 && ch == '+') break;
       if (((ch >= 32 && ch <= 126) || (ch >= 128 && ch <= 154)
