@@ -24,7 +24,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * Manages the pirila-udp connection lifecycle and competitor data.
@@ -45,6 +47,7 @@ public class TulospalveluService implements MessageListener {
     private volatile boolean started = false;
     private volatile String password;
     private volatile List<fi.pirila.tulospalvelu.Competitor> competitors = List.of();
+    private final List<Consumer<fi.pirila.tulospalvelu.Competitor>> updateListeners = new CopyOnWriteArrayList<>();
     private KilpSrjReader kilpSrjReader;
     private TulospalveluConnection udpConnection;
     private TulospalveluTcpConnection tcpConnection;
@@ -279,6 +282,18 @@ public class TulospalveluService implements MessageListener {
         }
     }
 
+    /**
+     * Register a listener for competitor updates from the network.
+     * Called on Netty thread — listener must handle UI.access() itself.
+     */
+    public void addUpdateListener(Consumer<fi.pirila.tulospalvelu.Competitor> listener) {
+        updateListeners.add(listener);
+    }
+
+    public void removeUpdateListener(Consumer<fi.pirila.tulospalvelu.Competitor> listener) {
+        updateListeners.remove(listener);
+    }
+
     // --- Server-initiated updates ---
 
     @Override
@@ -299,6 +314,9 @@ public class TulospalveluService implements MessageListener {
                 }
             }
             log.info("Server updated: {} {} emit -> {}", comp.sukunimi, comp.etunimi, badge);
+            for (var l : updateListeners) {
+                try { l.accept(comp); } catch (Exception e) { log.warn("Update listener failed", e); }
+            }
         }
     }
 }

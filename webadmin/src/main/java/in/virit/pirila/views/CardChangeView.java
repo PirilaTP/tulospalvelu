@@ -26,10 +26,11 @@ import org.vaadin.firitin.components.textfield.VTextField;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 @Route(layout = TopLayout.class)
 @MenuItem(icon = VaadinIcon.PENCIL)
-public class CardChangeView extends VVerticalLayout {
+public class CardChangeView extends VVerticalLayout implements Consumer<fi.pirila.tulospalvelu.Competitor> {
 
     private final CompetitionCardService cardService;
     private final CompetitorService competitorService;
@@ -59,9 +60,11 @@ public class CardChangeView extends VVerticalLayout {
         addColumn(Competitor::getCompetitionNumber).setHeader("Kilpailunro").setSortable(true);
         addColumn(Competitor::getName).setHeader("Nimi").setSortable(true);
         addColumn(Competitor::getClub).setHeader("Seura").setSortable(true);
+        addColumn(Competitor::getCardNumber).setHeader("Kortti").setSortable(true);
     }};
 
     private boolean clearing;
+    private java.util.function.Consumer<fi.pirila.tulospalvelu.Competitor> updateListener;
 
     private final DefaultButton saveButton = new DefaultButton("Vaihda kortti") {{
         setWidthFull();
@@ -100,6 +103,13 @@ public class CardChangeView extends VVerticalLayout {
         saveButton.addClickListener(e -> changeCard());
         competitorGrid.setItems(competitorService.getAllCompetitors());
         startEmitCardReading();
+
+        // Listen for competitor updates from the network (other HkMaali instances)
+        updateListener = comp -> getUI().ifPresent(ui -> ui.access(() -> {
+            // Refresh the grid to show updated data
+            searchCompetitors();
+        }));
+        tulospalveluService.addUpdateListener(this);
 
         var cardNumberRow = new HorizontalLayout(cardNumber, emitReaderButton) {{
             setWidthFull();
@@ -200,6 +210,9 @@ public class CardChangeView extends VVerticalLayout {
     @Override
     public void onDetach(DetachEvent detachEvent) {
         emitCardReader.stopReading();
+        if (updateListener != null) {
+            tulospalveluService.removeUpdateListener(updateListener);
+        }
         super.onDetach(detachEvent);
     }
 
@@ -207,4 +220,9 @@ public class CardChangeView extends VVerticalLayout {
     TextField getCardNumberField() { return cardNumber; }
     Grid<Competitor> getCompetitorGrid() { return competitorGrid; }
     DefaultButton getSaveButton() { return saveButton; }
+
+    @Override
+    public void accept(fi.pirila.tulospalvelu.Competitor competitor) {
+
+    }
 }
