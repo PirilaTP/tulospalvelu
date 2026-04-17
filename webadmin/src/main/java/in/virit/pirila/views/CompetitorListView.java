@@ -19,8 +19,8 @@ public class CompetitorListView extends VVerticalLayout {
 
     private final CompetitorService competitorService;
 
-    private final TextField searchField = new TextField("Hae kilpailija (numero/nimi)") {{
-        setPlaceholder("Hae kilpailijoita numerolla tai nimellä...");
+    private final TextField searchField = new TextField("Hae (numero/nimi/seura/sarja)") {{
+        setPlaceholder("Hae kilpailijoita...");
         setClearButtonVisible(true);
         setWidthFull();
         setValueChangeMode(ValueChangeMode.LAZY);
@@ -33,7 +33,11 @@ public class CompetitorListView extends VVerticalLayout {
         addColumn(Competitor::getCompetitionNumber).setHeader("Bib").setSortable(true);
         addColumn(Competitor::getName).setHeader("Nimi").setSortable(true);
         addColumn(Competitor::getClub).setHeader("Seura").setSortable(true);
+        addColumn(Competitor::getSarja).setHeader("Sarja").setSortable(true);
         addColumn(Competitor::getCardNumber).setHeader("Korttinro").setSortable(true);
+        addColumn(Competitor::getResult).setHeader("Tulos")
+                .setComparator(Competitor::getResultOrder)
+                .setSortable(true);
         setSizeFull();
     }};
 
@@ -43,7 +47,8 @@ public class CompetitorListView extends VVerticalLayout {
         searchField.addValueChangeListener(event -> search());
         competitorGrid.setItems(competitorService.getAllCompetitors());
 
-        add(searchField, competitorGrid);
+        add(searchField);
+        addAndExpand(competitorGrid);
         setSizeFull();
     }
 

@@ -29,7 +29,7 @@ public class CardChangeViewTest extends SpringBrowserlessTest {
     @Test
     public void testBlankCardNumberRejected() {
         var request = new CardChangeRequest();
-        request.setCompetitor(new Competitor(1L, "1", "Test", "Club", ""));
+        request.setCompetitor(new Competitor(1L, "1", "Test", "Club", "", "1", "Avoin", 100000));
         var violations = validator.validate(request);
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("cardNumber")),
                 "Blank card number should be rejected");

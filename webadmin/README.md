@@ -49,6 +49,15 @@ Asetusnäytössä:
 
 Klikkaa **Aloita**. Vihreä "Yhdistetty" -pallo tarkoittaa että yhteys tulospalveluserveriin on muodostettu.
 
+Asetusnäytön voi ohittaa lisäämällä `application.properties`-tiedoston jar:n viereen:
+
+```properties
+tulospalvelu.data-dir=.
+tulospalvelu.auto-start=true
+```
+
+Tällöin palvelu käynnistyy suoraan annettuun datahakemistoon ilman asetusnäyttöä. Salasanasuojaus ei ole käytössä automaattikäynnistyksessä.
+
 ### 5. Vaihda emit-kortteja
 
 1. Skannaa tai syötä uuden kortin numero

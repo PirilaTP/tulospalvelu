@@ -25,7 +25,8 @@ public class CompetitorService {
         return tulospalveluService.getCompetitors().stream()
                 .filter(c -> String.valueOf(c.kilpno).contains(term)
                         || (c.sukunimi + " " + c.etunimi).toLowerCase().contains(term)
-                        || c.seura.toLowerCase().contains(term))
+                        || c.seura.toLowerCase().contains(term)
+                        || tulospalveluService.getClassName(c.sarja).toLowerCase().contains(term))
                 .map(this::toCompetitor)
                 .toList();
     }
@@ -41,7 +42,10 @@ public class CompetitorService {
                 String.valueOf(comp.kilpno),
                 comp.sukunimi + " " + comp.etunimi,
                 comp.seura,
-                comp.badge > 0 ? String.valueOf(comp.badge) : ""
+                comp.badge > 0 ? String.valueOf(comp.badge) : "",
+                tulospalveluService.getClassName(comp.sarja),
+                comp.formatResult(),
+                comp.resultOrder()
         );
     }
 }

@@ -45,8 +45,13 @@ public class KilpReader {
     private static final int OFF_SARJA = 348;
 
     // Field offsets within pv (stage) block (pv_fields)
-    private static final int PV_OFF_BADGE = 68;   // INT32[2]
-    private static final int PV_OFF_BIB = 66;     // INT16
+    private static final int PV_OFF_BADGE = 68;    // INT32[2]
+    private static final int PV_OFF_BIB = 66;      // INT16
+    private static final int PV_OFF_TLAHTO = 124;    // INT32 start time (clock, 1/100s)
+    private static final int PV_OFF_KESKHYL = 128;   // WCHAR (2 bytes)
+    private static final int PV_OFF_VA = 152;         // vatp[] array, 8 bytes each
+    // vatp[0] = start time (= tlahto), vatp[1] = finish time (clock, 1/100s)
+    // vatp[n].val2 = position/order number
 
     /**
      * Read numrec (total record count including header) from KILP.DAT header.
@@ -275,15 +280,30 @@ public class KilpReader {
                 String seura = readWideString(record, OFF_SEURA, 32);
                 int sarja = buf.getShort(OFF_SARJA) & 0xFFFF;
 
-                // Badge from pv[0] (first stage)
+                // Fields from pv[0] (first stage)
                 int badge = 0;
                 int badge2 = 0;
+                char keskhyl = 0;
+                int ysija = 0;
+                int resultTime = 0;
                 if (kilprecsize0 + PV_OFF_BADGE + 8 <= reclen) {
                     badge = buf.getInt(kilprecsize0 + PV_OFF_BADGE);
                     badge2 = buf.getInt(kilprecsize0 + PV_OFF_BADGE + 4);
                 }
+                if (kilprecsize0 + PV_OFF_KESKHYL + 2 <= reclen) {
+                    keskhyl = (char) (buf.getShort(kilprecsize0 + PV_OFF_KESKHYL) & 0xFFFF);
+                }
+                // vatp[1] = result: {time_ms, position}
+                // time is result time in milliseconds, val2 = position (sija)
+                if (kilprecsize0 + PV_OFF_VA + 16 <= reclen) {
+                    int resultMs = buf.getInt(kilprecsize0 + PV_OFF_VA + 8);  // vatp[1].time
+                    ysija = buf.getInt(kilprecsize0 + PV_OFF_VA + 12);        // vatp[1].val2
+                    if (resultMs > 0) {
+                        resultTime = resultMs;
+                    }
+                }
 
-                competitors.add(new Competitor(i, kilpno, sukunimi, etunimi, seura, sarja, badge, badge2));
+                competitors.add(new Competitor(i, kilpno, sukunimi, etunimi, seura, sarja, badge, badge2, keskhyl, ysija, resultTime));
             }
         }
 

@@ -2,6 +2,7 @@ package in.virit.pirila.service;
 
 import fi.pirila.tulospalvelu.ConfigReader;
 import fi.pirila.tulospalvelu.KilpReader;
+import fi.pirila.tulospalvelu.KilpSrjReader;
 import fi.pirila.tulospalvelu.MessageListener;
 import fi.pirila.tulospalvelu.TulospalveluConnection;
 import fi.pirila.tulospalvelu.TulospalveluTcpConnection;
@@ -11,9 +12,11 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
+import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -33,14 +36,33 @@ public class TulospalveluService implements MessageListener {
 
     private static final Logger log = LoggerFactory.getLogger(TulospalveluService.class);
 
+    @Value("${tulospalvelu.data-dir:}")
+    private String defaultDataDir;
+
+    @Value("${tulospalvelu.auto-start:false}")
+    private boolean autoStart;
+
     private volatile boolean started = false;
     private volatile String password;
     private volatile List<fi.pirila.tulospalvelu.Competitor> competitors = List.of();
+    private KilpSrjReader kilpSrjReader;
     private TulospalveluConnection udpConnection;
     private TulospalveluTcpConnection tcpConnection;
     private EventLoopGroup eventLoopGroup;
     private Channel channel;
     private Path kilpFile;
+
+    @PostConstruct
+    public void init() {
+        if (autoStart && defaultDataDir != null && !defaultDataDir.isBlank()) {
+            log.info("Auto-starting with data-dir: {}", defaultDataDir);
+            try {
+                start(defaultDataDir, null);
+            } catch (Exception e) {
+                log.error("Auto-start failed", e);
+            }
+        }
+    }
 
     /**
      * Starts the service by reading data from the given directory.
@@ -71,6 +93,20 @@ public class TulospalveluService implements MessageListener {
             }
         } else {
             throw new IllegalArgumentException("KILP.DAT ei löydy hakemistosta: " + dir.toAbsolutePath());
+        }
+
+        Path srjFile = dir.resolve("KilpSrj.xml");
+        if (!Files.exists(srjFile)) {
+            srjFile = dir.getParent() != null ? dir.getParent().resolve("KilpSrj.xml") : null;
+        }
+        if (srjFile != null && Files.exists(srjFile)) {
+            try {
+                kilpSrjReader = new KilpSrjReader();
+                kilpSrjReader.read(srjFile);
+                log.info("Loaded {} classes from KilpSrj.xml", kilpSrjReader.getClassNames().size());
+            } catch (IOException e) {
+                log.warn("Failed to read KilpSrj.xml: {}", e.getMessage());
+            }
         }
 
         Path cfgFile = dir.resolve("laskenta.cfg");
@@ -181,6 +217,10 @@ public class TulospalveluService implements MessageListener {
 
     public List<fi.pirila.tulospalvelu.Competitor> getCompetitors() {
         return competitors;
+    }
+
+    public String getClassName(int sarja) {
+        return kilpSrjReader != null ? kilpSrjReader.getClassName(sarja) : String.valueOf(sarja);
     }
 
     public fi.pirila.tulospalvelu.Competitor getCompetitorByRecordIndex(int recordIndex) {
