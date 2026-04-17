@@ -57,7 +57,6 @@ __published:	// IDE-managed Components
 	TButton *BtnLuoAFlst;
 	TButton *Button6;
 	TRadioGroup *RGJatko;
-	TButton *BtnLahetysVal;
 	TCheckBox *CBVaadiMuutos;
 	TBitBtn *BitBtn1;
 	void __fastcall FormShow(TObject *Sender);
@@ -69,7 +68,6 @@ __published:	// IDE-managed Components
 	void __fastcall BtnAvaaAFlstClick(TObject *Sender);
 	void __fastcall CBVaadiMuutosClick(TObject *Sender);
 	void __fastcall RGJatkoClick(TObject *Sender);
-	void __fastcall BtnLahetysValClick(TObject *Sender);
 	void __fastcall BitBtn1Click(TObject *Sender);
 	void __fastcall BtnLuoAFlstClick(TObject *Sender);
 private:	// User declarations

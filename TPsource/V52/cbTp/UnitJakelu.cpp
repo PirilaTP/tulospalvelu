@@ -26,8 +26,6 @@
 #include <IdAllFTPListParsers.hpp>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "ScSFTPClient"
-#pragma link "ScSSHClient"
 #pragma resource "*.dfm"
 TFormJakelu *FormJakelu;
 extern CRITICAL_SECTION autotul_CriticalSection;
@@ -42,11 +40,11 @@ __fastcall TFormJakelu::TFormJakelu(TComponent* Owner)
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
 	}
-	ScSFTPClient->OnDirectoryList = ScSFTPClientDirectoryList;
-	ScFileStorage->Path = WorkingDir;
 	SourcePath = WorkingDir;
 	if (SourcePath.Length() > 1 && SourcePath[SourcePath.Length()] != L'\\')
 		SourcePath = SourcePath + L"\\";
+	Protokolla = 0;
+	ProtokollaValinnat();
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormJakelu::BtnOpenClick(TObject *Sender)
@@ -56,10 +54,6 @@ void __fastcall TFormJakelu::BtnOpenClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void TFormJakelu::openFTP(void)
 {
-	if (Protokolla == 1) {
-		openSFTP();
-		return;
-		}
 	IdFTP1->Host = EdServerAddr->Text;
 	IdFTP1->Port = _wtoi(EdServerPort->Text.c_str());
 	IdFTP1->Username = EdUser->Text;
@@ -113,10 +107,6 @@ void TFormJakelu::CloseAll(void)
 {
 	KeskeytaLahetys = true;
 	Sleep(500);
-	if (Connected == 2) {
-		CloseAllSFTP();
-		return;
-		}
 	if (!Connected)
 		return;
 	Connected = 0;
@@ -233,12 +223,7 @@ static void SendOnce(void *ptr)
 	EnterCriticalSection(&autotul_CriticalSection);
 	FormJakelu->LahetysKesken = true;
 	LeaveCriticalSection(&autotul_CriticalSection);
-	if (FormJakelu->Protokolla == 1) {
-		FormJakelu->SendOnceSFTP();
-		}
-	else {
-		FormJakelu->SendOnceFTP();
-		}
+	FormJakelu->SendOnceFTP();
 	FormJakelu->LahetysKesken = false;
 }
 //---------------------------------------------------------------------------
@@ -254,13 +239,6 @@ void __fastcall TFormJakelu::BtnSendOnceClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-void __fastcall TFormJakelu::RGAuthClick(TObject *Sender)
-{
-	GBKey->Visible = RGAuth->ItemIndex == 1;
-	PanelPW->Visible = !GBKey->Visible;
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TFormJakelu::FileViewDblClick(TObject *Sender)
 {
@@ -324,10 +302,6 @@ void TFormJakelu::OpenDir(const UnicodeString Path, const UnicodeString Selected
 	TTreeNode *Node;
 	int i;
 
-	if (Protokolla == 1) {
-		OpenDirSFTP(Path, SelectedName);
-		return;
-		}
 	OldCursor = Screen->Cursor;
 	try {
 		Screen->Cursor = crHourGlass;
@@ -359,11 +333,8 @@ void TFormJakelu::OpenDir(const UnicodeString Path, const UnicodeString Selected
 					Node->Text = Node->Text + L" - " + UnicodeString(IdFTP1->DirectoryListing->Items[i]->Size);
 					}
 				}
-//		ScSFTPClient->ReadDirectory(Handle);
-//		} while(!ScSFTPClient->EOF);}
 			}
 		__finally {
-//	  ScSFTPClient->CloseHandle(Handle);
 			}
 
 		if (SelectedName.Length() > 0) {
@@ -539,18 +510,13 @@ void TFormJakelu::TallJakeluMaaritykset(wchar_t *MaarFile)
 		swprintf(ln, L"%s createTime=\"%s\" creator=\"HkKisaWin %s\"", L"JakeluParam", ISOdatetime(0,1), Build());
 		tallfl->put_wtag(ln, level++);
 		tallfl->put_wxml_s(XMLhae_tagName(JAK_Protocol, JakTags, nJakTags),
-			XMLhaeteksti(L"FS"[Protokolla], TxtLaji, TxtSt), level);
+			XMLhaeteksti(L'F', TxtLaji, TxtSt), level);
 		tallfl->put_wxml_s(XMLhae_tagName(JAK_ServerAddr, JakTags, nJakTags), EdServerAddr->Text.c_str(), level);
 		tallfl->put_wxml_d(XMLhae_tagName(JAK_ServerPort, JakTags, nJakTags), _wtoi(EdServerPort->Text.c_str()), level);
 		tallfl->put_wxml_s(XMLhae_tagName(JAK_User, JakTags, nJakTags), EdUser->Text.c_str(), level);
 		tallfl->put_wxml_s(XMLhae_tagName(JAK_AuthMethod, JakTags, nJakTags),
-			XMLhaeteksti(L"PK"[RGAuth->ItemIndex], TxtLaji, TxtSt), level);
-		if (RGAuth->ItemIndex == 0) {
-			tallfl->put_wxml_s(XMLhae_tagName(JAK_Password, JakTags, nJakTags), EdPW->Text.c_str(), level);
-			}
-		if (RGAuth->ItemIndex == 1) {
-			tallfl->put_wxml_s(XMLhae_tagName(JAK_PublikKey, JakTags, nJakTags), CBKeyFile->Text.c_str(), level);
-			}
+			XMLhaeteksti(L'P', TxtLaji, TxtSt), level);
+		tallfl->put_wxml_s(XMLhae_tagName(JAK_Password, JakTags, nJakTags), EdPW->Text.c_str(), level);
 		tallfl->put_wxml_s(XMLhae_tagName(JAK_LocalDataType, JakTags, nJakTags),
 			XMLhaeteksti(L"TD"[RGTiedot->ItemIndex], TxtLaji, TxtSt), level);
 		tallfl->put_wxml_s(XMLhae_tagName(JAK_LocalDataName, JakTags, nJakTags), EdSource->Text.c_str(), level);
@@ -566,7 +532,6 @@ int TFormJakelu::loadJakeluParam(xml_node *node, int nnode)
 {
 	int er = 0, inode, DepthIn, haara = 0, iassign = -1, no = 0, val;
 	wchar_t ln[200], lj;
-	bool Protokolla0;
 
 	XMLhaenodeid(node, nnode, JakTags, nJakTags);
 	DepthIn = node[0].depth + 1;
@@ -576,8 +541,6 @@ int TFormJakelu::loadJakeluParam(xml_node *node, int nnode)
 			switch (node[inode].tagid) {
 				case JAK_Protocol :
 					node[inode].gettext(ln, 10);
-					lj = XMLhaetunnus(ln, TxtLaji, TxtSt, sizeof(TxtSt)/sizeof(TxtSt[0]));
-					Protokolla0 = wcswcind(lj, L"FS");
 					break;
 				case JAK_ServerAddr:
 					node[inode].gettext(ln, sizeof(ln)/2-1);
@@ -593,8 +556,6 @@ int TFormJakelu::loadJakeluParam(xml_node *node, int nnode)
 					break;
 				case JAK_AuthMethod:
 					node[inode].gettext(ln, 10);
-					lj = XMLhaetunnus(ln, TxtLaji, TxtSt, sizeof(TxtSt)/sizeof(TxtSt[0]));
-					RGAuth->ItemIndex = wcswcind(lj, L"PK");
 					break;
 				case JAK_Password:
 					node[inode].gettext(ln, sizeof(ln)/2-1);
@@ -602,7 +563,6 @@ int TFormJakelu::loadJakeluParam(xml_node *node, int nnode)
 					break;
 				case JAK_PublikKey:
 					node[inode].gettext(ln, sizeof(ln)/2-1);
-					CBKeyFile->Text = ln;
 					break;
 				case JAK_LocalDataType:
 					node[inode].gettext(ln, 10);
@@ -635,22 +595,8 @@ int TFormJakelu::loadJakeluParam(xml_node *node, int nnode)
 			continue;
 			}
 		}
-	if (Protokolla0) {
-		rbFTP->Checked = false;
-		Protokolla = Protokolla0;
-		if (rbSFTP->Checked)
-			ProtokollaValinnat();
-		else
-			rbSFTP->Checked = true;
-		}
-	else {
-		rbSFTP->Checked = false;
-		Protokolla = Protokolla0;
-		if (rbFTP->Checked)
-			ProtokollaValinnat();
-		else
-			rbFTP->Checked = true;
-		}
+	Protokolla = 0;
+	ProtokollaValinnat();
 	Refresh();
 	return(er);
 }
@@ -766,313 +712,14 @@ void __fastcall TFormJakelu::EdServerPathExit(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TFormJakelu::Luouusiavaintiedostopari1Click(TObject *Sender)
-{
-	wchar_t st[100] = L"", ch;
-  TCursor OldCursor = Screen->Cursor;
-
-	inputstr_prompt(st, 99, L"Anna avaintiedoston nimi ilman päätettä", &ch, this);
-	if (ch == ESC)
-		return;
-
-  try {
-	Screen->Cursor = crHourGlass;
-
-	TScKey *Key = ScFileStorage->Keys->FindKey(st);
-	TScAsymmetricAlgorithm Algorithm;
-	int BitCount;
-
-	if (Key == NULL) {
-	  Key = new TScKey(ScFileStorage->Keys);
-	  Key->KeyName = st;
-	  Algorithm = aaRSA;
-	  BitCount = 1024;
-	}
-	else {
-	  Key->Ready = true;
-	  Algorithm = Key->Algorithm;
-	  BitCount = Key->BitCount;
-	}
-
-	try {
-	  Key->Generate(Algorithm, BitCount, Scbridge::Random);
-	  Key->ExportTo(Key->KeyName + L".pub", true, L"", saTripleDES_cbc, kfDefault, L"");
-
-	  String msg = L"Avaintiedosto on generoitu ohjelman datahakemistoon.\n";
-	  msg += L"Ota avain käyttöön siirtämällä julkinen avaintiedosto '" + Key->KeyName;
-	  msg += ".pub' palvelimelle käytettävän SSH-palvelimen ohjeiden mukaisesti.";
-	  MessageDlg(msg, mtInformation, TMsgDlgButtons() << mbOK, 0);
-	}
-	catch (Exception &ex) {
-	  MessageDlg("Avaimen generointi ei onnistunut: " + ex.Message, mtWarning, TMsgDlgButtons() << mbOK, 0);
-    }
-  }
-  __finally {
-    Screen->Cursor = OldCursor;
-  }
-}
-//---------------------------------------------------------------------------
-
-
-
-void __fastcall TFormJakelu::ScSSHClientBeforeConnect(TObject *Sender)
-{
-  ScSSHClient->HostName = EdServerAddr->Text;
-  ScSSHClient->Port = _wtoi(EdServerPort->Text.c_str());
-  ScSSHClient->User = EdUser->Text;
-
-  if (RGAuth->ItemIndex == 0) {
-	ScSSHClient->Authentication = atPassword;
-	ScSSHClient->Password = EdPW->Text;
-  }
-  else {
-	TScKey *Key;
-	UnicodeString KNm;
-	int ll;
-
-	ScSSHClient->Authentication = atPublicKey;
-	ScSSHClient->PrivateKeyName = CBKeyFile->Text;
-
-	if (ScFileStorage->Keys->FindKey(ScSSHClient->PrivateKeyName) == NULL) {
-	   throw Exception("Avaintiedosto ei käytettävissä");
-	   }
-  }
-}
-//---------------------------------------------------------------------------
-
-
-void __fastcall TFormJakelu::ScSSHClientServerKeyValidate(TObject *Sender, TScKey *NewServerKey,
-          bool &Accept)
-{
-	String fp, msg;
-
-	TScKey *Key = ScFileStorage->Keys->FindKey(ScSSHClient->HostName);
-	if ((Key == NULL) || (!Key->Ready))  {
-		NewServerKey->GetFingerprint(haMD5, fp);
-		Key = new TScKey(NULL);
-		try {
-			Key->Assign(NewServerKey);
-			Key->KeyName = ScSSHClient->HostName;
-			ScFileStorage->Keys->Add(Key);
-			}
-		catch (Exception &exception) {
-			Key->Free();
-			throw;
-			}
-
-		Accept = true;
-		}
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormJakelu::ScSSHClientAfterConnect(TObject *Sender)
-{
-	Connected = 2;
-	SendMessage(FormJakelu->Handle,WM_MYMSGDSPMSG,1,0);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormJakelu::ScSSHClientAfterDisconnect(TObject *Sender)
-{
-	Connected = 0;
-	SendMessage(FormJakelu->Handle,WM_MYMSGDSPMSG,0,0);
-}
-//---------------------------------------------------------------------------
-void TFormJakelu::openSFTP(void)
-{
-	try {
-		ScSSHClient->Connect();
-		ScSFTPClient->Initialize();
-		if (EdServerPath->Text.Length() > 0)
-			ScSFTPClient->OpenDirectory(EdServerPath->Text);
-		Sleep(100);
-		EdServerPath->Font->Color = clBlue;
-		}
-	catch(...) {
-
-	}
-}
-//---------------------------------------------------------------------------
-void TFormJakelu::SendOnceSFTP(void)
-{
-	bool tempConnect = false;
-
-	TStringDynArray Files;
-	TSearchOption searchOption = TSearchOption::soTopDirectoryOnly;
-
-	try {
-		if (Connected == 0) {
-			ScSSHClient->Connect();
-			ScSFTPClient->Initialize();
-			tempConnect = true;
-			}
-		lbRootDir->Text = ScSFTPClient->RetrieveAbsolutePath(ServerPath);
-		ScSFTPClient->OpenDirectory(lbRootDir->Text);
-		if (!lahKaikki) {
-			Files.Length = 1;
-			Files[0] = TPath::GetFullPath(SourceFiles);
-			}
-		else {
-			Files = TDirectory::GetFiles(SourcePath);
-			}
-		for (int i = 0; i < Files.Length; i++) {
-			UnicodeString FlNm = TPath::GetFileName(Files[i]);
-			if (inLopetus || KeskeytaLahetys)
-				break;
-			try {
-				ScSFTPClient->RemoveFile(GetRootDir()+FlNm+L".__tmp__");
-				}
-			catch (Exception& EScSFTPClientError) {
-				}
-			try {
-				ScSFTPClient->UploadFile(Files[i], GetRootDir()+FlNm+L".__tmp__", False);
-				try {
-					ScSFTPClient->RemoveFile(GetRootDir()+FlNm);
-					}
-				catch (Exception& EScSFTPClientError){
-					}
-				ScSFTPClient->RenameFile(GetRootDir()+FlNm+L".__tmp__",GetRootDir()+FlNm);
-				if (DeleteAfterSend)
-					DeleteFile(Files[i]);
-				}
-			catch(Exception& EScSFTPClientError) {
-				}
-			}
-		if (FileView && FileView->Visible)
-			OpenDirSFTP(lbRootDir->Text);
-		}
-	catch(...) {
-		}
-	if (Connected == 2 && tempConnect && !KeepOpen) {
-		ScSFTPClient->Disconnect();
-		ScSSHClient->Disconnect();
-		}
-}
-//---------------------------------------------------------------------------
-void __fastcall TFormJakelu::OpenDirSFTP(const UnicodeString Path, const UnicodeString SelectedName)
-{
-	TCursor OldCursor;
-	TScSFTPFileHandle Handle;
-	int i;
-
-	OldCursor = Screen->Cursor;
-	try {
-		Screen->Cursor = crHourGlass;
-
-		lbRootDir->Text = ScSFTPClient->RetrieveAbsolutePath(Path.Trim());
-
-		Handle = ScSFTPClient->OpenDirectory(lbRootDir->Text);
-		try {
-			FileView->Items->Clear();
-			do {
-				ScSFTPClient->ReadDirectory(Handle);
-				} while(!ScSFTPClient->EOF());
-			}
-		__finally {
-			ScSFTPClient->CloseHandle(Handle);
-			}
-
-		if (SelectedName.Length() > 0) {
-			for (i = 0; i < FileView->Items->Count; i++) {
-				if (FileView->Items->Item[i]->Text.LowerCase() == SelectedName.LowerCase()) {
-					FileView->Selected = FileView->Items->Item[i];
-					return;
-					}
-				}
-			}
-		}
-	__finally {
-		Screen->Cursor = OldCursor;
-		}
-}
-//---------------------------------------------------------------------------
-void TFormJakelu::CloseAllSFTP(void)
-{
-	if (Connected != 2)
-		return;
-	Connected = 0;
-	try {
-		ScSFTPClient->Disconnect();
-		ScSSHClient->Disconnect();
-		}
-	catch(...) {
-	}
-	Panel1->Visible = false;
-	ClientWidth = Panel1->Left - 4;
-}
-//---------------------------------------------------------------------------
-
-
-void __fastcall TFormJakelu::ScSFTPClientDirectoryList(TObject *Sender, const UnicodeString Path,
-		  const TScSFTPFileHandle Handle, TScSFTPFileInfo *FileInfo,
-          bool EOF)
-{
-TTreeNode *Node;
-
-  if (FileInfo == NULL || FileInfo->Filename == L".")
-	 return;
-
-  Node = FileView->Items->Add(NULL, "");
-  if (FileInfo->Filename == L"..") {
-	Node->ImageIndex = 2;
-	Node->SelectedIndex = 2;
-	}
-  else if (FileInfo->Longname.Length() > 0 && FileInfo->Longname[1] == L'd') {
-	Node->ImageIndex = 1;
-	Node->SelectedIndex = 1;
-	}
-
-  Node->Text = FileInfo->Filename; // for sorting
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormJakelu::CBKeyFileDropDown(TObject *Sender)
-{
-  ScFileStorage->Keys->GetKeyNames(CBKeyFile->Items);
-}
-//---------------------------------------------------------------------------
 void TFormJakelu::ProtokollaValinnat(void)
 {
-	switch (Protokolla) {
-		case 0:
-//			rbFTP->Checked = true;
-//			rbSFTP->Checked = false;
-			RGAuth->Visible = false;
-			PanelPW->Visible = true;
-			GBKey->Visible = false;
-			EdServerPort->Text = 21;
-			break;
-		case 1:
-//			rbFTP->Checked = false;
-//			rbSFTP->Checked = true;
-			RGAuth->Visible = true;
-			PanelPW->Visible = RGAuth->ItemIndex == 0;
-			GBKey->Visible = RGAuth->ItemIndex == 1;
-			if (_wtoi(EdServerPort->Text.c_str()) < 22)
-				EdServerPort->Text = 22;
-			break;
-		}
-	Luouusiavaintiedostopari1->Visible = Protokolla == 1;
+	PanelPW->Visible = true;
+	if (_wtoi(EdServerPort->Text.c_str()) == 0 ||
+		_wtoi(EdServerPort->Text.c_str()) == 22)
+		EdServerPort->Text = 21;
 }
 //---------------------------------------------------------------------------
-
-
-void __fastcall TFormJakelu::rbFTPClick(TObject *Sender)
-{
-	CloseAll();
-	Protokolla = 0;
-	ProtokollaValinnat();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormJakelu::rbSFTPClick(TObject *Sender)
-{
-	CloseAll();
-	Protokolla = 1;
-	ProtokollaValinnat();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TFormJakelu::BtnOtaPolkuClick(TObject *Sender)
 {
 	EdServerPath->Text = lbRootDir->Text;
@@ -1084,15 +731,9 @@ void __fastcall TFormJakelu::BtnLuoKansioClick(TObject *Sender)
 {
 	if (lbRootDir->Text.Length() < 2)
 		return;
-	switch (Connected) {
-		case 1:
-			IdFTP1->MakeDir(lbRootDir->Text);
-			OpenDir(lbRootDir->Text);
-			break;
-		case 2:
-			ScSFTPClient->MakeDirectory(lbRootDir->Text);
-			OpenDirSFTP(lbRootDir->Text);
-			break;
+	if (Connected == 1) {
+		IdFTP1->MakeDir(lbRootDir->Text);
+		OpenDir(lbRootDir->Text);
 		}
 }
 //---------------------------------------------------------------------------
@@ -1107,19 +748,13 @@ void __fastcall TFormJakelu::BtnPoistaTiedostoClick(TObject *Sender)
 		return;
 	Node = GetSelectedNode();
 	if (Node != NULL && Node->SelectedIndex == 0) {
-		switch (Connected) {
-			case 1:
-				FlNm = Node->Text;
-				Pos = FlNm.Pos(L" - ");
-				if (Pos > 0)
-					FlNm = FlNm.SubString(1, Pos-1);
-				IdFTP1->Delete(FlNm);
-				OpenDir(lbRootDir->Text);
-				break;
-			case 2:
-				ScSFTPClient->RemoveFile(GetRootDir() + Node->Text);
-				OpenDirSFTP(lbRootDir->Text);
-			break;
+		if (Connected == 1) {
+			FlNm = Node->Text;
+			Pos = FlNm.Pos(L" - ");
+			if (Pos > 0)
+				FlNm = FlNm.SubString(1, Pos-1);
+			IdFTP1->Delete(FlNm);
+			OpenDir(lbRootDir->Text);
 			}
 		}
 }

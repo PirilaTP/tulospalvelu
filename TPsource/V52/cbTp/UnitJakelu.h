@@ -36,9 +36,6 @@
 #include <Vcl.ImgList.hpp>
 #include <Vcl.Buttons.hpp>
 #include <Vcl.Menus.hpp>
-#include "ScBridge.hpp"
-#include "ScSFTPClient.hpp"
-#include "ScSSHClient.hpp"
 #include <System.ImageList.hpp>
 #ifndef MAXOSUUSLUKU
 #include "HkDeclare.h"
@@ -59,7 +56,6 @@ __published:	// IDE-managed Components
 	TEdit *EdServerPath;
 	TLabel *Label4;
 	TEdit *EdUser;
-	TRadioGroup *RGAuth;
 	TOpenDialog *OpenDialog1;
 	TRadioGroup *RGTiedot;
 	TLabel *Label6;
@@ -73,7 +69,6 @@ __published:	// IDE-managed Components
 	TLabel *Label7;
 	TMaskEdit *EdServerPort;
 	TLabel *LblYhteys;
-	TGroupBox *GBKey;
 	TButton *BtnSelaa;
 	TPanel *Panel1;
 	TPanel *Panel2;
@@ -88,17 +83,9 @@ __published:	// IDE-managed Components
 	TMenuItem *Luemritykset1;
 	TSaveDialog *SaveDialog1;
 	TCheckBox *CBAutoJakelu;
-	TScSFTPClient *ScSFTPClient;
-	TScSSHClient *ScSSHClient;
-	TScFileStorage *ScFileStorage;
-	TMenuItem *Luouusiavaintiedostopari1;
-	TComboBox *CBKeyFile;
 	TPanel *PanelPW;
 	TEdit *EdPW;
 	TLabel *LblPW;
-	TGroupBox *GBProtokolla;
-	TRadioButton *rbFTP;
-	TRadioButton *rbSFTP;
 	TButton *BtnOtaPolku;
 	TButton *BtnLuoKansio;
 	TButton *BtnPoistaTiedosto;
@@ -109,7 +96,6 @@ __published:	// IDE-managed Components
 	void __fastcall BtnCloseClick(TObject *Sender);
 	void __fastcall BtnSelFileClick(TObject *Sender);
 	void __fastcall BtnSendOnceClick(TObject *Sender);
-	void __fastcall RGAuthClick(TObject *Sender);
 	void __fastcall FileViewDblClick(TObject *Sender);
 	void __fastcall FileViewKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
 	void __fastcall BtnSelaaClick(TObject *Sender);
@@ -127,18 +113,6 @@ __published:	// IDE-managed Components
 	void __fastcall EdPWChange(TObject *Sender);
 	void __fastcall RGKeepOpenClick(TObject *Sender);
 	void __fastcall EdServerPathExit(TObject *Sender);
-	void __fastcall Luouusiavaintiedostopari1Click(TObject *Sender);
-	void __fastcall ScSSHClientBeforeConnect(TObject *Sender);
-	void __fastcall ScSSHClientServerKeyValidate(TObject *Sender, TScKey *NewServerKey,
-		  bool &Accept);
-	void __fastcall ScSSHClientAfterConnect(TObject *Sender);
-	void __fastcall ScSSHClientAfterDisconnect(TObject *Sender);
-	void __fastcall ScSFTPClientDirectoryList(TObject *Sender, const UnicodeString Path,
-		  const TScSFTPFileHandle Handle, TScSFTPFileInfo *FileInfo,
-		  bool EOF);
-	void __fastcall CBKeyFileDropDown(TObject *Sender);
-	void __fastcall rbFTPClick(TObject *Sender);
-	void __fastcall rbSFTPClick(TObject *Sender);
 	void __fastcall BtnOtaPolkuClick(TObject *Sender);
 	void __fastcall BtnLuoKansioClick(TObject *Sender);
 	void __fastcall BtnPoistaTiedostoClick(TObject *Sender);
@@ -154,9 +128,6 @@ END_MESSAGE_MAP(TComponent)
 	UnicodeString __fastcall GetRootDir(void);
 	TTreeNode *GetSelectedNode(void);
 	void OpenDir(const UnicodeString Path, const UnicodeString SelectedName = L"");
-	void __fastcall OpenDirSFTP(const UnicodeString Path, const UnicodeString SelectedName = L"");
-	void openSFTP(void);
-	void CloseAllSFTP(void);
 	void ProtokollaValinnat(void);
 	int Connected;
 	bool DeleteAfterSend;
@@ -167,7 +138,6 @@ END_MESSAGE_MAP(TComponent)
 public:		// User declarations
 	__fastcall TFormJakelu(TComponent* Owner);
 	void openFTP(void);
-	void SendOnceSFTP(void);
 	void SendOnceFTP(void);
 	void SendFiles(void);
 	void CloseAll(void);

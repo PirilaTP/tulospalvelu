@@ -161,17 +161,8 @@ void __fastcall TFormAutoFile::CBVaadiMuutosClick(TObject *Sender)
 
 void __fastcall TFormAutoFile::RGJatkoClick(TObject *Sender)
 {
-	BtnLahetysVal->Enabled = RGJatko->ItemIndex != 1;
 	EdtKomento->Enabled = RGJatko->ItemIndex != 2;
 	BtnValitseKomento->Enabled = EdtKomento->Enabled;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormAutoFile::BtnLahetysValClick(TObject *Sender)
-{
-	if (FormJakelu == NULL)
-		FormJakelu = new TFormJakelu(this);
-	FormJakelu->Show();
 }
 //---------------------------------------------------------------------------
 

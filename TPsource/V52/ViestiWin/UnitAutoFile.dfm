@@ -342,26 +342,10 @@ object FormAutoFile: TFormAutoFile
     ItemIndex = 0
     Items.Strings = (
       'Ei automaattisia toimia'
-      'Suorita komentotiedosto'
-      'L'#228'het'#228' tiedostopalvelimelle')
+      'Suorita komentotiedosto')
     ParentFont = False
     TabOrder = 13
     OnClick = RGJatkoClick
-  end
-  object BtnLahetysVal: TButton
-    Left = 324
-    Top = 473
-    Width = 189
-    Height = 25
-    Caption = 'Tiedostopalvelimen m'#228#228'ritykset'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Arial'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 14
-    OnClick = BtnLahetysValClick
   end
   object CBVaadiMuutos: TCheckBox
     Left = 162

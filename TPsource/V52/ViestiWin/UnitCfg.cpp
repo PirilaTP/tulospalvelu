@@ -23,7 +23,6 @@
 #include "UnitCfg.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "ScSSHClient"
 #pragma resource "*.dfm"
 TFormCfg *FormCfg;
 

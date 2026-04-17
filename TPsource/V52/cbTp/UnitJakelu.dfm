@@ -90,19 +90,6 @@ object FormJakelu: TFormJakelu
     TabOrder = 1
     OnChange = EdUserChange
   end
-  object RGAuth: TRadioGroup
-    Left = 17
-    Top = 169
-    Width = 168
-    Height = 61
-    Caption = ' Autentikointimenettely '
-    ItemIndex = 0
-    Items.Strings = (
-      'Salasana'
-      'Julkisen avaimen tiedosto')
-    TabOrder = 3
-    OnClick = RGAuthClick
-  end
   object RGTiedot: TRadioGroup
     Left = 266
     Top = 21
@@ -186,23 +173,6 @@ object FormJakelu: TFormJakelu
     TabOrder = 15
     Text = '21   '
     OnChange = EdServerPortChange
-  end
-  object GBKey: TGroupBox
-    Left = 17
-    Top = 235
-    Width = 193
-    Height = 56
-    Caption = ' Avaintiedosto '
-    TabOrder = 4
-    Visible = False
-    object CBKeyFile: TComboBox
-      Left = 17
-      Top = 24
-      Width = 160
-      Height = 21
-      TabOrder = 0
-      OnDropDown = CBKeyFileDropDown
-    end
   end
   object BtnSelaa: TButton
     Left = 471
@@ -468,32 +438,6 @@ object FormJakelu: TFormJakelu
       OnChange = EdPWChange
     end
   end
-  object GBProtokolla: TGroupBox
-    Left = 17
-    Top = 18
-    Width = 127
-    Height = 37
-    Caption = ' Tiedonsiirtoprotokolla '
-    TabOrder = 19
-    object rbFTP: TRadioButton
-      Left = 10
-      Top = 14
-      Width = 49
-      Height = 17
-      Caption = 'FTP'
-      TabOrder = 0
-      OnClick = rbFTPClick
-    end
-    object rbSFTP: TRadioButton
-      Left = 71
-      Top = 14
-      Width = 49
-      Height = 17
-      Caption = 'SFTP'
-      TabOrder = 1
-      OnClick = rbSFTPClick
-    end
-  end
   object OpenDialog1: TOpenDialog
     Left = 192
     Top = 296
@@ -667,33 +611,10 @@ object FormJakelu: TFormJakelu
         Caption = '&Lue m'#228#228'ritykset'
         OnClick = Luemritykset1Click
       end
-      object Luouusiavaintiedostopari1: TMenuItem
-        Caption = 'Luo uusi avaintiedostopari'
-        Visible = False
-        OnClick = Luouusiavaintiedostopari1Click
-      end
     end
   end
   object SaveDialog1: TSaveDialog
     Left = 192
-    Top = 336
-  end
-  object ScSFTPClient: TScSFTPClient
-    SSHClient = ScSSHClient
-    Left = 304
-    Top = 336
-  end
-  object ScSSHClient: TScSSHClient
-    KeyStorage = ScFileStorage
-    AfterConnect = ScSSHClientAfterConnect
-    BeforeConnect = ScSSHClientBeforeConnect
-    AfterDisconnect = ScSSHClientAfterDisconnect
-    OnServerKeyValidate = ScSSHClientServerKeyValidate
-    Left = 352
-    Top = 336
-  end
-  object ScFileStorage: TScFileStorage
-    Left = 400
     Top = 336
   end
 end
