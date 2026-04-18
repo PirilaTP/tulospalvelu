@@ -243,6 +243,9 @@ public class TulospalveluService implements MessageListener {
         return udpConnection != null && udpConnection.isActive();
     }
 
+    private static final int MAX_RETRIES = 10;
+    private static final long RETRY_DELAY_MS = 2000;
+
     public boolean sendCardChange(int recordIndex, int newBadge) {
         log.info("sendCardChange called: recordIndex={}, newBadge={}, connected={}",
                 recordIndex, newBadge, isConnected());
@@ -259,22 +262,30 @@ public class TulospalveluService implements MessageListener {
             byte[] pvData = KilpReader.readPvData(kilpFile, recordIndex);
             int kilppvtpsize = KilpReader.getKilppvtpsize();
 
-            CompletableFuture<Boolean> result;
-            if (tcpConnection != null) {
-                result = tcpConnection.sendKilppvt(recordIndex, pvData, kilppvtpsize, newBadge);
-            } else {
-                result = udpConnection.sendKilppvt(recordIndex, pvData, kilppvtpsize, newBadge);
-            }
+            for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+                CompletableFuture<Boolean> result;
+                if (tcpConnection != null) {
+                    result = tcpConnection.sendKilppvt(recordIndex, pvData, kilppvtpsize, newBadge);
+                } else {
+                    result = udpConnection.sendKilppvt(recordIndex, pvData, kilppvtpsize, newBadge);
+                }
 
-            Boolean success = result.get(10, TimeUnit.SECONDS);
-            if (Boolean.TRUE.equals(success)) {
-                KilpReader.writeBadge(kilpFile, recordIndex, newBadge);
-                fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(recordIndex);
-                if (comp != null) comp.badge = newBadge;
-                log.info("Card change successful: record={}, newBadge={}", recordIndex, newBadge);
-                return true;
+                Boolean success = result.get(10, TimeUnit.SECONDS);
+                if (Boolean.TRUE.equals(success)) {
+                    KilpReader.writeBadge(kilpFile, recordIndex, newBadge);
+                    fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(recordIndex);
+                    if (comp != null) comp.badge = newBadge;
+                    log.info("Card change successful: record={}, newBadge={}, attempt={}", recordIndex, newBadge, attempt);
+                    return true;
+                }
+
+                if (attempt < MAX_RETRIES) {
+                    log.info("Card change NAK'd (attempt {}/{}), retrying in {}ms...", attempt, MAX_RETRIES, RETRY_DELAY_MS);
+                    Thread.sleep(RETRY_DELAY_MS);
+                } else {
+                    log.warn("Card change rejected after {} attempts: record={}", MAX_RETRIES, recordIndex);
+                }
             }
-            log.warn("Card change rejected by server: record={}", recordIndex);
             return false;
         } catch (Exception e) {
             log.error("Card change failed for record={}", recordIndex, e);

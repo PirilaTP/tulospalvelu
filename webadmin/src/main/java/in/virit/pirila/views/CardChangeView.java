@@ -3,11 +3,14 @@ package in.virit.pirila.views;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
@@ -43,7 +46,7 @@ public class CardChangeView extends VVerticalLayout implements Consumer<fi.piril
     private final Validator validator;
     private final EmitCardReader emitCardReader;
 
-    private final TextField cardNumber = new VTextField("Kilpailukortin numero") {{
+    private final TextField cardNumber = new VTextField("Uuden kilpailukortin numero") {{
         setPlaceholder("Skannaa tai syötä kortin numero");
         setClearButtonVisible(true);
         setAutofocus(true);
@@ -51,7 +54,7 @@ public class CardChangeView extends VVerticalLayout implements Consumer<fi.piril
 
     private final Emit250ReaderButton emitReaderButton;
 
-    private final TextField searchField = new TextField("Hae kilpailija (numero/nimi)") {{
+    private final TextField searchField = new TextField("Valitse kilpailija (numero/nimi)") {{
         setPlaceholder("Hae kilpailijoita numerolla tai nimellä...");
         setClearButtonVisible(true);
         setWidthFull();
@@ -122,8 +125,9 @@ public class CardChangeView extends VVerticalLayout implements Consumer<fi.piril
             expand(cardNumber);
         }};
 
-        add(cardNumberRow, searchField);
+        add(searchField);
         addAndExpand(competitorGrid);
+        add(cardNumberRow);
         add(saveButton);
         setSizeFull();
     }
@@ -164,17 +168,34 @@ public class CardChangeView extends VVerticalLayout implements Consumer<fi.piril
         showViolations(violations);
         if (!violations.isEmpty()) return;
 
-        boolean success = cardService.changeCard(
-                request.getCompetitor().getId(),
-                request.getCardNumber()
-        );
+        var dialog = new Dialog();
+        dialog.setHeaderTitle("Vaihdetaan emit-korttia...");
+        dialog.setCloseOnEsc(false);
+        dialog.setCloseOnOutsideClick(false);
+        var progress = new ProgressBar();
+        progress.setIndeterminate(true);
+        var statusText = new Paragraph("Lähetetään palvelimelle, yritetään uudelleen jos verkko on ruuhkainen...");
+        dialog.add(progress, statusText);
+        dialog.open();
 
-        if (success) {
-            Notification.show("Kilpailukortti vaihdettu onnistuneesti", 3000, Notification.Position.MIDDLE);
-            clearForm();
-        } else {
-            Notification.show("Kilpailukortin vaihto epäonnistui", 3000, Notification.Position.MIDDLE);
-        }
+        saveButton.setEnabled(false);
+
+        var competitorId = request.getCompetitor().getId();
+        var cardNum = request.getCardNumber();
+
+        new Thread(() -> {
+            boolean success = cardService.changeCard(competitorId, cardNum);
+            ui().access(() -> {
+                dialog.close();
+                if (success) {
+                    Notification.show("Kilpailukortti vaihdettu onnistuneesti", 3000, Notification.Position.MIDDLE);
+                    clearForm();
+                } else {
+                    Notification.show("Kilpailukortin vaihto epäonnistui usean yrityksen jälkeen", 5000, Notification.Position.MIDDLE);
+                    saveButton.setEnabled(true);
+                }
+            });
+        }).start();
     }
 
     private void clearForm() {
