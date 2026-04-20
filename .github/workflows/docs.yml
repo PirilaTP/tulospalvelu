@@ -1,11 +1,6 @@
 name: Deploy docs
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - docs-site/**
-      - .github/workflows/docs.yml
   workflow_dispatch:
 
 permissions:
