@@ -438,12 +438,6 @@
             <DependentOn>..\cbTp\UnitIlmoitus.h</DependentOn>
             <BuildOrder>123</BuildOrder>
         </CppCompile>
-        <CppCompile Include="..\cbTp\UnitJakelu.cpp">
-            <Form>FormJakelu</Form>
-            <FormType>dfm</FormType>
-            <DependentOn>..\cbTp\UnitJakelu.h</DependentOn>
-            <BuildOrder>116</BuildOrder>
-        </CppCompile>
         <CppCompile Include="..\cbTp\UnitKartta.cpp">
             <Form>FormKartta</Form>
             <DependentOn>..\cbTp\UnitKartta.h</DependentOn>
@@ -1018,7 +1012,6 @@
         <FormResources Include="..\cbTp\UnitAnnaAika.dfm"/>
         <FormResources Include="..\cbTp\UnitEmiTag.dfm"/>
         <FormResources Include="..\cbTp\UnitIlmoitus.dfm"/>
-        <FormResources Include="..\cbTp\UnitJakelu.dfm"/>
         <FormResources Include="..\cbTp\UnitKartta.dfm"/>
         <FormResources Include="..\cbTp\UnitHtmlEdit.dfm"/>
         <FormResources Include="..\cbTp\UnitEmitFile.dfm"/>

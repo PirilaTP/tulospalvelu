@@ -1014,14 +1014,6 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				}
 			continue;
 			}
-		 if( !wmemcmpU(fldn, L"AUTOJAKELU", 7)) {
-			p = wcsstr(fldn, L"=");
-			if (p && p[1]) {
-				wcsncpy(autofileparam.jakelumaar, p+1, sizeof(autofileparam.jakelumaar)/2-1);
-				}
-			autofileparam.autokomentolaji = 2;
-			continue;
-			}
 #endif
          if (!wmemcmpU(fldn, L"TCPTULOS=", 9)) {
             tcptulos = fldn[9];
@@ -3081,7 +3073,6 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 	maxkilpno = 9999;
 	autofileparam.af_xmlva = L'M';
 	wcscpy(autofileparam.aflstnm, L"AUTOFILE.LST");
-	wcscpy(autofileparam.jakelumaar, L"AutoJakelu.xml");
 	autofileparam.sanafchars = L'8';
 	for (i = 1; i < MAX_LAHPORTTI; i++) {
 	  wcscpy(naapuri[i], naapuri[0]);

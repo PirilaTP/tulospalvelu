@@ -64,7 +64,6 @@
 #include "UnitOsuuskopiointi.h"
 #include "UnitMySQL.h"
 #include "UnitLahestyjat.h"
-#include "UnitJakelu.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -503,26 +502,6 @@ MESSAGE void __fastcall TFormMain::LukumaaraReqHandler(TMyMessage &msg)
 
 //---------------------------------------------------------------------------
 
-void startAutojakelu(void)
-{
-	SendMessage(FormMain->Handle, WM_AUTOTULOSTUS, 0, 0);
-}
-
-MESSAGE void __fastcall TFormMain::AutotulostusReqHandler(TMyMessage &msg)
-{
-	if (!FormJakelu) {
-		FormJakelu = new TFormJakelu(FormMain);
-		}
-	if (!FormJakelu->Initialized) {
-		FormJakelu->Show();
-		FormJakelu->Hide();
-		}
-	FormJakelu->LueJakeluMaaritykset(autofileparam.jakelumaar);
-	Sleep(1000);
-	FormJakelu->openFTP();
-	if (!FormJakelu->KeepOpen)
-		FormJakelu->CloseAll();
-}
 
 static void tarkAutoTulostus(void)
 {
@@ -1708,8 +1687,6 @@ void SuljeKaikki(void)
 	int wparam = 0;
 	int lparam = 0;
 	lkmThreadOn = false;
-	if (FormJakelu)
-		FormJakelu->CloseAll();
 	talltapahtumat();
 	SendMessage(FormMain->Handle,WM_MYMSGCLOSEAPPL,wparam,lparam);
 }

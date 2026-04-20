@@ -477,7 +477,6 @@ extern struct {
 	int aflaji;
 	int autokomentolaji;
 	wchar_t autokomento[202];
-	wchar_t jakelumaar[202];
 	bool vainMuutt;
 	int afvali;
 	bool af_flag;

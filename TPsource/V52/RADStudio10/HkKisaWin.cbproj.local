@@ -343,10 +343,6 @@
     <File Path="..\cbTp\UnitIlmoitus.cpp"/>
     <File Path="..\cbTp\UnitIlmoitus.dfm"/>
     <File Path="..\cbTp\UnitIlmoitus.h"/>
-    <File Path="..\cbTp\UnitJakelu.cpp"/>
-    <File Path="..\cbTp\UnitJakelu.cpp"/>
-    <File Path="..\cbTp\UnitJakelu.dfm"/>
-    <File Path="..\cbTp\UnitJakelu.h"/>
     <File Path="..\cbTp\UnitKartta.cpp"/>
     <File Path="..\cbTp\UnitKartta.cpp"/>
     <File Path="..\cbTp\UnitKartta.dfm"/>

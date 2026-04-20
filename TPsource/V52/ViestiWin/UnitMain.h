@@ -256,7 +256,6 @@ private:	// User declarations
 	MESSAGE void __fastcall errorMsgHandler(TMyMessage &msg);
 	MESSAGE void __fastcall warnMsgHandler(TMyMessage &msg);
 	MESSAGE void __fastcall LukumaaraReqHandler(TMyMessage &msg);
-	MESSAGE void __fastcall AutotulostusReqHandler(TMyMessage &msg);
 	MESSAGE void __fastcall SelectOptHandler(TMyMessage &msg);
 //	MESSAGE void __fastcall UusiAikaHandler(TMyMessage &msg);
 
@@ -266,7 +265,6 @@ BEGIN_MESSAGE_MAP
 	MESSAGE_HANDLER(WM_MYMSGDSPERRORMSG, TMyMessage, errorMsgHandler);
 	MESSAGE_HANDLER(WM_MYMSGDSPWARNMSG, TMyMessage, warnMsgHandler);
 	MESSAGE_HANDLER(WM_MYLUKUMAARAT, TMyMessage, LukumaaraReqHandler);
-	MESSAGE_HANDLER(WM_AUTOTULOSTUS, TMyMessage, AutotulostusReqHandler);
 	MESSAGE_HANDLER(WM_MYSELECTOPT, TMyMessage, SelectOptHandler);
 //	MESSAGE_HANDLER(WM_MYUUSIAIKA, TMyMessage, UusiAikaHandler);
 END_MESSAGE_MAP(TComponent)
