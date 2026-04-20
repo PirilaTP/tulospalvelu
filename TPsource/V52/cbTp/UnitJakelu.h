@@ -42,9 +42,6 @@
 #else
 #include "VDeclare.h"
 #endif
-#ifdef EOF
-#undef EOF
-#endif
 
 //---------------------------------------------------------------------------
 class TFormJakelu : public TForm
@@ -148,7 +145,6 @@ public:		// User declarations
 	bool KeepOpen;
 	bool Initialized;
 	bool LahetysKesken;
-	int Protokolla;
 	bool KeskeytaLahetys;
 };
 //---------------------------------------------------------------------------

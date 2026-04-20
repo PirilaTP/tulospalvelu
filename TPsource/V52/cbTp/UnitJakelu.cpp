@@ -43,7 +43,6 @@ __fastcall TFormJakelu::TFormJakelu(TComponent* Owner)
 	SourcePath = WorkingDir;
 	if (SourcePath.Length() > 1 && SourcePath[SourcePath.Length()] != L'\\')
 		SourcePath = SourcePath + L"\\";
-	Protokolla = 0;
 	ProtokollaValinnat();
 }
 //---------------------------------------------------------------------------
@@ -467,9 +466,7 @@ void __fastcall TFormJakelu::Luemritykset1Click(TObject *Sender)
 #define JAK_ServerAddr  	102
 #define JAK_ServerPort  	103
 #define JAK_User			104
-#define JAK_AuthMethod  	105
 #define JAK_Password    	106
-#define JAK_PublikKey   	107
 #define JAK_LocalDataType 	108
 #define JAK_LocalDataName 	109
 #define JAK_ServerPath 		110
@@ -482,9 +479,7 @@ static tagListTp JakTags[] = {
 	{JAK_ServerAddr, L"ServerAddr"},
 	{JAK_ServerPort, L"ServerPort"},
 	{JAK_User, L"User"},
-	{JAK_AuthMethod, L"AuthMethod"},
 	{JAK_Password, L"Password"},
-	{JAK_PublikKey, L"PublikKey"},
 	{JAK_LocalDataType, L"LocalDataType"},
 	{JAK_LocalDataName, L"LocalDataName"},
 	{JAK_ServerPath, L"ServerPath"},
@@ -494,8 +489,7 @@ static tagListTp JakTags[] = {
 
 static int nJakTags = sizeof(JakTags)/sizeof(JakTags[0]);
 
-static wchar_t TxtLaji[] = L"FSPKTD", *TxtSt[] = {L"FTP", L"SFTP", L"Password", L"PublicKey",
-	L"File", L"Directory"};
+static wchar_t TxtLaji[] = L"FTD", *TxtSt[] = {L"FTP", L"File", L"Directory"};
 
 void TFormJakelu::TallJakeluMaaritykset(wchar_t *MaarFile)
 {
@@ -514,8 +508,6 @@ void TFormJakelu::TallJakeluMaaritykset(wchar_t *MaarFile)
 		tallfl->put_wxml_s(XMLhae_tagName(JAK_ServerAddr, JakTags, nJakTags), EdServerAddr->Text.c_str(), level);
 		tallfl->put_wxml_d(XMLhae_tagName(JAK_ServerPort, JakTags, nJakTags), _wtoi(EdServerPort->Text.c_str()), level);
 		tallfl->put_wxml_s(XMLhae_tagName(JAK_User, JakTags, nJakTags), EdUser->Text.c_str(), level);
-		tallfl->put_wxml_s(XMLhae_tagName(JAK_AuthMethod, JakTags, nJakTags),
-			XMLhaeteksti(L'P', TxtLaji, TxtSt), level);
 		tallfl->put_wxml_s(XMLhae_tagName(JAK_Password, JakTags, nJakTags), EdPW->Text.c_str(), level);
 		tallfl->put_wxml_s(XMLhae_tagName(JAK_LocalDataType, JakTags, nJakTags),
 			XMLhaeteksti(L"TD"[RGTiedot->ItemIndex], TxtLaji, TxtSt), level);
@@ -554,15 +546,9 @@ int TFormJakelu::loadJakeluParam(xml_node *node, int nnode)
 					node[inode].gettext(ln, sizeof(ln)/2-1);
 					EdUser->Text = ln;
 					break;
-				case JAK_AuthMethod:
-					node[inode].gettext(ln, 10);
-					break;
 				case JAK_Password:
 					node[inode].gettext(ln, sizeof(ln)/2-1);
 					EdPW->Text = ln;
-					break;
-				case JAK_PublikKey:
-					node[inode].gettext(ln, sizeof(ln)/2-1);
 					break;
 				case JAK_LocalDataType:
 					node[inode].gettext(ln, 10);
@@ -595,7 +581,6 @@ int TFormJakelu::loadJakeluParam(xml_node *node, int nnode)
 			continue;
 			}
 		}
-	Protokolla = 0;
 	ProtokollaValinnat();
 	Refresh();
 	return(er);
