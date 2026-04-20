@@ -40,8 +40,3 @@ on seuraava
        ja syöttää ajat käsin.- Sen, että numerointialueet eivät mene päällekkäin voi
          vielä varmistaa arvontakaavakkeen painikkeella *Etsi numeroalueiden
          päällekkäisyydet*
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

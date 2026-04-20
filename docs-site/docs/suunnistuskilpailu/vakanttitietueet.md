@@ -22,8 +22,3 @@ Aloitusnumero kannattaa valita muuten käytetyn numeroalueen ulkopuolelta.
 sukunimi ja seura voidaan jättää tyhjiksi, etunimeksi tulee aina
 kilpailijanumero. Lähtöaika on hyvä antaa ja se voi olla joskus ennen kilpailun
 alkua. Tärkeintä on, että luotavat tietueet merkitään vakanteiksi.
-
----
-
- Copyright 2012 Pekka
-Pirilä

@@ -20,8 +20,3 @@ ohjelma *HkMaali* asennetaan toiselle tietokoneelle yksinkertaisesti
 kopioimalla *HkMaali.exe*
 , jolloin ohjelma on luonnollisesti löydettävä. Sijoituspaikat
 selviävät helpoimmin asennusohjelman luoman pikakuvakkeen ominaisuuksista.
-
----
-
- Copyright 2012 Pekka
-Pirilä

@@ -187,8 +187,3 @@ Henkilötietokantatiedostoa voi täydentää kanslian koneella avaamalla toiminn
 
 Jos käytössä on MySQL-tietokanta, voi tapahtuman osanottotiedot siirtää sinne valinnassa
 *Tiedostot / Kirjoita siirtotiedostoon*. Lisäohjeita luvussa 11.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

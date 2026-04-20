@@ -88,8 +88,3 @@ lähemit2
 Sisältö on muuten sama, mutta yhteydestä ei sen toisessa päässä tarvitse kertoa muuta kuin sen numero, koska ohjelma voi päätellä muut tiedot toisen ohjelman ottaessa
 siihen
 yhteyttä.
-
----
-
- Copyright 2012 Pekka
-Pirilä

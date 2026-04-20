@@ -171,8 +171,3 @@ Henkilötietokantatiedostoa voi täydentää avaamalla toiminnon, jossa se näky
 
 Jos käytössä on MySQL-tietokanta, voi tapahtuman osanottotiedot siirtää sinne valinnassa
 *Tiedostot / Kirjoita siirtotiedostoon*. Lisäohjeita luvussa 11.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

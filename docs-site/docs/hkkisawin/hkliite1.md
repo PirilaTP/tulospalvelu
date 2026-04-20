@@ -228,8 +228,3 @@ mutta sen kaikkia alamäärityksiä ei voi tehdä.
 | SIRIT SIRITREUNA SIRITARRIVE SIRITDEPART FEIG IMPINJ |  | RFID-tunnisteiden ajanottokäyttöön liittyviä parametreja |
 | SW2000=xx |  | Uinnin SW2000 kellolaite käytössä |
 | BIBSIIRTOALUE |  | Alue ei-aktiivisten tietueiden numeroille |
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

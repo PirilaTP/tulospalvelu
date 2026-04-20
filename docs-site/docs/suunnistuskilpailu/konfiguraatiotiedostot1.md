@@ -149,8 +149,3 @@ ikkunat
 // Yhteys toimiston koneen ohjelmaan HkMaali.
 yhteys1=udp
 ```
-
----
-
- Copyright 2012 Pekka
-Pirilä

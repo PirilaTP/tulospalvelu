@@ -39,8 +39,3 @@ Kun perusominaisuudet on näin valittu, voidaan kilpailu
 avata esivalmisteluun klikkaamalla näin nimettyä painikenttää ja avaamalla ilmoitt.cfg. Tällöin ohjelma ilmoittaa, että tiedostoa KILP.DAT
 ei ole
 ja luo sellaisen.
-
----
-
- Copyright 2012 Pekka
-Pirilä

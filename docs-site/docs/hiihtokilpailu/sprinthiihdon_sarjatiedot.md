@@ -50,8 +50,3 @@ numeroinnin mukaan ja ensimmäiselle erävaiheelle niin, että sama numero ilmoi
 erille. Myöhemmille vaiheille jätetään alkunumeroksi 0. Jos koko kisassa
 käytetään samoja numeroita, merkitään myös ensimmäiseen erävaiheeseen alkunumeroksi
 0.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

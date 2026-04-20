@@ -49,8 +49,3 @@ merkintää hylkäyksestä, keskeyttämisestä tai ei-lähtemisestä. Mukana ova
 ne osuudet,
 jotka on suljettu aiemman osuuden tällaisen merkinnän
 takia, ellei merkintää ole ulotettu myöhemmille osuuksille.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

@@ -35,8 +35,3 @@ ilmoittautumiskaavakkeella.
 Kaavakkeen yläosan taulukon merkitys on lähinnä näyttää
 viimeksi tallennettu tieto, joka voidaan siitä palauttaa korjattavaksi, kun
 toimintamoodiksi on valittu *Muokkaa tietoja.*
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

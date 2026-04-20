@@ -38,8 +38,3 @@ Kun perustiedot on määritelty, voidaan ohjelma avata
 esivalmisteluun, jolloin ohjelma luo uuden kilpailijatietotiedoston ja
 suunnistuskilpailun tapauksessa normaalisti sijoittaa sinne 20
 vakanttitietuetta, joita saatetaan tarvita tulospalvelun hoitamisessa.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

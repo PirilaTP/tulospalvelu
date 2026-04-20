@@ -172,8 +172,3 @@ tapaukissa muuttaa ohjelma kirjaimet isoiksi ennen käyttöä.
 | TAULU\_COM=x TAULU\_BAUD= TAULUVIIVE=xx GAZ=x GAZVAIHE=x GAZRIVIy= | Erilaisten tulostaulujen ohjaukseen liittyviä parametreja |
 | SIRIT SIRITREUNA SIRITARRIVE SIRITDEPART IMPINJ  RFID-tunnisteiden ajanottokäyttöön liittyviä parametreja | |
 | SW2000=xx | Uinnin SW2000 kellolaite käytössä |
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

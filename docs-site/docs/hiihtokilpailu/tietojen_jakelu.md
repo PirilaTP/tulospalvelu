@@ -62,8 +62,3 @@ tietojen haku vastaavalla komennolla samalla, kun koneita käynnistetään kilpa
 Erikseen on huolehdittava, että tarvittavat
 konfiguraatiotiedostot ovat käytettävissä sekä siitä, että ohjelmasta HkKisaWin
 on tarpeen mukaan tallennettu avausmääritykset sekä avattavat ikkunat ennen kilpailun alkua.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

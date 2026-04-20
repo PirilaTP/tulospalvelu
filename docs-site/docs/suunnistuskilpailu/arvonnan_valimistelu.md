@@ -27,8 +27,3 @@ seuraavaa menettelyä:
          vielä varmistaa arvontakaavakkeen painikkeella *Etsi numeroalueiden
          päällekkäisyydet*
          .
-
----
-
- Copyright 2012 Pekka
-Pirilä

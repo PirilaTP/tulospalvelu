@@ -36,8 +36,3 @@ Siksi suosittelen nyt ensijaisesti vaihtoehtoa 2 ja esitän
 jäljempänä konfiguraatiotiedostot sille sopivassa muodossa.
 
 ![](../images/Konfiguraatiot.jpg)
-
----
-
- Copyright 2012 Pekka
-Pirilä

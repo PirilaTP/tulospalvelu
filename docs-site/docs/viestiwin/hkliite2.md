@@ -219,8 +219,3 @@ Tiedonsiirtoasetukset* pääsee tekemään seuraavia erikoistoimia
     - tarkastelemaan tiedonsiirron varmistustiedoston
       COMFILE.DAT sisältöä, josta selviää, millaisia sanomia kyseessä oleva
       tietokone on eri yhteyksiin lähettänyt.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

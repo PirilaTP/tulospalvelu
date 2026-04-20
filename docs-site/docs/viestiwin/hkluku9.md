@@ -13,8 +13,3 @@ kuin aiemmissa ohjelmissani. Lähtöluetteloiden ja tulosluetteloiden muotoilut 
 ovat yhteensopivat ohjelmat HkMaali kanssa.
 
 Rata- ja leimasintietojen tulostamista käsitellään luvussa 13.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

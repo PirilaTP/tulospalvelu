@@ -40,8 +40,3 @@ Ajanottotiedot ei tarkoita kilpailijan saamaa tulosta, joka siirretään aina, k
 yhteys on avoinna lähetykseen, vaan erillistä taulukkoa, jota käytetään
 esimerkiksi maalikellolta tulleiden aikojen seurantaan ja
 käsittelyyn.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

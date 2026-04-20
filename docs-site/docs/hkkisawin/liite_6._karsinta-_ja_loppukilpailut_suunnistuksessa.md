@@ -87,8 +87,3 @@ kaikkien koneiden tiedostot ovat todella samat 2. vaiheen alkaessa.
 Koska loppukilpailujen muodostaminen on suhteellisen
 monimutkainen toiminto, on aina syytä tehdä kilpailijatiedostosta kopio ennen
 homman aloittamista. Kopioita toi tehdä myös eri välivaiheissa käyttäen ohjelman valinnasta
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

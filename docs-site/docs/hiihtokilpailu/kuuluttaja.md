@@ -26,8 +26,3 @@ Koska kuuluttajan käyttöön avataan usein samat ikkunat,
 voidaan ohjelman käynnistämistä kisatilanteessa tehostaa tallentamalla sopiva
 ikkunoiden sijoittelu valinnassa *Tiedostot / Tallenna ikkunat* ja määrittelemällä konfiguraatioon parametri ikkunat avaamaan tallennettu
 tilanne automaattisesti ohjelmaa käynnistettäessä.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

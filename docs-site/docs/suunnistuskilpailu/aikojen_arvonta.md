@@ -21,8 +21,3 @@ jäsenten lähtemisen peräkkäisillä lähtöajoilla, kun se suinkin on mahdoll
 Kun käytettäväksi seuranimeksi valitaan *Lyhenne*,
 käyttää ohjelma seuralyhennettä tässä tarkastuksessa. Esto ei välttämättä toimi,
 jos osalla osanottajista on kirjattuna maakoodi ja osalla ei.
-
----
-
- Copyright 2012 Pekka
-Pirilä

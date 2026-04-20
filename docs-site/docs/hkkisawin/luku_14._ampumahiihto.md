@@ -108,8 +108,3 @@ Ohjelman valinnassa *Seuranta / Ampumapaikat*
 avautuu kaavake, jolla ohjelma näyttää jokaisen laukauksen tuloksen, jos
 käytössä on Kurvisen laitteet, jotka tulevat laukausten seurantaa (versio 0 ei
 tue).
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

@@ -40,8 +40,3 @@ viimeisen vaiheen luonteeksi *Takaa-ajo*
 **Sprinthiihdon** sarjamäärityksiä
 käsitellään tarkemmin omassa
 luvussaan.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

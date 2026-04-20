@@ -104,8 +104,3 @@ ohjelma on käynnistetty tulospalvelutilaan).
 - Valinnassa *Tiedostot / Avausmääritykset*
   valitaan avaaminen suoraan tulospalveluun sekä konfiguraatiotiedostoksi yllä
   kuvattu tiedosto.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

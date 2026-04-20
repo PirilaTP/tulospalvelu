@@ -11,8 +11,3 @@ sarakkeessa on rastin kilpailijalle näkyvä ja ratatietojen mukainen koodi ja
 muissa sarakkeissa leimasinkoodit. Poikkeustapauksessa voi leimasimilla olla
 enemmän kuin 6 koodia, jolloin käytetään kahta riviä, joilla on sama
 rastikoodi.
-
----
-
- Copyright 2012 Pekka
-Pirilä

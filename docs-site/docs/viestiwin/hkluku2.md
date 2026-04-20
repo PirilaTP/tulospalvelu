@@ -13,8 +13,3 @@ Kilpailun luomiseen sisältyy
       ja mahdollisesti muita tietoja
 
       - ohjelman käynnistäminen esivalmistelumoodissa, jolloin ohjelma luo uuden kilpailijatietotiedoston.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

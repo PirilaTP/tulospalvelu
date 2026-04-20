@@ -18,8 +18,3 @@ tietokone hoitaa lisäksi taustalla joitain muita tehtäviä. Itse
 tulospalvelussa käytetään myös toista tietokonetta erilaisten muutosten
 kirjaamiseen, itkumuuritoimintaan sekä kaikkiin tulospalvelun sekalaisiin
 tehtäviin. Kolmas tietokone on kuuluttajalla kilpailun seuraamista varten.
-
----
-
- Copyright 2012 Pekka
-Pirilä

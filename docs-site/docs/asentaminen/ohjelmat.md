@@ -29,8 +29,3 @@ Ohjelma *HkKisaWin*
 tarvitsee toimiakseen useita kirjastotiedostoja (dll- ja bpl-tiedostoja), jotka
 asennetaan normaalisti yhdessä ohjelman kanssa samaan
 kansioon.
-
----
-
- Copyright 2012 Pekka
-Pirilä

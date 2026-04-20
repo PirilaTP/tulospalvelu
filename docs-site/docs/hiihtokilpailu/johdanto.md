@@ -85,8 +85,3 @@ Pienenkin tapahtuman hoitamiseen voi liittyä myös tarve
 kirjata ilmoittumisia ennalta, suorittaa arvonta, sekä laatia
 konfiguraatiomäärittelyt tulospalveluvaiheelle esimerkiksi lähtökellon käyttöä
 varten.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

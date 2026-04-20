@@ -147,8 +147,3 @@ laskentakaavoja voi tarkastella taulukossa, joka avautuu pistelaskentakaavakkeen
 valikkovalinnalla. Sarakkeiden merkitys selvinnee vertailemalla
 määrittelykaavakkeen kenttiin. Taulukossa
 ei voi muokata kaavoja.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

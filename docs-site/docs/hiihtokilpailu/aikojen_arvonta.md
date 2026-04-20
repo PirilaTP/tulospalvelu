@@ -23,8 +23,3 @@ Kun käytettäväksi seuranimeksi valitaan *Täysi
 nimi*, käyttää
 ohjelma pitkää seuranimeä tässä tarkastuksessa. Esto ei välttämättä toimi,
 jos osalla osanottajista on kirjattuna maakoodi ja osalla ei.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

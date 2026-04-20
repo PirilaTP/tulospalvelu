@@ -49,8 +49,3 @@ tietokantaan tallentaa esimerkiksi kauden kaikkien kuntosuunnistustapahtumien
 osanottajat ja tulokset. Tällä hetkellä ei ohjelma anna mahdollisuutta jättää
 pois esimerkiksi vakantteja, joten ne on poistettava haluttaessa jälkikäteen
 esimerkiksi sopivalla SQL-komennolla.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

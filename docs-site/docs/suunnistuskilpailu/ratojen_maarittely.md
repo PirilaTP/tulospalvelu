@@ -43,8 +43,3 @@ RADATn.LST, missä n on monivaiheisen kilpailun vaiheen
 numero.
 
 Lisää ohjeita on kaavakkeen Help-ohjeissa.
-
----
-
- Copyright 2012 Pekka
-Pirilä

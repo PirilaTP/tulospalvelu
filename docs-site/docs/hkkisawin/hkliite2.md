@@ -251,8 +251,3 @@ nimetty hakemisto saman levyasematunnuksen alla.
 Tiedostosiirtoa käytetään myös, kun
 tulospalvelutilassa tallennetaan ratatiedot niitä käsittelevällä kaavakkeella. Tällöin ohjelma
 kysyy, lähetetäänkö tiedot tulospalveluverkon kautta.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

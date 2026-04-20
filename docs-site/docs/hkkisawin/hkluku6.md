@@ -10,8 +10,3 @@ käyttämään toistaiseksi varsinaiseen leimantarkastukseen ohjelmalla HkMaali.
 Seuraavassa käsitellään kaikkia kuntosuunnistuksen toimintamoodeja kerralla.
 Ohjeiden liiteluvuissa käydään yksi kerrallaan läpi, mitä kussakin
 toimintamallissa on tehtävä.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

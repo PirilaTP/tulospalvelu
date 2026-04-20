@@ -4,8 +4,3 @@
 
 Ilmoittautumiset voidaan kirjata joko syöttämällä
 ne joukkuetietojen kaavakkeella tai lukemalla ne tekstitiedostosta.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

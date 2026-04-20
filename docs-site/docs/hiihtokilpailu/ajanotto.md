@@ -45,8 +45,3 @@ HkKisaWin näppäin valitaan ajanottokaavakkeen valinnassa *Valinnat /
 Ajanottonäppäin ja piste.* Aina, kun aikoja otataan vain yhdestä pisteestä
 (esim. maalista), kannattaa tämä oste valita samalla kuin
 ajanottonäppäin.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

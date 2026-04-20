@@ -5,8 +5,3 @@ Jos tämä tehdään heti lähtöaikojen arvonnan perään, ovat sarjat valmiiks
 valittuina eikä tarvitse tehdä mitään muuta kuin todeta, että valinnat ovat
 halutut, kuten niiden pitäisi olla, ja klikata painiketta *Toteuta
 numerointi*.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

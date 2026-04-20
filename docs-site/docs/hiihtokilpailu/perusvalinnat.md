@@ -87,8 +87,3 @@ Sprinthiihdossa ei erien lähtöaika ole ole yleensä
 täsmälleen ennalta määrätty. Tästä syystä on valittava,
 että lähtöportti on
 käytössä.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

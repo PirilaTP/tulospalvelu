@@ -22,8 +22,3 @@ Algen Timy-maalikelloa koskevia lisäohjeita on [liitteessä 3](liite_7._algen_
 ### 
 
 ##
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

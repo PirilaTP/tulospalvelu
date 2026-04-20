@@ -152,8 +152,3 @@ että arvontaa ei suoriteta, vaan osanottajille annetaan lähtöajat samalla, ku
 
 3. Valitse tulostettavat sarjat
 4. Klikkaa tulosta
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

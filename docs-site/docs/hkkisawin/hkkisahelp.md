@@ -23,8 +23,3 @@ HkMaali, käsitellään usein vain ohjelman HkMaali pdf-ohjeissa.
 Lisää ohjelmien käyttöön liittyviä ohjeita
 löytyy nettisivuiltani. Sieltä löytyy mm. ohjeita ohjelmien asentamiseen
 sekä lajikohtaisia ohjeita tulospalvelun hoitamiselle ohjelmia käyttäen.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

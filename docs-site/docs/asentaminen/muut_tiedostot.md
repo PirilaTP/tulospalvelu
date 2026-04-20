@@ -9,8 +9,3 @@ Ohjelmatoimitukseen sisältyy myös monia muita tiedostoja
 
     - esimerkkimateriaalia, jota voi käyttää ohjelmiin
       tutustuttaessa ja josta löytyy myös hyödyllinen malli suunnistuksen sarjatiedoista
-
----
-
- Copyright 2012 Pekka
-Pirilä

@@ -34,8 +34,3 @@ tietojen siirtyminen on katkennut.
 
 Valinnassa *Osanottajat / Seurat ja osanottajamäärät* voi tarkastella
 osanottajamääriä jaoteltuina sekä sarjoittain että seuroittain.
-
----
-
- Copyright 2012 Pekka
-Pirilä

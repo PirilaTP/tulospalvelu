@@ -41,8 +41,3 @@ Kaavakkeen valikosta voidaan myös valita vaihekohtaisten
 muutosten tekemistä tehostava tila. Kun tämä tila on valittuna, siirtyy
 ohjelma näppäintä *F9* painettaessa vaihetietojen taulukkoon
 käynnissä olevan vaiheen rivin alkuun
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

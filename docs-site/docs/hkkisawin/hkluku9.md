@@ -19,8 +19,3 @@ Rata- ja leimasintietojen tulostamista käsitellään [luvussa 13.5](13.5_kirjoi
 Pisteisiin perustuvaan tulostukseen liittyvää tietoa on
 myös [luvussa
 11](luku_11._kilpailijoiden_ja_joukkueiden_pisteet.md) .
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

@@ -62,8 +62,3 @@ tapauksessa on jokainen matka ja tapa vahvistettava.
 Valitaa Yhdistä sarjoja rankisarjoihin ei nykykäytännön
 mukaan pidä tehdä, vaan sarjat on jätettävä kilpailun mukaisiksi. Hiihtoliitto
 toteuttaa rankiin tarvittavat yhdistämiset matkan ja ikäsarjan perusteella.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

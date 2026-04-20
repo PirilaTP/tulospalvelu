@@ -33,8 +33,3 @@ käyttämällä painiketta.
 Useimpien tekstitiedostojen osalta ohjelman olstuksena
 on UTF-8-koodaus, joka on tulossa yhä selvemmin valta-asemaan. Toistaiseksi voi
 siitä kuitenkin tulla ongelmia, jotka ratkeavat vaihtamalla merkistöksi ISO-8859-1.
-
----
-
- Copyright 2012 Pekka
-Pirilä

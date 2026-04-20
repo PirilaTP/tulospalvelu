@@ -40,8 +40,3 @@ Monia muita tietoja voi muokata sekä sarja kerrallaan
 että taulukossa, jossa voi tehdä useita muutoksia ennen niiden tallentamista. Taulukko on
 erityisen hyödyllinen, kun määritetään sarjojen lähtöaikoja ja numeroinnin alkuarvoja.
 Tähän palataan arvonnan yhteydessä.
-
----
-
- Copyright 2012 Pekka
-Pirilä

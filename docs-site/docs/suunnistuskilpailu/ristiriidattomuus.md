@@ -10,8 +10,3 @@ mutta saattavat sitä vaikeuttaa.
 
 Tarkastuksen tulokset ovat luettavissa alasivulla *Tarkastuksen
 tulos*.
-
----
-
- Copyright 2012 Pekka
-Pirilä

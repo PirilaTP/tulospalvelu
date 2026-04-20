@@ -116,8 +116,3 @@ cd public_html/kisa
 mput c:\kisa\html\*.htm
 quit
 ```
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

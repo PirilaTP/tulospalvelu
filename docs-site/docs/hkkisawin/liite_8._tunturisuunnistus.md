@@ -25,8 +25,3 @@ hyväksytyksi ensimmäisestä kortista, kun kaksi Emit-koodia on annettu. Samoin
 tapahtuu leimoihin perustuva ajanlaskenta vasta, kun molemmat kortit on luettu
 ja tällöin valitaan huonompi aika riippumatta luentajärjestyksestä. Tämä
 toiminto on voimassa vain, jos aikoja ei ole kirjattu ennen leimantarkastusta.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

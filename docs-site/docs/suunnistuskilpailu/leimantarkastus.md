@@ -64,8 +64,3 @@ virheellisiksi. Kilpailussa, jossa ajat on määrätty online-ajanotolla
 maalivivalla, antaa lasketun ja todellisen maaliintuloajan yhdenmukaisuus
 yleensä oikeat väliajat. Kun tulos on määrätty leimantarkastuksessa voidaan
 oikea maaliintuloaikakin joutua arvioimaan.
-
----
-
- Copyright 2012 Pekka
-Pirilä

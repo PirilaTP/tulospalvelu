@@ -46,8 +46,3 @@ HkKisaWin.exe sallitaan käyttää kaikkia yhteyksiä myös palvelimena. Jos ver
 on irti internetistä, voidaa kaikki palomuuriohjelmat poistaa tarvittaessa
 käytöstä kilpailun
 ajaksi.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

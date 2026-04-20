@@ -50,8 +50,3 @@ kirjoittamalla csv-tiedostoon ja lukemalla sieltä takaisin eri järjestyksessä
 On olennaista, että jokaiselle kilpailulle, joka tallennetaan samaan tietokantaan, annetaan eri koodi.
 Täten voidaan yhteen tietokantaan tallentaa esimerkiksi kauden kaikkien kuntosuunnistustapahtumien
 osanottajat ja tulokset.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

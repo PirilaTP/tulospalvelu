@@ -26,8 +26,3 @@ kirjoitin- ja tiedostotulosteiden muotoilua varten. Kun uusi muotoilu on
 määritelty, on se otettava painikkeen avulla käyttöön ja se voidaan myös
 tallentaa tiedostoon myöhempää käyttöä varten. Muotoilun määrittämisestä on
 lisätietoa muissa ohjeissa.
-
----
-
- Copyright 2012 Pekka
-Pirilä

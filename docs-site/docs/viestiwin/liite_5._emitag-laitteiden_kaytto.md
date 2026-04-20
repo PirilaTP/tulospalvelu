@@ -238,8 +238,3 @@ PISTEET=MMMLM/sarjannimi
 
 Jos päättely halutaan useammalle sarjalle, kirjoitetaan
 sarjannimen paikalle KAIKKI.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

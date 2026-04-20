@@ -143,6 +143,20 @@ def html_to_markdown(html: str, link_map: dict[str, str]) -> tuple[str, list[str
         new_soup.body.append(content_div)
         soup = new_soup
 
+    # Drop the per-page copyright footer. Original pages end with:
+    #   <hr><font size="1">Copyright YYYY Pekka Pirilä</font>
+    # The family has donated the docs under the same GPLv3 license as the code,
+    # so these per-page notices are redundant with the repo-level license.
+    for font in soup.find_all("font"):
+        if "Copyright" in font.get_text() and "Piril" in font.get_text():
+            # Remove preceding <hr> if present
+            prev = font.find_previous_sibling()
+            while prev and prev.name in (None, "br"):  # skip whitespace/br
+                prev = prev.find_previous_sibling()
+            if prev and prev.name == "hr":
+                prev.decompose()
+            font.decompose()
+
     # Rewrite inter-page links: ".htm#anchor" -> "target.md" (flat within site).
     for a in soup.find_all("a", href=True):
         href = a["href"]

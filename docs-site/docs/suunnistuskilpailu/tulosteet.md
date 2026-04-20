@@ -10,8 +10,3 @@ Pdf-tidostojen ohella voi tarjolla olla muitakin yhtä soveltuvia
 tiedostomuotoja, kuten *Microsoft XPS Document* tai *One Note*.
 Jos nämä mahdollisuudet ovat käytettävissä näkyvät ne kirjoitinvaihtoehtojen
 joukossa.
-
----
-
- Copyright 2012 Pekka
-Pirilä

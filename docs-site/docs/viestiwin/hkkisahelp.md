@@ -24,8 +24,3 @@ pdf-ohjeista ja aiempien viestiohjelmieni ohjeista.
 Aiempiin ohjemistoversiouhin sisältynyt ohjelma
 ViestiLuenta on ei sisälly enää ohjelmaversioon 5.20, koska ViestiWin hoitaa sen
 tehtävät paremmin.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

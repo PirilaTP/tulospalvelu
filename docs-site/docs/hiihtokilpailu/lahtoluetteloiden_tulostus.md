@@ -31,8 +31,3 @@ saattavat käyttää WebScorer-palvelua. Jotta tämä onnistuisi, on lähtöluet
 ladattava WebScorer-palveluun siihen sopivassa muodossa. Ohjelman
 tiedostotulosteista löytyy vaihtoehto, joka tuottaa WebScorer-palvelun vaatiman
 tiedoston.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

@@ -112,8 +112,3 @@ s tai 1/10000 s tarkkuudella, koska näin tarkoin samoja aikoja
 ei samasta kanavasta voida ottaa. Tulospalveluohjelma pyöristää ajat tarpeen mukaan, joten
 Timyn on hyvä käyttää jompaakumpaa suurimmista tarkkuuksista (Timyn omalta näppäimistöltä
 tulee sadasosaan pyöristettyjä aikoja, mutta liitäntöjen kautta toimittaessa täysi valittu tarkkuus.)
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

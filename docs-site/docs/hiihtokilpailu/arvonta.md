@@ -19,8 +19,3 @@ taulukossa, jonne voi siirtyä myös suoraan päävalikosta.
 Kun kaikki nämä vaiheet on toteutettu, ovat
 kilpailutiedot valmiina lähtöluetteloiden tulostusta ja itse kilpailua
 varten.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

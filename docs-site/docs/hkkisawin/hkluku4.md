@@ -16,8 +16,3 @@ Päätoimintoja on kolme:
 
 Kaavakkeen otsikot kertonevat eri valintojen merkityksen. Lisää
 ohjeita on lajikohtaisissa tulospalvelun ohjeissa.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

@@ -38,8 +38,3 @@ Ohjelma tekee asennuksen yhteydessä myös ohjelman
 *HkMaaliData*. Tämän pikakuvakkeen käynnistyskansio on sama kuin sen
 sijoituspaikka. Ohjelman *HkKisaWin* pikakuvakkeiden käynnistyskansio on
 yllä toisessa vaiheessa valittu kansio.
-
----
-
- Copyright 2012 Pekka
-Pirilä

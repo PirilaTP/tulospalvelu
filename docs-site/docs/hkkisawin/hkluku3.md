@@ -35,8 +35,3 @@ useasta eri pisteestä. Siten on suositeltavaa luoda riittävästi
 vakanttitietueita ennalta ja
 muokata niitä aina, kun toimintaa tehdään
 tulospalvelutilassa ja käytössä on tiedonsiirto.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä

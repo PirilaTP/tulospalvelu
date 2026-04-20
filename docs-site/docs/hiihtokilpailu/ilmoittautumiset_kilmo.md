@@ -29,8 +29,3 @@ Tällä kaavakkeella voidaan lukea osanottajia myös
 yksinkertaisesta csv-tiedostosta, joka voidaan laatia tai viimeistellä
 Excelissä. Tämä edellyttää kuitenkin oikein laadittua otsikkoriviä.
 sarakeotsikoiden oikeat muodot löytyvät ohjelman Help-ohjeista.
-
----
-
- Copyright 2012, 2015 Pekka
-Pirilä
