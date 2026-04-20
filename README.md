@@ -18,6 +18,15 @@ osoitteesta http://www.pirila.fi/ohj/index.html.
 Pekan perheen toiveena on, että ohjelmasta olisi hyötyä urheiluyhteisölle vielä
 vuosien ajan.
 
+## Käyttöohjeet
+
+Ohjelmien käyttöohjeet on koottu omalle sivustolleen:
+**https://pirilatp.github.io/tulospalvelu/**.
+
+Siirtymäajan voi vielä käyttää myös vanhaa talteen otettua dokumentaatiota
+osoitteessa https://www.tulospalvelu.fi/pirila/ohjeet/, jolta edellä mainitun
+sivuston sisältö on alun perin tuotu.
+
 
 ## Description
 After ten years, it’s time to start implementing a new version 2.0.
@@ -28,6 +37,12 @@ specialized in orienteering, but was later amended to support additional
 sports. The user interface is in Finnish and there are Finnish language
 variables and comments throughout the source code. The source code is released 
 under GPLv3. More information in Finnish at http://www.pirila.fi/ohj/index.html.
+
+## Documentation
+
+User guides are hosted at **https://pirilatp.github.io/tulospalvelu/**. The
+original archived documentation at https://www.tulospalvelu.fi/pirila/ohjeet/
+remains available during the transition period.
 
 ## Console programs
 

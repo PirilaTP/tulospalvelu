@@ -1,0 +1,390 @@
+site_name: Pekka Pirilän tulospalveluohjelmat
+site_description: Vanhojen tulospalveluohjelmien (HkKisaWin, ViestiWin, HkMaali)
+  käyttöohjeet, tuotu alkuperäisiltä sivuilta markdown-muotoon.
+site_url: https://pirilatp.github.io/tulospalvelu/
+repo_url: https://github.com/PirilaTP/tulospalvelu
+repo_name: PirilaTP/tulospalvelu
+edit_uri: edit/main/docs-site/docs/
+
+theme:
+  name: material
+  language: fi
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Vaihda tummaan teemaan
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Vaihda vaaleaan teemaan
+  icon:
+    repo: fontawesome/brands/github
+  font:
+    text: Inter
+    code: JetBrains Mono
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.details
+
+plugins:
+  - search:
+      lang: fi
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/PirilaTP/tulospalvelu
+
+
+nav:
+  - Etusivu: index.md
+  - "Asentaminen ja tutustuminen":
+    - Yleiskatsaus: asentaminen/index.md
+    - Yleistä: asentaminen/yleista.md
+    - Ohjematoimituksen sisältö:
+      - Ohjelmat: asentaminen/ohjelmat.md
+      - Muut tiedostot: asentaminen/muut_tiedostot.md
+    - Ennakkosuunnittelu:
+      - Ohjelmatiedostojen sijainti: asentaminen/ohjelmatiedostojen_sijainti.md
+      - Kansiorakenne: asentaminen/kansiorakenne.md
+    - Asennuksen toteutus:
+      - Asennuksen vaiheet: asentaminen/asennuksen_vaiheet.md
+    - Esimerkkiaineisto: asentaminen/esimerkkiaineisto.md
+  - "Suunnistuskilpailun tulospalvelu":
+    - Yleiskatsaus: suunnistuskilpailu/index.md
+    - Esimerkkikilpailun kuvaus: suunnistuskilpailu/johdanto.md
+    - Kilpailun perustaminen tulospalveluun:
+      - Perusvalinnat: suunnistuskilpailu/perusvalinnat.md
+      - Sarjatiedot: suunnistuskilpailu/sarajatiedot.md
+    - Ilmoittautumisten tallennus:
+      - Ilmoittautumisten tallennus: suunnistuskilpailu/ilmoittautumisten_tallennus.md
+      - "Ilmoittautumiset IRMA-järjestelmästä": suunnistuskilpailu/ilmoittautumiset_irma.md
+      - Ilmoittautumisten syöttö käsin: suunnistuskilpailu/ilmoittautumisten_syotto.md
+      - Vakanttitietueet: suunnistuskilpailu/vakanttitietueet.md
+    - Arvonta ja lähtöluettelot:
+      - Arvonta ja lähtöluettelot: suunnistuskilpailu/arvonta.md
+      - Arvonnan valimistelu: suunnistuskilpailu/arvonnan_valimistelu.md
+      - Lähtöaikojen arvonta: suunnistuskilpailu/aikojen_arvonta.md
+      - Kilpailijoiden numerointi: suunnistuskilpailu/kilpailijoiden_numerointi.md
+      - Lähtöluetteloiden tulostus: suunnistuskilpailu/lahtoluetteloiden_tulostus.md
+    - Ratatiedot:
+      - Ratatiedot: suunnistuskilpailu/ratatiedot.md
+      - Ratojen määrittely: suunnistuskilpailu/ratojen_maarittely.md
+      - Rastien leimasinkoodit: suunnistuskilpailu/rastien_leimasinkoodit.md
+      - Ristiriidattomuus: suunnistuskilpailu/ristiriidattomuus.md
+      - "Kirjoitin- ja tiedostotulosteet": suunnistuskilpailu/tulosteet.md
+      - Ratatiedot kilpailun aikana: suunnistuskilpailu/ratatiedot_kilpailun_aikana.md
+    - Tulospalvelun konfigurointi:
+      - Tulospalvelun konfigurointi: suunnistuskilpailu/konfiguraatiotiedostot.md
+      - Tietokoneiden tehtävät: suunnistuskilpailu/tietokoneiden_tehtavat.md
+      - Verkon määrittelyt: suunnistuskilpailu/verkon_maarittelyt.md
+      - Konfiguraatiotiedostot: suunnistuskilpailu/konfiguraatiotiedostot1.md
+    - Tietojen jakelu: suunnistuskilpailu/tietojen_jakelu.md
+    - Leimantarkastus: suunnistuskilpailu/leimantarkastus.md
+    - Tulosluettelot: suunnistuskilpailu/tulosluettelot.md
+    - Kuuluttaja: suunnistuskilpailu/kuuluttaja.md
+  - "Hiihtokilpailun tulospalvelu":
+    - Yleiskatsaus: hiihtokilpailu/index.md
+    - Esimerkkikilpailujen kuvaus: hiihtokilpailu/johdanto.md
+    - Kilpailun perustaminen tulospalveluun:
+      - Perusvalinnat: hiihtokilpailu/perusvalinnat.md
+      - Sarjatiedot: hiihtokilpailu/sarajatiedot.md
+      - Sprinthiihdon sarjatiedot: hiihtokilpailu/sprinthiihdon_sarjatiedot.md
+    - Ilmoittautumisten tallennus:
+      - Ilmoittautumisten tallennus: hiihtokilpailu/ilmoittautumisten_tallennus.md
+      - Ilmoittautumisten syöttö käsin: hiihtokilpailu/ilmoittautumisten_syotto.md
+      - "Ilmoittautumiset Kilmo-järjestelmästä": hiihtokilpailu/ilmoittautumiset_kilmo.md
+    - Arvonta ja lähtöluettelot:
+      - Arvonta ja lähtöluettelot: hiihtokilpailu/arvonta.md
+      - Arvonnan valmistelu: hiihtokilpailu/arvonnan_valimistelu.md
+      - Lähtöaikojen arvonta: hiihtokilpailu/aikojen_arvonta.md
+      - Kilpailijoiden numerointi: hiihtokilpailu/kilpailijoiden_numerointi.md
+      - Lähtöluetteloiden tulostus: hiihtokilpailu/lahtoluetteloiden_tulostus.md
+    - Tulospalvelun konfigurointi:
+      - Tulospalvelun konfigurointi: hiihtokilpailu/konfiguraatiotiedostot.md
+      - Verkon määrittelyt: hiihtokilpailu/verkon_maarittelyt.md
+      - Konfiguraatiotiedostot: hiihtokilpailu/konfiguraatiotiedostot2.md
+      - Tietojen jakelu: hiihtokilpailu/tietojen_jakelu.md
+    - Kilpailunaikainen toiminta:
+      - Kilpailunaikainen toiminta: hiihtokilpailu/kilpailunaikainen_toiminta.md
+      - Ajanotto: hiihtokilpailu/ajanotto.md
+      - Tulosluettelot: hiihtokilpailu/tulosluettelot.md
+      - Kuuluttaja: hiihtokilpailu/kuuluttaja.md
+    - Askel askeleelta hyvin pieni kisa: hiihtokilpailu/askel_askeleelta_pienimpaan_kisaan.md
+  - "HkKisaWin-referenssi":
+    - Yleiskatsaus: hkkisawin/index.md
+    - HkKisa Help: hkkisawin/hkkisahelp.md
+    - Luku 1. Asentaminen ja käyttöönotto:
+      - Luku 1. Asentaminen ja käyttöönotto: hkkisawin/hkluku1.md
+      - 1.1 Asentaminen: hkkisawin/1.1_asentaminen.md
+      - 1.2 Käytön aloittaminen ja toimintatilat: hkkisawin/1.2_kayton_aloittaminen_ja_toimintatilat.md
+      - 1.3 Ohjelman pääkaavake:
+        - 1.3 Ohjelman pääkaavake: hkkisawin/1.4_ohjelman_valikot.md
+        - "1.3.1 Valinta: Tiedostot": hkkisawin/1.4.1_valinta_tiedostot.md
+        - "1.3.2 Valinta: Valmistelu": hkkisawin/1.4.2_valinta_valmistelu.md
+        - "1.3.3 Valinta: Osanottajat": hkkisawin/1.4.3_valinta_osanottajat.md
+        - "1.3.4 Valinta: Seuranta": hkkisawin/1.4.4_valinta_seuranta.md
+        - "1.3.5 Valinta: Tulospalvelu": hkkisawin/1.4.5_valinta_tulospalvelu.md
+        - "1.3.6 Valinta: Tulosteet": hkkisawin/1.4.6_valinta_tulosteet.md
+      - 1.4 Toimintatilojen konfigurointi: hkkisawin/1.3_toimintatilojen_konfigurointi.md
+      - 1.5  Kaavakkeiden asetusten tallentaminen: hkkisawin/1.5_kaavakkeiden_asetusten_tallentaminen.md
+    - Luku 2. Kilpailun luominen ja määrittely:
+      - Luku 2. Kilpailun luominen ja määrittely: hkkisawin/hkluku2.md
+      - 2.1 Uuden kilpailun luominen ja perusominaisuuksien määrittely: hkkisawin/2.1_uuden_kilpailun_luominen.md
+      - 2.2 Sarjatietojen määrittely:
+        - 2.2 Sarjatietojen määrittely: hkkisawin/2.2_sarjatietojen_maarittely.md
+        - 2.2.1 Sarjatietojen muuttaminen: hkkisawin/2.2.1_sarjatietojen_muuttaminen.md
+        - "2.2.2 Sarjatietojen käsittely csv-tiedostossa": hkkisawin/2.2.2_sarjatiedot_csv-tiedostossa.md
+        - 2.2.3 Matkan ja hiihtotavan määrittely hiihtokilpailussa: hkkisawin/2.2.3_matka_ja_hiihtotapa_hiihtokilpailussa.md
+        - 2.2.4 Hiihdon sprintin sarjat: hkkisawin/2.2.4_hiihdon_sprintin_sarjat.md
+        - 2.2.5 Sarjatietomuutosten jakelu verkossa: hkkisawin/2.2.5_sarjatietomuutosten_jakelu_verkossa.md
+      - 2.3 Sarjayhdistelmät ja alisarjat: hkkisawin/2.3_sarjayhdistelmat.md
+      - 2.4 Tietojen siirto aiemmasta ohjelmaversiosta: hkkisawin/2.4_tietojen_siirto_aiemmasta_ohjelmaversiosta.md
+      - 2.5 Väliaikapisteiden määrittely: hkkisawin/2.5_valiaikapisteiden_maarittely.md
+      - 2.6 Automaattinen käynnistyminen haluttuun tilaan: hkkisawin/2.6_automaattinen_kaynnistyminen_tilaan.md
+      - 2.7 Tapahtumasarjan määrittely ja käyttö: hkkisawin/2.7_tapahtumasarja.md
+    - Luku 3. Ilmoittautumisten kirjaus:
+      - Luku 3. Ilmoittautumisten kirjaus: hkkisawin/hkluku3.md
+      - 3.1 Ilmoittautumisten syöttö: hkkisawin/3.1_ilmoittautumisten_syotto.md
+      - 3.2 Ilmoittautumisten lukeminen tiedostosta: hkkisawin/3.2_ilmoittautumisten_lukeminen_tiedostosta.md
+      - 3.3 Seurojen käsittely suunnistuskilpailuissa: hkkisawin/3.3_seurat_suunnistuskilpailuissa.md
+    - Luku 4. Arvonta ja kilpailunumeroiden määrääminen:
+      - Luku 4. Arvonta ja kilpailunumeroiden määrääminen: hkkisawin/hkluku4.md
+      - 4.1 Lähtöajat ja kilpailijanumerot: hkkisawin/4.1_lahtoajat_ja_kilpailijanumerot.md
+      - 4.2 Arvonta:
+        - 4.2 Arvonta: hkkisawin/4.2_arvonta.md
+        - 4.2.1 Arvonnan valmistelu: hkkisawin/4.2.1_arvonnan_valmistelu.md
+        - 4.2.2 Hiihdon perusvaihtoehto: hkkisawin/4.2.2_hiihdon_perusvaihtoehto.md
+        - 4.2.3 Arvonnan toteutus: hkkisawin/4.2.3_arvonnan_toteutus.md
+      - 4.3 Numeroiden antaminen: hkkisawin/4.3._numeroiden_antaminen.md
+      - 4.4 Rankipisteiden käyttö arvonnassa: hkkisawin/4.4_rankipisteet_arvonnassa.md
+      - 4.5 Sarjojen jakaminen: hkkisawin/4.5_sarjojen_jakaminen.md
+      - 4.6 Aikojen ja numeroiden siirrot: hkkisawin/4.6_aikojen_ja_numeroiden_siirrot.md
+    - Luku 5. Ajanottotoiminnot:
+      - Luku 5. Ajanottotoiminnot: hkkisawin/hkluku5.md
+      - 5.1  Maalikellon käyttö: hkkisawin/5.1_maalikellon_kaytto.md
+      - 5.2  Tunnisteisiin perustuva ajanotto: hkkisawin/5.2_tunnisteisiin_perustuva_ajanotto.md
+      - 5.3  Väliaikapisteiden käsittely: hkkisawin/5.3_valiaikapisteiden_kasittely.md
+      - 5.4  Lasketut ajat, nettoajat: hkkisawin/5.4_lasketut_ajat_nettoajat.md
+      - 5.5  Kierroskilpailu: hkkisawin/5.5_kierroskilpailu.md
+      - 5.6  Ajanottokaavakkeen toiminnot: hkkisawin/5.6_ajanottokaavakkeen_toiminnot.md
+      - 5.7  Ajanotto ratojen perusteella, erät: hkkisawin/5.7_ajanotto_ratojen_perusteella.md
+      - 5.8  Aikajonojen vertailu: hkkisawin/5.8_aikajonojen_vertailu.md
+      - 5.9  Käyttö lähtökellona: hkkisawin/5.9_kaytto_lahtokellona.md
+    - "Luku 6. Emit-leimantarkastus, kuntosuunnistus":
+      - "Luku 6. Emit-leimantarkastus, kuntosuunnistus": hkkisawin/hkluku6.md
+      - 6.1 Leimantarkastuskaavakkeen käyttö: hkkisawin/6.1_leimantarkastuskaavake.md
+      - 6.2 Kuntosuunnistusten tuki: hkkisawin/6.2_kuntosuunnistusten_tuki.md
+      - 6.3 Henkilötietokannan käyttö kuntosuunnistuksessa: hkkisawin/6.3_henkilotietokanta_kuntosuunnistuksessa.md
+      - 6.4 Esivalmistelut kuntosuunnistukseen: hkkisawin/6.4_esivalmistelut_kuntosuunnistukseen.md
+      - 6.5 Useiden tietokoneiden käyttö kuntosuunnistuksessa: hkkisawin/6.5_useiden_tietokoneiden_kaytto_kuntosuunnistuksessa.md
+      - 6.6 Muutokset leimoihin ja niihin liitetyn osanottajan vaihto: hkkisawin/6.6_emit-korjaukset.md
+      - 6.7 Rastireittisakkojen käsittely: hkkisawin/6.7_rastireittisakkojen_kasittely.md
+      - 6.8 Rastiväliaikatulosteet: hkkisawin/6.8_rastivaliaikatulosteet.md
+      - 6.9 Ohjelman konfigurointi ja käynnistyminen: hkkisawin/6.9_ohjelman_konfigurointi_ja_kaynnistyminen.md
+      - "6.10 Yhteydet Emit-lukijaan, MTR- ja emiTag-laitteiden ohjaus": hkkisawin/6.10_mtr-_ja_emitag-laitteiden_ohjaus.md
+      - 6.11 Emitkoodien kirjaus kilpailijoille, lähtijöiden kirjaaminen: hkkisawin/6.11_emitkoodien_lukeminen_kilpailijoille.md
+      - 6.12 Kartan käyttö itkumuurilla: hkkisawin/6.12_kartan_kaytto_itkumuurilla.md
+      - 6.13 Piikkikuvioiden tarkastelu: hkkisawin/6.13_piikkikuvioiden_tarkastelu.md
+      - 6.14 Leimaustietojen muokkaaminen jälkikäteen: hkkisawin/6.14_leimaustietojen_muokkaaminen.md
+      - 6.15 Tulosten laskenta rastiväliajoista: hkkisawin/6.14_tulosten_laskenta_rastivaliajoista.md
+      - 6.16 Hylkäysesitysten käsittely: hkkisawin/6.16_hylkaysesitysten_kasittely.md
+    - Luku 7. Osanottajatietojen tarkastelu ja muokkaus: hkkisawin/hkluku7.md
+    - Luku 8. Kuuluttajan ja selostajien toiminnot:
+      - Luku 8. Kuuluttajan ja selostajien toiminnot: hkkisawin/hkluku8.md
+      - 8.1 Yleistä: hkkisawin/8.1_yleista.md
+      - 8.2 Seurantanäytöt: hkkisawin/8.2_seurantanaytot.md
+      - 8.3 Korostukset seurantanäytöillä: hkkisawin/8.3_korostukset_seurantanaytoilla.md
+      - 8.4 Taustatiedot kilpailijoista: hkkisawin/8.4_taustatiedot_kilpailijoista.md
+      - 8.5 Tulostaulunäyttö: hkkisawin/8.5_tulostaulunaytto.md
+    - Luku 9. Tulostus kirjoittimelle ja tiedostoon:
+      - Luku 9. Tulostus kirjoittimelle ja tiedostoon: hkkisawin/hkluku9.md
+      - 9.1 Kirjoittimet: hkkisawin/luku_9.1_kirjoittimet.md
+      - 9.2 Tiedostotulostus: hkkisawin/9.2_tiedostotulostus.md
+      - 9.3 Tulosteiden muotoilumääritykset:
+        - 9.3 Tulosteiden muotoilumääritykset: hkkisawin/9.3_tulosten_muotoilumaaritykset.md
+        - "9.3.1 Html-lisämääritykset": hkkisawin/9.3.1_html-lisamaaritykset.md
+      - 9.4 Palkintojenjaon seuranta: hkkisawin/9.4_palkintojenjaon_seuranta.md
+      - 9.5 Lähtöluettelot: hkkisawin/9.5_lahtoluettelot.md
+      - 9.6 Automaattinen tulostus: hkkisawin/9.6_automaattinen_tulostus.md
+      - 9.7 Automaattinen tiedostotulostus: hkkisawin/9.7_automaattinen_tiedostotulostus.md
+      - 9.8 Kilpailijakohaiset tulosteet: hkkisawin/9.8_kilpailijakohaiset_tulosteet.md
+    - Luku 10. Monivaiheiset kilpailut:
+      - Luku 10. Monivaiheiset kilpailut: hkkisawin/hkluku10.md
+      - 10.1 Yhteistä monivaiheisille kilpailuille: hkkisawin/10.1_yhteista_monivaiheisille_kilpailuille.md
+      - 10.2 Hiihdon sprintti: hkkisawin/10.2_hiihdon_sprintti.md
+      - "10.3 Takaa-ajolähtö": hkkisawin/10.3_takaa-ajolahto.md
+      - 10.4 Karsintakilpailuun perustuva loppukilpailu: hkkisawin/10.4_karsintakilpailuun_perustuva_loppukilpailu.md
+      - 10.5 Vaiheen vaihto toiminnan aikana: hkkisawin/10.5_vaiheen_vaihto_toiminnan_aikana.md
+    - Luku 11. Kilpailijoiden ja joukkueiden pisteet:
+      - Luku 11. Kilpailijoiden ja joukkueiden pisteet: hkkisawin/luku_11._kilpailijoiden_ja_joukkueiden_pisteet.md
+      - 11.1 Kilpailijoiden pisteiden laskenta: hkkisawin/hkluku11.md
+      - 11.2 Joukkuepisteet: hkkisawin/11.2_joukkuepisteet.md
+    - "Luku 12. MySQL-tietokannan käyttö": hkkisawin/hkluku12.md
+    - Luku 13. Ratatietojen muokkaus:
+      - Luku 13. Ratatietojen muokkaus: hkkisawin/hkluku13.md
+      - "13.1 Rata- ja rastitiedot": hkkisawin/13.1_rata-_ja_rastitiedot.md
+      - 13.2 Radat ja sarjavastaavuus: hkkisawin/13.2_radat.md
+      - 13.3 Rastien leimasinkoodit: hkkisawin/13.3_rastien_leimasinkoodit.md
+      - 13.4 Ratatietojen siirto tiedostosta: hkkisawin/13.4_ratatietojen_siirto_tiedostosta.md
+      - 13.5 Kirjoitintulosteet: hkkisawin/13.5_kirjoitintulosteet.md
+      - 13.6 Ratamääritysten tarkastaminen: hkkisawin/13.6_ratamaaritysten_tarkastaminen.md
+      - 13.7 Ratamääritysten ottaminen käyttöön: hkkisawin/13.7_ratamaaritysten_ottaminen_kayttoon.md
+      - 13.8 Valinnainen leimausjärjestys: hkkisawin/13.8_valinnainen_leimausjarjestys.md
+      - 13.9 Ratatietojen muokkaus kisan aikana: hkkisawin/13.9_ratatietojen_muokkaus_kisan_aikana.md
+      - 13.10 Rastien sijainnit ja kartta: hkkisawin/13.10_rastien_sijainnit_ja_kartta.md
+      - 13.11 Ratatietojen käyttö Reittihärvelissä: hkkisawin/13.11_ratatietojen_kaytto_reittiharvelissa.md
+    - Luku 14. Ampumahiihto: hkkisawin/luku_14._ampumahiihto.md
+    - Luku 15. Yhdistetty hiihto: hkkisawin/15._yhdistetty_hiihto.md
+    - Luku 16. Ohjelman aputoimintoja:
+      - Luku 16. Ohjelman aputoimintoja: hkkisawin/16._ohjelman_aputoimintoja.md
+      - 16.1 Kaavake Siirrä lisätietoja: hkkisawin/16.1_kaavake_siirra_lisatietoja.md
+    - Liite 1. Käynnistysparametrit: hkkisawin/hkliite1.md
+    - Liite 2. Tiedonsiirron käyttöönotto: hkkisawin/hkliite2.md
+    - Liite 3. Kuntosuunnistusmalli 1: hkkisawin/hkliite3.md
+    - Liite 4. Kuntosuunnistusmalli 2: hkkisawin/hkliite4.md
+    - Liite 5. Kuntosuunnistusmalli 3: hkkisawin/hkliite5.md
+    - "Liite 6. Karsinta- ja loppukilpailut suunnistuksessa": hkkisawin/liite_6._karsinta-_ja_loppukilpailut_suunnistuksessa.md
+    - Liite 7. Algen Timy USB portissa: hkkisawin/liite_7._algen_timy_usb_portissa.md
+    - Liite 8. Tunturisuunnistuksen erityispiirteitä: hkkisawin/liite_8._tunturisuunnistus.md
+    - "Liite 9. EmiTag-laitteiden käyttö": hkkisawin/liite_9._emitag-laitteiden_kaytto.md
+    - Liite 10. Komentotiedoston automaattinen suorittaminen: hkkisawin/liite_10._komentotiedoston_automaattinen_suorittaminen.md
+  - "ViestiWin":
+    - Yleiskatsaus: viestiwin/index.md
+    - ViestiWin Help: viestiwin/hkkisahelp.md
+    - Luku 1. Asentaminen ja käyttöönotto:
+      - Luku 1. Asentaminen ja käyttöönotto: viestiwin/hkluku1.md
+      - 1.1 Asentaminen: viestiwin/1.1_asentaminen.md
+      - 1.2 Käytön aloittaminen ja toimintatilat: viestiwin/1.2_kayton_aloittaminen_ja_toimintatilat.md
+      - 1.3 Ohjelman pääkaavake:
+        - 1.3 Ohjelman pääkaavake: viestiwin/1.4_ohjelman_valikot.md
+        - "1.3.1 Valinta: Tiedostot": viestiwin/1.4.1_valinta_tiedostot.md
+        - "1.3.2 Valinta: Valmistelu": viestiwin/1.4.2_valinta_valmistelu.md
+        - "1.3.3 Valinta: Osanottajat": viestiwin/1.4.3_valinta_osanottajat.md
+        - "1.3.4 Valinta: Seuranta": viestiwin/1.4.4_valinta_seuranta.md
+        - "1.3.5 Valinta: Tulospalvelu": viestiwin/1.4.5_valinta_tulospalvelu.md
+        - "1.3.6 Valinta: Tulosteet": viestiwin/1.4.6_valinta_tulosteet.md
+      - 1.4 Toimintatilojen konfigurointi: viestiwin/1.3_toimintatilojen_konfigurointi.md
+      - 1.5  Kaavakkeiden asetusten tallentaminen: viestiwin/1.5_kaavakkeiden_asetusten_tallentaminen.md
+    - Luku 2. Kilpailun luominen ja määrittely:
+      - Luku 2. Kilpailun luominen ja määrittely: viestiwin/hkluku2.md
+      - 2.1 Uuden kilpailun luominen ja perusominaisuuksien määrittely: viestiwin/2.1_uuden_kilpailun_luominen.md
+      - 2.2 Sarjatietojen määrittely:
+        - 2.2 Sarjatietojen määrittely: viestiwin/2.2_sarjatietojen_maarittely.md
+        - 2.2.1 Sarjatietojen muuttaminen: viestiwin/2.2.1_sarjatietojen_muuttaminen.md
+        - "2.2.2 Sarjatietojen käsittely csv-tiedostossa": viestiwin/2.2.2_sarjatiedot_csv-tiedostossa.md
+        - 2.2.3 Matkan ja hiihtotavan määrittely hiihtokilpailussa: viestiwin/2.2.3_matka_ja_hiihtotapa_hiihtokilpailussa.md
+      - 2.3 Sarjayhdistelmät: viestiwin/2.3_sarjayhdistelmat.md
+      - 2.4 Tietojen siirto aiemmasta ohjelmaversiosta: viestiwin/2.4_tietojen_siirto_aiemmasta_ohjelmaversiosta.md
+      - 2.5 Automaattinen käynnistyminen haluttuun tilaan: viestiwin/2.6_automaattinen_kaynnistyminen_tilaan.md
+    - Luku 3. Ilmoittautumisten kirjaus:
+      - Luku 3. Ilmoittautumisten kirjaus: viestiwin/hkluku3.md
+      - 3.1 Ilmoittautumisten syöttö: viestiwin/3.1_ilmoittautumisten_syotto.md
+      - 3.2 Ilmoittautumisten lukeminen tiedostosta: viestiwin/3.2_ilmoittautumisten_lukeminen_tiedostosta.md
+      - 3.3 Parisprintin osuustietojen monistaminen: viestiwin/3.2_parisprintin_osuustietojen_monistaminen.md
+    - Luku 4. Kilpailunumeroiden määrääminen:
+      - Luku 4. Kilpailunumeroiden määrääminen: viestiwin/hkluku4.md
+      - 4.1 Lähtöajat ja kilpailijanumerot: viestiwin/4.1_lahtoajat_ja_kilpailijanumerot.md
+    - Luku 5. Ajanottotoiminnot:
+      - Luku 5. Ajanottotoiminnot: viestiwin/hkluku5.md
+      - 5.1  Ajanottokaavake: viestiwin/5.1_ajanottokaavake.md
+      - 5.2  Maalikellon käyttö: viestiwin/5.1_maalikellon_kaytto.md
+      - 5.3  Tunnisteisiin perustuva ajanotto: viestiwin/5.2_tunnisteisiin_perustuva_ajanotto.md
+      - 5.4  Osuuden määräytyminen ajanotossa: viestiwin/5.3_osuuden_m_r_ytyminen_ajanotossa.md
+      - 5.5  Väliaikapisteiden käsittely: viestiwin/5.4_valiaikapisteiden_kasittely.md
+      - 5.6  Yhteislähtöjen käsittely: viestiwin/5.5_yhteislahtojen_kasittely.md
+      - 5.7  Erän lähtöajan käsittely: viestiwin/5.5_eran_lahtoajan_kasittely.md
+      - 5.8  Aikajonojen vertailu: viestiwin/5.6_aikajonojen_vertailu.md
+      - 5.9 Sakkojen käsittely: viestiwin/5.9_sakkojen_kasittely.md
+    - "Luku 6. Emit-leimantarkastus":
+      - "Luku 6. Emit-leimantarkastus": viestiwin/hkluku6.md
+      - 6.1 Leimantarkastuskaavakkeen käyttö: viestiwin/6.1_leimantarkastuskaavake.md
+      - 6.2 Muutokset leimoihin ja niihin liitetyn osanottajan vaihto: viestiwin/6.6_emit-korjaukset.md
+      - 6.3 Rastireittisakkojen käsittely: viestiwin/6.7_rastireittisakkojen_kasittely.md
+      - 6.4 Rastiväliaikatulosteet: viestiwin/6.8_rastivaliaikatulosteet.md
+      - 6.5 Ohjelman konfigurointi ja käynnistyminen: viestiwin/6.9_ohjelman_konfigurointi_ja_kaynnistyminen.md
+      - "6.6 Yhteydet Emit-lukijaan, MTR- ja emiTag-laitteiden ohjaus": viestiwin/6.10_mtr-_ja_emitag-laitteiden_ohjaus.md
+      - 6.7 Emitkoodien lukeminen kilpailijoille: viestiwin/6.11_emitkoodien_lukeminen_kilpailijoille.md
+      - 6.8 Kartan käyttö itkumuurilla: viestiwin/6.8_kartan_kaytto_itkumuurilla.md
+      - 6.9 Emitkoodien muuttaminen: viestiwin/6.9_emitkoodien_muuttaminen.md
+      - 6.10 Piikkikuvioiden tarkastelu: viestiwin/6.10_piikkikuvioiden_tarkastelu.md
+      - 6.11 Leimaustietojen muokkaaminen jälkikäteen: viestiwin/6.11_leimaustietojen_muokkaaminen.md
+      - 6.12 Hylkäysesitysten käsittely: viestiwin/6.12_hylkaysesitysten_kasittely.md
+    - Luku 7. Osanottajatietojen tarkastelu ja muokkaus:
+      - Luku 7. Osanottajatietojen tarkastelu ja muokkaus: viestiwin/hkluku7.md
+      - "7.1 Joukkue- ja henkilötiedot": viestiwin/7.1_joukkue-_ja_henkilotiedot.md
+      - "7.2 Ei-lähteneet ja tarkastusmerkinnät": viestiwin/7.2_ei-lahteneet_ja_tarkastusmerkinnat.md
+      - 7.3 Kilpailun valmistunisen seuranta: viestiwin/7.3_kilpailun_valmistunisen_seuranta.md
+      - "7.4 Kaavake: Lisätietojen siirto": viestiwin/7.4_kaavake_lisatietojen_siirto.md
+    - Luku 8. Kuuluttajan ja selostajien toiminnot:
+      - Luku 8. Kuuluttajan ja selostajien toiminnot: viestiwin/hkluku8.md
+      - 8.1 Yleistä: viestiwin/8.1_yleista.md
+      - 8.2 Seurantanäytöt: viestiwin/8.2_seurantanaytot.md
+      - 8.3 Korostukset seurantanäytöillä: viestiwin/8.3_korostukset_seurantanaytoilla.md
+      - 8.4 Taustatiedot kilpailijoista: viestiwin/8.4_taustatiedot_kilpailijoista.md
+    - Luku 9. Tulostus kirjoittimelle ja tiedostoon:
+      - Luku 9. Tulostus kirjoittimelle ja tiedostoon: viestiwin/hkluku9.md
+      - 9.1 Kirjoittimet: viestiwin/luku_9.1_kirjoittimet.md
+      - 9.2 Tiedostotulostus: viestiwin/9.2_tiedostotulostus.md
+      - 9.3 Tulosteiden muotoilumääritykset: viestiwin/9.3_tulosten_muotoilumaaritykset.md
+      - 9.4 Tulokset hajontaradoittain: viestiwin/9.4_tulokset_hajontaradoittain.md
+      - 9.5  Automaattinen tulostus: viestiwin/9.5_automaattinen_tulostus.md
+    - Luku 10. Partiosuunnistus ja rogaining:
+      - Luku 10. Partiosuunnistus ja rogaining: viestiwin/luku_10._partiosuunnistus_ja_rogaining.md
+      - 10.1 Lähtöaikojen käsittely: viestiwin/10.1_lahtoaikojen_kasittely.md
+      - 10.2 Partiosuunnistus: viestiwin/10.2_partiosuunnistus.md
+      - 10.3 Rogaining: viestiwin/10.3_rogaining.md
+    - Luku 11. Joukkuekilpailut: viestiwin/luku_11._joukkuekilpailut.md
+    - "Luku 12. MySQL-tietokannan käyttö": viestiwin/hkluku12.md
+    - Luku 13. Ratatietojen muokkaus:
+      - Luku 13. Ratatietojen muokkaus: viestiwin/hkluku13.md
+      - "13.1 Rata- ja rastitiedot": viestiwin/13.1_rata-_ja_rastitiedot.md
+      - 13.2 Radat: viestiwin/13.2_radat.md
+      - 13.3 Rastien leimasinkoodit: viestiwin/13.3_rastien_leimasinkoodit.md
+      - 13.4 Ratatietojen siirto tiedostosta: viestiwin/13.4_ratatietojen_siirto_tiedostosta.md
+      - 13.5 Kirjoitintulosteet: viestiwin/13.5_kirjoitintulosteet.md
+      - 13.6 Ratamääritysten tarkastaminen: viestiwin/13.6_ratamaaritysten_tarkastaminen.md
+      - 13.7 Ratamääritysten ottaminen käyttöön: viestiwin/13.7_ratamaaritysten_ottaminen_kayttoon.md
+      - 13.8 Valinnainen leimausjärjestys: viestiwin/13.8_valinnainen_leimausjarjestys.md
+      - 13.9 Ratatietojen muokkaus kisan aikana: viestiwin/13.9_ratatietojen_muokkaus_kisan_aikana.md
+      - 13.10 Rastien sijainnit ja kartta: viestiwin/13.10_rastien_sijainnit_ja_kartta.md
+    - Luku 14. Ampumahiihto ja partiohiihto:
+      - Luku 14. Ampumahiihto ja partiohiihto: viestiwin/luku_14._ampumahiihto.md
+      - 14.1 Ampumahiihto: viestiwin/14.1_ampumahiihto.md
+      - 14.2 Partiohiihto: viestiwin/14.2_partiohiihto.md
+    - Liite 1. Käynnistysparametrit: viestiwin/hkliite1.md
+    - Liite 2. Tiedonsiirron käyttöönotto: viestiwin/hkliite2.md
+    - Liite 3. Algen Timy USB portissa: viestiwin/liite_7._algen_timy_usb_portissa.md
+    - Liite 4. Rinnakkaisosuusviestit: viestiwin/liite_4._rinnakkaisosuusviestit.md
+    - "Liite 5. EmiTag-laitteiden käyttö": viestiwin/liite_5._emitag-laitteiden_kaytto.md
+  - PDF-manuaalit: pdf-manuaalit.md

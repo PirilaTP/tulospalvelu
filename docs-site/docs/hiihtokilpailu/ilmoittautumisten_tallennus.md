@@ -1,0 +1,2 @@
+# Ilmoittautumisten tallennus
+
