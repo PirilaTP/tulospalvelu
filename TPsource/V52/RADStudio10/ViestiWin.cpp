@@ -96,7 +96,6 @@ USEFORM("..\cbTp\UnitAnnaArvo.cpp", FormAnnaArvo);
 USEFORM("..\cbTp\UnitAikakorjaus.cpp", FormAikakorjaus);
 USEFORM("..\cbTp\UnitAnnaAika.cpp", FormAnnaAika);
 USEFORM("..\cbTp\UnitEmiTag.cpp", FormEmiTag);
-USEFORM("..\cbTp\UnitJakelu.cpp", FormJakelu);
 USEFORM("..\cbTp\UnitKartta.cpp", FormKartta);
 USEFORM("..\cbTp\UnitKirjoitinVal.cpp", FormKirjVal);
 USEFORM("..\cbTp\UnitHtmlEdit.cpp", FormHtmlEdit);
@@ -180,7 +179,6 @@ WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 		Application->CreateForm(__classid(TFormSakkoKierr), &FormSakkoKierr);
 		Application->CreateForm(__classid(TFormKohdistus), &FormKohdistus);
 		Application->CreateForm(__classid(TFormYhteysStatus), &FormYhteysStatus);
-		Application->CreateForm(__classid(TFormJakelu), &FormJakelu);
 */
 
 

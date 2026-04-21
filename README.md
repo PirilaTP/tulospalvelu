@@ -66,7 +66,6 @@ successfully compiled with Visual Studio 2022 and Visual Studio 2026. The langua
 The Windows programs are made with
 [Embarcadero C++ Builder](https://www.embarcadero.com/app-development-tools-store/cbuilder).
 The free Community Edition was successfully used to compile and run the program.
-[SecureBridge](https://www.devart.com/sbridge/download.html) 12 for RAD Studio Berlin is an add-on that is required to compile and run the program. 
 
 ### Compile
 1. Open TPsource\V52\RADStudio10\DBboxm-XE.cbproj

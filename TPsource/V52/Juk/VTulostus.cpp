@@ -37,7 +37,6 @@
 #include "UnitMain.h"
 #include "UnitMsgs.h"
 #include "TulostusUnit2.h"
-#include "UnitJakelu.h"
 #endif
 
 #define K_TIED
@@ -6755,18 +6754,6 @@ int autofile(void)
 		return(0);
 	if (aftulparam.lstf && aftulparam.lstf->prno == -2 && aftulparam.lstf->u.Fl)
 		return(1);
-#ifdef _BORLAND_
-	if (autofileparam.autokomentolaji == 2) {
-		if (!FormJakelu) {
-			startAutojakelu();
-			Sleep(1000);
-			}
-		if (!FormJakelu)
-			return(0);
-		if (FormJakelu->LahetysKesken)
-			return(0);
-		}
-#endif
 #if defined(TCPSIIRTOxx)
 	if (fileyht >= 0) {
 		EnterCriticalSection(&tcp_CriticalSection[fileyht]);
@@ -6945,12 +6932,6 @@ int autofile(void)
 		_wsystem(cst);
 //		_wspawnl(P_DETACH, L"cmd.exe", L"/C", cst, NULL);
 		}
-#ifdef __BORLANDC__
-	if (kirjoitettu && autofileparam.autokomentolaji == 2) {
-		if (FormJakelu)
-			FormJakelu->SendFiles();
-		}
-#endif
 	autofileparam.af_flag = 0;
 	LeaveCriticalSection(&autotul_CriticalSection);
 	return(0);

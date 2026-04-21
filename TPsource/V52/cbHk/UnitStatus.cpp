@@ -29,7 +29,6 @@
 #include "UnitYhteysStatus.h"
 #include "HkDeclare.h"
 #include "HkMuotoilu.h"
-#include "UnitJakelu.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

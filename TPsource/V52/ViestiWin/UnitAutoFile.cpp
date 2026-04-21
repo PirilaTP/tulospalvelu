@@ -19,7 +19,6 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include "UnitJakelu.h"
 #include "UnitAutoFile.h"
 #include "UnitMain.h"
 //---------------------------------------------------------------------------
@@ -89,8 +88,6 @@ void __fastcall TFormAutoFile::BtnOtakayttoonClick(TObject *Sender)
 //	wcscpy(autokomento, EdtKomento->Text.c_str());
 	wcsncpy(autofileparam.autokomento, EdtKomento->Text.c_str(), sizeof(autofileparam.autokomento)/2-1);
 	autofileparam.autokomentolaji = RGJatko->ItemIndex;
-	if (FormJakelu)
-		FormJakelu->CBAutoJakelu->Checked = autofileparam.autokomentolaji == 2;
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormAutoFile::Button3Click(TObject *Sender)
@@ -161,17 +158,8 @@ void __fastcall TFormAutoFile::CBVaadiMuutosClick(TObject *Sender)
 
 void __fastcall TFormAutoFile::RGJatkoClick(TObject *Sender)
 {
-	BtnLahetysVal->Enabled = RGJatko->ItemIndex != 1;
-	EdtKomento->Enabled = RGJatko->ItemIndex != 2;
+	EdtKomento->Enabled = RGJatko->ItemIndex == 1;
 	BtnValitseKomento->Enabled = EdtKomento->Enabled;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormAutoFile::BtnLahetysValClick(TObject *Sender)
-{
-	if (FormJakelu == NULL)
-		FormJakelu = new TFormJakelu(this);
-	FormJakelu->Show();
 }
 //---------------------------------------------------------------------------
 

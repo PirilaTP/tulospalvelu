@@ -107,7 +107,6 @@ static const System::Uitypes::TColor clVaaleanHarmaa = System::Uitypes::TColor(0
 #define WM_MYLUKUMAARAT		(WM_APP + 2205)
 #define WM_MYSELECTOPT		(WM_APP + 2206)
 #define WM_MYDISPLTIMER		(WM_APP + 2207)
-#define WM_AUTOTULOSTUS 	(WM_APP + 2208)
 #define WM_MYADDSAKKO	 	(WM_APP + 2209)
 #define WM_MYECODE		 	(WM_APP + 2210)
 #define WM_MYSCROLL		 	(WM_APP + 2211)

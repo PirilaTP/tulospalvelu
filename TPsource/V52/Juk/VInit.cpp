@@ -2510,7 +2510,6 @@ void asetaOletusarvot(void)
 	aftulparam.tulmuot = filetulosmuot;
 	filetulparam = aftulparam;
 	wcscpy(autofileparam.aflstnm, L"AUTOFILE.LST");
-	wcscpy(autofileparam.jakelumaar, L"AutoJakelu.xml");
 	autofileparam.sanafchars = L'8';
 
 	for (int i = 0; i < MAXSARJALUKU+MAXYHD; i++)

@@ -27,7 +27,6 @@ USEFORM("..\cbTp\UnitLisaTekstit.cpp", FormLisaTekstit);
 USEFORM("..\cbTp\UnitMsgs.cpp", FormMsgs);
 USEFORM("..\cbTp\UnitMessages.cpp", FormMessages);
 USEFORM("..\cbTp\UnitKohdistus.cpp", FormKohdistus);
-USEFORM("..\cbTp\UnitJakelu.cpp", FormJakelu);
 USEFORM("..\cbTp\UnitIlmoitus.cpp", FormIlmoitus);
 USEFORM("..\cbTp\UnitKirjoitinVal.cpp", FormKirjVal);
 USEFORM("..\cbTp\UnitKartta.cpp", FormKartta);
@@ -228,7 +227,6 @@ WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 		Application->CreateForm(__classid(TFormAikakorjaus), &FormAikakorjaus);
 		Application->CreateForm(__classid(TFormKohdistus), &FormKohdistus);
 		Application->CreateForm(__classid(TFormYhteysStatus), &FormYhteysStatus);
-		Application->CreateForm(__classid(TFormJakelu), &FormJakelu);
 		Application->CreateForm(__classid(TFormCfg), &FormCfg);
 */
 	}

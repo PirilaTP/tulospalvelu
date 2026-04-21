@@ -56,7 +56,6 @@ __published:	// IDE-managed Components
 	TButton *BtnValitseKomento;
 	TButton *Button6;
 	TRadioGroup *RGJatko;
-	TButton *BtnLahetysVal;
 	TCheckBox *CBVaadiMuutos;
 	TBitBtn *BitBtn1;
 	TButton *BtnAvaaAFlst;
@@ -68,7 +67,6 @@ __published:	// IDE-managed Components
 	void __fastcall Button4Click(TObject *Sender);
 	void __fastcall BtnValitseKomentoClick(TObject *Sender);
 	void __fastcall Button6Click(TObject *Sender);
-	void __fastcall BtnLahetysValClick(TObject *Sender);
 	void __fastcall RGJatkoClick(TObject *Sender);
 	void __fastcall BitBtn1Click(TObject *Sender);
 	void __fastcall CBVaadiMuutosClick(TObject *Sender);

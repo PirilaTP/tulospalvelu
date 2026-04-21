@@ -25,7 +25,6 @@
 #include <HTMLHelpViewer.hpp>
 
 #include "WinHk.h"
-#include "UnitJakelu.h"
 #include "UnitAvausMaar.h"
 #include "UnitStatus.h"
 #include "UnitSelect.h"
@@ -1757,8 +1756,6 @@ void SuljeKaikki(void)
 	int wparam = 0;
 	int lparam = 0;
 	lkmThreadOn = false;
-	if (FormJakelu)
-		FormJakelu->CloseAll();
 	SendMessage(FormMain->Handle,WM_MYMSGCLOSEAPPL,wparam,lparam);
 }
 //---------------------------------------------------------------------------
@@ -1774,26 +1771,6 @@ MESSAGE void __fastcall TFormMain::LukumaaraReqHandler(TMyMessage &msg)
 }
 //---------------------------------------------------------------------------
 
-void startAutojakelu(void)
-{
-	SendMessage(FormMain->Handle, WM_AUTOTULOSTUS, 0, 0);
-}
-
-MESSAGE void __fastcall TFormMain::AutotulostusReqHandler(TMyMessage &msg)
-{
-	if (!FormJakelu) {
-		FormJakelu = new TFormJakelu(FormMain);
-		}
-	if (!FormJakelu->Initialized) {
-		FormJakelu->Show();
-		FormJakelu->Hide();
-		}
-	FormJakelu->LueJakeluMaaritykset(autofileparam.jakelumaar);
-	Sleep(1000);
-	FormJakelu->openFTP();
-	if (!FormJakelu->KeepOpen)
-		FormJakelu->CloseAll();
-}
 static void tarkAutoTulostus(void)
 {
 	if (autofl && lkmThreadOn) {

@@ -28,7 +28,6 @@
 #include "WinHk.h"
 #include "TulostusUnit2.h"
 #include "UnitJoukkueTilanne.h"
-#include "UnitJakelu.h"
 #endif
 
 int yhttl = 0;
@@ -53,7 +52,6 @@ int xmlfissrjots(int sarja, tulostusparamtp *tulprm);
 int xmlfissrjloppu(tulostusparamtp *tulprm);
 void xmlfistulos(kilptietue *kilp, INT sj, tulostusparamtp *tulprm);
 
-void startAutojakelu(void);
 INT avaa_tiedosto(tulostusparamtp *tulprm);
 INT avaa_tiedosto_nm(wchar_t *fname);
 void sulje_tiedosto(TextFl **tul_tied);
@@ -6812,18 +6810,6 @@ int autofile(int kaikki)
 		return(0);
 	if (aftulparam.lstf && aftulparam.lstf->prno == -2 && aftulparam.lstf->u.Fl)
 		return(1);
-#ifdef _BORLAND_
-	if (autofileparam.autokomentolaji == 2) {
-		if (!FormJakelu) {
-			startAutojakelu();
-			Sleep(1000);
-			}
-		if (!FormJakelu)
-			return(0);
-		if (FormJakelu->LahetysKesken)
-			return(0);
-		}
-#endif
 	autofileparam.af_kaikki = kaikki != 0;
 #if defined(TCPSIIRTOxx)
 	if (fileyht >= 0) {
@@ -7068,12 +7054,6 @@ int autofile(int kaikki)
 		strcat(cst, " >NUL");
 		system(cst);
 		}
-#ifdef _BORLAND_
-	if (kirjoitettu && autofileparam.autokomentolaji == 2) {
-		if (FormJakelu)
-			FormJakelu->SendFiles();
-		}
-#endif
 	autofileparam.af_flag = 0;
 	LeaveCriticalSection(&autotul_CriticalSection);
 	return(0);
