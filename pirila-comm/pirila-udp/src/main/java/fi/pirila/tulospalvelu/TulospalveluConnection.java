@@ -18,6 +18,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -50,6 +51,16 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
 
     private final Deque<Runnable> sendQueue = new ArrayDeque<>();
     private boolean sendInFlight = false;
+
+    /**
+     * Heartbeat interval in ms. C++ peers send NAK every nakviive (default 1000ms)
+     * as a keep-alive; without it, their yhtfl[] counter drops to 0 after ~5s and
+     * the GUI shows the connection as "Ei". We mirror that pulse.
+     */
+    private static final long HEARTBEAT_INTERVAL_MS = 1000;
+
+    private ScheduledFuture<?> heartbeatTask;
+    private long lastSendTimeMs;
 
     private MessageListener listener;
     private ChannelHandlerContext ctx;
@@ -217,6 +228,7 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
             connected = true;
             connectedLatch.countDown();
             log.info("Connected to server (ALKUT acknowledged)");
+            startHeartbeat();
             onSendCompleted();
             return;
         }
@@ -252,15 +264,19 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
             return;
         }
 
-        log.info("Incoming message: pkgclass={}, id={}, len={}",
-                frame.pkgclass() & 0xFF, frame.id() & 0xFF, frame.data().length);
+        log.info("Incoming message: pkgclass={} ({}), id={}, len={}, data={}",
+                frame.pkgclass() & 0xFF, pkgclassName(frame.pkgclass()),
+                frame.id() & 0xFF, frame.data().length,
+                bytesToHex(frame.data()));
 
         if (inPacketIdInit) {
             inPacketId = (byte) (frame.id() - 1);
             inPacketIdInit = false;
         }
 
-        // Always ACK (even retransmissions)
+        // Always ACK (even retransmissions). Send back to the packet's source
+        // address — MA's client socket is at an ephemeral port, not serverPort,
+        // and NAT state-tracking delivers our reply to the right place.
         sendAck(ctx, frame.id(), sender);
 
         if (frame.id() == inPacketId) {
@@ -366,9 +382,12 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
                 id & 0xFF, data.length, remoteAddress());
 
         ctx.writeAndFlush(new DatagramPacket(buf, remoteAddress()));
+        lastSendTimeMs = System.currentTimeMillis();
     }
 
     private void sendAck(ChannelHandlerContext ctx, byte msgId, InetSocketAddress target) {
+        // Server-side ACK format (peer responding to client): 00 00 + machineID + ACK(+id+~id+id)
+        // Matches wrt_st_UDPsrv / read_UDPcli convention in C++ side (WinUDP.cpp:1216).
         ByteBuf buf = Unpooled.buffer(4 + 4);
         buf.writeShort(0);
         buf.writeBytes(machineId.getBytes(CharsetUtil.US_ASCII));
@@ -379,6 +398,7 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
 
         log.debug("TX ACK for id={} -> {}", msgId & 0xFF, target);
         ctx.writeAndFlush(new DatagramPacket(buf, target));
+        lastSendTimeMs = System.currentTimeMillis();
     }
 
     private void sendNak(ChannelHandlerContext ctx, InetSocketAddress target) {
@@ -389,6 +409,50 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
 
         log.debug("TX NAK -> {}", target);
         ctx.writeAndFlush(new DatagramPacket(buf, target));
+        lastSendTimeMs = System.currentTimeMillis();
+    }
+
+    private void startHeartbeat() {
+        if (heartbeatTask != null) return;
+        heartbeatTask = ctx.executor().scheduleAtFixedRate(this::heartbeatTick,
+                HEARTBEAT_INTERVAL_MS, HEARTBEAT_INTERVAL_MS, TimeUnit.MILLISECONDS);
+    }
+
+    private void heartbeatTick() {
+        if (System.currentTimeMillis() - lastSendTimeMs < HEARTBEAT_INTERVAL_MS) return;
+        sendHeartbeatNak();
+    }
+
+    /**
+     * Send a 1-byte NAK wrapped in the C++ peer-data wrapper (STX | port | machID | NAK).
+     * read_UDP() on the peer strips the 5-byte wrapper and recognises the lone NAK
+     * payload, refreshing yhtfl[] and naapuri[]. The shorter UDPsrv-style wrapper
+     * used by sendNak() (for invalid-frame replies) is read by read_UDPcli only and
+     * would arrive at the peer's data socket as a malformed payload — koodi=1 error.
+     */
+    private void sendHeartbeatNak() {
+        ByteBuf buf = Unpooled.buffer(5 + 1);
+        buf.writeByte(STX);
+        buf.writeShortLE(localPort);
+        buf.writeBytes(machineId.getBytes(CharsetUtil.US_ASCII));
+        buf.writeByte(NAK);
+
+        log.trace("TX heartbeat NAK -> {}", remoteAddress());
+        ctx.writeAndFlush(new DatagramPacket(buf, remoteAddress()));
+        lastSendTimeMs = System.currentTimeMillis();
+    }
+
+    private void stopHeartbeat() {
+        if (heartbeatTask != null) {
+            heartbeatTask.cancel(false);
+            heartbeatTask = null;
+        }
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        stopHeartbeat();
+        super.channelInactive(ctx);
     }
 
     private void advancePacketId() {
@@ -400,6 +464,22 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) sb.append(String.format("%02X ", b));
         return sb.toString().trim();
+    }
+
+    private static String pkgclassName(byte pkgclass) {
+        return switch (pkgclass) {
+            case PKGCLASS_ALKUT -> "ALKUT";
+            case PKGCLASS_KILPT -> "KILPT";
+            case PKGCLASS_KILPPVT -> "KILPPVT";
+            case PKGCLASS_VAIN_TULOST -> "VAIN_TULOST";
+            case PKGCLASS_AIKAT -> "AIKAT";
+            case PKGCLASS_EMITT -> "EMITT";
+            case PKGCLASS_SEURAT -> "SEURAT";
+            case PKGCLASS_FILESEND -> "FILESEND";
+            case PKGCLASS_EMITVA -> "EMITVA";
+            case PKGCLASS_EXTRA -> "EXTRA";
+            default -> "?";
+        };
     }
 
     @Override
