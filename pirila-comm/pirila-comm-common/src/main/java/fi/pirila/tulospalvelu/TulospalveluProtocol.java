@@ -33,8 +33,16 @@ public final class TulospalveluProtocol {
 
     // --- Sizes and offsets ---
     public static final int ALKUT_DATA_SIZE = 10;
-    public static final int PV_OFF_BADGE = 68;   // Offset to badge (INT32) within pv/cpv data
-    public static final int KILPPVT_HEADER = 8;  // tarf(1)+pakota(1)+dk(2)+pv(2)+valuku(2)
+    public static final int PV_OFF_BADGE = 68;     // Offset to badge (INT32) within pv/cpv data
+    public static final int PV_OFF_KESKHYL = 128;  // Offset to keskhyl (WCHAR, UTF-16LE) within pv/cpv data
+    public static final int KILPPVT_HEADER = 8;    // tarf(1)+pakota(1)+dk(2)+pv(2)+valuku(2)
+
+    // --- Status (keskhyl) values ---
+    // C++ set_tark accepts "-TIHKOEVPXMB"; the four below are the user-facing ones.
+    public static final char STATUS_OPEN = '-';   // No status / pending
+    public static final char STATUS_DNS  = 'E';   // Ei lähtenyt (Did Not Start)
+    public static final char STATUS_DNF  = 'K';   // Keskeyttänyt (Did Not Finish)
+    public static final char STATUS_DSQ  = 'H';   // Hylätty (Disqualified)
 
     // --- EXTRA sub-types (d1 & 0x0F) ---
     public static final int EXTRA_CHECKPOINT = 1;
@@ -145,12 +153,27 @@ public final class TulospalveluProtocol {
         return data;
     }
 
-    /** Build KILPPVT outbound payload (8 + kilppvtpsize bytes). */
+    /** Build KILPPVT outbound payload (8 + kilppvtpsize bytes) with new badge. */
     public static byte[] buildKilppvtData(int recordIndex, byte[] pvData,
                                            int kilppvtpsize, int newBadge) {
+        return buildKilppvtData(recordIndex, pvData, kilppvtpsize, (Integer) newBadge, null);
+    }
+
+    /**
+     * Build KILPPVT outbound payload with optional badge and/or status (keskhyl) override.
+     * Either argument may be null to leave that field untouched (existing pvData value sent as-is).
+     */
+    public static byte[] buildKilppvtData(int recordIndex, byte[] pvData,
+                                           int kilppvtpsize, Integer newBadge, Character newKeskhyl) {
         byte[] cpv = new byte[kilppvtpsize];
         System.arraycopy(pvData, 0, cpv, 0, Math.min(pvData.length, kilppvtpsize));
-        writeInt32LE(cpv, PV_OFF_BADGE, newBadge);
+        if (newBadge != null) {
+            writeInt32LE(cpv, PV_OFF_BADGE, newBadge);
+        }
+        if (newKeskhyl != null) {
+            cpv[PV_OFF_KESKHYL] = (byte) (newKeskhyl & 0xFF);
+            cpv[PV_OFF_KESKHYL + 1] = (byte) ((newKeskhyl >> 8) & 0xFF);
+        }
 
         byte[] data = new byte[8 + kilppvtpsize];
         data[0] = 0;                                   // tarf

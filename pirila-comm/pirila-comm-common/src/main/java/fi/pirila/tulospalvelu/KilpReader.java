@@ -111,6 +111,22 @@ public class KilpReader {
     }
 
     /**
+     * Write keskhyl (status, wchar_t UTF-16LE) to KILP.DAT for a specific competitor record.
+     * Updates pv[0].keskhyl at offset kilprecsize0 + 128.
+     */
+    public static void writeKeskhyl(Path kilpFile, int recordIndex, char keskhyl) throws IOException {
+        int reclen = detectRecordSize(kilpFile);
+        int kilprecsize0 = findKilprecsize0(reclen);
+        long offset = (long) recordIndex * reclen + kilprecsize0 + PV_OFF_KESKHYL;
+
+        try (RandomAccessFile raf = new RandomAccessFile(kilpFile.toFile(), "rw")) {
+            raf.seek(offset);
+            raf.writeByte(keskhyl & 0xFF);
+            raf.writeByte((keskhyl >> 8) & 0xFF);
+        }
+    }
+
+    /**
      * Write full stage (pv) data to KILP.DAT for a competitor.
      * Used when receiving KILPPVT messages from the network.
      * Corresponds to C++ tark_kilp(cn, 2) → pv[n].unpack0(cpv) → tallenna().
@@ -317,6 +333,27 @@ public class KilpReader {
      */
     private static int findKilprecsize0(int reclen) {
         return 360;
+    }
+
+    /**
+     * Parsed core fields from a KILPT record (kilprecsize0 base block).
+     * Use to merge an incoming server record into an existing in-memory Competitor.
+     */
+    public record ParsedRecord(int kilpno, String sukunimi, String etunimi,
+                                String seura, int sarja) {}
+
+    /**
+     * Parse name/club/class/kilpno fields from a raw KILPT record byte buffer.
+     * Offsets follow kilp_fields in HkDat.cpp.
+     */
+    public static ParsedRecord parseRecord(byte[] recordData) {
+        java.nio.ByteBuffer buf = java.nio.ByteBuffer.wrap(recordData).order(java.nio.ByteOrder.LITTLE_ENDIAN);
+        int kilpno = buf.getShort(OFF_KILPNO) & 0xFFFF;
+        String sukunimi = readWideString(recordData, OFF_SUKUNIMI, 25);
+        String etunimi = readWideString(recordData, OFF_ETUNIMI, 25);
+        String seura = readWideString(recordData, OFF_SEURA, 32);
+        int sarja = buf.getShort(OFF_SARJA) & 0xFFFF;
+        return new ParsedRecord(kilpno, sukunimi, etunimi, seura, sarja);
     }
 
     /** Read a null-terminated UTF-16LE (wchar_t) string from a byte array. */

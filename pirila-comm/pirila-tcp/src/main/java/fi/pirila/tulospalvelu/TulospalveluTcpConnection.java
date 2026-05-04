@@ -157,16 +157,30 @@ public class TulospalveluTcpConnection extends SimpleChannelInboundHandler<byte[
 
     public CompletableFuture<Boolean> sendKilppvt(int recordIndex, byte[] pvData,
                                                    int kilppvtpsize, int newBadge) {
+        return sendKilppvtModified(recordIndex, pvData, kilppvtpsize, (Integer) newBadge, null,
+                "KILPPVT badge", () -> log.info("  dk={}, newBadge={}", recordIndex, newBadge));
+    }
+
+    public CompletableFuture<Boolean> sendStatusChange(int recordIndex, byte[] pvData,
+                                                        int kilppvtpsize, char newStatus) {
+        return sendKilppvtModified(recordIndex, pvData, kilppvtpsize, null, newStatus,
+                "KILPPVT status",
+                () -> log.info("  dk={}, newStatus='{}'", recordIndex, newStatus));
+    }
+
+    private CompletableFuture<Boolean> sendKilppvtModified(int recordIndex, byte[] pvData,
+            int kilppvtpsize, Integer newBadge, Character newKeskhyl,
+            String label, Runnable detailLog) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         ctx.executor().execute(() -> {
-            byte[] data = buildKilppvtData(recordIndex, pvData, kilppvtpsize, newBadge);
+            byte[] data = buildKilppvtData(recordIndex, pvData, kilppvtpsize, newBadge, newKeskhyl);
 
             enqueueSend(() -> {
                 pendingFuture = future;
                 pendingPacketId = outPacketId;
-                sendSohFrame(ctx, PKGCLASS_KILPPVT, data, "KILPPVT");
-                log.info("  dk={}, newBadge={}", recordIndex, newBadge);
+                sendSohFrame(ctx, PKGCLASS_KILPPVT, data, label);
+                detailLog.run();
                 advancePacketId();
             });
         });

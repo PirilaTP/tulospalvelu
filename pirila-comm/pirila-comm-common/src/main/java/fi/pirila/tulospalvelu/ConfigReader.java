@@ -66,8 +66,8 @@ public class ConfigReader {
     }
 
     private void parseConnection(String line) {
-        // Format: yhteys<N>=udp:<srvport>/<destaddr>:<destport>
-        // or:     yhteys<N>=tcp:<srvport>/<destaddr>:<destport>
+        // Full:    yhteys<N>=udp:<srvport>/<destaddr>:<destport>
+        // Passive: yhteys<N>=udp                       (listen only; destAddr=AUTO, destPort=0)
         int eqIdx = line.indexOf('=');
         if (eqIdx < 0) return;
 
@@ -78,33 +78,56 @@ public class ConfigReader {
         int connIdx = Integer.parseInt(numStr);
 
         String value = line.substring(eqIdx + 1).trim();
+        if (value.isEmpty()) return;
 
-        // Extract protocol prefix (udp:, tcp:, etc.)
-        int colonIdx = value.indexOf(':');
-        if (colonIdx < 0) return;
-        String protocol = value.substring(0, colonIdx).toLowerCase();
-        value = value.substring(colonIdx + 1);
-
-        // Parse: <srvport>/<destaddr>:<destport>
-        // Internal connection index is 0-based: yhteys1 = index 0
+        // C++ HkInit.cpp:393-394 defaults: srvport=PORTBASE+1+ny, destPort=PORTBASE+1, destAddr="AUTO"
+        // Internal connection index is 0-based: yhteys1 -> ny=0
         int ny = connIdx - 1;
         int srvPort = PORTBASE + 1 + ny;
         int destPort = PORTBASE + 1;
-        String destAddr = "localhost";
+        String destAddr = "AUTO";
 
-        String[] parts = value.split("[/:]");
-        if (parts.length >= 1) {
-            int sp = parseIntSafe(parts[0]);
-            if (sp > 0) srvPort = sp;
+        // Split protocol from rest. Bare "UDP" / "TCP" with no separator is the passive case.
+        String protocol;
+        String rest;
+        int sepIdx = indexOfAny(value, ":/=,");
+        if (sepIdx < 0) {
+            protocol = value.toLowerCase();
+            rest = "";
+        } else {
+            protocol = value.substring(0, sepIdx).toLowerCase();
+            rest = value.substring(sepIdx + 1);
         }
-        if (parts.length >= 2) {
-            destAddr = parts[1];
+
+        if (!rest.isEmpty()) {
+            String[] parts = rest.split("[/:]");
+            if (parts.length >= 1) {
+                int sp = parseIntSafe(parts[0]);
+                if (sp > 0) srvPort = sp;
+            }
+            if (parts.length >= 2) {
+                destAddr = parts[1];
+            }
+            if (parts.length >= 3) {
+                destPort = parsePort(parts[2], ny);
+            }
         }
-        if (parts.length >= 3) {
-            destPort = parsePort(parts[2], ny);
+
+        // C++ HkInit.cpp:424-425: if destAddr stays "AUTO", destPort is forced to 0 (passive)
+        if ("AUTO".equalsIgnoreCase(destAddr)) {
+            destPort = 0;
         }
 
         connections.add(new Connection(connIdx, protocol, destAddr, destPort, srvPort, false));
+    }
+
+    private static int indexOfAny(String s, String chars) {
+        int min = -1;
+        for (int i = 0; i < chars.length(); i++) {
+            int idx = s.indexOf(chars.charAt(i));
+            if (idx >= 0 && (min < 0 || idx < min)) min = idx;
+        }
+        return min;
     }
 
     private int parsePort(String portStr, int ny) {

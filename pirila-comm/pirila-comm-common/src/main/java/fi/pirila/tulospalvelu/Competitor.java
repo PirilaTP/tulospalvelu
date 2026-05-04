@@ -2,16 +2,16 @@ package fi.pirila.tulospalvelu;
 
 /**
  * A competitor read from KILP.DAT.
- * Badge fields are mutable since they can be updated via network messages.
+ * Mutable fields can be updated via network messages (KILPPVT/KILPT).
  */
 public class Competitor {
 
     public final int recordIndex;
-    public final int kilpno;
-    public final String sukunimi;
-    public final String etunimi;
-    public final String seura;
-    public final int sarja;
+    public int kilpno;
+    public String sukunimi;
+    public String etunimi;
+    public String seura;
+    public int sarja;
     public int badge;   // emit card from pv[0]
     public int badge2;  // second emit card from pv[0]
     public char keskhyl; // K=DNF, H=DSQ, E=DNS, 0=normal

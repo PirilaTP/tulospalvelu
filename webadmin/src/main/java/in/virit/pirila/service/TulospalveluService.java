@@ -159,9 +159,27 @@ public class TulospalveluService implements MessageListener {
     }
 
     private void setupUdpConnection(String host, int port, int srvPort, String machineId, int nrec) throws Exception {
-        log.info("Setting up UDP connection: host={}, port={}, srvPort={}, machineId={}, nrec={}",
-                host, port, srvPort, machineId, nrec);
-        udpConnection = new TulospalveluConnection(host, port, machineId, nrec);
+        boolean passive = host == null || host.isBlank() || "AUTO".equalsIgnoreCase(host);
+        log.info("Setting up UDP connection: host={}, port={}, srvPort={}, machineId={}, nrec={}, passive={}",
+                host, port, srvPort, machineId, nrec, passive);
+
+        // Probe if srvPort is available; handler is not @Sharable so we can't
+        // try/retry binding the same instance. Check with a plain DatagramSocket.
+        int actualSrvPort = srvPort;
+        try (java.net.DatagramSocket probe = new java.net.DatagramSocket(srvPort)) {
+            // srvPort available
+        } catch (java.net.BindException be) {
+            if (passive) {
+                throw new RuntimeException("Passiivi-yhteys vaatii kiinteän srvPortin " + srvPort
+                        + ", mutta se on käytössä: " + be.getMessage(), be);
+            }
+            log.warn("srvPort {} not available ({}), will use ephemeral port", srvPort, be.getMessage());
+            actualSrvPort = 0;
+        }
+
+        udpConnection = passive
+                ? TulospalveluConnection.passive(machineId, nrec)
+                : new TulospalveluConnection(host, port, machineId, nrec);
         udpConnection.setListener(this);
         eventLoopGroup = new NioEventLoopGroup();
 
@@ -175,10 +193,14 @@ public class TulospalveluService implements MessageListener {
                         ch.pipeline().addLast(udpConnection);
                     }
                 });
-
-        channel = bootstrap.bind(srvPort).sync().channel();
+        channel = bootstrap.bind(actualSrvPort).sync().channel();
         log.info("UDP channel bound to {}, channel.isActive={}, channel.isOpen={}",
                 channel.localAddress(), channel.isActive(), channel.isOpen());
+
+        if (passive) {
+            log.info("Passive UDP listener on port {} - waiting for peer to initiate", srvPort);
+            return;
+        }
 
         log.info("Waiting for ALKUT handshake (timeout 5s)...");
         boolean connected = udpConnection.awaitConnected(5, TimeUnit.SECONDS);
@@ -293,6 +315,59 @@ public class TulospalveluService implements MessageListener {
         }
     }
 
+    public boolean sendStatusChange(int recordIndex, char newStatus) {
+        log.info("sendStatusChange called: recordIndex={}, newStatus='{}', connected={}",
+                recordIndex, newStatus, isConnected());
+        if (!isConnected()) {
+            log.warn("Cannot send status change - not connected to server");
+            return false;
+        }
+        if (kilpFile == null) {
+            log.warn("Cannot send status change - KILP.DAT not available");
+            return false;
+        }
+
+        try {
+            byte[] pvData = KilpReader.readPvData(kilpFile, recordIndex);
+            int kilppvtpsize = KilpReader.getKilppvtpsize();
+
+            for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+                CompletableFuture<Boolean> result;
+                if (tcpConnection != null) {
+                    result = tcpConnection.sendStatusChange(recordIndex, pvData, kilppvtpsize, newStatus);
+                } else {
+                    result = udpConnection.sendStatusChange(recordIndex, pvData, kilppvtpsize, newStatus);
+                }
+
+                Boolean success = result.get(10, TimeUnit.SECONDS);
+                if (Boolean.TRUE.equals(success)) {
+                    KilpReader.writeKeskhyl(kilpFile, recordIndex, newStatus);
+                    fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(recordIndex);
+                    if (comp != null) {
+                        comp.keskhyl = newStatus;
+                        for (var l : updateListeners) {
+                            try { l.accept(comp); } catch (Exception e) { log.warn("Update listener failed", e); }
+                        }
+                    }
+                    log.info("Status change successful: record={}, newStatus='{}', attempt={}",
+                            recordIndex, newStatus, attempt);
+                    return true;
+                }
+
+                if (attempt < MAX_RETRIES) {
+                    log.info("Status change NAK'd (attempt {}/{}), retrying in {}ms...", attempt, MAX_RETRIES, RETRY_DELAY_MS);
+                    Thread.sleep(RETRY_DELAY_MS);
+                } else {
+                    log.warn("Status change rejected after {} attempts: record={}", MAX_RETRIES, recordIndex);
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            log.error("Status change failed for record={}", recordIndex, e);
+            return false;
+        }
+    }
+
     /**
      * Register a listener for competitor updates from the network.
      * Called on Netty thread — listener must handle UI.access() itself.
@@ -306,6 +381,32 @@ public class TulospalveluService implements MessageListener {
     }
 
     // --- Server-initiated updates ---
+
+    @Override
+    public void onFullCompetitorRecord(int dk, int entno, byte[] recordData) {
+        fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(dk);
+        if (comp == null) {
+            log.warn("KILPT for unknown record dk={}, entno={}", dk, entno);
+            return;
+        }
+        try {
+            KilpReader.ParsedRecord r = KilpReader.parseRecord(recordData);
+            comp.kilpno = r.kilpno();
+            comp.sukunimi = r.sukunimi();
+            comp.etunimi = r.etunimi();
+            comp.seura = r.seura();
+            comp.sarja = r.sarja();
+            if (kilpFile != null) {
+                KilpReader.writeFullRecord(kilpFile, dk, recordData);
+            }
+            log.info("Server updated full record: dk={}, {} {} ({})", dk, comp.sukunimi, comp.etunimi, comp.seura);
+            for (var l : updateListeners) {
+                try { l.accept(comp); } catch (Exception e) { log.warn("Update listener failed", e); }
+            }
+        } catch (Exception e) {
+            log.warn("Failed to apply KILPT for dk={}: {}", dk, e.getMessage());
+        }
+    }
 
     @Override
     public void onCompetitorUpdate(int dk, int pv, byte[] cpvData) {

@@ -36,7 +36,9 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
     private final int serverPort;
     private final String machineId;
     private final int nrec;
+    private final boolean passive;
     private int localPort;
+    private volatile InetSocketAddress learnedPeer;
 
     private final CountDownLatch connectedLatch = new CountDownLatch(1);
     private volatile boolean connected = false;
@@ -78,6 +80,12 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
         this.serverPort = serverPort;
         this.machineId = machineId;
         this.nrec = nrec;
+        this.passive = (serverHost == null || serverHost.isBlank() || "AUTO".equalsIgnoreCase(serverHost));
+    }
+
+    /** Listen-only constructor: peer address is learned from the first incoming packet. */
+    public static TulospalveluConnection passive(String machineId, int nrec) {
+        return new TulospalveluConnection(null, 0, machineId, nrec);
     }
 
     public void setListener(MessageListener listener) {
@@ -116,7 +124,8 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
         this.ctx = ctx;
         if (ctx.channel().isActive()) {
             resolveLocalPort(ctx);
-            sendAlkut(ctx);
+            if (!passive) sendAlkut(ctx);
+            else log.info("Passive UDP listener active; awaiting peer ALKUT");
         }
     }
 
@@ -124,7 +133,8 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         this.ctx = ctx;
         resolveLocalPort(ctx);
-        sendAlkut(ctx);
+        if (!passive) sendAlkut(ctx);
+        else log.info("Passive UDP listener active; awaiting peer ALKUT");
     }
 
     private void resolveLocalPort(ChannelHandlerContext ctx) {
@@ -135,6 +145,9 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
     }
 
     private InetSocketAddress remoteAddress() {
+        if (passive) {
+            return learnedPeer;
+        }
         return new InetSocketAddress(serverHost, serverPort);
     }
 
@@ -142,16 +155,30 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
 
     public CompletableFuture<Boolean> sendKilppvt(int recordIndex, byte[] pvData,
                                                    int kilppvtpsize, int newBadge) {
+        return sendKilppvtModified(recordIndex, pvData, kilppvtpsize, (Integer) newBadge, null,
+                "KILPPVT badge", () -> log.info("  dk={}, newBadge={}", recordIndex, newBadge));
+    }
+
+    public CompletableFuture<Boolean> sendStatusChange(int recordIndex, byte[] pvData,
+                                                        int kilppvtpsize, char newStatus) {
+        return sendKilppvtModified(recordIndex, pvData, kilppvtpsize, null, newStatus,
+                "KILPPVT status",
+                () -> log.info("  dk={}, newStatus='{}'", recordIndex, newStatus));
+    }
+
+    private CompletableFuture<Boolean> sendKilppvtModified(int recordIndex, byte[] pvData,
+            int kilppvtpsize, Integer newBadge, Character newKeskhyl,
+            String label, Runnable detailLog) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         ctx.executor().execute(() -> {
-            byte[] data = buildKilppvtData(recordIndex, pvData, kilppvtpsize, newBadge);
+            byte[] data = buildKilppvtData(recordIndex, pvData, kilppvtpsize, newBadge, newKeskhyl);
 
             enqueueSend(() -> {
                 pendingFuture = future;
                 pendingPacketId = outPacketId;
-                sendProtocolMessage(ctx, PKGCLASS_KILPPVT, data, "KILPPVT");
-                log.info("  dk={}, newBadge={}", recordIndex, newBadge);
+                sendProtocolMessage(ctx, PKGCLASS_KILPPVT, data, label);
+                detailLog.run();
                 advancePacketId();
             });
         });
@@ -201,6 +228,19 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
             // to appear stale, server retries and eventually NAKs - harmless noise)
             if (raw.length <= 6 && raw[raw.length - 1] == NAK) return;
             payloadOffset = 5;
+            // Wrapper bytes 1-2 = peer's srvport (LE). C++ wrt_st_UDP writes its own
+            // servaddr.sin_port here, and read_UDP at line 1163 stores it in cliaddr.
+            // We must use the peer's srvport as our outgoing destination; the packet
+            // source is its ephemeral sockcli, which only the lahetapaketti ACK-wait
+            // window listens on — heartbeats sent there don't refresh yhtfl[].
+            int peerSrvPort = (raw[1] & 0xFF) | ((raw[2] & 0xFF) << 8);
+            if (passive && peerSrvPort > 0) {
+                InetSocketAddress newPeer = new InetSocketAddress(packet.sender().getAddress(), peerSrvPort);
+                if (!newPeer.equals(learnedPeer)) {
+                    learnedPeer = newPeer;
+                    log.info("Learned peer srvaddr from STX wrapper: {}", newPeer);
+                }
+            }
         } else {
             payloadOffset = 4;
         }
@@ -272,6 +312,18 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
         if (inPacketIdInit) {
             inPacketId = (byte) (frame.id() - 1);
             inPacketIdInit = false;
+        }
+
+        // Passive mode: an incoming ALKUT is the handshake "from the other direction".
+        // Mark connected and start the heartbeat. learnedPeer was already set from the
+        // STX wrapper in channelRead0 (peer's srvport, not ephemeral sockcli).
+        if (passive && frame.pkgclass() == PKGCLASS_ALKUT) {
+            if (!connected) {
+                connected = true;
+                connectedLatch.countDown();
+                log.info("Passive: connected to peer {} (ALKUT received)", learnedPeer);
+                startHeartbeat();
+            }
         }
 
         // Always ACK (even retransmissions). Send back to the packet's source
@@ -420,6 +472,7 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
 
     private void heartbeatTick() {
         if (System.currentTimeMillis() - lastSendTimeMs < HEARTBEAT_INTERVAL_MS) return;
+        if (remoteAddress() == null) return; // passive: peer not learned yet
         sendHeartbeatNak();
     }
 
