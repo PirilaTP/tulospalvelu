@@ -68,46 +68,105 @@ public class KilpReader {
 
     /** kilppvtpsize for the current file (set by detectRecordSize). */
     private static int lastKilppvtpsize = 248;
+    /** n_pv (number of stages) for the current file (set by detectRecordSize). */
+    private static int lastNpv = 1;
 
     /** Get kilppvtpsize (full stage record size incl. intermediate times). */
     public static int getKilppvtpsize() {
         return lastKilppvtpsize;
     }
 
-    /**
-     * Read the raw pv[0] data for a competitor record.
-     * Returns kilppvtpsize bytes starting at offset kilprecsize0 within the record.
-     */
+    /** Get n_pv (number of stages) for the current file. */
+    public static int getNpv() {
+        return lastNpv;
+    }
+
+    /** Read the raw pv[0] data for a competitor record. Convenience for single-stage callers. */
     public static byte[] readPvData(Path kilpFile, int recordIndex) throws IOException {
+        return readPvData(kilpFile, recordIndex, 0);
+    }
+
+    /**
+     * Read the raw pv[pvIndex] data for a competitor record.
+     * Returns kilppvtpsize bytes starting at offset kilprecsize0 + pvIndex*kilppvtpsize.
+     */
+    public static byte[] readPvData(Path kilpFile, int recordIndex, int pvIndex) throws IOException {
         int reclen = detectRecordSize(kilpFile);
         int kilprecsize0 = findKilprecsize0(reclen);
-        int kilppvtpsize = reclen > kilprecsize0 ? (reclen - kilprecsize0) / Math.max(1, (reclen - kilprecsize0) / 248) : 248;
-        // Simple: pv[0] starts at kilprecsize0, take the rest up to reclen
-        // But we need exactly kilppvtpsize bytes for pv[0]
-        kilppvtpsize = lastKilppvtpsize;
+        int kilppvtpsize = lastKilppvtpsize;
         byte[] pvData = new byte[kilppvtpsize];
         try (RandomAccessFile raf = new RandomAccessFile(kilpFile.toFile(), "r")) {
-            long offset = (long) recordIndex * reclen + kilprecsize0;
+            long offset = (long) recordIndex * reclen + kilprecsize0 + (long) pvIndex * kilppvtpsize;
             raf.seek(offset);
-            int toRead = Math.min(kilppvtpsize, reclen - kilprecsize0);
-            raf.readFully(pvData, 0, toRead);
+            int toRead = Math.min(kilppvtpsize, reclen - kilprecsize0 - pvIndex * kilppvtpsize);
+            raf.readFully(pvData, 0, Math.max(0, toRead));
         }
         return pvData;
     }
 
-    /**
-     * Write badge value to KILP.DAT for a specific competitor record.
-     * Updates pv[0].badge (INT32 LE at offset kilprecsize0 + 68).
-     */
+    /** Write badge to pv[0] for a competitor record. Convenience for single-stage callers. */
     public static void writeBadge(Path kilpFile, int recordIndex, int badge) throws IOException {
+        writeBadge(kilpFile, recordIndex, 0, badge);
+    }
+
+    /**
+     * Write badge to pv[pvIndex] for a competitor record.
+     * Updates pv[pvIndex].badge (INT32 LE at offset kilprecsize0 + pvIndex*kilppvtpsize + 68).
+     */
+    public static void writeBadge(Path kilpFile, int recordIndex, int pvIndex, int badge) throws IOException {
         int reclen = detectRecordSize(kilpFile);
         int kilprecsize0 = findKilprecsize0(reclen);
-        long offset = (long) recordIndex * reclen + kilprecsize0 + PV_OFF_BADGE;
+        long offset = (long) recordIndex * reclen + kilprecsize0
+                + (long) pvIndex * lastKilppvtpsize + PV_OFF_BADGE;
 
         try (RandomAccessFile raf = new RandomAccessFile(kilpFile.toFile(), "rw")) {
             raf.seek(offset);
             writeInt32LEToFile(raf, badge);
         }
+    }
+
+    /** Result of a per-stage status probe: keskhyl char, finish time in ms, position. */
+    public record StageStatus(char keskhyl, int finishTime, int ysija) {
+        /**
+         * True if this stage has been "decided" — either the runner finished
+         * (finishTime > 0) or has a non-empty status mark (T/I/K/H/E/V/P/X/M/B).
+         * '-' and 0 mean "still open".
+         */
+        public boolean hasResult() {
+            return finishTime > 0 || (keskhyl != 0 && keskhyl != '-' && keskhyl != ' ');
+        }
+    }
+
+    /**
+     * Read keskhyl, finish time and position for a specific stage.
+     * Used to decide which stages a card change should propagate to.
+     */
+    public static StageStatus readStageStatus(Path kilpFile, int recordIndex, int pvIndex) throws IOException {
+        int reclen = detectRecordSize(kilpFile);
+        int kilprecsize0 = findKilprecsize0(reclen);
+        long pvBase = (long) recordIndex * reclen + kilprecsize0 + (long) pvIndex * lastKilppvtpsize;
+
+        try (RandomAccessFile raf = new RandomAccessFile(kilpFile.toFile(), "r")) {
+            raf.seek(pvBase + PV_OFF_KESKHYL);
+            int kLo = raf.readUnsignedByte();
+            int kHi = raf.readUnsignedByte();
+            char keskhyl = (char) (kLo | (kHi << 8));
+
+            // vatp[1] = finish: time at +152+8, ysija at +152+12
+            raf.seek(pvBase + PV_OFF_VA + 8);
+            int finishTime = readInt32LEFromFile(raf);
+            int ysija = readInt32LEFromFile(raf);
+
+            return new StageStatus(keskhyl, finishTime, ysija);
+        }
+    }
+
+    private static int readInt32LEFromFile(RandomAccessFile raf) throws IOException {
+        int b0 = raf.readUnsignedByte();
+        int b1 = raf.readUnsignedByte();
+        int b2 = raf.readUnsignedByte();
+        int b3 = raf.readUnsignedByte();
+        return b0 | (b1 << 8) | (b2 << 16) | (b3 << 24);
     }
 
     /**
@@ -242,6 +301,7 @@ public class KilpReader {
                             int candidate = pvTotal / npv;
                             if (candidate >= 152 && (candidate - 152) % 8 == 0) {
                                 lastKilppvtpsize = candidate;
+                                lastNpv = npv;
                                 break;
                             }
                         }

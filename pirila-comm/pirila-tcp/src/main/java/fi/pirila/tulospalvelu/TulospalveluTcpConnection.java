@@ -157,24 +157,35 @@ public class TulospalveluTcpConnection extends SimpleChannelInboundHandler<byte[
 
     public CompletableFuture<Boolean> sendKilppvt(int recordIndex, byte[] pvData,
                                                    int kilppvtpsize, int newBadge) {
-        return sendKilppvtModified(recordIndex, pvData, kilppvtpsize, (Integer) newBadge, null,
-                "KILPPVT badge", () -> log.info("  dk={}, newBadge={}", recordIndex, newBadge));
+        return sendKilppvt(recordIndex, 0, pvData, kilppvtpsize, newBadge);
+    }
+
+    public CompletableFuture<Boolean> sendKilppvt(int recordIndex, int pvIndex, byte[] pvData,
+                                                   int kilppvtpsize, int newBadge) {
+        return sendKilppvtModified(recordIndex, pvIndex, pvData, kilppvtpsize, (Integer) newBadge, null,
+                "KILPPVT badge",
+                () -> log.info("  dk={}, pv={}, newBadge={}", recordIndex, pvIndex, newBadge));
     }
 
     public CompletableFuture<Boolean> sendStatusChange(int recordIndex, byte[] pvData,
                                                         int kilppvtpsize, char newStatus) {
-        return sendKilppvtModified(recordIndex, pvData, kilppvtpsize, null, newStatus,
-                "KILPPVT status",
-                () -> log.info("  dk={}, newStatus='{}'", recordIndex, newStatus));
+        return sendStatusChange(recordIndex, 0, pvData, kilppvtpsize, newStatus);
     }
 
-    private CompletableFuture<Boolean> sendKilppvtModified(int recordIndex, byte[] pvData,
+    public CompletableFuture<Boolean> sendStatusChange(int recordIndex, int pvIndex, byte[] pvData,
+                                                        int kilppvtpsize, char newStatus) {
+        return sendKilppvtModified(recordIndex, pvIndex, pvData, kilppvtpsize, null, newStatus,
+                "KILPPVT status",
+                () -> log.info("  dk={}, pv={}, newStatus='{}'", recordIndex, pvIndex, newStatus));
+    }
+
+    private CompletableFuture<Boolean> sendKilppvtModified(int recordIndex, int pvIndex, byte[] pvData,
             int kilppvtpsize, Integer newBadge, Character newKeskhyl,
             String label, Runnable detailLog) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         ctx.executor().execute(() -> {
-            byte[] data = buildKilppvtData(recordIndex, pvData, kilppvtpsize, newBadge, newKeskhyl);
+            byte[] data = buildKilppvtData(recordIndex, pvIndex, pvData, kilppvtpsize, newBadge, newKeskhyl);
 
             enqueueSend(() -> {
                 pendingFuture = future;

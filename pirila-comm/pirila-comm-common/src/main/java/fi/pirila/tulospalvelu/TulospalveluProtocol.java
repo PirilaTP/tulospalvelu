@@ -153,17 +153,24 @@ public final class TulospalveluProtocol {
         return data;
     }
 
-    /** Build KILPPVT outbound payload (8 + kilppvtpsize bytes) with new badge. */
+    /** Build KILPPVT outbound payload for pv[0] with new badge. */
     public static byte[] buildKilppvtData(int recordIndex, byte[] pvData,
                                            int kilppvtpsize, int newBadge) {
-        return buildKilppvtData(recordIndex, pvData, kilppvtpsize, (Integer) newBadge, null);
+        return buildKilppvtData(recordIndex, 0, pvData, kilppvtpsize, (Integer) newBadge, null);
+    }
+
+    /** Build KILPPVT outbound payload with badge and/or status (keskhyl) override for pv[0]. */
+    public static byte[] buildKilppvtData(int recordIndex, byte[] pvData,
+                                           int kilppvtpsize, Integer newBadge, Character newKeskhyl) {
+        return buildKilppvtData(recordIndex, 0, pvData, kilppvtpsize, newBadge, newKeskhyl);
     }
 
     /**
-     * Build KILPPVT outbound payload with optional badge and/or status (keskhyl) override.
-     * Either argument may be null to leave that field untouched (existing pvData value sent as-is).
+     * Build KILPPVT outbound payload for a specific stage with optional badge/status override.
+     * Either modifier may be null to leave that field untouched. The header's pv field controls
+     * which stage on the receiver gets the update — multi-stage races require one message per stage.
      */
-    public static byte[] buildKilppvtData(int recordIndex, byte[] pvData,
+    public static byte[] buildKilppvtData(int recordIndex, int pvIndex, byte[] pvData,
                                            int kilppvtpsize, Integer newBadge, Character newKeskhyl) {
         byte[] cpv = new byte[kilppvtpsize];
         System.arraycopy(pvData, 0, cpv, 0, Math.min(pvData.length, kilppvtpsize));
@@ -179,7 +186,7 @@ public final class TulospalveluProtocol {
         data[0] = 0;                                   // tarf
         data[1] = 1;                                   // pakota = force
         writeInt16LE(data, 2, (short) recordIndex);    // dk
-        writeInt16LE(data, 4, (short) 0);              // pv = 0
+        writeInt16LE(data, 4, (short) pvIndex);        // pv = stage index
         writeInt16LE(data, 6, (short) 0);              // valuku = 0
         System.arraycopy(cpv, 0, data, 8, kilppvtpsize);
         return data;

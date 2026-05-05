@@ -281,38 +281,73 @@ public class TulospalveluService implements MessageListener {
         }
 
         try {
-            byte[] pvData = KilpReader.readPvData(kilpFile, recordIndex);
+            int npv = Math.max(1, KilpReader.getNpv());
             int kilppvtpsize = KilpReader.getKilppvtpsize();
 
-            for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-                CompletableFuture<Boolean> result;
-                if (tcpConnection != null) {
-                    result = tcpConnection.sendKilppvt(recordIndex, pvData, kilppvtpsize, newBadge);
-                } else {
-                    result = udpConnection.sendKilppvt(recordIndex, pvData, kilppvtpsize, newBadge);
-                }
-
-                Boolean success = result.get(10, TimeUnit.SECONDS);
-                if (Boolean.TRUE.equals(success)) {
-                    KilpReader.writeBadge(kilpFile, recordIndex, newBadge);
-                    fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(recordIndex);
-                    if (comp != null) comp.badge = newBadge;
-                    log.info("Card change successful: record={}, newBadge={}, attempt={}", recordIndex, newBadge, attempt);
-                    return true;
-                }
-
-                if (attempt < MAX_RETRIES) {
-                    log.info("Card change NAK'd (attempt {}/{}), retrying in {}ms...", attempt, MAX_RETRIES, RETRY_DELAY_MS);
-                    Thread.sleep(RETRY_DELAY_MS);
-                } else {
-                    log.warn("Card change rejected after {} attempts: record={}", MAX_RETRIES, recordIndex);
+            // Mirror C++ HkConsole/HkKilp.cpp:970-973 forward-only propagation, with the
+            // "current stage" auto-detected: change applies from the first stage that has
+            // not yet been finalised (no result yet, no DNF/DSQ/DNS mark). If every stage
+            // is already decided we still update the last one so the user's input isn't
+            // silently dropped.
+            int startStage = npv - 1;
+            for (int i = 0; i < npv; i++) {
+                KilpReader.StageStatus s = KilpReader.readStageStatus(kilpFile, recordIndex, i);
+                if (!s.hasResult()) {
+                    startStage = i;
+                    break;
                 }
             }
-            return false;
+            log.info("Card change record={} newBadge={}: npv={}, startStage={}",
+                    recordIndex, newBadge, npv, startStage);
+
+            for (int stage = startStage; stage < npv; stage++) {
+                if (!sendCardChangeStage(recordIndex, stage, newBadge, kilppvtpsize)) {
+                    log.warn("Card change failed at stage {} (stages [{}..{}) updated, [{}..{}) not)",
+                            stage, startStage, stage, stage, npv);
+                    return false;
+                }
+            }
+            return true;
         } catch (Exception e) {
             log.error("Card change failed for record={}", recordIndex, e);
             return false;
         }
+    }
+
+    private boolean sendCardChangeStage(int recordIndex, int pvIndex, int newBadge, int kilppvtpsize)
+            throws Exception {
+        byte[] pvData = KilpReader.readPvData(kilpFile, recordIndex, pvIndex);
+
+        for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+            CompletableFuture<Boolean> result;
+            if (tcpConnection != null) {
+                result = tcpConnection.sendKilppvt(recordIndex, pvIndex, pvData, kilppvtpsize, newBadge);
+            } else {
+                result = udpConnection.sendKilppvt(recordIndex, pvIndex, pvData, kilppvtpsize, newBadge);
+            }
+
+            Boolean success = result.get(10, TimeUnit.SECONDS);
+            if (Boolean.TRUE.equals(success)) {
+                KilpReader.writeBadge(kilpFile, recordIndex, pvIndex, newBadge);
+                if (pvIndex == 0) {
+                    fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(recordIndex);
+                    if (comp != null) comp.badge = newBadge;
+                }
+                log.info("Card change OK: record={}, pv={}, newBadge={}, attempt={}",
+                        recordIndex, pvIndex, newBadge, attempt);
+                return true;
+            }
+
+            if (attempt < MAX_RETRIES) {
+                log.info("Card change NAK'd (record={} pv={} attempt {}/{}), retrying in {}ms...",
+                        recordIndex, pvIndex, attempt, MAX_RETRIES, RETRY_DELAY_MS);
+                Thread.sleep(RETRY_DELAY_MS);
+            } else {
+                log.warn("Card change for stage {} rejected after {} attempts: record={}",
+                        pvIndex, MAX_RETRIES, recordIndex);
+            }
+        }
+        return false;
     }
 
     public boolean sendStatusChange(int recordIndex, char newStatus) {
