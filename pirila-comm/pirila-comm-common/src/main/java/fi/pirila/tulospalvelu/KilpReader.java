@@ -128,12 +128,18 @@ public class KilpReader {
     /** Result of a per-stage status probe: keskhyl char, finish time in ms, position. */
     public record StageStatus(char keskhyl, int finishTime, int ysija) {
         /**
-         * True if this stage has been "decided" — either the runner finished
-         * (finishTime > 0) or has a non-empty status mark (T/I/K/H/E/V/P/X/M/B).
-         * '-' and 0 mean "still open".
+         * True if the runner's outcome for this stage is locked in — they've
+         * either finished with a time, been DNF'd (K), DSQ'd (H), DNS'd (E),
+         * or got a time mark (T/I). Card changes from then on don't make sense.
+         *
+         * Returns false for placeholder/administrative marks like V (vakantti),
+         * P (pois = not racing this stage), and '-'/NUL (open) — those just
+         * mean "no result yet" and are valid targets for forward-propagation.
          */
         public boolean hasResult() {
-            return finishTime > 0 || (keskhyl != 0 && keskhyl != '-' && keskhyl != ' ');
+            return finishTime > 0
+                    || keskhyl == 'T' || keskhyl == 'I'
+                    || keskhyl == 'K' || keskhyl == 'H' || keskhyl == 'E';
         }
     }
 
@@ -217,6 +223,22 @@ public class KilpReader {
      * @param recordIndex 1-based record index (dk)
      * @param recordData raw packed base record data (kilprecsize0 bytes)
      */
+    /**
+     * Read the kilprecsize0-byte base record (no pv data) for a competitor.
+     * Used as the starting buffer for an outgoing KILPT update — modify the
+     * fields in-place and pass it to sendKilpt.
+     */
+    public static byte[] readFullRecord(Path kilpFile, int recordIndex) throws IOException {
+        int reclen = detectRecordSize(kilpFile);
+        int kilprecsize0 = findKilprecsize0(reclen);
+        byte[] record = new byte[kilprecsize0];
+        try (RandomAccessFile raf = new RandomAccessFile(kilpFile.toFile(), "r")) {
+            raf.seek((long) recordIndex * reclen);
+            raf.readFully(record);
+        }
+        return record;
+    }
+
     public static void writeFullRecord(Path kilpFile, int recordIndex, byte[] recordData) throws IOException {
         int reclen = detectRecordSize(kilpFile);
         int kilprecsize0 = findKilprecsize0(reclen);

@@ -350,6 +350,88 @@ public class Harness {
             }
         }
 
+        /**
+         * Edit a competitor through the Competitor List view's master-detail form.
+         * Toggles "Näytä vakantit" so vakant entries are reachable, searches by
+         * kilpno, picks the row, fills the form, hits Tallenna.
+         *
+         * sarjaLabel: the class label (e.g. "H21A") to pick from the sarja dropdown.
+         * cardNumber: pass null/blank to leave card unchanged.
+         */
+        public boolean editCompetitor(String kilpno, String etunimi, String sukunimi,
+                                       String seura, String sarjaLabel, String cardNumber) {
+            try (Playwright pw = Playwright.create()) {
+                try (Browser browser = pw.chromium().launch(
+                        new BrowserType.LaunchOptions().setHeadless(true))) {
+                    Page page = browser.newPage();
+                    page.navigate("http://localhost:" + httpPort + "/",
+                            new Page.NavigateOptions().setTimeout(15000));
+                    page.waitForLoadState(LoadState.NETWORKIDLE,
+                            new Page.WaitForLoadStateOptions().setTimeout(10000));
+                    page.getByText("Competitor List").click();
+                    Thread.sleep(2000);
+                    page.waitForLoadState(LoadState.NETWORKIDLE,
+                            new Page.WaitForLoadStateOptions().setTimeout(10000));
+
+                    // Reveal vakantit
+                    page.getByLabel("Näytä vakantit").check();
+                    Thread.sleep(500);
+
+                    // Filter by kilpno
+                    page.locator("vaadin-text-field input").first().fill(kilpno);
+                    Thread.sleep(1500);
+
+                    // Click the matching row in the grid
+                    page.locator("vaadin-grid-cell-content").getByText(kilpno).first()
+                            .click(new com.microsoft.playwright.Locator.ClickOptions().setForce(true));
+                    Thread.sleep(1500);
+
+                    // Fill the form fields. The detail panel renders text-fields
+                    // for etunimi, sukunimi, seura, cardNumber AND a combobox for sarja.
+                    // Order in the form: etunimi(0), sukunimi(1), seura(2), cardNumber(3)
+                    // — but the search field at the top is also a vaadin-text-field, so
+                    // we pick the form's fields by label.
+                    // Field labels collide with grid column headers ("Seura" appears
+                    // both as a vaadin-grid-sorter and a form field) — use ARIA TEXTBOX
+                    // role to pick only inputs.
+                    page.getByRole(AriaRole.TEXTBOX,
+                            new Page.GetByRoleOptions().setName("Etunimi")).fill(etunimi);
+                    Thread.sleep(200);
+                    page.getByRole(AriaRole.TEXTBOX,
+                            new Page.GetByRoleOptions().setName("Sukunimi")).fill(sukunimi);
+                    Thread.sleep(200);
+                    page.getByRole(AriaRole.TEXTBOX,
+                            new Page.GetByRoleOptions().setName("Seura")).fill(seura);
+                    Thread.sleep(200);
+
+                    // Sarja combobox — type the label then pick the matching option.
+                    var sarjaInput = page.getByRole(AriaRole.COMBOBOX,
+                            new Page.GetByRoleOptions().setName("Sarja"));
+                    sarjaInput.click();
+                    Thread.sleep(300);
+                    sarjaInput.fill(sarjaLabel);
+                    Thread.sleep(800);
+                    page.getByRole(AriaRole.OPTION,
+                            new Page.GetByRoleOptions().setName(sarjaLabel)).first().click();
+                    Thread.sleep(300);
+
+                    if (cardNumber != null && !cardNumber.isBlank()) {
+                        page.getByRole(AriaRole.TEXTBOX,
+                                new Page.GetByRoleOptions().setName("Kilpailukortti")).fill(cardNumber);
+                        Thread.sleep(200);
+                    }
+
+                    page.getByRole(AriaRole.BUTTON,
+                            new Page.GetByRoleOptions().setName("Tallenna")).click();
+                    Thread.sleep(3000);
+                    return true;
+                }
+            } catch (Exception e) {
+                System.err.println("Playwright error: " + e);
+                return false;
+            }
+        }
+
         /** Open Card Change with the competitor selected, check whether expectedBadge is visible. */
         public boolean checkEmit(String competitor, String expectedBadge) {
             try (Playwright pw = Playwright.create()) {

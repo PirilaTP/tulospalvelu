@@ -170,6 +170,26 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
         return sendStatusChange(recordIndex, 0, pvData, kilppvtpsize, newStatus);
     }
 
+    /**
+     * Send a KILPT (full base record) update for an existing competitor.
+     * Use entno == current kilpno for in-place edits (name/seura/sarja).
+     */
+    public CompletableFuture<Boolean> sendKilpt(int recordIndex, int entno,
+                                                 byte[] recordData, int kilprecsize0) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        ctx.executor().execute(() -> {
+            byte[] data = buildKilptData(recordIndex, entno, recordData, kilprecsize0);
+            enqueueSend(() -> {
+                pendingFuture = future;
+                pendingPacketId = outPacketId;
+                sendProtocolMessage(ctx, PKGCLASS_KILPT, data, "KILPT");
+                log.info("  dk={}, entno={}, len={}", recordIndex, entno, data.length);
+                advancePacketId();
+            });
+        });
+        return future;
+    }
+
     public CompletableFuture<Boolean> sendStatusChange(int recordIndex, int pvIndex, byte[] pvData,
                                                         int kilppvtpsize, char newStatus) {
         return sendKilppvtModified(recordIndex, pvIndex, pvData, kilppvtpsize, null, newStatus,

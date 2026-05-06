@@ -192,6 +192,44 @@ public final class TulospalveluProtocol {
         return data;
     }
 
+    /**
+     * Build KILPT outbound payload (full base record).
+     * Header: tarf(1) + pakota(1) + dk(2) + entno(2) = 6 bytes; followed by ckilp.
+     * entno = the OLD kilpno (passed unchanged for in-place edits; the C++ tark_kilp
+     * branches on entno==kilp.kilpno to mean "same competitor, just save").
+     */
+    public static byte[] buildKilptData(int recordIndex, int entno, byte[] recordData,
+                                         int kilprecsize0) {
+        byte[] ckilp = new byte[kilprecsize0];
+        System.arraycopy(recordData, 0, ckilp, 0, Math.min(recordData.length, kilprecsize0));
+
+        byte[] data = new byte[6 + kilprecsize0];
+        data[0] = 0;                                   // tarf
+        data[1] = 1;                                   // pakota
+        writeInt16LE(data, 2, (short) recordIndex);    // dk
+        writeInt16LE(data, 4, (short) entno);          // entno (old kilpno)
+        System.arraycopy(ckilp, 0, data, 6, kilprecsize0);
+        return data;
+    }
+
+    /**
+     * Write a UTF-16LE wide string into a fixed-size slot in a byte buffer,
+     * NUL-padded to maxChars wchars (= maxChars * 2 bytes). Truncates if longer.
+     * Used to update WTEXT fields (sukunimi, etunimi, seura, ...) inside a
+     * record buffer before sending KILPT.
+     */
+    public static void writeWideString(byte[] buf, int offset, int maxChars, String s) {
+        if (s == null) s = "";
+        // Zero out the slot first so old residue gets cleared on shrink.
+        for (int i = 0; i < maxChars * 2; i++) buf[offset + i] = 0;
+        int n = Math.min(s.length(), maxChars);
+        for (int i = 0; i < n; i++) {
+            int c = s.charAt(i);
+            buf[offset + i * 2]     = (byte) (c & 0xFF);
+            buf[offset + i * 2 + 1] = (byte) ((c >> 8) & 0xFF);
+        }
+    }
+
     // --- Payload parsers ---
 
     /** Parsed KILPPVT (competitor stage) payload. */

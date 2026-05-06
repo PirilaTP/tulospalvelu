@@ -1,0 +1,63 @@
+package in.virit.pirila.data;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
+/**
+ * Form-bindable copy of a competitor for the CompetitorListView edit panel.
+ * recordIndex is the immutable KILP.DAT slot (== Competitor.id internally);
+ * etunimi/sukunimi/seura/sarja go into a KILPT message; cardNumber goes into
+ * a KILPPVT message via the same multi-stage logic as the standalone card-
+ * change view.
+ */
+public class CompetitorEdit {
+
+    @NotNull
+    private Integer recordIndex;
+
+    /** Cleared display field, not sent. Just shown so the form has the runner's bib. */
+    private String kilpno;
+
+    @NotBlank
+    @Size(max = 24, message = "Korkeintaan 24 merkkiä")
+    private String etunimi;
+
+    @NotBlank
+    @Size(max = 24, message = "Korkeintaan 24 merkkiä")
+    private String sukunimi;
+
+    @Size(max = 31, message = "Korkeintaan 31 merkkiä")
+    private String seura;
+
+    @NotNull
+    private Integer sarja;
+
+    /** New badge or null if unchanged. Allow empty (no badge) too. */
+    @Pattern(regexp = "^$|^[0-9]{1,8}$", message = "Numeromuoto, korkeintaan 8 numeroa")
+    private String cardNumber;
+
+    public CompetitorEdit() {}
+
+    public Integer getRecordIndex() { return recordIndex; }
+    public void setRecordIndex(Integer recordIndex) { this.recordIndex = recordIndex; }
+
+    public String getKilpno() { return kilpno; }
+    public void setKilpno(String kilpno) { this.kilpno = kilpno; }
+
+    public String getEtunimi() { return etunimi; }
+    public void setEtunimi(String etunimi) { this.etunimi = etunimi; }
+
+    public String getSukunimi() { return sukunimi; }
+    public void setSukunimi(String sukunimi) { this.sukunimi = sukunimi; }
+
+    public String getSeura() { return seura; }
+    public void setSeura(String seura) { this.seura = seura; }
+
+    public Integer getSarja() { return sarja; }
+    public void setSarja(Integer sarja) { this.sarja = sarja; }
+
+    public String getCardNumber() { return cardNumber; }
+    public void setCardNumber(String cardNumber) { this.cardNumber = cardNumber; }
+}

@@ -5,6 +5,7 @@ import fi.pirila.tulospalvelu.KilpReader;
 import fi.pirila.tulospalvelu.KilpSrjReader;
 import fi.pirila.tulospalvelu.MessageListener;
 import fi.pirila.tulospalvelu.TulospalveluConnection;
+import fi.pirila.tulospalvelu.TulospalveluProtocol;
 import fi.pirila.tulospalvelu.TulospalveluTcpConnection;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -248,6 +249,15 @@ public class TulospalveluService implements MessageListener {
         return kilpSrjReader != null ? kilpSrjReader.getClassName(sarja) : String.valueOf(sarja);
     }
 
+    public boolean isVacantClass(int sarja) {
+        return kilpSrjReader != null && kilpSrjReader.isVacantClass(sarja);
+    }
+
+    /** sarja (0-based) → class name, in xml order. Empty if KilpSrj.xml wasn't loaded. */
+    public java.util.Map<Integer, String> getAllClasses() {
+        return kilpSrjReader != null ? kilpSrjReader.getAllClasses() : java.util.Map.of();
+    }
+
     public fi.pirila.tulospalvelu.Competitor getCompetitorByRecordIndex(int recordIndex) {
         for (fi.pirila.tulospalvelu.Competitor c : competitors) {
             if (c.recordIndex == recordIndex) return c;
@@ -348,6 +358,78 @@ public class TulospalveluService implements MessageListener {
             }
         }
         return false;
+    }
+
+    /**
+     * Update an existing competitor's record-level fields (sukunimi, etunimi, seura, sarja).
+     * Sends a single KILPT message and updates the local KILP.DAT on success.
+     * Badge changes are not handled here — call sendCardChange separately.
+     */
+    public boolean sendCompetitorEdit(int recordIndex, String sukunimi, String etunimi,
+                                       String seura, int sarja) {
+        log.info("sendCompetitorEdit: record={} sukunimi={} etunimi={} seura={} sarja={}",
+                recordIndex, sukunimi, etunimi, seura, sarja);
+        if (!isConnected()) {
+            log.warn("Cannot send competitor edit - not connected");
+            return false;
+        }
+        if (kilpFile == null) {
+            log.warn("Cannot send competitor edit - KILP.DAT not available");
+            return false;
+        }
+        try {
+            byte[] record = KilpReader.readFullRecord(kilpFile, recordIndex);
+            int kilprecsize0 = record.length;
+
+            // Field offsets (kilp_fields, default sizes from HkDat.cpp:94-119)
+            int OFF_SUKUNIMI = 48, LEN_SUKUNIMI = 25;
+            int OFF_ETUNIMI = 98, LEN_ETUNIMI = 25;
+            int OFF_SEURA = 180, LEN_SEURA = 32;
+            int OFF_SARJA = 348;
+            int OFF_KILPNO = 2;
+            int kilpno = (record[OFF_KILPNO] & 0xFF) | ((record[OFF_KILPNO + 1] & 0xFF) << 8);
+
+            TulospalveluProtocol.writeWideString(record, OFF_SUKUNIMI, LEN_SUKUNIMI, sukunimi);
+            TulospalveluProtocol.writeWideString(record, OFF_ETUNIMI, LEN_ETUNIMI, etunimi);
+            TulospalveluProtocol.writeWideString(record, OFF_SEURA, LEN_SEURA, seura);
+            TulospalveluProtocol.writeInt16LE(record, OFF_SARJA, (short) sarja);
+
+            for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+                CompletableFuture<Boolean> result;
+                if (tcpConnection != null) {
+                    result = tcpConnection.sendKilpt(recordIndex, kilpno, record, kilprecsize0);
+                } else {
+                    result = udpConnection.sendKilpt(recordIndex, kilpno, record, kilprecsize0);
+                }
+                Boolean success = result.get(10, TimeUnit.SECONDS);
+                if (Boolean.TRUE.equals(success)) {
+                    KilpReader.writeFullRecord(kilpFile, recordIndex, record);
+                    fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(recordIndex);
+                    if (comp != null) {
+                        comp.sukunimi = sukunimi;
+                        comp.etunimi = etunimi;
+                        comp.seura = seura;
+                        comp.sarja = sarja;
+                        for (var l : updateListeners) {
+                            try { l.accept(comp); } catch (Exception e) { log.warn("Update listener failed", e); }
+                        }
+                    }
+                    log.info("Competitor edit OK: record={}, attempt={}", recordIndex, attempt);
+                    return true;
+                }
+                if (attempt < MAX_RETRIES) {
+                    log.info("KILPT NAK'd (attempt {}/{}), retrying in {}ms...",
+                            attempt, MAX_RETRIES, RETRY_DELAY_MS);
+                    Thread.sleep(RETRY_DELAY_MS);
+                } else {
+                    log.warn("KILPT rejected after {} attempts: record={}", MAX_RETRIES, recordIndex);
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            log.error("Competitor edit failed for record={}", recordIndex, e);
+            return false;
+        }
     }
 
     public boolean sendStatusChange(int recordIndex, char newStatus) {
