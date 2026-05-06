@@ -526,6 +526,39 @@ public class TulospalveluService implements MessageListener {
     }
 
     @Override
+    public void onTimeResult(int dk, int bib, int stage, int splitIndex, int time) {
+        // VAIN_TULOST carries one timestamp at a time. The Windows side fires it
+        // both when a result lands and when an existing result is cleared (time=0).
+        // splitIndex semantics: -1 = start time (tlahto), 0 = finish (vatp[1].time),
+        //                       >0 = intermediate split.
+        if (kilpFile != null) {
+            try {
+                KilpReader.writeTimeResult(kilpFile, dk, stage, splitIndex, time);
+            } catch (Exception e) {
+                log.warn("Failed to write VAIN_TULOST to local KILP.DAT: {}", e.getMessage());
+            }
+        }
+        // Only the finish (splitIndex=0) on the active stage is reflected in our
+        // Competitor model — intermediate splits and start times don't affect the
+        // grid's "Tulos" column.
+        if (splitIndex == 0) {
+            fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(dk);
+            if (comp != null) {
+                comp.finishTime = time;
+                if (time == 0) comp.ysija = 0;  // result cleared → drop placement too
+                log.info("Server time result: dk={} bib={} stage={} time={}{}",
+                        dk, bib, stage, time, time == 0 ? " (cleared)" : "");
+                for (var l : updateListeners) {
+                    try { l.accept(comp); } catch (Exception e) { log.warn("Update listener failed", e); }
+                }
+            }
+        } else {
+            log.debug("VAIN_TULOST split (not finish): dk={} stage={} split={} time={}",
+                    dk, stage, splitIndex, time);
+        }
+    }
+
+    @Override
     public void onCompetitorUpdate(int dk, int pv, byte[] cpvData) {
         if (cpvData.length < 76) return;
 
