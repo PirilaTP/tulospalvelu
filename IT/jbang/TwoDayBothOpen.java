@@ -1,7 +1,7 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
 //JAVA 21
 //SOURCES Harness.java
-//DEPS org.jetbrains.pty4j:pty4j:0.13.10
+//DEPS org.jetbrains.pty4j:pty4j:0.13.12
 //DEPS com.microsoft.playwright:playwright:1.58.0
 //DEPS fi.pirila:pirila-comm-common:1.0.0-SNAPSHOT
 

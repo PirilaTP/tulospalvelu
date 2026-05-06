@@ -35,8 +35,30 @@ public class Harness {
     public static final Path PROJECT_ROOT = findProjectRoot();
     public static final Path HKMAALI = PROJECT_ROOT.resolve("TPsource/V52/HkMaali");
     public static final Path SOURCE_DATA = PROJECT_ROOT.resolve("kisat/HkKisaWinData");
+    /** Lazily-created derivative of SOURCE_DATA with every stage open (no results). */
+    public static final Path PRE_RACE_DATA = Path.of("/tmp", "HkKisaWinDataPreRace");
     public static final Path WEBADMIN_DIR = PROJECT_ROOT.resolve("webadmin");
     public static final int SYNC_WAIT_SEC = 4;
+
+    /** Empirically determined for HkKisaWinData/nikondataa demo data. */
+    public static final int TABS_TO_EME = 9;
+
+    public static final String KEY_ENTER = "\r";
+    public static final String KEY_TAB = "\t";
+    public static final String KEY_ESC = "\u001b";
+    public static final String KEY_DELETE = "\u001b[3~";
+
+    /**
+     * One UDP connection entry for laskenta.cfg.
+     * lahemitSuffix=null → "lähemit{n}" (bidirectional).
+     * lahemitSuffix="O"  → "lähemit{n}=O" (one-way, leimantarkastus).
+     */
+    public record Connection(int localPort, String peerHost, int peerPort,
+                             String lahemitSuffix) {
+        public Connection(int localPort, String peerHost, int peerPort) {
+            this(localPort, peerHost, peerPort, null);
+        }
+    }
 
     private static Path findProjectRoot() {
         // Walk up looking for the TPsource directory
@@ -69,6 +91,8 @@ public class Harness {
                     .setCommand(new String[]{HKMAALI.toString()})
                     .setDirectory(workdir.toString())
                     .setRedirectErrorStream(true)
+                    .setInitialColumns(80)
+                    .setInitialRows(50)
                     .start();
             InputStream out = proc.getInputStream();
             in = proc.getOutputStream();
@@ -113,12 +137,16 @@ public class Harness {
          * Mirrors the Python harness logic (hkmaali_harness.py:accept_and_wait).
          */
         public void acceptAndWait() throws IOException, InterruptedException {
+            acceptAndWait(60);
+        }
+
+        public void acceptAndWait(int timeoutSec) throws IOException, InterruptedException {
             // Two-stage detection: any sighting of the main-menu marker counts
             // as "we made it", because the daemon pumper keeps appending status-
             // line redraws long after the menu was first reached. Looking only
             // at the tail (Python harness style) loses the marker once enough
             // post-menu refreshes pile up.
-            long deadline = System.currentTimeMillis() + 25_000;
+            long deadline = System.currentTimeMillis() + timeoutSec * 1000L;
             read(3.0);
             sendRead("\r", 0.5, 2.0);
             int lastLen = 0;
@@ -126,6 +154,10 @@ public class Harness {
                 Thread.sleep(1000);
                 read(1.0);
                 String text = outputText();
+                // Main-menu markers: PÄÄVALIKKO header (some configs) or "M)aali"
+                // which only appears when the menu's input prompt is live and
+                // ready to accept keys. TIED.SIIRTO and Ilmoitt. show up earlier
+                // during status-panel redraws and are unsafe.
                 if (text.contains("PÄÄVALIKKO") || text.contains("M)aali")) return;
                 String clean = ANSI.matcher(text).replaceAll("");
                 clean = CTRL.matcher(clean).replaceAll("");
@@ -145,16 +177,78 @@ public class Harness {
                 }
                 lastLen = text.length();
             }
-            throw new RuntimeException("HkMaali did not reach main menu within 25s");
+            throw new RuntimeException("HkMaali did not reach main menu within " + timeoutSec + "s");
         }
 
         public String outputText() {
             synchronized (allOutput) { return allOutput.toString(); }
         }
 
+        public void clearOutput() {
+            synchronized (allOutput) { allOutput.setLength(0); }
+        }
+
+        public boolean hasStartupErrors() {
+            String t = outputText();
+            return t.contains("yhteensopivia") || t.contains("DATA_ERR");
+        }
+
         public void writeLog(Path target) {
             try { Files.writeString(target, outputText()); }
             catch (IOException ignored) {}
+        }
+
+        // --- Korjaukset / Korjaa flow (mirrors Python harness) ---
+
+        public void navigateToKorjaa(String competitor) throws IOException, InterruptedException {
+            sendRead("K", 0.5, 0.5);
+            sendRead("K", 0.5, 0.5);
+            sendRead(competitor + KEY_ENTER, 0.5, 2.0);
+        }
+
+        public void escapeToMain() throws IOException, InterruptedException {
+            for (int i = 0; i < 3; i++) sendRead(KEY_ESC, 0.3, 0.5);
+        }
+
+        /**
+         * On a competitor's edit page: TAB to the EME (emit) field, delete the
+         * old value, type the new one, accept with '+'. Tab count and delete
+         * count match the Python harness.
+         */
+        public void changeEmit(String newValue) throws IOException, InterruptedException {
+            for (int i = 0; i < TABS_TO_EME; i++) {
+                send(KEY_TAB);
+                Thread.sleep(50);
+                Thread.sleep(300);
+                read(0.5);
+            }
+            Thread.sleep(500);
+            read(0.5);
+
+            for (int i = 0; i < 8; i++) {
+                send(KEY_DELETE);
+                Thread.sleep(100);
+                read(0.1);
+            }
+            Thread.sleep(300);
+
+            for (char ch : newValue.toCharArray()) {
+                send(String.valueOf(ch));
+                Thread.sleep(100);
+                read(0.1);
+            }
+            Thread.sleep(300);
+
+            sendRead("+", 0.5, 2.0);
+        }
+
+        /** Navigate to the competitor, return all output captured during the navigation, then escape back. */
+        public String readCompetitorEmit(String competitor) throws IOException, InterruptedException {
+            clearOutput();
+            navigateToKorjaa(competitor);
+            String text = outputText();
+            escapeToMain();
+            return text;
         }
 
         @Override
@@ -223,20 +317,24 @@ public class Harness {
             }
         }
 
+        private void openCardChange(Page page) throws InterruptedException {
+            page.navigate("http://localhost:" + httpPort + "/",
+                    new Page.NavigateOptions().setTimeout(15000));
+            page.waitForLoadState(LoadState.NETWORKIDLE,
+                    new Page.WaitForLoadStateOptions().setTimeout(10000));
+            page.getByText("Card Change").click();
+            Thread.sleep(2000);
+            page.waitForLoadState(LoadState.NETWORKIDLE,
+                    new Page.WaitForLoadStateOptions().setTimeout(10000));
+        }
+
         /** Drive the Card Change view via Playwright. Returns true on submit. */
         public boolean changeEmit(String competitor, String newBadge) {
             try (Playwright pw = Playwright.create()) {
                 try (Browser browser = pw.chromium().launch(
                         new BrowserType.LaunchOptions().setHeadless(true))) {
                     Page page = browser.newPage();
-                    page.navigate("http://localhost:" + httpPort + "/",
-                            new Page.NavigateOptions().setTimeout(15000));
-                    page.waitForLoadState(LoadState.NETWORKIDLE,
-                            new Page.WaitForLoadStateOptions().setTimeout(10000));
-                    page.getByText("Card Change").click();
-                    Thread.sleep(2000);
-                    page.waitForLoadState(LoadState.NETWORKIDLE,
-                            new Page.WaitForLoadStateOptions().setTimeout(10000));
+                    openCardChange(page);
                     page.locator("vaadin-text-field").nth(0).locator("input").fill(competitor);
                     Thread.sleep(1500);
                     page.locator("vaadin-text-field").nth(1).locator("input").fill(newBadge);
@@ -245,6 +343,24 @@ public class Harness {
                             new Page.GetByRoleOptions().setName("Vaihda kortti")).click();
                     Thread.sleep(3000);
                     return true;
+                }
+            } catch (Exception e) {
+                System.err.println("Playwright error: " + e);
+                return false;
+            }
+        }
+
+        /** Open Card Change with the competitor selected, check whether expectedBadge is visible. */
+        public boolean checkEmit(String competitor, String expectedBadge) {
+            try (Playwright pw = Playwright.create()) {
+                try (Browser browser = pw.chromium().launch(
+                        new BrowserType.LaunchOptions().setHeadless(true))) {
+                    Page page = browser.newPage();
+                    openCardChange(page);
+                    page.locator("vaadin-text-field").nth(0).locator("input").fill(competitor);
+                    Thread.sleep(2000);
+                    String body = page.locator("body").innerText();
+                    return body.contains(expectedBadge);
                 }
             } catch (Exception e) {
                 System.err.println("Playwright error: " + e);
@@ -265,22 +381,92 @@ public class Harness {
 
     // --- Test data directory setup (mirrors setup_data_dir in Python harness) ---
 
+    /** Single-connection convenience wrapper (same default source data). */
     public static Path setupDataDir(String name, String kone, int localPort,
                                     String peerHost, int peerPort) throws IOException {
+        return setupDataDir(name, kone, null, SOURCE_DATA,
+                new Connection(localPort, peerHost, peerPort));
+    }
+
+    /** Multi-connection setup using the default HkKisaWinData source. */
+    public static Path setupDataDir(String name, String kone, Connection... conns)
+            throws IOException {
+        return setupDataDir(name, kone, null, SOURCE_DATA, conns);
+    }
+
+    /** Full setup. paiva=null skips the PÄIVÄ line; sourceData=null falls back to HkKisaWinData. */
+    public static Path setupDataDir(String name, String kone, Integer paiva,
+                                    Path sourceData, Connection... conns) throws IOException {
         Path base = SCRIPT_DIR.resolve("test_data_" + name);
+        Path src = sourceData != null ? sourceData : SOURCE_DATA;
         if (Files.exists(base)) deleteRecursive(base);
         Files.createDirectories(base);
 
-        Files.copy(SOURCE_DATA.resolve("KILP.DAT"), base.resolve("KILP.DAT"));
-        Files.copy(SOURCE_DATA.resolve("KilpSrj.xml"), base.resolve("KilpSrj.xml"));
-        Path radat = SOURCE_DATA.resolve("radat1.xml");
+        Files.copy(src.resolve("KILP.DAT"), base.resolve("KILP.DAT"));
+        Files.copy(src.resolve("KilpSrj.xml"), base.resolve("KilpSrj.xml"));
+        Path radat = src.resolve("radat1.xml");
         if (Files.exists(radat)) Files.copy(radat, base.resolve("radat1.xml"));
 
-        String cfg = "Kone=" + kone + "\n"
-                   + "Emit\n"
-                   + "yhteys1=udp:" + localPort + "/" + peerHost + ":" + peerPort + "\n"
-                   + "lähemit1\n";
-        Files.writeString(base.resolve("laskenta.cfg"), cfg);
+        StringBuilder cfg = new StringBuilder();
+        cfg.append("Kone=").append(kone).append('\n');
+        cfg.append("Emit\n");
+        if (paiva != null) cfg.append("PÄIVÄ=").append(paiva).append('\n');
+        for (int i = 0; i < conns.length; i++) {
+            Connection c = conns[i];
+            cfg.append("yhteys").append(i + 1).append("=udp:")
+                    .append(c.localPort()).append('/')
+                    .append(c.peerHost()).append(':').append(c.peerPort()).append('\n');
+            cfg.append("lähemit").append(i + 1);
+            if (c.lahemitSuffix() != null) cfg.append('=').append(c.lahemitSuffix());
+            cfg.append('\n');
+        }
+        Files.writeString(base.resolve("laskenta.cfg"), cfg.toString());
+        return base;
+    }
+
+    /**
+     * Lazily build (and cache) a derivative of SOURCE_DATA where every stage of every
+     * competitor is open: keskhyl='-', vatp[1].time=0, vatp[1].val2=0. Use this as the
+     * source for tests that simulate the realistic mid-race emit-change scenario where
+     * the competitor has not yet finished. Default SOURCE_DATA has all-decided demo
+     * results which would (correctly) make webadmin's auto-detect skip pv[0].
+     */
+    public static Path preRaceSourceData() throws IOException {
+        if (!Files.exists(PRE_RACE_DATA.resolve("KILP.DAT"))) {
+            Files.createDirectories(PRE_RACE_DATA);
+            for (String f : new String[]{"KILP.DAT", "KilpSrj.xml", "radat1.xml", "seurat.csv"}) {
+                Path src = SOURCE_DATA.resolve(f);
+                if (Files.exists(src)) {
+                    Files.copy(src, PRE_RACE_DATA.resolve(f),
+                            StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
+            // Clear every stage of every competitor.
+            Path kilp = PRE_RACE_DATA.resolve("KILP.DAT");
+            int reclen = KilpReader.detectRecordSize(kilp);
+            int npv = KilpReader.getNpv();
+            int numrec = (int) (Files.size(kilp) / reclen);
+            for (int i = 1; i < numrec; i++) {
+                for (int pv = 0; pv < npv; pv++) clearPvStatus(kilp, i, pv);
+            }
+        }
+        return PRE_RACE_DATA;
+    }
+
+    /** Escape hatch for tests that need a fully custom laskenta.cfg (e.g. yhteys3 without yhteys2). */
+    public static Path setupDataDirRaw(String name, String laskentaCfg, Path sourceData)
+            throws IOException {
+        Path base = SCRIPT_DIR.resolve("test_data_" + name);
+        Path src = sourceData != null ? sourceData : SOURCE_DATA;
+        if (Files.exists(base)) deleteRecursive(base);
+        Files.createDirectories(base);
+        Files.copy(src.resolve("KILP.DAT"), base.resolve("KILP.DAT"));
+        Files.copy(src.resolve("KilpSrj.xml"), base.resolve("KilpSrj.xml"));
+        Path radat = src.resolve("radat1.xml");
+        if (Files.exists(radat)) Files.copy(radat, base.resolve("radat1.xml"));
+        Path seurat = src.resolve("seurat.csv");
+        if (Files.exists(seurat)) Files.copy(seurat, base.resolve("seurat.csv"));
+        Files.writeString(base.resolve("laskenta.cfg"), laskentaCfg);
         return base;
     }
 
