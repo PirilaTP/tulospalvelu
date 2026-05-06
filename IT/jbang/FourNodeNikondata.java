@@ -9,13 +9,29 @@
  * Same topology as FourNodeWithWebadmin, but with real production data
  * (kisat/nikondataa, 763 kilpailijaa). Mirrors test_four_node_nikondata.py.
  *
- * Status: KNOWN FLAKY — Phase A (MA's UI emit change) does not propagate
- * reliably with production data (763 competitors, per-record validation
- * loops on startup, status-panel redraws drown the menu prompt). The
- * other phases (WI/BE/WB → others) work, suggesting the topology is
- * sound and the issue is in driving MA's TUI on this dataset. Run
- * coverage of the same code paths is provided by FourNodeWithWebadmin
- * on the smaller HkKisaWinData. Investigation TBD.
+ * KNOWN FAILING — and the cause is a test-data problem, NOT a Java client bug.
+ *
+ * Diagnosis (single-instance MA test, no peers):
+ *  - kisat/nikondataa contains only KILP.DAT + KilpSrj.xml. No radat1.xml.
+ *  - Without radat1.xml, HkMaali aborts at "Ratatietojen lukeminen ei
+ *    onnistunut" before the main menu draws.
+ *  - Borrowing radat1.xml from windowskonekonffit/HkMaaliData (the Python
+ *    test's workaround) lets startup proceed past course loading, but the
+ *    courses there don't match nikondata's classes. HkMaali then enters
+ *    its "VIRHE: Kilpailijan X sarjaa Y tai rataa Z ei radoissa" emit-
+ *    validation loop for nearly every competitor. The "J)atka, L)opeta"
+ *    prompt fires once, we send L, the flood is suppressed — but valikko()
+ *    is never reached: PÄÄVALIKKO, M)aali, Y)hteys etc. never appear in
+ *    the PTY output even at 180 s timeout. Only the status panel redraws.
+ *  - Phase A's K-K-416-ENTER is therefore sent into a dead screen. Phases
+ *    B-D succeed because by then peers are forwarding KILPPVTs that MA
+ *    accepts via the network handler regardless of UI state.
+ *
+ * Conclusion: the Java client (webadmin + pirila-comm) does not exhibit
+ * any fault here. The same code paths are exercised end-to-end by
+ * FourNodeWithWebadmin on HkKisaWinData. To make this test green, the
+ * repo would need nikondata's actual radat1.xml committed alongside
+ * KILP.DAT and KilpSrj.xml.
  */
 
 import java.nio.file.*;
