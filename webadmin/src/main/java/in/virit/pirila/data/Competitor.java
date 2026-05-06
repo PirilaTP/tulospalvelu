@@ -9,12 +9,15 @@ public class Competitor {
     private String sarja;
     private String result;
     private int resultOrder; // for sorting: ysija for placed, high values for DNF/DNS/open
+    private String startTime;     // formatted HH:MM:SS or empty
+    private int startTimeMs;      // raw tlahto in ms; sort key
 
     public Competitor() {
     }
 
     public Competitor(Long id, String competitionNumber, String name, String club,
-                      String cardNumber, String sarja, String result, int resultOrder) {
+                      String cardNumber, String sarja, String result, int resultOrder,
+                      String startTime, int startTimeMs) {
         this.id = id;
         this.competitionNumber = competitionNumber;
         this.name = name;
@@ -23,6 +26,8 @@ public class Competitor {
         this.sarja = sarja;
         this.result = result;
         this.resultOrder = resultOrder;
+        this.startTime = startTime;
+        this.startTimeMs = startTimeMs;
     }
 
     public Long getId() { return id; }
@@ -48,4 +53,10 @@ public class Competitor {
 
     public int getResultOrder() { return resultOrder; }
     public void setResultOrder(int resultOrder) { this.resultOrder = resultOrder; }
+
+    public String getStartTime() { return startTime; }
+    public void setStartTime(String startTime) { this.startTime = startTime; }
+
+    public int getStartTimeMs() { return startTimeMs; }
+    public void setStartTimeMs(int startTimeMs) { this.startTimeMs = startTimeMs; }
 }

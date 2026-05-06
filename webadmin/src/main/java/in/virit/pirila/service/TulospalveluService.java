@@ -486,6 +486,67 @@ public class TulospalveluService implements MessageListener {
     }
 
     /**
+     * Update pv[0].tlahto by sending a KILPPVT with the modified pv block.
+     * VAIN_TULOST splitIndex=-1 only updates va[0].vatulos on the C++ side
+     * (HkTls.cpp:850), leaving pv.tlahto stale, so the change never appears
+     * on screen. KILPPVT carries the whole pv block which tark_kilp(cn,2)
+     * unpacks in full. timeMs == TLAHTO_NOT_SET clears the start time.
+     */
+    public boolean sendStartTimeChange(int recordIndex, int timeMs) {
+        log.info("sendStartTimeChange called: recordIndex={}, timeMs={}, connected={}",
+                recordIndex, timeMs, isConnected());
+        if (!isConnected()) {
+            log.warn("Cannot send start time change - not connected");
+            return false;
+        }
+        if (kilpFile == null) {
+            log.warn("Cannot send start time change - KILP.DAT not available");
+            return false;
+        }
+        try {
+            byte[] pvData = KilpReader.readPvData(kilpFile, recordIndex, 0);
+            int kilppvtpsize = KilpReader.getKilppvtpsize();
+            // Modify tlahto in the pv buffer; preserve the existing badge so
+            // sendKilppvt's badge-overwrite is a no-op.
+            TulospalveluProtocol.writeInt32LE(pvData, 124, timeMs);
+            int currentBadge = TulospalveluProtocol.readInt32LE(pvData,
+                    TulospalveluProtocol.PV_OFF_BADGE);
+
+            for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+                CompletableFuture<Boolean> result = (tcpConnection != null)
+                        ? tcpConnection.sendKilppvt(recordIndex, 0, pvData, kilppvtpsize, currentBadge)
+                        : udpConnection.sendKilppvt(recordIndex, 0, pvData, kilppvtpsize, currentBadge);
+                Boolean success = result.get(10, TimeUnit.SECONDS);
+                if (Boolean.TRUE.equals(success)) {
+                    KilpReader.writePvData(kilpFile, recordIndex, 0, pvData);
+                    fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(recordIndex);
+                    if (comp != null) {
+                        comp.startTime = timeMs;
+                        for (var l : updateListeners) {
+                            try { l.accept(comp); } catch (Exception e) { log.warn("Update listener failed", e); }
+                        }
+                    }
+                    log.info("Start time change OK: record={}, timeMs={}, attempt={}",
+                            recordIndex, timeMs, attempt);
+                    return true;
+                }
+                if (attempt < MAX_RETRIES) {
+                    log.info("Start time change NAK'd (attempt {}/{}), retrying in {}ms...",
+                            attempt, MAX_RETRIES, RETRY_DELAY_MS);
+                    Thread.sleep(RETRY_DELAY_MS);
+                } else {
+                    log.warn("Start time change rejected after {} attempts: record={}",
+                            MAX_RETRIES, recordIndex);
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            log.error("Start time change failed for record={}", recordIndex, e);
+            return false;
+        }
+    }
+
+    /**
      * Register a listener for competitor updates from the network.
      * Called on Netty thread — listener must handle UI.access() itself.
      */
@@ -538,44 +599,52 @@ public class TulospalveluService implements MessageListener {
                 log.warn("Failed to write VAIN_TULOST to local KILP.DAT: {}", e.getMessage());
             }
         }
-        // Only the finish (splitIndex=0) on the active stage is reflected in our
-        // Competitor model — intermediate splits and start times don't affect the
-        // grid's "Tulos" column.
-        if (splitIndex == 0) {
-            fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(dk);
-            if (comp != null) {
+        // Reflect finish (splitIndex=0) and start time (splitIndex=-1) on the
+        // first stage in our Competitor model — those are the columns the grid renders.
+        // Intermediate splits aren't surfaced here.
+        fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(dk);
+        if (comp != null && stage == 0 && (splitIndex == 0 || splitIndex == -1)) {
+            if (splitIndex == 0) {
                 comp.finishTime = time;
                 if (time == 0) comp.ysija = 0;  // result cleared → drop placement too
-                log.info("Server time result: dk={} bib={} stage={} time={}{}",
-                        dk, bib, stage, time, time == 0 ? " (cleared)" : "");
-                for (var l : updateListeners) {
-                    try { l.accept(comp); } catch (Exception e) { log.warn("Update listener failed", e); }
-                }
+            } else {
+                comp.startTime = time;
             }
-        } else {
-            log.debug("VAIN_TULOST split (not finish): dk={} stage={} split={} time={}",
+            log.info("Server time result: dk={} bib={} stage={} split={} time={}{}",
+                    dk, bib, stage, splitIndex, time, time == 0 ? " (cleared)" : "");
+            for (var l : updateListeners) {
+                try { l.accept(comp); } catch (Exception e) { log.warn("Update listener failed", e); }
+            }
+        } else if (splitIndex != 0 && splitIndex != -1) {
+            log.debug("VAIN_TULOST split (not finish/start): dk={} stage={} split={} time={}",
                     dk, stage, splitIndex, time);
         }
     }
 
     @Override
     public void onCompetitorUpdate(int dk, int pv, byte[] cpvData) {
-        if (cpvData.length < 76) return;
+        // KILPPVT carries a whole pv block. C++ tark_kilp(cn,2) unpacks the
+        // entire cpv via tkilp.pv[..].unpack(cpv) so we mirror that — extracting
+        // single fields (only badge) silently drops other changes like tlahto
+        // (start time, INT32 LE @ 124).
+        if (cpvData.length < 128) return;
 
-        int badge = (cpvData[68] & 0xFF) | ((cpvData[69] & 0xFF) << 8)
-                | ((cpvData[70] & 0xFF) << 16) | ((cpvData[71] & 0xFF) << 24);
+        int badge  = TulospalveluProtocol.readInt32LE(cpvData, TulospalveluProtocol.PV_OFF_BADGE);
+        int tlahto = TulospalveluProtocol.readInt32LE(cpvData, 124);
 
         fi.pirila.tulospalvelu.Competitor comp = getCompetitorByRecordIndex(dk);
         if (comp != null) {
             comp.badge = badge;
+            if (pv == 0) comp.startTime = tlahto;
             if (kilpFile != null) {
                 try {
-                    KilpReader.writeBadge(kilpFile, dk, badge);
+                    KilpReader.writePvData(kilpFile, dk, pv, cpvData);
                 } catch (Exception e) {
                     log.warn("Failed to update local KILP.DAT: {}", e.getMessage());
                 }
             }
-            log.info("Server updated: {} {} emit -> {}", comp.sukunimi, comp.etunimi, badge);
+            log.info("Server updated: {} {} pv={} emit={} tlahto={}",
+                    comp.sukunimi, comp.etunimi, pv, badge, tlahto);
             for (var l : updateListeners) {
                 try { l.accept(comp); } catch (Exception e) { log.warn("Update listener failed", e); }
             }

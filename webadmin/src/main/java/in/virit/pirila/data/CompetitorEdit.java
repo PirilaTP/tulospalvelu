@@ -38,6 +38,15 @@ public class CompetitorEdit {
     @Pattern(regexp = "^$|^[0-9]{1,8}$", message = "Numeromuoto, korkeintaan 8 numeroa")
     private String cardNumber;
 
+    /**
+     * pv[0].tlahto as 24h "HH:MM[:SS]" or empty for "not set".
+     * Parsed in CompetitorListView.handleSave; unparseable input is rejected
+     * by the @Pattern below.
+     */
+    @Pattern(regexp = "^$|^([01]\\d|2[0-3]):[0-5]\\d(:[0-5]\\d)?$",
+            message = "Anna 24h aika muodossa HH:MM tai HH:MM:SS")
+    private String startTime;
+
     public CompetitorEdit() {}
 
     public Integer getRecordIndex() { return recordIndex; }
@@ -60,4 +69,7 @@ public class CompetitorEdit {
 
     public String getCardNumber() { return cardNumber; }
     public void setCardNumber(String cardNumber) { this.cardNumber = cardNumber; }
+
+    public String getStartTime() { return startTime; }
+    public void setStartTime(String startTime) { this.startTime = startTime; }
 }

@@ -6,6 +6,14 @@ package fi.pirila.tulospalvelu;
  */
 public class Competitor {
 
+    /**
+     * "Not set" sentinel for tlahto, mirroring C++ TMAALI0 = -24*TUNTI.
+     * TUNTI in TpDef.h = 36000*KSEK = 3_600_000 ticks (1 tick = 1 ms).
+     * So TMAALI0 = -24 * 3_600_000 = -86_400_000.
+     */
+    public static final int TLAHTO_NOT_SET = -24 * 3_600_000;
+    private static final int MS_PER_DAY = 24 * 3_600_000;
+
     public final int recordIndex;
     public int kilpno;
     public String sukunimi;
@@ -17,10 +25,11 @@ public class Competitor {
     public char keskhyl; // K=DNF, H=DSQ, E=DNS, 0=normal
     public int ysija;    // position (1-based), 0=no result
     public int finishTime; // result time in milliseconds, 0=no time
+    public int startTime;  // tlahto from pv[0], time-of-day in milliseconds, 0=no start time
 
     public Competitor(int recordIndex, int kilpno, String sukunimi, String etunimi,
                       String seura, int sarja, int badge, int badge2,
-                      char keskhyl, int ysija, int finishTime) {
+                      char keskhyl, int ysija, int finishTime, int startTime) {
         this.recordIndex = recordIndex;
         this.kilpno = kilpno;
         this.sukunimi = sukunimi;
@@ -32,6 +41,7 @@ public class Competitor {
         this.keskhyl = keskhyl;
         this.ysija = ysija;
         this.finishTime = finishTime;
+        this.startTime = startTime;
     }
 
     /**
@@ -75,6 +85,22 @@ public class Competitor {
             return String.format("%d:%02d:%02d", hours, minutes, seconds);
         }
         return String.format("%d:%02d", minutes, seconds);
+    }
+
+    /**
+     * Format tlahto as HH:MM:SS clock time. tlahto is stored as milliseconds
+     * from NOON (C++ Pirilä convention — see VIx.cpp:436 NORMKELLO macro):
+     * value 0 = 12:00, +3 600 000 = 13:00, -3 600 000 = 11:00.
+     * Returns empty string when the value equals the TMAALI0 "not set" sentinel.
+     */
+    public String formatStartTime() {
+        if (startTime == TLAHTO_NOT_SET) return "";
+        int msOfDay = (int) (((long) startTime + 36L * 3_600_000) % MS_PER_DAY);
+        int totalSeconds = msOfDay / 1000;
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
     @Override

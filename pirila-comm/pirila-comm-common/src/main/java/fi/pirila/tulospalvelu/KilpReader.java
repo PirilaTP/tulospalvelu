@@ -388,9 +388,13 @@ public class KilpReader {
                 char keskhyl = 0;
                 int ysija = 0;
                 int resultTime = 0;
+                int startTime = 0;
                 if (kilprecsize0 + PV_OFF_BADGE + 8 <= reclen) {
                     badge = buf.getInt(kilprecsize0 + PV_OFF_BADGE);
                     badge2 = buf.getInt(kilprecsize0 + PV_OFF_BADGE + 4);
+                }
+                if (kilprecsize0 + PV_OFF_TLAHTO + 4 <= reclen) {
+                    startTime = buf.getInt(kilprecsize0 + PV_OFF_TLAHTO);
                 }
                 if (kilprecsize0 + PV_OFF_KESKHYL + 2 <= reclen) {
                     keskhyl = (char) (buf.getShort(kilprecsize0 + PV_OFF_KESKHYL) & 0xFFFF);
@@ -405,7 +409,8 @@ public class KilpReader {
                     }
                 }
 
-                competitors.add(new Competitor(i, kilpno, sukunimi, etunimi, seura, sarja, badge, badge2, keskhyl, ysija, resultTime));
+                competitors.add(new Competitor(i, kilpno, sukunimi, etunimi, seura, sarja,
+                        badge, badge2, keskhyl, ysija, resultTime, startTime));
             }
         }
 

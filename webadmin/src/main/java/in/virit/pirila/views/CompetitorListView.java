@@ -90,8 +90,7 @@ public class CompetitorListView extends Composite<MasterDetailLayout>
         MasterDetailLayout root = getContent();
         root.setSizeFull();
         root.setMaster(master);
-        root.setDetailMinSize("400px");
-
+        root.setExpandMaster(true);
         search();
     }
 
@@ -148,6 +147,7 @@ public class CompetitorListView extends Composite<MasterDetailLayout>
         edit.setSeura(backing.seura);
         edit.setSarja(backing.sarja);
         edit.setCardNumber(backing.badge > 0 ? String.valueOf(backing.badge) : "");
+        edit.setStartTime(backing.formatStartTime());
         editForm.setEntity(edit);
         getContent().setDetail(editForm);
     }
@@ -167,12 +167,20 @@ public class CompetitorListView extends Composite<MasterDetailLayout>
                 || !Objects.equals(edit.getSarja(), backing.sarja);
         Integer newBadge = parseBadge(edit.getCardNumber());
         boolean badgeChanged = newBadge != null && newBadge != backing.badge;
+        Integer parsedStart = parseStartTime(edit.getStartTime());
+        if (parsedStart == null) {
+            // Pattern violation already shows on the field; don't send anything.
+            Notification.show("Lähtöajan muoto virheellinen", 3000, Notification.Position.MIDDLE);
+            return;
+        }
+        int newStartMs = parsedStart;
+        boolean startTimeChanged = newStartMs != backing.startTime;
 
-        if (!recordChanged && !badgeChanged) {
+        if (!recordChanged && !badgeChanged && !startTimeChanged) {
             Notification.show("Ei muutoksia", 2000, Notification.Position.MIDDLE);
             return;
         }
-        sendAsync(edit, recordChanged, badgeChanged, newBadge);
+        sendAsync(edit, recordChanged, badgeChanged, newBadge, startTimeChanged, newStartMs);
     }
 
     private static Integer parseBadge(String s) {
@@ -181,8 +189,29 @@ public class CompetitorListView extends Composite<MasterDetailLayout>
         catch (NumberFormatException e) { return null; }
     }
 
+    /**
+     * Parse "HH:MM" or "HH:MM:SS" → tlahto (ms from noon).
+     * Empty/blank → TLAHTO_NOT_SET. Returns null on malformed input.
+     */
+    private static Integer parseStartTime(String s) {
+        if (s == null || s.isBlank()) return fi.pirila.tulospalvelu.Competitor.TLAHTO_NOT_SET;
+        String[] parts = s.trim().split(":");
+        if (parts.length < 2 || parts.length > 3) return null;
+        try {
+            int h = Integer.parseInt(parts[0]);
+            int m = Integer.parseInt(parts[1]);
+            int sec = parts.length == 3 ? Integer.parseInt(parts[2]) : 0;
+            if (h < 0 || h > 23 || m < 0 || m > 59 || sec < 0 || sec > 59) return null;
+            int secOfDay = h * 3600 + m * 60 + sec;
+            return secOfDay * 1000 - 12 * 3_600_000;
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
     private void sendAsync(CompetitorEdit edit, boolean recordChanged,
-                           boolean badgeChanged, Integer newBadge) {
+                           boolean badgeChanged, Integer newBadge,
+                           boolean startTimeChanged, int newStartMs) {
         Dialog dialog = new Dialog();
         dialog.setHeaderTitle("Tallennetaan...");
         dialog.setCloseOnEsc(false);
@@ -201,6 +230,9 @@ public class CompetitorListView extends Composite<MasterDetailLayout>
             }
             if (ok && badgeChanged) {
                 ok = tulospalveluService.sendCardChange(edit.getRecordIndex(), newBadge);
+            }
+            if (ok && startTimeChanged) {
+                ok = tulospalveluService.sendStartTimeChange(edit.getRecordIndex(), newStartMs);
             }
             boolean success = ok;
             ui.access(() -> {
@@ -221,17 +253,28 @@ public class CompetitorListView extends Composite<MasterDetailLayout>
 
     private class CompetitorGrid extends VGrid<Competitor> {
         {
-            addColumn(Competitor::getCompetitionNumber).setHeader("Bib").setSortable(true);
+            addColumn(Competitor::getCompetitionNumber).setHeader("Bib")
+                    .setComparator(java.util.Comparator.comparingInt(c -> parseBibSafe(c.getCompetitionNumber())))
+                    .setSortable(true).setAutoWidth(true).setFlexGrow(0);
             addColumn(Competitor::getName).setHeader("Nimi").setSortable(true);
             addColumn(Competitor::getClub).setHeader("Seura").setSortable(true);
-            addColumn(Competitor::getSarja).setHeader("Sarja").setSortable(true);
+            addColumn(Competitor::getSarja).setHeader("Sarja").setSortable(true).setAutoWidth(true).setFlexGrow(0);
             addColumn(Competitor::getCardNumber).setHeader("Korttinro").setSortable(true);
+            addColumn(Competitor::getStartTime).setHeader("Lähtöaika")
+                    .setComparator(Competitor::getStartTimeMs)
+                    .setSortable(true).setAutoWidth(true).setFlexGrow(0);
             addColumn(Competitor::getResult).setHeader("Tulos")
                     .setComparator(Competitor::getResultOrder).setSortable(true);
-            addComponentColumn(StatusActionsMenu::new).setHeader("Tila").setAutoWidth(true).setFlexGrow(0);
+            addComponentColumn(StatusActionsMenu::new).setHeader("Tila").setWidth("26px");
             withColumnSelector();
             setSizeFull();
         }
+    }
+
+    private static int parseBibSafe(String s) {
+        if (s == null || s.isBlank()) return Integer.MAX_VALUE;
+        try { return Integer.parseInt(s.trim()); }
+        catch (NumberFormatException e) { return Integer.MAX_VALUE; }
     }
 
     // --- Status menu (DNS/DNF/DSQ) — preserved from earlier work ---
@@ -239,15 +282,13 @@ public class CompetitorListView extends Composite<MasterDetailLayout>
     private class StatusActionsMenu extends MenuBar {
         StatusActionsMenu(Competitor competitor) {
             addThemeVariants(MenuBarVariant.LUMO_TERTIARY_INLINE, MenuBarVariant.LUMO_SMALL);
-            var root = addItem(new Icon(VaadinIcon.MENU));
-            var sub = root.getSubMenu();
-            sub.addItem("Merkitse: Ei lähtenyt (DNS)",
+            addItem("Merkitse: Ei lähtenyt (DNS)",
                     e -> confirmStatus(competitor, TulospalveluProtocol.STATUS_DNS, "Ei lähtenyt"));
-            sub.addItem("Merkitse: Keskeyttänyt (DNF)",
+            addItem("Merkitse: Keskeyttänyt (DNF)",
                     e -> confirmStatus(competitor, TulospalveluProtocol.STATUS_DNF, "Keskeyttänyt"));
-            sub.addItem("Merkitse: Hylätty (DSQ)",
+            addItem("Merkitse: Hylätty (DSQ)",
                     e -> confirmStatus(competitor, TulospalveluProtocol.STATUS_DSQ, "Hylätty"));
-            sub.addItem("Tyhjennä tila",
+            addItem("Tyhjennä tila",
                     e -> confirmStatus(competitor, TulospalveluProtocol.STATUS_OPEN, "Avoinna"));
         }
     }

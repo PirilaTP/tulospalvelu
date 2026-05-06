@@ -45,7 +45,9 @@ public class CompetitorService {
                 comp.badge > 0 ? String.valueOf(comp.badge) : "",
                 tulospalveluService.getClassName(comp.sarja),
                 comp.formatResult(),
-                comp.resultOrder()
+                comp.resultOrder(),
+                comp.formatStartTime(),
+                comp.startTime
         );
     }
 }

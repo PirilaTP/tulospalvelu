@@ -432,6 +432,53 @@ public class Harness {
             }
         }
 
+        /**
+         * Open Competitor List, find kilpno, set Lähtöaika TimePicker to the given
+         * time (HH:MM:SS or HH:MM), hit Tallenna. Returns true on submit completion.
+         * Pass empty string to clear (sends time=0).
+         */
+        public boolean editStartTime(String kilpno, String hhmmss) {
+            try (Playwright pw = Playwright.create()) {
+                try (Browser browser = pw.chromium().launch(
+                        new BrowserType.LaunchOptions().setHeadless(true))) {
+                    Page page = browser.newPage();
+                    page.navigate("http://localhost:" + httpPort + "/",
+                            new Page.NavigateOptions().setTimeout(15000));
+                    page.waitForLoadState(LoadState.NETWORKIDLE,
+                            new Page.WaitForLoadStateOptions().setTimeout(10000));
+                    page.getByText("Competitor List").click();
+                    Thread.sleep(2000);
+                    page.waitForLoadState(LoadState.NETWORKIDLE,
+                            new Page.WaitForLoadStateOptions().setTimeout(10000));
+
+                    page.getByLabel("Näytä vakantit").check();
+                    Thread.sleep(500);
+
+                    page.locator("vaadin-text-field input").first().fill(kilpno);
+                    Thread.sleep(1500);
+                    page.locator("vaadin-grid-cell-content").getByText(kilpno).first()
+                            .click(new com.microsoft.playwright.Locator.ClickOptions().setForce(true));
+                    Thread.sleep(1500);
+
+                    // Plain VTextField — locate by ARIA TEXTBOX role with the label.
+                    var tp = page.getByRole(AriaRole.TEXTBOX,
+                            new Page.GetByRoleOptions().setName("Lähtöaika"));
+                    tp.fill(hhmmss);
+                    Thread.sleep(150);
+                    tp.press("Tab");
+                    Thread.sleep(500);
+
+                    page.getByRole(AriaRole.BUTTON,
+                            new Page.GetByRoleOptions().setName("Tallenna")).click();
+                    Thread.sleep(3000);
+                    return true;
+                }
+            } catch (Exception e) {
+                System.err.println("Playwright error: " + e);
+                return false;
+            }
+        }
+
         /** Open Card Change with the competitor selected, check whether expectedBadge is visible. */
         public boolean checkEmit(String competitor, String expectedBadge) {
             try (Playwright pw = Playwright.create()) {
@@ -582,6 +629,13 @@ public class Harness {
             throws IOException {
         byte[] pv = KilpReader.readPvData(kilpFile, recordIndex, pvIndex);
         return TulospalveluProtocol.readInt32LE(pv, TulospalveluProtocol.PV_OFF_BADGE);
+    }
+
+    /** Read tlahto (start time) at offset 124 within pv[pvIndex]. */
+    public static int readPvStartTime(Path kilpFile, int recordIndex, int pvIndex)
+            throws IOException {
+        byte[] pv = KilpReader.readPvData(kilpFile, recordIndex, pvIndex);
+        return TulospalveluProtocol.readInt32LE(pv, 124);
     }
 
     public static KilpReader.StageStatus readPvStatus(Path kilpFile, int recordIndex, int pvIndex)
