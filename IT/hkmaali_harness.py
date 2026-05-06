@@ -131,6 +131,21 @@ def clear_pv_status(kilp_path, record_index, pv_index=0):
         f.write(b'\x00' * 8)  # finishTime + ysija both zeroed
 
 
+def set_pv_result(kilp_path, record_index, pv_index=0,
+                  keskhyl='T', finish_time_ms=3600000, ysija=1):
+    """Mark a stage as 'has result' (StageStatus.hasResult() == true).
+    Sets keskhyl (default 'T'), vatp[1].time and vatp[1].val2 (ysija)."""
+    import struct
+    _, reclen, kilppvtpsize, _ = kilp_layout(kilp_path)
+    pv_base = record_index * reclen + KILPRECSIZE0 + pv_index * kilppvtpsize
+    with open(kilp_path, 'r+b') as f:
+        f.seek(pv_base + PV_OFF_KESKHYL)
+        f.write(struct.pack('<H', ord(keskhyl)))
+        f.seek(pv_base + PV_OFF_VA + 8)
+        f.write(struct.pack('<i', finish_time_ms))
+        f.write(struct.pack('<i', ysija))
+
+
 # --- Data directory setup ---
 
 def setup_data_dir(name, kone, connections=None, base_dir=None, paiva=None,
