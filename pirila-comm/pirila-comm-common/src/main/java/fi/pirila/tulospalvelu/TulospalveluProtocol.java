@@ -213,6 +213,28 @@ public final class TulospalveluProtocol {
     }
 
     /**
+     * Build VAIN_TULOST outbound payload (24 bytes). Used to push a single
+     * time result (or clear one with time=0) to peers without sending the
+     * full pv block. Header layout matches the C++ d.v struct:
+     *   tarf(1) + pakota(1) + dk(2) + bib(2) + k_pv(2) + vali(2) + aika(4)
+     * plus 10 bytes padding to reach the C++ class_len[VAIN_TULOST] = 24
+     * (sizeof(INT32) + 20 — the trailing space carries optional daika/iaika
+     * which the receiver doesn't read for splitIndex≤valuku+1).
+     */
+    public static byte[] buildVainTulostData(int dk, int bib, int stage, int splitIndex, int time) {
+        byte[] data = new byte[24];
+        data[0] = 0;                                 // tarf
+        data[1] = 1;                                 // pakota
+        writeInt16LE(data, 2, (short) dk);
+        writeInt16LE(data, 4, (short) bib);
+        writeInt16LE(data, 6, (short) stage);
+        writeInt16LE(data, 8, (short) splitIndex);
+        writeInt32LE(data, 10, time);
+        // bytes 14..23 left as zero (daika/iaika placeholders)
+        return data;
+    }
+
+    /**
      * Write a UTF-16LE wide string into a fixed-size slot in a byte buffer,
      * NUL-padded to maxChars wchars (= maxChars * 2 bytes). Truncates if longer.
      * Used to update WTEXT fields (sukunimi, etunimi, seura, ...) inside a

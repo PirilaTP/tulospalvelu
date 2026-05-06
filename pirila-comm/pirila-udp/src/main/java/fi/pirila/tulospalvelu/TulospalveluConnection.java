@@ -174,6 +174,26 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
      * Send a KILPT (full base record) update for an existing competitor.
      * Use entno == current kilpno for in-place edits (name/seura/sarja).
      */
+    /**
+     * Send a VAIN_TULOST (single time result) — splitIndex 0 = finish,
+     * -1 = start time, &gt;0 = intermediate. time=0 clears the slot.
+     */
+    public CompletableFuture<Boolean> sendVainTulost(int dk, int bib, int stage,
+                                                       int splitIndex, int time) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        ctx.executor().execute(() -> {
+            byte[] data = buildVainTulostData(dk, bib, stage, splitIndex, time);
+            enqueueSend(() -> {
+                pendingFuture = future;
+                pendingPacketId = outPacketId;
+                sendProtocolMessage(ctx, PKGCLASS_VAIN_TULOST, data, "VAIN_TULOST");
+                log.info("  dk={}, bib={}, split={}, time={}", dk, bib, splitIndex, time);
+                advancePacketId();
+            });
+        });
+        return future;
+    }
+
     public CompletableFuture<Boolean> sendKilpt(int recordIndex, int entno,
                                                  byte[] recordData, int kilprecsize0) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();

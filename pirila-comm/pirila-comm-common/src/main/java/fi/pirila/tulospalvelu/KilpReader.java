@@ -278,9 +278,13 @@ public class KilpReader {
                 // Start time: tlahto at offset 124 within pv
                 raf.seek(pvBase + 124);
             } else {
-                // vatp array starts at offset 152 within pv, each entry is 8 bytes
-                // splitIndex 0 = finish (first slot), >0 = intermediate times
-                raf.seek(pvBase + 152 + (long) splitIndex * 8);
+                // vatp array starts at offset 152 within pv, each entry is 8 bytes.
+                // C++ stores per-piste results in vatp[piste+1] (HkTls.cpp:850
+                // pv[k_pv].va[piste+1].vatulos = tls;) — vatp[0] is reserved for
+                // the start time. So splitIndex 0 (finish) → vatp[1], splitIndex N
+                // (intermediate) → vatp[N+1]. Read paths in this class already
+                // use vatp[1] for the finish, so this is the matching write.
+                raf.seek(pvBase + 152 + (long) (splitIndex + 1) * 8);
             }
             writeInt32LEToFile(raf, time);
         }

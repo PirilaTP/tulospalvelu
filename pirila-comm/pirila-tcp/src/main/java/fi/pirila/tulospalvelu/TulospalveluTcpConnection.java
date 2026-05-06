@@ -172,6 +172,22 @@ public class TulospalveluTcpConnection extends SimpleChannelInboundHandler<byte[
         return sendStatusChange(recordIndex, 0, pvData, kilppvtpsize, newStatus);
     }
 
+    public CompletableFuture<Boolean> sendVainTulost(int dk, int bib, int stage,
+                                                       int splitIndex, int time) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        ctx.executor().execute(() -> {
+            byte[] data = buildVainTulostData(dk, bib, stage, splitIndex, time);
+            enqueueSend(() -> {
+                pendingFuture = future;
+                pendingPacketId = outPacketId;
+                sendSohFrame(ctx, PKGCLASS_VAIN_TULOST, data, "VAIN_TULOST");
+                log.info("  dk={}, bib={}, split={}, time={}", dk, bib, splitIndex, time);
+                advancePacketId();
+            });
+        });
+        return future;
+    }
+
     public CompletableFuture<Boolean> sendKilpt(int recordIndex, int entno,
                                                  byte[] recordData, int kilprecsize0) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
