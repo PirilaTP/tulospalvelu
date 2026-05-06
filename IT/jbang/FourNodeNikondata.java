@@ -7,31 +7,13 @@
 
 /**
  * Same topology as FourNodeWithWebadmin, but with real production data
- * (kisat/nikondataa, 763 kilpailijaa). Mirrors test_four_node_nikondata.py.
+ * (kisat/nikonserver/data, 1493 kilpailijaa, 2-stage file format) instead
+ * of the small HkKisaWinData demo. Verifies the sync paths under real-
+ * world data volume. Mirrors test_four_node_nikondata.py in spirit.
  *
- * KNOWN FAILING — and the cause is a test-data problem, NOT a Java client bug.
- *
- * Diagnosis (single-instance MA test, no peers):
- *  - kisat/nikondataa contains only KILP.DAT + KilpSrj.xml. No radat1.xml.
- *  - Without radat1.xml, HkMaali aborts at "Ratatietojen lukeminen ei
- *    onnistunut" before the main menu draws.
- *  - Borrowing radat1.xml from windowskonekonffit/HkMaaliData (the Python
- *    test's workaround) lets startup proceed past course loading, but the
- *    courses there don't match nikondata's classes. HkMaali then enters
- *    its "VIRHE: Kilpailijan X sarjaa Y tai rataa Z ei radoissa" emit-
- *    validation loop for nearly every competitor. The "J)atka, L)opeta"
- *    prompt fires once, we send L, the flood is suppressed — but valikko()
- *    is never reached: PÄÄVALIKKO, M)aali, Y)hteys etc. never appear in
- *    the PTY output even at 180 s timeout. Only the status panel redraws.
- *  - Phase A's K-K-416-ENTER is therefore sent into a dead screen. Phases
- *    B-D succeed because by then peers are forwarding KILPPVTs that MA
- *    accepts via the network handler regardless of UI state.
- *
- * Conclusion: the Java client (webadmin + pirila-comm) does not exhibit
- * any fault here. The same code paths are exercised end-to-end by
- * FourNodeWithWebadmin on HkKisaWinData. To make this test green, the
- * repo would need nikondata's actual radat1.xml committed alongside
- * KILP.DAT and KilpSrj.xml.
+ * (Earlier this test pointed at kisat/nikondataa, which lacks the matching
+ *  radat1.xml — HkMaali got stuck in the emit-validation error flood before
+ *  reaching the menu. nikonserver/data is a complete consistent dataset.)
  */
 
 import java.nio.file.*;
@@ -41,7 +23,11 @@ import static java.lang.System.out;
 
 public class FourNodeNikondata {
 
-    static final String COMPETITOR = "416";
+    // kilpno chosen so its decimal string is not a substring of any other
+    // competitor's kilpno/sukunimi/etunimi/seura — the webadmin search yields
+    // exactly one match and the form auto-selects (otherwise the "Vaihda kortti"
+    // button stays disabled and Phase D fails on Playwright click).
+    static final String COMPETITOR = "1154";  // Kuusio Senni, has a card
     static final String EMIT_FROM_MA = "100001";
     static final String EMIT_FROM_WI = "200002";
     static final String EMIT_FROM_BE = "300003";
@@ -55,10 +41,8 @@ public class FourNodeNikondata {
     static final int PORT_WB    = 44904;
     static final int HTTP_PORT  = 48093;
 
-    static final Path NIKON_SRC = Harness.PROJECT_ROOT.resolve("kisat/nikondataa");
-    static final Path NIKON_RADAT = Harness.PROJECT_ROOT.resolve(
-            "windowskonekonffit/HkMaaliData/radat1.xml");
-    static final Path NIKON_MERGED = Path.of("/tmp/nikon-merged");
+    /** Complete consistent production dataset — KILP.DAT + KilpSrj.xml + radat1.xml all match. */
+    static final Path NIKON_SRC = Harness.PROJECT_ROOT.resolve("kisat/nikonserver/data");
 
     public static void main(String[] args) throws Exception {
         out.println("=".repeat(64));
@@ -69,33 +53,33 @@ public class FourNodeNikondata {
             out.println("FAIL: HkMaali not found");
             System.exit(1);
         }
-        if (!Files.exists(NIKON_SRC.resolve("KILP.DAT"))) {
-            out.println("FAIL: nikondataa missing at " + NIKON_SRC);
+        if (!Files.exists(NIKON_SRC.resolve("radat1.xml"))) {
+            out.println("FAIL: nikonserver dataset incomplete at " + NIKON_SRC);
             System.exit(1);
         }
 
-        // Stage a merged source dir: nikondataa + radat1.xml from
-        // windowskonekonffit (HkMaali requires radat1.xml to start).
-        Files.createDirectories(NIKON_MERGED);
-        Files.copy(NIKON_SRC.resolve("KILP.DAT"), NIKON_MERGED.resolve("KILP.DAT"),
-                StandardCopyOption.REPLACE_EXISTING);
-        Files.copy(NIKON_SRC.resolve("KilpSrj.xml"), NIKON_MERGED.resolve("KilpSrj.xml"),
-                StandardCopyOption.REPLACE_EXISTING);
-        if (Files.exists(NIKON_RADAT)) {
-            Files.copy(NIKON_RADAT, NIKON_MERGED.resolve("radat1.xml"),
-                    StandardCopyOption.REPLACE_EXISTING);
-        }
-
-        Path dirMa = Harness.setupDataDir("jb_nk_MA", "MA", 1, NIKON_MERGED,
+        Path dirMa = Harness.setupDataDir("jb_nk_MA", "MA", 1, NIKON_SRC,
                 new Harness.Connection(PORT_MA_Y1, "127.0.0.1", PORT_WI),
                 new Harness.Connection(PORT_MA_Y2, "127.0.0.1", PORT_BE),
                 new Harness.Connection(PORT_MA_Y3, "127.0.0.1", PORT_WB));
-        Path dirWi = Harness.setupDataDir("jb_nk_WI", "WI", 1, NIKON_MERGED,
+        Path dirWi = Harness.setupDataDir("jb_nk_WI", "WI", 1, NIKON_SRC,
                 new Harness.Connection(PORT_WI, "127.0.0.1", PORT_MA_Y1));
-        Path dirBe = Harness.setupDataDir("jb_nk_BE", "BE", 1, NIKON_MERGED,
+        Path dirBe = Harness.setupDataDir("jb_nk_BE", "BE", 1, NIKON_SRC,
                 new Harness.Connection(PORT_BE, "127.0.0.1", PORT_MA_Y2, "O"));
-        Path dirWb = Harness.setupDataDir("jb_nk_WB", "WB", 1, NIKON_MERGED,
+        Path dirWb = Harness.setupDataDir("jb_nk_WB", "WB", 1, NIKON_SRC,
                 new Harness.Connection(PORT_WB, "127.0.0.1", PORT_MA_Y3));
+
+        // Make sure the test competitor has both stages open on WB (the side
+        // whose multi-stage auto-detect chooses the start stage). Without this,
+        // production data with pre-set qualifier results would direct webadmin's
+        // change to pv[1], which the C++ TUI doesn't display in single-day mode
+        // (k_pv=0).
+        int recordIdx = Harness.findRecordByKilpno(dirWb.resolve("KILP.DAT"),
+                Integer.parseInt(COMPETITOR));
+        if (recordIdx > 0) {
+            Harness.clearPvStatus(dirWb.resolve("KILP.DAT"), recordIdx, 0);
+            Harness.clearPvStatus(dirWb.resolve("KILP.DAT"), recordIdx, 1);
+        }
 
         out.printf("%nInstances (production data, kilpailija %s):%n", COMPETITOR);
         out.printf("  MA (hub): UDP %d + %d + %d%n", PORT_MA_Y1, PORT_MA_Y2, PORT_MA_Y3);
@@ -121,7 +105,7 @@ public class FourNodeNikondata {
             }
             out.println("    C++ running. Starting webadmin...");
             wb.start();
-            // 763 kilpailijaa needs more settling time than the demo data —
+            // 1493 kilpailijaa needs more settling time than the demo data —
             // status-panel redraws and per-record validation churn well past
             // acceptAndWait. Without this the very first navigateToKorjaa often
             // races against tail prompt activity.
