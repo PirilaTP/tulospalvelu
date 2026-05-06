@@ -1,0 +1,2560 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Event createTime="2025-04-16T17:25:02+03:00" creator="HkKisaWin 5.20.080/2015-07-09">
+	<Software>
+		<VersionId>HK520</VersionId>
+		<FileFormat>
+			<Races>2</Races>
+			<Intermediaries>10</Intermediaries>
+		</FileFormat>
+	</Software>
+	<EventData>
+		<EventCode>2025_viking</EventCode>
+		<Title>
+			Viking Line -Rastit - Pasi Ikosen muistokilpailu, 20.4.2025, Paimion Rasti, Paimio
+		</Title>
+		<Sport>
+			<Discipline>Orienteering</Discipline>
+		</Sport>
+		<Year>2025</Year>
+		<RaceCount>1</RaceCount>
+		<ClassCount>52</ClassCount>
+		<VariableClass>No</VariableClass>
+		<VariableBib>No</VariableBib>
+		<IntIdLen>0</IntIdLen>
+		<UseClassId>Yes</UseClassId>
+		<Badge>Emit</Badge>
+		<CombinedResult>Sum</CombinedResult>
+	</EventData>
+	<Races>
+		<Race RaceNo="1">
+			<Title>Viking Line -Rastit</Title>
+			<Date>2025-04-20</Date>
+			<StartGate>No</StartGate>
+			<Precision>
+				<Internal>1</Internal>
+				<Rank>1</Rank>
+				<Results>1</Results>
+				<Pursuit>1</Pursuit>
+				<Intermediary>1</Intermediary>
+			</Precision>
+		</Race>
+	</Races>
+	<Classes>
+		<Class ClassNo="1">
+			<ClassId>H21E</ClassId>
+			<IdStart>1</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1</BibStart>
+					<Distance>
+						<Value>6,2</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>13</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:01:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>2,2</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>6,1</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="2">
+			<ClassId>D21E</ClassId>
+			<IdStart>101</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>101</BibStart>
+					<Distance>
+						<Value>5,4</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>12</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:00:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>2,2</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>5,3</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="3">
+			<ClassId>H21A</ClassId>
+			<IdStart>201</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>201</BibStart>
+					<Distance>
+						<Value>5,8</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>3</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:00:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>3,0</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>5,7</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="4">
+			<ClassId>H35</ClassId>
+			<IdStart>276</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>276</BibStart>
+					<Distance>
+						<Value>5,6</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>6</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:50:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>2,8</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>5,5</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="5">
+			<ClassId>H40</ClassId>
+			<IdStart>292</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>292</BibStart>
+					<Distance>
+						<Value>5,6</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>6</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>13:24:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>2,8</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>5,5</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="6">
+			<ClassId>H45</ClassId>
+			<IdStart>330</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>330</BibStart>
+					<Distance>
+						<Value>5,3</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>2</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:31:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>4,2</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>5,2</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="7">
+			<ClassId>H50</ClassId>
+			<IdStart>386</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>386</BibStart>
+					<Distance>
+						<Value>4,5</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>7</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:01:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>3,2</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>4,4</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="8">
+			<ClassId>H55</ClassId>
+			<IdStart>450</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>450</BibStart>
+					<Distance>
+						<Value>4,4</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>10</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:00:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>2,8</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>4,3</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="9">
+			<ClassId>H60</ClassId>
+			<IdStart>512</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>512</BibStart>
+					<Distance>
+						<Value>3,8</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>1</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:00:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>3,7</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="10">
+			<ClassId>H65</ClassId>
+			<IdStart>559</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>559</BibStart>
+					<Distance>
+						<Value>3,8</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>4</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:00:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>1,3</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>3,7</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="11">
+			<ClassId>H70</ClassId>
+			<IdStart>594</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>594</BibStart>
+					<Distance>
+						<Value>3,4</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>5</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:09:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>1,5</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>3,3</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="12">
+			<ClassId>H75</ClassId>
+			<IdStart>649</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>649</BibStart>
+					<Distance>
+						<Value>3,2</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>9</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:01:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>1,3</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>3,1</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="13">
+			<ClassId>H80</ClassId>
+			<IdStart>685</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>685</BibStart>
+					<Distance>
+						<Value>2,7</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>6</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:00:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>1,5</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>2,6</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="14">
+			<ClassId>H85</ClassId>
+			<IdStart>706</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>706</BibStart>
+					<Distance>
+						<Value>1,8</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>14</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:26:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>0,7</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,7</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="15">
+			<ClassId>H20</ClassId>
+			<IdStart>712</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>712</BibStart>
+					<Distance>
+						<Value>5,3</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>2</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>13:25:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>4,2</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>5,2</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="16">
+			<ClassId>H18</ClassId>
+			<IdStart>724</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>724</BibStart>
+					<Distance>
+						<Value>4,9</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>11</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>13:11:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>3,8</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>4,8</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="17">
+			<ClassId>H16</ClassId>
+			<IdStart>768</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>768</BibStart>
+					<Distance>
+						<Value>3,5</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>8</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:00:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>2,4</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>3,4</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="18">
+			<ClassId>H15</ClassId>
+			<IdStart>808</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>808</BibStart>
+					<Distance>
+						<Value>3,1</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>9</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:35:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>1,8</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>2,9</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="19">
+			<ClassId>H14</ClassId>
+			<IdStart>1301</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1301</BibStart>
+					<Distance>
+						<Value>2,9</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>24</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:01:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>2,8</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="20">
+			<ClassId>H13</ClassId>
+			<IdStart>1331</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1331</BibStart>
+					<Distance>
+						<Value>2,5</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>21</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:00:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>2,3</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="21">
+			<ClassId>H12</ClassId>
+			<IdStart>1354</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1354</BibStart>
+					<Distance>
+						<Value>1,6</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>22</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:01:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,5</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="22">
+			<ClassId>H12TR</ClassId>
+			<IdStart>1392</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1392</BibStart>
+					<Distance>
+						<Value>1,6</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>26</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:10:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,5</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="23">
+			<ClassId>H10</ClassId>
+			<IdStart>1394</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>2</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1394</BibStart>
+					<Distance>
+						<Value>1,4</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>25</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:30:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>600</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,3</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="24">
+			<ClassId>H10RR</ClassId>
+			<IdStart>1402</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>2</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1402</BibStart>
+					<Distance>
+						<Value>1,8</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>27</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:00:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>600</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,7</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="25">
+			<ClassId>D21A</ClassId>
+			<IdStart>851</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>851</BibStart>
+					<Distance>
+						<Value>4,9</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>11</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:31:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>3,8</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>4,8</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="26">
+			<ClassId>D35</ClassId>
+			<IdStart>900</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>900</BibStart>
+					<Distance>
+						<Value>4,5</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>15</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:01:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>2,7</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>4,3</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="27">
+			<ClassId>D40</ClassId>
+			<IdStart>919</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>919</BibStart>
+					<Distance>
+						<Value>4,5</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>15</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:41:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>2,7</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>4,3</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="28">
+			<ClassId>D45</ClassId>
+			<IdStart>951</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>951</BibStart>
+					<Distance>
+						<Value>4,5</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>15</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:47:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>2,7</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>4,3</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="29">
+			<ClassId>D50</ClassId>
+			<IdStart>996</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>996</BibStart>
+					<Distance>
+						<Value>3,8</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>1</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:36:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>3,7</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="30">
+			<ClassId>D55</ClassId>
+			<IdStart>1033</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1033</BibStart>
+					<Distance>
+						<Value>3,4</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>5</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:01:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>1,5</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>3,3</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="31">
+			<ClassId>D60</ClassId>
+			<IdStart>1066</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1066</BibStart>
+					<Distance>
+						<Value>3,1</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>14</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:00:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>1,7</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>3,0</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="32">
+			<ClassId>D65</ClassId>
+			<IdStart>1084</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1084</BibStart>
+					<Distance>
+						<Value>3,1</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>14</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:38:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>1,7</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>3,0</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="33">
+			<ClassId>D70</ClassId>
+			<IdStart>1107</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1107</BibStart>
+					<Distance>
+						<Value>2,7</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>6</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:44:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>1,5</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>2,6</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="34">
+			<ClassId>D75</ClassId>
+			<IdStart>1128</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1128</BibStart>
+					<Distance>
+						<Value>2,7</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>6</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:28:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>1,5</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>2,6</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="35">
+			<ClassId>D80</ClassId>
+			<IdStart>1139</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1139</BibStart>
+					<Distance>
+						<Value>1,8</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>14</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:40:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>0,7</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,7</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="36">
+			<ClassId>D85</ClassId>
+			<IdStart>1143</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1143</BibStart>
+					<Distance>
+						<Value>1,8</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>14</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:50:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>0,7</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,7</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="37">
+			<ClassId>D20</ClassId>
+			<IdStart>1145</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1145</BibStart>
+					<Distance>
+						<Value>4,1</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>4</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:14:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>3,1</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>4,0</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="38">
+			<ClassId>D18</ClassId>
+			<IdStart>1168</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1168</BibStart>
+					<Distance>
+						<Value>4,1</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>4</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>13:02:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>3,1</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>4,0</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="39">
+			<ClassId>D16</ClassId>
+			<IdStart>1216</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1216</BibStart>
+					<Distance>
+						<Value>3,5</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>8</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:22:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>2,4</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>3,4</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="40">
+			<ClassId>D15</ClassId>
+			<IdStart>1243</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1243</BibStart>
+					<Distance>
+						<Value>3,1</Value>
+					</Distance>
+					<StartGate>1</StartGate>
+					<StartQueue>9</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>13:37:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Distance>1,8</Distance>
+							<Id>107</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>2,9</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="41">
+			<ClassId>D14</ClassId>
+			<IdStart>1424</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1424</BibStart>
+					<Distance>
+						<Value>2,5</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>24</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:03:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>2,4</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="42">
+			<ClassId>D13</ClassId>
+			<IdStart>1456</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1456</BibStart>
+					<Distance>
+						<Value>2,3</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>23</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:00:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>2,2</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="43">
+			<ClassId>D12</ClassId>
+			<IdStart>1487</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1487</BibStart>
+					<Distance>
+						<Value>1,6</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>22</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:17:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,5</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="44">
+			<ClassId>D12TR</ClassId>
+			<IdStart>1514</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1514</BibStart>
+					<Distance>
+						<Value>1,6</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>26</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:16:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,5</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="45">
+			<ClassId>D10</ClassId>
+			<IdStart>1519</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>2</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1519</BibStart>
+					<Distance>
+						<Value>1,4</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>25</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:48:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>600</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,3</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="46">
+			<ClassId>D10RR</ClassId>
+			<IdStart>1529</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>2</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>1529</BibStart>
+					<Distance>
+						<Value>1,8</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>27</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>11:46:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>600</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,7</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="47">
+			<ClassId>14AVOIN</ClassId>
+			<IdStart>2001</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>5</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>2001</BibStart>
+					<Distance>
+						<Value>2,5</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>24</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>13:09:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>1</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>2,4</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="48">
+			<ClassId>13AVOIN</ClassId>
+			<IdStart>2011</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>5</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>2011</BibStart>
+					<Distance>
+						<Value>2,3</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>23</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:04:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>1</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>2,2</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="49">
+			<ClassId>12AVOIN</ClassId>
+			<IdStart>2021</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>5</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>2021</BibStart>
+					<Distance>
+						<Value>1,6</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>22</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>13:13:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>1</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,5</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="50">
+			<ClassId>TRAVOIN</ClassId>
+			<IdStart>2031</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>5</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>2031</BibStart>
+					<Distance>
+						<Value>1,6</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>26</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:28:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>1</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,5</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="51">
+			<ClassId>RRAVOIN</ClassId>
+			<IdStart>2041</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>5</Handicaps>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>2041</BibStart>
+					<Distance>
+						<Value>1,8</Value>
+					</Distance>
+					<StartGate>2</StartGate>
+					<StartQueue>27</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:30:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>600</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+						<Intermediary Order="1">
+							<Id>107</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="2">
+							<Id>112</Id>
+							<Public>No</Public>
+						</Intermediary>
+						<Intermediary Order="3">
+							<Distance>1,7</Distance>
+							<Id>100</Id>
+							<Public>Yes</Public>
+						</Intermediary>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+		<Class ClassNo="52">
+			<ClassId>VAKANTIT</ClassId>
+			<IdStart>9980</IdStart>
+			<Fee>
+				<Full>0</Full>
+				<SingleRace>0</SingleRace>
+				<Reduced>0</Reduced>
+			</Fee>
+			<FirstRace>1</FirstRace>
+			<LastRace>1</LastRace>
+			<ResultListOrder>0</ResultListOrder>
+			<Handicaps>0</Handicaps>
+			<VacantClass>Yes</VacantClass>
+			<Races>
+				<Race RaceNo="1">
+					<BibStart>9980</BibStart>
+					<Distance>
+						<Value />
+					</Distance>
+					<StartGate>99</StartGate>
+					<StartQueue>99</StartQueue>
+					<FinishGate>1</FinishGate>
+					<FirstStart>12:00:00</FirstStart>
+					<FirstExtraStart>12:00:00</FirstExtraStart>
+					<StartInterval>120</StartInterval>
+					<StartWave>1</StartWave>
+					<PenaltyCount>0</PenaltyCount>
+					<PenaltyUnit>0</PenaltyUnit>
+					<PenaltyMax>5</PenaltyMax>
+					<ResultThreshold>0</ResultThreshold>
+					<MultiRace>Independent</MultiRace>
+					<Intermediaries>
+					</Intermediaries>
+				</Race>
+			</Races>
+		</Class>
+	</Classes>
+</Event>

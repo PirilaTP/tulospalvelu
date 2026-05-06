@@ -33,7 +33,7 @@ Java/JBang-pohjaiset integraatiotestit Python-testien rinnalla
 | `TwoDayBothOpen.java` | Kaksipäiväinen kisa, kortinvaihto webadminista kun molemmat osat avoinna → muutos kahteen osaan. |
 | `TwoDayAfterQualifier.java` | Karsinta jo tuloksellinen → vain finaaliin. |
 | `TwoDayAllDone.java` | Kaikki osat valmiina → vaihto viimeiseen osaan. |
-| `FourNodeNikondata.java` | ⚠ KNOWN FLAKY. Sama topologia kuin FourNodeWithWebadmin, mutta `kisat/nikondataa` (763 kilpailijaa). Phase A:n MA-UI-vaihto ei propagoidu luotettavasti tämän datasetin kanssa — ks. tiedoston otsikkokommentti. Vastaava kattavuus saadaan FourNodeWithWebadmin:lla. |
+| `FourNodeNikondata.java` | Sama topologia kuin FourNodeWithWebadmin, mutta `kisat/nikonserver/data` (1493 kilpailijaa, 2-stage). Tuotantovolyymin sync-testi. |
 
 ## Ajaminen
 
