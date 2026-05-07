@@ -19,6 +19,8 @@ public class Competitor {
     public String sukunimi;
     public String etunimi;
     public String seura;
+    public String seuralyh;  // club abbreviation (WTEXT @ 244 in KILP.DAT)
+    public int piiri;        // district/area code (INT16 @ 34); 0 = unset
     public int sarja;
     public int badge;   // emit card from pv[0]
     public int badge2;  // second emit card from pv[0]
@@ -28,13 +30,16 @@ public class Competitor {
     public int startTime;  // tlahto from pv[0], time-of-day in milliseconds, 0=no start time
 
     public Competitor(int recordIndex, int kilpno, String sukunimi, String etunimi,
-                      String seura, int sarja, int badge, int badge2,
+                      String seura, String seuralyh, int piiri,
+                      int sarja, int badge, int badge2,
                       char keskhyl, int ysija, int finishTime, int startTime) {
         this.recordIndex = recordIndex;
         this.kilpno = kilpno;
         this.sukunimi = sukunimi;
         this.etunimi = etunimi;
         this.seura = seura;
+        this.seuralyh = seuralyh;
+        this.piiri = piiri;
         this.sarja = sarja;
         this.badge = badge;
         this.badge2 = badge2;

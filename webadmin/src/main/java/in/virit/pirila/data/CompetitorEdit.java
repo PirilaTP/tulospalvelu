@@ -31,6 +31,16 @@ public class CompetitorEdit {
     @Size(max = 31, message = "Korkeintaan 31 merkkiä")
     private String seura;
 
+    /**
+     * Club abbreviation (seuralyh in KILP.DAT). Auto-populated when the user
+     * picks a known seura from the catalogue; null/blank for custom entries.
+     */
+    @Size(max = 15, message = "Korkeintaan 15 merkkiä")
+    private String seuralyh;
+
+    /** District/area code (piiri INT16). Auto-populated alongside seuralyh; 0 = unset. */
+    private Integer piiri;
+
     @NotNull
     private Integer sarja;
 
@@ -63,6 +73,12 @@ public class CompetitorEdit {
 
     public String getSeura() { return seura; }
     public void setSeura(String seura) { this.seura = seura; }
+
+    public String getSeuralyh() { return seuralyh; }
+    public void setSeuralyh(String seuralyh) { this.seuralyh = seuralyh; }
+
+    public Integer getPiiri() { return piiri; }
+    public void setPiiri(Integer piiri) { this.piiri = piiri; }
 
     public Integer getSarja() { return sarja; }
     public void setSarja(Integer sarja) { this.sarja = sarja; }

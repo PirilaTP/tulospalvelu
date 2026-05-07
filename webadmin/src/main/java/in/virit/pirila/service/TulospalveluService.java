@@ -50,6 +50,9 @@ public class TulospalveluService implements MessageListener {
     private volatile List<fi.pirila.tulospalvelu.Competitor> competitors = List.of();
     private final List<Consumer<fi.pirila.tulospalvelu.Competitor>> updateListeners = new CopyOnWriteArrayList<>();
     private KilpSrjReader kilpSrjReader;
+    /** Known-clubs catalogue indexed by full name. Built from seurat.csv +
+     *  seuras already present on competitor records. */
+    private volatile java.util.Map<String, fi.pirila.tulospalvelu.Seura> seurat = java.util.Map.of();
     private TulospalveluConnection udpConnection;
     private TulospalveluTcpConnection tcpConnection;
     private EventLoopGroup eventLoopGroup;
@@ -112,6 +115,11 @@ public class TulospalveluService implements MessageListener {
                 log.warn("Failed to read KilpSrj.xml: {}", e.getMessage());
             }
         }
+
+        // Build the known-clubs catalogue: optional seurat.csv (kisat dir or
+        // its parent) merged with whatever distinct seuras are already present
+        // on competitor records. CSV wins for entries that match by name.
+        loadSeurat(dir);
 
         Path cfgFile = dir.resolve("laskenta.cfg");
         if (Files.exists(cfgFile)) {
@@ -254,6 +262,55 @@ public class TulospalveluService implements MessageListener {
     }
 
     /** sarja (0-based) → class name, in xml order. Empty if KilpSrj.xml wasn't loaded. */
+    /**
+     * Snapshot of the known-clubs catalogue. The combo box in the edit form
+     * uses this both to populate the dropdown and to look up lyhenne/piiri
+     * when the user selects an existing entry.
+     */
+    public java.util.Map<String, fi.pirila.tulospalvelu.Seura> getAllSeuras() {
+        return seurat;
+    }
+
+    private void loadSeurat(Path dir) {
+        java.util.Map<String, fi.pirila.tulospalvelu.Seura> built = new java.util.LinkedHashMap<>();
+
+        // 1) seuras already on competitor records — these reflect actual data
+        // entered for this competition and may include clubs not in any CSV.
+        for (fi.pirila.tulospalvelu.Competitor c : competitors) {
+            if (c.seura == null || c.seura.isBlank()) continue;
+            built.putIfAbsent(c.seura,
+                    new fi.pirila.tulospalvelu.Seura(c.piiri,
+                            c.seuralyh == null ? "" : c.seuralyh, c.seura));
+        }
+
+        // 2) seurat.csv master list — wins on entries that have lyhenne/piiri
+        // we haven't seen, but doesn't override a richer record value.
+        Path csv = dir.resolve("seurat.csv");
+        if (!Files.exists(csv) && dir.getParent() != null) {
+            csv = dir.getParent().resolve("seurat.csv");
+        }
+        if (Files.exists(csv)) {
+            try {
+                for (fi.pirila.tulospalvelu.Seura s :
+                        fi.pirila.tulospalvelu.SeuratReader.read(csv)) {
+                    fi.pirila.tulospalvelu.Seura existing = built.get(s.nimi());
+                    if (existing == null
+                            || (existing.piiri() == 0 && existing.lyhenne().isEmpty())) {
+                        built.put(s.nimi(), s);
+                    }
+                }
+                log.info("Loaded seurat.csv from {} ({} total clubs in catalogue)",
+                        csv, built.size());
+            } catch (IOException e) {
+                log.warn("Failed to read seurat.csv at {}: {}", csv, e.getMessage());
+            }
+        } else {
+            log.info("No seurat.csv; clubs catalogue ({} entries) is from competitor records only",
+                    built.size());
+        }
+        this.seurat = java.util.Collections.unmodifiableMap(built);
+    }
+
     public java.util.Map<Integer, String> getAllClasses() {
         return kilpSrjReader != null ? kilpSrjReader.getAllClasses() : java.util.Map.of();
     }
@@ -366,9 +423,16 @@ public class TulospalveluService implements MessageListener {
      * Badge changes are not handled here — call sendCardChange separately.
      */
     public boolean sendCompetitorEdit(int recordIndex, String sukunimi, String etunimi,
-                                       String seura, int sarja) {
-        log.info("sendCompetitorEdit: record={} sukunimi={} etunimi={} seura={} sarja={}",
-                recordIndex, sukunimi, etunimi, seura, sarja);
+                                       String seura, String seuralyh, int piiri, int sarja) {
+        // Normalise nulls — Vaadin ComboBox.clear() and a blank @NotBlank-skipped
+        // field both arrive as null but the wire format wants empty strings, and
+        // downstream search filters then NPE on c.seura.toLowerCase().
+        if (sukunimi == null) sukunimi = "";
+        if (etunimi  == null) etunimi  = "";
+        if (seura    == null) seura    = "";
+        if (seuralyh == null) seuralyh = "";
+        log.info("sendCompetitorEdit: record={} sukunimi={} etunimi={} seura={} seuralyh={} piiri={} sarja={}",
+                recordIndex, sukunimi, etunimi, seura, seuralyh, piiri, sarja);
         if (!isConnected()) {
             log.warn("Cannot send competitor edit - not connected");
             return false;
@@ -382,9 +446,11 @@ public class TulospalveluService implements MessageListener {
             int kilprecsize0 = record.length;
 
             // Field offsets (kilp_fields, default sizes from HkDat.cpp:94-119)
+            int OFF_PIIRI = 34;
             int OFF_SUKUNIMI = 48, LEN_SUKUNIMI = 25;
             int OFF_ETUNIMI = 98, LEN_ETUNIMI = 25;
             int OFF_SEURA = 180, LEN_SEURA = 32;
+            int OFF_SEURALYH = 244, LEN_SEURALYH = 16;
             int OFF_SARJA = 348;
             int OFF_KILPNO = 2;
             int kilpno = (record[OFF_KILPNO] & 0xFF) | ((record[OFF_KILPNO + 1] & 0xFF) << 8);
@@ -392,6 +458,9 @@ public class TulospalveluService implements MessageListener {
             TulospalveluProtocol.writeWideString(record, OFF_SUKUNIMI, LEN_SUKUNIMI, sukunimi);
             TulospalveluProtocol.writeWideString(record, OFF_ETUNIMI, LEN_ETUNIMI, etunimi);
             TulospalveluProtocol.writeWideString(record, OFF_SEURA, LEN_SEURA, seura);
+            TulospalveluProtocol.writeWideString(record, OFF_SEURALYH, LEN_SEURALYH,
+                    seuralyh == null ? "" : seuralyh);
+            TulospalveluProtocol.writeInt16LE(record, OFF_PIIRI, (short) piiri);
             TulospalveluProtocol.writeInt16LE(record, OFF_SARJA, (short) sarja);
 
             for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
@@ -409,6 +478,8 @@ public class TulospalveluService implements MessageListener {
                         comp.sukunimi = sukunimi;
                         comp.etunimi = etunimi;
                         comp.seura = seura;
+                        comp.seuralyh = seuralyh == null ? "" : seuralyh;
+                        comp.piiri = piiri;
                         comp.sarja = sarja;
                         for (var l : updateListeners) {
                             try { l.accept(comp); } catch (Exception e) { log.warn("Update listener failed", e); }
@@ -573,6 +644,8 @@ public class TulospalveluService implements MessageListener {
             comp.sukunimi = r.sukunimi();
             comp.etunimi = r.etunimi();
             comp.seura = r.seura();
+            comp.seuralyh = r.seuralyh();
+            comp.piiri = r.piiri();
             comp.sarja = r.sarja();
             if (kilpFile != null) {
                 KilpReader.writeFullRecord(kilpFile, dk, recordData);

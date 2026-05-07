@@ -400,9 +400,34 @@ public class Harness {
                     page.getByRole(AriaRole.TEXTBOX,
                             new Page.GetByRoleOptions().setName("Sukunimi")).fill(sukunimi);
                     Thread.sleep(200);
-                    page.getByRole(AriaRole.TEXTBOX,
-                            new Page.GetByRoleOptions().setName("Seura")).fill(seura);
-                    Thread.sleep(200);
+                    // Seura is now a combobox with allowCustomValue=true. Pick
+                    // a matching dropdown item if there is one, otherwise blur
+                    // (Tab) to fire customValueSet — pressing Enter triggers
+                    // the Tallenna shortcut before the value commits.
+                    var seuraInput = page.getByRole(AriaRole.COMBOBOX,
+                            new Page.GetByRoleOptions().setName("Seura"));
+                    seuraInput.click();
+                    Thread.sleep(300);
+                    // Clear any pre-existing value first; pressSequentially
+                    // appends to whatever's there and the ComboBox's input
+                    // already shows the previous label ("S-Z — Seura Z").
+                    seuraInput.press("Control+a");
+                    seuraInput.press("Delete");
+                    Thread.sleep(150);
+                    // pressSequentially fires real key events so Vaadin's filter
+                    // and customValueSet machinery actually wakes up; fill()
+                    // sets the input value silently and is sometimes ignored.
+                    seuraInput.pressSequentially(seura,
+                            new com.microsoft.playwright.Locator.PressSequentiallyOptions().setDelay(40));
+                    Thread.sleep(800);
+                    var seuraMatch = page.locator("vaadin-combo-box-item").filter(
+                            new com.microsoft.playwright.Locator.FilterOptions().setHasText(seura));
+                    if (seuraMatch.count() > 0) {
+                        seuraMatch.first().click();
+                    } else {
+                        seuraInput.press("Enter");
+                    }
+                    Thread.sleep(500);
 
                     // Sarja combobox — type the label then pick the matching option.
                     var sarjaInput = page.getByRole(AriaRole.COMBOBOX,

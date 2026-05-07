@@ -24,12 +24,14 @@ public class CompetitorService {
         String term = searchTerm.toLowerCase();
         return tulospalveluService.getCompetitors().stream()
                 .filter(c -> String.valueOf(c.kilpno).contains(term)
-                        || (c.sukunimi + " " + c.etunimi).toLowerCase().contains(term)
-                        || c.seura.toLowerCase().contains(term)
-                        || tulospalveluService.getClassName(c.sarja).toLowerCase().contains(term))
+                        || (nz(c.sukunimi) + " " + nz(c.etunimi)).toLowerCase().contains(term)
+                        || nz(c.seura).toLowerCase().contains(term)
+                        || nz(tulospalveluService.getClassName(c.sarja)).toLowerCase().contains(term))
                 .map(this::toCompetitor)
                 .toList();
     }
+
+    private static String nz(String s) { return s == null ? "" : s; }
 
     public Competitor getCompetitorById(Long id) {
         fi.pirila.tulospalvelu.Competitor comp = tulospalveluService.getCompetitorByRecordIndex(id.intValue());

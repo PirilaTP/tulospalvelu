@@ -108,23 +108,31 @@ public class CompetitorEditTest {
             var after = KilpReader.read(kilpMa).stream()
                     .filter(c -> c.recordIndex == recordIdx).findFirst().orElseThrow();
             int afterBadge = Harness.readPvBadge(kilpMa, recordIdx, 0);
+            char afterKeskhyl = Harness.readPvStatus(kilpMa, recordIdx, 0).keskhyl();
             out.printf("    sukunimi: %s → %s%n", repr(vakant.sukunimi), repr(after.sukunimi));
             out.printf("    etunimi:  %s → %s%n", repr(vakant.etunimi), repr(after.etunimi));
             out.printf("    seura:    %s → %s%n", repr(vakant.seura), repr(after.seura));
             out.printf("    sarja:    %d → %d%n", vakant.sarja, after.sarja);
             out.printf("    badge:    %d → %d%n", vakant.badge, afterBadge);
+            out.printf("    keskhyl:  '%s' → '%s' (V → open expected)%n",
+                    vakant.keskhyl == 0 ? "" : String.valueOf(vakant.keskhyl),
+                    afterKeskhyl == 0 ? "" : String.valueOf(afterKeskhyl));
 
             boolean okSukunimi = NEW_SUKUNIMI.equals(after.sukunimi);
             boolean okEtunimi = NEW_ETUNIMI.equals(after.etunimi);
             boolean okSeura = NEW_SEURA.equals(after.seura);
             boolean okSarja = after.sarja == targetSarjaIdx;
             boolean okBadge = afterBadge == Integer.parseInt(NEW_BADGE);
+            // Vakantti ('V') should auto-clear to '-' (open) once real
+            // competitor data is entered. Some C++ versions leave it as NUL.
+            boolean okKeskhyl = afterKeskhyl == '-' || afterKeskhyl == 0;
             out.println("    " + Harness.tag(okSukunimi) + " sukunimi");
             out.println("    " + Harness.tag(okEtunimi) + " etunimi");
             out.println("    " + Harness.tag(okSeura) + " seura");
             out.println("    " + Harness.tag(okSarja) + " sarja");
             out.println("    " + Harness.tag(okBadge) + " badge");
-            success = okSukunimi && okEtunimi && okSeura && okSarja && okBadge;
+            out.println("    " + Harness.tag(okKeskhyl) + " keskhyl auto-cleared");
+            success = okSukunimi && okEtunimi && okSeura && okSarja && okBadge && okKeskhyl;
             ma.writeLog(Path.of("/tmp/jb-edit-MA.log"));
         }
 

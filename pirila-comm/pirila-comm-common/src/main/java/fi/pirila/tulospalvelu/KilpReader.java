@@ -39,9 +39,11 @@ public class KilpReader {
     // Default field offsets in base record (kilp_fields)
     private static final int OFF_KILPSTATUS = 0;
     private static final int OFF_KILPNO = 2;
+    private static final int OFF_PIIRI = 34;
     private static final int OFF_SUKUNIMI = 48;
     private static final int OFF_ETUNIMI = 98;
     private static final int OFF_SEURA = 180;
+    private static final int OFF_SEURALYH = 244;
     private static final int OFF_SARJA = 348;
 
     // Field offsets within pv (stage) block (pv_fields)
@@ -380,6 +382,8 @@ public class KilpReader {
                 String sukunimi = readWideString(record, OFF_SUKUNIMI, 25);
                 String etunimi = readWideString(record, OFF_ETUNIMI, 25);
                 String seura = readWideString(record, OFF_SEURA, 32);
+                String seuralyh = readWideString(record, OFF_SEURALYH, 16);
+                int piiri = buf.getShort(OFF_PIIRI) & 0xFFFF;
                 int sarja = buf.getShort(OFF_SARJA) & 0xFFFF;
 
                 // Fields from pv[0] (first stage)
@@ -409,7 +413,8 @@ public class KilpReader {
                     }
                 }
 
-                competitors.add(new Competitor(i, kilpno, sukunimi, etunimi, seura, sarja,
+                competitors.add(new Competitor(i, kilpno, sukunimi, etunimi, seura,
+                        seuralyh, piiri, sarja,
                         badge, badge2, keskhyl, ysija, resultTime, startTime));
             }
         }
@@ -431,7 +436,7 @@ public class KilpReader {
      * Use to merge an incoming server record into an existing in-memory Competitor.
      */
     public record ParsedRecord(int kilpno, String sukunimi, String etunimi,
-                                String seura, int sarja) {}
+                                String seura, String seuralyh, int piiri, int sarja) {}
 
     /**
      * Parse name/club/class/kilpno fields from a raw KILPT record byte buffer.
@@ -443,8 +448,10 @@ public class KilpReader {
         String sukunimi = readWideString(recordData, OFF_SUKUNIMI, 25);
         String etunimi = readWideString(recordData, OFF_ETUNIMI, 25);
         String seura = readWideString(recordData, OFF_SEURA, 32);
+        String seuralyh = readWideString(recordData, OFF_SEURALYH, 16);
+        int piiri = buf.getShort(OFF_PIIRI) & 0xFFFF;
         int sarja = buf.getShort(OFF_SARJA) & 0xFFFF;
-        return new ParsedRecord(kilpno, sukunimi, etunimi, seura, sarja);
+        return new ParsedRecord(kilpno, sukunimi, etunimi, seura, seuralyh, piiri, sarja);
     }
 
     /** Read a null-terminated UTF-16LE (wchar_t) string from a byte array. */

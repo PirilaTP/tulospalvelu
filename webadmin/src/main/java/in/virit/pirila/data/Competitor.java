@@ -1,5 +1,7 @@
 package in.virit.pirila.data;
 
+import java.util.Objects;
+
 public class Competitor {
     private Long id;
     private String competitionNumber;
@@ -59,4 +61,16 @@ public class Competitor {
 
     public int getStartTimeMs() { return startTimeMs; }
     public void setStartTimeMs(int startTimeMs) { this.startTimeMs = startTimeMs; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Competitor that = (Competitor) o;
+        return Objects.equals(id, that.id) && Objects.equals(competitionNumber, that.competitionNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, competitionNumber);
+    }
 }
