@@ -330,7 +330,7 @@ int auto_lahtija(INT32 tlahto)
 		}
 	}
 
-static int haelahdepiste(kilptietue *kilp, INT16 kdi, int tm)
+int haelahdepiste(kilptietue *kilp, INT16 kdi, int tm)
 	{
 	lahdepsttp *kp, *kp0;
 
