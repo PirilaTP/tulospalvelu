@@ -424,13 +424,6 @@ static void tark_aika(INT cn)
 		if (initca[cn])
 			ibuf = inbuf + inbens;
 		memcpy(&ia, &ibuf->d.a.iaika, sizeof(aikatp));
-		if (lahdepistehaku && haelahdepiste(NULL, ia.piste, purajak(ia.t)) == -1) {
-			ia.piste = -1;
-			if (pakotalaika) {
-				INT d; kilptietue kilp;
-				if ((d = getpos(ia.kno)) > 0) { kilp.GETREC(d); kilp.tall_tulos(-1, ia.t); }
-			}
-		}
 		memcpy(&da, &ibuf->d.a.daika, sizeof(aikatp));
 		if (maxjono > 0) {
 			ino = 0;
