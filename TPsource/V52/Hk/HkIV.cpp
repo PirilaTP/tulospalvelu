@@ -330,7 +330,7 @@ int auto_lahtija(INT32 tlahto)
 		}
 	}
 
-int haelahdepiste(kilptietue *kilp, INT16 kdi, int tm)
+static int haelahdepiste(kilptietue *kilp, INT16 kdi, int tm)
 	{
 	lahdepsttp *kp, *kp0;
 
@@ -3423,6 +3423,14 @@ void tall_ec(UINT32 bdg, INT valeim, INT32 aika, INT kielto)
 //					wkirjloki(L"NEGATIIVINEN TAI HAAMUAIKA");
 //					}
 				}
+			else if (lahdepistehaku && pst == -1 && pakotalaika) {
+					vatime = pyoristatls(vatime, 1);
+					kilp.set_tulos(pst, vatime);
+					EnterCriticalSection(&tall_CriticalSection);
+					kilp.tallenna(d, 0, kielto, 0, 0);
+					LeaveCriticalSection(&tall_CriticalSection);
+					tall_rivi(1, &itm, NULL, NULL, 0, 0, 0, false);
+			}
 			else {
 				if (vaajat)
 					tall_rivi(aika_jono[0][1], &itm, NULL, NULL, 0, 0, 0, false);

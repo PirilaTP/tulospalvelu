@@ -341,7 +341,6 @@ void importsifile(void);
 void si_tcpimport(void);
 void takaa_ajolahdot(void);
 void luelahdepisteet(void);
-int haelahdepiste(kilptietue *kilp, INT16 kdi, int tm);
 void tall_maki(wchar_t *sanoma);
 void naytakilpailija(kilptietue *kilp);
 void siirra_taulu(INT t_no);
