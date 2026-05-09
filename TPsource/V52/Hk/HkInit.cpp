@@ -213,7 +213,8 @@ void merkisto(wchar_t merkit)
 
 void lueKorRajat(void)
    {
-   wchar_t rajaflnm[] = L"korostus.lst", buf[200], srjnm[200];
+   wchar_t rajaflnm[20], buf[200], srjnm[200];
+   swprintf(rajaflnm, L"korostus%d.lst", k_pv + 1);
    int srj, rj1;
    unsigned int rj2;
    TextFl *rajafl;
