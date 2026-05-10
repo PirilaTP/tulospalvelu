@@ -3424,12 +3424,15 @@ void tall_ec(UINT32 bdg, INT valeim, INT32 aika, INT kielto)
 //					}
 				}
 			else if (lahdepistehaku && pst == -1 && pakotalaika) {
-					vatime = pyoristatls(vatime, 1);
-					kilp.set_tulos(pst, vatime);
-					EnterCriticalSection(&tall_CriticalSection);
-					kilp.tallenna(d, 0, kielto, 0, 0);
-					LeaveCriticalSection(&tall_CriticalSection);
-					tall_rivi(1, &itm, NULL, NULL, 0, 0, 0, false);
+					if (pakotalaikaraja == 0 || kilp.pv[k_pv].va[pst+1].vatulos == 0 ||
+					   abs((long)NORMKELLO(vatime - kilp.pv[k_pv].va[pst+1].vatulos)) >= (long)pakotalaikaraja * SEK) {
+						vatime = pyoristatls(vatime, 1);
+						kilp.set_tulos(pst, vatime);
+						EnterCriticalSection(&tall_CriticalSection);
+						kilp.tallenna(d, 0, kielto, 0, 0);
+						LeaveCriticalSection(&tall_CriticalSection);
+						tall_rivi(1, &itm, NULL, NULL, 0, 0, 0, false);
+						}
 			}
 			else {
 				if (vaajat)

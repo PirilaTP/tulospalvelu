@@ -782,6 +782,7 @@ extern   INT ajat_on, status_on;
 extern   INT kuulpiste;
 extern   INT lukum_fl;
 extern	INT  pakotalaika;
+ extern	INT  pakotalaikaraja;
 extern   INT  nilmt;
 extern   INT  nyilmt;
 extern   INT  nytulost;

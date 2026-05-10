@@ -1413,6 +1413,10 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			continue;
 			}
 #endif
+		 if(!wmemcmpU(fldn, L"PAKOTALAIKARAJA", 15)) {
+				pakotalaikaraja = _wtoi(fldn + 16);
+				continue;
+				}
 		 if(!wmemcmpU(fldn, L"PAKOTALAIKA", 11)) {
 				if (fldn[11] == L'=' && (fldn[12] == L'0' || fldn[12] == L'E'))
 					pakotalaika = 0;
