@@ -61,10 +61,6 @@ void resizeConBufAndWindow(HANDLE hConsole, SHORT xSize, SHORT ySize)
   /* buffer first, then the console window */
   if ((DWORD) csbi.dwSize.X * csbi.dwSize.Y < (DWORD) xSize * ySize)
     {
-    SMALL_RECT srCur = csbi.srWindow;
-    if (srCur.Right  >= xSize) srCur.Right  = (SHORT)(xSize - 1);
-    if (srCur.Bottom >= ySize) srCur.Bottom = (SHORT)(ySize - 1);
-    SetConsoleWindowInfo(hConsole, TRUE, &srCur);
     bSuccess = SetConsoleScreenBufferSize(hConsole, coordScreen);
     PERR(bSuccess, "SetConsoleScreenBufferSize");
     bSuccess = SetConsoleWindowInfo(hConsole, TRUE, &srWindowRect);
