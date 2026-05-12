@@ -401,6 +401,7 @@
 	INT ajat_on, status_on = 1;
 	INT kuulpiste;
 	INT  pakotalaika;
+	INT  pakotalaikaraja;
 	INT  html_sail_nimi;
 //	INT  takaa_ajo;
    INT  nyilmt;
