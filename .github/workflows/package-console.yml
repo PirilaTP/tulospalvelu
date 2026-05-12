@@ -1,0 +1,109 @@
+name: Package console binaries
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Package label, for example v2026.05.1. Defaults to run-<number>."
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Build and package console programs
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build utility libraries (tputilv2 + dbboxm)
+        run: msbuild TPsource\V52\VS\Libs\tputilv2.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
+
+      - name: Build HkMaali (individual competition)
+        run: msbuild TPsource\V52\VS\Hk\HkMaali520.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
+
+      - name: Build ViestiMaali and ViestiLuenta (relay competition)
+        run: msbuild TPsource\V52\VS\V\JukMaali520.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
+
+      - name: Create ZIP package
+        id: package
+        shell: pwsh
+        env:
+          PACKAGE_VERSION: ${{ inputs.version }}
+          BUILD_COMMIT: ${{ github.sha }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          $version = $env:PACKAGE_VERSION
+          if ([string]::IsNullOrWhiteSpace($version)) {
+            $version = "run-$env:RUN_NUMBER"
+          }
+
+          $safeVersion = $version -replace '[^A-Za-z0-9._-]', '-'
+          $packageName = "tulospalvelu-console-$safeVersion-win32"
+          $packageDir = Join-Path "dist" $packageName
+
+          New-Item -ItemType Directory -Force -Path $packageDir | Out-Null
+
+          $binaries = @(
+            "TPexe\Hk\V521\HkMaali.exe",
+            "TPexe\Juk\V52\ViestiMaali.exe",
+            "TPexe\Juk\V52\ViestiLuenta.exe"
+          )
+
+          foreach ($binary in $binaries) {
+            if (-not (Test-Path $binary)) {
+              throw "Expected build output missing: $binary"
+            }
+            Copy-Item $binary $packageDir
+          }
+
+          Copy-Item "LICENSE" $packageDir
+          Copy-Item "README.md" $packageDir
+
+          @"
+          Pekka Pirilan tulospalveluohjelma - console binaries
+
+          Package: $packageName
+          Commit: $env:BUILD_COMMIT
+          Built: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss K")
+
+          Programs:
+          - HkMaali.exe: individual competition console program
+          - ViestiMaali.exe: relay competition console program
+          - ViestiLuenta.exe: relay reading console program
+
+          These binaries are unsigned. Windows may show a SmartScreen warning.
+          "@ | Set-Content -Path (Join-Path $packageDir "README.txt") -Encoding UTF8
+
+          Push-Location $packageDir
+          Get-FileHash -Algorithm SHA256 *.exe |
+            Sort-Object Path |
+            ForEach-Object { "$($_.Hash.ToLowerInvariant())  $(Split-Path $_.Path -Leaf)" } |
+            Set-Content -Path "SHA256SUMS.txt" -Encoding ASCII
+          Pop-Location
+
+          $zipPath = "dist\$packageName.zip"
+          Compress-Archive -Path "$packageDir\*" -DestinationPath $zipPath -Force
+
+          "package_name=$packageName" >> $env:GITHUB_OUTPUT
+          "zip_path=$zipPath" >> $env:GITHUB_OUTPUT
+
+          Add-Content $env:GITHUB_STEP_SUMMARY "## Console binary package"
+          Add-Content $env:GITHUB_STEP_SUMMARY ""
+          Add-Content $env:GITHUB_STEP_SUMMARY "- Package: ``$packageName``"
+          Add-Content $env:GITHUB_STEP_SUMMARY "- Commit: ``$env:BUILD_COMMIT``"
+          Add-Content $env:GITHUB_STEP_SUMMARY "- Artifact: download from this workflow run"
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.package.outputs.package_name }}
+          path: ${{ steps.package.outputs.zip_path }}
+          if-no-files-found: error
+          retention-days: 30
