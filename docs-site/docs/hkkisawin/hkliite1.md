@@ -98,7 +98,6 @@ mutta sen kaikkia alamäärityksiä ei voi tehdä.
 | HTMLSÄILNIMI | \*\*\* | Etu- ja sukunimen järjestystä ei vaihdeta HTML-tulosteissa |
 | XML=tied/xx | \*\*\* | Kirjoita XML-muotoinen tulosluettelo automaattisesti xx sekunnin välein. |
 | KOMENTO=xxxxx | \*\*\* | Komento, jonka ohjelma toteuttaa tiedoston automaattisen tulostuksen jälkeen |
-| AUTOJAKELU=xxxxx | \*\*\* | Kertoo, että tiedosto siirretään palvelimelle automaattisen tulostuksen jälkeen. =xxxx kertoo palvelinyhteyden määrittelevän tiedoston nimen, jos se ei ole AutoJakelu.xml |
 | DESEROTIN=x |  | Valitsee desimaalierottimeksi xml-tulosteissa merkin 'x' (pilkku tai piste). |
 | KILPKDI=xxx |  | Määrittelee kilpailun koodin tulostettavaksi eräisiin tiedostotulosteisiin. Poistuva, määrittele kilpailun vaihekohtaisena tietona. |
 | LÄHETÄCR=EI |  | Jättää rivinvaihtomerkin pois lähettäessään sivunvaihtomerkin kirjoittimelle |
