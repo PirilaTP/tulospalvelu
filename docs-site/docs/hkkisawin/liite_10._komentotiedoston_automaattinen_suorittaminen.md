@@ -2,17 +2,12 @@
 
 ## Liite 10. Komentotiedoston automaattinen suorittaminen
 
-Huom. Ohjelmasta voidaan nyt käynnistää tiedostojen
-siirto myös [sisäisenä
-toimintona](9.7_automaattinen_tiedostotulostus.md) 
-ilman komentotiedostoon turvautumista
-
-### A10.1  Komennon määrittely
+### A10.1  Komennon määrittely
 
 Kun ohjelmassa on käynnistetty tulosten automaattinen
 kirjoittaminen määrävälein tiedostoon ([luku 9.7](9.7_automaattinen_tiedostotulostus.md)), voidaan
 aina tiedostojen kirjoittamisen jälkeen käynnistää ulkoinen komento. Tämä
-toimintatapa käynnistetään joko automaattista tulostusta ohjaavalla kaavakkeella tai parametrilla
+toimintatapa käynnistetään joko automaattista tulostusta ohjaavalla kaavakkeella tai parametrilla
 
 ```
 KOMENTO=suoritettava komento
@@ -29,90 +24,146 @@ Useimmissa tapauksissa kannattanee koota suoritettavat
 komennot komentotiedostoon (BAT- tai CMD-tiedostoon) ja antaa tämän
 komentotiedoston nimi ohjelman parametrissa.
 
-### A10.2  Html-tiedostojen automaattinen ftp-siirto
+### A10.2  Html-tiedostojen automaattinen siirto rsyncillä SSH:n yli (suositus)
 
-Tyypillinen käyttötarkoitus ulkoisen komennon
-automaattiselle suorittamiselle on ohjelman automaattisesti luomien
-html-tiedostojen siirtäminen ftp-protokollaa käyttäen www-palvelimelle. Tämä
-toimintatapa voidaan käynnistää seuraavasti. Parametreilla
+Nykyaikainen ja tietoturvallinen tapa siirtää automaattisesti luodut
+html-tulostiedostot omalle www-palvelimelle on `rsync` SSH-yhteyden yli.
+`rsync` siirtää vain muuttuneet tiedostot, joten siirto on nopea ja säästää
+verkkoa, ja lippu `--delay-updates` vaihtaa yksittäiset tiedostot
+väliaikanimistä lopullisiin nimiin vasta siirron lopuksi. Näin katsojat
+eivät normaalisti näe puolivalmista html-tiedostoa. SSH:n julkisen
+avaimen tunnistus korvaa salasanan, joten siirto sopii myös automaattiseen
+ajoon.
 
-```
-HTML=c:\kisa\html\tulokset.htm/60  
-KOMENTO=c:\kisa\html\ftpsiirto.cmd
-```
+Tämä ohje korvaa aiemmat `ftp`- ja `sftp2`-esimerkit, joita ei enää
+suositella nykyaikaisille palvelimille.
 
-käynnistetään tiedoston c:\kisa\html\tulokset.htm
-automaattinen kirjoittaminen 60 s välein sekä aina tämän tiedostojen
-kirjoittamisen jälkeen samassa hakemistossa oleva komentotiedosto ftpsiirto.cmd
+#### Esivaatimukset
 
-Usein kannattaa lisätä parametriin HTML täydennys /S ilmaisemaan,
-että sarjat tulostetaan erikseen ja käyttää tulostettavat sarjat ja pisteet
-määrittelevää tiedostoa AUTOFILE.LST
-. Asiasta lisää ohjelmien yleisissä
-ohjeissa.
+- Windows 10/11 (22H2 tai uudempi)
+- WSL2 + Ubuntu (tai muu jakelu), asennus `wsl --install` PowerShellissä
+  järjestelmänvalvojana
+- SSH-pääsy kohdepalvelimelle (esim. `user@kisapalvelin.fi`) ja
+  kirjoitusoikeus sen hakemistoon (esim. `/var/www/html/kisa/`)
 
-Tiedoston ftpsiirto.cmd sisältö voi olla esimerkiksi
+#### 1. SSH-avainparin luonti ja rekisteröinti palvelimelle
 
-```
-if NOT exist c:\kisa\html\*.htm goto loppu
-ftp -v -i -n -s:c:\kisa\html\ftpsiirto.txt
-del c:\kisa\html\*.htm
-:loppu
-```
+Avaa WSL-terminaali (komento `wsl` komentoriviltä). Luo avain ilman
+salafraasia, jotta tulospalveluohjelma pystyy ajamaan siirron
+automaattisesti:
 
-Tiedosto ftpsiirto.txt sisältää puolestaan ohjelmaa ftp
-ohjaavan skriptin, jonka sisältö voisi olla
-
-```
-open wwwpalvelin.tarjoaja.fi
-user username password
-cd public_html/kisa
-binary
-mput c:\kisa\html\*.htm
-quit
+```bash
+ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519_kisa
+ssh-copy-id -i ~/.ssh/id_ed25519_kisa.pub user@kisapalvelin.fi
 ```
 
-missä kaksi ensimmäistä riviä määrittelevät käytettävän
-ftp-palvelimen, käyttäjätunnuksen ja salasanan, kolmas rivi pyytää siirtymään
-palvelimen hakemistoon public\_html/kisa
-ja viides rivi käynnistää tiedostojen siirron.
+Testaa, että kirjautuminen onnistuu ilman salasanaa:
 
-### A10.3  Secure ftp:n (ohjelman sftp2) käyttö
-
-Monet palvelimet eivät salli ftp-tiedonsiirtoa
-tietoturvasyistä, mutta sallivat suojatun secure ftp:n käytön. Tämä voidaan
-hoitaa käyttäen komentoriviohjelmaa sftp2. Ohjelman
-sftp2 käyttöä vaikeuttaa kaksi seikkaa:
-
-- SSH-ohjelmat, joista sftp2 on yksi, vaativat yleensä, että käyttäjä
-  antaa näppäimistöltä salasanan, mikä ei sovi yhteen tiedonsiirron
-  automatisoinnin kanssa. Tämä rajoitus voidaan ratkaista ottamalla käyttöön
-  julkiseen avaimeen perustuva käyttäjän tunnistus ja määrittelemällä julkiseen
-  avaimeen liittyvä salafraasi tyhjäksi.
-
-  - sftp2 ei salli
-    näyttötulostuksen ohjaamista näkymättömiin. Tästä syystä ei ohjelmaa voida
-    käynnistää samassa ikkunassa, jossa tulospalveluohjelma toimii. Tämä rajoitus
-    voidaan kiertää avaamalla sftp2 uuteen ikkunaan
-    komennolla start.
-
-Ohjelmaa sftp2 voidaan käyttää
-esimerkiksi käynnistämällä tulospalveluohjelmasta komentotiedosto
-sftpsiirto.cmd, jonka sisältö on
-
-```
-start /min sftp2 -B sftpsiirto.txt user@palvelin.tarjoaja.fi
+```bash
+ssh -i ~/.ssh/id_ed25519_kisa user@kisapalvelin.fi echo ok
 ```
 
-Parametri /min ei ole välttämätön, mutta se estää uuden
-ikkunan aukeamisen häiritsevästi näytölle.
+Ensimmäisellä kerralla pitää hyväksyä palvelimen host-avain (`yes`).
 
-Tiedosto sftpsiirto.txt
-sisältää ohjelmalle sftp2
-lähetettävät komennot, jotka voivat olla esimerkiksi
+#### 2. Rsync-komennon kokeilu käsin
+
+Tulospalveluohjelma kirjoittaa html-tiedostot yleensä omaan hakemistoon kuten
+`C:\kisa\www\`. Sama polku näkyy WSL:ssä muodossa `/mnt/c/kisa/www/`.
+Kokeile ensin käsin WSL-terminaalista:
+
+```bash
+rsync -av --delete-after --delay-updates \
+  -e "ssh -i /home/KÄYTTÄJÄ/.ssh/id_ed25519_kisa" \
+  /mnt/c/kisa/www/ \
+  user@kisapalvelin.fi:/var/www/html/kisa/
+```
+
+Lippujen merkitys:
+
+- `-a` = rekursiivinen arkistotila (säilyttää aikaleimat)
+- `-v` = näyttää siirretyt tiedostot (testaukseen; lopullisessa skriptissä pois)
+- `--delete-after` = poistaa palvelimelta tiedostot, jotka eivät enää ole
+  lähteessä vasta kun siirto on onnistunut
+- `--delay-updates` = siirtää tiedostot ensin väliaikanimillä ja vaihtaa ne
+  lopullisiin nimiin vasta siirron lopuksi
+
+Kun tiedostot ilmestyvät palvelimelle, SSH-tunnistus ja rsync toimivat.
+
+#### 3. Windows-komentotiedosto siirto.cmd
+
+Luo tiedosto, jonka tulospalveluohjelma käynnistää. Komento ei saa
+tulostaa näytölle eikä kysyä mitään (ks. A10.1). Siksi tulostus ohjataan
+lokitiedostoon. Tallenna skripti muualle kuin julkaistavaan html-hakemistoon,
+esim. nimellä `C:\kisa\siirto\siirto.cmd`:
+
+```cmd
+@echo off
+REM Tulospalvelun HTML-tiedostojen siirto palvelimelle rsyncillä WSL:n kautta.
+REM Kutsutaan automaattisesti HkKisaWin:n KOMENTO-parametrista.
+
+set LOG=C:\kisa\siirto\siirto.log
+
+wsl -- rsync -a --delete-after --delay-updates ^
+  -e "ssh -i /home/KÄYTTÄJÄ/.ssh/id_ed25519_kisa -o StrictHostKeyChecking=accept-new -o ConnectTimeout=10" ^
+  /mnt/c/kisa/www/ ^
+  user@kisapalvelin.fi:/var/www/html/kisa/ ^
+  >> "%LOG%" 2>&1
+
+exit /b %ERRORLEVEL%
+```
+
+Huomioita:
+
+- `wsl -- komento` ajaa komennon oletus-WSL-jakelussa ilman uutta ikkunaa.
+- `^`-merkit jatkavat riviä .cmd-tiedostossa.
+- `ConnectTimeout=10` varmistaa, ettei komento jää roikkumaan, jos verkko
+  on poikki.
+- Siirron lokia voi seurata PowerShellistä komennolla
+  `Get-Content C:\kisa\siirto\siirto.log -Wait`.
+- Pidä `siirto.cmd` ja `siirto.log` eri hakemistossa kuin julkaistavat
+  html-tiedostot, jotta niitä ei peilata palvelimelle.
+
+#### 4. Kytkentä tulospalveluohjelmaan
+
+Lisää kilpailun `.cfg`-tiedostoon (esim. `laskenta.cfg`):
 
 ```
-cd public_html/kisa
-mput c:\kisa\html\*.htm
-quit
+HTML=c:\kisa\www\tulokset.htm/60/S
+KOMENTO=c:\kisa\siirto\siirto.cmd
 ```
+
+`HTML=...` kirjoittaa html-tiedostot 60 sekunnin välein sarjakohtaisesti
+(`/S`) ja `KOMENTO=...` ajaa `siirto.cmd`-tiedoston aina tämän jälkeen.
+Tarkemmin tulostettavia sarjoja ja väliaikapisteitä voi rajata tiedostolla
+`AUTOFILE.LST` (ks. [luku 9.7](9.7_automaattinen_tiedostotulostus.md)).
+
+#### 5. Vianetsintä
+
+| Oire | Tarkista |
+|------|----------|
+| Mikään ei siirry | Aja `siirto.cmd` käsin komentoriviltä ja tarkista `siirto.log` |
+| `ssh: permission denied` | Julkinen avain puuttuu palvelimen `~/.ssh/authorized_keys`-tiedostosta |
+| `ssh: Host key verification failed` | Käytä `-o StrictHostKeyChecking=accept-new` ja poista tarvittaessa `~/.ssh/known_hosts` |
+| `wsl: command not found` | WSL ei ole asennettu, aja `wsl --install` PowerShellissä |
+| `rsync: command not found` | `sudo apt install rsync` WSL:ssä (yleensä asennettuna valmiiksi) |
+| Tulospalvelu jumittuu | `ConnectTimeout`-lippu puuttuu |
+| Selain näyttää puolivalmista | Varmista että `--delay-updates` on mukana |
+
+#### 6. Vaihtoehto ilman WSL:ää
+
+Jos WSL ei ole käytettävissä, voidaan käyttää Windowsin omaa
+OpenSSH-clientia (mukana Windows 10/11:ssä) ja erikseen asennettua
+rsync-pakettia (esim. cwRsync tai MSYS2). Tällöin `siirto.cmd`:ssä
+kutsutaan `rsync.exe`:tä suoraan ja polut ovat Windows-muodossa
+(`C:\kisa\html\`) ja SSH-avain tallennetaan hakemistoon `%USERPROFILE%\.ssh\`.
+WSL on kuitenkin suositeltu, koska rsync ja ssh toimivat siellä
+natiivisti ilman erillisiä asennuksia.
+
+#### 7. Turvallisuushuomioita
+
+- Säilytä palvelimen SSH-avainta vain siinä koneessa, jossa sitä tarvitaan.
+  Jos kisakone katoaa, poista kyseinen julkinen avain palvelimen
+  `authorized_keys`-tiedostosta.
+- Avaimen oikeuksia kannattaa rajoittaa `authorized_keys`-tiedostossa
+  esim. määrittelyillä `command="rsync --server ..."` ja
+  `from="kisakone.ip"`; ks. `man sshd` kohta *AUTHORIZED_KEYS FILE FORMAT*.
