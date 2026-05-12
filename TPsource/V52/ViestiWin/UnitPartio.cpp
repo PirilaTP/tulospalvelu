@@ -259,7 +259,7 @@ void __fastcall TFormPartio::Partio(kilptietue *kilp, int d)
 			Cells[1][ii+1].text = rt->rastikoodi[i];
 			Cells[2][ii+1].text = ljcode;
 			Cells[2][ii+1].style = ljstyle;
-			for (j = 0; j < os; j++) {
+			for (j = 0; j <= os; j++) {
 				if (p_tulkinta[ii][j+1]) {
 					Cells[j+4][ii+1].text = p_tulkinta[ii][j+1];
 					if (p_tulkinta[ii][j+1] > 0)
@@ -271,7 +271,7 @@ void __fastcall TFormPartio::Partio(kilptietue *kilp, int d)
 			Cells[3][ii+1].text = (k >= min_k ? UnicodeString(L"Ok") : UnicodeString(L"Vaj"));
 			if (k < min_k)
 				hyvstyle = 2;
-			for (j = -1; j < os; j++) {
+			for (j = 0; j <= os; j++) {
 				Cells[j+4][ii+1].style = (k >= min_k ? 0 : 5);
 				}
 			ii++;
