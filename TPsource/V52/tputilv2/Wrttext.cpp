@@ -149,8 +149,6 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 {
 	int nprf;
 	wchar_t wmsg[200], PrinterName[120];
-//	char cBuffer[MAXBUFFERSIZE];
-	wchar_t wcBuffer[MAXBUFFERSIZE];
 	DWORD bufSz = 120, err;
 	HDC     hPrinter;
 	int oletuskirjoitin = 0;
