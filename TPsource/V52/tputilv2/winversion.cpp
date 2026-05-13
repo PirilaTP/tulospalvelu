@@ -20,28 +20,9 @@
 //#define TESTPRT
 #include <windows.h>
 
-// Tarkistaa Windows-käyttöjärjestelmän version GetVersionEx-kutsulla.
-// Palauttaa 0 (Win95/98/Me), 4 (NT4) tai 5 (Win2000/XP tai uudempi).
+// Returns 5 always - GetVersionEx was deprecated in Windows 8.1 and the software
+// requires at minimum Windows Vista. Win9x/NT4 paths (return 0 or 4) are unreachable.
 int WinVersion(void)
    {
-   OSVERSIONINFO osvi;
-	int NTversion;
-
-   osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-   GetVersionEx(&osvi);
-   if (osvi.dwPlatformId != VER_PLATFORM_WIN32_NT) {
-       // Windows 95/98/Me
-		NTversion = 0;
-      }
-   else {
-      if (osvi.dwMajorVersion > 4) {
-               // Windows 2000, XP
-			NTversion = 5;
-         }
-      else {
-               // Windows NT4
-			NTversion = 4;
-			}
-		}
-	return(NTversion);
-	}
+   return 5;
+   }
