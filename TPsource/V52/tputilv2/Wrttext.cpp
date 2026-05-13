@@ -148,14 +148,11 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 	char *trlate, int immediate)
 {
 	int nprf;
-	char msg[400];
 	wchar_t wmsg[200], PrinterName[120];
 //	char cBuffer[MAXBUFFERSIZE];
 	wchar_t wcBuffer[MAXBUFFERSIZE];
-	DWORD bufSz = 120, cbNeeded, cReturned, err;
+	DWORD bufSz = 120, err;
 	HDC     hPrinter;
-	OSVERSIONINFO osvi;
-	PRINTER_INFO_1W PrtInfo;
 	int oletuskirjoitin = 0;
 
 	for (nprf = 0; nprf < PRLKM; nprf++)
@@ -187,62 +184,13 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 		upcasewstr(prtfname);
 		elimwbl(prtfname);
 		if (!wcscmp(prtfname, L"PRN")) {
-			osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-			GetVersionEx(&osvi);
-			if (osvi.dwPlatformId != VER_PLATFORM_WIN32_NT) {
-// Windows 95/98/Me
-				if (!EnumPrintersW(
-					PRINTER_ENUM_DEFAULT,   // printer object types
-					NULL,                   // name of printer object
-					1,                      // information level
-					(LPBYTE) msg,           // printer information buffer
-					sizeof(msg),            // size of printer information buffer
-					&cbNeeded,              // bytes received or required
-					&cReturned              // number of printers enumerated
-					)) {
-					swprintf(wmsg, L"Oletuskirjoitinta ei lˆytynyt, Virhe %d/%d", GetLastError(), cbNeeded);
-					writeerror_w(wmsg, 0);
-					oletuskirjoitin = -1;
-					}
-				else {
-					memcpy(&PrtInfo, msg, sizeof(PrtInfo));
-					wcscpy(PrinterName, PrtInfo.pName);
-					}
-				}
-			else {
-				if (osvi.dwMajorVersion > 4) {
-// Windows 2000, XP
-					if (!GetDefaultPrinterW(PrinterName, &bufSz)) {
-						err = GetLastError();
-						if (err == ERROR_INSUFFICIENT_BUFFER)
-							writeerror_w(L"Oletuskirjoittimen nimi liian pitk‰ (yli 79 merkki‰)", 0);
-						else
-							writeerror_w(L"Oletuskirjoitinta ei ole m‰‰ritelty", 0);
-						oletuskirjoitin = -1;
-						}
-					}
-				else {
-// Windows NT4
-// Retrieve the default string from Win.ini (the registry).
-// String will be in form "printername,drivername,portname".
-					if (GetProfileStringW(L"windows", L"device", L",,,", wcBuffer, MAXBUFFERSIZE) <= 0) {
-						writeerror_w(L"Oletuskirjoitinta ei ole m‰‰ritelty", 0);
-						oletuskirjoitin = -1;
-						}
-					else {
-// Printer name precedes first "," character...
-						wcstok(wcBuffer, L",");
-
-// If given buffer too small, set required size and fail...
-						if (wcslen(wcBuffer) >= 120) {
-							writeerror_w(L"Oletuskirjoittimen nimi liian pitk‰ (yli 119 merkki‰)", 0);
-							oletuskirjoitin = -1;
-							}
-						else {
-							wcsncpy(PrinterName, wcBuffer, 119);
-							}
-						}
-					}
+			if (!GetDefaultPrinterW(PrinterName, &bufSz)) {
+				err = GetLastError();
+				if (err == ERROR_INSUFFICIENT_BUFFER)
+					writeerror_w(L"Oletuskirjoittimen nimi liian pitk‰ (yli 79 merkki‰)", 0);
+				else
+					writeerror_w(L"Oletuskirjoitinta ei ole m‰‰ritelty", 0);
+				oletuskirjoitin = -1;
 				}
 			if (!oletuskirjoitin)
 			oletuskirjoitin = 1;
