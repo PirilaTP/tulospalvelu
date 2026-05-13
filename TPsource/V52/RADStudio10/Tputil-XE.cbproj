@@ -561,9 +561,6 @@
         <CppCompile Include="..\tputilv2\wcscmpU.cpp">
             <BuildOrder>136</BuildOrder>
         </CppCompile>
-        <CppCompile Include="..\tputilv2\winversion.cpp">
-            <BuildOrder>111</BuildOrder>
-        </CppCompile>
         <CppCompile Include="..\tputilv2\wPageedit.cpp">
             <BuildOrder>128</BuildOrder>
         </CppCompile>
