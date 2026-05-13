@@ -211,7 +211,6 @@ wchar_t towupper2(const wchar_t ch);
 wchar_t towlower2(const wchar_t ch);
 wchar_t *wconcat(const wchar_t *s1, const wchar_t *s2, const wchar_t *s3 = NULL);
 int haeStrIx(const wchar_t *st, wchar_t *stArr[], int szArr);
-int WinVersion(void);
 void initmstimer(void);
 long mstimer(void);
 #ifndef _CONSOLE

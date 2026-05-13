@@ -14,15 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#if defined(__BORLANDC__)
-#pragma -K -a1
-#endif
-//#define TESTPRT
-#include <windows.h>
-
-// Returns 5 always - GetVersionEx was deprecated in Windows 8.1 and the software
-// requires at minimum Windows Vista. Win9x/NT4 paths (return 0 or 4) are unreachable.
-int WinVersion(void)
-   {
-   return 5;
-   }
+// WinVersion() has been removed. All callers used (WinVersion() > 4) ? 10 : 1000
+// which is always 10 on any supported Windows version (Vista+).
+// Call sites now use the literal value 10 directly.
