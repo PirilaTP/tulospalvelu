@@ -75,12 +75,15 @@ void getWinVersion(void)
 	BOOL bIsWow64 = FALSE;
 	LPFN_ISWOW64PROCESS fnIsWow64Process;
 	OSVERSIONINFOEX osvi;
-//	BOOL bIsWindowsXPorLater;
+	typedef LONG (WINAPI *RtlGetVersionFn)(OSVERSIONINFOEX *);
+	RtlGetVersionFn RtlGetVersion = (RtlGetVersionFn) GetProcAddress(
+		GetModuleHandle(L"ntdll.dll"), "RtlGetVersion");
 
 	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
 	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
 
-	GetVersionEx((OSVERSIONINFO *)&osvi);
+	if (RtlGetVersion)
+		RtlGetVersion(&osvi);
 	EnvData.WinMajorVersion = osvi.dwMajorVersion;
 	EnvData.WinMinorVersion = osvi.dwMinorVersion;
 	wcsncpy(EnvData.CSDVersion, osvi.szCSDVersion, sizeof(EnvData.CSDVersion)/2-1);
