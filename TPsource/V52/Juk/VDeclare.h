@@ -34,7 +34,6 @@ wchar_t *Build(void);
 wchar_t *VersioNo(void);
 int VersioInt(void);
 void setBrowserEmulation(void);
-void getWinVersion(void);
 
 wchar_t XMLhaetunnus(wchar_t *Nimi, wchar_t *Koodit, wchar_t **Nimet, int N);
 wchar_t *XMLhaeteksti(wchar_t Koodi, wchar_t *Koodit, wchar_t **Nimet);

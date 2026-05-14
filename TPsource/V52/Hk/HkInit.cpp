@@ -3459,7 +3459,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 //		}
    for (i = 0; i < 9; i++) if (!maalit[i]) maaliajat[i] = TMAALI0;
 	if (!UDPCliWait)
-		UDPCliWait = (WinVersion() > 4) ? 10 : 1000;
+		UDPCliWait = 10;
 	UDPsetCliWait(UDPCliWait);
 
 	if (ToimintaTila == 1) {
@@ -3662,8 +3662,6 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 		swprintf(lmsg, L"Ohjelma käynnistetty, klo %s", wkello());
 		wkirjloki(lmsg);
 		}
-
-	getWinVersion();
 
 #ifdef _CONSOLE
    initscreens();

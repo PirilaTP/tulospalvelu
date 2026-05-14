@@ -249,7 +249,6 @@
     <ClCompile Include="..\..\TpUtilV2\Vidint.cpp" />
     <ClCompile Include="..\..\TpUtilV2\VIRDRECT.cpp" />
     <ClCompile Include="..\..\TpUtilV2\Viwrrect.cpp" />
-    <ClCompile Include="..\..\TpUtilV2\winversion.cpp" />
     <ClCompile Include="..\..\TpUtilV2\WRITEERR.cpp" />
     <ClCompile Include="..\..\tputilv2\xmlparser.cpp" />
     <ClCompile Include="..\..\TpUtilV2\xml_put.cpp" />

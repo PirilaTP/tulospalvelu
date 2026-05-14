@@ -68,42 +68,6 @@ int VersioInt(void)
 	return((int)(100*_wtof(VERSIOKDI)));
 }
 
-typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
-
-void getWinVersion(void)
-{
-	BOOL bIsWow64 = FALSE;
-	LPFN_ISWOW64PROCESS fnIsWow64Process;
-	OSVERSIONINFOEX osvi;
-//	BOOL bIsWindowsXPorLater;
-
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-
-	GetVersionEx((OSVERSIONINFO *)&osvi);
-	EnvData.WinMajorVersion = osvi.dwMajorVersion;
-	EnvData.WinMinorVersion = osvi.dwMinorVersion;
-	wcsncpy(EnvData.CSDVersion, osvi.szCSDVersion, sizeof(EnvData.CSDVersion)/2-1);
-	EnvData.isWinServer = osvi.wProductType > 1;
-	fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(
-		GetModuleHandle(TEXT("kernel32")),"IsWow64Process");
-
-	if(NULL != fnIsWow64Process) {
-		if (!fnIsWow64Process(GetCurrentProcess(),&bIsWow64)) {
-			//handle error
-			}
-		}
-	EnvData.isWow64_32 = bIsWow64 != 0;
-
-	if (DeveloperMode && loki) {
-		wchar_t msg[400] = L"";
-		swprintf(msg, L"Windows Version %d.%d %s, Wow64Process: %s, Server: %s",
-			EnvData.WinMajorVersion, EnvData.WinMinorVersion, EnvData.CSDVersion,
-			EnvData.isWow64_32 ? L"Yes" : L"No", EnvData.isWinServer ? L"Yes" : L"No");
-		wkirjloki(msg);
-		}
-}
-
 int tm_date(int t)
 {
 	time_t tt;

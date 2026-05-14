@@ -33,15 +33,6 @@ int initcon(TCHAR *title)
   DWORD dwMode;
   CONSOLE_SCREEN_BUFFER_INFO csbi; /* used to get cursor position */
 
-  /* check if Win32s, if so, display notice and terminate */
-  if( GetVersion() & 0x80000000 && (GetVersion() & 0xFF) == 3)
-	{
-	MessageBoxW(NULL,
-		L"This application cannot run on Windows 3.1.\n"
-		L"This application will now terminate.",
-		L"Error: Windows NT Required to Run",  MB_OK );
-	return(1);
-    }
 
   /* Free the console and immediately allocate a new one. This is done so */
   /* that when debugging under ntsd, the application output will not be */

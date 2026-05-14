@@ -309,11 +309,6 @@ typedef struct {
 } localparamtp;
 
 typedef struct {
-	int WinMajorVersion;
-	int WinMinorVersion;
-	wchar_t CSDVersion[128];
-	bool isWow64_32;
-	bool isWinServer;
 	int IEVersio;
 	int IEEmul;
 	} envdatatp;
