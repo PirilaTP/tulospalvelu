@@ -2917,7 +2917,7 @@ int lah_tiedosto(wchar_t *tiednimi, int kielto, int flags)
 
 			for (wchar_t *p = WorkingDir+len; *p; p++)
 				if (p[1] == L'\\' || (p[1] == 0 && p[0] != L'\\'))
-					wcscat(st, L"..\\");
+					if (wcslen(st) + 3 < 200) wcscat(st, L"..\\");
 			if (st[0] && wcslen(st)+wcslen(tiednimi+len+1) < 200) {
 				wcscpy(st+wcslen(st), tiednimi+len+1);
 				wcscpy(tiednimi, st);

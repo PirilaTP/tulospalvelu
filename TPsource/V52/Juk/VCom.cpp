@@ -1035,7 +1035,7 @@ void lahetakaikkiTCP(int cn)
 			   continue;
 			if (vali > kilpparam.maxvaluku)
 				vali = 0;
-			sprintf(buf, "%s:%d:%d:%d:%s:%d:%s:%s:%ld:%ld:%c:%s\n", Sarjat[kilp.sarja].sarjanimi, kilp.kilpno,
+			snprintf(buf, sizeof(buf), "%s:%d:%d:%d:%s:%d:%s:%s:%ld:%ld:%c:%s\n", Sarjat[kilp.sarja].sarjanimi, kilp.kilpno,
 				os+1, vali%kilpparam.valuku, kilp.Seura(st1), kilp.joukkue, kilp.maa, kilp.Nimi(st, 70, os),
 			   tulos(&kilp, os, vali%kilpparam.valuku), osuustulos(&kilp, os, vali%kilpparam.valuku),
 			   kilp.Tark(os, 1), kilp.ostiet[os].hajonta);
