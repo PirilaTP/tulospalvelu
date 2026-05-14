@@ -47,7 +47,6 @@ wchar_t *Build(void);
 wchar_t *VersioNo(void);
 int VersioInt(void);
 void setBrowserEmulation(void);
-void getWinVersion(void);
 
 // Kilpailijatiedon funktioita
 

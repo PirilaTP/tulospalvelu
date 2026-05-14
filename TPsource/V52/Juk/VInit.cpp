@@ -2933,7 +2933,6 @@ int aloitus(int argc, wchar_t *argv[], wchar_t *cfgflnm)
 		swprintf(lmsg, L"Ohjelma käynnistetty, klo %s", wkello());
 		wkirjloki(lmsg);
 		}
-	getWinVersion();
 
    taustaon = 1;
    taustaThread = _beginthread(taustaThr, 20480, NULL);

@@ -3658,8 +3658,6 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 		wkirjloki(lmsg);
 		}
 
-	getWinVersion();
-
 #ifdef _CONSOLE
    initscreens();
    if (emitfl == 1) {
