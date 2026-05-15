@@ -7,6 +7,7 @@ Release
 *.opensdf
 *.stat
 __history
+__recovery
 Debug_Build
 Release_Build
 obj
