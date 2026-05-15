@@ -6804,7 +6804,7 @@ int autofile(void)
 		}
 // #ifdef EI_OLE
 	else {
-		wchar_t buf[100], *p, *p1;
+		wchar_t buf[100], *p, *p1, *ctx = NULL;
 		int nt;
 //		aftulparam.yksihtml = false;
 		for (int srj = -1;;) {
@@ -6814,16 +6814,16 @@ int autofile(void)
 					break;
 				if (aflst->ReadLine(buf, 98) == NULL)
 					continue;
-				p = wcstok(buf, L" ;\t\n");
+				p = wcstok(buf, L" ;\t\n", &ctx);
 				if (!p || (srj = haesarja_w(p, true)) < 0)
 					continue;
-				if ((p = wcstok(NULL, L" ;\t\n")) == 0)
+				if ((p = wcstok(NULL, L" ;\t\n", &ctx)) == 0)
 					continue;
 				aftulparam.osuus = _wtoi(p) - 1;
-				if ((p = wcstok(NULL, L" ;\t\n")) == 0)
+				if ((p = wcstok(NULL, L" ;\t\n", &ctx)) == 0)
 					continue;
 				aftulparam.piste = _wtoi(p);
-				p1 = wcstok(NULL, L" ;\t\n");
+				p1 = wcstok(NULL, L" ;\t\n", &ctx);
 				}
 			else {
 				srj++;
@@ -7247,7 +7247,7 @@ void haeseura(wchar_t *seura);
 void luepiirit(wchar_t *flname)
    {
    TextFl *piirifile;
-   wchar_t line[61], *p, *flnm0 = L"PIIRIT.LST";
+   wchar_t line[61], *p, *ctx = NULL, *flnm0 = L"PIIRIT.LST";
    INT k;
 
    piirifile = new TextFl(flname != NULL ? flname : flnm0, L"rt");
@@ -7257,7 +7257,7 @@ void luepiirit(wchar_t *flname)
 			break;
 		 if (line[wcslen(line)-1] == L'\n')
 			line[wcslen(line)-1] = 0;
-		 p = wcstok(line, L" \t");
+		 p = wcstok(line, L" \t", &ctx);
 		 if ((k = _wtoi(p)) == 0)
 			break;
 		 if (k >= piiriluku)
@@ -8224,7 +8224,7 @@ int seur_rata(int sarja, tulostusparamtp *tulprm)
    static int init;
    static hajtp *haj;
    hajtp *haj0;
-   wchar_t line[20], *p;
+   wchar_t line[20], *p, *ctx = NULL;
    int srj=0, os=0;
    static bool tiedostosta = false;
 
@@ -8274,9 +8274,9 @@ int seur_rata(int sarja, tulostusparamtp *tulprm)
 			}
 		 else {
 			haj = (hajtp *) calloc(sizeof(hajtp), 1);
-			p = wcstok(line, L" \t");
+			p = wcstok(line, L" \t", &ctx);
 			wcsncpy(haj->rata, p, HAJONTA);
-			p = wcstok(NULL, L" \t");
+			p = wcstok(NULL, L" \t", &ctx);
 			if (p)
 				wcsncpy(haj->ratapit, p, 5);
 			if (!haj0)
