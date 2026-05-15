@@ -425,6 +425,7 @@ static int tulkxml(wchar_t *line)
 
 int TFormRadat::importradat(void)
 	{
+	wchar_t *ctx = NULL;
 	TextFl *rata_file;
 	bool addvariation = false, leimat = false;
 	static INT enn = -1, nmsar = 1, rastisar = 6, tiedtype = 0;
@@ -505,21 +506,21 @@ int TFormRadat::importradat(void)
 		 {
 		 memset(koodi, 0, sizeof(koodi));
 		 if (blerotin) {
-			p = wcstok(line, L" \n");
+			p = wcstok(line, L" \n", &ctx);
 			if (!p)
 			   continue;
 			for (i = 0; p && i < nmsar; i++)
-			   p = wcstok(NULL, L" \n");
+			   p = wcstok(NULL, L" \n", &ctx);
 			if (!p)
 			   continue;
 			wcsncpy(snimi[0], p, 20);
 			snimi[0][20] = 0;
 			nnimi = 1;
 			for (; p && i < rastisar; i++)
-			   p = wcstok(NULL, L" \n");
+			   p = wcstok(NULL, L" \n", &ctx);
 			for (i = 0; p && i < MAXNRASTI; i++) {
 			   koodi[i] = _wtoi(p);
-			   p = wcstok(NULL, L" \n");
+			   p = wcstok(NULL, L" \n", &ctx);
 			   }
 			}
 		 else {
@@ -627,6 +628,7 @@ int TFormRadat::importradat(void)
 
 void TFormRadat::lue_radat(wchar_t *fname)
    {
+	wchar_t *ctx = NULL;
    TextFl *rata_file;
    int i, j, ir, tn;
    wchar_t ch, line[300], msg[80], *p;
@@ -654,19 +656,19 @@ void TFormRadat::lue_radat(wchar_t *fname)
 	memset(rata_re, 0, sizeof(ratatp)*MAXRATA);
 	for (nrata_re = 0; ; nrata_re++) {
 		if (rata_file->ReadLine(line, 298) == NULL) break;
-	  p = wcstok(line, L" \t");
+	  p = wcstok(line, L" \t", &ctx);
 	  wcsncpy(rata_re[nrata_re].tunnus, p, 10);
-	  p = wcstok(NULL, L" \t");
+	  p = wcstok(NULL, L" \t", &ctx);
 	  if (p) {
 		 rata_re[nrata_re].ennakko = _wtoi(p);
-		 p = wcstok(NULL, L" \t");
+		 p = wcstok(NULL, L" \t", &ctx);
 		 if (p)
 			rata_re[nrata_re].maalilaji = _wtoi(p);
 		 }
 	  ir = 0;
 	  for (i = 0; i < 2; i++) {
 		 if (rata_file->ReadLine(line, 298) == NULL) goto esc;
-		 p = wcstok(line, L" \t");
+		 p = wcstok(line, L" \t", &ctx);
 		 for (j = 0; j < MAXNLEIMA; j++) {
 			if (!p) break;
 			*p = towupper(*p);
@@ -695,7 +697,7 @@ void TFormRadat::lue_radat(wchar_t *fname)
 			   rata_re[nrata_re].rastikoodi[ir] = tn;
 			   ir++;
 			   }
-			p = wcstok(NULL, L" \t");
+			p = wcstok(NULL, L" \t", &ctx);
 			}
 		 }
 	  rata_re[nrata_re].rastiluku = ir;

@@ -285,6 +285,7 @@ static void nimio(INT clear)
 
 static int luevaihevalinta(void)
 {
+	wchar_t *ctx = NULL;
 	TextFl *cfgfile;
 	wchar_t line[80], *p, cfgflnm[] = L"vaihevalinta.cfg";
 	int i_pv = 0;
@@ -293,9 +294,9 @@ static int luevaihevalinta(void)
 	if (cfgfile->IsOpen()) {
 		while (!cfgfile->Feof()) {
 			cfgfile->ReadLine(line, 78);
-			if ((p = wcstok(line, L"= \n")) != NULL) {
+			if ((p = wcstok(line, L"= \n", &ctx)) != NULL) {
 				if (wcscmpU(p, L"VAIHE") == 0 || wcscmpU(p, L"PÄIVÄ") == 0) {
-					if ((p = wcstok(NULL, L"= \n")) != NULL) {
+					if ((p = wcstok(NULL, L"= \n", &ctx)) != NULL) {
 						i_pv = _wtoi(p) - 1;
 						}
 					break;
@@ -322,6 +323,7 @@ void kirjvaihevalinta(void)
 
 static INT readcfg(INT *nf, wchar_t *argptr[], int kierros)
    {
+	wchar_t *ctx = NULL;
    TextFl *cfgfile;
 	wchar_t line[80],*p, *cfgflnm;
    INT l;
@@ -355,8 +357,8 @@ static INT readcfg(INT *nf, wchar_t *argptr[], int kierros)
 		 if (line[(l=wcslen(line))-1] == L'\n') line[--l] = 0;
 			if (!line[0] || line[0] == L';' || (line[0] == L'/' && line[1] == L'/'))
 			continue;
-//         p = wcstok(line, L" ");
-		 p = wcstok(line, L";");
+//         p = wcstok(line, L" ", &ctx);
+		 p = wcstok(line, L";", &ctx);
 		 elimwbl(p);
 		 l = wcslen(p);
 			if (l == 0) continue;
@@ -382,6 +384,7 @@ else {
 
 static void getipparam(INT ny, wchar_t *str)
 	{
+	wchar_t *ctx = NULL;
 	wchar_t *p;
 	int k;
 
@@ -399,14 +402,14 @@ static void getipparam(INT ny, wchar_t *str)
 			}
 		}
 	if (wcswcind(*p, L":,/=") >= 0) {
-		p = wcstok(p+1, L":,/=");
+		p = wcstok(p+1, L":,/=", &ctx);
 		if (p && (k = _wtoi(p)) >= 0) {
 			  if (k)
 					ipparam[ny].srvport = (USHORT) k;
-			  p = wcstok(NULL, L":,/=");
+			  p = wcstok(NULL, L":,/=", &ctx);
 			  if (p) {
 				wcsncpy(ipparam[ny].destaddr, p, 63);
-				  p = wcstok(NULL, L":,/=");
+				  p = wcstok(NULL, L":,/=", &ctx);
 				  if (p && (k = _wtoi(p)) >= 0) {
 					  if (!k) {
 						 if (*p == L'Y') {
@@ -428,6 +431,7 @@ static void getipparam(INT ny, wchar_t *str)
 
  static void getudpstreamipparam(INT ny, wchar_t *str)
     {
+	wchar_t *ctx = NULL;
 	wchar_t *p;
 	int k;
 
@@ -437,7 +441,7 @@ static void getipparam(INT ny, wchar_t *str)
 		ipparam[ny].iptype = ipUDPSTREAM;
 		portparam[ny] = -1;
 		if (wcswcind(*p, L":,/=") >= 0) {
-			p = wcstok(p+1, L":,/=");
+			p = wcstok(p+1, L":,/=", &ctx);
 			if (p && (k = _wtoi(p)) > 0) {
 				ipparam[ny].srvport = (USHORT) k;
 				}
@@ -447,6 +451,7 @@ static void getipparam(INT ny, wchar_t *str)
 
  static void gettauluipparam(int ny, wchar_t *str)
 	{
+	wchar_t *ctx = NULL;
 	wchar_t *p;
 
 	if (ny < MAX_PORTTI) {
@@ -454,9 +459,9 @@ static void getipparam(INT ny, wchar_t *str)
 		ipparam[ny].iptype = ipUDPBOTH;
 		ipparam[ny].destport = 51702;
 		p = str;
-		if (wcswcind(*str, L":,/=") >= 0 && (p = wcstok(str+1, L":")) != NULL) {
+		if (wcswcind(*str, L":,/=") >= 0 && (p = wcstok(str+1, L":", &ctx)) != NULL) {
 			wcsncpy(ipparam[ny].destaddr, p, 63);
-			if ((p = wcstok(NULL, L":")) != NULL && _wtoi(p) > 100)
+			if ((p = wcstok(NULL, L":", &ctx)) != NULL && _wtoi(p) > 100)
 				ipparam[ny].destport = _wtoi(p);
 			}
 		}
@@ -465,6 +470,7 @@ static void getipparam(INT ny, wchar_t *str)
 #if defined(TCPLUKIJA) || defined(TCPSIIRTO) || defined(LAJUNEN)
 static void gettcpipparam(INT ny, wchar_t *str, int server)
     {
+	wchar_t *ctx = NULL;
     wchar_t *p;
     int k;
 
@@ -474,7 +480,7 @@ static void gettcpipparam(INT ny, wchar_t *str, int server)
        return;
        }
 	 if (wcswcind(*p, L":,/=") >= 0) {
-		p = wcstok(p+1, L":,/=");
+		p = wcstok(p+1, L":,/=", &ctx);
 		if (!p)
             return;
 		if (server <= 0) {
@@ -491,7 +497,7 @@ static void gettcpipparam(INT ny, wchar_t *str, int server)
 				}
 			ipparam[ny].iptype = ipTCPCLIENT;
 			wcsncpy(ipparam[ny].destaddr, p, 63);
-		    p = wcstok(NULL, L":,/=");
+		    p = wcstok(NULL, L":,/=", &ctx);
 			if (p && (k = _wtoi(p)) > 0)
 				ipparam[ny].destport = (USHORT) k;
 			}
@@ -542,6 +548,7 @@ wchar_t *aptr;
 
 static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 	{
+	wchar_t *ctx = NULL;
 	wchar_t **fld, fldn[90];
 	wchar_t *argptr[200];
 	wchar_t *p;
@@ -644,16 +651,16 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 					continue;
 					}
 			 if(!wmemcmpU(fldn, L"VÄRIT=", 6)) {
-				p = wcstok(fldn+6,L"/");
+				p = wcstok(fldn+6,L"/", &ctx);
 				if (p) {
 					norm_fore = _wtoi(p);
-					p = wcstok(NULL,L"/");
+					p = wcstok(NULL,L"/", &ctx);
 					if (p) {
 						norm_back = _wtoi(p);
-						p = wcstok(NULL,L"/");
+						p = wcstok(NULL,L"/", &ctx);
 						if (p) {
 							inv_fore = _wtoi(p);
-							p = wcstok(NULL,L"/");
+							p = wcstok(NULL,L"/", &ctx);
 							if (p) {
 								inv_back = _wtoi(p);
 								}
@@ -915,12 +922,12 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			hptarra = 1;
 			k = 1;
 			rtarra = 1;
-			if ((p = wcstok(fldn+8, L"/,")) != 0)
+			if ((p = wcstok(fldn+8, L"/,", &ctx)) != 0)
 			   rtarra = _wtoi(p);
-			if ((p = wcstok(NULL, L"/,")) != 0)
+			if ((p = wcstok(NULL, L"/,", &ctx)) != 0)
 			   k = _wtoi(p);
 			ntarra = k*rtarra;
-			if ((p = wcstok(NULL, L"/,")) != 0)
+			if ((p = wcstok(NULL, L"/,", &ctx)) != 0)
 			   ftarra = _wtoi(p);
 			continue;
 			}
@@ -968,29 +975,29 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 #ifdef AUTOFILE
 		 if (!wmemcmpU(fldn, L"HTML=", 5) || !wmemcmpU(fldn, L"MHTML=", 6) || !wmemcmpU(fldn, L"XML=", 4)) {
 			wchar_t *p1;
-			p = wcstok(fldn, L"=");
+			p = wcstok(fldn, L"=", &ctx);
 			aftulparam.kohde = *p;
-			if ((p = wcstok(NULL, L",/")) == NULL)
+			if ((p = wcstok(NULL, L",/", &ctx)) == NULL)
 				continue;
 			for (p1 = p; isdigit(*p1); p1++);
 			if (p1 > p && *p1 == 0) {
 				aftulparam.yksihtml = 0;
 				autofileparam.afvali = SEK * _wtoi(p);
-				p = wcstok(NULL, L",/");
+				p = wcstok(NULL, L",/", &ctx);
 				}
 			else {
 				wcscpy(autofileparam.afname, p);
-				if ((p = wcstok(NULL, L",/")) == NULL || (ny = _wtoi(p)) == 0) {
+				if ((p = wcstok(NULL, L",/", &ctx)) == NULL || (ny = _wtoi(p)) == 0) {
 				   if (!autofileparam.afvali) autofileparam.afvali = (int) (60 * SEK);
 				   }
 				else
 				   autofileparam.afvali = (int) (ny * SEK);
 				}
-			if (p && *p != L'M' && (*p == L'S' || ((p = wcstok(NULL, L",/")) != NULL) && *p == L'S')) {
+			if (p && *p != L'M' && (*p == L'S' || ((p = wcstok(NULL, L",/", &ctx)) != NULL) && *p == L'S')) {
 			   aftulparam.yksihtml = 0;
 			   autofileparam.vainMuutt = true;
 			   }
-			if (p && (*p == L'M' || ((p = wcstok(NULL, L",/")) != NULL) && *p == L'M')) {
+			if (p && (*p == L'M' || ((p = wcstok(NULL, L",/", &ctx)) != NULL) && *p == L'M')) {
 			   aftulparam.vaihelkm = 2;
 			   }
 			continue;
@@ -1200,19 +1207,19 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				continue;
 				}
          if (!wmemcmpU(fldn, L"UDPVIIVEET=",11)) {
-			p = wcstok(fldn+11, L"/;,\n");
+			p = wcstok(fldn+11, L"/;,\n", &ctx);
 			if (p) {
                if ((ny = _wtoi(p)) > 3)
 				  UDPviive_lah = ny;
-               p = wcstok(NULL, L"/;,\n");
+               p = wcstok(NULL, L"/;,\n", &ctx);
                if (p) {
                   if ((ny = _wtoi(p)) > 3)
                      UDPviive_ts = ny;
-				  p = wcstok(NULL, L"/;,\n");
+				  p = wcstok(NULL, L"/;,\n", &ctx);
 				  if (p) {
                      if ((ny = _wtoi(p)) > 3)
 	                     UDPviive_lue = ny;
-					 p = wcstok(NULL, L"/;,\n");
+					 p = wcstok(NULL, L"/;,\n", &ctx);
 			         if (p) {
 				        if ((ny = _wtoi(p)) > 3)
 					  		UDPCliWait = ny;
@@ -1224,13 +1231,13 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
             }
 		 if (!wmemcmpU(fldn, L"TCPVIIVEET",10) && (pos = 10) != 0 &&
 			(ny = yhteys_no(fldn, &pos)) != 0) {
-			p = wcstok(fldn+pos+1, L"/;,\n");
+			p = wcstok(fldn+pos+1, L"/;,\n", &ctx);
             if (p) {
 				TCPviive_lah[ny-1] = _wtoi(p);
-				p = wcstok(NULL, L"/;,\n");
+				p = wcstok(NULL, L"/;,\n", &ctx);
 				if (p) {
 		            TCPviive_nak[ny-1] = _wtoi(p);
-					p = wcstok(NULL, L"/;,\n");
+					p = wcstok(NULL, L"/;,\n", &ctx);
 					if (p) {
 						TCPviive_pak[ny-1] = _wtoi(p);
 						}
@@ -1313,7 +1320,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 		 if (!wmemcmpU(fldn, L"RTNM",4) && (pos = 4) != 0 &&
 			(ny = yhteys_no(fldn, &pos)) != 0) {
 			regnly[ny-1] = LID_RTNM;
-			if ((p = wcstok(fldn, L"=")) != NULL) {
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
 				p = fldn+wcslen(p);
 				if (!wmemcmpU(p+1, L"UDP", 3))
 					gettauluipparam(cn_regnly[ny-1], p+4);
@@ -1324,11 +1331,11 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			(ny = yhteys_no(fldn, &pos)) != 0) {
 //			cpower = 1;
 			regnly[ny-1] = 23;
-			if ((p = wcstok(fldn, L"=")) != NULL) {
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
 				p = fldn+wcslen(p);
 				if (!wmemcmpU(p+1, L"TCP", 3))
 					gettcpipparam(cn_regnly[ny-1], p+4, 0);
-				else if (p[1] >= L'0' && p[1] <= L'9' &&(p = wcstok(NULL,L":,-/")) != NULL)
+				else if (p[1] >= L'0' && p[1] <= L'9' &&(p = wcstok(NULL,L":,-/", &ctx)) != NULL)
 					port_regnly[ny-1] = _wtoi(p);
 				}
             continue;
@@ -1457,9 +1464,9 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			}
 #ifdef _CONSOLE
 		 if(!wmemcmpU(fldn, L"NÄPPÄIN=", 8)) {
-			if ((p = wcstok(fldn+8, L",/")) == NULL) continue;
+			if ((p = wcstok(fldn+8, L",/", &ctx)) == NULL) continue;
 			y = _wtoi(p);
-				if ((p = wcstok(NULL, L",/")) == NULL || (ny = _wtoi(p)) == 0)
+				if ((p = wcstok(NULL, L",/", &ctx)) == NULL || (ny = _wtoi(p)) == 0)
 			   continue;
 			ajanottofl = 1;
 			keytab[0].ch = (char) y;
@@ -1615,13 +1622,13 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
                regnly[0] = LID_RTR;
                if (fldn[6] == L'2') regnly[0] = LID_RTR2;
                port_regnly[0] = 1;
-               if ((p = wcstok(fldn, L"=")) != NULL) {
-						if ((p = wcstok(NULL,L":,-/")) != NULL) {
+               if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+						if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
                      port_regnly[0] = _wtoi(p);
-							if ((p = wcstok(NULL,L":,-/")) != NULL) {
+							if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 						od_regnly = _wtoi(p)*2;
 						if (od_regnly < 4) od_regnly = 10;
-                        if ((p = wcstok(NULL,L":,-/")) != NULL) {
+                        if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 						   maxero = _wtol(p) * 10;
 						   if (maxero < 20) maxero = 600;
                            }
@@ -1851,15 +1858,15 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			if (regnly[rno]) {
 				port_regnly[rno] = 1;
 				ajanottofl = 1;
-				if ((p = wcstok(fldn, L"=")) != NULL) {
+				if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
 					p = fldn+wcslen(p);
 					if (!wmemcmpU(p+1, L"TCP", 3)) {
 						 gettcpipparam(MAX_LAHPORTTI+rno, p+4, 0);
 						  continue;
 						  }
-					if (p[1] >= L'0' && p[1] <= L'9' &&(p = wcstok(NULL,L":,-/")) != NULL) {
+					if (p[1] >= L'0' && p[1] <= L'9' &&(p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 						port_regnly[rno] = _wtoi(p);
-						if ((p = wcstok(NULL,L":,-/")) != NULL) {
+						if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 							maxero = _wtol(p) * 10L;
 							if (maxero == 0) maxero = 2000000L;
 							if (maxero < 20) maxero = 600;
@@ -1907,14 +1914,14 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
          if( !wmemcmpU(fldn, L"VAVUOROT",5)) {
 			va_vuoro = 1;
 			if (fldn[8] == L'=') {
-				p = wcstok(fldn+9, L"/");
+				p = wcstok(fldn+9, L"/", &ctx);
 				if (p) {
 					samapisteraja = _wtoi(p) * SEK;
-					if ((p = wcstok(NULL, L"/")) != NULL) {
+					if ((p = wcstok(NULL, L"/", &ctx)) != NULL) {
 						vavuoro_ala = _wtoi(p);
 						if (vavuoro_ala < 1)
 							vavuoro_ala = 1;
-						if ((p = wcstok(NULL, L"/")) != NULL)
+						if ((p = wcstok(NULL, L"/", &ctx)) != NULL)
 							vavuoro_yla = _wtoi(p);
 						}
 					}
@@ -2010,7 +2017,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				p2 = wcsstr(p, L"/");
 				if (p2)
 					*p2 = 0;
-				p1 = wcstok(p, L",;");
+				p1 = wcstok(p, L",;", &ctx);
 				while (p1 && p1[0]) {
 					if (p1[1] == 0) {
 					   if ((nn = wcswcind(*p1, ch_piste)) >= 0) {
@@ -2026,7 +2033,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 					y++;
 					if (y >= sizeof(aika_tunnus[0])/sizeof(aika_tunnus[0][0]))
 						break;
-					p1 = wcstok(NULL, L",;");
+					p1 = wcstok(NULL, L",;", &ctx);
 					}
 				if (p2) {
 					*p2 = L'/';
@@ -2123,8 +2130,8 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				continue;
 				}
 #endif
-			if ((p = wcstok(fldn, L"=")) != NULL) {
-			   if ((p = wcstok(NULL,L":,-/")) != NULL) {
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+			   if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 				  port_regnly[ny] = _wtoi(p);
 				  }
 			   }
@@ -2236,10 +2243,10 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			regnly[0] = LID_EMITKELLO;
 			port_regnly[0] = 1;
 				ajanottofl = 1;
-			if ((p = wcstok(fldn, L"=")) != NULL) {
-			   if ((p = wcstok(NULL,L":,-/")) != NULL) {
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+			   if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 				  port_regnly[0] = _wtoi(p);
-				  if ((p = wcstok(NULL,L":,-/")) != NULL) {
+				  if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 					 od_regnly = _wtoi(p)*2;
 					 if (od_regnly < 4) od_regnly = 10;
 					 }
@@ -2277,10 +2284,10 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				continue;
 				}
 #endif
-			if ((p = wcstok(fldn, L"=")) != NULL) {
-			   if ((p = wcstok(NULL,L":,-/")) != NULL) {
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+			   if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 				  port_regnly[ny] = _wtoi(p);
-				  if ((p = wcstok(NULL,L":,-/")) != NULL) {
+				  if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 					if (*p == L'U')
 						usb_regnly[ny] = 1;
 					 }
@@ -2305,10 +2312,10 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				if (ajanottofl == -1)
 					ajanottofl = 0;
 				emitfl = 1;
-				if ((p = wcstok(fldn, L"=")) != NULL) {
-					if ((p = wcstok(NULL,L":,-/")) != NULL) {
+				if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+					if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 						port_regnly[ny] = _wtoi(p);
-						if ((p = wcstok(NULL,L":,-/")) != NULL) {
+						if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 							if (*p == L'U')
 								usb_regnly[ny] = 1;
 							if (*p == L'C')
@@ -2342,9 +2349,9 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				lahdepistehaku = 1;
 				if (fldn[wcslen(fldn) - 1] != L'L')
 					eTParam.eThaku = 1;
-				if ((p = wcstok(fldn, L"=")) != NULL) {
+				if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
 					y = 0;
-					while ((p = wcstok(NULL, L":,-/")) != NULL) {
+					while ((p = wcstok(NULL, L":,-/", &ctx)) != NULL) {
 						if (y < sizeof(eTParam.eTserial) / sizeof(eTParam.eTserial[0]))
 							eTParam.eTserial[y++] = _wtoi(p);
 					}
@@ -2363,9 +2370,9 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				lahdepistehaku = 1;
 				if (fldn[wcslen(fldn)-1] != L'L')
 					eTParam.eThaku = 1;
-				if ((p = wcstok(fldn, L"=")) != NULL) {
+				if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
 						y = 0;
-				   while ((p = wcstok(NULL,L":,-/")) != NULL) {
+				   while ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 					  if (y < sizeof(eTParam.eTserial)/sizeof(eTParam.eTserial[0]))
 								eTParam.eTserial[y++] = _wtoi(p);
 					  }
@@ -2409,9 +2416,9 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				continue;
 				}
 			if (!wmemcmpU(fldn, L"ETHOST=",7)) {
-				if ((p = wcstok(fldn+7, L":")) != NULL) {
+				if ((p = wcstok(fldn+7, L":", &ctx)) != NULL) {
 					wcsncpy(eTParam.eThost, p, sizeof(eTParam.eThost)/2-1);
-					if ((p = wcstok(NULL, L":")) != NULL)
+					if ((p = wcstok(NULL, L":", &ctx)) != NULL)
 						eTParam.eTport = _wtoi(p);
 					}
 				continue;
@@ -2426,8 +2433,8 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			if (ajanottofl == -1)
 			   ajanottofl = 0;
 			emitfl = 1;
-			if ((p = wcstok(fldn, L"=")) != NULL) {
-			   if ((p = wcstok(NULL,L":,-/")) != NULL) {
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+			   if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 					if (*p == L'T')
 						port_regnly[ny] = 999;
 					else
@@ -2452,8 +2459,8 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				continue;
 				}
 #endif
-			if ((p = wcstok(fldn, L"=")) != NULL) {
-			   if ((p = wcstok(NULL,L":,-/")) != NULL) {
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+			   if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 				  port_regnly[ny] = _wtoi(p);
 				  }
 			   }
@@ -2466,16 +2473,16 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			continue;
 			}
 		 if (!wmemcmpU(fldn, L"EMITVASIVU",10)) {
-			if ((p = wcstok(fldn, L"=")) != NULL) {
-					if ((p = wcstok(NULL,L":,/")) != NULL) {
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+					if ((p = wcstok(NULL,L":,/", &ctx)) != NULL) {
 						valinelendef = _wtoi(p);
 						if (valinelendef)
 							valinelen = valinelendef;
-				   if ((p = wcstok(NULL,L":,/")) != NULL) {
+				   if ((p = wcstok(NULL,L":,/", &ctx)) != NULL) {
 							vapagelendef = _wtoi(p);
 							if (vapagelendef)
 								vapagelen = vapagelendef;
-							if ((p = wcstok(NULL,L":,/")) != NULL)
+							if ((p = wcstok(NULL,L":,/", &ctx)) != NULL)
 								vapageskip = _wtoi(p);
 								if (vapageskip)
 									vapagelen -= vapageskip;
@@ -2485,8 +2492,8 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
             continue;
             }
          if( !wmemcmpU(fldn, L"TARKRAPOHITA",10)) {
-			if ((p = wcstok(fldn, L"=")) != NULL) {
-               if ((p = wcstok(NULL,L":,/")) != NULL) {
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+               if ((p = wcstok(NULL,L":,/", &ctx)) != NULL) {
 						tarkrappageskip = _wtoi(p);
 						}
 					}
@@ -2740,6 +2747,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 
 static void luetlskertoimet(void)
 	{
+	wchar_t *ctx = NULL;
 	TextFl *kfl;
 	wchar_t s[100], *p;
 	int i_pv, k, j, srj;
@@ -2758,15 +2766,15 @@ static void luetlskertoimet(void)
 	if (kfl->IsOpen()) {
 		while (!kfl->Feof()) {
 			kfl->ReadLine(s, 99);
-			if ((p = wcstok(s, L" ,;\t\n")) != 0) {
+			if ((p = wcstok(s, L" ,;\t\n", &ctx)) != 0) {
 				upcasewstr(s);
 				elimwbl(s);
 				j = 1;
-				if (s[0] && (p = wcstok(NULL, L" ,;\t\n")) != 0) {
+				if (s[0] && (p = wcstok(NULL, L" ,;\t\n", &ctx)) != 0) {
 					i_pv = _wtoi(p) - 1;
-					if (i_pv >= 0 && i_pv < kilpparam.n_pv_akt && (p = wcstok(NULL, L" ,;\t\n")) != 0) {
+					if (i_pv >= 0 && i_pv < kilpparam.n_pv_akt && (p = wcstok(NULL, L" ,;\t\n", &ctx)) != 0) {
 						k = _wtoi(p);
-						if ((p = wcstok(NULL, L" ,;\t\n")) != 0)
+						if ((p = wcstok(NULL, L" ,;\t\n", &ctx)) != 0)
 							j = _wtoi(p);
 						if (k < 1)
 							k = 1;
@@ -3042,6 +3050,7 @@ korjval:
 
 int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 {
+	wchar_t *ctx = NULL;
 	INT  y,bd,i,nc, er = 0;
 	wchar_t prs[100], *p;
 	char cst[102];
@@ -3177,7 +3186,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			if( portparam[nc] != 0) {
 				portti[nc] = portparam[nc];
 				if (portti[nc] > 0) {
-					p = wcstok(baudst[nc], L",:;");
+					p = wcstok(baudst[nc], L",:;", &ctx);
 					if (p && (i = _wtoi(p)) > 1000) {
 						baud[nc] = 12;
 						bd = 220000;
@@ -3188,15 +3197,15 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 							else
 								bd = bd/2;
 							}
-						p = wcstok(NULL, L",:;");
+						p = wcstok(NULL, L",:;", &ctx);
 						if (p && *p) {
 							pty[nc] = (char) towlower(*p);
 							}
-						p = wcstok(NULL, L",:;");
+						p = wcstok(NULL, L",:;", &ctx);
 						if (p && *p) {
 							combits[nc] = _wtoi(p);
 							}
-						p = wcstok(NULL, L",:;");
+						p = wcstok(NULL, L",:;", &ctx);
 						if (p && *p) {
 							stopbits[nc] = _wtoi(p);
 							}

@@ -314,6 +314,7 @@ static int nyhtjono;
 
 void lueyhteysjonot(void)
 {
+	wchar_t *ctx = NULL;
 	wchar_t line[100], *p, filenm[] = L"yhtjonot.txt";
 	TextFl *yhtfile;
 
@@ -322,16 +323,16 @@ void lueyhteysjonot(void)
 	if (yhtfile->IsOpen()) {
 		while (!yhtfile->Feof() && nyhtjono < 4*MAXJONO) {
 			if (yhtfile->ReadLine(line, sizeof(line)/2-1) != NULL) {
-				p = wcstok(line, L" ,;\t\n");
+				p = wcstok(line, L" ,;\t\n", &ctx);
 				if (p) {
 					if ((yhtj[nyhtjono].cn = _wtoi(p)) > 0)
-						p = wcstok(NULL, L" ,;\t\n");
+						p = wcstok(NULL, L" ,;\t\n", &ctx);
 					else
 						p = NULL;
 					}
 				if (p) {
 					if ((yhtj[nyhtjono].cnino = _wtoi(p)) > 0)
-						p = wcstok(NULL, L" ,;\t\n");
+						p = wcstok(NULL, L" ,;\t\n", &ctx);
 					else
 						p = NULL;
 					}
@@ -435,19 +436,20 @@ __fastcall seuraTieto::~seuraTieto(void)
 //---------------------------------------------------------------------------
 int seuraTieto::tulkRivi(wchar_t *iBuf, wchar_t *erotin, int jarj, bool maakoodit)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *p, Buf[201];
 
 	wcsncpy(Buf, iBuf, 200);
 	Buf[200] = 0;
-	p = wcstok(Buf, erotin);
+	p = wcstok(Buf, erotin, &ctx);
 	if (p) {
 		piiri =  _wtoi(p);
-		p = wcstok(NULL, erotin);
+		p = wcstok(NULL, erotin, &ctx);
 		}
 	if (maakoodit) {
 		if (p) {
 			wcsncpy(maa, p, 3);
-			p = wcstok(NULL, erotin);
+			p = wcstok(NULL, erotin, &ctx);
 			}
 		}
 	if (p) {

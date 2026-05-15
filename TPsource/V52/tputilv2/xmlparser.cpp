@@ -165,6 +165,7 @@ xml_tree::~xml_tree(void)
 
 int xml_node::putXmlNodeinfo(wchar_t *ln)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *p, *pend, *p1, buf[200];
 	int npar = 0;
 
@@ -174,7 +175,7 @@ int xml_node::putXmlNodeinfo(wchar_t *ln)
 	for (p = ln; *p; p++)
 		if (*p == L'=')
 			npar++;
-	p = wcstok(ln, L" \t");
+	p = wcstok(ln, L" \t", &ctx);
 	if (p) {
 		wcsncpy(tag, p, MAXXMLTAGLEN);
 		nparam = npar;
@@ -214,6 +215,7 @@ int xml_node::putXmlNodeinfo(wchar_t *ln)
 
 int xml_node::interpretXmlLine(wchar_t *linein, wchar_t *ptag)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *p1, *p2, *p3;
 	int type = 0;
 	static wchar_t line[2000];
@@ -263,7 +265,7 @@ int xml_node::interpretXmlLine(wchar_t *linein, wchar_t *ptag)
 	// Etsit‰‰n sulkevaa tagia
 
 	if ((p1 = wcsstr(p2+1, L"<")) != NULL && p1[1] == L'/') {
-		p3 = wcstok(p1+2, L" \t>");
+		p3 = wcstok(p1+2, L" \t>", &ctx);
 		wcsncpy(ptag, p3, MAXXMLTAGLEN+1);
 		if (type == 0) {
 			memset(line, 0, sizeof(line));

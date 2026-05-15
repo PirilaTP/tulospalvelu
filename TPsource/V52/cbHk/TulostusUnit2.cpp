@@ -65,6 +65,7 @@ void __fastcall TTulosteForm::TabSheetKirjoitinEnter(TObject *Sender)
 
 void TTulosteForm::enumPrinters(TComboBox *CBkirj)
 {
+	wchar_t *ctx = NULL;
    PRINTER_INFO_1 PrinterEnum[400];
    wchar_t wPrinterName[120];
    DWORD cbNeeded, cReturned, cLisa;
@@ -131,7 +132,7 @@ void TTulosteForm::enumPrinters(TComboBox *CBkirj)
 		 // String will be in form L"printername,drivername,portname".
 			if (!GetProfileStringW(L"windows", L"device", L",,,", wcBuffer, MAXBUFFERSIZE) <= 0) {
 			   // Printer name precedes first L"," character...
-			   wcstok(wcBuffer, L",");
+			   wcstok(wcBuffer, L",", &ctx);
 
 			   // If given buffer too small, set required size and fail...
 			   if ((DWORD)wcslen(wcBuffer) >= 120) {
@@ -307,6 +308,7 @@ Joukkuetul (J)
 
 void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 {
+	wchar_t *ctx = NULL;
 	int alaraja = 0, ylaraja = 999999, KohdeIndex, SisaltoIndex, err = 0;
 	int RiviLuku = 0, kopioita = 1;
 	UINT32 Options = 0, Options2 = 0;
@@ -442,7 +444,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 					wchar_t ln[100], *p;
 					wcsncpy(ln, EditLahdot->Text.c_str(), 99);
 					ln[99] = 0;
-					p = wcstok(ln, L" ';/");
+					p = wcstok(ln, L" ';/", &ctx);
 					while (p) {
 						int i;
 						if ((i = _wtoi(p)) > 0) {
@@ -454,7 +456,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 								break;
 								}
 							}
-						p = wcstok(NULL, L" ';/");
+						p = wcstok(NULL, L" ';/", &ctx);
 						}
 					}
 				}
@@ -551,7 +553,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 						break;
 					}
 				wcsncpy(buf, EdtPistelista->Text.c_str(), sizeof(buf)/2-1);
-				p = wcstok(buf, L" ,;");
+				p = wcstok(buf, L" ,;", &ctx);
 				for (int i = 0; i < VALUKU+2 && p != NULL;) {
 					if (towupper(*p) == L'L')
 						PisteLista[i] = 1;
@@ -563,7 +565,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 						PisteLista[i] = _wtoi(p)+2;
 					if (PisteLista[i])
 						i++;
-					p = wcstok(NULL, L" ,");
+					p = wcstok(NULL, L" ,", &ctx);
 					}
 				if (PisteLista[0] == 0)
 					break;
@@ -625,7 +627,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 					}
 				memset(St, 0, sizeof(St));
 				wcsncpy(St, EdtIkasarjat->Text.UpperCase().c_str(), sizeof(St)/2-1);
-				p = wcstok(St, L" ,;/");
+				p = wcstok(St, L" ,;/", &ctx);
 				is = 0;
 				while (p && is < 40) {
 					if (_wtoi(p) > 0)
@@ -640,7 +642,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 								break;
 							}
 						}
-					p = wcstok(NULL, L" ,;/");
+					p = wcstok(NULL, L" ,;/", &ctx);
 					}
 				}
 			if (kohde[KohdeIndex] == L'I' && tiedTyyppi == L'S') {

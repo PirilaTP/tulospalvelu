@@ -91,6 +91,7 @@ void __fastcall TTulosteForm::TabSheetKirjoitinEnter(TObject *Sender)
 
 void TTulosteForm::enumPrinters(TComboBox *CBkirj)
 {
+	wchar_t *ctx = NULL;
    PRINTER_INFO_1 PrinterEnum[400];
    wchar_t wPrinterName[120];
    DWORD cbNeeded, cReturned, cLisa;
@@ -157,7 +158,7 @@ void TTulosteForm::enumPrinters(TComboBox *CBkirj)
 		 // String will be in form L"printername,drivername,portname".
 			if (!GetProfileStringW(L"windows", L"device", L",,,", wcBuffer, MAXBUFFERSIZE) <= 0) {
 			   // Printer name precedes first L"," character...
-			   wcstok(wcBuffer, L",");
+			   wcstok(wcBuffer, L",", &ctx);
 
 			   // If given buffer too small, set required size and fail...
 			   if ((DWORD)wcslen(wcBuffer) >= 120) {

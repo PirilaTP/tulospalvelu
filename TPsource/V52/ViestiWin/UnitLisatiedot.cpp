@@ -61,6 +61,7 @@ typedef struct {
 //---------------------------------------------------------------------------
 void __fastcall TFormLisatiedot::SiirraTiedot(bool sellaisinaan)
 {
+	wchar_t *ctx = NULL;
 	int Tunniste, Tieto, TunnPv, TunnPvA = 0, TunnPvY = 0, TietoPv, TunnSar, TietoSar, LTunn, LTieto, epv, vpv, Ehtolaji;
 	int nrv = 0, nsiirr = 0, EhtoArvo = -1, err = 0;
 	double deskerroin = 1000.0;
@@ -238,7 +239,7 @@ void __fastcall TFormLisatiedot::SiirraTiedot(bool sellaisinaan)
 					tunnst[MAXKEYPIT] = 0;
 					tietost[MAXTIETOPIT] = 0;
 					if (erotin == L' ')
-						p = wcstok(line, L" \t\n");
+						p = wcstok(line, L" \t\n", &ctx);
 					else
 						p = wcstokch(line, erotin);
 					for (int i = 0; p != NULL; i++) {
@@ -256,7 +257,7 @@ void __fastcall TFormLisatiedot::SiirraTiedot(bool sellaisinaan)
 							break;
 							}
 						if (erotin == L' ')
-							p = wcstok(NULL, L" \t\n");
+							p = wcstok(NULL, L" \t\n", &ctx);
 						else
 							p = wcstokch(NULL, erotin);
 						}
@@ -559,9 +560,9 @@ void __fastcall TFormLisatiedot::SiirraTiedot(bool sellaisinaan)
 							for (int ip = 0; ip < kilpparam.osuusluku; ip++) {
 								wchar_t *p;
 								if (ip == 0)
-									p = wcstok(sval, L" ;\t\n");
+									p = wcstok(sval, L" ;\t\n", &ctx);
 								else
-									p = wcstok(NULL, L" ;\t\n");
+									p = wcstok(NULL, L" ;\t\n", &ctx);
 								if (p == NULL)
 									break;
 								kilp.setHajonta(ip, p);

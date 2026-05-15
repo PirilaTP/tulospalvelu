@@ -1080,6 +1080,7 @@ void vasivu(void)
 		vapagelen = vapagelendef;
 		}
 	if (valinelendef) {
+	wchar_t *ctx = NULL;
 		valinelen = valinelendef;
 		}
    valinelen -= valinelen % 13;
@@ -1118,12 +1119,13 @@ void luekoodi(TextFl* luetfmtf, wchar_t *koodi)
 
    memset(koodi, 0, PRKOODIPIT);
    luetfmtf->ReadLine(s, 200);
-   p = wcstok(s, L" \n");
+   p = wcstok(s, L" \n", &ctx);
    l = _wtoi(p);
    l = min(l,PRKOODIPIT-1);
    koodi[0] = (wchar_t) l;
    for (i = 1; i <= l; i++) {
-	  if ((p = wcstok(NULL, L" \n")) == NULL) break;
+	wchar_t *ctx = NULL;
+	  if ((p = wcstok(NULL, L" \n", &ctx)) == NULL) break;
 	  koodi[i] = (wchar_t) _wtoi(p);
 	  }
    }
@@ -2036,6 +2038,7 @@ static int tulkXMLTlMuotoilut(xml_node *node, int *inode, int nnode)
 
 	DepthIn = node[*inode].depth + 1;
 	for (++*inode; *inode <= nnode; (*inode)++) {
+	wchar_t *ctx = NULL;
 		if (node[*inode].depth < DepthIn) {
 			--*inode;
 			break;
@@ -2118,9 +2121,9 @@ static int tulkXMLTlMuotoilut(xml_node *node, int *inode, int nnode)
 					break;
 				case FRM_Desim:
 					node[*inode].gettext(ln, 198);
-					if ((p = wcstok(ln, L";")) != NULL) {
+					if ((p = wcstok(ln, L";", &ctx)) != NULL) {
 						tulosmuot.pistedesim = _wtoi(ln);
-						if ((p = wcstok(NULL, L";")) != NULL)
+						if ((p = wcstok(NULL, L";", &ctx)) != NULL)
 							tulosmuot.des_sep = (wmemcmpU(p, L"PISTE", 5) == 0) ? L'.' : L',';
 						}
 					filetulosmuot.pistedesim = tulosmuot.pistedesim;
@@ -2208,9 +2211,9 @@ static int tulkXMLTlMuotoilut(xml_node *node, int *inode, int nnode)
 						break;
 					case FRM_Desim:
 						node[*inode].gettext(ln, 198);
-						if ((p = wcstok(ln, L";")) != NULL) {
+						if ((p = wcstok(ln, L";", &ctx)) != NULL) {
 							muot->pistedesim = _wtoi(ln);
-							if ((p = wcstok(NULL, L";")) != NULL)
+							if ((p = wcstok(NULL, L";", &ctx)) != NULL)
 								muot->des_sep = (wmemcmpU(p, L"PISTE", 5) == 0) ? L'.' : L',';
 							}
 						filetulosmuot.pistedesim = muot->pistedesim;

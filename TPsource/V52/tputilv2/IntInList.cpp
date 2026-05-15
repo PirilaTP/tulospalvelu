@@ -22,16 +22,17 @@
 // Palauttaa löydetyn alkion järjestysnumeron (0-pohjainen) tai -1 jos ei löydy.
 int IntInList(const int val, const wchar_t * const lst)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *p, list[200];
 	int k = 0;
 
 	wcsncpy(list, lst, sizeof(list)/2-1);
 	list[sizeof(list)/2-1] = 0;
-	p = wcstok(list, L" ,;\t");
+	p = wcstok(list, L" ,;\t", &ctx);
 	while (p) {
 		if (val == _wtoi(p))
 			return(k);
-		p = wcstok(NULL, L" ,;\t");
+		p = wcstok(NULL, L" ,;\t", &ctx);
 		k++;
 		}
 	return(-1);

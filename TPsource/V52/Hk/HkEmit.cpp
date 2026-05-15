@@ -1193,6 +1193,7 @@ void vaihda_badge(UINT32 badge)
 
 INT add(void *em)
 	{
+	wchar_t *ctx = NULL;
 	INT  i, exfl = 0;
 	INT  dataf;
 	kilptietue kilp;
@@ -2895,7 +2896,7 @@ INT lue_radat(INT r)
 		if (rata_file->ReadLine(line, 298) == NULL || wcslen(line) < 4)
 			break;
 		if (i % 3 == 0) {
-			p = wcstok(line, L" \t");
+			p = wcstok(line, L" \t", &ctx);
 			rno++;
 			}
 		}
@@ -2910,7 +2911,7 @@ INT lue_radat(INT r)
 	for (;;) {
 		if (rata_file->ReadLine(line, 298) == NULL || wcslen(line) < 4)
 			break;
-		p = wcstok(line, L" \t");
+		p = wcstok(line, L" \t", &ctx);
 		wcsncpy(rnimi, p, 12);
 		rnimi[11] = 0;
 		elimwbl2(rnimi);
@@ -2925,10 +2926,10 @@ INT lue_radat(INT r)
 			}
 		srj = rno++;
 		wcscpy(rata[srj].tunnus, rnimi);
-		p = wcstok(NULL, L" \t");
+		p = wcstok(NULL, L" \t", &ctx);
 		if (p) {
 			rata[srj].ennakko = _wtoi(p);
-			p = wcstok(NULL, L" \t");
+			p = wcstok(NULL, L" \t", &ctx);
 			if (p)
 				rata[srj].maalilaji = _wtoi(p);
 			}
@@ -2938,7 +2939,7 @@ INT lue_radat(INT r)
 		 if (emitfl < 0) {
 			continue;
 			}
-		 p = wcstok(line, L" \t");
+		 p = wcstok(line, L" \t", &ctx);
 		 for (j = 0; j < 40; j++) {
 			if (!p) {
 				if (i == 0 || !vapaajarj)
@@ -2986,7 +2987,7 @@ INT lue_radat(INT r)
 			   }
 			if (!p)
 				break;
-			p = wcstok(NULL, L" \t");
+			p = wcstok(NULL, L" \t", &ctx);
 			}
 		 }
 	  rata[srj].rastiluku = ir;

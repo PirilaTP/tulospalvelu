@@ -177,6 +177,7 @@ int xmlloppu(tulostusparamtp *tulprm)
 
 int xmlsrjots(int sarja, tulostusparamtp *tulprm)
    {
+	wchar_t *ctx = NULL;
    TextFl *xmllstfl;
    int i, k, insrj = 0;
    wchar_t buf[40], *p;
@@ -204,9 +205,9 @@ int xmlsrjots(int sarja, tulostusparamtp *tulprm)
 			   }
 			}
 		 else {
-			p = wcstok(buf, L" ,;\t\n");
+			p = wcstok(buf, L" ,;\t\n", &ctx);
 			if (p && (k = _wtoi(p)) > 0) {
-			   if ((p = wcstok(NULL, L" ,;\t\n")) != 0) {
+			   if ((p = wcstok(NULL, L" ,;\t\n", &ctx)) != 0) {
 				  i = _wtoi(p);
 				  if (i > 0 && i <= MAXNLEIMA) {
 					 xmlpiste[i-1] = k;

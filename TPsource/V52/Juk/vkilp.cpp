@@ -707,6 +707,7 @@ char *osrec::Nimi(char *st, int len, int jarj, char chars)
 
 wchar_t *osrec::Nimi(wchar_t *st, int len, int jarj, char chars)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *ps, *pe = NULL;
 	wchar_t wst[OSNIMIL+1] = L"";
 
@@ -723,9 +724,9 @@ wchar_t *osrec::Nimi(wchar_t *st, int len, int jarj, char chars)
 	wst[OSNIMIL] = 0;
 	if (len < OSNIMIL)
 		wst[len] = 0;
-	ps = wcstok(wst, L"|");
+	ps = wcstok(wst, L"|", &ctx);
 	if (ps) {
-		pe = wcstok(NULL, L"|");
+		pe = wcstok(NULL, L"|", &ctx);
 		}
 	if (jarj < 0) {
 		if (pe) {
@@ -750,6 +751,7 @@ wchar_t *osrec::Nimi(wchar_t *st, int len, int jarj, char chars)
 
 wchar_t *osrec::SukuNimi(wchar_t *st, int len, char chars)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *ps;
 	wchar_t wst[OSNIMIL+1] = L"";
 
@@ -765,7 +767,7 @@ wchar_t *osrec::SukuNimi(wchar_t *st, int len, char chars)
 		wst[len] = 0;
 	wmemset(st, 0, len+1);
 	if (wst[0] != L'|') {
-		ps = wcstok(wst, L"|");
+		ps = wcstok(wst, L"|", &ctx);
 		if (ps)
 			wcscpy(st, ps);
 		}
@@ -774,6 +776,7 @@ wchar_t *osrec::SukuNimi(wchar_t *st, int len, char chars)
 
 wchar_t *osrec::EtuNimi(wchar_t *st, int len, char chars)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *ps;
 	wchar_t wst[OSNIMIL+1] = L"";
 
@@ -792,9 +795,9 @@ wchar_t *osrec::EtuNimi(wchar_t *st, int len, char chars)
 		ps = wst+1;
 		}
 	else {
-		ps = wcstok(wst, L"|");
+		ps = wcstok(wst, L"|", &ctx);
 		if (ps)
-			ps = wcstok(NULL, L"|");
+			ps = wcstok(NULL, L"|", &ctx);
 		}
 	if (ps)
 		wcscpy(st, ps);

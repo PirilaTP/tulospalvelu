@@ -50,6 +50,7 @@ void __fastcall TFormLisaTekstit::Poistu1Click(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TFormLisaTekstit::Luetekstit1Click(TObject *Sender)
 {
+	wchar_t *ctx = NULL;
 	wchar_t line[300], tunn, *p;
 	txtTp txt, txts[4][50];
 	int n[4], i, laji, ya;
@@ -66,13 +67,13 @@ void __fastcall TFormLisaTekstit::Luetekstit1Click(TObject *Sender)
 
 		while (inFile && !inFile->Feof()) {
 			inFile->ReadLine(line, 298);
-			p = wcstok(line, L";\t\n");
+			p = wcstok(line, L";\t\n", &ctx);
 			if (p) {
 				tunn = towupper2(*p);
 				laji = wcswcind(tunn, L"PSAL");
 				if (laji < 0)
 					continue;
-				p = wcstok(NULL, L";\t\n");
+				p = wcstok(NULL, L";\t\n", &ctx);
 				}
 			if (p) {
 				if (*p >= L'A') {
@@ -86,20 +87,20 @@ void __fastcall TFormLisaTekstit::Luetekstit1Click(TObject *Sender)
 					par = false;
 					txt.x = _wtoi(p);
 					}
-				p = wcstok(NULL, L";\t\n");
+				p = wcstok(NULL, L";\t\n", &ctx);
 				}
 			if (p) {
 				if (par)
 					lisatxt[laji].ytila = _wtoi(p);
 				else
 					txt.y = _wtoi(p);
-				p = wcstok(NULL, L";\t\n");
+				p = wcstok(NULL, L";\t\n", &ctx);
 				}
 			if (par)
 				continue;
 			if (p) {
 				txt.size = _wtoi(p);
-				p = wcstok(NULL, L";\t\n");
+				p = wcstok(NULL, L";\t\n", &ctx);
 				}
 			if (p) {
 				wcscpy(txt.txt, p);

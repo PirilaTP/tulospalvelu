@@ -788,6 +788,7 @@ static int nyhtjono;
 
 void lueyhteysjonot(void)
 {
+	wchar_t *ctx = NULL;
 	wchar_t line[100], *p, filenm[] = L"yhtjonot.txt";
 	TextFl *yhtfile;
 
@@ -796,16 +797,16 @@ void lueyhteysjonot(void)
 	if (yhtfile->IsOpen()) {
 		while (!yhtfile->Feof() && nyhtjono < 4*MAXJONO) {
 			if (yhtfile->ReadLine(line, sizeof(line)/2-1) != NULL) {
-				p = wcstok(line, L" ,;\t\n");
+				p = wcstok(line, L" ,;\t\n", &ctx);
 				if (p) {
 					if ((yhtj[nyhtjono].cn = _wtoi(p)) > 0)
-						p = wcstok(NULL, L" ,;\t\n");
+						p = wcstok(NULL, L" ,;\t\n", &ctx);
 					else
 						p = NULL;
 					}
 				if (p) {
 					if ((yhtj[nyhtjono].cnino = _wtoi(p)) > 0)
-						p = wcstok(NULL, L" ,;\t\n");
+						p = wcstok(NULL, L" ,;\t\n", &ctx);
 					else
 						p = NULL;
 					}

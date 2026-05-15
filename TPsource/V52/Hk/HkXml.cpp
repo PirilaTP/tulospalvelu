@@ -629,6 +629,7 @@ static int loadRaceData(xml_node *node, int nnode)
 
 static int loadClassRaceData(sarjatietue *Sarja, xml_node *node, int *inode, int nnode)
 {
+	wchar_t *ctx = NULL;
 	int er = 0, DepthIn, haara = 0, haara2 = 0, i_pv, i_va = 0;
 	int iRule = 0;
 	wchar_t ln[80], *p;
@@ -727,9 +728,9 @@ static int loadClassRaceData(sarjatietue *Sarja, xml_node *node, int *inode, int
 					node[*inode].gettext(ln, sizeof(ln)/2-1);
 					for (UINT i = 0; i < sizeof(Sarja->asuunnsakot)/sizeof(Sarja->asuunnsakot[0]); i++) {
 						if (i == 0)
-							p = wcstok(ln, L";\n");
+							p = wcstok(ln, L";\n", &ctx);
 						else
-							p = wcstok(NULL, L";\n");
+							p = wcstok(NULL, L";\n", &ctx);
 						if (p == NULL)
 							break;
 						Sarja->asuunnsakot[i_pv][i] = _wtoi(p);

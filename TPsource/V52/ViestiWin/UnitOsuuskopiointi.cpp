@@ -56,6 +56,7 @@ void __fastcall TFormOsuuskopiointi::FormResize(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TFormOsuuskopiointi::Button1Click(TObject *Sender)
 {
+	wchar_t *ctx = NULL;
 	kilptietue kilp;
 	int Os, d, kohdeos[MAXOSUUSLUKU];
 	wchar_t kohdestr[200], *p;
@@ -71,12 +72,12 @@ void __fastcall TFormOsuuskopiointi::Button1Click(TObject *Sender)
 	Os = CBOsuudet->ItemIndex;
 	memset(kohdeos, 0, sizeof(kohdeos));
 	wcsncpy(kohdestr, EdtKohdeos->Text.c_str(), sizeof(kohdestr)/2-1);
-	p = wcstok(kohdestr, L" ,;/\t");
+	p = wcstok(kohdestr, L" ,;/\t", &ctx);
 	while (p) {
 		int k = _wtoi(p);
 		if (k > 0 && k <= kilpparam.osuusluku)
 			kohdeos[k-1] = 1;
-		p = wcstok(NULL, L" ,;/\t");
+		p = wcstok(NULL, L" ,;/\t", &ctx);
 		}
 	for (d = 1; d < datf2.numrec; d++) {
 		kilp.getrec(d);

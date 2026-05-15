@@ -103,17 +103,18 @@ wchar_t *stDateNo(wchar_t *st, int pvm)
 // Palauttaa päivänumeron tai 0 jos merkkijono on virheellinen.
 int DateNoFromSt(wchar_t *st)
 {
+	wchar_t *ctx = NULL;
 	unsigned int y, m, d, pvm = 0;
 
 	if (wcslen(st) <= 10 && (st[4] == L'-' || st[1] == L'.' || st[2] == L'.')) {
 		wchar_t st1[12] = L"", *p;
 		wcscpy(st1, st);
-		if ((p = wcstok(st1, L".-")) != NULL) {
+		if ((p = wcstok(st1, L".-", &ctx)) != NULL) {
 			if (st[4] == L'-')
 				y = _wtoi(p);
 			else
 				d = _wtoi(p);
-			if ((p = wcstok(NULL, L".-")) != NULL) {
+			if ((p = wcstok(NULL, L".-", &ctx)) != NULL) {
 				m = _wtoi(p);
 				if (st[4] == L'-')
 					d = _wtoi(p+wcslen(p)+1);

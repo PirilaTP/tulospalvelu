@@ -466,6 +466,7 @@ static void valitselahtosarja(void)
 /*
 static void	sprintsiirrot(void)
 	{
+	wchar_t *ctx = NULL;
    wchar_t ch,tc,ce = L'O';
    static INT tarfl0;
    extern INT errno;
@@ -655,16 +656,16 @@ static void	sprintsiirrot(void)
 			siirto = 0;
 			if (ohjefile->ReadLine(ln, 78)) {
 				r++;
-				p = wcstok(ln, L" ,;\t\n");
+				p = wcstok(ln, L" ,;\t\n", &ctx);
 				if (p) {
 					wcscpy(s1, p);
-					p = wcstok(NULL, L" ,;\t\n");
+					p = wcstok(NULL, L" ,;\t\n", &ctx);
 					if (p) {
 						wcscpy(s2, p);
-						p = wcstok(NULL, L" ,;\t\n");
+						p = wcstok(NULL, L" ,;\t\n", &ctx);
 						if (p) {
 							siirto = _wtol(p);
-							p = wcstok(NULL, L" ,;\t\n");
+							p = wcstok(NULL, L" ,;\t\n", &ctx);
 							if (p) {
 								lk = _wtoi(p);
 								}
@@ -865,6 +866,7 @@ int pyyda_vaihdavaihe(int vaihe, int kielto)
 
 void asetukset()
    {
+	wchar_t *ctx = NULL;
    wchar_t ch,tc,ce = L'O';
    char che;
    extern scr asetusvalikko;
@@ -948,16 +950,16 @@ void asetukset()
                siirto = 0;
                if (fgetws(ln, 78, ohjefile)) {
                   r++;
-                  p = wcstok(ln, L" ,;\t\n");
+                  p = wcstok(ln, L" ,;\t\n", &ctx);
                   if (p) {
                      wcscpy(s1, p);
-                     p = wcstok(NULL, L" ,;\t\n");
+                     p = wcstok(NULL, L" ,;\t\n", &ctx);
                      if (p) {
                         wcscpy(s2, p);
-                        p = wcstok(NULL, L" ,;\t\n");
+                        p = wcstok(NULL, L" ,;\t\n", &ctx);
                         if (p) {
                            siirto = _wtol(p);
-                           p = wcstok(NULL, L" ,;\t\n");
+                           p = wcstok(NULL, L" ,;\t\n", &ctx);
 									if (p) {
                               lk = _wtoi(p);
                               }

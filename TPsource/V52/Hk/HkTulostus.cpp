@@ -217,6 +217,7 @@ static void hae_kenttajarj(FldFrmtTp *flds, int *jarj, int *njrj)
 
 void tulostusparamtp::setActFlds(int srj)
 {
+	wchar_t *ctx = NULL;
 	int k = 0, nv = 0;
 	FldFrmtTp *fld = (FldFrmtTp *)p_fld;
 	int n = 0, (*fldarr)[2];
@@ -6568,7 +6569,7 @@ void autoalku(wchar_t *koodit)
    autofl = 1;
    if (!koodit[0])
 	  goto pois;
-   p = wcstok(koodit, L"/,=");
+   p = wcstok(koodit, L"/,=", &ctx);
    if (!p) goto pois;
    *p = towupper(*p);
    if (*p == L'P') {
@@ -6577,15 +6578,15 @@ void autoalku(wchar_t *koodit)
       }
    if (*p == L'T' || *p == L'I')
 	   autotulostusparam.rajaus = *p;
-   p = wcstok(NULL, L"/,");
+   p = wcstok(NULL, L"/,", &ctx);
    if (!p) goto pois;
    k = _wtoi(p);
    if (k > 0) kynnys = k;
-   p = wcstok(NULL, L"/,");
+   p = wcstok(NULL, L"/,", &ctx);
    if (!p) goto pois;
    k = _wtoi(p);
    if (k > 5 && k < 1000) intv[0] = 18*k;
-   p = wcstok(NULL, L"/,");
+   p = wcstok(NULL, L"/,", &ctx);
    if (!p) goto pois;
    for (k = 0; k < 9; k++) {
 	  autotulostusparam.automaali[k] = 0;
@@ -6593,7 +6594,7 @@ void autoalku(wchar_t *koodit)
    for (; *p; p++)
       if (*p > L'0' && *p <= L'9') autotulostusparam.automaali[*p - L'1'] = 1;
    if (k_pv) {
-      p = wcstok(NULL, L"/,");
+      p = wcstok(NULL, L"/,", &ctx);
       if (!p) return;
       *p = towupper(*p);
       switch (*p) {
@@ -6873,7 +6874,7 @@ int autofile(int kaikki)
 						break;
 					if (aflst->ReadLine(buf, 1000) == NULL)
 						continue;
-					p = wcstok(buf, L" ;\t\n");
+					p = wcstok(buf, L" ;\t\n", &ctx);
 					if (wmemcmpU(p, L"HTML=", 5) == 0 || wmemcmpU(p, L"MHTML=", 6) == 0) {
 						p1 = wcsstr(p, L"=")+1;
 						if (wcslen(p1) < 3)
@@ -6897,7 +6898,7 @@ int autofile(int kaikki)
 						memset(aftulparam.sarjalista, 0, (MAXSARJALUKU+MAXYHD)*2);
 						memset(afSrj, 0, sizeof(afSrj));
 						for (int i = 0; i < MAXSARJALUKU+MAXYHD+1; i++) {
-							p = wcstok(NULL, L" ;\t\n");
+							p = wcstok(NULL, L" ;\t\n", &ctx);
 							if (p == NULL)
 								break;
 							if (wcscmpU(p, L"KAIKKI") == 0) {
@@ -6938,10 +6939,10 @@ int autofile(int kaikki)
 					else {
 						if (!p || (srj = haesarja_w(p, true)) < 0)
 							continue;
-						if ((p = wcstok(NULL, L" ;\t\n")) == 0)
+						if ((p = wcstok(NULL, L" ;\t\n", &ctx)) == 0)
 							continue;
 						aftulparam.piste = _wtoi(p);
-						p1 = wcstok(NULL, L" ;\t\n");
+						p1 = wcstok(NULL, L" ;\t\n", &ctx);
 						}
 					}
 				}
@@ -7295,12 +7296,12 @@ void luepiirit(wchar_t *flname)
 	  for (;;) {
 		 if (piirifile->ReadLine(line, 120) == NULL)
 			break;
-		 p = wcstok(line, L" ;\t");
+		 p = wcstok(line, L" ;\t", &ctx);
 		 if ((k = _wtoi(p)) == 0)
 			continue;
 		 if (k >= piiriluku)
 			continue;
-		 p = wcstok(NULL, L";\t\n");
+		 p = wcstok(NULL, L";\t\n", &ctx);
 		 wcsncpy(piirinimi[k-1], p, sizeof(piirinimi[0])/2-1);
 		 }
 	  }

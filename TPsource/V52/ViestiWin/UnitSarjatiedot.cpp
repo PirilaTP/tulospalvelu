@@ -949,6 +949,7 @@ void __fastcall TFormSarjatiedot::Kirjoitacsvtiedostoon1Click(TObject *Sender)
 //---------------------------------------------------------------------------
 int TFormSarjatiedot::lue_sarjacsv(TextFl *afile, sarjatietue *Sarja, int lineno, int toiminto, wchar_t erotin)
 {
+	wchar_t *ctx = NULL;
 	wchar_t rivi[400+15*MAXOSUUSLUKU*(8+VAIKALUKU)],s[40], *p, *p1, *pp;
 	INT16 i,il,res = 0;
 	INT16 srj, l, kbg;
@@ -985,14 +986,14 @@ int TFormSarjatiedot::lue_sarjacsv(TextFl *afile, sarjatietue *Sarja, int lineno
 					if (i == Kexp_srj_kentat) {
 						p1 = NULL;
 						pp = NULL;
-						p = wcstok(fields[ifld], L"-");
+						p = wcstok(fields[ifld], L"-", &ctx);
 						if (p)
-							p1 = wcstok(NULL, L"-");
+							p1 = wcstok(NULL, L"-", &ctx);
 						if (!p1)
 							continue;
 						if ((os = _wtoi(p1)) < 1 || os > kilpparam.n_os_akt)
 							continue;
-						pp = wcstok(NULL, L"-");
+						pp = wcstok(NULL, L"-", &ctx);
 						if (pp)
 							va = _wtoi(pp);
 						}

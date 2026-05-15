@@ -747,15 +747,16 @@ void TFormCfg::PaivitaIkkuna(void)
 
 static void tulktcpipparam(wchar_t *str, wchar_t *iposoite, int *port)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *p;
 	int j = 0;
 
 	iposoite[0] = 0;
 	*port = 0;
-	p = wcstok(str, L":,/=");
+	p = wcstok(str, L":,/=", &ctx);
 	if (p) {
 		wcsncpy(iposoite, p, 98);
-		p = wcstok(NULL, L":,/=");
+		p = wcstok(NULL, L":,/=", &ctx);
 		}
 	if (p) {
 		if ((j = _wtoi(p)) > 0)
@@ -768,6 +769,7 @@ static void tulktcpipparam(wchar_t *str, wchar_t *iposoite, int *port)
 //---------------------------------------------------------------------------
 void TFormCfg::TulkitseTiedot(bool tyhjenna)
 {
+	wchar_t *ctx = NULL;
    wchar_t fld[200] = L"", fldn[90] = L"";
    wchar_t *p;
    wchar_t msg[401];
@@ -1003,7 +1005,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 				CBAutoLaajuus->ItemIndex = 1;
 				}
 			else {
-				p = wcstok(fldn+5, L"/,;");
+				p = wcstok(fldn+5, L"/,;", &ctx);
 				if (p) {
 					switch (towupper(*p)) {
 						case L'L':
@@ -1017,19 +1019,19 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 							EdAutoParhaat->Text = _wtoi(p+1);
 							break;
 						}
-					p = wcstok(NULL, L"/,;");
+					p = wcstok(NULL, L"/,;", &ctx);
 					}
 				if (p) {
 					EdAutoKynnys->Text  = _wtoi(p);
-					p = wcstok(NULL, L"/,;");
+					p = wcstok(NULL, L"/,;", &ctx);
 					}
 				if (p) {
 					EdAutoAskel->Text  = _wtoi(p);
-					p = wcstok(NULL, L"/,;");
+					p = wcstok(NULL, L"/,;", &ctx);
 					}
 				if (p) {
 					EdAutoKynnys->Text  = p;
-					p = wcstok(NULL, L"/,;");
+					p = wcstok(NULL, L"/,;", &ctx);
 					}
 				if (p) {
 					CBAutoMonivaihe->ItemIndex = wcswcind(*p, L"2VY1") + 1;
@@ -1057,27 +1059,27 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			}
 		else if (!wmemcmpU(fldn, L"HTML=", 5) || !wmemcmpU(fldn, L"XML=", 4)) {
 			Tulkitut[i] = 1;
-			p = wcstok(fldn, L"=");
+			p = wcstok(fldn, L"=", &ctx);
 			if (towupper(*p) == L'X')
 				RBXml->Checked = true;
 			else {
 				RBYksiHtml->Checked = true;
 				}
-			if ((p = wcstok(NULL, L",/")) != NULL) {
+			if ((p = wcstok(NULL, L",/", &ctx)) != NULL) {
 				EdAutoTiedosto->Text = p;
-				p = wcstok(NULL, L",/");
+				p = wcstok(NULL, L",/", &ctx);
 				}
 			if (p) {
 				if ((ny = _wtoi(p)) != 0)
 					EdAutoTiedVali->Text = ny;
-				p = wcstok(NULL, L",/");
+				p = wcstok(NULL, L",/", &ctx);
 				}
 			if (p && towupper(*p) != L'M' &&
-				(towupper(*p) == L'S' || ((p = wcstok(NULL, L",/")) != NULL) && towupper(*p) == L'S')) {
+				(towupper(*p) == L'S' || ((p = wcstok(NULL, L",/", &ctx)) != NULL) && towupper(*p) == L'S')) {
 				RBSarjatHtml->Checked = true;
 			   }
 			if (p && (towupper(*p) == L'M' ||
-				((p = wcstok(NULL, L",/")) != NULL) && towupper(*p) == L'M')) {
+				((p = wcstok(NULL, L",/", &ctx)) != NULL) && towupper(*p) == L'M')) {
 				CBAfMolemmat->Checked = false;
 				}
 			continue;
@@ -1169,14 +1171,14 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 					}
 				p = fldn+pos;
 				if (wcswcind(*p, L":,/=") >= 0) {
-					p = wcstok(p+1, L":,/=");
+					p = wcstok(p+1, L":,/=", &ctx);
 					if (p && (j = _wtoi(p)) >= 0) {
 						if (j)
 							SG1->Cells[3][r] = j;
-						p = wcstok(NULL, L":,/=");
+						p = wcstok(NULL, L":,/=", &ctx);
 						if (p) {
 							SG1->Cells[4][r] = p;
-							p = wcstok(NULL, L":,/=");
+							p = wcstok(NULL, L":,/=", &ctx);
 							}
 						if (p) {
 							if ((j = _wtoi(p)) >= 0) {
@@ -1380,9 +1382,9 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			}
 		else if(!wmemcmpU(fldn, L"NÄPPÄIN=", 8)) {
 			Tulkitut[i] = 1;
-			if ((p = wcstok(fldn+8, L",/")) == NULL) continue;
+			if ((p = wcstok(fldn+8, L",/", &ctx)) == NULL) continue;
 			y = _wtoi(p);
-			if ((p = wcstok(NULL, L",/")) != NULL && (ny = _wtoi(p)) != 0)
+			if ((p = wcstok(NULL, L",/", &ctx)) != NULL && (ny = _wtoi(p)) != 0)
 				EdNappain->Text = UnicodeString(y)+L","+UnicodeString(ny);
 			continue;
 			}
@@ -1559,7 +1561,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			else if (!wmemcmpU(fldn, L"SW2000",6)) {
 			   }
 			if (Tulkitut[i]) {
-				if ((p = wcstok(fldn, L"=")) != NULL) {
+				if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
 					p = fldn+wcslen(p);
 					if (!wmemcmpU(p+1, L"TCP", 3)) {
 						wchar_t iposoite[100];
@@ -1658,7 +1660,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 				p2 = wcsstr(p, L"/");
 				if (p2)
 					*p2 = 0;
-				p1 = wcstok(p, L",;");
+				p1 = wcstok(p, L",;", &ctx);
 				while (p1 && p1[0]) {
 					if (p1[1] == 0) {
 					   if ((ny = wcswcind(*p1, ch_piste)) >= 0) {
@@ -1670,7 +1672,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 					y++;
 					if (y >= SGAjat->RowCount)
 						break;
-					p1 = wcstok(NULL, L",;");
+					p1 = wcstok(NULL, L",;", &ctx);
 					}
 				if (p2) {
 					*p2 = L'/';
@@ -1795,7 +1797,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 				else
 					SGLeimat->Cells[2][r] = L"UDP";
 				if (wcswcind(fldn[pos+4], L":,/=") >= 0) {
-					p = wcstok(fldn+pos+5, L":,/=");
+					p = wcstok(fldn+pos+5, L":,/=", &ctx);
 					if (p && (j = _wtoi(p)) > 0) {
 						SGLeimat->Cells[3][r] = j;
 						}
@@ -1817,11 +1819,11 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 				else
 					SGLeimat->Cells[3][r] = j;
 				}
-			else if ((p = wcstok(fldn, L"=")) != NULL) {
-			   if ((p = wcstok(NULL,L":,-/")) != NULL) {
+			else if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+			   if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 					SGLeimat->Cells[2][r] = L"COM";
 					SGLeimat->Cells[3][r] = _wtoi(p);
-					if ((p = wcstok(NULL,L":,-/")) != NULL) {
+					if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 						if (towupper(*p) == L'U')
 							SGLeimat->Cells[2][r] = L"COM/U";
 						}
