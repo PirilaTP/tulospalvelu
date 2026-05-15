@@ -1003,54 +1003,7 @@ void tarkcom(LPVOID lpCn)
 
 void merk_uusinta(int cna, int cny, long ta, long ty, int autouusinta);
 
-void lahetakaikkiTCP(int cn)
-   {
-   int kno, srj, os, vali, len, dk, nsent = -1;
-   char buf[200], st[80], st1[80];
-   kilptietue kilp;
-
-   if (!comopen[cn] || !lahcom[cn])
-      return;
-   for (srj = 0; srj < sarjaluku; srj++) {
-      for (os = 0; os < Sarjat[srj].osuusluku; os++) {
-         for (vali = 0; vali <= kilpparam.maxvaluku; vali++) {
-//            if (vali && !com_valiajat[cn]) break;
-			if (ntulos[srj][os][vali]) {
-			   EnterCriticalSection(&tall_CriticalSection);
-               merk_sijat(srj, os, vali, 0);
-               LeaveCriticalSection(&tall_CriticalSection);
-               }
-            }
-		 }
-      }
-   for (kno = minkilpno; kno <= maxkilpno; kno++) {
-      if ((dk = getpos(kno)) <= 0)
-         continue;
-      GETREC(&kilp, dk);
-	  for (os = 0; os < Sarjat[kilp.sarja].osuusluku; os++) {
-		 for (vali = 1; vali <= kilpparam.maxvaluku+1; vali++) {
-			if (vali <= kilpparam.maxvaluku &&
-			   !tulos(&kilp, os, vali))
-//               (!com_valiajat[cn] || !tulos(&kilp, os, vali)))
-			   continue;
-			if (vali > kilpparam.maxvaluku)
-				vali = 0;
-			sprintf(buf, "%s:%d:%d:%d:%s:%d:%s:%s:%ld:%ld:%c:%s\n", Sarjat[kilp.sarja].sarjanimi, kilp.kilpno,
-				os+1, vali%kilpparam.valuku, kilp.Seura(st1), kilp.joukkue, kilp.maa, kilp.Nimi(st, 70, os),
-			   tulos(&kilp, os, vali%kilpparam.valuku), osuustulos(&kilp, os, vali%kilpparam.valuku),
-			   kilp.Tark(os, 1), kilp.ostiet[os].hajonta);
-			len = strlen(buf);
-			if (len) {
-			   EnterCriticalSection(&tcp_CriticalSection[cn]);
-			   wrt_st_x(cn, len, buf, &nsent);
-			   LeaveCriticalSection(&tcp_CriticalSection[cn]);
-			   }
-			if (vali == 0)
-				break;
-			}
-		 }
-	  }
-   }
+}
 
 void lahetaXML_TCP(combufrec *obuf, int cn)
    {

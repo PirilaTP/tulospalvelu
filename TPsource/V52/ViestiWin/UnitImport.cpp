@@ -114,6 +114,8 @@ int TFormImport::lue_kilpcsv(TextFl *afile, kilptietue *kilp, int lineno, int to
 	memset(fields, 0, sizeof(fields));
 	len = 250 + kilpparam.osuusluku * (300+32*kilpparam.maxvaluku);
 	rivi = (wchar_t *)calloc(len+1, sizeof(wchar_t));
+	if (!rivi)
+		return(-1);
 	if (afile->ReadLine(rivi, len) == NULL) {
 		free(rivi);
 		return(-1);

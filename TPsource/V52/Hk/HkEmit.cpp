@@ -2534,6 +2534,8 @@ void analradat(void)
 		rastiva[r].ratava = new ratavatp[rata[r].rastiluku+1];
 		}
 	rvint = (int (*)[2]) calloc(rvluku, 2*sizeof(int));
+	if (!rvint)
+		return;
 	rvluku = 0;
 	for (r = 0; r < nrata; r++) {
 		if (rata[r].rastiluku == 0)
