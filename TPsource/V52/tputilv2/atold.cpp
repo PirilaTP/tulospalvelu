@@ -17,6 +17,14 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#ifdef __BORLANDC__
+// bcc32 uses 2-arg wcstok; this overload accepts the ISO C11 3-arg form
+// so the same source compiles under both MSVC and bcc32.
+#include <wchar.h>
+inline wchar_t* wcstok(wchar_t* s, const wchar_t* d, wchar_t**) {
+	return ::wcstok(s, d);
+}
+#endif
 
 // Muuntaa desimaalilukumerkkijonon pitkäksi kokonaisluvuksi tuhannesosatarkkuudella.
 // str: merkkijono, joka sisältää desimaaliluvun (pilkku tai piste desimaalierotin).

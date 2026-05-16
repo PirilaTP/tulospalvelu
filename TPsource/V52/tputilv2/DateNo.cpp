@@ -17,6 +17,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef __BORLANDC__
+// bcc32 uses 2-arg wcstok; this overload accepts the ISO C11 3-arg form
+// so the same source compiles under both MSVC and bcc32.
+#include <wchar.h>
+inline wchar_t* wcstok(wchar_t* s, const wchar_t* d, wchar_t**) {
+	return ::wcstok(s, d);
+}
+#endif
 
 const int mm[12] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
 

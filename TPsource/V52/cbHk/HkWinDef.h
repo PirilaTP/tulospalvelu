@@ -26,6 +26,14 @@
 #include <Dialogs.hpp>
 #include "HkDef.h"
 #include <xmlparser.h>
+#ifdef __BORLANDC__
+// bcc32 uses 2-arg wcstok; this overload accepts the ISO C11 3-arg form
+// so the same source compiles under both MSVC and bcc32.
+#include <wchar.h>
+inline wchar_t* wcstok(wchar_t* s, const wchar_t* d, wchar_t**) {
+	return ::wcstok(s, d);
+}
+#endif
 
 #define selectopt(st, opt, sel) Win_selectopt((st), (opt), (sel))
 #define wselectopt(st, opt, sel) Win_wselectopt((st), (opt), (sel))
