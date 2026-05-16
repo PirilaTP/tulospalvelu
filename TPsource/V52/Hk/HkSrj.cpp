@@ -438,6 +438,7 @@ int luesarjat(void)
 			if (k_pv != makipv) {
 #else
 				{
+wchar_t *ctx = NULL;
 #endif
 				for (j = 0; j < (vanhat ? valuku_vanha : kilpparam.valuku); j++) {
 					if (sarjaf->ReadLine(s, 78) == NULL) {
@@ -504,6 +505,7 @@ int luesarjat(void)
 
 void luesarjayhdistelmat(void)
 	{
+	wchar_t *ctx = NULL;
 	TextFl *yhdfile;
 	wchar_t *yhdfilename = L"SARJAYHD.LST";
 	wchar_t buf[500] = L"", snimi[LSARJA+1] = L"", *p, *p1, pnimi[LPSARJA+1];
@@ -720,6 +722,7 @@ bool sarjatietue::operator==(sarjatietue& Sarja2)
 
 void sarjatietue::tulkMTB(wchar_t *ln, int i_pv)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *p;
 
 	p = wcstok(ln, L" ;,\t", &ctx);

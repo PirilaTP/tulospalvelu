@@ -6548,6 +6548,7 @@ void autoruutu(void)
 
 void autoalku(wchar_t *koodit)
    {
+   wchar_t *ctx = NULL;
    wchar_t *p;
    INT k;
    extern INT intv[];
@@ -6785,6 +6786,7 @@ void sendtcpfile(LPVOID lpCn)
 
 int autofile(int kaikki)
 	{
+	wchar_t *ctx = NULL;
 	int nt, i, l = 0, sv = 0, yht = 0;
 	int iSrj = 0, nSrj = 0, afSrj[MAXSARJALUKU+MAXYHD];
 	bool mobilFl = false;
@@ -7286,6 +7288,7 @@ void joukkuepisteet(bool naytolle, tulostusparamtp *tulprm)
 
 void luepiirit(wchar_t *flname)
    {
+   wchar_t *ctx = NULL;
    TextFl *piirifile;
    wchar_t line[121], *p, *flnm0 = L"PIIRIT.LST";
    INT k;

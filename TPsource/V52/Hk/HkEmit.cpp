@@ -2855,6 +2855,7 @@ static int TarkKilpailijat(void)
 
 INT lue_radat(INT r)
    {
+   wchar_t *ctx = NULL;
    TextFl *rata_file;
    INT i, j, ir, tn, srj, kdi[MAXNRASTI], rno, nr = 0, vapaajarj = 0, ensilm = 1;
    wchar_t line[300], msg[80], *p, rnimi[12];

@@ -1113,6 +1113,7 @@ void tallGDIfont(TextFl* luetfmtf, GDIfontTp *fnt)
 
 void luekoodi(TextFl* luetfmtf, wchar_t *koodi)
    {
+   wchar_t *ctx = NULL;
    INT i, l;
    wchar_t s[202];
    wchar_t *p;

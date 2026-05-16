@@ -504,6 +504,7 @@ int TFormRadat::importradat(void)
 	while (!rata_file->Feof()) {
 	  if (rata_file->ReadLine(line, sizeof(line)/2-2) == NULL) break;
 		 {
+		 wchar_t *ctx = NULL;
 		 memset(koodi, 0, sizeof(koodi));
 		 if (blerotin) {
 			p = wcstok(line, L" \n", &ctx);

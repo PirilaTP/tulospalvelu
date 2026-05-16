@@ -539,6 +539,7 @@ void kirjsarjat(void)
 
 void sarjatietue::tulkMTB(wchar_t *ln, int osuus)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *p;
 
 	p = wcstok(ln, L" ;,\t", &ctx);

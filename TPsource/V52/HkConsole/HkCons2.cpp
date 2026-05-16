@@ -2587,6 +2587,7 @@ static bool numerovertailu;
 
 void asetavertajat(wchar_t *ln)
 	{
+	wchar_t *ctx = NULL;
 	wchar_t *p;
 	int j = 0;
 	INT32 t;

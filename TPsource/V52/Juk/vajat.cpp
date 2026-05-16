@@ -451,6 +451,7 @@ void AjatTiedostoon(wchar_t *fname, int akttm)
 
 void AjatTiedostosta(wchar_t *fname, int akttm, bool vainajat)
 {
+	wchar_t *ctx = NULL;
 	TextFl *AikaFl;
 
 	AikaFl = new TextFl(fname, L"rt");
