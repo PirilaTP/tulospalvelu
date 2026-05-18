@@ -682,7 +682,6 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
             }
          else
 			{
-            wchar_t *ctx = NULL;
             wcsncpy(fldn, fld[ncl], 89);
             for (p = fldn; *p && *p != L' '; p++) ;
 			if (*p == L' ') *p = 0;
@@ -1375,7 +1374,6 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
                }
 			else if (fldn[10] >= L'0' && fldn[10] <= L'9')
 			   {
-			   wchar_t *ctx = NULL;
 			   ol_osuus = 0;
 			   os_raja = _wtoi(fldn+10);
 			   }

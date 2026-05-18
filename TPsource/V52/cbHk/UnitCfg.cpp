@@ -946,7 +946,6 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 				}
 			 else
 				{
-				wchar_t *ctx = NULL;
 				wcsncpy(fldn, fld, 89);
 				for (p = fldn; *p && *p != L' '; p++) ;
 				if (*p == L' ') *p = 0;
@@ -1743,7 +1742,6 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			int rno = 0;
 			if( !wmemcmpU(fldn, L"COMET",5))
 			   {
-				wchar_t *ctx = NULL;
 				Tulkitut[i] = 1;
 				CBLaite1->ItemIndex = 3;
 			   }

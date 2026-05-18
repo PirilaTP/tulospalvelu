@@ -1791,7 +1791,6 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			 int rno = 0;
 			if( !wmemcmpU(fldn, L"COMET",5))
 			   {
-			   wchar_t *ctx = NULL;
 			   regnly[0] = LID_COMET;
 			   }
 			else if (!wmemcmpU(fldn, L"TIMY",4)) {
