@@ -154,7 +154,7 @@ public:
 	void 	put_wxml_s(wchar_t *tag, wchar_t *value, int level, wchar_t *parstr = 0);
 	void 	put_wxml_d(wchar_t *tag, INT32 value, int level, wchar_t *parstr = 0);
 	void 	put_wxml_f(wchar_t *tag, double value, int prec, int level, wchar_t *parstr = 0);
-	void 	put_wxml_time(wchar_t *tag, int Date, INT32 value, int t0, int tarkkuus, int len, // Date = 0: ei pï¿½ivï¿½ystï¿½
+	void 	put_wxml_time(wchar_t *tag, int Date, INT32 value, int t0, int tarkkuus, int len, // Date = 0: ei päiväystä
 				wchar_t dcep, int level, wchar_t *parstr = 0);   // len < 0: poista etunollat
 	void 	put_wtag(wchar_t *tag, int level);
 	void 	put_wtagparams(wchar_t *tag, wchar_t *params, bool empty, int level);
@@ -428,10 +428,10 @@ int sendwline(wchar_t *linein, PRFILE *pf);
 int sendchars(char *line, int len, PRFILE *pf);
 int sendwchars(wchar_t *wline, int len, PRFILE *pf);
 // GDIkirjoitin: -1: TextFl, 0: muu kirjoitin tai tiedosto, 1: GDIkirjoitin
-// wait: ei kï¿½ytï¿½ssï¿½
-// append: avaa tiedoston append-moodiin (myï¿½s TextFl)
+// wait: ei käytössä
+// append: avaa tiedoston append-moodiin (myös TextFl)
 // trlate: merkkien korvaus taulukolla trlate
-// immed: tiedostoonkirjoitus viedï¿½ï¿½n heti levylle (ei Textfl)
+// immed: tiedostoonkirjoitus viedään heti levylle (ei Textfl)
 PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 	char *trlate, int immediate);
 int prstatus(PRFILE *pf);

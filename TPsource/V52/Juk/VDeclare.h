@@ -406,7 +406,7 @@ extern	 bool ProsEmitOn;
 extern   wchar_t sulkusalasana[12];
 extern   INT  max_lahportti, max_portti;
 extern   int lahcomserver[];
-extern   int keyclose[];                   /* Kï¿½yttï¿½jï¿½ sulkenut portin */
+extern   int keyclose[];                   /* Käyttäjä sulkenut portin */
 extern   char tyhjarivi[];
 extern   int kaynnistysvaihe;
 extern   int chkstk;
