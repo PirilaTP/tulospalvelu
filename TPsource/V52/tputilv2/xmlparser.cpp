@@ -17,12 +17,6 @@
 #include <stdlib.h>
 #include <tputil.h>
 #include "xmlparser.h"
-#ifdef __BORLANDC__
-// bcc32 uses 2-arg wcstok; rewrite 3-arg calls to 2-arg at preprocessor level.
-// Per C standard, a macro is not recursively expanded in its own replacement
-// text, so the inner wcstok(s,d) resolves to the real bcc32 runtime function.
-#define wcstok(s, d, ctx) wcstok(s, d)
-#endif
 
 static wchar_t *Tabs[8] = {L"", L"\t", L"\t\t", L"\t\t\t", L"\t\t\t\t", L"\t\t\t\t\t", L"\t\t\t\t\t\t", L"\t\t\t\t\t\t\t"};
 

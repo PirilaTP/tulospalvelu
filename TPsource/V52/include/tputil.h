@@ -58,6 +58,10 @@
 #define _filelength(fl)    filelength((fl))
 #define _chsize(f,l)       chsize((f),(l))
 #define _swab(x,y,n)       swab((x),(y),(n))
+// bcc32 uses 2-arg wcstok; rewrite 3-arg calls to 2-arg at preprocessor level.
+// Per C standard, a macro is not recursively expanded in its own replacement
+// text, so the inner wcstok(s,d) resolves to the real bcc32 runtime function.
+#define wcstok(s, d, ctx) wcstok(s, d)
 #else
 #define farmalloc(x) malloc((x))
 #define farcalloc(x, y) calloc((x), (y))
@@ -150,7 +154,7 @@ public:
 	void 	put_wxml_s(wchar_t *tag, wchar_t *value, int level, wchar_t *parstr = 0);
 	void 	put_wxml_d(wchar_t *tag, INT32 value, int level, wchar_t *parstr = 0);
 	void 	put_wxml_f(wchar_t *tag, double value, int prec, int level, wchar_t *parstr = 0);
-	void 	put_wxml_time(wchar_t *tag, int Date, INT32 value, int t0, int tarkkuus, int len, // Date = 0: ei päiväystä
+	void 	put_wxml_time(wchar_t *tag, int Date, INT32 value, int t0, int tarkkuus, int len, // Date = 0: ei pï¿½ivï¿½ystï¿½
 				wchar_t dcep, int level, wchar_t *parstr = 0);   // len < 0: poista etunollat
 	void 	put_wtag(wchar_t *tag, int level);
 	void 	put_wtagparams(wchar_t *tag, wchar_t *params, bool empty, int level);
@@ -424,10 +428,10 @@ int sendwline(wchar_t *linein, PRFILE *pf);
 int sendchars(char *line, int len, PRFILE *pf);
 int sendwchars(wchar_t *wline, int len, PRFILE *pf);
 // GDIkirjoitin: -1: TextFl, 0: muu kirjoitin tai tiedosto, 1: GDIkirjoitin
-// wait: ei käytössä
-// append: avaa tiedoston append-moodiin (myös TextFl)
+// wait: ei kï¿½ytï¿½ssï¿½
+// append: avaa tiedoston append-moodiin (myï¿½s TextFl)
 // trlate: merkkien korvaus taulukolla trlate
-// immed: tiedostoonkirjoitus viedään heti levylle (ei Textfl)
+// immed: tiedostoonkirjoitus viedï¿½ï¿½n heti levylle (ei Textfl)
 PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 	char *trlate, int immediate);
 int prstatus(PRFILE *pf);

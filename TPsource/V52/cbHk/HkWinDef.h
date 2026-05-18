@@ -26,13 +26,6 @@
 #include <Dialogs.hpp>
 #include "HkDef.h"
 #include <xmlparser.h>
-#ifdef __BORLANDC__
-// bcc32 uses 2-arg wcstok; rewrite 3-arg calls to 2-arg at preprocessor level.
-// Per C standard, a macro is not recursively expanded in its own replacement
-// text, so the inner wcstok(s,d) resolves to the real bcc32 runtime function.
-#define wcstok(s, d, ctx) wcstok(s, d)
-#endif
-
 #define selectopt(st, opt, sel) Win_selectopt((st), (opt), (sel))
 #define wselectopt(st, opt, sel) Win_wselectopt((st), (opt), (sel))
 void SuljeKaikki(void);
@@ -179,7 +172,7 @@ public:
 	TEdit	*EOrd;
 	TCheckBox *CB;
 	void	*Data;
-	int		DataType;  // 0: int, 2: wchar_t, 3: lähtöaika
+	int		DataType;  // 0: int, 2: wchar_t, 3: lï¿½htï¿½aika
 	int		Count;
 
 	__fastcall EdtField(void);
