@@ -26,6 +26,7 @@
 #include <Dialogs.hpp>
 #include "HkDef.h"
 #include <xmlparser.h>
+
 #define selectopt(st, opt, sel) Win_selectopt((st), (opt), (sel))
 #define wselectopt(st, opt, sel) Win_wselectopt((st), (opt), (sel))
 void SuljeKaikki(void);
@@ -172,7 +173,7 @@ public:
 	TEdit	*EOrd;
 	TCheckBox *CB;
 	void	*Data;
-	int		DataType;  // 0: int, 2: wchar_t, 3: lï¿½htï¿½aika
+	int		DataType;  // 0: int, 2: wchar_t, 3: lähtöaika
 	int		Count;
 
 	__fastcall EdtField(void);
