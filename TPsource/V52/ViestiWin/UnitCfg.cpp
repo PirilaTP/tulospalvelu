@@ -49,7 +49,7 @@ void __fastcall TFormCfg::FormCreate(TObject *Sender)
 	SG1->Cells[4][0] = L"VastaIPosoite";
 	SG1->Cells[5][0] = L"VastaPortti";
 	SG1->Cells[6][0] = L"Sanomat";
-	SG1->Cells[7][0] = L"Ei väl.";
+	SG1->Cells[7][0] = L"Ei vï¿½l.";
 	SG1->ColWidths[0] = 40 * Screen->PixelsPerInch / 96;
 	SG1->ColWidths[1] = 50 * Screen->PixelsPerInch / 96;
 	SG1->ColWidths[2] = 40 * Screen->PixelsPerInch / 96;
@@ -74,12 +74,12 @@ void __fastcall TFormCfg::FormCreate(TObject *Sender)
 	SGLeimat->ColWidths[5] = 60 * Screen->PixelsPerInch / 96;
 	SGLeimat->ColWidths[6] = 70 * Screen->PixelsPerInch / 96;
 	SGAjat->RowCount = 13;
-	SGAjat->Cells[0][0] = L"Lähde";
+	SGAjat->Cells[0][0] = L"Lï¿½hde";
 	SGAjat->Cells[1][0] = L"Kohde";
 	SGAjat->Cells[2][0] = L"Jono";
 	SGAjat->Cells[0][1] = L"Sarjaportti";
 	SGAjat->Cells[0][2] = L"Varalla";
-	SGAjat->Cells[0][3] = L"Näppäimistö";
+	SGAjat->Cells[0][3] = L"Nï¿½ppï¿½imistï¿½";
 	SGAjat->Cells[0][4] = L"Kellon kanava 0";
 	SGAjat->Cells[0][5] = L"Kellon kanava 1";
 	SGAjat->Cells[0][6] = L"Kellon kanava 2";
@@ -93,8 +93,8 @@ void __fastcall TFormCfg::FormCreate(TObject *Sender)
 	SGAjat->ColWidths[1] = 50 * Screen->PixelsPerInch / 96;
 	SGAjat->ColWidths[2] = 50 * Screen->PixelsPerInch / 96;
 	TulkitseTiedot(true);
-	Memo1->Lines->Add(L"//CfgEditorAlku - Konfiguraatioeditori ei tulkitse tai muuta tätä riviä edeltätäviä rivejä");
-	Memo1->Lines->Add(L"//CfgEditorLoppu - Konfiguraatioeditori ei tulkitse tai muuta tätä riviä seuraavia rivejä");
+	Memo1->Lines->Add(L"//CfgEditorAlku - Konfiguraatioeditori ei tulkitse tai muuta tï¿½tï¿½ riviï¿½ edeltï¿½tï¿½viï¿½ rivejï¿½");
+	Memo1->Lines->Add(L"//CfgEditorLoppu - Konfiguraatioeditori ei tulkitse tai muuta tï¿½tï¿½ riviï¿½ seuraavia rivejï¿½");
 	RGNaytaVal->ItemIndex = 2;
 	ValSetup();
 }
@@ -214,10 +214,10 @@ void TFormCfg::PaivitaIkkuna(void)
 			}
 		}
 	if (Loppu == 0) {
-		Memo1->Lines->Insert(Alku, L"//CfgEditorLoppu - Konfiguraatioeditori ei tulkitse tai muuta tätä riviä seuraavia rivejä");
+		Memo1->Lines->Insert(Alku, L"//CfgEditorLoppu - Konfiguraatioeditori ei tulkitse tai muuta tï¿½tï¿½ riviï¿½ seuraavia rivejï¿½");
 		}
 	if (Alku == 0) {
-		Memo1->Lines->Insert(0,L"//CfgEditorAlku - Konfiguraatioeditori ei tulkitse tai muuta tätä riviä edeltätäviä rivejä");
+		Memo1->Lines->Insert(0,L"//CfgEditorAlku - Konfiguraatioeditori ei tulkitse tai muuta tï¿½tï¿½ riviï¿½ edeltï¿½tï¿½viï¿½ rivejï¿½");
 		Alku = 1;
 		Loppu++;
 		}
@@ -241,7 +241,7 @@ void TFormCfg::PaivitaIkkuna(void)
 		Loppu++;
 		}
 	if (CBAani->ItemIndex != 1) {
-		Memo1->Lines->Insert(r++, UnicodeString(L"ÄÄNI=")+UnicodeString(CBAani->ItemIndex));
+		Memo1->Lines->Insert(r++, UnicodeString(L"ï¿½ï¿½NI=")+UnicodeString(CBAani->ItemIndex));
 		Loppu++;
 		}
 	US = EdSammSalasana->Text.Trim();
@@ -254,7 +254,7 @@ void TFormCfg::PaivitaIkkuna(void)
 		Loppu++;
 		}
 	if (CBSailHyl->Checked) {
-		Memo1->Lines->Insert(r++, UnicodeString(L"SÄILHYL"));
+		Memo1->Lines->Insert(r++, UnicodeString(L"Sï¿½ILHYL"));
 		Loppu++;
 		}
 	if (CBVuorokaudet->Checked) {
@@ -262,7 +262,7 @@ void TFormCfg::PaivitaIkkuna(void)
 		Loppu++;
 		}
 	if (CBNaytaHaj->Checked) {
-		Memo1->Lines->Insert(r++, UnicodeString(L"NÄYTÄHAJONTA=EI"));
+		Memo1->Lines->Insert(r++, UnicodeString(L"Nï¿½YTï¿½HAJONTA=EI"));
 		Loppu++;
 		}
 	if (CBComfile->ItemIndex == 1) {
@@ -280,7 +280,7 @@ void TFormCfg::PaivitaIkkuna(void)
 		Loppu++;
 		}
 	if (CBValita->ItemIndex == 1) {
-		Memo1->Lines->Insert(r++, UnicodeString(L"VÄLITÄ=EI"));
+		Memo1->Lines->Insert(r++, UnicodeString(L"Vï¿½LITï¿½=EI"));
 		Loppu++;
 		}
 	for (int y = 0; y < SG1->RowCount-1; y++) {
@@ -319,51 +319,51 @@ void TFormCfg::PaivitaIkkuna(void)
 		Memo1->Lines->Insert(r++, YhtStr);
 		Loppu++;
 		if (SG1->Cells[6][y+1].Pos(L"Aik") != 0) {
-			Memo1->Lines->Insert(r++, L"LÄHAIKA"+UnicodeString(ny));
+			Memo1->Lines->Insert(r++, L"Lï¿½HAIKA"+UnicodeString(ny));
 			Loppu++;
 			}
 		if (SG1->Cells[6][y+1].Pos(L"AiV") != 0) {
-			Memo1->Lines->Insert(r++, L"LÄHAIKA"+UnicodeString(ny)+L"=V");
+			Memo1->Lines->Insert(r++, L"Lï¿½HAIKA"+UnicodeString(ny)+L"=V");
 			Loppu++;
 			}
 		if (SG1->Cells[6][y+1].Pos(L"AiP") != 0) {
-			Memo1->Lines->Insert(r++, L"LÄHAIKA"+UnicodeString(ny)+L"=P");
+			Memo1->Lines->Insert(r++, L"Lï¿½HAIKA"+UnicodeString(ny)+L"=P");
 			Loppu++;
 			}
 		if (SG1->Cells[6][y+1].Pos(L"Emt") != 0) {
-			Memo1->Lines->Insert(r++, L"LÄHEMIT"+UnicodeString(ny));
+			Memo1->Lines->Insert(r++, L"Lï¿½HEMIT"+UnicodeString(ny));
 			Loppu++;
 			}
 		if (SG1->Cells[6][y+1].Pos(L"EmI") != 0) {
-			Memo1->Lines->Insert(r++, L"LÄHEMIT"+UnicodeString(ny)+L"=I");
+			Memo1->Lines->Insert(r++, L"Lï¿½HEMIT"+UnicodeString(ny)+L"=I");
 			Loppu++;
 			}
 		if (SG1->Cells[6][y+1].Pos(L"EmO") != 0) {
-			Memo1->Lines->Insert(r++, L"LÄHEMIT"+UnicodeString(ny)+L"=O");
+			Memo1->Lines->Insert(r++, L"Lï¿½HEMIT"+UnicodeString(ny)+L"=O");
 			Loppu++;
 			}
 		if (SG1->Cells[6][y+1].Pos(L"EmV") != 0) {
-			Memo1->Lines->Insert(r++, L"LÄHEMIT"+UnicodeString(ny)+L"=V");
+			Memo1->Lines->Insert(r++, L"Lï¿½HEMIT"+UnicodeString(ny)+L"=V");
 			Loppu++;
 			}
 		if (SG1->Cells[6][y+1].Pos(L"EVa") != 0) {
-			Memo1->Lines->Insert(r++, L"LÄHEMVA"+UnicodeString(ny));
+			Memo1->Lines->Insert(r++, L"Lï¿½HEMVA"+UnicodeString(ny));
 			Loppu++;
 			}
 		if (SG1->Cells[6][y+1].Pos(L"ECd") != 0) {
-			Memo1->Lines->Insert(r++, L"LÄHECODE"+UnicodeString(ny));
+			Memo1->Lines->Insert(r++, L"Lï¿½HECODE"+UnicodeString(ny));
 			Loppu++;
 			}
 		if (SG1->Cells[6][y+1].Pos(L"Tie") != 0) {
-			Memo1->Lines->Insert(r++, L"LÄHTIEDOSTOT"+UnicodeString(ny)+
+			Memo1->Lines->Insert(r++, L"Lï¿½HTIEDOSTOT"+UnicodeString(ny)+
 				(CBLahKaikkiPolku->Checked ? L"/K" : L""));
 			Loppu++;
 			}
 		if (SG1->Cells[7][y+1].Trim().Length() > 0) {
 			if (SG1->Cells[7][y+1].Pos(L"Ei") != 0)
-				Memo1->Lines->Insert(r++, L"VÄLITÄ"+UnicodeString(ny)+L"=Ei");
+				Memo1->Lines->Insert(r++, L"Vï¿½LITï¿½"+UnicodeString(ny)+L"=Ei");
 			else
-				Memo1->Lines->Insert(r++, L"VÄLITÄ"+UnicodeString(ny)+L"="+SG1->Cells[7][y+1].Trim());
+				Memo1->Lines->Insert(r++, L"Vï¿½LITï¿½"+UnicodeString(ny)+L"="+SG1->Cells[7][y+1].Trim());
 			Loppu++;
 			}
 		}
@@ -399,7 +399,7 @@ void TFormCfg::PaivitaIkkuna(void)
 			}
 		}
 	if (CBLahTiedostot->Checked) {
-		Memo1->Lines->Insert(r++, UnicodeString(L"LÄHTIEDOSTOT") + (CBLahKaikkiPolku->Checked ? L"/K" : L""));
+		Memo1->Lines->Insert(r++, UnicodeString(L"Lï¿½HTIEDOSTOT") + (CBLahKaikkiPolku->Checked ? L"/K" : L""));
 		Loppu++;
 		}
 	if (CBYhteysAjat->Checked) {
@@ -474,14 +474,14 @@ void TFormCfg::PaivitaIkkuna(void)
 				Loppu++;
 				break;
 			case 4:
-				Memo1->Lines->Insert(r++, UnicodeString(L"LÄHDEPISTEET"));
+				Memo1->Lines->Insert(r++, UnicodeString(L"Lï¿½HDEPISTEET"));
 				Loppu++;
 				break;
 			}
 
 		}
 	if (CBVainVA->Checked) {
-		Memo1->Lines->Insert(r++, UnicodeString(L"VAINVÄLIAJAT"));
+		Memo1->Lines->Insert(r++, UnicodeString(L"VAINVï¿½LIAJAT"));
 		Loppu++;
 		}
 	if (CBKelloNo->Checked) {
@@ -493,8 +493,8 @@ void TFormCfg::PaivitaIkkuna(void)
 		Loppu++;
 		}
 	if (RGEmittoiminto->ItemIndex > 1) {
-		Memo1->Lines->Insert(r++, UnicodeString(L"SISÄÄNLUENTA")+
-			(RGEmittoiminto->ItemIndex == 3 ? L"=MYÖS" : L""));
+		Memo1->Lines->Insert(r++, UnicodeString(L"SISï¿½ï¿½NLUENTA")+
+			(RGEmittoiminto->ItemIndex == 3 ? L"=MYï¿½S" : L""));
 		Loppu++;
 		}
 	for (int y = 0; y < SGLeimat->RowCount-1; y++) {
@@ -576,7 +576,7 @@ void TFormCfg::PaivitaIkkuna(void)
 		Loppu++;
 		}
 	if (CBJalkiSyotto->Checked) {
-		Memo1->Lines->Insert(r++, UnicodeString(L"JÄLKISYÖTTÖ"));
+		Memo1->Lines->Insert(r++, UnicodeString(L"Jï¿½LKISYï¿½TTï¿½"));
 		Loppu++;
 		}
 	if (CBVaadiAika->Checked) {
@@ -617,7 +617,7 @@ void TFormCfg::PaivitaIkkuna(void)
 				break;
 			case 4:
 				if (EdAikaLukija->Text.Trim().Length() > 0) {
-					Memo1->Lines->Insert(r++, UnicodeString(L"AIKALUKIJA=LÄHDE")+EdAikaLukija->Text.SubString(1,1));
+					Memo1->Lines->Insert(r++, UnicodeString(L"AIKALUKIJA=Lï¿½HDE")+EdAikaLukija->Text.SubString(1,1));
 					Loppu++;
 					}
 				break;
@@ -708,7 +708,7 @@ void TFormCfg::PaivitaIkkuna(void)
 		Loppu++;
 		}
 	if (CBAutoEtuSuku->Checked == false) {
-		Memo1->Lines->Insert(r++, UnicodeString(L"HTMLSÄILNIMI"));
+		Memo1->Lines->Insert(r++, UnicodeString(L"HTMLSï¿½ILNIMI"));
 		Loppu++;		
 		}
 	if (CB25rivi->Checked) {
@@ -720,7 +720,7 @@ void TFormCfg::PaivitaIkkuna(void)
 		Loppu++;		
 		}
 	if (EdVarit->Text.Trim().Length() > 3) {
-		Memo1->Lines->Insert(r++, UnicodeString(L"VÄRIT=") + EdVarit->Text.Trim());
+		Memo1->Lines->Insert(r++, UnicodeString(L"Vï¿½RIT=") + EdVarit->Text.Trim());
 		Loppu++;
 		}
 	if (CBBoot->ItemIndex > 10) {
@@ -729,11 +729,11 @@ void TFormCfg::PaivitaIkkuna(void)
 		Loppu++;			
 		}
 	if (CBUudenTulos->Checked) {
-		Memo1->Lines->Insert(r++, UnicodeString(L"SUORASYÖTTÖ"));
+		Memo1->Lines->Insert(r++, UnicodeString(L"SUORASYï¿½TTï¿½"));
 		Loppu++;		
 		}
 	if (EdNappain->Text.Trim().Length() > 2 && EdNappain->Text.Trim() != L"0,0") {
-		Memo1->Lines->Insert(r++, UnicodeString(L"NÄPPÄIN=") + EdNappain->Text.Trim());
+		Memo1->Lines->Insert(r++, UnicodeString(L"Nï¿½PPï¿½IN=") + EdNappain->Text.Trim());
 		Loppu++;
 		}
 	if (CBEnnakoi->Checked) {
@@ -800,26 +800,26 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			 for (p = fld; *p; p++) {
 				switch (*p) {
 				   case 196 :
-					  *p = L'Ä';
+					  *p = L'ï¿½';
 					  break;
 				   case 228 :
 					case 245 :
-					  *p = L'ä';
+					  *p = L'ï¿½';
 					  break;
 				   case 214 :
 					case 205 :
-					  *p = L'Ö';
+					  *p = L'ï¿½';
 					  break;
 					case 246 :
 				   case 247 :
-					  *p = L'ö';
+					  *p = L'ï¿½';
 					  break;
 				   case 197 :
-					  *p = L'';
+					  *p = L'ï¿½';
 					  break;
 				   case 229 :
 					case 213 :
-					  *p = L'å';
+					  *p = L'ï¿½';
 					  break;
 				   }
 				}
@@ -885,7 +885,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 		if (tyhjenna) {
 			EdVarit->Text = L"";
 			}
-		else if(!wmemcmpU(fldn, L"VÄRIT=", 6)) {
+		else if(!wmemcmpU(fldn, L"Vï¿½RIT=", 6)) {
 			Tulkitut[i] = 1;
 			EdVarit->Text = fldn+6;
 			continue;
@@ -937,7 +937,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 		if (tyhjenna) {
 			CBNaytaHaj->Checked = false;
 			}
-		else if(!wmemcmpU(fldn, L"NÄYTÄHAJONTA=EI", 14)) {
+		else if(!wmemcmpU(fldn, L"Nï¿½YTï¿½HAJONTA=EI", 14)) {
 			Tulkitut[i] = 1;
 			CBVuorokaudet->Checked = true;
 			continue;
@@ -945,7 +945,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 		if (tyhjenna) {
 			CBSailHyl->Checked = false;
 			}
-		else if(!wmemcmpU(fldn, L"SÄILHYL", 8)) {
+		else if(!wmemcmpU(fldn, L"Sï¿½ILHYL", 8)) {
 			Tulkitut[i] = 1;
 			CBSailHyl->Checked = true;
 			continue;
@@ -1274,7 +1274,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			}
 		if (tyhjenna) {
 			}
-		else if (!wmemcmpU(fldn, L"VÄLITÄ",6) && (pos = 6) != 0 &&
+		else if (!wmemcmpU(fldn, L"Vï¿½LITï¿½",6) && (pos = 6) != 0 &&
 			(ny = yhteys_no(fldn, &pos)) != 0) {
 			Tulkitut[i] = 1;
 			for (y = 1; y < SG1->RowCount; y++) {
@@ -1291,7 +1291,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			CBLahTiedostot->Checked = false;
 			CBLahKaikkiPolku->Checked = false;
 			}
-		else if (!wmemcmpU(fldn, L"LÄHTIEDOSTOT",12)) {
+		else if (!wmemcmpU(fldn, L"Lï¿½HTIEDOSTOT",12)) {
 			Tulkitut[i] = 1;
 			pos = 12;
 			if (fldn[12] == 0 || fldn[12] == L'/') {
@@ -1349,7 +1349,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 		if (tyhjenna) {
 			CBAani->ItemIndex = 1;
 			}
-		else if( !wmemcmpU(fldn, L"ÄÄNI=",5)) {
+		else if( !wmemcmpU(fldn, L"ï¿½ï¿½NI=",5)) {
 			Tulkitut[i] = 1;
 			CBAani->ItemIndex = fldn[5] - L'0';
 			continue;
@@ -1380,7 +1380,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 		 if (tyhjenna) {
 			EdNappain->Text = L"0,0";
 			}
-		else if(!wmemcmpU(fldn, L"NÄPPÄIN=", 8)) {
+		else if(!wmemcmpU(fldn, L"Nï¿½PPï¿½IN=", 8)) {
 			Tulkitut[i] = 1;
 			if ((p = wcstok(fldn+8, L",/", &ctx)) == NULL) continue;
 			y = _wtoi(p);
@@ -1390,7 +1390,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			}
 		if (tyhjenna) {
 			}
-		else if( !wmemcmpU(fldn, L"LÄHAIKA",7) && (pos = 7) != 0 &&
+		else if( !wmemcmpU(fldn, L"Lï¿½HAIKA",7) && (pos = 7) != 0 &&
 			(ny = yhteys_no(fldn, &pos)) != 0) {
 			Tulkitut[i] = 1;
 			for (y = 1; y < SG1->RowCount; y++) {
@@ -1407,7 +1407,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			}
 		 if (tyhjenna) {
 			}
-		else if( !wmemcmpU(fldn, L"LÄHECODE",8) && (pos = 8) != 0 &&
+		else if( !wmemcmpU(fldn, L"Lï¿½HECODE",8) && (pos = 8) != 0 &&
 			(ny = yhteys_no(fldn, &pos)) != 0) {
 			Tulkitut[i] = 1;
 			for (y = 1; y < SG1->RowCount; y++) {
@@ -1621,7 +1621,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			}
 		 if (tyhjenna) {
 			}
-		else if( !wmemcmpU(fldn, L"LÄHDEPISTEET",8)) {
+		else if( !wmemcmpU(fldn, L"Lï¿½HDEPISTEET",8)) {
 			Tulkitut[i] = 1;
 			RGPiste->ItemIndex = 4;
 			continue;
@@ -1696,7 +1696,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 		 if (tyhjenna) {
 			CBVainVA->Checked = false;
 			}
-		else if( !wmemcmpU(fldn, L"VAINVÄLIAJAT",12)) {
+		else if( !wmemcmpU(fldn, L"VAINVï¿½LIAJAT",12)) {
 			Tulkitut[i] = 1;
 			CBVainVA->Checked = true;
 			continue;
@@ -1735,7 +1735,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			}
 		 if (tyhjenna) {
 			}
-		else if( !wmemcmpU(fldn, L"SISÄÄNLUENTA",8)) {
+		else if( !wmemcmpU(fldn, L"SISï¿½ï¿½NLUENTA",8)) {
 			Tulkitut[i] = 1;
 			RGEmittoiminto->ItemIndex =
 				(wcsstr(fldn, L"=M") != NULL) ? 3 : 2;
@@ -1842,7 +1842,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 		 if (tyhjenna) {
 			CBJalkiSyotto->Checked = false;
 			}
-		else if( !wmemcmpU(fldn, L"JÄLKISYÖTTÖ",7)) {
+		else if( !wmemcmpU(fldn, L"Jï¿½LKISYï¿½TTï¿½",7)) {
 			Tulkitut[i] = 1;
 			CBJalkiSyotto->Checked = true;
 			continue;
@@ -1917,7 +1917,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 						EdAikaLukija->Text = j;
 						}
 					else {
-						SGLeimat->Cells[6][r] = L"LÄHDE"+j;
+						SGLeimat->Cells[6][r] = L"Lï¿½HDE"+j;
 						}
 					 continue;
 				  }
@@ -1964,7 +1964,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 		 if (tyhjenna) {
 			RGPiste->ItemIndex = 0;
 			}
-		else if( !wmemcmpU(fldn, L"SJBOX",5) || !wmemcmpU(fldn, L"LÄHDEPISTEET",8)) {
+		else if( !wmemcmpU(fldn, L"SJBOX",5) || !wmemcmpU(fldn, L"Lï¿½HDEPISTEET",8)) {
 			Tulkitut[i] = 1;
 			RGPiste->ItemIndex = 4;
 			continue;
@@ -1990,7 +1990,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			CBLuentaLoki->Checked = true;
 			continue;
 			}
-		if( !wmemcmpU(fldn, L"LÄHEMIT",7) && (pos = 7) != 0 &&
+		if( !wmemcmpU(fldn, L"Lï¿½HEMIT",7) && (pos = 7) != 0 &&
 			(ny = yhteys_no(fldn, &pos)) != 0) {
 			int r = 0;
 			Tulkitut[i] = 1;
@@ -2011,7 +2011,7 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			}
 		 if (tyhjenna) {
 			}
-		else if( !wmemcmpU(fldn, L"LÄHEMVA",7) && (pos = 7) != 0 &&
+		else if( !wmemcmpU(fldn, L"Lï¿½HEMVA",7) && (pos = 7) != 0 &&
 			(ny = yhteys_no(fldn, &pos)) != 0) {
 			int r = 0;
 			Tulkitut[i] = 1;
@@ -2281,7 +2281,7 @@ void __fastcall TFormCfg::LaiteAjatClick(TObject *Sender)
 	else if (Sender == LaiteVuorot)
 		SGLeimat->Cells[SGLeimat->Col][SGLeimat->Row] = L"VAINA";
 	else if (Sender == Lahdekoodi1)
-		SGLeimat->Cells[SGLeimat->Col][SGLeimat->Row] = L"LÄHDExx";
+		SGLeimat->Cells[SGLeimat->Col][SGLeimat->Row] = L"Lï¿½HDExx";
 }
 //---------------------------------------------------------------------------
 
