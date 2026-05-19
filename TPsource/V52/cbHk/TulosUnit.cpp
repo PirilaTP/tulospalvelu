@@ -383,6 +383,7 @@ int __fastcall TTilanneForm::SmartJarj(int rv, int *nRv)
 
 bool __fastcall TTilanneForm::OnAlisarja(kilptietue *kilp)
 {
+	wchar_t *ctx = NULL;
 	if (Rajaukset->Checked == false)
 		return(true);
 	if (EdtSp->Text != NULL && EdtSp->Text.Length() > 0 && kilp->sukup != towupper(EdtSp->Text.c_str()[0]))
@@ -390,7 +391,7 @@ bool __fastcall TTilanneForm::OnAlisarja(kilptietue *kilp)
 	if (EdtIkasarja->Text != NULL && EdtIkasarja->Text.Length() > 0) {
 		wchar_t *p, asStr[20];
 		wcscpy(asStr, EdtIkasarja->Text.UpperCase().SubString(1, 19).c_str());
-		p = wcstok(asStr, L" ,;");
+		p = wcstok(asStr, L" ,;", &ctx);
 		while (p) {
 			switch (p[0]) {
 				case L'Y':
@@ -405,7 +406,7 @@ bool __fastcall TTilanneForm::OnAlisarja(kilptietue *kilp)
 					if (kilp->ikasarja == _wtoi(p))
 						return(true);
 				}
-			p = wcstok(NULL, L" ,;");
+			p = wcstok(NULL, L" ,;", &ctx);
 			}
 		return(false);
 		}

@@ -42,6 +42,7 @@ int tv_val[MAXSARJALUKU][VALUKU+3];
 
 void opentv(void)
 	{
+	wchar_t *ctx = NULL;
 	char  *tvbuf, line[100], *p;
 	INT er = 1, i, k, l, srj = 0;
 	FILE *tvparfl;
@@ -57,14 +58,14 @@ void opentv(void)
 			}
 		while (!feof(tvparfl)) {
 			if (fgetws(line, 98, tvparfl)) {
-				if ((p = wcstok(line, L" \t\n")) == 0)
+				if ((p = wcstok(line, L" \t\n", &ctx)) == 0)
 					continue;
 				if ((k = haesarja_w(p, false)) >= 0) {
 					srj = k;
 					}
 				else {
 					k = _wtoi(p);
-					if ((p = wcstok(NULL, L" \t\n")) != 0) {
+					if ((p = wcstok(NULL, L" \t\n", &ctx)) != 0) {
 						l = _wtoi(p);
 
 						if (k >= 1 && k <= kilpparam.valuku) {

@@ -898,6 +898,7 @@ TextFl *SkriptiOFl;
 
 void __fastcall TLoppuKilpForm::Button2Click(TObject *Sender)
 {
+	wchar_t *ctx = NULL;
 	if (!SkriptiFl) {
 		OpenDialog1->FileName = L"FinSaannot.txt";
 		OpenDialog1->DefaultExt = L"txt";
@@ -928,10 +929,10 @@ void __fastcall TLoppuKilpForm::Button2Click(TObject *Sender)
 			upcasewstr(st);
 /*
 			if (!wmemcmp(st, L"PERUS:", 6)) {
-				if ((p = wcstok(line+6, L" ;\t\n")) == NULL)
+				if ((p = wcstok(line+6, L" ;\t\n", &ctx)) == NULL)
 					continue;
 				CBtakajo->Checked = _wtoi(p);
-				if ((p = wcstok(NULL, L" ;\t\n")) == NULL)
+				if ((p = wcstok(NULL, L" ;\t\n", &ctx)) == NULL)
 					continue;
 				RGPoimi->ItemIndex = _wtoi(p)-1;
 				continue;
@@ -1018,7 +1019,7 @@ void __fastcall TLoppuKilpForm::Button2Click(TObject *Sender)
 				return;
 				}
 			else {
-				if ((p = wcstok(st, L" ;\t\n")) == NULL)
+				if ((p = wcstok(st, L" ;\t\n", &ctx)) == NULL)
 					break;
 				srj = haesarja_w(p, false);
 				if (srj < 0)

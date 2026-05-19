@@ -3413,6 +3413,7 @@ static void lue_rogsakot(void)
 
 INT lue_radat(INT r)
    {
+	wchar_t *ctx = NULL;
    TextFl *rata_file;
    INT i, j, ir, tn, tn1, kdi[MAXNRASTI], rno, nr = 0, vapaajarj = 0, ensilm = 1;
    wchar_t line[300], *p;
@@ -3460,7 +3461,7 @@ INT lue_radat(INT r)
    for (;;) {
 	  if (rata_file->ReadLine(line, 298) == NULL || wcslen(line) < 4)
 		  break;
-	  p = wcstok(line, L" \t");
+	  p = wcstok(line, L" \t", &ctx);
 	  wcstoansi(rnimi, p, 39);
 	  rnimi[39] = 0;
 	  elimbl2(rnimi);
@@ -3481,10 +3482,10 @@ INT lue_radat(INT r)
 		nrata = rno++;
 		strcpy(rata[nrata].rata, rnimi);
 
-	  p = wcstok(NULL, L" \t");
+	  p = wcstok(NULL, L" \t", &ctx);
 	  if (p) {
 		 rata[nrata].ennakko = _wtoi(p);
-		 p = wcstok(NULL, L" \t");
+		 p = wcstok(NULL, L" \t", &ctx);
 		 if (p) rata[nrata].maalilaji = _wtoi(p);
 		 }
 	  ir = 0;
@@ -3494,7 +3495,7 @@ INT lue_radat(INT r)
 		 if (rata_file->ReadLine(line, 298) == NULL) goto esc;
 		 if (emitfl < 0)
 			continue;
-		 p = wcstok(line, L" \t");
+		 p = wcstok(line, L" \t", &ctx);
 		 for (j = 0; j < 40; j++) {
 			tn = 0;
 			if (p) {
@@ -3529,7 +3530,7 @@ INT lue_radat(INT r)
 			   kdi[ir] = tn;
 			   ir++;
 			   }
-			p = wcstok(NULL, L" \t");
+			p = wcstok(NULL, L" \t", &ctx);
 			}
 		 }
 	  rata[nrata].rastiluku = ir;

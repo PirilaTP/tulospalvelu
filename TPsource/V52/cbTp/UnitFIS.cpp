@@ -300,6 +300,7 @@ void __fastcall TFormFIS::BtnSuljeClick(TObject *Sender)
 
 void __fastcall TFormFIS::BtnLueClick(TObject *Sender)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *tags[] = {L"FVALUE", L"MINPENALTY", L"FISLIST", L"SEASON",
 		L"CODEX", L"NATION", L"DISCIPLINE", L"CATEGORY", L"DATE",
 		L"EVENTNAME", L"PLACE", L"TDIDCODE", L"TDLASTNAME", L"TDFIRSTNAME",
@@ -318,10 +319,10 @@ void __fastcall TFormFIS::BtnLueClick(TObject *Sender)
 				FISmaarfl->ReadLine(ln, 198);
 				if (wcslen(ln) > 6) {
 					Memo1->Lines->Add(ln);
-					p = wcstok(ln, L" =");
+					p = wcstok(ln, L" =", &ctx);
 					p1 = NULL;
 					if (p)
-						p1 = wcstok(NULL, L" \n");
+						p1 = wcstok(NULL, L" \n", &ctx);
 					if (p1 == NULL)
 						continue;
 					for (UINT i = 0; i < sizeof(tags)/sizeof(tags[0]); i++) {

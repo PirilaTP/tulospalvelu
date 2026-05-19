@@ -781,18 +781,19 @@ void tallGDIfont(TextFl* luetfmtf, GDIfontTp *fnt)
 
 void luekoodi(TextFl* luetfmtf, wchar_t *koodi)
    {
+	wchar_t *ctx = NULL;
    INT i, l;
    wchar_t s[202];
    wchar_t *p;
 
    memset(koodi, 0, PRKOODIPIT);
    luetfmtf->ReadLine(s, 200);
-   p = wcstok(s, L" \n");
+   p = wcstok(s, L" \n", &ctx);
    l = _wtoi(p);
    l = min(l,PRKOODIPIT-1);
    koodi[0] = (wchar_t) l;
    for (i = 1; i <= l; i++) {
-	  if ((p = wcstok(NULL, L" \n")) == NULL) break;
+	  if ((p = wcstok(NULL, L" \n", &ctx)) == NULL) break;
 	  koodi[i] = (wchar_t) _wtoi(p);
 	  }
    }

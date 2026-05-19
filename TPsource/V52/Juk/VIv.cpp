@@ -156,6 +156,7 @@ INT r_msg_len[NREGNLY];
 
 void luelahdepisteet(void)
 	{
+	wchar_t *ctx = NULL;
 	TextFl *infile = NULL;
 	wchar_t *p, *p1, Buf[200];
 	INT16 srj, pst, kdi, kdi2, os, osy;
@@ -187,7 +188,7 @@ void luelahdepisteet(void)
 		bool kaikki = false;
 
 		infile->ReadLine(Buf, 200);
-		p = wcstok(Buf, L" ;\t\n");
+		p = wcstok(Buf, L" ;\t\n", &ctx);
 		if (!p)
 			continue;
 		if (!wcscmpU(p, L"KAIKKI")) {
@@ -198,7 +199,7 @@ void luelahdepisteet(void)
 			srj = sarjaluku;
 		else
 			srj = haesarja_w(p, false);
-		if ((p = wcstok(NULL, L" ;\t\n")) != NULL) {
+		if ((p = wcstok(NULL, L" ;\t\n", &ctx)) != NULL) {
 			if (!wcscmpU(p, L"KAIKKI")) {
 				os = 0;
 				if (srj >= 0 && srj < sarjaluku)
@@ -213,9 +214,9 @@ void luelahdepisteet(void)
 			}
 		if (!p || os >= kilpparam.ntosuus)
 			continue;
-		if (srj >= 0 && (p = wcstok(NULL, L" ;\t\n")) != NULL) {
+		if (srj >= 0 && (p = wcstok(NULL, L" ;\t\n", &ctx)) != NULL) {
 			pst = _wtoi(p);
-			while (pst < kilpparam.valuku+2 && (p = wcstok(NULL, L" ;\t\n")) != NULL) {
+			while (pst < kilpparam.valuku+2 && (p = wcstok(NULL, L" ;\t\n", &ctx)) != NULL) {
 				if ((p1 = wcsstr(p, L"-")) > NULL) {
 					*p1 = 0;
 					kdi = _wtoi(p);
@@ -253,7 +254,7 @@ void luelahdepisteet(void)
 		bool kaikki = false;
 
 		infile->ReadLine(Buf, 200);
-		p = wcstok(Buf, L" ;\t\n");
+		p = wcstok(Buf, L" ;\t\n", &ctx);
 		if (!p)
 			continue;
 		if (!wcscmpU(p, L"KAIKKI")) {
@@ -264,7 +265,7 @@ void luelahdepisteet(void)
 			srj = sarjaluku;
 		else
 			srj = haesarja_w(p, false);
-		if ((p = wcstok(NULL, L" ;\t\n")) != NULL) {
+		if ((p = wcstok(NULL, L" ;\t\n", &ctx)) != NULL) {
 			if (!wcscmpU(p, L"KAIKKI")) {
 				os = 0;
 				if (srj >= 0 && srj < sarjaluku)
@@ -279,7 +280,7 @@ void luelahdepisteet(void)
 			}
 		if (!p || os >= kilpparam.ntosuus)
 			continue;
-		if (srj >= 0 && (p = wcstok(NULL, L" ;\t\n")) != NULL) {
+		if (srj >= 0 && (p = wcstok(NULL, L" ;\t\n", &ctx)) != NULL) {
 			if (towupper(*p) == L'M' || (*p == L'0' && _wtoi(p) == 0))
 				pst = 32767;
 			else {
@@ -287,7 +288,7 @@ void luelahdepisteet(void)
 				if (pst > kilpparam.valuku)
 					pst = 0;
 				}
-			while (pst > 0 && (p = wcstok(NULL, L" ;\t\n")) != NULL) {
+			while (pst > 0 && (p = wcstok(NULL, L" ;\t\n", &ctx)) != NULL) {
 				if ((p1 = wcsstr(p, L"-")) > NULL) {
 					*p1 = 0;
 					kdi = _wtoi(p);
@@ -371,6 +372,7 @@ INT lahdejonohaku = 0;
 
 void luelahdejonot(void)
 	{
+	wchar_t *ctx = NULL;
 	TextFl * infile;
 	wchar_t *p, *p1, Buf[200];
 	INT16 srj, os, pst, kdi, kdi2;
@@ -392,14 +394,14 @@ void luelahdejonot(void)
 	memset(nkdi, 0, sizeof(nkdi));
 	while (!infile->Feof()) {
 		infile->ReadLine(Buf, 200);
-		p = wcstok(Buf, L" ;\t\n");
+		p = wcstok(Buf, L" ;\t\n", &ctx);
 		if (!p)
 			continue;
 		if (!wcscmpU(p, L"KAIKKI"))
 			srj = sarjaluku;
 		else
 			srj = haesarja_w(p, false);
-		if ((p = wcstok(NULL, L" ;\t\n")) != NULL) {
+		if ((p = wcstok(NULL, L" ;\t\n", &ctx)) != NULL) {
 			if (!wcscmpU(p, L"KAIKKI"))
 				os = MAXOSUUSLUKU;
 			else
@@ -407,11 +409,11 @@ void luelahdejonot(void)
 			}
 		if (!p || (os >= kilpparam.osuusluku && os != MAXOSUUSLUKU))
 			continue;
-		if (srj >= 0 && (p = wcstok(NULL, L" ;\t\n")) != NULL) {
+		if (srj >= 0 && (p = wcstok(NULL, L" ;\t\n", &ctx)) != NULL) {
 			pst = _wtoi(p);
 			if (pst > MAXJONO)
 				pst = 0;
-			while (pst > 0 && (p = wcstok(NULL, L" ;\t\n")) != NULL) {
+			while (pst > 0 && (p = wcstok(NULL, L" ;\t\n", &ctx)) != NULL) {
 				if ((p1 = wcsstr(p, L"-")) > NULL) {
 					*p1 = 0;
 					kdi = _wtoi(p);
@@ -438,14 +440,14 @@ void luelahdejonot(void)
 	memset(nkdi, 0, sizeof(nkdi));
 	while (!infile->Feof()) {
 		infile->ReadLine(Buf, 200);
-		p = wcstok(Buf, L" ;\t\n");
+		p = wcstok(Buf, L" ;\t\n", &ctx);
 		if (!p)
 			continue;
 		if (!wcscmpU(p, L"KAIKKI"))
 			srj = sarjaluku;
 		else
 			srj = haesarja_w(p, false);
-		if ((p = wcstok(NULL, L" ;\t\n")) != NULL) {
+		if ((p = wcstok(NULL, L" ;\t\n", &ctx)) != NULL) {
 			if (!wcscmpU(p, L"KAIKKI"))
 				os = MAXOSUUSLUKU;
 			else
@@ -454,11 +456,11 @@ void luelahdejonot(void)
 		if (!p || (os >= kilpparam.osuusluku && os != MAXOSUUSLUKU))
 			continue;
 
-		if (srj >= 0 && (p = wcstok(NULL, L" ;\t\n")) != NULL) {
+		if (srj >= 0 && (p = wcstok(NULL, L" ;\t\n", &ctx)) != NULL) {
 			pst = _wtoi(p);
 			if (pst > MAXJONO)
 				pst = 0;
-			while (pst > 0 && (p = wcstok(NULL, L" ;\t\n")) != NULL) {
+			while (pst > 0 && (p = wcstok(NULL, L" ;\t\n", &ctx)) != NULL) {
 				if ((kdi =_wtoi(p)) > 0) {
 					if ((p1 = wcsstr(p, L"-")) > NULL) {
 						*p1 = 0;

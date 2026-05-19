@@ -101,6 +101,7 @@ __fastcall TFormImport::TFormImport(TComponent* Owner)
 
 int TFormImport::lue_kilpcsv(TextFl *afile, kilptietue *kilp, int lineno, int toiminto, int *dKilp, wchar_t erotin)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *rivi,s[40], *p, *p1, *pp;
 	INT16 i,il,res = 0;
 	INT16 srj, l, kbg;
@@ -141,14 +142,14 @@ int TFormImport::lue_kilpcsv(TextFl *afile, kilptietue *kilp, int lineno, int to
 					if (i == Kexp_kentat) {
 						p1 = NULL;
 						pp = NULL;
-						p = wcstok(fields[ifld], L"-");
+						p = wcstok(fields[ifld], L"-", &ctx);
 						if (p)
-							p1 = wcstok(NULL, L"-");
+							p1 = wcstok(NULL, L"-", &ctx);
 						if (!p1)
 							continue;
 						if ((os = _wtoi(p1)) < 1 || os > kilpparam.n_os_akt)
 							continue;
-						pp = wcstok(NULL, L"-");
+						pp = wcstok(NULL, L"-", &ctx);
 						if (pp)
 							va = _wtoi(pp);
 						}
@@ -406,6 +407,7 @@ static int lueuusirivi(TextFl *etied, int n, int seurjoukk)
 
 int tulkrivi(wchar_t *line, int *srj, int *kno, int *jno, wchar_t *maa, int *piiri)
    {
+	wchar_t *ctx = NULL;
    wchar_t *p, ero[2] = L" ";
    int plen, res = 1;
 
@@ -416,7 +418,7 @@ int tulkrivi(wchar_t *line, int *srj, int *kno, int *jno, wchar_t *maa, int *pii
    *piiri = 0;
    maa[0] = 0;
 
-   p = wcstok(line, ero);
+   p = wcstok(line, ero, &ctx);
    if (!p)
 		return(1);
    plen = wcslen(p);
@@ -426,7 +428,7 @@ int tulkrivi(wchar_t *line, int *srj, int *kno, int *jno, wchar_t *maa, int *pii
 		p++;
    *srj = haesarja_w(p, false);
    if (p[plen+1] != erotin) {
-	  p = wcstok(NULL, ero);
+	  p = wcstok(NULL, ero, &ctx);
 	  if (p) {
 		 while (*p == L' ')
 			p++;
@@ -434,17 +436,17 @@ int tulkrivi(wchar_t *line, int *srj, int *kno, int *jno, wchar_t *maa, int *pii
 		 *kno = _wtoi(p);
 		 }
 	  }
-   if ((p = wcstok(NULL, ero)) != NULL) {
+   if ((p = wcstok(NULL, ero, &ctx)) != NULL) {
 	  res = 0;
 	  elimwbl(p);
 	  wcscpy(line, p);
-	  if ((p = wcstok(NULL, ero)) != NULL) {
+	  if ((p = wcstok(NULL, ero, &ctx)) != NULL) {
 		 elimwbl(p);
 		 *jno = _wtoi(p);
-		 if ((p = wcstok(NULL, ero)) != NULL) {
+		 if ((p = wcstok(NULL, ero, &ctx)) != NULL) {
 			elimwbl(p);
 			wcsncpy(maa, p, 3);
-			if ((p = wcstok(NULL, ero)) != NULL) {
+			if ((p = wcstok(NULL, ero, &ctx)) != NULL) {
 			   elimwbl(p);
 			   *piiri = _wtoi(p);
 			   }

@@ -1334,6 +1334,7 @@ void __fastcall TFormKilpailijaOnline::SeurGridDrawCell(TObject *Sender, int ACo
 
 void __fastcall TFormKilpailijaOnline::BtnTietoaClick(TObject *Sender)
 {
+	wchar_t *ctx = NULL;
 	if (!HenkLinkki) {
 		if (Application->MessageBoxW(L"Linkkejä tietoihin ei ole avattu - avataanko nyt?",
 		L"Linkit", MB_YESNO) != IDYES)
@@ -1364,7 +1365,7 @@ void __fastcall TFormKilpailijaOnline::BtnTietoaClick(TObject *Sender)
 						InFile->ReadLine(ln, 240);
 						if (wcslen(ln) > 3) {
 							p1 = ln + wcslen(ln);
-							p = wcstok(ln, L" \t;");
+							p = wcstok(ln, L" \t;", &ctx);
 							if (p) {
 								for (;p1[-1] && p1 > p; p1--) ;
 								elimwbl2(p);

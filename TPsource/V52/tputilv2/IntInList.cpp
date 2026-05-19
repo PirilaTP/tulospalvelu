@@ -16,22 +16,29 @@
 
 #include <stdlib.h>
 #include <string.h>
+#ifdef __BORLANDC__
+// bcc32 uses 2-arg wcstok; rewrite 3-arg calls to 2-arg at preprocessor level.
+// Per C standard, a macro is not recursively expanded in its own replacement
+// text, so the inner wcstok(s,d) resolves to the real bcc32 runtime function.
+#define wcstok(s, d, ctx) wcstok(s, d)
+#endif
 
 // Tarkistaa, löytyykö kokonaisluku wide-merkkijonona annetusta luettelosta.
 // val: etsittävä arvo, lst: välilyönti/pilkku/puolipiste/tabulaattori-eroteltu wide-merkkijono luvuista.
 // Palauttaa löydetyn alkion järjestysnumeron (0-pohjainen) tai -1 jos ei löydy.
 int IntInList(const int val, const wchar_t * const lst)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *p, list[200];
 	int k = 0;
 
 	wcsncpy(list, lst, sizeof(list)/2-1);
 	list[sizeof(list)/2-1] = 0;
-	p = wcstok(list, L" ,;\t");
+	p = wcstok(list, L" ,;\t", &ctx);
 	while (p) {
 		if (val == _wtoi(p))
 			return(k);
-		p = wcstok(NULL, L" ,;\t");
+		p = wcstok(NULL, L" ,;\t", &ctx);
 		k++;
 		}
 	return(-1);

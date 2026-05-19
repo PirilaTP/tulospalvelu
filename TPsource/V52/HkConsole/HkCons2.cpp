@@ -738,6 +738,7 @@ static void near deletekilp(void)
 
 void korjaukset()
    {
+	wchar_t *ctx = NULL;
    wchar_t ch;
    extern scr korjvalikko;
 
@@ -2586,18 +2587,19 @@ static bool numerovertailu;
 
 void asetavertajat(wchar_t *ln)
 	{
+	wchar_t *ctx = NULL;
 	wchar_t *p;
 	int j = 0;
 	INT32 t;
 
-	p = wcstok(ln, L" ;/\t\n");
+	p = wcstok(ln, L" ;/\t\n", &ctx);
 	while (p && *p && j < MAXJONO+2) {
 		t = _wtol(p);
 		if (j < 2)
 			traja[j] = 1000*t;
 		else
 			tjono[j-2] = 1000*t;
-		p = wcstok(NULL, L" ;/\t\n");
+		p = wcstok(NULL, L" ;/\t\n", &ctx);
 		j++;
 		}
 	}

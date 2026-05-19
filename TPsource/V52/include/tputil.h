@@ -58,6 +58,10 @@
 #define _filelength(fl)    filelength((fl))
 #define _chsize(f,l)       chsize((f),(l))
 #define _swab(x,y,n)       swab((x),(y),(n))
+// bcc32 uses 2-arg wcstok; rewrite 3-arg calls to 2-arg at preprocessor level.
+// Per C standard, a macro is not recursively expanded in its own replacement
+// text, so the inner wcstok(s,d) resolves to the real bcc32 runtime function.
+#define wcstok(s, d, ctx) wcstok(s, d)
 #else
 #define farmalloc(x) malloc((x))
 #define farcalloc(x, y) calloc((x), (y))

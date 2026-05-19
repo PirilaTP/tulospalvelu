@@ -414,6 +414,7 @@ int wrt_st_x_srv(int cn, int len, char *buf, int *nsent)
 
 void addMonitori(wchar_t *str)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *p;
 	int k;
 
@@ -424,11 +425,11 @@ void addMonitori(wchar_t *str)
 	wcscpy(ipParamMon[monitoriLkm].destaddr, L"255.255.255.255");
 	ipParamMon[monitoriLkm].destport = monportbase + monitoriLkm;
 	if (*p && wcswcind(*p, L":,/=") >= 0) {
-		p = wcstok(p+1, L":,/=");
+		p = wcstok(p+1, L":,/=", &ctx);
 		if (p) {
 			if (wcslen(p) > 3)
 				wcsncpy(ipParamMon[monitoriLkm].destaddr, p, 63);
-			p = wcstok(NULL, L":,/=");
+			p = wcstok(NULL, L":,/=", &ctx);
 			if (p && (k = _wtoi(p)) > 0) {
 				ipParamMon[monitoriLkm].destport = (USHORT) k;
 				}

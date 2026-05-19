@@ -377,6 +377,7 @@ int __fastcall TFormLuenta::TarkKoodi(int badge)
 
 MESSAGE void __fastcall TFormLuenta::NewCardHandler(TMyMessage &msg)
 {
+	wchar_t *ctx = NULL;
 	if (uusi_emit && uusi_emit != _wtoi(EdtBadge->Text.c_str())) {
 		if (luentatesti) {
 			if (testifl) {
@@ -391,14 +392,14 @@ MESSAGE void __fastcall TFormLuenta::NewCardHandler(TMyMessage &msg)
 					int kno = 0, os = 0, bdg = 0, d;
 					fgetws(ln, 99, testifl);
 					if (wcslen(ln) > 5) {
-						p = wcstok(ln, L",;\t\n");
+						p = wcstok(ln, L",;\t\n", &ctx);
 						if (p) {
 							kno = _wtoi(p);
-							p = wcstok(NULL, L",;\t\n");
+							p = wcstok(NULL, L",;\t\n", &ctx);
 							}
 						if (p) {
 							os = _wtoi(p);
-							p = wcstok(NULL, L",;\t\n");
+							p = wcstok(NULL, L",;\t\n", &ctx);
 							}
 						if (p) {
 							bdg = _wtoi(p);

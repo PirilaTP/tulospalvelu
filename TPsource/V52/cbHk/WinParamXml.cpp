@@ -643,6 +643,7 @@ int lueIkkunaXml(wchar_t *filename)
 //---------------------------------------------------------------------------
 int seurIkkParamClass::readParams(xml_node *node, int *inode, int nnode)
 {
+	wchar_t *ctx = NULL;
 	int er = 0, pos, i, j, val, haara, DepthIn;
 	wchar_t ln[402], *p;
 	kilptietue Kilp;
@@ -743,9 +744,9 @@ int seurIkkParamClass::readParams(xml_node *node, int *inode, int nnode)
 					for (UINT i = 0; i < sizeof(ColW)/sizeof(ColW[0]); i++) {
 						wchar_t *p;
 						if (i == 0)
-							p = wcstok(ln, L";\n");
+							p = wcstok(ln, L";\n", &ctx);
 						else
-							p = wcstok(NULL, L";\n");
+							p = wcstok(NULL, L";\n", &ctx);
 						if (p == NULL)
 							break;
 						ColW[i] = _wtoi(p);
@@ -753,13 +754,13 @@ int seurIkkParamClass::readParams(xml_node *node, int *inode, int nnode)
 					break;
 				case TAGVarit:
 					node[*inode].gettext(ln, 400);
-					p = wcstok(ln, L";\n");
+					p = wcstok(ln, L";\n", &ctx);
 					if (p == NULL)
 						break;
 					AktColor = _wtoi(p);
 					for (UINT i = 0; i < sizeof(Colors)/sizeof(Colors[0]); i++) {
 						wchar_t *p;
-						p = wcstok(NULL, L";\n");
+						p = wcstok(NULL, L";\n", &ctx);
 						if (p == NULL)
 							break;
 						swscanf(p, L"%x", &Colors[i]);
@@ -833,6 +834,7 @@ int seurIkkParamClass::readParams(xml_node *node, int *inode, int nnode)
 //---------------------------------------------------------------------------
 int tapIkkParamClass::readParams(xml_node *node, int *inode, int nnode)
 {
+	wchar_t *ctx = NULL;
 	int er = 0, pos, i, j, val, haara, DepthIn;
 	wchar_t ln[402];
 	kilptietue Kilp;
@@ -880,9 +882,9 @@ int tapIkkParamClass::readParams(xml_node *node, int *inode, int nnode)
 				node[*inode].gettext(ln, 400);
 				for (UINT i = 0; i < sizeof(ColW)/sizeof(ColW[0]); i++) {
 					if (i == 0)
-						p = wcstok(ln, L";\n");
+						p = wcstok(ln, L";\n", &ctx);
 					else
-						p = wcstok(NULL, L";\n");
+						p = wcstok(NULL, L";\n", &ctx);
 					if (p == NULL)
 						break;
 					ColW[i] = _wtoi(p);
@@ -901,6 +903,7 @@ int tapIkkParamClass::readParams(xml_node *node, int *inode, int nnode)
 //---------------------------------------------------------------------------
 int ajatIkkParamClass::readParams(xml_node *node, int *inode, int nnode)
 {
+	wchar_t *ctx = NULL;
 	int er = 0, pos, i, j, val, haara, DepthIn;
 	wchar_t ln[402];
 	kilptietue Kilp;
@@ -958,9 +961,9 @@ int ajatIkkParamClass::readParams(xml_node *node, int *inode, int nnode)
 					node[*inode].gettext(ln, 400);
 					for (UINT i = 0; i < sizeof(ColW)/sizeof(ColW[0]); i++) {
 						if (i == 0)
-							p = wcstok(ln, L";\n");
+							p = wcstok(ln, L";\n", &ctx);
 						else
-							p = wcstok(NULL, L";\n");
+							p = wcstok(NULL, L";\n", &ctx);
 						if (p == NULL)
 							break;
 						ColW[i] = _wtoi(p);
@@ -977,6 +980,7 @@ int ajatIkkParamClass::readParams(xml_node *node, int *inode, int nnode)
 //---------------------------------------------------------------------------
 int aikavertIkkParamClass::readParams(xml_node *node, int *inode, int nnode)
 {
+	wchar_t *ctx = NULL;
 	int er = 0, pos, i, j, val, haara, DepthIn;
 	wchar_t ln[402];
 	kilptietue Kilp;
@@ -1009,9 +1013,9 @@ int aikavertIkkParamClass::readParams(xml_node *node, int *inode, int nnode)
 					node[*inode].gettext(ln, 400);
 					for (UINT i = 0; i < sizeof(ColW)/sizeof(ColW[0]); i++) {
 						if (i == 0)
-							p = wcstok(ln, L";\n");
+							p = wcstok(ln, L";\n", &ctx);
 						else
-							p = wcstok(NULL, L";\n");
+							p = wcstok(NULL, L";\n", &ctx);
 						if (p == NULL)
 							break;
 						ColW[i] = _wtoi(p);
@@ -1021,9 +1025,9 @@ int aikavertIkkParamClass::readParams(xml_node *node, int *inode, int nnode)
 					node[*inode].gettext(ln, 400);
 					for (UINT i = 0; i < sizeof(Visible)/sizeof(Visible[0]); i++) {
 						if (i == 0)
-							p = wcstok(ln, L";\n");
+							p = wcstok(ln, L";\n", &ctx);
 						else
-							p = wcstok(NULL, L";\n");
+							p = wcstok(NULL, L";\n", &ctx);
 						if (p == NULL)
 							break;
 						Visible[i] = _wtoi(p);

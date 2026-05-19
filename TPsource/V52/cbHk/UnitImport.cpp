@@ -129,6 +129,7 @@ __fastcall TFormImport::TFormImport(TComponent* Owner)
 //---------------------------------------------------------------------------
 int TFormImport::lue_kilpcsv2(TextFl *afile, kilptietue *kilp, int lineno, int toiminto, int *dKilp, wchar_t erotin)
 {
+	wchar_t *ctx = NULL;
 	wchar_t rivi[10000], *p, *p1, *pp;
 	INT16 i,res = 0;
 	INT16 srj;
@@ -166,14 +167,14 @@ int TFormImport::lue_kilpcsv2(TextFl *afile, kilptietue *kilp, int lineno, int t
 					if (i == Kexp_kentat) {
 						p1 = NULL;
 						pp = NULL;
-						p = wcstok(fields[ifld], L"-");
+						p = wcstok(fields[ifld], L"-", &ctx);
 						if (p)
-							p1 = wcstok(NULL, L"-");
+							p1 = wcstok(NULL, L"-", &ctx);
 						if (!p1)
 							continue;
 						if ((ipv = _wtoi(p1)) < 1 || ipv > kilpparam.n_pv_akt)
 							continue;
-						pp = wcstok(NULL, L"-");
+						pp = wcstok(NULL, L"-", &ctx);
 						if (pp)
 							va = _wtoi(pp);
 						}
@@ -1089,6 +1090,7 @@ int __fastcall TFormImport::lue_SQL(void)
 
 void __fastcall TFormImport::Button1Click(TObject *Sender)
 {
+	wchar_t *ctx = NULL;
 	wchar_t lajit[] = L" SH", erottimet[] = L";\t,;", Buf[10000];
 	char cbuf[200];
 	TextFl *InFile;
@@ -1268,11 +1270,11 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 								if (wcslen(ln) > 3) {
 									wchar_t *p;
 
-									p = wcstok(ln, L" ;\t\n");
+									p = wcstok(ln, L" ;\t\n", &ctx);
 									if (p) {
 										memset(&seuralst[nsra], 0, sizeof(seuralst[nsra]));
 										seuralst[nsra].alue = _wtoi(p);
-										p = wcstok(NULL, L" ;\t\n");
+										p = wcstok(NULL, L" ;\t\n", &ctx);
 										if (p) {
 											wcsncpy(seuralst[nsra].lyh, p, kilpparam.lseuralyh);
 											for (p = p+wcslen(p)+1; p < ln + 198 && *p <= L' '; p++) ;

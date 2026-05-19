@@ -26,7 +26,6 @@
 #include "WinTp.h"
 #include "VWinDef.h"
 #endif
-
 void kirjloki(char *msg);
 void wkirjloki(wchar_t *msg);
 void lopetus(void);

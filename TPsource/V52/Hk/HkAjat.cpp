@@ -114,6 +114,7 @@ __int64 datetime64(aikatp *tm)
 INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, INT *uptr, INT kysy,
    INT kielto, INT pakota_lah, bool InCriticalSection)
    {
+	wchar_t *ctx = NULL;
    aikatp tm;
    int rtm;
 	wchar_t ch;
@@ -472,6 +473,7 @@ void AjatTiedostoon(wchar_t *fname, int akttm)
 
 void AjatTiedostosta(wchar_t *fname, int akttm, bool vainajat)
 {
+	wchar_t *ctx = NULL;
 	TextFl *AikaFl;
 	int k;
 
@@ -487,42 +489,42 @@ void AjatTiedostosta(wchar_t *fname, int akttm, bool vainajat)
 				continue;
 			if (line[0] >= L'A')
 				continue;
-			p = wcstok(line, L" ;\t");
+			p = wcstok(line, L" ;\t", &ctx);
 			if (p) {
 				tp.date = (int) date_time_t(p);
 				if (tp.date == 0)
 					tp.date = (int)(time(0)/86400);
-				p = wcstok(NULL, L" ;\t");
+				p = wcstok(NULL, L" ;\t", &ctx);
 				if (p && wcslen(p) > 4) {
 					tp.t = wstrtoaika_vap(p, t0) * AIKAJAK;
 					if (p) {
 						tp.jono = _wtoi(p);
-						p = wcstok(NULL, L" ;\t");
+						p = wcstok(NULL, L" ;\t", &ctx);
 						}
 					if (p) {
 						tp.status = _wtoi(p);
-						p = wcstok(NULL, L" ;\t");
+						p = wcstok(NULL, L" ;\t", &ctx);
 						}
 					if (!vainajat) {
 						if (p) {
 							tp.kno = _wtoi(p);
-							p = wcstok(NULL, L" ;\t");
+							p = wcstok(NULL, L" ;\t", &ctx);
 							}
 						if (p) {
 							tp.piste = _wtoi(p);
-							p = wcstok(NULL, L" ;\t");
+							p = wcstok(NULL, L" ;\t", &ctx);
 							}
 						if (p) {
 							tp.piste = _wtoi(p);
-							p = wcstok(NULL, L" ;\t");
+							p = wcstok(NULL, L" ;\t", &ctx);
 							}
 						if (p) {
 							tp.badge = _wtoi(p);
-							p = wcstok(NULL, L" ;\t");
+							p = wcstok(NULL, L" ;\t", &ctx);
 							}
 						if (p) {
 							tp.kanava = _wtoi(p);
-							p = wcstok(NULL, L" ;\t");
+							p = wcstok(NULL, L" ;\t", &ctx);
 							}
 						if (p) {
 							if ((k = wcswcind(*p, L"ADLT")) >= 0)

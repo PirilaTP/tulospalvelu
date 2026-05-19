@@ -61,6 +61,7 @@ void alustaSarjatiedot(void)
 
 int luesarjat(void)
 	{
+	wchar_t *ctx = NULL;
 	TextFl *sarjaf;
 	INT   i = -1, j, er = 0, i_pv = 0, epv, vpv, nva[N_PV], m1, makipv = -1;
 	int laika = 8, laika2 = 8;
@@ -98,57 +99,57 @@ int luesarjat(void)
 			er = 2;
 			break;
 			}
-		if ((p = wcstok(s, L" \t\n")) == NULL) {
+		if ((p = wcstok(s, L" \t\n", &ctx)) == NULL) {
 			er = 2;
 			break;
 			}
 		kilpparam.vuosi = _wtoi(p);
-		if ((p = wcstok(NULL, L" \t\n")) == NULL) {
+		if ((p = wcstok(NULL, L" \t\n", &ctx)) == NULL) {
 			er = 2;
 			break;
 			}
 		sarjaluku = _wtoi(p);
-		if ((p = wcstok(NULL, L" \t\n")) != NULL) {
+		if ((p = wcstok(NULL, L" \t\n", &ctx)) != NULL) {
 			if (*p >= L'0' && *p <= L'9')
 				vanhat = true;
 			}
 		if (vanhat) {
-			if (p) p = wcstok(NULL, L" \t\n");
-			if (p && (p = wcstok(NULL, L" \t\n")) != NULL) {
+			if (p) p = wcstok(NULL, L" \t\n", &ctx);
+			if (p && (p = wcstok(NULL, L" \t\n", &ctx)) != NULL) {
 				kilpparam.kilplaji = *p;
 				if (kilpparam.kilplaji == L'H')
 					kilpparam.tarkkuus = 2;
 				else
 					kilpparam.tarkkuus = 0;
 				}
-			if (p && (p = wcstok(NULL, L" \t\n")) != NULL) {
+			if (p && (p = wcstok(NULL, L" \t\n", &ctx)) != NULL) {
 				kilpparam.n_pv_akt = _wtoi(p);
 				if (kilpparam.n_pv < kilpparam.n_pv_akt)
 					kilpparam.n_pv = kilpparam.n_pv_akt;
 				}
-			if (p && (p = wcstok(NULL, L" \t\n")) != NULL) {
+			if (p && (p = wcstok(NULL, L" \t\n", &ctx)) != NULL) {
 				valuku_vanha = _wtoi(p);
 				if (valuku_vanha > kilpparam.valuku)
 					kilpparam.valuku = valuku_vanha;
 				}
-			if (p && (p = wcstok(NULL, L" \t\n")) != NULL)
+			if (p && (p = wcstok(NULL, L" \t\n", &ctx)) != NULL)
 				wcsncpy(kilpparam.kilpkoodi, p, sizeof(kilpparam.kilpkoodi)/2-1);
 		}
 		else {
-			if (p && (p = wcstok(NULL, L" \t\n")) != NULL)
+			if (p && (p = wcstok(NULL, L" \t\n", &ctx)) != NULL)
 				kilpparam.n_pv = _wtoi(p);
-			if (p && (p = wcstok(NULL, L" \t\n")) != NULL)
+			if (p && (p = wcstok(NULL, L" \t\n", &ctx)) != NULL)
 				kilpparam.valuku = _wtoi(p);
-			if (p && (p = wcstok(NULL, L" \t\n")) != NULL)
+			if (p && (p = wcstok(NULL, L" \t\n", &ctx)) != NULL)
 				wcsncpy(kilpparam.kilpkoodi, p, sizeof(kilpparam.kilpkoodi)/2-1);
-			if (p && (p = wcstok(NULL, L" \t\n")) != NULL) {
+			if (p && (p = wcstok(NULL, L" \t\n", &ctx)) != NULL) {
 				kilpparam.kilplaji = *p;
 				if (p[1])
 					kilpparam.alalaji = *p;
 				}
-			if (p && (p = wcstok(NULL, L" \t\n")) != NULL)
+			if (p && (p = wcstok(NULL, L" \t\n", &ctx)) != NULL)
 				kilpparam.n_pv_akt = _wtoi(p);
-			if (p && (p = wcstok(NULL, L" \t\n")) != NULL && !tarkkuusparam)
+			if (p && (p = wcstok(NULL, L" \t\n", &ctx)) != NULL && !tarkkuusparam)
 				kilpparam.tarkkuus = _wtoi(p);
 			}
 		if (wcslen(kilpparam.kilpkoodi) == 0) {
@@ -197,7 +198,7 @@ int luesarjat(void)
 				}
 			wtrimline(s);
 
-			wcstok(s, L"*");
+			wcstok(s, L"*", &ctx);
 			if (wcslen(s) > 10) {
 				er = 3 + (N_PV+2) * i;
 				break;
@@ -208,45 +209,45 @@ int luesarjat(void)
 			wcsncpy(Sarjat[i].sarjanimi, s, LSARJA);
 			srjrno = kilpparam.n_pv_akt+2+(vanhat ? valuku_vanha : kilpparam.valuku);
 
-			if ((p = wcstok(NULL, L"\n")) != NULL && wcslen(p) > 2)
+			if ((p = wcstok(NULL, L"\n", &ctx)) != NULL && wcslen(p) > 2)
 				wcsncpy(Sarjat[i].psarjanimi, p, sizeof(Sarjat[0].psarjanimi)/2-1);
 			if (sarjaf->ReadLine(s, 100) == NULL) {
 				er = 4 + srjrno * i;
 				break;
 				}
-			p = wcstok(s, L" \n");
+			p = wcstok(s, L" \n", &ctx);
 			if (!p) {
 				er = 4 + srjrno * i;
 				break;
 				}
 			epv = _wtoi(p);
-			p = wcstok(NULL, L" \n");
+			p = wcstok(NULL, L" \n", &ctx);
 			if (!p) {
 				er = 4 + srjrno * i;
 				break;
 				}
 			vpv = _wtoi(p);
-			p = wcstok(NULL, L" \n");
+			p = wcstok(NULL, L" \n", &ctx);
 			if (!p) {
 				er = 4 + srjrno * i;
 				break;
 				}
 			Sarjat[i].rrtas = _wtoi(p);
-			p = wcstok(NULL, L" \n");
+			p = wcstok(NULL, L" \n", &ctx);
 			if (!p) {
 				er = 4 + srjrno * i;
 				break;
 				}
 			if (!vanhat) {
 				Sarjat[i].tuljarj = _wtoi(p);
-				p = wcstok(NULL, L" \n");
+				p = wcstok(NULL, L" \n", &ctx);
 				if (!p) {
 					er = 4 + srjrno * i;
 					break;
 					}
 				}
 			Sarjat[i].sarjaalku = _wtoi(p);
-			p = wcstok(NULL, L" \n");
+			p = wcstok(NULL, L" \n", &ctx);
 			if (!p) {
 				er = 4 + srjrno * i;
 				break;
@@ -255,7 +256,7 @@ int luesarjat(void)
 			if (Sarjat[i].maksu < 200)
 				Sarjat[i].maksu *= 100;
 
-			p = wcstok(NULL, L" \n");
+			p = wcstok(NULL, L" \n", &ctx);
 			if (!p) {
 				er = 4 + srjrno * i;
 				break;
@@ -274,7 +275,7 @@ int luesarjat(void)
 					}
 				}
 			else {
-				p = wcstok(NULL, L" \n");
+				p = wcstok(NULL, L" \n", &ctx);
 				if (!p) {
 					er = 4 + srjrno * i;
 					break;
@@ -288,7 +289,7 @@ int luesarjat(void)
 
 			if (vanhat) {
 				for (i_pv = 0; i_pv < kilpparam.n_pv_akt; i_pv++) {
-					p = wcstok(NULL, L" \n");
+					p = wcstok(NULL, L" \n", &ctx);
 					if (!p) {
 						break;
 						}
@@ -320,7 +321,7 @@ int luesarjat(void)
 					er = 5 + srjrno * i;
 					break;
 					}
-				p = wcstok(s, L" \n");
+				p = wcstok(s, L" \n", &ctx);
 				if (!p) {
 					er = 5 + srjrno * i;
 					break;
@@ -334,7 +335,7 @@ int luesarjat(void)
 #endif
 				Sarjat[i].lno[i_pv] = _wtoi(p);
 
-				p = wcstok(NULL, L" \n");
+				p = wcstok(NULL, L" \n", &ctx);
 				if (!p) {
 					er = 5 + srjrno * i;
 					break;
@@ -347,7 +348,7 @@ int luesarjat(void)
 				Sarjat[i].mno[i_pv] = _wtoi(p);
 
 				if (!vanhat) {
-					p = wcstok(NULL, L" \n");
+					p = wcstok(NULL, L" \n", &ctx);
 					if (!p) {
 						er = 5 + srjrno * i;
 						break;
@@ -357,7 +358,7 @@ int luesarjat(void)
 				else
 					Sarjat[i].bibalku[i_pv] = Sarjat[i].sarjaalku;
 
-				p = wcstok(NULL, L" \n");
+				p = wcstok(NULL, L" \n", &ctx);
 				if (!p) {
 					er = 5 + srjrno * i;
 					break;
@@ -366,7 +367,7 @@ int luesarjat(void)
 					Sarjat[i].enslahto[i_pv] = TMAALI0;
 				else
 					Sarjat[i].enslahto[i_pv] = _wtol(p);
-				p = wcstok(NULL, L" \n");
+				p = wcstok(NULL, L" \n", &ctx);
 				Sarjat[i].pari[i_pv] = 1;
 				if (!p) {
 					er = 5 + srjrno * i;
@@ -378,20 +379,20 @@ int luesarjat(void)
 				else
 					Sarjat[i].ensjlahto[i_pv] = _wtol(p);
 				if (!vanhat) {
-					p = wcstok(NULL, L" \n");
+					p = wcstok(NULL, L" \n", &ctx);
 					if (!p) {
 						er = 5 + srjrno * i;
 						break;
 						}
 					Sarjat[i].pari[i_pv] = _wtoi(p);
 					}
-				p = wcstok(NULL, L" \n");
+				p = wcstok(NULL, L" \n", &ctx);
 				if (!p) {
 					er = 5 + srjrno * i;
 					break;
 					}
 				Sarjat[i].lahtovali[i_pv] = _wtoi(p);
-				p = wcstok(NULL, L" \n");
+				p = wcstok(NULL, L" \n", &ctx);
 				if (!p) {
 					er = 5 + srjrno * i;
 					break;
@@ -403,27 +404,27 @@ int luesarjat(void)
 					Sarjat[i].lsak[i_pv] > kilpparam.lsakmax) {
 					kilpparam.lsakmax = Sarjat[i].lsak[i_pv];
 					}
-				p = wcstok(NULL, L" \n");
+				p = wcstok(NULL, L" \n", &ctx);
 				if (!p) {
 					er = 5 + srjrno * i;
 					break;
 					}
 				Sarjat[i].tsak[i_pv] = _wtoi(p);
 				if (!vanhat) {
-					p = wcstok(NULL, L" \n");
+					p = wcstok(NULL, L" \n", &ctx);
 					if (!p) {
 						er = 5 + srjrno * i;
 						break;
 						}
 					Sarjat[i].npist[i_pv] = _wtoi(p);
-					p = wcstok(NULL, L" \n");
+					p = wcstok(NULL, L" \n", &ctx);
 					if (!p) {
 						er = 5 + srjrno * i;
 						break;
 						}
 					Sarjat[i].tul_raja[i_pv] = _wtoi(p);
 					}
-				p = wcstok(NULL, L" \n");
+				p = wcstok(NULL, L" \n", &ctx);
 				if (p) {
 					if (p[wcslen(p)-1] == L'*')
 						p[wcslen(p)-1] = 0;
@@ -437,6 +438,7 @@ int luesarjat(void)
 			if (k_pv != makipv) {
 #else
 				{
+wchar_t *ctx = NULL;
 #endif
 				for (j = 0; j < (vanhat ? valuku_vanha : kilpparam.valuku); j++) {
 					if (sarjaf->ReadLine(s, 78) == NULL) {
@@ -445,16 +447,16 @@ int luesarjat(void)
 						}
 					for (i_pv = 0; i_pv < kilpparam.n_pv_akt; i_pv++) {
 						if (!i_pv) {
-							p = wcstok(s, L" \t\n");
+							p = wcstok(s, L" \t\n", &ctx);
 							}
 						else
-							p = wcstok(NULL, L" \t\n");
+							p = wcstok(NULL, L" \t\n", &ctx);
 						if (!p) {
 							if (!i_pv)
 								er = 6 + srjrno * i;
 							break;
 							}
-						p1 = wcstok(NULL, L" \t\n");
+						p1 = wcstok(NULL, L" \t\n", &ctx);
 						if (p[wcslen(p)-1] == L'*')
 							p[wcslen(p)-1] = 0;
 						if (*p) {
@@ -503,6 +505,7 @@ int luesarjat(void)
 
 void luesarjayhdistelmat(void)
 	{
+	wchar_t *ctx = NULL;
 	TextFl *yhdfile;
 	wchar_t *yhdfilename = L"SARJAYHD.LST";
 	wchar_t buf[500] = L"", snimi[LSARJA+1] = L"", *p, *p1, pnimi[LPSARJA+1];
@@ -516,7 +519,7 @@ void luesarjayhdistelmat(void)
 	n = 0;
 	while (!yhdfile->Feof()) {
 		yhdfile->ReadLine(buf, sizeof(buf)/2-1);
-		p = wcstok(buf, L" \t\n");
+		p = wcstok(buf, L" \t\n", &ctx);
 		if (p) {
 			if (n >= MAXYHD) {
 				swprintf(buf, L"Liikaa sarjayhdistelmiä. Maksimimäärä on %d.", MAXYHD);
@@ -538,7 +541,7 @@ void luesarjayhdistelmat(void)
 			upcasewstr(snimi);
 			k = 0;
 			while (p) {
-				p = wcstok(NULL, L" \t\n");
+				p = wcstok(NULL, L" \t\n", &ctx);
 				if (p) {
 					upcasewstr(p);
 					j = -1;
@@ -719,23 +722,24 @@ bool sarjatietue::operator==(sarjatietue& Sarja2)
 
 void sarjatietue::tulkMTB(wchar_t *ln, int i_pv)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *p;
 
-	p = wcstok(ln, L" ;,\t");
+	p = wcstok(ln, L" ;,\t", &ctx);
 	if (!p)
 		return;
 	laskemtb[i_pv] = _wtoi(p) > 0;
 	for (int i = 0; i <= valuku[i_pv]; i++) {
-		if ((p = wcstok(NULL, L" ;,\t")) == NULL)
+		if ((p = wcstok(NULL, L" ;,\t", &ctx)) == NULL)
 			break;
 		mtb[i_pv][i].alkukdi = _wtoi(p);
-		if ((p = wcstok(NULL, L" ;,\t")) == NULL)
+		if ((p = wcstok(NULL, L" ;,\t", &ctx)) == NULL)
 			break;
 		mtb[i_pv][i].loppukdi = _wtoi(p);
-		if ((p = wcstok(NULL, L" ;,\t")) == NULL)
+		if ((p = wcstok(NULL, L" ;,\t", &ctx)) == NULL)
 			break;
 		mtb[i_pv][i].piste = _wtoi(p);
-		if ((p = wcstok(NULL, L" ;,\t")) == NULL)
+		if ((p = wcstok(NULL, L" ;,\t", &ctx)) == NULL)
 			break;
 		mtb[i_pv][i].pohja = _wtoi(p);
 		}

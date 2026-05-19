@@ -65,6 +65,7 @@ __fastcall TFormLisatiedot::TFormLisatiedot(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TFormLisatiedot::SiirraTiedot(int sellaisinaan)
 {
+	wchar_t *ctx = NULL;
 	int Tunniste, Tieto, TunnPv, TietoPv, TunnSar, TietoSar, LTunn, LTieto, epv, vpv;
 	int nrv = 0, nsiirr = 0, PohjTunniste;
 	wchar_t st[20] = L"", erotin, erottimet[] = L" \t;,";
@@ -242,7 +243,7 @@ void __fastcall TFormLisatiedot::SiirraTiedot(int sellaisinaan)
 						tunnst[LSEURA] = 0;
 						tietost[LSEURA] = 0;
 						if (erotin == L' ')
-							p = wcstok(line, L" \t\n");
+							p = wcstok(line, L" \t\n", &ctx);
 						else
 							p = wcstokch(line, erotin);
 						for (int i = 0; p != NULL; i++) {
@@ -255,7 +256,7 @@ void __fastcall TFormLisatiedot::SiirraTiedot(int sellaisinaan)
 							if (tunnst[0] && tietost[0])
 								break;
 							if (erotin == L' ')
-								p = wcstok(NULL, L" \t\n");
+								p = wcstok(NULL, L" \t\n", &ctx);
 							else
 								p = wcstokch(NULL, erotin);
 							}
@@ -541,7 +542,7 @@ void __fastcall TFormLisatiedot::SiirraTiedot(int sellaisinaan)
 					   break;
 					case 16:
 						len = wcslen(sval);
-						p = wcstok(sval, L" ");
+						p = wcstok(sval, L" ", &ctx);
 						wcsncpy(kilp.sukunimi, sval, kilpparam.lsnimi);
 						for (p = sval+wcslen(sval); p < sval+len && !*p; p++) ;
 						wcsncpy(kilp.etunimi, p, kilpparam.lenimi);

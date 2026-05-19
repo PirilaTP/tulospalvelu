@@ -240,6 +240,7 @@ int maaraaOsuusluku(bool kysy)
 
 void luesarjayhdistelmat(void)
 	{
+	wchar_t *ctx = NULL;
 	TextFl *yhdfile;
 	wchar_t *yhdfilename = L"SARJAYHD.LST";
 	wchar_t buf[500] = L"", snimi[LSARJA+1] = L"", *p, *p1, pnimi[LPSARJA+1];
@@ -253,7 +254,7 @@ void luesarjayhdistelmat(void)
 	n = 0;
 	while (!yhdfile->Feof()) {
 		yhdfile->ReadLine(buf, sizeof(buf)/2-1);
-		p = wcstok(buf, L" \t\n");
+		p = wcstok(buf, L" \t\n", &ctx);
 		if (p) {
 			if (n >= MAXYHD) {
 				swprintf(buf, L"Liikaa sarjayhdistelmiä. Maksimimäärä on %d.", MAXYHD);
@@ -275,7 +276,7 @@ void luesarjayhdistelmat(void)
 			upcasewstr(snimi);
 			k = 0;
 			while (p) {
-				p = wcstok(NULL, L" \t\n");
+				p = wcstok(NULL, L" \t\n", &ctx);
 				if (p) {
 					upcasewstr(p);
 					if (wcscmp(p, L"KAIKKI") == 0 || (j = haesarja_w(p, false)) >= 0) {
@@ -303,6 +304,7 @@ void luesarjayhdistelmat(void)
 
 int luesarjat(void)
 	{
+	wchar_t *ctx = NULL;
 	FILE *sarjaf;
 	int   i,j,er,os, maxosuusluku, rr;
 	TMAALI yl, yl2 = 0, ylk = 0;
@@ -537,23 +539,24 @@ void kirjsarjat(void)
 
 void sarjatietue::tulkMTB(wchar_t *ln, int osuus)
 {
+	wchar_t *ctx = NULL;
 	wchar_t *p;
 
-	p = wcstok(ln, L" ;,\t");
+	p = wcstok(ln, L" ;,\t", &ctx);
 	if (!p)
 		return;
 	laskemtb = _wtoi(p) > 0;
 	for (int i = 0; i <= valuku[osuus]; i++) {
-		if ((p = wcstok(NULL, L" ;,\t")) == NULL)
+		if ((p = wcstok(NULL, L" ;,\t", &ctx)) == NULL)
 			break;
 		mtb[osuus][i].alkukdi = _wtoi(p);
-		if ((p = wcstok(NULL, L" ;,\t")) == NULL)
+		if ((p = wcstok(NULL, L" ;,\t", &ctx)) == NULL)
 			break;
 		mtb[osuus][i].loppukdi = _wtoi(p);
-		if ((p = wcstok(NULL, L" ;,\t")) == NULL)
+		if ((p = wcstok(NULL, L" ;,\t", &ctx)) == NULL)
 			break;
 		mtb[osuus][i].piste = _wtoi(p);
-		if ((p = wcstok(NULL, L" ;,\t")) == NULL)
+		if ((p = wcstok(NULL, L" ;,\t", &ctx)) == NULL)
 			break;
 		mtb[osuus][i].pohja = _wtoi(p);
 		}

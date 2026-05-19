@@ -1068,6 +1068,7 @@ static taglkm = 11;
 
 void __fastcall TFormMain::HaeIkkunatV(UnicodeString FlNm)
 {
+	wchar_t *ctx = NULL;
 	TextFl *haefl;
 	wchar_t line[200], cl, *p, st[100] = L"";
 	int state = 0, antifl, tagno, val, laji, no = 0, valmis = 0;
@@ -1093,7 +1094,7 @@ void __fastcall TFormMain::HaeIkkunatV(UnicodeString FlNm)
 			elimwbl(line);
 			antifl = 0;
 			if (line[0] == L'<') {
-				p = wcstok(line, L"<>");
+				p = wcstok(line, L"<>", &ctx);
 				if (p) {
 					wcsncpy(st, p, 99);
 					elimwbl(st);
@@ -1137,10 +1138,10 @@ void __fastcall TFormMain::HaeIkkunatV(UnicodeString FlNm)
 									}
 								else {
 									state++;
-									p = wcstok(NULL, L"<>");
+									p = wcstok(NULL, L"<>", &ctx);
 									if (p) {
 										wcscpy(st, p);
-										p = wcstok(NULL, L"<>");
+										p = wcstok(NULL, L"<>", &ctx);
 										if (p) {
 											elimwbl(p);
 											if (*p == L'/' && !wcscmp(p+1, tags[tagno])) {

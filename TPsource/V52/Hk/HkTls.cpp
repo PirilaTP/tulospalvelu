@@ -918,13 +918,14 @@ wchar_t *kilptietue::asakkoStr(int i_pv /* = -1 */)
 
 void kilptietue::set_Asakot(wchar_t *asakstr, int i_pv /* =-1 */)
 {
+	wchar_t *ctx = NULL;
 	wchar_t st[20] = L"", *p;
 
 	if (i_pv < 0)
 		i_pv = k_pv;
 	if (pvparam[i_pv].asakkolaji > 1 || kilpparam.maxasakko > 9) {
 		wcsncpy(st, asakstr, 19);
-		p = wcstok(st, L"/;");
+		p = wcstok(st, L"/;", &ctx);
 		}
 	for (int i = 0; i < Sarjat[Sarja(i_pv)].lsak[i_pv]; i++) {
 		if (pvparam[i_pv].asakkolaji > 1 || kilpparam.maxasakko > 9) {
@@ -945,7 +946,7 @@ void kilptietue::set_Asakot(wchar_t *asakstr, int i_pv /* =-1 */)
 			else
 				pv[i_pv].asakot[i] = L'-';
 			if (p)
-				p = wcstok(NULL, L"/;");
+				p = wcstok(NULL, L"/;", &ctx);
 			}
 		else {
 			if (asakstr[i] >= L'0' && asakstr[i] <= L'0' + kilpparam.maxasakko)
