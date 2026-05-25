@@ -21,6 +21,7 @@ object FormGAZ: TFormGAZ
     Width = 732
     Height = 401
     ActivePage = TabSheet2
+    Align = alClient
     Style = tsFlatButtons
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -687,6 +688,7 @@ object FormGAZ: TFormGAZ
         Top = 1
         Width = 704
         Height = 368
+        Align = alClient
         Caption = 'Panel2'
         ShowCaption = False
         TabOrder = 0
@@ -713,7 +715,8 @@ object FormGAZ: TFormGAZ
           Top = 136
           Width = 706
           Height = 232
-          Hint = 
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          Hint =
             'Ruudun valitseminen ja hiiren oikea n'#228'pp'#228'in tarjoaa usein vaihto' +
             'ehtoja'
           ColCount = 7
@@ -756,6 +759,7 @@ object FormGAZ: TFormGAZ
           Top = 9
           Width = 31
           Height = 31
+          Anchors = [akRight, akTop]
           Margins.Left = 0
           Margins.Right = 0
           Margins.Bottom = 0
