@@ -3429,11 +3429,11 @@ void tall_ec(UINT32 bdg, INT valeim, INT32 aika, INT kielto)
 			else if (lahdepistehaku && pst == -1 && pakotalaika) {
 					// PAKOTALAIKARAJA: record only if limit is 0 (no restriction),
 					// competitor has no stored time yet (va[0].vatulos==0),
-					// or new time differs from stored by at least pakotalaikaraja seconds.
+					// or new time differs from stored by at most pakotalaikaraja seconds.
 					// va[] uses piste+1 indexing (pst==-1 -> va[0] is the start slot),
 					// so va[pst+1] reads the currently stored value for the same slot set_tulos will write.
 					if (pakotalaikaraja == 0 || kilp.pv[k_pv].va[pst+1].vatulos == 0 ||
-					   abs((long)NORMKELLO(vatime - kilp.pv[k_pv].va[pst+1].vatulos)) >= (long)pakotalaikaraja * SEK) {
+					   abs((long)NORMKELLO(vatime - kilp.pv[k_pv].va[pst+1].vatulos)) <= (long)pakotalaikaraja * SEK) {
 						vatime = pyoristatls(vatime, 1);
 						kilp.set_tulos(pst, vatime);
 						EnterCriticalSection(&tall_CriticalSection);
