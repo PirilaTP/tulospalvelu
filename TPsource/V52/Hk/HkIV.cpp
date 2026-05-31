@@ -684,6 +684,16 @@ void tall_etulos(INT32 badge, INT32 t, INT32 tms, INT r_no, int Jono)
 				kilp.set_tulos(-1, t, 1);
 				tallfl = true;
 				}
+			else if (pakotalaika && !pvparam[k_pv].hiihtolahto) {
+				// PAKOTALAIKA: record forced start time also in non-skiing mode.
+				// Only write if no time stored yet, or the difference to the
+				// stored time is within pakotalaikaraja seconds.
+				if (pakotalaikaraja == 0 || kilp.pv[k_pv].va[0].vatulos == 0 ||
+					abs((long)NORMKELLO(t - kilp.pv[k_pv].va[0].vatulos)) <= (long)pakotalaikaraja * SEK) {
+					kilp.set_tulos(-1, pyoristatls(t, 1));
+					tallfl = true;
+					}
+				}
 			if (!pvparam[k_pv].hiihtolahto && (kilp.tark() == L'E' || kilp.tark() == L'B')) {
 				kilp.set_tark(L'-');
 				tallfl = true;
