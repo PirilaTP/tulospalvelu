@@ -686,9 +686,9 @@ void tall_etulos(INT32 badge, INT32 t, INT32 tms, INT r_no, int Jono)
 				}
 			else if (pakotalaika && !pvparam[k_pv].hiihtolahto) {
 				// PAKOTALAIKA: record forced start time also in non-skiing mode.
-				// Only write if no time stored yet, or the difference to the
-				// stored time is within pakotalaikaraja seconds.
-				if (pakotalaikaraja == 0 || kilp.pv[k_pv].va[0].vatulos == 0 ||
+				// First chip read always wins (vatulos still == planned tlahto or == TMAALI0).
+				// Subsequent reads are accepted only if within pakotalaikaraja seconds.
+				if (pakotalaikaraja == 0 || kilp.pv[k_pv].va[0].vatulos == TMAALI0 || kilp.pv[k_pv].va[0].vatulos == kilp.pv[k_pv].tlahto ||
 					abs((long)NORMKELLO(t - kilp.pv[k_pv].va[0].vatulos)) <= (long)pakotalaikaraja * SEK) {
 					kilp.set_tulos(-1, pyoristatls(t, 1));
 					tallfl = true;
@@ -3437,12 +3437,9 @@ void tall_ec(UINT32 bdg, INT valeim, INT32 aika, INT kielto)
 				}
 			// PAKOTALAIKA: start point (pst==-1) identified via start point search - record as forced start time
 			else if (lahdepistehaku && pst == -1 && pakotalaika) {
-					// PAKOTALAIKARAJA: record only if limit is 0 (no restriction),
-					// competitor has no stored time yet (va[0].vatulos==0),
-					// or new time differs from stored by at most pakotalaikaraja seconds.
-					// va[] uses piste+1 indexing (pst==-1 -> va[0] is the start slot),
-					// so va[pst+1] reads the currently stored value for the same slot set_tulos will write.
-					if (pakotalaikaraja == 0 || kilp.pv[k_pv].va[pst+1].vatulos == 0 ||
+					// PAKOTALAIKA: first chip read at start always wins (vatulos == tlahto or TMAALI0).
+					// Subsequent reads accepted only if within pakotalaikaraja seconds.
+					if (pakotalaikaraja == 0 || kilp.pv[k_pv].va[pst+1].vatulos == TMAALI0 || kilp.pv[k_pv].va[pst+1].vatulos == kilp.pv[k_pv].tlahto ||
 					   abs((long)NORMKELLO(vatime - kilp.pv[k_pv].va[pst+1].vatulos)) <= (long)pakotalaikaraja * SEK) {
 						vatime = pyoristatls(vatime, 1);
 						kilp.set_tulos(pst, vatime);
