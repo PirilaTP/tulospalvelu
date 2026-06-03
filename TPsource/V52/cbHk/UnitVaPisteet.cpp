@@ -405,18 +405,22 @@ void __fastcall TFormVaPisteet::Luetekstitiedostosta1Click(TObject *Sender)
 			memset(fields, 0, sizeof(fields));
 			nfld = getfields(line, fields, sizeof(fields)/sizeof(fields[0]), erottimet,
 				L"\"", true, false);
-			if (nfld < 5*kilpparam.n_pv_akt*(kilpparam.valuku+1) - 1)
+			// Block layout per ipv written by Kirjoitatekstitiedostoon1Click:
+			//   matka(1) + tul_raja(1) + valuku*5 fields = valuku*5+2 per block.
+			// Total fields: 1(name) + n_pv*(valuku*5+2).
+			if (nfld < 1 + kilpparam.n_pv_akt*(2 + kilpparam.valuku*5))
 				break;
 			for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
-				Sarjat[srj].tul_raja[ipv] = _wtoi(fields[5*ipv*(kilpparam.valuku+1)+2]);
+				int blk = ipv*(kilpparam.valuku*5+2);
+				Sarjat[srj].tul_raja[ipv] = _wtoi(fields[2+blk]);
 				for (int piste = 0; piste < kilpparam.valuku; piste++) {
 					int i;
-					wcsncpy(Sarjat[srj].va_matka[ipv][piste], fields[5*(ipv*(kilpparam.valuku+1)+piste)+3],
+					wcsncpy(Sarjat[srj].va_matka[ipv][piste], fields[3+blk+piste*5],
 						sizeof(Sarjat[srj].va_matka[ipv][piste])/2-1);
-					Sarjat[srj].va_koodi[ipv][piste] = _wtoi(fields[5*(ipv*(kilpparam.valuku+1)+piste)+4]);
-					Sarjat[srj].va_sakot[ipv][piste+1] = _wtoi(fields[5*(ipv*(kilpparam.valuku+1)+piste)+5]);
-					Sarjat[srj].va_piilota[ipv][piste] = _wtoi(fields[5*(ipv*(kilpparam.valuku+1)+piste)+6]);
-					i = 5*(ipv*(kilpparam.valuku+1)+piste)+7;
+					Sarjat[srj].va_koodi[ipv][piste] = _wtoi(fields[4+blk+piste*5]);
+					Sarjat[srj].va_sakot[ipv][piste+1] = _wtoi(fields[5+blk+piste*5]);
+					Sarjat[srj].va_piilota[ipv][piste] = _wtoi(fields[6+blk+piste*5]);
+					i = 7+blk+piste*5;
 					if (i < nfld)
 						Sarjat[srj].va_raja[ipv][piste] = _wtoi(fields[i]);
 					}
