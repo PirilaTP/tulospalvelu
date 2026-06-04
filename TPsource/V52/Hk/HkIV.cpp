@@ -580,6 +580,19 @@ void tall_elahto(int badge, int t)
 		}
 }
 
+// pakotalaika_hyvaksy -- decides whether a new start-gate chip read should
+// be stored under PAKOTALAIKA mode.
+//   stored : value currently in va[start_slot].vatulos
+//   t      : new chip read time
+//   tlahto : competitor's planned start time (detects "no real read yet")
+static bool pakotalaika_hyvaksy(INT32 stored, INT32 t, INT32 tlahto)
+	{
+	return pakotalaikaraja == 0
+		|| stored == TMAALI0
+		|| stored == tlahto
+		|| abs((long)NORMKELLO(t - stored)) <= (long)pakotalaikaraja * SEK;
+	}
+
 void tall_etulos(INT32 badge, INT32 t, INT32 tms, INT r_no, int Jono)
    {
    INT kno, d, piste = -2, jono = 0;
@@ -688,8 +701,8 @@ void tall_etulos(INT32 badge, INT32 t, INT32 tms, INT r_no, int Jono)
 				// PAKOTALAIKA: record forced start time also in non-skiing mode.
 				// First chip read always wins (vatulos still == planned tlahto or == TMAALI0).
 				// Subsequent reads are accepted only if within pakotalaikaraja seconds.
-				if (pakotalaikaraja == 0 || kilp.pv[k_pv].va[0].vatulos == TMAALI0 || kilp.pv[k_pv].va[0].vatulos == kilp.pv[k_pv].tlahto ||
-					abs((long)NORMKELLO(t - kilp.pv[k_pv].va[0].vatulos)) <= (long)pakotalaikaraja * SEK) {
+				// va[0] is the start slot (pst==-1 -> pst+1==0, same slot as tall_ec)
+				if (pakotalaika_hyvaksy(kilp.pv[k_pv].va[0].vatulos, t, kilp.pv[k_pv].tlahto)) {
 					kilp.set_tulos(-1, pyoristatls(t, 1));
 					tallfl = true;
 					}
@@ -3439,8 +3452,7 @@ void tall_ec(UINT32 bdg, INT valeim, INT32 aika, INT kielto)
 			else if (lahdepistehaku && pst == -1 && pakotalaika) {
 					// PAKOTALAIKA: first chip read at start always wins (vatulos == tlahto or TMAALI0).
 					// Subsequent reads accepted only if within pakotalaikaraja seconds.
-					if (pakotalaikaraja == 0 || kilp.pv[k_pv].va[pst+1].vatulos == TMAALI0 || kilp.pv[k_pv].va[pst+1].vatulos == kilp.pv[k_pv].tlahto ||
-					   abs((long)NORMKELLO(vatime - kilp.pv[k_pv].va[pst+1].vatulos)) <= (long)pakotalaikaraja * SEK) {
+					if (pakotalaika_hyvaksy(kilp.pv[k_pv].va[pst+1].vatulos, vatime, kilp.pv[k_pv].tlahto)) {
 						vatime = pyoristatls(vatime, 1);
 						kilp.set_tulos(pst, vatime);
 						EnterCriticalSection(&tall_CriticalSection);
