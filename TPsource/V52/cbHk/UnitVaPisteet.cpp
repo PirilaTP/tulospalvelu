@@ -366,9 +366,14 @@ void __fastcall TFormVaPisteet::Kirjoitatekstitiedostoon1Click(TObject *Sender)
 		OutFl = new TextFl(SaveDialog1->FileName.c_str(), L"wt");
 		if (OutFl->IsOpen()) {
 			wchar_t line[1000];
-			// Write header row
+			// Write header row.
+			// Buffer sized dynamically: max field name ~30 wchars,
+			// total fields = 1 + n_pv*(2 + valuku*5). Stack array hdr[5000]
+			// would overflow when valuku approaches VALUKU (250).
 			{
-				wchar_t hdr[5000];
+				int hdrmax = (1 + kilpparam.n_pv_akt*(2 + kilpparam.valuku*5)) * 30 + 16;
+				wchar_t *hdr = new wchar_t[hdrmax];
+				wmemset(hdr, 0, hdrmax);
 				swprintf(hdr, L"sarjanimi");
 				for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
 					swprintf(hdr+wcslen(hdr), L";matka_pv%d;tul_raja_pv%d", ipv+1, ipv+1);
@@ -379,6 +384,7 @@ void __fastcall TFormVaPisteet::Kirjoitatekstitiedostoon1Click(TObject *Sender)
 					}
 				wcscat(hdr, L"\n");
 				OutFl->WriteLine(hdr);
+				delete[] hdr;
 				}
 			for (int srj = 0; srj < sarjaluku; srj++) {
 				swprintf(line, L"%s", Sarjat[srj].sarjanimi);
@@ -429,8 +435,12 @@ void __fastcall TFormVaPisteet::Luetekstitiedostosta1Click(TObject *Sender)
 			// continue (not break) to skip fragments and blank lines gracefully.
 			if (nfld < 1 + kilpparam.n_pv_akt*(2 + kilpparam.valuku*5))
 				continue;
+			if (srj >= sarjaluku)
+				break; // do not write past Sarjat[] array bounds
 			for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
 				int blk = ipv*(kilpparam.valuku*5+2);
+				wcsncpy(Sarjat[srj].matka[ipv], fields[1+blk],
+					sizeof(Sarjat[srj].matka[ipv])/2-1);
 				Sarjat[srj].tul_raja[ipv] = _wtoi(fields[2+blk]);
 				for (int piste = 0; piste < kilpparam.valuku; piste++) {
 					int i;
