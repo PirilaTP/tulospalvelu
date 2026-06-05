@@ -11,3 +11,9 @@ __recovery
 Debug_Build
 Release_Build
 obj
+
+# VS internal folders
+.vs/
+
+# Claude Code worktrees
+.claude/

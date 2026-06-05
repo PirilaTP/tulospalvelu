@@ -207,6 +207,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\include\IRfidReader.h" />
+    <ClInclude Include="..\..\..\include\SiritReader.h" />
+    <ClInclude Include="..\..\..\include\ZebraReader.h" />
     <ClInclude Include="..\..\..\HkConsole\GetHttp.h" />
     <ClInclude Include="..\..\..\HkConsole\valinnat.h" />
     <ClInclude Include="..\..\..\Hk\BuildNo.h" />
@@ -247,6 +250,8 @@
     <ClCompile Include="..\..\..\Tp\TpApu.cpp" />
     <ClCompile Include="..\..\..\Tp\TpComY.cpp" />
     <ClCompile Include="..\..\..\Tp\TpLaitteet.cpp" />
+    <ClCompile Include="..\..\..\Tp\SiritReader.cpp" />
+    <ClCompile Include="..\..\..\Tp\ZebraReader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

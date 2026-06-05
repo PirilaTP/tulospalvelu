@@ -1,0 +1,559 @@
+// Pekka Pirila's sports timekeeping program (Finnish: tulospalveluohjelma)
+//
+// ZebraReader-toteutus: Zebra FX9600 -lukija LLRP-protokollalla (portti 5084),
+// projektin oman raa'an TCP-kerroksen (wincom.h) paalla, ilman ulkoisia
+// kirjastoja. Lukija valitaan konfiguraation ZEBRA=-parametrilla.
+//
+// Toimintaperiaate:
+//  - openConnection avaa TCP-yhteyden ja kaynnistaa jatkuvan inventaarion
+//    LLRP-sanomilla (DELETE_ROSPEC, ADD_ROSPEC, ENABLE_ROSPEC, START_ROSPEC,
+//    ENABLE_EVENTS_AND_REPORTS).
+//  - readTags lukee LLRP-sanomat, vastaa KEEPALIVE:en ja jasentaa
+//    RO_ACCESS_REPORT-sanomista tagit (EPC + antenni + aikaleima).
+//  - Kukin tagi muotoillaan samaan tekstimuotoon kuin FX9500/SIRIT
+//    ("tag_id=0x.. first=.. antenna=..") ja syotetaan tall_regnly:lle, jolloin
+//    EPC -> kilpailijanumero -muunnos ja ajankasittely toimivat samalla
+//    koodilla kuin SIRIT (parseTime delegoi siritaika:lle).
+//
+// Huom: tagien aikaleima otetaan lukijan FirstSeenTimestampUTC-kentasta, joten
+// FX9600:n kellon tulee olla oikeassa ajassa (NTP). Jos aikaleimaa ei saada,
+// kaytetaan PC:n paikallista kelloa.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#ifndef MAXOSUUSLUKU
+#include "HkDeclare.h"
+#else
+#include "VDeclare.h"
+#endif
+#include "TpLaitteet.h"
+#include "IRfidReader.h"
+#include "ZebraReader.h"
+
+#include <wincom.h>
+
+#ifdef LAJUNEN
+
+// LLRP:n vakioportti, jos konfiguraatiossa ei anneta porttia (ZEBRA=TCP:osoite).
+#define LLRP_PORT 5084
+
+// LLRP-sanomatyypit (10-bittinen tyyppikentta)
+#define LLRP_ADD_ROSPEC                20
+#define LLRP_DELETE_ROSPEC             21
+#define LLRP_START_ROSPEC              22
+#define LLRP_ENABLE_ROSPEC             24
+#define LLRP_RO_ACCESS_REPORT          61
+#define LLRP_KEEPALIVE                 62
+#define LLRP_KEEPALIVE_ACK             72
+#define LLRP_ENABLE_EVENTS_AND_REPORTS 64
+
+// LLRP-parametrityypit
+#define P_ANTENNA_ID            1   // TV, 2 tavua
+#define P_FIRST_SEEN_UTC        2   // TV, 8 tavua (mikrosekuntia UTC)
+#define P_LAST_SEEN_UTC         4   // TV, 8 tavua (mikrosekuntia UTC)
+#define P_PEAK_RSSI             6   // TV, 1 tavu
+#define P_CHANNEL_INDEX         7   // TV, 2 tavua
+#define P_ROSPEC_ID             9   // TV, 4 tavua
+#define P_INV_PARAM_SPEC_ID    10   // TV, 2 tavua
+#define P_EPC_96               13   // TV, 12 tavua
+#define P_SPEC_INDEX           14   // TV, 2 tavua
+#define P_ACCESS_SPEC_ID       16   // TV, 4 tavua
+#define P_EPC_DATA            241   // TLV (bittimaara + EPC-tavut)
+#define P_TAG_REPORT_DATA     240   // TLV
+
+#define RXSZ 16384
+
+// --- LLRP-sanomien rakennus (big-endian) ---
+
+typedef struct { unsigned char b[600]; int n; } LB;
+
+static void p8(LB *L, unsigned v)  { L->b[L->n++] = (unsigned char)v; }
+static void p16(LB *L, unsigned v) { p8(L, v >> 8); p8(L, v); }
+static void p32(LB *L, unsigned long v) { p8(L, (unsigned)(v >> 24)); p8(L, (unsigned)(v >> 16)); p8(L, (unsigned)(v >> 8)); p8(L, (unsigned)v); }
+
+// Aloittaa TLV-parametrin (tyyppi + paikanvaraus pituudelle); palauttaa alkukohdan.
+static int beginP(LB *L, unsigned type) { int pos = L->n; p16(L, type); p16(L, 0); return pos; }
+// Paivittaa TLV-parametrin pituuden (koko parametri otsikoineen).
+static void endP(LB *L, int pos) { int len = L->n - pos; L->b[pos+2] = (unsigned char)(len >> 8); L->b[pos+3] = (unsigned char)len; }
+
+static unsigned long g_msgid = 1;
+
+// Lahettaa LLRP-sanoman (otsikko + hyotykuorma) yhtena lohkona.
+static int sendLLRP(int cn, unsigned type, const unsigned char *payload, int plen)
+{
+	unsigned char msg[700];
+	int nsent;
+	unsigned ver_type = (1u << 10) | (type & 0x3FF);  // versio 1
+	unsigned long total = 10 + plen;
+
+	msg[0] = (unsigned char)(ver_type >> 8);
+	msg[1] = (unsigned char)ver_type;
+	msg[2] = (unsigned char)(total >> 24);
+	msg[3] = (unsigned char)(total >> 16);
+	msg[4] = (unsigned char)(total >> 8);
+	msg[5] = (unsigned char)total;
+	msg[6] = (unsigned char)(g_msgid >> 24);
+	msg[7] = (unsigned char)(g_msgid >> 16);
+	msg[8] = (unsigned char)(g_msgid >> 8);
+	msg[9] = (unsigned char)g_msgid;
+	g_msgid++;
+	if (plen > 0)
+		memcpy(msg + 10, payload, plen);
+	return wrt_st_TCP(hComm[cn], (int)total, (char *)msg, &nsent);
+}
+
+// Rakentaa ADD_ROSPEC-hyotykuorman: jatkuva inventaario kaikilla antenneilla,
+// raportoi jokaisen tagin EPC + antenni + ensimmaisen havainnon aikaleima.
+static void buildAddRospec(LB *L)
+{
+	L->n = 0;
+	int ro = beginP(L, 177);          // ROSpec
+		p32(L, 1);                    // ROSpecID = 1
+		p8(L, 0);                     // Priority
+		p8(L, 0);                     // CurrentState = Disabled
+		int bound = beginP(L, 178);   // ROBoundarySpec
+			int st = beginP(L, 179);  // ROSpecStartTrigger
+				p8(L, 0);             // Null (kaynnistetaan START_ROSPEC:lla)
+			endP(L, st);
+			int sp = beginP(L, 182);  // ROSpecStopTrigger
+				p8(L, 0);             // Null (ei pysayty itsestaan)
+				p32(L, 0);            // DurationTriggerValue
+			endP(L, sp);
+		endP(L, bound);
+		int ai = beginP(L, 183);      // AISpec
+			p16(L, 1);                // AntennaCount = 1
+			p16(L, 0);                // AntennaID = 0 -> kaikki antennit
+			int aist = beginP(L, 184);// AISpecStopTrigger
+				p8(L, 0);             // Null
+				p32(L, 0);            // Duration
+			endP(L, aist);
+			int inv = beginP(L, 186); // InventoryParameterSpec
+				p16(L, 1);            // InventoryParameterSpecID
+				p8(L, 1);             // ProtocolID = EPCGlobalClass1Gen2
+				// Gen2-inventoinnin hallinta: Session 0, jotta kentassa oleva tagi
+				// luetaan jatkuvasti ja tiheasti (presence-luenta) eika se vaikene
+				// Session 1 -lipun persistenssin (0.5-5 s) takia.
+				// HUOM: FX9600 hylkaa eksplisiittisen single-target-asetuksen
+				// (TagInventoryStateAware + SingulationAction -> A_Invalid), joten
+				// kohteen (target A/B) hallinta jaa lukijalle. Session 0 yksin
+				// korjaa patkittaisen luennan.
+				int ac = beginP(L, 222);          // AntennaConfiguration
+					p16(L, 0);                    // AntennaID = 0 -> kaikki antennit
+					int ic = beginP(L, 330);      // C1G2InventoryCommand
+						p8(L, 0x00);              // TagInventoryStateAware = 0 (lukija hallitsee kohteen)
+						int sc = beginP(L, 336);  // C1G2SingulationControl
+							p8(L, 0x00);          // Session = 0 (bitit 7-6)
+							p16(L, 4);            // TagPopulation (arvio, vahan tageja)
+							p32(L, 0);            // TagTransitTime = 0
+						endP(L, sc);
+					endP(L, ic);
+				endP(L, ac);
+			endP(L, inv);
+		endP(L, ai);
+		int rep = beginP(L, 237);     // ROReportSpec
+			p8(L, 2);                 // ROReportTrigger = Upon_N_Tags_Or_End_Of_ROSpec
+			p16(L, 1);                // N = 1 (raportoi joka tagi heti)
+			int tcs = beginP(L, 238); // TagReportContentSelector
+				// EnableAntennaID (bit12) | EnableFirstSeenTimestamp (bit9)
+				// | EnableLastSeenTimestamp (bit8) -> tarvitaan takareunaan
+				p16(L, 0x1300);
+			endP(L, tcs);
+		endP(L, rep);
+	endP(L, ro);
+}
+
+// Kaynnistaa jatkuvan inventaarion lukijassa.
+static void startInventory(int cn)
+{
+	unsigned char id[4];
+	LB L;
+
+	id[0] = 0; id[1] = 0; id[2] = 0; id[3] = 0;
+	sendLLRP(cn, LLRP_DELETE_ROSPEC, id, 4);   // poista kaikki ROSpecit
+	Sleep(150);
+	buildAddRospec(&L);
+	sendLLRP(cn, LLRP_ADD_ROSPEC, L.b, L.n);
+	Sleep(200);
+	id[3] = 1;
+	sendLLRP(cn, LLRP_ENABLE_ROSPEC, id, 4);   // ROSpecID = 1
+	Sleep(150);
+	sendLLRP(cn, LLRP_START_ROSPEC, id, 4);
+	Sleep(150);
+	sendLLRP(cn, LLRP_ENABLE_EVENTS_AND_REPORTS, 0, 0);
+	Sleep(50);
+}
+
+// --- Tagiraporttien jasennys ---
+
+// Muotoilee tavut heksamerkkijonoksi (isot kirjaimet).
+static void tohex(const unsigned char *src, int n, char *dst, int dstsz)
+{
+	int i;
+	if (n * 2 >= dstsz)
+		n = (dstsz - 1) / 2;
+	for (i = 0; i < n; i++)
+		sprintf(dst + 2*i, "%02X", src[i]);
+	dst[2*n] = 0;
+}
+
+// ZEBRADEPART: aika (ms), jonka tagi saa olla nakymatta ennen kuin se tulkitaan
+// poistuneeksi kentasta (takareuna). Luetaan HkInit.cpp:ssa; oletus 700 ms.
+int ZebraDepart = 700;
+
+// ZEBRADEPARTCLEANUP: aika (ms), jonka jalkeen departed-slotti vapautetaan uudelleen-
+// kayttolle. Arvo 0 = automaatti (10 x ZebraDepart). Luetaan HkInit.cpp:ssa.
+// Saato: lyhyt arvo sallii saman tagin uuden ohituksen nopeammin (riski: viela
+// kentassa olevan tagin slotti vapautuu liian pian -> toinen depart). Pitka arvo
+// estaa varmemmin toistuvan depart-syklin mutta blokkaa saman tagin uuden ohituksen.
+int ZebraDepartCleanup = 0;
+
+// Muotoilee tagitapahtuman SIRIT-tekstimuotoon ja syottaa tall_regnly:lle.
+// depart=false -> "arrive ... first=" (etureuna), depart=true -> "depart ... last=" (takareuna).
+static void emitTag(int r_no, const char *epchex, unsigned antenna, int haveAnt,
+	unsigned long long utc, int haveUtc, bool depart)
+{
+	int yyyy, mon, dd, hh, mm, ss, ms;
+	if (haveUtc) {
+		time_t secs = (time_t)(utc / 1000000ULL);
+		struct tm lt;
+		ms = (int)((utc / 1000ULL) % 1000ULL);
+		localtime_s(&lt, &secs);
+		yyyy = lt.tm_year + 1900; mon = lt.tm_mon + 1; dd = lt.tm_mday;
+		hh = lt.tm_hour; mm = lt.tm_min; ss = lt.tm_sec;
+		}
+	else {
+		SYSTEMTIME stm;
+		GetLocalTime(&stm);
+		yyyy = stm.wYear; mon = stm.wMonth; dd = stm.wDay;
+		hh = stm.wHour; mm = stm.wMinute; ss = stm.wSecond; ms = stm.wMilliseconds;
+		}
+	san_type vast;
+	// Sama tekstimuoto kuin FX9500/SIRIT, jotta siritaika jasentaa numeron ja ajan.
+	sprintf(vast.bytes,
+		"event.tag.%s tag_id=0x%s %s=%04d-%02d-%02dT%02d:%02d:%02d.%03d antenna=%u\r",
+		depart ? "depart" : "arrive", epchex, depart ? "last" : "first",
+		yyyy, mon, dd, hh, mm, ss, ms, haveAnt ? antenna : 1);
+	tall_regnly(&vast, r_no);
+}
+
+// --- Aktiiviset tagit takareunan (poistuman) tunnistusta varten ---
+#define ZEBRA_MAXACTIVE 256
+typedef struct {
+	int used;
+	int departed;     // 1 kun depart on jo emittoitu talle lahsaolojaksolle
+	int departedMs;   // mstimer() depart-emittoinnin hetkella
+	char epc[80];
+	unsigned antenna;
+	int haveAnt;
+	unsigned long long ts;   // viimeisin (suurin) LastSeen-aika
+	int haveTs;
+	int lastMs;              // mstimer() viimeisimmasta havainnosta
+} ActiveTag;
+static ActiveTag g_active[NREGNLY][ZEBRA_MAXACTIVE];
+
+// Tyhjentaa aktiivitagi-taulukon (kutsutaan yhteytta avattaessa, myos reconnect).
+static void clearActive(int r_no)
+{
+	int i;
+	for (i = 0; i < ZEBRA_MAXACTIVE; i++)
+		g_active[r_no][i].used = 0;
+}
+
+// Paivittaa tai lisaa aktiivisen tagin; ts paivitetaan suurimmaksi (uusin havainto).
+// Jos tagi on jo merkitty departed-tilaan, paivitys ohitetaan: sama
+// lahsaolojakso ei saa tuottaa useita departteja.
+static void activeUpsert(int r_no, const char *epc, unsigned antenna, int haveAnt,
+	unsigned long long ts, int haveTs)
+{
+	int i, vapaa = -1;
+	for (i = 0; i < ZEBRA_MAXACTIVE; i++) {
+		if (g_active[r_no][i].used) {
+			if (strcmp(g_active[r_no][i].epc, epc) == 0) {
+				if (g_active[r_no][i].departed) {
+					// Tagi luetaan depart-emittoinnin jalkeen: ei paiviteta lastMs:aa,
+					// jottei checkDepartures kaynnistaisi uutta depart-syklia.
+					return;
+					}
+				if (haveTs && (!g_active[r_no][i].haveTs || ts > g_active[r_no][i].ts)) {
+					g_active[r_no][i].ts = ts;
+					g_active[r_no][i].haveTs = 1;
+					}
+				g_active[r_no][i].antenna = antenna;
+				g_active[r_no][i].haveAnt = haveAnt;
+				g_active[r_no][i].lastMs = mstimer();
+				return;
+				}
+			}
+		else if (vapaa < 0)
+			vapaa = i;
+		}
+	if (vapaa >= 0) {
+		g_active[r_no][vapaa].used = 1;
+		g_active[r_no][vapaa].departed = 0;
+		g_active[r_no][vapaa].departedMs = 0;
+		strncpy(g_active[r_no][vapaa].epc, epc, sizeof(g_active[r_no][vapaa].epc) - 1);
+		g_active[r_no][vapaa].epc[sizeof(g_active[r_no][vapaa].epc) - 1] = 0;
+		g_active[r_no][vapaa].antenna = antenna;
+		g_active[r_no][vapaa].haveAnt = haveAnt;
+		g_active[r_no][vapaa].ts = ts;
+		g_active[r_no][vapaa].haveTs = haveTs;
+		g_active[r_no][vapaa].lastMs = mstimer();
+		}
+}
+
+// Palauttaa departed-slotille kaytetyn siivousajan ms:ina.
+// ZebraDepartCleanup == 0: kayteta automaattisesti 10 x ZebraDepart.
+static int departCleanupMs(void)
+{
+	return ZebraDepartCleanup > 0 ? ZebraDepartCleanup : 10 * ZebraDepart;
+}
+
+// Tarkistaa poistuneet tagit: jos tagia ei ole nahty ZebraDepart ms:iin, emittoi
+// poistuma (last=) viimeisella havaintoajalla ja merkitsee tagin departed-tilaan.
+// Departed-slotti pysyy varattuna departCleanupMs():n ajan, jottei sama
+// lahsaolojakso tuota useita departteja (ks. activeUpsert).
+static void checkDepartures(int r_no)
+{
+	int i, now = mstimer();
+	for (i = 0; i < ZEBRA_MAXACTIVE; i++) {
+		if (!g_active[r_no][i].used) continue;
+		if (g_active[r_no][i].departed) {
+			if (now - g_active[r_no][i].departedMs > departCleanupMs())
+				g_active[r_no][i].used = 0;
+			continue;
+			}
+		if (now - g_active[r_no][i].lastMs > ZebraDepart) {
+			emitTag(r_no, g_active[r_no][i].epc, g_active[r_no][i].antenna,
+				g_active[r_no][i].haveAnt, g_active[r_no][i].ts,
+				g_active[r_no][i].haveTs, true);
+			g_active[r_no][i].departed = 1;
+			g_active[r_no][i].departedMs = now;
+			// EI: used = 0 tassa — se aiheutti uudelleen-lisays+depart-syklin
+			}
+		}
+}
+
+// Kasittelee yhden TagReportData-parametrin: poimii EPC:n, antennin ja
+// aikaleiman, muotoilee SIRIT-tyylisen sanoman ja syottaa tall_regnly:lle.
+static void handleTagReport(int r_no, const unsigned char *d, int len)
+{
+	char epchex[80] = "";
+	int haveEpc = 0;
+	unsigned antenna = 0;
+	int haveAnt = 0;
+	unsigned long long firstUTC = 0;
+	int haveFirst = 0;
+	unsigned long long lastUTC = 0;
+	int haveLast = 0;
+	int i = 0;
+
+	while (i < len) {
+		if (d[i] & 0x80) {            // TV-parametri
+			unsigned t = d[i] & 0x7F;
+			int sz;
+			i++;
+			switch (t) {
+			case P_ANTENNA_ID:        sz = 2; antenna = (d[i] << 8) | d[i+1]; haveAnt = 1; break;
+			case P_PEAK_RSSI:         sz = 1; break;
+			case P_CHANNEL_INDEX:     sz = 2; break;
+			case P_ROSPEC_ID:         sz = 4; break;
+			case P_INV_PARAM_SPEC_ID: sz = 2; break;
+			case P_EPC_96:            sz = 12; tohex(d + i, 12, epchex, sizeof(epchex)); haveEpc = 1; break;
+			case P_SPEC_INDEX:        sz = 2; break;
+			case P_ACCESS_SPEC_ID:    sz = 4; break;
+			case P_FIRST_SEEN_UTC: {  // tyyppi 2: TV, 8 tavua, FirstSeen mikrosekuntia UTC
+				int k; sz = 8; firstUTC = 0;
+				for (k = 0; k < 8; k++)
+					firstUTC = (firstUTC << 8) | d[i+k];
+				haveFirst = 1;
+				break;
+				}
+			case P_LAST_SEEN_UTC: {   // tyyppi 4: TV, 8 tavua, LastSeen mikrosekuntia UTC
+				int k; sz = 8; lastUTC = 0;
+				for (k = 0; k < 8; k++)
+					lastUTC = (lastUTC << 8) | d[i+k];
+				haveLast = 1;
+				break;
+				}
+			case 3:                   // FirstSeenTimestampUptime (8 tavua, ei seinakelloaika)
+			case 5:                   // LastSeenTimestampUptime (8 tavua)
+				sz = 8;
+				break;
+			default:
+				// Tuntematon TV: kokoa ei voi paatella -> lopetetaan parametrien luku,
+				// mutta jo luettu EPC kasitellaan silti (ei pudoteta tagia).
+				i = len; sz = 0;
+				break;
+			}
+			if (i + sz > len)
+				return;
+			i += sz;
+			}
+		else {                        // TLV-parametri
+			unsigned t = ((d[i] & 0x03) << 8) | d[i+1];
+			unsigned l = (d[i+2] << 8) | d[i+3];
+			if (l < 4 || i + (int)l > len)
+				return;
+			if (t == P_EPC_DATA) {
+				unsigned bits = (d[i+4] << 8) | d[i+5];
+				int nb = (bits + 7) / 8;
+				tohex(d + i + 6, nb, epchex, sizeof(epchex));
+				haveEpc = 1;
+				}
+			// Aikaleimat (tyypit 2-5) ovat TV-koodattuja -> kasitellaan TV-haarassa.
+			i += (int)l;
+			}
+		}
+
+	if (!haveEpc)
+		return;
+
+	int wantFront = (siritreuna & 2);   // E tai M
+	int wantBack  = (siritreuna & 1);   // T tai M
+
+	// Etureuna (E ja M:n tulohetki): emittoi heti FirstSeen-ajalla.
+	// E-tilan (siritreuna==2) kaytos sailyy taysin ennallaan.
+	if (wantFront)
+		emitTag(r_no, epchex, antenna, haveAnt, firstUTC, haveFirst, false);
+
+	// Takareuna (T ja M:n poistuma): pida tagi aktiivisena; checkDepartures
+	// emittoi poistuman (last=) kun tagia ei ole nahty ZebraDepart ms:iin.
+	if (wantBack) {
+		unsigned long long ts = haveLast ? lastUTC : firstUTC;
+		activeUpsert(r_no, epchex, antenna, haveAnt, ts, haveLast || haveFirst);
+		}
+}
+
+// Kasittelee RO_ACCESS_REPORT-sanoman: kay lapi TagReportData-parametrit.
+static void handleAccessReport(int r_no, const unsigned char *d, int len)
+{
+	int i = 0;
+	while (i + 4 <= len) {
+		if (d[i] & 0x80)              // TV ei kuulu raportin ylatasolle
+			break;
+		unsigned ptype = ((d[i] & 0x03) << 8) | d[i+1];
+		unsigned plen = (d[i+2] << 8) | d[i+3];
+		if (plen < 4 || i + (int)plen > len)
+			break;
+		if (ptype == P_TAG_REPORT_DATA)
+			handleTagReport(r_no, d + i + 4, (int)plen - 4);
+		i += (int)plen;
+		}
+}
+
+// --- IRfidReader-rajapinta ---
+
+// Akkumulointipuskuri r_no-kohtaisesti (LLRP-sanomat voivat tulla osina).
+static unsigned char g_rx[NREGNLY][RXSZ];
+static int g_rxlen[NREGNLY];
+
+int ZebraReader::openConnection(int r_no, bool reconnect)
+{
+	int cn = cn_regnly[r_no];
+	wchar_t wline[200];
+
+	comtype[cn] = comtpTCP;
+	ipparam[MAX_LAHPORTTI + r_no].noreconnect = 1;
+	if (ipparam[MAX_LAHPORTTI + r_no].destport == 0)
+		ipparam[MAX_LAHPORTTI + r_no].destport = LLRP_PORT;
+
+	if (reconnect)
+		closeportTCP(&hComm[cn]);
+
+	if (openlukijaTCP(cn))
+		return 1;
+
+	for (int i = 0; i < 5; i++) {
+		if (TCPyht_on(hComm[cn]))
+			break;
+		Sleep(500);
+		}
+	if (!TCPyht_on(hComm[cn]))
+		return 1;
+
+	comopen[cn] = 1;
+	aikaTCPstatus = r_no + 1;
+	paivita_aikanaytto();
+	g_rxlen[r_no] = 0;
+	clearActive(r_no);   // tyhjenna aktiivitagit (myos reconnect) -> ei haamupoistumia
+
+	// Lukija lahettaa yhteyden avauksen jalkeen READER_EVENT_NOTIFICATION:n;
+	// se (ja komentojen vastaukset) ohitetaan readTags-silmukassa.
+	Sleep(300);
+	startInventory(cn);
+
+	if (loki) {
+		swprintf(wline, L"%d: FX9600 (LLRP) inventaario kaynnistetty portissa %d",
+			mstimer(), ipparam[MAX_LAHPORTTI + r_no].destport);
+		wkirjloki(wline);
+		}
+	return 0;
+}
+
+bool ZebraReader::isConnected(int r_no)
+{
+	return TCPyht_on(hComm[cn_regnly[r_no]]) != 0;
+}
+
+void ZebraReader::readTags(int r_no)
+{
+	int cn = cn_regnly[r_no];
+	int nread = 0;
+
+	// Lue saatavilla olevat tavut akkumulointipuskuriin.
+	if (g_rxlen[r_no] < RXSZ - 2048) {
+		read_TCP(hComm[cn], RXSZ - g_rxlen[r_no], (char *)(g_rx[r_no] + g_rxlen[r_no]), &nread);
+		if (nread > 0)
+			g_rxlen[r_no] += nread;
+		}
+
+	// Kasittele puskurista taydelliset LLRP-sanomat.
+	while (g_rxlen[r_no] >= 10) {
+		unsigned char *m = g_rx[r_no];
+		unsigned type = ((m[0] & 0x03) << 8) | m[1];
+		unsigned long mlen = ((unsigned long)m[2] << 24) | ((unsigned long)m[3] << 16) |
+			((unsigned long)m[4] << 8) | m[5];
+		if (mlen < 10 || mlen > RXSZ) {   // virheellinen pituus -> tyhjenna puskuri
+			g_rxlen[r_no] = 0;
+			break;
+			}
+		if ((unsigned long)g_rxlen[r_no] < mlen)
+			break;                        // sanoma ei viela kokonaan saapunut
+
+		if (type == LLRP_RO_ACCESS_REPORT)
+			handleAccessReport(r_no, m + 10, (int)(mlen - 10));
+		else if (type == LLRP_KEEPALIVE)
+			sendLLRP(cn, LLRP_KEEPALIVE_ACK, 0, 0);
+		// muut sanomat (vastaukset, tapahtumailmoitukset) ohitetaan
+
+		memmove(m, m + mlen, g_rxlen[r_no] - (int)mlen);
+		g_rxlen[r_no] -= (int)mlen;
+		}
+
+	// Takareuna (T/M): tarkista poistuneet tagit ja emittoi poistuma-ajat.
+	checkDepartures(r_no);
+}
+
+void ZebraReader::sync(bool setTime)
+{
+	// FX9600:n kello synkronoidaan ensisijaisesti NTP:lla; LLRP:lla ei ole
+	// standardia kellonasetusta. Ei toimenpiteita.
+}
+
+void ZebraReader::readCmd(int r_no)
+{
+	// FX9600 ei kayta SIRIT:n kaltaista erillista komentokanavaa.
+}
+
+int ZebraReader::parseTime(INT32 *t, san_type *vastaus, aikatp *ut,
+	INT *jono, int r_no)
+{
+	// readTags muotoilee tagit SIRIT-tekstimuotoon, joten sama jasennin
+	// (siritaika) hoitaa EPC -> kilpailijanumero -muunnoksen ja ajan.
+	return siritaika(t, vastaus, ut, jono, r_no);
+}
+
+#endif // LAJUNEN

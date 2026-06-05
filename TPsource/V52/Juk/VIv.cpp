@@ -38,6 +38,7 @@
 #include "VDeclare.h"
 #endif
 #include "TpLaitteet.h"
+#include "IRfidReader.h"
 
 #include <wincom.h>
 #include <sys/timeb.h>
@@ -1916,8 +1917,8 @@ int tall_regnly(san_type *vastaus, int r_no)
 	  vastaus->r6.tunnus = regnly_no[r_no] ? 'A' : 'F';
 	  }
 #ifdef LAJUNEN
-	else if (regnly[r_no] == 30) {           // SIRIT
-		siritaika((TMAALI *)&t, vastaus, &ut, &ino, r_no);
+	else if (regnly[r_no] == 30 || regnly[r_no] == LID_ZEBRA) {           // SIRIT
+		getRfidReader(r_no)->parseTime((INT32 *)&t, vastaus, &ut, &ino, r_no);
 		if (t == 20L*TMAALI0)
 			return(1);
 		bt = 0;

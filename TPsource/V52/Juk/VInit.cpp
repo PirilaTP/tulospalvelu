@@ -1589,7 +1589,8 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
 			|| !wmemcmp(fldn, L"TIMY",4)
 			|| !wmemcmp(fldn, L"FEIG",4)
 			|| !wmemcmp(fldn, L"IMPINJ",6)
-			|| !wmemcmp(fldn, L"SIRIT",5)) {
+			|| !wmemcmp(fldn, L"SIRIT",5)
+			|| !wmemcmp(fldn, L"ZEBRA",5)) {
             if( !wmemcmp(fldn, L"COMET",5))
 			   regnly[0] = 4;
             else if (!wmemcmp(fldn, L"TIMY",4))
@@ -1604,6 +1605,13 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
 				regnly_no[0] = 1;
 			   emitfl = 1;
 			   regnly[0] = 30;
+			   kaikki_ajat[1] = 2;
+			   }
+			else if (!wmemcmp(fldn, L"ZEBRA",5)) {
+			   // Zebra FX9600 (LLRP), rinnakkainen SIRIT:lle (FX9500)
+				regnly_no[0] = 1;
+			   emitfl = 1;
+			   regnly[0] = LID_ZEBRA;
 			   kaikki_ajat[1] = 2;
 			   }
 			else if (!wmemcmp(fldn, L"IMPINJ",6)) {

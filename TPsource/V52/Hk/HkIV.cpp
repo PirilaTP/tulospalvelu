@@ -39,6 +39,7 @@
 #include "VDeclare.h"
 #endif
 #include "TpLaitteet.h"
+#include "IRfidReader.h"
 
 #include <wincom.h>
 #include <sys/timeb.h>
@@ -2427,10 +2428,10 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 		bt = 0;
 		}
 #ifdef LAJUNEN
-	if (regnly[r_no] == LID_SIRIT) {           // SIRIT
+	if (regnly[r_no] == LID_SIRIT || regnly[r_no] == LID_ZEBRA) {           // SIRIT
 		if (loki && !siritloki)
 			kirjloki((char *) vastaus);
-		if (siritaika(&t, vastaus, &ut, &jono, r_no))
+		if (getRfidReader(r_no)->parseTime(&t, vastaus, &ut, &jono, r_no))
 			return(1);
 		if (ut.kanava == 0)
 			ut.kanava = r_no+1;
@@ -2687,6 +2688,7 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 				break;
 	#endif
 	#ifdef LAJUNEN
+			 case LID_ZEBRA:
 			 case LID_SIRIT:
 			 case LID_FEIG:
 			 case LID_IMPINJ:
