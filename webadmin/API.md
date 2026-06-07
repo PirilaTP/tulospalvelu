@@ -47,13 +47,20 @@ competition isn't reachable" from "key is wrong":
 
 Competitors are addressed by their competition number (`kilpno`).
 
+Both endpoints validate the current state, so a client need not track it:
+
 ### Mark not started (DNS / ei lähtenyt)
 
 ```
 POST /api/v1/competitors/{kilpno}/dns
 ```
 
-Sets the competitor's status to `E` (ei lähtenyt).
+Sets the status to `E` (ei lähtenyt). **Only allowed when the competitor is
+open** (no result and no decided status):
+
+- already DNS → `200`, `changed: false` (no-op)
+- open → `200`, `changed: true` (status set)
+- has a result or any other status → `409 Conflict`, nothing changed
 
 ### Reopen (avoin)
 
@@ -62,18 +69,29 @@ POST /api/v1/competitors/{kilpno}/open
 ```
 
 Reverts the status to `-` (avoin). Use this when a competitor previously
-marked DNS turns up and is registered at the start after all.
+marked DNS turns up and is registered at the start after all. **Only allowed
+when the competitor is currently DNS**:
 
-### Success response (`200 OK`)
+- already open → `200`, `changed: false` (no-op)
+- DNS → `200`, `changed: true` (reverted)
+- any other status → `409 Conflict`, nothing changed
+
+### Response body
 
 ```json
 {
   "kilpno": 101,
   "name": "Liisa Lähtijä",
   "status": "E",
+  "changed": true,
   "message": "Merkitty ei lähteneeksi (DNS)"
 }
 ```
+
+`changed` tells whether this request actually altered the status. On `409` the
+body carries the same shape with `changed: false` and a `message` explaining
+the current state, e.g. `"Ei voitu merkitä ei lähteneeksi: kilpailijan nykyinen
+tila on \"3. 1:21:39\""`.
 
 ### Errors
 
@@ -81,6 +99,7 @@ marked DNS turns up and is registered at the start after all.
 |--------|------|
 | `401 Unauthorized` | Missing or invalid api key |
 | `404 Not Found` | No competitor with that `kilpno` |
+| `409 Conflict` | The competitor's current state does not allow the requested change |
 | `502 Bad Gateway` | The Tulospalvelu C++ server rejected the change |
 | `503 Service Unavailable` | API disabled (no key) or no connection to the Tulospalvelu server |
 
