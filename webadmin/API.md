@@ -27,6 +27,24 @@ If no key is configured the API is **disabled** — every request gets
 
 ## Endpoints
 
+### Connectivity / key check
+
+```
+GET /api/v1/ping
+```
+
+Verifies the connection works and the api key is accepted. A `200` means the
+key is correct; `401`/`503` mean it is missing/invalid or the API is disabled.
+The body also tells whether webadmin currently has a live connection to the
+Tulospalvelu server, so a client can distinguish "key is good but the
+competition isn't reachable" from "key is wrong":
+
+```json
+{ "ok": true, "connected": false }
+```
+
+### Competitor status
+
 Competitors are addressed by their competition number (`kilpno`).
 
 ### Mark not started (DNS / ei lähtenyt)

@@ -85,6 +85,7 @@ Requires SecureBridge 7.1 add-on. Build libraries first (DBboxm-XE, Tputil-XE), 
 
 ### Webadmin REST API (`in.virit.pirila.rest`)
 - Status-change API for external apps (first consumer: the DNS start-line app). See `webadmin/API.md`.
+- `PingController.java` - `GET /api/v1/ping` connectivity/key check; 200 means the api key is accepted, body reports whether the TP server is connected.
 - `DnsApiController.java` - `POST /api/v1/competitors/{kilpno}/dns` (mark ei lähtenyt) and `/open` (revert to avoin); delegates to `TulospalveluService.sendStatusChange`. Competitors addressed by competition number (kilpno).
 - `ApiKeyAuthFilter.java` + `ApiConfig.java` - API-key auth (header `X-API-Key`) scoped to `/api/*` only, so the Vaadin UI is untouched. Key from `tulospalvelu.api.key` / `TULOSPALVELU_API_KEY` / `--tulospalvelu.api.key`. No key configured ⇒ API disabled (503).
 
