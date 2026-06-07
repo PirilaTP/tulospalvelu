@@ -366,6 +366,26 @@ void __fastcall TFormVaPisteet::Kirjoitatekstitiedostoon1Click(TObject *Sender)
 		OutFl = new TextFl(SaveDialog1->FileName.c_str(), L"wt");
 		if (OutFl->IsOpen()) {
 			wchar_t line[1000];
+			// Write header row.
+			// Buffer sized dynamically: max field name ~30 wchars,
+			// total fields = 1 + n_pv*(2 + valuku*5). Stack array hdr[5000]
+			// would overflow when valuku approaches VALUKU (250).
+			{
+				int hdrmax = (1 + kilpparam.n_pv_akt*(2 + kilpparam.valuku*5)) * 30 + 16;
+				wchar_t *hdr = new wchar_t[hdrmax];
+				wmemset(hdr, 0, hdrmax);
+				swprintf(hdr, L"sarjanimi");
+				for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
+					swprintf(hdr+wcslen(hdr), L";matka_pv%d;tul_raja_pv%d", ipv+1, ipv+1);
+					for (int piste = 0; piste < kilpparam.valuku; piste++) {
+						swprintf(hdr+wcslen(hdr), L";va_matka_pv%d_p%d;va_koodi_pv%d_p%d;va_sakot_pv%d_p%d;va_piilota_pv%d_p%d;va_raja_pv%d_p%d",
+							ipv+1, piste+1, ipv+1, piste+1, ipv+1, piste+1, ipv+1, piste+1, ipv+1, piste+1);
+						}
+					}
+				wcscat(hdr, L"\n");
+				OutFl->WriteLine(hdr);
+				delete[] hdr;
+				}
 			for (int srj = 0; srj < sarjaluku; srj++) {
 				swprintf(line, L"%s", Sarjat[srj].sarjanimi);
 				for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
@@ -405,18 +425,31 @@ void __fastcall TFormVaPisteet::Luetekstitiedostosta1Click(TObject *Sender)
 			memset(fields, 0, sizeof(fields));
 			nfld = getfields(line, fields, sizeof(fields)/sizeof(fields[0]), erottimet,
 				L"\"", true, false);
-			if (nfld < 5*kilpparam.n_pv_akt*(kilpparam.valuku+1) - 1)
-				break;
+			if (fields[0] && wcscmp(fields[0], L"sarjanimi") == 0)
+				continue; // skip header row
+			// Block layout per ipv written by Kirjoitatekstitiedostoon1Click:
+			//   matka(1) + tul_raja(1) + valuku*5 fields = valuku*5+2 per block.
+			// Total fields: 1(name) + n_pv*(valuku*5+2).
+			// Header is 3361 chars: ReadLine (999 wchars) needs 4 calls to consume it.
+			// Each fragment other than the first has too few fields, so use
+			// continue (not break) to skip fragments and blank lines gracefully.
+			if (nfld < 1 + kilpparam.n_pv_akt*(2 + kilpparam.valuku*5))
+				continue;
+			if (srj >= sarjaluku)
+				break; // do not write past Sarjat[] array bounds
 			for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
-				Sarjat[srj].tul_raja[ipv] = _wtoi(fields[5*ipv*(kilpparam.valuku+1)+2]);
+				int blk = ipv*(kilpparam.valuku*5+2);
+				wcsncpy(Sarjat[srj].matka[ipv], fields[1+blk],
+					sizeof(Sarjat[srj].matka[ipv])/2-1);
+				Sarjat[srj].tul_raja[ipv] = _wtoi(fields[2+blk]);
 				for (int piste = 0; piste < kilpparam.valuku; piste++) {
 					int i;
-					wcsncpy(Sarjat[srj].va_matka[ipv][piste], fields[5*(ipv*(kilpparam.valuku+1)+piste)+3],
+					wcsncpy(Sarjat[srj].va_matka[ipv][piste], fields[3+blk+piste*5],
 						sizeof(Sarjat[srj].va_matka[ipv][piste])/2-1);
-					Sarjat[srj].va_koodi[ipv][piste] = _wtoi(fields[5*(ipv*(kilpparam.valuku+1)+piste)+4]);
-					Sarjat[srj].va_sakot[ipv][piste+1] = _wtoi(fields[5*(ipv*(kilpparam.valuku+1)+piste)+5]);
-					Sarjat[srj].va_piilota[ipv][piste] = _wtoi(fields[5*(ipv*(kilpparam.valuku+1)+piste)+6]);
-					i = 5*(ipv*(kilpparam.valuku+1)+piste)+7;
+					Sarjat[srj].va_koodi[ipv][piste] = _wtoi(fields[4+blk+piste*5]);
+					Sarjat[srj].va_sakot[ipv][piste+1] = _wtoi(fields[5+blk+piste*5]);
+					Sarjat[srj].va_piilota[ipv][piste] = _wtoi(fields[6+blk+piste*5]);
+					i = 7+blk+piste*5;
 					if (i < nfld)
 						Sarjat[srj].va_raja[ipv][piste] = _wtoi(fields[i]);
 					}
