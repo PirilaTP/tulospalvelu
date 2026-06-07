@@ -123,7 +123,7 @@ mutta sen kaikkia alamäärityksiä ei voi tehdä.
 | LÄHAIKAy | \*\*\* | Ilmoittaa, että yhteyttä y käytetään myös ajanottotietojen siirtoon. y on yhteyden numero kuten parametrissa YHTEYSy. |
 | AJAT=/S AJAT=tied.nimi/S | \*\* | Ilmoittaa ajanottotiedoston nimen. '/S' poistaa tiedoston säilyttämistä koskevan kysymyksen (säilyttää kysymättä). |
 | PAKOTALAIKA |  | Estää hiihdon 3 sekunnin säännön käytön lähtöaikoja käsiteltäessä |
-| PAKOTALAIKARAJA=n |  | Käytössä vain PAKOTALAIKA-parametrin kanssa. Kertoo sekunteina minimieron, joka vaaditaan pakotalaikarekisteröinnin ja jo tallennetun lähtöajan välillä. Jos ero on pienempi kuin n, ei pakotalaika kirjata uudelleen. Oletusarvo 0 eli ei rajoitusta. |
+| PAKOTALAIKARAJA=n |  | Käytössä vain PAKOTALAIKA-parametrin kanssa. Kertoo sekunteina suurimman sallitun eron pakotalaikarekisteröinnin ja jo tallennetun lähtöajan välillä. Jos ero on suurempi kuin n, ei pakotalaika kirjata uudelleen. Oletusarvo 0 eli ei rajoitusta. |
 | LÄHTÖIKKUNA=x |  | Vaihtaa "3 sek säännön" aikarajaksi x sek. |
 | LAJAT LAJAT=tied.nimi | \*\* | Lähtöportin ajat tallennetaan eri tiedostoon kuin muut ajat |
 | TAUSTA-AIKA |  | Antaa mahdollisuuden avata toinen aikajono ohjelman HkMaali pikkuikkunaan |
