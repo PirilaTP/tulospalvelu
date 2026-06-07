@@ -322,6 +322,17 @@ public class TulospalveluService implements MessageListener {
         return null;
     }
 
+    /**
+     * Look up a competitor by competition number (kilpno), the natural key
+     * external systems use. Returns null if no competitor has that number.
+     */
+    public fi.pirila.tulospalvelu.Competitor getCompetitorByKilpno(int kilpno) {
+        for (fi.pirila.tulospalvelu.Competitor c : competitors) {
+            if (c.kilpno == kilpno) return c;
+        }
+        return null;
+    }
+
     public boolean isConnected() {
         if (tcpConnection != null) return tcpConnection.isConnected();
         return udpConnection != null && udpConnection.isConnected();

@@ -83,6 +83,11 @@ Requires SecureBridge 7.1 add-on. Build libraries first (DBboxm-XE, Tputil-XE), 
 - `webadmin/src/main/java/in/virit/pirila/views/KortinVaihtoView.java` - Emit card change UI (needs real backend integration)
 - Services in `webadmin/src/main/java/in/virit/pirila/service/` are currently stubs
 
+### Webadmin REST API (`in.virit.pirila.rest`)
+- Status-change API for external apps (first consumer: the DNS start-line app). See `webadmin/API.md`.
+- `DnsApiController.java` - `POST /api/v1/competitors/{kilpno}/dns` (mark ei lähtenyt) and `/open` (revert to avoin); delegates to `TulospalveluService.sendStatusChange`. Competitors addressed by competition number (kilpno).
+- `ApiKeyAuthFilter.java` + `ApiConfig.java` - API-key auth (header `X-API-Key`) scoped to `/api/*` only, so the Vaadin UI is untouched. Key from `tulospalvelu.api.key` / `TULOSPALVELU_API_KEY` / `--tulospalvelu.api.key`. No key configured ⇒ API disabled (503).
+
 ### C++ Core
 - `TPsource/V52/Hk/` - Individual competition logic
 - `TPsource/V52/Juk/` - Relay competition logic
