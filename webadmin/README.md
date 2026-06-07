@@ -78,12 +78,15 @@ Näin saat julkisen osoitteen joka ohjautuu lokaaliin palveluun.
 
 ## Kehittäjille
 
-Huom, parin java kirjaston snapshot versiot ei lödy centralista vielä, korjaillaan joku kaunis sadepäivä...
+Vaatii `pirila-comm`-kirjastot asennettuna lokaaliin Maven-repoon. Eli ensin `../pirila-comm` hakemistossa: 
 
 ```bash
-mvn                              # Käynnistä dev-serveri (http://localhost:8080)
-mvn test                         # Aja testit
-mvn clean package -Pproduction   # Buildaa tuotanto-JAR
+mvn install -DskipTests=true
 ```
 
-Vaatii `pirila-comm`-kirjastot asennettuna lokaaliin Maven-repoon (`cd ../pirila-comm && mvn install`).
+Sitten tässä hakemistossa, riippuen mitä haluaa tehdä:
+```bash
+mvn package             # Buildaa tuotanto-JAR target hakemistoon
+mvn spring-boot:run     # Käynnistää dev-serverin (http://localhost:8080)
+mvn test                # Ajaa testit
+```
