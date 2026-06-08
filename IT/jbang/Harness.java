@@ -704,6 +704,21 @@ public class Harness {
         }
     }
 
+    /** Write tlahto (start time, ms-of-day) at offset 124 within pv[pvIndex]. */
+    public static void setPvStartTime(Path kilpFile, int recordIndex, int pvIndex,
+                                      int startTimeMs) throws IOException {
+        KilpReader.read(kilpFile);
+        int reclen = KilpReader.detectRecordSize(kilpFile);
+        int kilppvtpsize = KilpReader.getKilppvtpsize();
+        long pvBase = (long) recordIndex * reclen + 360 + (long) pvIndex * kilppvtpsize;
+        try (RandomAccessFile raf = new RandomAccessFile(kilpFile.toFile(), "rw")) {
+            byte[] four = new byte[4];
+            TulospalveluProtocol.writeInt32LE(four, 0, startTimeMs);
+            raf.seek(pvBase + 124);
+            raf.write(four);
+        }
+    }
+
     // --- Misc ---
 
     public static void sleep(long ms) {

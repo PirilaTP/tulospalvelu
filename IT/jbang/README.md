@@ -35,6 +35,26 @@ Java/JBang-pohjaiset integraatiotestit Python-testien rinnalla
 | `TwoDayAllDone.java` | Kaikki osat valmiina → vaihto viimeiseen osaan. |
 | `FourNodeNikondata.java` | Sama topologia kuin FourNodeWithWebadmin, mutta `kisat/nikonserver/data` (1493 kilpailijaa, 2-stage). Tuotantovolyymin sync-testi. |
 
+## Testidatan generointi (manuaalinen testaus)
+
+`GenerateTwoMachineRace.java` ei ole pass/fail-testi vaan **luo kahden koneen
+kisan** käsin testattavaksi (mm. webadminin DNS-REST-API:lle):
+
+- kaksi datahakemistoa localhost-UDP:llä yhteen kytkettynä:
+  `test_data_server` (Kone=SE, C++ HkMaali) ja `test_data_J1` (Kone=J1, webadmin).
+- lähtölista: yksi satunnainen lähtijä per minuutti, kuluvasta minuutista
+  seuraavaan tasatuntiin (tai anna slottien määrä argumenttina). Lähde on
+  all-open pre-race -data, joten lähtijät ovat "Avoin" + lähtöaika.
+
+```bash
+jbang run GenerateTwoMachineRace.java        # nyt → seuraava tasatunti
+jbang run GenerateTwoMachineRace.java 60      # 60 minuuttislottia
+```
+
+Skripti tulostaa lopuksi käynnistysohjeet (HkMaali server-hakemistoon, webadmin
+J1-hakemistoon api-avaimella) ja valmiit curl-esimerkit DNS-API:n kokeiluun.
+Generoidut hakemistot ovat `.gitignore`ssa.
+
 ## Ajaminen
 
 ```bash
