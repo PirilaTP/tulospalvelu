@@ -266,11 +266,17 @@ public class Harness {
     public static class Webadmin implements AutoCloseable {
         private final Path dataDir;
         private final int httpPort;
+        private final String apiKey; // null = don't pass --tulospalvelu.api.key
         private Process proc;
 
         public Webadmin(Path dataDir, int httpPort) {
+            this(dataDir, httpPort, null);
+        }
+
+        public Webadmin(Path dataDir, int httpPort, String apiKey) {
             this.dataDir = dataDir;
             this.httpPort = httpPort;
+            this.apiKey = apiKey;
         }
 
         public void start() throws Exception {
@@ -279,11 +285,13 @@ public class Harness {
                 throw new IOException("webadmin jar not found in " + WEBADMIN_DIR.resolve("target")
                         + " — run 'mvn package -DskipTests' there first");
             }
-            ProcessBuilder pb = new ProcessBuilder(
+            List<String> cmd = new ArrayList<>(List.of(
                     "java", "-jar", jar.toString(),
                     "--tulospalvelu.data-dir=" + dataDir,
                     "--tulospalvelu.auto-start=true",
-                    "--server.port=" + httpPort);
+                    "--server.port=" + httpPort));
+            if (apiKey != null) cmd.add("--tulospalvelu.api.key=" + apiKey);
+            ProcessBuilder pb = new ProcessBuilder(cmd);
             pb.redirectErrorStream(true);
             pb.redirectOutput(new File("/tmp/webadmin-" + httpPort + ".log"));
             proc = pb.start();

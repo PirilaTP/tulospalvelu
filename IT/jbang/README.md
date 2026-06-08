@@ -34,6 +34,7 @@ Java/JBang-pohjaiset integraatiotestit Python-testien rinnalla
 | `TwoDayAfterQualifier.java` | Karsinta jo tuloksellinen → vain finaaliin. |
 | `TwoDayAllDone.java` | Kaikki osat valmiina → vaihto viimeiseen osaan. |
 | `FourNodeNikondata.java` | Sama topologia kuin FourNodeWithWebadmin, mutta `kisat/nikonserver/data` (1493 kilpailijaa, 2-stage). Tuotantovolyymin sync-testi. |
+| `DnsApiE2E.java` | Webadminin DNS-REST-API (`/api/v1/...`) päästä päähän oikeaa HkMaalia vasten: ping→connected, 401/404-vahdit, `/dns`→'E' ja `/open`→'-' etenevät serverin KILP.DAT:iin. Käytä Linuxissa (macOS:n C++ UDP-comm ei toimi). |
 
 ## Testidatan generointi (manuaalinen testaus)
 
