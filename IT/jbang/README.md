@@ -35,6 +35,7 @@ Java/JBang-pohjaiset integraatiotestit Python-testien rinnalla
 | `TwoDayAllDone.java` | Kaikki osat valmiina → vaihto viimeiseen osaan. |
 | `FourNodeNikondata.java` | Sama topologia kuin FourNodeWithWebadmin, mutta `kisat/nikonserver/data` (1493 kilpailijaa, 2-stage). Tuotantovolyymin sync-testi. |
 | `DnsApiE2E.java` | Webadminin DNS-REST-API (`/api/v1/...`) päästä päähän oikeaa HkMaalia vasten: ping→connected, 401/404-vahdit, `/dns`→'E' ja `/open`→'-' etenevät serverin KILP.DAT:iin. Käytä Linuxissa (macOS:n C++ UDP-comm ei toimi). |
+| `DnsPirilaE2E.java` | **Koko pino:** HkMaali (server) + webadmin (J1) + [DNS-sovellus](https://github.com/mstahv/dns) (branch `pirila-sync`, ajetaan `mvn spring-boot:test-run`, Testcontainers-Postgres DinD:ssä). Skripti generoi IOF-XML-lähtölistan (bib=kilpno, ~puolella lähtöaika jo ohi), tarjoilee sen DNS:n staattisena tiedostona, ja Playwrightilla luo kilpailun + konfiguroi pirilä-yhteyden. DNS:n ajastettu reconcile merkitsee ohitetut ei lähteneiksi → webadmin → serverin KILP.DAT:iin 'E'; tulevat jäävät avoimiksi. **Vaatii Dockerin** (DinD) ja Linuxin. |
 
 ## Testidatan generointi (manuaalinen testaus)
 
