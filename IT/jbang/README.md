@@ -45,6 +45,10 @@ kisan** käsin testattavaksi (mm. webadminin DNS-REST-API:lle):
 - lähtölista: yksi satunnainen lähtijä per minuutti, kuluvasta minuutista
   seuraavaan tasatuntiin (tai anna slottien määrä argumenttina). Lähde on
   all-open pre-race -data, joten lähtijät ovat "Avoin" + lähtöaika.
+- molempiin `laskenta.cfg`:hin kirjoitetaan `PÄIVÄ=1` (= `VAIHE=1`). Demo-data
+  on 2-vaiheinen; tämä kiinnittää HkMaalin 1. vaiheeseen (`k_pv=0`) ja ohittaa
+  "Vahvista kilpailupäivä" -kehotteen. Ilman sitä server voi jäädä eri
+  vaiheeseen kuin webadminin `vaihe=1`-kättely → C++ hylkää (NAK-silmukka).
 
 ```bash
 jbang run GenerateTwoMachineRace.java        # nyt → seuraava tasatunti

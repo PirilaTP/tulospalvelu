@@ -65,9 +65,14 @@ public class GenerateTwoMachineRace {
         // Pre-race source: every stage open (keskhyl='-', no result).
         Path src = Harness.preRaceSourceData();
 
-        Path dirServer = Harness.setupDataDir("server", KONE_SERVER, null, src,
+        // PÄIVÄ/VAIHE=1 pins both machines to the first stage (k_pv=0) and skips
+        // HkMaali's "Vahvista kilpailupäivä" prompt. The demo data is 2-stage, and
+        // without this the server can end up on a different stage than webadmin's
+        // vaihe=1 handshake — which the C++ server silently rejects (NAK loop).
+        int vaihe = 1;
+        Path dirServer = Harness.setupDataDir("server", KONE_SERVER, vaihe, src,
                 new Harness.Connection(PORT_SERVER, "127.0.0.1", PORT_J1));
-        Path dirJ1 = Harness.setupDataDir("J1", KONE_J1, null, src,
+        Path dirJ1 = Harness.setupDataDir("J1", KONE_J1, vaihe, src,
                 new Harness.Connection(PORT_J1, "127.0.0.1", PORT_SERVER));
 
         Path kilpServer = dirServer.resolve("KILP.DAT");
