@@ -53,4 +53,16 @@ public interface MessageListener {
      * @param targetMachine 2-char machine ID (empty = all machines)
      */
     default void onShutdown(String targetMachine) {}
+
+    /**
+     * ALKUT (type 0): the peer's handshake, carrying its identity and the
+     * competition stage/record count it is operating on. Lets a listener detect
+     * a mismatch (e.g. the other end is on a different competition day) and warn
+     * the user. Fired once per distinct peer handshake.
+     *
+     * @param peerMachineId the peer's 2-char machine ID (e.g. "MA", "J1")
+     * @param peerVaihe     the peer's competition stage/day, 1-based (k_pv + 1)
+     * @param peerNrec      the peer's KILP.DAT record count (numrec)
+     */
+    default void onPeerHandshake(String peerMachineId, int peerVaihe, int peerNrec) {}
 }

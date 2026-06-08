@@ -153,6 +153,19 @@ public final class TulospalveluProtocol {
         return data;
     }
 
+    /** Peer identity and competition state parsed from an ALKUT handshake payload. */
+    public record AlkutInfo(String machineId, int vaihe, int nrec) {}
+
+    /** Parse an ALKUT handshake payload. Returns null if it is too short. */
+    public static AlkutInfo parseAlkutData(byte[] data) {
+        if (data == null || data.length < ALKUT_DATA_SIZE) return null;
+        String machineId = new String(new char[]{
+                (char) (data[1] & 0xFF), (char) (data[2] & 0xFF)});
+        int vaihe = data[3] & 0xFF;
+        int nrec = readInt16LE(data, 4) & 0xFFFF;
+        return new AlkutInfo(machineId, vaihe, nrec);
+    }
+
     /** Build KILPPVT outbound payload for pv[0] with new badge. */
     public static byte[] buildKilppvtData(int recordIndex, byte[] pvData,
                                            int kilppvtpsize, int newBadge) {

@@ -49,6 +49,12 @@ public class TulospalveluService implements MessageListener {
     private volatile String password;
     private volatile List<fi.pirila.tulospalvelu.Competitor> competitors = List.of();
     private final List<Consumer<fi.pirila.tulospalvelu.Competitor>> updateListeners = new CopyOnWriteArrayList<>();
+    /** This machine's own competition stage/day (1-based). Webadmin is single-day for now. */
+    private static final int LOCAL_VAIHE = 1;
+    /** Our KILP.DAT record count, learned at connect; -1 until known. */
+    private volatile int localNrec = -1;
+    /** Latest connection warning (e.g. peer on a different day), or null. Polled by the UI. */
+    private volatile String connectionWarning;
     private KilpSrjReader kilpSrjReader;
     /** Known-clubs catalogue indexed by full name. Built from seurat.csv +
      *  seuras already present on competitor records. */
@@ -132,6 +138,7 @@ public class TulospalveluService implements MessageListener {
                 fi.pirila.tulospalvelu.Connection conn = config.getEmitConnection();
                 if (conn != null) {
                     int nrec = KilpReader.readNumrec(kilpFile);
+                    this.localNrec = nrec;
                     String machineId = config.getMachineId() != null ? config.getMachineId() : "W1";
                     log.info("Selected connection: protocol={}, dest={}:{}, srvPort={}, machineId={}, nrec={}",
                             conn.protocol(), conn.destAddr(), conn.destPort(), conn.srvPort(), machineId, nrec);
@@ -638,6 +645,38 @@ public class TulospalveluService implements MessageListener {
 
     public void removeUpdateListener(Consumer<fi.pirila.tulospalvelu.Competitor> listener) {
         updateListeners.remove(listener);
+    }
+
+    /**
+     * Latest connection warning detected from the peer's handshake (e.g. the
+     * other end is on a different competition day), or null if all is well.
+     * The UI polls this and surfaces it as a notification.
+     */
+    public String getConnectionWarning() {
+        return connectionWarning;
+    }
+
+    /**
+     * The peer announced its identity and competition state in its ALKUT
+     * handshake. Compare with ours and record a warning if they disagree — most
+     * importantly when the other end is on a different competition day, which
+     * makes the connection silently useless. Runs on a Netty thread.
+     */
+    @Override
+    public void onPeerHandshake(String peerMachineId, int peerVaihe, int peerNrec) {
+        if (peerVaihe != LOCAL_VAIHE) {
+            connectionWarning = "Yhteyden toinen pää (" + peerMachineId
+                    + ") on eri kilpailupäivässä: vaihe " + peerVaihe
+                    + ", tämä kone vaihe " + LOCAL_VAIHE + ".";
+            log.warn(connectionWarning);
+        } else if (localNrec > 0 && peerNrec != localNrec) {
+            connectionWarning = "Yhteyden toinen pää (" + peerMachineId
+                    + ") käyttää eri KILP.DAT:ia: " + peerNrec
+                    + " tietuetta, tässä " + localNrec + ".";
+            log.warn(connectionWarning);
+        } else {
+            connectionWarning = null; // handshake matches — clear any stale warning
+        }
     }
 
     // --- Server-initiated updates ---

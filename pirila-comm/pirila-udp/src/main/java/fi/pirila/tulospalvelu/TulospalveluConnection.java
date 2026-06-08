@@ -448,8 +448,18 @@ public class TulospalveluConnection extends SimpleChannelInboundHandler<Datagram
                     }
                 }
             }
-            case PKGCLASS_ALKUT ->
-                log.debug("ALKUT from server (handshake response)");
+            case PKGCLASS_ALKUT -> {
+                var info = parseAlkutData(data);
+                if (info != null) {
+                    log.info("Peer ALKUT: machine={}, vaihe={}, nrec={}",
+                            info.machineId(), info.vaihe(), info.nrec());
+                    if (listener != null) {
+                        listener.onPeerHandshake(info.machineId(), info.vaihe(), info.nrec());
+                    }
+                } else {
+                    log.debug("ALKUT from server (handshake response)");
+                }
+            }
             default ->
                 log.debug("Unhandled message type: {}", frame.pkgclass() & 0xFF);
         }
