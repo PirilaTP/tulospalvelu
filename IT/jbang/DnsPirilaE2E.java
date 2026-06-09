@@ -40,6 +40,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static java.lang.System.out;
 
@@ -101,8 +102,17 @@ public class DnsPirilaE2E {
         int half = pool.size() / 2;
         List<Competitor> passed = pool.subList(0, half);          // expect -> DNS ('E')
         List<Competitor> future = pool.subList(half, pool.size()); // expect -> stay open
+        Competitor reopenTarget = passed.get(0); // a late starter we register via the DNS UI
         out.printf("%nCompetitors: %d total, %d with passed start (expect DNS), %d future%n",
                 pool.size(), passed.size(), future.size());
+
+        // Start times computed once, in DNS's zone (it compares wall-clock LocalTime).
+        // All "passed" share one slot, all "future" another — so the DNS view has two
+        // time slots and we can navigate to the passed one to register a late starter.
+        ZonedDateTime nowZdt = ZonedDateTime.now(DNS_ZONE).withSecond(0).withNano(0);
+        ZonedDateTime passedStart = nowZdt.minusMinutes(15);
+        ZonedDateTime futureStart = nowZdt.plusMinutes(40);
+        String passedHhmm = passedStart.format(DateTimeFormatter.ofPattern("HH:mm"));
 
         // 2) Check out DNS (pirila-sync) and drop the IOF XML start list into its
         //    static resources so DNS serves it at /startlist.xml and reads it back.
@@ -110,7 +120,7 @@ public class DnsPirilaE2E {
         Path staticDir = DNS_CHECKOUT.resolve("server/src/main/resources/static");
         Files.createDirectories(staticDir);
         Files.writeString(staticDir.resolve("startlist.xml"),
-                buildIofStartList(passed, future), StandardCharsets.UTF_8);
+                buildIofStartList(passed, future, passedStart, futureStart), StandardCharsets.UTF_8);
         String startListUrl = "http://localhost:" + DNS_PORT + "/startlist.xml";
 
         Process dns = null;
@@ -137,7 +147,17 @@ public class DnsPirilaE2E {
             boolean dnsApplied = waitForStatus(kSrv, passed, 'E', 150);
             results.put("passed_marked_dns", dnsApplied);
 
-            out.println("[5] Verify future starters were left open...");
+            out.printf("[5] Register late starter bib %d via the DNS view "
+                    + "(expect reopen -> '-')...%n", reopenTarget.kilpno);
+            long t0 = System.currentTimeMillis();
+            markStartedViaUi(COMP_PW, passedHhmm, reopenTarget.kilpno);
+            boolean reopened = waitForOpen(kSrv, reopenTarget, 80);
+            long secs = (System.currentTimeMillis() - t0) / 1000;
+            out.printf("    reopen propagated in ~%ds (arrives via the 60s reconcile today; "
+                    + "near-instant once DNS sends on the started-event — see description)%n", secs);
+            results.put("late_starter_reopened", reopened);
+
+            out.println("[6] Verify future starters were left open...");
             boolean futureOpen = true;
             for (Competitor c : future) {
                 char st = Harness.readPvStatus(kSrv, c.recordIndex, 0).keskhyl();
@@ -147,7 +167,8 @@ public class DnsPirilaE2E {
 
             for (Competitor c : passed) {
                 char st = Harness.readPvStatus(kSrv, c.recordIndex, 0).keskhyl();
-                out.printf("    bib %-4d (%s) server keskhyl='%s'%n", c.kilpno, c.sukunimi, st);
+                out.printf("    bib %-4d (%s) server keskhyl='%s'%s%n", c.kilpno, c.sukunimi, st,
+                        c == reopenTarget ? "  <- late starter (reopened)" : "");
             }
         } finally {
             if (dns != null) dns.destroy();
@@ -247,23 +268,65 @@ public class DnsPirilaE2E {
         }
     }
 
+    /**
+     * Register a late starter through the DNS view: log in to the competition,
+     * navigate to the (past) start-time slot, and click the runner's card to mark
+     * them started. That makes DNS send /open for them to webadmin.
+     */
+    static void markStartedViaUi(String compPw, String passedHhmm, int bib) {
+        try (Playwright pw = Playwright.create();
+             Browser browser = pw.chromium().launch(
+                     new BrowserType.LaunchOptions().setHeadless(true))) {
+            Page page = browser.newPage();
+
+            page.navigate("http://localhost:" + DNS_PORT + "/",
+                    new Page.NavigateOptions().setTimeout(30000));
+            page.waitForLoadState(LoadState.NETWORKIDLE,
+                    new Page.WaitForLoadStateOptions().setTimeout(30000));
+            page.getByLabel("Nimesi").fill("E2E Tester");
+            // Exact: "Kisasalasana" otherwise also matches the two "Keksi kisasalasana" fields.
+            page.getByLabel("Kisasalasana", new Page.GetByLabelOptions().setExact(true)).fill(compPw);
+            page.getByRole(AriaRole.BUTTON,
+                    new Page.GetByRoleOptions().setName("Kirjaudu kisaan")).click();
+            page.waitForURL("**/dns", new Page.WaitForURLOptions().setTimeout(30000));
+            page.waitForLoadState(LoadState.NETWORKIDLE,
+                    new Page.WaitForLoadStateOptions().setTimeout(20000));
+
+            // The view opens on the upcoming slot; jump to the passed slot via the
+            // time-navigation popover (the bold "HH:mm (i/n)" toolbar button).
+            page.locator("vaadin-button")
+                    .filter(new Locator.FilterOptions().setHasText(Pattern.compile("\\d{1,2}:\\d{2}\\s*\\(")))
+                    .first().click();
+            page.getByLabel("Siirry aikaan").fill(passedHhmm);
+            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Siirry")).click();
+            page.waitForTimeout(2000);
+
+            // Click the late starter's card (matched by its "nro: <bib>" badge) -> marks started.
+            page.locator("vaadin-card")
+                    .filter(new Locator.FilterOptions().setHasText("nro: " + bib))
+                    .first().click();
+            page.waitForTimeout(2000);
+            out.println("    clicked card for bib " + bib + " at slot " + passedHhmm);
+        }
+    }
+
     // --- IOF XML start list --------------------------------------------------
 
     private static final DateTimeFormatter IOF_DT =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssxxx");
 
     /** Minimal IOF v3 StartList; passed[] get a past start time, future[] a future one. */
-    static String buildIofStartList(List<Competitor> passed, List<Competitor> future) {
-        ZonedDateTime now = ZonedDateTime.now(DNS_ZONE).withSecond(0).withNano(0);
+    static String buildIofStartList(List<Competitor> passed, List<Competitor> future,
+                                    ZonedDateTime passedStart, ZonedDateTime futureStart) {
         StringBuilder sb = new StringBuilder();
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
         // createTime is required: DNS's TulospalveluService caches it and NPEs on null.
         sb.append("<StartList xmlns=\"http://www.orienteering.org/datastandard/3.0\" "
-                + "iofVersion=\"3.0\" createTime=\"").append(IOF_DT.format(now.minusHours(2)))
+                + "iofVersion=\"3.0\" createTime=\"").append(IOF_DT.format(passedStart.minusHours(2)))
                 .append("\">\n");
         sb.append("  <ClassStart>\n    <Class><Name>H21</Name></Class>\n");
-        appendStarts(sb, passed, now.minusMinutes(15));
-        appendStarts(sb, future, now.plusMinutes(40));
+        appendStarts(sb, passed, passedStart);
+        appendStarts(sb, future, futureStart);
         sb.append("  </ClassStart>\n</StartList>\n");
         return sb.toString();
     }
@@ -296,6 +359,17 @@ public class DnsPirilaE2E {
                 if (Harness.readPvStatus(kilp, c.recordIndex, 0).keskhyl() != expect) { all = false; break; }
             }
             if (all) return true;
+            Harness.sleep(3000);
+        }
+        return false;
+    }
+
+    /** Wait until the competitor's stage is open again ('-' or unset) on the server. */
+    static boolean waitForOpen(Path kilp, Competitor c, int timeoutSec) throws Exception {
+        long deadline = System.currentTimeMillis() + timeoutSec * 1000L;
+        while (System.currentTimeMillis() < deadline) {
+            char st = Harness.readPvStatus(kilp, c.recordIndex, 0).keskhyl();
+            if (st == '-' || st == 0) return true;
             Harness.sleep(3000);
         }
         return false;
