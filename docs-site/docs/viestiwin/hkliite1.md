@@ -171,4 +171,5 @@ tapaukissa muuttaa ohjelma kirjaimet isoiksi ennen käyttöä.
 | --- | --- |
 | TAULU\_COM=x TAULU\_BAUD= TAULUVIIVE=xx GAZ=x GAZVAIHE=x GAZRIVIy= | Erilaisten tulostaulujen ohjaukseen liittyviä parametreja |
 | SIRIT SIRITREUNA SIRITARRIVE SIRITDEPART IMPINJ  RFID-tunnisteiden ajanottokäyttöön liittyviä parametreja | |
+| ZEBRA=TCP:osoite ZEBRADEPART=ms ZEBRADEPARTCLEANUP=ms | Zebra FX9600 RFID-lukija (LLRP-protokolla). ZEBRA määrittää lukijan osoitteen. ZEBRADEPART: aika (ms) ennen kuin tagi tulkitaan poistuneeksi (oletus 700). ZEBRADEPARTCLEANUP: departed-slotin vapautusaika ms (oletus 10×ZEBRADEPART). |
 | SW2000=xx | Uinnin SW2000 kellolaite käytössä |

@@ -226,5 +226,6 @@ mutta sen kaikkia alamäärityksiä ei voi tehdä.
 | --- | --- | --- |
 | TAULU\_COM=x TAULUVIIVE=xx GAZ=x GAZVAIHE=x GAZRIVIy= |  | Erilaisten tulostaulujen ohjaukseen liittyviä parametreja |
 | SIRIT SIRITREUNA SIRITARRIVE SIRITDEPART FEIG IMPINJ |  | RFID-tunnisteiden ajanottokäyttöön liittyviä parametreja |
+| ZEBRA=TCP:osoite ZEBRADEPART=ms ZEBRADEPARTCLEANUP=ms |  | Zebra FX9600 RFID-lukija (LLRP-protokolla). ZEBRA määrittää lukijan osoitteen. ZEBRADEPART: aika (ms) ennen kuin tagi tulkitaan poistuneeksi (oletus 700). ZEBRADEPARTCLEANUP: departed-slotin vapautusaika ms (oletus 10×ZEBRADEPART). |
 | SW2000=xx |  | Uinnin SW2000 kellolaite käytössä |
 | BIBSIIRTOALUE |  | Alue ei-aktiivisten tietueiden numeroille |

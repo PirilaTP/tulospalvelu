@@ -208,6 +208,9 @@ int ZebraDepart = 700;
 // Saato: lyhyt arvo sallii saman tagin uuden ohituksen nopeammin (riski: viela
 // kentassa olevan tagin slotti vapautuu liian pian -> toinen depart). Pitka arvo
 // estaa varmemmin toistuvan depart-syklin mutta blokkaa saman tagin uuden ohituksen.
+// HUOM: sama slotin elinkaari (ZebraDepart + tama cleanup) saataa MOLEMPIA reunoja.
+// Etureunalla (E) se maaraa, kuinka pian sama tagi voi tuottaa uuden arriven
+// poistuttuaan kentasta; takareunalla (T) saman tagin uuden departin.
 int ZebraDepartCleanup = 0;
 
 // Muotoilee tagitapahtuman SIRIT-tekstimuotoon ja syottaa tall_regnly:lle.
@@ -239,12 +242,13 @@ static void emitTag(int r_no, const char *epchex, unsigned antenna, int haveAnt,
 	tall_regnly(&vast, r_no);
 }
 
-// --- Aktiiviset tagit takareunan (poistuman) tunnistusta varten ---
+// --- Aktiiviset tagit etureunan (arrive) ja takareunan (poistuman) tunnistusta varten ---
 #define ZEBRA_MAXACTIVE 256
 typedef struct {
 	int used;
-	int departed;     // 1 kun depart on jo emittoitu talle lahsaolojaksolle
-	int departedMs;   // mstimer() depart-emittoinnin hetkella
+	int arrived;      // 1 kun arrive on jo emittoitu talle lahsaolojaksolle (etureuna)
+	int departed;     // 1 kun depart on jo emittoitu/lahsaolo paattynyt talle jaksolle
+	int departedMs;   // mstimer() depart-emittoinnin / lahsaolon paattymisen hetkella
 	char epc[80];
 	unsigned antenna;
 	int haveAnt;
@@ -262,21 +266,33 @@ static void clearActive(int r_no)
 		g_active[r_no][i].used = 0;
 }
 
-// Paivittaa tai lisaa aktiivisen tagin; ts paivitetaan suurimmaksi (uusin havainto).
-// Jos tagi on jo merkitty departed-tilaan, paivitys ohitetaan: sama
-// lahsaolojakso ei saa tuottaa useita departteja.
-static void activeUpsert(int r_no, const char *epc, unsigned antenna, int haveAnt,
-	unsigned long long ts, int haveTs)
+// Kirjaa havainnon yhteiseen g_active-taulukkoon ja emittoi etureunan arriven
+// VAIN kerran per lahsaolojakso (slotin luontihetkella, FirstSeen-ajalla). Sama
+// taulukko ja sama departed/cleanup-kuvio hoitaa seka etureunan (arrived) etta
+// takareunan (departed) "emittoi kerran per lahsaolo" -vaimennuksen.
+//  - wantFront != 0 (E/M): emittoi arrive uudelle slotille ja merkitsee arrived.
+//  - ts paivitetaan suurimmaksi (uusin havainto) takareunan depart-aikaa varten.
+//  - jos tagi on jo departed-tilassa, paivitys ohitetaan, jottei sama
+//    lahsaolojakso kaynnistaisi uutta sykli a (slotti vapautuu cleanupissa).
+// Takareunan depart-emissio tehdaan checkDeparturessa (portitettu siritreuna & 1).
+static void activeSee(int r_no, const char *epc, unsigned antenna, int haveAnt,
+	unsigned long long firstUTC, int haveFirst,
+	unsigned long long lastUTC, int haveLast, int wantFront)
 {
 	int i, vapaa = -1;
+	unsigned long long ts = haveLast ? lastUTC : firstUTC;
+	int haveTs = haveLast || haveFirst;
 	for (i = 0; i < ZEBRA_MAXACTIVE; i++) {
 		if (g_active[r_no][i].used) {
 			if (strcmp(g_active[r_no][i].epc, epc) == 0) {
 				if (g_active[r_no][i].departed) {
-					// Tagi luetaan depart-emittoinnin jalkeen: ei paiviteta lastMs:aa,
-					// jottei checkDepartures kaynnistaisi uutta depart-syklia.
+					// Tagi luetaan depart-emittoinnin/lahsaolon paattymisen jalkeen:
+					// ei paiviteta lastMs:aa, jottei checkDepartures kaynnistaisi
+					// uutta syklia -> slotti vapautuu cleanupissa.
 					return;
 					}
+				// Tagi jo aktiivinen: arrive on jo emittoitu (vaimennus) -> ei uutta
+				// emittia. Paivitetaan vain havaintotiedot takareunaa varten.
 				if (haveTs && (!g_active[r_no][i].haveTs || ts > g_active[r_no][i].ts)) {
 					g_active[r_no][i].ts = ts;
 					g_active[r_no][i].haveTs = 1;
@@ -292,6 +308,7 @@ static void activeUpsert(int r_no, const char *epc, unsigned antenna, int haveAn
 		}
 	if (vapaa >= 0) {
 		g_active[r_no][vapaa].used = 1;
+		g_active[r_no][vapaa].arrived = 0;
 		g_active[r_no][vapaa].departed = 0;
 		g_active[r_no][vapaa].departedMs = 0;
 		strncpy(g_active[r_no][vapaa].epc, epc, sizeof(g_active[r_no][vapaa].epc) - 1);
@@ -301,6 +318,11 @@ static void activeUpsert(int r_no, const char *epc, unsigned antenna, int haveAn
 		g_active[r_no][vapaa].ts = ts;
 		g_active[r_no][vapaa].haveTs = haveTs;
 		g_active[r_no][vapaa].lastMs = mstimer();
+		// Etureuna: emittoi arrive VAIN nyt (uusi lahsaolojakso, ensilukema).
+		if (wantFront && !g_active[r_no][vapaa].arrived) {
+			emitTag(r_no, epc, antenna, haveAnt, firstUTC, haveFirst, false);
+			g_active[r_no][vapaa].arrived = 1;
+			}
 		}
 }
 
@@ -311,10 +333,12 @@ static int departCleanupMs(void)
 	return ZebraDepartCleanup > 0 ? ZebraDepartCleanup : 10 * ZebraDepart;
 }
 
-// Tarkistaa poistuneet tagit: jos tagia ei ole nahty ZebraDepart ms:iin, emittoi
-// poistuma (last=) viimeisella havaintoajalla ja merkitsee tagin departed-tilaan.
-// Departed-slotti pysyy varattuna departCleanupMs():n ajan, jottei sama
-// lahsaolojakso tuota useita departteja (ks. activeUpsert).
+// Tarkistaa lahsaolon paattymisen: jos tagia ei ole nahty ZebraDepart ms:iin,
+// takareunalla (T/M) emittoidaan poistuma (last=) viimeisella havaintoajalla.
+// Etureunalla (pelkka E) ei emittoida departtia, mutta lahsaolo merkitaan silti
+// paattyneeksi (departed), jotta slotti vanhenee ja sama tagi voi myohemmin
+// tuottaa uuden arriven. Departed-slotti pysyy varattuna departCleanupMs():n
+// ajan, jottei sama lahsaolojakso tuota useita tapahtumia (ks. activeSee).
 static void checkDepartures(int r_no)
 {
 	int i, now = mstimer();
@@ -326,14 +350,53 @@ static void checkDepartures(int r_no)
 			continue;
 			}
 		if (now - g_active[r_no][i].lastMs > ZebraDepart) {
-			emitTag(r_no, g_active[r_no][i].epc, g_active[r_no][i].antenna,
-				g_active[r_no][i].haveAnt, g_active[r_no][i].ts,
-				g_active[r_no][i].haveTs, true);
+			// Vain takareuna (T/M) emittoi poistuman; E-tilassa pelkka merkinta.
+			if (siritreuna & 1)
+				emitTag(r_no, g_active[r_no][i].epc, g_active[r_no][i].antenna,
+					g_active[r_no][i].haveAnt, g_active[r_no][i].ts,
+					g_active[r_no][i].haveTs, true);
 			g_active[r_no][i].departed = 1;
 			g_active[r_no][i].departedMs = now;
 			// EI: used = 0 tassa — se aiheutti uudelleen-lisays+depart-syklin
 			}
 		}
+}
+
+// SiritMask: maskin konfiguraatio (X/Z/V/P + hex). Maaritelma TpLaitteet.cpp:ssa;
+// SIRIT-polkua ei muuteta, tassa kaytetaan vain samaa konfiguraatioarvoa, jotta
+// ZEBRA ja SIRIT suodattavat yhdenmukaisesti.
+extern char SiritMask[31];
+
+// Maskisuodatus: palauttaa true jos EPC on suodatettava (pudotettava) pois.
+// Toisinto TpLaitteet.cpp:n ohitaSirit-funktiosta (joka on static eika siten
+// nakyvissa tanne). Logiikan ON oltava identtinen ohitaSirit:n kanssa (samat
+// lajit X/Z/V/P), jotta ZEBRA ja SIRIT pudottavat samat tagit. Avulla vieras
+// tagi karsiutuu jo tassa, ENNEN emitTag/tall_regnly-kutsua, eika kuormita
+// putkea joka luennalla. Syote on heksamuotoinen EPC (kuten ohitaSirit:lle p,
+// joka osoittaa "tag_id=0x":n jalkeisiin heksamerkkeihin).
+static bool maskOhita(const char *epchex)
+{
+	int len, laji;
+	UINT32 maskval, stval;
+	char buf[32] = "0x";
+
+	if ((len = (int)strlen(SiritMask) - 1) < 1 || (laji = stschind(SiritMask[0], "XZVP")) < 0)
+		return(false);
+	memcpy(buf, epchex, len);
+	buf[len] = 0;
+	stval = strtoul(buf, 0, 16);
+	maskval = strtoul(SiritMask + 1, 0, 16);
+	switch (laji) {
+		case 0:
+			return(maskval == stval);
+		case 1:
+			return((maskval & stval) != 0);
+		case 2:
+			return(maskval != stval);
+		case 3:
+			return((maskval & stval) == 0);
+		}
+	return(false);
 }
 
 // Kasittelee yhden TagReportData-parametrin: poimii EPC:n, antennin ja
@@ -411,20 +474,20 @@ static void handleTagReport(int r_no, const unsigned char *d, int len)
 	if (!haveEpc)
 		return;
 
+	// Maski: pudota vieras tagi jo tassa, ennen mitaan emittia tai slotin
+	// varausta, jottei se kuormita tall_regnly-putkea joka luennalla.
+	if (maskOhita(epchex))
+		return;
+
 	int wantFront = (siritreuna & 2);   // E tai M
-	int wantBack  = (siritreuna & 1);   // T tai M
 
-	// Etureuna (E ja M:n tulohetki): emittoi heti FirstSeen-ajalla.
-	// E-tilan (siritreuna==2) kaytos sailyy taysin ennallaan.
-	if (wantFront)
-		emitTag(r_no, epchex, antenna, haveAnt, firstUTC, haveFirst, false);
-
-	// Takareuna (T ja M:n poistuma): pida tagi aktiivisena; checkDepartures
-	// emittoi poistuman (last=) kun tagia ei ole nahty ZebraDepart ms:iin.
-	if (wantBack) {
-		unsigned long long ts = haveLast ? lastUTC : firstUTC;
-		activeUpsert(r_no, epchex, antenna, haveAnt, ts, haveLast || haveFirst);
-		}
+	// Yksi yhteinen kasittely: kirjaa lahsaolo g_active-taulukkoon ja emittoi
+	// etureunan arrive VAIN kerran per lahsaolo (activeSee:n luontihaara).
+	// Takareunan depart emittoidaan checkDeparturessa kun tagia ei nahda
+	// ZebraDepart ms:iin. activeSee kutsutaan AINA (myos pelkka E-tila), jotta
+	// etureunan arrived-vaimennus toimii; M-tilassa molemmat reunat toimivat.
+	activeSee(r_no, epchex, antenna, haveAnt, firstUTC, haveFirst,
+		lastUTC, haveLast, wantFront);
 }
 
 // Kasittelee RO_ACCESS_REPORT-sanoman: kay lapi TagReportData-parametrit.
@@ -490,6 +553,8 @@ int ZebraReader::openConnection(int r_no, bool reconnect)
 			mstimer(), ipparam[MAX_LAHPORTTI + r_no].destport);
 		wkirjloki(wline);
 		}
+	// Ruutuilmoitus (alalaita) kuten SIRITilla "Sirit-yhteys avattu" (openSirit2).
+	vidspwmsg(ySize - 1, 50, 7, 0, L"Zebra-yhteys avattu");
 	return 0;
 }
 
