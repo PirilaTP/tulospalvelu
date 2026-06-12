@@ -1340,8 +1340,6 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 						vakiovali = tl1;
 				   if ((Options & 1) && key[0] == keyv[0]) {
 						tl1 /= vakiovali;
-						if (tl1 > 3)
-							tl1 = 2;
 						for (int i = 1; i < tl1; i++) {
 							  if (!tulprm.mahtuusivulle(l, 3)) {
 								 uusisivu = false;
