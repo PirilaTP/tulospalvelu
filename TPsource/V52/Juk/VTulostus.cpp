@@ -4935,6 +4935,12 @@ static void kirjoitinpaaotsikot(int *l, int *sv, int *srj, tulostusparamtp *tulp
 			putfld(tulprm, kilpailu, 0, wcslen(kilpailu), 0, 0);
 			endline(tulprm, 1);
 			paaots_pois(tulprm);
+			if (tulostus_lisateksti_tul[0]) {
+				aliots_on(tulprm);
+				putfld(tulprm, tulostus_lisateksti_tul, 0, (int)wcslen(tulostus_lisateksti_tul), 0, 0);
+				endline(tulprm, 1);
+				aliots_pois(tulprm);
+				}
 			(*l)++;
 			}
 		}
@@ -6607,6 +6613,11 @@ void htmlalku(wchar_t *wtitle, wchar_t *wheader, int frame, tulostusparamtp *tul
 		tulprm->writehtml(L"<H2 CLASS=otsikko>");
 		tulprm->writehtml(wheader);
 		tulprm->writehtml(L"</H2>\n");
+		if (tulostus_lisateksti_tul[0]) {
+			tulprm->writehtml(L"<H3>");
+			tulprm->writehtml(tulostus_lisateksti_tul);
+			tulprm->writehtml(L"</H3>\n");
+			}
 		}
 	}
 

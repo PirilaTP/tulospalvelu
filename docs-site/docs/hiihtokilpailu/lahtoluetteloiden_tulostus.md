@@ -7,6 +7,12 @@ päävalikon valinnassa *Tulosteet.* Siellä valitaan alasivu
 voidaan yksi yleisimmistä tulosteista käynnistää valitsemalla vain valikosta
 *Vakiotulosteet /* *Kaikki lähtöajat sarjoittain html-tiedostoon.*
 
+Kaavakkeen *Osanottajat/lähtöluettelot*-välilehdellä on kenttä **Lisäteksti**,
+johon voi kirjoittaa enintään 200 merkin pituisen lisärivin. Teksti tulostetaan
+kilpailun otsikon jälkeen omalla rivillään otsikkoa pienemmällä kirjasinkoolla.
+Kenttä on kertaluonteinen: se tyhjenee, kun kaavake suljetaan, eikä tallennu
+kilpailun tietoihin.
+
 Ellei valmiina oleva vakiotuloste vastaa tarvetta, on kaavakkeella tehtävä
 halutut muutokset valintoihin. Samoin voidaan kaikkien sarjojen sijaan valita
 sarjoista vain osa. Tarjolla olevista merkistöistä voi ISO-8859-1 olla vielä

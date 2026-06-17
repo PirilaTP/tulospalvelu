@@ -240,6 +240,32 @@ void __fastcall TTulosteForm::FormCreate(TObject *Sender)
         CBNaytaheti->Checked = false;
 		}
 	PageControlKohdeChange(Sender);
+
+	LblLisaTekstiOo = new TLabel(this);
+	LblLisaTekstiOo->Parent = TabSheetOottajat;
+	LblLisaTekstiOo->Caption = L"Lisäteksti:";
+	LblLisaTekstiOo->Left = 8;
+	LblLisaTekstiOo->Top = 163;
+
+	EdtLisaTekstiOo = new TEdit(this);
+	EdtLisaTekstiOo->Parent = TabSheetOottajat;
+	EdtLisaTekstiOo->Left = 8;
+	EdtLisaTekstiOo->Top = 179;
+	EdtLisaTekstiOo->Width = 200;
+	EdtLisaTekstiOo->MaxLength = 200;
+
+	LblLisaTekstiTul = new TLabel(this);
+	LblLisaTekstiTul->Parent = TabSheetTulokset;
+	LblLisaTekstiTul->Caption = L"Lisäteksti:";
+	LblLisaTekstiTul->Left = 8;
+	LblLisaTekstiTul->Top = 360;
+
+	EdtLisaTekstiTul = new TEdit(this);
+	EdtLisaTekstiTul->Parent = TabSheetTulokset;
+	EdtLisaTekstiTul->Left = 8;
+	EdtLisaTekstiTul->Top = 376;
+	EdtLisaTekstiTul->Width = 200;
+	EdtLisaTekstiTul->MaxLength = 200;
 }
 //---------------------------------------------------------------------------
 void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva, int jarjpv,
@@ -494,6 +520,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 						return;
 					}
 				}
+			wcscpy(tulostus_lisateksti_oo, EdtLisaTekstiOo->Text.c_str());
 			for (int ik = 0; ik < kopioita; ik++) {
 				lahtoluettelo(kohde[KohdeIndex],
 					tiedTyyppi,
@@ -512,6 +539,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 					_wtoi(EdtPisteJak->Text.c_str()));
 					Application->MessageBoxW(L"Pyydetty tuloste laadittu", L"Valmis", MB_OK);
 				}
+			tulostus_lisateksti_oo[0] = 0;
 			break;
 			}
 
@@ -690,6 +718,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 				}
 			wcsncpy(lsttulparam.muottied, EdXslFilename->Text.c_str(), sizeof(lsttulparam.muottied)/2-1);
 
+			wcscpy(tulostus_lisateksti_tul, EdtLisaTekstiTul->Text.c_str());
 			for (int ik = 0; ik < kopioita; ik++) {
 				RiviLuku =
 				list(kohde[KohdeIndex],
@@ -716,6 +745,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 				UnicodeString(RiviLuku)+ " riviä kirjoitettu").c_str(), L"Valmis", MB_OK);
 			else
 				Application->MessageBoxW(L"Pyydetty tuloste laadittu", L"Valmis", MB_OK);
+			tulostus_lisateksti_tul[0] = 0;
 			break;
 			}
 		if (SeuraLista)

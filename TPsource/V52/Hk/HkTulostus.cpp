@@ -6666,6 +6666,11 @@ void htmlalku(wchar_t *wtitle, wchar_t *wheader, int frame, tulostusparamtp *tul
 				tulprm->writehtml(L"<H2 CLASS=otsikko>");
 				tulprm->writehtml(wheader);
 				tulprm->writehtml(L"</H2>\n");
+				if (tulostus_lisateksti_tul[0]) {
+					tulprm->writehtml(L"<H3>");
+					tulprm->writehtml(tulostus_lisateksti_tul);
+					tulprm->writehtml(L"</H3>\n");
+					}
 				}
 			}
 		else if (frame) {
@@ -8382,6 +8387,12 @@ int list(wchar_t kohde, wchar_t tiedlaji, wchar_t tulostettava, wchar_t jarjesty
 							putfld(&tulprm, otsTeksti(NULL, paaots, 80, k_pv),0,80,0,0);
 							endline(&tulprm, -1);
 							paaots_pois(&tulprm);
+							if (tulostus_lisateksti_tul[0]) {
+								aliots_on(&tulprm);
+								putfld(&tulprm, tulostus_lisateksti_tul, 0, (int)wcslen(tulostus_lisateksti_tul), 0, 0);
+								endline(&tulprm, -1);
+								aliots_pois(&tulprm);
+								}
 							potsfl = TRUE;
 							l += 2;
 							}
@@ -8390,6 +8401,10 @@ int list(wchar_t kohde, wchar_t tiedlaji, wchar_t tulostettava, wchar_t jarjesty
 						if (paaots[0]) {
 							tulprm.puts_f(otsTeksti(NULL, paaots, 80, k_pv));
 							tulprm.puts_f(L"\n\n");
+							if (tulostus_lisateksti_tul[0]) {
+								tulprm.puts_f(tulostus_lisateksti_tul);
+								tulprm.puts_f(L"\n");
+								}
 							}
 						}
 					else if ((tulprm.kohde == L'H' || tulprm.kohde == L'M') &&

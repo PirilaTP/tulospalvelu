@@ -2,7 +2,7 @@
   Left = 244
   Top = 208
   Caption = 'Tulosteet'
-  ClientHeight = 539
+  ClientHeight = 579
   ClientWidth = 808
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -686,7 +686,7 @@
     Left = 245
     Top = 10
     Width = 219
-    Height = 522
+    Height = 562
     ActivePage = TabSheetOottajat
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -713,21 +713,21 @@
       end
       object Label13: TLabel
         Left = 13
-        Top = 384
+        Top = 424
         Width = 125
         Height = 14
         Caption = 'Rajaus Emit-kortin mukaan'
       end
       object Label16: TLabel
         Left = 13
-        Top = 449
+        Top = 489
         Width = 116
         Height = 14
         Caption = 'Takaa-ajol'#228'hd'#246'n jonolkm'
       end
       object Label1: TLabel
         Left = 13
-        Top = 473
+        Top = 513
         Width = 99
         Height = 14
         Caption = 'Rankipisteiden jakaja'
@@ -810,7 +810,7 @@
       end
       object GroupBox4: TGroupBox
         Left = 11
-        Top = 178
+        Top = 218
         Width = 182
         Height = 129
         Caption = ' L'#228'hd'#246'itt'#228'isen luettelon valinnat '
@@ -876,7 +876,7 @@
       end
       object GroupBox5: TGroupBox
         Left = 11
-        Top = 196
+        Top = 236
         Width = 182
         Height = 66
         Caption = ' Seuroittaisen luettelon valinnat '
@@ -899,7 +899,7 @@
       end
       object RGOoSra: TRadioGroup
         Left = 11
-        Top = 308
+        Top = 348
         Width = 182
         Height = 72
         Caption = ' Seuranimi '
@@ -918,7 +918,7 @@
       end
       object CBVaadiLahtija: TCheckBox
         Left = 13
-        Top = 170
+        Top = 210
         Width = 164
         Height = 17
         Caption = 'Ohita sarjat, joissa ei l'#228'htij'#246'it'#228
@@ -927,7 +927,7 @@
       end
       object CBEmitRajaus: TComboBox
         Left = 13
-        Top = 400
+        Top = 440
         Width = 145
         Height = 22
         ItemIndex = 0
@@ -940,7 +940,7 @@
       end
       object EdtJonoja: TEdit
         Left = 152
-        Top = 446
+        Top = 486
         Width = 35
         Height = 22
         Alignment = taRightJustify
@@ -949,7 +949,7 @@
       end
       object CBLainat: TCheckBox
         Left = 13
-        Top = 427
+        Top = 467
         Width = 133
         Height = 17
         Caption = 'Tulosta L lainakorteille'
@@ -1058,7 +1058,7 @@
       end
       object EdtPisteJak: TEdit
         Left = 152
-        Top = 470
+        Top = 510
         Width = 35
         Height = 22
         Alignment = taRightJustify
@@ -1067,7 +1067,7 @@
       end
       object CBTulVak: TCheckBox
         Left = 13
-        Top = 190
+        Top = 230
         Width = 164
         Height = 17
         Caption = 'Tulosta my'#246's vakantit'
@@ -1076,7 +1076,7 @@
       end
       object CBTakAjo: TCheckBox
         Left = 13
-        Top = 209
+        Top = 249
         Width = 140
         Height = 17
         Caption = 'Takaa-ajo perusteineen'
