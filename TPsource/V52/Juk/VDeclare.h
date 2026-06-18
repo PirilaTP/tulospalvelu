@@ -650,6 +650,8 @@ extern   INT32 t0_regnly;
 extern   int t0_regn[NREGNLY];
 extern   int port_regnly[NREGNLY];
 extern   int regnlyhetki[NREGNLY];
+extern   int zebraOffsetDs[NREGNLY];      // ZEBRA: lukijan kellon poikkeama PC:hen (1/10 s)
+extern   int zebraOffsetState[NREGNLY];   // 0=ei mitattu, 1=UTC kelvollinen, 2=vain Uptime
 extern   int regnly_open[NREGNLY];
 extern   INT cn_regnly[2 * NREGNLY];
 extern   long maxero;

@@ -40,6 +40,10 @@
 // LLRP:n vakioportti, jos konfiguraatiossa ei anneta porttia (ZEBRA=TCP:osoite).
 #define LLRP_PORT 5084
 
+// GPI-portti, johon ulkoinen kytkin on johdotettu (FX9600:n laitekonfig).
+// Toistaiseksi kiintea; myohemmin mahdollinen ZEBRAGPI=-parametri.
+#define GPI_PORT 1
+
 // LLRP-sanomatyypit (10-bittinen tyyppikentta)
 #define LLRP_ADD_ROSPEC                20
 #define LLRP_DELETE_ROSPEC             21
@@ -47,8 +51,12 @@
 #define LLRP_ENABLE_ROSPEC             24
 #define LLRP_RO_ACCESS_REPORT          61
 #define LLRP_KEEPALIVE                 62
+#define LLRP_READER_EVENT_NOTIFICATION 63
 #define LLRP_KEEPALIVE_ACK             72
 #define LLRP_ENABLE_EVENTS_AND_REPORTS 64
+#define LLRP_SET_READER_CONFIG          3
+#define LLRP_GET_READER_CONFIG          2
+#define LLRP_GET_READER_CONFIG_RESPONSE 12
 
 // LLRP-parametrityypit
 #define P_ANTENNA_ID            1   // TV, 2 tavua
@@ -63,6 +71,10 @@
 #define P_ACCESS_SPEC_ID       16   // TV, 4 tavua
 #define P_EPC_DATA            241   // TLV (bittimaara + EPC-tavut)
 #define P_TAG_REPORT_DATA     240   // TLV
+#define P_READER_EVENT_NOTIF_DATA 246   // TLV (yhteydenavausilmoituksen sisalto)
+#define P_UTC_TIMESTAMP       128   // TLV (u64 mikrosekuntia UTC-epookista)
+#define P_UPTIME              129   // TLV (u64 mikrosekuntia kaynnistyksesta)
+#define P_GPI_PORT_CURRENT_STATE 225   // TLV (GPIPortNum + Config + State)
 
 #define RXSZ 16384
 
@@ -115,12 +127,22 @@ static void buildAddRospec(LB *L)
 		p8(L, 0);                     // Priority
 		p8(L, 0);                     // CurrentState = Disabled
 		int bound = beginP(L, 178);   // ROBoundarySpec
-			int st = beginP(L, 179);  // ROSpecStartTrigger
-				p8(L, 0);             // Null (kaynnistetaan START_ROSPEC:lla)
+			int st = beginP(L, 179);      // ROSpecStartTrigger
+				p8(L, 3);                 // GPI: nouseva reuna (HIGH) kaynnistaa
+				int sg = beginP(L, 181);  // GPITriggerValue
+					p16(L, GPI_PORT);     // GPIPortNum
+					p8(L, 0x80);          // GPIEvent = true (HIGH), bitti 7
+					p32(L, 0);            // Timeout = 0 (ei aikakatkaisua)
+				endP(L, sg);
 			endP(L, st);
-			int sp = beginP(L, 182);  // ROSpecStopTrigger
-				p8(L, 0);             // Null (ei pysayty itsestaan)
-				p32(L, 0);            // DurationTriggerValue
+			int sp = beginP(L, 182);      // ROSpecStopTrigger
+				p8(L, 2);                 // GPI_With_Timeout: LOW pysayttaa
+				p32(L, 0);                // DurationTriggerValue = 0 (ei kestopysaytysta)
+				int pg = beginP(L, 181);  // GPITriggerValue
+					p16(L, GPI_PORT);     // GPIPortNum
+					p8(L, 0x00);          // GPIEvent = false (LOW)
+					p32(L, 0);            // Timeout = 0
+				endP(L, pg);
 			endP(L, sp);
 		endP(L, bound);
 		int ai = beginP(L, 183);      // AISpec
@@ -165,7 +187,28 @@ static void buildAddRospec(LB *L)
 	endP(L, ro);
 }
 
-// Kaynnistaa jatkuvan inventaarion lukijassa.
+// Rakentaa SET_READER_CONFIG-hyotykuorman, joka ottaa GPI-portin kayttoon, jotta
+// ROSpecin GPI-start/stop-triggerit voivat laueta. Ilman tata GPI-portti on
+// lukijassa oletuksena pois kaytosta eika trigger laukea.
+static void buildEnableGpi(LB *L)
+{
+	L->n = 0;
+	p8(L, 0x00);                  // ResetToFactoryDefault = false (bitti 7), johtava tavu
+	int gp = beginP(L, 225);      // GPIPortCurrentState
+		p16(L, GPI_PORT);         // GPIPortNum
+		p8(L, 0x80);              // Config = enabled (bitti 7); reserved(7) = 0
+		p8(L, 0);                 // State (GPIPortState; lukija ohittaa SET:ssa)
+	endP(L, gp);
+}
+
+// Etsii TLV-parametrin (maaritelty alempana); kaytetaan GPI-tilan jasennykseen.
+static const unsigned char *findTLV(const unsigned char *buf, int len,
+	unsigned want, int *vlen);
+
+// Asettaa GPI-triggeroidyn inventaarion lukijaan: GPI HIGH (nouseva reuna)
+// kaynnistaa, LOW pysayttaa. LISAKSI tarkistetaan GPI:n nykytila ROSpecin
+// asetuksen jalkeen: jos kytkin on JO HIGH (ei nousevaa reunaa tulossa),
+// luenta kaynnistetaan kerran START_ROSPECilla. Jos LOW, jaadaan odottamaan reunaa.
 static void startInventory(int cn)
 {
 	unsigned char id[4];
@@ -174,14 +217,64 @@ static void startInventory(int cn)
 	id[0] = 0; id[1] = 0; id[2] = 0; id[3] = 0;
 	sendLLRP(cn, LLRP_DELETE_ROSPEC, id, 4);   // poista kaikki ROSpecit
 	Sleep(150);
+	buildEnableGpi(&L);                        // ota GPI-portti kayttoon ennen ROSpecia
+	sendLLRP(cn, LLRP_SET_READER_CONFIG, L.b, L.n);
+	Sleep(150);
 	buildAddRospec(&L);
 	sendLLRP(cn, LLRP_ADD_ROSPEC, L.b, L.n);
 	Sleep(200);
 	id[3] = 1;
-	sendLLRP(cn, LLRP_ENABLE_ROSPEC, id, 4);   // ROSpecID = 1
+	sendLLRP(cn, LLRP_ENABLE_ROSPEC, id, 4);   // ROSpecID = 1: aseteltu, odottaa GPI HIGH
 	Sleep(150);
-	sendLLRP(cn, LLRP_START_ROSPEC, id, 4);
-	Sleep(150);
+
+	// --- GPI-tilan tarkistus + ehdollinen START_ROSPEC ---
+	// Kysytaan GPI-portin nykytila (GET_READER_CONFIG, RequestedData=9). Jos kytkin
+	// on JO HIGH ROSpecia asetettaessa, nousevaa reunaa ei tule eika luenta kaynnisty;
+	// silloin kaynnistetaan luenta kerran START_ROSPECilla. Jos LOW, jaadaan
+	// odottamaan nousevaa reunaa (kytkin pois = RF pois). GPI-stop-trigger jaa voimaan.
+	{
+		unsigned char q[7];
+		q[0] = 0; q[1] = 0;        // AntennaID = 0
+		q[2] = 9;                  // RequestedData = GPIPortCurrentState
+		q[3] = 0; q[4] = GPI_PORT; // GPIPortNum = 1
+		q[5] = 0; q[6] = 0;        // GPOPortNum = 0
+		sendLLRP(cn, LLRP_GET_READER_CONFIG, q, 7);
+
+		unsigned char rb[4096];
+		int rblen = 0, state = -1, gotResp = 0;
+		for (int s = 0; s < 10 && !gotResp; s++) {   // ~10 x 50 ms = 500 ms
+			int nr = 0;
+			if (rblen < (int)sizeof(rb) - 512) {
+				read_TCP(hComm[cn], (int)sizeof(rb) - rblen, (char *)(rb + rblen), &nr);
+				if (nr > 0) rblen += nr;
+				}
+			while (rblen >= 10) {
+				unsigned t = ((rb[0] & 0x03) << 8) | rb[1];
+				unsigned long ml = ((unsigned long)rb[2] << 24) | ((unsigned long)rb[3] << 16) |
+					((unsigned long)rb[4] << 8) | rb[5];
+				if (ml < 10 || ml > (unsigned long)sizeof(rb)) { rblen = 0; break; }
+				if ((unsigned long)rblen < ml) break;
+				if (t == LLRP_KEEPALIVE)
+					sendLLRP(cn, LLRP_KEEPALIVE_ACK, 0, 0);
+				else if (t == LLRP_GET_READER_CONFIG_RESPONSE) {
+					int vl = 0;
+					const unsigned char *gp = findTLV(rb + 10, (int)(ml - 10),
+						P_GPI_PORT_CURRENT_STATE, &vl);
+					if (gp && vl >= 4) state = gp[3];   // GPIPortNum(2)+Config(1)+State(1)
+					gotResp = 1;
+					}
+				memmove(rb, rb + ml, rblen - (int)ml);
+				rblen -= (int)ml;
+				}
+			if (!gotResp) Sleep(50);
+			}
+
+		if (state == 1) {                  // GPI High -> kaynnista luenta kerran
+			id[3] = 1;
+			sendLLRP(cn, LLRP_START_ROSPEC, id, 4);
+			}
+	}
+
 	sendLLRP(cn, LLRP_ENABLE_EVENTS_AND_REPORTS, 0, 0);
 	Sleep(50);
 }
@@ -399,6 +492,8 @@ static bool maskOhita(const char *epchex)
 	return(false);
 }
 
+static unsigned long long pcUtcMicros(void);   // maaritelty alempana
+
 // Kasittelee yhden TagReportData-parametrin: poimii EPC:n, antennin ja
 // aikaleiman, muotoilee SIRIT-tyylisen sanoman ja syottaa tall_regnly:lle.
 static void handleTagReport(int r_no, const unsigned char *d, int len)
@@ -474,6 +569,16 @@ static void handleTagReport(int r_no, const unsigned char *d, int len)
 	if (!haveEpc)
 		return;
 
+	// Paivita lukijan kellopoikkeama (max-suodatus): suurin offset = pienin
+	// verkkoviive = tarkin arvio. Aikaleima tulee jo raportissa, ei eri kyselya.
+	if (haveFirst) {
+		int cand = (int)(((long long)firstUTC - (long long)pcUtcMicros()) / 100000LL);
+		if (zebraOffsetState[r_no] != 1 || cand > zebraOffsetDs[r_no]) {
+			zebraOffsetDs[r_no] = cand;
+			zebraOffsetState[r_no] = 1;
+			}
+		}
+
 	// Maski: pudota vieras tagi jo tassa, ennen mitaan emittia tai slotin
 	// varausta, jottei se kuormita tall_regnly-putkea joka luennalla.
 	if (maskOhita(epchex))
@@ -513,6 +618,98 @@ static void handleAccessReport(int r_no, const unsigned char *d, int len)
 static unsigned char g_rx[NREGNLY][RXSZ];
 static int g_rxlen[NREGNLY];
 
+// Etsii TLV-parametrilistasta (buf, len) ensimmaisen tyyppia 'want' olevan
+// parametrin; palauttaa osoittimen sen ARVO-osaan (otsikon jalkeen) ja *vlen
+// sen pituuden, tai 0 jos ei loydy. Kasittelee vain TLV-parametrit (>=128).
+static const unsigned char *findTLV(const unsigned char *buf, int len,
+	unsigned want, int *vlen)
+{
+	int i = 0;
+	while (i + 4 <= len) {
+		if (buf[i] & 0x80)        // TV-parametri: ei pituuskenttaa -> ei osata ohittaa
+			break;
+		unsigned t = ((buf[i] & 0x03) << 8) | buf[i+1];
+		int l = (buf[i+2] << 8) | buf[i+3];
+		if (l < 4 || i + l > len)
+			break;
+		if (t == want) {
+			*vlen = l - 4;
+			return buf + i + 4;
+			}
+		i += l;
+		}
+	return 0;
+}
+
+// Jasentaa READER_EVENT_NOTIFICATIONin hyotykuorman (payload, plen): etsii
+// ReaderEventNotificationData (246) ja sen sisalta Timestampin -> UTCTimestamp
+// (128) tai Uptime (129). Palauttaa 1 jos aikaleima loytyi; *isUptime kertoo
+// kumpaa tyyppia se oli, *micros sisaltaa u64-mikrosekunnit.
+static int parseReaderEventUTC(const unsigned char *payload, int plen,
+	unsigned long long *micros, int *isUptime)
+{
+	int dlen = 0;
+	const unsigned char *d = findTLV(payload, plen, P_READER_EVENT_NOTIF_DATA, &dlen);
+	if (!d)
+		return 0;
+	int tlen = 0;
+	*isUptime = 0;
+	const unsigned char *ts = findTLV(d, dlen, P_UTC_TIMESTAMP, &tlen);
+	if (!ts) {
+		ts = findTLV(d, dlen, P_UPTIME, &tlen);
+		*isUptime = 1;
+		}
+	if (!ts || tlen < 8)
+		return 0;
+	unsigned long long v = 0;
+	for (int k = 0; k < 8; k++)
+		v = (v << 8) | ts[k];
+	*micros = v;
+	return 1;
+}
+
+// PC:n nykyaika mikrosekunteina UTC-epookista (1970-01-01).
+static unsigned long long pcUtcMicros(void)
+{
+	FILETIME ft;
+	GetSystemTimeAsFileTime(&ft);   // 100 ns -tikkia vuodesta 1601 UTC
+	unsigned long long t = ((unsigned long long)ft.dwHighDateTime << 32) | ft.dwLowDateTime;
+	return t / 10ULL - 11644473600000000ULL;   // -> us, epookki 1970
+}
+
+// Laskee lukijan ja PC:n kellon poikkeaman ja tallentaa sen globaaliin
+// (zebraOffsetDs = poikkeama 1/10 s, zebraOffsetState = mittauksen tila), jonka
+// lukumaarat() nayttaa LUKIJA/KELLO-laatikossa ZEBRA-rivilla juoksevana kellona.
+// EI kirjoita ruudulle (alalaita); kirjaa poikkeaman lokiin (jalkikateisdiagnostiikka).
+// Kutsutaan yhteytta avattaessa -> asettaa baselinen (reconnect nollaa ja mittaa uudelleen).
+static void measureClockOffset(int r_no, int haveUTC, int haveUptime,
+	unsigned long long readerUTC)
+{
+	if (haveUTC) {
+		long long delta = (long long)readerUTC - (long long)pcUtcMicros();   // us, +/-
+		zebraOffsetDs[r_no] = (int)(delta / 100000LL);    // -> 1/10 s, etumerkki sailyy
+		zebraOffsetState[r_no] = 1;
+		if (loki) {
+			wchar_t lg[100];
+			long long ad = delta < 0 ? -delta : delta;
+			long long tenths = (ad + 50000LL) / 100000LL; // pyoristus 0.1 s
+			swprintf(lg, L"%d: FX9600 kello %ls%lld.%lld s",
+				mstimer(), delta < 0 ? L"-" : L"+", tenths / 10, tenths % 10);
+			wkirjloki(lg);
+			}
+		}
+	else if (haveUptime) {
+		zebraOffsetState[r_no] = 2;
+		if (loki)
+			wkirjloki(L"FX9600: aikaleima oli Uptime (ei UTC-kelloa)");
+		}
+	else {
+		zebraOffsetState[r_no] = 0;
+		if (loki)
+			wkirjloki(L"FX9600: avausilmoituksesta ei saatu aikaleimaa");
+		}
+}
+
 int ZebraReader::openConnection(int r_no, bool reconnect)
 {
 	int cn = cn_regnly[r_no];
@@ -543,9 +740,44 @@ int ZebraReader::openConnection(int r_no, bool reconnect)
 	g_rxlen[r_no] = 0;
 	clearActive(r_no);   // tyhjenna aktiivitagit (myos reconnect) -> ei haamupoistumia
 
-	// Lukija lahettaa yhteyden avauksen jalkeen READER_EVENT_NOTIFICATION:n;
-	// se (ja komentojen vastaukset) ohitetaan readTags-silmukassa.
-	Sleep(300);
+	// Lue yhteydenavauksen READER_EVENT_NOTIFICATION ja jasenna lukijan kello,
+	// jotta poikkeama PC:hen voidaan nayttaa heti (ennen ensimmaista tagia).
+	// Tehdaan ENNEN startInventoryta: ROSpecia ei viela ole, joten puskurissa on
+	// vain avausilmoitus (ei tagiraportteja eika komentovastauksia). Sailyttaa
+	// ~300 ms asettumisajan. Muut sanomat jaavat puskuriin readTagsille.
+	unsigned long long readerUTC = 0;
+	int gotTs = 0, isUpt = 0;
+	for (int s = 0; s < 6 && !gotTs; s++) {     // ~6 x 50 ms = 300 ms
+		int nread = 0;
+		if (g_rxlen[r_no] < RXSZ - 2048) {
+			read_TCP(hComm[cn], RXSZ - g_rxlen[r_no],
+				(char *)(g_rx[r_no] + g_rxlen[r_no]), &nread);
+			if (nread > 0)
+				g_rxlen[r_no] += nread;
+			}
+		while (g_rxlen[r_no] >= 10) {
+			unsigned char *m = g_rx[r_no];
+			unsigned type = ((m[0] & 0x03) << 8) | m[1];
+			unsigned long mlen = ((unsigned long)m[2] << 24) | ((unsigned long)m[3] << 16) |
+				((unsigned long)m[4] << 8) | m[5];
+			if (mlen < 10 || mlen > RXSZ) {
+				g_rxlen[r_no] = 0;
+				break;
+				}
+			if ((unsigned long)g_rxlen[r_no] < mlen)
+				break;
+			if (type == LLRP_READER_EVENT_NOTIFICATION)
+				gotTs = parseReaderEventUTC(m + 10, (int)(mlen - 10), &readerUTC, &isUpt);
+			memmove(m, m + mlen, g_rxlen[r_no] - (int)mlen);
+			g_rxlen[r_no] -= (int)mlen;
+			}
+		if (!gotTs)
+			Sleep(50);
+		}
+	// Tallenna kellopoikkeama (baseline); lukumaarat() nayttaa juoksevan kellon
+	// LUKIJA/KELLO-laatikossa. Yhteystila nakyy jo laatikon varina, joten
+	// alalaidan "Zebra-yhteys avattu" -ilmoitusta ei tarvita.
+	measureClockOffset(r_no, gotTs && !isUpt, gotTs && isUpt, readerUTC);
 	startInventory(cn);
 
 	if (loki) {
@@ -553,8 +785,6 @@ int ZebraReader::openConnection(int r_no, bool reconnect)
 			mstimer(), ipparam[MAX_LAHPORTTI + r_no].destport);
 		wkirjloki(wline);
 		}
-	// Ruutuilmoitus (alalaita) kuten SIRITilla "Sirit-yhteys avattu" (openSirit2).
-	vidspwmsg(ySize - 1, 50, 7, 0, L"Zebra-yhteys avattu");
 	return 0;
 }
 
@@ -592,7 +822,7 @@ void ZebraReader::readTags(int r_no)
 			handleAccessReport(r_no, m + 10, (int)(mlen - 10));
 		else if (type == LLRP_KEEPALIVE)
 			sendLLRP(cn, LLRP_KEEPALIVE_ACK, 0, 0);
-		// muut sanomat (vastaukset, tapahtumailmoitukset) ohitetaan
+		// muut sanomat (tapahtumailmoitukset) ohitetaan
 
 		memmove(m, m + mlen, g_rxlen[r_no] - (int)mlen);
 		g_rxlen[r_no] -= (int)mlen;

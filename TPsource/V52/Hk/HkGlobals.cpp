@@ -438,6 +438,8 @@
 #ifndef NOREGNLY
    INT regnly[NREGNLY];
    int regnlyhetki[NREGNLY];
+   int zebraOffsetDs[NREGNLY];      // ZEBRA: lukijan kellon poikkeama PC:hen (1/10 s)
+   int zebraOffsetState[NREGNLY];   // 0=ei mitattu, 1=UTC kelvollinen, 2=vain Uptime
    INT port_regnly[NREGNLY];
 	int regnly_open[NREGNLY];
 	INT cn_regnly[2*NREGNLY];

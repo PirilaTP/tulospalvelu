@@ -18,6 +18,7 @@ The active task is adding support for the Zebra **FX9600** RFID reader alongside
 - The new **FX9600** reader is configured with the parallel `ZEBRA=` parameter (e.g. `ZEBRA=TCP:192.168.0.31`). The program reads the configuration to decide which reader is active.
 - Both readers live behind the common `IRfidReader` interface (`TPsource/V52/include/IRfidReader.h`). `SiritReader` (`TPsource/V52/Tp/SiritReader.cpp`) and `ZebraReader` (`TPsource/V52/Tp/ZebraReader.cpp`) are the two implementations, so application logic does not need to know which reader is in use.
 - Do FX9600 work on its own git branch (e.g. `feature/fx9600`), not directly on the main branch.
+- FX9600/ZEBRA-konfiguraatioparametrit (oletukset, maski, kiinteät arvot) on dokumentoitu tiedostoon `doc/fx9600-parametrit.md`.
 
 ## Working practices
 
@@ -118,3 +119,22 @@ Results can be emitted as HTML, plain text, IOF 3.0 XML, and GDI print output. T
 - **Ehjää versiota EI ole gitissä:** ei työpuussa, ei haarahistoriassa, ei `master`-haarassa eikä reflogissa (tarkistettu kaikki refit). HkInit.cpp:n palautustapa (palauta vioittumista edeltävästä commitista) ei siis sovi näihin.
 - **Sisältää myös käyttäjälle näkyvää tekstiä**, ei vain kommentteja — esim. `HkAjat.cpp`: `wselectopt(L"Aika ei vastaa riviä - vahvista tallennus (K/E)")`. Vioittuma vaikuttaa siis myös näyttöön.
 - **Korjataan erikseen myöhemmin** joko (a) alkuperäisestä vioittumattomasta lähteestä (verrataan ja palautetaan tavutarkasti) tai (b) kontekstipohjaisella rekonstruktiolla (ympäröivä suomi on ehjää; muutokset katselmoitava ennen committia). Säilytä Latin1-koodaus korjauksessa (ks. *CRITICAL: Source file character encoding*).
+
+### GPI-kytkintila: reconnect ei palauta GPI-triggeröityä ROSpecia
+
+FX9600:n GPI-kytkintilassa (`feature/fx9600-gpi`) reconnect-logiikkaa **ei ole muokattu** vastaamaan GPI-autonomista mallia. Jos LLRP-yhteys (C++ ↔ lukija) katkeaa ja palaa, nykyinen `startInventory` (`TPsource/V52/Tp/ZebraReader.cpp`) lähettää `DELETE_ROSPEC` + `ADD_ROSPEC` uudelleen.
+
+- **Seuraus:** uudelleenyhteys pyyhkii lukijassa jo olevan GPI-triggeröidyn ROSpecin ja asettaa sen tilalle uuden. Inventaario **ei käynnisty heti**, vaan vasta seuraavasta GPI HIGH -reunasta (kytkin pois ja takaisin päälle). Jos kytkin on yhteyden palatessa jo HIGH-tilassa, luku ei käynnisty ennen seuraavaa nousevaa reunaa.
+- **Tietoinen rajaus:** yhteys C++:n ja lukijan välillä ei käytännössä yleensä katkea, ja Raspberryssä on puskuri, joten riski on pieni. Siksi reconnectia ei kovetettu tässä vaiheessa.
+- **Ratkaisu jos tästä tulee ongelma kentällä:** reconnectissa kysytään `GET_ROSPECS` ja jätetään olemassa oleva GPI-ROSpec rauhaan (ei `DELETE`/`ADD` uudelleen), jolloin GPI-tila säilyy yhteyskatkon yli. Kartoitettu, **ei toteutettu**. (LLRP-autonomisen mallin periaate: client ei saisi poistaa lukijan ROSpeceja eikä lähettää START/STOP-komentoja — taustaa `doc/llrp/`-muistiinpanoissa.)
+- **Älä koske SIRIT-polkuun** korjauksessa (ks. *MOST IMPORTANT RULE*).
+
+### FX9600/ZEBRA: lukijan kelloa ei aseteta ohjelmasta (NTP-vastuu)
+
+Toisin kuin SIRIT/FX9500, jonka kellon **ohjelma asettaa PC:n aikaan** (`SiritSync` → `info.time=`-komento, `TpLaitteet.cpp`), **FX9600:n kelloa EI aseteta eikä synkronoida ohjelmasta**. `ZebraReader::sync()` on tarkoituksella tyhjä no-op, ja pääsilmukan ZEBRA-haara (`TpLaitteet.cpp`) ei kutsu `sync`-funktiota lainkaan. FX9600 synkronoidaan **NTP:llä lukijan omassa konfiguraatiossa**, ohjelman ulkopuolella.
+
+- **Aikalähde:** tagien aika tulee lukijan `FirstSeen/LastSeenTimestampUTC`-kentästä (lukijan oma kello). `siritaika` (`TpLaitteet.cpp`) käyttää **vain kellonaikaa `hh:mm:ss.mmm`** ja lisää per-lukija-offsetin `t0_regn[r_no]`; **päivämäärä hylätään** ja kello kiedotaan ±12 h ikkunaan (`normkello_a`).
+- **Käytännön seuraus:** ennen kisaa on varmistettava että **FX9600:n NTP toimii ja kello on oikeassa paikallisajassa**. Väärä kello näkyy suoraan tagien ajoissa — ohjelma ei korjaa sitä (vain staattinen `t0_regn`-kohdistus kilpailun nollaan).
+- **Kenttäkäyttö (Raspberry + 4G/VPN):** on varmistettava että lukija saa NTP-yhteyden. Jos yhteyttä ei ole, lukijan kello voi ajautua eikä ohjelma korjaa sitä.
+- **Mahdollinen tuleva parannus:** ohjelma voisi yhteyttä avattaessa **varoittaa, jos lukijan aikaleima eroaa paljon PC:n kellosta** (esim. vertaa ensimmäisen tagin tai READER_EVENT_NOTIFICATIONin UTC-aikaa `GetLocalTime`-aikaan). Kartoitettu, **ei toteutettu**.
+- **Älä koske SIRIT-polkuun** (ks. *MOST IMPORTANT RULE*); SIRITin oma settime/gettime-mekanismi säilyy ennallaan.
