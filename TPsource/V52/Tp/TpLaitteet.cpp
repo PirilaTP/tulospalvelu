@@ -1417,11 +1417,15 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	// EXT-protokollan B1-kysely: FF(wake) STX B1 LEN=0 CRC_H CRC_L ETX
 	// pcap: host sends ff 02 b1 00 b1 00 03 — FF wakeup required before command
 	static char SI5pyyntoEXT[7] = {'\377', '\002', '\261', '\000', '\261', '\000', '\003'};
+	// EXT EF-kysely SI8/9/10/11: FF STX EF LEN=1 blocknum CRC_H CRC_L ETX
+	// pcap: block0=ff02ef0100e20903, block1=ff02ef0101e30903
+	static char SI9pyynto_b0[8] = {'\377','\002','\357','\001','\000','\342','\011','\003'};
+	static char SI9pyynto_b1[8] = {'\377','\002','\357','\001','\001','\343','\011','\003'};
 	char SI5code[5] = "\002FI\003";
 	char SIack = ACK;
 	char SIbuf[512], *SIbp;
-	int SItype, SIdatalen[2] = {133, 402}, dle = 0;
-	int SIext = 0, SImsglen = 0, SIskip = 0;
+	int SItype, SIdatalen[3] = {133, 402, 256}, dle = 0;
+	int SIext = 0, SImsglen = 0, SIskip = 0, SInblock = 0;
 	INT32 SIt;
 	char *msg = NULL;
 
@@ -1456,6 +1460,13 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 				SItype = 5;
 				SIext = 1;
 				}
+			else if ((unsigned char)vastaus->r21.tunnus == 0xE8) {
+				// EXT-protokolla: BSM8 ilmoittaa SI8/9/10/11-kortin asettamisesta (CMD=E8)
+				msg = SI9pyynto_b0;
+				SImsglen = sizeof(SI9pyynto_b0);
+				SItype = 7;
+				SIext = 1;
+				}
 			else if (vastaus->r21.tunnus == 102 && vastaus->r21.etx == ETX) {
 				msg = SI6pyynto;
 				SImsglen = strlen(SI6pyynto);
@@ -1476,10 +1487,11 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 		wrt_st_x(cn, SImsglen, msg, &nch);
 		utsleep(2);
 		SIbp = SIbuf;
-		// EXT-protokollassa ohitetaan B1-vastauksen 2-tavuinen otsikko (02 B1)
-		// ennen 133-tavuista SI5tp-rakennetta. Vanhamuotoisessa protokollassa
-		// puretaan DLE-koodaus ja katkaistaan ohjausmerkeillä.
-		SIskip = SIext ? 2 : 0;
+		// EXT B1 (SI5): skip 2-byte header (02 B1) before 133-byte SI5tp.
+		// EXT EF (SI9): skip 6-byte header (02 EF 83 00 0A blocknum) per block.
+		// Legacy: no skip, DLE-encoded.
+		SIskip = (SItype == 7) ? 6 : (SIext ? 2 : 0);
+		SInblock = 0;
 		for(;;) {
 			nq = 0;
 			if (!read_ch_x(cn, &chin, &nq)) {
@@ -1512,6 +1524,13 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			l = SIbp - SIbuf;
 			if (l > 100) {
 				dle = 2*dle;
+				}
+			// SI9: block 0 done (128 bytes) → request block 1, reset header skip
+			if (SItype == 7 && l == 128 && SInblock == 0) {
+				SInblock = 1;
+				SIskip = 6;
+				wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
+				utsleep(2);
 				}
 			if (l == SIdatalen[SItype-5]) {
 				if (!tulkSI(SIbuf, vastaus, SIt, SItype)) {
@@ -2456,8 +2475,8 @@ void comajanotto(LPVOID lpCn)
 #endif
 
 #ifdef SPORTIDENT
-// Tulkitsee SportIdent SI5 tai SI6 -korttidata (buf) san_type-rakenteeseen vastaus.
-// SIt on lukuaika, SItype on 5 tai 6; palauttaa 0 onnistuessaan, 1 epäonnistuessaan.
+// Tulkitsee SportIdent SI5/SI6/SI8-11 -korttidata (buf) san_type-rakenteeseen vastaus.
+// SIt on lukuaika, SItype on 5, 6 tai 7 (SI8/9/10/11); palauttaa 0 onnistuessaan.
 static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
 	{
 	SI5tp *tp5;
@@ -2516,6 +2535,46 @@ static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
 					}
 				}
 			break;
+		case 7: {
+			// SI8/9/10/11 via EXT protocol (two 128-byte EF blocks, 256 bytes total).
+			// Block 0 layout (pcap-verified with card 1009090):
+			//   [8]TWD [9]CN [10:12]time  — Check
+			//   [12:16] EE EE EE EE       — Clear (may be empty)
+			//   [16]TWD [17]CN [18:20]time — Finish
+			//   [20]TWD [21]CN [22:24]time — Start (CN==EE → no start)
+			//   [24]CNS  [25:28] SIID (3 bytes, big-endian)
+			//   [56+] punches: {PTD, CN, time_H, time_L} × n, CN==EE → end
+			unsigned char *b = (unsigned char *) buf;
+			vastaus->r21data.badge  = b[25]*65536L + b[26]*256L + b[27];
+			vastaus->r21data.lukija = t_time_l(SIt, t0);
+			vastaus->r21data.check  = (b[9]  == 0xEE) ? 0L :
+				256L*b[10] + b[11] + (b[8]  & 1) * 43200L;
+			vastaus->r21data.finish = (b[17] == 0xEE) ? 0L :
+				256L*b[18] + b[19] + (b[16] & 1) * 43200L;
+			vastaus->r21data.start  = (b[21] == 0xEE) ? 0L :
+				256L*b[22] + b[23] + (b[20] & 1) * 43200L;
+			r = 0;
+			for (i = 56; i + 3 < 256; i += 4) {
+				unsigned char cn = b[i+1];
+				long pt;
+				if (cn == 0xEE) break;
+				pt = 256L*b[i+2] + b[i+3] + (b[i] & 1) * 43200L;
+				r++;
+				if (r <= 66) {
+					vastaus->r21data.cc[r] = cn;
+					if (r == 1) {
+						if (vastaus->r21data.start && pt < vastaus->r21data.start)
+							pt += 43200L;
+						}
+					else {
+						if (vastaus->r21data.ct[r-1] && pt < vastaus->r21data.ct[r-1])
+							pt += 43200L;
+						}
+					vastaus->r21data.ct[r] = pt;
+					}
+				}
+			break;
+			}
 		}
 	return(0);
 	}
