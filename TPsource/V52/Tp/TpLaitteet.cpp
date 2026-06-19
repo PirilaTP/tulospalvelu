@@ -1,4 +1,4 @@
-// Pekka Pirila's sports timekeeping program (Finnish: tulospalveluohjelma)
+﻿// Pekka Pirila's sports timekeeping program (Finnish: tulospalveluohjelma)
 // Copyright (C) 2015 Pekka Pirila 
 
 // This program is free software: you can redistribute it and/or modify
@@ -44,6 +44,13 @@
 
 #include <wincom.h>
 
+#ifdef SPORTIDENT
+#include "sitypes.h"
+#ifndef _CONSOLE
+#define utsleep(dura) Sleep((DWORD)(55*(dura)))
+#endif
+#endif
+
 #define MAX_R_OD 10
 #define MTR_ST_LEN 59
 /*
@@ -88,7 +95,7 @@ static int lue_MTR(int r_no, int cn, san_type *vastaus, char **p, int *nmsg,
 	int *ntotviim, int *tyhjpuskuri, int r_buflen, int r_msg_len);
 static int lue_EMITAG(int r_no, int cn, san_type *vastaus, char **p, int *nmsg,
 	int *ntotviim, int *tyhjpuskuri, int r_buflen);
-static int lue_SI(int r_no, int cn, san_type *vastaus, char **p, int *nmsg,
+static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int r_buflen, int r_msg_len);
 void paivitaEcdata(void);
 
@@ -1389,21 +1396,34 @@ static int lue_Rtnm(int r_no, int cn, san_type *vastaus, int *nmsg,
 	return(0);
 }
 
+static INT od[NREGNLY];
+
+#ifdef SPORTIDENT
+static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype);
+#endif
+
 #ifdef SPORTIDENT
 // Lukee SportIdent SI5/SI6-lukijan sanomia lukijalta r_no kanavalta cn.
-// Lähettää kyselysanoman (SI5pyynto tai SI6pyynto); purkaa DLE-koodauksen ja kutsuu tulkSI-funktiota.
+// Vanhamuotoinen protokolla: lähettää kyselyn ja purkaa DLE-koodauksen.
+// EXT-protokolla (BSM8): tunnistaa 0xE5-ilmoituksen, lähettää B1-kyselyn,
+// lukee raakabinäärivastauksen ilman DLE-koodausta (ohittaa 2 tavun otsikon).
 static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int r_buflen, int r_msg_len)
 {
 	char chin, *p2;
 	int t, dt, er = 0, nq, nch, l, ndata, nread, nmsg0, siirra, varm_ok;
 	char SI5pyynto[5] = "\002\002\061\003";
-	char SI6pyynto[6] = "\002\002\141\008\003";
+	char SI6pyynto[6] = "\002\002\141\010\003";
+	// EXT-protokollan B1-kysely: FF(wake) STX B1 LEN=0 CRC_H CRC_L ETX
+	// pcap: host sends ff 02 b1 00 b1 00 03 — FF wakeup required before command
+	static char SI5pyyntoEXT[7] = {'\377', '\002', '\261', '\000', '\261', '\000', '\003'};
 	char SI5code[5] = "\002FI\003";
 	char SIack = ACK;
 	char SIbuf[512], *SIbp;
 	int SItype, SIdatalen[2] = {133, 402}, dle = 0;
+	int SIext = 0, SImsglen = 0, SIskip = 0;
 	INT32 SIt;
+	char *msg = NULL;
 
 	t = biostime(0, 0);
 
@@ -1423,12 +1443,24 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			od[r_no]++;
 		else {
 			if (!memcmp(&vastaus->r21.stx, SI5code, 4)) {
+				// Vanhamuotoinen SI5-protokolla: blipin tunnistus "02 46 49 03"
 				msg = SI5pyynto;
+				SImsglen = 4;
 				SItype = 5;
+				SIext = 0;
+				}
+			else if ((unsigned char)vastaus->r21.tunnus == 0xE5) {
+				// EXT-protokolla: BSM8 ilmoittaa SI5-kortin asettamisesta (CMD=E5)
+				msg 	= SI5pyyntoEXT;
+				SImsglen = sizeof(SI5pyyntoEXT);
+				SItype = 5;
+				SIext = 1;
 				}
 			else if (vastaus->r21.tunnus == 102 && vastaus->r21.etx == ETX) {
 				msg = SI6pyynto;
+				SImsglen = strlen(SI6pyynto);
 				SItype = 6;
+				SIext = 0;
 				}
 			od[r_no] = 0;
 			*nmsg = 0;
@@ -1441,27 +1473,39 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 		*nmsg = 0;
 		vastaus->bytes[0] = 0;
 		i_flush_x(cn);
-		wrt_st_x(cn,strlen(msg),msg,&nch);
+		wrt_st_x(cn, SImsglen, msg, &nch);
 		utsleep(2);
 		SIbp = SIbuf;
+		// EXT-protokollassa ohitetaan B1-vastauksen 2-tavuinen otsikko (02 B1)
+		// ennen 133-tavuista SI5tp-rakennetta. Vanhamuotoisessa protokollassa
+		// puretaan DLE-koodaus ja katkaistaan ohjausmerkeillä.
+		SIskip = SIext ? 2 : 0;
 		for(;;) {
 			nq = 0;
 			if (!read_ch_x(cn, &chin, &nq)) {
 				bytecount = (bytecount + 1) % bytecountmax;
-				if (dle) {
-					*(SIbp++) = chin;
-					dle = 0;
+				if (SIext) {
+					if (SIskip > 0)
+						--SIskip;
+					else
+						*(SIbp++) = chin;
 					}
 				else {
-					if (chin == 16) {
-						dle = 1;
+					if (dle) {
+						*(SIbp++) = chin;
+						dle = 0;
 						}
 					else {
-						if (chin > 31 || chin == 2 || chin == 3) {
-							*(SIbp++) = chin;
+						if (chin == 16) {
+							dle = 1;
 							}
-						else
-							break;
+						else {
+							if (chin > 31 || chin == 2 || chin == 3) {
+								*(SIbp++) = chin;
+								}
+							else
+								break;
+							}
 						}
 					}
 				}
@@ -1515,7 +1559,7 @@ int lue_regnly(INT r_no)
 	{
 	char chin, *msg = NULL;
 	static INT in_lue_regnly[NREGNLY];
-	static INT od[NREGNLY],nmsg[NREGNLY];
+	static INT nmsg[NREGNLY];
 	INT  nq,nch = 0,er,r_buflen;
 	static san_type *vastaus[NREGNLY];
 	static INT32 t_raja[NREGNLY];
@@ -2008,7 +2052,7 @@ INT start_regnly(INT r_no)
 			   r_msg_len[r_no] = R_BUFLEN;
 			   break;
 		   case LID_SPORTIDENT:
-			   bd = 6;          //  4800
+				bd = 9;          //  38400 (BSM8 USB)
 			   r_msg_len[r_no] = 10;
 			   break;
 		   case LID_ARES:
@@ -2089,8 +2133,11 @@ INT start_regnly(INT r_no)
 	   if (comopen[cn_regnly[r_no]]) {
 
 #ifdef SPORTIDENT
-		   if (regnly[r_no] == LID_SPORTIDENT) {
-			   wrt_st_x(cn_regnly[r_no], 4, L"\002\002\161\003", &nw);
+		   if (regnly[r_no] == LID_SPORTIDENT && !usb_regnly[r_no]) {
+			   // Legacy RS-232 stations (BS7 etc.): send "remote mode" init.
+			   // USB BSM8 stations: skip — BSM8 responds with NAK (0xF0) to this
+			   // legacy command and then stays silent; it auto-sends E5 notifications.
+			   wrt_st_x(cn_regnly[r_no], 4, "\002\002\161\003", &nw);
 		   }
 #endif
 	   }
@@ -2457,7 +2504,7 @@ static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
 			vastaus->r21data.check =
 					256L*tp6->chk.PT[0] + tp6->chk.PT[1] +
 					(tp6->chk.PTD & 1) * 43200L;
-			vastaus->r21data.finish = 256L * tp5->FT[0] + tp5->FT[1];
+			vastaus->r21data.finish =
 					256L*tp6->fi.PT[0] + tp6->fi.PT[1] +
 					(tp6->fi.PTD & 1) * 43200L;
 			for (r = 0; r < 2; r++) {
