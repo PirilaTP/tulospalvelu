@@ -1418,13 +1418,14 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	// pcap: host sends ff 02 b1 00 b1 00 03 — FF wakeup required before command
 	static char SI5pyyntoEXT[7] = {'\377', '\002', '\261', '\000', '\261', '\000', '\003'};
 	// EXT EF-kysely SI8/9/10/11: FF STX EF LEN=1 blocknum CRC_H CRC_L ETX
-	// pcap: block0=ff02ef0100e20903, block1=ff02ef0101e30903
+	// pcap: block0=ff02ef0100e20903, block1=ff02ef0101e30903, block4=ff02ef0104e60903
 	static char SI9pyynto_b0[8] = {'\377','\002','\357','\001','\000','\342','\011','\003'};
 	static char SI9pyynto_b1[8] = {'\377','\002','\357','\001','\001','\343','\011','\003'};
+	static char SI11pyynto_b4[8] = {'\377','\002','\357','\001','\004','\346','\011','\003'};
 	char SI5code[5] = "\002FI\003";
 	char SIack = ACK;
 	char SIbuf[512], *SIbp;
-	int SItype, SIdatalen[3] = {133, 402, 256}, dle = 0;
+	int SItype, SIdatalen[4] = {133, 402, 256, 256}, dle = 0;
 	int SIext = 0, SImsglen = 0, SIskip = 0, SInblock = 0;
 	INT32 SIt;
 	char *msg = NULL;
@@ -1525,11 +1526,21 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			if (l > 100) {
 				dle = 2*dle;
 				}
-			// SI9: block 0 done (128 bytes) → request block 1, reset header skip
+			// EXT SI9/SI10/SI11: block 0 done (128 bytes) → route by SIID
+			// SI9 (SIID < 8M): request block 1; SI10/11 (SIID >= 8M): request block 4
 			if (SItype == 7 && l == 128 && SInblock == 0) {
+				unsigned long siid = (unsigned char)SIbuf[25] * 65536L
+				                   + (unsigned char)SIbuf[26] * 256L
+				                   + (unsigned char)SIbuf[27];
 				SInblock = 1;
 				SIskip = 6;
-				wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
+				if (siid >= 8000000L) {
+					SItype = 8;
+					wrt_st_x(cn, sizeof(SI11pyynto_b4), SI11pyynto_b4, &nch);
+					}
+				else {
+					wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
+					}
 				utsleep(2);
 				}
 			if (l == SIdatalen[SItype-5]) {
@@ -2555,6 +2566,41 @@ static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
 				256L*b[22] + b[23] + (b[20] & 1) * 43200L;
 			r = 0;
 			for (i = 56; i + 3 < 256; i += 4) {
+				unsigned char cn = b[i+1];
+				long pt;
+				if (cn == 0xEE) break;
+				pt = 256L*b[i+2] + b[i+3] + (b[i] & 1) * 43200L;
+				r++;
+				if (r <= 66) {
+					vastaus->r21data.cc[r] = cn;
+					if (r == 1) {
+						if (vastaus->r21data.start && pt < vastaus->r21data.start)
+							pt += 43200L;
+						}
+					else {
+						if (vastaus->r21data.ct[r-1] && pt < vastaus->r21data.ct[r-1])
+							pt += 43200L;
+						}
+					vastaus->r21data.ct[r] = pt;
+					}
+				}
+			break;
+			}
+		case 8: {
+			// SI10/SI11 via EXT protocol (block 0 header + block 4 punches, 256 bytes total).
+			// Block 0 header layout identical to SI9 (case 7).
+			// Punches in block 4 (buf[128:256]), {PTD, CN, time_H, time_L}, CN==EE → end.
+			unsigned char *b = (unsigned char *) buf;
+			vastaus->r21data.badge  = b[25]*65536L + b[26]*256L + b[27];
+			vastaus->r21data.lukija = t_time_l(SIt, t0);
+			vastaus->r21data.check  = (b[9]  == 0xEE) ? 0L :
+				256L*b[10] + b[11] + (b[8]  & 1) * 43200L;
+			vastaus->r21data.finish = (b[17] == 0xEE) ? 0L :
+				256L*b[18] + b[19] + (b[16] & 1) * 43200L;
+			vastaus->r21data.start  = (b[21] == 0xEE) ? 0L :
+				256L*b[22] + b[23] + (b[20] & 1) * 43200L;
+			r = 0;
+			for (i = 128; i + 3 < 256; i += 4) {
 				unsigned char cn = b[i+1];
 				long pt;
 				if (cn == 0xEE) break;
