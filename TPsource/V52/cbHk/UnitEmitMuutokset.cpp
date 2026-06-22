@@ -21,6 +21,7 @@
 #include "UnitEmitMuutokset.h"
 #include "UnitEmit.h"
 #include "HkDeclare.h"
+#include "TpLaitteet.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -252,6 +253,11 @@ void __fastcall TFormEmitMuutokset::Button2Click(TObject *Sender)
 
 void __fastcall TFormEmitMuutokset::FormShow(TObject *Sender)
 {
+	for (int i = 0; i < NREGNLY; i++)
+		if (regnly[i] == LID_SPORTIDENT) {
+			Caption = L"Sportident-muutokset";
+			break;
+			}
 	EdtNimi->Enabled = false;
 	BtnEdell->Enabled = false;
 	BtnSeur->Enabled = false;

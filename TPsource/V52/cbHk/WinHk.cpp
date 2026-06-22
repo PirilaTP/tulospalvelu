@@ -80,6 +80,7 @@
 #include "UnitASuunn.h"
 #include "UnitYhdistetty.h"
 #include "UnitTaulu.h"
+#include "TpLaitteet.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -359,6 +360,12 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 		Yhteenveto1->Visible = false;
 //		Asetukset1->Enabled = false;
 //		Asetukset1->Visible = false;
+		}
+	for (int i = 0; i < NREGNLY; i++) {
+		if (regnly[i] == LID_SPORTIDENT) {
+			Emitluenta1->Caption = L"&Sportident-luenta";
+			break;
+			}
 		}
 	Haeikkunat->Enabled = true;
 	if (alkulayout[0]) {
