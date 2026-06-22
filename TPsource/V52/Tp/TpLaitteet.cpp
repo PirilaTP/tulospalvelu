@@ -1399,7 +1399,7 @@ static int lue_Rtnm(int r_no, int cn, san_type *vastaus, int *nmsg,
 static INT od[NREGNLY];
 
 #ifdef SPORTIDENT
-static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype);
+static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype, int buflen);
 #endif
 
 #ifdef SPORTIDENT
@@ -1420,25 +1420,30 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	// SI5 EXT: CMD=B1, LEN=0 — asks BSM8 to return the 133-byte SI5tp block.
 	static char SI5pyyntoEXT[7] = {'\377', '\002', '\261', '\000', '\261', '\000', '\003'};
 	// SI8/9/10/11 EXT: CMD=EF, LEN=1, DATA=block_number — asks BSM8 for one 128-byte memory block.
-	// CRCs verified against pcap: block0=ff02ef0100e20903, block1=ff02ef0101e30903, block4=ff02ef0104e60903
+	// CRCs follow pattern CRC_H=0xE2+block_num, CRC_L=0x09 (verified against pcap for blocks 0,1,4).
 	static char SI9pyynto_b0[8] = {'\377','\002','\357','\001','\000','\342','\011','\003'};
 	static char SI9pyynto_b1[8] = {'\377','\002','\357','\001','\001','\343','\011','\003'};
 	static char SI11pyynto_b4[8] = {'\377','\002','\357','\001','\004','\346','\011','\003'};
+	static char SI11pyynto_b5[8] = {'\377','\002','\357','\001','\005','\347','\011','\003'};
+	static char SI11pyynto_b6[8] = {'\377','\002','\357','\001','\006','\350','\011','\003'};
+	static char SI11pyynto_b7[8] = {'\377','\002','\357','\001','\007','\351','\011','\003'};
 	// CMD=F9: tells BSM8 to beep once after a successful card read (count=1).
 	static char SIbeep[8] = {'\377','\002','\371','\001','\001','\027','\012','\003'};
 	char SI5code[5] = "\002FI\003";
 	char SIack = ACK;
-	char SIbuf[512], *SIbp;
-	// SItype encodes card family: 5=SI5, 6=SI6, 7=SI9, 8=SI10/11, 9=SI8.
-	// SIdatalen[SItype-5]: total bytes expected in SIbuf before calling tulkSI.
+	// 128 (block 0) + up to 4 punch blocks × 128 = 640 bytes max for SI10/11.
+	char SIbuf[640], *SIbp;
+	// SItype encodes card family: 5=SI5, 6=SI6, 7=SI9, 8=SI10/11, 9=SI8, 10=pCard, 11=tCard.
+	// SIdatalen[SItype-5]: total bytes to fill in SIbuf before calling tulkSI.
 	//   SI5: 133 (one B1 block), SI6: 402 (legacy multi-block),
-	//   SI9/SI10/11/SI8: 256 (two 128-byte EF blocks).
-	int SItype, SIdatalen[5] = {133, 402, 256, 256, 256}, dle = 0;
+	//   SI9/SI8/pCard/tCard: 256 (blocks 0+1). SI10/11: 256–640 (block 0 + 1–4 punch blocks).
+	int SItype, SIdatalen[7] = {133, 402, 256, 256, 256, 256, 256}, dle = 0;
 	// SIext=1: BSM8 EXT protocol (38400 bps, binary frames, FF wakeup required).
 	// SIext=0: legacy protocol (DLE-encoded, lower baud rate).
 	// SIskip: bytes remaining to discard from the current response header.
-	// SInblock: 0=reading block 0, 1=reading block 1 or 4.
-	int SIext = 0, SImsglen = 0, SIskip = 0, SInblock = 0;
+	// SInblock: 0=reading block 0, 1=reading first punch block (block 1 or 4), etc.
+	// SInblocks_needed: for SI10/11, how many punch blocks (1–4) based on RC in block 0.
+	int SIext = 0, SImsglen = 0, SIskip = 0, SInblock = 0, SInblocks_needed = 1;
 	INT32 SIt;
 	char *msg = NULL;
 
@@ -1544,12 +1549,14 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 				dle = 2*dle;
 				}
 			// Mid-read trigger: block 0 (128 bytes) is complete — determine card type from
-			// SIID and request the correct second block.
+			// SIID and request the correct next block.
 			//
 			// SIID ranges (block 0 bytes [25:28], big-endian 3-byte value):
-			//   SI9:    1 000 000 – 1 999 999  → block 1, punches at buf[56]  (SItype=7)
-			//   SI8:    2 000 000 – 7 999 999  → block 1, punches at buf[136] (SItype=9)
-			//   SI10/11: ≥ 8 000 000           → block 4, punches at buf[128] (SItype=8)
+			//   SI9:     1 000 000 – 1 999 999  → block 1, P1=56,  4-byte records (SItype=7)
+			//   SI8:     2 000 000 – 3 999 999  → block 1, P1=136, 4-byte records (SItype=9)
+			//   pCard:   4 000 000 – 5 999 999  → block 1, P1=176, 4-byte records (SItype=10)
+			//   tCard:   6 000 000 – 6 999 999  → block 1, P1=56,  8-byte records (SItype=11)
+			//   SI10/11: ≥ 7 000 000           → blocks 4–7, P1=128, 4-byte records (SItype=8)
 			//
 			// SIskip=9: the block 0 response tail (CRC_H CRC_L ETX = 3 bytes) is still
 			// in the serial buffer when this fires and consumes 3 skip credits before
@@ -1560,21 +1567,53 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 				                   + (unsigned char)SIbuf[27];
 				SInblock = 1;
 				SIskip = 9;
-				if (siid >= 8000000L) {
+				if (siid >= 7000000L) {
+					// SI10/11: RC at block 0 byte [22] = punch count.
+					// Compute how many 32-punch blocks (1–4) are needed.
+					unsigned char rc = (unsigned char)SIbuf[22];
 					SItype = 8;
+					SInblocks_needed = (rc + 31) / 32;
+					if (SInblocks_needed < 1) SInblocks_needed = 1;
+					if (SInblocks_needed > 4) SInblocks_needed = 4;
+					SIdatalen[3] = 128 + SInblocks_needed * 128;
 					wrt_st_x(cn, sizeof(SI11pyynto_b4), SI11pyynto_b4, &nch);
 					}
+				else if (siid >= 6000000L) {
+					SItype = 11;  // tCard
+					wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
+					}
+				else if (siid >= 4000000L) {
+					SItype = 10;  // pCard
+					wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
+					}
 				else if (siid >= 2000000L) {
-					SItype = 9;
+					SItype = 9;   // SI8
 					wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
 					}
 				else {
+					// SI9
 					wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
 					}
 				utsleep(2);
 				}
+			// SI10/11 multi-block: after each punch block, request the next one if needed.
+			// SInblock counts completed punch blocks (1=block4 done, 2=block5 done, ...).
+			// SIskip=9 skips the 3 tail bytes (CRC_H CRC_L ETX) still in the serial buffer
+			// plus the 6-byte header of the next block response.
+			if (SItype == 8 && SInblock > 0 && SInblock < SInblocks_needed
+			    && l == 128 + SInblock * 128) {
+				SInblock++;
+				SIskip = 9;
+				if (SInblock == 2)
+					wrt_st_x(cn, sizeof(SI11pyynto_b5), SI11pyynto_b5, &nch);
+				else if (SInblock == 3)
+					wrt_st_x(cn, sizeof(SI11pyynto_b6), SI11pyynto_b6, &nch);
+				else
+					wrt_st_x(cn, sizeof(SI11pyynto_b7), SI11pyynto_b7, &nch);
+				utsleep(2);
+				}
 			if (l == SIdatalen[SItype-5]) {
-				if (!tulkSI(SIbuf, vastaus, SIt, SItype)) {
+				if (!tulkSI(SIbuf, vastaus, SIt, SItype, SIdatalen[SItype-5])) {
 					tall_emit(vastaus, 0, r_no);
 					wrt_st_x(cn, sizeof(SIbeep), SIbeep, &nch);
 					}
@@ -2518,8 +2557,8 @@ void comajanotto(LPVOID lpCn)
 
 #ifdef SPORTIDENT
 // Tulkitsee SportIdent SI5/SI6/SI8-11 -korttidata (buf) san_type-rakenteeseen vastaus.
-// SIt on lukuaika, SItype on 5, 6 tai 7 (SI8/9/10/11); palauttaa 0 onnistuessaan.
-static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
+// SIt on lukuaika, SItype 5–11, buflen = SIbuf:n käytetty pituus; palauttaa 0 onnistuessaan.
+static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype, int buflen)
 	{
 	SI5tp *tp5;
 	SI6tp *tp6;
@@ -2597,8 +2636,8 @@ static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
 				256L*b[10] + b[11] + (b[8]  & 1) * 43200L;
 			vastaus->r21data.finish = (b[17] == 0xEE) ? 0L :
 				256L*b[18] + b[19] + (b[16] & 1) * 43200L;
-			vastaus->r21data.start  = (b[21] == 0xEE) ? 0L :
-				256L*b[22] + b[23] + (b[20] & 1) * 43200L;
+			vastaus->r21data.start  = (b[13] == 0xEE) ? TMAALI0 :
+				256L*b[14] + b[15] + (b[12] & 1) * 43200L;
 			r = 0;
 			for (i = 56; i + 3 < 256; i += 4) {
 				unsigned char cn = b[i+1];
@@ -2622,9 +2661,9 @@ static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
 			break;
 			}
 		case 8: {
-			// SI10/SI11 (SIID ≥8M) via EXT protocol: blocks 0+4, 256 bytes total.
+			// SI10/SI11 (SIID ≥7M) via EXT protocol: block 0 + 1–4 punch blocks (256–640 bytes).
 			// Block 0 header layout identical to SI9 (case 7): SIID, check, start, finish.
-			// Punches are in block 4 (buf[128:256]), not block 1.
+			// Punches start at buf[128] (block 4); each additional 128-byte block holds 32 more.
 			// Same {PTD, CN, time_H, time_L} record format; CN=EE terminates the list.
 			unsigned char *b = (unsigned char *) buf;
 			vastaus->r21data.badge  = b[25]*65536L + b[26]*256L + b[27];
@@ -2633,10 +2672,10 @@ static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
 				256L*b[10] + b[11] + (b[8]  & 1) * 43200L;
 			vastaus->r21data.finish = (b[17] == 0xEE) ? 0L :
 				256L*b[18] + b[19] + (b[16] & 1) * 43200L;
-			vastaus->r21data.start  = (b[21] == 0xEE) ? 0L :
-				256L*b[22] + b[23] + (b[20] & 1) * 43200L;
+			vastaus->r21data.start  = (b[13] == 0xEE) ? TMAALI0 :
+				256L*b[14] + b[15] + (b[12] & 1) * 43200L;
 			r = 0;
-			for (i = 128; i + 3 < 256; i += 4) {
+			for (i = 128; i + 3 < buflen; i += 4) {
 				unsigned char cn = b[i+1];
 				long pt;
 				if (cn == 0xEE) break;
@@ -2658,7 +2697,7 @@ static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
 			break;
 			}
 		case 9: {
-			// SI8 (SIID 2M–8M) via EXT protocol: blocks 0+1, 256 bytes total.
+			// SI8 (SIID 2M–4M) via EXT protocol: blocks 0+1, 256 bytes total.
 			// Block 0 header identical to SI9 (case 7).
 			// Punches start at buf[136] (block 1 offset 8), not buf[56] like SI9.
 			unsigned char *b = (unsigned char *) buf;
@@ -2668,10 +2707,82 @@ static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
 				256L*b[10] + b[11] + (b[8]  & 1) * 43200L;
 			vastaus->r21data.finish = (b[17] == 0xEE) ? 0L :
 				256L*b[18] + b[19] + (b[16] & 1) * 43200L;
-			vastaus->r21data.start  = (b[21] == 0xEE) ? 0L :
-				256L*b[22] + b[23] + (b[20] & 1) * 43200L;
+			vastaus->r21data.start  = (b[13] == 0xEE) ? TMAALI0 :
+				256L*b[14] + b[15] + (b[12] & 1) * 43200L;
 			r = 0;
 			for (i = 136; i + 3 < 256; i += 4) {
+				unsigned char cn = b[i+1];
+				long pt;
+				if (cn == 0xEE) break;
+				pt = 256L*b[i+2] + b[i+3] + (b[i] & 1) * 43200L;
+				r++;
+				if (r <= 66) {
+					vastaus->r21data.cc[r] = cn;
+					if (r == 1) {
+						if (vastaus->r21data.start && pt < vastaus->r21data.start)
+							pt += 43200L;
+						}
+					else {
+						if (vastaus->r21data.ct[r-1] && pt < vastaus->r21data.ct[r-1])
+							pt += 43200L;
+						}
+					vastaus->r21data.ct[r] = pt;
+					}
+				}
+			break;
+			}
+		case 10: {
+			// pCard (SIID 4M–6M) via EXT protocol: blocks 0+1, 256 bytes total.
+			// Block 0 header identical to SI9 (case 7): SIID, check, start, finish.
+			// Punches start at buf[176] (block 1 byte 48), max 20, 4-byte {PTD, CN, time_H, time_L}.
+			unsigned char *b = (unsigned char *) buf;
+			vastaus->r21data.badge  = b[25]*65536L + b[26]*256L + b[27];
+			vastaus->r21data.lukija = t_time_l(SIt, t0);
+			vastaus->r21data.check  = (b[9]  == 0xEE) ? 0L :
+				256L*b[10] + b[11] + (b[8]  & 1) * 43200L;
+			vastaus->r21data.finish = (b[17] == 0xEE) ? 0L :
+				256L*b[18] + b[19] + (b[16] & 1) * 43200L;
+			vastaus->r21data.start  = (b[13] == 0xEE) ? TMAALI0 :
+				256L*b[14] + b[15] + (b[12] & 1) * 43200L;
+			r = 0;
+			for (i = 176; i + 3 < 256; i += 4) {
+				unsigned char cn = b[i+1];
+				long pt;
+				if (cn == 0xEE) break;
+				pt = 256L*b[i+2] + b[i+3] + (b[i] & 1) * 43200L;
+				r++;
+				if (r <= 66) {
+					vastaus->r21data.cc[r] = cn;
+					if (r == 1) {
+						if (vastaus->r21data.start && pt < vastaus->r21data.start)
+							pt += 43200L;
+						}
+					else {
+						if (vastaus->r21data.ct[r-1] && pt < vastaus->r21data.ct[r-1])
+							pt += 43200L;
+						}
+					vastaus->r21data.ct[r] = pt;
+					}
+				}
+			break;
+			}
+		case 11: {
+			// tCard (SIID 6M–7M) via EXT protocol: blocks 0+1, 256 bytes total.
+			// Block 0 header identical to SI9 (case 7): SIID, check, start, finish.
+			// Punches start at buf[56], max 25, 8-byte records.
+			// Record layout: {PTD, CN, time_H, time_L, sub_H, sub_L, 0x00, 0x00}
+			// Sub-second bytes are ignored; step is 8 instead of 4.
+			unsigned char *b = (unsigned char *) buf;
+			vastaus->r21data.badge  = b[25]*65536L + b[26]*256L + b[27];
+			vastaus->r21data.lukija = t_time_l(SIt, t0);
+			vastaus->r21data.check  = (b[9]  == 0xEE) ? 0L :
+				256L*b[10] + b[11] + (b[8]  & 1) * 43200L;
+			vastaus->r21data.finish = (b[17] == 0xEE) ? 0L :
+				256L*b[18] + b[19] + (b[16] & 1) * 43200L;
+			vastaus->r21data.start  = (b[13] == 0xEE) ? TMAALI0 :
+				256L*b[14] + b[15] + (b[12] & 1) * 43200L;
+			r = 0;
+			for (i = 56; i + 3 < 256; i += 8) {
 				unsigned char cn = b[i+1];
 				long pt;
 				if (cn == 0xEE) break;
