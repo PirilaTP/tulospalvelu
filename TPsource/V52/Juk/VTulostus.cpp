@@ -6793,6 +6793,8 @@ int autofile(void)
 		if (aftulparam.kohde == L'H') {
 			htmlalku(aftulparam.title, aftulparam.header, 0, &aftulparam);
 			for (int srj = 0; srj < sarjaluku; srj++) {
+				aftulparam.osuus = Sarjat[srj].ntosuus - 1;
+				aftulparam.piste = 0;
 				if (aftulparam.sarjalista[srj] && ntulos[srj][aftulparam.osuus][aftulparam.piste]) {
 					tulostasarja(&srj, &aftulparam, &l, &sv, TRUE);
 					kirjoitettu = true;
