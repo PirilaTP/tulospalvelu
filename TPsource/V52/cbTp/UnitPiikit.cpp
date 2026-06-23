@@ -199,9 +199,9 @@ void TFormPiikit::piirrapiikit(void)
 					}
 				prtpiste(xx, yy, korostus);
 				if (SG1->Cells[xx][yy].Length() == 0)
-					SG1->Cells[xx][yy] = UnicodeString(i+1);
+					SG1->Cells[xx][yy] = UnicodeString(k);
 				else
-					SG1->Cells[xx][yy] = SG1->Cells[xx][yy]+UnicodeString(',')+UnicodeString(i+1);
+					SG1->Cells[xx][yy] = SG1->Cells[xx][yy]+UnicodeString(',')+UnicodeString(k);
 				}
 			}
 		}
@@ -253,10 +253,21 @@ int rt = CBRata->ItemIndex;
 				int tulkinta[MAXNLEIMA];
 				if (tarkista(&em, &kilp, tulkinta, -1, 0)) {
 					int k = 0;
+					int groupType = 10000;
 					for (int i = 0; i < rata[r].rastiluku; i++) {
+						int rc = rata[r].rastikoodi[i];
+						if (rc >= 10000 && rc <= 10002) {
+							groupType = rc;
+							continue;
+							}
+						if (rc == 0 || rc > MAXTUNNUS)
+							continue;
+						k++;
+						if (groupType != 10000)
+							continue;
 						int j;
 						for (j = 0; j < MAXNLEIMA; j++) {
-							if (abs(tulkinta[j]) == i+1)
+							if (abs(tulkinta[j]) == k)
 								break;
 							}
 						if (j == MAXNLEIMA)
@@ -281,10 +292,21 @@ int rt = CBRata->ItemIndex;
 				int tulkinta[MAXNLEIMA];
 				if (tarkista(&em, tulkinta, 0, &kilp)) {
 					int k = 0;
+					int groupType = 10000;
 					for (int i = 0; i < rata[r].rastiluku; i++) {
+						int rc = rata[r].rastikoodi[i];
+						if (rc >= 10000 && rc <= 10002) {
+							groupType = rc;
+							continue;
+							}
+						if (rc == 0 || rc > MAXTUNNUS)
+							continue;
+						k++;
+						if (groupType != 10000)
+							continue;
 						int j;
 						for (j = 0; j < MAXNLEIMA; j++) {
-							if (abs(tulkinta[j]) == i+1)
+							if (abs(tulkinta[j]) == k)
 								break;
 							}
 						if (j == MAXNLEIMA)
