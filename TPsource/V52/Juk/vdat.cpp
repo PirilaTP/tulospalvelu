@@ -860,7 +860,7 @@ void addtall(kilptietue *kilp, int *dataf, int kielto)
 		 for (int ibdg = 0; ibdg < (kilpparam.kaksibadge ? 2 : 1); ibdg++) {
 			 if (kilp->ostiet[os].badge[ibdg]) {
 				if (addbadge(kilp->ostiet[os].badge[ibdg],
-				   kilp->kilpno, *dataf, ibdg, 1)) {
+				   kilp->kilpno, i, ibdg, 1)) {
 				   sprintf(msg,"Emit-koodi %ld jo käytössä. Koodia ei tallennettu",
 					  kilp->ostiet[os].badge[ibdg]);
 				   kilp->ostiet[os].badge[ibdg] = 0;
