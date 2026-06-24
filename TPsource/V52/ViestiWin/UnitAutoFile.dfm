@@ -324,6 +324,7 @@ object FormAutoFile: TFormAutoFile
     Font.Name = 'Arial'
     Font.Style = []
     ParentFont = False
+    OnClick = Button6Click
     TabOrder = 12
     WordWrap = True
   end

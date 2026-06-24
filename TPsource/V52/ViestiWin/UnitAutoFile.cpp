@@ -41,7 +41,7 @@ void __fastcall TFormAutoFile::FormShow(TObject *Sender)
 	if (autofileparam.afvali == 0)
 		RGLaji->ItemIndex = 0;
 	else
-		RGLaji->ItemIndex = aftulparam.kohde == L'H' ? 1 : 2;
+		RGLaji->ItemIndex = aftulparam.kohde == L'H' ? 1 : 0;
 	EdtVali->Text = autofileparam.afvali/SEK;
 	EdtHtmlFName->Text = autofileparam.afname;
 	EdtPageTitle->Text = autofileparam.wtitlea;
@@ -66,6 +66,7 @@ void __fastcall TFormAutoFile::BtnOtakayttoonClick(TObject *Sender)
 			wcsncpy(autofileparam.wtitlea, EdtPageTitle->Text.c_str(), sizeof(autofileparam.wtitlea)/2-1);
 			wcsncpy(autofileparam.wheadera, EdtPageHeader->Text.c_str(), sizeof(autofileparam.wheadera)/2-1);
 			aftulparam.yksihtml = RGPisteet->ItemIndex == 0;
+			aftulparam.kohde = L'H';
 			break;
 		case 2:
 			autofileparam.afvali = _wtoi(EdtVali->Text.c_str()) * SEK;
@@ -160,6 +161,12 @@ void __fastcall TFormAutoFile::RGJatkoClick(TObject *Sender)
 {
 	EdtKomento->Enabled = RGJatko->ItemIndex == 1;
 	BtnValitseKomento->Enabled = EdtKomento->Enabled;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormAutoFile::Button6Click(TObject *Sender)
+{
+	Close();
 }
 //---------------------------------------------------------------------------
 
