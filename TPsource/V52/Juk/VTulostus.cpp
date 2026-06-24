@@ -4574,10 +4574,15 @@ static void htmlsarjaotsikot(int *srj, tulostusparamtp *tulprm, int ei_lukum, in
 //				putfld(tulprm, wline, 0, 180, 0, 0);
 //				endline(tulprm, 1);
 				if (tulprm->lahtoluettelo) {
+					wchar_t wtm[10]; INT32 lt = Sarjat[*srj].lahto;
 					if (tulprm->language == 0)
 						swprintf(wline,L"<p>Ilmoittautuneita : %d", nilm[*srj]);
 					else
 						swprintf(wline,L"<p>Participants : %d", nilm[*srj]);
+					if (lt && lt != TMAALI0) { AIKATOWSTRS(wtm, lt, t0); wtm[8] = 0;
+						wcscat(wline, tulprm->language == 0 ? L", Lähtö: " : L", Start: ");
+						wcscat(wline, wtm); }
+					wcscat(wline, L"\n"); tulprm->writehtml(wline);
 					}
 				else {
 					wline[0] = 0;
@@ -5054,6 +5059,17 @@ static void kirjoitinjatko_otsikot(int *l, int *srj, tulostusparamtp *tulprm)
 		}
 	putfld(tulprm, wline, 0, wcslen(wline), 0, 0);
 	endline(tulprm, 1);
+	if (tulprm->lahtoluettelo && Sarjat[*srj].lahto) {
+		wchar_t wtm[10];
+		AIKATOWSTRS(wtm, Sarjat[*srj].lahto, t0); wtm[8] = 0;
+		if (tulprm->language > 0)
+			swprintf(wline, L"Start: %s", wtm);
+		else
+			swprintf(wline, L"Lähtö: %s", wtm);
+		putfld(tulprm, wline, 0, wcslen(wline), 0, 0);
+		endline(tulprm, 1);
+		(*l)++;
+		}
 	if (tulprm->tulmuot.otsikot) {
 		FldFrmtTp *fld = tulprm->viimos == L'K' ? prtfldsk : prtflds;
 		newline(tulprm, 1);
@@ -5143,6 +5159,16 @@ static void kirjoitinalkuotsikot(int *l, int *srj, tulostusparamtp *tulprm, int 
 					}
 				putfld(tulprm, wline, prtflds[3].pos, 58, 0, 0);
 				endline(tulprm, 1);
+				if (tulprm->lahtoluettelo && Sarjat[*srj].lahto && Sarjat[*srj].lahto != TMAALI0) {
+					wchar_t wtm[10]; AIKATOWSTRS(wtm, Sarjat[*srj].lahto, t0); wtm[8] = 0;
+					if (tulprm->language > 0)
+						swprintf(wline, L"Start: %s", wtm);
+					else
+						swprintf(wline, L"Lähtö: %s", wtm);
+					putfld(tulprm, wline, 0, wcslen(wline), 0, 0);
+					endline(tulprm, 1);
+					(*l)++;
+					}
 				(*l)++;
 				(*l)++;
 	//			if (kilpparam.maxnosuus == 1)
