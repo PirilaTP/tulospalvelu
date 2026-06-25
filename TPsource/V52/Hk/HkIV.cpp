@@ -2654,7 +2654,7 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 
 //   else t = t0_regn[r_no];
 //#ifdef MERI5
-	if (wcswcind(kilpparam.kilplaji, L"NPU") >= 0 && regnly[r_no] != LID_RESERV_1 && rata == 0) {
+	if (wcswcind(kilpparam.kilplaji, L"NPU") >= 0 && regnly[r_no] != LID_SRRLUKIJA && rata == 0) {
 //		rata = 1;
 		if (piste >= 98) {
 			rata = (piste+2) / 100;
