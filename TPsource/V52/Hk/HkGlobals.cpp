@@ -511,7 +511,7 @@
 	int muutoskysely = 1;
    int valonaytto;
    INT com_emit[MAX_LAHPORTTI];
-   int  emitfile;
+   int  emitfile = -1;
 	wchar_t emitfname[13] = L"EMIT1.DAT";
 	INT emithead, emithead2, annaseur;
 	INT com_emitva[MAX_LAHPORTTI];

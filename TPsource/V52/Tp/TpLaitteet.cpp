@@ -1022,6 +1022,54 @@ static int lue_LUKIJA(int r_no, int cn, san_type *vastaus, int *nmsg,
 		*nmsg = 0;
 		}
 	else if (*nmsg >= 10 || *tyhjpuskuri) {
+	// SportIdent Extended Protocol -sanoma (SRR-dongle, Air+-radioleimaus)
+	// Sanoman rakenne: FF 02 <cmd> <dlen> <data[dlen]> <crc_lo> <crc_hi> 03
+	// FF 02 = laajennetun protokollan otsikko, dlen = datan pituus tavuina
+	// total = koko sanoman pituus (4 otsikko + dlen data + 2 CRC + 1 ETX)
+	if (*nmsg >= 4 && (unsigned char)vastaus->bytes[0] == 0xFF &&
+		(unsigned char)vastaus->bytes[1] == 0x02) {
+		unsigned char cmd = (unsigned char)vastaus->bytes[2];
+		unsigned char dlen = (unsigned char)vastaus->bytes[3];
+		int total = 4 + (int)dlen + 2 + 1;
+		if (*nmsg >= total && (unsigned char)vastaus->bytes[total - 1] == 0x03) {
+			// cmd 0xD3 = SportIdent Air+ -leimaussanoma (SIAC-kortin radioleimaus)
+			// Komento 0xD3 lahetetaan kun SIAC-kortti leimaa rastilla langattomasti.
+			// data[0] = CN lo (leimasinaseman numero, alin tavu)
+			// data[1] = CN hi (leimasinaseman numero, ylin tavu)
+			// data[2] = SI-kortin sarjanumeron ylin tavu (SN3)
+			// data[3] = SI-kortin sarjanumeron 2. tavu (SN2): < 10 = SI5-sarja, >= 10 = SI9+
+			// data[4..5] = SI-kortin sarjanumeron 2 alinta tavua (SN1, SN0)
+			// SI5-kortit (SN2 < 10): korttinumero = SN2 * 100000 + (SN1<<8 | SN0)
+			// SI9+-kortit (SN2 >= 10): korttinumero = (SN2<<16) | (SN1<<8) | SN0
+			if (cmd == 0xD3 && dlen >= 9) {
+				unsigned char *data = (unsigned char*)vastaus->bytes + 4;
+				UINT32 siid_lo2 = ((UINT32)data[4] << 8) | data[5];
+				UINT32 siid = (data[3] < 10) ? (UINT32)data[3] * 100000 + siid_lo2 : ((UINT32)data[3] << 16) | siid_lo2;
+				int nrest = *nmsg - total;
+				char rest[R_BUFLEN + 1];
+				// Talleta mahdolliset seuraavat sanomat ennen puskurin ylikirjoitusta
+				if (nrest > 0) memcpy(rest, vastaus->bytes + total, nrest);
+				// Rakennetaan vastaus EMIT-muotoon (0x2020-otsikko, badge XOR 0xDF)
+				// jotta tall_emit voi kasitella sen samoin kuin EMIT-kortin leimausta
+				memset(vastaus->bytes, '\xdf', r_msg_len);
+				vastaus->r12.alku = 0x2020;
+				vastaus->r12.badge[0] = (char)((unsigned char)(siid & 0xFF) ^ 0xDF);
+				vastaus->r12.badge[1] = (char)((unsigned char)((siid >> 8) & 0xFF) ^ 0xDF);
+				vastaus->r12.badge[2] = (char)((unsigned char)((siid >> 16) & 0xFF) ^ 0xDF);
+				vastaus->r12.fill1 = (char)(data[1] ^ 0xDF);  // CN hi (leimasinaseman numero, ylin tavu)
+				add_bdg_t(siid, r_no, 0, 0);   // rekisterointi ajanoton aikajonoon
+				tall_emit(vastaus, NULL, r_no); // leimauksen kasittely
+				*nmsg = nrest;
+				if (nrest > 0) memcpy(vastaus->bytes, rest, nrest);
+				} else {
+				// Tuntematon komento tai liian lyhyt data - ohitetaan sanoma
+				int nrest = *nmsg - total;
+				if (nrest > 0) memmove(vastaus->bytes, vastaus->bytes + total, nrest);
+				*nmsg = nrest;
+				}
+			}
+		return 0;
+		}
 
 // Jos merkkejä on vastaanotettu, tarkastetaan, onko kyseessä virheettömän
 // sanoman alku. Tarkastus koskee 2 tai 10 merkkiä tai koko sanomaa. Jos sanoma
@@ -1855,7 +1903,7 @@ int lue_regnly(INT r_no)
 		}
 #endif // LAJUNEN
 
-	else if (regnly[r_no] == LID_LUKIJA) {											// LUKIJA
+	else if (regnly[r_no] == LID_LUKIJA || regnly[r_no] == LID_SRRLUKIJA) {		// LUKIJA / SRRLUKIJA
 		lue_LUKIJA(r_no, cn_regnly[r_no], vastaus[r_no], nmsg+r_no,
 			ntotviim+r_no, tyhjpuskuri+r_no, r_buflen, r_msg_len[r_no]);
 		}
@@ -2137,6 +2185,11 @@ INT start_regnly(INT r_no)
 			   sbits = 1;
 			   r_msg_len[r_no] = 217;
 			   break;
+		   case LID_SRRLUKIJA:
+			   bd = 9;              //  38400
+			   sbits = 1;
+			   r_msg_len[r_no] = 217;
+			   break;
 		   case LID_MTR:
 			   bd = 7;          //  9600
 			   r_msg_len[r_no] = 234;
@@ -2209,7 +2262,7 @@ INT start_regnly(INT r_no)
 			   parity = 'n';
 			   break;
 		   }
-		   if (kello_baud && (regnly[r_no] < 10 || regnly[r_no] == LID_ARES || regnly[r_no] == LID_FEIG)) {
+		   if (kello_baud && (regnly[r_no] < 10 || regnly[r_no] == LID_ARES || regnly[r_no] == LID_FEIG || regnly[r_no] == LID_LUKIJA || regnly[r_no] == LID_SRRLUKIJA)) {
 			   bd = kello_baud;
 		   }
 	   }

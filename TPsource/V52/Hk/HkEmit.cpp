@@ -1276,6 +1276,7 @@ INT putem(emittp *em, INT32 ep, int inCrSe)
    {
    int retval = 0;
 
+   if (emitfile < 0) return(1);
    if (ep >= 0 && ep <= emithead) {
 	  if (!inCrSe)
 		 EnterCriticalSection(&emit_CriticalSection);

@@ -2254,6 +2254,24 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			   }
 			continue;
 			}
+		 if( !wmemcmpU(fldn, L"SRRLUKIJA",9)) {
+			pos = 9;
+			ny = yhteys_no(fldn, &pos) - 1;
+			if (pos == 9 || ny > NREGNLY-1 || ny < 0)
+				ny = NREGNLY-1;
+			regnly[ny] = LID_SRRLUKIJA;
+			port_regnly[ny] = 1;
+			if (ajanottofl == -1)
+			   ajanottofl = 0;
+			emitfl = 1;
+			kaikki_ajat[ny+1] = 2;
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+			   if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
+				  port_regnly[ny] = _wtoi(p);
+				  }
+			   }
+			continue;
+			}
 		 if( !wmemcmpU(fldn, L"LUKIJA",6)) {
 			pos = 6;
 			ny = yhteys_no(fldn, &pos) - 1;
@@ -2266,6 +2284,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			if (ajanottofl == -1)
 			   ajanottofl = 0;
 			emitfl = 1;
+			kaikki_ajat[ny+1] = 2;
 #ifdef TCPLUKIJA
 			if (!wmemcmpU(fldn+pos+1, L"UDP", 3)) {
 				if (fldn[pos+4] == L'S')

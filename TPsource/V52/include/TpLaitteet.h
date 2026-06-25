@@ -39,7 +39,7 @@
 #define LID_VALOT		29
 #define LID_SIRIT		30
 #define LID_FEIG		31
-#define LID_RESERV_1	32
+#define LID_SRRLUKIJA	32
 #define LID_IMPINJ		33
 #define LID_SW2000		36
 #define LID_KURVINEN	40
