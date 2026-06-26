@@ -1330,17 +1330,21 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 
 			   if (++naika > naikamax) naikamax = naika;
 			   if (keyv2 != * (INT32 *) (key+1)) {
-				   int tl1, tl2;
-				   memcpy(&tl1, key+1, 4);
-				   lswab((long *) &tl1);
-				   tl2 = keyv2;
-				   lswab((long *) &tl2);
-				   tl1 = (tl1 - tl2 + 24 * TUNTI) % (24 * TUNTI);
-				   if (tl1 > 0 && tl1 < vakiovali)
-						vakiovali = tl1;
-				   if ((Options & 1) && key[0] == keyv[0]) {
-						tl1 /= vakiovali;
-						for (int i = 1; i < tl1; i++) {
+				   int tamanLahtoaika, edellinenLahtoaika;
+				   memcpy(&tamanLahtoaika, key+1, 4);
+				   lswab((long *) &tamanLahtoaika);
+				   edellinenLahtoaika = keyv2;
+				   lswab((long *) &edellinenLahtoaika);
+				   int aikaero = (tamanLahtoaika - edellinenLahtoaika + 24 * TUNTI) % (24 * TUNTI);
+				   if (aikaero > 0 && aikaero < vakiovali)
+						vakiovali = aikaero;
+				   // täytä tyhjät lähtöminuutit ("EI LÄHTIJÖITÄ") vain jos vakantit on valittu
+				   // tulostettavaksi ja edellinen kilpailija on samassa lähtöpaikassa
+				   bool tulostaVakantit = (Options & 1) != 0;
+				   bool samaLahtopaikka = key[0] == keyv[0];
+				   if (tulostaVakantit && samaLahtopaikka) {
+						int tyhjienValienMaara = aikaero / vakiovali;
+						for (int i = 1; i < tyhjienValienMaara; i++) {
 							  if (!tulprm.mahtuusivulle(l, 3)) {
 								 uusisivu = false;
 								 endpage(&tulprm);
@@ -1359,7 +1363,7 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 									newline(&tulprm, 1);
 								 l++;
 								 }
-							 AIKATOWSTRS(as1, tl2+ensl+i*vakiovali-t0*TUNTI, t0);
+							 AIKATOWSTRS(as1, edellinenLahtoaika+ensl+i*vakiovali-t0*TUNTI, t0);
 							 as1[8] = 0;
 							 if (wcscmp(as1+5, L".00") == 0)
 								as1[5] = 0;
