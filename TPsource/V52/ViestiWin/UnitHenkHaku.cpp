@@ -18,8 +18,13 @@
 
 #include <vcl.h>
 #pragma hdrstop
-
+#include <stdlib.h>
 #include "UnitHenkHaku.h"
+
+static int __cdecl nimet_cmp(const void *a, const void *b)
+{
+	return wcscmp(((const nimettp *)a)->animi, ((const nimettp *)b)->animi);
+}
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -82,8 +87,9 @@ void __fastcall TFormHenkHaku::NaytaNimet(void)
 			kilp.Nimi(nimet[n].nimi, sizeof(nimet[n].nimi)/2-1, os, etusuku);
 			if (wcslen(nimet[n].nimi) < 2)
 				continue;
-			wcstoansi(nimet[n].animi, nimet[n].nimi, sizeof(nimet[n].animi)-1);
-			upcasestr(nimet[n].animi);
+			wcsncpy(nimet[n].animi, nimet[n].nimi, OSNIMIL+1);
+			nimet[n].animi[OSNIMIL+1] = 0;
+			upcasewstr(nimet[n].animi);
 			kilp.Joukkue(nimet[n].joukkue, sizeof(nimet[n].joukkue)/2-1);
 			nimet[n].sarja = kilp.sarja;
 			nimet[n].kno = kilp.kilpno;
@@ -93,7 +99,7 @@ void __fastcall TFormHenkHaku::NaytaNimet(void)
 		}
 	SG1->RowCount = n+1;
 	if (n) {
-		quicksort((char *)nimet, n, sizeof(nimet[0].animi), sizeof(nimet[0]));
+		qsort(nimet, n, sizeof(nimet[0]), nimet_cmp);
 		for (int r = 1; r <= n; r++) {
 			SG1->Cells[0][r] = nimet[r-1].kno;
 			SG1->Cells[1][r] = Sarjat[nimet[r-1].sarja].sarjanimi;

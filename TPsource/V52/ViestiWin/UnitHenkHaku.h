@@ -28,7 +28,7 @@
 #include "VDeclare.h"
 //---------------------------------------------------------------------------
 typedef struct {
-	char animi[OSNIMIL+2];
+	wchar_t animi[OSNIMIL+2];
 	wchar_t	nimi[OSNIMIL+2];
 	int sarja;
 	int kno;
