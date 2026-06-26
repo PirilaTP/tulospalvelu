@@ -375,6 +375,19 @@ static wchar_t *html_avaus(tulostusparamtp *tulprm, const wchar_t *wtitle, int l
 	return(0);
 }
 
+static void LisaaLahtoaika(wchar_t *wline, tulostusparamtp *tulprm, int srj, const wchar_t *sep)
+{
+	if (!(tulprm->lahtoluettelo && Sarjat[srj].lahto && Sarjat[srj].lahto != TMAALI0))
+		return;
+	wchar_t wtm[14]; AIKATOWSTRS(wtm, Sarjat[srj].lahto, t0); wtm[8] = 0;
+	wchar_t label[20];
+	if (tulprm->language > 0)
+		swprintf(label, L"%sStart: %s", sep, wtm);
+	else
+		swprintf(label, L"%sLähtö: %s", sep, wtm);
+	wcscat(wline, label);
+}
+
 static void setflds(FldFrmtTp *fld, FldFrmtTp* fld0, int maxfldno, int n_fld0)
 {
 	memset(fld, 0, maxfldno*sizeof(FldFrmtTp));
@@ -4569,11 +4582,7 @@ static void htmlsarjaotsikot(int *srj, tulostusparamtp *tulprm, int ei_lukum, in
 					if (wcslen(wline) > 2)
 						wcscat(wline, L" km)");
 					}
-				if (tulprm->lahtoluettelo && Sarjat[*srj].lahto && Sarjat[*srj].lahto != TMAALI0) {
-					wchar_t wtm[10]; AIKATOWSTRS(wtm, Sarjat[*srj].lahto, t0); wtm[8] = 0;
-					wcscat(wline, tulprm->language == 0 ? L" Lähtö: " : L" Start: ");
-					wcscat(wline, wtm);
-					}
+				LisaaLahtoaika(wline, tulprm, *srj, L" ");
 				wcscat(wline, L"</span>\n");
 				tulprm->writehtml(wline);
 //				putfld(tulprm, wline, 0, 180, 0, 0);
@@ -5051,11 +5060,7 @@ static void kirjoitinjatko_otsikot(int *l, int *srj, tulostusparamtp *tulprm)
 				swprintf(wline,L"%-10s  %d. osuus, %d. väliaika",snimi,tulprm->osuus+1,tulprm->piste);
 			}
 		}
-	if (tulprm->lahtoluettelo && Sarjat[*srj].lahto && Sarjat[*srj].lahto != TMAALI0) {
-		wchar_t wtm[10]; AIKATOWSTRS(wtm, Sarjat[*srj].lahto, t0); wtm[8] = 0;
-		wcscat(wline, tulprm->language > 0 ? L"  Start: " : L"  Lähtö: ");
-		wcscat(wline, wtm);
-		}
+	LisaaLahtoaika(wline, tulprm, *srj, L"  ");
 	putfld(tulprm, wline, 0, wcslen(wline), 0, 0);
 	endline(tulprm, 1);
 	if (tulprm->tulmuot.otsikot) {
@@ -5145,11 +5150,7 @@ static void kirjoitinalkuotsikot(int *l, int *srj, tulostusparamtp *tulprm, int 
 						MbsToWcs(wline+wcslen(wline), Sarjat[*srj].matka[tulprm->osuus], 20);
 					wcscat(wline, L" km)");
 					}
-				if (tulprm->lahtoluettelo && Sarjat[*srj].lahto && Sarjat[*srj].lahto != TMAALI0) {
-					wchar_t wtm[10]; AIKATOWSTRS(wtm, Sarjat[*srj].lahto, t0); wtm[8] = 0;
-					wcscat(wline, tulprm->language > 0 ? L"  Start: " : L"  Lähtö: ");
-					wcscat(wline, wtm);
-					}
+				LisaaLahtoaika(wline, tulprm, *srj, L"  ");
 				putfld(tulprm, wline, prtflds[3].pos, 58, 0, 0);
 				endline(tulprm, 1);
 				(*l)++;
