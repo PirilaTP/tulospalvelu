@@ -668,6 +668,11 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 			sendln(tulprm.lstf, L"<H2 CLASS=otsikko>");
 			sendln(tulprm.lstf, otsTeksti(NULL, llparam.luetots0, 100, ots_pv));
 			sendln(tulprm.lstf, L"</H2>\n");
+			if (tulostus_lisateksti_oo[0]) {
+				sendln(tulprm.lstf, L"<H3>");
+				sendln(tulprm.lstf, tulostus_lisateksti_oo);
+				sendln(tulprm.lstf, L"</H3>\n");
+				}
 /*
 		 if (ansifl)
 			sendln(tulprm.lstf, L"<!DOCTYPE html>\n<html>\n<head><meta http-equiv=\"content-type\" content=\"text/html; charset=iso-8859-1\" />\n<title>");
@@ -698,6 +703,12 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 			put_str(&tulprm, otsTeksti(NULL, llparam.luetots0, 100, ots_pv), 0);
 			endline(&tulprm, 1);
 			paaots_pois(&tulprm);
+			if (tulostus_lisateksti_oo[0]) {
+				aliots_on(&tulprm);
+				put_str(&tulprm, tulostus_lisateksti_oo, 0);
+				endline(&tulprm, 1);
+				aliots_pois(&tulprm);
+				}
 			l += 3;
 			}
 		 }

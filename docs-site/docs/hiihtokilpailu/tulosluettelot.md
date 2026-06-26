@@ -22,6 +22,12 @@ kirjoittaa täysin uusia kommentteja. Kirjoittamalla sopivia html-koodeja saa
 mukaan myös kuvia ja linkkejä muualle, mutta tämä edellyttää html:n alkeiden
 osaamista.
 
+Kaavakkeen *Tulokset*-välilehdellä on kenttä **Lisäteksti**, johon voi
+kirjoittaa enintään 200 merkin pituisen lisärivin. Teksti tulostetaan kilpailun
+otsikon jälkeen omalla rivillään otsikkoa pienemmällä kirjasinkoolla. Kenttä on
+kertaluonteinen: se tyhjenee, kun kaavake suljetaan, eikä tallennu kilpailun
+tietoihin.
+
 Alasvetovalikoista voidaan tehdä monia muitakin
 valintoja ja tiedoston sijasta voidaan tulostaa kirjoittimelle, joka on
 valittavissa Windowsin kyseisellä koneella tunnistamien kirjoittimien joukosta.

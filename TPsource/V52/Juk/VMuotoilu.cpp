@@ -394,6 +394,7 @@ int n_filefldsk = sizeof(filefldsk)/sizeof(FldFrmtTp)-1;
 wchar_t paaots[125] = L"";
 wchar_t sarjaots[125] = L"";
 wchar_t alaots[141] = L"";
+wchar_t tulostus_lisateksti_tul[201] = {0};
 
 wchar_t initfont_emrap[PRKOODIPIT+1] =
    L"\x26\x1b&l26A\x1b&l0O\x1b(s0p10h0s0b4099T\x1b&l8C\x1b(10U";
