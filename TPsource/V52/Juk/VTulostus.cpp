@@ -375,12 +375,19 @@ static wchar_t *html_avaus(tulostusparamtp *tulprm, const wchar_t *wtitle, int l
 	return(0);
 }
 
-static void LisaaLahtoaika(wchar_t *wline, tulostusparamtp *tulprm, int srj, const wchar_t *sep)
+static void LisaaLahtoaika(wchar_t *wline, tulostusparamtp *tulprm, int srj)
 {
 	if (!(tulprm->lahtoluettelo && Sarjat[srj].lahto && Sarjat[srj].lahto != TMAALI0))
 		return;
 	wchar_t wtm[14]; AIKATOWSTRS(wtm, Sarjat[srj].lahto, t0); wtm[8] = 0;
-	wchar_t label[20];
+	// Erota edellisestä tekstistä pilkulla vain jos rivillä on jo sisältöä; nipistä
+	// lopun välilyönnit pois, ettei pilkku jää roikkumaan välilyöntien perään.
+	int len = (int) wcslen(wline);
+	while (len > 0 && wline[len-1] == L' ')
+		len--;
+	wline[len] = 0;
+	const wchar_t *sep = len ? L", " : L"";
+	wchar_t label[24];
 	if (tulprm->language > 0)
 		swprintf(label, L"%sStart: %s", sep, wtm);
 	else
@@ -4582,7 +4589,7 @@ static void htmlsarjaotsikot(int *srj, tulostusparamtp *tulprm, int ei_lukum, in
 					if (wcslen(wline) > 2)
 						wcscat(wline, L" km)");
 					}
-				LisaaLahtoaika(wline, tulprm, *srj, L" ");
+				LisaaLahtoaika(wline, tulprm, *srj);
 				wcscat(wline, L"</span>\n");
 				tulprm->writehtml(wline);
 //				putfld(tulprm, wline, 0, 180, 0, 0);
@@ -5060,7 +5067,7 @@ static void kirjoitinjatko_otsikot(int *l, int *srj, tulostusparamtp *tulprm)
 				swprintf(wline,L"%-10s  %d. osuus, %d. väliaika",snimi,tulprm->osuus+1,tulprm->piste);
 			}
 		}
-	LisaaLahtoaika(wline, tulprm, *srj, L"  ");
+	LisaaLahtoaika(wline, tulprm, *srj);
 	putfld(tulprm, wline, 0, wcslen(wline), 0, 0);
 	endline(tulprm, 1);
 	if (tulprm->tulmuot.otsikot) {
@@ -5150,7 +5157,7 @@ static void kirjoitinalkuotsikot(int *l, int *srj, tulostusparamtp *tulprm, int 
 						MbsToWcs(wline+wcslen(wline), Sarjat[*srj].matka[tulprm->osuus], 20);
 					wcscat(wline, L" km)");
 					}
-				LisaaLahtoaika(wline, tulprm, *srj, L"  ");
+				LisaaLahtoaika(wline, tulprm, *srj);
 				putfld(tulprm, wline, prtflds[3].pos, 58, 0, 0);
 				endline(tulprm, 1);
 				(*l)++;
