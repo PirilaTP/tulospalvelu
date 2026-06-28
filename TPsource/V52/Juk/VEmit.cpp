@@ -1090,11 +1090,21 @@ int haeVapaaKoodi(int badge)
 	return(0);
 }
 
+// Rekisteröi emit-koodin (badge) joukkueelle kno emit-indeksiin.
+// d = joukkueen tietueen positio; jos 0, joukkueen olemassaolo varmistetaan
+//     getpos():lla. Jos joukkuetta ei vielä löydy indeksistä (esim. juuri
+//     lisättävä joukkue), kutsujan on annettava positio, ettei rekisteröinti
+//     epäonnistu vääränä positiivisena.
+// Paluu: 0 = rekisteröity (tai koodi jo tällä joukkueella),
+//        1 = joukkuetta ei löydy datasta,
+//        2 = koodi jo toisella joukkueella.
 INT addbadge(INT32 badge, INT kno, INT d, int toinen, INT msgfl)
    {
    INT i;
    char msg[50];
 
+   // Ilman tunnettua positiota (d==0) ei rekisteröidä koodia joukkueelle,
+   // jota ei vielä löydy datasta.
    if (!d && (i = getpos(kno)) <= 0)
       return(1);
    i = haebdg(badge, &toinen);
