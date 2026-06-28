@@ -5158,7 +5158,7 @@ static void kirjoitinalkuotsikot(int *l, int *srj, tulostusparamtp *tulprm, int 
 					wcscat(wline, L" km)");
 					}
 				LisaaLahtoaika(wline, tulprm, *srj);
-				putfld(tulprm, wline, prtflds[3].pos, 58, 0, 0);
+				putfld(tulprm, wline, prtflds[3].pos, wcslen(wline), 0, 0);
 				endline(tulprm, 1);
 				(*l)++;
 				(*l)++;
