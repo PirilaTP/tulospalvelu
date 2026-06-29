@@ -86,6 +86,7 @@ static wchar_t *ControlType[6] = {L"Control", L"Start", L"Finish", L"CrossingPoi
 #define TAGTotal		       138
 #define TAGRaceCourseData 	   139
 #define TAGPosition            140
+#define TAGPlace               222
 #define TAGCourseFamily        141
 #define TAGLength              142
 #define TAGClimb               143
@@ -165,6 +166,7 @@ static tagListTp IOF3Tags[] = {
 	{TAGTotal, L"Total"},
 	{TAGRaceCourseData, L"RaceCourseData"},
 	{TAGPosition, L"Position"},
+	{TAGPlace, L"Place"},
 	{TAGCourseFamily, L"CourseFamily"},
 	{TAGLength, L"Length"},
 	{TAGClimb, L"Climb"},
@@ -1018,7 +1020,7 @@ int xmlIOF30srjots(int sarja, tulostusparamtp *tulprm)
 	   tul_tied->put_wtag(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), level++);
 	   tul_tied->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->ratapit, level);
 	   if (rt->nousu)
-		   tul_tied->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->nousu, level);
+		   tul_tied->put_wxml_d(XMLhae_tagName(TAGClimb, IOF3Tags, nIOF3Tags), rt->nousu, level);
 	   tul_tied->put_wantitag(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), --level);
 	   }
 
@@ -1067,8 +1069,8 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 
    if (tulprm->xmlstd != L'J') {
 	   tul_tied->put_wtag(XMLhae_tagName(TAGOrganisation, IOF3Tags, nIOF3Tags), level++);
-	   tul_tied->put_wxml_s(XMLhae_tagName(TAGId, IOF3Tags, nIOF3Tags), kilp.seuralyh, level);
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), kilp.seura, level);
+	   tul_tied->put_wxml_s(XMLhae_tagName(TAGShortName, IOF3Tags, nIOF3Tags), kilp.seuralyh, level);
 	   if (kilp.maa[0]) {
 		   swprintf(ln, L"code=\"%s\"", kilp.maa);
 		   tul_tied->put_wxml_s(XMLhae_tagName(TAGCountry, IOF3Tags, nIOF3Tags), MaaNimi(kilp.maa), level, ln);
@@ -1087,7 +1089,7 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), sekTulos(NULL, kilp.tulos2(0), pvparam[k_pv].pyor[3]), level);
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGTimeBehind, IOF3Tags, nIOF3Tags), sekTulos(NULL, kilp.tulos2(0)-karki, pvparam[k_pv].pyor[3]), level);
 	   if (sj >= 1)
-		   tul_tied->put_wxml_d(XMLhae_tagName(TAGPosition, IOF3Tags, nIOF3Tags), sj, level);
+		   tul_tied->put_wxml_d(XMLhae_tagName(TAGPlace, IOF3Tags, nIOF3Tags), sj, level);
 	   }
    tul_tied->put_wxml_s(XMLhae_tagName(TAGStatus, IOF3Tags, nIOF3Tags), IOFStatus(&kilp), level);
    if (kilp.pv[k_pv].rata[0] && (rt = haerata(&kilp)) != NULL &&
@@ -1098,7 +1100,7 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 	   if (rt) {
 		   tul_tied->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->ratapit, level);
 		   if (rt->nousu)
-			   tul_tied->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->nousu, level);
+			   tul_tied->put_wxml_d(XMLhae_tagName(TAGClimb, IOF3Tags, nIOF3Tags), rt->nousu, level);
 		   }
 	   tul_tied->put_wantitag(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), --level);
 	   }

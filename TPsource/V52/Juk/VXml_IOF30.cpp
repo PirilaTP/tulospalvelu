@@ -101,6 +101,7 @@ static wchar_t *ControlType[6] = {L"Control", L"Start", L"Finish", L"CrossingPoi
 #define TAGTotal		       138
 #define TAGRaceCourseData 	   139
 #define TAGPosition            140
+#define TAGPlace               222
 #define TAGCourseFamily        141
 #define TAGLength              142
 #define TAGClimb               143
@@ -187,6 +188,7 @@ static tagListTp IOF3Tags[] = {
 	{TAGTotal, L"Total"},
 	{TAGRaceCourseData, L"RaceCourseData"},
 	{TAGPosition, L"Position"},
+	{TAGPlace, L"Place"},
 	{TAGCourseFamily, L"CourseFamily"},
 	{TAGLength, L"Length"},
 	{TAGClimb, L"Climb"},
@@ -1053,25 +1055,17 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 	   swprintf(ln, L"%d-%d", kilp.kilpno, os+1);
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGBibNumber, IOF3Tags, nIOF3Tags), ln, level);
 	   if (kilp.Lahto(os) != TMAALI0)
-			tul_tied->put_wxml_s(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), ISOtime(0, 0, kilp.Lahto(os)), level);
+			tul_tied->put_wxml_s(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), ISOtime(0, kilpparam.Date, kilp.Lahto(os)), level);
 	   if (kilp.Maali(os, 0) != TMAALI0)
-			tul_tied->put_wxml_s(XMLhae_tagName(TAGFinishTime, IOF3Tags, nIOF3Tags), ISOtime(0, 0, kilp.Maali(os, 0)), level);
+			tul_tied->put_wxml_s(XMLhae_tagName(TAGFinishTime, IOF3Tags, nIOF3Tags), ISOtime(0, kilpparam.Date, kilp.Maali(os, 0)), level);
 	   if ((tl = kilp.osTulos(os, 0, true)) != 0) {
 		   tul_tied->put_wxml_s(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), sekTulos(NULL, tl, kilpparam.pyor[3]), level);
 		   tul_tied->put_wxml_s(XMLhae_tagName(TAGTimeBehind, IOF3Tags, nIOF3Tags),
-			   sekTulos(NULL, tl-pkarki[kilp.sarja][Sarjat[kilp.sarja].yosuus[os]+1][kilpparam.valuku+1], kilpparam.pyor[3]), level, L"type=\"Leg\"");
-		   tul_tied->put_wxml_d(XMLhae_tagName(TAGPosition, IOF3Tags, nIOF3Tags), kilp.osSija(os), level, L"type=\"Leg\"");
+			   sekTulos(NULL, tl-pkarki[kilp.sarja][Sarjat[kilp.sarja].yosuus[os]+1][kilpparam.valuku+1], kilpparam.pyor[3]), level);
+		   tul_tied->put_wxml_d(XMLhae_tagName(TAGPlace, IOF3Tags, nIOF3Tags), kilp.osSija(os), level);
 		   }
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGStatus, IOF3Tags, nIOF3Tags), IOFStatus(&kilp, os), level);
 
-	   tul_tied->put_wtag(XMLhae_tagName(TAGOverallResult, IOF3Tags, nIOF3Tags), level++);
-	   if ((tl = kilp.Tulos(os, 0)) != 0) {
-		   tul_tied->put_wxml_s(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), sekTulos(NULL, tl, kilpparam.pyor[3]), level);
-		   tul_tied->put_wxml_s(XMLhae_tagName(TAGTimeBehind, IOF3Tags, nIOF3Tags), sekTulos(NULL, tl-pkarki[kilp.sarja][Sarjat[kilp.sarja].yosuus[os]+1][0], kilpparam.pyor[3]), level);
-		   tul_tied->put_wxml_d(XMLhae_tagName(TAGPosition, IOF3Tags, nIOF3Tags), kilp.Sija(os, 0), level);
-		   }
-	   tul_tied->put_wxml_s(XMLhae_tagName(TAGStatus, IOF3Tags, nIOF3Tags), IOFStatus(&kilp, os), level);
-	   tul_tied->put_wantitag(XMLhae_tagName(TAGOverallResult, IOF3Tags, nIOF3Tags), --level);
 
 
 #ifndef LUENTA
@@ -1081,7 +1075,7 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 		   tul_tied->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), rt->tunnus, level);
 		   tul_tied->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->ratapit, level);
 		   if (rt->nousu)
-			   tul_tied->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->nousu, level);
+			   tul_tied->put_wxml_d(XMLhae_tagName(TAGClimb, IOF3Tags, nIOF3Tags), rt->nousu, level);
 		   tul_tied->put_wantitag(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), --level);
 		   }
 	   if (tulprm->tulostettava == L'E') {
