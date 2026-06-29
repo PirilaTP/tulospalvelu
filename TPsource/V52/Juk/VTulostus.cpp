@@ -377,7 +377,7 @@ static wchar_t *html_avaus(tulostusparamtp *tulprm, const wchar_t *wtitle, int l
 
 static void LisaaLahtoaika(wchar_t *wline, tulostusparamtp *tulprm, int srj)
 {
-	if (!(tulprm->lahtoluettelo && Sarjat[srj].lahto && Sarjat[srj].lahto != TMAALI0))
+	if (!Sarjat[srj].lahto || Sarjat[srj].lahto == TMAALI0)
 		return;
 	wchar_t wtm[14]; AIKATOWSTRS(wtm, Sarjat[srj].lahto, t0); wtm[8] = 0;
 	// Erota edellisestä tekstistä pilkulla vain jos rivillä on jo sisältöä; nipistä
@@ -4573,7 +4573,7 @@ static void htmlsarjaotsikot(int *srj, tulostusparamtp *tulprm, int ei_lukum, in
 			else if (tulprm->viimos) {
 				Sarjat[*srj].Sarjanimi(snimi, true);
 				wcscat(wline, snimi);
-				if (!Sarjat[*srj].psarjanimi[0] && Sarjat[*srj].matka[0][0]) {
+				if ((!Sarjat[*srj].psarjanimi[0] || tulprm->lahtoluettelo) && Sarjat[*srj].matka[0][0]) {
 					wcscat(wline, L" - (");
 					for (int o = tulprm->osuus > 15 ? tulprm->osuus : 0; o <= tulprm->osuus; o++) {
 						if (Sarjat[*srj].matka[0][0] && Sarjat[*srj].matka[o][0]) {
@@ -4589,7 +4589,8 @@ static void htmlsarjaotsikot(int *srj, tulostusparamtp *tulprm, int ei_lukum, in
 					if (wcslen(wline) > 2)
 						wcscat(wline, L" km)");
 					}
-				LisaaLahtoaika(wline, tulprm, *srj);
+				if (tulprm->lahtoluettelo)
+					LisaaLahtoaika(wline, tulprm, *srj);
 				wcscat(wline, L"</span>\n");
 				tulprm->writehtml(wline);
 //				putfld(tulprm, wline, 0, 180, 0, 0);
@@ -5067,7 +5068,8 @@ static void kirjoitinjatko_otsikot(int *l, int *srj, tulostusparamtp *tulprm)
 				swprintf(wline,L"%-10s  %d. osuus, %d. väliaika",snimi,tulprm->osuus+1,tulprm->piste);
 			}
 		}
-	LisaaLahtoaika(wline, tulprm, *srj);
+	if (tulprm->lahtoluettelo)
+		LisaaLahtoaika(wline, tulprm, *srj);
 	putfld(tulprm, wline, 0, wcslen(wline), 0, 0);
 	endline(tulprm, 1);
 	if (tulprm->tulmuot.otsikot) {
@@ -5138,9 +5140,13 @@ static void kirjoitinalkuotsikot(int *l, int *srj, tulostusparamtp *tulprm, int 
 				}
 			else if (tulprm->viimos) {
 				Sarjat[*srj].Sarjanimi(snimi, true);
-				putfld(tulprm, snimi, 0, 10, 0, 0);
-				if (!Sarjat[*srj].psarjanimi[0] && Sarjat[*srj].matka[0][0]) {
-					wcscpy(wline, L"(");
+				wline[0] = 0;
+				if (tulprm->lahtoluettelo)
+					wcscpy(wline, snimi);
+				else
+					putfld(tulprm, snimi, 0, 10, 0, 0);
+				if ((!Sarjat[*srj].psarjanimi[0] || tulprm->lahtoluettelo) && Sarjat[*srj].matka[0][0]) {
+					wcscat(wline, wline[0] ? L" (" : L"(");
 					for (int o = tulprm->osuus > 15 ? tulprm->osuus : 0; o < tulprm->osuus; o++) {
 						if (Sarjat[*srj].matka[o][0]) {
 							MbsToWcs(wline+wcslen(wline), Sarjat[*srj].matka[o], 20);
@@ -5157,8 +5163,9 @@ static void kirjoitinalkuotsikot(int *l, int *srj, tulostusparamtp *tulprm, int 
 						MbsToWcs(wline+wcslen(wline), Sarjat[*srj].matka[tulprm->osuus], 20);
 					wcscat(wline, L" km)");
 					}
-				LisaaLahtoaika(wline, tulprm, *srj);
-				putfld(tulprm, wline, prtflds[3].pos, wcslen(wline), 0, 0);
+				if (tulprm->lahtoluettelo)
+					LisaaLahtoaika(wline, tulprm, *srj);
+				putfld(tulprm, wline, tulprm->lahtoluettelo ? 0 : prtflds[3].pos, wcslen(wline), 0, 0);
 				endline(tulprm, 1);
 				(*l)++;
 				(*l)++;
