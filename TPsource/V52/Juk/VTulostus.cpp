@@ -5043,7 +5043,9 @@ static void kirjoitinjatko_otsikot(int *l, int *srj, tulostusparamtp *tulprm)
 	if (tulprm->viimos == L'K' || tulprm->monios)
 		swprintf(wline,L"%-10s",snimi);
 	else if (tulprm->viimos == L'V') {
-		if (tulprm->language > 0)
+		if (tulprm->lahtoluettelo)
+			wcscpy(wline, snimi);
+		else if (tulprm->language > 0)
 			swprintf(wline,L"%-10s    Finish",snimi);
 		else
 			swprintf(wline,L"%-10s    Yhteistulokset",snimi);
