@@ -1089,7 +1089,7 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), sekTulos(NULL, kilp.tulos2(0), pvparam[k_pv].pyor[3]), level);
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGTimeBehind, IOF3Tags, nIOF3Tags), sekTulos(NULL, kilp.tulos2(0)-karki, pvparam[k_pv].pyor[3]), level);
 	   if (sj >= 1)
-		   tul_tied->put_wxml_d(XMLhae_tagName(TAGPlace, IOF3Tags, nIOF3Tags), sj, level);
+		   tul_tied->put_wxml_d(XMLhae_tagName(TAGPosition, IOF3Tags, nIOF3Tags), sj, level);
 	   }
    tul_tied->put_wxml_s(XMLhae_tagName(TAGStatus, IOF3Tags, nIOF3Tags), IOFStatus(&kilp), level);
    if (kilp.pv[k_pv].rata[0] && (rt = haerata(&kilp)) != NULL &&
@@ -1104,34 +1104,33 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 		   }
 	   tul_tied->put_wantitag(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), --level);
 	   }
-   if (tulprm->tulostettava == L'E') {
+   if (tulprm->tulostettava == L'E' || tulprm->tulostettava == L'F') {
 	  getem(&em, kilp.id(), 0);
 	  if (em.kilpno == kilp.id()) {
 		  emitvatp emva;
-		  bool leim_ok = true;
-
 		 tee_emva(&emva, &em);
 		 rt = haerata(&kilp);
-		 for (int r = 0; r < emva.rastiluku; r++) {
-			 if (kilp.tark() != L'T' && emva.rastit[r][1] == 0)
-				 leim_ok = false;
-
+		 int last_punch = -1;
+		 for (int r = 0; r < emva.rastiluku; r++)
+			 if (emva.rastit[r][1]) last_punch = r;
+		 int loop_end = emva.tulos ? emva.rastiluku - 1 : last_punch;
+		 for (int r = 0; r <= loop_end; r++) {
 			 if (emva.rastit[r][1]) {
-				if (leim_ok)
-					tul_tied->put_wtag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), level++);
-				else
-					tul_tied->put_wtagparams(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), L"status=\"Additional\"", false, level++);
+				tul_tied->put_wtag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), level++);
 				tul_tied->put_wxml_d(XMLhae_tagName(TAGControlCode, IOF3Tags, nIOF3Tags), emva.rastit[r][0], level);
 				tul_tied->put_wxml_d(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), emva.rastit[r][1], level);
 				}
 			 else {
-				if (leim_ok)
-					tul_tied->put_wtag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), level++);
-				else
-					tul_tied->put_wtagparams(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), L"status=\"Missing\"", false, level++);
+				tul_tied->put_wtagparams(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), L"status=\"Missing\"", false, level++);
 				if (rt)
 					tul_tied->put_wxml_d(XMLhae_tagName(TAGControlCode, IOF3Tags, nIOF3Tags), rt->rastikoodi[r], level);
 				}
+			tul_tied->put_wantitag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), --level);
+			}
+		 if (rt && emva.rastiluku < rt->rastiluku && emva.tulos) {
+			tul_tied->put_wtag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), level++);
+			tul_tied->put_wxml_d(XMLhae_tagName(TAGControlCode, IOF3Tags, nIOF3Tags), rt->rastikoodi[emva.rastiluku], level);
+			tul_tied->put_wxml_d(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), emva.tulos/SEK, level);
 			tul_tied->put_wantitag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), --level);
 			}
 		 }
