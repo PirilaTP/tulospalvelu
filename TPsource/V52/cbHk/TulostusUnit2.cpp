@@ -449,7 +449,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 					L" 'IOF standardi V 3.0' ja 'Takaa-ajon ajat kellolle'", L"Rajoitus", MB_OK);
 				break;
 				}
-			if (wcswcind(OoTulostettava[CBOoSisalto->ItemIndex], L"LR") >= 0) {
+			if (wcswcind(OoTulostettava[CBOoSisalto->ItemIndex], L"LR") >= 0 || tiedTyyppi == L'X') {
 				if (Paivat < 1) {
 					Application->MessageBoxW(L"Valitse yksi vaihe", L"Virhe", MB_OK);
 					err = 1;
