@@ -443,10 +443,10 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 			int Paivat, jonot = 1;
 
 			Paivat = CBLlPaivat->ItemIndex;
-			if (KohdeIndex == 1 && wcswcind(tiedTyyppi, L"RIHBA") < 0) {
+			if (KohdeIndex == 1 && wcswcind(tiedTyyppi, L"RIHBAX") < 0) {
 				Application->MessageBoxW(L"Lähtöluettelon sallitut tiedostotyypit ovat"
-					L" 'kentät erotettuina', 'kentät kohdistettuina', HTML, 'WebScorer'"
-					L" ja 'Takaa-ajon ajat kellolle'", L"Rajoitus", MB_OK);
+					L" 'kentät erotettuina', 'kentät kohdistettuina', HTML, 'WebScorer',"
+					L" 'IOF standardi V 3.0' ja 'Takaa-ajon ajat kellolle'", L"Rajoitus", MB_OK);
 				break;
 				}
 			if (wcswcind(OoTulostettava[CBOoSisalto->ItemIndex], L"LR") >= 0) {

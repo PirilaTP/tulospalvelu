@@ -280,6 +280,52 @@ static bool onkolasna(int srj, int ipv)
 	return(lasna);
 }
 
+int xmlIOF30LahtoOts(tulostusparamtp *tulprm, int i_pv);
+int xmlIOF30LahtoLoppu(tulostusparamtp *tulprm);
+int xmlIOF30LahtoSrjOts(int sarja, int i_pv, tulostusparamtp *tulprm);
+int xmlIOF30LahtoSrjLoppu(tulostusparamtp *tulprm);
+void xmlIOF30Lahto(kilptietue& kilp, int i_pv, tulostusparamtp *tulprm);
+
+// Kirjoittaa lahtoluettelon IOF XML 3.0 -muodossa (StartList), ryhmiteltyna sarjoittain
+// lahtojarjestyksessa (samaan tapaan kuin ASCLahdot/webScorerLahdot).
+static void IOF30Lahdot(tulostusparamtp *tulprm, short *sarjat, int i_pv)
+{
+	kilpindex ind;
+	char key[MAXINDL];
+	int d, srj, edsrj = -1;
+	kilptietue kilp;
+
+	arv_pv = i_pv;
+	memset(key, 0, MAXINDL);
+	xmlIOF30LahtoOts(tulprm, i_pv);
+	ind = *ljarjindex;
+	ind.ix = 0;
+	ind.flags = 0;
+	lahtojarjfl = 1;
+	if (!teeindeksi(&ind, true)) {
+		searchix(&ind, key, &d);
+		while (d > 0) {
+			kilp.GETREC(d);
+			srj = kilp.Sarja(i_pv);
+			if (sarjat[srj] && kilp.tark(i_pv) != L'P') {
+				if (srj != edsrj) {
+					if (edsrj >= 0)
+						xmlIOF30LahtoSrjLoppu(tulprm);
+					xmlIOF30LahtoSrjOts(srj, i_pv, tulprm);
+					edsrj = srj;
+					}
+				xmlIOF30Lahto(kilp, i_pv, tulprm);
+				}
+			if (nextix(&ind, key, &d))
+				break;
+			}
+		}
+	if (edsrj >= 0)
+		xmlIOF30LahtoSrjLoppu(tulprm);
+	lahtojarjfl = 0;
+	xmlIOF30LahtoLoppu(tulprm);
+}
+
 static void webScorerLahdot(tulostusparamtp *tulprm, short *sarjat, int i_pv)
 {
 	kilpindex ind;
@@ -407,7 +453,8 @@ static void ASCLahdot(tulostusparamtp *tulprm, int luetlaji, short *sarjat, int 
 }
 
 // kohde    		K: kirjoitin, I: Tiedosto
-// tiedlaji			R: erottimin, I: kohdistettu, E: jatkuva, H: html, X: XML
+// tiedlaji			R: erottimin, I: kohdistettu, E: jatkuva, H: html, X: XML (IOF 3.0 StartList),
+//						B: WebScorer, A: takaa-ajolahdot kellolle
 // luetlaji   		A: sarja/aakkos, B: sarja/lähtö, C: sarja/numero, sE)uroittain, L)ähdöittäin, aaK)kosin, N)umero
 // paiva            1, 2, .. 0 = kaikki
 // njono  			takaa-ajon jonot
@@ -481,6 +528,12 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 			}
 		if (tiedlaji == L'A') {
 			ASCLahdot(&tulprm, luetlaji, sarjat, jarjpv < 0 ? 0 : jarjpv);
+			closeprfile(tulprm.lstf);
+			tulprm.lstf = 0;
+			return;
+			}
+		if (tiedlaji == L'X') {
+			IOF30Lahdot(&tulprm, sarjat, jarjpv < 0 ? 0 : jarjpv);
 			closeprfile(tulprm.lstf);
 			tulprm.lstf = 0;
 			return;
