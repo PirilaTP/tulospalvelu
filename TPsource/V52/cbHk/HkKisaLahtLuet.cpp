@@ -307,7 +307,7 @@ static void IOF30Lahdot(tulostusparamtp *tulprm, short *sarjat, int i_pv)
 		while (d > 0) {
 			kilp.GETREC(d);
 			srj = kilp.Sarja(i_pv);
-			if (sarjat[srj] && kilp.tark(i_pv) != L'P') {
+			if (sarjat[srj] && kilp.tark(i_pv) != L'P' && kilp.tark(i_pv) != L'V') {
 				if (srj != edsrj) {
 					if (edsrj >= 0)
 						xmlIOF30LahtoSrjLoppu(tulprm);

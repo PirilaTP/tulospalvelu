@@ -986,7 +986,7 @@ int xmlIOF30ots(tulostusparamtp *tulprm)
 
 	outfl->put_wtag(XMLhae_tagName(TAGEvent, IOF3Tags, nIOF3Tags), level++);
 	outfl->put_wxml_s(XMLhae_tagName(TAGId, IOF3Tags, nIOF3Tags), pvparam[k_pv].RaceId, level);
-	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[k_pv].Title, level);
+	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[k_pv].Title[0] ? pvparam[k_pv].Title : kilpailu, level);
 	outfl->put_wtag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), level++);
 	outfl->put_wxml_s(XMLhae_tagName(TAGDate, IOF3Tags, nIOF3Tags), stDateNo(NULL, pvparam[k_pv].Date), level);
 //	outfl->put_wxml_s(srjtag[TAGTime], , level);
@@ -1203,13 +1203,13 @@ int xmlIOF30LahtoOts(tulostusparamtp *tulprm, int i_pv)
 
 	outfl->put_wtag(XMLhae_tagName(TAGEvent, IOF3Tags, nIOF3Tags), level++);
 	outfl->put_wxml_s(XMLhae_tagName(TAGId, IOF3Tags, nIOF3Tags), pvparam[i_pv].RaceId, level);
-	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[i_pv].Title, level);
+	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[i_pv].Title[0] ? pvparam[i_pv].Title : kilpailu, level);
 	outfl->put_wtag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), level++);
 	outfl->put_wxml_s(XMLhae_tagName(TAGDate, IOF3Tags, nIOF3Tags), stDateNo(NULL, pvparam[i_pv].Date), level);
 	outfl->put_wantitag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), --level);
 	outfl->put_wtag(XMLhae_tagName(TAGRace, IOF3Tags, nIOF3Tags), level++);
 	outfl->put_wxml_d(XMLhae_tagName(TAGRaceNumber, IOF3Tags, nIOF3Tags), i_pv+1, level);
-	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[i_pv].Title, level);
+	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[i_pv].Title[0] ? pvparam[i_pv].Title : kilpailu, level);
 	outfl->put_wantitag(XMLhae_tagName(TAGRace, IOF3Tags, nIOF3Tags), --level);
 	outfl->put_wantitag(XMLhae_tagName(TAGEvent, IOF3Tags, nIOF3Tags), --level);
 
