@@ -1168,7 +1168,7 @@ static void put_wxml_iofdatetime(TextFl *tul_tied, wchar_t *tag, int Date, INT32
 
    if (value == TMAALI0 || value == 0)
 	   return;
-   aikatowstr_hs(st, value, t0);
+   aikatowstr_ts(st, value, t0);
    st[2] = L':';
    st[5] = L':';
    st[8] = 0;
