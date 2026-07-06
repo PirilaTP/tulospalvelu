@@ -104,7 +104,7 @@ void NaytaTulosTimerThread(LPVOID lpCn)
 	NaytaTulosTimerThreadOn = false;
 	}
 //---------------------------------------------------------------------------
-void __fastcall TFormNaytaTulos::NaytaTulos(wchar_t *nimi, wchar_t trk, int tls, int sj, int ntls)
+void __fastcall TFormNaytaTulos::NaytaTulos(wchar_t *nimi, wchar_t trk, int tls, int sj, int ntls, int nro)
 {
 	int Vast;
 	wchar_t st[60];
@@ -124,6 +124,10 @@ void __fastcall TFormNaytaTulos::NaytaTulos(wchar_t *nimi, wchar_t trk, int tls,
 #endif
 	LblSija->Caption = st;
 	Panel1->Visible = (trk == L'T');
+	if (Panel1->Visible) {
+		swprintf(st, L"%d", nro);
+		Panel1->Caption = st;
+		}
 	Memo1->Visible = !Panel1->Visible;
 	Aika = 5*Kesto[(trk == L'T') ? 0 : 1];
 	if (!NaytaTulosTimerThreadOn)

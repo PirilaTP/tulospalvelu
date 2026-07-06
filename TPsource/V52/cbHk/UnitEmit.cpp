@@ -585,13 +585,13 @@ void __fastcall TFormEmit::Paivita(emittp *pEm)
 			if (esiluenta) {
 				if (Kilp.p_aika(0) == 0 && wcswcind(Kilp.tark(), L"TIKHPV") < 0 &&
 					NORMTULOS(Kilp.TLahto()-Nyt()) < FormNaytaTulos->IkkParam.LahtoRaja*MINUUTTI)
-					FormNaytaTulos->NaytaTulos(Kilp.nimi(st, 40, false), L'T', Kilp.TLahto()+t0*TUNTI, 0, 0);
+					FormNaytaTulos->NaytaTulos(Kilp.nimi(st, 40, false), L'T', Kilp.TLahto()+t0*TUNTI, 0, 0, Kilp.id());
 				else
-					FormNaytaTulos->NaytaTulos(Kilp.nimi(st, 40, false), L'H', Kilp.TLahto()+t0*TUNTI, 0, 0);
+					FormNaytaTulos->NaytaTulos(Kilp.nimi(st, 40, false), L'H', Kilp.TLahto()+t0*TUNTI, 0, 0, Kilp.id());
 				}
 			else
 				FormNaytaTulos->NaytaTulos(Kilp.nimi(st, 40, false), Kilp.tark(), Kilp.p_aika(0),
-					Kilp.p_sija(0), ntulos[Kilp.Sarja()][0]);
+					Kilp.p_sija(0), ntulos[Kilp.Sarja()][0], Kilp.id());
 			}
 		if (Kilp.pv[k_pv].vac == 'V')
 			VakTietue = true;
