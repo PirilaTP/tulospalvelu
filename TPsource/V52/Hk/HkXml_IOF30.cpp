@@ -963,6 +963,8 @@ void kirjIOF30VainRadatXml(wchar_t *outfname, IOFCourseData *CseData)
 
 //=============== IOF ResultList ================================
 
+static void put_wxml_iofdatetime(TextFl *tul_tied, wchar_t *tag, int Date, INT32 value, int level, int len = 8, wchar_t dcep = L'.');
+
 int xmlIOF30ots(tulostusparamtp *tulprm)
    {
    wchar_t ln[602], level = 0;
@@ -997,6 +999,10 @@ int xmlIOF30ots(tulostusparamtp *tulprm)
 	outfl->put_wxml_s(srjtag[TAGTime], kilpailu, level);
 	outfl->put_wantitag(srjtag[TAGEndTime], --level);
 */
+	outfl->put_wtag(XMLhae_tagName(TAGRace, IOF3Tags, nIOF3Tags), level++);
+	outfl->put_wxml_d(XMLhae_tagName(TAGRaceNumber, IOF3Tags, nIOF3Tags), k_pv+1, level);
+	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[k_pv].Title[0] ? pvparam[k_pv].Title : kilpailu, level);
+	outfl->put_wantitag(XMLhae_tagName(TAGRace, IOF3Tags, nIOF3Tags), --level);
 	outfl->put_wantitag(XMLhae_tagName(TAGEvent, IOF3Tags, nIOF3Tags), --level);
 
    return(0);
@@ -1014,6 +1020,7 @@ int xmlIOF30loppu(tulostusparamtp *tulprm)
 int xmlIOF30srjots(int sarja, tulostusparamtp *tulprm)
    {
    int level = 1;
+   wchar_t ln[40];
    TextFl *tul_tied;
    ratatp *rt;
 
@@ -1029,7 +1036,8 @@ int xmlIOF30srjots(int sarja, tulostusparamtp *tulprm)
    tul_tied->put_wantitag(XMLhae_tagName(TAGClass, IOF3Tags, nIOF3Tags), --level);
 
    if ((rt = haerata_sarja(sarja, k_pv)) != NULL) {
-	   tul_tied->put_wtag(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), level++);
+	   swprintf(ln, L"raceNumber=\"%d\"", k_pv+1);
+	   tul_tied->put_wtagparams(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), ln, false, level++);
 	   tul_tied->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->ratapit, level);
 	   if (rt->nousu)
 		   tul_tied->put_wxml_d(XMLhae_tagName(TAGClimb, IOF3Tags, nIOF3Tags), rt->nousu, level);
@@ -1077,6 +1085,10 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
    tul_tied->put_wxml_s(XMLhae_tagName(TAGFamily, IOF3Tags, nIOF3Tags), kilp.sukunimi, level);
    tul_tied->put_wxml_s(XMLhae_tagName(TAGGiven, IOF3Tags, nIOF3Tags), kilp.etunimi, level);
    tul_tied->put_wantitag(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), --level);
+   if (kilp.maa[0]) {
+	   swprintf(ln, L"code=\"%s\"", kilp.maa);
+	   tul_tied->put_wxml_s(XMLhae_tagName(TAGNationality, IOF3Tags, nIOF3Tags), MaaNimi(kilp.maa), level, ln);
+	   }
    tul_tied->put_wantitag(XMLhae_tagName(TAGPerson, IOF3Tags, nIOF3Tags), --level);
 
    if (tulprm->xmlstd != L'J') {
@@ -1090,13 +1102,14 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 	   tul_tied->put_wantitag(XMLhae_tagName(TAGOrganisation, IOF3Tags, nIOF3Tags), --level);
 	   }
 
-   tul_tied->put_wtag(XMLhae_tagName(TAGResult, IOF3Tags, nIOF3Tags), level++);
+   swprintf(ln, L"raceNumber=\"%d\"", k_pv+1);
+   tul_tied->put_wtagparams(XMLhae_tagName(TAGResult, IOF3Tags, nIOF3Tags), ln, false, level++);
    tul_tied->put_wxml_d(XMLhae_tagName(TAGBibNumber, IOF3Tags, nIOF3Tags), kilp.id(), level);
    if (kilp.TLahto(0) != TMAALI0)
-		tul_tied->put_wxml_time(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), pvparam[k_pv].Date, kilp.TLahto(), t0, SEK, 8, L'.', level);
+		put_wxml_iofdatetime(tul_tied, XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), pvparam[k_pv].Date, kilp.TLahto(), level);
    if (kilp.maali(0) != TMAALI0)
-		tul_tied->put_wxml_time(XMLhae_tagName(TAGFinishTime, IOF3Tags, nIOF3Tags), pvparam[k_pv].Date + (kilp.maali(0) < kilp.TLahto() ? 1 : 0),
-			kilp.maali(0), t0, SEK, pvparam[k_pv].laika, L'.', level);
+		put_wxml_iofdatetime(tul_tied, XMLhae_tagName(TAGFinishTime, IOF3Tags, nIOF3Tags), pvparam[k_pv].Date + (kilp.maali(0) < kilp.TLahto() ? 1 : 0),
+			kilp.maali(0), level, pvparam[k_pv].laika, L'.');
    if (kilp.hyv() && kilp.tulos2(0)) {
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), sekTulos(NULL, kilp.tulos2(0), pvparam[k_pv].pyor[3]), level);
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGTimeBehind, IOF3Tags, nIOF3Tags), sekTulos(NULL, kilp.tulos2(0)-karki, pvparam[k_pv].pyor[3]), level);
@@ -1162,7 +1175,7 @@ static wchar_t *IOF30zone(void)
    }
 
 // Kirjoittaa XML-paivamaara+kellonaika-elementin aikavyohykkeen siirtyman kanssa (esim. 2026-07-02T12:32:00+03:00).
-static void put_wxml_iofdatetime(TextFl *tul_tied, wchar_t *tag, int Date, INT32 value, int level)
+static void put_wxml_iofdatetime(TextFl *tul_tied, wchar_t *tag, int Date, INT32 value, int level, int len, wchar_t dcep)
    {
    wchar_t st[48];
 
@@ -1171,7 +1184,11 @@ static void put_wxml_iofdatetime(TextFl *tul_tied, wchar_t *tag, int Date, INT32
    aikatowstr_ts(st, value, t0);
    st[2] = L':';
    st[5] = L':';
-   st[8] = 0;
+   if (dcep)
+	   st[8] = dcep;
+   st[abs(len)] = 0;
+   if (len < 0)
+	   elimwzb1(st);
    if (Date > 0) {
 	   wmemmove(st+11, st, wcslen(st)+1);
 	   stDateNo(st, Date);
