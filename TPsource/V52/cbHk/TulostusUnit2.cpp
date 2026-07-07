@@ -600,7 +600,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 					break;
 				}
 			if (tulostettava[CBSisalto->ItemIndex] == L'F' &&
-				(k_pv > 0 || kohde[KohdeIndex] != L'I' ||
+				(kohde[KohdeIndex] != L'I' ||
 				 (tiedTyyppi != L'H' && tiedTyyppi != L'M' && wcswcind(tiedTyyppi, L"VXWY") < 0))) {
 				Application->MessageBoxW(L"Pyydetty tulosteyhdistelmä ei käytettävissä tähän tulosteeseen",
 					L"Rajoitus", MB_OK);
