@@ -192,8 +192,13 @@
     <ClCompile Include="..\..\Tp\TpApu.cpp" />
     <ClCompile Include="..\..\Tp\TpComY.cpp" />
     <ClCompile Include="..\..\Tp\TpLaitteet.cpp" />
+    <ClCompile Include="..\..\Tp\SiritReader.cpp" />
+    <ClCompile Include="..\..\Tp\ZebraReader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\IRfidReader.h" />
+    <ClInclude Include="..\..\include\SiritReader.h" />
+    <ClInclude Include="..\..\include\ZebraReader.h" />
     <ClInclude Include="..\..\JukConsole\valinnat.h" />
     <ClInclude Include="..\..\Juk\VDeclare.h" />
     <ClInclude Include="..\..\Juk\VDef.h" />
