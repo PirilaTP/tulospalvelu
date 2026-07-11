@@ -645,7 +645,7 @@ void __fastcall TFormSarja::PNimiExit(TObject *Sender)
 void __fastcall TFormSarja::VPvExit(TObject *Sender)
 {
 	int vpv = _wtoi(VPv->Text.c_str()) - 1;
-	for (int i_pv = Sarja1.viimpv + 1; i_pv <= vpv; i_pv++) {
+	for (int i_pv = Sarja1.viimpv + 1; i_pv <= vpv && i_pv < kilpparam.n_pv_akt; i_pv++) {
 		if (Sarja1.luonne[i_pv] < 0 || Sarja1.luonne[i_pv] >= CBLuonne[0]->Items->Count)
 			Sarja1.luonne[i_pv] = i_pv == Sarja1.enspv ? 0 : 1;
 		}
@@ -661,7 +661,7 @@ void __fastcall TFormSarja::VPvExit(TObject *Sender)
 void __fastcall TFormSarja::EPvExit(TObject *Sender)
 {
 	int epv = _wtoi(EPv->Text.c_str()) - 1;
-	for (int i_pv = epv; i_pv < Sarja1.enspv; i_pv++) {
+	for (int i_pv = epv < 0 ? 0 : epv; i_pv < Sarja1.enspv; i_pv++) {
 		if (Sarja1.luonne[i_pv] < 0 || Sarja1.luonne[i_pv] >= CBLuonne[0]->Items->Count)
 			Sarja1.luonne[i_pv] = i_pv == Sarja1.enspv ? 0 : 1;
 		}
