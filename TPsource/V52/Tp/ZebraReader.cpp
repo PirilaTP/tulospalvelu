@@ -686,29 +686,19 @@ static void handleTagReport(int r_no, const unsigned char *d, int len)
 			unsigned t = d[i] & 0x7F;
 			int sz;
 			i++;
+			// Ensin paatellaan parametrin koko lukematta viela sen sisaltoa,
+			// jotta rajatarkistus voidaan tehda ennen d[i+1]/d[i+k]-lukuja.
 			switch (t) {
-			case P_ANTENNA_ID:        sz = 2; antenna = (d[i] << 8) | d[i+1]; haveAnt = 1; break;
+			case P_ANTENNA_ID:        sz = 2; break;
 			case P_PEAK_RSSI:         sz = 1; break;
 			case P_CHANNEL_INDEX:     sz = 2; break;
 			case P_ROSPEC_ID:         sz = 4; break;
 			case P_INV_PARAM_SPEC_ID: sz = 2; break;
-			case P_EPC_96:            sz = 12; tohex(d + i, 12, epchex, sizeof(epchex)); haveEpc = 1; break;
+			case P_EPC_96:            sz = 12; break;
 			case P_SPEC_INDEX:        sz = 2; break;
 			case P_ACCESS_SPEC_ID:    sz = 4; break;
-			case P_FIRST_SEEN_UTC: {  // tyyppi 2: TV, 8 tavua, FirstSeen mikrosekuntia UTC
-				int k; sz = 8; firstUTC = 0;
-				for (k = 0; k < 8; k++)
-					firstUTC = (firstUTC << 8) | d[i+k];
-				haveFirst = 1;
-				break;
-				}
-			case P_LAST_SEEN_UTC: {   // tyyppi 4: TV, 8 tavua, LastSeen mikrosekuntia UTC
-				int k; sz = 8; lastUTC = 0;
-				for (k = 0; k < 8; k++)
-					lastUTC = (lastUTC << 8) | d[i+k];
-				haveLast = 1;
-				break;
-				}
+			case P_FIRST_SEEN_UTC:    sz = 8; break;  // tyyppi 2: TV, 8 tavua, FirstSeen mikrosekuntia UTC
+			case P_LAST_SEEN_UTC:     sz = 8; break;  // tyyppi 4: TV, 8 tavua, LastSeen mikrosekuntia UTC
 			case 3:                   // FirstSeenTimestampUptime (8 tavua, ei seinakelloaika)
 			case 5:                   // LastSeenTimestampUptime (8 tavua)
 				sz = 8;
@@ -721,9 +711,33 @@ static void handleTagReport(int r_no, const unsigned char *d, int len)
 			}
 			if (i + sz > len)
 				return;
+			switch (t) {
+			case P_ANTENNA_ID:
+				antenna = (d[i] << 8) | d[i+1]; haveAnt = 1; break;
+			case P_EPC_96:
+				tohex(d + i, 12, epchex, sizeof(epchex)); haveEpc = 1; break;
+			case P_FIRST_SEEN_UTC: {
+				int k; firstUTC = 0;
+				for (k = 0; k < 8; k++)
+					firstUTC = (firstUTC << 8) | d[i+k];
+				haveFirst = 1;
+				break;
+				}
+			case P_LAST_SEEN_UTC: {
+				int k; lastUTC = 0;
+				for (k = 0; k < 8; k++)
+					lastUTC = (lastUTC << 8) | d[i+k];
+				haveLast = 1;
+				break;
+				}
+			default:
+				break;
+			}
 			i += sz;
 			}
 		else {                        // TLV-parametri
+			if (i + 4 > len)
+				return;
 			unsigned t = ((d[i] & 0x03) << 8) | d[i+1];
 			unsigned l = (d[i+2] << 8) | d[i+3];
 			if (l < 4 || i + (int)l > len)
