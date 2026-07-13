@@ -104,7 +104,7 @@ void NaytaTulosTimerThread(LPVOID lpCn)
 	NaytaTulosTimerThreadOn = false;
 	}
 //---------------------------------------------------------------------------
-void __fastcall TFormNaytaTulos::NaytaTulos(wchar_t *nimi, wchar_t trk, int tls, int sj, int ntls, int nro)
+void __fastcall TFormNaytaTulos::NaytaTulos(wchar_t *nimi, wchar_t trk, int tls, int sj, int ntls, int nro, int osuus)
 {
 	int Vast;
 	wchar_t st[60];
@@ -125,7 +125,12 @@ void __fastcall TFormNaytaTulos::NaytaTulos(wchar_t *nimi, wchar_t trk, int tls,
 	LblSija->Caption = st;
 	Panel1->Visible = (trk == L'T');
 	if (Panel1->Visible) {
-		swprintf(st, L"%d", nro);
+#ifdef MAXOSUUSLUKU
+		if (osuus >= 0)
+			swprintf(st, L"%d-%d", nro, osuus+1);
+		else
+#endif
+			swprintf(st, L"%d", nro);
 		Panel1->Caption = st;
 		}
 	Memo1->Visible = !Panel1->Visible;
