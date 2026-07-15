@@ -62,6 +62,7 @@ extern char siritdepart[80];
 extern int SiritEventPort[NREGNLY];
 extern int SiritCmdPort[NREGNLY];
 extern int SiritPoll[NREGNLY];
+extern int ZebraGpiPort;
 #endif
 extern IV_KEY keytab[];
 static FILE *err_file;
@@ -1581,6 +1582,11 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
 			}
 		 if (!wmemcmp(fldn, L"SIRITPOLL=", 10)) {
 			 SiritPoll[0] = 1000 * _wtoi(fldn + 10);
+			 continue;
+			}
+		 if (!wmemcmp(fldn, L"ZEBRAGPI=", 9)) {
+			 int v = _wtoi(fldn+9);
+			 if (v >= 1 && v <= 4) ZebraGpiPort = v;
 			 continue;
 			}
 #endif

@@ -41,8 +41,8 @@
 #define LLRP_PORT 5084
 
 // GPI-portti, johon ulkoinen kytkin on johdotettu (FX9600:n laitekonfig).
-// Toistaiseksi kiintea; myohemmin mahdollinen ZEBRAGPI=-parametri.
-#define GPI_PORT 1
+// Oletus GPI1; asetettavissa konfiguraation ZEBRAGPI=-parametrilla (HkInit.cpp/VInit.cpp).
+int ZebraGpiPort = 1;
 
 // GPO-portti, johon summeri on johdotettu (FX9600:n laitekonfig). Uusi tagi
 // kaynnistaa GPO1-summeripulssin (paalle GPO_PULSE_MS ms). Toistaiseksi kiintea.
@@ -148,7 +148,7 @@ static void buildAddRospec(LB *L)
 			int st = beginP(L, 179);      // ROSpecStartTrigger
 				p8(L, 3);                 // GPI: nouseva reuna (HIGH) kaynnistaa
 				int sg = beginP(L, 181);  // GPITriggerValue
-					p16(L, GPI_PORT);     // GPIPortNum
+					p16(L, ZebraGpiPort);     // GPIPortNum
 					p8(L, 0x80);          // GPIEvent = true (HIGH), bitti 7
 					p32(L, 0);            // Timeout = 0 (ei aikakatkaisua)
 				endP(L, sg);
@@ -157,7 +157,7 @@ static void buildAddRospec(LB *L)
 				p8(L, 2);                 // GPI_With_Timeout: LOW pysayttaa
 				p32(L, 0);                // DurationTriggerValue = 0 (ei kestopysaytysta)
 				int pg = beginP(L, 181);  // GPITriggerValue
-					p16(L, GPI_PORT);     // GPIPortNum
+					p16(L, ZebraGpiPort);     // GPIPortNum
 					p8(L, 0x00);          // GPIEvent = false (LOW)
 					p32(L, 0);            // Timeout = 0
 				endP(L, pg);
@@ -213,7 +213,7 @@ static void buildEnableGpi(LB *L)
 	L->n = 0;
 	p8(L, 0x00);                  // ResetToFactoryDefault = false (bitti 7), johtava tavu
 	int gp = beginP(L, 225);      // GPIPortCurrentState
-		p16(L, GPI_PORT);         // GPIPortNum
+		p16(L, ZebraGpiPort);         // GPIPortNum
 		p8(L, 0x80);              // Config = enabled (bitti 7); reserved(7) = 0
 		p8(L, 0);                 // State (GPIPortState; lukija ohittaa SET:ssa)
 	endP(L, gp);
@@ -391,7 +391,7 @@ static void startInventory(int cn)
 		unsigned char q[7];
 		q[0] = 0; q[1] = 0;        // AntennaID = 0
 		q[2] = 9;                  // RequestedData = GPIPortCurrentState
-		q[3] = 0; q[4] = GPI_PORT; // GPIPortNum = 1
+		q[3] = 0; q[4] = ZebraGpiPort; // GPIPortNum = 1
 		q[5] = 0; q[6] = 0;        // GPOPortNum = 0
 		sendLLRP(cn, LLRP_GET_READER_CONFIG, q, 7);
 
@@ -422,6 +422,18 @@ static void startInventory(int cn)
 				rblen -= (int)ml;
 				}
 			if (!gotResp) Sleep(50);
+			}
+
+		if (loki) {                        // DIAGNOSTIIKKALOKITUS: miksi START_ROSPEC jai lahettamatta
+			wchar_t lg[140];
+			if (!gotResp)
+				swprintf(lg, L"%d: FX9600 GPI tilakysely -> ei vastausta 500 ms:ssa", mstimer());
+			else if (state < 0)
+				swprintf(lg, L"%d: FX9600 GPI tilakysely -> vastaus ilman GPIPortCurrentState-parametria", mstimer());
+			else
+				swprintf(lg, L"%d: FX9600 GPI%d tila=%ls -> START_ROSPEC %ls",
+					mstimer(), ZebraGpiPort, state == 1 ? L"HIGH" : L"LOW", state == 1 ? L"lahetetty" : L"ei lahetetty");
+			wkirjloki(lg);
 			}
 
 		if (state == 1) {                  // GPI High -> kaynnista luenta kerran

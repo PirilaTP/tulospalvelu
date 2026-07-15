@@ -80,6 +80,7 @@ extern int SiritPoll[NREGNLY];
 extern char SiritMask[31];
 extern int ZebraDepart;
 extern int ZebraDepartCleanup;
+extern int ZebraGpiPort;
 wchar_t ikkunaots[61];
 wchar_t	HenkTKantaNm[200] = L"Henkilot.csv";
 #ifdef MAALI
@@ -1777,6 +1778,11 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 		 if (!wmemcmpU(fldn, L"ZEBRADEPARTCLEANUP=", 19)) {
 			 ZebraDepartCleanup = _wtoi(fldn+19);
 			 if (ZebraDepartCleanup < 0) ZebraDepartCleanup = 0;
+			 continue;
+			}
+		 if (!wmemcmpU(fldn, L"ZEBRAGPI=", 9)) {
+			 int v = _wtoi(fldn+9);
+			 if (v >= 1 && v <= 4) ZebraGpiPort = v;
 			 continue;
 			}
 #endif
