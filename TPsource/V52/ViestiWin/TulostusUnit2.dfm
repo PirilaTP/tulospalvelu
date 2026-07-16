@@ -2,7 +2,7 @@
   Left = 244
   Top = 208
   Caption = 'Tulosteet'
-  ClientHeight = 521
+  ClientHeight = 551
   ClientWidth = 808
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -545,7 +545,7 @@
     Left = 246
     Top = 10
     Width = 217
-    Height = 505
+    Height = 535
     ActivePage = TabSheetTulokset
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -566,7 +566,7 @@
       ParentFont = False
       object Label5: TLabel
         Left = 18
-        Top = 269
+        Top = 297
         Width = 82
         Height = 14
         Caption = 'Tulostusj'#228'rjestys'
@@ -659,7 +659,7 @@
       end
       object CBJarj: TComboBox
         Left = 18
-        Top = 286
+        Top = 314
         Width = 169
         Height = 22
         ItemIndex = 0
@@ -676,7 +676,7 @@
       end
       object GroupBox2: TGroupBox
         Left = 7
-        Top = 110
+        Top = 138
         Width = 185
         Height = 155
         Caption = ' Tulostettava tieto '
@@ -804,7 +804,7 @@
       end
       object CBSarjayhd: TCheckBox
         Left = 17
-        Top = 341
+        Top = 369
         Width = 163
         Height = 17
         Caption = 'N'#228'yt'#228' my'#246's sarjayhdistelm'#228't'
@@ -813,7 +813,7 @@
       end
       object CBViimLeima: TCheckBox
         Left = 18
-        Top = 318
+        Top = 346
         Width = 183
         Height = 17
         Caption = 'J'#228't'#228' pois viimeinen leima (maali)'
@@ -923,7 +923,7 @@
       end
       object RGMoniOs: TRadioGroup
         Left = 11
-        Top = 367
+        Top = 395
         Width = 185
         Height = 56
         Caption = ' Moniosuuksinen tuloste '
@@ -935,7 +935,7 @@
       end
       object CBJoukkHyv: TCheckBox
         Left = 18
-        Top = 432
+        Top = 460
         Width = 167
         Height = 17
         Caption = 'Vaadi joukkuehyv'#228'ksynt'#228
@@ -947,7 +947,7 @@
       end
       object GBJatkTxt: TGroupBox
         Left = 8
-        Top = 364
+        Top = 392
         Width = 193
         Height = 109
         Caption = ' Jatkuvan tekstin valinnat '

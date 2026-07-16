@@ -220,13 +220,13 @@ void __fastcall TTulosteForm::FormCreate(TObject *Sender)
 	LblLisaTekstiTul->Parent = TabSheetTulokset;
 	LblLisaTekstiTul->Caption = L"Lisäteksti:";
 	LblLisaTekstiTul->Left = 8;
-	LblLisaTekstiTul->Top = 365;
+	LblLisaTekstiTul->Top = 92;
 
 	EdtLisaTekstiTul = new TEdit(this);
 	EdtLisaTekstiTul->Parent = TabSheetTulokset;
 	EdtLisaTekstiTul->Left = 8;
-	EdtLisaTekstiTul->Top = 381;
-	EdtLisaTekstiTul->Width = 200;
+	EdtLisaTekstiTul->Top = 108;
+	EdtLisaTekstiTul->Width = GroupBox2->Width;
 	EdtLisaTekstiTul->MaxLength = 200;
 }
 //---------------------------------------------------------------------------
