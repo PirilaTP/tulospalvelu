@@ -41,6 +41,7 @@
 #include "VDeclare.h"
 #endif
 #include "TpLaitteet.h"
+#include "IRfidReader.h"
 
 #include <wincom.h>
 
@@ -1763,7 +1764,16 @@ void lue_regnlyThread(LPVOID lpCn)
 		while (comfl && !inLopetus) {
 #ifdef LAJUNEN
 			if (regnly[r_no] == LID_SIRIT) {
-				if (openSirit2(r_no, false)) {
+				// Reititetty IRfidReader-rajapinnan kautta (delegoi openSirit2:een)
+				if (getRfidReader(r_no)->openConnection(r_no, false)) {
+					regnly_open[r_no] = 0;
+					regnlystarted[r_no] = 0;
+					break;
+					}
+				}
+			else if (regnly[r_no] == LID_ZEBRA) {
+				// FX9600 (LLRP): yhteyden avaus rajapinnan kautta
+				if (getRfidReader(r_no)->openConnection(r_no, false)) {
 					regnly_open[r_no] = 0;
 					regnlystarted[r_no] = 0;
 					break;
@@ -1803,23 +1813,41 @@ void lue_regnlyThread(LPVOID lpCn)
 					}
 				if (!comfl || inLopetus)
 					break;
-				if (!openSirit2(r_no, true))
+				if (!getRfidReader(r_no)->openConnection(r_no, true))
 					regnly_open[r_no] = 0;
 				reconnectSirit[r_no] = 0;
 				}
 			else {
 				if (SiritPollAvoin[r_no] && t_lah > LatestSiritPoll[r_no] + 2000) {
-					lue_SiritCmd(r_no);
+					getRfidReader(r_no)->readCmd(r_no);
 					SiritPollAvoin[r_no] = false;
 					}
 				if (SiritPoll[r_no] && t_lah > LatestSirit[r_no] + SiritPoll[r_no] &&
 					t_lah > LatestSiritPoll[r_no] + SiritPoll[r_no]) {
-					SiritSync(false);
+					getRfidReader(r_no)->sync(false);
 					LatestSiritPoll[r_no] = t_lah;
 					SiritPollAvoin[r_no] = true;
 					}
 				lue_regnly(r_no);
 				Sleep(50);
+				}
+			}
+		else if (regnly[r_no] == LID_ZEBRA) {
+			// FX9600 (LLRP): luenta ja uudelleenyhdistys rajapinnan kautta
+			if (!getRfidReader(r_no)->isConnected(r_no)) {
+				for (int i = 0; i < 10; i++) {
+					if (!comfl || inLopetus)
+						break;
+					Sleep(500);
+					}
+				if (!comfl || inLopetus)
+					break;
+				if (!getRfidReader(r_no)->openConnection(r_no, true))
+					regnly_open[r_no] = 0;
+				}
+			else {
+				getRfidReader(r_no)->readTags(r_no);
+				Sleep(20);
 				}
 			}
 		else
@@ -1901,7 +1929,7 @@ INT start_regnly(INT r_no)
 			   }
 		   if ((regnly[r_no] < LID_LUKIJA) || regnly[r_no] == LID_ARES ||
 				regnly[r_no] == LID_SIRIT || regnly[r_no] == LID_FEIG ||
-				regnly[r_no] == LID_IMPINJ || regnly[r_no] == LID_SW2000) {
+				regnly[r_no] == LID_IMPINJ || regnly[r_no] == LID_ZEBRA || regnly[r_no] == LID_SW2000) {
 			   t0_regn[r_no] = maaliajat[9];
 			   clrln(ySize - 3);
 #ifdef TUTKA

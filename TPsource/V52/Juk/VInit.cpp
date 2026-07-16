@@ -62,6 +62,7 @@ extern char siritdepart[80];
 extern int SiritEventPort[NREGNLY];
 extern int SiritCmdPort[NREGNLY];
 extern int SiritPoll[NREGNLY];
+extern int ZebraGpiPort;
 #endif
 extern IV_KEY keytab[];
 static FILE *err_file;
@@ -1583,13 +1584,19 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
 			 SiritPoll[0] = 1000 * _wtoi(fldn + 10);
 			 continue;
 			}
+		 if (!wmemcmp(fldn, L"ZEBRAGPI=", 9)) {
+			 int v = _wtoi(fldn+9);
+			 if (v >= 1 && v <= 4) ZebraGpiPort = v;
+			 continue;
+			}
 #endif
 #ifdef ALGE
          if (!wmemcmp(fldn, L"ALGE",4) || !wmemcmp(fldn, L"COMET",5)
 			|| !wmemcmp(fldn, L"TIMY",4)
 			|| !wmemcmp(fldn, L"FEIG",4)
 			|| !wmemcmp(fldn, L"IMPINJ",6)
-			|| !wmemcmp(fldn, L"SIRIT",5)) {
+			|| !wmemcmp(fldn, L"SIRIT",5)
+			|| !wmemcmp(fldn, L"ZEBRA",5)) {
             if( !wmemcmp(fldn, L"COMET",5))
 			   regnly[0] = 4;
             else if (!wmemcmp(fldn, L"TIMY",4))
@@ -1604,6 +1611,13 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
 				regnly_no[0] = 1;
 			   emitfl = 1;
 			   regnly[0] = 30;
+			   kaikki_ajat[1] = 2;
+			   }
+			else if (!wmemcmp(fldn, L"ZEBRA",5)) {
+			   // Zebra FX9600 (LLRP), rinnakkainen SIRIT:lle (FX9500)
+				regnly_no[0] = 1;
+			   emitfl = 1;
+			   regnly[0] = LID_ZEBRA;
 			   kaikki_ajat[1] = 2;
 			   }
 			else if (!wmemcmp(fldn, L"IMPINJ",6)) {

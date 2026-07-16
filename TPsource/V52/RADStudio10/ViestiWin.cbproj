@@ -638,6 +638,12 @@
         <CppCompile Include="..\Tp\TpLaitteet.cpp">
             <BuildOrder>114</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\Tp\SiritReader.cpp">
+            <BuildOrder>146</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\Tp\ZebraReader.cpp">
+            <BuildOrder>147</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\ViestiWin\ConvDat.cpp">
             <BuildOrder>101</BuildOrder>
         </CppCompile>

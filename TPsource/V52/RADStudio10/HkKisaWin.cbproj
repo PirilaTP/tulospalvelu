@@ -1035,6 +1035,12 @@
         <CppCompile Include="..\Tp\TpLaitteet.cpp">
             <BuildOrder>130</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\Tp\SiritReader.cpp">
+            <BuildOrder>146</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\Tp\ZebraReader.cpp">
+            <BuildOrder>147</BuildOrder>
+        </CppCompile>
         <FormResources Include="..\cbTp\UnitKohdistus.dfm"/>
         <FormResources Include="..\cbTp\UnitLisaTekstit.dfm"/>
         <FormResources Include="..\cbTp\UnitMaalikello.dfm"/>
