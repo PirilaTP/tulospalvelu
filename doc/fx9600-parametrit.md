@@ -3,7 +3,8 @@
 Tämä on kooste kaikista konfiguraatioparametreista, jotka vaikuttavat Zebra
 **FX9600** -lukijaan (`ZEBRA=`). Kaikki arvot on luettu suoraan koodista
 (rivinumerot viitteinä); oletukset on vahvistettu globaaleista ja
-jäsennyskohdista. Parametrit luetaan `HkInit.cpp`:ssä (`#if defined(LAJUNEN)`).
+jäsennyskohdista. Parametrit luetaan `HkInit.cpp`:ssä (HK) ja `VInit.cpp`:ssä
+(Viesti), molemmissa `#if defined(LAJUNEN)`.
 
 > **Tärkein sääntö muualla:** älä riko toimivaa FX9500/SIRIT-polkua. Tämä
 > dokumentti kuvaa vain ZEBRA-puolta; SIRIT-puoli on erillinen.
@@ -15,9 +16,24 @@ jäsennyskohdista. Parametrit luetaan `HkInit.cpp`:ssä (`#if defined(LAJUNEN)`)
 | `ZEBRA=` / `ZEBRA<n>=` | Ottaa FX9600:n käyttöön ja asettaa osoitteen (`regnly[rno] = LID_ZEBRA`). Numero valitsee lukijaindeksin: `ZEBRA=`/`ZEBRA1=` → lukija 1, `ZEBRA2=` → lukija 2. | — | `ZEBRA=TCP:<ip>[:portti]`; ilman porttia käytetään **5084**. |
 | `ZEBRADEPART=` | Aika, jonka tagi saa olla näkymättä ennen kuin se tulkitaan kentästä poistuneeksi (takareuna/depart). | **700** | millisekunti (ms). Annettu arvo < 1 → pakotetaan 700. |
 | `ZEBRADEPARTCLEANUP=` | Aika, jonka jälkeen depart-merkitty slotti vapautetaan uudelleenkäyttöön (säätää, kuinka pian sama tagi voi tuottaa uuden arrive/depart-tapahtuman). | **0** | millisekunti (ms). **0 = automaatti = 10 × ZebraDepart.** Annettu < 0 → 0. |
+| `ZEBRAGPI=` | Valitsee GPI-portin, jota ROSpecin GPI-käynnistys-/pysäytystriggeri (`buildAddRospec`) ja GPI-tilakysely käyttävät. | **1** (GPI1) | Kokonaisluku **1-4**. Väliin kuulumaton arvo jätetään huomiotta (oletus/edellinen arvo säilyy). |
 
-Viitteet: `HkInit.cpp:1772-1781` (luenta), `ZebraReader.cpp:41,456,466,893-894`,
+Viitteet: `HkInit.cpp:1772-1781,1783-1787` (luenta), `VInit.cpp:1587-1591` (luenta, Viesti),
+`ZebraReader.cpp:41,45,151,160,216,394,456,466,893-894` (`ZebraGpiPort`-muuttuja ja käyttökohdat),
 `openConnection`-portin oletus `ZebraReader.cpp` (`destport==0 → LLRP_PORT`).
+
+### GPI-tilan diagnostiikkalokitus
+
+Kun `loki`-lippu on päällä, `startInventory()` kirjaa lokiin GPI-tilakyselyn
+tuloksen juuri ennen kuin se päättää lähettääkö `START_ROSPEC`:in — näin näkee
+suoraan lokista *miksi* luenta ei käynnistynyt, sen sijaan että pitäisi
+päätellä se `GET_ROSPECS`:n jääneestä `CurrentState=1`-arvosta:
+
+- Ei vastausta 500 ms:ssa `GET_READER_CONFIG`-kyselyyn.
+- Vastaus saatiin, mutta `GPIPortCurrentState`-parametria ei löytynyt.
+- Tila luettu: `GPI<n> tila=HIGH|LOW -> START_ROSPEC lahetetty|ei lahetetty`.
+
+Viitteet: `ZebraReader.cpp:427-437`.
 
 ## 2. SIRITin kanssa jaetut parametrit, jotka koskevat MYÖS ZEBRA:a
 
@@ -48,10 +64,13 @@ ensimmäisiin `strlen(maski)-1` heksamerkkiin.
 
 | Nimi | Arvo | Selitys |
 |---|---|---|
-| `GPI_PORT` | **1** | GPI-portti, johon kytkin on johdotettu. Kovakoodattu. **`ZEBRAGPI=`-parametria ei ole olemassa** (kommentin mukaan mahdollinen myöhemmin). |
 | `LLRP_PORT` | **5084** | LLRP:n oletusportti, jos `ZEBRA=`-rivillä ei anneta porttia. |
 
-Viitteet: `ZebraReader.cpp:41,45`.
+> GPI-portti (aiemmin kiinteä `GPI_PORT`-define) on **2026-07-16 alkaen
+> konfiguroitavissa** `ZEBRAGPI=`-parametrilla, ks. kohta 1. Se ei siis enää
+> kuulu tähän "ei konfiguroitavissa" -taulukkoon.
+
+Viitteet: `ZebraReader.cpp:41`.
 
 > Poistettu (2026-07-11): `ZEBRA_CLOCKWARN_US`-rivi. Vakiota ei ole enää koodissa;
 > `measureClockOffset()` kirjaa kellopoikkeaman lokiin ehdoitta (`loki`-lipun
