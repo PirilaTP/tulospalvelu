@@ -178,6 +178,8 @@ public:		// User declarations
 	void enumPrinters(TComboBox *CBkirj);
 	bool SarjaValittu(int Srj);
    __fastcall TTulosteForm(TComponent* Owner);
+   TLabel *LblLisaTekstiTul;
+   TEdit *EdtLisaTekstiTul;
    wchar_t Kohde[30];
    wchar_t LisaFile[200];
    wchar_t SHLkilpailu[20];

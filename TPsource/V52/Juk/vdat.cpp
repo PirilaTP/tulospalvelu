@@ -842,9 +842,14 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
    LeaveCriticalSection(&tall_CriticalSection);
    }
 
+// addtall: lisää AINA uuden tietueen (kilp) joukkuerekisteriin — tarkoitettu
+// vain uusien joukkueiden kirjoitukseen, ei olemassa olevan muokkaukseen
+// (siihen on kilptietue::Tallenna). *dataf on output: addfrec() asettaa siihen
+// varatun position (tiedoston loppu tai kierrätetty poistettu paikka). Emit-
+// koodit validoidaan ja hylätyt nollataan ennen tietueen kirjoitusta.
 void addtall(kilptietue *kilp, int *dataf, int kielto)
    {
-   int  i,os, kno = 0;
+   int  os, kno = 0;
    char keyn[NIMIINDL+2];
    kilptietue tkilp;
 #if defined(EMIT) && defined(MAALI)
@@ -853,14 +858,19 @@ void addtall(kilptietue *kilp, int *dataf, int kielto)
 
    EnterCriticalSection(&tall_CriticalSection);
 //   siirra_tila(kilp->sarja, sarjaluku-1);
-   i = filelen(&datf2);
+   // addbadge() tarvitsee nollasta poikkeavan position ohittaakseen vartion, joka
+   // muuten hylkäisi koodin (joukkuetta ei vielä löydy datasta). *dataf on tässä
+   // vielä 0 ja saa arvonsa vasta alla olevassa addfrec()-kutsussa, joten annetaan
+   // filelen. HUOM: tämä ei ole välttämättä tietueen lopullinen positio — newrec()
+   // voi kierrättää poistetun paikan — mutta addbadge käyttää arvoa vain !=0 -lippuna.
+   int uusiPos = filelen(&datf2);
 #if defined(EMIT) && defined(MAALI)
    if (emitfl || sisaanluenta) {
 	  for (os = 0; os<Sarjat[kilp->sarja].osuusluku; os++) {
 		 for (int ibdg = 0; ibdg < (kilpparam.kaksibadge ? 2 : 1); ibdg++) {
 			 if (kilp->ostiet[os].badge[ibdg]) {
 				if (addbadge(kilp->ostiet[os].badge[ibdg],
-				   kilp->kilpno, *dataf, ibdg, 1)) {
+				   kilp->kilpno, uusiPos, ibdg, 1)) {
 				   sprintf(msg,"Emit-koodi %ld jo käytössä. Koodia ei tallennettu",
 					  kilp->ostiet[os].badge[ibdg]);
 				   kilp->ostiet[os].badge[ibdg] = 0;

@@ -121,7 +121,14 @@ void __fastcall TFormSarja::naytaSarja(void)
 		EMtk[ipv]->Text = UnicodeString(Sarja1.matka[ipv]);
 		ETapa[ipv]->Text = UnicodeString(Sarja1.tapa[ipv]);
 		EdtFlags[ipv]->Text = UnicodeString(Sarja1.flags[ipv]);
-		CBLuonne[ipv]->ItemIndex = Sarja1.luonne[ipv] >= 0 ? Sarja1.luonne[ipv] : CBLuonne[ipv]->Items->Count - 1;
+
+		//säilytetään järkevä Sarja1.luonne[ipv]
+		if (Sarja1.luonne[ipv] >= 0) {
+			CBLuonne[ipv]->ItemIndex = Sarja1.luonne[ipv];
+        //muuten 1. päivä 'Itsen.' ja muut päivät 'Jatko'
+		} else {
+			CBLuonne[ipv]->ItemIndex = ipv == Sarja1.enspv ? 0 : 1;
+		}
 		}
 	if (kilpparam.kilplaji == L'B') {
 		int k = 0;
@@ -638,7 +645,7 @@ void __fastcall TFormSarja::PNimiExit(TObject *Sender)
 void __fastcall TFormSarja::VPvExit(TObject *Sender)
 {
 	int vpv = _wtoi(VPv->Text.c_str()) - 1;
-	for (int i_pv = Sarja1.viimpv + 1; i_pv <= vpv; i_pv++) {
+	for (int i_pv = Sarja1.viimpv + 1; i_pv <= vpv && i_pv < kilpparam.n_pv_akt; i_pv++) {
 		if (Sarja1.luonne[i_pv] < 0 || Sarja1.luonne[i_pv] >= CBLuonne[0]->Items->Count)
 			Sarja1.luonne[i_pv] = i_pv == Sarja1.enspv ? 0 : 1;
 		}
@@ -654,11 +661,11 @@ void __fastcall TFormSarja::VPvExit(TObject *Sender)
 void __fastcall TFormSarja::EPvExit(TObject *Sender)
 {
 	int epv = _wtoi(EPv->Text.c_str()) - 1;
-	for (int i_pv = epv; i_pv < Sarja1.enspv; i_pv++) {
+	for (int i_pv = epv < 0 ? 0 : epv; i_pv < Sarja1.enspv; i_pv++) {
 		if (Sarja1.luonne[i_pv] < 0 || Sarja1.luonne[i_pv] >= CBLuonne[0]->Items->Count)
 			Sarja1.luonne[i_pv] = i_pv == Sarja1.enspv ? 0 : 1;
 		}
-	Sarja1.enspv = _wtoi(VPv->Text.c_str()) - 1;
+	Sarja1.enspv = epv;
 	if (Sarja1.enspv < 0)
 		Sarja1.enspv = 0;
 	if (Sarja1.enspv >= kilpparam.n_pv_akt)

@@ -199,9 +199,9 @@ void TFormPiikit::piirrapiikit(void)
 					}
 				prtpiste(xx, yy, korostus);
 				if (SG1->Cells[xx][yy].Length() == 0)
-					SG1->Cells[xx][yy] = UnicodeString(i+1);
+					SG1->Cells[xx][yy] = UnicodeString(k);
 				else
-					SG1->Cells[xx][yy] = SG1->Cells[xx][yy]+UnicodeString(',')+UnicodeString(i+1);
+					SG1->Cells[xx][yy] = SG1->Cells[xx][yy]+UnicodeString(',')+UnicodeString(k);
 				}
 			}
 		}
@@ -240,6 +240,12 @@ int rt = CBRata->ItemIndex;
 	kilptietue kilp;
 	kilp.nollaa();
 	memset(tark, 0, sizeof(tark));
+	// HaeRata: hakee valitun kilpailijan radan ja merkitsee tark[]:iin rastit,
+	// joita hän ei ole käynyt (piirrapiikit() näyttää ne punaisena).
+// MAXOSUUSLUKU on määritelty vain viestiversiossa (ViestiWin): kilpailijalla on
+// osuus (Osuus) ja hajontaan perustuva rata. #else-haara on henkilökohtaisen
+// kilpailun (HkKisaWin) versio. Haarojen rastisilmukka on identtinen; vain
+// kilpailijan ja emit-kortin haku eroaa.
 #ifdef MAXOSUUSLUKU
 	kilp.getrec(getpos(KilpNo));
 	if (!kilp.kilpstatus && kilp.kilpno == KilpNo) {
@@ -252,15 +258,33 @@ int rt = CBRata->ItemIndex;
 			if (getem(&em, KilpNo, Osuus) >= 0) {
 				int tulkinta[MAXNLEIMA];
 				if (tarkista(&em, &kilp, tulkinta, -1, 0)) {
-					int k = 0;
+					int k = 0;             // todellisten rastien juokseva numero (1,2,3,...)
+					int groupType = 10000; // käsiteltävän ryhmän tyyppi (10000 = pakollinen)
 					for (int i = 0; i < rata[r].rastiluku; i++) {
+						int rc = rata[r].rastikoodi[i];
+						// Partion tyyppimerkit eivät ole rasteja vaan aloittavat ryhmän:
+						// 10000 = pakollinen, 10001 = vapaa järjestys/haara, 10002 = valinnainen
+						if (rc >= 10000 && rc <= 10002) {
+							groupType = rc;
+							continue;
+							}
+						// ohita tyhjät ja rataan kuulumattomat koodit; vain todelliset rastit
+						// kasvattavat k:ta, samalla tavoin kuin tarkista() numeroi tulkinta[]:n
+						if (rc == 0 || rc > MAXTUNNUS)
+							continue;
+						k++;
+						// vain pakollisten ryhmien käymätön rasti merkitään punaiseksi; vapaan
+						// järjestyksen (10001) ja valinnaisen (10002) rasteista käydään vain osa
+						if (groupType != 10000)
+							continue;
+						// etsi löytyykö tälle rastille (k) leimaus kortin tulkinnasta
 						int j;
 						for (j = 0; j < MAXNLEIMA; j++) {
-							if (abs(tulkinta[j]) == i+1)
+							if (abs(tulkinta[j]) == k)
 								break;
 							}
 						if (j == MAXNLEIMA)
-							tark[i] = 1;
+							tark[i] = 1; // ei leimausta -> käymätön (näkyy punaisena)
 						}
 					}
 				}
@@ -269,6 +293,8 @@ int rt = CBRata->ItemIndex;
 	else
 		EdtNimi->Text = L"";
 #else
+// #else: henkilökohtaisen kilpailun (HkKisaWin) versio; sama rastisilmukka kuin
+// yllä, eri kilpailijan ja emit-kortin haku.
 	kilp.GETREC(getpos(KilpNo));
 	if (!kilp.kilpstatus && kilp.id() == KilpNo) {
 		wchar_t st[60];
@@ -280,15 +306,33 @@ int rt = CBRata->ItemIndex;
 			if (em.getbykno(KilpNo, 0) >= 0) {
 				int tulkinta[MAXNLEIMA];
 				if (tarkista(&em, tulkinta, 0, &kilp)) {
-					int k = 0;
+					int k = 0;             // todellisten rastien juokseva numero (1,2,3,...)
+					int groupType = 10000; // käsiteltävän ryhmän tyyppi (10000 = pakollinen)
 					for (int i = 0; i < rata[r].rastiluku; i++) {
+						int rc = rata[r].rastikoodi[i];
+						// Partion tyyppimerkit eivät ole rasteja vaan aloittavat ryhmän:
+						// 10000 = pakollinen, 10001 = vapaa järjestys/haara, 10002 = valinnainen
+						if (rc >= 10000 && rc <= 10002) {
+							groupType = rc;
+							continue;
+							}
+						// ohita tyhjät ja rataan kuulumattomat koodit; vain todelliset rastit
+						// kasvattavat k:ta, samalla tavoin kuin tarkista() numeroi tulkinta[]:n
+						if (rc == 0 || rc > MAXTUNNUS)
+							continue;
+						k++;
+						// vain pakollisten ryhmien käymätön rasti merkitään punaiseksi; vapaan
+						// järjestyksen (10001) ja valinnaisen (10002) rasteista käydään vain osa
+						if (groupType != 10000)
+							continue;
+						// etsi löytyykö tälle rastille (k) leimaus kortin tulkinnasta
 						int j;
 						for (j = 0; j < MAXNLEIMA; j++) {
-							if (abs(tulkinta[j]) == i+1)
+							if (abs(tulkinta[j]) == k)
 								break;
 							}
 						if (j == MAXNLEIMA)
-							tark[i] = 1;
+							tark[i] = 1; // ei leimausta -> käymätön (näkyy punaisena)
 						}
 					}
 				}

@@ -118,6 +118,7 @@ extern wchar_t pienet_pois[PRKOODIPIT+1];
 extern wchar_t paaots[125];
 extern wchar_t sarjaots[125];
 extern wchar_t alaots[141];
+extern wchar_t tulostus_lisateksti_tul[201];
 extern wchar_t initfont_emrap[];
 extern wchar_t initfont_emva[];
 

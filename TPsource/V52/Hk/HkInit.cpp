@@ -78,6 +78,9 @@ extern int SiritEventPort[NREGNLY];
 extern int SiritCmdPort[NREGNLY];
 extern int SiritPoll[NREGNLY];
 extern char SiritMask[31];
+extern int ZebraDepart;
+extern int ZebraDepartCleanup;
+extern int ZebraGpiPort;
 wchar_t ikkunaots[61];
 wchar_t	HenkTKantaNm[200] = L"Henkilot.csv";
 #ifdef MAALI
@@ -1767,6 +1770,21 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			 wcstoansi(SiritMask, fldn+10, 30);
 			 continue;
 			}
+		 if (!wmemcmpU(fldn, L"ZEBRADEPART=", 12)) {
+			 ZebraDepart = _wtoi(fldn+12);
+			 if (ZebraDepart < 1) ZebraDepart = 700;
+			 continue;
+			}
+		 if (!wmemcmpU(fldn, L"ZEBRADEPARTCLEANUP=", 19)) {
+			 ZebraDepartCleanup = _wtoi(fldn+19);
+			 if (ZebraDepartCleanup < 0) ZebraDepartCleanup = 0;
+			 continue;
+			}
+		 if (!wmemcmpU(fldn, L"ZEBRAGPI=", 9)) {
+			 int v = _wtoi(fldn+9);
+			 if (v >= 1 && v <= 4) ZebraGpiPort = v;
+			 continue;
+			}
 #endif
 #ifdef ALGE
 #if defined(EMITLEIMAT) || defined(COMETNO)
@@ -1784,6 +1802,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			  || !wmemcmpU(fldn, L"TIMY",4)
 			  || !wmemcmpU(fldn, L"FEIG",4)
 			  || !wmemcmpU(fldn, L"SIRIT",5)
+			  || !wmemcmpU(fldn, L"ZEBRA",5)
 			  || !wmemcmpU(fldn, L"IMPINJ",6)
 			  || !wmemcmpU(fldn, L"ARES",4)
 			  || !wmemcmpU(fldn, L"SW2000",6)
@@ -1833,6 +1852,15 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			   regnly_no[rno] = 1;
 			   emitfl = 1;
 			   regnly[rno] = LID_SIRIT;
+			   kaikki_ajat[rno+1] = 2;
+			   }
+			else if (!wmemcmpU(fldn, L"ZEBRA",5)) {
+			   // Zebra FX9600 (LLRP), rinnakkainen SIRIT:lle (FX9500)
+			   if ((rno = _wtoi(fldn+5)-1) < 0 || rno >= NREGNLY)
+					rno = 0;
+			   regnly_no[rno] = 1;
+			   emitfl = 1;
+			   regnly[rno] = LID_ZEBRA;
 			   kaikki_ajat[rno+1] = 2;
 			   }
 			else if (!wmemcmpU(fldn, L"IMPINJ",6)) {
@@ -3300,7 +3328,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 	if (vainalarajat == -1)
 		vainalarajat = (wcswcind(kilpparam.kilplaji, L"SB") >= 0) ? 1 : 0;
 	if (ohitatoisto == -1)
-		ohitatoisto = (regnly[0] == LID_SIRIT || regnly[0] == LID_FEIG || regnly[0] == LID_IMPINJ) ? 1 : 0;
+		ohitatoisto = (regnly[0] == LID_SIRIT || regnly[0] == LID_FEIG || regnly[0] == LID_IMPINJ || regnly[0] == LID_ZEBRA) ? 1 : 0;
 	if (ToimintaTila == 2) {
 	   if (kilpparam.n_pv_akt > 1 && kysy_pv) {
 		   wchar_t ch;
