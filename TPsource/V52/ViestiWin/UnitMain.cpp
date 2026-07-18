@@ -38,6 +38,7 @@
 #include "TapUnit2.h"
 #include "UnitSelect3.h"
 #include "UnitOhjtiedot.h"
+#include "TpLaitteet.h"
 #include "UnitNollaus.h"
 #include "UnitSarjatiedot.h"
 #include "UnitKilpMaaritys.h"
@@ -262,6 +263,13 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 		Emitluenta1->Visible = false;
 //		Asetukset1->Enabled = false;
 //		Asetukset1->Visible = false;
+		}
+	for (int i = 0; i < NREGNLY; i++) {
+		if (regnly[i] == LID_SPORTIDENT) {
+			Emitluenta1->Caption = L"&Sportident-luenta";
+			SisLuenta->Caption = L"Sis‰‰n&luenta (sportident)";
+			break;
+			}
 		}
 	if (alkulayout[0]) {
 		HaeIkkunat(GetCurrentDir()+UnicodeString(L"\\")+alkulayout);

@@ -2492,8 +2492,9 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				}
 #ifdef SPORTIDENT
 		 if( !wmemcmpU(fldn, L"SPORTIDENT",10)) {
-			ny = NREGNLY-1;
-			if ((ny = _wtoi(fldn+3)-1) >= NREGNLY || ny < 0)
+			pos = 10;
+			ny = yhteys_no(fldn, &pos) - 1;
+			if (pos == 10 || ny > NREGNLY-1 || ny < 0)
 				ny = NREGNLY-1;
 			regnly[ny] = LID_SPORTIDENT;
             port_regnly[ny] = 1;

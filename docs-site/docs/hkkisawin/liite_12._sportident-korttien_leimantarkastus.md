@@ -69,7 +69,56 @@ LUKIJA2=4
 Tässä SRRLUKIJA1 (COM3) on maalin ajanotto Air+-radioprotokollalla ja
 LUKIJA2 (COM4) on fyysinen SI-lukija leimantarkastukseen.
 
-### A12.4 Ratatiedot ja rastikoodit
+### A12.4 SPORTIDENT-parametri (vaihtoehtoinen suora lukija)
+
+`LUKIJA=`-parametrin lisäksi ohjelmassa on erillinen, tarkoitukseen dedikoitu
+`SPORTIDENT=`-parametri. Se **ei ole** `LUKIJA=`:n synonyymi — kyseessä on
+täysin oma lukijatyyppinsä (`LID_SPORTIDENT`), joka kutsuu suoraa
+SI5/SI6/SI8-11-korttilohkojen jäsennystä (`lue_SI`/`tulkSI`) sen sijaan että
+käyttäisi `LUKIJA=`:n yleistä EMIT-protokollaa (`lue_LUKIJA`).
+
+**Konfigurointi (`Laskenta.cfg`):**
+
+```
+SPORTIDENTx=n
+```
+
+missä:
+
+- `x` on yhteyden numero (voidaan jättää pois, jos vain yksi lukija)
+- `n` on COM-portin numero
+
+**Esimerkki: yksi lukija portissa COM4**
+
+```
+SPORTIDENT=4
+```
+
+**Esimerkki: kaksi lukijaa**
+
+```
+SPORTIDENT1=4
+SPORTIDENT2=6
+```
+
+Kuten `LUKIJA=`, myös `SPORTIDENT=` toimii leimantarkastusmoodissa — myöskään
+tälle lukijalle **ei anneta** `AIKALUKIJAx=VAINz`-parametria.
+
+**Tuki eri ohjelmaversioissa:**
+
+| Ohjelma | Tuki |
+|---|---|
+| HkKisaWin | Kyllä (Debug- ja Release-kokoonpano) |
+| ViestiWin | Kyllä (Debug- ja Release-kokoonpano) |
+| hkmaali (konsoli) | Kyllä (Debug\|Win32 ja Release\|Win32) |
+| viestimaali (konsoli) | Kyllä (Debug\|Win32 ja Release\|Win32) |
+| viestiluenta (konsoli) | Kyllä (Debug\|Win32 ja Release\|Win32) |
+
+> `SPORTIDENT`-esikääntäjämäärityksellä. Tämä on päällä perus-Debug- ja
+> Release-kokoonpanoissa; erikoiskokoonpanoissa (esim. Debug250, Release150os,
+> Demo, Win64) sitä ei toistaiseksi ole.
+
+### A12.5 Ratatiedot ja rastikoodit
 
 Leimantarkastus edellyttää, että ohjelmalla on käytettävissä:
 
@@ -80,7 +129,7 @@ Ohjelma vertaa kortin leimauksia ratatietoihin tallennettuihin SI-asemanumeroihi
 Rastikoodit konfiguroidaan ohjelman ratakaavakkeella (*Radat / Rastien leimasinkoodit*,
 kts. luku 13.3).
 
-### A12.5 Tiedonsiirtonopeus
+### A12.6 Tiedonsiirtonopeus
 
 | Laite | Parametri | Oletusnopeus |
 |---|---|---|
@@ -93,7 +142,7 @@ RS-232-yhteydessä lisätään tarvittaessa:
 KELLOBAUD=38400
 ```
 
-### A12.6 Leimantarkastuksen käyttö
+### A12.7 Leimantarkastuksen käyttö
 
 Kun konfigurointi on tehty ja ohjelma käynnistetty:
 
@@ -106,7 +155,7 @@ Kun konfigurointi on tehty ja ohjelma käynnistetty:
 
 Leimantarkastuskaavakkeen käytöstä tarkemmin kts. [luku 6.1](6.1_leimantarkastuskaavake.md).
 
-### A12.7 Vianetsintä
+### A12.8 Vianetsintä
 
 | Ongelma | Todennäköinen syy | Ratkaisu |
 |---|---|---|

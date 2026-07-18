@@ -240,7 +240,7 @@
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <LinkPackageStatics>IndyProtocols.lib</LinkPackageStatics>
         <Icon_MainIcon>..\ViestiWin\ViestiWin_Icon.ico</Icon_MainIcon>
-        <Defines>_DEBUG;$(Defines)</Defines>
+        <Defines>_DEBUG;SPORTIDENT;$(Defines)</Defines>
         <ILINK_StackReserveSize>0x00800000</ILINK_StackReserveSize>
         <ILINK_HeapCommitSize>0x00400000</ILINK_HeapCommitSize>
         <ILINK_StackCommitSize>0x00100000</ILINK_StackCommitSize>
@@ -293,7 +293,7 @@
         <LinkPackageStatics>IndyProtocols.lib</LinkPackageStatics>
         <VerInfo_Build>1</VerInfo_Build>
         <Icon_MainIcon>..\ViestiWin\ViestiWin_Icon.ico</Icon_MainIcon>
-        <Defines>NDEBUG;$(Defines)</Defines>
+        <Defines>NDEBUG;SPORTIDENT;$(Defines)</Defines>
         <VerInfo_PreRelease>false</VerInfo_PreRelease>
         <ILINK_HeapCommitSize>0x00400000</ILINK_HeapCommitSize>
         <ILINK_StackReserveSize>0x00800000</ILINK_StackReserveSize>

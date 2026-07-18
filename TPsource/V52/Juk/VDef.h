@@ -1500,6 +1500,25 @@ typedef union {
       char chksum2;
       char fill4;
       } r13st;
+#ifdef SPORTIDENT
+   struct {
+	   char stx;
+	   char tunnus;
+	   char csi;
+	   char t[2];
+	   char  cn[3];
+	   char etx;
+		} r21;
+   struct {
+	   INT32 badge;
+		INT32 lukija;
+		INT32 start;
+		INT32 check;
+		INT32 finish;
+		char cc[66];
+		INT32 ct[66];
+		} r21data;
+#endif
 #endif
    char bytes[R_BUFLEN+1];
    } san_type;

@@ -944,6 +944,9 @@ static emittp *ed_em[NREGNLY];
 #ifdef AJANOTTO
    INT mm = 0, sek = 0, osat = 0;
 #endif
+#ifdef SPORTIDENT
+   INT32 start;
+#endif
 
 	regnlyhetki[r_no] = T_TIME(biostime(0,0));
 	if (!ed_em[r_no]) {
@@ -1072,6 +1075,47 @@ static emittp *ed_em[NREGNLY];
 			return(0);
 	  em.maali = TMAALI0*10/SEK;
 	  }
+#ifdef SPORTIDENT
+   if (regnly[r_no] == LID_SPORTIDENT) {
+      em.badge = vastaus->r21data.badge;
+		em.time = vastaus->r21data.lukija;
+		if (vastaus->r21data.start == 61166L)
+			vastaus->r21data.start = TMAALI0;
+		start = vastaus->r21data.start;
+		if (vastaus->r21data.check == 61166L)
+			vastaus->r21data.check = TMAALI0;
+		if (vastaus->r21data.finish == 61166L)
+			vastaus->r21data.finish = TMAALI0;
+      em.maali = TMAALI0*10/SEK;
+      for (i = 0; i < MAXNLEIMA; i++) {
+         em.ctrlcode[i] = vastaus->r21data.cc[i];
+         em.ctrltime[i] = vastaus->r21data.ct[i];
+			if (start == TMAALI0 && em.ctrltime[i])
+				start = em.ctrltime[i];
+			if (em.ctrltime[i] && start != TMAALI0) {
+				em.ctrltime[i] =
+					(vastaus->r21data.ct[i] - start + 86400L) % 86400L;
+				}
+         }
+		for (i = MAXNLEIMA; i > 1; i--)
+			if (em.ctrlcode[i-1])
+				break;
+		if (i < MAXNLEIMA-1 && i > 1) {
+			if (vastaus->r21data.finish != TMAALI0 && start != TMAALI0) {
+				em.ctrlcode[i] = 240;
+				em.ctrltime[i] =
+					(vastaus->r21data.finish - start + 86400L) % 86400L;
+				i++;
+				}
+			em.ctrlcode[i] = 250;
+			if (start != TMAALI0)
+				em.ctrltime[i] =
+					(vastaus->r21data.lukija/10 - start + 86400L) % 86400L;
+			else
+				em.ctrltime[i] = (vastaus->r21data.lukija/10 + 86400L) % 86400L;
+			}
+		}
+#endif
    if (em.badge == 0) {
 	   return(0);
 	   }

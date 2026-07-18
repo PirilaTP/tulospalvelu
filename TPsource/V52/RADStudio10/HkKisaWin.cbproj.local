@@ -465,6 +465,7 @@
     <File Path="..\Tp\TpComY.cpp"/>
     <File Path="..\Tp\TpLaitteet.cpp"/>
     <File Path="..\Tp\ZebraReader.cpp"/>
+    <File Path="..\..\..\..\Pirila3_0_Masa"/>
     <File Path="..\..\..\TPexe"/>
     <File Path="..\..\..\TPexe\Lib"/>
     <File Path="..\..\..\TPexe\Lib\V521"/>

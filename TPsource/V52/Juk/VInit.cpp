@@ -1765,6 +1765,24 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
                }
             continue;
 			}
+		 if( !wmemcmp(fldn, L"SRRLUKIJA",9)) {
+			pos = 9;
+			ny = yhteys_no(fldn, &pos) - 1;
+			if (pos == 9 || ny > NREGNLY-1 || ny < 0)
+				ny = NREGNLY-1;
+			regnly[ny] = LID_SRRLUKIJA;
+			port_regnly[ny] = 1;
+			if (ajanottofl == -1)
+				ajanottofl = 0;
+			emitfl = 1;
+			kaikki_ajat[ny+1] = 2;
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+				if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
+					port_regnly[ny] = _wtoi(p);
+					}
+				}
+			continue;
+			}
 		 if( !wmemcmp(fldn, L"LUKIJA",6)) {
 		    pos=6;
             ny = yhteys_no(fldn, &pos) - 1;
@@ -1804,6 +1822,31 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
                }
 			continue;
 			}
+#ifdef SPORTIDENT
+		 if( !wmemcmp(fldn, L"SPORTIDENT",10)) {
+			pos = 10;
+			ny = yhteys_no(fldn, &pos) - 1;
+			if (pos == 10 || ny > NREGNLY-1 || ny < 0)
+				ny = NREGNLY-1;
+			regnly[ny] = LID_SPORTIDENT;
+            port_regnly[ny] = 1;
+            if (ajanottofl == -1)
+               ajanottofl = 0;
+			emitfl = 1;
+#ifdef TCPLUKIJA
+            if (!wmemcmp(fldn+pos+1, L"TCP", 3)) {
+				gettcpipparam(ny+MAX_LAHPORTTI, fldn+pos+4, 0);
+				continue;
+				}
+#endif
+            if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+               if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
+                  port_regnly[ny] = _wtoi(p);
+                  }
+               }
+			continue;
+			}
+#endif
          if( !wmemcmp(fldn, L"MTR",3)) {
             ny = NREGNLY-1;
             if (fldn[3] > L'0' && fldn[3] <= L'0'+NREGNLY)
