@@ -377,7 +377,7 @@ static wchar_t *html_avaus(tulostusparamtp *tulprm, const wchar_t *wtitle, int l
 
 static void LisaaLahtoaika(wchar_t *wline, tulostusparamtp *tulprm, int srj)
 {
-	if (!tulprm->lahtoluettelo || !Sarjat[srj].lahto || Sarjat[srj].lahto == TMAALI0)
+	if (!tulprm->lahtoluettelo || Sarjat[srj].lahto == TMAALI0)
 		return;
 	wchar_t wtm[14]; AIKATOWSTRS(wtm, Sarjat[srj].lahto, t0); wtm[8] = 0;
 	// Erota edellisestä tekstistä pilkulla vain jos rivillä on jo sisältöä; nipistä
