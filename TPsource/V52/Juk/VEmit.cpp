@@ -1811,25 +1811,25 @@ INT haelukija(emittp *em)
    int i;
 
    if (!em->ctrlcode[0]) {
-      for (i = MAXNLEIMA-1; i >= 0; i--)
+      for (i = 49; i >= 0; i--)
          if (em->ctrlcode[i] && em->ctrlcode[i] != 254)
 			break;
       return(i);
       }
-   for (i = MAXNLEIMA-1; i >= 0; i--) {
+   for (i = 49; i >= 0; i--) {
       if (em->ctrlcode[i] == 254)
-         return((i+MAXNLEIMA-1)%MAXNLEIMA);
+         return((i+49)%50);
       }
-   for (i = 0; i < MAXNLEIMA-1; i++) {
+   for (i = 0; i < 49; i++) {
       if (em->ctrltime[i+1] < em->ctrltime[i] && onlukija(em->ctrlcode[i]))
          return(i);
-      if (em->ctrltime[(i+2)%MAXNLEIMA] < em->ctrltime[i] && 
+      if (em->ctrltime[(i+2)%50] < em->ctrltime[i] && 
          onlukija(em->ctrlcode[i]) && !onlukija(em->ctrlcode[i+1]))
          return(i);
 	  }
-   for (i = 0; i <= MAXNLEIMA-1; i++) {
+   for (i = 0; i <= 49; i++) {
       if (onlukija(em->ctrlcode[i]) &&
-         em->ctrlcode[(i+1)%MAXNLEIMA] != em->ctrlcode[i] && em->ctrlcode[(i+2)%MAXNLEIMA] != em->ctrlcode[i])
+         em->ctrlcode[(i+1)%50] != em->ctrlcode[i] && em->ctrlcode[(i+2)%50] != em->ctrlcode[i])
          break;
       }
    return(i);
