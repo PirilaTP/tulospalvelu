@@ -244,6 +244,7 @@ __published:	// IDE-managed Components
 	void __fastcall Ajanotto21Click(TObject *Sender);
 	void __fastcall MySQL1Click(TObject *Sender);
 	void __fastcall Ratatiedot1Click(TObject *Sender);
+	void __fastcall TarkistaLahtoajat1Click(TObject *Sender);
 	void __fastcall dspMsg(wchar_t *txt);
 	void __fastcall Memo1DblClick(TObject *Sender);
 	void __fastcall Sanomaikkuna1Click(TObject *Sender);

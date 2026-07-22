@@ -724,6 +724,10 @@ object FormMain: TFormMain
         Caption = '&Ratatiedot'
         OnClick = Ratatiedot1Click
       end
+      object TarkistaLahtoajat1: TMenuItem
+        Caption = 'Tarkista l'#228'ht'#246'ajat'
+        OnClick = TarkistaLahtoajat1Click
+      end
     end
     object Osanottjat1: TMenuItem
       Caption = '&Osanottajat'

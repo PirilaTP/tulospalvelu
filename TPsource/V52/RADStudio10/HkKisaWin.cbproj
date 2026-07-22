@@ -508,6 +508,12 @@
             <DependentOn>..\cbHk\UnitJoukkueTilanne.h</DependentOn>
             <BuildOrder>99</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\cbHk\UnitLahtoRistiriita.cpp">
+            <Form>FormLahtoRistiriita</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>..\cbHk\UnitLahtoRistiriita.h</DependentOn>
+            <BuildOrder>148</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\cbHk\UnitKaavaTaul.cpp">
             <Form>FormKaavaTaul</Form>
             <FormType>dfm</FormType>
@@ -1090,6 +1096,7 @@
         <FormResources Include="..\cbHk\UnitAvausMaar.dfm"/>
         <FormResources Include="..\cbHk\UnitImport.dfm"/>
         <FormResources Include="..\cbHk\UnitJoukkueTilanne.dfm"/>
+        <FormResources Include="..\cbHk\UnitLahtoRistiriita.dfm"/>
         <FormResources Include="..\cbHk\UnitKaavaTaul.dfm"/>
         <FormResources Include="..\cbHk\UnitKilpailijaEmit.dfm"/>
         <FormResources Include="..\cbHk\UnitIlm2.dfm"/>
