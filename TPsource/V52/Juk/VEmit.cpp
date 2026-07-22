@@ -1792,7 +1792,7 @@ int getratano(wchar_t *tunnus)
    return(-1);
    }
 
-INT32 lukijakoodit[11] = {250, 240, 253, 243}
+INT32 lukijakoodit[11] = {250, 240, 253, 243};
 
 INT onlukija(INT koodi)
 {
@@ -1941,7 +1941,7 @@ int vatulkinta(emittp *em, int *valiajat)
 				}
 			if (rst <= 0)
 				break;
-			if (em->ctrlcode[j]) || em->ctrlcode[j] == 254)
+			if (onlukija(em->ctrlcode[j]) || em->ctrlcode[j] == 254)
 				break;
 			i = (i + MAXEMITVA - 1) % MAXEMITVA;
 			}
