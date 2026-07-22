@@ -1792,31 +1792,44 @@ int getratano(wchar_t *tunnus)
    return(-1);
    }
 
+INT32 lukijakoodit[11] = {250, 240, 253, 243}
+
+INT onlukija(INT koodi)
+{
+	unsigned int i;
+	
+	for (i = 0; i < sizeof(lukijakoodit)/sizeof(INT); i++)
+	{
+		if (koodi != 0 && koodi == lukijakoodit[i])
+			return(1);
+		return(0);
+	}
+}
+
 INT haelukija(emittp *em)
    {
    int i;
 
    if (!em->ctrlcode[0]) {
-      for (i = 49; i >= 0; i--)
+      for (i = MAXNLEIMA-1; i >= 0; i--)
          if (em->ctrlcode[i] && em->ctrlcode[i] != 254)
 			break;
       return(i);
       }
-   for (i = 49; i >= 0; i--) {
+   for (i = MAXNLEIMA-1; i >= 0; i--) {
       if (em->ctrlcode[i] == 254)
-         return((i+49)%50);
+         return((i+MAXNLEIMA-1)%MAXNLEIMA);
       }
-   for (i = 0; i < 49; i++) {
-      if (em->ctrltime[i+1] < em->ctrltime[i] && 
-         (em->ctrlcode[i] == 250 || (em->ctrlcode[i] > 121 && em->ctrlcode[i] < 126)))
+   for (i = 0; i < MAXNLEIMA-1; i++) {
+      if (em->ctrltime[i+1] < em->ctrltime[i] && onlukija(em->ctrlcode[i]))
          return(i);
-      if (em->ctrltime[(i+2)%50] < em->ctrltime[i] && 
-         em->ctrlcode[i] == 250 && em->ctrlcode[i+1] != 250)
+      if (em->ctrltime[(i+2)%MAXNLEIMA] < em->ctrltime[i] && 
+         onlukija(em->ctrlcode[i]) && !onlukija(em->ctrlcode[i+1]))
          return(i);
 	  }
-   for (i = 0; i <= 49; i++) {
-      if ((em->ctrlcode[i] == 250 || (em->ctrlcode[i] > 121 && em->ctrlcode[i] < 126)) &&
-         em->ctrlcode[(i+1)%50] != em->ctrlcode[i] && em->ctrlcode[(i+2)%50] != em->ctrlcode[i])
+   for (i = 0; i <= MAXNLEIMA-1; i++) {
+      if (onlukija(em->ctrlcode[i]) &&
+         em->ctrlcode[(i+1)%MAXNLEIMA] != em->ctrlcode[i] && em->ctrlcode[(i+2)%MAXNLEIMA] != em->ctrlcode[i])
          break;
       }
    return(i);
@@ -1849,7 +1862,7 @@ int vatulkinta(emittp *em, int *valiajat)
 			}
 		}
 	for (m = ala; m <= yla; m++) {
-		if (em->ctrlcode[m] != 250)
+		if (!onlukija(em->ctrlcode[m]))
 			continue;
 		lukijat[n] = m;
 		i = m;
@@ -1928,7 +1941,7 @@ int vatulkinta(emittp *em, int *valiajat)
 				}
 			if (rst <= 0)
 				break;
-			if (em->ctrlcode[j] == 250 || em->ctrlcode[j] == 254)
+			if (em->ctrlcode[j]) || em->ctrlcode[j] == 254)
 				break;
 			i = (i + MAXEMITVA - 1) % MAXEMITVA;
 			}
