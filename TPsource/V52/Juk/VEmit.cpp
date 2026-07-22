@@ -2041,7 +2041,7 @@ INT tarkista(emittp *em, kilptietue *pkilp, INT *tulkinta, int lukija, INT haku)
 //   while (!em->ctrlcode[j] && j) j--;
 //   if (!j) return(rt->rastiluku);
 
-   if (lukija == 0)
+   if (lukija <= 0)
 		lukija = haelukija(em);
    if (lukija < 0)
 	   return(-1);
