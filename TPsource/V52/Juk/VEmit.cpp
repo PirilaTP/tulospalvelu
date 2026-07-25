@@ -1792,17 +1792,16 @@ int getratano(wchar_t *tunnus)
    return(-1);
    }
 
-INT32 lukijakoodit[11] = {250, 240, 253, 243};
+INT32 lukijakoodit[4] = {250, 240, 253, 243};
 
 INT onlukija(INT koodi)
 {
 	unsigned int i;
+	const unsigned int koodimaara = sizeof(lukijakoodit)/sizeof(INT);
 	
-	for (i = 0; i < sizeof(lukijakoodit)/sizeof(INT); i++)
-	{
-		if (koodi != 0 && koodi == lukijakoodit[i])
+	for (i = 0; i < koodimaara; i++)
+		if (koodi == lukijakoodit[i])
 			return(1);
-	}
 	return(0);
 }
 
@@ -1854,13 +1853,8 @@ int vatulkinta(emittp *em, int *valiajat)
 	memset(alku, 0, sizeof(alku));
 	memset(lukijat, 0, sizeof(lukijat));
 	n = 0;
-	/*for (i = 0; i < 50; i++) {
-		if (em->ctrlcode[i] == 254) {
-			ala = i-1;
-			yla = i-1;
-			break;
-			}
-		}*/
+
+
 	for (m = ala; m <= yla; m++) {
 		if (!onlukija(em->ctrlcode[m]))
 			continue;
@@ -1941,7 +1935,7 @@ int vatulkinta(emittp *em, int *valiajat)
 				}
 			if (rst <= 0)
 				break;
-			if (onlukija(em->ctrlcode[j])/* || em->ctrlcode[j] == 254*/)
+			if (onlukija(em->ctrlcode[j]))
 				break;
 			i = (i + MAXEMITVA - 1) % MAXEMITVA;
 			}
