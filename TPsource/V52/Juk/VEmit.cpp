@@ -1802,6 +1802,19 @@ int getratano(wchar_t *tunnus)
    return(-1);
    }
 
+INT32 lukijakoodit[4] = {250, 240, 253, 243};
+
+INT onlukija(INT koodi)
+{
+	unsigned int i;
+	const unsigned int koodimaara = sizeof(lukijakoodit)/sizeof(INT32);
+	
+	for (i = 0; i < koodimaara; i++)
+		if (koodi == lukijakoodit[i])
+			return(1);
+	return(0);
+}
+
 INT haelukija(emittp *em)
    {
    int i;
@@ -1817,15 +1830,14 @@ INT haelukija(emittp *em)
          return((i+49)%50);
       }
    for (i = 0; i < 49; i++) {
-      if (em->ctrltime[i+1] < em->ctrltime[i] && 
-         (em->ctrlcode[i] == 250 || (em->ctrlcode[i] > 121 && em->ctrlcode[i] < 126)))
+      if (em->ctrltime[i+1] < em->ctrltime[i] && onlukija(em->ctrlcode[i]))
          return(i);
       if (em->ctrltime[(i+2)%50] < em->ctrltime[i] && 
-         em->ctrlcode[i] == 250 && em->ctrlcode[i+1] != 250)
+         onlukija(em->ctrlcode[i]) && !onlukija(em->ctrlcode[i+1]))
          return(i);
 	  }
    for (i = 0; i <= 49; i++) {
-      if ((em->ctrlcode[i] == 250 || (em->ctrlcode[i] > 121 && em->ctrlcode[i] < 126)) &&
+      if (onlukija(em->ctrlcode[i]) &&
          em->ctrlcode[(i+1)%50] != em->ctrlcode[i] && em->ctrlcode[(i+2)%50] != em->ctrlcode[i])
          break;
       }
@@ -1851,15 +1863,10 @@ int vatulkinta(emittp *em, int *valiajat)
 	memset(alku, 0, sizeof(alku));
 	memset(lukijat, 0, sizeof(lukijat));
 	n = 0;
-	for (i = 0; i < 50; i++) {
-		if (em->ctrlcode[i] == 254) {
-			ala = i-1;
-			yla = i-1;
-			break;
-			}
-		}
+
+
 	for (m = ala; m <= yla; m++) {
-		if (em->ctrlcode[m] != 250)
+		if (!onlukija(em->ctrlcode[m]))
 			continue;
 		lukijat[n] = m;
 		i = m;
@@ -1938,7 +1945,7 @@ int vatulkinta(emittp *em, int *valiajat)
 				}
 			if (rst <= 0)
 				break;
-			if (em->ctrlcode[j] == 250 || em->ctrlcode[j] == 254)
+			if (onlukija(em->ctrlcode[j]))
 				break;
 			i = (i + MAXEMITVA - 1) % MAXEMITVA;
 			}
@@ -2038,7 +2045,7 @@ INT tarkista(emittp *em, kilptietue *pkilp, INT *tulkinta, int lukija, INT haku)
 //   while (!em->ctrlcode[j] && j) j--;
 //   if (!j) return(rt->rastiluku);
 
-   if (lukija < 0)
+   if (lukija <= 0)
 		lukija = haelukija(em);
    if (lukija < 0)
 	   return(-1);
