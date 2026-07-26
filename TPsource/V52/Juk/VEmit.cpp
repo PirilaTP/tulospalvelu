@@ -1797,7 +1797,7 @@ INT32 lukijakoodit[4] = {250, 240, 253, 243};
 INT onlukija(INT koodi)
 {
 	unsigned int i;
-	const unsigned int koodimaara = sizeof(lukijakoodit)/sizeof(INT);
+	const unsigned int koodimaara = sizeof(lukijakoodit)/sizeof(INT32);
 	
 	for (i = 0; i < koodimaara; i++)
 		if (koodi == lukijakoodit[i])

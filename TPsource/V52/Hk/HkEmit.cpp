@@ -953,7 +953,7 @@ bool emittp::LueEdellinen(int *kno)
 INT onlukija(INT koodi)
 	{
 	unsigned int i;
-	const unsigned int koodimaara = sizeof(lukijakoodit)/sizeof(INT);
+	const unsigned int koodimaara = sizeof(lukijakoodit)/sizeof(INT32);
 
 	for (i = 0; i < koodimaara; i++)
 		if (koodi != 0 && koodi == lukijakoodit[i])
