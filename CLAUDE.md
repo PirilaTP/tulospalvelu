@@ -32,7 +32,27 @@ All `.cbproj` files are in `TPsource\V52\RADStudio10\`.
 
 If linker heap errors occur: run `bcdedit /set IncreaseUserVa 3072` as Administrator and reboot.
 
-There are no automated tests.
+### Unit tests
+
+There is a small but growing doctest-based unit test suite in `TPsource/V52/Tests/`
+(see `TPsource/V52/Tests/README.md`). It runs on every PR via `.github/workflows/build.yml`.
+
+- Visual Studio: `TPsource\V52\VS\Tests\TpTest.sln` → F5
+- Linux/WSL: `cd TPsource/V52 && ./Tests/run.sh`
+
+Only dependency-free translation units can be tested: most of the program pulls in
+`windows.h`, VCL and globals (`Sarjat[]`, `t0`, `kilpparam`), which cannot be linked
+into a test binary without dragging in the whole program and its database. The
+established pattern is to extract the decision logic into a small translation unit
+that takes everything as parameters (`Juk/VOtsikot.cpp`) and leave a thin adapter
+that reads the globals at the original call site (`Juk/VTulostus.cpp`). Follow that
+pattern when adding tests for existing code.
+
+Test sources and `Juk/VOtsikot.*` are pure ASCII (no Finnish diacritics in comments,
+`\u` escapes in string literals), unlike the rest of the codebase which is ISO-8859-1.
+This keeps them compiling under MSVC, g++ and C++Builder without charset options.
+
+There is no end-to-end or golden-output test coverage yet.
 
 ## Architecture
 

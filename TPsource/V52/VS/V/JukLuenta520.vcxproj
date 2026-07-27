@@ -182,6 +182,7 @@
     <ClCompile Include="..\..\Juk\VIx.cpp" />
     <ClCompile Include="..\..\Juk\vkilp.cpp" />
     <ClCompile Include="..\..\Juk\VMuotoilu.cpp" />
+    <ClCompile Include="..\..\Juk\VOtsikot.cpp" />
     <ClCompile Include="..\..\Juk\vSarjat.cpp" />
     <ClCompile Include="..\..\Juk\VTulostus.cpp" />
     <ClCompile Include="..\..\Juk\VXml.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="..\..\Juk\VDeclare.h" />
     <ClInclude Include="..\..\Juk\VDef.h" />
     <ClInclude Include="..\..\Juk\VMuotoilu.h" />
+    <ClInclude Include="..\..\Juk\VOtsikot.h" />
     <ClInclude Include="..\..\Tp\TpDef.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

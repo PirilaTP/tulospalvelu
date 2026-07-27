@@ -598,6 +598,10 @@
             <DependentOn>..\Juk\VMuotoilu.h</DependentOn>
             <BuildOrder>115</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\Juk\VOtsikot.cpp">
+            <DependentOn>..\Juk\VOtsikot.h</DependentOn>
+            <BuildOrder>116</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\Juk\vSarjat.cpp">
             <BuildOrder>67</BuildOrder>
         </CppCompile>

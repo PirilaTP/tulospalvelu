@@ -17,6 +17,7 @@
 /*  aikatostr_h muuttaa 1/100 sekunneissa annetun ajan muotoon tt.mm.ss,ss */
 /*  tt0 on lis„ys tunteihin */
 #include <string.h>
+#include <wchar.h>
 
 wchar_t *aikatowstr_hs(wchar_t *astr, int aika, int tt0)
 

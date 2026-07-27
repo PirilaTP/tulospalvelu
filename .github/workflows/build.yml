@@ -7,6 +7,35 @@ on:
     branches: [main, master]
 
 jobs:
+  # Nopea palaute: kääntää vain testattavat, riippuvuuksista irrotetut
+  # käännösyksiköt g++:lla. Hajoaa heti, jos niihin lisätään Windows- tai
+  # globaaliriippuvuus, eli pitää testattavuuden yllä.
+  unit-tests-gcc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run unit tests (g++)
+        working-directory: TPsource/V52
+        run: ./Tests/run.sh
+
+  # Samat testit sillä kääntäjällä ja wchar_t-leveydellä, jolla ohjelma ajetaan.
+  unit-tests-msvc:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build unit tests
+        run: msbuild TPsource\V52\VS\Tests\TpTest.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
+
+      - name: Run unit tests
+        run: TPsource\V52\VS\Tests\Release\TpTest.exe
+
   build:
     runs-on: windows-latest
 
