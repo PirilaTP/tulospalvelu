@@ -290,6 +290,7 @@ __published:	// IDE-managed Components
 	void __fastcall SGLeimatExit(TObject *Sender);
 	void __fastcall Merkitsekaikkienratojenpituudetmaalinmukaan1Click(TObject *Sender);
 	void __fastcall Nytrastit1Click(TObject *Sender);
+	void __fastcall EdtMapCoordChange(TObject *Sender);
 
 
 
