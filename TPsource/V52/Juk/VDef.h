@@ -190,7 +190,7 @@
 #define LARVO 15
 
 #ifndef HAJONTA
-#define HAJONTA  8
+#define HAJONTA  20
 #endif
 
 #define SELITYS 9

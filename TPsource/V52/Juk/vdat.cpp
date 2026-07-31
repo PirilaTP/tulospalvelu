@@ -29,6 +29,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include "VDeclare.h"
+#include <stddef.h>
 
 static int enst,innpfl[MAXOSUUSLUKU];
 static int tls_muutos[MAXOSUUSLUKU];
@@ -88,14 +89,94 @@ INT setpos(INT kno, int d)
 	  return(0);
    }
 
+// Legacy (VI520, HAJONTA=8) on-disk osrec layout. Kept only so that
+// competitions whose KilpSrj.xml VersionId is below VI522 continue to be
+// read and written in their original record layout, instead of being
+// silently reinterpreted with the current (HAJONTA=20) field size.
+#define HAJONTA_V520 8
+
+#pragma pack(push,1)
+struct osrec_v520 {
+	char nimi[OSNIMIL+1];
+	INT32 lisno;
+	char osseura[OSSEURAL+1];
+	char arvo[LARVO+1];
+	char hajonta[HAJONTA_V520+1];
+	INT32 badge[2];
+	char laina[2];
+	union {
+		struct {
+			char selitys[SELITYS+1];
+			char piikit;
+			char luonne;
+			char ratk_1;
+			char myonto;
+			char ratk_2;
+			};
+		struct {
+			char ufill_1[3];
+			int pisteet[3];
+			};
+		};
+	char uusi;
+	char seuranta;
+	UINT16 kone;
+	INT16  ossija;
+	INT32 ylahto;
+	UINT8 lahtolaji;
+	char keskhyl;
+	char ampsakot[LSAKOT+1];
+	INT32 sakko;
+	};
+#pragma pack(pop)
+
+#define OSRECSIZE0_V520 sizeof(osrec_v520)
+
+int osrecsize0_v520(void)
+{
+	return((int) OSRECSIZE0_V520);
+}
+
+// Both formats share the same field order and sizes on either side of
+// hajonta - only hajonta itself grew, so the bytes before it and the
+// bytes from badge through sakko are identical, just shifted by the
+// hajonta size difference. va[] (the split-time array) is handled by
+// the caller exactly as before, since it never depended on HAJONTA.
+static const int OSREC_HAJ_OFS = offsetof(osrec, hajonta);
+static const int OSREC_TAIL_OFS = OSREC_HAJ_OFS + (HAJONTA+1);
+static const int OSREC_TAIL_LEN = OSRECSIZE0 - OSREC_TAIL_OFS;
+
+static void pack_osrec_v520(char *dst, osrec *src)
+{
+	char *s = (char *) src;
+	memmove(dst, s, OSREC_HAJ_OFS);
+	memset(dst + OSREC_HAJ_OFS, 0, HAJONTA_V520+1);
+	strncpy(dst + OSREC_HAJ_OFS, src->hajonta, HAJONTA_V520);
+	memmove(dst + OSREC_HAJ_OFS + HAJONTA_V520+1, s + OSREC_TAIL_OFS, OSREC_TAIL_LEN);
+}
+
+static void unpack_osrec_v520(osrec *dst, char *src)
+{
+	char *d = (char *) dst;
+	memmove(d, src, OSREC_HAJ_OFS);
+	memset(d + OSREC_HAJ_OFS, 0, HAJONTA+1);
+	strncpy(d + OSREC_HAJ_OFS, src + OSREC_HAJ_OFS, HAJONTA_V520);
+	memmove(d + OSREC_TAIL_OFS, src + OSREC_HAJ_OFS + HAJONTA_V520+1, OSREC_TAIL_LEN);
+}
+
 char *kilptietue::pack(char *buf)
 {
 	memmove(buf, this, kilpparam.kilprecsize0);
 	for (int os = 0; os < kilpparam.n_os_akt; os++) {
-		memmove(buf + kilpparam.kilprecsize0 +
-			os * (kilpparam.osrecsize0 + (kilpparam.valuku+1) * kilpparam.vatpsize),
-			ostiet+os,
-			kilpparam.osrecsize0 + (kilpparam.valuku+1) * kilpparam.vatpsize);
+		char *dst = buf + kilpparam.kilprecsize0 + os * kilpparam.osrecsize;
+		if (vanhaHajontaMuoto) {
+			pack_osrec_v520(dst, ostiet+os);
+			memmove(dst + OSRECSIZE0_V520, (char *)(ostiet+os) + OSRECSIZE0,
+				(kilpparam.valuku+1) * kilpparam.vatpsize);
+			}
+		else {
+			memmove(dst, ostiet+os, kilpparam.osrecsize);
+			}
 		}
 	return(buf);
 }
@@ -105,9 +186,15 @@ void kilptietue::unpack(char *buf)
 	nollaa();
 	memmove(this, buf, kilpparam.kilprecsize0);
 	for (int os = 0; os < kilpparam.n_os_akt; os++) {
-		memmove(ostiet+os, buf + kilpparam.kilprecsize0 +
-			os * (kilpparam.osrecsize0 + (kilpparam.valuku+1) * kilpparam.vatpsize),
-			kilpparam.osrecsize0 + (kilpparam.valuku+1) * kilpparam.vatpsize);
+		char *src = buf + kilpparam.kilprecsize0 + os * kilpparam.osrecsize;
+		if (vanhaHajontaMuoto) {
+			unpack_osrec_v520(ostiet+os, src);
+			memmove((char *)(ostiet+os) + OSRECSIZE0, src + OSRECSIZE0_V520,
+				(kilpparam.valuku+1) * kilpparam.vatpsize);
+			}
+		else {
+			memmove(ostiet+os, src, kilpparam.osrecsize);
+			}
 		}
 }
 

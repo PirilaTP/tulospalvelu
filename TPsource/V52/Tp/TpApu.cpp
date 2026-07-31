@@ -65,7 +65,7 @@ wchar_t *VersioNo(void)
 
 int VersioInt(void)
 {
-	return((int)(100*_wtof(VERSIOKDI)));
+	return((int)(100*_wtof(VERSIOKDI)+0.5));
 }
 
 int tm_date(int t)

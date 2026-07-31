@@ -429,8 +429,16 @@ static int loadSoftwareData(xml_node *node, int nnode)
 	haenodeid(node, nnode);
 	for (inode = 1; inode <= nnode; inode++) {
 		switch (node[inode].tagid) {
-			case TAGVersionId :
+			case TAGVersionId : {
+				wchar_t vid[8];
+				memset(vid, 0, sizeof(vid));
+				node[inode].gettext(vid, sizeof(vid)/2-1);
+				if (vid[0] && _wtoi(vid+2) < 522) {
+					vanhaHajontaMuoto = true;
+					wcsncpy(kilpparam.tiedlaji, vid, sizeof(kilpparam.tiedlaji)/2-1);
+					}
 				break;
+				}
 			case TAGFileFormat :
 				break;
 			case TAGLegs :

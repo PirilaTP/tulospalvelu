@@ -672,6 +672,8 @@ extern   int taulu_com, taulu_baud;
 extern   int jatktaulu, htaulu, udptaulu;
 extern   int ratavalpit;
 extern   int ampusakot;
+extern   bool vanhaHajontaMuoto;
+int osrecsize0_v520(void);
 
 extern   int maxaika[MAXSARJALUKU], sakkoaskel[MAXSARJALUKU], askelsakko[MAXSARJALUKU];
 extern   int joustoviesti, joustopakotavaihto;

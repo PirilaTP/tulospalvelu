@@ -285,6 +285,10 @@
     <File Path="..\cbHk\WinHk.dfm"/>
     <File Path="..\cbHk\WinHk.h"/>
     <File Path="..\cbHk\WinParamXml.cpp"/>
+    <File Path="..\cbHk\UnitLahtoRistiriita.cpp"/>
+    <File Path="..\cbHk\UnitLahtoRistiriita.cpp"/>
+    <File Path="..\cbHk\UnitLahtoRistiriita.dfm"/>
+    <File Path="..\cbHk\UnitLahtoRistiriita.h"/>
     <File Path="..\cbTp"/>
     <File Path="..\cbTp\cbTpApu.cpp"/>
     <File Path="..\cbTp\UnitAikakorjaus.cpp"/>
@@ -465,6 +469,7 @@
     <File Path="..\Tp\TpComY.cpp"/>
     <File Path="..\Tp\TpLaitteet.cpp"/>
     <File Path="..\Tp\ZebraReader.cpp"/>
+    <File Path="..\..\..\..\Pirila3_0_Masa"/>
     <File Path="..\..\..\TPexe"/>
     <File Path="..\..\..\TPexe\Lib"/>
     <File Path="..\..\..\TPexe\Lib\V521"/>

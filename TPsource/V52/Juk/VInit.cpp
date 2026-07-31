@@ -2651,6 +2651,7 @@ int aloitus(int argc, wchar_t *argv[], wchar_t *cfgflnm)
 	  }
 */
 
+   vanhaHajontaMuoto = false;
    if (luesarjat())
 		return(1);
 
@@ -2658,7 +2659,13 @@ int aloitus(int argc, wchar_t *argv[], wchar_t *cfgflnm)
 	   for (int os = 0; os<Sarjat[i].osuusluku; os++)
 		   varkynnys[i][os] = varkynnys[0][0];
 		}
-   kilpparam.osrecsize = kilpparam.osrecsize0 + (kilpparam.valuku + 1) * kilpparam.vatpsize;
+   // kilpparam.osrecsize0/kilprecsize0 always reflect the current (HAJONTA=20)
+   // in-memory struct layout - vkilp.cpp relies on that for nollaa()/operator=.
+   // Only the on-disk stride (osrecsize/kilprecsize, used solely for file I/O
+   // positioning in vdat.cpp, VIx.cpp, openfile/makefile) uses the legacy base
+   // when this competition's KilpSrj.xml VersionId is below VI522.
+   kilpparam.osrecsize = (vanhaHajontaMuoto ? osrecsize0_v520() : kilpparam.osrecsize0) +
+	   (kilpparam.valuku + 1) * kilpparam.vatpsize;
    kilpparam.kilprecsize = kilpparam.kilprecsize0 + kilpparam.n_os * kilpparam.osrecsize;
     ylmyoh = kilpparam.maxnosuus > 1 ? 0 : 1;
 

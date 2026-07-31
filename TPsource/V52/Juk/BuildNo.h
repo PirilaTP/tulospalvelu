@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#define VERSIOKDI L"5.20"
+#define VERSIOKDI L"5.22"
 #define BUILD L"5.20.043/2015-07-06"
 
 #ifdef KEHITYSLISTA

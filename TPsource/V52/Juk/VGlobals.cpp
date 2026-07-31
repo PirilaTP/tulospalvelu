@@ -417,6 +417,7 @@ void ajanotto(void);
    INT sak_com, sak_baud = 8, sak_laji = 2;
    int ratavalpit = HAJONTA+1;
    int ampusakot = 0;
+   bool vanhaHajontaMuoto = false;
 //   int partio, rogaining
    int emitfl;
    int maxaika[MAXSARJALUKU], sakkoaskel[MAXSARJALUKU], askelsakko[MAXSARJALUKU];
