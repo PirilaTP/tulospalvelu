@@ -214,6 +214,9 @@
 
 #define TAULU_RIVPIT 32
 
+// open()/_wopen() returns this when the emitfile has not been opened
+#define EMITFILE_NOT_OPEN -1
+
 typedef UINT32 jarjtulostp[2];
 
 #pragma pack(push, 1)

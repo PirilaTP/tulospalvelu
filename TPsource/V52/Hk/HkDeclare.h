@@ -809,6 +809,7 @@ extern   INT ajanottofl, sail_ajat;
 extern   INT aika_com, com_aika, aika_esto, kello_esto;
 extern   char aika_int_mask;
 extern   INT regnly[NREGNLY];
+bool IsSportidentInUse(void);
 extern   int regnlyhetki[NREGNLY];
 extern   int zebraOffsetDs[NREGNLY];      // ZEBRA: lukijan kellon poikkeama PC:hen (1/10 s)
 extern   int zebraOffsetState[NREGNLY];   // 0=ei mitattu, 1=UTC kelvollinen, 2=vain Uptime

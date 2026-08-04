@@ -361,12 +361,8 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 //		Asetukset1->Enabled = false;
 //		Asetukset1->Visible = false;
 		}
-	for (int i = 0; i < NREGNLY; i++) {
-		if (regnly[i] == LID_SPORTIDENT) {
-			Emitluenta1->Caption = L"&Sportident-luenta";
-			break;
-			}
-		}
+	if (IsSportidentInUse())
+		Emitluenta1->Caption = L"&Sportident-luenta";
 	Haeikkunat->Enabled = true;
 	if (alkulayout[0]) {
 		HaeIkkunat(alkulayout);

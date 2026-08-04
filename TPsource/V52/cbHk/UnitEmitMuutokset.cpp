@@ -253,11 +253,8 @@ void __fastcall TFormEmitMuutokset::Button2Click(TObject *Sender)
 
 void __fastcall TFormEmitMuutokset::FormShow(TObject *Sender)
 {
-	for (int i = 0; i < NREGNLY; i++)
-		if (regnly[i] == LID_SPORTIDENT) {
-			Caption = L"Sportident-muutokset";
-			break;
-			}
+	if (IsSportidentInUse())
+		Caption = L"Sportident-muutokset";
 	EdtNimi->Enabled = false;
 	BtnEdell->Enabled = false;
 	BtnSeur->Enabled = false;

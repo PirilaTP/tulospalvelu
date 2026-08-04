@@ -3671,9 +3671,7 @@ void __fastcall TFormEmit::BtnLoppuunClick(TObject *Sender)
 {
 	if (EmitMuutosFlag) {
 		{
-		bool isSI = false;
-		for (int i = 0; i < NREGNLY; i++)
-			if (regnly[i] == LID_SPORTIDENT) { isSI = true; break; }
+		bool isSI = IsSportidentInUse();
 		Application->MessageBoxW(
 			isSI ? L"Luenta voi jatkua vasta, kun kaavake \"Sportident-muutokset\" on suljettu"
 			     : L"Luenta voi jatkua vasta, kun kaavake \"Emit-muutokset\" on suljettu",

@@ -2282,20 +2282,28 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			   }
 			continue;
 			}
+		 // This whole function (lue_parametrit) reads startup parameters from the
+		 // command line / config file, one keyword per iteration of the enclosing loop,
+		 // and configures the matching global state. The block below handles the
+		 // SRRLUKIJA keyword: it registers one connection slot in regnly[]/port_regnly[]
+		 // as a SportIdent SRR (Short Range Radio) reader, so that reader is then treated
+		 // as a normal EMIT-style card-reading timing input device, alongside the plain
+		 // LUKIJA keyword handled directly below.
+		 // SRRLUKIJA[n][=port]: configure connection slot n (default: last slot) as an SRR reader.
 		 if( !wmemcmpU(fldn, L"SRRLUKIJA",9)) {
-			pos = 9;
-			ny = yhteys_no(fldn, &pos) - 1;
-			if (pos == 9 || ny > NREGNLY-1 || ny < 0)
-				ny = NREGNLY-1;
-			regnly[ny] = LID_SRRLUKIJA;
-			port_regnly[ny] = 1;
+			pos = 9;                                    // length of the "SRRLUKIJA" prefix
+			ny = yhteys_no(fldn, &pos) - 1;             // optional trailing connection index (e.g. SRRLUKIJA2=), 0-based
+			if (pos == 9 || ny > NREGNLY-1 || ny < 0)   // no valid index found or out of range
+				ny = NREGNLY-1;                          // fall back to the last connection slot
+			regnly[ny] = LID_SRRLUKIJA;                 // mark this slot as an SRR reader
+			port_regnly[ny] = 1;                        // default serial port; may be overridden below
 			if (ajanottofl == -1)
-			   ajanottofl = 0;
-			emitfl = 1;
-			kaikki_ajat[ny+1] = 2;
-			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+			   ajanottofl = 0;                          // enable timing unless explicitly disabled
+			emitfl = 1;                                 // EMIT-style card reading is in use
+			kaikki_ajat[ny+1] = 2;                      // accept every reading on this connection immediately, skip double-read confirmation
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {  // parse the "=port" part, if given
 			   if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
-				  port_regnly[ny] = _wtoi(p);
+				  port_regnly[ny] = _wtoi(p);              // override the serial port number
 				  }
 			   }
 			continue;

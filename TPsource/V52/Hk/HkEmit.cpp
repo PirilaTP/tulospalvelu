@@ -976,6 +976,14 @@ INT bdg2kno(INT32 badge)
    else return(0);
    }
 
+bool IsSportidentInUse(void)
+   {
+   for (int i = 0; i < NREGNLY; i++)
+      if (regnly[i] == LID_SPORTIDENT)
+         return true;
+   return false;
+   }
+
 #ifdef TESTBDG
 void bdgstatus(void)
    {
@@ -1276,7 +1284,7 @@ INT putem(emittp *em, INT32 ep, int inCrSe)
    {
    int retval = 0;
 
-   if (emitfile < 0) return(1);
+   if (emitfile == EMITFILE_NOT_OPEN) return(1);
    if (ep >= 0 && ep <= emithead) {
 	  if (!inCrSe)
 		 EnterCriticalSection(&emit_CriticalSection);

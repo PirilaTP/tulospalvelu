@@ -104,20 +104,6 @@ SPORTIDENT2=6
 Kuten `LUKIJA=`, myös `SPORTIDENT=` toimii leimantarkastusmoodissa — myöskään
 tälle lukijalle **ei anneta** `AIKALUKIJAx=VAINz`-parametria.
 
-**Tuki eri ohjelmaversioissa:**
-
-| Ohjelma | Tuki |
-|---|---|
-| HkKisaWin | Kyllä (Debug- ja Release-kokoonpano) |
-| ViestiWin | Kyllä (Debug- ja Release-kokoonpano) |
-| hkmaali (konsoli) | Kyllä (Debug\|Win32 ja Release\|Win32) |
-| viestimaali (konsoli) | Kyllä (Debug\|Win32 ja Release\|Win32) |
-| viestiluenta (konsoli) | Kyllä (Debug\|Win32 ja Release\|Win32) |
-
-> `SPORTIDENT`-esikääntäjämäärityksellä. Tämä on päällä perus-Debug- ja
-> Release-kokoonpanoissa; erikoiskokoonpanoissa (esim. Debug250, Release150os,
-> Demo, Win64) sitä ei toistaiseksi ole.
-
 ### A12.5 Ratatiedot ja rastikoodit
 
 Leimantarkastus edellyttää, että ohjelmalla on käytettävissä:
@@ -146,7 +132,7 @@ KELLOBAUD=38400
 
 Kun konfigurointi on tehty ja ohjelma käynnistetty:
 
-1. Avaa leimantarkastuskaavake: *Tulospalvelu / Emit-luenta*
+1. Avaa leimantarkastuskaavake: *Tulospalvelu / Sportident-luenta*
 2. Aseta SI-kortti fyysiseen lukija-asemaan.
 3. Ohjelma lukee kortin leimatiedot ja näyttää ne kaavakkeella:
    - Vihreä pohjaväri: suoritus hyväksytty
