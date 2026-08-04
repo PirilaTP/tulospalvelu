@@ -192,17 +192,17 @@ TEST_CASE("SI6: pblk[1] ylikirjoittaa pblk[0]:n samassa cc/ct-indeksissa")
 // ===========================================================================
 
 // Rakentaa synteettisen EXT-protokollan lohkon (oletusarvoisesti 256 tavua,
-// block0 + block1). Layout - HUOM: tama seuraa SITulkinta.cpp:n koodin
-// TODELLISTA lukukohtaa, EI sen omaa (ristiriitaista) kommenttia, joka
-// vaittaa lahdon olevan [20:24):ssa. Koodi lukee lahdon aina [12:16):sta
-// (kaikissa case 7/8/9/10/11:ssa identtisesti) - kommentin mukaan tuo
-// alue on "Clear (ignored)". Kumpi on oikeasti oikein (koodi vai kommentti)
-// vaatisi varmistuksen oikealta laitteistolta/pcapilta; tama testi seuraa
-// koodin nykyista, todennettua kayttaytymista.
+// block0 + block1). Layout on varmistettu oikeaa laitteistoa/pcapia vasten:
 //   [8]  PTD  [9]  CN   [10:12) time   -- Check-leimaus
-//   [16] PTD  [17] CN   [18:20) time   -- Maalileimaus
 //   [12] PTD  [13] CN   [14:16) time   -- Lahtoleimaus (CN=EE -> ei lahtoa)
+//   [16] PTD  [17] CN   [18:20) time   -- Maalileimaus
+//   [20:24)   EE EE EE EE               -- ei kaytossa
 //   [25:28)   SIID (3 tavua, big-endian)
+//
+// HUOM: SITulkinta.cpp:n case 7:n oma kommentti kuvaa tama jarjestyksen
+// vielä vaarin (vaihtaa lahdon ja "ei kaytossa" -alueen keskenaan) - se on
+// vain kommentti, ei vaikuta koodin ajokayttaytymiseen, jota tama testi
+// seuraa.
 static void buildBlock(unsigned char *b, int len, unsigned long siid)
 {
 	memset(b, 0xEE, len);  // CN=EE kaikkialla = "ei leimaa" oletusarvona
@@ -241,7 +241,7 @@ TEST_CASE("SI9: check/finish/start puretaan kun CN != EE")
 	buildBlock(buf, 256, 1009090UL);
 	setPunch(buf, 8,  0, 200, 12*3600);   // check klo 12:00:00
 	setPunch(buf, 16, 0, 200, 13*3600);   // maali klo 13:00:00
-	setPunch(buf, 12, 0, 200, 11*3600);   // lahto klo 11:00:00 (koodi lukee [12:16), ei kommentin [20:24))
+	setPunch(buf, 12, 0, 200, 11*3600);   // lahto klo 11:00:00
 	tulkSI((char *) buf, &result, 0, 7, 256, 0);
 
 	CHECK(result.check  == 12*3600L);
@@ -305,7 +305,7 @@ TEST_CASE("SI9: rastiajan kaannos +12h kun aika on pienempi kuin edellinen")
 	SIResultTp result;
 
 	buildBlock(buf, 256, 1009090UL);
-	setPunch(buf, 12, 0, 200, 23*3600);      // lahto klo 23:00:00 (edellisena paivana); koodi lukee [12:16)
+	setPunch(buf, 12, 0, 200, 23*3600);      // lahto klo 23:00:00 (edellisena paivana)
 	setPunch(buf, 56, 0, 31, 1*3600);        // 1. rasti klo 01:00:00 -> pitaa kaantaa +12h
 	tulkSI((char *) buf, &result, 0, 7, 256, 0);
 
@@ -345,7 +345,7 @@ TEST_CASE("SI10/11: header (badge/check/finish/start) sama kuin SI9:lla")
 	buildBlock(buf, 256, 7000000UL);
 	setPunch(buf, 8,  0, 200, 12*3600);
 	setPunch(buf, 16, 0, 200, 13*3600);
-	setPunch(buf, 12, 0, 200, 11*3600);   // koodi lukee lahdon [12:16):sta
+	setPunch(buf, 12, 0, 200, 11*3600);   // lahto klo 11:00:00
 	tulkSI((char *) buf, &result, 0, 8, 256, 0);
 
 	CHECK(result.badge  == 7000000L);
