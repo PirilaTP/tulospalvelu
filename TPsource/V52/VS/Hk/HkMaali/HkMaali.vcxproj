@@ -250,6 +250,7 @@
     <ClCompile Include="..\..\..\Tp\TpApu.cpp" />
     <ClCompile Include="..\..\..\Tp\TpComY.cpp" />
     <ClCompile Include="..\..\..\Tp\TpLaitteet.cpp" />
+    <ClCompile Include="..\..\..\Tp\SITulkinta.cpp" />
     <ClCompile Include="..\..\..\Tp\SiritReader.cpp" />
     <ClCompile Include="..\..\..\Tp\ZebraReader.cpp" />
   </ItemGroup>

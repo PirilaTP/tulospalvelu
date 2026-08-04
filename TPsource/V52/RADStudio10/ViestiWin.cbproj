@@ -638,6 +638,9 @@
         <CppCompile Include="..\Tp\TpLaitteet.cpp">
             <BuildOrder>114</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\Tp\SITulkinta.cpp">
+            <BuildOrder>148</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\Tp\SiritReader.cpp">
             <BuildOrder>146</BuildOrder>
         </CppCompile>
