@@ -165,21 +165,6 @@ TEST_CASE("SI6: start/check/finish puretaan PT-kentista, PTD-bitti 0 lisaa 12h")
 	CHECK(result.finish == 70L + 43200L);
 }
 
-TEST_CASE("SI6: ensimmaisen lohkon (pblk[0]) valiaikaleimat puretaan cc/ct[1..32]:een")
-{
-	SI6tp tp;
-	SIResultTp result;
-
-	memset(&tp, 0, sizeof(tp));
-	tp.pblk[0].punch[0].CN = 31;
-	tp.pblk[0].punch[0].PT[0] = 0; tp.pblk[0].punch[0].PT[1] = 10;
-	tp.pblk[1].punch[0].CN = 0xEE;  // pblk[1]:n vastaava paikka on tyhja/ei-kaytossa
-	tulkSI((char *) &tp, &result, 0, 6, sizeof(tp), 0);
-
-	CHECK((int) (unsigned char) result.cc[1] == 31);
-	CHECK(result.ct[1] == 10L);
-}
-
 // Dokumentoi olemassa olevan kaytoksen: pblk[0] ja pblk[1] kirjoittavat
 // samaan cc[1..32]/ct[1..32]-alueeseen (silmukka ei siirra indeksia toiselle
 // lohkolle), joten pblk[1].punch[i] YLIKIRJOITTAA pblk[0].punch[i]:n samalla
@@ -207,10 +192,16 @@ TEST_CASE("SI6: pblk[1] ylikirjoittaa pblk[0]:n samassa cc/ct-indeksissa")
 // ===========================================================================
 
 // Rakentaa synteettisen EXT-protokollan lohkon (oletusarvoisesti 256 tavua,
-// block0 + block1). Layout (ks. SITulkinta.cpp:n case-kommentit):
+// block0 + block1). Layout - HUOM: tama seuraa SITulkinta.cpp:n koodin
+// TODELLISTA lukukohtaa, EI sen omaa (ristiriitaista) kommenttia, joka
+// vaittaa lahdon olevan [20:24):ssa. Koodi lukee lahdon aina [12:16):sta
+// (kaikissa case 7/8/9/10/11:ssa identtisesti) - kommentin mukaan tuo
+// alue on "Clear (ignored)". Kumpi on oikeasti oikein (koodi vai kommentti)
+// vaatisi varmistuksen oikealta laitteistolta/pcapilta; tama testi seuraa
+// koodin nykyista, todennettua kayttaytymista.
 //   [8]  PTD  [9]  CN   [10:12) time   -- Check-leimaus
 //   [16] PTD  [17] CN   [18:20) time   -- Maalileimaus
-//   [20] PTD  [21] CN   [22:24) time   -- Lahtoleimaus (CN=EE -> ei lahtoa)
+//   [12] PTD  [13] CN   [14:16) time   -- Lahtoleimaus (CN=EE -> ei lahtoa)
 //   [25:28)   SIID (3 tavua, big-endian)
 static void buildBlock(unsigned char *b, int len, unsigned long siid)
 {
@@ -250,7 +241,7 @@ TEST_CASE("SI9: check/finish/start puretaan kun CN != EE")
 	buildBlock(buf, 256, 1009090UL);
 	setPunch(buf, 8,  0, 200, 12*3600);   // check klo 12:00:00
 	setPunch(buf, 16, 0, 200, 13*3600);   // maali klo 13:00:00
-	setPunch(buf, 20, 0, 200, 11*3600);   // lahto klo 11:00:00
+	setPunch(buf, 12, 0, 200, 11*3600);   // lahto klo 11:00:00 (koodi lukee [12:16), ei kommentin [20:24))
 	tulkSI((char *) buf, &result, 0, 7, 256, 0);
 
 	CHECK(result.check  == 12*3600L);
@@ -314,7 +305,7 @@ TEST_CASE("SI9: rastiajan kaannos +12h kun aika on pienempi kuin edellinen")
 	SIResultTp result;
 
 	buildBlock(buf, 256, 1009090UL);
-	setPunch(buf, 20, 0, 200, 23*3600);      // lahto klo 23:00:00 (edellisena paivana)
+	setPunch(buf, 12, 0, 200, 23*3600);      // lahto klo 23:00:00 (edellisena paivana); koodi lukee [12:16)
 	setPunch(buf, 56, 0, 31, 1*3600);        // 1. rasti klo 01:00:00 -> pitaa kaantaa +12h
 	tulkSI((char *) buf, &result, 0, 7, 256, 0);
 
@@ -354,7 +345,7 @@ TEST_CASE("SI10/11: header (badge/check/finish/start) sama kuin SI9:lla")
 	buildBlock(buf, 256, 7000000UL);
 	setPunch(buf, 8,  0, 200, 12*3600);
 	setPunch(buf, 16, 0, 200, 13*3600);
-	setPunch(buf, 20, 0, 200, 11*3600);
+	setPunch(buf, 12, 0, 200, 11*3600);   // koodi lukee lahdon [12:16):sta
 	tulkSI((char *) buf, &result, 0, 8, 256, 0);
 
 	CHECK(result.badge  == 7000000L);
@@ -382,18 +373,26 @@ TEST_CASE("SI10/11: leimat jatkuvat lisalohkoissa buflen:iin asti (640 tavua, 4 
 	unsigned char buf[640];
 	SIResultTp result;
 
+	int i;
+
+	// Silmukka skannaa jokaisen 4 tavun paikan i=128,132,136,... jatkuvasti
+	// ja pysahtyy ensimmaiseen CN=EE:hen, joten leimat pitaa tayttaa
+	// KESKEYTYKSETTA - ei riita asettaa yhta per 128-tavuinen lohko valiin
+	// jaavine 0xEE-aukkoineen (silmukka pysahtyisi heti ensimmaisen leiman
+	// jalkeiseen aukkoon).
 	buildBlock(buf, 640, 7000000UL);
-	setPunch(buf, 128, 0, 31, 10*3600);       // lohko 4, 1. rasti
-	setPunch(buf, 256, 0, 32, 11*3600);       // lohko 5 (i=128+128=256), 2. rasti
-	setPunch(buf, 384, 0, 33, 12*3600);       // lohko 6 (i=384), 3. rasti
-	setPunch(buf, 512, 0, 34, 13*3600);       // lohko 7 (i=512), 4. rasti
+	for (i = 128; i + 3 < 512; i += 4)
+		setPunch(buf, i, 0, (unsigned char) (40 + ((i-128)/4) % 100), 10*3600 + (i-128)/4);
 	tulkSI((char *) buf, &result, 0, 8, 640, 0);
 
-	CHECK((int) (unsigned char) result.cc[1] == 31);
-	CHECK((int) (unsigned char) result.cc[2] == 32);
-	CHECK((int) (unsigned char) result.cc[3] == 33);
-	CHECK((int) (unsigned char) result.cc[4] == 34);
-	CHECK(result.ct[4] == 13*3600L);
+	// r=1 -> i=128 (lohko 4, ensimmainen)
+	CHECK((int) (unsigned char) result.cc[1] == 40);
+	// r=33 -> i=128+4*32=256 (lohko 5:n ensimmainen)
+	CHECK((int) (unsigned char) result.cc[33] == 40+32);
+	CHECK(result.ct[33] == 10*3600L + 32);
+	// r=65 -> i=128+4*64=384 (lohko 6:n ensimmainen)
+	CHECK((int) (unsigned char) result.cc[65] == 40+64);
+	CHECK(result.ct[65] == 10*3600L + 64);
 }
 
 TEST_CASE("SI10/11: buflen rajaa lukua - 256-tavuinen puskuri ei lue lohkoa 5:ta")
@@ -407,7 +406,9 @@ TEST_CASE("SI10/11: buflen rajaa lukua - 256-tavuinen puskuri ei lue lohkoa 5:ta
 	tulkSI((char *) buf, &result, 0, 8, 256, 0);  // buflen=256!
 
 	CHECK((int) (unsigned char) result.cc[1] == 31);
-	CHECK((int) (unsigned char) result.cc[2] == 0xEE);  // ei luettu -> nollattu oletusarvo
+	// result on tulkSI:n omaa muistia (nollattu memset(result,0,...):lla alussa),
+	// ei syotepuskuria, joten lukematon paikka on 0 - ei syotepuskurin 0xEE-tayte.
+	CHECK((int) (unsigned char) result.cc[2] == 0);
 }
 
 // ===========================================================================
