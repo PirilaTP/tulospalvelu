@@ -63,6 +63,7 @@ TFormOsanottajat *FormOsanottajat;
 #define COLIDVPist1		33
 #define COLIDVPist2		34
 #define COLIDTeksti		35
+#define COLIDSynt		36
 
 
 ColTp OoGridCols0[] = {
@@ -101,7 +102,8 @@ ColTp OoGridCols0[] = {
 	{L"GSM", 30, 0, N_PV, 0, false},
 	{L"VPist-1", 45, 0, N_PV, 0, false},
 	{L"VPist-2", 45, 0, N_PV, 0, false},
-	{L"Teksti", 80, 0, N_PV, 0, false}
+	{L"Teksti", 80, 0, N_PV, 0, false},
+	{L"Synt", 40, 0, 1, 0, false}
 };
 
 ColTp OoGridCols[sizeof(OoGridCols0)/sizeof(ColTp)];
@@ -365,6 +367,7 @@ void __fastcall TFormOsanottajat::setOoGrid(void)
 	OoGridCols[COLIDGSM].Visible = GSM1->Checked;
 	OoGridCols[COLIDVPist1].Visible = Vaihepist11->Checked;
 	OoGridCols[COLIDVPist2].Visible = Vaihepist21->Checked;
+	OoGridCols[COLIDSynt].Visible = Synt1->Checked;
 	OoGrid->RowCount = 1;
 	OoGrid->DefaultRowHeight = 20 * Screen->PixelsPerInch / 96;
 	if (OoGrid->FixedCols > 5)
@@ -689,6 +692,9 @@ void __fastcall TFormOsanottajat::naytaTiedot(void)
 							OoGrid->Cells[col+ipv][k] = UnicodeString(Kilp->pv[epv+ipv].txt);
 							}
 						break;
+					case COLIDSynt:
+						OoGrid->Cells[col][k] = UnicodeString(Kilp->synt);
+						break;
 					}
 				}
 			}
@@ -748,6 +754,9 @@ int __fastcall TFormOsanottajat::tallennaTiedot(void)
 							break;
 						case COLIDKvId:
 							Kilp.lisno[1] = OoGrid->Cells[col][k].ToInt();
+							break;
+						case COLIDSynt:
+							Kilp.synt = OoGrid->Cells[col][k].ToInt();
 							break;
 						case COLIDSukunimi:
 							wcsncpy(Kilp.sukunimi, OoGrid->Cells[col][k].c_str(), kilpparam.lsnimi);
@@ -1057,6 +1066,7 @@ int __fastcall TFormOsanottajat::paivitaMuutos(int col, int row)
 		case COLIDIkaSrj:
 		case COLIDIdno:
 		case COLIDKvId:
+		case COLIDSynt:
 			OoGrid->Cells[col][k] = UnicodeString(_wtoi(OoGrid->Cells[col][k].c_str()));
 			break;
 		case COLIDSukunimi:
@@ -1701,6 +1711,7 @@ void __fastcall TFormOsanottajat::initOoGrid(void)
 	GSM1->Checked = OoGridCols[COLIDGSM].Visible;
 	Vaihepist11->Checked = OoGridCols[COLIDVPist1].Visible;
 	Vaihepist21->Checked = OoGridCols[COLIDVPist2].Visible;
+	Synt1->Checked = OoGridCols[COLIDSynt].Visible;
 }
 //---------------------------------------------------------------------------
 
@@ -1769,6 +1780,13 @@ void __fastcall TFormOsanottajat::Sukupx1Click(TObject *Sender)
 void __fastcall TFormOsanottajat::Iksarjag1Click(TObject *Sender)
 {
 	Iksarjag1->Checked = !Iksarjag1->Checked;
+	naytaTiedot();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormOsanottajat::Synt1Click(TObject *Sender)
+{
+	Synt1->Checked = !Synt1->Checked;
 	naytaTiedot();
 }
 //---------------------------------------------------------------------------
