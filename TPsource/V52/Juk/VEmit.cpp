@@ -2738,6 +2738,13 @@ INT maalirasti(char *tunnus, INT koodi)
    return(oikeakoodi(rt, rt->rastiluku-1, koodi, 0));
    }
 
+INT maalirasti(ratatp *rt, INT koodi)
+   {
+   if (!rt)
+      return(0);
+   return(oikeakoodi(rt, rt->rastiluku-1, koodi, 0));
+   }
+
 void haerastit(int ecode, int *rst, int *nr)
    {
    int r, n = 0;

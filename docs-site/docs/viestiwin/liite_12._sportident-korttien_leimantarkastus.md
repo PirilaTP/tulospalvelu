@@ -1,8 +1,8 @@
-# Liite 12. SportIdent-korttien leimantarkastus
+# Liite 6. SportIdent-korttien leimantarkastus
 
-## Liite 12. SportIdent-korttien leimantarkastus
+### Liite 6. SportIdent-korttien leimantarkastus
 
-### A12.1 Protokollat
+#### A6.1 Protokollat
 
 SIAC-kortti (SportIdent Air+) tukee kahta eri tiedonsiirtotapaa:
 
@@ -13,16 +13,15 @@ SIAC-kortti (SportIdent Air+) tukee kahta eri tiedonsiirtotapaa:
 - Ei vaadi fyysistä kontaktia.
 - SRR-dongle vastaanottaa nämä lähetykset (D3-viesti).
 - Käytetään **ajanottoon** kilpailun aikana.
-- Kts. [Liite 11](liite_11._srr-dongle_siac-korttien_ajanotto.md).
 
 **Perusprotokolla (kontakti/induktio)**
 
 - Kortti asetetaan fyysisesti SI-lukija-asemaan (esim. BSF-8 readout-moodissa).
 - Käytetään **leimantarkastukseen** maalissa: kilpailija luovuttaa kortin
-  luettavaksi maaliin saapuessaan.
+  luettavaksi maaliin (tai osuuden vaihtoon) saapuessaan.
 - SRR-dongle **ei** tue tätä protokollaa — tarvitaan fyysinen SI-lukija-asema.
 
-### A12.2 Laitekokoonpano leimantarkastuksessa
+#### A6.2 Laitekokoonpano leimantarkastuksessa
 
 Leimantarkastukseen tarvitaan fyysinen SI-lukija-asema (esim. SportIdent BSF-8),
 joka on konfiguroitu **readout-moodiin**. Laite liitetään tietokoneeseen:
@@ -35,7 +34,7 @@ SRR-dongle ei sovellu leimantarkastuslukijaksi, koska se vastaanottaa vain
 Air+-radiolähetyksiä. Kortin leimatiedot saadaan luotettavasti vain fyysisellä
 kontaktilukijalla.
 
-### A12.3 Ohjelman konfigurointi
+#### A6.3 Ohjelman konfigurointi
 
 Lisää konfiguraatiotiedostoon (`Laskenta.cfg`):
 
@@ -66,10 +65,10 @@ AIKALUKIJA1=VAIN0
 LUKIJA2=4
 ```
 
-Tässä SRRLUKIJA1 (COM3) on maalin ajanotto Air+-radioprotokollalla ja
+Tässä SRRLUKIJA1 (COM3) on maalin/vaihdon ajanotto Air+-radioprotokollalla ja
 LUKIJA2 (COM4) on fyysinen SI-lukija leimantarkastukseen.
 
-### A12.4 SPORTIDENT-parametri (vaihtoehtoinen suora lukija)
+#### A6.4 SPORTIDENT-parametri (vaihtoehtoinen suora lukija)
 
 `LUKIJA=`-parametrin lisäksi ohjelmassa on erillinen, tarkoitukseen dedikoitu
 `SPORTIDENT=`-parametri. Se **ei ole** `LUKIJA=`:n synonyymi — kyseessä on
@@ -110,18 +109,23 @@ RS-232-asemien ("remote mode") alustuskomentoa, johon USB-asema muutenkin
 vastaisi NAK:lla. `KELLOBAUD=`-parametrilla ei siis ole vaikutusta
 `SPORTIDENT=`-yhteyteen.
 
-### A12.5 Ratatiedot ja rastikoodit
+Kun `SPORTIDENT=`-lukija on käytössä (tai kilpailun tunnistinlaji on asetettu
+SportIdentiksi), ohjelman *Tulospalvelu*-valikon *Emit-luenta*-valinta ja
+sisäänluenta muuttavat kaavakkeiden otsikot muotoon *Sportident-luenta* /
+*Sisäänluenta (sportident)*, vaikka toiminto onkin sama.
+
+#### A6.5 Ratatiedot ja rastikoodit
 
 Leimantarkastus edellyttää, että ohjelmalla on käytettävissä:
 
-1. **Ratatiedot** (`RADAT1.XML` tai `RADAT1.LST`) — rastijärjestys sarjoittain
+1. **Ratatiedot** (`RADAT1.XML` tai `RADAT1.LST`) — rastijärjestys osuuksittain
 2. **Rastien leimasinkoodit** — SI-aseman numero kullakin rastilla
 
 Ohjelma vertaa kortin leimauksia ratatietoihin tallennettuihin SI-asemanumeroihin.
 Rastikoodit konfiguroidaan ohjelman ratakaavakkeella (*Radat / Rastien leimasinkoodit*,
-kts. luku 13.3).
+kts. [luku 13.3](13.3_rastien_leimasinkoodit.md)).
 
-### A12.6 Tiedonsiirtonopeus
+#### A6.6 Tiedonsiirtonopeus
 
 | Laite | Parametri | Oletusnopeus |
 |---|---|---|
@@ -134,20 +138,23 @@ RS-232-yhteydessä lisätään tarvittaessa:
 KELLOBAUD=38400
 ```
 
-### A12.7 Leimantarkastuksen käyttö
+#### A6.7 Leimantarkastuksen käyttö
 
 Kun konfigurointi on tehty ja ohjelma käynnistetty:
 
-1. Avaa leimantarkastuskaavake: *Tulospalvelu / Sportident-luenta*
+1. Avaa leimantarkastuskaavake: *Tulospalvelu / Sportident-luenta* (tai
+   *Emit-luenta*, jos otsikko ei ole vielä vaihtunut).
 2. Aseta SI-kortti fyysiseen lukija-asemaan.
 3. Ohjelma lukee kortin leimatiedot ja näyttää ne kaavakkeella:
    - Vihreä pohjaväri: suoritus hyväksytty
    - Punainen tai muu väri: puuttuva tai väärä rasti, hylkäysesitys
-4. Jos kilpailijan numeroa ei löydy, avautuu apukaavake kilpailijan valitsemiseksi.
+4. Jos kilpailijan (osuuden juoksijan) numeroa ei löydy, avautuu apukaavake
+   kilpailijan valitsemiseksi.
 
-Leimantarkastuskaavakkeen käytöstä tarkemmin kts. [luku 6.1](6.1_leimantarkastuskaavake.md).
+Leimantarkastuskaavakkeen käytöstä tarkemmin kts.
+[luku 6.1](6.1_leimantarkastuskaavake.md).
 
-### A12.8 Vianetsintä
+#### A6.8 Vianetsintä
 
 | Ongelma | Todennäköinen syy | Ratkaisu |
 |---|---|---|

@@ -153,6 +153,12 @@ tapaukissa muuttaa ohjelma kirjaimet isoiksi ennen käyttöä.
 | ESTÄEMITTOISTO=EI SALLIEMITOISTO | Saman Emit-kortin lähes peräkkäiset lukemiset kirjataan (normaalisti estetty). |
 | JOUSTOVIESTI | Ohjelma tunnistaa joukkueen ja juoksijan emit-koodin perusteella, vaikka vuorossa olevalla osuudella ei ole tietoja |
 | ECAIKA ETGPRS ETHAKUVÄLI ETDATE ETTIME ETHOST | emiTagin käyttöön liittyvän väliaikapalvelimen käytön ohjausparametreja |
+| SIHOST=host | SportIdentin Center REST API:n palvelinosoite (oletus center-origin.sportident.com). Tarvitsee yleensä muuttaa vain testauksessa tai jos käytössä on jokin muu kuin SportIdentin oma pilvipalvelu. |
+| SIGPRS=modeemi SIGPRSn=modeemi | SportIdentin Center REST API -pilvipalvelun käyttöön liittyvä ohjausparametri (vain jos ohjelma on käännetty SPORTIDENT-määrityksellä). modeemi on haettavan modeemin sarjanumero (tai pilkuilla eroteltu lista useasta modeemista). Numerosuffiksi n hyväksytään ETGPRS:n kaltaisen kirjoitusasun vuoksi, mutta sillä ei ole merkitystä - SIGPRS ei ole sidottu mihinkään tiettyyn lukijakanavaan. |
+| SITIME=aika | SportIdentin Center REST API:sta haetaan vain tätä myöhemmät leimat (aika millisekunteina epokista, paikallista aikaa). Arvo päivittyy automaattisesti jokaisen onnistuneen haun jälkeen, joten tätä ei yleensä tarvitse asettaa käsin. |
+| SIHAKUVÄLI=n | Kuinka monen sekunnin välein SportIdentin Center REST API:a pollataan (oletus 5 s). |
+| SISTARTKOODI=n | Lähtöasemalla käytetty SI-rastikoodi. SportIdentin Center REST API:n "Unknown"-tyyppinen leima voi tosiasiassa olla mikä tahansa leimatyyppi (myös lähtö), joten ohjelman on pääteltävä oikea tyyppi rastikoodista - tämä kertoo, mikä koodi tarkoittaa lähtöä. Maali päätellään erikseen kilpailijan radan omasta rastikoodilistasta (sama käytäntö kuin paikallisilla Emit-leimoilla). |
+| SIGPRS: tunnistamaton badge | Jos SIGPRS-leiman badge-numeroa ei löydy yhdeltäkään kilpailijalta, toimitaan samoin kuin muidenkin tiedonsiirtoyhteyden kautta saapuvien tunnistamattomien leimojen kanssa: ILMTUNT näyttää ponnahdusilmoituksen badge-numerosta ja ajasta, ja YHTEYSAJAT (VA-AJAT) lisää leiman kohdistamattomien aikojen jonoon myöhempää käsittelyä varten (kts. A1.4). |
 
 ### A1.6 SQL-tietokannan käyttöön liittyvät parametrit
 

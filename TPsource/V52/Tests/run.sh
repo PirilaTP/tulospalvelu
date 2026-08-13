@@ -11,7 +11,9 @@ ${CXX:-g++} -Wall -o "$OUT" \
 	-I include -I Tp -I Tests \
 	Tests/DoctestMain.cpp \
 	Tests/TulkSITest.cpp \
+	Tests/SICenterJsonTest.cpp \
 	Tp/SITulkinta.cpp \
+	Tp/SICenterJson.cpp \
 	tputilv2/T_time_l.cpp
 
 exec "$OUT" "$@"

@@ -552,3 +552,17 @@ void ajanotto(void);
 		false};
 
 #endif
+
+#if defined(SPORTIDENT)
+	siCenterParamTp siParam = {
+		NULL,														//	char *buf;
+		0,														//	int buflen;
+		L"center-origin.sportident.com",	//	wchar_t sihost[100];
+		L"",						//	wchar_t sigprs[64];
+		0,							//	__int64 sitime;
+		0,							//	long afterId;
+		5,							//	int sihakuvali; (seconds)
+		0,							//	int sihaku;
+		0,							//	int haettu;
+		0};							//	int sistartkoodi;
+#endif

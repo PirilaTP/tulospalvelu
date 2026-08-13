@@ -351,7 +351,7 @@ void __fastcall TFormStatus::Lukumaarat(void)
 			LkmGrid->Cells[6][0] = UnicodeString(L"Avoin");
 			LkmGrid->ColWidths[5] = 55*Screen->PixelsPerInch/96;
 			cc = 7;
-			if (kilpparam.badgelaji == L'E') {
+			if (kilpparam.badgelaji == L'E' || kilpparam.badgelaji == L'I') {
 				LkmGrid->Cells[7][0] = UnicodeString(L"Esit");
 				LkmGrid->Cells[8][0] = UnicodeString(L"Emit");
 				cc = 9;
@@ -487,7 +487,7 @@ void __fastcall TFormStatus::Lukumaarat(void)
 		LkmGrid->Cells[4][1] = UnicodeString(nhylt);
 		LkmGrid->Cells[5][1] = UnicodeString(neilt);
 		LkmGrid->Cells[6][1] = UnicodeString(nAvoin);
-		if (kilpparam.badgelaji == L'E') {
+		if (kilpparam.badgelaji == L'E' || kilpparam.badgelaji == L'I') {
 			LkmGrid->Cells[7][1] = UnicodeString(nesitt);
 			LkmGrid->Cells[8][1] = UnicodeString(nEmit);
 		 cc = 9;

@@ -965,6 +965,11 @@ extern HTHREAD httphakuThread;
 #endif
 
 extern eThakuParamtp eTParam;
+
+#if defined(SPORTIDENT)
+extern siCenterParamTp siParam;
+void siCenterHaku(void);
+#endif
 extern sqlparamtp sqlparam;
 extern sqlparamtp sqlEparam;
 extern bool inkirjSQLThread;

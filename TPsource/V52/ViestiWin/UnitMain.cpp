@@ -271,6 +271,10 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 			break;
 			}
 		}
+	if (kilpparam.badgelaji == L'I') {
+		Emitluenta1->Caption = L"&Sportident-luenta";
+		SisLuenta->Caption = L"Sis‰‰n&luenta (sportident)";
+		}
 	if (alkulayout[0]) {
 		HaeIkkunat(GetCurrentDir()+UnicodeString(L"\\")+alkulayout);
 		}

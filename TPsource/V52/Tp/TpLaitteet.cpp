@@ -1474,19 +1474,28 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	static char SI9pyynto_b1[8] = {'\377','\002','\357','\001','\001','\343','\011','\003'};
 	static char SI11pyynto_b4[8] = {'\377','\002','\357','\001','\004','\346','\011','\003'};
 	static char SI11pyynto_b5[8] = {'\377','\002','\357','\001','\005','\347','\011','\003'};
-	static char SI11pyynto_b6[8] = {'\377','\002','\357','\001','\006','\350','\011','\003'};
-	static char SI11pyynto_b7[8] = {'\377','\002','\357','\001','\007','\351','\011','\003'};
+	static char SI11pyynto_b6[8] = {'\377','\002','\357','\001','\006','\344','\011','\003'};
+	static char SI11pyynto_b7[8] = {'\377','\002','\357','\001','\007','\345','\011','\003'};
+	// SI6 via EXT protocol (trigger 0xE6, cmd 0xE1) - distinct from legacy
+	// DLE-encoded SI6 (SI6pyynto above). CRCs verified against a real card log
+	// (SIID 579671): b0=46 0A, b1=47 0A, b6=40 0A, b7=41 0A.
+	static char SI6EXTpyynto_b0[8] = {'\377','\002','\341','\001','\000','\106','\012','\003'};
+	static char SI6EXTpyynto_b1[8] = {'\377','\002','\341','\001','\001','\107','\012','\003'};
+	static char SI6EXTpyynto_b6[8] = {'\377','\002','\341','\001','\006','\100','\012','\003'};
+	static char SI6EXTpyynto_b7[8] = {'\377','\002','\341','\001','\007','\101','\012','\003'};
 	// CMD=F9: tells BSM8 to beep once after a successful card read (count=1).
 	static char SIbeep[8] = {'\377','\002','\371','\001','\001','\027','\012','\003'};
 	char SI5code[5] = "\002FI\003";
 	char SIack = ACK;
 	// 128 (block 0) + up to 4 punch blocks × 128 = 640 bytes max for SI10/11.
 	char SIbuf[640], *SIbp;
-	// SItype encodes card family: 5=SI5, 6=SI6, 7=SI9, 8=SI10/11, 9=SI8, 10=pCard, 11=tCard.
+	// SItype encodes card family: 5=SI5, 6=SI6, 7=SI9, 8=SI10/11, 9=SI8, 10=pCard,
+	// 11=tCard, 12=SI6 via EXT protocol (distinct from legacy SI6, type 6).
 	// SIdatalen[SItype-5]: total bytes to fill in SIbuf before calling tulkSI.
 	//   SI5: 133 (one B1 block), SI6: 402 (legacy multi-block),
 	//   SI9/SI8/pCard/tCard: 256 (blocks 0+1). SI10/11: 256–640 (block 0 + 1–4 punch blocks).
-	int SItype, SIdatalen[7] = {133, 402, 256, 256, 256, 256, 256}, dle = 0;
+	//   SI6-EXT: 512 (block 0 + block 1 + 2 punch blocks, fixed size like legacy SI6).
+	int SItype, SIdatalen[8] = {133, 402, 256, 256, 256, 256, 256, 512}, dle = 0;
 	// SIext=1: BSM8 EXT protocol (38400 bps, binary frames, FF wakeup required).
 	// SIext=0: legacy protocol (DLE-encoded, lower baud rate).
 	// SIskip: bytes remaining to discard from the current response header.
@@ -1536,6 +1545,15 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 				SItype = 7;  // temporary; overwritten after block 0 if SI8 or SI10/11
 				SIext = 1;
 				}
+			else if ((unsigned char)vastaus->r21.tunnus == 0xE6) {
+				// EXT CMD=E6: BSM8 reports SI6 card inserted (EXT protocol variant,
+				// distinct from the legacy DLE-encoded SI6 handled below). Request
+				// block 0 first.
+				msg = SI6EXTpyynto_b0;
+				SImsglen = sizeof(SI6EXTpyynto_b0);
+				SItype = 12;
+				SIext = 1;
+				}
 			else if (vastaus->r21.tunnus == 102 && vastaus->r21.etx == ETX) {
 				msg = SI6pyynto;
 				SImsglen = strlen(SI6pyynto);
@@ -1560,7 +1578,7 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 		//   SI5  B1 response: "02 B1" (2 bytes) + 133-byte SI5tp data
 		//   SI9+ EF response: "02 EF 83 00 0A blocknum" (6 bytes) + 128-byte block data
 		// Legacy (SI5/SI6): no header; bytes are DLE-encoded and not framed.
-		SIskip = (SItype == 7) ? 6 : (SIext ? 2 : 0);
+		SIskip = (SItype == 7 || SItype == 12) ? 6 : (SIext ? 2 : 0);
 		SInblock = 0;
 		for(;;) {
 			nq = 0;
@@ -1659,6 +1677,29 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 					wrt_st_x(cn, sizeof(SI11pyynto_b6), SI11pyynto_b6, &nch);
 				else
 					wrt_st_x(cn, sizeof(SI11pyynto_b7), SI11pyynto_b7, &nch);
+				utsleep(2);
+				}
+			// SI6-EXT (SItype 12): always reads a fixed sequence of 4 blocks
+			// (0, 1, 6, 7) like the legacy SI6 (case 6, fixed 402 bytes) - not
+			// adaptive like SI10/11, since there's no known record-count field
+			// to size the read from. Blocks 6/7 hold up to 32 punches each
+			// (64 total, matching legacy SI6's two SI6PBLK punch blocks).
+			if (SItype == 12 && l == 128 && SInblock == 0) {
+				SInblock = 1;
+				SIskip = 9;
+				wrt_st_x(cn, sizeof(SI6EXTpyynto_b1), SI6EXTpyynto_b1, &nch);
+				utsleep(2);
+				}
+			else if (SItype == 12 && l == 256 && SInblock == 1) {
+				SInblock = 2;
+				SIskip = 9;
+				wrt_st_x(cn, sizeof(SI6EXTpyynto_b6), SI6EXTpyynto_b6, &nch);
+				utsleep(2);
+				}
+			else if (SItype == 12 && l == 384 && SInblock == 2) {
+				SInblock = 3;
+				SIskip = 9;
+				wrt_st_x(cn, sizeof(SI6EXTpyynto_b7), SI6EXTpyynto_b7, &nch);
 				utsleep(2);
 				}
 			if (l == SIdatalen[SItype-5]) {

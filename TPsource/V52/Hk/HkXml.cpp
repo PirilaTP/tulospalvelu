@@ -50,7 +50,7 @@ static wchar_t *SubSt[17] = {L"Regular", L"Sprint", L"Pursuit", L"Mass start", L
 	L"Event", L"Rounds", L"Naval", L"Military", L"Obstacle", L"LifeSaving", L"UtilitySwim", L"Seamanship",
 	L"CrossCountry", L"Shooting", L"Swimming", L"Throwing"};
 static wchar_t Stat[13] = L"-THKEOIVPXMB", *StatSt[12] = {L"Open", L"OK", L"DQ", L"DNF", L"DNS", L"LAP", L"Open", L"Vacant", L"Absent", L"NoResult", L"Missing", L"Observed"};
-static wchar_t Bdg[5] = L"ETSO", *BdgSt[4] = {L"Emit", L"emiTag", L"Sirit", L"Other"};
+static wchar_t Bdg[6] = L"ETISO", *BdgSt[5] = {L"Emit", L"emiTag", L"SportIdent", L"Sirit", L"Other"};
 static wchar_t YhtTls[5] = L"SLPV", *YhtTlsSt[4] = {L"Sum", L"FromRaceStart", L"Best", L"VarSum"};
 static wchar_t *Pr[4] = {L"1", L"0,1", L"0,01", L"0,001"};
 static wchar_t *Tabs[8] = {L"", L"\t", L"\t\t", L"\t\t\t", L"\t\t\t\t", L"\t\t\t\t\t", L"\t\t\t\t\t\t", L"\t\t\t\t\t\t\t"};

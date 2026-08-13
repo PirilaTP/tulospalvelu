@@ -16,7 +16,7 @@
 
 // Yksikkotestit kaikkien SportIdent-korttityyppien tulkinnalle
 // (Tp/SITulkinta.cpp:tulkSI): SI5 (5), SI6 (6), SI9 (7), SI10/SI11 (8),
-// SI8 (9), pCard (10), tCard (11).
+// SI8 (9), pCard (10), tCard (11), SI6 EXT-protokollan kautta (12).
 //
 // t0 annetaan tassa aina arvolla 0: se vaikuttaa vain lukija-kenttaan
 // (t_time_l:n kautta), ei badge/check/finish/start/cc/ct-kenttiin, joita
@@ -165,12 +165,13 @@ TEST_CASE("SI6: start/check/finish puretaan PT-kentista, PTD-bitti 0 lisaa 12h")
 	CHECK(result.finish == 70L + 43200L);
 }
 
-// Dokumentoi olemassa olevan kaytoksen: pblk[0] ja pblk[1] kirjoittavat
-// samaan cc[1..32]/ct[1..32]-alueeseen (silmukka ei siirra indeksia toiselle
-// lohkolle), joten pblk[1].punch[i] YLIKIRJOITTAA pblk[0].punch[i]:n samalla
-// i:lla. Vain jalkimmainen (pblk[1]) jaa nakyviin. Tama saattaa olla
-// tarkoittamaton, mutta testi kirjaa nykyisen kayttaytymisen nakyvaksi.
-TEST_CASE("SI6: pblk[1] ylikirjoittaa pblk[0]:n samassa cc/ct-indeksissa")
+// pblk[0] ja pblk[1] ovat kaksi ERI 32-leiman lohkoa (64 yhteensa), eivat
+// sama alue kahteen kertaan. Aiemmin molemmat kirjoittivat samaan
+// cc[1..32]/ct[1..32]-alueeseen, joten pblk[1] ylikirjoitti pblk[0]:n -
+// korjattu (ks. SITulkinta.cpp:n case 6) niin, etta ne jatkuvat perakkain:
+// pblk[0] -> cc[1..32], pblk[1] -> cc[33..64], CN=0xEE paattaa kummankin
+// lohkon listan erikseen.
+TEST_CASE("SI6: pblk[0] ja pblk[1] jatkuvat perakkain, ei ylikirjoita")
 {
 	SI6tp tp;
 	SIResultTp result;
@@ -178,12 +179,16 @@ TEST_CASE("SI6: pblk[1] ylikirjoittaa pblk[0]:n samassa cc/ct-indeksissa")
 	memset(&tp, 0, sizeof(tp));
 	tp.pblk[0].punch[0].CN = 31;
 	tp.pblk[0].punch[0].PT[0] = 0; tp.pblk[0].punch[0].PT[1] = 10;
+	tp.pblk[0].punch[1].CN = (char) 0xEE;   // pblk[0]:ssa vain 1 leima
 	tp.pblk[1].punch[0].CN = 32;
 	tp.pblk[1].punch[0].PT[0] = 0; tp.pblk[1].punch[0].PT[1] = 20;
+	tp.pblk[1].punch[1].CN = (char) 0xEE;   // pblk[1]:ssa vain 1 leima
 	tulkSI((char *) &tp, &result, 0, 6, sizeof(tp), 0);
 
-	CHECK((int) (unsigned char) result.cc[1] == 32);
-	CHECK(result.ct[1] == 20L);
+	CHECK((int) (unsigned char) result.cc[1] == 31);
+	CHECK(result.ct[1] == 10L);
+	CHECK((int) (unsigned char) result.cc[2] == 32);
+	CHECK(result.ct[2] == 20L);
 }
 
 // ===========================================================================
@@ -485,4 +490,259 @@ TEST_CASE("tCard: leimat askeltavat 8 tavua (ei 4:aa kuten SI9:lla)")
 	CHECK((int) (unsigned char) result.cc[1] == 31);
 	CHECK((int) (unsigned char) result.cc[2] == 32);
 	CHECK(result.ct[2] == 11*3600L);
+}
+
+// ===========================================================================
+// SI6 EXT-protokollan kautta (SItype == 12): eri langansiirtokoodaus samalle
+// korttisukupolvelle kuin legacy SI6 (SItype 6) - EI sama tavuasettelu kuin
+// SI9+:lla (SItype 7-11). Badge tavuilla [10:14), leimat alkaen tavusta 256
+// (lohkot 6 ja 7), 32 leimaa/lohko, kuten legacy SI6:n kaksi SI6PBLK-lohkoa.
+//
+// buildBlock/setPunch (SI9+:aa varten) eivat sovi tahan (badge/otsikko eri
+// tavuilla), joten testit rakentavat puskurin suoraan.
+// ===========================================================================
+
+TEST_CASE("SI6-EXT: badge puretaan tavuista [10:14) big-endian (4 tavua)")
+{
+	unsigned char buf[512];
+	SIResultTp result;
+
+	memset(buf, 0xEE, sizeof(buf));
+	buf[10] = 0x00; buf[11] = 0x08; buf[12] = 0xD8; buf[13] = 0x57;  // 579671
+	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+
+	CHECK(result.badge == 579671L);
+}
+
+TEST_CASE("SI6-EXT: oikea kortti (SIID 579671) - finish/check puretaan, ei lahtoa")
+{
+	// Todellinen tavudumppi lohkosta 0 (varmennettu oikealla kortilla).
+	unsigned char buf[512];
+	SIResultTp result;
+
+	memset(buf, 0xEE, sizeof(buf));
+	buf[10] = 0x00; buf[11] = 0x08; buf[12] = 0xD8; buf[13] = 0x57;  // badge
+	setPunch(buf, 20, 0x0D, 0x0A, 0x258B);          // maali: PTD=0D,CN=0A,aika=25 8B
+	// lahto: tavut [24:28) jaavat 0xEE:ksi -> ei lahtoa
+	setPunch(buf, 28, 0x0D, 0x03, 0x0E46);           // tarkastus: PTD=0D,CN=03,aika=0E 46
+	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+
+	CHECK(result.badge  == 579671L);
+	CHECK(result.finish == 52811L);   // 256*0x25+0x8B + 43200 (PTD&1=1)
+	CHECK(result.start  == TMAALI0);
+	CHECK(result.check  == 46854L);   // 256*0x0E+0x46 + 43200
+}
+
+TEST_CASE("SI6-EXT: leimat alkavat tavusta 256 (lohko 6), ei 128:sta tai 56:sta")
+{
+	unsigned char buf[512];
+	SIResultTp result;
+
+	memset(buf, 0xEE, sizeof(buf));
+	buf[10] = 0; buf[11] = 0; buf[12] = 0; buf[13] = 1;
+	setPunch(buf, 56,  0, 99, 1*3600);   // SI9:n paikka - EI saa nakya
+	setPunch(buf, 128, 0, 98, 2*3600);   // SI10/11:n paikka - EI saa nakya
+	setPunch(buf, 256, 0, 31, 12*3600);  // oikea 1. rasti SI6-EXT:lla (lohko 6)
+	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+
+	CHECK((int) (unsigned char) result.cc[1] == 31);
+	CHECK(result.ct[1] == 12*3600L);
+}
+
+TEST_CASE("SI6-EXT: leimat jatkuvat lohkoon 7 (tavu 384) asti, CN=EE paattaa")
+{
+	// Todellinen kortti: 8 leimaa lohkossa 6, loput 0xEE. Tama testi kattaa
+	// lisaksi jatkumisen lohkoon 7, jota ei ollut tallessa oikeassa dumpissa.
+	unsigned char buf[512];
+	SIResultTp result;
+	int i;
+
+	memset(buf, 0xEE, sizeof(buf));
+	buf[10] = 0; buf[11] = 0; buf[12] = 0; buf[13] = 1;
+	// tayta lohko 6 kokonaan (32 leimaa, tavut 256..383) ja jatka lohkoon 7:aan
+	for (i = 256; i + 3 < 384+16; i += 4)
+		setPunch(buf, i, 0, (unsigned char) (40 + (i-256)/4), 10*3600 + (i-256)/4);
+	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+
+	// r=32 -> i=256+4*31=380 (lohko 6:n viimeinen)
+	CHECK((int) (unsigned char) result.cc[32] == 40+31);
+	// r=33 -> i=384 (lohko 7:n ensimmainen)
+	CHECK((int) (unsigned char) result.cc[33] == 40+32);
+	CHECK(result.ct[33] == 10*3600L + 32);
+}
+
+// ===========================================================================
+// Maksimileimamaarat jokaiselle korttityypille (SIResultTp.cc[66]/ct[66] -
+// vain indeksit 0..65 kaytettavissa, 65 tallennettavaa leimaa).
+//
+// Tama joukko loydettiin/kirjattiin taman istunnon aikana, koska
+// SITulkinta.cpp:ssa oli "if (r <= 66)" jokaisessa EXT-protokollan
+// tapauksessa (7-11, ja uusi 12): kun r==66, koodi kirjoitti result->ct[66]:een,
+// joka on YHDEN INT32:n verran SIResultTp-rakenteen VIIMEISEN jasenen ohi -
+// siis rakenteen ULKOPUOLELLE (undefined behaviour, ei vain testipuskurissa
+// vaan oikeassa HkMaali/HkKisaWin-ohjelmassa). SI10/SI11-kortti taydella 128
+// leimalla laukaisi taman aidosti (65 < 128). Korjattu "if (r < 66)":ksi.
+//
+// Vain SI10/11 ylittaa 65 leimaa kaytannossa (SI9 50, SI8 30, pCard 20,
+// tCard 25, SI6-EXT 64, SI5 30, legacy SI6 32 - kaikki jaavat rajan
+// alapuolelle), mutta kaikki tyypit testataan tassa taydella maaralla, jotta
+// vastaava bugi ei paase hiipimaan takaisin mihinkaan tyyppiin.
+// ===========================================================================
+
+TEST_CASE("SI5: maksimileimamaara (30, kaikki 6 rivia x 5) mahtuu")
+{
+	// HUOM: PT/ct-tavut luetaan SIGNED char -kenttina (ks. tiedoston alun
+	// kommentti signed charista muualla istunnossa); +1 s/leima pitaa
+	// molemmat tavut < 128:ssa koko kaavan ajan, jottei etumerkin laajennus
+	// vaikuta odotettuihin arvoihin (60 s/leima olisi ylittanyt 128:n useaan
+	// otteeseen).
+	SI5tp tp;
+	SIResultTp result;
+	int r, i;
+
+	memset(&tp, 0, sizeof(tp));
+	for (r = 0; r < 6; r++) {
+		for (i = 0; i < 5; i++) {
+			unsigned t = 3600 + (r*5+i);   // nouseva, ei +12h-kaannoksia
+			tp.row[r].c[i].cc = (char) (33 + r*5 + i);
+			tp.row[r].c[i].ct[0] = (char) (t >> 8);
+			tp.row[r].c[i].ct[1] = (char) t;
+			}
+		}
+	tulkSI((char *) &tp, &result, 0, 5, sizeof(tp), 0);
+
+	CHECK((int) (unsigned char) result.cc[1]  == 33);
+	CHECK((int) (unsigned char) result.cc[30] == 33+29);
+	CHECK(result.ct[30] == 3600L + 29L);
+}
+
+TEST_CASE("SI6: maksimileimamaara (64, pblk[0]+pblk[1] taynna) tallentuu kokonaan")
+{
+	// HUOM: sama signed char -varovaisuus kuin SI5:n maksimitestissa yalla.
+	SI6tp tp;
+	SIResultTp result;
+	int i;
+
+	memset(&tp, 0, sizeof(tp));
+	for (i = 0; i < 32; i++) {
+		unsigned t = 3600 + i;
+		tp.pblk[0].punch[i].CN = (char) (33 + i);
+		tp.pblk[0].punch[i].PT[0] = (char) (t >> 8);
+		tp.pblk[0].punch[i].PT[1] = (char) t;
+		}
+	for (i = 0; i < 32; i++) {
+		unsigned t = 7200 + i;
+		tp.pblk[1].punch[i].CN = (char) (70 + i);
+		tp.pblk[1].punch[i].PT[0] = (char) (t >> 8);
+		tp.pblk[1].punch[i].PT[1] = (char) t;
+		}
+	tulkSI((char *) &tp, &result, 0, 6, sizeof(tp), 0);
+
+	CHECK((int) (unsigned char) result.cc[1]  == 33);
+	CHECK((int) (unsigned char) result.cc[32] == 33+31);
+	CHECK(result.ct[32] == 3600L + 31L);
+	CHECK((int) (unsigned char) result.cc[33] == 70);
+	CHECK((int) (unsigned char) result.cc[64] == 70+31);
+	CHECK(result.ct[64] == 7200L + 31L);
+}
+
+TEST_CASE("SI9: maksimileimamaara (50) tallentuu kokonaan")
+{
+	unsigned char buf[256];
+	SIResultTp result;
+	int i;
+
+	buildBlock(buf, 256, 1009090UL);
+	for (i = 0; i < 50; i++)
+		setPunch(buf, 56 + i*4, 0, (unsigned char) (33 + i), 3600 + i*60);
+	tulkSI((char *) buf, &result, 0, 7, 256, 0);
+
+	CHECK((int) (unsigned char) result.cc[1]  == 33);
+	CHECK((int) (unsigned char) result.cc[50] == 33+49);
+	CHECK(result.ct[50] == 3600L + 49*60);
+}
+
+TEST_CASE("SI10/11: 128 leimaa (taysi 4 lohkoa) ei ylivuoda cc/ct[66]-taulukkoa")
+{
+	// Kriittinen regressiotesti (ks. yllaoleva selitys): tayttaa kortin ihan
+	// oikeaan maksimiin (128 leimaa, 4 taytta lohkoa) ja tarkistaa, etta
+	// viimeinen TALLENNETTAVA indeksi (65 - taulukon suurin sallittu) on
+	// oikein eika mitaan kaadu/korruptoidu matkalla.
+	unsigned char buf[640];
+	SIResultTp result;
+	int i;
+
+	buildBlock(buf, 640, 7000000UL);
+	for (i = 128; i + 3 < 640; i += 4)
+		setPunch(buf, i, 0, (unsigned char) (33 + ((i-128)/4) % 200), 3600 + (i-128)/4*60);
+	tulkSI((char *) buf, &result, 0, 8, 640, 0);
+
+	CHECK((int) (unsigned char) result.cc[1]  == 33);
+	CHECK((int) (unsigned char) result.cc[65] == 33+64);
+	CHECK(result.ct[65] == 3600L + 64*60);
+}
+
+TEST_CASE("SI8: maksimileimamaara (30) tallentuu kokonaan")
+{
+	unsigned char buf[256];
+	SIResultTp result;
+	int i;
+
+	buildBlock(buf, 256, 2000000UL);
+	for (i = 0; i < 30; i++)
+		setPunch(buf, 136 + i*4, 0, (unsigned char) (33 + i), 3600 + i*60);
+	tulkSI((char *) buf, &result, 0, 9, 256, 0);
+
+	CHECK((int) (unsigned char) result.cc[1]  == 33);
+	CHECK((int) (unsigned char) result.cc[30] == 33+29);
+	CHECK(result.ct[30] == 3600L + 29*60);
+}
+
+TEST_CASE("pCard: maksimileimamaara (20) tallentuu kokonaan")
+{
+	unsigned char buf[256];
+	SIResultTp result;
+	int i;
+
+	buildBlock(buf, 256, 4000000UL);
+	for (i = 0; i < 20; i++)
+		setPunch(buf, 176 + i*4, 0, (unsigned char) (33 + i), 3600 + i*60);
+	tulkSI((char *) buf, &result, 0, 10, 256, 0);
+
+	CHECK((int) (unsigned char) result.cc[1]  == 33);
+	CHECK((int) (unsigned char) result.cc[20] == 33+19);
+	CHECK(result.ct[20] == 3600L + 19*60);
+}
+
+TEST_CASE("tCard: maksimileimamaara (25) tallentuu kokonaan")
+{
+	unsigned char buf[256];
+	SIResultTp result;
+	int i;
+
+	buildBlock(buf, 256, 6000000UL);
+	for (i = 0; i < 25; i++)
+		setPunch(buf, 56 + i*8, 0, (unsigned char) (33 + i), 3600 + i*60);
+	tulkSI((char *) buf, &result, 0, 11, 256, 0);
+
+	CHECK((int) (unsigned char) result.cc[1]  == 33);
+	CHECK((int) (unsigned char) result.cc[25] == 33+24);
+	CHECK(result.ct[25] == 3600L + 24*60);
+}
+
+TEST_CASE("SI6-EXT: maksimileimamaara (64, lohkot 6+7 taynna) tallentuu kokonaan")
+{
+	unsigned char buf[512];
+	SIResultTp result;
+	int i;
+
+	memset(buf, 0xEE, sizeof(buf));
+	buf[10] = 0; buf[11] = 0; buf[12] = 0; buf[13] = 1;
+	for (i = 256; i + 3 < 512; i += 4)
+		setPunch(buf, i, 0, (unsigned char) (33 + ((i-256)/4) % 200), 3600 + (i-256)/4*60);
+	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+
+	CHECK((int) (unsigned char) result.cc[1]  == 33);
+	CHECK((int) (unsigned char) result.cc[64] == 33+63);
+	CHECK(result.ct[64] == 3600L + 63*60);
 }

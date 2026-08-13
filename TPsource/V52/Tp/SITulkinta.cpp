@@ -65,7 +65,8 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 					}
 				}
 			break;
-		case 6:
+		case 6: {
+			int cnt;
 			tp6 = (SI6tp *) buf;
 			result->badge =
 				tp6->CN[3] + 256L * (tp6->CN[2] + 256L * (tp6->CN[1] + 256L * tp6->CN[0]));
@@ -79,15 +80,33 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			result->finish =
 					256L*tp6->fi.PT[0] + tp6->fi.PT[1] +
 					(tp6->fi.PTD & 1) * 43200L;
+			// pblk[0] and pblk[1] are two SEPARATE 32-punch blocks (64 total
+			// capacity), not two copies of the same 32 slots - they used to
+			// both write cc[1..32]/ct[1..32], so pblk[1] silently overwrote
+			// pblk[0]'s punches (a card with 33-64 punches lost its first 32;
+			// a card with <=32 punches had its real punches overwritten by
+			// pblk[1]'s unused/0xEE slots). Fixed to concatenate: pblk[0] ->
+			// cc[1..32], pblk[1] -> cc[33..64], stopping at the first
+			// CN=0xEE (unused slot), same convention as the EXT-protocol
+			// cards below.
+			cnt = 0;
 			for (r = 0; r < 2; r++) {
 				for (i = 0; i < 32; i++) {
-					result->cc[1+i] = tp6->pblk[r].punch[i].CN;
-					result->ct[1+i] =
-						256L*tp6->pblk[r].punch[i].PT[0] + tp6->pblk[r].punch[i].PT[1] +
-						(tp6->pblk[r].punch[i].PTD & 1) * 43200L;
+					unsigned char cn = (unsigned char) tp6->pblk[r].punch[i].CN;
+					if (cn == 0xEE)
+						break;
+					cnt++;
+					if (cnt < 66) {
+						result->cc[cnt] = cn;
+						result->ct[cnt] =
+							256L*(unsigned char) tp6->pblk[r].punch[i].PT[0] +
+							(unsigned char) tp6->pblk[r].punch[i].PT[1] +
+							(tp6->pblk[r].punch[i].PTD & 1) * 43200L;
+						}
 					}
 				}
 			break;
+			}
 		case 7: {
 			// SI9 (SIID 1M-2M) via EXT protocol: blocks 0+1, 256 bytes total.
 			//
@@ -117,7 +136,7 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 				if (cn == 0xEE) break;
 				pt = 256L*b[i+2] + b[i+3] + (b[i] & 1) * 43200L;
 				r++;
-				if (r <= 66) {
+				if (r < 66) {
 					result->cc[r] = cn;
 					if (r == 1) {
 						if (result->start && pt < result->start)
@@ -153,7 +172,7 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 				if (cn == 0xEE) break;
 				pt = 256L*b[i+2] + b[i+3] + (b[i] & 1) * 43200L;
 				r++;
-				if (r <= 66) {
+				if (r < 66) {
 					result->cc[r] = cn;
 					if (r == 1) {
 						if (result->start && pt < result->start)
@@ -188,7 +207,7 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 				if (cn == 0xEE) break;
 				pt = 256L*b[i+2] + b[i+3] + (b[i] & 1) * 43200L;
 				r++;
-				if (r <= 66) {
+				if (r < 66) {
 					result->cc[r] = cn;
 					if (r == 1) {
 						if (result->start && pt < result->start)
@@ -223,7 +242,7 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 				if (cn == 0xEE) break;
 				pt = 256L*b[i+2] + b[i+3] + (b[i] & 1) * 43200L;
 				r++;
-				if (r <= 66) {
+				if (r < 66) {
 					result->cc[r] = cn;
 					if (r == 1) {
 						if (result->start && pt < result->start)
@@ -260,7 +279,59 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 				if (cn == 0xEE) break;
 				pt = 256L*b[i+2] + b[i+3] + (b[i] & 1) * 43200L;
 				r++;
-				if (r <= 66) {
+				if (r < 66) {
+					result->cc[r] = cn;
+					if (r == 1) {
+						if (result->start && pt < result->start)
+							pt += 43200L;
+						}
+					else {
+						if (result->ct[r-1] && pt < result->ct[r-1])
+							pt += 43200L;
+						}
+					result->ct[r] = pt;
+					}
+				}
+			break;
+			}
+		case 12: {
+			// SI6 (SIID <1M) via EXT protocol (cmd 0xE1, trigger 0xE6) - a
+			// different wire encoding of the same card generation as legacy
+			// SI6 (case 6), not the same block layout as SI9+ (cases 7-11).
+			//
+			// Block 0 layout (verified against a real card, SIID 579671):
+			//   [10:14] CN (badge, 4-byte big-endian - not the 3-byte SIID
+			//           used by SI9+)
+			//   [20] PTD [21] CN [22:24] time - Finish punch
+			//   [24] PTD [25] CN [26:28] time - Start punch (CN=EE -> no start)
+			//   [28] PTD [29] CN [30:32] time - Check punch
+			//   [32] PTD [33] CN [34:36] time - Clear punch (not stored)
+			//   [48:128] surname/firstname/country/club text (ignored)
+			//
+			// Block 1 (buf[128:256]) holds extended personalisation data
+			// (e.g. an email address on some cards); not needed and not
+			// parsed here.
+			//
+			// Blocks 6/7 (buf[256:384], buf[384:512]) each hold up to 32
+			// {PTD, CN, time_H, time_L} punch records, same format as SI9+
+			// (case 7), terminated by CN=0xEE.
+			unsigned char *b = (unsigned char *) buf;
+			result->badge  = b[10]*16777216L + b[11]*65536L + b[12]*256L + b[13];
+			result->lukija = t_time_l(SIt, t0);
+			result->finish = (b[21] == 0xEE) ? 0L :
+				256L*b[22] + b[23] + (b[20] & 1) * 43200L;
+			result->start  = (b[25] == 0xEE) ? TMAALI0 :
+				256L*b[26] + b[27] + (b[24] & 1) * 43200L;
+			result->check  = (b[29] == 0xEE) ? 0L :
+				256L*b[30] + b[31] + (b[28] & 1) * 43200L;
+			r = 0;
+			for (i = 256; i + 3 < buflen; i += 4) {
+				unsigned char cn = b[i+1];
+				long pt;
+				if (cn == 0xEE) break;
+				pt = 256L*b[i+2] + b[i+3] + (b[i] & 1) * 43200L;
+				r++;
+				if (r < 66) {
 					result->cc[r] = cn;
 					if (r == 1) {
 						if (result->start && pt < result->start)
