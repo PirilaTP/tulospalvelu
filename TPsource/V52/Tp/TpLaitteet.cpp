@@ -1072,6 +1072,46 @@ static int lue_LUKIJA(int r_no, int cn, san_type *vastaus, int *nmsg,
 		return 0;
 		}
 
+	// SportIdent classic-protokollan D3-leimaussanoma (esim. BS-11-laitteen
+	// suora sarjaliikenne, ei radioleimauksen FF 02 -laajennettua otsikkoa)
+	// Sanoman rakenne: STX(02) D3 <dlen> <data[dlen]> <crc_hi> <crc_lo> ETX(03)
+	// Data-osa on sama tietue kuin Air+-sanomassa ylla, vain otsikko on
+	// 3 tavua (02 D3 dlen) 4 tavun (FF 02 D3 dlen) sijaan.
+	if (*nmsg >= 3 && (unsigned char)vastaus->bytes[0] == 0x02 &&
+		(unsigned char)vastaus->bytes[1] == 0xD3) {
+		unsigned char dlen = (unsigned char)vastaus->bytes[2];
+		int total = 3 + (int)dlen + 2 + 1;
+		if (*nmsg >= total && (unsigned char)vastaus->bytes[total - 1] == 0x03) {
+			if (dlen >= 9) {
+				unsigned char *data = (unsigned char*)vastaus->bytes + 3;
+				UINT32 siid_lo2 = ((UINT32)data[4] << 8) | data[5];
+				UINT32 siid = (data[3] < 10) ? (UINT32)data[3] * 100000 + siid_lo2 : ((UINT32)data[3] << 16) | siid_lo2;
+				int nrest = *nmsg - total;
+				char rest[R_BUFLEN + 1];
+				// Talleta mahdolliset seuraavat sanomat ennen puskurin ylikirjoitusta
+				if (nrest > 0) memcpy(rest, vastaus->bytes + total, nrest);
+				// Rakennetaan vastaus EMIT-muotoon (0x2020-otsikko, badge XOR 0xDF)
+				// jotta tall_emit voi kasitella sen samoin kuin EMIT-kortin leimausta
+				memset(vastaus->bytes, '\xdf', r_msg_len);
+				vastaus->r12.alku = 0x2020;
+				vastaus->r12.badge[0] = (char)((unsigned char)(siid & 0xFF) ^ 0xDF);
+				vastaus->r12.badge[1] = (char)((unsigned char)((siid >> 8) & 0xFF) ^ 0xDF);
+				vastaus->r12.badge[2] = (char)((unsigned char)((siid >> 16) & 0xFF) ^ 0xDF);
+				vastaus->r12.fill1 = (char)(data[1] ^ 0xDF);  // CN hi (leimasinaseman numero, ylin tavu)
+				add_bdg_t(siid, r_no, 0, 0);   // rekisterointi ajanoton aikajonoon
+				tall_emit(vastaus, NULL, r_no); // leimauksen kasittely
+				*nmsg = nrest;
+				if (nrest > 0) memcpy(vastaus->bytes, rest, nrest);
+				} else {
+				// Liian lyhyt data - ohitetaan sanoma
+				int nrest = *nmsg - total;
+				if (nrest > 0) memmove(vastaus->bytes, vastaus->bytes + total, nrest);
+				*nmsg = nrest;
+				}
+			}
+		return 0;
+		}
+
 // Jos merkkejä on vastaanotettu, tarkastetaan, onko kyseessä virheettömän
 // sanoman alku. Tarkastus koskee 2 tai 10 merkkiä tai koko sanomaa. Jos sanoma
 // ei ala oikein, poistetaan alusta merkkejä yksi kerrallaan, kunnes sanoman
