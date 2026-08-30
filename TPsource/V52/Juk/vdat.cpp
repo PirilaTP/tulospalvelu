@@ -608,7 +608,11 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
 			for (va = 0; va <= kilpparam.maxvaluku; va++) {
 				if (va == 0 || erot.os[os].tulosvaik || erot.os[os].aika[va]) {
 					if (os == Sarjat[kilp.sarja].aosuus[Sarjat[kilp.sarja].yosuus[os]]+1
-						|| (va == 0 && edyos != Sarjat[kilp.sarja].yosuus[os]))
+						|| (va == 0 && edyos != Sarjat[kilp.sarja].yosuus[os])
+						// Rinnakkaisosuudella (nosuus>1) jokainen paikka (esim. 3A/3B/3C)
+						// paivittaa jalku[]-jarjestyslistan omalla valiajallaan (va>0),
+						// ei vain rinnakkaisosuuden ensimmainen paikka.
+						|| (va > 0 && Sarjat[kilp.sarja].nosuus[Sarjat[kilp.sarja].yosuus[os]] > 1))
 						remjarjarr(&kilp,d, Sarjat[kilp.sarja].yosuus[os],va,0);
 					edyos = Sarjat[kilp.sarja].yosuus[os];
 					}
@@ -747,7 +751,11 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
 				for (va = 0; va <= kilpparam.maxvaluku; va++) {
 					if (va == 0 || erot.os[os].tulosvaik || erot.os[os].aika[va]) {
 						if (os == Sarjat[kilp.sarja].aosuus[Sarjat[kilp.sarja].yosuus[os]]+1
-							|| (va == 0 && edyos != Sarjat[kilp.sarja].yosuus[os]))
+							|| (va == 0 && edyos != Sarjat[kilp.sarja].yosuus[os])
+							// Rinnakkaisosuudella (nosuus>1) jokainen paikka (esim. 3A/3B/3C)
+							// paivittaa jalku[]-jarjestyslistan omalla valiajallaan (va>0),
+							// ei vain rinnakkaisosuuden ensimmainen paikka.
+							|| (va > 0 && Sarjat[kilp.sarja].nosuus[Sarjat[kilp.sarja].yosuus[os]] > 1))
 							addjarjarr(&kilp,d, Sarjat[kilp.sarja].yosuus[os],va,0);
 						edyos = Sarjat[kilp.sarja].yosuus[os];
 						}

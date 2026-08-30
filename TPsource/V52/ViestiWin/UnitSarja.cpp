@@ -122,7 +122,7 @@ static wchar_t *julkstr[5] =
 	return(julkstr[taso]);
 }
 //---------------------------------------------------------------------------
-static int valuku = 0, lisarivit0 = 0, lisarivit1 = 0, lisarivit2 = 0, lisarivit3 = 0;
+static int valuku = 0, lisarivit0 = 0, lisarivit1 = 0, lisarivit2 = 0, lisarivit3 = 0, lisarivit4 = 0;
 
 void __fastcall TFormSarja::naytaOsuudet(void)
 {
@@ -137,12 +137,14 @@ void __fastcall TFormSarja::naytaOsuudet(void)
 		lisarivit2 = Sarja1.taslaji % 10;
 	if (wcswcind(kilpparam.alalaji, L"JPR") >= 0)
 		lisarivit3 = 1;
+	if (Sarja1.maxnosuus > 1)
+		lisarivit4 = 1;
 	for (int os = 0; os < Sarja1.ntosuus; os++)
 		if (valuku < Sarja1.valuku[os])
 			valuku = Sarja1.valuku[os];
 
 	SG1->ColCount = Sarja1.ntosuus + 1;
-	SG1->RowCount = valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3;
+	SG1->RowCount = valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3+lisarivit4;
 	if (lisarivit0)
 		SG1->Cells[0][1] = L"Rinn.lkm.";
 	SG1->Cells[0][1+lisarivit0] = L"Matka (km)";
@@ -159,6 +161,10 @@ void __fastcall TFormSarja::naytaOsuudet(void)
 		SG1->Cells[0][5+lisarivit0+lisarivit1+lisarivit2] = L"Lähtöväli";
 	for (int va = 0; va < valuku; va++) {
 		SG1->Cells[0][va+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = UnicodeString(va+1)+L". va-matka";
+		}
+	if (lisarivit4) {
+		SG1->Cells[0][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = L"Rinnakkaisen osuuden ensimmäinen maaliaika käynnistää seuraavan osuuden lähdön (1=kyllä)";
+		SG1->ColWidths[0] = 260 * Screen->PixelsPerInch / 96;
 		}
 	for (int os = 0; os < Sarja1.ntosuus; os++) {
 		SG1->ColWidths[os+1] = 65 * Screen->PixelsPerInch / 96;
@@ -183,6 +189,12 @@ void __fastcall TFormSarja::naytaOsuudet(void)
 					Sarja1.va_matka[os][va]+UnicodeString(JulkSt(Sarja1.va_piilota[os][va]));
 			else
 				SG1->Cells[os+1][va+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = L"";
+			}
+		if (lisarivit4) {
+			if (Sarja1.nosuus[os] > 1)
+				SG1->Cells[os+1][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = (int)Sarja1.ekaMaaliLahettaa[os];
+			else
+				SG1->Cells[os+1][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = L"";
 			}
 		}
 }
@@ -239,6 +251,9 @@ void __fastcall TFormSarja::tallOsuudet(void)
 					}
 				}
 			}
+		if (lisarivit4)
+			Sarja1.ekaMaaliLahettaa[os] = (Sarja1.nosuus[os] > 1) &&
+				(_wtoi(SG1->Cells[os+1][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3].c_str()) != 0);
 		}
 	if (osluku > kilpparam.n_os_akt) {
 		Application->MessageBoxW((UnicodeString(L"¨Korjaa sarjan osuusluku, joka ylittää kilpailun osuusluvun ")+
@@ -461,11 +476,57 @@ void __fastcall TFormSarja::SG1Exit(TObject *Sender)
 void __fastcall TFormSarja::SG1SelectCell(TObject *Sender, int ACol, int ARow, bool &CanSelect)
           
 {
+	if (lisarivit4 && ACol >= 1 && ACol <= Sarja1.ntosuus &&
+		ARow == valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3 &&
+		Sarja1.nosuus[ACol-1] <= 1) {
+		CanSelect = false;
+		return;
+		}
 	if (SG1->Options.Contains(goEditing) && aktrow > 0 && aktrow > 0) {
 		paivitaMuutos(aktcol, aktrow);
 	}
 	aktcol = ACol;
 	aktrow = ARow;	
+}
+//---------------------------------------------------------------------------
+
+// Kiintean (rivinimi-)sarakkeen goColSizing ei koske sarakerajaa 0/1,
+// koska TStringGrid:n sisainen resize-tunnistus ei kata kiintean
+// sarakkeen reunaa. Toteutetaan sen vuoksi vetohiirella manuaalisesti.
+void __fastcall TFormSarja::SG1MouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	if (Button != mbLeft)
+		return;
+	if (Y >= SG1->RowHeights[0])
+		return;
+	if (X >= SG1->ColWidths[0] - 3 && X <= SG1->ColWidths[0] + 3) {
+		col0Resizing = true;
+		col0ResizeStartX = X;
+		col0ResizeStartWidth = SG1->ColWidths[0];
+		}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormSarja::SG1MouseMove(TObject *Sender, TShiftState Shift, int X, int Y)
+{
+	if (col0Resizing) {
+		int neww = col0ResizeStartWidth + (X - col0ResizeStartX);
+		if (neww < 40)
+			neww = 40;
+		SG1->ColWidths[0] = neww;
+		return;
+		}
+	if (Y < SG1->RowHeights[0] &&
+		X >= SG1->ColWidths[0] - 3 && X <= SG1->ColWidths[0] + 3)
+		SG1->Cursor = crSizeWE;
+	else
+		SG1->Cursor = crDefault;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormSarja::SG1MouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	col0Resizing = false;
 }
 //---------------------------------------------------------------------------
 int __fastcall TFormSarja::paivitaMuutos(int col, int row)

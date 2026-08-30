@@ -130,6 +130,7 @@ __published:	// IDE-managed Components
    void __fastcall SarjaValChange(TObject *Sender);
    void __fastcall FormCreate(TObject *Sender);
 	void __fastcall TulosGridDblClick(TObject *Sender);
+	void __fastcall TulosGridDrawCell(TObject *Sender, int ACol, int ARow, TRect &Rect, TGridDrawState State);
 	void __fastcall HylValClick(TObject *Sender);
 	void __fastcall Suuri1Click(TObject *Sender);
 	void __fastcall Normaali1Click(TObject *Sender);

@@ -382,6 +382,7 @@ public:
    int  maxnosuus;
    int  aosuus[MAXOSUUSLUKU+1];
    int  nosuus[MAXOSUUSLUKU];
+   bool ekaMaaliLahettaa[MAXOSUUSLUKU];
 //   int  n_os[MAXOSUUSLUKU];
    int  yosuus[MAXOSUUSLUKU];
    __int64 puutelisa[MAXOSUUSLUKU];
@@ -794,6 +795,7 @@ public:
 	TMAALI osTulos(int osuus, int piste, bool vaadiJoukkueHyv=true);
 	TMAALI tTulos(int osuus, int piste, __int64 *tlslisa = NULL);
 	TMAALI aTulos(int osuus, int piste);
+	int ekaMaaliOsuus(int osuus, int piste);
 	TMAALI kokTulos(bool sekvajaat = false);
 	int ASakkoLkm(int osuus);
 	int TSakkoLkm(int osuus);

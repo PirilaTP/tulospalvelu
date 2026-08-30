@@ -90,6 +90,9 @@ __published:	// IDE-managed Components
 	void __fastcall FormResize(TObject *Sender);
 	void __fastcall SG1Exit(TObject *Sender);
 	void __fastcall SG1SelectCell(TObject *Sender, int ACol, int ARow, bool &CanSelect);
+	void __fastcall SG1MouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
+	void __fastcall SG1MouseMove(TObject *Sender, TShiftState Shift, int X, int Y);
+	void __fastcall SG1MouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall CBSakClick(TObject *Sender);
 	void __fastcall ERinnMaxExit(TObject *Sender);
 	void __fastcall EOsLkmExit(TObject *Sender);
@@ -100,6 +103,9 @@ __published:	// IDE-managed Components
 private:	// User declarations
 	int aktrow;
 	int aktcol;
+	bool col0Resizing;
+	int col0ResizeStartX;
+	int col0ResizeStartWidth;
 	int  __fastcall paivitaMuutos(int col, int row);
 public:		// User declarations
 	__fastcall TFormSarja(TComponent* Owner);

@@ -347,6 +347,14 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 							if (kilpparam.partio && os != Sarjat[Kilp.sarja].osuusluku - 1) {
 								line[0] = 0;
 								}
+							else if (Sarjat[Kilp.sarja].nosuus[yos] > 1 &&
+								Sarjat[Kilp.sarja].ekaMaaliLahettaa[yos] &&
+								Kilp.ekaMaaliOsuus(yos, 0) != os) {
+								// Vain rinnakkaisosuuden ensimmaiseksi maaliin tulleen
+								// rivi nayttaa joukkueen yhteisen tuloksen; muut rivit
+								// nayttavat 00.00.00, jottei sama luku nayta kopioituvan kaikille.
+								wcscpy(line, L"00.00.00");
+								}
 							else {
 								tl = Kilp.tTulos(yos, 0);
 								if (tl != 0) {
@@ -418,7 +426,15 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 							aikatowstr_cols_n(ln, Kilp.Maali(os, va), t0, 0, laika);
 							break;
 						case 1:
-							aikatowstr_cols_n(ln, Kilp.tTulos(yos, va), 0, 0, laika);
+							// Rinnakkaisosuudella vain sen paikan sarake, joka ensin
+							// paasi tahan valiaikaan/maaliin, nayttaa joukkueen
+							// yhteisen tuloksen - muut sarakkeet nayttavat 00:00:00.
+							if (!(Sarjat[Kilp.sarja].nosuus[yos] > 1 &&
+								Sarjat[Kilp.sarja].ekaMaaliLahettaa[yos] &&
+								Kilp.ekaMaaliOsuus(yos, va) != os))
+								aikatowstr_cols_n(ln, Kilp.tTulos(yos, va), 0, 0, laika);
+							else
+								aikatowstr_cols_n(ln, 0, 0, 0, laika);
 							break;
 						case 2:
 							aikatowstr_cols_n(ln, Kilp.osTulos(os, va), 0, 0, laika);

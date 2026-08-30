@@ -34,6 +34,7 @@ object TilanneForm: TTilanneForm
     ParentFont = False
     TabOrder = 0
     OnDblClick = TulosGridDblClick
+    OnDrawCell = TulosGridDrawCell
   end
   object Panel1: TPanel
     Left = 0

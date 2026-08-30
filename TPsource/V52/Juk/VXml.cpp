@@ -209,6 +209,7 @@ static wchar_t *SakLaji[2] = {L"Shooting", L"Other"};
 #define TAGLegResult 			149
 #define TAGLegRank 				150
 #define TAGEmitToSplits		    151
+#define TAGFirstFinishStarts	    152
 
 static wchar_t *srjtag[153] = {
 	L"Event",
@@ -363,7 +364,7 @@ static wchar_t *srjtag[153] = {
 	L"LegResult",
 	L"LegRank",
 	L"EmitToSplits",
-	L""
+	L"FirstFinishStarts"
 	};
 
 int powi(int i, int j)
@@ -596,6 +597,13 @@ static int loadClassLegData(sarjatietue *Sarja, xml_node *node, int *inode, int 
 				case TAGNumberOfCompetitors :
 					node[*inode].gettext_int(&Sarja->nosuus[i_os]);
 					break;
+				case TAGFirstFinishStarts :
+					{
+					int ekafl = 0;
+					node[*inode].gettext_int(&ekafl);
+					Sarja->ekaMaaliLahettaa[i_os] = (ekafl != 0);
+					}
+					break;
 				case TAGDistance :
 					haara = 1;
 					break;
@@ -722,6 +730,7 @@ static int loadClassData(xml_node *node, int nnode)
 			switch (node[inode].tagid) {
 				case TAGClassId :
 					node[inode].gettext(Sarja->sarjanimi, sizeof(Sarja->sarjanimi));
+					upcasestr(Sarja->sarjanimi);
 					break;
 				case TAGName :
 					node[inode].gettext(Sarja->psarjanimi, sizeof(Sarja->psarjanimi));
@@ -1732,6 +1741,8 @@ void kirjXmlClassLegs(TextFl *outfl, sarjatietue *Sarja, int level)
 		outfl->put_wtag(ln, level++);
 		if (Sarja->nosuus[os] > 1)
 			outfl->put_wxml_d(srjtag[TAGNumberOfCompetitors], Sarja->nosuus[os], level);
+		if (Sarja->ekaMaaliLahettaa[os])
+			outfl->put_wxml_d(srjtag[TAGFirstFinishStarts], 1, level);
 		outfl->put_wtag(srjtag[TAGDistance], level++);
 		outfl->put_wxml_s(srjtag[TAGValue], ansitowcs(ln, Sarja->matka[os], 40), level);
 		outfl->put_wantitag(srjtag[TAGDistance], --level);

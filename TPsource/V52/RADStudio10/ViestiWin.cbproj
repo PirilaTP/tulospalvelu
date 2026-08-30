@@ -591,6 +591,12 @@
         <CppCompile Include="..\Juk\VIx.cpp">
             <BuildOrder>48</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\Juk\VRinnakkaisOsuus.cpp">
+            <BuildOrder>31</BuildOrder>
+        </CppCompile>
+        <None Include="..\Juk\VRinnakkaisOsuus.h">
+            <BuildOrder>31</BuildOrder>
+        </None>
         <CppCompile Include="..\Juk\vkilp.cpp">
             <BuildOrder>32</BuildOrder>
         </CppCompile>
