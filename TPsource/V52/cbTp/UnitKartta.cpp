@@ -280,7 +280,17 @@ void __fastcall TFormKartta::naytaLeimat(ratatp *rt, int *tulkinta, char *koodit
 		}
 	if (tulkinta && koodit) {
 		for (int j = 0; j < MAXNLEIMA; j++) {
-			if (koodit[j] && tulkinta[j] == 0) {
+			int dup = 0;
+			if (koodit[j])
+				for (int j2 = 0; j2 < MAXNLEIMA; j2++)
+					if (koodit[j2] == koodit[j])
+						dup++;
+			// tulkinta[j] == 0: raw code tarkista() couldn't match to this course at all.
+			// dup > 1: this physical unit was punched more than once (a genuine repeat
+			// stamp), regardless of which occurrence tarkista() happened to accept -
+			// this avoids flagging every earlier control when a single missing control
+			// later on throws tarkista()'s backward matching out of sync.
+			if (koodit[j] && (tulkinta[j] == 0 || dup > 1)) {
 				// Use the same logic as in the emit report. There can be up to four identical emit codes across different controls.
 				n = 4;
 				haerastit(koodit[j], tlk, &n);
