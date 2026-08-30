@@ -483,6 +483,10 @@ object FormOsanottajat: TFormOsanottajat
         Caption = 'Ik'#228'sarja (&g)'
         OnClick = Iksarjag1Click
       end
+      object Synt1: TMenuItem
+        Caption = 'Syn&t'
+        OnClick = Synt1Click
+      end
       object Vaiheensarja1: TMenuItem
         Caption = '&Vaiheen sarja'
         OnClick = Vaiheensarja1Click
