@@ -285,6 +285,10 @@
     <File Path="..\cbHk\WinHk.dfm"/>
     <File Path="..\cbHk\WinHk.h"/>
     <File Path="..\cbHk\WinParamXml.cpp"/>
+    <File Path="..\cbHk\UnitLahtoRistiriita.cpp"/>
+    <File Path="..\cbHk\UnitLahtoRistiriita.cpp"/>
+    <File Path="..\cbHk\UnitLahtoRistiriita.dfm"/>
+    <File Path="..\cbHk\UnitLahtoRistiriita.h"/>
     <File Path="..\cbTp"/>
     <File Path="..\cbTp\cbTpApu.cpp"/>
     <File Path="..\cbTp\UnitAikakorjaus.cpp"/>

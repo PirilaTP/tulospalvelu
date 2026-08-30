@@ -63,6 +63,7 @@
 //#include "UnitLahtoajat.h"
 #include "UnitMySQL.h"
 #include "UnitRadat.h"
+#include "UnitLahtoRistiriita.h"
 #include "UnitMessages.h"
 #include "UnitKilpSeurat.h"
 #include "UnitAikaSiirto.h"
@@ -1580,6 +1581,18 @@ void __fastcall TFormMain::Ratatiedot1Click(TObject *Sender)
 	if (FormRadat->WindowState == wsMinimized)
 		FormRadat->WindowState = wsNormal;
 	FormRadat->BringToFront();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormMain::TarkistaLahtoajat1Click(TObject *Sender)
+{
+	if (!FormLahtoRistiriita) {
+		FormLahtoRistiriita = new TFormLahtoRistiriita(FormMain);
+	}
+	FormLahtoRistiriita->Show();
+	if (FormLahtoRistiriita->WindowState == wsMinimized)
+		FormLahtoRistiriita->WindowState = wsNormal;
+	FormLahtoRistiriita->BringToFront();
 }
 //---------------------------------------------------------------------------
 void ProsEmitThread(LPVOID)
