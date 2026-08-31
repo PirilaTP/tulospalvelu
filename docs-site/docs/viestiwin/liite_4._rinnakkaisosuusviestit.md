@@ -49,3 +49,47 @@ merkintää hylkäyksestä, keskeyttämisestä tai ei-lähtemisestä. Mukana ova
 ne osuudet,
 jotka on suljettu aiemman osuuden tällaisen merkinnän
 takia, ellei merkintää ole ulotettu myöhemmille osuuksille.
+
+## Rinnakkaisen osuuden ensimmäinen maaliaika käynnistää seuraavan osuuden lähdön
+
+Rinnakkaisosuuksia sisältävälle sarjalle voidaan osuuskohtaisesti valita, että
+joukkueen tulosta ei lasketa vasta kun kaikki kyseisen osuuden rinnakkaiset
+juoksijat (esim. 3A, 3B ja 3C) ovat maalissa, vaan heti kun *ensimmäinen*
+heistä saapuu maaliin. Asetus tehdään *Sarjan lisäys ja muokkaus*
+-kaavakkeen taulukossa rivillä *Rinnakkaisen osuuden ensimmäinen maaliaika
+käynnistää seuraavan osuuden lähdön (1=kyllä)*. Rivi näkyy taulukossa
+automaattisesti, kun sarjassa on vähintään yksi rinnakkaisosuus, ja arvon 1
+voi kirjoittaa vain niiden osuuksien sarakkeisiin, joilla on useampi kuin
+yksi rinnakkainen juoksija.
+
+Kun asetus on käytössä osuudelle:
+
+- Joukkueen osuustulokseksi ja sijoitukseksi kirjataan sen rinnakkaisen
+  juoksijan aika, joka ensimmäisenä saapuu maaliin — muiden rinnakkaisten
+  juoksijoiden aikoja ei enää odoteta.
+- Sama ensimmäinen maaliintuloaika käynnistää myös joukkueen seuraavan
+  osuuden lähtöajan, eli vaihto tapahtuu heti ensimmäisen rinnakkaisen
+  juoksijan saapuessa, ei vasta kun kaikki kolme ovat vaihtaneet.
+- Jos ensimmäisenä maaliin tullut juoksija myöhemmin hylätään, joukkueen
+  osuustulos perii tämän hylkäyksen — sitä ei korvata jonkun toisen
+  rinnakkaisen juoksijan (esim. myöhemmin maaliin tulleen) hyväksytyllä
+  ajalla.
+- Kun ensimmäinen maaliaika on kerran määrännyt seuraavan osuuden lähdön,
+  se pysyy voimassa, vaikka ohjelma myöhemmin laskisi sarjalle uuden
+  yhteislähtöajan — yhteislähtö ei siis avaa jo lukittua lähtöä uudelleen.
+
+Ominaisuus näkyy myös seuranta- ja tulosnäytöillä:
+
+- *Tilanne pisteessä* -näytöllä ratkaisevan (ensimmäisenä maaliin tulleen)
+  juoksijan nimi lihavoidaan rinnakkaisosuuden rivillä; muiden rinnakkaisten
+  juoksijoiden nimet näkyvät tavallisella tyylillä. Suodattimet *1 puuttuu*
+  ja *2 puuttuu* piilotetaan automaattisesti, kun tarkasteltava osuus
+  käyttää tätä asetusta, koska "puuttuvien" määrä ei enää ole merkityksellinen
+  tieto sen jälkeen kun ensimmäinen aika on ratkaissut tuloksen; suodatin
+  *Täysi osuus* toimii edelleen.
+- *Joukkuetiedot*-näytön väliaikataulukossa (*Näytä väliajoista* → *Tulos*)
+  näytetään joukkueen yhteinen tulos vain ratkaisevan juoksijan sarakkeessa;
+  muiden rinnakkaisten juoksijoiden sarakkeissa näkyy 00:00:00. Jos halutaan
+  nähdä jokaisen rinnakkaisen juoksijan oma henkilökohtainen väliaika,
+  valitaan *Näytä väliajoista* → *OsTls*; tässä tilassa taulukko on
+  kuitenkin vain luettavissa, ei muokattavissa.

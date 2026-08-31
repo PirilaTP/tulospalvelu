@@ -271,18 +271,26 @@ void __fastcall TTilanneForm::PaivitaGrid(bool scroll)
 	Va = IkkParam.Va;
 	Sarja = IkkParam.Sarja;
 
+	// Nama kolme suodatinta koskevat vain TARKASTELTAVAA osuutta: nakyvat
+	// vain jos taman osuuden nosuus>1 (oikeasti rinnakkainen), ja 1puute/2puute
+	// piilotetaan lisaksi, jos osuudella on kaytossa ekaMaaliLahettaa - talloin
+	// tulosta ei enaa odoteta puuttuvilta rinnakkaisilta juoksijoilta.
 	bool onRinnakkainen = Sarjat[Sarja].nosuus[Osuus] > 1;
-	bool piiloEkaMaali = onRinnakkainen && Sarjat[Sarja].ekaMaaliLahettaa[Osuus];
-	CBkaikki->Visible = kilpparam.maxnosuus > 1 && onRinnakkainen;
+	bool ekaMaaliKaytossa = onRinnakkainen && Sarjat[Sarja].ekaMaaliLahettaa[Osuus];
+	CBkaikki->Visible = onRinnakkainen && !ekaMaaliKaytossa;
 	CBkaikki->Enabled = CBkaikki->Visible;
-	CB1puute->Visible = kilpparam.maxnosuus > 1 && !piiloEkaMaali;
+	if (ekaMaaliKaytossa)
+		// Kaavake piilotetaan, mutta suodatin pidetaan paalla, jotta
+		// tuloksen saaneet rivit (t > 5*SEK) nakyvat edelleen listassa.
+		CBkaikki->Checked = true;
+	CB1puute->Visible = onRinnakkainen && !ekaMaaliKaytossa;
 	CB1puute->Enabled = CB1puute->Visible;
-	CB2puute->Visible = kilpparam.maxnosuus > 2 && !piiloEkaMaali;
+	CB2puute->Visible = Sarjat[Sarja].nosuus[Osuus] > 2 && !ekaMaaliKaytossa;
 	CB2puute->Enabled = CB2puute->Visible;
-	if (piiloEkaMaali) {
+	if (!CB1puute->Visible)
 		CB1puute->Checked = false;
+	if (!CB2puute->Visible)
 		CB2puute->Checked = false;
-		}
 
 	aos = Sarjat[Sarja].aosuus[IkkParam.Osuus] + 1;
 	NimiJarj = Etunimiensin1->Checked ? -1 : 1;
@@ -716,6 +724,11 @@ void __fastcall TTilanneForm::FormActivate(TObject *Sender)
 	for (int va = 1; va <= kilpparam.maxvaluku; va++)
 		PisteVal->Items->Add(UnicodeString(va)+L". väliaika");
 	PisteVal->ItemIndex = IkkParam.Va+1;
+	// Alustaa mm. CBkaikki/CB1puute/CB2puute-suodattimien nakyvyyden heti
+	// kaavakkeen avautuessa. Taytyy tehda vasta taalla (ei FormShow:ssa),
+	// koska PaivitaGrid lukee Sarja/OsVal-yhdistelmaruudut, jotka taytetaan
+	// vasta talla FormActivate-kasittelijalla.
+	PaivitaGrid(false);
 }
 //---------------------------------------------------------------------------
 
