@@ -398,6 +398,11 @@ void merk_sijat(int srj, int osuus, int va, int sija)
 			 }
 		  jp = JarjSeur(yhd, osuus, va, jp);
 		  sj++;
+		  if (sj > nilmt+1) {
+			  // Turvaraja: estaa aarettoman silmukan, jos jrjseur[]-listaan
+			  // on paatynyt kehamainen linkitys (sama suoja kuin entsija/intsija:ssa).
+			  break;
+			  }
 		  }
 	   }
    else {
@@ -416,6 +421,11 @@ void merk_sijat(int srj, int osuus, int va, int sija)
 			 }
 		  jp = OsJarjSeur(yhd, srj, &eos, jp);
 		  sj++;
+		  if (sj > kilpparam.maxnosuus*nilmt+1) {
+			  // Turvaraja: estaa aarettoman silmukan, jos OsJarjSeur-listaan
+			  // on paatynyt kehamainen linkitys (sama suoja kuin entossija/intossija:ssa).
+			  break;
+			  }
 		  }
 	   }
    }
