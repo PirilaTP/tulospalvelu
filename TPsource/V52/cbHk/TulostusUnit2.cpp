@@ -254,17 +254,18 @@ void __fastcall TTulosteForm::FormCreate(TObject *Sender)
 	EdtLisaTekstiOo->Width = 200;
 	EdtLisaTekstiOo->MaxLength = 200;
 
+	int dpi = Screen->PixelsPerInch;
 	LblLisaTekstiTul = new TLabel(this);
 	LblLisaTekstiTul->Parent = TabSheetTulokset;
 	LblLisaTekstiTul->Caption = L"Lisäteksti:";
-	LblLisaTekstiTul->Left = 8;
-	LblLisaTekstiTul->Top = 360;
+	LblLisaTekstiTul->Left = MulDiv(8, dpi, 96);
+	LblLisaTekstiTul->Top = MulDiv(360, dpi, 96);
 
 	EdtLisaTekstiTul = new TEdit(this);
 	EdtLisaTekstiTul->Parent = TabSheetTulokset;
-	EdtLisaTekstiTul->Left = 8;
-	EdtLisaTekstiTul->Top = 376;
-	EdtLisaTekstiTul->Width = 200;
+	EdtLisaTekstiTul->Left = MulDiv(8, dpi, 96);
+	EdtLisaTekstiTul->Top = MulDiv(376, dpi, 96);
+	EdtLisaTekstiTul->Width = MulDiv(200, dpi, 96);
 	EdtLisaTekstiTul->MaxLength = 200;
 }
 //---------------------------------------------------------------------------
@@ -442,13 +443,13 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 			int Paivat, jonot = 1;
 
 			Paivat = CBLlPaivat->ItemIndex;
-			if (KohdeIndex == 1 && wcswcind(tiedTyyppi, L"RIHBA") < 0) {
+			if (KohdeIndex == 1 && wcswcind(tiedTyyppi, L"RIHBAX") < 0) {
 				Application->MessageBoxW(L"Lähtöluettelon sallitut tiedostotyypit ovat"
-					L" 'kentät erotettuina', 'kentät kohdistettuina', HTML, 'WebScorer'"
-					L" ja 'Takaa-ajon ajat kellolle'", L"Rajoitus", MB_OK);
+					L" 'kentät erotettuina', 'kentät kohdistettuina', HTML, 'WebScorer',"
+					L" 'IOF standardi V 3.0' ja 'Takaa-ajon ajat kellolle'", L"Rajoitus", MB_OK);
 				break;
 				}
-			if (wcswcind(OoTulostettava[CBOoSisalto->ItemIndex], L"LR") >= 0) {
+			if (wcswcind(OoTulostettava[CBOoSisalto->ItemIndex], L"LR") >= 0 || tiedTyyppi == L'X') {
 				if (Paivat < 1) {
 					Application->MessageBoxW(L"Valitse yksi vaihe", L"Virhe", MB_OK);
 					err = 1;
@@ -599,7 +600,8 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 					break;
 				}
 			if (tulostettava[CBSisalto->ItemIndex] == L'F' &&
-				(k_pv > 0 || kohde[KohdeIndex] != L'I' || (tiedTyyppi != L'H' && tiedTyyppi != L'M'))) {
+				(kohde[KohdeIndex] != L'I' ||
+				 (tiedTyyppi != L'H' && tiedTyyppi != L'M' && wcswcind(tiedTyyppi, L"VXWY") < 0))) {
 				Application->MessageBoxW(L"Pyydetty tulosteyhdistelmä ei käytettävissä tähän tulosteeseen",
 					L"Rajoitus", MB_OK);
 				break;

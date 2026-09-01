@@ -8067,8 +8067,8 @@ int list(wchar_t kohde, wchar_t tiedlaji, wchar_t tulostettava, wchar_t jarjesty
 		if (tulprm.kohde != L'X') {
 			TulosJaEmit = 1;
             tulprm.TlsJaRva = pisteval != L'N' ? 1 : 2;
+			tulostettava = L'T';
 			}
-		tulostettava = L'T';
 		}
 	tulprm.tulostettava = tulostettava;
 
