@@ -41,6 +41,7 @@
 #if defined(SPORTIDENT)
 #include "SICenterJson.h"
 #endif
+#include "EmitBadge.h"
 #include "IRfidReader.h"
 
 #include <wincom.h>
@@ -1008,7 +1009,7 @@ static emittp *ed_em[NREGNLY];
 	  em.package = 20000000L + r_no;
 	  for (i = 0; i < r_msg_len[r_no]; i++)
 		 vastaus->bytes[i] ^= '\xdf';
-	  em.badge = *(UINT32 *) vastaus->r12.badge & 0xffffffL;
+	  em.badge = combineBadge24LE((unsigned char) vastaus->r12.badge[0], (unsigned char) vastaus->r12.badge[1], (unsigned char) vastaus->r12.badge[2]);
 	  em.badgeweek = vastaus->r12.week;
 	  em.badgeyear = vastaus->r12.year;
 #if !defined(LUENTA)

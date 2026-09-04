@@ -468,6 +468,7 @@
     <File Path="..\Tp\SICenterJson.cpp"/>
     <File Path="..\Tp\SITulkinta.cpp"/>
     <File Path="..\Tp\SID3Punch.cpp"/>
+    <File Path="..\Tp\EmitBadge.cpp"/>
     <File Path="..\..\..\TPexe"/>
     <File Path="..\..\..\TPexe\Lib"/>
     <File Path="..\..\..\TPexe\Lib\V521"/>

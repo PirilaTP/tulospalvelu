@@ -647,6 +647,9 @@
         <CppCompile Include="..\Tp\SID3Punch.cpp">
             <BuildOrder>150</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\Tp\EmitBadge.cpp">
+            <BuildOrder>151</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\Tp\SiritReader.cpp">
             <BuildOrder>146</BuildOrder>
         </CppCompile>
