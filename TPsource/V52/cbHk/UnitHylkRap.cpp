@@ -228,7 +228,7 @@ void  TFormHylkRap::hylk_rap(tulostusparamtp *tulprm)
 	tulprm->Putfld(L"Ongelma / Problem", m, 30, 0, 0);
 	if (RGLuonne->ItemIndex > 0)
 		tulprm->Putfld(RGLuonne->ItemIndex == LUONNE_EI_LUETTU && IsSportidentInUse() ?
-			L"SportIdent-korttia ei ole luettu / SportIdent card not read" :
+			(wchar_t *) L"SportIdent-korttia ei ole luettu / SportIdent card not read" :
 			LuonneStr[RGLuonne->ItemIndex], m+x1, 40, 0, 0);
 	tulprm->Endline(1);
 	tulprm->Putfld(L"Piikinjäljet / Control card", m, 40, 0, 0);
