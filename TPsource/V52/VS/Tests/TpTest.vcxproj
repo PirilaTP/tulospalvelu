@@ -87,8 +87,10 @@
     <ClCompile Include="..\..\Tests\DoctestMain.cpp" />
     <ClCompile Include="..\..\Tests\TulkSITest.cpp" />
     <ClCompile Include="..\..\Tests\SICenterJsonTest.cpp" />
+    <ClCompile Include="..\..\Tests\SID3PunchTest.cpp" />
     <ClCompile Include="..\..\Tp\SITulkinta.cpp" />
     <ClCompile Include="..\..\Tp\SICenterJson.cpp" />
+    <ClCompile Include="..\..\Tp\SID3Punch.cpp" />
     <ClCompile Include="..\..\tputilv2\T_time_l.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +98,7 @@
     <ClInclude Include="..\..\include\sitypes.h" />
     <ClInclude Include="..\..\Tp\SITulkinta.h" />
     <ClInclude Include="..\..\Tp\SICenterJson.h" />
+    <ClInclude Include="..\..\Tp\SID3Punch.h" />
     <ClInclude Include="..\..\Tests\doctest.h" />
     <ClInclude Include="..\..\Tests\WideString.h" />
     <ClInclude Include="..\..\Tp\TpDef.h" />

@@ -467,6 +467,7 @@
     <File Path="..\Tp\ZebraReader.cpp"/>
     <File Path="..\Tp\SICenterJson.cpp"/>
     <File Path="..\Tp\SITulkinta.cpp"/>
+    <File Path="..\Tp\SID3Punch.cpp"/>
     <File Path="..\..\..\TPexe"/>
     <File Path="..\..\..\TPexe\Lib"/>
     <File Path="..\..\..\TPexe\Lib\V521"/>
