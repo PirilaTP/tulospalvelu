@@ -202,6 +202,7 @@
     <ClCompile Include="..\..\Tp\TpLaitteet.cpp" />
     <ClCompile Include="..\..\Tp\SITulkinta.cpp" />
     <ClCompile Include="..\..\Tp\SICenterJson.cpp" />
+    <ClCompile Include="..\..\Tp\SID3Punch.cpp" />
     <ClCompile Include="..\..\Tp\SiritReader.cpp" />
     <ClCompile Include="..\..\Tp\ZebraReader.cpp" />
   </ItemGroup>

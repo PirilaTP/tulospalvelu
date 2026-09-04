@@ -12,8 +12,10 @@ ${CXX:-g++} -Wall -o "$OUT" \
 	Tests/DoctestMain.cpp \
 	Tests/TulkSITest.cpp \
 	Tests/SICenterJsonTest.cpp \
+	Tests/SID3PunchTest.cpp \
 	Tp/SITulkinta.cpp \
 	Tp/SICenterJson.cpp \
+	Tp/SID3Punch.cpp \
 	tputilv2/T_time_l.cpp
 
 exec "$OUT" "$@"

@@ -42,6 +42,7 @@
 #endif
 #include "TpLaitteet.h"
 #include "IRfidReader.h"
+#include "SID3Punch.h"
 
 #include <wincom.h>
 
@@ -1044,8 +1045,7 @@ static int lue_LUKIJA(int r_no, int cn, san_type *vastaus, int *nmsg,
 			// SI9+-kortit (SN2 >= 10): korttinumero = (SN2<<16) | (SN1<<8) | SN0
 			if (cmd == 0xD3 && dlen >= 9) {
 				unsigned char *data = (unsigned char*)vastaus->bytes + 4;
-				UINT32 siid_lo2 = ((UINT32)data[4] << 8) | data[5];
-				UINT32 siid = (data[3] < 10) ? (UINT32)data[3] * 100000 + siid_lo2 : ((UINT32)data[3] << 16) | siid_lo2;
+				UINT32 siid = decodeD3Siid(data[3], data[4], data[5]);
 				int nrest = *nmsg - total;
 				char rest[R_BUFLEN + 1];
 				// Talleta mahdolliset seuraavat sanomat ennen puskurin ylikirjoitusta
@@ -1084,8 +1084,7 @@ static int lue_LUKIJA(int r_no, int cn, san_type *vastaus, int *nmsg,
 		if (*nmsg >= total && (unsigned char)vastaus->bytes[total - 1] == 0x03) {
 			if (dlen >= 9) {
 				unsigned char *data = (unsigned char*)vastaus->bytes + 3;
-				UINT32 siid_lo2 = ((UINT32)data[4] << 8) | data[5];
-				UINT32 siid = (data[3] < 10) ? (UINT32)data[3] * 100000 + siid_lo2 : ((UINT32)data[3] << 16) | siid_lo2;
+				UINT32 siid = decodeD3Siid(data[3], data[4], data[5]);
 				int nrest = *nmsg - total;
 				char rest[R_BUFLEN + 1];
 				// Talleta mahdolliset seuraavat sanomat ennen puskurin ylikirjoitusta
