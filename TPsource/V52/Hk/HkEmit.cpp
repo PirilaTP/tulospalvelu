@@ -977,16 +977,6 @@ INT bdg2kno(INT32 badge)
    else return(0);
    }
 
-bool IsSportidentInUse(void)
-   {
-   if (kilpparam.badgelaji == L'I')
-      return true;
-   for (int i = 0; i < NREGNLY; i++)
-      if (regnly[i] == LID_SPORTIDENT)
-         return true;
-   return false;
-   }
-
 #ifdef TESTBDG
 void bdgstatus(void)
    {

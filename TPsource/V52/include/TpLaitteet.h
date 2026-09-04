@@ -63,6 +63,7 @@ int kbdiv1(char ch,char ch2);
 void tee_aika(int laji);
 INT start_regnly(INT r_no);
 void rem_regnly(INT r_no);
+bool IsSportidentInUse(void);
 
 /*
 static INT32 ec_strtoaika(char *st, int t0, int *i_pv);

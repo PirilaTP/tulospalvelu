@@ -33,14 +33,6 @@ static FILE *testifl;
 static wchar_t testiflnm[] = L"emitrek.lst";
 extern luentatesti;
 
-static bool SportIdentKaytossa(void)
-{
-	for (int i = 0; i < NREGNLY; i++)
-		if (regnly[i] == LID_SPORTIDENT)
-			return true;
-	return false;
-}
-
 //---------------------------------------------------------------------------
 __fastcall TFormLuenta::TFormLuenta(TComponent* Owner)
 	: TForm(Owner)
@@ -248,7 +240,7 @@ void __fastcall TFormLuenta::EdtViivakoodiKeyPress(TObject *Sender, System::Wide
 			if (Osuus >= 0 && Osuus < kilpparam.osuusluku && (DKilp = getpos(Kilpno)) > 0) {
 				if (!NaytaJoukkue()) {
 					Key = 0;
-					EdtMsg->Text = SportIdentKaytossa() ? L"Lue SPORTident" : L"Lue Emit-kortti";
+					EdtMsg->Text = IsSportidentInUse() ? L"Lue SPORTident" : L"Lue Emit-kortti";
 					EdtMsg->Color = clLime;
 					FocusControl(EdtVahvistus);
 					}
@@ -501,7 +493,7 @@ void __fastcall TFormLuenta::EdtOsuusKeyPress(TObject *Sender, System::WideChar 
 			(DKilp = getpos(Kilpno)) > 0 && EdtOsuus->Text.Length() > 0  &&
 			(Osuus = tulkOsuuskoodi(sarjaKno(Kilpno), EdtOsuus->Text.c_str())) >= 0 && Osuus < kilpparam.osuusluku) {
 			if (!NaytaJoukkue()) {
-				EdtMsg->Text = SportIdentKaytossa() ? L"Lue SPORTident" : L"Lue Emit-kortti";
+				EdtMsg->Text = IsSportidentInUse() ? L"Lue SPORTident" : L"Lue Emit-kortti";
 				EdtMsg->Color = clLime;
 				FocusControl(EdtVahvistus);
             	}

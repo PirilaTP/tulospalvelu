@@ -101,20 +101,20 @@ void __fastcall TFormEmit::FormCreate(TObject *Sender)
 			MTRlaitteenohjaus1->Visible = true;
 		if (regnly[i] == LID_EMITAG)
 			emiTagluennanohjaus1->Visible = true;
-		if (regnly[i] == LID_SPORTIDENT) {
-			Caption = L"Sportident-tiedot";
-			Label2->AutoSize = true;
-			Label2->Caption = L"Sportident";
-			if (kilpparam.kaksibadge != 2) {
-				LblOrigBadge->AutoSize = true;
-				LblOrigBadge->Caption = L"Luettu sportident";
-				}
-			EdtBadge->Left     = 90;
-			LblOrigBadge->Left = 162;
-			EdtOrigBadge->Left = 280;
-			Label9->Left       = 341;
-			EdtTietue->Left    = 381;
+		}
+	if (IsSportidentInUse()) {
+		Caption = L"Sportident-tiedot";
+		Label2->AutoSize = true;
+		Label2->Caption = L"Sportident";
+		if (kilpparam.kaksibadge != 2) {
+			LblOrigBadge->AutoSize = true;
+			LblOrigBadge->Caption = L"Luettu sportident";
 			}
+		EdtBadge->Left     = 90;
+		LblOrigBadge->Left = 162;
+		EdtOrigBadge->Left = 280;
+		Label9->Left       = 341;
+		EdtTietue->Left    = 381;
 		}
 #ifdef DBGFILE
 	if (dbgtofile)

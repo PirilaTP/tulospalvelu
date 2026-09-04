@@ -100,6 +100,21 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int r_buflen, int r_msg_len);
 void paivitaEcdata(void);
 
+// SportIdent on kaytossa, jos suoralukija (LID_SPORTIDENT) tai SRR-dongle
+// (LID_SRRLUKIJA, Air+-radioleimaus) on konfiguroitu johonkin lukijapaikkaan,
+// tai kilpailun badge-laji on erikseen asetettu SportIdentiksi
+// (kilpparam.badgelaji == 'I'). Hk ja Juk jakavat taman TpLaitteet.cpp:n
+// kautta - ks. tiedoston alun #include HkDeclare.h/VDeclare.h -valinta.
+bool IsSportidentInUse(void)
+	{
+	if (kilpparam.badgelaji == L'I')
+		return true;
+	for (int i = 0; i < NREGNLY; i++)
+		if (regnly[i] == LID_SPORTIDENT || regnly[i] == LID_SRRLUKIJA)
+			return true;
+	return false;
+	}
+
 #ifdef _CONSOLE
 void paivitaEcdata(void){}
 #endif
