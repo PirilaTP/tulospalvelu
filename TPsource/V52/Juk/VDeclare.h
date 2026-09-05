@@ -680,6 +680,7 @@ extern   bool esta_uusikaytto;
 
 extern   INT  ajatfl, ilmlainat, emitkd, relax, emitsivu, emittoisto;
 extern   INT  siritreuna;
+extern   INT  srrkorttiaika;
 extern	 bool siritloki;
 extern	 bool siritsync;
 extern	 int sirithead, sirittail;

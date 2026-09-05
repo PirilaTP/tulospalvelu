@@ -659,19 +659,34 @@ int siritaika(INT32 *t, san_type *vastaus, aikatp *ut, INT *jono, int r_no)
 			}
 		if (p) {
 			SYSTEMTIME stm;
+			INT32 cardT;
 
-			// Tallennetaan tietokoneen paikallinen kello, ei kortin/aseman omaa
-			// (mahd. synkronoimatonta) kelloa - lokiin molemmat vertailua varten.
+			// Puretaan kortin/aseman oma (mahd. synkronoimaton) aika ja tietokoneen
+			// kello - SRRKORTTIAIKA valitsee kumpi niista tallennetaan, oletuksena
+			// tietokoneen kello. Molemmat kirjataan lokiin vertailua varten.
+			strncpy(st, p+17, 12);
+			st[12] = 0;
+			st[2] = 0;
+			st[5] = 0;
+			st[8] = 0;
+			cardT = 3600000L * atol(st) + 60000L * atol(st+3) + 1000L * atol(st+6) + atol(st+9)
+				+ t0_regn[r_no];
+			cardT = NORMKELLO_A(10*cardT);
 			GetLocalTime(&stm);
 			if (loki) {
-				char msg[160];
-				sprintf(msg, "SRR/SIRIT: kortin aika %.12s, tallennettu tietokoneen aika %02d:%02d:%02d.%03d (badge %ld)",
-					p+17, stm.wHour, stm.wMinute, stm.wSecond, stm.wMilliseconds, (long) bdg);
+				char msg[180];
+				sprintf(msg, "SRR/SIRIT: kortin aika %.12s, tietokoneen aika %02d:%02d:%02d.%03d, tallennettu %s (badge %ld)",
+					p+17, stm.wHour, stm.wMinute, stm.wSecond, stm.wMilliseconds,
+					srrkorttiaika ? "kortin aika" : "tietokoneen aika", (long) bdg);
 				kirjloki(msg);
 				}
-			*t = 3600000L * stm.wHour + 60000L * stm.wMinute + 1000L * stm.wSecond + stm.wMilliseconds
-				+ t0_regn[r_no];
-			*t = NORMKELLO_A(10*(*t));
+			if (srrkorttiaika)
+				*t = cardT;
+			else {
+				*t = 3600000L * stm.wHour + 60000L * stm.wMinute + 1000L * stm.wSecond + stm.wMilliseconds
+					+ t0_regn[r_no];
+				*t = NORMKELLO_A(10*(*t));
+				}
 			p = strstr(vastaus->bytes, "antenna=");
 #ifndef MAXOSUUSLUKU
 			if (p) {

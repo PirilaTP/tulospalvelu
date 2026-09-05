@@ -2308,6 +2308,14 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			   }
 			continue;
 			}
+		 // SRRKORTTIAIKA: SRR-donglen/SIRIT-lukijan Air+-leimauksissa tallennetaan
+		 // oletuksena tietokoneen kello (ei kortin/aseman omaa, mahd. synkronoimatonta
+		 // kelloa) - ks. siritaika() Tp/TpLaitteet.cpp:ssa. Tama parametri palauttaa
+		 // vanhan toiminnan (kortin/aseman oma aika).
+		 if( !wmemcmpU(fldn, L"SRRKORTTIAIKA",13)) {
+			srrkorttiaika = 1;
+			continue;
+			}
 		 if( !wmemcmpU(fldn, L"LUKIJA",6)) {
 			pos = 6;
 			ny = yhteys_no(fldn, &pos) - 1;

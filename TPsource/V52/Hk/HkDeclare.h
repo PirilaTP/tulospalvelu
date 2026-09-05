@@ -864,6 +864,7 @@ extern   INT *emitjarr[2];
 extern   INT emittime;
 extern   INT  ohitatoisto;
 extern   INT  siritreuna;
+extern   INT  srrkorttiaika;
 extern	 bool siritloki;
 extern	 bool siritsync;
 extern	 int sirithead, sirittail;

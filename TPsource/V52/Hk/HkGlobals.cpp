@@ -508,6 +508,7 @@
 	int pollaa, TCPpoll[NREGNLY+1];
 	INT  ohitatoisto = -1;
 	INT  siritreuna = 1;
+	INT  srrkorttiaika = 0;         // 0 = tallenna tietokoneen aika (oletus), 1 = kortin/aseman oma aika
 	bool siritloki = false;
 	bool siritsync = false;
 	int sirithead, sirittail;
