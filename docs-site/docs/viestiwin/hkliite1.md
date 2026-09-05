@@ -177,5 +177,5 @@ tapaukissa muuttaa ohjelma kirjaimet isoiksi ennen käyttöä.
 | --- | --- |
 | TAULU\_COM=x TAULU\_BAUD= TAULUVIIVE=xx GAZ=x GAZVAIHE=x GAZRIVIy= | Erilaisten tulostaulujen ohjaukseen liittyviä parametreja |
 | SIRIT SIRITREUNA SIRITARRIVE SIRITDEPART IMPINJ  RFID-tunnisteiden ajanottokäyttöön liittyviä parametreja | |
-| SRRKORTTIAIKA | SRR-donglen (myös Zebra-lukijan, joka muotoilee tagit samaan tekstimuotoon) Air+-leimauksissa tallennetaan oletuksena tietokoneen kello, ei kortin/aseman omaa - mahdollisesti synkronoimatonta - kelloa; molemmat kirjataan lokiin. Tämä parametri palauttaa vanhan toiminnan (kortin/aseman oma aika). |
+| SRRKORTTIAIKA | SRR-donglen (myös Zebra-lukijan, joka muotoilee tagit samaan tekstimuotoon) Air+-leimauksissa tallennetaan oletuksena tietokoneen kello, ei kortin/aseman omaa - mahdollisesti synkronoimatonta - kelloa; molemmat kirjataan lokiin, jos LOKI on käytössä (ks. LOKI(=tnimi) yllä; oletustiedosto LOKI1.LST). Tämä parametri palauttaa vanhan toiminnan (kortin/aseman oma aika). |
 | SW2000=xx | Uinnin SW2000 kellolaite käytössä |
