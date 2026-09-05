@@ -1074,11 +1074,13 @@ static int lue_LUKIJA(int r_no, int cn, san_type *vastaus, int *nmsg,
 			// Komento 0xD3 lahetetaan kun SIAC-kortti leimaa rastilla langattomasti.
 			// data[0] = CN lo (leimasinaseman numero, alin tavu)
 			// data[1] = CN hi (leimasinaseman numero, ylin tavu)
-			// data[2] = SI-kortin sarjanumeron ylin tavu (SN3)
-			// data[3] = SI-kortin sarjanumeron 2. tavu (SN2): < 10 = SI5-sarja, >= 10 = SI9+
-			// data[4..5] = SI-kortin sarjanumeron 2 alinta tavua (SN1, SN0)
-			// SI5-kortit (SN2 < 10): korttinumero = SN2 * 100000 + (SN1<<8 | SN0)
-			// SI9+-kortit (SN2 >= 10): korttinumero = (SN2<<16) | (SN1<<8) | SN0
+			// data[2] = SI-kortin sarjanumeron ylin tavu (SN3, ei kaytossa)
+			// data[3..5] = SI-kortin sarjanumero (SN2, SN1, SN0), 24-bit big-endian:
+			// korttinumero = (SN2<<16) | (SN1<<8) | SN0. Sama kaava kaikille
+			// D3-sanoman lahettavista korttisukupolvista (SI6, SI9+, SIAC) -
+			// SI5 ei koskaan lahetta D3-sanomaa (ei Air+/langatonta laitteistoa),
+			// joten sen oma, eri kaava (klassisen B1-luennan CN/CNS-kentat) ei
+			// koske tata. Ks. decodeD3Siid() Tp/SID3Punch.cpp:ssa.
 			if (cmd == 0xD3 && dlen >= 9) {
 				unsigned char *data = (unsigned char*)vastaus->bytes + 4;
 				UINT32 siid = decodeD3Siid(data[3], data[4], data[5]);

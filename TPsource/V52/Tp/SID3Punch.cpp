@@ -18,7 +18,5 @@
 
 UINT32 decodeD3Siid(unsigned char sn2, unsigned char sn1, unsigned char sn0)
 {
-	UINT32 lo2 = ((UINT32)sn1 << 8) | sn0;
-
-	return (sn2 < 10) ? (UINT32)sn2 * 100000 + lo2 : ((UINT32)sn2 << 16) | lo2;
+	return ((UINT32)sn2 << 16) | ((UINT32)sn1 << 8) | sn0;
 }

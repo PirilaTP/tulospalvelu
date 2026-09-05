@@ -30,9 +30,16 @@
 
 // Decodes a D3 message's SIID (SportIdent card serial number) from its
 // three serial-number payload bytes: sn2 (data[3] in the message), sn1
-// (data[4]), sn0 (data[5]). SI5-series cards (sn2 < 10) encode the number
-// as sn2*100000 + (sn1<<8 | sn0); SI9+ cards (sn2 >= 10) encode it as a
-// plain 24-bit big-endian number ((sn2<<16) | (sn1<<8) | sn0).
+// (data[4]), sn0 (data[5]) - a plain 24-bit big-endian number
+// ((sn2<<16) | (sn1<<8) | sn0). This is the same for every card that can
+// produce a D3 message (SI6, SI9+, SIAC): D3 is an Air+/wireless-capable
+// punch format, and SI5 - the only SportIdent card generation whose own
+// printed serial number needs a different formula (sn2*100000 + sn1sn0,
+// used by the *classic contact* B1 readout response, not this format) -
+// predates Air+/SIAC wireless hardware entirely and can never send one.
+// Confirmed against a real captured SI6 punch (SIID 579671, sn2=0x08)
+// that an sn2<10 special case here would have silently corrupted to
+// 855383 - see git history for the incident this test guards against.
 UINT32 decodeD3Siid(unsigned char sn2, unsigned char sn1, unsigned char sn0);
 
 #endif
