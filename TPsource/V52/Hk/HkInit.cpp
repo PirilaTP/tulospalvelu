@@ -2308,7 +2308,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			   }
 			continue;
 			}
-		 // SRRKORTTIAIKA: SRR-donglen/SIRIT-lukijan Air+-leimauksissa tallennetaan
+		 // SRRKORTTIAIKA: SRR-donglen Air+-leimauksissa tallennetaan
 		 // oletuksena tietokoneen kello (ei kortin/aseman omaa, mahd. synkronoimatonta
 		 // kelloa) - ks. siritaika() Tp/TpLaitteet.cpp:ssa. Tama parametri palauttaa
 		 // vanhan toiminnan (kortin/aseman oma aika).
