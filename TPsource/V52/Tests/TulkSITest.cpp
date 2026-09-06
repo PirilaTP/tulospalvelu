@@ -265,15 +265,19 @@ TEST_CASE("SI9: CN=EE lahtotavussa tarkoittaa ettei lahtoa ole, arvo TMAALI0")
 	CHECK(result.start == TMAALI0);
 }
 
-TEST_CASE("SI9: CN=EE check- ja maalitavussa tarkoittaa arvoa 0")
+TEST_CASE("SI9: CN=EE check- ja maalitavussa tarkoittaa ettei arvoa ole, arvo TMAALI0")
 {
 	unsigned char buf[256];
 	SIResultTp result;
 
+	// Ennen tata korjausta check/finish palauttivat 0 (=keskiyo) CN=EE:lla,
+	// mika HkIV.cpp/VIv.cpp tulkitsi VIRHEELLISESTI oikeaksi maaliajaksi
+	// (ne vertaavat vain TMAALI0:aan, eivat 0:aan) - tuottaen vaaria
+	// koodi-240-leimoja korteille joilla ei oikeasti ollut maalia.
 	buildBlock(buf, 256, 1009090UL);
 	tulkSI((char *) buf, &result, 0, 7, 256, 0);
-	CHECK(result.check == 0L);
-	CHECK(result.finish == 0L);
+	CHECK(result.check == TMAALI0);
+	CHECK(result.finish == TMAALI0);
 }
 
 TEST_CASE("SI9: PTD-bitti 0 lisaa 12h (puolipaivan kaannos)")

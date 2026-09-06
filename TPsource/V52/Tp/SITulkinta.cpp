@@ -83,9 +83,9 @@ extern long t_time_l(long tics, int t0);
 static void tulkExtOtsikko(const unsigned char *b, SIResultTp *result)
 	{
 	result->badge  = b[25]*65536L + b[26]*256L + b[27];
-	result->check  = (b[9]  == 0xEE) ? 0L :
+	result->check  = (b[9]  == 0xEE) ? TMAALI0 :
 		256L*b[10] + b[11] + (b[8]  & 1) * 43200L;
-	result->finish = (b[17] == 0xEE) ? 0L :
+	result->finish = (b[17] == 0xEE) ? TMAALI0 :
 		256L*b[18] + b[19] + (b[16] & 1) * 43200L;
 	result->start  = (b[13] == 0xEE) ? TMAALI0 :
 		256L*b[14] + b[15] + (b[12] & 1) * 43200L;
@@ -290,11 +290,11 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			// (case 7), terminated by CN=0xEE.
 			unsigned char *b = (unsigned char *) buf;
 			result->badge  = b[10]*16777216L + b[11]*65536L + b[12]*256L + b[13];
-			result->finish = (b[21] == 0xEE) ? 0L :
+			result->finish = (b[21] == 0xEE) ? TMAALI0 :
 				256L*b[22] + b[23] + (b[20] & 1) * 43200L;
 			result->start  = (b[25] == 0xEE) ? TMAALI0 :
 				256L*b[26] + b[27] + (b[24] & 1) * 43200L;
-			result->check  = (b[29] == 0xEE) ? 0L :
+			result->check  = (b[29] == 0xEE) ? TMAALI0 :
 				256L*b[30] + b[31] + (b[28] & 1) * 43200L;
 			tulkExtLeimat(b, result, 256, 4, buflen);
 			break;
