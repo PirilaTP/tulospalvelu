@@ -1209,6 +1209,10 @@ public:
 	INT16 osuus;
 	INT32 badge0;
 	INT32 kirjaus;
+	INT16 lahde;          // Leimatietojen lahde: 0 = EMIT, 1 = SportIdent.
+	                       // SportIdentilla ei ole fyysista nollauslaitetta,
+	                       // joten HkEmit.cpp:n tarkista() ohittaa sille
+	                       // kellon nollautumistarkistuksen (nollattu-lippu).
 	void nollaa(void);
 	int get(int i_ptr);
 	int getbykno(int kno, int toinen);

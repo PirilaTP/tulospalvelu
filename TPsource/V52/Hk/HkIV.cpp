@@ -1098,6 +1098,7 @@ INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
 #ifdef SPORTIDENT
    if (regnly[r_no] == LID_SPORTIDENT) {
       em.badge = vastaus->r21data.badge;
+		em.lahde = 1;   // SportIdent - ei fyysista nollauslaitetta, ks. HkDef.h:emittp
 		em.time = vastaus->r21data.lukija;
 		if (vastaus->r21data.start == 61166L)
 			vastaus->r21data.start = TMAALI0;
