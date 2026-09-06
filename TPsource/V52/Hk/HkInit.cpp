@@ -2282,6 +2282,40 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			   }
 			continue;
 			}
+		 // This whole function (lue_parametrit) reads startup parameters from the
+		 // command line / config file, one keyword per iteration of the enclosing loop,
+		 // and configures the matching global state. The block below handles the
+		 // SRRLUKIJA keyword: it registers one connection slot in regnly[]/port_regnly[]
+		 // as a SportIdent SRR (Short Range Radio) reader, so that reader is then treated
+		 // as a normal EMIT-style card-reading timing input device, alongside the plain
+		 // LUKIJA keyword handled directly below.
+		 // SRRLUKIJA[n][=port]: configure connection slot n (default: last slot) as an SRR reader.
+		 if( !wmemcmpU(fldn, L"SRRLUKIJA",9)) {
+			pos = 9;                                    // length of the "SRRLUKIJA" prefix
+			ny = yhteys_no(fldn, &pos) - 1;             // optional trailing connection index (e.g. SRRLUKIJA2=), 0-based
+			if (pos == 9 || ny > NREGNLY-1 || ny < 0)   // no valid index found or out of range
+				ny = NREGNLY-1;                          // fall back to the last connection slot
+			regnly[ny] = LID_SRRLUKIJA;                 // mark this slot as an SRR reader
+			port_regnly[ny] = 1;                        // default serial port; may be overridden below
+			if (ajanottofl == -1)
+			   ajanottofl = 0;                          // enable timing unless explicitly disabled
+			emitfl = 1;                                 // EMIT-style card reading is in use
+			kaikki_ajat[ny+1] = 2;                      // accept every reading on this connection immediately, skip double-read confirmation
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {  // parse the "=port" part, if given
+			   if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
+				  port_regnly[ny] = _wtoi(p);              // override the serial port number
+				  }
+			   }
+			continue;
+			}
+		 // SRRKORTTIAIKA: SRR-donglen Air+-leimauksissa tallennetaan
+		 // oletuksena tietokoneen kello (ei kortin/aseman omaa, mahd. synkronoimatonta
+		 // kelloa) - ks. siritaika() Tp/TpLaitteet.cpp:ssa. Tama parametri palauttaa
+		 // vanhan toiminnan (kortin/aseman oma aika).
+		 if( !wmemcmpU(fldn, L"SRRKORTTIAIKA",13)) {
+			srrkorttiaika = 1;
+			continue;
+			}
 		 if( !wmemcmpU(fldn, L"LUKIJA",6)) {
 			pos = 6;
 			ny = yhteys_no(fldn, &pos) - 1;
@@ -2294,6 +2328,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			if (ajanottofl == -1)
 			   ajanottofl = 0;
 			emitfl = 1;
+			kaikki_ajat[ny+1] = 2;
 #ifdef TCPLUKIJA
 			if (!wmemcmpU(fldn+pos+1, L"UDP", 3)) {
 				if (fldn[pos+4] == L'S')
@@ -2452,6 +2487,50 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				continue;
 				}
 #endif
+#if defined(SPORTIDENT)
+		 // SIHOST=host: SportIdent Center REST API hostname (default
+		 // center-origin.sportident.com, set at startup).
+		 if( !wmemcmpU(fldn, L"SIHOST=",7)) {
+			wcsncpy(siParam.sihost, fldn+7, sizeof(siParam.sihost)/2-1);
+			continue;
+			}
+		 // SIGPRS=modem or SIGPRSn=modem: SportIdent Center REST API's
+		 // "modem" parameter (one or more modem serial numbers,
+		 // comma-separated). The numeric suffix (n) is accepted for the
+		 // sake of ETGPRS-like syntax, but is otherwise ignored - SIGPRS
+		 // is not bound to any specific reader channel like ETGPRS is.
+		 if( !wmemcmpU(fldn, L"SIGPRS",6)) {
+			p = fldn+6;
+			while (*p >= L'0' && *p <= L'9')
+				p++;
+			if (*p == L'=')
+				wcsncpy(siParam.sigprs, p+1, sizeof(siParam.sigprs)/2-1);
+			continue;
+			}
+		 // SITIME=time: the "after" parameter (ms since epoch, local time) -
+		 // only punches at or after this time are fetched. Updated
+		 // automatically after every successful poll.
+		 if( !wmemcmpU(fldn, L"SITIME=",7)) {
+			siParam.sitime = _wtoi64(fldn+7);
+			continue;
+			}
+		 // SIHAKUVALI=n: how often (in seconds) the Center REST API is polled.
+		 if( !wmemcmpU(fldn, L"SIHAKUVALI=",11)) {
+			siParam.sihakuvali = _wtoi(fldn+11);
+			if (siParam.sihakuvali < 1)
+				siParam.sihakuvali = 1;
+			continue;
+			}
+		 // SISTARTKOODI=n: SI control code used by the Start station. A
+		 // SIGPRS punch with type "Unknown" can actually be a Start/Finish/
+		 // Check/Clear punch, not just a Control - this tells siParsePunch
+		 // which code identifies a Start punch (Finish is identified per-
+		 // course via the existing rastikoodi[]/maalirasti() convention).
+		 if( !wmemcmpU(fldn, L"SISTARTKOODI=",13)) {
+			siParam.sistartkoodi = _wtoi(fldn+13);
+			continue;
+			}
+#endif
 		 if( !wmemcmpU(fldn, L"MTR",3)) {
 			ny = NREGNLY-1;
 			if ((ny = _wtoi(fldn+3)-1) >= NREGNLY || ny < 0)
@@ -2473,11 +2552,13 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				}
 #ifdef SPORTIDENT
 		 if( !wmemcmpU(fldn, L"SPORTIDENT",10)) {
-			ny = NREGNLY-1;
-			if ((ny = _wtoi(fldn+3)-1) >= NREGNLY || ny < 0)
+			pos = 10;
+			ny = yhteys_no(fldn, &pos) - 1;
+			if (pos == 10 || ny > NREGNLY-1 || ny < 0)
 				ny = NREGNLY-1;
 			regnly[ny] = LID_SPORTIDENT;
             port_regnly[ny] = 1;
+            usb_regnly[ny] = 1;         // SportIdent readers (BSM8) are always USB
             if (ajanottofl == -1)
 			   ajanottofl = 0;
             emitfl = 1;

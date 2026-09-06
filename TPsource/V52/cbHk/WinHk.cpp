@@ -81,6 +81,7 @@
 #include "UnitASuunn.h"
 #include "UnitYhdistetty.h"
 #include "UnitTaulu.h"
+#include "TpLaitteet.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -361,6 +362,8 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 //		Asetukset1->Enabled = false;
 //		Asetukset1->Visible = false;
 		}
+	if (IsSportidentInUse())
+		Emitluenta1->Caption = L"&Sportident-luenta";
 	Haeikkunat->Enabled = true;
 	if (alkulayout[0]) {
 		HaeIkkunat(alkulayout);

@@ -864,6 +864,7 @@ extern   INT *emitjarr[2];
 extern   INT emittime;
 extern   INT  ohitatoisto;
 extern   INT  siritreuna;
+extern   INT  srrkorttiaika;
 extern	 bool siritloki;
 extern	 bool siritsync;
 extern	 int sirithead, sirittail;
@@ -964,6 +965,11 @@ extern HTHREAD httphakuThread;
 #endif
 
 extern eThakuParamtp eTParam;
+
+#if defined(SPORTIDENT)
+extern siCenterParamTp siParam;
+void siCenterHaku(void);
+#endif
 extern sqlparamtp sqlparam;
 extern sqlparamtp sqlEparam;
 extern bool inkirjSQLThread;

@@ -615,7 +615,7 @@ void __fastcall TFormStatus::FormShow(TObject *Sender)
 	static bool initialisoitu;
 
 	if (!initialisoitu) {
-		if (kilpparam.badgelaji == L'E')
+		if (kilpparam.badgelaji == L'E' || kilpparam.badgelaji == L'I')
 			Hylkysesitykset1->Checked = true;
 		if (emitfl) {
 			Hylkysesitykset1->Checked = true;

@@ -1158,6 +1158,29 @@ typedef struct {
 	bool autostart;
 } eThakuParamtp;
 
+#if defined(SPORTIDENT)
+// SportIdent Center REST API polling state (SIGPRS=, SITIME=).
+// after/afterId are updated after every successful poll, so that
+// the next poll doesn't return already-processed punches again.
+typedef struct {
+	char *buf;
+	int buflen;
+	wchar_t sihost[100];  // SIHOST: Center REST API hostname
+	wchar_t sigprs[64];   // SIGPRS: modem serial number(s), e.g. 9000041
+	__int64 sitime;       // SITIME: the "after" value (ms since epoch, local time)
+	long afterId;         // last processed punch id (the afterId parameter)
+	int sihakuvali;       // poll interval in seconds
+	int sihaku;           // 0 = off, -1 = starting, 1 = running
+	int haettu;           // number of bytes httphaku() wrote into buf
+	int sistartkoodi;     // SISTARTKOODI: SI control code used by the Start
+	                      // station (0 = not configured). Needed because a
+	                      // "Unknown" type punch can actually be a Start
+	                      // (or Finish/Check/Clear); Finish is identified
+	                      // via the existing maalirasti()/rastikoodi[] course
+	                      // convention instead, since it can differ per course.
+} siCenterParamTp;
+#endif
+
 typedef struct {                      /* Tiedonsiirtopaketti */
 		INT32 lahetetty;
 		INT16 portti;
@@ -1500,6 +1523,25 @@ typedef union {
       char chksum2;
       char fill4;
       } r13st;
+#ifdef SPORTIDENT
+   struct {
+	   char stx;
+	   char tunnus;
+	   char csi;
+	   char t[2];
+	   char  cn[3];
+	   char etx;
+		} r21;
+   struct {
+	   INT32 badge;
+		INT32 lukija;
+		INT32 start;
+		INT32 check;
+		INT32 finish;
+		char cc[66];
+		INT32 ct[66];
+		} r21data;
+#endif
 #endif
    char bytes[R_BUFLEN+1];
    } san_type;

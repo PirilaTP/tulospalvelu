@@ -21,6 +21,7 @@
 
 #include "UnitLuenta.h"
 #include "UnitEmiTag.h"
+#include "TpLaitteet.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -239,7 +240,7 @@ void __fastcall TFormLuenta::EdtViivakoodiKeyPress(TObject *Sender, System::Wide
 			if (Osuus >= 0 && Osuus < kilpparam.osuusluku && (DKilp = getpos(Kilpno)) > 0) {
 				if (!NaytaJoukkue()) {
 					Key = 0;
-					EdtMsg->Text = L"Lue Emit-kortti";
+					EdtMsg->Text = IsSportidentInUse() ? L"Lue SPORTident" : L"Lue Emit-kortti";
 					EdtMsg->Color = clLime;
 					FocusControl(EdtVahvistus);
 					}
@@ -492,7 +493,7 @@ void __fastcall TFormLuenta::EdtOsuusKeyPress(TObject *Sender, System::WideChar 
 			(DKilp = getpos(Kilpno)) > 0 && EdtOsuus->Text.Length() > 0  &&
 			(Osuus = tulkOsuuskoodi(sarjaKno(Kilpno), EdtOsuus->Text.c_str())) >= 0 && Osuus < kilpparam.osuusluku) {
 			if (!NaytaJoukkue()) {
-				EdtMsg->Text = L"Lue Emit-kortti";
+				EdtMsg->Text = IsSportidentInUse() ? L"Lue SPORTident" : L"Lue Emit-kortti";
 				EdtMsg->Color = clLime;
 				FocusControl(EdtVahvistus);
             	}

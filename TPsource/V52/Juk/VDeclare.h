@@ -288,6 +288,7 @@ wchar_t *ISOtime(wchar_t *st, wchar_t *datestr, int time);
 wchar_t *sekTulos(wchar_t *st, int t, int pyor);
 
 INT maalirasti(char *tunnus, INT koodi);
+INT maalirasti(ratatp *rt, INT koodi);
 void aikaruutu(int ino);
 void tallkvaihto(INT ekno, INT eos, INT kno, INT os, INT kielto);
 void lahkvaihto(INT ekno, INT eos, INT kno, INT os, INT kielto);
@@ -679,6 +680,7 @@ extern   bool esta_uusikaytto;
 
 extern   INT  ajatfl, ilmlainat, emitkd, relax, emitsivu, emittoisto;
 extern   INT  siritreuna;
+extern   INT  srrkorttiaika;
 extern	 bool siritloki;
 extern	 bool siritsync;
 extern	 int sirithead, sirittail;
@@ -759,6 +761,11 @@ extern   int monitoriLkm;
 
 extern	INT emittime;
 extern eThakuParamtp eTParam;
+
+#if defined(SPORTIDENT)
+extern siCenterParamTp siParam;
+void siCenterHaku(void);
+#endif
 extern int inhttpHaku;
 extern HTHREAD httphakuThread;
 extern bool inkirjSQLThread;

@@ -1666,7 +1666,7 @@ INT teejarj(bool uusinta)
 		muutos = 0;
 		while (!okk && d < ld) {
 			okk = !kilp.read(++d, in_data);
-			if (kilpparam.badgelaji != L'E')
+			if (kilpparam.badgelaji != L'E' && kilpparam.badgelaji != L'I')
 				if (okk && Sarjat[kilp.Sarja()].rrtas < 2)
 					kilp.pv[k_pv].tasoitus = 0;
 			kilp.kilpstatus = !okk;

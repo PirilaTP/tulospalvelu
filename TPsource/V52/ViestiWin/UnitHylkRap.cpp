@@ -23,6 +23,7 @@
 #include "UnitHylkRap.h"
 #include "UnitMain.h"
 #include "UnitKirjoitinVal.h"
+#include "TpLaitteet.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -70,6 +71,7 @@ static tagListTp HrpTags[] = {
 	{HRP_Toimitsija, L"Toimitsija"}
 	};
 static int nHrpTags = sizeof(HrpTags)/sizeof(HrpTags[0]);
+#define LUONNE_EI_LUETTU 2   // LuonneStr[LUONNE_EI_LUETTU]: kortti ei luettu (Emit tai SportIdent)
 static wchar_t *LuonneStr[] = {L"Aiheeton / Without basis", L"Keskeyttänyt / DNF",
 	L"Emit-korttia ei ole luettu / Emit card not read",	L"Leima puuttuu / Missing code",
 	L"Väärä leima / Wrong code", L"Leimausjärjestys / Wrong order", L"Muu / Other"};
@@ -241,7 +243,9 @@ void  TFormHylkRap::hylk_rap(tulostusparamtp *tulprm)
 	tulprm->Endline(1);
 	tulprm->Putfld(L"Ongelma / Problem", m, 30, 0, 0);
 	if (RGLuonne->ItemIndex > 0)
-		tulprm->Putfld(LuonneStr[RGLuonne->ItemIndex], m+x1, 40, 0, 0);
+		tulprm->Putfld(RGLuonne->ItemIndex == LUONNE_EI_LUETTU && IsSportidentInUse() ?
+			(wchar_t *) L"SportIdent-korttia ei ole luettu / SportIdent card not read" :
+			LuonneStr[RGLuonne->ItemIndex], m+x1, 40, 0, 0);
 	tulprm->Endline(1);
 	tulprm->Putfld(L"Piikinjäljet / Control card", m, 40, 0, 0);
 	if (RGPiikit->ItemIndex > 0)

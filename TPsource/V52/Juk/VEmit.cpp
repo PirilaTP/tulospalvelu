@@ -67,7 +67,9 @@ int maalileimasin;
 static INT on_kuvio(INT rasti);
 void tarkkilpradat(void);
 static int TarkKilpailijat(void);
+#if !defined(LUENTA)
 IOFCourseData CourseData;
+#endif
 int ratatiedot;
 #ifndef _CONSOLE
 rastivatp *rastiva;
@@ -81,17 +83,19 @@ typedef struct {
    UINT *va;
    INT *sj;
    } emitvatype;
-/*
+#if defined(LUENTA)
 typedef struct {
    INT rasti;
    char koodi;
    int pisteet;
    } ekditp;
-*/
+#endif
 
 //#pragma pack(pop)
 
+#if !defined(LUENTA)
 INT32 vapaaemit = 201;
+#endif  // !LUENTA
 
 ekditp *kuvio;
 INT nkuvio;
@@ -114,6 +118,7 @@ int analvertmax = 10;
 emiterotp *EmitErot;
 int nEmitErot;
 
+#if !defined(LUENTA)
 IOFPoint::IOFPoint(void)
 {
 	memset(this, 0, sizeof(IOFPoint));
@@ -842,7 +847,9 @@ int IOFCourseData::haeXmlRadat(ratatp *rt, int nrata)
 		}
 	return(0);
 }
+#endif  // !LUENTA
 
+#if !defined(LUENTA)
 static void taydenna_leimat(void)
 {
 	char rkoodit[250];
@@ -921,6 +928,7 @@ int lue_radat_xml(int r)
    TarkKilpailijat();
    return(er);
 }
+#endif  // !LUENTA
 
 void merk_ekdi(wchar_t *koodit, long ekdi)
    {
@@ -997,6 +1005,7 @@ INT lainakortti(kilptietue *kilp, INT os)
    return(laina);
    }
 
+#if !defined(LUENTA)
 INT haebdg(INT32 badge, int *toinen)
    {
    int ibdg = -1;
@@ -1232,6 +1241,7 @@ INT remjkbadge(INT kno, INT32 bdg)
    LeaveCriticalSection(&tall_CriticalSection);
    return(0);
    }
+#endif  // !LUENTA
 
 #ifdef EI_OLE
 void vaihda_badge(UINT32 badge)
@@ -1331,7 +1341,7 @@ INT32 e_maaliaika(emittp *em, kilptietue *kilp, INT os)
    return(tm);
    }
 
-#if defined(MAALI) && !defined(LUENTA)
+#if defined(MAALI)
  
 void aikaruutu(int ino)
    {
@@ -2741,6 +2751,13 @@ INT maalirasti(char *tunnus, INT koodi)
    ratatp *rt;
 
    if ((rt = getrata(tunnus)) == NULL)
+      return(0);
+   return(oikeakoodi(rt, rt->rastiluku-1, koodi, 0));
+   }
+
+INT maalirasti(ratatp *rt, INT koodi)
+   {
+   if (!rt)
       return(0);
    return(oikeakoodi(rt, rt->rastiluku-1, koodi, 0));
    }
@@ -4438,6 +4455,7 @@ static void e_sarja(emittp *em, kilptietue *kilp, INT osuus, INT d)
    tallenna(kilp, d, 1, 0, 0, &entkilp);
    }
 
+#if !defined(LUENTA)
 INT leimat(void)
    {
    char ch, cs, ch2, ct, line[80], trk, selitys[SELITYS+1], as[20];
@@ -4882,6 +4900,7 @@ INT leimat(void)
    status_on = 1;
    return(0);
    }
+#endif  // !LUENTA
 #endif // _CONSOLE
 
 void emitlista(tulostusparamtp *tulprm)
@@ -6129,8 +6148,10 @@ void lueRatatiedotUudelleen(void)
    EnterCriticalSection(&rastiva_CriticalSection);
    vapautaemitmuisti(true, true, 0, true);
    if (ratatiedot == 2) {
+#if !defined(LUENTA)
 		CourseData.nollaa();
 		lue_radat_xml(19);
+#endif
 		}
    else {
 		lue_leimat(19);

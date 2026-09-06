@@ -30,7 +30,7 @@
 extern TFormKilpMaaritys *FormKilpMaaritys;
 extern TFormMain *FormMain;
 
-static wchar_t TunnType[] = L" ETSO", orig_laji, orig_alalajit[N_PV+1];;
+static wchar_t TunnType[] = L" ETISO", orig_laji, orig_alalajit[N_PV+1];;
 static int orig_n_pv;
 static wchar_t YhtTlsLaji[] = L"SLPV";
 

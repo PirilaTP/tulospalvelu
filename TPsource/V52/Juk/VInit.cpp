@@ -1765,6 +1765,32 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
                }
             continue;
 			}
+		 if( !wmemcmp(fldn, L"SRRLUKIJA",9)) {
+			pos = 9;
+			ny = yhteys_no(fldn, &pos) - 1;
+			if (pos == 9 || ny > NREGNLY-1 || ny < 0)
+				ny = NREGNLY-1;
+			regnly[ny] = LID_SRRLUKIJA;
+			port_regnly[ny] = 1;
+			if (ajanottofl == -1)
+				ajanottofl = 0;
+			emitfl = 1;
+			kaikki_ajat[ny+1] = 2;
+			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+				if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
+					port_regnly[ny] = _wtoi(p);
+					}
+				}
+			continue;
+			}
+		 // SRRKORTTIAIKA: SRR-donglen Air+-leimauksissa tallennetaan
+		 // oletuksena tietokoneen kello (ei kortin/aseman omaa, mahd. synkronoimatonta
+		 // kelloa) - ks. siritaika() Tp/TpLaitteet.cpp:ssa. Tama parametri palauttaa
+		 // vanhan toiminnan (kortin/aseman oma aika).
+		 if( !wmemcmp(fldn, L"SRRKORTTIAIKA",13)) {
+			srrkorttiaika = 1;
+			continue;
+			}
 		 if( !wmemcmp(fldn, L"LUKIJA",6)) {
 		    pos=6;
             ny = yhteys_no(fldn, &pos) - 1;
@@ -1804,6 +1830,32 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
                }
 			continue;
 			}
+#ifdef SPORTIDENT
+		 if( !wmemcmp(fldn, L"SPORTIDENT",10)) {
+			pos = 10;
+			ny = yhteys_no(fldn, &pos) - 1;
+			if (pos == 10 || ny > NREGNLY-1 || ny < 0)
+				ny = NREGNLY-1;
+			regnly[ny] = LID_SPORTIDENT;
+            port_regnly[ny] = 1;
+            usb_regnly[ny] = 1;         // SportIdent readers (BSM8) are always USB
+            if (ajanottofl == -1)
+               ajanottofl = 0;
+			emitfl = 1;
+#ifdef TCPLUKIJA
+            if (!wmemcmp(fldn+pos+1, L"TCP", 3)) {
+				gettcpipparam(ny+MAX_LAHPORTTI, fldn+pos+4, 0);
+				continue;
+				}
+#endif
+            if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
+               if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
+                  port_regnly[ny] = _wtoi(p);
+                  }
+               }
+			continue;
+			}
+#endif
          if( !wmemcmp(fldn, L"MTR",3)) {
             ny = NREGNLY-1;
             if (fldn[3] > L'0' && fldn[3] <= L'0'+NREGNLY)
@@ -1931,6 +1983,50 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
 					}
 				continue;
 				}
+#endif
+#if defined(SPORTIDENT)
+		 // SIHOST=host: SportIdent Center REST API hostname (default
+		 // center-origin.sportident.com, set at startup).
+		 if( !wmemcmp(fldn, L"SIHOST=",7)) {
+			wcsncpy(siParam.sihost, fldn+7, sizeof(siParam.sihost)/2-1);
+			continue;
+			}
+		 // SIGPRS=modem or SIGPRSn=modem: SportIdent Center REST API's
+		 // "modem" parameter (one or more modem serial numbers,
+		 // comma-separated). The numeric suffix (n) is accepted for the
+		 // sake of ETGPRS-like syntax, but is otherwise ignored - SIGPRS
+		 // is not bound to any specific reader channel like ETGPRS is.
+		 if( !wmemcmp(fldn, L"SIGPRS",6)) {
+			p = fldn+6;
+			while (*p >= L'0' && *p <= L'9')
+				p++;
+			if (*p == L'=')
+				wcsncpy(siParam.sigprs, p+1, sizeof(siParam.sigprs)/2-1);
+			continue;
+			}
+		 // SITIME=time: the "after" parameter (ms since epoch, local time) -
+		 // only punches at or after this time are fetched. Updated
+		 // automatically after every successful poll.
+		 if( !wmemcmp(fldn, L"SITIME=",7)) {
+			siParam.sitime = _wtoi64(fldn+7);
+			continue;
+			}
+		 // SIHAKUVALI=n: how often (in seconds) the Center REST API is polled.
+		 if( !wmemcmp(fldn, L"SIHAKUVALI=",11)) {
+			siParam.sihakuvali = _wtoi(fldn+11);
+			if (siParam.sihakuvali < 1)
+				siParam.sihakuvali = 1;
+			continue;
+			}
+		 // SISTARTKOODI=n: SI control code used by the Start station. A
+		 // SIGPRS punch with type "Unknown" can actually be a Start/Finish/
+		 // Check/Clear punch, not just a Control - this tells siParsePunch
+		 // which code identifies a Start punch (Finish is identified per-
+		 // course via the existing rastikoodi[]/maalirasti() convention).
+		 if( !wmemcmp(fldn, L"SISTARTKOODI=",13)) {
+			siParam.sistartkoodi = _wtoi(fldn+13);
+			continue;
+			}
 #endif
          if( !wmemcmp(fldn, L"AUTOKILP",8)) {
 			autokilp = 1;

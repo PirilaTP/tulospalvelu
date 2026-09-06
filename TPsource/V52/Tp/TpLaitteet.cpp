@@ -1,4 +1,4 @@
-// Pekka Pirila's sports timekeeping program (Finnish: tulospalveluohjelma)
+﻿// Pekka Pirila's sports timekeeping program (Finnish: tulospalveluohjelma)
 // Copyright (C) 2015 Pekka Pirila 
 
 // This program is free software: you can redistribute it and/or modify
@@ -42,8 +42,16 @@
 #endif
 #include "TpLaitteet.h"
 #include "IRfidReader.h"
+#include "SID3Punch.h"
 
 #include <wincom.h>
+
+#ifdef SPORTIDENT
+#include "sitypes.h"
+#ifndef _CONSOLE
+#define utsleep(dura) Sleep((DWORD)(55*(dura)))
+#endif
+#endif
 
 #define MAX_R_OD 10
 #define MTR_ST_LEN 59
@@ -89,9 +97,24 @@ static int lue_MTR(int r_no, int cn, san_type *vastaus, char **p, int *nmsg,
 	int *ntotviim, int *tyhjpuskuri, int r_buflen, int r_msg_len);
 static int lue_EMITAG(int r_no, int cn, san_type *vastaus, char **p, int *nmsg,
 	int *ntotviim, int *tyhjpuskuri, int r_buflen);
-static int lue_SI(int r_no, int cn, san_type *vastaus, char **p, int *nmsg,
+static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int r_buflen, int r_msg_len);
 void paivitaEcdata(void);
+
+// SportIdent on kaytossa, jos suoralukija (LID_SPORTIDENT) tai SRR-dongle
+// (LID_SRRLUKIJA, Air+-radioleimaus) on konfiguroitu johonkin lukijapaikkaan,
+// tai kilpailun badge-laji on erikseen asetettu SportIdentiksi
+// (kilpparam.badgelaji == 'I'). Hk ja Juk jakavat taman TpLaitteet.cpp:n
+// kautta - ks. tiedoston alun #include HkDeclare.h/VDeclare.h -valinta.
+bool IsSportidentInUse(void)
+	{
+	if (kilpparam.badgelaji == L'I')
+		return true;
+	for (int i = 0; i < NREGNLY; i++)
+		if (regnly[i] == LID_SPORTIDENT || regnly[i] == LID_SRRLUKIJA)
+			return true;
+	return false;
+	}
 
 #ifdef _CONSOLE
 void paivitaEcdata(void){}
@@ -635,14 +658,35 @@ int siritaika(INT32 *t, san_type *vastaus, aikatp *ut, INT *jono, int r_no)
 				}
 			}
 		if (p) {
+			SYSTEMTIME stm;
+			INT32 cardT;
+
+			// Puretaan kortin/aseman oma (mahd. synkronoimaton) aika ja tietokoneen
+			// kello - SRRKORTTIAIKA valitsee kumpi niista tallennetaan, oletuksena
+			// tietokoneen kello. Molemmat kirjataan lokiin vertailua varten.
 			strncpy(st, p+17, 12);
 			st[12] = 0;
 			st[2] = 0;
 			st[5] = 0;
 			st[8] = 0;
-			*t = 3600000L * atol(st) + 60000L * atol(st+3) + 1000L * atol(st+6) + atol(st+9)
+			cardT = 3600000L * atol(st) + 60000L * atol(st+3) + 1000L * atol(st+6) + atol(st+9)
 				+ t0_regn[r_no];
-			*t = NORMKELLO_A(10*(*t));
+			cardT = NORMKELLO_A(10*cardT);
+			GetLocalTime(&stm);
+			if (loki) {
+				char msg[180];
+				sprintf(msg, "SRR/SIRIT: kortin aika %.12s, tietokoneen aika %02d:%02d:%02d.%03d, tallennettu %s (badge %ld)",
+					p+17, stm.wHour, stm.wMinute, stm.wSecond, stm.wMilliseconds,
+					srrkorttiaika ? "kortin aika" : "tietokoneen aika", (long) bdg);
+				kirjloki(msg);
+				}
+			if (srrkorttiaika)
+				*t = cardT;
+			else {
+				*t = 3600000L * stm.wHour + 60000L * stm.wMinute + 1000L * stm.wSecond + stm.wMilliseconds
+					+ t0_regn[r_no];
+				*t = NORMKELLO_A(10*(*t));
+				}
 			p = strstr(vastaus->bytes, "antenna=");
 #ifndef MAXOSUUSLUKU
 			if (p) {
@@ -1016,6 +1060,94 @@ static int lue_LUKIJA(int r_no, int cn, san_type *vastaus, int *nmsg,
 		*nmsg = 0;
 		}
 	else if (*nmsg >= 10 || *tyhjpuskuri) {
+	// SportIdent Extended Protocol -sanoma (SRR-dongle, Air+-radioleimaus)
+	// Sanoman rakenne: FF 02 <cmd> <dlen> <data[dlen]> <crc_lo> <crc_hi> 03
+	// FF 02 = laajennetun protokollan otsikko, dlen = datan pituus tavuina
+	// total = koko sanoman pituus (4 otsikko + dlen data + 2 CRC + 1 ETX)
+	if (*nmsg >= 4 && (unsigned char)vastaus->bytes[0] == 0xFF &&
+		(unsigned char)vastaus->bytes[1] == 0x02) {
+		unsigned char cmd = (unsigned char)vastaus->bytes[2];
+		unsigned char dlen = (unsigned char)vastaus->bytes[3];
+		int total = 4 + (int)dlen + 2 + 1;
+		if (*nmsg >= total && (unsigned char)vastaus->bytes[total - 1] == 0x03) {
+			// cmd 0xD3 = SportIdent Air+ -leimaussanoma (SIAC-kortin radioleimaus)
+			// Komento 0xD3 lahetetaan kun SIAC-kortti leimaa rastilla langattomasti.
+			// data[0] = CN lo (leimasinaseman numero, alin tavu)
+			// data[1] = CN hi (leimasinaseman numero, ylin tavu)
+			// data[2] = SI-kortin sarjanumeron ylin tavu (SN3, ei kaytossa)
+			// data[3..5] = SI-kortin sarjanumero (SN2, SN1, SN0), 24-bit big-endian:
+			// korttinumero = (SN2<<16) | (SN1<<8) | SN0. Sama kaava kaikille
+			// D3-sanoman lahettavista korttisukupolvista (SI6, SI9+, SIAC) -
+			// SI5 ei koskaan lahetta D3-sanomaa (ei Air+/langatonta laitteistoa),
+			// joten sen oma, eri kaava (klassisen B1-luennan CN/CNS-kentat) ei
+			// koske tata. Ks. decodeD3Siid() Tp/SID3Punch.cpp:ssa.
+			if (cmd == 0xD3 && dlen >= 9) {
+				unsigned char *data = (unsigned char*)vastaus->bytes + 4;
+				UINT32 siid = decodeD3Siid(data[3], data[4], data[5]);
+				int nrest = *nmsg - total;
+				char rest[R_BUFLEN + 1];
+				// Talleta mahdolliset seuraavat sanomat ennen puskurin ylikirjoitusta
+				if (nrest > 0) memcpy(rest, vastaus->bytes + total, nrest);
+				// Rakennetaan vastaus EMIT-muotoon (0x2020-otsikko, badge XOR 0xDF)
+				// jotta tall_emit voi kasitella sen samoin kuin EMIT-kortin leimausta
+				memset(vastaus->bytes, '\xdf', r_msg_len);
+				vastaus->r12.alku = 0x2020;
+				vastaus->r12.badge[0] = (char)((unsigned char)(siid & 0xFF) ^ 0xDF);
+				vastaus->r12.badge[1] = (char)((unsigned char)((siid >> 8) & 0xFF) ^ 0xDF);
+				vastaus->r12.badge[2] = (char)((unsigned char)((siid >> 16) & 0xFF) ^ 0xDF);
+				vastaus->r12.fill1 = (char)(data[1] ^ 0xDF);  // CN hi (leimasinaseman numero, ylin tavu)
+				add_bdg_t(siid, r_no, 0, 0);   // rekisterointi ajanoton aikajonoon
+				tall_emit(vastaus, NULL, r_no); // leimauksen kasittely
+				*nmsg = nrest;
+				if (nrest > 0) memcpy(vastaus->bytes, rest, nrest);
+				} else {
+				// Tuntematon komento tai liian lyhyt data - ohitetaan sanoma
+				int nrest = *nmsg - total;
+				if (nrest > 0) memmove(vastaus->bytes, vastaus->bytes + total, nrest);
+				*nmsg = nrest;
+				}
+			}
+		return 0;
+		}
+
+	// SportIdent classic-protokollan D3-leimaussanoma (esim. BS-11-laitteen
+	// suora sarjaliikenne, ei radioleimauksen FF 02 -laajennettua otsikkoa)
+	// Sanoman rakenne: STX(02) D3 <dlen> <data[dlen]> <crc_hi> <crc_lo> ETX(03)
+	// Data-osa on sama tietue kuin Air+-sanomassa ylla, vain otsikko on
+	// 3 tavua (02 D3 dlen) 4 tavun (FF 02 D3 dlen) sijaan.
+	if (*nmsg >= 3 && (unsigned char)vastaus->bytes[0] == 0x02 &&
+		(unsigned char)vastaus->bytes[1] == 0xD3) {
+		unsigned char dlen = (unsigned char)vastaus->bytes[2];
+		int total = 3 + (int)dlen + 2 + 1;
+		if (*nmsg >= total && (unsigned char)vastaus->bytes[total - 1] == 0x03) {
+			if (dlen >= 9) {
+				unsigned char *data = (unsigned char*)vastaus->bytes + 3;
+				UINT32 siid = decodeD3Siid(data[3], data[4], data[5]);
+				int nrest = *nmsg - total;
+				char rest[R_BUFLEN + 1];
+				// Talleta mahdolliset seuraavat sanomat ennen puskurin ylikirjoitusta
+				if (nrest > 0) memcpy(rest, vastaus->bytes + total, nrest);
+				// Rakennetaan vastaus EMIT-muotoon (0x2020-otsikko, badge XOR 0xDF)
+				// jotta tall_emit voi kasitella sen samoin kuin EMIT-kortin leimausta
+				memset(vastaus->bytes, '\xdf', r_msg_len);
+				vastaus->r12.alku = 0x2020;
+				vastaus->r12.badge[0] = (char)((unsigned char)(siid & 0xFF) ^ 0xDF);
+				vastaus->r12.badge[1] = (char)((unsigned char)((siid >> 8) & 0xFF) ^ 0xDF);
+				vastaus->r12.badge[2] = (char)((unsigned char)((siid >> 16) & 0xFF) ^ 0xDF);
+				vastaus->r12.fill1 = (char)(data[1] ^ 0xDF);  // CN hi (leimasinaseman numero, ylin tavu)
+				add_bdg_t(siid, r_no, 0, 0);   // rekisterointi ajanoton aikajonoon
+				tall_emit(vastaus, NULL, r_no); // leimauksen kasittely
+				*nmsg = nrest;
+				if (nrest > 0) memcpy(vastaus->bytes, rest, nrest);
+				} else {
+				// Liian lyhyt data - ohitetaan sanoma
+				int nrest = *nmsg - total;
+				if (nrest > 0) memmove(vastaus->bytes, vastaus->bytes + total, nrest);
+				*nmsg = nrest;
+				}
+			}
+		return 0;
+		}
 
 // Jos merkkejä on vastaanotettu, tarkastetaan, onko kyseessä virheettömän
 // sanoman alku. Tarkastus koskee 2 tai 10 merkkiä tai koko sanomaa. Jos sanoma
@@ -1390,21 +1522,65 @@ static int lue_Rtnm(int r_no, int cn, san_type *vastaus, int *nmsg,
 	return(0);
 }
 
+static INT od[NREGNLY];
+
+#ifdef SPORTIDENT
+#include "SITulkinta.h"
+#endif
+
 #ifdef SPORTIDENT
 // Lukee SportIdent SI5/SI6-lukijan sanomia lukijalta r_no kanavalta cn.
-// Lähettää kyselysanoman (SI5pyynto tai SI6pyynto); purkaa DLE-koodauksen ja kutsuu tulkSI-funktiota.
+// Vanhamuotoinen protokolla: lähettää kyselyn ja purkaa DLE-koodauksen.
+// EXT-protokolla (BSM8): tunnistaa 0xE5-ilmoituksen, lähettää B1-kyselyn,
+// lukee raakabinäärivastauksen ilman DLE-koodausta (ohittaa 2 tavun otsikon).
 static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int r_buflen, int r_msg_len)
 {
 	char chin, *p2;
 	int t, dt, er = 0, nq, nch, l, ndata, nread, nmsg0, siirra, varm_ok;
 	char SI5pyynto[5] = "\002\002\061\003";
-	char SI6pyynto[6] = "\002\002\141\008\003";
+	char SI6pyynto[6] = "\002\002\141\010\003";
+	// EXT-protokollan B1-kysely: FF(wake) STX B1 LEN=0 CRC_H CRC_L ETX
+	// pcap: host sends ff 02 b1 00 b1 00 03 — FF wakeup required before command
+	// EXT request frames sent to BSM8 (FF=wakeup, STX=02, CMD, LEN, DATA, CRC_H, CRC_L, ETX=03).
+	// SI5 EXT: CMD=B1, LEN=0 — asks BSM8 to return the 133-byte SI5tp block.
+	static char SI5pyyntoEXT[7] = {'\377', '\002', '\261', '\000', '\261', '\000', '\003'};
+	// SI8/9/10/11 EXT: CMD=EF, LEN=1, DATA=block_number — asks BSM8 for one 128-byte memory block.
+	// CRCs follow pattern CRC_H=0xE2+block_num, CRC_L=0x09 (verified against pcap for blocks 0,1,4).
+	static char SI9pyynto_b0[8] = {'\377','\002','\357','\001','\000','\342','\011','\003'};
+	static char SI9pyynto_b1[8] = {'\377','\002','\357','\001','\001','\343','\011','\003'};
+	static char SI11pyynto_b4[8] = {'\377','\002','\357','\001','\004','\346','\011','\003'};
+	static char SI11pyynto_b5[8] = {'\377','\002','\357','\001','\005','\347','\011','\003'};
+	static char SI11pyynto_b6[8] = {'\377','\002','\357','\001','\006','\344','\011','\003'};
+	static char SI11pyynto_b7[8] = {'\377','\002','\357','\001','\007','\345','\011','\003'};
+	// SI6 via EXT protocol (trigger 0xE6, cmd 0xE1) - distinct from legacy
+	// DLE-encoded SI6 (SI6pyynto above). CRCs verified against a real card log
+	// (SIID 579671): b0=46 0A, b1=47 0A, b6=40 0A, b7=41 0A.
+	static char SI6EXTpyynto_b0[8] = {'\377','\002','\341','\001','\000','\106','\012','\003'};
+	static char SI6EXTpyynto_b1[8] = {'\377','\002','\341','\001','\001','\107','\012','\003'};
+	static char SI6EXTpyynto_b6[8] = {'\377','\002','\341','\001','\006','\100','\012','\003'};
+	static char SI6EXTpyynto_b7[8] = {'\377','\002','\341','\001','\007','\101','\012','\003'};
+	// CMD=F9: tells BSM8 to beep once after a successful card read (count=1).
+	static char SIbeep[8] = {'\377','\002','\371','\001','\001','\027','\012','\003'};
 	char SI5code[5] = "\002FI\003";
 	char SIack = ACK;
-	char SIbuf[512], *SIbp;
-	int SItype, SIdatalen[2] = {133, 402}, dle = 0;
+	// 128 (block 0) + up to 4 punch blocks × 128 = 640 bytes max for SI10/11.
+	char SIbuf[640], *SIbp;
+	// SItype encodes card family: 5=SI5, 6=SI6, 7=SI9, 8=SI10/11, 9=SI8, 10=pCard,
+	// 11=tCard, 12=SI6 via EXT protocol (distinct from legacy SI6, type 6).
+	// SIdatalen[SItype-5]: total bytes to fill in SIbuf before calling tulkSI.
+	//   SI5: 133 (one B1 block), SI6: 402 (legacy multi-block),
+	//   SI9/SI8/pCard/tCard: 256 (blocks 0+1). SI10/11: 256–640 (block 0 + 1–4 punch blocks).
+	//   SI6-EXT: 512 (block 0 + block 1 + 2 punch blocks, fixed size like legacy SI6).
+	int SItype, SIdatalen[8] = {133, 402, 256, 256, 256, 256, 256, 512}, dle = 0;
+	// SIext=1: BSM8 EXT protocol (38400 bps, binary frames, FF wakeup required).
+	// SIext=0: legacy protocol (DLE-encoded, lower baud rate).
+	// SIskip: bytes remaining to discard from the current response header.
+	// SInblock: 0=reading block 0, 1=reading first punch block (block 1 or 4), etc.
+	// SInblocks_needed: for SI10/11, how many punch blocks (1–4) based on RC in block 0.
+	int SIext = 0, SImsglen = 0, SIskip = 0, SInblock = 0, SInblocks_needed = 1;
 	INT32 SIt;
+	char *msg = NULL;
 
 	t = biostime(0, 0);
 
@@ -1424,12 +1600,42 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			od[r_no]++;
 		else {
 			if (!memcmp(&vastaus->r21.stx, SI5code, 4)) {
+				// Legacy SI5: card-inserted beacon "02 46 49 03" (STX 'F' 'I' ETX).
 				msg = SI5pyynto;
+				SImsglen = 4;
 				SItype = 5;
+				SIext = 0;
+				}
+			else if ((unsigned char)vastaus->r21.tunnus == 0xE5) {
+				// EXT CMD=E5: BSM8 reports SI5 card inserted; request B1 block.
+				msg 	= SI5pyyntoEXT;
+				SImsglen = sizeof(SI5pyyntoEXT);
+				SItype = 5;
+				SIext = 1;
+				}
+			else if ((unsigned char)vastaus->r21.tunnus == 0xE8) {
+				// EXT CMD=E8: BSM8 reports SI8/9/10/11 card inserted.
+				// Request block 0 first; actual card type (SItype) is determined from
+				// the SIID in block 0 and updated in the mid-read trigger below.
+				msg = SI9pyynto_b0;
+				SImsglen = sizeof(SI9pyynto_b0);
+				SItype = 7;  // temporary; overwritten after block 0 if SI8 or SI10/11
+				SIext = 1;
+				}
+			else if ((unsigned char)vastaus->r21.tunnus == 0xE6) {
+				// EXT CMD=E6: BSM8 reports SI6 card inserted (EXT protocol variant,
+				// distinct from the legacy DLE-encoded SI6 handled below). Request
+				// block 0 first.
+				msg = SI6EXTpyynto_b0;
+				SImsglen = sizeof(SI6EXTpyynto_b0);
+				SItype = 12;
+				SIext = 1;
 				}
 			else if (vastaus->r21.tunnus == 102 && vastaus->r21.etx == ETX) {
 				msg = SI6pyynto;
+				SImsglen = strlen(SI6pyynto);
 				SItype = 6;
+				SIext = 0;
 				}
 			od[r_no] = 0;
 			*nmsg = 0;
@@ -1442,27 +1648,43 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 		*nmsg = 0;
 		vastaus->bytes[0] = 0;
 		i_flush_x(cn);
-		wrt_st_x(cn,strlen(msg),msg,&nch);
+		wrt_st_x(cn, SImsglen, msg, &nch);
 		utsleep(2);
 		SIbp = SIbuf;
+		// EXT responses begin with a header that must be discarded before data bytes.
+		//   SI5  B1 response: "02 B1" (2 bytes) + 133-byte SI5tp data
+		//   SI9+ EF response: "02 EF 83 00 0A blocknum" (6 bytes) + 128-byte block data
+		// Legacy (SI5/SI6): no header; bytes are DLE-encoded and not framed.
+		SIskip = (SItype == 7 || SItype == 12) ? 6 : (SIext ? 2 : 0);
+		SInblock = 0;
 		for(;;) {
 			nq = 0;
 			if (!read_ch_x(cn, &chin, &nq)) {
 				bytecount = (bytecount + 1) % bytecountmax;
-				if (dle) {
-					*(SIbp++) = chin;
-					dle = 0;
+				if (SIext) {
+					// EXT mode: discard header bytes, then store data bytes verbatim.
+					if (SIskip > 0)
+						--SIskip;
+					else
+						*(SIbp++) = chin;
 					}
 				else {
-					if (chin == 16) {
-						dle = 1;
+					// Legacy mode: DLE (0x10) escapes the next byte; control chars end the frame.
+					if (dle) {
+						*(SIbp++) = chin;
+						dle = 0;
 						}
 					else {
-						if (chin > 31 || chin == 2 || chin == 3) {
-							*(SIbp++) = chin;
+						if (chin == 16) {
+							dle = 1;
 							}
-						else
-							break;
+						else {
+							if (chin > 31 || chin == 2 || chin == 3) {
+								*(SIbp++) = chin;
+								}
+							else
+								break;
+							}
 						}
 					}
 				}
@@ -1470,9 +1692,107 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			if (l > 100) {
 				dle = 2*dle;
 				}
+			// Mid-read trigger: block 0 (128 bytes) is complete — determine card type from
+			// SIID and request the correct next block.
+			//
+			// SIID ranges (block 0 bytes [25:28], big-endian 3-byte value):
+			//   SI9:     1 000 000 – 1 999 999  → block 1, P1=56,  4-byte records (SItype=7)
+			//   SI8:     2 000 000 – 3 999 999  → block 1, P1=136, 4-byte records (SItype=9)
+			//   pCard:   4 000 000 – 5 999 999  → block 1, P1=176, 4-byte records (SItype=10)
+			//   tCard:   6 000 000 – 6 999 999  → block 1, P1=56,  8-byte records (SItype=11)
+			//   SI10/11: ≥ 7 000 000           → blocks 4–7, P1=128, 4-byte records (SItype=8)
+			//
+			// SIskip=9: the block 0 response tail (CRC_H CRC_L ETX = 3 bytes) is still
+			// in the serial buffer when this fires and consumes 3 skip credits before
+			// block 1/4's 6-byte header (02 EF 83 00 0A blocknum) arrives. 3+6=9.
+			if (SItype == 7 && l == 128 && SInblock == 0) {
+				unsigned long siid = (unsigned char)SIbuf[25] * 65536L
+				                   + (unsigned char)SIbuf[26] * 256L
+				                   + (unsigned char)SIbuf[27];
+				SInblock = 1;
+				SIskip = 9;
+				if (siid >= 7000000L) {
+					// SI10/11: RC at block 0 byte [22] = punch count.
+					// Compute how many 32-punch blocks (1–4) are needed.
+					unsigned char rc = (unsigned char)SIbuf[22];
+					SItype = 8;
+					SInblocks_needed = (rc + 31) / 32;
+					if (SInblocks_needed < 1) SInblocks_needed = 1;
+					if (SInblocks_needed > 4) SInblocks_needed = 4;
+					SIdatalen[3] = 128 + SInblocks_needed * 128;
+					wrt_st_x(cn, sizeof(SI11pyynto_b4), SI11pyynto_b4, &nch);
+					}
+				else if (siid >= 6000000L) {
+					SItype = 11;  // tCard
+					wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
+					}
+				else if (siid >= 4000000L) {
+					SItype = 10;  // pCard
+					wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
+					}
+				else if (siid >= 2000000L) {
+					SItype = 9;   // SI8
+					wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
+					}
+				else {
+					// SI9
+					wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
+					}
+				utsleep(2);
+				}
+			// SI10/11 multi-block: after each punch block, request the next one if needed.
+			// SInblock counts completed punch blocks (1=block4 done, 2=block5 done, ...).
+			// SIskip=9 skips the 3 tail bytes (CRC_H CRC_L ETX) still in the serial buffer
+			// plus the 6-byte header of the next block response.
+			if (SItype == 8 && SInblock > 0 && SInblock < SInblocks_needed
+			    && l == 128 + SInblock * 128) {
+				SInblock++;
+				SIskip = 9;
+				if (SInblock == 2)
+					wrt_st_x(cn, sizeof(SI11pyynto_b5), SI11pyynto_b5, &nch);
+				else if (SInblock == 3)
+					wrt_st_x(cn, sizeof(SI11pyynto_b6), SI11pyynto_b6, &nch);
+				else
+					wrt_st_x(cn, sizeof(SI11pyynto_b7), SI11pyynto_b7, &nch);
+				utsleep(2);
+				}
+			// SI6-EXT (SItype 12): always reads a fixed sequence of 4 blocks
+			// (0, 1, 6, 7) like the legacy SI6 (case 6, fixed 402 bytes) - not
+			// adaptive like SI10/11, since there's no known record-count field
+			// to size the read from. Blocks 6/7 hold up to 32 punches each
+			// (64 total, matching legacy SI6's two SI6PBLK punch blocks).
+			if (SItype == 12 && l == 128 && SInblock == 0) {
+				SInblock = 1;
+				SIskip = 9;
+				wrt_st_x(cn, sizeof(SI6EXTpyynto_b1), SI6EXTpyynto_b1, &nch);
+				utsleep(2);
+				}
+			else if (SItype == 12 && l == 256 && SInblock == 1) {
+				SInblock = 2;
+				SIskip = 9;
+				wrt_st_x(cn, sizeof(SI6EXTpyynto_b6), SI6EXTpyynto_b6, &nch);
+				utsleep(2);
+				}
+			else if (SItype == 12 && l == 384 && SInblock == 2) {
+				SInblock = 3;
+				SIskip = 9;
+				wrt_st_x(cn, sizeof(SI6EXTpyynto_b7), SI6EXTpyynto_b7, &nch);
+				utsleep(2);
+				}
 			if (l == SIdatalen[SItype-5]) {
-				if (!tulkSI(SIbuf, vastaus, SIt, SItype)) {
+				SIResultTp SIresult;
+				if (!tulkSI(SIbuf, &SIresult, SIt, SItype, SIdatalen[SItype-5], t0)) {
+					// SIResultTp on tulkSI:n riippumaton tulostyyppi (ks. SITulkinta.h);
+					// kopioidaan san_type-unionin r21data-jasenten yli.
+					vastaus->r21data.badge = SIresult.badge;
+					vastaus->r21data.lukija = SIresult.lukija;
+					vastaus->r21data.start = SIresult.start;
+					vastaus->r21data.check = SIresult.check;
+					vastaus->r21data.finish = SIresult.finish;
+					memcpy(vastaus->r21data.cc, SIresult.cc, sizeof(SIresult.cc));
+					memcpy(vastaus->r21data.ct, SIresult.ct, sizeof(SIresult.ct));
 					tall_emit(vastaus, 0, r_no);
+					wrt_st_x(cn, sizeof(SIbeep), SIbeep, &nch);
 					}
 				break;
 				}
@@ -1516,7 +1836,7 @@ int lue_regnly(INT r_no)
 	{
 	char chin, *msg = NULL;
 	static INT in_lue_regnly[NREGNLY];
-	static INT od[NREGNLY],nmsg[NREGNLY];
+	static INT nmsg[NREGNLY];
 	INT  nq,nch = 0,er,r_buflen;
 	static san_type *vastaus[NREGNLY];
 	static INT32 t_raja[NREGNLY];
@@ -1712,7 +2032,7 @@ int lue_regnly(INT r_no)
 		}
 #endif // LAJUNEN
 
-	else if (regnly[r_no] == LID_LUKIJA) {											// LUKIJA
+	else if (regnly[r_no] == LID_LUKIJA || regnly[r_no] == LID_SRRLUKIJA) {		// LUKIJA / SRRLUKIJA
 		lue_LUKIJA(r_no, cn_regnly[r_no], vastaus[r_no], nmsg+r_no,
 			ntotviim+r_no, tyhjpuskuri+r_no, r_buflen, r_msg_len[r_no]);
 		}
@@ -2021,6 +2341,11 @@ INT start_regnly(INT r_no)
 			   sbits = 1;
 			   r_msg_len[r_no] = 217;
 			   break;
+		   case LID_SRRLUKIJA:
+			   bd = 9;              //  38400
+			   sbits = 1;
+			   r_msg_len[r_no] = 217;
+			   break;
 		   case LID_MTR:
 			   bd = 7;          //  9600
 			   r_msg_len[r_no] = 234;
@@ -2036,7 +2361,7 @@ INT start_regnly(INT r_no)
 			   r_msg_len[r_no] = R_BUFLEN;
 			   break;
 		   case LID_SPORTIDENT:
-			   bd = 6;          //  4800
+				bd = 9;          //  38400 (BSM8 USB)
 			   r_msg_len[r_no] = 10;
 			   break;
 		   case LID_ARES:
@@ -2093,7 +2418,7 @@ INT start_regnly(INT r_no)
 			   parity = 'n';
 			   break;
 		   }
-		   if (kello_baud && (regnly[r_no] < 10 || regnly[r_no] == LID_ARES || regnly[r_no] == LID_FEIG)) {
+		   if (kello_baud && (regnly[r_no] < 10 || regnly[r_no] == LID_ARES || regnly[r_no] == LID_FEIG || regnly[r_no] == LID_LUKIJA || regnly[r_no] == LID_SRRLUKIJA)) {
 			   bd = kello_baud;
 		   }
 	   }
@@ -2117,8 +2442,11 @@ INT start_regnly(INT r_no)
 	   if (comopen[cn_regnly[r_no]]) {
 
 #ifdef SPORTIDENT
-		   if (regnly[r_no] == LID_SPORTIDENT) {
-			   wrt_st_x(cn_regnly[r_no], 4, L"\002\002\161\003", &nw);
+		   if (regnly[r_no] == LID_SPORTIDENT && !usb_regnly[r_no]) {
+			   // Legacy RS-232 stations (BS7 etc.): send "remote mode" init.
+			   // USB BSM8 stations: skip — BSM8 responds with NAK (0xF0) to this
+			   // legacy command and then stays silent; it auto-sends E5 notifications.
+			   wrt_st_x(cn_regnly[r_no], 4, "\002\002\161\003", &nw);
 		   }
 #endif
 	   }
@@ -2436,71 +2764,6 @@ void comajanotto(LPVOID lpCn)
 	}
 #endif
 
-#ifdef SPORTIDENT
-// Tulkitsee SportIdent SI5 tai SI6 -korttidata (buf) san_type-rakenteeseen vastaus.
-// SIt on lukuaika, SItype on 5 tai 6; palauttaa 0 onnistuessaan, 1 epäonnistuessaan.
-static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
-	{
-	SI5tp *tp5;
-	SI6tp *tp6;
-	int r, i;
-
-	memset(vastaus, 0, sizeof(vastaus->r21data));
-	switch (SItype) {
-		case 5:
-			tp5 = (SI5tp *) buf;
-			vastaus->r21data.badge = 256L * tp5->CN[0] + tp5->CN[1] +
-				(tp5->CNS > 1 ? tp5->CNS * 100000L : 0);
-			vastaus->r21data.lukija = t_time_l(SIt, t0);
-			vastaus->r21data.start = 256L * tp5->ST[0] + tp5->ST[1];
-			vastaus->r21data.check = 256L * tp5->CT[0] + tp5->CT[1];
-			vastaus->r21data.finish = 256L * tp5->FT[0] + tp5->FT[1];
-			for (r = 0; r < 6; r++) {
-				vastaus->r21data.cc[31+r] = tp5->row[r].ccx;
-				for (i = 0; i < 5; i++) {
-					vastaus->r21data.cc[1+i+5*r] = tp5->row[r].c[i].cc;
-					vastaus->r21data.ct[1+i+5*r] =
-						256L*tp5->row[r].c[i].ct[0] + tp5->row[r].c[i].ct[1];
-					if (r+i == 0) {
-						if (vastaus->r21data.start != 61166L && vastaus->r21data.ct[1] &&
-							vastaus->r21data.ct[1] < vastaus->r21data.start)
-							vastaus->r21data.ct[1] += 43200L;
-						}
-					else {
-						if (vastaus->r21data.ct[1+i+5*r] &&
-							vastaus->r21data.ct[1+i+5*r] < vastaus->r21data.ct[i+5*r])
-							vastaus->r21data.ct[1+i+5*r] += 43200L;
-						}
-					}
-				}
-			break;
-		case 6:
-			tp6 = (SI6tp *) buf;
-			vastaus->r21data.badge =
-				tp6->CN[3] + 256L * (tp6->CN[2] + 256L * (tp6->CN[1] + 256L * tp6->CN[0]));
-			vastaus->r21data.lukija = t_time_l(SIt, t0);
-			vastaus->r21data.start =
-					256L*tp6->st.PT[0] + tp6->st.PT[1] +
-					(tp6->st.PTD & 1) * 43200L;
-			vastaus->r21data.check =
-					256L*tp6->chk.PT[0] + tp6->chk.PT[1] +
-					(tp6->chk.PTD & 1) * 43200L;
-			vastaus->r21data.finish = 256L * tp5->FT[0] + tp5->FT[1];
-					256L*tp6->fi.PT[0] + tp6->fi.PT[1] +
-					(tp6->fi.PTD & 1) * 43200L;
-			for (r = 0; r < 2; r++) {
-				for (i = 0; i < 32; i++) {
-					vastaus->r21data.cc[1+i] = tp6->pblk[r].punch[i].CN;
-					vastaus->r21data.ct[1+i] =
-						256L*tp6->pblk[r].punch[i].PT[0] + tp6->pblk[r].punch[i].PT[1] +
-						(tp6->pblk[r].punch[i].PTD & 1) * 43200L;
-					}
-				}
-			break;
-		}
-	return(0);
-	}
-#endif
    
 #ifdef _CONSOLE
 // Interaktiivinen asetusvalikko emit-TAG-lukijalle r_no: kello, ratakoodi, antenni- ja muut asetukset.

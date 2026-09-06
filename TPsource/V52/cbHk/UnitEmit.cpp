@@ -102,6 +102,20 @@ void __fastcall TFormEmit::FormCreate(TObject *Sender)
 		if (regnly[i] == LID_EMITAG)
 			emiTagluennanohjaus1->Visible = true;
 		}
+	if (IsSportidentInUse()) {
+		Caption = L"Sportident-tiedot";
+		Label2->AutoSize = true;
+		Label2->Caption = L"Sportident";
+		if (kilpparam.kaksibadge != 2) {
+			LblOrigBadge->AutoSize = true;
+			LblOrigBadge->Caption = L"Luettu sportident";
+			}
+		EdtBadge->Left     = 90;
+		LblOrigBadge->Left = 162;
+		EdtOrigBadge->Left = 280;
+		Label9->Left       = 341;
+		EdtTietue->Left    = 381;
+		}
 #ifdef DBGFILE
 	if (dbgtofile)
 		{
@@ -3656,7 +3670,13 @@ void __fastcall TFormEmit::EmitvaihdottulevilleClick(TObject *Sender)
 void __fastcall TFormEmit::BtnLoppuunClick(TObject *Sender)
 {
 	if (EmitMuutosFlag) {
-		Application->MessageBoxW(L"Luenta voi jatkua vasta, kun kaavake \"Emit-muutokset\" on suljettu", L"Ohje", MB_OK);
+		{
+		bool isSI = IsSportidentInUse();
+		Application->MessageBoxW(
+			isSI ? L"Luenta voi jatkua vasta, kun kaavake \"Sportident-muutokset\" on suljettu"
+			     : L"Luenta voi jatkua vasta, kun kaavake \"Emit-muutokset\" on suljettu",
+			L"Ohje", MB_OK);
+		}
 		return;
 		}
 	if (OnkoMuutoksia()) {

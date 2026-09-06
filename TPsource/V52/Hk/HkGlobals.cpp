@@ -508,6 +508,7 @@
 	int pollaa, TCPpoll[NREGNLY+1];
 	INT  ohitatoisto = -1;
 	INT  siritreuna = 1;
+	INT  srrkorttiaika = 0;         // 0 = tallenna tietokoneen aika (oletus), 1 = kortin/aseman oma aika
 	bool siritloki = false;
 	bool siritsync = false;
 	int sirithead, sirittail;
@@ -515,7 +516,7 @@
 	int muutoskysely = 1;
    int valonaytto;
    INT com_emit[MAX_LAHPORTTI];
-   int  emitfile;
+   int  emitfile = EMITFILE_NOT_OPEN;
 	wchar_t emitfname[13] = L"EMIT1.DAT";
 	INT emithead, emithead2, annaseur;
 	INT com_emitva[MAX_LAHPORTTI];
@@ -631,6 +632,20 @@
 		L"05:00:00",			//	wchar_t eTtime[10];
 		0,						//	int msgno;
 		0};						//	int haettu;
+
+#if defined(SPORTIDENT)
+	siCenterParamTp siParam = {
+		NULL,														//	char *buf;
+		0,														//	int buflen;
+		L"center-origin.sportident.com",	//	wchar_t sihost[100];
+		L"",						//	wchar_t sigprs[64];
+		0,							//	__int64 sitime;
+		0,							//	long afterId;
+		5,							//	int sihakuvali; (seconds)
+		0,							//	int sihaku;
+		0,							//	int haettu;
+		0};							//	int sistartkoodi;
+#endif
 
 	sqlparamtp sqlparam = {
 		L"MYSQL",

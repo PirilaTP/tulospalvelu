@@ -93,12 +93,19 @@ int getwebPage(HINTERNET hSession, LPCWSTR host, int port, LPCWSTR page, int sec
 						bResults = -2;
 						break;
 						}
+					if (buf && *dwTot+dwSize >= (unsigned int) buflen) {
+						// buf is full: stop reading here instead of silently
+						// dropping this chunk and letting a later, smaller
+						// chunk still fit at the same *dwTot offset - that
+						// spliced unrelated data together into a corrupted,
+						// non-contiguous result for responses larger than buflen.
+						free(pszOutBuffer);
+						break;
+						}
 					if (buf) {
-						if (*dwTot+dwSize < (unsigned int) buflen) {
-							memcpy(pbuf, pszOutBuffer, dwSize);
-							pbuf += dwSize;
-							*dwTot += dwSize;
-							}
+						memcpy(pbuf, pszOutBuffer, dwSize);
+						pbuf += dwSize;
+						*dwTot += dwSize;
 						}
 					else {
 						fputs( pszOutBuffer, outfile);

@@ -1277,6 +1277,7 @@ INT putem(emittp *em, INT32 ep, int inCrSe)
    {
    int retval = 0;
 
+   if (emitfile == EMITFILE_NOT_OPEN) return(1);
    if (ep >= 0 && ep <= emithead) {
 	  if (!inCrSe)
 		 EnterCriticalSection(&emit_CriticalSection);
@@ -2161,7 +2162,9 @@ INT tarkista(emittp *em, INT *tulkinta, INT haku, kilptietue *kilp1)
 				}
 			do {
 				j = (j+MAXNLEIMA-1)%MAXNLEIMA;
-				if (i > 0 && i < rt->rastiluku-1 && !em->ctrltime[j])
+				// SportIdentilla (em->lahde==1) ei ole fyysista nollauslaitetta,
+				// joten kellon nollautumista ei voi tapahtua eika sita tulkita.
+				if (em->lahde != 1 && i > 0 && i < rt->rastiluku-1 && !em->ctrltime[j])
 				nollattu = 1;
 				} while (!em->ctrlcode[j] && j != (lukija+1)%MAXNLEIMA);
 			}
@@ -2223,7 +2226,9 @@ INT tarkista(emittp *em, INT *tulkinta, INT haku, kilptietue *kilp1)
    
       do {
          j = (j+MAXNLEIMA-1)%MAXNLEIMA;
-		 if (i > 0 && (j != lukija && !em->ctrltime[j] && i < rt->rastiluku-1 &&
+		 // SportIdentilla (em->lahde==1) ei ole fyysista nollauslaitetta,
+		 // joten kellon nollautumista ei voi tapahtua eika sita tulkita.
+		 if (em->lahde != 1 && i > 0 && (j != lukija && !em->ctrltime[j] && i < rt->rastiluku-1 &&
 			(i > 1 || (em->ctrlcode[j] && rt->ennakko >= 0))) &&
 				(!vapaajarj || !oikeat[1]))
 			nollattu = 1;

@@ -22,6 +22,7 @@
 #include <bstrings.h>
 
 #include "UnitEmit.h"
+#include "TpLaitteet.h"
 #include "UnitEmitMuutokset.h"
 #include "UnitKirjoitinVal.h"
 #include "UnitMTR.h"
@@ -151,6 +152,20 @@ void __fastcall TFormEmit::InitTila(void)
 		for (int i = 0; i < NREGNLY; i++) {
 			if (regnly[i] == 13)
 				MTRlaitteenohjaus1->Visible = true;
+			}
+		if (IsSportidentInUse()) {
+			Caption = L"Sportident-tiedot";
+			Label2->AutoSize = true;
+			Label2->Caption = L"Sportident";
+			if (kilpparam.kaksibadge != 2) {
+				LblOrigBadge->AutoSize = true;
+				LblOrigBadge->Caption = L"Luettu sportident";
+				}
+			EdtBadge->Left     = 90;
+			LblOrigBadge->Left = 162;
+			EdtOrigBadge->Left = 280;
+			Label9->Left       = 341;
+			EdtTietue->Left    = 381;
 			}
 #ifdef DBGFILE
 		if (dbgtofile) {
@@ -1949,7 +1964,10 @@ void __fastcall TFormEmit::EdtBadgeKeyPress(TObject *Sender, System::WideChar &K
 void __fastcall TFormEmit::BtnLoppuunClick(TObject *Sender)
 {
 	if (EmitMuutosFlag) {
-		Application->MessageBoxW(L"Luenta voi jatkua vasta, kun kaavake \"Emit-muutokset\" on suljettu", L"Ohje", MB_OK);
+		Application->MessageBoxW(
+			IsSportidentInUse() ? L"Luenta voi jatkua vasta, kun kaavake \"Sportident-muutokset\" on suljettu"
+			     : L"Luenta voi jatkua vasta, kun kaavake \"Emit-muutokset\" on suljettu",
+			L"Ohje", MB_OK);
 		return;
 		}
 	if (OnkoMuutoksia()) {

@@ -30,7 +30,7 @@
 TFormKilpMaaritys *FormKilpMaaritys;
 extern TFormMain *FormMain;
 
-static wchar_t TunnType[] = L" ETSM", orig_laji;
+static wchar_t TunnType[] = L" ETISM", orig_laji;
 static wchar_t lajit[] = L"SHJAM", muutlajit[] = L"PNM", alalajit[] = L" SJPRD";
 static int orig_n_os;
 int powi(int i, int j);
