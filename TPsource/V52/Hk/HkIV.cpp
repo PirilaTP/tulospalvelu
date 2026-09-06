@@ -966,6 +966,8 @@ INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
    INT mm, sek, osat;
 #ifdef SPORTIDENT
 	INT32 start;
+	INT32 lukija_abs;   // lukija-aika muunnettuna samalle asteikolle kuin
+	                    // start/ct[] (0..86400s), ks. aikatowsl_s.cpp:n muunnos.
 #endif
 
 	regnlyhetki[r_no] = t_time_l(biostime(0,0), t0);
@@ -1100,6 +1102,12 @@ INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
       em.badge = vastaus->r21data.badge;
 		em.lahde = 1;   // SportIdent - ei fyysista nollauslaitetta, ks. HkDef.h:emittp
 		em.time = vastaus->r21data.lukija;
+		// lukija tulee t_time_l():sta (PC:n BIOS-kello suhteessa t0:aan,
+		// +/-12h alue) - eri asteikko kuin ct[]/start (kortin oma PTD-
+		// korjattu vuorokaudenaika 0..86400s). Muunnetaan samalle
+		// asteikolle ennen kuin sita kaytetaan niiden kanssa yhdessa.
+		lukija_abs = (INT32) (((vastaus->r21data.lukija +
+			((INT32) t0 + 48) * 36000L + 24L*36000L) % (24L*36000L)) / 10);
 		if (vastaus->r21data.start == 61166L)
 			vastaus->r21data.start = TMAALI0;
 		start = vastaus->r21data.start;
@@ -1131,9 +1139,9 @@ INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
 			em.ctrlcode[i] = 250;
 			if (start != TMAALI0)
 				em.ctrltime[i] =
-					(vastaus->r21data.lukija/10 - start + 86400L) % 86400L;
+					(lukija_abs - start + 86400L) % 86400L;
 			else
-				em.ctrltime[i] = (vastaus->r21data.lukija/10 + 86400L) % 86400L;
+				em.ctrltime[i] = (lukija_abs + 86400L) % 86400L;
 			}
 		}
 #endif
