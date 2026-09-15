@@ -43,7 +43,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build DBboxm, Tputil, HkKisaWin and ViestiWin
-        shell: powershell
+        # Explicit shell command so the machine's PowerShell execution policy
+        # (Restricted by default) does not block the runner's generated script.
+        shell: powershell -NoProfile -ExecutionPolicy Bypass -Command ". '{0}'"
         run: .\TPsource\V52\RADStudio10\build-gui.ps1
 
       - name: Upload GUI binaries
