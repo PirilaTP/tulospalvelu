@@ -5,9 +5,11 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  workflow_dispatch:
 
 jobs:
-  build:
+  console:
+    name: Console programs (MSVC)
     runs-on: windows-latest
 
     steps:
@@ -24,3 +26,41 @@ jobs:
 
       - name: Build JukMaali (relay competition)
         run: msbuild TPsource\V52\VS\V\JukMaali520.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
+
+  gui:
+    name: Windows GUI programs (C++Builder, self-hosted)
+    # Self-hosted runner "TPbuilderi" with C++Builder Community Edition installed
+    # in C:\Program Files (x86)\Embarcadero\Studio\37.0.
+    runs-on: [self-hosted, Windows, X64]
+    # Never run code from forked pull requests on the self-hosted machine.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    timeout-minutes: 90
+    concurrency:
+      group: cbuilder-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build DBboxm, Tputil, HkKisaWin and ViestiWin
+        shell: powershell
+        run: .\TPsource\V52\RADStudio10\build-gui.ps1
+
+      - name: Upload GUI binaries
+        uses: actions/upload-artifact@v7
+        with:
+          name: windows-gui-win32
+          path: |
+            TPexe/Hk/V521/HkKisaWin.exe
+            TPexe/Juk/V521/ViestiWin.exe
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: cbuilder-build-logs
+          path: TPsource/V52/RADStudio10/build-logs/
+          if-no-files-found: ignore
+          retention-days: 7

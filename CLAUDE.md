@@ -30,6 +30,11 @@ Build order:
 
 All `.cbproj` files are in `TPsource\V52\RADStudio10\`.
 
+Command-line build of the same projects: `TPsource\V52\RADStudio10\build-gui.ps1`
+(uses `bds.exe -b`, works with the Community Edition; `-Tool msbuild` for licensed
+editions). CI runs it in the `gui` job of `.github/workflows/build.yml` on the
+self-hosted Windows runner (labels `self-hosted, Windows, X64`).
+
 If linker heap errors occur: run `bcdedit /set IncreaseUserVa 3072` as Administrator and reboot.
 
 There are no automated tests.

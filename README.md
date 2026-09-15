@@ -76,3 +76,18 @@ The free Community Edition was successfully used to compile and run the program.
 program for individual competitions
 6. Open TPsource\V52\RADStudio10\ViestiWin.cbproj and Run to start the 
 relay program
+
+### Command-line / CI build
+The same four projects can be built without opening the IDE with
+`TPsource\V52\RADStudio10\build-gui.ps1`. By default it drives the IDE
+(`bds.exe <project> -b`), which is the only method that works with the
+Community Edition; licensed editions can use `-Tool msbuild`. The installation
+directory is taken from the `BDS` environment variable or `-StudioRoot`
+(default `C:\Program Files (x86)\Embarcadero\Studio\37.0`). Outputs land in
+`TPexe\Hk\V521\HkKisaWin.exe` and `TPexe\Juk\V521\ViestiWin.exe`.
+
+GitHub Actions runs this script in the `gui` job of `.github/workflows/build.yml`
+on a self-hosted Windows runner that has C++ Builder installed. The runner
+should run as the Windows user who registered the C++ Builder licence (an
+interactive `run.cmd` session rather than a service), because `bds.exe` checks
+the licence and may otherwise wait on a hidden dialog.
