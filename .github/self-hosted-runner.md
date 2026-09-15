@@ -57,6 +57,40 @@ Ikkuna jää auki ja näyttää `Listening for Jobs`. Jätä se auki.
 Jos ensimmäisellä käännöksellä ruudulle tulee lisenssi- tai tervetulodialogi,
 kuittaa se kerran. Se ei toistu seuraavilla ajoilla.
 
+## 2b. Windows SDK (RAD Studio 13 vaatii)
+
+RAD Studio 13 vaatii C++-käännöksiin Microsoftin Windows SDK:n ja paikkaa sen
+otsikot omaan hakemistoonsa ensimmäisellä käännöksellä. Ilman sitä käännös
+päättyy virheeseen `Error creating platform SDK. Active developer path is
+invalid`, tai IDE kysyy "Add a New SDK" / "Windows SDK Base path".
+
+1. **Asenna tuettu SDK-versio.** IDE hyväksyy vain tietyt versiot (13.0:n
+   syyskuun 2025 päivityksessä 10.0.26100.6584, .4948, .4654 ja .4188).
+   Uudempi versio ei toimi, mutta useita versioita voi olla rinnakkain. Hae
+   sopiva Microsoftin SDK-arkistosta
+   <https://developer.microsoft.com/windows/downloads/sdk-archive/> kohdasta
+   "Windows 11 SDK, version 24H2". Tarkista:
+
+   ```powershell
+   Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\Include"
+   ```
+
+2. **Poista rikkinäinen SDK-merkintä**, jos aiempi yritys epäonnistui:
+   runner-käyttäjänä IDE:ssä Tools > Options > Deployment > SDK Manager,
+   Windows-alusta, poista merkintä. Vaihtoehtoisesti poista rekisteristä
+   `HKCU\Software\Embarcadero\BDS\37.0\PlatformSDKs` alta Windows-merkintä.
+
+3. **Ensimmäinen käännös järjestelmänvalvojana.** IDE kopioi SDK-otsikot
+   Program Files -hakemistoon, mihin tavalliset oikeudet eivät riitä.
+   Käynnistä RAD Studio 13 runner-käyttäjänä valinnalla "Suorita
+   järjestelmänvalvojana", avaa `TPsource\V52\RADStudio10\DBboxm-XE.cbproj`
+   ja käännä Ctrl+F9. Kun IDE kysyy SDK:ta, valitse Windows 32-bit ja
+   asennettu tuettu versio; peruspolku on `C:\Program Files (x86)\Windows
+   Kits\10`. Sulje IDE ja käynnistä runner tavallisena käyttäjänä.
+
+Lähteet: [Windows SDK Installation](https://docwiki.embarcadero.com/RADStudio/Florence/en/Windows_SDK_Installation),
+[Windows SDK Problem with RAD Studio 13](https://en.delphipraxis.net/topic/14486-windows-sdk-problem-with-rad-studio-13/).
+
 ## 3. Testaa
 
 Käynnistä GitHubissa Actions → Build → *Run workflow*, tai pushaa jotain
@@ -99,6 +133,7 @@ Lisäksi:
   "C:\Program Files (x86)\Embarcadero\Studio\37.0\bin\bds.exe" "C:\actions-runner\pirilaTP\tulospalvelu\tulospalvelu\TPsource\V52\RADStudio10\DBboxm-XE.cbproj" -b -ns -o"C:\Temp\dbboxm.log"
   ```
 
+- **`Error creating platform SDK` tai SDK-kysymykset.** Katso kohta 2b.
 - **CE-lisenssi on voimassa vuoden kerrallaan.** Kun se vanhenee, IDE vaatii
   uudelleenrekisteröinnin ja käännökset alkavat jäädä aikakatkaisuun. Avaa
   IDE kerran käsin ja uusi lisenssi.
