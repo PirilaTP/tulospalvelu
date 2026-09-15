@@ -91,3 +91,4 @@ on a self-hosted Windows runner that has C++ Builder installed. The runner
 should run as the Windows user who registered the C++ Builder licence (an
 interactive `run.cmd` session rather than a service), because `bds.exe` checks
 the licence and may otherwise wait on a hidden dialog.
+See `.github/self-hosted-runner.md` for runner setup instructions (in Finnish).
