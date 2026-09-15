@@ -36,7 +36,8 @@
 
 .PARAMETER TimeoutMinutes
     Maximum time for a single project build. A hidden modal dialog in the IDE
-    would otherwise hang a CI run forever.
+    would otherwise hang a CI run forever. While waiting, the captions of the
+    IDE's visible windows are printed so that such a dialog can be identified.
 
 .PARAMETER LogDir
     Directory for per-project build logs. Defaults to build-logs next to this
@@ -51,7 +52,7 @@ param(
     [string]$StudioRoot,
     [ValidateSet('bds', 'msbuild')]
     [string]$Tool = 'bds',
-    [int]$TimeoutMinutes = 20,
+    [int]$TimeoutMinutes = 10,
     [string]$LogDir
 )
 
@@ -86,14 +87,58 @@ New-Item -ItemType Directory -Force -Path $LogDir | Out-Null
 # Lines like "[bcc32c Error] Foo.cpp(12): ..." or "[ilink32 Error] ..." mark a failed build.
 $errorPattern = '\[(bcc32c?|bcc64x?|ilink32|ilink64|brcc32|tlib|cgrc|MSBuild) (Error|Fatal)\]|error [A-Z]+\d+:|Build FAILED'
 
+# Win32 helper: list the captions of all top-level windows owned by a process.
+# When bds.exe stops on a modal dialog (licence registration, "file not found",
+# project upgrade question...) this reveals the dialog caption in the CI log.
+Add-Type -Namespace Tp -Name Win32 -MemberDefinition @"
+    public delegate bool EnumWindowsProc(System.IntPtr hWnd, System.IntPtr lParam);
+    [System.Runtime.InteropServices.DllImport("user32.dll")] public static extern bool EnumWindows(EnumWindowsProc cb, System.IntPtr lParam);
+    [System.Runtime.InteropServices.DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(System.IntPtr hWnd, out uint pid);
+    [System.Runtime.InteropServices.DllImport("user32.dll")] public static extern bool IsWindowVisible(System.IntPtr hWnd);
+    [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)] public static extern int GetWindowText(System.IntPtr hWnd, System.Text.StringBuilder text, int count);
+    public static System.Collections.Generic.List<string> WindowTitles(uint targetPid) {
+        var titles = new System.Collections.Generic.List<string>();
+        EnumWindows((hWnd, lParam) => {
+            uint pid; GetWindowThreadProcessId(hWnd, out pid);
+            if (pid == targetPid && IsWindowVisible(hWnd)) {
+                var sb = new System.Text.StringBuilder(512);
+                GetWindowText(hWnd, sb, sb.Capacity);
+                if (sb.Length > 0) titles.Add(sb.ToString());
+            }
+            return true;
+        }, System.IntPtr.Zero);
+        return titles;
+    }
+"@
+
+function Get-ProcessWindowTitles([int]$processId) {
+    try { return @([Tp.Win32]::WindowTitles([uint32]$processId)) } catch { return @() }
+}
+
 function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
     # -b build, -ns no splash screen, -o<file> write build output to file.
     $bdsArgs = @("`"$projectPath`"", '-b', '-ns', "-o`"$logPath`"")
     Write-Host "  $bdsExe $($bdsArgs -join ' ')"
-    $proc = Start-Process -FilePath $bdsExe -ArgumentList $bdsArgs -PassThru -WindowStyle Hidden
-    if (-not $proc.WaitForExit($TimeoutMinutes * 60 * 1000)) {
-        try { $proc.Kill() } catch { }
-        throw "bds.exe did not finish within $TimeoutMinutes minutes (a hidden IDE dialog?). Killed."
+    $proc = Start-Process -FilePath $bdsExe -ArgumentList $bdsArgs -PassThru
+    $deadline = (Get-Date).AddMinutes($TimeoutMinutes)
+    $lastTitles = ''
+    while (-not $proc.WaitForExit(15000)) {
+        $titles = Get-ProcessWindowTitles $proc.Id
+        $joined = ($titles | Sort-Object) -join ' | '
+        if ($joined -ne $lastTitles) {
+            Write-Host "  [$(Get-Date -Format HH:mm:ss)] bds.exe windows: $joined"
+            $lastTitles = $joined
+        }
+        $logSize = 0
+        if (Test-Path $logPath) { $logSize = (Get-Item $logPath).Length }
+        $cpu = [int]$proc.TotalProcessorTime.TotalSeconds
+        Write-Verbose "  waiting... cpu=${cpu}s log=${logSize}B"
+        if ((Get-Date) -gt $deadline) {
+            Write-Host "##[error]bds.exe did not finish within $TimeoutMinutes minutes. Windows: $joined"
+            Write-Host "  The IDE is most likely stopped on a modal dialog. Run the command above by hand in the runner user's desktop session to see it."
+            try { $proc.Kill() } catch { }
+            throw "bds.exe timed out after $TimeoutMinutes minutes (cpu=${cpu}s, log=${logSize}B)."
+        }
     }
     return $proc.ExitCode
 }
