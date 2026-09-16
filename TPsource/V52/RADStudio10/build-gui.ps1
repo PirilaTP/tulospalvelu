@@ -143,6 +143,30 @@ function Close-ProcessDialogs([int]$processId) {
     try { return @([Tp.Win32]::CloseDialogs([uint32]$processId, 'C++Builder')) } catch { return @() }
 }
 
+# Names of the IDE and the tools it spawns. Leftovers from a killed build can hold
+# locks on intermediate files (PCH, obj) and make the next build hang silently.
+$toolProcessNames = @('bds', 'bcc32', 'bcc32c', 'bcc32x', 'bcc64', 'bcc64x', 'ilink32', 'ilink64', 'brcc32', 'cgrc', 'tlib', 'make', 'ld')
+
+function Get-ChildProcessInfo([int]$processId) {
+    try {
+        $children = @(Get-CimInstance Win32_Process -Filter "ParentProcessId=$processId" -ErrorAction Stop)
+        return @($children | ForEach-Object {
+            $cpu = ''
+            try { $cpu = [int](Get-Process -Id $_.ProcessId -ErrorAction Stop).TotalProcessorTime.TotalSeconds } catch { }
+            "$($_.Name)(pid $($_.ProcessId), cpu ${cpu}s)"
+        })
+    } catch { return @() }
+}
+
+function Stop-StaleToolProcesses([string]$reason) {
+    $stale = @(Get-Process -Name $toolProcessNames -ErrorAction SilentlyContinue)
+    if ($stale.Count -gt 0) {
+        Write-Host "  $reason - stopping leftover processes: $(($stale | ForEach-Object { "$($_.ProcessName)(pid $($_.Id))" }) -join ', ')"
+        $stale | Stop-Process -Force -ErrorAction SilentlyContinue
+        Start-Sleep -Seconds 2
+    }
+}
+
 function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
     # -b build, -ns no splash screen, -o<file> write build output to file.
     $bdsArgs = @("`"$projectPath`"", '-b', '-ns', "-o`"$logPath`"")
@@ -176,12 +200,14 @@ function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
             # The IDE has been idle for a minute without finishing: it is sitting in a dialog.
             # After a failed compile this is the "Build" progress window waiting for OK; the
             # log is only written once it is closed. Close every non-main window and carry on.
+            $children = @(Get-ChildProcessInfo $proc.Id)
+            Write-Host "  [$(Get-Date -Format HH:mm:ss)] IDE idle for ${idleSeconds}s (cpu=${cpu}s). Child processes: $(if ($children.Count) { $children -join ', ' } else { 'none' })"
             $closed = @(Close-ProcessDialogs $proc.Id)
             if ($closed.Count -gt 0) {
                 $nudges++
-                Write-Host "  [$(Get-Date -Format HH:mm:ss)] IDE idle for ${idleSeconds}s, closed dialog(s): $($closed -join ' | ')"
-                $cpuChangedAt = Get-Date
+                Write-Host "  closed dialog(s): $($closed -join ' | ')"
             }
+            $cpuChangedAt = Get-Date
         }
 
         if ($logDone) {
@@ -198,7 +224,10 @@ function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
         if ((Get-Date) -gt $deadline) {
             Write-Host "##[error]bds.exe did not finish within $TimeoutMinutes minutes. Windows: $joined"
             Write-Host "  The IDE is most likely stopped on a modal dialog. Run the command above by hand in the runner user's desktop session to see it."
+            $children = @(Get-ChildProcessInfo $proc.Id)
+            Write-Host "  Child processes at timeout: $(if ($children.Count) { $children -join ', ' } else { 'none' })"
             try { $proc.Kill() } catch { }
+            Stop-StaleToolProcesses 'after timeout'
             throw "bds.exe timed out after $TimeoutMinutes minutes (cpu=${cpu}s, log=${logSize}B)."
         }
     }
@@ -225,6 +254,7 @@ foreach ($p in $projects) {
     Write-Host ""
     Write-Host "=== Building $($p.Project) ($Tool) ==="
 
+    if ($Tool -eq 'bds') { Stop-StaleToolProcesses 'before build' }
     if (Test-Path $outputPath) { Remove-Item $outputPath -Force }
     if (Test-Path $logPath) { Remove-Item $logPath -Force }
 
