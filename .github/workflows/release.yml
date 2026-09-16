@@ -1,0 +1,195 @@
+name: Release
+
+# Builds every program (console programs on a GitHub-hosted runner, Windows GUI
+# programs on the self-hosted C++Builder runner), packages them into one ZIP
+# and, when triggered by a tag, publishes the ZIP as a GitHub Release.
+#
+# Publish a release:   git tag v2026.09.1 && git push origin v2026.09.1
+# Test the packaging:  Actions -> Release -> Run workflow (no release is created
+#                      unless the chosen ref is a tag).
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  console:
+    name: Console programs (MSVC)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build utility libraries (tputilv2 + dbboxm)
+        run: msbuild TPsource\V52\VS\Libs\tputilv2.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
+
+      - name: Build HkMaali (individual competition)
+        run: msbuild TPsource\V52\VS\Hk\HkMaali520.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
+
+      - name: Build ViestiMaali and ViestiLuenta (relay competition)
+        run: msbuild TPsource\V52\VS\V\JukMaali520.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
+
+      - name: Upload console binaries
+        uses: actions/upload-artifact@v7
+        with:
+          name: console-bin
+          path: |
+            TPexe/Hk/V521/HkMaali.exe
+            TPexe/Juk/V52/ViestiMaali.exe
+            TPexe/Juk/V52/ViestiLuenta.exe
+          if-no-files-found: error
+          retention-days: 7
+
+  gui:
+    name: Windows GUI programs (C++Builder, self-hosted)
+    runs-on: [self-hosted, Windows, X64]
+    timeout-minutes: 90
+    concurrency:
+      group: cbuilder-release-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build DBboxm, Tputil, HkKisaWin and ViestiWin
+        shell: powershell -NoProfile -ExecutionPolicy Bypass -Command ". '{0}'"
+        run: .\TPsource\V52\RADStudio10\build-gui.ps1
+
+      - name: Collect executables and C++Builder runtime files
+        shell: powershell -NoProfile -ExecutionPolicy Bypass -Command ". '{0}'"
+        run: |
+          .\TPsource\V52\RADStudio10\collect-gui-runtime.ps1 `
+            -Executable TPexe\Hk\V521\HkKisaWin.exe, TPexe\Juk\V521\ViestiWin.exe `
+            -Destination dist\gui
+
+      - name: Upload GUI binaries
+        uses: actions/upload-artifact@v7
+        with:
+          name: gui-bin
+          path: dist/gui/
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: cbuilder-release-build-logs
+          path: TPsource/V52/RADStudio10/build-logs/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  package:
+    name: Package and publish
+    needs: [console, gui]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: console-bin
+          path: staging/console
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: gui-bin
+          path: staging/gui
+
+      - name: Assemble ZIP package
+        id: package
+        shell: pwsh
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+          RUN_NUMBER: ${{ github.run_number }}
+          BUILD_COMMIT: ${{ github.sha }}
+        run: |
+          $version = if ($env:REF_TYPE -eq 'tag') { $env:REF_NAME } else { "run-$env:RUN_NUMBER" }
+          $safeVersion = $version -replace '[^A-Za-z0-9._-]', '-'
+          $packageName = "tulospalvelu-$safeVersion-win32"
+          $packageDir = Join-Path "dist" $packageName
+
+          New-Item -ItemType Directory -Force -Path "$packageDir\console", "$packageDir\gui" | Out-Null
+
+          # download-artifact flattens the uploaded paths; make sure every program arrived.
+          $consoleExes = @("HkMaali.exe", "ViestiMaali.exe", "ViestiLuenta.exe")
+          foreach ($exe in $consoleExes) {
+            $found = Get-ChildItem staging\console -Recurse -Filter $exe | Select-Object -First 1
+            if (-not $found) { throw "Console program missing from build output: $exe" }
+            Copy-Item $found.FullName "$packageDir\console"
+          }
+          foreach ($exe in @("HkKisaWin.exe", "ViestiWin.exe")) {
+            if (-not (Test-Path "staging\gui\$exe")) { throw "GUI program missing from build output: $exe" }
+          }
+          Copy-Item staging\gui\* "$packageDir\gui" -Recurse
+
+          Copy-Item LICENSE $packageDir
+          Copy-Item README.md $packageDir
+
+          @"
+          Pekka Pirilan tulospalveluohjelma
+
+          Package: $packageName
+          Commit:  $env:BUILD_COMMIT
+          Built:   $(Get-Date -Format "yyyy-MM-dd HH:mm:ss K")
+
+          gui\HkKisaWin.exe      Windows GUI, individual competition (henkilokilpailu)
+          gui\ViestiWin.exe      Windows GUI, relay competition (viesti)
+          gui\*.bpl, gui\*.dll   C++Builder runtime files the GUI programs need;
+                                 keep them in the same folder as the .exe files.
+          console\HkMaali.exe    console program, individual competition
+          console\ViestiMaali.exe console program, relay competition
+          console\ViestiLuenta.exe console program, relay reading
+
+          The binaries are unsigned; Windows may show a SmartScreen warning.
+          Source code (GPLv3): https://github.com/$env:GITHUB_REPOSITORY
+          "@ | Set-Content -Path (Join-Path $packageDir "README.txt") -Encoding UTF8
+
+          Push-Location $packageDir
+          Get-ChildItem -Recurse -File -Include *.exe, *.bpl, *.dll |
+            Get-FileHash -Algorithm SHA256 |
+            Sort-Object Path |
+            ForEach-Object { "$($_.Hash.ToLowerInvariant())  $(Resolve-Path -Relative $_.Path)" } |
+            Set-Content -Path "SHA256SUMS.txt" -Encoding ASCII
+          Pop-Location
+
+          $zipPath = "dist\$packageName.zip"
+          Compress-Archive -Path "$packageDir\*" -DestinationPath $zipPath -Force
+
+          "package_name=$packageName" >> $env:GITHUB_OUTPUT
+          "zip_path=$zipPath" >> $env:GITHUB_OUTPUT
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+          Add-Content $env:GITHUB_STEP_SUMMARY "## Package $packageName"
+          Add-Content $env:GITHUB_STEP_SUMMARY ""
+          Add-Content $env:GITHUB_STEP_SUMMARY '```'
+          Get-Content "$packageDir\SHA256SUMS.txt" | Add-Content $env:GITHUB_STEP_SUMMARY
+          Add-Content $env:GITHUB_STEP_SUMMARY '```'
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.package.outputs.package_name }}
+          path: ${{ steps.package.outputs.zip_path }}
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish GitHub Release
+        if: github.ref_type == 'tag'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          ZIP_PATH: ${{ steps.package.outputs.zip_path }}
+        run: |
+          gh release create $env:TAG $env:ZIP_PATH `
+            --repo $env:GITHUB_REPOSITORY `
+            --title "Tulospalvelu $env:TAG" `
+            --generate-notes `
+            --verify-tag

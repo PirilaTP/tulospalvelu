@@ -44,6 +44,27 @@ User guides are hosted at **https://pirilatp.github.io/tulospalvelu/**. The
 original archived documentation at https://www.tulospalvelu.fi/pirila/ohjeet/
 remains available during the transition period.
 
+## Downloads / releases
+
+Ready-built Windows binaries are published as
+[GitHub Releases](../../releases). Each release ZIP contains the console
+programs (`console\`) and the Windows GUI programs with the C++ Builder
+runtime files they need (`gui\`), plus `SHA256SUMS.txt`.
+
+A release is built by `.github/workflows/release.yml` when a tag starting
+with `v` is pushed:
+
+```
+git tag v2026.09.1
+git push origin v2026.09.1
+```
+
+The console programs are built on a GitHub-hosted runner and the GUI programs
+on the self-hosted C++ Builder runner (see `.github/self-hosted-runner.md`).
+The same workflow can be run manually from the Actions tab to test the
+packaging; a release is created only for tags. Artifacts of ordinary CI builds
+(`build.yml`) are kept for 30 days and require a GitHub login to download.
+
 ## Console programs
 
 ### Required tools

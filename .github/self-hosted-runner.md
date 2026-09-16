@@ -151,4 +151,7 @@ Lisäksi:
 - **Git puuttuu.** `actions/checkout` tarvitsee gitin runner-koneella.
 
 Käännösskripti ja sen parametrit: `TPsource/V52/RADStudio10/build-gui.ps1`.
-Workflow: `.github/workflows/build.yml`, job `gui`.
+Workflowt: `.github/workflows/build.yml` (job `gui`, joka pushilla) ja
+`.github/workflows/release.yml` (job `gui`, `v*`-tägeistä). Release-workflow
+kerää lisäksi ajonaikaiset BPL/DLL-tiedostot IDE:n `bin`-hakemistosta
+skriptillä `collect-gui-runtime.ps1`, joten myös se ajetaan tällä koneella.
