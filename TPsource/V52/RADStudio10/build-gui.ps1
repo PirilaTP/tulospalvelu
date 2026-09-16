@@ -154,7 +154,7 @@ function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
     $cpuChangedAt = Get-Date
     $nudges = 0
     while (-not $proc.WaitForExit(15000)) {
-        $titles = Get-ProcessWindowTitles $proc.Id
+        $titles = @(Get-ProcessWindowTitles $proc.Id)
         $joined = ($titles | Sort-Object) -join ' | '
         if ($joined -ne $lastTitles) {
             Write-Host "  [$(Get-Date -Format HH:mm:ss)] bds.exe windows: $joined"
@@ -176,7 +176,7 @@ function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
             # The IDE has been idle for a minute without finishing: it is sitting in a dialog.
             # After a failed compile this is the "Build" progress window waiting for OK; the
             # log is only written once it is closed. Close every non-main window and carry on.
-            $closed = Close-ProcessDialogs $proc.Id
+            $closed = @(Close-ProcessDialogs $proc.Id)
             if ($closed.Count -gt 0) {
                 $nudges++
                 Write-Host "  [$(Get-Date -Format HH:mm:ss)] IDE idle for ${idleSeconds}s, closed dialog(s): $($closed -join ' | ')"
