@@ -122,24 +122,58 @@ Add-Type -Namespace Tp -Name Win32 -MemberDefinition @"
         return titles;
     }
 
-    // Post WM_CLOSE to every visible top-level window of the process except the IDE main
-    // window (caption contains mainMarker) and tooltips. Returns what was closed.
-    public static System.Collections.Generic.List<string> CloseDialogs(uint targetPid, string mainMarker) {
-        var closed = new System.Collections.Generic.List<string>();
+    public delegate bool EnumChildProc(System.IntPtr hWnd, System.IntPtr lParam);
+    [System.Runtime.InteropServices.DllImport("user32.dll")] public static extern bool EnumChildWindows(System.IntPtr hWndParent, EnumChildProc cb, System.IntPtr lParam);
+
+    // Buttons we are willing to press, in order of preference. Never "Yes"/"Save": a
+    // "Save changes to project?" question must be answered No, the EULA reminder OK.
+    static readonly string[] ButtonPreference = { "&no", "no", "ei", "ok", "&ok", "close", "&close", "sulje", "continue", "&continue" };
+
+    static System.IntPtr FindPreferredButton(System.IntPtr dialog, out string caption) {
+        var buttons = new System.Collections.Generic.Dictionary<string, System.IntPtr>();
+        EnumChildWindows(dialog, (h, l) => {
+            string cls = Class(h);
+            if (cls.EndsWith("Button", System.StringComparison.OrdinalIgnoreCase)) {
+                string t = Text(h).Trim().ToLowerInvariant();
+                if (t.Length > 0 && !buttons.ContainsKey(t)) buttons[t] = h;
+            }
+            return true;
+        }, System.IntPtr.Zero);
+        foreach (string want in ButtonPreference) {
+            if (buttons.ContainsKey(want)) { caption = want; return buttons[want]; }
+        }
+        caption = null;
+        return System.IntPtr.Zero;
+    }
+
+    // Dismiss every visible top-level window of the process except the IDE main window
+    // (caption contains mainMarker), the windows named in keepTitles (e.g. the "Build"
+    // progress window - closing it cancels the build) and tooltips. Presses a preferred
+    // button (BM_CLICK) when one is found, otherwise posts WM_CLOSE. Returns what was done.
+    public static System.Collections.Generic.List<string> DismissDialogs(uint targetPid, string mainMarker, string[] keepTitles) {
+        var done = new System.Collections.Generic.List<string>();
         EnumWindows((hWnd, lParam) => {
             uint pid; GetWindowThreadProcessId(hWnd, out pid);
             if (pid == targetPid && IsWindowVisible(hWnd)) {
                 string cls = Class(hWnd);
                 string title = Text(hWnd);
                 bool isMain = title.IndexOf(mainMarker, System.StringComparison.OrdinalIgnoreCase) >= 0;
-                if (!isMain && !IsTooltip(cls)) {
-                    PostMessage(hWnd, 0x0010, System.IntPtr.Zero, System.IntPtr.Zero);
-                    closed.Add(cls + ":" + title);
+                bool keep = System.Array.Exists(keepTitles, k => string.Equals(k, title, System.StringComparison.OrdinalIgnoreCase));
+                if (!isMain && !keep && !IsTooltip(cls)) {
+                    string caption;
+                    System.IntPtr button = FindPreferredButton(hWnd, out caption);
+                    if (button != System.IntPtr.Zero) {
+                        PostMessage(button, 0x00F5, System.IntPtr.Zero, System.IntPtr.Zero); // BM_CLICK
+                        done.Add(cls + ":" + title + " -> pressed '" + caption + "'");
+                    } else {
+                        PostMessage(hWnd, 0x0010, System.IntPtr.Zero, System.IntPtr.Zero); // WM_CLOSE
+                        done.Add(cls + ":" + title + " -> WM_CLOSE");
+                    }
                 }
             }
             return true;
         }, System.IntPtr.Zero);
-        return closed;
+        return done;
     }
 "@
 
@@ -148,7 +182,7 @@ function Get-ProcessWindowTitles([int]$processId) {
 }
 
 function Close-ProcessDialogs([int]$processId) {
-    try { return @([Tp.Win32]::CloseDialogs([uint32]$processId, 'C++Builder')) } catch { return @() }
+    try { return @([Tp.Win32]::DismissDialogs([uint32]$processId, 'C++Builder', [string[]]@('Build'))) } catch { Write-Warning "DismissDialogs failed: $_"; return @() }
 }
 
 # Names of the IDE and the tools it spawns. Leftovers from a killed build can hold
@@ -206,9 +240,10 @@ function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
 
         if (-not $logDone -and $idleSeconds -ge 45 -and $nudges -lt 6) {
             # The IDE has been idle without finishing: it is sitting in a modal dialog. Known
-            # cases: the timed "Community Edition EULA Reminder" (a captionless form that
-            # blocks the build) and the "Build" window waiting for OK after a failed compile
-            # (the log is only written once it is closed). Close every non-main window.
+            # cases: the timed "Community Edition EULA Reminder" (a captionless form with an
+            # OK button that blocks the build) and "Confirm: Save changes to project?" when
+            # the IDE exits (answer No). The "Build" progress window is left alone because
+            # closing it cancels the build.
             $children = @(Get-ChildProcessInfo $proc.Id)
             Write-Host "  [$(Get-Date -Format HH:mm:ss)] IDE idle for ${idleSeconds}s (cpu=${cpu}s). Child processes: $(if ($children.Count) { $children -join ', ' } else { 'none' })"
             $closed = @(Close-ProcessDialogs $proc.Id)
