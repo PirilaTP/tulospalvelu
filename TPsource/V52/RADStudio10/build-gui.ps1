@@ -213,6 +213,10 @@ function Stop-StaleToolProcesses([string]$reason) {
     }
 }
 
+# Window classes (as printed in the "bds.exe windows" lines) that are dismissed immediately:
+# TCENotificationDialog = the timed "Community Edition EULA Reminder" (OK button).
+$knownDialogPattern = '^(TCENotificationDialog):'
+
 function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
     # -b build, -ns no splash screen, -o<file> write build output to file.
     $bdsArgs = @("`"$projectPath`"", '-b', '-ns', "-o`"$logPath`"")
@@ -223,12 +227,21 @@ function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
     $lastCpu = -1
     $cpuChangedAt = Get-Date
     $nudges = 0
-    while (-not $proc.WaitForExit(15000)) {
+    while (-not $proc.WaitForExit(5000)) {
         $titles = @(Get-ProcessWindowTitles $proc.Id)
         $joined = ($titles | Sort-Object) -join ' | '
         if ($joined -ne $lastTitles) {
             Write-Host "  [$(Get-Date -Format HH:mm:ss)] bds.exe windows: $joined"
             $lastTitles = $joined
+        }
+
+        # Dialogs we know are harmless nags are dismissed the moment they appear.
+        $known = @($titles | Where-Object { $_ -match $knownDialogPattern })
+        if ($known.Count -gt 0) {
+            $closed = @(Close-ProcessDialogs $proc.Id)
+            Write-Host "  [$(Get-Date -Format HH:mm:ss)] known dialog $($known -join ' | ') -> $($closed -join ' | ')"
+            $cpuChangedAt = Get-Date
+            continue
         }
         $logSize = 0
         $logDone = $false
@@ -242,7 +255,7 @@ function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
         if ($cpu -ne $lastCpu) { $lastCpu = $cpu; $cpuChangedAt = Get-Date }
         $idleSeconds = [int]((Get-Date) - $cpuChangedAt).TotalSeconds
 
-        if (-not $logDone -and $idleSeconds -ge 45 -and $nudges -lt 6) {
+        if (-not $logDone -and $idleSeconds -ge 45 -and $nudges -lt 6) {  # unknown dialogs: wait first
             # The IDE has been idle without finishing: it is sitting in a modal dialog. Known
             # cases: the timed "Community Edition EULA Reminder" (a captionless form with an
             # OK button that blocks the build) and "Confirm: Save changes to project?" when

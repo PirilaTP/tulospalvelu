@@ -139,8 +139,10 @@ Lisäksi:
   käännös on valmis, ja sulkee IDE:n tallentamatta. Ei vaadi toimenpiteitä.
 - **"Community Edition EULA Reminder".** CE näyttää ajastetun muistutuksen
   muutama minuutti IDE:n käynnistyksestä, ja se pysäyttää käännöksen
-  modaalisena. Skripti sulkee sen automaattisesti, kun IDE on ollut 45 s
-  toimettomana (CI-lokissa rivi `closed dialog(s): ...`). Ei vaadi toimenpiteitä.
+  modaalisena. Skripti tunnistaa sen luokkanimestä (`TCENotificationDialog`)
+  ja painaa OK heti (CI-lokissa rivi `known dialog ... -> pressed 'ok'`).
+  Tuntemattomat dialogit kuitataan 45 s toimettomuuden jälkeen. Ei vaadi
+  toimenpiteitä.
 - **CE-lisenssi on voimassa vuoden kerrallaan.** Kun se vanhenee, IDE vaatii
   uudelleenrekisteröinnin ja käännökset alkavat jäädä aikakatkaisuun. Avaa
   IDE kerran käsin ja uusi lisenssi.
