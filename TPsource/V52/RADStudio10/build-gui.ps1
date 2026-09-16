@@ -158,8 +158,12 @@ Add-Type -Namespace Tp -Name Win32 -MemberDefinition @"
                 string cls = Class(hWnd);
                 string title = Text(hWnd);
                 bool isMain = title.IndexOf(mainMarker, System.StringComparison.OrdinalIgnoreCase) >= 0;
+                // TApplication is the VCL application's hidden main window: WM_CLOSE to it
+                // shuts down the whole IDE. TProgressForm is the "Build" progress window.
+                bool isApp = string.Equals(cls, "TApplication", System.StringComparison.OrdinalIgnoreCase)
+                          || string.Equals(cls, "TProgressForm", System.StringComparison.OrdinalIgnoreCase);
                 bool keep = System.Array.Exists(keepTitles, k => string.Equals(k, title, System.StringComparison.OrdinalIgnoreCase));
-                if (!isMain && !keep && !IsTooltip(cls)) {
+                if (!isMain && !isApp && !keep && !IsTooltip(cls)) {
                     string caption;
                     System.IntPtr button = FindPreferredButton(hWnd, out caption);
                     if (button != System.IntPtr.Zero) {
