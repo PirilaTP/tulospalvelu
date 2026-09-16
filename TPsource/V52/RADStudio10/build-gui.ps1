@@ -25,7 +25,9 @@
     Because bds.exe does not report build failures reliably through its exit
     code, the script also deletes the expected outputs before building, scans
     the build log for compiler/linker errors and verifies that every expected
-    output file was produced.
+    output file was produced. When the log shows the build is over but the IDE
+    is still open (it asks whether to save project files it upgraded in
+    memory), the IDE is closed without saving.
 
 .PARAMETER StudioRoot
     RAD Studio / C++Builder installation directory. Defaults to $env:BDS if set,
@@ -130,9 +132,26 @@ function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
             $lastTitles = $joined
         }
         $logSize = 0
-        if (Test-Path $logPath) { $logSize = (Get-Item $logPath).Length }
+        $logDone = $false
+        if (Test-Path $logPath) {
+            $logSize = (Get-Item $logPath).Length
+            # The IDE writes the log when the build is over; its last line is "Elapsed time: ...".
+            try { $logDone = (Get-Content $logPath -Raw -ErrorAction Stop) -match 'Elapsed time:' } catch { }
+        }
         $cpu = [int]$proc.TotalProcessorTime.TotalSeconds
         Write-Verbose "  waiting... cpu=${cpu}s log=${logSize}B"
+
+        if ($logDone) {
+            # Build finished but the IDE has not exited. It is asking whether to save the
+            # project files it upgraded in memory ("Confirm" dialog). We never want those
+            # changes saved, so close the IDE; the log and the output files decide the result.
+            Write-Host "  Build finished, IDE still open ($joined). Closing bds.exe."
+            if (-not $proc.WaitForExit(10000)) {
+                try { $proc.Kill(); $proc.WaitForExit(30000) | Out-Null } catch { }
+            }
+            return 0
+        }
+
         if ((Get-Date) -gt $deadline) {
             Write-Host "##[error]bds.exe did not finish within $TimeoutMinutes minutes. Windows: $joined"
             Write-Host "  The IDE is most likely stopped on a modal dialog. Run the command above by hand in the runner user's desktop session to see it."

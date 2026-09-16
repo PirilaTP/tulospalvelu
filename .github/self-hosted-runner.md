@@ -134,6 +134,9 @@ Lisäksi:
   ```
 
 - **`Error creating platform SDK` tai SDK-kysymykset.** Katso kohta 2b.
+- **`Confirm`-dialogi käännöksen jälkeen.** IDE kysyy, tallennetaanko sen
+  muistissa päivittämät projektitiedostot. Skripti tunnistaa lokista, että
+  käännös on valmis, ja sulkee IDE:n tallentamatta. Ei vaadi toimenpiteitä.
 - **CE-lisenssi on voimassa vuoden kerrallaan.** Kun se vanhenee, IDE vaatii
   uudelleenrekisteröinnin ja käännökset alkavat jäädä aikakatkaisuun. Avaa
   IDE kerran käsin ja uusi lisenssi.
