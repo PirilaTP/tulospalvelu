@@ -100,33 +100,41 @@ Add-Type -Namespace Tp -Name Win32 -MemberDefinition @"
     [System.Runtime.InteropServices.DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(System.IntPtr hWnd, out uint pid);
     [System.Runtime.InteropServices.DllImport("user32.dll")] public static extern bool IsWindowVisible(System.IntPtr hWnd);
     [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)] public static extern int GetWindowText(System.IntPtr hWnd, System.Text.StringBuilder text, int count);
+    [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)] public static extern int GetClassName(System.IntPtr hWnd, System.Text.StringBuilder text, int count);
+    [System.Runtime.InteropServices.DllImport("user32.dll")] public static extern bool PostMessage(System.IntPtr hWnd, uint msg, System.IntPtr wParam, System.IntPtr lParam);
+
+    static string Text(System.IntPtr hWnd) { var sb = new System.Text.StringBuilder(512); GetWindowText(hWnd, sb, sb.Capacity); return sb.ToString(); }
+    static string Class(System.IntPtr hWnd) { var sb = new System.Text.StringBuilder(256); GetClassName(hWnd, sb, sb.Capacity); return sb.ToString(); }
+    static bool IsTooltip(string cls) { return cls.IndexOf("tooltip", System.StringComparison.OrdinalIgnoreCase) >= 0 || cls.IndexOf("hint", System.StringComparison.OrdinalIgnoreCase) >= 0; }
+
+    // "Class:Title" of every visible top-level window of the process. Captionless
+    // dialogs (e.g. the Community Edition EULA reminder) show up as "TFooForm:".
     public static System.Collections.Generic.List<string> WindowTitles(uint targetPid) {
         var titles = new System.Collections.Generic.List<string>();
         EnumWindows((hWnd, lParam) => {
             uint pid; GetWindowThreadProcessId(hWnd, out pid);
             if (pid == targetPid && IsWindowVisible(hWnd)) {
-                var sb = new System.Text.StringBuilder(512);
-                GetWindowText(hWnd, sb, sb.Capacity);
-                if (sb.Length > 0) titles.Add(sb.ToString());
+                string cls = Class(hWnd);
+                if (!IsTooltip(cls)) titles.Add(cls + ":" + Text(hWnd));
             }
             return true;
         }, System.IntPtr.Zero);
         return titles;
     }
-    [System.Runtime.InteropServices.DllImport("user32.dll")] public static extern bool PostMessage(System.IntPtr hWnd, uint msg, System.IntPtr wParam, System.IntPtr lParam);
-    // Post WM_CLOSE to every visible top-level window of the process whose caption does
-    // not contain mainMarker (the IDE main window). Returns the captions that were closed.
+
+    // Post WM_CLOSE to every visible top-level window of the process except the IDE main
+    // window (caption contains mainMarker) and tooltips. Returns what was closed.
     public static System.Collections.Generic.List<string> CloseDialogs(uint targetPid, string mainMarker) {
         var closed = new System.Collections.Generic.List<string>();
         EnumWindows((hWnd, lParam) => {
             uint pid; GetWindowThreadProcessId(hWnd, out pid);
             if (pid == targetPid && IsWindowVisible(hWnd)) {
-                var sb = new System.Text.StringBuilder(512);
-                GetWindowText(hWnd, sb, sb.Capacity);
-                string title = sb.ToString();
-                if (title.Length > 0 && title.IndexOf(mainMarker, System.StringComparison.OrdinalIgnoreCase) < 0) {
+                string cls = Class(hWnd);
+                string title = Text(hWnd);
+                bool isMain = title.IndexOf(mainMarker, System.StringComparison.OrdinalIgnoreCase) >= 0;
+                if (!isMain && !IsTooltip(cls)) {
                     PostMessage(hWnd, 0x0010, System.IntPtr.Zero, System.IntPtr.Zero);
-                    closed.Add(title);
+                    closed.Add(cls + ":" + title);
                 }
             }
             return true;
@@ -196,10 +204,11 @@ function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
         if ($cpu -ne $lastCpu) { $lastCpu = $cpu; $cpuChangedAt = Get-Date }
         $idleSeconds = [int]((Get-Date) - $cpuChangedAt).TotalSeconds
 
-        if (-not $logDone -and $idleSeconds -ge 60 -and $nudges -lt 3) {
-            # The IDE has been idle for a minute without finishing: it is sitting in a dialog.
-            # After a failed compile this is the "Build" progress window waiting for OK; the
-            # log is only written once it is closed. Close every non-main window and carry on.
+        if (-not $logDone -and $idleSeconds -ge 45 -and $nudges -lt 6) {
+            # The IDE has been idle without finishing: it is sitting in a modal dialog. Known
+            # cases: the timed "Community Edition EULA Reminder" (a captionless form that
+            # blocks the build) and the "Build" window waiting for OK after a failed compile
+            # (the log is only written once it is closed). Close every non-main window.
             $children = @(Get-ChildProcessInfo $proc.Id)
             Write-Host "  [$(Get-Date -Format HH:mm:ss)] IDE idle for ${idleSeconds}s (cpu=${cpu}s). Child processes: $(if ($children.Count) { $children -join ', ' } else { 'none' })"
             $closed = @(Close-ProcessDialogs $proc.Id)
