@@ -27,7 +27,9 @@
     the build log for compiler/linker errors and verifies that every expected
     output file was produced. When the log shows the build is over but the IDE
     is still open (it asks whether to save project files it upgraded in
-    memory), the IDE is closed without saving.
+    memory), the IDE is closed without saving. If the IDE sits idle in a
+    dialog (e.g. the "Build" window after a failed compile, which blocks the
+    log from being written), the dialog is closed so the log gets written.
 
 .PARAMETER StudioRoot
     RAD Studio / C++Builder installation directory. Defaults to $env:BDS if set,
@@ -111,10 +113,34 @@ Add-Type -Namespace Tp -Name Win32 -MemberDefinition @"
         }, System.IntPtr.Zero);
         return titles;
     }
+    [System.Runtime.InteropServices.DllImport("user32.dll")] public static extern bool PostMessage(System.IntPtr hWnd, uint msg, System.IntPtr wParam, System.IntPtr lParam);
+    // Post WM_CLOSE to every visible top-level window of the process whose caption does
+    // not contain mainMarker (the IDE main window). Returns the captions that were closed.
+    public static System.Collections.Generic.List<string> CloseDialogs(uint targetPid, string mainMarker) {
+        var closed = new System.Collections.Generic.List<string>();
+        EnumWindows((hWnd, lParam) => {
+            uint pid; GetWindowThreadProcessId(hWnd, out pid);
+            if (pid == targetPid && IsWindowVisible(hWnd)) {
+                var sb = new System.Text.StringBuilder(512);
+                GetWindowText(hWnd, sb, sb.Capacity);
+                string title = sb.ToString();
+                if (title.Length > 0 && title.IndexOf(mainMarker, System.StringComparison.OrdinalIgnoreCase) < 0) {
+                    PostMessage(hWnd, 0x0010, System.IntPtr.Zero, System.IntPtr.Zero);
+                    closed.Add(title);
+                }
+            }
+            return true;
+        }, System.IntPtr.Zero);
+        return closed;
+    }
 "@
 
 function Get-ProcessWindowTitles([int]$processId) {
     try { return @([Tp.Win32]::WindowTitles([uint32]$processId)) } catch { return @() }
+}
+
+function Close-ProcessDialogs([int]$processId) {
+    try { return @([Tp.Win32]::CloseDialogs([uint32]$processId, 'C++Builder')) } catch { return @() }
 }
 
 function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
@@ -124,6 +150,9 @@ function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
     $proc = Start-Process -FilePath $bdsExe -ArgumentList $bdsArgs -PassThru
     $deadline = (Get-Date).AddMinutes($TimeoutMinutes)
     $lastTitles = ''
+    $lastCpu = -1
+    $cpuChangedAt = Get-Date
+    $nudges = 0
     while (-not $proc.WaitForExit(15000)) {
         $titles = Get-ProcessWindowTitles $proc.Id
         $joined = ($titles | Sort-Object) -join ' | '
@@ -140,6 +169,20 @@ function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
         }
         $cpu = [int]$proc.TotalProcessorTime.TotalSeconds
         Write-Verbose "  waiting... cpu=${cpu}s log=${logSize}B"
+        if ($cpu -ne $lastCpu) { $lastCpu = $cpu; $cpuChangedAt = Get-Date }
+        $idleSeconds = [int]((Get-Date) - $cpuChangedAt).TotalSeconds
+
+        if (-not $logDone -and $idleSeconds -ge 60 -and $nudges -lt 3) {
+            # The IDE has been idle for a minute without finishing: it is sitting in a dialog.
+            # After a failed compile this is the "Build" progress window waiting for OK; the
+            # log is only written once it is closed. Close every non-main window and carry on.
+            $closed = Close-ProcessDialogs $proc.Id
+            if ($closed.Count -gt 0) {
+                $nudges++
+                Write-Host "  [$(Get-Date -Format HH:mm:ss)] IDE idle for ${idleSeconds}s, closed dialog(s): $($closed -join ' | ')"
+                $cpuChangedAt = Get-Date
+            }
+        }
 
         if ($logDone) {
             # Build finished but the IDE has not exited. It is asking whether to save the
