@@ -1249,9 +1249,12 @@ void __fastcall TFormKilpailijatiedot::FormDestroy(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TFormKilpailijatiedot::BtnSalliClick(TObject *Sender)
+// Switch the competitor form between view and edit.
+// Close() only hides this form, so edit mode must be turned off on close
+// or the next Show() still has writable fields.
+void __fastcall TFormKilpailijatiedot::asetaMuokkaustila(bool paalle)
 {
-	sallimuokkaus = !sallimuokkaus;
+	sallimuokkaus = paalle;
 	BtnPeruuta->Visible = sallimuokkaus;
 	BtnTallenna->Visible = sallimuokkaus;
 	BtnPaivita->Visible = !sallimuokkaus;
@@ -1289,6 +1292,12 @@ void __fastcall TFormKilpailijatiedot::BtnSalliClick(TObject *Sender)
 		BtnSalli->Caption = L"Salli muokkaus";
 		GBHaku->Visible = true;
 		}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormKilpailijatiedot::BtnSalliClick(TObject *Sender)
+{
+	asetaMuokkaustila(!sallimuokkaus);
 }
 //---------------------------------------------------------------------------
 
@@ -1352,16 +1361,31 @@ void __fastcall TFormKilpailijatiedot::EdtNimihakuChange(TObject *Sender)
 
 void __fastcall TFormKilpailijatiedot::FormClose(TObject *Sender, TCloseAction &Action)
 {
-//	kilptietue Kilp1;
+	// Form is reused: Close hides it and keeps sallimuokkaus / ReadOnly.
+	// Always prompt Yes/No when leaving while edit mode is on, then
+	// return to view mode so the next open is not still editable.
+	if (!sallimuokkaus)
+		return;
 
-	if (!EdtSukunimi->ReadOnly) {
-//		Kilp1 = Kilp;
-//		haeTiedot(&Kilp1);
-		if (!(Kilp1 == Kilp) && Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallennus",
-			MB_YESNO) == IDYES) {
+	if (ActiveControl && ActiveControl != BtnSulje)
+		FocusControl(BtnSulje);
+	if (aktcol > 0 && aktrow > 0)
+		paivitaMuutos(aktcol, aktrow);
+
+	if (Application->MessageBoxW(L"Tallennetaanko muutokset?", L"Tallennus",
+		MB_YESNO) == IDYES) {
+		if (Lisays || !(Kilp1 == Kilp))
 			tallennaTiedot();
-			}
 		}
+	else {
+		if (Lisays) {
+			Lisays = false;
+			EdBtnClick(Sender);
+			}
+		Kilp = Kilp1;
+		}
+
+	asetaMuokkaustila(false);
 }
 //---------------------------------------------------------------------------
 
@@ -1689,8 +1713,7 @@ void __fastcall TFormKilpailijatiedot::Liskilpailija1Click(TObject *Sender)
 	dKilp = 0;
 	Kilp.nollaa();
 	Lisays = true;
-	sallimuokkaus = false;
-	BtnSalliClick(Sender);
+	asetaMuokkaustila(true);
 	naytaTiedot();
 }
 //---------------------------------------------------------------------------
