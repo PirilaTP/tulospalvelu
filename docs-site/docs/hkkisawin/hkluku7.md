@@ -33,6 +33,12 @@ Kun kaavake on muokkaustilassa, eivät hakutoiminnot ole
 käytettävissä, vaan ensin on joko tallennettava tai peruutettava muutokset ja
 käytettävä painiketta *Hakuun ja katseluun*.
 
+Jos kaavake suljetaan muokkaustilan ollessa päällä (painike *Sulje* tai
+ikkunan sulkeminen), ohjelma kysyy aina *Tallennetaanko muutokset?*.
+*Kyllä* tallentaa tiedot, jos niitä on muutettu tai kyseessä on uusi
+kilpailija. *Ei* hylkää muutokset. Kummassakin tapauksessa muokkaustila
+päättyy, ja kaavake avautuu seuraavalla kerralla haku- ja katselutilassa.
+
 Muutoksien teon helpottamiseksi voidaan käyttää
 näppäintä *F9* sekä siirtymiseen muokkaustilaan sekä tehtyjen muutosten
 tallennukseen.
