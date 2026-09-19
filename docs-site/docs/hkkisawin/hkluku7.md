@@ -36,8 +36,11 @@ käytettävä painiketta *Hakuun ja katseluun*.
 Jos kaavake suljetaan muokkaustilan ollessa päällä (painike *Sulje* tai
 ikkunan sulkeminen), ohjelma kysyy aina *Tallennetaanko muutokset?*.
 *Kyllä* tallentaa tiedot, jos niitä on muutettu tai kyseessä on uusi
-kilpailija. *Ei* hylkää muutokset. Kummassakin tapauksessa muokkaustila
-päättyy, ja kaavake avautuu seuraavalla kerralla haku- ja katselutilassa.
+kilpailija. Jos tallennus epäonnistuu (esimerkiksi varattu numero tai
+tietoja muutettu toisaalla), kaavake jää muokkaustilaan auki. *Ei*
+hylkää muutokset; uuden kilpailijan lisäys perutaan. Onnistuneen
+tallennuksen tai hylkäyksen jälkeen muokkaustila päättyy, ja kaavake
+avautuu seuraavalla kerralla haku- ja katselutilassa.
 
 Muutoksien teon helpottamiseksi voidaan käyttää
 näppäintä *F9* sekä siirtymiseen muokkaustilaan sekä tehtyjen muutosten

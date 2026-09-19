@@ -1369,20 +1369,40 @@ void __fastcall TFormKilpailijatiedot::FormClose(TObject *Sender, TCloseAction &
 
 	if (ActiveControl && ActiveControl != BtnSulje)
 		FocusControl(BtnSulje);
-	if (aktcol > 0 && aktrow > 0)
-		paivitaMuutos(aktcol, aktrow);
 
 	if (Application->MessageBoxW(L"Tallennetaanko muutokset?", L"Tallennus",
 		MB_YESNO) == IDYES) {
-		if (Lisays || !(Kilp1 == Kilp))
-			tallennaTiedot();
+		if (Lisays || !(Kilp1 == Kilp)) {
+			if (tallennaTiedot() != 0) {
+				Action = caNone;
+				return;
+				}
+			}
 		}
 	else {
 		if (Lisays) {
 			Lisays = false;
-			EdBtnClick(Sender);
+			if (dKilp > 0)
+				EdBtnClick(Sender);
+			else {
+				int d;
+				for (d = 1; d < nrec; d++) {
+					kilptietue k;
+					k.GETREC(d);
+					if (k.kilpstatus == 0 && k.id() > 0) {
+						naytaKilpailija(d);
+						break;
+						}
+					}
+				if (dKilp <= 0) {
+					Kilp.nollaa();
+					Kilp1 = Kilp;
+					naytaTiedot();
+					}
+				}
 			}
-		Kilp = Kilp1;
+		else
+			Kilp = Kilp1;
 		}
 
 	asetaMuokkaustila(false);
