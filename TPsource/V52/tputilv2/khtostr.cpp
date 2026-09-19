@@ -61,3 +61,48 @@ void khtowstr(wchar_t kh, wchar_t *str)
 			wcscpy(str, L"-");
 		}
 	}
+
+void tark_selite(wchar_t kh, wchar_t *str)
+	{
+	switch (kh) {
+		case L'D' :
+			wcscpy(str, L"Delete");
+		break;
+		case L'K' :
+			wcscpy(str, L"Kesk");
+		break;
+		case L'O' :
+			wcscpy(str, L"Ohit");
+		break;
+		case L'X' :
+			wcscpy(str, L"EiAikaa");
+		break;
+		case L'H' :
+			wcscpy(str, L"Hyl");
+		break;
+		case L'M' :
+			wcscpy(str, L"Virhe");
+		break;
+		case L'E' :
+			wcscpy(str, L"Eiläht.");
+		break;
+		case L'B' :
+			wcscpy(str, L"Havaittu");
+		break;
+		case L'T' :
+			wcscpy(str, L"Tark.");
+		break;
+		case L'I' :
+			wcscpy(str, L"esItys");
+		break;
+		case L'V' :
+			wcscpy(str, L"Vakantti");
+		break;
+		case L'P' :
+			wcscpy(str, L"Poissa");
+		break;
+		default  :
+			wcscpy(str, L"Läsnä");
+		break;
+		}
+	}

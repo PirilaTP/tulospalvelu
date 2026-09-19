@@ -32,10 +32,12 @@ static int MaastossaNva(int srj, int os)
 	int nva = 0;
 	if (srj >= 0 && srj < sarjaluku && os >= 0 && os < Sarjat[srj].osuusluku)
 		nva = Sarjat[srj].valuku[os];
-	if (nva < kilpparam.valuku)
+	if (nva <= 0)
 		nva = kilpparam.valuku;
 	if (nva < 0)
 		nva = 0;
+	if (kilpparam.valuku >= 0 && nva > kilpparam.valuku)
+		nva = kilpparam.valuku;
 	if (nva > VAIKALUKU)
 		nva = VAIKALUKU;
 	return nva;
@@ -137,16 +139,7 @@ void __fastcall TFormMaastossa::asetaSarakkeet(void)
 //---------------------------------------------------------------------------
 void __fastcall TFormMaastossa::tarkStr(wchar_t kh, wchar_t *line)
 {
-	switch (kh) {
-	case L'T': wcscpy(line, L"Tark."); break;
-	case L'I': wcscpy(line, L"esItys"); break;
-	case L'K': wcscpy(line, L"Kesk"); break;
-	case L'H': wcscpy(line, L"Hyl"); break;
-	case L'E': wcscpy(line, L"Eiläht."); break;
-	case L'P': wcscpy(line, L"Poissa"); break;
-	case L'V': wcscpy(line, L"Vakantti"); break;
-	default: wcscpy(line, L"Avoin"); break;
-	}
+	tark_selite(kh, line);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormMaastossa::haeKilpailijat(void)

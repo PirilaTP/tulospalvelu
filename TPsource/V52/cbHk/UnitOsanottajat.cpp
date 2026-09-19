@@ -575,44 +575,7 @@ void __fastcall TFormOsanottajat::naytaTiedot(void)
 						for (int ipv = 0; ipv < npv; ipv++) {
 							ColIx[col+ipv] = i;
 							ColPv[col+ipv] = ipv;
-							switch (Kilp->tark(epv+ipv)) {
-								case L'K' :
-									wcscpy(line, L"Kesk");
-									break;
-								case L'O' :
-									wcscpy(line, L"Ohit");
-									break;
-								case L'X' :
-									wcscpy(line, L"EiAikaa");
-									break;
-								case L'H' :
-									wcscpy(line, L"Hyl");
-									break;
-								case L'M' :
-									wcscpy(line, L"Virhe");
-									break;
-								case L'E' :
-									wcscpy(line, L"Eiläht.");
-									break;
-								case L'B' :
-									wcscpy(line, L"Havaittu");
-									break;
-								case L'T' :
-									wcscpy(line, L"Tark.");
-									break;
-								case L'I' :
-									wcscpy(line, L"esItys");
-									break;
-								case L'V' :
-									wcscpy(line, L"Vakantti");
-									break;
-								case L'P' :
-									wcscpy(line, L"Poissa");
-									break;
-								default :
-									wcscpy(line, L"Läsnä");
-									break;
-								}
+							tark_selite(Kilp->tark(epv+ipv), line);
 							OoGrid->Cells[col+ipv][k] = UnicodeString(line);
 							}
 						break;
@@ -1144,44 +1107,7 @@ int __fastcall TFormOsanottajat::paivitaMuutos(int col, int row)
 					kh = towupper(OoGrid->Cells[col][k].c_str()[0]);
 					break;
 				}
-			switch (kh) {
-				case L'D' :
-					wcscpy(line, L"Delete");
-					break;
-				case L'K' :
-					wcscpy(line, L"Kesk");
-					break;
-				case L'O' :
-					wcscpy(line, L"Ohit");
-					break;
-				case L'X' :
-					wcscpy(line, L"EiAikaa");
-					break;
-				case L'H' :
-					wcscpy(line, L"Hyl");
-					break;
-				case L'M' :
-					wcscpy(line, L"Virhe");
-					break;
-				case L'E' :
-					wcscpy(line, L"Eiläht.");
-					break;
-				case L'T' :
-					wcscpy(line, L"Tark.");
-					break;
-				case L'I' :
-					wcscpy(line, L"esItys");
-					break;
-				case L'V' :
-					wcscpy(line, L"Vakantti");
-					break;
-				case L'P' :
-					wcscpy(line, L"Poissa");
-					break;
-				default :
-					wcscpy(line, L"Läsnä");
-					break;
-				}
+			tark_selite(kh, line);
 			OoGrid->Cells[col][k] = UnicodeString(line);
 			break;
 		case COLIDLahto:
