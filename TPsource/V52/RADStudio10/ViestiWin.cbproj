@@ -776,6 +776,11 @@
             <DependentOn>..\ViestiWin\UnitJoukkueet.h</DependentOn>
             <BuildOrder>65</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\ViestiWin\UnitMaastossa.cpp">
+            <Form>FormMaastossa</Form>
+            <DependentOn>..\ViestiWin\UnitMaastossa.h</DependentOn>
+            <BuildOrder>130</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\ViestiWin\UnitJoukkuetiedot.cpp">
             <Form>FormJoukkuetiedot</Form>
             <DependentOn>..\ViestiWin\UnitJoukkuetiedot.h</DependentOn>
@@ -954,6 +959,7 @@
         <FormResources Include="..\ViestiWin\UnitLuenta.dfm"/>
         <FormResources Include="..\ViestiWin\UnitKilpSeurat.dfm"/>
         <FormResources Include="..\ViestiWin\UnitJoukkueet.dfm"/>
+        <FormResources Include="..\ViestiWin\UnitMaastossa.dfm"/>
         <FormResources Include="..\ViestiWin\UnitJoukkuetiedot.dfm"/>
         <FormResources Include="..\ViestiWin\UnitKilpMaaritys.dfm"/>
         <FormResources Include="..\ViestiWin\UnitEmithaku.dfm"/>

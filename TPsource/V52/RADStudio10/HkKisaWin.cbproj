@@ -583,6 +583,11 @@
             <DependentOn>..\cbHk\UnitOsanottajat.h</DependentOn>
             <BuildOrder>55</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\cbHk\UnitMaastossa.cpp">
+            <Form>FormMaastossa</Form>
+            <DependentOn>..\cbHk\UnitMaastossa.h</DependentOn>
+            <BuildOrder>130</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\cbHk\UnitPiirival.cpp">
             <Form>FormPiiriVal</Form>
             <FormType>dfm</FormType>
@@ -1149,6 +1154,7 @@
         <FormResources Include="..\cbHk\UnitSeuraval.dfm"/>
         <FormResources Include="..\cbHk\UnitSarja.dfm"/>
         <FormResources Include="..\cbHk\UnitOsanottajat.dfm"/>
+        <FormResources Include="..\cbHk\UnitMaastossa.dfm"/>
         <FormResources Include="..\cbHk\UnitPiirival.dfm"/>
         <FormResources Include="..\cbHk\UnitPistelasku.dfm"/>
         <FormResources Include="..\cbHk\UnitSakkoKierr.dfm"/>

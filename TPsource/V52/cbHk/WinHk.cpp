@@ -47,6 +47,7 @@
 #include "UnitKilpMaaritys.h"
 #include "UnitSarjatiedot.h"
 #include "UnitOsanottajat.h"
+#include "UnitMaastossa.h"
 #include "UnitNollaus.h"
 #include "UnitVakLisays.h"
 #include "UnitArvonta.h"
@@ -133,6 +134,7 @@ FormItem  FormList[] = {
 	{(TForm **)&FormIlm2, L"Ilmoittautumiset",L""},
 	{(TForm **)&FormArvonta, L"Arvonta",L""},
 	{(TForm **)&FormOsanottajat, L"Osanottajat",L""},
+	{(TForm **)&FormMaastossa, L"Maastossa",L""},
 	{(TForm **)&FormSeurat, L"Seuraluettelo",L""},
 	{(TForm **)&TulosteForm, L"Tulosteet",L""},
 	{(TForm **)&FormEmit, L"Emitluenta",L""},
@@ -1338,6 +1340,17 @@ void __fastcall TFormMain::Osanottajat1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TFormMain::NaytaMaastossa1Click(TObject *Sender)
+{
+	if (!FormMaastossa)
+		FormMaastossa = new TFormMaastossa(this);
+	FormMaastossa->Show();
+	if (FormMaastossa->WindowState == wsMinimized)
+		FormMaastossa->WindowState = wsNormal;
+	FormMaastossa->BringToFront();
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TFormMain::Sarjatiedot1Click(TObject *Sender)
 {
 	FormSarjatiedot->Show();
@@ -2073,6 +2086,11 @@ void __fastcall TFormMain::Vaiheenvaihto1Click(TObject *Sender)
 			delete FormOsanottajat;
 			FormOsanottajat = NULL;
 			}
+		if (FormMaastossa) {
+			FormMaastossa->Close();
+			delete FormMaastossa;
+			FormMaastossa = NULL;
+			}
 		if (TulosteForm) {
 			TulosteForm->Close();
 			delete TulosteForm;
@@ -2150,6 +2168,11 @@ MESSAGE void __fastcall TFormMain::VaihdaVaiheHandler(TMyMessage &msg)
 			FormOsanottajat->Close();
 			delete FormOsanottajat;
 			FormOsanottajat = NULL;
+			}
+		if (FormMaastossa) {
+			FormMaastossa->Close();
+			delete FormMaastossa;
+			FormMaastossa = NULL;
 			}
 		if (TulosteForm) {
 			TulosteForm->Close();
