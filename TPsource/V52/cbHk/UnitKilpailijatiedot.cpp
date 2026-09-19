@@ -1378,6 +1378,7 @@ void __fastcall TFormKilpailijatiedot::FormClose(TObject *Sender, TCloseAction &
 				return;
 				}
 			}
+		Lisays = false;
 		}
 	else {
 		if (Lisays) {
