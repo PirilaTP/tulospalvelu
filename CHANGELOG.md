@@ -4,6 +4,7 @@ Muutoshistoria pääkehityshaaraan (main) tehdyistä committeista, uusin ensin.
 
 | Pvm | # | Muutos |
 |---|---|---|
+| 2026-09-19 | — | Kilpailijatiedot: Salli muokkaus piilotetaan muokkaustilassa; pois muokkauksesta Tallenna, Peruuta tai Sulje |
 | 2026-09-18 | #67 | Kilpailijatiedot: sulku muokkaustilassa kysyy *Tallennetaanko muutokset?* ja palauttaa haku- ja katselutilan, jotta seuraava avaus ei jää muokattavaksi |
 | 2026-07-28 | #50 | Ratatietoja: kartan kulmapisteiden muokkaus merkitsee nyt muutokset tallentamattomiksi — EdtMapLeft/Top/Right/Bottom- ja EdtScale-kentillä ei ollut OnChange-käsittelijää, joten pelkkien karttakalibrointitietojen muokkaus ei merkinnyt tietoja muuttuneiksi (rataMuutoksia). Tämä saattoi johtaa siihen, että käyttäjä sulki Ratatiedot-ikkunan ja muutokset katosivat tallentamatta ilman varoitusta. Korjattu lisäämällä yhteinen käsittelijä kaikille viidelle kentälle; koskee sekä HkKisaWiniä että ViestiWiniä, koska UnitRadat.cpp/h/dfm on jaettu koodi. |
 | 2026-07-26 | #47 | 253 and 254 reader code fix — Emit-lukijakoodien 253 ja 254 käsittelyn korjaus relay-puolella |
