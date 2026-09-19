@@ -1296,11 +1296,12 @@ void __fastcall TFormKilpailijatiedot::BtnPeruutaClick(TObject *Sender)
 {
 	if (Lisays) {
 		Lisays = false;
-		BtnSalliClick(Sender);
 		EdBtnClick(Sender);
 		}
 	Kilp = Kilp1;
 	naytaTiedot();
+	if (sallimuokkaus)
+		BtnSalliClick(Sender);
 }
 //---------------------------------------------------------------------------
 
@@ -1309,7 +1310,8 @@ void __fastcall TFormKilpailijatiedot::BtnTallennaClick(TObject *Sender)
 	if (tallennaTiedot() == 0) {
 		BtnPeruutaClick(Sender);
 		}
-	BtnSalliClick(Sender);
+	else if (sallimuokkaus)
+		BtnSalliClick(Sender);
 	FocusControl(EdtKilpno);
 }
 //---------------------------------------------------------------------------
