@@ -736,6 +736,10 @@ object FormMain: TFormMain
         Caption = '&Osanottajat'
         OnClick = Osanottajat1Click
       end
+      object NaytaMaastossa1: TMenuItem
+        Caption = 'N'#228'yt'#228' maastossa olevat kilpailijat'
+        OnClick = NaytaMaastossa1Click
+      end
       object Yksiosanottaja1: TMenuItem
         Caption = '&Yksi osanottaja'
         OnClick = Yksiosanottaja1Click

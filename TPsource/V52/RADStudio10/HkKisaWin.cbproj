@@ -341,10 +341,16 @@
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
     </PropertyGroup>
     <ItemGroup>
-        <LibFiles Include="..\..\..\TPexe\Lib\V521\debug_build\DBboxm-XE.lib" Condition="'$(Platform)'=='Win32'">
+        <LibFiles Include="..\..\..\TPexe\Lib\V521\debug_build\DBboxm-XE.lib" Condition="'$(Cfg_1_Win32)'=='true'">
             <BuildOrder>78</BuildOrder>
         </LibFiles>
-        <LibFiles Include="..\..\..\TPexe\Lib\V521\debug_build\Tputil-XE.lib" Condition="'$(Platform)'=='Win32'">
+        <LibFiles Include="..\..\..\TPexe\Lib\V521\release_build\DBboxm-XE.lib" Condition="'$(Cfg_2_Win32)'=='true'">
+            <BuildOrder>78</BuildOrder>
+        </LibFiles>
+        <LibFiles Include="..\..\..\TPexe\Lib\V521\debug_build\Tputil-XE.lib" Condition="'$(Cfg_1_Win32)'=='true'">
+            <BuildOrder>79</BuildOrder>
+        </LibFiles>
+        <LibFiles Include="..\..\..\TPexe\Lib\V521\release_build\Tputil-XE.lib" Condition="'$(Cfg_2_Win32)'=='true'">
             <BuildOrder>79</BuildOrder>
         </LibFiles>
         <CppCompile Include="..\cbHk\AsetusUnit.cpp">
@@ -582,6 +588,11 @@
             <Form>FormOsanottajat</Form>
             <DependentOn>..\cbHk\UnitOsanottajat.h</DependentOn>
             <BuildOrder>55</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\cbHk\UnitMaastossa.cpp">
+            <Form>FormMaastossa</Form>
+            <DependentOn>..\cbHk\UnitMaastossa.h</DependentOn>
+            <BuildOrder>130</BuildOrder>
         </CppCompile>
         <CppCompile Include="..\cbHk\UnitPiirival.cpp">
             <Form>FormPiiriVal</Form>
@@ -1149,6 +1160,7 @@
         <FormResources Include="..\cbHk\UnitSeuraval.dfm"/>
         <FormResources Include="..\cbHk\UnitSarja.dfm"/>
         <FormResources Include="..\cbHk\UnitOsanottajat.dfm"/>
+        <FormResources Include="..\cbHk\UnitMaastossa.dfm"/>
         <FormResources Include="..\cbHk\UnitPiirival.dfm"/>
         <FormResources Include="..\cbHk\UnitPistelasku.dfm"/>
         <FormResources Include="..\cbHk\UnitSakkoKierr.dfm"/>
@@ -2260,5 +2272,18 @@
     </ProjectExtensions>
     <Import Condition="Exists('$(BDS)\Bin\CodeGear.Cpp.Targets')" Project="$(BDS)\Bin\CodeGear.Cpp.Targets"/>
     <Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+    <Target Name="BuildLibDependencies" BeforeTargets="Make;Build;Rebuild" Condition="'$(Platform)'=='Win32'">
+        <!-- Keep DBboxm-XE.lib / Tputil-XE.lib in the matching config (Debug vs Release)
+             up to date before linking, so a Release build never picks up a stale
+             Debug-built copy of either shared library (or vice versa). -->
+        <PropertyGroup>
+            <DepConfig_DBboxm Condition="'$(Cfg_1)'=='true'">Debug</DepConfig_DBboxm>
+            <DepConfig_DBboxm Condition="'$(Cfg_2)'=='true'">Release</DepConfig_DBboxm>
+            <DepConfig_Tputil Condition="'$(Cfg_1)'=='true'">Debug Build</DepConfig_Tputil>
+            <DepConfig_Tputil Condition="'$(Cfg_2)'=='true'">Release Build</DepConfig_Tputil>
+        </PropertyGroup>
+        <MSBuild Projects="DBboxm-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_DBboxm);Platform=$(Platform)" Condition="'$(DepConfig_DBboxm)'!=''"/>
+        <MSBuild Projects="Tputil-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_Tputil);Platform=$(Platform)" Condition="'$(DepConfig_Tputil)'!=''"/>
+    </Target>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
 </Project>
