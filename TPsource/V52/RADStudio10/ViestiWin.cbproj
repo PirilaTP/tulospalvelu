@@ -364,10 +364,16 @@
     </PropertyGroup>
     <Import Condition="'$(Cfg_2)'!='' And Exists('OptionSet1.optset')" Project="OptionSet1.optset"/>
     <ItemGroup>
-        <LibFiles Include="..\..\..\TPexe\Lib\V521\debug_build\DBboxm-XE.lib" Condition="'$(Platform)'=='Win32'">
+        <LibFiles Include="..\..\..\TPexe\Lib\V521\debug_build\DBboxm-XE.lib" Condition="'$(Cfg_1_Win32)'=='true'">
             <BuildOrder>34</BuildOrder>
         </LibFiles>
-        <LibFiles Include="..\..\..\TPexe\Lib\V521\debug_build\Tputil-XE.lib" Condition="'$(Platform)'=='Win32'">
+        <LibFiles Include="..\..\..\TPexe\Lib\V521\release_build\DBboxm-XE.lib" Condition="'$(Cfg_2_Win32)'=='true'">
+            <BuildOrder>34</BuildOrder>
+        </LibFiles>
+        <LibFiles Include="..\..\..\TPexe\Lib\V521\debug_build\Tputil-XE.lib" Condition="'$(Cfg_1_Win32)'=='true'">
+            <BuildOrder>35</BuildOrder>
+        </LibFiles>
+        <LibFiles Include="..\..\..\TPexe\Lib\V521\release_build\Tputil-XE.lib" Condition="'$(Cfg_2_Win32)'=='true'">
             <BuildOrder>35</BuildOrder>
         </LibFiles>
         <CppCompile Include="..\cbTp\cbTpApu.cpp">
@@ -2251,5 +2257,18 @@
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>
+    <Target Name="BuildLibDependencies" BeforeTargets="Make;Build;Rebuild" Condition="'$(Platform)'=='Win32'">
+        <!-- Keep DBboxm-XE.lib / Tputil-XE.lib in the matching config (Debug vs Release)
+             up to date before linking, so a Release build never picks up a stale
+             Debug-built copy of either shared library (or vice versa). -->
+        <PropertyGroup>
+            <DepConfig_DBboxm Condition="'$(Cfg_1)'=='true'">Debug</DepConfig_DBboxm>
+            <DepConfig_DBboxm Condition="'$(Cfg_2)'=='true'">Release</DepConfig_DBboxm>
+            <DepConfig_Tputil Condition="'$(Cfg_1)'=='true'">Debug Build</DepConfig_Tputil>
+            <DepConfig_Tputil Condition="'$(Cfg_2)'=='true'">Release Build</DepConfig_Tputil>
+        </PropertyGroup>
+        <MSBuild Projects="DBboxm-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_DBboxm);Platform=$(Platform)" Condition="'$(DepConfig_DBboxm)'!=''"/>
+        <MSBuild Projects="Tputil-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_Tputil);Platform=$(Platform)" Condition="'$(DepConfig_Tputil)'!=''"/>
+    </Target>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
 </Project>
