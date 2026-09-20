@@ -97,6 +97,28 @@ static void MaastossaVaOts(int srjVal, int p, wchar_t *ots, int otsLen)
 	swprintf(ots, L"%d.va", p);
 }
 
+static bool MaastossaOnEmit(kilptietue& kilp, int os)
+{
+	if (os < 0)
+		return false;
+	if (kilp.ostiet[os].badge[0] != 0)
+		return true;
+	if (kilpparam.kaksibadge && kilp.ostiet[os].badge[1] != 0)
+		return true;
+	return false;
+}
+
+static bool MaastossaNaytaOsuus(kilptietue& kilp, int os)
+{
+	if (!MaastossaOnEmit(kilp, os))
+		return false;
+	if (kilp.Lahto(os) != TMAALI0)
+		return true;
+	// Edellinen osuus suljettu: seuraaja emitillä on maastossa, vaikka
+	// lähtöaika ei tule vaihdosta.
+	return kilp.Sulj(os);
+}
+
 static UnicodeString MaastossaLahtoPaikka(kilptietue& kilp, int srj, int os)
 {
 	UnicodeString lp = L"";
@@ -183,6 +205,8 @@ void __fastcall TFormMaastossa::haeKilpailijat(void)
 			if (kh == L'P' || kh == L'E' || kh == L'V' || kh == L'K' || kh == L'H')
 				continue;
 			if (kilp.Maali(os, 0) != TMAALI0)
+				continue;
+			if (!MaastossaNaytaOsuus(kilp, os))
 				continue;
 
 			if (rivi >= Grid->RowCount)
