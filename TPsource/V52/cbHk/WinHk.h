@@ -107,6 +107,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Avausmritykset1;
 	TMenuItem *Osanottjat1;
 	TMenuItem *Osanottajat1;
+	TMenuItem *NaytaMaastossa1;
 	TMenuItem *Ratatiedot1;
 	TMenuItem *Sarjatiedot1;
 	TLabel *Label3;
@@ -225,6 +226,7 @@ __published:	// IDE-managed Components
 	void __fastcall Seuranimienkopioinnit1Click(TObject *Sender);
 	void __fastcall Avausmritykset1Click(TObject *Sender);
 	void __fastcall Osanottajat1Click(TObject *Sender);
+	void __fastcall NaytaMaastossa1Click(TObject *Sender);
 	void __fastcall Sarjatiedot1Click(TObject *Sender);
 	void __fastcall iedot1Click(TObject *Sender);
 	void __fastcall ListBox1Click(TObject *Sender);
