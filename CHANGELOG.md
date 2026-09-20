@@ -4,7 +4,7 @@ Muutoshistoria pääkehityshaaraan (main) tehdyistä committeista, uusin ensin.
 
 | Pvm | # | Muutos |
 |---|---|---|
-| 2026-09-20 | #66 | Maastossa (ViestiWin): listalla vain emit+lähtöaika; suljetun osuuden seuraaja emitillä näytetään |
+| 2026-09-20 | #66 | Maastossa (ViestiWin): listalla vain emit ja merkitty lähtöaika; suljettu aiempi osuus ei riitä ilman lähtöaikaa |
 | 2026-09-20 | #66 | Maastossa (ViestiWin): ääkköset seuran, sarjan ja väliaikaotsikoiden näytössä (Seura/Sarjanimi/MbsToWcs) |
 | 2026-09-19 | #66 | Maastossa: sarjan valuku määrää väliaikasarakkeet (ei kilpailun globaali valuku); statusselitteet yhteiseen tark_selite-funktioon (Osanottajat + Maastossa) |
 | 2026-09-18 | #66 | Maastossa olevat kilpailijat: Osanottajat-valikkoon taulukko ilman maaliaikaa olevista (lähtöpaikka, lähtöaika, käytössä olevat väliajat); HkKisaWin ja ViestiWin |
