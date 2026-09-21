@@ -167,7 +167,7 @@ void __fastcall TFormKilpailijatiedot::naytaTiedot(void)
 			SrjVal->Items->Add(Sarjat[srj].sarjanimi);
 		SrjVal->ItemIndex = 0;
 	}
-	BtnSalli->Visible = sallimuokkausvalinta;
+	BtnSalli->Visible = sallimuokkausvalinta && !sallimuokkaus;
 	BtnPeruuta->Visible = sallimuokkaus;
 	BtnTallenna->Visible = sallimuokkaus;
 	BtnPaivita->Visible = !sallimuokkaus;
@@ -1252,9 +1252,12 @@ void __fastcall TFormKilpailijatiedot::FormDestroy(TObject *Sender)
 // Switch the competitor form between view and edit.
 // Close() only hides this form, so edit mode must be turned off on close
 // or the next Show() still has writable fields.
+// Hide Salli muokkaus while editing so it cannot leave edit as
+// Hakuun ja katseluun without Tallenna/Peruuta/Sulje.
 void __fastcall TFormKilpailijatiedot::asetaMuokkaustila(bool paalle)
 {
 	sallimuokkaus = paalle;
+	BtnSalli->Visible = sallimuokkausvalinta && !sallimuokkaus;
 	BtnPeruuta->Visible = sallimuokkaus;
 	BtnTallenna->Visible = sallimuokkaus;
 	BtnPaivita->Visible = !sallimuokkaus;
@@ -1283,8 +1286,9 @@ void __fastcall TFormKilpailijatiedot::asetaMuokkaustila(bool paalle)
 			Tila->Caption = UnicodeString(L"Uuden tietueen muokkaus");
 		else
 			Tila->Caption = UnicodeString(L"Muokkaustila");
-		BtnSalli->Caption = L"Hakuun ja katseluun";
 		GBHaku->Visible = false;
+		if (ActiveControl == BtnSalli)
+			FocusControl(EdtSukunimi);
 		}
 	else {
 		PvGrid->Options >> goEditing;
