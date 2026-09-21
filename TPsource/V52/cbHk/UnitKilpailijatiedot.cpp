@@ -1319,8 +1319,6 @@ void __fastcall TFormKilpailijatiedot::BtnTallennaClick(TObject *Sender)
 	if (tallennaTiedot() == 0) {
 		BtnPeruutaClick(Sender);
 		}
-	else if (sallimuokkaus)
-		BtnSalliClick(Sender);
 	FocusControl(EdtKilpno);
 }
 //---------------------------------------------------------------------------
