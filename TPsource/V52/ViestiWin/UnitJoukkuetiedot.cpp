@@ -1037,7 +1037,8 @@ void __fastcall TFormJoukkuetiedot::BtnPeruutaClick(TObject *Sender)
 		}
 	Kilp = Kilp1;
 	naytaTiedot();
-	asetaMuokkaustila(false);
+	if (!oistuvienlisystentila1->Checked)
+		asetaMuokkaustila(false);
 }
 //---------------------------------------------------------------------------
 
