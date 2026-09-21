@@ -158,6 +158,9 @@ wchar_t *str_piste(int piste)
 
 wchar_t *IOFStatus(kilptietue *kilp)
 {
+	if (kilp->hyv() && kilp->p_aika(0) &&
+		(kilp->tark() == L'T' || kilp->tark() == L'-'))
+		return(L"OK");
 	if (kilp->p_aika(0) || !kilp->hyv()) {
 		switch (kilp->tark()) {
 			case L'T':

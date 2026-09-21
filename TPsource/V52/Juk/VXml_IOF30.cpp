@@ -101,6 +101,7 @@ static wchar_t *ControlType[6] = {L"Control", L"Start", L"Finish", L"CrossingPoi
 #define TAGTotal		       138
 #define TAGRaceCourseData 	   139
 #define TAGPosition            140
+#define TAGPlace               222
 #define TAGCourseFamily        141
 #define TAGLength              142
 #define TAGClimb               143
@@ -187,6 +188,7 @@ static tagListTp IOF3Tags[] = {
 	{TAGTotal, L"Total"},
 	{TAGRaceCourseData, L"RaceCourseData"},
 	{TAGPosition, L"Position"},
+	{TAGPlace, L"Place"},
 	{TAGCourseFamily, L"CourseFamily"},
 	{TAGLength, L"Length"},
 	{TAGClimb, L"Climb"},
@@ -983,6 +985,9 @@ int xmlIOF30loppu(tulostusparamtp *tulprm)
    return(0);
    }
 
+static INT32 s_legFastest[MAXOSUUSLUKU];
+static INT32 s_cumFastest[MAXOSUUSLUKU];
+
 int xmlIOF30srjots(int sarja, tulostusparamtp *tulprm)
    {
    int level = 1;
@@ -999,6 +1004,32 @@ int xmlIOF30srjots(int sarja, tulostusparamtp *tulprm)
    else
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), Sarjat[sarja].Sarjanimi(Buf), level);
    tul_tied->put_wantitag(XMLhae_tagName(TAGClass, IOF3Tags, nIOF3Tags), --level);
+
+   // Precompute true class-wide fastest times by scanning all records.
+   // josalku/jalku can point to a wrong team in fork-course races (last per-fork
+   // winner overwrites the global best), so we scan directly.
+   int osuusluku = Sarjat[sarja].osuusluku;
+   int ntosuus   = Sarjat[sarja].ntosuus;
+   for (int os = 0; os < osuusluku && os < MAXOSUUSLUKU; os++)
+      s_legFastest[os] = 0;
+   for (int os = 0; os < ntosuus && os < MAXOSUUSLUKU; os++)
+      s_cumFastest[os] = 0;
+   kilptietue k;
+   for (int d = 1; d < (int)datf2.numrec; d++) {
+      k.getrec(d);
+      if (k.kilpstatus != 0 || k.sarja != sarja) continue;
+      for (int os = 0; os < osuusluku; os++) {
+         INT32 t = k.osTulos(os, 0, true);
+         if (t > 0 && (s_legFastest[os] == 0 || t < s_legFastest[os]))
+            s_legFastest[os] = t;
+         }
+      for (int os = 0; os < ntosuus; os++) {
+         INT32 t = k.tTulos(os, 0);
+         if (t > 0 && (s_cumFastest[os] == 0 || t < s_cumFastest[os]))
+            s_cumFastest[os] = t;
+         }
+      }
+
    return(0);
    }
 
@@ -1011,11 +1042,23 @@ int xmlIOF30srjloppu(tulostusparamtp *tulprm)
    return(0);
    }
 
+static wchar_t *ISOtimeLocal(wchar_t *datestr, int time)
+{
+   static wchar_t buf[40];
+   wchar_t *p = ISOtime(NULL, datestr, time);
+   wcscpy(buf, p);
+   wchar_t *dt = ISOdatetime(0, true);
+   wchar_t *tz = dt + wcslen(dt) - 6;
+   if (tz > dt + 10 && (tz[-1] == L'+' || tz[-1] == L'-'))
+      wcscat(buf, tz - 1);
+   return buf;
+}
+
 void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
    {
    wchar_t ln[100], ln1[50];
    INT piste = 0, level = 1;
-   INT32 tl;
+   INT32 tl, tl_cum;
    TextFl *tul_tied;
 #ifndef LUENTA
    emittp em;
@@ -1050,28 +1093,49 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 
 	   tul_tied->put_wtag(XMLhae_tagName(TAGResult, IOF3Tags, nIOF3Tags), level++);
 	   tul_tied->put_wxml_d(XMLhae_tagName(TAGLeg, IOF3Tags, nIOF3Tags), os+1, level);
-	   swprintf(ln, L"%d-%d", kilp.kilpno, os+1);
-	   tul_tied->put_wxml_s(XMLhae_tagName(TAGBibNumber, IOF3Tags, nIOF3Tags), ln, level);
+	   tul_tied->put_wxml_d(XMLhae_tagName(TAGLegOrder, IOF3Tags, nIOF3Tags), 1, level);
+	   tul_tied->put_wxml_d(XMLhae_tagName(TAGBibNumber, IOF3Tags, nIOF3Tags), kilp.kilpno, level);
 	   if (kilp.Lahto(os) != TMAALI0)
-			tul_tied->put_wxml_s(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), ISOtime(0, 0, kilp.Lahto(os)), level);
+			tul_tied->put_wxml_s(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), ISOtimeLocal(kilpparam.Date, kilp.Lahto(os)), level);
 	   if (kilp.Maali(os, 0) != TMAALI0)
-			tul_tied->put_wxml_s(XMLhae_tagName(TAGFinishTime, IOF3Tags, nIOF3Tags), ISOtime(0, 0, kilp.Maali(os, 0)), level);
+			tul_tied->put_wxml_s(XMLhae_tagName(TAGFinishTime, IOF3Tags, nIOF3Tags), ISOtimeLocal(kilpparam.Date, kilp.Maali(os, 0)), level);
 	   if ((tl = kilp.osTulos(os, 0, true)) != 0) {
+		   INT32 tl_fast = s_legFastest[os];
 		   tul_tied->put_wxml_s(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), sekTulos(NULL, tl, kilpparam.pyor[3]), level);
-		   tul_tied->put_wxml_s(XMLhae_tagName(TAGTimeBehind, IOF3Tags, nIOF3Tags),
-			   sekTulos(NULL, tl-pkarki[kilp.sarja][Sarjat[kilp.sarja].yosuus[os]+1][kilpparam.valuku+1], kilpparam.pyor[3]), level, L"type=\"Leg\"");
-		   tul_tied->put_wxml_d(XMLhae_tagName(TAGPosition, IOF3Tags, nIOF3Tags), kilp.osSija(os), level, L"type=\"Leg\"");
+		   if (tl_fast > 0 && tl >= tl_fast) {
+			   INT32 tb = (tl/SEK - tl_fast/SEK) * SEK;
+			   tul_tied->put_wxml_s(XMLhae_tagName(TAGTimeBehind, IOF3Tags, nIOF3Tags),
+				   sekTulos(NULL, tb, kilpparam.pyor[3]), level, L"type=\"Leg\"");
+			   }
+		   // Count teams with strictly smaller leg time for class-wide position
+		   int leg_pos = 1;
+		   kilptietue k_pos;
+		   for (int dp = 1; dp < (int)datf2.numrec; dp++) {
+			   k_pos.getrec(dp);
+			   if (k_pos.kilpstatus != 0 || k_pos.sarja != kilp.sarja) continue;
+			   INT32 t2 = k_pos.osTulos(os, 0, true);
+			   if (t2 > 0 && t2 < tl) leg_pos++;
+			   }
+		   tul_tied->put_wxml_d(XMLhae_tagName(TAGPosition, IOF3Tags, nIOF3Tags), leg_pos, level, L"type=\"Leg\"");
 		   }
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGStatus, IOF3Tags, nIOF3Tags), IOFStatus(&kilp, os), level);
-
+	   tl_cum = kilp.tTulos(Sarjat[kilp.sarja].yosuus[os], 0);
 	   tul_tied->put_wtag(XMLhae_tagName(TAGOverallResult, IOF3Tags, nIOF3Tags), level++);
-	   if ((tl = kilp.Tulos(os, 0)) != 0) {
-		   tul_tied->put_wxml_s(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), sekTulos(NULL, tl, kilpparam.pyor[3]), level);
-		   tul_tied->put_wxml_s(XMLhae_tagName(TAGTimeBehind, IOF3Tags, nIOF3Tags), sekTulos(NULL, tl-pkarki[kilp.sarja][Sarjat[kilp.sarja].yosuus[os]+1][0], kilpparam.pyor[3]), level);
-		   tul_tied->put_wxml_d(XMLhae_tagName(TAGPosition, IOF3Tags, nIOF3Tags), kilp.Sija(os, 0), level);
+	   if (tl_cum != 0) {
+		   int yos = Sarjat[kilp.sarja].yosuus[os];
+		   tul_tied->put_wxml_s(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), sekTulos(NULL, tl_cum, kilpparam.pyor[3]), level);
+		   INT32 tl_kark = s_cumFastest[yos];
+		   if (tl_kark > 0 && tl_cum >= tl_kark) {
+			   INT32 tb = (tl_cum/SEK - tl_kark/SEK) * SEK;
+			   tul_tied->put_wxml_s(XMLhae_tagName(TAGTimeBehind, IOF3Tags, nIOF3Tags), sekTulos(NULL, tb, kilpparam.pyor[3]), level);
+			   }
+		   int cum_pos = kilp.Sija(yos, 0);
+		   if (cum_pos > 0)
+			   tul_tied->put_wxml_d(XMLhae_tagName(TAGPosition, IOF3Tags, nIOF3Tags), cum_pos, level);
 		   }
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGStatus, IOF3Tags, nIOF3Tags), IOFStatus(&kilp, os), level);
 	   tul_tied->put_wantitag(XMLhae_tagName(TAGOverallResult, IOF3Tags, nIOF3Tags), --level);
+
 
 
 #ifndef LUENTA
@@ -1081,7 +1145,7 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 		   tul_tied->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), rt->tunnus, level);
 		   tul_tied->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->ratapit, level);
 		   if (rt->nousu)
-			   tul_tied->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->nousu, level);
+			   tul_tied->put_wxml_d(XMLhae_tagName(TAGClimb, IOF3Tags, nIOF3Tags), rt->nousu, level);
 		   tul_tied->put_wantitag(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), --level);
 		   }
 	   if (tulprm->tulostettava == L'E') {
