@@ -113,3 +113,12 @@ should run as the Windows user who registered the C++ Builder licence (an
 interactive `run.cmd` session rather than a service), because `bds.exe` checks
 the licence and may otherwise wait on a hidden dialog.
 See `.github/self-hosted-runner.md` for runner setup instructions (in Finnish).
+
+## Apuväline / Help tool
+
+EMIT250-simulaattori helpottaa Emit-leimasimen toiminnan kokeilua ilman
+fyysistä laitteistoa: **https://ikivela.github.io/emit250-simulator/**.
+
+The [EMIT250 simulator](https://ikivela.github.io/emit250-simulator/) is a
+browser tool for trying out Emit punch card behavior without physical
+hardware.
