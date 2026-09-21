@@ -37,8 +37,10 @@ kilpailijan numero ao. kenttään, valitsemalla sarja ja
 selaamalla tai käyttämällä nimihakua, jota voidaan myös täydentää selauksella.
 
 Kun kaavake on muokkaustilassa, eivät hakutoiminnot ole
-käytettävissä, vaan ensin on joko tallennettava tai peruutettava muutokset ja
-käytettävä painiketta *Hakuun ja katseluun*.
+käytettävissä. Painike *Salli muokkaus* piilotetaan, jotta sillä ei voi
+poistua muokkaustilasta. Painike *Peruuta muutokset* hylkää muutokset ja
+painike *Tallenna* tallentaa tiedot. Muokkaustilasta poistutaan näillä
+painikkeilla tai sulkemalla kaavake.
 
 Jos kaavake suljetaan muokkaustilan ollessa päällä (painike *Sulje* tai
 ikkunan sulkeminen), ohjelma kysyy aina *Tallennetaanko muutokset?*.
