@@ -27,6 +27,11 @@ Siirtymäajan voi vielä käyttää myös vanhaa talteen otettua dokumentaatiota
 osoitteessa https://www.tulospalvelu.fi/pirila/ohjeet/, jolta edellä mainitun
 sivuston sisältö on alun perin tuotu.
 
+### Apuväline / Help tool
+
+EMIT250-simulaattori helpottaa Emit-leimasimen toiminnan kokeilua ilman
+fyysistä laitteistoa: **https://ikivela.github.io/emit250-simulator/**.
+
 
 ## Description
 After ten years, it’s time to start implementing a new version 2.0.
@@ -43,6 +48,12 @@ under GPLv3. More information in Finnish at http://www.pirila.fi/ohj/index.html.
 User guides are hosted at **https://pirilatp.github.io/tulospalvelu/**. The
 original archived documentation at https://www.tulospalvelu.fi/pirila/ohjeet/
 remains available during the transition period.
+
+### Help tool
+
+The [EMIT250 simulator](https://ikivela.github.io/emit250-simulator/) is a
+browser tool for trying out Emit punch card behavior without physical
+hardware.
 
 ## Downloads / releases
 
