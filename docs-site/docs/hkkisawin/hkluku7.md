@@ -41,8 +41,7 @@ käytettävissä. Painike *Peruuta muutokset* hylkää muutokset ja palauttaa
 haku- ja katselutilan. Painike *Tallenna* tallentaa tiedot ja palauttaa
 haku- ja katselutilan, jos tallennus onnistuu. Jos tallennus epäonnistuu
 (esimerkiksi varattu numero), kaavake jää muokkaustilaan, jotta tiedot
-voi korjata ja tallentaa heti uudelleen. Muokkaustilasta voi poistua myös
-painikkeella *Hakuun ja katseluun*.
+voi korjata ja tallentaa heti uudelleen.
 
 Jos kaavake suljetaan muokkaustilan ollessa päällä (painike *Sulje* tai
 ikkunan sulkeminen), ohjelma kysyy aina *Tallennetaanko muutokset?*.
