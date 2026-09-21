@@ -3,6 +3,8 @@
 Muutoshistoria pääkehityshaaraan (main) tehdyistä committeista, uusin ensin.
 
 | Pvm | # | Muutos |
+| 2026-09-21 | #70 | Joukkuetiedot: Peruuta toistuvien lisäysten tilassa jättää muokkaustilan päälle |
+| 2026-09-20 | #70 | Joukkuetiedot: Salli muokkaus piilotetaan muokkaustilassa; pois muokkaustilasta Tallenna, Peruuta tai Sulje |
 | 2026-09-21 | #68 | Kilpailijatiedot: epäonnistunut Tallenna jättää muokkaustilan päälle, jotta virheen voi korjata heti |
 | 2026-09-20 | #66 | Maastossa (ViestiWin): listalla vain emit ja merkitty lähtöaika; suljettu aiempi osuus ei riitä ilman lähtöaikaa |
 | 2026-09-20 | #66 | Maastossa (ViestiWin): ääkköset seuran, sarjan ja väliaikaotsikoiden näytössä (Seura/Sarjanimi/MbsToWcs) |
