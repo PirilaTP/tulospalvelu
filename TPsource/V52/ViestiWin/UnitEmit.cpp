@@ -426,6 +426,7 @@ void __fastcall TFormEmit::NaytaEmit(void)
 {
 	wchar_t st[60];
 	int tm = 0, nc = 0, lk, n_lk = 0, enn, virhe = 0, tulkinta[51], style = 0;
+	bool lukijaOk = false;
 	UnicodeString AS = L"";
 	bool on99 = false;
 	ratatp *rt;
@@ -457,6 +458,7 @@ void __fastcall TFormEmit::NaytaEmit(void)
 		if (lk >= 0 && lk < 49) {
 			tm = Em.ctrltime[lk];
 			n_lk = tulkinta[lk];
+			lukijaOk = true;
 			}
 		for (nc = 49; nc > 1; nc--)
 			if (Em.ctrlcode[nc] != 0 || Em.ctrltime[nc] != 0)
@@ -495,7 +497,10 @@ void __fastcall TFormEmit::NaytaEmit(void)
 			aikatowstr_ls(st, 10*(Em.ctrltime[i]-enn), 0);
 			st[kilpparam.laika2] = 0;
 			Cells[5][i+1].text = st;
-			aikatowstr_ls(st, Em.time+10*(Em.ctrltime[i]-tm), t0);
+			if (lukijaOk)
+				aikatowstr_ls(st, Em.time+10*(Em.ctrltime[i]-tm), t0);
+			else
+				aikatowstr_ls(st, 10*(Em.ctrltime[i]-enn), 0);
 			st[kilpparam.laika2] = 0;
 			Cells[6][i+1].text = st;
 			if (tulkinta[i] == (n_lk - 1))

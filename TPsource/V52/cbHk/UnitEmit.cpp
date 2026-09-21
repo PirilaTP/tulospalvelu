@@ -449,6 +449,7 @@ void __fastcall TFormEmit::NaytaEmit(void)
 {
 	wchar_t st[60];
 	int tm = 0, nc = 0, lk = -1, n_lk = 0, enn, virhe = 0, tulkinta[MAXNLEIMA+1], style = 0;
+	bool lukijaOk = false;
 	UnicodeString AS;
 	ratatp *rt;
 
@@ -481,6 +482,7 @@ void __fastcall TFormEmit::NaytaEmit(void)
 		if (lk >= 0 && lk < MAXNLEIMA-1) {
 			tm = Em.ctrltime[lk];
 			n_lk = tulkinta[lk];
+			lukijaOk = true;
 			}
 		}
 	for (nc = MAXNLEIMA-1; nc > 0; nc--)
@@ -523,7 +525,10 @@ void __fastcall TFormEmit::NaytaEmit(void)
 		aikatowstr_ls(st, 10*(Em.ctrltime[i]-enn), 0);
 		st[pvparam[k_pv].laika] = 0;
 		Cells[5][i+1].text = st;
-		aikatowstr_ls(st, Em.time+10*(Em.ctrltime[i]-tm), t0);
+		if (lukijaOk)
+			aikatowstr_ls(st, Em.time+10*(Em.ctrltime[i]-tm), t0);
+		else
+			aikatowstr_ls(st, 10*(Em.ctrltime[i]-enn), 0);
 		st[pvparam[k_pv].laika] = 0;
 		Cells[6][i+1].text = st;
 		if (tulkinta[i] == (n_lk - 1))
