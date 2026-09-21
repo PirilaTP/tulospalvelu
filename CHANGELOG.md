@@ -6,6 +6,11 @@ Muutoshistoria pääkehityshaaraan (main) tehdyistä committeista, uusin ensin.
 |---|---|---|
 | 2026-09-21 | #70 | Joukkuetiedot: Peruuta toistuvien lisäysten tilassa jättää muokkaustilan päälle |
 | 2026-09-20 | #70 | Joukkuetiedot: Salli muokkaus piilotetaan muokkaustilassa; pois muokkaustilasta Tallenna, Peruuta tai Sulje |
+| 2026-09-20 | #66 | Maastossa (ViestiWin): listalla vain emit ja merkitty lähtöaika; suljettu aiempi osuus ei riitä ilman lähtöaikaa |
+| 2026-09-20 | #66 | Maastossa (ViestiWin): ääkköset seuran, sarjan ja väliaikaotsikoiden näytössä (Seura/Sarjanimi/MbsToWcs) |
+| 2026-09-19 | — | Kilpailijatiedot: Salli muokkaus piilotetaan muokkaustilassa; pois muokkauksesta Tallenna, Peruuta tai Sulje |
+| 2026-09-19 | #66 | Maastossa: sarjan valuku määrää väliaikasarakkeet (ei kilpailun globaali valuku); statusselitteet yhteiseen tark_selite-funktioon (Osanottajat + Maastossa) |
+| 2026-09-18 | #66 | Maastossa olevat kilpailijat: Osanottajat-valikkoon taulukko ilman maaliaikaa olevista (lähtöpaikka, lähtöaika, käytössä olevat väliajat); HkKisaWin ja ViestiWin |
 | 2026-09-18 | #67 | Kilpailijatiedot: sulku muokkaustilassa kysyy *Tallennetaanko muutokset?* ja palauttaa haku- ja katselutilan, jotta seuraava avaus ei jää muokattavaksi |
 | 2026-07-28 | #50 | Ratatietoja: kartan kulmapisteiden muokkaus merkitsee nyt muutokset tallentamattomiksi — EdtMapLeft/Top/Right/Bottom- ja EdtScale-kentillä ei ollut OnChange-käsittelijää, joten pelkkien karttakalibrointitietojen muokkaus ei merkinnyt tietoja muuttuneiksi (rataMuutoksia). Tämä saattoi johtaa siihen, että käyttäjä sulki Ratatiedot-ikkunan ja muutokset katosivat tallentamatta ilman varoitusta. Korjattu lisäämällä yhteinen käsittelijä kaikille viidelle kentälle; koskee sekä HkKisaWiniä että ViestiWiniä, koska UnitRadat.cpp/h/dfm on jaettu koodi. |
 | 2026-07-26 | #47 | 253 and 254 reader code fix — Emit-lukijakoodien 253 ja 254 käsittelyn korjaus relay-puolella |
