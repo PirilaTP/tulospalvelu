@@ -381,6 +381,7 @@ void __fastcall TTapForm::Skaalaa(void)
 
 	colCount1 = ((k_pv > 0 && Nytyhteistulokset1->Checked) ? 13 : 10) +
 		(wcswcind(kilpparam.kilplaji, L"NP") >= 0 ? 1 : 0);
+	colCount2 = colCount1;
 	TapGrid->ColCount = colCount1 +
 		(IkkParam.Ennatys > 0 ? 1 : 0) +
 		(IkkParam.Tavoite > 0 ? 1 : 0);
@@ -423,10 +424,12 @@ void __fastcall TTapForm::Skaalaa(void)
 		Cells[12][0].text = L"Y-ero";
 		}
 	if (IkkParam.Ennatys) {
+		IkkParam.Ennatys = colCount2++;
 		TapGrid->ColWidths[IkkParam.Ennatys] = IkkParam.ColW[14] * Screen->PixelsPerInch * lev / 960;
 		Cells[IkkParam.Ennatys][0].text = L"Ennätys";
 		}
 	if (IkkParam.Tavoite) {
+		IkkParam.Tavoite = colCount2++;
 		TapGrid->ColWidths[IkkParam.Tavoite] = IkkParam.ColW[15] * Screen->PixelsPerInch * lev / 960;
 		Cells[IkkParam.Tavoite][0].text = L"Tavoite";
 		}
