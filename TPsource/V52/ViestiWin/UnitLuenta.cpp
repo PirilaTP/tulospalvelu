@@ -200,6 +200,14 @@ void __fastcall TFormLuenta::EdtViivakoodiKeyPress(TObject *Sender, System::Wide
 	int alios = 0, yos = 0, srj = -1;
 
 	if (Key == L'\r') {
+		if (uusi_emit) {
+			Application->MessageBoxW(L"Edellisen kilpailijan Emit-kortti on vielä vahvistamatta. Tallenna tai peruuta se ensin.",
+				L"Poikkeama", MB_OK);
+			EdtViivakoodi->Text = L"";
+			Key = 0;
+			FocusControl(EdtVahvistus);
+			return;
+			}
 		if (EdtViivakoodi->Text.Length() > 2 && wcswcind(EdtViivakoodi->Text.c_str()[0], L"*%") >= 0) {
 			wchar_t st[20];
 			wcsncpy(st, EdtViivakoodi->Text.c_str(), 19);
