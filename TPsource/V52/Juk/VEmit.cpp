@@ -1331,7 +1331,8 @@ INT32 e_maaliaika(emittp *em, kilptietue *kilp, INT os)
 		 // SportIdent: perakkaisista maalirastin leimoista kaytetaan
 		 // ensimmaista (ks. tarkista). Ilman SportIdentia ennallaan.
 		 if (IsSportidentInUse())
-			while (l > 1 && em->ctrlcode[(lk+l-1)%50] == em->ctrlcode[(lk+l)%50])
+			while (l > 1 && em->ctrlcode[(lk+l-1)%50] == em->ctrlcode[(lk+l)%50] &&
+					(rt->rastiluku < 2 || oikeakoodi(rt, rt->rastiluku-2, em->ctrlcode[(lk+l)%50], 0) != 1))
 			   l--;
 		 if (rt->ennakko >= 0) {
 			tm = oslahto(kilp, os) + SEK*(em->ctrltime[(lk+l)%50] - rt->ennakko);
@@ -2159,11 +2160,14 @@ INT tarkista(emittp *em, kilptietue *pkilp, INT *tulkinta, int lukija, INT haku)
       // löytyy radan viimeiseltä ilmoitetulta rastilta eli kun lukija
       // sisältyy rataan
 
-	  // SportIdent: jos radan viimeinen rasti (maalirasti) on leimattu
-	  // useasti perakkain, maalileimaksi tulkitaan ensimmainen niista ja
-	  // myohemmat merkitaan ylimaaraisiksi (tulkinta negatiivinen).
+	  // SportIdent: jos radan rasti (myos maalirasti) on leimattu useasti
+	  // perakkain, rastin leimaksi tulkitaan ensimmainen niista ja myohemmat
+	  // merkitaan ylimaaraisiksi (tulkinta negatiivinen). Ei yhdisteta, jos
+	  // edellinenkin radan rasti hyvaksyy saman koodin (sama rasti kahdesti
+	  // perakkain radalla) - silloin aiempi leima kuuluu sille.
 	  // Ilman SportIdentia (EMIT) toiminta ennallaan.
-	  if (!vapaajarj && i == rt->rastiluku-1 && IsSportidentInUse()) {
+	  if (!vapaajarj && i < rt->rastiluku && IsSportidentInUse() &&
+		 (i == 0 || oikeakoodi(rt, i-1, em->ctrlcode[j], 0) != 1)) {
 		 while ((k = (j+49)%50) != lukija && k != (lukija+1)%50 &&
 			em->ctrlcode[k] == em->ctrlcode[j]) {
 			if (tulkinta) {
