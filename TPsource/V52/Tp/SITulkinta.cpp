@@ -79,7 +79,9 @@ static inline long ub(char c) { return (unsigned char) c; }
 // tavuasettelu, ks. case 12.
 //
 // Block 0 layout (pcap-verified, card 1009090):
-//   [8]  PTD  [9]  CN   [10] time_H [11] time_L  - Check punch
+//   [8]  PTD  [9]  CN   [10] time_H [11] time_L  - Check punch; myos nollaus
+//        (clear, CN=255) kirjoittaa tahan - SI Config nayttaa sen "Clear"-
+//        rivina. HkIV/VIv kayttaa tata nollahetkena, jos lahtoleimaa ei ole.
 //   [12] PTD  [13] CN   [14] time_H [15] time_L  - Start punch (CN=EE->no start)
 //   [16] PTD  [17] CN   [18] time_H [19] time_L  - Finish punch
 //   [24] CNS  [25:28] SIID (3 bytes, big-endian)
@@ -202,6 +204,12 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			result->check =
 					256L*ub(tp6->chk.PT[0]) + ub(tp6->chk.PT[1]) +
 					(tp6->chk.PTD & 1) * 43200L;
+			// Ei tarkastusleimaa (0xEEEE) -> nollausleima (clr) tilalle,
+			// kuten EXT-korteilla (ks. tulkExtOtsikko).
+			if (result->check == 61166L && ub(tp6->clr.CN) != 0xEE)
+				result->check =
+						256L*ub(tp6->clr.PT[0]) + ub(tp6->clr.PT[1]) +
+						(tp6->clr.PTD & 1) * 43200L;
 			result->finish =
 					256L*ub(tp6->fi.PT[0]) + ub(tp6->fi.PT[1]) +
 					(tp6->fi.PTD & 1) * 43200L;
@@ -286,7 +294,8 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			//   [20] PTD [21] CN [22:24] time - Finish punch
 			//   [24] PTD [25] CN [26:28] time - Start punch (CN=EE -> no start)
 			//   [28] PTD [29] CN [30:32] time - Check punch
-			//   [32] PTD [33] CN [34:36] time - Clear punch (not stored)
+			//   [32] PTD [33] CN [34:36] time - Clear punch (-> check, jos
+			//        check-leimaa ei ole; ks. tulkExtOtsikko)
 			//   [48:128] surname/firstname/country/club text (ignored)
 			//
 			// Block 1 (buf[128:256]) holds extended personalisation data
@@ -304,6 +313,8 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 				256L*b[26] + b[27] + (b[24] & 1) * 43200L;
 			result->check  = (b[29] == 0xEE) ? TMAALI0 :
 				256L*b[30] + b[31] + (b[28] & 1) * 43200L;
+			if (result->check == TMAALI0 && b[33] != 0xEE)
+				result->check = 256L*b[34] + b[35] + (b[32] & 1) * 43200L;
 			tulkExtLeimat(b, result, 256, 4, buflen);
 			break;
 			}

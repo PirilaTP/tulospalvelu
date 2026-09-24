@@ -1088,6 +1088,16 @@ static emittp *ed_em[NREGNLY];
 		start = vastaus->r21data.start;
 		if (vastaus->r21data.check == 61166L)
 			vastaus->r21data.check = TMAALI0;
+		// Nollahetki (luentanakyman rivi 0): lahtoleima; sen puuttuessa
+		// nollaus-/tarkastusleima, jos se on ennen ensimmaista rastileimaa
+		// ja enintaan 12 h sita aiemmin (vanha, esim. edellisen paivan
+		// nollaus ei kelpaa); muuten ensimmainen rastileima (alla).
+		if (start == TMAALI0 && vastaus->r21data.check != TMAALI0) {
+			for (i = 1; i < MAXNLEIMA && !vastaus->r21data.ct[i]; i++) ;
+			if (i >= MAXNLEIMA ||
+				(vastaus->r21data.ct[i] - vastaus->r21data.check + 86400L) % 86400L <= 43200L)
+				start = vastaus->r21data.check;
+			}
 		if (vastaus->r21data.finish == 61166L)
 			vastaus->r21data.finish = TMAALI0;
       em.maali = TMAALI0*10/SEK;

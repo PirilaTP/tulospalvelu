@@ -217,6 +217,20 @@ TEST_CASE("SI6: start/check/finish puretaan PT-kentista, PTD-bitti 0 lisaa 12h")
 	CHECK(result.finish == 70L + 43200L);
 }
 
+TEST_CASE("SI6: ilman tarkastusleimaa (0xEEEE) nollausleima clr tulee check-kenttaan")
+{
+	SI6tp tp;
+	SIResultTp result;
+
+	memset(&tp, 0, sizeof(tp));
+	tp.chk.PT[0] = tp.chk.PT[1] = (char) 0xEE; tp.chk.CN = (char) 0xEE;
+	tp.clr.CN = (char) 0xFF;
+	tp.clr.PT[0] = (char) 0x83; tp.clr.PT[1] = (char) 0xB3; tp.clr.PTD = 1;
+	tulkSI((char *) &tp, &result, 0, 6, sizeof(tp), 0);
+
+	CHECK(result.check == 0x83B3L + 43200L);   // 21:21:55
+}
+
 // pblk[0] ja pblk[1] ovat kaksi ERI 32-leiman lohkoa (64 yhteensa), eivat
 // sama alue kahteen kertaan. Aiemmin molemmat kirjoittivat samaan
 // cc[1..32]/ct[1..32]-alueeseen, joten pblk[1] ylikirjoitti pblk[0]:n -
@@ -587,6 +601,23 @@ TEST_CASE("SI6-EXT: oikea kortti (SIID 579671) - finish/check puretaan, ei lahto
 	CHECK(result.finish == 52811L);   // 256*0x25+0x8B + 43200 (PTD&1=1)
 	CHECK(result.start  == TMAALI0);
 	CHECK(result.check  == 46854L);   // 256*0x0E+0x46 + 43200
+}
+
+TEST_CASE("SI6-EXT: ilman tarkastusleimaa nollausleima (tavu 32) tulee check-kenttaan")
+{
+	// Oikea kortti 579671 (SI Config): Clear 255 Sa 21.21.55, Check tyhja.
+	unsigned char buf[512];
+	SIResultTp result;
+
+	memset(buf, 0xEE, sizeof(buf));
+	setPunch(buf, 32, 0x0D, 0xFF, 0x83B3);
+	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+	CHECK(result.check == 0x83B3L + 43200L);   // 21:21:55
+
+	// Kun tarkastusleima on, se voittaa nollausleiman.
+	setPunch(buf, 28, 0x0D, 0x03, 0x0E46);
+	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+	CHECK(result.check == 46854L);
 }
 
 TEST_CASE("SI6-EXT: leimat alkavat tavusta 256 (lohko 6), ei 128:sta tai 56:sta")
