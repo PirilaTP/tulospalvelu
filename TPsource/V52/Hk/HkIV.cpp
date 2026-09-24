@@ -956,6 +956,32 @@ static bool samatleimat(emittp *em1, emittp *em2, int regnlaji)
 	return(true);
 }
 
+#ifdef SPORTIDENT
+// SportIdent: varoitus, jos kortti luetaan yli 12 h nollauksen (tai sen
+// puuttuessa ensimmaisen leiman) jalkeen. Tavallisesti syyna on vaarin
+// asetettu leimasinten kello tai vanha, aiemmin leimattu kortti. Yli 65535 s
+// (18 h 12 min) ei mahdu emittp:n 16-bittiseen ctrltime-kenttaan: lukijarivi
+// ja siita laskettu maaliaika ja tulos menevat silloin vaarin (luku kiertaa).
+static void siLukuaikaVaroitus(INT32 badge, INT32 lukuaika)
+	{
+	wchar_t msg[300];
+
+	if (lukuaika <= 12L*3600L)
+		return;
+	swprintf(msg, L"SportIdent-kortti %ld luettu %ld h %02ld min nollauksen tai ensimm\xe4isen leiman j\xe4lkeen. Tarkista leimasinten kello.%s",
+		(long) badge, (long) (lukuaika / 3600), (long) (lukuaika / 60 % 60),
+		lukuaika > 65535L ?
+			L" Aika ylitt\xe4\xe4 18 h 12 min, joten kortin maaliaika ja tulos ovat virheellisi\xe4." : L"");
+	if (loki)
+		wkirjloki(msg);
+#ifdef _CONSOLE
+	writeerror_w(msg, 2000);
+#else
+	writewarning_w(msg, 5000);
+#endif
+	}
+#endif
+
 INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
    {
    static INT uusin = 0;
@@ -1152,6 +1178,8 @@ INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
 					(lukija_abs - start + 86400L) % 86400L;
 			else
 				em.ctrltime[i] = (lukija_abs + 86400L) % 86400L;
+			if (start != TMAALI0)
+				siLukuaikaVaroitus(em.badge, (lukija_abs - start + 86400L) % 86400L);
 			}
 		}
 #endif
