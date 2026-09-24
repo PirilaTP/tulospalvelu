@@ -25,11 +25,20 @@
 #ifndef SITULKINTA_DEFINED
 #define SITULKINTA_DEFINED
 
+#include <stddef.h>
 #include <tptype.h>
 
 // Sama kenttajoukko kuin san_type-unionin r21data (ks. HkDef.h/VDef.h,
 // #ifdef SPORTIDENT), mutta itsenaisena struktina, jotta tama tiedosto ei
 // tarvitse HkDef.h:ta/VDef.h:ta (jotka vetaisivat mukaan windows.h:n).
+//
+// Asettelu on lukittu pack(4):lla: tputil.h asettaa klassisella Borland-
+// kaantajalla (bcc32) "#pragma option -a1" (1 tavun tasaus) kaikille sen
+// jalkeen maaritellyille rakenteille. TpLaitteet.cpp (kutsuja) sisallyttaa
+// tputil.h:n, SITulkinta.cpp ei - ilman lukitusta ct[] oli kutsujalla
+// tavussa 86 ja tulkSI:lla tavussa 88, jolloin kaikki leima-ajat luettiin
+// 2 tavua vinossa (SI5: ajat 0, SI6+: roska-ajat; badge ja koodit oikein).
+#pragma pack(push, 4)
 typedef struct {
 	INT32 badge;
 	INT32 lukija;
@@ -39,6 +48,12 @@ typedef struct {
 	char cc[66];
 	INT32 ct[66];
 } SIResultTp;
+#pragma pack(pop)
+
+// Kaannosaikainen tarkistus: jokainen tata otsikkoa kayttava kaannosyksikko
+// nakee saman asettelun (taulukon koko -1 = kaannosvirhe).
+typedef char SIResultTp_asettelu_ct[offsetof(SIResultTp, ct) == 88 ? 1 : -1];
+typedef char SIResultTp_asettelu_koko[sizeof(SIResultTp) == 352 ? 1 : -1];
 
 // Tulkitsee yhden SportIdent-kortin tavupuskurin buf (kaytetty pituus buflen)
 // tyyppia SItype (5=SI5, 6=SI6, 7=SI9, 8=SI10/11, 9=SI8, 10=pCard, 11=tCard)

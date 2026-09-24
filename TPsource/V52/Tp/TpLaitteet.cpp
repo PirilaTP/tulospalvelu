@@ -1529,6 +1529,55 @@ static INT od[NREGNLY];
 #endif
 
 #ifdef SPORTIDENT
+// Vianetsinta: kirjaa SportIdent-luennan raakatavut lokiin (LOKI-parametri),
+// 32 tavua heksana riville (kirjloki katkaisee n. 198 merkkiin). Rivin alussa
+// otsikko ja tavun sijainti, esim. "SI data   32: 20 84 82 ...".
+static void SIlokiHex(const char *otsikko, const char *buf, int len)
+	{
+	char line[200];
+	int i, j, n;
+
+	if (!loki)
+		return;
+	if (len <= 0) {
+		sprintf(line, "%s: (ei tavuja)", otsikko);
+		kirjloki(line);
+		return;
+		}
+	for (i = 0; i < len; i += 32) {
+		n = sprintf(line, "%s %4d:", otsikko, i);
+		for (j = i; j < len && j < i + 32; j++)
+			n += sprintf(line + n, " %02X", (unsigned char) buf[j]);
+		kirjloki(line);
+		}
+	}
+
+// Vianetsinta: kirjaa tulkSI:n tuloksen lokiin (LOKI-parametri): badge,
+// lukuhetki, lahto/tarkastus/maali ja leimat muodossa koodi/aika(s).
+static void SIlokiTulos(int SItype, const SIResultTp *r)
+	{
+	char line[200];
+	int k, n, m = 0;
+
+	if (!loki)
+		return;
+	sprintf(line, "SI tulkinta: SItype %d, badge %ld, lukija %ld, lahto %ld, tark %ld, maali %ld",
+		SItype, (long) r->badge, (long) r->lukija, (long) r->start, (long) r->check, (long) r->finish);
+	kirjloki(line);
+	n = sprintf(line, "SI leimat:");
+	for (k = 1; k < 66; k++) {
+		if (!r->cc[k] && !r->ct[k])
+			continue;
+		n += sprintf(line + n, " %d/%ld", (unsigned char) r->cc[k], (long) r->ct[k]);
+		if (++m % 10 == 0) {
+			kirjloki(line);
+			n = sprintf(line, "SI leimat:");
+			}
+		}
+	if (m == 0 || m % 10)
+		kirjloki(line);
+	}
+
 // Lukee SportIdent SI5/SI6-lukijan sanomia lukijalta r_no kanavalta cn.
 // Vanhamuotoinen protokolla: lähettää kyselyn ja purkaa DLE-koodauksen.
 // EXT-protokolla (BSM8): tunnistaa 0xE5-ilmoituksen, lähettää B1-kyselyn,
@@ -1636,6 +1685,12 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 				SImsglen = strlen(SI6pyynto);
 				SItype = 6;
 				SIext = 0;
+				}
+			if (msg && loki) {
+				char line[80];
+				sprintf(line, "SI kortti asetettu: SItype %d, %s-protokolla", SItype, SIext ? "EXT" : "vanha");
+				kirjloki(line);
+				SIlokiHex("SI ilmoitus", vastaus->bytes, *nmsg);
 				}
 			od[r_no] = 0;
 			*nmsg = 0;
@@ -1781,7 +1836,9 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 				}
 			if (l == SIdatalen[SItype-5]) {
 				SIResultTp SIresult;
+				SIlokiHex("SI data", SIbuf, l);
 				if (!tulkSI(SIbuf, &SIresult, SIt, SItype, SIdatalen[SItype-5], t0)) {
+					SIlokiTulos(SItype, &SIresult);
 					// SIResultTp on tulkSI:n riippumaton tulostyyppi (ks. SITulkinta.h);
 					// kopioidaan san_type-unionin r21data-jasenten yli.
 					vastaus->r21data.badge = SIresult.badge;
@@ -1796,8 +1853,16 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 					}
 				break;
 				}
-			if ((biostime(0,0) + DAYTICKS - SIt) % DAYTICKS > 90)
+			if ((biostime(0,0) + DAYTICKS - SIt) % DAYTICKS > 90) {
+				if (loki) {
+					char line[80];
+					sprintf(line, "SI luenta keskeytyi (aikaraja): saatu %d / %d tavua, SItype %d",
+						l, SIdatalen[SItype-5], SItype);
+					kirjloki(line);
+					SIlokiHex("SI data", SIbuf, l);
+					}
 				break;
+				}
 			if (!nq)
 				utsleep(1);
 			}

@@ -30,6 +30,12 @@
 #define SI_PUNCH_CARD_LEN 24
 #define SI_PUNCH_MODEM_LEN 24
 
+// Layout pinned with pack(8): tputil.h sets "#pragma option -a1" (1-byte
+// alignment) for everything after it under the classic Borland compiler
+// (bcc32). HkIV.cpp/VIv.cpp include tputil.h, SICenterJson.cpp does not,
+// so without the pin the two sides would disagree on field offsets and on
+// the element size of the punches[] array (see also SITulkinta.h).
+#pragma pack(push, 8)
 typedef struct {
 	long id;
 	char card[SI_PUNCH_CARD_LEN];
@@ -39,6 +45,7 @@ typedef struct {
 	char modem[SI_PUNCH_MODEM_LEN];
 	long long receptionTimeUtc;
 } SIPunchTp;
+#pragma pack(pop)
 
 // Parses a JSON array (the SportIdent Center REST API's /punches response)
 // into out[0..maxout-1]. Unknown keys and object fields not known to this
