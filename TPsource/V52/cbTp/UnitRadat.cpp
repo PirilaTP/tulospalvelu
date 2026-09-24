@@ -2937,6 +2937,12 @@ void __fastcall TFormRadat::KeyToUpper(TObject *Sender, System::WideChar &Key)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TFormRadat::EdtMapCoordChange(TObject *Sender)
+{
+	rataMuutoksia = true;
+}
+//---------------------------------------------------------------------------
+
 int __fastcall TFormRadat::TallKoord(rastikoordtp *koord)
 {
 	int err_row = 0, k = 0;

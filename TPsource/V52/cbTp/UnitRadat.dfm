@@ -1498,6 +1498,7 @@
           Alignment = taRightJustify
           TabOrder = 0
           Text = '10000'
+          OnChange = EdtMapCoordChange
         end
         object EdtMapLeft: TEdit
           Left = 64
@@ -1507,6 +1508,7 @@
           Alignment = taRightJustify
           TabOrder = 1
           Text = '0,0'
+          OnChange = EdtMapCoordChange
         end
         object EdtMapTop: TEdit
           Left = 174
@@ -1516,6 +1518,7 @@
           Alignment = taRightJustify
           TabOrder = 2
           Text = '0,0'
+          OnChange = EdtMapCoordChange
         end
         object EdtMapBottom: TEdit
           Left = 174
@@ -1525,6 +1528,7 @@
           Alignment = taRightJustify
           TabOrder = 3
           Text = '0,0'
+          OnChange = EdtMapCoordChange
         end
         object EdtMapRight: TEdit
           Left = 64
@@ -1534,6 +1538,7 @@
           Alignment = taRightJustify
           TabOrder = 4
           Text = '0,0'
+          OnChange = EdtMapCoordChange
         end
       end
       object SGKoord: TStringGrid

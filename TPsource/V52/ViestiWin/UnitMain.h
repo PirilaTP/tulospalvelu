@@ -116,6 +116,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Ratatiedot1;
 	TMenuItem *Osanottajat1;
 	TMenuItem *Joukkueet1;
+	TMenuItem *NaytaMaastossa1;
 	TMenuItem *Yksijoukkue1;
 	TMenuItem *Haetiedostosta1;
 	TMenuItem *Merkitsetarkastuskoodeja1;
@@ -226,6 +227,7 @@ __published:	// IDE-managed Components
 	void __fastcall Kirjoitasiirtotiedostoon1Click(TObject *Sender);
 	void __fastcall Haetiedostosta1Click(TObject *Sender);
 	void __fastcall Joukkueet1Click(TObject *Sender);
+	void __fastcall NaytaMaastossa1Click(TObject *Sender);
 	void __fastcall Yksijoukkue1Click(TObject *Sender);
 	void __fastcall Siirrlistietoja1Click(TObject *Sender);
 	void __fastcall Ratatiedot1Click(TObject *Sender);

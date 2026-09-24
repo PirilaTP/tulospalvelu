@@ -445,7 +445,13 @@ void __fastcall TFormLisatiedot::SiirraTiedot(int sellaisinaan)
 					break;
 				}
 			if (sellaisinaan > 0 && Tunniste == PohjTunniste) {
-				ival = _wtoi(EdtPohjustus->Text.c_str());
+				if (Tieto == 22) {
+					ival = wstrtoaika_vap((EdtPohjustus->Text.c_str()), t0);
+				} else if (Tieto == 23 || Tieto == 36 || Tieto == 37) {
+					ival = wstrtoaika_vap((EdtPohjustus->Text.c_str()), 0);
+				} else {
+					ival = _wtoi(EdtPohjustus->Text.c_str());
+				}
 				wcsncpy(sval, EdtPohjustus->Text.c_str(), LSEURA);
 			}
 			if (sellaisinaan > 0 && ikey != -999999999) {

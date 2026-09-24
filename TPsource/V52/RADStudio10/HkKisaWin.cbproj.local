@@ -285,6 +285,14 @@
     <File Path="..\cbHk\WinHk.dfm"/>
     <File Path="..\cbHk\WinHk.h"/>
     <File Path="..\cbHk\WinParamXml.cpp"/>
+    <File Path="..\cbHk\UnitLahtoRistiriita.cpp"/>
+    <File Path="..\cbHk\UnitLahtoRistiriita.cpp"/>
+    <File Path="..\cbHk\UnitLahtoRistiriita.dfm"/>
+    <File Path="..\cbHk\UnitLahtoRistiriita.h"/>
+    <File Path="..\cbHk\UnitMaastossa.cpp"/>
+    <File Path="..\cbHk\UnitMaastossa.cpp"/>
+    <File Path="..\cbHk\UnitMaastossa.dfm"/>
+    <File Path="..\cbHk\UnitMaastossa.h"/>
     <File Path="..\cbTp"/>
     <File Path="..\cbTp\cbTpApu.cpp"/>
     <File Path="..\cbTp\UnitAikakorjaus.cpp"/>
@@ -475,6 +483,9 @@
     <File Path="..\..\..\TPexe\Lib\V521\debug_build"/>
     <File Path="..\..\..\TPexe\Lib\V521\debug_build\DBboxm-XE.lib"/>
     <File Path="..\..\..\TPexe\Lib\V521\debug_build\Tputil-XE.lib"/>
+    <File Path="..\..\..\TPexe\Lib\V521\release_build"/>
+    <File Path="..\..\..\TPexe\Lib\V521\release_build\DBboxm-XE.lib"/>
+    <File Path="..\..\..\TPexe\Lib\V521\release_build\Tputil-XE.lib"/>
     <File Path="HkKisaWin.cpp"/>
     <File Path="..\cbHk\winhttp.lib"/>
   </ProjectSortOrder>

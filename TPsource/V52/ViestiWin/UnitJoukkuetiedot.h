@@ -147,6 +147,7 @@ __published:	// IDE-managed Components
 
 private:	// User declarations
    int __fastcall tallennaTiedot(void);
+	void __fastcall asetaMuokkaustila(bool paalle); // view vs edit; call false on Close
 //   void __fastcall haeTiedot(kilptietue *Kilp1);
 	void __fastcall SiirraSeuraTiedot(int haku);
 	void __fastcall GridDims(void);

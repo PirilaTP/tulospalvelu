@@ -755,10 +755,19 @@ static void handleTagReport(int r_no, const unsigned char *d, int len)
 			if (l < 4 || i + (int)l > len)
 				return;
 			if (t == P_EPC_DATA) {
-				unsigned bits = (d[i+4] << 8) | d[i+5];
-				int nb = (bits + 7) / 8;
-				tohex(d + i + 6, nb, epchex, sizeof(epchex));
-				haveEpc = 1;
+				// EPCData = 4 tavun TLV-otsake + 2 tavun EPCLengthBits + EPC-tavut.
+				// Alle 6 tavun mittainen parametri ei voi sisaltaa bittipituutta,
+				// joten se ohitetaan (ei pudoteta tagia: mahd. EPC on jo luettu).
+				if (l >= 6) {
+					unsigned bits = (d[i+4] << 8) | d[i+5];
+					int nb = (bits + 7) / 8;
+					// Laitteen ilmoittama bittipituus voi olla suurempi kuin
+					// parametriin oikeasti mahtuu -> rajataan parametrin sisaltoon.
+					if (nb > (int)l - 6)
+						nb = (int)l - 6;
+					tohex(d + i + 6, nb, epchex, sizeof(epchex));
+					haveEpc = 1;
+					}
 				}
 			// Aikaleimat (tyypit 2-5) ovat TV-koodattuja -> kasitellaan TV-haarassa.
 			i += (int)l;

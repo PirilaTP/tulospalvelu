@@ -46,6 +46,7 @@
 #include "UnitExport.h"
 #include "UnitImport.h"
 #include "UnitJoukkueet.h"
+#include "UnitMaastossa.h"
 #include "UnitJoukkuetiedot.h"
 #include "UnitLisatiedot.h"
 #include "UnitRadat.h"
@@ -110,6 +111,7 @@ FormItem  FormList[] = {
 	{(TForm **)&FormStatus, L"Yleistilanne"},
 	{(TForm **)&FormSarjatiedot, L"Sarjatiedot"},
 	{(TForm **)&FormJoukkueet, L"Joukkuetaulukko"},
+	{(TForm **)&FormMaastossa, L"Maastossa"},
 	{(TForm **)&TulosteForm, L"Tulosteet"},
 	{(TForm **)&FormEmit, L"Emittoiminnot"},
 	{(TForm **)&FormAjanotot[0], L"Ajanotto 1"},
@@ -1658,6 +1660,17 @@ void __fastcall TFormMain::Joukkueet1Click(TObject *Sender)
 	if (FormJoukkueet->WindowState == wsMinimized)
 		FormJoukkueet->WindowState = wsNormal;
 	FormJoukkueet->BringToFront();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormMain::NaytaMaastossa1Click(TObject *Sender)
+{
+	if (!FormMaastossa)
+		FormMaastossa = new TFormMaastossa(this);
+	FormMaastossa->Show();
+	if (FormMaastossa->WindowState == wsMinimized)
+		FormMaastossa->WindowState = wsNormal;
+	FormMaastossa->BringToFront();
 }
 //---------------------------------------------------------------------------
 

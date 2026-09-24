@@ -122,7 +122,7 @@ mutta sen kaikkia alamäärityksiä ei voi tehdä.
 | AIKA\_COM=x AIKA\_ESTO=x | \* | Sarjaliitännän avulla tapahtuvaa ajanottoa koskevia parametreja. Katso ao. lukua. |
 | LÄHAIKAy | \*\*\* | Ilmoittaa, että yhteyttä y käytetään myös ajanottotietojen siirtoon. y on yhteyden numero kuten parametrissa YHTEYSy. |
 | AJAT=/S AJAT=tied.nimi/S | \*\* | Ilmoittaa ajanottotiedoston nimen. '/S' poistaa tiedoston säilyttämistä koskevan kysymyksen (säilyttää kysymättä). |
-| PAKOTALAIKA |  | Estää hiihdon 3 sekunnin säännön käytön lähtöaikoja käsiteltäessä |
+| PAKOTALAIKA |  | Estää hiihdon 3 sekunnin säännön käytön lähtöaikoja käsiteltäessä. Sallii myös lähtöajan tallentamisen ajanottopisteestä, jonka tiedostossa lahdepisteet(x).lst on merkitty pisteeksi kirjain L (ks. LÄHDEPISTEET). Käytetään esim. kun lähtöaika luetaan RFID-lukijalta. |
 | PAKOTALAIKARAJA=n |  | Käytössä vain PAKOTALAIKA-parametrin kanssa. Kertoo sekunteina suurimman sallitun eron pakotalaikarekisteröinnin ja jo tallennetun lähtöajan välillä. Jos ero on suurempi kuin n, ei pakotalaika kirjata uudelleen. Oletusarvo 0 eli ei rajoitusta. |
 | LÄHTÖIKKUNA=x |  | Vaihtaa "3 sek säännön" aikarajaksi x sek. |
 | LAJAT LAJAT=tied.nimi | \*\* | Lähtöportin ajat tallennetaan eri tiedostoon kuin muut ajat |
@@ -201,7 +201,7 @@ mutta sen kaikkia alamäärityksiä ei voi tehdä.
 | EMLOKI |  | Emit-tapahtumat kirjataan lokitiedostoon. |
 |  |  | **Emit-tunnisteeseen perustuvan ajanoton parametreja** |
 | AIKALUKIJA AIKALUKIJA=VAIN AIKALUKIJA=VAINx AIKALUKIJAy=VAINx AIKALUKIJAy=LÄHDEz | \*\*\* | Lukijarastin lukemishetki tallennetaan, vaikka kortilta ei saada muita tietoja kuin sen numero. VAIN: aina vain lukemishetki. x ilmaisee pisteen, y lukijan ja z lähdekoodin, joka annetaan lukijasta y tuleville ajanottotiedoille. |
-| LÄHDEPISTEET | \*\*\* | Ajanottopisteen päättelyssä käytetään tiedostoa lahdepisteetx.lst, missä x on vaiheen numero. Tämä parametri tarvitaan mm. usein, kun käytössä on SjBox. |
+| LÄHDEPISTEET | \*\*\* | Ajanottopisteen päättelyssä käytetään tiedostoa lahdepisteetx.lst, missä x on vaiheen numero. Tämä parametri tarvitaan mm. usein, kun käytössä on SjBox. Pisteeksi voidaan tiedostossa merkitä myös kirjain L, jolloin koodi tulkitaan lähtöajaksi maalin (M) sijaan; edellyttää lisäksi PAKOTALAIKA-parametria. |
 | AUTOKILP |  | Kirjaa luetut kilpailijat automaattisesti ajanottotietoihin liittäen maalikellon antamiin aikoihin. |
 | LEIMAT=E |  | Tiedostoa LEIMAT.LST ei lueta, vaikka se on käynnistyshakemistossa. Saa ajanoton joissain tapauksissa toimimaan loogisemmin. |
 | EMITAJAT EMITAJAT=n | \*\*\* | Leimantarkastuksessa määrätyt ajat kirjoitetaan ajanottotiedostoon. Parametri n kertoo ajanottojonon, jos useita on käytössä. |
