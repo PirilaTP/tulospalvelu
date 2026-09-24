@@ -425,7 +425,7 @@ void __fastcall TFormEmit::NaytaKilp(void)
 void __fastcall TFormEmit::NaytaEmit(void)
 {
 	wchar_t st[60];
-	int tm = 0, nc = 0, lk, n_lk = 0, enn, virhe = 0, tulkinta[51], style = 0;
+	int tm = 0, nc = 0, lk, n_lk = 0, enn = 0, virhe = 0, tulkinta[51], style = 0;
 	bool lukijaOk = false;
 	UnicodeString AS = L"";
 	bool on99 = false;

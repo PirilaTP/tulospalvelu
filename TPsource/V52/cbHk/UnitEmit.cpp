@@ -448,7 +448,7 @@ void __fastcall TFormEmit::NaytaKilp(void)
 void __fastcall TFormEmit::NaytaEmit(void)
 {
 	wchar_t st[60];
-	int tm = 0, nc = 0, lk = -1, n_lk = 0, enn, virhe = 0, tulkinta[MAXNLEIMA+1], style = 0;
+	int tm = 0, nc = 0, lk = -1, n_lk = 0, enn = 0, virhe = 0, tulkinta[MAXNLEIMA+1], style = 0;
 	bool lukijaOk = false;
 	UnicodeString AS;
 	ratatp *rt;

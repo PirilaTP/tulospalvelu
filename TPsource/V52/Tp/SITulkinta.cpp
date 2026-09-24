@@ -27,6 +27,12 @@
 // testeihin kaantymattoman. Toteutus (tputilv2/T_time_l.cpp) on riippumaton.
 extern long t_time_l(long tics, int t0);
 
+// SI5tp/SI6tp:n kentat ovat tavallisia char-kenttia. HkKisaWin kaannetaan
+// etumerkillisella charilla (bcc32c ei noudata tputil.h:n "#pragma option
+// -K":ta, eika tama tiedosto sita sisallyta), joten >= 0x80 tavut
+// (0xEE-sentinelli, badgen/ajan tavut) luetaan aina taman kautta.
+static inline long ub(char c) { return (unsigned char) c; }
+
 // ===========================================================================
 // SportIdent-korttien sukupolvet ja tulkintaprotokollat.
 //
@@ -145,24 +151,26 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			// row[r].ccx on rivin oma "ohituskoodi" (tallentuu cc[31..36]:
 			// een, ei kaytannon leimoihin), row[r].c[i] varsinaiset leimat
 			// (cc[1..30]/ct[1..30]).
+			// Kaytamattomat leimapaikat ovat kortilla 00-EE-EE (CN=0, aika
+			// 0xEEEE); ne jatetaan nollaksi, muuten 61166-aika nakyisi
+			// HkIV.cpp:n suhteutuksen jalkeen luentanakymassa haamuriveina.
 			tp5 = (SI5tp *) buf;
-			result->badge = 256L * tp5->CN[0] + tp5->CN[1] +
-				(tp5->CNS > 1 ? tp5->CNS * 100000L : 0);
-			result->start = 256L * tp5->ST[0] + tp5->ST[1];
-			result->check = 256L * tp5->CT[0] + tp5->CT[1];
-			result->finish = 256L * tp5->FT[0] + tp5->FT[1];
+			result->badge = 256L * ub(tp5->CN[0]) + ub(tp5->CN[1]) +
+				(ub(tp5->CNS) > 1 ? ub(tp5->CNS) * 100000L : 0);
+			result->start = 256L * ub(tp5->ST[0]) + ub(tp5->ST[1]);
+			result->check = 256L * ub(tp5->CT[0]) + ub(tp5->CT[1]);
+			result->finish = 256L * ub(tp5->FT[0]) + ub(tp5->FT[1]);
 			for (r = 0; r < 6; r++) {
 				result->cc[31+r] = tp5->row[r].ccx;
 				for (i = 0; i < 5; i++) {
+					if (ub(tp5->row[r].c[i].cc) == 0)
+						continue;
 					result->cc[1+i+5*r] = tp5->row[r].c[i].cc;
 					result->ct[1+i+5*r] =
-						256L*tp5->row[r].c[i].ct[0] + tp5->row[r].c[i].ct[1];
+						256L*ub(tp5->row[r].c[i].ct[0]) + ub(tp5->row[r].c[i].ct[1]);
 					if (r+i == 0) {
 						// 61166 = 0xEEEE (ST[0]=ST[1]=0xEE): SI5:n vastine
 						// EXT-protokollan 0xEE-sentinellille ("ei lahtoa").
-						// HUOM: talla alustalla (signed char) tama vertailu
-						// on kaytannossa saavuttamaton, ks. Tests/
-						// TulkSITest.cpp:n huomio taman ehdon ohessa.
 						if (result->start != 61166L && result->ct[1] &&
 							result->ct[1] < result->start)
 							result->ct[1] += 43200L;
@@ -187,15 +195,15 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			int cnt;
 			tp6 = (SI6tp *) buf;
 			result->badge =
-				tp6->CN[3] + 256L * (tp6->CN[2] + 256L * (tp6->CN[1] + 256L * tp6->CN[0]));
+				ub(tp6->CN[3]) + 256L * (ub(tp6->CN[2]) + 256L * (ub(tp6->CN[1]) + 256L * ub(tp6->CN[0])));
 			result->start =
-					256L*tp6->st.PT[0] + tp6->st.PT[1] +
+					256L*ub(tp6->st.PT[0]) + ub(tp6->st.PT[1]) +
 					(tp6->st.PTD & 1) * 43200L;
 			result->check =
-					256L*tp6->chk.PT[0] + tp6->chk.PT[1] +
+					256L*ub(tp6->chk.PT[0]) + ub(tp6->chk.PT[1]) +
 					(tp6->chk.PTD & 1) * 43200L;
 			result->finish =
-					256L*tp6->fi.PT[0] + tp6->fi.PT[1] +
+					256L*ub(tp6->fi.PT[0]) + ub(tp6->fi.PT[1]) +
 					(tp6->fi.PTD & 1) * 43200L;
 			// pblk[0] and pblk[1] are two SEPARATE 32-punch blocks (64 total
 			// capacity), not two copies of the same 32 slots - they used to

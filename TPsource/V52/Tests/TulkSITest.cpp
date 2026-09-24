@@ -97,15 +97,67 @@ TEST_CASE("SI5: ensimmainen rastileima (row[0].c[0]) puretaan ja verrataan start
 	CHECK(result.ct[1] == 50L + 43200L);
 }
 
-// HUOM: "result->start != 61166L" -erikoistapausta (SITulkinta.cpp, case 5)
-// ei voi testata tallaisenaan: ST[0]/ST[1] ovat SI5tp:ssa tavallisia (etumerkillisia)
-// char-kenttia tallakin alustalla (vahvistettu static_assert((char)-1<0)), ja
-// niiden arvot etumerkkilaajennetaan int/long:ksi ennen 256*ST[0]+ST[1]
-// -laskua. Etumerkillisen charin arvoalueella [-128,127] lauseke 256*a+b
-// yltaa korkeintaan arvoon 256*127+127 = 32639 - eli tulos ei voi koskaan
-// olla 61166. Erikoistapaus vaikuttaa siis saavuttamattomalta (kuolleelta)
-// koodilta talla alustalla; tata ei testata talla, koska yritys tuottaisi
-// vain vaaria/harhaanjohtavia odotusarvoja.
+// Oikea SI5-kortti (SIID 229401, SI Configin lokista): badgen alatavu 0xD9,
+// leima-ajat 0x84.., tyhja lahto/maali/tarkastus 0xEE-EE ja kayttamattomat
+// leimapaikat 00-EE-EE. Tavut >= 0x80 on tulkittava etumerkittomina
+// riippumatta siita, onko kaantajan char etumerkillinen (HkKisaWin/bcc32c,
+// g++) vai ei (ViestiWin, VS /J).
+static void buildSI5_229401(SI5tp *tp)
+{
+	static const unsigned char punches[3][3] = {
+		{31, 0x84, 0x2F}, {32, 0x84, 0x82}, {50, 0x8B, 0xC7} };
+	int r, i;
+
+	memset(tp, 0, sizeof(*tp));
+	tp->CN[0] = (char) 0x72; tp->CN[1] = (char) 0xD9; tp->CNS = 2;
+	tp->ST[0] = tp->ST[1] = (char) 0xEE;
+	tp->FT[0] = tp->FT[1] = (char) 0xEE;
+	tp->CT[0] = tp->CT[1] = (char) 0xEE;
+	for (r = 0; r < 6; r++)
+		for (i = 0; i < 5; i++) {
+			tp->row[r].c[i].ct[0] = tp->row[r].c[i].ct[1] = (char) 0xEE;
+			}
+	for (i = 0; i < 3; i++) {
+		tp->row[0].c[i].cc = (char) punches[i][0];
+		tp->row[0].c[i].ct[0] = (char) punches[i][1];
+		tp->row[0].c[i].ct[1] = (char) punches[i][2];
+		}
+}
+
+TEST_CASE("SI5: tavut >= 0x80 tulkitaan etumerkittomina (oikea kortti 229401)")
+{
+	SI5tp tp;
+	SIResultTp result;
+
+	buildSI5_229401(&tp);
+	tulkSI((char *) &tp, &result, 0, 5, sizeof(tp), 0);
+
+	CHECK(result.badge == 229401L);
+	CHECK(result.start == 61166L);     // 0xEEEE = ei lahtoa (HkIV -> TMAALI0)
+	CHECK(result.finish == 61166L);
+	CHECK(result.check == 61166L);
+	CHECK((int) (unsigned char) result.cc[1] == 31);
+	CHECK(result.ct[1] == 33839L);     // 09:23:59, ei 12h-kaannosta (start 0xEEEE)
+	CHECK((int) (unsigned char) result.cc[2] == 32);
+	CHECK(result.ct[2] == 33922L);     // 09:25:22
+	CHECK((int) (unsigned char) result.cc[3] == 50);
+	CHECK(result.ct[3] == 35783L);     // 09:56:23
+}
+
+TEST_CASE("SI5: kayttamattomat leimapaikat (00-EE-EE) jaavat nollaksi")
+{
+	SI5tp tp;
+	SIResultTp result;
+	int i;
+
+	buildSI5_229401(&tp);
+	tulkSI((char *) &tp, &result, 0, 5, sizeof(tp), 0);
+
+	for (i = 4; i <= 30; i++) {
+		CHECK(result.cc[i] == 0);
+		CHECK(result.ct[i] == 0L);
+		}
+}
 
 TEST_CASE("SI5: myohemmat leimat kaannetaan +12h jos pienempia kuin edellinen")
 {
