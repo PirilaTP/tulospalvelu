@@ -33,6 +33,7 @@
 #include <bstrings.h>
 #pragma hdrstop
 #include "VDeclare.h"
+#include "TpLaitteet.h"
 
 //#define DBG_1
 //   int emitloki = 1;
@@ -1327,6 +1328,11 @@ INT32 e_maaliaika(emittp *em, kilptietue *kilp, INT os)
 			break;
 		 }
 	  if (ok) {
+		 // SportIdent: perakkaisista maalirastin leimoista kaytetaan
+		 // ensimmaista (ks. tarkista). Ilman SportIdentia ennallaan.
+		 if (IsSportidentInUse())
+			while (l > 1 && em->ctrlcode[(lk+l-1)%50] == em->ctrlcode[(lk+l)%50])
+			   l--;
 		 if (rt->ennakko >= 0) {
 			tm = oslahto(kilp, os) + SEK*(em->ctrltime[(lk+l)%50] - rt->ennakko);
 			}
@@ -2152,6 +2158,23 @@ INT tarkista(emittp *em, kilptietue *pkilp, INT *tulkinta, int lukija, INT haku)
 	  // i:n arvoa pienennetään, jos kyseessä lukijalaite, jonka koodi
       // löytyy radan viimeiseltä ilmoitetulta rastilta eli kun lukija
       // sisältyy rataan
+
+	  // SportIdent: jos radan viimeinen rasti (maalirasti) on leimattu
+	  // useasti perakkain, maalileimaksi tulkitaan ensimmainen niista ja
+	  // myohemmat merkitaan ylimaaraisiksi (tulkinta negatiivinen).
+	  // Ilman SportIdentia (EMIT) toiminta ennallaan.
+	  if (!vapaajarj && i == rt->rastiluku-1 && IsSportidentInUse()) {
+		 while ((k = (j+49)%50) != lukija && k != (lukija+1)%50 &&
+			em->ctrlcode[k] == em->ctrlcode[j]) {
+			if (tulkinta) {
+			   tulkinta[j] = -(i+1);
+			   for (m = i; m >= 0; m--)
+				  if (rt->rastikoodi[m] > 9999 && rt->rastikoodi[m] <= 10002)
+					 tulkinta[j]++;
+			   }
+			j = k;
+			}
+		 }
 
       if (i == rt->rastiluku && oikeakoodi(rt, i-1, em->ctrlcode[j], 0)) i--;
 

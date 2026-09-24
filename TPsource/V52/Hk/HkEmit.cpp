@@ -2180,6 +2180,23 @@ INT tarkista(emittp *em, INT *tulkinta, INT haku, kilptietue *kilp1)
 	  // löytyy radan viimeiseltä ilmoitetulta rastilta eli kun lukija
       // sisältyy rataan
 
+	  // SportIdent: jos radan viimeinen rasti (maalirasti) on leimattu
+	  // useasti perakkain, maalileimaksi tulkitaan ensimmainen niista ja
+	  // myohemmat merkitaan ylimaaraisiksi (tulkinta negatiivinen).
+	  // EMIT-korteilla (lahde != 1) toiminta ennallaan.
+	  if (em->lahde == 1 && !vapaajarj && i == rt->rastiluku-1) {
+		 while ((k = (j+MAXNLEIMA-1)%MAXNLEIMA) != lukija &&
+			k != (lukija+1)%MAXNLEIMA && em->ctrlcode[k] == em->ctrlcode[j]) {
+			if (tulkinta) {
+			   tulkinta[j] = -(i+1);
+			   for (m = i-1; m >= 0; m--)
+				  if (rt->rastikoodi[m] > 9999 && rt->rastikoodi[m] < 10002)
+					 tulkinta[j]++;
+			   }
+			j = k;
+			}
+		 }
+
       if (i == rt->rastiluku && oikeakoodi(rt, i-1, em->ctrlcode[j], 0)) i--;
 
 	  if (!vapaajarj) {
@@ -3657,6 +3674,11 @@ INT32 e_maaliaika(emittp *em, kilptietue *kilp, INT32 *tlahto)
                break;
             }
          if (l >= rt->rastiluku-2) {
+			// SportIdent: perakkaisista maalirastin leimoista kaytetaan
+			// ensimmaista (ks. tarkista). EMIT-korteilla ennallaan.
+			if (em->lahde == 1)
+			   while (l > 1 && em->ctrlcode[(lk+l-1)%MAXNLEIMA] == em->ctrlcode[(lk+l)%MAXNLEIMA])
+				  l--;
             if (tlahto && rt->ennakko >= 0) {
                tm = -SEK*rt->ennakko;
                if (*tlahto != TMAALI0)
