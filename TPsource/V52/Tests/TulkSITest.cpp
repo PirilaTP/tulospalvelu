@@ -39,6 +39,14 @@
 #include "SITulkinta.h"
 #include "doctest.h"
 
+// Lukuhetki BIOS-tikkeina kuten lue_SI:n SIt (biostime, DAYTICKS = 1573040
+// tikkia/vrk). SI5 tarvitsee lukuhetken aamu-/iltapaivan paattelyyn
+// (ks. SITulkinta.cpp:tulkSI5Puolipaiva).
+static INT32 siTics(int h, int m, int s)
+{
+	return (INT32) ((h*3600L + m*60L + s) * 1573040.0 / 86400.0 + 0.5);
+}
+
 // ===========================================================================
 // SI5 (SItype == 5): legacy-protokolla, SI5tp-struktin kautta.
 // ===========================================================================
@@ -74,7 +82,7 @@ TEST_CASE("SI5: start/check/finish puretaan ST/CT/FT-kentista")
 	tp.ST[0] = 11; tp.ST[1] = 0;   // 11*256 s
 	tp.CT[0] = 12; tp.CT[1] = 0;
 	tp.FT[0] = 13; tp.FT[1] = 0;
-	tulkSI((char *) &tp, &result, 0, 5, sizeof(tp), 0);
+	tulkSI((char *) &tp, &result, siTics(1, 0, 0), 5, sizeof(tp), 0);  // luettu klo 1.00
 
 	CHECK(result.start  == 11L*256);
 	CHECK(result.check  == 12L*256);
@@ -90,7 +98,7 @@ TEST_CASE("SI5: ensimmainen rastileima (row[0].c[0]) puretaan ja verrataan start
 	tp.ST[0] = 0; tp.ST[1] = 100;             // start = 100 s (ei 61166)
 	tp.row[0].c[0].cc = 31;
 	tp.row[0].c[0].ct[0] = 0; tp.row[0].c[0].ct[1] = 50;  // 50 s < start=100
-	tulkSI((char *) &tp, &result, 0, 5, sizeof(tp), 0);
+	tulkSI((char *) &tp, &result, siTics(12, 30, 0), 5, sizeof(tp), 0);  // luettu klo 12.30
 
 	// 50 < 100 (start) ja start != 61166 -> +43200 kaannos
 	CHECK((int) (unsigned char) result.cc[1] == 31);
@@ -130,18 +138,77 @@ TEST_CASE("SI5: tavut >= 0x80 tulkitaan etumerkittomina (oikea kortti 229401)")
 	SIResultTp result;
 
 	buildSI5_229401(&tp);
-	tulkSI((char *) &tp, &result, 0, 5, sizeof(tp), 0);
+	tulkSI((char *) &tp, &result, siTics(9, 44, 27), 5, sizeof(tp), 0);  // luettu aamulla
 
 	CHECK(result.badge == 229401L);
-	CHECK(result.start == 61166L);     // 0xEEEE = ei lahtoa (HkIV -> TMAALI0)
-	CHECK(result.finish == 61166L);
-	CHECK(result.check == 61166L);
+	CHECK(result.start == TMAALI0);    // 0xEEEE = ei lahtoa
+	CHECK(result.finish == TMAALI0);
+	CHECK(result.check == TMAALI0);
 	CHECK((int) (unsigned char) result.cc[1] == 31);
-	CHECK(result.ct[1] == 33839L);     // 09:23:59, ei 12h-kaannosta (start 0xEEEE)
+	CHECK(result.ct[1] == 33839L);     // 09:23:59
 	CHECK((int) (unsigned char) result.cc[2] == 32);
 	CHECK(result.ct[2] == 33922L);     // 09:25:22
 	CHECK((int) (unsigned char) result.cc[3] == 50);
 	CHECK(result.ct[3] == 35783L);     // 09:56:23
+}
+
+// SI5:ssa ei ole aamu-/iltapaivatietoa: iltapaivalla luetun kortin leimat
+// siirretaan +12 h, jotta ne ovat samalla asteikolla kuin PC:n kellosta
+// laskettu lukuhetki (muuten HkIV.cpp:n 250-rivi menisi 12 h pieleen).
+TEST_CASE("SI5: iltapaivalla luettu kortti -> leimat +12 h")
+{
+	SI5tp tp;
+	SIResultTp result;
+
+	buildSI5_229401(&tp);
+	tulkSI((char *) &tp, &result, siTics(21, 44, 27), 5, sizeof(tp), 0);
+
+	CHECK(result.ct[1] == 33839L + 43200L);   // 21:23:59
+	CHECK(result.ct[2] == 33922L + 43200L);   // 21:25:22
+	CHECK(result.ct[3] == 35783L + 43200L);   // 21:56:23
+	CHECK(result.start == TMAALI0);           // tyhjat pysyvat tyhjina
+	CHECK(result.finish == TMAALI0);
+	CHECK(result.ct[4] == 0L);                // kayttamattomat eivat siirry
+}
+
+TEST_CASE("SI5: puolipaivan paattely toimii myos t0 != 0 (viestin oletus t0=12)")
+{
+	SI5tp tp;
+	SIResultTp result;
+
+	buildSI5_229401(&tp);
+	tulkSI((char *) &tp, &result, siTics(21, 44, 27), 5, sizeof(tp), 12);
+	CHECK(result.ct[1] == 33839L + 43200L);
+
+	tulkSI((char *) &tp, &result, siTics(9, 44, 27), 5, sizeof(tp), 12);
+	CHECK(result.ct[1] == 33839L);
+}
+
+TEST_CASE("SI5: leima juuri ennen puoltayota, luku puolenyon jalkeen")
+{
+	// Kortin 11:50:00 (= 23:50:00), luettu 00:10:00 -> leima 23:50:00.
+	SI5tp tp;
+	SIResultTp result;
+	unsigned t = 11*3600 + 50*60;
+
+	memset(&tp, 0, sizeof(tp));
+	tp.ST[0] = tp.ST[1] = (char) 0xEE;
+	tp.FT[0] = tp.FT[1] = (char) 0xEE;
+	tp.CT[0] = tp.CT[1] = (char) 0xEE;
+	tp.row[0].c[0].cc = 31;
+	tp.row[0].c[0].ct[0] = (char) (t >> 8);
+	tp.row[0].c[0].ct[1] = (char) t;
+	tulkSI((char *) &tp, &result, siTics(0, 10, 0), 5, sizeof(tp), 0);
+
+	CHECK(result.ct[1] == 23L*3600 + 50*60);
+
+	// Leima 08:00, kortti luetaan vasta 15:00 (7 h myohemmin) -> 08:00,
+	// ei 20:00 (joka olisi lukuhetkea lahempana, mutta tulevaisuudessa).
+	t = 8*3600;
+	tp.row[0].c[0].ct[0] = (char) (t >> 8);
+	tp.row[0].c[0].ct[1] = (char) t;
+	tulkSI((char *) &tp, &result, siTics(15, 0, 0), 5, sizeof(tp), 0);
+	CHECK(result.ct[1] == 8L*3600);
 }
 
 TEST_CASE("SI5: kayttamattomat leimapaikat (00-EE-EE) jaavat nollaksi")
@@ -169,7 +236,7 @@ TEST_CASE("SI5: myohemmat leimat kaannetaan +12h jos pienempia kuin edellinen")
 	tp.row[0].c[0].ct[0] = 0; tp.row[0].c[0].ct[1] = 120;  // ct[1] = 120
 	tp.row[0].c[1].cc = 32;
 	tp.row[0].c[1].ct[0] = 0; tp.row[0].c[1].ct[1] = 100;  // ct[2] = 100 < ct[1]
-	tulkSI((char *) &tp, &result, 0, 5, sizeof(tp), 0);
+	tulkSI((char *) &tp, &result, siTics(12, 30, 0), 5, sizeof(tp), 0);  // luettu klo 12.30
 
 	CHECK(result.ct[1] == 120L);
 	CHECK(result.ct[2] == 100L + 43200L);
@@ -696,7 +763,7 @@ TEST_CASE("SI5: maksimileimamaara (30, kaikki 6 rivia x 5) mahtuu")
 			tp.row[r].c[i].ct[1] = (char) t;
 			}
 		}
-	tulkSI((char *) &tp, &result, 0, 5, sizeof(tp), 0);
+	tulkSI((char *) &tp, &result, siTics(2, 0, 0), 5, sizeof(tp), 0);  // luettu klo 2.00
 
 	CHECK((int) (unsigned char) result.cc[1]  == 33);
 	CHECK((int) (unsigned char) result.cc[30] == 33+29);

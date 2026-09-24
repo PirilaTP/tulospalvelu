@@ -129,6 +129,62 @@ static void tulkExtLeimat(const unsigned char *b, SIResultTp *result, int start,
 		}
 	}
 
+// SI5 tallentaa ajat vain 12 h jaksossa (0..43199 s) ilman aamu-/ilta-
+// paiva-tietoa (vrt. EXT-korttien PTD-bitti 0). Ilman korjausta iltapaivalla
+// luetun kortin leimat olisivat 12 h pielessa PC:n kellosta laskettuun
+// lukuhetkeen (HkIV.cpp/VIv.cpp:n 250-rivi) nahden, jolloin myos kortilta
+// laskettu maaliaika ja ennakko menisivat 12 h vaarin. Valitaan puolipaiva
+// (+0 tai +12 h) niin, etta kortin viimeisin tapahtuma osuu lahimmaksi ennen
+// lukuhetkea. Leimasinten kello saa olla enintaan SI5_KELLOERO (1 h) PC:n
+// kelloa edella (tahdistamaton leimasin), ja kortti pitaa lukea alle
+// 11 h viimeisen leiman jalkeen.
+// Tyhjat lahto/tarkastus/maali (0xEEEE = 61166) muutetaan TMAALI0:ksi kuten
+// EXT-korteilla; muuten +12 h siirretty todellinen aika 17966 s (04:59:26)
+// sekoittuisi 61166-sentinelliin.
+#define SI5_KELLOERO 3600L
+
+static void tulkSI5Puolipaiva(SIResultTp *result, int t0)
+	{
+	long luku, ref = -1, d0, d1;
+	int i;
+
+	// Lukuhetki vuorokaudenaikana sekunteina, sama muunnos kuin HkIV.cpp:n
+	// lukija_abs: lukija on kymmenyksina suhteessa t0:aan (+/-12 h).
+	luku = ((result->lukija + (t0 + 48) * 36000L + 24L*36000L) % (24L*36000L)) / 10;
+	for (i = 30; i >= 1 && ref < 0; i--)
+		if (result->cc[i])
+			ref = result->ct[i];
+	if (ref < 0 && result->finish != 61166L)
+		ref = result->finish;
+	if (ref < 0 && result->check != 61166L)
+		ref = result->check;
+	if (ref < 0 && result->start != 61166L)
+		ref = result->start;
+	if (ref >= 0) {
+		// Aika viimeisesta tapahtumasta lukuhetkeen kummallakin tulkinnalla,
+		// valilla [-SI5_KELLOERO, 24 h - SI5_KELLOERO).
+		d0 = ((luku - ref + SI5_KELLOERO) % 86400L + 86400L) % 86400L - SI5_KELLOERO;
+		d1 = ((luku - ref - 43200L + SI5_KELLOERO) % 86400L + 86400L) % 86400L - SI5_KELLOERO;
+		if (d1 < d0) {
+			for (i = 1; i <= 30; i++)
+				if (result->cc[i])
+					result->ct[i] = (result->ct[i] + 43200L) % 86400L;
+			if (result->start != 61166L)
+				result->start = (result->start + 43200L) % 86400L;
+			if (result->check != 61166L)
+				result->check = (result->check + 43200L) % 86400L;
+			if (result->finish != 61166L)
+				result->finish = (result->finish + 43200L) % 86400L;
+			}
+		}
+	if (result->start == 61166L)
+		result->start = TMAALI0;
+	if (result->check == 61166L)
+		result->check = TMAALI0;
+	if (result->finish == 61166L)
+		result->finish = TMAALI0;
+	}
+
 // Tulkitsee SportIdent-korttidatan (buf) result-rakenteeseen. SItype:
 // 5=SI5, 6=SI6, 7=SI9, 8=SI10/SI11, 9=SI8, 10=pCard, 11=tCard,
 // 12=SI6 EXT-protokollan kautta (ks. yllaoleva yleiskatsaus SIID-alueista
@@ -184,6 +240,7 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 						}
 					}
 				}
+			tulkSI5Puolipaiva(result, t0);
 			break;
 		case 6: {
 			// SI6 (legacy-protokolla): kortin sisalto SI6tp-struktina.
