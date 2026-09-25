@@ -68,23 +68,31 @@ TEST_CASE("decodeD3Siid: sn1/sn0 byte order is big-endian (sn1 is the high byte)
 	CHECK(decodeD3Siid(20, 0x01, 0x00) == 0x140100);
 }
 
-TEST_CASE("decodeD3SiidSuora: SI5 cards from a wired station use the SI5 formula")
+TEST_CASE("decodeD3SiidSI5: real SI5 card 229401 relayed over SRR")
 {
-	// SI5 card 12345, series (CNS) 1: raw 0x013039 = 77881
-	CHECK(decodeD3SiidSuora(0x01, 0x30, 0x39) == 12345);
-	// SI5 card 12345, series 0
-	CHECK(decodeD3SiidSuora(0x00, 0x30, 0x39) == 12345);
-	// SI5 card 312345: series 3, number 0x3039
-	CHECK(decodeD3SiidSuora(0x03, 0x30, 0x39) == 312345);
-	// Largest SI5 number: series 4, 0xFFFF
-	CHECK(decodeD3SiidSuora(0x04, 0xFF, 0xFF) == 465535);
+	// Bytes 02 72 D9: series 2, number 0x72D9 = 29401. Plain 24-bit
+	// decoding gave 160473 (0x0272D9) in HkMaali.
+	CHECK(decodeD3SiidSI5(0x02, 0x72, 0xD9) == 229401);
+	CHECK(decodeD3Siid(0x02, 0x72, 0xD9) == 160473);
 }
 
-TEST_CASE("decodeD3SiidSuora: SI6 and newer cards are unchanged")
+TEST_CASE("decodeD3SiidSI5: SI5 cards use the SI5 formula")
+{
+	// SI5 card 12345, series (CNS) 1: raw 0x013039 = 77881
+	CHECK(decodeD3SiidSI5(0x01, 0x30, 0x39) == 12345);
+	// SI5 card 12345, series 0
+	CHECK(decodeD3SiidSI5(0x00, 0x30, 0x39) == 12345);
+	// SI5 card 312345: series 3, number 0x3039
+	CHECK(decodeD3SiidSI5(0x03, 0x30, 0x39) == 312345);
+	// Largest SI5 number: series 4, 0xFFFF
+	CHECK(decodeD3SiidSI5(0x04, 0xFF, 0xFF) == 465535);
+}
+
+TEST_CASE("decodeD3SiidSI5: SI6 and newer cards are unchanged")
 {
 	// Same real SI6 punch as the decodeD3Siid regression above.
-	CHECK(decodeD3SiidSuora(0x08, 0xD8, 0x57) == 579671);
-	CHECK(decodeD3SiidSuora(0x83, 0xF2, 0x09) == 8647177);
+	CHECK(decodeD3SiidSI5(0x08, 0xD8, 0x57) == 579671);
+	CHECK(decodeD3SiidSI5(0x83, 0xF2, 0x09) == 8647177);
 	// 500000 = 0x07A120 is the first non-SI5 value
-	CHECK(decodeD3SiidSuora(0x07, 0xA1, 0x20) == 500000);
+	CHECK(decodeD3SiidSI5(0x07, 0xA1, 0x20) == 500000);
 }

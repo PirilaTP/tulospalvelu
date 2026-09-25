@@ -981,12 +981,11 @@ static int lue_EmitKello(int r_no, int cn, san_type *vastaus, int *nmsg, int r_m
 // leimasinaseman oma aika sanomasta.
 //
 // Samaa kasittelya kaytetaan myos suoraan SPORTIDENT-yhteyteen kytketyn
-// online-rastiaseman D3-sanomille (ks. lue_SID3). Sellainen asema voi
-// lukea myos SI5-kortin, jonka numero on sanomassa kortin omassa
-// muodossa: si5koodaus = true muuntaa alle 500000 numerot kuten
-// tulkSI:n case 5 (CNS*100000 + numero). SRR-dongle (Air+) ei koskaan
-// valita SI5-korttia, joten sille si5koodaus = false.
-static void tallSRRleima(int r_no, const unsigned char *data, int dlen, bool si5koodaus)
+// online-rastiaseman D3-sanomille (ks. lue_SID3). SI5-kortin numero on
+// sanomassa kortin omassa muodossa - myos SRR:n kautta, kun SRR-rasti
+// valittaa SI5-kortin kosketusleiman - joten numero puretaan
+// decodeD3SiidSI5:lla (alle 500000 kuten tulkSI:n case 5).
+static void tallSRRleima(int r_no, const unsigned char *data, int dlen)
 	{
 	static UINT32 edsiid[NREGNLY];
 	static int edkoodi[NREGNLY];
@@ -996,8 +995,7 @@ static void tallSRRleima(int r_no, const unsigned char *data, int dlen, bool si5
 	INT32 tms, pctms, korttitms = -1;
 
 	koodi = 256 * data[0] + data[1];
-	siid = si5koodaus ? decodeD3SiidSuora(data[3], data[4], data[5]) :
-		decodeD3Siid(data[3], data[4], data[5]);
+	siid = decodeD3SiidSI5(data[3], data[4], data[5]);
 	pctms = msdaytime();
 	if (dlen >= 10)
 		korttitms = 1000L * ((data[6] & 1) * 43200L + 256L * data[7] + data[8]) +
@@ -1076,7 +1074,7 @@ static void lue_SRRsanomat(int r_no, san_type *vastaus, int *nmsg, int tyhjpusku
 				}
 			else {
 				if (b[alku + 1] == 0xD3 && dlen >= 6)
-					tallSRRleima(r_no, b + alku + 3, dlen, false);
+					tallSRRleima(r_no, b + alku + 3, dlen);
 				poista = total;
 				}
 			}
@@ -1636,7 +1634,7 @@ static void lue_SID3(int r_no, int cn, san_type *vastaus, int nmsg)
 		SIlokiHex("SI D3", vastaus->bytes, total);
 	if (b[total - 1] != 0x03 || dlen < 6)
 		return;
-	tallSRRleima(r_no, b + 3, dlen, true);
+	tallSRRleima(r_no, b + 3, dlen);
 	}
 
 // Lukee SportIdent SI5/SI6-lukijan sanomia lukijalta r_no kanavalta cn.

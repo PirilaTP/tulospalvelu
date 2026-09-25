@@ -31,25 +31,26 @@
 // Decodes a D3 message's SIID (SportIdent card serial number) from its
 // three serial-number payload bytes: sn2 (data[3] in the message), sn1
 // (data[4]), sn0 (data[5]) - a plain 24-bit big-endian number
-// ((sn2<<16) | (sn1<<8) | sn0). This is the same for every card that can
-// produce a D3 message (SI6, SI9+, SIAC): D3 is an Air+/wireless-capable
-// punch format, and SI5 - the only SportIdent card generation whose own
-// printed serial number needs a different formula (sn2*100000 + sn1sn0,
-// used by the *classic contact* B1 readout response, not this format) -
-// predates Air+/SIAC wireless hardware entirely and can never send one.
+// ((sn2<<16) | (sn1<<8) | sn0). This is right for SI6, SI9+ and SIAC
+// cards, but NOT for SI5, whose printed number needs sn2*100000 + sn1sn0:
+// an SI5 card can't punch wirelessly itself, but its contact punch at an
+// SRR-capable control is relayed as a D3 message all the same. The
+// callers therefore use decodeD3SiidSI5 below, which handles both.
 // Confirmed against a real captured SI6 punch (SIID 579671, sn2=0x08)
 // that an sn2<10 special case here would have silently corrupted to
 // 855383 - see git history for the incident this test guards against.
 UINT32 decodeD3Siid(unsigned char sn2, unsigned char sn1, unsigned char sn0);
 
-// Like decodeD3Siid, but for a D3 message from a station wired directly to
-// the PC (online control, auto-send mode). Unlike Air+/SRR, such a station
-// can also punch SI5 cards, whose number is carried in the SI5 card's own
-// form: sn2 = CNS (series), sn1:sn0 = number. A 24-bit value below 500000
-// is therefore decoded as an SI5 card: sn2 < 2 -> sn1sn0, otherwise
-// sn2*100000 + sn1sn0 (same as tulkSI's SI5 case). Every other card
-// generation's SIID is >= 500000 (SI6 579671 above stays 579671), so it
-// is returned unchanged. Not used for SRR/Air+ punches.
-UINT32 decodeD3SiidSuora(unsigned char sn2, unsigned char sn1, unsigned char sn0);
+// The card number to use for a D3 punch - both SRR/Air+ punches and a
+// station wired directly to the PC. An SI5 card's number is carried in
+// the SI5 card's own form: sn2 = CNS (series), sn1:sn0 = number. This
+// does reach the SRR dongle: an SRR-capable control relays contact punches
+// of any card, SI5 included - a real SI5 card 229401 (bytes 02 72 D9)
+// showed up as 160473 with plain decodeD3Siid. A 24-bit value below
+// 500000 is therefore decoded as an SI5 card: sn2 < 2 -> sn1sn0,
+// otherwise sn2*100000 + sn1sn0 (same as tulkSI's SI5 case). Every other
+// card generation's SIID is >= 500000 (SI6 579671 above stays 579671), so
+// it is returned unchanged.
+UINT32 decodeD3SiidSI5(unsigned char sn2, unsigned char sn1, unsigned char sn0);
 
 #endif
