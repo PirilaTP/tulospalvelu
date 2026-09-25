@@ -3694,6 +3694,26 @@ void etHaku(void)
 #if defined(SPORTIDENT)
 static int siInHaku;
 
+// Kuten tall_etulos: olemassa olevaa maali- tai valiaikaa ei korvata, ellei
+// uusi aika ole uusinaika-rajan sisalla vanhasta. Nain myohassa saapuva
+// GPRS-leima ei korvaa esim. maalikameran tai kasin korjattua aikaa, ja
+// toistetuista leimoista ensimmainen jaa voimaan. Lahtoaikaa ei tarkisteta:
+// lahtoaikakentassa on myos arvottu lahtoaika, joten "jo asetettu" -ehto
+// estaisi kaikki lahtoleimat valiaikalahdossa.
+static bool siSaaTallentaa(INT32 ed, INT32 tm, int kno, INT32 badge, int piste)
+{
+	char msg[140];
+
+	if (ed == TMAALI0 || (uusinaika && labs((long) NORMKELLO(tm - ed)) < uusinaika))
+		return true;
+	if (loki) {
+		sprintf(msg, "SIGPRS: kilpailijalla %d on jo aika pisteessa %d - leimaa (badge %ld) ei tallennettu",
+			kno, piste, (long) badge);
+		kirjloki(msg);
+		}
+	return false;
+}
+
 // Handles one punch returned by the SportIdent Center REST API:
 // looks up the competitor by card number (bdg2kno, as with other
 // Sportident/Emit punches) and stores the start, finish, or split
@@ -3769,6 +3789,8 @@ static void siParsePunch(SIPunchTp *pu)
 		kilp.tall_lajat_pv(tm, k_pv);
 		}
 	else if (!strcmp(pu->type, "Finish")) {
+		if (!siSaaTallentaa(kilp.maali(0), tm, kno, badge, 0))
+			return;
 		kilp.set_tulos(0, tm);
 		}
 	else {
@@ -3802,8 +3824,11 @@ static void siParsePunch(SIPunchTp *pu)
 			}
 		if (piste == SI_PUNCH_START)
 			kilp.tall_lajat_pv(tm, k_pv);
-		else
+		else {
+			if (!siSaaTallentaa(kilp.maali(piste), tm, kno, badge, piste))
+				return;
 			kilp.set_tulos(piste, tm);
+			}
 		}
 	if (loki) {
 		sprintf(msg, "SIGPRS: tallennettu kno=%d badge=%ld type=%s code=%d tm=%ld",
