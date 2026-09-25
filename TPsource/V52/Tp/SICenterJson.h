@@ -77,9 +77,14 @@ int koodi2piste(const int *rastikoodi, int rastiluku, int koodi);
 // any kuvio/pattern-code aliasing) - that logic depends on course data this
 // module has no access to, so it's supplied rather than recomputed here.
 //
+// rastikoodi[0..rastiluku-1] is the list the split number is looked up
+// from: the callers pass the series' split-point codes (Sarjat[].va_koodi,
+// valuku entries), so entry i is split i+1 - not the course's control list,
+// whose positions are not split numbers.
+//
 // Returns SI_PUNCH_START, SI_PUNCH_FINISH, a piste index >= 1 (already
 // including the +1 that set_tulos()/setMaali() expect for numbered splits),
-// or SI_PUNCH_NOTFOUND if code doesn't resolve to anything on the course.
+// or SI_PUNCH_NOTFOUND if code isn't the start, the finish or a split point.
 int siResolvePunch(const char *type, int code, int sistartkoodi, int isFinishCode,
 	const int *rastikoodi, int rastiluku);
 

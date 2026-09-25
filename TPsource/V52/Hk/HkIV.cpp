@@ -3778,6 +3778,9 @@ static void siParsePunch(SIPunchTp *pu)
 		// siResolvePunch() (SICenterJson.cpp, unit tested) applies the actual
 		// precedence: configured Start code (SISTARTKOODI), then the course's
 		// own finish code (maalirasti()), then a normal numbered split.
+		// The split number comes from the series' own split-point codes
+		// (Sarjat[].va_koodi), not from the control's position on the
+		// course - split points are configured per series by code.
 		rt = haerata(&kilp);
 		if (!rt) {
 			if (loki) {
@@ -3787,10 +3790,11 @@ static void siParsePunch(SIPunchTp *pu)
 			return;
 			}
 		piste = siResolvePunch(pu->type, pu->code, siParam.sistartkoodi,
-			maalirasti(rt, pu->code), rt->rastikoodi, rt->rastiluku);
+			maalirasti(rt, pu->code), Sarjat[kilp.Sarja()].va_koodi[k_pv],
+			Sarjat[kilp.Sarja()].valuku[k_pv]);
 		if (piste == SI_PUNCH_NOTFOUND) {
 			if (loki) {
-				sprintf(msg, "SIGPRS: rastikoodia %d ei loydy kilpailijan %d radalta (badge %ld)",
+				sprintf(msg, "SIGPRS: rastikoodia %d ei ole kilpailijan %d sarjan valiaikapisteissa (badge %ld)",
 					pu->code, kno, (long) badge);
 				kirjloki(msg);
 				}

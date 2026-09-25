@@ -1014,16 +1014,24 @@ static void tallSRRleima(int r_no, const unsigned char *data, int dlen)
 	// Viestin luentaversiossa ei ole aikojen tallennusta (tall_etulos);
 	// add_bdg_t oli siella tyhja.
 #elif !defined(MAXOSUUSLUKU)
-	if (lahdepistehaku && koodi > 0 && koodi < 256 &&
+	// Kuten add_bdg_t: lukijalle asetettu kiintea lahde (LUKIJALAHDE,
+	// lukijalahde[r_no]) ohittaa rastikoodin - tall_etulos kasittelee sen
+	// vain alkuperaisella r_no:lla.
+	if (lahdepistehaku && koodi > 0 && koodi < 256 && !lukijalahde[r_no] &&
 		vainpiste[r_no+1] <= -3 && vainpiste[0] <= -3)
 		r_no = NREGNLY + koodi - 1;
 	tall_etulos(siid, 0, tms, r_no, -1);
 #else
 	{
+	// Kuten add_bdg_t: kiintea lahde (LUKIJALAHDE) ensin, muuten rastikoodi.
 	int lahde = 0;
-	if (lahdepistehaku && koodi > 0 && koodi < 256 &&
-		vainpiste[r_no+1] <= -2 && vainpiste[0] <= -2)
-		lahde = koodi;
+	if (lahdepistehaku) {
+		if (lukijalahde[r_no])
+			lahde = lukijalahde[r_no];
+		else if (koodi > 0 && koodi < 256 &&
+			vainpiste[r_no+1] <= -2 && vainpiste[0] <= -2)
+			lahde = koodi;
+		}
 	tall_etulos(siid, 0, tms, r_no, lahde);
 	}
 #endif
