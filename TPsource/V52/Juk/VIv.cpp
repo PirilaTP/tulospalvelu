@@ -2580,7 +2580,7 @@ static bool siSaaTallentaa(INT32 ed, INT32 tm, int kno, INT32 badge, int piste)
 {
 	char msg[140];
 
-	if (ed == TMAALI0 || (uusinaika && labs((long) NORMKELLO(tm - ed)) < uusinaika))
+	if (siAikaSaaTallentaa(ed, tm, uusinaika))   // SICenterJson.cpp, yksikkotestattu
 		return true;
 	if (loki) {
 		sprintf(msg, "SIGPRS: kilpailijalla %d on jo aika pisteessa %d - leimaa (badge %ld) ei tallennettu",

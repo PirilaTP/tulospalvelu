@@ -53,4 +53,42 @@ UINT32 decodeD3Siid(unsigned char sn2, unsigned char sn1, unsigned char sn0);
 // it is returned unchanged.
 UINT32 decodeD3SiidSI5(unsigned char sn2, unsigned char sn1, unsigned char sn0);
 
+// Framing of SportIdent extended-protocol messages from the SRR dongle:
+//   [FF] 02 <cmd> <dlen> <data[dlen]> <crc_hi> <crc_lo> 03
+// (FF is an optional wake-up byte). Looks at the n >= 1 buffered bytes
+// b[0..n) and returns:
+//   SISAN_KESKEN  only the start of a message so far - wait for more bytes
+//   SISAN_OHITA   b[0] can't start a valid message (no STX, or no ETX where
+//                 the length says the message ends) - drop one byte, retry
+//   SISAN_OK      a complete message: *alku = 0 or 1 (FF present), *dlen =
+//                 data length, *total = message length; the command byte
+//                 is b[*alku + 1] and the data starts at b[*alku + 3]
+// Dropping one byte on SISAN_OHITA resynchronises the stream, so one bad
+// message can't stall the reader (see lue_SRRsanomat in TpLaitteet.cpp).
+#define SISAN_KESKEN 0
+#define SISAN_OHITA  1
+#define SISAN_OK     2
+int siEtsiSanoma(const unsigned char *b, int n, int *alku, int *dlen, int *total);
+
+// Fields of one D3 punch message's data part (data[0..dlen)):
+//   CN1 CN0 SI3 SI2 SI1 SI0 TD TH TL TSS [MEM2 MEM1 MEM0]
+// koodi = control code (CN1 high byte), siid = card number
+// (decodeD3SiidSI5), korttitms = the station's punch time in ms of day
+// (TD bit 0 = PM, TH:TL = seconds within 12 h, TSS = 1/256 s), or -1 when
+// the message is too short to carry it (dlen < 10). Requires dlen >= 6.
+typedef struct {
+	UINT32 siid;
+	int koodi;
+	INT32 korttitms;
+} SID3Leima;
+void siPuraD3(const unsigned char *data, int dlen, SID3Leima *leima);
+
+// true if a punch (siid, koodi, tms) repeats the previous one stored from
+// the same reader (edsiid, edkoodi, edtms): same card at the same control
+// within 3 s (tms in ms of day, the difference taken across midnight).
+// The same message can arrive more than once (e.g. via several SRR
+// receivers); a different control or a later punch is never a repeat.
+bool siToistoLeima(UINT32 edsiid, int edkoodi, INT32 edtms,
+	UINT32 siid, int koodi, INT32 tms);
+
 #endif

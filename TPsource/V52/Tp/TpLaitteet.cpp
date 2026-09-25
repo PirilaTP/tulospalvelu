@@ -990,16 +990,18 @@ static void tallSRRleima(int r_no, const unsigned char *data, int dlen)
 	static UINT32 edsiid[NREGNLY];
 	static int edkoodi[NREGNLY];
 	static INT32 edtms[NREGNLY];
+	SID3Leima leima;
 	UINT32 siid;
 	int koodi;
-	INT32 tms, pctms, korttitms = -1;
+	INT32 tms, pctms, korttitms;
 
-	koodi = 256 * data[0] + data[1];
-	siid = decodeD3SiidSI5(data[3], data[4], data[5]);
+	// Kenttien purku ja toistosuodatus: siPuraD3/siToistoLeima
+	// (SID3Punch.cpp, yksikkotestattu).
+	siPuraD3(data, dlen, &leima);
+	siid = leima.siid;
+	koodi = leima.koodi;
+	korttitms = leima.korttitms;
 	pctms = msdaytime();
-	if (dlen >= 10)
-		korttitms = 1000L * ((data[6] & 1) * 43200L + 256L * data[7] + data[8]) +
-			(1000L * data[9]) / 256;
 	tms = (srrkorttiaika && korttitms >= 0) ? korttitms : pctms;
 	if (loki) {
 		char msg[160];
@@ -1010,8 +1012,7 @@ static void tallSRRleima(int r_no, const unsigned char *data, int dlen)
 		}
 	if (!siid)
 		return;
-	if (siid == edsiid[r_no] && koodi == edkoodi[r_no] &&
-		(tms - edtms[r_no] + 86400000L) % 86400000L < 3000L)
+	if (siToistoLeima(edsiid[r_no], edkoodi[r_no], edtms[r_no], siid, koodi, tms))
 		return;
 	edsiid[r_no] = siid;
 	edkoodi[r_no] = koodi;
@@ -1058,26 +1059,22 @@ static void lue_SRRsanomat(int r_no, san_type *vastaus, int *nmsg, int tyhjpusku
 	int alku, dlen, total, poista;
 
 	while (*nmsg > 0) {
-		alku = (b[0] == 0xFF && *nmsg >= 2 && b[1] == 0x02) ? 1 : 0;
-		if (b[alku] != 0x02) {
-			poista = 1;
-			}
-		else {
-			if (*nmsg < alku + 3)
-				break;                 // otsikko kesken, odotetaan lisaa
-			dlen = b[alku + 2];
-			total = alku + 3 + dlen + 3;
-			if (*nmsg < total)
-				break;                 // sanoma kesken, odotetaan lisaa
-			if (b[total - 1] != 0x03) {
-				poista = 1;            // ei ETX:aa - virheellinen, tahdistetaan
-				}
-			else {
+		// Kehyksen tunnistus: siEtsiSanoma (SID3Punch.cpp, yksikkotestattu).
+		switch (siEtsiSanoma(b, *nmsg, &alku, &dlen, &total)) {
+			case SISAN_KESKEN:
+				poista = 0;            // sanoma kesken, odotetaan lisaa
+				break;
+			case SISAN_OHITA:
+				poista = 1;            // ei sanoman alku - tahdistetaan
+				break;
+			default:
 				if (b[alku + 1] == 0xD3 && dlen >= 6)
 					tallSRRleima(r_no, b + alku + 3, dlen);
 				poista = total;
-				}
+				break;
 			}
+		if (!poista)
+			break;
 		*nmsg -= poista;
 		if (*nmsg > 0)
 			memmove(b, b + poista, *nmsg);

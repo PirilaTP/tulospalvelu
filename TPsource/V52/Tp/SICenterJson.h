@@ -88,4 +88,13 @@ int koodi2piste(const int *rastikoodi, int rastiluku, int koodi);
 int siResolvePunch(const char *type, int code, int sistartkoodi, int isFinishCode,
 	const int *rastikoodi, int rastiluku);
 
+// Whether siParsePunch may store a Center punch's time tm into a finish or
+// split slot that currently holds ed (both in the program's internal clock
+// units; TMAALI0 = no time yet). Same rule as tall_etulos: only an empty
+// slot, or a time within uusinaika of the stored one (uusinaika 0 = never
+// replace). So a delayed GPRS punch can't replace a photocell or manually
+// corrected time, and of repeated punches the first one stays. Not used
+// for start punches (the start field also holds the drawn start time).
+bool siAikaSaaTallentaa(long ed, long tm, int uusinaika);
+
 #endif

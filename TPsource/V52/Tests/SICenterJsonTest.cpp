@@ -18,6 +18,9 @@
 // response (Tp/SICenterJson.cpp) and for the control-code->piste lookup.
 
 #include <string.h>
+#include <stdio.h>
+#include <tptype.h>
+#include <TpDef.h>
 #include "SICenterJson.h"
 #include "doctest.h"
 
@@ -281,4 +284,36 @@ TEST_CASE("siResolvePunch: isFinishCode takes precedence over a matching rastiko
 	// result) the finish control for this competitor - Finish must win.
 	int rastikoodi[] = {33, 99};
 	CHECK(siResolvePunch("Unknown", 33, 3, 1, rastikoodi, 2) == SI_PUNCH_FINISH);
+}
+
+// ---------------------------------------------------------------------------
+// siAikaSaaTallentaa - may a Center punch replace a stored finish/split time
+
+TEST_CASE("siAikaSaaTallentaa: an empty slot always accepts the time")
+{
+	CHECK(siAikaSaaTallentaa(TMAALI0, 10L * TUNTI, 0));
+	CHECK(siAikaSaaTallentaa(TMAALI0, 10L * TUNTI, 5 * SEK));
+}
+
+TEST_CASE("siAikaSaaTallentaa: an existing time is kept when uusinaika is 0")
+{
+	CHECK_FALSE(siAikaSaaTallentaa(10L * TUNTI, 10L * TUNTI + 1, 0));
+	CHECK_FALSE(siAikaSaaTallentaa(10L * TUNTI, 11L * TUNTI, 0));
+}
+
+TEST_CASE("siAikaSaaTallentaa: replaced only within uusinaika of the stored time")
+{
+	long ed = 10L * TUNTI;
+	int raja = 5 * SEK;
+	CHECK(siAikaSaaTallentaa(ed, ed + raja - 1, raja));
+	CHECK(siAikaSaaTallentaa(ed, ed - raja + 1, raja));      // earlier, too
+	CHECK_FALSE(siAikaSaaTallentaa(ed, ed + raja, raja));
+	CHECK_FALSE(siAikaSaaTallentaa(ed, ed + TUNTI, raja));   // delayed GPRS punch
+}
+
+TEST_CASE("siAikaSaaTallentaa: the uusinaika comparison works across midnight")
+{
+	int raja = 5 * SEK;
+	CHECK(siAikaSaaTallentaa(12L * TUNTI - SEK, -12L * TUNTI + SEK, raja));
+	CHECK(siAikaSaaTallentaa(10L * TUNTI, 10L * TUNTI + 24L * TUNTI + SEK, raja));
 }

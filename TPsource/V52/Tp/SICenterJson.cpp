@@ -15,7 +15,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <tptype.h>
+#include <TpDef.h>
 #include "SICenterJson.h"
 
 // Hand-written, minimal JSON parser: handles only this one known schema
@@ -317,4 +320,9 @@ int siResolvePunch(const char *type, int code, int sistartkoodi, int isFinishCod
 	if (piste < 0)
 		return SI_PUNCH_NOTFOUND;
 	return piste+1;
+}
+
+bool siAikaSaaTallentaa(long ed, long tm, int uusinaika)
+{
+	return ed == TMAALI0 || (uusinaika && labs((long) NORMKELLO(tm - ed)) < uusinaika);
 }
