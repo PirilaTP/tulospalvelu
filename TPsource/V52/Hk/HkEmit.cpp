@@ -33,6 +33,7 @@
 #include "HkDeclare.h"
 #include "HkMuotoilu.h"
 #include "TpLaitteet.h"
+#include "SITulkinta.h"
 
 #ifndef MAXTUNNUS
 #define MAXTUNNUS  899
@@ -1277,6 +1278,7 @@ INT putem(emittp *em, INT32 ep, int inCrSe)
    {
    int retval = 0;
 
+   if (emitfile == EMITFILE_NOT_OPEN) return(1);
    if (ep >= 0 && ep <= emithead) {
 	  if (!inCrSe)
 		 EnterCriticalSection(&emit_CriticalSection);
@@ -2161,7 +2163,9 @@ INT tarkista(emittp *em, INT *tulkinta, INT haku, kilptietue *kilp1)
 				}
 			do {
 				j = (j+MAXNLEIMA-1)%MAXNLEIMA;
-				if (i > 0 && i < rt->rastiluku-1 && !em->ctrltime[j])
+				// SportIdentilla (ON_SPORTIDENT_EM(em)) ei ole fyysista nollauslaitetta,
+				// joten kellon nollautumista ei voi tapahtua eika sita tulkita.
+				if (!ON_SPORTIDENT_EM(em) && i > 0 && i < rt->rastiluku-1 && !em->ctrltime[j])
 				nollattu = 1;
 				} while (!em->ctrlcode[j] && j != (lukija+1)%MAXNLEIMA);
 			}
@@ -2176,6 +2180,29 @@ INT tarkista(emittp *em, INT *tulkinta, INT haku, kilptietue *kilp1)
 	  // i:n arvoa pienennetään, jos kyseessä lukijalaite, jonka koodi
 	  // löytyy radan viimeiseltä ilmoitetulta rastilta eli kun lukija
       // sisältyy rataan
+
+	  // SportIdent: jos radan rasti (myos maalirasti) on leimattu useasti
+	  // perakkain, rastin leimaksi tulkitaan ensimmainen niista ja myohemmat
+	  // merkitaan ylimaaraisiksi (tulkinta negatiivinen). Ei yhdisteta, jos
+	  // edellinenkin radan rasti hyvaksyy saman koodin (sama rasti kahdesti
+	  // perakkain radalla) - silloin aiempi leima kuuluu sille.
+	  // EMIT-korteilla toiminta ennallaan.
+	  if (ON_SPORTIDENT_EM(em) && !vapaajarj && i < rt->rastiluku &&
+		 (i == 0 || oikeakoodi(rt, i-1, em->ctrlcode[j], 0) != 1)) {
+		 // Toistojen alkuun: siToistoAlkuun (SITulkinta.cpp, yksikkotestattu).
+		 // Ohitetut (myohemmat) leimat merkitaan ylimaaraisiksi kuten ennen.
+		 int ohit[MAXNLEIMA], nohit, h;
+		 j = siToistoAlkuun((unsigned char *) em->ctrlcode, MAXNLEIMA, j, lukija, ohit, &nohit);
+		 k = (j+MAXNLEIMA-1)%MAXNLEIMA;
+		 if (tulkinta) {
+			for (h = 0; h < nohit; h++) {
+			   tulkinta[ohit[h]] = -(i+1);
+			   for (m = i-1; m >= 0; m--)
+				  if (rt->rastikoodi[m] > 9999 && rt->rastikoodi[m] < 10002)
+					 tulkinta[ohit[h]]++;
+			   }
+			}
+		 }
 
       if (i == rt->rastiluku && oikeakoodi(rt, i-1, em->ctrlcode[j], 0)) i--;
 
@@ -2223,7 +2250,9 @@ INT tarkista(emittp *em, INT *tulkinta, INT haku, kilptietue *kilp1)
    
       do {
          j = (j+MAXNLEIMA-1)%MAXNLEIMA;
-		 if (i > 0 && (j != lukija && !em->ctrltime[j] && i < rt->rastiluku-1 &&
+		 // SportIdentilla (ON_SPORTIDENT_EM(em)) ei ole fyysista nollauslaitetta,
+		 // joten kellon nollautumista ei voi tapahtua eika sita tulkita.
+		 if (!ON_SPORTIDENT_EM(em) && i > 0 && (j != lukija && !em->ctrltime[j] && i < rt->rastiluku-1 &&
 			(i > 1 || (em->ctrlcode[j] && rt->ennakko >= 0))) &&
 				(!vapaajarj || !oikeat[1]))
 			nollattu = 1;
@@ -3652,6 +3681,13 @@ INT32 e_maaliaika(emittp *em, kilptietue *kilp, INT32 *tlahto)
                break;
             }
          if (l >= rt->rastiluku-2) {
+			// SportIdent: perakkaisista maalirastin leimoista kaytetaan
+			// ensimmaista (ks. tarkista). EMIT-korteilla ennallaan.
+			// siMaaliToistoAlkuun: SITulkinta.cpp, yksikkotestattu. Toistoissa
+			// koodi on sama, joten radan tarkistus tehdaan kerran.
+			if (ON_SPORTIDENT_EM(em) && (rt->rastiluku < 2 ||
+				oikeakoodi(rt, rt->rastiluku-2, em->ctrlcode[(lk+l)%MAXNLEIMA], 0) != 1))
+			   l = siMaaliToistoAlkuun((unsigned char *) em->ctrlcode, MAXNLEIMA, lk, l);
             if (tlahto && rt->ennakko >= 0) {
                tm = -SEK*rt->ennakko;
                if (*tlahto != TMAALI0)

@@ -1,4 +1,4 @@
-// Pekka Pirila's sports timekeeping program (Finnish: tulospalveluohjelma)
+﻿// Pekka Pirila's sports timekeeping program (Finnish: tulospalveluohjelma)
 // Copyright (C) 2015 Pekka Pirila 
 
 // This program is free software: you can redistribute it and/or modify
@@ -42,8 +42,16 @@
 #endif
 #include "TpLaitteet.h"
 #include "IRfidReader.h"
+#include "SID3Punch.h"
 
 #include <wincom.h>
+
+#ifdef SPORTIDENT
+#include "sitypes.h"
+#ifndef _CONSOLE
+#define utsleep(dura) Sleep((DWORD)(55*(dura)))
+#endif
+#endif
 
 #define MAX_R_OD 10
 #define MTR_ST_LEN 59
@@ -89,9 +97,24 @@ static int lue_MTR(int r_no, int cn, san_type *vastaus, char **p, int *nmsg,
 	int *ntotviim, int *tyhjpuskuri, int r_buflen, int r_msg_len);
 static int lue_EMITAG(int r_no, int cn, san_type *vastaus, char **p, int *nmsg,
 	int *ntotviim, int *tyhjpuskuri, int r_buflen);
-static int lue_SI(int r_no, int cn, san_type *vastaus, char **p, int *nmsg,
+static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int r_buflen, int r_msg_len);
 void paivitaEcdata(void);
+
+// SportIdent on kaytossa, jos suoralukija (LID_SPORTIDENT) tai SRR-dongle
+// (LID_SRRLUKIJA, Air+-radioleimaus) on konfiguroitu johonkin lukijapaikkaan,
+// tai kilpailun badge-laji on erikseen asetettu SportIdentiksi
+// (kilpparam.badgelaji == 'I'). Hk ja Juk jakavat taman TpLaitteet.cpp:n
+// kautta - ks. tiedoston alun #include HkDeclare.h/VDeclare.h -valinta.
+bool IsSportidentInUse(void)
+	{
+	if (kilpparam.badgelaji == L'I')
+		return true;
+	for (int i = 0; i < NREGNLY; i++)
+		if (regnly[i] == LID_SPORTIDENT || regnly[i] == LID_SRRLUKIJA)
+			return true;
+	return false;
+	}
 
 #ifdef _CONSOLE
 void paivitaEcdata(void){}
@@ -635,6 +658,9 @@ int siritaika(INT32 *t, san_type *vastaus, aikatp *ut, INT *jono, int r_no)
 				}
 			}
 		if (p) {
+			// Sirit/Zebra: tallennetaan lukijan oma tunnistushetki (first=/last=).
+			// SRRKORTTIAIKA ei koske tata: SRR-donglen leimat eivat kulje
+			// taman kautta, ks. tallSRRleima.
 			strncpy(st, p+17, 12);
 			st[12] = 0;
 			st[2] = 0;
@@ -938,6 +964,125 @@ static int lue_EmitKello(int r_no, int cn, san_type *vastaus, int *nmsg, int r_m
 	return(0);
 }
 
+// SRR-donglen Air+-radioleimaus (D3-sanoma). data = CN1 CN0 SI3 SI2 SI1 SI0
+// TD TH TL TSS MEM2 MEM1 MEM0: CN1/CN0 = rastikoodi (ylin/alin tavu),
+// SI2..SI0 = kortin numero (ks. decodeD3Siid), TD bitti 0 = iltapaiva,
+// TH:TL = sekunnit 12 h jaksossa, TSS = 1/256 s.
+//
+// Leima tallennetaan suoraan tall_etulos:lla kuten EMITHTTP-radioleimat
+// (ks. tulk_emiTag, EMITHTTP). add_bdg_t/tall_bdg_t eivat kelpaa: niiden badge-kohtainen
+// toistosuodatus hylkasi saman kortin perakkaiset leimat eri rasteilta
+// (esim. viimeinen rasti ja heti perassa maali). Tassa hylataan vain
+// saman kortin toistuva leima samalla rastilla 3 s sisalla (sama sanoma
+// voi tulla useamman kerran). Rastikoodi ohjaa lahdepistehakua samoin
+// kuin EMITHTTP:n eccode.
+//
+// Aika: oletuksena tietokoneen kello (msdaytime), SRRKORTTIAIKA-parametrilla
+// leimasinaseman oma aika sanomasta.
+//
+// Samaa kasittelya kaytetaan myos suoraan SPORTIDENT-yhteyteen kytketyn
+// online-rastiaseman D3-sanomille (ks. lue_SID3). SI5-kortin numero on
+// sanomassa kortin omassa muodossa - myos SRR:n kautta, kun SRR-rasti
+// valittaa SI5-kortin kosketusleiman - joten numero puretaan
+// decodeD3SiidSI5:lla (alle 500000 kuten tulkSI:n case 5).
+static void tallSRRleima(int r_no, const unsigned char *data, int dlen)
+	{
+	static UINT32 edsiid[NREGNLY];
+	static int edkoodi[NREGNLY];
+	static INT32 edtms[NREGNLY];
+	SID3Leima leima;
+	UINT32 siid;
+	int koodi;
+	INT32 tms, pctms, korttitms;
+
+	// Kenttien purku ja toistosuodatus: siPuraD3/siToistoLeima
+	// (SID3Punch.cpp, yksikkotestattu).
+	siPuraD3(data, dlen, &leima);
+	siid = leima.siid;
+	koodi = leima.koodi;
+	korttitms = leima.korttitms;
+	pctms = msdaytime();
+	tms = (srrkorttiaika && korttitms >= 0) ? korttitms : pctms;
+	if (loki) {
+		char msg[160];
+		sprintf(msg, "SRR: kortti %lu rasti %d, aseman aika %ld ms, tietokoneen aika %ld ms, tallennettu %s",
+			(unsigned long) siid, koodi, (long) korttitms, (long) pctms,
+			tms == pctms ? "tietokoneen aika" : "aseman aika");
+		kirjloki(msg);
+		}
+	if (!siid)
+		return;
+	if (siToistoLeima(edsiid[r_no], edkoodi[r_no], edtms[r_no], siid, koodi, tms))
+		return;
+	edsiid[r_no] = siid;
+	edkoodi[r_no] = koodi;
+	edtms[r_no] = tms;
+#if defined(MAXOSUUSLUKU) && defined(LUENTA)
+	// Viestin luentaversiossa ei ole aikojen tallennusta (tall_etulos);
+	// add_bdg_t oli siella tyhja.
+#elif !defined(MAXOSUUSLUKU)
+	// Kuten add_bdg_t: lukijalle asetettu kiintea lahde (LUKIJALAHDE,
+	// lukijalahde[r_no]) ohittaa rastikoodin - tall_etulos kasittelee sen
+	// vain alkuperaisella r_no:lla.
+	if (lahdepistehaku && koodi > 0 && koodi < 256 && !lukijalahde[r_no] &&
+		vainpiste[r_no+1] <= -3 && vainpiste[0] <= -3)
+		r_no = NREGNLY + koodi - 1;
+	tall_etulos(siid, 0, tms, r_no, -1);
+#else
+	{
+	// Kuten add_bdg_t: kiintea lahde (LUKIJALAHDE) ensin, muuten rastikoodi.
+	int lahde = 0;
+	if (lahdepistehaku) {
+		if (lukijalahde[r_no])
+			lahde = lukijalahde[r_no];
+		else if (koodi > 0 && koodi < 256 &&
+			vainpiste[r_no+1] <= -2 && vainpiste[0] <= -2)
+			lahde = koodi;
+		}
+	tall_etulos(siid, 0, tms, r_no, lahde);
+	}
+#endif
+	}
+
+// Kasittelee SRR-donglen (LID_SRRLUKIJA) SportIdent-sanomat puskurista:
+//   [FF] 02 <cmd> <dlen> <data[dlen]> <crc_hi> <crc_lo> 03
+// FF on vapaaehtoinen heratetavu. Kaikki puskurissa olevat taydet sanomat
+// kasitellaan (cmd D3 = radioleimaus, ks. tallSRRleima; muut ohitetaan).
+// Jos puskurin alku ei ole sanoman alku tai sanoman lopussa ei ole ETX:aa,
+// poistetaan yksi tavu ja yritetaan uudelleen - muuten yksikin
+// virheellinen sanoma jumittaisi lukijan pysyvasti, kun puskuri tayttyy
+// eika siita koskaan poisteta mitaan. Jos puskuriin on jaanyt keskenerainen
+// sanoma eika uutta dataa ole tullut (tyhjpuskuri), se hylataan.
+static void lue_SRRsanomat(int r_no, san_type *vastaus, int *nmsg, int tyhjpuskuri)
+	{
+	unsigned char *b = (unsigned char *) vastaus->bytes;
+	int alku, dlen, total, poista;
+
+	while (*nmsg > 0) {
+		// Kehyksen tunnistus: siEtsiSanoma (SID3Punch.cpp, yksikkotestattu).
+		switch (siEtsiSanoma(b, *nmsg, &alku, &dlen, &total)) {
+			case SISAN_KESKEN:
+				poista = 0;            // sanoma kesken, odotetaan lisaa
+				break;
+			case SISAN_OHITA:
+				poista = 1;            // ei sanoman alku - tahdistetaan
+				break;
+			default:
+				if (b[alku + 1] == 0xD3 && dlen >= 6)
+					tallSRRleima(r_no, b + alku + 3, dlen);
+				poista = total;
+				break;
+			}
+		if (!poista)
+			break;
+		*nmsg -= poista;
+		if (*nmsg > 0)
+			memmove(b, b + poista, *nmsg);
+		}
+	if (tyhjpuskuri)
+		*nmsg = 0;
+	}
+
 
 // Tämä lohko ottaa vastaan lukijarastilta tulevat tiedot. Jos muuttuja
 // tyhjpuskuri on asetettu tai jos portilta tulee virhesanoma, tyhjennetään
@@ -1016,6 +1161,14 @@ static int lue_LUKIJA(int r_no, int cn, san_type *vastaus, int *nmsg,
 		*nmsg = 0;
 		}
 	else if (*nmsg >= 10 || *tyhjpuskuri) {
+	// SRR-dongle (LID_SRRLUKIJA) puhuu vain SportIdent-protokollaa, ks.
+	// lue_SRRsanomat. EMIT-lukijan (LID_LUKIJA) puskuria ei tulkita
+	// SI-sanomina: satunnainen FF 02 / 02 D3 -tavupari EMIT-datassa ei saa
+	// ohjata sita SI-kasittelyyn.
+	if (regnly[r_no] == LID_SRRLUKIJA) {
+		lue_SRRsanomat(r_no, vastaus, nmsg, *tyhjpuskuri);
+		return 0;
+		}
 
 // Jos merkkejä on vastaanotettu, tarkastetaan, onko kyseessä virheettömän
 // sanoman alku. Tarkastus koskee 2 tai 10 merkkiä tai koko sanomaa. Jos sanoma
@@ -1390,21 +1543,151 @@ static int lue_Rtnm(int r_no, int cn, san_type *vastaus, int *nmsg,
 	return(0);
 }
 
+static INT od[NREGNLY];
+
 #ifdef SPORTIDENT
+#include "SITulkinta.h"
+#endif
+
+#ifdef SPORTIDENT
+// Vianetsinta: kirjaa SportIdent-luennan raakatavut lokiin (LOKI-parametri),
+// 32 tavua heksana riville (kirjloki katkaisee n. 198 merkkiin). Rivin alussa
+// otsikko ja tavun sijainti, esim. "SI data   32: 20 84 82 ...".
+static void SIlokiHex(const char *otsikko, const char *buf, int len)
+	{
+	char line[200];
+	int i, j, n;
+
+	if (!loki)
+		return;
+	if (len <= 0) {
+		sprintf(line, "%s: (ei tavuja)", otsikko);
+		kirjloki(line);
+		return;
+		}
+	for (i = 0; i < len; i += 32) {
+		n = sprintf(line, "%s %4d:", otsikko, i);
+		for (j = i; j < len && j < i + 32; j++)
+			n += sprintf(line + n, " %02X", (unsigned char) buf[j]);
+		kirjloki(line);
+		}
+	}
+
+// Vianetsinta: kirjaa tulkSI:n tuloksen lokiin (LOKI-parametri): badge,
+// lukuhetki, lahto/tarkastus/maali ja leimat muodossa koodi/aika(s).
+static void SIlokiTulos(int SItype, const SIResultTp *r)
+	{
+	char line[200];
+	int k, n, m = 0;
+
+	if (!loki)
+		return;
+	sprintf(line, "SI tulkinta: SItype %d, badge %ld, lukija %ld, lahto %ld, tark %ld, maali %ld",
+		SItype, (long) r->badge, (long) r->lukija, (long) r->start, (long) r->check, (long) r->finish);
+	kirjloki(line);
+	n = sprintf(line, "SI leimat:");
+	for (k = 1; k < 66; k++) {
+		if (!r->cc[k] && !r->ct[k])
+			continue;
+		n += sprintf(line + n, " %d/%ld", (unsigned char) r->cc[k], (long) r->ct[k]);
+		if (++m % 10 == 0) {
+			kirjloki(line);
+			n = sprintf(line, "SI leimat:");
+			}
+		}
+	if (m == 0 || m % 10)
+		kirjloki(line);
+	}
+
+// Suoraan SPORTIDENT-yhteyteen kytketyn online-rastiaseman (auto-send-
+// tila) leimaussanoma: 02 D3 <dlen> <data[dlen]> <crc_hi> <crc_lo> 03, data
+// sama kuin SRR:n Air+-leimassa (ks. tallSRRleima). lue_SI lukee kerralla
+// vain r_msg_len (10) tavua, joten sanoman loppu luetaan tassa - muuten
+// loput tavut jaisivat porttiin ja seuraava kutsu hylkaisi ne.
+// nmsg = vastaus->bytes:iin jo luettujen tavujen maara (alkaa 02 D3).
+static void lue_SID3(int r_no, int cn, san_type *vastaus, int nmsg)
+	{
+	unsigned char *b = (unsigned char *) vastaus->bytes;
+	int dlen, total, nch, nq;
+	INT32 alku = biostime(0, 0);
+
+	if (nmsg < 3)
+		return;
+	dlen = b[2];
+	total = 3 + dlen + 3;
+	while (nmsg < total) {
+		nch = 0;
+		if (read_st_x(cn, total - nmsg, vastaus->bytes + nmsg, &nch, &nq))
+			return;
+		nmsg += nch;
+		if (nmsg >= total)
+			break;
+		if ((biostime(0, 0) + DAYTICKS - alku) % DAYTICKS > 10)   // n. 0,5 s
+			return;
+		if (!nch)
+			utsleep(1);
+		}
+	if (loki)
+		SIlokiHex("SI D3", vastaus->bytes, total);
+	if (b[total - 1] != 0x03 || dlen < 6)
+		return;
+	tallSRRleima(r_no, b + 3, dlen);
+	}
+
 // Lukee SportIdent SI5/SI6-lukijan sanomia lukijalta r_no kanavalta cn.
-// Lähettää kyselysanoman (SI5pyynto tai SI6pyynto); purkaa DLE-koodauksen ja kutsuu tulkSI-funktiota.
+// Vanhamuotoinen protokolla: lähettää kyselyn ja purkaa DLE-koodauksen.
+// EXT-protokolla (BSM8): tunnistaa 0xE5-ilmoituksen, lähettää B1-kyselyn,
+// lukee raakabinäärivastauksen ilman DLE-koodausta (ohittaa 2 tavun otsikon).
 static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int r_buflen, int r_msg_len)
 {
 	char chin, *p2;
 	int t, dt, er = 0, nq, nch, l, ndata, nread, nmsg0, siirra, varm_ok;
 	char SI5pyynto[5] = "\002\002\061\003";
-	char SI6pyynto[6] = "\002\002\141\008\003";
-	char SI5code[5] = "\002FI\003";
+	char SI6pyynto[6] = "\002\002\141\010\003";
+	// EXT-protokollan B1-kysely: FF(wake) STX B1 LEN=0 CRC_H CRC_L ETX
+	// pcap: host sends ff 02 b1 00 b1 00 03 — FF wakeup required before command
+	// EXT request frames sent to BSM8 (FF=wakeup, STX=02, CMD, LEN, DATA, CRC_H, CRC_L, ETX=03).
+	// SI5 EXT: CMD=B1, LEN=0 — asks BSM8 to return the 133-byte SI5tp block.
+	static char SI5pyyntoEXT[7] = {'\377', '\002', '\261', '\000', '\261', '\000', '\003'};
+	// SI8/9/10/11 EXT: CMD=EF, LEN=1, DATA=block_number — asks BSM8 for one 128-byte memory block.
+	// CRCs follow pattern CRC_H=0xE2+block_num, CRC_L=0x09 (verified against pcap for blocks 0,1,4).
+	static char SI9pyynto_b0[8] = {'\377','\002','\357','\001','\000','\342','\011','\003'};
+	static char SI9pyynto_b1[8] = {'\377','\002','\357','\001','\001','\343','\011','\003'};
+	static char SI11pyynto_b4[8] = {'\377','\002','\357','\001','\004','\346','\011','\003'};
+	static char SI11pyynto_b5[8] = {'\377','\002','\357','\001','\005','\347','\011','\003'};
+	static char SI11pyynto_b6[8] = {'\377','\002','\357','\001','\006','\344','\011','\003'};
+	static char SI11pyynto_b7[8] = {'\377','\002','\357','\001','\007','\345','\011','\003'};
+	// SI6 via EXT protocol (trigger 0xE6, cmd 0xE1) - distinct from legacy
+	// DLE-encoded SI6 (SI6pyynto above). CRCs verified against a real card log
+	// (SIID 579671): b0=46 0A, b1=47 0A, b6=40 0A, b7=41 0A.
+	static char SI6EXTpyynto_b0[8] = {'\377','\002','\341','\001','\000','\106','\012','\003'};
+	static char SI6EXTpyynto_b1[8] = {'\377','\002','\341','\001','\001','\107','\012','\003'};
+	static char SI6EXTpyynto_b6[8] = {'\377','\002','\341','\001','\006','\100','\012','\003'};
+	static char SI6EXTpyynto_b7[8] = {'\377','\002','\341','\001','\007','\101','\012','\003'};
+	// CMD=F9: tells BSM8 to beep once after a successful card read (count=1).
+	static char SIbeep[8] = {'\377','\002','\371','\001','\001','\027','\012','\003'};
 	char SIack = ACK;
-	char SIbuf[512], *SIbp;
-	int SItype, SIdatalen[2] = {133, 402}, dle = 0;
+	// 128 (block 0) + up to 4 punch blocks × 128 = 640 bytes max for SI10/11.
+	char SIbuf[640], *SIbp;
+	// SItype encodes card family: 5=SI5, 6=SI6, 7=SI9, 8=SI10/11, 9=SI8, 10=pCard,
+	// 11=tCard, 12=SI6 via EXT protocol (distinct from legacy SI6, type 6).
+	// luku (SILukuTp, SITulkinta.h): kerattava pituus, luetut lohkot ja SI10/11:n
+	// tarvitsemat leimalohkot - ks. siLukuAloita/siLukuSeuraava.
+	int SItype, dle = 0, ilm;
+	SILukuTp luku;
+	char *lohkopyynto;
+	// SIext=1: BSM8 EXT protocol (38400 bps, binary frames, FF wakeup required).
+	// SIext=0: legacy protocol (DLE-encoded, lower baud rate).
+	// SIskip: bytes remaining to discard from the current response header.
+	int SIext = 0, SImsglen = 0, SIskip = 0;
+	// SIautosend=1: vanhan protokollan SI5 auto-send (02 31 <data>): asema
+	// lahetti kortin sisallon itse, joten pyyntoa ei lahdeta; jo luetut
+	// tavut (SIpre) ovat datan alku.
+	int SIautosend = 0, SIprelen = 0;
+	char SIpre[16];
 	INT32 SIt;
+	char *msg = NULL;
 
 	t = biostime(0, 0);
 
@@ -1420,49 +1703,135 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			memmove(&vastaus->r21.stx, &vastaus->r21.tunnus, *nmsg-1);
 			--*nmsg;
 			}
-		if (*nmsg < 4 || (vastaus->r21.tunnus == 102 && *nmsg < 10))
+		// Ilmoituksen tunnistus: siTunnistaIlmoitus (SITulkinta.cpp,
+		// yksikkotestattu).
+		ilm = siTunnistaIlmoitus((unsigned char *) vastaus->bytes, *nmsg);
+		if (ilm == SIILM_ODOTA)
 			od[r_no]++;
 		else {
-			if (!memcmp(&vastaus->r21.stx, SI5code, 4)) {
-				msg = SI5pyynto;
-				SItype = 5;
+			switch (ilm) {
+				case SIILM_SI5:
+					// Vanha SI5: kortti asetettu "02 46 49 03" (STX 'F' 'I' ETX).
+					msg = SI5pyynto;
+					SImsglen = 4;
+					SItype = 5;
+					SIext = 0;
+					break;
+				case SIILM_SI5EXT:
+					// EXT E5: SI5-kortti asetettu; pyydetaan B1-lohko.
+					msg = SI5pyyntoEXT;
+					SImsglen = sizeof(SI5pyyntoEXT);
+					SItype = 5;
+					SIext = 1;
+					break;
+				case SIILM_SI9:
+					// EXT E8: SI8/9/10/11, pCard tai tCard asetettu. Ensin lohko 0;
+					// tarkka tyyppi (SItype) paatetaan SIID:sta, ks. siLukuSeuraava.
+					msg = SI9pyynto_b0;
+					SImsglen = sizeof(SI9pyynto_b0);
+					SItype = 7;
+					SIext = 1;
+					break;
+				case SIILM_SI6EXT:
+					// EXT E6: SI6 asetettu (EXT-protokolla, ei vanha DLE-koodattu SI6).
+					msg = SI6EXTpyynto_b0;
+					SImsglen = sizeof(SI6EXTpyynto_b0);
+					SItype = 12;
+					SIext = 1;
+					break;
+				case SIILM_SI6:
+					msg = SI6pyynto;
+					SImsglen = strlen(SI6pyynto);
+					SItype = 6;
+					SIext = 0;
+					break;
+				case SIILM_SI5AUTO:
+					// Vanha protokolla, SI5 auto-send: asema lahettaa kortin sisallon
+					// itse (02 31 <data> CS 03) ilman korttiilmoitusta ja pyyntoa.
+					// Jo luetut tavut talteen ennen puskurin nollausta alla.
+					SItype = 5;
+					SIext = 0;
+					SIautosend = 1;
+					SIprelen = *nmsg < (int) sizeof(SIpre) ? *nmsg : (int) sizeof(SIpre);
+					memcpy(SIpre, vastaus->bytes, SIprelen);
+					break;
+				case SIILM_D3:
+					// Suoraan kytketty online-rastiasema (auto-send): leimaussanoma.
+					lue_SID3(r_no, cn, vastaus, *nmsg);
+					break;
+				default:
+					break;
 				}
-			else if (vastaus->r21.tunnus == 102 && vastaus->r21.etx == ETX) {
-				msg = SI6pyynto;
-				SItype = 6;
+			if ((msg || SIautosend) && loki) {
+				char line[80];
+				sprintf(line, "SI kortti asetettu: SItype %d, %s-protokolla", SItype, SIext ? "EXT" : "vanha");
+				kirjloki(line);
+				SIlokiHex("SI ilmoitus", vastaus->bytes, *nmsg);
 				}
 			od[r_no] = 0;
 			*nmsg = 0;
 			vastaus->bytes[0] = 0;
 			}
 		}
-	if (msg) {
+	if (msg || SIautosend) {
 		SIt = biostime(0,0);
 		od[r_no] = 0;
 		*nmsg = 0;
 		vastaus->bytes[0] = 0;
-		i_flush_x(cn);
-		wrt_st_x(cn,strlen(msg),msg,&nch);
-		utsleep(2);
 		SIbp = SIbuf;
+		if (SIautosend) {
+			// Data on jo tulossa: ei tyhjennysta eika pyyntoa. SI5tp olettaa
+			// kolmen tavun otsikon ennen korttidataa (kuten pyydetyssa
+			// vastauksessa); yllaoleva tahdistus poisti toistuvat STX:t,
+			// joten otsikko rakennetaan ja jo luetut tavut 31:n jalkeen
+			// puretaan DLE-koodauksesta kuten lukusilmukassa.
+			// siAutosendAlku: SITulkinta.cpp, yksikkotestattu.
+			SIbp += siAutosendAlku((unsigned char *) SIpre, SIprelen,
+				(unsigned char *) SIbuf, &dle);
+			}
+		else {
+			i_flush_x(cn);
+			wrt_st_x(cn, SImsglen, msg, &nch);
+			utsleep(2);
+			}
+		// EXT responses begin with a header that must be discarded before data bytes.
+		//   SI5  B1 response: "02 B1" (2 bytes) + 133-byte SI5tp data
+		//   SI9+ EF response: "02 EF 83 00 0A blocknum" (6 bytes) + 128-byte block data
+		// Legacy (SI5/SI6): no header; bytes are DLE-encoded and not framed.
+		// Kerattava pituus ja ohitettavat otsikkotavut: siLukuAloita
+		// (SITulkinta.cpp, yksikkotestattu).
+		siLukuAloita(&luku, SItype, SIext, &SIskip);
 		for(;;) {
 			nq = 0;
 			if (!read_ch_x(cn, &chin, &nq)) {
 				bytecount = (bytecount + 1) % bytecountmax;
-				if (dle) {
-					*(SIbp++) = chin;
-					dle = 0;
+				if (SIext) {
+					// EXT mode: discard header bytes, then store data bytes verbatim.
+					if (SIskip > 0)
+						--SIskip;
+					else
+						*(SIbp++) = chin;
 					}
 				else {
-					if (chin == 16) {
-						dle = 1;
+					// Legacy mode: DLE (0x10) escapes the next byte; control chars end the frame.
+					if (dle) {
+						*(SIbp++) = chin;
+						dle = 0;
 						}
 					else {
-						if (chin > 31 || chin == 2 || chin == 3) {
-							*(SIbp++) = chin;
+						if (chin == 16) {
+							dle = 1;
 							}
-						else
-							break;
+						else {
+							// Auto-send: kaikki tavut talteen (tarkistussumma voi
+							// olla < 32 koodaamatta; char voi olla etumerkillinen).
+							// Pyydetyn luennan kasittely ennallaan.
+							if (SIautosend || chin > 31 || chin == 2 || chin == 3) {
+								*(SIbp++) = chin;
+								}
+							else
+								break;
+							}
 						}
 					}
 				}
@@ -1470,14 +1839,56 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			if (l > 100) {
 				dle = 2*dle;
 				}
-			if (l == SIdatalen[SItype-5]) {
-				if (!tulkSI(SIbuf, vastaus, SIt, SItype)) {
+			// Lohkon tayttyessa seuraava pyynto: siLukuSeuraava (SITulkinta.cpp,
+			// yksikkotestattu) paattaa SI9-perheen korttityypin SIID:sta,
+			// SI10/11:n leimalohkojen maaran ja SI6-EXT:n lohkosarjan.
+			switch (siLukuSeuraava(&luku, (unsigned char *) SIbuf, l, &SIskip)) {
+				case SIPYY_SI9_B1:  lohkopyynto = SI9pyynto_b1; break;
+				case SIPYY_SI11_B4: lohkopyynto = SI11pyynto_b4; break;
+				case SIPYY_SI11_B5: lohkopyynto = SI11pyynto_b5; break;
+				case SIPYY_SI11_B6: lohkopyynto = SI11pyynto_b6; break;
+				case SIPYY_SI11_B7: lohkopyynto = SI11pyynto_b7; break;
+				case SIPYY_SI6X_B1: lohkopyynto = SI6EXTpyynto_b1; break;
+				case SIPYY_SI6X_B6: lohkopyynto = SI6EXTpyynto_b6; break;
+				case SIPYY_SI6X_B7: lohkopyynto = SI6EXTpyynto_b7; break;
+				default:            lohkopyynto = NULL; break;
+				}
+			SItype = luku.SItype;
+			if (lohkopyynto) {
+				// kaikki lohkopyynnot ovat 8 tavua (ks. SI9pyynto_b1 ym.)
+				wrt_st_x(cn, sizeof(SI9pyynto_b1), lohkopyynto, &nch);
+				utsleep(2);
+				}
+			if (l == luku.datalen) {
+				SIResultTp SIresult;
+				SIlokiHex("SI data", SIbuf, l);
+				if (!tulkSI(SIbuf, &SIresult, SIt, SItype, luku.datalen, t0)) {
+					SIlokiTulos(SItype, &SIresult);
+					// SIResultTp on tulkSI:n riippumaton tulostyyppi (ks. SITulkinta.h);
+					// kopioidaan san_type-unionin r21data-jasenten yli.
+					vastaus->r21data.badge = SIresult.badge;
+					vastaus->r21data.lukija = SIresult.lukija;
+					vastaus->r21data.start = SIresult.start;
+					vastaus->r21data.check = SIresult.check;
+					vastaus->r21data.finish = SIresult.finish;
+					memcpy(vastaus->r21data.cc, SIresult.cc, sizeof(SIresult.cc));
+					memcpy(vastaus->r21data.ct, SIresult.ct, sizeof(SIresult.ct));
 					tall_emit(vastaus, 0, r_no);
+					if (!SIautosend)   // auto-send-asema kuittaa itse
+						wrt_st_x(cn, sizeof(SIbeep), SIbeep, &nch);
 					}
 				break;
 				}
-			if ((biostime(0,0) + DAYTICKS - SIt) % DAYTICKS > 90)
+			if ((biostime(0,0) + DAYTICKS - SIt) % DAYTICKS > 90) {
+				if (loki) {
+					char line[80];
+					sprintf(line, "SI luenta keskeytyi (aikaraja): saatu %d / %d tavua, SItype %d",
+						l, luku.datalen, SItype);
+					kirjloki(line);
+					SIlokiHex("SI data", SIbuf, l);
+					}
 				break;
+				}
 			if (!nq)
 				utsleep(1);
 			}
@@ -1516,7 +1927,7 @@ int lue_regnly(INT r_no)
 	{
 	char chin, *msg = NULL;
 	static INT in_lue_regnly[NREGNLY];
-	static INT od[NREGNLY],nmsg[NREGNLY];
+	static INT nmsg[NREGNLY];
 	INT  nq,nch = 0,er,r_buflen;
 	static san_type *vastaus[NREGNLY];
 	static INT32 t_raja[NREGNLY];
@@ -1712,7 +2123,7 @@ int lue_regnly(INT r_no)
 		}
 #endif // LAJUNEN
 
-	else if (regnly[r_no] == LID_LUKIJA) {											// LUKIJA
+	else if (regnly[r_no] == LID_LUKIJA || regnly[r_no] == LID_SRRLUKIJA) {		// LUKIJA / SRRLUKIJA
 		lue_LUKIJA(r_no, cn_regnly[r_no], vastaus[r_no], nmsg+r_no,
 			ntotviim+r_no, tyhjpuskuri+r_no, r_buflen, r_msg_len[r_no]);
 		}
@@ -2021,6 +2432,11 @@ INT start_regnly(INT r_no)
 			   sbits = 1;
 			   r_msg_len[r_no] = 217;
 			   break;
+		   case LID_SRRLUKIJA:
+			   bd = 9;              //  38400
+			   sbits = 1;
+			   r_msg_len[r_no] = 217;
+			   break;
 		   case LID_MTR:
 			   bd = 7;          //  9600
 			   r_msg_len[r_no] = 234;
@@ -2036,7 +2452,10 @@ INT start_regnly(INT r_no)
 			   r_msg_len[r_no] = R_BUFLEN;
 			   break;
 		   case LID_SPORTIDENT:
-			   bd = 6;          //  4800
+			   if (usb_regnly[r_no])
+				   bd = 9;          //  38400 (BSM8 USB)
+			   else
+				   bd = 6;          //  4800 (vanha RS-232-asema, SPORTIDENT=portti:R)
 			   r_msg_len[r_no] = 10;
 			   break;
 		   case LID_ARES:
@@ -2093,7 +2512,7 @@ INT start_regnly(INT r_no)
 			   parity = 'n';
 			   break;
 		   }
-		   if (kello_baud && (regnly[r_no] < 10 || regnly[r_no] == LID_ARES || regnly[r_no] == LID_FEIG)) {
+		   if (kello_baud && (regnly[r_no] < 10 || regnly[r_no] == LID_ARES || regnly[r_no] == LID_FEIG || regnly[r_no] == LID_LUKIJA || regnly[r_no] == LID_SRRLUKIJA)) {
 			   bd = kello_baud;
 		   }
 	   }
@@ -2117,8 +2536,11 @@ INT start_regnly(INT r_no)
 	   if (comopen[cn_regnly[r_no]]) {
 
 #ifdef SPORTIDENT
-		   if (regnly[r_no] == LID_SPORTIDENT) {
-			   wrt_st_x(cn_regnly[r_no], 4, L"\002\002\161\003", &nw);
+		   if (regnly[r_no] == LID_SPORTIDENT && !usb_regnly[r_no]) {
+			   // Legacy RS-232 stations (BS7 etc.): send "remote mode" init.
+			   // USB BSM8 stations: skip — BSM8 responds with NAK (0xF0) to this
+			   // legacy command and then stays silent; it auto-sends E5 notifications.
+			   wrt_st_x(cn_regnly[r_no], 4, "\002\002\161\003", &nw);
 		   }
 #endif
 	   }
@@ -2436,71 +2858,6 @@ void comajanotto(LPVOID lpCn)
 	}
 #endif
 
-#ifdef SPORTIDENT
-// Tulkitsee SportIdent SI5 tai SI6 -korttidata (buf) san_type-rakenteeseen vastaus.
-// SIt on lukuaika, SItype on 5 tai 6; palauttaa 0 onnistuessaan, 1 epäonnistuessaan.
-static int tulkSI(char *buf, san_type *vastaus, INT32 SIt, int SItype)
-	{
-	SI5tp *tp5;
-	SI6tp *tp6;
-	int r, i;
-
-	memset(vastaus, 0, sizeof(vastaus->r21data));
-	switch (SItype) {
-		case 5:
-			tp5 = (SI5tp *) buf;
-			vastaus->r21data.badge = 256L * tp5->CN[0] + tp5->CN[1] +
-				(tp5->CNS > 1 ? tp5->CNS * 100000L : 0);
-			vastaus->r21data.lukija = t_time_l(SIt, t0);
-			vastaus->r21data.start = 256L * tp5->ST[0] + tp5->ST[1];
-			vastaus->r21data.check = 256L * tp5->CT[0] + tp5->CT[1];
-			vastaus->r21data.finish = 256L * tp5->FT[0] + tp5->FT[1];
-			for (r = 0; r < 6; r++) {
-				vastaus->r21data.cc[31+r] = tp5->row[r].ccx;
-				for (i = 0; i < 5; i++) {
-					vastaus->r21data.cc[1+i+5*r] = tp5->row[r].c[i].cc;
-					vastaus->r21data.ct[1+i+5*r] =
-						256L*tp5->row[r].c[i].ct[0] + tp5->row[r].c[i].ct[1];
-					if (r+i == 0) {
-						if (vastaus->r21data.start != 61166L && vastaus->r21data.ct[1] &&
-							vastaus->r21data.ct[1] < vastaus->r21data.start)
-							vastaus->r21data.ct[1] += 43200L;
-						}
-					else {
-						if (vastaus->r21data.ct[1+i+5*r] &&
-							vastaus->r21data.ct[1+i+5*r] < vastaus->r21data.ct[i+5*r])
-							vastaus->r21data.ct[1+i+5*r] += 43200L;
-						}
-					}
-				}
-			break;
-		case 6:
-			tp6 = (SI6tp *) buf;
-			vastaus->r21data.badge =
-				tp6->CN[3] + 256L * (tp6->CN[2] + 256L * (tp6->CN[1] + 256L * tp6->CN[0]));
-			vastaus->r21data.lukija = t_time_l(SIt, t0);
-			vastaus->r21data.start =
-					256L*tp6->st.PT[0] + tp6->st.PT[1] +
-					(tp6->st.PTD & 1) * 43200L;
-			vastaus->r21data.check =
-					256L*tp6->chk.PT[0] + tp6->chk.PT[1] +
-					(tp6->chk.PTD & 1) * 43200L;
-			vastaus->r21data.finish = 256L * tp5->FT[0] + tp5->FT[1];
-					256L*tp6->fi.PT[0] + tp6->fi.PT[1] +
-					(tp6->fi.PTD & 1) * 43200L;
-			for (r = 0; r < 2; r++) {
-				for (i = 0; i < 32; i++) {
-					vastaus->r21data.cc[1+i] = tp6->pblk[r].punch[i].CN;
-					vastaus->r21data.ct[1+i] =
-						256L*tp6->pblk[r].punch[i].PT[0] + tp6->pblk[r].punch[i].PT[1] +
-						(tp6->pblk[r].punch[i].PTD & 1) * 43200L;
-					}
-				}
-			break;
-		}
-	return(0);
-	}
-#endif
    
 #ifdef _CONSOLE
 // Interaktiivinen asetusvalikko emit-TAG-lukijalle r_no: kello, ratakoodi, antenni- ja muut asetukset.

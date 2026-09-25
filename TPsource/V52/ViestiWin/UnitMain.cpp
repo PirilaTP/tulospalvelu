@@ -38,6 +38,7 @@
 #include "TapUnit2.h"
 #include "UnitSelect3.h"
 #include "UnitOhjtiedot.h"
+#include "TpLaitteet.h"
 #include "UnitNollaus.h"
 #include "UnitSarjatiedot.h"
 #include "UnitKilpMaaritys.h"
@@ -166,6 +167,7 @@ __fastcall TFormMain::TFormMain(TComponent* Owner)
 {
 	Application->HelpFile = ExtractFilePath(Application->ExeName)+UnicodeString(L"ViestiWin.chm");
 	InitDir = GetCurrentDir();
+	SIsanastoKaynnista();   // Emit -> Sportident -tekstit SportIdent-kilpailussa (cbTpApu.cpp)
 #ifdef DEMO
 	Caption = L"ViestiWin - DEMO versio - max 20 joukkuetta";
 #endif
@@ -264,6 +266,10 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 		Emitluenta1->Visible = false;
 //		Asetukset1->Enabled = false;
 //		Asetukset1->Visible = false;
+		}
+	if (IsSportidentInUse()) {
+		Emitluenta1->Caption = L"&Sportident-luenta";
+		SisLuenta->Caption = L"Sis‰‰n&luenta (sportident)";
 		}
 	if (alkulayout[0]) {
 		HaeIkkunat(GetCurrentDir()+UnicodeString(L"\\")+alkulayout);

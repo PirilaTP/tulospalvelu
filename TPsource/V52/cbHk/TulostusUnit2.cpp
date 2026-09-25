@@ -607,12 +607,12 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 			if (tulostettava[CBSisalto->ItemIndex] == L'E' || tulostettava[CBSisalto->ItemIndex] == L'F') {
 				if (pisteval == L'S' &&
 					(kohde[KohdeIndex] != L'I' || wcswcind(tiedTyyppi, L"IXYVW") < 0)) {
-					Application->MessageBoxW(L"Emit-tietojen siirtotiedosto on kohdistettu tekstitiedosto tai XML-tiedosto",
+					Application->MessageBoxW(SIsana(L"Emit-tietojen siirtotiedosto on kohdistettu tekstitiedosto tai XML-tiedosto").c_str(),
 						L"Rajoitus", MB_OK);
 					break;
 					}
 				if (kohde[KohdeIndex] != L'I' || wcswcind(tiedTyyppi, L"IHMXYVW") < 0) {
-					Application->MessageBoxW(L"Emit-tulosteen tiedostomuodon on oltava html, XML tai kohdistettu tekstitiedosto",
+					Application->MessageBoxW(SIsana(L"Emit-tulosteen tiedostomuodon on oltava html, XML tai kohdistettu tekstitiedosto").c_str(),
 						L"Rajoitus", MB_OK);
 					break;
 					}

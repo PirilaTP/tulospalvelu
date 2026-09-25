@@ -39,6 +39,11 @@
 #include "VDeclare.h"
 #endif
 #include "TpLaitteet.h"
+#if defined(SPORTIDENT)
+#include "SICenterJson.h"
+#include "SITulkinta.h"
+#endif
+#include "EmitBadge.h"
 #include "IRfidReader.h"
 
 #include <wincom.h>
@@ -952,6 +957,57 @@ static bool samatleimat(emittp *em1, emittp *em2, int regnlaji)
 	return(true);
 }
 
+#ifdef SPORTIDENT
+// SportIdent: varoitus, jos kortti luetaan yli 12 h nollauksen (tai sen
+// puuttuessa ensimmaisen leiman) jalkeen. Tavallisesti syyna on vaarin
+// asetettu leimasinten kello tai vanha, aiemmin leimattu kortti. Yli 65535 s
+// (18 h 12 min) ei mahdu emittp:n 16-bittiseen ctrltime-kenttaan: lukijarivi
+// ja siita laskettu maaliaika ja tulos menevat silloin vaarin (luku kiertaa).
+static void siLukuaikaVaroitus(INT32 badge, INT32 lukuaika)
+	{
+	wchar_t msg[300];
+
+	if (lukuaika <= 12L*3600L)
+		return;
+	swprintf(msg, L"SportIdent-kortti %ld luettu %ld h %02ld min nollauksen tai ensimm\xe4isen leiman j\xe4lkeen. Tarkista leimasinten kello.%s",
+		(long) badge, (long) (lukuaika / 3600), (long) (lukuaika / 60 % 60),
+		lukuaika > 65535L ?
+			L" Aika ylitt\xe4\xe4 18 h 12 min, joten kortin maaliaika ja tulos ovat virheellisi\xe4." : L"");
+	if (loki)
+		wkirjloki(msg);
+#ifdef _CONSOLE
+	writeerror_w(msg, 2000);
+#else
+	writewarning_w(msg, 5000);
+#endif
+	}
+#endif
+
+#ifdef SPORTIDENT
+// SportIdent: varoitus, jos kortilla on enemman leimoja kuin emittp:hen
+// mahtuu (MAXNLEIMA - 2, ks. tall_emit); ylimaaraiset leimat jaavat pois.
+static void siYlimLeimat(INT32 badge, const char *cc, int mahtuu)
+	{
+	wchar_t msg[200];
+	int k, n = 0;
+
+	for (k = mahtuu; k < 66; k++)
+		if (cc[k])
+			n++;
+	if (!n)
+		return;
+	swprintf(msg, L"SportIdent-kortilla %ld on %d leimaa enemm\xe4n kuin mahtuu (%d). Ylim\xe4\xe4r\xe4iset leimat j\xe4\xe4v\xe4t pois.",
+		(long) badge, n, mahtuu - 1);
+	if (loki)
+		wkirjloki(msg);
+#ifdef _CONSOLE
+	writeerror_w(msg, 2000);
+#else
+	writewarning_w(msg, 5000);
+#endif
+	}
+#endif
+
 INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
    {
    static INT uusin = 0;
@@ -960,9 +1016,6 @@ INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
 	INT32 emtm;
    static emittp *ed_em[NREGNLY];
    INT mm, sek, osat;
-#ifdef SPORTIDENT
-	INT32 start;
-#endif
 
 	regnlyhetki[r_no] = t_time_l(biostime(0,0), t0);
 	if (!ed_em[r_no]) {
@@ -1019,7 +1072,7 @@ INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
 	  em.package = 20000000L + r_no;
 	  for (i = 0; i < r_msg_len[r_no]; i++)
 		 vastaus->bytes[i] ^= '\xdf';
-	  em.badge = *(UINT32 *) vastaus->r12.badge & 0xffffffL;
+	  em.badge = combineBadge24LE((unsigned char) vastaus->r12.badge[0], (unsigned char) vastaus->r12.badge[1], (unsigned char) vastaus->r12.badge[2]);
 	  em.badgeweek = vastaus->r12.week;
 	  em.badgeyear = vastaus->r12.year;
 
@@ -1094,42 +1147,29 @@ INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
 #ifdef SPORTIDENT
    if (regnly[r_no] == LID_SPORTIDENT) {
       em.badge = vastaus->r21data.badge;
+		em.package = EMITPKG_SPORTIDENT + r_no;   // SportIdent - ks. HkDef.h:ON_SPORTIDENT_EM
 		em.time = vastaus->r21data.lukija;
-		if (vastaus->r21data.start == 61166L)
-			vastaus->r21data.start = TMAALI0;
-		start = vastaus->r21data.start;
-		if (vastaus->r21data.check == 61166L)
-			vastaus->r21data.check = TMAALI0;
-		if (vastaus->r21data.finish == 61166L)
-			vastaus->r21data.finish = TMAALI0;
-      em.maali = TMAALI0/KSEK;
-      for (i = 0; i < MAXNLEIMA; i++) {
-         em.ctrlcode[i] = vastaus->r21data.cc[i];
-         em.ctrltime[i] = vastaus->r21data.ct[i];
-			if (start == TMAALI0 && em.ctrltime[i])
-				start = em.ctrltime[i];
-			if (em.ctrltime[i] && start != TMAALI0) {
-				em.ctrltime[i] =
-					(vastaus->r21data.ct[i] - start + 86400L) % 86400L;
-				}
-         }
-		for (i = MAXNLEIMA; i > 1; i--)
-			if (em.ctrlcode[i-1])
-				break;
-		if (i < MAXNLEIMA-1 && i > 1) {
-			if (vastaus->r21data.finish != TMAALI0 && start != TMAALI0) {
-				em.ctrlcode[i] = 240;
-				em.ctrltime[i] =
-					(vastaus->r21data.finish - start + 86400L) % 86400L;
-				i++;
-				}
-			em.ctrlcode[i] = 250;
-			if (start != TMAALI0)
-				em.ctrltime[i] =
-					(vastaus->r21data.lukija/10 - start + 86400L) % 86400L;
-			else
-				em.ctrltime[i] = (vastaus->r21data.lukija/10 + 86400L) % 86400L;
-			}
+		// Leimat emittp:hen: siEmitLeimat (SITulkinta.cpp, yksikkotestattu)
+		// - nollahetki (lahto, sen puuttuessa nollaus/tarkastus tai
+		// ensimmainen leima), ajat suhteessa siihen, kaksi viimeista paikkaa
+		// varattuna maali- (240) ja lukijariville (250).
+		{
+		SIResultTp sir;
+		long lukuaika;
+
+		sir.badge = vastaus->r21data.badge;
+		sir.lukija = vastaus->r21data.lukija;
+		sir.start = vastaus->r21data.start;
+		sir.check = vastaus->r21data.check;
+		sir.finish = vastaus->r21data.finish;
+		memcpy(sir.cc, vastaus->r21data.cc, sizeof(sir.cc));
+		memcpy(sir.ct, vastaus->r21data.ct, sizeof(sir.ct));
+		em.maali = TMAALI0/KSEK;
+		siYlimLeimat(em.badge, vastaus->r21data.cc, MAXNLEIMA-2);
+		siEmitLeimat(&sir, t0, (unsigned char *) em.ctrlcode, em.ctrltime, MAXNLEIMA, &lukuaika);
+		if (lukuaika >= 0)
+			siLukuaikaVaroitus(em.badge, lukuaika);
+		}
 		}
 #endif
    if (em.time != TMAALI0/KSEK)
@@ -2655,7 +2695,7 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 
 //   else t = t0_regn[r_no];
 //#ifdef MERI5
-	if (wcswcind(kilpparam.kilplaji, L"NPU") >= 0 && regnly[r_no] != LID_RESERV_1 && rata == 0) {
+	if (wcswcind(kilpparam.kilplaji, L"NPU") >= 0 && regnly[r_no] != LID_SRRLUKIJA && rata == 0) {
 //		rata = 1;
 		if (piste >= 98) {
 			rata = (piste+2) / 100;
@@ -3608,6 +3648,280 @@ void etHaku(void)
 }
 #endif
 
+#if defined(SPORTIDENT)
+static int siInHaku;
+
+// Kuten tall_etulos: olemassa olevaa maali- tai valiaikaa ei korvata, ellei
+// uusi aika ole uusinaika-rajan sisalla vanhasta. Nain myohassa saapuva
+// GPRS-leima ei korvaa esim. maalikameran tai kasin korjattua aikaa, ja
+// toistetuista leimoista ensimmainen jaa voimaan. Lahtoaikaa ei tarkisteta:
+// lahtoaikakentassa on myos arvottu lahtoaika, joten "jo asetettu" -ehto
+// estaisi kaikki lahtoleimat valiaikalahdossa.
+static bool siSaaTallentaa(INT32 ed, INT32 tm, int kno, INT32 badge, int piste)
+{
+	char msg[140];
+
+	if (siAikaSaaTallentaa(ed, tm, uusinaika))   // SICenterJson.cpp, yksikkotestattu
+		return true;
+	if (loki) {
+		sprintf(msg, "SIGPRS: kilpailijalla %d on jo aika pisteessa %d - leimaa (badge %ld) ei tallennettu",
+			kno, piste, (long) badge);
+		kirjloki(msg);
+		}
+	return false;
+}
+
+// Handles one punch returned by the SportIdent Center REST API:
+// looks up the competitor by card number (bdg2kno, as with other
+// Sportident/Emit punches) and stores the start, finish, or split
+// time depending on the punch type (pu->type). "Check"/"Clear" are
+// ignored; "Control" and "Unknown" are both treated as possible split
+// times, since some Center API punches arrive with type "Unknown"
+// even though they are actually ordinary control punches.
+static void siParsePunch(SIPunchTp *pu)
+{
+	INT32 badge, tm;
+	long msday;
+	int kno, piste, d;
+	kilptietue kilp;
+	ratatp *rt;
+	char msg[120];
+	wchar_t wmsg[150], st[16];
+
+	if (!strcmp(pu->type, "Check") || !strcmp(pu->type, "Clear"))
+		return;
+	badge = atol(pu->card);
+	if (badge <= 0)
+		return;
+
+	// pu->time is the Center API's own "local" ms-epoch value (already
+	// in local time per the documentation). The internal time unit is
+	// 1 tick = 1 ms (TUNTI=3600000, MINUUTTI=60000, see TpDef.h), so we
+	// only need the ms-of-day part minus t0 (in hours, converted to ms)
+	// - no tick-scale conversion needed. Same formula as VIv.cpp's
+	// tall_etulos uses (there, purajak(itm.t) produces the same value:
+	// (tms*10)/AIKAJAK = tms, since AIKAJAK=10). NORMKELLO-style
+	// day-rollover normalization already happens inside the
+	// tall_lajat_pv/set_tulos calls. Computed up front (before the badge
+	// lookup) so it's available for the unmatched-badge notice below too.
+	msday = (long) (pu->time % 86400000LL);
+	tm = (INT32) (msday - t0*3600000L);
+
+	kno = bdg2kno(badge);
+	if (kno <= 0) {
+		if (loki) {
+			sprintf(msg, "SIGPRS: badgea %ld ei loydy kilpailijoista", (long) badge);
+			kirjloki(msg);
+			}
+		if (ilmtunt) {
+			AIKATOWSTRS(st, tm, t0);
+			swprintf(wmsg, L"SIGPRS: tuntematon kortti %ld saapunut, aika: %8.8s", (long) badge, st);
+			writeerror_w(wmsg, 4000, true);
+			}
+		if (vaajat) {
+			// unmatched card: queue it (kno=0, badge only) in the same
+			// unassigned-time list tall_ec() uses for unmatched EMIT codes,
+			// so it can be reviewed and linked to a competitor later.
+			aikatp itm;
+			memset(&itm, 0, sizeof(itm));
+			itm.t = tm * AIKAJAK;
+			itm.date = tm_date(itm.t);
+			itm.jono = (UINT8) aika_jono[0][1];
+			itm.badge = badge;
+			tall_rivi(aika_jono[0][1], &itm, NULL, NULL, 0, 0, 0, false);
+			}
+		return;
+		}
+	d = getpos(kno);
+	if (d <= 0) {
+		if (loki) {
+			sprintf(msg, "SIGPRS: kilpailijan %d tietuetta ei loydy (badge %ld)", kno, (long) badge);
+			kirjloki(msg);
+			}
+		return;
+		}
+	kilp.GETREC(d);
+
+	if (!strcmp(pu->type, "Start")) {
+		kilp.tall_lajat_pv(tm, k_pv);
+		}
+	else if (!strcmp(pu->type, "Finish")) {
+		if (!siSaaTallentaa(kilp.maali(0), tm, kno, badge, 0))
+			return;
+		kilp.set_tulos(0, tm);
+		}
+	else {
+		// "Control" and "Unknown" both land here. Per SportIdent's own docs,
+		// an "Unknown" punch can actually be a Start/Finish/Check/Clear, not
+		// just a Control - so the real type has to be derived from pu->code.
+		// siResolvePunch() (SICenterJson.cpp, unit tested) applies the actual
+		// precedence: configured Start code (SISTARTKOODI), then the course's
+		// own finish code (maalirasti()), then a normal numbered split.
+		// The split number comes from the series' own split-point codes
+		// (Sarjat[].va_koodi), not from the control's position on the
+		// course - split points are configured per series by code.
+		rt = haerata(&kilp);
+		if (!rt) {
+			if (loki) {
+				sprintf(msg, "SIGPRS: kilpailijan %d rataa ei loydy (badge %ld)", kno, (long) badge);
+				kirjloki(msg);
+				}
+			return;
+			}
+		piste = siResolvePunch(pu->type, pu->code, siParam.sistartkoodi,
+			maalirasti(rt, pu->code), Sarjat[kilp.Sarja()].va_koodi[k_pv],
+			Sarjat[kilp.Sarja()].valuku[k_pv]);
+		if (piste == SI_PUNCH_NOTFOUND) {
+			if (loki) {
+				sprintf(msg, "SIGPRS: rastikoodia %d ei ole kilpailijan %d sarjan valiaikapisteissa (badge %ld)",
+					pu->code, kno, (long) badge);
+				kirjloki(msg);
+				}
+			return;
+			}
+		if (piste == SI_PUNCH_START)
+			kilp.tall_lajat_pv(tm, k_pv);
+		else {
+			if (!siSaaTallentaa(kilp.maali(piste), tm, kno, badge, piste))
+				return;
+			kilp.set_tulos(piste, tm);
+			}
+		}
+	if (loki) {
+		sprintf(msg, "SIGPRS: tallennettu kno=%d badge=%ld type=%s code=%d tm=%ld",
+			kno, (long) badge, pu->type, pu->code, (long) tm);
+		kirjloki(msg);
+		}
+	EnterCriticalSection(&tall_CriticalSection);
+	kilp.tallenna(d, 0, 0, 0, 0);
+	LeaveCriticalSection(&tall_CriticalSection);
+}
+
+// Kuluvan vuorokauden alku (paikallista aikaa) millisekunteina epokista -
+// samaa asteikkoa kuin Center API:n "time"/after (ks. SITIME).
+static __int64 siTanaanAlku(void)
+{
+	SYSTEMTIME st;
+	FILETIME ft;
+	ULARGE_INTEGER u;
+
+	GetLocalTime(&st);
+	st.wHour = st.wMinute = st.wSecond = st.wMilliseconds = 0;
+	if (!SystemTimeToFileTime(&st, &ft))
+		return 0;
+	u.LowPart = ft.dwLowDateTime;
+	u.HighPart = ft.dwHighDateTime;
+	// FILETIME: 100 ns jaksoja 1.1.1601 alkaen
+	return (__int64) ((u.QuadPart - 116444736000000000ULL) / 10000ULL);
+}
+
+// Fetches and processes new punches from the Center REST API. Runs in
+// its own thread (_beginthread) so that a slow/laggy http call doesn't
+// block the tausta() loop - same principle as vahaku() for EMITHTTP.
+static void siVahaku(LPVOID lpCn)
+{
+	static char httpbuf[200000];
+	wchar_t page[300], msg[600], snippet[451];
+	SIPunchTp punches[1000];
+	int er, n, i, slen, katkaistu = 0;
+	long maxId;
+	__int64 maxTime;
+
+	siInHaku = 1;
+	siParam.buf = httpbuf;
+	siParam.buflen = sizeof(httpbuf);
+	// Ilman SITIME-parametria after=0 palauttaisi modeemin koko historian,
+	// joka ei yleensa mahdu puskuriin - haetaan oletuksena kuluvan
+	// vuorokauden leimat.
+	if (siParam.afterId <= 0 && siParam.sitime <= 0)
+		siParam.sitime = siTanaanAlku();
+	// First poll (or every poll until we have a real punch id) uses the
+	// time-based after= cursor; once a poll has returned at least one
+	// punch (afterId > 0), switch to the id-based afterId= cursor, which
+	// is the more precise/stable pagination cursor per the API docs -
+	// after= and afterId= are not meant to be combined in one request.
+	if (siParam.afterId > 0)
+		swprintf(page, L"/api/rest/v1/punches?modem=%s&afterId=%ld",
+			siParam.sigprs, siParam.afterId);
+	else
+		swprintf(page, L"/api/rest/v1/punches?modem=%s&after=%I64d",
+			siParam.sigprs, siParam.sitime);
+	er = httphaku(siParam.sihost, 443, page, 1,
+		siParam.buf, siParam.buflen, &siParam.haettu, &katkaistu);
+	if (er != 0) {
+		swprintf(msg, L"SIGPRS: virhe %d leimojen haussa", er);
+		writeerror_w(msg, 2000, true);
+		}
+	else if (katkaistu) {
+		// Katkaistua JSONia ei yriteta tulkita: kursori ei etenisi ja sama
+		// virhe toistuisi joka haulla.
+		swprintf(msg, L"SIGPRS: vastaus ei mahdu puskuriin (%d tavua) - aseta SITIME= my\xf6hemm\xe4ksi",
+			siParam.buflen);
+		writeerror_w(msg, 4000, true);
+		}
+	else if (siParam.haettu > 0 && siParam.haettu < siParam.buflen) {
+		siParam.buf[siParam.haettu] = 0;
+		n = parseSIPunches(siParam.buf, punches, sizeof(punches)/sizeof(punches[0]));
+		if (n < 0) {
+			// dump the full raw response to a file so it can be inspected
+			// without any truncation - the on-screen message only shows a
+			// short preview (see below).
+			FILE *dumpf = fopen("sigprs_dump.json", "wb");
+			if (dumpf) {
+				fwrite(siParam.buf, 1, siParam.haettu, dumpf);
+				fclose(dumpf);
+				}
+			// naive byte->wchar_t copy for the preview - the response might not
+			// even be valid UTF-8 (e.g. an HTML error page), so we deliberately
+			// avoid MultiByteToWideChar here and just show the raw bytes.
+			slen = siParam.haettu;
+			if (slen > 450)
+				slen = 450;
+			for (i = 0; i < slen; i++)
+				snippet[i] = (unsigned char) siParam.buf[i];
+			snippet[slen] = 0;
+			swprintf(msg, L"SIGPRS: virheellinen JSON-vastaus (%d tavua, katso sigprs_dump.json): %s",
+				siParam.haettu, snippet);
+			writeerror_w(msg, 4000, true);
+			}
+		else if (n > 0) {
+			maxId = siParam.afterId;
+			maxTime = siParam.sitime;
+			for (i = 0; i < n; i++) {
+				siParsePunch(&punches[i]);
+				if (punches[i].id > maxId)
+					maxId = punches[i].id;
+				if (punches[i].time > maxTime)
+					maxTime = punches[i].time;
+				}
+			siParam.afterId = maxId;
+			siParam.sitime = maxTime;
+			}
+		}
+	siInHaku = 0;
+}
+
+// Called from the tausta() loop: starts the siVahaku thread every
+// sihakuvali seconds, if SIGPRS is set and the previous poll has finished.
+void siCenterHaku(void)
+{
+	static int edhaku = -1;
+	int t;
+
+	if (!taustaon || vaiheenvaihto || !siParam.sigprs[0] || siInHaku)
+		return;
+	t = biostime(0, 0L);
+	// edhaku = edellisen haun kaynnistyshetki. Erotus lasketaan modulo
+	// DAYTICKS, jotta keskiyon kohdalla nollautuva biostime ei pysayta
+	// hakuja (t + vali ylittaisi vuorokauden eika t saavuttaisi sita).
+	if (edhaku >= 0 &&
+		(t - edhaku + DAYTICKS) % DAYTICKS < (siParam.sihakuvali * 182L) / 10L)   // seconds -> biostime ticks (18.2 Hz)
+		return;
+	edhaku = t;
+	_beginthread(siVahaku, 40960, NULL);
+}
+#endif
+
 void tausta(INT spoolfl)
 	{
    static int init = 1, msgno = 1, keTserial, t_edell;
@@ -3688,6 +4002,9 @@ void tausta(INT spoolfl)
 #endif
 #ifdef EMITHTTP
 	etHaku();
+#endif
+#if defined(SPORTIDENT)
+	siCenterHaku();
 #endif
 		i = 0;
 		if ((tdif = t - ivtime[i]) > 0 || tdif + intv[i] < 0) {

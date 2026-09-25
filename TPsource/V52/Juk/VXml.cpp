@@ -51,7 +51,7 @@ static wchar_t Dis[5] = L"SHJA", *DisSt[4] = {L"Orienteering", L"Skiing", L"Runn
 static wchar_t Sub[7] = L"NSTPRD";
 static wchar_t *SubSt[6] = {L"Normal", L"Sprint", L"Team", L"Patrol", L"Rogaining", L"Rounds"};
 static wchar_t Stat[10] = L"-THKEOIVP", *StatSt[9] = {L"Open", L"OK", L"DQ", L"DNF", L"DNS", L"LAP", L"Open", L"Vacant", L"Absent"};
-static wchar_t Bdg[5] = L"ETSM", *BdgSt[4] = {L"Emit", L"emiTag", L"Sirit", L"Other"};
+static wchar_t Bdg[6] = L"ETISM", *BdgSt[5] = {L"Emit", L"emiTag", L"SportIdent", L"Sirit", L"Other"};
 static wchar_t *Pr[4] = {L"1", L"0,1", L"0,01", L"0,001"};
 static wchar_t *Tabs[8] = {L"", L"\t", L"\t\t", L"\t\t\t", L"\t\t\t\t", L"\t\t\t\t\t", L"\t\t\t\t\t\t", L"\t\t\t\t\t\t\t"};
 static wchar_t *LLaji[3] = {L"Auto", L"Individual", L"Fixed"};

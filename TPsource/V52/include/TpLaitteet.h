@@ -39,7 +39,7 @@
 #define LID_VALOT		29
 #define LID_SIRIT		30
 #define LID_FEIG		31
-#define LID_RESERV_1	32
+#define LID_SRRLUKIJA	32
 #define LID_IMPINJ		33
 #define LID_ZEBRA		34	// Zebra FX9600 (LLRP)
 #define LID_SW2000		36
@@ -63,6 +63,7 @@ int kbdiv1(char ch,char ch2);
 void tee_aika(int laji);
 INT start_regnly(INT r_no);
 void rem_regnly(INT r_no);
+bool IsSportidentInUse(void);
 
 /*
 static INT32 ec_strtoaika(char *st, int t0, int *i_pv);

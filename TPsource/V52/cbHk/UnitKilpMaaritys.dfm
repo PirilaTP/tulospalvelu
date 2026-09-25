@@ -847,6 +847,7 @@ object FormKilpMaaritys: TFormKilpMaaritys
       'Ei tunnistinta'
       'Emit-kortti'
       'emiTag'
+      'SportIdent'
       'RFID/Sirit'
       'Muu tunnistin')
   end

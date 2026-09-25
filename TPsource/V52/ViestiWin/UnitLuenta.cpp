@@ -21,6 +21,7 @@
 
 #include "UnitLuenta.h"
 #include "UnitEmiTag.h"
+#include "TpLaitteet.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -143,7 +144,7 @@ int __fastcall TFormLuenta::NaytaJoukkue(void)
 			}
 		if (!huomautettu && Huomautaohitetusta->Checked && Kilp.yOsuus(os) < Kilp.yOsuus(Osuus) &&
 			Kilp.ostiet[os].badge[RGkoodi->ItemIndex] == 0) {
-			if (Application->MessageBoxW(L"Aiemmalla osuudella ei emit-koodia. Kirjataanko silti",
+			if (Application->MessageBoxW(SIsana(L"Aiemmalla osuudella ei emit-koodia. Kirjataanko silti").c_str(),
 				L"Poikkeama", MB_YESNO) != IDYES)
 				ret = 1;
 			huomautettu = true;
@@ -239,7 +240,7 @@ void __fastcall TFormLuenta::EdtViivakoodiKeyPress(TObject *Sender, System::Wide
 			if (Osuus >= 0 && Osuus < kilpparam.osuusluku && (DKilp = getpos(Kilpno)) > 0) {
 				if (!NaytaJoukkue()) {
 					Key = 0;
-					EdtMsg->Text = L"Lue Emit-kortti";
+					EdtMsg->Text = IsSportidentInUse() ? L"Lue SPORTident" : L"Lue Emit-kortti";
 					EdtMsg->Color = clLime;
 					FocusControl(EdtVahvistus);
 					}
@@ -328,7 +329,7 @@ int __fastcall TFormLuenta::TarkKoodi(int badge)
 {
 	int kno, ibdg;
 	if (badge == 200) {
-		MemoMsg->Text = L"Viallinen Emit-kortti (koodi 200). Kortti on vaihdettava. Paina Esc.";
+		MemoMsg->Text = SIsana(L"Viallinen Emit-kortti (koodi 200). Kortti on vaihdettava. Paina Esc.");
 		MemoMsg->Color = clFuchsia;
 		MemoMsg->Visible = true;
 		FocusControl(EdtVahvistus);
@@ -492,7 +493,7 @@ void __fastcall TFormLuenta::EdtOsuusKeyPress(TObject *Sender, System::WideChar 
 			(DKilp = getpos(Kilpno)) > 0 && EdtOsuus->Text.Length() > 0  &&
 			(Osuus = tulkOsuuskoodi(sarjaKno(Kilpno), EdtOsuus->Text.c_str())) >= 0 && Osuus < kilpparam.osuusluku) {
 			if (!NaytaJoukkue()) {
-				EdtMsg->Text = L"Lue Emit-kortti";
+				EdtMsg->Text = IsSportidentInUse() ? L"Lue SPORTident" : L"Lue Emit-kortti";
 				EdtMsg->Color = clLime;
 				FocusControl(EdtVahvistus);
             	}
@@ -513,7 +514,7 @@ void __fastcall TFormLuenta::EdtOsuusKeyPress(TObject *Sender, System::WideChar 
 void __fastcall TFormLuenta::BtnTallennaClick(TObject *Sender)
 {
 	if (!uusi_emit) {
-		EdtMsg->Text = L"Emitkoodi puuttuu, ei tallennettu";
+		EdtMsg->Text = SIsana(L"Emitkoodi puuttuu, ei tallennettu");
 		EdtMsg->Color = clYellow;
 		if (luentaFl) {
 			swprintf(lokiLine, L"%s\tTallennusyritys\t%4d-%d\tEmit\tpuuttuu\n", wkello(),
@@ -582,7 +583,7 @@ void __fastcall TFormLuenta::FormShow(TObject *Sender)
 		if (testifl == NULL)
 			Application->MessageBoxW(L"Tiedoston emitrek.lst avaaminen ei onnistunut", L"Virhe", MB_OK);
 		else
-			EdtMsg->Text = L"Testi odottaa Emit-koodeja";
+			EdtMsg->Text = SIsana(L"Testi odottaa Emit-koodeja");
 		return;
 	}
 	EdtMsg->Text = L"Lue viivakoodi tai syötä joukkueen numero";

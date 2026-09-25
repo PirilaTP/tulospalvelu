@@ -22,6 +22,7 @@
 #include <bstrings.h>
 
 #include "UnitEmit.h"
+#include "TpLaitteet.h"
 #include "UnitEmitMuutokset.h"
 #include "UnitKirjoitinVal.h"
 #include "UnitMTR.h"
@@ -151,6 +152,20 @@ void __fastcall TFormEmit::InitTila(void)
 		for (int i = 0; i < NREGNLY; i++) {
 			if (regnly[i] == 13)
 				MTRlaitteenohjaus1->Visible = true;
+			}
+		if (IsSportidentInUse()) {
+			Caption = L"Sportident-tiedot";
+			Label2->AutoSize = true;
+			Label2->Caption = L"Sportident";
+			if (kilpparam.kaksibadge != 2) {
+				LblOrigBadge->AutoSize = true;
+				LblOrigBadge->Caption = L"Luettu sportident";
+				}
+			EdtBadge->Left     = 90;
+			LblOrigBadge->Left = 162;
+			EdtOrigBadge->Left = 280;
+			Label9->Left       = 341;
+			EdtTietue->Left    = 381;
 			}
 #ifdef DBGFILE
 		if (dbgtofile) {
@@ -410,7 +425,8 @@ void __fastcall TFormEmit::NaytaKilp(void)
 void __fastcall TFormEmit::NaytaEmit(void)
 {
 	wchar_t st[60];
-	int tm = 0, nc = 0, lk, n_lk = 0, enn, virhe = 0, tulkinta[51], style = 0;
+	int tm = 0, nc = 0, lk, n_lk = 0, enn = 0, virhe = 0, tulkinta[51], style = 0;
+	bool lukijaOk = false;
 	UnicodeString AS = L"";
 	bool on99 = false;
 	ratatp *rt;
@@ -442,6 +458,7 @@ void __fastcall TFormEmit::NaytaEmit(void)
 		if (lk >= 0 && lk < 49) {
 			tm = Em.ctrltime[lk];
 			n_lk = tulkinta[lk];
+			lukijaOk = true;
 			}
 		for (nc = 49; nc > 1; nc--)
 			if (Em.ctrlcode[nc] != 0 || Em.ctrltime[nc] != 0)
@@ -480,7 +497,10 @@ void __fastcall TFormEmit::NaytaEmit(void)
 			aikatowstr_ls(st, 10*(Em.ctrltime[i]-enn), 0);
 			st[kilpparam.laika2] = 0;
 			Cells[5][i+1].text = st;
-			aikatowstr_ls(st, Em.time+10*(Em.ctrltime[i]-tm), t0);
+			if (lukijaOk)
+				aikatowstr_ls(st, Em.time+10*(Em.ctrltime[i]-tm), t0);
+			else
+				aikatowstr_ls(st, 10*(Em.ctrltime[i]-enn), 0);
 			st[kilpparam.laika2] = 0;
 			Cells[6][i+1].text = st;
 			if (tulkinta[i] == (n_lk - 1))
@@ -1462,7 +1482,7 @@ void __fastcall TFormEmit::BadgeHaku(void)
 		FocusControl(EdtSNimi);
 		}
 	if (n > 1) {
-		Application->MessageBoxW(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä", L"Valitse", MB_OK);
+		Application->MessageBoxW(SIsana(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä").c_str(), L"Valitse", MB_OK);
 		EdtBadge->Color = clLime;
 		FocusControl(EdtBadge);
 		}
@@ -1949,7 +1969,10 @@ void __fastcall TFormEmit::EdtBadgeKeyPress(TObject *Sender, System::WideChar &K
 void __fastcall TFormEmit::BtnLoppuunClick(TObject *Sender)
 {
 	if (EmitMuutosFlag) {
-		Application->MessageBoxW(L"Luenta voi jatkua vasta, kun kaavake \"Emit-muutokset\" on suljettu", L"Ohje", MB_OK);
+		Application->MessageBoxW(
+			IsSportidentInUse() ? L"Luenta voi jatkua vasta, kun kaavake \"Sportident-muutokset\" on suljettu"
+			     : L"Luenta voi jatkua vasta, kun kaavake \"Emit-muutokset\" on suljettu",
+			L"Ohje", MB_OK);
 		return;
 		}
 	if (OnkoMuutoksia()) {
