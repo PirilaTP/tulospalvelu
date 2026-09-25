@@ -160,3 +160,15 @@ Leimantarkastuskaavakkeen käytöstä tarkemmin kts. [luku 6.1](6.1_leimantarkas
 | Kortin numero näkyy mutta leimoja ei | Ratatiedot puuttuvat | Tarkista `RADAT1.XML` kilpailuhakemistossa |
 | Rasteja puuttuu tai väärässä järjestyksessä | Rastikoodit väärin | Tarkista rastien SI-asemanumerot ratakaavakkeelta |
 | Leimantarkastus ei käynnisty | `AIKALUKIJA`-parametri estää | Poista `AIKALUKIJAx=VAINz` kyseiseltä lukijalta |
+| Leima-ajat tai Kello-sarake näyttävät väärältä | Selvitettävä, mitä asemalta tulee | Lisää parametri `LOKI`: jokaisen luetun kortin raakatavut ja tulkitut leimat kirjataan lokitiedostoon (oletus `LOKI1.LST`), kirjoitus tapahtuu ohjelmaa suljettaessa |
+| Varoitus "luettu yli 12 h nollauksen jälkeen" | Leimasinten kello väärässä ajassa tai vanha kortti | Tahdista leimasinten kello tietokoneen kelloon. Yli 18 h 12 min kohdalla maaliaika ja tulos ovat virheellisiä, koska aika ei mahdu kortin aikakenttään |
+
+### A12.9 Näkymien tekstit
+
+Kun kilpailussa on käytössä SportIdent (`SPORTIDENTx=`- tai `SRRLUKIJAx=`-lukija, tai tunnistimeksi on valittu SportIdent), ohjelman ikkunoissa, valikoissa ja ilmoituksissa sana "Emit" näytetään muodossa "Sportident", esimerkiksi *Emit-luenta* → *Sportident-luenta* ja *Emit-koodi* → *Sportident-koodi*. Päävalikko päivittyy, kun asetukset on luettu.
+
+Ennallaan pysyvät:
+
+- asetusparametrit (esim. `EMITAJAT=`), tiedostonimet ja tallennettujen ikkunoiden nimet
+- Emitin omat laitteet ja palvelut: emiTag, Emit-kellot (RTR, ECB, ETS), EmitSQL ja Emitin palvelin
+- tunnistinlajin valinta kilpailun määrityksissä, jossa ovat vaihtoehtoina sekä Emit-kortti että SportIdent

@@ -353,7 +353,7 @@ void __fastcall TFormStatus::Lukumaarat(void)
 			cc = 7;
 			if (kilpparam.badgelaji == L'E' || kilpparam.badgelaji == L'I') {
 				LkmGrid->Cells[7][0] = UnicodeString(L"Esit");
-				LkmGrid->Cells[8][0] = UnicodeString(L"Emit");
+				LkmGrid->Cells[8][0] = SIsana(L"Emit");
 				cc = 9;
 				}
 			LkmGrid->ColCount = cc+kilpparam.maxvaluku;

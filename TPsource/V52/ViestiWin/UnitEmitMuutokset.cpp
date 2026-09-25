@@ -134,8 +134,8 @@ void __fastcall TFormEmitMuutokset::Nayta(int d, int osuus)
 				}
 			else {
 				MemoOhje->Lines->Clear();
-				MemoOhje->Lines->Text = L"Kilpailijalle jo luettu Emit-tiedot. Yhteys aiempiin "
-					L"tietoihin menetetään tallennettaessa.";
+				MemoOhje->Lines->Text = SIsana(L"Kilpailijalle jo luettu Emit-tiedot. Yhteys aiempiin "
+					L"tietoihin menetetään tallennettaessa.");
 				MemoOhje->Color = clFuchsia;
 				}
 			}

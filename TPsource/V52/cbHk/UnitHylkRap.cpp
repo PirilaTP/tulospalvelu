@@ -222,7 +222,7 @@ void  TFormHylkRap::hylk_rap(tulostusparamtp *tulprm)
 	tulprm->Putfld(L"Seura / Club", m, 30, 0, 0);
 	tulprm->Putfld(EdtSeura->Text.c_str(), m+x2, 40, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Emit-koodi / Emit code", m, 30, 0, 0);
+	tulprm->Putfld(SIsana(L"Emit-koodi / Emit code").c_str(), m, 30, 0, 0);
 	tulprm->Putfld(EdtBadge->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(1);
 	tulprm->Putfld(L"Ongelma / Problem", m, 30, 0, 0);

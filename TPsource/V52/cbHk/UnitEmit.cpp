@@ -692,7 +692,7 @@ void __fastcall TFormEmit::Paivita(emittp *pEm)
 				if (n > 1) {
 					erbeep();
 					erbeep();
-					Application->MessageBoxW(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä", L"Valitse", MB_OK);
+					Application->MessageBoxW(SIsana(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä").c_str(), L"Valitse", MB_OK);
 					EdtBadge->Color = clLime;
 					FocusControl(EdtBadge);
 					}
@@ -1514,7 +1514,7 @@ int __fastcall TFormEmit::tallennaKilpailija(bool kysy)
 		if (Kilp.pv[k_pv].laina[1] != L'L' && !(on_lainakortti(bdg) || on_lainakortti(orgbdg)) && HTBadge != 0 &&
 			((bdg != HTBadge && bdg > 30000 && bdg < 1000000) || (orgbdg != HTBadge && orgbdg > 30000 && bdg < 1000000)) &&
 			_wtoi(EdtLisno->Text.c_str()) != 0) {
-			if (Application->MessageBox(L"Vaihdetaanko tietokannan Emit-koodi?", L"Pysyvä muutos?",
+			if (Application->MessageBox(SIsana(L"Vaihdetaanko tietokannan Emit-koodi?").c_str(), L"Pysyvä muutos?",
 				MB_YESNO) != IDYES) {
 				Kilp.pv[k_pv].laina[1] = L'L';
 				}
@@ -1942,7 +1942,7 @@ void __fastcall TFormEmit::BadgeHaku(void)
 		FocusControl(EdtSNimi);
 		}
 	if (n > 1) {
-		Application->MessageBoxW(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä", L"Valitse", MB_OK);
+		Application->MessageBoxW(SIsana(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä").c_str(), L"Valitse", MB_OK);
 		EdtBadge->Color = clLime;
 		FocusControl(EdtBadge);
 		}

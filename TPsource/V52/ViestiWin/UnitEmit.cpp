@@ -1482,7 +1482,7 @@ void __fastcall TFormEmit::BadgeHaku(void)
 		FocusControl(EdtSNimi);
 		}
 	if (n > 1) {
-		Application->MessageBoxW(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä", L"Valitse", MB_OK);
+		Application->MessageBoxW(SIsana(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä").c_str(), L"Valitse", MB_OK);
 		EdtBadge->Color = clLime;
 		FocusControl(EdtBadge);
 		}

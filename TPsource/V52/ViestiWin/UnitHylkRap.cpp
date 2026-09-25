@@ -235,7 +235,7 @@ void  TFormHylkRap::hylk_rap(tulostusparamtp *tulprm)
 	tulprm->Putfld((UnicodeString(Osuus+1)+L" :").c_str(), m+x1, 6, 1, 0);
 	tulprm->Putfld(EdtNimi->Text.c_str(), m+x2, 40, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Emit-koodi / Emit code", m, 30, 0, 0);
+	tulprm->Putfld(SIsana(L"Emit-koodi / Emit code").c_str(), m, 30, 0, 0);
 	tulprm->Putfld(EdtBadge->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(1);
 	tulprm->Putfld(L"Rata / Coutse", m, 30, 0, 0);

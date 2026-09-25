@@ -379,13 +379,13 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 			if (tulostettava[CBSisalto->ItemIndex] == L'E' || tulostettava[CBSisalto->ItemIndex] == L'F') {
 				if (pisteval == L'S' &&	(kohde[KohdeIndex] != L'I' ||
 					(tiedtyyppi[CBTiedLaji->ItemIndex] != L'I' && tiedtyyppi[CBTiedLaji->ItemIndex] != L'X'))) {
-					Application->MessageBoxW(L"Emit-tietojen siirtotiedosto on kohdistettu tekstitiedosto tai XML-tiedosto",
+					Application->MessageBoxW(SIsana(L"Emit-tietojen siirtotiedosto on kohdistettu tekstitiedosto tai XML-tiedosto").c_str(),
 						L"Rajoitus", MB_OK);
 					break;
 					}
 				if (kohde[KohdeIndex] != L'I' || (tiedtyyppi[CBTiedLaji->ItemIndex] != L'I' &&
 					tiedtyyppi[CBTiedLaji->ItemIndex] != L'H' && tiedtyyppi[CBTiedLaji->ItemIndex] != L'X')) {
-					Application->MessageBoxW(L"Emit-tulosteen tiedostomuodon on oltava html, XML tai kohdistettu tekstitiedosto",
+					Application->MessageBoxW(SIsana(L"Emit-tulosteen tiedostomuodon on oltava html, XML tai kohdistettu tekstitiedosto").c_str(),
 						L"Rajoitus", MB_OK);
 					break;
 					}
@@ -529,7 +529,7 @@ void __fastcall TTulosteForm::CBRajValChange(TObject *Sender)
 		CBSisalto->Clear();
 		CBSisalto->Items->Add(L"Osuuskohtaiset tulokset");
 		if (emitfl >= 1)
-			CBSisalto->Items->Add(L"Emit-väliajat");
+			CBSisalto->Items->Add(SIsana(L"Emit-väliajat"));
 		wcscpy(tulostettava, L"HE");
 		CBSisalto->ItemIndex = 0;
 		}
@@ -542,7 +542,7 @@ void __fastcall TTulosteForm::CBRajValChange(TObject *Sender)
 		CBSisalto->Items->Add(L"Väliajat");
 		CBSisalto->Items->Add(L"Kaikki tulokset ja väliajat");
 		if (emitfl >= 1) {
-			CBSisalto->Items->Add(L"Emit-väliajat");
+			CBSisalto->Items->Add(SIsana(L"Emit-väliajat"));
 			wcscpy(tulostettava, L"TLHOVYEP");
 			}
 		else

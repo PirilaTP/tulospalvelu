@@ -167,6 +167,7 @@ __fastcall TFormMain::TFormMain(TComponent* Owner)
 {
 	Application->HelpFile = ExtractFilePath(Application->ExeName)+UnicodeString(L"ViestiWin.chm");
 	InitDir = GetCurrentDir();
+	SIsanastoKaynnista();   // Emit -> Sportident -tekstit SportIdent-kilpailussa (cbTpApu.cpp)
 #ifdef DEMO
 	Caption = L"ViestiWin - DEMO versio - max 20 joukkuetta";
 #endif

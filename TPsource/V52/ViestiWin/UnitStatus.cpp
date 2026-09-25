@@ -589,7 +589,7 @@ void __fastcall TFormStatus::FormSetup(void)
 	if (IkkParam.esitykset)
 		FormStatus->LkmGrid->Cells[monisarja+IkkParam.ylahdot+7][0] = L"Esit";
 	if (IkkParam.emittiedot)
-		FormStatus->LkmGrid->Cells[monisarja+IkkParam.ylahdot+IkkParam.esitykset+7][0] = L"Emit";
+		FormStatus->LkmGrid->Cells[monisarja+IkkParam.ylahdot+IkkParam.esitykset+7][0] = SIsana(L"Emit");
 	if (IkkParam.emitkoodeja)
 		FormStatus->LkmGrid->Cells[monisarja+IkkParam.ylahdot+IkkParam.esitykset+IkkParam.emittiedot+7][0] = L"EmKoodit";
 	for (int va = 1; va <= kilpparam.maxvaluku; va++)
