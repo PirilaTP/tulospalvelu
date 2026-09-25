@@ -159,7 +159,8 @@ void uusintaTCP(int cn);
 void yhteysasetukset(void);
 void uusintalahetys(void);
 void yhteydet(void);
-extern int httphaku(wchar_t *host, int port, wchar_t *page, int secure, char *buf, int buflen, int *haettu);
+// katkaistu (valinnainen): 1, jos vastaus ei mahtunut puskuriin buf
+extern int httphaku(wchar_t *host, int port, wchar_t *page, int secure, char *buf, int buflen, int *haettu, int *katkaistu = NULL);
 void lahetasulku(char *tn, INT kielto);
 void lahetaeralahto(int era, INT kielto);
 void lahetaMonitorille(int yhtlkm, int yhtavattu, int jonossa, int jonoja);

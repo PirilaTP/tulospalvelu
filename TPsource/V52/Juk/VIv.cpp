@@ -965,6 +965,31 @@ static void siLukuaikaVaroitus(INT32 badge, INT32 lukuaika)
 	}
 #endif
 
+#ifdef SPORTIDENT
+// SportIdent: varoitus, jos kortilla on enemman leimoja kuin emittp:hen
+// mahtuu (MAXNLEIMA - 2, ks. tall_emit); ylimaaraiset leimat jaavat pois.
+static void siYlimLeimat(INT32 badge, const char *cc, int mahtuu)
+	{
+	wchar_t msg[200];
+	int k, n = 0;
+
+	for (k = mahtuu; k < 66; k++)
+		if (cc[k])
+			n++;
+	if (!n)
+		return;
+	swprintf(msg, L"SportIdent-kortilla %ld on %d leimaa enemm\xe4n kuin mahtuu (%d). Ylim\xe4\xe4r\xe4iset leimat j\xe4\xe4v\xe4t pois.",
+		(long) badge, n, mahtuu - 1);
+	if (loki)
+		wkirjloki(msg);
+#ifdef _CONSOLE
+	writeerror_w(msg, 2000);
+#else
+	writewarning_w(msg, 5000);
+#endif
+	}
+#endif
+
 INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
    {
    INT i, smm = 0, ssek = 0, sosat = 0;
@@ -1135,12 +1160,19 @@ static emittp *ed_em[NREGNLY];
 		if (vastaus->r21data.finish == 61166L)
 			vastaus->r21data.finish = TMAALI0;
       em.maali = TMAALI0*10/SEK;
-      for (i = 0; i < MAXNLEIMA; i++) {
+		// Kaksi viimeista paikkaa jatetaan maali- (240) ja lukijariville
+		// (250): tulkSI palauttaa SI6/SI10/SI11-korteilta enemman leimoja
+		// (cc[1..65]) kuin emittp:hen mahtuu. Ilman varausta >= 48 leiman
+		// kortilta jaisi maali- ja lukijarivi kokonaan pois.
+		siYlimLeimat(em.badge, vastaus->r21data.cc, MAXNLEIMA-2);
+      for (i = 0; i < MAXNLEIMA-2; i++) {
          em.ctrlcode[i] = vastaus->r21data.cc[i];
          em.ctrltime[i] = vastaus->r21data.ct[i];
-			if (start == TMAALI0 && em.ctrltime[i])
-				start = em.ctrltime[i];
-			if (em.ctrltime[i] && start != TMAALI0) {
+			// ct[] voi olla > 65535 (klo 18:12 jalkeen) - ei 16-bittisesta
+			// ctrltime-kentasta
+			if (start == TMAALI0 && vastaus->r21data.ct[i])
+				start = vastaus->r21data.ct[i];
+			if (vastaus->r21data.ct[i] && start != TMAALI0) {
 				em.ctrltime[i] =
 					(vastaus->r21data.ct[i] - start + 86400L) % 86400L;
 				}
@@ -2665,6 +2697,24 @@ static void siParsePunch(SIPunchTp *pu)
 	LeaveCriticalSection(&tall_CriticalSection);
 }
 
+// Kuluvan vuorokauden alku (paikallista aikaa) millisekunteina epokista -
+// samaa asteikkoa kuin Center API:n "time"/after (ks. SITIME).
+static __int64 siTanaanAlku(void)
+{
+	SYSTEMTIME st;
+	FILETIME ft;
+	ULARGE_INTEGER u;
+
+	GetLocalTime(&st);
+	st.wHour = st.wMinute = st.wSecond = st.wMilliseconds = 0;
+	if (!SystemTimeToFileTime(&st, &ft))
+		return 0;
+	u.LowPart = ft.dwLowDateTime;
+	u.HighPart = ft.dwHighDateTime;
+	// FILETIME: 100 ns jaksoja 1.1.1601 alkaen
+	return (__int64) ((u.QuadPart - 116444736000000000ULL) / 10000ULL);
+}
+
 // Fetches and processes new punches from the Center REST API. Runs in
 // its own thread (_beginthread) so that a slow/laggy http call doesn't
 // block the tausta() loop - same principle as vahaku() for EMITHTTP.
@@ -2673,13 +2723,18 @@ static void siVahaku(LPVOID lpCn)
 	static char httpbuf[200000];
 	wchar_t page[300], msg[600], snippet[451];
 	SIPunchTp punches[1000];
-	int er, n, i, slen;
+	int er, n, i, slen, katkaistu = 0;
 	long maxId;
 	__int64 maxTime;
 
 	siInHaku = 1;
 	siParam.buf = httpbuf;
 	siParam.buflen = sizeof(httpbuf);
+	// Ilman SITIME-parametria after=0 palauttaisi modeemin koko historian,
+	// joka ei yleensa mahdu puskuriin - haetaan oletuksena kuluvan
+	// vuorokauden leimat.
+	if (siParam.afterId <= 0 && siParam.sitime <= 0)
+		siParam.sitime = siTanaanAlku();
 	// First poll (or every poll until we have a real punch id) uses the
 	// time-based after= cursor; once a poll has returned at least one
 	// punch (afterId > 0), switch to the id-based afterId= cursor, which
@@ -2692,10 +2747,17 @@ static void siVahaku(LPVOID lpCn)
 		swprintf(page, L"/api/rest/v1/punches?modem=%s&after=%I64d",
 			siParam.sigprs, siParam.sitime);
 	er = httphaku(siParam.sihost, 443, page, 1,
-		siParam.buf, siParam.buflen, &siParam.haettu);
+		siParam.buf, siParam.buflen, &siParam.haettu, &katkaistu);
 	if (er != 0) {
 		swprintf(msg, L"SIGPRS: virhe %d leimojen haussa", er);
 		writeerror_w(msg, 2000, true);
+		}
+	else if (katkaistu) {
+		// Katkaistua JSONia ei yriteta tulkita: kursori ei etenisi ja sama
+		// virhe toistuisi joka haulla.
+		swprintf(msg, L"SIGPRS: vastaus ei mahdu puskuriin (%d tavua) - aseta SITIME= my\xf6hemm\xe4ksi",
+			siParam.buflen);
+		writeerror_w(msg, 4000, true);
 		}
 	else if (siParam.haettu > 0 && siParam.haettu < siParam.buflen) {
 		siParam.buf[siParam.haettu] = 0;
@@ -2736,9 +2798,6 @@ static void siVahaku(LPVOID lpCn)
 			siParam.sitime = maxTime;
 			}
 		}
-	else if (siParam.haettu >= siParam.buflen) {
-		writeerror_w(L"SIGPRS: vastaus on liian suuri puskuriin", 2000, true);
-		}
 	siInHaku = 0;
 }
 
@@ -2752,9 +2811,13 @@ void siCenterHaku(void)
 	if (!taustaon || !siParam.sigprs[0] || siInHaku)
 		return;
 	t = biostime(0, 0L);
-	if (edhaku >= 0 && t < edhaku)
+	// edhaku = edellisen haun kaynnistyshetki. Erotus lasketaan modulo
+	// DAYTICKS, jotta keskiyon kohdalla nollautuva biostime ei pysayta
+	// hakuja (t + vali ylittaisi vuorokauden eika t saavuttaisi sita).
+	if (edhaku >= 0 &&
+		(t - edhaku + DAYTICKS) % DAYTICKS < (siParam.sihakuvali * 182L) / 10L)   // seconds -> biostime ticks (18.2 Hz)
 		return;
-	edhaku = t + (siParam.sihakuvali * 182L) / 10L;   // seconds -> biostime ticks (18.2 Hz)
+	edhaku = t;
 	_beginthread(siVahaku, 40960, NULL);
 }
 #endif

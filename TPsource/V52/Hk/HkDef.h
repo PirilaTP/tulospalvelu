@@ -1192,6 +1192,17 @@ public:
 	int haeXmlRadat(ratatp *rt, int nrata);
 };
 
+// emittp.package SportIdent-lukijan (LID_SPORTIDENT) tallentamille korteille:
+// EMITPKG_SPORTIDENT + r_no (vrt. 20000000 + r_no LUKIJA-lukijalla).
+// package kulkee EMIT-tiedostossa ja verkkosanomissa, joten leimatietojen
+// lahde tunnistetaan ilman uutta kenttaa - emittp:n koko (tiedoston
+// tietuepituus, class_len[EMITT]) pysyy ennallaan. SportIdentilla ei ole
+// fyysista nollauslaitetta, joten HkEmit.cpp:n tarkista() ohittaa sille
+// kellon nollautumistarkistuksen (nollattu-lippu).
+#define EMITPKG_SPORTIDENT 30000000L
+#define ON_SPORTIDENT_EM(em) ((em)->package >= (UINT32) EMITPKG_SPORTIDENT && \
+	(em)->package < (UINT32) EMITPKG_SPORTIDENT + 1000000L)
+
 class emittp {
 public:
 	UINT32 package;
@@ -1209,10 +1220,6 @@ public:
 	INT16 osuus;
 	INT32 badge0;
 	INT32 kirjaus;
-	INT16 lahde;          // Leimatietojen lahde: 0 = EMIT, 1 = SportIdent.
-	                       // SportIdentilla ei ole fyysista nollauslaitetta,
-	                       // joten HkEmit.cpp:n tarkista() ohittaa sille
-	                       // kellon nollautumistarkistuksen (nollattu-lippu).
 	void nollaa(void);
 	int get(int i_ptr);
 	int getbykno(int kno, int toinen);

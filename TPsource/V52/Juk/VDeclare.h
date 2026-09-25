@@ -256,7 +256,8 @@ int lueEventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueOsanot
 void hae_enslahto(void);
 int maaraaOsuusluku(bool kysy);
 INT lueemitfile(void);
-extern int httphaku(wchar_t *host, int port, wchar_t *page, int secure, char *buf, int buflen, int *haettu);
+// katkaistu (valinnainen): 1, jos vastaus ei mahtunut puskuriin buf
+extern int httphaku(wchar_t *host, int port, wchar_t *page, int secure, char *buf, int buflen, int *haettu, int *katkaistu = NULL);
 INT naytatiedot(emittp *em, kilptietue *kilp, INT os, int loppuosa);
 int HaeSeuraLista(bool maafl, wchar_t (*sra)[LSEURA+5], int *nsra, int maxnsra);
 void laheta_em(emittp *em, int rajaus, INT kielto);

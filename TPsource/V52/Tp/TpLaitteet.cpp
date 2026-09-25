@@ -658,35 +658,17 @@ int siritaika(INT32 *t, san_type *vastaus, aikatp *ut, INT *jono, int r_no)
 				}
 			}
 		if (p) {
-			SYSTEMTIME stm;
-			INT32 cardT;
-
-			// Puretaan kortin/aseman oma (mahd. synkronoimaton) aika ja tietokoneen
-			// kello - SRRKORTTIAIKA valitsee kumpi niista tallennetaan, oletuksena
-			// tietokoneen kello. Molemmat kirjataan lokiin vertailua varten.
+			// Sirit/Zebra: tallennetaan lukijan oma tunnistushetki (first=/last=).
+			// SRRKORTTIAIKA ei koske tata: SRR-donglen leimat eivat kulje
+			// taman kautta, ks. tallSRRleima.
 			strncpy(st, p+17, 12);
 			st[12] = 0;
 			st[2] = 0;
 			st[5] = 0;
 			st[8] = 0;
-			cardT = 3600000L * atol(st) + 60000L * atol(st+3) + 1000L * atol(st+6) + atol(st+9)
+			*t = 3600000L * atol(st) + 60000L * atol(st+3) + 1000L * atol(st+6) + atol(st+9)
 				+ t0_regn[r_no];
-			cardT = NORMKELLO_A(10*cardT);
-			GetLocalTime(&stm);
-			if (loki) {
-				char msg[180];
-				sprintf(msg, "SRR/SIRIT: kortin aika %.12s, tietokoneen aika %02d:%02d:%02d.%03d, tallennettu %s (badge %ld)",
-					p+17, stm.wHour, stm.wMinute, stm.wSecond, stm.wMilliseconds,
-					srrkorttiaika ? "kortin aika" : "tietokoneen aika", (long) bdg);
-				kirjloki(msg);
-				}
-			if (srrkorttiaika)
-				*t = cardT;
-			else {
-				*t = 3600000L * stm.wHour + 60000L * stm.wMinute + 1000L * stm.wSecond + stm.wMilliseconds
-					+ t0_regn[r_no];
-				*t = NORMKELLO_A(10*(*t));
-				}
+			*t = NORMKELLO_A(10*(*t));
 			p = strstr(vastaus->bytes, "antenna=");
 #ifndef MAXOSUUSLUKU
 			if (p) {
@@ -982,6 +964,114 @@ static int lue_EmitKello(int r_no, int cn, san_type *vastaus, int *nmsg, int r_m
 	return(0);
 }
 
+// SRR-donglen Air+-radioleimaus (D3-sanoma). data = CN1 CN0 SI3 SI2 SI1 SI0
+// TD TH TL TSS MEM2 MEM1 MEM0: CN1/CN0 = rastikoodi (ylin/alin tavu),
+// SI2..SI0 = kortin numero (ks. decodeD3Siid), TD bitti 0 = iltapaiva,
+// TH:TL = sekunnit 12 h jaksossa, TSS = 1/256 s.
+//
+// Leima tallennetaan suoraan tall_etulos:lla kuten EMITHTTP-radioleimat
+// (ks. tulk_emiTag, EMITHTTP). add_bdg_t/tall_bdg_t eivat kelpaa: niiden badge-kohtainen
+// toistosuodatus hylkasi saman kortin perakkaiset leimat eri rasteilta
+// (esim. viimeinen rasti ja heti perassa maali). Tassa hylataan vain
+// saman kortin toistuva leima samalla rastilla 3 s sisalla (sama sanoma
+// voi tulla useamman kerran). Rastikoodi ohjaa lahdepistehakua samoin
+// kuin EMITHTTP:n eccode.
+//
+// Aika: oletuksena tietokoneen kello (msdaytime), SRRKORTTIAIKA-parametrilla
+// leimasinaseman oma aika sanomasta.
+static void tallSRRleima(int r_no, const unsigned char *data, int dlen)
+	{
+	static UINT32 edsiid[NREGNLY];
+	static int edkoodi[NREGNLY];
+	static INT32 edtms[NREGNLY];
+	UINT32 siid;
+	int koodi;
+	INT32 tms, pctms, korttitms = -1;
+
+	koodi = 256 * data[0] + data[1];
+	siid = decodeD3Siid(data[3], data[4], data[5]);
+	pctms = msdaytime();
+	if (dlen >= 10)
+		korttitms = 1000L * ((data[6] & 1) * 43200L + 256L * data[7] + data[8]) +
+			(1000L * data[9]) / 256;
+	tms = (srrkorttiaika && korttitms >= 0) ? korttitms : pctms;
+	if (loki) {
+		char msg[160];
+		sprintf(msg, "SRR: kortti %lu rasti %d, aseman aika %ld ms, tietokoneen aika %ld ms, tallennettu %s",
+			(unsigned long) siid, koodi, (long) korttitms, (long) pctms,
+			tms == pctms ? "tietokoneen aika" : "aseman aika");
+		kirjloki(msg);
+		}
+	if (!siid)
+		return;
+	if (siid == edsiid[r_no] && koodi == edkoodi[r_no] &&
+		(tms - edtms[r_no] + 86400000L) % 86400000L < 3000L)
+		return;
+	edsiid[r_no] = siid;
+	edkoodi[r_no] = koodi;
+	edtms[r_no] = tms;
+#if defined(MAXOSUUSLUKU) && defined(LUENTA)
+	// Viestin luentaversiossa ei ole aikojen tallennusta (tall_etulos);
+	// add_bdg_t oli siella tyhja.
+#elif !defined(MAXOSUUSLUKU)
+	if (lahdepistehaku && koodi > 0 && koodi < 256 &&
+		vainpiste[r_no+1] <= -3 && vainpiste[0] <= -3)
+		r_no = NREGNLY + koodi - 1;
+	tall_etulos(siid, 0, tms, r_no, -1);
+#else
+	{
+	int lahde = 0;
+	if (lahdepistehaku && koodi > 0 && koodi < 256 &&
+		vainpiste[r_no+1] <= -2 && vainpiste[0] <= -2)
+		lahde = koodi;
+	tall_etulos(siid, 0, tms, r_no, lahde);
+	}
+#endif
+	}
+
+// Kasittelee SRR-donglen (LID_SRRLUKIJA) SportIdent-sanomat puskurista:
+//   [FF] 02 <cmd> <dlen> <data[dlen]> <crc_hi> <crc_lo> 03
+// FF on vapaaehtoinen heratetavu. Kaikki puskurissa olevat taydet sanomat
+// kasitellaan (cmd D3 = radioleimaus, ks. tallSRRleima; muut ohitetaan).
+// Jos puskurin alku ei ole sanoman alku tai sanoman lopussa ei ole ETX:aa,
+// poistetaan yksi tavu ja yritetaan uudelleen - muuten yksikin
+// virheellinen sanoma jumittaisi lukijan pysyvasti, kun puskuri tayttyy
+// eika siita koskaan poisteta mitaan. Jos puskuriin on jaanyt keskenerainen
+// sanoma eika uutta dataa ole tullut (tyhjpuskuri), se hylataan.
+static void lue_SRRsanomat(int r_no, san_type *vastaus, int *nmsg, int tyhjpuskuri)
+	{
+	unsigned char *b = (unsigned char *) vastaus->bytes;
+	int alku, dlen, total, poista;
+
+	while (*nmsg > 0) {
+		alku = (b[0] == 0xFF && *nmsg >= 2 && b[1] == 0x02) ? 1 : 0;
+		if (b[alku] != 0x02) {
+			poista = 1;
+			}
+		else {
+			if (*nmsg < alku + 3)
+				break;                 // otsikko kesken, odotetaan lisaa
+			dlen = b[alku + 2];
+			total = alku + 3 + dlen + 3;
+			if (*nmsg < total)
+				break;                 // sanoma kesken, odotetaan lisaa
+			if (b[total - 1] != 0x03) {
+				poista = 1;            // ei ETX:aa - virheellinen, tahdistetaan
+				}
+			else {
+				if (b[alku + 1] == 0xD3 && dlen >= 6)
+					tallSRRleima(r_no, b + alku + 3, dlen);
+				poista = total;
+				}
+			}
+		*nmsg -= poista;
+		if (*nmsg > 0)
+			memmove(b, b + poista, *nmsg);
+		}
+	if (tyhjpuskuri)
+		*nmsg = 0;
+	}
+
 
 // Tämä lohko ottaa vastaan lukijarastilta tulevat tiedot. Jos muuttuja
 // tyhjpuskuri on asetettu tai jos portilta tulee virhesanoma, tyhjennetään
@@ -1060,92 +1150,12 @@ static int lue_LUKIJA(int r_no, int cn, san_type *vastaus, int *nmsg,
 		*nmsg = 0;
 		}
 	else if (*nmsg >= 10 || *tyhjpuskuri) {
-	// SportIdent Extended Protocol -sanoma (SRR-dongle, Air+-radioleimaus)
-	// Sanoman rakenne: FF 02 <cmd> <dlen> <data[dlen]> <crc_lo> <crc_hi> 03
-	// FF 02 = laajennetun protokollan otsikko, dlen = datan pituus tavuina
-	// total = koko sanoman pituus (4 otsikko + dlen data + 2 CRC + 1 ETX)
-	if (*nmsg >= 4 && (unsigned char)vastaus->bytes[0] == 0xFF &&
-		(unsigned char)vastaus->bytes[1] == 0x02) {
-		unsigned char cmd = (unsigned char)vastaus->bytes[2];
-		unsigned char dlen = (unsigned char)vastaus->bytes[3];
-		int total = 4 + (int)dlen + 2 + 1;
-		if (*nmsg >= total && (unsigned char)vastaus->bytes[total - 1] == 0x03) {
-			// cmd 0xD3 = SportIdent Air+ -leimaussanoma (SIAC-kortin radioleimaus)
-			// Komento 0xD3 lahetetaan kun SIAC-kortti leimaa rastilla langattomasti.
-			// data[0] = CN lo (leimasinaseman numero, alin tavu)
-			// data[1] = CN hi (leimasinaseman numero, ylin tavu)
-			// data[2] = SI-kortin sarjanumeron ylin tavu (SN3, ei kaytossa)
-			// data[3..5] = SI-kortin sarjanumero (SN2, SN1, SN0), 24-bit big-endian:
-			// korttinumero = (SN2<<16) | (SN1<<8) | SN0. Sama kaava kaikille
-			// D3-sanoman lahettavista korttisukupolvista (SI6, SI9+, SIAC) -
-			// SI5 ei koskaan lahetta D3-sanomaa (ei Air+/langatonta laitteistoa),
-			// joten sen oma, eri kaava (klassisen B1-luennan CN/CNS-kentat) ei
-			// koske tata. Ks. decodeD3Siid() Tp/SID3Punch.cpp:ssa.
-			if (cmd == 0xD3 && dlen >= 9) {
-				unsigned char *data = (unsigned char*)vastaus->bytes + 4;
-				UINT32 siid = decodeD3Siid(data[3], data[4], data[5]);
-				int nrest = *nmsg - total;
-				char rest[R_BUFLEN + 1];
-				// Talleta mahdolliset seuraavat sanomat ennen puskurin ylikirjoitusta
-				if (nrest > 0) memcpy(rest, vastaus->bytes + total, nrest);
-				// Rakennetaan vastaus EMIT-muotoon (0x2020-otsikko, badge XOR 0xDF)
-				// jotta tall_emit voi kasitella sen samoin kuin EMIT-kortin leimausta
-				memset(vastaus->bytes, '\xdf', r_msg_len);
-				vastaus->r12.alku = 0x2020;
-				vastaus->r12.badge[0] = (char)((unsigned char)(siid & 0xFF) ^ 0xDF);
-				vastaus->r12.badge[1] = (char)((unsigned char)((siid >> 8) & 0xFF) ^ 0xDF);
-				vastaus->r12.badge[2] = (char)((unsigned char)((siid >> 16) & 0xFF) ^ 0xDF);
-				vastaus->r12.fill1 = (char)(data[1] ^ 0xDF);  // CN hi (leimasinaseman numero, ylin tavu)
-				add_bdg_t(siid, r_no, 0, 0);   // rekisterointi ajanoton aikajonoon
-				tall_emit(vastaus, NULL, r_no); // leimauksen kasittely
-				*nmsg = nrest;
-				if (nrest > 0) memcpy(vastaus->bytes, rest, nrest);
-				} else {
-				// Tuntematon komento tai liian lyhyt data - ohitetaan sanoma
-				int nrest = *nmsg - total;
-				if (nrest > 0) memmove(vastaus->bytes, vastaus->bytes + total, nrest);
-				*nmsg = nrest;
-				}
-			}
-		return 0;
-		}
-
-	// SportIdent classic-protokollan D3-leimaussanoma (esim. BS-11-laitteen
-	// suora sarjaliikenne, ei radioleimauksen FF 02 -laajennettua otsikkoa)
-	// Sanoman rakenne: STX(02) D3 <dlen> <data[dlen]> <crc_hi> <crc_lo> ETX(03)
-	// Data-osa on sama tietue kuin Air+-sanomassa ylla, vain otsikko on
-	// 3 tavua (02 D3 dlen) 4 tavun (FF 02 D3 dlen) sijaan.
-	if (*nmsg >= 3 && (unsigned char)vastaus->bytes[0] == 0x02 &&
-		(unsigned char)vastaus->bytes[1] == 0xD3) {
-		unsigned char dlen = (unsigned char)vastaus->bytes[2];
-		int total = 3 + (int)dlen + 2 + 1;
-		if (*nmsg >= total && (unsigned char)vastaus->bytes[total - 1] == 0x03) {
-			if (dlen >= 9) {
-				unsigned char *data = (unsigned char*)vastaus->bytes + 3;
-				UINT32 siid = decodeD3Siid(data[3], data[4], data[5]);
-				int nrest = *nmsg - total;
-				char rest[R_BUFLEN + 1];
-				// Talleta mahdolliset seuraavat sanomat ennen puskurin ylikirjoitusta
-				if (nrest > 0) memcpy(rest, vastaus->bytes + total, nrest);
-				// Rakennetaan vastaus EMIT-muotoon (0x2020-otsikko, badge XOR 0xDF)
-				// jotta tall_emit voi kasitella sen samoin kuin EMIT-kortin leimausta
-				memset(vastaus->bytes, '\xdf', r_msg_len);
-				vastaus->r12.alku = 0x2020;
-				vastaus->r12.badge[0] = (char)((unsigned char)(siid & 0xFF) ^ 0xDF);
-				vastaus->r12.badge[1] = (char)((unsigned char)((siid >> 8) & 0xFF) ^ 0xDF);
-				vastaus->r12.badge[2] = (char)((unsigned char)((siid >> 16) & 0xFF) ^ 0xDF);
-				vastaus->r12.fill1 = (char)(data[1] ^ 0xDF);  // CN hi (leimasinaseman numero, ylin tavu)
-				add_bdg_t(siid, r_no, 0, 0);   // rekisterointi ajanoton aikajonoon
-				tall_emit(vastaus, NULL, r_no); // leimauksen kasittely
-				*nmsg = nrest;
-				if (nrest > 0) memcpy(vastaus->bytes, rest, nrest);
-				} else {
-				// Liian lyhyt data - ohitetaan sanoma
-				int nrest = *nmsg - total;
-				if (nrest > 0) memmove(vastaus->bytes, vastaus->bytes + total, nrest);
-				*nmsg = nrest;
-				}
-			}
+	// SRR-dongle (LID_SRRLUKIJA) puhuu vain SportIdent-protokollaa, ks.
+	// lue_SRRsanomat. EMIT-lukijan (LID_LUKIJA) puskuria ei tulkita
+	// SI-sanomina: satunnainen FF 02 / 02 D3 -tavupari EMIT-datassa ei saa
+	// ohjata sita SI-kasittelyyn.
+	if (regnly[r_no] == LID_SRRLUKIJA) {
+		lue_SRRsanomat(r_no, vastaus, nmsg, *tyhjpuskuri);
 		return 0;
 		}
 
@@ -2426,7 +2436,10 @@ INT start_regnly(INT r_no)
 			   r_msg_len[r_no] = R_BUFLEN;
 			   break;
 		   case LID_SPORTIDENT:
-				bd = 9;          //  38400 (BSM8 USB)
+			   if (usb_regnly[r_no])
+				   bd = 9;          //  38400 (BSM8 USB)
+			   else
+				   bd = 6;          //  4800 (vanha RS-232-asema, SPORTIDENT=portti:R)
 			   r_msg_len[r_no] = 10;
 			   break;
 		   case LID_ARES:

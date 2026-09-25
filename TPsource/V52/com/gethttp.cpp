@@ -24,7 +24,10 @@
 #include <process.h>
 // #include <tputil.h>
 
-int getwebPage(HINTERNET hSession, LPCWSTR host, int port, LPCWSTR page, int secure, char *buf, int buflen, FILE *outfile, int *dwTot)
+// *katkaistu (jos annettu) asetetaan 1:ksi, jos vastaus ei mahtunut
+// puskuriin buf ja luku lopetettiin kesken - *dwTot on silloin < buflen,
+// joten kutsuja ei voi paatella katkaisua pelkasta pituudesta.
+int getwebPage(HINTERNET hSession, LPCWSTR host, int port, LPCWSTR page, int secure, char *buf, int buflen, FILE *outfile, int *dwTot, int *katkaistu)
 {
 	DWORD dwSize = 0;
 	DWORD dwDownloaded = 0;
@@ -38,6 +41,8 @@ int getwebPage(HINTERNET hSession, LPCWSTR host, int port, LPCWSTR page, int sec
 
 	pbuf = buf;
 	*dwTot = 0;
+	if (katkaistu)
+		*katkaistu = 0;
 
 	// Specify an HTTP server.
 	hConnect = WinHttpConnect( hSession, host, port, 0 );
@@ -99,6 +104,8 @@ int getwebPage(HINTERNET hSession, LPCWSTR host, int port, LPCWSTR page, int sec
 						// chunk still fit at the same *dwTot offset - that
 						// spliced unrelated data together into a corrupted,
 						// non-contiguous result for responses larger than buflen.
+						if (katkaistu)
+							*katkaistu = 1;
 						free(pszOutBuffer);
 						break;
 						}
@@ -129,7 +136,7 @@ int getwebPage(HINTERNET hSession, LPCWSTR host, int port, LPCWSTR page, int sec
 	return(bResults);
 }
 
-int httphaku(wchar_t *host, int port, wchar_t *page, int secure, char *buf, int buflen, int *haettu)
+int httphaku(wchar_t *host, int port, wchar_t *page, int secure, char *buf, int buflen, int *haettu, int *katkaistu)
 {
   int bResults = 0;
   HINTERNET  hSession = NULL;
@@ -149,7 +156,7 @@ int httphaku(wchar_t *host, int port, wchar_t *page, int secure, char *buf, int 
 
 	// Read the data.
 
-	 bResults = getwebPage(hSession, host, port, page, secure, buf, buflen, tmpfile, haettu);
+	 bResults = getwebPage(hSession, host, port, page, secure, buf, buflen, tmpfile, haettu, katkaistu);
 		  // Free the memory allocated to the buffer.
 
 	if (bResults > -3 && bResults != 0)

@@ -2558,7 +2558,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				ny = NREGNLY-1;
 			regnly[ny] = LID_SPORTIDENT;
             port_regnly[ny] = 1;
-            usb_regnly[ny] = 1;         // SportIdent readers (BSM8) are always USB
+            usb_regnly[ny] = 1;         // oletus USB-asema (BSM8); SPORTIDENT=portti:R = vanha RS-232
             if (ajanottofl == -1)
 			   ajanottofl = 0;
             emitfl = 1;
@@ -2571,6 +2571,11 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			if ((p = wcstok(fldn, L"=", &ctx)) != NULL) {
 			   if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL) {
 				  port_regnly[ny] = _wtoi(p);
+				  // SPORTIDENT=portti:R - vanha RS-232-asema (4800 bps,
+				  // "remote mode" -alustus, ks. start_regnly)
+				  if ((p = wcstok(NULL,L":,-/", &ctx)) != NULL &&
+					(*p == L'R' || *p == L'r'))
+					usb_regnly[ny] = 0;
 				  }
 			   }
 			continue;

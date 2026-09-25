@@ -103,11 +103,15 @@ SPORTIDENT2=6
 Kuten `LUKIJA=`, myös `SPORTIDENT=` toimii leimantarkastusmoodissa — myöskään
 tälle lukijalle **ei anneta** `AIKALUKIJAx=VAINz`-parametria.
 
-`SPORTIDENT=`-yhteys oletetaan aina USB-liitännäksi (SI-asema BSM8 tms.):
-tiedonsiirtonopeus on kiinteä 38400 b/s eikä ohjelma lähetä asemalle vanhaa
+`SPORTIDENT=`-yhteys oletetaan USB-liitännäksi (SI-asema BSM8 tms.):
+tiedonsiirtonopeus on 38400 b/s eikä ohjelma lähetä asemalle vanhaa
 RS-232-asemien ("remote mode") alustuskomentoa, johon USB-asema muutenkin
-vastaisi NAK:lla. `KELLOBAUD=`-parametrilla ei siis ole vaikutusta
+vastaisi NAK:lla. `KELLOBAUD=`-parametrilla ei ole vaikutusta
 `SPORTIDENT=`-yhteyteen.
+
+Vanhalle RS-232-asemalle lisätään portin perään `:R`, esimerkiksi
+`SPORTIDENT=1:R`. Tällöin nopeus on 4800 b/s ja ohjelma lähettää asemalle
+"remote mode" -alustuskomennon yhteyden avauksessa.
 
 Kun `SPORTIDENT=`-lukija on käytössä (tai kilpailun tunnistinlaji on asetettu
 SportIdentiksi), ohjelman *Tulospalvelu*-valikon *Emit-luenta*-valinta ja
