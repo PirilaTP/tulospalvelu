@@ -33,9 +33,9 @@ joka on konfiguroitu **readout-tilaan**. Laite liitetään tietokoneeseen:
   nimellä *USB Serial Device* tai vastaavalla ja saa COMn-numeron.
 - **RS-232-liitäntä**: Käytetään sarjaportin numeroa suoraan (kts. A6.4).
 
-SRR-dongle ei sovellu leimantarkastuslukijaksi, koska se vastaanottaa vain
+**SRR-dongle ei sovellu leimantarkastuslukijaksi, koska se vastaanottaa vain
 Air+-radiolähetyksiä. Kortin leimatiedot saadaan luotettavasti vain fyysisellä
-kontaktilukijalla.
+kontaktilukijalla.**
 
 Leimasinten kellot kannattaa tahdistaa tietokoneen kelloon: luentanäkymän
 Kello-sarake, kortilta laskettava maaliaika ja lähtöajan ennakko perustuvat
