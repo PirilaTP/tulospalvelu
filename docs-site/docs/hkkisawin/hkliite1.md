@@ -232,6 +232,6 @@ mutta sen kaikkia alamäärityksiä ei voi tehdä.
 | --- | --- | --- |
 | TAULU\_COM=x TAULUVIIVE=xx GAZ=x GAZVAIHE=x GAZRIVIy= |  | Erilaisten tulostaulujen ohjaukseen liittyviä parametreja |
 | SIRIT SIRITREUNA SIRITARRIVE SIRITDEPART FEIG IMPINJ |  | RFID-tunnisteiden ajanottokäyttöön liittyviä parametreja |
-| SRRKORTTIAIKA |  | SRR-donglen (SRRLUKIJA) Air+-leimauksissa tallennetaan oletuksena tietokoneen kello, ei kortin/aseman omaa - mahdollisesti synkronoimatonta - kelloa; molemmat kirjataan lokiin, jos LOKI on käytössä (ks. LOKI(=tnimi) yllä; oletustiedosto LOKI1.LST). Tämä parametri ottaa käyttöön leimasinaseman oman ajan. Parametri ei koske Sirit- ja Zebra-lukijoita: niillä tallennetaan aina lukijan oma tunnistusaika. |
+| SRRKORTTIAIKA |  | SRR-donglen (SRRLUKIJA) Air+-leimauksissa ja suoraan kytketyn online-rastiaseman (SPORTIDENT) leimauksissa tallennetaan oletuksena tietokoneen kello, ei kortin/aseman omaa - mahdollisesti synkronoimatonta - kelloa; molemmat kirjataan lokiin, jos LOKI on käytössä (ks. LOKI(=tnimi) yllä; oletustiedosto LOKI1.LST). Tämä parametri ottaa käyttöön leimasinaseman oman ajan. Parametri ei koske Sirit- ja Zebra-lukijoita: niillä tallennetaan aina lukijan oma tunnistusaika. |
 | SW2000=xx |  | Uinnin SW2000 kellolaite käytössä |
 | BIBSIIRTOALUE |  | Alue ei-aktiivisten tietueiden numeroille |

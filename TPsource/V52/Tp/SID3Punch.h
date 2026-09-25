@@ -42,4 +42,14 @@
 // 855383 - see git history for the incident this test guards against.
 UINT32 decodeD3Siid(unsigned char sn2, unsigned char sn1, unsigned char sn0);
 
+// Like decodeD3Siid, but for a D3 message from a station wired directly to
+// the PC (online control, auto-send mode). Unlike Air+/SRR, such a station
+// can also punch SI5 cards, whose number is carried in the SI5 card's own
+// form: sn2 = CNS (series), sn1:sn0 = number. A 24-bit value below 500000
+// is therefore decoded as an SI5 card: sn2 < 2 -> sn1sn0, otherwise
+// sn2*100000 + sn1sn0 (same as tulkSI's SI5 case). Every other card
+// generation's SIID is >= 500000 (SI6 579671 above stays 579671), so it
+// is returned unchanged. Not used for SRR/Air+ punches.
+UINT32 decodeD3SiidSuora(unsigned char sn2, unsigned char sn1, unsigned char sn0);
+
 #endif

@@ -113,6 +113,16 @@ Vanhalle RS-232-asemalle lisätään portin perään `:R`, esimerkiksi
 `SPORTIDENT=1:R`. Tällöin nopeus on 4800 b/s ja ohjelma lähettää asemalle
 "remote mode" -alustuskomennon yhteyden avauksessa.
 
+`SPORTIDENT=`-yhteydellä käsitellään myös kaksi asemien auto-send-tilaa:
+
+- **SI5 auto-send (vanha protokolla):** asema lähettää SI5-kortin sisällön
+  itse ilman ohjelman pyyntöä. Kortti käsitellään kuten tavallinen luenta.
+- **Online-rastiasema (D3-leimaussanoma):** suoraan kytketyn rastiaseman
+  leimaukset tallennetaan väliaikoina samalla tavalla kuin SRR-donglen
+  Air+-leimat (lähdepistehaku rastikoodin mukaan, `SRRKORTTIAIKA`
+  valitsee tietokoneen tai aseman ajan). Myös SI5-kortin leimat
+  tunnistetaan.
+
 Kun `SPORTIDENT=`-lukija on käytössä (tai kilpailun tunnistinlaji on asetettu
 SportIdentiksi), ohjelman *Tulospalvelu*-valikon *Emit-luenta*-valinta ja
 sisäänluenta muuttavat kaavakkeiden otsikot muotoon *Sportident-luenta* /

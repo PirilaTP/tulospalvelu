@@ -20,3 +20,12 @@ UINT32 decodeD3Siid(unsigned char sn2, unsigned char sn1, unsigned char sn0)
 {
 	return ((UINT32)sn2 << 16) | ((UINT32)sn1 << 8) | sn0;
 }
+
+UINT32 decodeD3SiidSuora(unsigned char sn2, unsigned char sn1, unsigned char sn0)
+{
+	UINT32 siid = decodeD3Siid(sn2, sn1, sn0);
+
+	if (siid < 500000UL)
+		siid = ((UINT32)sn1 << 8 | sn0) + (sn2 >= 2 ? sn2 * 100000UL : 0);
+	return siid;
+}
