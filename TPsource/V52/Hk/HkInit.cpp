@@ -2514,8 +2514,9 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			siParam.sitime = _wtoi64(fldn+7);
 			continue;
 			}
-		 // SIHAKUVALI=n: how often (in seconds) the Center REST API is polled.
-		 if( !wmemcmpU(fldn, L"SIHAKUVALI=",11)) {
+		 // SIHAKUVALI=n: how often (in seconds) the Center REST API is polled. Also
+		 // accepted as SIHAKUV\xC4LI= (the documented spelling before 2026-09-25).
+		 if( !wmemcmpU(fldn, L"SIHAKUVALI=",11) || !wmemcmpU(fldn, L"SIHAKUV\xC4LI=",11)) {
 			siParam.sihakuvali = _wtoi(fldn+11);
 			if (siParam.sihakuvali < 1)
 				siParam.sihakuvali = 1;
