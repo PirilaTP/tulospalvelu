@@ -34,6 +34,7 @@
 #pragma hdrstop
 #include "VDeclare.h"
 #include "TpLaitteet.h"
+#include "SITulkinta.h"
 
 //#define DBG_1
 //   int emitloki = 1;
@@ -1330,10 +1331,11 @@ INT32 e_maaliaika(emittp *em, kilptietue *kilp, INT os)
 	  if (ok) {
 		 // SportIdent: perakkaisista maalirastin leimoista kaytetaan
 		 // ensimmaista (ks. tarkista). Ilman SportIdentia ennallaan.
-		 if (IsSportidentInUse())
-			while (l > 1 && em->ctrlcode[(lk+l-1)%50] == em->ctrlcode[(lk+l)%50] &&
-					(rt->rastiluku < 2 || oikeakoodi(rt, rt->rastiluku-2, em->ctrlcode[(lk+l)%50], 0) != 1))
-			   l--;
+		 // siMaaliToistoAlkuun: SITulkinta.cpp, yksikkotestattu. Toistoissa
+		 // koodi on sama, joten radan tarkistus tehdaan kerran.
+		 if (IsSportidentInUse() && (rt->rastiluku < 2 ||
+			oikeakoodi(rt, rt->rastiluku-2, em->ctrlcode[(lk+l)%50], 0) != 1))
+			l = siMaaliToistoAlkuun(em->ctrlcode, 50, lk, l);
 		 if (rt->ennakko >= 0) {
 			tm = oslahto(kilp, os) + SEK*(em->ctrltime[(lk+l)%50] - rt->ennakko);
 			}
@@ -2168,15 +2170,18 @@ INT tarkista(emittp *em, kilptietue *pkilp, INT *tulkinta, int lukija, INT haku)
 	  // Ilman SportIdentia (EMIT) toiminta ennallaan.
 	  if (!vapaajarj && i < rt->rastiluku && IsSportidentInUse() &&
 		 (i == 0 || oikeakoodi(rt, i-1, em->ctrlcode[j], 0) != 1)) {
-		 while ((k = (j+49)%50) != lukija && k != (lukija+1)%50 &&
-			em->ctrlcode[k] == em->ctrlcode[j]) {
-			if (tulkinta) {
-			   tulkinta[j] = -(i+1);
+		 // Toistojen alkuun: siToistoAlkuun (SITulkinta.cpp, yksikkotestattu).
+		 // Ohitetut (myohemmat) leimat merkitaan ylimaaraisiksi kuten ennen.
+		 int ohit[50], nohit, h;
+		 j = siToistoAlkuun(em->ctrlcode, 50, j, lukija, ohit, &nohit);
+		 k = (j+49)%50;
+		 if (tulkinta) {
+			for (h = 0; h < nohit; h++) {
+			   tulkinta[ohit[h]] = -(i+1);
 			   for (m = i; m >= 0; m--)
 				  if (rt->rastikoodi[m] > 9999 && rt->rastikoodi[m] <= 10002)
-					 tulkinta[j]++;
+					 tulkinta[ohit[h]]++;
 			   }
-			j = k;
 			}
 		 }
 

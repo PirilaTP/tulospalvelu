@@ -378,3 +378,198 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 		}
 	return(0);
 	}
+
+// ===========================================================================
+// SI-aseman lukusekvenssi (ks. SITulkinta.h ja TpLaitteet.cpp:n lue_SI).
+
+int siTunnistaIlmoitus(const unsigned char *b, int n)
+	{
+	if (n < 4 || (b[1] == 102 && n < 10))
+		return SIILM_ODOTA;
+	if (b[0] == 0x02 && b[1] == 'F' && b[2] == 'I' && b[3] == 0x03)
+		return SIILM_SI5;
+	if (b[1] == 0xE5)
+		return SIILM_SI5EXT;
+	if (b[1] == 0xE8)
+		return SIILM_SI9;
+	if (b[1] == 0xE6)
+		return SIILM_SI6EXT;
+	if (b[1] == 102 && b[8] == 0x03)
+		return SIILM_SI6;
+	if (b[1] == 0x31)
+		return SIILM_SI5AUTO;
+	if (b[1] == 0xD3)
+		return SIILM_D3;
+	return SIILM_EI;
+	}
+
+// Kerattava pituus tyypeittain, indeksi SItype-5: SI5 133, SI6 402,
+// SI9/SI10-11/SI8/pCard/tCard 256 (SI10/11 tarkentuu leimamaaran mukaan),
+// SI6-EXT 512.
+static const int SIdatalen[8] = {133, 402, 256, 256, 256, 256, 256, 512};
+
+void siLukuAloita(SILukuTp *t, int SItype, int SIext, int *skip)
+	{
+	t->SItype = SItype;
+	t->nblock = 0;
+	t->nblocks_needed = 1;
+	t->datalen = SIdatalen[SItype-5];
+	*skip = (SItype == 7 || SItype == 12) ? 6 : (SIext ? 2 : 0);
+	}
+
+int siLukuSeuraava(SILukuTp *t, const unsigned char *buf, int l, int *skip)
+	{
+	int pyynto = SIPYY_EI;
+
+	// SI9-perhe: lohko 0 luettu - korttityyppi SIID:sta (tavut 25..27).
+	if (t->SItype == 7 && l == 128 && t->nblock == 0) {
+		unsigned long siid = buf[25] * 65536L + buf[26] * 256L + buf[27];
+		t->nblock = 1;
+		*skip = 9;
+		if (siid >= 7000000L) {
+			// SI10/11: tavu 22 = leimamaara -> 1..4 leimalohkoa (32/lohko).
+			unsigned char rc = buf[22];
+			t->SItype = 8;
+			t->nblocks_needed = (rc + 31) / 32;
+			if (t->nblocks_needed < 1) t->nblocks_needed = 1;
+			if (t->nblocks_needed > 4) t->nblocks_needed = 4;
+			t->datalen = 128 + t->nblocks_needed * 128;
+			pyynto = SIPYY_SI11_B4;
+			}
+		else {
+			if (siid >= 6000000L)
+				t->SItype = 11;   // tCard
+			else if (siid >= 4000000L)
+				t->SItype = 10;   // pCard
+			else if (siid >= 2000000L)
+				t->SItype = 9;    // SI8
+			t->datalen = SIdatalen[t->SItype-5];
+			pyynto = SIPYY_SI9_B1;
+			}
+		}
+	// SI10/11: seuraava leimalohko, kunnes tarvittavat on luettu.
+	if (t->SItype == 8 && t->nblock > 0 && t->nblock < t->nblocks_needed
+		&& l == 128 + t->nblock * 128) {
+		t->nblock++;
+		*skip = 9;
+		if (t->nblock == 2)
+			pyynto = SIPYY_SI11_B5;
+		else if (t->nblock == 3)
+			pyynto = SIPYY_SI11_B6;
+		else
+			pyynto = SIPYY_SI11_B7;
+		}
+	// SI6-EXT: kiintea sarja lohkoja 0, 1, 6, 7.
+	if (t->SItype == 12 && l == 128 && t->nblock == 0) {
+		t->nblock = 1;
+		*skip = 9;
+		pyynto = SIPYY_SI6X_B1;
+		}
+	else if (t->SItype == 12 && l == 256 && t->nblock == 1) {
+		t->nblock = 2;
+		*skip = 9;
+		pyynto = SIPYY_SI6X_B6;
+		}
+	else if (t->SItype == 12 && l == 384 && t->nblock == 2) {
+		t->nblock = 3;
+		*skip = 9;
+		pyynto = SIPYY_SI6X_B7;
+		}
+	return pyynto;
+	}
+
+int siAutosendAlku(const unsigned char *pre, int prelen, unsigned char *buf, int *dle)
+	{
+	int n = 0, k;
+
+	buf[n++] = 0x02;
+	buf[n++] = 0x02;
+	buf[n++] = 0x31;
+	for (k = 2; k < prelen; k++) {
+		if (*dle) {
+			buf[n++] = pre[k];
+			*dle = 0;
+			}
+		else if (pre[k] == 16)
+			*dle = 1;
+		else
+			buf[n++] = pre[k];
+		}
+	return n;
+	}
+
+// ===========================================================================
+// tulkSI:n tulos emittp:n leimoiksi (ks. SITulkinta.h ja tall_emit).
+
+void siEmitLeimat(const SIResultTp *r, int t0, unsigned char *ctrlcode,
+	UINT16 *ctrltime, int maxn, long *lukuaika)
+	{
+	INT32 lukija_abs, start, check, finish;
+	int i;
+
+	*lukuaika = -1;
+	memset(ctrlcode, 0, maxn);
+	memset(ctrltime, 0, maxn * sizeof(UINT16));
+	// lukija on t_time_l-asteikolla (kymmenyksia suhteessa t0:aan, +/-12 h);
+	// muunnetaan vuorokaudenajaksi sekunteina kuten leimat.
+	lukija_abs = (INT32) (((r->lukija + ((INT32) t0 + 48) * 36000L + 24L*36000L) %
+		(24L*36000L)) / 10);
+	start = r->start == 61166L ? TMAALI0 : r->start;
+	check = r->check == 61166L ? TMAALI0 : r->check;
+	finish = r->finish == 61166L ? TMAALI0 : r->finish;
+	// Ei lahtoleimaa: nollaus-/tarkastusleima, jos se on ennen ensimmaista
+	// leimaa ja enintaan 12 h sita aiemmin; muuten ensimmainen leima (alla).
+	if (start == TMAALI0 && check != TMAALI0) {
+		for (i = 1; i < maxn && !r->ct[i]; i++) ;
+		if (i >= maxn || (r->ct[i] - check + 86400L) % 86400L <= 43200L)
+			start = check;
+		}
+	for (i = 0; i < maxn-2; i++) {
+		ctrlcode[i] = (unsigned char) r->cc[i];
+		ctrltime[i] = (UINT16) r->ct[i];
+		if (start == TMAALI0 && r->ct[i])
+			start = r->ct[i];
+		if (r->ct[i] && start != TMAALI0)
+			ctrltime[i] = (UINT16) ((r->ct[i] - start + 86400L) % 86400L);
+		}
+	for (i = maxn; i > 1; i--)
+		if (ctrlcode[i-1])
+			break;
+	if (i < maxn-1 && i > 1) {
+		if (finish != TMAALI0 && start != TMAALI0) {
+			ctrlcode[i] = 240;
+			ctrltime[i] = (UINT16) ((finish - start + 86400L) % 86400L);
+			i++;
+			}
+		ctrlcode[i] = 250;
+		if (start != TMAALI0)
+			ctrltime[i] = (UINT16) ((lukija_abs - start + 86400L) % 86400L);
+		else
+			ctrltime[i] = (UINT16) ((lukija_abs + 86400L) % 86400L);
+		if (start != TMAALI0)
+			*lukuaika = (lukija_abs - start + 86400L) % 86400L;
+		}
+	}
+
+// ===========================================================================
+// Toistuvat leimat (ks. SITulkinta.h).
+
+int siToistoAlkuun(const unsigned char *ctrlcode, int n, int j, int lukija,
+	int *ohitetut, int *nohit)
+	{
+	int k;
+
+	*nohit = 0;
+	while ((k = (j+n-1)%n) != lukija && k != (lukija+1)%n && ctrlcode[k] == ctrlcode[j]) {
+		ohitetut[(*nohit)++] = j;
+		j = k;
+		}
+	return j;
+	}
+
+int siMaaliToistoAlkuun(const unsigned char *ctrlcode, int n, int lk, int l)
+	{
+	while (l > 1 && ctrlcode[(lk+l-1)%n] == ctrlcode[(lk+l)%n])
+		l--;
+	return l;
+	}

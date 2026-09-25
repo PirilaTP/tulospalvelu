@@ -40,6 +40,7 @@
 #include "TpLaitteet.h"
 #if defined(SPORTIDENT)
 #include "SICenterJson.h"
+#include "SITulkinta.h"
 #endif
 #include "EmitBadge.h"
 #include "IRfidReader.h"
@@ -999,11 +1000,6 @@ static emittp *ed_em[NREGNLY];
 #ifdef AJANOTTO
    INT mm = 0, sek = 0, osat = 0;
 #endif
-#ifdef SPORTIDENT
-   INT32 start;
-	INT32 lukija_abs;   // lukija-aika muunnettuna samalle asteikolle kuin
-	                    // start/ct[] (0..86400s), ks. HkIV.cpp:n tall_emit.
-#endif
 
 	regnlyhetki[r_no] = T_TIME(biostime(0,0));
 	if (!ed_em[r_no]) {
@@ -1136,66 +1132,27 @@ static emittp *ed_em[NREGNLY];
    if (regnly[r_no] == LID_SPORTIDENT) {
       em.badge = vastaus->r21data.badge;
 		em.time = vastaus->r21data.lukija;
-		// lukija tulee t_time_l():sta (PC:n BIOS-kello suhteessa t0:aan,
-		// +/-12h alue) - eri asteikko kuin ct[]/start (kortin oma PTD-
-		// korjattu vuorokaudenaika 0..86400s). Muunnetaan samalle
-		// asteikolle ennen kuin sita kaytetaan niiden kanssa yhdessa.
-		lukija_abs = (INT32) (((vastaus->r21data.lukija +
-			((INT32) t0 + 48) * 36000L + 24L*36000L) % (24L*36000L)) / 10);
-		if (vastaus->r21data.start == 61166L)
-			vastaus->r21data.start = TMAALI0;
-		start = vastaus->r21data.start;
-		if (vastaus->r21data.check == 61166L)
-			vastaus->r21data.check = TMAALI0;
-		// Nollahetki (luentanakyman rivi 0): lahtoleima; sen puuttuessa
-		// nollaus-/tarkastusleima, jos se on ennen ensimmaista rastileimaa
-		// ja enintaan 12 h sita aiemmin (vanha, esim. edellisen paivan
-		// nollaus ei kelpaa); muuten ensimmainen rastileima (alla).
-		if (start == TMAALI0 && vastaus->r21data.check != TMAALI0) {
-			for (i = 1; i < MAXNLEIMA && !vastaus->r21data.ct[i]; i++) ;
-			if (i >= MAXNLEIMA ||
-				(vastaus->r21data.ct[i] - vastaus->r21data.check + 86400L) % 86400L <= 43200L)
-				start = vastaus->r21data.check;
-			}
-		if (vastaus->r21data.finish == 61166L)
-			vastaus->r21data.finish = TMAALI0;
-      em.maali = TMAALI0*10/SEK;
-		// Kaksi viimeista paikkaa jatetaan maali- (240) ja lukijariville
-		// (250): tulkSI palauttaa SI6/SI10/SI11-korteilta enemman leimoja
-		// (cc[1..65]) kuin emittp:hen mahtuu. Ilman varausta >= 48 leiman
-		// kortilta jaisi maali- ja lukijarivi kokonaan pois.
+		// Leimat emittp:hen: siEmitLeimat (SITulkinta.cpp, yksikkotestattu)
+		// - nollahetki (lahto, sen puuttuessa nollaus/tarkastus tai
+		// ensimmainen leima), ajat suhteessa siihen, kaksi viimeista paikkaa
+		// varattuna maali- (240) ja lukijariville (250).
+		{
+		SIResultTp sir;
+		long lukuaika;
+
+		sir.badge = vastaus->r21data.badge;
+		sir.lukija = vastaus->r21data.lukija;
+		sir.start = vastaus->r21data.start;
+		sir.check = vastaus->r21data.check;
+		sir.finish = vastaus->r21data.finish;
+		memcpy(sir.cc, vastaus->r21data.cc, sizeof(sir.cc));
+		memcpy(sir.ct, vastaus->r21data.ct, sizeof(sir.ct));
+		em.maali = TMAALI0*10/SEK;
 		siYlimLeimat(em.badge, vastaus->r21data.cc, MAXNLEIMA-2);
-      for (i = 0; i < MAXNLEIMA-2; i++) {
-         em.ctrlcode[i] = vastaus->r21data.cc[i];
-         em.ctrltime[i] = vastaus->r21data.ct[i];
-			// ct[] voi olla > 65535 (klo 18:12 jalkeen) - ei 16-bittisesta
-			// ctrltime-kentasta
-			if (start == TMAALI0 && vastaus->r21data.ct[i])
-				start = vastaus->r21data.ct[i];
-			if (vastaus->r21data.ct[i] && start != TMAALI0) {
-				em.ctrltime[i] =
-					(vastaus->r21data.ct[i] - start + 86400L) % 86400L;
-				}
-         }
-		for (i = MAXNLEIMA; i > 1; i--)
-			if (em.ctrlcode[i-1])
-				break;
-		if (i < MAXNLEIMA-1 && i > 1) {
-			if (vastaus->r21data.finish != TMAALI0 && start != TMAALI0) {
-				em.ctrlcode[i] = 240;
-				em.ctrltime[i] =
-					(vastaus->r21data.finish - start + 86400L) % 86400L;
-				i++;
-				}
-			em.ctrlcode[i] = 250;
-			if (start != TMAALI0)
-				em.ctrltime[i] =
-					(lukija_abs - start + 86400L) % 86400L;
-			else
-				em.ctrltime[i] = (lukija_abs + 86400L) % 86400L;
-			if (start != TMAALI0)
-				siLukuaikaVaroitus(em.badge, (lukija_abs - start + 86400L) % 86400L);
-			}
+		siEmitLeimat(&sir, t0, (unsigned char *) em.ctrlcode, em.ctrltime, MAXNLEIMA, &lukuaika);
+		if (lukuaika >= 0)
+			siLukuaikaVaroitus(em.badge, lukuaika);
+		}
 		}
 #endif
    if (em.badge == 0) {

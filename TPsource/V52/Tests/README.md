@@ -34,6 +34,11 @@ saa kaiken tarvitsemansa parametreina:
 
 - `Tp/SITulkinta.cpp` sisältää SportIdent-kortin tavupuskurin tulkintalogiikan
   (`tulkSI`), ei riipu globaaleista eikä Windowsista/VCL:sta
+  - samassa tiedostossa SI-aseman lukusekvenssin päätökset (`siTunnistaIlmoitus`,
+    `siLukuAloita`, `siLukuSeuraava`, `siAutosendAlku`; adapteri `lue_SI`),
+    kortin leimat emittp:hen (`siEmitLeimat`; adapteri `tall_emit`) ja
+    toistuvien leimojen säännöt (`siToistoAlkuun`, `siMaaliToistoAlkuun`;
+    adapterit `tarkista` ja `e_maaliaika`)
 - `Tp/SID3Punch.cpp`: SRR-donglen / online-rastiaseman D3-leimat - sanomien
   kehystys (`siEtsiSanoma`), kenttien purku (`siPuraD3`, kortin numero
   `decodeD3SiidSI5`) ja toistosuodatus (`siToistoLeima`); adapterit

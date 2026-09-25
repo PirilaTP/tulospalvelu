@@ -1667,27 +1667,24 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	static char SI6EXTpyynto_b7[8] = {'\377','\002','\341','\001','\007','\101','\012','\003'};
 	// CMD=F9: tells BSM8 to beep once after a successful card read (count=1).
 	static char SIbeep[8] = {'\377','\002','\371','\001','\001','\027','\012','\003'};
-	char SI5code[5] = "\002FI\003";
 	char SIack = ACK;
 	// 128 (block 0) + up to 4 punch blocks × 128 = 640 bytes max for SI10/11.
 	char SIbuf[640], *SIbp;
 	// SItype encodes card family: 5=SI5, 6=SI6, 7=SI9, 8=SI10/11, 9=SI8, 10=pCard,
 	// 11=tCard, 12=SI6 via EXT protocol (distinct from legacy SI6, type 6).
-	// SIdatalen[SItype-5]: total bytes to fill in SIbuf before calling tulkSI.
-	//   SI5: 133 (one B1 block), SI6: 402 (legacy multi-block),
-	//   SI9/SI8/pCard/tCard: 256 (blocks 0+1). SI10/11: 256–640 (block 0 + 1–4 punch blocks).
-	//   SI6-EXT: 512 (block 0 + block 1 + 2 punch blocks, fixed size like legacy SI6).
-	int SItype, SIdatalen[8] = {133, 402, 256, 256, 256, 256, 256, 512}, dle = 0;
+	// luku (SILukuTp, SITulkinta.h): kerattava pituus, luetut lohkot ja SI10/11:n
+	// tarvitsemat leimalohkot - ks. siLukuAloita/siLukuSeuraava.
+	int SItype, dle = 0, ilm;
+	SILukuTp luku;
+	char *lohkopyynto;
 	// SIext=1: BSM8 EXT protocol (38400 bps, binary frames, FF wakeup required).
 	// SIext=0: legacy protocol (DLE-encoded, lower baud rate).
 	// SIskip: bytes remaining to discard from the current response header.
-	// SInblock: 0=reading block 0, 1=reading first punch block (block 1 or 4), etc.
-	// SInblocks_needed: for SI10/11, how many punch blocks (1–4) based on RC in block 0.
-	int SIext = 0, SImsglen = 0, SIskip = 0, SInblock = 0, SInblocks_needed = 1;
+	int SIext = 0, SImsglen = 0, SIskip = 0;
 	// SIautosend=1: vanhan protokollan SI5 auto-send (02 31 <data>): asema
 	// lahetti kortin sisallon itse, joten pyyntoa ei lahdeta; jo luetut
 	// tavut (SIpre) ovat datan alku.
-	int SIautosend = 0, SIprelen = 0, k;
+	int SIautosend = 0, SIprelen = 0;
 	char SIpre[16];
 	INT32 SIt;
 	char *msg = NULL;
@@ -1706,60 +1703,64 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			memmove(&vastaus->r21.stx, &vastaus->r21.tunnus, *nmsg-1);
 			--*nmsg;
 			}
-		if (*nmsg < 4 || (vastaus->r21.tunnus == 102 && *nmsg < 10))
+		// Ilmoituksen tunnistus: siTunnistaIlmoitus (SITulkinta.cpp,
+		// yksikkotestattu).
+		ilm = siTunnistaIlmoitus((unsigned char *) vastaus->bytes, *nmsg);
+		if (ilm == SIILM_ODOTA)
 			od[r_no]++;
 		else {
-			if (!memcmp(&vastaus->r21.stx, SI5code, 4)) {
-				// Legacy SI5: card-inserted beacon "02 46 49 03" (STX 'F' 'I' ETX).
-				msg = SI5pyynto;
-				SImsglen = 4;
-				SItype = 5;
-				SIext = 0;
-				}
-			else if ((unsigned char)vastaus->r21.tunnus == 0xE5) {
-				// EXT CMD=E5: BSM8 reports SI5 card inserted; request B1 block.
-				msg 	= SI5pyyntoEXT;
-				SImsglen = sizeof(SI5pyyntoEXT);
-				SItype = 5;
-				SIext = 1;
-				}
-			else if ((unsigned char)vastaus->r21.tunnus == 0xE8) {
-				// EXT CMD=E8: BSM8 reports SI8/9/10/11 card inserted.
-				// Request block 0 first; actual card type (SItype) is determined from
-				// the SIID in block 0 and updated in the mid-read trigger below.
-				msg = SI9pyynto_b0;
-				SImsglen = sizeof(SI9pyynto_b0);
-				SItype = 7;  // temporary; overwritten after block 0 if SI8 or SI10/11
-				SIext = 1;
-				}
-			else if ((unsigned char)vastaus->r21.tunnus == 0xE6) {
-				// EXT CMD=E6: BSM8 reports SI6 card inserted (EXT protocol variant,
-				// distinct from the legacy DLE-encoded SI6 handled below). Request
-				// block 0 first.
-				msg = SI6EXTpyynto_b0;
-				SImsglen = sizeof(SI6EXTpyynto_b0);
-				SItype = 12;
-				SIext = 1;
-				}
-			else if (vastaus->r21.tunnus == 102 && vastaus->r21.etx == ETX) {
-				msg = SI6pyynto;
-				SImsglen = strlen(SI6pyynto);
-				SItype = 6;
-				SIext = 0;
-				}
-			else if ((unsigned char)vastaus->r21.tunnus == 0x31) {
-				// Vanha protokolla, SI5 auto-send: asema lahettaa kortin sisallon
-				// itse (02 31 <data> CS 03) ilman korttiilmoitusta ja pyyntoa.
-				// Jo luetut tavut talteen ennen puskurin nollausta alla.
-				SItype = 5;
-				SIext = 0;
-				SIautosend = 1;
-				SIprelen = *nmsg < (int) sizeof(SIpre) ? *nmsg : (int) sizeof(SIpre);
-				memcpy(SIpre, vastaus->bytes, SIprelen);
-				}
-			else if ((unsigned char)vastaus->r21.tunnus == 0xD3) {
-				// Suoraan kytketty online-rastiasema (auto-send): leimaussanoma.
-				lue_SID3(r_no, cn, vastaus, *nmsg);
+			switch (ilm) {
+				case SIILM_SI5:
+					// Vanha SI5: kortti asetettu "02 46 49 03" (STX 'F' 'I' ETX).
+					msg = SI5pyynto;
+					SImsglen = 4;
+					SItype = 5;
+					SIext = 0;
+					break;
+				case SIILM_SI5EXT:
+					// EXT E5: SI5-kortti asetettu; pyydetaan B1-lohko.
+					msg = SI5pyyntoEXT;
+					SImsglen = sizeof(SI5pyyntoEXT);
+					SItype = 5;
+					SIext = 1;
+					break;
+				case SIILM_SI9:
+					// EXT E8: SI8/9/10/11, pCard tai tCard asetettu. Ensin lohko 0;
+					// tarkka tyyppi (SItype) paatetaan SIID:sta, ks. siLukuSeuraava.
+					msg = SI9pyynto_b0;
+					SImsglen = sizeof(SI9pyynto_b0);
+					SItype = 7;
+					SIext = 1;
+					break;
+				case SIILM_SI6EXT:
+					// EXT E6: SI6 asetettu (EXT-protokolla, ei vanha DLE-koodattu SI6).
+					msg = SI6EXTpyynto_b0;
+					SImsglen = sizeof(SI6EXTpyynto_b0);
+					SItype = 12;
+					SIext = 1;
+					break;
+				case SIILM_SI6:
+					msg = SI6pyynto;
+					SImsglen = strlen(SI6pyynto);
+					SItype = 6;
+					SIext = 0;
+					break;
+				case SIILM_SI5AUTO:
+					// Vanha protokolla, SI5 auto-send: asema lahettaa kortin sisallon
+					// itse (02 31 <data> CS 03) ilman korttiilmoitusta ja pyyntoa.
+					// Jo luetut tavut talteen ennen puskurin nollausta alla.
+					SItype = 5;
+					SIext = 0;
+					SIautosend = 1;
+					SIprelen = *nmsg < (int) sizeof(SIpre) ? *nmsg : (int) sizeof(SIpre);
+					memcpy(SIpre, vastaus->bytes, SIprelen);
+					break;
+				case SIILM_D3:
+					// Suoraan kytketty online-rastiasema (auto-send): leimaussanoma.
+					lue_SID3(r_no, cn, vastaus, *nmsg);
+					break;
+				default:
+					break;
 				}
 			if ((msg || SIautosend) && loki) {
 				char line[80];
@@ -1784,19 +1785,9 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			// vastauksessa); yllaoleva tahdistus poisti toistuvat STX:t,
 			// joten otsikko rakennetaan ja jo luetut tavut 31:n jalkeen
 			// puretaan DLE-koodauksesta kuten lukusilmukassa.
-			*(SIbp++) = STX;
-			*(SIbp++) = STX;
-			*(SIbp++) = 0x31;
-			for (k = 2; k < SIprelen; k++) {
-				if (dle) {
-					*(SIbp++) = SIpre[k];
-					dle = 0;
-					}
-				else if (SIpre[k] == 16)
-					dle = 1;
-				else
-					*(SIbp++) = SIpre[k];
-				}
+			// siAutosendAlku: SITulkinta.cpp, yksikkotestattu.
+			SIbp += siAutosendAlku((unsigned char *) SIpre, SIprelen,
+				(unsigned char *) SIbuf, &dle);
 			}
 		else {
 			i_flush_x(cn);
@@ -1807,8 +1798,9 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 		//   SI5  B1 response: "02 B1" (2 bytes) + 133-byte SI5tp data
 		//   SI9+ EF response: "02 EF 83 00 0A blocknum" (6 bytes) + 128-byte block data
 		// Legacy (SI5/SI6): no header; bytes are DLE-encoded and not framed.
-		SIskip = (SItype == 7 || SItype == 12) ? 6 : (SIext ? 2 : 0);
-		SInblock = 0;
+		// Kerattava pituus ja ohitettavat otsikkotavut: siLukuAloita
+		// (SITulkinta.cpp, yksikkotestattu).
+		siLukuAloita(&luku, SItype, SIext, &SIskip);
 		for(;;) {
 			nq = 0;
 			if (!read_ch_x(cn, &chin, &nq)) {
@@ -1847,97 +1839,30 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			if (l > 100) {
 				dle = 2*dle;
 				}
-			// Mid-read trigger: block 0 (128 bytes) is complete — determine card type from
-			// SIID and request the correct next block.
-			//
-			// SIID ranges (block 0 bytes [25:28], big-endian 3-byte value):
-			//   SI9:     1 000 000 – 1 999 999  → block 1, P1=56,  4-byte records (SItype=7)
-			//   SI8:     2 000 000 – 3 999 999  → block 1, P1=136, 4-byte records (SItype=9)
-			//   pCard:   4 000 000 – 5 999 999  → block 1, P1=176, 4-byte records (SItype=10)
-			//   tCard:   6 000 000 – 6 999 999  → block 1, P1=56,  8-byte records (SItype=11)
-			//   SI10/11: ≥ 7 000 000           → blocks 4–7, P1=128, 4-byte records (SItype=8)
-			//
-			// SIskip=9: the block 0 response tail (CRC_H CRC_L ETX = 3 bytes) is still
-			// in the serial buffer when this fires and consumes 3 skip credits before
-			// block 1/4's 6-byte header (02 EF 83 00 0A blocknum) arrives. 3+6=9.
-			if (SItype == 7 && l == 128 && SInblock == 0) {
-				unsigned long siid = (unsigned char)SIbuf[25] * 65536L
-				                   + (unsigned char)SIbuf[26] * 256L
-				                   + (unsigned char)SIbuf[27];
-				SInblock = 1;
-				SIskip = 9;
-				if (siid >= 7000000L) {
-					// SI10/11: RC at block 0 byte [22] = punch count.
-					// Compute how many 32-punch blocks (1–4) are needed.
-					unsigned char rc = (unsigned char)SIbuf[22];
-					SItype = 8;
-					SInblocks_needed = (rc + 31) / 32;
-					if (SInblocks_needed < 1) SInblocks_needed = 1;
-					if (SInblocks_needed > 4) SInblocks_needed = 4;
-					SIdatalen[3] = 128 + SInblocks_needed * 128;
-					wrt_st_x(cn, sizeof(SI11pyynto_b4), SI11pyynto_b4, &nch);
-					}
-				else if (siid >= 6000000L) {
-					SItype = 11;  // tCard
-					wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
-					}
-				else if (siid >= 4000000L) {
-					SItype = 10;  // pCard
-					wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
-					}
-				else if (siid >= 2000000L) {
-					SItype = 9;   // SI8
-					wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
-					}
-				else {
-					// SI9
-					wrt_st_x(cn, sizeof(SI9pyynto_b1), SI9pyynto_b1, &nch);
-					}
+			// Lohkon tayttyessa seuraava pyynto: siLukuSeuraava (SITulkinta.cpp,
+			// yksikkotestattu) paattaa SI9-perheen korttityypin SIID:sta,
+			// SI10/11:n leimalohkojen maaran ja SI6-EXT:n lohkosarjan.
+			switch (siLukuSeuraava(&luku, (unsigned char *) SIbuf, l, &SIskip)) {
+				case SIPYY_SI9_B1:  lohkopyynto = SI9pyynto_b1; break;
+				case SIPYY_SI11_B4: lohkopyynto = SI11pyynto_b4; break;
+				case SIPYY_SI11_B5: lohkopyynto = SI11pyynto_b5; break;
+				case SIPYY_SI11_B6: lohkopyynto = SI11pyynto_b6; break;
+				case SIPYY_SI11_B7: lohkopyynto = SI11pyynto_b7; break;
+				case SIPYY_SI6X_B1: lohkopyynto = SI6EXTpyynto_b1; break;
+				case SIPYY_SI6X_B6: lohkopyynto = SI6EXTpyynto_b6; break;
+				case SIPYY_SI6X_B7: lohkopyynto = SI6EXTpyynto_b7; break;
+				default:            lohkopyynto = NULL; break;
+				}
+			SItype = luku.SItype;
+			if (lohkopyynto) {
+				// kaikki lohkopyynnot ovat 8 tavua (ks. SI9pyynto_b1 ym.)
+				wrt_st_x(cn, sizeof(SI9pyynto_b1), lohkopyynto, &nch);
 				utsleep(2);
 				}
-			// SI10/11 multi-block: after each punch block, request the next one if needed.
-			// SInblock counts completed punch blocks (1=block4 done, 2=block5 done, ...).
-			// SIskip=9 skips the 3 tail bytes (CRC_H CRC_L ETX) still in the serial buffer
-			// plus the 6-byte header of the next block response.
-			if (SItype == 8 && SInblock > 0 && SInblock < SInblocks_needed
-			    && l == 128 + SInblock * 128) {
-				SInblock++;
-				SIskip = 9;
-				if (SInblock == 2)
-					wrt_st_x(cn, sizeof(SI11pyynto_b5), SI11pyynto_b5, &nch);
-				else if (SInblock == 3)
-					wrt_st_x(cn, sizeof(SI11pyynto_b6), SI11pyynto_b6, &nch);
-				else
-					wrt_st_x(cn, sizeof(SI11pyynto_b7), SI11pyynto_b7, &nch);
-				utsleep(2);
-				}
-			// SI6-EXT (SItype 12): always reads a fixed sequence of 4 blocks
-			// (0, 1, 6, 7) like the legacy SI6 (case 6, fixed 402 bytes) - not
-			// adaptive like SI10/11, since there's no known record-count field
-			// to size the read from. Blocks 6/7 hold up to 32 punches each
-			// (64 total, matching legacy SI6's two SI6PBLK punch blocks).
-			if (SItype == 12 && l == 128 && SInblock == 0) {
-				SInblock = 1;
-				SIskip = 9;
-				wrt_st_x(cn, sizeof(SI6EXTpyynto_b1), SI6EXTpyynto_b1, &nch);
-				utsleep(2);
-				}
-			else if (SItype == 12 && l == 256 && SInblock == 1) {
-				SInblock = 2;
-				SIskip = 9;
-				wrt_st_x(cn, sizeof(SI6EXTpyynto_b6), SI6EXTpyynto_b6, &nch);
-				utsleep(2);
-				}
-			else if (SItype == 12 && l == 384 && SInblock == 2) {
-				SInblock = 3;
-				SIskip = 9;
-				wrt_st_x(cn, sizeof(SI6EXTpyynto_b7), SI6EXTpyynto_b7, &nch);
-				utsleep(2);
-				}
-			if (l == SIdatalen[SItype-5]) {
+			if (l == luku.datalen) {
 				SIResultTp SIresult;
 				SIlokiHex("SI data", SIbuf, l);
-				if (!tulkSI(SIbuf, &SIresult, SIt, SItype, SIdatalen[SItype-5], t0)) {
+				if (!tulkSI(SIbuf, &SIresult, SIt, SItype, luku.datalen, t0)) {
 					SIlokiTulos(SItype, &SIresult);
 					// SIResultTp on tulkSI:n riippumaton tulostyyppi (ks. SITulkinta.h);
 					// kopioidaan san_type-unionin r21data-jasenten yli.
@@ -1958,7 +1883,7 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 				if (loki) {
 					char line[80];
 					sprintf(line, "SI luenta keskeytyi (aikaraja): saatu %d / %d tavua, SItype %d",
-						l, SIdatalen[SItype-5], SItype);
+						l, luku.datalen, SItype);
 					kirjloki(line);
 					SIlokiHex("SI data", SIbuf, l);
 					}

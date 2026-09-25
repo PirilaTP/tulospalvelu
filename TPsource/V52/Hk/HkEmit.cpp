@@ -33,6 +33,7 @@
 #include "HkDeclare.h"
 #include "HkMuotoilu.h"
 #include "TpLaitteet.h"
+#include "SITulkinta.h"
 
 #ifndef MAXTUNNUS
 #define MAXTUNNUS  899
@@ -2188,15 +2189,18 @@ INT tarkista(emittp *em, INT *tulkinta, INT haku, kilptietue *kilp1)
 	  // EMIT-korteilla toiminta ennallaan.
 	  if (ON_SPORTIDENT_EM(em) && !vapaajarj && i < rt->rastiluku &&
 		 (i == 0 || oikeakoodi(rt, i-1, em->ctrlcode[j], 0) != 1)) {
-		 while ((k = (j+MAXNLEIMA-1)%MAXNLEIMA) != lukija &&
-			k != (lukija+1)%MAXNLEIMA && em->ctrlcode[k] == em->ctrlcode[j]) {
-			if (tulkinta) {
-			   tulkinta[j] = -(i+1);
+		 // Toistojen alkuun: siToistoAlkuun (SITulkinta.cpp, yksikkotestattu).
+		 // Ohitetut (myohemmat) leimat merkitaan ylimaaraisiksi kuten ennen.
+		 int ohit[MAXNLEIMA], nohit, h;
+		 j = siToistoAlkuun((unsigned char *) em->ctrlcode, MAXNLEIMA, j, lukija, ohit, &nohit);
+		 k = (j+MAXNLEIMA-1)%MAXNLEIMA;
+		 if (tulkinta) {
+			for (h = 0; h < nohit; h++) {
+			   tulkinta[ohit[h]] = -(i+1);
 			   for (m = i-1; m >= 0; m--)
 				  if (rt->rastikoodi[m] > 9999 && rt->rastikoodi[m] < 10002)
-					 tulkinta[j]++;
+					 tulkinta[ohit[h]]++;
 			   }
-			j = k;
 			}
 		 }
 
@@ -3679,10 +3683,11 @@ INT32 e_maaliaika(emittp *em, kilptietue *kilp, INT32 *tlahto)
          if (l >= rt->rastiluku-2) {
 			// SportIdent: perakkaisista maalirastin leimoista kaytetaan
 			// ensimmaista (ks. tarkista). EMIT-korteilla ennallaan.
-			if (ON_SPORTIDENT_EM(em))
-			   while (l > 1 && em->ctrlcode[(lk+l-1)%MAXNLEIMA] == em->ctrlcode[(lk+l)%MAXNLEIMA] &&
-			   		(rt->rastiluku < 2 || oikeakoodi(rt, rt->rastiluku-2, em->ctrlcode[(lk+l)%MAXNLEIMA], 0) != 1))
-				  l--;
+			// siMaaliToistoAlkuun: SITulkinta.cpp, yksikkotestattu. Toistoissa
+			// koodi on sama, joten radan tarkistus tehdaan kerran.
+			if (ON_SPORTIDENT_EM(em) && (rt->rastiluku < 2 ||
+				oikeakoodi(rt, rt->rastiluku-2, em->ctrlcode[(lk+l)%MAXNLEIMA], 0) != 1))
+			   l = siMaaliToistoAlkuun((unsigned char *) em->ctrlcode, MAXNLEIMA, lk, l);
             if (tlahto && rt->ennakko >= 0) {
                tm = -SEK*rt->ennakko;
                if (*tlahto != TMAALI0)

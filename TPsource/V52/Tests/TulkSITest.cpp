@@ -900,3 +900,430 @@ TEST_CASE("SI6-EXT: maksimileimamaara (64, lohkot 6+7 taynna) tallentuu kokonaan
 	CHECK((int) (unsigned char) result.cc[64] == 33+63);
 	CHECK(result.ct[64] == 3600L + 63*60);
 }
+
+// ===========================================================================
+// SI-aseman lukusekvenssi (lue_SI): siTunnistaIlmoitus, siLukuAloita,
+// siLukuSeuraava, siAutosendAlku.
+// ===========================================================================
+
+TEST_CASE("siTunnistaIlmoitus: kortin ilmoitukset tunnistetaan")
+{
+	unsigned char si5[4]  = {0x02, 'F', 'I', 0x03};
+	unsigned char e5[12]  = {0x02, 0xE5, 0x06, 0x00, 0x0A, 0x00, 0x02, 0x72, 0xD9, 0, 0, 0x03};
+	unsigned char e8[12]  = {0x02, 0xE8, 0x06, 0x00, 0x0A, 0x00, 0x0F, 0x65, 0xC2, 0, 0, 0x03};
+	unsigned char e6[12]  = {0x02, 0xE6, 0x06, 0x00, 0x0A, 0x00, 0x08, 0xD8, 0x57, 0, 0, 0x03};
+	unsigned char si6[10] = {0x02, 102, 0x83, 0, 0, 0x08, 0xD8, 0x57, 0x03, 0};
+	unsigned char a31[10] = {0x02, 0x31, 0x10, 0x00, 0x10, 0x00, 0x10, 0x00, 0x10, 0x00};
+	unsigned char d3[10]  = {0x02, 0xD3, 0x0D, 0x00, 0x32, 0x00, 0x02, 0x72, 0xD9, 0x01};
+
+	CHECK(siTunnistaIlmoitus(si5, 4) == SIILM_SI5);
+	CHECK(siTunnistaIlmoitus(e5, 10) == SIILM_SI5EXT);
+	CHECK(siTunnistaIlmoitus(e8, 10) == SIILM_SI9);
+	CHECK(siTunnistaIlmoitus(e6, 10) == SIILM_SI6EXT);
+	CHECK(siTunnistaIlmoitus(si6, 10) == SIILM_SI6);
+	CHECK(siTunnistaIlmoitus(a31, 10) == SIILM_SI5AUTO);
+	CHECK(siTunnistaIlmoitus(d3, 10) == SIILM_D3);
+}
+
+TEST_CASE("siTunnistaIlmoitus: liian lyhyt puskuri odottaa, tuntematon hylataan")
+{
+	unsigned char e8[12] = {0x02, 0xE8, 0x06, 0x00, 0x0A, 0x00, 0x0F, 0x65, 0xC2, 0, 0, 0x03};
+	unsigned char si6[10] = {0x02, 102, 0x83, 0, 0, 0x08, 0xD8, 0x57, 0x03, 0};
+	unsigned char e7[10] = {0x02, 0xE7, 0x06, 0x00, 0x0A, 0x00, 0x0F, 0x65, 0xC2, 0};
+
+	CHECK(siTunnistaIlmoitus(e8, 3) == SIILM_ODOTA);
+	// vanha SI6-ilmoitus tarvitsee 10 tavua (ETX tavussa 8)
+	CHECK(siTunnistaIlmoitus(si6, 9) == SIILM_ODOTA);
+	si6[8] = 0x00;
+	CHECK(siTunnistaIlmoitus(si6, 10) == SIILM_EI);
+	// E7 = kortti poistettu - ei kasitella
+	CHECK(siTunnistaIlmoitus(e7, 10) == SIILM_EI);
+}
+
+TEST_CASE("siLukuAloita: kerattava pituus ja ohitettava otsikko tyypeittain")
+{
+	SILukuTp t;
+	int skip;
+
+	siLukuAloita(&t, 5, 0, &skip);  CHECK(t.datalen == 133); CHECK(skip == 0);
+	siLukuAloita(&t, 5, 1, &skip);  CHECK(t.datalen == 133); CHECK(skip == 2);
+	siLukuAloita(&t, 6, 0, &skip);  CHECK(t.datalen == 402); CHECK(skip == 0);
+	siLukuAloita(&t, 7, 1, &skip);  CHECK(t.datalen == 256); CHECK(skip == 6);
+	siLukuAloita(&t, 12, 1, &skip); CHECK(t.datalen == 512); CHECK(skip == 6);
+	CHECK(t.nblock == 0);
+	CHECK(t.nblocks_needed == 1);
+}
+
+// Ajaa lukusekvenssin kuten lue_SI: l kasvaa tavu kerrallaan kunnes
+// datalen tayttyy, ja kerataan lahetetyt pyynnot. buf = kortin data.
+static int ajaLuku(int SItype, int SIext, const unsigned char *buf, int *pyynnot,
+	SILukuTp *t)
+{
+	int l, n = 0, skip;
+
+	siLukuAloita(t, SItype, SIext, &skip);
+	for (l = 1; l <= 640; l++) {
+		int p = siLukuSeuraava(t, buf, l, &skip);
+		if (p != SIPYY_EI) {
+			CHECK(skip == 9);
+			pyynnot[n++] = p;
+			}
+		if (l == t->datalen)
+			break;
+		}
+	return n;
+}
+
+TEST_CASE("siLukuSeuraava: SI9-perheen tyyppi SIID:sta, yksi lisalohko")
+{
+	unsigned char b[640];
+	int p[8], n;
+	SILukuTp t;
+
+	buildBlock(b, 640, 1009090);        // SI9
+	n = ajaLuku(7, 1, b, p, &t);
+	CHECK(n == 1); CHECK(p[0] == SIPYY_SI9_B1); CHECK(t.SItype == 7); CHECK(t.datalen == 256);
+
+	buildBlock(b, 640, 1999999);        // SI9 ylaraja
+	n = ajaLuku(7, 1, b, p, &t);
+	CHECK(t.SItype == 7);
+
+	buildBlock(b, 640, 2000123);        // SI8
+	n = ajaLuku(7, 1, b, p, &t);
+	CHECK(n == 1); CHECK(p[0] == SIPYY_SI9_B1); CHECK(t.SItype == 9); CHECK(t.datalen == 256);
+
+	buildBlock(b, 640, 4000001);        // pCard
+	n = ajaLuku(7, 1, b, p, &t);
+	CHECK(t.SItype == 10); CHECK(p[0] == SIPYY_SI9_B1);
+
+	buildBlock(b, 640, 6000001);        // tCard
+	n = ajaLuku(7, 1, b, p, &t);
+	CHECK(t.SItype == 11); CHECK(p[0] == SIPYY_SI9_B1);
+}
+
+TEST_CASE("siLukuSeuraava: SI10/11 lukee leimamaaran mukaan 1..4 leimalohkoa")
+{
+	unsigned char b[640];
+	int p[8], n;
+	SILukuTp t;
+
+	buildBlock(b, 640, 7000000);        // SI10 alaraja
+	b[22] = 0;                          // ei leimoja -> silti 1 lohko
+	n = ajaLuku(7, 1, b, p, &t);
+	CHECK(t.SItype == 8); CHECK(t.nblocks_needed == 1); CHECK(t.datalen == 256);
+	CHECK(n == 1); CHECK(p[0] == SIPYY_SI11_B4);
+
+	buildBlock(b, 640, 8647177);
+	b[22] = 40;                         // 40 leimaa -> 2 lohkoa
+	n = ajaLuku(7, 1, b, p, &t);
+	CHECK(t.nblocks_needed == 2); CHECK(t.datalen == 384);
+	REQUIRE(n == 2);
+	CHECK(p[0] == SIPYY_SI11_B4); CHECK(p[1] == SIPYY_SI11_B5);
+
+	b[22] = 128;                        // taysi kortti -> 4 lohkoa
+	n = ajaLuku(7, 1, b, p, &t);
+	CHECK(t.datalen == 640);
+	REQUIRE(n == 4);
+	CHECK(p[0] == SIPYY_SI11_B4); CHECK(p[1] == SIPYY_SI11_B5);
+	CHECK(p[2] == SIPYY_SI11_B6); CHECK(p[3] == SIPYY_SI11_B7);
+
+	b[22] = 200;                        // yli 128 -> rajataan 4:aan
+	n = ajaLuku(7, 1, b, p, &t);
+	CHECK(t.nblocks_needed == 4); CHECK(n == 4);
+}
+
+TEST_CASE("siLukuSeuraava: SI6-EXT lukee lohkot 0, 1, 6 ja 7")
+{
+	unsigned char b[640];
+	int p[8], n;
+	SILukuTp t;
+
+	memset(b, 0, sizeof(b));
+	n = ajaLuku(12, 1, b, p, &t);
+	REQUIRE(n == 3);
+	CHECK(p[0] == SIPYY_SI6X_B1); CHECK(p[1] == SIPYY_SI6X_B6); CHECK(p[2] == SIPYY_SI6X_B7);
+	CHECK(t.datalen == 512);
+}
+
+TEST_CASE("siLukuSeuraava: vanhan protokollan SI5/SI6 ei pyyda lisalohkoja")
+{
+	unsigned char b[640];
+	int p[8];
+	SILukuTp t;
+
+	memset(b, 0, sizeof(b));
+	CHECK(ajaLuku(5, 0, b, p, &t) == 0);
+	CHECK(ajaLuku(5, 1, b, p, &t) == 0);
+	CHECK(ajaLuku(6, 0, b, p, &t) == 0);
+}
+
+TEST_CASE("siAutosendAlku: SI5tp-otsikko ja DLE-koodauksen purku")
+{
+	unsigned char pre[6] = {0x02, 0x31, 0x41, 0x10, 0x05, 0x42};
+	unsigned char buf[16];
+	int dle = 0, n;
+
+	n = siAutosendAlku(pre, 6, buf, &dle);
+	REQUIRE(n == 6);
+	CHECK(buf[0] == 0x02); CHECK(buf[1] == 0x02); CHECK(buf[2] == 0x31);
+	CHECK(buf[3] == 0x41); CHECK(buf[4] == 0x05); CHECK(buf[5] == 0x42);
+	CHECK(dle == 0);
+
+	// puskuri loppuu DLE:hen -> tila siirtyy lukusilmukkaan
+	n = siAutosendAlku(pre, 4, buf, &dle);
+	CHECK(n == 4);
+	CHECK(dle == 1);
+}
+
+TEST_CASE("SI5 auto-send: asemalta tuleva kehys tuottaa oikean kortin (229401)")
+{
+	// Kehys linjalla: 02 31 <128 datatavua DLE-koodattuna> CS 03. lue_SI
+	// lukee ensin 10 tavua (r_msg_len), siAutosendAlku rakentaa niista
+	// SIbuf:n alun ja loput luetaan auto-send-tilan lukusilmukalla.
+	SI5tp tp;
+	SIResultTp result;
+	unsigned char *data, wire[400], buf[640];
+	int nw = 0, i, n, dle = 0;
+
+	buildSI5_229401(&tp);
+	data = (unsigned char *) &tp;
+	wire[nw++] = 0x02;
+	wire[nw++] = 0x31;
+	for (i = 3; i < 131; i++) {          // SI5tp:n data = tavut 3..130
+		if (data[i] < 0x20)
+			wire[nw++] = 0x10;
+		wire[nw++] = data[i];
+		}
+	wire[nw++] = 0x10; wire[nw++] = 0x00;   // CS (koodattuna)
+	wire[nw++] = 0x03;
+
+	n = siAutosendAlku(wire, 10, buf, &dle);
+	for (i = 10; i < nw && n < 133; i++) {   // lue_SI:n auto-send-silmukka
+		if (dle) { buf[n++] = wire[i]; dle = 0; }
+		else if (wire[i] == 16) dle = 1;
+		else buf[n++] = wire[i];
+		}
+	CHECK(n == 133);
+	tulkSI((char *) buf, &result, siTics(10, 0, 0), 5, 133, 0);
+	CHECK(result.badge == 229401);
+	CHECK(result.cc[1] == 31);
+}
+
+// ===========================================================================
+// tulkSI:n tulos emittp:n leimoiksi (tall_emit): siEmitLeimat
+// ===========================================================================
+
+// lukija t_time_l-asteikolla (kymmenyksia), kun t0 = 0: lukija_abs = s.
+static INT32 lukijaT(long s)
+{
+	return (INT32) (s * 10L);
+}
+
+static void tyhjaTulos(SIResultTp *r)
+{
+	memset(r, 0, sizeof(*r));
+	r->start = r->check = r->finish = 61166L;
+}
+
+TEST_CASE("siEmitLeimat: leimat, maali- ja lukijarivi suhteessa lahtoon")
+{
+	SIResultTp r;
+	unsigned char cc[50];
+	UINT16 ct[50];
+	long lukuaika;
+
+	tyhjaTulos(&r);
+	r.start = 36000;                                    // 10:00:00
+	r.cc[1] = 31; r.ct[1] = 36100;
+	r.cc[2] = 32; r.ct[2] = 36200;
+	r.cc[3] = 33; r.ct[3] = 36300;
+	r.finish = 36400;
+	r.lukija = lukijaT(36500);
+	siEmitLeimat(&r, 0, cc, ct, 50, &lukuaika);
+	CHECK(cc[1] == 31); CHECK(ct[1] == 100);
+	CHECK(cc[3] == 33); CHECK(ct[3] == 300);
+	CHECK(cc[4] == 240); CHECK(ct[4] == 400);           // maali
+	CHECK(cc[5] == 250); CHECK(ct[5] == 500);           // lukija
+	CHECK(cc[6] == 0);
+	CHECK(lukuaika == 500);
+}
+
+TEST_CASE("siEmitLeimat: ilman lahtoleimaa nollahetki on nollaus, jos enintaan 12 h ennen")
+{
+	SIResultTp r;
+	unsigned char cc[50];
+	UINT16 ct[50];
+	long lukuaika;
+
+	tyhjaTulos(&r);
+	r.check = 35000;                                    // nollaus 1100 s ennen
+	r.cc[1] = 31; r.ct[1] = 36100;
+	r.lukija = lukijaT(36500);
+	siEmitLeimat(&r, 0, cc, ct, 50, &lukuaika);
+	CHECK(ct[1] == 1100);
+	CHECK(lukuaika == 1500);
+
+	// yli 12 h vanha nollaus (edellinen paiva) ei kelpaa -> ensimmainen leima
+	r.check = 36100 - 43201 + 86400;
+	siEmitLeimat(&r, 0, cc, ct, 50, &lukuaika);
+	CHECK(ct[1] == 0);
+	CHECK(lukuaika == 400);
+}
+
+TEST_CASE("siEmitLeimat: ilman lahtoa ja nollausta ensimmainen leima on nollahetki")
+{
+	SIResultTp r;
+	unsigned char cc[50];
+	UINT16 ct[50];
+	long lukuaika;
+
+	tyhjaTulos(&r);
+	r.cc[1] = 31; r.ct[1] = 36100;
+	r.cc[2] = 32; r.ct[2] = 36250;
+	r.lukija = lukijaT(36500);
+	siEmitLeimat(&r, 0, cc, ct, 50, &lukuaika);
+	CHECK(ct[1] == 0); CHECK(ct[2] == 150);
+	CHECK(cc[3] == 250); CHECK(ct[3] == 400);           // ei maalia -> suoraan lukija
+}
+
+TEST_CASE("siEmitLeimat: iltapaivan ajat (> 65535 s) ja puoliyon ylitys")
+{
+	SIResultTp r;
+	unsigned char cc[50];
+	UINT16 ct[50];
+	long lukuaika;
+
+	tyhjaTulos(&r);
+	r.cc[1] = 31; r.ct[1] = 66600;                      // 18:30, ei mahdu 16 bittiin
+	r.cc[2] = 32; r.ct[2] = 66900;
+	r.lukija = lukijaT(67000);
+	siEmitLeimat(&r, 0, cc, ct, 50, &lukuaika);
+	CHECK(ct[1] == 0); CHECK(ct[2] == 300);
+
+	tyhjaTulos(&r);
+	r.start = 86000;                                    // 23:53:20
+	r.cc[1] = 31; r.ct[1] = 200;                        // 00:03:20
+	r.lukija = lukijaT(400);
+	siEmitLeimat(&r, 0, cc, ct, 50, &lukuaika);
+	CHECK(ct[1] == 600);
+	CHECK(lukuaika == 800);
+}
+
+TEST_CASE("siEmitLeimat: yli 47 leimaa - maali- ja lukijarivi mahtuvat silti")
+{
+	SIResultTp r;
+	unsigned char cc[50];
+	UINT16 ct[50];
+	long lukuaika;
+	int i;
+
+	tyhjaTulos(&r);
+	r.start = 36000;
+	for (i = 1; i <= 60; i++) {
+		r.cc[i] = (char) (30 + i);
+		r.ct[i] = 36000 + 10 * i;
+		}
+	r.finish = 37000;
+	r.lukija = lukijaT(37100);
+	siEmitLeimat(&r, 0, cc, ct, 50, &lukuaika);
+	CHECK(cc[47] == 77);                                // viimeinen mahtuva leima
+	CHECK(cc[48] == 240); CHECK(ct[48] == 1000);
+	CHECK(cc[49] == 250); CHECK(ct[49] == 1100);
+	CHECK(lukuaika == 1100);
+
+	// tasan 47 leimaa: sama tulos, ei pudotuksia
+	tyhjaTulos(&r);
+	r.start = 36000;
+	for (i = 1; i <= 47; i++) {
+		r.cc[i] = (char) (30 + i);
+		r.ct[i] = 36000 + 10 * i;
+		}
+	r.finish = 37000;
+	r.lukija = lukijaT(37100);
+	siEmitLeimat(&r, 0, cc, ct, 50, &lukuaika);
+	CHECK(cc[47] == 77); CHECK(cc[48] == 240); CHECK(cc[49] == 250);
+}
+
+TEST_CASE("siEmitLeimat: tyhja kortti - ei lukijarivia eika 12 h -varoitusta")
+{
+	SIResultTp r;
+	unsigned char cc[50];
+	UINT16 ct[50];
+	long lukuaika;
+
+	tyhjaTulos(&r);
+	r.check = 35000;
+	r.lukija = lukijaT(36000);
+	siEmitLeimat(&r, 0, cc, ct, 50, &lukuaika);
+	CHECK(cc[1] == 0); CHECK(cc[2] == 0);
+	CHECK(lukuaika == -1);
+}
+
+TEST_CASE("siEmitLeimat: lukuaika yli 12 h nollauksesta (varoitus)")
+{
+	SIResultTp r;
+	unsigned char cc[50];
+	UINT16 ct[50];
+	long lukuaika;
+
+	tyhjaTulos(&r);
+	r.start = 3600;                                     // 01:00
+	r.cc[1] = 31; r.ct[1] = 3700;
+	r.lukija = lukijaT(3600 + 13 * 3600L);             // 14:00
+	siEmitLeimat(&r, 0, cc, ct, 50, &lukuaika);
+	CHECK(lukuaika == 13 * 3600L);
+}
+
+// ===========================================================================
+// Toistuvat leimat (tarkista, e_maaliaika): siToistoAlkuun, siMaaliToistoAlkuun
+// ===========================================================================
+
+TEST_CASE("siToistoAlkuun: peraakkaisista saman rastin leimoista ensimmainen")
+{
+	// lukija indeksissa 6; rastin 32 leimat indekseissa 2..4
+	unsigned char c[10] = {0, 31, 32, 32, 32, 100, 250, 0, 0, 0};
+	int ohit[10], nohit, j;
+
+	j = siToistoAlkuun(c, 10, 4, 6, ohit, &nohit);
+	CHECK(j == 2);
+	REQUIRE(nohit == 2);
+	CHECK(ohit[0] == 4); CHECK(ohit[1] == 3);          // myohemmat = ylimaaraiset
+}
+
+TEST_CASE("siToistoAlkuun: ei toistoa -> leima ennallaan")
+{
+	unsigned char c[10] = {0, 31, 32, 33, 34, 100, 250, 0, 0, 0};
+	int ohit[10], nohit;
+
+	CHECK(siToistoAlkuun(c, 10, 4, 6, ohit, &nohit) == 4);
+	CHECK(nohit == 0);
+}
+
+TEST_CASE("siToistoAlkuun: ei kulje lukijan (lukija, lukija+1) ohi rengaspuskurissa")
+{
+	unsigned char c[10] = {40, 40, 40, 0, 0, 0, 0, 0, 0, 40};
+	int ohit[10], nohit;
+
+	// lukija = 7: j = 1 -> 0 -> 9 (rengas), pysahtyy ennen 8:aa (lukija+1)
+	CHECK(siToistoAlkuun(c, 10, 1, 7, ohit, &nohit) == 9);
+	CHECK(nohit == 2);
+	// lukija = 3: indeksi 4 on lukija+1 -> ei siirryta siihen
+	unsigned char c2[10] = {0, 0, 0, 250, 40, 40, 0, 0, 0, 0};
+	CHECK(siToistoAlkuun(c2, 10, 5, 3, ohit, &nohit) == 5);
+	CHECK(nohit == 0);
+}
+
+TEST_CASE("siMaaliToistoAlkuun: perakkaisista maalileimoista ensimmainen")
+{
+	unsigned char c[10] = {0, 31, 100, 100, 100, 250, 0, 0, 0, 0};
+
+	CHECK(siMaaliToistoAlkuun(c, 10, 0, 4) == 2);
+	CHECK(siMaaliToistoAlkuun(c, 10, 0, 2) == 2);      // ei toistoa
+}
+
+TEST_CASE("siMaaliToistoAlkuun: ei mene alle 1:n")
+{
+	unsigned char c[10] = {100, 100, 100, 100, 0, 0, 0, 0, 0, 0};
+
+	CHECK(siMaaliToistoAlkuun(c, 10, 0, 3) == 1);
+}
