@@ -1150,7 +1150,13 @@ static emittp *ed_em[NREGNLY];
 		em.maali = TMAALI0*10/SEK;
 		siYlimLeimat(em.badge, vastaus->r21data.cc, MAXNLEIMA-2);
 		siEmitLeimat(&sir, t0, (unsigned char *) em.ctrlcode, em.ctrltime, MAXNLEIMA, &lukuaika);
-		if (lukuaika >= 0)
+		// Ei 12 h -varoitusta sisaanluennassa (SISAANLUENTA-parametri,
+		// Sisaanluenta-ikkuna tai ViestiLuenta): kortti luetaan ennen
+		// kilpailua, joten nollaus on tavallisesti tunteja tai paivia vanha.
+#ifdef LUENTA
+		lukuaika = -1;
+#endif
+		if (lukuaika >= 0 && !sisaanluenta)
 			siLukuaikaVaroitus(em.badge, lukuaika);
 		}
 		}
