@@ -3605,7 +3605,7 @@ void lisaaika(kilptietue *kilp, int d)
 static void emituudelleen(void)
    {
    INT  eptr, d, emitptr0;
-   wchar_t ch, line[16];
+   wchar_t ch, line[80];   // ent. 16: "Alkuperainen koodi ..., koodi nyt ..." on ~45 merkkia
    emittp em;
    kilptietue kilp;
 

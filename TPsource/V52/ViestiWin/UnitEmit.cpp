@@ -1673,17 +1673,18 @@ void __fastcall TFormEmit::BtnHaeSeurClick(TObject *Sender)
 			case 2:
 				i = _wtoi(EdtHakuArvo->Text.c_str());
 				k = haebdg(i, 0);
+				// Seuraava koodi indeksista. Haku paattyy indeksin loppuun - ei
+				// kiinteaan ylarajaan (ent. 19999999), koska SportIdent-kilpailussa
+				// siirretyt koodit (BADGEASKEL 10 000 000) ovat sita suurempia.
 				if (k >= 0 && k < nbadge[0]-1) {
 					i = bdg_kno[0][k+1].badge;
 					}
-				else if (k < 0) {
+				else if (k < 0 && -k - 1 < nbadge[0]) {
 					i = bdg_kno[0][-k - 1].badge;
 					}
 				else
-					i++;
-				EdtHakuArvo->Text = UnicodeString(i);
-				if (i > 19999999)
 					JatkaHakua = 0;
+				EdtHakuArvo->Text = UnicodeString(i);
 				break;
 			case 3:
 				i = _wtoi(EdtHakuArvo->Text.c_str());

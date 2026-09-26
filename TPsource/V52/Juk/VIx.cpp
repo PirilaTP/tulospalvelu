@@ -1281,7 +1281,11 @@ int teejarj(void)
       vidspmsg(20,5,7,0,"Tarkastetaan Emit-koodien toistuminen");
       for (i = 1; i < nr; i++) {
          if (bdg_kno[0][i].badge == bdg) {
-            bdg_kno[0][i].badge = 9999999L;
+			// Merkki suuremmaksi kuin mikaan koodi (kuten HkIx.cpp:ssa), jotta
+			// toistot lajittuvat loppuun ja poistetaan. 9999999 jai siirrettyjen
+			// SportIdent-koodien (esim. 10229401, BADGEASKEL) alle, jolloin ne
+			// poistettiin toistojen sijasta.
+            bdg_kno[0][i].badge = 2000000000L;
 			sprintf(prs, "Kilpailijoilla %d ja %d sama Emit-koodi %d",
                bdg_kno[0][i-1].kilpno, bdg_kno[0][i].kilpno, bdg);
 			kirj_err_file(prs, 1);
@@ -1305,7 +1309,7 @@ int teejarj(void)
 		  vidspmsg(20,5,7,0,"Tarkastetaan tunnistinkoodien toistuminen");
 		  for (i = 1; i < nr; i++) {
 			 if (bdg_kno[1][i].badge == bdg) {
-				bdg_kno[1][i].badge = 9999999L;
+				bdg_kno[1][i].badge = 2000000000L;   // ks. ylla
 				sprintf(prs, "Kilpailijoilla %d ja %d sama tunnistinkoodi",
 				   bdg_kno[1][i-1].kilpno, bdg_kno[1][i].kilpno);
 				kirj_err_file(prs, 1);
