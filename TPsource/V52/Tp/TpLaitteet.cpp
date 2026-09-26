@@ -43,6 +43,7 @@
 #include "TpLaitteet.h"
 #include "IRfidReader.h"
 #include "SID3Punch.h"
+#include "SITulkinta.h"
 
 #include <wincom.h>
 
@@ -114,6 +115,15 @@ bool IsSportidentInUse(void)
 		if (regnly[i] == LID_SPORTIDENT || regnly[i] == LID_SRRLUKIJA)
 			return true;
 	return false;
+	}
+
+// BADGEASKEL (HkDef.h/VDef.h): luetun kortin numeron siirtoaskel. Paatetaan
+// kilpailun tallennetusta tunnistinlajista (kilpparam.badgelaji), ei tyoaseman
+// lukijakonfiguraatiosta (IsSportidentInUse), jotta kaikki tyoasemat kayttavat
+// samaa askelta samoille tiedoille. Ks. siBadgeAskel (SITulkinta.cpp).
+INT32 BadgeAskel(void)
+	{
+	return (INT32) siBadgeAskel(kilpparam.badgelaji);
 	}
 
 #ifdef _CONSOLE

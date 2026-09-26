@@ -1512,7 +1512,7 @@ int __fastcall TFormEmit::tallennaKilpailija(bool kysy)
 		bdg = _wtoi(EdtBadge->Text.c_str());
 		orgbdg = _wtoi(EdtOrigBadge->Text.c_str());
 		if (Kilp.pv[k_pv].laina[1] != L'L' && !(on_lainakortti(bdg) || on_lainakortti(orgbdg)) && HTBadge != 0 &&
-			((bdg != HTBadge && bdg > 30000 && bdg < 1000000) || (orgbdg != HTBadge && orgbdg > 30000 && bdg < 1000000)) &&
+			((bdg != HTBadge && bdg > 30000 && bdg < BADGEASKEL) || (orgbdg != HTBadge && orgbdg > 30000 && bdg < BADGEASKEL)) &&
 			_wtoi(EdtLisno->Text.c_str()) != 0) {
 			if (Application->MessageBox(SIsana(L"Vaihdetaanko tietokannan Emit-koodi?").c_str(), L"Pysyvä muutos?",
 				MB_YESNO) != IDYES) {

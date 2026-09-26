@@ -379,6 +379,11 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 	return(0);
 	}
 
+long siBadgeAskel(wchar_t badgelaji)
+	{
+	return badgelaji == L'I' ? 10000000L : 1000000L;
+	}
+
 // ===========================================================================
 // SI-aseman lukusekvenssi (ks. SITulkinta.h ja TpLaitteet.cpp:n lue_SI).
 

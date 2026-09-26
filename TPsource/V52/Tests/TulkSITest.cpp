@@ -1327,3 +1327,29 @@ TEST_CASE("siMaaliToistoAlkuun: ei mene alle 1:n")
 
 	CHECK(siMaaliToistoAlkuun(c, 10, 0, 3) == 1);
 }
+
+// ===========================================================================
+// Kortin numeron uudelleenkayton askel (BADGEASKEL): siBadgeAskel
+// ===========================================================================
+
+TEST_CASE("siBadgeAskel: SportIdent-kilpailussa 10 000 000, muuten 1 000 000")
+{
+	CHECK(siBadgeAskel(L'I') == 10000000L);
+	CHECK(siBadgeAskel(L'E') == 1000000L);   // Emit
+	CHECK(siBadgeAskel(L'T') == 1000000L);   // emiTag
+	CHECK(siBadgeAskel(L'S') == 1000000L);   // Sirit
+	CHECK(siBadgeAskel(L' ') == 1000000L);   // ei tunnistinta
+}
+
+TEST_CASE("siBadgeAskel: siirretty numero ei voi olla oikean kortin numero")
+{
+	// Suurimmat oikeat numerot: Emit < 1 000 000, SportIdent SI11 < 10 000 000.
+	long si11 = 9999999L, emit = 999999L;
+	// SI5 229401 + 1 000 000 = 1229401 olisi SI9-kortin numero; 10 000 000:n
+	// askeleella pienin siirretty numero on suurempi kuin mikaan SI-numero.
+	CHECK(229401L + siBadgeAskel(L'I') > si11);
+	CHECK(0L + siBadgeAskel(L'I') > si11);
+	CHECK(0L + siBadgeAskel(L'E') > emit);
+	// 30 osuutta (MAXOSUUSLUKU): 29 siirtoa mahtuu 32-bittiseen lukuun.
+	CHECK(si11 + 29L * siBadgeAskel(L'I') < 2147483647L);
+}

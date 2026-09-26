@@ -69,7 +69,11 @@
 #define MAXEMVALAH 45
 #define MAXKILPNO 9999
 
-#define BADGEASKEL 1000000
+// Kortin numeron uudelleenkayton askel: 1 000 000 Emit-kilpailussa,
+// 10 000 000 SportIdent-kilpailussa (tunnistinlaji 'I'), ks. BadgeAskel()
+// Tp/TpLaitteet.cpp:ssa ja siBadgeAskel() Tp/SITulkinta.cpp:ssa.
+INT32 BadgeAskel(void);
+#define BADGEASKEL BadgeAskel()
 
 #if defined(MAALI) && defined(EMIT) && !defined(EILEIMAT)
 #define EMITLEIMAT

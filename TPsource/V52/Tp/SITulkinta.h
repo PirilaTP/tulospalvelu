@@ -64,6 +64,18 @@ typedef char SIResultTp_asettelu_koko[sizeof(SIResultTp) == 352 ? 1 : -1];
 int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int t0);
 
 // ---------------------------------------------------------------------------
+// Kortin numeron uudelleenkayton askel (BADGEASKEL, ks. BadgeAskel()
+// TpLaitteet.cpp:ssa): luetun kortin numero siirretaan kilpailutiedoissa
+// muotoon numero + n * askel, jotta sama kortti voidaan kayttaa uudelleen.
+// Emit-numerot ovat alle 1 000 000, joten Emitilla askel on 1 000 000.
+// SportIdent-numerot ulottuvat lahes 10 miljoonaan (SI9 1 M, SI8 2 M,
+// pCard 4 M, tCard 6 M, SI10 7 M, SIAC 8 M, SI11 9 M), joten 1 000 000:n
+// askeleella siirretty numero voisi olla toisen oikean kortin numero
+// (esim. SI5 229401 -> 1229401 = SI9-kortti). SportIdent-kilpailussa
+// (badgelaji 'I') askel on siksi 10 000 000.
+long siBadgeAskel(wchar_t badgelaji);
+
+// ---------------------------------------------------------------------------
 // SI-aseman lukusekvenssi (Tp/TpLaitteet.cpp:n lue_SI). Puhtaat paatokset
 // erotettu tanne yksikkotesteja varten; lue_SI hoitaa sarjaportin.
 
