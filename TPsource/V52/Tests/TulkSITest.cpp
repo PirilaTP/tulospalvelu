@@ -1381,7 +1381,8 @@ TEST_CASE("siMaxSiirrot: siirretty koodi pysyy alle toistomerkin 2 000 000 000")
 	CHECK(siMaxSiirrot(9999999L, 10000000L) >= 29L);
 	CHECK(siMaxSiirrot(9999999L, 10000000L) < 249L);
 	// Emit-askel: raja ei kaytannossa tule vastaan
-	CHECK(siMaxSiirrot(999999L, 1000000L) == 1998L);
+	CHECK(siMaxSiirrot(999999L, 1000000L) == 1999L);   // 999 999 + 1999 * 1 000 000 = 1 999 999 999
+	CHECK(999999L + (siMaxSiirrot(999999L, 1000000L) + 1) * 1000000L >= 2000000000L);
 	// askel 1 (koodi 200, laskemtn.cpp)
 	CHECK(siMaxSiirrot(200L, 1L) == 1999999799L);
 	// virheelliset syotteet
