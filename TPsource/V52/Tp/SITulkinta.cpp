@@ -396,6 +396,13 @@ long siNaytettavaBadge(long badge, long askel, int len)
 	return badge;
 	}
 
+long siMaxSiirrot(long badge, long askel)
+	{
+	if (badge < 0 || askel <= 0 || badge >= 2000000000L)
+		return 0;
+	return (2000000000L - 1 - badge) / askel;
+	}
+
 // ===========================================================================
 // SI-aseman lukusekvenssi (ks. SITulkinta.h ja TpLaitteet.cpp:n lue_SI).
 

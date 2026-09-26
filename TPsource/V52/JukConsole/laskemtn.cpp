@@ -286,7 +286,9 @@ int haeVapaaKoodi(int badge)
 			return(badge);
 		askel = BADGEASKEL;
 		}
-	for (int i = 1; i < kilpparam.osuusluku; i++) {
+	int maxi = BadgeMaxSiirrot(badge, askel);   // ei ylivuotoa monen osuuden viestissa
+
+	for (int i = 1; i < kilpparam.osuusluku && i <= maxi; i++) {
 		if (bdg2kno(badge+i*askel, 0) <= 0)
 			return(badge+i*askel);
 		}

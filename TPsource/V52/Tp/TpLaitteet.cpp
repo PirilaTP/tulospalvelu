@@ -133,6 +133,12 @@ wchar_t *BadgeTeksti(wchar_t *st, INT32 badge, int len)
 	return st;
 	}
 
+// Kortin numeron siirtojen enimmaismaara (VDef.h), ks. siMaxSiirrot.
+int BadgeMaxSiirrot(INT32 badge, INT32 askel)
+	{
+	return (int) siMaxSiirrot(badge, askel);
+	}
+
 // Kaynnistyksen tarkistus: tyoasemalle on maaritelty SportIdent-lukija
 // (SPORTIDENT= tai SRRLUKIJA=), mutta kilpailun tunnistinlaji ei ole
 // SportIdent. Luetun kortin koodin siirtoaskel (BADGEASKEL) maaraytyy

@@ -82,6 +82,14 @@ long siBadgeAskel(wchar_t badgelaji);
 // numero ilman siirtoja (badge % askel); muuten numero sellaisenaan.
 long siNaytettavaBadge(long badge, long askel, int len);
 
+// Montako kertaa kortin numeroa badge voi siirtaa askeleella askel niin,
+// etta badge + n * askel pysyy alle 2 000 000 000:n. VIx.cpp ja HkIx.cpp
+// merkitsevat indeksin toistot arvolla 2 000 000 000, ja INT32 ylivuotaa
+// 2 147 483 647:n jalkeen. SportIdent-askeleella (10 000 000) raja tulee
+// vastaan vain hyvin monen osuuden viestissa (MAXOSUUSLUKU=250): kortin
+// 9 999 999 koodia voi siirtaa 199 kertaa.
+long siMaxSiirrot(long badge, long askel);
+
 // ---------------------------------------------------------------------------
 // SI-aseman lukusekvenssi (Tp/TpLaitteet.cpp:n lue_SI). Puhtaat paatokset
 // erotettu tanne yksikkotesteja varten; lue_SI hoitaa sarjaportin.

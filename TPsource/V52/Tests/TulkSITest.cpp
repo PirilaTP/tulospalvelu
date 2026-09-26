@@ -1370,3 +1370,22 @@ TEST_CASE("siNaytettavaBadge: liian pitka siirretty koodi -> kortin oma numero")
 	CHECK(siNaytettavaBadge(129647177L, 10000000L, 8) == 9647177L);  // 12 siirtoa
 	CHECK(siNaytettavaBadge(0L, 10000000L, 3) == 0L);
 }
+
+TEST_CASE("siMaxSiirrot: siirretty koodi pysyy alle toistomerkin 2 000 000 000")
+{
+	// SportIdent-askel: suurin kortti 9 999 999 -> 199 siirtoa (1 999 999 999)
+	CHECK(siMaxSiirrot(9999999L, 10000000L) == 199L);
+	CHECK(9999999L + siMaxSiirrot(9999999L, 10000000L) * 10000000L < 2000000000L);
+	CHECK(siMaxSiirrot(229401L, 10000000L) == 199L);
+	// 30 osuuden viesti ei koskaan osu rajaan, 250 osuuden viesti osuu
+	CHECK(siMaxSiirrot(9999999L, 10000000L) >= 29L);
+	CHECK(siMaxSiirrot(9999999L, 10000000L) < 249L);
+	// Emit-askel: raja ei kaytannossa tule vastaan
+	CHECK(siMaxSiirrot(999999L, 1000000L) == 1998L);
+	// askel 1 (koodi 200, laskemtn.cpp)
+	CHECK(siMaxSiirrot(200L, 1L) == 1999999799L);
+	// virheelliset syotteet
+	CHECK(siMaxSiirrot(-1L, 10000000L) == 0L);
+	CHECK(siMaxSiirrot(9999999L, 0L) == 0L);
+	CHECK(siMaxSiirrot(2000000000L, 10000000L) == 0L);
+}

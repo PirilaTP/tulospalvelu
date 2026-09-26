@@ -2083,7 +2083,7 @@ void __fastcall TFormEmit::BtnHaeSeurClick(TObject *Sender)
 {
 	wchar_t txt[62];
 	char key[MAXINDL+1];
-	int d, i, count = 0;
+	int d, i, k, count = 0;
 
 	do {
 		JatkaHakua = 1;
@@ -2115,9 +2115,19 @@ void __fastcall TFormEmit::BtnHaeSeurClick(TObject *Sender)
 				break;
 			case 2:
 				i = _wtoi(EdtHakuArvo->Text.c_str());
-				EdtHakuArvo->Text = UnicodeString(i+1);
-				if (i > 999999)
+				k = haebdg(i);
+				// Seuraava koodi indeksista (kuten ViestiWinissa). Ent. i+1 ja kiintea
+				// ylaraja 999999, jolloin SportIdent-kortteja (SI9:sta alkaen yli
+				// 1 000 000) ja siirrettyja koodeja (BADGEASKEL) ei selattu.
+				if (k >= 0 && k < nbadge-1) {
+					i = bdg_kno[k+1].badge;
+					}
+				else if (k < 0 && -k - 1 < nbadge) {
+					i = bdg_kno[-k - 1].badge;
+					}
+				else
 					JatkaHakua = 0;
+				EdtHakuArvo->Text = UnicodeString(i);
 				break;
 			case 3:
 				i = _wtoi(EdtHakuArvo->Text.c_str());
@@ -2143,7 +2153,7 @@ void __fastcall TFormEmit::BtnHaeEdClick(TObject *Sender)
 {
 	wchar_t txt[62];
 	char key[MAXINDL+1];
-	int d, i;
+	int d, i, k;
 
 	do {
 		JatkaHakua = 1;
@@ -2168,11 +2178,28 @@ void __fastcall TFormEmit::BtnHaeEdClick(TObject *Sender)
 				MuutosHaku = true;
 				break;
 			case 1:
-			case 2:
 			case 3:
 				i = _wtoi(EdtHakuArvo->Text.c_str());
 				if (i > 1)
 					EdtHakuArvo->Text = UnicodeString(i-1);
+				else
+					JatkaHakua = 0;
+				break;
+			case 2:
+				// Edellinen koodi indeksista (kuten ViestiWinissa), ks. BtnHaeSeurClick
+				i = _wtoi(EdtHakuArvo->Text.c_str());
+				if (i > 1) {
+					k = haebdg(i);
+					if (k > 0) {
+						i = bdg_kno[k-1].badge;
+						}
+					else if (k < -1) {
+						i = bdg_kno[-k - 2].badge;
+						}
+					else
+						i--;
+					EdtHakuArvo->Text = UnicodeString(i);
+					}
 				else
 					JatkaHakua = 0;
 				break;
