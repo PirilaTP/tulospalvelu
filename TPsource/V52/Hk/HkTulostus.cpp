@@ -668,7 +668,7 @@ wchar_t *kilptietue::strval(tulostusparamtp *tulprm, wchar_t *st, int len, int k
 			if (Sarjat[Sarja(i_pv)].luonne[i_pv] < 0)
 				break;
 			if (pv[i_pv].badge[0])
-				_itow(pv[i_pv].badge[0], st, 10);
+				BadgeTeksti(st, pv[i_pv].badge[0], len);
 			return(st);
 		case F_SRA:
 			wcsncpy(st, seura, len);

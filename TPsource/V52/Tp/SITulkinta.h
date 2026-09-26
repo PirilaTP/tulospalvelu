@@ -75,6 +75,13 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 // (badgelaji 'I') askel on siksi 10 000 000.
 long siBadgeAskel(wchar_t badgelaji);
 
+// Listalle tulostettava kortin numero, kun kentan leveys on len merkkia
+// (0 = ei rajaa). putfld katkaisee liian pitkan tekstin lopusta, jolloin
+// siirretty koodi (esim. 10229401 7 merkin kenttaan -> "1022940") nayttaisi
+// toisen kortin numerolta. Jos numero ei mahdu, palautetaan kortin oma
+// numero ilman siirtoja (badge % askel); muuten numero sellaisenaan.
+long siNaytettavaBadge(long badge, long askel, int len);
+
 // ---------------------------------------------------------------------------
 // SI-aseman lukusekvenssi (Tp/TpLaitteet.cpp:n lue_SI). Puhtaat paatokset
 // erotettu tanne yksikkotesteja varten; lue_SI hoitaa sarjaportin.

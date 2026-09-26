@@ -1353,3 +1353,20 @@ TEST_CASE("siBadgeAskel: siirretty numero ei voi olla oikean kortin numero")
 	// 30 osuutta (MAXOSUUSLUKU): 29 siirtoa mahtuu 32-bittiseen lukuun.
 	CHECK(si11 + 29L * siBadgeAskel(L'I') < 2147483647L);
 }
+
+TEST_CASE("siNaytettavaBadge: mahtuva numero sellaisenaan")
+{
+	CHECK(siNaytettavaBadge(229401L, 10000000L, 7) == 229401L);
+	CHECK(siNaytettavaBadge(10229401L, 10000000L, 8) == 10229401L);
+	CHECK(siNaytettavaBadge(1229401L, 1000000L, 7) == 1229401L);   // Emit ennallaan
+	CHECK(siNaytettavaBadge(10229401L, 10000000L, 0) == 10229401L); // ei rajaa
+}
+
+TEST_CASE("siNaytettavaBadge: liian pitka siirretty koodi -> kortin oma numero")
+{
+	// 7 merkin kenttaan putfld katkaisisi 10229401 -> "1022940" (vaara kortti)
+	CHECK(siNaytettavaBadge(10229401L, 10000000L, 7) == 229401L);
+	CHECK(siNaytettavaBadge(28647177L, 10000000L, 7) == 8647177L);  // 2 siirtoa
+	CHECK(siNaytettavaBadge(129647177L, 10000000L, 8) == 9647177L);  // 12 siirtoa
+	CHECK(siNaytettavaBadge(0L, 10000000L, 3) == 0L);
+}

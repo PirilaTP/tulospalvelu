@@ -33,6 +33,9 @@
 // Tp/TpLaitteet.cpp:ssa ja siBadgeAskel() Tp/SITulkinta.cpp:ssa.
 INT32 BadgeAskel(void);
 #define BADGEASKEL BadgeAskel()
+// Kortin numero listan kenttaan, jonka leveys on len (0 = ei rajaa): jos
+// siirretty koodi ei mahdu, kortin oma numero (ks. siNaytettavaBadge).
+wchar_t *BadgeTeksti(wchar_t *st, INT32 badge, int len);
 
 #ifdef MAKI
 #undef MAKI

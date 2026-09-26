@@ -384,6 +384,18 @@ long siBadgeAskel(wchar_t badgelaji)
 	return badgelaji == L'I' ? 10000000L : 1000000L;
 	}
 
+long siNaytettavaBadge(long badge, long askel, int len)
+	{
+	int n = 1;
+	long b;
+
+	for (b = badge; b >= 10 || b <= -10; b /= 10)
+		n++;
+	if (len > 0 && n > len && badge > 0 && askel > 0)
+		return badge % askel;
+	return badge;
+	}
+
 // ===========================================================================
 // SI-aseman lukusekvenssi (ks. SITulkinta.h ja TpLaitteet.cpp:n lue_SI).
 

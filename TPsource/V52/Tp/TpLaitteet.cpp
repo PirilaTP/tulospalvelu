@@ -126,6 +126,13 @@ INT32 BadgeAskel(void)
 	return (INT32) siBadgeAskel(kilpparam.badgelaji);
 	}
 
+// Kortin numero listan kenttaan (HkDef.h/VDef.h), ks. siNaytettavaBadge.
+wchar_t *BadgeTeksti(wchar_t *st, INT32 badge, int len)
+	{
+	_itow((int) siNaytettavaBadge(badge, BADGEASKEL, len), st, 10);
+	return st;
+	}
+
 // Kaynnistyksen tarkistus: tyoasemalle on maaritelty SportIdent-lukija
 // (SPORTIDENT= tai SRRLUKIJA=), mutta kilpailun tunnistinlaji ei ole
 // SportIdent. Luetun kortin koodin siirtoaskel (BADGEASKEL) maaraytyy
