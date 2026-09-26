@@ -403,6 +403,11 @@ long siMaxSiirrot(long badge, long askel)
 	return (2000000000L - 1 - badge) / askel;
 	}
 
+bool siViallinenEmit200(long badge, wchar_t badgelaji)
+	{
+	return badge == 200 && badgelaji != L'I';
+	}
+
 // ===========================================================================
 // SI-aseman lukusekvenssi (ks. SITulkinta.h ja TpLaitteet.cpp:n lue_SI).
 

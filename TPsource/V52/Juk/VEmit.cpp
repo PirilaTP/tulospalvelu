@@ -1086,7 +1086,7 @@ int haeVapaaKoodi(int badge)
 {
 	int askel;
 
-	if (badge == 200) {
+	if (ViallinenEmit200(badge)) {
 		return(ensvapaa());
 		}
 	else {

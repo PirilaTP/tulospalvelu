@@ -139,6 +139,13 @@ int BadgeMaxSiirrot(INT32 badge, INT32 askel)
 	return (int) siMaxSiirrot(badge, askel);
 	}
 
+// Viallinen Emit-kortti (koodi 200)? Ei SportIdent-kilpailussa, ks.
+// siViallinenEmit200.
+bool ViallinenEmit200(INT32 badge)
+	{
+	return siViallinenEmit200(badge, kilpparam.badgelaji);
+	}
+
 // Kaynnistyksen tarkistus: tyoasemalle on maaritelty SportIdent-lukija
 // (SPORTIDENT= tai SRRLUKIJA=), mutta kilpailun tunnistinlaji ei ole
 // SportIdent. Luetun kortin koodin siirtoaskel (BADGEASKEL) maaraytyy

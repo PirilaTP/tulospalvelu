@@ -77,6 +77,8 @@ INT32 BadgeAskel(void);
 // Kortin numero listan kenttaan, jonka leveys on len (0 = ei rajaa): jos
 // siirretty koodi ei mahdu, kortin oma numero (ks. siNaytettavaBadge).
 wchar_t *BadgeTeksti(wchar_t *st, INT32 badge, int len);
+// Viallinen Emit-kortti (koodi 200), ei SportIdent-kilpailussa (ks. siViallinenEmit200).
+bool ViallinenEmit200(INT32 badge);
 // Montako kertaa koodia badge voi siirtaa askeleella askel ylittamatta
 // indeksin toistomerkkia / INT32-rajaa (ks. siMaxSiirrot).
 int BadgeMaxSiirrot(INT32 badge, INT32 askel);

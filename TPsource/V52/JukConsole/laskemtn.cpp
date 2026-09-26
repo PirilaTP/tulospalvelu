@@ -279,7 +279,7 @@ int haeVapaaKoodi(int badge)
 {
 	int askel;
 
-	if (badge == 200)
+	if (ViallinenEmit200(badge))
 		askel = 1;
 	else {
 		if (!esta_uusikaytto)
@@ -678,7 +678,7 @@ INT leimat(void)
                   }
                vidint(r5+os, 37, 6, badge);
                ch = 'H';
-			   if (badge == 200) {
+			   if (ViallinenEmit200(badge)) {
                     ch = 'E';
 					viwrrect(r5+kilpparam.osuusluku,0,r5+kilpparam.osuusluku+4,64,
 						"                                                                 "

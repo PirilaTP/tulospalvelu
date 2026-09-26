@@ -51,7 +51,7 @@ ColTp IlmGridCols0[] = {
 	{L"Ilm.lista", 50, 0, 1, 0, false},
 	{L"Arv.ryhmä", 50, 0, 1, 0, false},
 	{L"RintaNo", 50, 0, N_PV, 0, false},
-	{L"Badge", 45, 0, N_PV, 0, true},
+	{L"Badge", 70, 0, N_PV, 0, true},
 	{L"Laina", 30, 0, N_PV, 0, false},
 	{L"Tas.", 40, 0, N_PV, 0, false},
 	{L"Läsnä", 35, 0, N_PV, 0, true},

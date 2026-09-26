@@ -90,6 +90,11 @@ long siNaytettavaBadge(long badge, long askel, int len);
 // 9 999 999 koodia voi siirtaa 199 kertaa.
 long siMaxSiirrot(long badge, long askel);
 
+// Emit-kortti, joka on menettanyt koodinsa, nayttaa koodia 200 ("viallinen
+// kortti"). SportIdent-kilpailussa (badgelaji 'I') 200 on oikean SI5-kortin
+// numero, joten sita ei kasitella viallisena.
+bool siViallinenEmit200(long badge, wchar_t badgelaji);
+
 // ---------------------------------------------------------------------------
 // SI-aseman lukusekvenssi (Tp/TpLaitteet.cpp:n lue_SI). Puhtaat paatokset
 // erotettu tanne yksikkotesteja varten; lue_SI hoitaa sarjaportin.

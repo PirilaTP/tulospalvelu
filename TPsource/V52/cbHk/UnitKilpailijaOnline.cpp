@@ -32,7 +32,7 @@ tietolinkkitp *HenkLinkki;
 ColTp PvOlGridCols0[] = {
 	{L"Päivä", 40, 0, 1, 0, true},
 	{L"Bib", 40, 0, 1, 0, false},
-	{L"Badge", 40, 0, 1, 0, false},
+	{L"Badge", 70, 0, 1, 0, false},
 	{L"Lähtö-arv", 70, 0, 1, 0, true},
 	{L"Lähtö-tot", 70, 0, 1, 0, false},
 	{L"Maali", 70, 0, 1, 0, true},

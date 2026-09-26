@@ -1389,3 +1389,12 @@ TEST_CASE("siMaxSiirrot: siirretty koodi pysyy alle toistomerkin 2 000 000 000")
 	CHECK(siMaxSiirrot(9999999L, 0L) == 0L);
 	CHECK(siMaxSiirrot(2000000000L, 10000000L) == 0L);
 }
+
+TEST_CASE("siViallinenEmit200: koodi 200 viallinen vain muussa kuin SportIdent-kilpailussa")
+{
+	CHECK(siViallinenEmit200(200L, L'E'));
+	CHECK(siViallinenEmit200(200L, L'T'));
+	CHECK_FALSE(siViallinenEmit200(200L, L'I'));    // SI5-kortti 200
+	CHECK_FALSE(siViallinenEmit200(201L, L'E'));
+	CHECK_FALSE(siViallinenEmit200(10000200L, L'I')); // siirretty SI5 200
+}

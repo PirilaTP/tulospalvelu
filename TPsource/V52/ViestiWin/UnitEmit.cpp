@@ -735,7 +735,7 @@ int __fastcall TFormEmit::HaeKilpailija(void)
 	int os, kno, d;
 
 	Em.osuus = -1;
-	if (Em.badge != 200 && Em.badge && (kno = bdg2kno(Em.badge, 0)) != 0) {
+	if (!ViallinenEmit200(Em.badge) && Em.badge && (kno = bdg2kno(Em.badge, 0)) != 0) {
 		d = getpos(kno);
 		kilp.getrec(d);
 		for (os = Sarjat[kilp.sarja].osuusluku-1; os >= 0; os--) {
@@ -769,7 +769,7 @@ int __fastcall TFormEmit::KysyKilpailija(void)
 	CBOsuus->Enabled = true;
 	if (Em.kilpno == 0) {
 		EdtKilpno->ReadOnly = false;
-		if (Em.badge == 200) {
+		if (ViallinenEmit200(Em.badge)) {
 			EdtMessage->Text = L"Viallinen kortti, koodi 200. Syötä kilpno ja osuus";
 			EdtMessage->Color = clYellow;
 			EdtMessage->Visible = true;

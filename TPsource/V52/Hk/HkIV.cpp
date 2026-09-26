@@ -1242,7 +1242,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 	   return(0);
 	   }
 #ifdef _CONSOLE
-	if (em.badge == 200 && memcmp(&em.sc, "emiTag", 6) != 0) {
+	if (ViallinenEmit200(em.badge) && memcmp(&em.sc, "emiTag", 6) != 0) {
 		kno = 0;
 		kbg = 0;
 		writeerror_w(L"Koodinsa menettänyt kortti (näyttää 200). Vastaa jatkokysymyksiin", 0);
@@ -1560,7 +1560,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 
 	if (kilp0)
 		kilp0->nollaa();
-	if (em.badge == 200 && memcmp(&em.sc, "emiTag", 6) != 0) {
+	if (ViallinenEmit200(em.badge) && memcmp(&em.sc, "emiTag", 6) != 0) {
 		if (esiluenta) {
 			wcscat(msgtxt, L"Viallinen kortti (koodi 200). Käyttö estetty. ");
 			em.badge = 0;

@@ -328,7 +328,7 @@ void __fastcall TFormLuenta::FormResize(TObject *Sender)
 int __fastcall TFormLuenta::TarkKoodi(int badge)
 {
 	int kno, ibdg;
-	if (badge == 200) {
+	if (ViallinenEmit200(badge)) {
 		MemoMsg->Text = SIsana(L"Viallinen Emit-kortti (koodi 200). Kortti on vaihdettava. Paina Esc.");
 		MemoMsg->Color = clFuchsia;
 		MemoMsg->Visible = true;
