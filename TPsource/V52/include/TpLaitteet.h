@@ -64,6 +64,7 @@ void tee_aika(int laji);
 INT start_regnly(INT r_no);
 void rem_regnly(INT r_no);
 bool IsSportidentInUse(void);
+void SITunnistinVaroitus(void);
 
 /*
 static INT32 ec_strtoaika(char *st, int t0, int *i_pv);

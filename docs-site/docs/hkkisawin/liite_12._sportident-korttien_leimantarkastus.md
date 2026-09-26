@@ -112,6 +112,12 @@ asemalle alustuskomennon yhteyden avauksessa.
 
 `KELLOBAUD=`-parametrilla ei ole vaikutusta `SPORTIDENT=`-yhteyteen.
 
+Aseta kilpailun määrityksissä tunnistimeksi **SportIdent** ennen korttien
+lukemista. Tunnistin ratkaisee, millä askeleella luettujen korttien koodit
+siirretään (SportIdent 10 000 000, muut 1 000 000). Jos työasemalle on
+määritelty `SPORTIDENT=`- tai `SRRLUKIJA=`-lukija mutta kilpailun tunnistin
+on jokin muu, ohjelma varoittaa tästä käynnistyessään.
+
 ### A12.5 Ratatiedot ja rastikoodit
 
 Leimantarkastus edellyttää, että ohjelmalla on käytettävissä:

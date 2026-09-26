@@ -2862,6 +2862,8 @@ int aloitus(int argc, wchar_t *argv[], wchar_t *cfgflnm)
 
 	if ((kilpparam.badgelaji > L' ' || vaajat) && emitfl == 0)
 		emitfl = -1;
+	// SportIdent-lukija, mutta tunnistin ei SportIdent -> varoitus (TpLaitteet.cpp)
+	SITunnistinVaroitus();
 
 	if (sisaanluenta > 1)
 		emitfl = 0;

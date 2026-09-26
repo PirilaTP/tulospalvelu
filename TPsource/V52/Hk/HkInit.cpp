@@ -3385,6 +3385,8 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 	if (kilpparam.vakanttisarja < 0) {
 		kilpparam.vakanttisarja = sarjaluku - 1;
 		}
+	// SportIdent-lukija, mutta tunnistin ei SportIdent -> varoitus (TpLaitteet.cpp)
+	SITunnistinVaroitus();
 	if (ToimintaTila == 2 && kilpparam.badgelaji > L' ' && emitfl == 0) {
 		if (vaajat)
 			emitfl = -1;
