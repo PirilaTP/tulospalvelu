@@ -155,6 +155,44 @@ void siLukuAloita(SILukuTp *t, int SItype, int SIext, int *skip);
 // Palauttaa SIPYY_*-arvon.
 int siLukuSeuraava(SILukuTp *t, const unsigned char *buf, int l, int *skip);
 
+// ---------------------------------------------------------------------------
+// EXT-protokollan vastauskehykset (lue_SI, SIext=1):
+//   02 <cmd> <len> <asema_H> <asema_L> <data[len-2]> <crc_H> <crc_L> 03
+// EF/E1-vastauksen datan 1. tavu on lohkonumero, jota seuraa 128 tavua.
+
+// SportIdentin CRC (polynomi 0x8005, 16 bitin sanoina) tavuista p[0..n);
+// kehyksessa lasketaan cmd:sta datan loppuun (ei STX:aa, CRC:ta eika ETX:aa).
+unsigned int siCrc(const unsigned char *p, int n);
+
+typedef struct {
+	int n;                  // keratyt kehyksen tavut
+	unsigned char k[140];   // kehys STX:sta ETX:aan (EF-lohko 137 tavua)
+} SIKehysTp;
+
+// siKehysTavu/siExtTavu-paluuarvot.
+#define SIKEHYS_KESKEN   0   // kehys kesken
+#define SIKEHYS_OK       1   // kehys valmis ja kunnossa
+#define SIKEHYS_VIRHE   -1   // ETX, CRC, pituus, komento tai lohkonumero vaarin
+#define SIKEHYS_POISTO  -2   // kortti poistettiin kesken luennan (E7)
+#define SIKEHYS_NAK     -3   // asema hylkasi pyynnon (NAK)
+
+void siKehysAloita(SIKehysTp *k);
+
+// Lisaa tavun c kehykseen. STX:aa edeltavat tavut (herate FF, edellisen
+// sanoman jaanteet) ohitetaan; NAK ennen kehysta = SIKEHYS_NAK. Valmiista
+// kehyksesta tarkistetaan pituus, ETX ja CRC; E7 = SIKEHYS_POISTO.
+int siKehysTavu(SIKehysTp *k, unsigned char c);
+
+// Lue_SI:n EXT-tavu: keraa kehyksen (siKehysTavu) ja kun se on valmis,
+// tarkistaa komennon kmd (B1, EF tai E1) ja EF/E1:lla lohkonumeron lohko,
+// ja lisaa datan buf:iin kohtaan *l (enintaan maxl tavua), *l kasvaa:
+//   B1 (SI5): len, asemakoodi, 128 tavua dataa ja CRC = 133 tavua, sama
+//             asettelu kuin vanhan protokollan SI5tp (data tavusta 3)
+//   EF/E1:    lohkon 128 tavua (lohkonumero ohitetaan)
+// Kehys alustetaan uutta varten, kun se on kasitelty.
+int siExtTavu(SIKehysTp *k, unsigned char c, int kmd, int lohko,
+	unsigned char *buf, int *l, int maxl);
+
 // SI5 auto-send (SIILM_SI5AUTO): rakentaa SIbuf:n alun jo luetuista
 // tavuista pre[0..prelen) (02 31 <data...>): kolmen tavun SI5tp-otsikko
 // (02 02 31) ja data pre[2]:sta DLE-koodaus purettuna. *dle kantaa

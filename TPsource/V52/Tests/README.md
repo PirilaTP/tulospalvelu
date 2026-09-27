@@ -36,6 +36,7 @@ saa kaiken tarvitsemansa parametreina:
   (`tulkSI`), ei riipu globaaleista eikä Windowsista/VCL:sta
   - samassa tiedostossa SI-aseman lukusekvenssin päätökset (`siTunnistaIlmoitus`,
     `siLukuAloita`, `siLukuSeuraava`, `siAutosendAlku`; adapteri `lue_SI`),
+    EXT-vastauskehysten tarkistus (`siCrc`, `siKehysTavu`, `siExtTavu`),
     kortin leimat emittp:hen (`siEmitLeimat`; adapteri `tall_emit`) ja
     toistuvien leimojen säännöt (`siToistoAlkuun`, `siMaaliToistoAlkuun`;
     adapterit `tarkista` ja `e_maaliaika`)

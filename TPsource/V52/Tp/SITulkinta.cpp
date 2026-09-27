@@ -61,15 +61,18 @@ static inline long ub(char c) { return (unsigned char) c; }
 // Yhteista kaikille tyypeille:
 //  - "Leima" (punch) = yksi rastikaynti. CN (control number, rastikoodi)
 //    yksiloi rastin; leiman kellonaika tallennetaan sekunteina keskiyosta.
-//  - SI tallentaa ajan vain 12h-jakson tarkkuudella (ei erottele AM/PM:aa
-//    suoraan), joten jokainen leima-aika verrataan edelliseen: jos se on
-//    pienempi, aika on "kiertanyt" seuraavaan 12h-jaksoon ja sille lisataan
-//    43200 s (=12h). EXT-protokollassa tama on valmiiksi PTD-tavun bitissa 0
-//    ("puolipaiva"-lippu); legacy-protokollassa (SI5/SI6) se paatellaan
-//    aina vain edellisen leiman/lahdon ajasta (ks. myos case 5:n kommentti
-//    61166:sta, SI5:n vastineesta samalle "ei arvoa" -ideaalle).
-//  - EXT-protokollan tavupuskureissa CN=0xEE tarkoittaa "ei kaytossa"
-//    (tyhja tai listan paattava tietue).
+//  - SI tallentaa ajan 12h-jakson tarkkuudella. SI6:lla ja uudemmilla
+//    aamu/iltapaiva on PTD-tavun bitissa 0 ("puolipaiva"-lippu), joten aika
+//    on valmiiksi vuorokaudenaika (0..86399) - sita ei enaa korjata
+//    edellisen leiman perusteella (leimasimen kello saa olla hieman
+//    edellista jaljessa, ja puolenyon ylitys hoituu siEmitLeimat:n
+//    modulo 24 h -laskennalla). SI5:lla PTD:ta ei ole: pienempi aika kuin
+//    edellinen lisataan 12 h:lla ja koko kortti sovitetaan lukuhetkeen
+//    (ks. case 5 ja tulkSI5Puolipaiva).
+//  - Aika 0xEEEE (61166 s, ei mahdollinen 12h-aika) tarkoittaa "ei aikaa".
+//    CN=0xEE on sen sijaan oikea rastikoodi 238, joten sita ei kayteta
+//    tyhjan tietueen tunnistamiseen; valiaikaleimojen maaran kertoo kortin
+//    leimalaskuri (ks. tulkExtLeimat).
 // ===========================================================================
 
 // EXT-protokollan otsikkolohkon tulkinta: SIID (badge), check-, maali- ja
@@ -82,49 +85,56 @@ static inline long ub(char c) { return (unsigned char) c; }
 //   [8]  PTD  [9]  CN   [10] time_H [11] time_L  - Check punch; myos nollaus
 //        (clear, CN=255) kirjoittaa tahan - SI Config nayttaa sen "Clear"-
 //        rivina. HkIV/VIv kayttaa tata nollahetkena, jos lahtoleimaa ei ole.
-//   [12] PTD  [13] CN   [14] time_H [15] time_L  - Start punch (CN=EE->no start)
+//   [12] PTD  [13] CN   [14] time_H [15] time_L  - Start punch
 //   [16] PTD  [17] CN   [18] time_H [19] time_L  - Finish punch
+//   [22] RC   leimalaskuri (valiaikaleimojen maara, ks. tulkExtLeimat)
 //   [24] CNS  [25:28] SIID (3 bytes, big-endian)
 // PTD bit 0 = half-day flag: add 43200 s when set (times wrap at 12 h).
+// Aika EE EE = ei leimaa (ks. extAika).
 // CNS-tavua (24) ei kayteta tassa: badge tulee suoraan 3-tavuisesta
 // SIID:sta, ei CN+CNS-yhdistelmasta kuten SI5:lla (case 5).
+
+// EXT-leimatietueen {PTD, CN, time_H, time_L} aika sekunteina keskiyosta,
+// tai TMAALI0 jos aikaa ei ole (EE EE). Aika tallennetaan 12 h -muodossa
+// (0..43199), joten 0xEEEE ei voi olla oikea aika; CN=0xEE voi sen sijaan
+// olla oikea rastikoodi 238 (esim. lahtoasema), eika kelpaa tunnisteeksi.
+static long extAika(const unsigned char *p)
+	{
+	if (p[2] == 0xEE && p[3] == 0xEE)
+		return TMAALI0;
+	return 256L*p[2] + p[3] + (p[0] & 1) * 43200L;
+	}
+
 static void tulkExtOtsikko(const unsigned char *b, SIResultTp *result)
 	{
 	result->badge  = b[25]*65536L + b[26]*256L + b[27];
-	result->check  = (b[9]  == 0xEE) ? TMAALI0 :
-		256L*b[10] + b[11] + (b[8]  & 1) * 43200L;
-	result->finish = (b[17] == 0xEE) ? TMAALI0 :
-		256L*b[18] + b[19] + (b[16] & 1) * 43200L;
-	result->start  = (b[13] == 0xEE) ? TMAALI0 :
-		256L*b[14] + b[15] + (b[12] & 1) * 43200L;
+	result->check  = extAika(b + 8);
+	result->start  = extAika(b + 12);
+	result->finish = extAika(b + 16);
 	}
 
 // EXT-protokollan valiaikaleimalistan tulkinta: tietueet {PTD, CN, time_H,
 // time_L, ...} alkaen tavusta start, tietueen koko step tavua (SI9/SI10-11/
 // SI8/pCard/SI6-EXT: 4; tCard: 8 - lisatavut ohitetaan), enintaan bound
-// tavuun asti. CN=0xEE paattaa listan. Sama silmukka kaikilla EXT-protokollan
-// korttityypeilla (SItype 7-12) - vain start/step/bound eroaa kutsuittain.
-static void tulkExtLeimat(const unsigned char *b, SIResultTp *result, int start, int step, int bound)
+// tavuun asti. Leimoja luetaan kortin leimalaskurin (RC) verran, kuten
+// SportIdentin omat ja sireader-kirjastot tekevat: CN=0xEE on oikea
+// rastikoodi 238, eika tyhjennetyn kortin leima-alue ole valttamatta
+// tyhjennetty, joten 0xEE ei kelpaa listan paattajaksi. Sama silmukka
+// kaikilla EXT-protokollan korttityypeilla (SItype 7-12) - vain start/step/
+// bound/count eroaa kutsuittain.
+// Aika on PTD-bitin ansiosta valmiiksi vuorokaudenaika; edelliseen leimaan
+// vertaavaa +12 h -korjausta ei tehda (vrt. SI5, case 5): muuten muutaman
+// sekunnin edellista jaljessa oleva leimasin siirtaisi leiman 12 h
+// eteenpain. Puolenyon ylitys hoituu siEmitLeimat:ssa (modulo 24 h).
+static void tulkExtLeimat(const unsigned char *b, SIResultTp *result, int start, int step, int bound, int count)
 	{
 	int i, r = 0;
 
-	for (i = start; i + 3 < bound; i += step) {
-		unsigned char cn = b[i+1];
-		long pt;
-		if (cn == 0xEE) break;
-		pt = 256L*b[i+2] + b[i+3] + (b[i] & 1) * 43200L;
+	for (i = start; r < count && i + 3 < bound; i += step) {
 		r++;
 		if (r < 66) {
-			result->cc[r] = cn;
-			if (r == 1) {
-				if (result->start && pt < result->start)
-					pt += 43200L;
-				}
-			else {
-				if (result->ct[r-1] && pt < result->ct[r-1])
-					pt += 43200L;
-				}
-			result->ct[r] = pt;
+			result->cc[r] = b[i+1];
+			result->ct[r] = 256L*b[i+2] + b[i+3] + (b[i] & 1) * 43200L;
 			}
 		}
 	}
@@ -251,7 +261,7 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			// protokollan leimatietueissa (PTD bitti 0 = puolipaivan
 			// kaannos), mutta tassa omina nimettyina kenttinaan eika
 			// listana.
-			int cnt;
+			int cnt, n;
 			tp6 = (SI6tp *) buf;
 			result->badge =
 				ub(tp6->CN[3]) + 256L * (ub(tp6->CN[2]) + 256L * (ub(tp6->CN[1]) + 256L * ub(tp6->CN[0])));
@@ -263,7 +273,8 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 					(tp6->chk.PTD & 1) * 43200L;
 			// Ei tarkastusleimaa (0xEEEE) -> nollausleima (clr) tilalle,
 			// kuten EXT-korteilla (ks. tulkExtOtsikko).
-			if (result->check == 61166L && ub(tp6->clr.CN) != 0xEE)
+			if (result->check == 61166L &&
+				!(ub(tp6->clr.PT[0]) == 0xEE && ub(tp6->clr.PT[1]) == 0xEE))
 				result->check =
 						256L*ub(tp6->clr.PT[0]) + ub(tp6->clr.PT[1]) +
 						(tp6->clr.PTD & 1) * 43200L;
@@ -276,15 +287,14 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			// pblk[0]'s punches (a card with 33-64 punches lost its first 32;
 			// a card with <=32 punches had its real punches overwritten by
 			// pblk[1]'s unused/0xEE slots). Fixed to concatenate: pblk[0] ->
-			// cc[1..32], pblk[1] -> cc[33..64], stopping at the first
-			// CN=0xEE (unused slot), same convention as the EXT-protocol
-			// cards below.
+			// cc[1..32], pblk[1] -> cc[33..64]. Leimoja luetaan leimalaskurin
+			// PP (lohkon 0 tavu 18) verran, kuten EXT-korteilla (ks.
+			// tulkExtLeimat) - ei CN=0xEE:hen asti.
+			n = ub(tp6->PP);
 			cnt = 0;
-			for (r = 0; r < 2; r++) {
-				for (i = 0; i < 32; i++) {
+			for (r = 0; r < 2 && cnt < n; r++) {
+				for (i = 0; i < 32 && cnt < n; i++) {
 					unsigned char cn = (unsigned char) tp6->pblk[r].punch[i].CN;
-					if (cn == 0xEE)
-						break;
 					cnt++;
 					if (cnt < 66) {
 						result->cc[cnt] = cn;
@@ -302,7 +312,7 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			// enintaan tavuun 256 (block 1 loppuun, buf[128:256]).
 			unsigned char *b = (unsigned char *) buf;
 			tulkExtOtsikko(b, result);
-			tulkExtLeimat(b, result, 56, 4, 256);
+			tulkExtLeimat(b, result, 56, 4, 256, b[22]);
 			break;
 			}
 		case 8: {
@@ -311,7 +321,7 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			// (256-640 tavua, 32 leimaa/lohko).
 			unsigned char *b = (unsigned char *) buf;
 			tulkExtOtsikko(b, result);
-			tulkExtLeimat(b, result, 128, 4, buflen);
+			tulkExtLeimat(b, result, 128, 4, buflen, b[22]);
 			break;
 			}
 		case 9: {
@@ -319,7 +329,7 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			// (block 1 offset 8), ei tavusta 56 kuten SI9:lla.
 			unsigned char *b = (unsigned char *) buf;
 			tulkExtOtsikko(b, result);
-			tulkExtLeimat(b, result, 136, 4, 256);
+			tulkExtLeimat(b, result, 136, 4, 256, b[22]);
 			break;
 			}
 		case 10: {
@@ -327,7 +337,7 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			// (block 1 byte 48), enintaan 20 kpl.
 			unsigned char *b = (unsigned char *) buf;
 			tulkExtOtsikko(b, result);
-			tulkExtLeimat(b, result, 176, 4, 256);
+			tulkExtLeimat(b, result, 176, 4, 256, b[22]);
 			break;
 			}
 		case 11: {
@@ -337,7 +347,7 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			// askel 8 (ei 4 kuten muilla EXT-tyypeilla).
 			unsigned char *b = (unsigned char *) buf;
 			tulkExtOtsikko(b, result);
-			tulkExtLeimat(b, result, 56, 8, 256);
+			tulkExtLeimat(b, result, 56, 8, 256, b[22]);
 			break;
 			}
 		case 12: {
@@ -348,8 +358,9 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			// Block 0 layout (verified against a real card, SIID 579671):
 			//   [10:14] CN (badge, 4-byte big-endian - not the 3-byte SIID
 			//           used by SI9+)
+			//   [18] leimalaskuri (leimojen maara lohkoissa 6/7)
 			//   [20] PTD [21] CN [22:24] time - Finish punch
-			//   [24] PTD [25] CN [26:28] time - Start punch (CN=EE -> no start)
+			//   [24] PTD [25] CN [26:28] time - Start punch (aika EE EE -> no start)
 			//   [28] PTD [29] CN [30:32] time - Check punch
 			//   [32] PTD [33] CN [34:36] time - Clear punch (-> check, jos
 			//        check-leimaa ei ole; ks. tulkExtOtsikko)
@@ -361,18 +372,15 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			//
 			// Blocks 6/7 (buf[256:384], buf[384:512]) each hold up to 32
 			// {PTD, CN, time_H, time_L} punch records, same format as SI9+
-			// (case 7), terminated by CN=0xEE.
+			// (case 7); count from block 0 byte 18.
 			unsigned char *b = (unsigned char *) buf;
 			result->badge  = b[10]*16777216L + b[11]*65536L + b[12]*256L + b[13];
-			result->finish = (b[21] == 0xEE) ? TMAALI0 :
-				256L*b[22] + b[23] + (b[20] & 1) * 43200L;
-			result->start  = (b[25] == 0xEE) ? TMAALI0 :
-				256L*b[26] + b[27] + (b[24] & 1) * 43200L;
-			result->check  = (b[29] == 0xEE) ? TMAALI0 :
-				256L*b[30] + b[31] + (b[28] & 1) * 43200L;
-			if (result->check == TMAALI0 && b[33] != 0xEE)
-				result->check = 256L*b[34] + b[35] + (b[32] & 1) * 43200L;
-			tulkExtLeimat(b, result, 256, 4, buflen);
+			result->finish = extAika(b + 20);
+			result->start  = extAika(b + 24);
+			result->check  = extAika(b + 28);
+			if (result->check == TMAALI0)
+				result->check = extAika(b + 32);
+			tulkExtLeimat(b, result, 256, 4, buflen, b[18]);
 			break;
 			}
 		}
@@ -505,6 +513,114 @@ int siLukuSeuraava(SILukuTp *t, const unsigned char *buf, int l, int *skip)
 		pyynto = SIPYY_SI6X_B7;
 		}
 	return pyynto;
+	}
+
+// ===========================================================================
+// EXT-protokollan vastauskehykset (ks. SITulkinta.h).
+
+// SportIdentin dokumentoima CRC-algoritmi (PC Programmers Guide).
+unsigned int siCrc(const unsigned char *p, int n)
+	{
+	unsigned int crc, val;
+	int i, j;
+
+	if (n < 2)
+		return 0;
+	crc = (p[0] << 8) | p[1];
+	if (n == 2)
+		return crc;
+	p += 2;
+	for (i = n / 2; i > 0; i--) {
+		if (i > 1) {
+			val = (p[0] << 8) | p[1];
+			p += 2;
+			}
+		else
+			val = (n & 1) ? (unsigned int) (p[0] << 8) : 0;
+		for (j = 0; j < 16; j++) {
+			if (crc & 0x8000) {
+				crc = (crc << 1) & 0xFFFF;
+				if (val & 0x8000)
+					crc++;
+				crc ^= 0x8005;
+				}
+			else {
+				crc = (crc << 1) & 0xFFFF;
+				if (val & 0x8000)
+					crc++;
+				}
+			val = (val << 1) & 0xFFFF;
+			}
+		}
+	return crc;
+	}
+
+void siKehysAloita(SIKehysTp *k)
+	{
+	k->n = 0;
+	}
+
+int siKehysTavu(SIKehysTp *k, unsigned char c)
+	{
+	int pituus;
+
+	if (k->n == 0) {
+		if (c == 0x15)
+			return SIKEHYS_NAK;
+		if (c != 0x02)
+			return SIKEHYS_KESKEN;   // herate tai jaanne ennen kehysta
+		}
+	k->k[k->n++] = c;
+	if (k->n < 3)
+		return SIKEHYS_KESKEN;
+	pituus = k->k[2] + 6;            // STX cmd len <len> crc crc ETX
+	if (pituus > (int) sizeof(k->k))
+		return SIKEHYS_VIRHE;
+	if (k->n < pituus)
+		return SIKEHYS_KESKEN;
+	if (k->k[pituus-1] != 0x03 ||
+		siCrc(k->k + 1, pituus - 4) != ((unsigned int) k->k[pituus-3] << 8 | k->k[pituus-2]))
+		return SIKEHYS_VIRHE;
+	if (k->k[1] == 0xE7)
+		return SIKEHYS_POISTO;
+	return SIKEHYS_OK;
+	}
+
+int siExtTavu(SIKehysTp *k, unsigned char c, int kmd, int lohko,
+	unsigned char *buf, int *l, int maxl)
+	{
+	int tulos, alku = 0, maara = 0;
+
+	tulos = siKehysTavu(k, c);
+	if (tulos != SIKEHYS_OK) {
+		if (tulos != SIKEHYS_KESKEN)
+			siKehysAloita(k);
+		return tulos;
+		}
+	if (k->k[1] != kmd)
+		tulos = SIKEHYS_VIRHE;
+	else if (kmd == 0xB1) {
+		// len + asemakoodi + data + CRC: SI5tp:n asettelu (data tavusta 3).
+		alku = 2;
+		maara = k->k[2] + 3;
+		}
+	else {
+		// asemakoodi (2) + lohkonumero (1) + lohkon data
+		if (k->k[2] < 3 || k->k[5] != lohko)
+			tulos = SIKEHYS_VIRHE;
+		alku = 6;
+		maara = k->k[2] - 3;
+		}
+	if (tulos == SIKEHYS_OK) {
+		if (*l + maara > maxl)
+			tulos = SIKEHYS_VIRHE;
+		else {
+			memcpy(buf + *l, k->k + alku, maara);
+			*l += maara;
+			}
+		}
+	siKehysAloita(k);
+	return tulos;
 	}
 
 int siAutosendAlku(const unsigned char *pre, int prelen, unsigned char *buf, int *dle)

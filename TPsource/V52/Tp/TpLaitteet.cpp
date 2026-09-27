@@ -1732,6 +1732,10 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int SItype, dle = 0, ilm;
 	SILukuTp luku;
 	char *lohkopyynto;
+	// EXT-vastauskehys (siExtTavu): odotettu komento (B1/EF/E1) ja
+	// lohkonumero, jonka vastausta odotetaan.
+	SIKehysTp kehys;
+	int SIkmd = 0, SIlohko = 0, kt;
 	// SIext=1: BSM8 EXT protocol (38400 bps, binary frames, FF wakeup required).
 	// SIext=0: legacy protocol (DLE-encoded, lower baud rate).
 	// SIskip: bytes remaining to discard from the current response header.
@@ -1778,6 +1782,7 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 					SImsglen = sizeof(SI5pyyntoEXT);
 					SItype = 5;
 					SIext = 1;
+					SIkmd = 0xB1;
 					break;
 				case SIILM_SI9:
 					// EXT E8: SI8/9/10/11, pCard tai tCard asetettu. Ensin lohko 0;
@@ -1786,6 +1791,7 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 					SImsglen = sizeof(SI9pyynto_b0);
 					SItype = 7;
 					SIext = 1;
+					SIkmd = 0xEF;
 					break;
 				case SIILM_SI6EXT:
 					// EXT E6: SI6 asetettu (EXT-protokolla, ei vanha DLE-koodattu SI6).
@@ -1793,6 +1799,7 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 					SImsglen = sizeof(SI6EXTpyynto_b0);
 					SItype = 12;
 					SIext = 1;
+					SIkmd = 0xE1;
 					break;
 				case SIILM_SI6:
 					msg = SI6pyynto;
@@ -1849,23 +1856,40 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			wrt_st_x(cn, SImsglen, msg, &nch);
 			utsleep(2);
 			}
-		// EXT responses begin with a header that must be discarded before data bytes.
-		//   SI5  B1 response: "02 B1" (2 bytes) + 133-byte SI5tp data
-		//   SI9+ EF response: "02 EF 83 00 0A blocknum" (6 bytes) + 128-byte block data
+		// EXT-vastaukset ovat kehyksia 02 <cmd> <len> <asema 2> <data> <crc 2> 03;
+		// siExtTavu tarkistaa kunkin kehyksen ja lisaa vain datan SIbuf:iin:
+		//   SI5  B1: len + asemakoodi + 128 tavua + CRC = 133 tavua (SI5tp)
+		//   SI9+ EF / SI6 E1: lohkonumero tarkistetaan, lohkon 128 tavua
 		// Legacy (SI5/SI6): no header; bytes are DLE-encoded and not framed.
-		// Kerattava pituus ja ohitettavat otsikkotavut: siLukuAloita
-		// (SITulkinta.cpp, yksikkotestattu).
+		// Kerattava pituus: siLukuAloita (SITulkinta.cpp, yksikkotestattu).
 		siLukuAloita(&luku, SItype, SIext, &SIskip);
+		siKehysAloita(&kehys);
+		SIlohko = 0;
 		for(;;) {
 			nq = 0;
 			if (!read_ch_x(cn, &chin, &nq)) {
 				bytecount = (bytecount + 1) % bytecountmax;
 				if (SIext) {
-					// EXT mode: discard header bytes, then store data bytes verbatim.
-					if (SIskip > 0)
-						--SIskip;
-					else
-						*(SIbp++) = chin;
+					// EXT: kehys kerataan ja tarkistetaan (STX, pituus, CRC, ETX,
+					// komento, lohkonumero) ennen kuin sen data lisataan SIbuf:iin.
+					// Virheellinen kehys, kortin poisto (E7) tai NAK keskeyttaa
+					// luennan - vaaraan kohtaan siirtynytta dataa ei tulkita.
+					int kl = SIbp - SIbuf;
+					kt = siExtTavu(&kehys, (unsigned char) chin, SIkmd, SIlohko,
+						(unsigned char *) SIbuf, &kl, sizeof(SIbuf));
+					SIbp = SIbuf + kl;
+					if (kt < 0) {
+						if (loki) {
+							char line[100];
+							sprintf(line, "SI luenta keskeytyi: %s, lohko %d, saatu %d / %d tavua, SItype %d",
+								kt == SIKEHYS_POISTO ? "kortti poistettiin" :
+								(kt == SIKEHYS_NAK ? "asema hylkasi pyynnon (NAK)" : "virheellinen kehys"),
+								SIlohko, kl, luku.datalen, SItype);
+							kirjloki(line);
+							SIlokiHex("SI data", SIbuf, kl);
+							}
+						break;
+						}
 					}
 				else {
 					// Legacy mode: DLE (0x10) escapes the next byte; control chars end the frame.
@@ -1898,14 +1922,14 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			// yksikkotestattu) paattaa SI9-perheen korttityypin SIID:sta,
 			// SI10/11:n leimalohkojen maaran ja SI6-EXT:n lohkosarjan.
 			switch (siLukuSeuraava(&luku, (unsigned char *) SIbuf, l, &SIskip)) {
-				case SIPYY_SI9_B1:  lohkopyynto = SI9pyynto_b1; break;
-				case SIPYY_SI11_B4: lohkopyynto = SI11pyynto_b4; break;
-				case SIPYY_SI11_B5: lohkopyynto = SI11pyynto_b5; break;
-				case SIPYY_SI11_B6: lohkopyynto = SI11pyynto_b6; break;
-				case SIPYY_SI11_B7: lohkopyynto = SI11pyynto_b7; break;
-				case SIPYY_SI6X_B1: lohkopyynto = SI6EXTpyynto_b1; break;
-				case SIPYY_SI6X_B6: lohkopyynto = SI6EXTpyynto_b6; break;
-				case SIPYY_SI6X_B7: lohkopyynto = SI6EXTpyynto_b7; break;
+				case SIPYY_SI9_B1:  lohkopyynto = SI9pyynto_b1; SIlohko = 1; break;
+				case SIPYY_SI11_B4: lohkopyynto = SI11pyynto_b4; SIlohko = 4; break;
+				case SIPYY_SI11_B5: lohkopyynto = SI11pyynto_b5; SIlohko = 5; break;
+				case SIPYY_SI11_B6: lohkopyynto = SI11pyynto_b6; SIlohko = 6; break;
+				case SIPYY_SI11_B7: lohkopyynto = SI11pyynto_b7; SIlohko = 7; break;
+				case SIPYY_SI6X_B1: lohkopyynto = SI6EXTpyynto_b1; SIlohko = 1; break;
+				case SIPYY_SI6X_B6: lohkopyynto = SI6EXTpyynto_b6; SIlohko = 6; break;
+				case SIPYY_SI6X_B7: lohkopyynto = SI6EXTpyynto_b7; SIlohko = 7; break;
 				default:            lohkopyynto = NULL; break;
 				}
 			SItype = luku.SItype;
