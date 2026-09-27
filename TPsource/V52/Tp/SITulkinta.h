@@ -138,22 +138,40 @@ typedef struct {
 #define SIPYY_SI11_B5  3
 #define SIPYY_SI11_B6  4
 #define SIPYY_SI11_B7  5
-#define SIPYY_SI6X_B1  6   // E1 lohko 1 (SI6-EXT)
-#define SIPYY_SI6X_B6  7
-#define SIPYY_SI6X_B7  8
+#define SIPYY_SI6X_B6  7   // E1 lohko 6 (SI6-EXT, leimat 1-32)
+#define SIPYY_SI6X_B7  8   // E1 lohko 7 (SI6-EXT, leimat 33-64)
+#define SIPYY_TUNTEMATON 9 // SIID ei minkaan tunnetun korttisarjan alueella
 
 // Aloittaa kortin luvun: datalen tyypin mukaan (SI5 133, SI6 402, SI9-
-// perhe 256, SI6-EXT 512) ja *skip = vastauksen alusta ohitettavat
-// otsikkotavut (SI9/SI6-EXT 6, muu EXT 2, vanha protokolla 0).
-void siLukuAloita(SILukuTp *t, int SItype, int SIext, int *skip);
+// perhe 256, SI6-EXT 384; SI10/11 ja SI6-EXT tarkentuvat lohkon 0 jalkeen).
+void siLukuAloita(SILukuTp *t, int SItype);
 
 // Kutsutaan, kun SIbuf:iin on kertynyt l tavua. Kun lohko on taynna,
-// paattaa seuraavan pyynnon: SI9-perheella korttityyppi SIID:sta
-// (lohko 0, tavut 25..27) ja SI10/11:lla leimamaara (tavu 22) ->
-// tarvittavat leimalohkot. Asettaa *skip = 9 aina kun pyynto lahtee
-// (edellisen vastauksen CRC+ETX 3 tavua + seuraavan otsikko 6 tavua).
+// paattaa seuraavan pyynnon:
+//  - SI9-perhe: korttisarja SIID:sta (lohko 0, tavut 25..27; SportIdentin
+//    numeroalueet, ks. SITulkinta.cpp). Tuntematon sarja -> SIPYY_TUNTEMATON.
+//    SI10/11/SIAC: leimamaara (tavu 22) -> tarvittavat leimalohkot 4..7.
+//  - SI6-EXT: lohko 6, ja lohko 7 vain kun leimoja (tavu 18) on yli 32.
+//    Henkilotietolohkoa 1 ei lueta. SIbuf = lohko 0 + lohko 6 [+ lohko 7].
 // Palauttaa SIPYY_*-arvon.
-int siLukuSeuraava(SILukuTp *t, const unsigned char *buf, int l, int *skip);
+int siLukuSeuraava(SILukuTp *t, const unsigned char *buf, int l);
+
+// Lohkopyynnon yritykset (SI Config+:n tapaan): virheellinen kehys, NAK tai
+// aikaraja -> sama pyynto uudelleen, kunnes SIYRITYKSET yritysta on tehty.
+// Kortin poisto (SIKEHYS_POISTO) keskeyttaa heti.
+#define SIYRITYKSET 3
+
+// Pyydetaanko lohko uudelleen: tulos = siExtTavu:n virhe (SIKEHYS_VIRHE,
+// SIKEHYS_NAK tai SIKEHYS_POISTO) tai SIKEHYS_KESKEN aikarajan tullessa,
+// yritys = tahan asti tehtyjen pyyntojen maara (ensimmainen = 1).
+int siUusitaanko(int tulos, int yritys);
+
+// Vanhan protokollan (SIext=0) koottu vastaus: STX ja ETX odotetuilla
+// paikoilla (SI5: 133 tavua 02 .. 03; SI6: kolme 134 tavun kehysta
+// 02 .. 03). Muuten data on siirtynyt, eika sita tulkita. Tarkistussummaa
+// (CS) ei tarkisteta: vanhan protokollan summan laskutapaa ei ole
+// dokumentoitu.
+int siVanhaKehysOk(const unsigned char *b, int len, int SItype);
 
 // ---------------------------------------------------------------------------
 // EXT-protokollan vastauskehykset (lue_SI, SIext=1):

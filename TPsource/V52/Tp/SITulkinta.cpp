@@ -366,13 +366,11 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			//        check-leimaa ei ole; ks. tulkExtOtsikko)
 			//   [48:128] surname/firstname/country/club text (ignored)
 			//
-			// Block 1 (buf[128:256]) holds extended personalisation data
-			// (e.g. an email address on some cards); not needed and not
-			// parsed here.
-			//
-			// Blocks 6/7 (buf[256:384], buf[384:512]) each hold up to 32
-			// {PTD, CN, time_H, time_L} punch records, same format as SI9+
-			// (case 7); count from block 0 byte 18.
+			// Kortin lohkoa 1 (henkilotietoja, esim. sahkoposti) ei lueta.
+			// SIbuf = lohko 0 + lohko 6 [+ lohko 7, kun leimoja on yli 32]
+			// (ks. siLukuSeuraava): leimat buf[128:256] ja buf[256:384],
+			// kukin enintaan 32 {PTD, CN, time_H, time_L} -tietuetta kuten
+			// SI9+:lla (case 7); maara lohkon 0 tavusta 18.
 			unsigned char *b = (unsigned char *) buf;
 			result->badge  = b[10]*16777216L + b[11]*65536L + b[12]*256L + b[13];
 			result->finish = extAika(b + 20);
@@ -380,7 +378,7 @@ int tulkSI(char *buf, SIResultTp *result, INT32 SIt, int SItype, int buflen, int
 			result->check  = extAika(b + 28);
 			if (result->check == TMAALI0)
 				result->check = extAika(b + 32);
-			tulkExtLeimat(b, result, 256, 4, buflen, b[18]);
+			tulkExtLeimat(b, result, 128, 4, buflen, b[18]);
 			break;
 			}
 		}
@@ -442,31 +440,51 @@ int siTunnistaIlmoitus(const unsigned char *b, int n)
 
 // Kerattava pituus tyypeittain, indeksi SItype-5: SI5 133, SI6 402,
 // SI9/SI10-11/SI8/pCard/tCard 256 (SI10/11 tarkentuu leimamaaran mukaan),
-// SI6-EXT 512.
-static const int SIdatalen[8] = {133, 402, 256, 256, 256, 256, 256, 512};
+// SI6-EXT 384 (tarkentuu leimamaaran mukaan 256:een tai 384:aan).
+static const int SIdatalen[8] = {133, 402, 256, 256, 256, 256, 256, 384};
 
-void siLukuAloita(SILukuTp *t, int SItype, int SIext, int *skip)
+void siLukuAloita(SILukuTp *t, int SItype)
 	{
 	t->SItype = SItype;
 	t->nblock = 0;
 	t->nblocks_needed = 1;
 	t->datalen = SIdatalen[SItype-5];
-	*skip = (SItype == 7 || SItype == 12) ? 6 : (SIext ? 2 : 0);
 	}
 
-int siLukuSeuraava(SILukuTp *t, const unsigned char *buf, int l, int *skip)
+// EXT-korttisarja SIID:sta (E8-ilmoitus, lohko 0 tavut 25..27). Alueet
+// SportIdentin korttitaulukosta (docs.sportident.com, Cards Overview); tCard
+// sireader-kirjastoista. 2 003 000 - 2 003 999 on SI6-sarja (E6), ei SI8.
+// Palauttaa SItype-arvon tai 0, jos alue ei ole tunnettu.
+static int siExtSarja(unsigned long siid)
+	{
+	if (siid >= 1000000L && siid <= 1999999L)
+		return 7;                         // SI9
+	if (siid >= 2000000L && siid <= 2999999L &&
+		!(siid >= 2003000L && siid <= 2003999L))
+		return 9;                         // SI8, ComCard Up
+	if (siid >= 4000000L && siid <= 4999999L)
+		return 10;                        // pCard
+	if (siid >= 6000000L && siid <= 6999999L)
+		return 11;                        // tCard
+	if (siid >= 7000000L && siid <= 9999999L)
+		return 8;                         // SI10, ComCard Pro, SIAC, SI11
+	return 0;
+	}
+
+int siLukuSeuraava(SILukuTp *t, const unsigned char *buf, int l)
 	{
 	int pyynto = SIPYY_EI;
 
-	// SI9-perhe: lohko 0 luettu - korttityyppi SIID:sta (tavut 25..27).
+	// SI9-perhe: lohko 0 luettu - korttisarja SIID:sta (tavut 25..27).
 	if (t->SItype == 7 && l == 128 && t->nblock == 0) {
 		unsigned long siid = buf[25] * 65536L + buf[26] * 256L + buf[27];
 		t->nblock = 1;
-		*skip = 9;
-		if (siid >= 7000000L) {
+		t->SItype = siExtSarja(siid);
+		if (t->SItype == 0)
+			return SIPYY_TUNTEMATON;
+		if (t->SItype == 8) {
 			// SI10/11: tavu 22 = leimamaara -> 1..4 leimalohkoa (32/lohko).
 			unsigned char rc = buf[22];
-			t->SItype = 8;
 			t->nblocks_needed = (rc + 31) / 32;
 			if (t->nblocks_needed < 1) t->nblocks_needed = 1;
 			if (t->nblocks_needed > 4) t->nblocks_needed = 4;
@@ -474,21 +492,14 @@ int siLukuSeuraava(SILukuTp *t, const unsigned char *buf, int l, int *skip)
 			pyynto = SIPYY_SI11_B4;
 			}
 		else {
-			if (siid >= 6000000L)
-				t->SItype = 11;   // tCard
-			else if (siid >= 4000000L)
-				t->SItype = 10;   // pCard
-			else if (siid >= 2000000L)
-				t->SItype = 9;    // SI8
 			t->datalen = SIdatalen[t->SItype-5];
 			pyynto = SIPYY_SI9_B1;
 			}
 		}
 	// SI10/11: seuraava leimalohko, kunnes tarvittavat on luettu.
-	if (t->SItype == 8 && t->nblock > 0 && t->nblock < t->nblocks_needed
+	else if (t->SItype == 8 && t->nblock > 0 && t->nblock < t->nblocks_needed
 		&& l == 128 + t->nblock * 128) {
 		t->nblock++;
-		*skip = 9;
 		if (t->nblock == 2)
 			pyynto = SIPYY_SI11_B5;
 		else if (t->nblock == 3)
@@ -496,23 +507,44 @@ int siLukuSeuraava(SILukuTp *t, const unsigned char *buf, int l, int *skip)
 		else
 			pyynto = SIPYY_SI11_B7;
 		}
-	// SI6-EXT: kiintea sarja lohkoja 0, 1, 6, 7.
-	if (t->SItype == 12 && l == 128 && t->nblock == 0) {
+	// SI6-EXT: lohko 0 -> lohko 6, ja lohko 7 vain yli 32 leimalla (tavu 18;
+	// 192 leiman tilassa laskuri voi olla yli 64, mutta lohkot 6-7 riittavat
+	// 64:aan). Henkilotietolohkoa 1 ei lueta.
+	else if (t->SItype == 12 && l == 128 && t->nblock == 0) {
 		t->nblock = 1;
-		*skip = 9;
-		pyynto = SIPYY_SI6X_B1;
-		}
-	else if (t->SItype == 12 && l == 256 && t->nblock == 1) {
-		t->nblock = 2;
-		*skip = 9;
+		t->nblocks_needed = buf[18] > 32 ? 2 : 1;
+		t->datalen = 128 + t->nblocks_needed * 128;
 		pyynto = SIPYY_SI6X_B6;
 		}
-	else if (t->SItype == 12 && l == 384 && t->nblock == 2) {
-		t->nblock = 3;
-		*skip = 9;
+	else if (t->SItype == 12 && l == 256 && t->nblock == 1 && t->nblocks_needed == 2) {
+		t->nblock = 2;
 		pyynto = SIPYY_SI6X_B7;
 		}
 	return pyynto;
+	}
+
+int siUusitaanko(int tulos, int yritys)
+	{
+	if (tulos == SIKEHYS_POISTO || tulos == SIKEHYS_OK)
+		return 0;
+	return yritys < SIYRITYKSET;
+	}
+
+int siVanhaKehysOk(const unsigned char *b, int len, int SItype)
+	{
+	int i;
+
+	if (SItype == 5)
+		return len == 133 && b[0] == 0x02 && b[132] == 0x03;
+	if (SItype == 6) {
+		if (len != 402)
+			return 0;
+		for (i = 0; i < 3; i++)
+			if (b[134*i] != 0x02 || b[134*i + 133] != 0x03)
+				return 0;
+		return 1;
+		}
+	return 0;
 	}
 
 // ===========================================================================

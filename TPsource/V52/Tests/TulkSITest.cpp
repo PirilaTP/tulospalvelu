@@ -535,7 +535,7 @@ TEST_CASE("SI6-EXT: otsikon leimat tunnistetaan ajasta, ei asemakoodista")
 	setPunch(buf, 24, 0, 0xEE, 10*3600);     // lahto asemalta 238
 	setPunch(buf, 28, 0, 5, 0xEEEE);         // tarkastus: koodi mutta ei aikaa
 	setPunch(buf, 32, 0, 0xEE, 9*3600);      // nollaus asemalta 238
-	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+	tulkSI((char *) buf, &result, 0, 12, 384, 0);
 
 	CHECK(result.start == 10*3600L);
 	CHECK(result.check == 9*3600L);          // nollaus tarkastuksen tilalle
@@ -727,8 +727,9 @@ TEST_CASE("tCard: leimat askeltavat 8 tavua (ei 4:aa kuten SI9:lla)")
 // ===========================================================================
 // SI6 EXT-protokollan kautta (SItype == 12): eri langansiirtokoodaus samalle
 // korttisukupolvelle kuin legacy SI6 (SItype 6) - EI sama tavuasettelu kuin
-// SI9+:lla (SItype 7-11). Badge tavuilla [10:14), leimat alkaen tavusta 256
-// (lohkot 6 ja 7), 32 leimaa/lohko, kuten legacy SI6:n kaksi SI6PBLK-lohkoa.
+// SI9+:lla (SItype 7-11). Badge tavuilla [10:14). SIbuf = lohko 0 + lohko 6
+// [+ lohko 7]: leimat alkaen tavusta 128, 32 leimaa/lohko, kuten legacy SI6:n
+// kaksi SI6PBLK-lohkoa.
 //
 // buildBlock/setPunch (SI9+:aa varten) eivat sovi tahan (badge/otsikko eri
 // tavuilla), joten testit rakentavat puskurin suoraan.
@@ -741,7 +742,7 @@ TEST_CASE("SI6-EXT: badge puretaan tavuista [10:14) big-endian (4 tavua)")
 
 	memset(buf, 0xEE, sizeof(buf));
 	buf[10] = 0x00; buf[11] = 0x08; buf[12] = 0xD8; buf[13] = 0x57;  // 579671
-	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+	tulkSI((char *) buf, &result, 0, 12, 384, 0);
 
 	CHECK(result.badge == 579671L);
 }
@@ -757,7 +758,7 @@ TEST_CASE("SI6-EXT: oikea kortti (SIID 579671) - finish/check puretaan, ei lahto
 	setPunch(buf, 20, 0x0D, 0x0A, 0x258B);          // maali: PTD=0D,CN=0A,aika=25 8B
 	// lahto: tavut [24:28) jaavat 0xEE:ksi -> ei lahtoa
 	setPunch(buf, 28, 0x0D, 0x03, 0x0E46);           // tarkastus: PTD=0D,CN=03,aika=0E 46
-	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+	tulkSI((char *) buf, &result, 0, 12, 384, 0);
 
 	CHECK(result.badge  == 579671L);
 	CHECK(result.finish == 52811L);   // 256*0x25+0x8B + 43200 (PTD&1=1)
@@ -773,16 +774,16 @@ TEST_CASE("SI6-EXT: ilman tarkastusleimaa nollausleima (tavu 32) tulee check-ken
 
 	memset(buf, 0xEE, sizeof(buf));
 	setPunch(buf, 32, 0x0D, 0xFF, 0x83B3);
-	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+	tulkSI((char *) buf, &result, 0, 12, 384, 0);
 	CHECK(result.check == 0x83B3L + 43200L);   // 21:21:55
 
 	// Kun tarkastusleima on, se voittaa nollausleiman.
 	setPunch(buf, 28, 0x0D, 0x03, 0x0E46);
-	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+	tulkSI((char *) buf, &result, 0, 12, 384, 0);
 	CHECK(result.check == 46854L);
 }
 
-TEST_CASE("SI6-EXT: leimat alkavat tavusta 256 (lohko 6), ei 128:sta tai 56:sta")
+TEST_CASE("SI6-EXT: leimat alkavat tavusta 128 (lohko 6 lohkon 0 jalkeen), ei 56:sta")
 {
 	unsigned char buf[512];
 	SIResultTp result;
@@ -790,16 +791,15 @@ TEST_CASE("SI6-EXT: leimat alkavat tavusta 256 (lohko 6), ei 128:sta tai 56:sta"
 	memset(buf, 0xEE, sizeof(buf));
 	buf[10] = 0; buf[11] = 0; buf[12] = 0; buf[13] = 1;
 	setPunch(buf, 56,  0, 99, 1*3600);   // SI9:n paikka - EI saa nakya
-	setPunch(buf, 128, 0, 98, 2*3600);   // SI10/11:n paikka - EI saa nakya
-	setPunch(buf, 256, 0, 31, 12*3600);  // oikea 1. rasti SI6-EXT:lla (lohko 6)
+	setPunch(buf, 128, 0, 31, 12*3600);  // oikea 1. rasti SI6-EXT:lla (lohko 6)
 	buf[18] = 1;                         // SI6-EXT:n leimalaskuri
-	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+	tulkSI((char *) buf, &result, 0, 12, 384, 0);
 
 	CHECK((int) (unsigned char) result.cc[1] == 31);
 	CHECK(result.ct[1] == 12*3600L);
 }
 
-TEST_CASE("SI6-EXT: leimat jatkuvat lohkoon 7 (tavu 384) asti, RC (tavu 18) rajaa")
+TEST_CASE("SI6-EXT: leimat jatkuvat lohkoon 7 (tavu 256), RC (tavu 18) rajaa")
 {
 	// Todellinen kortti: 8 leimaa lohkossa 6, loput 0xEE. Tama testi kattaa
 	// lisaksi jatkumisen lohkoon 7, jota ei ollut tallessa oikeassa dumpissa.
@@ -809,15 +809,15 @@ TEST_CASE("SI6-EXT: leimat jatkuvat lohkoon 7 (tavu 384) asti, RC (tavu 18) raja
 
 	memset(buf, 0xEE, sizeof(buf));
 	buf[10] = 0; buf[11] = 0; buf[12] = 0; buf[13] = 1;
-	// tayta lohko 6 kokonaan (32 leimaa, tavut 256..383) ja jatka lohkoon 7:aan
-	for (i = 256; i + 3 < 384+16; i += 4)
-		setPunch(buf, i, 0, (unsigned char) (40 + (i-256)/4), 10*3600 + (i-256)/4);
+	// tayta lohko 6 kokonaan (32 leimaa, tavut 128..255) ja jatka lohkoon 7:aan
+	for (i = 128; i + 3 < 256+16; i += 4)
+		setPunch(buf, i, 0, (unsigned char) (40 + (i-128)/4), 10*3600 + (i-128)/4);
 	buf[18] = 36;                        // 32 lohkossa 6 + 4 lohkossa 7
-	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+	tulkSI((char *) buf, &result, 0, 12, 384, 0);
 
-	// r=32 -> i=256+4*31=380 (lohko 6:n viimeinen)
+	// r=32 -> i=128+4*31=252 (lohko 6:n viimeinen)
 	CHECK((int) (unsigned char) result.cc[32] == 40+31);
-	// r=33 -> i=384 (lohko 7:n ensimmainen)
+	// r=33 -> i=256 (lohko 7:n ensimmainen)
 	CHECK((int) (unsigned char) result.cc[33] == 40+32);
 	CHECK(result.ct[33] == 10*3600L + 32);
 }
@@ -995,10 +995,10 @@ TEST_CASE("SI6-EXT: maksimileimamaara (64, lohkot 6+7 taynna) tallentuu kokonaan
 
 	memset(buf, 0xEE, sizeof(buf));
 	buf[10] = 0; buf[11] = 0; buf[12] = 0; buf[13] = 1;
-	for (i = 256; i + 3 < 512; i += 4)
-		setPunch(buf, i, 0, (unsigned char) (33 + ((i-256)/4) % 200), 3600 + (i-256)/4*60);
+	for (i = 128; i + 3 < 384; i += 4)
+		setPunch(buf, i, 0, (unsigned char) (33 + ((i-128)/4) % 200), 3600 + (i-128)/4*60);
 	buf[18] = 64;
-	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+	tulkSI((char *) buf, &result, 0, 12, 384, 0);
 
 	CHECK((int) (unsigned char) result.cc[1]  == 33);
 	CHECK((int) (unsigned char) result.cc[64] == 33+63);
@@ -1044,16 +1044,13 @@ TEST_CASE("siTunnistaIlmoitus: liian lyhyt puskuri odottaa, tuntematon hylataan"
 	CHECK(siTunnistaIlmoitus(e7, 10) == SIILM_EI);
 }
 
-TEST_CASE("siLukuAloita: kerattava pituus ja ohitettava otsikko tyypeittain")
+TEST_CASE("siLukuAloita: kerattava pituus tyypeittain")
 {
 	SILukuTp t;
-	int skip;
-
-	siLukuAloita(&t, 5, 0, &skip);  CHECK(t.datalen == 133); CHECK(skip == 0);
-	siLukuAloita(&t, 5, 1, &skip);  CHECK(t.datalen == 133); CHECK(skip == 2);
-	siLukuAloita(&t, 6, 0, &skip);  CHECK(t.datalen == 402); CHECK(skip == 0);
-	siLukuAloita(&t, 7, 1, &skip);  CHECK(t.datalen == 256); CHECK(skip == 6);
-	siLukuAloita(&t, 12, 1, &skip); CHECK(t.datalen == 512); CHECK(skip == 6);
+	siLukuAloita(&t, 5);  CHECK(t.datalen == 133);
+	siLukuAloita(&t, 6);  CHECK(t.datalen == 402);
+	siLukuAloita(&t, 7);  CHECK(t.datalen == 256);
+	siLukuAloita(&t, 12); CHECK(t.datalen == 384);
 	CHECK(t.nblock == 0);
 	CHECK(t.nblocks_needed == 1);
 }
@@ -1063,13 +1060,13 @@ TEST_CASE("siLukuAloita: kerattava pituus ja ohitettava otsikko tyypeittain")
 static int ajaLuku(int SItype, int SIext, const unsigned char *buf, int *pyynnot,
 	SILukuTp *t)
 {
-	int l, n = 0, skip;
+	int l, n = 0;
 
-	siLukuAloita(t, SItype, SIext, &skip);
+	(void) SIext;
+	siLukuAloita(t, SItype);
 	for (l = 1; l <= 640; l++) {
-		int p = siLukuSeuraava(t, buf, l, &skip);
+		int p = siLukuSeuraava(t, buf, l);
 		if (p != SIPYY_EI) {
-			CHECK(skip == 9);
 			pyynnot[n++] = p;
 			}
 		if (l == t->datalen)
@@ -1136,17 +1133,111 @@ TEST_CASE("siLukuSeuraava: SI10/11 lukee leimamaaran mukaan 1..4 leimalohkoa")
 	CHECK(t.nblocks_needed == 4); CHECK(n == 4);
 }
 
-TEST_CASE("siLukuSeuraava: SI6-EXT lukee lohkot 0, 1, 6 ja 7")
+TEST_CASE("siLukuSeuraava: SI6-EXT lukee lohkon 6, ja lohkon 7 vain yli 32 leimalla")
 {
 	unsigned char b[640];
 	int p[8], n;
 	SILukuTp t;
 
 	memset(b, 0, sizeof(b));
+	b[18] = 4;                          // 4 leimaa -> vain lohko 6
 	n = ajaLuku(12, 1, b, p, &t);
-	REQUIRE(n == 3);
-	CHECK(p[0] == SIPYY_SI6X_B1); CHECK(p[1] == SIPYY_SI6X_B6); CHECK(p[2] == SIPYY_SI6X_B7);
-	CHECK(t.datalen == 512);
+	REQUIRE(n == 1);
+	CHECK(p[0] == SIPYY_SI6X_B6);
+	CHECK(t.datalen == 256);
+
+	b[18] = 32;                         // lohko 6 taynna, ei viela lohkoa 7
+	n = ajaLuku(12, 1, b, p, &t);
+	CHECK(n == 1); CHECK(t.datalen == 256);
+
+	b[18] = 33;
+	n = ajaLuku(12, 1, b, p, &t);
+	REQUIRE(n == 2);
+	CHECK(p[0] == SIPYY_SI6X_B6); CHECK(p[1] == SIPYY_SI6X_B7);
+	CHECK(t.datalen == 384);
+
+	b[18] = 192;                        // 192 leiman tila: lohkot 6-7 riittavat 64:aan
+	n = ajaLuku(12, 1, b, p, &t);
+	CHECK(n == 2); CHECK(t.datalen == 384);
+}
+
+TEST_CASE("siLukuSeuraava: tuntematon korttisarja E8:lla hylataan")
+{
+	unsigned char b[640];
+	int p[8], n;
+	SILukuTp t;
+	unsigned long tuntemattomat[] = {999999UL, 2003000UL, 2003999UL, 3000000UL,
+		3999999UL, 5000000UL, 5999999UL, 10000000UL, 14000000UL, 16711680UL};
+	unsigned long tunnetut[] = {1000000UL, 1999999UL, 2000000UL, 2002999UL,
+		2004000UL, 2999999UL, 4000000UL, 4999999UL, 6000000UL, 6999999UL,
+		7000000UL, 8999999UL, 9999999UL};
+	int tyypit[] = {7, 7, 9, 9, 9, 9, 10, 10, 11, 11, 8, 8, 8};
+	size_t i;
+
+	for (i = 0; i < sizeof(tuntemattomat) / sizeof(tuntemattomat[0]); i++) {
+		CAPTURE(tuntemattomat[i]);
+		buildBlock(b, 640, tuntemattomat[i]);
+		n = ajaLuku(7, 1, b, p, &t);
+		REQUIRE(n == 1);
+		CHECK(p[0] == SIPYY_TUNTEMATON);
+		}
+	for (i = 0; i < sizeof(tunnetut) / sizeof(tunnetut[0]); i++) {
+		CAPTURE(tunnetut[i]);
+		buildBlock(b, 640, tunnetut[i]);
+		n = ajaLuku(7, 1, b, p, &t);
+		REQUIRE(n >= 1);
+		CHECK(p[0] != SIPYY_TUNTEMATON);
+		CHECK(t.SItype == tyypit[i]);
+		}
+}
+
+TEST_CASE("siUusitaanko: virhe, NAK ja aikaraja uusitaan SIYRITYKSET kertaan asti, poisto ei")
+{
+	CHECK(SIYRITYKSET == 3);
+	CHECK(siUusitaanko(SIKEHYS_VIRHE, 1) == 1);
+	CHECK(siUusitaanko(SIKEHYS_VIRHE, 2) == 1);
+	CHECK(siUusitaanko(SIKEHYS_VIRHE, 3) == 0);
+	CHECK(siUusitaanko(SIKEHYS_NAK, 1) == 1);
+	CHECK(siUusitaanko(SIKEHYS_NAK, 3) == 0);
+	CHECK(siUusitaanko(SIKEHYS_KESKEN, 2) == 1);   // aikaraja
+	CHECK(siUusitaanko(SIKEHYS_KESKEN, 3) == 0);
+	CHECK(siUusitaanko(SIKEHYS_POISTO, 1) == 0);
+	CHECK(siUusitaanko(SIKEHYS_OK, 1) == 0);
+}
+
+TEST_CASE("siVanhaKehysOk: vanhan protokollan STX/ETX-paikat")
+{
+	unsigned char b[402];
+	int i;
+
+	memset(b, 0x41, sizeof(b));
+	b[0] = 0x02; b[132] = 0x03;
+	CHECK(siVanhaKehysOk(b, 133, 5) == 1);
+	CHECK(siVanhaKehysOk(b, 132, 5) == 0);   // pituus vaara
+	b[132] = 0x41;
+	CHECK(siVanhaKehysOk(b, 133, 5) == 0);   // ETX puuttuu (tavu hukassa)
+	b[132] = 0x03; b[0] = 0x31;
+	CHECK(siVanhaKehysOk(b, 133, 5) == 0);   // STX puuttuu
+
+	memset(b, 0x41, sizeof(b));
+	for (i = 0; i < 3; i++) {
+		b[134*i] = 0x02;
+		b[134*i + 133] = 0x03;
+		}
+	CHECK(siVanhaKehysOk(b, 402, 6) == 1);
+	b[267] = 0x41;
+	CHECK(siVanhaKehysOk(b, 402, 6) == 0);   // 2. lohko siirtynyt
+	b[267] = 0x03;
+	CHECK(siVanhaKehysOk(b, 401, 6) == 0);
+	CHECK(siVanhaKehysOk(b, 402, 7) == 0);   // ei vanhan protokollan tyyppi
+
+	// SI5 auto-send -puskuri (siAutosendAlku rakentaa otsikon 02 02 31).
+	{
+	SI5tp tp;
+	memset(&tp, 0, sizeof(tp));
+	tp.stx = 0x02; tp.CD49 = 0x02; tp.CSI = 0x31; tp.etx = 0x03;
+	CHECK(siVanhaKehysOk((unsigned char *) &tp, sizeof(tp), 5) == 1);
+	}
 }
 
 TEST_CASE("siLukuSeuraava: vanhan protokollan SI5/SI6 ei pyyda lisalohkoja")
@@ -1510,7 +1601,8 @@ TEST_CASE("siViallinenEmit200: koodi 200 viallinen vain muussa kuin SportIdent-k
 // tulkinta"/"SI leimat"). Kukin kortti luettu kahdesti, toisella kerralla
 // lisaleimoin. Leimalaskurin (RC) kaytto ei saa muuttaa tulosta.
 // Kortin henkilotiedot (nimi, seura, sahkoposti) on korvattu tayttomerkeilla;
-// tulkSI ei lue niita tavuja.
+// tulkSI ei lue niita tavuja. SI6-EXT-dumpit (luettu lohkot 0, 1, 6, 7) on
+// muunnettu nykyiseen puskuriin: lohko 0 + lohko 6 (alle 33 leimaa).
 // ===========================================================================
 
 typedef struct {
@@ -1541,11 +1633,7 @@ static const SIDumpTp siDumpit[] = {
 	{12, 579671L, 74332L, 3, {31, 32, 50}, {74385L, 74427L, 74606L},
 		"01010101EDEDEDED55AA0008D857793D00320304EEEEEEEEEEEEEEEEEEEEEEEE0901799CFFFFFFFF000000012020202020202020202020202020202020202020"
 		"20202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020"
-		"20202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020"
-		"2020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020203030306DFFFFFFFFFFFFFFFFFFFFFFFF"
 		"091F79D1092079FB09327AAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
-		"EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
-		"EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
 		"EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"},
 	{8, 8004087L, 76936L, 5, {31, 31, 31, 32, 50}, {77040L, 77080L, 77085L, 77136L, 79108L},
 		"CE9ED064EAEAEAEA0DFF83C8EEEEEEEEEEEEEEEE04B005AD0F7A21F70C1908673B3B3B3B3B3B3B3B3B3B3BEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
@@ -1570,11 +1658,7 @@ static const SIDumpTp siDumpit[] = {
 	{12, 579671L, 74332L, 5, {31, 32, 50, 50, 50}, {74385L, 74427L, 74606L, 80535L, 84043L},
 		"01010101EDEDEDED55AA0008D857793D00320506EEEEEEEEEEEEEEEEEEEEEEEE0901799CFFFFFFFF000000012020202020202020202020202020202020202020"
 		"20202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020"
-		"20202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020"
-		"2020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020203030306DFFFFFFFFFFFFFFFFFFFFFFFF"
 		"091F79D1092079FB09327AAE0B3291D70B329F8BEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
-		"EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
-		"EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
 		"EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"},
 	{9, 2170603L, 74336L, 6, {31, 32, 50, 50, 50, 50}, {74393L, 74431L, 74599L, 80384L, 80484L, 84048L},
 		"C5ED809AEAEAEAEA090179A0EEEEEEEEEEEEEEEE0032064A02211EEBFFFFB7353B3BEEEE00000000000000000000000000000000000000000000000000000000"
@@ -1685,10 +1769,10 @@ TEST_CASE("EXT: leimalaskurin jalkeiset vanhat leimat ohitetaan")
 
 	// SI6-EXT: sama leimalaskurilla tavussa 18.
 	memset(buf, 0xEE, sizeof(buf));
-	setPunch(buf, 256, 0, 31, 10*3600);
-	setPunch(buf, 260, 0, 33, 9*3600);        // vanha leima
+	setPunch(buf, 128, 0, 31, 10*3600);
+	setPunch(buf, 132, 0, 33, 9*3600);        // vanha leima
 	buf[18] = 1;
-	tulkSI((char *) buf, &result, 0, 12, 512, 0);
+	tulkSI((char *) buf, &result, 0, 12, 384, 0);
 
 	CHECK((int) (unsigned char) result.cc[1] == 31);
 	CHECK(result.cc[2] == 0);
@@ -1923,9 +2007,9 @@ static int ajaExtLuku(int SItype, int kmd, const unsigned char *kortti,
 {
 	unsigned char k[160];
 	SIKehysTp kt;
-	int l = 0, skip, lohko = 0, n, i, tulos;
+	int l = 0, lohko = 0, n, i, tulos;
 
-	siLukuAloita(t, SItype, 1, &skip);
+	siLukuAloita(t, SItype);
 	siKehysAloita(&kt);
 	for (;;) {
 		n = teeKehys(k, kmd, lohko, kortti + 128 * lohko, 128);
@@ -1934,13 +2018,12 @@ static int ajaExtLuku(int SItype, int kmd, const unsigned char *kortti,
 			tulos = siExtTavu(&kt, k[i], kmd, lohko, buf, &l, 640);
 		if (tulos != SIKEHYS_OK)
 			return -1;
-		switch (siLukuSeuraava(t, buf, l, &skip)) {
+		switch (siLukuSeuraava(t, buf, l)) {
 			case SIPYY_SI9_B1:  lohko = 1; break;
 			case SIPYY_SI11_B4: lohko = 4; break;
 			case SIPYY_SI11_B5: lohko = 5; break;
 			case SIPYY_SI11_B6: lohko = 6; break;
 			case SIPYY_SI11_B7: lohko = 7; break;
-			case SIPYY_SI6X_B1: lohko = 1; break;
 			case SIPYY_SI6X_B6: lohko = 6; break;
 			case SIPYY_SI6X_B7: lohko = 7; break;
 			default:
@@ -1962,13 +2045,11 @@ TEST_CASE("Oikeat kortit: koko EXT-luenta kehyksineen tuottaa saman tuloksen")
 		CAPTURE(k->badge);
 		len = hexPuskuriin(k->hex, dump, sizeof(dump));
 		// Dumpin lohkot kortin lohkoiksi: SI9-perhe 0,1 (SI10/11: 0,4..),
-		// SI6-EXT 0,1,6,7.
+		// SI6-EXT 0,6[,7].
 		memset(kortti, 0xEE, sizeof(kortti));
 		memcpy(kortti, dump, 128);
-		if (k->SItype == 12) {
-			memcpy(kortti + 128, dump + 128, 128);
-			memcpy(kortti + 6*128, dump + 256, 256);
-			}
+		if (k->SItype == 12)
+			memcpy(kortti + 6*128, dump + 128, len - 128);
 		else if (k->SItype == 8)
 			memcpy(kortti + 4*128, dump + 128, len - 128);
 		else
@@ -1998,8 +2079,8 @@ TEST_CASE("Oikeat kortit: koko EXT-luenta kehyksineen tuottaa saman tuloksen")
 // tayttomerkeilla ja niiden kehysten CRC laskettu uudelleen.
 // Luenta ajetaan kuten lue_SI: tunnistuskehys -> pyydetyt lohkot tavu
 // kerrallaan siExtTavu:lle -> siLukuSeuraava -> tulkSI. SI Config+ ei lue
-// kaikkia samoja lohkoja (SI6: ei lohkoa 7, kun leimoja on alle 33); puuttuva
-// lohko annetaan tyhjana (EE), jota leimalaskuri ei lue.
+// kaikkia samoja lohkoja (SI10/11: myos asetuslohko 3); puuttuva lohko
+// annettaisiin tyhjana (EE).
 // ===========================================================================
 
 typedef struct {
@@ -2134,7 +2215,7 @@ TEST_CASE("SI Config+ -kaappaukset: luenta ja tulkinta samat kuin SI Config+:lla
 	SILukuTp luku;
 	SIResultTp r;
 	size_t c;
-	int i, j, n, t, kmd, lohko, l, skip, SItype, pyynto;
+	int i, j, n, t, kmd, lohko, l, SItype, pyynto;
 
 	memset(tyhja, 0xEE, sizeof(tyhja));
 	for (c = 0; c < sizeof(siConfigKortit) / sizeof(siConfigKortit[0]); c++) {
@@ -2148,7 +2229,7 @@ TEST_CASE("SI Config+ -kaappaukset: luenta ja tulkinta samat kuin SI Config+:lla
 			case SIILM_SI6EXT: SItype = 12; kmd = 0xE1; break;
 			default:           SItype = 7;  kmd = 0xEF; break;
 			}
-		siLukuAloita(&luku, SItype, 1, &skip);
+		siLukuAloita(&luku, SItype);
 		siKehysAloita(&kt);
 		l = 0;
 		lohko = 0;
@@ -2166,10 +2247,10 @@ TEST_CASE("SI Config+ -kaappaukset: luenta ja tulkinta samat kuin SI Config+:lla
 			for (j = 0; j < n && t == SIKEHYS_KESKEN; j++)
 				t = siExtTavu(&kt, k[j], kmd, lohko, buf, &l, sizeof(buf));
 			REQUIRE(t == SIKEHYS_OK);
-			pyynto = siLukuSeuraava(&luku, buf, l, &skip);
+			pyynto = siLukuSeuraava(&luku, buf, l);
 			if (pyynto == SIPYY_EI)
 				break;
-			lohko = pyynto == SIPYY_SI9_B1 || pyynto == SIPYY_SI6X_B1 ? 1 :
+			lohko = pyynto == SIPYY_SI9_B1 ? 1 :
 				pyynto == SIPYY_SI11_B4 ? 4 : pyynto == SIPYY_SI11_B5 ? 5 :
 				pyynto == SIPYY_SI11_B6 || pyynto == SIPYY_SI6X_B6 ? 6 : 7;
 			}
