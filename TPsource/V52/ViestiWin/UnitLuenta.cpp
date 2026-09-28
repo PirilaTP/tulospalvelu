@@ -79,6 +79,24 @@ void __fastcall TFormLuenta::Nollaa(void)
 	OdottaaKorttia = false;
 }
 //---------------------------------------------------------------------------
+// Palauttaa true, jos edellisen kilpailijan luettu Emit-kortti odottaa vielä
+// vahvistusta. Huomauttaa käyttäjälle, palauttaa kenttään odottavan kilpailijan
+// numeron ja osuuden ja siirtää kohdistuksen vahvistuskenttään.
+bool __fastcall TFormLuenta::EdellinenVahvistamatta(void)
+{
+	if (!uusi_emit)
+		return(false);
+	Application->MessageBoxW(L"Edellisen kilpailijan Emit-kortti on vielä vahvistamatta. Tallenna tai peruuta se ensin.",
+		L"Poikkeama", MB_OK);
+	EdtViivakoodi->Text = L"";
+	if (DKilp > 0 && Osuus >= 0) {
+		EdtKilpno->Text = Kilpno;
+		EdtOsuus->Text = wosuuskoodi(Kilp.sarja, Osuus, 0, 0);
+		}
+	FocusControl(EdtVahvistus);
+	return(true);
+}
+//---------------------------------------------------------------------------
 luentaIkkParamClass::luentaIkkParamClass(void)
 {
 	memset(this, 0, sizeof(luentaIkkParamClass));
@@ -200,12 +218,8 @@ void __fastcall TFormLuenta::EdtViivakoodiKeyPress(TObject *Sender, System::Wide
 	int alios = 0, yos = 0, srj = -1;
 
 	if (Key == L'\r') {
-		if (uusi_emit) {
-			Application->MessageBoxW(L"Edellisen kilpailijan Emit-kortti on vielä vahvistamatta. Tallenna tai peruuta se ensin.",
-				L"Poikkeama", MB_OK);
-			EdtViivakoodi->Text = L"";
+		if (EdellinenVahvistamatta()) {
 			Key = 0;
-			FocusControl(EdtVahvistus);
 			return;
 			}
 		if (EdtViivakoodi->Text.Length() > 2 && wcswcind(EdtViivakoodi->Text.c_str()[0], L"*%") >= 0) {
@@ -468,6 +482,10 @@ void __fastcall TFormLuenta::EdtKilpnoKeyPress(TObject *Sender, System::WideChar
 
 {
 	if (Key == L'\r' || Key == L'\t') {
+		if (EdellinenVahvistamatta()) {
+			Key = 0;
+			return;
+			}
 		if (EdtKilpno->Text.Length() > 0 && (Kilpno = _wtoi(EdtKilpno->Text.c_str())) > 0 &&
 			(DKilp = getpos(Kilpno)) > 0)
 			{
@@ -496,6 +514,10 @@ void __fastcall TFormLuenta::EdtKilpnoKeyPress(TObject *Sender, System::WideChar
 void __fastcall TFormLuenta::EdtOsuusKeyPress(TObject *Sender, System::WideChar &Key)
 {
 	if (Key == L'\r') {
+		if (EdellinenVahvistamatta()) {
+			Key = 0;
+			return;
+			}
 		if (EdtKilpno->Text.Length() > 0 && (Kilpno = _wtoi(EdtKilpno->Text.c_str())) > 0 &&
 			(DKilp = getpos(Kilpno)) > 0 && EdtOsuus->Text.Length() > 0  &&
 			(Osuus = tulkOsuuskoodi(sarjaKno(Kilpno), EdtOsuus->Text.c_str())) >= 0 && Osuus < kilpparam.osuusluku) {
