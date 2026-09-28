@@ -297,18 +297,21 @@ int TFormImport::lue_kilpcsv(TextFl *afile, kilptietue *kilp, int lineno, int to
 				break;
 			case FLDID_BADGE2:
 				kilp->ostiet[fldorder[ifld].os-1].badge[1] = _wtoi(tfld);
+				break;
 			case FLDID_LAINA2:
 				kilp->ostiet[fldorder[ifld].os-1].laina[1] = wchartoansi(tfld[0]);
 				break;
 			case FLDID_RATA:
 				WcsToMbs(kilp->ostiet[fldorder[ifld].os-1].hajonta, tfld,
 					sizeof(kilp->ostiet[fldorder[ifld].os-1].hajonta)-1);
+				break;
 			case FLDID_TARK:
 				kilp->SetTark(fldorder[ifld].os-1, tfld[0]);
 				break;
 			case FLDID_AMPSAKKO:
 				WcsToMbs(kilp->ostiet[fldorder[ifld].os-1].ampsakot, tfld,
 					sizeof(kilp->ostiet[fldorder[ifld].os-1].ampsakot)-1);
+				break;
 			case FLDID_SAKKO:
 				kilp->ostiet[fldorder[ifld].os-1].sakko = _wtoi(tfld);
 				break;
