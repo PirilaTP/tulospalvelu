@@ -89,7 +89,7 @@ ColTp OoGridCols0[] = {
 	{L"Pist-3", 40, 0, 1, 0, false},
 	{L"RintaNo", 50, 0, N_PV, 0, true},
 	{L"Vaihesarja", 60, 0, N_PV, 0, false},
-	{L"Badge", 50, 0, N_PV, 0, true},
+	{L"Badge", 70, 0, N_PV, 0, true},
 	{L"Laina", 30, 0, N_PV, 0, true},
 	{L"Tas.", 40, 0, N_PV, 0, false},
 	{L"Läsnä", 35, 0, N_PV, 0, true},

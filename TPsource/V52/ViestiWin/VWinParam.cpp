@@ -71,7 +71,7 @@ ColTp hTGridCols0[14] = {
 	{L"Sukup.", 30, 0, 1, 0, true},
 	{L"Sarja", 60, 0, 1, 0, false},
 	{L"Bib", 40, 0, 1, 0, false},
-	{L"Badge", 45, 0, 1, 0, true},
+	{L"Badge", 70, 0, 1, 0, true},
 	{L"Kv. id", 50, 0, 1, 0, true},
 	{L"Joukkue", 55, 0, 1, 0, false},
 	{L"Ranki", 50, 0, 1, 0, false},

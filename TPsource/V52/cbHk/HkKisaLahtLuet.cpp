@@ -1452,7 +1452,7 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 	  if ((wcswcind(luetlaji, L"EFKN") >= 0) && kilpparam.badgelaji > L' ' && !llhtml) {
 		 newline(&tulprm, 1);
 		 initline(&tulprm);
-		 swprintf(lots, L"Listalla emitkortteja: omat %d, laina %d, puuttuu %d ",
+		 swprintf(lots, SIsana(L"Listalla emitkortteja: omat %d, laina %d, puuttuu %d ").c_str(),
 			nomatot, nlainatot, neiemit);
 		 nomatot = 0;
 		 nlainatot = 0;

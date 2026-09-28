@@ -159,7 +159,8 @@ void uusintaTCP(int cn);
 void yhteysasetukset(void);
 void uusintalahetys(void);
 void yhteydet(void);
-extern int httphaku(wchar_t *host, int port, wchar_t *page, int secure, char *buf, int buflen, int *haettu);
+// katkaistu (valinnainen): 1, jos vastaus ei mahtunut puskuriin buf
+extern int httphaku(wchar_t *host, int port, wchar_t *page, int secure, char *buf, int buflen, int *haettu, int *katkaistu = NULL);
 void lahetasulku(char *tn, INT kielto);
 void lahetaeralahto(int era, INT kielto);
 void lahetaMonitorille(int yhtlkm, int yhtavattu, int jonossa, int jonoja);
@@ -864,6 +865,7 @@ extern   INT *emitjarr[2];
 extern   INT emittime;
 extern   INT  ohitatoisto;
 extern   INT  siritreuna;
+extern   INT  srrkorttiaika;
 extern	 bool siritloki;
 extern	 bool siritsync;
 extern	 int sirithead, sirittail;
@@ -964,6 +966,11 @@ extern HTHREAD httphakuThread;
 #endif
 
 extern eThakuParamtp eTParam;
+
+#if defined(SPORTIDENT)
+extern siCenterParamTp siParam;
+void siCenterHaku(void);
+#endif
 extern sqlparamtp sqlparam;
 extern sqlparamtp sqlEparam;
 extern bool inkirjSQLThread;

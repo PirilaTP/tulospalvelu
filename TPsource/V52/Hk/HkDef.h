@@ -28,7 +28,16 @@
 #define MAXKILPNO 9999
 #define RRSAKKO 600
 
-#define BADGEASKEL 1000000
+// Kortin numeron uudelleenkayton askel: 1 000 000 Emit-kilpailussa,
+// 10 000 000 SportIdent-kilpailussa (tunnistinlaji 'I'), ks. BadgeAskel()
+// Tp/TpLaitteet.cpp:ssa ja siBadgeAskel() Tp/SITulkinta.cpp:ssa.
+INT32 BadgeAskel(void);
+#define BADGEASKEL BadgeAskel()
+// Kortin numero listan kenttaan, jonka leveys on len (0 = ei rajaa): jos
+// siirretty koodi ei mahdu, kortin oma numero (ks. siNaytettavaBadge).
+wchar_t *BadgeTeksti(wchar_t *st, INT32 badge, int len);
+// Viallinen Emit-kortti (koodi 200), ei SportIdent-kilpailussa (ks. siViallinenEmit200).
+bool ViallinenEmit200(INT32 badge);
 
 #ifdef MAKI
 #undef MAKI
@@ -213,6 +222,9 @@
 #endif
 
 #define TAULU_RIVPIT 32
+
+// open()/_wopen() returns this when the emitfile has not been opened
+#define EMITFILE_NOT_OPEN -1
 
 typedef UINT32 jarjtulostp[2];
 
@@ -1189,6 +1201,17 @@ public:
 	int haeXmlRadat(ratatp *rt, int nrata);
 };
 
+// emittp.package SportIdent-lukijan (LID_SPORTIDENT) tallentamille korteille:
+// EMITPKG_SPORTIDENT + r_no (vrt. 20000000 + r_no LUKIJA-lukijalla).
+// package kulkee EMIT-tiedostossa ja verkkosanomissa, joten leimatietojen
+// lahde tunnistetaan ilman uutta kenttaa - emittp:n koko (tiedoston
+// tietuepituus, class_len[EMITT]) pysyy ennallaan. SportIdentilla ei ole
+// fyysista nollauslaitetta, joten HkEmit.cpp:n tarkista() ohittaa sille
+// kellon nollautumistarkistuksen (nollattu-lippu).
+#define EMITPKG_SPORTIDENT 30000000L
+#define ON_SPORTIDENT_EM(em) ((em)->package >= (UINT32) EMITPKG_SPORTIDENT && \
+	(em)->package < (UINT32) EMITPKG_SPORTIDENT + 1000000L)
+
 class emittp {
 public:
 	UINT32 package;
@@ -1343,6 +1366,29 @@ typedef struct {
 	int haettu;
 	bool autostart;
 } eThakuParamtp;
+
+#if defined(SPORTIDENT)
+// SportIdent Center REST API polling state (SIGPRS=, SITIME=).
+// after/afterId are updated after every successful poll, so that
+// the next poll doesn't return already-processed punches again.
+typedef struct {
+	char *buf;
+	int buflen;
+	wchar_t sihost[100];  // SIHOST: Center REST API hostname
+	wchar_t sigprs[64];   // SIGPRS: modem serial number(s), e.g. 9000041
+	__int64 sitime;       // SITIME: the "after" value (ms since epoch, local time)
+	long afterId;         // last processed punch id (the afterId parameter)
+	int sihakuvali;       // poll interval in seconds
+	int sihaku;           // 0 = off, -1 = starting, 1 = running
+	int haettu;           // number of bytes httphaku() wrote into buf
+	int sistartkoodi;     // SISTARTKOODI: SI control code used by the Start
+	                      // station (0 = not configured). Needed because a
+	                      // "Unknown" type punch can actually be a Start
+	                      // (or Finish/Check/Clear); Finish is identified
+	                      // via the existing maalirasti()/rastikoodi[] course
+	                      // convention instead, since it can differ per course.
+} siCenterParamTp;
+#endif
 
 #pragma pack(pop)
 

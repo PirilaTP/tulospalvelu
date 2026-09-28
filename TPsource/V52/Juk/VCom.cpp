@@ -394,7 +394,7 @@ void laheta(int dkilp, int entno, int os, int piste, int comtarfl, int kielto,
 	LeaveCriticalSection(&outb_CriticalSection);
    }
 
-#if defined(MAALI) && !defined(LUENTA)
+#if defined(MAALI)
 extern int odota;
 
 void laheta_aika(aikatp *dtm, aikatp *itm, int kielto, int pakota_lah)
@@ -757,7 +757,7 @@ static void tark_tls(int cn)
 	  }
    }
 
-#if defined(EMITLEIMAT) && defined(MAALI) && !defined(LUENTA)
+#if defined(MAALI)
 void lahkvaihto(INT ekno, INT eos, INT kno, INT os, INT kielto)
    {
    INT  cn ;
@@ -932,7 +932,7 @@ void tarkcom(LPVOID lpCn)
 					 tark_tls(cn);
 					 break;
 				  case AIKAT:
-#if defined(MAALI) && !defined(LUENTA)
+#if defined(MAALI)
 					 tark_aika(cn);
 #else
 #ifndef LANGSV_K
@@ -948,17 +948,17 @@ void tarkcom(LPVOID lpCn)
 					 tark_ylahto(cn);
 					 break;
 				  case EMITT:
-#if defined(EMITLEIMAT) && defined(MAALI) && !defined(LUENTA)
+#if defined(MAALI)
 					 tark_emit(cn);
 #endif
 					 break;
 				  case EMITVA:
-#if defined(EMITLEIMAT) && defined(MAALI) && !defined(LUENTA)
+#if defined(MAALI)
 					 tark_emitva(cn);
 #endif
 					 break;
 				  case VEMITT:
-#if defined(EMITLEIMAT) && defined(MAALI) && !defined(LUENTA)
+#if defined(MAALI)
 					 tark_vemit(cn);
 #endif
                      break;

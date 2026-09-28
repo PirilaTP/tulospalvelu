@@ -45,6 +45,9 @@ int decodeStdDateStr(wchar_t *st);
 int ShiftStateInt(TShiftState KeyShift);
 TShiftState IntShiftState(int state);
 void writewarning_w(wchar_t *txt, int wait);
+UnicodeString SIsana(const UnicodeString &teksti);
+void SIsanatLomakkeelle(TComponent *lomake);
+void SIsanastoKaynnista(void);
 
 static const System::Uitypes::TColor clVaaleanHarmaa = System::Uitypes::TColor(0xe0e0e0);
 //#define clVaaleanHarmaa 0xe0e0e0

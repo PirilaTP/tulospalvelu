@@ -37,6 +37,7 @@
 #include <dos.h>
 #include <sys\stat.h>
 #include "VDeclare.h"
+#include "TpLaitteet.h"
 
 //#define DBG_1
 //   int emitloki = 1;
@@ -278,14 +279,16 @@ int haeVapaaKoodi(int badge)
 {
 	int askel;
 
-	if (badge == 200)
+	if (ViallinenEmit200(badge))
 		askel = 1;
 	else {
 		if (!esta_uusikaytto)
 			return(badge);
 		askel = BADGEASKEL;
 		}
-	for (int i = 1; i < kilpparam.osuusluku; i++) {
+	int maxi = BadgeMaxSiirrot(badge, askel);   // ei ylivuotoa monen osuuden viestissa
+
+	for (int i = 1; i < kilpparam.osuusluku && i <= maxi; i++) {
 		if (bdg2kno(badge+i*askel, 0) <= 0)
 			return(badge+i*askel);
 		}
@@ -492,7 +495,7 @@ INT leimat(void)
                   gotoxy(12, r2);
                   while (!kbready(&ch, &key)) {
                      if (uusi_emit) {
-                        sprintf(line, "Luettu Emit-kortti: %ld   ", uusi_emit);
+                        sprintf(line, IsSportidentInUse() ? "Luettu SportIdent-kortti: %ld   " : "Luettu Emit-kortti: %ld   ", uusi_emit);
                         vidspmsg(ySize-5,0,7,0,line);
                         }
                      Sleep(100);
@@ -639,7 +642,7 @@ INT leimat(void)
                   }
                else {
                   ed_emit = 0;
-                  vidspmsg(r1,0,0,7,"Lue Emit-kortti, K)orjaa tieto näppäimistöltä, Esc: keskeytä");
+                  vidspmsg(r1,0,0,7, IsSportidentInUse() ? "Lue SportIdent-kortti, K)orjaa tieto näppäimistöltä, Esc: keskeytä" : "Lue Emit-kortti, K)orjaa tieto näppäimistöltä, Esc: keskeytä");
                   }
                clrln(ySize-3);
                if (!salli_emit_ensin || !ed_emit) {
@@ -675,7 +678,7 @@ INT leimat(void)
                   }
                vidint(r5+os, 37, 6, badge);
                ch = 'H';
-			   if (badge == 200) {
+			   if (ViallinenEmit200(badge)) {
                     ch = 'E';
 					viwrrect(r5+kilpparam.osuusluku,0,r5+kilpparam.osuusluku+4,64,
 						"                                                                 "
@@ -732,7 +735,7 @@ INT leimat(void)
 						}
 					}
                if (!esta_uusikaytto && kno1 && kno1 != kno) {
-                  sprintf(line, "Emit-kortti jo käytössä joukkueella %d.", kno1);
+                  sprintf(line, IsSportidentInUse() ? "SportIdent-kortti jo käytössä joukkueella %d." : "Emit-kortti jo käytössä joukkueella %d.", kno1);
                   kbflush();
                   writeerror(line, 0);
                   ch = 'E';
@@ -746,7 +749,7 @@ INT leimat(void)
                      }
                   if (os1 < os) {
                      kbflush();
-                     writeerror("Emit-kortti lukematta aiemmalta osuudelta", 0);
+                     writeerror(IsSportidentInUse() ? "SportIdent-kortti lukematta aiemmalta osuudelta" : "Emit-kortti lukematta aiemmalta osuudelta", 0);
                      ch = 'E';
                      kbflush();
                      }
