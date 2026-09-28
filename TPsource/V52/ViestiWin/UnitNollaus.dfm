@@ -256,7 +256,7 @@ object FormNollaus: TFormNollaus
   object CBEmit: TCheckBox
     Left = 21
     Top = 71
-    Width = 111
+    Width = 169
     Height = 17
     Caption = 'Poista Emit-koodit'
     TabOrder = 3
