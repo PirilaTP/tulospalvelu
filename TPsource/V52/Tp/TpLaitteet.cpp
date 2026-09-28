@@ -146,7 +146,7 @@ bool ViallinenEmit200(INT32 badge)
 	return siViallinenEmit200(badge, kilpparam.badgelaji);
 	}
 
-// Kaynnistyksen tarkistus: tyoasemalle on maaritelty SportIdent-lukija
+// Kaynnistyksen tarkistus: kilpailulle on maaritelty SportIdent-lukija
 // (SPORTIDENT= tai SRRLUKIJA=), mutta kilpailun tunnistinlaji ei ole
 // SportIdent. Luetun kortin koodin siirtoaskel (BADGEASKEL) maaraytyy
 // tunnistinlajista, joten Emit-askeleella (1 000 000) siirretty koodi voisi
@@ -162,7 +162,7 @@ void SITunnistinVaroitus(void)
 			lukija = true;
 	if (!lukija || kilpparam.badgelaji == L'I')
 		return;
-	writeerror_w(L"T\xe4" L"lle ty\xf6" L"asemalle on m\xe4\xe4ritelty SportIdent-lukija "
+	writeerror_w(L"T\xe4" L"lle kilpailulle on m\xe4\xe4ritelty SportIdent-lukija "
 		L"(SPORTIDENT tai SRRLUKIJA), mutta kilpailun tunnistimeksi on asetettu "
 		L"jokin muu kuin SportIdent.\n\n"
 		L"Aseta kilpailun m\xe4\xe4rityksiss\xe4 tunnistimeksi SportIdent ennen "
