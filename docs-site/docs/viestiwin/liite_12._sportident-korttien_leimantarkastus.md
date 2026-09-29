@@ -8,10 +8,11 @@ SIAC-kortti (SportIdent Air+) tukee kahta eri tiedonsiirtotapaa:
 
 **Air+-protokolla (radio)**
 
-- Kortti lähettää leimaustiedon langattomasti radiosignaalina, kun se on lähellä
-  SI-asemaa tai SRR-dongleta.
+- Kortti leimaa langattomasti, kun se on lähellä SI-asemaa.
 - Ei vaadi fyysistä kontaktia.
-- SRR-dongle vastaanottaa nämä lähetykset (D3-viesti).
+- SRR-radiota tukeva asema lähettää leimauksen radiolla SRR-donglelle
+  (D3-viesti). Asema lähettää samoin myös muiden SI-korttien
+  kosketusleimaukset.
 - Käytetään **ajanottoon** kilpailun aikana.
 - Kts. [Liite 7](liite_11._srr-dongle_siac-korttien_ajanotto.md).
 
@@ -34,8 +35,8 @@ joka on konfiguroitu **readout-tilaan**. Laite liitetään tietokoneeseen:
 - **RS-232-liitäntä**: Käytetään sarjaportin numeroa suoraan (kts. A6.4).
 
 **SRR-dongle ei sovellu leimantarkastuslukijaksi, koska se vastaanottaa vain
-Air+-radiolähetyksiä. Kortin leimatiedot saadaan luotettavasti vain fyysisellä
-kontaktilukijalla.**
+asemien radiolla lähettämiä yksittäisiä leimauksia. Kortin leimatiedot
+saadaan luotettavasti vain fyysisellä kontaktilukijalla.**
 
 Leimasinten kellot kannattaa tahdistaa tietokoneen kelloon: luentanäkymän
 Kello-sarake, kortilta laskettava maaliaika ja lähtöajan ennakko perustuvat

@@ -5,14 +5,20 @@
 ### A11.1 Yleistä
 
 SportIdent SRR (Short Range Radio) -dongle on USB-laite, joka vastaanottaa
-SIAC-korttien (SportIdent Air+) radioteitse lähettämiä leimauksia. Kortti
-lähettää leimaustiedon langattomasti radiosignaalina, jonka dongle vastaanottaa
-ja välittää tietokoneelle virtuaalisen sarjaportin kautta.
+SRR-radiota tukevien leimasinasemien (esim. SRR-toiminnolla varustettu BSM8)
+radioteitse lähettämiä leimauksia ja välittää ne tietokoneelle virtuaalisen
+sarjaportin kautta.
 
-SRR-dongle vastaanottaa vain Air+-radioleimauksia, eli se toimii vain
-SIAC-korttien kanssa. Muut SportIdent-kortit (SI5, SI6, SI8, SI9, SI10, SI11,
-pCard, tCard) eivät lähetä radioleimauksia; niiden leimat luetaan
-SI-lukija-asemalla (kts. [Liite 12](liite_12._sportident-korttien_leimantarkastus.md)).
+Asema lähettää radiolla jokaisen tallentamansa leimauksen:
+
+- SIAC-kortin (SportIdent Air+) kosketuksettoman leimauksen ja
+- minkä tahansa muun SportIdent-kortin (SI5, SI6, SI8, SI9, SI10, SI11, pCard,
+  tCard) kosketusleimauksen.
+
+Leimaus tulee donglelle siis vain SRR-radiota tukevalta asemalta. Tavallisella
+asemalla leimatun kortin leimat luetaan SI-lukija-asemalla
+(kts. [Liite 12](liite_12._sportident-korttien_leimantarkastus.md)).
+Ohjelma tunnistaa radioleimauksesta myös SI5-kortin numeron oikein.
 
 ### A11.2 Laitteiston kytkentä
 
@@ -122,6 +128,6 @@ Kun ohjelma on käynnistetty ja ajanotto on aktiivisena:
 | Ei mitään AJANOTTO-näytöllä | Väärä COM-portti tai dongle ei ole kytketty | Tarkista portti Laitehallinnasta |
 | Ei mitään, RS-232-kytkennässä | Väärä tiedonsiirtonopeus | Käytä `SRRLUKIJA` tai lisää `KELLOBAUD=38400` |
 | Väärä korttinumero | Vanhentunut ohjelmaversio | Päivitä ohjelma SRR-tukea sisältävään versioon |
-| Leimoja ei tule muilla kuin SIAC-korteilla | Kortti ei lähetä radioleimauksia | Normaali toiminta: SRR vastaanottaa vain SIAC-korttien Air+-leimauksia |
+| Joltakin rastilta ei tule leimoja | Rastin asema ei tue SRR-radiota tai on liian kaukana donglesta | Käytä SRR-radiota tukevaa asemaa tai lue kortti SI-lukija-asemalla |
 | Numero näkyy mutta nimi puuttuu | Kilpailijatiedostossa ei kyseistä korttia | Normaali toiminta tuntemattomille korteille |
 
