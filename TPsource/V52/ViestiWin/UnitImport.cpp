@@ -256,28 +256,12 @@ int TFormImport::lue_kilpcsv(TextFl *afile, kilptietue *kilp, int lineno, int to
 				kilp->ostiet[fldorder[ifld].os-1].lisno = _wtoi(tfld);
 				break;
 			case FLDID_SUKUNIMI:
-				memset(ast, 0, sizeof(ast));
-				WcsToMbs(ast, tfld, kilpparam.lnimi);
-				if (kilp->ostiet[fldorder[ifld].os-1].nimi[0] && strlen(ast) < kilpparam.lnimi-2) {
-					if (kilp->ostiet[fldorder[ifld].os-1].nimi[0] != '|')
-						strcat(ast, "|");
-					strncpy(ast+strlen(ast), kilp->ostiet[fldorder[ifld].os-1].nimi, 
-						kilpparam.lnimi-strlen(ast));
-					for (char *p = ast+strlen(ast)-1; *p > 127 && p > ast; p--)
-						*p = 0;
-					}
-				memset(kilp->ostiet[fldorder[ifld].os-1].nimi, 0, 
-					sizeof(kilp->ostiet[fldorder[ifld].os-1].nimi));
-				strncpy(kilp->ostiet[fldorder[ifld].os-1].nimi, ast, kilpparam.lnimi);
+				// Vaihdetaan vain sukunimi. Päivitettäessä aiempi nimi on jo tietueessa,
+				// joten nimeen ei saa lisätä vanhan perään.
+				kilp->ostiet[fldorder[ifld].os-1].setSukuNimi(tfld);
 				break;
 			case FLDID_ETUNIMI:
-				if (strlen(kilp->ostiet[fldorder[ifld].os-1].nimi) >= kilpparam.lnimi - 1)
-					break;
-				if (kilp->ostiet[fldorder[ifld].os-1].nimi[0] == 0 ||
-					kilp->ostiet[fldorder[ifld].os-1].nimi[strlen(kilp->ostiet[fldorder[ifld].os-1].nimi)-1] != '|')
-					strcat(kilp->ostiet[fldorder[ifld].os-1].nimi, "|");
-				WcsToMbs(kilp->ostiet[fldorder[ifld].os-1].nimi+strlen(kilp->ostiet[fldorder[ifld].os-1].nimi),
-					tfld, kilpparam.lnimi-strlen(kilp->ostiet[fldorder[ifld].os-1].nimi));
+				kilp->ostiet[fldorder[ifld].os-1].setEtuNimi(tfld);
 				break;
 			case FLDID_NIMI:
 				kilp->setNimi(tfld, fldorder[ifld].os-1, 1 - 2*RGNimiJarj->ItemIndex);
