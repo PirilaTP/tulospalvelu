@@ -108,6 +108,10 @@ void kilptietue::unpack(char *buf)
 		memmove(ostiet+os, buf + kilpparam.kilprecsize0 +
 			os * (kilpparam.osrecsize0 + (kilpparam.valuku+1) * kilpparam.vatpsize),
 			kilpparam.osrecsize0 + (kilpparam.valuku+1) * kilpparam.vatpsize);
+		// Vanhat CSV-tuonnit tallensivat tyhjän etunimen erottimen "|" nimen loppuun
+		size_t l = strlen(ostiet[os].nimi);
+		if (l > 0 && ostiet[os].nimi[l-1] == '|')
+			ostiet[os].nimi[l-1] = 0;
 		}
 }
 
