@@ -1131,6 +1131,7 @@ static emittp *ed_em[NREGNLY];
 #ifdef SPORTIDENT
    if (regnly[r_no] == LID_SPORTIDENT) {
       em.badge = vastaus->r21data.badge;
+		em.package = EMITPKG_SPORTIDENT + r_no;   // SportIdent - ks. VDef.h:ON_SPORTIDENT_EM
 		em.time = vastaus->r21data.lukija;
 		// Leimat emittp:hen: siEmitLeimat (SITulkinta.cpp, yksikkotestattu)
 		// - nollahetki (lahto, sen puuttuessa nollaus/tarkastus tai

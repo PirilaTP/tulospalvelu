@@ -1099,6 +1099,14 @@ typedef struct {
 	wchar_t kh;
 } emiterotp;
 
+// emittp.package SportIdent-lukijan (LID_SPORTIDENT) tallentamille korteille:
+// EMITPKG_SPORTIDENT + r_no (vrt. 20000000 + r_no LUKIJA-lukijalla), kuten
+// HkDef.h:ssa. package kulkee EMIT-tiedostossa ja verkkosanomissa, joten
+// leimatietojen lahde tunnistetaan ilman uutta kenttaa - emittp:n koko pysyy.
+#define EMITPKG_SPORTIDENT 30000000L
+#define ON_SPORTIDENT_EM(em) ((em)->package >= (UINT32) EMITPKG_SPORTIDENT && \
+	(em)->package < (UINT32) EMITPKG_SPORTIDENT + 1000000L)
+
 class emittp {
    public:
    UINT32 package;
