@@ -4102,10 +4102,30 @@ static void taulutulos(kilptietue *kilp, int Va, int sj, int l)
 
 #endif
 
+// Responsiivisessa html-taulukossa tekstikenttiä ei katkaista muotoilun kenttäpituuteen, koska solu rivittyy
+static int htmlkenttapit(bool resp, int id, int len)
+{
+	if (resp) {
+		switch (id) {
+			case F_NIMI:
+			case F_ETUNIMI:
+			case F_SUKUNIMI:
+			case F_ARVO:
+			case F_SRA:
+			case F_SRALYH:
+			case F_MAA:
+			case F_YHD:
+			case F_JOUK:
+				return(100);
+			}
+		}
+	return((std::min)(199, len));
+}
+
 //static void htmltulos(kilptietue *kilp, int day, wchar_t cd, int piste, int sj1, int sjfl, int sarja)
 static void htmltulos(kilptietue *kilp, int sj1, int sarja, tulostusparamtp *tulprm)
 {
-	wchar_t st[200], prs[20000];
+	wchar_t st[200], prs[20000], sra[200], esc[1300];
 	static INT32 karkitls = 0;
 	INT l, pistefl = 0, sjfl, n_knt = 30, opt = 0, vaslisa = 0;
 	bool toistotehty = false, taulufl;
@@ -4156,6 +4176,20 @@ static void htmltulos(kilptietue *kilp, int sj1, int sarja, tulostusparamtp *tul
 	if (tulprm->kohde == L'I') {
 		kilp->SarjaNimi(k_pv, st);
 		wmemcpy(prs, st, wcslen(st));
+		}
+	bool resp = taulufl && html_resp(tulprm), sraTehty = false;
+
+	// Responsiivisessa tulosteessa seura näytetään kapealla näytöllä nimen alla
+	memset(sra, 0, sizeof(sra));
+	if (resp) {
+		for (int i_knt = 0; i_knt < tulprm->n_aFlds; i_knt++) {
+			int id = tulprm->aFld[i_knt].id;
+			if (id == F_SRA || (id == F_SRALYH && !sra[0])) {
+				kilp->strval(tulprm, sra, htmlkenttapit(true, id, p_fld[id].len), id, tulprm->aFld[i_knt].race, 0, sj1, 0);
+				if (id == F_SRA)
+					break;
+				}
+			}
 		}
 	for (int i_knt = 0; i_knt < tulprm->n_aFlds; i_knt++) {
 		int pos;
@@ -4253,16 +4287,29 @@ static void htmltulos(kilptietue *kilp, int sj1, int sarja, tulostusparamtp *tul
 			(Sarjat[kilp->Sarja()].piilotatulos && (id == F_SJ || id == F_OSASJ)))
 			st[0] = 0;
 		else
-			kilp->strval(tulprm, st, (std::min)(199, fld->len), (pistefl == 2 && id == F_OSATLS) ? F_PIST : id, race, pst, sj1, opt);
+			kilp->strval(tulprm, st, htmlkenttapit(resp, id, fld->len), (pistefl == 2 && id == F_OSATLS) ? F_PIST : id, race, pst, sj1, opt);
 		if (taulufl) {
 /*			if (fld->oik)
 				wcscat(prs, L"<td align=right>");
 			else
 				wcscat(prs, L"<td align=left>");
 */
-			wcscat(prs, L"<td>");
-			wcscat(prs, st);
-			wcscat(prs, L"</td>");
+			if (resp) {
+				swprintf(prs+wcslen(prs), 40, L"<td class=c-%s>", html_fldclass(id));
+				wcscat(prs, htmlesc(esc, st, sizeof(esc)/2));
+				if (!sraTehty && sra[0] && (id == F_NIMI || id == F_SUKUNIMI || id == F_ETUNIMI)) {
+					wcscat(prs, L"<span class=m-sra>");
+					wcscat(prs, htmlesc(esc, sra, sizeof(esc)/2));
+					wcscat(prs, L"</span>");
+					sraTehty = true;
+					}
+				wcscat(prs, L"</td>");
+				}
+			else {
+				wcscat(prs, L"<td>");
+				wcscat(prs, st);
+				wcscat(prs, L"</td>");
+				}
 			}
 		else {
 			l = wcslen(st);
@@ -4893,9 +4940,151 @@ static int tlsSeuraava(int *p, int *d, int ixjarj, int *srj, int piste, int *lj,
 	return(valmis);
 }
 
+// Responsiivisen html-tulosteen sarjaotsikot (tulmuot.cssfl == CSS_RESP)
+static void kirjhtmlotsikot_resp(int *srj, tulostusparamtp *tulprm)
+{
+	int na, piste, lkmfl;
+	wchar_t prs[10000], stas[200], esc[600], id[100];
+	static const wchar_t *txts[2][10] = {{L"Piiri", L"Seura", L"Tilanne", L"Lähti", L"Keskeytti", L"Hylätty", L"Tls", L"Yht.", L"Sj.", L"Avoinna" },
+						  {L"District", L"Club", L"Status", L"Started", L"DNF", L"DQ", L"Race", L"Total", L"Pos", L"Open" }};
+
+	piste = tulprm->piste;
+	if (tulprm->yksihtml && potsfl) {
+// Piiri- tai seurarajaus kirjoitetaan kerran sivun alkuun (sarjalinkkejä ei responsiivisessa tilassa käytetä)
+		if (tulprm->piiritulokset) {
+			swprintf(prs, sizeof(prs)/2, L"<p class=rajaus>%s:", txts[tulprm->language][0]);
+			for (int piiri = 0; piiri < piiriluku; piiri++) {
+				if (piirifl[piiri] && piirinimi[piiri][0] &&
+					wcslen(prs) + 6*wcslen(piirinimi[piiri]) < sizeof(prs)/2-10) {
+					wcscat(prs, L" ");
+					wcscat(prs, htmlesc(esc, piirinimi[piiri], sizeof(esc)/2));
+					}
+				}
+			wcscat(prs, L"</p>\n");
+			tulprm->writehtml(prs);
+			}
+		else if (tulprm->seuratulokset) {
+			swprintf(prs, sizeof(prs)/2, L"<p class=rajaus>%s:", txts[tulprm->language][1]);
+			for (int is = 0; is < SEURALISTA && seuranimi[is][0]; is++) {
+				if (wcslen(prs) + 6*wcslen(seuranimi[is]) >= sizeof(prs)/2-10)
+					break;
+				wcscat(prs, is ? L", " : L" ");
+				wcscat(prs, htmlesc(esc, seuranimi[is], sizeof(esc)/2));
+				}
+			wcscat(prs, L"</p>\n");
+			tulprm->writehtml(prs);
+			}
+		}
+
+	swprintf(prs, sizeof(prs)/2, L"<section class=sarja id=\"%s\">\n<h3 class=sarjanimi>",
+		htmlid(id, Sarjat[*srj].sarjanimi, sizeof(id)/2));
+	wcscat(prs, htmlesc(esc, SarjaNimi(stas, sizeof(stas)/2, *srj, true, NULL), sizeof(esc)/2));
+	AlisarjaOts(stas, 80, tulprm);
+	if (wcslen(stas) > 0) {
+		wcscat(prs, L" - ");
+		wcscat(prs, htmlesc(esc, stas, sizeof(esc)/2));
+		}
+#ifdef MAKI
+	if (!makitulokset)
+#endif
+		{
+		if (((piste == 0 && tulprm->tulmuot.matkafl &&
+			(tulprm->tulmuot.matkafl == 2 || Sarjat[*srj].psarjanimi[0] == 0)) ||
+			piste > kilpparam.valuku) && Sarjat[*srj].matka[k_pv][0]) {
+			wcscat(prs, L"<span class=matka>");
+			if (k_pv == 1 && tulprm->yhttuljarj) {
+				wcscat(prs, Sarjat[*srj].matka[0]);
+				wcscat(prs, L" + ");
+				}
+			wcscpy(stas, Sarjat[*srj].matka[k_pv]);
+			if (stas[wcslen(stas)-1] <= L'9') {
+				wcscat(stas, L" km");
+				if (Sarjat[*srj].tapa[k_pv][0] >= L'P') {
+					swprintf(stas+wcslen(stas), 20, L" (%s)", Sarjat[*srj].tapa[k_pv]);
+					}
+				}
+			else if (wcswcind(stas[wcslen(stas)-1], L"VP") >= 0) {
+				 wchar_t *p, stl[10] = L"";
+				 for (p = stas+wcslen(stas)-1; p > stas+1 && *p > L'9'; p--) ;
+				 if (*p <= L'9') {
+					  wcsncpy(stl, p+1, 9);
+					  p[1] = 0;
+					  swprintf(p+1, 30, L" km (%s)", stl);
+					  }
+				 }
+			wcscat(prs, stas);
+			wcscat(prs, L"</span>");
+			}
+		if (piste > 0 && piste <= kilpparam.valuku && Sarjat[*srj].va_matka[k_pv][piste-1]) {
+			wcscat(prs, L"<span class=matka>");
+			wcscat(prs, Sarjat[*srj].va_matka[k_pv][piste-1]);
+			if (Sarjat[*srj].va_matka[k_pv][piste-1][wcslen(Sarjat[*srj].va_matka[k_pv][piste-1])-1] <= L'9')
+				wcscat(prs, L" km");
+			wcscat(prs, L"</span>");
+			}
+		}
+	wcscat(prs, L"</h3>\n");
+	tulprm->writehtml(prs);
+
+	na = n_avoin(*srj);
+	lkmfl = tulprm->tulmuot.lkmfl && !tulprm->piilotatulos && !Sarjat[*srj].piilotatulos;
+	if (tulprm->tulostettava != L'P' && (na || lkmfl)) {
+		wcscpy(prs, L"<p class=sarjatiedot>");
+		if (na)
+			swprintf(prs+wcslen(prs), 100, L"%s %s", txts[tulprm->language][2], wkello());
+		if (lkmfl) {
+			swprintf(prs+wcslen(prs), 200, L"%s%s: %d, %s: %d, %s: %d", na ? L" &middot; " : L"",
+				txts[tulprm->language][3], ntulos[*srj][0]+nkesk[*srj]+nhyl[*srj],
+				txts[tulprm->language][4], nkesk[*srj],
+				txts[tulprm->language][5], nhyl[*srj]);
+			if (na)
+				swprintf(prs+wcslen(prs), 50, L", %s: %d", txts[tulprm->language][9], na);
+			}
+		wcscat(prs, L"</p>\n");
+		tulprm->writehtml(prs);
+		}
+
+	if (!tulprm->tulmuot.tauluhtml) {
+		tulprm->writehtml(L"<pre class=tulokset>\n");
+		}
+	else {
+		bool va = false;
+
+		for (int i_knt = 0; i_knt < tulprm->n_aFlds; i_knt++)
+			if (tulprm->aFld[i_knt].id == F_OSATLS || tulprm->aFld[i_knt].id == F_OSASJ)
+				va = true;
+		if (va)
+			tulprm->writehtml(L"<div class=tbl-wrap>\n<table class=\"restbl va\">\n");
+		else
+			tulprm->writehtml(L"<div class=tbl-wrap>\n<table class=restbl>\n");
+		if (tulprm->tulmuot.otsikot & 1) {
+			wcscpy(prs, L"<thead><tr>");
+			for (int i_knt = 0; i_knt < tulprm->n_aFlds; i_knt++) {
+				wchar_t st[40] = L"";
+				wcsncpy(st, tulprm->aFld[i_knt].title, 29);
+				if (wcslen(prs) > sizeof(prs)/2 - 300) {
+					tulprm->writehtml(prs);
+					prs[0] = 0;
+					}
+				swprintf(prs+wcslen(prs), 40, L"<th class=c-%s>", html_fldclass(tulprm->aFld[i_knt].id));
+				wcscat(prs, htmlesc(esc, st, sizeof(esc)/2));
+				wcscat(prs, L"</th>");
+				}
+			wcscat(prs, L"</tr></thead>\n");
+			tulprm->writehtml(prs);
+			}
+		tulprm->writehtml(L"<tbody>\n");
+		}
+	potsfl = FALSE;
+}
+
 //static void kirjhtmlotsikot(int *srj, int piste, int day, wchar_t cd)
 static void kirjhtmlotsikot(int *srj, tulostusparamtp *tulprm)
 {
+	if (html_resp(tulprm)) {
+		kirjhtmlotsikot_resp(srj, tulprm);
+		return;
+		}
 	int na, piste;
 	wchar_t prs[10000], stas[80];
 	static const wchar_t *txts[2][10] = {{L"Piiri", L"Seura", L"Tilanne", L"Lähti", L"Keskeytti", L"Hylätty", L"Tls", L"Yht.", L"Sj.", L"Avoinna" },
@@ -6300,7 +6489,13 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 	  if (tulprm->kohde == L'E') {
 		 tulprm->puts_f(L".\n\n");
 		 }
-	  if ((tulprm->kohde == L'H' || tulprm->kohde == L'M') && tulprm->rivi) {
+	  if (html_resp(tulprm) && tulprm->rivi) {
+		 if (!tulprm->tulmuot.tauluhtml)
+			tulprm->writehtml(L"</pre>\n</section>\n");
+		 else
+			tulprm->writehtml(L"</tbody></table></div>\n</section>\n");
+		 }
+	  else if ((tulprm->kohde == L'H' || tulprm->kohde == L'M') && tulprm->rivi) {
 		 if (!tulprm->tulmuot.tauluhtml)
 			tulprm->writehtml(L"</PRE>\n");
 		 else
@@ -6626,6 +6821,60 @@ void autoalku(wchar_t *koodit)
    }
 
 static int htmlalkufl;
+static wchar_t htmlIndexName[200];   // responsiivisen hakemistosivun nimi sarjakohtaisten sivujen paluulinkkiin
+
+// Responsiivisen html-sivun alku. frame != 0: sarjakohtainen tiedosto
+static void htmlalku_resp(wchar_t *title, wchar_t *header, int frame, tulostusparamtp *tulprm)
+{
+	wchar_t esc[600];
+
+	if (tulprm->language == 1)
+		tulprm->writehtml(L"<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n");
+	else
+		tulprm->writehtml(L"<!DOCTYPE html>\n<html lang=\"fi\">\n<head>\n");
+	if (tulprm->merkit == L'A')
+		tulprm->writehtml(L"<meta charset=\"iso-8859-1\">\n");
+	else
+		tulprm->writehtml(L"<meta charset=\"utf-8\">\n");
+	tulprm->writehtml(L"<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n");
+	tulprm->writehtml(L"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n");
+	if (frame) {
+		title = wtitle;
+		header = wheader;
+		}
+	if (title && title[0]) {
+		tulprm->writehtml(L"<title>");
+		tulprm->writehtml(htmlesc(esc, title, sizeof(esc)/2));
+		tulprm->writehtml(L"</title>\n");
+		}
+	css_string(tulprm, 4);
+	tulprm->writehtml(L"</head>\n");
+	if (!tulprm->yksihtml && !frame)
+		return;				// htmlrunko kirjoittaa hakemistosivun rungon
+	if (frame) {
+		tulprm->writehtml(L"<body class='tulframe'>\n");
+		if (htmlIndexName[0]) {
+			tulprm->writehtml(L"<p class=takaisin><a href=\"");
+			tulprm->writehtml(htmlesc(esc, htmlIndexName, sizeof(esc)/2));
+			if (tulprm->language == 1)
+				tulprm->writehtml(L"\">&larr; All classes</a></p>\n");
+			else
+				tulprm->writehtml(L"\">&larr; Kaikki sarjat</a></p>\n");
+			}
+		}
+	else
+		tulprm->writehtml(L"<body>\n");
+	if (header && header[0]) {
+		tulprm->writehtml(L"<h2 class=otsikko>");
+		tulprm->writehtml(htmlesc(esc, header, sizeof(esc)/2));
+		tulprm->writehtml(L"</h2>\n");
+		if (tulostus_lisateksti_tul[0]) {
+			tulprm->writehtml(L"<p class=lisateksti>");
+			tulprm->writehtml(htmlesc(esc, tulostus_lisateksti_tul, sizeof(esc)/2));
+			tulprm->writehtml(L"</p>\n");
+			}
+		}
+}
 
 //void htmlalku(wchar_t *wtitle, wchar_t *wheader, int frame, int emitvali, tulostusparamtp *tulprm)
 void htmlalku(wchar_t *wtitle, wchar_t *wheader, int frame, tulostusparamtp *tulprm)
@@ -6647,7 +6896,10 @@ void htmlalku(wchar_t *wtitle, wchar_t *wheader, int frame, tulostusparamtp *tul
 			}
 		delete hfl;
 		}
-	if (!htmlalkufl) {
+	if (!htmlalkufl && html_resp(tulprm)) {
+		htmlalku_resp(wtitle, wheader, frame, tulprm);
+		}
+	else if (!htmlalkufl) {
 		tulprm->writehtml(L"<!DOCTYPE html>\n<html>");
 		if (tulprm->merkit == L'A')
 			tulprm->writehtml(L"<head><meta http-equiv=\"content-type\" content=\"text/html; charset=iso-8859-1\" />\n");
@@ -6826,6 +7078,9 @@ int autofile(int kaikki)
 #endif
 //	autofileparam.kopiofl = 1;
 	aftulparam.merkit = L'A';
+	if ((aftulparam.kohde == L'H' && filetulosmuot.cssfl == CSS_RESP) ||
+		(aftulparam.kohde == L'M' && mobiltulosmuot.cssfl == CSS_RESP))
+		aftulparam.merkit = L'8';
 	EnterCriticalSection(&autotul_CriticalSection);
 	if ((aftulparam.kohde != L'H' && aftulparam.kohde != L'M')|| aftulparam.yksihtml) {
 		aftulparam.lstf = openprfile(autofileparam.afname, -1, 1, 2, (char *)&aftulparam.merkit, 0);
@@ -6846,14 +7101,18 @@ int autofile(int kaikki)
 //				autofileparam.kopiofl = 0;
 				aftulparam.tulmuot = filetulosmuot;
 				aftulparam.p_fld = fileflds;;
-				if (aftulparam.yksihtml)
+				if (aftulparam.yksihtml) {
 					htmlalku(autofileparam.wtitlea, autofileparam.wheadera, 0, &aftulparam);
+					potsfl = TRUE;
+					}
 				break;
 			case L'M':
 				aftulparam.tulmuot = mobiltulosmuot;
 				aftulparam.p_fld = mobilflds;
-				if (aftulparam.yksihtml)
+				if (aftulparam.yksihtml) {
 					htmlalku(autofileparam.wtitlea, autofileparam.wheadera, 0, &aftulparam);
+					potsfl = TRUE;
+					}
 				break;
 			case L'X':
 				xmlots(&aftulparam);
@@ -6899,6 +7158,7 @@ int autofile(int kaikki)
 							aftulparam.p_fld = fileflds;
 							aftulparam.tulmuot = filetulosmuot;
 							}
+						aftulparam.merkit = aftulparam.tulmuot.cssfl == CSS_RESP ? L'8' : L'A';
 						aftulparam.piste = 0;
 						if (aftulparam.sarjalista == NULL)
 							aftulparam.sarjalista = new INT16[MAXSARJALUKU+MAXYHD];
@@ -7708,6 +7968,34 @@ INT htmlrunko(tulostusparamtp *tulprm, wchar_t *baseFName)
 #endif
 	  }
    htmlalku(wtitle, wheader, 0, tulprm);
+   if (!tulprm->yksihtml && html_resp(tulprm)) {
+	  // Responsiivisessa tilassa framesetin tilalle hakemistosivu, josta linkit sarjojen tiedostoihin
+	  wchar_t esc[400];
+
+	  tulprm->writehtml(L"<body>\n<h2 class=otsikko>");
+	  tulprm->writehtml(htmlesc(esc, wheader, sizeof(esc)/2));
+	  tulprm->writehtml(L"</h2>\n");
+	  if (tulostus_lisateksti_tul[0]) {
+		 tulprm->writehtml(L"<p class=lisateksti>");
+		 tulprm->writehtml(htmlesc(esc, tulostus_lisateksti_tul, sizeof(esc)/2));
+		 tulprm->writehtml(L"</p>\n");
+		 }
+	  tulprm->writehtml(L"<nav class=sarjaluettelo><ul>\n");
+	  for (isrj = 0; isrj < sarjaluku+nsarjayhd; isrj++) {
+		 if (nilm[isrj] && (!tulprm->sarjalista || tulprm->sarjalista[isrj])) {
+			tulprm->writehtml(L"<li><a href=\"");
+			tulprm->writehtml(htmlesc(esc, Sarjat[isrj].sarjanimi, sizeof(esc)/2));
+			tulprm->writehtml(L".html\">");
+			tulprm->writehtml(htmlesc(esc, Sarjat[isrj].sarjanimi, sizeof(esc)/2));
+			tulprm->writehtml(L"</a></li>\n");
+			}
+		 }
+	  tulprm->writehtml(L"</ul></nav>\n");
+	  // Tiedosto jää auki: ensimmäisen sarjan htmlloppu-kutsu kirjoittaa </body></html> ja sulkee sen
+	  for (p = baseFName + wcslen(baseFName); p > baseFName && p[-1] != L'\\' && p[-1] != L'/'; p--) ;
+	  wcsncpy(htmlIndexName, p, sizeof(htmlIndexName)/2-1);
+	  return(0);
+	  }
    if (!tulprm->yksihtml) {
 	  tulprm->writehtml(L"<frameset cols=\"12%,*\" frameborder=\"yes\" border=\"1\">\n");
 	  tulprm->writehtml(L"<frame src=\"sarjalue.html\" name=\"sivu\""
@@ -8049,6 +8337,9 @@ int list(wchar_t kohde, wchar_t tiedlaji, wchar_t tulostettava, wchar_t jarjesty
 
 	tulprm.rajaus = rajaus;
 	tulprm.kohde = kohde;
+	if (html_resp(&tulprm))
+		tulprm.merkit = L'8';			// responsiivinen html kirjoitetaan aina utf-8:na
+	htmlIndexName[0] = 0;
 	tulprm.optiot = options;
 	tulprm.optiot2 = options2;
 	tulprm.language = (options & 0x10000000) ? 1 : 0;
@@ -8498,6 +8789,7 @@ int list(wchar_t kohde, wchar_t tiedlaji, wchar_t tulostettava, wchar_t jarjesty
 	loppu:
 	if (kohde == L'H' || kohde == L'M')
 		htmlloppu(&tulprm);
+	htmlIndexName[0] = 0;
 	if (kohde == L'F')
 		tulprm.writeline(L"E");
 	if (kohde == L'X') {

@@ -5610,6 +5610,33 @@ INT puts1(wchar_t *line, wchar_t co)
 	}
 */
 
+// Palauttaa true, jos sarjan kilpailijat kiertävät eri ratoja. Vain silloin väliaikatulosteeseen
+// kirjoitetaan rata. Rata haetaan kuten muuallakin (sarjan rata, sarjan nimi, kilpailijan rata).
+static bool sarjassa_eri_radat(INT srj)
+{
+	kilptietue kilp;
+	ratatp *rt, *rt0 = NULL;
+	bool eka = true, eri = false;
+
+	EnterCriticalSection(&tall_CriticalSection);
+	for (int lj = 0; lj < 3 && !eri; lj++) {
+		for (int p = jalku[srj][lj]; p >= 0 && !eri; p = JarjSeur(0, 0, p)) {
+			kilp.GETREC(p);
+			if (kilp.tark() == L'X')
+				continue;
+			rt = haerata(&kilp);
+			if (eka) {
+				rt0 = rt;
+				eka = false;
+				}
+			else if (rt != rt0)
+				eri = true;
+			}
+		}
+	LeaveCriticalSection(&tall_CriticalSection);
+	return(eri);
+}
+
 void emitvaliajat(INT *srj, tulostusparamtp *tulprm)
 	{
 	INT r, i, j, d, n, p, lj, sj = 0, sj1, html = 0, nvakilp;
@@ -5622,6 +5649,7 @@ void emitvaliajat(INT *srj, tulostusparamtp *tulprm)
 	ratatp *rt;
 	wchar_t co, cr;
 	INT nparas, moniriviva = 0, viimpois = 0;
+	bool rataSarake = false;
 
 	co = tulprm->kohde;
 	if (co == L'M')
@@ -5668,6 +5696,7 @@ void emitvaliajat(INT *srj, tulostusparamtp *tulprm)
 	if ((nvakilp = luo_emitva(*srj, emptr, nparas < 0, &mxnrasti)) > 0) {
 		for (i = 0; i < mxnrasti - viimpois + 1; i++)
 			va_sijat(emptr, i, nvakilp);
+		rataSarake = sarjassa_eri_radat(*srj);
 		for (int lj1 = 0; lj1 < 2; lj1++) {
 			int laji = lj1;
 			if (cr == L'N')
@@ -5707,8 +5736,12 @@ void emitvaliajat(INT *srj, tulostusparamtp *tulprm)
 				if (r == 0) {
 					if (co == L'P')
 						initvapage(0);
-					if (html)
-						tulprm->writehtml(L"<H3>");
+					if (html) {
+						if (html_resp(tulprm))
+							tulprm->writehtml(L"<h3 class=sarjanimi>");
+						else
+							tulprm->writehtml(L"<H3>");
+						}
 					if (laji == 0) {
 						if (tulprm->language == EN)
 							swprintf(oline, L"%s   Times at controls\n\n", Sarjat[*srj].sarjanimi);
@@ -5747,7 +5780,10 @@ void emitvaliajat(INT *srj, tulostusparamtp *tulprm)
 							swprintf(oline, L"<col width=\"%dpx\">\n</colgroup>\n", colW[4]*fsz/fsz0);
 							tulprm->writehtml(oline);
 */
-							tulprm->writehtml(L"<table class='rvatbl'>\n");
+							if (html_resp(tulprm))
+								tulprm->writehtml(L"<div class=tbl-wrap>\n<table class='rvatbl'>\n");
+							else
+								tulprm->writehtml(L"<table class='rvatbl'>\n");
 							}
 						else
 							tulprm->writehtml(L"<PRE>\n");
@@ -5763,13 +5799,13 @@ void emitvaliajat(INT *srj, tulostusparamtp *tulprm)
 							swprintf(oline+wcslen(oline), L"<th></th><th>%d.</th>", i+1);
 							}
 						if (tulprm->language == EN) {
-							if (!onrata(Sarjat[*srj].sarjanimi))
+							if (rataSarake)
 								wcscat(oline, L"<th>Course</th><th>Result</th></tr>\n");
 							else
 								wcscat(oline, L"<th>Result</th></tr>\n");
 							}
 						else {
-							if (!onrata(Sarjat[*srj].sarjanimi))
+							if (rataSarake)
 								wcscat(oline, L"<th>Rata</th><th>Tulos</th></tr>\n");
 							else
 								wcscat(oline, L"<th>Tulos</th></tr>\n");
@@ -5862,7 +5898,12 @@ void emitvaliajat(INT *srj, tulostusparamtp *tulprm)
 					swprintf(oline+wcslen(oline), L"<td>%s</td><td align=left>%s</td>", sjstr, kilp.nimi(st, 25, false));
 //					swprintf(oline+wcslen(oline), L"<td>%s</td><td style=\"text-align: left;\">%s</td>", sjstr, kilp.nimi(st, 25, false));
 */
-					swprintf(oline+wcslen(oline), L"<tr><td>%s</td><td>%s</td>", sjstr, kilp.nimi(st, 25, false));
+					if (html_resp(tulprm)) {
+						wchar_t esc[200];
+						swprintf(oline+wcslen(oline), 300, L"<tr><td>%s</td><td>%s</td>", sjstr, htmlesc(esc, kilp.nimi(st, 25, false), 200));
+						}
+					else
+						swprintf(oline+wcslen(oline), L"<tr><td>%s</td><td>%s</td>", sjstr, kilp.nimi(st, 25, false));
 					}
 				else if (!moniriviva)
 					swprintf(oline, L"%4.4s %-21.21s", sjstr, kilp.nimi(st, 21, false));
@@ -5971,9 +6012,9 @@ void emitvaliajat(INT *srj, tulostusparamtp *tulprm)
 								else
 									wcscat(oline, L"<td></td><td></td>");
 								}
-							if (!onrata(Sarjat[*srj].sarjanimi)) {
+							if (rataSarake) {
 								if (laji2 == 0 || laji == 1)
-									swprintf(oline+wcslen(oline), L"<td>%s</td>", kilp.pv[k_pv].rata);
+									swprintf(oline+wcslen(oline), L"<td>%s</td>", rt->tunnus);
 								else
 									wcscat(oline, L"<td></td>");
 								if (tls && laji2 == 0 || laji == 1)
@@ -6023,8 +6064,8 @@ void emitvaliajat(INT *srj, tulostusparamtp *tulprm)
 							if (laji2 == 0) {
 								if (tls)
 									swprintf(oline+wcslen(oline), L"  %8s", st1);
-								if (kilp.pv[k_pv].rata[0])
-									swprintf(oline+wcslen(oline), L" %5s", kilp.pv[k_pv].rata);
+								if (rataSarake)
+									swprintf(oline+wcslen(oline), L" %5s", rt->tunnus);
 								}
 							if (wcslen(oline) > 100) {
 								wcscat(oline, L"  ");
@@ -6041,8 +6082,12 @@ void emitvaliajat(INT *srj, tulostusparamtp *tulprm)
 				}
 			LeaveCriticalSection(&tall_CriticalSection);
 			if (html) {
-				if (tulprm->tulmuot.tauluhtml)
-					tulprm->writehtml(L"</table>\n");
+				if (tulprm->tulmuot.tauluhtml) {
+					if (html_resp(tulprm))
+						tulprm->writehtml(L"</table>\n</div>\n");
+					else
+						tulprm->writehtml(L"</table>\n");
+					}
 				else
 					tulprm->writehtml(L"</PRE>\n");
 				}

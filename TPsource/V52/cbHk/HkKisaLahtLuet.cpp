@@ -40,6 +40,7 @@ void aliots_on(tulostusparamtp *tulprm);
 void aliots_pois(tulostusparamtp *tulprm);
 void jarj(INT *ia, INT a, INT y);
 wchar_t *css_string(tulostusparamtp *tulprm, int laji);
+bool html_resp(tulostusparamtp *tulprm);
 
 static int  jikorotus = 100;
 static TextFl *lstfile;
@@ -659,6 +660,8 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 				sendln(tulprm.lstf, L"<head><meta http-equiv=\"content-type\" content=\"text/html; charset=iso-8859-1\" />\n");
 			else
 				sendln(tulprm.lstf, L"<head><meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />\n");
+			if (html_resp(&tulprm))
+				sendln(tulprm.lstf, L"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n");
 			css_string(&tulprm, 4);
 			sendln(tulprm.lstf, L"<title>");
 			sendln(tulprm.lstf, otsTeksti(NULL, llparam.luetots0, 100, ots_pv));
