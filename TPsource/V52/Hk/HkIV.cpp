@@ -1140,10 +1140,6 @@ INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
 			return(0);
 	  em.maali = TMAALI0/KSEK;
 	  }
-   if (emitTunnistus) {
-	   emitLuettu(em.badge);
-	   return(0);
-	   }
 #ifdef SPORTIDENT
    if (regnly[r_no] == LID_SPORTIDENT) {
       em.badge = vastaus->r21data.badge;
@@ -1172,6 +1168,13 @@ INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
 		}
 		}
 #endif
+   // Korttien tunnistus (RASTIVATULOSTE): vasta taalla, koska SportIdent-
+   // kortin numero asetetaan em.badgeen vasta yllaolevassa lohkossa - aiemmin
+   // emitLuettu sai SI-kortille numeron 0 ja kortti ohitettiin.
+   if (emitTunnistus) {
+	   emitLuettu(em.badge);
+	   return(0);
+	   }
    if (em.time != TMAALI0/KSEK)
       em.time = ((em.time + 36*TUNTI/KSEK)%(24*TUNTI/KSEK) - 12*TUNTI/KSEK);
 	em.badge0 = em.badge;
