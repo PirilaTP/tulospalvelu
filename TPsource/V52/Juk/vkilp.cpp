@@ -71,12 +71,26 @@ bool vatp::operator==(vatp& va)
 	return(true);
 }
 
+// Vertaa nimet niin, että pelkkä loppuun jäänyt erotin "|" (tyhjä etunimi) ei ole ero
+static int vertNimi(const char *n1, const char *n2)
+{
+	size_t l1 = strlen(n1), l2 = strlen(n2);
+
+	if (l1 > 0 && n1[l1-1] == '|')
+		l1--;
+	if (l2 > 0 && n2[l2-1] == '|')
+		l2--;
+	if (l1 != l2)
+		return(1);
+	return(memcmp(n1, n2, l1));
+}
+
 int osrec::vert0(osrec &ostiet)
 {
 	int ret = 0;
 	int ero = 0;
 
-	if (strcmp(nimi, ostiet.nimi)) {
+	if (vertNimi(nimi, ostiet.nimi)) {
 		ret |= 1;
 		ero = 1;
 		}
