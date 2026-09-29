@@ -1024,6 +1024,8 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 							tallenna(&kilp, d, 0, 0, 0, 0);
 							nkorv++;
 							}
+						else if (numeroKaytossa(kilp.kilpno, &nOhit, &ohitetut))
+							continue;
 						else
 							addtall(&kilp, &d, 0);
 						n++;
@@ -1067,15 +1069,19 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 					InFile->Rewind();
 					kilptietue pkilp;
 					int d;
+					bool ohitaJoukkue = false;	// joukkue ohitettu, ohitetaan myös sen osuusrivit
 
 					while (!InFile->Feof()) {
 						InFile->ReadLine(Buf, 998);
 						if (wcslen(Buf) > 3 && (vast = tulkKilmoRivi(Buf, pkilp, ++rNo, erotin)) == 0 || vast == 1) {
 							if (vast == 1) {
-								addtall(&pkilp, &d, 0);
-								n++;
+								ohitaJoukkue = numeroKaytossa(pkilp.kilpno, &nOhit, &ohitetut);
+								if (!ohitaJoukkue) {
+									addtall(&pkilp, &d, 0);
+									n++;
+									}
 								}
-							if (vast == 0) {
+							if (vast == 0 && !ohitaJoukkue) {
 								pkilp.Tallenna(d, 0, 0, 0, 0);
 								nos++;
 								}

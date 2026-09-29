@@ -1148,6 +1148,8 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 							|| i >= Kexp_kentat + Pexp_kentat + Vexp_kentat)
 							exp_kentat_local[i].len = 1;
 						}
+					// Järjestyksestä luettaessa vain lisäys: lue_kilpcsv() ei hae tietuetta (d)
+					int toiminto = RGCsvType->ItemIndex == 0 ? RGToiminto->ItemIndex : 0;
 					if (RGCsvType->ItemIndex == 0)
 						n = -1;
 					EnterCriticalSection(&tall_CriticalSection);
@@ -1155,9 +1157,9 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 						if (RGCsvType->ItemIndex == 1)
 							ret = lue_kilpcsv(InFile, &kilp, erotin);
 						else
-							ret = lue_kilpcsv2(InFile, &kilp, n, RGToiminto->ItemIndex, &d, erotin);
+							ret = lue_kilpcsv2(InFile, &kilp, n, toiminto, &d, erotin);
 						if (ret == 0) {
-							if (RGToiminto->ItemIndex > 0)
+							if (toiminto > 0)
 								kilp.tallenna(d, 0, 0, 0, 0);
 							else if (numeroKaytossa(kilp.id(), &nOhit, &ohitetut)) {
 								ntot++;
@@ -1376,8 +1378,14 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 						}
 					ntot = nTiedRivi;
 					EnterCriticalSection(&tall_CriticalSection);
-					for (int i = 0; i < n; i++)
+					int nLisatty = 0;
+					for (int i = 0; i < n; i++) {
+						if (numeroKaytossa(temparr[i].id(), &nOhit, &ohitetut))
+							continue;
 						temparr[i].addtall(&d, 0);
+						nLisatty++;
+						}
+					n = nLisatty;
 					LeaveCriticalSection(&tall_CriticalSection);
 					delete[] temparr;
 					}
@@ -1439,8 +1447,14 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 						}
 					ntot = nTiedRivi;
 					EnterCriticalSection(&tall_CriticalSection);
-					for (int i = 0; i < n; i++)
+					int nLisatty = 0;
+					for (int i = 0; i < n; i++) {
+						if (numeroKaytossa(temparr[i].id(), &nOhit, &ohitetut))
+							continue;
 						temparr[i].addtall(&d, 0);
+						nLisatty++;
+						}
+					n = nLisatty;
 					LeaveCriticalSection(&tall_CriticalSection);
 					delete[] temparr;
 					}
