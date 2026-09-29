@@ -154,12 +154,12 @@ void __fastcall TFormEmit::InitTila(void)
 				MTRlaitteenohjaus1->Visible = true;
 			}
 		if (IsSportidentInUse()) {
-			Caption = L"Sportident-tiedot";
+			Caption = L"SportIdent-tiedot";
 			Label2->AutoSize = true;
-			Label2->Caption = L"Sportident";
+			Label2->Caption = L"SportIdent";
 			if (kilpparam.kaksibadge != 2) {
 				LblOrigBadge->AutoSize = true;
-				LblOrigBadge->Caption = L"Luettu sportident";
+				LblOrigBadge->Caption = L"Luettu SportIdent";
 				}
 			EdtBadge->Left     = 90;
 			LblOrigBadge->Left = 162;
@@ -1971,7 +1971,7 @@ void __fastcall TFormEmit::BtnLoppuunClick(TObject *Sender)
 {
 	if (EmitMuutosFlag) {
 		Application->MessageBoxW(
-			IsSportidentInUse() ? L"Luenta voi jatkua vasta, kun kaavake \"Sportident-muutokset\" on suljettu"
+			IsSportidentInUse() ? L"Luenta voi jatkua vasta, kun kaavake \"SportIdent-muutokset\" on suljettu"
 			     : L"Luenta voi jatkua vasta, kun kaavake \"Emit-muutokset\" on suljettu",
 			L"Ohje", MB_OK);
 		return;

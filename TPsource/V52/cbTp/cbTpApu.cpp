@@ -282,12 +282,13 @@ int select3(int nButton, wchar_t *Teksti, wchar_t *Otsikko,
 //---------------------------------------------------------------------------
 // SportIdent-sanasto: kun kilpailussa on kaytossa SportIdent
 // (IsSportidentInUse()), kayttoliittyman "Emit"-sanat naytetaan
-// "Sportident"-sanoina. Tallennettuja avaimia (asetusparametrit, XML-tagit,
+// "SportIdent"-sanoina. Tallennettuja avaimia (asetusparametrit, XML-tagit,
 // tiedostonimet, ohjeen avainsanat) ei muuteta - vain naytettavat tekstit.
 //
-// Muutetaan: "Emit" -> "Sportident", "Emit-" -> "Sportident-",
-//   yhdyssana "Emitluenta" -> "Sportident-luenta",
-//   "Emit&yhteenveto" -> "Sportident-&yhteenveto", pienella kirjaimella samoin.
+// Muutetaan: "Emit" -> "SportIdent", "Emit-" -> "SportIdent-",
+//   yhdyssana "Emitluenta" -> "SportIdent-luenta",
+//   "Emit&yhteenveto" -> "SportIdent-&yhteenveto";
+//   myos pienella alkavasta "emit"-sanasta tulee "SportIdent" (tuotenimi).
 // Ei muuteta (Emit-laitteisto ja -palvelut, tallennetut avaimet):
 //   "emiTag...", "EMIT..." (isoin), "EmitSQL" (iso kirjain perassa),
 //   "Emitin" (Emit-yhtion palvelin), "Emit RTR2" (laitemalli),
@@ -350,7 +351,7 @@ UnicodeString SIsana(const UnicodeString &teksti)
 					muuta = false;                             // emitrek.lst
 				}
 			if (muuta) {
-				t += (s[i] == L'E') ? L"Sportident" : L"sportident";
+				t += L"SportIdent";                    // tuotenimi aina SportIdent
 				if (siPieni(seur) || (seur == L'&' && j+1 < s.size() && siPieni(s[j+1])))
 					t += L'-';                                 // yhdyssana
 				i += 3;
@@ -407,7 +408,7 @@ static void siKomponentti(TComponent *c)
 }
 
 // Vaihtaa lomakkeen (ja sen omistamien komponenttien, myos valikoiden)
-// kuvatekstit, vihjeet ja luettelovalinnat. Idempotentti: "Sportident"
+// kuvatekstit, vihjeet ja luettelovalinnat. Idempotentti: "SportIdent"
 // ei sisalla sanaa "emit", joten toistuva kutsu ei muuta mitaan.
 void SIsanatLomakkeelle(TComponent *lomake)
 {

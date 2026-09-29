@@ -167,7 +167,7 @@ __fastcall TFormMain::TFormMain(TComponent* Owner)
 {
 	Application->HelpFile = ExtractFilePath(Application->ExeName)+UnicodeString(L"ViestiWin.chm");
 	InitDir = GetCurrentDir();
-	SIsanastoKaynnista();   // Emit -> Sportident -tekstit SportIdent-kilpailussa (cbTpApu.cpp)
+	SIsanastoKaynnista();   // Emit -> SportIdent -tekstit SportIdent-kilpailussa (cbTpApu.cpp)
 #ifdef DEMO
 	Caption = L"ViestiWin - DEMO versio - max 20 joukkuetta";
 #endif
@@ -268,8 +268,8 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 //		Asetukset1->Visible = false;
 		}
 	if (IsSportidentInUse()) {
-		Emitluenta1->Caption = L"&Sportident-luenta";
-		SisLuenta->Caption = L"Sis‰‰n&luenta (sportident)";
+		Emitluenta1->Caption = L"&SportIdent-luenta";
+		SisLuenta->Caption = L"Sis‰‰n&luenta (SportIdent)";
 		}
 	if (alkulayout[0]) {
 		HaeIkkunat(GetCurrentDir()+UnicodeString(L"\\")+alkulayout);

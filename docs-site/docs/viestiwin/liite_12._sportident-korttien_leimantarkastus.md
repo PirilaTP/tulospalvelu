@@ -134,7 +134,7 @@ kts. [luku 13.3](13.3_rastien_leimasinkoodit.md)).
 
 Kun konfigurointi on tehty ja ohjelma käynnistetty:
 
-1. Avaa leimantarkastuskaavake: *Tulospalvelu / Sportident-luenta*
+1. Avaa leimantarkastuskaavake: *Tulospalvelu / SportIdent-luenta*
 2. Aseta SI-kortti fyysiseen lukija-asemaan.
 3. Ohjelma lukee kortin leimatiedot ja näyttää ne kaavakkeella:
    - Vihreä pohjaväri: suoritus hyväksytty
@@ -222,7 +222,7 @@ tai vanha, aiemmin leimattu kortti.
 
 #### A6.9 Näkymien tekstit
 
-Kun kilpailussa on käytössä SportIdent (`SPORTIDENTx=`- tai `SRRLUKIJAx=`-lukija, tai tunnistimeksi on valittu SportIdent), ohjelman ikkunoissa, valikoissa ja ilmoituksissa sana "Emit" näytetään muodossa "Sportident", esimerkiksi *Emit-luenta* → *Sportident-luenta* ja *Emit-koodi* → *Sportident-koodi*. Päävalikko päivittyy, kun asetukset on luettu.
+Kun kilpailussa on käytössä SportIdent (`SPORTIDENTx=`- tai `SRRLUKIJAx=`-lukija, tai tunnistimeksi on valittu SportIdent), ohjelman ikkunoissa, valikoissa ja ilmoituksissa sana "Emit" näytetään muodossa "SportIdent", esimerkiksi *Emit-luenta* → *SportIdent-luenta* ja *Emit-koodi* → *SportIdent-koodi*. Päävalikko päivittyy, kun asetukset on luettu.
 
 Ennallaan pysyvät:
 

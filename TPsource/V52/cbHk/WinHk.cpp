@@ -188,7 +188,7 @@ __fastcall TFormMain::TFormMain(TComponent* Owner)
 {
 	Application->HelpFile = ExtractFilePath(Application->ExeName)+UnicodeString(L"HkKisa.chm");
 	InitDir = GetCurrentDir();
-	SIsanastoKaynnista();   // Emit -> Sportident -tekstit SportIdent-kilpailussa (cbTpApu.cpp)
+	SIsanastoKaynnista();   // Emit -> SportIdent -tekstit SportIdent-kilpailussa (cbTpApu.cpp)
 #ifdef DEMO
 	Caption = L"HkKisaWin - DEMO versio - max 30 kilpailijaa";
 #endif
@@ -366,7 +366,7 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 //		Asetukset1->Visible = false;
 		}
 	if (IsSportidentInUse())
-		Emitluenta1->Caption = L"&Sportident-luenta";
+		Emitluenta1->Caption = L"&SportIdent-luenta";
 	Haeikkunat->Enabled = true;
 	if (alkulayout[0]) {
 		HaeIkkunat(alkulayout);

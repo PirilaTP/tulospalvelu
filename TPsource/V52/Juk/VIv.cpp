@@ -2555,7 +2555,7 @@ static bool siSaaTallentaa(INT32 ed, INT32 tm, int kno, INT32 badge, int piste)
 }
 
 // Handles one punch returned by the SportIdent Center REST API:
-// looks up the competitor by card number (as with other Sportident/Emit
+// looks up the competitor by card number (as with other SportIdent/Emit
 // punches), determines the leg via siHaeOsuus, and stores the start,
 // finish, or split time depending on the punch type (pu->type).
 // "Check"/"Clear" are ignored; "Control" and "Unknown" are both

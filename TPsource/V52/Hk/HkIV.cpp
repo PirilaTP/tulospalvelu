@@ -3676,7 +3676,7 @@ static bool siSaaTallentaa(INT32 ed, INT32 tm, int kno, INT32 badge, int piste)
 
 // Handles one punch returned by the SportIdent Center REST API:
 // looks up the competitor by card number (bdg2kno, as with other
-// Sportident/Emit punches) and stores the start, finish, or split
+// SportIdent/Emit punches) and stores the start, finish, or split
 // time depending on the punch type (pu->type). "Check"/"Clear" are
 // ignored; "Control" and "Unknown" are both treated as possible split
 // times, since some Center API punches arrive with type "Unknown"
