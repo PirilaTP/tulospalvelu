@@ -441,17 +441,64 @@ TEST_CASE("SI9: valiaikaleimat luetaan tavusta 56 alkaen, CN=EE paattaa listan")
 	CHECK(result.ct[2] == 12*3600L+30);
 }
 
-TEST_CASE("SI9: rastiajan kaannos +12h kun aika on pienempi kuin edellinen")
+TEST_CASE("SI9: +12h kaannos, kun asema ei anna PTD-bittia (puolipaivan ylitys)")
 {
 	unsigned char buf[256];
 	SIResultTp result;
 
 	buildBlock(buf, 256, 1009090UL);
-	setPunch(buf, 12, 0, 200, 23*3600);      // lahto klo 23:00:00 (edellisena paivana)
-	setPunch(buf, 56, 0, 31, 1*3600);        // 1. rasti klo 01:00:00 -> pitaa kaantaa +12h
+	setPunch(buf, 12, 0, 200, 11*3600 + 50*60); // lahto 11:50, PTD-bitti 0
+	setPunch(buf, 56, 0, 31, 10*60);            // "00:10" = 12:10 -> +12h
+	setPunch(buf, 60, 0, 32, 30*60);            // "00:30" = 12:30 -> +12h
 	tulkSI((char *) buf, &result, 0, 7, 256, 0);
 
-	CHECK(result.ct[1] == 1*3600L + 43200L);
+	CHECK(result.ct[1] == 10*60L + 43200L);
+	CHECK(result.ct[2] == 30*60L + 43200L);
+}
+
+TEST_CASE("SI9: keskiyon ylitys - PTD-bitti antaa 24 h ajan, ei +12h")
+{
+	unsigned char buf[256];
+	SIResultTp result;
+	unsigned char cc[50];
+	UINT16 ct[50];
+	long lukuaika;
+
+	buildBlock(buf, 256, 1009090UL);
+	setPunch(buf, 12, 1, 200, 11*3600);          // lahto 23:00 (PTD 1)
+	setPunch(buf, 16, 0, 100, 1*3600 + 10*60);   // maali 01:10 seuraavana paivana
+	setPunch(buf, 56, 1, 31, 11*3600 + 40*60);   // 23:40
+	setPunch(buf, 60, 0, 32, 20*60);             // 00:20
+	setPunch(buf, 64, 0, 33, 50*60);             // 00:50
+	tulkSI((char *) buf, &result, 0, 7, 256, 0);
+
+	CHECK(result.start == 23*3600L);
+	CHECK(result.ct[1] == 23*3600L + 40*60L);
+	CHECK(result.ct[2] == 20*60L);               // ennen korjausta 12:20
+	CHECK(result.ct[3] == 50*60L);
+	CHECK(result.finish == 1*3600L + 10*60L);
+
+	// valiajat lahdosta vuorokauden vaihteen yli (siEmitLeimat), luettu 01:20
+	result.lukija = (INT32) ((1*3600L + 20*60L) * 10L);
+	siEmitLeimat(&result, 0, cc, ct, 50, &lukuaika);
+	CHECK(ct[1] == 40*60);
+	CHECK(ct[2] == 80*60);                        // 1 h 20 min, ei 13 h 20 min
+	CHECK(ct[3] == 110*60);
+	CHECK(cc[4] == 240); CHECK(ct[4] == 130*60);  // maali
+	CHECK(cc[5] == 250); CHECK(ct[5] == 140*60);  // lukija
+}
+
+TEST_CASE("SI9: ensimmainen rasti heti keskiyon jalkeen - verrataan lahtoon, ei +12h")
+{
+	unsigned char buf[256];
+	SIResultTp result;
+
+	buildBlock(buf, 256, 1009090UL);
+	setPunch(buf, 12, 1, 200, 11*3600 + 50*60); // lahto 23:50
+	setPunch(buf, 56, 0, 31, 5*60);             // 00:05
+	tulkSI((char *) buf, &result, 0, 7, 256, 0);
+
+	CHECK(result.ct[1] == 5*60L);
 }
 
 // Dokumentoi olemassa olevan rajatapauksen: cc[]/ct[] on kokoa 66 (indeksit

@@ -68,6 +68,8 @@ static inline long ub(char c) { return (unsigned char) c; }
 //    ("puolipaiva"-lippu); legacy-protokollassa (SI5/SI6) se paatellaan
 //    aina vain edellisen leiman/lahdon ajasta (ks. myos case 5:n kommentti
 //    61166:sta, SI5:n vastineesta samalle "ei arvoa" -ideaalle).
+//    EXT-korteilla vain alle 12 h pudotus on kierto; suurempi on keskiyon
+//    ylitys, jota ei korjata tassa (ks. tulkExtLeimat).
 //  - EXT-protokollan tavupuskureissa CN=0xEE tarkoittaa "ei kaytossa"
 //    (tyhja tai listan paattava tietue).
 // ===========================================================================
@@ -111,19 +113,21 @@ static void tulkExtLeimat(const unsigned char *b, SIResultTp *result, int start,
 	for (i = start; i + 3 < bound; i += step) {
 		unsigned char cn = b[i+1];
 		long pt;
+		long ed;
 		if (cn == 0xEE) break;
 		pt = 256L*b[i+2] + b[i+3] + (b[i] & 1) * 43200L;
 		r++;
 		if (r < 66) {
 			result->cc[r] = cn;
-			if (r == 1) {
-				if (result->start && pt < result->start)
-					pt += 43200L;
-				}
-			else {
-				if (result->ct[r-1] && pt < result->ct[r-1])
-					pt += 43200L;
-				}
+			// +12 h vain, jos aika putoaa alle 12 h edellisesta: asema ilman
+			// PTD-puolipaivabittia (ajat 0..43199 s) ja puolipaivan ylitys.
+			// Suurempi pudotus on keskiyon ylitys - PTD-bitti antaa jo 24 h
+			// ajan, ja siEmitLeimat laskee vuorokauden vaihteen yli (% 86400).
+			// Aiemmin +12 h lisattiin aina: klo 23 lahdon jalkeen klo 00.20
+			// leimattu rasti tulkittiin klo 12.20:ksi (valiaika 12 h liian pitka).
+			ed = (r == 1) ? result->start : result->ct[r-1];
+			if (ed > 0 && pt < ed && ed - pt < 43200L)
+				pt += 43200L;
 			result->ct[r] = pt;
 			}
 		}
