@@ -778,6 +778,28 @@ int __fastcall TFormImport::lue_SQL(void)
 }
 //---------------------------------------------------------------------------
 
+// Lisäystilassa ohitetaan rivi, jonka numero on jo käytössä, ettei
+// samalla numerolla synny kahta tietuetta (#77). Rivit ilman numeroa lisätään.
+static bool numeroKaytossa(int kno, int *nOhit, UnicodeString *ohitetut)
+{
+	if (kno <= 0 || getpos(kno) <= 0)
+		return(false);
+	(*nOhit)++;
+	if (*nOhit <= 10)
+		*ohitetut += (*nOhit > 1 ? UnicodeString(L", ") : UnicodeString()) + UnicodeString(kno);
+	else if (*nOhit == 11)
+		*ohitetut += L", ...";
+	return(true);
+}
+//---------------------------------------------------------------------------
+static UnicodeString ohitetutViesti(int nOhit, UnicodeString ohitetut)
+{
+	if (nOhit <= 0)
+		return(UnicodeString());
+	return(UnicodeString(L"\r\n\r\n")+UnicodeString(nOhit)+
+		L" riviä ohitettu, koska numero oli jo käytössä: "+ohitetut);
+}
+//---------------------------------------------------------------------------
 void __fastcall TFormImport::Button1Click(TObject *Sender)
 {
 	wchar_t lajit[] = L" SH", erottimet[] = L";\t,;", Buf[10000];
@@ -787,6 +809,8 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 	int d, n = 0, nkorv = 0, ret, ntot = 0, nos = 0;
 	int vast = 0;
 	int rNo = 0;
+	int nOhit = 0;
+	UnicodeString ohitetut;
 
 	UINT32 kirjheti0 = kirjheti;
 	kirjheti = 0;
@@ -821,6 +845,10 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 						if ((ret = lue_kilpcsv(InFile, &kilp, n, RGtoiminto->ItemIndex, &d, erotin)) == 0) {
 							if (RGtoiminto->ItemIndex > 0)
 								tallenna(&kilp, d, 0, 0, 0, 0);
+							else if (numeroKaytossa(kilp.kilpno, &nOhit, &ohitetut)) {
+								ntot++;
+								continue;
+								}
 							else
 								addtall(&kilp, &d, 0);
 							n++;
@@ -1121,11 +1149,14 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 		Application->MessageBoxW(L"Toiminto keskeytetty mahdolliseen virheeseen", L"Valmis", MB_OK);
 		}
 	else {
+		UnicodeString msg;
 		if (nkorv > 0)
-			Application->MessageBoxW((UnicodeString(nkorv)+L" joukkuetta päivitetty, "+
-				UnicodeString(n-nkorv)+L" joukkuetta lisätty").c_str(), L"Valmis", MB_OK);
+			msg = UnicodeString(nkorv)+L" joukkuetta päivitetty, "+
+				UnicodeString(n-nkorv)+L" joukkuetta lisätty";
 		else
-			Application->MessageBoxW(L"Toiminto suoritettu", L"Valmis", MB_OK);
+			msg = L"Toiminto suoritettu";
+		msg += ohitetutViesti(nOhit, ohitetut);
+		Application->MessageBoxW(msg.c_str(), L"Valmis", MB_OK);
 		}
 }
 //---------------------------------------------------------------------------
