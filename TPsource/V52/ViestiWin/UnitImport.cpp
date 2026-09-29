@@ -44,6 +44,7 @@ int lueIOF30EventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueO
 void TallEhdoin(kilptietue *kilp, int pos);
 char *keysa(void *vkilp, char *key, int keylen, int flags);
 extern kilpindex *srjaakindex;
+void uusiKilpnoIx(void);
 
 typedef struct {
    int kilprecsize;
@@ -815,6 +816,10 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 	UINT32 kirjheti0 = kirjheti;
 	kirjheti = 0;
 	TulkintaOn = true;
+	// Esivalmistelutilassa (ToimintaTila 1) numeroindeksiä ei täytetä luettaessa,
+	// joten getpos() ei löydä aiempia joukkueita ilman uudelleenrakennusta (#77).
+	if (ToimintaTila == 1)
+		uusiKilpnoIx();
 /*
 	kilpparam_v.kilplaji = lajit[RGLaji->ItemIndex+1];
 	n_pv_v = EditNpv->Text.ToInt();
