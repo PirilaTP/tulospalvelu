@@ -44,6 +44,7 @@ int lueIOF30EventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueO
 void TallEhdoin(kilptietue *kilp, int pos);
 char *keysa(void *vkilp, char *key, int keylen, int flags);
 extern kilpindex *srjaakindex;
+void uusiKilpnoIx(void);
 
 typedef struct {
    int kilprecsize;
@@ -255,28 +256,12 @@ int TFormImport::lue_kilpcsv(TextFl *afile, kilptietue *kilp, int lineno, int to
 				kilp->ostiet[fldorder[ifld].os-1].lisno = _wtoi(tfld);
 				break;
 			case FLDID_SUKUNIMI:
-				memset(ast, 0, sizeof(ast));
-				WcsToMbs(ast, tfld, kilpparam.lnimi);
-				if (kilp->ostiet[fldorder[ifld].os-1].nimi[0] && strlen(ast) < kilpparam.lnimi-2) {
-					if (kilp->ostiet[fldorder[ifld].os-1].nimi[0] != '|')
-						strcat(ast, "|");
-					strncpy(ast+strlen(ast), kilp->ostiet[fldorder[ifld].os-1].nimi, 
-						kilpparam.lnimi-strlen(ast));
-					for (char *p = ast+strlen(ast)-1; *p > 127 && p > ast; p--)
-						*p = 0;
-					}
-				memset(kilp->ostiet[fldorder[ifld].os-1].nimi, 0, 
-					sizeof(kilp->ostiet[fldorder[ifld].os-1].nimi));
-				strncpy(kilp->ostiet[fldorder[ifld].os-1].nimi, ast, kilpparam.lnimi);
+				// Vaihdetaan vain sukunimi. Päivitettäessä aiempi nimi on jo tietueessa,
+				// joten nimeen ei saa lisätä vanhan perään.
+				kilp->ostiet[fldorder[ifld].os-1].setSukuNimi(tfld);
 				break;
 			case FLDID_ETUNIMI:
-				if (strlen(kilp->ostiet[fldorder[ifld].os-1].nimi) >= kilpparam.lnimi - 1)
-					break;
-				if (kilp->ostiet[fldorder[ifld].os-1].nimi[0] == 0 ||
-					kilp->ostiet[fldorder[ifld].os-1].nimi[strlen(kilp->ostiet[fldorder[ifld].os-1].nimi)-1] != '|')
-					strcat(kilp->ostiet[fldorder[ifld].os-1].nimi, "|");
-				WcsToMbs(kilp->ostiet[fldorder[ifld].os-1].nimi+strlen(kilp->ostiet[fldorder[ifld].os-1].nimi),
-					tfld, kilpparam.lnimi-strlen(kilp->ostiet[fldorder[ifld].os-1].nimi));
+				kilp->ostiet[fldorder[ifld].os-1].setEtuNimi(tfld);
 				break;
 			case FLDID_NIMI:
 				kilp->setNimi(tfld, fldorder[ifld].os-1, 1 - 2*RGNimiJarj->ItemIndex);
@@ -778,6 +763,28 @@ int __fastcall TFormImport::lue_SQL(void)
 }
 //---------------------------------------------------------------------------
 
+// Lisäystilassa ohitetaan rivi, jonka numero on jo käytössä, ettei
+// samalla numerolla synny kahta tietuetta (#77). Rivit ilman numeroa lisätään.
+static bool numeroKaytossa(int kno, int *nOhit, UnicodeString *ohitetut)
+{
+	if (kno <= 0 || getpos(kno) <= 0)
+		return(false);
+	(*nOhit)++;
+	if (*nOhit <= 10)
+		*ohitetut += (*nOhit > 1 ? UnicodeString(L", ") : UnicodeString()) + UnicodeString(kno);
+	else if (*nOhit == 11)
+		*ohitetut += L", ...";
+	return(true);
+}
+//---------------------------------------------------------------------------
+static UnicodeString ohitetutViesti(int nOhit, UnicodeString ohitetut)
+{
+	if (nOhit <= 0)
+		return(UnicodeString());
+	return(UnicodeString(L"\r\n\r\n")+UnicodeString(nOhit)+
+		L" riviä ohitettu, koska numero oli jo käytössä: "+ohitetut);
+}
+//---------------------------------------------------------------------------
 void __fastcall TFormImport::Button1Click(TObject *Sender)
 {
 	wchar_t lajit[] = L" SH", erottimet[] = L";\t,;", Buf[10000];
@@ -787,10 +794,16 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 	int d, n = 0, nkorv = 0, ret, ntot = 0, nos = 0;
 	int vast = 0;
 	int rNo = 0;
+	int nOhit = 0;
+	UnicodeString ohitetut;
 
 	UINT32 kirjheti0 = kirjheti;
 	kirjheti = 0;
 	TulkintaOn = true;
+	// Esivalmistelutilassa (ToimintaTila 1) numeroindeksiä ei täytetä luettaessa,
+	// joten getpos() ei löydä aiempia joukkueita ilman uudelleenrakennusta (#77).
+	if (ToimintaTila == 1)
+		uusiKilpnoIx();
 /*
 	kilpparam_v.kilplaji = lajit[RGLaji->ItemIndex+1];
 	n_pv_v = EditNpv->Text.ToInt();
@@ -821,6 +834,10 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 						if ((ret = lue_kilpcsv(InFile, &kilp, n, RGtoiminto->ItemIndex, &d, erotin)) == 0) {
 							if (RGtoiminto->ItemIndex > 0)
 								tallenna(&kilp, d, 0, 0, 0, 0);
+							else if (numeroKaytossa(kilp.kilpno, &nOhit, &ohitetut)) {
+								ntot++;
+								continue;
+								}
 							else
 								addtall(&kilp, &d, 0);
 							n++;
@@ -1007,6 +1024,8 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 							tallenna(&kilp, d, 0, 0, 0, 0);
 							nkorv++;
 							}
+						else if (numeroKaytossa(kilp.kilpno, &nOhit, &ohitetut))
+							continue;
 						else
 							addtall(&kilp, &d, 0);
 						n++;
@@ -1050,15 +1069,19 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 					InFile->Rewind();
 					kilptietue pkilp;
 					int d;
+					bool ohitaJoukkue = false;	// joukkue ohitettu, ohitetaan myös sen osuusrivit
 
 					while (!InFile->Feof()) {
 						InFile->ReadLine(Buf, 998);
 						if (wcslen(Buf) > 3 && (vast = tulkKilmoRivi(Buf, pkilp, ++rNo, erotin)) == 0 || vast == 1) {
 							if (vast == 1) {
-								addtall(&pkilp, &d, 0);
-								n++;
+								ohitaJoukkue = numeroKaytossa(pkilp.kilpno, &nOhit, &ohitetut);
+								if (!ohitaJoukkue) {
+									addtall(&pkilp, &d, 0);
+									n++;
+									}
 								}
-							if (vast == 0) {
+							if (vast == 0 && !ohitaJoukkue) {
 								pkilp.Tallenna(d, 0, 0, 0, 0);
 								nos++;
 								}
@@ -1121,11 +1144,14 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 		Application->MessageBoxW(L"Toiminto keskeytetty mahdolliseen virheeseen", L"Valmis", MB_OK);
 		}
 	else {
+		UnicodeString msg;
 		if (nkorv > 0)
-			Application->MessageBoxW((UnicodeString(nkorv)+L" joukkuetta päivitetty, "+
-				UnicodeString(n-nkorv)+L" joukkuetta lisätty").c_str(), L"Valmis", MB_OK);
+			msg = UnicodeString(nkorv)+L" joukkuetta päivitetty, "+
+				UnicodeString(n-nkorv)+L" joukkuetta lisätty";
 		else
-			Application->MessageBoxW(L"Toiminto suoritettu", L"Valmis", MB_OK);
+			msg = L"Toiminto suoritettu";
+		msg += ohitetutViesti(nOhit, ohitetut);
+		Application->MessageBoxW(msg.c_str(), L"Valmis", MB_OK);
 		}
 }
 //---------------------------------------------------------------------------
