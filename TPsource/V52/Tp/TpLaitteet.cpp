@@ -1715,9 +1715,8 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	static char SI11pyynto_b7[8] = {'\377','\002','\357','\001','\007','\345','\011','\003'};
 	// SI6 via EXT protocol (trigger 0xE6, cmd 0xE1) - distinct from legacy
 	// DLE-encoded SI6 (SI6pyynto above). CRCs verified against a real card log
-	// (SIID 579671): b0=46 0A, b1=47 0A, b6=40 0A, b7=41 0A.
+	// (SIID 579671): b0=46 0A, b6=40 0A, b7=41 0A. Henkilotietolohkoa 1 ei lueta.
 	static char SI6EXTpyynto_b0[8] = {'\377','\002','\341','\001','\000','\106','\012','\003'};
-	static char SI6EXTpyynto_b1[8] = {'\377','\002','\341','\001','\001','\107','\012','\003'};
 	static char SI6EXTpyynto_b6[8] = {'\377','\002','\341','\001','\006','\100','\012','\003'};
 	static char SI6EXTpyynto_b7[8] = {'\377','\002','\341','\001','\007','\101','\012','\003'};
 	// CMD=F9: tells BSM8 to beep once after a successful card read (count=1).
@@ -1732,10 +1731,17 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 	int SItype, dle = 0, ilm;
 	SILukuTp luku;
 	char *lohkopyynto;
+	// EXT-vastauskehys (siExtTavu): odotettu komento (B1/EF/E1) ja
+	// lohkonumero, jonka vastausta odotetaan. SIpyynto/SIpyyntolen = viimeksi
+	// lahetetty pyynto (uusitaan virheen tai aikarajan jalkeen, ks.
+	// siUusitaanko), SIyritys = sen yritykset, SIpyyntoT = lahetyshetki.
+	SIKehysTp kehys;
+	int SIkmd = 0, SIlohko = 0, kt, SIyritys = 0, SIpyyntolen = 0;
+	char *SIpyynto = NULL;
+	INT32 SIpyyntoT = 0;
 	// SIext=1: BSM8 EXT protocol (38400 bps, binary frames, FF wakeup required).
 	// SIext=0: legacy protocol (DLE-encoded, lower baud rate).
-	// SIskip: bytes remaining to discard from the current response header.
-	int SIext = 0, SImsglen = 0, SIskip = 0;
+	int SIext = 0, SImsglen = 0;
 	// SIautosend=1: vanhan protokollan SI5 auto-send (02 31 <data>): asema
 	// lahetti kortin sisallon itse, joten pyyntoa ei lahdeta; jo luetut
 	// tavut (SIpre) ovat datan alku.
@@ -1778,6 +1784,7 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 					SImsglen = sizeof(SI5pyyntoEXT);
 					SItype = 5;
 					SIext = 1;
+					SIkmd = 0xB1;
 					break;
 				case SIILM_SI9:
 					// EXT E8: SI8/9/10/11, pCard tai tCard asetettu. Ensin lohko 0;
@@ -1786,6 +1793,7 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 					SImsglen = sizeof(SI9pyynto_b0);
 					SItype = 7;
 					SIext = 1;
+					SIkmd = 0xEF;
 					break;
 				case SIILM_SI6EXT:
 					// EXT E6: SI6 asetettu (EXT-protokolla, ei vanha DLE-koodattu SI6).
@@ -1793,6 +1801,7 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 					SImsglen = sizeof(SI6EXTpyynto_b0);
 					SItype = 12;
 					SIext = 1;
+					SIkmd = 0xE1;
 					break;
 				case SIILM_SI6:
 					msg = SI6pyynto;
@@ -1849,23 +1858,59 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			wrt_st_x(cn, SImsglen, msg, &nch);
 			utsleep(2);
 			}
-		// EXT responses begin with a header that must be discarded before data bytes.
-		//   SI5  B1 response: "02 B1" (2 bytes) + 133-byte SI5tp data
-		//   SI9+ EF response: "02 EF 83 00 0A blocknum" (6 bytes) + 128-byte block data
+		SIpyynto = msg;
+		SIpyyntolen = SImsglen;
+		SIyritys = 1;
+		SIpyyntoT = biostime(0,0);
+		// EXT-vastaukset ovat kehyksia 02 <cmd> <len> <asema 2> <data> <crc 2> 03;
+		// siExtTavu tarkistaa kunkin kehyksen ja lisaa vain datan SIbuf:iin:
+		//   SI5  B1: len + asemakoodi + 128 tavua + CRC = 133 tavua (SI5tp)
+		//   SI9+ EF / SI6 E1: lohkonumero tarkistetaan, lohkon 128 tavua
 		// Legacy (SI5/SI6): no header; bytes are DLE-encoded and not framed.
-		// Kerattava pituus ja ohitettavat otsikkotavut: siLukuAloita
-		// (SITulkinta.cpp, yksikkotestattu).
-		siLukuAloita(&luku, SItype, SIext, &SIskip);
+		// Kerattava pituus: siLukuAloita (SITulkinta.cpp, yksikkotestattu).
+		siLukuAloita(&luku, SItype);
+		siKehysAloita(&kehys);
+		SIlohko = 0;
 		for(;;) {
 			nq = 0;
 			if (!read_ch_x(cn, &chin, &nq)) {
 				bytecount = (bytecount + 1) % bytecountmax;
 				if (SIext) {
-					// EXT mode: discard header bytes, then store data bytes verbatim.
-					if (SIskip > 0)
-						--SIskip;
-					else
-						*(SIbp++) = chin;
+					// EXT: kehys kerataan ja tarkistetaan (STX, pituus, CRC, ETX,
+					// komento, lohkonumero) ennen kuin sen data lisataan SIbuf:iin.
+					// Virheellinen kehys tai NAK: sama pyynto uudelleen (enintaan
+					// SIYRITYKSET kertaa); kortin poisto (E7) keskeyttaa heti.
+					// Vaaraan kohtaan siirtynytta dataa ei tulkita.
+					int kl = SIbp - SIbuf;
+					kt = siExtTavu(&kehys, (unsigned char) chin, SIkmd, SIlohko,
+						(unsigned char *) SIbuf, &kl, sizeof(SIbuf));
+					SIbp = SIbuf + kl;
+					if (kt < 0) {
+						const char *syy = kt == SIKEHYS_POISTO ? "kortti poistettiin" :
+							(kt == SIKEHYS_NAK ? "asema hylkasi pyynnon (NAK)" : "virheellinen kehys");
+						if (siUusitaanko(kt, SIyritys)) {
+							if (loki) {
+								char line[100];
+								sprintf(line, "SI lohko %d uudelleen (%s), yritys %d / %d",
+									SIlohko, syy, SIyritys + 1, SIYRITYKSET);
+								kirjloki(line);
+								}
+							utsleep(2);
+							i_flush_x(cn);
+							wrt_st_x(cn, SIpyyntolen, SIpyynto, &nch);
+							SIyritys++;
+							SIpyyntoT = biostime(0,0);
+							continue;
+							}
+						if (loki) {
+							char line[120];
+							sprintf(line, "SI luenta keskeytyi: %s, lohko %d, yritys %d, saatu %d / %d tavua, SItype %d",
+								syy, SIlohko, SIyritys, kl, luku.datalen, SItype);
+							kirjloki(line);
+							SIlokiHex("SI data", SIbuf, kl);
+							}
+						break;
+						}
 					}
 				else {
 					// Legacy mode: DLE (0x10) escapes the next byte; control chars end the frame.
@@ -1897,26 +1942,52 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 			// Lohkon tayttyessa seuraava pyynto: siLukuSeuraava (SITulkinta.cpp,
 			// yksikkotestattu) paattaa SI9-perheen korttityypin SIID:sta,
 			// SI10/11:n leimalohkojen maaran ja SI6-EXT:n lohkosarjan.
-			switch (siLukuSeuraava(&luku, (unsigned char *) SIbuf, l, &SIskip)) {
-				case SIPYY_SI9_B1:  lohkopyynto = SI9pyynto_b1; break;
-				case SIPYY_SI11_B4: lohkopyynto = SI11pyynto_b4; break;
-				case SIPYY_SI11_B5: lohkopyynto = SI11pyynto_b5; break;
-				case SIPYY_SI11_B6: lohkopyynto = SI11pyynto_b6; break;
-				case SIPYY_SI11_B7: lohkopyynto = SI11pyynto_b7; break;
-				case SIPYY_SI6X_B1: lohkopyynto = SI6EXTpyynto_b1; break;
-				case SIPYY_SI6X_B6: lohkopyynto = SI6EXTpyynto_b6; break;
-				case SIPYY_SI6X_B7: lohkopyynto = SI6EXTpyynto_b7; break;
+			switch (siLukuSeuraava(&luku, (unsigned char *) SIbuf, l)) {
+				case SIPYY_SI9_B1:  lohkopyynto = SI9pyynto_b1; SIlohko = 1; break;
+				case SIPYY_SI11_B4: lohkopyynto = SI11pyynto_b4; SIlohko = 4; break;
+				case SIPYY_SI11_B5: lohkopyynto = SI11pyynto_b5; SIlohko = 5; break;
+				case SIPYY_SI11_B6: lohkopyynto = SI11pyynto_b6; SIlohko = 6; break;
+				case SIPYY_SI11_B7: lohkopyynto = SI11pyynto_b7; SIlohko = 7; break;
+				case SIPYY_SI6X_B6: lohkopyynto = SI6EXTpyynto_b6; SIlohko = 6; break;
+				case SIPYY_SI6X_B7: lohkopyynto = SI6EXTpyynto_b7; SIlohko = 7; break;
+				case SIPYY_TUNTEMATON:
+					// SIID ei ole minkaan tunnetun korttisarjan alueella: ei
+					// tulkita vaaralla asettelulla.
+					if (loki) {
+						char line[100];
+						sprintf(line, "SI luenta keskeytyi: tuntematon korttisarja, SIID %ld",
+							(long) ((unsigned char) SIbuf[25] * 65536L +
+							(unsigned char) SIbuf[26] * 256L + (unsigned char) SIbuf[27]));
+						kirjloki(line);
+						SIlokiHex("SI data", SIbuf, l);
+						}
+					lohkopyynto = NULL;
+					l = -1;
+					break;
 				default:            lohkopyynto = NULL; break;
 				}
+			if (l < 0)
+				break;
 			SItype = luku.SItype;
 			if (lohkopyynto) {
 				// kaikki lohkopyynnot ovat 8 tavua (ks. SI9pyynto_b1 ym.)
 				wrt_st_x(cn, sizeof(SI9pyynto_b1), lohkopyynto, &nch);
 				utsleep(2);
+				SIpyynto = lohkopyynto;
+				SIpyyntolen = sizeof(SI9pyynto_b1);
+				SIyritys = 1;
+				SIpyyntoT = biostime(0,0);
 				}
 			if (l == luku.datalen) {
 				SIResultTp SIresult;
 				SIlokiHex("SI data", SIbuf, l);
+				// Vanha protokolla: STX/ETX odotetuilla paikoilla (siVanhaKehysOk,
+				// SITulkinta.cpp, yksikkotestattu), muuten data on siirtynyt.
+				if (!SIext && !siVanhaKehysOk((unsigned char *) SIbuf, l, SItype)) {
+					if (loki)
+						kirjloki("SI luenta hylatty: vanhan protokollan kehys ei ala STX:lla tai paaty ETX:aan odotetussa kohdassa");
+					break;
+					}
 				if (!tulkSI(SIbuf, &SIresult, SIt, SItype, luku.datalen, t0)) {
 					SIlokiTulos(SItype, &SIresult);
 					// SIResultTp on tulkSI:n riippumaton tulostyyppi (ks. SITulkinta.h);
@@ -1934,11 +2005,27 @@ static int lue_SI(int r_no, int cn, san_type *vastaus, int *nmsg,
 					}
 				break;
 				}
-			if ((biostime(0,0) + DAYTICKS - SIt) % DAYTICKS > 90) {
+			// Aikaraja (90 tikkia, n. 5 s) lasketaan viimeisimmasta pyynnosta.
+			// EXT: puuttuva vastaus tai katkennut kehys -> pyynto uudelleen.
+			if ((biostime(0,0) + DAYTICKS - SIpyyntoT) % DAYTICKS > 90) {
+				if (SIext && siUusitaanko(SIKEHYS_KESKEN, SIyritys)) {
+					if (loki) {
+						char line[80];
+						sprintf(line, "SI lohko %d uudelleen (aikaraja), yritys %d / %d",
+							SIlohko, SIyritys + 1, SIYRITYKSET);
+						kirjloki(line);
+						}
+					siKehysAloita(&kehys);
+					i_flush_x(cn);
+					wrt_st_x(cn, SIpyyntolen, SIpyynto, &nch);
+					SIyritys++;
+					SIpyyntoT = biostime(0,0);
+					continue;
+					}
 				if (loki) {
-					char line[80];
-					sprintf(line, "SI luenta keskeytyi (aikaraja): saatu %d / %d tavua, SItype %d",
-						l, luku.datalen, SItype);
+					char line[100];
+					sprintf(line, "SI luenta keskeytyi (aikaraja): yritys %d, saatu %d / %d tavua, SItype %d",
+						SIyritys, l, luku.datalen, SItype);
 					kirjloki(line);
 					SIlokiHex("SI data", SIbuf, l);
 					}
