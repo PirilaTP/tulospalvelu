@@ -257,7 +257,8 @@ int TFormImport::lue_kilpcsv(TextFl *afile, kilptietue *kilp, int lineno, int to
 			case FLDID_SUKUNIMI:
 				memset(ast, 0, sizeof(ast));
 				WcsToMbs(ast, tfld, kilpparam.lnimi);
-				if (kilp->ostiet[fldorder[ifld].os-1].nimi[0] && strlen(ast) < kilpparam.lnimi-2) {
+				if (kilp->ostiet[fldorder[ifld].os-1].nimi[0] &&
+					strcmp(kilp->ostiet[fldorder[ifld].os-1].nimi, "|") && strlen(ast) < kilpparam.lnimi-2) {
 					if (kilp->ostiet[fldorder[ifld].os-1].nimi[0] != '|')
 						strcat(ast, "|");
 					strncpy(ast+strlen(ast), kilp->ostiet[fldorder[ifld].os-1].nimi, 
@@ -270,6 +271,8 @@ int TFormImport::lue_kilpcsv(TextFl *afile, kilptietue *kilp, int lineno, int to
 				strncpy(kilp->ostiet[fldorder[ifld].os-1].nimi, ast, kilpparam.lnimi);
 				break;
 			case FLDID_ETUNIMI:
+				if (tfld[0] == 0)
+					break;
 				if (strlen(kilp->ostiet[fldorder[ifld].os-1].nimi) >= kilpparam.lnimi - 1)
 					break;
 				if (kilp->ostiet[fldorder[ifld].os-1].nimi[0] == 0 ||
