@@ -562,26 +562,6 @@ void __fastcall TFormLuenta::BtnTallennaClick(TObject *Sender)
 			}
 		}
 	else {
-		kilptietue tkilp;
-		INT32 vanha;
-
-		// Osuudella on jo eri Emit-koodi: vahvistetaan korvaus ennen tallennusta
-		tkilp.getrec(DKilp);
-		vanha = tkilp.ostiet[Osuus].badge[RGkoodi->ItemIndex];
-		if (vanha != 0 && vanha != uusi_emit &&
-			Application->MessageBoxW((UnicodeString(L"Osuudella on jo Emit-koodi ") + UnicodeString(vanha) +
-				L". Korvataanko se koodilla " + UnicodeString(uusi_emit) + L"?").c_str(),
-				L"Poikkeama", MB_YESNO) != IDYES) {
-			if (luentaFl) {
-				swprintf(lokiLine, L"%s\tKorvaus peruttu\t%4d-%d\tEmit\t%d\n", wkello(),
-					Kilpno, Osuus + 1, uusi_emit);
-				luentaFl->WriteLine(lokiLine);
-				}
-			EdtMsg->Text = L"Ei tallennettu. Tallenna tai peruuta";
-			EdtMsg->Color = clYellow;
-			FocusControl(EdtVahvistus);
-			return;
-			}
 		EnterCriticalSection(&tall_CriticalSection);
 		Kilp.getrec(DKilp);
 		Kilp.ostiet[Osuus].badge[RGkoodi->ItemIndex] = uusi_emit;
