@@ -76,13 +76,14 @@ TEST_CASE("EkaMaaliIndeksi: tasapelissa valitsee ensimmaisen loydetyn")
 	CHECK(EkaMaaliIndeksi(osat, 3) == 0);
 }
 
-TEST_CASE("EkaMaaliIndeksi: kaytossa olematon paikka ei koskaan voita")
+// Aika on aina mukana, vaikka nimi puuttuisi: nimi voidaan lisata myohemmin.
+TEST_CASE("EkaMaaliIndeksi: nimeton paikka, jolla on aika, voi voittaa")
 {
 	RinnakkaisTila osat[2] = {
 		{ false, true, 100 },
 		{ true, true, 900 },
 		};
-	CHECK(EkaMaaliIndeksi(osat, 2) == 1);
+	CHECK(EkaMaaliIndeksi(osat, 2) == 0);
 }
 
 TEST_CASE("EkaMaaliIndeksi: vain yksi ilmoitettu kolmesta paikasta - se riittaa")

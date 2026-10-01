@@ -34,19 +34,19 @@
 #pragma pack(push, 1)
 struct RinnakkaisTila {
 	bool onKilpailija;  // onko tahan paikkaan ilmoitettu kilpailija
-	bool onMaalissa;    // onko kilpailija jo maalissa (merkitsevaa vain jos onKilpailija)
+	bool onMaalissa;    // onko paikalle kirjattu maaliaika (aika on aina mukana, vaikka nimi puuttuisi)
 	long kulunutAika;   // kulunut aika lahdosta, mielivaltaisessa yhteismitallisessa
-	                    // yksikossa; merkitseva vain jos onKilpailija && onMaalissa
+	                    // yksikossa; merkitseva vain jos onMaalissa
 	};
 #pragma pack(pop)
 
-// Palauttaa 0-pohjaisen indeksin osat-taulukkoon: se rinnakkaisosuus,
-// johon on ilmoitettu kilpailija (onKilpailija) JA joka on ensimmaisena
-// maalissa (pienin kulunutAika niista, jotka ovat maalissa). Kaytossa
-// olematon paikka ei koskaan voita eika sita odoteta.
+// Palauttaa 0-pohjaisen indeksin osat-taulukkoon: se paikka, joka on
+// ensimmaisena maalissa (pienin kulunutAika niista, jotka ovat maalissa).
+// Paikka, jolle on kirjattu aika, on aina mukana, vaikka nimea ei olisi
+// (onKilpailija == false): aika tallennetaan ja nimi voidaan lisata
+// myohemmin. Paikka ilman aikaa ei voi voittaa.
 //
-// Palauttaa -1, jos kukaan kaytossa-olevista ei ole viela maalissa
-// (mukaan lukien se tapaus, ettei kukaan ole ilmoittautunut).
+// Palauttaa -1, jos kukaan ei ole viela maalissa.
 int EkaMaaliIndeksi(const RinnakkaisTila *osat, int n);
 
 // Paattaa, onko rinnakkaisosuuden "puute-lisaaika" (odotusaika

@@ -22,8 +22,6 @@ int EkaMaaliIndeksi(const RinnakkaisTila *osat, int n)
 	long bestAika = 0;
 
 	for (int i = 0; i < n; i++) {
-		if (!osat[i].onKilpailija)
-			continue;
 		if (!osat[i].onMaalissa)
 			continue;
 		if (best == -1) {
