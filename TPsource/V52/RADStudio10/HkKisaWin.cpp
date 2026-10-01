@@ -122,6 +122,7 @@ USEFORM("..\cbHk\UnitSeuratoimet.cpp", FormSeuratoimet);
 USEFORM("..\cbHk\UnitSeurat.cpp", FormSeurat);
 USEFORM("..\cbHk\UnitSakkoKierr.cpp", FormSakkoKierr);
 USEFORM("..\cbHk\UnitOsanottajat.cpp", FormOsanottajat);
+USEFORM("..\cbHk\UnitMaastossa.cpp", FormMaastossa);
 USEFORM("..\cbHk\UnitOhjtiedot.cpp", FormOhjtiedot);
 USEFORM("..\cbHk\UnitPistelasku.cpp", FormPistelasku);
 USEFORM("..\cbHk\UnitPiirival.cpp", FormPiiriVal);

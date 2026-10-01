@@ -498,6 +498,10 @@ object FormMain: TFormMain
         Caption = '&Joukkueet'
         OnClick = Joukkueet1Click
       end
+      object NaytaMaastossa1: TMenuItem
+        Caption = 'N'#228'yt'#228' maastossa olevat kilpailijat'
+        OnClick = NaytaMaastossa1Click
+      end
       object Yksijoukkue1: TMenuItem
         Caption = '&Yksi joukkue'
         OnClick = Yksijoukkue1Click

@@ -1692,9 +1692,11 @@ void __fastcall TFormSarjatiedot::Haematkatratatiedoista1Click(TObject *Sender)
 	if (!SG1->Options.Contains(goEditing))
 		BtnMuokkausClick(Sender);
 	for (int srj = 0; srj < sarjaluku; srj++) {
-		int rr;
-		if ((rr = onrata(Sarjat[srj].sarjanimi)) > 0 && rata[rr-1].ratapit > 0) {
-			swprintf(Sarjat[srj].matka[k_pv], L"%d,%d", (rata[rr-1].ratapit+50)/1000, ((rata[rr-1].ratapit+50)%1000)/100);
+		ratatp *rt;
+		// haerata_sarja() ottaa huomioon sarjalle mahdollisesti kohdennetun
+		// radan (Sarjat[srj].rata[k_pv]), ei pelkkää sarjan nimen mukaista rataa.
+		if ((rt = haerata_sarja(srj, k_pv)) != NULL && rt->ratapit > 0) {
+			swprintf(Sarjat[srj].matka[k_pv], L"%d,%d", (rt->ratapit+50)/1000, ((rt->ratapit+50)%1000)/100);
 			n++;
 			}
 		}

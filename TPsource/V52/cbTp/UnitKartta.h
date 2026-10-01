@@ -97,7 +97,7 @@ public:		// User declarations
 	bool __fastcall KarttaLadattu(void);
 	void __fastcall naytaLeimat(ratatp *rt, int *tulkinta, char *koodit);
 	void __fastcall naytaRastit(void);
-	void __fastcall piirraRasti(int y, int x, wchar_t *kdi, int rastilaji);
+	void __fastcall piirraRasti(int y, int x, wchar_t *koodi, int rastilaji);
 	void __fastcall piirraLahto(int y, int x);
 	void __fastcall piirraMaali(int y, int x);
 	void __fastcall piirraViiva(int y1, int x1, int y2, int x2);

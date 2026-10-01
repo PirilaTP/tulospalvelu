@@ -81,6 +81,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Vaiheensarja1;
 	TMenuItem *Sukupx1;
 	TMenuItem *Iksarjag1;
+	TMenuItem *Synt1;
 	TMenuItem *Rata1;
 	TMenuItem *oiminnot1;
 	TMenuItem *Lueemitkoodeja1;
@@ -137,6 +138,7 @@ __published:	// IDE-managed Components
           bool &Handled);
 	void __fastcall Sukupx1Click(TObject *Sender);
 	void __fastcall Iksarjag1Click(TObject *Sender);
+	void __fastcall Synt1Click(TObject *Sender);
 	void __fastcall Rata1Click(TObject *Sender);
 	void __fastcall Lueemitkoodeja1Click(TObject *Sender);
 	void __fastcall Qual1Click(TObject *Sender);
