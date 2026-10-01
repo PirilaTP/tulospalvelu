@@ -242,9 +242,9 @@ TEST_CASE("EkaMaaliOsuudenTila: ensimmaisen keskeytys (aika kirjattu) on joukkue
 	CHECK(EkaMaaliOsuudenTila(osat, tila, 2) == 'K');
 }
 
-// Ensimmainen tapahtuma ratkaisee: hylkays tai keskeytys ennen kenenkaan
-// maaliintuloa paattaa osuuden, vaikka joku olisi viela matkalla.
-TEST_CASE("EkaMaaliOsuudenTila: kukaan ei maalissa, joku jo ulkona - ei jaa avoimeksi")
+// Ilman aikaa joukkuetta ei voi hylata eika keskeyttaa: ratkaiseva
+// tapahtuma on aina ajallinen. Osuus pysyy avoimena, kun joku on matkalla.
+TEST_CASE("EkaMaaliOsuudenTila: kukaan ei maalissa, joku ulkona ilman aikaa, joku matkalla - osuus on kesken")
 {
 	RinnakkaisTila osat[3] = {
 		{ true, false, 0 },
@@ -252,9 +252,9 @@ TEST_CASE("EkaMaaliOsuudenTila: kukaan ei maalissa, joku jo ulkona - ei jaa avoi
 		{ true, false, 0 },
 		};
 	const char tila1[3] = { 'K', '-', 'H' };
-	CHECK(EkaMaaliOsuudenTila(osat, tila1, 3) == 'K');
+	CHECK(EkaMaaliOsuudenTila(osat, tila1, 3) == '-');
 	const char tila2[3] = { '-', '-', 'H' };
-	CHECK(EkaMaaliOsuudenTila(osat, tila2, 3) == 'H');
+	CHECK(EkaMaaliOsuudenTila(osat, tila2, 3) == '-');
 }
 
 TEST_CASE("EkaMaaliOsuudenTila: kukaan ei maalissa eika ketaan ulkona - osuus on kesken")

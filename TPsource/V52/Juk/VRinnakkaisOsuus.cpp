@@ -89,7 +89,7 @@ char EkaMaaliOsuudenTila(const RinnakkaisTila *osat, const char *tila, int n)
 			(tila[i] == 'H' && huonoin != 'E' && huonoin != 'K'))
 			huonoin = tila[i];
 		}
-	if (huonoin)
-		return huonoin;
-	return avoin ? avoin : '-';
+	if (avoin)
+		return avoin;
+	return huonoin ? huonoin : '-';
 }
