@@ -47,3 +47,21 @@ bool PuutelisaNollataan(int registered, int finished, bool ekaMaaliLahettaa)
 		return finished >= 1;
 	return finished == registered;
 }
+
+bool PaikkaKaytossa(const char *nimi, bool onBadge, bool onAika)
+{
+	if (onBadge || onAika)
+		return true;
+	if (nimi == 0)
+		return false;
+	for (const char *p = nimi; *p; p++) {
+		if (*p != '|' && *p != ' ')
+			return true;
+		}
+	return false;
+}
+
+bool LahtoEdellisenTuloksesta(int nosuusNyt, int nosuusEd, bool edEkaMaaliLahettaa)
+{
+	return nosuusNyt == 1 || nosuusEd == 1 || edEkaMaaliLahettaa;
+}

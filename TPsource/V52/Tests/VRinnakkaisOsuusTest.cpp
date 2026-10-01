@@ -136,3 +136,60 @@ TEST_CASE("PuutelisaNollataan: yksi ilmoitettu paikka toimii molemmilla saannoil
 	CHECK(PuutelisaNollataan(1, 0, true) == false);
 	CHECK(PuutelisaNollataan(1, 0, false) == false);
 }
+
+// ---------------------------------------------------------------------
+// PaikkaKaytossa
+// ---------------------------------------------------------------------
+
+TEST_CASE("PaikkaKaytossa: nimetty paikka on kaytossa")
+{
+	CHECK(PaikkaKaytossa("Virtanen|Matti", false, false) == true);
+	CHECK(PaikkaKaytossa("Virtanen", false, false) == true);
+	CHECK(PaikkaKaytossa("|Matti", false, false) == true);
+}
+
+TEST_CASE("PaikkaKaytossa: tyhja paikka ei ole kaytossa")
+{
+	CHECK(PaikkaKaytossa("", false, false) == false);
+	CHECK(PaikkaKaytossa(nullptr, false, false) == false);
+}
+
+// CSV-tuonti tallentaa tyhjan nimen erottimena "|": se ei ole nimi.
+TEST_CASE("PaikkaKaytossa: pelkka erotin tai valilyonnit eivat ole nimi")
+{
+	CHECK(PaikkaKaytossa("|", false, false) == false);
+	CHECK(PaikkaKaytossa(" | ", false, false) == false);
+}
+
+// Regressio: nimeton juoksija, jolla on aika, hukkui aiemmin kokonaan.
+TEST_CASE("PaikkaKaytossa: nimeton juoksija, jolla aika tai Emit-koodi, on kaytossa")
+{
+	CHECK(PaikkaKaytossa("", false, true) == true);
+	CHECK(PaikkaKaytossa("", true, false) == true);
+	CHECK(PaikkaKaytossa("|", true, true) == true);
+}
+
+// ---------------------------------------------------------------------
+// LahtoEdellisenTuloksesta
+// ---------------------------------------------------------------------
+
+TEST_CASE("LahtoEdellisenTuloksesta: tavallinen osuus jommallakummalla puolella")
+{
+	CHECK(LahtoEdellisenTuloksesta(1, 1, false) == true);
+	CHECK(LahtoEdellisenTuloksesta(3, 1, false) == true);
+	CHECK(LahtoEdellisenTuloksesta(1, 3, false) == true);
+	CHECK(LahtoEdellisenTuloksesta(1, 3, true) == true);
+}
+
+TEST_CASE("LahtoEdellisenTuloksesta: rinnakkaiselta rinnakkaiselle ilman saantoa - k:s nopein")
+{
+	CHECK(LahtoEdellisenTuloksesta(2, 2, false) == false);
+	CHECK(LahtoEdellisenTuloksesta(3, 2, false) == false);
+}
+
+// Regressio: saanto ohitettiin, jos seuraavakin osuus oli rinnakkainen.
+TEST_CASE("LahtoEdellisenTuloksesta: saanto kaynnistaa myos rinnakkaisen jatko-osuuden kaikki paikat")
+{
+	CHECK(LahtoEdellisenTuloksesta(2, 2, true) == true);
+	CHECK(LahtoEdellisenTuloksesta(3, 2, true) == true);
+}

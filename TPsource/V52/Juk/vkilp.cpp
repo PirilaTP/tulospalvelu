@@ -21,6 +21,14 @@
 #endif
 #include "VRinnakkaisOsuus.h"
 
+// Onko joukkueen paikalla os kilpailija (nimi, Emit-koodi tai aika), ks. PaikkaKaytossa
+static bool paikkaKaytossa(kilptietue *kilp, int os, int va)
+{
+	return(PaikkaKaytossa(kilp->ostiet[os].nimi,
+		kilp->ostiet[os].badge[0] != 0 || kilp->ostiet[os].badge[1] != 0,
+		kilp->Maali(os, va) != TMAALI0 || kilp->Maali(os, 0) != TMAALI0));
+}
+
 void vatp::nollaa(void)
 {
 	sija = 0;
@@ -313,8 +321,10 @@ INT32 kilptietue::Lahto(int osuus, int *laji /* = NULL */)
 		 etls < 50L * TUNTI)
 		 oslahto = Sarjat[sarja].lahto + etls - SakkoAika(yOsuus, true);
 #else // !SKMKV
-	   if (Sarjat[sarja].nosuus[yosuus] == 1 ||
-		  Sarjat[sarja].nosuus[yosuus-1] == 1) {
+	   // Ensimmainen maaliin -saanto edellisella osuudella: kaikki paikat lahtevat
+	   // joukkueen osuustuloksesta myos, kun seuraavakin osuus on rinnakkainen
+	   if (LahtoEdellisenTuloksesta(Sarjat[sarja].nosuus[yosuus], Sarjat[sarja].nosuus[yosuus-1],
+		  Sarjat[sarja].ekaMaaliLahettaa[yosuus-1])) {
 		  if ((etls = tTulos(yosuus-1, 0, &puutelisa)) != 0 &&
 			   puutelisa == 0)
 			   oslahto = Sarjat[sarja].lahto + etls;
@@ -386,7 +396,7 @@ INT32 kilptietue::tTulos(int tosuus, int va, __int64 *tlslisa /* = NULL */)
 	  if (yos && ostiet[Sarjat[sarja].aosuus[yos+1]].ylahto != TMAALI0)
 		  yl1 = 1;
 	  for (os = Sarjat[sarja].aosuus[yos]+1; os <= Sarjat[sarja].aosuus[yos+1]; os++) {
-		  if (ostiet[os].nimi[0] == 0 && Sarjat[sarja].nosuus[yos] > 1)
+		  if (Sarjat[sarja].nosuus[yos] > 1 && !paikkaKaytossa(this, os, va))
 			 continue;
 		  n_reg[yos]++;
 		  if (Maali(os, va) != TMAALI0) {
@@ -437,7 +447,7 @@ int kilptietue::ekaMaaliOsuus(int tosuus, int va)
 	int loppu = Sarjat[sarja].aosuus[tosuus+1];
 
 	for (int os = alku; os <= loppu && n < MAXOSUUSLUKU; os++, n++) {
-		tilat[n].onKilpailija = (ostiet[os].nimi[0] != 0);
+		tilat[n].onKilpailija = paikkaKaytossa(this, os, va);
 		tilat[n].onMaalissa = (Maali(os, va) != TMAALI0);
 		if (tilat[n].onMaalissa)
 			tilat[n].kulunutAika = (long)((Maali(os, va) - Sarjat[sarja].lahto + 48L*TUNTI) % (24L*TUNTI));
@@ -1379,7 +1389,7 @@ bool kilptietue::tHyv(int osuus /* =-1 */)
 	else
 		osuus = Sarjat[sarja].aosuus[osuus+1];
 	for (int os = 0; os <= osuus; os++) {
-		if (ostiet[os].nimi[0] == 0 && Sarjat[sarja].nosuus[Sarjat[sarja].yosuus[os]] > 1)
+		if (Sarjat[sarja].nosuus[Sarjat[sarja].yosuus[os]] > 1 && !paikkaKaytossa(this, os, 0))
 			continue;
 		if (stschind(ostiet[os].keskhyl, "TI-") < 0)
 			return(false);
@@ -1392,7 +1402,7 @@ bool kilptietue::Hyv(int osuus /* =-1 */)
 	if (osuus == -1)
 		osuus = Sarjat[sarja].osuusluku-1;
 	for (int os = 0; os <= osuus; os++) {
-		if (ostiet[os].nimi[0] == 0 && Sarjat[sarja].nosuus[Sarjat[sarja].yosuus[os]] > 1)
+		if (Sarjat[sarja].nosuus[Sarjat[sarja].yosuus[os]] > 1 && !paikkaKaytossa(this, os, 0))
 			continue;
 		if (stschind(ostiet[os].keskhyl, "TI-") < 0)
 			return(false);

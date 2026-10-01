@@ -63,4 +63,20 @@ int EkaMaaliIndeksi(const RinnakkaisTila *osat, int n);
 // etta yksikin on maalissa; muuten kaikkien ilmoitettujen on oltava.
 bool PuutelisaNollataan(int registered, int finished, bool ekaMaaliLahettaa);
 
+// Onko rinnakkaisosuuden paikalla kilpailija, jota odotetaan ja jonka
+// maaliaika voi ratkaista osuuden. Paikka on kaytossa, jos sille on
+// annettu nimi, Emit-koodi tai aika. Pelkka erotin "|" (tai tyhja/
+// valilyonnit) ei ole nimi: CSV-tuonti on tallentanut tyhjan nimen
+// muodossa "|". Nimeton juoksija, jolla on aika tai Emit-koodi, on
+// siis mukana - nimen puuttuminen ei saa hukata tulosta.
+bool PaikkaKaytossa(const char *nimi, bool onBadge, bool onAika);
+
+// Lahteeko osuuden jokainen paikka edellisen osuuden joukkuetuloksesta
+// (yhteinen vaihto)? Kylla, jos jompikumpi osuus on tavallinen (yksi
+// paikka) tai jos edellisella osuudella on kaytossa "ensimmainen
+// maaliin kaynnistaa seuraavan osuuden" -saanto. Muuten (rinnakkais-
+// osuudelta rinnakkaisosuudelle ilman saantoa) k:s paikka lahtee
+// edellisen osuuden k:nneksi nopeimman maaliajasta.
+bool LahtoEdellisenTuloksesta(int nosuusNyt, int nosuusEd, bool edEkaMaaliLahettaa);
+
 #endif
