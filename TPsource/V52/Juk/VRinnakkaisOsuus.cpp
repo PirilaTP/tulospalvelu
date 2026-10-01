@@ -74,19 +74,24 @@ bool TilaHyvaksytty(char tila)
 char EkaMaaliOsuudenTila(const RinnakkaisTila *osat, const char *tila, int n)
 {
 	int eka = EkaMaaliIndeksi(osat, n);
-	char huonoin = 0;
+	char huonoin = 0, avoin = 0;
 
 	if (eka >= 0)
 		return tila[eka];
 	for (int i = 0; i < n; i++) {
 		if (!osat[i].onKilpailija)
 			continue;
-		if (TilaHyvaksytty(tila[i]))
-			return tila[i];
+		if (TilaHyvaksytty(tila[i])) {
+			if (avoin == 0)
+				avoin = tila[i];
+			continue;
+			}
 		if (huonoin == 0 || tila[i] == 'E' ||
 			(tila[i] == 'K' && huonoin != 'E') ||
 			(tila[i] == 'H' && huonoin != 'E' && huonoin != 'K'))
 			huonoin = tila[i];
 		}
-	return huonoin ? huonoin : '-';
+	if (huonoin)
+		return huonoin;
+	return avoin ? avoin : '-';
 }

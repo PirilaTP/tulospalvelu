@@ -241,14 +241,29 @@ TEST_CASE("EkaMaaliOsuudenTila: ensimmaisen keskeytys (aika kirjattu) on joukkue
 	CHECK(EkaMaaliOsuudenTila(osat, tila, 2) == 'K');
 }
 
-TEST_CASE("EkaMaaliOsuudenTila: kukaan ei maalissa, joku viela mukana - osuus on kesken")
+// Ensimmainen tapahtuma ratkaisee: hylkays tai keskeytys ennen kenenkaan
+// maaliintuloa paattaa osuuden, vaikka joku olisi viela matkalla.
+TEST_CASE("EkaMaaliOsuudenTila: kukaan ei maalissa, joku jo ulkona - ei jaa avoimeksi")
 {
 	RinnakkaisTila osat[3] = {
 		{ true, false, 0 },
 		{ true, false, 0 },
 		{ true, false, 0 },
 		};
-	const char tila[3] = { 'K', '-', 'H' };
+	const char tila1[3] = { 'K', '-', 'H' };
+	CHECK(EkaMaaliOsuudenTila(osat, tila1, 3) == 'K');
+	const char tila2[3] = { '-', '-', 'H' };
+	CHECK(EkaMaaliOsuudenTila(osat, tila2, 3) == 'H');
+}
+
+TEST_CASE("EkaMaaliOsuudenTila: kukaan ei maalissa eika ketaan ulkona - osuus on kesken")
+{
+	RinnakkaisTila osat[3] = {
+		{ true, false, 0 },
+		{ true, false, 0 },
+		{ true, false, 0 },
+		};
+	const char tila[3] = { '-', '-', '-' };
 	CHECK(EkaMaaliOsuudenTila(osat, tila, 3) == '-');
 }
 
@@ -279,4 +294,41 @@ TEST_CASE("EkaMaaliOsuudenTila: kayttamaton paikka ei vaikuta")
 	RinnakkaisTila tyhjat[2] = { { false, false, 0 }, { false, false, 0 } };
 	const char tilaT[2] = { 'H', 'K' };
 	CHECK(EkaMaaliOsuudenTila(tyhjat, tilaT, 2) == '-');
+}
+
+// Ensimmaisena maaliin tullut ratkaisee riippumatta siita, missa
+// rinnakkaisessa paikassa han on.
+TEST_CASE("EkaMaaliOsuudenTila: C ensimmaisena maalissa hylattyna - joukkue hylatty, vaikka A ja B myohemmin hyvaksyttyja")
+{
+	RinnakkaisTila osat[3] = {
+		{ true, true, 700 },
+		{ true, true, 800 },
+		{ true, true, 600 },
+		};
+	const char tila[3] = { 'T', '-', 'H' };
+	CHECK(EkaMaaliOsuudenTila(osat, tila, 3) == 'H');
+}
+
+TEST_CASE("EkaMaaliOsuudenTila: B ensimmaisena keskeyttaneena (aika kirjattu) - joukkue keskeyttanyt, vaikka A myohemmin hyvaksytty")
+{
+	RinnakkaisTila osat[3] = {
+		{ true, true, 700 },
+		{ true, true, 600 },
+		{ true, false, 0 },
+		};
+	const char tila[3] = { '-', 'K', '-' };
+	CHECK(EkaMaaliOsuudenTila(osat, tila, 3) == 'K');
+}
+
+// Aikaa vailla oleva merkinta katsotaan tapahtuneeksi maaliintulojen
+// jalkeen: kun B tulee maaliin, B ratkaisee.
+TEST_CASE("EkaMaaliOsuudenTila: ajaton keskeytys, sitten toinen maaliin hyvaksyttyna - maaliin tullut ratkaisee")
+{
+	RinnakkaisTila osat[3] = {
+		{ true, false, 0 },
+		{ true, true, 600 },
+		{ true, false, 0 },
+		};
+	const char tila[3] = { 'K', '-', 'H' };
+	CHECK(EkaMaaliOsuudenTila(osat, tila, 3) == '-');
 }

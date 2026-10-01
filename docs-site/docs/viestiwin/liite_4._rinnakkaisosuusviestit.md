@@ -78,6 +78,12 @@ Kun asetus on käytössä osuudelle:
   osuuden tila, vaikka muut rinnakkaiset juoksijat olisivat hyväksyttyjä.
   Muiden rinnakkaisten juoksijoiden hylkäys tai keskeytys ei sen sijaan
   vaikuta joukkueen tulokseen, kun ensimmäisenä maaliin tullut on hyväksytty.
+- Ratkaisevaa on ensimmäinen tapahtuma. Jos rinnakkainen juoksija hylätään
+  tai hän keskeyttää ennen kuin kukaan on tullut maaliin, joukkue saa saman
+  merkinnän eikä osuus jää avoimeksi, vaikka joku olisi vielä matkalla.
+  Jotta merkintä pysyy ratkaisevana muiden myöhemmästä maaliintulosta
+  huolimatta, sille kirjataan aika (maaliaika-kenttään); aikaa vailla olevan
+  merkinnän katsotaan tapahtuneen vasta maaliintulojen jälkeen.
 - Rinnakkainen juoksija, jolle ei ole kirjattu nimeä, otetaan mukaan, jos
   hänellä on Emit-koodi tai aika.
 - Kun ensimmäinen maaliaika on kerran määrännyt seuraavan osuuden lähdön,

@@ -87,15 +87,22 @@ bool TilaHyvaksytty(char tila);
 // kaynnistaa seuraavan osuuden" -saanto. tila[i] on paikan i tila
 // (keskhyl).
 //
-// - Kun joku on maalissa, ensimmaisena maaliin tulleen tila on osuuden
-//   tila: hanen hylkayksensa tai keskeytyksensa on joukkueen, vaikka
-//   muut rinnakkaiset olisivat hyvaksyttyja, ja muiden rinnakkaisten
-//   hylkays tai keskeytys ei vaikuta, jos han on hyvaksytty.
-// - Kun kukaan ei ole maalissa, osuus on kesken (palautetaan ensimmaisen
-//   hyvaksytyn kaytossa olevan paikan tila), jos joku on viela mukana.
-//   Jos kaikki ovat ulkona, palautetaan huonoin tila samassa jarjestyksessa
-//   kuin ilman saantoa: 'E' ennen 'K':ta ennen 'H':ta.
-// - Jos osuudelle ei ole ilmoitettu ketaan, palautetaan '-'.
+// Ratkaisee ensimmainen tapahtuma. Tapahtuman aika on paikan maaliaika;
+// hylkays tai keskeytys ratkaisee ennen muiden maaliintuloa vain, jos
+// sille on kirjattu aika (aikaa vailla oleva merkinta katsotaan
+// tapahtuneeksi vasta kaikkien maaliintulojen jalkeen).
+//
+// - Kun jollakulla on aika, aikaisimman tila on osuuden tila: hanen
+//   hylkayksensa tai keskeytyksensa on joukkueen, vaikka muut olisivat
+//   myohemmin tulleet hyvaksyttyina maaliin, ja myohempien hylkays tai
+//   keskeytys ei vaikuta, jos han on hyvaksytty.
+// - Kun kenellakaan ei ole aikaa, mutta joku on jo hylatty, keskeyttanyt
+//   tai jaanyt lahtematta, joukkue saa taman tilan (ei jaa avoimeksi,
+//   vaikka joku olisi viela matkalla). Useasta merkinnasta valitaan
+//   huonoin samassa jarjestyksessa kuin ilman saantoa: 'E' ennen 'K':ta
+//   ennen 'H':ta.
+// - Muuten osuus on kesken: palautetaan ensimmaisen kaytossa olevan
+//   paikan tila, tai '-', jos osuudelle ei ole ilmoitettu ketaan.
 char EkaMaaliOsuudenTila(const RinnakkaisTila *osat, const char *tila, int n);
 
 #endif
