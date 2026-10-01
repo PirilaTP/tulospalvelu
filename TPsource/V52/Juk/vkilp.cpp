@@ -29,6 +29,38 @@ static bool paikkaKaytossa(kilptietue *kilp, int os, int va)
 		kilp->Maali(os, va) != TMAALI0 || kilp->Maali(os, 0) != TMAALI0));
 }
 
+// Kerataan osuuden tosuus rinnakkaisten paikkojen tiedot ensimmainen maaliin
+// -paatoksia varten (ks. VRinnakkaisOsuus.h). tila saa paikkojen keskhyl-
+// merkinnat, jos se annetaan. Palauttaa paikkojen lukumaaran.
+static int keraaRinnakkaisTilat(kilptietue *kilp, int tosuus, int va, RinnakkaisTila *tilat, char *tila)
+{
+	int n = 0;
+	int alku = Sarjat[kilp->sarja].aosuus[tosuus] + 1;
+	int loppu = Sarjat[kilp->sarja].aosuus[tosuus+1];
+
+	for (int os = alku; os <= loppu && n < MAXOSUUSLUKU; os++, n++) {
+		tilat[n].onKilpailija = paikkaKaytossa(kilp, os, va);
+		tilat[n].onMaalissa = (kilp->Maali(os, va) != TMAALI0);
+		if (tilat[n].onMaalissa)
+			tilat[n].kulunutAika = (long)((kilp->Maali(os, va) - Sarjat[kilp->sarja].lahto + 48L*TUNTI) % (24L*TUNTI));
+		else
+			tilat[n].kulunutAika = 0;
+		if (tila)
+			tila[n] = kilp->ostiet[os].keskhyl;
+		}
+	return(n);
+}
+
+// Ensimmainen maaliin -saannon osuuden tila, ks. EkaMaaliOsuudenTila
+static char ekaMaaliTila(kilptietue *kilp, int tosuus)
+{
+	RinnakkaisTila tilat[MAXOSUUSLUKU];
+	char tila[MAXOSUUSLUKU];
+	int n = keraaRinnakkaisTilat(kilp, tosuus, 0, tilat, tila);
+
+	return(EkaMaaliOsuudenTila(tilat, tila, n));
+}
+
 void vatp::nollaa(void)
 {
 	sija = 0;
@@ -442,20 +474,9 @@ int kilptietue::ekaMaaliOsuus(int tosuus, int va)
 	// antaa paatoksen riippumattomalle VRinnakkaisOsuus.cpp:lle. Ks.
 	// Tests/VRinnakkaisOsuusTest.cpp.
 	RinnakkaisTila tilat[MAXOSUUSLUKU];
-	int n = 0;
-	int alku = Sarjat[sarja].aosuus[tosuus] + 1;
-	int loppu = Sarjat[sarja].aosuus[tosuus+1];
-
-	for (int os = alku; os <= loppu && n < MAXOSUUSLUKU; os++, n++) {
-		tilat[n].onKilpailija = paikkaKaytossa(this, os, va);
-		tilat[n].onMaalissa = (Maali(os, va) != TMAALI0);
-		if (tilat[n].onMaalissa)
-			tilat[n].kulunutAika = (long)((Maali(os, va) - Sarjat[sarja].lahto + 48L*TUNTI) % (24L*TUNTI));
-		else
-			tilat[n].kulunutAika = 0;
-		}
+	int n = keraaRinnakkaisTilat(this, tosuus, va, tilat, NULL);
 	int i = EkaMaaliIndeksi(tilat, n);
-	return(i < 0 ? -1 : alku + i);
+	return(i < 0 ? -1 : Sarjat[sarja].aosuus[tosuus] + 1 + i);
 }
 
 INT32 kilptietue::aTulos(int tosuus, int va)
@@ -1020,12 +1041,9 @@ char kilptietue::tTark(int osuus)
 		return('S');
 
 	if (Sarjat[sarja].ekaMaaliLahettaa[osuus]) {
-		// Ensimmainen maaliin tullut (kaytossa-oleva) rinnakkaisosuus
-		// ratkaisee statuksen - ei enaa huonoin-voittaa -periaatetta.
-		int eos = ekaMaaliOsuus(osuus, 0);
-		if (eos < 0)
-			return('T');
-		return(ostiet[eos].keskhyl);
+		// Ensimmaisena maaliin tullut ratkaisee statuksen (myos hylkayksen ja
+		// keskeytyksen) - ei enaa huonoin-voittaa -periaatetta
+		return(ekaMaaliTila(this, osuus));
 		}
 
 	for (int os = Sarjat[sarja].aosuus[osuus] + 1; os <= Sarjat[sarja].aosuus[osuus+1]; os++) {
@@ -1389,7 +1407,14 @@ bool kilptietue::tHyv(int osuus /* =-1 */)
 	else
 		osuus = Sarjat[sarja].aosuus[osuus+1];
 	for (int os = 0; os <= osuus; os++) {
-		if (Sarjat[sarja].nosuus[Sarjat[sarja].yosuus[os]] > 1 && !paikkaKaytossa(this, os, 0))
+		int yos = Sarjat[sarja].yosuus[os];
+		if (Sarjat[sarja].nosuus[yos] > 1 && Sarjat[sarja].ekaMaaliLahettaa[yos]) {
+			// Ensimmainen maaliin -saanto: vain ratkaisevan juoksijan tila merkitsee
+			if (os == Sarjat[sarja].aosuus[yos] + 1 && !TilaHyvaksytty(ekaMaaliTila(this, yos)))
+				return(false);
+			continue;
+			}
+		if (Sarjat[sarja].nosuus[yos] > 1 && !paikkaKaytossa(this, os, 0))
 			continue;
 		if (stschind(ostiet[os].keskhyl, "TI-") < 0)
 			return(false);
@@ -1402,7 +1427,14 @@ bool kilptietue::Hyv(int osuus /* =-1 */)
 	if (osuus == -1)
 		osuus = Sarjat[sarja].osuusluku-1;
 	for (int os = 0; os <= osuus; os++) {
-		if (Sarjat[sarja].nosuus[Sarjat[sarja].yosuus[os]] > 1 && !paikkaKaytossa(this, os, 0))
+		int yos = Sarjat[sarja].yosuus[os];
+		if (Sarjat[sarja].nosuus[yos] > 1 && Sarjat[sarja].ekaMaaliLahettaa[yos]) {
+			// Ensimmainen maaliin -saanto: vain ratkaisevan juoksijan tila merkitsee
+			if (os == Sarjat[sarja].aosuus[yos] + 1 && !TilaHyvaksytty(ekaMaaliTila(this, yos)))
+				return(false);
+			continue;
+			}
+		if (Sarjat[sarja].nosuus[yos] > 1 && !paikkaKaytossa(this, os, 0))
 			continue;
 		if (stschind(ostiet[os].keskhyl, "TI-") < 0)
 			return(false);

@@ -74,6 +74,12 @@ Kun asetus on käytössä osuudelle:
   osuustulos perii tämän hylkäyksen — sitä ei korvata jonkun toisen
   rinnakkaisen juoksijan (esim. myöhemmin maaliin tulleen) hyväksytyllä
   ajalla.
+- Ensimmäisenä maaliin tulleen juoksijan hylkäys tai keskeytys on joukkueen
+  osuuden tila, vaikka muut rinnakkaiset juoksijat olisivat hyväksyttyjä.
+  Muiden rinnakkaisten juoksijoiden hylkäys tai keskeytys ei sen sijaan
+  vaikuta joukkueen tulokseen, kun ensimmäisenä maaliin tullut on hyväksytty.
+- Rinnakkainen juoksija, jolle ei ole kirjattu nimeä, otetaan mukaan, jos
+  hänellä on Emit-koodi tai aika.
 - Kun ensimmäinen maaliaika on kerran määrännyt seuraavan osuuden lähdön,
   se pysyy voimassa, vaikka ohjelma myöhemmin laskisi sarjalle uuden
   yhteislähtöajan — yhteislähtö ei siis avaa jo lukittua lähtöä uudelleen.

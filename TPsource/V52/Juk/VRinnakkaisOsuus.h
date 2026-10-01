@@ -79,4 +79,23 @@ bool PaikkaKaytossa(const char *nimi, bool onBadge, bool onAika);
 // edellisen osuuden k:nneksi nopeimman maaliajasta.
 bool LahtoEdellisenTuloksesta(int nosuusNyt, int nosuusEd, bool edEkaMaaliLahettaa);
 
+// Onko juoksijan tai osuuden tila hyvaksytty: '-' (avoin), 'T' tai 'I'.
+// Muut ('K' keskeytti, 'H' hylatty, 'E' ei lahtenyt, ...) eivat ole.
+bool TilaHyvaksytty(char tila);
+
+// Rinnakkaisosuuden tila, kun osuudella on kaytossa "ensimmainen maaliin
+// kaynnistaa seuraavan osuuden" -saanto. tila[i] on paikan i tila
+// (keskhyl).
+//
+// - Kun joku on maalissa, ensimmaisena maaliin tulleen tila on osuuden
+//   tila: hanen hylkayksensa tai keskeytyksensa on joukkueen, vaikka
+//   muut rinnakkaiset olisivat hyvaksyttyja, ja muiden rinnakkaisten
+//   hylkays tai keskeytys ei vaikuta, jos han on hyvaksytty.
+// - Kun kukaan ei ole maalissa, osuus on kesken (palautetaan ensimmaisen
+//   hyvaksytyn kaytossa olevan paikan tila), jos joku on viela mukana.
+//   Jos kaikki ovat ulkona, palautetaan huonoin tila samassa jarjestyksessa
+//   kuin ilman saantoa: 'E' ennen 'K':ta ennen 'H':ta.
+// - Jos osuudelle ei ole ilmoitettu ketaan, palautetaan '-'.
+char EkaMaaliOsuudenTila(const RinnakkaisTila *osat, const char *tila, int n);
+
 #endif

@@ -193,3 +193,90 @@ TEST_CASE("LahtoEdellisenTuloksesta: saanto kaynnistaa myos rinnakkaisen jatko-o
 	CHECK(LahtoEdellisenTuloksesta(2, 2, true) == true);
 	CHECK(LahtoEdellisenTuloksesta(3, 2, true) == true);
 }
+
+// ---------------------------------------------------------------------
+// EkaMaaliOsuudenTila
+// ---------------------------------------------------------------------
+
+TEST_CASE("TilaHyvaksytty: avoin, T ja I ovat hyvaksyttyja")
+{
+	CHECK(TilaHyvaksytty('-') == true);
+	CHECK(TilaHyvaksytty('T') == true);
+	CHECK(TilaHyvaksytty('I') == true);
+	CHECK(TilaHyvaksytty('K') == false);
+	CHECK(TilaHyvaksytty('H') == false);
+	CHECK(TilaHyvaksytty('E') == false);
+}
+
+// Regressio: toisen rinnakkaisen hylkays poisti joukkueen tuloksen.
+TEST_CASE("EkaMaaliOsuudenTila: ensimmainen hyvaksytty - muiden hylkays tai keskeytys ei vaikuta")
+{
+	RinnakkaisTila osat[3] = {
+		{ true, true, 600 },
+		{ true, true, 700 },
+		{ true, false, 0 },
+		};
+	const char tila[3] = { '-', 'H', 'K' };
+	CHECK(EkaMaaliOsuudenTila(osat, tila, 3) == '-');
+}
+
+TEST_CASE("EkaMaaliOsuudenTila: ensimmaisen hylkays on joukkueen, vaikka muut ovat hyvaksyttyja")
+{
+	RinnakkaisTila osat[3] = {
+		{ true, true, 700 },
+		{ true, true, 600 },
+		{ true, true, 800 },
+		};
+	const char tila[3] = { '-', 'H', 'T' };
+	CHECK(EkaMaaliOsuudenTila(osat, tila, 3) == 'H');
+}
+
+TEST_CASE("EkaMaaliOsuudenTila: ensimmaisen keskeytys (aika kirjattu) on joukkueen")
+{
+	RinnakkaisTila osat[2] = {
+		{ true, true, 600 },
+		{ true, true, 700 },
+		};
+	const char tila[2] = { 'K', '-' };
+	CHECK(EkaMaaliOsuudenTila(osat, tila, 2) == 'K');
+}
+
+TEST_CASE("EkaMaaliOsuudenTila: kukaan ei maalissa, joku viela mukana - osuus on kesken")
+{
+	RinnakkaisTila osat[3] = {
+		{ true, false, 0 },
+		{ true, false, 0 },
+		{ true, false, 0 },
+		};
+	const char tila[3] = { 'K', '-', 'H' };
+	CHECK(EkaMaaliOsuudenTila(osat, tila, 3) == '-');
+}
+
+TEST_CASE("EkaMaaliOsuudenTila: kukaan ei maalissa ja kaikki ulkona - huonoin tila")
+{
+	RinnakkaisTila osat[3] = {
+		{ true, false, 0 },
+		{ true, false, 0 },
+		{ true, false, 0 },
+		};
+	const char tila1[3] = { 'H', 'K', 'H' };
+	CHECK(EkaMaaliOsuudenTila(osat, tila1, 3) == 'K');
+	const char tila2[3] = { 'H', 'E', 'K' };
+	CHECK(EkaMaaliOsuudenTila(osat, tila2, 3) == 'E');
+	const char tila3[3] = { 'H', 'H', 'H' };
+	CHECK(EkaMaaliOsuudenTila(osat, tila3, 3) == 'H');
+}
+
+TEST_CASE("EkaMaaliOsuudenTila: kayttamaton paikka ei vaikuta")
+{
+	RinnakkaisTila osat[3] = {
+		{ false, false, 0 },
+		{ true, false, 0 },
+		{ false, false, 0 },
+		};
+	const char tila[3] = { 'H', 'K', '-' };
+	CHECK(EkaMaaliOsuudenTila(osat, tila, 3) == 'K');
+	RinnakkaisTila tyhjat[2] = { { false, false, 0 }, { false, false, 0 } };
+	const char tilaT[2] = { 'H', 'K' };
+	CHECK(EkaMaaliOsuudenTila(tyhjat, tilaT, 2) == '-');
+}

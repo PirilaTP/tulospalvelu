@@ -65,3 +65,28 @@ bool LahtoEdellisenTuloksesta(int nosuusNyt, int nosuusEd, bool edEkaMaaliLahett
 {
 	return nosuusNyt == 1 || nosuusEd == 1 || edEkaMaaliLahettaa;
 }
+
+bool TilaHyvaksytty(char tila)
+{
+	return tila == '-' || tila == 'T' || tila == 'I';
+}
+
+char EkaMaaliOsuudenTila(const RinnakkaisTila *osat, const char *tila, int n)
+{
+	int eka = EkaMaaliIndeksi(osat, n);
+	char huonoin = 0;
+
+	if (eka >= 0)
+		return tila[eka];
+	for (int i = 0; i < n; i++) {
+		if (!osat[i].onKilpailija)
+			continue;
+		if (TilaHyvaksytty(tila[i]))
+			return tila[i];
+		if (huonoin == 0 || tila[i] == 'E' ||
+			(tila[i] == 'K' && huonoin != 'E') ||
+			(tila[i] == 'H' && huonoin != 'E' && huonoin != 'K'))
+			huonoin = tila[i];
+		}
+	return huonoin ? huonoin : '-';
+}
