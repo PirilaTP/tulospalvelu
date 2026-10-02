@@ -3,6 +3,7 @@
 Muutoshistoria pääkehityshaaraan (main) tehdyistä committeista, uusin ensin.
 
 | Pvm | # | Muutos |
+| 2026-10-02 | #82 | Osanottajat: valinnaiset Ennätys- ja Tavoite-sarakkeet (Kentät-valikko), vaihekohtaiset, oletuksena piilossa; muokattavissa F9-tilassa; lajittelu ennätyksen tai tavoitteen mukaan (puuttuvat viimeisiksi) |
 | 2026-09-21 | #70 | Joukkuetiedot: Peruuta toistuvien lisäysten tilassa jättää muokkaustilan päälle |
 | 2026-09-20 | #70 | Joukkuetiedot: Salli muokkaus piilotetaan muokkaustilassa; pois muokkaustilasta Tallenna, Peruuta tai Sulje |
 | 2026-09-21 | #68 | Kilpailijatiedot: epäonnistunut Tallenna jättää muokkaustilan päälle, jotta virheen voi korjata heti |
