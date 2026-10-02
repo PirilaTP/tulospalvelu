@@ -18,6 +18,7 @@
 #include <io.h>
 #include <fcntl.h>
 #include <string>
+#include <vector>
 #include <process.h>
 #include <errno.h>
 #include <ctype.h>
@@ -83,6 +84,74 @@ static const wchar_t *llfldclass(int knt)
 	return(L"aika");		// lisävaiheiden lähtöajat
 }
 
+// Responsiivisen lähtöluettelon taulukon rivit kerätään ja kirjoitetaan vasta taulukon lopussa,
+// jotta sarakkeet, jotka ovat kaikilla riveillä tyhjiä, voidaan jättää pois.
+static std::vector< std::vector<std::wstring> > llrivit;
+static int llknt[NLLFIELDS+NFLISA], llnknt = 0, lllaji = 0;
+
+// Kirjoitetaanko kenttä responsiiviseen lähtöluetteloon: lisävaiheiden ajoista vain olemassa olevat vaiheet
+static bool llsarake(int knt, int laji)
+{
+	if (tulkentta[tiedostoon][knt].len[laji] <= 0)
+		return(false);
+	return(knt < (int) NLLFIELDS || knt - (int) NLLFIELDS + 1 < kilpparam.n_pv_akt);
+}
+
+// Solun html-sisältö; puuttuvan lähtöajan paikkamerkki __.__ jätetään tyhjäksi
+static std::wstring llsolu(int knt, int laji)
+{
+	wchar_t esc[400], st[80];
+	std::wstring s;
+	int n;
+
+	wcsncpy(st, fldstr[knt], 79);
+	st[79] = 0;
+	for (n = (int) wcslen(st); n > 0 && st[n-1] == L' '; n--)
+		st[n-1] = 0;
+	if (!wcscmp(st, L"__.__"))
+		st[0] = 0;
+	if (!st[0])
+		return(s);
+	s = htmlesc(esc, st, sizeof(esc)/2);
+	// Seura näytetään kapealla näytöllä nimen alla
+	if (knt == LLF_NIMI && tulkentta[tiedostoon][LLF_SEURA].len[laji] && fldstr[LLF_SEURA][0]) {
+		s += L"<span class=m-sra>";
+		s += htmlesc(esc, fldstr[LLF_SEURA], sizeof(esc)/2);
+		s += L"</span>";
+		}
+	return(s);
+}
+
+// Kirjoittaa kerätyt rivit ilman kokonaan tyhjiä sarakkeita
+static void llrivit_kirjoita(tulostusparamtp *tulprm)
+{
+	bool kaytossa[NLLFIELDS+NFLISA];
+
+	for (int c = 0; c < llnknt; c++) {
+		kaytossa[c] = false;
+		for (unsigned r = 0; r < llrivit.size() && !kaytossa[c]; r++)
+			if (c < (int) llrivit[r].size() && !llrivit[r][c].empty())
+				kaytossa[c] = true;
+		}
+	for (unsigned r = 0; r < llrivit.size(); r++) {
+		std::wstring rivi = L"<tr>";
+		for (int c = 0; c < llnknt && c < (int) llrivit[r].size(); c++) {
+			wchar_t td[60];
+
+			if (!kaytossa[c])
+				continue;
+			swprintf(td, sizeof(td)/2, L"<td class=\"l-%s%s\">", llfldclass(llknt[c]),
+				tulkentta[tiedostoon][llknt[c]].tas[lllaji] ? L" r" : L"");
+			rivi += td;
+			rivi += llrivit[r][c];
+			rivi += L"</td>";
+			}
+		rivi += L"</tr>\n";
+		sendln(tulprm->lstf, (wchar_t *) rivi.c_str());
+		}
+	llrivit.clear();
+}
+
 // Responsiivisen lähtöluettelon sarakeleveydet kenttämäärityksistä sekä kapealla näytöllä
 // piilotettavat sarakkeet. Nimi ja seura jakavat jäljelle jäävän leveyden.
 static void css_lahtoluettelo(tulostusparamtp *tulprm, int laji)
@@ -120,20 +189,7 @@ static void putllfld(tulostusparamtp *tulprm, INT laji, INT knt)
 	ll = min(ll, len);
 	oik = tulkentta[tiedostoon][knt].tas[laji];
 
-	if (tulprm->tulmuot.tauluhtml && html_resp(tulprm)) {
-		wchar_t esc[400];
-
-		swprintf(tulprm->sline + wcslen(tulprm->sline), 40, L"<td class=\"l-%s%s\">", llfldclass(knt), oik ? L" r" : L"");
-		wcscat(tulprm->sline, htmlesc(esc, str, sizeof(esc)/2));
-		// Seura näytetään kapealla näytöllä nimen alla
-		if (knt == LLF_NIMI && tulkentta[tiedostoon][LLF_SEURA].len[laji] && fldstr[LLF_SEURA][0]) {
-			wcscat(tulprm->sline, L"<span class=m-sra>");
-			wcscat(tulprm->sline, htmlesc(esc, fldstr[LLF_SEURA], sizeof(esc)/2));
-			wcscat(tulprm->sline, L"</span>");
-			}
-		wcscat(tulprm->sline, L"</td>");
-		}
-	else if ((tulprm->kohde == L'H' || tulprm->kohde == L'M') && tulprm->tulmuot.tauluhtml) {
+	if ((tulprm->kohde == L'H' || tulprm->kohde == L'M') && tulprm->tulmuot.tauluhtml) {
 		if (oik)
 			wcscat(tulprm->sline, L"<td align=right>");
 		else
@@ -176,9 +232,7 @@ static void prt_kilp(tulostusparamtp *tulprm, INT laji)
    INT i, kntjrj[NLLFIELDS+NFLISA], knt[NLLFIELDS+NFLISA];
 
    initline();
-	if (tulprm->tulmuot.tauluhtml && html_resp(tulprm))
-		wcscpy(tulprm->sline, L"<tr>");
-	else if ((tulprm->kohde == L'H' || tulprm->kohde == L'M') && tulprm->tulmuot.tauluhtml) {
+	if ((tulprm->kohde == L'H' || tulprm->kohde == L'M') && tulprm->tulmuot.tauluhtml && !html_resp(tulprm)) {
 		if ((tulprm->rivi+tulprm->tulmuot.riviryhma-1) % (2*tulprm->tulmuot.riviryhma) >= tulprm->tulmuot.riviryhma)
 			wcscpy(tulprm->sline, L"<tr class='ab'>");
 		else
@@ -189,6 +243,20 @@ static void prt_kilp(tulostusparamtp *tulprm, INT laji)
 	  }
    jarj(kntjrj, 1, NLLFIELDS+NFLISA);
    for (i = 0; i < (int) NLLFIELDS+NFLISA; i++) knt[kntjrj[i]-1] = i;
+	if (tulprm->tulmuot.tauluhtml && html_resp(tulprm)) {
+		std::vector<std::wstring> rivi;
+
+		llnknt = 0;
+		lllaji = laji;
+		for (i = 0; i < (int) NLLFIELDS+NFLISA; i++) {
+			if (!llsarake(knt[i], laji))
+				continue;
+			llknt[llnknt++] = knt[i];
+			rivi.push_back(llsolu(knt[i], laji));
+			}
+		llrivit.push_back(rivi);
+		return;
+		}
    for (i = 0; i < (int) NLLFIELDS+NFLISA; i++) putllfld(tulprm, laji, knt[i]);
 	if ((tulprm->kohde == L'H' || tulprm->kohde == L'M') && tulprm->tulmuot.tauluhtml)
 		wcscat(tulprm->sline, L"</tr>");
@@ -1522,8 +1590,10 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 		 if (llhtml) {
 			   if (!tulprm.tulmuot.tauluhtml)
 					sendln(tulprm.lstf, L"</pre>\n");
-			   else if (html_resp(&tulprm))
+			   else if (html_resp(&tulprm)) {
+					llrivit_kirjoita(&tulprm);
 					sendln(tulprm.lstf, L"</table>\n</div>\n");
+					}
 			   else
 					sendln(tulprm.lstf, L"</table>\n");
 				}
