@@ -2079,7 +2079,7 @@ object FormMuotoilu: TFormMuotoilu
         end
         object Label43: TLabel
           Left = 14
-          Top = 205
+          Top = 212
           Width = 175
           Height = 15
           Caption = 'Taustav'#228'rin vaihdon askel (rivi'#228')'
@@ -2122,10 +2122,10 @@ object FormMuotoilu: TFormMuotoilu
         object RGcssTied: TRadioGroup
           Left = 8
           Top = 157
-          Width = 244
-          Height = 40
+          Width = 294
+          Height = 50
           Caption = ' css-muotoilum'#228#228'ritykset '
-          Columns = 3
+          Columns = 2
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -2135,7 +2135,8 @@ object FormMuotoilu: TFormMuotoilu
           Items.Strings = (
             'Sis'#228'inen'
             'Tiedosto'
-            'J'#228't'#228' pois')
+            'J'#228't'#228' pois'
+            'Responsiivinen')
           ParentFont = False
           TabOrder = 2
         end
@@ -2170,7 +2171,7 @@ object FormMuotoilu: TFormMuotoilu
         end
         object EdtVariRivitFile: TEdit
           Left = 217
-          Top = 202
+          Top = 209
           Width = 21
           Height = 23
           Alignment = taRightJustify
@@ -2511,7 +2512,7 @@ object FormMuotoilu: TFormMuotoilu
         end
         object Label39: TLabel
           Left = 8
-          Top = 205
+          Top = 212
           Width = 175
           Height = 15
           Caption = 'Taustav'#228'rin vaihdon askel (rivi'#228')'
@@ -2554,10 +2555,10 @@ object FormMuotoilu: TFormMuotoilu
         object RGcssMobil: TRadioGroup
           Left = 9
           Top = 157
-          Width = 241
-          Height = 40
+          Width = 294
+          Height = 50
           Caption = ' css-muotoilum'#228#228'ritykset '
-          Columns = 3
+          Columns = 2
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -2567,7 +2568,8 @@ object FormMuotoilu: TFormMuotoilu
           Items.Strings = (
             'Sis'#228'inen'
             'Tiedosto'
-            'J'#228't'#228' pois')
+            'J'#228't'#228' pois'
+            'Responsiivinen')
           ParentFont = False
           TabOrder = 2
         end
@@ -2604,7 +2606,7 @@ object FormMuotoilu: TFormMuotoilu
         end
         object EdtVariRivitMobil: TEdit
           Left = 215
-          Top = 202
+          Top = 209
           Width = 21
           Height = 23
           Alignment = taRightJustify
