@@ -60,6 +60,7 @@ void __fastcall TFormLuenta::Nollaa(void)
 	Kilpno = 0;
 	Osuus = -1;
 	uusi_emit = 0;
+	ViivakoodiVahvistuksessa = false;
 	EdtBadge->Text = L"";
 	EdtJoukkue->Text = L"";
 	EdtKilpno->Text = 0;
@@ -77,6 +78,24 @@ void __fastcall TFormLuenta::Nollaa(void)
 		}
 	DG1->Refresh();
 	OdottaaKorttia = false;
+}
+//---------------------------------------------------------------------------
+// Palauttaa true, jos edellisen kilpailijan luettu Emit-kortti odottaa vielä
+// vahvistusta. Huomauttaa käyttäjälle, palauttaa kenttään odottavan kilpailijan
+// numeron ja osuuden ja siirtää kohdistuksen vahvistuskenttään.
+bool __fastcall TFormLuenta::EdellinenVahvistamatta(void)
+{
+	if (!uusi_emit)
+		return(false);
+	Application->MessageBoxW(L"Edellisen kilpailijan Emit-kortti on vielä tallentamatta. Tallenna tai peruuta se ensin.",
+		L"Poikkeama", MB_OK);
+	EdtViivakoodi->Text = L"";
+	if (DKilp > 0 && Osuus >= 0) {
+		EdtKilpno->Text = Kilpno;
+		EdtOsuus->Text = wosuuskoodi(Kilp.sarja, Osuus, 0, 0);
+		}
+	FocusControl(EdtVahvistus);
+	return(true);
 }
 //---------------------------------------------------------------------------
 luentaIkkParamClass::luentaIkkParamClass(void)
@@ -152,8 +171,18 @@ int __fastcall TFormLuenta::NaytaJoukkue(void)
 			Cells[c][os+1].style = style;
 		}
 	DG1->Refresh();
+	UnicodeString huom;
+	// Valitulla osuudella on jo Emit-koodi: uusi kortti korvaisi sen
+	if (Kilp.ostiet[Osuus].badge[RGkoodi->ItemIndex] != 0)
+		huom = L"  Osuudella on jo Emit-koodi " + UnicodeString(Kilp.ostiet[Osuus].badge[RGkoodi->ItemIndex]) +
+			L". Uusi kortti korvaa sen.  ";
 	if (toupper(Kilp.ostiet[Osuus].seuranta) == 'G') {
-		MemoMsg->Text = L"  Kilpailija osallisena GPS-seurantaan. Lähetin haettava.  ";
+		if (huom.Length() > 0)
+			huom += L"\r\n";
+		huom += L"  Kilpailija osallisena GPS-seurantaan. Lähetin haettava.  ";
+		}
+	if (huom.Length() > 0) {
+		MemoMsg->Text = huom;
 		MemoMsg->Color = clYellow;
 		MemoMsg->Visible = true;
 		}
@@ -200,6 +229,10 @@ void __fastcall TFormLuenta::EdtViivakoodiKeyPress(TObject *Sender, System::Wide
 	int alios = 0, yos = 0, srj = -1;
 
 	if (Key == L'\r') {
+		if (EdellinenVahvistamatta()) {
+			Key = 0;
+			return;
+			}
 		if (EdtViivakoodi->Text.Length() > 2 && wcswcind(EdtViivakoodi->Text.c_str()[0], L"*%") >= 0) {
 			wchar_t st[20];
 			wcsncpy(st, EdtViivakoodi->Text.c_str(), 19);
@@ -302,18 +335,28 @@ void __fastcall TFormLuenta::FormCreate(TObject *Sender)
 void __fastcall TFormLuenta::EdtVahvistusKeyPress(TObject *Sender, System::WideChar &Key)
 
 {
-	if (Key == L'%') {
-		Application->MessageBoxW(L"Viivakoodi luettu hyväksymiskenttään ennen edellisen kilpailijan tallentamista,", L"Poikkeama", MB_OK);
-		if (uusi_emit && Application->MessageBoxW(L"Viivakoodi luettu hyväksymiskenttään ennen edellisen kilpailijan tallentamista. Tallennetaanko aiemmat tiedot?", L"Poikkeama", MB_YESNO) == IDYES)
+	// Viivakoodi luettu hyväksymiskenttään (alkaa merkillä % tai *): ohitetaan
+	// koodin loput merkit ja huomautetaan vasta koodin päättävällä Enterillä.
+	// Näin Enter ei tallenna edellisen kilpailijan tietoja eikä sulje huomautusta.
+	if (Key == L'%' || Key == L'*')
+		ViivakoodiVahvistuksessa = true;
+	else if (ViivakoodiVahvistuksessa && Key != ESC) {
+		if (Key == L'\r') {
+			ViivakoodiVahvistuksessa = false;
+			if (!EdellinenVahvistamatta()) {
+				Application->MessageBoxW(L"Viivakoodi luettu hyväksymiskenttään ennen edellisen kilpailijan tallentamista.", L"Poikkeama", MB_OK);
+				BtnPeruutaClick(Sender);
+				}
+			}
+		}
+	else {
+		ViivakoodiVahvistuksessa = false;
+		if (Key == L'\r') {
 			BtnTallennaClick(Sender);
-		else
+			}
+		if (Key == ESC) {
 			BtnPeruutaClick(Sender);
-		}
-	if (Key == L'\r') {
-		BtnTallennaClick(Sender);
-		}
-	if (Key == ESC) {
-		BtnPeruutaClick(Sender);
+			}
 		}
 	Key = 0;
 }
@@ -448,6 +491,7 @@ void __fastcall TFormLuenta::HaeUusiTietue(void)
 
 void __fastcall TFormLuenta::EdtVahvistusEnter(TObject *Sender)
 {
+	ViivakoodiVahvistuksessa = false;
 	EdtVahvistus->Color = clYellow;
 }
 //---------------------------------------------------------------------------
@@ -460,6 +504,10 @@ void __fastcall TFormLuenta::EdtKilpnoKeyPress(TObject *Sender, System::WideChar
 
 {
 	if (Key == L'\r' || Key == L'\t') {
+		if (EdellinenVahvistamatta()) {
+			Key = 0;
+			return;
+			}
 		if (EdtKilpno->Text.Length() > 0 && (Kilpno = _wtoi(EdtKilpno->Text.c_str())) > 0 &&
 			(DKilp = getpos(Kilpno)) > 0)
 			{
@@ -488,6 +536,10 @@ void __fastcall TFormLuenta::EdtKilpnoKeyPress(TObject *Sender, System::WideChar
 void __fastcall TFormLuenta::EdtOsuusKeyPress(TObject *Sender, System::WideChar &Key)
 {
 	if (Key == L'\r') {
+		if (EdellinenVahvistamatta()) {
+			Key = 0;
+			return;
+			}
 		if (EdtKilpno->Text.Length() > 0 && (Kilpno = _wtoi(EdtKilpno->Text.c_str())) > 0 &&
 			(DKilp = getpos(Kilpno)) > 0 && EdtOsuus->Text.Length() > 0  &&
 			(Osuus = tulkOsuuskoodi(sarjaKno(Kilpno), EdtOsuus->Text.c_str())) >= 0 && Osuus < kilpparam.osuusluku) {
@@ -522,6 +574,26 @@ void __fastcall TFormLuenta::BtnTallennaClick(TObject *Sender)
 			}
 		}
 	else {
+		kilptietue tkilp;
+		INT32 vanha;
+
+		// Osuudella on jo eri Emit-koodi: vahvistetaan korvaus ennen tallennusta
+		tkilp.getrec(DKilp);
+		vanha = tkilp.ostiet[Osuus].badge[RGkoodi->ItemIndex];
+		if (vanha != 0 && vanha != uusi_emit &&
+			Application->MessageBoxW((UnicodeString(L"Osuudella on jo Emit-koodi ") + UnicodeString(vanha) +
+				L". Korvataanko se koodilla " + UnicodeString(uusi_emit) + L"?").c_str(),
+				L"Poikkeama", MB_YESNO) != IDYES) {
+			if (luentaFl) {
+				swprintf(lokiLine, L"%s\tKorvaus peruttu\t%4d-%d\tEmit\t%d\n", wkello(),
+					Kilpno, Osuus + 1, uusi_emit);
+				luentaFl->WriteLine(lokiLine);
+				}
+			EdtMsg->Text = L"Ei tallennettu. Tallenna tai peruuta";
+			EdtMsg->Color = clYellow;
+			FocusControl(EdtVahvistus);
+			return;
+			}
 		EnterCriticalSection(&tall_CriticalSection);
 		Kilp.getrec(DKilp);
 		Kilp.ostiet[Osuus].badge[RGkoodi->ItemIndex] = uusi_emit;
