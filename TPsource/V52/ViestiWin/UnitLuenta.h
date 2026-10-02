@@ -107,6 +107,7 @@ END_MESSAGE_MAP(TComponent)
 	int Badge;
 	int Tietue;
 	bool OdottaaKorttia;
+	bool ViivakoodiVahvistuksessa;
 	TextFl *luentaFl;
 	wchar_t lokiLine[200];
 public:		// User declarations

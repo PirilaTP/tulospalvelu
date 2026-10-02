@@ -60,6 +60,7 @@ void __fastcall TFormLuenta::Nollaa(void)
 	Kilpno = 0;
 	Osuus = -1;
 	uusi_emit = 0;
+	ViivakoodiVahvistuksessa = false;
 	EdtBadge->Text = L"";
 	EdtJoukkue->Text = L"";
 	EdtKilpno->Text = 0;
@@ -86,7 +87,7 @@ bool __fastcall TFormLuenta::EdellinenVahvistamatta(void)
 {
 	if (!uusi_emit)
 		return(false);
-	Application->MessageBoxW(L"Edellisen kilpailijan Emit-kortti on vielä vahvistamatta. Tallenna tai peruuta se ensin.",
+	Application->MessageBoxW(L"Edellisen kilpailijan Emit-kortti on vielä tallentamatta. Tallenna tai peruuta se ensin.",
 		L"Poikkeama", MB_OK);
 	EdtViivakoodi->Text = L"";
 	if (DKilp > 0 && Osuus >= 0) {
@@ -334,18 +335,28 @@ void __fastcall TFormLuenta::FormCreate(TObject *Sender)
 void __fastcall TFormLuenta::EdtVahvistusKeyPress(TObject *Sender, System::WideChar &Key)
 
 {
-	if (Key == L'%') {
-		Application->MessageBoxW(L"Viivakoodi luettu hyväksymiskenttään ennen edellisen kilpailijan tallentamista,", L"Poikkeama", MB_OK);
-		if (uusi_emit && Application->MessageBoxW(L"Viivakoodi luettu hyväksymiskenttään ennen edellisen kilpailijan tallentamista. Tallennetaanko aiemmat tiedot?", L"Poikkeama", MB_YESNO) == IDYES)
+	// Viivakoodi luettu hyväksymiskenttään (alkaa merkillä % tai *): ohitetaan
+	// koodin loput merkit ja huomautetaan vasta koodin päättävällä Enterillä.
+	// Näin Enter ei tallenna edellisen kilpailijan tietoja eikä sulje huomautusta.
+	if (Key == L'%' || Key == L'*')
+		ViivakoodiVahvistuksessa = true;
+	else if (ViivakoodiVahvistuksessa && Key != ESC) {
+		if (Key == L'\r') {
+			ViivakoodiVahvistuksessa = false;
+			if (!EdellinenVahvistamatta()) {
+				Application->MessageBoxW(L"Viivakoodi luettu hyväksymiskenttään ennen edellisen kilpailijan tallentamista.", L"Poikkeama", MB_OK);
+				BtnPeruutaClick(Sender);
+				}
+			}
+		}
+	else {
+		ViivakoodiVahvistuksessa = false;
+		if (Key == L'\r') {
 			BtnTallennaClick(Sender);
-		else
+			}
+		if (Key == ESC) {
 			BtnPeruutaClick(Sender);
-		}
-	if (Key == L'\r') {
-		BtnTallennaClick(Sender);
-		}
-	if (Key == ESC) {
-		BtnPeruutaClick(Sender);
+			}
 		}
 	Key = 0;
 }
@@ -480,6 +491,7 @@ void __fastcall TFormLuenta::HaeUusiTietue(void)
 
 void __fastcall TFormLuenta::EdtVahvistusEnter(TObject *Sender)
 {
+	ViivakoodiVahvistuksessa = false;
 	EdtVahvistus->Color = clYellow;
 }
 //---------------------------------------------------------------------------
