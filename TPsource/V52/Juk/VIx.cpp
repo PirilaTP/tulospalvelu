@@ -719,7 +719,8 @@ void addjarjarr(kilptietue *kilp, int d, int osuus, INT piste, int *keskeyta)
 				  nesitt++;
 				  nesit[srj]++;
 				  }
-			   if (kilp->osHyv(aos) && kilp->Maali(aos, 0) == TMAALI0) {
+			   if (kilp->osHyv(aos) && kilp->Maali(aos, 0) == TMAALI0 &&
+				  (Sarjat[kilp->sarja].nosuus[osuus] == 1 || onPaikkaKaytossa(kilp, aos))) {
 				  navoint[osuus]++;
 				  navoin[srj][osuus]++;
 				  }
@@ -865,7 +866,8 @@ void remjarjarr(kilptietue *kilp, int d, int osuus, INT piste, int *keskeyta)
 				  nesitt--;
 				  nesit[srj]--;
 				  }
-			   if (kilp->osHyv(aos) && kilp->Maali(aos, 0) == TMAALI0) {
+			   if (kilp->osHyv(aos) && kilp->Maali(aos, 0) == TMAALI0 &&
+				  (Sarjat[kilp->sarja].nosuus[osuus] == 1 || onPaikkaKaytossa(kilp, aos))) {
 				  navoint[osuus]--;
 				  navoin[srj][osuus]--;
 				  }

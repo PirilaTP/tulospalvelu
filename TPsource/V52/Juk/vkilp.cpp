@@ -29,6 +29,13 @@ static bool paikkaKaytossa(kilptietue *kilp, int os, int va)
 		kilp->Maali(os, va) != TMAALI0 || kilp->Maali(os, 0) != TMAALI0));
 }
 
+// Julkinen versio laskureita varten: tyhjat rinnakkaiset paikat (ei nimea, Emit-koodia
+// eika aikaa) eivat ole avoimia osanottajia
+bool onPaikkaKaytossa(kilptietue *kilp, int os)
+{
+	return(paikkaKaytossa(kilp, os, 0));
+}
+
 // Kerataan osuuden tosuus rinnakkaisten paikkojen tiedot ensimmainen maaliin
 // -paatoksia varten (ks. VRinnakkaisOsuus.h). tila saa paikkojen keskhyl-
 // merkinnat, jos se annetaan. Palauttaa paikkojen lukumaaran.
