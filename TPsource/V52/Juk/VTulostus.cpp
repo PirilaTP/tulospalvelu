@@ -6200,8 +6200,12 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 						for (os1 = tulprm->viimos == L'K' ? 0 : os; os1 <= os; os1++) {
 							if (tulprm->tulostettava != L'H')
 								texttulos(&kilp, tulprm, os1, os == os1 ? sj1 : kilp.Sija(os1, 0));
-							else if (kilpparam.maxnosuus == 1 || slotjrj)
-								textosuus(&kilp, tulprm, slotjrj ? osd : os1, os ? kilp.Sija(os1, 0) : sj1);
+							else if (slotjrj) {   // juoksijakohtainen rivi kerran, ei kerran osuutta kohti
+								if (os1 == os)
+									textosuus(&kilp, tulprm, osd, sj1);
+								}
+							else if (kilpparam.maxnosuus == 1)
+								textosuus(&kilp, tulprm, os1, os ? kilp.Sija(os1, 0) : sj1);
 							}
 						}
 					}

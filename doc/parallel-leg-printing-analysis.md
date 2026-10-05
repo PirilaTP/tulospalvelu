@@ -31,6 +31,7 @@ Code: `TPsource/V52/Juk/VTulostus.cpp`, `VIx.cpp`, `vkilp.cpp`, `VDeclare.h`.
 | 10 | empty list printed no title (looked like a failure) | series skipped when the list is empty | title, counts line and empty table are printed (HTML, parallel competitions only) |
 | 11 | "Kaikki osuudet" printed an empty file | all-legs mode set `os = osuusluku - 1` (runner slots, 8 for NJ) instead of the last leg (6); the row count was read from a slot that is never filled, `n = 0`, whole list skipped | `os = ntosuus - 1` (identical when each leg has one runner) |
 | 12 | text rows without a rank started with ". " | `"%s. %s"` with empty rank | omitted in the per-runner list, also on single-runner legs of a parallel competition (found when testing leg 6) |
+| 13 | "Kaikki osuudet" as text printed every runner once per leg (1960 lines instead of 280) | text branch looped over the legs and called `textosuus` each time, but the per-runner list already has one row per runner | one call per runner when the list is per-runner (found testing item 3; 280 lines, no duplicates after the fix) |
 
 Verified on the demo (HTML unless noted):
 
@@ -54,16 +55,18 @@ Verified on the demo (HTML unless noted):
 
 ## 3. Open problems and risks
 
-1. **Console build compiles, but was not run.** `JukMaali520.exe` was built (Debug, 5 Oct
-   12:11, after the last source edit) and its `.pdb` contains `rinnLista`, `ossijatRinn`,
-   `otsikkoLuvut`, `avoinLkm`, `onPaikkaKaytossa`, so the `#ifdef _CONSOLE` code compiles.
-   Console output of the parallel-leg lists has not been tested.
-2. **Coverage.** Text, HTML and printer (PDF) were run for leg 3; other legs of the demo were
-   run as: Hylatyt leg 6 (text, PDF: 135 Nea Hiltunen "Hyl."), Keskeyttaneet leg 7 (text: 1
-   runner), Avoimet leg 5 (text, HTML: 141 and 142, header 34/0/0/2), Ei-lahteneet leg 7 (HTML:
-   empty, correct, the data has only one "E", on leg 3). The empty-list title is printed in HTML
-   only; in text and printer an empty list prints nothing (a blank PDF page), as in normal
-   relays (left as is, because changing it would alter normal-relay output).
+1. **Console build compiles and runs, per-runner list not run.** `JukMaali520.exe` (built
+   12:11, before fixes 12-13) starts on the demo; the team-level Avoimet list for leg 3
+   prints team 141 correctly. The per-runner screen (`naytaosuus`) was not reached. Its main
+   menu shows Avoinna 35 for the competition, the Status window 27 (different counts).
+2. **Coverage.** Text, HTML and printer (PDF) were run for leg 3; other legs: Hylatyt leg 6
+   (text, PDF), Keskeyttaneet legs 1 and 7 (text), Avoimet legs 2, 4, 5 (text; leg 4 and 5
+   also PDF/HTML), Ei-lahteneet leg 7 (HTML: empty, correct). "Kaikki osuudet": PDF 6 pages,
+   ranks 1-280, and text 280 lines (after fix 13); the normal relay's all-legs PDF is complete.
+   One earlier all-legs PDF was a single page ending at rank 31 and could not be reproduced
+   (two later runs: 6 pages). Rank in the all-legs list is the leg rank in text and a running
+   number in PDF (same in a normal relay, left as is). The empty-list title is printed in HTML
+   only; in text and printer an empty list prints nothing, as in normal relays.
 3. **Status window "Avoinna" is aligned with the printouts (verified on the demo).**
    `UnitStatus.cpp` uses `avoinLkm(srj, os)` (`VIx.cpp`); on a parallel leg it counts open
    teams still in play, like the header. Leg 3 shows 1 and the total row is the sum of the legs.
