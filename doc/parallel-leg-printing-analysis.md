@@ -32,6 +32,12 @@ Code: `TPsource/V52/Juk/VTulostus.cpp`, `VIx.cpp`, `vkilp.cpp`, `VDeclare.h`.
 | 11 | "Kaikki osuudet" printed an empty file | all-legs mode set `os = osuusluku - 1` (runner slots, 8 for NJ) instead of the last leg (6); the row count was read from a slot that is never filled, `n = 0`, whole list skipped | `os = ntosuus - 1` (identical when each leg has one runner) |
 | 12 | text rows without a rank started with ". " | `"%s. %s"` with empty rank | omitted in the per-runner list, also on single-runner legs of a parallel competition (found when testing leg 6) |
 | 13 | "Kaikki osuudet" as text printed every runner once per leg (1960 lines instead of 280) | text branch looped over the legs and called `textosuus` each time, but the per-runner list already has one row per runner | one call per runner when the list is per-runner (found testing item 3; 280 lines, no duplicates after the fix) |
+| 14 | `Tulokset` + `Kaikki osuudet`: all legs after a parallel leg missing for a team whose non-deciding runner is DSQ (team 105 stopped after 3C) | the "stop listing" flag `khfl` was set by any runner that is not approved, including a DSQ of a runner who does not decide the team | on a parallel leg the flag is set only when the team itself is not approved (`tHyv`); HTML and printer |
+| 15 | team leg time and place missing on a parallel leg when the team has fewer than three runners | printed only on the last slot row (3C), which is empty | new `tulosPaikka()`: the deciding runner's row (first-finish rule) or the last used slot; HTML and printer |
+| 16 | garbage characters in empty time cells of the all-legs HTML/text rows | `oas` filled with spaces but never terminated | terminator added |
+| 17 | `Tulosta yhteenveto` HTML showed `K&Atilde;&curren;rkiaika`-style text | the summary file had no `<head>`, so no charset; viewers guess ANSI | proper header with the charset of the chosen encoding |
+| 18 | clearing a finish time in Joukkuetiedot (Maali column, split table) stored 00:00:00, so the runner got a leg time of 24h minus the start (127-3A/3B: 11.50.01) | `wstrtoaika_vap` returns 0 for an empty string when `t0 == 0` | an empty cell stores "no time" (`TMAALI0`). Old bad values must be cleared again. Other places that clear times were not checked |
+| 19 | `105-3A` could wrap at the hyphen in the HTML number column | normal line breaking | wrapped in `white-space:nowrap` (HTML only) |
 
 Verified on the demo (HTML unless noted):
 

@@ -718,7 +718,18 @@ int __fastcall TFormJoukkuetiedot::paivitaMuutos(int col, int row)
 				Kilp.ostiet[ipv].lahtolaji = 0;
 			break;
 		case 10:
-			Kilp.setMaali(ipv, 0, wstrtoaika_vap(OsGrid->Cells[col][k].c_str(), t0));
+			{   // tyhja solu poistaa ajan (wstrtoaika_vap antaisi 0 = 00:00:00, kun t0 == 0)
+			const wchar_t *cs = OsGrid->Cells[col][k].c_str();
+			bool tyhja = true;
+
+			for (; *cs; cs++) {
+				if (*cs >= L'0' && *cs <= L'9') {
+					tyhja = false;
+					break;
+					}
+				}
+			Kilp.setMaali(ipv, 0, tyhja ? TMAALI0 : wstrtoaika_vap(OsGrid->Cells[col][k].c_str(), t0));
+			}
 			break;
 		case 13:
 			if (Sarjat[Kilp.sarja].paikat[ipv] > 0) {
@@ -771,7 +782,18 @@ int __fastcall TFormJoukkuetiedot::paivitaVaMuutos(int col, int row)
 	else
 		va = row;
 	if (lj == 0) {
-		Kilp.setMaali(os, va, wstrtoaika_vap(TlsGrid->Cells[col][row].c_str(), t0));
+		// tyhja solu poistaa ajan; wstrtoaika_vap palauttaa tyhjasta 0, kun t0 == 0,
+		// ja se olisi kellonaika 00:00:00 eika puuttuva aika
+		const wchar_t *cs = TlsGrid->Cells[col][row].c_str();
+		bool tyhja = true;
+
+		for (; *cs; cs++) {
+			if (*cs >= L'0' && *cs <= L'9') {
+				tyhja = false;
+				break;
+				}
+			}
+		Kilp.setMaali(os, va, tyhja ? TMAALI0 : wstrtoaika_vap(TlsGrid->Cells[col][row].c_str(), t0));
 		}
 	else {
 		tl = wstrtoaika_vap(TlsGrid->Cells[col][row].c_str(), 0);

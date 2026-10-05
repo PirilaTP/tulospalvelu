@@ -3040,6 +3040,28 @@ static int htmlkaikkitiivis(kilptietue *kilp, tulostusparamtp *tulprm, int sj)
 	return(nr);
    }
 
+// Osuuden rivi, jolla joukkueen osuuden loppuaika ja sija nayteaan. Yksittaisella osuudella
+// osuuden ainoa paikka; rinnakkaisella osuudella ensimmaisen maaliin -saannon mukaan ratkaiseva
+// juoksija, muuten viimeinen kaytossa oleva paikka (ei kiinteasti viimeinen, koska joukkueessa
+// ei valttamatta ole kaikkia rinnakkaisia juoksijoita).
+static int tulosPaikka(kilptietue *kilp, int yosuus)
+{
+	sarjatietue *srj = &Sarjat[kilp->sarja];
+
+	if (srj->nosuus[yosuus] == 1)
+		return(srj->aosuus[yosuus+1]);
+	if (srj->ekaMaaliLahettaa[yosuus]) {
+		int eos = kilp->ekaMaaliOsuus(yosuus, 0);
+		if (eos >= 0)
+			return(eos);
+		}
+	for (int os = srj->aosuus[yosuus+1]; os > srj->aosuus[yosuus]; os--) {
+		if (onPaikkaKaytossa(kilp, os))
+			return(os);
+		}
+	return(srj->aosuus[yosuus+1]);
+}
+
 static int htmlkaikki_osrivi(kilptietue *kilp, tulostusparamtp *tulprm, int sj,
 	FldFrmtTp *fld, int (*kntjrj_2)[3], int n_knt, int osuus, int yosuus, int &khfl)
 {
@@ -3079,12 +3101,12 @@ static int htmlkaikki_osrivi(kilptietue *kilp, tulostusparamtp *tulprm, int sj,
 					_itow(kilp->osSija(osuus), st2, 10);
 					}
 				}
-			if (!tulprm->piilotatulos && osuus == Sarjat[kilp->sarja].aosuus[yosuus+1]) {
+			if (!tulprm->piilotatulos && osuus == tulosPaikka(kilp, yosuus)) {
 				AIKATOWSTRS(as, kilp->tTulos(yosuus,0),0);
 				as[kilpparam.laika2] = 0;
 				elimwz(as);
 				}
-			if (!tulprm->piilotasijat && osuus == Sarjat[kilp->sarja].aosuus[yosuus+1]) {
+			if (!tulprm->piilotasijat && osuus == tulosPaikka(kilp, yosuus)) {
 				if (kilpparam.rogaining) {
 					_itow(kilp->ostiet[osuus].sakko, stsj, 10);
 					}
@@ -3097,10 +3119,12 @@ static int htmlkaikki_osrivi(kilptietue *kilp, tulostusparamtp *tulprm, int sj,
 		else {
 			if (!tulprm->piilotatulos && !kilp->osHyv(osuus)) {
 				kilp->tarkstr(oas, osuus, false, 10, tulprm->language);
-				khfl = yosuus + 2;
+				// rinnakkaisosuudella vain joukkueen tila katkaisee myohemmat osuudet
+				if (Sarjat[kilp->sarja].nosuus[yosuus] == 1 || !kilp->tHyv(yosuus))
+					khfl = yosuus + 2;
 				}
 			}
-		if (!tulprm->piilotatulos && !kilp->tHyv(yosuus) && osuus == Sarjat[kilp->sarja].aosuus[yosuus+1]) {
+		if (!tulprm->piilotatulos && !kilp->tHyv(yosuus) && osuus == tulosPaikka(kilp, yosuus)) {
 			kilp->tarkstr(as, yosuus, true, 10, tulprm->language);
 			stsj[0] = 0;
 			}
@@ -3540,12 +3564,12 @@ static int prtkaikki(kilptietue *kilp, tulostusparamtp *tulprm, int sj)
 						_itow(kilp->osSija(osuus), st2, 10);
 						}
 					}
-				if (!tulprm->piilotatulos && osuus == Sarjat[kilp->sarja].aosuus[yosuus+1]) {
+				if (!tulprm->piilotatulos && osuus == tulosPaikka(kilp, yosuus)) {
 					AIKATOWSTRS(as, kilp->tTulos(yosuus,0),0);
 					as[kilpparam.laika2] = 0;
 					elimwz(as);
 					}
-				if (!tulprm->piilotasijat && osuus == Sarjat[kilp->sarja].aosuus[yosuus+1]) {
+				if (!tulprm->piilotasijat && osuus == tulosPaikka(kilp, yosuus)) {
 					if (kilpparam.rogaining) {
 						_itow(kilp->ostiet[osuus].sakko, st, 10);
 						}
@@ -3558,10 +3582,11 @@ static int prtkaikki(kilptietue *kilp, tulostusparamtp *tulprm, int sj)
 			else {
 				if (!tulprm->piilotatulos && !kilp->osHyv(osuus)) {
 					kilp->tarkstr(oas, osuus, false, 10, tulprm->language);
-					khfl = yosuus+2;
+					if (Sarjat[kilp->sarja].nosuus[yosuus] == 1 || !kilp->tHyv(yosuus))
+						khfl = yosuus+2;
 					}
 				}
-			if (!tulprm->piilotatulos && !kilp->tHyv(yosuus) && osuus == Sarjat[kilp->sarja].aosuus[yosuus+1]) {
+			if (!tulprm->piilotatulos && !kilp->tHyv(yosuus) && osuus == tulosPaikka(kilp, yosuus)) {
 				kilp->tarkstr(as, yosuus, true, 10, tulprm->language);
 				st[0] = 0;
 				}
@@ -3794,6 +3819,12 @@ static void htmlosuus(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, int 
 				len = pfld->len;
 				if (tulprm->monios || (rl && Sarjat[kilp->sarja].nosuus[Sarjat[kilp->sarja].yosuus[osuus]] > 1)) {
 				   swprintf(st, L"%d-%s", kilp->KilpNo(true), wosuuskoodi(kilp->sarja, osuus, 0, 0));
+				   if (tulprm->tulmuot.tauluhtml) {   // 105-3A samalle riville, ei katkaisua tavuviivasta
+					   wchar_t st0[80];
+
+					   wcscpy(st0, st);
+					   swprintf(st, L"<span style='white-space:nowrap'>%s</span>", st0);
+					   }
 				   if (len > 2 && len < 6)
 					   len = 6;
 				   }
@@ -6422,9 +6453,10 @@ void yhteenveto(tulostusparamtp *tulprm)
 		else
 			initpage(tulprm,0);
 		if (tulprm->kohde == L'H') {
-			initline(tulprm);
-			putfld(tulprm, L"<html>\n<body>\n<pre>\n", 0, 80, 0, 0);
-			endline(tulprm, 0);
+			// merkisto ilmoitettava, muuten selain tulkitsee UTF-8:n ANSI:ksi (skandit sekaisin)
+			tulprm->writehtml(L"<!DOCTYPE html>\n<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=");
+			tulprm->writehtml(tulprm->merkit == L'A' ? L"iso-8859-1" : L"utf-8");
+			tulprm->writehtml(L"\" /></head>\n<body>\n<pre>\n");
 			}
 	  initline(tulprm);
 	  swprintf(wline,L"   Maaliaika : %-16.8s Kirjausaika : %s",
