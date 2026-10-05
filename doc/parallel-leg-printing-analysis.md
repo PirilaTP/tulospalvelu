@@ -30,7 +30,7 @@ Code: `TPsource/V52/Juk/VTulostus.cpp`, `VIx.cpp`, `vkilp.cpp`, `VDeclare.h`.
 | 9 | runners of a parallel leg indistinguishable | team number only | number column shows leg code (`105-3A`) in HTML, printer and text |
 | 10 | empty list printed no title (looked like a failure) | series skipped when the list is empty | title, counts line and empty table are printed (HTML, parallel competitions only) |
 | 11 | "Kaikki osuudet" printed an empty file | all-legs mode set `os = osuusluku - 1` (runner slots, 8 for NJ) instead of the last leg (6); the row count was read from a slot that is never filled, `n = 0`, whole list skipped | `os = ntosuus - 1` (identical when each leg has one runner) |
-| 12 | text rows without a rank started with ". " | `"%s. %s"` with empty rank | omitted in the per-runner list |
+| 12 | text rows without a rank started with ". " | `"%s. %s"` with empty rank | omitted in the per-runner list, also on single-runner legs of a parallel competition (found when testing leg 6) |
 
 Verified on the demo (HTML unless noted):
 
@@ -58,13 +58,19 @@ Verified on the demo (HTML unless noted):
    12:11, after the last source edit) and its `.pdb` contains `rinnLista`, `ossijatRinn`,
    `otsikkoLuvut`, `avoinLkm`, `onPaikkaKaytossa`, so the `#ifdef _CONSOLE` code compiles.
    Console output of the parallel-leg lists has not been tested.
-2. **Coverage.** All status lists were run in HTML, text and printer (PDF) for leg 3 of the
-   demo. Not run: other legs in text/printer. The empty-list title is printed in HTML only; in
-   text and printer an empty list prints nothing, as in normal relays (left as is, because
-   changing it would alter normal-relay output).
+2. **Coverage.** Text, HTML and printer (PDF) were run for leg 3; other legs of the demo were
+   run as: Hylatyt leg 6 (text, PDF: 135 Nea Hiltunen "Hyl."), Keskeyttaneet leg 7 (text: 1
+   runner), Avoimet leg 5 (text, HTML: 141 and 142, header 34/0/0/2), Ei-lahteneet leg 7 (HTML:
+   empty, correct, the data has only one "E", on leg 3). The empty-list title is printed in HTML
+   only; in text and printer an empty list prints nothing (a blank PDF page), as in normal
+   relays (left as is, because changing it would alter normal-relay output).
 3. **Status window "Avoinna" is aligned with the printouts (verified on the demo).**
    `UnitStatus.cpp` uses `avoinLkm(srj, os)` (`VIx.cpp`); on a parallel leg it counts open
    teams still in play, like the header. Leg 3 shows 1 and the total row is the sum of the legs.
+3a. **Status "Avoinna" differs from the per-runner list header on single-runner legs.** On leg 5
+   the Status window shows 6 (teams without a result, including 4 teams closed by an earlier
+   K/E: `navoin`, as documented), the Avoimet list and its header show 2 (runners still in
+   play). Team-level lists use `navoin` too. Not changed; pick one meaning if it matters.
 4. **Per-runner lists show a DSQ of a non-deciding runner; team-level lists do not.** This is
    by design (first-finish rule: the list of a leg shows each runner's own status, the team
    list shows the team's), so it is not changed.

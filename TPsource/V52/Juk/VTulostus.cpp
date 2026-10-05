@@ -3881,6 +3881,8 @@ static void textosuus(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, int 
 	  else      // ei sijaa (hylatty, keskeyttanyt, avoin): ei tyhjaa ". " rivin alkuun
 		 swprintf(ln, L"%s, %s %s, %s", st, stjk, wosuuskoodi(kilp->sarja, osuus, 0, 0), oas);
 	  }
+   else if (rl && !stsj[0])      // ei sijaa: ei tyhjaa ". " rivin alkuun
+	  swprintf(ln, L"%s, %s, %s", st, stjk, oas);
    else
 	  swprintf(ln, L"%s. %s, %s, %s", stsj, st, stjk, oas);
    if (tulprm->kohde == L'E')
