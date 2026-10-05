@@ -40,15 +40,54 @@ sarjoissa.
 Kun sarjassa on rinnakkaisosuuksia, ottaa tämän automaattisesti huomioon
 tulosten laskennassa, seurantanäytöillä ja tulosluetteloissa. Tulosluetteloiden
 muotoilussa ei kenttien leveyksiä kuitenkaan kasvateta automaattisesti, joten
-käyttäjän on muutettava muotoilua mm. osuuskohtaisten tulosteiden osalta. Kaikki
+käyttäjän on muutettava muotoilua mm. osuuskohtaisten tulosteiden osalta;
+rinnakkaisosuuden tunnus (esim. 105-3A) mahtuu numerokenttään vain, jos kenttä
+on riittävän leveä. Kaikki
 osuudet sisältävät lopputulokset eivät vaadi muutosta muotoiluun.
 
-Ohjelma näyttää seurantanäytöllä avoinna olevien
-lukumäärän niiden yksittäisten osanottajien määränä, joilla ei ole aikaa tai
-merkintää hylkäyksestä, keskeyttämisestä tai ei-lähtemisestä. Mukana ovat myös
-ne osuudet,
-jotka on suljettu aiemman osuuden tällaisen merkinnän
-takia, ellei merkintää ole ulotettu myöhemmille osuuksille.
+Seurantanäytöllä ja tulosluetteloiden otsikoissa *Avoinna* tarkoittaa
+
+- kilpailussa, jossa on rinnakkaisosuuksia: niiden joukkueiden lukumäärää,
+  joilla kyseisellä osuudella ei ole aikaa eikä merkintää hylkäyksestä,
+  keskeyttämisestä tai ei-lähtemisestä ja joiden aiemman osuuden merkintä ei ole
+  sulkenut osuutta. Aiemman osuuden merkinnän takia suljettujen joukkueiden
+  myöhemmät osuudet eivät siis ole avoimia. Rinnakkaisosuudella (esim. 3A, 3B,
+  3C) joukkue on avoinna, kunnes osuuden tulos on ratkennut.
+- tavallisessa viestissä, jossa rinnakkaisosuuksia ei ole: yksittäisten
+  osanottajien lukumäärää, joilla ei ole aikaa tai merkintää hylkäyksestä,
+  keskeyttämisestä tai ei-lähtemisestä. Mukana ovat myös ne osuudet, jotka on
+  suljettu aiemman osuuden tällaisen merkinnän takia, ellei merkintää ole
+  ulotettu myöhemmille osuuksille.
+
+## Tulosteet rinnakkaisosuuksia sisältävässä kilpailussa
+
+*Osuuskohtaiset tulokset* tulostetaan rinnakkaisosuuksia sisältävässä
+kilpailussa juoksijakohtaisena listana: jokainen juoksija on omalla
+rivillään osuusajan mukaisessa järjestyksessä, ja rinnakkaisilla osuuksilla
+numerokentässä on joukkueen numero ja osuuden tunnus (esimerkiksi 105-3A).
+Samat ajat saavat saman sijan. Listan otsikon luvut (tuloksia, keskeyttäneitä,
+hylättyjä, avoinna) ovat tässä listassa juoksijoiden lukumääriä.
+Joukkuekohtaisessa listassa (esim. *Tulokset*) samat luvut ovat joukkueiden
+lukumääriä.
+
+Tulostusten *Tulostettavien rajaus* -valinnoilla *Hylätyt*, *Keskeyttäneet*,
+*Ei-lähteneet* ja *Avoimet* osuuskohtainen lista sisältää vain valitun tilan
+juoksijat; tila on kunkin juoksijan oma tila, ja avoimista jätetään pois
+aiemman osuuden merkinnän takia suljettujen joukkueiden juoksijat. Rinnakkaisosuudella
+ensimmäisen maaliin tulleen juoksijan tila ratkaisee joukkueen osuuden tilan
+(ks. alla), mutta juoksijakohtainen lista näyttää myös muiden rinnakkaisten
+juoksijoiden omat hylkäykset ja keskeytykset, joten sen luvut voivat poiketa
+joukkuekohtaisen listan luvuista. Lista, jossa ei ole yhtään riviä,
+kirjoitetaan html-tiedostoon otsikkoineen ja lukuineen; tekstitiedostoon ja
+kirjoittimelle tyhjää listaa ei kirjoiteta mitään.
+
+Valinta *Kaikki osuudet* kirjoittaa kaikki osuusajat yhteen listaan
+aikajärjestyksessä. Tekstitiedostossa sija on osuudella saavutettu sija,
+kirjoittimelle kirjoitetaan juokseva järjestysnumero.
+
+Samat osuuskohtaiset rajaukset toimivat myös tavallisessa viestissä: osuuskohtainen
+*Hylätyt*-, *Keskeyttäneet*-, *Ei-lähteneet*- tai *Avoimet*-lista kirjoittaa
+niiden juoksijat (aiemmin tulostui tyhjä tiedosto).
 
 ## Rinnakkaisen osuuden ensimmäinen maaliaika käynnistää seuraavan osuuden lähdön
 
