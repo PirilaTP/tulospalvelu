@@ -44,6 +44,9 @@ Verified on the demo (HTML unless noted):
 | "Kaikki osuudet" (Lopputulos) | 280 rows: 42/42/34+17+13/35/34/32/31 per leg | exactly that, time order, tie ranks |
 | Same lists as continuous text | 67 lines; 7 DSQ runners | OK |
 | Hylatyt as printer output (Microsoft Print to PDF) | heading, counts, 7 runners with leg codes | OK, layout checked |
+| Keskeyttaneet / Avoimet / Ei-lahteneet, leg 3, continuous text | 6 / 7 / 1 runners | the 6 (108-3C, 120-3A/3B/3C, 123-3A, 126-3A), the 7 (141-3A/3B/3C, 142-3A/3C, 143-3B/3C), 102-3C; no ". " prefix |
+| Same three lists as printer output (PDF) | same runners with leg codes | OK; header is the leg's runner counts 67/6/7/7 for every list |
+| Status window (Seuranta > Status), demo | leg 3 row = header; totals = sum of legs | leg 3: 43 teams, 35 finished, 3 Kesk, 3 Hyl, 1 Ei laht., 1 Avoinna (adds to 43); totals 251/5/4/31/27 equal the leg sums |
 | Team level Hylatyt, leg 3 | 117, 111, 114; header 35/3/3/1 | OK |
 | Team level Avoimet, leg 3 / leg 6 | 141 / 141, 142, 143 | OK |
 | Team level empty list (Hylatyt, leg 1) | title and counts | "NJ - 1. osuus", "Lahti : 43 Keskeytti : 1 Hylatty : 0", empty table |
@@ -51,28 +54,30 @@ Verified on the demo (HTML unless noted):
 
 ## 3. Open problems and risks
 
-1. **The console code branch was changed but never compiled.** The only console-only edit is
-   the `naytaosuus(...)` call; the rest is shared code that the GUI build compiled. No MSVC
-   tools are installed here (`cl.exe` missing), so `JukMaali520` could not be built.
-2. **Not every list/format combination was run.** Printer and text were exercised with the
-   Hylatyt list and the text with the full list; Keskeyttaneet/Avoimet/Ei-lahteneet in
-   text and printer use the same row code but were not printed. Empty-list title is HTML only.
-3. **Status window "Avoinna" aligned with the printouts (code done, not checked in the GUI).**
-   `UnitStatus.cpp` now uses `avoinLkm(srj, os)` (`VIx.cpp`); on a parallel leg it counts open
-   teams that are still in play, like the header. Check on the demo: Seuranta > Status, leg 3
-   should show 1 and the total should match.
+1. **Console build compiles, but was not run.** `JukMaali520.exe` was built (Debug, 5 Oct
+   12:11, after the last source edit) and its `.pdb` contains `rinnLista`, `ossijatRinn`,
+   `otsikkoLuvut`, `avoinLkm`, `onPaikkaKaytossa`, so the `#ifdef _CONSOLE` code compiles.
+   Console output of the parallel-leg lists has not been tested.
+2. **Coverage.** All status lists were run in HTML, text and printer (PDF) for leg 3 of the
+   demo. Not run: other legs in text/printer. The empty-list title is printed in HTML only; in
+   text and printer an empty list prints nothing, as in normal relays (left as is, because
+   changing it would alter normal-relay output).
+3. **Status window "Avoinna" is aligned with the printouts (verified on the demo).**
+   `UnitStatus.cpp` uses `avoinLkm(srj, os)` (`VIx.cpp`); on a parallel leg it counts open
+   teams still in play, like the header. Leg 3 shows 1 and the total row is the sum of the legs.
 4. **Per-runner lists show a DSQ of a non-deciding runner; team-level lists do not.** This is
-   intended by the first-finish rule, but a reader comparing the two lists sees different
-   numbers.
+   by design (first-finish rule: the list of a leg shows each runner's own status, the team
+   list shows the team's), so it is not changed.
 5. **Normal relay, "Osuuskohtaiset" + Hylatyt/Keskeyttaneet/Avoimet/Ei-lahteneet now lists runners**
-   (before: empty file). Verified on `C:\Temp
-ormal_relay` (HTML): Hylatyt leg 2 -> 105,
+   (before: empty file). Verified on `C:\Temp\normal_relay` (HTML): Hylatyt leg 2 -> 105,
    Keskeyttaneet leg 2 -> 107, Avoimet leg 2 -> 118 "Avoinna", Ei-lahteneet leg 3 -> 115
    "Ei laht.". An empty list still prints no title there, and the all-legs list is skipped if
    nobody has finished the last leg (unchanged).
-6. **Buffers.** Searching `Juk/` and `ViestiWin/` for allocations sized by team or record
-   count found only the two fixed above; the others are sized by `maxrec`, `n_os_akt`,
-   `maxnosuus` or are per team. The search was by grep, not a full audit.
+6. **Buffers (audited).** Every allocation in `Juk/` and `ViestiWin/` sized by a team or
+   record count was read: `vApu.cpp:648` (`d[nilm]`) and `UnitArvonta.cpp:161` (`rjrj[nilm]`) are
+   per-team arrays indexed per team, `UnitSeuraval/UnitSuodatus` are per club, `UnitSakkoKierr`
+   uses `maxrec` with a fixed slot dimension. Only `ossijat` and `osjarj` were per-runner and
+   are fixed (problem 2).
 
 ## 4. Effect on normal relays (no parallel legs)
 
