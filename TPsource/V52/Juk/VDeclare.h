@@ -95,6 +95,7 @@ int pyoristatls(int tls, int pyorista);
 INT32 osuuslahto(kilptietue *kilp, int osuus);
 INT32 tulos(kilptietue *kilp, int osuus, int va);
 bool onPaikkaKaytossa(kilptietue *kilp, int os);
+int avoinLkm(int srj, int os);
 INT32 ttulos(kilptietue *kilp, int tosuus, int va, int lisafl);
 INT32 osuustulos(kilptietue *kilp, int osuus, int va);
 __int64 jtulos(kilptietue *kilp, int osuus,int va);

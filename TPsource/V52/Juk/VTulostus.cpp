@@ -756,6 +756,180 @@ void autotulostus(void)
    LeaveCriticalSection(&autotul_CriticalSection);
    }
 
+// ---- Osuuskohtaiset tulokset rinnakkaisosuuksilla: lista juoksijoittain -------------
+// Kun kilpailussa on rinnakkaisia juoksijoita (maxnosuus > 1), osuuskohtainen lista
+// muodostetaan juoksijapaikoista, ei joukkueista. Rajaus (hylatyt, keskeyttaneet,
+// ei-lahteneet, avoimet) koskee talloin yksittaista juoksijaa.
+static bool rinnLista(tulostusparamtp *tulprm)
+{
+	if (tulprm->tulostettava != L'H' || tulprm->hajontatulokset || tulprm->ixjarj != 10)
+		return(false);
+	if (kilpparam.maxnosuus > 1)
+		return(true);
+	// Tavallinen viesti: vain hylatyt, keskeyttaneet, ei-lahteneet ja avoimet -rajaus
+	// (aikajarjestyksessa oleva lista ei niita sisalla)
+	return(!tulprm->monios && tulprm->rajaus != 0 && wcschr(L"YKEA", tulprm->rajaus) != NULL);
+}
+
+// Otsikon luvut juoksijalistassa (juoksijoita, ei joukkueita)
+static struct {
+	bool kelp;
+	int tulos, kesk, hyl, avoin;
+	} rinnLuvut;
+
+typedef struct {
+	TULOS key;
+	int d;
+	int os;
+	} rinnrivitp;
+
+static int cmpRinnrivi(const void *a, const void *b)
+{
+	const rinnrivitp *x = (const rinnrivitp *) a;
+	const rinnrivitp *y = (const rinnrivitp *) b;
+
+	if (x->key != y->key)
+		return(x->key < y->key ? -1 : 1);
+	if (x->d != y->d)
+		return(x->d < y->d ? -1 : 1);
+	return(x->os - y->os);
+}
+
+// Keraa osuuden os juoksijapaikat listaa varten. Palauttaa rivien lukumaaran.
+//  L, H, I, P ym.: juoksijat joilla on hyvaksytty osuusaika, aikajarjestyksessa
+//  Y: hylatyt  K: keskeyttaneet  E: ei-lahteneet  A: avoimet (joukkueen osuus ei suljettu)
+//  Kenttajarjestys Y, K, E, A: joukkueen numero ja paikka
+static int ossijatRinn(tulostusparamtp *tulprm, int srj, int os, osjarjtp *osjarj, int *hyltot, int *kesktot)
+{
+	rinnrivitp *r, *r0;
+	kilptietue kilp1;
+	TULOS ost, tls0;
+	int p = -1, lj = -1, nt = 0, sj1, i, nfin = 0, ndnf = 0, ndsq = 0, nopen = 0;
+	int os1, osmax;
+	bool tila = (tulprm->rajaus != 0 && wcschr(L"YKEA", tulprm->rajaus) != NULL);
+
+	rinnLuvut.kelp = false;
+	if (hyltot)
+		*hyltot = 0;
+	if (kesktot)
+		*kesktot = 0;
+	if (srj >= sarjaluku || os < 0 || os >= Sarjat[srj].ntosuus)
+		return(0);
+	osmax = (nilm[srj] + 1) * kilpparam.maxnosuus;
+	r0 = r = (rinnrivitp *) malloc(osmax * sizeof(rinnrivitp));
+	if (r == NULL)
+		return(0);
+	while (1) {
+		bool suljettu, valittu;
+
+		p = askellasarja(srj, os, 0, 0, p, &lj);
+		if (p <= 0)
+			break;
+		GETREC(&kilp1, p);
+		suljettu = kilp1.tSulj(os);
+		for (os1 = Sarjat[srj].aOsuus(os, 0); os1 < Sarjat[srj].aOsuus(os+1, 0); os1++) {
+			char kh;
+			bool onAika;
+
+			if (!onPaikkaKaytossa(&kilp1, os1))
+				continue;
+			kh = kilp1.ostiet[os1].keskhyl;
+			onAika = (kilp1.Maali(os1, 0) != TMAALI0);
+			ost = osuustulos(&kilp1, os1, 0);
+			if (ost != 0)
+				nfin++;
+			else if (kh == 'H')
+				ndsq++;
+			else if (kh == 'K')
+				ndnf++;
+			else if (kilp1.osHyv(os1) && !onAika && !suljettu)
+				nopen++;
+			switch (tulprm->rajaus) {
+				case L'Y':
+					valittu = (kh == 'H');
+					break;
+				case L'K':
+					valittu = (kh == 'K');
+					break;
+				case L'E':
+					valittu = (kh == 'E');
+					break;
+				case L'A':
+					valittu = (ost == 0 && kilp1.osHyv(os1) && !onAika && !suljettu);
+					break;
+				default:
+					valittu = (ost != 0);
+					break;
+				}
+			if (!valittu || nt >= osmax)
+				continue;
+			r[nt].d = p;
+			r[nt].os = os1;
+			r[nt].key = tila ? kilp1.kilpno * 8 + (os1 - Sarjat[srj].aOsuus(os, 0)) : ost;
+			nt++;
+			}
+		}
+	qsort(r, nt, sizeof(rinnrivitp), cmpRinnrivi);
+	if (!tila) {
+		tls0 = 0;
+		sj1 = 0;
+		for (i = 0; i < nt; i++) {
+			GETREC(&kilp1, r[i].d);
+			if (r[i].key != tls0)
+				sj1 = i + 1;
+			tls0 = r[i].key;
+			kilp1.ostiet[r[i].os].ossija = sj1;
+			PUTREC(&kilp1, r[i].d);
+			}
+		}
+	if (osjarj) {
+		for (i = 0; i < nt; i++) {
+			osjarj[i].d = r[i].d;
+			osjarj[i].os = r[i].os;
+			}
+		osjarj[nt].d = -1;
+		}
+	free(r0);
+	rinnLuvut.kelp = true;
+	rinnLuvut.tulos = nfin;
+	rinnLuvut.kesk = ndnf;
+	rinnLuvut.hyl = ndsq;
+	rinnLuvut.avoin = nopen;
+	if (hyltot)
+		*hyltot = ndsq;
+	if (kesktot)
+		*kesktot = ndnf;
+	return(nt);
+}
+
+// Otsikon luvut: tulokset, keskeytykset, hylkaykset, avoimet. Rinnakkaisosuudella
+// joukkuelistassa kaikki luvut ovat joukkueita (avoimet = ei tulosta eika merkintaa,
+// osuus ei suljettu); juoksijalistassa kaikki ovat juoksijoita. Palauttaa 1, jos luvut
+// ovat juoksijalistan lukuja.
+static int otsikkoLuvut(int srj, tulostusparamtp *tulprm, int *tul, int *kesk, int *hyl, int *avoin)
+{
+	int os = tulprm->osuus;
+
+	*tul = ntulos[srj][os][tulprm->piste];
+	*kesk = nkesk[srj][os];
+	*hyl = nhyl[srj][os];
+	*avoin = navoin[srj][os];
+	if (rinnLuvut.kelp) {
+		*tul = rinnLuvut.tulos;
+		*kesk = rinnLuvut.kesk;
+		*hyl = rinnLuvut.hyl;
+		*avoin = rinnLuvut.avoin;
+		return(1);
+		}
+	if (kilpparam.maxnosuus > 1 && os >= 0 && os < Sarjat[srj].ntosuus &&
+		Sarjat[srj].nosuus[os] > 1 && tulprm->piste == 0) {
+		*avoin = nilm[srj] - *tul - *kesk - *hyl - neil[srj][os];
+		if (*avoin < 0)
+			*avoin = 0;
+		}
+	return(0);
+}
+
 static int ossijat(tulostusparamtp *tulprm, int srj, int osuus, osjarjtp *osjarj, int *hyltot, int *kesktot)
 {
 	int os, os1, sj = 0, sj1, i, nt = 0, yhd = 0;
@@ -3579,6 +3753,7 @@ static void htmlosuus(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, int 
 //	   return(htmlosuus_nt(kilp, tulprm, osuus, sija));
 	   }
 
+   bool rl = rinnLista(tulprm);   // juoksijakohtainen lista rinnakkaisosuuksilla
    setflds(fld, fileflds, MAXFLD, n_fileflds);
    hae_kenttajarj(tulprm, fld, kntjrj, &n_knt);
 
@@ -3592,7 +3767,7 @@ static void htmlosuus(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, int 
    wmemset(oas, L' ',sizeof(oas)/2);
 
    if(kilp->Maali(osuus, 0) != TMAALI0 && kilp->osHyv(osuus) &&
-	  (osuus == 0 || kilp->Maali(osuus-1, 0) != TMAALI0 ||
+	  (rl || osuus == 0 || kilp->Maali(osuus-1, 0) != TMAALI0 ||
 	  kilp->ostiet[osuus].ylahto != TMAALI0)) {
 	  AIKATOWSTRS(oas,kilp->osTulos(osuus, 0, false),0);
 	  if (!tulprm->hksijafl || tulprm->hajontatulokset || tulprm->piirisijat || sija == kilp->osSija(osuus))
@@ -3602,7 +3777,9 @@ static void htmlosuus(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, int 
 	  }
    else {
 		oas[0] = 0;
-		if (!kilp->Hyv(osuus))
+		if (rl)
+			wcsncpy(oas, kilp->TarkStr(osuus, false, tulprm->language), 15);
+		else if (!kilp->Hyv(osuus))
 			kilp->tarkstr(oas, osuus, false, 10, tulprm->language);
 	  oas[kilpparam.laika2] = 0;
 	  }
@@ -3618,7 +3795,7 @@ static void htmlosuus(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, int 
 			case F_KNO :
 				_itow(kilp->KilpNo(true), st, 10);
 				len = pfld->len;
-				if (tulprm->monios) {
+				if (tulprm->monios || (rl && Sarjat[kilp->sarja].nosuus[Sarjat[kilp->sarja].yosuus[osuus]] > 1)) {
 				   swprintf(st, L"%d-%s", kilp->KilpNo(true), wosuuskoodi(kilp->sarja, osuus, 0, 0));
 				   if (len > 2 && len < 6)
 					   len = 6;
@@ -3657,10 +3834,11 @@ static void textosuus(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, int 
    {
    wchar_t ln[300], oas[16],st[80], len = 0, stsj[6] = L"", stjk[60], stsk[20];
 
+   bool rl = rinnLista(tulprm);   // juoksijakohtainen lista rinnakkaisosuuksilla
    initline(tulprm);
    wmemset(oas, L' ',sizeof(oas)/2);
    if(kilp->Maali(osuus, 0) != TMAALI0 && kilp->osHyv(osuus) &&
-	  (osuus == 0 || kilp->Maali(osuus-1, 0) != TMAALI0 ||
+	  (rl || osuus == 0 || kilp->Maali(osuus-1, 0) != TMAALI0 ||
 	  kilp->ostiet[osuus].ylahto != TMAALI0)) {
 	  AIKATOWSTRS(oas,kilp->osTulos(osuus, 0, false),0);
 	  _itow(kilp->osSija(osuus), stsj, 10);
@@ -3670,7 +3848,9 @@ static void textosuus(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, int 
 	  }
    else {
 		oas[0] = 0;
-		if (!kilp->Hyv(osuus))
+		if (rl)
+			wcsncpy(oas, kilp->TarkStr(osuus, false, tulprm->language), 15);
+		else if (!kilp->Hyv(osuus))
 			kilp->tarkstr(oas, osuus, false, 10, tulprm->language);
 	  oas[kilpparam.laika2] = 0;
 	  }
@@ -3695,7 +3875,14 @@ static void textosuus(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, int 
 	  kilp->Ampsakot(osuus, stsk+1);
 	  wcscat(stsk, L")");
 	  }
-   swprintf(ln, L"%s. %s, %s, %s", stsj, st, stjk, oas);
+   if (rl && Sarjat[kilp->sarja].nosuus[Sarjat[kilp->sarja].yosuus[osuus]] > 1) {
+	  if (stsj[0])
+		 swprintf(ln, L"%s. %s, %s %s, %s", stsj, st, stjk, wosuuskoodi(kilp->sarja, osuus, 0, 0), oas);
+	  else      // ei sijaa (hylatty, keskeyttanyt, avoin): ei tyhjaa ". " rivin alkuun
+		 swprintf(ln, L"%s, %s %s, %s", st, stjk, wosuuskoodi(kilp->sarja, osuus, 0, 0), oas);
+	  }
+   else
+	  swprintf(ln, L"%s. %s, %s, %s", stsj, st, stjk, oas);
    if (tulprm->kohde == L'E')
 	  wcscat(ln, L"; ");
    putfld(tulprm, ln, 0, wcslen(ln)+1, 0, 0);
@@ -3711,11 +3898,12 @@ static void prtosuus(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, int s
 //	   return(prtosuus_nt(kilp, tulprm, osuus, sija));
 	   }
 
+   bool rl = rinnLista(tulprm);   // juoksijakohtainen lista rinnakkaisosuuksilla
    setflds(fld, prtflds, MAXFLD, n_prtflds);
 
    wmemset(oas, L' ',sizeof(oas)/2);
    if(kilp->Maali(osuus, 0) != TMAALI0 && kilp->osHyv(osuus) &&
-	  (osuus == 0 || (kilp->Maali(osuus-1, 0) != TMAALI0 ||
+	  (rl || osuus == 0 || (kilp->Maali(osuus-1, 0) != TMAALI0 ||
 	  kilp->ostiet[osuus].ylahto != TMAALI0))) {
 	  AIKATOWSTRS(oas,kilp->osTulos(osuus, 0, false),0);
 	  _itow(tulprm->monios ? sija : kilp->osSija(osuus), st, 10);
@@ -3726,13 +3914,19 @@ static void prtosuus(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, int s
 	  }
    else {
 		oas[0] = 0;
-		if (!kilp->Hyv(osuus))
+		if (rl)
+			wcsncpy(oas, kilp->TarkStr(osuus, false, tulprm->language), 15);
+		else if (!kilp->Hyv(osuus))
 			kilp->tarkstr(oas, osuus, false, 10, tulprm->language);
 	  oas[kilpparam.laika2] = 0;
 	  }
    kilp->Nimi(st, fld[F_NIMI].len, osuus);
    putfld(tulprm, st, fld[F_NIMI].pos, fld[F_NIMI].len, fld[F_NIMI].oik, 0);
-   if (tulprm->monios) {
+   if (rl && Sarjat[kilp->sarja].nosuus[Sarjat[kilp->sarja].yosuus[osuus]] > 1) {
+	   swprintf(st, L"%d-%s", kilp->KilpNo(true), wosuuskoodi(kilp->sarja, osuus, 0, 0));
+	   putfld(tulprm, st, fld[F_EDSJ].pos, fld[F_KNO].len+fld[F_EDSJ].len, fld[F_KNO].oik, 0);
+	   }
+   else if (tulprm->monios) {
 	   swprintf(st, L"%d-%d", kilp->KilpNo(true), osuus+1);
 	   putfld(tulprm, st, fld[F_EDSJ].pos, fld[F_KNO].len+fld[F_EDSJ].len, fld[F_KNO].oik, 0);
 	   }
@@ -4400,7 +4594,10 @@ static int tlsSeuraava(tulostusparamtp *tulprm, int *d, int lisa, int srj, int *
 				else
 					n_osjarj = nilm[srj]*kilpparam.maxnosuus+1;
 				osjarj = new osjarjtp[n_osjarj];
-				n_varaus = ossijat(tulprm, srj, tulprm->osuus, osjarj, nhyltot, nkesktot);
+				if (!tulprm->monios && rinnLista(tulprm))
+					n_varaus = ossijatRinn(tulprm, srj, tulprm->osuus, osjarj, nhyltot, nkesktot);
+				else
+					n_varaus = ossijat(tulprm, srj, tulprm->osuus, osjarj, nhyltot, nkesktot);
 				if (n_ostot)
 					 *n_ostot = n_varaus;
 				osdk = osjarj;
@@ -4669,26 +4866,28 @@ static void htmlsarjaotsikot(int *srj, tulostusparamtp *tulprm, int ei_lukum, in
 	//			if (kilpparam.maxnosuus == 1) {
 	//				na = nilm[*srj] - ntulos[*srj][tulprm->osuus][tulprm->piste] - nkesk[*srj][tulprm->osuus] -
 	//					nhyl[*srj][tulprm->osuus] - neil[*srj][tulprm->osuus];
-					if (!ei_lukum && navoin[*srj][tulprm->osuus] != nilm[*srj]) {
-						if (navoin[*srj][tulprm->osuus] != 0 ) {
+					int hTul, hKesk, hHyl, hAvoin;
+					int hRinn = otsikkoLuvut(*srj, tulprm, &hTul, &hKesk, &hHyl, &hAvoin);
+					if (!ei_lukum && (hRinn || hAvoin != nilm[*srj])) {
+						if (hAvoin != 0 ) {
 							if (tulprm->language > 0)
 								swprintf(wline,L"<p>Results :%d  DNF :%d  DQ :%d  Open :%d\n",
-									ntulos[*srj][tulprm->osuus][tulprm->piste],nkesk[*srj][tulprm->osuus],
-									nhyl[*srj][tulprm->osuus],navoin[*srj][tulprm->osuus]);
+									hTul,hKesk,
+									hHyl,hAvoin);
 							else
 								swprintf(wline,L"<p>Tuloksia :%d  Kesk :%d  Hyl :%d  Avoinna :%d\n",
-									ntulos[*srj][tulprm->osuus][tulprm->piste],nkesk[*srj][tulprm->osuus],
-									nhyl[*srj][tulprm->osuus],navoin[*srj][tulprm->osuus]);
+									hTul,hKesk,
+									hHyl,hAvoin);
 							}
 						else {
 							if (tulprm->language > 0)
 								swprintf(wline,L"<p>Started : %d   DNF : %d   DQ : %d\n",
-									ntulos[*srj][tulprm->osuus][tulprm->piste]+nkesk[*srj][tulprm->osuus]+
-									nhyl[*srj][tulprm->osuus],nkesk[*srj][tulprm->osuus],nhyl[*srj][tulprm->osuus]);
+									hTul+hKesk+
+									hHyl,hKesk,hHyl);
 							else
 								swprintf(wline,L"<p>Lähti : %d   Keskeytti : %d   Hylätty : %d\n",
-									ntulos[*srj][tulprm->osuus][tulprm->piste]+nkesk[*srj][tulprm->osuus]+
-									nhyl[*srj][tulprm->osuus],nkesk[*srj][tulprm->osuus],nhyl[*srj][tulprm->osuus]);
+									hTul+hKesk+
+									hHyl,hKesk,hHyl);
 							}
 						tulprm->writehtml(wline);
 //						putfld(tulprm, wline,0,60,0, 0);
@@ -5238,26 +5437,28 @@ static void kirjoitinalkuotsikot(int *l, int *srj, tulostusparamtp *tulprm, int 
 	//			if (kilpparam.maxnosuus == 1) {
 	//				na = nilm[*srj] - ntulos[*srj][tulprm->osuus][tulprm->piste] - nkesk[*srj][tulprm->osuus] -
 	//					nhyl[*srj][tulprm->osuus] - neil[*srj][tulprm->osuus];
-					if (!ei_lukum && navoin[*srj][tulprm->osuus] != nilm[*srj]) {
-						if( navoin[*srj][tulprm->osuus] != 0 ) {
+					int hTul, hKesk, hHyl, hAvoin;
+					int hRinn = otsikkoLuvut(*srj, tulprm, &hTul, &hKesk, &hHyl, &hAvoin);
+					if (!ei_lukum && (hRinn || hAvoin != nilm[*srj])) {
+						if (hAvoin != 0 ) {
 							if (tulprm->language > 0)
 								swprintf(wline,L"Results :%d  DNF :%d  DQ :%d  Open :%d",
-									ntulos[*srj][tulprm->osuus][tulprm->piste],nkesk[*srj][tulprm->osuus],
-									nhyl[*srj][tulprm->osuus],navoin[*srj][tulprm->osuus]);
+									hTul,hKesk,
+									hHyl,hAvoin);
 							else
 								swprintf(wline,L"Tuloksia :%d  Kesk :%d  Hyl :%d  Avoinna :%d",
-									ntulos[*srj][tulprm->osuus][tulprm->piste],nkesk[*srj][tulprm->osuus],
-									nhyl[*srj][tulprm->osuus],navoin[*srj][tulprm->osuus]);
+									hTul,hKesk,
+									hHyl,hAvoin);
 							}
 						else {
 							if (tulprm->language > 0)
 								swprintf(wline,L"Started : %d   DNF : %d   DQ : %d",
-									ntulos[*srj][tulprm->osuus][tulprm->piste]+nkesk[*srj][tulprm->osuus]+
-									nhyl[*srj][tulprm->osuus],nkesk[*srj][tulprm->osuus],nhyl[*srj][tulprm->osuus]);
+									hTul+hKesk+
+									hHyl,hKesk,hHyl);
 							else
 								swprintf(wline,L"Lähti : %d   Keskeytti : %d   Hylätty : %d",
-									ntulos[*srj][tulprm->osuus][tulprm->piste]+nkesk[*srj][tulprm->osuus]+
-									nhyl[*srj][tulprm->osuus],nkesk[*srj][tulprm->osuus],nhyl[*srj][tulprm->osuus]);
+									hTul+hKesk+
+									hHyl,hKesk,hHyl);
 							}
 						putfld(tulprm, wline,0,60,0, 0);
 						endline(tulprm, 0);
@@ -5340,6 +5541,18 @@ static bool onHajonta(wchar_t *krata, wchar_t *trata)
 	return(false);
 	}
 
+// Tyhja lista rinnakkaisosuuksia sisaltavassa kilpailussa: tulostetaan sarjan otsikko ja
+// luvut, jotta tulosteesta nakyy, etta lista on tyhja (vain HTML).
+static void tyhjaListaOtsikko(INT *srj, tulostusparamtp *tulprm, int ei_lukum, int nkesktot, int nhyltot)
+{
+	if (kilpparam.maxnosuus > 1 && tulprm->kohde == L'H' && tulprm->tulostettava != L'E' &&
+		!tulprm->hajontatulokset && !tulprm->viimos && tulprm->osuus < Sarjat[*srj].ntosuus &&
+		(rinnLista(tulprm) || (tulprm->rajaus != 0 && wcschr(L"YKEA", tulprm->rajaus) != NULL))) {
+		htmlotsikot(srj, tulprm);
+		htmlsarjaotsikot(srj, tulprm, ei_lukum, nkesktot, nhyltot);
+		}
+}
+
 // Joukkueen tila osuudella os (os on osuuden, ei juoksijapaikan numero). Rinnakkaisilla
 // osuuksilla tila on joukkueen osuuden tila (ensimmainen maaliin -saanto mukaan lukien),
 // muuten osuuden ainoan juoksijan tila. naytasulj kuten kilptietue::Tark.
@@ -5373,13 +5586,15 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 	int os1, osd;
 	bool enstietue = true;
 	bool slotjrj = false;   // osuuskohtaiset tulokset juoksijakohtaisessa jarjestyksessa
+	bool otsikoitu = false;
 	wchar_t wst[200];
 
 	if (*srj < 0 || *srj >= sarjaluku+nsarjayhd || nilm[*srj] == 0)
 		return(0);
 	os = tulprm->osuus;
 	tls0 = 0;
-	slotjrj = (kilpparam.maxnosuus > 1 && tulprm->tulostettava == L'H' && !tulprm->hajontatulokset && tulprm->ixjarj == 10);
+	slotjrj = rinnLista(tulprm);
+	rinnLuvut.kelp = false;
 
 	if (tulprm->seuratulokset && !onko_seura(*srj))
 		return(0);
@@ -5421,7 +5636,7 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 
 	tulprm->rivi = 0;
 	if (tulprm->monios) {
-		os = Sarjat[*srj].osuusluku - 1;
+		os = Sarjat[*srj].ntosuus - 1;     // viimeinen osuus (ei juoksijapaikka: rinnakkaisosuuksilla paikkoja on enemman)
 		n = Sarjat[*srj].osuusluku * nilm[*srj];
 		tulprm->ixjarj = tulprm->hajontatulokset ? 9 : 10;
 		}
@@ -5566,12 +5781,16 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 		}
 	nkesk0 = nkesktot;
 	nhyl0 = nhyltot;
-	if (tlsSeuraava(tulprm, &d, 1, *srj, &lj, lj1, true, &nkesktot, &nhyltot, &n_ostot, &osd))
+	if (tlsSeuraava(tulprm, &d, 1, *srj, &lj, lj1, true, &nkesktot, &nhyltot, &n_ostot, &osd)) {
+		tyhjaListaOtsikko(srj, tulprm, ei_lukum, nkesktot, nhyltot);
 		goto lopeta;
-	if (slotjrj && !tulprm->viimos) {   // ossijat nollaa laskurit, otsikkoon tarvitaan osuuden luvut
+		}
+	if (slotjrj && tulprm->monios && !tulprm->viimos) {   // ossijat nollaa laskurit, otsikkoon tarvitaan osuuden luvut
 		nkesktot = nkesk0;
 		nhyltot = nhyl0;
 		}
+	if (slotjrj && !tulprm->monios)
+		n = n_ostot;      // rivien lukumaara juoksijalistassa
 	if (tulprm->hajontatulokset && tulprm->monios)
 		os1 = osd;
 	else
@@ -5747,11 +5966,11 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 				if (tulprm->rajaus == L'-' && kilp.ostiet[os].badge[0])
 					continue;
 #endif
-				if (tulprm->rajaus == L'Y' && osuusTila(&kilp, os, 0) != 'H')
+				if (!slotjrj && tulprm->rajaus == L'Y' && osuusTila(&kilp, os, 0) != 'H')
 					continue;
 				}
 			else {
-				if ((tulprm->rajaus == L'Y' || tulprm->rajaus == L'K') && osuusTila(&kilp, os, 0) != ct1)
+				if (!slotjrj && (tulprm->rajaus == L'Y' || tulprm->rajaus == L'K') && osuusTila(&kilp, os, 0) != ct1)
 					continue;
 				}
 
@@ -5773,16 +5992,16 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 					}
 				}
 
-			if (tulprm->tulostettava == L'H' && tulprm->monios) {
+			if (slotjrj) {
+				if (osuustulos(&kilp, osd, 0) != tls0)
+					sj1 = sj;
+				tls0 = osuustulos(&kilp, osd, 0);
+				}
+			else if (tulprm->tulostettava == L'H' && tulprm->monios) {
 				os = osd;
 				if (tulos(&kilp,os,tulprm->piste) != tls0)
 					sj1 = sj;
 				tls0 = tulos(&kilp,os,tulprm->piste);
-				}
-			else if (slotjrj) {
-				if (osuustulos(&kilp, osd, 0) != tls0)
-					sj1 = sj;
-				tls0 = osuustulos(&kilp, osd, 0);
 				}
 			else if (!tulprm->hajontatulokset && !tulprm->yhteislahdot) {
 				if (kilpparam.alalaji == L'D') {
@@ -5897,7 +6116,8 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 				}
 			else if(tulprm->kohde == L'H') {
 				enstls[*srj][os] = 10000;
-				if (i == 1) {
+				if (i == 1 || (slotjrj && !otsikoitu)) {
+					otsikoitu = true;
 					htmlotsikot(srj, tulprm);
 					htmlsarjaotsikot(srj, tulprm, ei_lukum, nkesktot, nhyltot);
 					}
@@ -8532,7 +8752,8 @@ int list(wchar_t kohde, wchar_t tiedlaji, wchar_t tulostettava, wchar_t jarjesty
 		switch (tulprm.tulostettava) {
 			case L'H':   // Osuuskohtaiset tulokset
 				if (!tulprm.hajontatulokset)
-					tulprm.ixjarj = (tulprm.monios || kilpparam.maxnosuus > 1) ? 10 : 0;
+					tulprm.ixjarj = (tulprm.monios || kilpparam.maxnosuus > 1 ||
+						(tulprm.rajaus != 0 && wcschr(L"YKEA", tulprm.rajaus) != NULL)) ? 10 : 0;
 				tulprm.piste = kilpparam.valuku+1;
 				break;
 			case L'V':

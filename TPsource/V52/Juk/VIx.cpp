@@ -694,6 +694,22 @@ void paivJoukkLkm(int srj, int muutos)
 //
 //    kilpparam.valuku+5 : osuustulos vaihdossa/maalissa
 
+// Avoimien lukumaara osuudella: rinnakkaisosuudella joukkueita (ei tulosta eika merkintaa,
+// osuus ei suljettu), muuten navoin (yksittaisia osanottajia). Sama maaritelma kuin
+// tulosteiden otsikoissa.
+int avoinLkm(int srj, int os)
+{
+	int n = navoin[srj][os];
+
+	if (kilpparam.maxnosuus > 1 && srj >= 0 && srj < sarjaluku && os >= 0 &&
+		os < Sarjat[srj].ntosuus && Sarjat[srj].nosuus[os] > 1) {
+		n = nilm[srj] - ntulos[srj][os][0] - nkesk[srj][os] - nhyl[srj][os] - neil[srj][os];
+		if (n < 0)
+			n = 0;
+		}
+	return(n);
+}
+
 void addjarjarr(kilptietue *kilp, int d, int osuus, INT piste, int *keskeyta)
 	{
 	INT  tllj = -1,p,sj = 99999, yhd = 0, srj;
