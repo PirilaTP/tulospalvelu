@@ -3046,6 +3046,7 @@ static int htmlkaikki_osrivi(kilptietue *kilp, tulostusparamtp *tulprm, int sj,
    wchar_t as[26], oas[16], st[80], stsj[20] = L"", st1[80], st2[20], *class_str = L" ";
 
 	wmemset(oas, L' ',kilpparam.laika2);
+	oas[kilpparam.laika2] = 0;   // paattamaton merkkijono tulosti roskaa
 	stsj[0] = 0;
 	st1[0] = 0;
 	st2[0] = 0;
@@ -4150,6 +4151,7 @@ static int prtkaikki_nt(kilptietue *kilp, tulostusparamtp *tulprm, int sj)
 	  initline(tulprm);
       wmemset(as, 0,kilpparam.laika2);
 	  wmemset(oas, L' ',kilpparam.laika2);
+	  oas[kilpparam.laika2] = 0;
 	  if (!tulprm->tiivis) {
          if ( osuus == 0 ||
             Sarjat[kilp->sarja].aosuus[Sarjat[kilp->sarja].yosuus[osuus-1]+1] == osuus-1
