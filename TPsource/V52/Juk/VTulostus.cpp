@@ -921,12 +921,8 @@ static int otsikkoLuvut(int srj, tulostusparamtp *tulprm, int *tul, int *kesk, i
 		*avoin = rinnLuvut.avoin;
 		return(1);
 		}
-	if (kilpparam.maxnosuus > 1 && os >= 0 && os < Sarjat[srj].ntosuus &&
-		Sarjat[srj].nosuus[os] > 1 && tulprm->piste == 0) {
-		*avoin = nilm[srj] - *tul - *kesk - *hyl - neil[srj][os];
-		if (*avoin < 0)
-			*avoin = 0;
-		}
+	if (kilpparam.maxnosuus > 1 && os >= 0 && os < Sarjat[srj].ntosuus && tulprm->piste == 0)
+		*avoin = avoinLkm(srj, os);   // sama luku kuin Status-ikkunassa
 	return(0);
 }
 

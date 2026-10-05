@@ -694,9 +694,10 @@ void paivJoukkLkm(int srj, int muutos)
 //
 //    kilpparam.valuku+5 : osuustulos vaihdossa/maalissa
 
-// Avoimien lukumaara osuudella: rinnakkaisosuudella joukkueita (ei tulosta eika merkintaa,
-// osuus ei suljettu), muuten navoin (yksittaisia osanottajia). Sama maaritelma kuin
-// tulosteiden otsikoissa.
+// Avoimien lukumaara osuudella. Kilpailussa, jossa on rinnakkaisosuuksia (maxnosuus > 1),
+// lasketaan joukkueet, joilla osuus on avoin (ei tulosta eika merkintaa, joukkue ei
+// suljettu); tavallisessa kilpailussa navoin (yksittaisia osanottajia, sisaltaa
+// aiemmin suljettujen joukkueiden osuudet). Sama maaritelma kuin tulosteiden otsikoissa.
 int avoinLkm(int srj, int os)
 {
 	int n = navoin[srj][os];
@@ -706,6 +707,20 @@ int avoinLkm(int srj, int os)
 		n = nilm[srj] - ntulos[srj][os][0] - nkesk[srj][os] - nhyl[srj][os] - neil[srj][os];
 		if (n < 0)
 			n = 0;
+		}
+	else if (kilpparam.maxnosuus > 1 && srj >= 0 && srj < sarjaluku && os >= 0 &&
+		os < Sarjat[srj].ntosuus) {
+		kilptietue kilp;
+		int p = -1, lj = -1, aos = Sarjat[srj].aosuus[os] + 1;
+
+		n = 0;
+		EnterCriticalSection(&tall_CriticalSection);
+		while ((p = askellasarja(srj, os, 0, 0, p, &lj)) > 0) {
+			GETREC(&kilp, p);
+			if (kilp.osHyv(aos) && kilp.Maali(aos, 0) == TMAALI0 && !kilp.tSulj(os))
+				n++;
+			}
+		LeaveCriticalSection(&tall_CriticalSection);
 		}
 	return(n);
 }

@@ -58,7 +58,7 @@ Verified on the demo (HTML unless noted):
 1. **Console build compiles and runs, per-runner list not run.** `JukMaali520.exe` (built
    12:11, before fixes 12-13) starts on the demo; the team-level Avoimet list for leg 3
    prints team 141 correctly. The per-runner screen (`naytaosuus`) was not reached. Its main
-   menu shows Avoinna 35 for the competition, the Status window 27 (different counts).
+   menu shows Avoinna 35 (`navoint`, closed teams included), the Status window now 10.
 2. **Coverage.** Text, HTML and printer (PDF) were run for leg 3; other legs: Hylatyt leg 6
    (text, PDF), Keskeyttaneet legs 1 and 7 (text), Avoimet legs 2, 4, 5 (text; leg 4 and 5
    also PDF/HTML), Ei-lahteneet leg 7 (HTML: empty, correct). "Kaikki osuudet": PDF 6 pages,
@@ -70,10 +70,15 @@ Verified on the demo (HTML unless noted):
 3. **Status window "Avoinna" is aligned with the printouts (verified on the demo).**
    `UnitStatus.cpp` uses `avoinLkm(srj, os)` (`VIx.cpp`); on a parallel leg it counts open
    teams still in play, like the header. Leg 3 shows 1 and the total row is the sum of the legs.
-3a. **Status "Avoinna" differs from the per-runner list header on single-runner legs.** On leg 5
-   the Status window shows 6 (teams without a result, including 4 teams closed by an earlier
-   K/E: `navoin`, as documented), the Avoimet list and its header show 2 (runners still in
-   play). Team-level lists use `navoin` too. Not changed; pick one meaning if it matters.
+3a. **Status vs list "Avoinna" on single-runner legs: aligned for parallel-leg competitions.**
+   Before: leg 5 showed 6 in the Status window (`navoin`, includes teams closed by an earlier
+   K/E) and 2 in the Avoimet list. Now `avoinLkm` (also used by the team-level list headers
+   through `otsikkoLuvut`) counts, whenever `maxnosuus > 1`, teams whose leg has no result and
+   whose team is not closed (`tSulj`). Verified on the demo: Status Avoinna per leg 0/0/1/1/2/3/3,
+   total 10 (was 27), equal to the printed headers (leg 4: 1, leg 5: 2, leg 6: 3, leg 7: 3).
+   Normal relays (`maxnosuus == 1`) still use `navoin` (closed teams included), unchanged. The
+   console main menu total (`navoint`, 35 on the demo) still counts runners of closed teams;
+   the console was not rebuilt.
 4. **Per-runner lists show a DSQ of a non-deciding runner; team-level lists do not.** This is
    by design (first-finish rule: the list of a leg shows each runner's own status, the team
    list shows the team's), so it is not changed.
