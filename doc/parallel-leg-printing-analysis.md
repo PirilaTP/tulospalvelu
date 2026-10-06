@@ -38,6 +38,7 @@ Code: `TPsource/V52/Juk/VTulostus.cpp`, `VIx.cpp`, `vkilp.cpp`, `VDeclare.h`.
 | 17 | `Tulosta yhteenveto` HTML showed `K&Atilde;&curren;rkiaika`-style text | the summary file had no `<head>`, so no charset; viewers guess ANSI | proper header with the charset of the chosen encoding |
 | 18 | clearing a finish time in Joukkuetiedot (Maali column, split table) stored 00:00:00, so the runner got a leg time of 24h minus the start (127-3A/3B: 11.50.01) | `wstrtoaika_vap` returns 0 for an empty string when `t0 == 0` | an empty cell stores "no time" (`TMAALI0`). Old bad values must be cleared again. Other places that clear times were not checked |
 | 19 | `105-3A` could wrap at the hyphen in the HTML number column | normal line breaking | wrapped in `white-space:nowrap` (HTML only) |
+| 20 | team list of a parallel leg: last column printed every runner's time joined with "/" (`---/---/`), cut off by the column width so the real time was lost | `osuustlsst` listed all parallel runners | with the first-finish rule only the deciding runner's leg time is printed; legs without it still list all times. Checked in printer (PDF) output only |
 
 Verified on the demo (HTML unless noted):
 

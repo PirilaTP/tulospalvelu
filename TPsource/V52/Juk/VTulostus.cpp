@@ -1888,6 +1888,22 @@ static wchar_t * osuustlsst(kilptietue *kilp, tulostusparamtp *tulprm, int osuus
 		  }
 	   return(oas);
 	   }
+   if (Sarjat[kilp->sarja].ekaMaaliLahettaa[osuus]) {
+	   // ensimmaisen maaliin -saanto: osuuden aika on ratkaisevan (ensimmaisen) juoksijan aika,
+	   // ei kaikkien rinnakkaisten aikoja, jotka eivat mahdu sarakkeeseen
+	   int eos = kilp->ekaMaaliOsuus(osuus, 0);
+
+	   if (eos >= 0) {
+		  ostls = kilp->osTulos(eos, 0, false);
+		  if (ostls) {
+			 AIKATOWSTRS(as, ostls, 0);
+			 as[kilpparam.laika2] = 0;
+			 elimwz(as);
+			 wcscpy(oas, as);
+			 }
+		  }
+	   return(oas);
+	   }
    p = oas;
    for (os = Sarjat[kilp->sarja].aosuus[osuus] + 1;
 	  os <= Sarjat[kilp->sarja].aosuus[osuus+1]; os++) {
