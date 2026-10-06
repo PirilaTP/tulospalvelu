@@ -1883,14 +1883,16 @@ static wchar_t * osuustlsst(kilptietue *kilp, tulostusparamtp *tulprm, int osuus
    if (Sarjat[kilp->sarja].nosuus[osuus] == 1) {
 	   ostls = kilp->osTulos(Sarjat[kilp->sarja].aosuus[osuus+1],0,false);
 	   if (ostls) {
-		  aikatowstr_cols_n(oas, ostls, 0, 0, kilpparam.laika2);
-		  elimwz(oas);
+		  AIKATOWSTRS(as, ostls, 0);   // pisteet kuten muissa ajoissa (ei kaksoispisteita)
+		  as[kilpparam.laika2] = 0;
+		  elimwz(as);
+		  wcscpy(oas, as);
 		  }
 	   return(oas);
 	   }
-   if (Sarjat[kilp->sarja].ekaMaaliLahettaa[osuus]) {
-	   // ensimmaisen maaliin -saanto: osuuden aika on ratkaisevan (ensimmaisen) juoksijan aika,
-	   // ei kaikkien rinnakkaisten aikoja, jotka eivat mahdu sarakkeeseen
+   if (tulprm->kohde != L'H' && Sarjat[kilp->sarja].ekaMaaliLahettaa[osuus]) {
+	   // paperi/pdf/teksti, ensimmaisen maaliin -saanto: vain ratkaisevan juoksijan aika (kaikkien
+	   // rinnakkaisten ajat eivat mahdu sarakkeeseen; html-tulosteessa kaikki ajat)
 	   int eos = kilp->ekaMaaliOsuus(osuus, 0);
 
 	   if (eos >= 0) {
@@ -1913,16 +1915,33 @@ static wchar_t * osuustlsst(kilptietue *kilp, tulostusparamtp *tulprm, int osuus
 			AIKATOWSTRS(as,ostls,0);
 			as[kilpparam.laika2] = 0;
 			elimwz(as);
-			wcscat(p, as);
+			wcscat(p, as + wcsspn(as, L" "));   // ei alkutyhjia, jotta ajat mahtuvat
 			}
 		 else {
-			wcscat(p, L"---");
+			// ei aikaa: lyhyt merkki, jotta kaikkien rinnakkaisten tulokset mahtuvat riville
+			// (- ei aikaa tai paikka tyhja, H hylatty, K keskeytti, E ei lahtenyt)
+			char kh = kilp->ostiet[os].keskhyl;
+
+			if (onPaikkaKaytossa(kilp, os) && (kh == 'H' || kh == 'K' || kh == 'E'))
+				{
+				p[0] = (wchar_t) kh;
+				p[1] = 0;
+				}
+			else
+				wcscat(p, L"-");
 			}
 		 p += wcslen(p);
 		 *(p++) = L'/';
 		 }
 	  }
    if (p > oas) p[-1] = 0;
+   if (tulprm->kohde == L'H' && tulprm->tulmuot.tauluhtml && oas[0]) {   // html: tulokset yhdelle riville
+	   wchar_t tmp[40];
+
+	   wcsncpy(tmp, oas, 30);
+	   tmp[30] = 0;
+	   swprintf(oas, L"<nobr>%s</nobr>", tmp);   // lyhyt kehys, oas on usein vain 60 merkkia
+	   }
    return(oas);
    }
 
@@ -2367,7 +2386,12 @@ static INT texttulos(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, INT s
 	putfld(tulprm, wst, fld[F_LISNO].pos, fld[F_LISNO].len, fld[F_LISNO].oik, 0);
 	putfld(tulprm, was, fld[F_TLS].pos, fld[F_TLS].len, fld[F_TLS].oik, l);
 	putfld(tulprm, weas, fld[F_ERO].pos, fld[F_ERO].len, fld[F_ERO].oik, l);
-	putfld(tulprm, woas, fld[F_OSATLS].pos, fld[F_OSATLS].len, fld[F_OSATLS].oik, l);
+	if (Sarjat[kilp->sarja].maxnosuus > 1 && (int) wcslen(woas) > fld[F_OSATLS].len) {
+		// rinnakkaisten juoksijoiden ajat yhdelle riville: kentta kasvaa oikealle, jotta ajat mahtuvat
+		putfld(tulprm, woas, fld[F_OSATLS].pos, wcslen(woas), 0, l);
+		}
+	else
+		putfld(tulprm, woas, fld[F_OSATLS].pos, fld[F_OSATLS].len, fld[F_OSATLS].oik, l);
 	putfld(tulprm, whksj, fld[F_OSASJ].pos, fld[F_OSASJ].len, fld[F_OSASJ].oik, l);
 	  if (Sarjat[kilp->sarja].paikat[osuus]) {
 		 memset(wst, 0, sizeof(wst));
@@ -2675,8 +2699,38 @@ static INT prttulos(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, INT sj
 			putfld(tulprm, wst2, fld[F_TARK].pos, fld[F_TARK].len, fld[F_TARK].oik, l);
 			}
 		}
-	if (Sarjat[kilp->sarja].maxnosuus > 1)
-		osuusnimist(kilp, osuus, wst, fld[F_NIMI].len);
+	if (Sarjat[kilp->sarja].maxnosuus > 1) {
+		// yksi nimi: yksittaisen osuuden juoksija tai rinnakkaisosuuden ratkaiseva (nopein) juoksija;
+		// ilman ensimmaisen maaliin -saantoa rinnakkaisten nimet lyhennettyina
+		sarjatietue *srj = &Sarjat[kilp->sarja];
+		int eos = -1;
+
+		if (srj->nosuus[osuus] == 1)
+			eos = srj->aosuus[osuus+1];
+		else if (srj->ekaMaaliLahettaa[osuus]) {
+			eos = kilp->ekaMaaliOsuus(osuus, 0);
+			if (eos < 0) {   // kukaan ei ole maalissa: nimi sen, jonka merkinta (H/K/E) ratkaisee, muuten ensimmainen
+				int eos1 = -1;
+
+				for (int os = srj->aosuus[osuus] + 1; os <= srj->aosuus[osuus+1]; os++) {
+					if (!onPaikkaKaytossa(kilp, os))
+						continue;
+					if (eos1 < 0)
+						eos1 = os;
+					if (wcschr(L"HKE", (wchar_t) kilp->ostiet[os].keskhyl)) {
+						eos1 = os;
+						break;
+						}
+					}
+				eos = eos1;
+				}
+			}
+		if (eos >= 0)
+			kilp->Nimi(wst, fld[F_NIMI].len, eos, tulprm->tulmuot.etusuku);
+		else
+			osuusnimist(kilp, osuus, wst, fld[F_NIMI].len);
+		putfld(tulprm, wst, fld[F_NIMI].pos, fld[F_NIMI].len, fld[F_NIMI].oik, l);
+		}
 	else {
 		for (int ifld = 0; ifld < n_prtflds; ifld++) {
 			int opt = 0;
@@ -2702,7 +2756,17 @@ static INT prttulos(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, INT sj
 		}
 	putfld(tulprm, was, fld[F_TLS].pos, fld[F_TLS].len, fld[F_TLS].oik, l);
 	putfld(tulprm, weas, fld[F_ERO].pos, fld[F_ERO].len, fld[F_ERO].oik, l);
-	putfld(tulprm, woas, fld[F_OSATLS].pos, fld[F_OSATLS].len, fld[F_OSATLS].oik, l);
+	if (Sarjat[kilp->sarja].maxnosuus > 1 && (int) wcslen(woas) > fld[F_OSATLS].len) {
+		// rinnakkaisten juoksijoiden ajat yhdelle riville: kentta kasvaa oikealle, jotta ajat mahtuvat
+		// teksti pidetaan sivun sisalla: alku siirtyy vasemmalle yhta monta merkkia kuin teksti on kenttaa pidempi
+		// (GDI:ssa merkin leveys on noin numwidth/4 paikkayksikkoa, muuten 1)
+		int siirto = ((int) wcslen(woas) - fld[F_OSATLS].len) *
+			(tulprm->printer == GDIPRINTER ? tulprm->lstf->u.wp.GDIparam.Currentfont.numwidth / 4 : 1);
+
+		putfld(tulprm, woas, fld[F_OSATLS].pos - siirto, wcslen(woas), 0, l);
+		}
+	else
+		putfld(tulprm, woas, fld[F_OSATLS].pos, fld[F_OSATLS].len, fld[F_OSATLS].oik, l);
 	putfld(tulprm, whksj, fld[F_OSASJ].pos, fld[F_OSASJ].len, fld[F_OSASJ].oik, l);
 	  if (Sarjat[kilp->sarja].paikat[osuus]) {
 		 memset(wst, 0, sizeof(wst));

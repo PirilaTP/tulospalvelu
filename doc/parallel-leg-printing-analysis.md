@@ -39,6 +39,11 @@ Code: `TPsource/V52/Juk/VTulostus.cpp`, `VIx.cpp`, `vkilp.cpp`, `VDeclare.h`.
 | 18 | clearing a finish time in Joukkuetiedot (Maali column, split table) stored 00:00:00, so the runner got a leg time of 24h minus the start (127-3A/3B: 11.50.01) | `wstrtoaika_vap` returns 0 for an empty string when `t0 == 0` | an empty cell stores "no time" (`TMAALI0`). Old bad values must be cleared again. Other places that clear times were not checked |
 | 19 | `105-3A` could wrap at the hyphen in the HTML number column | normal line breaking | wrapped in `white-space:nowrap` (HTML only) |
 | 20 | team list of a parallel leg: last column printed every runner's time joined with "/" (`---/---/`), cut off by the column width so the real time was lost | `osuustlsst` listed all parallel runners | with the first-finish rule only the deciding runner's leg time is printed; legs without it still list all times. Checked in printer (PDF) output only |
+| 21 | HTML team list of a parallel leg showed one runner's time only | single time column | all parallel runners' results on one line in a nowrap cell: time, `H` DSQ, `K` DNF, `E` DNS, `-` none/empty slot (`10.51/H/-`) |
+| 22 | PDF/paper/text team list of a parallel leg (first-finish rule) | all times do not fit the column | only the deciding runner's leg time (row 20 behaviour); the HTML keeps all times. When all three times exceed one hour a full list would not fit the PDF (not built, not tested) |
+| 23 | PDF: no runner names in a competition with parallel legs (any leg) | the name was built (`osuusnimist`) but never written | one name: the leg's runner, the deciding runner on a first-finish leg, or when nobody has a time the runner whose mark (E, K, H) decides, else the first runner |
+| 24 | PDF: leg time of single-runner legs in a parallel competition printed with colons (`28:15`) | `aikatowstr_cols_n` | dots like other times |
+| 25 | PDF: long parallel time lists were cut at the page edge | fixed field width | the text starts further left by its excess length (position unit calibrated by eye for the default layout) |
 
 Verified on the demo (HTML unless noted):
 
