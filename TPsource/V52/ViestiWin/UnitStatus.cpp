@@ -323,7 +323,14 @@ void __fastcall TFormStatus::Lukumaarat(void)
 				nKesk += nkeskt[os];
 				nHyl += nhylt[os];
 				nEil += neilt[os];
-				nAvoin += navoint[os];
+				if (kilpparam.maxnosuus > 1) {   // sama maaritelma kuin tulosteissa
+					for (int srj = 0; srj < sarjaluku; srj++) {
+						if (os < Sarjat[srj].ntosuus)
+							nAvoin += avoinLkm(srj, os);
+						}
+					}
+				else
+					nAvoin += navoint[os];
 				for (int srj = 0; srj < sarjaluku; srj++) {
 					nYhtLht += nylahto[srj][os];
 					nEmitKoodit += nekoodi[srj][os];
@@ -413,7 +420,7 @@ void __fastcall TFormStatus::Lukumaarat(void)
 				FormStatus->LkmGrid->Cells[monisarja+3][rr] = nkesk[srj][os];
 				FormStatus->LkmGrid->Cells[monisarja+4][rr] = nhyl[srj][os];
 				FormStatus->LkmGrid->Cells[monisarja+5][rr] = neil[srj][os];
-				FormStatus->LkmGrid->Cells[monisarja+6][rr] = navoin[srj][os];
+				FormStatus->LkmGrid->Cells[monisarja+6][rr] = avoinLkm(srj, os);
 				if (IkkParam.ylahdot)
 					FormStatus->LkmGrid->Cells[monisarja+7][rr] = nylahto[srj][os];
 				if (IkkParam.esitykset)
