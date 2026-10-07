@@ -114,7 +114,10 @@ Säännöt voi valita erikseen:
 | kyllä | kyllä | Nuorten Jukolan sääntö: ensimmäinen ratkaisee tuloksen ja käynnistää seuraavan osuuden |
 | ei | kyllä | Seuraava osuus lähtee ensimmäisestä, mutta joukkueen osuustulos ja -tila vaativat kaikkien rinnakkaisten tulokset: osuusaika on hitaimman aika ja yhden juoksijan hylkäys tai keskeytys hylkää tai keskeyttää joukkueen |
 | ei | ei | Normaali rinnakkaisosuus: tulos odottaa kaikkia, seuraava osuus lähtee joukkueen osuustuloksesta (hitain) |
-| kyllä | ei | Ensimmäisen aika on joukkueen osuusaika; tavallinen seuraava osuus lähtee silti tästä ajasta, rinnakkainen seuraava osuus omien sääntöjensä mukaan |
+| kyllä | ei | Ensimmäisen aika on joukkueen osuusaika; tavallinen (yhden juoksijan) seuraava osuus lähtee silti tästä ajasta. Jos seuraava osuus on itsekin rinnakkainen, sen ensimmäinen paikka (esim. 4A) lähtee ensimmäisestä, toinen (4B) toiseksi maaliin tulleesta ja kolmas (4C) kolmanneksi maaliin tulleesta |
+
+Jos osuudelle on annettu oma yhteislähtöaika (*MassStart*), se on ensisijainen
+eikä kumpikaan sääntö muuta lähtöaikaa.
 
 Vanhoissa sarjatiedostoissa ollut yhteinen asetus (*FirstFinishStarts*) luetaan
 automaattisesti kummaksikin säännöksi (osuudella ratkaisee ensimmäinen ja

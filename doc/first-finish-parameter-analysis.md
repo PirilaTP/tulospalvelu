@@ -1,5 +1,9 @@
 # First finish rule: should "no other result needed" be its own parameter? (branch 56)
 
+> Status: sections 1-5 are the original analysis and use the pre-change names (`ekaMaaliLahettaa`,
+> `FirstFinishStarts`, proposed `FirstFinishDecides`). The implemented design differs in names and in
+> where the start flag lives; see section 6 for what is in the code.
+
 Question: today one flag, "first finish starts the next leg" (`FirstFinishStarts`), also makes the
 other parallel runners' results unnecessary. Could or should there be a separate parameter for
 "no other result needed"?

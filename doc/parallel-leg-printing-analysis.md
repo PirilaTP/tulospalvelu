@@ -4,6 +4,11 @@ Scope: ViestiWin result printing (`Tulosteet`) for relays with parallel runners 
 (e.g. Nuorten Jukola, 7 legs, leg 3 = 3A/3B/3C, first finish starts leg 4).
 Code: `TPsource/V52/Juk/VTulostus.cpp`, `VIx.cpp`, `vkilp.cpp`, `VDeclare.h`.
 
+Terminology: "the first-finish rule" below means the leg's result rule `OnlyFirstFinishCounts`
+(`ekaMaaliRatkaisee`, only the first finisher counts). The start rule is separate
+(`StartsAtPreviousFirstFinish`, `lahtoEdEkaMaalista`) and does not affect printing; see
+`first-finish-parameter-analysis.md`.
+
 ## 1. How it was investigated
 
 - Demo competition `C:\Temp\nj2026_demo` (generator `make_demo.py`): 40 teams, 7 legs, leg 3
