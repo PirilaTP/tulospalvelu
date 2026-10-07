@@ -55,13 +55,13 @@ int EkaMaaliIndeksi(const RinnakkaisTila *osat, int n);
 //
 // registered  kaytossa olevien (ilmoitettujen) paikkojen lkm osuudella
 // finished    niista maalissa olevien lkm
-// ekaMaaliLahettaa  onko "ensimmainen maaliin kaynnistaa seuraavan
-//             osuuden" -saanto kaytossa talla osuudella
+// ekaMaaliRatkaisee  onko "vain ensimmaisena maaliin tullut ratkaisee"
+//             -saanto kaytossa talla osuudella
 //
 // Jos registered == 0 (ei ketaan ilmoitettu), osuutta ei koskaan
-// odoteta - palauttaa aina true. Muuten: jos ekaMaaliLahettaa, riittaa
+// odoteta - palauttaa aina true. Muuten: jos ekaMaaliRatkaisee, riittaa
 // etta yksikin on maalissa; muuten kaikkien ilmoitettujen on oltava.
-bool PuutelisaNollataan(int registered, int finished, bool ekaMaaliLahettaa);
+bool PuutelisaNollataan(int registered, int finished, bool ekaMaaliRatkaisee);
 
 // Onko rinnakkaisosuuden paikalla kilpailija, jota odotetaan ja jonka
 // maaliaika voi ratkaista osuuden. Paikka on kaytossa, jos sille on
@@ -73,11 +73,11 @@ bool PaikkaKaytossa(const char *nimi, bool onBadge, bool onAika);
 
 // Lahteeko osuuden jokainen paikka edellisen osuuden joukkuetuloksesta
 // (yhteinen vaihto)? Kylla, jos jompikumpi osuus on tavallinen (yksi
-// paikka) tai jos edellisella osuudella on kaytossa "ensimmainen
-// maaliin kaynnistaa seuraavan osuuden" -saanto. Muuten (rinnakkais-
+// paikka) tai jos osuudella on kaytossa "lahtee edellisen rinnakkais-
+// osuuden ensimmaisen maalista" -saanto. Muuten (rinnakkais-
 // osuudelta rinnakkaisosuudelle ilman saantoa) k:s paikka lahtee
 // edellisen osuuden k:nneksi nopeimman maaliajasta.
-bool LahtoEdellisenTuloksesta(int nosuusNyt, int nosuusEd, bool edEkaMaaliLahettaa);
+bool LahtoEdellisenTuloksesta(int nosuusNyt, int nosuusEd, bool lahtoEdEkaMaalista);
 
 // Onko juoksijan tai osuuden tila hyvaksytty: '-' (avoin), 'T' tai 'I'.
 // Muut ('K' keskeytti, 'H' hylatty, 'E' ei lahtenyt, ...) eivat ole.

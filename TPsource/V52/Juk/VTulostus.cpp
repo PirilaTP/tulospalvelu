@@ -1890,7 +1890,7 @@ static wchar_t * osuustlsst(kilptietue *kilp, tulostusparamtp *tulprm, int osuus
 		  }
 	   return(oas);
 	   }
-   if (tulprm->kohde != L'H' && Sarjat[kilp->sarja].ekaMaaliLahettaa[osuus]) {
+   if (tulprm->kohde != L'H' && Sarjat[kilp->sarja].ekaMaaliRatkaisee[osuus]) {
 	   // paperi/pdf/teksti, ensimmaisen maaliin -saanto: vain ratkaisevan juoksijan aika (kaikkien
 	   // rinnakkaisten ajat eivat mahdu sarakkeeseen; html-tulosteessa kaikki ajat)
 	   int eos = kilp->ekaMaaliOsuus(osuus, 0);
@@ -2707,7 +2707,7 @@ static INT prttulos(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, INT sj
 
 		if (srj->nosuus[osuus] == 1)
 			eos = srj->aosuus[osuus+1];
-		else if (srj->ekaMaaliLahettaa[osuus]) {
+		else if (srj->ekaMaaliRatkaisee[osuus]) {
 			eos = kilp->ekaMaaliOsuus(osuus, 0);
 			if (eos < 0) {   // kukaan ei ole maalissa: nimi sen, jonka merkinta (H/K/E) ratkaisee, muuten ensimmainen
 				int eos1 = -1;
@@ -3130,7 +3130,7 @@ static int tulosPaikka(kilptietue *kilp, int yosuus)
 
 	if (srj->nosuus[yosuus] == 1)
 		return(srj->aosuus[yosuus+1]);
-	if (srj->ekaMaaliLahettaa[yosuus]) {
+	if (srj->ekaMaaliRatkaisee[yosuus]) {
 		int eos = kilp->ekaMaaliOsuus(yosuus, 0);
 		if (eos >= 0)
 			return(eos);

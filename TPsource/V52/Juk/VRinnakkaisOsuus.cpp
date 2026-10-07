@@ -37,11 +37,11 @@ int EkaMaaliIndeksi(const RinnakkaisTila *osat, int n)
 	return best;
 }
 
-bool PuutelisaNollataan(int registered, int finished, bool ekaMaaliLahettaa)
+bool PuutelisaNollataan(int registered, int finished, bool ekaMaaliRatkaisee)
 {
 	if (registered == 0)
 		return true;
-	if (ekaMaaliLahettaa)
+	if (ekaMaaliRatkaisee)
 		return finished >= 1;
 	return finished == registered;
 }
@@ -59,9 +59,9 @@ bool PaikkaKaytossa(const char *nimi, bool onBadge, bool onAika)
 	return false;
 }
 
-bool LahtoEdellisenTuloksesta(int nosuusNyt, int nosuusEd, bool edEkaMaaliLahettaa)
+bool LahtoEdellisenTuloksesta(int nosuusNyt, int nosuusEd, bool lahtoEdEkaMaalista)
 {
-	return nosuusNyt == 1 || nosuusEd == 1 || edEkaMaaliLahettaa;
+	return nosuusNyt == 1 || nosuusEd == 1 || lahtoEdEkaMaalista;
 }
 
 bool TilaHyvaksytty(char tila)

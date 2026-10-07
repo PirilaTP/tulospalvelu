@@ -360,11 +360,18 @@ INT32 kilptietue::Lahto(int osuus, int *laji /* = NULL */)
 		 etls < 50L * TUNTI)
 		 oslahto = Sarjat[sarja].lahto + etls - SakkoAika(yOsuus, true);
 #else // !SKMKV
-	   // Ensimmainen maaliin -saanto edellisella osuudella: kaikki paikat lahtevat
-	   // joukkueen osuustuloksesta myos, kun seuraavakin osuus on rinnakkainen
+	   // Osuus lahtee edellisen rinnakkaisosuuden ensimmaisen maalista: kaikki paikat lahtevat
+	   // yhdessa, myos kun tama osuus on rinnakkainen
 	   if (LahtoEdellisenTuloksesta(Sarjat[sarja].nosuus[yosuus], Sarjat[sarja].nosuus[yosuus-1],
-		  Sarjat[sarja].ekaMaaliLahettaa[yosuus-1])) {
-		  if ((etls = tTulos(yosuus-1, 0, &puutelisa)) != 0 &&
+		  Sarjat[sarja].lahtoEdEkaMaalista[yosuus])) {
+		  if (Sarjat[sarja].lahtoEdEkaMaalista[yosuus] && Sarjat[sarja].nosuus[yosuus-1] > 1 &&
+			  !Sarjat[sarja].ekaMaaliRatkaisee[yosuus-1]) {
+			  // joukkueen osuustulos ei ole ensimmaisen aika (kaikkien tulos tarvitaan),
+			  // mutta lahto tulee silti ensimmaisen maalista
+			  if ((etls = ekaMaaliTulos(yosuus-1, 0)) != 0)
+				  oslahto = Sarjat[sarja].lahto + etls;
+			  }
+		  else if ((etls = tTulos(yosuus-1, 0, &puutelisa)) != 0 &&
 			   puutelisa == 0)
 			   oslahto = Sarjat[sarja].lahto + etls;
 		  oslahto -= SakkoAika(yosuus, true);
@@ -446,14 +453,14 @@ INT32 kilptietue::tTulos(int tosuus, int va, __int64 *tlslisa /* = NULL */)
 			 }
 		  }
 	   if (tlslisa && !yl1 &&
-		  PuutelisaNollataan(n_reg[yos], n_osaika[yos], Sarjat[sarja].ekaMaaliLahettaa[yos]))
+		  PuutelisaNollataan(n_reg[yos], n_osaika[yos], Sarjat[sarja].ekaMaaliRatkaisee[yos]))
 		  *tlslisa = 0;
 	   }
    if (n_osaika[tosuus] == 0) {
 	   return(0);
 	  }
    if (tlslisa == NULL && n_osaika[tosuus] < n_reg[tosuus] &&
-	   !Sarjat[sarja].ekaMaaliLahettaa[tosuus]) {
+	   !Sarjat[sarja].ekaMaaliRatkaisee[tosuus]) {
 	   return(SEK*n_osaika[tosuus]);
 	   }
    if (yl1) {
@@ -486,6 +493,23 @@ int kilptietue::ekaMaaliOsuus(int tosuus, int va)
 	return(i < 0 ? -1 : Sarjat[sarja].aosuus[tosuus] + 1 + i);
 }
 
+// Ensimmaisena maaliin tulleen juoksijan aika rinnakkaisosuudella riippumatta siita,
+// ratkaiseeko han joukkueen osuustuloksen (osuuden lahto edellisen ensimmaisen maalista)
+INT32 kilptietue::ekaMaaliTulos(int tosuus, int va)
+{
+	int eos;
+	long tls1;
+
+	if (tosuus < 0 || tosuus >= Sarjat[sarja].ntosuus || va < 0 || va > Sarjat[sarja].valuku[tosuus])
+		return(0);
+	eos = ekaMaaliOsuus(tosuus, va);
+	if (eos < 0)
+		return(0);
+	tls1 = (Maali(eos, va) - Sarjat[sarja].lahto + 48L*TUNTI) % (24L*TUNTI);
+	tls1 += SakkoAika(tosuus, true);
+	return(tls1);
+}
+
 INT32 kilptietue::aTulos(int tosuus, int va)
 {
 	long tls = 0, tls1, os;
@@ -493,7 +517,7 @@ INT32 kilptietue::aTulos(int tosuus, int va)
 	if (tosuus < 0 || tosuus >= Sarjat[sarja].ntosuus || va < 0 || va > Sarjat[sarja].valuku[tosuus])
 		return(0);
 
-	if (Sarjat[sarja].ekaMaaliLahettaa[tosuus]) {
+	if (Sarjat[sarja].ekaMaaliRatkaisee[tosuus]) {
 		int eos = ekaMaaliOsuus(tosuus, va);
 		if (eos < 0)
 			return(0);
@@ -1047,7 +1071,7 @@ char kilptietue::tTark(int osuus)
 	if (tSulj(osuus))
 		return('S');
 
-	if (Sarjat[sarja].ekaMaaliLahettaa[osuus]) {
+	if (Sarjat[sarja].ekaMaaliRatkaisee[osuus]) {
 		// Ensimmaisena maaliin tullut ratkaisee statuksen (myos hylkayksen ja
 		// keskeytyksen) - ei enaa huonoin-voittaa -periaatetta
 		return(ekaMaaliTila(this, osuus));
@@ -1415,7 +1439,7 @@ bool kilptietue::tHyv(int osuus /* =-1 */)
 		osuus = Sarjat[sarja].aosuus[osuus+1];
 	for (int os = 0; os <= osuus; os++) {
 		int yos = Sarjat[sarja].yosuus[os];
-		if (Sarjat[sarja].nosuus[yos] > 1 && Sarjat[sarja].ekaMaaliLahettaa[yos]) {
+		if (Sarjat[sarja].nosuus[yos] > 1 && Sarjat[sarja].ekaMaaliRatkaisee[yos]) {
 			// Ensimmainen maaliin -saanto: vain ratkaisevan juoksijan tila merkitsee
 			if (os == Sarjat[sarja].aosuus[yos] + 1 && !TilaHyvaksytty(ekaMaaliTila(this, yos)))
 				return(false);
@@ -1435,7 +1459,7 @@ bool kilptietue::Hyv(int osuus /* =-1 */)
 		osuus = Sarjat[sarja].osuusluku-1;
 	for (int os = 0; os <= osuus; os++) {
 		int yos = Sarjat[sarja].yosuus[os];
-		if (Sarjat[sarja].nosuus[yos] > 1 && Sarjat[sarja].ekaMaaliLahettaa[yos]) {
+		if (Sarjat[sarja].nosuus[yos] > 1 && Sarjat[sarja].ekaMaaliRatkaisee[yos]) {
 			// Ensimmainen maaliin -saanto: vain ratkaisevan juoksijan tila merkitsee
 			if (os == Sarjat[sarja].aosuus[yos] + 1 && !TilaHyvaksytty(ekaMaaliTila(this, yos)))
 				return(false);

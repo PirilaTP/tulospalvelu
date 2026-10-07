@@ -348,7 +348,7 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 								line[0] = 0;
 								}
 							else if (Sarjat[Kilp.sarja].nosuus[yos] > 1 &&
-								Sarjat[Kilp.sarja].ekaMaaliLahettaa[yos] &&
+								Sarjat[Kilp.sarja].ekaMaaliRatkaisee[yos] &&
 								Kilp.ekaMaaliOsuus(yos, 0) != os) {
 								// Vain rinnakkaisosuuden ensimmaiseksi maaliin tulleen
 								// rivi nayttaa joukkueen yhteisen tuloksen; muut rivit
@@ -430,7 +430,7 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 							// paasi tahan valiaikaan/maaliin, nayttaa joukkueen
 							// yhteisen tuloksen - muut sarakkeet nayttavat 00:00:00.
 							if (!(Sarjat[Kilp.sarja].nosuus[yos] > 1 &&
-								Sarjat[Kilp.sarja].ekaMaaliLahettaa[yos] &&
+								Sarjat[Kilp.sarja].ekaMaaliRatkaisee[yos] &&
 								Kilp.ekaMaaliOsuus(yos, va) != os))
 								aikatowstr_cols_n(ln, Kilp.tTulos(yos, va), 0, 0, laika);
 							else

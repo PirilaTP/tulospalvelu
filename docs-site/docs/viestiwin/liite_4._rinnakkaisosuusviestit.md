@@ -89,26 +89,48 @@ Samat osuuskohtaiset rajaukset toimivat myös tavallisessa viestissä: osuuskoht
 *Hylätyt*-, *Keskeyttäneet*-, *Ei-lähteneet*- tai *Avoimet*-lista kirjoittaa
 niiden juoksijat (aiemmin tulostui tyhjä tiedosto).
 
-## Rinnakkaisen osuuden ensimmäinen maaliaika käynnistää seuraavan osuuden lähdön
+## Rinnakkaisosuuden ensimmäinen maaliin tullut ratkaisee ja käynnistää seuraavan osuuden
 
-Rinnakkaisosuuksia sisältävälle sarjalle voidaan osuuskohtaisesti valita, että
-joukkueen tulosta ei lasketa vasta kun kaikki kyseisen osuuden rinnakkaiset
-juoksijat (esim. 3A, 3B ja 3C) ovat maalissa, vaan heti kun *ensimmäinen*
-heistä saapuu maaliin. Asetus tehdään *Sarjan lisäys ja muokkaus*
--kaavakkeen taulukossa rivillä *Rinnakkaisen osuuden ensimmäinen maaliaika
-käynnistää seuraavan osuuden lähdön (1=kyllä)*. Rivi näkyy taulukossa
-automaattisesti, kun sarjassa on vähintään yksi rinnakkaisosuus, ja arvon 1
-voi kirjoittaa vain niiden osuuksien sarakkeisiin, joilla on useampi kuin
-yksi rinnakkainen juoksija.
+Rinnakkaisosuuksia sisältävässä sarjassa voidaan valita kaksi toisistaan
+riippumatonta sääntöä. Asetukset tehdään *Sarjan lisäys ja muokkaus*
+-kaavakkeen taulukon kahdella rivillä, jotka näkyvät automaattisesti, kun
+sarjassa on vähintään yksi rinnakkaisosuus.
 
-Kun asetus on käytössä osuudelle:
+1. *Rinnakkaisosuuden tuloksen ratkaisee ensimmäisenä maaliin tullut, muita
+   ei tarvita (1=kyllä)*. Arvo 1 kirjoitetaan rinnakkaisen osuuden (esim. 3)
+   sarakkeeseen. Tällöin joukkueen osuustulosta ja -tilaa ei odoteta kaikilta
+   rinnakkaisilta juoksijoilta (esim. 3A, 3B ja 3C), vaan ne määräytyvät heti,
+   kun *ensimmäinen* heistä saapuu maaliin.
+2. *Osuus lähtee, kun edellisen rinnakkaisosuuden ensimmäinen juoksija tulee
+   maaliin (1=kyllä)*. Arvo 1 kirjoitetaan sen osuuden (esim. 4) sarakkeeseen,
+   joka seuraa rinnakkaisosuutta. Osuuden lähtöaika on silloin ensimmäisen
+   rinnakkaisen juoksijan maaliintuloaika. Jos osuus on itsekin rinnakkainen,
+   kaikki sen paikat lähtevät yhdessä.
+
+Säännöt voi valita erikseen:
+
+| Ratkaisee ensimmäinen (osuus 3) | Lähtee ensimmäisestä (osuus 4) | Vaikutus |
+|---|---|---|
+| kyllä | kyllä | Nuorten Jukolan sääntö: ensimmäinen ratkaisee tuloksen ja käynnistää seuraavan osuuden |
+| ei | kyllä | Seuraava osuus lähtee ensimmäisestä, mutta joukkueen osuustulos ja -tila vaativat kaikkien rinnakkaisten tulokset: osuusaika on hitaimman aika ja yhden juoksijan hylkäys tai keskeytys hylkää tai keskeyttää joukkueen |
+| ei | ei | Normaali rinnakkaisosuus: tulos odottaa kaikkia, seuraava osuus lähtee joukkueen osuustuloksesta (hitain) |
+| kyllä | ei | Ensimmäisen aika on joukkueen osuusaika; tavallinen seuraava osuus lähtee silti tästä ajasta, rinnakkainen seuraava osuus omien sääntöjensä mukaan |
+
+Vanhoissa sarjatiedostoissa ollut yhteinen asetus (*FirstFinishStarts*) luetaan
+automaattisesti kummaksikin säännöksi (osuudella ratkaisee ensimmäinen ja
+seuraava osuus lähtee siitä), joten aiemmat kilpailut toimivat entiseen tapaan.
+Tallennettaessa asetukset kirjoitetaan *KilpSrj.xml*-tiedostoon osuuskohtaisilla
+tunnisteilla *OnlyFirstFinishCounts* ja *StartsAtPreviousFirstFinish*.
+
+Kun osuudella ratkaisee ensimmäinen maaliin tullut:
 
 - Joukkueen osuustulokseksi ja sijoitukseksi kirjataan sen rinnakkaisen
   juoksijan aika, joka ensimmäisenä saapuu maaliin — muiden rinnakkaisten
   juoksijoiden aikoja ei enää odoteta.
-- Sama ensimmäinen maaliintuloaika käynnistää myös joukkueen seuraavan
-  osuuden lähtöajan, eli vaihto tapahtuu heti ensimmäisen rinnakkaisen
-  juoksijan saapuessa, ei vasta kun kaikki kolme ovat vaihtaneet.
+- Jos seuraavalla osuudella on käytössä lähtö edellisen ensimmäisestä, sama
+  maaliintuloaika käynnistää myös joukkueen seuraavan osuuden lähtöajan, eli
+  vaihto tapahtuu heti ensimmäisen rinnakkaisen juoksijan saapuessa, ei vasta
+  kun kaikki kolme ovat vaihtaneet.
 - Jos ensimmäisenä maaliin tullut juoksija myöhemmin hylätään, joukkueen
   osuustulos perii tämän hylkäyksen — sitä ei korvata jonkun toisen
   rinnakkaisen juoksijan (esim. myöhemmin maaliin tulleen) hyväksytyllä

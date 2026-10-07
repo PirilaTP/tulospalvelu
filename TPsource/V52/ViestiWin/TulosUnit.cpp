@@ -273,10 +273,10 @@ void __fastcall TTilanneForm::PaivitaGrid(bool scroll)
 
 	// Nama kolme suodatinta koskevat vain TARKASTELTAVAA osuutta: nakyvat
 	// vain jos taman osuuden nosuus>1 (oikeasti rinnakkainen), ja 1puute/2puute
-	// piilotetaan lisaksi, jos osuudella on kaytossa ekaMaaliLahettaa - talloin
+	// piilotetaan lisaksi, jos osuudella on kaytossa ekaMaaliRatkaisee - talloin
 	// tulosta ei enaa odoteta puuttuvilta rinnakkaisilta juoksijoilta.
 	bool onRinnakkainen = Sarjat[Sarja].nosuus[Osuus] > 1;
-	bool ekaMaaliKaytossa = onRinnakkainen && Sarjat[Sarja].ekaMaaliLahettaa[Osuus];
+	bool ekaMaaliKaytossa = onRinnakkainen && Sarjat[Sarja].ekaMaaliRatkaisee[Osuus];
 	CBkaikki->Visible = onRinnakkainen && !ekaMaaliKaytossa;
 	CBkaikki->Enabled = CBkaikki->Visible;
 	if (ekaMaaliKaytossa)
@@ -589,7 +589,7 @@ void __fastcall TTilanneForm::PaivitaGrid(bool scroll)
 					}
 				wln[wcslen(wln)-1] = 0;
 				TulosGrid->Cells[6][k] = UnicodeString(wln);
-				if (Sarjat[kilp.sarja].nosuus[Osuus] > 1 && Sarjat[kilp.sarja].ekaMaaliLahettaa[Osuus]) {
+				if (Sarjat[kilp.sarja].nosuus[Osuus] > 1 && Sarjat[kilp.sarja].ekaMaaliRatkaisee[Osuus]) {
 					int eos = kilp.ekaMaaliOsuus(Osuus, Va < 0 ? 0 : Va);
 					TulosGrid->Objects[6][k] = (TObject*)(NativeInt)
 						(eos < 0 ? -1 : eos - (Sarjat[kilp.sarja].aosuus[Osuus] + 1));
@@ -603,7 +603,7 @@ void __fastcall TTilanneForm::PaivitaGrid(bool scroll)
 						// tassa (piste <= valuku) haarassa, joten aos jaa aina
 						// osuuden ensimmaiseen paikkaan. Kaytetaan sen sijaan
 						// suoraan ekaMaaliOsuus:aa oikean paikan loytamiseen.
-						if (Sarjat[Sarja].ekaMaaliLahettaa[Osuus]) {
+						if (Sarjat[Sarja].ekaMaaliRatkaisee[Osuus]) {
 							int eos = kilp.ekaMaaliOsuus(Osuus, Va);
 							t = (eos < 0) ? 0 : kilp.osTulos(eos, Va);
 							}

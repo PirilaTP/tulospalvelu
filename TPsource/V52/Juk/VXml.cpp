@@ -209,9 +209,11 @@ static wchar_t *SakLaji[2] = {L"Shooting", L"Other"};
 #define TAGLegResult 			149
 #define TAGLegRank 				150
 #define TAGEmitToSplits		    151
-#define TAGFirstFinishStarts	    152
+#define TAGFirstFinishStarts	    152   // vanha nimi: lukeminen vastaa uusia OnlyFirstFinishCounts + seuraavan StartsAtPreviousFirstFinish
+#define TAGOnlyFirstFinishCounts	    153
+#define TAGStartsAtPreviousFirstFinish	    154
 
-static wchar_t *srjtag[153] = {
+static wchar_t *srjtag[155] = {
 	L"Event",
 	L"Software",
 	L"VersionId",
@@ -364,7 +366,9 @@ static wchar_t *srjtag[153] = {
 	L"LegResult",
 	L"LegRank",
 	L"EmitToSplits",
-	L"FirstFinishStarts"
+	L"FirstFinishStarts",
+	L"OnlyFirstFinishCounts",
+	L"StartsAtPreviousFirstFinish"
 	};
 
 int powi(int i, int j)
@@ -599,9 +603,26 @@ static int loadClassLegData(sarjatietue *Sarja, xml_node *node, int *inode, int 
 					break;
 				case TAGFirstFinishStarts :
 					{
+					// vanha yhteinen asetus: osuus ratkaisee tuloksen ja seuraava osuus lahtee sen maalista
 					int ekafl = 0;
 					node[*inode].gettext_int(&ekafl);
-					Sarja->ekaMaaliLahettaa[i_os] = (ekafl != 0);
+					Sarja->ekaMaaliRatkaisee[i_os] = (ekafl != 0);
+					if (i_os + 1 < MAXOSUUSLUKU)
+						Sarja->lahtoEdEkaMaalista[i_os+1] = (ekafl != 0);
+					}
+					break;
+				case TAGOnlyFirstFinishCounts :
+					{
+					int ekafl = 0;
+					node[*inode].gettext_int(&ekafl);
+					Sarja->ekaMaaliRatkaisee[i_os] = (ekafl != 0);
+					}
+					break;
+				case TAGStartsAtPreviousFirstFinish :
+					{
+					int ekafl = 0;
+					node[*inode].gettext_int(&ekafl);
+					Sarja->lahtoEdEkaMaalista[i_os] = (ekafl != 0);
 					}
 					break;
 				case TAGDistance :
@@ -1741,8 +1762,10 @@ void kirjXmlClassLegs(TextFl *outfl, sarjatietue *Sarja, int level)
 		outfl->put_wtag(ln, level++);
 		if (Sarja->nosuus[os] > 1)
 			outfl->put_wxml_d(srjtag[TAGNumberOfCompetitors], Sarja->nosuus[os], level);
-		if (Sarja->ekaMaaliLahettaa[os])
-			outfl->put_wxml_d(srjtag[TAGFirstFinishStarts], 1, level);
+		if (Sarja->ekaMaaliRatkaisee[os])
+			outfl->put_wxml_d(srjtag[TAGOnlyFirstFinishCounts], 1, level);
+		if (Sarja->lahtoEdEkaMaalista[os])
+			outfl->put_wxml_d(srjtag[TAGStartsAtPreviousFirstFinish], 1, level);
 		outfl->put_wtag(srjtag[TAGDistance], level++);
 		outfl->put_wxml_s(srjtag[TAGValue], ansitowcs(ln, Sarja->matka[os], 40), level);
 		outfl->put_wantitag(srjtag[TAGDistance], --level);

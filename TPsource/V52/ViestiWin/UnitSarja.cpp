@@ -144,7 +144,7 @@ void __fastcall TFormSarja::naytaOsuudet(void)
 			valuku = Sarja1.valuku[os];
 
 	SG1->ColCount = Sarja1.ntosuus + 1;
-	SG1->RowCount = valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3+lisarivit4;
+	SG1->RowCount = valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3+2*lisarivit4;   // lisarivit4: kaksi rivia (tulos ratkaistaan ensimmaisesta, lahto edellisen ensimmaisesta)
 	if (lisarivit0)
 		SG1->Cells[0][1] = L"Rinn.lkm.";
 	SG1->Cells[0][1+lisarivit0] = L"Matka (km)";
@@ -163,8 +163,9 @@ void __fastcall TFormSarja::naytaOsuudet(void)
 		SG1->Cells[0][va+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = UnicodeString(va+1)+L". va-matka";
 		}
 	if (lisarivit4) {
-		SG1->Cells[0][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = L"Rinnakkaisen osuuden ensimmäinen maaliaika käynnistää seuraavan osuuden lähdön (1=kyllä)";
-		SG1->ColWidths[0] = 260 * Screen->PixelsPerInch / 96;
+		SG1->Cells[0][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = L"Rinnakkaisosuuden tuloksen ratkaisee ensimmäisenä maaliin tullut, muita ei tarvita (1=kyllä)";
+		SG1->Cells[0][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3+1] = L"Osuus lähtee, kun edellisen rinnakkaisosuuden ensimmäinen juoksija tulee maaliin (1=kyllä)";
+		SG1->ColWidths[0] = 470 * Screen->PixelsPerInch / 96;   // pitkat rivin nimet (rinnakkaisosuuden saannot)
 		}
 	for (int os = 0; os < Sarja1.ntosuus; os++) {
 		SG1->ColWidths[os+1] = 65 * Screen->PixelsPerInch / 96;
@@ -192,9 +193,13 @@ void __fastcall TFormSarja::naytaOsuudet(void)
 			}
 		if (lisarivit4) {
 			if (Sarja1.nosuus[os] > 1)
-				SG1->Cells[os+1][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = (int)Sarja1.ekaMaaliLahettaa[os];
+				SG1->Cells[os+1][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = (int)Sarja1.ekaMaaliRatkaisee[os];
 			else
 				SG1->Cells[os+1][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = L"";
+			if (os > 0 && Sarja1.nosuus[os-1] > 1)
+				SG1->Cells[os+1][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3+1] = (int)Sarja1.lahtoEdEkaMaalista[os];
+			else
+				SG1->Cells[os+1][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3+1] = L"";
 			}
 		}
 }
@@ -251,9 +256,13 @@ void __fastcall TFormSarja::tallOsuudet(void)
 					}
 				}
 			}
-		if (lisarivit4)
-			Sarja1.ekaMaaliLahettaa[os] = (Sarja1.nosuus[os] > 1) &&
+		if (lisarivit4) {
+			Sarja1.ekaMaaliRatkaisee[os] = (Sarja1.nosuus[os] > 1) &&
 				(_wtoi(SG1->Cells[os+1][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3].c_str()) != 0);
+			// lahto edellisen ensimmaisesta: vain osuudella, jonka edellinen osuus on rinnakkainen
+			Sarja1.lahtoEdEkaMaalista[os] = (os > 0 && Sarja1.nosuus[os-1] > 1) &&
+				(_wtoi(SG1->Cells[os+1][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3+1].c_str()) != 0);
+			}
 		}
 	if (osluku > kilpparam.n_os_akt) {
 		Application->MessageBoxW((UnicodeString(L"¨Korjaa sarjan osuusluku, joka ylittää kilpailun osuusluvun ")+
@@ -477,8 +486,8 @@ void __fastcall TFormSarja::SG1SelectCell(TObject *Sender, int ACol, int ARow, b
           
 {
 	if (lisarivit4 && ACol >= 1 && ACol <= Sarja1.ntosuus &&
-		ARow == valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3 &&
-		Sarja1.nosuus[ACol-1] <= 1) {
+		((ARow == valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3 && Sarja1.nosuus[ACol-1] <= 1) ||
+		 (ARow == valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3+1 && (ACol < 2 || Sarja1.nosuus[ACol-2] <= 1)))) {
 		CanSelect = false;
 		return;
 		}

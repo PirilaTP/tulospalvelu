@@ -382,7 +382,8 @@ public:
    int  maxnosuus;
    int  aosuus[MAXOSUUSLUKU+1];
    int  nosuus[MAXOSUUSLUKU];
-   bool ekaMaaliLahettaa[MAXOSUUSLUKU];
+   bool ekaMaaliRatkaisee[MAXOSUUSLUKU];   // rinnakkaisosuus: vain ensimmaisena maaliin tullut ratkaisee tuloksen ja tilan (OnlyFirstFinishCounts)
+   bool lahtoEdEkaMaalista[MAXOSUUSLUKU];  // osuus lahtee edellisen rinnakkaisosuuden ensimmaisen maalista (StartsAtPreviousFirstFinish)
 //   int  n_os[MAXOSUUSLUKU];
    int  yosuus[MAXOSUUSLUKU];
    __int64 puutelisa[MAXOSUUSLUKU];
@@ -796,6 +797,7 @@ public:
 	TMAALI tTulos(int osuus, int piste, __int64 *tlslisa = NULL);
 	TMAALI aTulos(int osuus, int piste);
 	int ekaMaaliOsuus(int osuus, int piste);
+	TMAALI ekaMaaliTulos(int osuus, int piste);
 	TMAALI kokTulos(bool sekvajaat = false);
 	int ASakkoLkm(int osuus);
 	int TSakkoLkm(int osuus);
