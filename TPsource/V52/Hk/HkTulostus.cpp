@@ -6884,7 +6884,9 @@ void htmlalku(wchar_t *wtitle, wchar_t *wheader, int frame, tulostusparamtp *tul
 
 	htmlalkufl = 0;
 	fnm[7] = tulprm->yksihtml ? L'Y' : L'M';
-	if (tulprm->yksihtml || frame) {
+	// Responsiivinen sivu tarvitsee oman head-osan (viewport, css, utf-8),
+	// joten HTMLALK?.TXT-tiedostoa ei silloin käytetä
+	if ((tulprm->yksihtml || frame) && !html_resp(tulprm)) {
 		hfl = new TextFl(fnm, L"rt");
 		if (hfl->IsOpen()) {
 			while (!hfl->Feof()) {
