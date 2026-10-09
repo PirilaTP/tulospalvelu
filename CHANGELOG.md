@@ -3,6 +3,8 @@
 Muutoshistoria pääkehityshaaraan (main) tehdyistä committeista, uusin ensin.
 
 | Pvm | # | Muutos |
+| 2026-10-02 | — | HkKisaWin: lähtöluettelo myös mobiili-HTML:nä (responsiivinen: sarakeluokat ja -leveydet, seura nimen alle kapealla näytöllä, ei sarjalinkkejä); Näytä heti ei enää avaa vanhaa tiedostoa, jos tulostus estettiin virheilmoituksella |
+| 2026-09-29 | — | HkKisaWin: responsiivinen html-tulostetila (css-muotoilu *Responsiivinen*, mobiilitulosteen oletus): viewport, utf-8, sarakekohtaiset css-luokat, kapealla näytöllä toissijaiset sarakkeet piiloon ja seura nimen alle, vieritettävät väliaikataulukot, ei sarjalinkkejä eikä riviraidoitusta, pääsivu framesetin tilalle, html-merkkien koodaus |
 | 2026-09-21 | #70 | Joukkuetiedot: Peruuta toistuvien lisäysten tilassa jättää muokkaustilan päälle |
 | 2026-09-20 | #70 | Joukkuetiedot: Salli muokkaus piilotetaan muokkaustilassa; pois muokkaustilasta Tallenna, Peruuta tai Sulje |
 | 2026-09-21 | #68 | Kilpailijatiedot: epäonnistunut Tallenna jättää muokkaustilan päälle, jotta virheen voi korjata heti |
