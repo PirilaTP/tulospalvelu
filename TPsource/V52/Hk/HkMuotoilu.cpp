@@ -748,15 +748,82 @@ wchar_t *htmlesc(wchar_t *out, const wchar_t *in, int maxlen)
 	return(out);
 }
 
-// Sarjan nimestä id-attribuutiksi ja linkin kohteeksi kelpaava tunnus
+// Sarjan nimestä id-attribuutiksi ja linkin kohteeksi kelpaava tunnus. Kirjaimet, numerot ja -
+// säilyvät, muut merkit (myös _) koodataan muotoon _XXXX, joten eri nimistä tulee eri tunnukset.
 wchar_t *htmlid(wchar_t *out, const wchar_t *in, int maxlen)
 {
 	int n = 0;
 
-	for (; in && *in && n < maxlen - 1; in++)
-		out[n++] = (iswalnum(*in) || *in == L'-' || *in == L'_') ? *in : L'_';
+	for (; in && *in; in++) {
+		if (iswalnum(*in) || *in == L'-') {
+			if (n >= maxlen - 1)
+				break;
+			out[n++] = *in;
+			}
+		else {
+			if (n + 5 >= maxlen)
+				break;
+			swprintf(out+n, 6, L"_%04X", (unsigned) *in);
+			n += 5;
+			}
+		}
 	if (n == 0)
 		out[n++] = L'_';
+	out[n] = 0;
+	return(out);
+}
+
+// Tiedostonimi linkin kohteeksi: muut kuin URL:n varauksettomat merkit (A-Z a-z 0-9 - _ . ~)
+// koodataan utf-8-tavuina muotoon %XX. maxlen on out-puskurin koko merkkeinä.
+wchar_t *htmlurl(wchar_t *out, const wchar_t *in, int maxlen)
+{
+	int n = 0;
+
+	for (; in && *in; in++) {
+		unsigned c = *in;
+		unsigned char b[4];
+		int nb;
+
+		if ((c >= L'A' && c <= L'Z') || (c >= L'a' && c <= L'z') || (c >= L'0' && c <= L'9') ||
+			c == L'-' || c == L'_' || c == L'.' || c == L'~') {
+			if (n >= maxlen - 1)
+				break;
+			out[n++] = (wchar_t) c;
+			continue;
+			}
+		if (c >= 0xD800 && c <= 0xDBFF && in[1] >= 0xDC00 && in[1] <= 0xDFFF) {
+			c = 0x10000 + ((c - 0xD800) << 10) + (in[1] - 0xDC00);
+			in++;
+			}
+		if (c < 0x80) {
+			b[0] = (unsigned char) c;
+			nb = 1;
+			}
+		else if (c < 0x800) {
+			b[0] = (unsigned char) (0xC0 | (c >> 6));
+			b[1] = (unsigned char) (0x80 | (c & 0x3F));
+			nb = 2;
+			}
+		else if (c < 0x10000) {
+			b[0] = (unsigned char) (0xE0 | (c >> 12));
+			b[1] = (unsigned char) (0x80 | ((c >> 6) & 0x3F));
+			b[2] = (unsigned char) (0x80 | (c & 0x3F));
+			nb = 3;
+			}
+		else {
+			b[0] = (unsigned char) (0xF0 | (c >> 18));
+			b[1] = (unsigned char) (0x80 | ((c >> 12) & 0x3F));
+			b[2] = (unsigned char) (0x80 | ((c >> 6) & 0x3F));
+			b[3] = (unsigned char) (0x80 | (c & 0x3F));
+			nb = 4;
+			}
+		if (n + 3*nb >= maxlen)
+			break;
+		for (int i = 0; i < nb; i++) {
+			swprintf(out+n, 4, L"%%%02X", b[i]);
+			n += 3;
+			}
+		}
 	out[n] = 0;
 	return(out);
 }

@@ -780,16 +780,14 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 	  initpage(&tulprm, 0);
 	  if (tiedostoon)
 		  tulprm.tulmuot.sivpit = 99999;
+	  llrivit.clear();		// keskeytetyn ajon rivit eiv‰t saa j‰‰d‰ seuraavaan luetteloon
 	  if (llhtml) {
 			if (html_resp(&tulprm)) {
 				wchar_t esc[400];
 
-				sendln(tulprm.lstf, L"<!DOCTYPE html>\n<html lang=\"fi\">\n<head>\n<meta charset=\"utf-8\">\n"
-					L"<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n"
-					L"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>");
-				sendln(tulprm.lstf, htmlesc(esc, otsTeksti(NULL, llparam.luetots0, 100, ots_pv), sizeof(esc)/2));
-				sendln(tulprm.lstf, L"</title>\n");
-				css_string(&tulprm, 4);
+				tulprm.merkit = merkit;
+				tulprm.language = (Options & 0x10000000) ? 1 : 0;
+				htmlhead_resp(otsTeksti(NULL, llparam.luetots0, 100, ots_pv), &tulprm);
 				css_lahtoluettelo(&tulprm, laji);
 				sendln(tulprm.lstf, L"</head>\n<body>\n<h2 class=otsikko>");
 				sendln(tulprm.lstf, htmlesc(esc, otsTeksti(NULL, llparam.luetots0, 100, ots_pv), sizeof(esc)/2));

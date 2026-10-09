@@ -91,6 +91,8 @@ bool html_resp(tulostusparamtp *tulprm);
 const wchar_t *html_fldclass(int id);
 wchar_t *htmlesc(wchar_t *out, const wchar_t *in, int maxlen);
 wchar_t *htmlid(wchar_t *out, const wchar_t *in, int maxlen);
+wchar_t *htmlurl(wchar_t *out, const wchar_t *in, int maxlen);
+void htmlhead_resp(const wchar_t *title, tulostusparamtp *tulprm);
 
 typedef struct {
 	int id;

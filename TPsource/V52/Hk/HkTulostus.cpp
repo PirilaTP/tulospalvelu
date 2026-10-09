@@ -4295,15 +4295,26 @@ static void htmltulos(kilptietue *kilp, int sj1, int sarja, tulostusparamtp *tul
 				wcscat(prs, L"<td align=left>");
 */
 			if (resp) {
-				swprintf(prs+wcslen(prs), 40, L"<td class=c-%s>", html_fldclass(id));
-				wcscat(prs, htmlesc(esc, st, sizeof(esc)/2));
-				if (!sraTehty && sra[0] && (id == F_NIMI || id == F_SUKUNIMI || id == F_ETUNIMI)) {
-					wcscat(prs, L"<span class=m-sra>");
-					wcscat(prs, htmlesc(esc, sra, sizeof(esc)/2));
-					wcscat(prs, L"</span>");
-					sraTehty = true;
+				// Koodattu teksti voi olla kuusinkertainen. Varataan 60 merkkiä tageille ja rivin lopulle;
+				// jos tila ei riitä, solu jää tyhjäksi tai pois, ettei prs ylivuoda.
+				int vapaa = (int) (sizeof(prs)/2 - wcslen(prs)) - 60;
+				if (vapaa > 0) {
+					htmlesc(esc, st, sizeof(esc)/2);
+					if ((int) wcslen(esc) >= vapaa)
+						esc[0] = 0;
+					swprintf(prs+wcslen(prs), 40, L"<td class=c-%s>", html_fldclass(id));
+					wcscat(prs, esc);
+					if (!sraTehty && sra[0] && (id == F_NIMI || id == F_SUKUNIMI || id == F_ETUNIMI)) {
+						htmlesc(esc, sra, sizeof(esc)/2);
+						if ((int) (wcslen(prs) + wcslen(esc)) < (int) sizeof(prs)/2 - 60) {
+							wcscat(prs, L"<span class=m-sra>");
+							wcscat(prs, esc);
+							wcscat(prs, L"</span>");
+							}
+						sraTehty = true;
+						}
+					wcscat(prs, L"</td>");
 					}
-				wcscat(prs, L"</td>");
 				}
 			else {
 				wcscat(prs, L"<td>");
@@ -6823,8 +6834,9 @@ void autoalku(wchar_t *koodit)
 static int htmlalkufl;
 static wchar_t htmlIndexName[200];   // responsiivisen hakemistosivun nimi sarjakohtaisten sivujen paluulinkkiin
 
-// Responsiivisen html-sivun alku. frame != 0: sarjakohtainen tiedosto
-static void htmlalku_resp(wchar_t *title, wchar_t *header, int frame, tulostusparamtp *tulprm)
+// Responsiivisen html-sivun head-osa ilman loppumerkintää </head>: kieli, merkistö, viewport,
+// otsikko ja css. Kutsuja voi lisätä omat määrityksensä ennen kuin kirjoittaa </head>.
+void htmlhead_resp(const wchar_t *title, tulostusparamtp *tulprm)
 {
 	wchar_t esc[600];
 
@@ -6838,16 +6850,24 @@ static void htmlalku_resp(wchar_t *title, wchar_t *header, int frame, tulostuspa
 		tulprm->writehtml(L"<meta charset=\"utf-8\">\n");
 	tulprm->writehtml(L"<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n");
 	tulprm->writehtml(L"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n");
-	if (frame) {
-		title = wtitle;
-		header = wheader;
-		}
 	if (title && title[0]) {
 		tulprm->writehtml(L"<title>");
 		tulprm->writehtml(htmlesc(esc, title, sizeof(esc)/2));
 		tulprm->writehtml(L"</title>\n");
 		}
 	css_string(tulprm, 4);
+}
+
+// Responsiivisen html-sivun alku. frame != 0: sarjakohtainen tiedosto
+static void htmlalku_resp(wchar_t *title, wchar_t *header, int frame, tulostusparamtp *tulprm)
+{
+	wchar_t esc[600];
+
+	if (frame) {
+		title = wtitle;
+		header = wheader;
+		}
+	htmlhead_resp(title, tulprm);
 	tulprm->writehtml(L"</head>\n");
 	if (!tulprm->yksihtml && !frame)
 		return;				// htmlrunko kirjoittaa hakemistosivun rungon
@@ -6855,7 +6875,7 @@ static void htmlalku_resp(wchar_t *title, wchar_t *header, int frame, tulostuspa
 		tulprm->writehtml(L"<body class='tulframe'>\n");
 		if (htmlIndexName[0]) {
 			tulprm->writehtml(L"<p class=takaisin><a href=\"");
-			tulprm->writehtml(htmlesc(esc, htmlIndexName, sizeof(esc)/2));
+			tulprm->writehtml(htmlurl(esc, htmlIndexName, sizeof(esc)/2));
 			if (tulprm->language == 1)
 				tulprm->writehtml(L"\">&larr; All classes</a></p>\n");
 			else
@@ -7932,6 +7952,7 @@ INT htmlrunko(tulostusparamtp *tulprm, wchar_t *baseFName)
    TextFl *htmlotsfl = NULL;
 
    emitvali = tulprm->tulostettava == L'E';
+   htmlIndexName[0] = 0;		// edellisen ajon hakemistosivu ei saa jäädä paluulinkkiin
 #ifdef _CONSOLE
 	  {
 	  ch = tulprm->yksihtml ? L'Y' : L'S';
@@ -7986,7 +8007,7 @@ INT htmlrunko(tulostusparamtp *tulprm, wchar_t *baseFName)
 	  for (isrj = 0; isrj < sarjaluku+nsarjayhd; isrj++) {
 		 if (nilm[isrj] && (!tulprm->sarjalista || tulprm->sarjalista[isrj])) {
 			tulprm->writehtml(L"<li><a href=\"");
-			tulprm->writehtml(htmlesc(esc, Sarjat[isrj].sarjanimi, sizeof(esc)/2));
+			tulprm->writehtml(htmlurl(esc, Sarjat[isrj].sarjanimi, sizeof(esc)/2));
 			tulprm->writehtml(L".html\">");
 			tulprm->writehtml(htmlesc(esc, Sarjat[isrj].sarjanimi, sizeof(esc)/2));
 			tulprm->writehtml(L"</a></li>\n");

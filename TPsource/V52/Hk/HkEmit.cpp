@@ -5612,6 +5612,7 @@ INT puts1(wchar_t *line, wchar_t co)
 
 // Palauttaa true, jos sarjan kilpailijat kiertävät eri ratoja. Vain silloin väliaikatulosteeseen
 // kirjoitetaan rata. Rata haetaan kuten muuallakin (sarjan rata, sarjan nimi, kilpailijan rata).
+// Kilpailijoita, joille rataa ei löydy, ei verrata.
 static bool sarjassa_eri_radat(INT srj)
 {
 	kilptietue kilp;
@@ -5625,6 +5626,8 @@ static bool sarjassa_eri_radat(INT srj)
 			if (kilp.tark() == L'X')
 				continue;
 			rt = haerata(&kilp);
+			if (!rt)
+				continue;		// kilpailija ilman rataa ei tee sarjasta eri ratojen sarjaa
 			if (eka) {
 				rt0 = rt;
 				eka = false;
@@ -5908,9 +5911,9 @@ void emitvaliajat(INT *srj, tulostusparamtp *tulprm)
 				else if (!moniriviva)
 					swprintf(oline, L"%4.4s %-21.21s", sjstr, kilp.nimi(st, 21, false));
 				else {
-					if (kilp.pv[k_pv].rata[0])
+					if (rataSarake && (rt = haerata(&kilp)) != NULL)
 						swprintf(oline, L"%4.4s %-25.25s %-10.10s %5s %8s", sjstr,
-							kilp.nimi(st, 25, false), kilp.seuratieto(0), kilp.pv[k_pv].rata, st1);
+							kilp.nimi(st, 25, false), kilp.seuratieto(0), rt->tunnus, st1);
 					else
 						swprintf(oline, L"%4.4s %-25.25s %-10.10s  %8s", sjstr,
 							kilp.nimi(st, 25, false), kilp.seuratieto(0), st1);
