@@ -585,6 +585,9 @@ object FormSarja: TFormSarja
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goEditing, goTabs]
     TabOrder = 19
     OnExit = SG1Exit
+    OnMouseDown = SG1MouseDown
+    OnMouseMove = SG1MouseMove
+    OnMouseUp = SG1MouseUp
     OnSelectCell = SG1SelectCell
   end
   object ERinnMax: TEdit

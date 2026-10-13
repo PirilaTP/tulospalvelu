@@ -271,6 +271,27 @@ void __fastcall TTilanneForm::PaivitaGrid(bool scroll)
 	Va = IkkParam.Va;
 	Sarja = IkkParam.Sarja;
 
+	// Nama kolme suodatinta koskevat vain TARKASTELTAVAA osuutta: nakyvat
+	// vain jos taman osuuden nosuus>1 (oikeasti rinnakkainen), ja 1puute/2puute
+	// piilotetaan lisaksi, jos osuudella on kaytossa ekaMaaliRatkaisee - talloin
+	// tulosta ei enaa odoteta puuttuvilta rinnakkaisilta juoksijoilta.
+	bool onRinnakkainen = Sarjat[Sarja].nosuus[Osuus] > 1;
+	bool ekaMaaliKaytossa = onRinnakkainen && Sarjat[Sarja].ekaMaaliRatkaisee[Osuus];
+	CBkaikki->Visible = onRinnakkainen && !ekaMaaliKaytossa;
+	CBkaikki->Enabled = CBkaikki->Visible;
+	if (ekaMaaliKaytossa)
+		// Kaavake piilotetaan, mutta suodatin pidetaan paalla, jotta
+		// tuloksen saaneet rivit (t > 5*SEK) nakyvat edelleen listassa.
+		CBkaikki->Checked = true;
+	CB1puute->Visible = onRinnakkainen && !ekaMaaliKaytossa;
+	CB1puute->Enabled = CB1puute->Visible;
+	CB2puute->Visible = Sarjat[Sarja].nosuus[Osuus] > 2 && !ekaMaaliKaytossa;
+	CB2puute->Enabled = CB2puute->Visible;
+	if (!CB1puute->Visible)
+		CB1puute->Checked = false;
+	if (!CB2puute->Visible)
+		CB2puute->Checked = false;
+
 	aos = Sarjat[Sarja].aosuus[IkkParam.Osuus] + 1;
 	NimiJarj = Etunimiensin1->Checked ? -1 : 1;
 
@@ -500,6 +521,7 @@ void __fastcall TTilanneForm::PaivitaGrid(bool scroll)
 				}
 			if (kilpparam.maxnosuus == 1 || IkkParam.OsJarj) {
 				TulosGrid->Cells[6][k] = kilp.Nimi(wln, OSNIMIL, aos, NimiJarj);
+				TulosGrid->Objects[6][k] = (TObject*)(NativeInt)(-1);
 				if (kilpparam.maxnosuus == 1 && Osuus < Sarjat[Sarja].osuusluku-1) {
 					TulosGrid->Cells[nCol-1][k] = kilp.Nimi(wln, OSNIMIL, Osuus+1, NimiJarj);
 					}
@@ -567,12 +589,29 @@ void __fastcall TTilanneForm::PaivitaGrid(bool scroll)
 					}
 				wln[wcslen(wln)-1] = 0;
 				TulosGrid->Cells[6][k] = UnicodeString(wln);
+				if (Sarjat[kilp.sarja].nosuus[Osuus] > 1 && Sarjat[kilp.sarja].ekaMaaliRatkaisee[Osuus]) {
+					int eos = kilp.ekaMaaliOsuus(Osuus, Va < 0 ? 0 : Va);
+					TulosGrid->Objects[6][k] = (TObject*)(NativeInt)
+						(eos < 0 ? -1 : eos - (Sarjat[kilp.sarja].aosuus[Osuus] + 1));
+					}
+				else
+					TulosGrid->Objects[6][k] = (TObject*)(NativeInt)(-1);
 				if (!KH) {
 					lisa = 0;
 					if (Sarjat[Sarja].nosuus[Osuus] > 1) {
-						t = kilp.aTulos(Osuus, Va);
-						if (t > 0 && Osuus > 0)
-							t -= kilp.aTulos(Osuus-1, 0);
+						// askellasarja() ei paivita aos:aa rinnakkaisosuudelle
+						// tassa (piste <= valuku) haarassa, joten aos jaa aina
+						// osuuden ensimmaiseen paikkaan. Kaytetaan sen sijaan
+						// suoraan ekaMaaliOsuus:aa oikean paikan loytamiseen.
+						if (Sarjat[Sarja].ekaMaaliRatkaisee[Osuus]) {
+							int eos = kilp.ekaMaaliOsuus(Osuus, Va);
+							t = (eos < 0) ? 0 : kilp.osTulos(eos, Va);
+							}
+						else {
+							t = kilp.aTulos(Osuus, Va);
+							if (t > 0 && Osuus > 0)
+								t -= kilp.aTulos(Osuus-1, 0);
+							}
 						}
 					else {
 						if (IkkParam.OsJarj) {
@@ -685,6 +724,11 @@ void __fastcall TTilanneForm::FormActivate(TObject *Sender)
 	for (int va = 1; va <= kilpparam.maxvaluku; va++)
 		PisteVal->Items->Add(UnicodeString(va)+L". väliaika");
 	PisteVal->ItemIndex = IkkParam.Va+1;
+	// Alustaa mm. CBkaikki/CB1puute/CB2puute-suodattimien nakyvyyden heti
+	// kaavakkeen avautuessa. Taytyy tehda vasta taalla (ei FormShow:ssa),
+	// koska PaivitaGrid lukee Sarja/OsVal-yhdistelmaruudut, jotka taytetaan
+	// vasta talla FormActivate-kasittelijalla.
+	PaivitaGrid(false);
 }
 //---------------------------------------------------------------------------
 
@@ -716,6 +760,45 @@ void __fastcall TTilanneForm::TulosGridDblClick(TObject *Sender)
 	if (FormJoukktiedot->WindowState == wsMinimized)
 		FormJoukktiedot->WindowState = wsNormal;
 	FormJoukktiedot->BringToFront();
+}
+//---------------------------------------------------------------------------
+
+// Rinnakkaisosuuden yhdistetyssa nimisolussa (esim. "Etunimi3a Sukunimi/
+// Etunimi3b Sukunimi/Etunimi3c Sukunimi") lihavoidaan sen paikan nimi,
+// joka on ensimmaisena taman osuuden maalissa (tai nykyisessa
+// valiajassa) - PaivitaGrid tallentaa lihavoitavan osan indeksin
+// (tai -1) solun Objects-kenttaan, koska TStringGrid ei muuten tue
+// eri fonttityylia saman solun eri osille.
+void __fastcall TTilanneForm::TulosGridDrawCell(TObject *Sender, int ACol, int ARow, TRect &Rect, TGridDrawState State)
+{
+	if (ACol != 6 || ARow == 0)
+		return;
+	int boldIdx = (int)(NativeInt)TulosGrid->Objects[ACol][ARow];
+	if (boldIdx < 0)
+		return;
+	UnicodeString s = TulosGrid->Cells[ACol][ARow];
+	TCanvas *cv = TulosGrid->Canvas;
+	cv->Brush->Color = State.Contains(gdSelected) ? clHighlight : TulosGrid->Color;
+	cv->FillRect(Rect);
+	int x = Rect.Left + 2;
+	int y = Rect.Top + 1;
+	int idx = 0;
+	int startPos = 1;
+	for (int i = 1; i <= s.Length()+1; i++) {
+		if (i > s.Length() || s[i] == L'/') {
+			UnicodeString part = s.SubString(startPos, i - startPos);
+			cv->Font->Style = (idx == boldIdx) ? TFontStyles() << fsBold : TFontStyles();
+			cv->TextOut(x, y, part);
+			x += cv->TextWidth(part);
+			if (i <= s.Length()) {
+				cv->Font->Style = TFontStyles();
+				cv->TextOut(x, y, L"/");
+				x += cv->TextWidth(L"/");
+				}
+			idx++;
+			startPos = i+1;
+			}
+		}
 }
 //---------------------------------------------------------------------------
 
