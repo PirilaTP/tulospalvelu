@@ -27,6 +27,7 @@
 TFormLuenta *FormLuenta;
 
 extern INT32 uusi_emit;
+extern INT32 hylatty_emit;
 extern bool luentaloki;
 static FILE *testifl;
 static wchar_t testiflnm[] = L"emitrek.lst";
@@ -343,10 +344,9 @@ void __fastcall TFormLuenta::EdtVahvistusKeyPress(TObject *Sender, System::WideC
 	else if (ViivakoodiVahvistuksessa && Key != ESC) {
 		if (Key == L'\r') {
 			ViivakoodiVahvistuksessa = false;
-			if (!EdellinenVahvistamatta()) {
-				Application->MessageBoxW(L"Viivakoodi luettu hyväksymiskenttään ennen edellisen kilpailijan tallentamista.", L"Poikkeama", MB_OK);
-				BtnPeruutaClick(Sender);
-				}
+			// Ilman odottavaa korttia ei tehdä mitään: viivakoodi hylätään, mutta kilpailija
+			// säilyy. Modaalinen ikkuna sulkeutuisi lukijan loppumerkkiin.
+			EdellinenVahvistamatta();
 			}
 		}
 	else {
@@ -370,6 +370,9 @@ void __fastcall TFormLuenta::FormResize(TObject *Sender)
 int __fastcall TFormLuenta::TarkKoodi(int badge)
 {
 	int kno, ibdg;
+	// Edellisen kortin virheilmoitus ei saa jääd näkyviin uuden kortin luvun jälkeen
+	if (MemoMsg->Visible && MemoMsg->Color == clFuchsia)
+		MemoMsg->Visible = false;
 	if (badge == 200) {
 		MemoMsg->Text = L"Viallinen Emit-kortti (koodi 200). Kortti on vaihdettava. Paina Esc.";
 		MemoMsg->Color = clFuchsia;
@@ -384,7 +387,7 @@ int __fastcall TFormLuenta::TarkKoodi(int badge)
 		d = getpos(kno);
 		EnterCriticalSection(&tall_CriticalSection);
 		kilp.getrec(d);
-		if (badge == kilp.ostiet[Osuus].badge[ibdg]) {
+		if (kno == Kilpno && Osuus >= 0 && badge == kilp.ostiet[Osuus].badge[ibdg]) {
 			MemoMsg->Text = L"Kortti jo luettu samalle kilpailijalle. Ei muutettavaa. Paina Esc.";
 			MemoMsg->Color = clFuchsia;
 			MemoMsg->Visible = true;
@@ -421,6 +424,19 @@ int __fastcall TFormLuenta::TarkKoodi(int badge)
 MESSAGE void __fastcall TFormLuenta::NewCardHandler(TMyMessage &msg)
 {
 	wchar_t *ctx = NULL;
+	if (hylatty_emit) {
+		INT32 hylatty = hylatty_emit;
+		hylatty_emit = 0;
+		MemoMsg->Text = L"Kortti " + UnicodeString(hylatty) + L" luettiin ennen edellisen kortin tallentamista. "
+			L"Uutta korttia ei otettu. Tallenna tai peruuta (Esc) edellinen kortti ensin.";
+		MemoMsg->Color = clFuchsia;
+		MemoMsg->Visible = true;
+		if (luentaFl) {
+			swprintf(lokiLine, L"%s\tKortti hylätty\t%4d-%d\tEmit\t%d\n", wkello(),
+				Kilpno, Osuus + 1, hylatty);
+			luentaFl->WriteLine(lokiLine);
+			}
+		}
 	if (uusi_emit && uusi_emit != _wtoi(EdtBadge->Text.c_str())) {
 		if (luentatesti) {
 			if (testifl) {

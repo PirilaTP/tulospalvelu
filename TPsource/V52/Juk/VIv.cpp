@@ -121,6 +121,7 @@ extern int viimrivi;
 
 #ifdef EMITLEIMAT
 INT32 uusi_emit;
+INT32 hylatty_emit;
 void prtemitsivu(void);
 void add_bdg_t(UINT32 badge, INT r_no, char byte9, UINT32 tms);
 
@@ -918,6 +919,14 @@ INT lueem(emittp *em, INT ep)
 
 void addluenta(emittp *em)
 {
+#ifndef _CONSOLE
+	// Sisäänluenta: edellinen kortti odottaa vielä tallennusta tai peruutusta.
+	// Uutta korttia ei oteta, jotta edellinen ei korvaudu huomaamatta.
+	if (sisaanluenta && !RastiVaTuloste && uusi_emit && uusi_emit != em->badge) {
+		hylatty_emit = em->badge;
+		return;
+		}
+#endif
 	uusi_emit = em->badge;
 }
 
