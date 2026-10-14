@@ -26,6 +26,9 @@ on taas uuden kilpailijan ilmoittautuminen aivan samaan tapaan kuin
 ensimmäinen lukeminen. Ilmoittautuminen ja leimantarkastus voivat tapahtua
 samalla tai eri koneilla edellyttäen, että koneiden välillä on tiedonsiirtoyhteys.
 
+Koodin vaihdossa käytetään ensisijaisesti kortin omaa numeroa kasvatettuna
+1 000 000:lla, SportIdent-kilpailussa 10 000 000:lla (ks. luku 6.2).
+
 Tulos voidaan kuitenkin tallentaa tulos jo ensimmäisellä lukemiskerralla edellyttäen, että
 leimat antavat hyväksytyn suorituksen jollekin radalla. Muussa tapauksessa tarvitaan toinen lukeminen
 ja lukemisten välissä on luettava joku toinen kortti.

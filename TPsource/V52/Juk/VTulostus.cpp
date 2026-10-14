@@ -576,7 +576,7 @@ wchar_t *kilptietue::strval(wchar_t *st, int len, int knt, int os, int pst, int 
 			return(st);
 		case F_BADGE:
 			if (ostiet[os].badge[0])
-				_itow(ostiet[os].badge[0], st, 10);
+				BadgeTeksti(st, ostiet[os].badge[0], len);
 			return(st);
 		case F_RATA:
 			return(Hajonta(os, st));
@@ -1876,7 +1876,7 @@ static INT naytatulos(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, INT 
 		kilp->Hajonta(osuus, wst);
 		putfld(tulprm, wst, fld[F_RATA].pos, fld[F_RATA].len, fld[F_RATA].oik, l);
 #ifdef LUENTA
-		_itow(kilp->ostiet[osuus].badge[0], whksj, 10);
+		BadgeTeksti(whksj, kilp->ostiet[osuus].badge[0], fld[F_OSASJ].len);
 #endif
 		}
 	if (tulprm->tulostettava == L'H')
@@ -2169,7 +2169,7 @@ static INT texttulos(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, INT s
 		osuusnimist(kilp, osuus, wst, fld[F_NIMI].len);
 	else {
 #ifdef LUENTA
-		_itow(kilp->ostiet[osuus].badge[0], whksj, 10);
+		BadgeTeksti(whksj, kilp->ostiet[osuus].badge[0], fld[F_OSASJ].len);
 #endif
 		kilp->Nimi(wst, fld[F_NIMI].len, osuus, tulprm->tulmuot.etusuku);
 		}
@@ -2509,7 +2509,7 @@ static INT prttulos(kilptietue *kilp, tulostusparamtp *tulprm, int osuus, INT sj
 			}
 #ifdef LUENTA
 		if (fld[F_BADGE].len == 0)
-			_itow(kilp->ostiet[osuus].badge[0], whksj, 10);
+			BadgeTeksti(whksj, kilp->ostiet[osuus].badge[0], fld[F_OSASJ].len);
 #endif
 		}
 	putfld(tulprm, was, fld[F_TLS].pos, fld[F_TLS].len, fld[F_TLS].oik, l);
@@ -3345,14 +3345,14 @@ static int prtkaikki(kilptietue *kilp, tulostusparamtp *tulprm, int sj)
 			st2[0] = 0;
 		if (kilpparam.alalaji == L'D') {
 			if (kilp->Maali(0, 0) == TMAALI0)
-			_itow(kilp->ostiet[osuus].badge[0], as, 10);
+			BadgeTeksti(as, kilp->ostiet[osuus].badge[0], fld[F_TLS].len);
 			}
 		else {
 			if (tulprm->tulbadge == 2) {
 				as[0] = 0;
 				}
 			else if (tulprm->tulbadge == 1)
-				_itow(kilp->ostiet[osuus].badge[0], as, 10);
+				BadgeTeksti(as, kilp->ostiet[osuus].badge[0], fld[F_TLS].len);
 			}
 		if (tulprm->tulbadge == 0 && !tulprm->piilotatulos || !tulprm->piilotasijat)
 			{

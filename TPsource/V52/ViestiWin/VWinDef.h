@@ -85,6 +85,9 @@ static const System::Uitypes::TColor clVaaleanHarmaa = System::Uitypes::TColor(0
 int ShiftStateInt(TShiftState KeyShift);
 TShiftState IntShiftState(int state);
 void writewarning_w(wchar_t *txt, int wait);
+UnicodeString SIsana(const UnicodeString &teksti);
+void SIsanatLomakkeelle(TComponent *lomake);
+void SIsanastoKaynnista(void);
 
 #define WM_MYMSGNEWCARD		(WM_APP + 2201)
 #define WM_MYMSGCLOSEAPPL  	(WM_APP + 2202)

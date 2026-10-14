@@ -66,7 +66,34 @@ void __fastcall TFormSelect3::Kysy(int nButton, wchar_t *Teksti, wchar_t *Otsikk
 	selResult = 0;
 	KestoAika = Kesto;
 	Caption = Otsikko;
-	Sanoma->Text = Teksti;
+	// TMemo vaatii rivinvaihdoksi CR LF, pelkka LF nakyisi rivin jatkona
+	UnicodeString txt = StringReplace(Teksti, L"\r\n", L"\n", TReplaceFlags() << rfReplaceAll);
+	txt = StringReplace(txt, L"\n", L"\r\n", TReplaceFlags() << rfReplaceAll);
+	Sanoma->Text = txt;
+	// Kasvatetaan tekstikenttaa ja ikkunaa niin, etta koko sanoma mahtuu nakyviin.
+	// Jos sanoma ei mahdu naytolle, kenttaan tulee vierityspalkki.
+	{
+		TRect r(0, 0, Sanoma->ClientWidth - 8, 0);
+		Canvas->Font->Assign(Sanoma->Font);
+		DrawTextW(Canvas->Handle, txt.c_str(), -1, &r,
+			DT_CALCRECT | DT_WORDBREAK | DT_EDITCONTROL | DT_NOPREFIX);
+		int h = r.Height() + 10;
+		int maxh = Screen->WorkAreaHeight * 2 / 3;
+		if (h > maxh) {
+			h = maxh;
+			Sanoma->Enabled = true;
+			Sanoma->ReadOnly = true;
+			Sanoma->ScrollBars = ssVertical;
+			}
+		if (h > Sanoma->Height) {
+			int d = h - Sanoma->Height;
+			Sanoma->Height = h;
+			Button1->Top += d;
+			Button2->Top += d;
+			Button3->Top += d;
+			ClientHeight = ClientHeight + d;
+			}
+	}
 	if (wcslen(Vast1) > 20)
 		Button1->Font->Size = 8;
 	Button1->Caption = Vast1;

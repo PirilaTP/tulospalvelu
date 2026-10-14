@@ -101,7 +101,9 @@ void __fastcall TFormVaTuloste::NaytaKilpailijat(int badge)
 	Nollaa();
 	r = 0;
 	EdtBadge->Text = badge;
-	for (int os = 1; os < kilpparam.n_os_akt; os++) {
+	// Siirrettyja koodeja haetaan vain ylivuotorajaan asti (ks. siMaxSiirrot)
+	int maxos = BadgeMaxSiirrot(badge, BADGEASKEL);
+	for (int os = 1; os < kilpparam.n_os_akt && os <= maxos; os++) {
 		if (AinaViimeinen->Checked || (kno = bdg2kno(badge+os*BADGEASKEL, 0)) < minkilpno) {
 			os = 0;
 			if ((kno = bdg2kno(badge, 0)) < minkilpno)

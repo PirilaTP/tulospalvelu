@@ -35,7 +35,7 @@ ColTp OsGridCols0[] = {
 	{L"Sukunimi", 120, 0, 1, 0, true},
 	{L"Seura", 80, 0, 1, 0, false},
 	{L"Lisenssi", 65, 0, 1, 0, false},
-	{L"Badge", 65, 0, 1, 0, true},
+	{L"Badge", 70, 0, 1, 0, true},
 	{L"L", 15, 0, 1, 0, true},
 	{L"Tark", 45, 0, 1, 0, true},
 	{L"Lähtö", 75, 0, 1, 0, true},

@@ -38,7 +38,7 @@ void __fastcall TFormEmitKoodit::FormCreate(TObject *Sender)
 {
 	SG1->ColCount = 5;
 	SG1->Cells[0][0] = L"No";
-	SG1->Cells[1][0] = L"Emit";
+	SG1->Cells[1][0] = SIsana(L"Emit");
 	SG1->Cells[2][0] = L"Laina";
 	SG1->Cells[3][0] = L"Nimi";
 	SG1->Cells[4][0] = L"Seura";

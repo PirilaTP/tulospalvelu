@@ -89,12 +89,12 @@ void __fastcall TFormLisaTietue::Button1Click(TObject *Sender)
 				if (em.badge != em.badge0)
 					em.badge = em.badge0;
 				else {
-					Application->MessageBoxW(L"Anna uusi emit-koodi", L"Virhe", MB_OK);
+					Application->MessageBoxW(SIsana(L"Anna uusi emit-koodi").c_str(), L"Virhe", MB_OK);
 					return;
 					}
 				}
 			if (getEmitJarr(bdg2kno(em.badge), NULL) >= 0) {
-				Application->MessageBoxW(L"Uutta emit-koodia vastaava tietue jo olemassa. Lisäys peruttu.", L"Este", MB_OK);
+				Application->MessageBoxW(SIsana(L"Uutta emit-koodia vastaava tietue jo olemassa. Lisäys peruttu.").c_str(), L"Este", MB_OK);
 				return;
 				}
 			em.kilpno = 0;
@@ -102,7 +102,7 @@ void __fastcall TFormLisaTietue::Button1Click(TObject *Sender)
 			break;
 		case 1:
 			if (ubdg <= 0) {
-				Application->MessageBoxW(L"Anna uusi emit-koodi", L"Virhe", MB_OK);
+				Application->MessageBoxW(SIsana(L"Anna uusi emit-koodi").c_str(), L"Virhe", MB_OK);
 				return;
 				}
 			rt = rata+CBRata->ItemIndex;

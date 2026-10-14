@@ -941,7 +941,7 @@ void TFormRadat::prtpiikit(tulostusparamtp *tulprm, int srj, int *n, int graaf)
 			}
 		 }
 	  if (!onkoodi) {
-		 swprintf(msg, L"Radan %s rastin %d (tunnus %d) Emit-koodi puuttuu",
+		 swprintf(msg, SIsana(L"Radan %s rastin %d (tunnus %d) Emit-koodi puuttuu").c_str(),
 			prata->tunnus, k, r);
 		 Application->MessageBoxW(msg, L"Virhe", MB_OK);
 		 }
@@ -990,8 +990,8 @@ void TFormRadat::tulostapiikit(tulostusparamtp *tulprm)
    wchar_t ch = L'G';
 
    if (!nrasti) {
-	  Application->MessageBoxW(L"Rastien Emit-koodimäärittelyt (tiedosto LEIMAT.LST) puuttuvat."
-		 L"Emit-koodien oletetaan olevan samat kuin rastitunnukset.", L"Varoitus", MB_OK);
+	  Application->MessageBoxW(SIsana(L"Rastien Emit-koodimäärittelyt (tiedosto LEIMAT.LST) puuttuvat."
+		 L"Emit-koodien oletetaan olevan samat kuin rastitunnukset.").c_str(), L"Varoitus", MB_OK);
 	  }
    if (ch == L'G') {
 	  graaf = 1;
@@ -1015,7 +1015,7 @@ void TFormRadat::tulostakoodit(tulostusparamtp *tulprm)
 	initpage(tulprm, L"C");
    putfld(tulprm, L"RASTIT JA EMITKOODIT", 0, 60, 0, 0);
    endline(tulprm, 1);
-   putfld(tulprm, L"   Rastitunnus   Emitkoodit", 0, 60, 0, 0);
+   putfld(tulprm, SIsana(L"   Rastitunnus   Emitkoodit").c_str(), 0, 60, 0, 0);
    endline(tulprm, 0);
    memset(kdi, 0, sizeof(kdi));
    i = koodit[0].rasti;
@@ -1037,7 +1037,7 @@ void TFormRadat::tulostakoodit(tulostusparamtp *tulprm)
 			initpage(tulprm, L"C");
 			putfld(tulprm, L"RASTIT JA EMITKOODIT", 0, 60, 0, 0);
 			endline(tulprm, 1);
-			putfld(tulprm, L"   Rastitunnus   Emitkoodit", 0, 60, 0, 0);
+			putfld(tulprm, SIsana(L"   Rastitunnus   Emitkoodit").c_str(), 0, 60, 0, 0);
 			endline(tulprm, 0);
 			n = 0;
 			}
@@ -1060,7 +1060,7 @@ void TFormRadat::tulostaleimasinkoodit(tulostusparamtp *tulprm)
 	initpage(tulprm, L"C");
    putfld(tulprm, L"EMITKOODIEN KÄYTTÖ", 0, 60, 0, 0);
    endline(tulprm, 1);
-   putfld(tulprm, L"Emitkoodi  Rastitunnukset", 0, 60, 0, 0);
+   putfld(tulprm, SIsana(L"Emitkoodi  Rastitunnukset").c_str(), 0, 60, 0, 0);
    endline(tulprm, 0);
    memset(kdi, 0, sizeof(kdi));
    ir = koodit[0].rasti;
@@ -1091,7 +1091,7 @@ void TFormRadat::tulostaleimasinkoodit(tulostusparamtp *tulprm)
 			initpage(tulprm, L"C");
 			putfld(tulprm, L"EMITKOODIEN KÄYTTÖ", 0, 60, 0, 0);
 			endline(tulprm, 1);
-			putfld(tulprm, L"Emitkoodi  Rastitunnukset", 0, 60, 0, 0);
+			putfld(tulprm, SIsana(L"Emitkoodi  Rastitunnukset").c_str(), 0, 60, 0, 0);
 			endline(tulprm, 0);
 			n = 0;
 			}
@@ -1125,7 +1125,7 @@ void TFormRadat::prtrata(tulostusparamtp *tulprm, int srj, int *n)
 	swprintf(buf, L"   %s", prata->tunnus);
 	putfld(tulprm, buf, 0, 20, 0, 0);
 	endline(tulprm, 1);
-	putfld(tulprm, L"      Rastitunnus   Emitkoodit", 0, 60, 0, 0);
+	putfld(tulprm, SIsana(L"      Rastitunnus   Emitkoodit").c_str(), 0, 60, 0, 0);
 	endline(tulprm, 0);
 	*n += 5;
 	rr = 0;

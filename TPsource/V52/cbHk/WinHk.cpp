@@ -82,6 +82,7 @@
 #include "UnitASuunn.h"
 #include "UnitYhdistetty.h"
 #include "UnitTaulu.h"
+#include "TpLaitteet.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -187,6 +188,7 @@ __fastcall TFormMain::TFormMain(TComponent* Owner)
 {
 	Application->HelpFile = ExtractFilePath(Application->ExeName)+UnicodeString(L"HkKisa.chm");
 	InitDir = GetCurrentDir();
+	SIsanastoKaynnista();   // Emit -> Sportident -tekstit SportIdent-kilpailussa (cbTpApu.cpp)
 #ifdef DEMO
 	Caption = L"HkKisaWin - DEMO versio - max 30 kilpailijaa";
 #endif
@@ -363,6 +365,8 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 //		Asetukset1->Enabled = false;
 //		Asetukset1->Visible = false;
 		}
+	if (IsSportidentInUse())
+		Emitluenta1->Caption = L"&Sportident-luenta";
 	Haeikkunat->Enabled = true;
 	if (alkulayout[0]) {
 		HaeIkkunat(alkulayout);
@@ -645,7 +649,7 @@ void __fastcall TFormMain::EmitGrafiikkaClick(int i)
 {
 	if (i < 0 || !FrmGr[i]) {
 		if (!emitanal_fl) {
-			Application->MessageBoxW(L"Emitaikojen analyysia ei ole käynnistetty", L"Este", MB_OK);
+			Application->MessageBoxW(SIsana(L"Emitaikojen analyysia ei ole käynnistetty").c_str(), L"Este", MB_OK);
 			return;
 			}
 		 for (i = 0; i < NFORMVAGR; i++)
@@ -717,7 +721,7 @@ void __fastcall TFormMain::Asetukset1Click(TObject *Sender)
 void __fastcall TFormMain::Yhteenveto1Click(TObject *Sender)
 {
 	if (!emitanal_fl) {
-		Application->MessageBoxW(L"Emitaikojen analyysia ei ole käynnistetty", L"Este", MB_OK);
+		Application->MessageBoxW(SIsana(L"Emitaikojen analyysia ei ole käynnistetty").c_str(), L"Este", MB_OK);
 		return;
 		}
    if (!Yv1)

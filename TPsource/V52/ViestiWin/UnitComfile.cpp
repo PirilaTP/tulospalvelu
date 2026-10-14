@@ -378,7 +378,7 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		SGSanoma->Cells[0][6] = L"Maali";
 		SGSanoma->Cells[0][7] = L"Luettu";
 		SGSanoma->Cells[0][8] = L"Kirjattu";
-		SGSanoma->Cells[1][1] = L"Emit-tieto";
+		SGSanoma->Cells[1][1] = SIsana(L"Emit-tieto");
 		SGSanoma->Cells[1][2] = UnicodeString(aikatowstr_cols_n(st, tl, t0, 0, 11));
 		SGSanoma->Cells[1][3] = UnicodeString(ComBuf.d.em.badge)+L" (orig:"+UnicodeString(ComBuf.d.em.badge0)+L")";
 		SGSanoma->Cells[1][4] = UnicodeString(ComBuf.d.em.kilpno);
@@ -400,7 +400,7 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		SGSanoma->Cells[0][4] = L"Osuus";
 		SGSanoma->Cells[0][5] = L"EntKno";
 		SGSanoma->Cells[0][6] = L"EntOs";
-		SGSanoma->Cells[1][1] = L"Emitvaihto";
+		SGSanoma->Cells[1][1] = SIsana(L"Emitvaihto");
 		SGSanoma->Cells[1][2] = UnicodeString(aikatowstr_cols_n(st, tl, t0, 0, 11));
 		SGSanoma->Cells[1][3] = UnicodeString(ComBuf.d.ev.kno);
 		SGSanoma->Cells[1][4] = UnicodeString(ComBuf.d.ev.os+1);
@@ -435,7 +435,7 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		SGSanoma->Cells[0][7] = L"OK";
 		SGSanoma->Cells[0][8] = L"Rastiluku";
 		SGSanoma->Cells[0][9] = L"Rata";
-		SGSanoma->Cells[1][1] = L"Emitväliajat";
+		SGSanoma->Cells[1][1] = SIsana(L"Emitväliajat");
 		SGSanoma->Cells[1][2] = UnicodeString(aikatowstr_cols_n(st, tl, t0, 0, 11));
 		SGSanoma->Cells[1][3] = UnicodeString(ComBuf.d.emva.badge);
 		SGSanoma->Cells[1][4] = UnicodeString(ComBuf.d.emva.kilpno);

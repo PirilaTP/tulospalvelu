@@ -668,7 +668,7 @@ wchar_t *kilptietue::strval(tulostusparamtp *tulprm, wchar_t *st, int len, int k
 			if (Sarjat[Sarja(i_pv)].luonne[i_pv] < 0)
 				break;
 			if (pv[i_pv].badge[0])
-				_itow(pv[i_pv].badge[0], st, 10);
+				BadgeTeksti(st, pv[i_pv].badge[0], len);
 			return(st);
 		case F_SRA:
 			wcsncpy(st, seura, len);
@@ -3064,8 +3064,10 @@ static INT prttulos(kilptietue *kilp, tulostusparamtp *tulprm, INT sj, INT32 tka
 		kilp->strval(tulprm, st, fld[F_LISNO2].len, F_LISNO2, k_pv, 0, 0, 0);
 		putfld(tulprm, st, fld[F_LISNO2].pos, fld[F_LISNO2].len, fld[F_LISNO2].oik, 0);
 		}
-	if (kilp->pv[k_pv].badge[0])
-		putfld_int(tulprm, kilp->pv[k_pv].badge[0], fld[F_BADGE].pos, fld[F_BADGE].len, fld[F_BADGE].oik, 0);
+	if (kilp->pv[k_pv].badge[0]) {
+		BadgeTeksti(st, kilp->pv[k_pv].badge[0], fld[F_BADGE].len);
+		putfld(tulprm, st, fld[F_BADGE].pos, fld[F_BADGE].len, fld[F_BADGE].oik, 0);
+		}
 	putfld(tulprm, kilp->seura, fld[F_SRA].pos, fld[F_SRA].len, fld[F_SRA].oik, 0);
 	putfld(tulprm, kilp->seuralyh, fld[F_SRALYH].pos, fld[F_SRALYH].len, fld[F_SRALYH].oik, 0);
 	putfld(tulprm, kilp->yhdistys, fld[F_YHD].pos, fld[F_YHD].len, fld[F_YHD].oik, 0);

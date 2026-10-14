@@ -51,7 +51,7 @@ ColTp IlmGridCols0[] = {
 	{L"Ilm.lista", 50, 0, 1, 0, false},
 	{L"Arv.ryhmä", 50, 0, 1, 0, false},
 	{L"RintaNo", 50, 0, N_PV, 0, false},
-	{L"Badge", 45, 0, N_PV, 0, true},
+	{L"Badge", 70, 0, N_PV, 0, true},
 	{L"Laina", 30, 0, N_PV, 0, false},
 	{L"Tas.", 40, 0, N_PV, 0, false},
 	{L"Läsnä", 35, 0, N_PV, 0, true},
@@ -1542,7 +1542,7 @@ void __fastcall TFormIlm2::tallennaKilpailija(bool kysy)
 		bdg = _wtoi(EBadge1->Text.c_str());
 		if (!on_lainakortti(bdg) && HTBadge != 0 && bdg != HTBadge && bdg > 11000 &&
 			_wtoi(ELisno->Text.c_str()) != 0) {
-			if (Application->MessageBox(L"Vaihdetaanko tietokannan Emit-koodi?", L"Pysyvä muutos?",
+			if (Application->MessageBox(SIsana(L"Vaihdetaanko tietokannan Emit-koodi?").c_str(), L"Pysyvä muutos?",
 				MB_YESNO) != IDYES) {
 				Kilp.pv[k_pv].laina[1] = L'L';
 				}

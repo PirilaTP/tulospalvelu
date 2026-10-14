@@ -92,7 +92,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;_CONSOLE;BIT32;EMIT;MAXOSUUSLUKU=30;MAXSARJALUKU=250;HAJONTA=8;VAIKALUKU=12;MAX_LAHPORTTI=64;NREGNLY=8;MAALI;KONETUNN;TCPSIIRTO;DBGFILE;PROFILOI;SERVER;PARTIO;AUTOFILE;TCPLUKIJA;LUENTA;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;_CONSOLE;BIT32;EMIT;MAXOSUUSLUKU=30;MAXSARJALUKU=250;HAJONTA=8;VAIKALUKU=12;MAX_LAHPORTTI=64;NREGNLY=8;MAALI;KONETUNN;TCPSIIRTO;DBGFILE;PROFILOI;SERVER;PARTIO;AUTOFILE;TCPLUKIJA;LUENTA;_DEBUG;SPORTIDENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Juk;..\..\Tp;..\..\JukConsole;..\..\include;</AdditionalIncludeDirectories>
       <AdditionalOptions>/J</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -100,7 +100,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\..\..\..\TPexe\lib\V52\VS\debug\tputilv2.lib;..\..\..\..\TPexe\lib\V52\VS\debug\dbboxm.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;commode.obj;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\..\..\TPexe\lib\V52\VS\debug\tputilv2.lib;..\..\..\..\TPexe\lib\V52\VS\debug\dbboxm.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;winhttp.lib;commode.obj;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug250|Win32'">
@@ -117,7 +117,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\..\..\..\vc10\lib\debug\tputilv2.lib;..\..\..\..\vc10\lib\debug\dbboxm.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;commode.obj;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\..\..\vc10\lib\debug\tputilv2.lib;..\..\..\..\vc10\lib\debug\dbboxm.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;winhttp.lib;commode.obj;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -128,7 +128,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;_CONSOLE;BIT32;EMIT;MAXOSUUSLUKU=30;MAXSARJALUKU=250;HAJONTA=8;VAIKALUKU=12;MAX_LAHPORTTI=64;NREGNLY=8;MAALI;KONETUNN;TCPSIIRTO;DBGFILE;PROFILOI;SERVER;PARTIO;AUTOFILE;TCPLUKIJA;LUENTA;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;_CONSOLE;BIT32;EMIT;MAXOSUUSLUKU=30;MAXSARJALUKU=250;HAJONTA=8;VAIKALUKU=12;MAX_LAHPORTTI=64;NREGNLY=8;MAALI;KONETUNN;TCPSIIRTO;DBGFILE;PROFILOI;SERVER;PARTIO;AUTOFILE;TCPLUKIJA;LUENTA;NDEBUG;SPORTIDENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Juk;..\..\Tp;..\..\JukConsole;..\..\include;</AdditionalIncludeDirectories>
       <AdditionalOptions>/J</AdditionalOptions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -138,7 +138,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>..\..\..\..\TPexe\lib\V52\VS\release\tputilv2.lib;..\..\..\..\TPexe\lib\V52\VS\release\dbboxm.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;commode.obj;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\..\..\TPexe\lib\V52\VS\release\tputilv2.lib;..\..\..\..\TPexe\lib\V52\VS\release\dbboxm.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;winhttp.lib;commode.obj;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release150os|Win32'">
@@ -159,10 +159,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>..\..\..\..\vc10\lib\release\tputilv2.lib;..\..\..\..\vc10\lib\release\dbboxm.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;commode.obj;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\..\..\vc10\lib\release\tputilv2.lib;..\..\..\..\vc10\lib\release\dbboxm.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;winhttp.lib;commode.obj;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\com\gethttp.cpp" />
     <ClCompile Include="..\..\com\winCom.cpp" />
     <ClCompile Include="..\..\com\WinUDP.cpp" />
     <ClCompile Include="..\..\JukConsole\laskemtn.cpp" />
@@ -172,9 +173,11 @@
     <ClCompile Include="..\..\JukConsole\lasktxt.cpp" />
     <ClCompile Include="..\..\JukConsole\vcons2.cpp" />
     <ClCompile Include="..\..\JukConsole\VConTul.cpp" />
+    <ClCompile Include="..\..\Juk\vajat.cpp" />
     <ClCompile Include="..\..\Juk\vApu.cpp" />
     <ClCompile Include="..\..\Juk\VCom.cpp" />
     <ClCompile Include="..\..\Juk\vdat.cpp" />
+    <ClCompile Include="..\..\Juk\VEmit.cpp" />
     <ClCompile Include="..\..\Juk\VEmitHtml.cpp" />
     <ClCompile Include="..\..\Juk\VGlobals.cpp" />
     <ClCompile Include="..\..\Juk\VInit.cpp" />
@@ -192,6 +195,10 @@
     <ClCompile Include="..\..\Tp\TpApu.cpp" />
     <ClCompile Include="..\..\Tp\TpComY.cpp" />
     <ClCompile Include="..\..\Tp\TpLaitteet.cpp" />
+    <ClCompile Include="..\..\Tp\SITulkinta.cpp" />
+    <ClCompile Include="..\..\Tp\SICenterJson.cpp" />
+    <ClCompile Include="..\..\Tp\SID3Punch.cpp" />
+    <ClCompile Include="..\..\Tp\EmitBadge.cpp" />
     <ClCompile Include="..\..\Tp\SiritReader.cpp" />
     <ClCompile Include="..\..\Tp\ZebraReader.cpp" />
   </ItemGroup>
