@@ -1088,6 +1088,28 @@ int __fastcall TFormImport::lue_SQL(void)
 }
 //---------------------------------------------------------------------------
 
+// Lisäystilassa ohitetaan rivi, jonka numero on jo käytössä, ettei
+// samalla numerolla synny kahta tietuetta (#77). Rivit ilman numeroa lisätään.
+static bool numeroKaytossa(int kno, int *nOhit, UnicodeString *ohitetut)
+{
+	if (kno <= 0 || getpos(kno) <= 0)
+		return(false);
+	(*nOhit)++;
+	if (*nOhit <= 10)
+		*ohitetut += (*nOhit > 1 ? UnicodeString(L", ") : UnicodeString()) + UnicodeString(kno);
+	else if (*nOhit == 11)
+		*ohitetut += L", ...";
+	return(true);
+}
+//---------------------------------------------------------------------------
+static UnicodeString ohitetutViesti(int nOhit, UnicodeString ohitetut)
+{
+	if (nOhit <= 0)
+		return(UnicodeString());
+	return(UnicodeString(L"\r\n\r\n")+UnicodeString(nOhit)+
+		L" riviä ohitettu, koska numero oli jo käytössä: "+ohitetut);
+}
+//---------------------------------------------------------------------------
 void __fastcall TFormImport::Button1Click(TObject *Sender)
 {
 	wchar_t *ctx = NULL;
@@ -1098,6 +1120,8 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 	int d, n = 0, ret, ntot = 0;
 	int vast = 0;
 	int rNo = 0;
+	int nOhit = 0;
+	UnicodeString ohitetut;
 
 	laikaerot = 0;
 	TulkintaOn = true;
@@ -1124,6 +1148,8 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 							|| i >= Kexp_kentat + Pexp_kentat + Vexp_kentat)
 							exp_kentat_local[i].len = 1;
 						}
+					// Järjestyksestä luettaessa vain lisäys: lue_kilpcsv() ei hae tietuetta (d)
+					int toiminto = RGCsvType->ItemIndex == 0 ? RGToiminto->ItemIndex : 0;
 					if (RGCsvType->ItemIndex == 0)
 						n = -1;
 					EnterCriticalSection(&tall_CriticalSection);
@@ -1131,10 +1157,14 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 						if (RGCsvType->ItemIndex == 1)
 							ret = lue_kilpcsv(InFile, &kilp, erotin);
 						else
-							ret = lue_kilpcsv2(InFile, &kilp, n, RGToiminto->ItemIndex, &d, erotin);
+							ret = lue_kilpcsv2(InFile, &kilp, n, toiminto, &d, erotin);
 						if (ret == 0) {
-							if (RGToiminto->ItemIndex > 0)
+							if (toiminto > 0)
 								kilp.tallenna(d, 0, 0, 0, 0);
+							else if (numeroKaytossa(kilp.id(), &nOhit, &ohitetut)) {
+								ntot++;
+								continue;
+								}
 							else
 								kilp.addtall(&d, 0);
 							n++;
@@ -1186,7 +1216,10 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 //					InFile->ReadLine(Buf, 998);
 					EnterCriticalSection(&tall_CriticalSection);
 					while (!InFile->Feof()) {
-						if ((ret = lue_ascii_e(InFile, &kilp, erotin)) == 0) {
+						if ((ret = lue_ascii_e(InFile, &kilp, erotin)) == 0 &&
+							numeroKaytossa(kilp.id(), &nOhit, &ohitetut))
+							ret = 1;
+						if (ret == 0) {
 							kilp.addtall(&d, 0);
 							n++;
 							ntot++;
@@ -1345,8 +1378,14 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 						}
 					ntot = nTiedRivi;
 					EnterCriticalSection(&tall_CriticalSection);
-					for (int i = 0; i < n; i++)
+					int nLisatty = 0;
+					for (int i = 0; i < n; i++) {
+						if (numeroKaytossa(temparr[i].id(), &nOhit, &ohitetut))
+							continue;
 						temparr[i].addtall(&d, 0);
+						nLisatty++;
+						}
+					n = nLisatty;
 					LeaveCriticalSection(&tall_CriticalSection);
 					delete[] temparr;
 					}
@@ -1408,8 +1447,14 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 						}
 					ntot = nTiedRivi;
 					EnterCriticalSection(&tall_CriticalSection);
-					for (int i = 0; i < n; i++)
+					int nLisatty = 0;
+					for (int i = 0; i < n; i++) {
+						if (numeroKaytossa(temparr[i].id(), &nOhit, &ohitetut))
+							continue;
 						temparr[i].addtall(&d, 0);
+						nLisatty++;
+						}
+					n = nLisatty;
 					LeaveCriticalSection(&tall_CriticalSection);
 					delete[] temparr;
 					}
@@ -1443,7 +1488,8 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 		Application->MessageBoxW(L"Toiminto keskeytetty mahdolliseen virheeseen", L"Valmis", MB_OK);
 		}
 	else
-		Application->MessageBoxW(L"Toiminto suoritettu", L"Valmis", MB_OK);
+		Application->MessageBoxW((UnicodeString(L"Toiminto suoritettu")+
+			ohitetutViesti(nOhit, ohitetut)).c_str(), L"Valmis", MB_OK);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormImport::FormShow(TObject *Sender)
