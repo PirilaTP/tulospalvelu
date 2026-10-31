@@ -142,6 +142,11 @@ Kun osuudella ratkaisee ensimmäinen maaliin tullut:
   osuuden tila, vaikka muut rinnakkaiset juoksijat olisivat hyväksyttyjä.
   Muiden rinnakkaisten juoksijoiden hylkäys tai keskeytys ei sen sijaan
   vaikuta joukkueen tulokseen, kun ensimmäisenä maaliin tullut on hyväksytty.
+- *Emit-tiedot*-lomakkeella näkyy huomautus "ENSIMMÄINEN MAALISSA. Hylkäys
+  (DSQ) tai keskeytys (DNF) ratkaisee joukkueen tuloksen.", kun osuudella
+  ratkaisee ensimmäinen maaliin tullut, juoksija on ensimmäisenä maalissa ja
+  Tarkastus-valintana on *esitys*. Huomautus ei näy muille rinnakkaisille
+  juoksijoille eikä muilla tiloilla.
 - Ratkaisevaa on ensimmäinen tapahtuma, jolla on aika. Hylkäys tai
   keskeytys ratkaisee joukkueen osuuden vain, jos sille on kirjattu aika
   (maaliaika-kenttään): silloin se pysyy ratkaisevana, vaikka joku muu
