@@ -1254,7 +1254,7 @@ object FormEmit: TFormEmit
   object MemoMessage: TMemo
     Left = 8
     Top = 485
-    Width = 159
+    Width = 250
     Height = 74
     ParentCustomHint = False
     TabStop = False
