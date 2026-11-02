@@ -671,7 +671,7 @@ int __fastcall TFormJoukkuetiedot::paivitaMuutos(int col, int row)
 			kh = towupper(OsGrid->Cells[col][k].c_str()[0]);
 			switch (kh) {
 				case L'E' :
-					if (OsGrid->Cells[col][k].Length() == 1 || towupper(OsGrid->Cells[col][k].c_str()[2]) != L'S')
+					if (OsGrid->Cells[col][k].Length() == 1 || towupper(OsGrid->Cells[col][k].c_str()[1]) != L'S')
 						kh = L'E';
 					else
 						kh = L'I';
