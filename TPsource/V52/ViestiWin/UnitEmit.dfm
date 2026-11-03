@@ -1251,25 +1251,40 @@ object FormEmit: TFormEmit
     TabOrder = 35
     Text = 'K'#228'sittelyyn kortti'
   end
-  object MemoMessage: TMemo
-    Left = 8
+  object PnlMessage: TPanel
+    Left = 6
     Top = 485
-    Width = 250
+    Width = 240
     Height = 74
-    ParentCustomHint = False
-    TabStop = False
-    Color = clBtnFace
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Arial'
-    Font.Style = [fsBold]
-    Lines.Strings = (
-      '')
-    ParentFont = False
-    ReadOnly = True
+    BevelOuter = bvRaised
+    Padding.Left = 3
+    Padding.Top = 3
+    Padding.Right = 3
+    Padding.Bottom = 3
+    ShowCaption = False
     TabOrder = 36
     Visible = False
+    object MemoMessage: TMemo
+      Left = 4
+      Top = 4
+      Width = 232
+      Height = 66
+      Align = alClient
+      BorderStyle = bsNone
+      ParentCustomHint = False
+      TabStop = False
+      Color = clBtnFace
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 0
+    end
   end
   object EdtSakkoja: TEdit
     Left = 96

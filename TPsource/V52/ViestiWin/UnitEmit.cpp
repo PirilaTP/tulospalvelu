@@ -347,12 +347,12 @@ static void NaytaRinnakkaisInfo(TMemo *Memo, kilptietue &Kilp, int Osuus, bool e
 		int yos = Sarjat[Kilp.sarja].yosuus[Osuus];
 		if (Sarjat[Kilp.sarja].nosuus[yos] > 1 && Sarjat[Kilp.sarja].ekaMaaliRatkaisee[yos]) {
 			if (esitys && Kilp.ekaMaaliOsuus(yos, 0) == Osuus)
-				Txt = L"ENSIMM\u00c4INEN MAALISSA.  "
-					L"Hylk\u00e4ys (DSQ) tai keskeytys (DNF) ratkaisee joukkueen tuloksen.";
+				Txt = L"Ensimm\u00e4inen maalissa.  "
+					L"T\u00e4m\u00e4n henkil\u00f6n tulos ratkaiseva joukkueen tuloksessa.";
 			}
 		}
 	Memo->Text = Txt;
-	Memo->Visible = !Txt.IsEmpty();
+	Memo->Parent->Visible = !Txt.IsEmpty();
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormEmit::NaytaKilp(void)
