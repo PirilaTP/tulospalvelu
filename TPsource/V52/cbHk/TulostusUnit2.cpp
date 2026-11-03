@@ -337,6 +337,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 	wchar_t *ctx = NULL;
 	int alaraja = 0, ylaraja = 999999, KohdeIndex, SisaltoIndex, err = 0;
 	int RiviLuku = 0, kopioita = 1;
+	bool tehty = false;		// tuloste näytetään selaimessa vain, jos se laadittiin
 	UINT32 Options = 0, Options2 = 0;
 #if MAXSARJALUKU+MAXYHD > 255
 	INT16 sarjat[MAXSARJALUKU+MAXYHD+1];
@@ -403,6 +404,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 			kohdenimi,
 			merkisto[CBMerkisto->ItemIndex],
 			erottimet[CBErotin->ItemIndex]);
+		tehty = true;
 		}
 	else {
 
@@ -442,9 +444,9 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 			int Paivat, jonot = 1;
 
 			Paivat = CBLlPaivat->ItemIndex;
-			if (KohdeIndex == 1 && wcswcind(tiedTyyppi, L"RIHBA") < 0) {
+			if (KohdeIndex == 1 && wcswcind(tiedTyyppi, L"RIHMBA") < 0) {
 				Application->MessageBoxW(L"Lähtöluettelon sallitut tiedostotyypit ovat"
-					L" 'kentät erotettuina', 'kentät kohdistettuina', HTML, 'WebScorer'"
+					L" 'kentät erotettuina', 'kentät kohdistettuina', HTML, 'HTML mobiililaitteelle', 'WebScorer'"
 					L" ja 'Takaa-ajon ajat kellolle'", L"Rajoitus", MB_OK);
 				break;
 				}
@@ -521,6 +523,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 					}
 				}
 			wcscpy(tulostus_lisateksti_oo, EdtLisaTekstiOo->Text.c_str());
+			tehty = true;
 			for (int ik = 0; ik < kopioita; ik++) {
 				lahtoluettelo(kohde[KohdeIndex],
 					tiedTyyppi,
@@ -719,6 +722,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 			wcsncpy(lsttulparam.muottied, EdXslFilename->Text.c_str(), sizeof(lsttulparam.muottied)/2-1);
 
 			wcscpy(tulostus_lisateksti_tul, EdtLisaTekstiTul->Text.c_str());
+			tehty = true;
 			for (int ik = 0; ik < kopioita; ik++) {
 				RiviLuku =
 				list(kohde[KohdeIndex],
@@ -751,7 +755,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 		if (SeuraLista)
 			delete[] SeuraLista;
 		}
-	if (CBNaytaheti->Checked && kohde[KohdeIndex] == L'I' &&
+	if (tehty && CBNaytaheti->Checked && kohde[KohdeIndex] == L'I' &&
 		wcswcind(tiedTyyppi, L"RIEHMOSBA") >= 0) {
 		UnicodeString HtmlFl = L"file:///";
 		if (FormBrowser == NULL)

@@ -22,6 +22,7 @@
 #include <string>
 #include <errno.h>
 #include <ctype.h>
+#include <wctype.h>
 #include <malloc.h>
 #include <bstrings.h>
 #include <butil.h>
@@ -673,6 +674,8 @@ void init_muotoilut(void)
 	mobiltulosmuot.tpvafl = 0;
 	mobiltulosmuot.tklofl = 0;
 	mobiltulosmuot.lkmfl = 0;
+	mobiltulosmuot.cssfl = CSS_RESP;
+	mobiltulosmuot.fontsize = 1;
 
 	if (wcswcind(kilpparam.kilplaji, L"SB") >= 0) {
 		memcpy(prtflds, prtflds_suunn, (n_prtflds+1)*sizeof(prtflds[0]));
@@ -695,6 +698,268 @@ static const wchar_t *fszstr[] = {L"small", L"medium", L"large", L"x-large", L"x
 static wchar_t cssstr[] = L"<link rel=\"stylesheet\" type=\"text/css\" href=\"tuloslue.css\">\n";
 static const wchar_t *fwgtstr[] = {L"normal", L"bold"};
 
+// Responsiivinen html-tuloste (tulmuot.cssfl == CSS_RESP)
+
+static const wchar_t *fldclass[] = {L"sj", L"kno", L"nimi", L"etunimi", L"sukunimi", L"arvo",
+	L"lisno", L"kvid", L"badge", L"sra", L"sralyh", L"maa", L"yhd", L"jouk", L"alisrj",
+	L"tls", L"ero", L"sak", L"tark", L"aika", L"pist", L"osasj", L"osatls"};
+
+bool html_resp(tulostusparamtp *tulprm)
+{
+	return((tulprm->kohde == L'H' || tulprm->kohde == L'M') && tulprm->tulmuot.cssfl == CSS_RESP);
+}
+
+// Kentän css-luokan nimi ilman c-etuliitettä
+const wchar_t *html_fldclass(int id)
+{
+	if (id < 0 || id >= (int) (sizeof(fldclass)/sizeof(fldclass[0])))
+		return(L"x");
+	return(fldclass[id]);
+}
+
+// Korvaa html:n erikoismerkit entiteeteillä. maxlen on out-puskurin koko merkkeinä.
+wchar_t *htmlesc(wchar_t *out, const wchar_t *in, int maxlen)
+{
+	int n = 0;
+
+	for (; in && *in && n < maxlen - 7; in++) {
+		switch (*in) {
+			case L'&':
+				wcscpy(out+n, L"&amp;");
+				n += 5;
+				break;
+			case L'<':
+				wcscpy(out+n, L"&lt;");
+				n += 4;
+				break;
+			case L'>':
+				wcscpy(out+n, L"&gt;");
+				n += 4;
+				break;
+			case L'"':
+				wcscpy(out+n, L"&quot;");
+				n += 6;
+				break;
+			default:
+				out[n++] = *in;
+			}
+		}
+	out[n] = 0;
+	return(out);
+}
+
+// Sarjan nimestä id-attribuutiksi ja linkin kohteeksi kelpaava tunnus. Kirjaimet, numerot ja -
+// säilyvät, muut merkit (myös _) koodataan muotoon _XXXX, joten eri nimistä tulee eri tunnukset.
+wchar_t *htmlid(wchar_t *out, const wchar_t *in, int maxlen)
+{
+	int n = 0;
+
+	for (; in && *in; in++) {
+		if (iswalnum(*in) || *in == L'-') {
+			if (n >= maxlen - 1)
+				break;
+			out[n++] = *in;
+			}
+		else {
+			if (n + 5 >= maxlen)
+				break;
+			swprintf(out+n, 6, L"_%04X", (unsigned) *in);
+			n += 5;
+			}
+		}
+	if (n == 0)
+		out[n++] = L'_';
+	out[n] = 0;
+	return(out);
+}
+
+// Tiedostonimi linkin kohteeksi: muut kuin URL:n varauksettomat merkit (A-Z a-z 0-9 - _ . ~)
+// koodataan utf-8-tavuina muotoon %XX. maxlen on out-puskurin koko merkkeinä.
+wchar_t *htmlurl(wchar_t *out, const wchar_t *in, int maxlen)
+{
+	int n = 0;
+
+	for (; in && *in; in++) {
+		unsigned c = *in;
+		unsigned char b[4];
+		int nb;
+
+		if ((c >= L'A' && c <= L'Z') || (c >= L'a' && c <= L'z') || (c >= L'0' && c <= L'9') ||
+			c == L'-' || c == L'_' || c == L'.' || c == L'~') {
+			if (n >= maxlen - 1)
+				break;
+			out[n++] = (wchar_t) c;
+			continue;
+			}
+		if (c >= 0xD800 && c <= 0xDBFF && in[1] >= 0xDC00 && in[1] <= 0xDFFF) {
+			c = 0x10000 + ((c - 0xD800) << 10) + (in[1] - 0xDC00);
+			in++;
+			}
+		if (c < 0x80) {
+			b[0] = (unsigned char) c;
+			nb = 1;
+			}
+		else if (c < 0x800) {
+			b[0] = (unsigned char) (0xC0 | (c >> 6));
+			b[1] = (unsigned char) (0x80 | (c & 0x3F));
+			nb = 2;
+			}
+		else if (c < 0x10000) {
+			b[0] = (unsigned char) (0xE0 | (c >> 12));
+			b[1] = (unsigned char) (0x80 | ((c >> 6) & 0x3F));
+			b[2] = (unsigned char) (0x80 | (c & 0x3F));
+			nb = 3;
+			}
+		else {
+			b[0] = (unsigned char) (0xF0 | (c >> 18));
+			b[1] = (unsigned char) (0x80 | ((c >> 12) & 0x3F));
+			b[2] = (unsigned char) (0x80 | ((c >> 6) & 0x3F));
+			b[3] = (unsigned char) (0x80 | (c & 0x3F));
+			nb = 4;
+			}
+		if (n + 3*nb >= maxlen)
+			break;
+		for (int i = 0; i < nb; i++) {
+			swprintf(out+n, 4, L"%%%02X", b[i]);
+			n += 3;
+			}
+		}
+	out[n] = 0;
+	return(out);
+}
+
+static const wchar_t *ffstr_resp[] = {L"system-ui,-apple-system,'Segoe UI',Roboto,Verdana,Arial,sans-serif",
+	L"Georgia,Times,serif", L"ui-monospace,Menlo,Consolas,'Courier New',monospace"};
+static const wchar_t *fszstr_resp[] = {L"0.875rem", L"1rem", L"1.125rem", L"1.25rem", L"1.5rem"};
+
+// Tekstikenttä, jonka leveys määräytyy responsiivisessa taulukossa jäljelle jäävästä tilasta
+static bool html_tekstikentta(int id)
+{
+	switch (id) {
+		case F_NIMI:
+		case F_ETUNIMI:
+		case F_SUKUNIMI:
+		case F_ARVO:
+		case F_SRA:
+		case F_SRALYH:
+		case F_YHD:
+		case F_JOUK:
+			return(true);
+		}
+	return(false);
+}
+
+static void css_resp(tulostusparamtp *tulprm)
+{
+	wchar_t prs[2000];
+	tulosmuottp *m = &tulprm->tulmuot;
+	int ff = m->fontfamily, fsz = m->fontsize;
+
+	// Värit kirjoitetaan suoraan ilman css-muuttujia ja linkit ilman flex-asettelua,
+	// koska ohjelman oma selain (TWebBrowser, IE11) ei tue niitä
+	if (ff < 0 || ff > 2)
+		ff = 0;
+	if (fsz < 0 || fsz > 4)
+		fsz = 1;
+	swprintf(prs, sizeof(prs)/2,
+		L"<style>\n"
+		L"* {box-sizing:border-box;}\n"
+		L"html {-webkit-text-size-adjust:100%%; -ms-text-size-adjust:100%%; text-size-adjust:100%%;}\n"
+		L"body {margin:0 auto; max-width:72rem; padding:0 1rem 2rem; background-color:#%6.6x; color:#%6.6x;"
+		L" font-family:%s; font-size:%s; line-height:1.4;}\n"
+		L"h2 {font-size:%d%%; margin:1rem 0 .5rem;}\n"
+		L"h3 {font-size:%d%%; margin:1.5rem 0 .25rem;}\n"
+		L"th, td {padding:%dpx %dpx;}\n"
+		L"th {font-weight:%s; background-color:#%6.6x; color:#%6.6x; text-align:left; white-space:nowrap;}\n",
+		m->bgcolor, m->fontcolor, ffstr_resp[ff], fszstr_resp[fsz], m->paaotskoko, m->alaotskoko,
+		m->vpad, m->hpad, m->sarotsbold ? L"bold" : L"normal", m->thcolor, m->thfontcolor);
+	tulprm->writehtml(prs);
+	if (m->border > 0)
+		swprintf(prs, sizeof(prs)/2, L"td, th {border:%dpx solid #%6.6x;}\n", m->border, m->bordercolor);
+	else
+		swprintf(prs, sizeof(prs)/2, L".restbl td, .rvatbl td {border-bottom:1px solid #%6.6x;}\n", m->bordercolor);
+	tulprm->writehtml(prs);
+	swprintf(prs, sizeof(prs)/2,
+		L".restbl tbody tr, .rvatbl tr {background-color:#%6.6x; color:#%6.6x;}\n"
+		L".sarjaluettelo a {display:inline-block; margin:0 .375rem .375rem 0; padding:.25rem .625rem;"
+		L" border:1px solid #%6.6x; border-radius:1rem; text-decoration:none; white-space:nowrap;}\n",
+		m->td1color, m->td1fontcolor, m->bordercolor);
+	tulprm->writehtml(prs);
+	tulprm->writehtml(
+		L"table {border-collapse:collapse;}\n"
+		L".tbl-wrap {overflow-x:auto; -webkit-overflow-scrolling:touch; margin-bottom:.5rem;}\n"
+		L".restbl {width:100%;}\n"
+		L".restbl td, .rvatbl td {white-space:nowrap; vertical-align:top;}\n"
+		L".restbl .c-nimi, .restbl .c-etunimi, .restbl .c-sukunimi, .restbl .c-sra, .restbl .c-yhd, .restbl .c-jouk {white-space:normal;}\n"
+		L".c-sj, .c-kno, .c-tls, .c-ero, .c-sak, .c-aika, .c-pist, .c-osasj, .c-osatls, .c-lisno, .c-kvid, .c-badge"
+		L" {text-align:right; font-variant-numeric:tabular-nums;}\n"
+		L".m-sra {display:none;}\n"
+		L".matka {font-weight:normal; margin-left:.5em; opacity:.75;}\n"
+		L".sarjatiedot, .rajaus, .lisateksti {margin:.25rem 0 .5rem; font-size:.875em; opacity:.8;}\n"
+		L".sarjaluettelo ul {list-style:none; margin:0; padding:0;}\n"
+		L".sarjaluettelo li {display:inline;}\n"
+		L".sarjaluettelo a {padding:.5rem .875rem;}\n"
+		L".takaisin {margin:.75rem 0 0;}\n"
+		L".tulokset {overflow-x:auto;}\n"
+		L".rvatbl {font-variant-numeric:tabular-nums;}\n"
+		L".rvatbl td, .rvatbl th {text-align:right; white-space:nowrap;}\n"
+		L".rvatbl td:nth-child(2), .rvatbl th:nth-child(2) {text-align:left;}\n"
+		L".rvatbl td:nth-child(2n+3):not(:last-child) {padding-right:0; font-size:.8em; font-style:italic; opacity:.7;}\n");
+	swprintf(prs, sizeof(prs)/2, L".rvatbl {font-size:%d%%;}\n", m->efontsize > 0 ? m->efontsize : 100);
+	tulprm->writehtml(prs);
+
+	// Nimisarake pysyy paikallaan, kun väliaikataulukkoa vieritetään sivusuunnassa
+	swprintf(prs, sizeof(prs)/2,
+		L".restbl.va td.c-nimi, .rvatbl td:nth-child(2), .restbl.va th.c-nimi, .rvatbl th:nth-child(2)"
+		L" {position:-webkit-sticky; position:sticky; left:0; z-index:1; box-shadow:inset -1px 0 0 #%6.6x;}\n"
+		L".restbl.va td.c-nimi, .rvatbl td:nth-child(2) {background-color:inherit;}\n",
+		m->bordercolor);
+	tulprm->writehtml(prs);
+	// Kaksirivisessä väliaikataulukossa kilpailijan rivien välissä ei viivaa (otsikkorivi on 1.)
+	if (tulprm->TlsJaRva == 2 || tulprm->piste == 3)
+		tulprm->writehtml(L".rvatbl tr:nth-of-type(2n) td {border-bottom:none;}\n");
+
+	// Kiinteät sarakeleveydet kenttämäärityksistä, jotta sarakkeet ovat samoilla kohdilla kaikissa sarjoissa.
+	// Tavallisessa taulukossa tekstikentät jakavat jäljelle jäävän leveyden, väliaikataulukossa (va)
+	// niilläkin on kiinteä leveys ja taulukkoa vieritetään kapealla näytöllä.
+	tulprm->writehtml(L".restbl {table-layout:fixed;}\n.restbl.va {width:auto;}\n");
+	tulprm->setActFlds(-1);
+	{
+	bool tehty[F_OSATLS+1];
+
+	memset(tehty, 0, sizeof(tehty));
+	for (int i = 0; i < tulprm->n_aFlds; i++) {
+		int id = tulprm->aFld[i].id, w;
+
+		if (id < 0 || id > F_OSATLS || tehty[id] || tulprm->aFld[i].len <= 0)
+			continue;
+		tehty[id] = true;
+		w = 6 * tulprm->aFld[i].len + 8;		// kymmenesosa-em:inä
+		if (html_tekstikentta(id)) {
+			if (w > 140)
+				w = 140;
+			swprintf(prs, sizeof(prs)/2, L".restbl.va .c-%s {width:%d.%dem;}\n", html_fldclass(id), w/10, w%10);
+			}
+		else
+			swprintf(prs, sizeof(prs)/2, L".restbl .c-%s {width:%d.%dem;}\n", html_fldclass(id), w/10, w%10);
+		tulprm->writehtml(prs);
+		}
+	}
+
+	tulprm->writehtml(
+		L"@media (max-width:40rem) {\n"
+		L" body {padding:0 .5rem 1.5rem;}\n"
+		L" .c-kno, .c-arvo, .c-lisno, .c-kvid, .c-badge, .c-sra, .c-sralyh, .c-maa, .c-yhd, .c-jouk, .c-alisrj {display:none;}\n"
+		L" .m-sra {display:block; font-size:.85em; opacity:.75;}\n"
+		L"}\n"
+		L"@media print {\n"
+		L" body {max-width:none;}\n"
+		L" .takaisin {display:none;}\n"
+		L" .tbl-wrap, .tulokset {overflow:visible;}\n"
+		L"}\n"
+		L"</style>\n");
+}
+
 wchar_t *css_string(tulostusparamtp *tulprm, int laji)
 {
 	static wchar_t prs[5000];
@@ -704,6 +969,8 @@ wchar_t *css_string(tulostusparamtp *tulprm, int laji)
 
 	if (tulprm->tulmuot.cssfl == 1)
 		tulprm->writehtml(cssstr);
+	else if (tulprm->tulmuot.cssfl == CSS_RESP)
+		css_resp(tulprm);
 	else if (tulprm->tulmuot.cssfl == 0) {
 		wcscpy(prs, L"<style>\n");
 		if (tulprm->tulmuot.tauluhtml) {

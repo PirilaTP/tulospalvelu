@@ -12,5 +12,9 @@ ${CXX:-g++} -Wall -o "$OUT" \
 	Tests/DoctestMain.cpp \
 	Tests/VRinnakkaisOsuusTest.cpp \
 	Juk/VRinnakkaisOsuus.cpp
+	Tests/HkEnnTavTest.cpp \
+	Hk/HkEnnTav.cpp \
+	tputilv2/aikatowst_s.cpp \
+	tputilv2/putint_r.cpp
 
 exec "$OUT" "$@"

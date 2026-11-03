@@ -97,6 +97,7 @@ END_MESSAGE_MAP(TComponent)
 
 	int __fastcall NaytaJoukkue(void);
 	void __fastcall Nollaa(void);
+	bool __fastcall EdellinenVahvistamatta(void);
 	int __fastcall TarkKoodi(int badge);
 	cellTp Cells[5][MAXOSUUSLUKU];
 	kilptietue Kilp;
@@ -106,6 +107,7 @@ END_MESSAGE_MAP(TComponent)
 	int Badge;
 	int Tietue;
 	bool OdottaaKorttia;
+	bool ViivakoodiVahvistuksessa;
 	TextFl *luentaFl;
 	wchar_t lokiLine[200];
 public:		// User declarations

@@ -33,7 +33,8 @@
 
 .PARAMETER StudioRoot
     RAD Studio / C++Builder installation directory. Defaults to $env:BDS if set,
-    otherwise C:\Program Files (x86)\Embarcadero\Studio\37.0 (C++Builder 13).
+    otherwise C:\Program Files (x86)\Embarcadero\Studio\37.0 (C++Builder 13) if
+    installed, else the newest installed version under ...\Embarcadero\Studio.
 
 .PARAMETER Tool
     'bds' (default) or 'msbuild'. See DESCRIPTION.
@@ -65,7 +66,18 @@ Set-StrictMode -Version 2
 
 if (-not $StudioRoot) {
     if ($env:BDS) { $StudioRoot = $env:BDS }
-    else { $StudioRoot = 'C:\Program Files (x86)\Embarcadero\Studio\37.0' }
+    else {
+        # Prefer C++Builder 13 (37.0); otherwise the newest installed version with bds.exe.
+        $studioBase = 'C:\Program Files (x86)\Embarcadero\Studio'
+        $StudioRoot = Join-Path $studioBase '37.0'
+        if (-not (Test-Path (Join-Path $StudioRoot 'bin\bds.exe'))) {
+            $found = Get-ChildItem $studioBase -Directory -ErrorAction SilentlyContinue |
+                Where-Object { Test-Path (Join-Path $_.FullName 'bin\bds.exe') } |
+                Sort-Object { [version]($_.Name -replace '[^\d.]', '') } -Descending |
+                Select-Object -First 1
+            if ($found) { $StudioRoot = $found.FullName }
+        }
+    }
 }
 if (-not $LogDir) { $LogDir = Join-Path $PSScriptRoot 'build-logs' }
 
