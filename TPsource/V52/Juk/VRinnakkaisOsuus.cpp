@@ -1,0 +1,95 @@
+// Pekka Pirila's sports timekeeping program (Finnish: tulospalveluohjelma)
+// Copyright (C) 2015 Pekka Pirila
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#include "VRinnakkaisOsuus.h"
+
+int EkaMaaliIndeksi(const RinnakkaisTila *osat, int n)
+{
+	int best = -1;
+	long bestAika = 0;
+
+	for (int i = 0; i < n; i++) {
+		if (!osat[i].onMaalissa)
+			continue;
+		if (best == -1) {
+			best = i;
+			bestAika = osat[i].kulunutAika;
+			continue;
+			}
+		if (osat[i].kulunutAika < bestAika) {
+			best = i;
+			bestAika = osat[i].kulunutAika;
+			}
+		}
+	return best;
+}
+
+bool PuutelisaNollataan(int registered, int finished, bool ekaMaaliRatkaisee)
+{
+	if (registered == 0)
+		return true;
+	if (ekaMaaliRatkaisee)
+		return finished >= 1;
+	return finished == registered;
+}
+
+bool PaikkaKaytossa(const char *nimi, bool onBadge, bool onAika)
+{
+	if (onBadge || onAika)
+		return true;
+	if (nimi == 0)
+		return false;
+	for (const char *p = nimi; *p; p++) {
+		if (*p != '|' && *p != ' ')
+			return true;
+		}
+	return false;
+}
+
+bool LahtoEdellisenTuloksesta(int nosuusNyt, int nosuusEd, bool lahtoEdEkaMaalista)
+{
+	return nosuusNyt == 1 || nosuusEd == 1 || lahtoEdEkaMaalista;
+}
+
+bool TilaHyvaksytty(char tila)
+{
+	return tila == '-' || tila == 'T' || tila == 'I';
+}
+
+char EkaMaaliOsuudenTila(const RinnakkaisTila *osat, const char *tila, int n)
+{
+	int eka = EkaMaaliIndeksi(osat, n);
+	char huonoin = 0, avoin = 0;
+
+	if (eka >= 0)
+		return tila[eka];
+	for (int i = 0; i < n; i++) {
+		if (!osat[i].onKilpailija)
+			continue;
+		if (TilaHyvaksytty(tila[i])) {
+			if (avoin == 0)
+				avoin = tila[i];
+			continue;
+			}
+		if (huonoin == 0 || tila[i] == 'E' ||
+			(tila[i] == 'K' && huonoin != 'E') ||
+			(tila[i] == 'H' && huonoin != 'E' && huonoin != 'K'))
+			huonoin = tila[i];
+		}
+	if (avoin)
+		return avoin;
+	return huonoin ? huonoin : '-';
+}
