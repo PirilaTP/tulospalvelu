@@ -307,7 +307,9 @@ object FormOsanottajat: TFormOsanottajat
       'Kv-id'
       'L'#228'sn'#228'/Tark.'
       'Maa/Seura/Aak'
-      'L'#228'ht'#246'/L'#228'ht'#246'j'#228'rj.')
+      'L'#228'ht'#246'/L'#228'ht'#246'j'#228'rj.'
+      'Enn'#228'tys'
+      'Tavoite')
   end
   object BtnPaivita: TButton
     Left = 258
@@ -590,6 +592,14 @@ object FormOsanottajat: TFormOsanottajat
       object Vaihepist21: TMenuItem
         Caption = 'Vaihepist-2'
         OnClick = Vaihepist21Click
+      end
+      object Ennatys1: TMenuItem
+        Caption = 'Enn'#228'tys'
+        OnClick = Ennatys1Click
+      end
+      object Tavoite1: TMenuItem
+        Caption = 'Tavoite'
+        OnClick = Tavoite1Click
       end
     end
     object oiminnot1: TMenuItem

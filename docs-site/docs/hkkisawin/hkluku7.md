@@ -18,6 +18,37 @@ hylätyiksi. Taulukossa näkyvät lähtöpaikka (sarjan lähtönumero ja radan
 lähtö), lähtöaika ja kaikki käytössä olevat väliaikapisteet. Sarja voidaan
 valita yläreunan luettelosta; painike *Hae* päivittää listan.
 
+Taulukon *Osanottajat* valikosta *Kentät* valitaan, mitkä sarakkeet
+taulukossa näytetään. Vaihekohtaisista tiedoista (esim. *Lähtöaika*,
+*Tulos*, *Rata*) näytetään monivaiheisessa kilpailussa oma sarake kullekin
+vaiheelle, kun valittuna on *Kaikki vaiheet*.
+
+Valinnat *Ennätys* ja *Tavoite* tuovat taulukkoon kilpailijan ennätys- ja
+tavoiteajan, jotka muuten näkyvät vain kilpailija kerrallaan kaavakkeella
+*Kilpailijatiedot* (valikon valinnat *Näytä ennätys* ja *Näytä
+tavoitetulos*). Näin koko osanottajajoukon ennätyksiä ja tavoitteita voi
+tarkastella ja verrata yhdellä kertaa, esimerkiksi ennen tasoitus- tai
+tavoiteaikakilpailua. Sarakkeet ovat oletuksena piilossa.
+
+- Aika näytetään muodossa tt.mm.ss kokonaisina sekunteina samoin kuin
+  kaavakkeella *Kilpailijatiedot*. Tyhjä solu tarkoittaa, ettei aikaa ole
+  annettu.
+- Kun muokkaus on sallittu (*F9* tai *Muokkaus sallittu*), arvoja voi
+  muuttaa suoraan taulukossa. Aika kirjoitetaan samoin kuin tiedostosta
+  luettaessa, esimerkiksi `45.30` tai `45:30` (45 min 30 s) ja `1.02.30`
+  tai `1:02:30`. Ohjelma muotoilee ajan, kun solusta siirrytään pois.
+  Solun tyhjentäminen poistaa ajan.
+- Muutokset tallennetaan muiden taulukossa tehtyjen muutosten kanssa.
+  Jos tallennettu aika sisältää sekunnin osia, ne säilyvät, ellei solua
+  muuteta.
+- Taulukon voi lajitella ennätyksen tai tavoitteen mukaan valitsemalla
+  järjestykseksi *Ennätys* tai *Tavoite* tai klikkaamalla sarakkeen
+  otsikkoa. Nopein aika tulee ensin ja kilpailijat, joilla aikaa ei ole,
+  viimeisiksi. Samat ajat järjestetään nimen mukaan.
+
+Ennätys- ja tavoiteajat voidaan myös lukea tiedostosta kentillä
+`Ennätys-1`, `Tavoite-1` jne. (ks. [luku 3.2](3.2_ilmoittautumisten_lukeminen_tiedostosta.md)).
+
 Sekä taulukossa että kaavakkeella edellyttää muutosten tekeminen, että ne sallitaan painikkeella *Salli muutokset*. Väliaikoja ei näytetä
 tällä kaavakkeella, vaan niiden tarkastelu ja muuttaminen tapahtuvat kaavakkeella, joka avataan painikkeella *Online väliajat*. Muutettaessa tulokseen vaikuttavia
 tietoja kaavakkeella *Kilpailijatiedot* muuttuu joko maaliaika tai
