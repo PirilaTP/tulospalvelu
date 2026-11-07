@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <process.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -185,10 +186,12 @@ int nForms = sizeof(FormList)/sizeof(FormItem);
 __fastcall TFormMain::TFormMain(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
+	lisaaKielivalikko(Tiedostot1);
 	Application->HelpFile = ExtractFilePath(Application->ExeName)+UnicodeString(L"HkKisa.chm");
 	InitDir = GetCurrentDir();
 #ifdef DEMO
-	Caption = L"HkKisaWin - DEMO versio - max 30 kilpailijaa";
+	Caption = TR(L"HkKisaWin - DEMO versio - max 30 kilpailijaa");
 #endif
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
@@ -272,13 +275,13 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 	CurrentDir = GetCurrentDir();
 	wcsncpy(WorkingDir, CurrentDir.c_str(), sizeof(WorkingDir)/2-1);
 	CfgFileName = cfgflnm;
-	LbVaihe->Caption = L"Tiedostojen luentavaihe - odota";
+	LbVaihe->Caption = TR(L"Tiedostojen luentavaihe - odota");
 	LbVaihe->Visible = true;
 	Refresh();
 	Sleep(50);
 	if (aloitus(0, 0, cfgflnm)) {
 		ToimintaTila = 0;
-		writeerror_w(L"Siirtyminen pyydettyyn toimintatilaan ei onnistunut. Vain käynnistysasetusten muuttaminen sallittua", 0);
+		writeerror_w(TR(L"Siirtyminen pyydettyyn toimintatilaan ei onnistunut. Vain käynnistysasetusten muuttaminen sallittua"), 0);
 		return;
 	}
 	if (ikkunaots[0])
@@ -296,7 +299,7 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 	if (ToimintaTila == 1) {
 		Nollaa1->Enabled = true;
 		Numeroi1->Enabled = true;
-		LbVaihe->Caption = L"Esivalmistelutila";
+		LbVaihe->Caption = TR(L"Esivalmistelutila");
 		if (kilpparam.n_pv_akt > 1) {
 			Tapahtumasarjansiirrot1->Enabled = true;
 			Tapahtumasarjansiirrot1->Visible = true;
@@ -308,10 +311,10 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 		Tulospalvelu1->Enabled = true;
 		if (kilpparam.n_pv_akt > 1) {
 			Vaiheenvaihto1->Visible = true;
-			LbVaihe->Caption = L"Tulospalvelutila - vaihe "+UnicodeString(k_pv+1);
+			LbVaihe->Caption = TR(L"Tulospalvelutila - vaihe ")+UnicodeString(k_pv+1);
 			}
 		else
-			LbVaihe->Caption = L"Tulospalvelutila";
+			LbVaihe->Caption = TR(L"Tulospalvelutila");
 		if (kuntosuunnmoodi == 0) {
 			Sprinthiihdonsiirrot1->Enabled = true;
 			if (!k_pv) {
@@ -347,7 +350,7 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 			Vliaikojenhakupalvelimelta1->Visible = false;
 			}
 		if (wcswcind(kilpparam.kilplaji, L"NP") >= 0) {
-			Ammunnansakot1->Caption = L"&Sakkojen ja pisteiden syöttö";
+			Ammunnansakot1->Caption = TR(L"&Sakkojen ja pisteiden syöttö");
 			}
 		if (wcswcind(kilpparam.kilplaji, L"NPU") >= 0) {
 			Lueeratjaradat1->Visible = true;
@@ -645,7 +648,7 @@ void __fastcall TFormMain::EmitGrafiikkaClick(int i)
 {
 	if (i < 0 || !FrmGr[i]) {
 		if (!emitanal_fl) {
-			Application->MessageBoxW(L"Emitaikojen analyysia ei ole käynnistetty", L"Este", MB_OK);
+			Application->MessageBoxW(TR(L"Emitaikojen analyysia ei ole käynnistetty"), TR(L"Este"), MB_OK);
 			return;
 			}
 		 for (i = 0; i < NFORMVAGR; i++)
@@ -717,7 +720,7 @@ void __fastcall TFormMain::Asetukset1Click(TObject *Sender)
 void __fastcall TFormMain::Yhteenveto1Click(TObject *Sender)
 {
 	if (!emitanal_fl) {
-		Application->MessageBoxW(L"Emitaikojen analyysia ei ole käynnistetty", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Emitaikojen analyysia ei ole käynnistetty"), TR(L"Este"), MB_OK);
 		return;
 		}
    if (!Yv1)
@@ -792,7 +795,7 @@ void __fastcall TFormMain::N6ikkuna1Click(TObject *Sender)
 
 void __fastcall TFormMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
-	if (!suljesuoraan && Application->MessageBox(L"Haluatko todella poistua ohjelmasta?", L"Vahvista",
+	if (!suljesuoraan && Application->MessageBox(TR(L"Haluatko todella poistua ohjelmasta?"), TR(L"Vahvista"),
 	  MB_YESNO) != IDYES) {
 		CanClose = false;
 	  }
@@ -1199,7 +1202,7 @@ void __fastcall TFormMain::BtnTulPalvClick(TObject *Sender)
 		Initialisoi(NULL, cfgFName.c_str());
 		}
 	else
-		Application->MessageBoxW(L"Avaaminen peruutettu", L"", MB_OK);
+		Application->MessageBoxW(TR(L"Avaaminen peruutettu"), L"", MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -1259,7 +1262,7 @@ void __fastcall TFormMain::BtnIlmTilaClick(TObject *Sender)
 		Initialisoi(NULL, cfgFName.c_str());
 		}
 	else
-		Application->MessageBoxW(L"Avaaminen peruutettu", L"", MB_OK);
+		Application->MessageBoxW(TR(L"Avaaminen peruutettu"), L"", MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -1744,7 +1747,7 @@ MESSAGE void __fastcall TFormMain::CloseReqHandler(TMyMessage &msg)
 		erbeep();
 		Sleep(200);
 		erbeep();
-		writewarning_w(L"Ohjelma suljetaan 3 s kuluttua verkkokomennon perusteella", 3000);
+		writewarning_w(TR(L"Ohjelma suljetaan 3 s kuluttua verkkokomennon perusteella"), 3000);
 		}
 	suljesuoraan = 1;
 	Close();
@@ -1955,7 +1958,7 @@ void __fastcall TFormMain::Nyttulokset1Click(TObject *Sender)
 {
 	Nyttulokset1->Checked = true;
 	Nytavoimet1->Checked = false;
-	Label5->Caption = L"Tuloksia";
+	Label5->Caption = TR(L"Tuloksia");
 }
 //---------------------------------------------------------------------------
 
@@ -1963,7 +1966,7 @@ void __fastcall TFormMain::Nytavoimet1Click(TObject *Sender)
 {
 	Nyttulokset1->Checked = false;
 	Nytavoimet1->Checked = true;
-	Label5->Caption = L"Avoimia";
+	Label5->Caption = TR(L"Avoimia");
 }
 //---------------------------------------------------------------------------
 
@@ -2007,8 +2010,8 @@ void __fastcall TFormMain::Lhettiedosto1Click(TObject *Sender)
 	OpenDialog2->Filter = L"Kaikki tiedostot (*.*)|*.*";
 	if (OpenDialog2->Execute()) {
 		if (lah_tiedosto(OpenDialog2->FileName.c_str(), 0, 1))
-			Application->MessageBoxW(L"Tiedoston lähettäminen ei onnistunut. Tiedoston on sijaittava työkansiossa tai sen alihakemistossa",
-				L"Ei lähetetty", MB_OK);
+			Application->MessageBoxW(TR(L"Tiedoston lähettäminen ei onnistunut. Tiedoston on sijaittava työkansiossa tai sen alihakemistossa"),
+				TR(L"Ei lähetetty"), MB_OK);
 		}
 }
 //---------------------------------------------------------------------------
@@ -2028,7 +2031,7 @@ void __fastcall TFormMain::Valitseer1Click(TObject *Sender)
 	int era;
 
 	era = era_akt;
-	inputint_prompt(&era, L"Anna erän numero", &ch);
+	inputint_prompt(&era, TR(L"Anna erän numero"), &ch);
 	if (era >= 0 && era < MAXERA)
 		era_akt = era;
 }
@@ -2053,7 +2056,7 @@ void __fastcall TFormMain::Vaiheenvaihto1Click(TObject *Sender)
 
 	for (int cn = 0; cn < maxyhteys; cn++) {
 		if (comopen[cn] && !keyclose[cn] && lahettamatta(cn)) {
-			writeerror_w(L"Avoimen yhteyden lähettämättä olevat sanomat estävät vaihdon", 0, true);
+			writeerror_w(TR(L"Avoimen yhteyden lähettämättä olevat sanomat estävät vaihdon"), 0, true);
 			return;
 			}
 		}
@@ -2063,16 +2066,16 @@ void __fastcall TFormMain::Vaiheenvaihto1Click(TObject *Sender)
 	else {
 		if (vaihe > kilpparam.n_pv_akt)
 			vaihe = kilpparam.n_pv_akt;
-		inputint_prompt(&vaihe, L"Anna uusi vaihe.", &ch);
+		inputint_prompt(&vaihe, TR(L"Anna uusi vaihe."), &ch);
 		if (vaihe == k_pv+1) {
-			Application->MessageBoxW(L"Valittu nykyinen vaihe. Toimenpide peruutettu", L"Este", MB_OK);
+			Application->MessageBoxW(TR(L"Valittu nykyinen vaihe. Toimenpide peruutettu"), TR(L"Este"), MB_OK);
 			ch = ESC;
 			}
 		if (ch == ESC)
 			return;
 		}
 	if (vaiheenvaihto) {
-		writeerror_w(L"Vaihto jo käynnissä", 0, true);
+		writeerror_w(TR(L"Vaihto jo käynnissä"), 0, true);
 		return;
 		}
 
@@ -2125,7 +2128,7 @@ void __fastcall TFormMain::Vaiheenvaihto1Click(TObject *Sender)
 			}
 		vaihdavaihe(vaihe-1, 0);
 		Numeroi1->Enabled = kilpparam.bibvaihtelee && k_pv < kilpparam.n_pv_akt - 1;
-		LbVaihe->Caption = L"Tulospalvelutila - vaihe "+UnicodeString(k_pv+1);
+		LbVaihe->Caption = TR(L"Tulospalvelutila - vaihe ")+UnicodeString(k_pv+1);
 		Loppukilpailunmuodostaminen1->Enabled = (k_pv == 0);
 		Loppukilpailunmuodostaminen1->Visible = (k_pv == 0);
 		akaaajolhtjenmuodostaminen1->Enabled = (k_pv < kilpparam.n_pv_akt);
@@ -2155,7 +2158,7 @@ MESSAGE void __fastcall TFormMain::VaihdaVaiheHandler(TMyMessage &msg)
 		 return;
 	for (int cn = 0; cn < maxyhteys; cn++) {
 		if (comopen[cn] && !keyclose[cn] && lahettamatta(cn)) {
-			writeerror_w(L"Vaiheen vaihtoa tai uusintakäynnistystä pyydetty. Avoimen yhteyden lähettämättä olevat sanomat estävät vaihdon", 0, true);
+			writeerror_w(TR(L"Vaiheen vaihtoa tai uusintakäynnistystä pyydetty. Avoimen yhteyden lähettämättä olevat sanomat estävät vaihdon"), 0, true);
 			return;
 			}
 		}
@@ -2163,7 +2166,7 @@ MESSAGE void __fastcall TFormMain::VaihdaVaiheHandler(TMyMessage &msg)
 		vaiheenvaihto = true;
 		lkmThreadOn = 0;
 		ProsEmitOn = false;
-		writewarning_w(L"Vaiheen vaihto tai uusintakäynnistys. Odota muutama sekunti.", 3000);
+		writewarning_w(TR(L"Vaiheen vaihto tai uusintakäynnistys. Odota muutama sekunti."), 3000);
 		if (FormOsanottajat) {
 			FormOsanottajat->Close();
 			delete FormOsanottajat;
@@ -2208,7 +2211,7 @@ MESSAGE void __fastcall TFormMain::VaihdaVaiheHandler(TMyMessage &msg)
 			}
 		vaihdavaihe(vaihe, kielto);
 		Numeroi1->Enabled = kilpparam.bibvaihtelee && k_pv < kilpparam.n_pv_akt - 1;
-		LbVaihe->Caption = L"Tulospalvelutila - vaihe "+UnicodeString(k_pv+1);
+		LbVaihe->Caption = TR(L"Tulospalvelutila - vaihe ")+UnicodeString(k_pv+1);
 		Loppukilpailunmuodostaminen1->Enabled = (k_pv == 0);
 		Loppukilpailunmuodostaminen1->Visible = (k_pv == 0);
 		akaaajolhtjenmuodostaminen1->Enabled = (k_pv < kilpparam.n_pv_akt);

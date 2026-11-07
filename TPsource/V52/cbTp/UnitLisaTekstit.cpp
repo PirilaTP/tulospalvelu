@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitLisaTekstit.h"
 #ifndef MAXOSUUSLUKU
@@ -37,6 +38,7 @@ extern lisatxttp lisatxt[4];
 __fastcall TFormLisaTekstit::TFormLisaTekstit(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

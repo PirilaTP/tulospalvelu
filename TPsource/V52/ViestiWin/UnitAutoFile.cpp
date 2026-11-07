@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitAutoFile.h"
 #include "UnitMain.h"
@@ -30,6 +31,7 @@ TFormAutoFile *FormAutoFile;
 __fastcall TFormAutoFile::TFormAutoFile(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -186,7 +188,7 @@ void __fastcall TFormAutoFile::BtnLuoAFlstClick(TObject *Sender)
 			UnicodeString(Sarjat[srj].psarjanimi);
 		Memo1->Lines->Add(ln);
 		}
-	Application->MessageBoxW(L"Tietoja ei ole tallennettu", L"Varoitus", MB_OK);
+	Application->MessageBoxW(TR(L"Tietoja ei ole tallennettu"), TR(L"Varoitus"), MB_OK);
 }
 //---------------------------------------------------------------------------
 

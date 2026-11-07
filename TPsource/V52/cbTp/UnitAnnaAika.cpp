@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitAnnaAika.h"
 #ifdef MAXOSUUSLUKU
@@ -33,6 +34,7 @@ TFormAnnaAika *FormAnnaAika;
 __fastcall TFormAnnaAika::TFormAnnaAika(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

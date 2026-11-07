@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitArvonta.h"
 #include "UnitSarjatiedot.h"
@@ -33,14 +34,15 @@ void arvonumerot(INT srj, bool yhtlahtoajat, bool kaikkipaivat, kilpindex *aktin
 __fastcall TFormArvonta::TFormArvonta(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
 	}
 	SGMuodostettavat->ColWidths[0] = 70 * Screen->PixelsPerInch / 96;
-	SGMuodostettavat->Cells[0][0] = L"Sarja";
-	SGMuodostettavat->Cells[1][0] = L"Ennalta";
-	SGMuodostettavat->Cells[2][0] = L"Jaosta";
+	SGMuodostettavat->Cells[0][0] = TR(L"Sarja");
+	SGMuodostettavat->Cells[1][0] = TR(L"Ennalta");
+	SGMuodostettavat->Cells[2][0] = TR(L"Jaosta");
 	GroupBox4->Visible = kilpparam.n_pv_akt >= 2;
 	CB2pv->Enabled = (kilpparam.n_pv_akt == 2);
 	CBJakoVaiheet->Visible = kilpparam.n_pv_akt >= 2;
@@ -49,12 +51,12 @@ __fastcall TFormArvonta::TFormArvonta(TComponent* Owner)
 		CBPaiva->Clear();
 		CBNumPaiva->Clear();
 		CBJakoVaiheet->Clear();
-		CBPaiva->Items->Add(L"Kaikkien vaiheiden arvonta kerralla");
-		CBJakoVaiheet->Items->Add(L"Kaikki vaiheet");
+		CBPaiva->Items->Add(TR(L"Kaikkien vaiheiden arvonta kerralla"));
+		CBJakoVaiheet->Items->Add(TR(L"Kaikki vaiheet"));
 		for (int i = 0;i < kilpparam.n_pv_akt; i++) {
-		   CBPaiva->Items->Add(UnicodeString(i+1)+L". vaihe");
-		   CBNumPaiva->Items->Add(UnicodeString(i+1)+L". vaihe");
-		   CBJakoVaiheet->Items->Add(UnicodeString(i+1)+L". vaihe");
+		   CBPaiva->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
+		   CBNumPaiva->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
+		   CBJakoVaiheet->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
 			}
 		CBPaiva->ItemIndex = 0;
 		CBNumPaiva->ItemIndex = 0;
@@ -179,7 +181,7 @@ int tarkNumerotila(bool kerro)
 			if (sa <= sa1 && sa1 <= sl) {
 				nPaall++;
 				if (nPaall <= 20) {
-					swprintf(msg+wcslen(msg), L"Sarjojen %s ja %s numeroalueet päällekkäiset\n",
+					swprintf(msg+wcslen(msg), TR(L"Sarjojen %s ja %s numeroalueet päällekkäiset\n"),
 						Sarjat[i].sarjanimi, Sarjat[j].sarjanimi);
 					}
 				}
@@ -192,13 +194,13 @@ int tarkNumerotila(bool kerro)
 	if (wcslen(msg) > 20) {
 		int vast;
 		if (nPaall > 20) {
-			swprintf(msg+wcslen(msg), L"..\n..\nPäällekkäisyyksiä yhteensä %d\n", nPaall);
+			swprintf(msg+wcslen(msg), TR(L"..\n..\nPäällekkäisyyksiä yhteensä %d\n"), nPaall);
 			}
-		vast = Application->MessageBox((UnicodeString(msg)+L" Numeroidaanko tästä huolimatta?").c_str(), L"Virhe", MB_YESNO);
+		vast = Application->MessageBox((UnicodeString(msg)+TR(L" Numeroidaanko tästä huolimatta?")).c_str(), TR(L"Virhe"), MB_YESNO);
 		return(vast == IDYES ? 0 : 1);
 		}
 	else if(kerro)
-		Application->MessageBoxW(L"Ei päällekkäisyyksiä", L"OK", MB_OK);
+		Application->MessageBoxW(TR(L"Ei päällekkäisyyksiä"), TR(L"OK"), MB_OK);
 	return(0);
 }
 //---------------------------------------------------------------------------
@@ -360,7 +362,7 @@ void __fastcall TFormArvonta::BtnToteutaClick(TObject *Sender)
 		}
 
 	if (ToimintaTila ==2 && Pv <= k_pv+1) {
-		Application->MessageBoxW(L"Tulospalvelutilassa voidaan arpoa vain myöhempiä vaiheita", L"Rajoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Tulospalvelutilassa voidaan arpoa vain myöhempiä vaiheita"), TR(L"Rajoitus"), MB_OK);
 		return;
 		}
 	if (Pv > 0) {
@@ -369,7 +371,7 @@ void __fastcall TFormArvonta::BtnToteutaClick(TObject *Sender)
 			if (SarjaValittu(srj) && Sarjat[srj].luonne[Pv-1] < 0)
 				n++;
 		if (n > 0) {
-			if (Application->MessageBoxW(L"Kaikki valitut sarjat eivät osallistu valittuun vaiheeseen. Arvotaanko osallistuvat sarjat?", L"Varoitus", MB_YESNO)
+			if (Application->MessageBoxW(TR(L"Kaikki valitut sarjat eivät osallistu valittuun vaiheeseen. Arvotaanko osallistuvat sarjat?"), TR(L"Varoitus"), MB_YESNO)
 				!= IDYES)
 				return;
 			}
@@ -380,7 +382,7 @@ void __fastcall TFormArvonta::BtnToteutaClick(TObject *Sender)
 			if (SarjaValittu(srj) && (Sarjat[srj].luonne[0] < 0 || Sarjat[srj].luonne[1] < 0))
 				n++;
 		if (n > 0) {
-			Application->MessageBoxW(L"Kaikki valitut sarjat eivät osallistu kahteen ensimmäiseen päivään. Valittua arvontaa ei suoriteta.", L"Rajoitus", MB_OK);
+			Application->MessageBoxW(TR(L"Kaikki valitut sarjat eivät osallistu kahteen ensimmäiseen päivään. Valittua arvontaa ei suoriteta."), TR(L"Rajoitus"), MB_OK);
 			return;
 			}
 		}
@@ -391,7 +393,7 @@ void __fastcall TFormArvonta::BtnToteutaClick(TObject *Sender)
 				if (SarjaValittu(srj))
 					n++;
 			if (RGRajaustapa->ItemIndex == 0 && n != 1) {
-				Application->MessageBoxW(L"Osittainen arvonta tehdään yhdelle sarjalle kerrallaan", L"Rajoitus", MB_OK);
+				Application->MessageBoxW(TR(L"Osittainen arvonta tehdään yhdelle sarjalle kerrallaan"), TR(L"Rajoitus"), MB_OK);
 				return;
 				}
 			}
@@ -445,7 +447,7 @@ void __fastcall TFormArvonta::BtnToteutaClick(TObject *Sender)
 			LeaveCriticalSection(&tall_CriticalSection);
 			}
 		}
-	Application->MessageBoxW(L"Toiminto toteutettu", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Toiminto toteutettu"), TR(L"Valmis"), MB_OK);
 	EdtArvottava->Text = L"";
 }
 //---------------------------------------------------------------------------
@@ -548,7 +550,7 @@ void __fastcall TFormArvonta::BtnNumeroiClick(TObject *Sender)
 	else
 		NumKaikkiPaivat = 0;
 	if (ToimintaTila ==2 && Pv <= k_pv) {
-		Application->MessageBoxW(L"Tulospalvelutilassa voidaan numeroida vain myöhempiä vaiheita", L"Rajoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Tulospalvelutilassa voidaan numeroida vain myöhempiä vaiheita"), TR(L"Rajoitus"), MB_OK);
 		return;
 		}
 	if (NumKaikki && Toiminto <= 2 && tarkNumerotila(false))
@@ -557,9 +559,9 @@ void __fastcall TFormArvonta::BtnNumeroiClick(TObject *Sender)
 	if (kilpparam.bibvaihtelee) {
 		int vast;
 		if (NumKaikkiPaivat)
-			vast = Application->MessageBoxW(L"Numerointi perustuu perusnumeroiden alkunumeroihin. Toteuta numerointi?", L"Vahvista", MB_YESNO);
+			vast = Application->MessageBoxW(TR(L"Numerointi perustuu perusnumeroiden alkunumeroihin. Toteuta numerointi?"), TR(L"Vahvista"), MB_YESNO);
 		else
-			vast = Application->MessageBoxW(L"Numerointi perustuu vaihekohtaisiin alkunumeroihin. Toteuta numerointi?", L"Vahvista", MB_YESNO);
+			vast = Application->MessageBoxW(TR(L"Numerointi perustuu vaihekohtaisiin alkunumeroihin. Toteuta numerointi?"), TR(L"Vahvista"), MB_YESNO);
 		if (vast != IDYES)
 			return;
 		}
@@ -760,7 +762,7 @@ void __fastcall TFormArvonta::BtnNumeroiClick(TObject *Sender)
 		arv_pv = 0;
 	luo_posarr();
 	if (!keskeyta)
-		Application->MessageBoxW(L"Toiminto toteutettu", L"Valmis", MB_OK);
+		Application->MessageBoxW(TR(L"Toiminto toteutettu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -1039,9 +1041,9 @@ void __fastcall TFormArvonta::BtnJaaClick(TObject *Sender)
 	nn = arv_pv < 0 ? nilm[jsrj] : nilm_pv[arv_pv][jsrj];
 	if (jsrj < 0 || RGjakotapa->ItemIndex < 0 || nn < 2) {
 		if (arv_pv >= 0 && jsrj >= 0 && Sarjat[jsrj].luonne[arv_pv] < 0)
-			Application->MessageBoxW(L"Jaettavan sarjan on oltava aktiivinen käsiteltävässä vaiheessa", L"Virhe", MB_OK);
+			Application->MessageBoxW(TR(L"Jaettavan sarjan on oltava aktiivinen käsiteltävässä vaiheessa"), TR(L"Virhe"), MB_OK);
 		else
-			Application->MessageBoxW(L"Puutteellisen valinnat tai jaettavassa sarjassa ei kilpailijoita", L"Virhe", MB_OK);
+			Application->MessageBoxW(TR(L"Puutteellisen valinnat tai jaettavassa sarjassa ei kilpailijoita"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	tapa = jakotapa[RGjakotapa->ItemIndex];
@@ -1051,7 +1053,7 @@ void __fastcall TFormArvonta::BtnJaaClick(TObject *Sender)
 		if (wcslen(ln) > 0) {
 			if ((msrj[n] = haesarja_w(ln, false)) >= 0) {
 				if (arv_pv >= 0 && Sarjat[msrj[n]].luonne[arv_pv] < 0) {
-					Application->MessageBoxW(L"Kaikkien muodostettavien sarjojen on oltava aktiivisia käsiteltävässä vaiheessa", L"Virhe", MB_OK);
+					Application->MessageBoxW(TR(L"Kaikkien muodostettavien sarjojen on oltava aktiivisia käsiteltävässä vaiheessa"), TR(L"Virhe"), MB_OK);
 					return;
 					}
 				n++;
@@ -1059,13 +1061,13 @@ void __fastcall TFormArvonta::BtnJaaClick(TObject *Sender)
 			}
 		}
 	if (n < 1) {
-		Application->MessageBoxW(L"Ei muodostettavia sarjoja", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Ei muodostettavia sarjoja"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	ValmisteleJako(jsrj, nn, msrj, n, nsrj, tapa);
 	if (arv_pv < 0)
 		arv_pv = 0;
-	if (Application->MessageBoxW(L"Toteuta jako", L"Vahvistus", MB_YESNO) == IDYES)
+	if (Application->MessageBoxW(TR(L"Toteuta jako"), TR(L"Vahvistus"), MB_YESNO) == IDYES)
 		ToteutaJako(jsrj, nn, msrj, n, nsrj, tapa);
 }
 //---------------------------------------------------------------------------
@@ -1139,7 +1141,7 @@ void __fastcall TFormArvonta::CBPaivaChange(TObject *Sender)
 {
 	if (ToimintaTila == 2 && CBPaiva->ItemIndex <= k_pv+1) {
 		CBPaiva->ItemIndex = k_pv + 2;
-		Application->MessageBoxW(L"Tulospalvelutilassa voi arpoa vain tulevia päiviä", L"Rajoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Tulospalvelutilassa voi arpoa vain tulevia päiviä"), TR(L"Rajoitus"), MB_OK);
 	}
 	if (kilpparam.n_pv_akt > 2)
 		CB2pv->Enabled = (CBPaiva->ItemIndex == 2);
@@ -1150,7 +1152,7 @@ void __fastcall TFormArvonta::CBNumPaivaChange(TObject *Sender)
 {
 	if (ToimintaTila == 2 && CBNumPaiva->ItemIndex <= k_pv) {
 		CBNumPaiva->ItemIndex = k_pv + 1;
-		Application->MessageBoxW(L"Tulospalvelutilassa voi numeroida vain tulevia päiviä", L"Rajoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Tulospalvelutilassa voi numeroida vain tulevia päiviä"), TR(L"Rajoitus"), MB_OK);
 	}
 }
 //---------------------------------------------------------------------------
@@ -1252,12 +1254,12 @@ void __fastcall TFormArvonta::BtnLisaaLhtSarjatClick(TObject *Sender)
 
 	if (kilpparam.n_pv_akt > 1) {
 		i_pv++;
-		inputint_prompt(&i_pv, L"Anna vaiheen järjestysnumero", &ch, this);
+		inputint_prompt(&i_pv, TR(L"Anna vaiheen järjestysnumero"), &ch, this);
 		if (ch == ESC || i_pv < 1 || i_pv > kilpparam.n_pv_akt)
 			return;
 		i_pv--;
 		}
-	inputint_prompt(&lno, L"Anna lähdön numero", &ch, this);
+	inputint_prompt(&lno, TR(L"Anna lähdön numero"), &ch, this);
 	if (ch == ESC)
 		return;
 	for (int srj = 0; srj < sarjaluku; srj++) {

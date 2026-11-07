@@ -19,6 +19,7 @@
 #include <vcl.h>
 #include <process.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSelect3.h"
 //---------------------------------------------------------------------------
@@ -33,6 +34,7 @@ static bool SelTimerThreadOn;
 __fastcall TFormSelect3::TFormSelect3(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormSelect3::Button1Click(TObject *Sender)

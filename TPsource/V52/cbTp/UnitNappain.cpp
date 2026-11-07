@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitNappain.h"
 //---------------------------------------------------------------------------
@@ -28,6 +29,7 @@ TFormNappain *FormNappain;
 __fastcall TFormNappain::TFormNappain(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormNappain::Edit1KeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
@@ -73,11 +75,11 @@ void __fastcall TFormNappain::FormShow(TObject *Sender)
 		(KeyShift.Contains(ssCtrl) ? UnicodeString(L" Ctrl") : UnicodeString(L"")) +
 		(KeyShift.Contains(ssAlt) ? UnicodeString(L" Alt") : UnicodeString(L""));
 	CBPiste->Clear();
-	CBPiste->Items->Add(L"Automaattisesti määräytyvä");
-	CBPiste->Items->Add(L"Lähtö");
-	CBPiste->Items->Add(L"Maali");
+	CBPiste->Items->Add(TR(L"Automaattisesti määräytyvä"));
+	CBPiste->Items->Add(TR(L"Lähtö"));
+	CBPiste->Items->Add(TR(L"Maali"));
 	for (int i = 1; i <= MaxVa; i++)
-		CBPiste->Items->Add(UnicodeString(i)+L". väliaika");
+		CBPiste->Items->Add(UnicodeString(i)+TR(L". väliaika"));
 	CBPiste->ItemIndex = Piste + 2;
 }
 //---------------------------------------------------------------------------

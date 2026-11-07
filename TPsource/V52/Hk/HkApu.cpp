@@ -118,7 +118,7 @@ int parametrivirhe(wchar_t *sub, int intparam, wchar_t *strparam, wchar_t charpa
 	else
 		str = st;
 	if (hav_virheet) {
-		swprintf(msg, L"Parametrivirhe, aliohjelma %s, parametrit %d, %s, %c", sub, intparam, str, charparam);
+		swprintf(msg, TR(L"Parametrivirhe, aliohjelma %s, parametrit %d, %s, %c"), sub, intparam, str, charparam);
 		writeerror_w(msg, 0);
 		}
 	return(0);

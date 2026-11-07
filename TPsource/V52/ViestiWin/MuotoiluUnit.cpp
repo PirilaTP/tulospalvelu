@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <stdio.h>
 #include <bstrings.h>
 
@@ -61,6 +62,7 @@ static int omaVariNo;
 __fastcall TFormMuotoilu::TFormMuotoilu(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -84,7 +86,7 @@ int TFormMuotoilu::LisaaOmaVari(int vari)
 	for (cl = 0; cl < sizeof(OlVarit)/sizeof(OlVarit[0]) && OlVarit[cl].nimi[0] != 0; cl++) ;
 
 	if (cl < sizeof(OlVarit)/sizeof(OlVarit[0])) {
-		swprintf(OlVarit[cl].nimi, L"Oma-%d", ++omaVariNo);
+		swprintf(OlVarit[cl].nimi, TR(L"Oma-%d"), ++omaVariNo);
 		OlVarit[cl].vari = vari;
 		for (int j = 0; j < 2; j++)
 			ClBx[j]->Items->AddObject(OlVarit[cl].nimi, reinterpret_cast<TObject*>(OlVarit[cl].vari));
@@ -241,11 +243,11 @@ void __fastcall TFormMuotoilu::naytaTls(int lj)
 	SGTls[lj]->RowCount = n_frmflds[lj]+1;
 	SGTls[lj]->ColWidths[0] = 60 * Screen->PixelsPerInch / 96;
 	SGTls[lj]->ColWidths[1] = 60 * Screen->PixelsPerInch / 96;
-	SGTls[lj]->Cells[0][0] = L"Kenttä";
-	SGTls[lj]->Cells[1][0] = L"Otsikko";
-	SGTls[lj]->Cells[2][0] = L"Sijainti";
-	SGTls[lj]->Cells[3][0] = L"Merkkejä";
-	SGTls[lj]->Cells[4][0] = L"Tasaus";
+	SGTls[lj]->Cells[0][0] = TR(L"Kenttä");
+	SGTls[lj]->Cells[1][0] = TR(L"Otsikko");
+	SGTls[lj]->Cells[2][0] = TR(L"Sijainti");
+	SGTls[lj]->Cells[3][0] = TR(L"Merkkejä");
+	SGTls[lj]->Cells[4][0] = TR(L"Tasaus");
 	for (int i = 1; i <= 3; i++) {
 		SGTls[lj]->ColWidths[i] = 50 * Screen->PixelsPerInch / 96;
 		}
@@ -254,7 +256,7 @@ void __fastcall TFormMuotoilu::naytaTls(int lj)
 		SGTls[lj]->Cells[1][r] = UnicodeString(frmflds[lj][r-1].ots);
 		SGTls[lj]->Cells[2][r] = UnicodeString(frmflds[lj][r-1].pos);
 		SGTls[lj]->Cells[3][r] = UnicodeString(frmflds[lj][r-1].len);
-		SGTls[lj]->Cells[4][r] = frmflds[lj][r-1].oik ? L"Oik" : L"Vas";
+		SGTls[lj]->Cells[4][r] = frmflds[lj][r-1].oik ? TR(L"Oik") : TR(L"Vas");
 		}
 	SGTls[lj]->Options << goEditing;
 }

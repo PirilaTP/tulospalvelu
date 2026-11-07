@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitJoukkueTilanne.h"
 //---------------------------------------------------------------------------
@@ -30,6 +31,7 @@ void joukkuetul(bool naytolle, int srj, tulostusparamtp *tulprm);
 __fastcall TFormJoukkueTilanne::TFormJoukkueTilanne(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -223,17 +225,17 @@ void __fastcall TFormJoukkueTilanne::Joukkueenkoko1Click(TObject *Sender)
 	wchar_t ch;
 
 	if (tlsLaji == 3) {
-		inputint_prompt(&viimSj, L"Anna pisteisiin oikeuttava huonoin sijoitus", &ch, this);
+		inputint_prompt(&viimSj, TR(L"Anna pisteisiin oikeuttava huonoin sijoitus"), &ch, this);
 		return;
 		}
 	k = joukkKoko;
-	inputint_prompt(&k, L"Anna joukkueen (maximi) koko", &ch, this);
+	inputint_prompt(&k, TR(L"Anna joukkueen (maximi) koko"), &ch, this);
 	if (ch == ESC)
 		return;
 	joukkKoko = k;
 	if (tlsLaji != 3) {
 		k = minKoko;
-		inputint_prompt(&k, L"Anna joukkueen minimikoko", &ch, this);
+		inputint_prompt(&k, TR(L"Anna joukkueen minimikoko"), &ch, this);
 		if (ch != ESC)
 			minKoko = k;
 		}

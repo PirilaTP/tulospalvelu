@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSarjatiedot.h"
 #include "UnitVaPisteet.h"
@@ -154,6 +155,7 @@ static void teesarjajarj(int jrj);
 __fastcall TFormSarjatiedot::TFormSarjatiedot(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -690,7 +692,7 @@ void __fastcall TFormSarjatiedot::TallennaSarjat(void)
 						if (!kilpparam.bibvaihtelee || CBTiedot->ItemIndex < 2) {
 							int sa = SG1->Cells[col][ir].ToInt();
 							if (Sarjat[srj].sarjaalku != sa && kilpparam.bibvaihtelee && myosbibalku < 0) {
-								if (Application->MessageBoxW(L"Tallennetaanko kaikki alkunumeromuutokset myˆs vaiheisiin?", L"Valitse", MB_YESNO) == IDYES)
+								if (Application->MessageBoxW(TR(L"Tallennetaanko kaikki alkunumeromuutokset myˆs vaiheisiin?"), TR(L"Valitse"), MB_YESNO) == IDYES)
 									myosbibalku = 1;
 								else
 									myosbibalku = 0;
@@ -839,10 +841,10 @@ void __fastcall TFormSarjatiedot::BtnTallennaClick(TObject *Sender)
 	TallennaSarjat();
 	BtnPeruutaClick(Sender);
 	if (ToimintaTila == 2 && comfl && maxyhteys && memnullcmp((char *)lah_tiedostot, sizeof(lah_tiedostot))) {
-		if (Application->MessageBoxW(L"L‰hetet‰‰nkˆ tiedosto verkon muille tietokoneille?",
-			L"L‰hetys", MB_YESNO) == IDYES) {
+		if (Application->MessageBoxW(TR(L"L‰hetet‰‰nkˆ tiedosto verkon muille tietokoneille?"),
+			TR(L"L‰hetys"), MB_YESNO) == IDYES) {
 			if (lah_tiedosto(sarjaxmlfname, 0, 2))
-				Application->MessageBoxW(L"Tiedoston l‰hett‰minen ei onnistunut.", L"Ei l‰hetetty", MB_OK);
+				Application->MessageBoxW(TR(L"Tiedoston l‰hett‰minen ei onnistunut."), TR(L"Ei l‰hetetty"), MB_OK);
 			}
 		}
 }
@@ -856,7 +858,7 @@ void __fastcall TFormSarjatiedot::FormClose(TObject *Sender, TCloseAction &Actio
 
 {
 	if (SG1->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			TallennaSarjat();
 			}
@@ -880,7 +882,7 @@ void __fastcall TFormSarjatiedot::Button5Click(TObject *Sender)
 void __fastcall TFormSarjatiedot::SG1DblClick(TObject *Sender)
 {
 	if (SG1->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			TallennaSarjat();
 			}
@@ -972,7 +974,7 @@ void __fastcall TFormSarjatiedot::SG1KeyDown(TObject *Sender, WORD &Key, TShiftS
 	cc = aktcol;
 	if (Key == VK_F9 && !Shift.Contains(ssShift) && !Shift.Contains(ssCtrl) && !Shift.Contains(ssAlt)) {
 		if (SG1->Options.Contains(goEditing)) {
-			if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+			if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 				MB_YESNO) == IDYES) {
 				TallennaSarjat();
 				}
@@ -1011,7 +1013,7 @@ void __fastcall TFormSarjatiedot::Vakanttinumeroitasarjojenvliss1Click(TObject *
 {
 	wchar_t ch;
 
-	inputint_prompt(&VapNum, L"Anna vapaiden numeroiden luku", &ch, this);
+	inputint_prompt(&VapNum, TR(L"Anna vapaiden numeroiden luku"), &ch, this);
 }
 //---------------------------------------------------------------------------
 
@@ -1019,7 +1021,7 @@ void __fastcall TFormSarjatiedot::Vapaataaikaasarjojenvliss1Click(TObject *Sende
 {
 	wchar_t ch;
 
-	inputint_prompt(&VapAika, L"Anna vapaa aika sekunteina (sarjan viim. l‰htij‰st‰ seur. sarjan alkuun)", &ch, this);
+	inputint_prompt(&VapAika, TR(L"Anna vapaa aika sekunteina (sarjan viim. l‰htij‰st‰ seur. sarjan alkuun)"), &ch, this);
 }
 //---------------------------------------------------------------------------
 
@@ -1028,8 +1030,8 @@ void __fastcall TFormSarjatiedot::Mrsarjojenalkunumerot1Click(TObject *Sender)
 	int i_pv;
 
 	if (CBJarj->ItemIndex != 1) {
-		Application->MessageBoxW(L"Valitse j‰rjestykseksi alkunumero",
-			L"Edellytys", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse j‰rjestykseksi alkunumero"),
+			TR(L"Edellytys"), MB_OK);
 		return;
 		}
 	if ((i_pv = CBTiedot->ItemIndex-2) >= 0 && kilpparam.n_pv_akt > 1 && kilpparam.bibvaihtelee) {
@@ -1059,7 +1061,7 @@ void __fastcall TFormSarjatiedot::Mrsarjojenalkunumerot1Click(TObject *Sender)
 			}
 		}
 	NaytaSarjat();
-	Application->MessageBoxW(L"Toimenpide suoritettu. Uusia tietoja ei ole tallennettu", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Toimenpide suoritettu. Uusia tietoja ei ole tallennettu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -1068,8 +1070,8 @@ void __fastcall TFormSarjatiedot::Mrsarjojenlhtajat1Click(TObject *Sender)
 	int i_pv;
 
 	if ((i_pv = CBTiedot->ItemIndex-2) < 0 || CBJarj->ItemIndex != 2) {
-		Application->MessageBoxW(L"Valitse n‰ytett‰v‰ksi yksi vaihe ja j‰rjestykseksi L‰htˆ/L‰htˆaika",
-			L"Edellytys", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse n‰ytett‰v‰ksi yksi vaihe ja j‰rjestykseksi L‰htˆ/L‰htˆaika"),
+			TR(L"Edellytys"), MB_OK);
 		return;
 		}
 
@@ -1088,7 +1090,7 @@ void __fastcall TFormSarjatiedot::Mrsarjojenlhtajat1Click(TObject *Sender)
 			}
 		}
 	NaytaSarjat();
-	Application->MessageBoxW(L"Toimenpide suoritettu. Uusia tietoja ei ole tallennettu", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Toimenpide suoritettu. Uusia tietoja ei ole tallennettu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -1300,7 +1302,7 @@ void __fastcall TFormSarjatiedot::Siiraikoja1Click(TObject *Sender)
 	i_pv = CBTiedot->ItemIndex - 2;
 	if (i_pv < 0 || i_pv >= kilpparam.n_pv_akt)
 		return;
-	inputint_prompt(&siirto, L"Anna siirto sekunteina", &ch, this);
+	inputint_prompt(&siirto, TR(L"Anna siirto sekunteina"), &ch, this);
 	if (ch == ESC)
 		return;
 	for (int r = 1; r < SG1->RowCount; r++) {
@@ -1312,7 +1314,7 @@ void __fastcall TFormSarjatiedot::Siiraikoja1Click(TObject *Sender)
 				NORMKELLO(Sarjat[srj].enslahto[i_pv] + SEK*siirto);
 		}
 	NaytaSarjat();
-	Application->MessageBoxW(L"Toimenpide suoritettu. Uusia tietoja ei ole tallennettu", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Toimenpide suoritettu. Uusia tietoja ei ole tallennettu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -1326,7 +1328,7 @@ void __fastcall TFormSarjatiedot::Pisteidenlaskenta1Click(TObject *Sender)
 	if (CBTiedot->ItemIndex > 1)
 		pv = CBTiedot->ItemIndex - 2;
 	if (SG1->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			BtnTallennaClick(Sender);
 //			TallennaSarjat();
@@ -1486,7 +1488,7 @@ void __fastcall TFormSarjatiedot::Kiinteitsarakkeita11Click(TObject *Sender)
 {
 	int FC = SG1->FixedCols;
 	wchar_t ret;
-	inputint_prompt(&FC, L"Anna kiinteiden sarakkeiden luku (1..8)", &ret, this);
+	inputint_prompt(&FC, TR(L"Anna kiinteiden sarakkeiden luku (1..8)"), &ret, this);
 	if (ret != ESC) {
 		if (FC < 1)
 			FC = 1;
@@ -1495,7 +1497,7 @@ void __fastcall TFormSarjatiedot::Kiinteitsarakkeita11Click(TObject *Sender)
 		if (FC > SG1->ColCount)
 			FC = SG1->ColCount;
 		SG1->FixedCols = FC;
-		Kiinteitsarakkeita11->Caption = L"Kiinteit‰ sarakkeita "+UnicodeString(FC);
+		Kiinteitsarakkeita11->Caption = TR(L"Kiinteit‰ sarakkeita ")+UnicodeString(FC);
 		}
 }
 //---------------------------------------------------------------------------
@@ -1507,19 +1509,19 @@ void __fastcall TFormSarjatiedot::Hiihtokilpailunperusmalli1Click(TObject *Sende
 	bool ohitatyhjat, enssrj = true, asetaperus = false;
 
 	if ((i_pv = CBTiedot->ItemIndex-2) < 0 || CBJarj->ItemIndex != 1) {
-		Application->MessageBoxW(L"Valitse n‰ytett‰v‰ksi yksi vaihe ja j‰rjestykseksi alkunumero",
-			L"Edellytys", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse n‰ytett‰v‰ksi yksi vaihe ja j‰rjestykseksi alkunumero"),
+			TR(L"Edellytys"), MB_OK);
 		return;
 		}
-	if (Application->MessageBoxW(L"Sek‰ numerot ett‰ l‰htˆajat annetaan yhten‰iseksi jonoksi. "
+	if (Application->MessageBoxW(TR(L"Sek‰ numerot ett‰ l‰htˆajat annetaan yhten‰iseksi jonoksi. "
 			L"Jokaisen sarjan alkuun lis‰t‰‰n valittu m‰‰r‰ vakantteja."
 			L"Valittu alkunumero annetaan ensimm‰iselle vakantille."
-			L"Alkunumerot ja l‰htˆajat merkit‰‰n arvontaan osallistuvien mukaan.",
-			L"Vahvista", MB_YESNO) != IDYES) {
+			L"Alkunumerot ja l‰htˆajat merkit‰‰n arvontaan osallistuvien mukaan."),
+			TR(L"Vahvista"), MB_YESNO) != IDYES) {
 		return;
 		}
-	if ((vast = Application->MessageBoxW(L"Lis‰t‰‰nkˆ vakanttaja myˆs tyhjiin sarjoihin?",
-		L"Tyhj‰t sarjat", MB_YESNOCANCEL)) == IDCANCEL) {
+	if ((vast = Application->MessageBoxW(TR(L"Lis‰t‰‰nkˆ vakanttaja myˆs tyhjiin sarjoihin?"),
+		TR(L"Tyhj‰t sarjat"), MB_YESNOCANCEL)) == IDCANCEL) {
 		return;
 		}
 	ohitatyhjat = (vast == IDNO);
@@ -1579,7 +1581,7 @@ void __fastcall TFormSarjatiedot::Hiihtokilpailunperusmalli1Click(TObject *Sende
 			}
 		}
 	NaytaSarjat();
-	Application->MessageBoxW(L"Toimenpide suoritettu. Uusia tietoja ei ole tallennettu", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Toimenpide suoritettu. Uusia tietoja ei ole tallennettu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -1589,10 +1591,10 @@ void __fastcall TFormSarjatiedot::FormShow(TObject *Sender)
 		Lissarja1->Enabled = false;
 		}
 	CBTiedot->Clear();
-	CBTiedot->Items->Add(L"Laajat");
-	CBTiedot->Items->Add(L"Perustiedot");
+	CBTiedot->Items->Add(TR(L"Laajat"));
+	CBTiedot->Items->Add(TR(L"Perustiedot"));
 	for (int i = 0;i < kilpparam.n_pv_akt; i++) {
-	   CBTiedot->Items->Add(UnicodeString(i+1)+L". vaihe");
+	   CBTiedot->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
 		}
 	CBTiedot->ItemIndex = 0;
 	SetColumns();
@@ -1602,7 +1604,7 @@ void __fastcall TFormSarjatiedot::FormShow(TObject *Sender)
 void __fastcall TFormSarjatiedot::Lissarja1Click(TObject *Sender)
 {
 	if (SG1->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			TallennaSarjat();
 			}
@@ -1633,22 +1635,22 @@ void __fastcall TFormSarjatiedot::Lisvakantitsarjojenedelle1Click(TObject *Sende
 
 	memset(varattu, 0, sizeof(varattu));
 	if ((i_pv = CBTiedot->ItemIndex-2) < 0 || CBJarj->ItemIndex != 1) {
-		Application->MessageBoxW(L"Valitse n‰ytett‰v‰ksi yksi vaihe ja j‰rjestykseksi alkunumero",
-			L"Edellytys", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse n‰ytett‰v‰ksi yksi vaihe ja j‰rjestykseksi alkunumero"),
+			TR(L"Edellytys"), MB_OK);
 		return;
 		}
 	for (int d = 1; d < nrec; d++) {
 		kilptietue kilp;
 		kilp.GETREC(d);
 		if (kilp.kilpstatus == 0 && kilp.kilpno == 0) {
-			Application->MessageBoxW(L"Toimintoa voi k‰ytt‰‰ vasta, kun kaikki kilpailijat on numeroitu.",
-				L"Edellytys", MB_OK);
+			Application->MessageBoxW(TR(L"Toimintoa voi k‰ytt‰‰ vasta, kun kaikki kilpailijat on numeroitu."),
+				TR(L"Edellytys"), MB_OK);
 			return;
 			}
 		varattu[kilp.kilpno] = 1;
 		}
-	if (Application->MessageBoxW(L"Kaikki sarjaa edelt‰v‰t vapaat paikat t‰ytet‰‰n edelt‰vill‰ "
-			L"numeroilla ja ajoilla. ", L"Vahvista", MB_YESNO) != IDYES) {
+	if (Application->MessageBoxW(TR(L"Kaikki sarjaa edelt‰v‰t vapaat paikat t‰ytet‰‰n edelt‰vill‰ "
+			L"numeroilla ja ajoilla. "), TR(L"Vahvista"), MB_YESNO) != IDYES) {
 		return;
 		}
 	for (int i = 1; i < SG1->RowCount; i++) {
@@ -1677,7 +1679,7 @@ void __fastcall TFormSarjatiedot::Lisvakantitsarjojenedelle1Click(TObject *Sende
 			}
 		}
 	NaytaSarjat();
-	Application->MessageBoxW(L"Toimenpide suoritettu.", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Toimenpide suoritettu."), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -1686,7 +1688,7 @@ void __fastcall TFormSarjatiedot::Haematkatratatiedoista1Click(TObject *Sender)
 {
 	int n = 0;
 	if (ToimintaTila != 2 || nrata == 0) {
-		Application->MessageBoxW(L"Toiminto on k‰ytett‰viss‰ vain tulospalvelutilassa, kun radatiedot on luettu", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Toiminto on k‰ytett‰viss‰ vain tulospalvelutilassa, kun radatiedot on luettu"), TR(L"Este"), MB_OK);
 		return;
 		}
 	if (!SG1->Options.Contains(goEditing))
@@ -1702,7 +1704,7 @@ void __fastcall TFormSarjatiedot::Haematkatratatiedoista1Click(TObject *Sender)
 		}
 	if (n > 0)
 		NaytaSarjat();
-	Application->MessageBoxW((L"Siirretty "+UnicodeString(n)+" matkatietoa. Paina 'Tallenna muokatut tiedot' tallentaaksesi.").c_str(), L"", MB_OK);
+	Application->MessageBoxW((TR(L"Siirretty ")+UnicodeString(n)+TRA(" matkatietoa. Paina 'Tallenna muokatut tiedot' tallentaaksesi.")).c_str(), L"", MB_OK);
 }
 //---------------------------------------------------------------------------
 

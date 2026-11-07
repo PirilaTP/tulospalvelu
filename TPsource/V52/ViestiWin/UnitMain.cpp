@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <bstrings.h>
 #include <HTMLHelpViewer.hpp>
 
@@ -164,10 +165,12 @@ int nForms = sizeof(FormList)/sizeof(FormItem);
 __fastcall TFormMain::TFormMain(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
+	lisaaKielivalikko(Toiminnot1);
 	Application->HelpFile = ExtractFilePath(Application->ExeName)+UnicodeString(L"ViestiWin.chm");
 	InitDir = GetCurrentDir();
 #ifdef DEMO
-	Caption = L"ViestiWin - DEMO versio - max 20 joukkuetta";
+	Caption = TR(L"ViestiWin - DEMO versio - max 20 joukkuetta");
 #endif
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
@@ -213,12 +216,12 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 	CurrentDir = GetCurrentDir();
 	wcsncpy(WorkingDir, CurrentDir.c_str(), sizeof(WorkingDir)/2-1);
 	CfgFileName = cfgflnm;
-	LbVaihe->Caption = L"Tiedostojen luentavaihe - odota";
+	LbVaihe->Caption = TR(L"Tiedostojen luentavaihe - odota");
 	LbVaihe->Visible = true;
 	Refresh();
 	Sleep(50);
 	if (aloitus(0, 0, cfgflnm)) {
-		writeerror_w(L"Siirtyminen pyydettyyn toimintatilaan ei onnistunut. Vain käynnistysasetusten muuttaminen sallittua", 0);
+		writeerror_w(TR(L"Siirtyminen pyydettyyn toimintatilaan ei onnistunut. Vain käynnistysasetusten muuttaminen sallittua"), 0);
 		return;
 	}
 	if (ikkunaots[0])
@@ -232,7 +235,7 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 	Numerointi1->Enabled = true;
 	Osanottajat1->Enabled = true;
 	if (ToimintaTila == 1) {
-		LbVaihe->Caption = L"Esivalmistelu";
+		LbVaihe->Caption = TR(L"Esivalmistelu");
 		Nollaatietoja1->Enabled = true;
 		}
 	else {
@@ -244,7 +247,7 @@ void __fastcall TFormMain::Initialisoi(wchar_t *kilphak, wchar_t *cfgflnm)
 		analyysit1->Enabled = true;
 		SisLuenta->Visible = sisaanluenta != 0;
 		Emitluenta1->Visible = sisaanluenta < 2;
-		LbVaihe->Caption = sisaanluenta > 1 ? L"Vaihe: Sisäänluenta" : L"Tulospalvelutila";
+		LbVaihe->Caption = sisaanluenta > 1 ? TR(L"Vaihe: Sisäänluenta") : TR(L"Tulospalvelutila");
 		if (kilpparam.lsakmax > 0) {
 			Ammunnansakot1->Enabled = true;
 			Ammunnansakot1->Visible = true;
@@ -978,7 +981,7 @@ void __fastcall TFormMain::N4ikkuna6Click(TObject *Sender)
 void __fastcall TFormMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
 
-   if (!suljesuoraan && Application->MessageBoxW(L"Haluatko todella poistua ohjelmasta?", L"Vahvista",
+   if (!suljesuoraan && Application->MessageBoxW(TR(L"Haluatko todella poistua ohjelmasta?"), TR(L"Vahvista"),
 	  MB_YESNO) != IDYES) {
 	  CanClose = false;
 	  }
@@ -1403,7 +1406,7 @@ void __fastcall TFormMain::BtnTulPalvClick(TObject *Sender)
 		Initialisoi(NULL, cfgFName.c_str());
 		}
 	else
-		Application->MessageBoxW(L"Avaaminen peruutettu", L"", MB_OK);
+		Application->MessageBoxW(TR(L"Avaaminen peruutettu"), L"", MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -1426,7 +1429,7 @@ void __fastcall TFormMain::BtnIlmTilaClick(TObject *Sender)
 		Initialisoi(NULL, cfgFName.c_str());
 		}
 	else
-		Application->MessageBoxW(L"Avaaminen peruutettu", L"", MB_OK);
+		Application->MessageBoxW(TR(L"Avaaminen peruutettu"), L"", MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -1581,7 +1584,7 @@ void __fastcall TFormMain::Nyttulokset1Click(TObject *Sender)
 {
 	Nyttulokset1->Checked = true;
 	Nytavoimet1->Checked = false;
-	Label5->Caption = L"Tuloksia";
+	Label5->Caption = TR(L"Tuloksia");
 }
 //---------------------------------------------------------------------------
 
@@ -1589,7 +1592,7 @@ void __fastcall TFormMain::Nytavoimet1Click(TObject *Sender)
 {
 	Nyttulokset1->Checked = false;
 	Nytavoimet1->Checked = true;
-	Label5->Caption = L"Avoimia";
+	Label5->Caption = TR(L"Avoimia");
 }
 //---------------------------------------------------------------------------
 
@@ -1689,7 +1692,7 @@ MESSAGE void __fastcall TFormMain::CloseReqHandler(TMyMessage &msg)
 		erbeep();
 		Sleep(200);
 		erbeep();
-		writewarning_w(L"Ohjelma suljetaan 3 s kuluttua verkkokomennon perusteella", 3000);
+		writewarning_w(TR(L"Ohjelma suljetaan 3 s kuluttua verkkokomennon perusteella"), 3000);
 		}
 	suljesuoraan = 1;
 	Close();
@@ -1877,8 +1880,8 @@ void __fastcall TFormMain::Lhettiedosto1Click(TObject *Sender)
 	OpenDialog2->Filter = L"Kaikki tiedostot (*.*)|*.*";
 	if (OpenDialog2->Execute()) {
 		if (lah_tiedosto(OpenDialog2->FileName.c_str(), 0, 1))
-			Application->MessageBoxW(L"Tiedoston lähettäminen ei onnistunut. Tiedoston on sijaittava työkansiossa tai sen alihakemistossa",
-				L"Ei lähetetty", MB_OK);
+			Application->MessageBoxW(TR(L"Tiedoston lähettäminen ei onnistunut. Tiedoston on sijaittava työkansiossa tai sen alihakemistossa"),
+				TR(L"Ei lähetetty"), MB_OK);
 		}
 
 }

@@ -78,7 +78,7 @@ static void ljarj(UINT32 *ia, INT a, INT y)
 
    n = y - a + 1;
    if ((ja = (int *) malloc((n+1)*sizeof(INT))) == NULL) {
-	  writeerror_w(L"Ei tilaa arvonnalle", 0);
+	  writeerror_w(TR(L"Ei tilaa arvonnalle"), 0);
 	  return;
 	  }
    ja[0] = a;
@@ -102,7 +102,7 @@ void jarj(INT *ia, INT a, INT y)
 
    n = y - a + 1;
    if ((ja = (int *) malloc((n+1)*sizeof(INT))) == NULL) {
-	  writeerror_w(L"Ei tilaa arvonnalle", 0);
+	  writeerror_w(TR(L"Ei tilaa arvonnalle"), 0);
 	  return;
 	  }
    ja[0] = a;
@@ -547,7 +547,7 @@ static void jaatasan(INT nseura, INT nsrj, INT njako, INT *rs, INT *nilmrs, char
 				  x[ix] = 1;
 				  }
 			   else
-				  writeerror_w(L"Ongelma 1", 0);
+				  writeerror_w(TR(L"Ongelma 1"), 0);
 			   }
 			}
 		 for ( i = 0; i < nsra; i++)
@@ -582,7 +582,7 @@ static void jaatasan(INT nseura, INT nsrj, INT njako, INT *rs, INT *nilmrs, char
 			   ix++;
 			   }
 			else
-			   writeerror_w(L"Ongelma 2", 0);
+			   writeerror_w(TR(L"Ongelma 2"), 0);
 			}
 		 }
 	  }
@@ -705,7 +705,7 @@ void arvonumerot(INT srj, bool yhtlahtoajat, bool kaikkipaivat, kilpindex *aktin
    else
 	   nn = nilm_pv[arv_pv][srj] - (FormArvonta->CBOhitaVakantit->Checked ? nvak[arv_pv][srj] : 0) - 1;
    if ((jsatn = (int *) malloc(nn*sizeof(INT))) == NULL) {
-	  writeerror_w(L"Muisti ei riitä arvonnalle", 0);
+	  writeerror_w(TR(L"Muisti ei riitä arvonnalle"), 0);
 	  }
    else {
 	  for (i = 0; i < nn; i++) {
@@ -769,7 +769,7 @@ int arvovaihe(int srj, int nn, int ipv, int sailpo, int hiihtoarv, bool osasarja
 
 				swprintf(msg, L"Sarjassa %s yhteislähtö. Lähtöajat merkitään. Arvotaanko samalla kaikkien vaiheiden numerot?, Peruuta keskeyttää arvonnan",
 					Sarjat[srj].sarjanimi);
-				if ((retval = Application->MessageBoxW(msg, L"Yhteislähtösarja", MB_YESNOCANCEL)) == IDYES) {
+				if ((retval = Application->MessageBoxW(msg, TR(L"Yhteislähtösarja"), MB_YESNOCANCEL)) == IDYES) {
 #ifdef DBGARVONTA
 					fwprintf(dbgarvfile, L"Yhteislähdön numeroiden arvonta\n");
 					fclose(dbgarvfile);
@@ -1263,7 +1263,7 @@ void arvo(int Toiminto)
 	else
 		arv_pv = 0;
 	if (ret == -2) {
-		writeerror_w(L"Ei tilaa arvonnalle", 0);
+		writeerror_w(TR(L"Ei tilaa arvonnalle"), 0);
 	}
 #ifdef DBGARVONTA
 	fwprintf(dbgarvfile, L"Arvonta loppu\n");

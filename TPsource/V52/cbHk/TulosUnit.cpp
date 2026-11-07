@@ -19,6 +19,7 @@
 #include <Clipbrd.hpp>
 #include <process.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "TulosUnit.h"
 #include "WinHk.h"
@@ -34,6 +35,7 @@ extern TTilanneForm *TilFrm[];
 __fastcall TTilanneForm::TTilanneForm(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -884,26 +886,26 @@ void __fastcall TTilanneForm::PaivitaGrid(bool scroll)
 			else {
 				switch (kilp.tark(k_pv)) {
 					case L'H' :
-						wcscpy(ln, L"Hyl.");
+						wcscpy(ln, TR(L"Hyl."));
 						break;
 					case L'M' :
-						wcscpy(ln, L"Puut.");
+						wcscpy(ln, TR(L"Puut."));
 						break;
 					case L'K' :
-						wcscpy(ln, L"Kesk.");
+						wcscpy(ln, TR(L"Kesk."));
 						break;
 					case L'O' :
-						wcscpy(ln, L"Ohit.");
+						wcscpy(ln, TR(L"Ohit."));
 						break;
 					case L'X' :
-						wcscpy(ln, L"EiTul");
+						wcscpy(ln, TR(L"EiTul"));
 						break;
 					case L'E' :
 					case L'V' :
-						wcscpy(ln, L"Eil.");
+						wcscpy(ln, TR(L"Eil."));
 						break;
 					case L'B' :
-						wcscpy(ln, L"Hav.");
+						wcscpy(ln, TR(L"Hav."));
 						break;
 					}
 				Cells[k][CTulos].text = UnicodeString(ln);
@@ -1187,14 +1189,14 @@ void __fastcall TTilanneForm::FormSetup(bool pakota, bool paivitaLeveys)
 	if (PisteVal->ItemIndex == YTulVal)
 		pVal = 9999;
 	PisteVal->Items->Clear();
-	PisteVal->Items->Add(L"L‰htˆ");
-	PisteVal->Items->Add(L"Maali");
+	PisteVal->Items->Add(TR(L"L‰htˆ"));
+	PisteVal->Items->Add(TR(L"Maali"));
 	for (int p = 0; p < Sarjat[IkkParam.Sarja].valuku[k_pv]; p++)
-		PisteVal->Items->Add(UnicodeString(p+1)+UnicodeString(L". v‰liaika"));
+		PisteVal->Items->Add(UnicodeString(p+1)+UnicodeString(TR(L". v‰liaika")));
 //	YTulVal = Sarjat[Sarja].valuku[k_pv] + 2;
 	YTulVal = PisteVal->Items->Count;
 	if (Sarjat[IkkParam.Sarja].luonne[k_pv] > 0 && k_pv > Sarjat[IkkParam.Sarja].enspv) {
-		PisteVal->Items->Add(L"Yhteistulos");
+		PisteVal->Items->Add(TR(L"Yhteistulos"));
 		if (pVal >= YTulVal) {
 			pVal = (pVal == 9999 ? YTulVal : YTulVal - 1);
 			}
@@ -1497,7 +1499,7 @@ void __fastcall TTilanneForm::Muumerkkikoko1Click(TObject *Sender)
 	int fnt;
 
 	fnt = IkkParam.FontSize;
-	inputint_prompt(&fnt, L"Valitse koko pistein‰", &ch, this);
+	inputint_prompt(&fnt, TR(L"Valitse koko pistein‰"), &ch, this);
 	if (ch == ESC)
 		return;
 	IkkParam.FontSize = fnt;
@@ -1564,12 +1566,12 @@ void __fastcall TTilanneForm::FormShow(TObject *Sender)
 //		}
 	SrjVal->ItemIndex = 0;
 	PisteVal->Items->Clear();
-	PisteVal->Items->Add(L"L‰htˆ");
-	PisteVal->Items->Add(L"Maali");
+	PisteVal->Items->Add(TR(L"L‰htˆ"));
+	PisteVal->Items->Add(TR(L"Maali"));
 	for (int p = 0; p < kilpparam.valuku; p++)
-		PisteVal->Items->Add(UnicodeString(p+1)+UnicodeString(L". v‰liaika"));
+		PisteVal->Items->Add(UnicodeString(p+1)+UnicodeString(TR(L". v‰liaika")));
 	if (k_pv)
-		PisteVal->Items->Add(L"Yhteistulos");
+		PisteVal->Items->Add(TR(L"Yhteistulos"));
 	PisteVal->ItemIndex = 1;
 //	akaaajonvliaikatilanne1->Checked = takaa_ajo;
 //	akaaajonvliaikatilanne1->Visible = k_pv > 0;
@@ -1788,10 +1790,10 @@ void __fastcall TTilanneForm::Korostusaikarajat1Click(TObject *Sender)
 	wchar_t ch;
 
 	rj = IkkParam.korRaja[0] / SEK;
-	inputint_prompt(&rj, L"Anna alempi aikaraja sekunteina", &ch, this);
+	inputint_prompt(&rj, TR(L"Anna alempi aikaraja sekunteina"), &ch, this);
 	IkkParam.korRaja[0] = SEK*rj;
 	rj = IkkParam.korRaja[1] / SEK;
-	inputint_prompt(&rj, L"Anna ylempi aikaraja sekunteina", &ch, this);
+	inputint_prompt(&rj, TR(L"Anna ylempi aikaraja sekunteina"), &ch, this);
 	IkkParam.korRaja[1] = SEK*rj;
 }
 //---------------------------------------------------------------------------
@@ -2064,7 +2066,7 @@ void __fastcall TTilanneForm::aukosarjanptteeksi1Click(TObject *Sender)
 	wchar_t ch;
 
 	IkkParam.ScrollVali = IkkParam.ScrollVali/1000;
-	inputint_prompt(&IkkParam.ScrollVali, L"Tuloksen n‰ytˆn minimikesto (sek)", &ch, this);
+	inputint_prompt(&IkkParam.ScrollVali, TR(L"Tuloksen n‰ytˆn minimikesto (sek)"), &ch, this);
 	IkkParam.ScrollVali = IkkParam.ScrollVali*1000;
 }
 //---------------------------------------------------------------------------
@@ -2074,7 +2076,7 @@ void __fastcall TTilanneForm::Sarjanminimikesto1Click(TObject *Sender)
 	wchar_t ch;
 
 	IkkParam.ScrollRiviKesto = IkkParam.ScrollRiviKesto/100;
-	inputint_prompt(&IkkParam.ScrollRiviKesto, L"N‰ytˆn lis‰kesto 10 rivi‰ kohti (sek)", &ch, this);
+	inputint_prompt(&IkkParam.ScrollRiviKesto, TR(L"N‰ytˆn lis‰kesto 10 rivi‰ kohti (sek)"), &ch, this);
 	IkkParam.ScrollRiviKesto = IkkParam.ScrollRiviKesto*100;
 	ScrollViive = IkkParam.ScrollRiviKesto / TulosGrid->DefaultRowHeight;
 }
@@ -2431,7 +2433,7 @@ void __fastcall TTilanneForm::Er1Click(TObject *Sender)
 	wchar_t vast;
 
 	arvo = IkkParam.EraVal;
-	inputint_prompt(&arvo, L"Anna er‰n numero, 0: ei rajausta, -1: automaattinen valinta", &vast, this);
+	inputint_prompt(&arvo, TR(L"Anna er‰n numero, 0: ei rajausta, -1: automaattinen valinta"), &vast, this);
 	if (vast != ESC)
 		IkkParam.EraVal = arvo;
 	if (IkkParam.EraVal >= 0)
@@ -2504,7 +2506,7 @@ void __fastcall TTilanneForm::Nytkierrosaika1Click(TObject *Sender)
 		wchar_t ch;
 		if (IkkParam.kierrosaika <= 0)
 		   IkkParam.kierrosaika = 1 - IkkParam.kierrosaika;
-		inputint_prompt(&IkkParam.kierrosaika, L"Kierroksen aikojen lukum‰‰r‰", &ch, this);
+		inputint_prompt(&IkkParam.kierrosaika, TR(L"Kierroksen aikojen lukum‰‰r‰"), &ch, this);
 		}
 	else if (IkkParam.kierrosaika > 0) {
 		IkkParam.kierrosaika = 1 - IkkParam.kierrosaika;
@@ -2556,7 +2558,7 @@ void __fastcall TTilanneForm::Sallikaikkiensarakkeidenst1Click(TObject *Sender)
 void __fastcall TTilanneForm::Lhdnnimerkki1Click(TObject *Sender)
 {
 	wchar_t ch;
-	inputint_prompt(&IkkParam.AaniLkm, L"Anna piippausten lukum‰‰r‰, 0: ei piippausta", &ch, this);
+	inputint_prompt(&IkkParam.AaniLkm, TR(L"Anna piippausten lukum‰‰r‰, 0: ei piippausta"), &ch, this);
 }
 //---------------------------------------------------------------------------
 

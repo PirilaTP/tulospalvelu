@@ -214,8 +214,8 @@ INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, INT *uptr, INT kysy,
 		// Tähän tullaan, jos looppi on käyty loppuun löytämättä oikeaa riviä
 
 	  if (!kielto) {
-		 writeerror_w(L"Tallennus ei onnistu. Aikataulukkoon tullut mahdollisesti "
-			L"muutossanoma", 2000);
+		 writeerror_w(TR(L"Tallennus ei onnistu. Aikataulukkoon tullut mahdollisesti "
+			L"muutossanoma"), 2000);
 		 if (loki) wkirjloki(L"Tallennus peruutettu (muutos)");
 		 errret = 1;
 		 goto poistu;
@@ -231,7 +231,7 @@ INT tall_rivi(INT ino, aikatp *utm, aikatp *vtm, INT *uptr, INT kysy,
 	if (utm && utm->t != TMAALI0*AIKAJAK) {
 		utm->t = NORMKELLO_A(utm->t);
 	  if((aikajono[ino]->rwtime - aikajono[ino]->mxtime) >= 0) {
-			writeerror_w(L"AIKATAULUKKO TÄYSI",0);
+			writeerror_w(TR(L"AIKATAULUKKO TÄYSI"),0);
 		 if (loki) wkirjloki(L"Aikataulukko täysi, tallennus peruutettu");
 		 errret = 1;
 		 goto poistu;
@@ -542,7 +542,7 @@ void AjatTiedostosta(wchar_t *fname, int akttm, bool vainajat)
 		}
 #ifndef _CONSOLE
 	else {
-		Application->MessageBoxW(L"Tiedoston avaaminen ei onnistunut", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Tiedoston avaaminen ei onnistunut"), TR(L"Este"), MB_OK);
 		}
 #endif
 	if (AikaFl)

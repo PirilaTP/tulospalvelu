@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "TapUnit2.h"
 #include "VDeclare.h"
@@ -35,6 +36,7 @@ extern bool TapEtunimiensin;
 __fastcall TTapForm::TTapForm(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -456,7 +458,7 @@ void __fastcall TTapForm::Muumerkkikoko1Click(TObject *Sender)
 	int fnt;
 
 	fnt = IkkParam.FontSize;
-	inputint_prompt(&fnt, L"Valitse koko pisteinä", &ch, this);
+	inputint_prompt(&fnt, TR(L"Valitse koko pisteinä"), &ch, this);
 	if (ch == ESC)
 		return;
 	IkkParam.FontSize = fnt;
@@ -509,11 +511,11 @@ void __fastcall TTapForm::FormCreate(TObject *Sender)
 	applyParams();
 	PisteVal->Clear();
 	if (kierrokset)
-		PisteVal->Items->Add("Yhteensä");
-	PisteVal->Items->Add("Kaikki");
-	PisteVal->Items->Add("Maali");
+		PisteVal->Items->Add(TRA("Yhteensä"));
+	PisteVal->Items->Add(TRA("Kaikki"));
+	PisteVal->Items->Add(TRA("Maali"));
 	for (int i = 1; i <= kilpparam.maxvaluku; i++) {
-		PisteVal->Items->Add(AnsiString(i)+". väliaika");
+		PisteVal->Items->Add(AnsiString(i)+TRA(". väliaika"));
 		}
 	PisteVal->ItemIndex = 0;
 	Valittu = 0;

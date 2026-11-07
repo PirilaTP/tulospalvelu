@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSarjaVal.h"
 //---------------------------------------------------------------------------
@@ -28,6 +29,7 @@ TFormSarjaVal *FormSarjaVal;
 __fastcall TFormSarjaVal::TFormSarjaVal(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

@@ -18,6 +18,7 @@
 #include <vcl.h>
 #include <Clipbrd.hpp>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include <iostream>
 #include <fstream.h>
@@ -31,6 +32,7 @@ TFormYhtveto *FormYhtveto;
 __fastcall TFormYhtveto::TFormYhtveto(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormYhtveto::YvGridClick(TObject *Sender)

@@ -232,7 +232,7 @@ int maaraaOsuusluku(bool kysy)
 			}
 		if (kilpparam.n_os_akt < kilpparam.osuusluku) {
 			kilpparam.n_os_akt = kilpparam.osuusluku;
-			writeerror_w(L"Korjattu kilpailun ja sarjatietojen osuusluvuissa ristiriita. Tarkasta tiedot.", 0);
+			writeerror_w(TR(L"Korjattu kilpailun ja sarjatietojen osuusluvuissa ristiriita. Tarkasta tiedot."), 0);
 			}
 		}
 	return(0);
@@ -257,7 +257,7 @@ void luesarjayhdistelmat(void)
 		p = wcstok(buf, L" \t\n", &ctx);
 		if (p) {
 			if (n >= MAXYHD) {
-				swprintf(buf, L"Liikaa sarjayhdistelmiä. Maksimimäärä on %d.", MAXYHD);
+				swprintf(buf, TR(L"Liikaa sarjayhdistelmiä. Maksimimäärä on %d."), MAXYHD);
 				writeerror_w(buf, 0);
 				}
 //			wcsncpy(yhdnimet[n], p, LSARJA);
@@ -296,7 +296,7 @@ void luesarjayhdistelmat(void)
 		}
 	nsarjayhd = n;
 	if (n > 0) {
-		swprintf(buf, L"Tiedostosta %s luettu %d sarjayhdistelmää", yhdfilename, n);
+		swprintf(buf, TR(L"Tiedostosta %s luettu %d sarjayhdistelmää"), yhdfilename, n);
 		vidspwmsg(1,5,7,0,buf);
 		}
 	delete yhdfile;
@@ -341,13 +341,13 @@ int luesarjat(void)
 			else {
 				maxosuusluku = (rr - 4) / sarjaluku;
 				if (sarjaluku > MAXSARJALUKU) {
-					sprintf(prs,"Suurin sallittu sarjaluku on %d",
+					sprintf(prs,TRA("Suurin sallittu sarjaluku on %d"),
 						MAXSARJALUKU);
 					writeerror(prs,0);
 					return(1);
 					}
 				else if (maxosuusluku > MAXOSUUSLUKU) {
-					sprintf(prs,"Suurin sallittu osuusluku on %d",
+					sprintf(prs,TRA("Suurin sallittu osuusluku on %d"),
 						MAXOSUUSLUKU);
 					writeerror(prs,0);
 					return(1);
@@ -452,19 +452,19 @@ error :
 			clrln(17);
 			clrln(18);
 			sccurset(15,0);
-			sprintf(prs,"Tiedosto %s viallinen", sarjafname);
+			sprintf(prs,TRA("Tiedosto %s viallinen"), sarjafname);
 			vidspmsg(15,0,7,0,prs);
-			sprintf(prs,"Virhe rivillä %d tai ennen sitä", er);
+			sprintf(prs,TRA("Virhe rivillä %d tai ennen sitä"), er);
 			vidspmsg(16,0,7,0,prs);
 			vidspmsg(17,0,7,0,
-				"Korjaa tiedosto ennen uutta käynnistystä");
-			writeerror("Virhe vanhoja sarjatietoja (KILP.SRJ) luettaessa.", 0);
+				TRA("Korjaa tiedosto ennen uutta käynnistystä"));
+			writeerror(TRA("Virhe vanhoja sarjatietoja (KILP.SRJ) luettaessa."), 0);
 			return(1);
 			}
 		fclose(sarjaf);
 		}
 	else {
-		strcpy(prs, "Sarjatietoja ei löydy, käyttö mahdotonta");
+		strcpy(prs, TRA("Sarjatietoja ei löydy, käyttö mahdotonta"));
 		writeerror(prs, 0);
 		scpclr();
 		return(1);
@@ -534,7 +534,7 @@ void kirjsarjat(void)
 		fclose(sarjaf);
 		}
 	else 
-		writeerror("Sarjatietotiedoston avaus kirjoitusta varten ei onnistu", 0);
+		writeerror(TRA("Sarjatietotiedoston avaus kirjoitusta varten ei onnistu"), 0);
 	}
 
 void sarjatietue::tulkMTB(wchar_t *ln, int osuus)

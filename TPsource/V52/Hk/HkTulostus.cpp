@@ -2535,7 +2535,7 @@ void meri3pisteet(void)
 	INT32 tls;
 	kilptietue kilp;
 
-	vidspwmsg(ySize-6,5,7,0, L"Pisteiden laskenta k‰ynniss‰");
+	vidspwmsg(ySize-6,5,7,0, TR(L"Pisteiden laskenta k‰ynniss‰"));
 	for (srj = 0; srj < sarjaluku; srj++) {
 		if (vaiheLkm(srj) == 3) {
 			meri3on = 1;
@@ -4034,7 +4034,7 @@ void opentaulu(void)
 		 er = 0;
 	  }
    if (er) {
-	  writeerror_w(L"Tiedonsiirron avaaminen taululle ei onnistu", 0, true);
+	  writeerror_w(TR(L"Tiedonsiirron avaaminen taululle ei onnistu"), 0, true);
 	  taulu_com = 0;
 	  }
    }
@@ -6015,7 +6015,7 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 				sj1 = 0;
 				sj2 = 0;
 				*l = 0;
-				writeerror_w(L"Uusi tulos, sarja aloitetaan alusta", 1500);
+				writeerror_w(TR(L"Uusi tulos, sarja aloitetaan alusta"), 1500);
 				modif[*srj] = FALSE;
 				}
 #endif
@@ -6413,8 +6413,8 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 			if (*l == (ySize-7) || (i == ni && *l > 0)) {
 			   clrln(ySize-3);
 			   vidspwmsg(ySize-3,0,7,0,Sarjat[*srj].sarjanimi);
-			   vidspwmsg(ySize-3,13,7,0,L"Paina <Return> jatkaaksesi tai "
-				  L"<Esc> keskeytt‰‰ksesi");
+			   vidspwmsg(ySize-3,13,7,0,TR(L"Paina <Return> jatkaaksesi tai "
+				  L"<Esc> keskeytt‰‰ksesi"));
 			   sccurset(ySize-3,66);
 			   LeaveCriticalSection(&tall_CriticalSection);
 			   do {
@@ -6426,7 +6426,7 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 				   goto lopeta;
 			   if (p != seuraava(0, piste, d)) {
 				  LeaveCriticalSection(&tall_CriticalSection);
-				  writeerror("Sarjan tulokset muuttuneet", 0);
+				  writeerror(TRA("Sarjan tulokset muuttuneet"), 0);
 				  EnterCriticalSection(&tall_CriticalSection);
 				  goto lopeta;
 				  }
@@ -6556,7 +6556,7 @@ void yhteenveto(tulostusparamtp *tulprm)
 #ifdef _CONSOLE
       status_on = 0;
       clearframe();
-      vidspwmsg(0,0,7,0,L"YHTEENVETO");
+      vidspwmsg(0,0,7,0,TR(L"YHTEENVETO"));
 	  vidspwmsg(2,0,7,0,ots);
       clrln(ySize-3);
 //      swprintf(line,L"Viim. maaliaika : %8.8s",AIKATOWSTRS(st, tmaali,t0));
@@ -6602,13 +6602,13 @@ void yhteenveto(tulostusparamtp *tulprm)
             l = 4;
             do {
 			   vidspwmsg(ySize-3,0,7,0,
-				  L"Paina <Return> jatkaaksesi tai P merkit‰ksesi palkintojenjako");
+				  TR(L"Paina <Return> jatkaaksesi tai P merkit‰ksesi palkintojenjako"));
 			   ch2 = readkbd(&ch2,TRUE,spoolfl);
 			   if (ch2 == 'P' || ch2 == 'p') {
 
 				  snimi[0] = 0;
 				  clrln(ySize-3);
-				  vidspwmsg(ySize-3, 0, 7, 0, L"Anna sarja");
+				  vidspwmsg(ySize-3, 0, 7, 0, TR(L"Anna sarja"));
 				  psrj = luesarja(snimi, &ch);
                   if (psrj >= 0) {
                      palk[psrj] = 1 - palk[psrj];
@@ -6736,15 +6736,15 @@ void autoruutu(void)
 		 wcscat(sl ,st);
 		 }
 	  swprintf(st, L" Laajuus %5s", sl);
-	  viwrrectw(12,66,12,79,L" Auto       ON",7,0,0);
+	  viwrrectw(12,66,12,79,TR(L" Auto       ON"),7,0,0);
 	  viwrrectw(13,66,13,79,st,7,0,0);
 	  swprintf(st, L" Kynnys %6d", kynnys);
 	  viwrrectw(14,66,14,79,st,7,0,0);
-	  viwrrectw(15,66,15,73,L" Korkein",7,0,0);
+	  viwrrectw(15,66,15,73,TR(L" Korkein"),7,0,0);
 	  }
    else {
 	  wcscpy(st, L"              ");
-      viwrrectw(12,66,12,79,L" Auto       EI",7,0,0);
+      viwrrectw(12,66,12,79,TR(L" Auto       EI"),7,0,0);
       viwrrectw(13,66,13,79,st,7,0,0);
       viwrrectw(14,66,14,79,st,7,0,0);
       viwrrectw(15,66,15,79,st,7,0,0);
@@ -7015,7 +7015,7 @@ void startaf(INT kysy)
 	  if (!comopen[fileyht]) {
 		 InitializeCriticalSection(&tcp_CriticalSection[fileyht]);
 		 if (openportTCP(hComm+fileyht, ipparam+fileyht)) {
-			writeerror_w(L"Tiedostosiirron TCP-yhteyden avaaminen ei onnistunut", 0);
+			writeerror_w(TR(L"Tiedostosiirron TCP-yhteyden avaaminen ei onnistunut"), 0);
 			}
 		 else
 			comopen[fileyht] = 1;
@@ -7657,7 +7657,7 @@ void joukkuetul(bool naytolle, int srj, tulostusparamtp *tulprm)
 		maxjoukk = ntulos[srj][0]/2+200;
 		joukk = (jluettp *) calloc(maxjoukk, sizeof(jluettp));
 		if (!joukk) {
-			writeerror_w(L"Muisti ei riit‰ joukkuetuloksille", 0);
+			writeerror_w(TR(L"Muisti ei riit‰ joukkuetuloksille"), 0);
 			return;
 			}
 		njoukk = 0;
@@ -7972,7 +7972,7 @@ INT htmlrunko(tulostusparamtp *tulprm, wchar_t *baseFName)
    wtitle[76] = 0;
    elimwbl(wtitle);
 #ifdef _CONSOLE
-   viwrrectw(ySize-1,0,ySize-1,12,L"SIVUN NIMI   ", 7, 0, 0);
+   viwrrectw(ySize-1,0,ySize-1,12,TR(L"SIVUN NIMI   "), 7, 0, 0);
    inputwstr(wtitle,76,0,ySize-3,L"\r\x1b", &ch, 0);
 #endif
    if (tulprm->yksihtml || !htmlotsfl) {
@@ -7985,7 +7985,7 @@ INT htmlrunko(tulostusparamtp *tulprm, wchar_t *baseFName)
 	  wheader[76] = 0;
 	  elimwbl(wheader);
 #ifdef _CONSOLE
-	  viwrrectw(ySize-1,0,ySize-1,13,L"SIVUN OTSIKKO ", 7, 0, 0);
+	  viwrrectw(ySize-1,0,ySize-1,13,TR(L"SIVUN OTSIKKO "), 7, 0, 0);
 	  clrln(ySize-3);
 	  inputwstr(wheader,76,0,ySize-3,L"\r\x1b", &ch, 0);
 #endif
@@ -8170,7 +8170,7 @@ static int makivalinnat(wchar_t co, wchar_t *rajaus)
 		}
 	if (wcswcind(*rajaus, L"ILTP") >= 0) {
 		if (aktkierros != nkierros[0]) {
-			writeerror_w(L"T‰m‰ valinta toimii vain, kun viimeinen kierros on aktiivinen", 0);
+			writeerror_w(TR(L"T‰m‰ valinta toimii vain, kun viimeinen kierros on aktiivinen"), 0);
 			err = 1;
 			goto loppu;
 			}			
@@ -8214,7 +8214,7 @@ static void teesarjapisteindeksi(int srj)
 		max_npst = k_pv+1;
    n = 0;
    if ((pstindex.ix = (char *) calloc(nilmt+1,pstindex.recl)) == NULL) {
-	  writeerror_w(L"Muistissa ei tilaa indeksille", 4000);
+	  writeerror_w(TR(L"Muistissa ei tilaa indeksille"), 4000);
 	  return;
 	  }
    ip = pstindex.ix;
@@ -8292,7 +8292,7 @@ int list(wchar_t kohde, wchar_t tiedlaji, wchar_t tulostettava, wchar_t jarjesty
 		merkisto(L'G');
 		if ((tulprm.lstf = openprfile(listfname, 1, TRUE, FALSE, trlate, FALSE))
 			== NULL) {
-			writeerror_w(L"Kirjoitinyhteyden avaaminen ei onnistunut",0, true);
+			writeerror_w(TR(L"Kirjoitinyhteyden avaaminen ei onnistunut"),0, true);
 			return(0);
 			}
 		}

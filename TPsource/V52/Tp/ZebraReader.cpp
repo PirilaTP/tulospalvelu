@@ -432,7 +432,7 @@ static void startInventory(int cn)
 				swprintf(lg, L"%d: FX9600 GPI tilakysely -> vastaus ilman GPIPortCurrentState-parametria", mstimer());
 			else
 				swprintf(lg, L"%d: FX9600 GPI%d tila=%ls -> START_ROSPEC %ls",
-					mstimer(), ZebraGpiPort, state == 1 ? L"HIGH" : L"LOW", state == 1 ? L"lahetetty" : L"ei lahetetty");
+					mstimer(), ZebraGpiPort, state == 1 ? L"HIGH" : L"LOW", state == 1 ? L"lahetetty" : TR(L"ei lahetetty"));
 			wkirjloki(lg);
 			}
 

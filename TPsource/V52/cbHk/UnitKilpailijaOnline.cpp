@@ -18,6 +18,7 @@
 #include <vcl.h>
 #include <Clipbrd.hpp>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "HkDeclare.h"
 #include "UnitKilpailijaOnline.h"
@@ -61,6 +62,7 @@ ColTp VaGridCols0[] = {
 __fastcall TFormKilpailijaOnline::TFormKilpailijaOnline(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -250,31 +252,31 @@ void __fastcall TFormKilpailijaOnline::naytaTiedot(void)
 						case 7:
 							switch (Kilp.tark(pv)) {
 								case L'K' :
-									wcscpy(line, L"Kesk");
+									wcscpy(line, TR(L"Kesk"));
 									break;
 								case L'M' :
-									wcscpy(line, L"Virhe");
+									wcscpy(line, TR(L"Virhe"));
 									break;
 								case L'O' :
-									wcscpy(line, L"Ohit");
+									wcscpy(line, TR(L"Ohit"));
 									break;
 								case L'H' :
-									wcscpy(line, L"Hyl");
+									wcscpy(line, TR(L"Hyl"));
 									break;
 								case L'E' :
-									wcscpy(line, L"Eiläht.");
+									wcscpy(line, TR(L"Eiläht."));
 									break;
 								case L'B' :
-									wcscpy(line, L"Havaittu");
+									wcscpy(line, TR(L"Havaittu"));
 									break;
 								case L'X' :
-									wcscpy(line, L"EiAikaa");
+									wcscpy(line, TR(L"EiAikaa"));
 									break;
 								case L'V' :
-									wcscpy(line, L"Vakantti");
+									wcscpy(line, TR(L"Vakantti"));
 									break;
 								case L'T' :
-									wcscpy(line, L"Tark.");
+									wcscpy(line, TR(L"Tark."));
 									break;
 								case L'I' :
 									wcscpy(line, L"esItys");
@@ -570,7 +572,7 @@ int __fastcall TFormKilpailijaOnline::tallennaTiedot(void)
    Kilp1 = Kilp;
 	Kilp1.setId(_wtoi(EdtKilpno->Text.c_str()));
 	if (Kilp1.id() != Kilp.id() && getpos(Kilp1.id()) > 0) {
-	  Application->MessageBox(L"Kilpailijanumero ei ole käytettävissä", L"Virhe",
+	  Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä"), TR(L"Virhe"),
 	  MB_OK);
 	  return(1);
 	}
@@ -1030,7 +1032,7 @@ void __fastcall TFormKilpailijaOnline::FormClose(TObject *Sender, TCloseAction &
 
 	if (!EdtSukunimi->ReadOnly) {
 		haeTiedot(&Kilp1);
-		if (!(Kilp1 == Kilp) && Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallennus",
+		if (!(Kilp1 == Kilp) && Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallennus"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -1263,8 +1265,8 @@ void __fastcall TFormKilpailijaOnline::FormShow(TObject *Sender)
 	LblSeurPiste->Visible = Seuranta;
 	CBSeurPiste->Visible = Seuranta;
 	CBSeurPiste->Items->Clear();
-	CBSeurPiste->Items->Add(L"Lähtö");
-	CBSeurPiste->Items->Add(L"Maali");
+	CBSeurPiste->Items->Add(TR(L"Lähtö"));
+	CBSeurPiste->Items->Add(TR(L"Maali"));
 	PvGrid->DefaultRowHeight = 20 * Screen->PixelsPerInch / 96;
 	if (ToimintaTila < 2)
 		PvGrid->RowCount = kilpparam.n_pv_akt + 1;
@@ -1284,9 +1286,9 @@ void __fastcall TFormKilpailijaOnline::FormShow(TObject *Sender)
 	Cells[2][0].text = UnicodeString(L"Aika");
 	Cells[3][0].text = UnicodeString(L"Ero");
 	for (int p = 0; p < kilpparam.valuku; p++)
-		CBSeurPiste->Items->Add(UnicodeString(p+1)+UnicodeString(L". väliaika"));
+		CBSeurPiste->Items->Add(UnicodeString(p+1)+UnicodeString(TR(L". väliaika")));
 	if (k_pv)
-		CBSeurPiste->Items->Add(L"Yhteistulos");
+		CBSeurPiste->Items->Add(TR(L"Yhteistulos"));
 	CBSeurPiste->ItemIndex = 1;
 	FormResize(Sender);
 	Refresh();
@@ -1336,8 +1338,8 @@ void __fastcall TFormKilpailijaOnline::BtnTietoaClick(TObject *Sender)
 {
 	wchar_t *ctx = NULL;
 	if (!HenkLinkki) {
-		if (Application->MessageBoxW(L"Linkkejä tietoihin ei ole avattu - avataanko nyt?",
-		L"Linkit", MB_YESNO) != IDYES)
+		if (Application->MessageBoxW(TR(L"Linkkejä tietoihin ei ole avattu - avataanko nyt?"),
+		TR(L"Linkit"), MB_YESNO) != IDYES)
 			return;
 		OpenDialog1->InitialDir = FormMain->CurrentDir;
 		OpenDialog1->FileName = L"Tietolista.txt";
@@ -1407,7 +1409,7 @@ void __fastcall TFormKilpailijaOnline::BtnTietoaClick(TObject *Sender)
 				}
 			delete InFile;
 			if (!HenkLinkki) {
-				Application->MessageBoxW(L"Linkkejä ei löytynyt tiedostosta", L"Virhe", MB_OK);
+				Application->MessageBoxW(TR(L"Linkkejä ei löytynyt tiedostosta"), TR(L"Virhe"), MB_OK);
 				return;
 				}
 			}
@@ -1447,7 +1449,7 @@ void __fastcall TFormKilpailijaOnline::BtnTietoaClick(TObject *Sender)
 			FormBrowser->BringToFront();
 			}
 		else {
-			Application->MessageBoxW(L"Kilpailijalle ei ole tietolinkkiä", L"Ei löydy", MB_OK);
+			Application->MessageBoxW(TR(L"Kilpailijalle ei ole tietolinkkiä"), TR(L"Ei löydy"), MB_OK);
 			}
 		}
 }
@@ -1478,7 +1480,7 @@ void __fastcall TFormKilpailijaOnline::EdtKeyDown(TObject *Sender, WORD &Key,
 	if (sallimuokkaus && Key == VK_F9 && !Shift.Contains(ssShift) && !Shift.Contains(ssCtrl) && !Shift.Contains(ssAlt)) {
 		if (!EdtSukunimi->ReadOnly) {
 			haeTiedot(&Kilp1);
-			if (!(Kilp1 == Kilp) && Application->MessageBoxW(L"Tallenna mahdolliset muutokset", L"Vahvistus", MB_YESNO) == IDYES)
+			if (!(Kilp1 == Kilp) && Application->MessageBoxW(TR(L"Tallenna mahdolliset muutokset"), TR(L"Vahvistus"), MB_YESNO) == IDYES)
 				BtnTallennaClick(Sender);
 			else
 				BtnPeruutaClick(Sender);

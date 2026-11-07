@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitStatus.h"
 #include "UnitMain.h"
@@ -55,6 +56,7 @@ static yhtstatustp yhtstatus[MAX_PORTTI];
 __fastcall TFormStatus::TFormStatus(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -163,7 +165,7 @@ void naytayhteydet(void)
 			else
 				wcscpy(line1, L"   ");
 			if (lahcom[cn])
-				wcscat(line1, L"Out");
+				wcscat(line1, TR(L"Out"));
 			else
 				wcscat(line1, L"   ");
 			if (!lkmThreadOn)
@@ -581,27 +583,27 @@ void __fastcall TFormStatus::FormSetup(void)
 	FormStatus->LkmGrid->ColCount = iLisa + 1 + monisarja + kilpparam.maxvaluku;
 	FormStatus->LkmGrid->FixedCols = 1 + monisarja;
 	if (monisarja) {
-		FormStatus->LkmGrid->Cells[0][0] = L"Sarja";
+		FormStatus->LkmGrid->Cells[0][0] = TR(L"Sarja");
 		FormStatus->LkmGrid->ColWidths[0] = 55 * Screen->PixelsPerInch / ppi0;
 		}
-	FormStatus->LkmGrid->Cells[monisarja][0] = L"Osuus";
-	FormStatus->LkmGrid->Cells[monisarja+1][0] = L"Ilm";
-	FormStatus->LkmGrid->Cells[monisarja+2][0] = L"Tulos";
-	FormStatus->LkmGrid->Cells[monisarja+3][0] = L"Kesk";
-	FormStatus->LkmGrid->Cells[monisarja+4][0] = L"Hyl";
-	FormStatus->LkmGrid->Cells[monisarja+5][0] = L"Eil";
-	FormStatus->LkmGrid->Cells[monisarja+6][0] = L"Avoin";
+	FormStatus->LkmGrid->Cells[monisarja][0] = TR(L"Osuus");
+	FormStatus->LkmGrid->Cells[monisarja+1][0] = TR(L"Ilm");
+	FormStatus->LkmGrid->Cells[monisarja+2][0] = TR(L"Tulos");
+	FormStatus->LkmGrid->Cells[monisarja+3][0] = TR(L"Kesk");
+	FormStatus->LkmGrid->Cells[monisarja+4][0] = TR(L"Hyl");
+	FormStatus->LkmGrid->Cells[monisarja+5][0] = TR(L"Eil");
+	FormStatus->LkmGrid->Cells[monisarja+6][0] = TR(L"Avoin");
 	if (IkkParam.ylahdot)
-		FormStatus->LkmGrid->Cells[monisarja+7][0] = L"YhtLht";
+		FormStatus->LkmGrid->Cells[monisarja+7][0] = TR(L"YhtLht");
 	if (IkkParam.esitykset)
-		FormStatus->LkmGrid->Cells[monisarja+IkkParam.ylahdot+7][0] = L"Esit";
+		FormStatus->LkmGrid->Cells[monisarja+IkkParam.ylahdot+7][0] = TR(L"Esit");
 	if (IkkParam.emittiedot)
-		FormStatus->LkmGrid->Cells[monisarja+IkkParam.ylahdot+IkkParam.esitykset+7][0] = L"Emit";
+		FormStatus->LkmGrid->Cells[monisarja+IkkParam.ylahdot+IkkParam.esitykset+7][0] = TR(L"Emit");
 	if (IkkParam.emitkoodeja)
-		FormStatus->LkmGrid->Cells[monisarja+IkkParam.ylahdot+IkkParam.esitykset+IkkParam.emittiedot+7][0] = L"EmKoodit";
+		FormStatus->LkmGrid->Cells[monisarja+IkkParam.ylahdot+IkkParam.esitykset+IkkParam.emittiedot+7][0] = TR(L"EmKoodit");
 	for (int va = 1; va <= kilpparam.maxvaluku; va++)
 		FormStatus->LkmGrid->Cells[monisarja+iLisa+va][0] = UnicodeString(va)+L".va";
-	FormStatus->LkmGrid->Cells[0][1] = L"Yht.";
+	FormStatus->LkmGrid->Cells[0][1] = TR(L"Yht.");
 	colMuutos = true;
 }
 //---------------------------------------------------------------------------

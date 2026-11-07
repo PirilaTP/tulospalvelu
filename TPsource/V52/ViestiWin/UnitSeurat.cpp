@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSeurat.h"
 #include "UnitEditDialog.h"
@@ -42,6 +43,7 @@ wchar_t seuraTiedNm[200] = L"seurat.csv";
 __fastcall TFormSeurat::TFormSeurat(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

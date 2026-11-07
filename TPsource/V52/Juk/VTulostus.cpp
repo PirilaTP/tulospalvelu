@@ -4460,8 +4460,8 @@ static char nayta_srj_os(int srj, int os, int jatko)
 	  vidint(ySize-3,12,2,os+1);
    else viwrrect(ySize-3,14,ySize-3,14,"*", 7,0,0);
    if (jatko) {
-      vidspmsg(ySize-3,14,7,0,".os.  Paina <Return> jatkaaksesi tai"
-         " <Esc> keskeytt‰‰ksesi");
+      vidspmsg(ySize-3,14,7,0,TRA(".os.  Paina <Return> jatkaaksesi tai"
+         " <Esc> keskeytt‰‰ksesi"));
 	  sccurset(ySize-3,73);
 	  do {
 //         tarkcom();
@@ -4469,7 +4469,7 @@ static char nayta_srj_os(int srj, int os, int jatko)
 		 } while (ch != KB_CR && ch != 27);
       }
    else {
-      vidspmsg(ySize-3,14,7,0,".os.   Paina <Esc> keskeytt‰‰ksesi");
+      vidspmsg(ySize-3,14,7,0,TRA(".os.   Paina <Esc> keskeytt‰‰ksesi"));
       sccurset(ySize-3,49);
       }
    return(ch);
@@ -5930,10 +5930,10 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 #ifdef _CONSOLE
 		if (tulprm->kohde == L'P') {
 			clrln(ySize-1);
-			vidspmsg(ySize-1,0,7,0,"Tulostaa sarjaa");
+			vidspmsg(ySize-1,0,7,0,TRA("Tulostaa sarjaa"));
 			vidspwmsg(ySize-1,17,7,0,Sarjat[*srj].Sarjanimi());
 			if (!autotl)
-				vidspmsg(ySize-1,30,7,0,"Paina <Esc> keskeytt‰‰ksesi");
+				vidspmsg(ySize-1,30,7,0,TRA("Paina <Esc> keskeytt‰‰ksesi"));
 			tulfl =TRUE;
 			tcomfl = FALSE;
 			}
@@ -6017,7 +6017,7 @@ int tulostasarja(INT *srj, tulostusparamtp *tulprm, INT *l, INT *sv, INT autotl)
 					sj = nalku;
 					tlsSeuraava(tulprm, &d, nalku, *srj, &lj, lj1, false, NULL, NULL, NULL, &osd);
 					}
-				writeerror("Uusi tulos, sarja aloitetaan alusta", 1500);
+				writeerror(TRA("Uusi tulos, sarja aloitetaan alusta"), 1500);
 				modif[*srj][os] = FALSE;
 				}
 #endif
@@ -6474,7 +6474,7 @@ void yhteenveto(tulostusparamtp *tulprm)
 #endif
    if (tulprm->kohde  == L'N' ) {
 	  clearframe();
-	  vidspmsg(0,0,7,0,"YHTEENVETO");
+	  vidspmsg(0,0,7,0,TRA("YHTEENVETO"));
 	  vidspwmsg(2,0,7,0,ots);
 	  clrln(ySize-3);
 	  swprintf(wline,L"Viim. maaliaika : %s",AIKATOWSTRS(as, tmaali,t0));
@@ -6519,7 +6519,7 @@ void yhteenveto(tulostusparamtp *tulprm)
 			   }
 			}
 		 if( (l >= 16) || (srj == sarjaluku - 1) ) {
-			vidspmsg(ySize-3,0,7,0,"Paina <Return> jatkaaksesi");
+			vidspmsg(ySize-3,0,7,0,TRA("Paina <Return> jatkaaksesi"));
 			do { } while (readkbd(&ch2,TRUE,spoolfl) != KB_CR);
 			clearframe();
 			l = 4;
@@ -6739,8 +6739,8 @@ void kaikki_tiedostoon(tulostusparamtp *tulprm, int sarja, int ens)
 	  kehys(0);
 	  do {
 		 if (sarjaluku > 1) {
-			vidspwmsg(ySize-3,0,7,0,L"       Anna sarja :             "
-			   L"  <Esc> : Poistu p‰‰valintaan");
+			vidspwmsg(ySize-3,0,7,0,TR(L"       Anna sarja :             "
+			   L"  <Esc> : Poistu p‰‰valintaan"));
 			srj = luesarja(Sarjat[srj].sarjanimi, &tc);
 			if (tc == ESC) goto escape;
 			}
@@ -6757,7 +6757,7 @@ void kaikki_tiedostoon(tulostusparamtp *tulprm, int sarja, int ens)
 			(tulprm->seuratulokset && !onko_seura(srj)) ||
 			(tulprm->piiritulokset && !onko_piiri(srj))) {
 			if (np <= nalku)
-			   writeerror("Ei tulostettavia, tyhj‰ sarja ?",0);
+			   writeerror(TRA("Ei tulostettavia, tyhj‰ sarja ?"),0);
 			if (sarjaluku == 1 || sarja == srj)
 				goto escape;
 			if (srj < sarjaluku - 1) srj++;
@@ -7086,7 +7086,7 @@ void startaf(INT kysy)
 	  if (!comopen[fileyht]) {
 		 InitializeCriticalSection(&tcp_CriticalSection[fileyht]);
 		 if (openportTCP(hComm+fileyht, ipparam+fileyht)) {
-			writeerror_w(L"Tiedostosiirron TCP-yhteyden avaaminen ei onnistunut", 0);
+			writeerror_w(TR(L"Tiedostosiirron TCP-yhteyden avaaminen ei onnistunut"), 0);
 			}
 		 else
 			comopen[fileyht] = 1;
@@ -7171,7 +7171,7 @@ int autofile(void)
 			wmemset((wchar_t *)aftulparam.sarjalista, 1, sizeof(aftulparam.sarjalista)/2);
 			}
 		if (!aftulparam.lstf) {
-			writeerror_w(L"Virhe autotulostustiedostoa avattaessa", 0);
+			writeerror_w(TR(L"Virhe autotulostustiedostoa avattaessa"), 0);
 			autofileparam.af_flag = 0;
 			LeaveCriticalSection(&autotul_CriticalSection);
 			return(1);
@@ -7374,7 +7374,7 @@ void joukkuepisteval(tulostusparamtp *tulprm)
 		 case L'L' :
 			luePisteSrj(0);
 			clrln(ySize-3);
-			vidspwmsg(ySize-3,0,7,0,L"Paina jotain n‰pp‰int‰");
+			vidspwmsg(ySize-3,0,7,0,TR(L"Paina jotain n‰pp‰int‰"));
 			readkbd(&ch2,TRUE,spoolfl);
 			break;
 		 case L'M' :
@@ -7576,7 +7576,7 @@ void joukkuepisteet(bool naytolle, tulostusparamtp *tulprm)
 		   }
 	  else {
 #ifdef _CONSOLE
-		 vidspwmsg(ySize-3,13,7,0,L"Paina <Return> jatkaaksesi");
+		 vidspwmsg(ySize-3,13,7,0,TR(L"Paina <Return> jatkaaksesi"));
 		 sccurset(ySize-3,66);
 		 do {
 			char che;
@@ -7606,7 +7606,7 @@ void seuraluettelo(void)
 
    if (seurat) return;
    if ((seurat = (sraluettp *) calloc(MAXNSEURA+2, sizeof(sraluettp))) == NULL) {
-	  writeerror_w(L"Ei tilaa seuraluettelolle", 0);
+	  writeerror_w(TR(L"Ei tilaa seuraluettelolle"), 0);
 	  return;
 	  }
    lseura = kilpparam.seuralyh_on ? kilpparam.lseuralyh : kilpparam.lseura;
@@ -7629,7 +7629,7 @@ void seuraluettelo(void)
 			   ns++;
 			   }
 			else {
-			   writeerror_w(L"Ei tilaa t‰ydelliselle seuraluettelolle", 0);
+			   writeerror_w(TR(L"Ei tilaa t‰ydelliselle seuraluettelolle"), 0);
 			   break;
 			   }
 			}
@@ -7712,8 +7712,8 @@ void joukkuetul(tulostusparamtp *tulprm)
 		}
 	while (1) {
 		clrln(ySize-3);
-		vidspwmsg(ySize-3,0,7,0,L"       Anna sarja :               "
-			L"<F4>:Yhdistelm‰, <Esc>:Poistu");
+		vidspwmsg(ySize-3,0,7,0,TR(L"       Anna sarja :               "
+			L"<F4>:Yhdistelm‰, <Esc>:Poistu"));
 		sarjayhdfl = 0;
 		srj = luesarja(L"", &tc);
 		if (tc == 204) {
@@ -7734,7 +7734,7 @@ void joukkuetul(tulostusparamtp *tulprm)
 		maxjoukk = ntulos[srj][0]/2+200;
 		joukk = (jluettp *) calloc(maxjoukk, sizeof(jluettp));
 		if (!joukk) {
-			writeerror_w(L"Muisti ei riit‰ joukkuetuloksille", 0);
+			writeerror_w(TR(L"Muisti ei riit‰ joukkuetuloksille"), 0);
 			break;
 			}
 		njoukk = 0;
@@ -7962,7 +7962,7 @@ void joukkuetul(int srj, tulostusparamtp *tulprm)
 		maxjoukk = ntulos[srj][0]/2+200;
 		joukk = (jluettp *) calloc(maxjoukk, sizeof(jluettp));
 		if (!joukk) {
-			writeerror_w(L"Muisti ei riit‰ joukkuetuloksille", 0);
+			writeerror_w(TR(L"Muisti ei riit‰ joukkuetuloksille"), 0);
 			return;
 			}
 		njoukk = 0;
@@ -8206,17 +8206,17 @@ void joukkuetul(tulostusparamtp *tulprm)
 	  srj = 0;
 	  if (sarjaluku > 1) {
 		 clrln(ySize-3);
-         vidspwmsg(ySize-3,0,7,0,L"Anna sarja:");
+         vidspwmsg(ySize-3,0,7,0,TR(L"Anna sarja:"));
 		 srj = luesarja(L"", &tc);
 		 }
 	  n = 6;
       clrln(ySize-3);
-      vidspwmsg(ySize-3,0,7,0,L"Joukkueeseen laskettavien luku :");
+      vidspwmsg(ySize-3,0,7,0,TR(L"Joukkueeseen laskettavien luku :"));
       INPUTINTW(&n, 2, 33, ySize-3, L"\r", &ch);
       if (n > PM_LUKU) {
          n = PM_LUKU;
          vidint(ySize-3, 33, 2, n);
-		 writeerror_w(L"Lukum‰‰r‰ pienennetty maksimiarvoonsa 8", 0, true);
+		 writeerror_w(TR(L"Lukum‰‰r‰ pienennetty maksimiarvoonsa 8"), 0, true);
          }
       clrln(ySize-3);
 	  }
@@ -8566,7 +8566,7 @@ void metsassa(tulostusparamtp *tulprm)
 	clrln(ySize-3);
 	if (ch == L'E') {
 #ifdef _CONSOLE
-		vidspwmsg(ySize-3, 0, 7, 0, L"L‰htˆajan yl‰raja:");
+		vidspwmsg(ySize-3, 0, 7, 0, TR(L"L‰htˆajan yl‰raja:"));
 		INPUTAIKAW(&traja, t0, 8, 21, ySize-3, L"\r", &ch);
 #else
 		inputaika_prompt(&traja, t0, 8, L"\r", &ch);

@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <process.h>
 #include <bstrings.h>
 #include <io.h>
@@ -49,6 +50,7 @@ static wchar_t TarkKoodit[] = L"--TIKHEVPMXB";
 __fastcall TFormEmit::TFormEmit(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -89,7 +91,7 @@ void __fastcall TFormEmit::FormCreate(TObject *Sender)
 	EdtTark1->Visible = kilpparam.kaksibadge == 2;
 	EdtTark2->Visible = kilpparam.kaksibadge == 2;
 	if (kilpparam.kaksibadge == 2) {
-		LblOrigBadge->Caption = L"Toinen";
+		LblOrigBadge->Caption = TR(L"Toinen");
 		EdtOrigBadge->Font->Style << fsBold;
 		EdtOrigBadge->Font->Size = 11;
 		}
@@ -125,13 +127,13 @@ void __fastcall TFormEmit::FormCreate(TObject *Sender)
 	Emitvaihdottuleville->Visible = k_pv < kilpparam.n_pv_akt - 1;
 	NaytaMemo(0);
 	CSarja->Items->Clear();
-	CSarja->Items->Add(L"Valitse sarja");
+	CSarja->Items->Add(TR(L"Valitse sarja"));
 	for (int i = 0; i < sarjaluku; i++) {
 		CSarja->Items->Add(UnicodeString(Sarjat[i].sarjanimi));
 		}
 	CSarja->ItemIndex = 0;
 	CRata->Items->Clear();
-	CRata->Items->Add(L"Sarjan mukaan");
+	CRata->Items->Add(TR(L"Sarjan mukaan"));
 	for (ratatp *rt = rata; rt < rata+nrata; rt++)
 		CRata->Items->Add(rt->tunnus);
 	CRata->ItemIndex = 0;
@@ -247,7 +249,7 @@ void __fastcall TFormEmit::InitTila(void)
 		Panel1->Visible = false;
 		BtnOhita->Visible = true;
 		if (esiluenta == 2) {
-			Caption = L"Väliaikatulosteet";
+			Caption = TR(L"Väliaikatulosteet");
 			EdtBdgMsg->Text = L"Lue kortti tai syötä KilpNo";
 			Height = 350 * Screen->PixelsPerInch / 96;
 			BtnOhita->Visible = false;
@@ -604,9 +606,9 @@ void __fastcall TFormEmit::Paivita(emittp *pEm)
 			int Vast;
 			setEmitJarr(-1, Kilp.kilpno, 0);
 			KasittelyKesken = true;
-			Vast = select3(2, (L"Kortti jo rekisteröity kilpailijalle "+UnicodeString(Kilp.kilpno)).c_str(),
-				L"Valitse toimintatapa", L"Jätä kortti aiemmalle käyttäjälle",
-				L"Ota kortti uuteen käyttöön", L"", this);
+			Vast = select3(2, (TR(L"Kortti jo rekisteröity kilpailijalle ")+UnicodeString(Kilp.kilpno)).c_str(),
+				TR(L"Valitse toimintatapa"), TR(L"Jätä kortti aiemmalle käyttäjälle"),
+				TR(L"Ota kortti uuteen käyttöön"), L"", this);
 			switch (Vast) {
 				case 1:
 					NaytaMemo(1);
@@ -655,7 +657,7 @@ void __fastcall TFormEmit::Paivita(emittp *pEm)
 					NimiKeyHit = False;
 					SiirraHTTiedot(0);
 					if (vahvistaaina) {
-						if (Application->MessageBoxW(L"Oikea kilpailija löytynyt?", L"Vahvista", MB_YESNO) != IDYES)
+						if (Application->MessageBoxW(TR(L"Oikea kilpailija löytynyt?"), TR(L"Vahvista"), MB_YESNO) != IDYES)
 							Vast = false;
 						}
 	//			if (select3(2, L"Onko haettu osanottaja oikea?", L"Vahvista",
@@ -673,14 +675,14 @@ void __fastcall TFormEmit::Paivita(emittp *pEm)
 				if (n > 1) {
 					erbeep();
 					erbeep();
-					Application->MessageBoxW(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä", L"Valitse", MB_OK);
+					Application->MessageBoxW(TR(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä"), TR(L"Valitse"), MB_OK);
 					EdtBadge->Color = clLime;
 					FocusControl(EdtBadge);
 					}
 				if (n == 0) {
 					erbeep();
 					erbeep();
-					Application->MessageBoxW(L"Syötä osanottajan tiedot tai valitse käyttäen nimihakua", L"Anna tiedot", MB_OK);
+					Application->MessageBoxW(TR(L"Syötä osanottajan tiedot tai valitse käyttäen nimihakua"), TR(L"Anna tiedot"), MB_OK);
 					FocusControl(EdtSNimi);
 					}
 				}
@@ -935,7 +937,7 @@ MESSAGE void __fastcall TFormEmit::NewCardHandler(TMyMessage &msg)
 		msgtxt[0] = 0;
 		bdg = pros_emit(&EKilp, msgtxt);
 		if (bdg <= 0) {
-			Application->MessageBoxW(msgtxt, L"Virhe luennassa", MB_OK);
+			Application->MessageBoxW(msgtxt, TR(L"Virhe luennassa"), MB_OK);
 			return;
 			}
 		if (esiluenta || kuntoLahto) {
@@ -1495,22 +1497,22 @@ int __fastcall TFormEmit::tallennaKilpailija(bool kysy)
 		if (Kilp.pv[k_pv].laina[1] != L'L' && !(on_lainakortti(bdg) || on_lainakortti(orgbdg)) && HTBadge != 0 &&
 			((bdg != HTBadge && bdg > 30000 && bdg < 1000000) || (orgbdg != HTBadge && orgbdg > 30000 && bdg < 1000000)) &&
 			_wtoi(EdtLisno->Text.c_str()) != 0) {
-			if (Application->MessageBox(L"Vaihdetaanko tietokannan Emit-koodi?", L"Pysyvä muutos?",
+			if (Application->MessageBox(TR(L"Vaihdetaanko tietokannan Emit-koodi?"), TR(L"Pysyvä muutos?"),
 				MB_YESNO) != IDYES) {
 				Kilp.pv[k_pv].laina[1] = L'L';
 				}
 			}
 		}
 	if (kysy) {
-		if (Application->MessageBox(L"Vahvista tallennus", L"Vahvista",
+		if (Application->MessageBox(TR(L"Vahvista tallennus"), TR(L"Vahvista"),
 			MB_YESNO) != IDYES)
 		return(0);
 		}
 	if ((kuntosuunnmoodi == 1) && Kilp.pv[k_pv].uusi == 'U' && (Kilp.p_aika(0) || (Em.ctrlcode[1] && Em.ctrlcode[1] != 250))) {
 		if (kuntoMaali) {
-			if (select3(2, L"Suunnistajan kortti saattaa sisältää suorituksen. "
-				L"Merkitäänkö kuitenkin lähtijäksi? Jos ei merkitä, tulkitaan suunnistaja maaliintulijaksi.",
-				L"Onko lähtijä?", L"Lähtijä", L"Maaliin tulija", L"", this) != 1) {
+			if (select3(2, TR(L"Suunnistajan kortti saattaa sisältää suorituksen. "
+				L"Merkitäänkö kuitenkin lähtijäksi? Jos ei merkitä, tulkitaan suunnistaja maaliintulijaksi."),
+				TR(L"Onko lähtijä?"), TR(L"Lähtijä"), TR(L"Maaliin tulija"), L"", this) != 1) {
 /*
 			if (Application->MessageBoxW(L"Suunnistajan kortti saattaa sisältää suorituksen. "
 				L"Merkitäänkö kuitenkin lähtijäksi? Jos ei merkitä, tulkitaan suunnistaja maaliintulijaksi.",
@@ -1622,7 +1624,7 @@ int __fastcall TFormEmit::tallennaKilpailija(bool kysy)
 	if (esiluenta == 1)
 		NaytaMemo(1);
 	if (LblToimi->Visible)
-		LblToimi->Caption = L"Lue kortti";
+		LblToimi->Caption = TR(L"Lue kortti");
 	return(0);
 //	if (CBSeuralisa->Checked && CBSeurahaku->Checked && FormSeurat->SeuraHakuOn())
 //		FormSeurat->TallennaSeura(Kilp.piiri, Kilp.maa, Kilp.seuralyh, Kilp.seura, 0);
@@ -1697,13 +1699,13 @@ void __fastcall TFormEmit::EdtKilpnoKeyDown(TObject *Sender, WORD &Key, TShiftSt
 		d = getpos(kno);
 		if (d != DKilp) {
 			if (d <= 0) {
-				Application->MessageBoxW(L"Pyydetty kilpailijanumero ei ole käytössä", L"Ei löydy",
+				Application->MessageBoxW(TR(L"Pyydetty kilpailijanumero ei ole käytössä"), TR(L"Ei löydy"),
 					MB_OK);
 				return;
 				}
 			else {
 				if (lueKilp3(d))
-					Application->MessageBoxW(L"Pyydetty kilpailija merkitty poissaolevaksi", L"Este",
+					Application->MessageBoxW(TR(L"Pyydetty kilpailija merkitty poissaolevaksi"), TR(L"Este"),
 						MB_OK);
 				else
 					tallennaKilpailija(false);
@@ -1720,7 +1722,7 @@ void __fastcall TFormEmit::EdtKilpnoKeyDown(TObject *Sender, WORD &Key, TShiftSt
 		kno = _wtoi(st);
 		d = getpos(kno);
 		if (d <= 0) {
-			Application->MessageBoxW(L"Pyydetty kilpailijanumero ei ole käytössä", L"Ei löydy",
+			Application->MessageBoxW(TR(L"Pyydetty kilpailijanumero ei ole käytössä"), TR(L"Ei löydy"),
 				MB_OK);
 			}
 		else {
@@ -1728,7 +1730,7 @@ void __fastcall TFormEmit::EdtKilpnoKeyDown(TObject *Sender, WORD &Key, TShiftSt
 				kilptietue kilp1;
 				kilp1.GETREC(d);
 				if (kilp1.tark(k_pv) == L'P') {
-					Application->MessageBoxW(L"Pyydetty kilpailija merkitty poissaolevaksi", L"Este",
+					Application->MessageBoxW(TR(L"Pyydetty kilpailija merkitty poissaolevaksi"), TR(L"Este"),
 						MB_OK);
 					}
 				else {
@@ -1738,7 +1740,7 @@ void __fastcall TFormEmit::EdtKilpnoKeyDown(TObject *Sender, WORD &Key, TShiftSt
 				}
 			else {
 				if (lueKilp3(d))
-					Application->MessageBoxW(L"Pyydetty kilpailija merkitty poissaolevaksi", L"Este",
+					Application->MessageBoxW(TR(L"Pyydetty kilpailija merkitty poissaolevaksi"), TR(L"Este"),
 						MB_OK);
 				else
 					tallennaKilpailija(false);
@@ -1941,9 +1943,9 @@ void __fastcall TFormEmit::CBVaadiChange(TObject *Sender)
 {
 	if (CBVaadi->ItemIndex >= CBVaadi->Items->Count - 2) {
 		naytaEiAkt = true;
-		Application->MessageBoxW(L"Ei-aktiivisiin tietoihin tehdyt muutokset eivät siirry verkossa."
-			L"Haku vain lukemisjärjestyksen mukaan.",
-			L"Varoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Ei-aktiivisiin tietoihin tehdyt muutokset eivät siirry verkossa."
+			L"Haku vain lukemisjärjestyksen mukaan."),
+			TR(L"Varoitus"), MB_OK);
 		RGHakuPeruste->ItemIndex = 3;
 		RGHakuPeruste->Enabled = false;
 		}
@@ -2463,7 +2465,7 @@ void __fastcall TFormEmit::BtnMuutoksetClick(TObject *Sender)
 	static bool initialisoitu;
 
 	if (getEmitJarr(Kilp.id(), &Em.osuus) < 0) {
-		Application->MessageBoxW(L"Valittulla kilpailijalla ei leimaustietoja", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Valittulla kilpailijalla ei leimaustietoja"), TR(L"Este"), MB_OK);
 		return;
 		}
 	Kilp_0 = Kilp;
@@ -2550,7 +2552,7 @@ void __fastcall TFormEmit::SiirraKilpailijalle(int kno, INT16 kbdg)
 		Nayta();
 		}
 	else
-		Application->MessageBoxW(L"Siirrolle on este", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Siirrolle on este"), TR(L"Este"), MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -2578,14 +2580,14 @@ void __fastcall TFormEmit::TallennaMuutokset(void)
 		return;
 		}
 	if (DKilp_0 == DKilp) {
-		Application->MessageBoxW(L"Ei tallennettavaa muutosta", L"", MB_OK);
+		Application->MessageBoxW(TR(L"Ei tallennettavaa muutosta"), L"", MB_OK);
 		return;
 		}
 	ibdg = Em.osuus;
 	if (getEmitJarr(Kilp.id(), &Em.osuus) >= 0) {
-		Vast = select3(3, L"Kohdekilpailijalla jo leimaustiedot.", L"Valitse toimintatapa",
-			L"Luovu siirrosta", L"Siirrä menettäen yhteys \r\n aiempiin leimaustietoihin",
-			L"Siirrä aiemmat \r\nleimat vakantille", this);
+		Vast = select3(3, TR(L"Kohdekilpailijalla jo leimaustiedot."), TR(L"Valitse toimintatapa"),
+			TR(L"Luovu siirrosta"), TR(L"Siirrä menettäen yhteys \r\n aiempiin leimaustietoihin"),
+			TR(L"Siirrä aiemmat \r\nleimat vakantille"), this);
 		if (Vast <= 1) {
 			Em.get(Tietue);
 			Paivita(&Em);
@@ -2601,7 +2603,7 @@ void __fastcall TFormEmit::TallennaMuutokset(void)
 
 		kno = haeSeurVakantti(0);
 		if (kno == 0) {
-			Application->MessageBoxW(L"Ei vakantteja, muutos perutaan", L"", MB_OK);
+			Application->MessageBoxW(TR(L"Ei vakantteja, muutos perutaan"), L"", MB_OK);
 			return;
 			}
 		EnterCriticalSection(&tall_CriticalSection);
@@ -2705,13 +2707,13 @@ void __fastcall TFormEmit::TallennaMuutokset(void)
 		   addemitanal(&Em, 1);
 		}
 	else {
-		Application->MessageBoxW(L"Kilpailijan tulosta ja leimantarkastustietoa ei "
-			L"muutettu vastaamaan siirrettyjä leimoja. Aiemmat tiedot säilytetty kilpailijalla",
-			L"Varoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Kilpailijan tulosta ja leimantarkastustietoa ei "
+			L"muutettu vastaamaan siirrettyjä leimoja. Aiemmat tiedot säilytetty kilpailijalla"),
+			TR(L"Varoitus"), MB_OK);
 		}
 	if (kno) {
-		Application->MessageBoxW((L"Vanhat tiedot siirretty vakantille "+UnicodeString(kno)).c_str(),
-			 L"Kaksi siirtoa tehty", MB_OK);
+		Application->MessageBoxW((TR(L"Vanhat tiedot siirretty vakantille ")+UnicodeString(kno)).c_str(),
+			 TR(L"Kaksi siirtoa tehty"), MB_OK);
 		}
 	Nayta();
 	TallVals();
@@ -2756,12 +2758,12 @@ void __fastcall TFormEmit::TallennaVaihto(int d)
 	kilptietue vkilp, kilp;
 
 	if (d == 0 || DKilp_0 == d) {
-		Application->MessageBoxW(L"Ei tallennettavaa vaihtoa", L"", MB_OK);
+		Application->MessageBoxW(TR(L"Ei tallennettavaa vaihtoa"), L"", MB_OK);
 		return;
 		}
 	kno = haeSeurVakantti(0);
 	if (kno == 0) {
-		Application->MessageBoxW(L"Ei vaihtoon tarvittavaa vakanttia, muutos perutaan", L"", MB_OK);
+		Application->MessageBoxW(TR(L"Ei vaihtoon tarvittavaa vakanttia, muutos perutaan"), L"", MB_OK);
 		return;
 		}
 	EnterCriticalSection(&tall_CriticalSection);
@@ -3031,7 +3033,7 @@ void __fastcall TFormEmit::Tulosta(int tuloste)
 	if (!EmitTulPrm.lstf) {
 		if ((EmitTulPrm.lstf = openprfile(EmitKirjoitin, 1, TRUE, FALSE, 0, FALSE))
 			== NULL) {
-			Application->MessageBoxW(L"Kirjoittimen käyttö ei onnistu", L"Virhe", MB_OK);
+			Application->MessageBoxW(TR(L"Kirjoittimen käyttö ei onnistu"), TR(L"Virhe"), MB_OK);
 			return;
 			}
 		if (EmitTulPrm.lstf && EmitTulPrm.lstf->prno == 2)
@@ -3095,8 +3097,8 @@ void __fastcall TFormEmit::Automaattinentulostus1Click(TObject *Sender)
 {
 	int vast;
 
-	vast = select3(3, L"Hylkäysesitystietojen automaattinen tulostus", L"Tulostus",
-		L"Paikallisesti luetut kortit", L"Tiedonsiirron tuomat", L"Ei tulosteta", this);
+	vast = select3(3, TR(L"Hylkäysesitystietojen automaattinen tulostus"), TR(L"Tulostus"),
+		TR(L"Paikallisesti luetut kortit"), TR(L"Tiedonsiirron tuomat"), TR(L"Ei tulosteta"), this);
 	if (vast < 3) {
 		if (!emittulparam)
 			emittulparam = &lsttulparam;
@@ -3112,7 +3114,7 @@ void __fastcall TFormEmit::Automaattinentulostus1Click(TObject *Sender)
 			if (!lsttulparam.lstf) {
 				if ((lsttulparam.lstf = openprfile(EmitKirjoitin, 1, TRUE, FALSE, 0, FALSE))
 					== NULL) {
-					Application->MessageBoxW(L"Kirjoittimen käyttö ei onnistu", L"Virhe", MB_OK);
+					Application->MessageBoxW(TR(L"Kirjoittimen käyttö ei onnistu"), TR(L"Virhe"), MB_OK);
 					vast = 3;
 					}
 				if (lsttulparam.lstf && lsttulparam.lstf->prno == 2)
@@ -3155,8 +3157,8 @@ void __fastcall TFormEmit::Automaattinenvliaikatuloste1Click(TObject *Sender)
 {
 	int vast;
 
-	vast = select3(3, L"Väliaikatulosteiden automaattinen tulostus", L"Tulostus",
-		L"Paikallisesti luetuille", L"Tiedonsiirron tuomille", L"Ei tulosteta", this);
+	vast = select3(3, TR(L"Väliaikatulosteiden automaattinen tulostus"), TR(L"Tulostus"),
+		TR(L"Paikallisesti luetuille"), TR(L"Tiedonsiirron tuomille"), TR(L"Ei tulosteta"), this);
 	if (vast < 3) {
 		if (!emittulparam)
 			emittulparam = &lsttulparam;
@@ -3172,7 +3174,7 @@ void __fastcall TFormEmit::Automaattinenvliaikatuloste1Click(TObject *Sender)
 			if (!lsttulparam.lstf) {
 				if ((lsttulparam.lstf = openprfile(EmitKirjoitin, 1, TRUE, FALSE, 0, FALSE))
 					== NULL) {
-					Application->MessageBoxW(L"Kirjoittimen käyttö ei onnistu", L"Virhe", MB_OK);
+					Application->MessageBoxW(TR(L"Kirjoittimen käyttö ei onnistu"), TR(L"Virhe"), MB_OK);
 					vast = 3;
 					}
 				if (lsttulparam.lstf && lsttulparam.lstf->prno == 2)
@@ -3220,15 +3222,15 @@ void __fastcall TFormEmit::Etsileimojavastaavarata1Click(TObject *Sender)
 
 	rr = etsierata(&Em);
 	if (rr < 0) {
-		Application->MessageBoxW(L"Leimat eivät vastaa mitää rataa", L"Ei löydy", MB_OK);
+		Application->MessageBoxW(TR(L"Leimat eivät vastaa mitää rataa"), TR(L"Ei löydy"), MB_OK);
 		}
 	else {
 		wchar_t msg[200];
 		if ((srj = haeradansarja(rata[rr].tunnus, NULL)) >= 0)
-			swprintf(msg, L"Leimat vastaavat sarjaa %s", Sarjat[srj].sarjanimi);
+			swprintf(msg, TR(L"Leimat vastaavat sarjaa %s"), Sarjat[srj].sarjanimi);
 		else
-			swprintf(msg, L"Leimat vastaavat rataa %s", rata[rr].tunnus);
-		vast = select3(2, msg, L"Löytyi", L"Vaihda rata kilpailijalle", L"Jätä rata ennalleen", L"", this);
+			swprintf(msg, TR(L"Leimat vastaavat rataa %s"), rata[rr].tunnus);
+		vast = select3(2, msg, TR(L"Löytyi"), TR(L"Vaihda rata kilpailijalle"), TR(L"Jätä rata ennalleen"), L"", this);
 		if (vast == 1) {
 			if (srj < 0) {
 				CRata->ItemIndex = rr+1;
@@ -3375,9 +3377,9 @@ void __fastcall TFormEmit::Laskeuudelleen1Click(TObject *Sender)
 	int vast;
 	INT16 ibdg;
 
-	if (Application->MessageBoxW(L"Vahvista kaikkien aikojen uudelleenlaskenta. Virheettömät avoimet ja hylkäysesityksen saaneet hyväksytään samalla.", L"Vahvista", MB_YESNO) != IDYES)
+	if (Application->MessageBoxW(TR(L"Vahvista kaikkien aikojen uudelleenlaskenta. Virheettömät avoimet ja hylkäysesityksen saaneet hyväksytään samalla."), TR(L"Vahvista"), MB_YESNO) != IDYES)
 		return;
-	vast = Application->MessageBoxW(L"Merkitäänkö samalla hyväksyntä myös virheettömille hylätyille ja hylkäysesitys leimausvirheille.", L"Tarkastusmerkintä", MB_YESNOCANCEL);
+	vast = Application->MessageBoxW(TR(L"Merkitäänkö samalla hyväksyntä myös virheettömille hylätyille ja hylkäysesitys leimausvirheille."), TR(L"Tarkastusmerkintä"), MB_YESNOCANCEL);
 	switch (vast) {
 		case IDYES:
 			muutahyv = true;
@@ -3510,7 +3512,7 @@ void __fastcall TFormEmit::BtnNaytaKarttaClick(TObject *Sender)
 	if (!FormKartta->KarttaLadattu() && kilpparam.kartta[0])
 		FormKartta->Lataakartta(kilpparam.kartta);
 	if (!FormKartta->KarttaLadattu()) {
-		Application->MessageBoxW(L"Kartan lataaminen ei onnistu", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Kartan lataaminen ei onnistu"), TR(L"Este"), MB_OK);
 		return;
 		}
 	FormKartta->Show();
@@ -3546,9 +3548,9 @@ void __fastcall TFormEmit::BtnTyhjSanomaClick(TObject *Sender)
 
 void __fastcall TFormEmit::Luemysviallisetkortit1Click(TObject *Sender)
 {
-	Application->MessageBoxW(L"Viallisten korttien hyväksyminen voi johtaa virheisiin "
+	Application->MessageBoxW(TR(L"Viallisten korttien hyväksyminen voi johtaa virheisiin "
 		L"myös muiden korttien lukemisessa. Käytä tätä valintaa vain tilapäisesti yrityksenä "
-		L"lukea tiedot, jotka eivät muuten tallennu", L"Varoitus", MB_OK);
+		L"lukea tiedot, jotka eivät muuten tallennu"), TR(L"Varoitus"), MB_OK);
 	Luemysviallisetkortit1->Checked = !Luemysviallisetkortit1->Checked;
 	sallisummavirhe = Luemysviallisetkortit1->Checked;
 }
@@ -3656,13 +3658,13 @@ void __fastcall TFormEmit::EmitvaihdottulevilleClick(TObject *Sender)
 void __fastcall TFormEmit::BtnLoppuunClick(TObject *Sender)
 {
 	if (EmitMuutosFlag) {
-		Application->MessageBoxW(L"Luenta voi jatkua vasta, kun kaavake \"Emit-muutokset\" on suljettu", L"Ohje", MB_OK);
+		Application->MessageBoxW(TR(L"Luenta voi jatkua vasta, kun kaavake \"Emit-muutokset\" on suljettu"), TR(L"Ohje"), MB_OK);
 		return;
 		}
 	if (OnkoMuutoksia()) {
 		int Vast;
-		Vast = select3(3, L"Muutoksia tallentamatta. Tallennetaanko? ",
-		L"Tallennetaanko muutokset", L"Tallenna", L"Hylkää muutokset", L"Jatka käsittelyä",
+		Vast = select3(3, TR(L"Muutoksia tallentamatta. Tallennetaanko? "),
+		TR(L"Tallennetaanko muutokset"), TR(L"Tallenna"), TR(L"Hylkää muutokset"), TR(L"Jatka käsittelyä"),
 		this);
 		switch (Vast) {
 			case 1:
@@ -3688,7 +3690,7 @@ void __fastcall TFormEmit::VaihdaluentaajatClick(TObject *Sender)
 	int vast;
 	INT16 ibdg;
 
-	if (Application->MessageBoxW(L"Vahvista kaikkien luenta-aikojen vaihtaminen.", L"Vahvista", MB_YESNO) != IDYES)
+	if (Application->MessageBoxW(TR(L"Vahvista kaikkien luenta-aikojen vaihtaminen."), TR(L"Vahvista"), MB_YESNO) != IDYES)
 		return;
 	for (int i_ptr = 0; i_ptr < emithead2; i_ptr++) {
 		emittp em, em2;

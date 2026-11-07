@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "TapUnit2.h"
 #include "WinHk.h"
@@ -32,6 +33,7 @@ TTapForm *TapForm;
 __fastcall TTapForm::TTapForm(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -234,7 +236,7 @@ void __fastcall TTapForm::Paivita(TObject *Sender)
 				}
 			else if (pst == kilpparam.valuku+2)
 				{
-				wcscpy(ln, L"Sakko");
+				wcscpy(ln, TR(L"Sakko"));
 				}
 			else if (T->Piste)
 				_itow(T->Piste, ln, 10);
@@ -453,16 +455,16 @@ void __fastcall TTapForm::FormShow(TObject *Sender)
 	Valittu = PisteVal->ItemIndex;
 	Etunimiensin1->Checked = IkkParam.EtuSuku;
 	PisteVal->Clear();
-	PisteVal->Items->Add(L"Kaikki");
-	PisteVal->Items->Add(L"Maali");
+	PisteVal->Items->Add(TR(L"Kaikki"));
+	PisteVal->Items->Add(TR(L"Maali"));
 	if (kilpparam.maxvaluku > 0) {
-		PisteVal->Items->Add(L"Kaikki väliajat");
+		PisteVal->Items->Add(TR(L"Kaikki väliajat"));
 		for (int i = 1; i <= kilpparam.maxvaluku; i++) {
-			PisteVal->Items->Add(UnicodeString(i)+L". väliaika");
+			PisteVal->Items->Add(UnicodeString(i)+TR(L". väliaika"));
 			}
 		}
 	if (kilpparam.kilplaji == L'A')
-		PisteVal->Items->Add(L"Ammunnat");
+		PisteVal->Items->Add(TR(L"Ammunnat"));
 	PisteVal->ItemIndex = Valittu;
 	Skaalaa();
 }
@@ -596,7 +598,7 @@ void __fastcall TTapForm::Muumerkkikoko1Click(TObject *Sender)
 	int fnt;
 
 	fnt = IkkParam.FontSize;
-	inputint_prompt(&fnt, L"Valitse koko pisteinä", &ch, this);
+	inputint_prompt(&fnt, TR(L"Valitse koko pisteinä"), &ch, this);
 	if (ch == ESC)
 		return;
 	IkkParam.FontSize = fnt;

@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitMaalikello.h"
 #include "TpLaitteet.h"
@@ -35,6 +36,7 @@ static int laiteLkm = 2;
 __fastcall TFormMaalikello::TFormMaalikello(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -170,7 +172,7 @@ void __fastcall TFormMaalikello::FormShow(TObject *Sender)
 	GBS4->Enabled = false;
 	GBRTR2->Enabled = false;
 	for (int laite = 0; laite < laiteLkm; laite++) {
-		LblYhteys[laite]->Caption = L"Yhteys suljettu";
+		LblYhteys[laite]->Caption = TR(L"Yhteys suljettu");
 		if (laite == 1) {
 			for (rno = 1; rno < NREGNLY; rno++)
 				if (cn_regnly[rno] >= NREGNLY && (lj = IntInList(regnly[rno], L"6")) >= 0)
@@ -224,7 +226,7 @@ void __fastcall TFormMaalikello::FormShow(TObject *Sender)
 					GBRTR2->Enabled = true;
 				Panel[laite]->Enabled = false;
 				BtnLaiteAvaa[laite]->Enabled = false;
-				LblYhteys[laite]->Caption = L"Yhteys on";
+				LblYhteys[laite]->Caption = TR(L"Yhteys on");
 				}
 			}
 		}
@@ -243,7 +245,7 @@ void __fastcall TFormMaalikello::BtnLaite1SuljeClick(TObject *Sender)
 	GBRTR2->Enabled = false;
 	Panel1->Enabled = true;
 	BtnLaiteAvaa[0]->Enabled = true;
-	LblYhteys1->Caption = L"Yhteys suljettu";
+	LblYhteys1->Caption = TR(L"Yhteys suljettu");
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormMaalikello::BtnLaite2SuljeClick(TObject *Sender)
@@ -258,7 +260,7 @@ void __fastcall TFormMaalikello::BtnLaite2SuljeClick(TObject *Sender)
 		}
 	Panel2->Enabled = true;
 	BtnLaiteAvaa[1]->Enabled = true;
-	LblYhteys2->Caption = L"Yhteys suljettu";
+	LblYhteys2->Caption = TR(L"Yhteys suljettu");
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormMaalikello::BtnLaite1AvaaClick(TObject *Sender)
@@ -273,11 +275,11 @@ void __fastcall TFormMaalikello::BtnLaite2AvaaClick(TObject *Sender)
 	if (laite < 1)
 		return;
 	if (laite == 1) {
-		Application->MessageBoxW(L"Määrittele laite 1 vasemmalla", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Määrittele laite 1 vasemmalla"), TR(L"Este"), MB_OK);
 		return;
 		}
 	if (regnly_open[laite-1] != 0) {
-		Application->MessageBoxW(L"Laitenumero varattu toiselle laitteelle", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Laitenumero varattu toiselle laitteelle"), TR(L"Este"), MB_OK);
 		return;
 		}
 	LaiteAvaa(1);
@@ -289,7 +291,7 @@ void __fastcall TFormMaalikello::LaiteAvaa(int laite)
 	if (laite == 1)
 		rno = _wtoi(EdLaite2No->Text.c_str()) - 1;
 	if (regnly_open[rno]) {
-		Application->MessageBoxW(L"Laiteyhteys jo avattu", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Laiteyhteys jo avattu"), TR(L"Este"), MB_OK);
 		return;
 		}
 	cn = MAX_LAHPORTTI + rno;
@@ -353,7 +355,7 @@ void __fastcall TFormMaalikello::LaiteAvaa(int laite)
 		aika_jono[rno][i] = _wtoi(EJ[laite][i]->Text.c_str()) - 1;
 		}
 	if (regnly_open[rno]) {
-		LblYhteys[laite]->Caption = L"Yhteys on";
+		LblYhteys[laite]->Caption = TR(L"Yhteys on");
 		if (rno == 0 && regnly[0] == LID_ALGE4)
 			GBS4->Enabled = true;
 		if (rno == 0 && regnly[0] == LID_RTR2)
@@ -403,8 +405,8 @@ void __fastcall TFormMaalikello::BtnViiveClick(TObject *Sender)
 void __fastcall TFormMaalikello::BtnTyhjennaClick(TObject *Sender)
 {
 	int n;
-	if (Application->MessageBoxW(L"Vahvista kaikkien aikojen poisto kellon muistista",
-		L"Vahvista", MB_YESNO) == IDYES) {
+	if (Application->MessageBoxW(TR(L"Vahvista kaikkien aikojen poisto kellon muistista"),
+		TR(L"Vahvista"), MB_YESNO) == IDYES) {
 		wrt_st_x(cn_regnly[0], 2, "\x95\r", &n);
         }
 }
@@ -431,7 +433,7 @@ void __fastcall TFormMaalikello::Button1Click(TObject *Sender)
 		ens -= viim;
 		}
 	if (i >= 40)
-		Application->MessageBoxW(L"RTR-kello ei vahvistanut pyynnön hyväksymistä", L"", MB_OK);
+		Application->MessageBoxW(TR(L"RTR-kello ei vahvistanut pyynnön hyväksymistä"), L"", MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -489,11 +491,11 @@ void __fastcall TFormMaalikello::EdLaite2NoExit(TObject *Sender)
 	if (laite < 1)
 		return;
 	if (laite == 1) {
-		Application->MessageBoxW(L"Määrittele laite 1 vasemmalla", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Määrittele laite 1 vasemmalla"), TR(L"Este"), MB_OK);
 		return;
 		}
 	if (regnly_open[laite-1] != 0) {
-		Application->MessageBoxW(L"Laitenumero varattu toiselle laitteelle", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Laitenumero varattu toiselle laitteelle"), TR(L"Este"), MB_OK);
 		return;
 		}
 	CBLaite2->Enabled = _wtoi(EdLaite2No->Text.c_str()) > 1;

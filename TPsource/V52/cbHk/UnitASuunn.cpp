@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitASuunn.h"
 //---------------------------------------------------------------------------
@@ -30,6 +31,7 @@ static CRITICAL_SECTION sakkoGrid_CriticalSection;
 __fastcall TFormASuunn::TFormASuunn(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -51,14 +53,14 @@ void __fastcall TFormASuunn::FormCreate(TObject *Sender)
 	StringGrid1->ColWidths[5] = 45 * Screen->PixelsPerInch / 96;
 	StringGrid1->ColWidths[6] = 45 * Screen->PixelsPerInch / 96;
 	StringGrid1->ColWidths[7] = 45 * Screen->PixelsPerInch / 96;
-	StringGrid1->Cells[0][0] = L"Rivi";
-	StringGrid1->Cells[1][0] = L"KilpNo";
-	StringGrid1->Cells[2][0] = L"Nimi";
-	StringGrid1->Cells[3][0] = L"Amm-1";
-	StringGrid1->Cells[4][0] = L"Amm-2";
-	StringGrid1->Cells[5][0] = L"Amm-X";
-	StringGrid1->Cells[6][0] = L"Kl-mm";
-	StringGrid1->Cells[7][0] = L"Kl-X";
+	StringGrid1->Cells[0][0] = TR(L"Rivi");
+	StringGrid1->Cells[1][0] = TR(L"KilpNo");
+	StringGrid1->Cells[2][0] = TR(L"Nimi");
+	StringGrid1->Cells[3][0] = TR(L"Amm-1");
+	StringGrid1->Cells[4][0] = TR(L"Amm-2");
+	StringGrid1->Cells[5][0] = TR(L"Amm-X");
+	StringGrid1->Cells[6][0] = TR(L"Kl-mm");
+	StringGrid1->Cells[7][0] = TR(L"Kl-X");
 }
 //---------------------------------------------------------------------------
 

@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitBrowser.h"
 //---------------------------------------------------------------------------
@@ -29,6 +30,7 @@ TFormBrowser *FormBrowser;
 __fastcall TFormBrowser::TFormBrowser(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

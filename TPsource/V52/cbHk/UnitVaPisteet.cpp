@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitVaPisteet.h"
 #include "UnitTuloskaava.h"
@@ -32,6 +33,7 @@ TFormVaPisteet *FormVaPisteet;
 __fastcall TFormVaPisteet::TFormVaPisteet(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	NLaji = 5;
 	NNaytaLaji = NLaji;
 	ValLaji = 0;
@@ -42,7 +44,7 @@ __fastcall TFormVaPisteet::TFormVaPisteet(TComponent* Owner)
 void __fastcall TFormVaPisteet::editKaava(int srj, int pv, int va)
 {
 	if (VAGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset tähänastiset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset tähänastiset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -69,7 +71,7 @@ void __fastcall TFormVaPisteet::naytaTiedot(void)
 	ipv = CBPaiva->ItemIndex;
 	if (CBPaiva->Items->Count < kilpparam.n_pv_akt) {
 		for (int i = CBPaiva->Items->Count; i < kilpparam.n_pv_akt; i++) {
-			CBPaiva->Items->Add(UnicodeString(i+1)+UnicodeString(L". päivä"));
+			CBPaiva->Items->Add(UnicodeString(i+1)+UnicodeString(TR(L". päivä")));
 			}
 		}
 	while (CBPaiva->Items->Count > kilpparam.n_pv_akt)
@@ -186,7 +188,7 @@ void __fastcall TFormVaPisteet::Button2Click(TObject *Sender)
 void __fastcall TFormVaPisteet::FormClose(TObject *Sender, TCloseAction &Action)
 {
 	if (VAGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -250,7 +252,7 @@ void __fastcall TFormVaPisteet::FormShow(TObject *Sender)
 {
 	CBPaiva->Clear();
 	for (int i = 0;i < kilpparam.n_pv_akt; i++) {
-	   CBPaiva->Items->Add(UnicodeString(i+1)+L". vaihe");
+	   CBPaiva->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
 		}
 	CBPaiva->ItemIndex = k_pv;
 	if (FormSarjatiedot->CBTiedot->ItemIndex > 0)
@@ -305,7 +307,7 @@ void __fastcall TFormVaPisteet::Kopioi1Click(TObject *Sender)
 			}
 		}
 	if (onkaava)
-		Application->MessageBoxW(L"Kaavojen kopiointi sarjasta toisiin tehdään kaavan määrittelykaavakkeella", L"Varoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Kaavojen kopiointi sarjasta toisiin tehdään kaavan määrittelykaavakkeella"), TR(L"Varoitus"), MB_OK);
 	VAGrid->Refresh();
 }
 //---------------------------------------------------------------------------
@@ -351,7 +353,7 @@ void __fastcall TFormVaPisteet::Kirjoitatekstitiedostoon1Click(TObject *Sender)
 	TextFl *OutFl;
 
 	if (VAGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -559,7 +561,7 @@ void __fastcall TFormVaPisteet::FormDestroy(TObject *Sender)
 void __fastcall TFormVaPisteet::ComboBox1Change(TObject *Sender)
 {
 	if (VAGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -590,12 +592,12 @@ void __fastcall TFormVaPisteet::Mrmatkatratatiedoista1Click(TObject *Sender)
 	ratatp *rt;
 
 	if (!emitfl || !rata) {
-		Application->MessageBox(L"Ei ratatietoja", L"Este", MB_OK);
+		Application->MessageBox(TR(L"Ei ratatietoja"), TR(L"Este"), MB_OK);
 		return;
 		}
 
 	if (VAGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset aiemmat muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset aiemmat muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -632,7 +634,7 @@ void __fastcall TFormVaPisteet::Kopioivaiheentiedotmuillevaiheille1Click(TObject
 	int kpv = CBPaiva->ItemIndex;
 
 	if (VAGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset tehdyt muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset tehdyt muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}

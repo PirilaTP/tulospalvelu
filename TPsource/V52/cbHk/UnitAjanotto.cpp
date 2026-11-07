@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitAjanotto.h"
 #include "WinHk.h"
@@ -52,6 +53,7 @@ static const int cTrk = 10;
 __fastcall TFormAjanotto::TFormAjanotto(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -98,9 +100,9 @@ void __fastcall TFormAjanotto::FormCreate(TObject *Sender)
 		inittimer();
 		}
 	CBPisteVal->Clear();
-	CBPisteVal->Items->Add(L"Auto");
-	CBPisteVal->Items->Add(L"Lähtö");
-	CBPisteVal->Items->Add(L"Maali");
+	CBPisteVal->Items->Add(TR(L"Auto"));
+	CBPisteVal->Items->Add(TR(L"Lähtö"));
+	CBPisteVal->Items->Add(TR(L"Maali"));
 	for (int ip = 1; ip <= kilpparam.valuku; ip++)
 		CBPisteVal->Items->Add(ip);
 	if (IkkParam.OletusPiste >= -2 && IkkParam.OletusPiste <= kilpparam.valuku)
@@ -110,20 +112,20 @@ void __fastcall TFormAjanotto::FormCreate(TObject *Sender)
 	CBJono->Clear();
 	if (maxjono) {
 		for (int r = 0; r <= maxjono; r++) {
-			CBJono->Items->Add(L"Jono "+UnicodeString(r+1));
+			CBJono->Items->Add(TR(L"Jono ")+UnicodeString(r+1));
 			}
 		}
 	else if (lajatfl) {
-		CBJono->Items->Add(L"Aika");
-		CBJono->Items->Add(L"Lähtö");
+		CBJono->Items->Add(TR(L"Aika"));
+		CBJono->Items->Add(TR(L"Lähtö"));
 		}
 	else {
-		CBJono->Items->Add(L"Jono 1");
+		CBJono->Items->Add(TR(L"Jono 1"));
 		}
 	CBJono->ItemIndex = IkkParam.Jono;
 	IkkParam.Ennakoi = true;
 	if (emitfl)
-		CBSyotto->Items->Add(L"Badge");
+		CBSyotto->Items->Add(TR(L"Badge"));
 	FormResize(Sender);
 }
 //---------------------------------------------------------------------------
@@ -273,7 +275,7 @@ void __fastcall TFormAjanotto::naytaRivi(int grid, int r, int rw, int jono)
 	if (grid == 0 && IkkParam.SyottoTila && r == aktRivi1 && vertRiviMuutt() &&
 		(IkkParam.SyottoTila < 3 || IkkParam.SyottoTila == 6)) {
 		if (memcmp(&pt, &eAika, sizeof(aikatp))) {
-			Application->MessageBoxW(L"Vastaanotettu muutos muokattavaan riviin", L"Muutos", MB_OK);
+			Application->MessageBoxW(TR(L"Vastaanotettu muutos muokattavaan riviin"), TR(L"Muutos"), MB_OK);
 			eAika = pt;
 			}
 		}
@@ -318,19 +320,19 @@ void __fastcall TFormAjanotto::naytaRivi(int grid, int r, int rw, int jono)
 		LeaveCriticalSection(&tall_CriticalSection);
 		as[0] = 0;
 		if (pt.kno == 10000) {
-			wcscpy(as, L"Kohdistusaika");
+			wcscpy(as, TR(L"Kohdistusaika"));
 			}
 		if (pt.kno == 19998) {
-			wcscpy(as, L"Nollaus - ylimääräinen aika");
+			wcscpy(as, TR(L"Nollaus - ylimääräinen aika"));
 			}
 		if (pt.kno == 19999) {
-			wcscpy(as, L"Nollauksen loppu");
+			wcscpy(as, TR(L"Nollauksen loppu"));
 			}
 		if (pt.kno > 30000 && pt.kno <= 30000 + sarjaluku) {
-			swprintf(as, L"Sarjan %s lähtö", Sarjat[pt.kno-30001].sarjanimi);
+			swprintf(as, TR(L"Sarjan %s lähtö"), Sarjat[pt.kno-30001].sarjanimi);
 			}
 		if (pt.kno > 31000 && pt.kno < 32000 + sarjaluku) {
-			swprintf(as, L"Erän %d lähtö", pt.kno-31000);
+			swprintf(as, TR(L"Erän %d lähtö"), pt.kno-31000);
 			}
 		Cells[grid][r][cNimi].text = as;
 		Cells[grid][r][cSra].text = L"";
@@ -342,7 +344,7 @@ void __fastcall TFormAjanotto::naytaRivi(int grid, int r, int rw, int jono)
 	else {
 		LeaveCriticalSection(&tall_CriticalSection);
 		if (rw < aikajono[jono]->aktrows)
-			swprintf(as, L"Badge: %d, Lähde: %3d%c", pt.badge, (int) pt.kanava, pt.tapahtuma ? L'D' : L' ');
+			swprintf(as, TR(L"Badge: %d, Lähde: %3d%c"), pt.badge, (int) pt.kanava, pt.tapahtuma ? L'D' : L' ');
 		else
 			as[0] = 0;
 		Cells[grid][r][cNimi].text = as;
@@ -646,7 +648,7 @@ void __fastcall TFormAjanotto::BtnTall2Click(TObject *Sender)
 			vp = L"Kilpailijalla jo aika, tallennetaanko muutos?";
 			}
 		}
-	if (Application->MessageBoxW(vp, L"Vahvistus", MB_YESNO) != IDYES) {
+	if (Application->MessageBoxW(vp, TR(L"Vahvistus"), MB_YESNO) != IDYES) {
 		return;
 		}
 	tall_rivi(IkkParam.Jono, &upt, &vpt, &uptr, 0, 0, 0, false);
@@ -691,7 +693,7 @@ void __fastcall TFormAjanotto::BtnPoistaClick(TObject *Sender)
 
 	if (aktRivi1 > aikajono[IkkParam.Jono]->aktrows)
 		return;
-	if (Application->MessageBoxW(L"Vahvista poisto", L"Vahvistus", MB_YESNO) != IDYES)
+	if (Application->MessageBoxW(TR(L"Vahvista poisto"), TR(L"Vahvistus"), MB_YESNO) != IDYES)
 		return;
 	aikajono[IkkParam.Jono]->getAktTime(&vpt, aktRivi1-1);
 	poista_aika(IkkParam.Jono, &vpt);
@@ -871,7 +873,7 @@ void __fastcall TFormAjanotto::FormShow(TObject *Sender)
 	for (int i = 0; i < NAJANOTOT; i++) {
 		if (this == FormAjanotot[i]) {
 			Ajanotto = i+1;
-			Caption = L"Ajanotto - " + UnicodeString(Ajanotto);
+			Caption = TR(L"Ajanotto - ") + UnicodeString(Ajanotto);
 			break;
 			}
 		}
@@ -911,7 +913,7 @@ int __fastcall TFormAjanotto::SarjaLahto(int row, wchar_t val)
 	if (val == L'R') {
 		int era = 0;
 		wchar_t ch;
-		inputint_prompt(&era, L"Anna erän numero", &ch, this);
+		inputint_prompt(&era, TR(L"Anna erän numero"), &ch, this);
 		if (era >= 0 && ch != ESC) {
 			asetaEraLahto(era, purajak(pt.t), true, false);
 			upt.kno = 31000+era;
@@ -1118,7 +1120,7 @@ void __fastcall TFormAjanotto::DGajat1KeyPress(TObject *Sender, System::WideChar
 			badge = _wtoi(Cells[0][DGajat1->Row][cBdg].text.c_str());
 			if ((uKno = bdg2kno(badge)) < minkilpno) {
 				Key = 0;
-				Application->MessageBoxW(L"Tuntematon koodi", L"", MB_OK);
+				Application->MessageBoxW(TR(L"Tuntematon koodi"), L"", MB_OK);
 				return;
 				}
 			Cells[0][DGajat1->Row][cKno].text = uKno;
@@ -1204,12 +1206,12 @@ void __fastcall TFormAjanotto::DGajat1KeyPress(TObject *Sender, System::WideChar
 			}
 		if ((pt.kno != upt.kno || pt.piste != upt.piste) && d > 0) {
 			if (kilp.p_aika(va_piste(upt.piste))) {
-				if (Application->MessageBoxW(L"Kilpailijalla jo aika, tallennetaanko muutos?", L"Vahvistus", MB_YESNO) != IDYES)
+				if (Application->MessageBoxW(TR(L"Kilpailijalla jo aika, tallennetaanko muutos?"), TR(L"Vahvistus"), MB_YESNO) != IDYES)
 					tallFl = false;
 				}
 			}
 		if (tallFl && IkkParam.VaadiVahvistus == 1 || (IkkParam.VaadiVahvistus == 2 && pt.kno)) {
-			if (Application->MessageBoxW(L"Vahvista tallennus", L"Vahvistus", MB_YESNO) != IDYES)
+			if (Application->MessageBoxW(TR(L"Vahvista tallennus"), TR(L"Vahvistus"), MB_YESNO) != IDYES)
 				tallFl = false;
 			}
 //		if (!tallFl) {
@@ -1366,13 +1368,13 @@ void __fastcall TFormAjanotto::Vaihdaer1Click(TObject *Sender)
 	int era;
 
 	era = era_akt;
-	inputint_prompt(&era, L"Anna erän numero", &ch, this);
+	inputint_prompt(&era, TR(L"Anna erän numero"), &ch, this);
 	if (era >= 0 && era < MAXERA) {
 		era_akt = era;
-		Caption = L"Ajanotto - " + UnicodeString(Ajanotto) + L" - Erä " + era_akt;
+		Caption = TR(L"Ajanotto - ") + UnicodeString(Ajanotto) + L" - Erä " + era_akt;
 		}
 	else
-		Caption = L"Ajanotto - " + UnicodeString(Ajanotto);
+		Caption = TR(L"Ajanotto - ") + UnicodeString(Ajanotto);
 }
 //---------------------------------------------------------------------------
 
@@ -1396,8 +1398,8 @@ void __fastcall TFormAjanotto::Lueaikojatekstitiedostosta1Click(TObject *Sender)
 	static wchar_t fname[200] = L"ajat.txt";
 	int vast;
 
-	vast = Application->MessageBoxW(L"Luetaanko myös kilpailijan numero ja piste (Kyllä), vai vain ajat (Ei)",
-		L"Valitse", MB_YESNOCANCEL);
+	vast = Application->MessageBoxW(TR(L"Luetaanko myös kilpailijan numero ja piste (Kyllä), vai vain ajat (Ei)"),
+		TR(L"Valitse"), MB_YESNOCANCEL);
 	if (vast == IDCANCEL)
 		return;
 	OpenDialog1->FileName = fname;
@@ -1483,7 +1485,7 @@ void __fastcall TFormAjanotto::Kirjasinkoko1Click(TObject *Sender)
 {
 	wchar_t ch;
 	int fs = IkkParam.FontSize;
-	inputint_prompt(&fs, L"Anna taulukoiden kirjasinkoko", &ch, this);
+	inputint_prompt(&fs, TR(L"Anna taulukoiden kirjasinkoko"), &ch, this);
 	if (ch != ESC) {
 		IkkParam.FontSize = fs;
 		DGajat1->Font->Size = IkkParam.FontSize;
@@ -1645,7 +1647,7 @@ void __fastcall TFormAjanotto::Sirityhteydenpollaus1Click(TObject *Sender)
 		}
 
 	int k = SiritPoll[sirits[0]-1] / 1000;
-	inputint_prompt(&k, L"Annan pollausväli sekunteina. 0 : ei pollausta", &ch, this);
+	inputint_prompt(&k, TR(L"Annan pollausväli sekunteina. 0 : ei pollausta"), &ch, this);
 	if (ch != ESC)
 		SiritPoll[sirits[0]-1] = 1000 * k;
 }
@@ -1673,7 +1675,7 @@ void __fastcall TFormAjanotto::oistuvantiedonvaroitus1Click(TObject *Sender)
 	wchar_t ch;
 
 	kesto = JoKirjattuKesto / 1000;
-	inputint_prompt(&kesto, L"Anna varoitusilmoituksen kesto (sek). 0: ei varoiteta", &ch, this);
+	inputint_prompt(&kesto, TR(L"Anna varoitusilmoituksen kesto (sek). 0: ei varoiteta"), &ch, this);
 	if (ch != ESC)
 		JoKirjattuKesto = 1000*kesto;
 }
@@ -1843,7 +1845,7 @@ void __fastcall TFormAjanotto::Viimeistenaikojenosuusnytst1Click(TObject *Sender
 {
 	wchar_t ch;
 
-	inputint_prompt(&IkkParam.ViimOsuus, L"Anna osuus prosentteina", &ch, this);
+	inputint_prompt(&IkkParam.ViimOsuus, TR(L"Anna osuus prosentteina"), &ch, this);
 	if (IkkParam.ViimOsuus < 5)
 	   IkkParam.ViimOsuus == 5;
 	if (IkkParam.ViimOsuus > 95)
@@ -1869,7 +1871,7 @@ void __fastcall TFormAjanotto::Vaihdanytetynaikajonontiedosto1Click(TObject *Sen
 {
 	wchar_t flnm[102] = L"", ch;
 	wcsncpy(flnm, aikajono[IkkParam.Jono]->aikafname, 100);
-	inputstr_prompt(flnm, 100, L"Anna uuden tiedoston nimi", &ch, this);
+	inputstr_prompt(flnm, 100, TR(L"Anna uuden tiedoston nimi"), &ch, this);
 	if (ch != ESC) {
 		wcsncpy(aikajono[IkkParam.Jono]->aikafname, flnm, 100);
 		suljeajat(IkkParam.Jono, false);
@@ -1882,7 +1884,7 @@ void __fastcall TFormAjanotto::Vaihdanytetynaikajonontiedosto1Click(TObject *Sen
 void __fastcall TFormAjanotto::Seuraavaer1Click(TObject *Sender)
 {
 	if (era_akt < MAXERA-1) {
-		Caption = L"Ajanotto - " + UnicodeString(Ajanotto) + L" - Erä " + (++era_akt);
+		Caption = TR(L"Ajanotto - ") + UnicodeString(Ajanotto) + L" - Erä " + (++era_akt);
 		}
 }
 //---------------------------------------------------------------------------
@@ -1890,14 +1892,14 @@ void __fastcall TFormAjanotto::Seuraavaer1Click(TObject *Sender)
 void __fastcall TFormAjanotto::Edellinener1Click(TObject *Sender)
 {
 	if (era_akt > 1) {
-		Caption = L"Ajanotto - " + UnicodeString(Ajanotto) + L" - Erä " + (--era_akt);
+		Caption = TR(L"Ajanotto - ") + UnicodeString(Ajanotto) + L" - Erä " + (--era_akt);
 		}
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TFormAjanotto::Lhtryhmnkoko1Click(TObject *Sender)
 {
-	inputint_prompt(&kilpparam.lahtoryhma, L"Lähtöryhmän koko", 0);
+	inputint_prompt(&kilpparam.lahtoryhma, TR(L"Lähtöryhmän koko"), 0);
 }
 //---------------------------------------------------------------------------
 
@@ -1925,7 +1927,7 @@ void __fastcall TFormAjanotto::Kaavakkeenoletuspiste1Click(TObject *Sender)
 		st[0] = L"ALM"[IkkParam.OletusPiste+2];
 	else
 		_itow(IkkParam.OletusPiste, st, 10);
-	inputstr_prompt(st, 3, L"Anna pisteen tunnus M, L tai A tai väliaikapisteen numero", &ch, this);
+	inputstr_prompt(st, 3, TR(L"Anna pisteen tunnus M, L tai A tai väliaikapisteen numero"), &ch, this);
 	if (ch != ESC) {
 		elimwbl(st);
 		switch(towupper(st[0])) {
@@ -1955,7 +1957,7 @@ void __fastcall TFormAjanotto::CBPisteValChange(TObject *Sender)
 void __fastcall TFormAjanotto::Vritlhdekoodinperusteella1Click(TObject *Sender)
 {
 	wchar_t ch;
-	inputstr_prompt(varitettavat, 50, L"Luettele väritettävät koodit välilyöntien erottamina", &ch, this);
+	inputstr_prompt(varitettavat, 50, TR(L"Luettele väritettävät koodit välilyöntien erottamina"), &ch, this);
 }
 //---------------------------------------------------------------------------
 

@@ -252,7 +252,7 @@ static void tark_kilp(INT cn, INT kaikki)
 	ibuf = inbuf + inbens;
 	d=ibuf->d.k.dk;
 	if (d <= 0) {
-		writeerror_w(L"Virheellinen sanoma tiedonsiirrosta", 0);
+		writeerror_w(TR(L"Virheellinen sanoma tiedonsiirrosta"), 0);
 		return;
 		}
 	er = FALSE;
@@ -340,12 +340,12 @@ static void tark_kilp(INT cn, INT kaikki)
    if (er) {
 #ifdef _CONSOLE
 		writeerror_w(
-		 L"Tiedostot eri koneilla eiv‰t ole yht‰pit‰vi‰",0);
-	  writeerror_w(L"Poistu ohjelmasta, kopioi KILP.DAT"
-		 L"l‰hett‰v‰lt‰ t‰lle koneelle",0);
+		 TR(L"Tiedostot eri koneilla eiv‰t ole yht‰pit‰vi‰"),0);
+	  writeerror_w(TR(L"Poistu ohjelmasta, kopioi KILP.DAT"
+		 L"l‰hett‰v‰lt‰ t‰lle koneelle"),0);
 #else
-		writeerror_w(L"Tiedostot eri koneilla eiv‰t ole yht‰pit‰vi‰"
-			L"Poistu ohjelmasta ja kopioi KILP.DAT l‰hett‰v‰lt‰ t‰lle koneelle",0);
+		writeerror_w(TR(L"Tiedostot eri koneilla eiv‰t ole yht‰pit‰vi‰"
+			L"Poistu ohjelmasta ja kopioi KILP.DAT l‰hett‰v‰lt‰ t‰lle koneelle"),0);
 #endif
 	  }
    }
@@ -657,7 +657,7 @@ static void tark_extra(int cn)
 				lahetasulku(tn, cn+1);
 			if (!tn[0] || !memcmp(tn, konetunn, 2)) {
 #ifdef _CONSOLE
-				writeerror_w(L"Ohjelma suljetaan 3 s kuluttua verkkokomennon perusteella", 3000);
+				writeerror_w(TR(L"Ohjelma suljetaan 3 s kuluttua verkkokomennon perusteella"), 3000);
 				suljesuoraan = true;
 				lopetus();
 #else
@@ -830,11 +830,11 @@ bool tark_alku(const combufrec * const cbuf, int cn)
 	if (cbuf->d.alku.nrec != datf2.numrec) {
 		erbeep();
 		if (cbuf->d.alku.flags & 1) {
-			swprintf(ln, L"Vaihen vaihtopyyntˆ koneelta, jonka KILP.DAT eri pituinen, yhteys %d", cn+1);
+			swprintf(ln, TR(L"Vaihen vaihtopyyntˆ koneelta, jonka KILP.DAT eri pituinen, yhteys %d"), cn+1);
 			writeerror_w(ln, 0);
 			}
 		else if (var[cn] == 0) {
-			swprintf(ln, L"Yhteyspyyntˆ koneelta, jonka KILP.DAT eri pituinen, yhteys %d", cn+1);
+			swprintf(ln, TR(L"Yhteyspyyntˆ koneelta, jonka KILP.DAT eri pituinen, yhteys %d"), cn+1);
 			writeerror_w(ln, 0);
 			}
 		var[cn]++;
@@ -850,7 +850,7 @@ bool tark_alku(const combufrec * const cbuf, int cn)
 	else if (cbuf->d.alku.vaihe != k_pv + 1) {
 		if (var[cn] == 0) {
 			erbeep();
-			swprintf(ln, L"Eri vaiheessa oleva kone pyyt‰‰ yhteytt‰, yhteys %d", cn+1);
+			swprintf(ln, TR(L"Eri vaiheessa oleva kone pyyt‰‰ yhteytt‰, yhteys %d"), cn+1);
 			writeerror_w(ln, 0);
 			}
 		var[cn]++;
@@ -942,7 +942,7 @@ void tarkcom(LPVOID lpCn)
 					default:
 						if (testi) {
 							wchar_t line[200];
-							swprintf(line, L"Vastaanotettu sanoma - luokka %d", inbuf[inb].pkgclass);
+							swprintf(line, TR(L"Vastaanotettu sanoma - luokka %d"), inbuf[inb].pkgclass);
 							wkirjloki(line);
 							}
 					  break;
@@ -958,7 +958,7 @@ void tarkcom(LPVOID lpCn)
 			autoclose = 0;
             for (cn = 0; cn < maxyhteys; cn++)
                 vastcom[cn] = vastcom0[cn];
-				writeerror_w(L"Puskurissa taas tilaa, portti avataan",1000, true);
+				writeerror_w(TR(L"Puskurissa taas tilaa, portti avataan"),1000, true);
 	      	}
         }
 	 }
@@ -1230,7 +1230,7 @@ void uusintaTCP(int cn)
       wselectopt(L"K)oko kilpailu, V)alittava aikavali, Esc: peruuta", L"KV\x1b", &ch);
       if (ch == L'V') {
       clrln(ySize-3);
-         vidspwmsg(ySize-3, 0, 7, 0, L"Aikarajat: alku          loppu           Esc: peruuta");
+         vidspwmsg(ySize-3, 0, 7, 0, TR(L"Aikarajat: alku          loppu           Esc: peruuta"));
 		 INPUTAIKAW(&alku,t0,8,16, ySize-3,L"\r\x1b",&ch);
    if (ch == ESC)
 	  return;
@@ -1240,7 +1240,7 @@ void uusintaTCP(int cn)
          return;
       do {
          if (cs == L'V') {
-            vidspwmsg(ySize-3,0,7,0,L"    Valitse sarja :               <Esc>: lopeta");
+            vidspwmsg(ySize-3,0,7,0,TR(L"    Valitse sarja :               <Esc>: lopeta"));
             srj = luesarja(L"", &ch);
             if (ch == ESC)
 				break;
@@ -1250,7 +1250,7 @@ void uusintaTCP(int cn)
       }
    if (cs == L'S' && levypusk) {
 	   clrln(ySize-3);
-      vidspwmsg(ySize-3, 0, 7, 0, L"Numeroalue: alku         loppu           Esc: peruuta");
+      vidspwmsg(ySize-3, 0, 7, 0, TR(L"Numeroalue: alku         loppu           Esc: peruuta"));
       alku = 0;
       INPUTINTW(&alku,6,17, ySize-3,L"\r\x1b",&ch);
          if (ch == ESC)

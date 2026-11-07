@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitKilpSeurat.h"
 #include "WinHk.h"
@@ -29,6 +30,7 @@ TFormKilpSeurat *FormKilpSeurat;
 __fastcall TFormKilpSeurat::TFormKilpSeurat(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -239,19 +241,19 @@ void __fastcall TFormKilpSeurat::Nayta(void)
 	clisa = 2 + ((vpv - epv) ? (vpv -epv + 1) : 0) + (sralaji-1)/2;
 	SG1->ColCount = sarjaluku + clisa;
 	SG1->FixedRows = 2;
-	wcscpy(sra[0].seura, L"Yhteensä");
-	wcscpy(sra[0].lyhenne, L"Yhteensä");
+	wcscpy(sra[0].seura, TR(L"Yhteensä"));
+	wcscpy(sra[0].lyhenne, TR(L"Yhteensä"));
 	if (sralaji != 2) {
 		sracol = Lyhennejrj->Checked ? 1 : 0;
-		SG1->Cells[sracol][0] = L"Seura";
+		SG1->Cells[sracol][0] = TR(L"Seura");
 		SG1->ColWidths[sracol] = 180 * Screen->PixelsPerInch / 96;
 		}
 	if (sralaji != 1) {
 		lyhcol = Lyhennejrj->Checked ? 0 : 1;
-		SG1->Cells[lyhcol][0] = L"Lyhenne";
+		SG1->Cells[lyhcol][0] = TR(L"Lyhenne");
 		SG1->ColWidths[lyhcol] = 90 * Screen->PixelsPerInch / 96;
 		}
-	SG1->Cells[(sralaji-1)/2 + 1][0] = L"Kaikki";
+	SG1->Cells[(sralaji-1)/2 + 1][0] = TR(L"Kaikki");
 	SG1->ColWidths[(sralaji-1)/2 + 1] = 45 * Screen->PixelsPerInch / 96;
 	if (vpv > epv) {
 		for (i_pv = epv; i_pv <= vpv; i_pv++) {
@@ -296,15 +298,15 @@ void __fastcall TFormKilpSeurat::NaytaSarjat(void)
 	SG1->FixedRows = 1;
 	SG1->ColWidths[0] = 70 * Screen->PixelsPerInch / 96;
 	SG1->ColWidths[1] = 60 * Screen->PixelsPerInch / 96;
-	SG1->Cells[0][0] = L"Sarja";
-	SG1->Cells[1][0] = L"Yhteensä";
+	SG1->Cells[0][0] = TR(L"Sarja");
+	SG1->Cells[1][0] = TR(L"Yhteensä");
 	SG1->Cells[1][1] = nyilmt;
 	for (i_pv = 0; i_pv < kilpparam.n_pv_akt; i_pv++) {
 		SG1->Cells[i_pv+2][0] = UnicodeString(i_pv+1) + L". vaihe";
 		SG1->ColWidths[i_pv+2] = 60 * Screen->PixelsPerInch / 96;
 		SG1->Cells[i_pv+2][1] = npv[i_pv];
 		}
-	SG1->Cells[0][1] = L"Yhteensä";
+	SG1->Cells[0][1] = TR(L"Yhteensä");
 	for (srj = 0; srj < sarjaluku; srj++) {
 		SG1->Cells[0][srj+2] = Sarjat[srj].sarjanimi;
 		SG1->Cells[1][srj+2] = nyilm[srj];

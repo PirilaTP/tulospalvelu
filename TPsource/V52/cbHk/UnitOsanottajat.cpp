@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitOsanottajat.h"
 #include "UnitKilpailijatiedot.h"
@@ -118,6 +119,7 @@ ColTp OoGridCols[sizeof(OoGridCols0)/sizeof(ColTp)];
 __fastcall TFormOsanottajat::TFormOsanottajat(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -938,8 +940,8 @@ int __fastcall TFormOsanottajat::tallennaTiedot(void)
 				}
 			if (errrivi) {
 				LeaveCriticalSection(&tall_CriticalSection);
-				Application->MessageBox((UnicodeString(L"Virhe kilpailijan ") + UnicodeString(errrivi)
-					+ UnicodeString(L" tiedoissa. Loppuja ei tallennettu.")).c_str(), L"Virhe", MB_OK);
+				Application->MessageBox((UnicodeString(TR(L"Virhe kilpailijan ")) + UnicodeString(errrivi)
+					+ UnicodeString(TR(L" tiedoissa. Loppuja ei tallennettu."))).c_str(), TR(L"Virhe"), MB_OK);
 				EnterCriticalSection(&tall_CriticalSection);
 				break;
 				}
@@ -966,35 +968,35 @@ int __fastcall TFormOsanottajat::tallennaTiedot(void)
 		if (vaihe == 0) {
 			if (erolkm <= 0) {
 				LeaveCriticalSection(&tall_CriticalSection);
-				Application->MessageBox(L"Ei muutoksia tallennettavaksi", L"Ei muutoksia", MB_OK);
+				Application->MessageBox(TR(L"Ei muutoksia tallennettavaksi"), TR(L"Ei muutoksia"), MB_OK);
 				EnterCriticalSection(&tall_CriticalSection);
 				break;
 				}
 			if (erolkm > 0) {
 				LeaveCriticalSection(&tall_CriticalSection);
 				if (dellkm) {
-					if (Application->MessageBox((UnicodeString(dellkm)+L" kilpailijan tiedot poistetaan kokonaan. Vahvista poisto").c_str(),
-						L"Tietojen poisto", MB_YESNO) != IDYES) {
+					if (Application->MessageBox((UnicodeString(dellkm)+TR(L" kilpailijan tiedot poistetaan kokonaan. Vahvista poisto")).c_str(),
+						TR(L"Tietojen poisto"), MB_YESNO) != IDYES) {
 						EnterCriticalSection(&tall_CriticalSection);
 						break;
 						}
 					}
 				if (muutlkm == erolkm) {
-					Application->MessageBox(L"Ei tallennettavissa olevia muutoksia johtuen muualla tehdyistä samojen osanottajien muutoksista", L"Ei tallenneta muutoksia", MB_OK);
+					Application->MessageBox(TR(L"Ei tallennettavissa olevia muutoksia johtuen muualla tehdyistä samojen osanottajien muutoksista"), TR(L"Ei tallenneta muutoksia"), MB_OK);
 					EnterCriticalSection(&tall_CriticalSection);
 					break;
 					}
 				else if (muutlkm > 0) {
-					if (Application->MessageBox((UnicodeString(erolkm)+L" kilpailijan tiedoissa muutos, näistä "+
-						UnicodeString(muutlkm)+L" ei voida tallentaa muualla tehdyn muutoksen takia, tallennetaanko loput").c_str(),
-						L"Muutoksia", MB_YESNO) != IDYES) {
+					if (Application->MessageBox((UnicodeString(erolkm)+TR(L" kilpailijan tiedoissa muutos, näistä ")+
+						UnicodeString(muutlkm)+TR(L" ei voida tallentaa muualla tehdyn muutoksen takia, tallennetaanko loput")).c_str(),
+						TR(L"Muutoksia"), MB_YESNO) != IDYES) {
 						EnterCriticalSection(&tall_CriticalSection);
 						break;
 						}
 					}
 				else {
-					if (Application->MessageBox((UnicodeString(erolkm)+L" kilpailijan tiedoissa muutos, tallennetaanko").c_str(),
-						L"Muutoksia", MB_YESNO) != IDYES) {
+					if (Application->MessageBox((UnicodeString(erolkm)+TR(L" kilpailijan tiedoissa muutos, tallennetaanko")).c_str(),
+						TR(L"Muutoksia"), MB_YESNO) != IDYES) {
 						EnterCriticalSection(&tall_CriticalSection);
 						break;
 						}
@@ -1018,9 +1020,9 @@ void __fastcall TFormOsanottajat::FormShow(TObject *Sender)
 		else
 			CBJarjestys->ItemIndex = 0;
 		CBPaivat->Clear();
-		CBPaivat->Items->Add(L"Kaikki vaiheet");
+		CBPaivat->Items->Add(TR(L"Kaikki vaiheet"));
 		for (int i = 0; i < kilpparam.n_pv_akt; i++) {
-			CBPaivat->Items->Add(UnicodeString(i+1)+UnicodeString(L". vaihe"));
+			CBPaivat->Items->Add(UnicodeString(i+1)+UnicodeString(TR(L". vaihe")));
 			}
 		Oo_pv = k_pv;
 		Oo_Jrjpv = Oo_pv;
@@ -1380,8 +1382,8 @@ void __fastcall TFormOsanottajat::OoGridKeyDown(TObject *Sender, WORD &Key, TShi
 		}
 	if (aktrow > 0 && Key == VK_DELETE && !Shift.Contains(ssShift) && Shift.Contains(ssCtrl) && !Shift.Contains(ssAlt)) {
 		kilp.GETREC(DKilp[aktrow]);
-		swprintf(msg, L"Vahvista kilpailijan %s pysyvä poisto", kilp.nimi(buf, 49, false));
-		if (Application->MessageBox(msg, L"Poisto", MB_YESNO) == IDYES) {
+		swprintf(msg, TR(L"Vahvista kilpailijan %s pysyvä poisto"), kilp.nimi(buf, 49, false));
+		if (Application->MessageBox(msg, TR(L"Poisto"), MB_YESNO) == IDYES) {
 			EnterCriticalSection(&tall_CriticalSection);
 			deltall(DKilp[aktrow], 0);
 			LeaveCriticalSection(&tall_CriticalSection);
@@ -1784,8 +1786,8 @@ void __fastcall TFormOsanottajat::Lueemitkoodeja1Click(TObject *Sender)
 {
 	Lueemitkoodeja1->Checked = !Lueemitkoodeja1->Checked;
 	if (Lueemitkoodeja1->Checked) {
-		int vast = Application->MessageBoxW(L"Luettavan kortin koodi menee valitulle riville kaikille vaiheille."
-			L" Merkitäänkö lainakortiksi? (Cancel peruuttaa luennan)", L"Lainakortti?", MB_YESNOCANCEL);
+		int vast = Application->MessageBoxW(TR(L"Luettavan kortin koodi menee valitulle riville kaikille vaiheille."
+			L" Merkitäänkö lainakortiksi? (Cancel peruuttaa luennan)"), TR(L"Lainakortti?"), MB_YESNOCANCEL);
 		if (vast == IDCANCEL) {
 			Lueemitkoodeja1->Checked = false;
 			return;
@@ -1853,7 +1855,7 @@ void __fastcall TFormOsanottajat::Kiinteitsarakkeita11Click(TObject *Sender)
 {
 	int FC = OoGrid->FixedCols;
 	wchar_t ret;
-	inputint_prompt(&FC, L"Anna kiinteiden sarakkeiden luku (1..12)", &ret, this);
+	inputint_prompt(&FC, TR(L"Anna kiinteiden sarakkeiden luku (1..12)"), &ret, this);
 	if (ret != ESC) {
 		if (FC < 1)
 			FC = 1;
@@ -1862,7 +1864,7 @@ void __fastcall TFormOsanottajat::Kiinteitsarakkeita11Click(TObject *Sender)
 		if (FC > OoGrid->ColCount)
 			FC = OoGrid->ColCount;
 		OoGrid->FixedCols = FC;
-		Kiinteitsarakkeita11->Caption = L"Kiinteitä sarakkeita "+UnicodeString(FC);
+		Kiinteitsarakkeita11->Caption = TR(L"Kiinteitä sarakkeita ")+UnicodeString(FC);
 		}
 	naytaTiedot();
 }

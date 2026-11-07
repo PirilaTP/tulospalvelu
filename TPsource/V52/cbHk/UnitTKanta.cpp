@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "WinHk.h"
 #include "UnitTKanta.h"
@@ -134,6 +135,7 @@ static int nflds;
 __fastcall TFormTKanta::TFormTKanta(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -1381,8 +1383,8 @@ void TFormTKanta::kirjoitaTiedostoon(int aiempaan)
 		vast = aiempaan;
 		}
 	else {
-		vast = select3(3, L"Tallennetaanko muutokset aiempaan tiedostoon?", L"Kohdetiedosto",
-			L"Tallenna aimpaan tehden backup", L"Tallenna samaan ilman backup-tiedostoa", L"Tallenna uudella nimellä", this);
+		vast = select3(3, TR(L"Tallennetaanko muutokset aiempaan tiedostoon?"), TR(L"Kohdetiedosto"),
+			TR(L"Tallenna aimpaan tehden backup"), TR(L"Tallenna samaan ilman backup-tiedostoa"), TR(L"Tallenna uudella nimellä"), this);
 		}
 	if (vast == 3) {
 		SaveDialog1->InitialDir = FormMain->CurrentDir;
@@ -1410,17 +1412,17 @@ void TFormTKanta::kirjoitaTiedostoon(int aiempaan)
 				OutFile->WriteLine(Buf);
 				}
 			OutFile->Close();
-			Application->MessageBoxW((UnicodeString(L"Tiedosto ") + FName +
-				L" kirjoitettu. Kirjoitetut tiedot luetaan uudelleen ohjelmaan").c_str(), L"Valmis", MB_OK);
+			Application->MessageBoxW((UnicodeString(TR(L"Tiedosto ")) + FName +
+				TR(L" kirjoitettu. Kirjoitetut tiedot luetaan uudelleen ohjelmaan")).c_str(), TR(L"Valmis"), MB_OK);
 			LueHenkilot(FName.c_str(), false);
 			}
 		delete OutFile;
 		if (ToimintaTila == 2 && comfl && maxyhteys && memnullcmp((char *)lah_tiedostot, sizeof(lah_tiedostot))) {
-			if (Application->MessageBoxW(L"Lähetetäänkö tiedosto verkon muille tietokoneille?",
-				L"Lähetys", MB_YESNO) == IDYES) {
+			if (Application->MessageBoxW(TR(L"Lähetetäänkö tiedosto verkon muille tietokoneille?"),
+				TR(L"Lähetys"), MB_YESNO) == IDYES) {
 				if (lah_tiedosto(FName.c_str(), 0, 2))
-					Application->MessageBoxW(L"Tiedoston lähettäminen ei onnistunut.",
-						L"Ei lähetetty", MB_OK);
+					Application->MessageBoxW(TR(L"Tiedoston lähettäminen ei onnistunut."),
+						TR(L"Ei lähetetty"), MB_OK);
 				}
 			}
 		}

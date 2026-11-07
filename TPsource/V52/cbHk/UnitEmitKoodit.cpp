@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitEmitKoodit.h"
 #include "HkDeclare.h"
@@ -28,6 +29,7 @@ TFormEmitKoodit *FormEmitKoodit;
 __fastcall TFormEmitKoodit::TFormEmitKoodit(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -37,11 +39,11 @@ __fastcall TFormEmitKoodit::TFormEmitKoodit(TComponent* Owner)
 void __fastcall TFormEmitKoodit::FormCreate(TObject *Sender)
 {
 	SG1->ColCount = 5;
-	SG1->Cells[0][0] = L"No";
-	SG1->Cells[1][0] = L"Emit";
-	SG1->Cells[2][0] = L"Laina";
-	SG1->Cells[3][0] = L"Nimi";
-	SG1->Cells[4][0] = L"Seura";
+	SG1->Cells[0][0] = TR(L"No");
+	SG1->Cells[1][0] = TR(L"Emit");
+	SG1->Cells[2][0] = TR(L"Laina");
+	SG1->Cells[3][0] = TR(L"Nimi");
+	SG1->Cells[4][0] = TR(L"Seura");
 	SG1->ColWidths[0] = 50 * Screen->PixelsPerInch / 96;
 	SG1->ColWidths[1] = 60 * Screen->PixelsPerInch / 96;
 	SG1->ColWidths[2] = 35 * Screen->PixelsPerInch / 96;
@@ -58,10 +60,10 @@ void __fastcall TFormEmitKoodit::FormCreate(TObject *Sender)
 		Label1->Visible = false;
 		}
 	CBVaiheet->Clear();
-	CBVaiheet->Items->Add(L"Tämä ja myöhemmät");
-	CBVaiheet->Items->Add(L"Vain tämä");
+	CBVaiheet->Items->Add(TR(L"Tämä ja myöhemmät"));
+	CBVaiheet->Items->Add(TR(L"Vain tämä"));
 	for (int i = 1; i <= kilpparam.n_pv_akt; i++)
-		CBVaiheet->Items->Add(UnicodeString(L"Vain ")+i+L". vaihe");
+		CBVaiheet->Items->Add(UnicodeString(TR(L"Vain "))+i+TR(L". vaihe"));
 	CBVaiheet->ItemIndex = 0;
 }
 //---------------------------------------------------------------------------

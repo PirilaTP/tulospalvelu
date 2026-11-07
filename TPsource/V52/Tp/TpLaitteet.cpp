@@ -547,7 +547,7 @@ void naytatulos(int tulos)
 static void naytaluentaTh(LPVOID lpCn)
    {
 	int i;
-   vidspmsg(ySize-6, 5, 7, 0, "Viimeisin luettu kortti");
+   vidspmsg(ySize-6, 5, 7, 0, TRA("Viimeisin luettu kortti"));
    vidint(ySize-6, 30, 7, *((int *) lpCn));
    viwrrect(ySize-9, 5, ySize-7, 40,
 		"                                    "
@@ -782,7 +782,7 @@ static void lue_Sirit(int r_no, san_type *vastaus, int *nmsg, int nch)
 			else {
 				if (loki) {
 					char ln[80];
-					sprintf(ln, "Ohitettu merkit: %s", vast.bytes);
+					sprintf(ln, TRA("Ohitettu merkit: %s"), vast.bytes);
 					}
 				}
 			while ((*p2 == '\r' || *p2 == '\n') && p2 < vastaus->bytes + *nmsg)
@@ -1175,7 +1175,7 @@ static int lue_MTR(int r_no, int cn, san_type *vastaus, int *nmsg,
 	if (er || *tyhjpuskuri) {
 		*nmsg = 0;
 #ifdef DBGEMIT
-		writeerror_w(L"Tyhjennä puskuri", 400);
+		writeerror_w(TR(L"Tyhjennä puskuri"), 400);
 #endif
 		}
 	else {
@@ -1216,7 +1216,7 @@ static int lue_MTR(int r_no, int cn, san_type *vastaus, int *nmsg,
 				*nmsg -= (INT)(p2 - vastaus->bytes);
 				memmove(vastaus->bytes, p2, *nmsg);
 #ifdef DBGEMIT
-				writeerror_w(L"Poisto 2", 400);
+				writeerror_w(TR(L"Poisto 2"), 400);
 #endif
 				continue;
 				}
@@ -1233,7 +1233,7 @@ static int lue_MTR(int r_no, int cn, san_type *vastaus, int *nmsg,
 				if (vastaus->r13.pkgno == pkg_alku[r_no]+1)
 					pkg_alku[r_no]++;
 #ifdef DBGEMIT
-				writeerror_w(L"Poisto 3", 400);
+				writeerror_w(TR(L"Poisto 3"), 400);
 #endif
 				continue;
 				}
@@ -1247,7 +1247,7 @@ static int lue_MTR(int r_no, int cn, san_type *vastaus, int *nmsg,
 			if (vastaus->r13.pkgno <= pkg_alku[r_no]) {
 				tall_emit(vastaus, &vahvistus[r_no], r_no);
 #ifdef DBGEMIT
-				writeerror_w(L"Tallennus", 400);
+				writeerror_w(TR(L"Tallennus"), 400);
 #endif
 				pkg_alku[r_no] = vastaus->r13.pkgno;
 				if (pkg_loppu[r_no] < pkg_alku[r_no])
@@ -1268,7 +1268,7 @@ static int lue_MTR(int r_no, int cn, san_type *vastaus, int *nmsg,
 
 	if (mtr_pyynto[r_no] && (int) pkg_alku[r_no] > mtr_pyynto[r_no]) {
 		mtr_pyynto[r_no] = 0;
-		writeerror_w(L"Kaikki MTR-laitteelta pyydetyt tiedot luettu - odota hetki", 2000, true);
+		writeerror_w(TR(L"Kaikki MTR-laitteelta pyydetyt tiedot luettu - odota hetki"), 2000, true);
 		}
 
 // Jos puskuria on käsitelty ja pkg_alku[r_no] ja pkg_loppu[r_no] osoittavat, että
@@ -1277,7 +1277,7 @@ static int lue_MTR(int r_no, int cn, san_type *vastaus, int *nmsg,
 
 	if (*nmsg < nmsg0 && pkg_alku[r_no] <= pkg_loppu[r_no] && !mtr_yksi) {
 #ifdef DBGEMIT
-		writeerror_w(L"Pyyntö", 400);
+		writeerror_w(TR(L"Pyyntö"), 400);
 #endif
 		memcpy(pyynto, "/GB", 3);
 		*(INT32 *)(pyynto+3) = pkg_alku[r_no];
@@ -1537,7 +1537,7 @@ int lue_regnly(INT r_no)
 		if (!siritopen[r_no]) {
 #ifdef _CONSOLE
 			if (ySize == 50)
-				vidspwmsg(45, 72, 0, 7, L"SULJETTU");
+				vidspwmsg(45, 72, 0, 7, TR(L"SULJETTU"));
 #endif
 			return(0);
 			}
@@ -1545,7 +1545,7 @@ int lue_regnly(INT r_no)
 #endif
 	if (!vastaus[r_no]) {
 		if ((vastaus[r_no] = (san_type *) malloc(sizeof(san_type))) == 0) {
-			writeerror_w(L"Muisti ei riitä sanomapuskureille", 0);
+			writeerror_w(TR(L"Muisti ei riitä sanomapuskureille"), 0);
 			return(-1);
 			}
 		}
@@ -1596,7 +1596,7 @@ int lue_regnly(INT r_no)
 				LatestSirit[r_no] += 10000;
 				if (LatestSirit[r_no] < tt - SiritPoll[r_no] + 5000)
 					LatestSirit[r_no] = tt - SiritPoll[r_no] + 5000;
-				writeerror_w(L"Sirit ei vastaa", 3000);
+				writeerror_w(TR(L"Sirit ei vastaa"), 3000);
 #else
 				if (SiritEiVastaa[r_no] == 0) {
 					SiritEiVastaa[r_no] = tt - LatestSirit[r_no];
@@ -1871,7 +1871,7 @@ void lue_regnlyThread(LPVOID lpCn)
 		}
 	regnly_open[r_no] = 0;
 	if (!inLopetus && !katkaisuPyydetty)
-		writeerror_w(L"Häiriö. Ajanoton/leimantarkastuksen jatko vaatii uudelleenkäynnistyksen", 0);
+		writeerror_w(TR(L"Häiriö. Ajanoton/leimantarkastuksen jatko vaatii uudelleenkäynnistyksen"), 0);
 }
 
 // Käynnistää lukijalaitteen r_no: asettaa sarjaporttiparametrit laitteen tyypin mukaan ja avaa yhteyden.
@@ -1889,7 +1889,7 @@ INT start_regnly(INT r_no)
 #ifdef SIIMPORT
 	   if (regnly[r_no] == LID_SIIMPORT) {
 		   viwrrectw(ySize - 3, 0, ySize - 3, 31,
-			   L"Anna maalikellon käynnistysaika:", 7, 0, 0);
+			   TR(L"Anna maalikellon käynnistysaika:"), 7, 0, 0);
 		   INPUTAIKAW(&t0_regnly, t0, 8, 50, ySize - 3, L"\xD", &wch);
 		   maaliajat[9] = t0_regnly;
 		   return(0);
@@ -1911,8 +1911,8 @@ INT start_regnly(INT r_no)
 #ifdef EMITFILE
 		   if (port_regnly[r_no] > 900) {
 			   r_no_file = r_no;
-			   writeerror_w(L"Ohjelma lukee EMIT-tietoja tiedostosta näppäimellä "
-				   L"N valinnassa lE)imat", 2000);
+			   writeerror_w(TR(L"Ohjelma lukee EMIT-tietoja tiedostosta näppäimellä "
+				   L"N valinnassa lE)imat"), 2000);
 			   return(0);
 			   }
 #endif
@@ -1942,12 +1942,12 @@ INT start_regnly(INT r_no)
 				   }
 			   else {
 				   if (regnly[r_no] == LID_MTR)
-					   wcscpy(msg, L"Anna poikkeama: kilpailuaika - MTR-laitteen aika :");
+					   wcscpy(msg, TR(L"Anna poikkeama: kilpailuaika - MTR-laitteen aika :"));
 				   else
 				   if (regnly[r_no] <= LID_RTR2)
-					   wcscpy(msg, L"Anna maalikellon käynnistysaika:");
+					   wcscpy(msg, TR(L"Anna maalikellon käynnistysaika:"));
 				   else
-					   wcscpy(msg, L"Anna poikkeama: kilpailuaika - maalikellon aika :");
+					   wcscpy(msg, TR(L"Anna poikkeama: kilpailuaika - maalikellon aika :"));
 #ifdef _CONSOLE
 				   vidspwmsg(ySize - 3, 0, 7, 0, msg);
 				   INPUTAIKAW(&t0_regn[r_no], t0, 8, 50, ySize - 3, L"\xD", &wch);
@@ -2296,14 +2296,14 @@ int openSirit2(int r_no, bool reconnect)
 		if (siritreuna & 2) {
 			strcpy(line, "tag.reporting.arrive_fields=tag_id time antenna\r\n");
 			wrt_st_x(cn_regnly[r_no+NREGNLY], strlen(line), line, &nread);
-			sprintf(line, "reader.register_event(%d, %s)\r\n", yht, siritarrive);
+			sprintf(line, TRA("reader.register_event(%d, %s)\r\n"), yht, siritarrive);
 			wrt_st_x(cn_regnly[r_no+NREGNLY], strlen(line), line, &nread);
 			}
 		if (siritreuna & 1) {
 			strcpy(line, "tag.reporting.depart_fields=tag_id time antenna\r\n");
 			wrt_st_x(cn_regnly[r_no+NREGNLY], strlen(line), line, &nread);
 			Sleep(300);
-			sprintf(line, "reader.register_event(%d, %s)\r\n", yht, siritdepart);
+			sprintf(line, TRA("reader.register_event(%d, %s)\r\n"), yht, siritdepart);
 			wrt_st_x(cn_regnly[r_no+NREGNLY], strlen(line), line, &nread);
 			}
 		if (siritsync) {
@@ -2312,7 +2312,7 @@ int openSirit2(int r_no, bool reconnect)
 			}
 //      regnly[r_no] = LID_SIRIT;
 		writeerrorOn  = 50;
-		vidspwmsg(ySize - 1, 50, 7, 0, L"Sirit-yhteys avattu");
+		vidspwmsg(ySize - 1, 50, 7, 0, TR(L"Sirit-yhteys avattu"));
 		if (loki) {
 			swprintf(wline, L"%d: Sirit-yhteysparametrit asetettu", mstimer());
 			wkirjloki(wline);
@@ -2324,7 +2324,7 @@ int openSirit2(int r_no, bool reconnect)
 			swprintf(wline, L"%d: Sirit-yhteyden avaaminen ei onnistu", mstimer());
 			wkirjloki(wline);
 			}
-		writeerror_w(L"Sirit-yhteyden avaaminen ei onnistu", 2000);
+		writeerror_w(TR(L"Sirit-yhteyden avaaminen ei onnistu"), 2000);
 		}
 	return(0);
 	}
@@ -2520,24 +2520,24 @@ void aseta_emitag(int r_no)
 	kbflush();
 	for (;;) {
 		clrln(ySize - 3);
-		vidspwmsg(ySize - 3, 0, 7, 0, L"K)ellon synkronointi, aseta M)oodi, aseman kO)odi, U)udelleenläh., Esc: Poistu");
-		swprintf(msg, L"Laiteversio: %s, toimintamoodi: %d    ", ansitowcs(was, ecdata[r_no].devtype, 39), ecdata[r_no].mode);
+		vidspwmsg(ySize - 3, 0, 7, 0, TR(L"K)ellon synkronointi, aseta M)oodi, aseman kO)odi, U)udelleenläh., Esc: Poistu"));
+		swprintf(msg, TR(L"Laiteversio: %s, toimintamoodi: %d    "), ansitowcs(was, ecdata[r_no].devtype, 39), ecdata[r_no].mode);
 		if (ecdata[r_no].mode != 0)
-			vidspwmsg(6, 15, 7, 0, L"Toiminta edellyttää, että moodi = 0");
+			vidspwmsg(6, 15, 7, 0, TR(L"Toiminta edellyttää, että moodi = 0"));
 		vidspwmsg(5, 5, 7, 0, msg);
-		swprintf(msg, L"Aseman koodi: %d  Tallennetut sanomat %d - %d     ",
+		swprintf(msg, TR(L"Aseman koodi: %d  Tallennetut sanomat %d - %d     "),
 			ecdata[r_no].code, ecdata[r_no].first, ecdata[r_no].next - 1);
 		vidspwmsg(7, 5, 7, 0, msg);
-		swprintf(msg, L"Laitteen kellonaika         %s   ", AIKATOWSTRS(was, ecdata[r_no].devtime, t0));
+		swprintf(msg, TR(L"Laitteen kellonaika         %s   "), AIKATOWSTRS(was, ecdata[r_no].devtime, t0));
 		vidspwmsg(9, 5, 7, 0, msg);
-		swprintf(msg, L"Vastaanotettu tietokoneelle %s   ", AIKATOWSTRS(was, ecdata[r_no].pctime, t0));
+		swprintf(msg, TR(L"Vastaanotettu tietokoneelle %s   "), AIKATOWSTRS(was, ecdata[r_no].pctime, t0));
 		vidspwmsg(10, 5, 7, 0, msg);
 		if (ecdata[r_no].health[0]) {
-			swprintf(msg, L"Pariston tila      %s   ", ansitowcs(was, ecdata[r_no].health, 39));
+			swprintf(msg, TR(L"Pariston tila      %s   "), ansitowcs(was, ecdata[r_no].health, 39));
 			vidspwmsg(12, 5, 7, 0, msg);
 		}
 		if (ecdata[r_no].comm[0]) {
-			swprintf(msg, L"Tiedonsiirron tila %s   ", ansitowcs(was, ecdata[r_no].health, 39));
+			swprintf(msg, TR(L"Tiedonsiirron tila %s   "), ansitowcs(was, ecdata[r_no].health, 39));
 			vidspwmsg(14, 5, 7, 0, msg);
 		}
 		key = 0;
@@ -2567,26 +2567,26 @@ void aseta_emitag(int r_no)
 				i = ecdata[r_no].code;
 				for (;;) {
 					clrln(ySize - 3);
-					vidspwmsg(ySize - 3, 0, 7, 0, L"Anna aseman koodi: ");
+					vidspwmsg(ySize - 3, 0, 7, 0, TR(L"Anna aseman koodi: "));
 					inputlongw(&i, 3, 20, ySize - 3, L"\r\x1b", &ch);
 					if (i < 0 || (i > 240 && i != 243 && i != 244 && i != 248 && i != 250 && i != 251 && i != 252 && i != 253)) {
-						writeerror_w(L"Koodi ei sallittu", 0, true);
+						writeerror_w(TR(L"Koodi ei sallittu"), 0, true);
 						continue;
 					}
 					if (i == 0)
-						wcscpy(msg, L"Lähtönollauksen koodi, vahvista (K/E)");
+						wcscpy(msg, TR(L"Lähtönollauksen koodi, vahvista (K/E)"));
 					else if (i < 66)
-						swprintf(msg, L"Koodi %d - Alle 66 oleva koodi kieltää tiedonsiirron, vahvista (K/E)", i);
+						swprintf(msg, TR(L"Koodi %d - Alle 66 oleva koodi kieltää tiedonsiirron, vahvista (K/E)"), i);
 					else if (i < 240)
-						swprintf(msg, L"Koodi %d - Asema lähettää tietoja, vahvista (K/E)", i);
+						swprintf(msg, TR(L"Koodi %d - Asema lähettää tietoja, vahvista (K/E)"), i);
 					else if (i < 244)
-						swprintf(msg, L"Koodi %d - Tietojen luenta, 5 viim. päivää, vahvista (K/E)", i);
+						swprintf(msg, TR(L"Koodi %d - Tietojen luenta, 5 viim. päivää, vahvista (K/E)"), i);
 					else if (i == 244)
-						swprintf(msg, L"Koodi %d - Tietojen luenta, kaikki kortin tiedot, vahvista (K/E)", i);
+						swprintf(msg, TR(L"Koodi %d - Tietojen luenta, kaikki kortin tiedot, vahvista (K/E)"), i);
 					else if (i == 248)
-						wcscpy(msg, L"Maaliajanoton koodi, vahvista (K/E)");
+						wcscpy(msg, TR(L"Maaliajanoton koodi, vahvista (K/E)"));
 					else if (i < 254)
-						swprintf(msg, L"Koodi %d - Tietojen luenta, viimeisin kilpailu, vahvista (K/E)", i);
+						swprintf(msg, TR(L"Koodi %d - Tietojen luenta, viimeisin kilpailu, vahvista (K/E)"), i);
 					ch = L' ';
 					wselectopt(msg, L"KE", &ch);
 					if (ch == L'K')
@@ -2602,7 +2602,7 @@ void aseta_emitag(int r_no)
 				if (ch == L'N' || ch == L'Y') {
 					i = ecdata[r_no].next - 1;
 					clrln(ySize - 3);
-					vidspwmsg(ySize - 3, 0, 7, 0, L"Anna sanoman numero: ");
+					vidspwmsg(ySize - 3, 0, 7, 0, TR(L"Anna sanoman numero: "));
 					inputlongw(&i, 3, 23, ySize - 3, L"\r\x1b", &ch2);
 					if (ch2 == ESC)
 						break;
@@ -2660,7 +2660,7 @@ void aseta_mtr(void)
 		r_no = i;
 	}
 	if (j > 1) {
-		vidspwmsg(ySize - 3, 0, 7, 0, L"Valitse MTR:n tai emiTag-aseman numero");
+		vidspwmsg(ySize - 3, 0, 7, 0, TR(L"Valitse MTR:n tai emiTag-aseman numero"));
 		r_no++;
 		INPUTINTW(&r_no, 2, 39, ySize - 3, L"\r", &ch);
 		r_no--;
@@ -2703,14 +2703,14 @@ void aseta_mtr(void)
 	if (nch < MTR_ST_LEN || vastaus.r13st.alku != 0xffffffffL ||
 		vastaus.r13st.msglen != MTR_ST_LEN - 4 || vastaus.r13st.tunnus != 'S' ||
 		r_tarksum(vastaus.bytes, MTR_ST_LEN - 2, vastaus.r13st.chksum2, 0)) {
-		writeerror_w(L"MTR:n tilatietojen lukeminen epäonnistui", 0);
+		writeerror_w(TR(L"MTR:n tilatietojen lukeminen epäonnistui"), 0);
 		clearframe63();
 		in_aseta_mtr = 0;
 		return;
 	}
 	e_time = vastaus.r13st.t_ms / 100 + 10L * vastaus.r13st.t_sek +
 		600L * vastaus.r13st.t_min + 36000L * vastaus.r13st.t_hour + t0_regn[r_no] / KSEK;
-	vidspwmsg(2, 1, 7, 0, L"MTR-laite no");
+	vidspwmsg(2, 1, 7, 0, TR(L"MTR-laite no"));
 	vidint(2, 17, 0, vastaus.r13st.mtrid);
 	swprintf(msg, L"MTR-laitteen ilmoittama aika %02d.%02d.%02d  %s",
 		vastaus.r13st.t_day, vastaus.r13st.t_month, vastaus.r13st.t_year,
@@ -2722,10 +2722,10 @@ void aseta_mtr(void)
 	swprintf(msg, L"Pariston tila %s", vastaus.r13st.battery ? L"HEIKKO" : L"OK");
 	vidspwmsg(7, 1, 7, 0, msg);
 	if (!vastaus.r13st.pkgno)
-		vidspwmsg(8, 1, 7, 0, L"Laitteessa ei tietoja");
+		vidspwmsg(8, 1, 7, 0, TR(L"Laitteessa ei tietoja"));
 	else {
-		vidspwmsg(8, 1, 7, 0, L"Laitteen muistissa olevat istunnot");
-		vidspwmsg(9, 1, 7, 0, L"Istunto   aloituspvm ja -aika  vanhin nro  uusin nro  lukumäärä");
+		vidspwmsg(8, 1, 7, 0, TR(L"Laitteen muistissa olevat istunnot"));
+		vidspwmsg(9, 1, 7, 0, TR(L"Istunto   aloituspvm ja -aika  vanhin nro  uusin nro  lukumäärä"));
 		ed_alku = vastaus.r13st.pkgno + 1;
 		for (i = 0; i < 8; i++) {
 			if (i == 0) wcscpy(ist, L"viimeisin");
@@ -2827,7 +2827,7 @@ void aseta_mtr(void)
 		if (ch == L'Y') {
 			mtr_yksi = 1;
 			lue_rno = r_no;
-			writeerror_w(L"Pyydä seuraava tieto aina näppäimellä L'N'", 0);
+			writeerror_w(TR(L"Pyydä seuraava tieto aina näppäimellä L'N'"), 0);
 		}
 		else
 			mtr_yksi = 0;
@@ -2849,14 +2849,14 @@ void aseta_mtr(void)
 		case L'V':
 			clrln(ySize - 3);
 			pkg_loppu[r_no] = vastaus.r13st.pkgno;
-			vidspwmsg(ySize - 3, 0, 7, 0, L"Viimeisten luku");
+			vidspwmsg(ySize - 3, 0, 7, 0, TR(L"Viimeisten luku"));
 			pkg_alku[r_no] = 0;
 			inputlongw((INT32 *)&pkg_alku[r_no], 4, 17, ySize - 3, L"\r", &ch);
 			pkg_alku[r_no] = pkg_loppu[r_no] - pkg_alku[r_no] + 1;
 			break;
 		case L'S':
 			clrln(ySize - 3);
-			vidspwmsg(ySize - 3, 0, 7, 0, L"Ensimmäinen           viimeinen");
+			vidspwmsg(ySize - 3, 0, 7, 0, TR(L"Ensimmäinen           viimeinen"));
 			pkg_alku[r_no] = 0;
 			inputlongw((INT32 *)&pkg_alku[r_no], 4, 13, ySize - 3, L"\r", &ch);
 			pkg_loppu[r_no] = 0;
@@ -2888,7 +2888,7 @@ void aseta_s4(void)
 
 	if (regnly[0] == LID_RTR2) {
 		clrln(ySize - 3);
-		vidspwmsg(ySize - 3, 0, 7, 0, L"Uudelleen lähetettävien aikojen luku (9999 = kaikki)");
+		vidspwmsg(ySize - 3, 0, 7, 0, TR(L"Uudelleen lähetettävien aikojen luku (9999 = kaikki)"));
 		ens = 0;
 		INPUTINTW(&ens, 4, 54, ySize - 3, L"\r\x1b", &ch);
 		if (ch == L'\r' && ens > 0) {
@@ -2906,7 +2906,7 @@ void aseta_s4(void)
 				ens -= viim;
 			}
 			if (i == 20)
-				writeerror_w(L"RTR-kello ei vahvistanut pyynnön hyväksymistä", 0);
+				writeerror_w(TR(L"RTR-kello ei vahvistanut pyynnön hyväksymistä"), 0);
 		}
 	}
 	if (regnly[0] == LID_ALGE4) {
@@ -2927,7 +2927,7 @@ void aseta_s4(void)
 			if (ch == L'O') {
 				clrln(ySize - 3);
 				vidspwmsg(ySize - 3, 0, 7, 0,
-					L"Alkurivi:        loppurivi:         (Viimeinen vastaanotettu     )");
+					TR(L"Alkurivi:        loppurivi:         (Viimeinen vastaanotettu     )"));
 				vidint(ySize - 3, 61, 4, viimrivi);
 				ens = 1;
 				viim = viimrivi;
@@ -2940,7 +2940,7 @@ void aseta_s4(void)
 			break;
 		case L'V':
 			clrln(ySize - 3);
-			vidspwmsg(ySize - 3, 0, 7, 0, L"Toistoviive sekunnin kymmenyksinä");
+			vidspwmsg(ySize - 3, 0, 7, 0, TR(L"Toistoviive sekunnin kymmenyksinä"));
 			viim = 0;
 			INPUTINTW(&viim, 2, 34, ySize - 3, L"\r\x1b", &ch);
 			sprintf(san, "\x82%02d\r\x83%02d\r", viim, viim);

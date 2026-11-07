@@ -19,6 +19,7 @@
 #include <vcl.h>
 #include <Clipbrd.hpp>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "OsuusTiedot.h"
 #include "VDeclare.h"
@@ -36,6 +37,7 @@ extern rastivatp *rastiva;
 __fastcall TFormOsuus::TFormOsuus(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -93,7 +95,7 @@ void __fastcall TFormOsuus::naytaTiedot(void)
 	  Osuus = os + 1;
 	  yos = Sarjat[Sarja].yosuus[os];
 	  kilp.Joukkue(line, 20);
-	  swprintf(Kohde, L"%s %d. os", line, Osuus);
+	  swprintf(Kohde, TR(L"%s %d. os"), line, Osuus);
 	  FormMain->SetFormKohde(this, Kohde);
 	  kilp.Joukkue(line);
 	  JoukkNimi->Text = line;
@@ -418,7 +420,7 @@ void __fastcall TFormOsuus::ValSarjaChange(TObject *Sender)
 	  Osuus = Sarjat[Sarja].osuusluku;
    ValOsuus->Clear();
    for (int os = 0; os < Sarjat[Sarja].osuusluku; os++) {
-	   ValOsuus->Items->Add(UnicodeString(L"Osuus ") + wosuuskoodi(Sarja, os, 0, 0));
+	   ValOsuus->Items->Add(UnicodeString(TR(L"Osuus ")) + wosuuskoodi(Sarja, os, 0, 0));
 	   }
    ValOsuus->ItemIndex = Osuus - 1;
    VaihdKarkiBtn(Sender);
@@ -439,7 +441,7 @@ void __fastcall TFormOsuus::FormShow(TObject *Sender)
 	Rastivliaikaanalyysi1->Visible = !emitanal_fl;
    ValOsuus->Clear();
    for (int os = 0; os < Sarjat[Sarja].osuusluku; os++) {
-	   ValOsuus->Items->Add(UnicodeString(L"Osuus ") + wosuuskoodi(Sarja, os, 0, 0));
+	   ValOsuus->Items->Add(UnicodeString(TR(L"Osuus ")) + wosuuskoodi(Sarja, os, 0, 0));
 	   }
    ValOsuus->ItemIndex = Osuus - 1;
    naytaTiedot();

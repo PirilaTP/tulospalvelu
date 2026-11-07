@@ -67,7 +67,7 @@ int parametrivirhe(wchar_t *sub, int intparam, wchar_t *strparam, wchar_t charpa
 	else
 		str = st;
 	if (hav_virheet) {
-		swprintf(msg, L"Parametrivirhe, aliohjelma %s, parametrit %d, %s, %c", sub, intparam, str, charparam);
+		swprintf(msg, TR(L"Parametrivirhe, aliohjelma %s, parametrit %d, %s, %c"), sub, intparam, str, charparam);
 		writeerror_w(msg, 0);
 		}
 	return(0);
@@ -641,7 +641,7 @@ void merk_yht_lahdot(int srj, bool nayta)
    if (os == Sarjat[srj].ntosuus)
 	   return;
    if (nayta) {
-	   vidspmsg(ySize-1,0,7,0,"Kirjaa yhteislähtöjä, sarja :");
+	   vidspmsg(ySize-1,0,7,0,TRA("Kirjaa yhteislähtöjä, sarja :"));
 	   vidspmsg(ySize-1,40,7,0,(char *)Sarjat[srj].sarjanimi);
 	   }
    EnterCriticalSection(&tall_CriticalSection);
@@ -662,9 +662,9 @@ void merk_yht_lahdot(int srj, bool nayta)
 			OUTBUFL > (3*OUTBUFL)/4 ||
 			(cjseur[1] + OUTBUFL - cjens[1]) % OUTBUFL > (3*OUTBUFL)/4)) {
 #ifdef _CONSOLE
-			vidspmsg(ySize-3,0,7,0,"Odottaa tiedonsiirron "
+			vidspmsg(ySize-3,0,7,0,TRA("Odottaa tiedonsiirron "
 				"etenemistä.  'Esc' lopettaa"
-				" yhteislähtöjen kirjauksen");
+				" yhteislähtöjen kirjauksen"));
 			if (readkbd(&ch, FALSE, spoolfl) == ESC)
 				goto escape;
 #endif
@@ -955,7 +955,7 @@ void lopetus1(void)
 		return;
 	if (loki) {
 		wchar_t lmsg[60];
-		swprintf(lmsg, L"Ohjelmasta poistutaan, klo %s", wkello());
+		swprintf(lmsg, TR(L"Ohjelmasta poistutaan, klo %s"), wkello());
 		wkirjloki(lmsg);
 		}
 	lkmThreadOn = false;
@@ -966,7 +966,7 @@ void lopetus1(void)
    inkirjSQLThread = false;
 
    scpclr();
-   vidspmsg(3,3,7,0,"Odota hetki, tiedostoja ja yhteyksiä suljetaan");
+   vidspmsg(3,3,7,0,TRA("Odota hetki, tiedostoja ja yhteyksiä suljetaan"));
    if (kaynnistysvaihe > 2) {
 #if defined(ALGETAULU) || defined(TAULU)
 	  if (taulu_com || udptaulu) {

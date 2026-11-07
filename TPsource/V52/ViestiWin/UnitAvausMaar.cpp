@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitAvausMaar.h"
 #include "UnitMain.h"
@@ -31,6 +32,7 @@ TFormAvausMaar *FormAvausMaar;
 __fastcall TFormAvausMaar::TFormAvausMaar(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

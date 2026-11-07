@@ -21,6 +21,7 @@
 #include <io.h>
 #include <fcntl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <sys/stat.h>
 #include <winsock2.h>
 
@@ -44,23 +45,24 @@ int jatktaulu;
 __fastcall TFormTaulu::TFormTaulu(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
 		}
 	SGTaulut->RowCount = NREGNLY+1;
 	SGTaulut->ColCount = 11;
-	SGTaulut->Cells[0][0] = L"LaiteNo";
-	SGTaulut->Cells[1][0] = L"Laite";
-	SGTaulut->Cells[2][0] = L"Yhteys";
-	SGTaulut->Cells[3][0] = L"Portti";
-	SGTaulut->Cells[4][0] = L"VastaIPosoite";
-	SGTaulut->Cells[5][0] = L"VastaPortti";
-	SGTaulut->Cells[6][0] = L"LaiteID";
-	SGTaulut->Cells[7][0] = L"KorttiID";
-	SGTaulut->Cells[8][0] = L"Lev";
-	SGTaulut->Cells[9][0] = L"Kork";
-	SGTaulut->Cells[10][0] = L"Tila";
+	SGTaulut->Cells[0][0] = TR(L"LaiteNo");
+	SGTaulut->Cells[1][0] = TR(L"Laite");
+	SGTaulut->Cells[2][0] = TR(L"Yhteys");
+	SGTaulut->Cells[3][0] = TR(L"Portti");
+	SGTaulut->Cells[4][0] = TR(L"VastaIPosoite");
+	SGTaulut->Cells[5][0] = TR(L"VastaPortti");
+	SGTaulut->Cells[6][0] = TR(L"LaiteID");
+	SGTaulut->Cells[7][0] = TR(L"KorttiID");
+	SGTaulut->Cells[8][0] = TR(L"Lev");
+	SGTaulut->Cells[9][0] = TR(L"Kork");
+	SGTaulut->Cells[10][0] = TR(L"Tila");
 	SGTaulut->ColWidths[0] = 40 * Screen->PixelsPerInch / 96;
 	SGTaulut->ColWidths[1] = 50 * Screen->PixelsPerInch / 96;
 	SGTaulut->ColWidths[2] = 45 * Screen->PixelsPerInch / 96;
@@ -169,7 +171,7 @@ void TFormTaulu::PaivitaYhteydet(void)
 			onLaite = true;
 			switch (regnly[ny]) {
 				case LID_CPOWER:
-					SGTaulut->Cells[1][y+1] = L"C-Power";
+					SGTaulut->Cells[1][y+1] = TR(L"C-Power");
 					swprintf(st, L"%03d.%03d.%03d.%03d",
 						TauluParam[ny].DevID & 0xff,
 						(TauluParam[ny].DevID & 0xff00) / 0x100,
@@ -223,7 +225,7 @@ void TFormTaulu::opentaulu(void)
    cn_gaz = GAZCOM;
    htaulu = -1;
    if (openport_x(cn_gaz, t_com, t_baud, 'n', 8, 1, 0)) {
-	  writeerror("GAZ-tiedonsiirron avaaminen ei onnistunut", 0);
+	  writeerror(TRA("GAZ-tiedonsiirron avaaminen ei onnistunut"), 0);
 	  t_com = 0;
 	  taulu_com = 0;
 	  return;
@@ -755,12 +757,12 @@ void TFormTaulu::PaivLEDsivu(void)
 				CBCPTieto[it][ir]->Left = CBCPTieto[0][0]->Left;
 				CBCPTieto[it][ir]->Height = CBCPTieto[0][0]->Height;
 				CBCPTieto[it][ir]->Width = CBCPTieto[0][0]->Width;
-				CBCPTieto[it][ir]->Items->Add(L"Vain os.");
-				CBCPTieto[it][ir]->Items->Add(L"Sija");
-				CBCPTieto[it][ir]->Items->Add(L"Ero kärkeen");
-				CBCPTieto[it][ir]->Items->Add(L"Ero txt-ajasta");
-				CBCPTieto[it][ir]->Items->Add(L"Teksti");
-				CBCPTieto[it][ir]->Items->Add(L"Kello");
+				CBCPTieto[it][ir]->Items->Add(TR(L"Vain os."));
+				CBCPTieto[it][ir]->Items->Add(TR(L"Sija"));
+				CBCPTieto[it][ir]->Items->Add(TR(L"Ero kärkeen"));
+				CBCPTieto[it][ir]->Items->Add(TR(L"Ero txt-ajasta"));
+				CBCPTieto[it][ir]->Items->Add(TR(L"Teksti"));
+				CBCPTieto[it][ir]->Items->Add(TR(L"Kello"));
 				CBCPTieto[it][ir]->ItemIndex = 4;
 				}
 			if (EdCPOs[it][ir] == NULL) {
@@ -1076,7 +1078,7 @@ void __fastcall TFormTaulu::LaiteClick(TObject *Sender)
 	if (Sender == miGAZ)
 		SGTaulut->Cells[SGTaulut->Col][SGTaulut->Row] = L"GAZ";
 	else if (Sender == CPower) {
-		SGTaulut->Cells[SGTaulut->Col][SGTaulut->Row] = L"C-Power";
+		SGTaulut->Cells[SGTaulut->Col][SGTaulut->Row] = TR(L"C-Power");
 		}
 	else if (Sender == RTNM) {
 		SGTaulut->Cells[SGTaulut->Col][SGTaulut->Row] = L"D-RTNM";
@@ -1097,12 +1099,12 @@ void __fastcall TFormTaulu::BtnAvaaYhtClick(TObject *Sender)
 		return;
 		}
 	if (SGTaulut->Cells[0][y+1].Length() == 0 || (ny = SGTaulut->Cells[0][y+1].ToInt() - 1) < 0 || ny >= NREGNLY) {
-		Application->MessageBoxW(L"Rivillä ei hyväksyttävää yhteyden numeroa", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Rivillä ei hyväksyttävää yhteyden numeroa"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (regnly_open[ny]) {
-		Application->MessageBoxW((UnicodeString(L"Laiteyhteys ") + UnicodeString(ny+1) + L" avattuna käyttöön").c_str(),
-			L"Este", MB_OK);
+		Application->MessageBoxW((UnicodeString(TR(L"Laiteyhteys ")) + UnicodeString(ny+1) + TR(L" avattuna käyttöön")).c_str(),
+			TR(L"Este"), MB_OK);
 		return;
 		}
 	if (wmemcmpU(SGTaulut->Cells[1][y+1].c_str(), L"GAZ", 3) == 0) {
@@ -1124,8 +1126,8 @@ void __fastcall TFormTaulu::BtnAvaaYhtClick(TObject *Sender)
 		TauluParam[ny].Korkeus = SGTaulut->Cells[9][y+1].ToInt();
 		}
 	else {
-		Application->MessageBoxW((UnicodeString(L"Laitetyyppi ") + SGTaulut->Cells[1][y+1] + L" ei käytettävissä").c_str(),
-			L"Este", MB_OK);
+		Application->MessageBoxW((UnicodeString(TR(L"Laitetyyppi ")) + SGTaulut->Cells[1][y+1] + TR(L" ei käytettävissä")).c_str(),
+			TR(L"Este"), MB_OK);
 		return;
 		}
 	if (wmemcmpU(SGTaulut->Cells[2][y+1].c_str(), L"COM", 3) == 0) {
@@ -1145,8 +1147,8 @@ void __fastcall TFormTaulu::BtnAvaaYhtClick(TObject *Sender)
 		ipparam[cn_regnly[ny]].destport = (USHORT) _wtoi(SGTaulut->Cells[5][y+1].c_str());
 		}
 	else {
-		Application->MessageBoxW((UnicodeString(L"Yhteyslaji ") + SGTaulut->Cells[2][y+1] + L" ei käytettävissä").c_str(),
-			L"Este", MB_OK);
+		Application->MessageBoxW((UnicodeString(TR(L"Yhteyslaji ")) + SGTaulut->Cells[2][y+1] + TR(L" ei käytettävissä")).c_str(),
+			TR(L"Este"), MB_OK);
 		return;
 		}
 	inittimer();
@@ -1166,17 +1168,17 @@ void __fastcall TFormTaulu::BtnSuljeYhtClick(TObject *Sender)
 		}
 	if (SGTaulut->Cells[0][SGTaulut->Row].Length() == 0 ||
 		(ny = SGTaulut->Cells[0][SGTaulut->Row].ToInt() - 1) < 0 || ny >= NREGNLY) {
-		Application->MessageBoxW(L"Rivillä ei hyväksyttävää yhteyden numeroa", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Rivillä ei hyväksyttävää yhteyden numeroa"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (!regnly_open[ny]) {
-		Application->MessageBoxW((UnicodeString(L"Laiteyhteys ") + UnicodeString(ny+1) + L" ei ole avoinna").c_str(),
-			L"Este", MB_OK);
+		Application->MessageBoxW((UnicodeString(TR(L"Laiteyhteys ")) + UnicodeString(ny+1) + TR(L" ei ole avoinna")).c_str(),
+			TR(L"Este"), MB_OK);
 		return;
 		}
 	if (IntInList(regnly[ny], L"23") < 0) {
-		Application->MessageBoxW((UnicodeString(L"Yhteyden ") + UnicodeString(ny+1) + L" laite ei ole GAZ eikä LED-taulu").c_str(),
-			L"Este", MB_OK);
+		Application->MessageBoxW((UnicodeString(TR(L"Yhteyden ")) + UnicodeString(ny+1) + TR(L" laite ei ole GAZ eikä LED-taulu")).c_str(),
+			TR(L"Este"), MB_OK);
 		return;
 		}
 	katkaisuPyydetty = true;
@@ -1279,7 +1281,7 @@ void __fastcall TFormTaulu::Button2Click(TObject *Sender)
 		if (regnly[ny] == LID_RTNM)
 			break;
 	if (ny == NREGNLY) {
-		Application->MessageBoxW(L"Ei yhteyttä D-RTNM-tauluun", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Ei yhteyttä D-RTNM-tauluun"), TR(L"Este"), MB_OK);
 		return;
 		}
 	memset(buf, 0, sizeof(buf));

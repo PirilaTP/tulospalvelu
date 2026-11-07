@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <stdio.h>
 
 #include "UnitPiikit.h"
@@ -68,6 +69,7 @@ static int BMtop = 0, BMleft = 0;
 __fastcall TFormPiikit::TFormPiikit(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -146,7 +148,7 @@ void TFormPiikit::piirrapiikit(void)
 			if (c < 4 || c > 5 || r < 7 || r > 9)
 				prtpiste(c, r, 0);
 			if ((c == 0 || c == 9) && r == 0)
-				SG1->Cells[c][r] = L"noll";
+				SG1->Cells[c][r] = TR(L"noll");
 			else
 				SG1->Cells[c][r] = L"";
 			}
@@ -209,7 +211,7 @@ void TFormPiikit::piirrapiikit(void)
 	Memo1->Clear();
 	for (i = 0; i < 255; i++) {
 		if (kdirastit[i][1]) {
-			swprintf(msg, L"Koodi %d rasteilla %d", i, kdirastit[i][0]);
+			swprintf(msg, TR(L"Koodi %d rasteilla %d"), i, kdirastit[i][0]);
 			for (j = 1; j < 8 && kdirastit[i][j]; j++) {
 				swprintf(msg+wcslen(msg), L"%s %d", (j == 7 || !kdirastit[i][j+1]) ? L" ja" : L",", kdirastit[i][j]);
 				}
@@ -364,7 +366,7 @@ void __fastcall TFormPiikit::FormCreate(TObject *Sender)
 #ifdef MAXOSUUSLUKU
 	CBOsuus->Clear();
 	for (int i = 0; i < kilpparam.osuusluku; i++) {
-		CBOsuus->Items->Add(UnicodeString(i+1)+L". osuus");
+		CBOsuus->Items->Add(UnicodeString(i+1)+TR(L". osuus"));
 		}
 	CBOsuus->ItemIndex = 0;
 #endif
@@ -389,9 +391,9 @@ void __fastcall TFormPiikit::CBRataChange(TObject *Sender)
 void __fastcall TFormPiikit::PohjRata(void)
 {
 	CBRasti->Clear();
-	CBRasti->Items->Add(L"Ei valittu");
+	CBRasti->Items->Add(TR(L"Ei valittu"));
 	for (int i = 1; i <= rata[CBRata->ItemIndex].rastiluku; i++)
-		CBRasti->Items->Add(UnicodeString(i)+L". rasti");
+		CBRasti->Items->Add(UnicodeString(i)+TR(L". rasti"));
 	CBRasti->ItemIndex = 0;
 	Piirra();
 }

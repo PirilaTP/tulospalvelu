@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitAikakorjaus.h"
 //---------------------------------------------------------------------------
@@ -28,6 +29,7 @@ TFormAikakorjaus *FormAikakorjaus;
 __fastcall TFormAikakorjaus::TFormAikakorjaus(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -52,17 +54,17 @@ void __fastcall TFormAikakorjaus::FormShow(TObject *Sender)
 	CBJono->Clear();
 	if (maxjono) {
 		for (int r = 0; r <= maxjono; r++) {
-			CBJono->Items->Add(L"Jono "+UnicodeString(r+1));
+			CBJono->Items->Add(TR(L"Jono ")+UnicodeString(r+1));
 			}
 		}
 #ifndef MAXOSUUSLUKU
 	else if (lajatfl) {
-		CBJono->Items->Add(L"Aika");
-		CBJono->Items->Add(L"Lähtö");
+		CBJono->Items->Add(TR(L"Aika"));
+		CBJono->Items->Add(TR(L"Lähtö"));
 		}
 #endif
 	else {
-		CBJono->Items->Add(L"Jono 1");
+		CBJono->Items->Add(TR(L"Jono 1"));
 		CBJono->Enabled = false;
 		}
 	CBJono->ItemIndex = Jono;

@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <process.h>
 
 #include "UnitEmitSQL.h"
@@ -35,6 +36,7 @@ void tall_etulos(INT32 badge, INT32 t, INT32 tms, INT r_no, int Jono);
 __fastcall TFormEmitSQL::TFormEmitSQL(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -149,8 +151,8 @@ void __fastcall TFormEmitSQL::BtnSuljeYhtClick(TObject *Sender)
 {
 	if (Jatkuva) {
 		Jatkuva = false;
-		Application->MessageBoxW(L"Suljetaan ensin jatkuva haku, odota n. 10 sek ennen jatkamista",
-			L"Sulkeminen", MB_OK);
+		Application->MessageBoxW(TR(L"Suljetaan ensin jatkuva haku, odota n. 10 sek ennen jatkamista"),
+			TR(L"Sulkeminen"), MB_OK);
 		CBJatkuva->Checked = false;
 		Sleep(500);
 		}
@@ -221,7 +223,7 @@ bool TFormEmitSQL::readSQLrivi(wchar_t *minTimeSt)
 				maxNo = lastNo[i] + hakulkm;
 			if (testi && loki) {
 				wchar_t msg[200];
-				swprintf(msg, L"%10d SQLhakuun, Dev %d, Sanoma %6d", mstimer(), i+1, lastNo[i]+1);
+				swprintf(msg, TR(L"%10d SQLhakuun, Dev %d, Sanoma %6d"), mstimer(), i+1, lastNo[i]+1);
 				wkirjloki(msg);
 				}
 			SQLDataSet1->CommandText =
@@ -235,7 +237,7 @@ bool TFormEmitSQL::readSQLrivi(wchar_t *minTimeSt)
 				wchar_t msg[200] = L"";
 				wcsncpy(msg, SQLDataSet1->CommandText.c_str(), 199);
 				wkirjloki(msg);
-				swprintf(msg, L"%10d SQLhaettu, Dev %d, Sanoma %6d", mstimer(), i+1, lastNo[i]+1);
+				swprintf(msg, TR(L"%10d SQLhaettu, Dev %d, Sanoma %6d"), mstimer(), i+1, lastNo[i]+1);
 				wkirjloki(msg);
 				}
 			if (!SQLDataSet1->IsEmpty()) {
@@ -319,7 +321,7 @@ bool TFormEmitSQL::readSQLrivi(wchar_t *minTimeSt)
 		}
 	if (testi && loki) {
 		wchar_t msg[100];
-		swprintf(msg, L"%10d SQLhaku valmis", mstimer());
+		swprintf(msg, TR(L"%10d SQLhaku valmis"), mstimer());
 		wkirjloki(msg);
 		}
 	return(false);
@@ -517,17 +519,17 @@ void __fastcall TFormEmitSQL::FormCreate(TObject *Sender)
 	CBJono->Clear();
 	if (maxjono) {
 		for (int r = 0; r <= maxjono; r++) {
-			CBJono->Items->Add(L"Jono "+UnicodeString(r+1));
+			CBJono->Items->Add(TR(L"Jono ")+UnicodeString(r+1));
 			}
 		}
 #ifndef MAXOSUUSLUKU
 	else if (lajatfl) {
-		CBJono->Items->Add(L"Aika");
-		CBJono->Items->Add(L"Lähtö");
+		CBJono->Items->Add(TR(L"Aika"));
+		CBJono->Items->Add(TR(L"Lähtö"));
 		}
 #endif
 	else {
-		CBJono->Items->Add(L"Jono 1");
+		CBJono->Items->Add(TR(L"Jono 1"));
 		}
 #ifndef MAXOSUUSLUKU
 	if (tunnjono >= 0)

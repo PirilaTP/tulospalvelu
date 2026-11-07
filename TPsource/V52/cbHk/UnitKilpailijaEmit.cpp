@@ -18,6 +18,7 @@
 #include <vcl.h>
 #include <Clipbrd.hpp>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "HkDeclare.h"
 #include "UnitKilpailijaEmit.h"
@@ -33,6 +34,7 @@ extern rastivatp *rastiva;
 __fastcall TFormKilpailijaEmit::TFormKilpailijaEmit(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

@@ -39,7 +39,7 @@ long strtoaika(char *straika,int tt0)
   if ((tt0 != 0 && abs(60 * (tt-tt0) + tm) > 545) ||
       (tt0 == 0 && 60 * tt + tm > 1090))
   {
-    writeerror("Aika sallitun v„lin ulkopuolella", 2000);
+    writeerror(TRA("Aika sallitun v„lin ulkopuolella"), 2000);
     return(0);
   }
   if ((nf == 3) && (straika[2] == '.') && (straika[5] == '.') &&

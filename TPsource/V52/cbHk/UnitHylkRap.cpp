@@ -18,6 +18,7 @@
 #include <vcl.h>
 //#include <FileCtrl.hpp>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitHylkRap.h"
 #include "WinHk.h"
@@ -83,6 +84,7 @@ static wchar_t *PiikkiStr[] = {L"Ei käsitelty / Not verified", L"Ei korttia / No
 __fastcall TFormHylkRap::TFormHylkRap(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	wchar_t *p;
 
 	Scaled = false;
@@ -276,7 +278,7 @@ void  TFormHylkRap::tulostaRaportti(void)
 		EnterCriticalSection(&print_CriticalSection);
 		if ((RapTulPrm.lstf = openprfile(RapKirjoitin, 1, TRUE, FALSE, 0, FALSE))
 			== NULL) {
-			Application->MessageBoxW(L"Kirjoittimen käyttö ei onnistu", L"Virhe", MB_OK);
+			Application->MessageBoxW(TR(L"Kirjoittimen käyttö ei onnistu"), TR(L"Virhe"), MB_OK);
 			return;
 			}
 		if (RapTulPrm.lstf && RapTulPrm.lstf->prno == 2)
@@ -334,7 +336,7 @@ void __fastcall TFormHylkRap::BtnTallennaClick(TObject *Sender)
 		Kilp.GETREC(d);
 	if (d < 1 || Kilp.kilpstatus != 0) {
 		LeaveCriticalSection(&tall_CriticalSection);
-		Application->MessageBoxW(L"Virheellinen kilpailunumero", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Virheellinen kilpailunumero"), TR(L"Este"), MB_OK);
 		return;
 		}
 	wcsncpy(Kilp.pv[k_pv].selitys, EdtSelitys->Text.c_str(), sizeof(Kilp.pv[k_pv].selitys)/2-1);
@@ -581,7 +583,7 @@ int TFormHylkRap::lueXmlRaportti(void)
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
 				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, että tagit ovat pari
 					er = 1;
-					swprintf(msg, L"XML-muotoilun tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
+					swprintf(msg, TR(L"XML-muotoilun tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"),
 						rv, tag, tree.node[jnode].tag);
 					break;
 					}
@@ -609,11 +611,11 @@ int TFormHylkRap::lueXmlRaportti(void)
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s päättyi rivillä %d tasolla %d", RapFile(), rv, depth);
+		swprintf(msg, TR(L"XML-tiedosto %s päättyi rivillä %d tasolla %d"), RapFile(), rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivillä %d tai aikaisemmin", RapFile(), rv);
+			swprintf(msg, TR(L"Tiedostossa %s virhe rivillä %d tai aikaisemmin"), RapFile(), rv);
 			}
 		writeerror_w(msg, 0, true);
 		RGXmlLuku->ItemIndex = 2;

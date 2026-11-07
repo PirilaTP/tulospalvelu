@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitYLahdot.h"
 #include "VDeclare.h"
@@ -33,6 +34,7 @@ static int ylvert[MAXSARJALUKU][MAXOSUUSLUKU];
 __fastcall TFormYLahdot::TFormYLahdot(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -166,9 +168,9 @@ void __fastcall TFormYLahdot::FormCreate(TObject *Sender)
 		}
 	SG1->RowCount = kilpparam.ntosuus;
 	SG1->ColWidths[0] = 55 * Screen->PixelsPerInch / 96;
-	SG1->Cells[0][0] = L"Osuus";
-	SG1->Cells[1][0] = L"Yht.lähtö";
-	SG1->Cells[2][0] = L"Vaihto sulj.";
+	SG1->Cells[0][0] = TR(L"Osuus");
+	SG1->Cells[1][0] = TR(L"Yht.lähtö");
+	SG1->Cells[2][0] = TR(L"Vaihto sulj.");
 	for (int os = 2; os <= kilpparam.ntosuus; os++) {
 		wchar_t as[20];
 		SG1->Cells[0][os-1] = UnicodeString(os)+L". osuus";

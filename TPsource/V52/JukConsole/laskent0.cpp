@@ -117,12 +117,12 @@ void lukumaarat(void)
    if (!status_on) return;
    draw_hline2(16,66,14);
    if (comfl) {
-      viwrrect(17,66,17,78," TIED.SIIRTO ",7,0,0);
+      viwrrect(17,66,17,78,TRA(" TIED.SIIRTO "),7,0,0);
       if (ySize <= 25)
          {
-         viwrrect(18,66,20,71," Saap:"
+         viwrrect(18,66,20,71,TRA(" Saap:"
                               " Läht:"
-                              " Yht.:",7,0,0);
+                              " Yht.:"),7,0,0);
          draw_vline2(17, 65, 4);
          vidint(17,78,2, dcom+1);
          for (nc1 = 0; nc1 < 3 && nc1 < maxyhteys; nc1++) {
@@ -139,7 +139,7 @@ void lukumaarat(void)
             }
          }
       else {
-         viwrrect(18,66,18,71," Saap:",7,0,0);
+         viwrrect(18,66,18,71,TRA(" Saap:"),7,0,0);
          for (nc1 = 0; nc1 < ySize-24; nc1++) {
             if (nc1 >= maxyhteys)
                break;
@@ -186,31 +186,31 @@ void lukumaarat(void)
 #ifdef EMIT
    if (emitfl) {              
       rl = 0;   
-      viwrrect(6,66,6,75," Esitys   ",7,0,0);
+      viwrrect(6,66,6,75,TRA(" Esitys   "),7,0,0);
       }
 #endif
-   viwrrect(rl,66,5+rl,75," Ilmoitt. "
+   viwrrect(rl,66,5+rl,75,TRA(" Ilmoitt. "
                       " Tulos    "
                       " Keskeytt."
                       " Hylätty  "
                       " Ei läht. "
-                      " Avoinna  ",7,0,0);
-   viwrrect(8,66,9,75," TULOSTUS "
-                      " Tausta   ",7,0,0);
+                      " Avoinna  "),7,0,0);
+   viwrrect(8,66,9,75,TRA(" TULOSTUS "
+                      " Tausta   "),7,0,0);
    draw_hline2(7,66,10);
-   viwrrect(12,66,12,75," Auto     ",7,0,0);
+   viwrrect(12,66,12,75,TRA(" Auto     "),7,0,0);
    if (spoolfl) {
-      viwrrect(9,76,9,79,"  ON",7,0,0);
-      viwrrect(10,66,11,75," Tilaa    "
-                           " Jono     ",7,0,0);
+      viwrrect(9,76,9,79,TRA("  ON"),7,0,0);
+      viwrrect(10,66,11,75,TRA(" Tilaa    "
+                           " Jono     "),7,0,0);
 	  vidint(10,76,4,maxnblock);
       }
    else 
-      viwrrect(9,76,9,79,"  EI",7,0,0);
+      viwrrect(9,76,9,79,TRA("  EI"),7,0,0);
    if (autofl)
-      viwrrect(12,76,12,79,"  ON",7,0,0);
+      viwrrect(12,76,12,79,TRA("  ON"),7,0,0);
    else
-	  viwrrect(12,76,12,79,"  EI",7,0,0);
+	  viwrrect(12,76,12,79,TRA("  EI"),7,0,0);
 #if defined(EMIT) && !defined(KUUL)
    if (emitfl) {    
       vidint(6,76,4,nesitt);
@@ -276,7 +276,7 @@ void lukumaarat(void)
 		nc = 10;
 	if (nc) {
 		yb = ySize-5-nc;
-	    viwrrect(yb,66, yb, 79, " LUKIJA/KELLO ", 7,0,0);
+	    viwrrect(yb,66, yb, 79, TRA(" LUKIJA/KELLO "), 7,0,0);
 		for (nc1 = 0; nc1 < NREGNLY; nc1++) {
 			if (regnly[nc1] > 0) {
 				yb++;
@@ -332,7 +332,7 @@ void copydfile(datafile *datfb, int oldfile)
 	static char backfname[50] = "KILP.BAK";
 
 	if ((buf = (char *) malloc(CBUFL)) == 0) {
-      writeerror("Muisti ei riitä kopioinnille", 0);
+      writeerror(TRA("Muisti ei riitä kopioinnille"), 0);
       return;
       }
 	memset(buf, 0, CBUFL);
@@ -343,7 +343,7 @@ void copydfile(datafile *datfb, int oldfile)
       scpclr();
       kehys(1);
       prscr(&backupohje);
-		vidspmsg(ySize-3,0,7,0,"Backup-tiedoston nimi, Esc: Peruuta");
+		vidspmsg(ySize-3,0,7,0,TRA("Backup-tiedoston nimi, Esc: Peruuta"));
 		inputstr(backfname, 42, 36, ySize-3, "\r\x1b", &ch, 0);
 	  tcomfl = FALSE;
 	  if (ch == ESC) {
@@ -390,7 +390,7 @@ void copydfile(datafile *datfb, int oldfile)
 		 }
 	  ptr = buf;
 	  nread = 0;
-	  sprintf(prs,"%4d tietuetta kopioitu", rr);
+	  sprintf(prs,TRA("%4d tietuetta kopioitu"), rr);
 	  vidspmsg(ySize-1,9,7,0,prs);
 	  } while (ll > 0);
    clrln(ySize-1);
@@ -448,8 +448,8 @@ void asetukset()
                           tarfl = FALSE;
                           tarfl = FALSE;
                           clrln(ySize-3);
-                          viwrrect(ySize-3,0,ySize-3,39,"Luettele tarralähetyksen "
-                             "tiedonsiirrot: ",7,0,0);
+                          viwrrect(ySize-3,0,ySize-3,39,TRA("Luettele tarralähetyksen "
+                             "tiedonsiirrot: "),7,0,0);
 						  p = msg;
 						  for (l = 0; l < MAX_PORTTI; l++) {
 							 if (tarlahcom[l]) *(p++) = l + '1';
@@ -462,7 +462,7 @@ void asetukset()
 								tarlahcom[*p - '1'] = 1;
 							 }
 						  }
-					   else writeerror("Tiedonsiirto ei käytössä",0);
+					   else writeerror(TRA("Tiedonsiirto ei käytössä"),0);
 					   break;
 					case 'T' :
 					   break;
@@ -488,17 +488,17 @@ void asetukset()
                        }
                     }
                  _close(varfhandle);
-                 vidspmsg(2,0,7,0,"Varoituskynnyksen alittavista "
-                    "osuusajoista huomautetaan");
-                 vidspmsg(3,20,7,0,"Ajat minuutteina");
+                 vidspmsg(2,0,7,0,TRA("Varoituskynnyksen alittavista "
+                    "osuusajoista huomautetaan"));
+                 vidspmsg(3,20,7,0,TRA("Ajat minuutteina"));
                  for (srj = 0; srj < sarjaluku && srj < ySize-8; srj++) {
                     vidspmsg(srj+4, 0, 7, 0, (char *)Sarjat[srj].sarjanimi);
                     for (os = 0; os < Sarjat[srj].osuusluku; os++)
                     vidint(srj+4, 15+6*os, 3, (int)(varkynnys[srj][os] /
                        MINUUTTI));
                     }
-                 vidspmsg(ySize-3,0,7,0,"<Tab>, <Shift-Tab>, \x19, \x18 : "
-                    "Siirry,  + : Hyväksy");
+                 vidspmsg(ySize-3,0,7,0,TRA("<Tab>, <Shift-Tab>, \x19, \x18 : "
+                    "Siirry,  + : Hyväksy"));
                  srj = 0;
                  os = 0;
                  do {
@@ -539,7 +539,7 @@ void asetukset()
                        2*MAXOSUUSLUKU*sarjaluku) != 2*MAXOSUUSLUKU*
                           sarjaluku)
 
-                       writeerror("Virhe kynnysten tallentamisessa",
+                       writeerror(TRA("Virhe kynnysten tallentamisessa"),
                           2000);
                     _close(varfhandle);
                     }
@@ -552,7 +552,7 @@ void asetukset()
             case 'L' :
                if (sarjaluku == 1) {
                   clrln(ySize-3);
-                  viwrrect(ySize-3,0,ySize-3,16,"Anna lähtöaika : ",7,0,0);
+                  viwrrect(ySize-3,0,ySize-3,16,TRA("Anna lähtöaika : "),7,0,0);
                   tl[0] = Sarjat[0].lahto;
 				  INPUTAIKA(&tl[0],t0,8,18,ySize-3,"\x0D\x1B",&ch);
                   if (ch == KB_CR) ch = '+';
@@ -567,8 +567,8 @@ void asetukset()
                      tl[l] = Sarjat[l].lahto;
                      VIDSPAIKA(r, m+10 , tl[l],t0);
                      }
-                  vidspmsg(ySize-3,0,7,0, "\x19\x18 : Siirry, + : Hyväksy "
-                     "kaikki, Esc : Peruuta muutokset");
+                  vidspmsg(ySize-3,0,7,0, TRA("\x19\x18 : Siirry, + : Hyväksy "
+                     "kaikki, Esc : Peruuta muutokset"));
                   for (l = 0; ; ) {
                      r = l % (ySize-6) + 3;
                      m = (l / (ySize-6)) * 21 + 10;
@@ -608,7 +608,7 @@ void asetukset()
                do {
                   for (r=2; r<21; r++) clrtxt(r,0,64);
                   vidspmsg(2,0,7,0,
-                     "Sarja     Yhteislähtö Vaihto kiinni");
+                     TRA("Sarja     Yhteislähtö Vaihto kiinni"));
                   ylmsg =
 
                      "Yhteislähtö merkitään au-"
@@ -631,24 +631,24 @@ void asetukset()
                      "                         "
                      "Käsinmerk yksi os:       ";
                   viwrrect(2,40,19,64,ylmsg,7,0,0);
-                  viwrrect(19,60,19,64,ylm ? "Ei   " : "Kyllä",7,0,0);
+                  viwrrect(19,60,19,64,ylm ? TRA("Ei   ") : TRA("Kyllä"),7,0,0);
                   paivita:
                   for (srj = l; srj < sarjaluku && srj < (l+ySize-7)/rk; srj++) {
                      r = rk*srj - l + 3;
 
 					 vidspmsg(r, 0, 7 , 0, (char *)Sarjat[srj].sarjanimi);
                      VIDSPAIKA(r, 12 , tl[srj],t0);
-					 vidspmsg(r+1, 0, 7, 0, "- ankkurit");
+					 vidspmsg(r+1, 0, 7, 0, TRA("- ankkurit"));
                      VIDSPAIKA(r+1, 12 , tl2[srj],t0);
                      if (ylk[srj] == TMAALI0)
-                        vidspmsg(r,22,7,0, "Ei automaattinen");
+                        vidspmsg(r,22,7,0, TRA("Ei automaattinen"));
                      else {
                         vidspmsg(r,22,7,0, "                ");
                         VIDSPAIKA(r, 24 , ylk[srj],t0);
                         }
                      }
-                  vidspmsg(ySize-3,0,7,0, "\x19\x18 : Siirry, + : Hyväksy "
-                     "kaikki, P: Poista, Esc : Peruuta muutokset");
+                  vidspmsg(ySize-3,0,7,0, TRA("\x19\x18 : Siirry, + : Hyväksy "
+                     "kaikki, P: Poista, Esc : Peruuta muutokset"));
                   for (srj = l; ; ) {
 					 r = rk*srj - l + 3;
 
@@ -668,7 +668,7 @@ void asetukset()
                      switch (ch) {
                         case 'P' :
                            ylk[srj] = TMAALI0;
-                           vidspmsg(r,22,7,0, "Ei automaattinen");
+                           vidspmsg(r,22,7,0, TRA("Ei automaattinen"));
                         case '\r':
                         case DOWN:
                            srj = (srj+1) % sarjaluku;
@@ -684,7 +684,7 @@ void asetukset()
                         case 'Y' :
                            ylm = !ylm;
                            viwrrect(ySize-6,60,ySize-6,64,
-                              ylm ? "Ei   " : "Kyllä",7,0,0);
+                              ylm ? TRA("Ei   ") : TRA("Kyllä"),7,0,0);
                            break;
                         case 'C' :
                            for (m = 1; m < sarjaluku; m++) {
@@ -754,7 +754,7 @@ void asetukset()
 					   ch = 0;
 					   memset(msg, 0, sizeof(msg));
 					   memset(opts, 0, sizeof(opts));
-					   strcpy(msg, "Yhteys");
+					   strcpy(msg, TRA("Yhteys"));
 					   opts[0] = '\x1b';
 					   for (m = 0; m < MAX_PORTTI; m++) {
 						  if (comopen[m]) {
@@ -782,7 +782,7 @@ void asetukset()
 					   break;
 					case 'M':
 					   if (regnly[0] == 1 || regnly[0] == 2) {
-						  vidspmsg(ySize-1,0,7,0,"Odottaa vastausta maalikellolta");
+						  vidspmsg(ySize-1,0,7,0,TRA("Odottaa vastausta maalikellolta"));
 						  kerro_regnly = 1;
 						  while (kerro_regnly &&
 							 readkbd(&ch, FALSE, spoolfl) != ESC) {
@@ -791,7 +791,7 @@ void asetukset()
 						  kerro_regnly = 0;
 						  clrln(ySize-3);
 						  viwrrect(ySize-3,0,ySize-3,36,
-							 "Anna maalikellon nolla-aika :        ",7,0,0);
+							 TRA("Anna maalikellon nolla-aika :        "),7,0,0);
 						  INPUTAIKA(&t0_regn[0],t0,8,30,ySize-3,"\xD",&ch);
 						  maaliajat[9] = t0_regn[0];
 						  }
@@ -806,7 +806,7 @@ void asetukset()
                  break;
          case 'U':
 					  clrln(ySize-3);
-					  vidspmsg(ySize-3,0,7,0,"Anna nak-viive");
+					  vidspmsg(ySize-3,0,7,0,TRA("Anna nak-viive"));
                  INPUTINT(&nakviive,5,16,ySize-3,"\x0D",&ch);
 				 break;
 	  case 'D' :

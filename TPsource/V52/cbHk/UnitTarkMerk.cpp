@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitTarkMerk.h"
 #include "WinHk.h"
@@ -28,6 +29,7 @@ TFormTarkMerk *FormTarkMerk;
 __fastcall TFormTarkMerk::TFormTarkMerk(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

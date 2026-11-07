@@ -210,7 +210,7 @@ void tall_ampsakko(char *sakbuf, int r_no)
 		 }
    if (er) {
 		if (er == -2) {
-			swprintf(msg, L"Virheellinen sanoma ampumapaikalta. Kilpailija no %d paikalla %d",
+			swprintf(msg, TR(L"Virheellinen sanoma ampumapaikalta. Kilpailija no %d paikalla %d"),
 				err_kno, err_paikka);
 			}
 		else {
@@ -218,7 +218,7 @@ void tall_ampsakko(char *sakbuf, int r_no)
 				selitys = selitykset[-er-1];
 			else
 				selitys = selitykset[0];
-			swprintf(msg, L"Viallinen sanoma ampumapaikalta, virhe %d %s",
+			swprintf(msg, TR(L"Viallinen sanoma ampumapaikalta, virhe %d %s"),
 				er, selitys);
 			}
 		writeerror_w(msg, 2000, true);

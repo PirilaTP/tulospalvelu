@@ -275,7 +275,7 @@ int teeindeksi(kilpindex *ind, bool uusi)
 		}
    if (ind->ix == NULL) {
 	   if ((ind->ix = (char *) calloc(ixsize+1,ind->recl)) == NULL) {
-		  writeerror_w(L"Muistissa ei tilaa indeksille", 4000);
+		  writeerror_w(TR(L"Muistissa ei tilaa indeksille"), 4000);
 		  return(1);
 		  }
 	   }
@@ -1091,7 +1091,7 @@ int teejarj(void)
    if (!er && (kilpnoix = (int *) calloc(mx,sizeof(int))) == NULL)
 	  er = 1;
    if (er) {
-	  writeerror("Muistissa ei tilaa kilpailijatiedoille",0);
+	  writeerror(TRA("Muistissa ei tilaa kilpailijatiedoille"),0);
 	  return(1);
 	  }
 #if defined(EMIT) && (defined(MAALI) || defined(AUTOVA))
@@ -1112,7 +1112,7 @@ int teejarj(void)
 			free(bdg_kno[0]);
 			bdg_kno[0] = NULL;
 			}
-		 writeerror("Muisti ei riitä leimantarkastukselle", 0);
+		 writeerror(TRA("Muisti ei riitä leimantarkastukselle"), 0);
 		 emitfl = 0;
 		 }
 	  }
@@ -1120,7 +1120,7 @@ int teejarj(void)
    nilmt = 0;
    nr = 0;
 #ifdef _CONSOLE
-   vidspmsg(ySize-7,10,7,0,"kilpailijan tiedot luettu");
+   vidspmsg(ySize-7,10,7,0,TRA("kilpailijan tiedot luettu"));
 #endif
    d = -1;
    ld = filelen(&datf2)-1;
@@ -1145,21 +1145,21 @@ int teejarj(void)
 		 if (ToimintaTila == 2) {
 			 if (kilp.kilpno < minkilpno || kilp.kilpno >= maxkilpno) {
 				ok = FALSE;
-				sprintf(prs,"Joukkueella %.24s %d on virheellinen numero %d",
+				sprintf(prs,TRA("Joukkueella %.24s %d on virheellinen numero %d"),
 				   kilp.Seura(st), kilp.joukkue, kilp.kilpno);
 				}
 			 else if(getpos(kilp.kilpno) > 0) {
 				char st2[60];
 				getrec(&datf2, getpos(kilp.kilpno),&vkilp);
 				ok = FALSE;
-				sprintf(prs,"Joukkueilla %.20s-%d ja %.20s-%d on sama no %d  ",
+				sprintf(prs,TRA("Joukkueilla %.20s-%d ja %.20s-%d on sama no %d  "),
 				   kilp.Seura(st),kilp.joukkue, vkilp.Seura(st2), vkilp.joukkue, kilp.kilpno);
 				}
 			}
 		 if (kilp.sarja >= sarjaluku) {
 			ok = FALSE;
-			sprintf(prs,"Joukkueella %.24s %d on virheellinen sarjanumero"
-			   " : %d", kilp.Seura(st), kilp.joukkue, (int) kilp.sarja + 1);
+			sprintf(prs,TRA("Joukkueella %.24s %d on virheellinen sarjanumero"
+			   " : %d"), kilp.Seura(st), kilp.joukkue, (int) kilp.sarja + 1);
 			}
 		 if (!ok) {
 			erbeep();
@@ -1195,8 +1195,8 @@ int teejarj(void)
 				  if (!emittoisto) {
 					 for (i = 0; i < os; i++) {
 						if (kilp.ostiet[i].badge[0] == kilp.ostiet[os].badge[0]) {
-						   sprintf(prs, "Joukkueella %d sama Emit-koodi %s"
-							  "osuuksilla %d ja %d", kilp.kilpno, kilp.ostiet[os].badge[0], i+1, os+1);
+						   sprintf(prs, TRA("Joukkueella %d sama Emit-koodi %s"
+							  "osuuksilla %d ja %d"), kilp.kilpno, kilp.ostiet[os].badge[0], i+1, os+1);
 						   kirj_err_file(prs, 1);
 						   }
 						}
@@ -1216,8 +1216,8 @@ int teejarj(void)
 				  if (!emittoisto) {
 					 for (i = 0; i < os; i++) {
 						if (kilp.ostiet[i].badge[1] == kilp.ostiet[os].badge[1]) {
-						   sprintf(prs, "Kilpailijalla %d sama tunnistinkoodi2 %d"
-							  "osuuksilla %d ja %d", kilp.kilpno, kilp.ostiet[os].badge[1], i+1, os+1);
+						   sprintf(prs, TRA("Kilpailijalla %d sama tunnistinkoodi2 %d"
+							  "osuuksilla %d ja %d"), kilp.kilpno, kilp.ostiet[os].badge[1], i+1, os+1);
 						   kirj_err_file(prs, 1);
 						   }
 						}
@@ -1230,7 +1230,7 @@ int teejarj(void)
 	  } while (okk);
 
 		if (AllocJarjSeur(nsarjayhd, maxrec)) {
-		 writeerror("Muistissa ei tilaa indekseille", 0);
+		 writeerror(TRA("Muistissa ei tilaa indekseille"), 0);
 		 return(1);
 		 }
 	  for (int i = 0 ; i < sarjaluku+nsarjayhd ; i++) {
@@ -1243,7 +1243,7 @@ int teejarj(void)
 	memset(nilm, 0, sizeof(nilm));
 	d = 0;
 #ifdef _CONSOLE
-	vidspmsg(ySize-6,10,7,0,"kilpailijan tiedot indeksoitu");
+	vidspmsg(ySize-6,10,7,0,TRA("kilpailijan tiedot indeksoitu"));
 #endif
 	for (d = 1; d <= ld; d++) {
 		GETREC(&kilp, d);
@@ -1301,21 +1301,21 @@ int teejarj(void)
    clrln(18);
    keylen = NIMIINDL;
    nameindex.nrec=nr;
-   vidspmsg(20,5,7,0,"Laaditaan nimi-indeksi");
+   vidspmsg(20,5,7,0,TRA("Laaditaan nimi-indeksi"));
    quicksort((char *) nameindex.ix, nr, nameindex.keyl, nameindex.recl);
 #if defined(EMIT) && (defined(MAALI) || defined(AUTOVA))
 
 //   if ((emitfl || sisaanluenta || port_autova) && nbadge[0]) {
 	if ((emitfl || sisaanluenta || vaajat) && nbadge[0]) {
-      vidspmsg(20,5,7,0,"Laaditaan Emit-koodi-indeksi");
+      vidspmsg(20,5,7,0,TRA("Laaditaan Emit-koodi-indeksi"));
 	  qsortint(bdg_kno[0], nbadge[0], sizeof(bdg_kno_tp), 0, 1);
       nr = nbadge[0];
 	  bdg = bdg_kno[0][0].badge;
-      vidspmsg(20,5,7,0,"Tarkastetaan Emit-koodien toistuminen");
+      vidspmsg(20,5,7,0,TRA("Tarkastetaan Emit-koodien toistuminen"));
       for (i = 1; i < nr; i++) {
          if (bdg_kno[0][i].badge == bdg) {
             bdg_kno[0][i].badge = 9999999L;
-			sprintf(prs, "Kilpailijoilla %d ja %d sama Emit-koodi %d",
+			sprintf(prs, TRA("Kilpailijoilla %d ja %d sama Emit-koodi %d"),
                bdg_kno[0][i-1].kilpno, bdg_kno[0][i].kilpno, bdg);
 			kirj_err_file(prs, 1);
             nbadge[0]--;
@@ -1324,7 +1324,7 @@ int teejarj(void)
             bdg = bdg_kno[0][i].badge;
          }
       if (nbadge[0] < nr) {
-         vidspmsg(20,5,7,0,"Indeksoidaan Emit-koodit uudelleen    ");
+         vidspmsg(20,5,7,0,TRA("Indeksoidaan Emit-koodit uudelleen    "));
          qsortint(bdg_kno[0], nr, sizeof(bdg_kno_tp), 0, 1);
          for (i = nbadge[0]; i < nr; i++) {
 			bdg_kno[0][i].badge = 0;
@@ -1335,11 +1335,11 @@ int teejarj(void)
 		  qsortint(bdg_kno[1], nbadge[1], sizeof(bdg_kno_tp), 0, 1);
 		  nr = nbadge[1];
 		  bdg = bdg_kno[1][0].badge;
-		  vidspmsg(20,5,7,0,"Tarkastetaan tunnistinkoodien toistuminen");
+		  vidspmsg(20,5,7,0,TRA("Tarkastetaan tunnistinkoodien toistuminen"));
 		  for (i = 1; i < nr; i++) {
 			 if (bdg_kno[1][i].badge == bdg) {
 				bdg_kno[1][i].badge = 9999999L;
-				sprintf(prs, "Kilpailijoilla %d ja %d sama tunnistinkoodi",
+				sprintf(prs, TRA("Kilpailijoilla %d ja %d sama tunnistinkoodi"),
 				   bdg_kno[1][i-1].kilpno, bdg_kno[1][i].kilpno);
 				kirj_err_file(prs, 1);
 				nbadge[1]--;
@@ -1348,7 +1348,7 @@ int teejarj(void)
 				bdg = bdg_kno[1][i].badge;
 			 }
 		  if (nbadge[1] < nr) {
-			 vidspmsg(20,5,7,0,"Indeksoidaan Emit-koodit uudelleen    ");
+			 vidspmsg(20,5,7,0,TRA("Indeksoidaan Emit-koodit uudelleen    "));
 			 qsortint(bdg_kno[1], nr, sizeof(bdg_kno_tp), 0, 1);
 			 for (i = nbadge[1]; i < nr; i++) {
 				bdg_kno[1][i].badge = 0;

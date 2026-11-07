@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitPiirival.h"
 #include "VDeclare.h"
@@ -36,6 +37,7 @@ extern INT piirifl[];
 __fastcall TFormPiiriVal::TFormPiiriVal(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

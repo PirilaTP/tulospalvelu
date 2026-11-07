@@ -174,8 +174,8 @@ int tall_rivi(int ino, aikatp *utm, aikatp *vtm, int *uptr, int kysy,
 			}
 		 }
 	  if (kysy) {
-		  writeerror("Aikataulukkoon tullut muutossanoma - tallennus "
-			  "peruutetaan", 0);
+		  writeerror(TRA("Aikataulukkoon tullut muutossanoma - tallennus "
+			  "peruutetaan"), 0);
 		  if (loki)
 			  kirjloki("Tallennus peruutettu (muutos)\r\n");
 		}
@@ -188,7 +188,7 @@ int tall_rivi(int ino, aikatp *utm, aikatp *vtm, int *uptr, int kysy,
 
    if (utm && purajak(utm->t) != TMAALI0) {
 	  if((aikajono[ino]->rwtime - aikajono[ino]->mxtime) >= 0) {
-		 writeerror("AIKATAULUKKO TÄYSI",0);
+		 writeerror(TRA("AIKATAULUKKO TÄYSI"),0);
 		  if (loki)
 			  kirjloki("Aikataulukko täysi, tallennus peruutettu\r\n");
 		 errret = 1;
@@ -310,12 +310,12 @@ void writeaika(int ino, int p)
    char abuf[sizeof(aikatp)];
 
    if (_lseek(aikajono[ino]->afhandle, l = ((long)p + 1) * sizeof(aikatp), SEEK_SET) != l) {
-	  writeerror_w(L"Virhe rutiinissa 'writeaika', koodi 1", 0);
+	  writeerror_w(TR(L"Virhe rutiinissa 'writeaika', koodi 1"), 0);
 	  return;
 	  }
    gettm(p, (aikatp *)abuf, ino);
    if (_write(aikajono[ino]->afhandle, abuf, sizeof(aikatp)) != sizeof(aikatp))
-	  writeerror_w(L"Virhe rutiinissa 'writeaika', koodi 2", 0);
+	  writeerror_w(TR(L"Virhe rutiinissa 'writeaika', koodi 2"), 0);
    else {
       if (kirjheti & 8)
 		 fflush(aikajono[ino]->fafhandle);
@@ -337,7 +337,7 @@ void writeajat(void)
 		  continue;
 		if (_lseek(aikajono[ino]->afhandle, l = (aikajono[ino]->fp1+1)*sizeof(aikatp), SEEK_SET)
 			!= l) {
-			writeerror_w(L"Virhe rutiinissa 'writeajat', koodi 1", 0);
+			writeerror_w(TR(L"Virhe rutiinissa 'writeajat', koodi 1"), 0);
 			continue;
 			}
 		while (fl > 0) {
@@ -347,7 +347,7 @@ void writeajat(void)
 			 gettm(aikajono[ino]->fp1++, (aikatp *)abuf+r, ino);
 			 }
 		  if (_write(aikajono[ino]->afhandle, abuf, n*sizeof(aikatp)) != n*sizeof(aikatp)) {
-			 writeerror_w(L"Virhe rutiinissa 'writeajat', koodi 2", 0);
+			 writeerror_w(TR(L"Virhe rutiinissa 'writeajat', koodi 2"), 0);
 			 break;
 			 }
 		  }
@@ -517,7 +517,7 @@ void AjatTiedostosta(wchar_t *fname, int akttm, bool vainajat)
 		}
 #ifndef _CONSOLE
 	else {
-		Application->MessageBoxW(L"Tiedoston avaaminen ei onnistunut", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Tiedoston avaaminen ei onnistunut"), TR(L"Este"), MB_OK);
 		}
 #endif
 	if (AikaFl)

@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitStatus.h"
 #include "WinHk.h"
@@ -55,6 +56,7 @@ static yhtstatustp yhtstatus[MAX_PORTTI];
 __fastcall TFormStatus::TFormStatus(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -224,7 +226,7 @@ void naytayhteydet(void)
 			else
 				wcscpy(line1, L"   ");
 			if (lahcom[cn])
-				wcscat(line1, L"Out");
+				wcscat(line1, TR(L"Out"));
 			else
 				wcscat(line1, L"   ");
 			if (!lkmThreadOn)
@@ -362,14 +364,14 @@ void __fastcall TFormStatus::Lukumaarat(void)
 			if (VaiheenMahd->Checked || YhteisMahd->Checked) {
 				LkmGrid->ColCount++;
 				mahdCol = cc;
-				LkmGrid->Cells[cc++][0] = L"Mahd";
+				LkmGrid->Cells[cc++][0] = TR(L"Mahd");
 				}
 			else
 				mahdCol = 0;
 			if (Palkintojenjako1->Checked) {
 				LkmGrid->ColCount++;
 				jakoCol = cc;
-				LkmGrid->Cells[jakoCol][0] = L"Jako";
+				LkmGrid->Cells[jakoCol][0] = TR(L"Jako");
 				}
 			else
 				jakoCol = 0;
@@ -673,7 +675,7 @@ void __fastcall TFormStatus::LkmGridDblClick(TObject *Sender)
 		srj = LkmGrid->Row-2;
 		if (palkJaettu[srj] && lsttulparam.lstf && lsttulparam.printer == GDIPRINTER) {
 			wchar_t ch;
-			inputint_prompt(&lkm, L"Tulostettavien lukumäärä", &ch, this);
+			inputint_prompt(&lkm, TR(L"Tulostettavien lukumäärä"), &ch, this);
 			if (ch != ESC && lkm > 0)
 				tulostaParhaat(srj, lkm);
 			}
@@ -701,7 +703,7 @@ void __fastcall TFormStatus::Tuloskirjoitin1Click(TObject *Sender)
 	lsttulparam.printer = GDIPRINTER;
 	if ((lsttulparam.lstf = openprfile(LstKirjoitin, 1, TRUE, FALSE, 0, FALSE))
 		== NULL) {
-		Application->MessageBoxW(L"Kirjoittimen käyttö ei onnistu", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Kirjoittimen käyttö ei onnistu"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (lsttulparam.lstf && lsttulparam.lstf->prno == 2)

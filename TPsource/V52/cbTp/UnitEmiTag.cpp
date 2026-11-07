@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <process.h>
 
 #include "UnitEmiTag.h"
@@ -37,20 +38,21 @@ void emitTarkOn(void);
 __fastcall TFormEmiTag::TFormEmiTag(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
 		}
 	SGLeimat->RowCount = NREGNLY+1;
 	SGLeimat->ColCount = 8;
-	SGLeimat->Cells[0][0] = L"LaiteNo";
-	SGLeimat->Cells[1][0] = L"Laite";
-	SGLeimat->Cells[2][0] = L"Yhteys";
-	SGLeimat->Cells[3][0] = L"Portti";
-	SGLeimat->Cells[4][0] = L"VastaIPosoite";
-	SGLeimat->Cells[5][0] = L"VastaPortti";
-	SGLeimat->Cells[6][0] = L"Ajanotto";
-	SGLeimat->Cells[7][0] = L"Tila";
+	SGLeimat->Cells[0][0] = TR(L"LaiteNo");
+	SGLeimat->Cells[1][0] = TR(L"Laite");
+	SGLeimat->Cells[2][0] = TR(L"Yhteys");
+	SGLeimat->Cells[3][0] = TR(L"Portti");
+	SGLeimat->Cells[4][0] = TR(L"VastaIPosoite");
+	SGLeimat->Cells[5][0] = TR(L"VastaPortti");
+	SGLeimat->Cells[6][0] = TR(L"Ajanotto");
+	SGLeimat->Cells[7][0] = TR(L"Tila");
 	SGLeimat->ColWidths[0] = 40 * Screen->PixelsPerInch / 96;
 	SGLeimat->ColWidths[1] = 50 * Screen->PixelsPerInch / 96;
 	SGLeimat->ColWidths[2] = 45 * Screen->PixelsPerInch / 96;
@@ -137,7 +139,7 @@ void __fastcall TFormEmiTag::BtnMoodiClick(TObject *Sender)
 
 	m = _wtoi(EdtMoodi->Text.c_str());
 	if (m != 0) {
-		if (Application->MessageBoxW(L"Haluatko varmasti asettaa ohjelman toimivuuden estävän moodin?", L"Vahvista", MB_YESNO)
+		if (Application->MessageBoxW(TR(L"Haluatko varmasti asettaa ohjelman toimivuuden estävän moodin?"), TR(L"Vahvista"), MB_YESNO)
 			!= IDYES)
 			return;
 		}
@@ -157,24 +159,24 @@ void __fastcall TFormEmiTag::BtnCodeClick(TObject *Sender)
 
 	i = _wtoi(EdtCode->Text.c_str());
 	if (i < 0 || (i > 240 && IntInList(i, L"243 244 248 250 251 252 253") < 0)) {
-		Application->MessageBoxW(L"Koodi ei sallittu", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Koodi ei sallittu"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (i == 0)
-		wcscpy(msg, L"Lähtönollauksen koodi, toteutetaanko?");
+		wcscpy(msg, TR(L"Lähtönollauksen koodi, toteutetaanko?"));
 	else if (i < 66)
-		swprintf(msg, L"Koodi %d - Alle 66 oleva koodi kieltää tiedonsiirron, toteutetaanko?", i);
+		swprintf(msg, TR(L"Koodi %d - Alle 66 oleva koodi kieltää tiedonsiirron, toteutetaanko?"), i);
 	else if (i < 240)
-		swprintf(msg, L"Koodi %d - Asema lähettää tietoja, toteutetaanko?", i);
+		swprintf(msg, TR(L"Koodi %d - Asema lähettää tietoja, toteutetaanko?"), i);
 	else if (i < 244)
-		swprintf(msg, L"Koodi %d - Tietojen luenta, 5 viim. päivää, toteutetaanko?", i);
+		swprintf(msg, TR(L"Koodi %d - Tietojen luenta, 5 viim. päivää, toteutetaanko?"), i);
 	else if (i == 244)
-		swprintf(msg, L"Koodi %d - Tietojen luenta, kaikki kortin tiedot, toteutetaanko?", i);
+		swprintf(msg, TR(L"Koodi %d - Tietojen luenta, kaikki kortin tiedot, toteutetaanko?"), i);
 	else if (i == 248)
-		wcscpy(msg, L"Maaliajanoton koodi, toteutetaanko?");
+		wcscpy(msg, TR(L"Maaliajanoton koodi, toteutetaanko?"));
 	else if (i < 254)
-		swprintf(msg, L"Koodi %d - Tietojen luenta, viimeisin kilpailu, toteutetaanko?", i);
-	if (Application->MessageBoxW(msg, L"Vahvista", MB_YESNO) == IDYES) {
+		swprintf(msg, TR(L"Koodi %d - Tietojen luenta, viimeisin kilpailu, toteutetaanko?"), i);
+	if (Application->MessageBoxW(msg, TR(L"Vahvista"), MB_YESNO) == IDYES) {
 		sprintf(st, "/CD%03d\r\n/ST\r\n", i);
 		for (p = st; *p; p++) {
 			wrt_ch_x(cn_regnly[r_no], *p);
@@ -188,9 +190,9 @@ void __fastcall TFormEmiTag::Button1Click(TObject *Sender)
 {
 	char st[40], *p;
 
-	if (Application->MessageBoxW(L"Haluatko varmasti poistaa KAIKKI tiedot laitteesta?", L"Tyhjennys",
+	if (Application->MessageBoxW(TR(L"Haluatko varmasti poistaa KAIKKI tiedot laitteesta?"), TR(L"Tyhjennys"),
 		MB_YESNO) == IDYES) {
-		if (Application->MessageBoxW(L"V)ahvista, että haluat tyhjentää laitteen muistin", L"Vahvistus",
+		if (Application->MessageBoxW(TR(L"V)ahvista, että haluat tyhjentää laitteen muistin"), TR(L"Vahvistus"),
 			MB_YESNO) == IDYES) {
 			sprintf(st, "/CL\r\n/ST\r\n");
 			for (p = st; *p; p++) {
@@ -297,12 +299,12 @@ void __fastcall TFormEmiTag::BtnAvaaClick(TObject *Sender)
 	bool xmlfl = false;
 
 	if (SGLeimat->Cells[0][y+1].Length() == 0 || (ny = SGLeimat->Cells[0][y+1].ToInt() - 1) < 0 || ny >= NREGNLY) {
-		Application->MessageBoxW(L"Rivillä ei hyväksyttävää yhteyden numeroa", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Rivillä ei hyväksyttävää yhteyden numeroa"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (regnly_open[ny]) {
-		Application->MessageBoxW((UnicodeString(L"Laiteyhteys ") + UnicodeString(ny+1) + L" avattuna käyttöön").c_str(),
-			L"Este", MB_OK);
+		Application->MessageBoxW((UnicodeString(TR(L"Laiteyhteys ")) + UnicodeString(ny+1) + TR(L" avattuna käyttöön")).c_str(),
+			TR(L"Este"), MB_OK);
 		return;
 		}
 	if (wmemcmpU(SGLeimat->Cells[1][y+1].c_str(), L"LUKIJA", 3) == 0)
@@ -312,8 +314,8 @@ void __fastcall TFormEmiTag::BtnAvaaClick(TObject *Sender)
 	else if (wmemcmpU(SGLeimat->Cells[1][y+1].c_str(), L"MTR", 3) == 0)
 		regnly[ny] = LID_MTR;
 	else {
-		Application->MessageBoxW((UnicodeString(L"Laitetyyppi ") + SGLeimat->Cells[1][y+1] + L" ei käytettävissä").c_str(),
-			L"Este", MB_OK);
+		Application->MessageBoxW((UnicodeString(TR(L"Laitetyyppi ")) + SGLeimat->Cells[1][y+1] + TR(L" ei käytettävissä")).c_str(),
+			TR(L"Este"), MB_OK);
 		return;
 		}
 	if (wmemcmpU(SGLeimat->Cells[2][y+1].c_str(), L"COM", 3) == 0) {
@@ -345,8 +347,8 @@ void __fastcall TFormEmiTag::BtnAvaaClick(TObject *Sender)
 		ipparam[cn_regnly[ny]].srvport = (USHORT) _wtoi(SGLeimat->Cells[3][y+1].c_str());
 		}
 	else {
-		Application->MessageBoxW((UnicodeString(L"Yhteyslaji ") + SGLeimat->Cells[2][y+1] + L" ei käytettävissä").c_str(),
-			L"Este", MB_OK);
+		Application->MessageBoxW((UnicodeString(TR(L"Yhteyslaji ")) + SGLeimat->Cells[2][y+1] + TR(L" ei käytettävissä")).c_str(),
+			TR(L"Este"), MB_OK);
 		return;
 		}
 	if (SGLeimat->Cells[6][y+1].Trim().Length() > 3 &&
@@ -400,13 +402,13 @@ void TFormEmiTag::PaivitaYhteydet(void)
 			onLaite = true;
 			switch (regnly[ny]) {
 				case 12:
-					SGLeimat->Cells[1][y+1] = L"Lukija";
+					SGLeimat->Cells[1][y+1] = TR(L"Lukija");
 					break;
 				case 13:
 					SGLeimat->Cells[1][y+1] = L"MTR";
 					break;
 				case 14:
-					SGLeimat->Cells[1][y+1] = L"emiTag";
+					SGLeimat->Cells[1][y+1] = TR(L"emiTag");
 					break;
 				}
 			switch (comtype[cn_regnly[ny]]) {
@@ -548,7 +550,7 @@ void __fastcall TFormEmiTag::BtnSuljeYhteysClick(TObject *Sender)
 
 	if (SGLeimat->Cells[0][SGLeimat->Row].Length() == 0 ||
 		(ny = SGLeimat->Cells[0][SGLeimat->Row].ToInt() - 1) < 0 || ny >= NREGNLY) {
-		Application->MessageBoxW(L"Rivillä ei hyväksyttävää yhteyden numeroa", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Rivillä ei hyväksyttävää yhteyden numeroa"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 /*
@@ -559,8 +561,8 @@ void __fastcall TFormEmiTag::BtnSuljeYhteysClick(TObject *Sender)
 		}
 */
 	if (IntInList(regnly[ny], L"12 13 14") < 0) {
-		Application->MessageBoxW((UnicodeString(L"Yhteyden ") + UnicodeString(ny+1) + L" laite ei ole lukija, emiTag-laite tai MTR").c_str(),
-			L"Este", MB_OK);
+		Application->MessageBoxW((UnicodeString(TR(L"Yhteyden ")) + UnicodeString(ny+1) + TR(L" laite ei ole lukija, emiTag-laite tai MTR")).c_str(),
+			TR(L"Este"), MB_OK);
 		return;
 		}
 	katkaisuPyydetty = true;

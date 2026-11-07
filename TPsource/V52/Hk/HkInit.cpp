@@ -179,8 +179,8 @@ void merkisto(wchar_t merkit)
 					   utrlate[i] = (char) j;
 					   }
 					}
-				 else writeerror_w(L"Kirjoitinkoodien lukeminen "
-					L"tiedostosta MERKISTO.KOD ei onnistu", 0);
+				 else writeerror_w(TR(L"Kirjoitinkoodien lukeminen "
+					L"tiedostosta MERKISTO.KOD ei onnistu"), 0);
 				delete mf;
 				 break;
 	  case L'P' : 
@@ -193,8 +193,8 @@ void merkisto(wchar_t merkit)
 					   *(UINT16  *) psinit = (UINT16) len;
 					   }
 					}
-				 if (!psinit) writeerror_w(L"Kirjoitinalustuksen lukeminen "
-					L"tiedostosta POSTSCRI.INI ei onnistu", 0);
+				 if (!psinit) writeerror_w(TR(L"Kirjoitinalustuksen lukeminen "
+					L"tiedostosta POSTSCRI.INI ei onnistu"), 0);
 				delete mf;
 				 pscr = 1;
 	  case L'W' :                    // myös 'P' jatkuu
@@ -273,15 +273,15 @@ static void nimio(INT clear)
 
    if (clear) scpclr();
    scbox(1,12,9,67,15,0,7);
-   viwrrectw(7,27,7,49,L"Ohjelma HkMaali, versio",7,0,0);
+   viwrrectw(7,27,7,49,TR(L"Ohjelma HkMaali, versio"),7,0,0);
    vidspwmsg(7,51,7,0,VersioNo());
-   vidspwmsg(8,42, 7, 0, L"Build");
+   vidspwmsg(8,42, 7, 0, TR(L"Build"));
    vidspwmsg(8, 48, 7, 0, Build());
-   viwrrectw(3,15,3,63,L"HENKILÖKOHTAISEN KILPAILUN TULOSPALVELUOHJELMISTO",
+   viwrrectw(3,15,3,63,TR(L"HENKILÖKOHTAISEN KILPAILUN TULOSPALVELUOHJELMISTO"),
 	  7,0,0);
-   viwrrectw(5,34,5,45,L"Pekka Pirilä",7,0,0);
+   viwrrectw(5,34,5,45,TR(L"Pekka Pirilä"),7,0,0);
 #ifdef DEMO
-   vidspwmsg(8,24,7,0,L"DEMO korkeintaan 30 osanottajaa");   /* DEMO */
+   vidspwmsg(8,24,7,0,TR(L"DEMO korkeintaan 30 osanottajaa"));   /* DEMO */
 #endif
 }
 #endif
@@ -340,7 +340,7 @@ static INT readcfg(INT *nf, wchar_t *argptr[], int kierros)
 		if (!cfgfile->IsOpen()) {
 			delete cfgfile;
 			if (kierros > 0 && cfgparam) {
-				swprintf(line, L"Konfiguraatiotiedostoa %s ei löydy",
+				swprintf(line, TR(L"Konfiguraatiotiedostoa %s ei löydy"),
 					cfgflnm);
 				writeerror_w(line ,0);
 				}
@@ -351,7 +351,7 @@ static INT readcfg(INT *nf, wchar_t *argptr[], int kierros)
 		if (cfgfile->ReadLine(line, 78) == NULL) {
 			if (cfgfile->Feof())
 				goto esc;
-			swprintf(line, L"Virhe tiedostoa %s luettaessa",
+			swprintf(line, TR(L"Virhe tiedostoa %s luettaessa"),
 			   cfgflnm);
 			writeerror_w(line ,0);
 			goto esc;
@@ -371,7 +371,7 @@ static INT readcfg(INT *nf, wchar_t *argptr[], int kierros)
 			++*nf;
 			}
 else {
-			writeerror_w(L"Liikaa parametreja", 0);
+			writeerror_w(TR(L"Liikaa parametreja"), 0);
 			break;
 			}
 		 }
@@ -479,7 +479,7 @@ static void gettcpipparam(INT ny, wchar_t *str, int server)
 
 	p = str;
 	if (ny >= MAX_PORTTI) {
-       writeerror_w(L"TCP-yhteyden numero virheellinen", 0);
+       writeerror_w(TR(L"TCP-yhteyden numero virheellinen"), 0);
        return;
        }
 	 if (wcswcind(*p, L":,/=") >= 0) {
@@ -2762,7 +2762,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			DeveloperMode = true;
 			continue;
 			}
-		 swprintf(msg, L"Tuntematon parametri %.17s %s %s", fldn,
+		 swprintf(msg, TR(L"Tuntematon parametri %.17s %s %s"), fldn,
 			L"tiedostossa ",
             cfgfilename);
 		 writeerror_w(msg,0);
@@ -2856,11 +2856,11 @@ void lueeratiedot(wchar_t *fname)
             k++;
          }
 	  k--;
-      swprintf(msg, L"Tietoja kirjattu %d, puutteellisia rivejä %d", n, k);
+      swprintf(msg, TR(L"Tietoja kirjattu %d, puutteellisia rivejä %d"), n, k);
 	  writeerror_w(msg, 0, true);
 	  }
    else
-	  writeerror_w(L"Tiedostoa ERADAT.LST ei löydy", 0, true);
+	  writeerror_w(TR(L"Tiedostoa ERADAT.LST ei löydy"), 0, true);
    if (erafl != NULL)
 		delete erafl;
    }
@@ -2875,7 +2875,7 @@ static int ConsoleAloitus(int *y)
    if (ikkunaots[0])
 	   SetConsoleTitle(ikkunaots);
    nimio(1);
-   viwrrectw(11,5,11,30,L"Voimassa olevat valinnat :",7,0,0);
+   viwrrectw(11,5,11,30,TR(L"Voimassa olevat valinnat :"),7,0,0);
    ch = 0;
    *y = 16;
 korjval:
@@ -2883,14 +2883,14 @@ korjval:
    if (ch) {
       for (*y=11; *y<ySize-3; (*y)++) 
 		  clrln(*y);
-      viwrrectw(11,5,11,23,L"Korjatut valinnat :",7,0,0);
+      viwrrectw(11,5,11,23,TR(L"Korjatut valinnat :"),7,0,0);
       }
 #ifdef EI_OLE
    if (ch) {
       clrln(ySize-3);
-      viwrrect(ySize-3,5,ySize-3,24,"Anna tarratiedosto :",7,0,0);
+      viwrrect(ySize-3,5,ySize-3,24,TRA("Anna tarratiedosto :"),7,0,0);
       viwrrect(ySize-1,5,ySize-1,54,
-         "NUL : Ei tarroja,  LÄHETÄ : Toisella tietokoneella",7,0,0);
+         TRA("NUL : Ei tarroja,  LÄHETÄ : Toisella tietokoneella"),7,0,0);
 	  inputstr(tarfname,39,26,ySize-3,"\r",&ch2,FALSE);
       clrln(ySize-1);
 	  upcasestr(tarfname);
@@ -2899,7 +2899,7 @@ korjval:
    elimbl(tarfname);
    if ( !memcmp(tarfname, "NUL", 4) ) {
       tarfl = FALSE;
-      sprintf(prs,"Tarroja ei kirjoiteta");
+      sprintf(prs,TRA("Tarroja ei kirjoiteta"));
       }
    else if ( !memcmp(tarfname, "LÄHETÄ", 4) ) {
       tarfl = FALSE;
@@ -2911,17 +2911,17 @@ korjval:
                tarlahcom[*p - '1'] = 1;
             }
          }
-      sprintf(prs,"Tarrojen kirjoitus toisella tietokoneella");
+      sprintf(prs,TRA("Tarrojen kirjoitus toisella tietokoneella"));
       }
    else {
       tarfl = TRUE;
-      sprintf(prs,"Tarrakirjoitinportti tai -tiedosto = %s",tarfname);
+      sprintf(prs,TRA("Tarrakirjoitinportti tai -tiedosto = %s"),tarfname);
       }
    vidspmsg(15,5,7,0,prs);
    y = 16;
    if (tarfl && !ch && korkeat)
       {
-	  viwrrect(y,5,y,45,"Tarrakirjoitin kirjoittaa korkeaa tekstiä",
+	  viwrrect(y,5,y,45,TRA("Tarrakirjoitin kirjoittaa korkeaa tekstiä"),
          7,0,0);
       y++;
 	  }
@@ -2932,7 +2932,7 @@ korjval:
       if (ch2 == 'K') {
          korkeat = TRUE;
          y = 16;
-         viwrrect(y,5,y,45,"Tarrakirjoitin kirjoittaa korkeaa tekstiä",
+         viwrrect(y,5,y,45,TRA("Tarrakirjoitin kirjoittaa korkeaa tekstiä"),
             7,0,0);
          y++;
          ch2 = star ? 'K' : 'E';
@@ -2947,19 +2947,19 @@ korjval:
       tarra1 = (ch2 == '1');
       }
    if( tarra1 ) {
-      viwrrect(y,5,y,18,"Yksi tarrarivi",7,0,0);
+      viwrrect(y,5,y,18,TRA("Yksi tarrarivi"),7,0,0);
 	  y++;
       }
 #endif
    if (ch) {
       clrln(ySize-3);
-	  viwrrectw(ySize-3,5,ySize-3,24,L"Anna listatiedosto :",7,0,0);
+	  viwrrectw(ySize-3,5,ySize-3,24,TR(L"Anna listatiedosto :"),7,0,0);
       inputwstr(listfname,39,26,ySize-3,L"\r",&ch2,FALSE);
 	  }
    elimwbl(listfname);
 	if (!wcscmp(listfname, L"PRN")) 
 		wcscpy(listfname, L"OLETUS");
-	swprintf(prs,L"Listakirjoitinportti tai -tiedosto = %s", listfname);
+	swprintf(prs,TR(L"Listakirjoitinportti tai -tiedosto = %s"), listfname);
    vidspwmsg(*y,5,7,0,prs);
    if (ch) {
 		wselectopt(L"Merkistö: I)BM, A)scii-7, R)oman-8, P)ostscrpt"
@@ -2973,21 +2973,21 @@ korjval:
 		}
    clrln(ySize-3);
    switch (merkit) {
-      case L'A' : viwrrectw(*y,63,*y,78,L"Merkistö Ascii-7",7,0,0);
+      case L'A' : viwrrectw(*y,63,*y,78,TR(L"Merkistö Ascii-7"),7,0,0);
                  break;
-      case L'R' : viwrrectw(*y,63,*y,78,L"Merkistö Roman-8",7,0,0);
+      case L'R' : viwrrectw(*y,63,*y,78,TR(L"Merkistö Roman-8"),7,0,0);
                  break;
-      case L'P' : viwrrectw(*y,62,*y,79,L"Merkistö Postscript",7,0,0);
+      case L'P' : viwrrectw(*y,62,*y,79,TR(L"Merkistö Postscript"),7,0,0);
                  break;
-	  case L'W' : viwrrectw(*y,63,*y,78,L"Merkistö Windows",7,0,0);
+	  case L'W' : viwrrectw(*y,63,*y,78,TR(L"Merkistö Windows"),7,0,0);
                  break;
-      case L'L' : viwrrectw(*y,63,*y,78,L"Merkistö levyltä",7,0,0);
+      case L'L' : viwrrectw(*y,63,*y,78,TR(L"Merkistö levyltä"),7,0,0);
                  break;
 #ifdef WIN32
-      case L'G' : viwrrectw(*y,63,*y,78,L"Windowskirjoitin",7,0,0);
+      case L'G' : viwrrectw(*y,63,*y,78,TR(L"Windowskirjoitin"),7,0,0);
                  break;
 #endif
-      default  : viwrrectw(*y,63,*y,79,L"Merkistö IBM (PC)",7,0,0);
+      default  : viwrrectw(*y,63,*y,79,TR(L"Merkistö IBM (PC)"),7,0,0);
       }
    (*y)++;
    if (ch) {
@@ -3004,15 +3004,15 @@ korjval:
 		 case L'H' : aani = 2; break;
          }
       }
-   viwrrectw(*y,5,*y,16,L"Äänimerkki :",7,0,0);
+   viwrrectw(*y,5,*y,16,TR(L"Äänimerkki :"),7,0,0);
    switch (aani) {
-      case 0  : viwrrectw(*y,18,*y,28,L"Ei käytössä", 7, 0, 0); break;
-      case 1  : viwrrectw(*y,18,*y,31,L"Vain virheistä", 7, 0, 0); break;
-      default : viwrrectw(*y,18,*y,39,L"Virhe- ja huomiomerkit", 7, 0, 0);
+      case 0  : viwrrectw(*y,18,*y,28,TR(L"Ei käytössä"), 7, 0, 0); break;
+      case 1  : viwrrectw(*y,18,*y,31,TR(L"Vain virheistä"), 7, 0, 0); break;
+      default : viwrrectw(*y,18,*y,39,TR(L"Virhe- ja huomiomerkit"), 7, 0, 0);
       }
    ++*y;
 #ifndef COMOFF
-	wcscpy(msg, L"Käytössä yhteydet:");
+	wcscpy(msg, TR(L"Käytössä yhteydet:"));
 	for (int nc = 0; nc < MAX_LAHPORTTI; nc++) {
 		if( portparam[nc] != 0) {
 			lahcom[nc] = (comdir[nc] == L'I') ? FALSE : TRUE;
@@ -3021,7 +3021,7 @@ korjval:
 		if (ch && nc < 8) {
 			clrln(ySize-3);
 			vidspwmsg(ySize-3,5,7,0,
-				L"Anna portin   numero :    (0 : ei käytetä, -1 : UDP), Esc: pois yhteyksistä");
+				TR(L"Anna portin   numero :    (0 : ei käytetä, -1 : UDP), Esc: pois yhteyksistä"));
 			vidint(ySize-3,17,1,nc+1);
 			INPUTINTW(&portparam[nc],2,28,ySize-3,L"\r\x1b",&ch2);
 			if (ch2 == ESC)
@@ -3030,17 +3030,17 @@ korjval:
 		if( portparam[nc] != 0) {
 			portti[nc] = portparam[nc];
 			if (comtype[nc] == comtpRS)
-				swprintf(prs, L"Yhteys %d : COM%d", nc+1, portparam[nc]);
+				swprintf(prs, TR(L"Yhteys %d : COM%d"), nc+1, portparam[nc]);
 			else
-				swprintf(prs, L"Yhteys %d : %s", nc+1, (comtype[nc]  & comtpUDP) ? L"UDP" : L"TCP");
+				swprintf(prs, TR(L"Yhteys %d : %s"), nc+1, (comtype[nc]  & comtpUDP) ? L"UDP" : L"TCP");
 			clrln(*y);
 			vidspwmsg(*y,5,7,0,prs);
 			lahcom[nc] = (comdir[nc] == L'I') ? FALSE : TRUE;
 			vastcom[nc] = (comdir[nc] == L'O') ? FALSE : TRUE;
 			if (!lahcom[nc])
-				vidspwmsg(*y,53,7,0,L"Vain vastaanotto           ");
+				vidspwmsg(*y,53,7,0,TR(L"Vain vastaanotto           "));
 			if (!vastcom[nc])
-				vidspwmsg(*y,53,7,0,L"Vain lähetys               ");
+				vidspwmsg(*y,53,7,0,TR(L"Vain lähetys               "));
 #if MAX_LAHPORTTI > 22
 			if (wcslen(msg) < 73)
 #endif
@@ -3200,7 +3200,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			}
 		}
 	if (minvakanttiluku > n_lisaa) {
-		writeerror_w(L"Parametrin VAKANTTILUKU arvo liian suuri. Parametri LISÄÄ ehkä syynä.", 0);
+		writeerror_w(TR(L"Parametrin VAKANTTILUKU arvo liian suuri. Parametri LISÄÄ ehkä syynä."), 0);
 		return(1);
 		}
    InitializeCriticalSection(&print_CriticalSection);
@@ -3250,7 +3250,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 	nimiixfl = FALSE;
 
 	if (luesarjat()) {
-		writeerror_w(L"Sarjatietojen lukeminen ei onnistunut", 0);
+		writeerror_w(TR(L"Sarjatietojen lukeminen ei onnistunut"), 0);
 		return(1);
 		}
 
@@ -3476,7 +3476,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 	if (autostr[sizeof(autostr)/2-1] == '1')
 		autoalku(autostr);
 	if ((tmpfile = _wfopen(dataf2name, L"rb")) == NULL) {
-		writeerror_w(L"Tiedostoa KILP.DAT ei ole. Luodaan uusi tiedosto.", 0);
+		writeerror_w(TR(L"Tiedostoa KILP.DAT ei ole. Luodaan uusi tiedosto."), 0);
 		makefile(&datf2,wcstooem(cst, dataf2name, 100),kilpparam.kilprecsize);
 		  closefile(&datf2);
 		}
@@ -3485,7 +3485,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 		}
 	if (inLopetus || openfile(&datf2,wcstooem(cst, dataf2name, 100),kilpparam.kilprecsize)) {
 		if (!inLopetus) {
-			swprintf(prs,L"Tiedosto %s puuttuu tai sen avaaminen ei onnistu", dataf2name);
+			swprintf(prs,TR(L"Tiedosto %s puuttuu tai sen avaaminen ei onnistu"), dataf2name);
 			writeerror_w(prs, 0);
 			}
 		return(1);
@@ -3583,7 +3583,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 #ifdef _CONSOLE
 		writeerror_w(L"", 0);
 #else
-		writeerror_w(L"Kilpailijatietojen lukeminen keskeytyi", 0);
+		writeerror_w(TR(L"Kilpailijatietojen lukeminen keskeytyi"), 0);
 #endif
 		return(1);
 		}
@@ -3596,18 +3596,18 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				return(1);
 				}
 			if (lue_radat(19)) {
-				writeerror_w(L"Ratatietojen lukeminen ei onnistunut", 0);
+				writeerror_w(TR(L"Ratatietojen lukeminen ei onnistunut"), 0);
 				return(1);
 				}
 			}
 		else if (er) {
-			writeerror_w(L"Ratatietojen lukeminen xml-tiedostosta ei onnistunut", 0);
+			writeerror_w(TR(L"Ratatietojen lukeminen xml-tiedostosta ei onnistunut"), 0);
 			return(1);
 			}
 		}
 	if (ToimintaTila == 2 && emitfl == 1) {
 		if (lueemitfile()) {
-			writeerror_w(L"Leimaustietotiedoston lukeminen ei onnistunut", 0);
+			writeerror_w(TR(L"Leimaustietotiedoston lukeminen ei onnistunut"), 0);
 			return(1);
 			}
 		if (lainatied)
@@ -3624,7 +3624,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 		lueKorRajat();
 #endif
 		if (lajatfl && !pvparam[k_pv].hiihtolahto) {
-			writeerror_w(L"Parametri LAJAT, mutta lähtöportin aikojen käyttöä ei valittuna", 0);
+			writeerror_w(TR(L"Parametri LAJAT, mutta lähtöportin aikojen käyttöä ei valittuna"), 0);
 			}
 		if (pvparam[k_pv].hiihtolahto && *tunn_srj_nimi) {
 			  if (!wcscmp(tunn_srj_nimi, L"KAIKKI"))
@@ -3657,7 +3657,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				continue;
 			if (portparam[nc] != 0) {
 				if (initcom(nc)) {
-					writeerror_w(L"Tiedonsiirtotoimintojen käynnistys ei onnistunut.", 0);
+					writeerror_w(TR(L"Tiedonsiirtotoimintojen käynnistys ei onnistunut."), 0);
 					return(1);
 					}
 				}
@@ -3696,7 +3696,7 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 
 	if (loki) {
 		wchar_t lmsg[60];
-		swprintf(lmsg, L"Ohjelma käynnistetty, klo %s", wkello());
+		swprintf(lmsg, TR(L"Ohjelma käynnistetty, klo %s"), wkello());
 		wkirjloki(lmsg);
 		}
 
@@ -3743,7 +3743,7 @@ void lopetus1(void)
 		return;
 	if (loki) {
 		wchar_t lmsg[60];
-		swprintf(lmsg, L"Ohjelmasta poistutaan, klo %s", wkello());
+		swprintf(lmsg, TR(L"Ohjelmasta poistutaan, klo %s"), wkello());
 		wkirjloki(lmsg);
 		}
 	inLopetus = 1;

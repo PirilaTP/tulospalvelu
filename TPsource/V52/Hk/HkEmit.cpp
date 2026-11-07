@@ -318,7 +318,7 @@ int IOFCourseData::siirraXmlKuviot(ekditp **kuvio, int *nkuvio, int *maxnkuvio)
 		else
 			tn = _wtoi(Point[i]->Code);
 		if (tn > MAXTUNNUS) {
-			swprintf(msg,L"Rastitunnus %d on rastitiedoissa liian suuri", tn);
+			swprintf(msg,TR(L"Rastitunnus %d on rastitiedoissa liian suuri"), tn);
 			kirj_err_file(msg, 1);
 			continue;
 			}
@@ -364,13 +364,13 @@ int IOFCourseData::siirraXmlKuviot(ekditp **kuvio, int *nkuvio, int *maxnkuvio)
 	*nkuvio = nk;
 	if (nk == 0) {
 		vidspwmsg(20,5,7,0,
-			L"EMIT-koodit asetataan samoiksi kuin rastitunnukset");
+			TR(L"EMIT-koodit asetataan samoiksi kuin rastitunnukset"));
 		if (*maxnkuvio == 0) {
 			*kuvio = (ekditp *)calloc(300, sizeof(ekditp));
 			*maxnkuvio = 300;
 			}
 		if (!*kuvio) {
-			writeerror_w(L"Ei muistitilaa EMIT-koodeille", 0);
+			writeerror_w(TR(L"Ei muistitilaa EMIT-koodeille"), 0);
 			return(1);
 			}
 		else {
@@ -395,7 +395,7 @@ int IOFCourseData::siirraXmlKuviot(ekditp **kuvio, int *nkuvio, int *maxnkuvio)
 		if (*maxnkuvio == 0) {
 			*kuvio = (ekditp *) calloc(*nkuvio+40, sizeof(ekditp));
 			if (!*kuvio) {
-				writeerror_w(L"Ei muistitilaa EMIT-koodeille", 0);
+				writeerror_w(TR(L"Ei muistitilaa EMIT-koodeille"), 0);
 				return(1);
 				}
 			*maxnkuvio = *nkuvio+40;
@@ -458,13 +458,13 @@ int IOFCourseData::siirraXmlRadat(ratatp **rt, int *nrata, wchar_t nimilaji, int
 	*nrata = rno;
 
 	if (*nrata == 0) {
-		vidspwmsg(19, 0, 7, 0, L"Ohjelma ei löytänyt ratoja xml-tiedostosta");
+		vidspwmsg(19, 0, 7, 0, TR(L"Ohjelma ei löytänyt ratoja xml-tiedostosta"));
 		return(1);
 		}
 	if (maxnrata == 0)
 		*rt = (ratatp *) calloc(*nrata, sizeof(ratatp));
 	if (!*rt) {
-		writeerror_w(L"Ei tilaa ratatiedoille", 0);
+		writeerror_w(TR(L"Ei tilaa ratatiedoille"), 0);
 		goto esc;
 		}
 	rno = 0;
@@ -511,7 +511,7 @@ int IOFCourseData::siirraXmlRadat(ratatp **rt, int *nrata, wchar_t nimilaji, int
 					if (!wcscmp(rt[0][ii].tunnus, rnimi))
 						break;
 				if (ii < rno) {
-					swprintf(msg, L"Rata %s toistuu ratatiedoissa", rnimi);
+					swprintf(msg, TR(L"Rata %s toistuu ratatiedoissa"), rnimi);
 					kirj_err_file(msg, 1);
 					}
 				srj = rno++;
@@ -583,13 +583,13 @@ int IOFCourseData::siirraXmlRadat(ratatp **rt, int *nrata, wchar_t nimilaji, int
 					}
 				if (tn > 0 && (tn <= MAXTUNNUS || tn == 10000 || tn == 10001)) {
 					if (ToimintaTila == 2 && tn <= MAXTUNNUS && !on_kuvio(tn)) {
-						swprintf(msg, L"Radan %s rastin %d tunnusta %d ei tiedoissa",
+						swprintf(msg, TR(L"Radan %s rastin %d tunnusta %d ei tiedoissa"),
 							rnimi, ir+1, tn);
 						puute++;
 						kirj_err_file(msg, 0);
 						}
 					if (ir >= MAXNRASTI) {
-						swprintf(msg, L"Radalla %s liikaa rasteja (yli %d)",
+						swprintf(msg, TR(L"Radalla %s liikaa rasteja (yli %d)"),
 							rnimi, MAXNRASTI);
 						kirj_err_file(msg, 1);
 						continue;
@@ -608,7 +608,7 @@ int IOFCourseData::siirraXmlRadat(ratatp **rt, int *nrata, wchar_t nimilaji, int
 				int m = 0;
 				memset(rt[0][srj].rastikoodi, 0, sizeof(rt[0][0].rastikoodi));
 				if (!rt[0][srj].rastikoodi) {
-					writeerror_w(L"Ei tilaa ratatiedoille", 0);
+					writeerror_w(TR(L"Ei tilaa ratatiedoille"), 0);
 					goto esc;
 					}
 				for (j = 0; j < ir; j++) {
@@ -624,7 +624,7 @@ int IOFCourseData::siirraXmlRadat(ratatp **rt, int *nrata, wchar_t nimilaji, int
 //		*nrata = nr;
 	if (*rt == rata) {
 		tarkkilpradat();
-		swprintf(msg, L"Siirretty %d rataa", nr);
+		swprintf(msg, TR(L"Siirretty %d rataa"), nr);
 		vidspwmsg(18,5,7,0,msg);
 		}
 	if (ToimintaTila > 0) {
@@ -633,13 +633,13 @@ int IOFCourseData::siirraXmlRadat(ratatp **rt, int *nrata, wchar_t nimilaji, int
 	if (ToimintaTila == 2 && *rt == rata)
 		TarkKilpailijat();
 	if (puute > 0) {
-		writeerror_w(L"Kaikille rasteille ei tiedoissa emit-koodia. Käytetään rastien koodeja", 0, true);
+		writeerror_w(TR(L"Kaikille rasteille ei tiedoissa emit-koodia. Käytetään rastien koodeja"), 0, true);
 		}
 	return(0);
 esc:
 	if (maxnrata == 0 && *rt)
 		free(*rt);
-	swprintf(msg,L"Virhe ratatietoja käsiteltäessa. Rata %s", rnimi);
+	swprintf(msg,TR(L"Virhe ratatietoja käsiteltäessa. Rata %s"), rnimi);
 	kirj_err_file(msg, 1);
 	return(1);
 }
@@ -852,7 +852,7 @@ int lue_radat_xml(int r)
    rataxmlfname[5] = k_pv + L'1';
    if ((er = lueEventXml(rataxmlfname, false, true, false)) != 0)
 		return(er);
-   swprintf(msg, L"Ratatiedot luetaan tiedostosta %s", rataxmlfname);
+   swprintf(msg, TR(L"Ratatiedot luetaan tiedostosta %s"), rataxmlfname);
    vidspwmsg(r, 0, 7, 0, msg);
    CourseData.siirraXmlKuviot(&kuvio, &nkuvio, &maxnkuvio);
    CourseData.siirraXmlRadat(&rata, &nrata, L'V', 0, 0, -99);
@@ -874,7 +874,7 @@ static void editlukijakoodit(void)
 
 	clrln(ySize-3);
 	n = sizeof(lukijakoodit)/sizeof(INT);
-	vidspwmsg(ySize-3, 0, 7, 0, L"Lukijan koodit (+: hyväksy):");
+	vidspwmsg(ySize-3, 0, 7, 0, TR(L"Lukijan koodit (+: hyväksy):"));
 	for (i = 0; i < n; i++) {
 		vidint(ySize-3, 37+4*i, 3, lukijakoodit[i]);
 		}
@@ -1048,7 +1048,7 @@ INT addbadge(INT32 badge, INT kno, INT kysyfl)
 		return(1);
    i = haebdg(badge);
    if (loki && emitloki) {
-	  swprintf(msg, L"Lisää e-koodin %ld kilpailijalle %d",
+	  swprintf(msg, TR(L"Lisää e-koodin %ld kilpailijalle %d"),
 		 badge, kno);
 	  wkirjloki(msg);
 	  }
@@ -1059,7 +1059,7 @@ INT addbadge(INT32 badge, INT kno, INT kysyfl)
 		for (unsigned int ivap = 0; ivap < sizeof(vapautettu_bdg)/sizeof(vapautettu_bdg[0]); ivap++)
 			if (vapautettu_bdg[ivap].badge == badge && vapautettu_bdg[ivap].kilpno == kno)
 				return(0);
-		swprintf(msg, L"Kilpailijoilla %d ja %d sama e-koodi %d",
+		swprintf(msg, TR(L"Kilpailijoilla %d ja %d sama e-koodi %d"),
 			bdg_kno[i].kilpno, kno, badge);
 		wkirjloki(msg);
 		}
@@ -1104,7 +1104,7 @@ INT rembadge(INT32 badge, INT kno, INT kysyfl)
 		return(1);
    kilp.GETREC(d);
    if (loki && emitloki && kilp.tark(k_pv) != L'P') {
-	  swprintf(msg, L"Poistaa ekoodin %ld kilpailijalta %d",
+	  swprintf(msg, TR(L"Poistaa ekoodin %ld kilpailijalta %d"),
 		 badge, kno);
 	  wkirjloki(msg);
 	  }
@@ -1113,7 +1113,7 @@ INT rembadge(INT32 badge, INT kno, INT kysyfl)
 		  kbdg = haebdg(badge);
 		  if ((nbadge && (kbdg < 0 || kbdg >= nbadge)) || (!nbadge && kbdg <= 0)) {
 			 if (loki && emitloki && kilp.tark(k_pv) != L'P') {
-				swprintf(msg, L"E-koodia %ld ei indeksissä", badge);
+				swprintf(msg, TR(L"E-koodia %ld ei indeksissä"), badge);
 				wkirjloki(msg);
 				}
 			 return(1);
@@ -1129,7 +1129,7 @@ INT rembadge(INT32 badge, INT kno, INT kysyfl)
    k = bdg_kno[kbdg].kilpno;
    if (k != kno) {
 	  if (loki && emitloki) {
-		 swprintf(msg, L"E-koodi %ld liitetty kilpailijaan %d, ei poistettu",
+		 swprintf(msg, TR(L"E-koodi %ld liitetty kilpailijaan %d, ei poistettu"),
 			badge, kilp.id());
 		 wkirjloki(msg);
 		 }
@@ -1234,11 +1234,11 @@ INT add(void *em)
 		kilp.setSarjaAll(kilp.Sarja());
 		if( ! exfl ) {
 			if (nrec == maxrec-1)
-				writeerror_w(L"Kilpailijataulukko täyttyi. "
-					L"Kilpailijamäärää ei voi enää lisätä",3000);
+				writeerror_w(TR(L"Kilpailijataulukko täyttyi. "
+					L"Kilpailijamäärää ei voi enää lisätä"),3000);
 			if (nrec >= maxrec) {
 				writeerror_w(
-					L"Kilpailijataulukko täynnä - lisäystä ei tallennettu", 0);
+					TR(L"Kilpailijataulukko täynnä - lisäystä ei tallennettu"), 0);
 #else
 			{
 			_ltow(((emittp *)em)->badge, kilp.etunimi, 10);
@@ -1246,11 +1246,11 @@ INT add(void *em)
 				kilp.setSarjaAll(0);
 				}
 			if (nrec == maxrec-1)
-				vidspwmsg(0,0,0,0,L"Kilpailijataulukko täyttyi. "
-					L"Kilpailijamäärää ei voi enää lisätä");
+				vidspwmsg(0,0,0,0,TR(L"Kilpailijataulukko täyttyi. "
+					L"Kilpailijamäärää ei voi enää lisätä"));
 			if (nrec >= maxrec) {
 				vidspwmsg(0,0,0,0,
-					L"Kilpailijataulukko täynnä - lisäystä ei tallennettu");
+					TR(L"Kilpailijataulukko täynnä - lisäystä ei tallennettu"));
 #endif
 				exfl = 1;
 				dataf = 0;
@@ -1433,13 +1433,13 @@ void lue_lainat(int poista, int varoita)
 			}
 		 }
 	  else {
-		 writeerror_w(L"Muisti ei riita lainaemitluettelolle", 0);
+		 writeerror_w(TR(L"Muisti ei riita lainaemitluettelolle"), 0);
 		 lainatied = 0;
 		 }
 	  }
    else {
 	  if (varoita)
-		  writeerror_w(L"Lainaemitluettelon LAINAEMT.LST avaaminen ei onnistu", 0);
+		  writeerror_w(TR(L"Lainaemitluettelon LAINAEMT.LST avaaminen ei onnistu"), 0);
 	  lainatied = 0;
 	  }
   delete ekdifile;
@@ -1484,7 +1484,7 @@ void lueemitkoodit(void)
 	   }
    if (!emitkdfile->IsOpen()) {
 	  delete emitkdfile;
-	  writeerror_w(L"Tiedostoa EMITKDI.LST tai TUNNKDI.LST ei löydy", 0, true);
+	  writeerror_w(TR(L"Tiedostoa EMITKDI.LST tai TUNNKDI.LST ei löydy"), 0, true);
 	  return;
 	  }
    ch = L' ';
@@ -1492,7 +1492,7 @@ void lueemitkoodit(void)
    if (ch == L'L') {
 	  nrot = (struct strnrot *) calloc(nrec, sizeof(INT)+sizeof(INT32));
 	  if (!nrot) {
-		 writeerror_w(L"Muisti ei riitä", 0);
+		 writeerror_w(TR(L"Muisti ei riitä"), 0);
 		 return;
 		 }
 	  for (d = 1; d < nrec; d++) {
@@ -1795,7 +1795,7 @@ static void editkoodit(void)
 	  }
    do {
 	  clrln(ySize-3);
-	  vidspwmsg(ySize-3,0,7,0,L"Anna rastin tunnus:        999: lukija, Esc: poistu");
+	  vidspwmsg(ySize-3,0,7,0,TR(L"Anna rastin tunnus:        999: lukija, Esc: poistu"));
 	  inputintw(&rasti, 3, 20, ySize-3, L"\r\x1b", &wch);
 	  if (wch == ESC) break;
 	  if (rasti == 999) {
@@ -1803,18 +1803,18 @@ static void editkoodit(void)
 			continue;
 			}
 	  if (rasti <= 0 || rasti > MAXTUNNUS) {
-		 writeerror_w(L"Tunnus liian suuri tai pieni", 0, true);
+		 writeerror_w(TR(L"Tunnus liian suuri tai pieni"), 0, true);
 		 continue;
 		 }
 	  for (i = 0; i < nkuvio; i++)
 		 if (kuvio[i].rasti == rasti) break;
 	  if (i >= nkuvio) {
-		 writeerror_w(L"Tunnusta ei esiinny ratatiedoissa", 0, true);
+		 writeerror_w(TR(L"Tunnusta ei esiinny ratatiedoissa"), 0, true);
 		 continue;
 		 }
-	  vidspwmsg(ySize-3, 27, 7, 0, L"Emit-koodit  ");
+	  vidspwmsg(ySize-3, 27, 7, 0, TR(L"Emit-koodit  "));
 	  clrln(ySize-1);
-	  vidspwmsg(ySize-1, 0, 7, 0, L"Emit-koodien arvot: 1 kaikki kelpaavat, 2 leimausta ei vaadita");
+	  vidspwmsg(ySize-1, 0, 7, 0, TR(L"Emit-koodien arvot: 1 kaikki kelpaavat, 2 leimausta ei vaadita"));
 	  for (j = 0; j < RINNTUNNUS; j++, i++) {
 		 if (i < nkuvio && kuvio[i].rasti == rasti)
 			kdi[j] = kuvio[i].koodi;
@@ -1840,7 +1840,7 @@ static void editkoodit(void)
 			   nkuvio++;
             if (nkuvio > maxnkuvio) {
                nkuvio = maxnkuvio;
-			   writeerror_w(L"Kooditaulu täynnä. Lisääminen ei onnistu", 0);
+			   writeerror_w(TR(L"Kooditaulu täynnä. Lisääminen ei onnistu"), 0);
                continue;
 			   }
 			kuvio[i].rasti = rasti;
@@ -2357,7 +2357,7 @@ INT lue_leimat(INT r)
 		}
    if (!leima_file || !leima_file->IsOpen()) {
 	  vidspwmsg(r+1,5,7,0,
-		 L"EMIT-koodit asetataan samoiksi kuin rastitunnukset");
+		 TR(L"EMIT-koodit asetataan samoiksi kuin rastitunnukset"));
 	  if (!ohitaleimat) {
 		 ch = L' ';
 		 wselectopt(L"J)atka ilman tiedostoa LEIMAT.LST, P)oistu ohjelmasta", L"JP", &ch);
@@ -2366,7 +2366,7 @@ INT lue_leimat(INT r)
 		 }
 	  kuvio = (ekditp *)calloc(255, sizeof(ekditp));
 	  if (!kuvio) {
-		 writeerror_w(L"Ei muistitilaa EMIT-koodeille", 0);
+		 writeerror_w(TR(L"Ei muistitilaa EMIT-koodeille"), 0);
 			return(1);
 		 }
 	  else {
@@ -2398,7 +2398,7 @@ INT lue_leimat(INT r)
    qsortint(tmpkdi, nkuvio, sizeof(ekditp), 0,  sizeof(kuvio[0].rasti)==4);
    kuvio = (ekditp *) calloc(nkuvio+20, sizeof(ekditp));
    if (!kuvio) {
-	  writeerror_w(L"Ei muistitilaa EMIT-koodeille", 0);
+	  writeerror_w(TR(L"Ei muistitilaa EMIT-koodeille"), 0);
 	  return(1);
 	  }
    else {
@@ -2905,7 +2905,7 @@ INT lue_radat(INT r)
 	nrata = rno;
 	rata = (ratatp *) calloc(nrata, sizeof(ratatp));
 	if (!rata) {
-		writeerror_w(L"Ei tilaa ratatiedoille", 0);
+		writeerror_w(TR(L"Ei tilaa ratatiedoille"), 0);
 		goto esc1;
 		}
 	rno = 0;
@@ -2996,7 +2996,7 @@ INT lue_radat(INT r)
 	  if (ir) {
 		 memset(rata[srj].rastikoodi, 0, sizeof(rata[0].rastikoodi));
 		 if (!rata[srj].rastikoodi) {
-			writeerror_w(L"Ei tilaa ratatiedoille", 0);
+			writeerror_w(TR(L"Ei tilaa ratatiedoille"), 0);
 			goto esc1;
 			}
 		 for (j = 0; j < ir; j++)
@@ -3203,17 +3203,17 @@ INT naytatiedot(emittp *em, kilptietue *kilp, int loppuosa)
             }
          }
       if (code99) {
-         viwrrectw(17,42,18,60,L"Leimasin sammumassa"
-                              L"(koodi 99)         ",0,7,0);
+         viwrrectw(17,42,18,60,TR(L"Leimasin sammumassa"
+                              L"(koodi 99)         "),0,7,0);
          }
 	  for (i = 0; i < MAXNLEIMA; i++) {
          if (tulkinta[i] > 0) {
             if (em->ctrltime[i] < enn) {
                viwrrectw(17, 42, 20, 64,
-                  L"Negatiivisia väliaikoja"
+                  TR(L"Negatiivisia väliaikoja"
                   L"Varmista kilpailija,   "
 				  L"lähtöaika sekä kortin  "
-                  L"kellon toiminta.       ", 0,7,0);
+                  L"kellon toiminta.       "), 0,7,0);
                 }
             break;
             }
@@ -3231,13 +3231,13 @@ void emit_tallenna(kilptietue *kilp, wchar_t trk, wchar_t *selitys, INT cn)
 
    if (!cn && (trk == L'H' || trk == L'K') && kilp->tark(k_pv) != L'I'
 	  && kilp->tark(k_pv) != trk) {
-	  writeerror_w(L"Hylkäys vain esityksen jälkeen.", 0, true);
+	  writeerror_w(TR(L"Hylkäys vain esityksen jälkeen."), 0, true);
       return;
       }
    if (!cn && (kilp->tark(k_pv) == L'H' || kilp->tark(k_pv) == L'K') &&
       trk != kilp->tark(k_pv)) {
       clrln(ySize-3);
-      vidspwmsg(ySize-3,20,7,0,L"Hylkäyksen poisto. Vahvista (K/E)");
+      vidspwmsg(ySize-3,20,7,0,TR(L"Hylkäyksen poisto. Vahvista (K/E)"));
       mene(56, ySize-3);
       do {
 		 ch = readkbd(&che,1,spoolfl);
@@ -3384,24 +3384,24 @@ void vaihdakilp(INT ekno)
 
    clrln(ySize-3);
    vidspwmsg(ySize-3,0,7,0,
-      L"Kilpailijanumero, jolle tiedot siirretään :         Esc : peruuta");
+      TR(L"Kilpailijanumero, jolle tiedot siirretään :         Esc : peruuta"));
    inputintw(&kno,4, 44, ySize-3,L"\r\x1B",&ch);
    if (ch == ESC) return;
    EnterCriticalSection(&tall_CriticalSection);
    if ((d = getpos(ekno)) <= 0 || (du = getpos(kno)) <= 0) {
 	  LeaveCriticalSection(&tall_CriticalSection);
-	  writeerror_w(L"Kilpailijaa ei löydy", 0);
+	  writeerror_w(TR(L"Kilpailijaa ei löydy"), 0);
 	  return;
 	  }
    if (getEmitJarr(kno, &ibdg) >= 0) {
 	  LeaveCriticalSection(&tall_CriticalSection);
-	  writeerror_w(L"Valitulle kilpailijalle jo luettu emit-tiedot - ei muuteta", 0);
+	  writeerror_w(TR(L"Valitulle kilpailijalle jo luettu emit-tiedot - ei muuteta"), 0);
 	  return;
 	  }
    ekilp.GETREC(d);
    kilp.GETREC(du);
    if (ekilp.tark(k_pv) == L'P') {
-	  writeerror_w(L"Valittu kilpailija poissaoleva - ei muuteta", 0);
+	  writeerror_w(TR(L"Valittu kilpailija poissaoleva - ei muuteta"), 0);
 	  return;
 	  }
    rt = haerata(&ekilp);
@@ -3484,7 +3484,7 @@ wchar_t outleimat(kilptietue *kilp, emittp *em, INT selaus, int loppuosa)
       swprintf(line, L"Kilpailija %4d, kortti %6ld", kilp->id(), em->badge);
       vidspwmsg(0,0,7,0, line);
 	  }
-   if (selaus) vidspwmsg(0,50,7,0,L"SELAUS");
+   if (selaus) vidspwmsg(0,50,7,0,TR(L"SELAUS"));
    else clrtxt(0,50,56);
    clrtxt(2,30,36);
    for (i = 15; i < ySize-4; i++) clrtxt(i,42,64);
@@ -3494,12 +3494,12 @@ wchar_t outleimat(kilptietue *kilp, emittp *em, INT selaus, int loppuosa)
 	  line[27] = 0;
       vidspwmsg(2, 0, 7, 0, line);
       if (lainakortti(kilp)) {
-         vidspwmsg(2,30, 0, 7, L" LAINA ");
+         vidspwmsg(2,30, 0, 7, TR(L" LAINA "));
          for (i_pv = k_pv+1; i_pv < kilpparam.n_pv_akt; i_pv++)
             if (kilp->tark(i_pv) != L'P')
                break;
          if (i_pv == kilpparam.n_pv_akt) {
-			vidspwmsg(2,37, 0, 7, L"KERÄÄ ");
+			vidspwmsg(2,37, 0, 7, TR(L"KERÄÄ "));
             }
          }
       if (em->kilpno == kilp->id()) {
@@ -3527,21 +3527,21 @@ wchar_t outleimat(kilptietue *kilp, emittp *em, INT selaus, int loppuosa)
       vidspwmsg(15, 42, 7, 0, kilp->pv[k_pv].selitys);
       ret = kilp->tark(k_pv);
       }
-   vidspwmsg(2, 42, 7, 0, L"Sarja");
-	vidspwmsg(6, 42, 7, 0, L"Tarkistuksen tulos");
-   vidspwmsg(7, 42, 7, 0, L"T: T)arkistus ok");
-   vidspwmsg(8, 42, 7, 0, L"H: H)ylkäys");
-	vidspwmsg(9, 42, 7, 0, L"K: K)eskeytys");
-   vidspwmsg(10, 42, 7, 0, L"I: hylkäysesI)tys");
-   vidspwmsg(11, 42, 7, 0, L"P: P)oissa");
-   vidspwmsg(13, 42, 0, 7, L"Tark.tulos:");
-   vidspwmsg(14, 42, 0, 7, L"Selitys:");
+   vidspwmsg(2, 42, 7, 0, TR(L"Sarja"));
+	vidspwmsg(6, 42, 7, 0, TR(L"Tarkistuksen tulos"));
+   vidspwmsg(7, 42, 7, 0, TR(L"T: T)arkistus ok"));
+   vidspwmsg(8, 42, 7, 0, TR(L"H: H)ylkäys"));
+	vidspwmsg(9, 42, 7, 0, TR(L"K: K)eskeytys"));
+   vidspwmsg(10, 42, 7, 0, TR(L"I: hylkäysesI)tys"));
+   vidspwmsg(11, 42, 7, 0, TR(L"P: P)oissa"));
+   vidspwmsg(13, 42, 0, 7, TR(L"Tark.tulos:"));
+   vidspwmsg(14, 42, 0, 7, TR(L"Selitys:"));
    naytatiedot(em, kilp,loppuosa);
 	if (kilp && Sarjat[kilp->Sarja()].rrtas > 1) {
 		int yks = Sarjat[kilp->Sarja()].tsak[k_pv];
 		if (yks == 0)
 			yks = kilpparam.sakkoyks ? kilpparam.sakkoyks : 1;
-	   vidspwmsg(17, 42, 7, 0, L"L)isäaika:");
+	   vidspwmsg(17, 42, 7, 0, TR(L"L)isäaika:"));
 	   vidint(17, 53, 3, kilp->pv[k_pv].tasoitus/yks);
 	   }
    return(ret);
@@ -3582,7 +3582,7 @@ static void emituudelleen(void)
 
    clrln(ySize-3);
    vidspwmsg(ySize-3,0,7,0,
-	  L"Uudelleenkäsiteltävä tietue:       Esc : Peruuta");
+	  TR(L"Uudelleenkäsiteltävä tietue:       Esc : Peruuta"));
    eptr = emitptr + 1;
    INPUTINTW(&eptr, 5, 29, ySize-3, L"\r\x1b", &ch);
    if (ch == L'\r' && eptr > 0 && eptr <= emithead) {
@@ -3722,19 +3722,19 @@ static void e_sarja(emittp *em, kilptietue *kilp, INT d)
    rt = haerata(kilp);
    if ((srj = haeradansarja(snimi, NULL)) < 0) {
 #ifdef _CONSOLE
-	   vidspwmsg(ySize-3,0,7,0,L"Valitse uusi rata:       "
-		  L"<Esc>: Poistu vaihtamatta rataa");
+	   vidspwmsg(ySize-3,0,7,0,TR(L"Valitse uusi rata:       "
+		  L"<Esc>: Poistu vaihtamatta rataa"));
 	   do {
 		   inputwstr(snimi, 8, ySize-3, 19, L"\x1b\r", &ch, 0);
 #else
 	   do {
-			inputstr_prompt(snimi, 8, L"Valitse uusi rata. "
-				L"Peruuta: Poistu vaihtamatta rataa", &ch);
+			inputstr_prompt(snimi, 8, TR(L"Valitse uusi rata. "
+				L"Peruuta: Poistu vaihtamatta rataa"), &ch);
 #endif
 		   if (onrata(snimi))
 			   break;
 		   else
-			   writeerror_w(L"Virheellinen radan nimi", 0, true);
+			   writeerror_w(TR(L"Virheellinen radan nimi"), 0, true);
 		   } while (ch != ESC);
 //	   INPUTINTW(&srj, 5, ySize-3, 19, L"\x1b\n", &ch);
 	   if (ch == ESC)
@@ -3748,8 +3748,8 @@ static void e_sarja(emittp *em, kilptietue *kilp, INT d)
 	   wcscpy(kilp->pv[k_pv].rata, snimi);
 	  }
    else {
-	   vidspwmsg(ySize-3,0,7,0,L"Valitse uusi sarja:               "
-		  L"<Esc>: Poistu vaihtamatta sarjaa");
+	   vidspwmsg(ySize-3,0,7,0,TR(L"Valitse uusi sarja:               "
+		  L"<Esc>: Poistu vaihtamatta sarjaa"));
 	   wcscpy(snimi, Sarjat[srj].sarjanimi);
 	   srj = luesarja(snimi, &ch);
 	   if (ch == ESC)
@@ -3794,7 +3794,7 @@ INT leimat(void)
 	  L"Leimauskortin valinta, F1 : Muita komentoja";
 
    if (emitfl != 1) {
-	  writeerror_w(L"Leimantarkastustoimintoa ei ole käynnistetty", 0, true);
+	  writeerror_w(TR(L"Leimantarkastustoimintoa ei ole käynnistetty"), 0, true);
 	  return(0);
       }
    ajat_on = ajat_on_loc;
@@ -3817,7 +3817,7 @@ INT leimat(void)
          swprintf(line, L"Kilpailija %4d, kortti %6ld", kilpno, badge);
          clrtxt(0, 0, 33);
 		 vidspwmsg(0,0,7,0, line);
-         if (selaus) vidspwmsg(0,50,7,0,L"SELAUS");
+         if (selaus) vidspwmsg(0,50,7,0,TR(L"SELAUS"));
          else clrtxt(0,50,56);
          vidint(0, 57, 5, emitptr+1);
          for (i = 3; i < ySize-4; i++) clrtxt(i,0,64);
@@ -4033,7 +4033,7 @@ INT leimat(void)
 			wcscpy(selitys, kilp.pv[k_pv].selitys);
 			inputwstr(selitys, 14, 42, 15, L"\r\x1b", &ch, 0);
             if (ch == L'\x1b') break;
-            vidspwmsg(16,42,7,0, L"Vahvista kirjaus (K/E)");
+            vidspwmsg(16,42,7,0, TR(L"Vahvista kirjaus (K/E)"));
             mene(65, 17);
             do {
                ch = readkbd(&che,1,spoolfl);
@@ -4128,7 +4128,7 @@ INT leimat(void)
          switch (ch) {
 			case L'G':
                clrln(ySize-3);
-               vidspwmsg(ySize-3,0,7,0,L"Anna järjestysnumero");
+               vidspwmsg(ySize-3,0,7,0,TR(L"Anna järjestysnumero"));
                INPUTINTW(&emitptr, 5, 22, ySize-3, L"\r", &ch);
                emitptr--;
                ch = L'S';
@@ -4190,7 +4190,7 @@ INT leimat(void)
 
       do {
          clrln(ySize-3);
-		 vidspwmsg(ySize-3,0,7,0,L"Esc: poistu numerovalinnasta");
+		 vidspwmsg(ySize-3,0,7,0,TR(L"Esc: poistu numerovalinnasta"));
          vidspwmsg(ySize-1,0,7,0,numval);
          clrtxt(2,0,64);
          clrtxt(3,0,64);
@@ -4213,13 +4213,13 @@ INT leimat(void)
             continue;
             }
          if ((d = getpos(kilpno)) < 1) {
-			vidspwmsg(3,0,7,0, L"Kilpailijaa ei löydy");
+			vidspwmsg(3,0,7,0, TR(L"Kilpailijaa ei löydy"));
 			ch = 0;
 			}
 		 else {
 			kilp.GETREC(d);
 			if (kilp.tark(k_pv) == L'P') {
-				vidspwmsg(3,0,7,0, L"Kilpailijaa poissaoleva");
+				vidspwmsg(3,0,7,0, TR(L"Kilpailijaa poissaoleva"));
 				ch = 0;
 				}
 			else
@@ -4253,11 +4253,11 @@ void emitlista(tulostusparamtp *tulprm)
 		return;
 	clrln(ySize-3);
 #ifdef _CONSOLE
-   vidspwmsg(ySize-3,0,7,0,L"Anna alku- ja loppurivit (Esc: peruuta):");
+   vidspwmsg(ySize-3,0,7,0,TR(L"Anna alku- ja loppurivit (Esc: peruuta):"));
    inputintw(&elistaalku, 4, 42, ySize-3, L"\r\x1b", &ch);
 #else
    i = elistaalku;
-   inputint_prompt(&i,L"Anna alkurivi", &ch);
+   inputint_prompt(&i,TR(L"Anna alkurivi"), &ch);
    elistaalku = i;
 #endif
    if (ch == 27) {
@@ -4270,7 +4270,7 @@ void emitlista(tulostusparamtp *tulprm)
    inputintw(&elistaloppu, 4, 49, ySize-3, L"\r\x1b", &ch);
 #else
    i = elistaloppu;
-   inputint_prompt(&i,L"Anna loppurivi", &ch);
+   inputint_prompt(&i,TR(L"Anna loppurivi"), &ch);
    elistaloppu = i;
 #endif
    clrln(ySize-3);
@@ -5056,15 +5056,15 @@ void tark_rap(tulostusparamtp *tulprm, INT kilpno)
          break;
       }
    vidspwmsg(7,0,7,0,trk);
-   vidspwmsg(9,0,7,0,L"Selitys :");
+   vidspwmsg(9,0,7,0,TR(L"Selitys :"));
    vidspwmsg(9,12,7,0,kilp.pv[k_pv].selitys);
 #ifdef _CONSOLE
-   vidspwmsg(11,0,7,0,L"Lisätietoja raporttiin (max 3 riviä)");
+   vidspwmsg(11,0,7,0,TR(L"Lisätietoja raporttiin (max 3 riviä)"));
    inputwstr(l1, 65, 0, 13, L"\r", &ch, 0);
    inputwstr(l2, 65, 0, 14, L"\r", &ch, 0);
    inputwstr(l3, 65, 0, 15, L"\r", &ch, 0);
 #else
-	inputstr_prompt(l1, 65, L"Lisätietoja raporttiin (max 65 merkkiä)", &ch);
+	inputstr_prompt(l1, 65, TR(L"Lisätietoja raporttiin (max 65 merkkiä)"), &ch);
 #endif
    ch = L'K';
    wselectopt(L"Raportti tulostetaan paperille (K/E)", L"KE", &ch);
@@ -5168,13 +5168,13 @@ void tarkraportit(tulostusparamtp *tulprm, wchar_t trk)
 	  if( srj < vsrj ) srj++;
       else {
 		 clrln(ySize-3);
-         vidspwmsg(ySize-3,0,7,0,L"Ensimmäinen sarja :               "
-			L"<F2>: Alusta, <Esc>: Poistu");
+         vidspwmsg(ySize-3,0,7,0,TR(L"Ensimmäinen sarja :               "
+			L"<F2>: Alusta, <Esc>: Poistu"));
 		 srj = luesarja(L"", &tc);
 			if (tc == ESC) break;
          clrln(ySize-3);
-         vidspwmsg(ySize-3,0,7,0,L"Viimeinen sarja :               " 
-			L"<Esc>: Poistu");
+         vidspwmsg(ySize-3,0,7,0,TR(L"Viimeinen sarja :               " 
+			L"<Esc>: Poistu"));
          vsrj = luesarja((wchar_t *)Sarjat[srj].sarjanimi, &tc);
          clrln(ySize-1);
          if (tc == 202) vsrj = sarjaluku - 1;
@@ -5200,7 +5200,7 @@ void tarkraportit(tulostusparamtp *tulprm, wchar_t trk)
          if (co == L'N') {
 			if (r > ySize-5) {
                vidspwmsg(ySize-3,0,0,7,
-                  L"Paina näppäintä jatkaaksesi, Esc : Poistu");
+                  TR(L"Paina näppäintä jatkaaksesi, Esc : Poistu"));
 			   LeaveCriticalSection(&tall_CriticalSection);
 			   if ((ch = readkbd(&che,1,spoolfl)) == ESC) break;
 			   EnterCriticalSection(&tall_CriticalSection);
@@ -5241,7 +5241,7 @@ void tarkraportit(tulostusparamtp *tulprm, wchar_t trk)
       LeaveCriticalSection(&tall_CriticalSection);
       if (co == L'N') {
          if (n > 0 && ch != ESC) {
-            vidspwmsg(ySize-3,0,0,7, L"Paina näppäintä jatkaaksesi");
+            vidspwmsg(ySize-3,0,0,7, TR(L"Paina näppäintä jatkaaksesi"));
 			readkbd(&che,1,0);
             n = 0;
             }
@@ -5276,7 +5276,7 @@ void kirjvaliajat(wchar_t *flnm)
    vafile = new TextFl(flnm != NULL ? flnm : vafilename, L"wb");
    if (!vafile->IsOpen()) {
 	  delete vafile;
-	  writeerror_w(L"Virhe väliaikatiedostoa avattaessa", 0);
+	  writeerror_w(TR(L"Virhe väliaikatiedostoa avattaessa"), 0);
 	  return;
 	  }
    vafile->WriteLine(L"Klpno Nimi                        Sarja      Tulos    T NR Lahto"
@@ -5692,7 +5692,7 @@ void emitvaliajat(INT *srj, tulostusparamtp *tulprm)
 		}
 	emptr = new emitvaclass[nilm[*srj]+1];
 	if (!emptr) {
-		writeerror_w(L"Muisti ei riitä", 0);
+		writeerror_w(TR(L"Muisti ei riitä"), 0);
 		*srj = sarjaluku;
 		goto loppu;
 		}
@@ -6262,12 +6262,12 @@ void editemit(INT32 ep, emittp *em, kilptietue *kilp)
 	  clrln(ySize-3);
 	  clrln(ySize-1);
 	  vidspwmsg(ySize-1,0,7,0,
-               L"P)uolita ajat, L)isää aikoihin vakiolisäys, +: Tallenna, Esc: Poistu");
-	  vidspwmsg(5,45,7,0,L"Luetun kortin koodi");
+               TR(L"P)uolita ajat, L)isää aikoihin vakiolisäys, +: Tallenna, Esc: Poistu"));
+	  vidspwmsg(5,45,7,0,TR(L"Luetun kortin koodi"));
       vidint(6, 50, 7, em->badge0);
-      vidspwmsg(8,45,7,0,L"Emit-maaliaika");
+      vidspwmsg(8,45,7,0,TR(L"Emit-maaliaika"));
 	  vidspaika_l(9,50,em->maali, t0, 8);
-	  vidspwmsg(10,45,7,0,L"Tulos-maaliaika");
+	  vidspwmsg(10,45,7,0,TR(L"Tulos-maaliaika"));
 	  VIDSPAIKA(11,50,kilp->maali(0), t0);
 	  for (r = 0; r < MAXNLEIMA; r++) {
 		 swprintf(line, L"%2d %3d %5d |", r, cd[r], tm[r]);
@@ -6317,7 +6317,7 @@ void editemit(INT32 ep, emittp *em, kilptietue *kilp)
 			case L'L' :
 			   tl = 0;
 			   clrln(ySize-3);
-			   vidspwmsg(ySize-3, 0, 7, 0, L"Anna kaikkiin aikoihin tuleva lisäys (sek)");
+			   vidspwmsg(ySize-3, 0, 7, 0, TR(L"Anna kaikkiin aikoihin tuleva lisäys (sek)"));
 			   inputlongw(&tl, 6, 45, ySize-3, L"\r", &wch);
 			   for (r = 1; r < MAXNLEIMA; r++) {
 				  if ((r == 1 || tm[r]) && (tl + (INT32)tm[r]) >= 0 && tl + tm[r] < 32768L) {

@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitAmpPaikat.h"
 //---------------------------------------------------------------------------
@@ -28,6 +29,7 @@ TFormAmpPaikat *FormAmpPaikat;
 __fastcall TFormAmpPaikat::TFormAmpPaikat(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

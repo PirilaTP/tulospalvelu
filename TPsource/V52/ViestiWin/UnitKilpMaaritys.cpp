@@ -19,6 +19,7 @@
 #include <vcl.h>
 #include <FileCtrl.hpp>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include <time.h>
 #include "UnitKilpMaaritys.h"
@@ -39,6 +40,7 @@ int powi(int i, int j);
 __fastcall TFormKilpMaaritys::TFormKilpMaaritys(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -48,8 +50,8 @@ __fastcall TFormKilpMaaritys::TFormKilpMaaritys(TComponent* Owner)
 	CBVaihe[2] = CBVaihe3;
 	CBVaihe[3] = CBVaihe4;
 	CBVaihe[4] = CBVaihe5;
-	Label3->Caption = L"Osuuksien tilavaraus (version max. "+UnicodeString(MAXOSUUSLUKU)+L")";
-	Label4->Caption = L"Väliaikojen tilavaraus (version max. "+UnicodeString(VAIKALUKU)+L")";
+	Label3->Caption = TR(L"Osuuksien tilavaraus (version max. ")+UnicodeString(MAXOSUUSLUKU)+L")";
+	Label4->Caption = TR(L"Väliaikojen tilavaraus (version max. ")+UnicodeString(VAIKALUKU)+L")";
 	if (KSEK == 100 && CBTarkkuus->Items->Count == 3) {
 		CBTarkkuus->Items->Add(L"0,001 s");
 		CBJrjTarkkuus->Items->Add(L"0,001 s");
@@ -68,12 +70,12 @@ void __fastcall TFormKilpMaaritys::ButtonOKClick(TObject *Sender)
 	kilpparam.n_os = _wtoi(EditTiedOsluku->Text.c_str());
 	kilpparam.valuku = _wtoi(EditTiedVa->Text.c_str());
 	if (EditOsluku->Text.ToInt() > kilpparam.n_os) {
-		Application->MessageBox(L"Joukkuekoko ei voi ylittää tiedoston tilavarausta. Korjaa tiedot.", L"Virhe",
+		Application->MessageBox(TR(L"Joukkuekoko ei voi ylittää tiedoston tilavarausta. Korjaa tiedot."), TR(L"Virhe"),
 			MB_OK);
 		return;
 		}
 	if (EditOsluku->Text.ToInt() < kilpparam.osuusluku) {
-		Application->MessageBox(L"Kilpailun joukkuekoko ei voi alittaa minkään sarjan joukkuekokoa. Korjaa tiedot.", L"Virhe",
+		Application->MessageBox(TR(L"Kilpailun joukkuekoko ei voi alittaa minkään sarjan joukkuekokoa. Korjaa tiedot."), TR(L"Virhe"),
 			MB_OK);
 		return;
 		}
@@ -81,7 +83,7 @@ void __fastcall TFormKilpMaaritys::ButtonOKClick(TObject *Sender)
 	kilpparam.n_os_akt = _wtoi(EditOsluku->Text.c_str());
 	int osLkm = _wtoi(EdtOsLkm->Text.c_str());
 	if (CBSarjat->Checked && (osLkm < 1 || osLkm > kilpparam.n_os_akt)) {
-		Application->MessageBoxW(L"Muodostettavien sarjojen osuusluku mahdoton", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Muodostettavien sarjojen osuusluku mahdoton"), TR(L"Este"), MB_OK);
 		return;
 		}
 	kilpparam.maxnosuus = _wtoi(EdtMaxRinn->Text.c_str());
@@ -138,7 +140,7 @@ void __fastcall TFormKilpMaaritys::ButtonOKClick(TObject *Sender)
 			FILE *sfl;
 			if ((sfl = _wfopen(sarjaxmlfname, L"rt")) != NULL) {
 				fclose(sfl);
-				if (Application->MessageBox(L"Sarjatiedosto jo olemassa, korvataanko uudella?", L"Vahvista",
+				if (Application->MessageBox(TR(L"Sarjatiedosto jo olemassa, korvataanko uudella?"), TR(L"Vahvista"),
 					MB_YESNO) != IDYES) {
 					return;
 					}
@@ -153,7 +155,7 @@ void __fastcall TFormKilpMaaritys::ButtonOKClick(TObject *Sender)
 			kirjEventXml(sarjaxmlfname, true, false, false);
 			}
 		else {
-			Application->MessageBox(L"Sarjalukumäärä ei sallitulla alueella", L"Virhe",
+			Application->MessageBox(TR(L"Sarjalukumäärä ei sallitulla alueella"), TR(L"Virhe"),
 				MB_OK);
 			return;
 			}
@@ -182,17 +184,17 @@ void __fastcall TFormKilpMaaritys::ButtonOKClick(TObject *Sender)
 					vakantit = 0;
 				}
 */
-			if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset sarjatiedostoon?", L"Tallennus",
+			if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset sarjatiedostoon?"), TR(L"Tallennus"),
 				MB_YESNO) == IDYES) {
 				int err = 0;
 				orig_laji = kilpparam.kilplaji;
 				if ((err = maaraaOsuusluku(false)) != 0) {
 					if (err == 2)
-						Application->MessageBoxW(L"Osuusmäärän tilavaraus ristiriidassa aiempien sarjatietojen kanssa",
-							L"Virhe", MB_OK);
+						Application->MessageBoxW(TR(L"Osuusmäärän tilavaraus ristiriidassa aiempien sarjatietojen kanssa"),
+							TR(L"Virhe"), MB_OK);
 					if (err == 1)
-						Application->MessageBoxW(L"Määritelty osuusluku ristiriidassa aiempien sarjatietojen kanssa",
-							L"Virhe", MB_OK);
+						Application->MessageBoxW(TR(L"Määritelty osuusluku ristiriidassa aiempien sarjatietojen kanssa"),
+							TR(L"Virhe"), MB_OK);
 					return;
 					}
 				kirjEventXml(sarjaxmlfname, true, false, false);
@@ -200,8 +202,8 @@ void __fastcall TFormKilpMaaritys::ButtonOKClick(TObject *Sender)
 				}
 			}
 		else {
-			Application->MessageBox(L"Valinnat tallennetaan vasta, kun sarjatiedosto on muodostettu, aiemman sarjatiedoston lukeminen kumoaa valinnat",
-				L"Rajoitus", MB_OK);
+			Application->MessageBox(TR(L"Valinnat tallennetaan vasta, kun sarjatiedosto on muodostettu, aiemman sarjatiedoston lukeminen kumoaa valinnat"),
+				TR(L"Rajoitus"), MB_OK);
 			}
 		}
 	ModalResult = mrOk;
@@ -333,19 +335,19 @@ void __fastcall TFormKilpMaaritys::EditTiedOslukuExit(TObject *Sender)
 
 	n = _wtoi(EditTiedOsluku->Text.c_str());
 	if (ToimintaTila > 0 && n != kilpparam.n_os) {
-		Application->MessageBox(L"Osuuksien tilavarausta ei voi muuttaa, kun kilpailijatiedot on jo luotu",
-			L"Rajoitus", MB_OK);
+		Application->MessageBox(TR(L"Osuuksien tilavarausta ei voi muuttaa, kun kilpailijatiedot on jo luotu"),
+			TR(L"Rajoitus"), MB_OK);
 		EditTiedOsluku->Text = kilpparam.n_os;
 		}
 	else if (n < 1 || n > MAXOSUUSLUKU) {
-		Application->MessageBox(L"Osuuksien tilavaraus ei sallitulla alueella", L"Virhe",
+		Application->MessageBox(TR(L"Osuuksien tilavaraus ei sallitulla alueella"), TR(L"Virhe"),
 			MB_OK);
 		EditTiedOsluku->Text = kilpparam.n_os;
 		}
 	else {
 		if (_wtoi(EditOsluku->Text.c_str()) > n) {
-			Application->MessageBoxW((L"Kilpailun joukkuekooksi asetettu "+UnicodeString(n)).c_str(),
-				L"Muutos", MB_OK);
+			Application->MessageBoxW((TR(L"Kilpailun joukkuekooksi asetettu ")+UnicodeString(n)).c_str(),
+				TR(L"Muutos"), MB_OK);
 			}
 		EditOsluku->Text = n;
 		}
@@ -358,12 +360,12 @@ void __fastcall TFormKilpMaaritys::EditTiedVaExit(TObject *Sender)
 
 	n = _wtoi(EditTiedVa->Text.c_str());
 	if (ToimintaTila > 0 && n != kilpparam.valuku) {
-		Application->MessageBox(L"Väliaikojen tilavarausta ei voi muuttaa, kun kilpailijatiedot on jo luotu",
-			L"Rajoitus", MB_OK);
+		Application->MessageBox(TR(L"Väliaikojen tilavarausta ei voi muuttaa, kun kilpailijatiedot on jo luotu"),
+			TR(L"Rajoitus"), MB_OK);
 		EditTiedVa->Text = kilpparam.valuku;
 		}
 	if (n < 1 || n > VAIKALUKU) {
-		Application->MessageBox(L"Väliaikojen tilavaraus ei sallitulla alueella", L"Virhe",
+		Application->MessageBox(TR(L"Väliaikojen tilavaraus ei sallitulla alueella"), TR(L"Virhe"),
 			MB_OK);
 		EditTiedVa->Text = kilpparam.valuku;
 		}
@@ -413,7 +415,7 @@ void __fastcall TFormKilpMaaritys::RGMuuLajiClick(TObject *Sender)
 {
 	for (int i = 0; i < 5; i++) {
 		CBVaihe[i]->Items->Clear();
-		CBVaihe[i]->Items->Add(L"Ei käytössä");
+		CBVaihe[i]->Items->Add(TR(L"Ei käytössä"));
 		CBVaihe[i]->ItemIndex = 0;
 		}
 }
@@ -424,18 +426,18 @@ void __fastcall TFormKilpMaaritys::EditOslukuExit(TObject *Sender)
 	int n = _wtoi(EditOsluku->Text.c_str());
 	if (ToimintaTila == 2 && n != kilpparam.n_os_akt) {
 		n = kilpparam.n_os_akt;
-		Application->MessageBoxW(L"Joukkuekoon maksimin muuttaminen on mahdollista vain esivalmistelutilassa",
-			L"Rajoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Joukkuekoon maksimin muuttaminen on mahdollista vain esivalmistelutilassa"),
+			TR(L"Rajoitus"), MB_OK);
 		}
 	else if (n < 1) {
 		n = 1;
-		Application->MessageBoxW((L"Kilpailun joukkuekooksi asetettu "+UnicodeString(n)).c_str(),
-			L"Rajoitus", MB_OK);
+		Application->MessageBoxW((TR(L"Kilpailun joukkuekooksi asetettu ")+UnicodeString(n)).c_str(),
+			TR(L"Rajoitus"), MB_OK);
 		}
 	else if (n > _wtoi(EditTiedOsluku->Text.c_str())) {
 		n = _wtoi(EditTiedOsluku->Text.c_str());
-		Application->MessageBoxW((L"Kilpailun joukkuekooksi asetettu "+UnicodeString(n)+
-			L". Muuta tarvittaessa tiedostomuoto ensin.").c_str(), L"Rajoitus", MB_OK);
+		Application->MessageBoxW((TR(L"Kilpailun joukkuekooksi asetettu ")+UnicodeString(n)+
+			TR(L". Muuta tarvittaessa tiedostomuoto ensin.")).c_str(), TR(L"Rajoitus"), MB_OK);
 		}
 	EditOsluku->Text = n;
 }

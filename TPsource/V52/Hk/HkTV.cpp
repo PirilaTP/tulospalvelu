@@ -86,14 +86,14 @@ void opentv(void)
 	else {
 		cn_tv = TV1COM;
 		if (openport_x(cn_tv, tv_com, tv_baud, L'n', 8, 1, 0)) {
-			writeerror_w(L"TV-tiedonsiirron avaaminen ei onnistunut", 0);
+			writeerror_w(TR(L"TV-tiedonsiirron avaaminen ei onnistunut"), 0);
 			tv_com = 0;
 			return;
 			}
 			}
 		}
 	if (er) {
-		writeerror_w(L"Tiedonsiirtoa TV:lle ei avata", 0);
+		writeerror_w(TR(L"Tiedonsiirtoa TV:lle ei avata"), 0);
 		tv_com = 0;
 		}
 	}
@@ -123,7 +123,7 @@ static void near lah_tv(kilptietue *kilp, INT piste, INT sj)
 			if (n > 0)
 				kilp0.GETREC(n);
 			if (n <= 0 || kilp0.Sarja() != kilp->Sarja()) {
-				writeerror_w(L"Sarjatiedossa v‰‰r‰ alkunumero, takaa-ajon ajat TV:lle v‰‰rin", 0);
+				writeerror_w(TR(L"Sarjatiedossa v‰‰r‰ alkunumero, takaa-ajon ajat TV:lle v‰‰rin"), 0);
 				}
 			else {
 				edkarki = kilp0.ytulos(k_pv - 1);

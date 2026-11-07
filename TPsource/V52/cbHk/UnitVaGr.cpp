@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitVaGr.h"
 #include "HkDeclare.h"
@@ -29,6 +30,7 @@ TFormVaGr *FormVaGr;
 __fastcall TFormVaGr::TFormVaGr(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

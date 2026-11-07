@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitFIS.h"
 //---------------------------------------------------------------------------
@@ -28,6 +29,7 @@ TFormFIS *FormFIS;
 __fastcall TFormFIS::TFormFIS(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -131,7 +133,7 @@ void __fastcall TFormFIS::BtnLuePisteetClick(TObject *Sender)
 			wcscpy(laji, L"SP");
 			break;
 		default:
-			Application->MessageBoxW(L"Valitse laji", L"Valitse", MB_OK);
+			Application->MessageBoxW(TR(L"Valitse laji"), TR(L"Valitse"), MB_OK);
 			return;
 		}
 	OpenDialog1->DefaultExt = L"csv";
@@ -149,8 +151,8 @@ void __fastcall TFormFIS::BtnLuePisteetClick(TObject *Sender)
 				InFileCom = new TextFl(fnamecom, L"rt");
 			if (!InFileCom || !InFileCom->IsOpen()) {
 				Application->MessageBoxW(
-					(UnicodeString(L"Ohjelma ei onnistunut avaamaan molempia tarvittavia tiedostoja: ")+fnamepts+
-					L" ja "+fnamecom).c_str(), L"Este", MB_OK);
+					(UnicodeString(TR(L"Ohjelma ei onnistunut avaamaan molempia tarvittavia tiedostoja: "))+fnamepts+
+					TR(L" ja ")+fnamecom).c_str(), TR(L"Este"), MB_OK);
 				}
 			else {
 				LueKilpailijat(InFileCom);
@@ -233,8 +235,8 @@ void __fastcall TFormFIS::BtnLueNimetClick(TObject *Sender)
 		InFileCom = new TextFl(fnamecom, L"rt");
 		if (!InFileCom || !InFileCom->IsOpen()) {
 			Application->MessageBoxW(
-				(UnicodeString(L"Ohjelma ei onnistunut avaamaan tarvittavaa tiedostoa: ")+
-				fnamecom).c_str(), L"Este", MB_OK);
+				(UnicodeString(TR(L"Ohjelma ei onnistunut avaamaan tarvittavaa tiedostoa: "))+
+				fnamecom).c_str(), TR(L"Este"), MB_OK);
 				}
 		else {
 			LueKilpailijat(InFileCom);

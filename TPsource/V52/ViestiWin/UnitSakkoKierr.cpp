@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <process.h>
 
 #include "UnitSakkoKierr.h"
@@ -34,6 +35,7 @@ CRITICAL_SECTION sakkoKierrCriticalSection;
 __fastcall TFormSakkoKierr::TFormSakkoKierr(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

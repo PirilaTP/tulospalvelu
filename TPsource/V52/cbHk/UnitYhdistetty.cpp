@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitYhdistetty.h"
 //---------------------------------------------------------------------------
@@ -28,6 +29,7 @@ TFormYhdistetty *FormYhdistetty;
 __fastcall TFormYhdistetty::TFormYhdistetty(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -43,7 +45,7 @@ void __fastcall TFormYhdistetty::BitBtn1Click(TObject *Sender)
 void __fastcall TFormYhdistetty::FormShow(TObject *Sender)
 {
 	CBSarjat->Clear();
-	CBSarjat->Items->Add(L"Kaikki sarjat");
+	CBSarjat->Items->Add(TR(L"Kaikki sarjat"));
 	for (int srj = 0; srj < sarjaluku; srj++)
 		CBSarjat->Items->Add(Sarjat[srj].sarjanimi);
 	CBSarjat->ItemIndex = 0;
@@ -122,7 +124,7 @@ void __fastcall TFormYhdistetty::Button1Click(TObject *Sender)
 			delete[] d_pist;
 			}
 		}
-	Application->MessageBoxW(L"Toimenpide suoritettu", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Toimenpide suoritettu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 

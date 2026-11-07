@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitPartio.h"
 //---------------------------------------------------------------------------
@@ -31,6 +32,7 @@ INT seur_laji(ratatp *rt, INT r);
 __fastcall TFormPartio::TFormPartio(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -219,10 +221,10 @@ void __fastcall TFormPartio::Partio(kilptietue *kilp, int d)
 			}
 		}
 	if (kilpparam.rogaining) {
-		swprintf(line, L"Lasketut pisteet: %d, Sis. sakon %d,  Aika: %8.8s",
+		swprintf(line, TR(L"Lasketut pisteet: %d, Sis. sakon %d,  Aika: %8.8s"),
 			Kilp.pisteet[0], Kilp.pisteet[1]-Kilp.pisteet[0], aikatowstr_ls(as, tls, 0));
 		if (entpisteet > -1000000 && entpisteet != Kilp.pisteet[0]) {
-			swprintf(line, L"Tallennetut pisteet: %d", entpisteet);
+			swprintf(line, TR(L"Tallennetut pisteet: %d"), entpisteet);
 			}
 		}
 	hyvstyle = 0;

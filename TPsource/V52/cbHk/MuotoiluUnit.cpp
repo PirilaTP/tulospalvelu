@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <stdio.h>
 #include <bstrings.h>
 
@@ -60,6 +61,7 @@ static int omaVariNo;
 __fastcall TFormMuotoilu::TFormMuotoilu(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -85,7 +87,7 @@ int TFormMuotoilu::LisaaOmaVari(int vari)
 	for (cl = 0; cl < sizeof(OlVarit)/sizeof(OlVarit[0]) && OlVarit[cl].nimi[0] != 0; cl++) ;
 
 	if (cl < sizeof(OlVarit)/sizeof(OlVarit[0])) {
-		swprintf(OlVarit[cl].nimi, L"Oma-%d", ++omaVariNo);
+		swprintf(OlVarit[cl].nimi, TR(L"Oma-%d"), ++omaVariNo);
 		OlVarit[cl].vari = vari;
 		for (int i = 0; i < 2; i++)
 			for (int j = 0; j < 2; j++)
@@ -261,14 +263,14 @@ void __fastcall TFormMuotoilu::naytaLl(int lj)
 	SGLl[lj]->ColCount = 22;
 	SGLl[lj]->RowCount = rowCount;
 	SGLl[lj]->ColWidths[0] = 60 * Screen->PixelsPerInch / 96;
-	SGLl[lj]->Cells[0][0] = L"Kenttä";
-	SGLl[lj]->Cells[1][0] = L"Sarj.";
-	SGLl[lj]->Cells[2][0] = L"Aakk.";
-	SGLl[lj]->Cells[3][0] = L"Seur.";
-	SGLl[lj]->Cells[4][0] = L"Lähd.";
-	SGLl[lj]->Cells[5][0] = L"Srj-2";
-	SGLl[lj]->Cells[6][0] = L"Aak-2";
-	SGLl[lj]->Cells[7][0] = L"Seu-2";
+	SGLl[lj]->Cells[0][0] = TR(L"Kenttä");
+	SGLl[lj]->Cells[1][0] = TR(L"Sarj.");
+	SGLl[lj]->Cells[2][0] = TR(L"Aakk.");
+	SGLl[lj]->Cells[3][0] = TR(L"Seur.");
+	SGLl[lj]->Cells[4][0] = TR(L"Lähd.");
+	SGLl[lj]->Cells[5][0] = TR(L"Srj-2");
+	SGLl[lj]->Cells[6][0] = TR(L"Aak-2");
+	SGLl[lj]->Cells[7][0] = TR(L"Seu-2");
 	if (lj == 0) {
 		EdtLots0->Text = UnicodeString(llparam.luetots0);
 		EdtLots1->Text = UnicodeString(llparam.luetots1);
@@ -283,9 +285,9 @@ void __fastcall TFormMuotoilu::naytaLl(int lj)
 		SGLl[lj]->ColWidths[i+7] = 32 * Screen->PixelsPerInch / 96;
 		SGLl[lj]->ColWidths[i+14] = 32 * Screen->PixelsPerInch / 96;
 		}
-	SGLl[lj]->Cells[0][rowCount-3] = L"Aikap/Marg";
-	SGLl[lj]->Cells[0][rowCount-2] = L"Pv/Klo/Mtk";
-	SGLl[lj]->Cells[0][rowCount-1] = L"Etunm ens";
+	SGLl[lj]->Cells[0][rowCount-3] = TR(L"Aikap/Marg");
+	SGLl[lj]->Cells[0][rowCount-2] = TR(L"Pv/Klo/Mtk");
+	SGLl[lj]->Cells[0][rowCount-1] = TR(L"Etunm ens");
 //	SGLl[lj]->Cells[0][rowCount-1] = L"Seura/Etunm";
 	for (int r = 1; r < rowCount; r++) {
 		if (r < rowCount-3)
@@ -294,7 +296,7 @@ void __fastcall TFormMuotoilu::naytaLl(int lj)
 			if (r < rowCount-3) {
 				SGLl[lj]->Cells[i][r] = UnicodeString(tulkentta[lj][r-1].pos[i-1]);
 				SGLl[lj]->Cells[i+7][r] = UnicodeString(tulkentta[lj][r-1].len[i-1]);
-				SGLl[lj]->Cells[i+14][r] = tulkentta[lj][r-1].tas[i-1] ? L"Oik" : L"Vas";
+				SGLl[lj]->Cells[i+14][r] = tulkentta[lj][r-1].tas[i-1] ? TR(L"Oik") : TR(L"Vas");
 				}
 			if (r == rowCount-3) {
 				if (i > 4)
@@ -334,13 +336,13 @@ void __fastcall TFormMuotoilu::naytaTls(int lj)
 	SGTls[lj]->RowCount = n_frmflds[lj]+1;
 	SGTls[lj]->ColWidths[0] = 60 * Screen->PixelsPerInch / 96;
 	SGTls[lj]->ColWidths[1] = 60 * Screen->PixelsPerInch / 96;
-	SGTls[lj]->Cells[0][0] = L"Kenttä";
-	SGTls[lj]->Cells[1][0] = L"Otsikko";
-	SGTls[lj]->Cells[2][0] = L"Sij.";
-	SGTls[lj]->Cells[3][0] = L"Merkk.";
-	SGTls[lj]->Cells[4][0] = L"Tas.";
+	SGTls[lj]->Cells[0][0] = TR(L"Kenttä");
+	SGTls[lj]->Cells[1][0] = TR(L"Otsikko");
+	SGTls[lj]->Cells[2][0] = TR(L"Sij.");
+	SGTls[lj]->Cells[3][0] = TR(L"Merkk.");
+	SGTls[lj]->Cells[4][0] = TR(L"Tas.");
 	if (lj != 0)
-		SGTls[lj]->Cells[5][0] = L"Askel";
+		SGTls[lj]->Cells[5][0] = TR(L"Askel");
 	for (int i = 2; i < SGTls[lj]->ColCount; i++) {
 		SGTls[lj]->ColWidths[i] = (lj == 0 ? 50 : 36) * Screen->PixelsPerInch / 96;
 		}
@@ -349,7 +351,7 @@ void __fastcall TFormMuotoilu::naytaTls(int lj)
 		SGTls[lj]->Cells[1][r] = UnicodeString(frmflds[lj][r-1].ots);
 		SGTls[lj]->Cells[2][r] = UnicodeString(frmflds[lj][r-1].pos);
 		SGTls[lj]->Cells[3][r] = UnicodeString(frmflds[lj][r-1].len);
-		SGTls[lj]->Cells[4][r] = frmflds[lj][r-1].oik ? L"Oik" : L"Vas";
+		SGTls[lj]->Cells[4][r] = frmflds[lj][r-1].oik ? TR(L"Oik") : TR(L"Vas");
 		if (lj != 0)
 			SGTls[lj]->Cells[5][r] = UnicodeString(frmflds[lj][r-1].askel);
 		}

@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitKaavaTaul.h"
 //---------------------------------------------------------------------------
@@ -27,6 +28,7 @@ TFormKaavaTaul *FormKaavaTaul;
 __fastcall TFormKaavaTaul::TFormKaavaTaul(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -42,10 +44,10 @@ void __fastcall TFormKaavaTaul::NaytaTaul(void)
 	sijOn = CBSij->Checked ? 1 : 0;
 	tulOn = CBTls->Checked ? 1 : 0;
 	SG1->ColCount = 16*sijOn+7*tulOn+10;
-	SG1->Cells[0][0] = L"Sarja";
-	SG1->Cells[1][0] = L"Vaihe";
-	SG1->Cells[2][0] = L"Jatk";
-	SG1->Cells[3][0] = L"Laji";
+	SG1->Cells[0][0] = TR(L"Sarja");
+	SG1->Cells[1][0] = TR(L"Vaihe");
+	SG1->Cells[2][0] = TR(L"Jatk");
+	SG1->Cells[3][0] = TR(L"Laji");
 	if (sijOn) {
 		SG1->Cells[4][0] = L"A1";
 		SG1->Cells[5][0] = L"L1";
@@ -65,20 +67,20 @@ void __fastcall TFormKaavaTaul::NaytaTaul(void)
 		SG1->Cells[19][0] = L"L4";
 		}
 	if (tulOn) {
-		SG1->Cells[16*sijOn+4][0] = L"TulLaji";
-		SG1->Cells[16*sijOn+5][0] = L"VertAika";
-		SG1->Cells[16*sijOn+6][0] = L"V-Pist";
-		SG1->Cells[16*sijOn+7][0] = L"Kerr";
-		SG1->Cells[16*sijOn+8][0] = L"Jak";
-		SG1->Cells[16*sijOn+9][0] = L"Pyör";
-		SG1->Cells[16*sijOn+10][0] = L"EiNeg";
+		SG1->Cells[16*sijOn+4][0] = TR(L"TulLaji");
+		SG1->Cells[16*sijOn+5][0] = TR(L"VertAika");
+		SG1->Cells[16*sijOn+6][0] = TR(L"V-Pist");
+		SG1->Cells[16*sijOn+7][0] = TR(L"Kerr");
+		SG1->Cells[16*sijOn+8][0] = TR(L"Jak");
+		SG1->Cells[16*sijOn+9][0] = TR(L"Pyör");
+		SG1->Cells[16*sijOn+10][0] = TR(L"EiNeg");
 		}
-	SG1->Cells[16*sijOn+7*tulOn+4][0] = L"Y-Jatk";
-	SG1->Cells[16*sijOn+7*tulOn+5][0] = L"V-lkm";
-	SG1->Cells[16*sijOn+7*tulOn+6][0] = L"OoMin";
-	SG1->Cells[16*sijOn+7*tulOn+7][0] = L"HyvMin";
-	SG1->Cells[16*sijOn+7*tulOn+8][0] = L"Kaik";
-	SG1->Cells[16*sijOn+7*tulOn+9][0] = L"YpTulos";
+	SG1->Cells[16*sijOn+7*tulOn+4][0] = TR(L"Y-Jatk");
+	SG1->Cells[16*sijOn+7*tulOn+5][0] = TR(L"V-lkm");
+	SG1->Cells[16*sijOn+7*tulOn+6][0] = TR(L"OoMin");
+	SG1->Cells[16*sijOn+7*tulOn+7][0] = TR(L"HyvMin");
+	SG1->Cells[16*sijOn+7*tulOn+8][0] = TR(L"Kaik");
+	SG1->Cells[16*sijOn+7*tulOn+9][0] = TR(L"YpTulos");
 	SG1->ColWidths[0] = 60 * Screen->PixelsPerInch / 96;
 	if (sijOn) {
 		for (int c = 4; c <= 19; c++)
@@ -140,7 +142,7 @@ void __fastcall TFormKaavaTaul::NaytaTaul(void)
 			if (tulOn) {
 				SG1->Cells[16*sijOn+4][r] = Sarjat[srj].pistekaava[ipv].plaji;
 				if (Sarjat[srj].pistekaava[ipv].vaika == 0)
-					SG1->Cells[16*sijOn+5][r] = L"Kärki";
+					SG1->Cells[16*sijOn+5][r] = TR(L"Kärki");
 				else {
 					aikatowstr_cols_n(ln, Sarjat[srj].pistekaava[ipv].vaika, 0, 0, 8);
 					SG1->Cells[16*sijOn+5][r] = ln;
@@ -165,14 +167,14 @@ void __fastcall TFormKaavaTaul::NaytaTaul(void)
 void __fastcall TFormKaavaTaul::FormShow(TObject *Sender)
 {
 	CBSarja->Clear();
-	CBSarja->Items->Add(L"Kaikki");
+	CBSarja->Items->Add(TR(L"Kaikki"));
 	for (int srj = 0; srj < sarjaluku; srj++)
 		CBSarja->Items->Add(Sarjat[srj].sarjanimi);
 	CBSarja->ItemIndex = 0;
 	CBVaihe->Clear();
-	CBVaihe->Items->Add(L"Kaikki");
+	CBVaihe->Items->Add(TR(L"Kaikki"));
 	for (int ipv = 1; ipv <= kilpparam.n_pv_akt; ipv++)
-		CBVaihe->Items->Add(UnicodeString(ipv)+L". vaihe");
+		CBVaihe->Items->Add(UnicodeString(ipv)+TR(L". vaihe"));
 	CBVaihe->ItemIndex = k_pv+1;
 	NaytaTaul();
 }

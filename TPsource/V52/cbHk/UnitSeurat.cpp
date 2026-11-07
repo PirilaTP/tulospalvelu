@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <ctype.h>
 
 #include "WinHk.h"
@@ -44,6 +45,7 @@ static wchar_t erotin[8] = L" ;\t";
 __fastcall TFormSeurat::TFormSeurat(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

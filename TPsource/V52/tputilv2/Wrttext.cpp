@@ -157,7 +157,7 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 		if (prf[nprf] == NULL)
 			break;
 	if (nprf == PRLKM) {
-		writeerror_w(L"Kaikki kirjoitinliitännät käytössä. Tulostus ei onnstu", 0);
+		writeerror_w(TR(L"Kaikki kirjoitinliitännät käytössä. Tulostus ei onnstu"), 0);
 		return(NULL);		
 		}
 	if ((prf[nprf] = (PRFILE *)malloc(sizeof(PRFILE))) != NULL) {
@@ -170,7 +170,7 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 			prf[nprf]->u.Fl = new TextFl(prtfname, mode[append], merk);
 			if (!prf[nprf]->u.Fl->IsOpen()) {
 				delete prf[nprf]->u.Fl;
-				writeerror_w(L"Tiedoston avaaminen ei onnisunut", 0);
+				writeerror_w(TR(L"Tiedoston avaaminen ei onnisunut"), 0);
 				free(prf[nprf]);
 				prf[nprf] = NULL;
 				return(NULL);
@@ -185,9 +185,9 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 			if (!GetDefaultPrinterW(PrinterName, &bufSz)) {
 				err = GetLastError();
 				if (err == ERROR_INSUFFICIENT_BUFFER)
-					writeerror_w(L"Oletuskirjoittimen nimi liian pitkä (yli 79 merkkiä)", 0);
+					writeerror_w(TR(L"Oletuskirjoittimen nimi liian pitkä (yli 79 merkkiä)"), 0);
 				else
-					writeerror_w(L"Oletuskirjoitinta ei ole määritelty", 0);
+					writeerror_w(TR(L"Oletuskirjoitinta ei ole määritelty"), 0);
 				oletuskirjoitin = -1;
 				}
 			if (!oletuskirjoitin)
@@ -232,7 +232,7 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 			}
 		if (oletuskirjoitin) {
 			if (oletuskirjoitin == 1) {
-				writeerror_w(L"Oletuskirjoittimen käyttöönotto ei onnistu",0);
+				writeerror_w(TR(L"Oletuskirjoittimen käyttöönotto ei onnistu"),0);
 				wcscpy(prtfname, L"NUL");
 				}
 			if (!wcscmp(prtfname, L"NUL")) {
@@ -740,7 +740,7 @@ int startdocGDI(PRFILE *pf)
 	 nError = StartDocW((HDC)pf->u.wp.hPrinter, &di); 
 	 if (nError == SP_ERROR)
 	 { 
-		  writeerror_w(L"Virhe kirjoitintulostusta käynnistettäessä", 0);
+		  writeerror_w(TR(L"Virhe kirjoitintulostusta käynnistettäessä"), 0);
 		  goto Error; 
 	 }
 	 pf->u.wp.DocOpen = 1;
@@ -777,7 +777,7 @@ int startpageGDI(PRFILE *pf)
     nError = StartPage((HDC)pf->u.wp.hPrinter); 
 	 if (nError <= 0)
     { 
-		  writeerror_w(L"Virhe sivun tulostusta käynnistettäessä", 0);
+		  writeerror_w(TR(L"Virhe sivun tulostusta käynnistettäessä"), 0);
 		  goto Error;
 	 }
 	SetTextAlign((HDC)pf->u.wp.hPrinter, TA_TOP | TA_LEFT);

@@ -10,6 +10,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitMaastossa.h"
 #include "HkDeclare.h"
@@ -22,6 +23,7 @@ TFormMaastossa *FormMaastossa;
 __fastcall TFormMaastossa::TFormMaastossa(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96)
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -145,7 +147,7 @@ void __fastcall TFormMaastossa::haeKilpailijat(void)
 		Grid->RowCount = 2;
 		for (int c = 0; c < Grid->ColCount; c++)
 			Grid->Cells[c][1] = L"";
-		LblLkm->Caption = L"0 kilpailijaa";
+		LblLkm->Caption = TR(L"0 kilpailijaa");
 		return;
 	}
 
@@ -213,7 +215,7 @@ void __fastcall TFormMaastossa::FormShow(TObject *Sender)
 	int vanha = CBSarja->ItemIndex;
 	CBSarja->Items->BeginUpdate();
 	CBSarja->Clear();
-	CBSarja->Items->Add(L"Kaikki sarjat");
+	CBSarja->Items->Add(TR(L"Kaikki sarjat"));
 	for (int srj = 0; srj < sarjaluku; srj++)
 		CBSarja->Items->Add(UnicodeString(Sarjat[srj].sarjanimi));
 	CBSarja->Items->EndUpdate();

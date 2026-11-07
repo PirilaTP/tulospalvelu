@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSeurGr.h"
 #include "VDeclare.h"
@@ -30,6 +31,7 @@ TSeurantaForm *SeurantaForm;
 __fastcall TSeurantaForm::TSeurantaForm(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -561,9 +563,9 @@ void __fastcall TSeurantaForm::FormActivate(TObject *Sender)
       SarjaVal->Items->Add(Sarjat[srj].sarjanimi);
    SarjaVal->ItemIndex = Sarja;
    OsVal->Clear();
-   OsVal->Items->Add("Numerot");
+   OsVal->Items->Add(TRA("Numerot"));
    for (int os = 0; os < Sarjat[Sarja].osuusluku; os++)
-      OsVal->Items->Add(AnsiString(os+1)+". osuus");
+      OsVal->Items->Add(AnsiString(os+1)+TRA(". osuus"));
    OsVal->ItemIndex = Osuus + 1;
    PiirraBtnClick(Sender);
         piirraPyynto = 1;
@@ -576,9 +578,9 @@ void __fastcall TSeurantaForm::SarjaValChange(TObject *Sender)
    if (Osuus >= Sarjat[Sarja].osuusluku)
       Osuus = Sarjat[Sarja].osuusluku - 1;
    OsVal->Clear();
-   OsVal->Items->Add("Numerot");
+   OsVal->Items->Add(TRA("Numerot"));
    for (int os = 0; os < Sarjat[Sarja].osuusluku; os++)
-      OsVal->Items->Add(AnsiString(os+1)+". osuus");
+      OsVal->Items->Add(AnsiString(os+1)+TRA(". osuus"));
    OsVal->ItemIndex = Osuus + 1;
    OsValChange(Sender);
 }

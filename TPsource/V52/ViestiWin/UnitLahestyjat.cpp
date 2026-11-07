@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitMain.h"
 #include "UnitLahestyjat.h"
@@ -36,6 +37,7 @@ static const int cNimi = 4;
 __fastcall TFormLahestyjat::TFormLahestyjat(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -222,14 +224,14 @@ void __fastcall TFormLahestyjat::FormShow(TObject *Sender)
 		}
 	CBOsuus->Clear();
 	for (int os = 1; os <= Sarjat[Sarja].ntosuus; os++)
-		CBOsuus->Items->Add(UnicodeString(os)+L". os.");
+		CBOsuus->Items->Add(UnicodeString(os)+TR(L". os."));
 	if (Osuus >= Sarjat[Sarja].ntosuus)
 		Osuus = Sarjat[Sarja].ntosuus - 1;
 	CBOsuus->ItemIndex = Osuus;
 	CBPiste->Clear();
-	CBPiste->Items->Add(L"Vaihto");
+	CBPiste->Items->Add(TR(L"Vaihto"));
 	for (int va = 1; va <= kilpparam.maxvaluku; va++)
-		CBPiste->Items->Add(UnicodeString(va)+L". va");
+		CBPiste->Items->Add(UnicodeString(va)+TR(L". va"));
 	if (Osuus == 0 && Piste == 1)
 		Piste = 2;
 	CBPiste->ItemIndex = Piste;
@@ -246,7 +248,7 @@ void __fastcall TFormLahestyjat::CBSarjaClick(TObject *Sender)
 	Sarja = CBSarja->ItemIndex;
 	CBOsuus->Clear();
 	for (int os = 1; os <= Sarjat[Sarja].ntosuus; os++)
-		CBOsuus->Items->Add(UnicodeString(os)+L". os.");
+		CBOsuus->Items->Add(UnicodeString(os)+TR(L". os."));
 	if (Osuus >= Sarjat[Sarja].ntosuus)
 		Osuus = Sarjat[Sarja].ntosuus - 1;
 	CBOsuus->ItemIndex = Osuus;

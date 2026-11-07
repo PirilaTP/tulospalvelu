@@ -18,6 +18,7 @@
 #include <vcl.h>
 #include <Clipbrd.hpp>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitKilpailijatiedot.h"
 #include "UnitKilpailijaOnline.h"
@@ -83,6 +84,7 @@ static const char salausVal[2] = "YJ";
 __fastcall TFormKilpailijatiedot::TFormKilpailijatiedot(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -120,16 +122,16 @@ void __fastcall TFormKilpailijatiedot::EdtKilpnoChanged(TObject *Sender)
 		}
 	else {
 		if (KilpNo < 0 || KilpNo > maxkilpno || (ToimintaTila == 2 && KilpNo < minkilpno)) {
-			Application->MessageBoxW(L"Numero ei sallitulla alueella", MB_OK);
+			Application->MessageBoxW(TR(L"Numero ei sallitulla alueella"), MB_OK);
 			return;
 			}
 		if (ToimintaTila == 2 && (d = getpos(KilpNo)) > 0) {
 			if (d != dKilp)
-				Application->MessageBoxW(L"Numero jo käytössä", MB_OK);
+				Application->MessageBoxW(TR(L"Numero jo käytössä"), MB_OK);
 			return;
 			}
-		if (Application->MessageBoxW(L"Haluatko todella muuttaa kilpailijan numeroa",
-			L"Vahvista", MB_YESNO) == IDYES) {
+		if (Application->MessageBoxW(TR(L"Haluatko todella muuttaa kilpailijan numeroa"),
+			TR(L"Vahvista"), MB_YESNO) == IDYES) {
 			Kilp.setId(KilpNo, ToimintaTila == 1 ? -1 : k_pv);
 			}
 		else
@@ -350,40 +352,40 @@ void __fastcall TFormKilpailijatiedot::naytaTiedot(void)
 						case TarkCol:
 							switch (Kilp.tark(pv)) {
 								case L'K' :
-									wcscpy(line, L"Kesk");
+									wcscpy(line, TR(L"Kesk"));
 									break;
 								case L'H' :
-									wcscpy(line, L"Hyl");
+									wcscpy(line, TR(L"Hyl"));
 									break;
 								case L'M' :
-									wcscpy(line, L"Virhe");
+									wcscpy(line, TR(L"Virhe"));
 									break;
 								case L'E' :
-									wcscpy(line, L"Eiläht.");
+									wcscpy(line, TR(L"Eiläht."));
 									break;
 								case L'B' :
-									wcscpy(line, L"Havaittu");
+									wcscpy(line, TR(L"Havaittu"));
 									break;
 								case L'T' :
-									wcscpy(line, L"Tark.");
+									wcscpy(line, TR(L"Tark."));
 									break;
 								case L'I' :
 									wcscpy(line, L"esItys");
 									break;
 								case L'V' :
-									wcscpy(line, L"Vakantti");
+									wcscpy(line, TR(L"Vakantti"));
 									break;
 								case L'O' :
-									wcscpy(line, L"Ohitettu");
+									wcscpy(line, TR(L"Ohitettu"));
 									break;
 								case L'X' :
-									wcscpy(line, L"EiAikaa");
+									wcscpy(line, TR(L"EiAikaa"));
 									break;
 								case L'P' :
-									wcscpy(line, L"Poissa");
+									wcscpy(line, TR(L"Poissa"));
 									break;
 								default :
-									wcscpy(line, L"Avoin");
+									wcscpy(line, TR(L"Avoin"));
 									break;
 								}
 							PvGrid->Cells[PvGridCols[i].Order][pv-epv+1] =
@@ -593,7 +595,7 @@ int __fastcall TFormKilpailijatiedot::tallennaTiedot(void)
 //	   Kilp.setId(EdtKilpno->Text.ToInt());
 //	   haeTiedot(&Kilp);
 	   if (ToimintaTila > 1 && !Kilp.id() || getpos(Kilp.id()) > 0) {
-			Application->MessageBox(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta", L"Virhe",
+			Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta"), TR(L"Virhe"),
 				MB_OK);
 			return(1);
 			}
@@ -605,20 +607,20 @@ int __fastcall TFormKilpailijatiedot::tallennaTiedot(void)
 	   return(0);
 	   }
    if (Kilp1 == Kilp) {
-	  Application->MessageBox(L"Kilpailijan tiedot eivät ole muuttuneet", L"Ei tallenneta",
+	  Application->MessageBox(TR(L"Kilpailijan tiedot eivät ole muuttuneet"), TR(L"Ei tallenneta"),
 		  MB_OK);
 	  return(1);
 	  }
 
    Kilp2.GETREC(dKilp);
    if (!(Kilp2 == Kilp1)) {
-	  Application->MessageBox(L"Kilpailijan tietoja muutettu toisaalla, tietoja ei tallenneta", L"Este",
+	  Application->MessageBox(TR(L"Kilpailijan tietoja muutettu toisaalla, tietoja ei tallenneta"), TR(L"Este"),
 		  MB_OK);
 	  return(1);
 	  }
 
 	if (Kilp1.id() != Kilp.id() && getpos(Kilp.id()) > 0) {
-	  Application->MessageBox(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta", L"Virhe",
+	  Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta"), TR(L"Virhe"),
 		  MB_OK);
 	  return(1);
 	  }
@@ -726,7 +728,7 @@ void __fastcall TFormKilpailijatiedot::SrjValExit(TObject *Sender)
 	if (sallimuokkaus) {
 		Kilp.setSarja(SrjVal->ItemIndex);
 		if (kilpparam.sarjavaihtelee) {
-			if (Application->MessageBoxW(L"Asetetaanko kaikkien vaiheiden sarjat samaksi", L"Valitse", MB_YESNO) == IDYES) {
+			if (Application->MessageBoxW(TR(L"Asetetaanko kaikkien vaiheiden sarjat samaksi"), TR(L"Valitse"), MB_YESNO) == IDYES) {
 				Kilp.setSarjaAll(SrjVal->ItemIndex);
 				}
 			}
@@ -805,7 +807,7 @@ int __fastcall TFormKilpailijatiedot::paivitaMuutos(int col, int row)
 			if (tl != Kilp.pv[ipv].badge[0]) {
 				upv = ipv;
 				if (ipv < vpv &&
-					Application->MessageBoxW(L"Kopioidaanko muutos myöhempiin vaiheisiin", L"Valitse", MB_YESNO) == IDYES)
+					Application->MessageBoxW(TR(L"Kopioidaanko muutos myöhempiin vaiheisiin"), TR(L"Valitse"), MB_YESNO) == IDYES)
 					upv = vpv;
 				for (int jpv = ipv; jpv <= upv; jpv++) {
 					Kilp.pv[jpv].badge[0] = tl;
@@ -823,7 +825,7 @@ int __fastcall TFormKilpailijatiedot::paivitaMuutos(int col, int row)
 			if (tl != Kilp.pv[ipv].badge[1]) {
 				upv = ipv;
 				if (ipv < vpv &&
-					Application->MessageBoxW(L"Kopioidaanko muutos myöhempiin vaiheisiin", L"Valitse", MB_YESNO) == IDYES)
+					Application->MessageBoxW(TR(L"Kopioidaanko muutos myöhempiin vaiheisiin"), TR(L"Valitse"), MB_YESNO) == IDYES)
 					upv = vpv;
 				for (int jpv = ipv; jpv <= upv; jpv++) {
 					Kilp.pv[jpv].badge[1] = tl;
@@ -963,40 +965,40 @@ int __fastcall TFormKilpailijatiedot::paivitaMuutos(int col, int row)
 				}
 			switch (kh) {
 				case L'K' :
-					wcscpy(line, L"Kesk");
+					wcscpy(line, TR(L"Kesk"));
 					break;
 				case L'X' :
-					wcscpy(line, L"EiAikaa");
+					wcscpy(line, TR(L"EiAikaa"));
 					break;
 				case L'H' :
-					wcscpy(line, L"Hyl");
+					wcscpy(line, TR(L"Hyl"));
 					break;
 				case L'M' :
-					wcscpy(line, L"Virhe");
+					wcscpy(line, TR(L"Virhe"));
 					break;
 				case L'E' :
-					wcscpy(line, L"Eiläht.");
+					wcscpy(line, TR(L"Eiläht."));
 					break;
 				case L'B' :
-					wcscpy(line, L"Havaittu");
+					wcscpy(line, TR(L"Havaittu"));
 					break;
 				case L'T' :
-					wcscpy(line, L"Tark.");
+					wcscpy(line, TR(L"Tark."));
 					break;
 				case L'I' :
 					wcscpy(line, L"esItys");
 					break;
 				case L'V' :
-					wcscpy(line, L"Vakantti");
+					wcscpy(line, TR(L"Vakantti"));
 					break;
 				case L'O' :
-					wcscpy(line, L"Ohitettu");
+					wcscpy(line, TR(L"Ohitettu"));
 					break;
 				case L'P' :
-					wcscpy(line, L"Poissa");
+					wcscpy(line, TR(L"Poissa"));
 					break;
 				default :
-					wcscpy(line, L"Avoin");
+					wcscpy(line, TR(L"Avoin"));
 					break;
 				}
 			PvGrid->Cells[col][k] = UnicodeString(line);
@@ -1293,7 +1295,7 @@ void __fastcall TFormKilpailijatiedot::asetaMuokkaustila(bool paalle)
 	else {
 		PvGrid->Options >> goEditing;
 		Tila->Caption = UnicodeString(L"Haku- ja katselutila");
-		BtnSalli->Caption = L"Salli muokkaus";
+		BtnSalli->Caption = TR(L"Salli muokkaus");
 		GBHaku->Visible = true;
 		}
 }
@@ -1374,7 +1376,7 @@ void __fastcall TFormKilpailijatiedot::FormClose(TObject *Sender, TCloseAction &
 	if (ActiveControl && ActiveControl != BtnSulje)
 		FocusControl(BtnSulje);
 
-	if (Application->MessageBoxW(L"Tallennetaanko muutokset?", L"Tallennus",
+	if (Application->MessageBoxW(TR(L"Tallennetaanko muutokset?"), TR(L"Tallennus"),
 		MB_YESNO) == IDYES) {
 		if (Lisays || !(Kilp1 == Kilp)) {
 			if (tallennaTiedot() != 0) {
@@ -1688,7 +1690,7 @@ void __fastcall TFormKilpailijatiedot::Lisenssinumerohaku1Click(TObject *Sender)
 	int lisno = 0;
 	wchar_t wch;
 
-	inputint_prompt(&lisno, L"Anna haettava koodi", &wch, this);
+	inputint_prompt(&lisno, TR(L"Anna haettava koodi"), &wch, this);
 	if (wch == L'\r') {
 		int d;
 		kilptietue kilp;
@@ -1702,7 +1704,7 @@ void __fastcall TFormKilpailijatiedot::Lisenssinumerohaku1Click(TObject *Sender)
 			naytaKilpailija(d);
 			}
 		else {
-			Application->MessageBoxW(L"Koodi ei ole käytössä", L"Ei löydy", MB_OK);
+			Application->MessageBoxW(TR(L"Koodi ei ole käytössä"), TR(L"Ei löydy"), MB_OK);
 		}
 	}
 }
@@ -1713,7 +1715,7 @@ void __fastcall TFormKilpailijatiedot::Perusnumerohaku1Click(TObject *Sender)
 	int kno = 0;
 	wchar_t wch;
 
-	inputint_prompt(&kno, L"Anna haettava numero", &wch, this);
+	inputint_prompt(&kno, TR(L"Anna haettava numero"), &wch, this);
 	if (wch == L'\r') {
 		int d;
 		kilptietue kilp;
@@ -1727,7 +1729,7 @@ void __fastcall TFormKilpailijatiedot::Perusnumerohaku1Click(TObject *Sender)
 			naytaKilpailija(d);
 			}
 		else {
-			Application->MessageBoxW(L"Numero ei ole käytössä", L"Ei löydy", MB_OK);
+			Application->MessageBoxW(TR(L"Numero ei ole käytössä"), TR(L"Ei löydy"), MB_OK);
 		}
 	}
 }
@@ -1745,7 +1747,7 @@ void __fastcall TFormKilpailijatiedot::Liskilpailija1Click(TObject *Sender)
 
 void __fastcall TFormKilpailijatiedot::Poistakilpailija1Click(TObject *Sender)
 {
-	if (Application->MessageBoxW(L"Poista näytetty kilpailija", L"Vahvista poisto", MB_YESNO) == IDYES)	{
+	if (Application->MessageBoxW(TR(L"Poista näytetty kilpailija"), TR(L"Vahvista poisto"), MB_YESNO) == IDYES)	{
 		deltall(dKilp, 0);
 		EdBtnClick(Sender);
 		}
@@ -1874,7 +1876,7 @@ void __fastcall TFormKilpailijatiedot::Pisteet2ei1Click(TObject *Sender)
 {
 	Pisteet2ei1->Checked = !Pisteet2ei1->Checked;
 	ValPist = Pisteet2ei1->Checked ? 1 : 0;
-	Label4->Caption = Pisteet2ei1->Checked ? L"Pisteet-2" : L"Pisteet-1";
+	Label4->Caption = Pisteet2ei1->Checked ? TR(L"Pisteet-2") : TR(L"Pisteet-1");
 }
 //---------------------------------------------------------------------------
 
@@ -1882,7 +1884,7 @@ void __fastcall TFormKilpailijatiedot::Vaihepisteet2ei1Click(TObject *Sender)
 {
 	Vaihepisteet2ei1->Checked = !Vaihepisteet2ei1->Checked;
 	PvPist = Vaihepisteet2ei1->Checked ? 1 : 0;
-	wcscpy(PvGridCols[PistCol].Caption, Vaihepisteet2ei1->Checked ? L"Pist-2" : L"Pist-1");
+	wcscpy(PvGridCols[PistCol].Caption, Vaihepisteet2ei1->Checked ? TR(L"Pist-2") : TR(L"Pist-1"));
 }
 //---------------------------------------------------------------------------
 

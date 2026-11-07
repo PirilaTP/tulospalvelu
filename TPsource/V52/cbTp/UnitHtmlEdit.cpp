@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitHtmlEdit.h"
 #ifdef MAXOSUUSLUKU
@@ -37,6 +38,7 @@ wchar_t temp_html_flnm[80] = L"___tmp_html_1.html";
 __fastcall TFormHtmlEdit::TFormHtmlEdit(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

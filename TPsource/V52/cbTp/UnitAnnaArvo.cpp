@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitAnnaArvo.h"
 //#include "HkDeclare.h"
@@ -29,6 +30,7 @@ TFormAnnaArvo *FormAnnaArvo;
 __fastcall TFormAnnaArvo::TFormAnnaArvo(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

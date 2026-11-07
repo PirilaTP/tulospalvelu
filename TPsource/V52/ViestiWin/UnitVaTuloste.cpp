@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitVaTuloste.h"
 #include "UnitKirjoitinVal.h"
@@ -33,6 +34,7 @@ extern INT32 uusi_emit;
 __fastcall TFormVaTuloste::TFormVaTuloste(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormVaTuloste::AinoaSuoraanClick(TObject *Sender)
@@ -306,7 +308,7 @@ void __fastcall TFormVaTuloste::Tulosta(void)
 	if (!EmitTulPrm.lstf) {
 		if ((EmitTulPrm.lstf = openprfile(EmitKirjoitin, 1, TRUE, FALSE, 0, FALSE))
 			== NULL) {
-			Application->MessageBoxW(L"Kirjoittimen käyttö ei onnistu", L"Virhe", MB_OK);
+			Application->MessageBoxW(TR(L"Kirjoittimen käyttö ei onnistu"), TR(L"Virhe"), MB_OK);
 			return;
 			}
 		if (EmitTulPrm.lstf && EmitTulPrm.lstf->prno == 2)

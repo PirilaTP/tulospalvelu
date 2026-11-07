@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitMTR.h"
 #include <process.h>
@@ -47,6 +48,7 @@ extern FILE *dbgfile[NREGNLY];
 __fastcall TFormMTR::TFormMTR(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -96,7 +98,7 @@ void __fastcall TFormMTR::LueMTRTiedot(void)
 	if (nch < MTR_ST_LEN || vastaus.r13st.alku != 0xffffffffL ||
 		vastaus.r13st.msglen != MTR_ST_LEN-4 || vastaus.r13st.tunnus != 'S' ||
 		r_tarksum(vastaus.bytes, MTR_ST_LEN-2, vastaus.r13st.chksum2, 0)) {
-		writeerror_w(L"MTR:n tilatietojen lukeminen ep‰onnistui", 0, true);
+		writeerror_w(TR(L"MTR:n tilatietojen lukeminen ep‰onnistui"), 0, true);
 		in_aseta_mtr = 0;
 		return;
 		}
@@ -112,7 +114,7 @@ void __fastcall TFormMTR::LueMTRTiedot(void)
 	wcscpy(msg, vastaus.r13st.battery ? L"HEIKKO" : L"OK");
 	EdtParisto->Text = msg;
 	if (!vastaus.r13st.pkgno)
-		Application->MessageBoxW(L"Laitteessa ei tietoja", L"Tyhj‰ laite", MB_OK);
+		Application->MessageBoxW(TR(L"Laitteessa ei tietoja"), TR(L"Tyhj‰ laite"), MB_OK);
 	else {
 		SG1->ColCount = 5;
 		SG1->ColCount = 10;
@@ -121,11 +123,11 @@ void __fastcall TFormMTR::LueMTRTiedot(void)
 		SG1->ColWidths[2] = 55 * Screen->PixelsPerInch / 96;
 		SG1->ColWidths[3] = 55 * Screen->PixelsPerInch / 96;
 		SG1->ColWidths[4] = 55 * Screen->PixelsPerInch / 96;
-		SG1->Cells[0][0] = L"Istunto";
-		SG1->Cells[1][0] = L"Aloituspvm ja -aika";
-		SG1->Cells[2][0] = L"Vanhin nro";
-		SG1->Cells[3][0] = L"Uusin nro";
-		SG1->Cells[4][0] = L"Lukum‰‰r‰";
+		SG1->Cells[0][0] = TR(L"Istunto");
+		SG1->Cells[1][0] = TR(L"Aloituspvm ja -aika");
+		SG1->Cells[2][0] = TR(L"Vanhin nro");
+		SG1->Cells[3][0] = TR(L"Uusin nro");
+		SG1->Cells[4][0] = TR(L"Lukum‰‰r‰");
 		SG1->RowCount = 21;
 		ed_alku = vastaus.r13st.pkgno + 1;
 		for (i = 0; i < 20; i++) {
@@ -164,7 +166,7 @@ void __fastcall TFormMTR::LueMTRTiedot(void)
 				if (nch < r_msg_len[r_no] || vast1.r13.alku != 0xffffffffL ||
 					vast1.r13.msglen != r_msg_len[r_no]-4 || vast1.r13.tunnus != 'M' ||
 					r_tarksum(vast1.bytes, r_msg_len[r_no]-2, vast1.r13.chksum2, 0)) {
-					SG1->Cells[1][i+1] = L"Lukeminen ep‰onnistui";
+					SG1->Cells[1][i+1] = TR(L"Lukeminen ep‰onnistui");
 					}
 				else {
 					luku = ed_alku - vastaus.r13st.s_start[i];
@@ -180,10 +182,10 @@ void __fastcall TFormMTR::LueMTRTiedot(void)
 				}
 			else {
 				SG1->Cells[0][i+1] = ist;
-				SG1->Cells[1][i+1] = L"Ei tietoja";
+				SG1->Cells[1][i+1] = TR(L"Ei tietoja");
 				}
 			}
-		SG1->Cells[0][i+1] = L"Kaikkiaan";
+		SG1->Cells[0][i+1] = TR(L"Kaikkiaan");
 		SG1->Cells[2][i+1] = vastaus.r13st.oldestpkgno;
 		SG1->Cells[3][i+1] = vastaus.r13st.pkgno;
 		SG1->Cells[4][i+1] = vastaus.r13st.pkgno - vastaus.r13st.oldestpkgno + 1;
@@ -201,7 +203,7 @@ void __fastcall TFormMTR::FormShow(TObject *Sender)
 		 CBAsema->Items->Add(i+1);
 	  }
    if (j == 0) {
-		Application->MessageBoxW(L"Ei MTR-laitetta", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Ei MTR-laitetta"), TR(L"Virhe"), MB_OK);
 		return;
 		}
    CBAsema->ItemIndex = 0;
@@ -217,7 +219,7 @@ void __fastcall TFormMTR::Button1Click(TObject *Sender)
 	INT nch;
 
 	if (RGkohde->ItemIndex < 0) {
-		Application->MessageBoxW(L"Valitse lukemisen kohde", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse lukemisen kohde"), TR(L"Este"), MB_OK);
 		return;
 		}
 	if (RGkohde->ItemIndex == 1 && emittallfile == NULL) {
@@ -256,14 +258,14 @@ void __fastcall TFormMTR::Button1Click(TObject *Sender)
 	else if (RGkohde->ItemIndex == 1) {
 		Label12->Visible = true;
 		EdtTallennettu->Visible = true;
-		Application->MessageBoxW(L"Odota luennan p‰‰ttymist‰ ennen kuin suljet kaavakkeen", L"Ohje", MB_OK);
+		Application->MessageBoxW(TR(L"Odota luennan p‰‰ttymist‰ ennen kuin suljet kaavakkeen"), TR(L"Ohje"), MB_OK);
 		if (!hPaivThread) {
 			PaivOn = true;
 			hPaivThread = _beginthread(PaivThread, 10240, 0);
 			}
 		}
 	else
-		Application->MessageBoxW(L"Luenta k‰ynnistyy, kun kaavake suljetaan", L"Ohje", MB_OK);
+		Application->MessageBoxW(TR(L"Luenta k‰ynnistyy, kun kaavake suljetaan"), TR(L"Ohje"), MB_OK);
 	if (pkg_alku[r_no] <= pkg_loppu[r_no]) {
 //		if (pkg_alku[r_no] < vastaus.r13st.oldestpkgno)
 //			pkg_alku[r_no] = vastaus.r13st.oldestpkgno;
@@ -303,7 +305,7 @@ void __fastcall TFormMTR::Button3Click(TObject *Sender)
 	char san[40];
 	INT nch;
 
-	if (Application->MessageBoxW(L"Haluatko varmasti sulkea istunnon (vain MTR3)?", L"Istunto",
+	if (Application->MessageBoxW(TR(L"Haluatko varmasti sulkea istunnon (vain MTR3)?"), TR(L"Istunto"),
 		MB_YESNO) == IDYES) {
 		memcpy(san, "/NS", 3);
 		wrt_st_x(cn_regnly[r_no],3,san,&nch);
@@ -316,9 +318,9 @@ void __fastcall TFormMTR::Button4Click(TObject *Sender)
 	char san[40];
 	INT nch;
 
-	if (Application->MessageBoxW(L"Haluatko varmasti poistaa KAIKKI tiedot MTR-laitteesta?", L"Tyhjennys",
+	if (Application->MessageBoxW(TR(L"Haluatko varmasti poistaa KAIKKI tiedot MTR-laitteesta?"), TR(L"Tyhjennys"),
 		MB_YESNO) == IDYES) {
-		if (Application->MessageBoxW(L"V)ahvista, ett‰ haluat tyhjent‰‰ MTR-laitteen muistin", L"Vahvistus",
+		if (Application->MessageBoxW(TR(L"V)ahvista, ett‰ haluat tyhjent‰‰ MTR-laitteen muistin"), TR(L"Vahvistus"),
 			MB_YESNO) == IDYES) {
 			memcpy(san, L"/CL", 3);
 			wrt_st_x(cn_regnly[r_no],3,san,&nch);

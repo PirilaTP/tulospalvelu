@@ -51,7 +51,7 @@ void inputkno_os2(int *kno, int *os, int x, int y, char *term, char *tc)
 		 inputint_oik(os, 2, x+5, y, "+\r\x1b", &ch);
          vidint(y,x+5,2,*os);
          if (!*kno || *os > 0) break;
-         writeerror("Virheellinen osuus",1000);
+         writeerror(TRA("Virheellinen osuus"),1000);
          } 
       }
    *tc = ch;

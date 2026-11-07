@@ -347,7 +347,7 @@ INT teejonot(int **ljonot, INT njono, wchar_t lahto, INT d, kilpindex *ind)
 	  lmax /= 2;
    *ljonot = (int *) calloc(lmax, sizeof(INT));
    if (*ljonot == 0) {
-	  writeerror_w(L"Ei muistitilaa jonojen muodostamiselle", 0);
+	  writeerror_w(TR(L"Ei muistitilaa jonojen muodostamiselle"), 0);
 	  return(0);
 	  }
    l = -1;
@@ -362,7 +362,7 @@ INT teejonot(int **ljonot, INT njono, wchar_t lahto, INT d, kilpindex *ind)
 	  if (l < lmax)
 		 (*ljonot)[l] = d;
 	  else {
-		 writeerror_w(L"Jonojen muodostus keskeytetty. Liian epätasaiset jonot", 0, true);
+		 writeerror_w(TR(L"Jonojen muodostus keskeytetty. Liian epätasaiset jonot"), 0, true);
 		 break;
 		 }
 	  ksrj[kilp.Sarja()] = (ksrj[kilp.Sarja()]+1) % njono;

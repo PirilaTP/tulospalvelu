@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "VertAikaUnit.h"
 #include "VDeclare.h"
@@ -29,6 +30,7 @@ TVertAikaFrm *VertAikaFrm;
 __fastcall TVertAikaFrm::TVertAikaFrm(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -83,7 +85,7 @@ void __fastcall TVertAikaFrm::FormShow(TObject *Sender)
 void __fastcall TVertAikaFrm::Maksimikesto1Click(TObject *Sender)
 {
 	wchar_t ch;
-	inputint_prompt(&analmaxosuuskesto, L"Analysoitavan osuusden maksimikesto (sek)", &ch, this);
+	inputint_prompt(&analmaxosuuskesto, TR(L"Analysoitavan osuusden maksimikesto (sek)"), &ch, this);
 }
 //---------------------------------------------------------------------------
 

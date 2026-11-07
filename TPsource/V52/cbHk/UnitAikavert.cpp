@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitAikavert.h"
 #include "UnitAikakorjaus.h"
@@ -43,6 +44,7 @@ ColTp VertGridCols0[MAXAVCOL] = {
 __fastcall TFormAikavert::TFormAikavert(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -139,7 +141,7 @@ void __fastcall TFormAikavert::naytaRivi(int grid, int r, aikatp &pt, aikatp &pt
 				if (kilp.kilpno)
 					Cells[grid][c][r].text = kilp.nimi(as, 35, false);
 				else {
-					swprintf(as, L"Badge: %d, Lähde: %3d%c", pt.badge, (int) pt.kanava, pt.tapahtuma ? L'D' : L' ');
+					swprintf(as, TR(L"Badge: %d, Lähde: %3d%c"), pt.badge, (int) pt.kanava, pt.tapahtuma ? L'D' : L' ');
 					Cells[grid][c][r].text = as;
 					}
 				break;
@@ -375,19 +377,19 @@ void __fastcall TFormAikavert::FormCreate(TObject *Sender)
 	CBJono2->Clear();
 	if (maxjono) {
 		for (int r = 0; r <= maxjono; r++) {
-			CBJono1->Items->Add(L"Jono "+UnicodeString(r+1));
-			CBJono2->Items->Add(L"Jono "+UnicodeString(r+1));
+			CBJono1->Items->Add(TR(L"Jono ")+UnicodeString(r+1));
+			CBJono2->Items->Add(TR(L"Jono ")+UnicodeString(r+1));
 			}
 		}
 	else if (lajatfl) {
-		CBJono1->Items->Add(L"Aika");
-		CBJono1->Items->Add(L"Lähtö");
-		CBJono2->Items->Add(L"Aika");
-		CBJono2->Items->Add(L"Lähtö");
+		CBJono1->Items->Add(TR(L"Aika"));
+		CBJono1->Items->Add(TR(L"Lähtö"));
+		CBJono2->Items->Add(TR(L"Aika"));
+		CBJono2->Items->Add(TR(L"Lähtö"));
 		}
 	else {
-		CBJono1->Items->Add(L"Jono 1");
-		CBJono2->Items->Add(L"Jono 1");
+		CBJono1->Items->Add(TR(L"Jono 1"));
+		CBJono2->Items->Add(TR(L"Jono 1"));
 		}
 	CBJono1->ItemIndex = IkkParam.Jono1;
 	CBJono2->ItemIndex = IkkParam.Jono2;
@@ -432,7 +434,7 @@ void __fastcall TFormAikavert::FormShow(TObject *Sender)
 	for (int i = 0; i < NAJANOTOT; i++) {
 		if (this == FormAikavertailut[i]) {
 			Ajanotto = i+1;
-			Caption = L"Aikavertailu - " + UnicodeString(Ajanotto);
+			Caption = TR(L"Aikavertailu - ") + UnicodeString(Ajanotto);
 			break;
 			}
 		}
@@ -475,7 +477,7 @@ void __fastcall TFormAikavert::Kirjasinkoko1Click(TObject *Sender)
 {
 	wchar_t ch;
 	int fs = IkkParam.FontSize;
-	inputint_prompt(&fs, L"Anna taulukoiden kirjasinkoko", &ch, this);
+	inputint_prompt(&fs, TR(L"Anna taulukoiden kirjasinkoko"), &ch, this);
 	if (ch != ESC) {
 		IkkParam.FontSize = fs;
 		DGajat1->Font->Size = IkkParam.FontSize;
@@ -829,8 +831,8 @@ void __fastcall TFormAikavert::Aikavertailu1Click(TObject *Sender)
 	Aikavertailu1->Checked = !Aikavertailu1->Checked;
 	IkkParam.AikaVert = Aikavertailu1->Checked;
 	if (IkkParam.AikaVert) {
-		inputint_prompt(&IkkParam.AikaRajat[0], L"Anna alempi aikaraja (ms)", &ch, this);
-		inputint_prompt(&IkkParam.AikaRajat[1], L"Anna ylempi aikaraja (ms)", &ch, this);
+		inputint_prompt(&IkkParam.AikaRajat[0], TR(L"Anna alempi aikaraja (ms)"), &ch, this);
+		inputint_prompt(&IkkParam.AikaRajat[1], TR(L"Anna ylempi aikaraja (ms)"), &ch, this);
 		}
 	naytaAjat();
 }
@@ -839,8 +841,8 @@ void __fastcall TFormAikavert::Aikavertailu1Click(TObject *Sender)
 void __fastcall TFormAikavert::BtnPoista1Click(TObject *Sender)
 {
 	if (DGajat[0]->Row > 0 && aRow[DGajat[0]->Row-1] > 0) {
-		if (Application->MessageBoxW((UnicodeString(L"Vahvista rivin ")+UnicodeString(aRow[0][DGajat[0]->Row-1])+L" poisto").c_str(),
-			L"Vahvista", MB_YESNO) == IDYES) {
+		if (Application->MessageBoxW((UnicodeString(TR(L"Vahvista rivin "))+UnicodeString(aRow[0][DGajat[0]->Row-1])+TR(L" poisto")).c_str(),
+			TR(L"Vahvista"), MB_YESNO) == IDYES) {
 			aikatp vpt;
 			aikajono[Jono[0]]->getAktTime(&vpt, aRow[0][DGajat[0]->Row-1]-1);
 			poista_aika(Jono[0], &vpt);
@@ -853,8 +855,8 @@ void __fastcall TFormAikavert::BtnPoista1Click(TObject *Sender)
 void __fastcall TFormAikavert::BtnPoista2Click(TObject *Sender)
 {
 	if (DGajat[1]->Row > 0 && aRow[DGajat[1]->Row-1] > 0) {
-		if (Application->MessageBoxW((L"Vahvista rivin "+UnicodeString(aRow[1][DGajat[1]->Row-1])+L" poisto").c_str(),
-			L"Vahvista", MB_YESNO) == IDYES) {
+		if (Application->MessageBoxW((TR(L"Vahvista rivin ")+UnicodeString(aRow[1][DGajat[1]->Row-1])+TR(L" poisto")).c_str(),
+			TR(L"Vahvista"), MB_YESNO) == IDYES) {
 			aikatp vpt;
 			aikajono[Jono[1]]->getAktTime(&vpt, aRow[1][DGajat[1]->Row-1]-1);
 			poista_aika(Jono[1], &vpt);
@@ -897,7 +899,7 @@ void __fastcall TFormAikavert::Aikaero1Click(TObject *Sender)
 {
 	wchar_t ch;
 
-	inputint_prompt(&AikaEro, L"Anna jonojen aikaero vertailuun (ms)", &ch, this);
+	inputint_prompt(&AikaEro, TR(L"Anna jonojen aikaero vertailuun (ms)"), &ch, this);
 	naytaAjat();
 }
 //---------------------------------------------------------------------------

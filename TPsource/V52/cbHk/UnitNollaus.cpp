@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitNollaus.h"
 #include "HkDeclare.h"
@@ -28,6 +29,7 @@ extern TFormNollaus *FormNollaus;
 __fastcall TFormNollaus::TFormNollaus(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -41,9 +43,9 @@ void __fastcall TFormNollaus::FormShow(TObject *Sender)
 		LBSarjat->Items->Add(UnicodeString(Sarjat[srj].sarjanimi));
 		}
 	CBVaiheet->Clear();
-	CBVaiheet->Items->Add(L"Kaikki");
+	CBVaiheet->Items->Add(TR(L"Kaikki"));
 	for (int i = 0;i < kilpparam.n_pv_akt; i++) {
-	   CBVaiheet->Items->Add(UnicodeString(i+1)+L". vaihe");
+	   CBVaiheet->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
 		}
 	CBVaiheet->ItemIndex = 0;
 }
@@ -115,7 +117,7 @@ void __fastcall TFormNollaus::Button1Click(TObject *Sender)
 		kilp.tallenna(d, 0, 0, 0, NULL);
 		}
 	LeaveCriticalSection(&tall_CriticalSection);
-	Application->MessageBoxW(L"Toimenpide tehty", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Toimenpide tehty"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 static void KerroKaikkiAjat(int kerroin, int jakaja)

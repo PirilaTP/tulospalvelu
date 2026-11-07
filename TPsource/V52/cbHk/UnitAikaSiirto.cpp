@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitAikaSiirto.h"
 //---------------------------------------------------------------------------
@@ -27,6 +28,7 @@ TFormAikaSiirto *FormAikaSiirto;
 __fastcall TFormAikaSiirto::TFormAikaSiirto(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -135,11 +137,11 @@ void __fastcall TFormAikaSiirto::Button1Click(TObject *Sender)
 	if (kohde < 0)
 		return;
 	if (ToimintaTila == 2 && kohde == 5 && i_pv < k_pv+1) {
-		Application->MessageBoxW(L"Tulospalvelutilassa voidaan siirtää vain myöhempiä numeroita", L"Rajoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Tulospalvelutilassa voidaan siirtää vain myöhempiä numeroita"), TR(L"Rajoitus"), MB_OK);
 		return;
 		}
 	if (i_pv >= 0 && !pvparam[i_pv].hiihtolahto && (kohde == 2 || kohde == 3)) {
-		Application->MessageBoxW(L"Vaihtoehto ei käytössä", L"Rajoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Vaihtoehto ei käytössä"), TR(L"Rajoitus"), MB_OK);
 		return;
 		}
 	if (kohde == 1)
@@ -256,21 +258,21 @@ void __fastcall TFormAikaSiirto::Button1Click(TObject *Sender)
 			kilp.tallenna(d, 0, 0, 0, 0);
 			}
 		}
-	Application->MessageBoxW((L"Tehty "+UnicodeString(lkm)+L" siirtoa").c_str(), L"Valmis", MB_OK);
+	Application->MessageBoxW((TR(L"Tehty ")+UnicodeString(lkm)+TR(L" siirtoa")).c_str(), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TFormAikaSiirto::FormShow(TObject *Sender)
 {
 	CBVaiheet->Clear();
-	CBVaiheet->Items->Add(L"Kaikki vaiheet");
+	CBVaiheet->Items->Add(TR(L"Kaikki vaiheet"));
 	for (int i = 0;i < kilpparam.n_pv_akt; i++) {
-	   CBVaiheet->Items->Add(UnicodeString(i+1)+L". vaihe");
+	   CBVaiheet->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
 		}
 	CBVaiheet->ItemIndex = 0;
 	CBKohdeVaihe->Clear();
 	for (int i = 0;i < kilpparam.n_pv_akt; i++) {
-	   CBKohdeVaihe->Items->Add(UnicodeString(i+1)+L". vaihe");
+	   CBKohdeVaihe->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
 		}
 	CBKohdeVaihe->ItemIndex = 1;
 	NaytaSarjavalinnat();
@@ -283,7 +285,7 @@ void __fastcall TFormAikaSiirto::RGKohdeClick(TObject *Sender)
 	switch (RGKohde->ItemIndex) {
 		case 0:       // Arvotut lähtöajat
 			Label3->Visible = true;
-			Label3->Caption = L"Siirto sekunteina";
+			Label3->Caption = TR(L"Siirto sekunteina");
 			EdtSiirto->Visible = true;
 			EdtSiirto->Text = L"0";
 			RGTulos->Visible = true;
@@ -292,7 +294,7 @@ void __fastcall TFormAikaSiirto::RGKohdeClick(TObject *Sender)
 			CBKohdeVaihe->Visible = false;
 			break;
 		case 1:        //  Aseta lähtöajat
-			Label3->Caption = L"Uusi lähtöaika kaikille";
+			Label3->Caption = TR(L"Uusi lähtöaika kaikille");
 			EdtSiirto->Text = L"00:00:00";
 			Label3->Visible = true;
 			EdtSiirto->Visible = true;
@@ -303,7 +305,7 @@ void __fastcall TFormAikaSiirto::RGKohdeClick(TObject *Sender)
 			CBKohdeVaihe->Visible = false;
 			break;
 		case 2:        // Toteut. lähtöajat
-			Label3->Caption = L"Siirto millisekunteina";
+			Label3->Caption = TR(L"Siirto millisekunteina");
 			Label3->Visible = true;
 			EdtSiirto->Text = L"0000";
 			EdtSiirto->Visible = true;
@@ -314,7 +316,7 @@ void __fastcall TFormAikaSiirto::RGKohdeClick(TObject *Sender)
 			CBKohdeVaihe->Visible = false;
 			break;
 		case 3:        //  Aseta toteutuneet lähtöajat arvotuiksi
-			Label3->Caption = L"Toteutuneet lähtöajat arvotuiksi";
+			Label3->Caption = TR(L"Toteutuneet lähtöajat arvotuiksi");
 			Label3->Visible = true;
 			EdtSiirto->Visible = false;
 			RGTulos->Visible = true;
@@ -325,7 +327,7 @@ void __fastcall TFormAikaSiirto::RGKohdeClick(TObject *Sender)
 			CBKohdeVaihe->Visible = false;
 			break;
 		case 4:        // Tulokset
-			Label3->Caption = L"Siirto millisekunteina";
+			Label3->Caption = TR(L"Siirto millisekunteina");
 			Label3->Visible = true;
 			EdtSiirto->Visible = true;
 			EdtSiirto->Text = L"0000";
@@ -335,7 +337,7 @@ void __fastcall TFormAikaSiirto::RGKohdeClick(TObject *Sender)
 			CBKohdeVaihe->Visible = false;
 			break;
 		case 5:        // Rintanumerot
-			Label3->Caption = L"Siirto";
+			Label3->Caption = TR(L"Siirto");
 			Label3->Visible = true;
 			EdtSiirto->Visible = true;
 			EdtSiirto->Text = L"0";
@@ -370,17 +372,17 @@ void TFormAikaSiirto::Selostus(void)
 	LblSelostus->Height = 128 * Screen->PixelsPerInch / 96;
 	if (CBVaiheet->ItemIndex > 0 && pvparam[CBVaiheet->ItemIndex-1].hiihtolahto) {
 		if (RGKohde->ItemIndex <= 1) {
-			LblSelostus->Caption = L"Valinnan mukaiset muutokset koskevat tuloksen laskennassa"
+			LblSelostus->Caption = TR(L"Valinnan mukaiset muutokset koskevat tuloksen laskennassa"
 				L" käytettävää lähtöaikaa, jos se on ennen muutosta sama kuin arvottu.\n"
 				L"Jos toteutuneita lähtöjä on jo kirjattu, on toteutuneet lähtöportin lähtöajat"
-				L" siirrettävä ensin ja arvotut vasta sen jälkeen";
+				L" siirrettävä ensin ja arvotut vasta sen jälkeen");
 			LblSelostus->Visible = true;
 			}
 		}
 	if (CBVaiheet->ItemIndex > 0 && !pvparam[CBVaiheet->ItemIndex-1].hiihtolahto) {
 		if (RGKohde->ItemIndex == 2 || RGKohde->ItemIndex == 3) {
-			LblSelostus->Caption = L"Valinta käytettävissä vain, kun lähtöportti valittu käyttöön."
-				L" Muussa tapauksessa arvottua lähtöaikaa käytetään myös toteutuneena.";
+			LblSelostus->Caption = TR(L"Valinta käytettävissä vain, kun lähtöportti valittu käyttöön."
+				L" Muussa tapauksessa arvottua lähtöaikaa käytetään myös toteutuneena.");
 			LblSelostus->Visible = true;
 			}
 		}

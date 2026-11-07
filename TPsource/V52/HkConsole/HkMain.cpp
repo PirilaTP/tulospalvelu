@@ -127,7 +127,7 @@ void valikko(void)
 #endif
          case L'L' :
 				if (nilmt < 1) {
-					writeerror_w(L"Ei kilpailijoita", 0);
+					writeerror_w(TR(L"Ei kilpailijoita"), 0);
 					break;
 					}
             status_on = 1;
@@ -151,7 +151,7 @@ void valikko(void)
             break;
          case L'E' : 
 				if (nilmt < 1) {
-					writeerror_w(L"Ei kilpailijoita", 0);
+					writeerror_w(TR(L"Ei kilpailijoita"), 0);
 					break;
 					}
             leimat();
@@ -162,15 +162,9 @@ void valikko(void)
          }
 		if (ch == L'P') {
          ch = L' ';
-#if LANG == SV
-         wselectopt(L"Sluta och stänga av? (J/N)",
-            L"JN", &ch);
-         if (ch == L'J') ch = L'P';
-#else
          wselectopt(L"Haluatko varmasti poistua ohjelmasta (K/E)",
             L"KE", &ch);
          if (ch == L'K') ch = L'P';
-#endif
 			}
       } while (ch != L'P');
    }

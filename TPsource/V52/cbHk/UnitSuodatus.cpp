@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSuodatus.h"
 #include "UnitOsanottajat.h"
@@ -29,6 +30,7 @@ TFormSuodatus *FormSuodatus;
 __fastcall TFormSuodatus::TFormSuodatus(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	int nsra;
 	wchar_t (*seuralista)[LSEURA+5];
 
@@ -37,7 +39,7 @@ __fastcall TFormSuodatus::TFormSuodatus(TComponent* Owner)
 		ScaleBy(Screen->PixelsPerInch, 96);
 		}
 	CBSarja->Clear();
-	CBSarja->Items->Add(L"Ei sarjasuodatusta");
+	CBSarja->Items->Add(TR(L"Ei sarjasuodatusta"));
 	for (int srj = 0; srj < sarjaluku; srj++)
 		CBSarja->Items->Add(UnicodeString(Sarjat[srj].sarjanimi));
 	CBSarja->ItemIndex = 0;
@@ -45,7 +47,7 @@ __fastcall TFormSuodatus::TFormSuodatus(TComponent* Owner)
 	seuralista = new wchar_t[nilmt+1][LSEURA+5];
 	HaeSeuraLista(0, true, k_pv+1, seuralista, &nsra, nilmt+10);
 	CBSeura->Clear();
-	CBSeura->Items->Add(L"Ei seurasuodatusta");
+	CBSeura->Items->Add(TR(L"Ei seurasuodatusta"));
 	for (int r = 0; r < nsra; r++) {
 		CBSeura->Items->Add(seuralista[r]);
 		}
@@ -53,7 +55,7 @@ __fastcall TFormSuodatus::TFormSuodatus(TComponent* Owner)
 	CBSeura->ItemIndex = 0;
 	CBVaihe->Clear();
 	for (int i = 1; i <= kilpparam.n_pv_akt; i++)
-		CBVaihe->Items->Add(UnicodeString(i) + L". vaihe");
+		CBVaihe->Items->Add(UnicodeString(i) + TR(L". vaihe"));
 	CBVaihe->ItemIndex = k_pv;
 }
 //---------------------------------------------------------------------------

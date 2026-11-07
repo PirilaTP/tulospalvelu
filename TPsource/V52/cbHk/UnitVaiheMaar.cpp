@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitVaiheMaar.h"
 #include "HkDeclare.h"
@@ -31,6 +32,7 @@ extern int PyorIx(int pyor);
 __fastcall TFormVaiheMaar::TFormVaiheMaar(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -42,12 +44,12 @@ void __fastcall TFormVaiheMaar::FormShow(TObject *Sender)
 	SG1->ColCount = kilpparam.n_pv_akt + 1;
 	SG1->RowCount = 7;
 	SG1->ColWidths[0] = 100 * Screen->PixelsPerInch / 96;
-	SG1->Cells[0][1] = L"Id-koodi";
-	SG1->Cells[0][2] = L"Päivämäärä";
-	SG1->Cells[0][3] = L"Otsikko";
-	SG1->Cells[0][4] = L"Sij.-tarkkuus";
-	SG1->Cells[0][5] = L"Tulostarkkuus";
-	SG1->Cells[0][6] = L"Lähtöportti";
+	SG1->Cells[0][1] = TR(L"Id-koodi");
+	SG1->Cells[0][2] = TR(L"Päivämäärä");
+	SG1->Cells[0][3] = TR(L"Otsikko");
+	SG1->Cells[0][4] = TR(L"Sij.-tarkkuus");
+	SG1->Cells[0][5] = TR(L"Tulostarkkuus");
+	SG1->Cells[0][6] = TR(L"Lähtöportti");
 //	SG1->Cells[0][7] = L"Takaa-ajon aikalisä";
 	Paivita();
 }

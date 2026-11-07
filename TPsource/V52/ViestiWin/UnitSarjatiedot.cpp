@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSarjatiedot.h"
 #include "UnitSarja.h"
@@ -125,6 +126,7 @@ static void teesarjajarj(int jrj)
 __fastcall TFormSarjatiedot::TFormSarjatiedot(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -410,8 +412,8 @@ void __fastcall TFormSarjatiedot::TallennaSarjat(void)
 						if (kilpparam.maxnosuus == 1) {
 							Sarjat[srj].ntosuus = SG1->Cells[col][ir].ToInt();
 							if (Sarjat[srj].ntosuus > kilpparam.n_os_akt) {
-								Application->MessageBoxW((UnicodeString(L"Kilpailun osuusluvuksi on määritelty ")+
-									UnicodeString(kilpparam.n_os_akt)).c_str(), L"Rajoitus", MB_OK);
+								Application->MessageBoxW((UnicodeString(TR(L"Kilpailun osuusluvuksi on määritelty "))+
+									UnicodeString(kilpparam.n_os_akt)).c_str(), TR(L"Rajoitus"), MB_OK);
 								Sarjat[srj].ntosuus = kilpparam.n_os_akt;
 								}
 							Sarjat[srj].osuusluku = Sarjat[srj].ntosuus;
@@ -518,7 +520,7 @@ void __fastcall TFormSarjatiedot::FormClose(TObject *Sender, TCloseAction &Actio
 
 {
 	if (SG1->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			TallennaSarjat();
 			}
@@ -532,7 +534,7 @@ void __fastcall TFormSarjatiedot::SG1DblClick(TObject *Sender)
 {
 
 	if (SG1->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			TallennaSarjat();
 			}
@@ -606,7 +608,7 @@ void __fastcall TFormSarjatiedot::SG1KeyDown(TObject *Sender, WORD &Key, TShiftS
 	cc = aktcol;
 	if (Key == VK_F9 && !Shift.Contains(ssShift) && !Shift.Contains(ssCtrl) && !Shift.Contains(ssAlt)) {
 		if (SG1->Options.Contains(goEditing)) {
-			if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+			if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 				MB_YESNO) == IDYES) {
 				TallennaSarjat();
 				}
@@ -1164,7 +1166,7 @@ void __fastcall TFormSarjatiedot::Kiinteitsarakkeita11Click(TObject *Sender)
 {
 	int FC = SG1->FixedCols;
 	wchar_t ret;
-	inputint_prompt(&FC, L"Anna kiinteiden sarakkeiden luku (1..8)", &ret, this);
+	inputint_prompt(&FC, TR(L"Anna kiinteiden sarakkeiden luku (1..8)"), &ret, this);
 	if (ret != ESC) {
 		if (FC < 1)
 			FC = 1;
@@ -1173,7 +1175,7 @@ void __fastcall TFormSarjatiedot::Kiinteitsarakkeita11Click(TObject *Sender)
 		if (FC > SG1->ColCount)
 			FC = SG1->ColCount;
 		SG1->FixedCols = FC;
-		Kiinteitsarakkeita11->Caption = L"Kiinteitä sarakkeita "+UnicodeString(FC);
+		Kiinteitsarakkeita11->Caption = TR(L"Kiinteitä sarakkeita ")+UnicodeString(FC);
 		}
 }
 //---------------------------------------------------------------------------
