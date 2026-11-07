@@ -2331,6 +2331,10 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 				emitaglisa = 1;
 				continue;
 				}
+			if (!wmemcmpU(fldn, L"SETECUCODE", 10)) {
+				ecAsetaKoodiCfg(fldn);
+				continue;
+				}
 			if (!wmemcmpU(fldn, L"EMITAG",6)) {
 				ny = NREGNLY-1;
 				if ((ny = _wtoi(fldn+6)-1) >= NREGNLY || ny < 0)

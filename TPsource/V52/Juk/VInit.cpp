@@ -1823,6 +1823,10 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
                }
             continue;
             }
+			if (!wmemcmp(fldn, L"SETECUCODE", 10)) {
+				ecAsetaKoodiCfg(fldn);
+				continue;
+				}
          if (!wmemcmp(fldn, L"EMITAG",6)) {
 			ny = NREGNLY-1;
             if (fldn[6] > L'0' && fldn[6] <= L'0'+NREGNLY)

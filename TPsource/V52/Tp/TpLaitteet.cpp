@@ -119,6 +119,17 @@ static int regnlystarted[NREGNLY];
 
 extern int lue_rno;
 ecdatatp ecdata[NREGNLY];
+// Käynnistyksessä asetettava aseman koodi (cfg: SETECUCODE=n tai SETECUCODEn=koodi), -1 = ei muuteta, -2 = virheellinen arvo
+int ecAsetaKoodi[NREGNLY];
+int ecAsetaKoodiKaikki = -1;
+// Laskuri vastaanotetuille emiTag-aseman tilasanomille (I), käytetään koodin asetuksen varmistukseen
+static volatile int ecInfoLkm[NREGNLY];
+static struct ecAsetaKoodiAlustus {
+	ecAsetaKoodiAlustus() {
+		for (int i = 0; i < NREGNLY; i++)
+			ecAsetaKoodi[i] = -1;
+		}
+	} ecAsetaKoodiAlustusOlio;
 extern FILE *emittallfile;
 extern int n_emittallfile;
 
@@ -405,6 +416,8 @@ int tulk_emiTag(char *buf, emittp *em, INT32 *emtm, int r_no)
 			}
 		p = strtok(NULL, "\t");
 		}
+	if (msgtp == 1 && r_no >= 0 && r_no < NREGNLY)
+		ecInfoLkm[r_no]++;
 	paivitaEcdata();
 	if (em) {
 		em->badge = badge;
@@ -1742,6 +1755,140 @@ int lue_regnly(INT r_no)
    return(nmsg[r_no]);
    }
 
+// Aseman koodi on sallittu: 0-240 sekä 243, 244, 248 ja 250-253.
+bool ecKoodiSallittu(int koodi)
+{
+	if (koodi < 0)
+		return(false);
+	return(koodi <= 240 || koodi == 243 || koodi == 244 || koodi == 248 ||
+		(koodi >= 250 && koodi <= 253));
+}
+
+// Käynnistyksessä asetettavaksi kelpaavat vain lukukoodit. Koodit 0-65 estävät tiedonsiirron
+// tai nollaavat aseman ja 66-239 saavat aseman lähettämään tietoja, joten ne eivät kelpaa.
+static bool ecAlkuKoodiSallittu(int koodi)
+{
+	return(koodi == 240 || koodi == 243 || koodi == 244 || koodi == 248 ||
+		(koodi >= 250 && koodi <= 253));
+}
+
+// Tulkitsee cfg-rivin SETECUCODE=koodi (kaikki emiTag-lukijat) tai SETECUCODEn=koodi (lukija n).
+// fldn on rivi muodossa AVAIN=ARVO, jossa avain alkaa merkkijonolla SETECUCODE.
+void ecAsetaKoodiCfg(wchar_t *fldn)
+{
+	wchar_t *p = fldn + 10, *eq = wcschr(fldn, L'=');
+	int ny = -1, arvo = -2;
+
+	if (eq == NULL)
+		return;
+	if (p < eq) {
+		ny = _wtoi(p) - 1;
+		if (ny < 0 || ny >= NREGNLY)
+			return;
+		}
+	for (eq++; *eq == L' '; eq++) ;
+	if (*eq >= L'0' && *eq <= L'9')
+		arvo = _wtoi(eq);
+	if (ny < 0)
+		ecAsetaKoodiKaikki = arvo;
+	else
+		ecAsetaKoodi[ny] = arvo;
+}
+
+static void ecLahetaKomento(int r_no, const char *st)
+{
+	for (const char *p = st; *p; p++) {
+		wrt_ch_x(cn_regnly[r_no], *p);
+		Sleep(*p == '\n' ? 100 : 5);
+		}
+}
+
+// Lukee lukijaa kunnes uusi tilasanoma (I) on käsitelty tai aika ms ylittyy. Palauttaa true, jos sanoma saatiin.
+static bool ecOdotaInfo(int r_no, int lkm0, int ms)
+{
+	int ts = (int) mstimer();
+
+	while (comfl && !inLopetus && regnly_open[r_no]) {
+		lue_regnly(r_no);
+		if (ecInfoLkm[r_no] != lkm0)
+			return(true);
+		if ((int) mstimer() - ts > ms)
+			break;
+		Sleep(50);
+		}
+	return(ecInfoLkm[r_no] != lkm0);
+}
+
+// Näyttää tilaikkunan. Ikkunat näytetään yksi kerrallaan, koska ikkunan tekstipuskuri on yhteinen.
+static void ecNaytaTila(wchar_t *msg, int kesto)
+{
+	static volatile LONG lukko = 0;
+
+	while (InterlockedCompareExchange(&lukko, 1, 0) != 0) {
+		if (inLopetus)
+			return;
+		Sleep(100);
+		}
+	writeerror_w(msg, kesto, true, L"emiTag-asema");
+	InterlockedExchange(&lukko, 0);
+}
+
+// Asettaa emiTag-aseman koodin lukijalle r_no cfg-avaimen SETECUCODE mukaan ja näyttää tuloksen.
+// Jos asemalla on jo haluttu koodi, mitään ei lähetetä eikä ilmoiteta.
+static void ecAsetaKoodiAlussa(int r_no)
+{
+	int koodi = ecAsetaKoodi[r_no] != -1 ? ecAsetaKoodi[r_no] : ecAsetaKoodiKaikki;
+	int lkm, vanha = -1, yritys;
+	bool vastasi;
+	char st[20];
+	wchar_t msg[300];
+
+	if (koodi == -1)
+		return;
+	if (koodi == -2) {
+		swprintf(msg, L"Lukija %d: SETECUCODE-asetuksen arvo ei ole luku. Koodia ei asetettu.", r_no + 1);
+		ecNaytaTila(msg, 0);
+		return;
+		}
+	if (!ecAlkuKoodiSallittu(koodi)) {
+		swprintf(msg, L"Lukija %d: SETECUCODE=%d ei ole sallittu lukukoodi (sallitut 240, 243, 244, 248, 250-253). Koodia ei asetettu.",
+			r_no + 1, koodi);
+		ecNaytaTila(msg, 0);
+		return;
+		}
+	lkm = ecInfoLkm[r_no];
+	ecLahetaKomento(r_no, "/ST\r\n");
+	if (ecOdotaInfo(r_no, lkm, 5000)) {
+		vanha = ecdata[r_no].code;
+		if (vanha == koodi)
+			return;
+		}
+	lkm = ecInfoLkm[r_no];
+	sprintf(st, "/CD%03d\r\n/ST\r\n", koodi);
+	ecLahetaKomento(r_no, st);
+	vastasi = false;
+	for (yritys = 0; yritys < 3; yritys++) {
+		if (!ecOdotaInfo(r_no, lkm, 5000))
+			break;
+		vastasi = true;
+		if (ecdata[r_no].code == koodi) {
+			if (vanha >= 0)
+				swprintf(msg, L"Lukija %d: aseman koodi muutettu %d -> %d (vahvistettu).", r_no + 1, vanha, koodi);
+			else
+				swprintf(msg, L"Lukija %d: aseman koodi asetettu %d (vahvistettu).", r_no + 1, koodi);
+			ecNaytaTila(msg, 3000);
+			return;
+			}
+		lkm = ecInfoLkm[r_no];
+		}
+	if (!vastasi)
+		swprintf(msg, L"Lukija %d: asema ei vastannut. Koodia %d ei voitu varmistaa.", r_no + 1, koodi);
+	else
+		swprintf(msg, L"Lukija %d: koodin asetus epäonnistui. Haluttu koodi %d, asemalla %d.",
+			r_no + 1, koodi, (int) ecdata[r_no].code);
+	ecNaytaTila(msg, 0);
+}
+
 // Taustasäie lukijalaitteelle r_no: avaa yhteyden (RS-232/UDP/TCP/Sirit) ja kutsuu lue_regnly-silmukassa.
 // Hoitaa myös Sirit-pollaustilassa TCP-yhteyden ylläpidon ja lähetyspyynnöt.
 void lue_regnlyThread(LPVOID lpCn)
@@ -1800,6 +1947,8 @@ void lue_regnlyThread(LPVOID lpCn)
 	if (!comopen[cn])
 		return;
 	regnly_open[r_no] = 1;
+	if (regnly[r_no] == LID_EMITAG)
+		ecAsetaKoodiAlussa(r_no);
 	while (comfl && regnly_open[r_no] && !inLopetus) {
 
 #ifdef LAJUNEN
@@ -1862,6 +2011,8 @@ void lue_regnlyThread(LPVOID lpCn)
 				if (!comfl || inLopetus)
 					break;
 				reconnectTCP(hComm[cn_regnly[r_no]]);
+				if (regnly[r_no] == LID_EMITAG && regnly_open[r_no] && TCPyht_on(hComm[cn_regnly[r_no]]))
+					ecAsetaKoodiAlussa(r_no);
 				}
 			else {
 				lue_regnly(r_no);
@@ -2569,7 +2720,7 @@ void aseta_emitag(int r_no)
 					clrln(ySize - 3);
 					vidspwmsg(ySize - 3, 0, 7, 0, L"Anna aseman koodi: ");
 					inputlongw(&i, 3, 20, ySize - 3, L"\r\x1b", &ch);
-					if (i < 0 || (i > 240 && i != 243 && i != 244 && i != 248 && i != 250 && i != 251 && i != 252 && i != 253)) {
+					if (!ecKoodiSallittu(i)) {
 						writeerror_w(L"Koodi ei sallittu", 0, true);
 						continue;
 					}

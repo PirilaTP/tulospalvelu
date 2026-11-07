@@ -104,6 +104,11 @@ void writeerror_w(wchar_t *txt, int wait, bool vainok)
 	writeerror_w(txt, wait);
 }
 
+void writeerror_w(wchar_t *txt, int wait, bool vainok, wchar_t *ots)
+{
+	writeerror_w(txt, wait);
+}
+
 void chgchar(char *buf, int len)
 {
 	int i;

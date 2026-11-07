@@ -477,6 +477,22 @@ void writeerror_w(wchar_t *txt, int wait, bool vainok)
 }
 
 //---------------------------------------------------------------------------
+// Kuten writeerror_w, mutta ikkunan otsikko annetaan parametrina. Ei tee mitään, jos pääikkunaa ei ole vielä luotu.
+void writeerror_w(wchar_t *txt, int wait, bool vainok, wchar_t *ots)
+{
+	int lparam;
+	if (FormMain == NULL)
+		return;
+	wcsncpy(perr_ptrs2.ots, ots, MAX_MSG_BUF_SIZE);
+	wcsncpy(perr_ptrs2.msg, txt, MAX_MSG_BUF_SIZE);
+	perr_ptrs2.vast = 0;
+	lparam = (int) &perr_ptrs2;
+	SendMessage(FormMain->Handle,WM_MYMSGDSPERRORMSG,wait + (vainok ? 0x10000000 : 0),lparam);
+	while (perr_ptrs2.vast == 0)
+		Sleep(200);
+}
+
+//---------------------------------------------------------------------------
 void writeerror_w(wchar_t *txt, int wait)
 {
 	int lparam;
