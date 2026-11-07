@@ -2569,7 +2569,7 @@ void aseta_emitag(int r_no)
 					clrln(ySize - 3);
 					vidspwmsg(ySize - 3, 0, 7, 0, L"Anna aseman koodi: ");
 					inputlongw(&i, 3, 20, ySize - 3, L"\r\x1b", &ch);
-					if (i < 0 || (i > 240 && i != 243 && i != 244 && i != 248 && i != 250 && i != 253)) {
+					if (i < 0 || (i > 240 && i != 243 && i != 244 && i != 248 && i != 250 && i != 251 && i != 252 && i != 253)) {
 						writeerror_w(L"Koodi ei sallittu", 0, true);
 						continue;
 					}
