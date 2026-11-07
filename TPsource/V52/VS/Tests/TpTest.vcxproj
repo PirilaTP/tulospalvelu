@@ -91,6 +91,8 @@
     <ClCompile Include="..\..\tputilv2\putint_r.cpp" />                                                                  
     <ClCompile Include="..\..\Tests\VRinnakkaisOsuusTest.cpp" />
     <ClCompile Include="..\..\Juk\VRinnakkaisOsuus.cpp" />
+    <ClCompile Include="..\..\Tests\KieletTest.cpp" />
+    <ClCompile Include="..\..\tputilv2\Kielet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Juk\VRinnakkaisOsuus.h" />
