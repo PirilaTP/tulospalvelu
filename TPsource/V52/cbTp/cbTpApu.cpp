@@ -77,6 +77,8 @@ int kbflush(void) {	return(0);}
 
 int vidspwmsg(int row, int col, int fg, int bg, const wchar_t *txt)
    {
+	if (FormMain == NULL)
+		return(0);
 	FormMain->dspMsg((wchar_t *)txt);
 	return(wcslen(txt));
    }
@@ -468,22 +470,6 @@ void writeerror_w(wchar_t *txt, int wait, bool vainok)
 {
 	int lparam;
 	wcscpy(perr_ptrs2.ots, L"Virhe");
-	wcsncpy(perr_ptrs2.msg, txt, MAX_MSG_BUF_SIZE);
-	perr_ptrs2.vast = 0;
-	lparam = (int) &perr_ptrs2;
-	SendMessage(FormMain->Handle,WM_MYMSGDSPERRORMSG,wait + (vainok ? 0x10000000 : 0),lparam);
-	while (perr_ptrs2.vast == 0)
-		Sleep(200);
-}
-
-//---------------------------------------------------------------------------
-// Kuten writeerror_w, mutta ikkunan otsikko annetaan parametrina. Ei tee mitään, jos pääikkunaa ei ole vielä luotu.
-void writeerror_w(wchar_t *txt, int wait, bool vainok, wchar_t *ots)
-{
-	int lparam;
-	if (FormMain == NULL)
-		return;
-	wcsncpy(perr_ptrs2.ots, ots, MAX_MSG_BUF_SIZE);
 	wcsncpy(perr_ptrs2.msg, txt, MAX_MSG_BUF_SIZE);
 	perr_ptrs2.vast = 0;
 	lparam = (int) &perr_ptrs2;

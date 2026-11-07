@@ -61,11 +61,6 @@ void writeerror_w(wchar_t *txt, int wait, bool vainok)
 	writeerror_w(txt, wait);
 }
 
-void writeerror_w(wchar_t *txt, int wait, bool vainok, wchar_t *ots)
-{
-	writeerror_w(txt, wait);
-}
-
 void vidint2(int y, int x, int l, long i)
    {
    if (i > 999) {

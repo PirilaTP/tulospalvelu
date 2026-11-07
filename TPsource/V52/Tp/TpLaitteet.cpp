@@ -1819,18 +1819,13 @@ static bool ecOdotaInfo(int r_no, int lkm0, int ms)
 	return(ecInfoLkm[r_no] != lkm0);
 }
 
-// Näyttää tilaikkunan. Ikkunat näytetään yksi kerrallaan, koska ikkunan tekstipuskuri on yhteinen.
-static void ecNaytaTila(wchar_t *msg, int kesto)
+// Kirjoittaa tuloksen pääikkunan viestikenttään (konsolissa alariville).
+static void ecNaytaTila(wchar_t *msg)
 {
-	static volatile LONG lukko = 0;
+	wchar_t txt[330];
 
-	while (InterlockedCompareExchange(&lukko, 1, 0) != 0) {
-		if (inLopetus)
-			return;
-		Sleep(100);
-		}
-	writeerror_w(msg, kesto, true, L"emiTag-asema");
-	InterlockedExchange(&lukko, 0);
+	swprintf(txt, L"emiTag: %s", msg);
+	vidspwmsg(ySize - 2, 0, 7, 0, txt);
 }
 
 // Asettaa emiTag-aseman koodin lukijalle r_no cfg-avaimen SETECUCODE mukaan ja näyttää tuloksen.
@@ -1847,13 +1842,13 @@ static void ecAsetaKoodiAlussa(int r_no)
 		return;
 	if (koodi == -2) {
 		swprintf(msg, L"Lukija %d: SETECUCODE-asetuksen arvo ei ole luku. Koodia ei asetettu.", r_no + 1);
-		ecNaytaTila(msg, 0);
+		ecNaytaTila(msg);
 		return;
 		}
 	if (!ecAlkuKoodiSallittu(koodi)) {
 		swprintf(msg, L"Lukija %d: SETECUCODE=%d ei ole sallittu lukukoodi (sallitut 240, 243, 244, 248, 250-253). Koodia ei asetettu.",
 			r_no + 1, koodi);
-		ecNaytaTila(msg, 0);
+		ecNaytaTila(msg);
 		return;
 		}
 	lkm = ecInfoLkm[r_no];
@@ -1876,7 +1871,7 @@ static void ecAsetaKoodiAlussa(int r_no)
 				swprintf(msg, L"Lukija %d: aseman koodi muutettu %d -> %d (vahvistettu).", r_no + 1, vanha, koodi);
 			else
 				swprintf(msg, L"Lukija %d: aseman koodi asetettu %d (vahvistettu).", r_no + 1, koodi);
-			ecNaytaTila(msg, 3000);
+			ecNaytaTila(msg);
 			return;
 			}
 		lkm = ecInfoLkm[r_no];
@@ -1886,7 +1881,7 @@ static void ecAsetaKoodiAlussa(int r_no)
 	else
 		swprintf(msg, L"Lukija %d: koodin asetus epäonnistui. Haluttu koodi %d, asemalla %d.",
 			r_no + 1, koodi, (int) ecdata[r_no].code);
-	ecNaytaTila(msg, 0);
+	ecNaytaTila(msg);
 }
 
 // Taustasäie lukijalaitteelle r_no: avaa yhteyden (RS-232/UDP/TCP/Sirit) ja kutsuu lue_regnly-silmukassa.
