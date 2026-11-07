@@ -864,7 +864,7 @@ int lue_radat_xml(int r)
 
 #endif // EMIT
 
-INT32 lukijakoodit[11] = {250, 240, 253, 243};
+INT32 lukijakoodit[11] = {250, 240, 253, 243, 251, 252};
 
 #ifdef _CONSOLE
 static void editlukijakoodit(void)

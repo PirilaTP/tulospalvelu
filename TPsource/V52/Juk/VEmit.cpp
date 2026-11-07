@@ -1792,7 +1792,7 @@ int getratano(wchar_t *tunnus)
    return(-1);
    }
 
-INT32 lukijakoodit[4] = {250, 240, 253, 243};
+INT32 lukijakoodit[6] = {250, 240, 253, 243, 251, 252};
 
 INT onlukija(INT koodi)
 {

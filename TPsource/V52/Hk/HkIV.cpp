@@ -1082,8 +1082,8 @@ INT tall_emit(san_type *vastaus, UINT32 *vahvistus, INT r_no)
 		for (i = MAXNLEIMA-1; i > 1; i--)
 			if (em.ctrlcode[i] > 0)
 				break;
-		if (IntInList(em.ctrlcode[i], L"240 243 244 250 253") < 0 &&
-			IntInList(em.ctrlcode[i-1], L"240 243 244 250 253") < 0)
+		if (IntInList(em.ctrlcode[i], L"240 243 244 250 251 252 253") < 0 &&
+			IntInList(em.ctrlcode[i-1], L"240 243 244 250 251 252 253") < 0)
 			return(0);
 	  em.maali = TMAALI0/KSEK;
 	  }

@@ -486,7 +486,7 @@ int tulk_emiTag(char *buf, emittp *em, INT32 *emtm, int r_no)
 				em->ctrltime[i] = (UINT16) (30000 + (controls[j].time - controls[nctrl-1].time)/1000);
 			else
 				em->ctrltime[i] = (UINT16) (controls[j].time/1000);
-			if (IntInList(controls[i].code, L"240 243 244 250 253") >= 0)
+			if (IntInList(controls[i].code, L"240 243 244 250 251 252 253") >= 0)
 				lukijaOn = true;
 			}
 		}
