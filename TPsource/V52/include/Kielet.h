@@ -64,6 +64,10 @@ wchar_t *TRCL(int kieli, const wchar_t *konteksti, const wchar_t *fi);
 // 8-bittinen (Windows-1252) versio TR:stä vanhoille char *-teksteille.
 char *TRA(const char *fi);
 
+// Merkitsee taulukoiden alustuksissa olevat tekstit käännettäviksi (kielet.py poimii ne).
+// Ei käännä mitään; teksti käännetään käyttökohdassa TR:llä tai TRA:lla.
+#define N_(s) s
+
 // Kääntää konsolin valintakehotteen ja sen pikanäppäimet käyttöliittymän kielelle.
 // Pikanäppäimet tunnistetaan muodoista "S)euraava", "eR)ätiedot" ja "(K/E)".
 // term: sallitut merkit, tterm: käännetyt merkit samassa järjestyksessä (koko >= wcslen(term)+1).
@@ -75,6 +79,11 @@ wchar_t vastaavaMerkki(wchar_t c, const wchar_t *mista, const wchar_t *mihin);
 
 // Asettaa käyttöliittymän kielen.
 void asetaKayttokieli(int kieli);
+// Asettaa tulosteiden oletuskielen ja kutsuu funktiota tulostekieliMuuttui, jos se on asetettu.
+void asetaTulostekieli(int kieli);
+// Ohjelman funktio, joka päivittää valmiiksi alustettujen tulostusparametrien kielen
+// (esim. lsttulparam, aftulparam), kun tulosteiden kieli vaihdetaan valikosta.
+extern void (*tulostekieliMuuttui)(int kieli);
 // Käyttöliittymän kieli käyttäjän asetuksista (rekisteri HKCU\Software\Tulospalvelu),
 // oletus KIELI_FI.
 int lueKayttokieliAsetus(void);

@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "HkDeclare.h"
+#include "Kielet.h"
 
 
 //  tulos1(piste, tm)       palauttaa maaliajasta lasketun tuloksen

@@ -484,6 +484,17 @@ void asetaKayttokieli(int kieli)
 	kayttokieli = kieli;
 }
 
+void (*tulostekieliMuuttui)(int kieli) = NULL;
+
+void asetaTulostekieli(int kieli)
+{
+	if (kieli < 0 || kieli >= KIELILKM)
+		kieli = KIELI_FI;
+	tulostekieli = kieli;
+	if (tulostekieliMuuttui)
+		tulostekieliMuuttui(kieli);
+}
+
 int lueKayttokieliAsetus(void)
 {
 	HKEY avain;

@@ -27,6 +27,7 @@
 #include <bvideo.h>
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <dos.h>
 #include <sys/stat.h>
 #include <time.h>

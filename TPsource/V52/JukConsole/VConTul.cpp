@@ -25,6 +25,7 @@
 #include <malloc.h>
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <dos.h>
 #include <sys/stat.h>
 #include "VDeclare.h"
@@ -1329,11 +1330,11 @@ static void tiedostovalinnat(tulostusparamtp *tulostusparam)
 	wchar_t ch, opts[12], msg[90], co = L' ';
 
 	if (emitfl) {
-		wcscpy(msg, TR(L"Tulokset T)eksti, C)SV, H)TML, X)ML, E)mit-väliajat (myös XML)"));
+		wcscpy(msg, N_(L"Tulokset T)eksti, C)SV, H)TML, X)ML, E)mit-väliajat (myös XML)"));
 		wcscpy(opts, L"TCHXE");
 		}
 	else {
-		wcscpy(msg, TR(L"T)eksti, C)SV, H)TML, X)ML, hI)ihtoliiton tulostiedosto"));
+		wcscpy(msg, N_(L"T)eksti, C)SV, H)TML, X)ML, hI)ihtoliiton tulostiedosto"));
 		wcscpy(opts, L"TCHIX");
 		}
 	wselectopt(msg, opts, &co);
@@ -1404,11 +1405,11 @@ int valitsekohde(wchar_t *co)
    wchar_t msg[90];
    wchar_t opts[20];
 
-      wcscpy(msg, TR(L"N)äyttö, P)aperi, A)utomaattinen, M)uotoilu, "
+      wcscpy(msg, N_(L"N)äyttö, P)aperi, A)utomaattinen, M)uotoilu, "
          L"tI)edostoon"));
       wcscpy(opts, L"NPAMI\x1b");
       if (taulu_com) {
-         wcscat(msg, TR(L", V)alotaulu"));
+         wcscat(msg, N_(L", V)alotaulu"));
          wcscat(opts, L"V");
          }
       wselectopt(msg, opts, co);
@@ -1448,7 +1449,7 @@ int valitsesisalto(int oikaise, tulostusparamtp *tulprm)
 		wcscpy(msg, TR(L"J)oukkueet, O)suus"));
 		wcscpy(opts, L"\x1BJO");
 		if (valiajat) {
-			wcscat(msg, TR(L", V)äliajat"));
+			wcscat(msg, N_(L", V)äliajat"));
 			wcscat(opts, L"V");
 			}
 		}
@@ -1463,19 +1464,19 @@ int valitsesisalto(int oikaise, tulostusparamtp *tulprm)
 			}
 		}
 	if (valiajat && tulprm->kohde != L'I') {
-		wcscat(msg, TR(L", V)äliajat"));
+		wcscat(msg, N_(L", V)äliajat"));
 		wcscat(opts, L"V");
 		}
 	if (tulprm->kohde == L'N' || tulprm->kohde == L'P' || tulprm->kohde == L'I') {
-		wcscat(msg, TR(L", Y)hteenveto"));
+		wcscat(msg, N_(L", Y)hteenveto"));
 		wcscat(opts, L"Y");
 		}
 	if (emitfl && tulprm->kohde == L'I') {
-		wcscat(msg, TR(L", M)etsässä"));
+		wcscat(msg, N_(L", M)etsässä"));
 		wcscat(opts, L"M");
 		}
 	if (tulprm->kohde == L'I') {
-		wcscat(msg, TR(L", onG)elmat"));
+		wcscat(msg, N_(L", onG)elmat"));
 		wcscat(opts, L"G");
 		}
 	wcscat(msg, TR(L", Esc: Peruuta"));

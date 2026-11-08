@@ -31,6 +31,7 @@
 #endif
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include "HkDeclare.h"
 #include "HkMuotoilu.h"
@@ -57,6 +58,17 @@ static INT tarra1, muotoilufl, ll_muotoilufl, cfgparam;
 static wchar_t comdir[MAX_PORTTI];
 wchar_t merkit = 'G';
 static wchar_t cfgfilename[201] = L"LASKENTA.CFG", autostr[25] = L"";
+
+// Päivittää tulostusparametrien kielen (asetuksista luettaessa ja tulosteiden kieltä vaihdettaessa)
+static void asetaTulosteparamKieli(int kieli)
+{
+	lsttulparam.language = kieli;
+	lokitulparam.language = kieli;
+	tartulparam.language = kieli;
+	aftulparam.language = kieli;
+	sivutulostusparam.language = kieli;
+	autotulostusparam.language = kieli;
+}
 extern wchar_t lainafname[200];
 static INT korkeat = FALSE;
 static INT star = FALSE;
@@ -1073,6 +1085,16 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
             }
          if( !wmemcmpU(fldn, L"KONE=",5)) {
 			wcstoansi((char *) konetunn, fldn+5, 3);
+            continue;
+			}
+		 // KIELI=FI|SV|EN: tulosteiden oletuskieli (myös vanhat KIELI=S ja KIELI=E)
+		 if( !wmemcmpU(fldn, L"KIELI=",6)) {
+			tulostekieli = kieliKoodista(fldn+6, tulostekieli);
+            continue;
+			}
+		 // KAYTTOKIELI=FI|SV|EN: käyttöliittymän kieli
+		 if( !wmemcmpU(fldn, L"KAYTTOKIELI=",12) || !wmemcmpU(fldn, L"KÄYTTÖKIELI=",12)) {
+			asetaKayttokieli(kieliKoodista(fldn+12, kayttokieli));
             continue;
 			}
 		 if( !wmemcmpU(fldn, L"SOTILAS", 7)) {
@@ -3394,6 +3416,9 @@ int aloitus(int argc, wchar_t* argv[], wchar_t *cfgflname)
 
 	lsttulparam.tulmuot = tulosmuot;
 	lokitulparam.tulmuot = tulosmuot;
+	// Tulosteiden kieli asetuksista (KIELI=); parametrit on alustettu ennen asetusten lukemista
+	asetaTulosteparamKieli(tulostekieli);
+	tulostekieliMuuttui = asetaTulosteparamKieli;
 
 	if (loki == 1) {
 		if ((lokitulparam.lstf = openprfile(lokifname, -1, FALSE, 1,

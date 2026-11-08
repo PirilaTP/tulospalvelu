@@ -37,6 +37,7 @@
 #include <butil.h>
 //#include <wincom.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include "VDeclare.h"
 #ifndef _CONSOLE
@@ -264,13 +265,8 @@ void laheta_yl(int srj, int kielto)
 		 ch = 0;
 		 while (ch != ESC && v == cjens[cn]) {
 			clrln(ySize-3);
-#ifndef LANGSV_K
 			vidspmsg(ySize-3,0,7,0,TRA("Odottaa tiedonsiirron etenemistä.  'Esc' "
 			   "lopettaa yhteislähtöaikojen siirron"));
-#else // LANGSV_K
-			vidspmsg(ySize-3,0,7,0,TRA("Odottaa tiedonsiirron etenemistä.  'Esc' "
-			   "lopettaa yhteislähtöaikojen siirron"));
-#endif // LANGSV_K
 			ch = readkbd(&ch2, FALSE, spoolfl);
 			Sleep(20);
 			}
@@ -589,17 +585,10 @@ static void tark_kilp(int cn)
 	  LeaveCriticalSection(&tall_CriticalSection);
 	  }
    if (er > 0) {
-#ifndef LANGSV_K
 	  writeerror(
 		 TRA("Tiedostot eri koneilla eivät ole yhtäpitäviä"),0);
 	  writeerror(TRA("Poistu ohjelmasta, kopioi KILP.DAT"
 		 "lähettävältä tälle koneelle"),0);
-#else // LANGSV_K
-	  writeerror(
-		 TRA("Okonsistent data mellan datorer"),0);
-	  writeerror(TRA("Avsluta program, kopiera KILP.DAT"
-		 "fr†n den sändande dator till denna dator"),0);
-#endif // LANGSV_K
 	  }
    }
 
@@ -663,17 +652,10 @@ static void tark_osuus(int cn)
 		}
 	LeaveCriticalSection(&tall_CriticalSection);
    if (er) {
-#ifndef LANGSV_K
 	  writeerror(
 		 TRA("Tiedostot eri koneilla eivät ole yhtäpitäviä"),0);
 	  writeerror(TRA("Poistu ohjelmasta, kopioi KILP.DAT"
 		 "lähettävältä tälle koneelle"),0);
-#else // LANGSV_K
-	  writeerror(
-		 TRA("Okonsistent data mellan datorer"),0);
-	  writeerror(TRA("Avsluta program, kopiera KILP.DAT"
-		 "fr†n den sändande dator till denna dator"),0);
-#endif // LANGSV_K
 	  }
    }
 
@@ -705,17 +687,10 @@ static void tark_trk(int cn)
 	   }
 	LeaveCriticalSection(&tall_CriticalSection);
    if (er) {
-#ifndef LANGSV_K
 	  writeerror(
 		 TRA("Tiedostot eri koneilla eivät ole yhtäpitäviä"),0);
 	  writeerror(TRA("Poistu ohjelmasta, kopioi KILP.DAT"
 		 "lähettävältä tälle koneelle"),0);
-#else // LANGSV_K
-	  writeerror(
-		 TRA("Okonsistent data mellan datorer"),0);
-	  writeerror(TRA("Avsluta program, kopiera KILP.DAT"
-		 "fr†n den sändande dator till denna dator"),0);
-#endif // LANGSV_K
 	  }
    }
 
@@ -743,17 +718,10 @@ static void tark_tls(int cn)
 		}
 	LeaveCriticalSection(&tall_CriticalSection);
    if (er) {
-#ifndef LANGSV_K
 	  writeerror(
 		 TRA("Tiedostot eri koneilla eivät ole yhtäpitäviä"),0);
 	  writeerror(TRA("Poistu ohjelmasta, kopioi KILP.DAT"
 		 "lähettävältä tälle koneelle"),0);
-#else // LANGSV_K
-	  writeerror(
-		 TRA("Okonsistent data mellan datorer"),0);
-	  writeerror(TRA("Avsluta program, kopiera KILP.DAT"
-		 "fr†n den sändande dator till denna dator"),0);
-#endif // LANGSV_K
 	  }
    }
 
@@ -935,13 +903,8 @@ void tarkcom(LPVOID lpCn)
 #if defined(MAALI) && !defined(LUENTA)
 					 tark_aika(cn);
 #else
-#ifndef LANGSV_K
 					 writeerror(TRA("Vastaanotettu MAALI-ohjelman ajanottotieto."
 						" Korjaa konfigurointi"), 0);
-#else // LANGSV_K
-					 writeerror(TRA("Programmet MAALI har sänt tidtagningsdata."
-						" Korrigera konfiguration"), 0);
-#endif // LANGSV_K
 #endif
 					 break;
 				  case YHTEISLAHTOT:

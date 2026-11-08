@@ -38,6 +38,7 @@
 #include <bstrings.h>
 #include <butil.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 
 #ifdef VIESTI

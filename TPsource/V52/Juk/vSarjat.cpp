@@ -28,6 +28,7 @@
 #endif
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <direct.h>
 #include <dos.h>
 //#include <size.h>

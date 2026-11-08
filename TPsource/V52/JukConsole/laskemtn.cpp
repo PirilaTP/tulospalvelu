@@ -33,6 +33,7 @@
 #include <bkeys.h>
 #endif
 #pragma hdrstop
+#include "Kielet.h"
 #include <conio.h>
 #include <dos.h>
 #include <sys\stat.h>

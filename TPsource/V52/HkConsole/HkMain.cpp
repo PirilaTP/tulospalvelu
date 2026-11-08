@@ -26,6 +26,7 @@
 #include <bkeybrd.h>
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <dos.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -172,6 +173,8 @@ void valikko(void)
 int wmain(int argc, wchar_t* argv[])
 {
 	initcon(argv[0]);
+	// Käyttöliittymän kieli käyttäjän asetuksista; KAYTTOKIELI= konfiguraatiossa voi vaihtaa sen
+	asetaKayttokieli(lueKayttokieliAsetus());
 	SetConsoleOutputCP(850);
 	SetConsoleCP(850);
 	SetConsoleCtrlHandler((PHANDLER_ROUTINE)ExitHandler, TRUE);

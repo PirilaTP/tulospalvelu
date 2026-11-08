@@ -29,6 +29,7 @@
 #include <malloc.h>
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include <dos.h>
 #include "HkDeclare.h"
@@ -47,18 +48,18 @@ int valuku_vanha;
 int iscurpos;
 
 EDITFLD editfld[] = {
-	{L"Nimi :",		0,		7,		7, LSNIMI,	1},
+	{N_(L"Nimi :"),		0,		7,		7, LSNIMI,	1},
 	{L"",			0, LSNIMI+8,	7, LENIMI,	1},
-	{L"Arvo :",		0,		7,		8, LARVO,	1},
-	{L"Lisenssi :", 0,		11,		9,		8,	1},
-	{L"WREkoodi :",	0,		11,		10,		9,	0},
-	{L"Kilpailukortti :", 22, 39,	9,		8,	1},
+	{N_(L"Arvo :"),		0,		7,		8, LARVO,	1},
+	{N_(L"Lisenssi :"), 0,		11,		9,		8,	1},
+	{N_(L"WREkoodi :"),	0,		11,		10,		9,	0},
+	{N_(L"Kilpailukortti :"), 22, 39,	9,		8,	1},
 	{L"",			0,		50,		9,		5,	1},
-	{L"Seura :",	0,		8,		11, LSEURA, 1},
-	{L"Seuralyh :", 0,		11,		12,	 LLYH,	0},
-	{L"Alue :",		45,		52,		11,		2,	1},
-	{L"Maa :",		56,		62,		11,		3,	1},
-	{L"Yhdistys :", 37,		48,		12,	 LYHD,	0},
+	{N_(L"Seura :"),	0,		8,		11, LSEURA, 1},
+	{N_(L"Seuralyh :"), 0,		11,		12,	 LLYH,	0},
+	{N_(L"Alue :"),		45,		52,		11,		2,	1},
+	{N_(L"Maa :"),		56,		62,		11,		3,	1},
+	{N_(L"Yhdistys :"), 37,		48,		12,	 LYHD,	0},
 	{L"",			0,		5,		16,		10, 1},
 	{L"",			0,		17,		16,		10, 1},
 	{L"",			0,		30,		16,		5,	1},
@@ -66,14 +67,14 @@ EDITFLD editfld[] = {
 	{L"",			0,		48,		16,		3,	1},
 	{L"",			0,		56,		16,		3,	1},
 	{L"",			0,		17,		20,		10, 1},
-	{L"Sarja :",	0,		8,		2, LSARJA,	1},
-	{L"Kilpno : ",	0,		8,		4,		4,	1},
-	{L"Maaliaika :", 42,	54,		3,		11, 1},
-	{L"Tot.lähtö :", 42,	54,		4,		11, 1},
-	{L"Tasoitus/sakko :", 37, 54,	6,		4,	0},
-	{L"Amp.sakot :", 42,	54,		5,		1,	0},
-	{L"Rata :",		46,		54,		5,		8,	0},
-	{L"Erä :",		32,		38,		5,		2,	0}
+	{N_(L"Sarja :"),	0,		8,		2, LSARJA,	1},
+	{N_(L"Kilpno : "),	0,		8,		4,		4,	1},
+	{N_(L"Maaliaika :"), 42,	54,		3,		11, 1},
+	{N_(L"Tot.lähtö :"), 42,	54,		4,		11, 1},
+	{N_(L"Tasoitus/sakko :"), 37, 54,	6,		4,	0},
+	{N_(L"Amp.sakot :"), 42,	54,		5,		1,	0},
+	{N_(L"Rata :"),		46,		54,		5,		8,	0},
+	{N_(L"Erä :"),		32,		38,		5,		2,	0}
 };
 
 void addtapahtuma(kilptietue *kilp, int piste) { }

@@ -2698,6 +2698,8 @@ void __fastcall TFormEmit::TallennaMuutokset(void)
 		EnterCriticalSection(&tall_CriticalSection);
 		Kilp.tallenna(DKilp, 0, -1, 0, 0);
 		LeaveCriticalSection(&tall_CriticalSection);
+		if (emittulparam)
+			emittulparam->language = tulostekieli;	// tulosteiden kieli voi muuttua valikosta
 		if (emittulparam && autorap > 9 && Em.kilpno == Kilp.id() &&
 			(autorap > 1 || Kilp.tark(k_pv) == L'I' || autorapsrj[Kilp.Sarja()]))
 			emit_rap(emittulparam, Em.kilpno);
@@ -3030,6 +3032,7 @@ void __fastcall TFormEmit::Tulosta(int tuloste)
 		delete FormKirjVal;
 	}
 	EmitTulPrm.printer = GDIPRINTER;
+	EmitTulPrm.language = tulostekieli;
 	if (!EmitTulPrm.lstf) {
 		if ((EmitTulPrm.lstf = openprfile(EmitKirjoitin, 1, TRUE, FALSE, 0, FALSE))
 			== NULL) {

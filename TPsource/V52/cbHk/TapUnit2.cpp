@@ -81,14 +81,15 @@ void __fastcall TTapForm::FormSetup(TObject *Sender)
 		IkkParam.Ennatys = colCount2++;
 		if (IkkParam.ColW[14])
 			TapGrid->ColWidths[IkkParam.Ennatys] = IkkParam.ColW[14] * Screen->PixelsPerInch * lev / 960;
-		Cells[IkkParam.Ennatys][0].text = L"Ennätys";
+		Cells[IkkParam.Ennatys][0].text = TR(L"Ennätys");
 		}
 	if (IkkParam.Tavoite) {
 		IkkParam.Tavoite = colCount2++;
 		if (IkkParam.ColW[15])
 			TapGrid->ColWidths[IkkParam.Tavoite] = IkkParam.ColW[15] * Screen->PixelsPerInch * lev / 960;
-		Cells[IkkParam.Tavoite][0].text = L"Tavoite";
+		Cells[IkkParam.Tavoite][0].text = TR(L"Tavoite");
 		}
+	SovitaOtsikot();
 }
 //---------------------------------------------------------------------------
 tapIkkParamClass::tapIkkParamClass(void)
@@ -377,6 +378,20 @@ void __fastcall TTapForm::PisteValChange(TObject *Sender)
 	Valittu = PisteVal->ItemIndex;
 }
 //---------------------------------------------------------------------------
+void __fastcall TTapForm::SovitaOtsikot(void)
+{
+	Graphics::TBitmap *otsikkokuva = new Graphics::TBitmap();
+	otsikkokuva->Canvas->Font->Size = IkkParam.FontSize;
+	for (int col = 0; col < TapGrid->ColCount; col++) {
+		if (TapGrid->ColWidths[col] <= 0)
+			continue;
+		int leveys = otsikkokuva->Canvas->TextWidth(Cells[col][0].text) + 4 * Screen->PixelsPerInch/96;
+		if (leveys > TapGrid->ColWidths[col])
+			TapGrid->ColWidths[col] = leveys;
+		}
+	delete otsikkokuva;
+}
+//---------------------------------------------------------------------------
 void __fastcall TTapForm::Skaalaa(void)
 {
 	int GrdWidth;
@@ -403,42 +418,43 @@ void __fastcall TTapForm::Skaalaa(void)
 	TapGrid->ColWidths[7] = IkkParam.ColW[7] * Screen->PixelsPerInch * lev / 960;
 	TapGrid->ColWidths[8] = IkkParam.ColW[8] * Screen->PixelsPerInch * lev / 960;
 	TapGrid->ColWidths[9] = IkkParam.ColW[9] * Screen->PixelsPerInch * lev / 960;
-	Cells[0][0].text = L"Kilpno";
-	Cells[1][0].text = L"Nimi";
-	Cells[2][0].text = L"Seura";
-	Cells[3][0].text = L"Maa";
-	Cells[4][0].text = L"Sarja";
-	Cells[5][0].text = L"Piste";
-	Cells[6][0].text = L"Sija";
-	Cells[7][0].text = L"Tulos";
-	Cells[8][0].text = L"Ero";
+	Cells[0][0].text = TR(L"Kilpno");
+	Cells[1][0].text = TR(L"Nimi");
+	Cells[2][0].text = TR(L"Seura");
+	Cells[3][0].text = TR(L"Maa");
+	Cells[4][0].text = TR(L"Sarja");
+	Cells[5][0].text = TR(L"Piste");
+	Cells[6][0].text = TR(L"Sija");
+	Cells[7][0].text = TR(L"Tulos");
+	Cells[8][0].text = TR(L"Ero");
 	if (kilpparam.kilplaji == L'A') {
-		Cells[9][0].text = L"Sakot";
+		Cells[9][0].text = TR(L"Sakot");
 		}
 	else
-		Cells[9][0].text = L"Trk";
+		Cells[9][0].text = TR(L"Trk");
 	if (k_pv && Nytyhteistulokset1->Checked) {
 		TapGrid->ColWidths[10] = IkkParam.ColW[10] * Screen->PixelsPerInch * lev / 960;
 		TapGrid->ColWidths[11] = IkkParam.ColW[11] * Screen->PixelsPerInch * lev / 960;
 		TapGrid->ColWidths[12] = IkkParam.ColW[12] * Screen->PixelsPerInch * lev / 960;
-		Cells[10][0].text = L"Y-sija";
-		Cells[11][0].text = L"Y-tulos";
-		Cells[12][0].text = L"Y-ero";
+		Cells[10][0].text = TR(L"Y-sija");
+		Cells[11][0].text = TR(L"Y-tulos");
+		Cells[12][0].text = TR(L"Y-ero");
 		}
 	if (IkkParam.Ennatys) {
 		IkkParam.Ennatys = colCount2++;
 		TapGrid->ColWidths[IkkParam.Ennatys] = IkkParam.ColW[14] * Screen->PixelsPerInch * lev / 960;
-		Cells[IkkParam.Ennatys][0].text = L"Ennätys";
+		Cells[IkkParam.Ennatys][0].text = TR(L"Ennätys");
 		}
 	if (IkkParam.Tavoite) {
 		IkkParam.Tavoite = colCount2++;
 		TapGrid->ColWidths[IkkParam.Tavoite] = IkkParam.ColW[15] * Screen->PixelsPerInch * lev / 960;
-		Cells[IkkParam.Tavoite][0].text = L"Tavoite";
+		Cells[IkkParam.Tavoite][0].text = TR(L"Tavoite");
 		}
 	if (wcswcind(kilpparam.kilplaji, L"NP") >= 0) {
 		TapGrid->ColWidths[colCount1-1] = IkkParam.ColW[13] * Screen->PixelsPerInch * lev / 960;
-		Cells[colCount1-1][0].text = L"Vaihe";
+		Cells[colCount1-1][0].text = TR(L"Vaihe");
 		}
+	SovitaOtsikot();
 	GrdWidth = 16 * Screen->PixelsPerInch / 96;
 	for (int i = 0; i < TapGrid->ColCount; i++) {
 		GrdWidth += TapGrid->ColWidths[i] + 2;

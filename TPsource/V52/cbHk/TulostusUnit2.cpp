@@ -53,6 +53,9 @@ __fastcall TTulosteForm::TTulosteForm(TComponent* Owner)
    : TForm(Owner)
 {
 	kaannaLomake(this);
+	// Tulosteiden kieli valitaan alivalikosta, joka korvaa entisen valinnan "Englanninkieliset otsikot"
+	Englanninkielisetotsikot1->Visible = false;
+	lisaaTulostekielivalikko(Englanninkielisetotsikot1->Parent);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -363,8 +366,6 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 	SisaltoIndex = PageControlSisalto->ActivePageIndex;
 	if (CBUusiSivu->Checked)
 		Options |= 0x80000000;
-	if (Englanninkielisetotsikot1->Checked)
-		Options |= 0x10000000;
 	switch (KohdeIndex) {
 		case 0:
 			if (KirjoitinVal->ItemIndex == -1 ||
@@ -1520,9 +1521,9 @@ void __fastcall TTulosteForm::Reittihrvelintiedostoxml1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+// Piilotettu (korvattu valikolla "Tulosteiden kieli"), säilytetty .dfm-viittauksen vuoksi
 void __fastcall TTulosteForm::Englanninkielisetotsikot1Click(TObject *Sender)
 {
-	Englanninkielisetotsikot1->Checked = !Englanninkielisetotsikot1->Checked;
 }
 //---------------------------------------------------------------------------
 

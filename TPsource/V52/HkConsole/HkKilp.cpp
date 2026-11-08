@@ -25,6 +25,7 @@
 #include "HkDeclare.h"
 #include "HkConsoleDef.h"
 #include <size.h>
+#include "Kielet.h"
 
 
 extern INT16  setySize;
@@ -438,7 +439,7 @@ INT hae_seura(wchar_t *snimi, wchar_t *lyhenne, UINT16 *piiri, INT etsi)
 
 			for (i = 0; i < maxEditNo; i++) {
 				if (editfld[i].active != 0 && editfld[i].ots[0] != 0)
-					vidspwmsg(editfld[i].y, editfld[i].xots, 7, 0, editfld[i].ots);
+					vidspwmsg(editfld[i].y, editfld[i].xots, 7, 0, TR(editfld[i].ots));
 				}
 		}
 }
@@ -522,10 +523,10 @@ void kilptietue::outkilp(INT ntlisa)
 		editfld[TAE-1].active = (Sarjat[Sarja()].rrtas > 1);
 		editfld[RATAE-1].active = monirata;
 		if (editfld[RATAE-1].active)
-			vidspwmsg(editfld[RATAE-1].y, editfld[RATAE-1].xots-7, 7, 0, editfld[RATAE-1].ots);
+			vidspwmsg(editfld[RATAE-1].y, editfld[RATAE-1].xots-7, 7, 0, TR(editfld[RATAE-1].ots));
 		}
    if (editfld[TAE-1].active) {
-	   vidspwmsg(editfld[TAE-1].y, editfld[TAE-1].xots, 7, 0, editfld[TAE-1].ots);
+	   vidspwmsg(editfld[TAE-1].y, editfld[TAE-1].xots, 7, 0, TR(editfld[TAE-1].ots));
 	   }
    if (Sarja() >= 0 && Sarja() < sarjaluku) {
       pst = kuulpiste <= Sarjat[Sarja()].valuku[k_pv] ? kuulpiste : 0;

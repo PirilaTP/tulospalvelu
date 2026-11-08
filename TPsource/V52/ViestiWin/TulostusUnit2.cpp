@@ -52,11 +52,15 @@ int list(wchar_t kohde, wchar_t tiedlaji, wchar_t tulostettava, wchar_t jarjesty
 	wchar_t *PisteLista, wchar_t (*seuralista)[LSEURA+5], wchar_t *Lisarivit, int options);
 
 TTulosteForm *TulosteForm;
+// Tulosteiden kielen valikko (korvaa valinnan Englanninkieliset otsikot)
+static TMenuItem *TulostekieliValikko = NULL;
 //---------------------------------------------------------------------------
 __fastcall TTulosteForm::TTulosteForm(TComponent* Owner)
    : TForm(Owner)
 {
 	kaannaLomake(this);
+	Englanninkielisetotsikot1->Visible = false;
+	TulostekieliValikko = lisaaTulostekielivalikko(Englanninkielisetotsikot1->Parent);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -216,7 +220,7 @@ void __fastcall TTulosteForm::FormCreate(TObject *Sender)
 {
 //	CBViimLeima->Checked = maalileimasin < 0;
 	TabSheetKirjoitinEnter(Sender);
-	Englanninkielisetotsikot1->Checked = (lsttulparam.language == 1);
+	paivitaTulostekielivalikko(TulostekieliValikko);
 
 	LblLisaTekstiTul = new TLabel(this);
 	LblLisaTekstiTul->Parent = TabSheetTulokset;
@@ -280,8 +284,6 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 	SisaltoIndex = PageControlSisalto->ActivePageIndex;
 	if (CBUusiSivu->Checked)
 		Options |= 0x80000000;
-	if (Englanninkielisetotsikot1->Checked)
-		Options |= 0x10000000;
 
 	switch (KohdeIndex) {
 		case 0:

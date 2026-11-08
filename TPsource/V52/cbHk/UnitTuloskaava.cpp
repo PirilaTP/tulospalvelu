@@ -49,7 +49,7 @@ void __fastcall TFormTuloskaava::FormShow(TObject *Sender)
 		CBLaskettava->Items->Add(UnicodeString(i+1)+TR(L". va-pisteen aika"));
 	CBLaskettava->Items->Add(TR(L"Vaihekohtaiset pisteet"));
 	CBLaskettava->ItemIndex = (Va <= Sarjat[Srj].valuku[Pv]) ? Va : Sarjat[Srj].valuku[Pv]+1;
-	EdtKaavaOn->Text = Sarjat[Srj].kaava[Pv][Va].on ? L"Kaava käytössä" : L"Kaava pois käytöstä";
+	EdtKaavaOn->Text = Sarjat[Srj].kaava[Pv][Va].on ? TR(L"Kaava käytössä") : TR(L"Kaava pois käytöstä");
 	EdtYla->Text = Sarjat[Srj].kaava[Pv][Va].yla;
 	EdtAla->Text = Sarjat[Srj].kaava[Pv][Va].ala;
 	EdtKerroin->Text = Sarjat[Srj].kaava[Pv][Va].kerroin;

@@ -31,6 +31,7 @@
 #include <bstrings.h>
 #include <butil.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <dos.h>
 #include <sys/stat.h>
 #ifndef MAXOSUUSLUKU
@@ -1386,7 +1387,7 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 				swprintf(msg, TR(L"K‰sittelyss‰ kortti %ld    "), em.badge);
 				vidspwmsg(ySize-1, 0, 7, 0, msg);
 			   if (kysytty) {
-				  wcscpy(msg, TR(L"Anna K)ilpailijanro, H)ae, L)is‰‰ uusi tietue, Esc: ohita"));
+				  wcscpy(msg, N_(L"Anna K)ilpailijanro, H)ae, L)is‰‰ uusi tietue, Esc: ohita"));
 				  }
 			   else {
 					   naytatulos(3);

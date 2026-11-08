@@ -189,51 +189,88 @@ void __fastcall TFormHylkRap::ValitseHakemisto1Click(TObject *Sender)
 	SetCurrentDir(FormMain->CurrentDir);
 }
 //---------------------------------------------------------------------------
+// Hylkäysraportti on kaksikielinen: tulosteen kieli / englanti (englanniksi pelkkä englanti).
+// teksti on muotoa "suomi / englanti" (myös raportin tallennettavat valintatekstit);
+// suomenkielinen osa on käännösavain (konteksti "hylkäysraportti") ja englanninkielistä
+// osaa käytetään, jos englanninkielistä käännöstä ei ole.
+static void hrOsat(int kieli, const wchar_t *teksti, UnicodeString &oma, UnicodeString &eng)
+{
+	wchar_t avain[200];
+	const wchar_t *p;
+
+	wcsncpy(avain, teksti, sizeof(avain)/2-1);
+	avain[sizeof(avain)/2-1] = 0;
+	eng = L"";
+	if ((p = wcsstr(teksti, L" / ")) != NULL) {
+		avain[p - teksti] = 0;
+		eng = p + 3;
+		}
+	oma = TRCL(kieli, L"hylkäysraportti", avain);
+	if (wcscmp(TRCL(KIELI_EN, L"hylkäysraportti", avain), avain) || eng.Length() == 0)
+		eng = TRCL(KIELI_EN, L"hylkäysraportti", avain);
+	if (kieli == KIELI_EN)
+		oma = eng;
+}
+
+static UnicodeString hrTeksti(int kieli, const wchar_t *teksti)
+{
+	UnicodeString oma, eng;
+
+	hrOsat(kieli, teksti, oma, eng);
+	if (kieli == KIELI_EN || oma == eng)
+		return(oma);
+	return(oma + L" / " + eng);
+}
+
 void  TFormHylkRap::hylk_rap(tulostusparamtp *tulprm)
 {
+	UnicodeString otsikko, alaotsikko;
+	int kieli = tulprm->language;
 	int m = 50, x1 = 400, x2 = 470;
 	tulprm->Initpage(NULL);
 	tulprm->Paaots_on();
-	tulprm->Putfld(L"Hylkäysesitys", m, 20, 0, 0);
+	hrOsat(kieli, L"Hylkäysesitys / Disqualification proposal", otsikko, alaotsikko);
+	tulprm->Putfld(otsikko.c_str(), m, 20, 0, 0);
 	tulprm->Endline(0);
 	tulprm->Paaots_pois();
 	tulprm->Aliots_on();
-	tulprm->Putfld(L"Disqualification proposal", m, 30, 0, 0);
+	if (kieli != KIELI_EN && otsikko != alaotsikko)
+		tulprm->Putfld(alaotsikko.c_str(), m, 30, 0, 0);
 	tulprm->Aliots_pois();
 	tulprm->Endline(3);
-	tulprm->Putfld(L"Tapaus avattu / Case opened", m, 30, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Tapaus avattu / Case opened").c_str(), m, 30, 0, 0);
 	tulprm->Putfld(EdtAvausaika->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Viimeisin tallennus / Latest processing", m, 45, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Viimeisin tallennus / Latest processing").c_str(), m, 45, 0, 0);
 	tulprm->Putfld(EdtTallennusaika->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Sarja / Class", m, 30, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Sarja / Class").c_str(), m, 30, 0, 0);
 	tulprm->Putfld(EdtSarja->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(1);
 	if (EdtRata->Text.Length() > 0) {
-		tulprm->Putfld(L"Rata / Course", m, 30, 0, 0);
+		tulprm->Putfld(hrTeksti(kieli, L"Rata / Course").c_str(), m, 30, 0, 0);
 		tulprm->Putfld(EdtRata->Text.c_str(), m+x1, 30, 0, 0);
 		tulprm->Endline(1);
 		}
-	tulprm->Putfld(L"Kilpailija / Competitor", m, 30, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Kilpailija / Competitor").c_str(), m, 30, 0, 0);
 	tulprm->Putfld((UnicodeString(KilpNo)+L" :").c_str(), m+x1, 6, 1, 0);
 	tulprm->Putfld(EdtNimi->Text.c_str(), m+x2, 40, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Seura / Club", m, 30, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Seura / Club").c_str(), m, 30, 0, 0);
 	tulprm->Putfld(EdtSeura->Text.c_str(), m+x2, 40, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Emit-koodi / Emit code", m, 30, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Emit-koodi / Emit code").c_str(), m, 30, 0, 0);
 	tulprm->Putfld(EdtBadge->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Ongelma / Problem", m, 30, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Ongelma / Problem").c_str(), m, 30, 0, 0);
 	if (RGLuonne->ItemIndex > 0)
-		tulprm->Putfld(LuonneStr[RGLuonne->ItemIndex], m+x1, 40, 0, 0);
+		tulprm->Putfld(hrTeksti(kieli, LuonneStr[RGLuonne->ItemIndex]).c_str(), m+x1, 40, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Piikinjäljet / Control card", m, 40, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Piikinjäljet / Control card").c_str(), m, 40, 0, 0);
 	if (RGPiikit->ItemIndex > 0)
-	tulprm->Putfld(PiikkiStr[RGPiikit->ItemIndex], m+x1, 40, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, PiikkiStr[RGPiikit->ItemIndex]).c_str(), m+x1, 40, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Lisätietoa / Additional notes", m, 40, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Lisätietoa / Additional notes").c_str(), m, 40, 0, 0);
 	tulprm->Putfld(EdtSelitys->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(0);
 	for (int r = 0; r < 5; r++) {
@@ -242,25 +279,25 @@ void  TFormHylkRap::hylk_rap(tulostusparamtp *tulprm)
 		tulprm->Endline(0);
 		}
 	tulprm->Endline(0);
-	tulprm->Putfld(L"Toimitsijan päätös / Official's decision", m, 45, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Toimitsijan päätös / Official's decision").c_str(), m, 45, 0, 0);
 	if (RGRatk_1->ItemIndex > 0)
-		tulprm->Putfld(RatkStr[RGRatk_1->ItemIndex], m+x1, 40, 0, 0);
+		tulprm->Putfld(hrTeksti(kieli, RatkStr[RGRatk_1->ItemIndex]).c_str(), m+x1, 40, 0, 0);
 	tulprm->Endline(0);
-	tulprm->Putfld(L"Toimitsija / Official", m, 40, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Toimitsija / Official").c_str(), m, 40, 0, 0);
 	tulprm->Putfld(EdtToimitsija->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Kilpailijan kanta / Competitor's view", m, 45, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Kilpailijan kanta / Competitor's view").c_str(), m, 45, 0, 0);
 	if (RGKilpKanta->ItemIndex > 0)
-		tulprm->Putfld(MyontoStr[RGKilpKanta->ItemIndex], m+x1, 40, 0, 0);
+		tulprm->Putfld(hrTeksti(kieli, MyontoStr[RGKilpKanta->ItemIndex]).c_str(), m+x1, 40, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Lopullinen päätös / Final decision", m, 40, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Lopullinen päätös / Final decision").c_str(), m, 40, 0, 0);
 	if (RGTuom->ItemIndex > 0)
-		tulprm->Putfld(RatkStr[RGTuom->ItemIndex], m+x1, 40, 0, 0);
+		tulprm->Putfld(hrTeksti(kieli, RatkStr[RGTuom->ItemIndex]).c_str(), m+x1, 40, 0, 0);
 	tulprm->Endline(3);
-	tulprm->Putfld(L"Allekirjoitukset / Signatures", m, 30, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Allekirjoitukset / Signatures").c_str(), m, 30, 0, 0);
 	tulprm->Endline(4);
-	tulprm->Putfld(L"Toimitsija / Official", m, 30, 0, 0);
-	tulprm->Putfld(L"Kilpailija / Competitor", m+x1, 30, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Toimitsija / Official").c_str(), m, 30, 0, 0);
+	tulprm->Putfld(hrTeksti(kieli, L"Kilpailija / Competitor").c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(0);
 	tulprm->Endpage();
 	tulprm->Enddoc();
@@ -273,7 +310,7 @@ void  TFormHylkRap::tulostaRaportti(void)
 		}
 	if (RapKirjoitin[0] != 0) {
 	RapTulPrm.printer = GDIPRINTER;
-	RapTulPrm.language = lsttulparam.language;
+	RapTulPrm.language = tulostekieli;
 	if (!RapTulPrm.lstf) {
 		EnterCriticalSection(&print_CriticalSection);
 		if ((RapTulPrm.lstf = openprfile(RapKirjoitin, 1, TRUE, FALSE, 0, FALSE))

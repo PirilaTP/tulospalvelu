@@ -2547,7 +2547,7 @@ void __fastcall TFormEmit::Tulosta(int tuloste)
 		delete FormKirjVal;
 		}
 	EmitTulPrm.printer = GDIPRINTER;
-	EmitTulPrm.language = lsttulparam.language;
+	EmitTulPrm.language = tulostekieli;
 	if (!EmitTulPrm.lstf) {
 		if ((EmitTulPrm.lstf = openprfile(EmitKirjoitin, 1, TRUE, FALSE, 0, FALSE))
 			== NULL) {

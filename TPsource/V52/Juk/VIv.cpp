@@ -30,6 +30,7 @@
 #include <bstrings.h>
 #include <butil.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <dos.h>
 #include <sys/stat.h>
 #ifndef MAXOSUUSLUKU
@@ -2031,11 +2032,7 @@ int tall_regnly(san_type *vastaus, int r_no)
 			labs(bt) > maxero && yritys++ == 0)
 			return(1);
 		if (aikajono[ino]->rwtime - aikajono[ino]->mxtime >= 0) {
-#ifndef LANGSV_K
 			writeerror(TRA("AIKATAULUKKO TÄYSI"),0);
-#else // LANGSV_K
-			writeerror(TRA("TIDTAVLAN FULL"),0);
-#endif // LANGSV_K
 			return(1);
 			}
 		wt = aikajono[ino]->aktrows;
@@ -2218,17 +2215,9 @@ int tall_regnly(san_type *vastaus, int r_no)
 		kerro_regnly = 0;
 #ifdef _CONSOLE
 		clrln(ySize-1);
-#ifndef LANGSV_K
 		vidspmsg(ySize-1,0,7,0,TRA("Maalikello on tietokoneen kelloa      s"));
-#else // LANGSV_K
-		vidspmsg(ySize-1,0,7,0,TRA("Maalikello on tietokoneen kelloa      s"));
-#endif // LANGSV_K
 		vidint(ySize-1,32,5,(int)(labs(bt) / 10));
-#ifndef LANGSV_K
 		as = (bt > 0) ? "edellä" : "jäljessä";
-#else // LANGSV_K
-		as = (bt > 0) ? "edellä" : "jäljessä";
-#endif // LANGSV_K
 		vidspmsg(ySize-1,40,7,0,as);
 #endif
 		}
@@ -2717,14 +2706,8 @@ void initajat(int ino, int vaihda)
 			{
 #ifdef _CONSOLE
 			ch = L' ';
-#ifndef LANGSV_K
 			wselectopt(L"AJANOTTOTOIMINNON KÄYNNISTYS - Luetaanko aiemmat "
 			   L"tiedot levyltä (K/E)", L"KE", &ch);
-#else
-			wselectopt(L"STARTEN AV FUNKTIONEN ML - Skall tidigare data  "
-			   L"läsas från fil (J/E)", L"JE", &ch);
-			wtransl(L"J", L"K", &ch);
-#endif
 #else
 			int i;
 			i = select3(2, TR(L"AJANOTTOTIEDOSTON AVAAMINEN - Luetaanko aiemmat "
@@ -2812,11 +2795,7 @@ static void vaihda_ajat(int ino)
 
    wcsncpy(vanhanimi, aikajono[ino]->aikafname, 100);
    clrln(ySize-3);
-#ifndef LANGSV_K
    viwrrect(ySize-3,0,ySize-3,18,TRA("Uusi aikatiedosto :"),7,0,0);
-#else // LANGSV_K
-   viwrrect(ySize-3,0,ySize-3,18,TRA("Nytt tidfil       :"),7,0,0);
-#endif // LANGSV_K
    inputwstr(aikajono[ino]->aikafname,37,20,ySize-3,L"\r\x1b",&ch,FALSE);
    if (ch == ESC) {
 	  wcsncpy(aikajono[ino]->aikafname, vanhanimi, 38);
@@ -2897,21 +2876,13 @@ void inittimer(void)
 		  do {
 			 clrln(ySize-3);
 
-#ifndef LANGSV_K
 			 vidspmsg(ySize-3,0,7,0,TRA("Paina ajanottoon varattavaa näppäintä"));
-#else // LANGSV_K
-			 vidspmsg(ySize-3,0,7,0,TRA("Tryck tangenten för tidtagningen     "));
-#endif // LANGSV_K
 			 i = nivkeys;
 			 nivkeys = 0;
 			 ch = readkbd(&key, 1, 0);
 			 nivkeys = i;
 			 if (ch == '\r' || ch == 27 || (ch >= '0' && ch <= '9') || (toupper(ch) >= 'A' && toupper(ch) <= 'Z')) {
-#ifndef LANGSV_K
 				writeerror(TRA("Ajanottonäppäin ei voi olla 'Enter', 'Esc', numero tai kirjain"),0);
-#else // LANGSV_K
-				writeerror(TRA("Tangentes kan inte vara 'Enter' eller 'Esc'"),0);
-#endif // LANGSV_K
 				continue;
 				}
 			 if (ch > 32) {
@@ -2919,18 +2890,10 @@ void inittimer(void)
 				st[9] = ch;
 				}
 			 else st[0] = 0;
-#ifndef LANGSV_K
 			 sprintf(prs,TRA("Näppäinkoodi (%d,%d) %s varattu ajanotolle, vahvista "
 				"(K/E)"), (int) ch, (int) key, st);
 			 tc = ' ';
 			 selectopt(prs, "KE", &tc);
-#else // LANGSV_K
-			 sprintf(prs,TRA("Tangentkod (%d,%d) %s reserverats för tidtagningen, bekräfta "
-				"(J/E)"), (int) ch, (int) key, st);
-			 tc = ' ';
-			 selectopt(prs, "JE", &tc);
-			 transl("J", "K", &tc);
-#endif // LANGSV_K
 			 } while (tc != 'K');
 		  keytab[0].ch = ch;
 		  keytab[0].keycode = key;

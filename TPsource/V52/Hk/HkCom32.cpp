@@ -29,6 +29,7 @@
 #include <butil.h>
 #include <wincom.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include "HkDeclare.h"
 #ifdef _BORLAND_

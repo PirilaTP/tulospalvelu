@@ -33,6 +33,7 @@
 #include <asynch_1.h>
 #endif
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include <dos.h>
 #include "laskent.h"

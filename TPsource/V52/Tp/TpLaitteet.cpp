@@ -31,6 +31,7 @@
 #include <bstrings.h>
 #include <butil.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <dos.h>
 #include <sys/stat.h>
 #include <sys/timeb.h>
@@ -2574,7 +2575,7 @@ void aseta_emitag(int r_no)
 						continue;
 					}
 					if (i == 0)
-						wcscpy(msg, TR(L"Lähtönollauksen koodi, vahvista (K/E)"));
+						wcscpy(msg, N_(L"Lähtönollauksen koodi, vahvista (K/E)"));
 					else if (i < 66)
 						swprintf(msg, TR(L"Koodi %d - Alle 66 oleva koodi kieltää tiedonsiirron, vahvista (K/E)"), i);
 					else if (i < 240)
@@ -2584,7 +2585,7 @@ void aseta_emitag(int r_no)
 					else if (i == 244)
 						swprintf(msg, TR(L"Koodi %d - Tietojen luenta, kaikki kortin tiedot, vahvista (K/E)"), i);
 					else if (i == 248)
-						wcscpy(msg, TR(L"Maaliajanoton koodi, vahvista (K/E)"));
+						wcscpy(msg, N_(L"Maaliajanoton koodi, vahvista (K/E)"));
 					else if (i < 254)
 						swprintf(msg, TR(L"Koodi %d - Tietojen luenta, viimeisin kilpailu, vahvista (K/E)"), i);
 					ch = L' ';

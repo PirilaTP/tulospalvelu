@@ -24,7 +24,6 @@
 #include <Vcl.ComCtrls.hpp>
 #include <Vcl.Dialogs.hpp>
 #include <Vcl.Menus.hpp>
-#include <Vcl.CheckLst.hpp>
 #include "cbKielet.h"
 
 #pragma package(smart_init)
@@ -107,9 +106,6 @@ static void kaannaKomponentti(TComponent *C)
 		}
 	else if (TListBox *LB = dynamic_cast<TListBox *>(C)) {
 		kaannaStrings(LB->Items);
-		}
-	else if (TCheckListBox *CLB = dynamic_cast<TCheckListBox *>(C)) {
-		kaannaStrings(CLB->Items);
 		}
 	else if (TMemo *M = dynamic_cast<TMemo *>(C)) {
 		kaannaStrings(M->Lines);
@@ -200,7 +196,7 @@ public:
 		TMenuItem *MI = dynamic_cast<TMenuItem *>(Sender);
 		if (MI != NULL) {
 			MI->Checked = true;
-			tulostekieli = MI->Tag;
+			asetaTulostekieli(MI->Tag);
 			}
 	}
 };

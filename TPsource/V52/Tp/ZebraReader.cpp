@@ -34,6 +34,7 @@
 #include "ZebraReader.h"
 
 #include <wincom.h>
+#include "Kielet.h"
 
 #ifdef LAJUNEN
 

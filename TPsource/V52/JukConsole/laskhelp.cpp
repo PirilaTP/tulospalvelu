@@ -16,6 +16,7 @@
 
 #include "VDeclare.h"
 #include <bvideo.h>
+#include "Kielet.h"
 
 static scr *helps[11];
 #ifndef __linux__
@@ -40,7 +41,7 @@ void prscr(scr *s)
    char line[82],*p1, *p2;
 
    for (i=0; i<s->nl; i++) {
-      p2 = s->l[i].t;
+      p2 = TRA(s->l[i].t);
       p1 = line;
       while (*p2) *(p1++) = *(p2++);
       viwrrect(s->l[i].r, s->l[i].c,s->l[i].r, s->l[i].c+p1-line-1,line,

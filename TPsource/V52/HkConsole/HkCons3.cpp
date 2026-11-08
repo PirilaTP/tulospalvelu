@@ -26,6 +26,7 @@
 #include <bkeybrd.h>
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <dos.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -1751,10 +1752,10 @@ static void tiedostovalinnat(tulostusparamtp *tulostusparam)
    wcscpy(opts, L"KELSHVX");
 #else
 #ifdef JOUKKUETUL
-      wcscpy(msg, TR(L"K)ohdistettu, E)rottimin, L)ehteen, H)TML, X)ML, V)äliajoin, J)oukkueet"));
+      wcscpy(msg, N_(L"K)ohdistettu, E)rottimin, L)ehteen, H)TML, X)ML, V)äliajoin, J)oukkueet"));
    wcscpy(opts, L"KELHVXJ");
 #else
-      wcscpy(msg, TR(L"K)ohdistettu, E)rottimin, L)ehteen, S)HL, H)TML, X)ML, V)äliajoin"));
+      wcscpy(msg, N_(L"K)ohdistettu, E)rottimin, L)ehteen, S)HL, H)TML, X)ML, V)äliajoin"));
    wcscpy(opts, L"KELSHVX");
 #endif
 #endif
@@ -1837,11 +1838,11 @@ int valitsekohde(wchar_t *co)
    wchar_t msg[90];
    wchar_t opts[20];
 
-      wcscpy(msg, TR(L"N)äyttö, P)aperi, A)utomaattinen, M)uotoilu, "
+      wcscpy(msg, N_(L"N)äyttö, P)aperi, A)utomaattinen, M)uotoilu, "
          L"tI)edostoon"));
       wcscpy(opts, L"NPAMI\x1b");
       if (taulu_com) {
-         wcscat(msg, TR(L", V)alotaulu"));
+         wcscat(msg, N_(L", V)alotaulu"));
          wcscat(opts, L"V");
          }
       wselectopt(msg, opts, co);

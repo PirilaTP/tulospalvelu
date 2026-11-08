@@ -24,6 +24,7 @@
 #include <ctype.h>
 #include <malloc.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <bstrings.h>
 #ifdef _CONSOLE
 #include <bkeybrd.h>
@@ -72,13 +73,22 @@ static int muotoilufl, cfgparam;
 char merkit = 'G';
 static wchar_t comdir[MAX_PORTTI];
 static wchar_t cfgfilename[41] = L"LASKENTA.CFG";
+
+// P‰ivitt‰‰ tulostusparametrien kielen (asetuksista luettaessa ja tulosteiden kielt‰ vaihdettaessa)
+static void asetaTulosteparamKieli(int kieli)
+{
+	lsttulparam.language = kieli;
+	lokitulparam.language = kieli;
+	filetulparam.language = kieli;
+	aftulparam.language = kieli;
+	autotulostusparam.language = kieli;
+}
 static wchar_t autostr[25] = L"";
 static int korkeat = FALSE;
 static int star = FALSE;
 static wchar_t baudst[MAX_PORTTI][20] = {L"9600,n,8,1"};
 static int portparam[MAX_PORTTI];
 static int nopeuta = 0;
-static wchar_t oletuskieli = L'S';
 static int pisteparam;
 int aikakorjaus[MAXJONO];
 extern int korjaareaaliaika;
@@ -852,8 +862,12 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
 			continue;
 			}
 */
+		 if(!wmemcmp(fldn, L"KAYTTOKIELI=", 12)) {
+			asetaKayttokieli(kieliKoodista(fldn+12, kayttokieli));
+			continue;
+			}
 		 if(!wmemcmp(fldn, L"KIELI=", 6)) {
-			oletuskieli = fldn[6];
+			tulostekieli = kieliKoodista(fldn+6, tulostekieli);
 			continue;
 			}
 		 if(!wmemcmp(fldn, L"LOKI", 4)) {
@@ -2525,7 +2539,7 @@ void asetaOletusarvot(void)
 	aftulparam.kohde = L'H';
 	aftulparam.yksihtml = 0;
 	aftulparam.rajaus = L'L';
-	aftulparam.language = (oletuskieli == L'E' ? 1 : 0);
+	aftulparam.language = tulostekieli;
 	aftulparam.tulmuot = filetulosmuot;
 	filetulparam = aftulparam;
 	wcscpy(autofileparam.aflstnm, L"AUTOFILE.LST");
@@ -2664,10 +2678,9 @@ int aloitus(int argc, wchar_t *argv[], wchar_t *cfgflnm)
 
     maaraaPuutelisat();
 	lsttulparam.tulmuot = tulosmuot;
-	lsttulparam.language = (oletuskieli == L'E' ? 1 : 0);
 	lokitulparam.tulmuot = tulosmuot;
-	filetulparam.language = lsttulparam.language;
-	aftulparam.language = lsttulparam.language;
+	asetaTulosteparamKieli(tulostekieli);
+	tulostekieliMuuttui = asetaTulosteparamKieli;
 
 	if (loki == 1) {
 		if ((lokitulparam.lstf = openprfile(lokifname, -1, FALSE, 1,

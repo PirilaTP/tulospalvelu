@@ -34,6 +34,7 @@
 #include <bstrings.h>
 #include <System.DateUtils.hpp>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include <dos.h>
 

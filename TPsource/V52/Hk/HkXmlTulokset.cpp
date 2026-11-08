@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <math.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include "HkDeclare.h"
 #include "HkMuotoilu.h"
 
@@ -1873,7 +1874,8 @@ void xmlTulostulos(kilptietue& kilp, int sarja, INT sj, tulostusparamtp *tulprm)
 				}
 		   }
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGStatus, TulosTags, nTulosTags),
-			kilp.tarkstr(ln, i_pv < k_pv ? i_pv : k_pv, i_pv > k_pv, 8, tulprm->language), level);
+			kilp.tarkstr(ln, i_pv < k_pv ? i_pv : k_pv, i_pv > k_pv, 8,
+				tulprm->language == KIELI_FI ? KIELI_FI : KIELI_EN), level);
 	   if (kilp.pv[k_pv].rata[0] && (rt = haerata(&kilp)) != NULL &&
 			!wcscmp(kilp.pv[k_pv].rata, rt->tunnus)) {
 		   tul_tied->put_wtag(XMLhae_tagName(TAGCourse, TulosTags, nTulosTags), level++);

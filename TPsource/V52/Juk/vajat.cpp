@@ -26,6 +26,7 @@
 #include <bstrings.h>
 
 #pragma hdrstop
+#include "Kielet.h"
 #include <dos.h>
 #include <sys/stat.h>
 
