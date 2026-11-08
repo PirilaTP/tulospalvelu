@@ -256,7 +256,7 @@ void __fastcall TFormMuotoilu::naytaTls(int lj)
 		SGTls[lj]->Cells[1][r] = UnicodeString(frmflds[lj][r-1].ots);
 		SGTls[lj]->Cells[2][r] = UnicodeString(frmflds[lj][r-1].pos);
 		SGTls[lj]->Cells[3][r] = UnicodeString(frmflds[lj][r-1].len);
-		SGTls[lj]->Cells[4][r] = frmflds[lj][r-1].oik ? TR(L"Oik") : TR(L"Vas");
+		SGTls[lj]->Cells[4][r] = frmflds[lj][r-1].oik ? L"Oik" : L"Vas";
 		}
 	SGTls[lj]->Options << goEditing;
 }

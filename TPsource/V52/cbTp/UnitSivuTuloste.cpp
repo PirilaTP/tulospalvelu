@@ -376,7 +376,7 @@ void __fastcall TFormSivuTuloste::NaytaValinnat(void)
 		SG1->Cells[2][r] = PageField[r-1].vpos;
 		SG1->Cells[3][r] = PageField[r-1].len;
 		SG1->Cells[4][r] = PageField[r-1].koko;
-		SG1->Cells[5][r] = PageField[r-1].oik ? TR(L"Oik") : TR(L"Vas");
+		SG1->Cells[5][r] = PageField[r-1].oik ? L"Oik" : L"Vas";
 		}
 }
 //---------------------------------------------------------------------------

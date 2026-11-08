@@ -296,7 +296,7 @@ void __fastcall TFormMuotoilu::naytaLl(int lj)
 			if (r < rowCount-3) {
 				SGLl[lj]->Cells[i][r] = UnicodeString(tulkentta[lj][r-1].pos[i-1]);
 				SGLl[lj]->Cells[i+7][r] = UnicodeString(tulkentta[lj][r-1].len[i-1]);
-				SGLl[lj]->Cells[i+14][r] = tulkentta[lj][r-1].tas[i-1] ? TR(L"Oik") : TR(L"Vas");
+				SGLl[lj]->Cells[i+14][r] = tulkentta[lj][r-1].tas[i-1] ? L"Oik" : L"Vas";
 				}
 			if (r == rowCount-3) {
 				if (i > 4)
@@ -351,7 +351,7 @@ void __fastcall TFormMuotoilu::naytaTls(int lj)
 		SGTls[lj]->Cells[1][r] = UnicodeString(frmflds[lj][r-1].ots);
 		SGTls[lj]->Cells[2][r] = UnicodeString(frmflds[lj][r-1].pos);
 		SGTls[lj]->Cells[3][r] = UnicodeString(frmflds[lj][r-1].len);
-		SGTls[lj]->Cells[4][r] = frmflds[lj][r-1].oik ? TR(L"Oik") : TR(L"Vas");
+		SGTls[lj]->Cells[4][r] = frmflds[lj][r-1].oik ? L"Oik" : L"Vas";
 		if (lj != 0)
 			SGTls[lj]->Cells[5][r] = UnicodeString(frmflds[lj][r-1].askel);
 		}

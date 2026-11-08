@@ -1095,7 +1095,7 @@ static void muotoilu(void)
          if (j < n_fld[i]) {
             sprintf(sline, "%-10.10s   %3d    %3d     %3.3s",
                fldname[j], fld[j].pos, fld[j].len,
-               fld[j].oik ? TRA("Oik") : TRA("Vas"));
+               fld[j].oik ? "Oik" : "Vas");
 			vidspmsg(j+5, 3, 7, 0, sline);
             }
          else clrln(j+5);
@@ -1105,7 +1105,7 @@ static void muotoilu(void)
          if (ch == ESC) break;
          INPUTINT((int *)&fld[j].len, 3, 23, j+5, "\r\x1b", &ch);
          if (ch == ESC) break;
-         strcpy(s, fld[j].oik ? TRA("Oik") : TRA("Vas"));
+         strcpy(s, fld[j].oik ? "Oik" : "Vas");
          inputstr(s, 3, 31, j+5, "\r\x1b", &ch, 0);
          fld[j].oik = (s[0] == 'O' || s[0] == 'o');
          }

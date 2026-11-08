@@ -4250,16 +4250,6 @@ msgstr "Position %s, bredd i tecken"
 msgid "yksiköissä 1/72 in"
 msgstr "i enheter 1/72 in"
 
-#: HkConsole/HkCons3.cpp JukConsole/VConTul.cpp cbHk/MuotoiluUnit.cpp ViestiWin/MuotoiluUnit.cpp
-#: cbTp/UnitSivuTuloste.cpp
-msgid "Oik"
-msgstr ""
-
-#: HkConsole/HkCons3.cpp JukConsole/VConTul.cpp cbHk/MuotoiluUnit.cpp ViestiWin/MuotoiluUnit.cpp
-#: cbTp/UnitSivuTuloste.cpp
-msgid "Vas"
-msgstr ""
-
 #: HkConsole/HkCons3.cpp
 msgid "Paina <Esc> lopettaaksesi tämän sivun muutokset"
 msgstr "Tryck <Esc> för att avsluta ändringarna på denna sida"
@@ -8779,7 +8769,7 @@ msgstr "Res-2"
 
 #: cbHk/UnitASakot.cpp cbHk/UnitASakot.dfm
 msgid "Napa"
-msgstr "Prick"
+msgstr "X"
 
 #: cbHk/UnitASakot.cpp
 msgid "Sakkojen ja pisteiden syöttö"
@@ -8799,11 +8789,11 @@ msgstr "Sky-X"
 
 #: cbHk/UnitASuunn.cpp
 msgid "Kl-mm"
-msgstr ""
+msgstr "Kl-mm"
 
 #: cbHk/UnitASuunn.cpp
 msgid "Kl-X"
-msgstr ""
+msgstr "Kl-X"
 
 #: cbHk/UnitAikaSiirto.cpp
 msgid "Tulospalvelutilassa voidaan siirtää vain myöhempiä numeroita"
@@ -10070,11 +10060,11 @@ msgstr "På"
 
 #: cbHk/UnitKaavaTaul.cpp
 msgid "Jatk"
-msgstr "Fort"
+msgstr "Auto"
 
 #: cbHk/UnitKaavaTaul.cpp
 msgid "TulLaji"
-msgstr "ResTyp"
+msgstr "Formel"
 
 #: cbHk/UnitKaavaTaul.cpp
 msgid "VertAika"
@@ -10082,7 +10072,7 @@ msgstr "JämfTid"
 
 #: cbHk/UnitKaavaTaul.cpp
 msgid "V-Pist"
-msgstr "V-Poäng"
+msgstr "JämfP"
 
 #: cbHk/UnitKaavaTaul.cpp
 msgid "Kerr"
@@ -10102,11 +10092,11 @@ msgstr "EjNeg"
 
 #: cbHk/UnitKaavaTaul.cpp
 msgid "Y-Jatk"
-msgstr "T-Fort"
+msgstr "T-Auto"
 
 #: cbHk/UnitKaavaTaul.cpp
 msgid "V-lkm"
-msgstr "E-ant"
+msgstr "MaxEt"
 
 #: cbHk/UnitKaavaTaul.cpp
 msgid "OoMin"
@@ -10126,7 +10116,7 @@ msgstr "TotRes"
 
 #: cbHk/UnitKaavaTaul.cpp
 msgid "Kärki"
-msgstr "Topp"
+msgstr "Vinnare"
 
 #: cbHk/UnitKilpMaaritys.cpp
 msgid "Vaiheiden tilavaraus (version max. "
@@ -11225,11 +11215,11 @@ msgstr "Förs"
 
 #: cbHk/UnitStatus.cpp
 msgid "Mahd"
-msgstr "Möjl"
+msgstr "BästMöjl"
 
 #: cbHk/UnitStatus.cpp
 msgid "Jako"
-msgstr "Pris"
+msgstr "Prisutd."
 
 #: cbHk/UnitStatus.cpp
 msgid "Tulostettavien lukumäärä"

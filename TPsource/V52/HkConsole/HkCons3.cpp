@@ -1266,7 +1266,7 @@ static void near muotoilu(void)
          if (j < nfld) {
             swprintf(ln, L"%-10.10s   %3d    %3d     %3.3s",
                fld[j].name, fld[j].pos, fld[j].len,
-               fld[j].oik ? TR(L"Oik") : TR(L"Vas"));
+               fld[j].oik ? L"Oik" : L"Vas");
             vidspwmsg(j+5, 3, 7, 0, ln);
             }     
          else clrln(j+5);
@@ -1284,7 +1284,7 @@ static void near muotoilu(void)
                INPUTINTW((INT *)&fld[j].len, 3, 23, j+5, term, &ch);
                break;
             case 3:
-               wcscpy(s, fld[j].oik ? TR(L"Oik") : TR(L"Vas"));
+               wcscpy(s, fld[j].oik ? L"Oik" : L"Vas");
                inputwstr(s, 3, 31, j+5, term, &ch, 0);
                fld[j].oik = (s[0] == L'O' || s[0] == L'o');
                break;

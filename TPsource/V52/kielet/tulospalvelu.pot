@@ -4209,16 +4209,6 @@ msgstr ""
 msgid "yksiköissä 1/72 in"
 msgstr ""
 
-#: HkConsole/HkCons3.cpp JukConsole/VConTul.cpp cbHk/MuotoiluUnit.cpp ViestiWin/MuotoiluUnit.cpp
-#: cbTp/UnitSivuTuloste.cpp
-msgid "Oik"
-msgstr ""
-
-#: HkConsole/HkCons3.cpp JukConsole/VConTul.cpp cbHk/MuotoiluUnit.cpp ViestiWin/MuotoiluUnit.cpp
-#: cbTp/UnitSivuTuloste.cpp
-msgid "Vas"
-msgstr ""
-
 #: HkConsole/HkCons3.cpp
 msgid "Paina <Esc> lopettaaksesi tämän sivun muutokset"
 msgstr ""
