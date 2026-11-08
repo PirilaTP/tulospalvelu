@@ -105,8 +105,8 @@ void __fastcall TFormMaastossa::asetaSarakkeet(void)
 	int srjVal = CBSarja->ItemIndex - 1;
 	int nva = MaastossaMaxNva(srjVal);
 	static const wchar_t *kiint[] = {
-		L"No", L"Sarja", L"Nimi", L"Seura", L"Status",
-		L"Lpaikka", L"Lähtö"
+		N_(L"No"), N_(L"Sarja"), N_(L"Nimi"), N_(L"Seura"), N_(L"Status"),
+		N_(L"Lpaikka"), N_(L"Lähtö")
 	};
 	int wkiint[] = {50, 70, 180, 140, 110, 70, 80};
 	const int nkiint = 7;
@@ -118,7 +118,7 @@ void __fastcall TFormMaastossa::asetaSarakkeet(void)
 	Grid->FixedRows = 1;
 	Grid->RowCount = 2;
 	for (int c = 0; c < nkiint; c++) {
-		Grid->Cells[c][0] = kiint[c];
+		Grid->Cells[c][0] = TR(kiint[c]);
 		Grid->ColWidths[c] = wkiint[c] * Screen->PixelsPerInch / 96;
 	}
 	for (int p = 1; p <= nva; p++) {

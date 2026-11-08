@@ -63,6 +63,12 @@ Kaikki on määritelty tiedostossa `include/Kielet.h` (sisältyy `tputil.h`:hon)
   `Cells[..] == L"COM"`), konfiguraatiotiedoston avainsanoja (`L"KIELI="`), xml-tageja,
   tiedostonimiä, CSV-tiedostojen sarakeavaimia tai lokitiedostojen rivejä. Jos teksti
   sekä näytetään että verrataan, käännä molemmat: `wcscmp(x, TR(L"Hyl"))`.
+- Muokattavien taulukoiden **tilasarakkeet** (Kesk, Hyl, esItys, Eiläht., Laina ...) ovat
+  suomeksi myös muilla kielillä: tallennettaessa tila luetaan solun alkukirjaimista
+  (`FirstChar(Cells[c][r])`). `kielet.py kaari` ei käännä näitä sanoja tällaisissa tiedostoissa.
+- Taulukoiden **sarakeotsikot** käännetään kirjoitettaessa ne soluun: `Cells[c][0] = TR(L"Nimi")`;
+  `ColTp`-taulukoissa otsikko merkitään `N_(L"Nimi")` ja käännetään käyttökohdassa
+  `TR(Cols[i].Caption)`.
 - `TR`-funktioiden palauttamaa merkkijonoa ei saa muuttaa, ja se on voimassa koko ajon.
   Suomella `TR(s)` palauttaa saman osoittimen `s`.
 - Muotoilumerkkijono käännetään ennen muotoilua: `swprintf(msg, TR(L"Kilpailija %d puuttuu"), kno)`.

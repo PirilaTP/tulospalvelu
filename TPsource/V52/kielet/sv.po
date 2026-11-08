@@ -393,18 +393,23 @@ msgid "KERÄÄ "
 msgstr "SAMLA "
 
 #: Hk/HkEmit.cpp Hk/HkTulostus.cpp Juk/VEmit.cpp cbHk/HkKisaLahtLuet.cpp
-#: cbHk/TapUnit2.cpp cbHk/UnitArvonta.cpp cbHk/UnitComfile.cpp cbHk/UnitEmithaku.cpp
-#: cbHk/UnitKaavaTaul.cpp cbHk/UnitKilpSeurat.cpp cbHk/UnitSHLTul.cpp cbHk/UnitSarjatiedot.cpp
-#: ViestiWin/UnitComfile.cpp ViestiWin/UnitEmithaku.cpp ViestiWin/UnitHenkHaku.cpp ViestiWin/UnitImport.cpp
-#: ViestiWin/UnitKilpSeurat.cpp ViestiWin/UnitSHLTul.cpp ViestiWin/UnitStatus.cpp cbTp/UnitRadat.cpp
-#: cbHk/TakaaAjoUnit.dfm cbHk/UnitEmit.dfm cbHk/UnitEmitMuutokset.dfm cbHk/UnitEmit_VA.dfm
-#: cbHk/UnitHylkRap.dfm cbHk/UnitIlm2.dfm cbHk/UnitJoukkueTilanne.dfm cbHk/UnitKaavaTaul.dfm
-#: cbHk/UnitKilpailijaEmit.dfm cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm cbHk/UnitLisatiedot.dfm
-#: cbHk/UnitMaastossa.dfm cbHk/UnitSuodatus.dfm cbHk/UnitTarkMerk.dfm cbHk/UnitTaulu.dfm
-#: cbHk/UnitTuloskaava.dfm cbHk/UnitVaToisto.dfm cbHk/UnitVakLisays.dfm ViestiWin/OsuusTiedot.dfm
-#: ViestiWin/TulosUnit.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitEmitMuutokset.dfm ViestiWin/UnitEmit_VA.dfm
-#: ViestiWin/UnitHylkRap.dfm ViestiWin/UnitJoukkuetiedot.dfm ViestiWin/UnitLahestyjat.dfm ViestiWin/UnitLisatiedot.dfm
-#: ViestiWin/UnitMaastossa.dfm ViestiWin/UnitSeurGr.dfm ViestiWin/UnitSuodatus.dfm cbTp/UnitSarjaVal.dfm
+#: cbHk/HkWinParam.cpp cbHk/TapUnit2.cpp cbHk/UnitAikavert.cpp cbHk/UnitAjanotto.cpp
+#: cbHk/UnitArvonta.cpp cbHk/UnitComfile.cpp cbHk/UnitEmithaku.cpp cbHk/UnitIlm2.cpp
+#: cbHk/UnitKaavaTaul.cpp cbHk/UnitKilpSeurat.cpp cbHk/UnitKilpailijatiedot.cpp cbHk/UnitMaastossa.cpp
+#: cbHk/UnitOsanottajat.cpp cbHk/UnitSHLTul.cpp cbHk/UnitSarjatiedot.cpp cbHk/UnitTKanta.cpp
+#: cbHk/UnitVaPisteet.cpp cbHk/UnitYv.cpp ViestiWin/TapUnit2.cpp ViestiWin/UnitAikavert.cpp
+#: ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitEmithaku.cpp ViestiWin/UnitHenkHaku.cpp
+#: ViestiWin/UnitImport.cpp ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitKilpSeurat.cpp ViestiWin/UnitMaastossa.cpp
+#: ViestiWin/UnitSHLTul.cpp ViestiWin/UnitSarjatiedot.cpp ViestiWin/UnitStatus.cpp ViestiWin/UnitYv.cpp
+#: ViestiWin/VWinParam.cpp cbTp/UnitRadat.cpp cbHk/TakaaAjoUnit.dfm cbHk/UnitEmit.dfm
+#: cbHk/UnitEmitMuutokset.dfm cbHk/UnitEmit_VA.dfm cbHk/UnitHylkRap.dfm cbHk/UnitIlm2.dfm
+#: cbHk/UnitJoukkueTilanne.dfm cbHk/UnitKaavaTaul.dfm cbHk/UnitKilpailijaEmit.dfm cbHk/UnitKilpailijaOnline.dfm
+#: cbHk/UnitKilpailijatiedot.dfm cbHk/UnitLisatiedot.dfm cbHk/UnitMaastossa.dfm cbHk/UnitSuodatus.dfm
+#: cbHk/UnitTarkMerk.dfm cbHk/UnitTaulu.dfm cbHk/UnitTuloskaava.dfm cbHk/UnitVaToisto.dfm
+#: cbHk/UnitVakLisays.dfm ViestiWin/OsuusTiedot.dfm ViestiWin/TulosUnit.dfm ViestiWin/UnitEmit.dfm
+#: ViestiWin/UnitEmitMuutokset.dfm ViestiWin/UnitEmit_VA.dfm ViestiWin/UnitHylkRap.dfm ViestiWin/UnitJoukkuetiedot.dfm
+#: ViestiWin/UnitLahestyjat.dfm ViestiWin/UnitLisatiedot.dfm ViestiWin/UnitMaastossa.dfm ViestiWin/UnitSeurGr.dfm
+#: ViestiWin/UnitSuodatus.dfm cbTp/UnitSarjaVal.dfm
 msgid "Sarja"
 msgstr "Klass"
 
@@ -688,11 +693,13 @@ msgstr "   Kontroll  Kontrkod   Emitkod         Tid  Sträcktid"
 
 #: Hk/HkEmit.cpp Juk/VEmit.cpp HkConsole/HkCons0.cpp cbHk/TapUnit2.cpp
 #: cbHk/TulosUnit.cpp cbHk/UnitAjanotto.cpp cbHk/UnitComfile.cpp cbHk/UnitKilpailijaOnline.cpp
-#: cbHk/UnitSarjatiedot.cpp ViestiWin/TapUnit2.cpp ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp
-#: cbTp/UnitEmitFile.cpp cbTp/UnitNappain.cpp cbHk/TapUnit2.dfm cbHk/TulosUnit.dfm
-#: cbHk/UnitCfg.dfm cbHk/UnitEmit.dfm cbHk/UnitKilpailijaEmit.dfm cbHk/UnitSarja.dfm
-#: ViestiWin/OsuusTiedot.dfm ViestiWin/TapUnit2.dfm ViestiWin/UnitCfg.dfm ViestiWin/UnitEmit.dfm
-#: ViestiWin/UnitLahestyjat.dfm ViestiWin/UnitSarja.dfm cbTp/UnitEmiTag.dfm cbTp/UnitRadat.dfm
+#: cbHk/UnitKilpailijatiedot.cpp cbHk/UnitSarjatiedot.cpp cbHk/UnitVaPisteet.cpp ViestiWin/TapUnit2.cpp
+#: ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitJoukkuetiedot.cpp ViestiWin/UnitLuenta.cpp
+#: ViestiWin/UnitSarjatiedot.cpp ViestiWin/UnitVaTuloste.cpp cbTp/UnitEmitFile.cpp cbTp/UnitNappain.cpp
+#: cbHk/TapUnit2.dfm cbHk/TulosUnit.dfm cbHk/UnitCfg.dfm cbHk/UnitEmit.dfm
+#: cbHk/UnitKilpailijaEmit.dfm cbHk/UnitSarja.dfm ViestiWin/OsuusTiedot.dfm ViestiWin/TapUnit2.dfm
+#: ViestiWin/UnitCfg.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitLahestyjat.dfm ViestiWin/UnitSarja.dfm
+#: cbTp/UnitEmiTag.dfm cbTp/UnitRadat.dfm
 msgid "Maali"
 msgstr "Mål"
 
@@ -808,33 +815,42 @@ msgid "Rastiväliajat"
 msgstr "Kontrollmellantider"
 
 #: Hk/HkEmit.cpp Juk/VEmitHtml.cpp cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp
-#: cbHk/UnitTaulu.cpp ViestiWin/TulosUnit.cpp ViestiWin/UnitGAZ.cpp cbHk/UnitKilpailijaEmit.dfm
-#: cbHk/UnitTaulu.dfm ViestiWin/OsuusTiedot.dfm ViestiWin/UnitGAZ.dfm ViestiWin/UnitJoukkuetiedot.dfm
+#: cbHk/UnitKilpailijaEmit.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp cbHk/UnitTaulu.cpp
+#: ViestiWin/TapUnit2.cpp ViestiWin/TulosUnit.cpp ViestiWin/UnitGAZ.cpp ViestiWin/UnitJoukkuetiedot.cpp
+#: cbHk/UnitKilpailijaEmit.dfm cbHk/UnitTaulu.dfm ViestiWin/OsuusTiedot.dfm ViestiWin/UnitGAZ.dfm
+#: ViestiWin/UnitJoukkuetiedot.dfm
 msgid "Sija"
 msgstr "Plac."
 
 #: Hk/HkEmit.cpp Juk/VEmitHtml.cpp cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp
-#: cbHk/UnitASakot.cpp cbHk/UnitASuunn.cpp cbHk/UnitEmitKoodit.cpp cbHk/UnitEmithaku.cpp
-#: cbHk/UnitKisaLuett.cpp ViestiWin/TulosUnit.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitHenkHaku.cpp
-#: ViestiWin/UnitJjVaihdot.cpp cbHk/UnitASakot.dfm cbHk/UnitEmit.dfm cbHk/UnitEmitMuutokset.dfm
-#: cbHk/UnitHylkRap.dfm cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm cbHk/UnitSuodatus.dfm
-#: cbHk/UnitTarkMerk.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitEmitMuutokset.dfm ViestiWin/UnitHylkRap.dfm
-#: ViestiWin/UnitOsuuskopiointi.dfm
+#: cbHk/UnitASakot.cpp cbHk/UnitASuunn.cpp cbHk/UnitAikavert.cpp cbHk/UnitAjanotto.cpp
+#: cbHk/UnitEmitKoodit.cpp cbHk/UnitEmithaku.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKisaLuett.cpp
+#: cbHk/UnitMaastossa.cpp cbHk/UnitSeurat.cpp ViestiWin/TapUnit2.cpp ViestiWin/TulosUnit.cpp
+#: ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitHenkHaku.cpp ViestiWin/UnitJjVaihdot.cpp
+#: ViestiWin/UnitLahestyjat.cpp ViestiWin/UnitLuenta.cpp ViestiWin/UnitMaastossa.cpp ViestiWin/UnitSeurat.cpp
+#: ViestiWin/UnitVaTuloste.cpp cbTp/UnitAmpPaikat.cpp cbHk/UnitASakot.dfm cbHk/UnitEmit.dfm
+#: cbHk/UnitEmitMuutokset.dfm cbHk/UnitHylkRap.dfm cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm
+#: cbHk/UnitSuodatus.dfm cbHk/UnitTarkMerk.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitEmitMuutokset.dfm
+#: ViestiWin/UnitHylkRap.dfm ViestiWin/UnitOsuuskopiointi.dfm
 msgid "Nimi"
 msgstr "Namn"
 
 #: Hk/HkEmit.cpp Juk/VEmit.cpp Juk/VEmitHtml.cpp cbHk/UnitComfile.cpp
-#: ViestiWin/UnitComfile.cpp cbTp/UnitRadat.cpp cbHk/UnitEmit.dfm cbHk/UnitHylkRap.dfm
+#: cbHk/UnitKilpailijatiedot.cpp cbHk/UnitOsanottajat.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitJoukkueet.cpp
+#: ViestiWin/UnitJoukkuetiedot.cpp cbTp/UnitRadat.cpp cbHk/UnitEmit.dfm cbHk/UnitHylkRap.dfm
 #: cbHk/UnitIlm2.dfm cbHk/UnitLisaTietue.dfm cbHk/UnitOsanottajat.dfm ViestiWin/OsuusTiedot.dfm
 #: ViestiWin/UnitEmit.dfm ViestiWin/UnitHylkRap.dfm ViestiWin/UnitJoukkueet.dfm cbTp/UnitPiikit.dfm
 msgid "Rata"
 msgstr "Bana"
 
 #: Hk/HkEmit.cpp Juk/VEmit.cpp HkConsole/HkKilp.cpp cbHk/TapUnit2.cpp
-#: cbHk/TulosUnit.cpp cbHk/UnitComfile.cpp ViestiWin/TulosUnit.cpp ViestiWin/UnitComfile.cpp
-#: ViestiWin/UnitStatus.cpp cbHk/TakaaAjoUnit.dfm cbHk/UnitASakot.dfm cbHk/UnitEmit.dfm
-#: cbHk/UnitKilpailijaEmit.dfm cbHk/UnitTarkMerk.dfm cbHk/UnitVaGr.dfm ViestiWin/OsuusTiedot.dfm
-#: ViestiWin/UnitEmit.dfm ViestiWin/UnitJoukkuetiedot.dfm
+#: cbHk/TulosUnit.cpp cbHk/UnitAikavert.cpp cbHk/UnitAjanotto.cpp cbHk/UnitComfile.cpp
+#: cbHk/UnitIlm2.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp cbHk/UnitOsanottajat.cpp
+#: cbHk/UnitStatus.cpp ViestiWin/TapUnit2.cpp ViestiWin/TulosUnit.cpp ViestiWin/UnitAikavert.cpp
+#: ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitJoukkuetiedot.cpp ViestiWin/UnitStatus.cpp
+#: cbHk/TakaaAjoUnit.dfm cbHk/UnitASakot.dfm cbHk/UnitEmit.dfm cbHk/UnitKilpailijaEmit.dfm
+#: cbHk/UnitTarkMerk.dfm cbHk/UnitVaGr.dfm ViestiWin/OsuusTiedot.dfm ViestiWin/UnitEmit.dfm
+#: ViestiWin/UnitJoukkuetiedot.dfm
 msgid "Tulos"
 msgstr "Resultat"
 
@@ -1743,16 +1759,17 @@ msgstr "Efterdelens startintervall i sekunder"
 msgid "Jälkiosan ryhmäkoko"
 msgstr "Efterdelens gruppstorlek"
 
-#: Hk/HkTulostus.cpp ViestiWin/UnitStatus.cpp ViestiWin/UnitPartio.dfm
+#: Hk/HkTulostus.cpp cbHk/UnitStatus.cpp ViestiWin/UnitStatus.cpp ViestiWin/UnitPartio.dfm
 msgid "Yht."
 msgstr "Tot."
 
 #: Hk/HkTulostus.cpp Juk/VTulostus.cpp cbHk/HkKisaLahtLuet.cpp cbHk/TulosUnit.cpp
-#: cbHk/UnitAikavert.cpp cbHk/UnitAjanotto.cpp cbHk/UnitComfile.cpp cbHk/UnitKilpailijaOnline.cpp
-#: cbHk/UnitSarjatiedot.cpp ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp cbTp/UnitAikakorjaus.cpp
-#: cbTp/UnitEmitSQL.cpp cbTp/UnitNappain.cpp cbHk/TulosUnit.dfm cbHk/UnitCfg.dfm
-#: cbHk/UnitEmit.dfm cbHk/UnitKilpailijaEmit.dfm ViestiWin/OsuusTiedot.dfm ViestiWin/UnitEmit.dfm
-#: cbTp/UnitRadat.dfm
+#: cbHk/UnitAikavert.cpp cbHk/UnitAjanotto.cpp cbHk/UnitComfile.cpp cbHk/UnitIlm2.cpp
+#: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitMaastossa.cpp cbHk/UnitOsanottajat.cpp cbHk/UnitSarjatiedot.cpp
+#: ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitJoukkuetiedot.cpp
+#: ViestiWin/UnitMaastossa.cpp cbTp/UnitAikakorjaus.cpp cbTp/UnitEmitSQL.cpp cbTp/UnitNappain.cpp
+#: cbHk/TulosUnit.dfm cbHk/UnitCfg.dfm cbHk/UnitEmit.dfm cbHk/UnitKilpailijaEmit.dfm
+#: ViestiWin/OsuusTiedot.dfm ViestiWin/UnitEmit.dfm cbTp/UnitRadat.dfm
 msgid "Lähtö"
 msgstr "Start"
 
@@ -1830,26 +1847,25 @@ msgstr "Ange klass"
 msgid "Viim. maaliaika : %8.8s            kirjausaika : %s\r\n"
 msgstr "Senaste måltid  : %8.8s            registrerad : %s\r\n"
 
-#: Hk/HkTulostus.cpp cbHk/HkKisaLahtLuet.cpp ViestiWin/UnitStatus.cpp
+#: Hk/HkTulostus.cpp cbHk/HkKisaLahtLuet.cpp cbHk/UnitStatus.cpp ViestiWin/UnitStatus.cpp
 msgid "Ilm"
 msgstr "Anm"
 
 #: Hk/HkTulostus.cpp Juk/VEmit.cpp cbHk/HkKisaLahtLuet.cpp cbHk/UnitAikavert.cpp
-#: cbHk/UnitAjanotto.cpp cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitMerkKoodeja.cpp
-#: cbTp/UnitAikakorjaus.cpp cbTp/UnitEmitSQL.cpp cbHk/TulostusUnit2.dfm cbHk/UnitAjanotto.dfm
-#: ViestiWin/UnitAjanotto.dfm
+#: cbHk/UnitAjanotto.cpp cbHk/UnitComfile.cpp cbHk/UnitKilpailijaEmit.cpp cbHk/UnitKilpailijaOnline.cpp
+#: ViestiWin/OsuusTiedot.cpp ViestiWin/UnitAikavert.cpp ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp
+#: ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitMerkKoodeja.cpp cbTp/UnitAikakorjaus.cpp cbTp/UnitEmitSQL.cpp
+#: cbHk/TulostusUnit2.dfm cbHk/UnitAjanotto.dfm ViestiWin/UnitAjanotto.dfm
 msgid "Aika"
 msgstr "Tid"
 
 #: Hk/HkTulostus.cpp Juk/VTulostus.cpp HkConsole/HkKilp.cpp cbHk/HkKisaLahtLuet.cpp
-#: cbHk/UnitIlm2.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp ViestiWin/UnitJoukkueet.cpp
-#: ViestiWin/UnitJoukkuetiedot.cpp ViestiWin/UnitStatus.cpp
+#: cbHk/UnitStatus.cpp ViestiWin/UnitStatus.cpp
 msgid "Kesk"
 msgstr "Utg"
 
 #: Hk/HkTulostus.cpp Juk/VTulostus.cpp JukConsole/vcons2.cpp cbHk/HkKisaLahtLuet.cpp
-#: cbHk/UnitIlm2.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp ViestiWin/UnitJoukkueet.cpp
-#: ViestiWin/UnitJoukkuetiedot.cpp ViestiWin/UnitStatus.cpp
+#: cbHk/UnitStatus.cpp ViestiWin/UnitStatus.cpp
 msgid "Hyl"
 msgstr "Dsk"
 
@@ -2065,8 +2081,8 @@ msgstr "kl."
 msgid "Tallennetut pisteet"
 msgstr "Sparade poäng"
 
-#: Juk/VEmit.cpp cbHk/UnitTarkMerk.dfm cbHk/UnitVakLisays.dfm ViestiWin/UnitLisatiedot.dfm
-#: ViestiWin/UnitSarja.dfm cbTp/UnitNappain.dfm
+#: Juk/VEmit.cpp ViestiWin/UnitSarjatiedot.cpp cbHk/UnitTarkMerk.dfm cbHk/UnitVakLisays.dfm
+#: ViestiWin/UnitLisatiedot.dfm ViestiWin/UnitSarja.dfm cbTp/UnitNappain.dfm
 msgid "Lähtöaika"
 msgstr "Starttid"
 
@@ -2092,7 +2108,7 @@ msgid "Kilpailijatietoihin"
 msgstr "Till tävlandes uppgifter"
 
 #: Juk/VEmit.cpp Juk/VTulostus.cpp Juk/vkilp.cpp HkConsole/HkKilp.cpp
-#: ViestiWin/UnitJoukkueet.cpp cbHk/UnitSuodatus.dfm ViestiWin/UnitSuodatus.dfm
+#: cbHk/UnitSuodatus.dfm ViestiWin/UnitSuodatus.dfm
 msgid "Avoinna"
 msgstr "Öppna"
 
@@ -2324,8 +2340,8 @@ msgstr "Emitbricka nr"
 msgid "valmistettu"
 msgstr "tillverkad"
 
-#: Juk/VEmit.cpp HkConsole/HkKilp.cpp cbHk/UnitEmitKoodit.cpp cbHk/UnitEmit.dfm
-#: ViestiWin/UnitEmit.dfm ViestiWin/UnitJoukkueet.dfm
+#: Juk/VEmit.cpp HkConsole/HkKilp.cpp cbHk/UnitEmitKoodit.cpp cbHk/UnitIlm2.cpp
+#: cbHk/UnitOsanottajat.cpp cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitJoukkueet.dfm
 msgid "Laina"
 msgstr "Hyr"
 
@@ -2337,7 +2353,7 @@ msgstr "Bricka läst"
 msgid "Rastinro"
 msgstr "Kontroll"
 
-#: Juk/VEmit.cpp cbTp/UnitKohdistus.dfm
+#: Juk/VEmit.cpp cbHk/UnitVaPisteet.cpp cbTp/UnitKohdistus.dfm
 msgid "Rastikoodi"
 msgstr "Kontrollkod"
 
@@ -2381,9 +2397,10 @@ msgid "%d-%d: Bdg %d, Aika %d, Trk %d, Rata %s, Rasteja %d"
 msgstr "%d-%d: Bdg %d, Tid %d, Kntr %d, Bana %s, Kontroller %d"
 
 #: Juk/VEmitHtml.cpp Juk/VTulostus.cpp JukConsole/laskemtn.cpp ViestiWin/UnitASakot.cpp
-#: ViestiWin/UnitComfile.cpp ViestiWin/UnitEmithaku.cpp ViestiWin/UnitHenkHaku.cpp ViestiWin/UnitImport.cpp
-#: ViestiWin/UnitLuenta.cpp ViestiWin/UnitMerkKoodeja.cpp ViestiWin/UnitSHLTul.cpp ViestiWin/UnitStatus.cpp
-#: ViestiWin/UnitYLahdot.cpp cbHk/UnitTaulu.dfm ViestiWin/UnitASakot.dfm ViestiWin/UnitAjanotto.dfm
+#: ViestiWin/UnitAikavert.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitEmithaku.cpp ViestiWin/UnitHenkHaku.cpp
+#: ViestiWin/UnitImport.cpp ViestiWin/UnitJoukkuetiedot.cpp ViestiWin/UnitLuenta.cpp ViestiWin/UnitMerkKoodeja.cpp
+#: ViestiWin/UnitSHLTul.cpp ViestiWin/UnitStatus.cpp ViestiWin/UnitVaTuloste.cpp ViestiWin/UnitYLahdot.cpp
+#: ViestiWin/UnitYv.cpp cbHk/UnitTaulu.dfm ViestiWin/UnitASakot.dfm ViestiWin/UnitAjanotto.dfm
 #: ViestiWin/UnitEmit.dfm ViestiWin/UnitEmit_VA.dfm ViestiWin/UnitGAZ.dfm ViestiWin/UnitHylkRap.dfm
 #: ViestiWin/UnitLahestyjat.dfm ViestiWin/UnitLuenta.dfm ViestiWin/UnitSakkoKierr.dfm ViestiWin/UnitVaTuloste.dfm
 #: cbTp/UnitPiikit.dfm
@@ -2403,12 +2420,15 @@ msgstr "Kontrollkod"
 msgid "No-Os"
 msgstr "Nr-Str"
 
-#: Juk/VEmitHtml.cpp JukConsole/laskemtn.cpp ViestiWin/TulosUnit.cpp ViestiWin/UnitASakot.cpp
-#: ViestiWin/UnitComfile.cpp ViestiWin/UnitEmithaku.cpp ViestiWin/UnitHenkHaku.cpp ViestiWin/UnitImport.cpp
-#: ViestiWin/UnitLuenta.cpp ViestiWin/UnitMerkKoodeja.cpp cbHk/TulostusUnit2.dfm cbHk/UnitIlm2.dfm
-#: cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm cbHk/UnitLisatiedot.dfm cbHk/UnitSuodatus.dfm
-#: cbHk/UnitTKanta.dfm ViestiWin/MuotoiluUnit.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitEmitMuutokset.dfm
-#: ViestiWin/UnitHylkRap.dfm ViestiWin/UnitJoukkuetiedot.dfm ViestiWin/UnitLuenta.dfm ViestiWin/UnitVaTuloste.dfm
+#: Juk/VEmitHtml.cpp JukConsole/laskemtn.cpp cbHk/HkWinParam.cpp cbHk/UnitIlm2.cpp
+#: cbHk/UnitOsanottajat.cpp cbHk/UnitTKanta.cpp ViestiWin/TapUnit2.cpp ViestiWin/TulosUnit.cpp
+#: ViestiWin/UnitASakot.cpp ViestiWin/UnitAikavert.cpp ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp
+#: ViestiWin/UnitEmithaku.cpp ViestiWin/UnitHenkHaku.cpp ViestiWin/UnitImport.cpp ViestiWin/UnitLahestyjat.cpp
+#: ViestiWin/UnitLuenta.cpp ViestiWin/UnitMerkKoodeja.cpp ViestiWin/UnitYv.cpp ViestiWin/VWinParam.cpp
+#: cbHk/TulostusUnit2.dfm cbHk/UnitIlm2.dfm cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm
+#: cbHk/UnitLisatiedot.dfm cbHk/UnitSuodatus.dfm cbHk/UnitTKanta.dfm ViestiWin/MuotoiluUnit.dfm
+#: ViestiWin/UnitEmit.dfm ViestiWin/UnitEmitMuutokset.dfm ViestiWin/UnitHylkRap.dfm ViestiWin/UnitJoukkuetiedot.dfm
+#: ViestiWin/UnitLuenta.dfm ViestiWin/UnitVaTuloste.dfm
 msgid "Joukkue"
 msgstr "Lag"
 
@@ -2859,7 +2879,7 @@ msgstr "varv"
 msgid "kierrosta"
 msgstr "varv"
 
-#: Juk/VTulostus.cpp ViestiWin/UnitGAZ.dfm
+#: Juk/VTulostus.cpp ViestiWin/TapUnit2.cpp ViestiWin/UnitGAZ.dfm
 msgid "Os."
 msgstr "Str."
 
@@ -3180,9 +3200,7 @@ msgstr "Ändringen avbruten"
 msgid "Emit-koodi %ld jo käytössä. Koodia ei tallennettu"
 msgstr "Emitkod %ld används redan. Koden sparades inte"
 
-#: Juk/vkilp.cpp cbHk/UnitIlm2.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp
-#: ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitJoukkuetiedot.cpp cbHk/UnitEmit.dfm cbHk/UnitTarkMerk.dfm
-#: ViestiWin/UnitEmit.dfm
+#: Juk/vkilp.cpp cbHk/UnitEmit.dfm cbHk/UnitTarkMerk.dfm ViestiWin/UnitEmit.dfm
 msgid "Tark."
 msgstr "Kontr."
 
@@ -3194,8 +3212,7 @@ msgstr "D-försl."
 msgid "Ei läht."
 msgstr "Ej start"
 
-#: Juk/vkilp.cpp cbHk/UnitIlm2.cpp cbHk/UnitKilpailijatiedot.cpp ViestiWin/UnitJoukkueet.cpp
-#: ViestiWin/UnitJoukkuetiedot.cpp cbHk/TakaaAjoUnit.dfm cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm
+#: Juk/vkilp.cpp cbHk/TakaaAjoUnit.dfm cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm
 #: cbHk/UnitTarkMerk.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitMerkKoodeja.dfm ViestiWin/UnitSuodatus.dfm
 msgid "Poissa"
 msgstr "Frånv."
@@ -3509,13 +3526,17 @@ msgstr "Skriv: H)undradelar, T)iondelar, S)ekunder"
 msgid "Tarratulostus ei käytössä tällä koneella"
 msgstr "Etikettutskrift används inte på denna dator"
 
-#: HkConsole/HkCons2.cpp cbHk/UnitComfile.cpp cbHk/UnitEmit.dfm cbHk/UnitIlm2.dfm
-#: cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm cbHk/UnitLisatiedot.dfm ViestiWin/UnitLisatiedot.dfm
+#: HkConsole/HkCons2.cpp cbHk/HkWinParam.cpp cbHk/UnitComfile.cpp cbHk/UnitIlm2.cpp
+#: cbHk/UnitOsanottajat.cpp cbHk/UnitTKanta.cpp ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitJoukkuetiedot.cpp
+#: ViestiWin/VWinParam.cpp cbHk/UnitEmit.dfm cbHk/UnitIlm2.dfm cbHk/UnitKilpailijaOnline.dfm
+#: cbHk/UnitKilpailijatiedot.dfm cbHk/UnitLisatiedot.dfm ViestiWin/UnitLisatiedot.dfm
 msgid "Sukunimi"
 msgstr "Efternamn"
 
-#: HkConsole/HkCons2.cpp cbHk/UnitComfile.cpp cbHk/UnitEmit.dfm cbHk/UnitIlm2.dfm
-#: cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm cbHk/UnitLisatiedot.dfm ViestiWin/UnitLisatiedot.dfm
+#: HkConsole/HkCons2.cpp cbHk/HkWinParam.cpp cbHk/UnitComfile.cpp cbHk/UnitIlm2.cpp
+#: cbHk/UnitOsanottajat.cpp cbHk/UnitTKanta.cpp ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitJoukkuetiedot.cpp
+#: ViestiWin/VWinParam.cpp cbHk/UnitEmit.dfm cbHk/UnitIlm2.dfm cbHk/UnitKilpailijaOnline.dfm
+#: cbHk/UnitKilpailijatiedot.dfm cbHk/UnitLisatiedot.dfm ViestiWin/UnitLisatiedot.dfm
 msgid "Etunimi"
 msgstr "Förnamn"
 
@@ -6289,9 +6310,9 @@ msgstr "S)ändning, T)idsprecision, M)ålklockans tid"
 msgid "L)ähetys, A)jantarkkuus, M)aalikello, S)irit"
 msgstr "S)ändning, T)idsprecision, M)ålklocka, siR)it"
 
-#: JukConsole/laskent0.cpp cbHk/UnitCfg.cpp cbHk/UnitTaulu.cpp ViestiWin/UnitCfg.cpp
-#: ViestiWin/UnitGAZ.cpp cbTp/UnitEmiTag.cpp cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
-#: cbTp/UnitMaalikello.dfm
+#: JukConsole/laskent0.cpp cbHk/UnitCfg.cpp cbHk/UnitStatus.cpp cbHk/UnitTaulu.cpp
+#: ViestiWin/UnitCfg.cpp ViestiWin/UnitGAZ.cpp ViestiWin/UnitStatus.cpp cbTp/UnitEmiTag.cpp
+#: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm cbTp/UnitMaalikello.dfm
 msgid "Yhteys"
 msgstr "Anslutning"
 
@@ -7019,8 +7040,8 @@ msgstr "Poäng:"
 msgid "Slj"
 msgstr "Stg"
 
-#: JukConsole/vcons2.cpp cbHk/UnitLisatiedot.dfm cbHk/UnitSuodatus.dfm ViestiWin/UnitJoukkueet.dfm
-#: ViestiWin/UnitSuodatus.dfm
+#: JukConsole/vcons2.cpp ViestiWin/UnitJoukkueet.cpp cbHk/UnitLisatiedot.dfm cbHk/UnitSuodatus.dfm
+#: ViestiWin/UnitJoukkueet.dfm ViestiWin/UnitSuodatus.dfm
 msgid "GPS"
 msgstr ""
 
@@ -7062,7 +7083,8 @@ msgstr "Frv"
 msgid "Eil"
 msgstr "Ejs"
 
-#: JukConsole/vcons2.cpp cbHk/TapUnit2.cpp
+#: JukConsole/vcons2.cpp cbHk/TapUnit2.cpp cbHk/UnitAjanotto.cpp ViestiWin/TapUnit2.cpp
+#: ViestiWin/UnitAjanotto.cpp
 msgid "Trk"
 msgstr "Ktr"
 
@@ -7964,7 +7986,7 @@ msgstr "Hyrbrickor %d"
 msgid "Listalla emitkortteja: omat %d, laina %d, puuttuu %d "
 msgstr "Emitbrickor på listan: egna %d, hyr %d, saknas %d "
 
-#: cbHk/HkKisaLahtLuet.cpp
+#: cbHk/HkKisaLahtLuet.cpp cbHk/UnitKilpailijaOnline.cpp
 msgid "Yht.aika"
 msgstr "Tot.tid"
 
@@ -8004,34 +8026,85 @@ msgctxt "emityhteenveto"
 msgid "Laina"
 msgstr "Hyr"
 
-#: cbHk/HkKisaLahtLuet.cpp cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp cbHk/UnitComfile.cpp
-#: cbHk/UnitEmitKoodit.cpp cbHk/UnitKilpSeurat.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitImport.cpp
-#: ViestiWin/UnitKilpSeurat.cpp cbHk/TulostusUnit2.dfm cbHk/UnitEmit.dfm cbHk/UnitEmitMuutokset.dfm
-#: cbHk/UnitHylkRap.dfm cbHk/UnitIlm2.dfm cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm
-#: cbHk/UnitLisatiedot.dfm cbHk/UnitSuodatus.dfm cbHk/UnitTKanta.dfm ViestiWin/UnitEmit.dfm
-#: ViestiWin/UnitJoukkuetiedot.dfm ViestiWin/UnitLisatiedot.dfm ViestiWin/UnitSuodatus.dfm
+#: cbHk/HkKisaLahtLuet.cpp cbHk/HkWinParam.cpp cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp
+#: cbHk/UnitAikavert.cpp cbHk/UnitAjanotto.cpp cbHk/UnitComfile.cpp cbHk/UnitEmitKoodit.cpp
+#: cbHk/UnitIlm2.cpp cbHk/UnitKilpSeurat.cpp cbHk/UnitMaastossa.cpp cbHk/UnitOsanottajat.cpp
+#: cbHk/UnitTKanta.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitImport.cpp ViestiWin/UnitJoukkueet.cpp
+#: ViestiWin/UnitJoukkuetiedot.cpp ViestiWin/UnitKilpSeurat.cpp ViestiWin/UnitMaastossa.cpp ViestiWin/VWinParam.cpp
+#: cbHk/TulostusUnit2.dfm cbHk/UnitEmit.dfm cbHk/UnitEmitMuutokset.dfm cbHk/UnitHylkRap.dfm
+#: cbHk/UnitIlm2.dfm cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm cbHk/UnitLisatiedot.dfm
+#: cbHk/UnitSuodatus.dfm cbHk/UnitTKanta.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitJoukkuetiedot.dfm
+#: ViestiWin/UnitLisatiedot.dfm ViestiWin/UnitSuodatus.dfm
 msgid "Seura"
 msgstr "Klubb"
 
-#: cbHk/HkKisaLahtLuet.cpp cbHk/UnitKilpSeurat.cpp cbHk/TulostusUnit2.dfm cbHk/UnitArvonta.dfm
-#: cbHk/UnitKilpMaaritys.dfm
+#: cbHk/HkKisaLahtLuet.cpp cbHk/UnitKilpSeurat.cpp cbHk/UnitSeurat.cpp cbHk/TulostusUnit2.dfm
+#: cbHk/UnitArvonta.dfm cbHk/UnitKilpMaaritys.dfm
 msgid "Lyhenne"
 msgstr "Förkortning"
 
-#: cbHk/HkKisaLahtLuet.cpp cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp cbHk/UnitComfile.cpp
-#: ViestiWin/TulosUnit.cpp ViestiWin/UnitComfile.cpp cbHk/UnitIlm2.dfm cbHk/UnitKilpailijaOnline.dfm
-#: cbHk/UnitKilpailijatiedot.dfm cbHk/UnitLisatiedot.dfm cbHk/UnitSuodatus.dfm cbHk/UnitTKanta.dfm
-#: ViestiWin/UnitJoukkuetiedot.dfm ViestiWin/UnitLisatiedot.dfm ViestiWin/UnitSuodatus.dfm
+#: cbHk/HkKisaLahtLuet.cpp cbHk/HkWinParam.cpp cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp
+#: cbHk/UnitComfile.cpp cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp cbHk/UnitSeurat.cpp
+#: cbHk/UnitTKanta.cpp ViestiWin/TapUnit2.cpp ViestiWin/TulosUnit.cpp ViestiWin/UnitComfile.cpp
+#: ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitSeurat.cpp ViestiWin/VWinParam.cpp cbHk/UnitIlm2.dfm
+#: cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm cbHk/UnitLisatiedot.dfm cbHk/UnitSuodatus.dfm
+#: cbHk/UnitTKanta.dfm ViestiWin/UnitJoukkuetiedot.dfm ViestiWin/UnitLisatiedot.dfm ViestiWin/UnitSuodatus.dfm
 msgid "Maa"
 msgstr "Land"
 
-#: cbHk/HkKisaLahtLuet.cpp cbHk/UnitSarjatiedot.cpp cbHk/UnitSarja.dfm ViestiWin/UnitSarja.dfm
+#: cbHk/HkKisaLahtLuet.cpp cbHk/HkWinParam.cpp cbHk/UnitSarjatiedot.cpp ViestiWin/UnitSarjatiedot.cpp
+#: ViestiWin/VWinParam.cpp cbHk/UnitSarja.dfm ViestiWin/UnitSarja.dfm
 msgid "Maksu"
 msgstr "Avgift"
 
 #: cbHk/HkKisaLahtLuet.cpp
 msgid "pv"
 msgstr "dag"
+
+#: cbHk/HkWinParam.cpp cbHk/UnitTKanta.cpp ViestiWin/VWinParam.cpp
+msgid "Id"
+msgstr "Id"
+
+#: cbHk/HkWinParam.cpp cbHk/UnitTKanta.cpp ViestiWin/VWinParam.cpp
+msgid "Synt."
+msgstr "Född"
+
+#: cbHk/HkWinParam.cpp cbHk/UnitTKanta.cpp ViestiWin/VWinParam.cpp cbHk/TulosUnit.dfm
+msgid "Sukup."
+msgstr "Kön"
+
+#: cbHk/HkWinParam.cpp cbHk/UnitComfile.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp
+#: cbHk/UnitTKanta.cpp ViestiWin/UnitComfile.cpp ViestiWin/VWinParam.cpp
+msgid "Bib"
+msgstr "Nr"
+
+#: cbHk/HkWinParam.cpp cbHk/UnitAjanotto.cpp cbHk/UnitComfile.cpp cbHk/UnitIlm2.cpp
+#: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp cbHk/UnitOsanottajat.cpp cbHk/UnitTKanta.cpp
+#: ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitJoukkuetiedot.cpp
+#: ViestiWin/UnitLuenta.cpp ViestiWin/UnitVaTuloste.cpp ViestiWin/VWinParam.cpp cbTp/UnitEmitFile.cpp
+#: cbHk/UnitAjanotto.dfm cbHk/UnitOsanottajat.dfm ViestiWin/UnitAjanotto.dfm
+msgid "Badge"
+msgstr "Badge"
+
+#: cbHk/HkWinParam.cpp ViestiWin/VWinParam.cpp
+msgid "Kv. id"
+msgstr "Int. id"
+
+#: cbHk/HkWinParam.cpp ViestiWin/VWinParam.cpp
+msgid "Ranki"
+msgstr "Rank"
+
+#: cbHk/HkWinParam.cpp cbHk/UnitTKanta.cpp
+msgid "OsOttoLkm"
+msgstr "AntDelt"
+
+#: cbHk/HkWinParam.cpp cbHk/UnitTKanta.cpp
+msgid "ViimOsOtto"
+msgstr "SenDelt"
+
+#: cbHk/HkWinParam.cpp cbHk/UnitTKanta.cpp cbHk/UnitTKanta.dfm
+msgid "Lisätieto"
+msgstr "Tilläggsuppgift"
 
 #: cbHk/LoppuKilpUnit.cpp
 msgid "Loppukilpailut laadittu"
@@ -8121,7 +8194,7 @@ msgstr "Plac."
 msgid "Merkk."
 msgstr "Tecken"
 
-#: cbHk/MuotoiluUnit.cpp cbTp/UnitSivuTuloste.cpp
+#: cbHk/MuotoiluUnit.cpp cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp cbTp/UnitSivuTuloste.cpp
 msgid "Tas."
 msgstr "Hcp."
 
@@ -8143,15 +8216,13 @@ msgid "Pistekaavan kerroin virheellinen"
 msgstr "Poängformelns koefficient felaktig"
 
 #: cbHk/TakaaAjoUnit.cpp cbHk/TulostusUnit2.cpp cbHk/UnitArvonta.cpp cbHk/UnitEmit.cpp
-#: cbHk/UnitHylkRap.cpp cbHk/UnitIlm2.cpp cbHk/UnitImport.cpp cbHk/UnitKilpMaaritys.cpp
-#: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp cbHk/UnitLisaTietue.cpp cbHk/UnitLisatiedot.cpp
-#: cbHk/UnitOsanottajat.cpp cbHk/UnitSarja.cpp cbHk/UnitSprinthiihto.cpp cbHk/UnitStatus.cpp
+#: cbHk/UnitHylkRap.cpp cbHk/UnitImport.cpp cbHk/UnitKilpMaaritys.cpp cbHk/UnitLisaTietue.cpp
+#: cbHk/UnitLisatiedot.cpp cbHk/UnitSarja.cpp cbHk/UnitSprinthiihto.cpp cbHk/UnitStatus.cpp
 #: cbHk/UnitTaulu.cpp cbHk/UnitTuloskaava.cpp ViestiWin/UnitArvonta.cpp ViestiWin/UnitEmit.cpp
-#: ViestiWin/UnitGAZ.cpp ViestiWin/UnitHylkRap.cpp ViestiWin/UnitImport.cpp ViestiWin/UnitJoukkueet.cpp
-#: ViestiWin/UnitJoukkuetiedot.cpp ViestiWin/UnitKilpMaaritys.cpp ViestiWin/UnitLisatiedot.cpp ViestiWin/UnitLuenta.cpp
-#: ViestiWin/UnitSarja.cpp ViestiWin/UnitVaTuloste.cpp cbTp/UnitEmiTag.cpp cbTp/UnitMTR.cpp
-#: cbTp/UnitRadat.cpp cbTp/UnitUusinta.cpp cbTp/cbTpApu.cpp cbHk/UnitEmit.dfm
-#: cbHk/UnitSuodatus.dfm
+#: ViestiWin/UnitGAZ.cpp ViestiWin/UnitHylkRap.cpp ViestiWin/UnitImport.cpp ViestiWin/UnitKilpMaaritys.cpp
+#: ViestiWin/UnitLisatiedot.cpp ViestiWin/UnitLuenta.cpp ViestiWin/UnitSarja.cpp ViestiWin/UnitVaTuloste.cpp
+#: cbTp/UnitEmiTag.cpp cbTp/UnitMTR.cpp cbTp/UnitRadat.cpp cbTp/UnitUusinta.cpp
+#: cbTp/cbTpApu.cpp cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm
 msgid "Virhe"
 msgstr "Fel"
 
@@ -8159,42 +8230,47 @@ msgstr "Fel"
 msgid "Lähtöjärjestys laadittu"
 msgstr "Startordning skapad"
 
-#: cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp cbHk/UnitKilpailijaOnline.dfm cbHk/UnitOsanottajat.dfm
+#: cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp
+#: cbHk/UnitOsanottajat.cpp cbHk/UnitKilpailijaOnline.dfm cbHk/UnitOsanottajat.dfm
 msgid "Ennätys"
 msgstr "Rekord"
 
-#: cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp cbHk/UnitKilpailijaOnline.dfm cbHk/UnitOsanottajat.dfm
+#: cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp
+#: cbHk/UnitOsanottajat.cpp cbHk/UnitKilpailijaOnline.dfm cbHk/UnitOsanottajat.dfm
 msgid "Tavoite"
 msgstr "Målsättning"
 
-#: cbHk/TapUnit2.cpp cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp
+#: cbHk/TapUnit2.cpp cbHk/UnitComfile.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp
+#: ViestiWin/UnitComfile.cpp ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitJoukkuetiedot.cpp
 msgid "Sakko"
 msgstr "Straff"
 
-#: cbHk/TapUnit2.cpp cbHk/UnitEmithaku.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitEmithaku.cpp
-#: ViestiWin/UnitHenkHaku.cpp cbHk/UnitASakot.dfm cbHk/UnitASuunn.dfm cbHk/UnitAjanotto.dfm
-#: ViestiWin/UnitASakot.dfm ViestiWin/UnitAjanotto.dfm
+#: cbHk/TapUnit2.cpp cbHk/UnitAjanotto.cpp cbHk/UnitEmithaku.cpp ViestiWin/TapUnit2.cpp
+#: ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitEmithaku.cpp ViestiWin/UnitHenkHaku.cpp
+#: cbHk/UnitASakot.dfm cbHk/UnitASuunn.dfm cbHk/UnitAjanotto.dfm ViestiWin/UnitASakot.dfm
+#: ViestiWin/UnitAjanotto.dfm
 msgid "Kilpno"
 msgstr "Tävl.nr"
 
-#: cbHk/TapUnit2.cpp cbHk/UnitComfile.cpp cbHk/UnitEmit_VA.cpp ViestiWin/UnitComfile.cpp
-#: ViestiWin/UnitEmit_VA.cpp cbHk/MuotoiluUnit.dfm cbHk/UnitASakot.dfm cbHk/UnitAjanotto.dfm
-#: cbHk/UnitCfg.dfm cbHk/UnitTuloskaava.dfm ViestiWin/UnitAjanotto.dfm ViestiWin/UnitCfg.dfm
-#: ViestiWin/UnitLahestyjat.dfm
+#: cbHk/TapUnit2.cpp cbHk/UnitAikavert.cpp cbHk/UnitComfile.cpp cbHk/UnitEmit_VA.cpp
+#: cbHk/UnitKilpailijaOnline.cpp ViestiWin/UnitAikavert.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitEmit_VA.cpp
+#: cbHk/MuotoiluUnit.dfm cbHk/UnitASakot.dfm cbHk/UnitAjanotto.dfm cbHk/UnitCfg.dfm
+#: cbHk/UnitTuloskaava.dfm ViestiWin/UnitAjanotto.dfm ViestiWin/UnitCfg.dfm ViestiWin/UnitLahestyjat.dfm
 msgid "Piste"
 msgstr "Punkt"
 
-#: cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp
+#: cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp cbHk/UnitAikavert.cpp cbHk/UnitAjanotto.cpp
+#: cbHk/UnitKilpailijaOnline.cpp ViestiWin/TapUnit2.cpp ViestiWin/UnitAikavert.cpp ViestiWin/UnitAjanotto.cpp
 msgid "Ero"
 msgstr "Diff."
 
-#: cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp cbHk/UnitASakot.cpp ViestiWin/TulosUnit.cpp
-#: ViestiWin/UnitASakot.cpp cbHk/UnitASakot.dfm cbHk/UnitOsanottajat.dfm ViestiWin/UnitASakot.dfm
-#: ViestiWin/UnitJoukkueet.dfm
+#: cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp cbHk/UnitASakot.cpp ViestiWin/TapUnit2.cpp
+#: ViestiWin/TulosUnit.cpp ViestiWin/UnitASakot.cpp cbTp/UnitAmpPaikat.cpp cbHk/UnitASakot.dfm
+#: cbHk/UnitOsanottajat.dfm ViestiWin/UnitASakot.dfm ViestiWin/UnitJoukkueet.dfm
 msgid "Sakot"
 msgstr "Straff"
 
-#: cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp
+#: cbHk/TapUnit2.cpp cbHk/TulosUnit.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp
 msgid "Y-sija"
 msgstr "Totalplac."
 
@@ -8206,8 +8282,8 @@ msgstr "Totalresultat"
 msgid "Y-ero"
 msgstr "Totaldiff."
 
-#: cbHk/TapUnit2.cpp cbHk/UnitComfile.cpp cbHk/UnitKaavaTaul.cpp cbHk/UnitEmit_VA.dfm
-#: cbHk/UnitKaavaTaul.dfm cbHk/UnitTuloskaava.dfm
+#: cbHk/TapUnit2.cpp cbHk/UnitComfile.cpp cbHk/UnitKaavaTaul.cpp cbHk/UnitKilpailijatiedot.cpp
+#: cbHk/UnitEmit_VA.dfm cbHk/UnitKaavaTaul.dfm cbHk/UnitTuloskaava.dfm
 msgid "Vaihe"
 msgstr "Etapp"
 
@@ -8257,7 +8333,8 @@ msgstr "Obs."
 msgid "Yhteistulos"
 msgstr "Totalresultat"
 
-#: cbHk/TulosUnit.cpp cbHk/UnitSarjatiedot.cpp ViestiWin/TulosUnit.cpp
+#: cbHk/TulosUnit.cpp cbHk/UnitKilpailijaEmit.cpp cbHk/UnitSarjatiedot.cpp ViestiWin/OsuusTiedot.cpp
+#: ViestiWin/TulosUnit.cpp ViestiWin/UnitSarjatiedot.cpp cbTp/UnitAmpPaikat.cpp
 msgid "Nro"
 msgstr "Nr"
 
@@ -8269,8 +8346,9 @@ msgstr "Senaste"
 msgid "Srj"
 msgstr "Klass"
 
-#: cbHk/TulosUnit.cpp cbHk/TapUnit2.dfm cbHk/UnitLisatiedot.dfm cbHk/UnitOsanottajat.dfm
-#: ViestiWin/UnitJoukkueet.dfm ViestiWin/UnitLisatiedot.dfm
+#: cbHk/TulosUnit.cpp cbHk/UnitKilpailijatiedot.cpp cbHk/UnitOsanottajat.cpp ViestiWin/UnitJoukkueet.cpp
+#: cbHk/TapUnit2.dfm cbHk/UnitLisatiedot.dfm cbHk/UnitOsanottajat.dfm ViestiWin/UnitJoukkueet.dfm
+#: ViestiWin/UnitLisatiedot.dfm
 msgid "Erä"
 msgstr "Heat"
 
@@ -8597,6 +8675,19 @@ msgstr "Poäng (stigande, 0p: ej med)"
 msgid "Pisteet (nousevat, 0p: paras)"
 msgstr "Poäng (stigande, 0p: bäst)"
 
+#: cbHk/TulostusUnit2.cpp ViestiWin/TulostusUnit2.cpp cbHk/TulostusUnit2.dfm cbHk/UnitLisatiedot.dfm
+#: ViestiWin/TulostusUnit2.dfm ViestiWin/UnitLisatiedot.dfm cbTp/UnitTietoTulk.dfm
+msgid "Kenttäerotin"
+msgstr "Fältavgränsare"
+
+#: cbHk/TulostusUnit2.cpp cbHk/TulostusUnit2.dfm
+msgid "Joukkueen koko"
+msgstr "Lagets storlek"
+
+#: cbHk/TulostusUnit2.cpp
+msgid "Max. sijoitus"
+msgstr "Max. placering"
+
 #: cbHk/TulostusUnit2.cpp ViestiWin/TulostusUnit2.cpp
 msgid "Käynnistä automaattinen tulostus"
 msgstr "Starta automatisk utskrift"
@@ -8642,16 +8733,19 @@ msgstr ""
 msgid "Varoitus"
 msgstr "Varning"
 
-#: cbHk/UnitASakot.cpp cbHk/UnitASuunn.cpp cbHk/UnitComfile.cpp ViestiWin/UnitASakot.cpp
-#: ViestiWin/UnitComfile.cpp cbTp/UnitEmitFile.cpp cbTp/UnitTietoTulk.cpp cbHk/UnitAjanotto.dfm
-#: ViestiWin/UnitAjanotto.dfm
+#: cbHk/UnitASakot.cpp cbHk/UnitASuunn.cpp cbHk/UnitAikavert.cpp cbHk/UnitAjanotto.cpp
+#: cbHk/UnitComfile.cpp cbHk/UnitYv.cpp ViestiWin/UnitASakot.cpp ViestiWin/UnitAikavert.cpp
+#: ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitYv.cpp cbTp/UnitEmitFile.cpp
+#: cbTp/UnitTietoTulk.cpp cbHk/UnitAjanotto.dfm ViestiWin/UnitAjanotto.dfm
 msgid "Rivi"
 msgstr "Rad"
 
-#: cbHk/UnitASakot.cpp cbHk/UnitASuunn.cpp cbHk/UnitComfile.cpp ViestiWin/UnitASakot.cpp
-#: ViestiWin/UnitComfile.cpp ViestiWin/UnitImport.cpp cbHk/UnitComfile.dfm cbHk/UnitEmit.dfm
-#: cbHk/UnitHylkRap.dfm cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm ViestiWin/UnitComfile.dfm
-#: ViestiWin/UnitEmit.dfm ViestiWin/UnitHylkRap.dfm ViestiWin/UnitJoukkuetiedot.dfm cbTp/UnitPiikit.dfm
+#: cbHk/UnitASakot.cpp cbHk/UnitASuunn.cpp cbHk/UnitAikavert.cpp cbHk/UnitComfile.cpp
+#: cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp ViestiWin/UnitASakot.cpp ViestiWin/UnitAikavert.cpp
+#: ViestiWin/UnitComfile.cpp ViestiWin/UnitImport.cpp ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitLahestyjat.cpp
+#: cbHk/UnitComfile.dfm cbHk/UnitEmit.dfm cbHk/UnitHylkRap.dfm cbHk/UnitKilpailijaOnline.dfm
+#: cbHk/UnitKilpailijatiedot.dfm ViestiWin/UnitComfile.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitHylkRap.dfm
+#: ViestiWin/UnitJoukkuetiedot.dfm cbTp/UnitPiikit.dfm
 msgid "KilpNo"
 msgstr "TävlNr"
 
@@ -8761,6 +8855,16 @@ msgid ""
 msgstr ""
 "Valet är tillgängligt endast när startgrind tagits i bruk. Annars används den lottade starttiden även som verklig."
 
+#: cbHk/UnitAikavert.cpp cbHk/UnitComfile.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp
+#: ViestiWin/UnitAikavert.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitJoukkuetiedot.cpp
+#: ViestiWin/UnitLuenta.cpp ViestiWin/UnitVaTuloste.cpp
+msgid "Tark"
+msgstr "Kontr"
+
+#: cbHk/UnitAikavert.cpp ViestiWin/UnitAikavert.cpp
+msgid "Jonoero"
+msgstr "Köskillnad"
+
 #: cbHk/UnitAikavert.cpp cbHk/UnitAjanotto.cpp
 #, c-format
 msgid "Badge: %d, Lähde: %3d%c"
@@ -8808,11 +8912,6 @@ msgstr "Ange köernas tidsskillnad för jämförelse (ms)"
 msgid "Auto"
 msgstr "Auto"
 
-#: cbHk/UnitAjanotto.cpp cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitLuenta.cpp
-#: cbTp/UnitEmitFile.cpp cbHk/UnitAjanotto.dfm cbHk/UnitOsanottajat.dfm ViestiWin/UnitAjanotto.dfm
-msgid "Badge"
-msgstr "Badge"
-
 #: cbHk/UnitAjanotto.cpp
 msgid "Vastaanotettu muutos muokattavaan riviin"
 msgstr "Mottagen ändring till rad som redigeras"
@@ -8821,6 +8920,10 @@ msgstr "Mottagen ändring till rad som redigeras"
 #: ViestiWin/UnitKilpMaaritys.cpp
 msgid "Muutos"
 msgstr "Ändring"
+
+#: cbHk/UnitAjanotto.cpp
+msgid "Hav"
+msgstr "Obs"
 
 #: cbHk/UnitAjanotto.cpp
 msgid "Kohdistusaika"
@@ -8843,6 +8946,10 @@ msgstr "Klass %s start"
 #, c-format
 msgid "Erän %d lähtö"
 msgstr "Heat %d start"
+
+#: cbHk/UnitAjanotto.cpp ViestiWin/TapUnit2.cpp ViestiWin/UnitAjanotto.cpp
+msgid "Pst"
+msgstr "Pkt"
 
 #: cbHk/UnitAjanotto.cpp cbHk/UnitArvonta.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitSarja.cpp
 #: ViestiWin/UnitAjanotto.cpp ViestiWin/UnitSarja.cpp cbTp/UnitEmiTag.cpp cbTp/UnitMTR.cpp
@@ -9038,13 +9145,14 @@ msgstr "Uppgifterna har inte sparats"
 msgid "Konfiguraatiot (*.cfg) | *.CFG"
 msgstr "Konfigurationer (*.cfg) | *.CFG"
 
-#: cbHk/UnitCfg.cpp cbHk/UnitEmitKoodit.cpp ViestiWin/UnitCfg.cpp ViestiWin/UnitMerkKoodeja.cpp
-#: cbHk/UnitTarkMerk.dfm
+#: cbHk/UnitCfg.cpp cbHk/UnitEmit.cpp cbHk/UnitEmitKoodit.cpp cbHk/UnitMaastossa.cpp
+#: ViestiWin/UnitCfg.cpp ViestiWin/UnitEmit.cpp ViestiWin/UnitMaastossa.cpp ViestiWin/UnitMerkKoodeja.cpp
+#: ViestiWin/UnitPartio.cpp cbHk/UnitTarkMerk.dfm
 msgid "No"
 msgstr "Nr"
 
-#: cbHk/UnitCfg.cpp cbHk/UnitKaavaTaul.cpp ViestiWin/UnitCfg.cpp cbTp/UnitRadat.cpp
-#: cbHk/UnitAjanotto.dfm cbHk/UnitSarja.dfm
+#: cbHk/UnitCfg.cpp cbHk/UnitKaavaTaul.cpp ViestiWin/UnitCfg.cpp ViestiWin/UnitPartio.cpp
+#: cbTp/UnitRadat.cpp cbHk/UnitAjanotto.dfm cbHk/UnitSarja.dfm
 msgid "Laji"
 msgstr "Typ"
 
@@ -9091,7 +9199,7 @@ msgstr "Tidtagning"
 msgid "Lähde"
 msgstr "Källa"
 
-#: cbHk/UnitCfg.cpp ViestiWin/UnitCfg.cpp
+#: cbHk/UnitCfg.cpp cbHk/UnitStatus.cpp ViestiWin/UnitCfg.cpp ViestiWin/UnitStatus.cpp
 msgid "Kohde"
 msgstr "Mål"
 
@@ -9183,11 +9291,13 @@ msgstr "Kl"
 msgid "DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*"
 msgstr "DAT-filer (*.dat)|*.DAT|Alla filer (*.*)|*.*"
 
-#: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm
+#: cbHk/UnitComfile.cpp cbHk/UnitVaPisteet.cpp ViestiWin/UnitComfile.cpp cbHk/UnitTaulu.dfm
+#: ViestiWin/UnitGAZ.dfm
 msgid "Tieto"
 msgstr "Uppgift"
 
-#: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp cbHk/UnitIlm2.dfm cbHk/UnitKilpailijaOnline.dfm
+#: cbHk/UnitComfile.cpp cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp ViestiWin/UnitComfile.cpp
+#: ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitPartio.cpp cbHk/UnitIlm2.dfm cbHk/UnitKilpailijaOnline.dfm
 #: cbHk/UnitKilpailijatiedot.dfm ViestiWin/UnitOsuuskopiointi.dfm
 msgid "Arvo"
 msgstr "Värde"
@@ -9196,7 +9306,7 @@ msgstr "Värde"
 msgid "Sanomalaji"
 msgstr "Meddelandetyp"
 
-#: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp
+#: cbHk/UnitComfile.cpp cbHk/UnitMaastossa.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitMaastossa.cpp
 msgid "Status"
 msgstr "Status"
 
@@ -9208,21 +9318,13 @@ msgstr "Pos"
 msgid "EntNo"
 msgstr "AnmNr"
 
-#: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp
+#: cbHk/UnitComfile.cpp cbHk/UnitStatus.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitStatus.cpp
 msgid "Lähetetty"
 msgstr "Skickad"
 
-#: cbHk/UnitComfile.cpp
+#: cbHk/UnitComfile.cpp cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp
 msgid "Seuralyh"
 msgstr "Klubbförk"
-
-#: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp
-msgid "Bib"
-msgstr "Nr"
-
-#: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp
-msgid "Tark"
-msgstr "Kontr"
 
 #: cbHk/UnitComfile.cpp cbHk/UnitKilpMaaritys.cpp cbHk/UnitKilpMaaritys.dfm cbHk/UnitSarja.dfm
 msgid "Ammunta"
@@ -9285,7 +9387,8 @@ msgstr "Registrerad"
 msgid "Emit-tieto"
 msgstr "Emit-uppgift"
 
-#: cbHk/UnitComfile.cpp cbHk/UnitLisatiedot.dfm ViestiWin/UnitLisatiedot.dfm
+#: cbHk/UnitComfile.cpp cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp cbHk/UnitSeurat.cpp
+#: ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitSeurat.cpp cbHk/UnitLisatiedot.dfm ViestiWin/UnitLisatiedot.dfm
 msgid "Piiri"
 msgstr "Distrikt"
 
@@ -9382,6 +9485,32 @@ msgstr "Sänd enligt val"
 #: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp cbHk/UnitComfile.dfm ViestiWin/UnitComfile.dfm
 msgid "Lähetä valintojen mukaan"
 msgstr "Sänd enligt val"
+
+#: cbHk/UnitEmit.cpp cbHk/UnitKilpailijaEmit.cpp cbHk/UnitKisaLuett.cpp ViestiWin/OsuusTiedot.cpp
+#: ViestiWin/UnitEmit.cpp cbTp/UnitRadat.cpp
+msgid "Koodi"
+msgstr "Kod"
+
+#: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp ViestiWin/UnitPartio.cpp cbTp/UnitRadat.cpp
+msgid "Rasti"
+msgstr "Kontroll"
+
+#: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
+msgid "Kortin aika"
+msgstr "Brickans tid"
+
+#: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
+msgid "Korj. (s)"
+msgstr "Korr. (s)"
+
+#: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
+msgid "Korj."
+msgstr "Korr."
+
+#: cbHk/UnitEmit.cpp cbHk/UnitTaulu.cpp ViestiWin/UnitEmit.cpp ViestiWin/UnitGAZ.cpp
+#: cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm ViestiWin/UnitJoukkuetiedot.dfm
+msgid "Kello"
+msgstr "Klocka"
 
 #: cbHk/UnitEmit.cpp
 msgid "Toinen"
@@ -9675,8 +9804,9 @@ msgstr "Fortsätt behandling"
 msgid "Vahvista kaikkien luenta-aikojen vaihtaminen."
 msgstr "Bekräfta byte av alla lästider."
 
-#: cbHk/UnitEmitKoodit.cpp ViestiWin/UnitStatus.cpp cbHk/UnitEmit.dfm cbHk/UnitEmitMuutokset.dfm
-#: cbHk/UnitHylkRap.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitEmitMuutokset.dfm ViestiWin/UnitHylkRap.dfm
+#: cbHk/UnitEmitKoodit.cpp cbHk/UnitStatus.cpp ViestiWin/UnitStatus.cpp cbHk/UnitEmit.dfm
+#: cbHk/UnitEmitMuutokset.dfm cbHk/UnitHylkRap.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitEmitMuutokset.dfm
+#: ViestiWin/UnitHylkRap.dfm
 msgid "Emit"
 msgstr ""
 
@@ -9771,27 +9901,47 @@ msgstr "XML-filen %s slutade på rad %d på nivå %d"
 msgid "Tiedostossa %s virhe rivillä %d tai aikaisemmin"
 msgstr "Fel i filen %s på rad %d eller tidigare"
 
+#: cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp ViestiWin/UnitJoukkueet.cpp
+msgid "Id-no"
+msgstr "Id-nr"
+
+#: cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp cbHk/TulostusUnit2.dfm cbHk/UnitIlm2.dfm
+#: cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm cbHk/UnitLisatiedot.dfm cbHk/UnitSuodatus.dfm
+msgid "Yhdistys"
+msgstr "Förening"
+
+#: cbHk/UnitIlm2.cpp
+msgid "WRkoodi"
+msgstr "WRkod"
+
+#: cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp
+msgid "Ilm.lista"
+msgstr "Anm.lista"
+
+#: cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp
+msgid "Arv.ryhmä"
+msgstr "Lottgrupp"
+
+#: cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp
+msgid "RintaNo"
+msgstr "Nummerlapp"
+
+#: cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp cbHk/UnitSarjatiedot.cpp cbHk/TakaaAjoUnit.dfm
+msgid "Läsnä"
+msgstr "Närvarande"
+
+#: cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp ViestiWin/UnitJoukkueet.cpp
+msgid "A-sakot"
+msgstr "S-straff"
+
+#: cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp cbHk/UnitTaulu.cpp ViestiWin/UnitGAZ.cpp
+#: cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm
+msgid "Teksti"
+msgstr "Text"
+
 #: cbHk/UnitIlm2.cpp cbHk/UnitVaPisteet.cpp
 msgid ". päivä"
 msgstr ". dagen"
-
-#: cbHk/UnitIlm2.cpp cbHk/UnitKilpailijaOnline.cpp ViestiWin/UnitJoukkueet.cpp
-msgid "Ohit"
-msgstr "Överh"
-
-#: cbHk/UnitIlm2.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp ViestiWin/UnitJoukkueet.cpp
-#: ViestiWin/UnitJoukkuetiedot.cpp cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm
-msgid "Eiläht."
-msgstr "Ej start"
-
-#: cbHk/UnitIlm2.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp cbHk/UnitEmit.dfm
-#: cbHk/UnitSuodatus.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitSuodatus.dfm
-msgid "Vakantti"
-msgstr "Vakant"
-
-#: cbHk/UnitIlm2.cpp cbHk/UnitSarjatiedot.cpp cbHk/TakaaAjoUnit.dfm
-msgid "Läsnä"
-msgstr "Närvarande"
 
 #: cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp
 msgid "Virhe kilpailijan "
@@ -9893,6 +10043,30 @@ msgstr "Ange lagets (max) storlek"
 #: cbHk/UnitJoukkueTilanne.cpp
 msgid "Anna joukkueen minimikoko"
 msgstr "Ange lagets minsta storlek"
+
+#: cbHk/UnitKaavaTaul.cpp
+msgid "Sij"
+msgstr "Plac"
+
+#: cbHk/UnitKaavaTaul.cpp
+msgid "Tul"
+msgstr "Res"
+
+#: cbHk/UnitKaavaTaul.cpp
+msgid "Mol"
+msgstr "Båda"
+
+#: cbHk/UnitKaavaTaul.cpp cbHk/UnitTaulu.cpp ViestiWin/UnitGAZ.cpp cbTp/UnitEmiTag.cpp
+#: cbHk/MuotoiluUnit.dfm cbHk/UnitAjanotto.dfm cbHk/UnitArvonta.dfm cbHk/UnitCfg.dfm
+#: cbHk/UnitSarja.dfm ViestiWin/MuotoiluUnit.dfm ViestiWin/UnitAjanotto.dfm ViestiWin/UnitCfg.dfm
+#: cbTp/UnitSelect3.dfm
+msgid "Ei"
+msgstr "Nej"
+
+#: cbHk/UnitKaavaTaul.cpp cbHk/UnitTaulu.cpp cbHk/UnitVaiheMaar.cpp ViestiWin/UnitGAZ.cpp
+#: cbTp/UnitEmiTag.cpp cbHk/UnitSarja.dfm
+msgid "On"
+msgstr "På"
 
 #: cbHk/UnitKaavaTaul.cpp
 msgid "Jatk"
@@ -10149,17 +10323,83 @@ msgstr ""
 msgid "CSV-tiedostot (*.csv) | *.CSV|Kaikki tiedostot (*.*)|*.*"
 msgstr "CSV-filer (*.csv) | *.CSV|Alla filer (*.*)|*.*"
 
-#: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm
-msgid "Havaittu"
-msgstr "Observerad"
+#: cbHk/UnitKilpailijaEmit.cpp
+msgid "V-aika"
+msgstr "M-tid"
+
+#: cbHk/UnitKilpailijaEmit.cpp ViestiWin/OsuusTiedot.cpp
+msgid "Ero/nop."
+msgstr "Diff/snabb."
+
+#: cbHk/UnitKilpailijaEmit.cpp ViestiWin/OsuusTiedot.cpp
+msgid "Sj/"
+msgstr "Pl/"
+
+#: cbHk/UnitKilpailijaEmit.cpp cbHk/UnitYv.cpp ViestiWin/OsuusTiedot.cpp ViestiWin/UnitYv.cpp
+msgid "R-väli"
+msgstr "K-sträcka"
+
+#: cbHk/UnitKilpailijaEmit.cpp ViestiWin/OsuusTiedot.cpp
+msgid "Suht rv."
+msgstr "Rel. kstr."
+
+#: cbHk/UnitKilpailijaEmit.cpp ViestiWin/OsuusTiedot.cpp
+msgid "Vert.aik"
+msgstr "Jmf.tid"
+
+#: cbHk/UnitKilpailijaEmit.cpp ViestiWin/OsuusTiedot.cpp
+msgid "Nopein"
+msgstr "Snabbast"
+
+#: cbHk/UnitKilpailijaEmit.cpp ViestiWin/OsuusTiedot.cpp
+msgid "Suht yht."
+msgstr "Rel. tot."
+
+#: cbHk/UnitKilpailijaEmit.cpp ViestiWin/OsuusTiedot.cpp
+msgid "min/km"
+msgstr "min/km"
+
+#: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitAjanotto.dfm ViestiWin/UnitAjanotto.dfm
+msgid "Päivä"
+msgstr "Dag"
 
 #: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp
-msgid "EiAikaa"
-msgstr "EjTid"
+msgid "Lähtö-arv"
+msgstr "Start-lott"
+
+#: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp
+msgid "Lähtö-tot"
+msgstr "Start-verkl"
+
+#: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp cbHk/UnitSarjatiedot.cpp ViestiWin/UnitJoukkuetiedot.cpp
+msgid "Amp.sakot"
+msgstr "Skjutstraff"
+
+#: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp
+msgid "Yht.tls."
+msgstr "Tot.res."
+
+#: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitSHLTul.cpp cbHk/UnitSarjatiedot.cpp ViestiWin/UnitSHLTul.cpp
+#: ViestiWin/UnitSarjatiedot.cpp cbHk/UnitSarja.dfm ViestiWin/UnitJoukkuetiedot.dfm
+msgid "Matka"
+msgstr "Distans"
+
+#: cbHk/UnitKilpailijaOnline.cpp
+msgid "Edellisestä"
+msgstr "Från föreg."
 
 #: cbHk/UnitKilpailijaOnline.cpp
 msgid "Kilpailijanumero ei ole käytettävissä"
 msgstr "Startnumret är inte tillgängligt"
+
+#: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp ViestiWin/UnitJoukkuetiedot.cpp
+msgid "Muokkaustila"
+msgstr "Redigeringsläge"
+
+#: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp ViestiWin/UnitJoukkuetiedot.cpp cbHk/UnitKilpailijaOnline.dfm
+#: cbHk/UnitKilpailijatiedot.dfm ViestiWin/UnitJoukkuetiedot.dfm
+msgid "Haku- ja katselutila"
+msgstr "Sök- och visningsläge"
 
 #: cbHk/UnitKilpailijaOnline.cpp
 msgid "Linkkejä tietoihin ei ole avattu - avataanko nyt?"
@@ -10181,6 +10421,22 @@ msgstr "Den tävlande har ingen datalänk"
 msgid "Tallenna mahdolliset muutokset"
 msgstr "Spara eventuella ändringar"
 
+#: cbHk/UnitKilpailijatiedot.cpp ViestiWin/UnitJoukkuetiedot.cpp
+msgid "L"
+msgstr "H"
+
+#: cbHk/UnitKilpailijatiedot.cpp
+msgid "Badge-2"
+msgstr "Bricka-2"
+
+#: cbHk/UnitKilpailijatiedot.cpp
+msgid "L2"
+msgstr "H2"
+
+#: cbHk/UnitKilpailijatiedot.cpp cbHk/UnitOsanottajat.cpp
+msgid "Pist-1"
+msgstr "Poäng-1"
+
 #: cbHk/UnitKilpailijatiedot.cpp
 msgid "Numero ei sallitulla alueella"
 msgstr "Numret utanför tillåtet område"
@@ -10188,16 +10444,6 @@ msgstr "Numret utanför tillåtet område"
 #: cbHk/UnitKilpailijatiedot.cpp
 msgid "Haluatko todella muuttaa kilpailijan numeroa"
 msgstr "Vill du verkligen ändra den tävlandes nummer"
-
-#: cbHk/UnitKilpailijatiedot.cpp
-msgid "Ohitettu"
-msgstr "Överhoppad"
-
-#: cbHk/UnitKilpailijatiedot.cpp ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitJoukkuetiedot.cpp ViestiWin/UnitStatus.cpp
-#: cbHk/TulostusUnit2.dfm cbHk/UnitEmit.dfm cbHk/UnitTarkMerk.dfm ViestiWin/UnitEmit.dfm
-#: ViestiWin/UnitMerkKoodeja.dfm
-msgid "Avoin"
-msgstr "Öppen"
 
 #: cbHk/UnitKilpailijatiedot.cpp ViestiWin/UnitJoukkuetiedot.cpp
 msgid "Kilpailijanumero ei ole käytettävissä, ei tallenneta"
@@ -10222,6 +10468,10 @@ msgstr "Sätts alla etappers klasser lika"
 #: cbHk/UnitKilpailijatiedot.cpp
 msgid "Kopioidaanko muutos myöhempiin vaiheisiin"
 msgstr "Kopieras ändringen till senare etapper"
+
+#: cbHk/UnitKilpailijatiedot.cpp ViestiWin/UnitJoukkuetiedot.cpp
+msgid "Uuden tietueen muokkaus"
+msgstr "Redigering av ny post"
 
 #: cbHk/UnitKilpailijatiedot.cpp ViestiWin/UnitJoukkuetiedot.cpp cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm
 #: cbHk/UnitOsanottajat.dfm cbHk/UnitVaPisteet.dfm ViestiWin/UnitJoukkueet.dfm ViestiWin/UnitJoukkuetiedot.dfm
@@ -10260,17 +10510,9 @@ msgstr "Poäng-2"
 msgid "Pisteet-1"
 msgstr "Poäng-1"
 
-#: cbHk/UnitKilpailijatiedot.cpp
+#: cbHk/UnitKilpailijatiedot.cpp cbHk/UnitOsanottajat.cpp
 msgid "Pist-2"
 msgstr "Poäng-2"
-
-#: cbHk/UnitKilpailijatiedot.cpp
-msgid "Pist-1"
-msgstr "Poäng-1"
-
-#: cbHk/UnitKisaLuett.cpp cbTp/UnitRadat.cpp
-msgid "Koodi"
-msgstr "Kod"
 
 #: cbHk/UnitKisaLuett.cpp
 msgid "Pvm."
@@ -10410,6 +10652,10 @@ msgid "Vihje"
 msgstr "Tips"
 
 #: cbHk/UnitMaastossa.cpp ViestiWin/UnitMaastossa.cpp
+msgid "Lpaikka"
+msgstr "Startpl."
+
+#: cbHk/UnitMaastossa.cpp ViestiWin/UnitMaastossa.cpp
 msgid "0 kilpailijaa"
 msgstr "0 tävlande"
 
@@ -10512,6 +10758,46 @@ msgstr "Långt klassnamns längd: "
 #: cbHk/UnitOhjtiedot.cpp ViestiWin/UnitOhjtiedot.cpp
 msgid "Sakkopisteiden maksimiluku: "
 msgstr "Max antal straffpunkter: "
+
+#: cbHk/UnitOsanottajat.cpp cbHk/UnitIlm2.dfm cbHk/UnitKilpailijatiedot.dfm
+msgid "Sukup"
+msgstr "Kön"
+
+#: cbHk/UnitOsanottajat.cpp
+msgid "IkäSrj"
+msgstr "Åldersklass"
+
+#: cbHk/UnitOsanottajat.cpp
+msgid "KvId"
+msgstr "IntId"
+
+#: cbHk/UnitOsanottajat.cpp
+msgid "Pist-3"
+msgstr "Poäng-3"
+
+#: cbHk/UnitOsanottajat.cpp
+msgid "Vaihesarja"
+msgstr "Etappklass"
+
+#: cbHk/UnitOsanottajat.cpp cbHk/UnitLisatiedot.dfm cbHk/UnitOsanottajat.dfm cbHk/UnitSuodatus.dfm
+msgid "Qual"
+msgstr ""
+
+#: cbHk/UnitOsanottajat.cpp cbHk/UnitOsanottajat.dfm
+msgid "GSM"
+msgstr ""
+
+#: cbHk/UnitOsanottajat.cpp
+msgid "VPist-1"
+msgstr "EPoäng-1"
+
+#: cbHk/UnitOsanottajat.cpp
+msgid "VPist-2"
+msgstr "EPoäng-2"
+
+#: cbHk/UnitOsanottajat.cpp
+msgid "Synt"
+msgstr "Född"
 
 #: cbHk/UnitOsanottajat.cpp ViestiWin/UnitJoukkueet.cpp
 msgid "Ei muutoksia tallennettavaksi"
@@ -10617,11 +10903,6 @@ msgstr ""
 msgid "Sarja tiedostossa"
 msgstr "Klass i filen"
 
-#: cbHk/UnitSHLTul.cpp cbHk/UnitSarjatiedot.cpp ViestiWin/UnitSHLTul.cpp cbHk/UnitSarja.dfm
-#: ViestiWin/UnitJoukkuetiedot.dfm
-msgid "Matka"
-msgstr "Distans"
-
 #: cbHk/UnitSHLTul.cpp cbHk/UnitSarjatiedot.cpp
 msgid "Tapa"
 msgstr "Stil"
@@ -10678,7 +10959,7 @@ msgstr "Flytta klass"
 msgid "Mahdolliset muutokset tallennetaan. Vahvista"
 msgstr "Eventuella ändringar sparas. Bekräfta"
 
-#: cbHk/UnitSarjatiedot.cpp
+#: cbHk/UnitSarjatiedot.cpp ViestiWin/UnitSarjatiedot.cpp
 msgid "AlkuNo"
 msgstr "Första nr"
 
@@ -10702,7 +10983,7 @@ msgstr "Typ"
 msgid "BibAlku"
 msgstr "Första startnr"
 
-#: cbHk/UnitSarjatiedot.cpp ViestiWin/UnitSarja.cpp
+#: cbHk/UnitSarjatiedot.cpp ViestiWin/UnitSarja.cpp ViestiWin/UnitSarjatiedot.cpp
 msgid "Lähtöväli"
 msgstr "Startintervall"
 
@@ -10718,11 +10999,11 @@ msgstr "Efteranm. start"
 msgid "Pari"
 msgstr "Gruppstorlek"
 
-#: cbHk/UnitSarjatiedot.cpp
+#: cbHk/UnitSarjatiedot.cpp ViestiWin/UnitSarjatiedot.cpp
 msgid "Amp.paikat"
 msgstr "Skjutplatser"
 
-#: cbHk/UnitSarjatiedot.cpp
+#: cbHk/UnitSarjatiedot.cpp ViestiWin/UnitSarjatiedot.cpp
 msgid "Sakkoyks."
 msgstr "Straffenhet"
 
@@ -10734,15 +11015,15 @@ msgstr "Poäng"
 msgid "Maksu-1"
 msgstr "Avgift-1"
 
-#: cbHk/UnitSarjatiedot.cpp
+#: cbHk/UnitSarjatiedot.cpp ViestiWin/UnitSarjatiedot.cpp
 msgid "Maksu-ale"
 msgstr "Rabatterad avgift"
 
-#: cbHk/UnitSarjatiedot.cpp cbHk/UnitKilpMaaritys.dfm
+#: cbHk/UnitSarjatiedot.cpp ViestiWin/UnitSarjatiedot.cpp cbHk/UnitKilpMaaritys.dfm
 msgid "Pitkä nimi"
 msgstr "Långt namn"
 
-#: cbHk/UnitSarjatiedot.cpp
+#: cbHk/UnitSarjatiedot.cpp ViestiWin/UnitSarjatiedot.cpp
 msgid "Lukum"
 msgstr "Antal"
 
@@ -10761,10 +11042,6 @@ msgstr "Första etapp"
 #: cbHk/UnitSarjatiedot.cpp
 msgid "ViimPv"
 msgstr "Sista etapp"
-
-#: cbHk/UnitSarjatiedot.cpp
-msgid "Amp.sakot"
-msgstr "Skjutstraff"
 
 #: cbHk/UnitSarjatiedot.cpp
 msgid "Tallennetaanko kaikki alkunumeromuutokset myös vaiheisiin?"
@@ -10924,6 +11201,28 @@ msgstr "Inga klasser valda"
 msgid "Virheellinen vaihe vaihdettu seuraavaksi vaiheeksi"
 msgstr "Felaktig etapp ändrad till nästa etapp"
 
+#: cbHk/UnitStatus.cpp cbHk/UnitTaulu.cpp ViestiWin/UnitGAZ.cpp ViestiWin/UnitMerkKoodeja.cpp
+#: ViestiWin/UnitStatus.cpp cbTp/UnitEmiTag.cpp
+msgid "Tila"
+msgstr "Status"
+
+#: cbHk/UnitStatus.cpp ViestiWin/UnitStatus.cpp
+msgid "Jonossa"
+msgstr "I kö"
+
+#: cbHk/UnitStatus.cpp
+msgid "Eil (Aika)"
+msgstr "Ej st (Tid)"
+
+#: cbHk/UnitStatus.cpp ViestiWin/UnitStatus.cpp cbHk/TulostusUnit2.dfm cbHk/UnitEmit.dfm
+#: cbHk/UnitTarkMerk.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitMerkKoodeja.dfm
+msgid "Avoin"
+msgstr "Öppen"
+
+#: cbHk/UnitStatus.cpp ViestiWin/UnitStatus.cpp
+msgid "Esit"
+msgstr "Förs"
+
 #: cbHk/UnitStatus.cpp
 msgid "Mahd"
 msgstr "Möjl"
@@ -10943,6 +11242,10 @@ msgstr "Ingen klassfiltrering"
 #: cbHk/UnitSuodatus.cpp ViestiWin/UnitSuodatus.cpp
 msgid "Ei seurasuodatusta"
 msgstr "Ingen klubbfiltrering"
+
+#: cbHk/UnitTKanta.cpp cbHk/UnitIlm2.dfm
+msgid "Ikä"
+msgstr "Ålder"
 
 #: cbHk/UnitTKanta.cpp
 msgid "Tallennetaanko muutokset aiempaan tiedostoon?"
@@ -10988,10 +11291,6 @@ msgstr "Br"
 msgid "Kork"
 msgstr "Höjd"
 
-#: cbHk/UnitTaulu.cpp ViestiWin/UnitGAZ.cpp ViestiWin/UnitMerkKoodeja.cpp cbTp/UnitEmiTag.cpp
-msgid "Tila"
-msgstr "Status"
-
 #: cbHk/UnitTaulu.cpp ViestiWin/UnitGAZ.cpp cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm
 msgid "C-Power"
 msgstr ""
@@ -11008,15 +11307,6 @@ msgstr "Diff till ledaren"
 #: cbHk/UnitTaulu.cpp ViestiWin/UnitGAZ.cpp cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm
 msgid "Ero txt-ajasta"
 msgstr "Diff från txt-tid"
-
-#: cbHk/UnitTaulu.cpp ViestiWin/UnitGAZ.cpp cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm
-msgid "Teksti"
-msgstr "Text"
-
-#: cbHk/UnitTaulu.cpp ViestiWin/UnitGAZ.cpp cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm
-#: ViestiWin/UnitJoukkuetiedot.dfm
-msgid "Kello"
-msgstr "Klocka"
 
 #: cbHk/UnitTaulu.cpp ViestiWin/UnitGAZ.cpp cbTp/UnitEmiTag.cpp
 msgid "Rivillä ei hyväksyttävää yhteyden numeroa"
@@ -11091,6 +11381,38 @@ msgstr "Både multiplikator och divisor måste vara skilda från noll"
 msgid "Tallennetaanko mahdolliset tähänastiset muutokset?"
 msgstr "Spara eventuella hittills gjorda ändringar?"
 
+#: cbHk/UnitVaPisteet.cpp ViestiWin/MuotoiluUnit.cpp
+msgid "Sijainti"
+msgstr "Position"
+
+#: cbHk/UnitVaPisteet.cpp cbTp/UnitEmitSQL.dfm cbTp/UnitEmitnouto.dfm
+msgid "Aikaraja"
+msgstr "Tidsgräns"
+
+#: cbHk/UnitVaPisteet.cpp
+msgid "Sakkoja"
+msgstr "Straff"
+
+#: cbHk/UnitVaPisteet.cpp cbHk/UnitVaPisteet.dfm
+msgid "Julkisuus"
+msgstr "Offentlighet"
+
+#: cbHk/UnitVaPisteet.cpp
+msgid "Kaava"
+msgstr "Formel"
+
+#: cbHk/UnitVaPisteet.cpp cbHk/UnitCfg.dfm cbHk/UnitVaToisto.dfm
+msgid "Piilota"
+msgstr "Dölj"
+
+#: cbHk/UnitVaPisteet.cpp cbHk/UnitVaToisto.dfm
+msgid "Julkinen"
+msgstr "Offentlig"
+
+#: cbHk/UnitVaPisteet.cpp
+msgid "Taso"
+msgstr "Nivå"
+
 #: cbHk/UnitVaPisteet.cpp
 msgid ""
 "Kaavojen kopiointi sarjasta toisiin tehdään kaavan määrittelykaavakkeella"
@@ -11136,6 +11458,26 @@ msgstr "Ingen tävling vald"
 #: cbHk/UnitYhdistetty.cpp
 msgid "Toimenpide suoritettu"
 msgstr "Åtgärden utförd"
+
+#: cbHk/UnitYv.cpp ViestiWin/UnitYv.cpp
+msgid "Lukum."
+msgstr "Antal"
+
+#: cbHk/UnitYv.cpp ViestiWin/UnitYv.cpp
+msgid "Vert.aika"
+msgstr "Jmf.tid"
+
+#: cbHk/UnitYv.cpp ViestiWin/UnitYv.cpp
+msgid "Keskim."
+msgstr "Medel"
+
+#: cbHk/UnitYv.cpp ViestiWin/UnitYv.cpp
+msgid "Paras"
+msgstr "Bästa"
+
+#: cbHk/UnitYv.cpp cbTp/UnitNaytaTulos.cpp cbHk/UnitKilpailijaEmit.dfm cbTp/UnitPiikit.dfm
+msgid "Kilpailija"
+msgstr "Tävlande"
 
 #: cbHk/WinHk.cpp
 msgid "HkKisaWin - DEMO versio - max 30 kilpailijaa"
@@ -11229,10 +11571,6 @@ msgid "XML-iedosto %s päättyi rivillä %d tasolla %d"
 msgstr "XML-filen %s slutade på rad %d på nivå %d"
 
 #: ViestiWin/MuotoiluUnit.cpp
-msgid "Sijainti"
-msgstr "Position"
-
-#: ViestiWin/MuotoiluUnit.cpp
 msgid "Merkkejä"
 msgstr "Tecken"
 
@@ -11245,7 +11583,7 @@ msgstr "Justering"
 msgid "%s %d. os"
 msgstr "%s %d. str"
 
-#: ViestiWin/OsuusTiedot.cpp
+#: ViestiWin/OsuusTiedot.cpp ViestiWin/UnitJoukkuetiedot.cpp ViestiWin/UnitLuenta.cpp
 msgid "Osuus "
 msgstr "Sträcka "
 
@@ -11261,6 +11599,14 @@ msgstr "Föreg.pl"
 #: ViestiWin/TulosUnit.cpp
 msgid "Ostls"
 msgstr "Str.res"
+
+#: ViestiWin/TulosUnit.cpp
+msgid "Jk.sj"
+msgstr "Lag.pl"
+
+#: ViestiWin/TulosUnit.cpp ViestiWin/UnitJoukkuetiedot.cpp
+msgid "Os.sj"
+msgstr "Str.pl"
 
 #: ViestiWin/TulosUnit.cpp ViestiWin/TulostusUnit2.cpp ViestiWin/UnitArvonta.cpp ViestiWin/UnitEmit.cpp
 #: ViestiWin/UnitEmitMuutokset.cpp ViestiWin/UnitHenkHaku.cpp ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitLisatiedot.cpp
@@ -11365,6 +11711,10 @@ msgstr "Ankare"
 #: ViestiWin/UnitAjanotto.cpp
 msgid "Ylimääräinen aika tai vastaanotettu muutos muokattavaan riviin"
 msgstr "Extra tid eller mottagen ändring till raden som redigeras"
+
+#: ViestiWin/UnitAjanotto.cpp ViestiWin/UnitMaastossa.cpp cbTp/UnitEmitFile.cpp
+msgid "Os"
+msgstr "Str"
 
 #: ViestiWin/UnitAjanotto.cpp
 msgid "Kilpailijalla jo aika, valitse jatko"
@@ -11509,7 +11859,7 @@ msgstr "Binärfil"
 msgid "txt-tiedostot (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*"
 msgstr "txt-filer (*.txt)|*.txt|Alla filer (*.*)|*.*"
 
-#: ViestiWin/UnitEmit.cpp
+#: ViestiWin/UnitEmit.cpp ViestiWin/UnitJoukkuetiedot.cpp
 msgid "Os. "
 msgstr "Str. "
 
@@ -11589,6 +11939,34 @@ msgid "Uusi osuus"
 msgstr "Ny sträcka"
 
 #: ViestiWin/UnitJoukkueet.cpp
+msgid "Jk"
+msgstr "Lag"
+
+#: ViestiWin/UnitJoukkueet.cpp
+msgid "JoukkNimi"
+msgstr "Lagnamn"
+
+#: ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitJoukkuetiedot.cpp cbHk/UnitOsanottajat.dfm
+msgid "Lisenssi"
+msgstr "Licens"
+
+#: ViestiWin/UnitJoukkueet.cpp
+msgid "OsSeura"
+msgstr "StrKlubb"
+
+#: ViestiWin/UnitJoukkueet.cpp
+msgid "Badge2"
+msgstr "Bricka2"
+
+#: ViestiWin/UnitJoukkueet.cpp
+msgid "Lna"
+msgstr "Hyr"
+
+#: ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitJoukkuetiedot.cpp
+msgid "Lht-lj"
+msgstr "St-ordn"
+
+#: ViestiWin/UnitJoukkueet.cpp
 msgid "OsPist-1"
 msgstr "StrPoä-1"
 
@@ -11631,6 +12009,10 @@ msgstr "Redigering tillåten"
 #, c-format
 msgid "Vahvista joukkueen %s pysyvä poisto"
 msgstr "Bekräfta permanent borttagning av laget %s"
+
+#: ViestiWin/UnitJoukkuetiedot.cpp
+msgid "Os.tls."
+msgstr "Str.res."
 
 #: ViestiWin/UnitJoukkuetiedot.cpp
 msgid "Yritys muuttaa joukkueen numeroa muokkaustilassa. Valitse toimintatapa"
@@ -11717,6 +12099,14 @@ msgstr ""
 msgid ""
 "Joukkuekoon maksimin muuttaminen on mahdollista vain esivalmistelutilassa"
 msgstr "Maximal lagstorlek kan ändras endast i förberedelseläget"
+
+#: ViestiWin/UnitLahestyjat.cpp
+msgid "Ed. pisteestä"
+msgstr "Från föreg. punkt"
+
+#: ViestiWin/UnitLahestyjat.cpp cbTp/UnitRadat.cpp
+msgid "Järj."
+msgstr "Ordn."
 
 #: ViestiWin/UnitLahestyjat.cpp
 msgid ". os."
@@ -11850,6 +12240,14 @@ msgid "Nimikentän pituus: "
 msgstr "Namnfältets längd: "
 
 #: ViestiWin/UnitPartio.cpp
+msgid "Pist"
+msgstr "Poäng"
+
+#: ViestiWin/UnitPartio.cpp
+msgid "Hyv"
+msgstr "Godk"
+
+#: ViestiWin/UnitPartio.cpp
 #, c-format
 msgid "Lasketut pisteet: %d, Sis. sakon %d,  Aika: %8.8s"
 msgstr "Beräknade poäng: %d, Inkl. straff %d,  Tid: %8.8s"
@@ -11858,6 +12256,14 @@ msgstr "Beräknade poäng: %d, Inkl. straff %d,  Tid: %8.8s"
 #, c-format
 msgid "Tallennetut pisteet: %d"
 msgstr "Sparade poäng: %d"
+
+#: ViestiWin/UnitPartio.cpp
+msgid "Ok"
+msgstr "Ok"
+
+#: ViestiWin/UnitPartio.cpp
+msgid "Vaj"
+msgstr "Ofullst"
 
 #: ViestiWin/UnitPiirival.cpp
 msgid "Teksstitiedostot|*.TXT;*.LST|Kaikki tiedostot (*.*)|*.*"
@@ -11905,6 +12311,26 @@ msgstr ""
 "¨Korrigera klassens sträckantal, som överskrider tävlingens sträckantal "
 
 #: ViestiWin/UnitSarjatiedot.cpp
+msgid "Osuusluku"
+msgstr "Sträckantal"
+
+#: ViestiWin/UnitSarjatiedot.cpp
+msgid "Henk.lkm"
+msgstr "Pers.antal"
+
+#: ViestiWin/UnitSarjatiedot.cpp cbHk/UnitSarja.dfm
+msgid "Sakollinen"
+msgstr "Med straff"
+
+#: ViestiWin/UnitSarjatiedot.cpp ViestiWin/UnitSarja.dfm
+msgid "Lähtöpaikka"
+msgstr "Startplats"
+
+#: ViestiWin/UnitSarjatiedot.cpp
+msgid "Osuuslähtö"
+msgstr "Sträckstart"
+
+#: ViestiWin/UnitSarjatiedot.cpp
 msgid "Kilpailun osuusluvuksi on määritelty "
 msgstr "Tävlingens sträckantal har definierats som "
 
@@ -11918,10 +12344,6 @@ msgid "YhtLht"
 msgstr "MassSt"
 
 #: ViestiWin/UnitStatus.cpp
-msgid "Esit"
-msgstr "Förs"
-
-#: ViestiWin/UnitStatus.cpp
 msgid "EmKoodit"
 msgstr "EmKoder"
 
@@ -11932,6 +12354,22 @@ msgstr "Växl. stängd"
 #: ViestiWin/VertAikaUnit.cpp
 msgid "Analysoitavan osuusden maksimikesto (sek)"
 msgstr "Max längd för analyserad sträcka (sek)"
+
+#: cbTp/UnitAmpPaikat.cpp
+msgid "Taulu"
+msgstr "Tavla"
+
+#: cbTp/UnitAmpPaikat.cpp
+msgid "Pka"
+msgstr "Skjpl"
+
+#: cbTp/UnitAmpPaikat.cpp
+msgid "Ohi"
+msgstr "Bom"
+
+#: cbTp/UnitAmpPaikat.cpp
+msgid "Vara"
+msgstr "Reserv"
 
 #: cbTp/UnitEmiTag.cpp
 msgid "Lähtönollauksen koodi, toteutetaanko?"
@@ -11997,10 +12435,6 @@ msgstr ""
 #: cbTp/UnitEmitFile.cpp
 msgid "Kno"
 msgstr "Nr"
-
-#: cbTp/UnitEmitFile.cpp
-msgid "Os"
-msgstr "Str"
 
 #: cbTp/UnitEmitSQL.cpp
 msgid "Suljetaan ensin jatkuva haku, odota n. 10 sek ennen jatkamista"
@@ -12164,10 +12598,6 @@ msgstr "Bekräfta radering av alla tider i klockans minne"
 #: cbTp/UnitNappain.cpp cbTp/UnitNappain.dfm
 msgid "Automaattisesti määräytyvä"
 msgstr "Bestäms automatiskt"
-
-#: cbTp/UnitNaytaTulos.cpp cbHk/UnitKilpailijaEmit.dfm cbTp/UnitPiikit.dfm
-msgid "Kilpailija"
-msgstr "Tävlande"
 
 #: cbTp/UnitNaytaTulos.cpp
 msgid "OK - näytön kesto sekunteina"
@@ -12530,16 +12960,8 @@ msgid "Kaavake käytössä vain henkilökohtaisissa kilpailuissa"
 msgstr "Formuläret används endast i individuella tävlingar"
 
 #: cbTp/UnitRadat.cpp
-msgid "Järj."
-msgstr "Ordn."
-
-#: cbTp/UnitRadat.cpp
 msgid "Lähdöstä (m)"
 msgstr "Från start (m)"
-
-#: cbTp/UnitRadat.cpp
-msgid "Rasti"
-msgstr "Kontroll"
 
 #: cbTp/UnitRadat.cpp
 msgid "Leimat"
@@ -13284,12 +13706,6 @@ msgstr "Använd html-tabell i resultat"
 msgid " Linkit sarjoihin "
 msgstr " Länkar till klasser "
 
-#: cbHk/MuotoiluUnit.dfm cbHk/UnitAjanotto.dfm cbHk/UnitArvonta.dfm cbHk/UnitCfg.dfm
-#: cbHk/UnitSarja.dfm ViestiWin/MuotoiluUnit.dfm ViestiWin/UnitAjanotto.dfm ViestiWin/UnitCfg.dfm
-#: cbTp/UnitSelect3.dfm
-msgid "Ei"
-msgstr "Nej"
-
 #: cbHk/MuotoiluUnit.dfm ViestiWin/MuotoiluUnit.dfm
 msgid "Kerran"
 msgstr "En gång"
@@ -13665,10 +14081,6 @@ msgstr "Dölj valuppgifter"
 #: cbHk/TulosUnit.dfm ViestiWin/TulosUnit.dfm
 msgid "Tilanne"
 msgstr "Ställning"
-
-#: cbHk/TulosUnit.dfm
-msgid "Sukup."
-msgstr "Kön"
 
 #: cbHk/TulosUnit.dfm
 msgid "Ikäsarjat"
@@ -14081,11 +14493,6 @@ msgstr "Filtyp"
 msgid "Merkistö"
 msgstr "Teckenuppsättning"
 
-#: cbHk/TulostusUnit2.dfm cbHk/UnitLisatiedot.dfm ViestiWin/TulostusUnit2.dfm ViestiWin/UnitLisatiedot.dfm
-#: cbTp/UnitTietoTulk.dfm
-msgid "Kenttäerotin"
-msgstr "Fältavgränsare"
-
 #: cbHk/TulostusUnit2.dfm
 msgid ""
 "Varoitus: Ohjelma ei pysty näyttämään html-tiedoston  kaikkia muotoiluja oikein tällä tietokoneella (XP?)"
@@ -14426,11 +14833,6 @@ msgstr " Klubbnamn "
 msgid "Seuranimikenttä"
 msgstr "Klubbnamnsfält"
 
-#: cbHk/TulostusUnit2.dfm cbHk/UnitIlm2.dfm cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm
-#: cbHk/UnitLisatiedot.dfm cbHk/UnitSuodatus.dfm
-msgid "Yhdistys"
-msgstr "Förening"
-
 #: cbHk/TulostusUnit2.dfm
 msgid "Ohita sarjat, joissa ei lähtijöitä"
 msgstr "Hoppa över klasser utan startande"
@@ -14606,10 +15008,6 @@ msgstr " Lagdefinition "
 #: cbHk/TulostusUnit2.dfm
 msgid "Tunnistava tieto"
 msgstr "Identifierande uppgift"
-
-#: cbHk/TulostusUnit2.dfm
-msgid "Joukkueen koko"
-msgstr "Lagets storlek"
 
 #: cbHk/TulostusUnit2.dfm
 msgid "min"
@@ -15088,10 +15486,6 @@ msgstr "Senaste"
 #: cbHk/UnitAjanotto.dfm ViestiWin/UnitAjanotto.dfm
 msgid "Orig.jono"
 msgstr "Urspr.kö"
-
-#: cbHk/UnitAjanotto.dfm ViestiWin/UnitAjanotto.dfm
-msgid "Päivä"
-msgstr "Dag"
 
 #: cbHk/UnitAjanotto.dfm ViestiWin/UnitAjanotto.dfm
 msgid "Tallenna muutos"
@@ -15862,10 +16256,6 @@ msgstr "Hämta uppgift"
 #: cbHk/UnitCfg.dfm
 msgid "Ei hakua"
 msgstr "Ingen sökning"
-
-#: cbHk/UnitCfg.dfm cbHk/UnitVaToisto.dfm
-msgid "Piilota"
-msgstr "Dölj"
 
 #: cbHk/UnitCfg.dfm
 msgid "Vahvista aina haun löytämä henkilö"
@@ -16890,9 +17280,21 @@ msgstr "Teckenström från läsaren"
 msgid "esItys"
 msgstr "Förslag"
 
+#: cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm
+msgid "Eiläht."
+msgstr "Ej start"
+
+#: cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitSuodatus.dfm
+msgid "Vakantti"
+msgstr "Vakant"
+
 #: cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm
 msgid "Ei aikaa"
 msgstr "Ingen tid"
+
+#: cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm
+msgid "Havaittu"
+msgstr "Observerad"
 
 #: cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm
 msgid "Lue kortteja"
@@ -17796,14 +18198,6 @@ msgstr "Permanent"
 msgid "Muokkausmoodi"
 msgstr "Redigeringsläge"
 
-#: cbHk/UnitIlm2.dfm cbHk/UnitKilpailijatiedot.dfm
-msgid "Sukup"
-msgstr "Kön"
-
-#: cbHk/UnitIlm2.dfm
-msgid "Ikä"
-msgstr "Ålder"
-
 #: cbHk/UnitIlm2.dfm
 msgid "Käsiteltävien toimintojen ja tietojen valinta"
 msgstr "Val av funktioner och uppgifter att behandla"
@@ -18522,10 +18916,6 @@ msgstr "&Föregående"
 msgid "Kilpailija online väliajoin"
 msgstr "Tävlande online med mellantider"
 
-#: cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm ViestiWin/UnitJoukkuetiedot.dfm
-msgid "Haku- ja katselutila"
-msgstr "Sök- och visningsläge"
-
 #: cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm
 msgid "Nimihaku"
 msgstr "Namnsökning"
@@ -18857,10 +19247,6 @@ msgstr "Tidsstraff/hcp (sek)"
 #: cbHk/UnitLisatiedot.dfm
 msgid "Millisek. korjaus"
 msgstr "Millisek. korrigering"
-
-#: cbHk/UnitLisatiedot.dfm cbHk/UnitOsanottajat.dfm cbHk/UnitSuodatus.dfm
-msgid "Qual"
-msgstr ""
 
 #: cbHk/UnitLisatiedot.dfm
 msgid " Vaihe jolle siirretään  "
@@ -19210,10 +19596,6 @@ msgid "Sarja/Rankipist."
 msgstr "Klass/Rankingp."
 
 #: cbHk/UnitOsanottajat.dfm
-msgid "Lisenssi"
-msgstr "Licens"
-
-#: cbHk/UnitOsanottajat.dfm
 msgid "Kv-id"
 msgstr "Int-id"
 
@@ -19340,10 +19722,6 @@ msgstr "Star&ttid"
 #: cbHk/UnitOsanottajat.dfm ViestiWin/UnitJoukkueet.dfm
 msgid "T&ulos"
 msgstr "Res&ultat"
-
-#: cbHk/UnitOsanottajat.dfm
-msgid "GSM"
-msgstr ""
 
 #: cbHk/UnitOsanottajat.dfm
 msgid "Pisteet-&1"
@@ -19763,10 +20141,6 @@ msgid "Tasoituksellinen"
 msgstr "Med handikapp"
 
 #: cbHk/UnitSarja.dfm
-msgid "Sakollinen"
-msgstr "Med straff"
-
-#: cbHk/UnitSarja.dfm
 msgid "Ei aikoja ja sijoituksia"
 msgstr "Inga tider och placeringar"
 
@@ -19785,10 +20159,6 @@ msgstr "Nästa klass"
 #: cbHk/UnitSarja.dfm ViestiWin/UnitSarja.dfm
 msgid "Edellinen sarja"
 msgstr "Föregående klass"
-
-#: cbHk/UnitSarja.dfm
-msgid "On"
-msgstr "På"
 
 #: cbHk/UnitSarja.dfm
 msgid " Ampumasuunnistus "
@@ -20489,10 +20859,6 @@ msgid "Osanotot"
 msgstr "Deltaganden"
 
 #: cbHk/UnitTKanta.dfm
-msgid "Lisätieto"
-msgstr "Tilläggsuppgift"
-
-#: cbHk/UnitTKanta.dfm
 msgid "Näytä kaikki rivit (hidastaa)"
 msgstr "Visa alla rader (långsammare)"
 
@@ -20861,10 +21227,6 @@ msgid "Rastikoodit"
 msgstr "Kontrollkoder"
 
 #: cbHk/UnitVaPisteet.dfm
-msgid "Julkisuus"
-msgstr "Offentlighet"
-
-#: cbHk/UnitVaPisteet.dfm
 msgid "Kaavat"
 msgstr "Formler"
 
@@ -20959,10 +21321,6 @@ msgstr "Nivå 2"
 #: cbHk/UnitVaToisto.dfm
 msgid "Taso 3"
 msgstr "Nivå 3"
-
-#: cbHk/UnitVaToisto.dfm
-msgid "Julkinen"
-msgstr "Offentlig"
 
 #: cbHk/UnitVaToisto.dfm cbHk/UnitVakLisays.dfm
 msgid "Merkitse"
@@ -23100,10 +23458,6 @@ msgid "Osuuskohtaiset tiedot"
 msgstr "Sträckspecifika uppgifter"
 
 #: ViestiWin/UnitSarja.dfm
-msgid "Lähtöpaikka"
-msgstr "Startplats"
-
-#: ViestiWin/UnitSarja.dfm
 msgid "Rinnakkaisten juoksijoiden maksimiluku"
 msgstr "Max antal parallella löpare"
 
@@ -23501,10 +23855,6 @@ msgstr "EmitSQL-anslutning"
 #: cbTp/UnitEmitSQL.dfm
 msgid "Viim. siirretty"
 msgstr "Senast flyttad"
-
-#: cbTp/UnitEmitSQL.dfm cbTp/UnitEmitnouto.dfm
-msgid "Aikaraja"
-msgstr "Tidsgräns"
 
 #: cbTp/UnitEmitSQL.dfm cbTp/UnitEmitnouto.dfm
 msgid "Hakuväli ms."
@@ -24841,3 +25191,12 @@ msgstr "Starttidpunkt (tom: från början)"
 #: cbTp/UnitUusinta.dfm
 msgid "Loppuhetki (tyhjä: loppuun)"
 msgstr "Sluttidpunkt (tom: till slutet)"
+
+#~ msgid "Ohit"
+#~ msgstr "Överh"
+
+#~ msgid "EiAikaa"
+#~ msgstr "EjTid"
+
+#~ msgid "Ohitettu"
+#~ msgstr "Överhoppad"

@@ -55,28 +55,28 @@ static const int YSijaCol =   20;
 static const int PistCol =    21;
 
 ColTp PvGridCols0[] = {
-	{L"Vaihe", 50, 0, 1, 0, true},
-	{L"Bib", 40, 0, 1, 0, true},
-	{L"Sarja", 50, 0, 1, 0, true},
-	{L"Badge", 60, 0, 1, 0, true},
-	{L"L", 15, 0, 1, 0, true},
-	{L"Badge-2", 60, 0, 1, 0, true},
-	{L"L2", 15, 0, 1, 0, true},
-	{L"Lähtö-arv", 70, 0, 1, 0, true},
-	{L"Lähtö-tot", 70, 0, 1, 0, true},
-	{L"Maali", 70, 0, 1, 0, true},
-	{L"Tulos", 70, 0, 1, 0, true},
-	{L"Tark", 45, 0, 1, 0, true},
-	{L"Amp.sakot", 60, 0, 1, 0, false},
-	{L"Sakko", 45, 0, 1, 0, true},
-	{L"Sija", 35, 0, 1, 0, true},
-	{L"Rata", 50, 0, 1, 0, true},
-	{L"Erä", 50, 0, 1, 0, false},
-	{L"Ennätys", 60, 0, 1, 0, false},
-	{L"Tavoite", 60, 0, 1, 0, false},
-	{L"Yht.tls.", 60, 0, 1, 0, false},
-	{L"Y-sija", 40, 0, 1, 0, false},
-	{L"Pist-1", 40, 0, 1, 0, true}
+	{N_(L"Vaihe"), 50, 0, 1, 0, true},
+	{N_(L"Bib"), 40, 0, 1, 0, true},
+	{N_(L"Sarja"), 50, 0, 1, 0, true},
+	{N_(L"Badge"), 60, 0, 1, 0, true},
+	{N_(L"L"), 15, 0, 1, 0, true},
+	{N_(L"Badge-2"), 60, 0, 1, 0, true},
+	{N_(L"L2"), 15, 0, 1, 0, true},
+	{N_(L"Lähtö-arv"), 70, 0, 1, 0, true},
+	{N_(L"Lähtö-tot"), 70, 0, 1, 0, true},
+	{N_(L"Maali"), 70, 0, 1, 0, true},
+	{N_(L"Tulos"), 70, 0, 1, 0, true},
+	{N_(L"Tark"), 45, 0, 1, 0, true},
+	{N_(L"Amp.sakot"), 60, 0, 1, 0, false},
+	{N_(L"Sakko"), 45, 0, 1, 0, true},
+	{N_(L"Sija"), 35, 0, 1, 0, true},
+	{N_(L"Rata"), 50, 0, 1, 0, true},
+	{N_(L"Erä"), 50, 0, 1, 0, false},
+	{N_(L"Ennätys"), 60, 0, 1, 0, false},
+	{N_(L"Tavoite"), 60, 0, 1, 0, false},
+	{N_(L"Yht.tls."), 60, 0, 1, 0, false},
+	{N_(L"Y-sija"), 40, 0, 1, 0, false},
+	{N_(L"Pist-1"), 40, 0, 1, 0, true}
 };
 
 static const char salausVal[2] = "YJ";
@@ -260,7 +260,7 @@ void __fastcall TFormKilpailijatiedot::naytaTiedot(void)
 			if (PvGridCols[i].Visible) {
 				if (n >= PvGrid->ColCount)
 					PvGrid->ColCount = n+1;
-				PvGrid->Cells[n][0] = UnicodeString(PvGridCols[i].Caption);
+				PvGrid->Cells[n][0] = UnicodeString(TR(PvGridCols[i].Caption));
 				PvGrid->ColWidths[n] = PvGridCols[i].Width * Screen->PixelsPerInch / 96;
 				PvGridCols[i].Order = n;
 				n++;
@@ -352,40 +352,40 @@ void __fastcall TFormKilpailijatiedot::naytaTiedot(void)
 						case TarkCol:
 							switch (Kilp.tark(pv)) {
 								case L'K' :
-									wcscpy(line, TR(L"Kesk"));
+									wcscpy(line, L"Kesk");
 									break;
 								case L'H' :
-									wcscpy(line, TR(L"Hyl"));
+									wcscpy(line, L"Hyl");
 									break;
 								case L'M' :
-									wcscpy(line, TR(L"Virhe"));
+									wcscpy(line, L"Virhe");
 									break;
 								case L'E' :
-									wcscpy(line, TR(L"Eiläht."));
+									wcscpy(line, L"Eiläht.");
 									break;
 								case L'B' :
-									wcscpy(line, TR(L"Havaittu"));
+									wcscpy(line, L"Havaittu");
 									break;
 								case L'T' :
-									wcscpy(line, TR(L"Tark."));
+									wcscpy(line, L"Tark.");
 									break;
 								case L'I' :
 									wcscpy(line, L"esItys");
 									break;
 								case L'V' :
-									wcscpy(line, TR(L"Vakantti"));
+									wcscpy(line, L"Vakantti");
 									break;
 								case L'O' :
-									wcscpy(line, TR(L"Ohitettu"));
+									wcscpy(line, L"Ohitettu");
 									break;
 								case L'X' :
-									wcscpy(line, TR(L"EiAikaa"));
+									wcscpy(line, L"EiAikaa");
 									break;
 								case L'P' :
-									wcscpy(line, TR(L"Poissa"));
+									wcscpy(line, L"Poissa");
 									break;
 								default :
-									wcscpy(line, TR(L"Avoin"));
+									wcscpy(line, L"Avoin");
 									break;
 								}
 							PvGrid->Cells[PvGridCols[i].Order][pv-epv+1] =
@@ -595,7 +595,7 @@ int __fastcall TFormKilpailijatiedot::tallennaTiedot(void)
 //	   Kilp.setId(EdtKilpno->Text.ToInt());
 //	   haeTiedot(&Kilp);
 	   if (ToimintaTila > 1 && !Kilp.id() || getpos(Kilp.id()) > 0) {
-			Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta"), TR(L"Virhe"),
+			Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta"), L"Virhe",
 				MB_OK);
 			return(1);
 			}
@@ -620,7 +620,7 @@ int __fastcall TFormKilpailijatiedot::tallennaTiedot(void)
 	  }
 
 	if (Kilp1.id() != Kilp.id() && getpos(Kilp.id()) > 0) {
-	  Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta"), TR(L"Virhe"),
+	  Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta"), L"Virhe",
 		  MB_OK);
 	  return(1);
 	  }
@@ -965,40 +965,40 @@ int __fastcall TFormKilpailijatiedot::paivitaMuutos(int col, int row)
 				}
 			switch (kh) {
 				case L'K' :
-					wcscpy(line, TR(L"Kesk"));
+					wcscpy(line, L"Kesk");
 					break;
 				case L'X' :
-					wcscpy(line, TR(L"EiAikaa"));
+					wcscpy(line, L"EiAikaa");
 					break;
 				case L'H' :
-					wcscpy(line, TR(L"Hyl"));
+					wcscpy(line, L"Hyl");
 					break;
 				case L'M' :
-					wcscpy(line, TR(L"Virhe"));
+					wcscpy(line, L"Virhe");
 					break;
 				case L'E' :
-					wcscpy(line, TR(L"Eiläht."));
+					wcscpy(line, L"Eiläht.");
 					break;
 				case L'B' :
-					wcscpy(line, TR(L"Havaittu"));
+					wcscpy(line, L"Havaittu");
 					break;
 				case L'T' :
-					wcscpy(line, TR(L"Tark."));
+					wcscpy(line, L"Tark.");
 					break;
 				case L'I' :
 					wcscpy(line, L"esItys");
 					break;
 				case L'V' :
-					wcscpy(line, TR(L"Vakantti"));
+					wcscpy(line, L"Vakantti");
 					break;
 				case L'O' :
-					wcscpy(line, TR(L"Ohitettu"));
+					wcscpy(line, L"Ohitettu");
 					break;
 				case L'P' :
-					wcscpy(line, TR(L"Poissa"));
+					wcscpy(line, L"Poissa");
 					break;
 				default :
-					wcscpy(line, TR(L"Avoin"));
+					wcscpy(line, L"Avoin");
 					break;
 				}
 			PvGrid->Cells[col][k] = UnicodeString(line);
@@ -1285,16 +1285,16 @@ void __fastcall TFormKilpailijatiedot::asetaMuokkaustila(bool paalle)
 	if (sallimuokkaus) {
 		PvGrid->Options << goEditing;
 		if (Lisays)
-			Tila->Caption = UnicodeString(L"Uuden tietueen muokkaus");
+			Tila->Caption = UnicodeString(TR(L"Uuden tietueen muokkaus"));
 		else
-			Tila->Caption = UnicodeString(L"Muokkaustila");
+			Tila->Caption = UnicodeString(TR(L"Muokkaustila"));
 		GBHaku->Visible = false;
 		if (ActiveControl == BtnSalli)
 			FocusControl(EdtSukunimi);
 		}
 	else {
 		PvGrid->Options >> goEditing;
-		Tila->Caption = UnicodeString(L"Haku- ja katselutila");
+		Tila->Caption = UnicodeString(TR(L"Haku- ja katselutila"));
 		BtnSalli->Caption = TR(L"Salli muokkaus");
 		GBHaku->Visible = true;
 		}

@@ -71,7 +71,7 @@ void TFormVaiheMaar::Paivita()
 		SG1->Cells[ipv+1][3] = pvparam[ipv].Title;
 		SG1->Cells[ipv+1][4] = Pr[PyorIx(pvparam[ipv].pyor[2])];
 		SG1->Cells[ipv+1][5] = Pr[PyorIx(pvparam[ipv].pyor[3])];
-		SG1->Cells[ipv+1][6] = pvparam[ipv].hiihtolahto ? UnicodeString(L"On") : UnicodeString(L"Ei");
+		SG1->Cells[ipv+1][6] = pvparam[ipv].hiihtolahto ? UnicodeString(TR(L"On")) : UnicodeString(L"Ei");
 //		SG1->Cells[ipv+1][7] = pvparam[ipv].takaaAjoLisa ? UnicodeString(L"On") : UnicodeString(L"Ei");
 		}
 }

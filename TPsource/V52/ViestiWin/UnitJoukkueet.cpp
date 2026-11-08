@@ -56,31 +56,31 @@ TFormJoukkueet *FormJoukkueet;
 #define OCOLGPS		24
 
 ColTp OoGridCols0[] = {
-	{L"KilpNo", 40, 0, 1, 0, true},
-	{L"Sarja", 60, 0, 1, 0, true},
-	{L"Seura", 120, 0, 1, 0, true},
-	{L"Jk", 30, 0, 1, 0, true},
-	{L"Maa", 30, 0, 1, 0, true},
-	{L"Id-no", 50, 0, 1, 0, false},
-	{L"JoukkNimi", 70, 0, 1, 0, false},
-	{L"Piiri", 40, 0, 1, 0, false},
-	{L"Erä", 40, 0, 1, 0, false},
-	{L"Sukunimi", 80, 0, MAXOSUUSLUKU, 0, true},
-	{L"Etunimi", 80, 0, MAXOSUUSLUKU, 0, true},
-	{L"Lisenssi", 55, 0, MAXOSUUSLUKU, 0, false},
-	{L"Arvo", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"OsSeura", 80, 0, MAXOSUUSLUKU, 0, false},
-	{L"Badge", 55, 0, MAXOSUUSLUKU, 0, true},
-	{L"Badge2", 55, 0, MAXOSUUSLUKU, 0, false},
-	{L"Lna", 30, 0, MAXOSUUSLUKU, 0, true},
-	{L"Lähtö", 70, 0, MAXOSUUSLUKU, 0, true},
-	{L"Lht-lj", 40, 0, MAXOSUUSLUKU, 0, true},
-	{L"Aika", 70, 0, MAXOSUUSLUKU, 0, true},
-	{L"Tark", 40, 0, MAXOSUUSLUKU, 0, true},
-	{L"A-sakot", 55, 0, MAXOSUUSLUKU, 0, false},
-	{L"Sakko", 40, 0, MAXOSUUSLUKU, 0, false},
-	{L"Rata", 60, 0, MAXOSUUSLUKU, 0, true},
-	{L"GPS", 30, 0, MAXOSUUSLUKU, 0, true}
+	{N_(L"KilpNo"), 40, 0, 1, 0, true},
+	{N_(L"Sarja"), 60, 0, 1, 0, true},
+	{N_(L"Seura"), 120, 0, 1, 0, true},
+	{N_(L"Jk"), 30, 0, 1, 0, true},
+	{N_(L"Maa"), 30, 0, 1, 0, true},
+	{N_(L"Id-no"), 50, 0, 1, 0, false},
+	{N_(L"JoukkNimi"), 70, 0, 1, 0, false},
+	{N_(L"Piiri"), 40, 0, 1, 0, false},
+	{N_(L"Erä"), 40, 0, 1, 0, false},
+	{N_(L"Sukunimi"), 80, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Etunimi"), 80, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Lisenssi"), 55, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Arvo"), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"OsSeura"), 80, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Badge"), 55, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Badge2"), 55, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Lna"), 30, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Lähtö"), 70, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Lht-lj"), 40, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Aika"), 70, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Tark"), 40, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"A-sakot"), 55, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Sakko"), 40, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Rata"), 60, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"GPS"), 30, 0, MAXOSUUSLUKU, 0, true}
 };
 
 ColTp OoGridCols[sizeof(OoGridCols0)/sizeof(ColTp)];
@@ -319,7 +319,7 @@ void __fastcall TFormJoukkueet::setOoGrid(void)
 						OoGrid->Cells[n+ipv*n_monios][0] = TR(L"OsPist-3");
 					}
 				else
-					OoGrid->Cells[n+ipv*n_monios][0] = UnicodeString(OoGridCols[i].Caption);
+					OoGrid->Cells[n+ipv*n_monios][0] = UnicodeString(TR(OoGridCols[i].Caption));
 				OoGrid->ColWidths[n+ipv*n_monios] = OoGridCols[i].Width * Screen->PixelsPerInch / 96;
 				}
 			n++;
@@ -499,28 +499,28 @@ void __fastcall TFormJoukkueet::naytaTiedot(void)
 							ColPv[col+ipv*n_monios] = ipv;
 							switch (Kilp->wTark(epv+ipv, 0)) {
 								case L'K' :
-									wcscpy(line, TR(L"Kesk"));
+									wcscpy(line, L"Kesk");
 									break;
 								case L'O' :
-									wcscpy(line, TR(L"Ohit"));
+									wcscpy(line, L"Ohit");
 									break;
 								case L'H' :
-									wcscpy(line, TR(L"Hyl"));
+									wcscpy(line, L"Hyl");
 									break;
 								case L'E' :
-									wcscpy(line, TR(L"Eiläht."));
+									wcscpy(line, L"Eiläht.");
 									break;
 								case L'T' :
-									wcscpy(line, TR(L"Tark."));
+									wcscpy(line, L"Tark.");
 									break;
 								case L'I' :
 									wcscpy(line, L"esItys");
 									break;
 								case L'P' :
-									wcscpy(line, TR(L"Poissa"));
+									wcscpy(line, L"Poissa");
 									break;
 								default :
-									wcscpy(line, TR(L"Avoin"));
+									wcscpy(line, L"Avoin");
 									break;
 								}
 							OoGrid->Cells[col+ipv*n_monios][k] = UnicodeString(line);
@@ -770,7 +770,7 @@ int __fastcall TFormJoukkueet::tallennaTiedot(void)
 			if (errrivi) {
 				LeaveCriticalSection(&tall_CriticalSection);
 				Application->MessageBox((UnicodeString(TR(L"Virhe joukkueen ")) + UnicodeString(errrivi)
-					+ UnicodeString(TR(L" tiedoissa. Loppuja ei tallennettu."))).c_str(), TR(L"Virhe"), MB_OK);
+					+ UnicodeString(TR(L" tiedoissa. Loppuja ei tallennettu."))).c_str(), L"Virhe", MB_OK);
 				EnterCriticalSection(&tall_CriticalSection);
 				break;
 				}
@@ -937,25 +937,25 @@ int __fastcall TFormJoukkueet::paivitaMuutos(int col, int row)
 				}
 			switch (kh) {
 				case L'K' :
-					wcscpy(line, TR(L"Kesk"));
+					wcscpy(line, L"Kesk");
 					break;
 				case L'H' :
-					wcscpy(line, TR(L"Hyl"));
+					wcscpy(line, L"Hyl");
 					break;
 				case L'E' :
-					wcscpy(line, TR(L"Eiläht."));
+					wcscpy(line, L"Eiläht.");
 					break;
 				case L'T' :
-					wcscpy(line, TR(L"Tark."));
+					wcscpy(line, L"Tark.");
 					break;
 				case L'I' :
 					wcscpy(line, L"esItys");
 					break;
 				case L'P' :
-					wcscpy(line, TR(L"Poissa"));
+					wcscpy(line, L"Poissa");
 					break;
 				default :
-					wcscpy(line, TR(L"Avoinna"));
+					wcscpy(line, L"Avoinna");
 					break;
 				}
 			OoGrid->Cells[col][k] = UnicodeString(line);

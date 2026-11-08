@@ -71,45 +71,45 @@ TFormOsanottajat *FormOsanottajat;
 
 
 ColTp OoGridCols0[] = {
-	{L"KilpNo", 40, 0, 1, 0, true},
-	{L"Sarja", 60, 0, 1, 0, true},
-	{L"Sukup", 40, 0, 1, 0, false},
-	{L"IkäSrj", 40, 0, 1, 0, false},
-	{L"Id-no", 50, 0, 1, 0, true},
-	{L"KvId", 50, 0, 1, 0, true},
-	{L"Sukunimi", 80, 0, 1, 0, true},
-	{L"Etunimi", 80, 0, 1, 0, true},
-	{L"Arvo", 50, 0, 1, 0, false},
-	{L"Seura", 100, 0, 1, 0, true},
-	{L"Seuralyh", 50, 0, 1, 0, true},
-	{L"Yhdistys", 50, 0, 1, 0, false},
-	{L"Joukkue", 50, 0, 1, 0, false},
-	{L"Maa", 30, 0, 1, 0, true},
-	{L"Piiri", 40, 0, 1, 0, false},
-	{L"Ilm.lista", 50, 0, 1, 0, false},
-	{L"Arv.ryhmä", 50, 0, 1, 0, false},
-	{L"Pist-1", 40, 0, 1, 0, false},
-	{L"Pist-2", 40, 0, 1, 0, false},
-	{L"Pist-3", 40, 0, 1, 0, false},
-	{L"RintaNo", 50, 0, N_PV, 0, true},
-	{L"Vaihesarja", 60, 0, N_PV, 0, false},
-	{L"Badge", 50, 0, N_PV, 0, true},
-	{L"Laina", 30, 0, N_PV, 0, true},
-	{L"Tas.", 40, 0, N_PV, 0, false},
-	{L"Läsnä", 35, 0, N_PV, 0, true},
-	{L"Lähtö", 65, 0, N_PV, 0, true},
-	{L"Tulos", 70, 0, N_PV, 0, true},
-	{L"A-sakot", 50, 0, N_PV, 0, false},
-	{L"Rata", 50, 0, N_PV, 0, false},
-	{L"Erä", 50, 0, N_PV, 0, false},
-	{L"Qual", 30, 0, N_PV, 0, false},
-	{L"GSM", 30, 0, N_PV, 0, false},
-	{L"VPist-1", 45, 0, N_PV, 0, false},
-	{L"VPist-2", 45, 0, N_PV, 0, false},
-	{L"Teksti", 80, 0, N_PV, 0, false},
-	{L"Synt", 40, 0, 1, 0, false},
-	{L"Ennätys", 60, 0, N_PV, 0, false},
-	{L"Tavoite", 60, 0, N_PV, 0, false}
+	{N_(L"KilpNo"), 40, 0, 1, 0, true},
+	{N_(L"Sarja"), 60, 0, 1, 0, true},
+	{N_(L"Sukup"), 40, 0, 1, 0, false},
+	{N_(L"IkäSrj"), 40, 0, 1, 0, false},
+	{N_(L"Id-no"), 50, 0, 1, 0, true},
+	{N_(L"KvId"), 50, 0, 1, 0, true},
+	{N_(L"Sukunimi"), 80, 0, 1, 0, true},
+	{N_(L"Etunimi"), 80, 0, 1, 0, true},
+	{N_(L"Arvo"), 50, 0, 1, 0, false},
+	{N_(L"Seura"), 100, 0, 1, 0, true},
+	{N_(L"Seuralyh"), 50, 0, 1, 0, true},
+	{N_(L"Yhdistys"), 50, 0, 1, 0, false},
+	{N_(L"Joukkue"), 50, 0, 1, 0, false},
+	{N_(L"Maa"), 30, 0, 1, 0, true},
+	{N_(L"Piiri"), 40, 0, 1, 0, false},
+	{N_(L"Ilm.lista"), 50, 0, 1, 0, false},
+	{N_(L"Arv.ryhmä"), 50, 0, 1, 0, false},
+	{N_(L"Pist-1"), 40, 0, 1, 0, false},
+	{N_(L"Pist-2"), 40, 0, 1, 0, false},
+	{N_(L"Pist-3"), 40, 0, 1, 0, false},
+	{N_(L"RintaNo"), 50, 0, N_PV, 0, true},
+	{N_(L"Vaihesarja"), 60, 0, N_PV, 0, false},
+	{N_(L"Badge"), 50, 0, N_PV, 0, true},
+	{N_(L"Laina"), 30, 0, N_PV, 0, true},
+	{N_(L"Tas."), 40, 0, N_PV, 0, false},
+	{N_(L"Läsnä"), 35, 0, N_PV, 0, true},
+	{N_(L"Lähtö"), 65, 0, N_PV, 0, true},
+	{N_(L"Tulos"), 70, 0, N_PV, 0, true},
+	{N_(L"A-sakot"), 50, 0, N_PV, 0, false},
+	{N_(L"Rata"), 50, 0, N_PV, 0, false},
+	{N_(L"Erä"), 50, 0, N_PV, 0, false},
+	{N_(L"Qual"), 30, 0, N_PV, 0, false},
+	{N_(L"GSM"), 30, 0, N_PV, 0, false},
+	{N_(L"VPist-1"), 45, 0, N_PV, 0, false},
+	{N_(L"VPist-2"), 45, 0, N_PV, 0, false},
+	{N_(L"Teksti"), 80, 0, N_PV, 0, false},
+	{N_(L"Synt"), 40, 0, 1, 0, false},
+	{N_(L"Ennätys"), 60, 0, N_PV, 0, false},
+	{N_(L"Tavoite"), 60, 0, N_PV, 0, false}
 };
 
 ColTp OoGridCols[sizeof(OoGridCols0)/sizeof(ColTp)];
@@ -423,7 +423,7 @@ void __fastcall TFormOsanottajat::setOoGrid(void)
 			OoGridCols[ii].Order = n;
 			OoGridCols[ii].Count = nlisa;
 			for (int ipv = 0; ipv < nlisa; ipv++) {
-				OoGrid->Cells[n+ipv][0] = UnicodeString(OoGridCols[ii].Caption);
+				OoGrid->Cells[n+ipv][0] = UnicodeString(TR(OoGridCols[ii].Caption));
 				OoGrid->ColWidths[n+ipv] = OoGridCols[ii].Width * Screen->PixelsPerInch / 96;
 				}
 			n += nlisa;
@@ -941,7 +941,7 @@ int __fastcall TFormOsanottajat::tallennaTiedot(void)
 			if (errrivi) {
 				LeaveCriticalSection(&tall_CriticalSection);
 				Application->MessageBox((UnicodeString(TR(L"Virhe kilpailijan ")) + UnicodeString(errrivi)
-					+ UnicodeString(TR(L" tiedoissa. Loppuja ei tallennettu."))).c_str(), TR(L"Virhe"), MB_OK);
+					+ UnicodeString(TR(L" tiedoissa. Loppuja ei tallennettu."))).c_str(), L"Virhe", MB_OK);
 				EnterCriticalSection(&tall_CriticalSection);
 				break;
 				}

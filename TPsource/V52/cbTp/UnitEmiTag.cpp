@@ -460,7 +460,7 @@ void TFormEmiTag::PaivitaYhteydet(void)
 						break;
 					}
 				}
-			SGLeimat->Cells[7][y+1] = (regnly_open[ny] ? L"On" : L"Ei");
+			SGLeimat->Cells[7][y+1] = (regnly_open[ny] ? TR(L"On") : TR(L"Ei"));
 			y++;
 			}
 		}

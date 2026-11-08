@@ -168,12 +168,12 @@ void naytayhteydet(void)
 		YhteysGrid = FormYhteysStatus->YhteysGrid;
 	else
 		YhteysGrid = FormStatus->YhteysGrid;
-	YhteysGrid->Cells[0][0] = UnicodeString(L"Yhteys");
-	YhteysGrid->Cells[1][0] = UnicodeString(L"Kohde");
+	YhteysGrid->Cells[0][0] = UnicodeString(TR(L"Yhteys"));
+	YhteysGrid->Cells[1][0] = UnicodeString(TR(L"Kohde"));
 	YhteysGrid->Cells[2][0] = UnicodeString(L"I/O");
-	YhteysGrid->Cells[3][0] = UnicodeString(L"Tila");
-	YhteysGrid->Cells[4][0] = UnicodeString(L"Jonossa");
-	YhteysGrid->Cells[5][0] = UnicodeString(L"Lähetetty");
+	YhteysGrid->Cells[3][0] = UnicodeString(TR(L"Tila"));
+	YhteysGrid->Cells[4][0] = UnicodeString(TR(L"Jonossa"));
+	YhteysGrid->Cells[5][0] = UnicodeString(TR(L"Lähetetty"));
 	YhteysGrid->ColCount = 6;
 	YhteysGrid->RowCount = YhtLkm > 1 ? YhtLkm+1 : 2;
 	jonossa = 0;
@@ -345,17 +345,17 @@ void __fastcall TFormStatus::Lukumaarat(void)
 			edvaluku = kilpparam.maxvaluku;
 			ed_pv = k_pv;
 			LkmGrid->RowCount = sarjaluku+2;
-			LkmGrid->Cells[1][0] = UnicodeString(L"Ilm");
-			LkmGrid->Cells[2][0] = UnicodeString(L"Tulos");
-			LkmGrid->Cells[3][0] = UnicodeString(L"Kesk");
-			LkmGrid->Cells[4][0] = UnicodeString(L"Hyl");
-			LkmGrid->Cells[5][0] = UnicodeString(L"Eil (Aika)");
-			LkmGrid->Cells[6][0] = UnicodeString(L"Avoin");
+			LkmGrid->Cells[1][0] = UnicodeString(TR(L"Ilm"));
+			LkmGrid->Cells[2][0] = UnicodeString(TR(L"Tulos"));
+			LkmGrid->Cells[3][0] = UnicodeString(TR(L"Kesk"));
+			LkmGrid->Cells[4][0] = UnicodeString(TR(L"Hyl"));
+			LkmGrid->Cells[5][0] = UnicodeString(TR(L"Eil (Aika)"));
+			LkmGrid->Cells[6][0] = UnicodeString(TR(L"Avoin"));
 			LkmGrid->ColWidths[5] = 55*Screen->PixelsPerInch/96;
 			cc = 7;
 			if (kilpparam.badgelaji == L'E') {
-				LkmGrid->Cells[7][0] = UnicodeString(L"Esit");
-				LkmGrid->Cells[8][0] = UnicodeString(L"Emit");
+				LkmGrid->Cells[7][0] = UnicodeString(TR(L"Esit"));
+				LkmGrid->Cells[8][0] = UnicodeString(TR(L"Emit"));
 				cc = 9;
 				}
 			LkmGrid->ColCount = cc+kilpparam.maxvaluku;
@@ -482,7 +482,7 @@ void __fastcall TFormStatus::Lukumaarat(void)
 			}
 		edaikaNyt = aikaNyt;
 
-		LkmGrid->Cells[0][1] = UnicodeString(L"Yht.");
+		LkmGrid->Cells[0][1] = UnicodeString(TR(L"Yht."));
 		LkmGrid->Cells[1][1] = UnicodeString(nilmt);
 		LkmGrid->Cells[2][1] = UnicodeString(ntulost);
 		LkmGrid->Cells[3][1] = UnicodeString(nkeskt);

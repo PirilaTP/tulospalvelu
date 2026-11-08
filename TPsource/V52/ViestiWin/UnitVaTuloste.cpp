@@ -351,11 +351,11 @@ void __fastcall TFormVaTuloste::EdtVahvistusKeyPress(TObject *Sender, System::Wi
 //---------------------------------------------------------------------------
 void __fastcall TFormVaTuloste::FormCreate(TObject *Sender)
 {
-	Cells[0][0].text = L"Osuus";
-	Cells[1][0].text = L"Nimi";
-	Cells[2][0].text = L"Badge";
-	Cells[3][0].text = L"Maali";
-	Cells[4][0].text = L"Tark";
+	Cells[0][0].text = TR(L"Osuus");
+	Cells[1][0].text = TR(L"Nimi");
+	Cells[2][0].text = TR(L"Badge");
+	Cells[3][0].text = TR(L"Maali");
+	Cells[4][0].text = TR(L"Tark");
 	DG1->ColWidths[1] = 200 * Screen->PixelsPerInch / 96;
 	DG1->ColWidths[3] = 75 * Screen->PixelsPerInch / 96;
 }

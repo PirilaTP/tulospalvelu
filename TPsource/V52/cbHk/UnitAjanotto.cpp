@@ -312,7 +312,7 @@ void __fastcall TFormAjanotto::naytaRivi(int grid, int r, int rw, int jono)
 			Cells[grid][r][cEro].text = L"";
 			}
 		if (kilp.tark(k_pv) == L'B')
-			Cells[grid][r][cTrk].text = L"Hav";
+			Cells[grid][r][cTrk].text = TR(L"Hav");
 		else
 			Cells[grid][r][cTrk].text = (kilp.tark(k_pv) != L'-') ? UnicodeString(kilp.tark(k_pv)) : UnicodeString(L"");
 		}
@@ -404,17 +404,17 @@ void __fastcall TFormAjanotto::naytaAjat1(void)
 		if (Cells[0] != NULL)
 			delete[] Cells[0];
 		Cells[0] = new rowTp[CellRows[0]];
-		Cells[0][0][cRivi].text = L"Rivi";
-		Cells[0][0][cAika].text = L"Aika";
-		Cells[0][0][cBdg].text = L"Badge";
-		Cells[0][0][cKno].text = L"Kilpno";
-		Cells[0][0][cPst].text = L"Pst";
-		Cells[0][0][cNimi].text = L"Nimi";
-		Cells[0][0][cSra].text = L"Seura";
-		Cells[0][0][cSrj].text = L"Sarja";
-		Cells[0][0][cTls].text = L"Tulos";
-		Cells[0][0][cEro].text = L"Ero";
-		Cells[0][0][cTrk].text = L"Trk";
+		Cells[0][0][cRivi].text = TR(L"Rivi");
+		Cells[0][0][cAika].text = TR(L"Aika");
+		Cells[0][0][cBdg].text = TR(L"Badge");
+		Cells[0][0][cKno].text = TR(L"Kilpno");
+		Cells[0][0][cPst].text = TR(L"Pst");
+		Cells[0][0][cNimi].text = TR(L"Nimi");
+		Cells[0][0][cSra].text = TR(L"Seura");
+		Cells[0][0][cSrj].text = TR(L"Sarja");
+		Cells[0][0][cTls].text = TR(L"Tulos");
+		Cells[0][0][cEro].text = TR(L"Ero");
+		Cells[0][0][cTrk].text = TR(L"Trk");
 		}
 	for (r = 1; r < DGajat1->RowCount; r++) {
 		naytaRivi(0, r, r-1, IkkParam.Jono);

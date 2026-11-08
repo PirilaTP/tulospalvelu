@@ -108,12 +108,12 @@ void naytayhteydet(void)
 		YhteysGrid = FormYhteysStatus->YhteysGrid;
 	else
 		YhteysGrid = FormStatus->YhteysGrid;
-	YhteysGrid->Cells[0][0] = UnicodeString(L"Yhteys");
-	YhteysGrid->Cells[1][0] = UnicodeString(L"Kohde");
+	YhteysGrid->Cells[0][0] = UnicodeString(TR(L"Yhteys"));
+	YhteysGrid->Cells[1][0] = UnicodeString(TR(L"Kohde"));
 	YhteysGrid->Cells[2][0] = UnicodeString(L"I/O");
-	YhteysGrid->Cells[3][0] = UnicodeString(L"Tila");
-	YhteysGrid->Cells[4][0] = UnicodeString(L"Jonossa");
-	YhteysGrid->Cells[5][0] = UnicodeString(L"Lähetetty");
+	YhteysGrid->Cells[3][0] = UnicodeString(TR(L"Tila"));
+	YhteysGrid->Cells[4][0] = UnicodeString(TR(L"Jonossa"));
+	YhteysGrid->Cells[5][0] = UnicodeString(TR(L"Lähetetty"));
 	YhteysGrid->ColCount = 6;
 	YhteysGrid->RowCount = YhtLkm > 1 ? YhtLkm+1 : 2;
 	jonossa = 0;

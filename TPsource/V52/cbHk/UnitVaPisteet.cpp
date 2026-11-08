@@ -92,19 +92,19 @@ void __fastcall TFormVaPisteet::naytaTiedot(void)
 	for (int col = 2; col < VAGrid->ColCount-1; col++) {
 		Cells[0][col].text = UnicodeString(col-1)+UnicodeString(L". va");
 		}
-	Cells[0][0].text = UnicodeString(L"Sarja");
-	Cells[0][1].text = UnicodeString(L"Tieto");
-	Cells[0][VAGrid->ColCount-1].text = UnicodeString(L"Maali");
+	Cells[0][0].text = UnicodeString(TR(L"Sarja"));
+	Cells[0][1].text = UnicodeString(TR(L"Tieto"));
+	Cells[0][VAGrid->ColCount-1].text = UnicodeString(TR(L"Maali"));
 	for (int srj = 0; srj < sarjaluku; srj++) {
 		Cells[NLaji*srj + 1][0].text = UnicodeString(Sarjat[srj].sarjanimi);
-		Cells[NLaji*srj + 1][1].text = UnicodeString(L"Sijainti");
-		Cells[NLaji*srj + 2][1].text = UnicodeString(L"Aikaraja");
+		Cells[NLaji*srj + 1][1].text = UnicodeString(TR(L"Sijainti"));
+		Cells[NLaji*srj + 2][1].text = UnicodeString(TR(L"Aikaraja"));
 		if (wcswcind(kilpparam.kilplaji, L"AB") >= 0)
-			Cells[NLaji*srj + 3][1].text = UnicodeString(L"Sakkoja");
+			Cells[NLaji*srj + 3][1].text = UnicodeString(TR(L"Sakkoja"));
 		else
-			Cells[NLaji*srj + 3][1].text = UnicodeString(L"Rastikoodi");
-		Cells[NLaji*srj + 4][1].text = UnicodeString(L"Julkisuus");
-		Cells[NLaji*srj + 5][1].text = UnicodeString(L"Kaava");
+			Cells[NLaji*srj + 3][1].text = UnicodeString(TR(L"Rastikoodi"));
+		Cells[NLaji*srj + 4][1].text = UnicodeString(TR(L"Julkisuus"));
+		Cells[NLaji*srj + 5][1].text = UnicodeString(TR(L"Kaava"));
 		}
 	for (int srj = 0; srj < sarjaluku; srj++) {
 		for (int iva = 0; iva < kilpparam.valuku; iva++) {
@@ -115,13 +115,13 @@ void __fastcall TFormVaPisteet::naytaTiedot(void)
 			else
 				Cells[NLaji*srj + 3][iva + 2].text = UnicodeString(Sarjat[srj].va_koodi[ipv][iva]);
 			if (Sarjat[srj].va_piilota[ipv][iva] == 0)
-				Cells[NLaji*srj + 4][iva + 2].text = L"Piilota";
+				Cells[NLaji*srj + 4][iva + 2].text = TR(L"Piilota");
 			else if (Sarjat[srj].va_piilota[ipv][iva] >= 9)
-				Cells[NLaji*srj + 4][iva + 2].text = L"Julkinen";
+				Cells[NLaji*srj + 4][iva + 2].text = TR(L"Julkinen");
 			else
-				Cells[NLaji*srj + 4][iva + 2].text = UnicodeString(L"Taso")+Sarjat[srj].va_piilota[ipv][iva];
+				Cells[NLaji*srj + 4][iva + 2].text = UnicodeString(TR(L"Taso"))+Sarjat[srj].va_piilota[ipv][iva];
 			if (Sarjat[srj].kaava[ipv][iva+1].on)
-				Cells[NLaji*srj + 5][iva + 2].text = L"Kaava";
+				Cells[NLaji*srj + 5][iva + 2].text = TR(L"Kaava");
 			else
 				Cells[NLaji*srj + 5][iva + 2].text = L" ";
 			}
@@ -227,14 +227,14 @@ int __fastcall TFormVaPisteet::paivitaMuutos(int col, int row)
 					if (ch == L'T')
 						ch = Cells[CRow][col].text.c_str()[Cells[CRow][col].text.Length()-1];
 					if (ch > L'0' && ch <= L'9')
-						Cells[CRow][col].text = L"Taso"+UnicodeString(ch);
+						Cells[CRow][col].text = TR(L"Taso")+UnicodeString(ch);
 					else
-						Cells[CRow][col].text = ((ch == L'P') ? L"Piilota" : L"Julkinen");
+						Cells[CRow][col].text = ((ch == L'P') ? TR(L"Piilota") : TR(L"Julkinen"));
 					break;
 				case 4:
 					editKaava((row-1)/NNaytaLaji, CBPaiva->ItemIndex, col-1);
 					if (Sarjat[(row-1)/NNaytaLaji].kaava[CBPaiva->ItemIndex][col-1].on)
-						Cells[row][col].text = L"Kaava";
+						Cells[row][col].text = TR(L"Kaava");
 					break;
 				}
 			}
@@ -761,7 +761,7 @@ void __fastcall TFormVaPisteet::Poistasolunvliaika1Click(TObject *Sender)
 		Cells[CRow][VAGrid->Col].text = L"";
 		Cells[CRow+1][VAGrid->Col].text = L"00.00.00";
 		Cells[CRow+2][VAGrid->Col].text = L"0";
-		Cells[CRow+3][VAGrid->Col].text = L"Piilota";
+		Cells[CRow+3][VAGrid->Col].text = TR(L"Piilota");
 		Cells[CRow+4][VAGrid->Col].text = L"";
 		VAGrid->Refresh();
 		}

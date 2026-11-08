@@ -171,8 +171,9 @@ void lisaaKielivalikko(TMenuItem *Valikko)
 		return;
 	Valitsin = new TKieliValitsin(Valikko);
 	Ylin = new TMenuItem(Valikko);
-	// Nimi kaikilla kielillä, jotta valikon löytää vieraallakin kielellä
-	Ylin->Caption = L"Kieli / Språk / Language";
+	// Nimi kaikilla kielillä, jotta valikon löytää vieraallakin kielellä (ei käännetä)
+	static const wchar_t *monikielinen = L"Kieli / Språk / Language";
+	Ylin->Caption = monikielinen;
 	Valikko->Add(Ylin);
 	for (int i = 0; i < KIELILKM; i++) {
 		TMenuItem *MI = new TMenuItem(Ylin);

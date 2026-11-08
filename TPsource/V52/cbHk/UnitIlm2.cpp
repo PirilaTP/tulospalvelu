@@ -36,30 +36,30 @@ int vakbiblisa = 6000;
 //---------------------------------------------------------------------------
 
 ColTp IlmGridCols0[] = {
-	{L"KilpNo", 40, 0, 1, 0, true},
-	{L"Sarja", 60, 0, 1, 0, true},
-	{L"Id-no", 40, 0, 1, 0, true},
-	{L"Sukunimi", 80, 0, 1, 0, true},
-	{L"Etunimi", 80, 0, 1, 0, true},
-	{L"Arvo", 50, 0, 1, 0, false},
-	{L"Seura", 100, 0, 1, 0, true},
-	{L"Seuralyh", 50, 0, 1, 0, true},
-	{L"Yhdistys", 50, 0, 1, 0, false},
-	{L"Joukkue", 50, 0, 1, 0, false},
-	{L"Maa", 30, 0, 1, 0, true},
-	{L"Piiri", 40, 0, 1, 0, false},
-	{L"WRkoodi", 50, 0, 1, 0, false},
-	{L"Ilm.lista", 50, 0, 1, 0, false},
-	{L"Arv.ryhmä", 50, 0, 1, 0, false},
-	{L"RintaNo", 50, 0, N_PV, 0, false},
-	{L"Badge", 45, 0, N_PV, 0, true},
-	{L"Laina", 30, 0, N_PV, 0, false},
-	{L"Tas.", 40, 0, N_PV, 0, false},
-	{L"Läsnä", 35, 0, N_PV, 0, true},
-	{L"Lähtö", 50, 0, N_PV, 0, true},
-	{L"Tulos", 50, 0, N_PV, 0, false},
-	{L"A-sakot", 50, 0, N_PV, 0, false},
-	{L"Teksti", 80, 0, N_PV, 0, false}
+	{N_(L"KilpNo"), 40, 0, 1, 0, true},
+	{N_(L"Sarja"), 60, 0, 1, 0, true},
+	{N_(L"Id-no"), 40, 0, 1, 0, true},
+	{N_(L"Sukunimi"), 80, 0, 1, 0, true},
+	{N_(L"Etunimi"), 80, 0, 1, 0, true},
+	{N_(L"Arvo"), 50, 0, 1, 0, false},
+	{N_(L"Seura"), 100, 0, 1, 0, true},
+	{N_(L"Seuralyh"), 50, 0, 1, 0, true},
+	{N_(L"Yhdistys"), 50, 0, 1, 0, false},
+	{N_(L"Joukkue"), 50, 0, 1, 0, false},
+	{N_(L"Maa"), 30, 0, 1, 0, true},
+	{N_(L"Piiri"), 40, 0, 1, 0, false},
+	{N_(L"WRkoodi"), 50, 0, 1, 0, false},
+	{N_(L"Ilm.lista"), 50, 0, 1, 0, false},
+	{N_(L"Arv.ryhmä"), 50, 0, 1, 0, false},
+	{N_(L"RintaNo"), 50, 0, N_PV, 0, false},
+	{N_(L"Badge"), 45, 0, N_PV, 0, true},
+	{N_(L"Laina"), 30, 0, N_PV, 0, false},
+	{N_(L"Tas."), 40, 0, N_PV, 0, false},
+	{N_(L"Läsnä"), 35, 0, N_PV, 0, true},
+	{N_(L"Lähtö"), 50, 0, N_PV, 0, true},
+	{N_(L"Tulos"), 50, 0, N_PV, 0, false},
+	{N_(L"A-sakot"), 50, 0, N_PV, 0, false},
+	{N_(L"Teksti"), 80, 0, N_PV, 0, false}
 };
 
 ColTp IlmGridCols[sizeof(IlmGridCols0)/sizeof(ColTp)];
@@ -547,7 +547,7 @@ void __fastcall TFormIlm2::naytaTiedot(int kno)
 			IlmGridCols[i].Order = n;
 			IlmGridCols[i].Count = nlisa;
 			for (int ipv = 0; ipv < nlisa; ipv++) {
-				IlmGrid->Cells[n+ipv][0] = UnicodeString(IlmGridCols[i].Caption);
+				IlmGrid->Cells[n+ipv][0] = UnicodeString(TR(IlmGridCols[i].Caption));
 				IlmGrid->ColWidths[n+ipv] = IlmGridCols[i].Width * Screen->PixelsPerInch / 96;
 				}
 			n += nlisa;
@@ -669,31 +669,31 @@ void __fastcall TFormIlm2::naytaTiedot(int kno)
 							ColPv[col+ipv] = ipv;
 							switch (Kilp.tark(epv+ipv)) {
 								case L'K' :
-									wcscpy(line, TR(L"Kesk"));
+									wcscpy(line, L"Kesk");
 									break;
 								case L'O' :
-									wcscpy(line, TR(L"Ohit"));
+									wcscpy(line, L"Ohit");
 									break;
 								case L'H' :
-									wcscpy(line, TR(L"Hyl"));
+									wcscpy(line, L"Hyl");
 									break;
 								case L'E' :
-									wcscpy(line, TR(L"Eiläht."));
+									wcscpy(line, L"Eiläht.");
 									break;
 								case L'T' :
-									wcscpy(line, TR(L"Tark."));
+									wcscpy(line, L"Tark.");
 									break;
 								case L'I' :
 									wcscpy(line, L"esItys");
 									break;
 								case L'V' :
-									wcscpy(line, TR(L"Vakantti"));
+									wcscpy(line, L"Vakantti");
 									break;
 								case L'P' :
-									wcscpy(line, TR(L"Poissa"));
+									wcscpy(line, L"Poissa");
 									break;
 								default :
-									wcscpy(line, TR(L"Läsnä"));
+									wcscpy(line, L"Läsnä");
 									break;
 								}
 							IlmGrid->Cells[col+ipv][k] = UnicodeString(line);
@@ -879,7 +879,7 @@ int __fastcall TFormIlm2::tallennaTiedot(void)
 		if (errrivi) {
 			LeaveCriticalSection(&tall_CriticalSection);
 			Application->MessageBox((UnicodeString(TR(L"Virhe kilpailijan ")) + UnicodeString(errrivi)
-				+ UnicodeString(TR(L" tiedoissa. Loppuja ei tallennettu."))).c_str(), TR(L"Virhe"), MB_OK);
+				+ UnicodeString(TR(L" tiedoissa. Loppuja ei tallennettu."))).c_str(), L"Virhe", MB_OK);
 			EnterCriticalSection(&tall_CriticalSection);
 			break;
 			}
@@ -1009,31 +1009,31 @@ int __fastcall TFormIlm2::paivitaMuutos(int col, int row)
 					}
 				switch (kh) {
 					case L'K' :
-						wcscpy(line, TR(L"Kesk"));
+						wcscpy(line, L"Kesk");
 						break;
 					case L'O' :
-						wcscpy(line, TR(L"Ohit"));
+						wcscpy(line, L"Ohit");
 						break;
 					case L'H' :
-						wcscpy(line, TR(L"Hyl"));
+						wcscpy(line, L"Hyl");
 						break;
 					case L'E' :
-						wcscpy(line, TR(L"Eiläht."));
+						wcscpy(line, L"Eiläht.");
 						break;
 					case L'T' :
-						wcscpy(line, TR(L"Tark."));
+						wcscpy(line, L"Tark.");
 						break;
 					case L'I' :
 						wcscpy(line, L"esItys");
 						break;
 					case L'V' :
-						wcscpy(line, TR(L"Vakantti"));
+						wcscpy(line, L"Vakantti");
 						break;
 					case L'P' :
-						wcscpy(line, TR(L"Poissa"));
+						wcscpy(line, L"Poissa");
 						break;
 					default :
-						wcscpy(line, TR(L"Läsnä"));
+						wcscpy(line, L"Läsnä");
 						break;
 					}
 				IlmGrid->Cells[col+ipv][k] = UnicodeString(line);
@@ -1519,12 +1519,12 @@ void __fastcall TFormIlm2::tallennaKilpailija(bool kysy)
 	int d, kilpno, bdg;
 
 	if (RGLisays->ItemIndex == 0 && (Dk <= 0 || Dk >= nrec)) {
-		Application->MessageBoxW(TR(L"Kilpailijaa ei voi lisätä muokkausmoodissa"), TR(L"Virhe"), MB_OK);
+		Application->MessageBoxW(TR(L"Kilpailijaa ei voi lisätä muokkausmoodissa"), L"Virhe", MB_OK);
 		return;
 		}
 	kilpno = _wtoi(EId->Text.c_str());
 	if (CSarja->ItemIndex < 0) {
-		Application->MessageBox(TR(L"Sarja puuttuu"), TR(L"Virhe"),	MB_OK);
+		Application->MessageBox(TR(L"Sarja puuttuu"), L"Virhe",	MB_OK);
 		return;
 		}
 	if (RGLisays->ItemIndex == 1) {
@@ -1533,11 +1533,11 @@ void __fastcall TFormIlm2::tallennaKilpailija(bool kysy)
 		kilpno = haeseurvapaa(kilpno);
 		}
 	if (kilpno < minkilpno || kilpno > maxkilpno) {
-		Application->MessageBox(TR(L"Kilpailunumero virheellinen"), TR(L"Virhe"), MB_OK);
+		Application->MessageBox(TR(L"Kilpailunumero virheellinen"), L"Virhe", MB_OK);
 		return;
 		}
 	if ((d = getpos(kilpno)) > 0 && d != Dk && d != DVKilp) {
-		Application->MessageBox(TR(L"Kilpailunumero varattu"), TR(L"Virhe"), MB_OK);
+		Application->MessageBox(TR(L"Kilpailunumero varattu"), L"Virhe", MB_OK);
 		return;
 		}
 	if (ilmkentat > 1 && CBNimiHThaku->Checked) {

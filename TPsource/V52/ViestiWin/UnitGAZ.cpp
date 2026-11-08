@@ -178,7 +178,7 @@ void TFormGAZ::PaivitaYhteydet(void)
 		SGTaulut->Cells[1][y+1] = L"GAZ";
 		SGTaulut->Cells[2][y+1] = L"COM";
 		SGTaulut->Cells[3][y+1] = taulu_com;
-		SGTaulut->Cells[10][y+1] = (GAZavoin ? L"On" : L"Ei");
+		SGTaulut->Cells[10][y+1] = (GAZavoin ? TR(L"On") : TR(L"Ei"));
 		y++;
 		}
 	for (int ny = 0; ny < NREGNLY; ny++) {
@@ -216,7 +216,7 @@ void TFormGAZ::PaivitaYhteydet(void)
 					SGTaulut->Cells[5][y+1] = ipparam[cn_regnly[ny]].destport;
 					break;
 				}
-			SGTaulut->Cells[10][y+1] = (regnly_open[ny] ? L"On" : L"Ei");
+			SGTaulut->Cells[10][y+1] = (regnly_open[ny] ? TR(L"On") : TR(L"Ei"));
 			y++;
 			}
 		}

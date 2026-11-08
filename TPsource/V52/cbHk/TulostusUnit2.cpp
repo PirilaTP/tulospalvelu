@@ -1161,7 +1161,7 @@ void __fastcall TTulosteForm::CBTiedLajiChange(TObject *Sender)
 	CBxmlStand->Enabled = wcswcind(tiedtyyppi[CBTiedLaji->ItemIndex], L"X") >= 0;
 	Label8->Visible = CBErotin->Visible || CBxmlStand->Visible;
 	CBvaadiKvId->Visible = wcswcind(tiedtyyppi[CBTiedLaji->ItemIndex], L"X") >= 0;
-	Label8->Caption = CBErotin->Visible ? UnicodeString(L"Kenttäerotin") : UnicodeString(L"XML-standardi");
+	Label8->Caption = CBErotin->Visible ? UnicodeString(TR(L"Kenttäerotin")) : UnicodeString(L"XML-standardi");
 	CBMerkisto->Enabled = wcswcind(tiedtyyppi[CBTiedLaji->ItemIndex], L"RIEHMX") >= 0 &&
 		CBTiedLaji->ItemIndex != 9;
 	GBhtml->Visible = wcswcind(tiedtyyppi[CBTiedLaji->ItemIndex], L"IHM") >= 0;
@@ -1267,7 +1267,7 @@ void __fastcall TTulosteForm::PaivitaTulossivu(TObject *Sender)
 				RGJkTls->Visible = true;
 				if (RGJkTls->ItemIndex == 1)
 					CBJkPstJrj->Visible = true;
-				Label15->Caption = (RGJkTls->ItemIndex != 3 ? L"Joukkueen koko" : L"Max. sijoitus");
+				Label15->Caption = (RGJkTls->ItemIndex != 3 ? TR(L"Joukkueen koko") : TR(L"Max. sijoitus"));
 				CBVaadiJoukkue->Visible =  RGJkTls->ItemIndex != 3;
 				CBSeuraJoukkueena->Visible = CBVaadiJoukkue->Visible;
 				CBVoittLisa->Visible = !CBVaadiJoukkue->Visible;

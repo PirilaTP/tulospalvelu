@@ -56,15 +56,15 @@ void __fastcall TFormYhtveto::LaadiYhtveto(void)
 
    YvGrid->RowCount = 1;
    YvGrid->ColCount = 9;
-   YvGrid->Cells[0][0] = AnsiString("Rivi");
-   YvGrid->Cells[1][0] = AnsiString("R-väli");
-   YvGrid->Cells[2][0] = AnsiString("Sarja");
-   YvGrid->Cells[3][0] = AnsiString("Osuus");
-   YvGrid->Cells[4][0] = AnsiString("Lukum.");
-   YvGrid->Cells[5][0] = AnsiString("Vert.aika");
-   YvGrid->Cells[6][0] = AnsiString("Keskim.");
-   YvGrid->Cells[7][0] = AnsiString("Paras");
-   YvGrid->Cells[8][0] = AnsiString("Joukkue");
+   YvGrid->Cells[0][0] = AnsiString(TRA("Rivi"));
+   YvGrid->Cells[1][0] = AnsiString(TRA("R-väli"));
+   YvGrid->Cells[2][0] = AnsiString(TRA("Sarja"));
+   YvGrid->Cells[3][0] = AnsiString(TRA("Osuus"));
+   YvGrid->Cells[4][0] = AnsiString(TRA("Lukum."));
+   YvGrid->Cells[5][0] = AnsiString(TRA("Vert.aika"));
+   YvGrid->Cells[6][0] = AnsiString(TRA("Keskim."));
+   YvGrid->Cells[7][0] = AnsiString(TRA("Paras"));
+   YvGrid->Cells[8][0] = AnsiString(TRA("Joukkue"));
    for (int rv = 0; rv < rvluku; rv++) {
       for (int srj = 0; srj < sarjaluku; srj++) {
 		 for (int os = 0; os < Sarjat[srj].ntosuus; os++) {

@@ -861,7 +861,7 @@ void __fastcall TTulosteForm::CBTiedLajiChange(TObject *Sender)
 	CBErotin->Visible = (tiedtyyppi[CBTiedLaji->ItemIndex] == L'R');
 	CBxmlStand->Visible = (tiedtyyppi[CBTiedLaji->ItemIndex] == L'X');
 	Label8->Visible = CBErotin->Visible || CBxmlStand->Visible;
-	Label8->Caption = CBErotin->Visible ? UnicodeString(L"Kenttäerotin") : UnicodeString(L"XML-standardi");
+	Label8->Caption = CBErotin->Visible ? UnicodeString(TR(L"Kenttäerotin")) : UnicodeString(L"XML-standardi");
 	CBMerkisto->Enabled = wcswcind(tiedtyyppi[CBTiedLaji->ItemIndex], L"RIEHX") >= 0;
 	GBhtml->Visible = (tiedtyyppi[CBTiedLaji->ItemIndex] == L'H');
 	PisteVal->Visible = wcswcind(tiedtyyppi[CBTiedLaji->ItemIndex], L"X") < 0;

@@ -205,11 +205,11 @@ void __fastcall TFormLahestyjat::FormResize(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TFormLahestyjat::FormShow(TObject *Sender)
 {
-	Cells[0][0].text = L"Ed. pisteestä";
-	Cells[0][1].text = L"Järj.";
-	Cells[0][2].text = L"KilpNo";
-	Cells[0][3].text = L"Joukkue";
-	Cells[0][4].text = L"Nimi";
+	Cells[0][0].text = TR(L"Ed. pisteestä");
+	Cells[0][1].text = TR(L"Järj.");
+	Cells[0][2].text = TR(L"KilpNo");
+	Cells[0][3].text = TR(L"Joukkue");
+	Cells[0][4].text = TR(L"Nimi");
 	FormResize(Sender);
 	CBSarja->Clear();
 	CBSarja->ItemIndex = -1;

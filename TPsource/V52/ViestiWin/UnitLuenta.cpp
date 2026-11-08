@@ -148,7 +148,7 @@ int __fastcall TFormLuenta::NaytaJoukkue(void)
 	DG1->FixedRows = 0;
 	for (int os = 0; os < Sarjat[Kilp.sarja].osuusluku; os++) {
 		style = 0;
-		Cells[0][os+1].text = UnicodeString("Osuus ") + wosuuskoodi(Kilp.sarja, os, 0, 0);
+		Cells[0][os+1].text = UnicodeString(TRA("Osuus ")) + wosuuskoodi(Kilp.sarja, os, 0, 0);
 		Cells[1][os+1].text = Kilp.Nimi(st, kilpparam.lnimi, os, -1);
 		Cells[2][os+1].text = Kilp.ostiet[os].badge[RGkoodi->ItemIndex];
 		Cells[3][os+1].text = aikatowstr_cols_n(st, Kilp.Maali(os, 0), t0, 0, 8);
@@ -314,11 +314,11 @@ void __fastcall TFormLuenta::FormCreate(TObject *Sender)
 {
 	wchar_t flname[] = L"luentaloki.txt";
 
-	Cells[0][0].text = L"Osuus";
-	Cells[1][0].text = L"Nimi";
-	Cells[2][0].text = L"Badge";
-	Cells[3][0].text = L"Maali";
-	Cells[4][0].text = L"Tark";
+	Cells[0][0].text = TR(L"Osuus");
+	Cells[1][0].text = TR(L"Nimi");
+	Cells[2][0].text = TR(L"Badge");
+	Cells[3][0].text = TR(L"Maali");
+	Cells[4][0].text = TR(L"Tark");
 	DG1->ColWidths[1] = 160 * Screen->PixelsPerInch / 96;
 	DG1->ColWidths[3] = 70 * Screen->PixelsPerInch / 96;
 	SG1->Cells[0][0] = TR(L"Badge");

@@ -28,17 +28,17 @@
 TFormAikavert *FormAikavertailut[NAJANOTOT];
 
 ColTp VertGridCols0[MAXAVCOL] = {
-	{L"Rivi", 35, 1, 1, 0, true},
-	{L"Aika", 70, 0, 1, 0, true},
-	{L"KilpNo", 35, 1, 1, 0, true},
-	{L"Osuus", 35, 2, 1, 0, true},
-	{L"Piste", 35, 2, 1, 0, true},
-	{L"Joukkue", 90, 0, 1, 0, true},
-	{L"Sarja", 60, 0, 1, 0, false},
-	{L"Tulos", 70, 0, 1, 0, true},
-	{L"Ero", 50, 1, 1, 0, false},
-	{L"Tark", 35, 2, 1, 0, false},
-	{L"Jonoero", 55, 1, 1, 0, false}
+	{N_(L"Rivi"), 35, 1, 1, 0, true},
+	{N_(L"Aika"), 70, 0, 1, 0, true},
+	{N_(L"KilpNo"), 35, 1, 1, 0, true},
+	{N_(L"Osuus"), 35, 2, 1, 0, true},
+	{N_(L"Piste"), 35, 2, 1, 0, true},
+	{N_(L"Joukkue"), 90, 0, 1, 0, true},
+	{N_(L"Sarja"), 60, 0, 1, 0, false},
+	{N_(L"Tulos"), 70, 0, 1, 0, true},
+	{N_(L"Ero"), 50, 1, 1, 0, false},
+	{N_(L"Tark"), 35, 2, 1, 0, false},
+	{N_(L"Jonoero"), 55, 1, 1, 0, false}
 };
 
 //---------------------------------------------------------------------------
@@ -343,7 +343,7 @@ void __fastcall TFormAikavert::SarakeLeveydet(void)
 				if (DGajat[grid]->ColCount < ncol + 1)
 					DGajat[grid]->ColCount = ncol + 1;
 				DGajat[grid]->ColWidths[ncol] = IkkParam.FontSize * IkkParam.ColW[c+grid*MAXAVCOL] * Screen->PixelsPerInch / 768;
-				Cells[grid][ncol][0].text = VertGridCols[grid][c].Caption;
+				Cells[grid][ncol][0].text = TR(VertGridCols[grid][c].Caption);
 				wdt += DGajat[grid]->ColWidths[ncol]+2;
 				ncol++;
 				}

@@ -31,31 +31,31 @@ TFormKilpailijaOnline *FormKilpailijaOnline;
 tietolinkkitp *HenkLinkki;
 
 ColTp PvOlGridCols0[] = {
-	{L"Päivä", 40, 0, 1, 0, true},
-	{L"Bib", 40, 0, 1, 0, false},
-	{L"Badge", 40, 0, 1, 0, false},
-	{L"Lähtö-arv", 70, 0, 1, 0, true},
-	{L"Lähtö-tot", 70, 0, 1, 0, false},
-	{L"Maali", 70, 0, 1, 0, true},
-	{L"Tulos", 70, 0, 1, 0, true},
-	{L"Tark", 40, 0, 1, 0, true},
-	{L"Amp.sakot", 60, 0, 1, 0, false},
-	{L"Sakko", 40, 0, 1, 0, false},
-	{L"Sija", 40, 0, 1, 0, true},
-	{L"Ennätys", 60, 0, 1, 0, false},
-	{L"Tavoite", 60, 0, 1, 0, false},
-	{L"Yht.tls.", 70, 0, 1, 0, false},
-	{L"Y-sija", 40, 0, 1, 0, false}
+	{N_(L"Päivä"), 40, 0, 1, 0, true},
+	{N_(L"Bib"), 40, 0, 1, 0, false},
+	{N_(L"Badge"), 40, 0, 1, 0, false},
+	{N_(L"Lähtö-arv"), 70, 0, 1, 0, true},
+	{N_(L"Lähtö-tot"), 70, 0, 1, 0, false},
+	{N_(L"Maali"), 70, 0, 1, 0, true},
+	{N_(L"Tulos"), 70, 0, 1, 0, true},
+	{N_(L"Tark"), 40, 0, 1, 0, true},
+	{N_(L"Amp.sakot"), 60, 0, 1, 0, false},
+	{N_(L"Sakko"), 40, 0, 1, 0, false},
+	{N_(L"Sija"), 40, 0, 1, 0, true},
+	{N_(L"Ennätys"), 60, 0, 1, 0, false},
+	{N_(L"Tavoite"), 60, 0, 1, 0, false},
+	{N_(L"Yht.tls."), 70, 0, 1, 0, false},
+	{N_(L"Y-sija"), 40, 0, 1, 0, false}
 };
 
 ColTp VaGridCols0[] = {
-	{L"Piste", 40, 0, 1, 0, true},
-	{L"Matka", 60, 0, 1, 0, false},
-	{L"Aika", 80, 0, 1, 0, true},
-	{L"Sija", 40, 0, 1, 0, true},
-	{L"Edellisestä", 80, 0, 1, 0, true},
-	{L"Yht.aika", 80, 0, 1, 0, false}
-//	{L"Y-sija", 40, 0, 1, 0, false}
+	{N_(L"Piste"), 40, 0, 1, 0, true},
+	{N_(L"Matka"), 60, 0, 1, 0, false},
+	{N_(L"Aika"), 80, 0, 1, 0, true},
+	{N_(L"Sija"), 40, 0, 1, 0, true},
+	{N_(L"Edellisestä"), 80, 0, 1, 0, true},
+	{N_(L"Yht.aika"), 80, 0, 1, 0, false}
+//	{N_(L"Y-sija"), 40, 0, 1, 0, false}
 };
 
 //---------------------------------------------------------------------------
@@ -176,7 +176,7 @@ void __fastcall TFormKilpailijaOnline::naytaTiedot(void)
 			if (PvGridCols[i].Visible) {
 				if (n >= PvGrid->ColCount)
 					PvGrid->ColCount = n+1;
-				PvGrid->Cells[n][0] = UnicodeString(PvGridCols[i].Caption);
+				PvGrid->Cells[n][0] = UnicodeString(TR(PvGridCols[i].Caption));
 				PvGrid->ColWidths[n] = PvGridCols[i].Width * Screen->PixelsPerInch / 96;
 				PvGridWidth += PvGrid->ColWidths[n] + 2;
 				PvGridCols[i].Order = n;
@@ -252,31 +252,31 @@ void __fastcall TFormKilpailijaOnline::naytaTiedot(void)
 						case 7:
 							switch (Kilp.tark(pv)) {
 								case L'K' :
-									wcscpy(line, TR(L"Kesk"));
+									wcscpy(line, L"Kesk");
 									break;
 								case L'M' :
-									wcscpy(line, TR(L"Virhe"));
+									wcscpy(line, L"Virhe");
 									break;
 								case L'O' :
-									wcscpy(line, TR(L"Ohit"));
+									wcscpy(line, L"Ohit");
 									break;
 								case L'H' :
-									wcscpy(line, TR(L"Hyl"));
+									wcscpy(line, L"Hyl");
 									break;
 								case L'E' :
-									wcscpy(line, TR(L"Eiläht."));
+									wcscpy(line, L"Eiläht.");
 									break;
 								case L'B' :
-									wcscpy(line, TR(L"Havaittu"));
+									wcscpy(line, L"Havaittu");
 									break;
 								case L'X' :
-									wcscpy(line, TR(L"EiAikaa"));
+									wcscpy(line, L"EiAikaa");
 									break;
 								case L'V' :
-									wcscpy(line, TR(L"Vakantti"));
+									wcscpy(line, L"Vakantti");
 									break;
 								case L'T' :
-									wcscpy(line, TR(L"Tark."));
+									wcscpy(line, L"Tark.");
 									break;
 								case L'I' :
 									wcscpy(line, L"esItys");
@@ -361,7 +361,7 @@ void __fastcall TFormKilpailijaOnline::naytaTiedot(void)
 			if (VaGridCols[i].Visible) {
 				if (n >= VaGrid->ColCount)
 					VaGrid->ColCount = n+1;
-				VaGrid->Cells[n][0] = UnicodeString(VaGridCols[i].Caption);
+				VaGrid->Cells[n][0] = UnicodeString(TR(VaGridCols[i].Caption));
 				VaGrid->ColWidths[n] = VaGridCols[i].Width * Screen->PixelsPerInch / 96;
 				VaGridCols[i].Order = n;
 				n++;
@@ -572,7 +572,7 @@ int __fastcall TFormKilpailijaOnline::tallennaTiedot(void)
    Kilp1 = Kilp;
 	Kilp1.setId(_wtoi(EdtKilpno->Text.c_str()));
 	if (Kilp1.id() != Kilp.id() && getpos(Kilp1.id()) > 0) {
-	  Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä"), TR(L"Virhe"),
+	  Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä"), L"Virhe",
 	  MB_OK);
 	  return(1);
 	}
@@ -812,7 +812,7 @@ void __fastcall TFormKilpailijaOnline::BtnSalliClick(TObject *Sender)
 	EdBtn->Enabled = false;
 	PvGrid->Options << goEditing;
 	VaGrid->Options << goEditing;
-	Tila->Caption = UnicodeString(L"Muokkaustila");
+	Tila->Caption = UnicodeString(TR(L"Muokkaustila"));
 }
 //---------------------------------------------------------------------------
 
@@ -832,7 +832,7 @@ void __fastcall TFormKilpailijaOnline::BtnPeruutaClick(TObject *Sender)
 	PvGrid->Options >> goEditing;
 	VaGrid->Options >> goEditing;
 	naytaTiedot();
-	Tila->Caption = UnicodeString(L"Haku- ja katselutila");
+	Tila->Caption = UnicodeString(TR(L"Haku- ja katselutila"));
 }
 //---------------------------------------------------------------------------
 
@@ -1077,7 +1077,7 @@ void __fastcall TFormKilpailijaOnline::naytaSeuranta(void)
 		}
 	else {
 		alkuVa = Va;
-		Cells[2][0].text = UnicodeString(L"Tulos");
+		Cells[2][0].text = UnicodeString(TR(L"Tulos"));
 		}
 	Va1 = Va;
 	if (Va == kilpparam.valuku+1) {
@@ -1281,10 +1281,10 @@ void __fastcall TFormKilpailijaOnline::FormShow(TObject *Sender)
 	SeurGrid->ColWidths[3] = 60 * Screen->PixelsPerInch/96;
 	SeurGridWidth = 304 * Screen->PixelsPerInch/96;
 	SeurGrid->Width = SeurGridWidth;
-	Cells[0][0].text = UnicodeString(L"Sija");
-	Cells[1][0].text = UnicodeString(L"Nimi");
-	Cells[2][0].text = UnicodeString(L"Aika");
-	Cells[3][0].text = UnicodeString(L"Ero");
+	Cells[0][0].text = UnicodeString(TR(L"Sija"));
+	Cells[1][0].text = UnicodeString(TR(L"Nimi"));
+	Cells[2][0].text = UnicodeString(TR(L"Aika"));
+	Cells[3][0].text = UnicodeString(TR(L"Ero"));
 	for (int p = 0; p < kilpparam.valuku; p++)
 		CBSeurPiste->Items->Add(UnicodeString(p+1)+UnicodeString(TR(L". väliaika")));
 	if (k_pv)
@@ -1409,7 +1409,7 @@ void __fastcall TFormKilpailijaOnline::BtnTietoaClick(TObject *Sender)
 				}
 			delete InFile;
 			if (!HenkLinkki) {
-				Application->MessageBoxW(TR(L"Linkkejä ei löytynyt tiedostosta"), TR(L"Virhe"), MB_OK);
+				Application->MessageBoxW(TR(L"Linkkejä ei löytynyt tiedostosta"), L"Virhe", MB_OK);
 				return;
 				}
 			}

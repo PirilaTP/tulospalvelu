@@ -59,21 +59,21 @@ static wchar_t erotin = L';';
 static kokonimi = false;
 static ColTp FileCols0[HT_FILECOLS]
  = {
-	{L"Id", 50, 1, 0, 0, true},
-	{L"Sukunimi", 80, 1, 1, 0, true},
-	{L"Etunimi", 80, 1, 2, 0, true},
-	{L"Seura", 100, 1, 3, 0, true},
-	{L"Maa", 30, 1, 4, 0, true},
-	{L"Joukkue", 55, 1, 11, 0, true},
-	{L"Sarja", 60, 1, 7, 0, true},
-	{L"Badge", 45, 1, 9, 0, true},
-	{L"Bib", 40, 1, 8, 0, false},
-	{L"Sukup.", 30, 1, 6, 0, false},
-	{L"Synt.", 30, 1, 5, 0, false},
-	{L"Ikä", 50, 1, 0, 0, false},
-	{L"OsOttoLkm", 60, 1, 0, 0, false},
-	{L"ViimOsOtto", 60, 1, 0, 0, false},
-	{L"Lisätieto", 60, 1, 0, 0, false}
+	{N_(L"Id"), 50, 1, 0, 0, true},
+	{N_(L"Sukunimi"), 80, 1, 1, 0, true},
+	{N_(L"Etunimi"), 80, 1, 2, 0, true},
+	{N_(L"Seura"), 100, 1, 3, 0, true},
+	{N_(L"Maa"), 30, 1, 4, 0, true},
+	{N_(L"Joukkue"), 55, 1, 11, 0, true},
+	{N_(L"Sarja"), 60, 1, 7, 0, true},
+	{N_(L"Badge"), 45, 1, 9, 0, true},
+	{N_(L"Bib"), 40, 1, 8, 0, false},
+	{N_(L"Sukup."), 30, 1, 6, 0, false},
+	{N_(L"Synt."), 30, 1, 5, 0, false},
+	{N_(L"Ikä"), 50, 1, 0, 0, false},
+	{N_(L"OsOttoLkm"), 60, 1, 0, 0, false},
+	{N_(L"ViimOsOtto"), 60, 1, 0, 0, false},
+	{N_(L"Lisätieto"), 60, 1, 0, 0, false}
 };
 
 #define HENKID_KILPID 	1
@@ -740,7 +740,7 @@ int __fastcall TFormTKanta::NaytaHenkilot(wchar_t *alain, wchar_t *ylain, wchar_
 				hTGrid->ColCount = n+1;
 			ColContent[n] = i;
 			hTGridCols[i].Order = n;
-			hTGrid->Cells[n][0] = UnicodeString(hTGridCols[i].Caption);
+			hTGrid->Cells[n][0] = UnicodeString(TR(hTGridCols[i].Caption));
 			hTGrid->Cells[n][1] = UnicodeString(L"");
 			hTGrid->ColWidths[n] = hTGridCols[i].Width * Screen->PixelsPerInch / 96;
 			n += 1;

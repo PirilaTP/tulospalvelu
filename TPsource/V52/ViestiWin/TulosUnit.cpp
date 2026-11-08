@@ -232,7 +232,7 @@ void __fastcall TTilanneForm::FormSetup(TObject *Sender)
 	if (kilpparam.alalaji == L'D' && IkkParam.Osuus == Sarjat[IkkParam.Sarja].osuusluku -1)
 		TulosGrid->ColCount--;
 	else
-		TulosGrid->Cells[iCol++][0] = UnicodeString((IkkParam.OsJarj ? L"Jk.sj" : L"Os.sj"));
+		TulosGrid->Cells[iCol++][0] = UnicodeString((IkkParam.OsJarj ? TR(L"Jk.sj") : TR(L"Os.sj")));
 
 	wdt = TulosGrid->Left + 24 * Screen->PixelsPerInch/96;
 	for (int cb = 0; cb < TulosGrid->ColCount; cb++) {

@@ -686,7 +686,7 @@ UI_KOKOELMAMETODIT = {'Add', 'Insert'}
 UI_MUOTOILU = {'swprintf', 'swprintf_s', '_snwprintf', 'snwprintf', 'wsprintf', 'sprintf', 'wcscpy', 'wcsncpy',
                'wcscat', 'wcsncat', 'strcpy', 'strcat', 'strncpy', 'strncat', 'wcscpy_s', 'wcscat_s'}
 # Sijoitukset ominaisuuksiin: X->Caption = L"..."
-UI_OMINAISUUDET = {'Caption', 'Hint', 'Title', 'SimpleText', 'Filter'}
+UI_OMINAISUUDET = {'Caption', 'Hint', 'Title', 'SimpleText', 'Filter', 'text'}
 # Kääreet, joiden läpi katsotaan ulompaan kutsuun
 NEUTRAALIT = {'UnicodeString', 'AnsiString', 'String', 'WideString', 'wchar_t', 'char', 'LPWSTR', 'LPCWSTR',
               'const'}
@@ -701,6 +701,13 @@ TULOSTEKUTSUT = {'putfld', 'Putfld', 'writehtml', 'put_wantitag', 'put_wtag', 'W
 VERTAILUKUTSUT = {'wcscmp', 'wcsncmp', 'wmemcmp', 'wmemcmpU', 'wcscmpU', '_wcsicmp', '_wcsnicmp', 'wcsicmp',
                   'strcmp', 'strncmp', 'memcmp', 'stricmp', '_stricmp', 'strnicmp', 'wcsstr', 'strstr', 'Pos',
                   'CompareText', 'CompareStr', 'AnsiCompareText', 'SameText'}
+
+
+# Kilpailijan tilan tekstit, jotka muokattavista taulukoista luetaan takaisin alkukirjaimen
+# perusteella (esim. switch (towupper(FirstChar(Cells[c][r])))): niitä ei saa kääntää
+TILASANAT = {'esItys', 'Tark.', 'Kesk', 'Hyl', 'Eiläht.', 'Poissa', 'Vakantti', 'Laina', 'Virhe', 'Ohit',
+             'EiAikaa', 'Avoin', 'Havaittu', 'Ohitettu', 'Läsnä', 'Avoinna'}
+TILA_LUETAAN = re.compile(r'(set_tark|\bkh\s*=|laina\[\d\]\s*=)[^;]*(FirstChar\(|c_str\(\)\[0\])')
 
 
 def on_nimike(s):
@@ -781,6 +788,7 @@ def kaari_teksti(teksti, ui_tiedosto):
         if t.laji == 'ident' and t.arvo in TULOSTEKUTSUT and syv > 0 and k + 1 < n and tok[k+1].arvo == '(':
             tulostelohkot.add(nyk)
 
+    tila_luetaan = TILA_LUETAAN.search(teksti) is not None
     muutokset = []
     ohitetut = []
     kaaritut = set()
@@ -797,6 +805,9 @@ def kaari_teksti(teksti, ui_tiedosto):
             ohitetut.append((t.rivi, 'esikääntäjä', sisalto))
             i = loppu
             continue
+        if tila_luetaan and sisalto in TILASANAT:
+            i = loppu
+            continue
         if not re.search(r'[A-Za-zÄÖÅäöå]{2}', sisalto) or tok[i].arvo.startswith(('u8', 'u"', 'U"')):
             i = loppu
             continue
@@ -806,9 +817,11 @@ def kaari_teksti(teksti, ui_tiedosto):
         # Etsi lähin nimetty kutsu neutraalien kääreiden ja ryhmittelysulkujen läpi
         s = ymparoiva[i]
         nimi = None
+        uloin = i          # uloimman neutraalin kääreen alku (esim. UnicodeString(...))
         while s is not None and tok[s].arvo == '(':
             nimi = kutsun_nimi(s)
             if nimi is None or nimi in NEUTRAALIT:
+                uloin = s - 1 if nimi is not None or (s > 0 and tok[s-1].laji == 'ident') else s
                 s = ymparoiva[s]
                 nimi = None
                 continue
@@ -831,9 +844,9 @@ def kaari_teksti(teksti, ui_tiedosto):
             pass
         if not kaari and (s is None or tok[s].arvo == '{') and ui_tiedosto is not None:
             # Sijoitus: etsi lauseen '=' samalla tasolla
-            k = i - 1
+            k = uloin - 1
             while k >= 0 and tok[k].arvo not in (';', '{', '}', '=') and \
-                    not (tok[k].laji == 'p' and tok[k].arvo in '()' and ymparoiva[k] != ymparoiva[i]):
+                    not (tok[k].laji == 'p' and tok[k].arvo in '()' and ymparoiva[k] != ymparoiva[uloin]):
                 k -= 1
             if k >= 1 and tok[k].arvo == '=' and tok[k-1].arvo not in ('=', '!', '<', '>'):
                 vasen = tok[k-1]

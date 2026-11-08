@@ -30,9 +30,9 @@ TFormSeurat *FormSeurat;
 extern TEditDialog *EditDialog;
 
 ColTp SraGridCols0[] = {
-	{L"Piiri", 40, 0, 1, 0, true},
-	{L"Maa", 40, 0, 1, 0, false},
-	{L"Nimi", 200, 0, 1, 0, true}
+	{N_(L"Piiri"), 40, 0, 1, 0, true},
+	{N_(L"Maa"), 40, 0, 1, 0, false},
+	{N_(L"Nimi"), 200, 0, 1, 0, true}
 };
 
 ColTp SraGridCols[sizeof(SraGridCols0)/sizeof(ColTp)];
@@ -210,7 +210,7 @@ int __fastcall TFormSeurat::NaytaSeurat(wchar_t *alain, wchar_t *ylain)
 			if (n+1 > SraGrid->ColCount)
 				SraGrid->ColCount = n+1;
 			SraGridCols[i].Order = n;
-			SraGrid->Cells[n][0] = UnicodeString(SraGridCols[i].Caption);
+			SraGrid->Cells[n][0] = UnicodeString(TR(SraGridCols[i].Caption));
 			SraGrid->Cells[n][1] = UnicodeString(L"");
 			SraGrid->ColWidths[n] = SraGridCols[i].Width * Screen->PixelsPerInch / 96;
 			n += 1;

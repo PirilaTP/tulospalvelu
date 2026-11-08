@@ -393,21 +393,21 @@ void __fastcall TTapForm::Skaalaa(void)
 	for (int cc = 0; cc < TapGrid->ColCount; cc++)
 		TapGrid->ColWidths[cc] = IkkParam.ColW[cc] * Screen->PixelsPerInch * lev / 960;
 
-	Cells[0][0].text = L"Kilpno";
-	Cells[1][0].text = L"Os.";
-	Cells[2][0].text = L"Joukkue";
-	Cells[3][0].text = L"Nimi";
-	Cells[4][0].text = L"Maa";
-	Cells[5][0].text = L"Sarja";
-	Cells[6][0].text = L"Pst";
-	Cells[7][0].text = L"Sija";
-	Cells[8][0].text = L"Tulos";
-	Cells[9][0].text = L"Ero";
+	Cells[0][0].text = TR(L"Kilpno");
+	Cells[1][0].text = TR(L"Os.");
+	Cells[2][0].text = TR(L"Joukkue");
+	Cells[3][0].text = TR(L"Nimi");
+	Cells[4][0].text = TR(L"Maa");
+	Cells[5][0].text = TR(L"Sarja");
+	Cells[6][0].text = TR(L"Pst");
+	Cells[7][0].text = TR(L"Sija");
+	Cells[8][0].text = TR(L"Tulos");
+	Cells[9][0].text = TR(L"Ero");
 	if (kilpparam.lsakmax) {
-		Cells[10][0].text = L"Sakot";
+		Cells[10][0].text = TR(L"Sakot");
 		}
 	else
-		Cells[10][0].text = L"Trk";
+		Cells[10][0].text = TR(L"Trk");
 
 	GrdWidth = 16 * Screen->PixelsPerInch * IkkParam.FontSize / 960;
 	for (int i = 0; i < TapGrid->ColCount; i++) {

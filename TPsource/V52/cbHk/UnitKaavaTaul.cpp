@@ -37,8 +37,8 @@ __fastcall TFormKaavaTaul::TFormKaavaTaul(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TFormKaavaTaul::NaytaTaul(void)
 {
-	wchar_t *lajit[4] = {L" ", L"Sij", L"Tul", L"Mol"};
-	wchar_t *eion[2] = {L"Ei", L"On"}, ln[50];
+	wchar_t *lajit[4] = {L" ", N_(L"Sij"), N_(L"Tul"), N_(L"Mol")};
+	wchar_t *eion[2] = {N_(L"Ei"), N_(L"On")}, ln[50];
 	int sijOn = 1, tulOn = 1, eSrj, vSrj, e_pv, v_pv, r;
 
 	sijOn = CBSij->Checked ? 1 : 0;
@@ -119,8 +119,8 @@ void __fastcall TFormKaavaTaul::NaytaTaul(void)
 				SG1->RowCount = r+1;
 			SG1->Cells[0][r] = Sarjat[srj].sarjanimi;
 			SG1->Cells[1][r] = ipv+1;
-			SG1->Cells[2][r] = eion[Sarjat[srj].pistekaava[ipv].vaiheon];
-			SG1->Cells[3][r] = lajit[Sarjat[srj].pistekaava[ipv].laji];
+			SG1->Cells[2][r] = TR(eion[Sarjat[srj].pistekaava[ipv].vaiheon]);
+			SG1->Cells[3][r] = TR(lajit[Sarjat[srj].pistekaava[ipv].laji]);
 			if (sijOn) {
 				SG1->Cells[4][r] = Sarjat[srj].pistekaava[ipv].a[0];
 				SG1->Cells[5][r] = Sarjat[srj].pistekaava[ipv].y[0];
@@ -150,15 +150,15 @@ void __fastcall TFormKaavaTaul::NaytaTaul(void)
 				SG1->Cells[16*sijOn+6][r] = Sarjat[srj].pistekaava[ipv].vpist;
 				SG1->Cells[16*sijOn+7][r] = Sarjat[srj].pistekaava[ipv].kerr;
 				SG1->Cells[16*sijOn+8][r] = Sarjat[srj].pistekaava[ipv].jak;
-				SG1->Cells[16*sijOn+9][r] = eion[Sarjat[srj].pistekaava[ipv].optiot & 1];
-				SG1->Cells[16*sijOn+10][r] = eion[(Sarjat[srj].pistekaava[ipv].optiot & 4)/4];
+				SG1->Cells[16*sijOn+9][r] = TR(eion[Sarjat[srj].pistekaava[ipv].optiot & 1]);
+				SG1->Cells[16*sijOn+10][r] = TR(eion[(Sarjat[srj].pistekaava[ipv].optiot & 4)/4]);
 				}
-			SG1->Cells[16*sijOn+7*tulOn+4][r] = eion[Sarjat[srj].pistekaava[ipv].yhtpiston & 1];
+			SG1->Cells[16*sijOn+7*tulOn+4][r] = TR(eion[Sarjat[srj].pistekaava[ipv].yhtpiston & 1]);
 			SG1->Cells[16*sijOn+7*tulOn+5][r] = Sarjat[srj].pistekaava[ipv].yhtpistvaihelkm;
 			SG1->Cells[16*sijOn+7*tulOn+6][r] = Sarjat[srj].pistekaava[ipv].yhtpistosottomin;
 			SG1->Cells[16*sijOn+7*tulOn+7][r] = Sarjat[srj].pistekaava[ipv].yhtpisthyvmin;
-			SG1->Cells[16*sijOn+7*tulOn+8][r] = eion[(Sarjat[srj].pistekaava[ipv].yhtpiston & 2) / 2];
-			SG1->Cells[16*sijOn+7*tulOn+9][r] = eion[(Sarjat[srj].pistekaava[ipv].yhtpiston & 4) / 4];
+			SG1->Cells[16*sijOn+7*tulOn+8][r] = TR(eion[(Sarjat[srj].pistekaava[ipv].yhtpiston & 2) / 2]);
+			SG1->Cells[16*sijOn+7*tulOn+9][r] = TR(eion[(Sarjat[srj].pistekaava[ipv].yhtpiston & 4) / 4]);
 			}
 		}
 }

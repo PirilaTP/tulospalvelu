@@ -31,24 +31,24 @@
 TFormJoukkuetiedot *FormJoukkuetiedot;
 
 ColTp OsGridCols0[] = {
-	{L"Osuus", 50, 0, 1, 0, true},
-	{L"Etunimi", 90, 0, 1, 0, true},
-	{L"Sukunimi", 120, 0, 1, 0, true},
-	{L"Seura", 80, 0, 1, 0, false},
-	{L"Lisenssi", 65, 0, 1, 0, false},
-	{L"Badge", 65, 0, 1, 0, true},
-	{L"L", 15, 0, 1, 0, true},
-	{L"Tark", 45, 0, 1, 0, true},
-	{L"Lähtö", 75, 0, 1, 0, true},
-	{L"Lht-lj", 45, 0, 1, 0, true},
-	{L"Maali", 75, 0, 1, 0, true},
-	{L"Tulos", 75, 0, 1, 0, true},
-	{L"Sija", 35, 0, 1, 0, true},
-	{L"Amp.sakot", 60, 0, 1, 0, false},
-	{L"Sakko", 45, 0, 1, 0, false},
-	{L"Rata", 60, 0, 1, 0, true},
-	{L"Os.tls.", 75, 0, 1, 0, false},
-	{L"Os.sj", 35, 0, 1, 0, false}
+	{N_(L"Osuus"), 50, 0, 1, 0, true},
+	{N_(L"Etunimi"), 90, 0, 1, 0, true},
+	{N_(L"Sukunimi"), 120, 0, 1, 0, true},
+	{N_(L"Seura"), 80, 0, 1, 0, false},
+	{N_(L"Lisenssi"), 65, 0, 1, 0, false},
+	{N_(L"Badge"), 65, 0, 1, 0, true},
+	{N_(L"L"), 15, 0, 1, 0, true},
+	{N_(L"Tark"), 45, 0, 1, 0, true},
+	{N_(L"Lähtö"), 75, 0, 1, 0, true},
+	{N_(L"Lht-lj"), 45, 0, 1, 0, true},
+	{N_(L"Maali"), 75, 0, 1, 0, true},
+	{N_(L"Tulos"), 75, 0, 1, 0, true},
+	{N_(L"Sija"), 35, 0, 1, 0, true},
+	{N_(L"Amp.sakot"), 60, 0, 1, 0, false},
+	{N_(L"Sakko"), 45, 0, 1, 0, false},
+	{N_(L"Rata"), 60, 0, 1, 0, true},
+	{N_(L"Os.tls."), 75, 0, 1, 0, false},
+	{N_(L"Os.sj"), 35, 0, 1, 0, false}
 };
 
 static wchar_t *LLaji[4] = {L"Auto", L"Auto", L"Yksil", L"Kiint"};
@@ -137,7 +137,7 @@ void __fastcall TFormJoukkuetiedot::GridDims(void)
 	n = 0;
 	for (int i = 0; i < sizeof(OsGridCols0)/sizeof(ColTp); i++) {
 		if (OsGridCols[i].Visible) {
-			OsGrid->Cells[n][0] = UnicodeString(OsGridCols[i].Caption);
+			OsGrid->Cells[n][0] = UnicodeString(TR(OsGridCols[i].Caption));
 			OsGrid->ColWidths[n] = OsGridCols[i].Width * Screen->PixelsPerInch / 96;
 			OsGridCols[i].Order = n;
 			n++;
@@ -146,7 +146,7 @@ void __fastcall TFormJoukkuetiedot::GridDims(void)
 	TlsGrid->ColCount = Sarjat[Sarja].osuusluku + 1;
 	TlsGrid->RowCount = Sarjat[Kilp.sarja].Vaikaluku() + 2;
 	for (int col = 1; col < TlsGrid->ColCount; col++) {
-		TlsGrid->Cells[col][0] = UnicodeString("Osuus ") + wosuuskoodi(Sarja, col-1, 0, 0);
+		TlsGrid->Cells[col][0] = UnicodeString(TRA("Osuus ")) + wosuuskoodi(Sarja, col-1, 0, 0);
 		}
 	for (int row = 1; row < TlsGrid->RowCount-1; row++) {
 		TlsGrid->Cells[0][row] = UnicodeString(row) + L". va.";
@@ -262,7 +262,7 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 					switch (i) {
 						case 0:
 							OsGrid->Cells[OsGridCols[i].Order][os+1] =
-								UnicodeString(L"Os. ") + wosuuskoodi(Kilp.sarja, os, 0, 0);
+								UnicodeString(TR(L"Os. ")) + wosuuskoodi(Kilp.sarja, os, 0, 0);
 							break;
 						case 1:
 							OsGrid->Cells[OsGridCols[i].Order][os+1] =
@@ -295,25 +295,25 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 							else {
 								switch (Kilp.wTark(os, 0)) {
 									case L'K' :
-										wcscpy(line, TR(L"Kesk"));
+										wcscpy(line, L"Kesk");
 										break;
 									case L'H' :
-										wcscpy(line, TR(L"Hyl"));
+										wcscpy(line, L"Hyl");
 										break;
 									case L'E' :
-										wcscpy(line, TR(L"Eiläht."));
+										wcscpy(line, L"Eiläht.");
 										break;
 									case L'T' :
-										wcscpy(line, TR(L"Tark."));
+										wcscpy(line, L"Tark.");
 										break;
 									case L'I' :
 										wcscpy(line, L"esItys");
 										break;
 									case L'P' :
-										wcscpy(line, TR(L"Poissa"));
+										wcscpy(line, L"Poissa");
 										break;
 									default :
-										wcscpy(line, TR(L"Avoin"));
+										wcscpy(line, L"Avoin");
 										break;
 									}
 								}
@@ -483,7 +483,7 @@ int __fastcall TFormJoukkuetiedot::tallennaTiedot(void)
 //	   Kilp.setId(EdtKilpno->Text.ToInt());
 //	   haeTiedot(&Kilp);
 	   if ((ToimintaTila == 2 && !Kilp.kilpno) || getpos(Kilp.kilpno) > 0) {
-			Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta"), TR(L"Virhe"),
+			Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta"), L"Virhe",
 				MB_OK);
 			return(1);
 			}
@@ -506,13 +506,13 @@ int __fastcall TFormJoukkuetiedot::tallennaTiedot(void)
 	  }
 
 	if (Kilp1.kilpno != Kilp.kilpno && getpos(Kilp.kilpno) > 0) {
-	  Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta"), TR(L"Virhe"),
+	  Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta"), L"Virhe",
 		  MB_OK);
 	  return(1);
 	  }
 
 	if (ToimintaTila == 2 && Kilp.kilpno == 0) {
-	  Application->MessageBox(TR(L"Joukkueelle on annettava numero"), TR(L"Virhe"),
+	  Application->MessageBox(TR(L"Joukkueelle on annettava numero"), L"Virhe",
 		  MB_OK);
 	  return(1);
 	  }
@@ -1044,16 +1044,16 @@ void __fastcall TFormJoukkuetiedot::asetaMuokkaustila(bool paalle)
 		if (RGVaTieto->ItemIndex < 2)
 			TlsGrid->Options << goEditing;
 		if (Lisays)
-			Tila->Caption = UnicodeString(L"Uuden tietueen muokkaus");
+			Tila->Caption = UnicodeString(TR(L"Uuden tietueen muokkaus"));
 		else
-			Tila->Caption = UnicodeString(L"Muokkaustila");
+			Tila->Caption = UnicodeString(TR(L"Muokkaustila"));
 		if (ActiveControl == BtnSalli)
 			FocusControl(EdtSeura);
 		}
 	else {
 		OsGrid->Options >> goEditing;
 		TlsGrid->Options >> goEditing;
-		Tila->Caption = UnicodeString(L"Haku- ja katselutila");
+		Tila->Caption = UnicodeString(TR(L"Haku- ja katselutila"));
 		BtnSalli->Caption = TR(L"Salli muokkaus");
 		}
 }

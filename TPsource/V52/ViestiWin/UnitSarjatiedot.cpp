@@ -31,47 +31,47 @@ TFormSarjatiedot *FormSarjatiedot;
 //extern TFormVaPisteet *FormVaPisteet;
 
 ColTp GridCols0[] = {
-	{L"Nro", 30, 0, 1, 0, true},
-	{L"Sarja", 55, 0, 1, 0, true},
-	{L"AlkuNo", 55, 0, 1, 0, true},
-	{L"Osuusluku", 55, 0, 1, 0, true},
-	{L"Henk.lkm", 55, 0, 1, 0, true},
-	{L"Lähtöaika", 60, 0, 1, 0, true},
-	{L"Sakollinen", 60, 0, 1, 0, false},
-	{L"Lähtöpaikka", 40, 0, 1, 0, false},
-	{L"Maali", 40, 0, 1, 0, false},
-	{L"Osuuslähtö", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"Lähtöväli", 45, 0, MAXOSUUSLUKU, 0, false},
-	{L"Amp.paikat", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"Sakkoyks.", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"Maksu", 60, 0, 1, 0, true},
-	{L"Maksu-ale", 60, 0, 1, 0, false},
-	{L"Matka", 60, 0, MAXOSUUSLUKU, 0, true},
-	{L"Pitkä nimi", 180, 0, 1, 0, true},
-	{L"Lukum", 40, 0, 1, 0, false}
+	{N_(L"Nro"), 30, 0, 1, 0, true},
+	{N_(L"Sarja"), 55, 0, 1, 0, true},
+	{N_(L"AlkuNo"), 55, 0, 1, 0, true},
+	{N_(L"Osuusluku"), 55, 0, 1, 0, true},
+	{N_(L"Henk.lkm"), 55, 0, 1, 0, true},
+	{N_(L"Lähtöaika"), 60, 0, 1, 0, true},
+	{N_(L"Sakollinen"), 60, 0, 1, 0, false},
+	{N_(L"Lähtöpaikka"), 40, 0, 1, 0, false},
+	{N_(L"Maali"), 40, 0, 1, 0, false},
+	{N_(L"Osuuslähtö"), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Lähtöväli"), 45, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Amp.paikat"), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Sakkoyks."), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Maksu"), 60, 0, 1, 0, true},
+	{N_(L"Maksu-ale"), 60, 0, 1, 0, false},
+	{N_(L"Matka"), 60, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Pitkä nimi"), 180, 0, 1, 0, true},
+	{N_(L"Lukum"), 40, 0, 1, 0, false}
 };
 
 ColTp *GridCols1;
 
 ColTp GridColsArv[] = {
-	{L"Nro", 30, 0, 1, 0, true},
-	{L"Sarja", 55, 0, 1, 0, true},
-	{L"AlkuNo", 55, 0, 1, 0, true},
-	{L"Osuusluku", 55, 0, 1, 0, true},
-	{L"Henk.lkm", 55, 0, 1, 0, true},
-	{L"Lähtöaika", 60, 0, 1, 0, true},
-	{L"Sakollinen", 60, 0, 1, 0, false},
-	{L"Lähtöpaikka", 40, 0, 1, 0, false},
-	{L"Maali", 40, 0, 1, 0, false},
-	{L"Osuuslähtö", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"Lähtöväli", 45, 0, MAXOSUUSLUKU, 0, false},
-	{L"Amp.paikat", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"Sakkoyks.", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"Maksu", 60, 0, 1, 0, true},
-	{L"Maksu-ale", 60, 0, 1, 0, false},
-	{L"Matka", 60, 0, MAXOSUUSLUKU, 0, true},
-	{L"Pitkä nimi", 180, 0, 1, 0, true},
-	{L"Lukum", 40, 0, 1, 0, false}
+	{N_(L"Nro"), 30, 0, 1, 0, true},
+	{N_(L"Sarja"), 55, 0, 1, 0, true},
+	{N_(L"AlkuNo"), 55, 0, 1, 0, true},
+	{N_(L"Osuusluku"), 55, 0, 1, 0, true},
+	{N_(L"Henk.lkm"), 55, 0, 1, 0, true},
+	{N_(L"Lähtöaika"), 60, 0, 1, 0, true},
+	{N_(L"Sakollinen"), 60, 0, 1, 0, false},
+	{N_(L"Lähtöpaikka"), 40, 0, 1, 0, false},
+	{N_(L"Maali"), 40, 0, 1, 0, false},
+	{N_(L"Osuuslähtö"), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Lähtöväli"), 45, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Amp.paikat"), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Sakkoyks."), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Maksu"), 60, 0, 1, 0, true},
+	{N_(L"Maksu-ale"), 60, 0, 1, 0, false},
+	{N_(L"Matka"), 60, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Pitkä nimi"), 180, 0, 1, 0, true},
+	{N_(L"Lukum"), 40, 0, 1, 0, false}
 };
 
 static int GridCols1Count;
@@ -195,7 +195,7 @@ void __fastcall TFormSarjatiedot::NaytaSarjat(void)
 			if (GridCols[ic].Count == MAXOSUUSLUKU)
 				n = kilpparam.ntosuus;
 			for (int i = 0; i < n; i++) {
-				SG1->Cells[GridCols[ic].Order+i][0] = UnicodeString(GridCols[ic].Caption);
+				SG1->Cells[GridCols[ic].Order+i][0] = UnicodeString(TR(GridCols[ic].Caption));
 				SG1->ColWidths[GridCols[ic].Order+i] = GridCols[ic].Width * Screen->PixelsPerInch / 96;
 				}
 			}
