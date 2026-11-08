@@ -43,7 +43,7 @@ GitHub Release. The GUI programs link to runtime packages (`UsePackages`,
 
 If linker heap errors occur: run `bcdedit /set IncreaseUserVa 3072` as Administrator and reboot.
 
-There are no automated tests.
+Unit tests (doctest): `TPsource\V52\VS\Tests\TpTest.sln` → `TPsource\V52\VS\Tests\Release\TpTest.exe`.
 
 ## Architecture
 
@@ -79,6 +79,18 @@ Both domains share the same utility and database layers, and compile to both a c
 ### Communications
 
 Supports RS-232 (legacy), UDP, TCP, and XML message transport. The `comtp` and `iptype` enums in `wincom.h` define the protocol variants. Used to sync split times between distributed timing stations.
+
+### Language versions (fi / sv / en)
+
+Texts are written in Finnish and translated at run time, gettext style: the Finnish text is the
+key, translations come from `TPsource/V52/kielet/en.po` and `sv.po` (missing translation → Finnish).
+API in `include/Kielet.h`: `TR()` (UI language), `TRA()` (char*), `TRL(lang, ...)` (output language,
+`tulostusparamtp::language`), `TRCL()` (with context), `N_()` (marks texts in static tables).
+Forms are translated by `kaannaLomake(this)` at the start of every form constructor
+(`cbTp/cbKielet.cpp`); console selection prompts (`wselectopt` etc.) translate themselves and
+remap hotkeys. Don't translate strings that are compared/parsed, config keywords, XML tags or
+file names. After changing user-visible texts run `python TPsource/V52/kielet/kielet.py poimi`
+and `paivita` (CI checks that `tulospalvelu.pot` is current). See `TPsource/V52/kielet/README.md`.
 
 ### Output formats
 

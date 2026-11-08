@@ -129,6 +129,12 @@ jobs:
           }
           Copy-Item staging\gui\* "$packageDir\gui" -Recurse
 
+          # Käännöstiedostot ohjelmien viereen: <ohjelmahakemisto>\kielet\en.po ja sv.po
+          foreach ($dir in @("console", "gui")) {
+            New-Item -ItemType Directory -Force -Path "$packageDir\$dir\kielet" | Out-Null
+            Copy-Item TPsource\V52\kielet\*.po "$packageDir\$dir\kielet"
+          }
+
           Copy-Item LICENSE $packageDir
           Copy-Item README.md $packageDir
 

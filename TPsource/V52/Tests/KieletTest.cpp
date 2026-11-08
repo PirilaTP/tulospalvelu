@@ -186,6 +186,39 @@ TEST_CASE_FIXTURE(KieliFixture, "kaannaValinta kayttaa suomea, jos nappaimet eiv
 	CHECK(wcscmp(tterm, L"NT\x1b") == 0);
 }
 
+// Repon kaannostiedostot: polku johdetaan taman tiedoston sijainnista (Tests\..\kielet)
+static void kieletPolku(wchar_t *polku, const wchar_t *nimi)
+{
+	const char *t = __FILE__;
+	int n = MultiByteToWideChar(CP_ACP, 0, t, -1, polku, MAX_PATH);
+	wchar_t *p = wcsrchr(polku, L'\\');
+	(void) n;
+	if (p == NULL)
+		p = wcsrchr(polku, L'/');
+	if (p != NULL)
+		*p = 0;
+	wcscat(polku, L"\\..\\kielet\\");
+	wcscat(polku, nimi);
+}
+
+TEST_CASE("Repon en.po ja sv.po luetaan C++-jasentimella")
+{
+	wchar_t polku[MAX_PATH + 40];
+
+	kieletPolku(polku, L"sv.po");
+	CHECK(lataaKaannostiedosto(KIELI_SV, polku) > 5000);
+	kieletPolku(polku, L"en.po");
+	CHECK(lataaKaannostiedosto(KIELI_EN, polku) > 5000);
+	CHECK(wcscmp(TRL(KIELI_SV, L"Tulokset"), L"Tulokset") != 0);
+	CHECK(wcscmp(TRL(KIELI_EN, L"Tulokset"), L"Results") == 0);
+	// Paavalikon kehote: kaikki pikanappaimet vastaavat yksikasitteisesti
+	wchar_t tterm[20];
+	asetaKayttokieli(KIELI_SV);
+	const wchar_t *k = L"M)aali, L)ask, K)orj, T)ulos, lE)imat, Y)hteys, A)setukset, B)ackup, P)oistu";
+	CHECK(kaannaValinta(k, L"MLKTOEYAPB", tterm, 20) != k);
+	asetaKayttokieli(KIELI_FI);
+}
+
 TEST_CASE("Suomi palauttaa aina saman osoittimen")
 {
 	const wchar_t *s = L"Hyl\x00e4tty";

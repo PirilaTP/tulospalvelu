@@ -1,0 +1,11 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup>
+        <Kaannostiedosto Include="$(MSBuildThisFileDirectory)..\kielet\en.po"/>
+        <Kaannostiedosto Include="$(MSBuildThisFileDirectory)..\kielet\sv.po"/>
+    </ItemGroup>
+    <!-- Runtime translations must be next to the executable, also for IDE builds. -->
+    <Target Name="CopyTranslations" AfterTargets="Make;Build;Rebuild">
+        <Error Condition="'$(FinalOutputDir)'==''" Text="Translation output directory (FinalOutputDir) is not set."/>
+        <Copy SourceFiles="@(Kaannostiedosto)" DestinationFolder="$(FinalOutputDir)\kielet" SkipUnchangedFiles="true"/>
+    </Target>
+</Project>

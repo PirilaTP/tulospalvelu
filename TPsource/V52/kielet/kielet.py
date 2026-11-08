@@ -45,6 +45,7 @@ KAANNOSFUNKTIOT = {
     'TRA': (0, None),
     'TRL': (1, None),
     'TRCL': (2, 1),
+    'N_': (0, None),
 }
 # Konsolin valintakehotteet, jotka kääntyvät funktion sisällä: nimi -> (kehote, sallitut merkit)
 VALINTAFUNKTIOT = {
@@ -257,6 +258,17 @@ def poimi_lahde(polku, luettelo, varoitukset):
             if tok[ka].laji == 'str':
                 _, ktx, _ = str_ryhma(tok, ka)
         huom = None
+        if nimi in ('N_', 'TR', 'TRA') and (pikanappaimet(msgid) or '(K/E)' in msgid):
+            # Muuttujaan koottu valintakehote (wcscpy/swprintf -> wselectopt(muuttuja))
+            alku = teksti.rfind('\n', 0, t.alku) + 1
+            mk = re.search(r'\b(wcscpy|wcsncpy|strcpy|swprintf|sprintf|wcscat|strcat)\s*\(\s*(\w+)',
+                           teksti[alku:t.alku])
+            if mk:
+                jatko = '\n'.join(teksti[t.loppu:].split('\n')[:15])
+                if re.search(r'\b(w?selectopt|w?selectxy|Wselectopt)\s*\(\s*' + re.escape(mk.group(2)) + r'\b', jatko):
+                    # N_: wselectopt kääntää ja vaihtaa näppäimet. TR: teksti on jo muotoiltu, kun
+                    # wselectopt saa sen, joten näppäimiä ei voi vaihtaa: käännöksessä samat kirjaimet.
+                    huom = 'valinta' if nimi == 'N_' else 'valinta-kiintea: pidä suomenkieliset pikanäppäimet'
         if nimi in VALINTAFUNKTIOT:
             ta, tl = params[VALINTAFUNKTIOT[nimi][1]] if VALINTAFUNKTIOT[nimi][1] < len(params) else (0, 0)
             if tl > ta and tok[ta].laji == 'str':
@@ -267,7 +279,7 @@ def poimi_lahde(polku, luettelo, varoitukset):
                 huom = 'valinta'
         if enc == 'utf-8' and any(ord(c) >= 0x80 for c in msgid):
             varoitukset.append(f'{rel}:{tok[a].rivi}: UTF-8-tiedostossa ilman BOMia ei-ASCII-teksti: {msgid!r}')
-        luettelo.lisaa(msgid, f'{rel}:{tok[a].rivi}', ktx, huom)
+        luettelo.lisaa(msgid, rel, ktx, huom)
 
 
 # --- Lomakkeet (.dfm) ---
@@ -278,7 +290,8 @@ DFM_TOKEN = re.compile(r"""'(?:[^'\n]|'')*'|\#\d+|\+|\(|\)|\n|[ \t\r]+|[^\s'#+()
 
 
 def lue_dfm(polku):
-    b = open(polku, 'rb').read()
+    with open(polku, 'rb') as tiedosto:
+        b = tiedosto.read()
     if b.startswith(b'\xef\xbb\xbf'):
         return b[3:].decode('utf-8')
     try:
@@ -311,7 +324,8 @@ def dfm_arvo(teksti, pos):
             jatkuu = True
             continue
         if t == '\n':
-            if jatkuu:
+            # Pitka Caption voi alkaa vasta '='-rivia seuraavalta rivilta.
+            if jatkuu or (nyk is None and not alkiot):
                 continue
             if nyk is not None:
                 alkiot.append(nyk)
@@ -372,9 +386,9 @@ def poimi_dfm(polku, luettelo):
             # Vain kuvaukset, ei tiedostomaskeja: 'Tekstitiedostot (*.txt)|*.txt|...'
             osat = teksti.split('|')
             for k in range(0, len(osat), 2):
-                luettelo.lisaa(osat[k], f'{rel}:{rivi}', huom='suodatin')
+                luettelo.lisaa(osat[k], rel, huom='suodatin')
             continue
-        luettelo.lisaa(teksti, f'{rel}:{rivi}')
+        luettelo.lisaa(teksti, rel)
 
 
 def poimi(argv):
@@ -619,7 +633,12 @@ def tarkista(argv):
                     [x for x in MUOTOILU.findall(m.msgstr) if x != '%%']:
                 ongelmat.append('muotoilukoodit eroavat')
             for h in m.huom:
-                if h.startswith('valinta'):
+                if h.startswith('valinta-kiintea'):
+                    # Näppäimet ovat suomenkieliset: käännöksessä saa näkyä vain ne (esim. "S: samma")
+                    vieraat = set(pikanappaimet(m.msgstr)) - set(pikanappaimet(m.msgid))
+                    if vieraat or ('(K/E)' in m.msgid and re.search(r'\((J/N|Y/N)\)', m.msgstr)):
+                        ongelmat.append('näppäimiä ei vaihdeta: käännöksessä vain suomenkieliset näppäimet')
+                elif h.startswith('valinta'):
                     a, k = pikanappaimet(m.msgid), pikanappaimet(m.msgstr)
                     term = h.split(':', 1)[1].strip() if ':' in h else ''
                     if len(a) != len(k):
@@ -632,7 +651,8 @@ def tarkista(argv):
                 ongelmat.append('&-pikanäppäin puuttuu')
             if m.msgid.count('\n') != m.msgstr.count('\n'):
                 ongelmat.append('rivinvaihtojen määrä eroaa')
-            if (m.msgid[:1].isspace(), m.msgid[-1:].isspace()) != (m.msgstr[:1].isspace(), m.msgstr[-1:].isspace()):
+            if len(m.msgid) != len(m.msgstr) and \
+                    (m.msgid[:1].isspace(), m.msgid[-1:].isspace()) != (m.msgstr[:1].isspace(), m.msgstr[-1:].isspace()):
                 ongelmat.append('alku- tai loppuvälilyönnit eroavat')
             for o in ongelmat:
                 virheita += 1
