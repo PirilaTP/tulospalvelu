@@ -57,7 +57,7 @@ void __fastcall TFormEmitFile::Button1Click(TObject *Sender)
 {
 
 	OpenDialog1->DefaultExt = "dat";
-	OpenDialog1->Filter = "Datatiedostot (*.dat) |*.dat|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TRA("Datatiedostot (*.dat) |*.dat|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		emitinfile = _wfopen(OpenDialog1->FileName.c_str(), L"rb");
 		if (emitinfile) {

@@ -1113,7 +1113,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 			erotin = erottimet[CBerotin->ItemIndex];
 
 			OpenDialog1->DefaultExt = L"csv";
-			OpenDialog1->Filter = L"Teksti/csv-tiedostot (*.csv), *.txt|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TR(L"Teksti/csv-tiedostot (*.csv), *.txt|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 			if (OpenDialog1->Execute()) {
 				InFile = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 				if (InFile->IsOpen()) {
@@ -1168,7 +1168,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 			n = -nilmt;
 			sailTiedPos = CBsailPos->Checked;
 			OpenDialog1->DefaultExt = L"xml";
-			OpenDialog1->Filter = L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*");
 			if (OpenDialog1->Execute()) {
 				if (RGXMLLaji->ItemIndex == 1)
 					lueEventXml(OpenDialog1->FileName.c_str(), false, false, true);
@@ -1181,7 +1181,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 			erotin = erottimet[CBerotin->ItemIndex];
 
 			OpenDialog1->DefaultExt = L"csv";
-			OpenDialog1->Filter = L"Teksti/csv-tiedostot (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TR(L"Teksti/csv-tiedostot (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 			if (OpenDialog1->Execute()) {
 				InFile = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 				if (InFile->IsOpen()) {
@@ -1209,7 +1209,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 			break;
 		case 3:
 			OpenDialog1->DefaultExt = L"dat";
-			OpenDialog1->Filter = L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TR(L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*");
 			if (OpenDialog1->Execute()) {
 				kilpparam_v.n_pv = n_pv_v;
 				kilpparam_v.n_pv_va = n_pv_v;
@@ -1225,7 +1225,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 			irmaflds[6].pos = RGmaa->ItemIndex;
 			OpenDialog1->DefaultExt = L"txt";
 			OpenDialog1->FileName = L"Ilmoittautumiset.csv";
-			OpenDialog1->Filter = L"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TR(L"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*");
 			if (OpenDialog1->Execute()) {
 
 				InFile = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
@@ -1247,7 +1247,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 								}
 							OpenDialog2->DefaultExt = L"csv";
 							OpenDialog2->FileName = seuraTiedNm;
-							OpenDialog2->Filter = L"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*";
+							OpenDialog2->Filter = TR(L"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*");
 							if (OpenDialog2->Execute()) {
 								SeuraFile = new TextFl(OpenDialog2->FileName.c_str(), L"rt");
 								if (SeuraFile && !SeuraFile->IsOpen()) {
@@ -1362,7 +1362,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 			erotin = erottimet[CBerotin->ItemIndex];
 
 			OpenDialog1->DefaultExt = L"txt";
-			OpenDialog1->Filter = L"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TR(L"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*");
 			if (OpenDialog1->Execute()) {
 				InFile = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 				if (InFile->IsOpen()) {

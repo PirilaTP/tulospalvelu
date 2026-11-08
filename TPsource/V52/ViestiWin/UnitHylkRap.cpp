@@ -328,7 +328,7 @@ void __fastcall TFormHylkRap::Avaahylkysraportti1Click(TObject *Sender)
 {
 	LblRapLkm->Visible = false;
 	OpenDialog1->DefaultExt = "x,l";
-	OpenDialog1->Filter = "Xml-tiedostot (*.xml) |*.xml|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TRA("Xml-tiedostot (*.xml) |*.xml|Kaikki tiedostot (*.*)|*.*");
 	OpenDialog1->InitialDir = ReportDir[0];
 	if (OpenDialog1->Execute()) {
 		int kno = 0, os = 0;

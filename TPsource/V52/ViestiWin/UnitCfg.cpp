@@ -117,7 +117,7 @@ void __fastcall TFormCfg::Luetiedosto1Click(TObject *Sender)
 
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->FileName = UnicodeString(L"laskenta.cfg");
-	OpenDialog1->Filter = L"Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		Memo1->Clear();
 		cfgfile = new TextFl(OpenDialog1->FileName.c_str(), L"r");
@@ -143,7 +143,7 @@ void __fastcall TFormCfg::Kirjoitatiedosto1Click(TObject *Sender)
 	TextFl *cfgfile;
 
 	SaveDialog1->InitialDir = FormMain->CurrentDir;
-	SaveDialog1->Filter = L"Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		cfgfile = new TextFl(SaveDialog1->FileName.c_str(), L"w");
 		if (cfgfile->IsOpen()) {

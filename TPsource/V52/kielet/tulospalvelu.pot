@@ -7973,6 +7973,10 @@ msgstr ""
 msgid "Siirretty %d lähtöaikaa"
 msgstr ""
 
+#: cbHk/LoppuKilpUnit.cpp cbHk/UnitKilpSeurat.cpp ViestiWin/UnitKilpSeurat.cpp
+msgid "Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
 #: cbHk/LoppuKilpUnit.cpp cbHk/TakaaAjoUnit.cpp cbHk/UnitSprinthiihto.cpp cbHk/LoppuKilpUnit.dfm
 #: cbHk/TakaaAjoUnit.dfm
 msgid "Ei sarjaa"
@@ -8045,6 +8049,15 @@ msgstr ""
 
 #: cbHk/MuotoiluUnit.cpp cbHk/UnitPistelasku.dfm
 msgid "Askel"
+msgstr ""
+
+#: cbHk/MuotoiluUnit.cpp ViestiWin/MuotoiluUnit.cpp ViestiWin/TulostusUnit2.cpp
+msgid "XML-tiedostot (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
+#: cbHk/MuotoiluUnit.cpp cbHk/UnitKisaLuett.cpp cbHk/WinHk.cpp ViestiWin/MuotoiluUnit.cpp
+#: ViestiWin/UnitMain.cpp cbTp/UnitRadat.cpp
+msgid "Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: cbHk/TakaaAjoUnit.cpp
@@ -8220,6 +8233,11 @@ msgstr ""
 msgid "Anna piippausten lukumäärä, 0: ei piippausta"
 msgstr ""
 
+#: cbHk/TulosUnit.cpp cbHk/UnitSeurat.cpp cbHk/UnitTKanta.cpp ViestiWin/UnitSeurat.cpp
+msgid ""
+"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
 #: cbHk/TulostusUnit2.cpp ViestiWin/TulostusUnit2.cpp
 #, c-format
 msgid "Kirjoitinten luettelointi epäonnistui, koodi %d"
@@ -8227,6 +8245,24 @@ msgstr ""
 
 #: cbHk/TulostusUnit2.cpp ViestiWin/TulostusUnit2.cpp
 msgid "Oletuskirjoittimen nimi liian pitkä (yli 119 merkkiä)"
+msgstr ""
+
+#: cbHk/TulostusUnit2.cpp cbHk/UnitKilpailijaOnline.cpp ViestiWin/TulostusUnit2.cpp
+msgid "Tekstitiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
+#: cbHk/TulostusUnit2.cpp
+msgid ""
+"Erotteelliset tiedostot (*.csv, *.txt)|*.CSV;*.TXT|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
+#: cbHk/TulostusUnit2.cpp
+msgid "Html-tiedostot (*html, *.htm)|*.HTML;*.HTM|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
+#: cbHk/TulostusUnit2.cpp cbHk/UnitExport.cpp cbHk/UnitImport.cpp cbHk/UnitKilpMaaritys.cpp
+#: cbHk/UnitKisaLuett.cpp ViestiWin/UnitExport.cpp ViestiWin/UnitImport.cpp ViestiWin/UnitKilpMaaritys.cpp
+msgid "XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: cbHk/TulostusUnit2.cpp cbHk/UnitAikaSiirto.cpp cbHk/UnitArvonta.cpp cbHk/UnitOsanottajat.cpp
@@ -8756,6 +8792,10 @@ msgstr ""
 msgid "Vahvista tallennus"
 msgstr ""
 
+#: cbHk/UnitAjanotto.cpp ViestiWin/TulostusUnit2.cpp ViestiWin/UnitAjanotto.cpp
+msgid "Tekstitiedostot (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
 #: cbHk/UnitAjanotto.cpp
 msgid "Luetaanko myös kilpailijan numero ja piste (Kyllä), vai vain ajat (Ei)"
 msgstr ""
@@ -8894,8 +8934,21 @@ msgstr ""
 msgid "Tulospalvelutilassa voi numeroida vain tulevia päiviä"
 msgstr ""
 
+#: cbHk/UnitAutoFile.cpp
+msgid "Html-tiedostot (*.html)|*.HTML|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
+#: cbHk/UnitAutoFile.cpp ViestiWin/UnitAutoFile.cpp
+msgid ""
+"CMD-tiedostot (*.cmd)|*.cmd|BAT-tiedostot (*.bat)|*.bat|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
 #: cbHk/UnitAutoFile.cpp ViestiWin/UnitAutoFile.cpp
 msgid "Tietoja ei ole tallennettu"
+msgstr ""
+
+#: cbHk/UnitAvausMaar.cpp ViestiWin/UnitAvausMaar.cpp
+msgid "Konfiguraatiot (*.cfg) | *.CFG"
 msgstr ""
 
 #: cbHk/UnitCfg.cpp cbHk/UnitEmitKoodit.cpp ViestiWin/UnitCfg.cpp ViestiWin/UnitMerkKoodeja.cpp
@@ -9004,6 +9057,10 @@ msgstr ""
 msgid "Kellon kanava 8"
 msgstr ""
 
+#: cbHk/UnitCfg.cpp cbHk/WinHk.cpp ViestiWin/UnitCfg.cpp ViestiWin/UnitMain.cpp
+msgid "Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
 #: cbHk/UnitCfg.cpp ViestiWin/UnitCfg.cpp
 msgid "In"
 msgstr ""
@@ -9032,6 +9089,11 @@ msgstr ""
 
 #: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp
 msgid "Lah"
+msgstr ""
+
+#: cbHk/UnitComfile.cpp cbHk/UnitExport.cpp cbHk/UnitImport.cpp ViestiWin/UnitComfile.cpp
+#: ViestiWin/UnitExport.cpp ViestiWin/UnitImport.cpp
+msgid "DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm
@@ -9464,12 +9526,20 @@ msgid "Tarkastusmerkintä"
 msgstr ""
 
 #: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
+msgid "Kuvatiedostot (*.bmp) |*.bmp|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
+#: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
 msgid "Kartan lataaminen ei onnistu"
 msgstr ""
 
 #: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
 msgid ""
 "Viallisten korttien hyväksyminen voi johtaa virheisiin myös muiden korttien lukemisessa. Käytä tätä valintaa vain tilapäisesti yrityksenä lukea tiedot, jotka eivät muuten tallennu"
+msgstr ""
+
+#: cbHk/UnitEmit.cpp
+msgid "dat-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
@@ -9572,7 +9642,15 @@ msgid "Tiedosto kirjoitettu"
 msgstr ""
 
 #: cbHk/UnitExport.cpp ViestiWin/UnitExport.cpp
+msgid "CSV-tiedostot (*.csv)|*.csv|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
+#: cbHk/UnitExport.cpp ViestiWin/UnitExport.cpp
 msgid "Tiedonsiirto käynnistyy, kun SQL-määritysikkuna suljetaan"
+msgstr ""
+
+#: cbHk/UnitHylkRap.cpp ViestiWin/UnitHylkRap.cpp
+msgid "Xml-tiedostot (*.xml) |*.xml|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: cbHk/UnitHylkRap.cpp ViestiWin/UnitHylkRap.cpp cbTp/UnitSivuTuloste.cpp
@@ -9646,6 +9724,21 @@ msgstr ""
 
 #: cbHk/UnitImport.cpp
 msgid "Virheellinen sarja "
+msgstr ""
+
+#: cbHk/UnitImport.cpp ViestiWin/UnitImport.cpp
+msgid ""
+"Teksti/csv-tiedostot (*.csv), *.txt|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
+#: cbHk/UnitImport.cpp
+msgid ""
+"Teksti/csv-tiedostot (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
+#: cbHk/UnitImport.cpp ViestiWin/UnitImport.cpp
+msgid ""
+"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: cbHk/UnitImport.cpp ViestiWin/UnitImport.cpp
@@ -9940,6 +10033,10 @@ msgstr ""
 #: cbHk/UnitKilpMaaritys.cpp
 msgid ""
 "Anna nollasta eroava numero, jos maakoodi kirjoitetaan lisenssinumeron alkuun. Annettu numeroarvo kertoo lisenssikoodin numero-osan minimipituuden"
+msgstr ""
+
+#: cbHk/UnitKilpSeurat.cpp ViestiWin/UnitKilpSeurat.cpp
+msgid "CSV-tiedostot (*.csv) | *.CSV|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm
@@ -10369,6 +10466,10 @@ msgstr ""
 msgid "Kiinteitä sarakkeita "
 msgstr ""
 
+#: cbHk/UnitPiirival.cpp
+msgid "Teksstitiedostot|*.TXT;*.LST;*.CSV|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
 #: cbHk/UnitPistelasku.cpp
 msgid ""
 "Yhteistuloksen määräytymistavan muutos, kun yhteistuloksia jo on, voi synnyttää indeksointivirheitä ja vaatii ohjelman uudelleenkäynnistyksen. Muutetaanko määräytymistapa"
@@ -10593,6 +10694,11 @@ msgstr ""
 
 #: cbHk/UnitSarjatiedot.cpp
 msgid "Anna siirto sekunteina"
+msgstr ""
+
+#: cbHk/UnitSarjatiedot.cpp cbHk/UnitVaPisteet.cpp ViestiWin/UnitSarjatiedot.cpp cbTp/UnitFIS.cpp
+#: cbTp/UnitLisaTekstit.cpp
+msgid "Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: cbHk/UnitSarjatiedot.cpp ViestiWin/UnitSarjatiedot.cpp
@@ -10943,6 +11049,14 @@ msgid "Haluatko todella poistua ohjelmasta?"
 msgstr ""
 
 #: cbHk/WinHk.cpp ViestiWin/UnitMain.cpp
+msgid "xml-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
+#: cbHk/WinHk.cpp
+msgid "Ikkunatiedostot (*.ikk,*.xml)|*.IKK;*.XML|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
+#: cbHk/WinHk.cpp ViestiWin/UnitMain.cpp
 msgid "Avaaminen peruutettu"
 msgstr ""
 
@@ -10974,6 +11088,10 @@ msgstr ""
 
 #: cbHk/WinHk.cpp
 msgid "Vaiheen vaihto tai uusintakäynnistys. Odota muutama sekunti."
+msgstr ""
+
+#: cbHk/WinParamXml.cpp
+msgid "Ikkunat (*.ikk)|*.IKK|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: cbHk/WinParamXml.cpp
@@ -11049,6 +11167,15 @@ msgstr ""
 
 #: ViestiWin/TulostusUnit2.cpp ViestiWin/TulostusUnit2.dfm
 msgid "Kaikki tulokset ja väliajat"
+msgstr ""
+
+#: ViestiWin/TulostusUnit2.cpp
+msgid ""
+"Erotteelliset tiedostot (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
+#: ViestiWin/TulostusUnit2.cpp
+msgid "Html-tiedostot (*html, *.htm)|*.html;*.htm|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: ViestiWin/TulostusUnit2.cpp
@@ -11189,6 +11316,10 @@ msgstr ""
 msgid "Valitse toiminto"
 msgstr ""
 
+#: ViestiWin/UnitAutoFile.cpp
+msgid "Html-tiedostot (*.html)|*.html|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
 #: ViestiWin/UnitComfile.cpp ViestiWin/OsuusTiedot.dfm
 msgid "Osuustiedot"
 msgstr ""
@@ -11239,6 +11370,10 @@ msgstr ""
 
 #: ViestiWin/UnitComfile.cpp
 msgid "Binaaritiedosto"
+msgstr ""
+
+#: ViestiWin/UnitComfile.cpp
+msgid "txt-tiedostot (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: ViestiWin/UnitEmit.cpp
@@ -11545,6 +11680,10 @@ msgstr ""
 msgid "Vaihe: Sisäänluenta"
 msgstr ""
 
+#: ViestiWin/UnitMain.cpp
+msgid "Ikkunat (*.xml,*.ikk) |*.XML|*.IKK|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
 #: ViestiWin/UnitNollaus.cpp ViestiWin/UnitOsuuskopiointi.cpp ViestiWin/UnitNollaus.dfm ViestiWin/UnitOsuuskopiointi.dfm
 msgid "Toiminto käynnissä"
 msgstr ""
@@ -11573,6 +11712,10 @@ msgstr ""
 #: ViestiWin/UnitPartio.cpp
 #, c-format
 msgid "Tallennetut pisteet: %d"
+msgstr ""
+
+#: ViestiWin/UnitPiirival.cpp
+msgid "Teksstitiedostot|*.TXT;*.LST|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: ViestiWin/UnitSHLTul.cpp
@@ -11689,6 +11832,10 @@ msgstr ""
 msgid "V)ahvista, että haluat tyhjentää laitteen muistin"
 msgstr ""
 
+#: cbTp/UnitEmiTag.cpp cbTp/UnitEmitFile.cpp cbTp/UnitMTR.cpp
+msgid "Datatiedostot (*.dat) |*.dat|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
 #: cbTp/UnitEmiTag.cpp cbHk/UnitKilpMaaritys.dfm ViestiWin/UnitKilpMaaritys.dfm
 msgid "emiTag"
 msgstr ""
@@ -11746,6 +11893,14 @@ msgstr ""
 
 #: cbTp/UnitFIS.cpp
 msgid "Ohjelma ei onnistunut avaamaan tarvittavaa tiedostoa: "
+msgstr ""
+
+#: cbTp/UnitFIS.cpp
+msgid "Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*"
+msgstr ""
+
+#: cbTp/UnitHtmlEdit.cpp
+msgid "Html-tiedostot (*.html, *htm)|*.html;*.htm|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: cbTp/UnitKartta.cpp
@@ -11894,7 +12049,7 @@ msgstr ""
 msgid "noll"
 msgstr ""
 
-#: cbTp/UnitPiikit.cpp
+#: cbTp/UnitPiikit.cpp cbTp/UnitRadat.cpp
 #, c-format
 msgid "Koodi %d rasteilla %d"
 msgstr ""
@@ -11926,6 +12081,10 @@ msgstr ""
 #: cbTp/UnitRadat.cpp
 #, c-format
 msgid "Rastin numero %d tai e-koodi %d virheellinen tai poikkeuksellinen"
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
+msgid "LST-tiedostot (*.lst)|*.LST|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: cbTp/UnitRadat.cpp
@@ -11980,6 +12139,15 @@ msgid "Ei ratoja"
 msgstr ""
 
 #: cbTp/UnitRadat.cpp
+#, c-format
+msgid "Radan %s rastin %d (tunnus %d) Emit-koodi puuttuu"
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
+msgid " ja"
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
 msgid ""
 "Rastien Emit-koodimäärittelyt (tiedosto LEIMAT.LST) puuttuvat.Emit-koodien oletetaan olevan samat kuin rastitunnukset."
 msgstr ""
@@ -11989,12 +12157,40 @@ msgid "Pyydetyt radat tulostettu"
 msgstr ""
 
 #: cbTp/UnitRadat.cpp
+msgid "   Rastitunnus   Emitkoodit"
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
 msgid "Koodit tulostettu"
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
+msgid "Emitkoodi  Rastitunnukset"
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
+msgid "      Rastitunnus   Emitkoodit"
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
+msgid "Pakollisessa järjestyksessä juostavia"
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
+msgid "Pakollisia, mutta vapaassa järjestyksessä juostavia"
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
+msgid "Vapaassa järjestyksessä juostavia, partiokisassa valinnaisia"
 msgstr ""
 
 #: cbTp/UnitRadat.cpp
 #, c-format
 msgid "VAROITUS: Leimasintietoihin lisätty rastille %d koodi %d"
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
+msgid "maalirasti"
 msgstr ""
 
 #: cbTp/UnitRadat.cpp
@@ -12051,6 +12247,10 @@ msgstr ""
 
 #: cbTp/UnitRadat.cpp
 msgid "Vahvista tietojen vaihto"
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
+msgid "XML-tiedostot (*.XML)|*.XML"
 msgstr ""
 
 #: cbTp/UnitRadat.cpp
@@ -12116,6 +12316,10 @@ msgstr ""
 
 #: cbTp/UnitRadat.cpp
 msgid "Palaa ratojen käsittelyyn"
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
+msgid "XML-tiedostot (*.xml)|*.xml"
 msgstr ""
 
 #: cbTp/UnitRadat.cpp
@@ -12185,6 +12389,10 @@ msgid "Leimat"
 msgstr ""
 
 #: cbTp/UnitRadat.cpp
+msgid "Rata "
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
 msgid "Finish"
 msgstr ""
 
@@ -12202,6 +12410,10 @@ msgstr ""
 
 #: cbTp/UnitRadat.cpp
 msgid "Virheellinen koordinaatti kartan määrityksissä"
+msgstr ""
+
+#: cbTp/UnitRadat.cpp
+msgid "csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: cbTp/UnitRadat.cpp
@@ -12227,6 +12439,10 @@ msgstr ""
 
 #: cbTp/UnitRadat.cpp
 msgid "Anna kaikkien ratojen loppuviitoituksen mahdollinen lisämatka"
+msgstr ""
+
+#: cbTp/UnitSivuTuloste.cpp
+msgid "Xml-tiedosto (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
 #: cbTp/UnitSivuTuloste.cpp

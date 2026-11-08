@@ -286,7 +286,7 @@ void TFormRadat::lue_leimat(wchar_t *leimafnm)
 		wcsncpy(LeimaFName, leimafname, sizeof(LeimaFName)/2-1);
 		OpenDialog1->FileName = UnicodeString(leimafname);
 		OpenDialog1->DefaultExt = L"lst";
-		OpenDialog1->Filter = L"LST-tiedostot (*.lst)|*.LST|Kaikki tiedostot (*.*)|*.*";
+		OpenDialog1->Filter = TR(L"LST-tiedostot (*.lst)|*.LST|Kaikki tiedostot (*.*)|*.*");
 		if (!OpenDialog1->Execute())
 			return;
 		wcsncpy(LeimaFName, OpenDialog1->FileName.c_str(), sizeof(LeimaFName)/2-1);
@@ -335,7 +335,7 @@ void TFormRadat::kirj_leimat(void)
 		 SaveDialog1->InitialDir = FormMain->CurrentDir;
 	SaveDialog1->FileName = UnicodeString(LeimaFName);
 	SaveDialog1->DefaultExt = L"lst";
-	SaveDialog1->Filter = L"LST-tiedostot (*.lst)|*.LST|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"LST-tiedostot (*.lst)|*.LST|Kaikki tiedostot (*.*)|*.*");
 	if (!SaveDialog1->Execute())
 		return;
 	leima_file = new TextFl(SaveDialog1->FileName.c_str(),L"w");
@@ -462,7 +462,7 @@ int TFormRadat::importradat(void)
 	if (ToimintaTila > 0)
 		OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog2->FileName = L"";
-	OpenDialog2->Filter = L"Kaikki tiedostot (*.*)|*.*";
+	OpenDialog2->Filter = TR(L"Kaikki tiedostot (*.*)|*.*");
 	if (!OpenDialog2->Execute())
 		return(0);
 	rata_file = new TextFl(OpenDialog2->FileName.c_str(),L"r");
@@ -642,7 +642,7 @@ void TFormRadat::lue_radat(wchar_t *fname)
 			OpenDialog1->InitialDir = FormMain->CurrentDir;
 		OpenDialog1->FileName = UnicodeString(RataFName);
 		OpenDialog1->DefaultExt = L"lst";
-		OpenDialog1->Filter = L"LST-tiedostot (*.lst)|*.LST|Kaikki tiedostot (*.*)|*.*";
+		OpenDialog1->Filter = TR(L"LST-tiedostot (*.lst)|*.LST|Kaikki tiedostot (*.*)|*.*");
 		if (!OpenDialog1->Execute())
 			return;
 		wcsncpy(RataFName, OpenDialog1->FileName.c_str(), sizeof(RataFName)/2-1);
@@ -747,7 +747,7 @@ void TFormRadat::kirj_radat(void)
 		SaveDialog1->InitialDir = FormMain->CurrentDir;
 	SaveDialog1->FileName = UnicodeString(RataFName);
 	SaveDialog1->DefaultExt = L"lst";
-	SaveDialog1->Filter = L"LST-tiedostot (*.lst)|*.LST|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"LST-tiedostot (*.lst)|*.LST|Kaikki tiedostot (*.*)|*.*");
 	if (!SaveDialog1->Execute())
 		return;
 	rata_file = new TextFl(SaveDialog1->FileName.c_str(),L"w");
@@ -943,7 +943,7 @@ void TFormRadat::prtpiikit(tulostusparamtp *tulprm, int srj, int *n, int graaf)
 			}
 		 }
 	  if (!onkoodi) {
-		 swprintf(msg, L"Radan %s rastin %d (tunnus %d) Emit-koodi puuttuu",
+		 swprintf(msg, TR(L"Radan %s rastin %d (tunnus %d) Emit-koodi puuttuu"),
 			prata->tunnus, k, r);
 		 Application->MessageBoxW(msg, TR(L"Virhe"), MB_OK);
 		 }
@@ -952,9 +952,9 @@ void TFormRadat::prtpiikit(tulostusparamtp *tulprm, int srj, int *n, int graaf)
 		r = 0;
 		for (i = 1; i < 256; i++) {
 			if (kdirastit[i][1]) {
-				swprintf(msg, L"Koodi %d rasteilla %d", i, kdirastit[i][0]);
+				swprintf(msg, TRL(tulprm->language, L"Koodi %d rasteilla %d"), i, kdirastit[i][0]);
 				for (j = 1; j < 8 && kdirastit[i][j]; j++) {
-					swprintf(msg+wcslen(msg), L"%s %d", (j == 7 || !kdirastit[i][j+1]) ? L" ja" : L",", kdirastit[i][j]);
+					swprintf(msg+wcslen(msg), L"%s %d", (j == 7 || !kdirastit[i][j+1]) ? TRL(tulprm->language, L" ja") : L",", kdirastit[i][j]);
 					}
 				if (graaf) {
 					prtlisaselitys(tulprm->lstf, msg, r++, *n);
@@ -1017,7 +1017,7 @@ void TFormRadat::tulostakoodit(tulostusparamtp *tulprm)
 	initpage(tulprm, L"C");
    putfld(tulprm, L"RASTIT JA EMITKOODIT", 0, 60, 0, 0);
    endline(tulprm, 1);
-   putfld(tulprm, L"   Rastitunnus   Emitkoodit", 0, 60, 0, 0);
+   putfld(tulprm, TRL(tulprm->language, L"   Rastitunnus   Emitkoodit"), 0, 60, 0, 0);
    endline(tulprm, 0);
    memset(kdi, 0, sizeof(kdi));
    i = koodit[0].rasti;
@@ -1039,7 +1039,7 @@ void TFormRadat::tulostakoodit(tulostusparamtp *tulprm)
 			initpage(tulprm, L"C");
 			putfld(tulprm, L"RASTIT JA EMITKOODIT", 0, 60, 0, 0);
 			endline(tulprm, 1);
-			putfld(tulprm, L"   Rastitunnus   Emitkoodit", 0, 60, 0, 0);
+			putfld(tulprm, TRL(tulprm->language, L"   Rastitunnus   Emitkoodit"), 0, 60, 0, 0);
 			endline(tulprm, 0);
 			n = 0;
 			}
@@ -1062,7 +1062,7 @@ void TFormRadat::tulostaleimasinkoodit(tulostusparamtp *tulprm)
 	initpage(tulprm, L"C");
    putfld(tulprm, L"EMITKOODIEN KÄYTTÖ", 0, 60, 0, 0);
    endline(tulprm, 1);
-   putfld(tulprm, L"Emitkoodi  Rastitunnukset", 0, 60, 0, 0);
+   putfld(tulprm, TRL(tulprm->language, L"Emitkoodi  Rastitunnukset"), 0, 60, 0, 0);
    endline(tulprm, 0);
    memset(kdi, 0, sizeof(kdi));
    ir = koodit[0].rasti;
@@ -1093,7 +1093,7 @@ void TFormRadat::tulostaleimasinkoodit(tulostusparamtp *tulprm)
 			initpage(tulprm, L"C");
 			putfld(tulprm, L"EMITKOODIEN KÄYTTÖ", 0, 60, 0, 0);
 			endline(tulprm, 1);
-			putfld(tulprm, L"Emitkoodi  Rastitunnukset", 0, 60, 0, 0);
+			putfld(tulprm, TRL(tulprm->language, L"Emitkoodi  Rastitunnukset"), 0, 60, 0, 0);
 			endline(tulprm, 0);
 			n = 0;
 			}
@@ -1127,7 +1127,7 @@ void TFormRadat::prtrata(tulostusparamtp *tulprm, int srj, int *n)
 	swprintf(buf, L"   %s", prata->tunnus);
 	putfld(tulprm, buf, 0, 20, 0, 0);
 	endline(tulprm, 1);
-	putfld(tulprm, L"      Rastitunnus   Emitkoodit", 0, 60, 0, 0);
+	putfld(tulprm, TRL(tulprm->language, L"      Rastitunnus   Emitkoodit"), 0, 60, 0, 0);
 	endline(tulprm, 0);
 	*n += 5;
 	rr = 0;
@@ -1144,15 +1144,15 @@ void TFormRadat::prtrata(tulostusparamtp *tulprm, int srj, int *n)
 	  if (r > 9999) {
 		 switch (partiokoodit[pkdi++]) {
 			case 10000 :
-			   putfld(tulprm, L"Pakollisessa järjestyksessä juostavia", 0, 80, 0, 0);
+			   putfld(tulprm, TRL(tulprm->language, L"Pakollisessa järjestyksessä juostavia"), 0, 80, 0, 0);
 			   endline(tulprm, 0);
 			   break;
 			case 10001 :
-			   putfld(tulprm, L"Pakollisia, mutta vapaassa järjestyksessä juostavia", 0, 80, 0, 0);
+			   putfld(tulprm, TRL(tulprm->language, L"Pakollisia, mutta vapaassa järjestyksessä juostavia"), 0, 80, 0, 0);
 			   endline(tulprm, 0);
 			   break;
 			case 10002 :
-			   putfld(tulprm, L"Vapaassa järjestyksessä juostavia, partiokisassa valinnaisia", 0, 80, 0, 0);
+			   putfld(tulprm, TRL(tulprm->language, L"Vapaassa järjestyksessä juostavia, partiokisassa valinnaisia"), 0, 80, 0, 0);
 			   endline(tulprm, 0);
 			   break;
 			}
@@ -1261,7 +1261,7 @@ int TFormRadat::tarkrata_re(int k, int varoita)
 				}
 			if (er) {
 				if (er > 1)
-					wcscpy(st, L"maalirasti");
+					wcscpy(st, TR(L"maalirasti"));
 				else
 					_itow(kdirastit[i][ii], st, 10);
 				swprintf(msg, TR(L"VIRHE: Leimasin %d radalla %s rasteilla %d"), i, snimi, kdirastit[i][0]);
@@ -2042,7 +2042,7 @@ void __fastcall TFormRadat::Lue_Xml_File(int lisaa)
 		OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->FileName = rataxmlname;
 	OpenDialog1->DefaultExt = L"xml";
-	OpenDialog1->Filter = L"XML-tiedostot (*.XML)|*.XML";
+	OpenDialog1->Filter = TR(L"XML-tiedostot (*.XML)|*.XML");
 	if (!OpenDialog1->Execute())
 		return;
 //	wcsncpy(rataxmlname, OpenDialog1->FileName.c_str(), sizeof(rataxmlname)/2-1);
@@ -2387,7 +2387,7 @@ int TFormRadat::kirjXmlTiedot(bool kysy, bool talldialog)
 		if (ToimintaTila > 0)
 			SaveDialog1->InitialDir = FormMain->CurrentDir;
 		SaveDialog1->DefaultExt = L"xml";
-		SaveDialog1->Filter = L"XML-tiedostot (*.xml)|*.xml";
+		SaveDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.xml");
 		if (!SaveDialog1->Execute())
 			return(1);
 		wcsncpy(rataxmlname, SaveDialog1->FileName.c_str(), sizeof(rataxmlname)/2-1);
@@ -2891,7 +2891,7 @@ void __fastcall TFormRadat::Nytrata1Click(TObject *Sender)
 {
 	if (FormKartta) {
 		FormKartta->naytaLeimat(rata_re+kRata, NULL, NULL);
-		FormKartta->NaytaOtsikko(UnicodeString(L"Rata ")+rata_re[kRata].tunnus);
+		FormKartta->NaytaOtsikko(UnicodeString(TR(L"Rata "))+rata_re[kRata].tunnus);
 		}
 }
 //---------------------------------------------------------------------------
@@ -3041,7 +3041,7 @@ void __fastcall TFormRadat::BtnVainKoordClick(TObject *Sender)
 		SaveDialog1->InitialDir = FormMain->CurrentDir;
 	SaveDialog1->FileName = rataxmlname;
 	SaveDialog1->DefaultExt = L"xml";
-	SaveDialog1->Filter = L"XML-tiedostot (*.xml)|*.xml";
+	SaveDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.xml");
 	if (!SaveDialog1->Execute())
 		return;
 //	wcsncpy(rataxmlname, SaveDialog1->FileName.c_str(), sizeof(rataxmlname)/2-1);
@@ -3140,7 +3140,7 @@ void __fastcall TFormRadat::BtnLueKoordCsvClick(TObject *Sender)
 	if (ToimintaTila > 0)
 		OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->DefaultExt = L"csv";
-	OpenDialog1->Filter = L"csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (!OpenDialog1->Execute())
 		return;
 
@@ -3203,7 +3203,7 @@ void __fastcall TFormRadat::BtnKirjKoordCsvClick(TObject *Sender)
 	if (ToimintaTila > 0)
 		SaveDialog1->InitialDir = FormMain->CurrentDir;
 	SaveDialog1->DefaultExt = L"csv";
-	SaveDialog1->Filter = L"csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (!SaveDialog1->Execute())
 		return;
 

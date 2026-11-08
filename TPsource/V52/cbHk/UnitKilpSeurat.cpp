@@ -47,12 +47,12 @@ void __fastcall TFormKilpSeurat::KirjoitaSeurat(int tyyli)
 	if (tyyli != 4) {
 		SaveDialog1->FileName = L"Seuraluettelo.txt";
 		SaveDialog1->DefaultExt = L"txt";
-		SaveDialog1->Filter = L"Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*");
 		}
 	else {
 		SaveDialog1->FileName = L"Seuraluettelo.csv";
 		SaveDialog1->DefaultExt = L"csv";
-		SaveDialog1->Filter = L"CSV-tiedostot (*.csv) | *.CSV|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"CSV-tiedostot (*.csv) | *.CSV|Kaikki tiedostot (*.*)|*.*");
 		}
 	if (SaveDialog1->Execute()) {
 		outfile = new TextFl(SaveDialog1->FileName.c_str(), L"w");

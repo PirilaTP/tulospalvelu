@@ -446,7 +446,7 @@ void __fastcall TFormExport::Button1Click(TObject *Sender)
 	kirjXMLkaikki = CBLaajennettu->Checked;
 	if (RGLaji->ItemIndex == 0) {
 		SaveDialog1->DefaultExt = L"xml";
-		SaveDialog1->Filter = L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute()) {
 			kirjEventXml(SaveDialog1->FileName.c_str() , CBXMLSarjat->Checked,
 				CBXMLRadat->Checked, CBXMLKilpailijat->Checked);
@@ -455,7 +455,7 @@ void __fastcall TFormExport::Button1Click(TObject *Sender)
 		}
 	if (RGLaji->ItemIndex == 1) {
 		SaveDialog1->DefaultExt = L"csv";
-		SaveDialog1->Filter = L"CSV-tiedostot (*.csv)|*.csv|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"CSV-tiedostot (*.csv)|*.csv|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute()) {
 			kirjCsv(SaveDialog1->FileName.c_str());
 			}
@@ -478,7 +478,7 @@ void __fastcall TFormExport::Button1Click(TObject *Sender)
 	if (RGLaji->ItemIndex == 4) {
 
 		SaveDialog1->DefaultExt = L"dat";
-		SaveDialog1->Filter = L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute()) {
 			kirjKilpDat(SaveDialog1->FileName.c_str());
 			Application->MessageBoxW(TR(L"Tiedosto kirjoitettu"), TR(L"Valmis"), MB_OK);

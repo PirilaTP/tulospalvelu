@@ -313,7 +313,7 @@ void __fastcall TFormKilpMaaritys::BtnLueSrjClick(TObject *Sender)
 {
 	OpenDialog1->FileName = UnicodeString(L"KilpSrj.xml");
 	OpenDialog1->DefaultExt = L"xml";
-	OpenDialog1->Filter = L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		lueEventXml(OpenDialog1->FileName.c_str(), true, false, false);
 		maaraaOsuusluku(true);

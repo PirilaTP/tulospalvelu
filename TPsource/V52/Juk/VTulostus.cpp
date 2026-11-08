@@ -199,6 +199,7 @@ void tulostusparamtp::operator=(tulostusparamtp& param)
 void tulostusparamtp::nollaa(void)
 {
 	memset(this, 0, sizeof(tulostusparamtp));
+	language = tulostekieli;
 	tulostettava = L'T';
 	vaihelkm = 1;
 	sj_raja = 3;

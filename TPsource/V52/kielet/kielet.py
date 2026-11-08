@@ -686,7 +686,7 @@ UI_KOKOELMAMETODIT = {'Add', 'Insert'}
 UI_MUOTOILU = {'swprintf', 'swprintf_s', '_snwprintf', 'snwprintf', 'wsprintf', 'sprintf', 'wcscpy', 'wcsncpy',
                'wcscat', 'wcsncat', 'strcpy', 'strcat', 'strncpy', 'strncat', 'wcscpy_s', 'wcscat_s'}
 # Sijoitukset ominaisuuksiin: X->Caption = L"..."
-UI_OMINAISUUDET = {'Caption', 'Hint', 'Title', 'SimpleText'}
+UI_OMINAISUUDET = {'Caption', 'Hint', 'Title', 'SimpleText', 'Filter'}
 # Kääreet, joiden läpi katsotaan ulompaan kutsuun
 NEUTRAALIT = {'UnicodeString', 'AnsiString', 'String', 'WideString', 'wchar_t', 'char', 'LPWSTR', 'LPCWSTR',
               'const'}

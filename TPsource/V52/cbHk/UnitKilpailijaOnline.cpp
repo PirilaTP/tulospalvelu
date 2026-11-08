@@ -1344,7 +1344,7 @@ void __fastcall TFormKilpailijaOnline::BtnTietoaClick(TObject *Sender)
 		OpenDialog1->InitialDir = FormMain->CurrentDir;
 		OpenDialog1->FileName = L"Tietolista.txt";
 		OpenDialog1->DefaultExt = L"txt";
-		OpenDialog1->Filter = L"Tekstitiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*";
+		OpenDialog1->Filter = TR(L"Tekstitiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*");
 		if (OpenDialog1->Execute()) {
 			TextFl *InFile = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 

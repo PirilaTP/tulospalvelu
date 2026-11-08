@@ -72,7 +72,7 @@ void __fastcall TFormSeurat::KirjSeurat(UnicodeString FName)
 		SaveDialog1->InitialDir = FormMain->CurrentDir;
 		SaveDialog1->FileName = UnicodeString(seuraTiedNm);
 		SaveDialog1->DefaultExt = L"csv";
-		SaveDialog1->Filter = L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute())
 			FName = SaveDialog1->FileName;
 		}
@@ -124,7 +124,7 @@ int __fastcall TFormSeurat::LueSeurat(UnicodeString FName)
 		OpenDialog1->InitialDir = FormMain->CurrentDir;
 		OpenDialog1->FileName = UnicodeString(L"seuraTiedNm");
 		OpenDialog1->DefaultExt = L"csv";
-		OpenDialog1->Filter = L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+		OpenDialog1->Filter = TR(L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 		if (OpenDialog1->Execute()) {
 			FName = OpenDialog1->FileName;
 			}

@@ -1359,7 +1359,7 @@ void __fastcall TFormSarjatiedot::Kirjoitacsvtiedostoon1Click(TObject *Sender)
 	SaveDialog1->InitialDir = FormMain->CurrentDir;
 	SaveDialog1->FileName = UnicodeString(L"sarjat.csv");
 	SaveDialog1->DefaultExt = L"csv";
-	SaveDialog1->Filter = L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		OutFl = new TextFl(SaveDialog1->FileName.c_str(), L"wt");
 		if (OutFl->IsOpen()) {
@@ -1406,7 +1406,7 @@ void __fastcall TFormSarjatiedot::Luecsvtiedostosta1Click(TObject *Sender)
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->FileName = UnicodeString(L"sarjat.csv");
 	OpenDialog1->DefaultExt = L"csv";
-	OpenDialog1->Filter = L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		InFl = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 		while (InFl->IsOpen() && !InFl->Feof()) {

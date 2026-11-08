@@ -384,7 +384,7 @@ void __fastcall TFormMuotoilu::BtnLue1Click(TObject *Sender)
 {
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->DefaultExt = L"xml";
-	OpenDialog1->Filter = L"XML-tiedostot (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		LueXMLMuotoilu(OpenDialog1->FileName.c_str());
 		}
@@ -402,7 +402,7 @@ void __fastcall TFormMuotoilu::BtnKirj1Click(TObject *Sender)
 	BtnOtaTul2Click(Sender);
 	SaveDialog1->InitialDir = FormMain->CurrentDir;
 	SaveDialog1->DefaultExt = L"xml";
-	SaveDialog1->Filter = L"XML-tiedostot (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		TallXMLMuotoilu(SaveDialog1->FileName.c_str());
 		}
@@ -545,7 +545,7 @@ void __fastcall TFormMuotoilu::allennamuotoiluttiedostoon1Click(TObject *Sender)
 void __fastcall TFormMuotoilu::Luevanhamuotoilutiedosto1Click(TObject *Sender)
 {
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
-	OpenDialog1->Filter = L"Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		lue_muotoilu(OpenDialog1->FileName.c_str(), 0);
 		}

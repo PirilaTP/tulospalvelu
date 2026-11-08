@@ -3505,7 +3505,7 @@ void __fastcall TFormEmit::BtnNaytaKarttaClick(TObject *Sender)
 	if (!FormKartta) {
 		if (!kilpparam.kartta[0]) {
 			OpenDialog1->DefaultExt = "bmp";
-			OpenDialog1->Filter = "Kuvatiedostot (*.bmp) |*.bmp|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TRA("Kuvatiedostot (*.bmp) |*.bmp|Kaikki tiedostot (*.*)|*.*");
 			if (!OpenDialog1->Execute() || OpenDialog1->FileName.Length() < 5)
 				return;
 			wcsncpy(kilpparam.kartta, OpenDialog1->FileName.c_str(), sizeof(kilpparam.kartta)/2-1);
@@ -3630,7 +3630,7 @@ void __fastcall TFormEmit::Kirjoitakopioemittiedoista1Click(TObject *Sender)
 
 	SaveDialog1->FileName = EFName;
 	SaveDialog1->DefaultExt = L"dat";
-	SaveDialog1->Filter = L"dat-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"dat-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		FILE *efl;
 

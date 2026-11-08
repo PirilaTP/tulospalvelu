@@ -197,13 +197,13 @@ void __fastcall TTulosteForm::ButtonTiedValClick(TObject *Sender)
 	Tyyppivaihdettu = false;
 	SaveDialog1->DefaultExt = TiedDefault;
 	if (!wcscmp(TiedDefault, L"txt"))
-		SaveDialog1->Filter = L"Tekstitiedostot (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Tekstitiedostot (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*");
 	if (!wcscmp(TiedDefault, L"csv"))
-		SaveDialog1->Filter = L"Erotteelliset tiedostot (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Erotteelliset tiedostot (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 	if (!wcscmp(TiedDefault, L"html"))
-		SaveDialog1->Filter = L"Html-tiedostot (*html, *.htm)|*.html;*.htm|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Html-tiedostot (*html, *.htm)|*.html;*.htm|Kaikki tiedostot (*.*)|*.*");
 	if (!wcscmp(TiedDefault, L"xml"))
-		SaveDialog1->Filter = L"XML-tiedostot (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*");
    if (SaveDialog1->Execute()) {
 	  TiedNimiEdit->Text = SaveDialog1->FileName;
 	  }
@@ -887,7 +887,7 @@ void __fastcall TTulosteForm::Button2Click(TObject *Sender)
 {
 	OpenDialog1->FileName = FormMain->CurrentDir+UnicodeString(L"\\fismaar.txt");
 	OpenDialog1->DefaultExt = L"txt";
-	OpenDialog1->Filter = L"Tekstitiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Tekstitiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		EdtFISMaar->Text = OpenDialog1->FileName;
 		wcsncpy(FISMaarFileName, OpenDialog1->FileName.c_str(), sizeof(FISMaarFileName)/2-1);

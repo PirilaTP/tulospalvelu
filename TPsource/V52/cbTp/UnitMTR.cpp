@@ -224,7 +224,7 @@ void __fastcall TFormMTR::Button1Click(TObject *Sender)
 		}
 	if (RGkohde->ItemIndex == 1 && emittallfile == NULL) {
 		SaveDialog1->DefaultExt = "dat";
-		SaveDialog1->Filter = "Datatiedostot (*.dat) |*.dat|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TRA("Datatiedostot (*.dat) |*.dat|Kaikki tiedostot (*.*)|*.*");
 		if (!SaveDialog1->Execute())
 			return;
 		emittallfile = _wfopen(SaveDialog1->FileName.c_str(), L"wb");

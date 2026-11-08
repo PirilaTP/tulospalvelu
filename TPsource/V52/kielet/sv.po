@@ -8051,6 +8051,10 @@ msgstr "Klar"
 msgid "Siirretty %d lähtöaikaa"
 msgstr "Flyttade %d starttider"
 
+#: cbHk/LoppuKilpUnit.cpp cbHk/UnitKilpSeurat.cpp ViestiWin/UnitKilpSeurat.cpp
+msgid "Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*"
+msgstr "Textfiler (*.txt) | *.TXT|Alla filer (*.*)|*.*"
+
 #: cbHk/LoppuKilpUnit.cpp cbHk/TakaaAjoUnit.cpp cbHk/UnitSprinthiihto.cpp cbHk/LoppuKilpUnit.dfm
 #: cbHk/TakaaAjoUnit.dfm
 msgid "Ei sarjaa"
@@ -8124,6 +8128,15 @@ msgstr "Hcp."
 #: cbHk/MuotoiluUnit.cpp cbHk/UnitPistelasku.dfm
 msgid "Askel"
 msgstr "Steg"
+
+#: cbHk/MuotoiluUnit.cpp ViestiWin/MuotoiluUnit.cpp ViestiWin/TulostusUnit2.cpp
+msgid "XML-tiedostot (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*"
+msgstr "XML-filer (*.xml)|*.xml|Alla filer (*.*)|*.*"
+
+#: cbHk/MuotoiluUnit.cpp cbHk/UnitKisaLuett.cpp cbHk/WinHk.cpp ViestiWin/MuotoiluUnit.cpp
+#: ViestiWin/UnitMain.cpp cbTp/UnitRadat.cpp
+msgid "Kaikki tiedostot (*.*)|*.*"
+msgstr "Alla filer (*.*)|*.*"
 
 #: cbHk/TakaaAjoUnit.cpp
 msgid "Pistekaavan kerroin virheellinen"
@@ -8298,6 +8311,11 @@ msgstr "Antal varvtider"
 msgid "Anna piippausten lukumäärä, 0: ei piippausta"
 msgstr "Ange antal pip, 0: inget pip"
 
+#: cbHk/TulosUnit.cpp cbHk/UnitSeurat.cpp cbHk/UnitTKanta.cpp ViestiWin/UnitSeurat.cpp
+msgid ""
+"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*"
+msgstr "Text/csv-fil (*.csv, *.txt)|*.csv;*.txt|Alla filer (*.*)|*.*"
+
 #: cbHk/TulostusUnit2.cpp ViestiWin/TulostusUnit2.cpp
 #, c-format
 msgid "Kirjoitinten luettelointi epäonnistui, koodi %d"
@@ -8306,6 +8324,24 @@ msgstr "Uppräkning av skrivare misslyckades, kod %d"
 #: cbHk/TulostusUnit2.cpp ViestiWin/TulostusUnit2.cpp
 msgid "Oletuskirjoittimen nimi liian pitkä (yli 119 merkkiä)"
 msgstr "Standardskrivarens namn för långt (över 119 tecken)"
+
+#: cbHk/TulostusUnit2.cpp cbHk/UnitKilpailijaOnline.cpp ViestiWin/TulostusUnit2.cpp
+msgid "Tekstitiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*"
+msgstr "Textfiler (*.txt)|*.TXT|Alla filer (*.*)|*.*"
+
+#: cbHk/TulostusUnit2.cpp
+msgid ""
+"Erotteelliset tiedostot (*.csv, *.txt)|*.CSV;*.TXT|Kaikki tiedostot (*.*)|*.*"
+msgstr "Avgränsade filer (*.csv, *.txt)|*.CSV;*.TXT|Alla filer (*.*)|*.*"
+
+#: cbHk/TulostusUnit2.cpp
+msgid "Html-tiedostot (*html, *.htm)|*.HTML;*.HTM|Kaikki tiedostot (*.*)|*.*"
+msgstr "Html-filer (*html, *.htm)|*.HTML;*.HTM|Alla filer (*.*)|*.*"
+
+#: cbHk/TulostusUnit2.cpp cbHk/UnitExport.cpp cbHk/UnitImport.cpp cbHk/UnitKilpMaaritys.cpp
+#: cbHk/UnitKisaLuett.cpp ViestiWin/UnitExport.cpp ViestiWin/UnitImport.cpp ViestiWin/UnitKilpMaaritys.cpp
+msgid "XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*"
+msgstr "XML-filer (*.xml)|*.XML|Alla filer (*.*)|*.*"
 
 #: cbHk/TulostusUnit2.cpp cbHk/UnitAikaSiirto.cpp cbHk/UnitArvonta.cpp cbHk/UnitOsanottajat.cpp
 #: cbHk/UnitSeuratoimet.cpp cbHk/TulostusUnit2.dfm cbHk/UnitAikaSiirto.dfm cbHk/UnitArvonta.dfm
@@ -8839,6 +8875,10 @@ msgstr "Tävlande har redan en tid, spara ändringen?"
 msgid "Vahvista tallennus"
 msgstr "Bekräfta sparande"
 
+#: cbHk/UnitAjanotto.cpp ViestiWin/TulostusUnit2.cpp ViestiWin/UnitAjanotto.cpp
+msgid "Tekstitiedostot (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*"
+msgstr "Textfiler (*.txt)|*.txt|Alla filer (*.*)|*.*"
+
 #: cbHk/UnitAjanotto.cpp
 msgid "Luetaanko myös kilpailijan numero ja piste (Kyllä), vai vain ajat (Ei)"
 msgstr "Läses även tävlandes nummer och punkt (Ja), eller bara tider (Nej)"
@@ -8981,9 +9021,22 @@ msgstr "I resultattjänstläge kan endast kommande dagar lottas"
 msgid "Tulospalvelutilassa voi numeroida vain tulevia päiviä"
 msgstr "I resultattjänstläge kan endast kommande dagar numreras"
 
+#: cbHk/UnitAutoFile.cpp
+msgid "Html-tiedostot (*.html)|*.HTML|Kaikki tiedostot (*.*)|*.*"
+msgstr "Html-filer (*.html)|*.HTML|Alla filer (*.*)|*.*"
+
+#: cbHk/UnitAutoFile.cpp ViestiWin/UnitAutoFile.cpp
+msgid ""
+"CMD-tiedostot (*.cmd)|*.cmd|BAT-tiedostot (*.bat)|*.bat|Kaikki tiedostot (*.*)|*.*"
+msgstr "CMD-filer (*.cmd)|*.cmd|BAT-filer (*.bat)|*.bat|Alla filer (*.*)|*.*"
+
 #: cbHk/UnitAutoFile.cpp ViestiWin/UnitAutoFile.cpp
 msgid "Tietoja ei ole tallennettu"
 msgstr "Uppgifterna har inte sparats"
+
+#: cbHk/UnitAvausMaar.cpp ViestiWin/UnitAvausMaar.cpp
+msgid "Konfiguraatiot (*.cfg) | *.CFG"
+msgstr "Konfigurationer (*.cfg) | *.CFG"
 
 #: cbHk/UnitCfg.cpp cbHk/UnitEmitKoodit.cpp ViestiWin/UnitCfg.cpp ViestiWin/UnitMerkKoodeja.cpp
 #: cbHk/UnitTarkMerk.dfm
@@ -9091,6 +9144,10 @@ msgstr "Klockans kanal 7"
 msgid "Kellon kanava 8"
 msgstr "Klockans kanal 8"
 
+#: cbHk/UnitCfg.cpp cbHk/WinHk.cpp ViestiWin/UnitCfg.cpp ViestiWin/UnitMain.cpp
+msgid "Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*"
+msgstr "Konfigurationer (*.cfg)|*.CFG|Alla filer (*.*)|*.*"
+
 #: cbHk/UnitCfg.cpp ViestiWin/UnitCfg.cpp
 msgid "In"
 msgstr ""
@@ -9120,6 +9177,11 @@ msgstr "Fillängden %d är inte väntad multipel. Post %d, köer %d, poster %d"
 #: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp
 msgid "Lah"
 msgstr "Kl"
+
+#: cbHk/UnitComfile.cpp cbHk/UnitExport.cpp cbHk/UnitImport.cpp ViestiWin/UnitComfile.cpp
+#: ViestiWin/UnitExport.cpp ViestiWin/UnitImport.cpp
+msgid "DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*"
+msgstr "DAT-filer (*.dat)|*.DAT|Alla filer (*.*)|*.*"
 
 #: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm
 msgid "Tieto"
@@ -9561,6 +9623,10 @@ msgid "Tarkastusmerkintä"
 msgstr "Kontrollmarkering"
 
 #: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
+msgid "Kuvatiedostot (*.bmp) |*.bmp|Kaikki tiedostot (*.*)|*.*"
+msgstr "Bildfiler (*.bmp) |*.bmp|Alla filer (*.*)|*.*"
+
+#: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
 msgid "Kartan lataaminen ei onnistu"
 msgstr "Kartan kan inte laddas"
 
@@ -9569,6 +9635,10 @@ msgid ""
 "Viallisten korttien hyväksyminen voi johtaa virheisiin myös muiden korttien lukemisessa. Käytä tätä valintaa vain tilapäisesti yrityksenä lukea tiedot, jotka eivät muuten tallennu"
 msgstr ""
 "Att godkänna felaktiga brickor kan leda till fel även vid läsning av andra brickor. Använd detta val endast tillfälligt för att försöka läsa uppgifter som annars inte sparas"
+
+#: cbHk/UnitEmit.cpp
+msgid "dat-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*"
+msgstr "dat-filer (*.dat)|*.DAT|Alla filer (*.*)|*.*"
 
 #: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
 msgid "Luenta voi jatkua vasta, kun kaavake \"Emit-muutokset\" on suljettu"
@@ -9671,8 +9741,16 @@ msgid "Tiedosto kirjoitettu"
 msgstr "Filen skriven"
 
 #: cbHk/UnitExport.cpp ViestiWin/UnitExport.cpp
+msgid "CSV-tiedostot (*.csv)|*.csv|Kaikki tiedostot (*.*)|*.*"
+msgstr "CSV-filer (*.csv)|*.csv|Alla filer (*.*)|*.*"
+
+#: cbHk/UnitExport.cpp ViestiWin/UnitExport.cpp
 msgid "Tiedonsiirto käynnistyy, kun SQL-määritysikkuna suljetaan"
 msgstr "Dataöverföringen startar när SQL-definitionsfönstret stängs"
+
+#: cbHk/UnitHylkRap.cpp ViestiWin/UnitHylkRap.cpp
+msgid "Xml-tiedostot (*.xml) |*.xml|Kaikki tiedostot (*.*)|*.*"
+msgstr "Xml-filer (*.xml) |*.xml|Alla filer (*.*)|*.*"
 
 #: cbHk/UnitHylkRap.cpp ViestiWin/UnitHylkRap.cpp cbTp/UnitSivuTuloste.cpp
 #, c-format
@@ -9747,6 +9825,21 @@ msgstr "Tävlingsnumret upptaget"
 #: cbHk/UnitImport.cpp
 msgid "Virheellinen sarja "
 msgstr "Felaktig klass "
+
+#: cbHk/UnitImport.cpp ViestiWin/UnitImport.cpp
+msgid ""
+"Teksti/csv-tiedostot (*.csv), *.txt|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*"
+msgstr "Text/csv-filer (*.csv), *.txt|*.csv;*.txt|Alla filer (*.*)|*.*"
+
+#: cbHk/UnitImport.cpp
+msgid ""
+"Teksti/csv-tiedostot (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*"
+msgstr "Text/csv-filer (*.csv, *.txt)|*.csv;*.txt|Alla filer (*.*)|*.*"
+
+#: cbHk/UnitImport.cpp ViestiWin/UnitImport.cpp
+msgid ""
+"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*"
+msgstr "Text/csv-filer (*.txt, *.csv)|*.txt;*.csv|Alla filer (*.*)|*.*"
 
 #: cbHk/UnitImport.cpp ViestiWin/UnitImport.cpp
 msgid "Tiedostosta ei löytynyt osanottajatietoja"
@@ -10051,6 +10144,10 @@ msgid ""
 "Anna nollasta eroava numero, jos maakoodi kirjoitetaan lisenssinumeron alkuun. Annettu numeroarvo kertoo lisenssikoodin numero-osan minimipituuden"
 msgstr ""
 "Ange ett nummer skilt från noll, om landskoden skrivs i början av licensnumret. Angivet värde anger minimilängden för licenskodens sifferdel"
+
+#: cbHk/UnitKilpSeurat.cpp ViestiWin/UnitKilpSeurat.cpp
+msgid "CSV-tiedostot (*.csv) | *.CSV|Kaikki tiedostot (*.*)|*.*"
+msgstr "CSV-filer (*.csv) | *.CSV|Alla filer (*.*)|*.*"
 
 #: cbHk/UnitKilpailijaOnline.cpp cbHk/UnitKilpailijatiedot.cpp cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm
 msgid "Havaittu"
@@ -10486,6 +10583,10 @@ msgstr "Ange antal fasta kolumner (1..12)"
 msgid "Kiinteitä sarakkeita "
 msgstr "Fasta kolumner "
 
+#: cbHk/UnitPiirival.cpp
+msgid "Teksstitiedostot|*.TXT;*.LST;*.CSV|Kaikki tiedostot (*.*)|*.*"
+msgstr "Textfiler|*.TXT;*.LST;*.CSV|Alla filer (*.*)|*.*"
+
 #: cbHk/UnitPistelasku.cpp
 msgid ""
 "Yhteistuloksen määräytymistavan muutos, kun yhteistuloksia jo on, voi synnyttää indeksointivirheitä ja vaatii ohjelman uudelleenkäynnistyksen. Muutetaanko määräytymistapa"
@@ -10715,6 +10816,11 @@ msgstr "Välj en etapp att visa och ordningen Start/Starttid"
 #: cbHk/UnitSarjatiedot.cpp
 msgid "Anna siirto sekunteina"
 msgstr "Ange förskjutning i sekunder"
+
+#: cbHk/UnitSarjatiedot.cpp cbHk/UnitVaPisteet.cpp ViestiWin/UnitSarjatiedot.cpp cbTp/UnitFIS.cpp
+#: cbTp/UnitLisaTekstit.cpp
+msgid "Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*"
+msgstr "Csv-filer (*.csv)|*.CSV|Alla filer (*.*)|*.*"
 
 #: cbHk/UnitSarjatiedot.cpp ViestiWin/UnitSarjatiedot.cpp
 msgid "Anna kiinteiden sarakkeiden luku (1..8)"
@@ -11070,6 +11176,14 @@ msgid "Haluatko todella poistua ohjelmasta?"
 msgstr "Vill du verkligen avsluta programmet?"
 
 #: cbHk/WinHk.cpp ViestiWin/UnitMain.cpp
+msgid "xml-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*"
+msgstr "xml-filer (*.xml)|*.XML|Alla filer (*.*)|*.*"
+
+#: cbHk/WinHk.cpp
+msgid "Ikkunatiedostot (*.ikk,*.xml)|*.IKK;*.XML|Kaikki tiedostot (*.*)|*.*"
+msgstr "Fönsterfiler (*.ikk,*.xml)|*.IKK;*.XML|Alla filer (*.*)|*.*"
+
+#: cbHk/WinHk.cpp ViestiWin/UnitMain.cpp
 msgid "Avaaminen peruutettu"
 msgstr "Öppnandet avbrutet"
 
@@ -11104,6 +11218,10 @@ msgstr ""
 #: cbHk/WinHk.cpp
 msgid "Vaiheen vaihto tai uusintakäynnistys. Odota muutama sekunti."
 msgstr "Etappbyte eller omstart. Vänta några sekunder."
+
+#: cbHk/WinParamXml.cpp
+msgid "Ikkunat (*.ikk)|*.IKK|Kaikki tiedostot (*.*)|*.*"
+msgstr "Fönster (*.ikk)|*.IKK|Alla filer (*.*)|*.*"
 
 #: cbHk/WinParamXml.cpp
 #, c-format
@@ -11179,6 +11297,15 @@ msgstr "Sträckvisa resultat"
 #: ViestiWin/TulostusUnit2.cpp ViestiWin/TulostusUnit2.dfm
 msgid "Kaikki tulokset ja väliajat"
 msgstr "Alla resultat och mellantider"
+
+#: ViestiWin/TulostusUnit2.cpp
+msgid ""
+"Erotteelliset tiedostot (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*"
+msgstr "Avgränsade filer (*.csv, *.txt)|*.csv;*.txt|Alla filer (*.*)|*.*"
+
+#: ViestiWin/TulostusUnit2.cpp
+msgid "Html-tiedostot (*html, *.htm)|*.html;*.htm|Kaikki tiedostot (*.*)|*.*"
+msgstr "Html-filer (*html, *.htm)|*.html;*.htm|Alla filer (*.*)|*.*"
 
 #: ViestiWin/TulostusUnit2.cpp
 msgid ""
@@ -11322,6 +11449,10 @@ msgstr ""
 msgid "Valitse toiminto"
 msgstr "Välj funktion"
 
+#: ViestiWin/UnitAutoFile.cpp
+msgid "Html-tiedostot (*.html)|*.html|Kaikki tiedostot (*.*)|*.*"
+msgstr "Html-filer (*.html)|*.html|Alla filer (*.*)|*.*"
+
 #: ViestiWin/UnitComfile.cpp ViestiWin/OsuusTiedot.dfm
 msgid "Osuustiedot"
 msgstr "Sträckdata"
@@ -11373,6 +11504,10 @@ msgstr "Masstart"
 #: ViestiWin/UnitComfile.cpp
 msgid "Binaaritiedosto"
 msgstr "Binärfil"
+
+#: ViestiWin/UnitComfile.cpp
+msgid "txt-tiedostot (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*"
+msgstr "txt-filer (*.txt)|*.txt|Alla filer (*.*)|*.*"
 
 #: ViestiWin/UnitEmit.cpp
 msgid "Os. "
@@ -11690,6 +11825,10 @@ msgstr "Förberedelse"
 msgid "Vaihe: Sisäänluenta"
 msgstr "Fas: Inläsning"
 
+#: ViestiWin/UnitMain.cpp
+msgid "Ikkunat (*.xml,*.ikk) |*.XML|*.IKK|Kaikki tiedostot (*.*)|*.*"
+msgstr "Fönster (*.xml,*.ikk) |*.XML|*.IKK|Kaikki tiedostot (*.*)|*.*"
+
 #: ViestiWin/UnitNollaus.cpp ViestiWin/UnitOsuuskopiointi.cpp ViestiWin/UnitNollaus.dfm ViestiWin/UnitOsuuskopiointi.dfm
 msgid "Toiminto käynnissä"
 msgstr "Funktion pågår"
@@ -11719,6 +11858,10 @@ msgstr "Beräknade poäng: %d, Inkl. straff %d,  Tid: %8.8s"
 #, c-format
 msgid "Tallennetut pisteet: %d"
 msgstr "Sparade poäng: %d"
+
+#: ViestiWin/UnitPiirival.cpp
+msgid "Teksstitiedostot|*.TXT;*.LST|Kaikki tiedostot (*.*)|*.*"
+msgstr "Textfiler|*.TXT;*.LST|Alla filer (*.*)|*.*"
 
 #: ViestiWin/UnitSHLTul.cpp
 msgid "Tyyli"
@@ -11835,6 +11978,10 @@ msgstr "Tömning"
 msgid "V)ahvista, että haluat tyhjentää laitteen muistin"
 msgstr "Bekräfta att du vill tömma enhetens minne"
 
+#: cbTp/UnitEmiTag.cpp cbTp/UnitEmitFile.cpp cbTp/UnitMTR.cpp
+msgid "Datatiedostot (*.dat) |*.dat|Kaikki tiedostot (*.*)|*.*"
+msgstr "Datafiler (*.dat) |*.dat|Alla filer (*.*)|*.*"
+
 #: cbTp/UnitEmiTag.cpp cbHk/UnitKilpMaaritys.dfm ViestiWin/UnitKilpMaaritys.dfm
 msgid "emiTag"
 msgstr ""
@@ -11893,6 +12040,14 @@ msgstr " och "
 #: cbTp/UnitFIS.cpp
 msgid "Ohjelma ei onnistunut avaamaan tarvittavaa tiedostoa: "
 msgstr "Programmet kunde inte öppna den nödvändiga filen: "
+
+#: cbTp/UnitFIS.cpp
+msgid "Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*"
+msgstr "Txt-filer (*.txt)|*.TXT|Alla filer (*.*)|*.*"
+
+#: cbTp/UnitHtmlEdit.cpp
+msgid "Html-tiedostot (*.html, *htm)|*.html;*.htm|Kaikki tiedostot (*.*)|*.*"
+msgstr "Html-filer (*.html, *htm)|*.html;*.htm|Alla filer (*.*)|*.*"
 
 #: cbTp/UnitKartta.cpp
 msgid ""
@@ -12042,7 +12197,7 @@ msgstr "Varningsgräns för starttid (min)"
 msgid "noll"
 msgstr "noll"
 
-#: cbTp/UnitPiikit.cpp
+#: cbTp/UnitPiikit.cpp cbTp/UnitRadat.cpp
 #, c-format
 msgid "Koodi %d rasteilla %d"
 msgstr "Kod %d på kontrollerna %d"
@@ -12075,6 +12230,10 @@ msgstr "Ingendera"
 #, c-format
 msgid "Rastin numero %d tai e-koodi %d virheellinen tai poikkeuksellinen"
 msgstr "Kontrollnummer %d eller e-kod %d felaktig eller avvikande"
+
+#: cbTp/UnitRadat.cpp
+msgid "LST-tiedostot (*.lst)|*.LST|Kaikki tiedostot (*.*)|*.*"
+msgstr "LST-filer (*.lst)|*.LST|Alla filer (*.*)|*.*"
 
 #: cbTp/UnitRadat.cpp
 #, c-format
@@ -12131,6 +12290,15 @@ msgid "Ei ratoja"
 msgstr "Inga banor"
 
 #: cbTp/UnitRadat.cpp
+#, c-format
+msgid "Radan %s rastin %d (tunnus %d) Emit-koodi puuttuu"
+msgstr "Bana %s kontroll %d (kod %d) saknar Emit-kod"
+
+#: cbTp/UnitRadat.cpp
+msgid " ja"
+msgstr " och"
+
+#: cbTp/UnitRadat.cpp
 msgid ""
 "Rastien Emit-koodimäärittelyt (tiedosto LEIMAT.LST) puuttuvat.Emit-koodien oletetaan olevan samat kuin rastitunnukset."
 msgstr ""
@@ -12141,13 +12309,41 @@ msgid "Pyydetyt radat tulostettu"
 msgstr "Begärda banor utskrivna"
 
 #: cbTp/UnitRadat.cpp
+msgid "   Rastitunnus   Emitkoodit"
+msgstr "   Kontrollkod   Emitkoder "
+
+#: cbTp/UnitRadat.cpp
 msgid "Koodit tulostettu"
 msgstr "Koder utskrivna"
+
+#: cbTp/UnitRadat.cpp
+msgid "Emitkoodi  Rastitunnukset"
+msgstr "Emitkod    Kontrollkoder"
+
+#: cbTp/UnitRadat.cpp
+msgid "      Rastitunnus   Emitkoodit"
+msgstr "      Kontrollkod   Emitkoder "
+
+#: cbTp/UnitRadat.cpp
+msgid "Pakollisessa järjestyksessä juostavia"
+msgstr "Ska tas i bestämd ordning"
+
+#: cbTp/UnitRadat.cpp
+msgid "Pakollisia, mutta vapaassa järjestyksessä juostavia"
+msgstr "Obligatoriska, men i valfri ordning"
+
+#: cbTp/UnitRadat.cpp
+msgid "Vapaassa järjestyksessä juostavia, partiokisassa valinnaisia"
+msgstr "I valfri ordning, valbara i patrulltävling"
 
 #: cbTp/UnitRadat.cpp
 #, c-format
 msgid "VAROITUS: Leimasintietoihin lisätty rastille %d koodi %d"
 msgstr "VARNING: Till stämplingsenhetsuppgifterna lades för kontroll %d kod %d"
+
+#: cbTp/UnitRadat.cpp
+msgid "maalirasti"
+msgstr "målkontroll"
 
 #: cbTp/UnitRadat.cpp
 #, c-format
@@ -12205,6 +12401,10 @@ msgstr ""
 #: cbTp/UnitRadat.cpp
 msgid "Vahvista tietojen vaihto"
 msgstr "Bekräfta byte av uppgifter"
+
+#: cbTp/UnitRadat.cpp
+msgid "XML-tiedostot (*.XML)|*.XML"
+msgstr "XML-filer (*.XML)|*.XML"
 
 #: cbTp/UnitRadat.cpp
 msgid "Säilytetäänkö aimmat tiedot täydentäen ja päivittäen niitä?"
@@ -12272,6 +12472,10 @@ msgstr "Spara"
 #: cbTp/UnitRadat.cpp
 msgid "Palaa ratojen käsittelyyn"
 msgstr "Återgå till behandling av banor"
+
+#: cbTp/UnitRadat.cpp
+msgid "XML-tiedostot (*.xml)|*.xml"
+msgstr "XML-filer (*.xml)|*.xml"
 
 #: cbTp/UnitRadat.cpp
 msgid "Ratatietojen avaaminen kirjoitettavaksi ei onnistunut."
@@ -12342,6 +12546,10 @@ msgid "Leimat"
 msgstr "Stämplingar"
 
 #: cbTp/UnitRadat.cpp
+msgid "Rata "
+msgstr "Bana "
+
+#: cbTp/UnitRadat.cpp
 msgid "Finish"
 msgstr ""
 
@@ -12360,6 +12568,10 @@ msgstr "Felaktig koordinat på rad "
 #: cbTp/UnitRadat.cpp
 msgid "Virheellinen koordinaatti kartan määrityksissä"
 msgstr "Felaktig koordinat i kartdefinitionerna"
+
+#: cbTp/UnitRadat.cpp
+msgid "csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*"
+msgstr "csv-filer (*.csv)|*.CSV|Alla filer (*.*)|*.*"
 
 #: cbTp/UnitRadat.cpp
 msgid "Koordinaattitiedoston avaaminen ei onnistu"
@@ -12386,6 +12598,10 @@ msgstr "Ange eventuell tilläggssträcka för alla banors första kontrollsträc
 #: cbTp/UnitRadat.cpp
 msgid "Anna kaikkien ratojen loppuviitoituksen mahdollinen lisämatka"
 msgstr "Ange eventuell tilläggssträcka för alla banors snitsel till mål"
+
+#: cbTp/UnitSivuTuloste.cpp
+msgid "Xml-tiedosto (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*"
+msgstr "Xml-fil (*.xml)|*.xml|Alla filer (*.*)|*.*"
 
 #: cbTp/UnitSivuTuloste.cpp
 msgid "X-pos"
@@ -12707,7 +12923,7 @@ msgstr "Huvudrubrik på varje resultatlistas första sida"
 #: cbHk/MuotoiluUnit.dfm
 msgid ""
 "Sarjanimeä edeltävä tulosluettelon otsikko (korkeintaan kerran sivua kohti)"
-msgstr ""
+msgstr "Resultatlistans rubrik före klassnamnet (högst en gång per sida)"
 
 #: cbHk/MuotoiluUnit.dfm ViestiWin/MuotoiluUnit.dfm
 msgid "Sarjanimeä seuraava tulosluettelon otsikko"
@@ -12715,7 +12931,7 @@ msgstr "Resultatlistans rubrik efter klassnamnet"
 
 #: cbHk/MuotoiluUnit.dfm
 msgid "Kirjoitintulosteiden ylä- ja alamarginaalit (yksikkö 1/72 tuumaa)"
-msgstr ""
+msgstr "Övre och nedre marginal för utskrifter (enhet 1/72 tum)"
 
 #: cbHk/MuotoiluUnit.dfm cbTp/UnitRadat.dfm
 msgid "Ylä"
@@ -12769,11 +12985,13 @@ msgstr "Tomma rader i sidans början"
 msgid ""
 "Tämän sivun asetuksista kirjasintyyppivalinnat, ylä- ja alamarginaalit sekä tiedostojen käsittely koskevat myös lähtöluetteloita, muut vain tulosluetteloita. Lähtöluetteloden vastaavat valinnat tehdään ao. taulukoiden alimmilla riveillä."
 msgstr ""
+"Av inställningarna på denna sida gäller teckensnitt, övre och nedre marginal samt filhantering även startlistor, övriga endast resultatlistor. Motsvarande val för startlistor görs på de nedersta raderna i tabellerna."
 
 #: cbHk/MuotoiluUnit.dfm
 msgid ""
 "Käytettäessä Windowsin kirjoitinajureita määräävät ylä- ja alamarginaali sivun pituuden"
 msgstr ""
+"Med Windows skrivardrivrutiner bestämmer övre och nedre marginal sidans längd"
 
 #: cbHk/MuotoiluUnit.dfm cbTp/UnitRadat.dfm
 msgid "Kirjoitin"
@@ -12928,6 +13146,7 @@ msgstr "Startlistor, fil"
 msgid ""
 "Otsikkotekstit määritellään kirjoittimelle tulostettavan lähtöluettelon muotoilusivulla ja ovat tiedostotulostuksessa samat"
 msgstr ""
+"Rubriktexterna definieras på formateringssidan för utskriven startlista och är desamma vid filutskrift"
 
 #: cbHk/MuotoiluUnit.dfm
 msgid "Html-lisämääritykset ovat sivun 'Tulokset tiedostoon' mukaiset"
@@ -13234,6 +13453,7 @@ msgstr "Första starttid"
 msgid ""
 "Pois jätettävien numeroksi perusnumero + oheinen lisä (0: ei uutta numeroa)"
 msgstr ""
+"Nummer för uteslutna: grundnummer + tillägget bredvid (0: inget nytt nummer)"
 
 #: cbHk/TakaaAjoUnit.dfm
 msgid "Aaltokoko lopuille"
@@ -13303,6 +13523,7 @@ msgstr "Ej startat"
 #: cbHk/TakaaAjoUnit.dfm
 msgid "Vähennä tuloksista kärkiaika ottaen pyöristys ja kertoimet huomioon"
 msgstr ""
+"Dra av ledarens tid från resultaten med hänsyn till avrundning och koefficienter"
 
 #: cbHk/TakaaAjoUnit.dfm
 msgid "Tallenna ero kärkeen vaiheen pistekenttään 2"
@@ -13869,6 +14090,7 @@ msgstr "Fältavgränsare"
 msgid ""
 "Varoitus: Ohjelma ei pysty näyttämään html-tiedoston  kaikkia muotoiluja oikein tällä tietokoneella (XP?)"
 msgstr ""
+"Varning: Programmet kan inte visa all formatering i html-filen korrekt på denna dator (XP?)"
 
 #: cbHk/TulostusUnit2.dfm
 msgid "Tekstitiedosto kentät erotettuina"
@@ -13922,6 +14144,7 @@ msgstr "Jaktstartens starter till klocka"
 msgid ""
 "UTF-8 toimii varmimmin Microsoftin ohjelmissa, kun BOM-tavut ovat mukana, muuten ilman BOM-tavuja"
 msgstr ""
+"UTF-8 fungerar säkrast i Microsofts program med BOM-byte, annars utan BOM-byte"
 
 #: cbHk/TulostusUnit2.dfm ViestiWin/TulostusUnit2.dfm
 msgid "UTF-8 (standardi, ilman BOM-tavuja)"
@@ -14448,7 +14671,7 @@ msgstr "Utelämna sista stämpling (mål)"
 #: cbHk/TulostusUnit2.dfm
 msgid ""
 "Luettele väliaikapisteet tulostettavassa järjestyksessä. 1 = 1. va. jne."
-msgstr ""
+msgstr "Ange mellantidspunkterna i utskriftsordning. 1 = 1:a mellantid osv."
 
 #: cbHk/TulostusUnit2.dfm
 msgid "Rajaa alisarjoja"
@@ -15239,6 +15462,7 @@ msgstr "Tilldelning av nummer"
 msgid ""
 "Myöhemmille vaiheille annettava lisäys sprintin pohjustuksena. Samalla merkitään vaihe vakntiksi."
 msgstr ""
+"Tillägg för senare etapper vid initiering av sprint. Samtidigt markeras etappen som vakant."
 
 #: cbHk/UnitArvonta.dfm
 msgid "Numerointi sarjoittain lähtöjärjestykssä"
@@ -15312,6 +15536,7 @@ msgstr "Numrera endast vald etapp"
 msgid ""
 "Numeroille tehtävän muutoksen suuruus ja etumerkki Muutos tehdään joko yhdelle vaiheelle tai kaikille vaiheille antaen kaikille vaiheille samat numero perusnumeron pohjalta."
 msgstr ""
+"Storlek och tecken för ändringen av nummer. Ändringen görs för en etapp eller för alla etapper, så att alla etapper får samma nummer utgående från grundnumret."
 
 #: cbHk/UnitArvonta.dfm
 msgid " Rankiin perustuvan numeroinnin valintoja "
@@ -15709,7 +15934,7 @@ msgstr "Anslutningar"
 
 #: cbHk/UnitCfg.dfm cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm cbTp/UnitEmiTag.dfm
 msgid "Ruudun valitseminen ja hiiren oikea näppäin tarjoaa usein vaihtoehtoja"
-msgstr ""
+msgstr "Markera en ruta och högerklicka för att ofta få alternativ"
 
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Kysy käynnistettäessä"
@@ -15892,6 +16117,7 @@ msgstr "Valt antal"
 msgid ""
 "Merkitse sarakkeeseen 'Kohde' kirjain M, L tai A (piste avoin) tai väliajan järjestysluku"
 msgstr ""
+"Ange i kolumnen 'Kohde' bokstaven M, L eller A (punkt öppen) eller mellantidens ordningsnummer"
 
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid " Ajan kohdepiste "
@@ -16047,7 +16273,7 @@ msgstr "Tider från stämplingskontroll till fil"
 
 #: cbHk/UnitCfg.dfm
 msgid "Tässä määritellään Emit- ja emiTag tunnistimiin perustuva ajanotto"
-msgstr ""
+msgstr "Här definieras tidtagning baserad på Emit- och emiTag-enheter"
 
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Kaikkien (ainoan) lukijoiden ajanottokäyttö"
@@ -17126,6 +17352,7 @@ msgstr "Ändringar av stämplingsuppgifter"
 msgid ""
 "Leimaustietotaulukkon tehdyt muutokset tallennetaan vain, kun ne on hyväksytty tällä kaavakkeella "
 msgstr ""
+"Ändringar i stämplingstabellen sparas endast när de godkänts i detta formulär "
 
 #: cbHk/UnitEmitMuutokset.dfm ViestiWin/UnitEmitMuutokset.dfm
 msgid "sek"
@@ -17138,11 +17365,11 @@ msgstr "Halvera brickans tider"
 #: cbHk/UnitEmitMuutokset.dfm ViestiWin/UnitEmitMuutokset.dfm
 msgid ""
 "Määrää luentahetki niin, että maaliintuloajan määritykset ovat yhdenmukaiset"
-msgstr ""
+msgstr "Bestäm avläsningstidpunkten så att måltidsdefinitionerna är enhetliga"
 
 #: cbHk/UnitEmitMuutokset.dfm ViestiWin/UnitEmitMuutokset.dfm
 msgid "Huomioi leimasinkoodien ja kortin aikatietojen muutokset taulukossa"
-msgstr ""
+msgstr "Beakta ändringar av stämplingskoder och brickans tider i tabellen"
 
 #: cbHk/UnitEmitMuutokset.dfm ViestiWin/UnitEmitMuutokset.dfm
 msgid "Hyväksy muutokset"
@@ -17222,6 +17449,7 @@ msgstr "Överföring av data till fil"
 msgid ""
 "Varmista, että kilpailun koodi ei ole sama kuin toisella tallennetulla kilpailulla"
 msgstr ""
+"Kontrollera att tävlingens kod inte är densamma som för en annan sparad tävling"
 
 #: cbHk/UnitExport.dfm ViestiWin/UnitExport.dfm
 msgid "Ei-kirjoitettavat sarjat"
@@ -17266,7 +17494,7 @@ msgstr "Orienteringens banuppgifter"
 #: cbHk/UnitExport.dfm ViestiWin/UnitExport.dfm
 msgid ""
 "Laajennetut tiedot ottaen mukaan tyhjät kentät formaatin selvittämiseksi"
-msgstr ""
+msgstr "Utökade uppgifter med tomma fält för att visa formatet"
 
 #: cbHk/UnitExport.dfm ViestiWin/UnitExport.dfm
 msgid " Tekstitiedoston valinnat "
@@ -17341,6 +17569,7 @@ msgstr "Poster behandlade"
 msgid ""
 "Jatkuvan tiedonsiirron ollessa käytössä panee ohjelma tietueet heti lähetysjonoon"
 msgstr ""
+"När kontinuerlig dataöverföring används lägger programmet posterna genast i sändningskön"
 
 #: cbHk/UnitExport.dfm ViestiWin/UnitExport.dfm
 msgid "Ohita ei-lähteneet"
@@ -17723,6 +17952,7 @@ msgstr "rader från filen"
 msgid ""
 "Tietojen siirto MySQL-tietokannasta voi olla hidasta (esim. 2 s/kilpailija). Ohjelma ei päivity eikä reagoi mihinkään siirron aikana."
 msgstr ""
+"Överföring från MySQL-databasen kan vara långsam (t.ex. 2 s/tävlande). Programmet uppdateras inte och reagerar inte under överföringen."
 
 #: cbHk/UnitImport.dfm ViestiWin/UnitImport.dfm
 msgid " Laji vanhan ohjelman tietoja luettaessa "
@@ -18174,7 +18404,7 @@ msgstr "Etappvis"
 
 #: cbHk/UnitKilpMaaritys.dfm
 msgid "Lähtöportti käytössä     (valinta voidaan tehdä myös vaihekohtaisesti)"
-msgstr ""
+msgstr "Startgrind i bruk     (valet kan också göras per etapp)"
 
 #: cbHk/UnitKilpMaaritys.dfm
 msgid "Vaihekohtaiset lisämääritykset"
@@ -18654,7 +18884,7 @@ msgstr ""
 
 #: cbHk/UnitLisatiedot.dfm
 msgid "Desimaaliluvut tallennetaan kokonaislukuina kertoen oheisella luvulla"
-msgstr ""
+msgstr "Decimaltal sparas som heltal multiplicerade med talet bredvid"
 
 #: cbHk/UnitLisatiedot.dfm ViestiWin/UnitLisatiedot.dfm
 msgid "Valitse tiedosto ja siirrä tieto tiedostosta"
@@ -18672,6 +18902,7 @@ msgstr "Uppgiften är ett decimaltal även utan decimalkomma eller -punkt"
 msgid ""
 "Kopioi tunnistavan kentän sisältö tai pohjustus sellaisenaan tai kasvatettuna annetulla lisäyksellä"
 msgstr ""
+"Kopiera identifierande fältets innehåll eller startvärde som sådant eller ökat med angivet tillägg"
 
 #: cbHk/UnitLisatiedot.dfm
 msgid " Kaikille annettava pohjustus "
@@ -19945,6 +20176,7 @@ msgstr "Heatomgång 3"
 msgid ""
 "Erien lukumäärä sisältää karsinnan. Merkitse vaiheiden lukumäärä nollaksi, jos haluat poistaa merkinnän  sprintin perussarjaksi"
 msgstr ""
+"Antalet heat inkluderar kvalet. Sätt antalet etapper till noll för att ta bort markeringen som sprintens grundklass"
 
 #: cbHk/UnitSprintSarja.dfm
 msgid "Vaiheiden lkm."
@@ -20034,6 +20266,7 @@ msgstr " Initiering av kommande omgångar "
 msgid ""
 "Pohjusta myöhemmät vaiheet asettamalla sarjat samoiksi kuin 1. vaiheessa ja numeroiksi samat lisättynä valitulla määrällä (valituille lähtösarjoille). Tarkastusmerkinnät pohjustetaan arvoon 'V'."
 msgstr ""
+"Initiera senare etapper med samma klasser som i 1:a etappen och samma nummer ökade med valt tillägg (för valda startklasser). Kontrollmarkeringarna sätts till 'V'."
 
 #: cbHk/UnitSprinthiihto.dfm
 msgid "Pohjustettavat vaiheet"
@@ -20047,6 +20280,7 @@ msgstr "Tillägg till nummer"
 msgid ""
 "Pohjustus tarvitaan, ellei sitä tehdä arvonnan yhteydessä ja jos rintanumerot vaihtuvat kisan jossain vaiheessa."
 msgstr ""
+"Initieringen behövs om den inte görs vid lottningen och om nummerlapparna byts under tävlingen."
 
 #: cbHk/UnitSprinthiihto.dfm
 msgid "Kaikki myöhemmät vaiheet"
@@ -20064,6 +20298,7 @@ msgstr " Återställning "
 msgid ""
 "Palauta valittujen lähtösarjojen kilpailijoille muodostettavan vaiheen tietoihin "
 msgstr ""
+"Återställ för de valda startklassernas tävlande i den etapp som bildas "
 
 #: cbHk/UnitSprinthiihto.dfm
 msgid "Perusnumeroihin annettava lisäys"
@@ -20091,7 +20326,7 @@ msgstr "Som bröstnummer grundnummer eventuellt med tillägg"
 
 #: cbHk/UnitSprinthiihto.dfm
 msgid "Toteuta ennen muodostamista alla määritelty palautus automaattisesti"
-msgstr ""
+msgstr "Utför återställningen nedan automatiskt före bildandet"
 
 #: cbHk/UnitStatus.dfm ViestiWin/UnitStatus.dfm
 msgid "Yleistilanne"
@@ -20369,6 +20604,7 @@ msgstr "1000: Placeringar fyrsiffrigt i tidsfältet"
 msgid ""
 "Auto: Vertailuaika automaattisesti osuuden kärjestä. Aikakorjaus sekunteina."
 msgstr ""
+"Auto: Jämförelsetid automatiskt från sträckans ledare. Tidskorrigering i sekunder."
 
 #: cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm
 msgid "Ota muutokset käyttöön"
@@ -20398,6 +20634,7 @@ msgstr "Ljusstyrka"
 msgid ""
 "Aseta kello tietokoneen aikaan tai kentän Teksti aikaan, jos kentässä kellonaika"
 msgstr ""
+"Ställ klockan till datorns tid eller till tiden i fältet Teksti om det innehåller en klocktid"
 
 #: cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm
 msgid "Aseta kello"
@@ -20440,11 +20677,13 @@ msgstr ""
 msgid ""
 "Uusi yhteys avataan määrittelemällä sen omiinaisuudet ja klikkaamalla 'Avaa', kun rivi on valittuna"
 msgstr ""
+"En ny anslutning öppnas genom att ange dess egenskaper och klicka 'Avaa' med raden vald"
 
 #: cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm cbTp/UnitEmiTag.dfm
 msgid ""
 "Aiempi yhteys on valittava ja suljettava ennen, kuin sen ominaisuuksia voidaan muuttaa. "
 msgstr ""
+"En tidigare anslutning måste väljas och stängas innan dess egenskaper kan ändras. "
 
 #: cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm cbTp/UnitEmiTag.dfm
 msgid "Avaa valittu yhteys"
@@ -21364,7 +21603,7 @@ msgstr "Resultatlistans rubrik före klassnamnet"
 #: ViestiWin/MuotoiluUnit.dfm
 msgid ""
 "Kirjoitintulosteiden marginaalit annetaan yksikkönä 1/1000 sivun koosta) "
-msgstr ""
+msgstr "Marginaler för utskrifter anges i enheten 1/1000 av sidans storlek) "
 
 #: ViestiWin/MuotoiluUnit.dfm
 msgid "Ylämarginaali"
@@ -21386,6 +21625,7 @@ msgstr "Höger marginal"
 msgid ""
 "Sivun pituus riveinä (koskee riveinä laskettuja tulosteita, yleensä säädetään marginaaleja)"
 msgstr ""
+"Sidans längd i rader (gäller radbaserade utskrifter, normalt justeras marginalerna)"
 
 #: ViestiWin/MuotoiluUnit.dfm
 msgid "Joukkue (lihavoitu)"
@@ -21427,6 +21667,7 @@ msgstr "Kompakta start- och resultatlistor"
 msgid ""
 "Tiiviin tulosteen erillinen joukkuetietorivi kirjoitetaan monirivisen kaikkien osuuksien tulosteen  määritysten mukaisesti."
 msgstr ""
+"Den kompakta utskriftens separata lagrad skrivs enligt definitionerna för flerradsutskriften av alla sträckor."
 
 #: ViestiWin/MuotoiluUnit.dfm
 msgid " Kirjoitintuloste, jossa osuudet peräkkäin "
@@ -21896,11 +22137,13 @@ msgstr "Läs FIS-poäng"
 msgid ""
 "Tällä kaavakkeella kirjataan sarjatietojen ja joukkueen numeron perusteella määritetyt lähtöajat kilpailijoille. Merkintä on tarpeen mm. partiosuunnistuksessa ja joukkuekilpailuissa, joissa osuudet lähtevät sarjan kullekin osuudelle määritetyllä hetkellä."
 msgstr ""
+"I detta formulär registreras starttider för de tävlande utgående från klassuppgifterna och lagets nummer. Det behövs bl.a. i patrullorientering och lagtävlingar där sträckorna startar vid en tidpunkt som bestämts för varje sträcka i klassen."
 
 #: ViestiWin/UnitArvonta.dfm
 msgid ""
 "Jos lähtövali poikkeaa nollasta, annetaan ajat numerojärjestyk- sessä alkaen sarjan alkunumerosta siten, että puuttuvalle numerolle varataan vapaa aika."
 msgstr ""
+"Om startintervallet inte är noll ges tiderna i nummerordning från klassens första nummer så att en ledig tid reserveras för saknade nummer."
 
 #: ViestiWin/UnitArvonta.dfm
 msgid "Siirron suuruus (sek)"
@@ -21914,6 +22157,7 @@ msgstr "Målsträckor"
 msgid ""
 "Tavallisessa viestissä ei lähtöaikoja anneta  tällä kaavak- keella, vaan sarjan lähtöaika vaihdetaan sarjatiedoissa."
 msgstr ""
+"I en vanlig stafett ges starttider inte i detta formulär, utan klassens starttid ändras i klassuppgifterna."
 
 #: ViestiWin/UnitArvonta.dfm
 msgid "Toteuta merkintä valituille sarjoille"
@@ -21959,6 +22203,7 @@ msgstr ""
 msgid ""
 "Joukkueen jäsenet voivat jakaa osuudet joustavasti vaihtaen osalistujaa epäsäännöllisin välein. "
 msgstr ""
+"Lagets medlemmar kan dela sträckorna flexibelt och byta löpare med oregelbundna intervall. "
 
 #: ViestiWin/UnitCfg.dfm
 msgid "Kilpailu kestää yli 24 tuntia, vuorokaudet merkitään aikoihin"
@@ -22203,7 +22448,7 @@ msgstr "Läser data - vänta"
 #: ViestiWin/UnitImport.dfm
 msgid ""
 "Tässä valinnassa luetaan IOF standardin 3.0 mukaisia ilmoittautumistietoja"
-msgstr ""
+msgstr "Detta val läser anmälningsuppgifter enligt IOF-standarden 3.0"
 
 #: ViestiWin/UnitImport.dfm
 msgid "Suunnistuksen ilmoittautumistiedosto"
@@ -22253,6 +22498,7 @@ msgstr "Ändringar i löpordning"
 msgid ""
 "Kun kohdeosuus on 0, ei nimiä siirretä. Täten voidaan taulukkoa käyttää myös kopiointiin."
 msgstr ""
+"När målsträckan är 0 flyttas inga namn. Tabellen kan alltså också användas för kopiering."
 
 #: ViestiWin/UnitJjVaihdot.dfm
 msgid "Vaihda etu- ja sukunimet"
@@ -22402,6 +22648,7 @@ msgstr "Rogaining"
 msgid ""
 "Joukkueen koko on osuusuoritusten kokonaismäärä laskien mahdolliset rinnakkaiset osuudet mukaan"
 msgstr ""
+"Lagets storlek är det totala antalet sträckprestationer inklusive eventuella parallella sträckor"
 
 #: ViestiWin/UnitKilpMaaritys.dfm
 msgid " Sarjojen luominen pohjaksi "
@@ -22758,7 +23005,7 @@ msgstr "Utvidga 1:a sträckans \"Ej startat\" till alla sträckor"
 #: ViestiWin/UnitMerkKoodeja.dfm
 msgid ""
 "Merkitse hylkäyksen ja keskeyttämisen jälkeiset osuudet ei-lähteneiksi "
-msgstr ""
+msgstr "Markera sträckor efter diskning och utgång som ej startade "
 
 #: ViestiWin/UnitNollaus.dfm
 msgid "Käsiteltävät osuudet"
@@ -22826,7 +23073,7 @@ msgstr "Tidsstraff"
 
 #: ViestiWin/UnitPartio.dfm
 msgid "Keltainen väri kertoo, että tallennettu tieto poikkeaa näytetystä"
-msgstr ""
+msgstr "Gul färg visar att sparad uppgift avviker från den visade"
 
 #: ViestiWin/UnitPartio.dfm
 msgid "Painike tallentaa näytetyt tiedot"
@@ -22996,6 +23243,7 @@ msgstr "Kopiera 2. sträckans tider till alla sträckor"
 msgid ""
 "Poista vaihdon sulkemisaika kaikilta osuuksilta (lopettaa automatiikan, kun valinnat vahvistetaan seur. painikkeella)"
 msgstr ""
+"Ta bort växlingens stängningstid från alla sträckor (stoppar automatiken när valen bekräftas med nästa knapp)"
 
 #: ViestiWin/UnitYLahdot.dfm
 msgid "Ota tehdyt valinnat käyttöön valituissa sarjoissa"
@@ -23023,7 +23271,7 @@ msgstr "Uppdatera följningsgrafikens ritning automatiskt"
 
 #: ViestiWin/VertAikaUnit.dfm
 msgid "Päivitä pistekohtainen viimeisinten tulosluettelo automaattisesti"
-msgstr ""
+msgstr "Uppdatera punktens lista över senaste resultat automatiskt"
 
 #: ViestiWin/VertAikaUnit.dfm
 msgid "Muita asetuksia"
@@ -23052,7 +23300,7 @@ msgstr "Korrigeringen görs linjärt utgående från följande tider."
 #: cbTp/UnitAikakorjaus.dfm
 msgid ""
 "Tee korjaukset aina ajoille, jotka ovat saman vuorokauden sisällä ennen korjausta."
-msgstr ""
+msgstr "Korrigera alltid tider som ligger inom samma dygn före korrigeringen."
 
 #: cbTp/UnitAikakorjaus.dfm
 msgid "Ajankohta 1"
@@ -23605,6 +23853,7 @@ msgstr "Läge på skärmen (pixel)"
 #: cbTp/UnitKohdistus.dfm
 msgid "Näytä rastit kartalla ja valitse molemmat rastit ennen muita toimia."
 msgstr ""
+"Visa kontrollerna på kartan och välj båda kontrollerna före andra åtgärder."
 
 #: cbTp/UnitKohdistus.dfm
 msgid "Hae klikkaamalla karttaa (oikea näppäin)"
@@ -23618,6 +23867,7 @@ msgstr " Andra inpassningspunkt "
 msgid ""
 "Toinen kohdistuspiste vaikuttaa vain skaalaukseen, joka perustuu x-koordinaattiin "
 msgstr ""
+"Den andra kalibreringspunkten påverkar endast skalningen, som baseras på x-koordinaten "
 
 #: cbTp/UnitKohdistus.dfm
 msgid " Karttakuvan lasketut kohdistukset "
@@ -23811,6 +24061,7 @@ msgstr "Styrning av klockan"
 msgid ""
 "Maalikellon ohjaus on mahdollista vain laitteelle 1, joka on joko Alge S4 tai Emit RTR2"
 msgstr ""
+"Målklockan kan styras endast för enhet 1, som är antingen Alge S4 eller Emit RTR2"
 
 #: cbTp/UnitMaalikello.dfm
 msgid " Alge S4 "
@@ -23864,6 +24115,7 @@ msgstr "Tidtagningstangent"
 msgid ""
 "Ajanottonäppäin toimii vain, kun selailtava ajanottotaulu on aktiivisena. ja muutokset sallittu."
 msgstr ""
+"Tidtagningstangenten fungerar endast när tidtagningstabellen är aktiv och ändringar tillåtna."
 
 #: cbTp/UnitNappain.dfm
 msgid "Valittu koodi"
@@ -24049,6 +24301,7 @@ msgstr "Ingen stämplingsenhet på mållinjen"
 msgid ""
 "Leimantarkastus laskee automaattisesti tulokset, ellei jo otettuna. (Poista ruksi vain, kun poikeuksellisia syitä)"
 msgstr ""
+"Stämplingskontrollen beräknar resultaten automatiskt om de inte redan tagits. (Avmarkera endast av särskilda skäl)"
 
 #: cbTp/UnitRadat.dfm
 msgid "Rastileimasimet"
@@ -24058,6 +24311,7 @@ msgstr "Stämplingsenheter vid kontroller"
 msgid ""
 "Varoitus: Lopeta kentän muokkaus painamalla Enter tai vaihtamalla ruutua"
 msgstr ""
+"Varning: Avsluta redigeringen av fältet med Enter eller genom att byta ruta"
 
 #: cbTp/UnitRadat.dfm
 msgid "Tallenna koodit muistiin"
@@ -24095,6 +24349,7 @@ msgstr "Kontroller"
 msgid ""
 "Aiempia tietoja käsitellään siinä muodossa kuin ne on luettu XML-tiedostosta. Tehtyjen muutosten tallentuminen edellyttää kirjoittamista tiedostoon ja lukemista uudelleen tästä tiedostosta."
 msgstr ""
+"Tidigare uppgifter behandlas i den form de lästs från XML-filen. För att ändringarna ska sparas måste de skrivas till fil och läsas in igen från den filen."
 
 #: cbTp/UnitRadat.dfm
 msgid "XML (IOF-muoto V2.0.3)"
@@ -24232,11 +24487,12 @@ msgstr "Banor tilldelade klasser"
 msgid ""
 "Ohjelman oletuksena on sarjanimen mukainen radan nimi. Tätä tietoa ei tallenneta."
 msgstr ""
+"Programmets standard är ett bannamn enligt klassnamnet. Uppgiften sparas inte."
 
 #: cbTp/UnitRadat.dfm
 msgid ""
 "Tähän taulukkoon tehdyt muutokset tallentuvat automaattisesti tietoja tallennettaessa"
-msgstr ""
+msgstr "Ändringar i denna tabell sparas automatiskt när uppgifterna sparas"
 
 #: cbTp/UnitRadat.dfm
 msgid "Poista valittu kohdennus"
@@ -24268,7 +24524,7 @@ msgstr "Stämplingsenhetskoder i kodordning"
 
 #: cbTp/UnitRadat.dfm
 msgid "Havaitut ongelmat (tarkastus koskee muistiin tallennettuja tietoja)"
-msgstr ""
+msgstr "Upptäckta problem (kontrollen gäller uppgifterna i minnet)"
 
 #: cbTp/UnitRadat.dfm
 msgid "Rastikoordinaatit"

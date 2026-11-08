@@ -156,7 +156,7 @@ void __fastcall TFormPiiriVal::Button2Click(TObject *Sender)
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->FileName = FormMain->CurrentDir+UnicodeString(L"piirit.lst");
 	OpenDialog1->DefaultExt = L"lst";
-	OpenDialog1->Filter = L"Teksstitiedostot|*.TXT;*.LST;*.CSV|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Teksstitiedostot|*.TXT;*.LST;*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		luepiirit(OpenDialog1->FileName.c_str());
 		memset(piirifl, 0, piiriluku * sizeof(int));

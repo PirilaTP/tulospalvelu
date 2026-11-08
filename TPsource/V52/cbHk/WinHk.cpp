@@ -1113,7 +1113,7 @@ void __fastcall TFormMain::TallennaikkunatClick(TObject *Sender)
 		init = 1;
 	}
 	SaveDialog1->DefaultExt = L"xml";
-	SaveDialog1->Filter = L"xml-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"xml-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*");
 //	if (Application->MessageBoxW(L"Tallennetaanko laajat tiedot (uusi formaatti)", L"Tallennuslaajuus", MB_YESNO) == IDYES)
 		ikkParams = true;
 //	else
@@ -1134,7 +1134,7 @@ void __fastcall TFormMain::HaeikkunatClick(TObject *Sender)
 		init = 1;
 	}
 	OpenDialog1->DefaultExt = L"xml";
-	OpenDialog1->Filter = L"Ikkunatiedostot (*.ikk,*.xml)|*.IKK;*.XML|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Ikkunatiedostot (*.ikk,*.xml)|*.IKK;*.XML|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		HaeIkkunat(OpenDialog1->FileName);
 		}
@@ -1191,7 +1191,7 @@ void __fastcall TFormMain::BtnTulPalvClick(TObject *Sender)
 	if (vast == mrNo) {
 		OpenDialog2->FileName = CurrentDir+UnicodeString(L"laskenta.cfg");
 		OpenDialog2->DefaultExt = L"cfg";
-		OpenDialog2->Filter = L"Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*";
+		OpenDialog2->Filter = TR(L"Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*");
 		if (OpenDialog2->Execute())
 			cfgFName = OpenDialog2->FileName;
 		else
@@ -1251,7 +1251,7 @@ void __fastcall TFormMain::BtnIlmTilaClick(TObject *Sender)
 	if (vast == mrNo) {
 		OpenDialog2->FileName = CurrentDir+UnicodeString(L"ilmoitt.cfg");
 		OpenDialog2->DefaultExt = L"cfg";
-		OpenDialog2->Filter = L"Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*";
+		OpenDialog2->Filter = TR(L"Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*");
 		if (OpenDialog2->Execute())
 			cfgFName = OpenDialog2->FileName;
 		else
@@ -2007,7 +2007,7 @@ void __fastcall TFormMain::SytEmitkoodeja1Click(TObject *Sender)
 
 void __fastcall TFormMain::Lhettiedosto1Click(TObject *Sender)
 {
-	OpenDialog2->Filter = L"Kaikki tiedostot (*.*)|*.*";
+	OpenDialog2->Filter = TR(L"Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog2->Execute()) {
 		if (lah_tiedosto(OpenDialog2->FileName.c_str(), 0, 1))
 			Application->MessageBoxW(TR(L"Tiedoston lähettäminen ei onnistunut. Tiedoston on sijaittava työkansiossa tai sen alihakemistossa"),
@@ -2019,7 +2019,7 @@ void __fastcall TFormMain::Lhettiedosto1Click(TObject *Sender)
 void __fastcall TFormMain::Lueeratjaradat1Click(TObject *Sender)
 {
 	OpenDialog1->FileName = L"eradat.lst";
-	OpenDialog1->Filter = L"Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute())
 		lueeratiedot(OpenDialog1->FileName.c_str());
 }

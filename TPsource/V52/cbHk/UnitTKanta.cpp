@@ -610,7 +610,7 @@ int __fastcall TFormTKanta::LueHenkilot(wchar_t *flName, bool NaytaDialogi)
 		OpenDialog1->InitialDir = FormMain->CurrentDir;
 		OpenDialog1->FileName = UnicodeString(HenkTKantaNm);
 		OpenDialog1->DefaultExt = L"csv";
-		OpenDialog1->Filter = L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+		OpenDialog1->Filter = TR(L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 		if (OpenDialog1->Execute()) {
 			InFile = new TextFl(OpenDialog1->FileName.c_str(), L"t");
 			if (InFile->IsOpen())
@@ -1389,7 +1389,7 @@ void TFormTKanta::kirjoitaTiedostoon(int aiempaan)
 	if (vast == 3) {
 		SaveDialog1->InitialDir = FormMain->CurrentDir;
 		SaveDialog1->DefaultExt = L"csv";
-		SaveDialog1->Filter = L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute()) {
 			FName = SaveDialog1->FileName;
 			}

@@ -63,7 +63,7 @@ void __fastcall TFormLisaTekstit::Luetekstit1Click(TObject *Sender)
 	TextFl *inFile;
 	OpenDialog1->FileName = FormMain->CurrentDir+UnicodeString(L"\\lisatekstit.csv");
 	OpenDialog1->DefaultExt = L"csv";
-	OpenDialog1->Filter = L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		inFile = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 

@@ -353,7 +353,7 @@ void __fastcall TFormMain::TallennaikkunatClick(TObject *Sender)
 		init = 1;
 	}
 	SaveDialog1->DefaultExt = L"ikk";
-	SaveDialog1->Filter = L"Ikkunat (*.ikk)|*.IKK|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Ikkunat (*.ikk)|*.IKK|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		TallennaIkkunat(SaveDialog1->FileName);
 		}

@@ -137,7 +137,7 @@ void __fastcall TFormFIS::BtnLuePisteetClick(TObject *Sender)
 			return;
 		}
 	OpenDialog1->DefaultExt = L"csv";
-	OpenDialog1->Filter = L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		wchar_t *p, fnamepts[200] = L"", fnamecom[200];
 		TextFl *InFilePts = NULL, *InFileCom = NULL;
@@ -226,7 +226,7 @@ void __fastcall TFormFIS::BtnLueNimetClick(TObject *Sender)
 {
 	Label2->Visible = false;
 	OpenDialog1->DefaultExt = L"csv";
-	OpenDialog1->Filter = L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		wchar_t *p, fnamecom[200];
 		TextFl *InFileCom = NULL;
@@ -311,7 +311,7 @@ void __fastcall TFormFIS::BtnLueClick(TObject *Sender)
 
 	TextFl *FISmaarfl;
 	OpenDialog1->DefaultExt = L"txt";
-	OpenDialog1->Filter = L"Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		if ((FISmaarfl = new TextFl(OpenDialog1->FileName.c_str(), L"r")) != NULL) {
 			Memo1->Clear();
@@ -415,7 +415,7 @@ void __fastcall TFormFIS::BtnKirjClick(TObject *Sender)
 
 	TextFl *FISmaarfl;
 	SaveDialog1->DefaultExt = L"txt";
-	SaveDialog1->Filter = L"Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		if ((FISmaarfl = new TextFl(SaveDialog1->FileName.c_str(), L"wt")) != NULL) {
 			Memo1->Clear();
@@ -487,7 +487,7 @@ void __fastcall TFormFIS::Button1Click(TObject *Sender)
 {
 	TextFl *FISmaarfl;
 	SaveDialog1->DefaultExt = L"txt";
-	SaveDialog1->Filter = L"Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		if ((FISmaarfl = new TextFl(SaveDialog1->FileName.c_str(), L"w")) != NULL) {
 			for (int i = 0; i < Memo1->Lines->Count; i++) {

@@ -186,7 +186,7 @@ void __fastcall TFormComfile::Button1Click(TObject *Sender)
 	BtnLaheta->Visible = false;
 	OpenDialog1->FileName = ActComfile;
 	OpenDialog1->DefaultExt = L"dat";
-	OpenDialog1->Filter = L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		ComFile = avaacomfile(OpenDialog1->FileName.c_str());
 		if (ComFile && OpenDialog1->FileName != ActComfile)
@@ -796,7 +796,7 @@ void __fastcall TFormComfile::Button7Click(TObject *Sender)
 		FILE *outfl = NULL;
 		char cbuf[2000];
 		SaveDialog1->DefaultExt = L"dat";
-		SaveDialog1->Filter = L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute())
 			outfl = _wfopen(SaveDialog1->FileName.c_str(), L"wb");
 		if (outfl) {
@@ -818,7 +818,7 @@ void __fastcall TFormComfile::Button7Click(TObject *Sender)
 		wchar_t line[200];
 
 		SaveDialog1->DefaultExt = L"txt";
-		SaveDialog1->Filter = L"txt-tiedostot (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"txt-tiedostot (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute())
 			outfl = new TextFl(SaveDialog1->FileName.c_str(), L"wt");
 		if (outfl && outfl->IsOpen()) {

@@ -202,7 +202,7 @@ void __fastcall TFormComfile::Button1Click(TObject *Sender)
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->FileName = UnicodeString(L"comfile.dat");
 	OpenDialog1->DefaultExt = L"dat";
-	OpenDialog1->Filter = L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		if (LahComFile == ComFile) {
 			fclose(ComFile);

@@ -1396,7 +1396,7 @@ void __fastcall TFormAjanotto::Kirjoitaajattekstitiedostoon1Click(TObject *Sende
 
 	SaveDialog1->FileName = fname;
 	SaveDialog1->DefaultExt = L"txt";
-	SaveDialog1->Filter = L"Tekstitiedostot (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Tekstitiedostot (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		wcsncpy(fname, SaveDialog1->FileName.c_str(), sizeof(fname)/2-1);
 		AjatTiedostoon(fname, Jono);
@@ -1567,7 +1567,7 @@ void __fastcall TFormAjanotto::Lueaikojatekstitiedostosta1Click(TObject *Sender)
 		return;
 	OpenDialog1->FileName = fname;
 	OpenDialog1->DefaultExt = L"txt";
-	OpenDialog1->Filter = L"Tekstitiedostot (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Tekstitiedostot (*.txt)|*.txt|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		wcsncpy(fname, OpenDialog1->FileName.c_str(), sizeof(fname)/2-1);
 		AjatTiedostosta(fname, Jono, vast == IDNO);

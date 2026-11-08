@@ -345,7 +345,7 @@ void TFormKisaLuett::haeLista(void)
 void __fastcall TFormKisaLuett::Button2Click(TObject *Sender)
 {
 	SaveDialog1->DefaultExt = L"xml";
-	SaveDialog1->Filter = L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*");
 	SaveDialog1->FileName = FormMain->InitDir+UnicodeString(L"\\")+fnameRacelist;
 	if (SaveDialog1->Execute()) {
 		haeLista();
@@ -443,7 +443,7 @@ void __fastcall TFormKisaLuett::BtnToteutaClick(TObject *Sender)
 
 void __fastcall TFormKisaLuett::BtnRunkoClick(TObject *Sender)
 {
-	OpenDialog1->Filter = L"Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		int l;
 		EdtRunko->Text = OpenDialog1->FileName;
@@ -461,7 +461,7 @@ void __fastcall TFormKisaLuett::BtnRunkoClick(TObject *Sender)
 void __fastcall TFormKisaLuett::Luekilpailuluettelo1Click(TObject *Sender)
 {
 	OpenDialog1->DefaultExt = L"xml";
-	OpenDialog1->Filter = L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*");
 	OpenDialog1->FileName = FormMain->InitDir+UnicodeString(L"\\")+fnameRacelist;
 	if (OpenDialog1->Execute()) {
 		kilpLkm = sizeof(kisaLuett)/sizeof(kisaLuett[0]);

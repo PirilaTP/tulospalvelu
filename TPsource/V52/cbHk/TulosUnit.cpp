@@ -2601,7 +2601,7 @@ void __fastcall TTilanneForm::Lueomatvrit1Click(TObject *Sender)
 {
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->DefaultExt = L"csv";
-	OpenDialog1->Filter = L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		int rv = 0;
 		TextFl *InFl;

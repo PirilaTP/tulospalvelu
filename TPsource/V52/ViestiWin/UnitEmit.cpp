@@ -2879,7 +2879,7 @@ void __fastcall TFormEmit::BtnNaytaKarttaClick(TObject *Sender)
 	if (!FormKartta) {
 		if (!kilpparam.kartta[0]) {
 			OpenDialog1->DefaultExt = "bmp";
-			OpenDialog1->Filter = "Kuvatiedostot (*.bmp) |*.bmp|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TRA("Kuvatiedostot (*.bmp) |*.bmp|Kaikki tiedostot (*.*)|*.*");
 			if (!OpenDialog1->Execute() || OpenDialog1->FileName.Length() < 5)
 				return;
 			wcsncpy(kilpparam.kartta, OpenDialog1->FileName.c_str(), sizeof(kilpparam.kartta)/2-1);

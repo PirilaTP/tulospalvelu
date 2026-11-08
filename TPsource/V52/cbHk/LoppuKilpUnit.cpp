@@ -904,7 +904,7 @@ void __fastcall TLoppuKilpForm::Button2Click(TObject *Sender)
 	if (!SkriptiFl) {
 		OpenDialog1->FileName = L"FinSaannot.txt";
 		OpenDialog1->DefaultExt = L"txt";
-		OpenDialog1->Filter = L"Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*";
+		OpenDialog1->Filter = TR(L"Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*");
 		if (OpenDialog1->Execute()) {
 			SkriptiFl = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 			if (!SkriptiFl->IsOpen()) {
@@ -1070,7 +1070,7 @@ void __fastcall TLoppuKilpForm::Lisskriptitiedostoon1Click(TObject *Sender)
 		SaveDialog1->InitialDir = FormMain->CurrentDir;
 		SaveDialog1->FileName = flnm;
 		SaveDialog1->DefaultExt = L"txt";
-		SaveDialog1->Filter = L"Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute()) {
 			SkriptiOFl = new TextFl(SaveDialog1->FileName.c_str(), L"at");
 			if (!SkriptiOFl->IsOpen()) {

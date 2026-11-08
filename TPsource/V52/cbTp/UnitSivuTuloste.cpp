@@ -149,7 +149,7 @@ void __fastcall TFormSivuTuloste::allennatehdytvalinnat1Click(TObject *Sender)
 	SaveDialog1->InitialDir = FormMain->CurrentDir;
 	SaveDialog1->FileName = PgMaarFlNm;
 	SaveDialog1->DefaultExt = L"xml";
-	SaveDialog1->Filter = L"Xml-tiedosto (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Xml-tiedosto (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		KirjoitaValinnat(SaveDialog1->FileName.c_str());
 		}
@@ -161,7 +161,7 @@ void __fastcall TFormSivuTuloste::Luevalinnattiedostosta1Click(TObject *Sender)
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->FileName = PgMaarFlNm;
 	OpenDialog1->DefaultExt = L"xml";
-	OpenDialog1->Filter = L"Xml-tiedosto (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Xml-tiedosto (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		LueValinnat(OpenDialog1->FileName.c_str());
 		}

@@ -102,7 +102,7 @@ void __fastcall TFormAutoFile::Button1Click(TObject *Sender)
 {
 	SaveDialog1->FileName = EdtHtmlFName->Text;
 	SaveDialog1->DefaultExt = L"html";
-	SaveDialog1->Filter = L"Html-tiedostot (*.html)|*.html|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Html-tiedostot (*.html)|*.html|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		EdtHtmlFName->Text = SaveDialog1->FileName;
 		}
@@ -128,7 +128,7 @@ void __fastcall TFormAutoFile::BtnValitseKomentoClick(TObject *Sender)
 {
 	SaveDialog1->FileName = EdtKomento->Text;
 	SaveDialog1->DefaultExt = L"cmd";
-	SaveDialog1->Filter = L"CMD-tiedostot (*.cmd)|*.cmd|BAT-tiedostot (*.bat)|*.bat|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"CMD-tiedostot (*.cmd)|*.cmd|BAT-tiedostot (*.bat)|*.bat|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		EdtKomento->Text = SaveDialog1->FileName;
 		}
