@@ -188,6 +188,7 @@ __fastcall TFormMain::TFormMain(TComponent* Owner)
 {
 	kaannaLomake(this);
 	lisaaKielivalikko(Tiedostot1);
+	EditKilpailu->Text = TR(L"Ei avattua kilpailua");
 	Application->HelpFile = ExtractFilePath(Application->ExeName)+UnicodeString(L"HkKisa.chm");
 	InitDir = GetCurrentDir();
 #ifdef DEMO

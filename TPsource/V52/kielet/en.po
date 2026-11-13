@@ -11489,6 +11489,10 @@ msgstr "Best"
 msgid "Kilpailija"
 msgstr "Competitor"
 
+#: cbHk/WinHk.cpp ViestiWin/UnitMain.cpp
+msgid "Ei avattua kilpailua"
+msgstr "No competition opened"
+
 #: cbHk/WinHk.cpp
 msgid "HkKisaWin - DEMO versio - max 30 kilpailijaa"
 msgstr "HkKisaWin - DEMO version - max 30 competitors"

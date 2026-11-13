@@ -402,6 +402,18 @@ void kaannaLomake(TComponent *Lomake)
 	std::vector<Alku> alut;
 	for (int i = 0; i < Lomake->ComponentCount; i++)
 		tallennaAlku(Lomake->Components[i], alut);
+	// Valikoiden automaattinen pikanäppäinten korjaus (AutoHotkeys) pois käännöksen ajaksi:
+	// muuten se siirtäisi vielä kääntämättömän tekstin pikanäppäimen, kun jo käännetty
+	// kohta saa saman näppäimen (T&ulosteet -> Tu&losteet), eikä tekstin käännöstä löytyisi.
+	std::vector<TMenu *> valikot;
+	std::vector<TMenuAutoFlag> pikanappainliput;
+	for (int i = 0; i < Lomake->ComponentCount; i++) {
+		if (TMenu *M = dynamic_cast<TMenu *>(Lomake->Components[i])) {
+			valikot.push_back(M);
+			pikanappainliput.push_back(M->AutoHotkeys);
+			M->AutoHotkeys = maManual;
+			}
+		}
 	kaannaKomponentti(Lomake);
 	for (int i = 0; i < Lomake->ComponentCount; i++) {
 		TComponent *C = Lomake->Components[i];
@@ -410,6 +422,9 @@ void kaannaLomake(TComponent *Lomake)
 		if (dynamic_cast<TFrame *>(C) != NULL)
 			kaannaLomake(C);
 		}
+	// Nyt törmäävät pikanäppäimet korjataan käännetyistä teksteistä
+	for (unsigned i = 0; i < valikot.size(); i++)
+		valikot[i]->AutoHotkeys = pikanappainliput[i];
 	sovitaLomake(alut);
 }
 

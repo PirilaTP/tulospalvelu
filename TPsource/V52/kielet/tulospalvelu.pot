@@ -11343,6 +11343,10 @@ msgstr ""
 msgid "Kilpailija"
 msgstr ""
 
+#: cbHk/WinHk.cpp ViestiWin/UnitMain.cpp
+msgid "Ei avattua kilpailua"
+msgstr ""
+
 #: cbHk/WinHk.cpp
 msgid "HkKisaWin - DEMO versio - max 30 kilpailijaa"
 msgstr ""

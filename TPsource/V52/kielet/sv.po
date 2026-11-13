@@ -11513,6 +11513,10 @@ msgstr "Bästa"
 msgid "Kilpailija"
 msgstr "Tävlande"
 
+#: cbHk/WinHk.cpp ViestiWin/UnitMain.cpp
+msgid "Ei avattua kilpailua"
+msgstr "Ingen öppnad tävling"
+
 #: cbHk/WinHk.cpp
 msgid "HkKisaWin - DEMO versio - max 30 kilpailijaa"
 msgstr "HkKisaWin - DEMO-version - max 30 tävlande"
@@ -22502,7 +22506,7 @@ msgstr "Straff i skytteorientering"
 
 #: cbHk/WinHk.dfm ViestiWin/UnitMain.dfm
 msgid "T&ulosteet"
-msgstr "&Utskrifter"
+msgstr "Utsk&rifter"
 
 #: cbHk/WinHk.dfm
 msgid "Kirjoitin ja tiedostotulosteet"
