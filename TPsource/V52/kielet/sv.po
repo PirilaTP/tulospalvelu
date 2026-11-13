@@ -854,6 +854,10 @@ msgstr "Bana"
 msgid "Tulos"
 msgstr "Resultat"
 
+msgctxt "lyhyt"
+msgid "Tulos"
+msgstr "Res."
+
 #: Hk/HkEmit.cpp
 msgid "KESK"
 msgstr "UTG "
@@ -2407,9 +2411,17 @@ msgstr "%d-%d: Bdg %d, Tid %d, Kntr %d, Bana %s, Kontroller %d"
 msgid "Osuus"
 msgstr "Sträcka"
 
+msgctxt "lyhyt"
+msgid "Osuus"
+msgstr "Str."
+
 #: Juk/VEmitHtml.cpp ViestiWin/UnitJoukkuetiedot.dfm
 msgid "OsTls"
 msgstr "StrRes"
+
+msgctxt "lyhyt"
+msgid "OsTls"
+msgstr "StRes"
 
 #: Juk/VEmitHtml.cpp
 msgctxt "väliaikataulukko"
@@ -3203,6 +3215,10 @@ msgstr "Emitkod %ld används redan. Koden sparades inte"
 #: Juk/vkilp.cpp cbHk/UnitEmit.dfm cbHk/UnitTarkMerk.dfm ViestiWin/UnitEmit.dfm
 msgid "Tark."
 msgstr "Kontr."
+
+msgctxt "lyhyt"
+msgid "Tark."
+msgstr "Kont."
 
 #: Juk/vkilp.cpp
 msgid "H-esit."
@@ -6306,6 +6322,10 @@ msgstr "S)ändning, T)idsprecision, M)ålklocka, siR)it"
 msgid "Yhteys"
 msgstr "Anslutning"
 
+msgctxt "lyhyt"
+msgid "Yhteys"
+msgstr "Anslut."
+
 #. valinta: KE
 #: JukConsole/laskent0.cpp
 msgid "Vahvista lähetys (K/E)"
@@ -8947,6 +8967,10 @@ msgstr "Pkt"
 msgid "Vahvistus"
 msgstr "Bekräftelse"
 
+msgctxt "lyhyt"
+msgid "Vahvistus"
+msgstr "Bekräfta"
+
 #: cbHk/UnitAjanotto.cpp cbHk/UnitKilpailijatiedot.cpp ViestiWin/UnitAjanotto.cpp ViestiWin/UnitJoukkuetiedot.cpp
 msgid "Vahvista poisto"
 msgstr "Bekräfta borttagning"
@@ -9179,6 +9203,10 @@ msgstr "EnhetNr"
 #: ViestiWin/UnitGAZ.dfm cbTp/UnitEmitSQL.dfm cbTp/UnitMaalikello.dfm
 msgid "Laite"
 msgstr "Enhet"
+
+msgctxt "lyhyt"
+msgid "Laite"
+msgstr "Enh."
 
 #: cbHk/UnitCfg.cpp ViestiWin/UnitCfg.cpp cbTp/UnitEmiTag.cpp cbHk/UnitAjanotto.dfm
 #: cbHk/UnitCfg.dfm ViestiWin/UnitAjanotto.dfm ViestiWin/UnitCfg.dfm
@@ -9501,6 +9529,10 @@ msgstr "Korr."
 #: cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm ViestiWin/UnitJoukkuetiedot.dfm
 msgid "Kello"
 msgstr "Klocka"
+
+msgctxt "lyhyt"
+msgid "Kello"
+msgstr "Kl.tid"
 
 #: cbHk/UnitEmit.cpp
 msgid "Toinen"
@@ -10374,6 +10406,10 @@ msgstr "Tot.res."
 msgid "Matka"
 msgstr "Distans"
 
+msgctxt "lyhyt"
+msgid "Matka"
+msgstr "Dist."
+
 #: cbHk/UnitKilpailijaOnline.cpp
 msgid "Edellisestä"
 msgstr "Från föreg."
@@ -10981,6 +11017,10 @@ msgstr "Startintervall"
 msgid "Ens. lähtö"
 msgstr "Första start"
 
+msgctxt "lyhyt"
+msgid "Ens. lähtö"
+msgstr "1:a start"
+
 #: cbHk/UnitSarjatiedot.cpp
 msgid "Ens. j.ilm"
 msgstr "Efteranm. start"
@@ -11378,6 +11418,10 @@ msgstr "Position"
 #: cbHk/UnitVaPisteet.cpp cbTp/UnitEmitSQL.dfm cbTp/UnitEmitnouto.dfm
 msgid "Aikaraja"
 msgstr "Tidsgräns"
+
+msgctxt "lyhyt"
+msgid "Aikaraja"
+msgstr "Tidsgr."
 
 #: cbHk/UnitVaPisteet.cpp
 msgid "Sakkoja"
@@ -12158,6 +12202,10 @@ msgstr " Sträcka för data som kopieras "
 msgid " Tunnistavan tiedon osuus "
 msgstr " Sträcka för identifierande data "
 
+msgctxt "lyhyt"
+msgid " Tunnistavan tiedon osuus "
+msgstr " Sträcka för identifierare "
+
 #: ViestiWin/UnitLuenta.cpp
 msgid ""
 "Edellisen kilpailijan Emit-kortti on vielä tallentamatta. Tallenna tai peruuta se ensin."
@@ -12274,6 +12322,10 @@ msgstr "Sträcka (km)"
 #: ViestiWin/UnitSarja.cpp cbHk/UnitImport.dfm ViestiWin/UnitImport.dfm
 msgid "Väliaikoja"
 msgstr "Mellantider"
+
+msgctxt "lyhyt"
+msgid "Väliaikoja"
+msgstr "Mellantid."
 
 #: ViestiWin/UnitSarja.cpp
 msgid "Sak/Tas-yks."
@@ -13126,6 +13178,10 @@ msgstr "Dataöverföring"
 msgid "Kättelyviive"
 msgstr "Handskakningsfördröjning"
 
+msgctxt "lyhyt"
+msgid "Kättelyviive"
+msgstr "Handskakn.tid"
+
 #: cbHk/AsetusUnit.dfm
 msgid "UDP Time-out"
 msgstr "UDP-timeout"
@@ -13194,6 +13250,10 @@ msgstr "Res."
 msgid "Lähtö- väli"
 msgstr "Start- intervall"
 
+msgctxt "lyhyt"
+msgid "Lähtö- väli"
+msgstr "Start- interv."
+
 #: cbHk/LoppuKilpUnit.dfm
 msgid "Anna lähtö- ajat"
 msgstr "Ange start- tider"
@@ -13221,6 +13281,10 @@ msgstr "Ny numrerings början (0: gamla nummer"
 #: cbHk/LoppuKilpUnit.dfm
 msgid "Lähtö- aallon koko"
 msgstr "Start- vågens storlek"
+
+msgctxt "lyhyt"
+msgid "Lähtö- aallon koko"
+msgstr "Start- vågstorlek"
 
 #: cbHk/LoppuKilpUnit.dfm
 msgid "D-lkm"
@@ -13373,6 +13437,10 @@ msgstr "Huvudrubrik"
 msgid "Riviväli"
 msgstr "Radavstånd"
 
+msgctxt "lyhyt"
+msgid "Riviväli"
+msgstr "Radav."
+
 #: cbHk/MuotoiluUnit.dfm ViestiWin/MuotoiluUnit.dfm
 msgid "Laatu"
 msgstr "Kvalitet"
@@ -13380,6 +13448,10 @@ msgstr "Kvalitet"
 #: cbHk/MuotoiluUnit.dfm ViestiWin/MuotoiluUnit.dfm
 msgid "Alaotsikot"
 msgstr "Underrubriker"
+
+msgctxt "lyhyt"
+msgid "Alaotsikot"
+msgstr "Underrub."
 
 #: cbHk/MuotoiluUnit.dfm ViestiWin/MuotoiluUnit.dfm
 msgid "Vakiolevyinen"
@@ -13408,6 +13480,10 @@ msgstr ""
 #: cbHk/MuotoiluUnit.dfm cbTp/UnitRadat.dfm
 msgid "Kirjoitin"
 msgstr "Skrivare"
+
+msgctxt "lyhyt"
+msgid "Kirjoitin"
+msgstr "Printer"
 
 #: cbHk/MuotoiluUnit.dfm cbHk/UnitCfg.dfm ViestiWin/MuotoiluUnit.dfm ViestiWin/UnitCfg.dfm
 #: cbTp/UnitHtmlEdit.dfm cbTp/UnitTietoTulk.dfm
@@ -13640,6 +13716,10 @@ msgstr "Teckenstorlek"
 msgid "Taustavärin vaihdon askel (riviä)"
 msgstr "Steg för byte av bakgrundsfärg (rader)"
 
+msgctxt "lyhyt"
+msgid "Taustavärin vaihdon askel (riviä)"
+msgstr "Steg för bakgrundsfärg (rader)"
+
 #: cbHk/MuotoiluUnit.dfm ViestiWin/MuotoiluUnit.dfm
 msgid "Suht-sans-serif"
 msgstr "Prop-sans-serif"
@@ -13659,6 +13739,10 @@ msgstr "Liten"
 #: cbHk/MuotoiluUnit.dfm ViestiWin/MuotoiluUnit.dfm ViestiWin/UnitLahestyjat.dfm
 msgid "Keski"
 msgstr "Mellan"
+
+msgctxt "lyhyt"
+msgid "Keski"
+msgstr "Mell."
 
 #: cbHk/MuotoiluUnit.dfm ViestiWin/MuotoiluUnit.dfm ViestiWin/UnitLahestyjat.dfm
 msgid "Suuri"
@@ -13700,9 +13784,17 @@ msgstr " Länkar till klasser "
 msgid "Kerran"
 msgstr "En gång"
 
+msgctxt "lyhyt"
+msgid "Kerran"
+msgstr "1 gång"
+
 #: cbHk/MuotoiluUnit.dfm ViestiWin/MuotoiluUnit.dfm
 msgid "Toistuvat"
 msgstr "Upprepade"
+
+msgctxt "lyhyt"
+msgid "Toistuvat"
+msgstr "Upprep."
 
 #: cbHk/MuotoiluUnit.dfm
 msgid " Sisäisen css-tiedoston ominausuudet "
@@ -13847,6 +13939,10 @@ msgstr "Ny num- rerings början"
 msgid "Lähtöväli lopuille"
 msgstr "Startintervall för övriga"
 
+msgctxt "lyhyt"
+msgid "Lähtöväli lopuille"
+msgstr "Intervall för övriga"
+
 #: cbHk/TakaaAjoUnit.dfm
 msgid "Takaa-ajon kesto (min)"
 msgstr "Jaktstartens längd (min)"
@@ -13864,6 +13960,10 @@ msgstr ""
 #: cbHk/TakaaAjoUnit.dfm
 msgid "Aaltokoko lopuille"
 msgstr "Vågstorlek för övriga"
+
+msgctxt "lyhyt"
+msgid "Aaltokoko lopuille"
+msgstr "Vågstorlek, övriga"
 
 #: cbHk/TakaaAjoUnit.dfm
 msgid "Luo lähtöjärjestys"
@@ -13905,6 +14005,10 @@ msgstr " Hantering av tidsskillnader "
 msgid "Käytä aikaeroja sellaisinaan"
 msgstr "Använd tidsskillnader som sådana"
 
+msgctxt "lyhyt"
+msgid "Käytä aikaeroja sellaisinaan"
+msgstr "Använd tidsskillnaderna direkt"
+
 #: cbHk/TakaaAjoUnit.dfm
 msgid "Puolita aikaerot"
 msgstr "Halvera tidsskillnader"
@@ -13930,6 +14034,10 @@ msgstr "Ej startat"
 msgid "Vähennä tuloksista kärkiaika ottaen pyöristys ja kertoimet huomioon"
 msgstr ""
 "Dra av ledarens tid från resultaten med hänsyn till avrundning och koefficienter"
+
+msgctxt "lyhyt"
+msgid "Vähennä tuloksista kärkiaika ottaen pyöristys ja kertoimet huomioon"
+msgstr "Dra av ledarens tid från resultaten med avrundning och koefficienter"
 
 #: cbHk/TakaaAjoUnit.dfm
 msgid "Tallenna ero kärkeen vaiheen pistekenttään 2"
@@ -14615,6 +14723,10 @@ msgstr "Slå ihop klasser till rankingklasser"
 msgid "Ohita matkan/lajin vahvistus"
 msgstr "Hoppa över bekräftelse av distans/gren"
 
+msgctxt "lyhyt"
+msgid "Ohita matkan/lajin vahvistus"
+msgstr "Bekräfta ej distans/gren"
+
 #: cbHk/TulostusUnit2.dfm ViestiWin/TulostusUnit2.dfm
 msgid "Ohjelman oma formaatti"
 msgstr "Programmets eget format"
@@ -14646,6 +14758,10 @@ msgstr "Långa klubbnamn"
 #: cbHk/TulostusUnit2.dfm
 msgid "Pilkkuja tietojen välissä"
 msgstr "Kommatecken mellan uppgifter"
+
+msgctxt "lyhyt"
+msgid "Pilkkuja tietojen välissä"
+msgstr "Komma mellan data"
 
 #: cbHk/TulostusUnit2.dfm ViestiWin/TulostusUnit2.dfm
 msgid "Näytä heti selainikkunassa"
@@ -14783,6 +14899,10 @@ msgstr "Lista"
 msgid "Vaadi merkintä"
 msgstr "Kräv markering"
 
+msgctxt "lyhyt"
+msgid "Vaadi merkintä"
+msgstr "Kräv märkning"
+
 #: cbHk/TulostusUnit2.dfm
 msgid " Tulostettavat lähdöt "
 msgstr " Starter som skrivs ut "
@@ -14790,6 +14910,10 @@ msgstr " Starter som skrivs ut "
 #: cbHk/TulostusUnit2.dfm
 msgid "Luetellut"
 msgstr "Uppräknade"
+
+msgctxt "lyhyt"
+msgid "Luetellut"
+msgstr "Listade"
 
 #: cbHk/TulostusUnit2.dfm
 msgid "Tulosta myös tyhjät minuutit"
@@ -14826,6 +14950,10 @@ msgstr "Klubbnamnsfält"
 #: cbHk/TulostusUnit2.dfm
 msgid "Ohita sarjat, joissa ei lähtijöitä"
 msgstr "Hoppa över klasser utan startande"
+
+msgctxt "lyhyt"
+msgid "Ohita sarjat, joissa ei lähtijöitä"
+msgstr "Hoppa över klasser utan start"
 
 #: cbHk/TulostusUnit2.dfm
 msgid "Ei rajausta"
@@ -15008,6 +15136,10 @@ msgstr ""
 msgid "Seuralyhenne"
 msgstr "Klubbförkortning"
 
+msgctxt "lyhyt"
+msgid "Seuralyhenne"
+msgstr "Klubbförk."
+
 #: cbHk/TulostusUnit2.dfm
 msgid "Piirin numero"
 msgstr "Distriktsnummer"
@@ -15023,6 +15155,10 @@ msgstr "Poäng (tidigare beräknade)"
 #: cbHk/TulostusUnit2.dfm cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm ViestiWin/UnitJoukkuetiedot.dfm
 msgid "Sijoitus"
 msgstr "Placering"
+
+msgctxt "lyhyt"
+msgid "Sijoitus"
+msgstr "Plac."
 
 #: cbHk/TulostusUnit2.dfm
 msgid "Uudet sijoituspisteet"
@@ -15043,6 +15179,10 @@ msgstr "En extra poäng till klassvinnaren"
 #: cbHk/TulostusUnit2.dfm
 msgid "Sarjan koko vaikuttaa voittajan pisteisiin"
 msgstr "Klassens storlek påverkar vinnarens poäng"
+
+msgctxt "lyhyt"
+msgid "Sarjan koko vaikuttaa voittajan pisteisiin"
+msgstr "Klasstorlek påverkar vinnarens poäng"
 
 #: cbHk/TulostusUnit2.dfm
 msgid "Suuremmat paremmat"
@@ -15119,6 +15259,10 @@ msgstr " Sammandrag "
 msgid "Tulosta yhteenveto"
 msgstr "Skriv ut sammandrag"
 
+msgctxt "lyhyt"
+msgid "Tulosta yhteenveto"
+msgstr "Skriv ut summering"
+
 #: cbHk/TulostusUnit2.dfm ViestiWin/TulostusUnit2.dfm
 msgid "Tulostilanne"
 msgstr "Resultatställning"
@@ -15146,6 +15290,10 @@ msgstr "Åldersklasskoder"
 #: cbHk/TulostusUnit2.dfm cbHk/UnitArvonta.dfm
 msgid "Lisää yhden lähdön sarjat"
 msgstr "Lägg till klasser med en start"
+
+msgctxt "lyhyt"
+msgid "Lisää yhden lähdön sarjat"
+msgstr "Lägg till klasser m. 1 start"
 
 #: cbHk/TulostusUnit2.dfm cbHk/UnitEmit.dfm ViestiWin/TulostusUnit2.dfm ViestiWin/UnitEmit.dfm
 msgid "&Automaattinen tulostus"
@@ -15245,6 +15393,10 @@ msgstr "Föregående"
 msgid "Sulje kaavake"
 msgstr "Stäng formuläret"
 
+msgctxt "lyhyt"
+msgid "Sulje kaavake"
+msgstr "Stäng"
+
 #: cbHk/UnitASuunn.dfm cbHk/UnitKilpMaaritys.dfm
 msgid "Ampumasuunnistus"
 msgstr "Skytteorientering"
@@ -15270,11 +15422,19 @@ msgstr "Flyttning av starttider, nummer och etapp"
 msgid "Ei-käsiteltävät sarjat"
 msgstr "Klasser som inte behandlas"
 
+msgctxt "lyhyt"
+msgid "Ei-käsiteltävät sarjat"
+msgstr "Ej behandlade klasser"
+
 #: cbHk/UnitAikaSiirto.dfm cbHk/UnitArvonta.dfm cbHk/UnitNollaus.dfm cbHk/UnitPistelasku.dfm
 #: cbHk/UnitValSarjat.dfm ViestiWin/UnitArvonta.dfm ViestiWin/UnitNollaus.dfm ViestiWin/UnitOsuuskopiointi.dfm
 #: ViestiWin/UnitValSarjat.dfm ViestiWin/UnitYLahdot.dfm
 msgid "Käsiteltävät sarjat"
 msgstr "Klasser som behandlas"
+
+msgctxt "lyhyt"
+msgid "Käsiteltävät sarjat"
+msgstr "Aktuella klasser"
 
 #: cbHk/UnitAikaSiirto.dfm
 msgid "Siirrettävä vaihe"
@@ -15291,6 +15451,10 @@ msgstr "Måletapp"
 #: cbHk/UnitAikaSiirto.dfm
 msgid "Selostus"
 msgstr "Förklaring"
+
+msgctxt "lyhyt"
+msgid "Selostus"
+msgstr "Förklar."
 
 #: cbHk/UnitAikaSiirto.dfm
 msgid " Siirrä "
@@ -15323,6 +15487,10 @@ msgstr "Flytta startnummer"
 #: cbHk/UnitAikaSiirto.dfm
 msgid "Kaikki tiedot vaiheesta toiseen"
 msgstr "Alla uppgifter från en etapp till en annan"
+
+msgctxt "lyhyt"
+msgid "Kaikki tiedot vaiheesta toiseen"
+msgstr "Alla uppgifter mellan etapper"
 
 #: cbHk/UnitAikaSiirto.dfm cbHk/UnitSeuratoimet.dfm cbHk/UnitTapahtSiirrot.dfm cbTp/UnitEmitFile.dfm
 msgid "Toteuta siirto"
@@ -15358,6 +15526,10 @@ msgstr "Kö A"
 msgid "Aikoja lisäksi:"
 msgstr "Tider dessutom:"
 
+msgctxt "lyhyt"
+msgid "Aikoja lisäksi:"
+msgstr "Även tider:"
+
 #: cbHk/UnitAikavert.dfm ViestiWin/UnitAikavert.dfm
 msgid "LblLisaA"
 msgstr ""
@@ -15365,6 +15537,10 @@ msgstr ""
 #: cbHk/UnitAikavert.dfm ViestiWin/UnitAikavert.dfm
 msgid "Luo uusi tietue valitun alle"
 msgstr "Skapa ny post under den valda"
+
+msgctxt "lyhyt"
+msgid "Luo uusi tietue valitun alle"
+msgstr "Skapa ny post under vald"
 
 #: cbHk/UnitAikavert.dfm cbHk/UnitAjanotto.dfm cbHk/UnitKisaLuett.dfm ViestiWin/UnitAikavert.dfm
 msgid "Poista valittu rivi"
@@ -15381,6 +15557,10 @@ msgstr "Kö B"
 #: cbHk/UnitAikavert.dfm ViestiWin/UnitAikavert.dfm
 msgid "Siirtymä"
 msgstr "Förskjutning"
+
+msgctxt "lyhyt"
+msgid "Siirtymä"
+msgstr "Förskj."
 
 #: cbHk/UnitAikavert.dfm ViestiWin/UnitAikavert.dfm
 msgid "LblLisaB"
@@ -15461,6 +15641,10 @@ msgstr "Hjälp"
 msgid "Muutosten kirjaus selailutaulokossa"
 msgstr "Registrering av ändringar i bläddringstabellen"
 
+msgctxt "lyhyt"
+msgid "Muutosten kirjaus selailutaulokossa"
+msgstr "Registrering av ändringar i tabellen"
+
 #: cbHk/UnitAjanotto.dfm
 msgid " Näytä taulukoista "
 msgstr " Visa i tabeller "
@@ -15468,6 +15652,10 @@ msgstr " Visa i tabeller "
 #: cbHk/UnitAjanotto.dfm
 msgid "Selailu ja syöttö"
 msgstr "Bläddring och inmatning"
+
+msgctxt "lyhyt"
+msgid "Selailu ja syöttö"
+msgstr "Bläddra, mata in"
 
 #: cbHk/UnitAjanotto.dfm ViestiWin/UnitAjanotto.dfm cbTp/UnitMTR.dfm
 msgid "Viimeiset"
@@ -15529,6 +15717,10 @@ msgstr "Töm tabellen"
 #: cbHk/UnitAjanotto.dfm ViestiWin/UnitAjanotto.dfm
 msgid "Hae kilpailija numero"
 msgstr "Hämta tävlande nummer"
+
+msgctxt "lyhyt"
+msgid "Hae kilpailija numero"
+msgstr "Hämta tävlande nr"
 
 #: cbHk/UnitAjanotto.dfm ViestiWin/UnitAjanotto.dfm
 msgid "TCP"
@@ -15758,6 +15950,10 @@ msgstr "Halverad"
 msgid " Lähtöajat myös vaiheesta poissaoleville "
 msgstr " Starttider även för frånvarande i etappen "
 
+msgctxt "lyhyt"
+msgid " Lähtöajat myös vaiheesta poissaoleville "
+msgstr " Starttider även för frånvarande i etapp "
+
 #: cbHk/UnitArvonta.dfm
 msgid " Suunnistusarvonnassa käytettävä seuranimi "
 msgstr " Klubbnamn vid orienteringslottning "
@@ -15785,6 +15981,10 @@ msgstr " Begränsningssätt "
 #: cbHk/UnitArvonta.dfm
 msgid "Oheiset sijat (1 sarja)"
 msgstr "Följande placeringar (1 klass)"
+
+msgctxt "lyhyt"
+msgid "Oheiset sijat (1 sarja)"
+msgstr "Följande placeringar (1 kl.)"
 
 #: cbHk/UnitArvonta.dfm
 msgid "Sarjojen alkupuoliskot"
@@ -15994,6 +16194,10 @@ msgstr "Val för automatisk filutskrift"
 msgid "Tulostusväli (sek)"
 msgstr "Utskriftsintervall (s)"
 
+msgctxt "lyhyt"
+msgid "Tulostusväli (sek)"
+msgstr "Utskr.intervall (s)"
+
 #: cbHk/UnitAutoFile.dfm ViestiWin/UnitAutoFile.dfm
 msgid "Tiedoston AUTOFILE.LST sisältö"
 msgstr "Innehåll i filen AUTOFILE.LST"
@@ -16175,6 +16379,10 @@ msgstr "Konfigurationstext"
 msgid "Kilpailun vaihe"
 msgstr "Tävlingens etapp"
 
+msgctxt "lyhyt"
+msgid "Kilpailun vaihe"
+msgstr "Tävlingsetapp"
+
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Avattavien kaavakkeiden määrittelytiedosto"
 msgstr "Definitionsfil för formulär som öppnas"
@@ -16207,6 +16415,10 @@ msgstr " Val för motionsorientering m.m. "
 msgid "Kuntosuunnistuksen laji"
 msgstr "Typ av motionsorientering"
 
+msgctxt "lyhyt"
+msgid "Kuntosuunnistuksen laji"
+msgstr "Motionsorienteringstyp"
+
 #: cbHk/UnitCfg.dfm
 msgid "Henkilötietokantatiedosto"
 msgstr "Persondatabasfil"
@@ -16218,6 +16430,10 @@ msgstr "Klubblista"
 #: cbHk/UnitCfg.dfm
 msgid "Uusien numeroiden alueen alku"
 msgstr "Början av område för nya nummer"
+
+msgctxt "lyhyt"
+msgid "Uusien numeroiden alueen alku"
+msgstr "Början av område för nya nr"
 
 #: cbHk/UnitCfg.dfm
 msgid "Uuden tiedoston vakanttien alku"
@@ -16243,9 +16459,17 @@ msgstr " Sökning och visning av klubb i lista   "
 msgid "Hae tieto"
 msgstr "Hämta uppgift"
 
+msgctxt "lyhyt"
+msgid "Hae tieto"
+msgstr "Hämta"
+
 #: cbHk/UnitCfg.dfm
 msgid "Ei hakua"
 msgstr "Ingen sökning"
+
+msgctxt "lyhyt"
+msgid "Ei hakua"
+msgstr "Sök ej"
 
 #: cbHk/UnitCfg.dfm
 msgid "Vahvista aina haun löytämä henkilö"
@@ -16278,6 +16502,10 @@ msgstr "Alla alternativ"
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Äänimerkin käyttö"
 msgstr "Användning av ljudsignal"
+
+msgctxt "lyhyt"
+msgid "Äänimerkin käyttö"
+msgstr "Ljudsignal"
 
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Ei äänimerkkejä"
@@ -16364,6 +16592,10 @@ msgstr "Sändning av filer från alla mappar"
 msgid "Ajanottojonojen lkm."
 msgstr "Antal tidtagningsköer"
 
+msgctxt "lyhyt"
+msgid "Ajanottojonojen lkm."
+msgstr "Antal tidköer"
+
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Aikojen kohteet ja/tai jonot"
 msgstr "Tidernas mål och/eller köer"
@@ -16371,6 +16603,10 @@ msgstr "Tidernas mål och/eller köer"
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Yhteinen piste"
 msgstr "Gemensam punkt"
+
+msgctxt "lyhyt"
+msgid "Yhteinen piste"
+msgstr "Gem. punkt"
 
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid " Ajanotto sarjaporttipainikkeella "
@@ -16380,9 +16616,17 @@ msgstr " Tidtagning med serieportsknapp "
 msgid "Sarjaportin numero"
 msgstr "Serieportens nummer"
 
+msgctxt "lyhyt"
+msgid "Sarjaportin numero"
+msgstr "Serieportnummer"
+
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm cbTp/UnitMaalikello.dfm
 msgid " Ajanottolaite - Laitenumero 1 "
 msgstr " Tidtagningsenhet - Enhetsnummer 1 "
+
+msgctxt "lyhyt"
+msgid " Ajanottolaite - Laitenumero 1 "
+msgstr " Tidtagningsenhet - Enhetsnr 1 "
 
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm cbTp/UnitMaalikello.dfm
 msgid "Portin numero"
@@ -16396,6 +16640,10 @@ msgstr ""
 msgid "Laitteen ip-osoite"
 msgstr "Enhetens ip-adress"
 
+msgctxt "lyhyt"
+msgid "Laitteen ip-osoite"
+msgstr "Enhetens ip-adr."
+
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm cbTp/UnitMaalikello.dfm
 msgid "Baud"
 msgstr ""
@@ -16403,6 +16651,10 @@ msgstr ""
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm cbTp/UnitMaalikello.dfm
 msgid "Kellon nollausaika"
 msgstr "Klockans nollställningstid"
+
+msgctxt "lyhyt"
+msgid "Kellon nollausaika"
+msgstr "Klockans nolltid"
 
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm cbTp/UnitMaalikello.dfm
 msgid "Ei laitetta"
@@ -16477,6 +16729,10 @@ msgstr ""
 msgid " Aikajonojen käyttö "
 msgstr " Användning av tidtagningsköer "
 
+msgctxt "lyhyt"
+msgid " Aikajonojen käyttö "
+msgstr " Användning av tidköer "
+
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Aikoja ei käsitellä"
 msgstr "Tider behandlas inte"
@@ -16527,6 +16783,10 @@ msgstr "Använd filen lahdepisteet(1).lst"
 msgid "Säilytä aiemmat ajat kysymättä"
 msgstr "Behåll tidigare tider utan att fråga"
 
+msgctxt "lyhyt"
+msgid "Säilytä aiemmat ajat kysymättä"
+msgstr "Behåll tidigare tider utan fråga"
+
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid " Ajat tiedonsiirron kautta "
 msgstr " Tider via dataöverföring "
@@ -16543,6 +16803,10 @@ msgstr "Ta emot tider från dataanslutning"
 msgid " Vuoron käyttö "
 msgstr " Användning av tur "
 
+msgctxt "lyhyt"
+msgid " Vuoron käyttö "
+msgstr " Användn. av tur "
+
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Sama piste (sek)"
 msgstr "Samma punkt (s)"
@@ -16551,9 +16815,17 @@ msgstr "Samma punkt (s)"
 msgid "Alin"
 msgstr "Lägsta"
 
+msgctxt "lyhyt"
+msgid "Alin"
+msgstr "Min"
+
 #: cbHk/UnitCfg.dfm ViestiWin/UnitSeurGr.dfm
 msgid "Ylin"
 msgstr "Högsta"
+
+msgctxt "lyhyt"
+msgid "Ylin"
+msgstr "Max"
 
 #: cbHk/UnitCfg.dfm ViestiWin/UnitAjanotto.dfm ViestiWin/UnitCfg.dfm
 msgid "Panel4"
@@ -16566,6 +16838,10 @@ msgstr "Koppla starttider automatiskt till tävlande i tur"
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Kaikki ajat väliaikoja (estä kirjaus loppuajaksi) "
 msgstr "Alla tider mellantider (förhindra registrering som sluttid) "
+
+msgctxt "lyhyt"
+msgid "Kaikki ajat väliaikoja (estä kirjaus loppuajaksi) "
+msgstr "Alla tider mellantider (aldrig som sluttid) "
 
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Kello lähettää kilpailijanumeroita"
@@ -16615,6 +16891,10 @@ msgstr "Kontrollrapport om diskningsförslag"
 msgid "Rastiväliaikaraportti erillisenä toimintona"
 msgstr "Kontrollmellantidsrapport som separat funktion"
 
+msgctxt "lyhyt"
+msgid "Rastiväliaikaraportti erillisenä toimintona"
+msgstr "Kontrollmellantidsrapport som egen funktion"
+
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid " Raportin kirjoittaminen tiedonsiirron perusteella "
 msgstr " Rapportskrivning utifrån dataöverföring "
@@ -16646,6 +16926,10 @@ msgstr "Analys av Emit-data i bruk"
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Tarkastuksen aikajono"
 msgstr "Kontrollens tidtagningskö"
+
+msgctxt "lyhyt"
+msgid "Tarkastuksen aikajono"
+msgstr "Kontrollens tidkö"
 
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Leimantarkastuksen antamat ajat  tiedostoon"
@@ -16694,6 +16978,10 @@ msgstr "Första nummer för nya Emit-koder"
 #: cbHk/UnitCfg.dfm
 msgid "Viimeisen leiman aika on rastiväliaika"
 msgstr "Sista stämplingens tid är kontrollmellantid"
+
+msgctxt "lyhyt"
+msgid "Viimeisen leiman aika on rastiväliaika"
+msgstr "Sista stämplingens tid är mellantid"
 
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Huomauta, kun aikaa ei voida määrätä"
@@ -16771,13 +17059,25 @@ msgstr " Automatisk utskrift på skrivare "
 msgid "Tulostuksen laajuus"
 msgstr "Utskriftens omfattning"
 
+msgctxt "lyhyt"
+msgid "Tulostuksen laajuus"
+msgstr "Utskriftsomfattning"
+
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Lkm."
 msgstr "Antal"
 
+msgctxt "lyhyt"
+msgid "Lkm."
+msgstr "Ant."
+
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Laskurin kynnysarvo"
 msgstr "Räknarens tröskelvärde"
+
+msgctxt "lyhyt"
+msgid "Laskurin kynnysarvo"
+msgstr "Räknarens tröskel"
 
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Aika-askel (sek)"
@@ -16958,6 +17258,10 @@ msgstr "Tillåt inmatning av nummer innan tiden fåtts"
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm
 msgid "Päivitä sisältö"
 msgstr "Uppdatera innehåll"
+
+msgctxt "lyhyt"
+msgid "Päivitä sisältö"
+msgstr "Uppdatera"
 
 #: cbHk/UnitCfg.dfm ViestiWin/UnitCfg.dfm cbTp/UnitTietoTulk.dfm
 msgid "Tulkitse"
@@ -17149,6 +17453,10 @@ msgstr "Meddelande"
 msgid "Hae kilpno"
 msgstr "Hämta tävl.nr"
 
+msgctxt "lyhyt"
+msgid "Hae kilpno"
+msgstr "Hämta nr"
+
 #: cbHk/UnitComfile.dfm
 msgid "Määrää KilpPos avatun kilpailun tiedoista"
 msgstr "Bestäm KilpPos ur öppnad tävlings data"
@@ -17160,6 +17468,10 @@ msgstr ""
 #: cbHk/UnitComfile.dfm ViestiWin/UnitComfile.dfm
 msgid "Hae KilpPos"
 msgstr "Hämta KilpPos"
+
+msgctxt "lyhyt"
+msgid "Hae KilpPos"
+msgstr "Läs KilpPos"
 
 #: cbHk/UnitComfile.dfm ViestiWin/UnitComfile.dfm
 msgid "Ed."
@@ -17190,6 +17502,10 @@ msgstr " Sändning av meddelanden "
 msgid "Yhteys, mihin lähetys"
 msgstr "Anslutning för sändning"
 
+msgctxt "lyhyt"
+msgid "Yhteys, mihin lähetys"
+msgstr "Anslutning för sändn."
+
 #: cbHk/UnitComfile.dfm ViestiWin/UnitComfile.dfm
 msgid "Alkurivi"
 msgstr "Första rad"
@@ -17202,9 +17518,17 @@ msgstr "Sista rad"
 msgid "Lähetysväli"
 msgstr "Sändningsintervall"
 
+msgctxt "lyhyt"
+msgid "Lähetysväli"
+msgstr "Sändintervall"
+
 #: cbHk/UnitComfile.dfm ViestiWin/UnitComfile.dfm
 msgid "Tasaväli"
 msgstr "Jämnt intervall"
+
+msgctxt "lyhyt"
+msgid "Tasaväli"
+msgstr "Jämnt"
 
 #: cbHk/UnitComfile.dfm ViestiWin/UnitComfile.dfm
 msgid "Tiedoista"
@@ -17229,6 +17553,10 @@ msgstr "Vald"
 #: cbHk/UnitComfile.dfm ViestiWin/UnitComfile.dfm
 msgid "Salli lähetysaokojen muokkaus"
 msgstr "Tillåt redigering av sändningstider"
+
+msgctxt "lyhyt"
+msgid "Salli lähetysaokojen muokkaus"
+msgstr "Tillåt redigering av sändtider"
 
 #: cbHk/UnitComfile.dfm ViestiWin/UnitComfile.dfm
 msgid "Tallenna muutettu lähetysaika"
@@ -17387,6 +17715,10 @@ msgstr "Räkna resultat från stämplingar"
 msgid "Vaihda kilpailija muuta leimaustietoja, ohita kortti"
 msgstr "Byt tävlande, ändra stämplingsuppgifter, hoppa över bricka"
 
+msgctxt "lyhyt"
+msgid "Vaihda kilpailija muuta leimaustietoja, ohita kortti"
+msgstr "Byt tävlande/ändra stämplingar/hoppa över bricka"
+
 #: cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm
 msgid "Näytä leimat"
 msgstr "Visa stämplingar"
@@ -17399,13 +17731,25 @@ msgstr "Ångra registrering"
 msgid "Tulosta leimausraportti"
 msgstr "Skriv ut stämplingsrapport"
 
+msgctxt "lyhyt"
+msgid "Tulosta leimausraportti"
+msgstr "Skriv ut stämpl.rapport"
+
 #: cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitVaTuloste.dfm
 msgid "Väliaikatuloste"
 msgstr "Mellantidsutskrift"
 
+msgctxt "lyhyt"
+msgid "Väliaikatuloste"
+msgstr "Mellantidsutskr."
+
 #: cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm
 msgid "Hae heti seur. laskettava"
 msgstr "Hämta genast nästa att räkna"
+
+msgctxt "lyhyt"
+msgid "Hae heti seur. laskettava"
+msgstr "Hämta nästa att ber."
 
 #: cbHk/UnitEmit.dfm
 msgid "Ohita kortti"
@@ -17439,6 +17783,10 @@ msgstr "Töm meddelandefältet"
 msgid "Piikkikuviot"
 msgstr "Spikmönster"
 
+msgctxt "lyhyt"
+msgid "Piikkikuviot"
+msgstr "Spikmönst."
+
 #: cbHk/UnitEmit.dfm
 msgid "Kortti luettu. Siirry käsittelyyn tästä."
 msgstr "Brickan läst. Gå till behandling här."
@@ -17454,6 +17802,10 @@ msgstr "Alias"
 #: cbHk/UnitEmit.dfm cbHk/UnitHylkRap.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitHylkRap.dfm
 msgid "Hylkäysraportti"
 msgstr "Diskningsrapport"
+
+msgctxt "lyhyt"
+msgid "Hylkäysraportti"
+msgstr "Diskrapport"
 
 #: cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitMain.dfm
 msgid "&Tiedostot"
@@ -17624,6 +17976,10 @@ msgstr "Inmatning av Emit-koder"
 msgid "Vaiheet, joita merkintä koskee"
 msgstr "Etapper som markeringen gäller"
 
+msgctxt "lyhyt"
+msgid "Vaiheet, joita merkintä koskee"
+msgstr "Etapper som markering gäller"
+
 #: cbHk/UnitEmitKoodit.dfm cbHk/UnitTarkMerk.dfm ViestiWin/UnitMerkKoodeja.dfm
 msgid "Toteuta merkinnät"
 msgstr "Utför markeringar"
@@ -17660,6 +18016,10 @@ msgstr "Markera som hyrbricka"
 msgid "Poista lainakorttimerkinnät"
 msgstr "Ta bort hyrbricksmarkeringar"
 
+msgctxt "lyhyt"
+msgid "Poista lainakorttimerkinnät"
+msgstr "Ta bort hyrbricksmarkering"
+
 #: cbHk/UnitEmitMuutokset.dfm ViestiWin/UnitEmitMuutokset.dfm
 msgid "Emit-muutokset"
 msgstr "Emit-ändringar"
@@ -17692,6 +18052,10 @@ msgstr "Nästa namn"
 msgid "Siirrä leimaukset tallentamatta"
 msgstr "Flytta stämplingar utan att spara"
 
+msgctxt "lyhyt"
+msgid "Siirrä leimaukset tallentamatta"
+msgstr "Flytta stämpl. utan att spara"
+
 #: cbHk/UnitEmitMuutokset.dfm ViestiWin/UnitEmitMuutokset.dfm
 msgid "Vaihda kilpailijoiden leimaukset ristiin"
 msgstr "Byt stämplingar korsvis mellan tävlande"
@@ -17708,9 +18072,17 @@ msgstr "Ångra osparad flyttning"
 msgid "Merkitse kortti ohitetuksi"
 msgstr "Markera brickan som överhoppad"
 
+msgctxt "lyhyt"
+msgid "Merkitse kortti ohitetuksi"
+msgstr "Markera brickan överhoppad"
+
 #: cbHk/UnitEmitMuutokset.dfm
 msgid "Salli nimihaku kilpailijan löytämiseksi"
 msgstr "Tillåt namnsökning för att hitta tävlande"
+
+msgctxt "lyhyt"
+msgid "Salli nimihaku kilpailijan löytämiseksi"
+msgstr "Tillåt namnsökning av tävlande"
 
 #: cbHk/UnitEmitMuutokset.dfm ViestiWin/UnitLuenta.dfm
 msgid "1. koodi"
@@ -17795,9 +18167,17 @@ msgstr "Beräkna automatiskt vid läsning"
 msgid "Laske sarja"
 msgstr "Beräkna klass"
 
+msgctxt "lyhyt"
+msgid "Laske sarja"
+msgstr "Räkna klass"
+
 #: cbHk/UnitEmit_VA.dfm ViestiWin/UnitEmit_VA.dfm
 msgid "Laske kaikki sarjat"
 msgstr "Beräkna alla klasser"
+
+msgctxt "lyhyt"
+msgid "Laske kaikki sarjat"
+msgstr "Räkna alla klasser"
 
 #: cbHk/UnitEmit_VA.dfm ViestiWin/UnitEmit_VA.dfm
 msgid "Säilytä jo lasketut"
@@ -17991,9 +18371,17 @@ msgstr "Uteslut etappens frånvarande"
 msgid "Jätä pois vaiheen poissaolevat ja vakantit"
 msgstr "Uteslut etappens frånvarande och vakanta"
 
+msgctxt "lyhyt"
+msgid "Jätä pois vaiheen poissaolevat ja vakantit"
+msgstr "Utan etappens frånvarande och vakanta"
+
 #: cbHk/UnitHylkRap.dfm ViestiWin/UnitHylkRap.dfm
 msgid "Asian avausaika"
 msgstr "Ärendets öppningstid"
+
+msgctxt "lyhyt"
+msgid "Asian avausaika"
+msgstr "Ärendet öppnat"
 
 #: cbHk/UnitHylkRap.dfm ViestiWin/UnitHylkRap.dfm
 msgid "Tallennusaika"
@@ -18018,6 +18406,10 @@ msgstr " Fallets art "
 #: cbHk/UnitHylkRap.dfm ViestiWin/UnitHylkRap.dfm
 msgid "Aiheeton (poistettu käsittelystä)"
 msgstr "Ogrundad (borttagen från behandling)"
+
+msgctxt "lyhyt"
+msgid "Aiheeton (poistettu käsittelystä)"
+msgstr "Ogrundad (avförd från behandling)"
 
 #: cbHk/UnitHylkRap.dfm ViestiWin/UnitHylkRap.dfm
 msgid "Epäonnistunut kortin luenta"
@@ -18252,9 +18644,17 @@ msgstr "Sök med namn i persondatabasen"
 msgid "Käytä nimeä muokattavan hakuun"
 msgstr "Använd namn för att söka den som redigeras"
 
+msgctxt "lyhyt"
+msgid "Käytä nimeä muokattavan hakuun"
+msgstr "Sök den som redigeras med namn"
+
 #: cbHk/UnitIlm2.dfm
 msgid "Käytä kilpailijanumeroa muokattavan hakuun"
 msgstr "Använd startnummer för att söka den som redigeras"
+
+msgctxt "lyhyt"
+msgid "Käytä kilpailijanumeroa muokattavan hakuun"
+msgstr "Sök den som redigeras med startnummer"
 
 #: cbHk/UnitIlm2.dfm
 msgid "Muokkaa tietoja"
@@ -18578,6 +18978,10 @@ msgstr "Poängformlernas koefficienter"
 msgid "Näytä sijoituskertoimet"
 msgstr "Visa placeringskoefficienter"
 
+msgctxt "lyhyt"
+msgid "Näytä sijoituskertoimet"
+msgstr "Visa placeringskoefficient"
+
 #: cbHk/UnitKaavaTaul.dfm
 msgid "Näytä tuloskertoimet"
 msgstr "Visa resultatkoefficienter"
@@ -18669,6 +19073,10 @@ msgstr "Simning"
 #: cbHk/UnitKilpMaaritys.dfm ViestiWin/UnitKilpMaaritys.dfm
 msgid " Lajitäsmennys "
 msgstr " Precisering av gren "
+
+msgctxt "lyhyt"
+msgid " Lajitäsmennys "
+msgstr " Grenprecisering "
 
 #: cbHk/UnitKilpMaaritys.dfm
 msgid "Sprint"
@@ -18894,6 +19302,10 @@ msgstr "Tävlande Emit"
 msgid "Sarjan &kärki"
 msgstr "Klassens &topp"
 
+msgctxt "lyhyt"
+msgid "Sarjan &kärki"
+msgstr "Klass&topp"
+
 #: cbHk/UnitKilpailijaEmit.dfm cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm ViestiWin/UnitJoukkuetiedot.dfm
 msgid "&Seuraava"
 msgstr "&Nästa"
@@ -18901,6 +19313,10 @@ msgstr "&Nästa"
 #: cbHk/UnitKilpailijaEmit.dfm cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm ViestiWin/UnitJoukkuetiedot.dfm
 msgid "&Edellinen"
 msgstr "&Föregående"
+
+msgctxt "lyhyt"
+msgid "&Edellinen"
+msgstr "&Föreg."
 
 #: cbHk/UnitKilpailijaOnline.dfm
 msgid "Kilpailija online väliajoin"
@@ -18921,6 +19337,10 @@ msgstr " Bläddringsgrund "
 #: cbHk/UnitKilpailijaOnline.dfm
 msgid "Näytä seurantaikkuna"
 msgstr "Visa uppföljningsfönster"
+
+msgctxt "lyhyt"
+msgid "Näytä seurantaikkuna"
+msgstr "Visa uppföljning"
 
 #: cbHk/UnitKilpailijaOnline.dfm
 msgid "Tietoa"
@@ -18953,6 +19373,10 @@ msgstr "Rankingpoäng"
 #: cbHk/UnitKilpailijatiedot.dfm ViestiWin/UnitJoukkuetiedot.dfm
 msgid "Piiri/alue"
 msgstr "Distrikt/område"
+
+msgctxt "lyhyt"
+msgid "Piiri/alue"
+msgstr "Distr/omr"
 
 #: cbHk/UnitKilpailijatiedot.dfm cbHk/UnitLisatiedot.dfm
 msgid "Ikäsarja"
@@ -19078,6 +19502,10 @@ msgstr "Utför valda åtgärder"
 msgid "Lisää tämä kilpailu"
 msgstr "Lägg till denna tävling"
 
+msgctxt "lyhyt"
+msgid "Lisää tämä kilpailu"
+msgstr "Lägg till tävlingen"
+
 #: cbHk/UnitKisaLuett.dfm
 msgid "&Lue kilpailuluettelo"
 msgstr "&Läs tävlingslista"
@@ -19105,6 +19533,10 @@ msgstr "Lägg till Emitpost"
 #: cbHk/UnitLisaTietue.dfm
 msgid " Tietueen pohjustustapa "
 msgstr " Initieringssätt för posten "
+
+msgctxt "lyhyt"
+msgid " Tietueen pohjustustapa "
+msgstr " Initieringssätt för post "
 
 #: cbHk/UnitLisaTietue.dfm
 msgid "Aiempi tietue"
@@ -19182,6 +19614,10 @@ msgstr "Initiera fält"
 msgid " Vaihe, kun tieto voi vaihtua"
 msgstr " Etapp, när uppgiften kan ändras"
 
+msgctxt "lyhyt"
+msgid " Vaihe, kun tieto voi vaihtua"
+msgstr " Etapp när uppgiften ändras"
+
 #: cbHk/UnitLisatiedot.dfm ViestiWin/UnitLisatiedot.dfm
 msgid " Siirron kohde  "
 msgstr " Överföringens mål  "
@@ -19205,6 +19641,10 @@ msgstr "Hyrbricksmarkering"
 #: cbHk/UnitLisatiedot.dfm
 msgid "Lähtöaika (arv. ja tot.)"
 msgstr "Starttid (lottad och faktisk)"
+
+msgctxt "lyhyt"
+msgid "Lähtöaika (arv. ja tot.)"
+msgstr "Starttid (lottad o. faktisk)"
 
 #: cbHk/UnitLisatiedot.dfm
 msgid "Vaiheen pisteet 1"
@@ -19250,9 +19690,17 @@ msgstr " Filens egenskaper "
 msgid "Tunnistavan tiedon sarake"
 msgstr "Kolumn för identifierande uppgift"
 
+msgctxt "lyhyt"
+msgid "Tunnistavan tiedon sarake"
+msgstr "Kolumn för identifierare"
+
 #: cbHk/UnitLisatiedot.dfm ViestiWin/UnitLisatiedot.dfm
 msgid "Siirrettävän tiedon sarake"
 msgstr "Kolumn för data som överförs"
+
+msgctxt "lyhyt"
+msgid "Siirrettävän tiedon sarake"
+msgstr "Kolumn för data att överföra"
 
 #: cbHk/UnitLisatiedot.dfm
 msgid "Label7"
@@ -19273,6 +19721,10 @@ msgstr "Mellanslag eller tabulator"
 #: cbHk/UnitLisatiedot.dfm
 msgid "Tieto on desimaaliluku myös ilman desimaalipilkkua tai -pistettä"
 msgstr "Uppgiften är ett decimaltal även utan decimalkomma eller -punkt"
+
+msgctxt "lyhyt"
+msgid "Tieto on desimaaliluku myös ilman desimaalipilkkua tai -pistettä"
+msgstr "Uppgiften är decimaltal även utan decimalkomma eller -punkt"
 
 #: cbHk/UnitLisatiedot.dfm
 msgid ""
@@ -19295,6 +19747,10 @@ msgstr "Krävt fältvärde"
 #: cbHk/UnitLisatiedot.dfm cbHk/UnitSuodatus.dfm
 msgid "Ehdon vaihe"
 msgstr "Villkorets etapp"
+
+msgctxt "lyhyt"
+msgid "Ehdon vaihe"
+msgstr "Villkorsetapp"
 
 #: cbHk/UnitLisatiedot.dfm
 msgid "Rajoita kentän arvolla"
@@ -19409,6 +19865,10 @@ msgstr "Databas"
 msgid "Jatkuvan tiedonsiirron jono"
 msgstr "Kö för kontinuerlig dataöverföring"
 
+msgctxt "lyhyt"
+msgid "Jatkuvan tiedonsiirron jono"
+msgstr "Kö för löpande överföring"
+
 #: cbHk/UnitMySQL.dfm ViestiWin/UnitMySQL.dfm cbTp/UnitEmitSQL.dfm cbTp/UnitMaalikello.dfm
 msgid "Avaa yhteys"
 msgstr "Öppna anslutning"
@@ -19437,9 +19897,17 @@ msgstr ""
 msgid "Jatkuva tiedonsiirto"
 msgstr "Kontinuerlig dataöverföring"
 
+msgctxt "lyhyt"
+msgid "Jatkuva tiedonsiirto"
+msgstr "Löpande överföring"
+
 #: cbHk/UnitMySQL.dfm ViestiWin/UnitMySQL.dfm
 msgid "Varmista jatkuva tiedonsiirto"
 msgstr "Säkra kontinuerlig dataöverföring"
+
+msgctxt "lyhyt"
+msgid "Varmista jatkuva tiedonsiirto"
+msgstr "Säkra löpande överföring"
 
 #: cbHk/UnitNollaus.dfm ViestiWin/UnitNollaus.dfm
 msgid "Nollaa tietoja"
@@ -19773,6 +20241,10 @@ msgstr "Totalplaceringar"
 msgid "Piirisijat"
 msgstr "Distriktsplaceringar"
 
+msgctxt "lyhyt"
+msgid "Piirisijat"
+msgstr "Distriktsplac."
+
 #: cbHk/UnitPiirival.dfm ViestiWin/UnitPiirival.dfm
 msgid "Lue PIIRIT.LST"
 msgstr "Läs PIIRIT.LST"
@@ -19801,21 +20273,41 @@ msgstr "Första poäng"
 msgid "Sija-alue 1"
 msgstr "Placeringsområde 1"
 
+msgctxt "lyhyt"
+msgid "Sija-alue 1"
+msgstr "Plac.omr 1"
+
 #: cbHk/UnitPistelasku.dfm
 msgid "Sija-alue 2"
 msgstr "Placeringsområde 2"
+
+msgctxt "lyhyt"
+msgid "Sija-alue 2"
+msgstr "Plac.omr 2"
 
 #: cbHk/UnitPistelasku.dfm
 msgid "Sija-alue 3"
 msgstr "Placeringsområde 3"
 
+msgctxt "lyhyt"
+msgid "Sija-alue 3"
+msgstr "Plac.omr 3"
+
 #: cbHk/UnitPistelasku.dfm
 msgid "Sija-alue 4"
 msgstr "Placeringsområde 4"
 
+msgctxt "lyhyt"
+msgid "Sija-alue 4"
+msgstr "Plac.omr 4"
+
 #: cbHk/UnitPistelasku.dfm
 msgid "Sija-alue 5"
 msgstr "Placeringsområde 5"
+
+msgctxt "lyhyt"
+msgid "Sija-alue 5"
+msgstr "Plac.omr 5"
 
 #: cbHk/UnitPistelasku.dfm
 msgid "Ota huomioon vain joukkuenimen haltijat"
@@ -19861,6 +20353,10 @@ msgstr "Beräkningsformel"
 msgid "Kerroin on lukujen a ja b suhde (a/b)     a"
 msgstr "Koefficienten är kvoten av talen a och b (a/b)     a"
 
+msgctxt "lyhyt"
+msgid "Kerroin on lukujen a ja b suhde (a/b)     a"
+msgstr "Koefficient = kvoten av a och b (a/b)     a"
+
 #: cbHk/UnitPistelasku.dfm
 msgid "b"
 msgstr ""
@@ -19868,6 +20364,10 @@ msgstr ""
 #: cbHk/UnitPistelasku.dfm
 msgid "Vertaikuaika"
 msgstr "Jämförelsetid"
+
+msgctxt "lyhyt"
+msgid "Vertaikuaika"
+msgstr "Jämförtid"
 
 #: cbHk/UnitPistelasku.dfm
 msgid "Valitse tästä, jos pisteet tulosperusteisia"
@@ -19912,6 +20412,10 @@ msgstr "Till närmaste heltal"
 #: cbHk/UnitPistelasku.dfm
 msgid "Vertailuaika on voittajan tulos"
 msgstr "Jämförelsetiden är vinnarens resultat"
+
+msgctxt "lyhyt"
+msgid "Vertailuaika on voittajan tulos"
+msgstr "Jämförelsetid är segrarens tid"
 
 #: cbHk/UnitPistelasku.dfm
 msgid "Käytä summaa sijoitus- ja tulospisteistä"
@@ -20058,6 +20562,10 @@ msgstr "Första efteranm. starter"
 msgid "Alkunumero"
 msgstr "Första nummer"
 
+msgctxt "lyhyt"
+msgid "Alkunumero"
+msgstr "Första nr"
+
 #: cbHk/UnitSarja.dfm
 msgid "Alkunumerot"
 msgstr "Första nummer"
@@ -20110,6 +20618,10 @@ msgstr "Tilläggskoder"
 msgid "Sprinthiihdon perussarja"
 msgstr "Sprintskidåkningens grundklass"
 
+msgctxt "lyhyt"
+msgid "Sprinthiihdon perussarja"
+msgstr "Grundklass för sprint"
+
 #: cbHk/UnitSarja.dfm
 msgid "Hiihtotapa (P, V, PV, VP)"
 msgstr "Skidstil (P, V, PV, VP)"
@@ -20157,6 +20669,10 @@ msgstr " Skytteorientering "
 #: cbHk/UnitSarja.dfm
 msgid "Kilpailun vaihe (päivä)"
 msgstr "Tävlingens etapp (dag)"
+
+msgctxt "lyhyt"
+msgid "Kilpailun vaihe (päivä)"
+msgstr "Tävlingsetapp (dag)"
 
 #: cbHk/UnitSarja.dfm
 msgid "Yhden kisan vaiheet"
@@ -20496,6 +21012,10 @@ msgstr "Klubbval"
 msgid "Ei-tulostettavat seurat"
 msgstr "Klubbar som inte skrivs ut"
 
+msgctxt "lyhyt"
+msgid "Ei-tulostettavat seurat"
+msgstr "Klubbar som ej skrivs ut"
+
 #: cbHk/UnitSeuraval.dfm ViestiWin/UnitSeuraval.dfm
 msgid "Tulostettavat seurat"
 msgstr "Klubbar som skrivs ut"
@@ -20532,6 +21052,10 @@ msgstr "Heatomgång 2"
 msgid "3. erävaihe"
 msgstr "Heatomgång 3"
 
+msgctxt "lyhyt"
+msgid "3. erävaihe"
+msgstr "Heatomg. 3"
+
 #: cbHk/UnitSprintSarja.dfm
 msgid ""
 "Erien lukumäärä sisältää karsinnan. Merkitse vaiheiden lukumäärä nollaksi, jos haluat poistaa merkinnän  sprintin perussarjaksi"
@@ -20554,6 +21078,10 @@ msgstr "Heatstorlek"
 msgid "Luo uudet sarjat erävaiheisiin (käytä vain, jos sarjoja ei ole)"
 msgstr "Skapa nya klasser för heatomgångar (använd endast om klasser saknas)"
 
+msgctxt "lyhyt"
+msgid "Luo uudet sarjat erävaiheisiin (käytä vain, jos sarjoja ei ole)"
+msgstr "Skapa klasser för heatomgångar (bara om klasser saknas)"
+
 #: cbHk/UnitSprinthiihto.dfm
 msgid "Sprint-hiihdon siirrot"
 msgstr "Sprintskidåkningens överföringar"
@@ -20561,6 +21089,10 @@ msgstr "Sprintskidåkningens överföringar"
 #: cbHk/UnitSprinthiihto.dfm
 msgid "Lähtösarja tai -sarjat"
 msgstr "Ursprungsklass eller -klasser"
+
+msgctxt "lyhyt"
+msgid "Lähtösarja tai -sarjat"
+msgstr "Ursprungsklass(er)"
 
 #: cbHk/UnitSprinthiihto.dfm
 msgid "Uusien numeroiden alku (0: aiemmat numerot)"
@@ -20585,6 +21117,10 @@ msgstr "Från kval till heat"
 #: cbHk/UnitSprinthiihto.dfm
 msgid "Alkueristä välieriin"
 msgstr "Från kvartsfinal till semifinal"
+
+msgctxt "lyhyt"
+msgid "Alkueristä välieriin"
+msgstr "Kvartsfinal till semifinal"
 
 #: cbHk/UnitSprinthiihto.dfm
 msgid "Finaaleiden luonti"
@@ -20676,6 +21212,10 @@ msgstr "Markering av frånvaro (vakant)"
 msgid "Poista karsinnan läpäisymerkinnät lähtövaiheelta"
 msgstr "Radera markeringar för godkänt kval från ursprungsomgången"
 
+msgctxt "lyhyt"
+msgid "Poista karsinnan läpäisymerkinnät lähtövaiheelta"
+msgstr "Radera kvalmarkeringar i ursprungsomgången"
+
 #: cbHk/UnitSprinthiihto.dfm
 msgid "Sarjaksi kilpailijan perussarja"
 msgstr "Som klass den tävlandes grundklass"
@@ -20683,6 +21223,10 @@ msgstr "Som klass den tävlandes grundklass"
 #: cbHk/UnitSprinthiihto.dfm
 msgid "Rintanumeroksi perusnumero mahdollisesti lisättynä"
 msgstr "Som bröstnummer grundnummer eventuellt med tillägg"
+
+msgctxt "lyhyt"
+msgid "Rintanumeroksi perusnumero mahdollisesti lisättynä"
+msgstr "Som bröstnummer grundnummer ev. med tillägg"
 
 #: cbHk/UnitSprinthiihto.dfm
 msgid "Toteuta ennen muodostamista alla määritelty palautus automaattisesti"
@@ -20936,9 +21480,17 @@ msgstr ""
 msgid "Käytössä sarjaportti "
 msgstr "Serieport i användning "
 
+msgctxt "lyhyt"
+msgid "Käytössä sarjaportti "
+msgstr "Serieport används "
+
 #: cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm
 msgid "Aikakorjaus/Aika"
 msgstr "Tidskorrigering/Tid"
+
+msgctxt "lyhyt"
+msgid "Aikakorjaus/Aika"
+msgstr "Korrigering/Tid"
 
 #: cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm
 msgid "GAZ 1"
@@ -21011,6 +21563,10 @@ msgstr "Tom"
 #: cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm
 msgid "Oletussisältö"
 msgstr "Standardinnehåll"
+
+msgctxt "lyhyt"
+msgid "Oletussisältö"
+msgstr "Standard"
 
 #: cbHk/UnitTaulu.dfm
 msgid "Monirivitaulu"
@@ -21188,6 +21744,10 @@ msgstr "Okorrigerade tider"
 msgid "Aikaerot maastossa"
 msgstr "Tidsskillnader i terrängen"
 
+msgctxt "lyhyt"
+msgid "Aikaerot maastossa"
+msgstr "Tidsskillnad i terräng"
+
 #: cbHk/UnitVaGr.dfm ViestiWin/TulosUnit.dfm ViestiWin/UnitVaGr.dfm
 msgid " Järjestys "
 msgstr " Ordning "
@@ -21275,6 +21835,10 @@ msgstr "Mellantider - upprepade"
 #: cbHk/UnitVaToisto.dfm
 msgid "Väliaikapisteiden väli metreinä"
 msgstr "Avstånd mellan mellantidspunkter i meter"
+
+msgctxt "lyhyt"
+msgid "Väliaikapisteiden väli metreinä"
+msgstr "Avstånd mellan mellantidspunkter (m)"
 
 #: cbHk/UnitVaToisto.dfm
 msgid "Ensimmäinen annettava piste metreinä"
@@ -21376,6 +21940,10 @@ msgstr "Vakanta skapade"
 msgid "Ei lähteneiksi"
 msgstr "Som ej startade"
 
+msgctxt "lyhyt"
+msgid "Ei lähteneiksi"
+msgstr "Ej startade"
+
 #: cbHk/UnitVakLisays.dfm
 msgid "Täytä vain numeroalueen aukot"
 msgstr "Fyll bara luckor i nummerområdet"
@@ -21407,6 +21975,10 @@ msgstr "Nordisk kombination"
 #: cbHk/UnitYhdistetty.dfm
 msgid "Muuntokerroin (piste/min)"
 msgstr "Omräkningsfaktor (poäng/min)"
+
+msgctxt "lyhyt"
+msgid "Muuntokerroin (piste/min)"
+msgstr "Omräkningsfaktor (p/min)"
 
 #: cbHk/UnitYhdistetty.dfm
 msgid "Muunnettava sarja"
@@ -21488,6 +22060,10 @@ msgstr "Öppnade fönster"
 msgid "Avatun kilpailun nimi"
 msgstr "Namn på öppnad tävling"
 
+msgctxt "lyhyt"
+msgid "Avatun kilpailun nimi"
+msgstr "Öppnad tävling"
+
 #: cbHk/WinHk.dfm ViestiWin/UnitMain.dfm
 msgid "Vaihe: Esivalmistelu"
 msgstr "Läge: Förberedelse"
@@ -21499,6 +22075,10 @@ msgstr "Definierad"
 #: cbHk/WinHk.dfm ViestiWin/UnitMain.dfm
 msgid "Avattu"
 msgstr "Öppnad"
+
+msgctxt "lyhyt"
+msgid "Avattu"
+msgstr "Öppen"
 
 #: cbHk/WinHk.dfm ViestiWin/UnitMain.dfm
 msgid "Yhteyksiä"
@@ -21983,6 +22563,10 @@ msgstr "Lag (fet)"
 msgid "Pieni osuuksille"
 msgstr "Liten för sträckor"
 
+msgctxt "lyhyt"
+msgid "Pieni osuuksille"
+msgstr "Liten, sträckor"
+
 #: ViestiWin/MuotoiluUnit.dfm
 msgid "Jokainen sarja uudelle sivulle"
 msgstr "Varje klass på ny sida"
@@ -22081,6 +22665,10 @@ msgstr "Lag i fetstil (endast mono)"
 msgid "Koko sama tai lähellä samaa"
 msgstr "Samma eller nästan samma storlek"
 
+msgctxt "lyhyt"
+msgid "Koko sama tai lähellä samaa"
+msgstr "(Nästan) samma storlek"
+
 #: ViestiWin/MuotoiluUnit.dfm
 msgid " Html-määrityksiä  "
 msgstr " Html-inställningar  "
@@ -22104,6 +22692,10 @@ msgstr "Sträckor rad 2"
 #: ViestiWin/MuotoiluUnit.dfm
 msgid "Käytä kiinteitä sarakeleveyksiä rastiväliajoissa"
 msgstr "Använd fasta kolumnbredder i kontrollmellantider"
+
+msgctxt "lyhyt"
+msgid "Käytä kiinteitä sarakeleveyksiä rastiväliajoissa"
+msgstr "Fasta kolumnbredder i kontrollmellantider"
 
 #: ViestiWin/MuotoiluUnit.dfm
 msgid "Sarakelevydet sisällön mukaan"
@@ -22136,6 +22728,10 @@ msgstr "Startplac."
 #: ViestiWin/OsuusTiedot.dfm
 msgid "Osuuden &nopein"
 msgstr "Sträckans &snabbaste"
+
+msgctxt "lyhyt"
+msgid "Osuuden &nopein"
+msgstr "Sträckans &bästa"
 
 #: ViestiWin/OsuusTiedot.dfm
 msgid "Osuuden &seuraava"
@@ -22180,6 +22776,10 @@ msgstr "&Typsnitt"
 #: ViestiWin/TulosUnit.dfm
 msgid "Kärjestä"
 msgstr "Från täten"
+
+msgctxt "lyhyt"
+msgid "Kärjestä"
+msgstr "Från 1:an"
 
 #: ViestiWin/TulosUnit.dfm ViestiWin/TulostusUnit2.dfm ViestiWin/UnitArvonta.dfm ViestiWin/UnitEmit.dfm
 #: ViestiWin/UnitEmitMuutokset.dfm ViestiWin/UnitHenkHaku.dfm ViestiWin/UnitHylkRap.dfm ViestiWin/UnitJoukkueet.dfm
@@ -22357,6 +22957,10 @@ msgstr "Sträckor på egna rader"
 msgid "Osuudet tiiviisti peräkkäin"
 msgstr "Sträckor kompakt efter varandra"
 
+msgctxt "lyhyt"
+msgid "Osuudet tiiviisti peräkkäin"
+msgstr "Sträckor tätt efter varandra"
+
 #: ViestiWin/TulostusUnit2.dfm
 msgid "Vaadi joukkuehyväksyntä"
 msgstr "Kräv godkännande av laget"
@@ -22428,6 +23032,10 @@ msgstr "Ingen inmatning"
 #: ViestiWin/UnitAjanotto.dfm
 msgid "No, osuus ja piste"
 msgstr "Nr, sträcka och punkt"
+
+msgctxt "lyhyt"
+msgid "No, osuus ja piste"
+msgstr "Nr, sträcka, punkt"
 
 #: ViestiWin/UnitAjanotto.dfm
 msgid " Näytä "
@@ -22617,6 +23225,10 @@ msgstr ""
 msgid "Emitkoodi kirjataan leimantarkastuksessa"
 msgstr "Emitkoden registreras vid stämplingskontroll"
 
+msgctxt "lyhyt"
+msgid "Emitkoodi kirjataan leimantarkastuksessa"
+msgstr "Emitkod registreras i stämplingskontroll"
+
 #: ViestiWin/UnitCfg.dfm
 msgid "Kirjoita luentatapahtumat lokiin"
 msgstr "Skriv avläsningshändelser i loggen"
@@ -22648,6 +23260,10 @@ msgstr ""
 #: ViestiWin/UnitCfg.dfm
 msgid " Ajanoton lisäparametrit ohjelmassa ViestiMaali "
 msgstr " Tilläggsparametrar för tidtagning i programmet ViestiMaali "
+
+msgctxt "lyhyt"
+msgid " Ajanoton lisäparametrit ohjelmassa ViestiMaali "
+msgstr " Extra tidtagningsparametrar i ViestiMaali "
 
 #: ViestiWin/UnitCfg.dfm
 msgid "Aikasanoman aika korvaa aiemmin tallennetun"
@@ -22712,6 +23328,10 @@ msgstr "Ange lagets nummer"
 #: ViestiWin/UnitEmitMuutokset.dfm
 msgid "ja kilpailijan osuus"
 msgstr "och den tävlandes sträcka"
+
+msgctxt "lyhyt"
+msgid "ja kilpailijan osuus"
+msgstr "o. tävlandes sträcka"
 
 #: ViestiWin/UnitEmitMuutokset.dfm
 msgid "Edellinen joukkue"
@@ -22871,6 +23491,10 @@ msgstr "Stäng formuläret utan ändringar"
 #: ViestiWin/UnitJjVaihdot.dfm
 msgid "Siirrä samalla ratatunnukset"
 msgstr "Flytta samtidigt banbeteckningar"
+
+msgctxt "lyhyt"
+msgid "Siirrä samalla ratatunnukset"
+msgstr "Flytta även banbeteckningar"
 
 #: ViestiWin/UnitJjVaihdot.dfm
 msgid "Siirrä samalla lisenssinumerot"
@@ -23086,6 +23710,10 @@ msgstr "Str poängfält 1/Kv.id."
 msgid "Kopioi osuudelta toiselle"
 msgstr "Kopiera från sträcka till en annan"
 
+msgctxt "lyhyt"
+msgid "Kopioi osuudelta toiselle"
+msgstr "Kopiera mellan sträckor"
+
 #: ViestiWin/UnitLisatiedot.dfm
 msgid "Joukkuee id-no"
 msgstr "Lag-id-nr"
@@ -23154,6 +23782,10 @@ msgstr "Skriv identifierande data och flyttens mål i csv-fil"
 msgid "Tiedoston tieto on desimaali- arvo, joka kerrotaan 1000:lla"
 msgstr "Uppgiften i filen är ett decimal- värde som multipliceras med 1000"
 
+msgctxt "lyhyt"
+msgid "Tiedoston tieto on desimaali- arvo, joka kerrotaan 1000:lla"
+msgstr "Värdet i filen är ett decimal- tal att multiplicera med 1000"
+
 #: ViestiWin/UnitLuenta.dfm ViestiWin/UnitVaTuloste.dfm
 msgid "Joukkuenro"
 msgstr "Lagnr"
@@ -23181,6 +23813,10 @@ msgstr " Val av tävlande "
 #: ViestiWin/UnitLuenta.dfm
 msgid "Numero ja osuus"
 msgstr "Nummer och sträcka"
+
+msgctxt "lyhyt"
+msgid "Numero ja osuus"
+msgstr "Nr och sträcka"
 
 #: ViestiWin/UnitLuenta.dfm
 msgid "MemoMsg"
@@ -23637,6 +24273,10 @@ msgstr "Korrigering av tidtagningstider"
 msgid "Käsiteltävät rivit"
 msgstr "Rader som behandlas"
 
+msgctxt "lyhyt"
+msgid "Käsiteltävät rivit"
+msgstr "Rader att behandla"
+
 #: cbTp/UnitAikakorjaus.dfm
 msgid "Korjaus tehdään lineaarisesti seuraavien aikojen perusteella."
 msgstr "Korrigeringen görs linjärt utgående från följande tider."
@@ -23653,6 +24293,10 @@ msgstr "Tidpunkt 1"
 #: cbTp/UnitAikakorjaus.dfm
 msgid "Siirto millisekuntia"
 msgstr "Förskjutning millisekunder"
+
+msgctxt "lyhyt"
+msgid "Siirto millisekuntia"
+msgstr "Förskjutning ms"
 
 #: cbTp/UnitAikakorjaus.dfm
 msgid "Ajankohta 2"
@@ -23802,6 +24446,10 @@ msgstr "Ställ in kod"
 msgid "Päivitä tietoja jatkuvasti"
 msgstr "Uppdatera uppgifter kontinuerligt"
 
+msgctxt "lyhyt"
+msgid "Päivitä tietoja jatkuvasti"
+msgstr "Uppdatera data löpande"
+
 #: cbTp/UnitEmiTag.dfm
 msgid "Synkroinoi laite tietokoneen aikaan"
 msgstr "Synkronisera enheten med datorns tid"
@@ -23834,9 +24482,17 @@ msgstr " Emit-kod "
 msgid "Käytä OrigBdg"
 msgstr "Använd OrigBdg"
 
+msgctxt "lyhyt"
+msgid "Käytä OrigBdg"
+msgstr "Anv. OrigBdg"
+
 #: cbTp/UnitEmitFile.dfm
 msgid "Käytä Badge"
 msgstr "Använd Badge"
+
+msgctxt "lyhyt"
+msgid "Käytä Badge"
+msgstr "Anv. Badge"
 
 #: cbTp/UnitEmitSQL.dfm
 msgid "EmitSQL yhteys"
@@ -23849,6 +24505,10 @@ msgstr "Senast flyttad"
 #: cbTp/UnitEmitSQL.dfm cbTp/UnitEmitnouto.dfm
 msgid "Hakuväli ms."
 msgstr "Hämtintervall ms."
+
+msgctxt "lyhyt"
+msgid "Hakuväli ms."
+msgstr "Intervall ms."
 
 #: cbTp/UnitEmitSQL.dfm
 msgid "Löydetyt sanomat"
@@ -23865,6 +24525,10 @@ msgstr "Hämtningens satsstorlek (0: ingen gräns)"
 #: cbTp/UnitEmitSQL.dfm
 msgid "Jatkuva haku"
 msgstr "Kontinuerlig hämtning"
+
+msgctxt "lyhyt"
+msgid "Jatkuva haku"
+msgstr "Kontinuerlig"
 
 #: cbTp/UnitEmitSQL.dfm
 msgid "Päivitä näyttö"
@@ -23901,6 +24565,10 @@ msgstr " Gren "
 #: cbTp/UnitFIS.dfm
 msgid "Pitkät matkat (DI)"
 msgstr "Långa distanser (DI)"
+
+msgctxt "lyhyt"
+msgid "Pitkät matkat (DI)"
+msgstr "Långdistans (DI)"
 
 #: cbTp/UnitFIS.dfm
 msgid "Sprint (SP)"
@@ -24199,6 +24867,10 @@ msgstr ""
 msgid "Hae klikkaamalla karttaa (oikea näppäin)"
 msgstr "Hämta genom att klicka på kartan (höger knapp)"
 
+msgctxt "lyhyt"
+msgid "Hae klikkaamalla karttaa (oikea näppäin)"
+msgstr "Hämta via klick på kartan (höger knapp)"
+
 #: cbTp/UnitKohdistus.dfm
 msgid " Toinen kohdistuspiste "
 msgstr " Andra inpassningspunkt "
@@ -24317,6 +24989,10 @@ msgstr "Sen."
 msgid "Lue sanomia"
 msgstr "Läs meddelanden"
 
+msgctxt "lyhyt"
+msgid "Lue sanomia"
+msgstr "Läs meddel."
+
 #: cbTp/UnitMTR.dfm
 msgid " Toisto "
 msgstr " Upprepning "
@@ -24325,6 +25001,10 @@ msgstr " Upprepning "
 msgid "Jatkuva luenta"
 msgstr "Kontinuerlig avläsning"
 
+msgctxt "lyhyt"
+msgid "Jatkuva luenta"
+msgstr "Kontinuerlig"
+
 #: cbTp/UnitMTR.dfm
 msgid "Rajaus"
 msgstr "Avgränsning"
@@ -24332,6 +25012,10 @@ msgstr "Avgränsning"
 #: cbTp/UnitMTR.dfm
 msgid "Sanomanumerot"
 msgstr "Meddelandenummer"
+
+msgctxt "lyhyt"
+msgid "Sanomanumerot"
+msgstr "Meddelandenr"
 
 #: cbTp/UnitMTR.dfm
 msgid "Viim. -1"
@@ -24369,6 +25053,10 @@ msgstr " Läsningens mål "
 msgid "Heti käsiteltäväksi"
 msgstr "För omedelbar behandling"
 
+msgctxt "lyhyt"
+msgid "Heti käsiteltäväksi"
+msgstr "För direkt behandling"
+
 #: cbTp/UnitMTR.dfm
 msgid "Erilliseen tiedostoon"
 msgstr "Till separat fil"
@@ -24393,6 +25081,10 @@ msgstr "Tang"
 msgid "Kellon kanavien ajanottojonot"
 msgstr "Tidtagningsköer för klockans kanaler"
 
+msgctxt "lyhyt"
+msgid "Kellon kanavien ajanottojonot"
+msgstr "Tidköer för klockans kanaler"
+
 #: cbTp/UnitMaalikello.dfm
 msgid "Kellon ohjaus"
 msgstr "Styrning av klockan"
@@ -24414,6 +25106,10 @@ msgstr "Rader"
 #: cbTp/UnitMaalikello.dfm
 msgid "Valokennoviive (yksikkö 0,1 s)"
 msgstr "Fotocellsfördröjning (enhet 0,1 s)"
+
+msgctxt "lyhyt"
+msgid "Valokennoviive (yksikkö 0,1 s)"
+msgstr "Fotocellsfördröjn. (enhet 0,1 s)"
 
 #: cbTp/UnitMaalikello.dfm
 msgid " Uudelleenlähetys"
@@ -24480,6 +25176,10 @@ msgstr "Stämplingskontrollens resultat"
 #: cbTp/UnitNaytaTulos.dfm
 msgid "Kilpailijan nimi                                             "
 msgstr "Tävlandes namn                                               "
+
+msgctxt "lyhyt"
+msgid "Kilpailijan nimi                                             "
+msgstr "Tävlandes namn                                            "
 
 #: cbTp/UnitNaytaTulos.dfm
 msgid "Leimoissa puutteita"
@@ -24556,6 +25256,10 @@ msgstr "Val av bana"
 #: cbTp/UnitRadat.dfm
 msgid "Radan (uusi) nimi tai lisättävä rata"
 msgstr "Banans (nya) namn eller bana att lägga till"
+
+msgctxt "lyhyt"
+msgid "Radan (uusi) nimi tai lisättävä rata"
+msgstr "Banans (nya) namn eller ny bana"
 
 #: cbTp/UnitRadat.dfm
 msgid "Rastikoodit ja matkat (myös maaliviivan koodi)"
@@ -24643,6 +25347,12 @@ msgid ""
 msgstr ""
 "Stämplingskontrollen beräknar resultaten automatiskt om de inte redan tagits. (Avmarkera endast av särskilda skäl)"
 
+msgctxt "lyhyt"
+msgid ""
+"Leimantarkastus laskee automaattisesti tulokset, ellei jo otettuna. (Poista ruksi vain, kun poikeuksellisia syitä)"
+msgstr ""
+"Stämplingskontrollen beräknar resultaten automatiskt om ej redan tagna. (Avmarkera bara av särskilda skäl)"
+
 #: cbTp/UnitRadat.dfm
 msgid "Rastileimasimet"
 msgstr "Stämplingsenheter vid kontroller"
@@ -24664,6 +25374,10 @@ msgstr "Ångra ändringar"
 #: cbTp/UnitRadat.dfm
 msgid "Laadi oletus- taulukko"
 msgstr "Skapa standard- tabell"
+
+msgctxt "lyhyt"
+msgid "Laadi oletus- taulukko"
+msgstr "Gör standard- tabell"
 
 #: cbTp/UnitRadat.dfm
 msgid "Siirtotiedostot"
@@ -24791,6 +25505,10 @@ msgstr " Fältavgränsare "
 msgid "Pilkku, puolipiste tai tabulaattori"
 msgstr "Komma, semikolon eller tabulator"
 
+msgctxt "lyhyt"
+msgid "Pilkku, puolipiste tai tabulaattori"
+msgstr "Komma, semikolon el. tabulator"
+
 #: cbTp/UnitRadat.dfm
 msgid "Välilyönnit"
 msgstr "Mellanslag"
@@ -24810,6 +25528,10 @@ msgstr "Ta bort tidigare uppgifter"
 #: cbTp/UnitRadat.dfm
 msgid "Lisää korvaten aiemmat samannimiset radat"
 msgstr "Lägg till och ersätt tidigare banor med samma namn"
+
+msgctxt "lyhyt"
+msgid "Lisää korvaten aiemmat samannimiset radat"
+msgstr "Lägg till och ersätt banor med samma namn"
 
 #: cbTp/UnitRadat.dfm
 msgid "Tätä kaavaketta koskevia ohjeita"
@@ -24925,6 +25647,10 @@ msgstr "Funktioner för programmets xml-filformat"
 #: cbTp/UnitRadat.dfm
 msgid "Lue radat ja rastit (xml)"
 msgstr "Läs banor och kontroller (xml)"
+
+msgctxt "lyhyt"
+msgid "Lue radat ja rastit (xml)"
+msgstr "Läs banor, kontr. (xml)"
 
 #: cbTp/UnitRadat.dfm
 msgid "Kirjoita radat ja rastit (xml)"
@@ -25046,6 +25772,10 @@ msgstr "Tolkning av fil"
 msgid "Siirretävän tiedon sarake"
 msgstr "Kolumn för uppgift att flytta"
 
+msgctxt "lyhyt"
+msgid "Siirretävän tiedon sarake"
+msgstr "Kolumn för flyttad data"
+
 #: cbTp/UnitTietoTulk.dfm
 msgid "Sarakkeita"
 msgstr "Kolumner"
@@ -25057,6 +25787,10 @@ msgstr "Kolumn för identifierare"
 #: cbTp/UnitTietoTulk.dfm
 msgid "Tiedoissa otsikkorivi"
 msgstr "Uppgifterna har rubrikrad"
+
+msgctxt "lyhyt"
+msgid "Tiedoissa otsikkorivi"
+msgstr "Data har rubrikrad"
 
 #: cbTp/UnitTietoTulk.dfm
 msgid "Lainausmerkit rajaavat kenttiä"
@@ -25097,6 +25831,10 @@ msgstr "Godkänn och läs resten"
 #: cbTp/UnitTulkinta.dfm
 msgid "Ohita tietue"
 msgstr "Hoppa över post"
+
+msgctxt "lyhyt"
+msgid "Ohita tietue"
+msgstr "Hoppa över"
 
 #: cbTp/UnitTulkinta.dfm
 msgid "Keskeytä lukeminen"
@@ -25177,6 +25915,10 @@ msgstr " Tidsintervall "
 #: cbTp/UnitUusinta.dfm
 msgid "Alkuhetki (tyhjä: alusta)"
 msgstr "Starttidpunkt (tom: från början)"
+
+msgctxt "lyhyt"
+msgid "Alkuhetki (tyhjä: alusta)"
+msgstr "Starttid (tom: från början)"
 
 #: cbTp/UnitUusinta.dfm
 msgid "Loppuhetki (tyhjä: loppuun)"

@@ -53,6 +53,29 @@ Kaikki on määritelty tiedostossa `include/Kielet.h` (sisältyy `tputil.h`:hon)
   rivillä `kaannaLomake(this);` (`cbTp/cbKielet.cpp`). Uuteen lomakkeeseen lisätään sama
   rivi ja `#include "cbKielet.h"`. Käännetään `Caption`, `Hint`, `Items`, `Lines`,
   `EditLabel`, `Title`, `Filter`, tilarivin paneelit ja ListView-sarakkeet.
+  Käännöksen jälkeen `kaannaLomake` sovittaa pidemmät tekstit lomakkeelle:
+  1. painike tai valintaruutu levennetään, jos sen oikealla puolella on vapaata tilaa
+  2. jos teksti ei silti mahdu, käytetään tekstin **lyhyttä muotoa** (ks. alla), jos sellainen on
+  3. muuten teksti katkaistaan "…"-merkkiin; automaattisesti levenevä teksti (TLabel) ei saa
+     peittää viereistä kontrollia.
+
+  Kun teksti on lyhennetty tai katkaistu, koko teksti näytetään vihjeenä (Hint).
+  Valintaryhmän (TRadioGroup) vaihtoehdoille sama: lyhyt muoto ja vaihtoehdon oma vihje.
+- **Lyhyt muoto** kirjoitetaan .po-tiedostoon omaksi merkinnäkseen kontekstilla `lyhyt`
+  pääkäännöksen perään:
+
+  ```
+  msgid "Riviväli"
+  msgstr "Line spacing"
+
+  msgctxt "lyhyt"
+  msgid "Riviväli"
+  msgstr "Ln sp."
+  ```
+
+  Lyhyttä muotoa käytetään vain lomakkeilla ja vain silloin, kun pitkä ei mahdu; muualla
+  (ilmoitukset, tulosteet, `TR()`) käytetään aina pitkää käännöstä. `kielet.py paivita`
+  säilyttää `lyhyt`-merkinnät, kunhan suomenkielinen teksti on edelleen käytössä.
 - **Konsolin valintakehotteet** (`wselectopt`, `selectopt`, `wselectxy`, `selectxy` ja
   GUI:n `Win_wselectopt`) kääntävät kehotteen itse. Pikanäppäimet tunnistetaan
   muodoista `S)euraava`, `eR)ätiedot` ja `(K/E)`, ja ne vaihdetaan käännöksen mukaisiksi.
@@ -81,7 +104,16 @@ python kielet/kielet.py poimi       # päivittää tulospalvelu.pot
 python kielet/kielet.py paivita     # lisää uudet tekstit en.po:hon ja sv.po:hon (käännökset säilyvät)
 python kielet/kielet.py tarkista    # muotoilukoodit, pikanäppäimet, &-merkit, rivinvaihdot
 python kielet/kielet.py tilasto     # käännettyjen määrät
+python kielet/kielet.py mittaa      # käännökset, jotka eivät mahdu lomakkeille
 ```
+
+`kielet.py mittaa [--kieli sv|en] [--lomake nimi] [--kaikki] [--tsv tiedosto]` mittaa
+jokaisen lomaketekstin käännöksen leveyden kontrollin omalla fontilla (96 DPI) ja listaa
+tekstit, jotka eivät mahdu ja joita `kaannaLomake` ei voi leventää eikä korvata lyhyellä
+muodolla (`--kaikki` listaa myös ne). Vertailukohtana on suomenkielinen teksti: sen leveys
+hyväksytään aina. Komento vaatii Pillow-kirjaston (`pip install pillow`) ja Windowsin
+fontit, joten sitä ei ajeta CI:ssä. Lisää listatuille teksteille lyhyt muoto tai muuta
+lomakkeen asettelua C++Builderin lomake-editorissa.
 
 CI (`.github/workflows/build.yml`) tarkistaa, että `tulospalvelu.pot` vastaa lähdekoodia
 ja että `kielet.py tarkista` menee läpi.
@@ -107,5 +139,9 @@ muotoilufunktiot). `--nayta` näyttää muutokset kirjoittamatta niitä.
     kirjainten on oltava samat kuin vastaavan valintakehotteen käännöksessä.
 - Konsolissa ja tekstimuotoisissa tulosteissa rivin leveys on rajattu: pidä käännös
   suunnilleen alkutekstin pituisena.
+- Lomakkeilla tila on mitoitettu suomenkielisille teksteille. Älä lyhennä pääkäännöstä
+  lomakkeen takia: kirjoita lyhyt muoto erilliseksi `msgctxt "lyhyt"` -merkinnäksi
+  (ks. yllä), jolloin pitkä muoto näkyy vihjeenä ja muualla ohjelmassa. `kielet.py mittaa`
+  kertoo, mitkä käännökset eivät mahdu ja kuinka monta pikseliä tilaa on.
 - Lyhenteet (esim. `Hyl.`, `Kesk.`, `Tls`) ovat sarakkeissa: käytä vakiintuneita lyhenteitä
   (en: DQ, DNF, DNS; sv: Disk, Utg, Ej start).

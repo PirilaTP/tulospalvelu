@@ -21,9 +21,10 @@
   python kielet/kielet.py paivita    tulospalvelu.pot -> en.po ja sv.po (säilyttää käännökset)
   python kielet/kielet.py tarkista   tarkistaa käännökset (muotoilukoodit, pikanäppäimet, &)
   python kielet/kielet.py tilasto    käännettyjen määrät
+  python kielet/kielet.py mittaa     käännökset, jotka eivät mahdu lomakkeille (ks. mitat.py)
 
 Aja hakemistosta TPsource/V52 tai mistä tahansa; polut lasketaan tämän tiedoston paikasta.
-Vaatii Python 3.8+, ei ulkoisia kirjastoja.
+Vaatii Python 3.8+, ei ulkoisia kirjastoja (mittaa vaatii Pillow-kirjaston ja Windowsin fontit).
 """
 
 import os
@@ -54,6 +55,10 @@ VALINTAFUNKTIOT = {
     'wselectxy': (2, 3),
     'selectxy': (2, 3),
 }
+
+# Lomaketekstin lyhyt muoto: msgctxt "lyhyt", msgid = suomenkielinen teksti. kaannaLomake
+# käyttää sitä vain, kun pitkä käännös ei mahdu, ja näyttää pitkän vihjeenä (cbTp/cbKielet.cpp).
+LYHYT = 'lyhyt'
 
 # Lomakkeiden käännettävät ominaisuudet (ks. cbTp/cbKielet.cpp)
 DFM_OMINAISUUDET = {'Caption', 'Hint', 'EditLabel.Caption', 'Items.Strings', 'Title', 'Filter',
@@ -591,13 +596,20 @@ def paivita(argv):
                 if 'fuzzy' in v.liput:
                     m.liput.append('fuzzy')
             uudet.append(m)
+            # Lomakkeiden lyhyt muoto (msgctxt "lyhyt") säilyy pääkäännöksen perässä
+            if p.ktx is None:
+                lyhyt = vanhat.pop((LYHYT, p.msgid), None)
+                if lyhyt is not None:
+                    lyhyt.viitteet = []
+                    lyhyt.vanhentunut = False
+                    uudet.append(lyhyt)
         for v in vanhat.values():
             if v.msgstr:
                 v.vanhentunut = True
                 v.viitteet = []
                 uudet.append(v)
         kirjoita_po(polku, uudet, otsikko_po(kieli))
-        kaannetty = sum(1 for m in uudet if m.msgstr and not m.vanhentunut)
+        kaannetty = sum(1 for m in uudet if m.msgstr and not m.vanhentunut and m.ktx != LYHYT)
         print(f'{kieli}.po: {kaannetty}/{len(pot)} käännetty')
 
 
@@ -665,9 +677,11 @@ def tilasto(argv):
     pot = lue_po(POT)
     print(f'tulospalvelu.pot: {len(pot)} tekstiä')
     for kieli in KIELET:
-        po = [m for m in lue_po(os.path.join(KIELIHAK, kieli + '.po')) if not m.vanhentunut]
+        kaikki = [m for m in lue_po(os.path.join(KIELIHAK, kieli + '.po')) if not m.vanhentunut]
+        po = [m for m in kaikki if m.ktx != LYHYT]
         k = sum(1 for m in po if m.msgstr)
-        print(f'{kieli}.po: {k}/{len(po)} käännetty')
+        lyhyet = sum(1 for m in kaikki if m.ktx == LYHYT and m.msgstr)
+        print(f'{kieli}.po: {k}/{len(po)} käännetty, {lyhyet} lyhyttä muotoa lomakkeille')
 
 
 # ---------------------------------------------------------------------------
@@ -915,7 +929,67 @@ def kaari(argv):
     print(f'yhteensä {yht}')
 
 
-KOMENNOT = {'poimi': poimi, 'paivita': paivita, 'tarkista': tarkista, 'tilasto': tilasto, 'kaari': kaari}
+def mittaa(argv):
+    """Käännösten mahtuminen lomakkeille, ks. mitat.py.
+
+    mittaa [--kieli sv|en] [--tsv tiedosto] [--lomake osa_nimestä] [--kaikki]
+    Oletuksena listataan ylivuodot, joita kaannaLomake ei ratkaise ajon aikana leventämällä
+    tai lyhyellä muodolla (msgctxt "lyhyt"); --kaikki listaa kaikki."""
+    import mitat
+    kielilista = list(KIELET)
+    tsv = None
+    lomake = None
+    kaikki_rivit = False
+    i = 0
+    while i < len(argv):
+        if argv[i] == '--kieli' and i + 1 < len(argv):
+            kielilista = argv[i + 1].split(',')
+            i += 2
+        elif argv[i] == '--tsv' and i + 1 < len(argv):
+            tsv = argv[i + 1]
+            i += 2
+        elif argv[i] == '--lomake' and i + 1 < len(argv):
+            lomake = argv[i + 1].lower()
+            i += 2
+        elif argv[i] == '--kaikki':
+            kaikki_rivit = True
+            i += 1
+        else:
+            print(mittaa.__doc__)
+            return 2
+    rivit = mitat.ylivuodot(sys.modules[__name__], kielilista)
+    if lomake:
+        rivit = [r for r in rivit if lomake in r['lomake'].lower()]
+    if tsv:
+        kentat = ['kieli', 'lomake', 'kontrolli', 'luokka', 'ominaisuus', 'tarve', 'tila',
+                  'ratkaisu', 'fontti', 'fi', 'kaannos', 'lyhyt', 'lyhyt_px']
+        with open(tsv, 'w', encoding='utf-8', newline='\n') as f:
+            f.write('\t'.join(kentat) + '\n')
+            for r in rivit:
+                f.write('\t'.join(str(r[k]).replace('\n', '\\n').replace('\t', ' ')
+                                  for k in kentat) + '\n')
+    for kieli in kielilista:
+        omat = [r for r in rivit if r['kieli'] == kieli]
+        lev = sum(1 for r in omat if r['ratkaisu'] == 'levenee')
+        lyh = sum(1 for r in omat if r['ratkaisu'] == 'lyhyt')
+        ei = len(omat) - lev - lyh
+        print('%s: %d tekstiä ei mahdu sellaisenaan (%d lomaketta): %d levenee vapaaseen tilaan, '
+              '%d käyttää lyhyttä muotoa, %d ei mahdu (lyhennä, lisää lyhyt muoto tai muuta lomaketta)'
+              % (kieli, len(omat), len({r['lomake'] for r in omat}), lev, lyh, ei))
+        if not tsv:
+            for r in omat:
+                if r['ratkaisu'] and not kaikki_rivit:
+                    continue
+                lyhyt = ' [lyhyt: %s %d px]' % (r['lyhyt'], r['lyhyt_px']) if r['lyhyt'] else ''
+                print('  %s %s (%s): %d > %d px  %s -> %s%s%s' % (
+                    r['lomake'], r['kontrolli'], r['luokka'], r['tarve'], r['tila'],
+                    r['fi'].replace('\n', ' '), r['kaannos'].replace('\n', ' '), lyhyt,
+                    ' (%s)' % r['ratkaisu'] if r['ratkaisu'] else ''))
+    return 0
+
+
+KOMENNOT = {'poimi': poimi, 'paivita': paivita, 'tarkista': tarkista, 'tilasto': tilasto, 'kaari': kaari,
+            'mittaa': mittaa}
 
 if __name__ == '__main__':
     if hasattr(sys.stdout, 'reconfigure'):

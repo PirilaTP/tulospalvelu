@@ -24,6 +24,8 @@
 #include <Vcl.ComCtrls.hpp>
 #include <Vcl.Dialogs.hpp>
 #include <Vcl.Menus.hpp>
+#include <Vcl.Buttons.hpp>
+#include <vector>
 #include "cbKielet.h"
 
 #pragma package(smart_init)
@@ -123,10 +125,283 @@ static void kaannaKomponentti(TComponent *C)
 		}
 }
 
+// ---------------------------------------------------------------------------
+// Käännettyjen tekstien sovittaminen lomakkeelle
+// ---------------------------------------------------------------------------
+// Lomakkeet on suunniteltu suomenkielisille teksteille. Kun käännös on pidempi:
+//  - painike tai valintaruutu levennetään, jos sen oikealla puolella on vapaata tilaa
+//  - automaattisesti levenevä TLabel ei saa peittää viereistä kontrollia: se rajataan
+//    vapaaseen tilaan ja katkaistaan "..."-merkkiin
+//  - jos teksti ei silti mahdu, käytetään lyhyttä muotoa (.po: msgctxt "lyhyt"), jos
+//    sellainen on, tai katkaistaan teksti; koko teksti näytetään vihjeenä (Hint)
+//  - valintaryhmän vaihtoehdoille sama: lyhyt muoto ja vaihtoehdon oma vihje
+// Tekstit, jotka eivät mahdu, listaa: python kielet/kielet.py mittaa
+
+static int tekstinLeveys(TFont *Font, const UnicodeString &Teksti, bool Pikanappain)
+{
+	static Graphics::TBitmap *Mittari = NULL;
+	if (Mittari == NULL)
+		Mittari = new Graphics::TBitmap;
+	Mittari->Canvas->Font->Assign(Font);
+	return(Mittari->Canvas->TextWidth(Pikanappain ? StripHotkey(Teksti) : Teksti));
+}
+
+static int isanLeveys(TControl *C)
+{
+	int w = C->Parent->ClientWidth;
+	// Välilehteä ei välttämättä ole vielä mitoitettu
+	TTabSheet *TS = dynamic_cast<TTabSheet *>(C->Parent);
+	if (TS != NULL && TS->PageControl != NULL && w < 50)
+		w = TS->PageControl->ClientWidth - 8;
+	return(w);
+}
+
+static bool samallaRivilla(TControl *A, TControl *B)
+{
+	return(A->Top < B->Top + B->Height && B->Top < A->Top + A->Height);
+}
+
+// Lähin este oikealla: isän reuna tai samalla rivillä oleva sisarkontrolli, joka alkaa
+// kontrollin alkuperäisen oikean reunan jälkeen
+static int oikeaRaja(TControl *C, int VanhaOikea)
+{
+	int raja = isanLeveys(C) - 4;
+	TWinControl *P = C->Parent;
+	for (int i = 0; i < P->ControlCount; i++) {
+		TControl *S = P->Controls[i];
+		if (S != C && samallaRivilla(S, C) && S->Left > C->Left && S->Left >= VanhaOikea - 2
+			&& S->Left - 4 < raja)
+			raja = S->Left - 4;
+		}
+	return(raja);
+}
+
+// Lähin este vasemmalla (oikealle tasatut tekstit kasvavat vasemmalle)
+static int vasenRaja(TControl *C, int VanhaVasen)
+{
+	int raja = 0;
+	TWinControl *P = C->Parent;
+	for (int i = 0; i < P->ControlCount; i++) {
+		TControl *S = P->Controls[i];
+		if (S != C && samallaRivilla(S, C) && S->Left + S->Width <= VanhaVasen + 2
+			&& S->Left + S->Width + 4 > raja)
+			raja = S->Left + S->Width + 4;
+		}
+	return(raja);
+}
+
+template <class T> static void naytaVihjeena(T *C, const UnicodeString &Teksti)
+{
+	if (C->Hint.IsEmpty())
+		C->Hint = StripHotkey(Teksti);
+	C->ShowHint = true;
+}
+
+// Lomaketekstin lyhyt muoto (.po: msgctxt "lyhyt"), tai NULL, jos sitä ei ole
+static const wchar_t *lyhytMuoto(const UnicodeString &Fi)
+{
+	if (Fi.IsEmpty())
+		return(NULL);
+	const wchar_t *pitka = TR(Fi.c_str());
+	const wchar_t *lyhyt = TRCL(kayttokieli, L"lyhyt", Fi.c_str());
+	return((lyhyt == NULL || lyhyt == pitka) ? NULL : lyhyt);
+}
+
+// Kontrollin tila ennen kääntämistä
+struct Alku {
+	TControl *C;
+	UnicodeString Fi;                   // suomenkielinen teksti (käännösavain)
+	int Left, Width;
+	std::vector<UnicodeString> FiKohdat;  // valintaryhmän vaihtoehdot
+};
+
+// Painike, valintaruutu ja valintanappi. Reuna = kehyksen ja valintamerkin viemä tila (px, 96 DPI).
+template <class T> static void sovitaPainike(T *C, int Reuna, const UnicodeString &Fi)
+{
+	UnicodeString pitka = C->Caption;
+	if (pitka.IsEmpty() || C->WordWrap || pitka.Pos(L"\n") > 0 || C->Parent == NULL)
+		return;
+	int reuna = MulDiv(Reuna, Screen->PixelsPerInch, 96);
+	int tarve = tekstinLeveys(C->Font, pitka, true) + reuna;
+	if (tarve <= C->Width)
+		return;
+	if (C->Align == alNone && !C->Anchors.Contains(akRight)) {
+		int uusi = oikeaRaja(C, C->Left + C->Width) - C->Left;
+		if (uusi > tarve)
+			uusi = tarve;
+		if (uusi > C->Width)
+			C->Width = uusi;
+		}
+	if (tarve <= C->Width)
+		return;
+	if (const wchar_t *lyhyt = lyhytMuoto(Fi))
+		C->Caption = lyhyt;
+	naytaVihjeena(C, pitka);
+}
+
+static void sovitaLabel(const Alku &A)
+{
+	TLabel *Lb = static_cast<TLabel *>(A.C);
+	UnicodeString pitka = Lb->Caption;
+	if (Lb->Parent == NULL || pitka.IsEmpty() || pitka.Pos(L"\n") > 0 || Lb->WordWrap
+		|| Lb->Align != alNone)
+		return;
+	const wchar_t *lyhyt = lyhytMuoto(A.Fi);
+	if (!Lb->AutoSize) {
+		// Kiinteä leveys: lyhyt muoto tai katkaistu teksti
+		if (tekstinLeveys(Lb->Font, pitka, Lb->ShowAccelChar) <= Lb->Width)
+			return;
+		if (lyhyt != NULL)
+			Lb->Caption = lyhyt;
+		if (tekstinLeveys(Lb->Font, Lb->Caption, Lb->ShowAccelChar) > Lb->Width)
+			Lb->EllipsisPosition = epEndEllipsis;
+		naytaVihjeena(Lb, pitka);
+		return;
+		}
+	if (Lb->Width <= A.Width)
+		return;
+	// Alue, jolle teksti saa levitä peittämättä muita kontrolleja
+	int vanhaOikea = A.Left + A.Width;
+	int vasen, oikea;
+	bool oikealle = Lb->Alignment == taRightJustify;
+	if (oikealle) {
+		vasen = vasenRaja(Lb, A.Left);
+		oikea = vanhaOikea;
+		}
+	else if (Lb->Alignment == taLeftJustify) {
+		vasen = A.Left;
+		oikea = oikeaRaja(Lb, vanhaOikea);
+		}
+	else
+		return;
+	if (Lb->Left >= vasen && Lb->Left + Lb->Width <= oikea)
+		return;
+	if (lyhyt != NULL) {
+		Lb->Caption = lyhyt;        // AutoSize mitoittaa uudelleen
+		if (Lb->Left >= vasen && Lb->Left + Lb->Width <= oikea) {
+			naytaVihjeena(Lb, pitka);
+			return;
+			}
+		}
+	Lb->AutoSize = false;
+	int leveys = oikea - vasen > A.Width ? oikea - vasen : A.Width;
+	Lb->SetBounds(oikealle ? oikea - leveys : A.Left, Lb->Top, leveys, Lb->Height);
+	Lb->EllipsisPosition = epEndEllipsis;
+	naytaVihjeena(Lb, pitka);
+}
+
+// Ryhmäkehyksen (TGroupBox, TRadioGroup) otsikko
+template <class T> static void sovitaOtsikko(T *G, const UnicodeString &Fi)
+{
+	UnicodeString pitka = G->Caption;
+	if (pitka.IsEmpty() || pitka.Pos(L"\n") > 0)
+		return;
+	if (tekstinLeveys(G->Font, pitka, true) + MulDiv(16, Screen->PixelsPerInch, 96) <= G->Width)
+		return;
+	if (const wchar_t *lyhyt = lyhytMuoto(Fi))
+		G->Caption = lyhyt;
+	naytaVihjeena(G, pitka);
+}
+
+// Valintaryhmän vaihtoehdot. Jokainen vaihtoehto on oma painikkeensa (TRadioButton),
+// joten pitkän tekstin voi näyttää vaihtoehdon omana vihjeenä.
+static void sovitaVaihtoehdot(TRadioGroup *RG, const Alku &A)
+{
+	int n = RG->Items->Count;
+	if ((int) A.FiKohdat.size() < n)
+		n = (int) A.FiKohdat.size();
+	if (n == 0)
+		return;
+	int sarakkeita = RG->Columns > 0 ? RG->Columns : 1;
+	int tila = (RG->Width - 10) / sarakkeita - MulDiv(22, Screen->PixelsPerInch, 96);
+	std::vector<UnicodeString> vihjeet(n);
+	bool vihjeita = false;
+	for (int i = 0; i < n; i++) {
+		UnicodeString pitka = RG->Items->Strings[i];
+		if (pitka.Pos(L"\n") > 0 || tekstinLeveys(RG->Font, pitka, true) <= tila)
+			continue;
+		if (const wchar_t *lyhyt = lyhytMuoto(A.FiKohdat[i]))
+			RG->Items->Strings[i] = lyhyt;
+		vihjeet[i] = StripHotkey(pitka);
+		vihjeita = true;
+		}
+	if (!vihjeita)
+		return;
+	// Vaihtoehtojen painikkeet ovat valintaryhmän lapsia vaihtoehtojen järjestyksessä
+	int j = 0;
+	for (int k = 0; k < RG->ControlCount && j < n; k++) {
+		TRadioButton *B = dynamic_cast<TRadioButton *>(RG->Controls[k]);
+		if (B == NULL)
+			continue;
+		if (!vihjeet[j].IsEmpty()) {
+			B->Hint = vihjeet[j];
+			B->ShowHint = true;
+			}
+		j++;
+		}
+}
+
+static void sovitaLomake(const std::vector<Alku> &Alut)
+{
+	for (unsigned i = 0; i < Alut.size(); i++) {
+		const Alku &A = Alut[i];
+		TControl *C = A.C;
+		if (TBitBtn *BB = dynamic_cast<TBitBtn *>(C))
+			sovitaPainike(BB, (BB->Glyph->Empty && BB->Kind == bkCustom) ? 8 : 30, A.Fi);
+		else if (TButton *B = dynamic_cast<TButton *>(C))
+			sovitaPainike(B, 8, A.Fi);
+		else if (TCheckBox *CB = dynamic_cast<TCheckBox *>(C))
+			sovitaPainike(CB, 18, A.Fi);
+		else if (TRadioButton *RB = dynamic_cast<TRadioButton *>(C))
+			sovitaPainike(RB, 18, A.Fi);
+		else if (dynamic_cast<TLabel *>(C) != NULL)
+			sovitaLabel(A);
+		else if (TRadioGroup *RG = dynamic_cast<TRadioGroup *>(C)) {
+			sovitaOtsikko(RG, A.Fi);
+			sovitaVaihtoehdot(RG, A);
+			}
+		else if (TGroupBox *GB = dynamic_cast<TGroupBox *>(C))
+			sovitaOtsikko(GB, A.Fi);
+		}
+}
+
+// Tallentaa sovitettavien kontrollien tekstit ja paikat ennen kääntämistä
+static void tallennaAlku(TComponent *Comp, std::vector<Alku> &Alut)
+{
+	TControl *C = dynamic_cast<TControl *>(Comp);
+	if (C == NULL)
+		return;
+	Alku a;
+	a.C = C;
+	a.Left = C->Left;
+	a.Width = C->Width;
+	if (TButton *B = dynamic_cast<TButton *>(C))
+		a.Fi = B->Caption;
+	else if (TCheckBox *CB = dynamic_cast<TCheckBox *>(C))
+		a.Fi = CB->Caption;
+	else if (TRadioButton *RB = dynamic_cast<TRadioButton *>(C))
+		a.Fi = RB->Caption;
+	else if (TLabel *Lb = dynamic_cast<TLabel *>(C))
+		a.Fi = Lb->Caption;
+	else if (TRadioGroup *RG = dynamic_cast<TRadioGroup *>(C)) {
+		a.Fi = RG->Caption;
+		for (int i = 0; i < RG->Items->Count; i++)
+			a.FiKohdat.push_back(RG->Items->Strings[i]);
+		}
+	else if (TGroupBox *GB = dynamic_cast<TGroupBox *>(C))
+		a.Fi = GB->Caption;
+	else
+		return;
+	Alut.push_back(a);
+}
+
 void kaannaLomake(TComponent *Lomake)
 {
 	if (kayttokieli == KIELI_FI || Lomake == NULL)
 		return;
+	std::vector<Alku> alut;
+	for (int i = 0; i < Lomake->ComponentCount; i++)
+		tallennaAlku(Lomake->Components[i], alut);
 	kaannaKomponentti(Lomake);
 	for (int i = 0; i < Lomake->ComponentCount; i++) {
 		TComponent *C = Lomake->Components[i];
@@ -135,6 +410,7 @@ void kaannaLomake(TComponent *Lomake)
 		if (dynamic_cast<TFrame *>(C) != NULL)
 			kaannaLomake(C);
 		}
+	sovitaLomake(alut);
 }
 
 // ---------------------------------------------------------------------------
