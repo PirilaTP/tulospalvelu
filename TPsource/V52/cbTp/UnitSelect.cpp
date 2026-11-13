@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSelect.h"
 //#include "WinHk.h"
@@ -32,6 +33,7 @@
 __fastcall TValitse::TValitse(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
    selected = 0;
 }
 //---------------------------------------------------------------------------

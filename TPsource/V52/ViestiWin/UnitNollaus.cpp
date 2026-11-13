@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitNollaus.h"
 #include "VDeclare.h"
@@ -29,6 +30,7 @@ TFormNollaus *FormNollaus;
 __fastcall TFormNollaus::TFormNollaus(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -44,9 +46,9 @@ void __fastcall TFormNollaus::FormShow(TObject *Sender)
 //		LBSarjat->Items->Add(UnicodeString(Sarjat[srj].sarjanimi));
 		}
 	CBOsuudet->Clear();
-	CBOsuudet->Items->Add(L"Kaikki");
+	CBOsuudet->Items->Add(TR(L"Kaikki"));
 	for (int i = 0;i < kilpparam.n_os_akt; i++) {
-	   CBOsuudet->Items->Add(UnicodeString(i+1)+L". osuus");
+	   CBOsuudet->Items->Add(UnicodeString(i+1)+TR(L". osuus"));
 		}
 	CBOsuudet->ItemIndex = 0;
 }
@@ -64,7 +66,7 @@ void __fastcall TFormNollaus::Button1Click(TObject *Sender)
 	kirjheti = 0;
 
 	LblTila->Visible = true;
-	LblTila->Caption = L"Toiminto käynnissä";
+	LblTila->Caption = TR(L"Toiminto käynnissä");
 	LblTila->Refresh();
 	Sleep(100);
 	EnterCriticalSection(&tall_CriticalSection);
@@ -131,7 +133,7 @@ void __fastcall TFormNollaus::Button1Click(TObject *Sender)
 		tallenna(&kilp, d, 0, 0, 0, NULL);
 		}
 	kirjheti = kirjheti0;
-	LblTila->Caption = L"Toiminto valmis";
+	LblTila->Caption = TR(L"Toiminto valmis");
 	LeaveCriticalSection(&tall_CriticalSection);
 }
 //---------------------------------------------------------------------------
@@ -183,7 +185,7 @@ void __fastcall TFormNollaus::PoistamiljoonatClick(TObject *Sender)
 	kirjheti = 0;
 
 	LblTila->Visible = true;
-	LblTila->Caption = L"Toiminto käynnissä";
+	LblTila->Caption = TR(L"Toiminto käynnissä");
 	LblTila->Refresh();
 	Sleep(100);
 	EnterCriticalSection(&tall_CriticalSection);
@@ -209,7 +211,7 @@ void __fastcall TFormNollaus::PoistamiljoonatClick(TObject *Sender)
 		tallenna(&kilp, d, 0, 0, 0, NULL);
 		}
 	kirjheti = kirjheti0;
-	LblTila->Caption = L"Toiminto valmis";
+	LblTila->Caption = TR(L"Toiminto valmis");
 	LeaveCriticalSection(&tall_CriticalSection);
 }
 //---------------------------------------------------------------------------

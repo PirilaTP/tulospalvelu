@@ -26,6 +26,7 @@
 #include <malloc.h>
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 
 #include "WinHk.h"
@@ -352,7 +353,7 @@ void __fastcall TFormMain::TallennaikkunatClick(TObject *Sender)
 		init = 1;
 	}
 	SaveDialog1->DefaultExt = L"ikk";
-	SaveDialog1->Filter = L"Ikkunat (*.ikk)|*.IKK|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Ikkunat (*.ikk)|*.IKK|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		TallennaIkkunat(SaveDialog1->FileName);
 		}
@@ -604,7 +605,7 @@ int lueIkkunaXml(wchar_t *filename)
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
 				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ett‰ tagit ovat pari
 					er = 1;
-					swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
+					swprintf(msg, TR(L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"),
 						rv, tag, tree.node[jnode].tag);
 					break;
 					}
@@ -628,11 +629,11 @@ int lueIkkunaXml(wchar_t *filename)
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-iedosto %s p‰‰ttyi rivill‰ %d tasolla %d", filename, rv, depth);
+		swprintf(msg, TR(L"XML-iedosto %s p‰‰ttyi rivill‰ %d tasolla %d"), filename, rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivill‰ %d tai aikaisemmin", filename, rv);
+			swprintf(msg, TR(L"Tiedostossa %s virhe rivill‰ %d tai aikaisemmin"), filename, rv);
 			}
 		writeerror_w(msg, 0);
 		}

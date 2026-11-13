@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitKaavaTaul.h"
 //---------------------------------------------------------------------------
@@ -27,6 +28,7 @@ TFormKaavaTaul *FormKaavaTaul;
 __fastcall TFormKaavaTaul::TFormKaavaTaul(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -35,17 +37,17 @@ __fastcall TFormKaavaTaul::TFormKaavaTaul(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TFormKaavaTaul::NaytaTaul(void)
 {
-	wchar_t *lajit[4] = {L" ", L"Sij", L"Tul", L"Mol"};
-	wchar_t *eion[2] = {L"Ei", L"On"}, ln[50];
+	wchar_t *lajit[4] = {L" ", N_(L"Sij"), N_(L"Tul"), N_(L"Mol")};
+	wchar_t *eion[2] = {N_(L"Ei"), N_(L"On")}, ln[50];
 	int sijOn = 1, tulOn = 1, eSrj, vSrj, e_pv, v_pv, r;
 
 	sijOn = CBSij->Checked ? 1 : 0;
 	tulOn = CBTls->Checked ? 1 : 0;
 	SG1->ColCount = 16*sijOn+7*tulOn+10;
-	SG1->Cells[0][0] = L"Sarja";
-	SG1->Cells[1][0] = L"Vaihe";
-	SG1->Cells[2][0] = L"Jatk";
-	SG1->Cells[3][0] = L"Laji";
+	SG1->Cells[0][0] = TR(L"Sarja");
+	SG1->Cells[1][0] = TR(L"Vaihe");
+	SG1->Cells[2][0] = TR(L"Jatk");
+	SG1->Cells[3][0] = TR(L"Laji");
 	if (sijOn) {
 		SG1->Cells[4][0] = L"A1";
 		SG1->Cells[5][0] = L"L1";
@@ -65,20 +67,20 @@ void __fastcall TFormKaavaTaul::NaytaTaul(void)
 		SG1->Cells[19][0] = L"L4";
 		}
 	if (tulOn) {
-		SG1->Cells[16*sijOn+4][0] = L"TulLaji";
-		SG1->Cells[16*sijOn+5][0] = L"VertAika";
-		SG1->Cells[16*sijOn+6][0] = L"V-Pist";
-		SG1->Cells[16*sijOn+7][0] = L"Kerr";
-		SG1->Cells[16*sijOn+8][0] = L"Jak";
-		SG1->Cells[16*sijOn+9][0] = L"Pyör";
-		SG1->Cells[16*sijOn+10][0] = L"EiNeg";
+		SG1->Cells[16*sijOn+4][0] = TR(L"TulLaji");
+		SG1->Cells[16*sijOn+5][0] = TR(L"VertAika");
+		SG1->Cells[16*sijOn+6][0] = TR(L"V-Pist");
+		SG1->Cells[16*sijOn+7][0] = TR(L"Kerr");
+		SG1->Cells[16*sijOn+8][0] = TR(L"Jak");
+		SG1->Cells[16*sijOn+9][0] = TR(L"Pyör");
+		SG1->Cells[16*sijOn+10][0] = TR(L"EiNeg");
 		}
-	SG1->Cells[16*sijOn+7*tulOn+4][0] = L"Y-Jatk";
-	SG1->Cells[16*sijOn+7*tulOn+5][0] = L"V-lkm";
-	SG1->Cells[16*sijOn+7*tulOn+6][0] = L"OoMin";
-	SG1->Cells[16*sijOn+7*tulOn+7][0] = L"HyvMin";
-	SG1->Cells[16*sijOn+7*tulOn+8][0] = L"Kaik";
-	SG1->Cells[16*sijOn+7*tulOn+9][0] = L"YpTulos";
+	SG1->Cells[16*sijOn+7*tulOn+4][0] = TR(L"Y-Jatk");
+	SG1->Cells[16*sijOn+7*tulOn+5][0] = TR(L"V-lkm");
+	SG1->Cells[16*sijOn+7*tulOn+6][0] = TR(L"OoMin");
+	SG1->Cells[16*sijOn+7*tulOn+7][0] = TR(L"HyvMin");
+	SG1->Cells[16*sijOn+7*tulOn+8][0] = TR(L"Kaik");
+	SG1->Cells[16*sijOn+7*tulOn+9][0] = TR(L"YpTulos");
 	SG1->ColWidths[0] = 60 * Screen->PixelsPerInch / 96;
 	if (sijOn) {
 		for (int c = 4; c <= 19; c++)
@@ -117,8 +119,8 @@ void __fastcall TFormKaavaTaul::NaytaTaul(void)
 				SG1->RowCount = r+1;
 			SG1->Cells[0][r] = Sarjat[srj].sarjanimi;
 			SG1->Cells[1][r] = ipv+1;
-			SG1->Cells[2][r] = eion[Sarjat[srj].pistekaava[ipv].vaiheon];
-			SG1->Cells[3][r] = lajit[Sarjat[srj].pistekaava[ipv].laji];
+			SG1->Cells[2][r] = TR(eion[Sarjat[srj].pistekaava[ipv].vaiheon]);
+			SG1->Cells[3][r] = TR(lajit[Sarjat[srj].pistekaava[ipv].laji]);
 			if (sijOn) {
 				SG1->Cells[4][r] = Sarjat[srj].pistekaava[ipv].a[0];
 				SG1->Cells[5][r] = Sarjat[srj].pistekaava[ipv].y[0];
@@ -140,7 +142,7 @@ void __fastcall TFormKaavaTaul::NaytaTaul(void)
 			if (tulOn) {
 				SG1->Cells[16*sijOn+4][r] = Sarjat[srj].pistekaava[ipv].plaji;
 				if (Sarjat[srj].pistekaava[ipv].vaika == 0)
-					SG1->Cells[16*sijOn+5][r] = L"Kärki";
+					SG1->Cells[16*sijOn+5][r] = TR(L"Kärki");
 				else {
 					aikatowstr_cols_n(ln, Sarjat[srj].pistekaava[ipv].vaika, 0, 0, 8);
 					SG1->Cells[16*sijOn+5][r] = ln;
@@ -148,15 +150,15 @@ void __fastcall TFormKaavaTaul::NaytaTaul(void)
 				SG1->Cells[16*sijOn+6][r] = Sarjat[srj].pistekaava[ipv].vpist;
 				SG1->Cells[16*sijOn+7][r] = Sarjat[srj].pistekaava[ipv].kerr;
 				SG1->Cells[16*sijOn+8][r] = Sarjat[srj].pistekaava[ipv].jak;
-				SG1->Cells[16*sijOn+9][r] = eion[Sarjat[srj].pistekaava[ipv].optiot & 1];
-				SG1->Cells[16*sijOn+10][r] = eion[(Sarjat[srj].pistekaava[ipv].optiot & 4)/4];
+				SG1->Cells[16*sijOn+9][r] = TR(eion[Sarjat[srj].pistekaava[ipv].optiot & 1]);
+				SG1->Cells[16*sijOn+10][r] = TR(eion[(Sarjat[srj].pistekaava[ipv].optiot & 4)/4]);
 				}
-			SG1->Cells[16*sijOn+7*tulOn+4][r] = eion[Sarjat[srj].pistekaava[ipv].yhtpiston & 1];
+			SG1->Cells[16*sijOn+7*tulOn+4][r] = TR(eion[Sarjat[srj].pistekaava[ipv].yhtpiston & 1]);
 			SG1->Cells[16*sijOn+7*tulOn+5][r] = Sarjat[srj].pistekaava[ipv].yhtpistvaihelkm;
 			SG1->Cells[16*sijOn+7*tulOn+6][r] = Sarjat[srj].pistekaava[ipv].yhtpistosottomin;
 			SG1->Cells[16*sijOn+7*tulOn+7][r] = Sarjat[srj].pistekaava[ipv].yhtpisthyvmin;
-			SG1->Cells[16*sijOn+7*tulOn+8][r] = eion[(Sarjat[srj].pistekaava[ipv].yhtpiston & 2) / 2];
-			SG1->Cells[16*sijOn+7*tulOn+9][r] = eion[(Sarjat[srj].pistekaava[ipv].yhtpiston & 4) / 4];
+			SG1->Cells[16*sijOn+7*tulOn+8][r] = TR(eion[(Sarjat[srj].pistekaava[ipv].yhtpiston & 2) / 2]);
+			SG1->Cells[16*sijOn+7*tulOn+9][r] = TR(eion[(Sarjat[srj].pistekaava[ipv].yhtpiston & 4) / 4]);
 			}
 		}
 }
@@ -165,14 +167,14 @@ void __fastcall TFormKaavaTaul::NaytaTaul(void)
 void __fastcall TFormKaavaTaul::FormShow(TObject *Sender)
 {
 	CBSarja->Clear();
-	CBSarja->Items->Add(L"Kaikki");
+	CBSarja->Items->Add(TR(L"Kaikki"));
 	for (int srj = 0; srj < sarjaluku; srj++)
 		CBSarja->Items->Add(Sarjat[srj].sarjanimi);
 	CBSarja->ItemIndex = 0;
 	CBVaihe->Clear();
-	CBVaihe->Items->Add(L"Kaikki");
+	CBVaihe->Items->Add(TR(L"Kaikki"));
 	for (int ipv = 1; ipv <= kilpparam.n_pv_akt; ipv++)
-		CBVaihe->Items->Add(UnicodeString(ipv)+L". vaihe");
+		CBVaihe->Items->Add(UnicodeString(ipv)+TR(L". vaihe"));
 	CBVaihe->ItemIndex = k_pv+1;
 	NaytaTaul();
 }

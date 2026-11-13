@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitLuenta.h"
 #include "UnitEmiTag.h"
@@ -37,6 +38,7 @@ extern luentatesti;
 __fastcall TFormLuenta::TFormLuenta(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -88,8 +90,8 @@ bool __fastcall TFormLuenta::EdellinenVahvistamatta(void)
 {
 	if (!uusi_emit)
 		return(false);
-	Application->MessageBoxW(L"Edellisen kilpailijan Emit-kortti on vielä tallentamatta. Tallenna tai peruuta se ensin.",
-		L"Poikkeama", MB_OK);
+	Application->MessageBoxW(TR(L"Edellisen kilpailijan Emit-kortti on vielä tallentamatta. Tallenna tai peruuta se ensin."),
+		TR(L"Poikkeama"), MB_OK);
 	EdtViivakoodi->Text = L"";
 	if (DKilp > 0 && Osuus >= 0) {
 		EdtKilpno->Text = Kilpno;
@@ -146,7 +148,7 @@ int __fastcall TFormLuenta::NaytaJoukkue(void)
 	DG1->FixedRows = 0;
 	for (int os = 0; os < Sarjat[Kilp.sarja].osuusluku; os++) {
 		style = 0;
-		Cells[0][os+1].text = UnicodeString("Osuus ") + wosuuskoodi(Kilp.sarja, os, 0, 0);
+		Cells[0][os+1].text = UnicodeString(TRA("Osuus ")) + wosuuskoodi(Kilp.sarja, os, 0, 0);
 		Cells[1][os+1].text = Kilp.Nimi(st, kilpparam.lnimi, os, -1);
 		Cells[2][os+1].text = Kilp.ostiet[os].badge[RGkoodi->ItemIndex];
 		Cells[3][os+1].text = aikatowstr_cols_n(st, Kilp.Maali(os, 0), t0, 0, 8);
@@ -155,16 +157,16 @@ int __fastcall TFormLuenta::NaytaJoukkue(void)
 			style = ((Kilp.wTark(os, false) == L'-' && Kilp.ostiet[os].badge[RGkoodi->ItemIndex] == 0 &&
 				Kilp.Maali(os, 0) == TMAALI0) ? 1 : 2);
 			if (!huomautettu && Huomautasuljetusta->Checked && Kilp.wTark(os, 1) != L'-') {
-				if (Application->MessageBoxW(L"Joukkue suljettu tai kilpailijalla tarkastusmerkintä. Kirjataanko silti",
-					L"Poikkeama", MB_YESNO) != IDYES)
+				if (Application->MessageBoxW(TR(L"Joukkue suljettu tai kilpailijalla tarkastusmerkintä. Kirjataanko silti"),
+					TR(L"Poikkeama"), MB_YESNO) != IDYES)
 					ret = 1;
 				huomautettu = true;
 				}
 			}
 		if (!huomautettu && Huomautaohitetusta->Checked && Kilp.yOsuus(os) < Kilp.yOsuus(Osuus) &&
 			Kilp.ostiet[os].badge[RGkoodi->ItemIndex] == 0) {
-			if (Application->MessageBoxW(L"Aiemmalla osuudella ei emit-koodia. Kirjataanko silti",
-				L"Poikkeama", MB_YESNO) != IDYES)
+			if (Application->MessageBoxW(TR(L"Aiemmalla osuudella ei emit-koodia. Kirjataanko silti"),
+				TR(L"Poikkeama"), MB_YESNO) != IDYES)
 				ret = 1;
 			huomautettu = true;
 			}
@@ -312,16 +314,16 @@ void __fastcall TFormLuenta::FormCreate(TObject *Sender)
 {
 	wchar_t flname[] = L"luentaloki.txt";
 
-	Cells[0][0].text = L"Osuus";
-	Cells[1][0].text = L"Nimi";
-	Cells[2][0].text = L"Badge";
-	Cells[3][0].text = L"Maali";
-	Cells[4][0].text = L"Tark";
+	Cells[0][0].text = TR(L"Osuus");
+	Cells[1][0].text = TR(L"Nimi");
+	Cells[2][0].text = TR(L"Badge");
+	Cells[3][0].text = TR(L"Maali");
+	Cells[4][0].text = TR(L"Tark");
 	DG1->ColWidths[1] = 160 * Screen->PixelsPerInch / 96;
 	DG1->ColWidths[3] = 70 * Screen->PixelsPerInch / 96;
-	SG1->Cells[0][0] = L"Badge";
-	SG1->Cells[1][0] = L"Joukkue";
-	SG1->Cells[2][0] = L"Osuus";
+	SG1->Cells[0][0] = TR(L"Badge");
+	SG1->Cells[1][0] = TR(L"Joukkue");
+	SG1->Cells[2][0] = TR(L"Osuus");
 	if (luentaloki) {
 		if (!luentaFl) {
 			luentaFl = new TextFl(flname, L"a");
@@ -441,7 +443,7 @@ MESSAGE void __fastcall TFormLuenta::NewCardHandler(TMyMessage &msg)
 		if (luentatesti) {
 			if (testifl) {
 				if (feof(testifl)) {
-					Application->MessageBoxW(L"Tiedosto emitrek.lst käsitelty", L"Valmis", MB_OK);
+					Application->MessageBoxW(TR(L"Tiedosto emitrek.lst käsitelty"), TR(L"Valmis"), MB_OK);
 					fclose(testifl);
 					testifl = NULL;
 					return;
@@ -597,9 +599,9 @@ void __fastcall TFormLuenta::BtnTallennaClick(TObject *Sender)
 		tkilp.getrec(DKilp);
 		vanha = tkilp.ostiet[Osuus].badge[RGkoodi->ItemIndex];
 		if (vanha != 0 && vanha != uusi_emit &&
-			Application->MessageBoxW((UnicodeString(L"Osuudella on jo Emit-koodi ") + UnicodeString(vanha) +
-				L". Korvataanko se koodilla " + UnicodeString(uusi_emit) + L"?").c_str(),
-				L"Poikkeama", MB_YESNO) != IDYES) {
+			Application->MessageBoxW((UnicodeString(TR(L"Osuudella on jo Emit-koodi ")) + UnicodeString(vanha) +
+				TR(L". Korvataanko se koodilla ") + UnicodeString(uusi_emit) + L"?").c_str(),
+				TR(L"Poikkeama"), MB_YESNO) != IDYES) {
 			if (luentaFl) {
 				swprintf(lokiLine, L"%s\tKorvaus peruttu\t%4d-%d\tEmit\t%d\n", wkello(),
 					Kilpno, Osuus + 1, uusi_emit);
@@ -668,7 +670,7 @@ void __fastcall TFormLuenta::FormShow(TObject *Sender)
 		if (testifl == NULL)
 			testifl = _wfopen(testiflnm, L"rt");
 		if (testifl == NULL)
-			Application->MessageBoxW(L"Tiedoston emitrek.lst avaaminen ei onnistunut", L"Virhe", MB_OK);
+			Application->MessageBoxW(TR(L"Tiedoston emitrek.lst avaaminen ei onnistunut"), TR(L"Virhe"), MB_OK);
 		else
 			EdtMsg->Text = L"Testi odottaa Emit-koodeja";
 		return;

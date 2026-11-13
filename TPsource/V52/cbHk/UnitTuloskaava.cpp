@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitTuloskaava.h"
 #include "UnitVaPisteet.h"
@@ -29,6 +30,7 @@ TFormTuloskaava *FormTuloskaava;
 __fastcall TFormTuloskaava::TFormTuloskaava(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormTuloskaava::FormShow(TObject *Sender)
@@ -39,15 +41,15 @@ void __fastcall TFormTuloskaava::FormShow(TObject *Sender)
 	CBSarja->ItemIndex = Srj;
 	CBVaihe->Items->Clear();
 	for (int i = 0; i < kilpparam.n_pv_akt; i++)
-		CBVaihe->Items->Add(UnicodeString(i+1)+L". vaihe");
+		CBVaihe->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
 	CBVaihe->ItemIndex = Pv;
 	CBLaskettava->Items->Clear();
-	CBLaskettava->Items->Add(L"Vaiheen lopputulos");
+	CBLaskettava->Items->Add(TR(L"Vaiheen lopputulos"));
 	for (int i = 0; i < Sarjat[Srj].valuku[Pv]; i++)
-		CBLaskettava->Items->Add(UnicodeString(i+1)+L". va-pisteen aika");
-	CBLaskettava->Items->Add(L"Vaihekohtaiset pisteet");
+		CBLaskettava->Items->Add(UnicodeString(i+1)+TR(L". va-pisteen aika"));
+	CBLaskettava->Items->Add(TR(L"Vaihekohtaiset pisteet"));
 	CBLaskettava->ItemIndex = (Va <= Sarjat[Srj].valuku[Pv]) ? Va : Sarjat[Srj].valuku[Pv]+1;
-	EdtKaavaOn->Text = Sarjat[Srj].kaava[Pv][Va].on ? L"Kaava käytössä" : L"Kaava pois käytöstä";
+	EdtKaavaOn->Text = Sarjat[Srj].kaava[Pv][Va].on ? TR(L"Kaava käytössä") : TR(L"Kaava pois käytöstä");
 	EdtYla->Text = Sarjat[Srj].kaava[Pv][Va].yla;
 	EdtAla->Text = Sarjat[Srj].kaava[Pv][Va].ala;
 	EdtKerroin->Text = Sarjat[Srj].kaava[Pv][Va].kerroin;
@@ -92,13 +94,13 @@ void __fastcall TFormTuloskaava::BtnKaikilleClick(TObject *Sender)
 void __fastcall TFormTuloskaava::BtnTallennaClick(TObject *Sender)
 {
 	if (_wtoi(EdtYla->Text.c_str()) == _wtoi(EdtAla->Text.c_str()) && _wtoi(EdtYla->Text.c_str()) != -1) {
-		Application->MessageBoxW(L"Ylä- ja alatuloksen pisteet samat. Muuta kaavaa tai poista käytöstä",
-			L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Ylä- ja alatuloksen pisteet samat. Muuta kaavaa tai poista käytöstä"),
+			TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (_wtoi(EdtKerroin->Text.c_str()) == 0 || _wtoi(EdtJakaja->Text.c_str()) == 0) {
-		Application->MessageBoxW(L"Sekä kertoimen että jakajan pitää poiketa nollasta",
-			L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Sekä kertoimen että jakajan pitää poiketa nollasta"),
+			TR(L"Virhe"), MB_OK);
 		return;
 		}
 	Sarjat[Srj].kaava[Pv][Va].yla = _wtoi(EdtYla->Text.c_str());

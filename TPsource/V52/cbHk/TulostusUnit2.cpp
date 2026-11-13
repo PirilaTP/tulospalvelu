@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include <iostream>
 #include <fstream.h>
@@ -51,6 +52,10 @@ static wchar_t tiedtyyppi[] = L"RIEHMXOSFYBA";
 __fastcall TTulosteForm::TTulosteForm(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
+	// Tulosteiden kieli valitaan alivalikosta, joka korvaa entisen valinnan "Englanninkieliset otsikot"
+	Englanninkielisetotsikot1->Visible = false;
+	lisaaTulostekielivalikko(Englanninkielisetotsikot1->Parent);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -88,7 +93,7 @@ void TTulosteForm::enumPrinters(TComboBox *CBkirj)
 	  )) {
 	  wchar_t msg[80];
 	  DWORD ec = GetLastError();
-	  swprintf(msg, L"Kirjoitinten luettelointi epäonnistui, koodi %d", ec);
+	  swprintf(msg, TR(L"Kirjoitinten luettelointi epäonnistui, koodi %d"), ec);
 	  writeerror_w(msg, 0);
 	  return;
 	  }
@@ -120,7 +125,7 @@ void TTulosteForm::enumPrinters(TComboBox *CBkirj)
 			if (!GetDefaultPrinterW(wPrinterName, &bufSz)) {
 			   err = GetLastError();
 			   if (err == ERROR_INSUFFICIENT_BUFFER)
-				  writeerror_w(L"Oletuskirjoittimen nimi liian pitkä (yli 119 merkkiä)", 0, true);
+				  writeerror_w(TR(L"Oletuskirjoittimen nimi liian pitkä (yli 119 merkkiä)"), 0, true);
 			   }
 			else
 			   oletuskirjoitin = 1;
@@ -166,13 +171,13 @@ void __fastcall TTulosteForm::ButtonTiedValClick(TObject *Sender)
 	Tyyppivaihdettu = false;
 	SaveDialog1->DefaultExt = TiedDefault;
 	if (!wcscmp(TiedDefault, L"txt"))
-		SaveDialog1->Filter = L"Tekstitiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Tekstitiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*");
 	if (!wcscmp(TiedDefault, L"csv"))
-		SaveDialog1->Filter = L"Erotteelliset tiedostot (*.csv, *.txt)|*.CSV;*.TXT|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Erotteelliset tiedostot (*.csv, *.txt)|*.CSV;*.TXT|Kaikki tiedostot (*.*)|*.*");
 	if (!wcscmp(TiedDefault, L"html"))
-		SaveDialog1->Filter = L"Html-tiedostot (*html, *.htm)|*.HTML;*.HTM|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Html-tiedostot (*html, *.htm)|*.HTML;*.HTM|Kaikki tiedostot (*.*)|*.*");
 	if (!wcscmp(TiedDefault, L"xml"))
-		SaveDialog1->Filter = L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*");
    if (SaveDialog1->Execute()) {
 	  TiedNimiEdit->Text = SaveDialog1->FileName;
 	  }
@@ -193,11 +198,11 @@ void __fastcall TTulosteForm::FormCreate(TObject *Sender)
 	PageControlKohde->ActivePageIndex = 1;
 	CBLlPaivat->Clear();
 	CBLlJarjPv->Clear();
-	CBLlPaivat->Items->Add(L"Kaikki vaiheet");
-	CBLlJarjPv->Items->Add(L"Perustiedot");
+	CBLlPaivat->Items->Add(TR(L"Kaikki vaiheet"));
+	CBLlJarjPv->Items->Add(TR(L"Perustiedot"));
 	for (int i = 0;i < kilpparam.n_pv_akt; i++) {
-	   CBLlPaivat->Items->Add(UnicodeString(i+1)+L". vaihe");
-	   CBLlJarjPv->Items->Add(UnicodeString(i+1)+L". vaihe");
+	   CBLlPaivat->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
+	   CBLlJarjPv->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
 		}
 	if (kilpparam.n_pv_akt == 1) {
 		CBLlPaivat->ItemIndex = 1;
@@ -213,11 +218,11 @@ void __fastcall TTulosteForm::FormCreate(TObject *Sender)
 		}
 	if (emitfl < 1) {
 		CBSisalto->Clear();
-		CBSisalto->Items->Add(L"Tulokset");
-		CBSisalto->Items->Add(L"Osanottajat ilman tulostietoa");
-		CBSisalto->Items->Add(L"Väliajat");
-		CBSisalto->Items->Add(L"Tulokset ja väliaikoja");
-		CBSisalto->Items->Add(L"Pisteet (tuloksista lasketut)");
+		CBSisalto->Items->Add(TR(L"Tulokset"));
+		CBSisalto->Items->Add(TR(L"Osanottajat ilman tulostietoa"));
+		CBSisalto->Items->Add(TR(L"Väliajat"));
+		CBSisalto->Items->Add(TR(L"Tulokset ja väliaikoja"));
+		CBSisalto->Items->Add(TR(L"Pisteet (tuloksista lasketut)"));
 		wcscpy(tulostettava, L"TOVYP");
 		CBSisalto->ItemIndex = 0;
 		}
@@ -243,7 +248,7 @@ void __fastcall TTulosteForm::FormCreate(TObject *Sender)
 
 	LblLisaTekstiOo = new TLabel(this);
 	LblLisaTekstiOo->Parent = TabSheetOottajat;
-	LblLisaTekstiOo->Caption = L"Lisäteksti:";
+	LblLisaTekstiOo->Caption = TR(L"Lisäteksti:");
 	LblLisaTekstiOo->Left = 8;
 	LblLisaTekstiOo->Top = 163;
 
@@ -256,7 +261,7 @@ void __fastcall TTulosteForm::FormCreate(TObject *Sender)
 
 	LblLisaTekstiTul = new TLabel(this);
 	LblLisaTekstiTul->Parent = TabSheetTulokset;
-	LblLisaTekstiTul->Caption = L"Lisäteksti:";
+	LblLisaTekstiTul->Caption = TR(L"Lisäteksti:");
 	LblLisaTekstiTul->Left = 8;
 	LblLisaTekstiTul->Top = 360;
 
@@ -361,13 +366,11 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 	SisaltoIndex = PageControlSisalto->ActivePageIndex;
 	if (CBUusiSivu->Checked)
 		Options |= 0x80000000;
-	if (Englanninkielisetotsikot1->Checked)
-		Options |= 0x10000000;
 	switch (KohdeIndex) {
 		case 0:
 			if (KirjoitinVal->ItemIndex == -1 ||
 				KirjoitinVal->Items->Strings[KirjoitinVal->ItemIndex].Length() == 0) {
-				Application->MessageBoxW(L"Kirjoitinta ei valittu", L"Valitse kirjoitin", MB_OK);
+				Application->MessageBoxW(TR(L"Kirjoitinta ei valittu"), TR(L"Valitse kirjoitin"), MB_OK);
 				return;
 				}
 			wcsncpy(kohdenimi,
@@ -375,7 +378,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 			break;
 		case 1:
 			if (TiedNimiEdit->Text.Length() == 0) {
-				Application->MessageBoxW(L"Tiedostoa ei valittu", L"Valitse tiedosto", MB_OK);
+				Application->MessageBoxW(TR(L"Tiedostoa ei valittu"), TR(L"Valitse tiedosto"), MB_OK);
 				return;
 				}
 			wcsncpy(kohdenimi, TiedNimiEdit->Text.c_str(), 199);
@@ -431,8 +434,8 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 					}
 				}
 			else {
-				Application->MessageBoxW(L"Seuroja ei ole valittu tai valintaikkuna on suljettu",
-					L"Este", MB_OK);
+				Application->MessageBoxW(TR(L"Seuroja ei ole valittu tai valintaikkuna on suljettu"),
+					TR(L"Este"), MB_OK);
 				return;
 				}
 			}
@@ -445,14 +448,14 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 
 			Paivat = CBLlPaivat->ItemIndex;
 			if (KohdeIndex == 1 && wcswcind(tiedTyyppi, L"RIHMBA") < 0) {
-				Application->MessageBoxW(L"Lähtöluettelon sallitut tiedostotyypit ovat"
+				Application->MessageBoxW(TR(L"Lähtöluettelon sallitut tiedostotyypit ovat"
 					L" 'kentät erotettuina', 'kentät kohdistettuina', HTML, 'HTML mobiililaitteelle', 'WebScorer'"
-					L" ja 'Takaa-ajon ajat kellolle'", L"Rajoitus", MB_OK);
+					L" ja 'Takaa-ajon ajat kellolle'"), TR(L"Rajoitus"), MB_OK);
 				break;
 				}
 			if (wcswcind(OoTulostettava[CBOoSisalto->ItemIndex], L"LR") >= 0) {
 				if (Paivat < 1) {
-					Application->MessageBoxW(L"Valitse yksi vaihe", L"Virhe", MB_OK);
+					Application->MessageBoxW(TR(L"Valitse yksi vaihe"), TR(L"Virhe"), MB_OK);
 					err = 1;
 					break;
 					}
@@ -479,7 +482,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 							if (i < 256)
 								sarjat[i] = 1;
 							else {
-								Application->MessageBoxW(L"Lähtönumeron on oltava välillä 1 - 255", L"Rajoitus", MB_OK);
+								Application->MessageBoxW(TR(L"Lähtönumeron on oltava välillä 1 - 255"), TR(L"Rajoitus"), MB_OK);
 								err = 1;
 								break;
 								}
@@ -517,8 +520,8 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 				kopioita = _wtoi(EdtKopioita->Text.c_str());
 				EdtKopioita->Text = 1;
 				if (kopioita > 5) {
-					if (Application->MessageBoxW((UnicodeString(L"Vahvista ")+UnicodeString(kopioita)+L" kopion tulostus").c_str(),
-						L"Vahvista", MB_YESNO) != IDYES)
+					if (Application->MessageBoxW((UnicodeString(TR(L"Vahvista "))+UnicodeString(kopioita)+TR(L" kopion tulostus")).c_str(),
+						TR(L"Vahvista"), MB_YESNO) != IDYES)
 						return;
 					}
 				}
@@ -540,7 +543,7 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 					LisaRivit,
 					Options,
 					_wtoi(EdtPisteJak->Text.c_str()));
-					Application->MessageBoxW(L"Pyydetty tuloste laadittu", L"Valmis", MB_OK);
+					Application->MessageBoxW(TR(L"Pyydetty tuloste laadittu"), TR(L"Valmis"), MB_OK);
 				}
 			tulostus_lisateksti_oo[0] = 0;
 			break;
@@ -579,8 +582,8 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 				wchar_t *p, buf[500];
 				buf[499] = 0;
 				if (kohde[KohdeIndex] == L'P') {
-					Application->MessageBoxW(L"Tulostettavan tiedon vaihtoehto ei käytettävissä kirjoitintulosteissa",
-						L"Rajoitus", MB_OK);
+					Application->MessageBoxW(TR(L"Tulostettavan tiedon vaihtoehto ei käytettävissä kirjoitintulosteissa"),
+						TR(L"Rajoitus"), MB_OK);
 						break;
 					}
 				wcsncpy(buf, EdtPistelista->Text.c_str(), sizeof(buf)/2-1);
@@ -603,27 +606,27 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 				}
 			if (tulostettava[CBSisalto->ItemIndex] == L'F' &&
 				(k_pv > 0 || kohde[KohdeIndex] != L'I' || (tiedTyyppi != L'H' && tiedTyyppi != L'M'))) {
-				Application->MessageBoxW(L"Pyydetty tulosteyhdistelmä ei käytettävissä tähän tulosteeseen",
-					L"Rajoitus", MB_OK);
+				Application->MessageBoxW(TR(L"Pyydetty tulosteyhdistelmä ei käytettävissä tähän tulosteeseen"),
+					TR(L"Rajoitus"), MB_OK);
 				break;
 				}
 			if (tulostettava[CBSisalto->ItemIndex] == L'E' || tulostettava[CBSisalto->ItemIndex] == L'F') {
 				if (pisteval == L'S' &&
 					(kohde[KohdeIndex] != L'I' || wcswcind(tiedTyyppi, L"IXYVW") < 0)) {
-					Application->MessageBoxW(L"Emit-tietojen siirtotiedosto on kohdistettu tekstitiedosto tai XML-tiedosto",
-						L"Rajoitus", MB_OK);
+					Application->MessageBoxW(TR(L"Emit-tietojen siirtotiedosto on kohdistettu tekstitiedosto tai XML-tiedosto"),
+						TR(L"Rajoitus"), MB_OK);
 					break;
 					}
 				if (kohde[KohdeIndex] != L'I' || wcswcind(tiedTyyppi, L"IHMXYVW") < 0) {
-					Application->MessageBoxW(L"Emit-tulosteen tiedostomuodon on oltava html, XML tai kohdistettu tekstitiedosto",
-						L"Rajoitus", MB_OK);
+					Application->MessageBoxW(TR(L"Emit-tulosteen tiedostomuodon on oltava html, XML tai kohdistettu tekstitiedosto"),
+						TR(L"Rajoitus"), MB_OK);
 					break;
 					}
 				}
 			if (rajaus[CBRajVal->ItemIndex] == L'J') {
 				if (kohde[KohdeIndex] == L'I' && tiedTyyppi != L'H' && tiedTyyppi != L'M') {
-					Application->MessageBoxW(L"Joukkuetulokset voi tulostaa vain kirjoittimelle ja html-tiedostoon",
-						L"Rajoitus", MB_OK);
+					Application->MessageBoxW(TR(L"Joukkuetulokset voi tulostaa vain kirjoittimelle ja html-tiedostoon"),
+						TR(L"Rajoitus"), MB_OK);
 					break;
 					}
 				if (RGJkTls->ItemIndex == 3) {
@@ -635,8 +638,8 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 				else {
 					Tulostettava = L'J';
 					if (CBJkTunnus->ItemIndex > 3) {
-						Application->MessageBoxW(L"Piiriä ei voi valita tunnukseksi näille pisteille",
-							L"Rajoitus", MB_OK);
+						Application->MessageBoxW(TR(L"Piiriä ei voi valita tunnukseksi näille pisteille"),
+							TR(L"Rajoitus"), MB_OK);
 						break;
 						}
 					Options = 4 * RGJkTls->ItemIndex + (CBVaadiJoukkue->Checked ? 0x10 : 0) +
@@ -714,8 +717,8 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 				kopioita = _wtoi(EdtKopioita->Text.c_str());
 				EdtKopioita->Text = 1;
 				if (kopioita > 5) {
-					if (Application->MessageBoxW((UnicodeString(L"Vahvista ")+UnicodeString(kopioita)+L" kopion tulostus").c_str(),
-						L"Vahvista", MB_YESNO) != IDYES)
+					if (Application->MessageBoxW((UnicodeString(TR(L"Vahvista "))+UnicodeString(kopioita)+TR(L" kopion tulostus")).c_str(),
+						TR(L"Vahvista"), MB_YESNO) != IDYES)
 						return;
 					}
 				}
@@ -745,10 +748,10 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 					Options2);
 				}
 			if (RiviLuku)
-				Application->MessageBoxW((UnicodeString(L"Pyydetty tuloste laadittu. ")+
-				UnicodeString(RiviLuku)+ " riviä kirjoitettu").c_str(), L"Valmis", MB_OK);
+				Application->MessageBoxW((UnicodeString(TR(L"Pyydetty tuloste laadittu. "))+
+				UnicodeString(RiviLuku)+ TRA(" riviä kirjoitettu")).c_str(), TR(L"Valmis"), MB_OK);
 			else
-				Application->MessageBoxW(L"Pyydetty tuloste laadittu", L"Valmis", MB_OK);
+				Application->MessageBoxW(TR(L"Pyydetty tuloste laadittu"), TR(L"Valmis"), MB_OK);
 			tulostus_lisateksti_tul[0] = 0;
 			break;
 			}
@@ -837,12 +840,12 @@ void __fastcall TTulosteForm::BtnLisaaLhtSarjatClick(TObject *Sender)
 
 	if (kilpparam.n_pv_akt > 1) {
 		i_pv++;
-		inputint_prompt(&i_pv, L"Anna vaiheen järjestysnumero", &ch, this);
+		inputint_prompt(&i_pv, TR(L"Anna vaiheen järjestysnumero"), &ch, this);
 		if (ch == ESC || i_pv < 1 || i_pv > kilpparam.n_pv_akt)
 			return;
 		i_pv--;
 		}
-	inputint_prompt(&lno, L"Anna lähdön numero", &ch, this);
+	inputint_prompt(&lno, TR(L"Anna lähdön numero"), &ch, this);
 	if (ch == ESC)
 		return;
 	for (int srj = 0; srj < sarjaluku; srj++) {
@@ -950,11 +953,11 @@ void __fastcall TTulosteForm::CBSisaltoChange(TObject *Sender)
 			CBJarj->Clear();
 			if (k_pv == 0) {
 				if (kilpparam.kilplaji == L'H' && kilpparam.alalaji == L'S') {
-					LblPistevalinta->Caption = L"Tulostettavat vaiheet";
+					LblPistevalinta->Caption = TR(L"Tulostettavat vaiheet");
 					PisteVal->Clear();
-					PisteVal->Items->Add(L"Tämän vaiheen tulos");
-					PisteVal->Items->Add(L"Yhteissijat");
-					PisteVal->Items->Add(L"Tulosyhteenveto");
+					PisteVal->Items->Add(TR(L"Tämän vaiheen tulos"));
+					PisteVal->Items->Add(TR(L"Yhteissijat"));
+					PisteVal->Items->Add(TR(L"Tulosyhteenveto"));
 					wcscpy(vaiheet, L"TYK");
 					}
 				else {
@@ -962,59 +965,59 @@ void __fastcall TTulosteForm::CBSisaltoChange(TObject *Sender)
 					LblPistevalinta->Visible = false;
 					wcscpy(vaiheet, L"TYZUK");
 					}
-				CBJarj->Items->Add(L"Paremmuus");
+				CBJarj->Items->Add(TR(L"Paremmuus"));
 //				wcscpy(tulostettava, L"TOVYEP");
 				wcscpy(jarj, L"TAN");
 				}
 			else {
-				LblPistevalinta->Caption = L"Tulostettavat vaiheet";
+				LblPistevalinta->Caption = TR(L"Tulostettavat vaiheet");
 				PisteVal->Clear();
-				PisteVal->Items->Add(L"Tämän vaiheen tulos");
-				PisteVal->Items->Add(L"Yhteistulos");
-				PisteVal->Items->Add(L"Yhteistulos ja vaiheen tulos");
-				PisteVal->Items->Add(L"Vaiheen tulos ja yhteistulos");
-				PisteVal->Items->Add(L"Kaikki vaiheet");
-				CBJarj->Items->Add(L"Paremmuus - tämä vaihe");
-				CBJarj->Items->Add(L"Paremmuus - yhteistilanne");
+				PisteVal->Items->Add(TR(L"Tämän vaiheen tulos"));
+				PisteVal->Items->Add(TR(L"Yhteistulos"));
+				PisteVal->Items->Add(TR(L"Yhteistulos ja vaiheen tulos"));
+				PisteVal->Items->Add(TR(L"Vaiheen tulos ja yhteistulos"));
+				PisteVal->Items->Add(TR(L"Kaikki vaiheet"));
+				CBJarj->Items->Add(TR(L"Paremmuus - tämä vaihe"));
+				CBJarj->Items->Add(TR(L"Paremmuus - yhteistilanne"));
 				wcscpy(jarj, L"TYAN");
 				wcscpy(vaiheet, L"TYZUK");
 				}
-			CBJarj->Items->Add(L"Sarjoittain aakkosjärjestyksessä");
-			CBJarj->Items->Add(L"Sarjoittain numerojärjestyksessä");
+			CBJarj->Items->Add(TR(L"Sarjoittain aakkosjärjestyksessä"));
+			CBJarj->Items->Add(TR(L"Sarjoittain numerojärjestyksessä"));
 
 			PisteVal->ItemIndex = 0;
 			CBJarj->ItemIndex = 0;
 			break;
 		case L'V':
 			CBSijoitukset->Visible = true;
-			LblPistevalinta->Caption = L"Tulostettava väliaika";
+			LblPistevalinta->Caption = TR(L"Tulostettava väliaika");
 			PisteVal->Clear();
-			PisteVal->Items->Add(L"Kaikki väliajat");
+			PisteVal->Items->Add(TR(L"Kaikki väliajat"));
 			vaiheet[0] = L'0';
 			for (int Va = 1; Va <= kilpparam.valuku; Va++) {
-				PisteVal->Items->Add(UnicodeString(Va)+L". väliaika");
+				PisteVal->Items->Add(UnicodeString(Va)+TR(L". väliaika"));
 				vaiheet[Va] = L'0'+Va;
 				}
 			vaiheet[kilpparam.valuku+1] = 0;
 			PisteVal->ItemIndex = 0;
 			CBJarj->Clear();
-			CBJarj->Items->Add(L"Paremmuus");
+			CBJarj->Items->Add(TR(L"Paremmuus"));
 			CBJarj->Enabled = false;
 			CBJarj->ItemIndex = 0;
 			wcscpy(jarj, L"T");
 			CBVAKesk->Visible = true;
 			break;
 		case L'Y':
-			LblPistevalinta->Caption = L"Luettele tulostettavat pisteet";
+			LblPistevalinta->Caption = TR(L"Luettele tulostettavat pisteet");
 			CBSijoitukset->Visible = true;
 			PisteVal->Visible = false;
 			EdtPistelista->Visible = true;
 			PisteVal->ItemIndex = 0;
 			CBJarj->Clear();
-			CBJarj->Items->Add(L"Lopputulos");
+			CBJarj->Items->Add(TR(L"Lopputulos"));
 			jarj[0] = L'0';
 			for (int Va = 1; Va <= kilpparam.valuku; Va++) {
-				CBJarj->Items->Add(UnicodeString(Va)+L". väliaika");
+				CBJarj->Items->Add(UnicodeString(Va)+TR(L". väliaika"));
 				jarj[Va] = L'0'+Va;
 				}
 			jarj[kilpparam.valuku+1] = 0;
@@ -1028,16 +1031,16 @@ void __fastcall TTulosteForm::CBSisaltoChange(TObject *Sender)
 				LblPistevalinta->Visible = false;
 				PisteVal->Visible = false;
 				}
-			LblPistevalinta->Caption = L"Tulostettavat taulukot";
+			LblPistevalinta->Caption = TR(L"Tulostettavat taulukot");
 			PisteVal->Clear();
-			PisteVal->Items->Add(L"Ajat rasteille");
-			PisteVal->Items->Add(L"Rastivälien ajat");
-			PisteVal->Items->Add(L"Molemmat eri taulukkoon");
-			PisteVal->Items->Add(L"Molemmat samaaan taulukkoon");
-			PisteVal->Items->Add(L"Siirtotiedosto");
+			PisteVal->Items->Add(TR(L"Ajat rasteille"));
+			PisteVal->Items->Add(TR(L"Rastivälien ajat"));
+			PisteVal->Items->Add(TR(L"Molemmat eri taulukkoon"));
+			PisteVal->Items->Add(TR(L"Molemmat samaaan taulukkoon"));
+			PisteVal->Items->Add(TR(L"Siirtotiedosto"));
 			PisteVal->ItemIndex = 0;
 			CBJarj->Clear();
-			CBJarj->Items->Add(L"Paremmuus - tämä vaihe");
+			CBJarj->Items->Add(TR(L"Paremmuus - tämä vaihe"));
 			CBJarj->Enabled = false;
 			CBJarj->ItemIndex = 0;
 			wcscpy(jarj, L"TANBMLP");
@@ -1045,21 +1048,21 @@ void __fastcall TTulosteForm::CBSisaltoChange(TObject *Sender)
 			CBViimLeima->Visible = true;
 			break;
 		case L'P':
-			LblPistevalinta->Caption = L"Tulostettavat pisteet";
+			LblPistevalinta->Caption = TR(L"Tulostettavat pisteet");
 //			CBKaikkiSijoitukset->Visible = true;
 //			CBKaikkiSijoitukset->Caption = L"Jaa pisteet sadalla";
 			PisteVal->Clear();
-			PisteVal->Items->Add(L"Tämän vaiheen pisteet");
-			PisteVal->Items->Add(L"Kokonaispisteet");
-			PisteVal->Items->Add(L"Kaikki vaiheet ja kok.pisteet");
-			PisteVal->Items->Add(L"Lähtötietojen rankipisteet");
+			PisteVal->Items->Add(TR(L"Tämän vaiheen pisteet"));
+			PisteVal->Items->Add(TR(L"Kokonaispisteet"));
+			PisteVal->Items->Add(TR(L"Kaikki vaiheet ja kok.pisteet"));
+			PisteVal->Items->Add(TR(L"Lähtötietojen rankipisteet"));
 			PisteVal->ItemIndex = 0;
 			CBJarj->Clear();
-			CBJarj->Items->Add(L"Sarjoittain aakkosjärjestyksessä");
-			CBJarj->Items->Add(L"Sarjoittain numerojärjestyksessä");
-			CBJarj->Items->Add(L"Pisteet (laskevat, suurin paras)");
-			CBJarj->Items->Add(L"Pisteet (nousevat, 0p: ei mukana)");
-			CBJarj->Items->Add(L"Pisteet (nousevat, 0p: paras)");
+			CBJarj->Items->Add(TR(L"Sarjoittain aakkosjärjestyksessä"));
+			CBJarj->Items->Add(TR(L"Sarjoittain numerojärjestyksessä"));
+			CBJarj->Items->Add(TR(L"Pisteet (laskevat, suurin paras)"));
+			CBJarj->Items->Add(TR(L"Pisteet (nousevat, 0p: ei mukana)"));
+			CBJarj->Items->Add(TR(L"Pisteet (nousevat, 0p: paras)"));
 			wcscpy(jarj, L"ANLPO");
 			wcscpy(vaiheet, L"TYZR");
 			break;
@@ -1158,7 +1161,7 @@ void __fastcall TTulosteForm::CBTiedLajiChange(TObject *Sender)
 	CBxmlStand->Enabled = wcswcind(tiedtyyppi[CBTiedLaji->ItemIndex], L"X") >= 0;
 	Label8->Visible = CBErotin->Visible || CBxmlStand->Visible;
 	CBvaadiKvId->Visible = wcswcind(tiedtyyppi[CBTiedLaji->ItemIndex], L"X") >= 0;
-	Label8->Caption = CBErotin->Visible ? UnicodeString(L"Kenttäerotin") : UnicodeString(L"XML-standardi");
+	Label8->Caption = CBErotin->Visible ? UnicodeString(TR(L"Kenttäerotin")) : UnicodeString(L"XML-standardi");
 	CBMerkisto->Enabled = wcswcind(tiedtyyppi[CBTiedLaji->ItemIndex], L"RIEHMX") >= 0 &&
 		CBTiedLaji->ItemIndex != 9;
 	GBhtml->Visible = wcswcind(tiedtyyppi[CBTiedLaji->ItemIndex], L"IHM") >= 0;
@@ -1182,7 +1185,7 @@ void __fastcall TTulosteForm::Button2Click(TObject *Sender)
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->FileName = UnicodeString(L"fismaar.txt");
 	OpenDialog1->DefaultExt = L"txt";
-	OpenDialog1->Filter = L"Tekstitiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Tekstitiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		EdtFISMaar->Text = OpenDialog1->FileName;
 		wcsncpy(FISMaarFileName, OpenDialog1->FileName.c_str(), sizeof(FISMaarFileName)/2-1);
@@ -1264,7 +1267,7 @@ void __fastcall TTulosteForm::PaivitaTulossivu(TObject *Sender)
 				RGJkTls->Visible = true;
 				if (RGJkTls->ItemIndex == 1)
 					CBJkPstJrj->Visible = true;
-				Label15->Caption = (RGJkTls->ItemIndex != 3 ? L"Joukkueen koko" : L"Max. sijoitus");
+				Label15->Caption = (RGJkTls->ItemIndex != 3 ? TR(L"Joukkueen koko") : TR(L"Max. sijoitus"));
 				CBVaadiJoukkue->Visible =  RGJkTls->ItemIndex != 3;
 				CBSeuraJoukkueena->Visible = CBVaadiJoukkue->Visible;
 				CBVoittLisa->Visible = !CBVaadiJoukkue->Visible;
@@ -1347,12 +1350,12 @@ void __fastcall TTulosteForm::Automaattinentulostus1Click(TObject *Sender)
 		return;
 		}
 	if (autotulostusparam.rajaus != 0) {
-		vast = select3(3, L"Käynnistä automaattinen tulostus", L"Automaattinen tulostus",
-			L"Aiempien valintojen mukaan", L"Kaavakkeen valintojen mukaan", L"Ei käynnistetä", this);
+		vast = select3(3, TR(L"Käynnistä automaattinen tulostus"), TR(L"Automaattinen tulostus"),
+			TR(L"Aiempien valintojen mukaan"), TR(L"Kaavakkeen valintojen mukaan"), TR(L"Ei käynnistetä"), this);
 		}
 	else {
-		vast = select3(2, L"Käynnistä automaattinen tulostus", L"Automaattinen tulostus",
-			L"Kaavakkeen valintojen mukaan", L"Ei käynnistetä", L"", this) + 1;
+		vast = select3(2, TR(L"Käynnistä automaattinen tulostus"), TR(L"Automaattinen tulostus"),
+			TR(L"Kaavakkeen valintojen mukaan"), TR(L"Ei käynnistetä"), L"", this) + 1;
 		}
 	if (vast == 2) {
 		autotulostusparam.tulmuot = tulosmuot;
@@ -1369,10 +1372,10 @@ void __fastcall TTulosteForm::Automaattinentulostus1Click(TObject *Sender)
 		autotulostusparam.rajaus = rajaus[CBRajVal->ItemIndex];
 		autotulostusparam.enssija = _wtoi(Alaraja->Text.c_str());
 		autotulostusparam.viimsija = _wtoi(Ylaraja->Text.c_str());
-		inputint_prompt(&kynnys, L"Anna tulostuskynnys", &co, this);
+		inputint_prompt(&kynnys, TR(L"Anna tulostuskynnys"), &co, this);
 		kynnys = max(kynnys,1);
 		sek = intv[0] / 18;
-		inputint_prompt(&sek, L"Anna aika-askel (sek)", &co, this);
+		inputint_prompt(&sek, TR(L"Anna aika-askel (sek)"), &co, this);
 		intv[0] = 18*sek;
 		p = maalistr;
 		for (int i = 0; i < 9; i++) {
@@ -1380,7 +1383,7 @@ void __fastcall TTulosteForm::Automaattinentulostus1Click(TObject *Sender)
 			autotulostusparam.automaali[i] = 0;
 			}
 		*p = 0;
-		inputstr_prompt(maalistr, 9, L"Anna tulostettavat maalinumerot yhtenä numerosarjana", &co, this);
+		inputstr_prompt(maalistr, 9, TR(L"Anna tulostettavat maalinumerot yhtenä numerosarjana"), &co, this);
 		for (p = maalistr; *p; p++)
 			if (*p > L'0' && *p <= L'9') autotulostusparam.automaali[*p - L'1'] = 1;
 		}
@@ -1518,9 +1521,9 @@ void __fastcall TTulosteForm::Reittihrvelintiedostoxml1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+// Piilotettu (korvattu valikolla "Tulosteiden kieli"), säilytetty .dfm-viittauksen vuoksi
 void __fastcall TTulosteForm::Englanninkielisetotsikot1Click(TObject *Sender)
 {
-	Englanninkielisetotsikot1->Checked = !Englanninkielisetotsikot1->Checked;
 }
 //---------------------------------------------------------------------------
 
@@ -1591,8 +1594,8 @@ void __fastcall TTulosteForm::CBJarjClick(TObject *Sender)
 void __fastcall TTulosteForm::CBLlJarjPvChange(TObject *Sender)
 {
 	if (CBLlPaivat->ItemIndex == 0 && CBLlJarjPv->ItemIndex > 0)
-		Application->MessageBoxW(L"Kun järjestys on yhden vaiheen mukainen, ei tästä vaiheesta poissaolevia tulosteta.",
-			L"Varoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Kun järjestys on yhden vaiheen mukainen, ei tästä vaiheesta poissaolevia tulosteta."),
+			TR(L"Varoitus"), MB_OK);
 }
 //---------------------------------------------------------------------------
 

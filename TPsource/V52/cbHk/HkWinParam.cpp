@@ -113,23 +113,23 @@ FLD2 exp_kentat[] = {
 int Kexp_kentat = 21, Pexp_kentat = 21, Vexp_kentat = 2, Xexp_kentat = 1;
 
 ColTp hTGridCols0[HT_GRIDCOLS] = {
-	{L"Id", 50, 0, 1, 0, true},
-	{L"Sukunimi", 80, 0, 1, 0, true},
-	{L"Etunimi", 80, 0, 1, 0, true},
-	{L"Seura", 100, 0, 1, 0, true},
-	{L"Maa", 30, 0, 1, 0, false},
-	{L"Synt.", 30, 0, 1, 0, true},
-	{L"Sukup.", 30, 0, 1, 0, true},
-	{L"Sarja", 60, 0, 1, 0, false},
-	{L"Bib", 40, 0, 1, 0, false},
-	{L"Badge", 45, 0, 1, 0, true},
-	{L"Kv. id", 50, 0, 1, 0, true},
-	{L"Joukkue", 55, 0, 1, 0, false},
-	{L"Ranki", 50, 0, 1, 0, false},
-	{L"Maksu", 35, 0, 1, 0, false},
-	{L"OsOttoLkm", 60, 0, 1, 0, false},
-	{L"ViimOsOtto", 60, 1, 0, 0, false},
-	{L"Lisätieto", 60, 1, 0, 0, false}
+	{N_(L"Id"), 50, 0, 1, 0, true},
+	{N_(L"Sukunimi"), 80, 0, 1, 0, true},
+	{N_(L"Etunimi"), 80, 0, 1, 0, true},
+	{N_(L"Seura"), 100, 0, 1, 0, true},
+	{N_(L"Maa"), 30, 0, 1, 0, false},
+	{N_(L"Synt."), 30, 0, 1, 0, true},
+	{N_(L"Sukup."), 30, 0, 1, 0, true},
+	{N_(L"Sarja"), 60, 0, 1, 0, false},
+	{N_(L"Bib"), 40, 0, 1, 0, false},
+	{N_(L"Badge"), 45, 0, 1, 0, true},
+	{N_(L"Kv. id"), 50, 0, 1, 0, true},
+	{N_(L"Joukkue"), 55, 0, 1, 0, false},
+	{N_(L"Ranki"), 50, 0, 1, 0, false},
+	{N_(L"Maksu"), 35, 0, 1, 0, false},
+	{N_(L"OsOttoLkm"), 60, 0, 1, 0, false},
+	{N_(L"ViimOsOtto"), 60, 1, 0, 0, false},
+	{N_(L"Lisätieto"), 60, 1, 0, 0, false}
 };
 
 seurIkkParamClass seurIkkParam[NTILANNEFORM];

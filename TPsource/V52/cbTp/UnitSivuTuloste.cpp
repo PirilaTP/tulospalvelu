@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSivuTuloste.h"
 #ifndef MAXOSUUSLUKU
@@ -65,6 +66,7 @@ static int nFrmTags = sizeof(FrmTags)/sizeof(FrmTags[0]);
 __fastcall TFormSivuTuloste::TFormSivuTuloste(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -147,7 +149,7 @@ void __fastcall TFormSivuTuloste::allennatehdytvalinnat1Click(TObject *Sender)
 	SaveDialog1->InitialDir = FormMain->CurrentDir;
 	SaveDialog1->FileName = PgMaarFlNm;
 	SaveDialog1->DefaultExt = L"xml";
-	SaveDialog1->Filter = L"Xml-tiedosto (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Xml-tiedosto (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		KirjoitaValinnat(SaveDialog1->FileName.c_str());
 		}
@@ -159,7 +161,7 @@ void __fastcall TFormSivuTuloste::Luevalinnattiedostosta1Click(TObject *Sender)
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->FileName = PgMaarFlNm;
 	OpenDialog1->DefaultExt = L"xml";
-	OpenDialog1->Filter = L"Xml-tiedosto (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Xml-tiedosto (*.xml)|*.xml|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		LueValinnat(OpenDialog1->FileName.c_str());
 		}
@@ -293,7 +295,7 @@ int __fastcall TFormSivuTuloste::LueValinnat(wchar_t *MuotFile)
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
 				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, että tagit ovat pari
 					er = 1;
-					swprintf(msg, L"XML-muotoilun tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
+					swprintf(msg, TR(L"XML-muotoilun tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"),
 						rv, tag, tree.node[jnode].tag);
 					break;
 					}
@@ -317,11 +319,11 @@ int __fastcall TFormSivuTuloste::LueValinnat(wchar_t *MuotFile)
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s päättyi rivillä %d tasolla %d", MuotFile, rv, depth);
+		swprintf(msg, TR(L"XML-tiedosto %s päättyi rivillä %d tasolla %d"), MuotFile, rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivillä %d tai aikaisemmin", MuotFile, rv);
+			swprintf(msg, TR(L"Tiedostossa %s virhe rivillä %d tai aikaisemmin"), MuotFile, rv);
 			}
 		writeerror_w(msg, 0, true);
 		}
@@ -381,18 +383,18 @@ void __fastcall TFormSivuTuloste::NaytaValinnat(void)
 void __fastcall TFormSivuTuloste::FormCreate(TObject *Sender)
 {
 	SG1->ColWidths[0] = 60 * Screen->PixelsPerInch / 96;
-	SG1->Cells[0][0] = L"Kenttä";
-	SG1->Cells[1][0] = L"X-pos";
-	SG1->Cells[2][0] = L"Y-pos";
-	SG1->Cells[3][0] = L"Pituus";
-	SG1->Cells[4][0] = L"Koko";
-	SG1->Cells[5][0] = L"Tas.";
+	SG1->Cells[0][0] = TR(L"Kenttä");
+	SG1->Cells[1][0] = TR(L"X-pos");
+	SG1->Cells[2][0] = TR(L"Y-pos");
+	SG1->Cells[3][0] = TR(L"Pituus");
+	SG1->Cells[4][0] = TR(L"Koko");
+	SG1->Cells[5][0] = TR(L"Tas.");
 	SG1->RowCount = PageFieldCount+1;
 	NaytaValinnat();
 	CBJatkuva->Checked = lisaToimetOn;
 	CBValinta->Clear();
-	CBValinta->Items->Add(L"Kaikki läsnäolevat");
-	CBValinta->Items->Add(L"Oheinen numero");
+	CBValinta->Items->Add(TR(L"Kaikki läsnäolevat"));
+	CBValinta->Items->Add(TR(L"Oheinen numero"));
 	for (int srj = 0; srj < sarjaluku+nsarjayhd; srj++) {
 		CBValinta->Items->Add(Sarjat[srj].sarjanimi);
 		}

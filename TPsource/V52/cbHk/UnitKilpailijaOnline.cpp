@@ -18,6 +18,7 @@
 #include <vcl.h>
 #include <Clipbrd.hpp>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "HkDeclare.h"
 #include "UnitKilpailijaOnline.h"
@@ -30,37 +31,38 @@ TFormKilpailijaOnline *FormKilpailijaOnline;
 tietolinkkitp *HenkLinkki;
 
 ColTp PvOlGridCols0[] = {
-	{L"Päivä", 40, 0, 1, 0, true},
-	{L"Bib", 40, 0, 1, 0, false},
-	{L"Badge", 40, 0, 1, 0, false},
-	{L"Lähtö-arv", 70, 0, 1, 0, true},
-	{L"Lähtö-tot", 70, 0, 1, 0, false},
-	{L"Maali", 70, 0, 1, 0, true},
-	{L"Tulos", 70, 0, 1, 0, true},
-	{L"Tark", 40, 0, 1, 0, true},
-	{L"Amp.sakot", 60, 0, 1, 0, false},
-	{L"Sakko", 40, 0, 1, 0, false},
-	{L"Sija", 40, 0, 1, 0, true},
-	{L"Ennätys", 60, 0, 1, 0, false},
-	{L"Tavoite", 60, 0, 1, 0, false},
-	{L"Yht.tls.", 70, 0, 1, 0, false},
-	{L"Y-sija", 40, 0, 1, 0, false}
+	{N_(L"Päivä"), 40, 0, 1, 0, true},
+	{N_(L"Bib"), 40, 0, 1, 0, false},
+	{N_(L"Badge"), 40, 0, 1, 0, false},
+	{N_(L"Lähtö-arv"), 70, 0, 1, 0, true},
+	{N_(L"Lähtö-tot"), 70, 0, 1, 0, false},
+	{N_(L"Maali"), 70, 0, 1, 0, true},
+	{N_(L"Tulos"), 70, 0, 1, 0, true},
+	{N_(L"Tark"), 40, 0, 1, 0, true},
+	{N_(L"Amp.sakot"), 60, 0, 1, 0, false},
+	{N_(L"Sakko"), 40, 0, 1, 0, false},
+	{N_(L"Sija"), 40, 0, 1, 0, true},
+	{N_(L"Ennätys"), 60, 0, 1, 0, false},
+	{N_(L"Tavoite"), 60, 0, 1, 0, false},
+	{N_(L"Yht.tls."), 70, 0, 1, 0, false},
+	{N_(L"Y-sija"), 40, 0, 1, 0, false}
 };
 
 ColTp VaGridCols0[] = {
-	{L"Piste", 40, 0, 1, 0, true},
-	{L"Matka", 60, 0, 1, 0, false},
-	{L"Aika", 80, 0, 1, 0, true},
-	{L"Sija", 40, 0, 1, 0, true},
-	{L"Edellisestä", 80, 0, 1, 0, true},
-	{L"Yht.aika", 80, 0, 1, 0, false}
-//	{L"Y-sija", 40, 0, 1, 0, false}
+	{N_(L"Piste"), 40, 0, 1, 0, true},
+	{N_(L"Matka"), 60, 0, 1, 0, false},
+	{N_(L"Aika"), 80, 0, 1, 0, true},
+	{N_(L"Sija"), 40, 0, 1, 0, true},
+	{N_(L"Edellisestä"), 80, 0, 1, 0, true},
+	{N_(L"Yht.aika"), 80, 0, 1, 0, false}
+//	{N_(L"Y-sija"), 40, 0, 1, 0, false}
 };
 
 //---------------------------------------------------------------------------
 __fastcall TFormKilpailijaOnline::TFormKilpailijaOnline(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -174,7 +176,7 @@ void __fastcall TFormKilpailijaOnline::naytaTiedot(void)
 			if (PvGridCols[i].Visible) {
 				if (n >= PvGrid->ColCount)
 					PvGrid->ColCount = n+1;
-				PvGrid->Cells[n][0] = UnicodeString(PvGridCols[i].Caption);
+				PvGrid->Cells[n][0] = UnicodeString(TR(PvGridCols[i].Caption));
 				PvGrid->ColWidths[n] = PvGridCols[i].Width * Screen->PixelsPerInch / 96;
 				PvGridWidth += PvGrid->ColWidths[n] + 2;
 				PvGridCols[i].Order = n;
@@ -359,7 +361,7 @@ void __fastcall TFormKilpailijaOnline::naytaTiedot(void)
 			if (VaGridCols[i].Visible) {
 				if (n >= VaGrid->ColCount)
 					VaGrid->ColCount = n+1;
-				VaGrid->Cells[n][0] = UnicodeString(VaGridCols[i].Caption);
+				VaGrid->Cells[n][0] = UnicodeString(TR(VaGridCols[i].Caption));
 				VaGrid->ColWidths[n] = VaGridCols[i].Width * Screen->PixelsPerInch / 96;
 				VaGridCols[i].Order = n;
 				n++;
@@ -570,7 +572,7 @@ int __fastcall TFormKilpailijaOnline::tallennaTiedot(void)
    Kilp1 = Kilp;
 	Kilp1.setId(_wtoi(EdtKilpno->Text.c_str()));
 	if (Kilp1.id() != Kilp.id() && getpos(Kilp1.id()) > 0) {
-	  Application->MessageBox(L"Kilpailijanumero ei ole käytettävissä", L"Virhe",
+	  Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä"), L"Virhe",
 	  MB_OK);
 	  return(1);
 	}
@@ -810,7 +812,7 @@ void __fastcall TFormKilpailijaOnline::BtnSalliClick(TObject *Sender)
 	EdBtn->Enabled = false;
 	PvGrid->Options << goEditing;
 	VaGrid->Options << goEditing;
-	Tila->Caption = UnicodeString(L"Muokkaustila");
+	Tila->Caption = UnicodeString(TR(L"Muokkaustila"));
 }
 //---------------------------------------------------------------------------
 
@@ -830,7 +832,7 @@ void __fastcall TFormKilpailijaOnline::BtnPeruutaClick(TObject *Sender)
 	PvGrid->Options >> goEditing;
 	VaGrid->Options >> goEditing;
 	naytaTiedot();
-	Tila->Caption = UnicodeString(L"Haku- ja katselutila");
+	Tila->Caption = UnicodeString(TR(L"Haku- ja katselutila"));
 }
 //---------------------------------------------------------------------------
 
@@ -1030,7 +1032,7 @@ void __fastcall TFormKilpailijaOnline::FormClose(TObject *Sender, TCloseAction &
 
 	if (!EdtSukunimi->ReadOnly) {
 		haeTiedot(&Kilp1);
-		if (!(Kilp1 == Kilp) && Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallennus",
+		if (!(Kilp1 == Kilp) && Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallennus"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -1075,7 +1077,7 @@ void __fastcall TFormKilpailijaOnline::naytaSeuranta(void)
 		}
 	else {
 		alkuVa = Va;
-		Cells[2][0].text = UnicodeString(L"Tulos");
+		Cells[2][0].text = UnicodeString(TR(L"Tulos"));
 		}
 	Va1 = Va;
 	if (Va == kilpparam.valuku+1) {
@@ -1263,8 +1265,8 @@ void __fastcall TFormKilpailijaOnline::FormShow(TObject *Sender)
 	LblSeurPiste->Visible = Seuranta;
 	CBSeurPiste->Visible = Seuranta;
 	CBSeurPiste->Items->Clear();
-	CBSeurPiste->Items->Add(L"Lähtö");
-	CBSeurPiste->Items->Add(L"Maali");
+	CBSeurPiste->Items->Add(TR(L"Lähtö"));
+	CBSeurPiste->Items->Add(TR(L"Maali"));
 	PvGrid->DefaultRowHeight = 20 * Screen->PixelsPerInch / 96;
 	if (ToimintaTila < 2)
 		PvGrid->RowCount = kilpparam.n_pv_akt + 1;
@@ -1279,14 +1281,14 @@ void __fastcall TFormKilpailijaOnline::FormShow(TObject *Sender)
 	SeurGrid->ColWidths[3] = 60 * Screen->PixelsPerInch/96;
 	SeurGridWidth = 304 * Screen->PixelsPerInch/96;
 	SeurGrid->Width = SeurGridWidth;
-	Cells[0][0].text = UnicodeString(L"Sija");
-	Cells[1][0].text = UnicodeString(L"Nimi");
-	Cells[2][0].text = UnicodeString(L"Aika");
-	Cells[3][0].text = UnicodeString(L"Ero");
+	Cells[0][0].text = UnicodeString(TR(L"Sija"));
+	Cells[1][0].text = UnicodeString(TR(L"Nimi"));
+	Cells[2][0].text = UnicodeString(TR(L"Aika"));
+	Cells[3][0].text = UnicodeString(TR(L"Ero"));
 	for (int p = 0; p < kilpparam.valuku; p++)
-		CBSeurPiste->Items->Add(UnicodeString(p+1)+UnicodeString(L". väliaika"));
+		CBSeurPiste->Items->Add(UnicodeString(p+1)+UnicodeString(TR(L". väliaika")));
 	if (k_pv)
-		CBSeurPiste->Items->Add(L"Yhteistulos");
+		CBSeurPiste->Items->Add(TR(L"Yhteistulos"));
 	CBSeurPiste->ItemIndex = 1;
 	FormResize(Sender);
 	Refresh();
@@ -1336,13 +1338,13 @@ void __fastcall TFormKilpailijaOnline::BtnTietoaClick(TObject *Sender)
 {
 	wchar_t *ctx = NULL;
 	if (!HenkLinkki) {
-		if (Application->MessageBoxW(L"Linkkejä tietoihin ei ole avattu - avataanko nyt?",
-		L"Linkit", MB_YESNO) != IDYES)
+		if (Application->MessageBoxW(TR(L"Linkkejä tietoihin ei ole avattu - avataanko nyt?"),
+		TR(L"Linkit"), MB_YESNO) != IDYES)
 			return;
 		OpenDialog1->InitialDir = FormMain->CurrentDir;
 		OpenDialog1->FileName = L"Tietolista.txt";
 		OpenDialog1->DefaultExt = L"txt";
-		OpenDialog1->Filter = L"Tekstitiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*";
+		OpenDialog1->Filter = TR(L"Tekstitiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*");
 		if (OpenDialog1->Execute()) {
 			TextFl *InFile = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 
@@ -1407,7 +1409,7 @@ void __fastcall TFormKilpailijaOnline::BtnTietoaClick(TObject *Sender)
 				}
 			delete InFile;
 			if (!HenkLinkki) {
-				Application->MessageBoxW(L"Linkkejä ei löytynyt tiedostosta", L"Virhe", MB_OK);
+				Application->MessageBoxW(TR(L"Linkkejä ei löytynyt tiedostosta"), L"Virhe", MB_OK);
 				return;
 				}
 			}
@@ -1447,7 +1449,7 @@ void __fastcall TFormKilpailijaOnline::BtnTietoaClick(TObject *Sender)
 			FormBrowser->BringToFront();
 			}
 		else {
-			Application->MessageBoxW(L"Kilpailijalle ei ole tietolinkkiä", L"Ei löydy", MB_OK);
+			Application->MessageBoxW(TR(L"Kilpailijalle ei ole tietolinkkiä"), TR(L"Ei löydy"), MB_OK);
 			}
 		}
 }
@@ -1478,7 +1480,7 @@ void __fastcall TFormKilpailijaOnline::EdtKeyDown(TObject *Sender, WORD &Key,
 	if (sallimuokkaus && Key == VK_F9 && !Shift.Contains(ssShift) && !Shift.Contains(ssCtrl) && !Shift.Contains(ssAlt)) {
 		if (!EdtSukunimi->ReadOnly) {
 			haeTiedot(&Kilp1);
-			if (!(Kilp1 == Kilp) && Application->MessageBoxW(L"Tallenna mahdolliset muutokset", L"Vahvistus", MB_YESNO) == IDYES)
+			if (!(Kilp1 == Kilp) && Application->MessageBoxW(TR(L"Tallenna mahdolliset muutokset"), TR(L"Vahvistus"), MB_YESNO) == IDYES)
 				BtnTallennaClick(Sender);
 			else
 				BtnPeruutaClick(Sender);

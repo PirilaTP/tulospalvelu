@@ -358,6 +358,14 @@ foreach ($p in $projects) {
     else {
         $status = 'OK'
         Write-Host "$($p.Project): OK -> $($p.Output) (${elapsed}s)"
+        if ($p.Output -like '*.exe') {
+            # Translations next to the program (<exe dir>\kielet). Kielet.targets does the same
+            # in IDE builds, but its target does not run in 'bds.exe -b' command-line builds.
+            $kieliDir = Join-Path (Split-Path $outputPath -Parent) 'kielet'
+            New-Item -ItemType Directory -Force -Path $kieliDir | Out-Null
+            Copy-Item (Join-Path $repoRoot 'TPsource\V52\kielet\*.po') $kieliDir -Force
+            Write-Host "  Translations copied to $kieliDir"
+        }
     }
     $summary += [pscustomobject]@{ Project = $p.Project; Output = $p.Output; Status = $status; Seconds = $elapsed }
 

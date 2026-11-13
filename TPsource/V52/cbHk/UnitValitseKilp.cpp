@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <System.DateUtils.hpp>
 
 #include "WinHk.h"
@@ -34,6 +35,7 @@ static int kilpLkm;
 __fastcall TFormValitseKilp::TFormValitseKilp(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	if (FormKisaLuett == NULL) {
 		FormKisaLuett = new TFormKisaLuett(this);
 	}
@@ -49,7 +51,7 @@ void __fastcall TFormValitseKilp::BtnValittuClick(TObject *Sender)
 
 	ix = CBKilpailu->ItemIndex - 1;
 	if (ix < 0) {
-		Application->MessageBoxW(L"Kilpailua ei valittu", L"Ei valittu", MB_OK);
+		Application->MessageBoxW(TR(L"Kilpailua ei valittu"), TR(L"Ei valittu"), MB_OK);
 		return;
 		}
 	if (kisaLuett[ix].polku[wcslen(kisaLuett[ix].polku)-1] == L'\\')
@@ -94,7 +96,7 @@ void __fastcall TFormValitseKilp::FormShow(TObject *Sender)
 	int idate;
 
 	CBKilpailu->Clear();
-	CBKilpailu->Items->Add(L"Ei valittu");
+	CBKilpailu->Items->Add(TR(L"Ei valittu"));
 	ValitseKilp();
 }
 //---------------------------------------------------------------------------

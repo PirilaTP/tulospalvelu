@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitEmit_VA.h"
 //---------------------------------------------------------------------------
@@ -27,6 +28,7 @@ TFormEmit_VA *FormEmit_VA;
 __fastcall TFormEmit_VA::TFormEmit_VA(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -36,16 +38,16 @@ __fastcall TFormEmit_VA::TFormEmit_VA(TComponent* Owner)
 void __fastcall TFormEmit_VA::FormCreate(TObject *Sender)
 {
 	SG1->RowCount = kilpparam.valuku+2;
-	SG1->Cells[0][0] = L"Alku";
-	SG1->Cells[1][0] = L"Loppu";
-	SG1->Cells[2][0] = L"Piste";
-	SG1->Cells[3][0] = L"Pohjapiste";
+	SG1->Cells[0][0] = TR(L"Alku");
+	SG1->Cells[1][0] = TR(L"Loppu");
+	SG1->Cells[2][0] = TR(L"Piste");
+	SG1->Cells[3][0] = TR(L"Pohjapiste");
 	for (int r = 1; r < SG1->RowCount; r++) {
 		for (int c = 0; c < 4; c++)
 			SG1->Cells[c][r] = L"";
 		}
 	CBSarja->Clear();
-	CBSarja->Items->Add(L"Valitse sarja");
+	CBSarja->Items->Add(TR(L"Valitse sarja"));
 	for (int i = 0; i < sarjaluku; i++)
 		CBSarja->Items->Add(Sarjat[i].sarjanimi);
 	CBSarja->ItemIndex = 0;

@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitVaPisteet.h"
 #include "UnitTuloskaava.h"
@@ -32,6 +33,7 @@ TFormVaPisteet *FormVaPisteet;
 __fastcall TFormVaPisteet::TFormVaPisteet(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	NLaji = 5;
 	NNaytaLaji = NLaji;
 	ValLaji = 0;
@@ -42,7 +44,7 @@ __fastcall TFormVaPisteet::TFormVaPisteet(TComponent* Owner)
 void __fastcall TFormVaPisteet::editKaava(int srj, int pv, int va)
 {
 	if (VAGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset tähänastiset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset tähänastiset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -69,7 +71,7 @@ void __fastcall TFormVaPisteet::naytaTiedot(void)
 	ipv = CBPaiva->ItemIndex;
 	if (CBPaiva->Items->Count < kilpparam.n_pv_akt) {
 		for (int i = CBPaiva->Items->Count; i < kilpparam.n_pv_akt; i++) {
-			CBPaiva->Items->Add(UnicodeString(i+1)+UnicodeString(L". päivä"));
+			CBPaiva->Items->Add(UnicodeString(i+1)+UnicodeString(TR(L". päivä")));
 			}
 		}
 	while (CBPaiva->Items->Count > kilpparam.n_pv_akt)
@@ -90,19 +92,19 @@ void __fastcall TFormVaPisteet::naytaTiedot(void)
 	for (int col = 2; col < VAGrid->ColCount-1; col++) {
 		Cells[0][col].text = UnicodeString(col-1)+UnicodeString(L". va");
 		}
-	Cells[0][0].text = UnicodeString(L"Sarja");
-	Cells[0][1].text = UnicodeString(L"Tieto");
-	Cells[0][VAGrid->ColCount-1].text = UnicodeString(L"Maali");
+	Cells[0][0].text = UnicodeString(TR(L"Sarja"));
+	Cells[0][1].text = UnicodeString(TR(L"Tieto"));
+	Cells[0][VAGrid->ColCount-1].text = UnicodeString(TR(L"Maali"));
 	for (int srj = 0; srj < sarjaluku; srj++) {
 		Cells[NLaji*srj + 1][0].text = UnicodeString(Sarjat[srj].sarjanimi);
-		Cells[NLaji*srj + 1][1].text = UnicodeString(L"Sijainti");
-		Cells[NLaji*srj + 2][1].text = UnicodeString(L"Aikaraja");
+		Cells[NLaji*srj + 1][1].text = UnicodeString(TR(L"Sijainti"));
+		Cells[NLaji*srj + 2][1].text = UnicodeString(TR(L"Aikaraja"));
 		if (wcswcind(kilpparam.kilplaji, L"AB") >= 0)
-			Cells[NLaji*srj + 3][1].text = UnicodeString(L"Sakkoja");
+			Cells[NLaji*srj + 3][1].text = UnicodeString(TR(L"Sakkoja"));
 		else
-			Cells[NLaji*srj + 3][1].text = UnicodeString(L"Rastikoodi");
-		Cells[NLaji*srj + 4][1].text = UnicodeString(L"Julkisuus");
-		Cells[NLaji*srj + 5][1].text = UnicodeString(L"Kaava");
+			Cells[NLaji*srj + 3][1].text = UnicodeString(TR(L"Rastikoodi"));
+		Cells[NLaji*srj + 4][1].text = UnicodeString(TR(L"Julkisuus"));
+		Cells[NLaji*srj + 5][1].text = UnicodeString(TR(L"Kaava"));
 		}
 	for (int srj = 0; srj < sarjaluku; srj++) {
 		for (int iva = 0; iva < kilpparam.valuku; iva++) {
@@ -113,13 +115,13 @@ void __fastcall TFormVaPisteet::naytaTiedot(void)
 			else
 				Cells[NLaji*srj + 3][iva + 2].text = UnicodeString(Sarjat[srj].va_koodi[ipv][iva]);
 			if (Sarjat[srj].va_piilota[ipv][iva] == 0)
-				Cells[NLaji*srj + 4][iva + 2].text = L"Piilota";
+				Cells[NLaji*srj + 4][iva + 2].text = TR(L"Piilota");
 			else if (Sarjat[srj].va_piilota[ipv][iva] >= 9)
-				Cells[NLaji*srj + 4][iva + 2].text = L"Julkinen";
+				Cells[NLaji*srj + 4][iva + 2].text = TR(L"Julkinen");
 			else
-				Cells[NLaji*srj + 4][iva + 2].text = UnicodeString(L"Taso")+Sarjat[srj].va_piilota[ipv][iva];
+				Cells[NLaji*srj + 4][iva + 2].text = UnicodeString(TR(L"Taso"))+Sarjat[srj].va_piilota[ipv][iva];
 			if (Sarjat[srj].kaava[ipv][iva+1].on)
-				Cells[NLaji*srj + 5][iva + 2].text = L"Kaava";
+				Cells[NLaji*srj + 5][iva + 2].text = TR(L"Kaava");
 			else
 				Cells[NLaji*srj + 5][iva + 2].text = L" ";
 			}
@@ -186,7 +188,7 @@ void __fastcall TFormVaPisteet::Button2Click(TObject *Sender)
 void __fastcall TFormVaPisteet::FormClose(TObject *Sender, TCloseAction &Action)
 {
 	if (VAGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -225,14 +227,14 @@ int __fastcall TFormVaPisteet::paivitaMuutos(int col, int row)
 					if (ch == L'T')
 						ch = Cells[CRow][col].text.c_str()[Cells[CRow][col].text.Length()-1];
 					if (ch > L'0' && ch <= L'9')
-						Cells[CRow][col].text = L"Taso"+UnicodeString(ch);
+						Cells[CRow][col].text = TR(L"Taso")+UnicodeString(ch);
 					else
-						Cells[CRow][col].text = ((ch == L'P') ? L"Piilota" : L"Julkinen");
+						Cells[CRow][col].text = ((ch == L'P') ? TR(L"Piilota") : TR(L"Julkinen"));
 					break;
 				case 4:
 					editKaava((row-1)/NNaytaLaji, CBPaiva->ItemIndex, col-1);
 					if (Sarjat[(row-1)/NNaytaLaji].kaava[CBPaiva->ItemIndex][col-1].on)
-						Cells[row][col].text = L"Kaava";
+						Cells[row][col].text = TR(L"Kaava");
 					break;
 				}
 			}
@@ -250,7 +252,7 @@ void __fastcall TFormVaPisteet::FormShow(TObject *Sender)
 {
 	CBPaiva->Clear();
 	for (int i = 0;i < kilpparam.n_pv_akt; i++) {
-	   CBPaiva->Items->Add(UnicodeString(i+1)+L". vaihe");
+	   CBPaiva->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
 		}
 	CBPaiva->ItemIndex = k_pv;
 	if (FormSarjatiedot->CBTiedot->ItemIndex > 0)
@@ -305,7 +307,7 @@ void __fastcall TFormVaPisteet::Kopioi1Click(TObject *Sender)
 			}
 		}
 	if (onkaava)
-		Application->MessageBoxW(L"Kaavojen kopiointi sarjasta toisiin tehdään kaavan määrittelykaavakkeella", L"Varoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Kaavojen kopiointi sarjasta toisiin tehdään kaavan määrittelykaavakkeella"), TR(L"Varoitus"), MB_OK);
 	VAGrid->Refresh();
 }
 //---------------------------------------------------------------------------
@@ -351,7 +353,7 @@ void __fastcall TFormVaPisteet::Kirjoitatekstitiedostoon1Click(TObject *Sender)
 	TextFl *OutFl;
 
 	if (VAGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -361,7 +363,7 @@ void __fastcall TFormVaPisteet::Kirjoitatekstitiedostoon1Click(TObject *Sender)
 	SaveDialog1->InitialDir = FormMain->CurrentDir;
 	SaveDialog1->FileName = UnicodeString(L"vapisteet.csv");
 	SaveDialog1->DefaultExt = L"csv";
-	SaveDialog1->Filter = L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		OutFl = new TextFl(SaveDialog1->FileName.c_str(), L"wt");
 		if (OutFl->IsOpen()) {
@@ -415,7 +417,7 @@ void __fastcall TFormVaPisteet::Luetekstitiedostosta1Click(TObject *Sender)
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->FileName = UnicodeString(L"vapisteet.csv");
 	OpenDialog1->DefaultExt = L"csv";
-	OpenDialog1->Filter = L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		InFl = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 		while (InFl->IsOpen() && !InFl->Feof()) {
@@ -559,7 +561,7 @@ void __fastcall TFormVaPisteet::FormDestroy(TObject *Sender)
 void __fastcall TFormVaPisteet::ComboBox1Change(TObject *Sender)
 {
 	if (VAGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -590,12 +592,12 @@ void __fastcall TFormVaPisteet::Mrmatkatratatiedoista1Click(TObject *Sender)
 	ratatp *rt;
 
 	if (!emitfl || !rata) {
-		Application->MessageBox(L"Ei ratatietoja", L"Este", MB_OK);
+		Application->MessageBox(TR(L"Ei ratatietoja"), TR(L"Este"), MB_OK);
 		return;
 		}
 
 	if (VAGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset aiemmat muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset aiemmat muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -632,7 +634,7 @@ void __fastcall TFormVaPisteet::Kopioivaiheentiedotmuillevaiheille1Click(TObject
 	int kpv = CBPaiva->ItemIndex;
 
 	if (VAGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset tehdyt muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset tehdyt muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -759,7 +761,7 @@ void __fastcall TFormVaPisteet::Poistasolunvliaika1Click(TObject *Sender)
 		Cells[CRow][VAGrid->Col].text = L"";
 		Cells[CRow+1][VAGrid->Col].text = L"00.00.00";
 		Cells[CRow+2][VAGrid->Col].text = L"0";
-		Cells[CRow+3][VAGrid->Col].text = L"Piilota";
+		Cells[CRow+3][VAGrid->Col].text = TR(L"Piilota");
 		Cells[CRow+4][VAGrid->Col].text = L"";
 		VAGrid->Refresh();
 		}

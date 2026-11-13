@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitEmitFile.h"
 #include <stdio.h>
@@ -38,6 +39,7 @@ static emittp *emarr;
 __fastcall TFormEmitFile::TFormEmitFile(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -55,7 +57,7 @@ void __fastcall TFormEmitFile::Button1Click(TObject *Sender)
 {
 
 	OpenDialog1->DefaultExt = "dat";
-	OpenDialog1->Filter = "Datatiedostot (*.dat) |*.dat|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TRA("Datatiedostot (*.dat) |*.dat|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		emitinfile = _wfopen(OpenDialog1->FileName.c_str(), L"rb");
 		if (emitinfile) {
@@ -102,13 +104,13 @@ void __fastcall TFormEmitFile::FormShow(TObject *Sender)
 	SG1->ColWidths[2] = 52;
 	SG1->ColWidths[5] = 64;
 	SG1->ColWidths[6] = 64;
-	SG1->Cells[0][0] = L"Rivi";
-	SG1->Cells[1][0] = L"Badge";
-	SG1->Cells[2][0] = L"OrigBdg";
-	SG1->Cells[3][0] = L"Kno";
-	SG1->Cells[4][0] = L"Os";
-	SG1->Cells[5][0] = L"Luettu";
-	SG1->Cells[6][0] = L"Maali";
+	SG1->Cells[0][0] = TR(L"Rivi");
+	SG1->Cells[1][0] = TR(L"Badge");
+	SG1->Cells[2][0] = TR(L"OrigBdg");
+	SG1->Cells[3][0] = TR(L"Kno");
+	SG1->Cells[4][0] = TR(L"Os");
+	SG1->Cells[5][0] = TR(L"Luettu");
+	SG1->Cells[6][0] = TR(L"Maali");
 	for (int c = 0; c < 50; c++) {
 		SG1->Cells[2*c+7][0] = L"C-"+UnicodeString(c);
 		SG1->Cells[2*c+8][0] = L"T-"+UnicodeString(c);
@@ -140,7 +142,7 @@ void __fastcall TFormEmitFile::Button2Click(TObject *Sender)
 			}
 		addem(&em, 0);
 		}
-	Application->MessageBoxW(L"Valmis", L"", MB_OK);
+	Application->MessageBoxW(TR(L"Valmis"), L"", MB_OK);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormEmitFile::Button3Click(TObject *Sender)

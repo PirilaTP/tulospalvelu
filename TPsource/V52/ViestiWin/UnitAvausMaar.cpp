@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitAvausMaar.h"
 #include "UnitMain.h"
@@ -31,6 +32,7 @@ TFormAvausMaar *FormAvausMaar;
 __fastcall TFormAvausMaar::TFormAvausMaar(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -66,7 +68,7 @@ void __fastcall TFormAvausMaar::Button1Click(TObject *Sender)
 		OpenDialog1->FileName = UnicodeString(L"ilmoitt.cfg");
 	else
 		OpenDialog1->FileName = UnicodeString(L"laskenta.cfg");
-	OpenDialog1->Filter = L"Konfiguraatiot (*.cfg) | *.CFG";
+	OpenDialog1->Filter = TR(L"Konfiguraatiot (*.cfg) | *.CFG");
 	if (OpenDialog1->Execute()) {
 		Edit1->Text = OpenDialog1->FileName;
 		LueCfgFile();
@@ -80,7 +82,7 @@ void __fastcall TFormAvausMaar::Button2Click(TObject *Sender)
 	if (FormMain->InitFileName.Length() == 0)
 		FormMain->InitFileName = FormMain->InitDir+L"\\Init.cfg";
 	SaveDialog1->FileName = FormMain->InitFileName;
-	SaveDialog1->Filter = L"Konfiguraatiot (*.cfg) | *.CFG";
+	SaveDialog1->Filter = TR(L"Konfiguraatiot (*.cfg) | *.CFG");
 	if (!SaveDialog1->Execute()) {
 		SetCurrentDir(FormMain->CurrentDir);
 		return;
@@ -148,7 +150,7 @@ void __fastcall TFormAvausMaar::Button4Click(TObject *Sender)
 	TextFl *cfgfile;
 
 	SaveDialog1->FileName = Edit1->Text;
-	SaveDialog1->Filter = L"Konfiguraatiot (*.cfg) | *.CFG";
+	SaveDialog1->Filter = TR(L"Konfiguraatiot (*.cfg) | *.CFG");
 	if (SaveDialog1->Execute()) {
 		cfgfile = new TextFl(SaveDialog1->FileName.c_str(), L"w");
 		if (cfgfile->IsOpen()) {

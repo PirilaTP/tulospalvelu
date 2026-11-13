@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitVakLisays.h"
 #include "HkDeclare.h"
@@ -28,6 +29,7 @@ extern TFormVakLisays *FormVakLisays;
 __fastcall TFormVakLisays::TFormVakLisays(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

@@ -19,6 +19,7 @@
 #include <Clipbrd.hpp>
 #include <process.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "TulosUnit.h"
 #include "WinHk.h"
@@ -34,6 +35,7 @@ extern TTilanneForm *TilFrm[];
 __fastcall TTilanneForm::TTilanneForm(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -514,8 +516,8 @@ void __fastcall TTilanneForm::PaivitaGrid(bool scroll)
 		alkuVa = Va+4;
 		LA = 0;
 		Caption = UnicodeString(Sarjat[Sarja].sarjanimi) +
-			(Va == YTulVal-1 ? UnicodeString(L" - Yhteistulokset") :
-			(UnicodeString(L" - ") + Va + L". väliaika " + Sarjat[Sarja].va_matka[k_pv][Va-1] + L" km"));
+			(Va == YTulVal-1 ? UnicodeString(L" - ") + TR(L"Yhteistulokset") :
+			(UnicodeString(L" - ") + Va + TR(L". väliaika") + L" " + Sarjat[Sarja].va_matka[k_pv][Va-1] + L" km"));
 		}
 	else if (Va < 0) {
 //		alkuVa = kilpparam.valuku + 5 + 5 * (k_pv > 0);
@@ -524,15 +526,15 @@ void __fastcall TTilanneForm::PaivitaGrid(bool scroll)
 		Va = kilpparam.valuku + 2;
 		edEnn = IkkParam.AaniLkm*SEK;
 		LA = 1;
-		Caption = UnicodeString(Sarjat[Sarja].sarjanimi) + L" - Lähtöajat";
+		Caption = UnicodeString(Sarjat[Sarja].sarjanimi) + L" - " + TR(L"Lähtöajat");
 		if (IkkParam.vainjarj)
-			OtsCells[CTulos].text = UnicodeString(L"Lähtö");
+			OtsCells[CTulos].text = UnicodeString(TR(L"Lähtö"));
 		}
 	else {
 		alkuVa = Va;
 		if (IkkParam.vainjarj)
-			OtsCells[CTulos].text = UnicodeString(L"Tulos");
-		Caption = UnicodeString(Sarjat[Sarja].sarjanimi) + L" - Loppuajat";
+			OtsCells[CTulos].text = UnicodeString(TR(L"Tulos"));
+		Caption = UnicodeString(Sarjat[Sarja].sarjanimi) + L" - " + TR(L"Loppuajat");
 		LA = 0;
 		}
 	Va1 = Va;
@@ -884,26 +886,26 @@ void __fastcall TTilanneForm::PaivitaGrid(bool scroll)
 			else {
 				switch (kilp.tark(k_pv)) {
 					case L'H' :
-						wcscpy(ln, L"Hyl.");
+						wcscpy(ln, TR(L"Hyl."));
 						break;
 					case L'M' :
-						wcscpy(ln, L"Puut.");
+						wcscpy(ln, TR(L"Puut."));
 						break;
 					case L'K' :
-						wcscpy(ln, L"Kesk.");
+						wcscpy(ln, TR(L"Kesk."));
 						break;
 					case L'O' :
-						wcscpy(ln, L"Ohit.");
+						wcscpy(ln, TR(L"Ohit."));
 						break;
 					case L'X' :
-						wcscpy(ln, L"EiTul");
+						wcscpy(ln, TR(L"EiTul"));
 						break;
 					case L'E' :
 					case L'V' :
-						wcscpy(ln, L"Eil.");
+						wcscpy(ln, TR(L"Eil."));
 						break;
 					case L'B' :
-						wcscpy(ln, L"Hav.");
+						wcscpy(ln, TR(L"Hav."));
 						break;
 					}
 				Cells[k][CTulos].text = UnicodeString(ln);
@@ -1187,14 +1189,14 @@ void __fastcall TTilanneForm::FormSetup(bool pakota, bool paivitaLeveys)
 	if (PisteVal->ItemIndex == YTulVal)
 		pVal = 9999;
 	PisteVal->Items->Clear();
-	PisteVal->Items->Add(L"Lähtö");
-	PisteVal->Items->Add(L"Maali");
+	PisteVal->Items->Add(TR(L"Lähtö"));
+	PisteVal->Items->Add(TR(L"Maali"));
 	for (int p = 0; p < Sarjat[IkkParam.Sarja].valuku[k_pv]; p++)
-		PisteVal->Items->Add(UnicodeString(p+1)+UnicodeString(L". väliaika"));
+		PisteVal->Items->Add(UnicodeString(p+1)+UnicodeString(TR(L". väliaika")));
 //	YTulVal = Sarjat[Sarja].valuku[k_pv] + 2;
 	YTulVal = PisteVal->Items->Count;
 	if (Sarjat[IkkParam.Sarja].luonne[k_pv] > 0 && k_pv > Sarjat[IkkParam.Sarja].enspv) {
-		PisteVal->Items->Add(L"Yhteistulos");
+		PisteVal->Items->Add(TR(L"Yhteistulos"));
 		if (pVal >= YTulVal) {
 			pVal = (pVal == 9999 ? YTulVal : YTulVal - 1);
 			}
@@ -1291,35 +1293,35 @@ void __fastcall TTilanneForm::FormSetup(bool pakota, bool paivitaLeveys)
 		TulosGrid->ColWidths[CMaa] = IkkParam.ColW[8] * lev * Screen->PixelsPerInch/960;
 		ColLj[8] = CAlisarja+1;
 		}
-	OtsCells[0].text = UnicodeString(L"Sija");
+	OtsCells[0].text = UnicodeString(TR(L"Sija"));
 	OtsCells[0].justify = 1;
-	OtsCells[CNro].text = UnicodeString(L"Nro");
+	OtsCells[CNro].text = UnicodeString(TR(L"Nro"));
 	OtsCells[CNro].justify = 1;
-	OtsCells[CNimi].text = UnicodeString(L"Nimi");
+	OtsCells[CNimi].text = UnicodeString(TR(L"Nimi"));
 	OtsCells[CNimi].justify = 0;
 	if (CViimeisin) {
-		OtsCells[CViimeisin].text = UnicodeString(L"Viimeisin");
+		OtsCells[CViimeisin].text = UnicodeString(TR(L"Viimeisin"));
 		OtsCells[CViimeisin].justify = 1;
 		}
 	if (CAlisarja) {
-		OtsCells[CAlisarja].text = UnicodeString(L"Srj");
+		OtsCells[CAlisarja].text = UnicodeString(TR(L"Srj"));
 		OtsCells[CAlisarja].justify = 0;
 		}
 	if (CSeura) {
-		OtsCells[CSeura].text = UnicodeString(L"Seura");
+		OtsCells[CSeura].text = UnicodeString(TR(L"Seura"));
 		OtsCells[CSeura].justify = 0;
 		}
 	if (CMaa) {
-		OtsCells[CMaa].text = UnicodeString(L"Maa");
+		OtsCells[CMaa].text = UnicodeString(TR(L"Maa"));
 		OtsCells[CMaa].justify = 0;
 		}
 	if (CEnn) {
-		OtsCells[CEnn].text = UnicodeString(L"Ennätys");
+		OtsCells[CEnn].text = UnicodeString(TR(L"Ennätys"));
 		OtsCells[CEnn].justify = 1;
 		TulosGrid->ColWidths[CEnn] = IkkParam.ColW[18] * lev * Screen->PixelsPerInch/960;
 		}
 	if (CTav) {
-		OtsCells[CTav].text = UnicodeString(L"Tavoite");
+		OtsCells[CTav].text = UnicodeString(TR(L"Tavoite"));
 		OtsCells[CTav].justify = 1;
 		TulosGrid->ColWidths[CTav] = IkkParam.ColW[19] * lev * Screen->PixelsPerInch/960;
 		}
@@ -1328,8 +1330,8 @@ void __fastcall TTilanneForm::FormSetup(bool pakota, bool paivitaLeveys)
 		ColLj[9] = CTulos+1;
 		TulosGrid->ColWidths[CEro] = IkkParam.ColW[10] * lev * Screen->PixelsPerInch/960;
 		ColLj[10] = CEro+1;
-		OtsCells[CTulos].text = UnicodeString(L"Tulos");
-		OtsCells[CEro].text = UnicodeString(L"Ero");
+		OtsCells[CTulos].text = UnicodeString(TR(L"Tulos"));
+		OtsCells[CEro].text = UnicodeString(TR(L"Ero"));
 		OtsCells[CTulos].justify = 1;
 		OtsCells[CEro].justify = 1;
 		}
@@ -1339,14 +1341,14 @@ void __fastcall TTilanneForm::FormSetup(bool pakota, bool paivitaLeveys)
 		if (IkkParam.lahtoaika) {
 			TulosGrid->ColWidths[CTulos] = IkkParam.ColW[11] * lev * Screen->PixelsPerInch/960;
 			ColLj[11] = CTulos+1;
-			OtsCells[CTulos].text = UnicodeString(L"Lähtö");
+			OtsCells[CTulos].text = UnicodeString(TR(L"Lähtö"));
 			OtsCells[CTulos].justify = 1;
 			}
 		for (int iva = 0; iva < npiste; iva++) {
 			TulosGrid->ColWidths[tcol+iva] = IkkParam.ColW[12] * lev * Screen->PixelsPerInch/960;
 			ColLj[12] = tcol+iva+1;
 			if (naytapiste[iva] == 1)
-				OtsCells[tcol+iva].text = UnicodeString(L"Tulos");
+				OtsCells[tcol+iva].text = UnicodeString(TR(L"Tulos"));
 			else if (naytapiste[iva] > 1)
 				OtsCells[tcol+iva].text = UnicodeString(naytapiste[iva]-1)+L"/"+Sarjat[IkkParam.Sarja].va_matka[k_pv][naytapiste[iva]-2];
 			OtsCells[tcol+iva].justify = 1;
@@ -1355,11 +1357,11 @@ void __fastcall TTilanneForm::FormSetup(bool pakota, bool paivitaLeveys)
 	if (kilpparam.lsakmax > 0) {
 		TulosGrid->ColWidths[TulosGrid->ColCount-1] = IkkParam.ColW[13] * lev * Screen->PixelsPerInch/960;
 		ColLj[13] = TulosGrid->ColCount;
-		OtsCells[TulosGrid->ColCount-1].text = UnicodeString(L"Sakot");
+		OtsCells[TulosGrid->ColCount-1].text = UnicodeString(TR(L"Sakot"));
 		}
 	if ((pVal == 0 && IkkParam.EraVal) || wcswcind(kilpparam.kilplaji, L"U") >= 0) {
-		OtsCells[CEro].text = UnicodeString(L"Erä");
-		OtsCells[CEro+1].text = UnicodeString(L"Rata");
+		OtsCells[CEro].text = UnicodeString(TR(L"Erä"));
+		OtsCells[CEro+1].text = UnicodeString(TRCL(kayttokieli, L"lahtorata", L"Rata"));
 		OtsCells[CEro+1].justify = 1;
 		}
 	if (kilpparam.alalaji == L'D' || wcswcind(kilpparam.kilplaji, L"NP") >= 0) {
@@ -1367,7 +1369,7 @@ void __fastcall TTilanneForm::FormSetup(bool pakota, bool paivitaLeveys)
 		TulosGrid->ColCount += 1;
 		TulosGrid->ColWidths[cb] = IkkParam.ColW[14] * lev * Screen->PixelsPerInch/960;
 		ColLj[14] = cb+1;
-		OtsCells[cb].text = UnicodeString(L"Kierr");
+		OtsCells[cb].text = UnicodeString(TR(L"Kierr"));
 		OtsCells[cb].justify = 1;
 		}
 	if (k_pv && IkkParam.yhttulos) {
@@ -1380,14 +1382,27 @@ void __fastcall TTilanneForm::FormSetup(bool pakota, bool paivitaLeveys)
 		ColLj[16] = cb+2;
 		TulosGrid->ColWidths[cb+2] = IkkParam.ColW[17] * lev * Screen->PixelsPerInch/960;
 		ColLj[17] = cb+3;
-		OtsCells[cb].text = UnicodeString(L"Y-tulos");
+		OtsCells[cb].text = UnicodeString(TR(L"Y-tulos"));
 		OtsCells[cb].justify = 1;
-		OtsCells[cb+1].text = UnicodeString(L"Y-ero");
+		OtsCells[cb+1].text = UnicodeString(TR(L"Y-ero"));
 		OtsCells[cb+1].justify = 1;
-		OtsCells[cb+2].text = UnicodeString(L"Y-sija");
+		OtsCells[cb+2].text = UnicodeString(TR(L"Y-sija"));
 		OtsCells[cb+2].justify = 1;
 //		Width += 133 * Screen->PixelsPerInch/96;
 		}
+	// Sama kirjasin kuin otsikkorivin piirrossa; piilotetut sarakkeet pysyvat piilossa.
+	Graphics::TBitmap *otsikkokuva = new Graphics::TBitmap();
+	otsikkokuva->Canvas->Font->Size = IkkParam.FontSize;
+	if (IkkParam.Lihavoitu)
+		otsikkokuva->Canvas->Font->Style = TFontStyles() << fsBold;
+	for (int cb = 0; cb < TulosGrid->ColCount; cb++) {
+		if (TulosGrid->ColWidths[cb] <= 0)
+			continue;
+		int leveys = otsikkokuva->Canvas->TextWidth(OtsCells[cb].text) + 4 * Screen->PixelsPerInch/96;
+		if (leveys > TulosGrid->ColWidths[cb])
+			TulosGrid->ColWidths[cb] = leveys;
+		}
+	delete otsikkokuva;
 	if (paivitaLeveys) {
 		wdt = TulosGrid->Left + 24 * Screen->PixelsPerInch/96;
 		for (int cb = 0; cb < TulosGrid->ColCount; cb++) {
@@ -1497,7 +1512,7 @@ void __fastcall TTilanneForm::Muumerkkikoko1Click(TObject *Sender)
 	int fnt;
 
 	fnt = IkkParam.FontSize;
-	inputint_prompt(&fnt, L"Valitse koko pisteinä", &ch, this);
+	inputint_prompt(&fnt, TR(L"Valitse koko pisteinä"), &ch, this);
 	if (ch == ESC)
 		return;
 	IkkParam.FontSize = fnt;
@@ -1564,12 +1579,12 @@ void __fastcall TTilanneForm::FormShow(TObject *Sender)
 //		}
 	SrjVal->ItemIndex = 0;
 	PisteVal->Items->Clear();
-	PisteVal->Items->Add(L"Lähtö");
-	PisteVal->Items->Add(L"Maali");
+	PisteVal->Items->Add(TR(L"Lähtö"));
+	PisteVal->Items->Add(TR(L"Maali"));
 	for (int p = 0; p < kilpparam.valuku; p++)
-		PisteVal->Items->Add(UnicodeString(p+1)+UnicodeString(L". väliaika"));
+		PisteVal->Items->Add(UnicodeString(p+1)+UnicodeString(TR(L". väliaika")));
 	if (k_pv)
-		PisteVal->Items->Add(L"Yhteistulos");
+		PisteVal->Items->Add(TR(L"Yhteistulos"));
 	PisteVal->ItemIndex = 1;
 //	akaaajonvliaikatilanne1->Checked = takaa_ajo;
 //	akaaajonvliaikatilanne1->Visible = k_pv > 0;
@@ -1788,10 +1803,10 @@ void __fastcall TTilanneForm::Korostusaikarajat1Click(TObject *Sender)
 	wchar_t ch;
 
 	rj = IkkParam.korRaja[0] / SEK;
-	inputint_prompt(&rj, L"Anna alempi aikaraja sekunteina", &ch, this);
+	inputint_prompt(&rj, TR(L"Anna alempi aikaraja sekunteina"), &ch, this);
 	IkkParam.korRaja[0] = SEK*rj;
 	rj = IkkParam.korRaja[1] / SEK;
-	inputint_prompt(&rj, L"Anna ylempi aikaraja sekunteina", &ch, this);
+	inputint_prompt(&rj, TR(L"Anna ylempi aikaraja sekunteina"), &ch, this);
 	IkkParam.korRaja[1] = SEK*rj;
 }
 //---------------------------------------------------------------------------
@@ -2064,7 +2079,7 @@ void __fastcall TTilanneForm::aukosarjanptteeksi1Click(TObject *Sender)
 	wchar_t ch;
 
 	IkkParam.ScrollVali = IkkParam.ScrollVali/1000;
-	inputint_prompt(&IkkParam.ScrollVali, L"Tuloksen näytön minimikesto (sek)", &ch, this);
+	inputint_prompt(&IkkParam.ScrollVali, TR(L"Tuloksen näytön minimikesto (sek)"), &ch, this);
 	IkkParam.ScrollVali = IkkParam.ScrollVali*1000;
 }
 //---------------------------------------------------------------------------
@@ -2074,7 +2089,7 @@ void __fastcall TTilanneForm::Sarjanminimikesto1Click(TObject *Sender)
 	wchar_t ch;
 
 	IkkParam.ScrollRiviKesto = IkkParam.ScrollRiviKesto/100;
-	inputint_prompt(&IkkParam.ScrollRiviKesto, L"Näytön lisäkesto 10 riviä kohti (sek)", &ch, this);
+	inputint_prompt(&IkkParam.ScrollRiviKesto, TR(L"Näytön lisäkesto 10 riviä kohti (sek)"), &ch, this);
 	IkkParam.ScrollRiviKesto = IkkParam.ScrollRiviKesto*100;
 	ScrollViive = IkkParam.ScrollRiviKesto / TulosGrid->DefaultRowHeight;
 }
@@ -2431,7 +2446,7 @@ void __fastcall TTilanneForm::Er1Click(TObject *Sender)
 	wchar_t vast;
 
 	arvo = IkkParam.EraVal;
-	inputint_prompt(&arvo, L"Anna erän numero, 0: ei rajausta, -1: automaattinen valinta", &vast, this);
+	inputint_prompt(&arvo, TR(L"Anna erän numero, 0: ei rajausta, -1: automaattinen valinta"), &vast, this);
 	if (vast != ESC)
 		IkkParam.EraVal = arvo;
 	if (IkkParam.EraVal >= 0)
@@ -2504,7 +2519,7 @@ void __fastcall TTilanneForm::Nytkierrosaika1Click(TObject *Sender)
 		wchar_t ch;
 		if (IkkParam.kierrosaika <= 0)
 		   IkkParam.kierrosaika = 1 - IkkParam.kierrosaika;
-		inputint_prompt(&IkkParam.kierrosaika, L"Kierroksen aikojen lukumäärä", &ch, this);
+		inputint_prompt(&IkkParam.kierrosaika, TR(L"Kierroksen aikojen lukumäärä"), &ch, this);
 		}
 	else if (IkkParam.kierrosaika > 0) {
 		IkkParam.kierrosaika = 1 - IkkParam.kierrosaika;
@@ -2556,7 +2571,7 @@ void __fastcall TTilanneForm::Sallikaikkiensarakkeidenst1Click(TObject *Sender)
 void __fastcall TTilanneForm::Lhdnnimerkki1Click(TObject *Sender)
 {
 	wchar_t ch;
-	inputint_prompt(&IkkParam.AaniLkm, L"Anna piippausten lukumäärä, 0: ei piippausta", &ch, this);
+	inputint_prompt(&IkkParam.AaniLkm, TR(L"Anna piippausten lukumäärä, 0: ei piippausta"), &ch, this);
 }
 //---------------------------------------------------------------------------
 
@@ -2586,7 +2601,7 @@ void __fastcall TTilanneForm::Lueomatvrit1Click(TObject *Sender)
 {
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->DefaultExt = L"csv";
-	OpenDialog1->Filter = L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		int rv = 0;
 		TextFl *InFl;

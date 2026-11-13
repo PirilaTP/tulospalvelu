@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitStatus.h"
 #include "WinHk.h"
@@ -55,6 +56,7 @@ static yhtstatustp yhtstatus[MAX_PORTTI];
 __fastcall TFormStatus::TFormStatus(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -166,12 +168,12 @@ void naytayhteydet(void)
 		YhteysGrid = FormYhteysStatus->YhteysGrid;
 	else
 		YhteysGrid = FormStatus->YhteysGrid;
-	YhteysGrid->Cells[0][0] = UnicodeString(L"Yhteys");
-	YhteysGrid->Cells[1][0] = UnicodeString(L"Kohde");
+	YhteysGrid->Cells[0][0] = UnicodeString(TR(L"Yhteys"));
+	YhteysGrid->Cells[1][0] = UnicodeString(TR(L"Kohde"));
 	YhteysGrid->Cells[2][0] = UnicodeString(L"I/O");
-	YhteysGrid->Cells[3][0] = UnicodeString(L"Tila");
-	YhteysGrid->Cells[4][0] = UnicodeString(L"Jonossa");
-	YhteysGrid->Cells[5][0] = UnicodeString(L"Lähetetty");
+	YhteysGrid->Cells[3][0] = UnicodeString(TR(L"Tila"));
+	YhteysGrid->Cells[4][0] = UnicodeString(TR(L"Jonossa"));
+	YhteysGrid->Cells[5][0] = UnicodeString(TR(L"Lähetetty"));
 	YhteysGrid->ColCount = 6;
 	YhteysGrid->RowCount = YhtLkm > 1 ? YhtLkm+1 : 2;
 	jonossa = 0;
@@ -224,7 +226,7 @@ void naytayhteydet(void)
 			else
 				wcscpy(line1, L"   ");
 			if (lahcom[cn])
-				wcscat(line1, L"Out");
+				wcscat(line1, TR(L"Out"));
 			else
 				wcscat(line1, L"   ");
 			if (!lkmThreadOn)
@@ -343,17 +345,17 @@ void __fastcall TFormStatus::Lukumaarat(void)
 			edvaluku = kilpparam.maxvaluku;
 			ed_pv = k_pv;
 			LkmGrid->RowCount = sarjaluku+2;
-			LkmGrid->Cells[1][0] = UnicodeString(L"Ilm");
-			LkmGrid->Cells[2][0] = UnicodeString(L"Tulos");
-			LkmGrid->Cells[3][0] = UnicodeString(L"Kesk");
-			LkmGrid->Cells[4][0] = UnicodeString(L"Hyl");
-			LkmGrid->Cells[5][0] = UnicodeString(L"Eil (Aika)");
-			LkmGrid->Cells[6][0] = UnicodeString(L"Avoin");
+			LkmGrid->Cells[1][0] = UnicodeString(TR(L"Ilm"));
+			LkmGrid->Cells[2][0] = UnicodeString(TR(L"Tulos"));
+			LkmGrid->Cells[3][0] = UnicodeString(TR(L"Kesk"));
+			LkmGrid->Cells[4][0] = UnicodeString(TR(L"Hyl"));
+			LkmGrid->Cells[5][0] = UnicodeString(TR(L"Eil (Aika)"));
+			LkmGrid->Cells[6][0] = UnicodeString(TR(L"Avoin"));
 			LkmGrid->ColWidths[5] = 55*Screen->PixelsPerInch/96;
 			cc = 7;
 			if (kilpparam.badgelaji == L'E') {
-				LkmGrid->Cells[7][0] = UnicodeString(L"Esit");
-				LkmGrid->Cells[8][0] = UnicodeString(L"Emit");
+				LkmGrid->Cells[7][0] = UnicodeString(TR(L"Esit"));
+				LkmGrid->Cells[8][0] = UnicodeString(TR(L"Emit"));
 				cc = 9;
 				}
 			LkmGrid->ColCount = cc+kilpparam.maxvaluku;
@@ -362,14 +364,14 @@ void __fastcall TFormStatus::Lukumaarat(void)
 			if (VaiheenMahd->Checked || YhteisMahd->Checked) {
 				LkmGrid->ColCount++;
 				mahdCol = cc;
-				LkmGrid->Cells[cc++][0] = L"Mahd";
+				LkmGrid->Cells[cc++][0] = TR(L"Mahd");
 				}
 			else
 				mahdCol = 0;
 			if (Palkintojenjako1->Checked) {
 				LkmGrid->ColCount++;
 				jakoCol = cc;
-				LkmGrid->Cells[jakoCol][0] = L"Jako";
+				LkmGrid->Cells[jakoCol][0] = TR(L"Jako");
 				}
 			else
 				jakoCol = 0;
@@ -480,7 +482,7 @@ void __fastcall TFormStatus::Lukumaarat(void)
 			}
 		edaikaNyt = aikaNyt;
 
-		LkmGrid->Cells[0][1] = UnicodeString(L"Yht.");
+		LkmGrid->Cells[0][1] = UnicodeString(TR(L"Yht."));
 		LkmGrid->Cells[1][1] = UnicodeString(nilmt);
 		LkmGrid->Cells[2][1] = UnicodeString(ntulost);
 		LkmGrid->Cells[3][1] = UnicodeString(nkeskt);
@@ -673,7 +675,7 @@ void __fastcall TFormStatus::LkmGridDblClick(TObject *Sender)
 		srj = LkmGrid->Row-2;
 		if (palkJaettu[srj] && lsttulparam.lstf && lsttulparam.printer == GDIPRINTER) {
 			wchar_t ch;
-			inputint_prompt(&lkm, L"Tulostettavien lukumäärä", &ch, this);
+			inputint_prompt(&lkm, TR(L"Tulostettavien lukumäärä"), &ch, this);
 			if (ch != ESC && lkm > 0)
 				tulostaParhaat(srj, lkm);
 			}
@@ -701,7 +703,7 @@ void __fastcall TFormStatus::Tuloskirjoitin1Click(TObject *Sender)
 	lsttulparam.printer = GDIPRINTER;
 	if ((lsttulparam.lstf = openprfile(LstKirjoitin, 1, TRUE, FALSE, 0, FALSE))
 		== NULL) {
-		Application->MessageBoxW(L"Kirjoittimen käyttö ei onnistu", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Kirjoittimen käyttö ei onnistu"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (lsttulparam.lstf && lsttulparam.lstf->prno == 2)

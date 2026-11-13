@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitPartio.h"
 //---------------------------------------------------------------------------
@@ -31,6 +32,7 @@ INT seur_laji(ratatp *rt, INT r);
 __fastcall TFormPartio::TFormPartio(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -88,15 +90,15 @@ void __fastcall TFormPartio::Partio(kilptietue *kilp, int d)
 	DG1->ColWidths[1] = 35 * Screen->PixelsPerInch / 96;
 	DG1->ColWidths[2] = 45 * Screen->PixelsPerInch / 96;
 	DG1->ColWidths[3] = 35 * Screen->PixelsPerInch / 96;
-	Cells[0][0].text = L"No";
-	Cells[1][0].text = L"Rasti";
+	Cells[0][0].text = TR(L"No");
+	Cells[1][0].text = TR(L"Rasti");
 	if (kilpparam.rogaining) {
-		Cells[2][0].text = L"Arvo";
-		Cells[3][0].text = L"Pist";
+		Cells[2][0].text = TR(L"Arvo");
+		Cells[3][0].text = TR(L"Pist");
 		}
 	else {
-		Cells[2][0].text = L"Laji";
-		Cells[3][0].text = L"Hyv";
+		Cells[2][0].text = TR(L"Laji");
+		Cells[3][0].text = TR(L"Hyv");
 		}
 	EdtKilpno->Text = Kilp.kilpno;
 	EdtJoukkue->Text = Kilp.Joukkue(st, 50);
@@ -219,10 +221,10 @@ void __fastcall TFormPartio::Partio(kilptietue *kilp, int d)
 			}
 		}
 	if (kilpparam.rogaining) {
-		swprintf(line, L"Lasketut pisteet: %d, Sis. sakon %d,  Aika: %8.8s",
+		swprintf(line, TR(L"Lasketut pisteet: %d, Sis. sakon %d,  Aika: %8.8s"),
 			Kilp.pisteet[0], Kilp.pisteet[1]-Kilp.pisteet[0], aikatowstr_ls(as, tls, 0));
 		if (entpisteet > -1000000 && entpisteet != Kilp.pisteet[0]) {
-			swprintf(line, L"Tallennetut pisteet: %d", entpisteet);
+			swprintf(line, TR(L"Tallennetut pisteet: %d"), entpisteet);
 			}
 		}
 	hyvstyle = 0;
@@ -268,7 +270,7 @@ void __fastcall TFormPartio::Partio(kilptietue *kilp, int d)
 				else
 					Cells[j+4][ii+1].text = L"";
 				}
-			Cells[3][ii+1].text = (k >= min_k ? UnicodeString(L"Ok") : UnicodeString(L"Vaj"));
+			Cells[3][ii+1].text = (k >= min_k ? UnicodeString(TR(L"Ok")) : UnicodeString(TR(L"Vaj")));
 			if (k < min_k)
 				hyvstyle = 2;
 			for (j = 0; j <= os; j++) {

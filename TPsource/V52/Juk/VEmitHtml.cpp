@@ -73,16 +73,12 @@ void EmitHtmlTulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 			swprintf(st, L"<p><b>%d ", kilp.kilpno);
 			as[0] = 0;
 			if (wcswcind(kilp.Tark(Sarjat[kilp.sarja].osuusluku-1, 1), L"KHSE") >= 0) {
-				if (tulprm->language == 0)
-					wcscpy(as, L"Keskeyttänyt");
-				else
-					wcscpy(as, L"DNF");
+				wcsncpy(as, TRL(tulprm->language, L"Keskeyttänyt"), 15);
+				as[15] = 0;
 				for (os = 0; os < Sarjat[kilp.sarja].osuusluku; os++) {
 					if (kilp.Tark(os, 1) == L'H') {
-						if (tulprm->language == 0)
-							wcscpy(as, L"Hylätty");
-						else
-							wcscpy(as, L"DQ");
+						wcsncpy(as, TRL(tulprm->language, L"Hylätty"), 15);
+						as[15] = 0;
 						break;
 						}
 					}
@@ -103,22 +99,14 @@ void EmitHtmlTulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 		swprintf(stspan, L"<th colspan=%d>", maxrlkm > 4 ? 4 : maxrlkm);
 		tulprm->writehtml(L"</b></p>\n");
 		tulprm->writehtml(L"<table class='jkrva'>\n");
-		if (tulprm->language == 0) {
-			tulprm->writehtml(L"<tr><th>Osuus</th><th>Nimi</th><th>Rata</th><th>OsTls</th>");
-			tulprm->writehtml(stspan);
-			if (tulprm->rastivali)
-				tulprm->writehtml(L"<em>Rastikoodi:</em> Rastivälin aika</th>");
-			else
-				tulprm->writehtml(L"<em>Rastikoodi:</em> Aika rastille</th>");
-			}
-		else {
-			tulprm->writehtml(L"<tr><th>Leg</th><th>Name</th><th>Course</th><th>Legtime</th>");
-			tulprm->writehtml(stspan);
-			if (tulprm->rastivali)
-				tulprm->writehtml(L"<em>Control code:</em> Control to control</th>");
-			else
-				tulprm->writehtml(L"<em>Control code:</em> Start to control</th>");
-			}
+		swprintf(line, L"<tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th>",
+			TRL(tulprm->language, L"Osuus"), TRL(tulprm->language, L"Nimi"),
+			TRL(tulprm->language, L"Rata"), TRL(tulprm->language, L"OsTls"));
+		tulprm->writehtml(line);
+		tulprm->writehtml(stspan);
+		swprintf(line, L"<em>%s:</em> %s</th>", TRCL(tulprm->language, L"väliaikataulukko", L"Rastikoodi"),
+			TRL(tulprm->language, tulprm->rastivali ? L"Rastivälin aika" : L"Aika rastille"));
+		tulprm->writehtml(line);
 		line[0] = 0;
 		if (maxrlkm > 4) {
 			for (int ii = 5; ii <= maxrlkm; ii++)
@@ -134,7 +122,8 @@ void EmitHtmlTulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 					wpoistanollat(as);
 					}
 				else {
-					wcscpy(as, kilp.TarkStr(os, false, tulprm->language));
+					wcsncpy(as, kilp.TarkStr(os, false, tulprm->language), 15);
+					as[15] = 0;
 					}
 				swprintf(line, L"<tr>\n<td>%d</td><td>%s</td><td>%s</td><td>%s</td>",
 					os+1, kilp.Nimi(st, kilpparam.lnimi, os, -1), kilp.Hajonta(os, st1), as);
@@ -225,7 +214,10 @@ void EmitHtmlOsuus(kilptietue& kilp, int osuus, INT sj, tulostusparamtp *tulprm)
 		if (eva) {
 			if (otsrivit) {
 				otsrivit = false;
-				tulprm->writehtml(L"<tr><th>Sija</th><th>No-Os</th><th>Joukkue</th><th>Nimi</th><th>OsTls</th>");
+				swprintf(line, L"<tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th><th>%s</th>",
+					TRL(tulprm->language, L"Sija"), TRL(tulprm->language, L"No-Os"), TRL(tulprm->language, L"Joukkue"),
+					TRL(tulprm->language, L"Nimi"), TRL(tulprm->language, L"OsTls"));
+				tulprm->writehtml(line);
 				line[0] = 0;
 				for (int i = 0; i < rt->rastiluku; i++)
 					swprintf(line+wcslen(line), L"<th>%d. <em>(%d)</em></th>", i+1, rt->rastikoodi[i]);
@@ -233,7 +225,9 @@ void EmitHtmlOsuus(kilptietue& kilp, int osuus, INT sj, tulostusparamtp *tulprm)
 //				wcscat(line, L"<th>Maali</th></tr>\n");
 				tulprm->writehtml(line);
 				if (tulprm->rastivali) {
-					tulprm->writehtml(L"<tr><th></th><th></th><th>Rastivälivertailu</th><th><em>Lkm</em> ja paras aika</th><th></th>");
+					swprintf(line, L"<tr><th></th><th></th><th>%s</th><th><em>%s</em> %s</th><th></th>",
+						TRL(tulprm->language, L"Rastivälivertailu"), TRL(tulprm->language, L"Lkm"), TRL(tulprm->language, L"ja paras aika"));
+					tulprm->writehtml(line);
 					line[0] = 0;
 					for (int i = 0; i < emvaluku; i++) {
 						int n;

@@ -34,6 +34,7 @@
 #include <bstrings.h>
 #include <System.DateUtils.hpp>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include <dos.h>
 
@@ -321,7 +322,7 @@ int ValitseHakemisto(wchar_t *Hakemisto, int len)
 	if (cbTpApu_IsOsVistaOrLater()) {
 		TFileOpenDialog *Dlg = new TFileOpenDialog(FormMain);
 		if (Dlg) {
-			Dlg->Title = L"Valitse hakemisto";
+			Dlg->Title = TR(L"Valitse hakemisto");
 			Dlg->Options << fdoPickFolders;
 			Dlg->DefaultFolder = Hakemisto;
 			Dlg->FileName = Hakemisto;
@@ -422,7 +423,7 @@ void writewarning_w(wchar_t *txt, int wait)
 {
 	int retval = 0, lparam;
 
-	wcscpy(perr_ptrs2.ots, L"Varoitus");
+	wcscpy(perr_ptrs2.ots, TR(L"Varoitus"));
 	wcsncpy(perr_ptrs2.msg, txt, MAX_MSG_BUF_SIZE);
 	perr_ptrs2.vast = 0;
 	lparam = (int) &perr_ptrs2;
@@ -467,7 +468,7 @@ MESSAGE void __fastcall TFormMain::errorMsgHandler(TMyMessage &msg)
 void writeerror_w(wchar_t *txt, int wait, bool vainok)
 {
 	int lparam;
-	wcscpy(perr_ptrs2.ots, L"Virhe");
+	wcscpy(perr_ptrs2.ots, TR(L"Virhe"));
 	wcsncpy(perr_ptrs2.msg, txt, MAX_MSG_BUF_SIZE);
 	perr_ptrs2.vast = 0;
 	lparam = (int) &perr_ptrs2;
@@ -480,7 +481,7 @@ void writeerror_w(wchar_t *txt, int wait, bool vainok)
 void writeerror_w(wchar_t *txt, int wait)
 {
 	int lparam;
-	wcscpy(perr_ptrs2.ots, L"Virhe");
+	wcscpy(perr_ptrs2.ots, TR(L"Virhe"));
 	wcsncpy(perr_ptrs2.msg, txt, MAX_MSG_BUF_SIZE);
 	perr_ptrs2.vast = 0;
 	lparam = (int) &perr_ptrs2;
@@ -528,15 +529,20 @@ MESSAGE void __fastcall TFormMain::SelectOptHandler(TMyMessage &msg)
 void Win_wselectopt(wchar_t *msg, wchar_t *opts, wchar_t *sel)
 	{
 	int lparam, wparam;
-	wcscpy(perr_ptrs2.ots, opts);
-	wcsncpy(perr_ptrs2.msg, msg, MAX_MSG_BUF_SIZE);
+	wchar_t topts[40];
+	const wchar_t *tmsg;
+
+	// Kehote ja pikanäppäimet käyttöliittymän kielelle; palautetaan alkuperäinen näppäin
+	tmsg = kaannaValinta(msg, opts, topts, 40);
+	wcscpy(perr_ptrs2.ots, topts);
+	wcsncpy(perr_ptrs2.msg, tmsg, MAX_MSG_BUF_SIZE);
 	perr_ptrs2.vast = 0;
 	lparam = (int) &perr_ptrs2;
-	wparam = *sel;
+	wparam = vastaavaMerkki(*sel, opts, topts);
 	SendMessage(FormMain->Handle,WM_MYSELECTOPT,wparam,lparam);
 	while (perr_ptrs2.vast == 0)
 		Sleep(200);
-	*sel = perr_ptrs2.vast;
+	*sel = vastaavaMerkki(perr_ptrs2.vast, topts, opts);
 }
 //---------------------------------------------------------------------------
 void Win_selectopt(char *msg, char *opts, char *sel)
@@ -591,14 +597,14 @@ void setBrowserEmulation(void)
 	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, IEkey, 0, KEY_WOW64_32KEY | KEY_READ, &hkIEkey) == ERROR_SUCCESS) {
 		ret = RegQueryValueEx(hkIEkey, L"Version", NULL, NULL, (LPBYTE)val, &len);
 		if (DeveloperMode)
-			swprintf(msg, L"RegOpenKeyEx(HKEY_LOCAL_MACHINE) - Version: ret: %d, len: %d val: %s\n",
+			swprintf(msg, TR(L"RegOpenKeyEx(HKEY_LOCAL_MACHINE) - Version: ret: %d, len: %d val: %s\n"),
 				ret, len, val);
 		if (ret == ERROR_SUCCESS && len > 2) {
 			EnvData.IEVersio = val[0] - L'0';
 			if (wmemcmp(val, L"9.1", 3) == 0) {
 				ret = RegQueryValueEx(hkIEkey, L"svcVersion", NULL, NULL, (LPBYTE)val2, &len);
 				if (DeveloperMode)
-					swprintf(msg + wcslen(msg), L"RegOpenKeyEx(HKEY_LOCAL_MACHINE) - svcVersion: ret: %d, len: %d val: %s\n",
+					swprintf(msg + wcslen(msg), TR(L"RegOpenKeyEx(HKEY_LOCAL_MACHINE) - svcVersion: ret: %d, len: %d val: %s\n"),
 						ret, len, val2);
 				if (ret == ERROR_SUCCESS && len > 3 && val2[0] == L'1' && val2[2] == L'.')
 					EnvData.IEVersio = val2[1] - L'0' + 10;
@@ -612,12 +618,12 @@ void setBrowserEmulation(void)
 			if ((ret = RegCreateKeyEx(HKEY_CURRENT_USER, IEkey, 0, 0, 0,
 				KEY_WOW64_32KEY | KEY_READ  | KEY_SET_VALUE, 0, &hkEmKey, &disp)) == ERROR_SUCCESS) {
 				if (DeveloperMode)
-					swprintf(msg + wcslen(msg), L"RegCreateKeyEx(HKEY_CURRENT_USER) ret: %d, Disp: %d%s\n",
+					swprintf(msg + wcslen(msg), TR(L"RegCreateKeyEx(HKEY_CURRENT_USER) ret: %d, Disp: %d%s\n"),
 						ret, disp, disp <= 2 ? disptxt[disp] : L"");
 				len = 4;
 				ret = RegQueryValueEx(hkEmKey, exeName, NULL, NULL, (LPBYTE)&DWEmul, &len);
 				if (DeveloperMode)
-					swprintf(msg + wcslen(msg), L"RegQueryValueEx(HKEY_CURRENT_USER) ret: %d, val: %d\n",
+					swprintf(msg + wcslen(msg), TR(L"RegQueryValueEx(HKEY_CURRENT_USER) ret: %d, val: %d\n"),
 						ret, DWEmul);
 				if (ret == ERROR_SUCCESS)
 					EnvData.IEEmul = DWEmul;
@@ -627,7 +633,7 @@ void setBrowserEmulation(void)
 					if (ret == ERROR_SUCCESS)
 						EnvData.IEEmul = DWEmul;
 					if (DeveloperMode)
-						swprintf(msg + wcslen(msg), L"RegSetValueEx(HKEY_CURRENT_USER) ret: %d\n",
+						swprintf(msg + wcslen(msg), TR(L"RegSetValueEx(HKEY_CURRENT_USER) ret: %d\n"),
 							ret);
 					}
 				RegCloseKey(hkEmKey);

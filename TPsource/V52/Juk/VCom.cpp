@@ -37,6 +37,7 @@
 #include <butil.h>
 //#include <wincom.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include "VDeclare.h"
 #ifndef _CONSOLE
@@ -264,13 +265,8 @@ void laheta_yl(int srj, int kielto)
 		 ch = 0;
 		 while (ch != ESC && v == cjens[cn]) {
 			clrln(ySize-3);
-#ifndef LANGSV_K
-			vidspmsg(ySize-3,0,7,0,"Odottaa tiedonsiirron etenemistä.  'Esc' "
-			   "lopettaa yhteislähtöaikojen siirron");
-#else // LANGSV_K
-			vidspmsg(ySize-3,0,7,0,"Odottaa tiedonsiirron etenemistä.  'Esc' "
-			   "lopettaa yhteislähtöaikojen siirron");
-#endif // LANGSV_K
+			vidspmsg(ySize-3,0,7,0,TRA("Odottaa tiedonsiirron etenemistä.  'Esc' "
+			   "lopettaa yhteislähtöaikojen siirron"));
 			ch = readkbd(&ch2, FALSE, spoolfl);
 			Sleep(20);
 			}
@@ -436,8 +432,8 @@ static void tark_aika(int cn)
    int piste, ino;
 
    if (!com_ajat[cn]) {
-      writeerror("Vastaanotettu MAALI-ohjelman ajanottotieto."
-		 " LISÄÄ PARAMETRI LÄHAIKA", 0);
+      writeerror(TRA("Vastaanotettu MAALI-ohjelman ajanottotieto."
+		 " LISÄÄ PARAMETRI LÄHAIKA"), 0);
 	  return;
       }
 
@@ -589,17 +585,10 @@ static void tark_kilp(int cn)
 	  LeaveCriticalSection(&tall_CriticalSection);
 	  }
    if (er > 0) {
-#ifndef LANGSV_K
 	  writeerror(
-		 "Tiedostot eri koneilla eivät ole yhtäpitäviä",0);
-	  writeerror("Poistu ohjelmasta, kopioi KILP.DAT"
-		 "lähettävältä tälle koneelle",0);
-#else // LANGSV_K
-	  writeerror(
-		 "Okonsistent data mellan datorer",0);
-	  writeerror("Avsluta program, kopiera KILP.DAT"
-		 "fr†n den sändande dator till denna dator",0);
-#endif // LANGSV_K
+		 TRA("Tiedostot eri koneilla eivät ole yhtäpitäviä"),0);
+	  writeerror(TRA("Poistu ohjelmasta, kopioi KILP.DAT"
+		 "lähettävältä tälle koneelle"),0);
 	  }
    }
 
@@ -663,17 +652,10 @@ static void tark_osuus(int cn)
 		}
 	LeaveCriticalSection(&tall_CriticalSection);
    if (er) {
-#ifndef LANGSV_K
 	  writeerror(
-		 "Tiedostot eri koneilla eivät ole yhtäpitäviä",0);
-	  writeerror("Poistu ohjelmasta, kopioi KILP.DAT"
-		 "lähettävältä tälle koneelle",0);
-#else // LANGSV_K
-	  writeerror(
-		 "Okonsistent data mellan datorer",0);
-	  writeerror("Avsluta program, kopiera KILP.DAT"
-		 "fr†n den sändande dator till denna dator",0);
-#endif // LANGSV_K
+		 TRA("Tiedostot eri koneilla eivät ole yhtäpitäviä"),0);
+	  writeerror(TRA("Poistu ohjelmasta, kopioi KILP.DAT"
+		 "lähettävältä tälle koneelle"),0);
 	  }
    }
 
@@ -705,17 +687,10 @@ static void tark_trk(int cn)
 	   }
 	LeaveCriticalSection(&tall_CriticalSection);
    if (er) {
-#ifndef LANGSV_K
 	  writeerror(
-		 "Tiedostot eri koneilla eivät ole yhtäpitäviä",0);
-	  writeerror("Poistu ohjelmasta, kopioi KILP.DAT"
-		 "lähettävältä tälle koneelle",0);
-#else // LANGSV_K
-	  writeerror(
-		 "Okonsistent data mellan datorer",0);
-	  writeerror("Avsluta program, kopiera KILP.DAT"
-		 "fr†n den sändande dator till denna dator",0);
-#endif // LANGSV_K
+		 TRA("Tiedostot eri koneilla eivät ole yhtäpitäviä"),0);
+	  writeerror(TRA("Poistu ohjelmasta, kopioi KILP.DAT"
+		 "lähettävältä tälle koneelle"),0);
 	  }
    }
 
@@ -743,17 +718,10 @@ static void tark_tls(int cn)
 		}
 	LeaveCriticalSection(&tall_CriticalSection);
    if (er) {
-#ifndef LANGSV_K
 	  writeerror(
-		 "Tiedostot eri koneilla eivät ole yhtäpitäviä",0);
-	  writeerror("Poistu ohjelmasta, kopioi KILP.DAT"
-		 "lähettävältä tälle koneelle",0);
-#else // LANGSV_K
-	  writeerror(
-		 "Okonsistent data mellan datorer",0);
-	  writeerror("Avsluta program, kopiera KILP.DAT"
-		 "fr†n den sändande dator till denna dator",0);
-#endif // LANGSV_K
+		 TRA("Tiedostot eri koneilla eivät ole yhtäpitäviä"),0);
+	  writeerror(TRA("Poistu ohjelmasta, kopioi KILP.DAT"
+		 "lähettävältä tälle koneelle"),0);
 	  }
    }
 
@@ -859,7 +827,7 @@ bool tark_alku(const combufrec * const cbuf, int cn)
 		return(false);
 	if (cbuf->d.alku.vaihe != 0) {
 		if (var[cn] == 0) {
-			swprintf(ln, L"Henkilökohtainsen kilpailun ohjelma pyytää yhteyttä", cn+1);
+			swprintf(ln, TR(L"Henkilökohtainsen kilpailun ohjelma pyytää yhteyttä"), cn+1);
 			writeerror_w(ln, 0);
 			}
 		var[cn]++;
@@ -867,7 +835,7 @@ bool tark_alku(const combufrec * const cbuf, int cn)
 		}
 	if (cbuf->d.alku.nrec != datf2.numrec) {
 		if (var[cn] == 0) {
-			swprintf(ln, L"Yhteyspyyntö koneelta, jonka KILP.DAT eri pituinen, yhteys %d", cn + 1);
+			swprintf(ln, TR(L"Yhteyspyyntö koneelta, jonka KILP.DAT eri pituinen, yhteys %d"), cn + 1);
 			writeerror_w(ln, 0);
 			}
 		var[cn]++;
@@ -935,13 +903,8 @@ void tarkcom(LPVOID lpCn)
 #if defined(MAALI) && !defined(LUENTA)
 					 tark_aika(cn);
 #else
-#ifndef LANGSV_K
-					 writeerror("Vastaanotettu MAALI-ohjelman ajanottotieto."
-						" Korjaa konfigurointi", 0);
-#else // LANGSV_K
-					 writeerror("Programmet MAALI har sänt tidtagningsdata."
-						" Korrigera konfiguration", 0);
-#endif // LANGSV_K
+					 writeerror(TRA("Vastaanotettu MAALI-ohjelman ajanottotieto."
+						" Korjaa konfigurointi"), 0);
 #endif
 					 break;
 				  case YHTEISLAHTOT:
@@ -969,7 +932,7 @@ void tarkcom(LPVOID lpCn)
 					 tark_tiedosto(cn);
 					 break;
                   default :
-                     writeerror("Tuntematon sanomalaji, ohjelmat eivät sovi yhteen", 1000);
+                     writeerror(TRA("Tuntematon sanomalaji, ohjelmat eivät sovi yhteen"), 1000);
                      lisa = 0;
                      break;
 				  }
@@ -990,7 +953,7 @@ void tarkcom(LPVOID lpCn)
             autoclose = 0;
 			for (cn = 0; cn < maxyhteys; cn++)
 				vastcom[cn] = vastcom0[cn];
-      		writeerror("Puskurissa taas tilaa, portti avataan",1000);
+      		writeerror(TRA("Puskurissa taas tilaa, portti avataan"),1000);
 	      	}
 		}
     }
@@ -1193,7 +1156,7 @@ void lahetaXML_TCP(combufrec *obuf, int cn)
 				t = T_TIME(biostime(0, 0));
 				if (t == 0) t = 1;
 				if (_write(obfile, &t, 4) < 4)
-				   writeerror_w(L"Virhe rutiinissa 'lahetaXML_TCP', koodi 3", 0);
+				   writeerror_w(TR(L"Virhe rutiinissa 'lahetaXML_TCP', koodi 3"), 0);
 				}
 			cjens[cn] = cje;
 			}
@@ -1382,10 +1345,10 @@ void lahetanumerotTCP(int cn, INT32 alku, INT32 loppu)
 			SEEK_SET);
 		 if (pos >= 0)
 			 if (_read(obfile, &ibuf, sizeof(combufrec)) < sizeof(combufrec))
-			   writeerror_w(L"Virhe rutiinissa 'lahetanumerotTCP', koodi 1", 0);
+			   writeerror_w(TR(L"Virhe rutiinissa 'lahetanumerotTCP', koodi 1"), 0);
 		 LeaveCriticalSection(&outb_CriticalSection);
 		 if (pos < 0) {
-			writeerror_w(L"Virhe rutiinissa 'lahetanumerotTCP', koodi 2", 0);
+			writeerror_w(TR(L"Virhe rutiinissa 'lahetanumerotTCP', koodi 2"), 0);
 			return;
 			}
 		 if (ibuf.pkgclass == VAIN_TULOST || ibuf.pkgclass == KILPT  || ibuf.pkgclass == OSUUST ||
@@ -1415,7 +1378,7 @@ void uusintaTCP(int cn)
 	  selectopt("K)oko kilpailu, V)alittava aikavali, Esc: peruuta", "KV\x1b", &ch);
 	  if (ch == 'V') {
 		 clrln(ySize-3);
-		 vidspmsg(ySize-3, 0, 7, 0, "Aikarajat: alku          loppu           Esc: peruuta");
+		 vidspmsg(ySize-3, 0, 7, 0, TRA("Aikarajat: alku          loppu           Esc: peruuta"));
 		 INPUTAIKA(&alku,t0,8,16, ySize-3,"\r\x1b",&ch);
 		 if (ch == ESC)
 			return;
@@ -1425,7 +1388,7 @@ void uusintaTCP(int cn)
 		 return;
 	  do {
 		 if (cs == 'V') {
-			vidspmsg(ySize-3,0,7,0,"    Valitse sarja :               <Esc>: lopeta");
+			vidspmsg(ySize-3,0,7,0,TRA("    Valitse sarja :               <Esc>: lopeta"));
 			srj = luesarja("", &ch);
 			if (ch == ESC || srj < 0)
 			   break;
@@ -1435,7 +1398,7 @@ void uusintaTCP(int cn)
 	  }
    if (cs == 'S' && levypusk) {
       clrln(ySize-3);
-      vidspmsg(ySize-3, 0, 7, 0, "Numeroalue: alku         loppu           Esc: peruuta");
+      vidspmsg(ySize-3, 0, 7, 0, TRA("Numeroalue: alku         loppu           Esc: peruuta"));
 	  alku = 0;
       INPUTINT(&alku,6,17, ySize-3,"\r\x1b",&ch);
       if (ch == ESC)
@@ -1485,7 +1448,7 @@ void emitva_uusinta(int cn, int tietue)
 				srj = -1;
 			if (ch == 'M' || ch == 'O') {
 				clrln(ySize-3);
-				vidspmsg(ySize-3, 0, 7, 0, "Anna osuus");
+				vidspmsg(ySize-3, 0, 7, 0, TRA("Anna osuus"));
 				osuus++;
 				inputint(&osuus, 2, 12, ySize-3, "\r\x1b", &tc);
 				if (tc == ESC)
@@ -1627,7 +1590,7 @@ static void tark_extra(int cn)
 				lahetasulku(tn, cn+1);
 			if (!tn[0] || !memcmp(tn, konetunn, 2)) {
 #ifdef _CONSOLE
-				writeerror_w(L"Ohjelma suljetaan 3 s kuluttua verkkokomennon perusteella", 3000);
+				writeerror_w(TR(L"Ohjelma suljetaan 3 s kuluttua verkkokomennon perusteella"), 3000);
 				suljesuoraan = true;
 				lopetus();
 #else

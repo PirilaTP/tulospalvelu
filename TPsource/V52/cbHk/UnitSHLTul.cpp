@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSHLTul.h"
 #include "TulostusUnit2.h"
@@ -28,6 +29,7 @@ TFormSHLtul *FormSHLtul;
 __fastcall TFormSHLtul::TFormSHLtul(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -48,10 +50,10 @@ void __fastcall TFormSHLtul::FormShow(TObject *Sender)
 	SG1->ColWidths[1] = 80 * Screen->PixelsPerInch/96;
 	SG1->ColWidths[2] = 50 * Screen->PixelsPerInch/96;
 	SG1->ColWidths[3] = 40 * Screen->PixelsPerInch/96;
-	SG1->Cells[0][0] = L"Sarja";
-	SG1->Cells[1][0] = L"Sarja tiedostossa";
-	SG1->Cells[2][0] = L"Matka";
-	SG1->Cells[3][0] = L"Tapa";
+	SG1->Cells[0][0] = TR(L"Sarja");
+	SG1->Cells[1][0] = TR(L"Sarja tiedostossa");
+	SG1->Cells[2][0] = TR(L"Matka");
+	SG1->Cells[3][0] = TR(L"Tapa");
 	for (int srj = 0; srj < sarjaluku + nsarjayhd; srj++)
 		if (TulosteForm->SarjaValittu(srj))
 			nsrj++;

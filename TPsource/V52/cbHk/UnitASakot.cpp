@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitASakot.h"
 //---------------------------------------------------------------------------
@@ -30,6 +31,7 @@ static CRITICAL_SECTION sakkoGrid_CriticalSection;
 __fastcall TFormASakot::TFormASakot(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -333,10 +335,10 @@ void __fastcall TFormASakot::FormCreate(TObject *Sender)
 {
 	StringGrid1->ColWidths[2] = 200 * Screen->PixelsPerInch / 96;
 	StringGrid1->ColWidths[3] = 80 * Screen->PixelsPerInch / 96;
-	StringGrid1->Cells[0][0] = L"Rivi";
-	StringGrid1->Cells[1][0] = L"KilpNo";
-	StringGrid1->Cells[2][0] = L"Nimi";
-	StringGrid1->Cells[3][0] = L"Sakot";
+	StringGrid1->Cells[0][0] = TR(L"Rivi");
+	StringGrid1->Cells[1][0] = TR(L"KilpNo");
+	StringGrid1->Cells[2][0] = TR(L"Nimi");
+	StringGrid1->Cells[3][0] = TR(L"Sakot");
 	EditS[0] = EditS1;
 	EditS[1] = EditS2;
 	EditS[2] = EditS3;
@@ -346,15 +348,15 @@ void __fastcall TFormASakot::FormCreate(TObject *Sender)
 		nEdit++;
 	Label6->Caption = L"  ";
 	if (kilpparam.kilplaji == L'P' && pvparam[k_pv].alalaji == L'T') {
-		Label3->Caption = L"Tark x10";
-		Label6->Caption = L"Pit (10 cm)";
+		Label3->Caption = TR(L"Tark x10");
+		Label6->Caption = TR(L"Pit (10 cm)");
 		}
 	else if (kilpparam.kilplaji == L'P' && pvparam[k_pv].alalaji == 'H') {
-		Label3->Caption = L"Tulos-1";
-		Label6->Caption = L"Tulos-2";
+		Label3->Caption = TR(L"Tulos-1");
+		Label6->Caption = TR(L"Tulos-2");
 		}
 	else if (wcswcind(kilpparam.kilplaji, L"HT") >= 0)
-		Label3->Caption = L"Sakot (sek)";
+		Label3->Caption = TR(L"Sakot (sek)");
 	for (int i = nEdit; i < 4; i++)
 		EditS[i]->Visible = false;
 
@@ -371,9 +373,9 @@ void __fastcall TFormASakot::FormCreate(TObject *Sender)
 			EditS[1]->Left = EditS[0]->Left + 41 * Screen->PixelsPerInch / 96;
 			EditS[2]->Left = EditS[0]->Left + 82 * Screen->PixelsPerInch / 96;
 			if (kilpparam.kilplaji == L'P' && pvparam[k_pv].alalaji == 'H') {
-				Label3->Caption = L"Tls-1";
-				Label6->Caption = L"Tls-2";
-				Label7->Caption = L"Napa";
+				Label3->Caption = TR(L"Tls-1");
+				Label6->Caption = TR(L"Tls-2");
+				Label7->Caption = TR(L"Napa");
 				Label7->Visible = true;
 				Label7->Left = EditS[2]->Left;
 				}
@@ -388,7 +390,7 @@ void __fastcall TFormASakot::FormCreate(TObject *Sender)
 void __fastcall TFormASakot::FormShow(TObject *Sender)
 {
 	if (wcswcind(kilpparam.kilplaji, L"NP") >= 0)
-		FormASakot->Caption = L"Sakkojen ja pisteiden syöttö";
+		FormASakot->Caption = TR(L"Sakkojen ja pisteiden syöttö");
 }
 //---------------------------------------------------------------------------
 

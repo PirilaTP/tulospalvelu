@@ -28,6 +28,7 @@
 #include <bkeybrd.h>
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include <dos.h>
 #include "VDeclare.h"
@@ -61,7 +62,7 @@ static void opentaulu(void)
    taulu_baud = 5;
    cn_gaz = GAZCOM;
    if (openport_x(cn_gaz, taulu_com, taulu_baud, 'n', 8, 1, 0)) {
-      writeerror("GAZ-tiedonsiirron avaaminen ei onnistunut", 0);
+      writeerror(TRA("GAZ-tiedonsiirron avaaminen ei onnistunut"), 0);
       taulu_com = 0;
       return;
       }
@@ -228,7 +229,7 @@ void algetaulu(void)
    int t;
 
    if (!taulu_com) {
-      writeerror("Tiedonsiirtoa ei m‰‰ritelty", 0);
+      writeerror(TRA("Tiedonsiirtoa ei m‰‰ritelty"), 0);
       return;
       }
    clrscr();   
@@ -241,12 +242,12 @@ void algetaulu(void)
       else return;
       }
    for (;;) {
-      vidspmsg(9,0,7,0,"Valinnat");
+      vidspmsg(9,0,7,0,TRA("Valinnat"));
       for (k = 0; k < nosuus; k++) {
-         sprintf(msg, "%d. taulu   ", k+1);
+         sprintf(msg, TRA("%d. taulu   "), k+1);
          vidspmsg(11+k, 1, 7, 0, msg);
          AIKATOSTRS(st, tkarki[tosuus[k]-1], t0);
-         sprintf(msg, "%d. osuus   K‰rki: %8.8s", tosuus[k], st);
+         sprintf(msg, TRA("%d. osuus   K‰rki: %8.8s"), tosuus[k], st);
          vidspmsg(11+k, 11, 7, 0, msg);
          }
       ch = nosuus + '0';
@@ -256,13 +257,13 @@ void algetaulu(void)
          }
       nosuus = ch - '0';
       for (k = 0; k < nosuus; k++) {     
-         sprintf(msg, "%d. taulu   ", k+1);
+         sprintf(msg, TRA("%d. taulu   "), k+1);
          vidspmsg(11+k, 1, 7, 0, msg);
          cv = tosuus[k] + '0';
-         sprintf(msg, "Anna %d taulun osuuden numero", k+1);
+         sprintf(msg, TRA("Anna %d taulun osuuden numero"), k+1);
          selectopt(msg, "123456789", &cv);
          tosuus[k] = cv - '0';
-         sprintf(msg, "%d. osuus   ", tosuus[k]);
+         sprintf(msg, TRA("%d. osuus   "), tosuus[k]);
          vidspmsg(11+k, 11, 7, 0, msg);
          cv = lkmaikana[k] ? 'K' : 'E';
          selectopt("Kirjoitentaanko lukum‰‰r‰ aikakent‰‰n (K/E)", "KE", &cv);
@@ -278,13 +279,13 @@ void algetaulu(void)
                switch (cv) {
                   case 'T' :
                      autokarki[tosuus[k]-1] = 1;
-                     vidspmsg(ySize-3,0,7,0,"Anna viive ajanotosta");
+                     vidspmsg(ySize-3,0,7,0,TRA("Anna viive ajanotosta"));
                      INPUTAIKA(&kviive[tosuus[k]-1], 0, 8, 23, ySize-3, "\r", &ch);
                      break;
                   case 'N' :
                      t = KSEK*T_TIME(biostime(0,0));
                   case 'S' :
-                     vidspmsg(ySize-3,0,7,0,"Vahvista tai syˆt‰ aika, Esc: aikaa ei muuteta");
+                     vidspmsg(ySize-3,0,7,0,TRA("Vahvista tai syˆt‰ aika, Esc: aikaa ei muuteta"));
                      INPUTAIKA(&t, t0, 8, 48, ySize-3, "\r\x1b", &ch);
                      if (ch == '\r')
                         tkarki[tosuus[k]-1] = t;

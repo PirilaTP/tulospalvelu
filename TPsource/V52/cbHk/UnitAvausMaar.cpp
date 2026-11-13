@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitAvausMaar.h"
 #include "WinHk.h"
@@ -31,6 +32,7 @@ extern TFormMain *FormMain;
 __fastcall TFormAvausMaar::TFormAvausMaar(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -70,7 +72,7 @@ void __fastcall TFormAvausMaar::Button1Click(TObject *Sender)
 		OpenDialog1->FileName = UnicodeString(L"ilmoitt.cfg");
 	else
 		OpenDialog1->FileName = UnicodeString(L"laskenta.cfg");
-	OpenDialog1->Filter = L"Konfiguraatiot (*.cfg) | *.CFG";
+	OpenDialog1->Filter = TR(L"Konfiguraatiot (*.cfg) | *.CFG");
 	if (OpenDialog1->Execute()) {
 		Edit1->Text = OpenDialog1->FileName;
 		LueCfgFile();
@@ -144,7 +146,7 @@ void __fastcall TFormAvausMaar::Button4Click(TObject *Sender)
 
 	SaveDialog1->InitialDir = FormMain->CurrentDir;
 	SaveDialog1->FileName = Edit1->Text;
-	SaveDialog1->Filter = L"Konfiguraatiot (*.cfg) | *.CFG";
+	SaveDialog1->Filter = TR(L"Konfiguraatiot (*.cfg) | *.CFG");
 	if (SaveDialog1->Execute()) {
 		cfgfile = new TextFl(SaveDialog1->FileName.c_str(), L"w");
 		if (cfgfile->IsOpen()) {

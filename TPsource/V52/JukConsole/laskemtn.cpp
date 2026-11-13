@@ -33,6 +33,7 @@
 #include <bkeys.h>
 #endif
 #pragma hdrstop
+#include "Kielet.h"
 #include <conio.h>
 #include <dos.h>
 #include <sys\stat.h>
@@ -122,7 +123,7 @@ INT addbadge(INT32 badge, INT kno, INT d, int toinen, INT msgfl)
    if (i >= 0) {
       if (bdg_kno[toinen][i].kilpno == kno) return(0);
       if (msgfl) {
-         sprintf(msg, "Joukkueella %d jo Emit-koodi %ld",
+         sprintf(msg, TRA("Joukkueella %d jo Emit-koodi %ld"),
             bdg_kno[toinen][i].kilpno, badge);
          writeerror(msg, 0);
          }
@@ -136,7 +137,7 @@ INT addbadge(INT32 badge, INT kno, INT d, int toinen, INT msgfl)
    bdg_kno[toinen][i].badge = badge;
 #ifdef DBG_1
    if (loki && emitloki) {
-	  sprintf(msg, "addbadge %ld, kno %d, d %d\n",
+	  sprintf(msg, TRA("addbadge %ld, kno %d, d %d\n"),
          badge, kno, d);
       sendline(msg, lokifile);
       }
@@ -197,7 +198,7 @@ INT rembadge(INT kno, INT os, int toinen, INT d)
       bdg_kno[toinen][nbadge[toinen]].kilpno = 0;
 #ifdef DBG_1
       if (loki && emitloki) {
-         sprintf(msg, "rembadge %ld, kno %d, os %d, d %d\n",
+         sprintf(msg, TRA("rembadge %ld, kno %d, os %d, d %d\n"),
             kilp.ostiet[os].badge[toinen], kno, os, d);
          sendline(msg, lokifile);
          }
@@ -320,7 +321,7 @@ INT leimat(void)
 	  }
 
    if (emitfl <= 0) {
-      writeerror("Leimantarkastustoimintoa ei ole käynnistetty", 0);
+      writeerror(TRA("Leimantarkastustoimintoa ei ole käynnistetty"), 0);
       return(0);
       }
    if (ajat_on) status_on = 0;
@@ -330,13 +331,13 @@ INT leimat(void)
    if (luentatesti) {
       clrscr();
       kehys(1);
-      vidspmsg(r2,0,7,0,"Viivakoodi");
-      vidspmsg(r3,0,7,0,"Joukkue");
-      vidspmsg(r4,0,7,0,"Osuus");
+      vidspmsg(r2,0,7,0,TRA("Viivakoodi"));
+      vidspmsg(r3,0,7,0,TRA("Joukkue"));
+      vidspmsg(r4,0,7,0,TRA("Osuus"));
       if (!testfile)
          testfile = fopen("EMITREK.LST", "rt");
       if (!testfile) {
-         writeerror("Tiedoston EMITREK.LST avaaminen ei onnistu", 0);
+         writeerror(TRA("Tiedoston EMITREK.LST avaaminen ei onnistu"), 0);
          return(0);
          }
       if (luentatesti == 2) {
@@ -353,7 +354,7 @@ INT leimat(void)
                selectopt("T)iedoston EMITREK.LST mukaiset ajat, V)akioväliset ajat", "TV", &ch);
                if (ch == 'V') {
                   clrln(ySize-3);
-                  vidspmsg(ySize-3, 0, 7, 0, "Anna aikaväli sekunnin kymmenyksinä");
+                  vidspmsg(ySize-3, 0, 7, 0, TRA("Anna aikaväli sekunnin kymmenyksinä"));
                   INPUTINT(&aikaaskel, 5, 37, ySize-3, "\r", &ch);
                   }
                else
@@ -365,7 +366,7 @@ INT leimat(void)
                selectopt("T)iedoston EMITREK.LST mukainen aloitus, M)uu aloitusaika", "TM", &ch);
                if (ch == 'M') {
                   clrln(ySize-3);
-                  vidspmsg(ySize-3, 0, 7, 0, "Anna ensimmäisen kilpailijan lukemisaika");
+                  vidspmsg(ySize-3, 0, 7, 0, TRA("Anna ensimmäisen kilpailijan lukemisaika"));
                   alkut = T_TIME(biostime(0,0));
                   INPUTAIKA(&alkut, t0, 8, 43, ySize-3, "\r", &ch);
                   }
@@ -380,7 +381,7 @@ INT leimat(void)
          clrtxt(r1,0,60);
          clrln(ySize-3);
          if (luentatesti != 2) {
-            vidspmsg(ySize-3,0,7,0, "Odottaa Emit-koodia - Esc: keskeytä odotus");
+            vidspmsg(ySize-3,0,7,0, TRA("Odottaa Emit-koodia - Esc: keskeytä odotus"));
             for (;;) {
                ch = readkbd(&ch, 0, spoolfl);
                if (ch == ESC) {
@@ -426,12 +427,12 @@ INT leimat(void)
             } while (bdg != badge);
          if (bdg != badge) {
             fclose(testfile);
-            writeerror("Kaikki tiedot luettu", 0);
+            writeerror(TRA("Kaikki tiedot luettu"), 0);
             return(0);
             }
          if (luentatesti == 2) {
             badge = bdg;
-            vidspmsg(ySize-3,0,7,0, "Esc : Keskeytä testi");
+            vidspmsg(ySize-3,0,7,0, TRA("Esc : Keskeytä testi"));
             for (;;) {
                ch = readkbd(&ch, 0, spoolfl);
                if (ch == ESC) {
@@ -457,9 +458,9 @@ INT leimat(void)
          clrtxt(r3, 18, 65);
          vidspwmsg(r3, 18, 7, 0, wline);
          for (os1 = 0; os1 < Sarjat[kilp.sarja].osuusluku; os1++) {
-            swprintf(wline, L"Osuus%3s:  %-25.25s %7ld %8.8s  %c %s", wosuuskoodi(kilp.sarja, os1, 0, 0), kilp.Nimi(wst, 27, os1),   
+            swprintf(wline, TR(L"Osuus%3s:  %-25.25s %7ld %8.8s  %c %s"), wosuuskoodi(kilp.sarja, os1, 0, 0), kilp.Nimi(wst, 27, os1),   
                kilp.ostiet[os1].badge[0], AIKATOWSTRS(was, tulos(&kilp, os1, 0), 0), 
-               kilp.wTark(os1, false), kilp.wTark(os1, true) == L'S' ? L"Sulj" : L"    ");
+               kilp.wTark(os1, false), kilp.wTark(os1, true) == L'S' ? TR(L"Sulj") : L"    ");
             fore = (os1 == os) ? 0 : 7;
             vidspwmsg(r5+os1, 0, fore, 7-fore, wline);
             }
@@ -479,20 +480,20 @@ INT leimat(void)
       kbflush();
 		if (!valo_on) 
 			asetavalo(0);
-      vidspmsg(r2,0,7,0,"Viivakoodi");
-      vidspmsg(r3,0,7,0,"Joukkue");
-      vidspmsg(r4,0,7,0,"Osuus");
+      vidspmsg(r2,0,7,0,TRA("Viivakoodi"));
+      vidspmsg(r3,0,7,0,TRA("Joukkue"));
+      vidspmsg(r4,0,7,0,TRA("Osuus"));
       for (i = 0; i < 2;) {
          clrln(ySize-3);
          switch (i) {
             case 0 :
                clrtxt(r1,0,60);
-               vidspmsg(r1,0,7,0,"Lue viivakoodi tai anna joukkue ja osuus,  Esc: poistu");   
+               vidspmsg(r1,0,7,0,TRA("Lue viivakoodi tai anna joukkue ja osuus,  Esc: poistu"));   
                if (salli_emit_ensin) {
                   gotoxy(12, r2);
                   while (!kbready(&ch, &key)) {
                      if (uusi_emit) {
-                        sprintf(line, "Luettu Emit-kortti: %ld   ", uusi_emit);
+                        sprintf(line, TRA("Luettu Emit-kortti: %ld   "), uusi_emit);
                         vidspmsg(ySize-5,0,7,0,line);
                         }
                      Sleep(100);
@@ -522,7 +523,7 @@ INT leimat(void)
 		              }
                   else {
 						naytatulos(0);
-						sprintf(msg, "Virheellinen merkkijono viivakoodista tai näppäimiltä: %s", line);
+						sprintf(msg, TRA("Virheellinen merkkijono viivakoodista tai näppäimiltä: %s"), line);
 						writeerror(msg, 0);
 						}
 					}
@@ -552,13 +553,13 @@ INT leimat(void)
 					  }
                else {
 						naytatulos(0);
-						sprintf(msg, "Virheellinen merkkijono viivakoodista tai näppäimiltä: %s", line);
+						sprintf(msg, TRA("Virheellinen merkkijono viivakoodista tai näppäimiltä: %s"), line);
 						writeerror(msg, 0);
 						}
                    }
                if (os < 1 || os > kilpparam.osuusluku || (d = getpos(kno)) <= 0) {
 						asetavalo(2);
-                  vidspmsg(r2, 27, 0, 7, "Joukkue tai osuus väärä -lue uudelleen");
+                  vidspmsg(r2, 27, 0, 7, TRA("Joukkue tai osuus väärä -lue uudelleen"));
                   continue;
                   }
                clrtxt(r2, 23, 65);
@@ -567,7 +568,7 @@ INT leimat(void)
                os--;
                GETREC(&kilp, d);
                if (os >= Sarjat[kilp.sarja].osuusluku) {
-                  vidspmsg(r2, 27, 0, 7, "Osuus väärä -lue uudelleen");
+                  vidspmsg(r2, 27, 0, 7, TRA("Osuus väärä -lue uudelleen"));
 				  asetavalo(2);
                   continue;
                   }
@@ -576,17 +577,17 @@ INT leimat(void)
                clrtxt(r3, 18, 60);
                vidspwmsg(r3, 18, 7, 0, wline);
                for (os1 = 0; os1 < Sarjat[kilp.sarja].osuusluku; os1++) {
-                  swprintf(wline, L"Osuus %2.2s:  %-25.25s %7ld %8.8s  %c %s", wosuuskoodi(kilp.sarja, os1, 0, 2), kilp.Nimi(wst, OSNIMIL, os1), 
+                  swprintf(wline, TR(L"Osuus %2.2s:  %-25.25s %7ld %8.8s  %c %s"), wosuuskoodi(kilp.sarja, os1, 0, 2), kilp.Nimi(wst, OSNIMIL, os1), 
                      kilp.ostiet[os1].badge[0], AIKATOWSTRS(was, tulos(&kilp, os1, 0), 0), 
-                     kilp.wTark(os1, false), kilp.wTark(os1, true) == L'S' ? L"Sulj" : L"    ");
+                     kilp.wTark(os1, false), kilp.wTark(os1, true) == L'S' ? TR(L"Sulj") : L"    ");
                   fore = (os1 == os) ? 0 : 7;
                   vidspwmsg(r5+os1, 0, fore, 7-fore, wline);
                   }
 				if (toupper(kilp.ostiet[os].seuranta) == 'G') {
 					viwrrect(r5+kilpparam.osuusluku,0,r5+kilpparam.osuusluku+2,64,
-						"                                                                 "
+						TRA("                                                                 "
 						"      KILPAILIJA OSALLISENA GPS-SEURANTAAN - HAE LÄHETIN         "
-						"                                                                 ", 0, 3, 0);
+						"                                                                 "), 0, 3, 0);
 					}
 /*
 			   if (kilpparam.maxnosuus > 1) {
@@ -632,19 +633,19 @@ INT leimat(void)
                   ed_emit = uusi_emit;
                   if (!salli_emit_ensin) {
                      uusi_emit = 0;
-                     sprintf(line, "Lue uusi kortti tai P)oimi edellinen luettu:"
-                        " %ld, Esc: keskeytä", ed_emit);
+                     sprintf(line, TRA("Lue uusi kortti tai P)oimi edellinen luettu:"
+                        " %ld, Esc: keskeytä"), ed_emit);
                      vidspmsg(r1,0,0,7,line);
                      }
                   }
                else {
                   ed_emit = 0;
-                  vidspmsg(r1,0,0,7,"Lue Emit-kortti, K)orjaa tieto näppäimistöltä, Esc: keskeytä");
+                  vidspmsg(r1,0,0,7,TRA("Lue Emit-kortti, K)orjaa tieto näppäimistöltä, Esc: keskeytä"));
                   }
                clrln(ySize-3);
                if (!salli_emit_ensin || !ed_emit) {
 				  asetavalo(3);
-                  vidspmsg(ySize-3,0,7,0, "Odottaa Emit-koodia - Esc: keskeytä odotus");
+                  vidspmsg(ySize-3,0,7,0, TRA("Odottaa Emit-koodia - Esc: keskeytä odotus"));
                   for (;;) {
                      ch = toupper(readkbd(&ch, 0, spoolfl));
                      if (ch == 'K')
@@ -678,11 +679,11 @@ INT leimat(void)
 			   if (badge == 200) {
                     ch = 'E';
 					viwrrect(r5+kilpparam.osuusluku,0,r5+kilpparam.osuusluku+4,64,
-						"                                                                 "
+						TRA("                                                                 "
 						"                                                                 "
 						"       VIALLINEN EMIT-KORTTI - PAINA ESC JA VAIHDA KORTTI        "
 						"                                                                 "
-						"                                                                 ", 0, 3, 0);
+						"                                                                 "), 0, 3, 0);
 					}
                 kno1 = bdg2kno(badge, 0);
 				if (esta_uusikaytto && kno1 > 0) {
@@ -694,11 +695,11 @@ INT leimat(void)
 						vkilp.getrec(vd);
 						if (kno1 == kno && vkilp.ostiet[os].badge[0] == badge) {
 							viwrrect(r5+kilpparam.osuusluku,0,r5+kilpparam.osuusluku+4,64,
-								"                                                                 "
+								TRA("                                                                 "
 								"                                                                 "
 								"       SAMA KORTTI JO KIRJATTU KILPAILIJALLE. EI MUUTETTAVAA     "
 								"       PAINA ESC JA SIIRRY SEURAAVAN KILPAILIJAN KÄSITTELYYN     "
-								"                                                                 ", 0, 3, 0);
+								"                                                                 "), 0, 3, 0);
 							i = 0;
 							readkbd(&ch, TRUE,  spoolfl);
 		                    kbflush();
@@ -719,20 +720,20 @@ INT leimat(void)
 							}
 						}
 					if (vd > 0) {
-						sprintf(line, "          Kortti käytössä joukkueen %d osuudella %s                ", kno1, osuuskoodi(vkilp.sarja, vos, 0, 0));
+						sprintf(line, TRA("          Kortti käytössä joukkueen %d osuudella %s                "), kno1, osuuskoodi(vkilp.sarja, vos, 0, 0));
 						viwrrect(r5+kilpparam.osuusluku,0,r5+kilpparam.osuusluku+4,64,
-							"                                                                 "
+							TRA("                                                                 "
 							"                                                                 "
 							"                                                                 "
 							"                 PAINA ESC JA VAIHDA KORTTI                      "
-							"                                                                 ", 0, 3, 0);
+							"                                                                 "), 0, 3, 0);
 						viwrrect(r5+kilpparam.osuusluku+1,0,r5+kilpparam.osuusluku+1,64, line, 0, 3, 0);
 						ch = 'E';
 						kbflush();
 						}
 					}
                if (!esta_uusikaytto && kno1 && kno1 != kno) {
-                  sprintf(line, "Emit-kortti jo käytössä joukkueella %d.", kno1);
+                  sprintf(line, TRA("Emit-kortti jo käytössä joukkueella %d."), kno1);
                   kbflush();
                   writeerror(line, 0);
                   ch = 'E';
@@ -746,7 +747,7 @@ INT leimat(void)
                      }
                   if (os1 < os) {
                      kbflush();
-                     writeerror("Emit-kortti lukematta aiemmalta osuudelta", 0);
+                     writeerror(TRA("Emit-kortti lukematta aiemmalta osuudelta"), 0);
                      ch = 'E';
                      kbflush();
                      }

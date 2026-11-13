@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "VertAikaUnit.h"
 #include "HkDeclare.h"
@@ -28,6 +29,7 @@ TVertAikaFrm *VertAikaFrm;
 __fastcall TVertAikaFrm::TVertAikaFrm(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 

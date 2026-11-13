@@ -36,6 +36,7 @@
 #endif
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include "HkDeclare.h"
 
@@ -156,7 +157,7 @@ int luesarjat(void)
 			wcscpy(kilpparam.kilpkoodi, L"KOODI");
 			}
 		if (kilpparam.n_pv > N_PV || kilpparam.valuku > VALUKU) {
-			writeerror_w(L"Ohjelmaversio ei tue sarjatiedon mukaista p‰ivien tai v‰liaikojan m‰‰r‰‰", 0);
+			writeerror_w(TR(L"Ohjelmaversio ei tue sarjatiedon mukaista p‰ivien tai v‰liaikojan m‰‰r‰‰"), 0);
 			return(0);
 			}
 		switch (kilpparam.tarkkuus) {
@@ -496,7 +497,7 @@ wchar_t *ctx = NULL;
 		swprintf(prs,L"Virhe rivill‰ %d tai ennen sit‰", er);
 		vidspwmsg(16,0,7,0,prs);
 		vidspwmsg(17,0,7,0,
-			L"Poista tai korjaa tiedosto ennen uutta k‰ynnistyst‰");
+			TR(L"Poista tai korjaa tiedosto ennen uutta k‰ynnistyst‰"));
 		writeerror_w(L"",0);
 		}
 	delete sarjaf;
@@ -649,7 +650,7 @@ void kirjsarjat(void)
 		}
 	else
 		writeerror_w(
-			L"Sarjatietotiedoston avaus kirjoitusta varten ei onnistu", 0);
+			TR(L"Sarjatietotiedoston avaus kirjoitusta varten ei onnistu"), 0);
 	delete sarjaf;
 	}
 

@@ -18,6 +18,7 @@
 #include <vcl.h>
 #include <Clipbrd.hpp>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include <iostream>
 #include <fstream.h>
@@ -31,6 +32,7 @@ TFormYhtveto *FormYhtveto;
 __fastcall TFormYhtveto::TFormYhtveto(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormYhtveto::YvGridClick(TObject *Sender)
@@ -44,14 +46,14 @@ void __fastcall TFormYhtveto::LaadiYhtveto(void)
 
    YvGrid->RowCount = 1;
    YvGrid->ColCount = 8;
-   YvGrid->Cells[0][0] = UnicodeString(L"Rivi");
-   YvGrid->Cells[1][0] = UnicodeString(L"R-väli");
-   YvGrid->Cells[2][0] = UnicodeString(L"Sarja");
-   YvGrid->Cells[3][0] = UnicodeString(L"Lukum.");
-   YvGrid->Cells[4][0] = UnicodeString(L"Vert.aika");
-   YvGrid->Cells[5][0] = UnicodeString(L"Keskim.");
-   YvGrid->Cells[6][0] = UnicodeString(L"Paras");
-   YvGrid->Cells[7][0] = UnicodeString(L"Kilpailija");
+   YvGrid->Cells[0][0] = UnicodeString(TR(L"Rivi"));
+   YvGrid->Cells[1][0] = UnicodeString(TR(L"R-väli"));
+   YvGrid->Cells[2][0] = UnicodeString(TR(L"Sarja"));
+   YvGrid->Cells[3][0] = UnicodeString(TR(L"Lukum."));
+   YvGrid->Cells[4][0] = UnicodeString(TR(L"Vert.aika"));
+   YvGrid->Cells[5][0] = UnicodeString(TR(L"Keskim."));
+   YvGrid->Cells[6][0] = UnicodeString(TR(L"Paras"));
+   YvGrid->Cells[7][0] = UnicodeString(TR(L"Kilpailija"));
    for (int rv = 0; rv < rvluku; rv++) {
       for (int srj = 0; srj < sarjaluku; srj++) {
          if (rvalit[rv].lkm[srj] > 0) {

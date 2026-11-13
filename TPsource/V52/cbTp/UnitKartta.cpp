@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitKartta.h"
 #include "UnitKohdistus.h"
@@ -44,6 +45,7 @@ static int fntSize = 20;
 __fastcall TFormKartta::TFormKartta(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -175,8 +177,8 @@ void __fastcall TFormKartta::naytaRastit(void)
 	if (KarttaFlnm.Length() == 0)
 		return;
 	if (Map.rightX <= Map.leftX) {
-		Application->MessageBoxW(L"Kartan oikean laidan koordinaatti ratatiedoissa "
-			L"sama tai pienempi kuin vasemman laidan. Rataa ei voida näyttää", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Kartan oikean laidan koordinaatti ratatiedoissa "
+			L"sama tai pienempi kuin vasemman laidan. Rataa ei voida näyttää"), TR(L"Este"), MB_OK);
 		return;
 		}
 	Image1->Picture->LoadFromFile(KarttaFlnm);
@@ -218,8 +220,8 @@ void __fastcall TFormKartta::naytaLeimat(ratatp *rt, int *tulkinta, char *koodit
 	if (!rt || KarttaFlnm.Length() == 0)
 		return;
 	if (Map.rightX <= Map.leftX) {
-		Application->MessageBoxW(L"Kartan oikean laidan koordinaatti ratatiedoissa "
-			L"sama tai pienempi kuin vasemman laidan. Rataa ei voida näyttää", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Kartan oikean laidan koordinaatti ratatiedoissa "
+			L"sama tai pienempi kuin vasemman laidan. Rataa ei voida näyttää"), TR(L"Este"), MB_OK);
 		return;
 		}
 	Image1->Picture->LoadFromFile(KarttaFlnm);
@@ -613,11 +615,11 @@ void __fastcall TFormKartta::Rata1Click(TObject *Sender)
 	int rataIx;
 
 	if (ToimintaTila != 2 || emitfl < 1) {
-		Application->MessageBoxW(L"Tämä valinta on käytettävissä vain tulospalvelutilassa. Käytä ratamäärittelykaavakkeen valintaa.",
-			L"Rajoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Tämä valinta on käytettävissä vain tulospalvelutilassa. Käytä ratamäärittelykaavakkeen valintaa."),
+			TR(L"Rajoitus"), MB_OK);
 		return;
 		}
-	inputstr_prompt(st, 18, L"Anna radan nimi", &ch, this);
+	inputstr_prompt(st, 18, TR(L"Anna radan nimi"), &ch, this);
 	if (ch != ESC && (rataIx = onrata(st)-1) >= 0) {
 		naytaLeimat(rata+rataIx, NULL, NULL);
 		NaytaOtsikko(UnicodeString(L"Rata ")+rata[rataIx].tunnus);

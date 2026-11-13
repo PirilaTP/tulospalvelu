@@ -97,6 +97,7 @@ __published:	// IDE-managed Components
 
 private:	// User declarations
 	void __fastcall FormSetup(TObject *Sender);
+	void __fastcall SovitaOtsikot(void);
    int Valittu;
 	int CurrentRow;
 	int CurrentCol;

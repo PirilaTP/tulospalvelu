@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "HkDeclare.h"
+#include "Kielet.h"
 
 
 //  tulos1(piste, tm)       palauttaa maaliajasta lasketun tuloksen
@@ -1590,19 +1591,19 @@ void takaa_ajolahdot(void)
 	kilptietue kilp;
 
 	for (;;) {
-		vidspwmsg(ySize-3, 0, 7, 0, L"Anna sarja                      Esc: lopeta");
+		vidspwmsg(ySize-3, 0, 7, 0, TR(L"Anna sarja                      Esc: lopeta"));
 		srj = luesarja(Sarjat[srj].sarjanimi, &ch);
 		if (srj < 0 || ch == ESC)
 			break;
 		clrln(ySize-3);
-		vidspwmsg(ySize-3, 0, 7, 0, L"Takaa-ajovaiheen osanottajamäärä");
+		vidspwmsg(ySize-3, 0, 7, 0, TR(L"Takaa-ajovaiheen osanottajamäärä"));
 		INPUTINTW(&n, 3, 34, ySize-3, L"\r\x1b", &ch);
 		if (n > ntulos[srj][VALUKU+1])
 			n = ntulos[srj][VALUKU+1];
 		p = jalku[srj][VALUKU+5];
 		if (n > 0) {
 			clrln(ySize-3);
-			vidspwmsg(ySize-3, 0, 7, 0, L"Ensimmäinen lähtöaika");
+			vidspwmsg(ySize-3, 0, 7, 0, TR(L"Ensimmäinen lähtöaika"));
 			INPUTAIKAW(&enslahto, t0, 8, 34, ySize-3, L"\r\x1b", &ch);
 			vlahto = enslahto;
 			for (i = 0; i < n && p >= 0; i++) {
@@ -1621,7 +1622,7 @@ void takaa_ajolahdot(void)
 			}
 		if (n < ntulos[srj][VALUKU+1]) {
 			clrln(ySize-3);
-			vidspwmsg(ySize-3, 0, 7, 0, L"Muiden osanottajien määrä");
+			vidspwmsg(ySize-3, 0, 7, 0, TR(L"Muiden osanottajien määrä"));
 			n1 = ntulos[srj][VALUKU+1] - n;
 			INPUTINTW(&n1, 3, 34, ySize-3, L"\r\x1b", &ch);
 			if (n1 > 0 && ch != ESC) {
@@ -1630,14 +1631,14 @@ void takaa_ajolahdot(void)
 				clrln(ySize-3);
 				enslahto = vlahto + MINUUTTI;
 				enslahto = ((enslahto + 24*TUNTI)/SEK)*SEK-24*TUNTI;
-				vidspwmsg(ySize-3, 0, 7, 0, L"Ensimmäinen jälkiosan lähtöaika");
+				vidspwmsg(ySize-3, 0, 7, 0, TR(L"Ensimmäinen jälkiosan lähtöaika"));
 				INPUTAIKAW(&enslahto, t0, 8, 44, ySize-3, L"\r\x1b", &ch);
 				vlahto = enslahto;
 				clrln(ySize-3);
-				vidspwmsg(ySize-3, 0, 7, 0, L"Jälkiosan lähtövälit sekunteina");
+				vidspwmsg(ySize-3, 0, 7, 0, TR(L"Jälkiosan lähtövälit sekunteina"));
 				INPUTINTW(&lvali, 4, 44, ySize-3, L"\r\x1b", &ch);
 				clrln(ySize-3);
-				vidspwmsg(ySize-3, 0, 7, 0, L"Jälkiosan ryhmäkoko");
+				vidspwmsg(ySize-3, 0, 7, 0, TR(L"Jälkiosan ryhmäkoko"));
 				for (i = 0; i < n1 && p >= 0; i++) {
 					kilp.GETREC(p);
 					vlahto = enslahto + (i/nr) * lvali * SEK;

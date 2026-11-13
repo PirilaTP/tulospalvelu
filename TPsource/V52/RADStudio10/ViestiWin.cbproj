@@ -376,6 +376,9 @@
         <LibFiles Include="..\..\..\TPexe\Lib\V521\release_build\Tputil-XE.lib" Condition="'$(Cfg_2_Win32)'=='true'">
             <BuildOrder>35</BuildOrder>
         </LibFiles>
+        <CppCompile Include="..\cbTp\cbKielet.cpp">
+            <BuildOrder>148</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\cbTp\cbTpApu.cpp">
             <BuildOrder>47</BuildOrder>
         </CppCompile>
@@ -2276,5 +2279,6 @@
         <MSBuild Projects="DBboxm-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_DBboxm);Platform=$(Platform)" Condition="'$(DepConfig_DBboxm)'!=''"/>
         <MSBuild Projects="Tputil-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_Tputil);Platform=$(Platform)" Condition="'$(DepConfig_Tputil)'!=''"/>
     </Target>
+    <Import Project="Kielet.targets"/>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
 </Project>

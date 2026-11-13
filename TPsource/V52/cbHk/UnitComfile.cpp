@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <process.h>
 
 #include "UnitComfile.h"
@@ -37,6 +38,7 @@ extern sendtestparamtp sendtestparam;
 __fastcall TFormComfile::TFormComfile(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -132,12 +134,12 @@ FILE *TFormComfile::avaacomfile(wchar_t *obfilename)
 		SGSanoma->Options >> goEditing;
 		}
 	if (obfile == NULL)
-		Application->MessageBoxW(L"Tiedoston avaaminen ei onnistu", L"", MB_OK);
+		Application->MessageBoxW(TR(L"Tiedoston avaaminen ei onnistu"), L"", MB_OK);
 	else {
 		fseek(obfile, 0, SEEK_END);
 		fgetpos(obfile, &len);
 		if (len < combufsize) {
-			Application->MessageBoxW(L"Tiedosto tyhjä tai liian lyhyt", L"", MB_OK);
+			Application->MessageBoxW(TR(L"Tiedosto tyhjä tai liian lyhyt"), L"", MB_OK);
 			fclose(obfile);
 			return(0);
 			}
@@ -147,7 +149,7 @@ FILE *TFormComfile::avaacomfile(wchar_t *obfilename)
 		NJono = obfbuf[0].so;
 		NRec = len / (NJono*combufsize);
 		if (len != NRec * NJono * combufsize) {
-			swprintf(msg, L"Tiedoston pituus %d ei odotettu moninkerta. Tietue %d, jonoja %d, tietueita %d",
+			swprintf(msg, TR(L"Tiedoston pituus %d ei odotettu moninkerta. Tietue %d, jonoja %d, tietueita %d"),
 				len, combufsize, NJono, NRec);
 			Application->MessageBoxW(msg, L"", MB_OK);
 			fclose(obfile);
@@ -183,9 +185,9 @@ void __fastcall TFormComfile::JonoPituudet(void)
 		}
 	rewind(ComFile);
 	SGJonot->RowCount = NJono+1;
-	SGJonot->Cells[0][0] = L"Jono";
-	SGJonot->Cells[1][0] = L"Lkm";
-	SGJonot->Cells[2][0] = L"Lah";
+	SGJonot->Cells[0][0] = TR(L"Jono");
+	SGJonot->Cells[1][0] = TR(L"Lkm");
+	SGJonot->Cells[2][0] = TR(L"Lah");
 	for (int r = 1; r <= NJono; r++) {
 		SGJonot->Cells[0][r] = UnicodeString(r);
 		SGJonot->Cells[1][r] = UnicodeString(NJRec[r-1]);
@@ -200,7 +202,7 @@ void __fastcall TFormComfile::Button1Click(TObject *Sender)
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->FileName = UnicodeString(L"comfile.dat");
 	OpenDialog1->DefaultExt = L"dat";
-	OpenDialog1->Filter = L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		if (LahComFile == ComFile) {
 			fclose(ComFile);
@@ -256,8 +258,8 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 
 	SGSanoma->ColWidths[0] = 70 * Screen->PixelsPerInch / 96;
 	SGSanoma->ColWidths[1] = 150 * Screen->PixelsPerInch / 96;
-	SGSanoma->Cells[0][0] = L"Tieto";
-	SGSanoma->Cells[1][0] = L"Arvo";
+	SGSanoma->Cells[0][0] = TR(L"Tieto");
+	SGSanoma->Cells[1][0] = TR(L"Arvo");
 	if (r <= 0 || r > NJRec[Jono]) {
 		SGSanoma->RowCount = 2;
 		return;
@@ -271,18 +273,18 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 	if (ComBuf.pkgclass == 1) {
 		kilp.unpack0(ComBuf.d.k.ckilp);
 		SGSanoma->RowCount = 12;
-		SGSanoma->Cells[0][1] = L"Sanomalaji";
-		SGSanoma->Cells[0][2] = L"Status";
-		SGSanoma->Cells[0][3] = L"Pos";
-		SGSanoma->Cells[0][4] = L"EntNo";
-		SGSanoma->Cells[0][5] = L"Lähetetty";
-		SGSanoma->Cells[0][6] = L"KilpNo";
-		SGSanoma->Cells[0][7] = L"Sukunimi";
-		SGSanoma->Cells[0][8] = L"Etunimi";
-		SGSanoma->Cells[0][9] = L"Sarja";
-		SGSanoma->Cells[0][10] = L"Seura";
-		SGSanoma->Cells[0][11] = L"Seuralyh";
-		SGSanoma->Cells[1][1] = L"Perustiedot";
+		SGSanoma->Cells[0][1] = TR(L"Sanomalaji");
+		SGSanoma->Cells[0][2] = TR(L"Status");
+		SGSanoma->Cells[0][3] = TR(L"Pos");
+		SGSanoma->Cells[0][4] = TR(L"EntNo");
+		SGSanoma->Cells[0][5] = TR(L"Lähetetty");
+		SGSanoma->Cells[0][6] = TR(L"KilpNo");
+		SGSanoma->Cells[0][7] = TR(L"Sukunimi");
+		SGSanoma->Cells[0][8] = TR(L"Etunimi");
+		SGSanoma->Cells[0][9] = TR(L"Sarja");
+		SGSanoma->Cells[0][10] = TR(L"Seura");
+		SGSanoma->Cells[0][11] = TR(L"Seuralyh");
+		SGSanoma->Cells[1][1] = TR(L"Perustiedot");
 		SGSanoma->Cells[1][2] = UnicodeString(kilp.kilpstatus);
 		SGSanoma->Cells[1][3] = UnicodeString(ComBuf.d.k.dk);
 		SGSanoma->Cells[1][4] = UnicodeString(ComBuf.d.k.entno);
@@ -302,18 +304,18 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 			pv.unpack0(ComBuf.d.pv.cpv);
 			}
 		SGSanoma->RowCount = 12;
-		SGSanoma->Cells[0][1] = L"Sanomalaji";
-		SGSanoma->Cells[0][2] = L"Pos";
-		SGSanoma->Cells[0][3] = L"Lähetetty";
-		SGSanoma->Cells[0][4] = L"Vaihe";
-		SGSanoma->Cells[0][5] = L"Sarja";
-		SGSanoma->Cells[0][6] = L"Bib";
-		SGSanoma->Cells[0][7] = L"Badge";
-		SGSanoma->Cells[0][8] = L"Lähtö";
-		SGSanoma->Cells[0][9] = L"Tark";
-		SGSanoma->Cells[0][10] = L"Sakko";
-		SGSanoma->Cells[0][11] = L"Ammunta";
-		SGSanoma->Cells[1][1] = L"Vaihetiedot";
+		SGSanoma->Cells[0][1] = TR(L"Sanomalaji");
+		SGSanoma->Cells[0][2] = TR(L"Pos");
+		SGSanoma->Cells[0][3] = TR(L"Lähetetty");
+		SGSanoma->Cells[0][4] = TR(L"Vaihe");
+		SGSanoma->Cells[0][5] = TR(L"Sarja");
+		SGSanoma->Cells[0][6] = TR(L"Bib");
+		SGSanoma->Cells[0][7] = TR(L"Badge");
+		SGSanoma->Cells[0][8] = TR(L"Lähtö");
+		SGSanoma->Cells[0][9] = TR(L"Tark");
+		SGSanoma->Cells[0][10] = TR(L"Sakko");
+		SGSanoma->Cells[0][11] = TR(L"Ammunta");
+		SGSanoma->Cells[1][1] = TR(L"Vaihetiedot");
 		SGSanoma->Cells[1][2] = UnicodeString(ComBuf.d.k.dk);
 		SGSanoma->Cells[1][3] = UnicodeString(aikatowstr_cols_n(st, tl, t0, 0, 11));
 		SGSanoma->Cells[1][4] = UnicodeString(ComBuf.d.pv.pv + 1);
@@ -327,14 +329,14 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		}
 	if (ComBuf.pkgclass == 3) {
 		SGSanoma->RowCount = 8;
-		SGSanoma->Cells[0][1] = L"Sanomalaji";
-		SGSanoma->Cells[0][2] = L"Pos";
-		SGSanoma->Cells[0][3] = L"Lähetetty";
-		SGSanoma->Cells[0][4] = L"Bib";
-		SGSanoma->Cells[0][5] = L"Vaihe";
-		SGSanoma->Cells[0][6] = L"Piste";
-		SGSanoma->Cells[0][7] = L"Aika/Tark";
-		SGSanoma->Cells[1][1] = L"Tulostieto";
+		SGSanoma->Cells[0][1] = TR(L"Sanomalaji");
+		SGSanoma->Cells[0][2] = TR(L"Pos");
+		SGSanoma->Cells[0][3] = TR(L"Lähetetty");
+		SGSanoma->Cells[0][4] = TR(L"Bib");
+		SGSanoma->Cells[0][5] = TR(L"Vaihe");
+		SGSanoma->Cells[0][6] = TR(L"Piste");
+		SGSanoma->Cells[0][7] = TR(L"Aika/Tark");
+		SGSanoma->Cells[1][1] = TR(L"Tulostieto");
 		SGSanoma->Cells[1][2] = UnicodeString(ComBuf.d.k.dk);
 		SGSanoma->Cells[1][3] = UnicodeString(aikatowstr_cols_n(st, tl, t0, 0, 11));
 		SGSanoma->Cells[1][4] = UnicodeString(ComBuf.d.v.bib);
@@ -344,21 +346,21 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		}
 	if (ComBuf.pkgclass == 4) {
 		SGSanoma->RowCount = 15;
-		SGSanoma->Cells[0][1] = L"Sanomalaji";
-		SGSanoma->Cells[0][2] = L"Lähetetty";
-		SGSanoma->Cells[0][3] = L"Aika";
-		SGSanoma->Cells[0][4] = L"Bib";
-		SGSanoma->Cells[0][5] = L"Piste";
-		SGSanoma->Cells[0][6] = L"Badge";
-		SGSanoma->Cells[0][7] = L"Kanava";
-		SGSanoma->Cells[0][8] = L"Jono";
-		SGSanoma->Cells[0][9] = L"Ed. aika";
-		SGSanoma->Cells[0][10] = L"Ed. bib";
-		SGSanoma->Cells[0][11] = L"Ed. piste";
-		SGSanoma->Cells[0][12] = L"Ed. badge";
-		SGSanoma->Cells[0][13] = L"Ed. kanava";
-		SGSanoma->Cells[0][14] = L"Ed. jono";
-		SGSanoma->Cells[1][1] = L"Ajanottotieto";
+		SGSanoma->Cells[0][1] = TR(L"Sanomalaji");
+		SGSanoma->Cells[0][2] = TR(L"Lähetetty");
+		SGSanoma->Cells[0][3] = TR(L"Aika");
+		SGSanoma->Cells[0][4] = TR(L"Bib");
+		SGSanoma->Cells[0][5] = TR(L"Piste");
+		SGSanoma->Cells[0][6] = TR(L"Badge");
+		SGSanoma->Cells[0][7] = TR(L"Kanava");
+		SGSanoma->Cells[0][8] = TR(L"Jono");
+		SGSanoma->Cells[0][9] = TR(L"Ed. aika");
+		SGSanoma->Cells[0][10] = TR(L"Ed. bib");
+		SGSanoma->Cells[0][11] = TR(L"Ed. piste");
+		SGSanoma->Cells[0][12] = TR(L"Ed. badge");
+		SGSanoma->Cells[0][13] = TR(L"Ed. kanava");
+		SGSanoma->Cells[0][14] = TR(L"Ed. jono");
+		SGSanoma->Cells[1][1] = TR(L"Ajanottotieto");
 		SGSanoma->Cells[1][2] = UnicodeString(aikatowstr_cols_n(st, tl, t0, 0, 11));
 		SGSanoma->Cells[1][3] = UnicodeString(aikatowstr_cols_n(st, ComBuf.d.a.iaika.t/AIKAJAK, t0, 0, 11));
 		SGSanoma->Cells[1][4] = UnicodeString(ComBuf.d.a.iaika.kno);
@@ -377,14 +379,14 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		}
 	if (ComBuf.pkgclass == 6) {
 		SGSanoma->RowCount = 58;
-		SGSanoma->Cells[0][1] = L"Sanomalaji";
-		SGSanoma->Cells[0][2] = L"Lähetetty";
-		SGSanoma->Cells[0][3] = L"Badge";
-		SGSanoma->Cells[0][4] = L"Bib";
-		SGSanoma->Cells[0][5] = L"Maali";
-		SGSanoma->Cells[0][6] = L"Luettu";
-		SGSanoma->Cells[0][7] = L"Kirjattu";
-		SGSanoma->Cells[1][1] = L"Emit-tieto";
+		SGSanoma->Cells[0][1] = TR(L"Sanomalaji");
+		SGSanoma->Cells[0][2] = TR(L"Lähetetty");
+		SGSanoma->Cells[0][3] = TR(L"Badge");
+		SGSanoma->Cells[0][4] = TR(L"Bib");
+		SGSanoma->Cells[0][5] = TR(L"Maali");
+		SGSanoma->Cells[0][6] = TR(L"Luettu");
+		SGSanoma->Cells[0][7] = TR(L"Kirjattu");
+		SGSanoma->Cells[1][1] = TR(L"Emit-tieto");
 		SGSanoma->Cells[1][2] = UnicodeString(aikatowstr_cols_n(st, tl, t0, 0, 11));
 		SGSanoma->Cells[1][3] = UnicodeString(ComBuf.d.em.badge)+L" (orig:"+UnicodeString(ComBuf.d.em.badge0)+L")";
 		SGSanoma->Cells[1][4] = UnicodeString(ComBuf.d.em.kilpno);
@@ -399,12 +401,12 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		}
 	if (ComBuf.pkgclass == 7) {
 		SGSanoma->RowCount = 6;
-		SGSanoma->Cells[0][1] = L"Sanomalaji";
-		SGSanoma->Cells[0][2] = L"Seura";
-		SGSanoma->Cells[0][3] = L"Seuralyh";
-		SGSanoma->Cells[0][4] = L"Maa";
-		SGSanoma->Cells[0][5] = L"Piiri";
-		SGSanoma->Cells[1][1] = L"Seuratieto";
+		SGSanoma->Cells[0][1] = TR(L"Sanomalaji");
+		SGSanoma->Cells[0][2] = TR(L"Seura");
+		SGSanoma->Cells[0][3] = TR(L"Seuralyh");
+		SGSanoma->Cells[0][4] = TR(L"Maa");
+		SGSanoma->Cells[0][5] = TR(L"Piiri");
+		SGSanoma->Cells[1][1] = TR(L"Seuratieto");
 		SGSanoma->Cells[1][2] = UnicodeString(ComBuf.d.sra.snimi);
 		SGSanoma->Cells[1][3] = UnicodeString(ComBuf.d.sra.lyhenne);
 		SGSanoma->Cells[1][4] = UnicodeString(ComBuf.d.sra.maa);
@@ -412,15 +414,15 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		}
 	if (ComBuf.pkgclass == 13) {
 		SGSanoma->RowCount = 10 + ComBuf.d.emva.rastiluku;
-		SGSanoma->Cells[0][1] = L"Sanomalaji";
-		SGSanoma->Cells[0][2] = L"Lähetetty";
-		SGSanoma->Cells[0][3] = L"Badge";
-		SGSanoma->Cells[0][4] = L"Bib";
-		SGSanoma->Cells[0][5] = L"Tulos";
+		SGSanoma->Cells[0][1] = TR(L"Sanomalaji");
+		SGSanoma->Cells[0][2] = TR(L"Lähetetty");
+		SGSanoma->Cells[0][3] = TR(L"Badge");
+		SGSanoma->Cells[0][4] = TR(L"Bib");
+		SGSanoma->Cells[0][5] = TR(L"Tulos");
 		SGSanoma->Cells[0][6] = L"OK";
-		SGSanoma->Cells[0][7] = L"Rastiluku";
-		SGSanoma->Cells[0][8] = L"Rata";
-		SGSanoma->Cells[1][1] = L"Emitväliajat";
+		SGSanoma->Cells[0][7] = TR(L"Rastiluku");
+		SGSanoma->Cells[0][8] = TR(L"Rata");
+		SGSanoma->Cells[1][1] = TR(L"Emitväliajat");
 		SGSanoma->Cells[1][2] = UnicodeString(aikatowstr_cols_n(st, tl, t0, 0, 11));
 		SGSanoma->Cells[1][3] = UnicodeString(ComBuf.d.emva.badge);
 		SGSanoma->Cells[1][4] = UnicodeString(ComBuf.d.emva.kilpno);
@@ -436,14 +438,14 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		}
 	if (ComBuf.pkgclass == 14) {
 		SGSanoma->RowCount = 8;
-		SGSanoma->Cells[0][1] = L"Sanomalaji";
-		SGSanoma->Cells[0][2] = L"Pos";
-		SGSanoma->Cells[0][3] = L"Lähetetty";
-		SGSanoma->Cells[0][4] = L"Arvo 1";
-		SGSanoma->Cells[0][5] = L"Arvo 2";
-		SGSanoma->Cells[0][6] = L"Arvo 3";
-		SGSanoma->Cells[0][7] = L"Arvo 4";
-		SGSanoma->Cells[1][1] = L"Extra";
+		SGSanoma->Cells[0][1] = TR(L"Sanomalaji");
+		SGSanoma->Cells[0][2] = TR(L"Pos");
+		SGSanoma->Cells[0][3] = TR(L"Lähetetty");
+		SGSanoma->Cells[0][4] = TR(L"Arvo 1");
+		SGSanoma->Cells[0][5] = TR(L"Arvo 2");
+		SGSanoma->Cells[0][6] = TR(L"Arvo 3");
+		SGSanoma->Cells[0][7] = TR(L"Arvo 4");
+		SGSanoma->Cells[1][1] = TR(L"Extra");
 		SGSanoma->Cells[1][2] = UnicodeString(ComBuf.d.k.dk);
 		SGSanoma->Cells[1][3] = UnicodeString(aikatowstr_cols_n(st, tl, t0, 0, 11));
 		SGSanoma->Cells[1][4] = UnicodeString(ComBuf.d.x.d1);
@@ -469,17 +471,17 @@ void __fastcall TFormComfile::lataaJono(int jono)
 	SGJono->ColCount = 11;
 	SGJono->ColWidths[2] = 65 * Screen->PixelsPerInch / 96;
 	SGJono->ColWidths[10] = 65 * Screen->PixelsPerInch / 96;
-	SGJono->Cells[0][0] = L"Rivi";
-	SGJono->Cells[1][0] = L"Class";
-	SGJono->Cells[2][0] = L"Lähetetty";
-	SGJono->Cells[3][0] = L"Pit";
-	SGJono->Cells[4][0] = L"Pos";
-	SGJono->Cells[5][0] = L"Entno";
-	SGJono->Cells[6][0] = L"Bib";
-	SGJono->Cells[7][0] = L"Badge";
-	SGJono->Cells[8][0] = L"Vaihe";
-	SGJono->Cells[9][0] = L"Piste";
-	SGJono->Cells[10][0] = L"Aika";
+	SGJono->Cells[0][0] = TR(L"Rivi");
+	SGJono->Cells[1][0] = TR(L"Class");
+	SGJono->Cells[2][0] = TR(L"Lähetetty");
+	SGJono->Cells[3][0] = TR(L"Pit");
+	SGJono->Cells[4][0] = TR(L"Pos");
+	SGJono->Cells[5][0] = TR(L"Entno");
+	SGJono->Cells[6][0] = TR(L"Bib");
+	SGJono->Cells[7][0] = TR(L"Badge");
+	SGJono->Cells[8][0] = TR(L"Vaihe");
+	SGJono->Cells[9][0] = TR(L"Piste");
+	SGJono->Cells[10][0] = TR(L"Aika");
 	for (int r = 1; r <= NJRec[jono]; r++) {
 		d = 0;
 		fseek(ComFile, (r * NJono + jono) * RecLen, SEEK_SET);
@@ -786,7 +788,7 @@ void __fastcall TFormComfile::Button8Click(TObject *Sender)
 	int vast;
 	char cbuf[2000];
 
-	vast = select3(3, L"Valitse tiedostotyyppi", L"Valitse", L"Tekstitiedosto", L"COMFILE.DAT", L"Peruuta",
+	vast = select3(3, TR(L"Valitse tiedostotyyppi"), TR(L"Valitse"), TR(L"Tekstitiedosto"), TR(L"COMFILE.DAT"), TR(L"Peruuta"),
 		this);
 	if (vast == 3)
 		return;
@@ -906,7 +908,7 @@ void __fastcall TFormComfile::BtnLahetaClick(TObject *Sender)
 	wchar_t as[20];
 
 	CBLahYhteys->Clear();
-	CBLahYhteys->Items->Add(L"Kaikki");
+	CBLahYhteys->Items->Add(TR(L"Kaikki"));
 	for (int cn = 0; cn < maxyhteys; cn++) {
 		CBLahYhteys->Items->Add(UnicodeString(cn+1));
 		}
@@ -918,7 +920,7 @@ void __fastcall TFormComfile::BtnLahetaClick(TObject *Sender)
 		EdtValit->Text = sendtestparam.ValiKerroin;
 		EdtLahLoppu->Text = sendtestparam.viim;
 		if (sendtestparam.valilaji == 1) {
-			EdtAloitus->EditLabel->Caption = L"Vertailuaika";
+			EdtAloitus->EditLabel->Caption = TR(L"Vertailuaika");
 			EdtAloitus->Text = aikatowstr_cols_n(as, sendtestparam.t_vert, t0, 0, 8);
 			}
 		RGAloitus->ItemIndex = sendtestparam.aloituslaji;
@@ -927,7 +929,7 @@ void __fastcall TFormComfile::BtnLahetaClick(TObject *Sender)
 		if (sendtestparam.ComFile) {
 			LahComFile = sendtestparam.ComFile;
 			if (LahComFile != ComFile)
-				Application->MessageBoxW(L"Lähetettävien sanomien tiedosto on jo avattu ja poikkeaa kaavakkeen tiedostosta", L"Varoitus", MB_OK);
+				Application->MessageBoxW(TR(L"Lähetettävien sanomien tiedosto on jo avattu ja poikkeaa kaavakkeen tiedostosta"), TR(L"Varoitus"), MB_OK);
 			}
 		else
 			LahComFile = ComFile;
@@ -940,7 +942,7 @@ void __fastcall TFormComfile::BtnLahetaClick(TObject *Sender)
 	GBLahetys->Visible = true;
 	FormResize(Sender);
 	if (sendtestparam.inSendCopy) {
-		BtnLahVal->Caption = L"Keskeytä lähettäminen";
+		BtnLahVal->Caption = TR(L"Keskeytä lähettäminen");
     }
 }
 //---------------------------------------------------------------------------
@@ -948,13 +950,13 @@ void __fastcall TFormComfile::BtnLahetaClick(TObject *Sender)
 void __fastcall TFormComfile::RGValitClick(TObject *Sender)
 {
 	if (RGValit->ItemIndex == 1) {
-		EdtValit->EditLabel->Caption = L"Kerroin";
+		EdtValit->EditLabel->Caption = TR(L"Kerroin");
 		EdtValit->Text = L"1,0";
-		EdtAloitus->EditLabel->Caption = L"Vertailuaika";
+		EdtAloitus->EditLabel->Caption = TR(L"Vertailuaika");
 		}
 	else {
-		EdtValit->EditLabel->Caption = L"Sanomaväli";
-		EdtAloitus->EditLabel->Caption = L"Aloitushetki";
+		EdtValit->EditLabel->Caption = TR(L"Sanomaväli");
+		EdtAloitus->EditLabel->Caption = TR(L"Aloitushetki");
 		}
 	if (EdtLahAlku->Text.Length() == 0 || _wtoi(EdtLahAlku->Text.c_str()) == 0)
 		EdtLahAlku->Text = 1;
@@ -998,7 +1000,7 @@ void __fastcall TFormComfile::BtnLahValClick(TObject *Sender)
 	if (sendtestparam.inSendCopy) {
 		sendtestparam.inSendCopy = false;
 		Button1->Enabled = true;
-		BtnLahVal->Caption = L"Lähetätä valintojen mukaan";
+		BtnLahVal->Caption = TR(L"Lähetätä valintojen mukaan");
 		return;
 		}
 	sendtestparam.inSendCopy = true;
@@ -1035,7 +1037,7 @@ void __fastcall TFormComfile::BtnLahValClick(TObject *Sender)
 		}
 
 	_beginthread(SendCopyThread, 10240, NULL);
-	BtnLahVal->Caption = L"Keskeytä lähettäminen";
+	BtnLahVal->Caption = TR(L"Keskeytä lähettäminen");
 }
 //---------------------------------------------------------------------------
 
@@ -1062,7 +1064,7 @@ void sendTestLopetus(void)
 {
 	if (FormComfile && FormComfile->Visible) {
 		FormComfile->EdtLahAlku->Text = sendtestparam.LahRivi;
-		FormComfile->BtnLahVal->Caption = L"Lähetä valintojen mukaan";
+		FormComfile->BtnLahVal->Caption = TR(L"Lähetä valintojen mukaan");
 		}
 }
 

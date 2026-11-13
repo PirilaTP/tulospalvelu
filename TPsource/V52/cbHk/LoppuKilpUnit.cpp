@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <string>
 
 #include "LoppuKilpUnit.h"
@@ -44,6 +45,7 @@ srajrjtp *srajrj[5];
 __fastcall TLoppuKilpForm::TLoppuKilpForm(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -748,7 +750,7 @@ void __fastcall TLoppuKilpForm::BtnToteutaClick(TObject *Sender)
 	for (int j = 0; j < 5; j++)
 		if (df[j])
 			free(df[j]);
-	Application->MessageBoxW(L"Loppukilpailut laadittu", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Loppukilpailut laadittu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -798,8 +800,8 @@ void __fastcall TLoppuKilpForm::Button1Click(TObject *Sender)
 					}
 				}
 			LeaveCriticalSection(&tall_CriticalSection);
-			swprintf(line, L"Siirretty %d lähtöaikaa", nn);
-			Application->MessageBoxW(line, L"Valmis", MB_OK);
+			swprintf(line, TR(L"Siirretty %d lähtöaikaa"), nn);
+			Application->MessageBoxW(line, TR(L"Valmis"), MB_OK);
 			}
 		delete lafile;
 		}
@@ -902,7 +904,7 @@ void __fastcall TLoppuKilpForm::Button2Click(TObject *Sender)
 	if (!SkriptiFl) {
 		OpenDialog1->FileName = L"FinSaannot.txt";
 		OpenDialog1->DefaultExt = L"txt";
-		OpenDialog1->Filter = L"Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*";
+		OpenDialog1->Filter = TR(L"Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*");
 		if (OpenDialog1->Execute()) {
 			SkriptiFl = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 			if (!SkriptiFl->IsOpen()) {
@@ -1068,7 +1070,7 @@ void __fastcall TLoppuKilpForm::Lisskriptitiedostoon1Click(TObject *Sender)
 		SaveDialog1->InitialDir = FormMain->CurrentDir;
 		SaveDialog1->FileName = flnm;
 		SaveDialog1->DefaultExt = L"txt";
-		SaveDialog1->Filter = L"Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute()) {
 			SkriptiOFl = new TextFl(SaveDialog1->FileName.c_str(), L"at");
 			if (!SkriptiOFl->IsOpen()) {
@@ -1120,7 +1122,7 @@ void __fastcall TLoppuKilpForm::FormShow(TObject *Sender)
 	for (int ifin = 0; ifin < 5; ifin++) {
 		itm = CBfin[ifin]->ItemIndex;
 		CBfin[ifin]->Items->Clear();
-		CBfin[ifin]->Items->Add(L"Ei sarjaa");
+		CBfin[ifin]->Items->Add(TR(L"Ei sarjaa"));
 		for (int srj = 0; srj < sarjaluku; srj++)
 			CBfin[ifin]->Items->Add(Sarjat[srj].sarjanimi);
 		CBfin[ifin]->ItemIndex = itm;

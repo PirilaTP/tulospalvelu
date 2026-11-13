@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSprinthiihto.h"
 #include "WinHk.h"
@@ -30,6 +31,7 @@ static int muodvaihe;
 __fastcall TFormSprinthiihto::TFormSprinthiihto(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -68,7 +70,7 @@ void __fastcall TFormSprinthiihto::FormShow(TObject *Sender)
 	EdtMuodVaihe->Text = k_pv+2;
 	muodvaihe = k_pv+1;
 	CBPerussarja->Clear();
-	CBPerussarja->Items->Add(L"Ei sarjaa");
+	CBPerussarja->Items->Add(TR(L"Ei sarjaa"));
 	for (int srj = 0; srj < sarjaluku; srj++)
 		if (Sarjat[srj].enspv == 0 && Sarjat[srj].sprintSrj.vaihelkm > k_pv+1)
 			CBPerussarja->Items->Add(Sarjat[srj].sarjanimi);
@@ -76,8 +78,8 @@ void __fastcall TFormSprinthiihto::FormShow(TObject *Sender)
 	for	(int i = 0; i < 5; i++) {
 		CBL[i]->Clear();
 		CBM[i]->Clear();
-		CBL[i]->Items->Add(L"Ei sarjaa");
-		CBM[i]->Items->Add(L"Ei sarjaa");
+		CBL[i]->Items->Add(TR(L"Ei sarjaa"));
+		CBM[i]->Items->Add(TR(L"Ei sarjaa"));
 		EdTul[i]->Text = L"";
 		for (int srj = 0; srj < sarjaluku; srj++) {
 			CBL[i]->Items->Add(Sarjat[srj].sarjanimi);
@@ -102,7 +104,7 @@ void __fastcall TFormSprinthiihto::Karsinnasta(bool suoraan)
 	if (kilpparam.bibvaihtelee)
 		numAlku = _wtoi(EdtNumAlku->Text.c_str());
 	if (lsrj[0] < 0 || ml < eria) {
-		Application->MessageBoxW(L"Määrittelyt ristiriitaisia", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Määrittelyt ristiriitaisia"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	EnterCriticalSection(&tall_CriticalSection);
@@ -177,7 +179,7 @@ void __fastcall TFormSprinthiihto::Karsinnasta(bool suoraan)
 		kilp.tallenna(d[i], 0, 0, 0, 0);
 		}
 	LeaveCriticalSection(&tall_CriticalSection);
-	Application->MessageBoxW(L"Toiminto toteutettu", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Toiminto toteutettu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormSprinthiihto::Semi(void)
@@ -194,7 +196,7 @@ void __fastcall TFormSprinthiihto::Semi(void)
 	erakoko = _wtoi(EdKoko->Text.c_str());
 	nsj = (eria * erakoko - _wtoi(EdAjalla->Text.c_str())) / nl;
 	if (nm < eria) {
-		Application->MessageBoxW(L"Määrittelyt ristiriitaisia", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Määrittelyt ristiriitaisia"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	EnterCriticalSection(&tall_CriticalSection);
@@ -284,7 +286,7 @@ void __fastcall TFormSprinthiihto::Semi(void)
 			}
 		}
 	LeaveCriticalSection(&tall_CriticalSection);
-	Application->MessageBoxW(L"Toiminto toteutettu", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Toiminto toteutettu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormSprinthiihto::HaeSprintsarjat(int *lsrj, int *nl, int *msrj, int *nm)
@@ -317,7 +319,7 @@ void __fastcall TFormSprinthiihto::Finaalit(void)
 //	numAlku = _wtoi(EdtNumAlku->Text.c_str());
 	nsj = (erakoko - ajalla) / nl;
 	if (nm < eria) {
-		Application->MessageBoxW(L"Määrittelyt ristiriitaisia", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Määrittelyt ristiriitaisia"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	EnterCriticalSection(&tall_CriticalSection);
@@ -419,7 +421,7 @@ void __fastcall TFormSprinthiihto::Finaalit(void)
 			}
 		}
 	LeaveCriticalSection(&tall_CriticalSection);
-	Application->MessageBoxW(L"Toiminto toteutettu", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Toiminto toteutettu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormSprinthiihto::BtnToteutaClick(TObject *Sender)
@@ -503,7 +505,7 @@ void __fastcall TFormSprinthiihto::BtnPohjustaClick(TObject *Sender)
 		vpv = epv;
 	HaeSprintsarjat(lsrj, &nl, msrj, &nm);
 	if (!nl || epv > kilpparam.n_pv_akt - 1) {
-		Application->MessageBoxW(L"Valinnat eivät salli toteutusta", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Valinnat eivät salli toteutusta"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	lisays = _wtoi(EdPohjLisays->Text.c_str());
@@ -526,7 +528,7 @@ void __fastcall TFormSprinthiihto::BtnPohjustaClick(TObject *Sender)
 			}
 		}
 	LeaveCriticalSection(&tall_CriticalSection);
-	Application->MessageBoxW(L"Toiminto toteutettu", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Toiminto toteutettu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -538,7 +540,7 @@ void __fastcall TFormSprinthiihto::BtnPalautaClick(TObject *Sender)
 
 	HaeSprintsarjat(lsrj, &nl, msrj, &nm);
 	if (!nl) {
-		Application->MessageBoxW(L"Sarjoja ei valittu", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Sarjoja ei valittu"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	lisays = _wtoi(EdPalLisays->Text.c_str());
@@ -564,7 +566,7 @@ void __fastcall TFormSprinthiihto::BtnPalautaClick(TObject *Sender)
 			}
 		}
 	LeaveCriticalSection(&tall_CriticalSection);
-	Application->MessageBoxW(L"Toiminto toteutettu", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Toiminto toteutettu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -612,7 +614,7 @@ void __fastcall TFormSprinthiihto::EdtMuodVaiheExit(TObject *Sender)
 {
 	muodvaihe = _wtoi(EdtMuodVaihe->Text.c_str()) - 1;
 	if (muodvaihe < k_pv+1 || muodvaihe >= kilpparam.n_pv_akt) {
-		Application->MessageBoxW(L"Virheellinen vaihe vaihdettu seuraavaksi vaiheeksi", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Virheellinen vaihe vaihdettu seuraavaksi vaiheeksi"), TR(L"Virhe"), MB_OK);
 		muodvaihe = k_pv+1;
 		EdtMuodVaihe->Text = muodvaihe+1;
 	}

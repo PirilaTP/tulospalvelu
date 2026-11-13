@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitMerkKoodeja.h"
 #include "VDeclare.h"
@@ -29,6 +30,7 @@ TFormMerkKoodeja *FormMerkKoodeja;
 __fastcall TFormMerkKoodeja::TFormMerkKoodeja(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -38,14 +40,14 @@ __fastcall TFormMerkKoodeja::TFormMerkKoodeja(TComponent* Owner)
 void __fastcall TFormMerkKoodeja::FormCreate(TObject *Sender)
 {
 	SG1->ColCount = 5;
-	SG1->Cells[0][0] = L"No";
-	SG1->Cells[1][0] = L"Osuus";
+	SG1->Cells[0][0] = TR(L"No");
+	SG1->Cells[1][0] = TR(L"Osuus");
 	if (RGTark->ItemIndex >= 7)
 		SG1->Cells[2][0] = L"GPS";
 	else
-		SG1->Cells[2][0] = L"Tila";
-	SG1->Cells[3][0] = L"Aika";
-	SG1->Cells[4][0] = L"Joukkue";
+		SG1->Cells[2][0] = TR(L"Tila");
+	SG1->Cells[3][0] = TR(L"Aika");
+	SG1->Cells[4][0] = TR(L"Joukkue");
 	SG1->ColWidths[0] = 50 * Screen->PixelsPerInch / 96;
 	SG1->ColWidths[1] = 50 * Screen->PixelsPerInch / 96;
 	SG1->ColWidths[2] = 50 * Screen->PixelsPerInch / 96;

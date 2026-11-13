@@ -18,6 +18,7 @@
 #include <vcl.h>
 #include <string>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "TakaaAjoUnit.h"
 #include "HkDeclare.h"
@@ -42,6 +43,7 @@ static int ntls1 = 0, ntls2 = 0, nhyl1 = 0, nkesk1 = 0, npois1 = 0;
 __fastcall TTakaaAjoForm::TTakaaAjoForm(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -279,7 +281,7 @@ void __fastcall TTakaaAjoForm::Button22Click(TObject *Sender)
 		return;
 	srj = finsrj[0];
 	if (wcswcind(kilpparam.kilplaji, L"NP") >= 0 && Sarjat[srj].kaava[k_pv+1][VALUKU+1].kerroin == 0) {
-		Application->MessageBoxW(L"Pistekaavan kerroin virheellinen", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Pistekaavan kerroin virheellinen"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	takajo = RGtakajo->ItemIndex == 0;
@@ -348,7 +350,7 @@ void __fastcall TTakaaAjoForm::Button22Click(TObject *Sender)
 		kilp.tallenna(jrjarr[i].dkilp, 0, 0, 0, NULL);
 		}
 	LeaveCriticalSection(&tall_CriticalSection);
-	Application->MessageBoxW(L"Lähtöjärjestys laadittu", L"Valmis", MB_OK);
+	Application->MessageBoxW(TR(L"Lähtöjärjestys laadittu"), TR(L"Valmis"), MB_OK);
 }
 
 //---------------------------------------------------------------------------
@@ -481,7 +483,7 @@ void __fastcall TTakaaAjoForm::FormShow(TObject *Sender)
 		RGnumeroi->Enabled = true;
 	itma = CBAfin->ItemIndex;
 	CBAfin->Items->Clear();
-	CBAfin->Items->Add(L"Ei sarjaa");
+	CBAfin->Items->Add(TR(L"Ei sarjaa"));
 	for (int srj = 0; srj < sarjaluku; srj++) {
 		CBAfin->Items->Add(Sarjat[srj].sarjanimi);
 	}

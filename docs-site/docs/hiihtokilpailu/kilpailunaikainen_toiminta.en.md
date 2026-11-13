@@ -1,0 +1,3 @@
+# Operations during the competition
+
+

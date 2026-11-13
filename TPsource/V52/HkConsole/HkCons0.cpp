@@ -29,6 +29,7 @@
 #include <malloc.h>
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include <dos.h>
 #include "HkDeclare.h"
@@ -47,18 +48,18 @@ int valuku_vanha;
 int iscurpos;
 
 EDITFLD editfld[] = {
-	{L"Nimi :",		0,		7,		7, LSNIMI,	1},
+	{N_(L"Nimi :"),		0,		7,		7, LSNIMI,	1},
 	{L"",			0, LSNIMI+8,	7, LENIMI,	1},
-	{L"Arvo :",		0,		7,		8, LARVO,	1},
-	{L"Lisenssi :", 0,		11,		9,		8,	1},
-	{L"WREkoodi :",	0,		11,		10,		9,	0},
-	{L"Kilpailukortti :", 22, 39,	9,		8,	1},
+	{N_(L"Arvo :"),		0,		7,		8, LARVO,	1},
+	{N_(L"Lisenssi :"), 0,		11,		9,		8,	1},
+	{N_(L"WREkoodi :"),	0,		11,		10,		9,	0},
+	{N_(L"Kilpailukortti :"), 22, 39,	9,		8,	1},
 	{L"",			0,		50,		9,		5,	1},
-	{L"Seura :",	0,		8,		11, LSEURA, 1},
-	{L"Seuralyh :", 0,		11,		12,	 LLYH,	0},
-	{L"Alue :",		45,		52,		11,		2,	1},
-	{L"Maa :",		56,		62,		11,		3,	1},
-	{L"Yhdistys :", 37,		48,		12,	 LYHD,	0},
+	{N_(L"Seura :"),	0,		8,		11, LSEURA, 1},
+	{N_(L"Seuralyh :"), 0,		11,		12,	 LLYH,	0},
+	{N_(L"Alue :"),		45,		52,		11,		2,	1},
+	{N_(L"Maa :"),		56,		62,		11,		3,	1},
+	{N_(L"Yhdistys :"), 37,		48,		12,	 LYHD,	0},
 	{L"",			0,		5,		16,		10, 1},
 	{L"",			0,		17,		16,		10, 1},
 	{L"",			0,		30,		16,		5,	1},
@@ -66,14 +67,14 @@ EDITFLD editfld[] = {
 	{L"",			0,		48,		16,		3,	1},
 	{L"",			0,		56,		16,		3,	1},
 	{L"",			0,		17,		20,		10, 1},
-	{L"Sarja :",	0,		8,		2, LSARJA,	1},
-	{L"Kilpno : ",	0,		8,		4,		4,	1},
-	{L"Maaliaika :", 42,	54,		3,		11, 1},
-	{L"Tot.lähtö :", 42,	54,		4,		11, 1},
-	{L"Tasoitus/sakko :", 37, 54,	6,		4,	0},
-	{L"Amp.sakot :", 42,	54,		5,		1,	0},
-	{L"Rata :",		46,		54,		5,		8,	0},
-	{L"Erä :",		32,		38,		5,		2,	0}
+	{N_(L"Sarja :"),	0,		8,		2, LSARJA,	1},
+	{N_(L"Kilpno : "),	0,		8,		4,		4,	1},
+	{N_(L"Maaliaika :"), 42,	54,		3,		11, 1},
+	{N_(L"Tot.lähtö :"), 42,	54,		4,		11, 1},
+	{N_(L"Tasoitus/sakko :"), 37, 54,	6,		4,	0},
+	{N_(L"Amp.sakot :"), 42,	54,		5,		1,	0},
+	{N_(L"Rata :"),		46,		54,		5,		8,	0},
+	{N_(L"Erä :"),		32,		38,		5,		2,	0}
 };
 
 void addtapahtuma(kilptietue *kilp, int piste) { }
@@ -275,7 +276,7 @@ void lukumaarat()
 		else {
 			yb = 18;
 			vidint(yb-1,78,2, dcom+1);
-			viwrrect(yb,66,yb,76," Saap:     ",7,0,0);
+			viwrrect(yb,66,yb,76,TRA(" Saap:     "),7,0,0);
 			for (nc1 = 0; nc1 < ySize-24; nc1++) {
 				if (yb+nc1+1 < ySize-4)
 					viwrrect(yb+nc1+1,66,yb+nc1+1,76,"           ",7,0,0);
@@ -300,7 +301,7 @@ void lukumaarat()
 				nc = 10;
 			if (nc) {
 				yb = ySize-5-nc;
-				viwrrect(yb,66, yb, 79, " LUKIJA/KELLO ", 7,0,0);
+				viwrrect(yb,66, yb, 79, TRA(" LUKIJA/KELLO "), 7,0,0);
 				for (nc1 = 0; nc1 < NREGNLY; nc1++) {
 					if (regnly[nc1] > 0) {
 						yb++;
@@ -349,14 +350,14 @@ void copydfile(datafile *datfb, INT oldfile)
 
 	header = L"BACK-UP";
 	clrln(ySize-3);
-	vidspwmsg(ySize-3, 0, 7, 0, L"Anna backup-tiedoston nimi");
+	vidspwmsg(ySize-3, 0, 7, 0, TR(L"Anna backup-tiedoston nimi"));
 	inputwstr(fname, 49, 27, ySize-3, L"\r\x1b", &wch, 0);
 	if (wch == ESC) {
 		return;
 		}
 	clrln(ySize-3);
 	kirjKilpDat(fname);
-	vidspwmsg(ySize-5,0,7,0,L"Tiedosto kirjoitettu  ");
+	vidspwmsg(ySize-5,0,7,0,TR(L"Tiedosto kirjoitettu  "));
 	}
 #endif
 
@@ -375,15 +376,15 @@ void valiajat(void)
       clearframe63();
       prscr(&valiaikaohje);
       clrln(ySize-3);
-      vidspwmsg(ySize-3,0,7,0,L"Anna sarja                     Esc : Poistu");
+      vidspwmsg(ySize-3,0,7,0,TR(L"Anna sarja                     Esc : Poistu"));
 	  srj = luesarja(NULL, &wtc);
 	  if (wtc == ESC || srj < 0) break;
       vidspwmsg(4,3,7,0,Sarjat[srj].sarjanimi);
-      vidspwmsg(4,23,7,0,L"Sijainti (km)      Minimiaika");
-      vidspwmsg(ySize-3,0,7,0,L" + : Hyväksy,  Esc : Peruuta sarjan muutokset");
+      vidspwmsg(4,23,7,0,TR(L"Sijainti (km)      Minimiaika"));
+      vidspwmsg(ySize-3,0,7,0,TR(L" + : Hyväksy,  Esc : Peruuta sarjan muutokset"));
       rajat[0] = Sarjat[srj].tul_raja[k_pv];
       memcpy(rajat+1, Sarjat[srj].va_raja[k_pv], kilpparam.valuku*sizeof(rajat[0]));
-      wcscpy(pisteet[0],L"Maali");
+      wcscpy(pisteet[0],TR(L"Maali"));
       memcpy(pisteet+1, Sarjat[srj].va_matka[k_pv], kilpparam.valuku*sizeof(pisteet[0]));
       for (k = 0; k <= Sarjat[srj].valuku[k_pv]; k++) {
          for (l = 0; l < 2; l++)
@@ -455,7 +456,7 @@ static void valitselahtosarja(void)
    else msg[0] = 0;
    clrln(ySize-3);
    viwrrectw(ySize-3,0,ySize-3,18,
-      L"Anna lähtevä sarja tai 'kaikki':",7,0,0);
+      TR(L"Anna lähtevä sarja tai 'kaikki':"),7,0,0);
    do {
       inputwstr(msg,10,29,ySize-3,L"\r\x1b",&ch,0);
       if (ch == ESC) break;
@@ -464,7 +465,7 @@ static void valitselahtosarja(void)
       else {
          tunn_srj = haesarja_w(msg, false);
          if(tunn_srj < 0)
-            writeerror_w(L"Virheellinen sarja",0);
+            writeerror_w(TR(L"Virheellinen sarja"),0);
          }
       } while (tunn_srj < 0);
 	}
@@ -823,24 +824,24 @@ void pistetunn(void)
             ch = ch_piste[aika_tunnus[0][m]+2];
 		 if (pvparam[k_pv].hiihtolahto) {
             if (regnly[0] != 4)
-               swprintf(msg, L"Anna %s käyttökohde"
-	               L" (ALM123456789X)", porttinimi[m+1]);
+               swprintf(msg, TR(L"Anna %s käyttökohde"
+	               L" (ALM123456789X)"), porttinimi[m+1]);
 		    else
-			   swprintf(msg, L"Anna %s käyttökohde"
-			       L" (ALM123456789X)", porttinimi2[m+1]);
+			   swprintf(msg, TR(L"Anna %s käyttökohde"
+			       L" (ALM123456789X)"), porttinimi2[m+1]);
 			wselectopt(msg, L"ALM123456789X", &ch);
 			}
 		 else
 			{
 #ifndef MAASTO
              if (!m) continue;
-             swprintf(msg, L"Anna %s käyttökohde"
-                 L" (AM123456789X)", porttinimi[m+1]);
+             swprintf(msg, TR(L"Anna %s käyttökohde"
+                 L" (AM123456789X)"), porttinimi[m+1]);
 	         wselectopt(msg, L"AM123456789X", &ch);
 #else
 		     if (!m) continue;
-			 swprintf(msg, L"Anna %s käyttökohde"
-			     L" (AMK)", porttinimi[m+1]);
+			 swprintf(msg, TR(L"Anna %s käyttökohde"
+			     L" (AMK)"), porttinimi[m+1]);
 			 wselectopt(msg, L"AMK", &ch);
 #endif
 			 }
@@ -938,12 +939,12 @@ void asetukset()
          tc = ch;
          if (tc == L'O') {
             clrln(ySize-3);
-            vidspwmsg(ySize-3,0,7,0,L"Ohjetiedoston nimi:");
+            vidspwmsg(ySize-3,0,7,0,TR(L"Ohjetiedoston nimi:"));
             inputwstr(ohjefl, 39, 20, ySize-3, L"\r\x1b", &ch, 0);
             if (ch == ESC)
 			   break;
             if ((ohjefile = _wfopen(ohjefl, L"rt")) == NULL) {
-               writeerror_w(L"Tiedostoa ei löydy", 0);
+               writeerror_w(TR(L"Tiedostoa ei löydy"), 0);
                break;
                }
             }
@@ -981,7 +982,7 @@ void asetukset()
                      if ((l = haesarja_w(s2, false)) >= 0)
                         ch = L'N';
                      else {
-                        swprintf(msg, L"Ohjerivillä %d (MUUTA-rivi) virheellinen sarja %s", r, s2);
+                        swprintf(msg, TR(L"Ohjerivillä %d (MUUTA-rivi) virheellinen sarja %s"), r, s2);
                         ch = ESC;
                         }
                      }
@@ -1001,9 +1002,9 @@ void asetukset()
                         }
                      if (m < 0) {
 								if (l < 0)
-                           swprintf(msg, L"Ohjerivillä %d virheellinen sarja %s", r, s1);
+                           swprintf(msg, TR(L"Ohjerivillä %d virheellinen sarja %s"), r, s1);
                         else
-                           swprintf(msg, L"Ohjerivillä %d sarjaan %s virheellinen sijoitus %s", r, s1, s2);
+                           swprintf(msg, TR(L"Ohjerivillä %d sarjaan %s virheellinen sijoitus %s"), r, s1, s2);
                         ch = ESC;
                         }
                      }
@@ -1027,7 +1028,7 @@ void asetukset()
                   for(;;) {
                      if (tc != L'O') {
                         clrln(ySize-3);
-                        vidspwmsg(ySize-3,0,7,0,L"Lähtötiedon kilpailijanumero:      Kohteen kilpailijanumero:       Esc: Lopeta");
+                        vidspwmsg(ySize-3,0,7,0,TR(L"Lähtötiedon kilpailijanumero:      Kohteen kilpailijanumero:       Esc: Lopeta"));
                         INPUTINTW(&l, 4, 30, ySize-3, L"\r\x1b", &ch);
                         if (ch == ESC) break;
                         m = getpos(l);
@@ -1058,7 +1059,7 @@ void asetukset()
                            }
                         }
                      if (m <= 0)
-                        writeerror_w(L"Virheellinen tai varattu kilpailijanumero", 0);
+                        writeerror_w(TR(L"Virheellinen tai varattu kilpailijanumero"), 0);
                      if (tc == L'O')
                         break;
                      }
@@ -1076,10 +1077,10 @@ void asetukset()
                      clrln(ySize-6);
                      clrln(ySize-5);
                      clrln(ySize-3);
-							swprintf(msg, L"Sarjakohtainen %sen muutos", ch == L'L' ? L"lähtöaikoj" : L"numeroid");
+							swprintf(msg, TR(L"Sarjakohtainen %sen muutos"), ch == L'L' ? L"lähtöaikoj" : L"numeroid");
                      vidspwmsg(ySize-5,0,7,0, msg);
-                     swprintf(msg, L"Anna sarja              ja %s",
-                        ch == L'L' ? L"lähtöajan siirto         sek" : L"numeroiden muutos");
+                     swprintf(msg, TR(L"Anna sarja              ja %s"),
+                        ch == L'L' ? TR(L"lähtöajan siirto         sek") : TR(L"numeroiden muutos"));
                      vidspwmsg(ySize-3,9,7,0, msg);
                      l = luesarja(NULL, &ch);
                      if (ch == ESC)
@@ -1160,10 +1161,10 @@ void asetukset()
                         autorap = 1;
                         memset(autorapsrj, 0, MAXSARJALUKU);
                         clrln(ySize-3);
-                        vidspwmsg(ySize-3,0,7,0,L"Anna sarja");
+                        vidspwmsg(ySize-3,0,7,0,TR(L"Anna sarja"));
                         do {
                            clrln(ySize-1);
-                           vidspwmsg(ySize-1,0,7,0,L"Luettele tulostettavat sarjat, lopuksi L'Esc'");
+                           vidspwmsg(ySize-1,0,7,0,TR(L"Luettele tulostettavat sarjat, lopuksi L'Esc'"));
                            l = luesarja(NULL, &ch);
                            if (ch == ESC) break;
                            if (l >= 0 && l < sarjaluku) autorapsrj[l] = L'\x01';
@@ -1189,7 +1190,7 @@ void asetukset()
       case L'T' :
          break;
       case L'M' :
-         viwrrectw(ySize-3,0,ySize-3,30,L"Anna maalin   viimeinen aika : ",7,0,0);
+         viwrrectw(ySize-3,0,ySize-3,30,TR(L"Anna maalin   viimeinen aika : "),7,0,0);
          for (m = 0; m < 9; m++)
             if (maaliajat[m] != TMAALI0) {
                ch = m + L'1';
@@ -1235,7 +1236,7 @@ void asetukset()
                   {
                   if (regnly[0] == 1 || regnly[0] == 2 || regnly[0] == 12) {
                      vidspwmsg(ySize-1,0,7,0,
-                        L"Odottaa vastausta maalikellolta");
+                        TR(L"Odottaa vastausta maalikellolta"));
                      kerro_regnly = 1;
                      while (kerro_regnly && 
                         readkbd(&che, FALSE, spoolfl) != ESC);
@@ -1243,7 +1244,7 @@ void asetukset()
                      }
                   clrln(ySize-3);
                   viwrrectw(ySize-3,0,ySize-3,36,
-                     L"Anna maalikellon nolla-aika :        ",7,0,0);
+                     TR(L"Anna maalikellon nolla-aika :        "),7,0,0);
                   INPUTAIKAW(&t0_regn[0],t0,8,30,ySize-3,L"\xD",&ch);
 						maaliajat[9] = t0_regn[0];
                   }

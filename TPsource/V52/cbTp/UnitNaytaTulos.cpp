@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include <process.h>
 #include "UnitNaytaTulos.h"
@@ -34,6 +35,7 @@ static bool vaiheenvaihto = false;
 __fastcall TFormNaytaTulos::TFormNaytaTulos(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -142,7 +144,7 @@ void __fastcall TFormNaytaTulos::NaytaTulos(wchar_t *nimi, wchar_t trk, int tls,
 MESSAGE void __fastcall TFormNaytaTulos::DisplTimerHandler(TMyMessage &msg)
 {
 	if (Aika <= 0) {
-		Label1->Caption = L"Kilpailija";
+		Label1->Caption = TR(L"Kilpailija");
 		LblTulos->Caption = L"";
 		LblSija->Caption = L"";
 		LblEro->Caption = L"";
@@ -158,8 +160,8 @@ MESSAGE void __fastcall TFormNaytaTulos::DisplTimerHandler(TMyMessage &msg)
 void __fastcall TFormNaytaTulos::Nytnkesto1Click(TObject *Sender)
 {
 	wchar_t ch;
-	inputint_prompt(&Kesto[0], L"OK - näytön kesto sekunteina", &ch, this);
-	inputint_prompt(&Kesto[1], L"Virhenäytön kesto sekunteina", &ch, this);
+	inputint_prompt(&Kesto[0], TR(L"OK - näytön kesto sekunteina"), &ch, this);
+	inputint_prompt(&Kesto[1], TR(L"Virhenäytön kesto sekunteina"), &ch, this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormNaytaTulos::Teksti1Click(TObject *Sender)
@@ -227,11 +229,11 @@ void __fastcall TFormNaytaTulos::FormCreate(TObject *Sender)
 		Memo1->Clear();
 		Memo1->Lines->Add(L" ");
 		Memo1->Lines->Add(L" ");
-		Memo1->Lines->Add(L"Varmista tiedot");
+		Memo1->Lines->Add(TR(L"Varmista tiedot"));
 		Memo1->Lines->Add(L" ");
-		Memo1->Lines->Add(L"Check information");
+		Memo1->Lines->Add(TR(L"Check information"));
 		Memo1->Lines->Add(L" ");
-		Memo1->Lines->Add(L"Granska information");
+		Memo1->Lines->Add(TR(L"Granska information"));
 		}
 #endif
 }
@@ -241,7 +243,7 @@ void __fastcall TFormNaytaTulos::Esiluennanlhtraja1Click(TObject *Sender)
 {
 #ifndef MAXOSUUSLUKU
 	wchar_t ch;
-	inputint_prompt(&IkkParam.LahtoRaja, L"Varoitusraja lähtöajalle (min)", &ch, this);
+	inputint_prompt(&IkkParam.LahtoRaja, TR(L"Varoitusraja lähtöajalle (min)"), &ch, this);
 #endif
 }
 //---------------------------------------------------------------------------

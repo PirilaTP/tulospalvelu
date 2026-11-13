@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitIlmoitus.h"
 //---------------------------------------------------------------------------
@@ -28,6 +29,7 @@ TFormIlmoitus *FormIlmoitus;
 __fastcall TFormIlmoitus::TFormIlmoitus(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormIlmoitus::FormShow(TObject *Sender)

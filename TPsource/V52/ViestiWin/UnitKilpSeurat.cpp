@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitKilpSeurat.h"
 #include "VDeclare.h"
@@ -30,6 +31,7 @@ TFormKilpSeurat *FormKilpSeurat;
 __fastcall TFormKilpSeurat::TFormKilpSeurat(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -45,12 +47,12 @@ void __fastcall TFormKilpSeurat::KirjoitaSeurat(int tyyli)
 	if (tyyli != 2) {
 		SaveDialog1->FileName = L"Seuraluettelo.txt";
 		SaveDialog1->DefaultExt = L"txt";
-		SaveDialog1->Filter = L"Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Tekstitiedostot (*.txt) | *.TXT|Kaikki tiedostot (*.*)|*.*");
 		}
 	else {
 		SaveDialog1->FileName = L"Seuraluettelo.csv";
 		SaveDialog1->DefaultExt = L"csv";
-		SaveDialog1->Filter = L"CSV-tiedostot (*.csv) | *.CSV|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"CSV-tiedostot (*.csv) | *.CSV|Kaikki tiedostot (*.*)|*.*");
 		}
 	if (SaveDialog1->Execute()) {
 		outfile = new TextFl(SaveDialog1->FileName.c_str(), L"w");
@@ -162,10 +164,10 @@ void __fastcall TFormKilpSeurat::Nayta(void)
 	clisa = 2 + ((vpv - epv) ? (vpv -epv + 1) : 0);
 	SG1->ColCount = sarjaluku + clisa;
 	SG1->FixedRows = 2;
-	wcscpy(sra[0].seura, L"Yhteensä");
-	SG1->Cells[sracol][0] = L"Seura";
+	wcscpy(sra[0].seura, TR(L"Yhteensä"));
+	SG1->Cells[sracol][0] = TR(L"Seura");
 	SG1->ColWidths[sracol] = 180 * Screen->PixelsPerInch / 96;
-	SG1->Cells[1][0] = L"Kaikki";
+	SG1->Cells[1][0] = TR(L"Kaikki");
 	SG1->ColWidths[1] = 45 * Screen->PixelsPerInch / 96;
 	if (vpv > epv) {
 		for (i_pv = epv; i_pv <= vpv; i_pv++) {
@@ -200,8 +202,8 @@ void __fastcall TFormKilpSeurat::NaytaSarjat(void)
 	SG1->FixedRows = 1;
 	SG1->ColWidths[0] = 70 * Screen->PixelsPerInch / 96;
 	SG1->ColWidths[1] = 60 * Screen->PixelsPerInch / 96;
-	SG1->Cells[0][0] = L"Sarja";
-	SG1->Cells[1][0] = L"Yhteensä";
+	SG1->Cells[0][0] = TR(L"Sarja");
+	SG1->Cells[1][0] = TR(L"Yhteensä");
 	SG1->Cells[1][1] = nilmt;
 }
 //---------------------------------------------------------------------------

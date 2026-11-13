@@ -32,6 +32,7 @@
 #include <malloc.h>
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include <dos.h>
 #include "HkDeclare.h"
@@ -597,7 +598,7 @@ int kilptietue::write(int d, int mihin)
 void kilptietue::GETREC(INT d)
 	{
 	if (d < 0 || d > maxrec) {
-		writeerror_w(L"Virhe: Ohjelma yritt‰‰ hakea olematonta kilpailijaa", 0);
+		writeerror_w(TR(L"Virhe: Ohjelma yritt‰‰ hakea olematonta kilpailijaa"), 0);
 		return;
 		}
 	this->nollaa();
@@ -609,7 +610,7 @@ void kilptietue::GETREC(INT d)
 void kilptietue::PUTREC(INT d, int tallenna)
 	{
 	if (d > maxrec) {
-		writeerror_w(L"Yritys tallentaa liikaa klpailijoita", 2000);
+		writeerror_w(TR(L"Yritys tallentaa liikaa klpailijoita"), 2000);
 		return;
 		}
 	EnterCriticalSection(&kilpdat_CriticalSection);
@@ -679,7 +680,7 @@ void kilptietue::addtall(INT *dataf, INT kielto)
 
 //	EnterCriticalSection(&tall_CriticalSection);
 	if (nrec >= maxrec) {
-		writeerror_w(L"Yritys lis‰t‰ liikaa kilpailijoita", 0);
+		writeerror_w(TR(L"Yritys lis‰t‰ liikaa kilpailijoita"), 0);
 		return;
 		}
 	if (!kilpparam.sarjavaihtelee)
@@ -776,7 +777,7 @@ int haeseurvapaa(int seurvapaa)
 
 	i = haeSeurVapaaKno(k_pv, seurvapaa);
 	if (i == 0) {
-		writeerror_w(L"Ei vapaita kilpailijanumeroita, lis‰ys mahdotonta", 0);
+		writeerror_w(TR(L"Ei vapaita kilpailijanumeroita, lis‰ys mahdotonta"), 0);
 		}
 	return(i);
 	}
@@ -928,7 +929,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 			parametrivirhe(L"tallenna - kilpno", iid, L"", L' ');
 			setId(haeSeurVapaaKno(k_pv, iid), k_pv);
 			if (loki) {
-				swprintf(line, L"tallenna vaihtoi tietueen %d kilpnon %d -> %d", d, iid, id());
+				swprintf(line, TR(L"tallenna vaihtoi tietueen %d kilpnon %d -> %d"), d, iid, id());
 				wkirjloki(line);
 				}
 			}
@@ -941,7 +942,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 //	EnterCriticalSection(&tall_CriticalSection);
 	if (Sarja() < 0) {
 		if (!kielto) {
-			writeerror_w(L"Yritys tallentaa kilpailija ilman sarjaa. Tallennus peruutettu", 0);
+			writeerror_w(TR(L"Yritys tallentaa kilpailija ilman sarjaa. Tallennus peruutettu"), 0);
 			return;
 			}
 		else
@@ -1056,7 +1057,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 				getEmitJarr(bkno, &jbdg);
 				if (bkno && kysyfl) {
 					swprintf(line,
-						L"Kilpailijalla %d on jo e-koodi %ld - poista ennen muutosta",
+						TR(L"Kilpailijalla %d on jo e-koodi %ld - poista ennen muutosta"),
 						bkno, ubadge[ibdg]);
 					writeerror_w(line, timerfl*2000, true);
 					pv[k_pv].badge[ibdg] = kilp.pv[k_pv].badge[ibdg];
@@ -1073,8 +1074,8 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 					if (ep >= 0 && kysyfl) {
 						if (ubadge[ibdg]) {
 							if (!kuntosuunnmoodi)
-								writeerror_w(L"Kilpailijalle luetut Emit-tiedot s‰ilyv‰t "
-									L"kilpailijalla", timerfl*2000, true);
+								writeerror_w(TR(L"Kilpailijalle luetut Emit-tiedot s‰ilyv‰t "
+									L"kilpailijalla"), timerfl*2000, true);
 							}
 						else {
 #ifdef _CONSOLE
@@ -1366,7 +1367,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 				Sarjat[Sarja()].sarjanimi,ss,tark(k_pv));
 			wkirjloki(line);
 			if (keskeyta) {
-				swprintf(line,L"Keskeyt‰ = %d, kello %s", keskeyta, wkello());
+				swprintf(line,TR(L"Keskeyt‰ = %d, kello %s"), keskeyta, wkello());
 				wkirjloki(line);
 				}
 			}
@@ -1374,7 +1375,7 @@ void kilptietue::tallenna(INT d, INT comtarfl, INT kielto, INT pakota_lah, kilpt
 			lisaToimet(this, &kilp, kcmp, m_pv, m_ajat);
 			}
 		if (keskeyta > 2) {
-			writeerror_w(L"Indeksointivirhe, Ohjelma keskeytet‰‰n", 0, true);
+			writeerror_w(TR(L"Indeksointivirhe, Ohjelma keskeytet‰‰n"), 0, true);
 			inLopetus = 1;
 			lopetus();
 			}

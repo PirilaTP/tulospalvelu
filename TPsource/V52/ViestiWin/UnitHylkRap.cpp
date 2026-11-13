@@ -19,6 +19,7 @@
 #include <vcl.h>
 //#include <FileCtrl.hpp>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitHylkRap.h"
 #include "UnitMain.h"
@@ -84,6 +85,7 @@ static wchar_t *PiikkiStr[] = {L"Ei käsitelty / Not verified", L"Ei korttia / No
 __fastcall TFormHylkRap::TFormHylkRap(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	wchar_t *p;
 
 	Scaled = false;
@@ -204,50 +206,67 @@ void __fastcall TFormHylkRap::ValitseHakemisto1Click(TObject *Sender)
 	SetCurrentDir(FormMain->CurrentDir);
 }
 //---------------------------------------------------------------------------
+// Raportin kenttäotsikko tulosteen kielellä ja lisäksi englanniksi (esim. "Sarja / Class"),
+// englanninkielisessä tulosteessa vain englanniksi
+static UnicodeString rapTeksti(int kieli, const wchar_t *fi)
+{
+	if (kieli == KIELI_EN)
+		return(UnicodeString(TRL(KIELI_EN, fi)));
+	return(UnicodeString(TRL(kieli, fi)) + L" / " + TRL(KIELI_EN, fi));
+}
+
+static void rapOtsikko(tulostusparamtp *tulprm, const wchar_t *fi, int pos, int len)
+{
+	UnicodeString Teksti = rapTeksti(tulprm->language, fi);
+	tulprm->Putfld(Teksti.c_str(), pos, Teksti.Length() > len ? Teksti.Length() : len, 0, 0);
+}
+
 void  TFormHylkRap::hylk_rap(tulostusparamtp *tulprm)
 {
 	int m = 50, x1 = 400, x2 = 470;
 	tulprm->Initpage(NULL);
 	tulprm->Paaots_on();
-	tulprm->Putfld(L"Hylkäysesitys", m, 20, 0, 0);
+	tulprm->Putfld(TRCL(tulprm->language, L"raportti", L"Hylkäysesitys"), m, 30, 0, 0);
 	tulprm->Endline(0);
 	tulprm->Paaots_pois();
-	tulprm->Aliots_on();
-	tulprm->Putfld(L"Disqualification proposal", m, 30, 0, 0);
-	tulprm->Aliots_pois();
+	if (tulprm->language != KIELI_EN) {
+		tulprm->Aliots_on();
+		tulprm->Putfld(TRCL(KIELI_EN, L"raportti", L"Hylkäysesitys"), m, 30, 0, 0);
+		tulprm->Aliots_pois();
+		}
 	tulprm->Endline(3);
-	tulprm->Putfld(L"Tapaus avattu / Case opened", m, 30, 0, 0);
+	rapOtsikko(tulprm, L"Tapaus avattu", m, 30);
 	tulprm->Putfld(EdtAvausaika->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Viimeisin tallennus / Latest processing", m, 45, 0, 0);
+	rapOtsikko(tulprm, L"Viimeisin tallennus", m, 45);
 	tulprm->Putfld(EdtTallennusaika->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Sarja / Class", m, 30, 0, 0);
+	rapOtsikko(tulprm, L"Sarja", m, 30);
 	tulprm->Putfld(EdtSarja->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Joukkue / Team", m, 30, 0, 0);
+	rapOtsikko(tulprm, L"Joukkue", m, 30);
 	tulprm->Putfld((UnicodeString(KilpNo)+L" :").c_str(), m+x1, 6, 1, 0);
 	tulprm->Putfld(EdtSeura->Text.c_str(), m+x2, 40, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Osuus / Leg", m, 30, 0, 0);
+	rapOtsikko(tulprm, L"Osuus", m, 30);
 	tulprm->Putfld((UnicodeString(Osuus+1)+L" :").c_str(), m+x1, 6, 1, 0);
 	tulprm->Putfld(EdtNimi->Text.c_str(), m+x2, 40, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Emit-koodi / Emit code", m, 30, 0, 0);
+	rapOtsikko(tulprm, L"Emit-koodi", m, 30);
 	tulprm->Putfld(EdtBadge->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Rata / Coutse", m, 30, 0, 0);
+	rapOtsikko(tulprm, L"Rata", m, 30);
 	tulprm->Putfld(EdtRata->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Ongelma / Problem", m, 30, 0, 0);
+	rapOtsikko(tulprm, L"Ongelma", m, 30);
 	if (RGLuonne->ItemIndex > 0)
 		tulprm->Putfld(LuonneStr[RGLuonne->ItemIndex], m+x1, 40, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Piikinjäljet / Control card", m, 40, 0, 0);
+	rapOtsikko(tulprm, L"Piikinjäljet", m, 40);
 	if (RGPiikit->ItemIndex > 0)
 	tulprm->Putfld(PiikkiStr[RGPiikit->ItemIndex], m+x1, 40, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Lisätietoa / Additional notes", m, 40, 0, 0);
+	rapOtsikko(tulprm, L"Lisätietoa", m, 40);
 	tulprm->Putfld(EdtSelitys->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(0);
 	for (int r = 0; r < 5; r++) {
@@ -256,25 +275,25 @@ void  TFormHylkRap::hylk_rap(tulostusparamtp *tulprm)
 		tulprm->Endline(0);
 		}
 	tulprm->Endline(0);
-	tulprm->Putfld(L"Toimitsijan päätös / Official's decision", m, 45, 0, 0);
+	rapOtsikko(tulprm, L"Toimitsijan päätös", m, 45);
 	if (RGRatk_1->ItemIndex > 0)
 		tulprm->Putfld(RatkStr[RGRatk_1->ItemIndex], m+x1, 40, 0, 0);
 	tulprm->Endline(0);
-	tulprm->Putfld(L"Toimitsija / Official", m, 40, 0, 0);
+	rapOtsikko(tulprm, L"Toimitsija", m, 40);
 	tulprm->Putfld(EdtToimitsija->Text.c_str(), m+x1, 30, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Kilpailijan kanta / Competitor's view", m, 45, 0, 0);
+	rapOtsikko(tulprm, L"Kilpailijan kanta", m, 45);
 	if (RGKilpKanta->ItemIndex > 0)
 		tulprm->Putfld(MyontoStr[RGKilpKanta->ItemIndex], m+x1, 40, 0, 0);
 	tulprm->Endline(1);
-	tulprm->Putfld(L"Lopullinen päätös / Final decision", m, 40, 0, 0);
+	rapOtsikko(tulprm, L"Lopullinen päätös", m, 40);
 	if (RGTuom->ItemIndex > 0)
 		tulprm->Putfld(RatkStr[RGTuom->ItemIndex], m+x1, 40, 0, 0);
 	tulprm->Endline(3);
-	tulprm->Putfld(L"Allekirjoitukset / Signatures", m, 30, 0, 0);
+	rapOtsikko(tulprm, L"Allekirjoitukset", m, 30);
 	tulprm->Endline(4);
-	tulprm->Putfld(L"Toimitsija / Official", m, 30, 0, 0);
-	tulprm->Putfld(L"Kilpailija / Competitor", m+x1, 30, 0, 0);
+	rapOtsikko(tulprm, L"Toimitsija", m, 30);
+	rapOtsikko(tulprm, L"Kilpailija", m+x1, 30);
 	tulprm->Endline(0);
 	tulprm->Endpage();
 	tulprm->Enddoc();
@@ -287,12 +306,12 @@ void  TFormHylkRap::tulostaRaportti(void)
 		}
 	if (RapKirjoitin[0] != 0) {
 	RapTulPrm.printer = GDIPRINTER;
-	RapTulPrm.language = lsttulparam.language;
+	RapTulPrm.language = tulostekieli;
 	if (!RapTulPrm.lstf) {
 		EnterCriticalSection(&print_CriticalSection);
 		if ((RapTulPrm.lstf = openprfile(RapKirjoitin, 1, TRUE, FALSE, 0, FALSE))
 			== NULL) {
-			Application->MessageBoxW(L"Kirjoittimen käyttö ei onnistu", L"Virhe", MB_OK);
+			Application->MessageBoxW(TR(L"Kirjoittimen käyttö ei onnistu"), TR(L"Virhe"), MB_OK);
 			return;
 			}
 		if (RapTulPrm.lstf && RapTulPrm.lstf->prno == 2)
@@ -309,7 +328,7 @@ void __fastcall TFormHylkRap::Avaahylkysraportti1Click(TObject *Sender)
 {
 	LblRapLkm->Visible = false;
 	OpenDialog1->DefaultExt = "x,l";
-	OpenDialog1->Filter = "Xml-tiedostot (*.xml) |*.xml|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TRA("Xml-tiedostot (*.xml) |*.xml|Kaikki tiedostot (*.*)|*.*");
 	OpenDialog1->InitialDir = ReportDir[0];
 	if (OpenDialog1->Execute()) {
 		int kno = 0, os = 0;
@@ -353,12 +372,12 @@ void __fastcall TFormHylkRap::BtnTallennaClick(TObject *Sender)
 		Kilp.getrec(d);
 	if (d < 1 || Kilp.kilpstatus != 0) {
 		LeaveCriticalSection(&tall_CriticalSection);
-		Application->MessageBoxW(L"Virheellinen kilpailunumero", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Virheellinen kilpailunumero"), TR(L"Este"), MB_OK);
 		return;
 		}
 	if (Osuus < 0 || Osuus >= Sarjat[Kilp.sarja].osuusluku) {
 		LeaveCriticalSection(&tall_CriticalSection);
-		Application->MessageBoxW(L"Virheellinen osuus", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Virheellinen osuus"), TR(L"Este"), MB_OK);
 		return;
 		}
 	Kilp.ostiet[Osuus].luonne = RGLuonne->ItemIndex < 1 ? 0 : " KEPVJM"[RGLuonne->ItemIndex];
@@ -462,7 +481,7 @@ void  TFormHylkRap::kirjoitaXmlRaportti(void)
 			}
 		delete tallfl;
 		}
-	LblRapLkm->Caption = L"Raportti tallennettu " + UnicodeString(nRap) + L" kansioon";
+	LblRapLkm->Caption = TR(L"Raportti tallennettu ") + UnicodeString(nRap) + L" kansioon";
 	LblRapLkm->Visible = true;
 }
 //---------------------------------------------------------------------------
@@ -632,7 +651,7 @@ int TFormHylkRap::lueXmlRaportti(void)
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
 				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, että tagit ovat pari
 					er = 1;
-					swprintf(msg, L"XML-muotoilun tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
+					swprintf(msg, TR(L"XML-muotoilun tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"),
 						rv, tag, tree.node[jnode].tag);
 					break;
 					}
@@ -660,11 +679,11 @@ int TFormHylkRap::lueXmlRaportti(void)
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s päättyi rivillä %d tasolla %d", RapFile(rHak), rv, depth);
+		swprintf(msg, TR(L"XML-tiedosto %s päättyi rivillä %d tasolla %d"), RapFile(rHak), rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivillä %d tai aikaisemmin", RapFile(rHak), rv);
+			swprintf(msg, TR(L"Tiedostossa %s virhe rivillä %d tai aikaisemmin"), RapFile(rHak), rv);
 			}
 		writeerror_w(msg, 0, true);
 		RGXmlLuku->ItemIndex = 2;

@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitFIS.h"
 //---------------------------------------------------------------------------
@@ -28,6 +29,7 @@ TFormFIS *FormFIS;
 __fastcall TFormFIS::TFormFIS(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -131,11 +133,11 @@ void __fastcall TFormFIS::BtnLuePisteetClick(TObject *Sender)
 			wcscpy(laji, L"SP");
 			break;
 		default:
-			Application->MessageBoxW(L"Valitse laji", L"Valitse", MB_OK);
+			Application->MessageBoxW(TR(L"Valitse laji"), TR(L"Valitse"), MB_OK);
 			return;
 		}
 	OpenDialog1->DefaultExt = L"csv";
-	OpenDialog1->Filter = L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		wchar_t *p, fnamepts[200] = L"", fnamecom[200];
 		TextFl *InFilePts = NULL, *InFileCom = NULL;
@@ -149,8 +151,8 @@ void __fastcall TFormFIS::BtnLuePisteetClick(TObject *Sender)
 				InFileCom = new TextFl(fnamecom, L"rt");
 			if (!InFileCom || !InFileCom->IsOpen()) {
 				Application->MessageBoxW(
-					(UnicodeString(L"Ohjelma ei onnistunut avaamaan molempia tarvittavia tiedostoja: ")+fnamepts+
-					L" ja "+fnamecom).c_str(), L"Este", MB_OK);
+					(UnicodeString(TR(L"Ohjelma ei onnistunut avaamaan molempia tarvittavia tiedostoja: "))+fnamepts+
+					TR(L" ja ")+fnamecom).c_str(), TR(L"Este"), MB_OK);
 				}
 			else {
 				LueKilpailijat(InFileCom);
@@ -224,7 +226,7 @@ void __fastcall TFormFIS::BtnLueNimetClick(TObject *Sender)
 {
 	Label2->Visible = false;
 	OpenDialog1->DefaultExt = L"csv";
-	OpenDialog1->Filter = L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		wchar_t *p, fnamecom[200];
 		TextFl *InFileCom = NULL;
@@ -233,8 +235,8 @@ void __fastcall TFormFIS::BtnLueNimetClick(TObject *Sender)
 		InFileCom = new TextFl(fnamecom, L"rt");
 		if (!InFileCom || !InFileCom->IsOpen()) {
 			Application->MessageBoxW(
-				(UnicodeString(L"Ohjelma ei onnistunut avaamaan tarvittavaa tiedostoa: ")+
-				fnamecom).c_str(), L"Este", MB_OK);
+				(UnicodeString(TR(L"Ohjelma ei onnistunut avaamaan tarvittavaa tiedostoa: "))+
+				fnamecom).c_str(), TR(L"Este"), MB_OK);
 				}
 		else {
 			LueKilpailijat(InFileCom);
@@ -309,7 +311,7 @@ void __fastcall TFormFIS::BtnLueClick(TObject *Sender)
 
 	TextFl *FISmaarfl;
 	OpenDialog1->DefaultExt = L"txt";
-	OpenDialog1->Filter = L"Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		if ((FISmaarfl = new TextFl(OpenDialog1->FileName.c_str(), L"r")) != NULL) {
 			Memo1->Clear();
@@ -413,7 +415,7 @@ void __fastcall TFormFIS::BtnKirjClick(TObject *Sender)
 
 	TextFl *FISmaarfl;
 	SaveDialog1->DefaultExt = L"txt";
-	SaveDialog1->Filter = L"Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		if ((FISmaarfl = new TextFl(SaveDialog1->FileName.c_str(), L"wt")) != NULL) {
 			Memo1->Clear();
@@ -485,7 +487,7 @@ void __fastcall TFormFIS::Button1Click(TObject *Sender)
 {
 	TextFl *FISmaarfl;
 	SaveDialog1->DefaultExt = L"txt";
-	SaveDialog1->Filter = L"Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Txt-tiedostot (*.txt)|*.TXT|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		if ((FISmaarfl = new TextFl(SaveDialog1->FileName.c_str(), L"w")) != NULL) {
 			for (int i = 0; i < Memo1->Lines->Count; i++) {

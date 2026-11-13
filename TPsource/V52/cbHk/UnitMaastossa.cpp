@@ -10,6 +10,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitMaastossa.h"
 #include "HkDeclare.h"
@@ -22,6 +23,7 @@ TFormMaastossa *FormMaastossa;
 __fastcall TFormMaastossa::TFormMaastossa(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96)
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -103,8 +105,8 @@ void __fastcall TFormMaastossa::asetaSarakkeet(void)
 	int srjVal = CBSarja->ItemIndex - 1;
 	int nva = MaastossaMaxNva(srjVal);
 	static const wchar_t *kiint[] = {
-		L"No", L"Sarja", L"Nimi", L"Seura", L"Status",
-		L"Lpaikka", L"Lähtö"
+		N_(L"No"), N_(L"Sarja"), N_(L"Nimi"), N_(L"Seura"), N_(L"Status"),
+		N_(L"Lpaikka"), N_(L"Lähtö")
 	};
 	int wkiint[] = {50, 70, 180, 140, 110, 70, 80};
 	const int nkiint = 7;
@@ -116,7 +118,7 @@ void __fastcall TFormMaastossa::asetaSarakkeet(void)
 	Grid->FixedRows = 1;
 	Grid->RowCount = 2;
 	for (int c = 0; c < nkiint; c++) {
-		Grid->Cells[c][0] = kiint[c];
+		Grid->Cells[c][0] = TR(kiint[c]);
 		Grid->ColWidths[c] = wkiint[c] * Screen->PixelsPerInch / 96;
 	}
 	for (int p = 1; p <= nva; p++) {
@@ -145,7 +147,7 @@ void __fastcall TFormMaastossa::haeKilpailijat(void)
 		Grid->RowCount = 2;
 		for (int c = 0; c < Grid->ColCount; c++)
 			Grid->Cells[c][1] = L"";
-		LblLkm->Caption = L"0 kilpailijaa";
+		LblLkm->Caption = TR(L"0 kilpailijaa");
 		return;
 	}
 
@@ -213,7 +215,7 @@ void __fastcall TFormMaastossa::FormShow(TObject *Sender)
 	int vanha = CBSarja->ItemIndex;
 	CBSarja->Items->BeginUpdate();
 	CBSarja->Clear();
-	CBSarja->Items->Add(L"Kaikki sarjat");
+	CBSarja->Items->Add(TR(L"Kaikki sarjat"));
 	for (int srj = 0; srj < sarjaluku; srj++)
 		CBSarja->Items->Add(UnicodeString(Sarjat[srj].sarjanimi));
 	CBSarja->Items->EndUpdate();

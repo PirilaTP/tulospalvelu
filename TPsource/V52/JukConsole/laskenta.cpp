@@ -101,6 +101,8 @@ int wmain(int argc, wchar_t *argv[])
 
 //   initcon(ansitowcs(wst, argv[0], 79));
    initcon(argv[0]);
+   // Käyttöliittymän kieli käyttäjän asetuksista; KAYTTOKIELI= konfiguraatiossa voi vaihtaa sen
+   asetaKayttokieli(lueKayttokieliAsetus());
    SetConsoleOutputCP(850);
    SetConsoleCP(850);
    SetConsoleCtrlHandler((PHANDLER_ROUTINE)ExitHandler, TRUE);

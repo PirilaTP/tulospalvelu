@@ -28,9 +28,49 @@
 #define FALSE 0
 
 
+static void selectxy0(int y, int x, char *prompt, char *term, char *tc);
+
 // Näyttää valintakehote ruudun rivillä y, sarakkeessa x ja odottaa käyttäjän valintaa.
 // prompt: kehoteteksti, term: hyväksytyt merkit, tc: valittu merkki palautetaan tähän.
+// Kehote ja sen pikanäppäimet käännetään käyttöliittymän kielelle (kaannaValinta),
+// mutta tc:ssä palautetaan aina alkuperäisen term-merkkijonon merkki.
 void selectxy(int y, int x, char *prompt, char *term, char *tc)
+{
+	wchar_t wprompt[200], wterm[40], wtterm[40];
+	const wchar_t *wtprompt;
+	char tprompt[400], tterm[40], ttc;
+
+	if (kayttokieli == KIELI_FI || strlen(prompt) >= 200 || strlen(term) >= 40) {
+		selectxy0(y, x, prompt, term, tc);
+		return;
+		}
+	MultiByteToWideChar(1252, 0, prompt, -1, wprompt, 200);
+	MultiByteToWideChar(1252, 0, term, -1, wterm, 40);
+	wtprompt = kaannaValinta(wprompt, wterm, wtterm, 40);
+	if (wtprompt == wprompt) {
+		selectxy0(y, x, prompt, term, tc);
+		return;
+		}
+	WideCharToMultiByte(1252, 0, wtprompt, -1, tprompt, sizeof(tprompt), NULL, NULL);
+	WideCharToMultiByte(1252, 0, wtterm, -1, tterm, sizeof(tterm), NULL, NULL);
+	ttc = *tc;
+	for (int i = 0; term[i] && tterm[i]; i++) {
+		if (term[i] == *tc) {
+			ttc = tterm[i];
+			break;
+			}
+		}
+	selectxy0(y, x, tprompt, tterm, &ttc);
+	*tc = ttc;
+	for (int i = 0; term[i] && tterm[i]; i++) {
+		if (tterm[i] == ttc) {
+			*tc = term[i];
+			break;
+			}
+		}
+}
+
+static void selectxy0(int y, int x, char *prompt, char *term, char *tc)
 {
    char ch,ch2;
    int l;

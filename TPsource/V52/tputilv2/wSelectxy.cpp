@@ -29,9 +29,28 @@
 
 extern short ySize;
 
+static void wselectxy0(int y, int x, const wchar_t *prompt, const wchar_t *term, wchar_t *tc);
+
 // Näyttää valintakehotemerkkijonon prompt rivillä y sarakkeesta x ja lukee yhden valintamerkin.
 // term: sallitut valintamerkit (wide), tc: valittu merkki (in/out); odottaa kunnes term-merkki painetaan.
+// Kehote ja sen pikanäppäimet käännetään käyttöliittymän kielelle (kaannaValinta),
+// mutta tc:ssä palautetaan aina alkuperäisen term-merkkijonon merkki.
 void wselectxy(int y, int x, wchar_t *prompt, wchar_t *term, wchar_t *tc)
+{
+	wchar_t tterm[40], ttc;
+	const wchar_t *tprompt;
+
+	if (kayttokieli == KIELI_FI || wcslen(term) >= 40) {
+		wselectxy0(y, x, prompt, term, tc);
+		return;
+		}
+	tprompt = kaannaValinta(prompt, term, tterm, 40);
+	ttc = vastaavaMerkki(*tc, term, tterm);
+	wselectxy0(y, x, tprompt, tterm, &ttc);
+	*tc = vastaavaMerkki(ttc, tterm, term);
+}
+
+static void wselectxy0(int y, int x, const wchar_t *prompt, const wchar_t *term, wchar_t *tc)
 {
 	wchar_t ch, ch2;
 	int l, wait = 1;

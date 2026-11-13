@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <math.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include "HkDeclare.h"
 #include "HkMuotoilu.h"
 
@@ -1269,14 +1270,14 @@ int xmlfissrjots(int sarja, tulostusparamtp *tulprm)
 	else if (wcswcind(towupper(Sarjat[sarja].sarjanimi[0]), L"MGHP") >= 0)
 		fissex[0] = L'M';
 	else {
-		writeerror_w(L"Sukupuolta ei voi päätellä sarjan nimestä. Vaihda sarjan nimi", 0);
+		writeerror_w(TR(L"Sukupuolta ei voi päätellä sarjan nimestä. Vaihda sarjan nimi"), 0);
 		return(1);
 		}
    swprintf(tag, L"Raceheader Sector=\"CC\" Sex=\"%c\"", fissex[0]);
    tul_tied->put_wtag(tag, 0);
    clrln(ySize-3);
 #ifdef _CONSOLE
-   vidspwmsg(ySize-3, 0, 7, 0, L"Kilpailun määritystiedosto:");
+   vidspwmsg(ySize-3, 0, 7, 0, TR(L"Kilpailun määritystiedosto:"));
    while (1) {
 	   inputwstr(kisaflnm, 45, 28, ySize-3, L"\r\x1b", &cs, FALSE);
 #else
@@ -1363,9 +1364,9 @@ int xmlfissrjots(int sarja, tulostusparamtp *tulprm)
 		   break;
 		   }
 #ifdef _CONSOLE
-	   writeerror_w(L"Tiedostoa ei löydy, peruuta painamalla Enter ja ESC", 0);
+	   writeerror_w(TR(L"Tiedostoa ei löydy, peruuta painamalla Enter ja ESC"), 0);
 #else
-	   writeerror_w(L"Kilpailun määritystiedostoa ei ole valittu", 0, true);
+	   writeerror_w(TR(L"Kilpailun määritystiedostoa ei ole valittu"), 0, true);
 	   return(1);
 #endif
 	   }
@@ -1873,7 +1874,8 @@ void xmlTulostulos(kilptietue& kilp, int sarja, INT sj, tulostusparamtp *tulprm)
 				}
 		   }
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGStatus, TulosTags, nTulosTags),
-			kilp.tarkstr(ln, i_pv < k_pv ? i_pv : k_pv, i_pv > k_pv, 8, tulprm->language), level);
+			kilp.tarkstr(ln, i_pv < k_pv ? i_pv : k_pv, i_pv > k_pv, 8,
+				tulprm->language == KIELI_FI ? KIELI_FI : KIELI_EN), level);
 	   if (kilp.pv[k_pv].rata[0] && (rt = haerata(&kilp)) != NULL &&
 			!wcscmp(kilp.pv[k_pv].rata, rt->tunnus)) {
 		   tul_tied->put_wtag(XMLhae_tagName(TAGCourse, TulosTags, nTulosTags), level++);

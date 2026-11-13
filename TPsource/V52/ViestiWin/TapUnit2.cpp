@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "TapUnit2.h"
 #include "VDeclare.h"
@@ -35,6 +36,7 @@ extern bool TapEtunimiensin;
 __fastcall TTapForm::TTapForm(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -391,21 +393,21 @@ void __fastcall TTapForm::Skaalaa(void)
 	for (int cc = 0; cc < TapGrid->ColCount; cc++)
 		TapGrid->ColWidths[cc] = IkkParam.ColW[cc] * Screen->PixelsPerInch * lev / 960;
 
-	Cells[0][0].text = L"Kilpno";
-	Cells[1][0].text = L"Os.";
-	Cells[2][0].text = L"Joukkue";
-	Cells[3][0].text = L"Nimi";
-	Cells[4][0].text = L"Maa";
-	Cells[5][0].text = L"Sarja";
-	Cells[6][0].text = L"Pst";
-	Cells[7][0].text = L"Sija";
-	Cells[8][0].text = L"Tulos";
-	Cells[9][0].text = L"Ero";
+	Cells[0][0].text = TR(L"Kilpno");
+	Cells[1][0].text = TR(L"Os.");
+	Cells[2][0].text = TR(L"Joukkue");
+	Cells[3][0].text = TR(L"Nimi");
+	Cells[4][0].text = TR(L"Maa");
+	Cells[5][0].text = TR(L"Sarja");
+	Cells[6][0].text = TR(L"Pst");
+	Cells[7][0].text = TR(L"Sija");
+	Cells[8][0].text = TR(L"Tulos");
+	Cells[9][0].text = TR(L"Ero");
 	if (kilpparam.lsakmax) {
-		Cells[10][0].text = L"Sakot";
+		Cells[10][0].text = TR(L"Sakot");
 		}
 	else
-		Cells[10][0].text = L"Trk";
+		Cells[10][0].text = TR(L"Trk");
 
 	GrdWidth = 16 * Screen->PixelsPerInch * IkkParam.FontSize / 960;
 	for (int i = 0; i < TapGrid->ColCount; i++) {
@@ -456,7 +458,7 @@ void __fastcall TTapForm::Muumerkkikoko1Click(TObject *Sender)
 	int fnt;
 
 	fnt = IkkParam.FontSize;
-	inputint_prompt(&fnt, L"Valitse koko pisteinä", &ch, this);
+	inputint_prompt(&fnt, TR(L"Valitse koko pisteinä"), &ch, this);
 	if (ch == ESC)
 		return;
 	IkkParam.FontSize = fnt;
@@ -509,11 +511,11 @@ void __fastcall TTapForm::FormCreate(TObject *Sender)
 	applyParams();
 	PisteVal->Clear();
 	if (kierrokset)
-		PisteVal->Items->Add("Yhteensä");
-	PisteVal->Items->Add("Kaikki");
-	PisteVal->Items->Add("Maali");
+		PisteVal->Items->Add(TRA("Yhteensä"));
+	PisteVal->Items->Add(TRA("Kaikki"));
+	PisteVal->Items->Add(TRA("Maali"));
 	for (int i = 1; i <= kilpparam.maxvaluku; i++) {
-		PisteVal->Items->Add(AnsiString(i)+". väliaika");
+		PisteVal->Items->Add(AnsiString(i)+TRA(". väliaika"));
 		}
 	PisteVal->ItemIndex = 0;
 	Valittu = 0;

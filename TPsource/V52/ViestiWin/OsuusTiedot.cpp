@@ -19,6 +19,7 @@
 #include <vcl.h>
 #include <Clipbrd.hpp>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "OsuusTiedot.h"
 #include "VDeclare.h"
@@ -36,6 +37,7 @@ extern rastivatp *rastiva;
 __fastcall TFormOsuus::TFormOsuus(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -93,7 +95,7 @@ void __fastcall TFormOsuus::naytaTiedot(void)
 	  Osuus = os + 1;
 	  yos = Sarjat[Sarja].yosuus[os];
 	  kilp.Joukkue(line, 20);
-	  swprintf(Kohde, L"%s %d. os", line, Osuus);
+	  swprintf(Kohde, TR(L"%s %d. os"), line, Osuus);
 	  FormMain->SetFormKohde(this, Kohde);
 	  kilp.Joukkue(line);
 	  JoukkNimi->Text = line;
@@ -177,19 +179,19 @@ void __fastcall TFormOsuus::naytaTiedot(void)
 			EmitGrid->ColWidths[11] = 65 * Screen->PixelsPerInch / 96;
 			EmitGrid->ColWidths[12] = 55 * Screen->PixelsPerInch / 96;
 			EmitGrid->Width = (80+70+350+105+65+55) * Screen->PixelsPerInch / 96;
-			EmitGrid->Cells[0][0] = UnicodeString(L"Nro");
-			EmitGrid->Cells[1][0] = UnicodeString(L"Koodi");
-			EmitGrid->Cells[2][0] = UnicodeString(L"Aika");
-			EmitGrid->Cells[3][0] = UnicodeString(L"Ero/nop.");
-			EmitGrid->Cells[4][0] = UnicodeString(L"Sj/")+nradalla;
-			EmitGrid->Cells[5][0] = UnicodeString(L"R-väli");
-			EmitGrid->Cells[6][0] = UnicodeString(L"Suht rv.");
-			EmitGrid->Cells[7][0] = UnicodeString(L"Vert.aik");
-			EmitGrid->Cells[8][0] = UnicodeString(L"Ero/nop.");
-			EmitGrid->Cells[9][0] = UnicodeString(L"Nopein");
-			EmitGrid->Cells[10][0] = UnicodeString(L"Sj/")+nsarjasta;
-			EmitGrid->Cells[11][0] = UnicodeString(L"Suht yht.");
-			EmitGrid->Cells[12][0] = UnicodeString(L"min/km");
+			EmitGrid->Cells[0][0] = UnicodeString(TR(L"Nro"));
+			EmitGrid->Cells[1][0] = UnicodeString(TR(L"Koodi"));
+			EmitGrid->Cells[2][0] = UnicodeString(TR(L"Aika"));
+			EmitGrid->Cells[3][0] = UnicodeString(TR(L"Ero/nop."));
+			EmitGrid->Cells[4][0] = UnicodeString(TR(L"Sj/"))+nradalla;
+			EmitGrid->Cells[5][0] = UnicodeString(TR(L"R-väli"));
+			EmitGrid->Cells[6][0] = UnicodeString(TR(L"Suht rv."));
+			EmitGrid->Cells[7][0] = UnicodeString(TR(L"Vert.aik"));
+			EmitGrid->Cells[8][0] = UnicodeString(TR(L"Ero/nop."));
+			EmitGrid->Cells[9][0] = UnicodeString(TR(L"Nopein"));
+			EmitGrid->Cells[10][0] = UnicodeString(TR(L"Sj/"))+nsarjasta;
+			EmitGrid->Cells[11][0] = UnicodeString(TR(L"Suht yht."));
+			EmitGrid->Cells[12][0] = UnicodeString(TR(L"min/km"));
 			tlsum = 0;
 			for (i = 0; i < emvaluku; i++) {
 			   int mtk;
@@ -418,7 +420,7 @@ void __fastcall TFormOsuus::ValSarjaChange(TObject *Sender)
 	  Osuus = Sarjat[Sarja].osuusluku;
    ValOsuus->Clear();
    for (int os = 0; os < Sarjat[Sarja].osuusluku; os++) {
-	   ValOsuus->Items->Add(UnicodeString(L"Osuus ") + wosuuskoodi(Sarja, os, 0, 0));
+	   ValOsuus->Items->Add(UnicodeString(TR(L"Osuus ")) + wosuuskoodi(Sarja, os, 0, 0));
 	   }
    ValOsuus->ItemIndex = Osuus - 1;
    VaihdKarkiBtn(Sender);
@@ -439,7 +441,7 @@ void __fastcall TFormOsuus::FormShow(TObject *Sender)
 	Rastivliaikaanalyysi1->Visible = !emitanal_fl;
    ValOsuus->Clear();
    for (int os = 0; os < Sarjat[Sarja].osuusluku; os++) {
-	   ValOsuus->Items->Add(UnicodeString(L"Osuus ") + wosuuskoodi(Sarja, os, 0, 0));
+	   ValOsuus->Items->Add(UnicodeString(TR(L"Osuus ")) + wosuuskoodi(Sarja, os, 0, 0));
 	   }
    ValOsuus->ItemIndex = Osuus - 1;
    naytaTiedot();

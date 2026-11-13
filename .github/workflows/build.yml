@@ -15,6 +15,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check translation catalogs (kielet/)
+        # tulospalvelu.pot must match the sources: run "python TPsource/V52/kielet/kielet.py poimi"
+        # (and "paivita") after changing user-visible texts, and commit the result.
+        run: |
+          python -m unittest discover -s TPsource/V52/kielet -p test_*.py
+          python TPsource/V52/kielet/kielet.py poimi
+          git diff --exit-code -- TPsource/V52/kielet/tulospalvelu.pot
+          python TPsource/V52/kielet/kielet.py tarkista
+
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
@@ -26,6 +35,11 @@ jobs:
 
       - name: Build JukMaali (relay competition)
         run: msbuild TPsource\V52\VS\V\JukMaali520.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
+
+      - name: Unit tests
+        run: |
+          msbuild TPsource\V52\VS\Tests\TpTest.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
+          TPsource\V52\VS\Tests\Release\TpTest.exe
 
   gui:
     name: Windows GUI programs (C++Builder, self-hosted)
@@ -54,7 +68,9 @@ jobs:
           name: windows-gui-win32
           path: |
             TPexe/Hk/V521/HkKisaWin.exe
+            TPexe/Hk/V521/kielet/*.po
             TPexe/Juk/V521/ViestiWin.exe
+            TPexe/Juk/V521/kielet/*.po
           if-no-files-found: error
           retention-days: 30
 

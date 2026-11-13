@@ -759,6 +759,9 @@
         <CppCompile Include="..\cbHk\WinParamXml.cpp">
             <BuildOrder>117</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\cbTp\cbKielet.cpp">
+            <BuildOrder>150</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\cbTp\cbTpApu.cpp">
             <BuildOrder>106</BuildOrder>
         </CppCompile>
@@ -2289,5 +2292,6 @@
         <MSBuild Projects="DBboxm-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_DBboxm);Platform=$(Platform)" Condition="'$(DepConfig_DBboxm)'!=''"/>
         <MSBuild Projects="Tputil-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_Tputil);Platform=$(Platform)" Condition="'$(DepConfig_Tputil)'!=''"/>
     </Target>
+    <Import Project="Kielet.targets"/>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
 </Project>

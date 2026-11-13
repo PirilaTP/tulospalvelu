@@ -36,6 +36,7 @@
 #endif
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include "VDeclare.h"
 
@@ -2186,7 +2187,7 @@ void kirjEventXml(wchar_t *outfname, bool kirjSarjat, bool kirjRadat, bool kirjO
 		}
 	else
 		writeerror_w(
-			L"Sarjatietotiedoston avaus kirjoitusta varten ei onnistu", 0);
+			TR(L"Sarjatietotiedoston avaus kirjoitusta varten ei onnistu"), 0);
 	delete outfl;
 #endif
 }

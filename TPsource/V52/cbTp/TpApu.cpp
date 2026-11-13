@@ -32,6 +32,7 @@
 #include <malloc.h>
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include <dos.h>
 
@@ -384,7 +385,7 @@ void kirj_err_file(wchar_t *msg, int nayta)
 		int vast;
 
 		swprintf(msg2, L"%s \nJatketaanko näiden virheilmoitusten näyttämistä", msg);
-		vast = select3(2, msg2, L"Toistuva virheilmoitus", L"Näytä edelleen", L"Ohita ilmoitukset jatkossa", L"", 0);
+		vast = select3(2, msg2, TR(L"Toistuva virheilmoitus"), TR(L"Näytä edelleen"), TR(L"Ohita ilmoitukset jatkossa"), L"", 0);
 		if (vast == 2)
 			lopilm = 1;
 #endif
@@ -405,11 +406,11 @@ void close_err_file(void)
 		wchar_t msg[200];
 		fclose(err_file);
 		err_file = 0;
-		swprintf(msg, L"Tiedostoon DATA_ERR.TXT kirjoitettu %d virhetietoa", n_err_file);
+		swprintf(msg, TR(L"Tiedostoon DATA_ERR.TXT kirjoitettu %d virhetietoa"), n_err_file);
 #ifdef _CONSOLE
 		writeerror_w(msg, 0);
 #else
-		if (select3(2, msg, L"Virheitä tiedoissa", L"Näytä tiedot", L"Ohita", L"", 0) == 1)
+		if (select3(2, msg, TR(L"Virheitä tiedoissa"), TR(L"Näytä tiedot"), TR(L"Ohita"), L"", 0) == 1)
 			nayta_virhesanomat();
 #endif
 		}
@@ -419,7 +420,7 @@ void Perr(int ok, wchar_t *api)
 {
 	wchar_t line[200];
 	if (ok) return;
-	swprintf(line, L"Virhe %d, API: %s", GetLastError(), api);
+	swprintf(line, TR(L"Virhe %d, API: %s"), GetLastError(), api);
 	writeerror_w(line, 0);
 }
 
@@ -700,7 +701,7 @@ INT luesarja(wchar_t *snimi, wchar_t *tc)
 		srj = haesarja_w(sn, false);
 		}
 	do {
-		vidspwmsg(ySize-1,0,7,0, L"Sarjoja voi selata näppäimillä \x19 \x18 PgDn PgUp");
+		vidspwmsg(ySize-1,0,7,0, TR(L"Sarjoja voi selata näppäimillä \x19 \x18 PgDn PgUp"));
 		do {
 			if (srj >= 0 && srj < sarjaluku)
 				wcscpy(sn, Sarjat[srj].sarjanimi);
@@ -731,7 +732,7 @@ INT luesarja(wchar_t *snimi, wchar_t *tc)
 			srj = haesarja_w(sn, false);
 			if (srj < 0) {
 				erbeep();
-				vidspwmsg(ySize-1,22,7,0,L"Virheellinen sarja");
+				vidspwmsg(ySize-1,22,7,0,TR(L"Virheellinen sarja"));
 				}
 			}
 		else srj = sarjaluku+1;

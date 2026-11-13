@@ -26,6 +26,7 @@
 #include <bkeybrd.h>
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <dos.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -262,7 +263,7 @@ int teeindeksi(kilpindex *ind, bool uusi)
 		}
    if (ind->ix == NULL) {
 	   if ((ind->ix = (char *) calloc(nrec+1,ind->recl)) == NULL) {
-		  writeerror_w(L"Muistissa ei tilaa indeksille", 4000);
+		  writeerror_w(TR(L"Muistissa ei tilaa indeksille"), 4000);
 		  return(1);
 		  }
 	   }
@@ -1615,7 +1616,7 @@ INT teejarj(bool uusinta)
 		er = AllocJarjSeur(nsarjayhd, maxrec);
 		}
    if (er) {
-	  writeerror_w(L"Muistissa ei tilaa kilpailijatiedoille",0);
+	  writeerror_w(TR(L"Muistissa ei tilaa kilpailijatiedoille"),0);
 	  return(1);
 	  }
    if (emitfl) {
@@ -1647,7 +1648,7 @@ INT teejarj(bool uusinta)
 					   free(bdg_kno);
 					   bdg_kno = NULL;
 					   }
-				   writeerror_w(L"Muisti ei riit‰ leimantarkastukselle", 0);
+				   writeerror_w(TR(L"Muisti ei riit‰ leimantarkastukselle"), 0);
 				   emitfl = 0;
 				   }
 				}
@@ -1683,19 +1684,19 @@ INT teejarj(bool uusinta)
 				}
 			if (ToimintaTila == 2 && (kilp.id() < minkilpno || kilp.id() > maxkilpno)) {
 				ok = FALSE;
-				swprintf(prs,L"Kilpailijalla %s on virheellinen numero %d",
+				swprintf(prs,TR(L"Kilpailijalla %s on virheellinen numero %d"),
 				kilp.nimi(st, 38, false), kilp.id());
 				kirj_err_file(prs, 1);
 				}
 			else if(ToimintaTila == 2 && getpos(kilp.id()) > 0 ) {
 				vkilp.GETREC(getpos(kilp.id()));
 				ok = FALSE;
-				swprintf(prs,L"Kilpailijoilla %s ja %s on sama numero %d ",kilp.nimi(st, 24, false), vkilp.nimi(st2, 24, false), kilp.id());
+				swprintf(prs,TR(L"Kilpailijoilla %s ja %s on sama numero %d "),kilp.nimi(st, 24, false), vkilp.nimi(st2, 24, false), kilp.id());
 				kirj_err_file(prs, 1);
 				}
 			if (kilp.Sarja() < 0 || kilp.Sarja() >= sarjaluku) {
 				ok = FALSE;
-				swprintf(prs,L"Kilpailijalla %s on virheellinen sarjanumero : %d, vaihdetaan %s",
+				swprintf(prs,TR(L"Kilpailijalla %s on virheellinen sarjanumero : %d, vaihdetaan %s"),
 				kilp.nimi(st, 24, false), (int) kilp.Sarja() + 1, Sarjat[sarjaluku-1].sarjanimi);
 				kilp.setSarja(sarjaluku-1);
 				muutos = 1;
@@ -1708,7 +1709,7 @@ INT teejarj(bool uusinta)
 					}
 				if (!kilpparam.sarjavaihtelee && kilp.Sarja(ipv) != kilp.Sarja()) {
 					ok = FALSE;
-					swprintf(prs,L"Kilpailijan %s sarja vaihtelee vastoin kilpailun m‰‰rityst‰",
+					swprintf(prs,TR(L"Kilpailijan %s sarja vaihtelee vastoin kilpailun m‰‰rityst‰"),
 						kilp.nimi(st, 38, false));
 					kirj_err_file(prs, 1);
 					}
@@ -1718,8 +1719,8 @@ INT teejarj(bool uusinta)
 				wselectopt(L"J)atka,  P)oistu ohjelmasta",L"JP",&ch);
 				if( ch == L'P' )
 #else
-				if (select3(2, L"Jatketaanko kipailijatietojen lukemista?", L"Kilpailijatietojen lukeminen",
-					L"Jatka", L"Keskeyt‰", L"", 0) == 2)
+				if (select3(2, TR(L"Jatketaanko kipailijatietojen lukemista?"), TR(L"Kilpailijatietojen lukeminen"),
+					TR(L"Jatka"), TR(L"Keskeyt‰"), L"", 0) == 2)
 #endif
 					return(1);
 				else
@@ -1792,7 +1793,7 @@ INT teejarj(bool uusinta)
 			for (i = 1; i < nr; i++) {
 				if (bdg_kno[i].badge == bdg) {
 					bdg_kno[i].badge = 2000000000L;
-					swprintf(prs, L"Kilpailijoilla %d ja %d sama E-koodi %d",
+					swprintf(prs, TR(L"Kilpailijoilla %d ja %d sama E-koodi %d"),
 					bdg_kno[i-1].kilpno, bdg_kno[i].kilpno, bdg);
 					kirj_err_file(prs, 1);
 					nbadge--;
@@ -1814,11 +1815,11 @@ INT teejarj(bool uusinta)
 		teevuorotaulu(0, 0);
 #endif
 	if (yhtlahtoero)
-		writeerror_w(L"Yhteisl‰htˆkisa - Jossain sarjassa useampia l‰htˆaikoja.", 0);
+		writeerror_w(TR(L"Yhteisl‰htˆkisa - Jossain sarjassa useampia l‰htˆaikoja."), 0);
 #ifndef _CONSOLE
 	if (nrec < 2 && Sarjat[kilpparam.vakanttisarja].vakanttisarja) {
-		if (select3(2, (L"Kilpailussa vakanttisarja, mutta ei yht‰‰n kilpailijaa. Lis‰t‰‰nkˆ " +
-			UnicodeString(minvakanttiluku) + L" vakanttia?").c_str(), L"Vakantit", L"Lis‰‰", L"J‰t‰ lis‰‰m‰tt‰", L"", NULL) == 1)
+		if (select3(2, (TR(L"Kilpailussa vakanttisarja, mutta ei yht‰‰n kilpailijaa. Lis‰t‰‰nkˆ ") +
+			UnicodeString(minvakanttiluku) + TR(L" vakanttia?")).c_str(), TR(L"Vakantit"), TR(L"Lis‰‰"), TR(L"J‰t‰ lis‰‰m‰tt‰"), L"", NULL) == 1)
 			lisaavakantit(minvakanttiluku);
 		}
 #endif
@@ -1870,12 +1871,12 @@ int vaihdavaihe(int vaihe, int kielto)
 	vaiheenvaihto = true;
 	for (int cn = 0; cn < maxyhteys; cn++) {
 		if (comopen[cn] && !keyclose[cn] && lahettamatta(cn)) {
-			writeerror_w(L"Avoimen yhteyden l‰hett‰m‰tt‰ olevat sanomat est‰v‰t vaihdon", 0, true);
+			writeerror_w(TR(L"Avoimen yhteyden l‰hett‰m‰tt‰ olevat sanomat est‰v‰t vaihdon"), 0, true);
 			return(1);
 			}
 		}
 	header0 = header;
-	vidspwmsg(0, 0, 0, 7, L"     VAIHEEN VAIHTO     ");
+	vidspwmsg(0, 0, 0, 7, TR(L"     VAIHEEN VAIHTO     "));
 	Sleep(500);
 	svscr = savescr(2, 0, ySize - 5, 64);
 	virdrect(ySize - 3, 0, ySize - 3, 79, saveline, 0);
@@ -1930,18 +1931,18 @@ int vaihdavaihe(int vaihe, int kielto)
 	memset((char *)nesit, 0, sizeof(nesit));
 	k_pv = vaihe;
 	arv_pv = k_pv;
-	vidspwmsg(6, 0, 7, 0, L"K‰ynnist‰‰ uuteen vaiheeseen");
+	vidspwmsg(6, 0, 7, 0, TR(L"K‰ynnist‰‰ uuteen vaiheeseen"));
 	luesarjat();
 	teejarj(true);
 	if (emitfl > 0 && !esitark && esiluenta != 1) {
 		if (lue_radat_xml(7) == -1) {
-			writeerror_w(L"Ratatietojen lukeminen xml-tiedostosta ei onnistunut", 0);
+			writeerror_w(TR(L"Ratatietojen lukeminen xml-tiedostosta ei onnistunut"), 0);
 			emitfl = 0;
 			}
 		else {
 			emitfname[4] = L'1' + k_pv;
 			if (emitfl == 1 && lueemitfile()) {
-				writeerror_w(L"Leimaustietotiedoston lukeminen ei onnistunut", 0);
+				writeerror_w(TR(L"Leimaustietotiedoston lukeminen ei onnistunut"), 0);
 				emitfl = 0;
 				}
 			if (emitfl == 1 && lainatied)
@@ -1999,7 +2000,7 @@ int vaihdavaihe(int vaihe, int kielto)
 #ifndef _CONSOLE
 	haeIkkunat();
 #endif
-	swprintf(msg, L"K‰ynnistys vaiheeseen %d valmis", k_pv+1);
+	swprintf(msg, TR(L"K‰ynnistys vaiheeseen %d valmis"), k_pv+1);
 	vidspwmsg(ySize - 5, 0, 7, 0, msg);
 	return(0);
 	}

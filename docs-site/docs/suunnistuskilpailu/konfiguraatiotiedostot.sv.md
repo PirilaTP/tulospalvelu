@@ -1,0 +1,3 @@
+# Konfigurering av resultattjänsten
+
+

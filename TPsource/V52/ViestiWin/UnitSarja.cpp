@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSarja.h"
 #include "UnitSarjatiedot.h"
@@ -31,6 +32,7 @@ TFormSarja *FormSarja;
 __fastcall TFormSarja::TFormSarja(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -146,19 +148,19 @@ void __fastcall TFormSarja::naytaOsuudet(void)
 	SG1->ColCount = Sarja1.ntosuus + 1;
 	SG1->RowCount = valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3+2*lisarivit4;   // lisarivit4: kaksi rivia (tulos ratkaistaan ensimmaisesta, lahto edellisen ensimmaisesta)
 	if (lisarivit0)
-		SG1->Cells[0][1] = L"Rinn.lkm.";
-	SG1->Cells[0][1+lisarivit0] = L"Matka (km)";
-	SG1->Cells[0][2+lisarivit0] = L"Väliaikoja";
+		SG1->Cells[0][1] = TR(L"Rinn.lkm.");
+	SG1->Cells[0][1+lisarivit0] = TR(L"Matka (km)");
+	SG1->Cells[0][2+lisarivit0] = TR(L"Väliaikoja");
 	if (lisarivit1)
-		SG1->Cells[0][3+lisarivit0] = L"Sak/Tas-yks.";
+		SG1->Cells[0][3+lisarivit0] = TR(L"Sak/Tas-yks.");
 	if (lisarivit2)
-		SG1->Cells[0][3+lisarivit0+lisarivit1] = L"Sakkopaikat";
+		SG1->Cells[0][3+lisarivit0+lisarivit1] = TR(L"Sakkopaikat");
 	if (lisarivit2 == 2)
-		SG1->Cells[0][4+lisarivit0+lisarivit1] = L"Ammunnan sakko";
-	SG1->Cells[0][3+lisarivit0+lisarivit1+lisarivit2] = L"Yht.lähtö";
-	SG1->Cells[0][4+lisarivit0+lisarivit1+lisarivit2] = L"Yht.l.kynnys";
+		SG1->Cells[0][4+lisarivit0+lisarivit1] = TR(L"Ammunnan sakko");
+	SG1->Cells[0][3+lisarivit0+lisarivit1+lisarivit2] = TR(L"Yht.lähtö");
+	SG1->Cells[0][4+lisarivit0+lisarivit1+lisarivit2] = TR(L"Yht.l.kynnys");
 	if (lisarivit3)
-		SG1->Cells[0][5+lisarivit0+lisarivit1+lisarivit2] = L"Lähtöväli";
+		SG1->Cells[0][5+lisarivit0+lisarivit1+lisarivit2] = TR(L"Lähtöväli");
 	for (int va = 0; va < valuku; va++) {
 		SG1->Cells[0][va+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = UnicodeString(va+1)+L". va-matka";
 		}
@@ -265,8 +267,8 @@ void __fastcall TFormSarja::tallOsuudet(void)
 			}
 		}
 	if (osluku > kilpparam.n_os_akt) {
-		Application->MessageBoxW((UnicodeString(L"¨Korjaa sarjan osuusluku, joka ylittää kilpailun osuusluvun ")+
-			UnicodeString(kilpparam.n_os_akt)).c_str(), L"Virhe", MB_OK);
+		Application->MessageBoxW((UnicodeString(TR(L"¨Korjaa sarjan osuusluku, joka ylittää kilpailun osuusluvun "))+
+			UnicodeString(kilpparam.n_os_akt)).c_str(), TR(L"Virhe"), MB_OK);
 		osluku = kilpparam.n_os_akt;
 		}
 	Sarja1.osuusluku = osluku;
@@ -289,8 +291,8 @@ void __fastcall TFormSarja::Button3Click(TObject *Sender)
 void __fastcall TFormSarja::Button4Click(TObject *Sender)
 {
 	if (sarjaluku > 1 && SarjaNo >= 0 && SarjaNo < sarjaluku) {
-		if (Application->MessageBoxW((UnicodeString(L"Vahvista sarjan '")+UnicodeString(Sarjat[SarjaNo].sarjanimi)+
-			UnicodeString(L"' poisto")).c_str(), L"Vahvistus", MB_YESNO) == IDYES) {
+		if (Application->MessageBoxW((UnicodeString(TR(L"Vahvista sarjan '"))+UnicodeString(Sarjat[SarjaNo].sarjanimi)+
+			UnicodeString(TR(L"' poisto"))).c_str(), TR(L"Vahvistus"), MB_YESNO) == IDYES) {
 			memmove(&Sarjat[SarjaNo], &Sarjat[SarjaNo+1], (sarjaluku-SarjaNo-1)*sizeof(Sarjat[0]));
 			vaihdakilpsrj(SarjaNo, sarjaluku-1, -1, true);
 			sarjaluku--;
@@ -304,7 +306,7 @@ void __fastcall TFormSarja::Button4Click(TObject *Sender)
 			}
 		}
 	else {
-		Application->MessageBoxW(L"Sarjan numero ei käytössä", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Sarjan numero ei käytössä"), TR(L"Virhe"), MB_OK);
 		}
 }
 //---------------------------------------------------------------------------
@@ -333,8 +335,8 @@ void __fastcall TFormSarja::Button1Click(TObject *Sender)
 	EdtSarja->Text = UnicodeString(srj+1);
 	if (SarjaNo == -1 || srj == sarjaluku) {
 		if (srj < sarjaluku) {
-			if (Application->MessageBoxW(L"Sarja lisätään annetun sarjanumeron paikalle. Vahvista",
-				L"Sarjan lisäys", MB_YESNO) != IDYES)
+			if (Application->MessageBoxW(TR(L"Sarja lisätään annetun sarjanumeron paikalle. Vahvista"),
+				TR(L"Sarjan lisäys"), MB_YESNO) != IDYES)
 				return;
 			memmove(&Sarjat[srj+1], &Sarjat[srj], (sarjaluku-srj)*sizeof(Sarjat[0]));
 			Sarjat[srj] = Sarja1;
@@ -342,16 +344,16 @@ void __fastcall TFormSarja::Button1Click(TObject *Sender)
 			vaihdakilpsrj(srj, sarjaluku-2, 1, true);
 			}
 		else {
-			if (Application->MessageBoxW(L"Sarja lisätään viimeiseksi. Vahvista",
-				L"Sarjan lisäys", MB_YESNO) != IDYES)
+			if (Application->MessageBoxW(TR(L"Sarja lisätään viimeiseksi. Vahvista"),
+				TR(L"Sarjan lisäys"), MB_YESNO) != IDYES)
 				return;
 			sarjaluku++;
 			Sarjat[srj] = Sarja1;
 			}
 		}
 	else if (srj != SarjaNo) {
-		if (Application->MessageBoxW(L"Sarja siirretään annetun sarjanumeron paikalle. Vahvista",
-			L"Sarjan siirto", MB_YESNO) != IDYES)
+		if (Application->MessageBoxW(TR(L"Sarja siirretään annetun sarjanumeron paikalle. Vahvista"),
+			TR(L"Sarjan siirto"), MB_YESNO) != IDYES)
 			return;
 		if (srj < SarjaNo) {
 			memmove(&Sarjat[srj+1], &Sarjat[srj], (SarjaNo-srj)*sizeof(Sarjat[0]));
@@ -369,8 +371,8 @@ void __fastcall TFormSarja::Button1Click(TObject *Sender)
 		   }
 		}
 	else {
-		if (Application->MessageBoxW(L"Mahdolliset muutokset tallennetaan. Vahvista",
-			L"Vahvistus", MB_YESNO) != IDYES)
+		if (Application->MessageBoxW(TR(L"Mahdolliset muutokset tallennetaan. Vahvista"),
+			TR(L"Vahvistus"), MB_YESNO) != IDYES)
 			return;
 		Sarja0 = Sarjat[srj];
 		Sarjat[srj] = Sarja1;

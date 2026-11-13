@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitLisaTietue.h"
 //---------------------------------------------------------------------------
@@ -27,6 +28,7 @@ TFormLisaTietue *FormLisaTietue;
 __fastcall TFormLisaTietue::TFormLisaTietue(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -70,14 +72,14 @@ void __fastcall TFormLisaTietue::Button1Click(TObject *Sender)
 			bdg = _wtoi(EdAiempi->Text.c_str());
 			kno = _wtoi(EdAiempiKno->Text.c_str());
 			if ((bdg > 0 && kno > 0) || (bdg <= 0 && kno <= 0)) {
-				Application->MessageBoxW(L"Anna joko aiempi koodi tai aiempi kilpailija (ei molempia)", L"Virhe", MB_OK);
+				Application->MessageBoxW(TR(L"Anna joko aiempi koodi tai aiempi kilpailija (ei molempia)"), TR(L"Virhe"), MB_OK);
 				return;
 				}
 			if (bdg > 0)
 				kno = bdg2kno(bdg);
 			ip = getEmitJarr(kno, NULL);
 			if (ip < 0) {
-				Application->MessageBoxW(L"Aiempaa tietuetta ei löydy", L"Virhe", MB_OK);
+				Application->MessageBoxW(TR(L"Aiempaa tietuetta ei löydy"), TR(L"Virhe"), MB_OK);
 				return;
 				}
 			em.get(ip);
@@ -89,12 +91,12 @@ void __fastcall TFormLisaTietue::Button1Click(TObject *Sender)
 				if (em.badge != em.badge0)
 					em.badge = em.badge0;
 				else {
-					Application->MessageBoxW(L"Anna uusi emit-koodi", L"Virhe", MB_OK);
+					Application->MessageBoxW(TR(L"Anna uusi emit-koodi"), TR(L"Virhe"), MB_OK);
 					return;
 					}
 				}
 			if (getEmitJarr(bdg2kno(em.badge), NULL) >= 0) {
-				Application->MessageBoxW(L"Uutta emit-koodia vastaava tietue jo olemassa. Lisäys peruttu.", L"Este", MB_OK);
+				Application->MessageBoxW(TR(L"Uutta emit-koodia vastaava tietue jo olemassa. Lisäys peruttu."), TR(L"Este"), MB_OK);
 				return;
 				}
 			em.kilpno = 0;
@@ -102,7 +104,7 @@ void __fastcall TFormLisaTietue::Button1Click(TObject *Sender)
 			break;
 		case 1:
 			if (ubdg <= 0) {
-				Application->MessageBoxW(L"Anna uusi emit-koodi", L"Virhe", MB_OK);
+				Application->MessageBoxW(TR(L"Anna uusi emit-koodi"), TR(L"Virhe"), MB_OK);
 				return;
 				}
 			rt = rata+CBRata->ItemIndex;

@@ -19,6 +19,7 @@
 #include <vcl.h>
 #include <Clipbrd.hpp>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitJoukkuetiedot.h"
 #include "UnitMain.h"
@@ -30,24 +31,24 @@
 TFormJoukkuetiedot *FormJoukkuetiedot;
 
 ColTp OsGridCols0[] = {
-	{L"Osuus", 50, 0, 1, 0, true},
-	{L"Etunimi", 90, 0, 1, 0, true},
-	{L"Sukunimi", 120, 0, 1, 0, true},
-	{L"Seura", 80, 0, 1, 0, false},
-	{L"Lisenssi", 65, 0, 1, 0, false},
-	{L"Badge", 65, 0, 1, 0, true},
-	{L"L", 15, 0, 1, 0, true},
-	{L"Tark", 45, 0, 1, 0, true},
-	{L"Lähtö", 75, 0, 1, 0, true},
-	{L"Lht-lj", 45, 0, 1, 0, true},
-	{L"Maali", 75, 0, 1, 0, true},
-	{L"Tulos", 75, 0, 1, 0, true},
-	{L"Sija", 35, 0, 1, 0, true},
-	{L"Amp.sakot", 60, 0, 1, 0, false},
-	{L"Sakko", 45, 0, 1, 0, false},
-	{L"Rata", 60, 0, 1, 0, true},
-	{L"Os.tls.", 75, 0, 1, 0, false},
-	{L"Os.sj", 35, 0, 1, 0, false}
+	{N_(L"Osuus"), 50, 0, 1, 0, true},
+	{N_(L"Etunimi"), 90, 0, 1, 0, true},
+	{N_(L"Sukunimi"), 120, 0, 1, 0, true},
+	{N_(L"Seura"), 80, 0, 1, 0, false},
+	{N_(L"Lisenssi"), 65, 0, 1, 0, false},
+	{N_(L"Badge"), 65, 0, 1, 0, true},
+	{N_(L"L"), 15, 0, 1, 0, true},
+	{N_(L"Tark"), 45, 0, 1, 0, true},
+	{N_(L"Lähtö"), 75, 0, 1, 0, true},
+	{N_(L"Lht-lj"), 45, 0, 1, 0, true},
+	{N_(L"Maali"), 75, 0, 1, 0, true},
+	{N_(L"Tulos"), 75, 0, 1, 0, true},
+	{N_(L"Sija"), 35, 0, 1, 0, true},
+	{N_(L"Amp.sakot"), 60, 0, 1, 0, false},
+	{N_(L"Sakko"), 45, 0, 1, 0, false},
+	{N_(L"Rata"), 60, 0, 1, 0, true},
+	{N_(L"Os.tls."), 75, 0, 1, 0, false},
+	{N_(L"Os.sj"), 35, 0, 1, 0, false}
 };
 
 static wchar_t *LLaji[4] = {L"Auto", L"Auto", L"Yksil", L"Kiint"};
@@ -56,6 +57,7 @@ static wchar_t *LLaji[4] = {L"Auto", L"Auto", L"Yksil", L"Kiint"};
 __fastcall TFormJoukkuetiedot::TFormJoukkuetiedot(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -93,10 +95,10 @@ void __fastcall TFormJoukkuetiedot::EdtKilpnoChanged(TObject *Sender)
 	else {
 		if (!salliNumeromuutos) {
 			int vast;
-			vast = select3(3, L"Yritys muuttaa joukkueen numeroa muokkaustilassa. Valitse toimintatapa",
-				L"Valitse", L"Säilytä aiempi numero ja tallenna muut muutokset",
-				L"Säilytä aiempi numero ja jatka muiden tietojen muokkaamista",
-				L"Salli joukkueen numeron muuttaminen", this);
+			vast = select3(3, TR(L"Yritys muuttaa joukkueen numeroa muokkaustilassa. Valitse toimintatapa"),
+				TR(L"Valitse"), TR(L"Säilytä aiempi numero ja tallenna muut muutokset"),
+				TR(L"Säilytä aiempi numero ja jatka muiden tietojen muokkaamista"),
+				TR(L"Salli joukkueen numeron muuttaminen"), this);
 			switch (vast) {
 				case 1:
 					EdtKilpno->Text = Kilp.kilpno;
@@ -135,7 +137,7 @@ void __fastcall TFormJoukkuetiedot::GridDims(void)
 	n = 0;
 	for (int i = 0; i < sizeof(OsGridCols0)/sizeof(ColTp); i++) {
 		if (OsGridCols[i].Visible) {
-			OsGrid->Cells[n][0] = UnicodeString(OsGridCols[i].Caption);
+			OsGrid->Cells[n][0] = UnicodeString(TR(OsGridCols[i].Caption));
 			OsGrid->ColWidths[n] = OsGridCols[i].Width * Screen->PixelsPerInch / 96;
 			OsGridCols[i].Order = n;
 			n++;
@@ -144,12 +146,12 @@ void __fastcall TFormJoukkuetiedot::GridDims(void)
 	TlsGrid->ColCount = Sarjat[Sarja].osuusluku + 1;
 	TlsGrid->RowCount = Sarjat[Kilp.sarja].Vaikaluku() + 2;
 	for (int col = 1; col < TlsGrid->ColCount; col++) {
-		TlsGrid->Cells[col][0] = UnicodeString("Osuus ") + wosuuskoodi(Sarja, col-1, 0, 0);
+		TlsGrid->Cells[col][0] = UnicodeString(TRA("Osuus ")) + wosuuskoodi(Sarja, col-1, 0, 0);
 		}
 	for (int row = 1; row < TlsGrid->RowCount-1; row++) {
 		TlsGrid->Cells[0][row] = UnicodeString(row) + L". va.";
 		}
-	TlsGrid->Cells[0][TlsGrid->RowCount - 1] = L"Vaihto";
+	TlsGrid->Cells[0][TlsGrid->RowCount - 1] = TR(L"Vaihto");
 	FormResize(this);
 }
 
@@ -260,7 +262,7 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 					switch (i) {
 						case 0:
 							OsGrid->Cells[OsGridCols[i].Order][os+1] =
-								UnicodeString(L"Os. ") + wosuuskoodi(Kilp.sarja, os, 0, 0);
+								UnicodeString(TR(L"Os. ")) + wosuuskoodi(Kilp.sarja, os, 0, 0);
 							break;
 						case 1:
 							OsGrid->Cells[OsGridCols[i].Order][os+1] =
@@ -481,7 +483,7 @@ int __fastcall TFormJoukkuetiedot::tallennaTiedot(void)
 //	   Kilp.setId(EdtKilpno->Text.ToInt());
 //	   haeTiedot(&Kilp);
 	   if ((ToimintaTila == 2 && !Kilp.kilpno) || getpos(Kilp.kilpno) > 0) {
-			Application->MessageBox(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta", L"Virhe",
+			Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta"), L"Virhe",
 				MB_OK);
 			return(1);
 			}
@@ -498,19 +500,19 @@ int __fastcall TFormJoukkuetiedot::tallennaTiedot(void)
 	   return(0);
 	   }
    if (Kilp1 == Kilp) {
-	  Application->MessageBox(L"Kilpailijan tiedot eivät ole muuttuneet", L"Ei tallenneta",
+	  Application->MessageBox(TR(L"Kilpailijan tiedot eivät ole muuttuneet"), TR(L"Ei tallenneta"),
 		  MB_OK);
 	  return(1);
 	  }
 
 	if (Kilp1.kilpno != Kilp.kilpno && getpos(Kilp.kilpno) > 0) {
-	  Application->MessageBox(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta", L"Virhe",
+	  Application->MessageBox(TR(L"Kilpailijanumero ei ole käytettävissä, ei tallenneta"), L"Virhe",
 		  MB_OK);
 	  return(1);
 	  }
 
 	if (ToimintaTila == 2 && Kilp.kilpno == 0) {
-	  Application->MessageBox(L"Joukkueelle on annettava numero", L"Virhe",
+	  Application->MessageBox(TR(L"Joukkueelle on annettava numero"), L"Virhe",
 		  MB_OK);
 	  return(1);
 	  }
@@ -519,7 +521,7 @@ int __fastcall TFormJoukkuetiedot::tallennaTiedot(void)
    Kilp2.getrec(dKilp);
    if (!(Kilp2 == Kilp1)) {
 	  LeaveCriticalSection(&tall_CriticalSection);
-	  Application->MessageBox(L"Kilpailijan tietoja muutettu toisaalla, tietoja ei tallenneta", L"Este",
+	  Application->MessageBox(TR(L"Kilpailijan tietoja muutettu toisaalla, tietoja ei tallenneta"), TR(L"Este"),
 		  MB_OK);
 	  return(1);
 	  }
@@ -995,7 +997,7 @@ void __fastcall TFormJoukkuetiedot::SrjValChange(TObject *Sender)
 			Sarjat[SrjVal->ItemIndex].osuusluku + 1;
 	CBSelOsuus->Clear();
 	for (int os = 0; os < kilpparam.ntosuus; os++)
-		CBSelOsuus->Items->Add(UnicodeString(os+1) + L" Os.");
+		CBSelOsuus->Items->Add(UnicodeString(os+1) + TR(L" Os."));
 	if (SelOsuus >= kilpparam.ntosuus)
 		SelOsuus = kilpparam.ntosuus;
 	CBSelOsuus->ItemIndex = SelOsuus;
@@ -1042,17 +1044,17 @@ void __fastcall TFormJoukkuetiedot::asetaMuokkaustila(bool paalle)
 		if (RGVaTieto->ItemIndex < 2)
 			TlsGrid->Options << goEditing;
 		if (Lisays)
-			Tila->Caption = UnicodeString(L"Uuden tietueen muokkaus");
+			Tila->Caption = UnicodeString(TR(L"Uuden tietueen muokkaus"));
 		else
-			Tila->Caption = UnicodeString(L"Muokkaustila");
+			Tila->Caption = UnicodeString(TR(L"Muokkaustila"));
 		if (ActiveControl == BtnSalli)
 			FocusControl(EdtSeura);
 		}
 	else {
 		OsGrid->Options >> goEditing;
 		TlsGrid->Options >> goEditing;
-		Tila->Caption = UnicodeString(L"Haku- ja katselutila");
-		BtnSalli->Caption = L"Salli muokkaus";
+		Tila->Caption = UnicodeString(TR(L"Haku- ja katselutila"));
+		BtnSalli->Caption = TR(L"Salli muokkaus");
 		}
 }
 //---------------------------------------------------------------------------
@@ -1129,7 +1131,7 @@ void __fastcall TFormJoukkuetiedot::EdtNimihakuChange(TObject *Sender)
 void __fastcall TFormJoukkuetiedot::FormClose(TObject *Sender, TCloseAction &Action)
 {
 	if (sallimuokkaus) {
-		if (!(Kilp1 == Kilp) && Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallennus",
+		if (!(Kilp1 == Kilp) && Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallennus"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -1219,7 +1221,7 @@ void __fastcall TFormJoukkuetiedot::FormShow(TObject *Sender)
 	SrjVal->ItemIndex = Sarja;
 	CBSelOsuus->Clear();
 	for (int os = 0; os < kilpparam.ntosuus; os++)
-		CBSelOsuus->Items->Add(UnicodeString(os+1) + L" Os.");
+		CBSelOsuus->Items->Add(UnicodeString(os+1) + TR(L" Os."));
 	CBSelOsuus->ItemIndex = SelOsuus;
 	OsGrid->DefaultRowHeight = 20 * Screen->PixelsPerInch / 96;
 	OsGrid->RowCount = kilpparam.osuusluku + 1;
@@ -1331,7 +1333,7 @@ void __fastcall TFormJoukkuetiedot::Perusnumerohaku1Click(TObject *Sender)
 	wchar_t wch;
 
 	salliNumeromuutos = false;
-	inputint_prompt(&kno, L"Anna haettava numero", &wch, this);
+	inputint_prompt(&kno, TR(L"Anna haettava numero"), &wch, this);
 	if (wch == L'\r') {
 		int d;
 		kilptietue kilp;
@@ -1345,7 +1347,7 @@ void __fastcall TFormJoukkuetiedot::Perusnumerohaku1Click(TObject *Sender)
 			naytaKilpailija(d);
 			}
 		else {
-			Application->MessageBoxW(L"Numero ei ole käytössä", L"Ei löydy", MB_OK);
+			Application->MessageBoxW(TR(L"Numero ei ole käytössä"), TR(L"Ei löydy"), MB_OK);
 		}
 	}
 }
@@ -1364,7 +1366,7 @@ void __fastcall TFormJoukkuetiedot::Liskilpailija1Click(TObject *Sender)
 
 void __fastcall TFormJoukkuetiedot::Poistakilpailija1Click(TObject *Sender)
 {
-	if (Application->MessageBoxW(L"Poista näytetty kilpailija", L"Vahvista poisto", MB_YESNO) == IDYES)	{
+	if (Application->MessageBoxW(TR(L"Poista näytetty kilpailija"), TR(L"Vahvista poisto"), MB_YESNO) == IDYES)	{
 		deltall(dKilp, 0);
 		EdBtnClick(Sender);
 		}
