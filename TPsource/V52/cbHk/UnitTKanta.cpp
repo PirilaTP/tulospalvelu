@@ -1605,7 +1605,7 @@ void TFormTKanta::lisaaKilpailijat(bool kaikki)
 			Henkilot[k].id = kilp.lisno[0];
 			wcscpy(Henkilot[k].sukunimi, kilp.sukunimi);
 			wcscpy(Henkilot[k].etunimi, kilp.etunimi);
-			kopioJosEiTyhja(Henkilot[k].seura, sizeof(Henkilot[k].seura)/2, kilp.seura);
+			wcscpy(Henkilot[k].seura, kilp.seura);
 			kopioJosEiTyhja(Henkilot[k].yhdistys, sizeof(Henkilot[k].yhdistys)/2, kilp.yhdistys);
 			kopioJosEiTyhja(Henkilot[k].maa, sizeof(Henkilot[k].maa)/2, kilp.maa);
 			kopioJosEiTyhja(Henkilot[k].joukkue, sizeof(Henkilot[k].joukkue)/2, kilp.joukkue);
