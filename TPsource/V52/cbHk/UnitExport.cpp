@@ -21,6 +21,7 @@
 #include "WinHk.h"
 #include "UnitExport.h"
 #include "UnitMySQL.h"
+#include "HkExportPv.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -380,15 +381,7 @@ void TFormExport::kirjCsv(wchar_t *flname)
 	TextFl *outfl;
 	kilptietue kilp;
 
-	int selpv = CBPaiva->Enabled ? CBPaiva->ItemIndex : 0;
-	if (selpv > 0 && selpv <= kilpparam.n_pv_akt) {
-		pvMin = selpv - 1;
-		pvMax = selpv;
-		}
-	else {
-		pvMin = 0;
-		pvMax = kilpparam.n_pv_akt;
-		}
+	exportPvRange(CBPaiva->Enabled ? CBPaiva->ItemIndex : 0, kilpparam.n_pv_akt, &pvMin, &pvMax);
 	int nfld = Kexp_kentat + Pexp_kentat + Vexp_kentat + Xexp_kentat;
 	exp_kentat_local = new FLD2[nfld];
 	for (int i = 0; i < nfld; i++) {
