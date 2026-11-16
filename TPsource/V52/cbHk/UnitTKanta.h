@@ -81,6 +81,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Nytlisvalinnat1;
 	TMenuItem *Lisatieto1;
 	TMenuItem *Yhdistys1;
+	TMenuItem *Liskaikkikilpailijat1;
 	void __fastcall Luetiedot1Click(TObject *Sender);
 	void __fastcall IRMAtiedosto1Click(TObject *Sender);
 	void __fastcall FormResize(TObject *Sender);
@@ -126,10 +127,12 @@ __published:	// IDE-managed Components
 	void __fastcall Nytlisvalinnat1Click(TObject *Sender);
 	void __fastcall Lisatieto1Click(TObject *Sender);
 	void __fastcall Yhdistys1Click(TObject *Sender);
+	void __fastcall Liskaikkikilpailijat1Click(TObject *Sender);
 private:	// User declarations
 	void  laadiRivi(wchar_t *iBuf, int len, int r, bool kokonimi);
 	void  kirjoitaTiedostoon(int aiempaan);
 	void  paivitaHenkilot(void);
+	void  lisaaKilpailijat(bool kaikki);
 public:		// User declarations
 	__fastcall TFormTKanta(TComponent* Owner);
 	__fastcall ~TFormTKanta();

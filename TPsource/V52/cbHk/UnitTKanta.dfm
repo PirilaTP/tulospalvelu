@@ -369,6 +369,10 @@ object FormTKanta: TFormTKanta
         Caption = '&Lis'#228#228' kilpailijat tietokantaan'
         OnClick = Liskilpailijattietokantaan1Click
       end
+      object Liskaikkikilpailijat1: TMenuItem
+        Caption = 'Lis'#228#228' &kaikki kilpailijat tietokantaan'
+        OnClick = Liskaikkikilpailijat1Click
+      end
       object Sallimuokkaustaulukossa1: TMenuItem
         Caption = '&Salli muokkaus taulukossa'
         Visible = False

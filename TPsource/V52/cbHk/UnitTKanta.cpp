@@ -1505,6 +1505,20 @@ static void varaaHenkTilaa(TFormTKanta *F)
 
 void __fastcall TFormTKanta::Liskilpailijattietokantaan1Click(TObject *Sender)
 {
+	lisaaKilpailijat(false);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormTKanta::Liskaikkikilpailijat1Click(TObject *Sender)
+{
+	if (Application->MessageBoxW(L"Lis\u00e4t\u00e4\u00e4n kaikki kilpailijat (my\u00f6s ne, jotka eiv\u00e4t ole l\u00e4sn\u00e4) henkil\u00f6tietokantaan. Jatketaanko?",
+		L"Vahvista", MB_YESNO) == IDYES)
+		lisaaKilpailijat(true);
+}
+//---------------------------------------------------------------------------
+
+void TFormTKanta::lisaaKilpailijat(bool kaikki)
+{
 	kilptietue kilp;
 	int vapLisno = 1;
 	wchar_t datestr[20] = L"";
@@ -1524,7 +1538,7 @@ void __fastcall TFormTKanta::Liskilpailijattietokantaan1Click(TObject *Sender)
 	for (int d = 1; d < nrec; d++) {
 		int k;
 		kilp.GETREC(d);
-		if (kilp.kilpstatus != 0 || !kilp.lasna() || (ilmkentat > 1 && kilp.pv[k_pv].badge[1] == 0))
+		if (kilp.kilpstatus != 0 || (!kaikki && (!kilp.lasna() || (ilmkentat > 1 && kilp.pv[k_pv].badge[1] == 0))))
 			continue;
 		if (kilp.lisno[0] == 0) {
 			while (1) {
@@ -1590,7 +1604,7 @@ void __fastcall TFormTKanta::Liskilpailijattietokantaan1Click(TObject *Sender)
 			kopioJosEiTyhja(Henkilot[k].maa, sizeof(Henkilot[k].maa)/2, kilp.maa);
 			kopioJosEiTyhja(Henkilot[k].joukkue, sizeof(Henkilot[k].joukkue)/2, kilp.joukkue);
 			wcscpy(Henkilot[k].sarja, Sarjat[kilp.Sarja()].sarjanimi);
-			if (ilmkentat > 1 && kilp.pv[k_pv].laina[1] != 'L')
+			if (ilmkentat > 1 && kilp.pv[k_pv].laina[1] != 'L' && (!kaikki || kilp.pv[k_pv].badge[1]))
 				Henkilot[k].badge = kilp.pv[k_pv].badge[1];
 			if (kilp.tulos_pv(k_pv, false) || wcswcind(kilp.tark(), L"KHM") >= 0) {
 				Henkilot[k].oolkm++;
