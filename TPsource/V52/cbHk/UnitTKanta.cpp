@@ -1466,6 +1466,27 @@ void TFormTKanta::kirjoitaTiedostoon(int aiempaan)
 }
 //---------------------------------------------------------------------------
 
+// Kasvattaa henkilotaulukon (ja rowHenk-taulukon), kun se on tayna, jotta uusia
+// henkiloita voidaan lisata ilman, etta kirjoitetaan taulukon yli.
+static void varaaHenkTilaa(TFormTKanta *F)
+{
+	if (F->Henkilot && F->NHenk < F->maxNHenk)
+		return;
+	int uusi = F->maxNHenk + HENKLISA;
+	henkTieto *h = new henkTieto[uusi];
+	if (F->Henkilot) {
+		memcpy(h, F->Henkilot, F->NHenk*sizeof(henkTieto));
+		delete[] F->Henkilot;
+		}
+	F->Henkilot = h;
+	if (F->rowHenk)
+		delete[] F->rowHenk;
+	F->rowHenk = new int[uusi+1];
+	memset(F->rowHenk, 0, (uusi+1)*sizeof(int));
+	F->maxNHenk = uusi;
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TFormTKanta::Liskilpailijattietokantaan1Click(TObject *Sender)
 {
 	kilptietue kilp;
@@ -1507,6 +1528,7 @@ void __fastcall TFormTKanta::Liskilpailijattietokantaan1Click(TObject *Sender)
 //			k = hTGrid->RowCount;
 //			hTGrid->RowCount++;
 			k = NHenk;
+			varaaHenkTilaa(this);
 			NHenk++;
 			memset(&Henkilot[k], 0, sizeof(Henkilot[k]));
 /*
@@ -1527,6 +1549,7 @@ void __fastcall TFormTKanta::Liskilpailijattietokantaan1Click(TObject *Sender)
 			if (k == NHenk) {
 //				k = hTGrid->RowCount;
 //				hTGrid->RowCount++;
+				varaaHenkTilaa(this);
 				NHenk++;
 				memset(&Henkilot[k], 0, sizeof(Henkilot[k]));
 				}
