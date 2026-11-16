@@ -926,7 +926,7 @@ void __fastcall TFormTKanta::Luetiedot1Click(TObject *Sender)
 //---------------------------------------------------------------------------
 int __fastcall TFormTKanta::THenktiedot(int KHenk, wchar_t *snimi, wchar_t *enimi,
 	wchar_t *seura, wchar_t *maa, wchar_t *sarja, wchar_t *joukkue, int *id,
-	int *intid, int *badge, int *bib, wchar_t *sukup, int *ika, int *synt)
+	int *intid, int *badge, int *bib, wchar_t *sukup, int *ika, int *synt, wchar_t *yhdistys)
 {
 	if (NEsilla < 1)
 		return(-1);
@@ -971,6 +971,8 @@ int __fastcall TFormTKanta::THenktiedot(int KHenk, wchar_t *snimi, wchar_t *enim
 		wcscpy(sarja, Henkilot[KHenk].sarja);
 	if (joukkue)
 		wcscpy(joukkue, Henkilot[KHenk].joukkue);
+	if (yhdistys)
+		wcscpy(yhdistys, Henkilot[KHenk].yhdistys);
 	if (id)
 		*id = Henkilot[KHenk].id;
 	if (intid)

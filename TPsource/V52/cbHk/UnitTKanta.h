@@ -139,7 +139,7 @@ public:		// User declarations
 	int __fastcall NaytaHenkilot(wchar_t *ala, wchar_t *yla, wchar_t *etuala, wchar_t *etuyla, int badge);
 	int __fastcall THenktiedot(int KHenk, wchar_t *snimi, wchar_t *enimi,
 		wchar_t *seura, wchar_t *maa, wchar_t *sarja, wchar_t *joukkue, int *id, int *intid,
-		int *badge, int *bib, wchar_t *sukup, int *ika, int *synt);
+		int *badge, int *bib, wchar_t *sukup, int *ika, int *synt, wchar_t *yhdistys = NULL);
 	bool __fastcall HenkiloHakuOn(void);
 	int TallennaMuutokset(void);
 
