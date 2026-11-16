@@ -1351,7 +1351,7 @@ void TFormTKanta::laadiRivi(wchar_t *oBuf, int len, int r, bool kokonimi)
 						}
 					}
 				}
-			oBuf[wcslen(oBuf)-1] = L'\n';
+			oBuf[wcslen(oBuf) ? wcslen(oBuf)-1 : 0] = L'\n';
 			}
 		else {
 			Henkilot[r-1].tee_HenkRivi(oBuf, len, erotin);
@@ -1444,6 +1444,12 @@ void TFormTKanta::kirjoitaTiedostoon(int aiempaan)
 			wchar_t Buf[1000];
 			int N = otsrivi ? 1 : 0;
 
+			if (Otsikkorivinmukaan1->Checked && nflds == 0) {
+				int ids[50];
+				nflds = oletusKenttajarjestys(henk_kentat, Khenk_kentat, ids, 50);
+				for (int c = 0; c < nflds; c++)
+					fldorder[c].fld = ids[c];
+				}
 			kirjYhd = hTGridCols[17].Visible;
 			for (int k = 0; k < NHenk && !kirjYhd; k++)
 				if (Henkilot[k].yhdistys[0])

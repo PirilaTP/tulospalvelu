@@ -46,4 +46,19 @@ inline int etsiOtsikkoKolumni(wchar_t **fields, int nfld, const wchar_t *nimi)
 	return(-1);
 }
 
+// Taytetaan kenttajarjestys oletuksilla (aktiiviset kentat taulukon
+// jarjestyksessa), kun otsikkorivilta luettua jarjestysta ei ole, esim.
+// uutta tietokantaa kirjoitettaessa. T:lla on jasenet id ja akt.
+// Palauttaa kenttien lukumaaran (enintaan maxOut).
+template <class T>
+int oletusKenttajarjestys(const T *kentat, int n, int *out, int maxOut)
+{
+	int lkm = 0;
+	for (int i = 0; i < n && lkm < maxOut; i++) {
+		if (kentat[i].akt)
+			out[lkm++] = kentat[i].id;
+		}
+	return(lkm);
+}
+
 #endif

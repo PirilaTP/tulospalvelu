@@ -59,3 +59,36 @@ TEST_CASE("etsiOtsikkoKolumni: puuttuva sarake antaa -1")
 	CHECK(etsiOtsikkoKolumni(f, 2, L"Yhdistys") == -1);
 	CHECK(etsiOtsikkoKolumni(f, 0, L"Id") == -1);
 }
+
+struct TestiKentta {
+	int id;
+	int akt;
+};
+
+TEST_CASE("oletusKenttajarjestys: vain aktiiviset kentat taulukon jarjestyksessa")
+{
+	const TestiKentta k[] = {{1, 1}, {2, 0}, {3, 1}, {8, 0}, {4, 1}};
+	int out[10];
+	int n = oletusKenttajarjestys(k, 5, out, 10);
+	CHECK(n == 3);
+	CHECK(out[0] == 1);
+	CHECK(out[1] == 3);
+	CHECK(out[2] == 4);
+}
+
+TEST_CASE("oletusKenttajarjestys: tyhja tai ei-aktiivinen taulukko antaa nolla")
+{
+	const TestiKentta k[] = {{1, 0}, {2, 0}};
+	int out[4];
+	CHECK(oletusKenttajarjestys(k, 2, out, 4) == 0);
+	CHECK(oletusKenttajarjestys(k, 0, out, 4) == 0);
+}
+
+TEST_CASE("oletusKenttajarjestys: tulos rajataan maxOut-kenttaan")
+{
+	const TestiKentta k[] = {{1, 1}, {2, 1}, {3, 1}, {4, 1}};
+	int out[2];
+	CHECK(oletusKenttajarjestys(k, 4, out, 2) == 2);
+	CHECK(out[0] == 1);
+	CHECK(out[1] == 2);
+}
