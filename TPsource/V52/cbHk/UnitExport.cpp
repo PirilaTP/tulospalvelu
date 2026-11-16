@@ -21,6 +21,7 @@
 #include "WinHk.h"
 #include "UnitExport.h"
 #include "UnitMySQL.h"
+#include "HkExportPv.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -94,14 +95,14 @@ wchar_t *TFormExport::otsikkorivi(wchar_t *line, int len, wchar_t erotin)
 			line[wcslen(line)] = erotin;
 			}
 		}
-	for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
+	for (int ipv = pvMin; ipv < pvMax; ipv++) {
 		for (int i = Kexp_kentat; i < Kexp_kentat+Pexp_kentat; i++) {
 			if (exp_kentat_local[i].len) {
 				swprintf(line+wcslen(line), L"%s-%d%c", exp_kentat_local[i].name, ipv+1, erotin);
 				}
 			}
 		}
-	for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
+	for (int ipv = pvMin; ipv < pvMax; ipv++) {
 		for (int iva = 0; iva < kilpparam.valuku; iva++) {
 			for (int i = Kexp_kentat+Pexp_kentat; i < Kexp_kentat+Pexp_kentat+Vexp_kentat; i++) {
 				if (exp_kentat_local[i].len) {
@@ -125,13 +126,13 @@ wchar_t *TFormExport::datarivi(kilptietue *kilp, wchar_t *line, int len, wchar_t
 	wchar_t st[40];
 
 	wmemset(line, 0, len);
-	for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
+	for (int ipv = pvMin; ipv < pvMax; ipv++) {
 		for (int i = 0; i < Kexp_kentat+Pexp_kentat; i++) {
 			if ((int)wcslen(line) > len-40)
 				break;
 			if (!exp_kentat_local[i].len)
 				continue;
-			if (ipv > 0 && i < Kexp_kentat)
+			if (ipv > pvMin && i < Kexp_kentat)
 				continue;
 			switch (exp_kentat_local[i].oik) {
 				case 1:
@@ -272,7 +273,7 @@ wchar_t *TFormExport::datarivi(kilptietue *kilp, wchar_t *line, int len, wchar_t
 				}
 			}
 		}
-	for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
+	for (int ipv = pvMin; ipv < pvMax; ipv++) {
 		for (int iva = 0; iva < kilpparam.valuku; iva++) {
 			for (int i = Kexp_kentat+Pexp_kentat; i < Kexp_kentat+Pexp_kentat+Vexp_kentat; i++) {
 				if ((int)wcslen(line) > len-20)
@@ -380,6 +381,7 @@ void TFormExport::kirjCsv(wchar_t *flname)
 	TextFl *outfl;
 	kilptietue kilp;
 
+	exportPvRange(CBPaiva->Enabled ? CBPaiva->ItemIndex : 0, kilpparam.n_pv_akt, &pvMin, &pvMax);
 	int nfld = Kexp_kentat + Pexp_kentat + Vexp_kentat + Xexp_kentat;
 	exp_kentat_local = new FLD2[nfld];
 	for (int i = 0; i < nfld; i++) {
@@ -411,6 +413,8 @@ void TFormExport::kirjCsv(wchar_t *flname)
 		LeaveCriticalSection(&tall_CriticalSection);
 		}
 	delete outfl;
+	delete[] exp_kentat_local;
+	exp_kentat_local = NULL;
 	if (ind.ix)
 		poistaindeksi(&ind);
 	Application->MessageBoxW((UnicodeString(L"Kirjoitettu ")+UnicodeString(nrv)+
@@ -630,6 +634,15 @@ void TFormExport::NaytaSarjavalinnat(void)
 void __fastcall TFormExport::FormShow(TObject *Sender)
 {
 	NaytaSarjavalinnat();
+	if (CBPaiva->Items->Count != kilpparam.n_pv_akt + 1) {
+		CBPaiva->Items->Clear();
+		CBPaiva->Items->Add(L"Kaikki");
+		for (int ipv = 1; ipv <= kilpparam.n_pv_akt; ipv++)
+			CBPaiva->Items->Add(UnicodeString(ipv));
+		CBPaiva->ItemIndex = 0;
+		}
+	CBPaiva->Enabled = kilpparam.n_pv_akt > 1;
+	LblPaiva->Enabled = kilpparam.n_pv_akt > 1;
 }
 //---------------------------------------------------------------------------
 

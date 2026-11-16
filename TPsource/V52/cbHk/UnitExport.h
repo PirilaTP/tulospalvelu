@@ -48,6 +48,8 @@ __published:	// IDE-managed Components
 	TComboBox *CBMerkisto;
 	TCheckBox *CBKaikkiKentat;
 	TCheckBox *CBValiajat;
+	TLabel *LblPaiva;
+	TComboBox *CBPaiva;
 	TLabel *Label2;
 	TButton *Button2;
 	TGroupBox *GBSQL;
@@ -79,6 +81,7 @@ __published:	// IDE-managed Components
 	void __fastcall FormShow(TObject *Sender);
 private:	// User declarations
 	FLD2 *exp_kentat_local;
+	int pvMin, pvMax;
 	wchar_t *otsikkorivi(wchar_t *line, int len, wchar_t erotin);
 	wchar_t *datarivi(kilptietue *kilp, wchar_t *line, int len, wchar_t erotin);
 	void NaytaSarjavalinnat(void);

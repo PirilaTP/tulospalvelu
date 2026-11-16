@@ -294,7 +294,7 @@ object FormExport: TFormExport
     Left = 248
     Top = 16
     Width = 225
-    Height = 241
+    Height = 281
     Caption = ' Tekstitiedoston valinnat '
     TabOrder = 2
     object Label1: TLabel
@@ -313,10 +313,17 @@ object FormExport: TFormExport
     end
     object Label4: TLabel
       Left = 16
-      Top = 191
+      Top = 231
       Width = 40
       Height = 14
       Caption = 'Merkist'#246
+    end
+    object LblPaiva: TLabel
+      Left = 16
+      Top = 128
+      Width = 61
+      Height = 14
+      Caption = 'P'#228'iv'#228'/Vaihe'
     end
     object CBErotin: TComboBox
       Left = 16
@@ -346,13 +353,25 @@ object FormExport: TFormExport
         'Sarjoittainen numeroj'#228'rjestys'
         'Sarjoittainen aakkosj'#228'rjestys')
     end
+    object CBPaiva: TComboBox
+      Left = 16
+      Top = 144
+      Width = 121
+      Height = 22
+      Style = csDropDownList
+      ItemIndex = 0
+      TabOrder = 2
+      Text = 'Kaikki'
+      Items.Strings = (
+        'Kaikki')
+    end
     object CBPisteet: TCheckBox
       Left = 16
-      Top = 133
+      Top = 173
       Width = 153
       Height = 17
       Caption = 'Kirjoita my'#246's pistetekent'#228't'
-      TabOrder = 2
+      TabOrder = 3
     end
     object CBLainMerk: TCheckBox
       Left = 16
@@ -360,15 +379,15 @@ object FormExport: TFormExport
       Width = 206
       Height = 17
       Caption = 'Ymp'#228'r'#246'i tekstikent'#228't lainausmerkeill'#228
-      TabOrder = 3
+      TabOrder = 4
     end
     object CBMerkisto: TComboBox
       Left = 16
-      Top = 207
+      Top = 247
       Width = 121
       Height = 22
       ItemIndex = 0
-      TabOrder = 4
+      TabOrder = 5
       Text = 'UTF-8'
       Items.Strings = (
         'UTF-8'
@@ -378,21 +397,21 @@ object FormExport: TFormExport
     end
     object CBKaikkiKentat: TCheckBox
       Left = 16
-      Top = 153
+      Top = 193
       Width = 201
       Height = 17
       Caption = 'Kirjoita kaikki kent'#228't (paitsi v'#228'liajat)'
       Checked = True
       State = cbChecked
-      TabOrder = 5
+      TabOrder = 6
     end
     object CBValiajat: TCheckBox
       Left = 16
-      Top = 172
+      Top = 212
       Width = 121
       Height = 17
       Caption = 'Kirjoita v'#228'liajat'
-      TabOrder = 6
+      TabOrder = 7
     end
   end
   object Button1: TButton
