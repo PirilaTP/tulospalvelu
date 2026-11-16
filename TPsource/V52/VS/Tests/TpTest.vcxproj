@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Tests\DoctestMain.cpp" />
     <ClCompile Include="..\..\Tests\HkEnnTavTest.cpp" />
+    <ClCompile Include="..\..\Tests\HkHenkKopioTest.cpp" />
     <ClCompile Include="..\..\Hk\HkEnnTav.cpp" />
     <ClCompile Include="..\..\tputilv2\aikatowst_s.cpp" />
     <ClCompile Include="..\..\tputilv2\putint_r.cpp" />                                                                  
@@ -97,6 +98,7 @@
     <ClInclude Include="..\..\Tests\doctest.h" />
     <ClInclude Include="..\..\Tests\WideString.h" />
     <ClInclude Include="..\..\Hk\HkEnnTav.h" />
+    <ClInclude Include="..\..\Hk\HkHenkKopio.h" />
     <ClInclude Include="..\..\Tests\doctest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

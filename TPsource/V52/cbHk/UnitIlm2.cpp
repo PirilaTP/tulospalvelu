@@ -1380,6 +1380,7 @@ void __fastcall TFormIlm2::SiirraHTTiedot(int haku)
 	int KHenk;
 	wchar_t snimi[LSNIMI+1], enimi[LENIMI+1], seura[LSEURA+1], maa[4], sarja[20];
 	wchar_t joukkue[LJK+1], sukup;
+	wchar_t yhdistys[LYHD+1];
 	int id, intid, badge, bib, ika, synt, d;
 
 	if (!FormTKanta->HenkiloHakuOn())
@@ -1392,7 +1393,7 @@ void __fastcall TFormIlm2::SiirraHTTiedot(int haku)
 		return;
 		}
 	KHenk =	FormTKanta->THenktiedot(haku, snimi, enimi, seura, maa, sarja, joukkue, &id, &intid,
-		&badge, &bib, &sukup, &ika, &synt);
+		&badge, &bib, &sukup, &ika, &synt, yhdistys);
 	if (KHenk >= 0) {
 		if (CBLisnoTark->Checked && id && (d = etsilisno(id, 0)) > 0) {
 			if (_wtoi(Kilp.etunimi) == Kilp.id()) {
@@ -1435,6 +1436,8 @@ void __fastcall TFormIlm2::SiirraHTTiedot(int haku)
 				EMaa->Text = UnicodeString(maa);
 			if (CBJoukkue->Checked)
 				EJoukkue->Text = UnicodeString(joukkue);
+			if (CBYhdistys->Checked)
+				EYhdistys->Text = UnicodeString(yhdistys);
 			if (CBWRKoodi->Checked)
 				EWRKoodi->Text = UnicodeString(intid);
 			HTBadge = badge;

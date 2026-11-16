@@ -20,6 +20,7 @@
 
 #include "WinHk.h"
 #include "UnitTKanta.h"
+#include "HkHenkKopio.h"
 #include "UnitEditDialog.h"
 #include "UnitIlm2.h"
 #include "UnitEmit.h"
@@ -56,6 +57,8 @@ extern ColTp hTGridCols0[HT_GRIDCOLS];
 ColTp hTGridCols[sizeof(hTGridCols0)/sizeof(ColTp)];
 static wchar_t erotin = L';';
 static kokonimi = false;
+static int yhdKol = -1;
+static bool kirjYhd = false;
 static ColTp FileCols0[HT_FILECOLS]
  = {
 	{L"Id", 50, 1, 0, 0, true},
@@ -257,6 +260,9 @@ int henkTieto::tulk_HenkRivi(wchar_t *rivi, int lineno, wchar_t erotin)
 			case HENKID_SEURALYH:
 				wcsncpy(seuralyh, tfld, kilpparam.lseuralyh);
 				break;
+			case HENKID_YHD:
+				wcsncpy(yhdistys, tfld, LYHD);
+				break;
 			case HENKID_JK:
 				wcsncpy(joukkue, tfld, kilpparam.ljoukkue);
 				break;
@@ -314,12 +320,13 @@ int henkTieto::tee_HenkRivi(wchar_t *line, int len, wchar_t erotin)
 	wchar_t st[40];
 
 	wmemset(line, 0, len);
-	for (int i = 0; i < Khenk_kentat; i++) {
+	for (int c = 0; c < nflds; c++) {
+		int fid = fldorder[c].fld;
 		if ((int)wcslen(line) > len-40)
 			break;
-		if (!henk_kentat[i].akt)
+		if (fid == 0)
 			continue;
-		switch (henk_kentat[i].id) {
+		switch (fid) {
 			case HENKID_KILPID:
 				swprintf(line+wcslen(line), L"%d%c", id, erotin);
 				break;
@@ -340,6 +347,9 @@ int henkTieto::tee_HenkRivi(wchar_t *line, int len, wchar_t erotin)
 				break;
 			case HENKID_SEURALYH:
 				swprintf(line+wcslen(line), L"%s%c", seuralyh, erotin);
+				break;
+			case HENKID_YHD:
+				swprintf(line+wcslen(line), L"%s%c", yhdistys, erotin);
 				break;
 			case HENKID_JK:
 				swprintf(line+wcslen(line), L"%s%c", joukkue, erotin);
@@ -372,6 +382,9 @@ int henkTieto::tee_HenkRivi(wchar_t *line, int len, wchar_t erotin)
 				break;
 			case HENKID_OOLKM:
 				swprintf(line+wcslen(line), L"%d%c", oolkm, erotin);
+				break;
+			case HENKID_VIIMOO:
+				swprintf(line+wcslen(line), L"%s%c", viimoo, erotin);
 				break;
 			case HENKID_LISA:
 				swprintf(line+wcslen(line), L"%s%c", lisatieto, erotin);
@@ -509,8 +522,11 @@ int henkTieto::tulkRivi(wchar_t *iBuf)
 		if (nfld < ++k)
 			goto pois;
 		id =  _wtoi(fields[0]);
-		if (id == 0 && fields[0][0] > L'9')
+		if (id == 0 && fields[0][0] > L'9') {
+			yhdKol = etsiOtsikkoKolumni(fields, nfld, L"Yhdistys");
 			goto pois;
+			}
+
 		if (nfld < ++k)
 			goto pois;
 		if (kokonimi) {
@@ -555,6 +571,10 @@ int henkTieto::tulkRivi(wchar_t *iBuf)
 		++k;
 		}
 	pois:
+	if (yhdKol >= 0 && yhdKol < nfld && fields[yhdKol]) {
+		wcsncpy(yhdistys, fields[yhdKol], LYHD);
+		elimwbl(yhdistys);
+		}
 	wcscpy(st, sukunimi);
 	wcscat(st, L" ");
 	wcscat(st, etunimi);
@@ -568,6 +588,8 @@ int __fastcall TFormTKanta::LueHenkilot(wchar_t *flName, bool NaytaDialogi)
 {
 	bool otsrivi = false;
 	TextFl *InFile = NULL;
+
+	yhdKol = -1;
 
 	if (Henkilot) {
 		delete[] Henkilot;
@@ -729,6 +751,7 @@ int __fastcall TFormTKanta::NaytaHenkilot(wchar_t *alain, wchar_t *ylain, wchar_
 	if ((hTGridCols[13].Visible = Maksumerkint1->Checked) == true) n++;
 	if ((hTGridCols[14].Visible = Osanotot1->Checked) == true) n++;
 	if ((hTGridCols[15].Visible = Osanotot1->Checked) == true) n++;
+	if ((hTGridCols[17].Visible = Yhdistys1->Checked) == true) n++;
 	hTGrid->ColCount = n;
 	n = 0;
 	memset(ColContent, 0, sizeof(ColContent));
@@ -851,6 +874,9 @@ int __fastcall TFormTKanta::NaytaHenkilot(wchar_t *alain, wchar_t *ylain, wchar_
 					case 16:
 						hTGrid->Cells[col][n] = UnicodeString(Henkilot[k].lisatieto);
 						break;
+					case 17:
+						hTGrid->Cells[col][n] = UnicodeString(Henkilot[k].yhdistys);
+						break;
 					}
 				}
 			}
@@ -900,7 +926,7 @@ void __fastcall TFormTKanta::Luetiedot1Click(TObject *Sender)
 //---------------------------------------------------------------------------
 int __fastcall TFormTKanta::THenktiedot(int KHenk, wchar_t *snimi, wchar_t *enimi,
 	wchar_t *seura, wchar_t *maa, wchar_t *sarja, wchar_t *joukkue, int *id,
-	int *intid, int *badge, int *bib, wchar_t *sukup, int *ika, int *synt)
+	int *intid, int *badge, int *bib, wchar_t *sukup, int *ika, int *synt, wchar_t *yhdistys)
 {
 	if (NEsilla < 1)
 		return(-1);
@@ -945,6 +971,8 @@ int __fastcall TFormTKanta::THenktiedot(int KHenk, wchar_t *snimi, wchar_t *enim
 		wcscpy(sarja, Henkilot[KHenk].sarja);
 	if (joukkue)
 		wcscpy(joukkue, Henkilot[KHenk].joukkue);
+	if (yhdistys)
+		wcscpy(yhdistys, Henkilot[KHenk].yhdistys);
 	if (id)
 		*id = Henkilot[KHenk].id;
 	if (intid)
@@ -1292,6 +1320,9 @@ void TFormTKanta::paivitaHenkilot(void)
 				case 16:
 					wcsncpy(Henkilot[r].lisatieto, hTGrid->Cells[hTGridCols[c].Order][r+1].c_str(), sizeof(Henkilot[r].lisatieto)/2-1);
 					break;
+				case 17:
+					wcsncpy(Henkilot[r].yhdistys, hTGrid->Cells[hTGridCols[c].Order][r+1].c_str(), sizeof(Henkilot[r].yhdistys)/2-1);
+					break;
 				}
 			}
 		wcscpy(st, Henkilot[r].sukunimi);
@@ -1320,7 +1351,7 @@ void TFormTKanta::laadiRivi(wchar_t *oBuf, int len, int r, bool kokonimi)
 						}
 					}
 				}
-			oBuf[wcslen(oBuf)-1] = L'\n';
+			oBuf[wcslen(oBuf) ? wcslen(oBuf)-1 : 0] = L'\n';
 			}
 		else {
 			Henkilot[r-1].tee_HenkRivi(oBuf, len, erotin);
@@ -1333,6 +1364,10 @@ void TFormTKanta::laadiRivi(wchar_t *oBuf, int len, int r, bool kokonimi)
 				if (c < nFileCols-1)
 					oBuf[wcslen(oBuf)] = erotin;
 				}
+			if (kirjYhd) {
+				oBuf[wcslen(oBuf)] = erotin;
+				wcscat(oBuf, L"Yhdistys");
+				}
 			}
 		else {
 			for (int c = 0; c < nFileCols; c++) {
@@ -1341,6 +1376,10 @@ void TFormTKanta::laadiRivi(wchar_t *oBuf, int len, int r, bool kokonimi)
 					wcscat(oBuf, hTGrid->Cells[hTGridCols[FileCols[c].Order].Order][r].c_str());
 				if (c < nFileCols-1)
 					oBuf[wcslen(oBuf)] = erotin;
+				}
+			if (kirjYhd) {
+				oBuf[wcslen(oBuf)] = erotin;
+				wcscat(oBuf, Henkilot[r-1].yhdistys);
 				}
 			}
 		oBuf[wcslen(oBuf)] = L'\n';
@@ -1405,6 +1444,27 @@ void TFormTKanta::kirjoitaTiedostoon(int aiempaan)
 			wchar_t Buf[1000];
 			int N = otsrivi ? 1 : 0;
 
+			if (Otsikkorivinmukaan1->Checked && nflds == 0) {
+				int ids[50];
+				nflds = oletusKenttajarjestys(henk_kentat, Khenk_kentat, ids, 50);
+				for (int c = 0; c < nflds; c++)
+					fldorder[c].fld = ids[c];
+				}
+			kirjYhd = hTGridCols[17].Visible;
+			for (int k = 0; k < NHenk && !kirjYhd; k++)
+				if (Henkilot[k].yhdistys[0])
+					kirjYhd = true;
+			if (kirjYhd && Otsikkorivinmukaan1->Checked && nflds > 0 && nflds < 50) {
+				bool onYhd = false;
+				for (int c = 0; c < nflds; c++)
+					if (fldorder[c].fld == HENKID_YHD)
+						onYhd = true;
+				if (!onYhd) {
+					fldorder[nflds].fld = HENKID_YHD;
+					nflds++;
+					}
+				}
+
 			for (; N <= NHenk ; N++) {
 				laadiRivi(Buf, sizeof(Buf)/2, N, kokonimi);
 				OutFile->WriteLine(Buf);
@@ -1428,7 +1488,42 @@ void TFormTKanta::kirjoitaTiedostoon(int aiempaan)
 }
 //---------------------------------------------------------------------------
 
+// Kasvattaa henkilotaulukon (ja rowHenk-taulukon), kun se on tayna, jotta uusia
+// henkiloita voidaan lisata ilman, etta kirjoitetaan taulukon yli.
+static void varaaHenkTilaa(TFormTKanta *F)
+{
+	if (F->Henkilot && F->NHenk < F->maxNHenk)
+		return;
+	int uusi = F->maxNHenk + HENKLISA;
+	henkTieto *h = new henkTieto[uusi];
+	if (F->Henkilot) {
+		memcpy(h, F->Henkilot, F->NHenk*sizeof(henkTieto));
+		delete[] F->Henkilot;
+		}
+	F->Henkilot = h;
+	if (F->rowHenk)
+		delete[] F->rowHenk;
+	F->rowHenk = new int[uusi+1];
+	memset(F->rowHenk, 0, (uusi+1)*sizeof(int));
+	F->maxNHenk = uusi;
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TFormTKanta::Liskilpailijattietokantaan1Click(TObject *Sender)
+{
+	lisaaKilpailijat(false);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormTKanta::Liskaikkikilpailijat1Click(TObject *Sender)
+{
+	if (Application->MessageBoxW(L"Lis\u00e4t\u00e4\u00e4n kaikki kilpailijat (my\u00f6s ne, jotka eiv\u00e4t ole l\u00e4sn\u00e4) henkil\u00f6tietokantaan. Jatketaanko?",
+		L"Vahvista", MB_YESNO) == IDYES)
+		lisaaKilpailijat(true);
+}
+//---------------------------------------------------------------------------
+
+void TFormTKanta::lisaaKilpailijat(bool kaikki)
 {
 	kilptietue kilp;
 	int vapLisno = 1;
@@ -1449,7 +1544,7 @@ void __fastcall TFormTKanta::Liskilpailijattietokantaan1Click(TObject *Sender)
 	for (int d = 1; d < nrec; d++) {
 		int k;
 		kilp.GETREC(d);
-		if (kilp.kilpstatus != 0 || !kilp.lasna() || (ilmkentat > 1 && kilp.pv[k_pv].badge[1] == 0))
+		if (kilp.kilpstatus != 0 || (!kaikki && (!kilp.lasna() || (ilmkentat > 1 && kilp.pv[k_pv].badge[1] == 0))))
 			continue;
 		if (kilp.lisno[0] == 0) {
 			while (1) {
@@ -1469,6 +1564,7 @@ void __fastcall TFormTKanta::Liskilpailijattietokantaan1Click(TObject *Sender)
 //			k = hTGrid->RowCount;
 //			hTGrid->RowCount++;
 			k = NHenk;
+			varaaHenkTilaa(this);
 			NHenk++;
 			memset(&Henkilot[k], 0, sizeof(Henkilot[k]));
 /*
@@ -1489,6 +1585,7 @@ void __fastcall TFormTKanta::Liskilpailijattietokantaan1Click(TObject *Sender)
 			if (k == NHenk) {
 //				k = hTGrid->RowCount;
 //				hTGrid->RowCount++;
+				varaaHenkTilaa(this);
 				NHenk++;
 				memset(&Henkilot[k], 0, sizeof(Henkilot[k]));
 				}
@@ -1509,8 +1606,11 @@ void __fastcall TFormTKanta::Liskilpailijattietokantaan1Click(TObject *Sender)
 			wcscpy(Henkilot[k].sukunimi, kilp.sukunimi);
 			wcscpy(Henkilot[k].etunimi, kilp.etunimi);
 			wcscpy(Henkilot[k].seura, kilp.seura);
+			kopioJosEiTyhja(Henkilot[k].yhdistys, sizeof(Henkilot[k].yhdistys)/2, kilp.yhdistys);
+			kopioJosEiTyhja(Henkilot[k].maa, sizeof(Henkilot[k].maa)/2, kilp.maa);
+			kopioJosEiTyhja(Henkilot[k].joukkue, sizeof(Henkilot[k].joukkue)/2, kilp.joukkue);
 			wcscpy(Henkilot[k].sarja, Sarjat[kilp.Sarja()].sarjanimi);
-			if (ilmkentat > 1 && kilp.pv[k_pv].laina[1] != 'L')
+			if (ilmkentat > 1 && kilp.pv[k_pv].laina[1] != 'L' && (!kaikki || kilp.pv[k_pv].badge[1]))
 				Henkilot[k].badge = kilp.pv[k_pv].badge[1];
 			if (kilp.tulos_pv(k_pv, false) || wcswcind(kilp.tark(), L"KHM") >= 0) {
 				Henkilot[k].oolkm++;
@@ -1622,6 +1722,13 @@ void __fastcall TFormTKanta::Nytlisvalinnat1Click(TObject *Sender)
 void __fastcall TFormTKanta::Lisatieto1Click(TObject *Sender)
 {
 	Lisatieto1->Checked = !Lisatieto1->Checked;
+	NaytaHenkilot(NULL, NULL, NULL, NULL, 0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormTKanta::Yhdistys1Click(TObject *Sender)
+{
+	Yhdistys1->Checked = !Yhdistys1->Checked;
 	NaytaHenkilot(NULL, NULL, NULL, NULL, 0);
 }
 //---------------------------------------------------------------------------

@@ -856,6 +856,7 @@ public:
 	wchar_t  arvo[LARVO];
 	wchar_t  seura[LSEURA];
 	wchar_t  seuralyh[LLYH];
+	wchar_t  yhdistys[LYHD+1];
 	wchar_t  maa[4];
 	wchar_t  joukkue[LJK];
 	wchar_t	 sarja[12];
