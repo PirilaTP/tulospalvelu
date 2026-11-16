@@ -320,12 +320,13 @@ int henkTieto::tee_HenkRivi(wchar_t *line, int len, wchar_t erotin)
 	wchar_t st[40];
 
 	wmemset(line, 0, len);
-	for (int i = 0; i < Khenk_kentat; i++) {
+	for (int c = 0; c < nflds; c++) {
+		int fid = fldorder[c].fld;
 		if ((int)wcslen(line) > len-40)
 			break;
-		if (!henk_kentat[i].akt)
+		if (fid == 0)
 			continue;
-		switch (henk_kentat[i].id) {
+		switch (fid) {
 			case HENKID_KILPID:
 				swprintf(line+wcslen(line), L"%d%c", id, erotin);
 				break;
@@ -381,6 +382,9 @@ int henkTieto::tee_HenkRivi(wchar_t *line, int len, wchar_t erotin)
 				break;
 			case HENKID_OOLKM:
 				swprintf(line+wcslen(line), L"%d%c", oolkm, erotin);
+				break;
+			case HENKID_VIIMOO:
+				swprintf(line+wcslen(line), L"%s%c", viimoo, erotin);
 				break;
 			case HENKID_LISA:
 				swprintf(line+wcslen(line), L"%s%c", lisatieto, erotin);
@@ -1442,6 +1446,16 @@ void TFormTKanta::kirjoitaTiedostoon(int aiempaan)
 			for (int k = 0; k < NHenk && !kirjYhd; k++)
 				if (Henkilot[k].yhdistys[0])
 					kirjYhd = true;
+			if (kirjYhd && Otsikkorivinmukaan1->Checked && nflds > 0 && nflds < 50) {
+				bool onYhd = false;
+				for (int c = 0; c < nflds; c++)
+					if (fldorder[c].fld == HENKID_YHD)
+						onYhd = true;
+				if (!onYhd) {
+					fldorder[nflds].fld = HENKID_YHD;
+					nflds++;
+					}
+				}
 
 			for (; N <= NHenk ; N++) {
 				laadiRivi(Buf, sizeof(Buf)/2, N, kokonimi);
