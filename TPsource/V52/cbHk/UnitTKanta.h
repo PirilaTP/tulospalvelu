@@ -80,6 +80,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Otsikkorivinmukaan1;
 	TMenuItem *Nytlisvalinnat1;
 	TMenuItem *Lisatieto1;
+	TMenuItem *Yhdistys1;
 	void __fastcall Luetiedot1Click(TObject *Sender);
 	void __fastcall IRMAtiedosto1Click(TObject *Sender);
 	void __fastcall FormResize(TObject *Sender);
@@ -124,6 +125,7 @@ __published:	// IDE-managed Components
 	void __fastcall Otsikkorivinmukaan1Click(TObject *Sender);
 	void __fastcall Nytlisvalinnat1Click(TObject *Sender);
 	void __fastcall Lisatieto1Click(TObject *Sender);
+	void __fastcall Yhdistys1Click(TObject *Sender);
 private:	// User declarations
 	void  laadiRivi(wchar_t *iBuf, int len, int r, bool kokonimi);
 	void  kirjoitaTiedostoon(int aiempaan);

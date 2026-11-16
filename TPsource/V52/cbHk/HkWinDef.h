@@ -117,7 +117,7 @@ static const System::Uitypes::TColor clVaaleanHarmaa = System::Uitypes::TColor(0
 #define WM_MYTIEDOT 		(WM_APP + 2216)
 #define WM_MYMSGDSPWARNMSG	(WM_APP + 2217)
 
-#define HT_GRIDCOLS 17
+#define HT_GRIDCOLS 18
 
 struct TMyMessage {
 	Cardinal Msg;

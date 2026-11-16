@@ -129,7 +129,8 @@ ColTp hTGridCols0[HT_GRIDCOLS] = {
 	{L"Maksu", 35, 0, 1, 0, false},
 	{L"OsOttoLkm", 60, 0, 1, 0, false},
 	{L"ViimOsOtto", 60, 1, 0, 0, false},
-	{L"Lisätieto", 60, 1, 0, 0, false}
+	{L"Lisätieto", 60, 1, 0, 0, false},
+	{L"Yhdistys", 70, 0, 1, 0, false}
 };
 
 seurIkkParamClass seurIkkParam[NTILANNEFORM];

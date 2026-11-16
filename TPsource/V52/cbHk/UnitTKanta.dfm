@@ -352,6 +352,10 @@ object FormTKanta: TFormTKanta
           Caption = 'Lis'#228'tieto'
           OnClick = Lisatieto1Click
         end
+        object Yhdistys1: TMenuItem
+          Caption = 'Yhdistys'
+          OnClick = Yhdistys1Click
+        end
       end
       object Nytkaikkirivit1: TMenuItem
         Caption = 'N'#228'yt'#228' kaikki rivit (hidastaa)'
