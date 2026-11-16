@@ -413,6 +413,8 @@ void TFormExport::kirjCsv(wchar_t *flname)
 		LeaveCriticalSection(&tall_CriticalSection);
 		}
 	delete outfl;
+	delete[] exp_kentat_local;
+	exp_kentat_local = NULL;
 	if (ind.ix)
 		poistaindeksi(&ind);
 	Application->MessageBoxW((UnicodeString(L"Kirjoitettu ")+UnicodeString(nrv)+
