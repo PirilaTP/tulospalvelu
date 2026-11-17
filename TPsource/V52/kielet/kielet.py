@@ -357,7 +357,7 @@ def dfm_arvo(teksti, pos):
 def dfm_tekstit(polku):
     """Tuottaa (komponenttipolku 'Lomake.Komponentti', luokka, ominaisuus, teksti, rivi)."""
     teksti = lue_dfm(polku).replace('\r\n', '\n')
-    pino = []
+    pino = []           # [nimi, luokka, vain luku, Text-arvot]
     pos = 0
     while pos < len(teksti):
         loppu = teksti.find('\n', pos)
@@ -367,11 +367,18 @@ def dfm_tekstit(polku):
         rivino = teksti.count('\n', 0, pos) + 1
         m = DFM_OBJ.match(rivi)
         if m:
-            pino.append((m.group(2), m.group(3)))
+            pino.append([m.group(2), m.group(3), False, []])
             pos = loppu + 1
             continue
         if rivi.strip() == 'end':
             if pino:
+                # Vain luku -tekstikentän Text on näyttöteksti (cbKielet.cpp kaannaKomponentti)
+                nimi, luokka, vain_luku, tekstit = pino[-1]
+                if vain_luku and luokka == 'TEdit':
+                    for a, r in tekstit:
+                        if a == nimi:
+                            continue        # suunnitteluaikainen oletus (Text = komponentin nimi)
+                        yield '.'.join(p[0] for p in pino), luokka, 'Text', a, r
                 pino.pop()
             pos = loppu + 1
             continue
@@ -379,7 +386,11 @@ def dfm_tekstit(polku):
         if not m:
             pos = loppu + 1
             continue
+        if m.group(1) == 'ReadOnly' and pino:
+            pino[-1][2] = rivi[m.end():].strip() == 'True'
         arvot, pos = dfm_arvo(teksti, pos + m.end())
+        if arvot and m.group(1) == 'Text' and pino:
+            pino[-1][3] += [(a, rivino) for a in arvot]
         if arvot and m.group(1) in DFM_OMINAISUUDET and pino:
             for a in arvot:
                 yield '.'.join(p[0] for p in pino), pino[-1][1], m.group(1), a, rivino

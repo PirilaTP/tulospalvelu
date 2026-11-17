@@ -53,7 +53,9 @@ Kaikki on määritelty tiedostossa `include/Kielet.h` (sisältyy `tputil.h`:hon)
 - **Lomakkeet (.dfm)** käännetään automaattisesti: jokaisen lomakkeen konstruktori alkaa
   rivillä `kaannaLomake(this);` (`cbTp/cbKielet.cpp`). Uuteen lomakkeeseen lisätään sama
   rivi ja `#include "cbKielet.h"`. Käännetään `Caption`, `Hint`, `Items`, `Lines`,
-  `EditLabel`, `Title`, `Filter`, tilarivin paneelit ja ListView-sarakkeet.
+  `EditLabel`, `Title`, `Filter`, tilarivin paneelit, ListView-sarakkeet ja vain luku
+  -tekstikenttien (`TEdit`, `ReadOnly`) `Text`. Valikon tekstin käännös löytyy, vaikka
+  automaattinen pikanäppäin (`AutoHotkeys`) olisi lisännyt siihen &-merkin.
   Käännöksen jälkeen `kaannaLomake` sovittaa pidemmät tekstit lomakkeelle:
   1. painike tai valintaruutu levennetään, jos sen oikealla puolella on vapaata tilaa;
      kentän nimi (vasemmalle tasattu TLabel) siirtyy vasemmalle, jos sen vasemmalla puolella

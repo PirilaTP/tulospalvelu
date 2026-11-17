@@ -37,9 +37,19 @@ static UnicodeString kaanna(const UnicodeString &s)
 		return(s);
 	const wchar_t *fi = s.c_str();
 	const wchar_t *t = TR(fi);
-	if (t == fi)
-		return(s);
-	return(UnicodeString(t));
+	if (t != fi)
+		return(UnicodeString(t));
+	// Valikon automaattinen pikanäppäin (AutoHotkeys) lisää lomaketta ladattaessa &-merkin
+	// tekstiin, jossa sitä ei lomakkeella ole ('Laitteet' -> '&Laitteet'): haetaan ilman sitä
+	if (s.Pos(L"&") > 0) {
+		UnicodeString ilman = StripHotkey(s);
+		if (ilman != s && !ilman.IsEmpty()) {
+			const wchar_t *t2 = TR(ilman.c_str());
+			if (t2 != ilman.c_str())
+				return(UnicodeString(t2));
+			}
+		}
+	return(s);
 }
 
 // Tiedostosuodatin 'Kuvaus|*.txt|Kuvaus2|*.csv': käännetään vain kuvaukset
@@ -122,6 +132,12 @@ static void kaannaKomponentti(TComponent *C)
 	else if (TListView *LV = dynamic_cast<TListView *>(C)) {
 		for (int i = 0; i < LV->Columns->Count; i++)
 			LV->Columns->Items[i]->Caption = kaanna(LV->Columns->Items[i]->Caption);
+		}
+	else if (TEdit *E = dynamic_cast<TEdit *>(C)) {
+		// Vain luku -kenttä on näyttöteksti (esim. Emit-lomakkeen 'Käsittelyyn kortti');
+		// muokattavan kentän teksti on tietoa, jota ei käännetä
+		if (E->ReadOnly)
+			E->Text = kaanna(E->Text);
 		}
 }
 

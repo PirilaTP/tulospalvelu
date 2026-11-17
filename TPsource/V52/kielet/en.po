@@ -831,10 +831,10 @@ msgstr "Rank"
 #: cbHk/UnitMaastossa.cpp cbHk/UnitSeurat.cpp ViestiWin/TapUnit2.cpp ViestiWin/TulosUnit.cpp
 #: ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitHenkHaku.cpp ViestiWin/UnitJjVaihdot.cpp
 #: ViestiWin/UnitLahestyjat.cpp ViestiWin/UnitLuenta.cpp ViestiWin/UnitMaastossa.cpp ViestiWin/UnitSeurat.cpp
-#: ViestiWin/UnitVaTuloste.cpp cbTp/UnitAmpPaikat.cpp cbHk/UnitASakot.dfm cbHk/UnitEmit.dfm
-#: cbHk/UnitEmitMuutokset.dfm cbHk/UnitHylkRap.dfm cbHk/UnitKilpailijaOnline.dfm cbHk/UnitKilpailijatiedot.dfm
-#: cbHk/UnitSuodatus.dfm cbHk/UnitTarkMerk.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitEmitMuutokset.dfm
-#: ViestiWin/UnitHylkRap.dfm ViestiWin/UnitOsuuskopiointi.dfm
+#: ViestiWin/UnitVaTuloste.cpp cbTp/UnitAmpPaikat.cpp cbHk/UnitASakot.dfm cbHk/UnitASuunn.dfm
+#: cbHk/UnitEmit.dfm cbHk/UnitEmitMuutokset.dfm cbHk/UnitHylkRap.dfm cbHk/UnitKilpailijaOnline.dfm
+#: cbHk/UnitKilpailijatiedot.dfm cbHk/UnitSuodatus.dfm cbHk/UnitTarkMerk.dfm ViestiWin/UnitASakot.dfm
+#: ViestiWin/UnitEmit.dfm ViestiWin/UnitEmitMuutokset.dfm ViestiWin/UnitHylkRap.dfm ViestiWin/UnitOsuuskopiointi.dfm
 msgid "Nimi"
 msgstr "Name"
 
@@ -8562,8 +8562,9 @@ msgstr "Comp.no"
 
 #: cbHk/TapUnit2.cpp cbHk/UnitAikavert.cpp cbHk/UnitComfile.cpp cbHk/UnitEmit_VA.cpp
 #: cbHk/UnitKilpailijaOnline.cpp ViestiWin/UnitAikavert.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitEmit_VA.cpp
-#: cbHk/MuotoiluUnit.dfm cbHk/UnitASakot.dfm cbHk/UnitAjanotto.dfm cbHk/UnitCfg.dfm
-#: cbHk/UnitTuloskaava.dfm ViestiWin/UnitAjanotto.dfm ViestiWin/UnitCfg.dfm ViestiWin/UnitLahestyjat.dfm
+#: cbHk/MuotoiluUnit.dfm cbHk/UnitASakot.dfm cbHk/UnitASuunn.dfm cbHk/UnitAjanotto.dfm
+#: cbHk/UnitCfg.dfm cbHk/UnitTuloskaava.dfm ViestiWin/UnitASakot.dfm ViestiWin/UnitAjanotto.dfm
+#: ViestiWin/UnitCfg.dfm ViestiWin/UnitLahestyjat.dfm
 msgid "Piste"
 msgstr "Point"
 
@@ -9857,7 +9858,8 @@ msgid "Korj."
 msgstr "Corr."
 
 #: cbHk/UnitEmit.cpp cbHk/UnitTaulu.cpp ViestiWin/UnitEmit.cpp ViestiWin/UnitGAZ.cpp
-#: cbHk/UnitTaulu.dfm ViestiWin/UnitGAZ.dfm ViestiWin/UnitJoukkuetiedot.dfm
+#: cbHk/UnitASuunn.dfm cbHk/UnitTaulu.dfm ViestiWin/UnitASakot.dfm ViestiWin/UnitGAZ.dfm
+#: ViestiWin/UnitJoukkuetiedot.dfm
 msgid "Kello"
 msgstr "Clock"
 
@@ -11878,7 +11880,7 @@ msgctxt "lyhyt"
 msgid "Kilpailija"
 msgstr "Comp."
 
-#: cbHk/WinHk.cpp ViestiWin/UnitMain.cpp
+#: cbHk/WinHk.cpp ViestiWin/UnitMain.cpp cbHk/WinHk.dfm ViestiWin/UnitMain.dfm
 msgid "Ei avattua kilpailua"
 msgstr "No competition opened"
 
@@ -18155,6 +18157,10 @@ msgstr "Show punches"
 #: cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm
 msgid "Peruuta kirjaus"
 msgstr "Cancel recording"
+
+#: cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm
+msgid "Käsittelyyn kortti"
+msgstr "Card being processed"
 
 #: cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm
 msgid "Tulosta leimausraportti"

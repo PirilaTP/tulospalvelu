@@ -43,6 +43,16 @@ class DfmTextTests(unittest.TestCase):
         ])
 
 
+    def test_read_only_edit_text_is_extracted(self):
+        form = pathlib.Path(kielet.V52) / 'cbHk' / 'UnitEmit.dfm'
+        texts = [text for obj, cls, prop, text, line in kielet.dfm_tekstit(form)
+                 if prop == 'Text']
+        self.assertIn('Käsittelyyn kortti', texts)
+        # muokattavan kentän tekstiä ('0') ei poimita käännettäväksi kuin vain luku -kentistä
+        self.assertNotIn('EdtSarja', [t for obj, cls, prop, t, line in kielet.dfm_tekstit(
+            pathlib.Path(kielet.V52) / 'cbHk' / 'UnitVaToisto.dfm')])
+
+
 class UntranslatedTextTests(unittest.TestCase):
     def found(self, code):
         return [(kind, text) for line, kind, text in kielet.kaantamattomat_teksti(code)]
