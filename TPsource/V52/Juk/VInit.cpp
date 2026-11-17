@@ -863,7 +863,12 @@ void lue_parametrit(int argc, wchar_t *argv[], wchar_t *cfgflname)
 			}
 */
 		 if(!wmemcmp(fldn, L"KAYTTOKIELI=", 12)) {
+			// Vain konsolissa: Windows-ohjelmien lomakkeet on jo k‰‰nnetty rekisterin kielell‰, kun
+			// konfiguraatio luetaan, joten kielen vaihto t‰ss‰ tuottaisi sekakielisen n‰kym‰n
+			// (ks. kielet/muistio-kayttokieli.md). Windows-ohjelmissa kieli valitaan valikosta.
+#ifdef _CONSOLE
 			asetaKayttokieli(kieliKoodista(fldn+12, kayttokieli));
+#endif
 			continue;
 			}
 		 if(!wmemcmp(fldn, L"KIELI=", 6)) {

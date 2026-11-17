@@ -27,7 +27,8 @@ vieressä on `kielet\en.po` ja `kielet\sv.po`. Kopioi ohjelmaa siirtäessäsi my
     käyttäjän rekisteriin (`HKCU\Software\Tulospalvelu`, arvo `Kayttokieli`) ja tulee
     voimaan, kun ohjelma käynnistetään uudelleen.
   - Konsoliohjelmat: sama rekisteriasetus tai konfiguraatiotiedoston rivi
-    `KAYTTOKIELI=FI|SV|EN`.
+    `KAYTTOKIELI=FI|SV|EN`. Windows-ohjelmat ohittavat tämän rivin, koska niiden lomakkeet
+    on jo käännetty, kun konfiguraatio luetaan (ks. [muistio](muistio-kayttokieli.md)).
 - **Tulosteiden kieli** (`tulostekieli`, tulosteen `tulostusparamtp::language`): tulos- ja
   lähtöluettelot, html-sivut, väliaikatulosteet ja muut tulosteet.
   - Windows-ohjelmat: tulostusikkunan valikko *Tulosteiden kieli*.
@@ -54,10 +55,17 @@ Kaikki on määritelty tiedostossa `include/Kielet.h` (sisältyy `tputil.h`:hon)
   rivi ja `#include "cbKielet.h"`. Käännetään `Caption`, `Hint`, `Items`, `Lines`,
   `EditLabel`, `Title`, `Filter`, tilarivin paneelit ja ListView-sarakkeet.
   Käännöksen jälkeen `kaannaLomake` sovittaa pidemmät tekstit lomakkeelle:
-  1. painike tai valintaruutu levennetään, jos sen oikealla puolella on vapaata tilaa
+  1. painike tai valintaruutu levennetään, jos sen oikealla puolella on vapaata tilaa;
+     kentän nimi (vasemmalle tasattu TLabel) siirtyy vasemmalle, jos sen vasemmalla puolella
+     on tilaa, niin että se päättyy entiseen kohtaan kentän viereen
   2. jos teksti ei silti mahdu, käytetään tekstin **lyhyttä muotoa** (ks. alla), jos sellainen on
   3. muuten teksti katkaistaan "…"-merkkiin; automaattisesti levenevä teksti (TLabel) ei saa
      peittää viereistä kontrollia.
+
+  Rivittyvät tekstit (`WordWrap`) mitataan rivitettyinä: rivien on mahduttava kontrollin
+  korkeuteen, eikä yksikään sana saa olla kontrollia leveämpi (Windows katkaisisi sen kesken
+  sanan). Muuten käytetään lyhyttä muotoa. Rivittyvä TLabel, joka kasvaa automaattisesti,
+  rajataan alla olevaan kontrolliin asti.
 
   Kun teksti on lyhennetty tai katkaistu, koko teksti näytetään vihjeenä (Hint).
   Valintaryhmän (TRadioGroup) vaihtoehdoille sama: lyhyt muoto ja vaihtoehdon oma vihje.
@@ -95,6 +103,12 @@ Kaikki on määritelty tiedostossa `include/Kielet.h` (sisältyy `tputil.h`:hon)
 - `TR`-funktioiden palauttamaa merkkijonoa ei saa muuttaa, ja se on voimassa koko ajon.
   Suomella `TR(s)` palauttaa saman osoittimen `s`.
 - Muotoilumerkkijono käännetään ennen muotoilua: `swprintf(msg, TR(L"Kilpailija %d puuttuu"), kno)`.
+- Älä kokoa tekstiä paloista (`UnicodeString(n) + L". osuus"`): käytä koko lauseen
+  muotoilumerkkijonoa, jotta sanajärjestys voi vaihdella käännöksessä:
+  `UnicodeString().sprintf(TR(L"%d. osuus"), n)`.
+- Konsolin kiinteän levyiseen kenttään: `TRkentta(line+57, L"KESKEYT", 7)` kopioi käännöksestä
+  enintään 7 merkkiä ja täyttää loput välilyönneillä. Näytön otsikkorivi: `header = TR(L"LISTAT    ")`
+  (käännöksessä sama leveys).
 
 ### Työnkulku tekstejä muutettaessa
 
@@ -112,11 +126,20 @@ jokaisen lomaketekstin käännöksen leveyden kontrollin omalla fontilla (96 DPI
 tekstit, jotka eivät mahdu ja joita `kaannaLomake` ei voi leventää eikä korvata lyhyellä
 muodolla (`--kaikki` listaa myös ne). Vertailukohtana on suomenkielinen teksti: sen leveys
 hyväksytään aina. Komento vaatii Pillow-kirjaston (`pip install pillow`) ja Windowsin
-fontit, joten sitä ei ajeta CI:ssä. Lisää listatuille teksteille lyhyt muoto tai muuta
-lomakkeen asettelua C++Builderin lomake-editorissa.
+fontit. Lisää listatuille teksteille lyhyt muoto tai muuta lomakkeen asettelua
+C++Builderin lomake-editorissa. `--raja en=8,sv=2` palauttaa virheen, jos ratkaisemattomia
+on enemmän (CI).
 
-CI (`.github/workflows/build.yml`) tarkistaa, että `tulospalvelu.pot` vastaa lähdekoodia
-ja että `kielet.py tarkista` menee läpi.
+`python kielet/kielet.py kattavuus [--lista] [--paivita]` etsii käyttöliittymän tekstit, jotka
+sijoitetaan koodissa ilman `TR()`-kutsua (`->Text = L"..."`, `Caption`, `Cells[][]`, `header`,
+ilmoitukset, `swprintf`-kehotteet, `+`-operaattorilla kootut tekstit). Hyväksytyt poikkeukset
+(tiedostonimet, asetusten avainsanat, takaisin luettavat tilasanat) ovat tiedostossa
+`kaantamattomat.txt`. Uusi kääntämätön teksti on virhe: kääri se `TR()`-kutsuun tai, jos sitä ei
+pidä kääntää, hyväksy se komennolla `kattavuus --paivita`.
+
+CI (`.github/workflows/build.yml`) tarkistaa, että `tulospalvelu.pot` vastaa lähdekoodia,
+että `kielet.py tarkista` ja `kielet.py kattavuus` menevät läpi ja että `kielet.py mittaa`
+-komennon ratkaisemattomien määrä ei kasva.
 
 `python kielet/kielet.py kaari [--nayta] [--ei-ui] tiedostot...` käärii
 käyttöliittymän merkkijonovakiot automaattisesti `TR()`-kutsuihin (ilmoitusfunktiot,

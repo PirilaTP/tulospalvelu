@@ -1094,7 +1094,12 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			}
 		 // KAYTTOKIELI=FI|SV|EN: käyttöliittymän kieli
 		 if( !wmemcmpU(fldn, L"KAYTTOKIELI=",12) || !wmemcmpU(fldn, L"KÄYTTÖKIELI=",12)) {
+			// Vain konsolissa: Windows-ohjelmien lomakkeet on jo käännetty rekisterin kielellä, kun
+			// konfiguraatio luetaan, joten kielen vaihto tässä tuottaisi sekakielisen näkymän
+			// (ks. kielet/muistio-kayttokieli.md). Windows-ohjelmissa kieli valitaan valikosta.
+#ifdef _CONSOLE
 			asetaKayttokieli(kieliKoodista(fldn+12, kayttokieli));
+#endif
             continue;
 			}
 		 if( !wmemcmpU(fldn, L"SOTILAS", 7)) {
