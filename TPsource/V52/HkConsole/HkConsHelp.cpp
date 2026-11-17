@@ -74,20 +74,20 @@ static scr help1 = {
     18,0,hr13
     };
 
-static char h2r1[] = "HELP,    sivu 3     TIETOJEN SYÖTTÖ JA MUUTTAMINEN";
-static char h2r2[] = "Maaliajan syöttö tapahtuu laskentatoiminnossa käyttäen vain";
-static char h2r3[] = "numeronäppäimiä sekä näppäintä 'Askelpalautus', joka kumoaa";
-static char h2r4[] = "edellisen painalluksen vaikutuksen. Syötetyt numerot korvaavat";
-static char h2r5[] = "aiemmat viimeisestä alkaen. Kilpailijanumero syötetään samoin.";
-static char h2r6[] = "Aikoja korjattaessa käytetään numeronäppäimiä, nuolia  ja \x32";
-static char h2r7[] = "sekä näppäimä <Home> ja <End>. Korjaus tapahtuu korvaustoimin-";
-static char h2r8[] = "tana (Replace). Nuolien sijasta voidaan käyttää";
-static char h2r9[] = "näppäimiä <F7> ja <F8>";
-static char h2r10[] = "Muita tietoja korjattaessa voidaan käyttää lisäys (Insert) tai";
-static char h2r11[] = "korvaustoimintaa; toiminta vaihdetaan näppäimellä <Ins>";
-static char h2r12[] = "Kentän loppuosan poistaa yhdistelmä <Ctrl-End> tai <Ctrl-Del>";
-static char h2r13[] = "Käytettävissä on myös näppäimet , \x32 F7, F8, Del, Askelpal.";
-static char h2r14[] = "Poista tulos antamalla sellainen maaliaika, että tulos on 0.";
+static char h2r1[] = N_("HELP,    sivu 3     TIETOJEN SYÖTTÖ JA MUUTTAMINEN");
+static char h2r2[] = N_("Maaliajan syöttö tapahtuu laskentatoiminnossa käyttäen vain");
+static char h2r3[] = N_("numeronäppäimiä sekä näppäintä 'Askelpalautus', joka kumoaa");
+static char h2r4[] = N_("edellisen painalluksen vaikutuksen. Syötetyt numerot korvaavat");
+static char h2r5[] = N_("aiemmat viimeisestä alkaen. Kilpailijanumero syötetään samoin.");
+static char h2r6[] = N_("Aikoja korjattaessa käytetään numeronäppäimiä, nuolia  ja \x32");
+static char h2r7[] = N_("sekä näppäimä <Home> ja <End>. Korjaus tapahtuu korvaustoimin-");
+static char h2r8[] = N_("tana (Replace). Nuolien sijasta voidaan käyttää");
+static char h2r9[] = N_("näppäimiä <F7> ja <F8>");
+static char h2r10[] = N_("Muita tietoja korjattaessa voidaan käyttää lisäys (Insert) tai");
+static char h2r11[] = N_("korvaustoimintaa; toiminta vaihdetaan näppäimellä <Ins>");
+static char h2r12[] = N_("Kentän loppuosan poistaa yhdistelmä <Ctrl-End> tai <Ctrl-Del>");
+static char h2r13[] = N_("Käytettävissä on myös näppäimet , \x32 F7, F8, Del, Askelpal.");
+static char h2r14[] = N_("Poista tulos antamalla sellainen maaliaika, että tulos on 0.");
 
 static scr help2 = {
     14,

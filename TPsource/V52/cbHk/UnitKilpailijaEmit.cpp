@@ -106,25 +106,25 @@ void __fastcall TFormKilpailijaEmit::naytaTiedot(void)
          TLahto->Clear();
 		switch (Kilp->tark(k_pv)) {
          case L'K' :
-				Tulos->Text = UnicodeString(L"Kesk");
+				Tulos->Text = UnicodeString(TR(L"Kesk"));
 				break;
 			case L'H' :
-				Tulos->Text = UnicodeString(L"Hyl");
+				Tulos->Text = UnicodeString(TR(L"Hyl"));
 				break;
 			case L'M' :
-				Tulos->Text = UnicodeString(L"Virhe");
+				Tulos->Text = UnicodeString(TR(L"Virhe"));
 				break;
 			case L'X' :
-				Tulos->Text = UnicodeString(L"EiAikaa");
+				Tulos->Text = UnicodeString(TR(L"EiAikaa"));
 				break;
 			case L'E' :
-				Tulos->Text = UnicodeString(L"Eiläht.");
+				Tulos->Text = UnicodeString(TR(L"Eiläht."));
 				break;
 			case L'B' :
-				Tulos->Text = UnicodeString(L"Havaittu");
+				Tulos->Text = UnicodeString(TR(L"Havaittu"));
 				break;
 			case L'V' :
-				Tulos->Text = UnicodeString(L"Vakant");
+				Tulos->Text = UnicodeString(TR(L"Vakant"));
 				break;
 			case L'-' :
 			case L'T' :
@@ -145,7 +145,7 @@ void __fastcall TFormKilpailijaEmit::naytaTiedot(void)
 			VaGrid->Cells[1][0] = UnicodeString(TR(L"Sija"));
 		 VaGrid->Cells[2][0] = UnicodeString(TR(L"V-aika"));
 		 for (i = 1; i <= Sarjat[Kilp->Sarja()].valuku[k_pv]; i++) {
-            VaGrid->Cells[0][i] = UnicodeString(i)+L". va";
+            VaGrid->Cells[0][i] = UnicodeString().sprintf(TR(L"%d. va"), i);
 				if ((tl = Kilp->p_aika(i)) > 0) {
 			   VaGrid->Cells[1][i] = UnicodeString(Kilp->p_sija(i));
 			   AIKATOWSTRS(line, tl, 0);

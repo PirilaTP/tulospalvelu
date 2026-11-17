@@ -233,7 +233,7 @@ void algetaulu(void)
       return;
       }
    clrscr();   
-   header=L"TULOSTAULU";
+   header=TR(L"TULOSTAULU");
    kehys(1);
    in_taulu = 1;
    if (!avoin && taulu_com) {

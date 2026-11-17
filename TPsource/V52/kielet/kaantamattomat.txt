@@ -1,0 +1,67 @@
+# Hyväksytyt kääntämättömät käyttöliittymätekstit (kielet.py kattavuus --paivita).
+# Luettelo saa vain lyhentyä: uusi käyttäjälle näkyvä teksti kääritään TR()-kutsuun.
+Hk/HkXmlTulokset.cpp	muotoilu	 - päivä %d
+Hk/HkXmlTulokset.cpp	muotoilu	Classic
+Hk/HkXmlTulokset.cpp	muotoilu	Flight
+Hk/HkXmlTulokset.cpp	muotoilu	Free
+Hk/HkXmlTulokset.cpp	muotoilu	Landing
+Hk/HkXmlTulokset.cpp	muotoilu	Outrun
+Hk/HkXmlTulokset.cpp	muotoilu	Tot
+HkConsole/HkCons3.cpp	muotoilu	Oik
+HkConsole/HkCons3.cpp	muotoilu	Vas
+Juk/VTulostus.cpp	muotoilu	%d. osuus
+Juk/VTulostus.cpp	muotoilu	%d. väliaika
+JukConsole/VConTul.cpp	muotoilu	Oik
+JukConsole/VConTul.cpp	muotoilu	Vas
+ViestiWin/MuotoiluUnit.cpp	sijoitus	Oik
+ViestiWin/MuotoiluUnit.cpp	sijoitus	Vas
+ViestiWin/TulostusUnit2.cpp	sijoitus	Juoksujarj_
+ViestiWin/TulostusUnit2.cpp	sijoitus	Osuus_1.html
+ViestiWin/TulostusUnit2.cpp	sijoitus	Tulokset_
+ViestiWin/TulostusUnit2.cpp	yhdistelma	.html
+ViestiWin/UnitCfg.cpp	sijoitus	Ei
+ViestiWin/UnitCfg.cpp	sijoitus	ikkunat.xml
+ViestiWin/UnitCfg.cpp	yhdistelma	AiP
+ViestiWin/UnitCfg.cpp	yhdistelma	AiV
+ViestiWin/UnitCfg.cpp	yhdistelma	Aik
+ViestiWin/UnitCfg.cpp	yhdistelma	ECd
+ViestiWin/UnitCfg.cpp	yhdistelma	EVa
+ViestiWin/UnitCfg.cpp	yhdistelma	EmI
+ViestiWin/UnitCfg.cpp	yhdistelma	EmO
+ViestiWin/UnitCfg.cpp	yhdistelma	EmV
+ViestiWin/UnitCfg.cpp	yhdistelma	Emt
+ViestiWin/UnitCfg.cpp	yhdistelma	Lki
+ViestiWin/UnitCfg.cpp	yhdistelma	Tie
+ViestiWin/UnitCfg.cpp	yhdistelma	Xml
+ViestiWin/UnitCfg.cpp	yhdistelma	Zzz
+ViestiWin/UnitComfile.cpp	yhdistelma	 (orig:
+ViestiWin/UnitImport.cpp	muotoilu	TIEDOSTO LOPPU
+cbHk/MuotoiluUnit.cpp	sijoitus	Oik
+cbHk/MuotoiluUnit.cpp	sijoitus	Vas
+cbHk/TulostusUnit2.cpp	sijoitus	Lahtoajat_
+cbHk/TulostusUnit2.cpp	sijoitus	Tulokset_
+cbHk/TulostusUnit2.cpp	sijoitus	TulosAvoinna.html
+cbHk/TulostusUnit2.cpp	sijoitus	rastiva_
+cbHk/TulostusUnit2.cpp	yhdistelma	.html
+cbHk/TulostusUnit2.cpp	yhdistelma	.xml
+cbHk/UnitCfg.cpp	sijoitus	Ei
+cbHk/UnitCfg.cpp	sijoitus	henkilot.csv
+cbHk/UnitCfg.cpp	sijoitus	ikkunat.xml
+cbHk/UnitCfg.cpp	sijoitus	seurat.csv
+cbHk/UnitCfg.cpp	yhdistelma	AiV
+cbHk/UnitCfg.cpp	yhdistelma	Aik
+cbHk/UnitCfg.cpp	yhdistelma	ECd
+cbHk/UnitCfg.cpp	yhdistelma	EVa
+cbHk/UnitCfg.cpp	yhdistelma	EmI
+cbHk/UnitCfg.cpp	yhdistelma	EmO
+cbHk/UnitCfg.cpp	yhdistelma	EmV
+cbHk/UnitCfg.cpp	yhdistelma	Emt
+cbHk/UnitCfg.cpp	yhdistelma	Lki
+cbHk/UnitCfg.cpp	yhdistelma	Tie
+cbHk/UnitCfg.cpp	yhdistelma	Xml
+cbHk/UnitComfile.cpp	yhdistelma	 (orig:
+cbTp/UnitNappain.cpp	sijoitus	 Alt
+cbTp/UnitNappain.cpp	sijoitus	 Ctrl
+cbTp/UnitNappain.cpp	sijoitus	Shift
+cbTp/UnitSivuTuloste.cpp	sijoitus	Oik
+cbTp/UnitSivuTuloste.cpp	sijoitus	Vas

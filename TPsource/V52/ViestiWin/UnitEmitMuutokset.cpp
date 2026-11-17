@@ -75,8 +75,8 @@ void __fastcall TFormEmitMuutokset::naytaMemoOhje(bool nayta)
 {
 	if (nayta) {
 		MemoOhje->Lines->Clear();
-		MemoOhje->Lines->Text = L"Tällä kaavakkeella annetaan kilpailijan numero, kun kortti "
-			L"on viallinen tai väärä. Näytetty numero on vaihdettava.";
+		MemoOhje->Lines->Text = TR(L"Tällä kaavakkeella annetaan kilpailijan numero, kun kortti "
+			L"on viallinen tai väärä. Näytetty numero on vaihdettava.");
 		MemoOhje->Color = clYellow;
 		}
 	else {
@@ -129,20 +129,20 @@ void __fastcall TFormEmitMuutokset::Nayta(int d, int osuus)
 			joTiedot = true;
 			if (((kilp.ostiet[osuus].badge[0] - FormEmit->Em.badge0) % BADGEASKEL) == 0) {
 				MemoOhje->Lines->Clear();
-				MemoOhje->Lines->Text = L"Kortti jo luettu samalle osuudelle. Valitse toinen osuus tai merkitse"
-					L" ohitetuksi.";
+				MemoOhje->Lines->Text = TR(L"Kortti jo luettu samalle osuudelle. Valitse toinen osuus tai merkitse"
+					L" ohitetuksi.");
 				MemoOhje->Color = clFuchsia;
 				}
 			else {
 				MemoOhje->Lines->Clear();
-				MemoOhje->Lines->Text = L"Kilpailijalle jo luettu Emit-tiedot. Yhteys aiempiin "
-					L"tietoihin menetetään tallennettaessa.";
+				MemoOhje->Lines->Text = TR(L"Kilpailijalle jo luettu Emit-tiedot. Yhteys aiempiin "
+					L"tietoihin menetetään tallennettaessa.");
 				MemoOhje->Color = clFuchsia;
 				}
 			}
 		else {
 			MemoOhje->Lines->Clear();
-			MemoOhje->Lines->Text = L"Ei esteitä tietojen valitulle kilpailijalle tallentamiselle.";
+			MemoOhje->Lines->Text = TR(L"Ei esteitä tietojen valitulle kilpailijalle tallentamiselle.");
 			MemoOhje->Color = clWindow;
 			}
 		}
@@ -324,8 +324,8 @@ void __fastcall TFormEmitMuutokset::FormShow(TObject *Sender)
 		BtnVaihda->Visible = false;
 		MemoOhje->Visible = true;
 		MemoOhje->Lines->Clear();
-		MemoOhje->Lines->Text = L"Kortti viallinen tai tunnistamaton. Anna joukkueen numero ja"
-			L" kilpailijan osuus.";
+		MemoOhje->Lines->Text = TR(L"Kortti viallinen tai tunnistamaton. Anna joukkueen numero ja"
+			L" kilpailijan osuus.");
 //		MemoOhje->Lines->Add(L"Kortti viallinen tai tunnistamaton");
 //		MemoOhje->Lines->Add(L"Anna joukkueen nimero ja");
 //		MemoOhje->Lines->Add(L"kilpailijan osuus.");

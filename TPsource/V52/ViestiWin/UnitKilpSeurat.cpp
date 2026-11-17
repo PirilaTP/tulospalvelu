@@ -171,7 +171,7 @@ void __fastcall TFormKilpSeurat::Nayta(void)
 	SG1->ColWidths[1] = 45 * Screen->PixelsPerInch / 96;
 	if (vpv > epv) {
 		for (i_pv = epv; i_pv <= vpv; i_pv++) {
-			SG1->Cells[i_pv - epv + 2][0] = UnicodeString(i_pv+1)+L". osuus";
+			SG1->Cells[i_pv - epv + 2][0] = UnicodeString().sprintf(TR(L"%d. osuus"), i_pv+1);
 			SG1->ColWidths[i_pv - epv + 2] = 45 * Screen->PixelsPerInch / 96;
 			}
 		}

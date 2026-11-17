@@ -254,7 +254,7 @@ void __fastcall TFormMaastossa::haeKilpailijat(void)
 	}
 	else
 		Grid->RowCount = rivi;
-	LblLkm->Caption = IntToStr(rivi - 1) + L" kilpailijaa ilman tulosta";
+	LblLkm->Caption = UnicodeString().sprintf(TR(L"%d kilpailijaa ilman tulosta"), rivi - 1);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormMaastossa::FormShow(TObject *Sender)

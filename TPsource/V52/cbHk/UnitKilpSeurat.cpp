@@ -257,7 +257,7 @@ void __fastcall TFormKilpSeurat::Nayta(void)
 	SG1->ColWidths[(sralaji-1)/2 + 1] = 45 * Screen->PixelsPerInch / 96;
 	if (vpv > epv) {
 		for (i_pv = epv; i_pv <= vpv; i_pv++) {
-			SG1->Cells[(sralaji-1)/2 + i_pv - epv + 2][0] = UnicodeString(i_pv+1)+L". vaihe";
+			SG1->Cells[(sralaji-1)/2 + i_pv - epv + 2][0] = UnicodeString().sprintf(TR(L"%d. vaihe"), i_pv+1);
 			SG1->ColWidths[(sralaji-1)/2 + i_pv - epv + 2] = 45 * Screen->PixelsPerInch / 96;
 			}
 		}
@@ -302,7 +302,7 @@ void __fastcall TFormKilpSeurat::NaytaSarjat(void)
 	SG1->Cells[1][0] = TR(L"Yhteensä");
 	SG1->Cells[1][1] = nyilmt;
 	for (i_pv = 0; i_pv < kilpparam.n_pv_akt; i_pv++) {
-		SG1->Cells[i_pv+2][0] = UnicodeString(i_pv+1) + L". vaihe";
+		SG1->Cells[i_pv+2][0] = UnicodeString().sprintf(TR(L"%d. vaihe"), i_pv+1);
 		SG1->ColWidths[i_pv+2] = 60 * Screen->PixelsPerInch / 96;
 		SG1->Cells[i_pv+2][1] = npv[i_pv];
 		}

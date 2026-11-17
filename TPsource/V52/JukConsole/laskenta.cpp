@@ -32,7 +32,7 @@ void valikko(void)
    do {
       clrscr();
 	  status_on = 1;
-      header=L"PÄÄVALIKKO";
+      header=TR(L"PÄÄVALIKKO");
       kehys(1);
       prscr(&paavalikko);
       listfl = TRUE;

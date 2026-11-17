@@ -71,7 +71,7 @@ void __fastcall TFormLuenta::Nollaa(void)
 	EdtViivakoodi->Text = L"";
 	for (int os = 1; os < DG1->RowCount; os++) {
 		style = 0;
-		Cells[0][os].text = UnicodeString(os)+L". osuus";
+		Cells[0][os].text = UnicodeString().sprintf(TR(L"%d. osuus"), os);
 		Cells[1][os].text = L"";
 		Cells[2][os].text = L"";
 		Cells[3][os].text = L"";
@@ -275,7 +275,7 @@ void __fastcall TFormLuenta::EdtViivakoodiKeyPress(TObject *Sender, System::Wide
 			if (Osuus >= 0 && Osuus < kilpparam.osuusluku && (DKilp = getpos(Kilpno)) > 0) {
 				if (!NaytaJoukkue()) {
 					Key = 0;
-					EdtMsg->Text = L"Lue Emit-kortti";
+					EdtMsg->Text = TR(L"Lue Emit-kortti");
 					EdtMsg->Color = clLime;
 					FocusControl(EdtVahvistus);
 					}
@@ -288,7 +288,7 @@ void __fastcall TFormLuenta::EdtViivakoodiKeyPress(TObject *Sender, System::Wide
 		else
 			Key = ESC;
 		if (Key == ESC) {
-			EdtMsg->Text = L"Viivakoodi virheellinen";
+			EdtMsg->Text = TR(L"Viivakoodi virheellinen");
 			EdtMsg->Color = clFuchsia;
 			}
 		}
@@ -376,7 +376,7 @@ int __fastcall TFormLuenta::TarkKoodi(int badge)
 	if (MemoMsg->Visible && MemoMsg->Color == clFuchsia)
 		MemoMsg->Visible = false;
 	if (badge == 200) {
-		MemoMsg->Text = L"Viallinen Emit-kortti (koodi 200). Kortti on vaihdettava. Paina Esc.";
+		MemoMsg->Text = TR(L"Viallinen Emit-kortti (koodi 200). Kortti on vaihdettava. Paina Esc.");
 		MemoMsg->Color = clFuchsia;
 		MemoMsg->Visible = true;
 		FocusControl(EdtVahvistus);
@@ -390,7 +390,7 @@ int __fastcall TFormLuenta::TarkKoodi(int badge)
 		EnterCriticalSection(&tall_CriticalSection);
 		kilp.getrec(d);
 		if (kno == Kilpno && Osuus >= 0 && badge == kilp.ostiet[Osuus].badge[ibdg]) {
-			MemoMsg->Text = L"Kortti jo luettu samalle kilpailijalle. Ei muutettavaa. Paina Esc.";
+			MemoMsg->Text = TR(L"Kortti jo luettu samalle kilpailijalle. Ei muutettavaa. Paina Esc.");
 			MemoMsg->Color = clFuchsia;
 			MemoMsg->Visible = true;
 			FocusControl(EdtVahvistus);
@@ -412,8 +412,8 @@ int __fastcall TFormLuenta::TarkKoodi(int badge)
 			}
 		LeaveCriticalSection(&tall_CriticalSection);
 		if (!vap) {
-			MemoMsg->Text = L"Kortti on varattuna joukkueen " + UnicodeString(kno) + L" osuudelle " +
-				UnicodeString(os+1) + L". Kortti on vaihdettava. Paina Esc.";
+			MemoMsg->Text = UnicodeString().sprintf(TR(L"Kortti on varattuna joukkueen %d osuudelle %d. Kortti on vaihdettava. Paina Esc."),
+				kno, os+1);
 			MemoMsg->Color = clFuchsia;
 			MemoMsg->Visible = true;
 			FocusControl(EdtVahvistus);
@@ -538,13 +538,13 @@ void __fastcall TFormLuenta::EdtKilpnoKeyPress(TObject *Sender, System::WideChar
 						break;
 				EdtOsuus->Text = os+1;
 				}
-			EdtMsg->Text = L"Anna osuus";
+			EdtMsg->Text = TR(L"Anna osuus");
 			FocusControl(EdtOsuus);
 			EdtMsg->Color = clAqua;
 			}
 		else {
 			DKilp = 0;
-			EdtMsg->Text = L"Numero virheellinen";
+			EdtMsg->Text = TR(L"Numero virheellinen");
 			EdtMsg->Color = clFuchsia;
 			}
 		Key = 0;
@@ -562,13 +562,13 @@ void __fastcall TFormLuenta::EdtOsuusKeyPress(TObject *Sender, System::WideChar 
 			(DKilp = getpos(Kilpno)) > 0 && EdtOsuus->Text.Length() > 0  &&
 			(Osuus = tulkOsuuskoodi(sarjaKno(Kilpno), EdtOsuus->Text.c_str())) >= 0 && Osuus < kilpparam.osuusluku) {
 			if (!NaytaJoukkue()) {
-				EdtMsg->Text = L"Lue Emit-kortti";
+				EdtMsg->Text = TR(L"Lue Emit-kortti");
 				EdtMsg->Color = clLime;
 				FocusControl(EdtVahvistus);
             	}
 			}
 		else {
-			EdtMsg->Text = L"Numero tai osuus virheellinen";
+			EdtMsg->Text = TR(L"Numero tai osuus virheellinen");
 			EdtMsg->Color = clFuchsia;
 			}
 		Key = 0;
@@ -672,10 +672,10 @@ void __fastcall TFormLuenta::FormShow(TObject *Sender)
 		if (testifl == NULL)
 			Application->MessageBoxW(TR(L"Tiedoston emitrek.lst avaaminen ei onnistunut"), TR(L"Virhe"), MB_OK);
 		else
-			EdtMsg->Text = L"Testi odottaa Emit-koodeja";
+			EdtMsg->Text = TR(L"Testi odottaa Emit-koodeja");
 		return;
 	}
-	EdtMsg->Text = L"Lue viivakoodi tai syötä joukkueen numero";
+	EdtMsg->Text = TR(L"Lue viivakoodi tai syötä joukkueen numero");
 	EdtMsg->Color = clAqua;
 	Nollaa();
 }

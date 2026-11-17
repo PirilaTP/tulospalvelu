@@ -46,6 +46,7 @@ KAANNOSFUNKTIOT = {
     'TRA': (0, None),
     'TRL': (1, None),
     'TRCL': (2, 1),
+    'TRkentta': (1, None),
     'N_': (0, None),
 }
 # Konsolin valintakehotteet, jotka kääntyvät funktion sisällä: nimi -> (kehote, sallitut merkit)
@@ -704,7 +705,7 @@ UI_OMINAISUUDET = {'Caption', 'Hint', 'Title', 'SimpleText', 'Filter', 'text'}
 # Kääreet, joiden läpi katsotaan ulompaan kutsuun
 NEUTRAALIT = {'UnicodeString', 'AnsiString', 'String', 'WideString', 'wchar_t', 'char', 'LPWSTR', 'LPCWSTR',
               'const'}
-KAANNOSKUTSUT = {'TR', 'TRA', 'TRL', 'TRCL', 'KT', 'N_'}
+KAANNOSKUTSUT = {'TR', 'TRA', 'TRL', 'TRCL', 'TRkentta', 'KT', 'N_'}
 # Tulosteita kirjoittavat kutsut: funktiossa, jossa näitä on, muotoilufunktioiden tekstit
 # kuuluvat tulosteeseen (tulosteen kieli), eivät käyttöliittymään
 TULOSTEKUTSUT = {'putfld', 'Putfld', 'writehtml', 'put_wantitag', 'put_wtag', 'WriteLine', 'sendln',
@@ -932,17 +933,26 @@ def kaari(argv):
 def mittaa(argv):
     """Käännösten mahtuminen lomakkeille, ks. mitat.py.
 
-    mittaa [--kieli sv|en] [--tsv tiedosto] [--lomake osa_nimestä] [--kaikki]
-    Oletuksena listataan ylivuodot, joita kaannaLomake ei ratkaise ajon aikana leventämällä
-    tai lyhyellä muodolla (msgctxt "lyhyt"); --kaikki listaa kaikki."""
+    mittaa [--kieli sv|en] [--tsv tiedosto] [--lomake osa_nimestä] [--kaikki] [--raja N]
+    Oletuksena listataan ylivuodot, joita kaannaLomake ei ratkaise ajon aikana leventämällä,
+    siirtämällä tai lyhyellä muodolla (msgctxt "lyhyt"); --kaikki listaa kaikki.
+    --raja N: virhe (paluuarvo 1), jos ratkaisemattomia on kielellä yli N (CI)."""
     import mitat
     kielilista = list(KIELET)
     tsv = None
     lomake = None
     kaikki_rivit = False
+    raja = None
     i = 0
     while i < len(argv):
-        if argv[i] == '--kieli' and i + 1 < len(argv):
+        if argv[i] == '--raja' and i + 1 < len(argv):
+            # N (kaikille kielille) tai kieli=N,kieli=N
+            raja = {}
+            for osa in argv[i + 1].split(','):
+                k, _, n = osa.rpartition('=')
+                raja[k or None] = int(n)
+            i += 2
+        elif argv[i] == '--kieli' and i + 1 < len(argv):
             kielilista = argv[i + 1].split(',')
             i += 2
         elif argv[i] == '--tsv' and i + 1 < len(argv):
@@ -968,14 +978,19 @@ def mittaa(argv):
             for r in rivit:
                 f.write('\t'.join(str(r[k]).replace('\n', '\\n').replace('\t', ' ')
                                   for k in kentat) + '\n')
+    ylitys = False
     for kieli in kielilista:
         omat = [r for r in rivit if r['kieli'] == kieli]
-        lev = sum(1 for r in omat if r['ratkaisu'] == 'levenee')
+        lev = sum(1 for r in omat if r['ratkaisu'] in ('levenee', 'siirtyy'))
         lyh = sum(1 for r in omat if r['ratkaisu'] == 'lyhyt')
         ei = len(omat) - lev - lyh
-        print('%s: %d tekstiä ei mahdu sellaisenaan (%d lomaketta): %d levenee vapaaseen tilaan, '
-              '%d käyttää lyhyttä muotoa, %d ei mahdu (lyhennä, lisää lyhyt muoto tai muuta lomaketta)'
-              % (kieli, len(omat), len({r['lomake'] for r in omat}), lev, lyh, ei))
+        print('%s: %d tekstiä ei mahdu sellaisenaan (%d lomaketta): %d levenee tai siirtyy vapaaseen '
+              'tilaan, %d käyttää lyhyttä muotoa, %d ei mahdu (lyhennä, lisää lyhyt muoto tai muuta '
+              'lomaketta)' % (kieli, len(omat), len({r['lomake'] for r in omat}), lev, lyh, ei))
+        kraja = None if raja is None else raja.get(kieli, raja.get(None))
+        if kraja is not None and ei > kraja:
+            print('%s: ratkaisemattomia %d, raja %d: lisää lyhyt muoto tai muuta lomaketta' % (kieli, ei, kraja))
+            ylitys = True
         if not tsv:
             for r in omat:
                 if r['ratkaisu'] and not kaikki_rivit:
@@ -985,11 +1000,197 @@ def mittaa(argv):
                     r['lomake'], r['kontrolli'], r['luokka'], r['tarve'], r['tila'],
                     r['fi'].replace('\n', ' '), r['kaannos'].replace('\n', ' '), lyhyt,
                     ' (%s)' % r['ratkaisu'] if r['ratkaisu'] else ''))
+    return 1 if ylitys else 0
+
+
+# ---------------------------------------------------------------------------
+# Kääntämättömät tekstit: käyttöliittymän merkkijonovakiot, jotka eivät kulje TR():n kautta
+# ---------------------------------------------------------------------------
+
+# Hakemistot, joiden koodi kirjoittaa käyttöliittymään
+KATTAVUUSHAK = ['cbHk', 'ViestiWin', 'cbTp', 'HkConsole', 'JukConsole', 'Hk', 'Juk', 'Tp']
+KATTAVUUS_POHJA = os.path.join(KIELIHAK, 'kaantamattomat.txt')
+# Ominaisuudet, joihin sijoitettu teksti näkyy käyttäjälle
+# header: konsolin näytön otsikkorivi
+NAKYVAT_OMINAISUUDET = UI_OMINAISUUDET | {'Text', 'Caption', 'Cells', 'header'}
+# Käyttöliittymän kutsut, joiden teksti kääntyy kutsun sisällä
+ITSEKAANTYVAT = set(VALINTAFUNKTIOT) | {'Win_wselectopt', 'Wselectopt'}
+
+
+def kaantamattomat_teksti(teksti):
+    """Tekstin kääntämättömät käyttöliittymätekstit: [(rivi, laji, teksti)].
+
+    laji: 'ilmoitus' (MessageBox ym.), 'sijoitus' (Caption/Text/Cells = ...),
+    'yhdistelma' (tekstiä koottu +-operaattorilla) tai 'muotoilu' (swprintf ym.)."""
+    tok = tokenit(teksti)
+    n = len(tok)
+    ymparoiva = [None] * n
+    pino = []
+    for i, t in enumerate(tok):
+        ymparoiva[i] = pino[-1] if pino else None
+        if t.laji == 'p' and t.arvo in '([{':
+            pino.append(i)
+        elif t.laji == 'p' and t.arvo in ')]}' and pino:
+            pino.pop()
+    # Tulosteita kirjoittavat funktiot: niiden tekstit kuuluvat tulosteen kieleen
+    lohko = [None] * n
+    tulostelohkot = set()
+    syv = 0
+    nyk = None
+    for k, t in enumerate(tok):
+        if t.arvo == '{':
+            if syv == 0:
+                nyk = k
+            syv += 1
+        elif t.arvo == '}':
+            syv = max(0, syv - 1)
+        lohko[k] = nyk if syv > 0 else None
+        if t.laji == 'ident' and t.arvo in TULOSTEKUTSUT and syv > 0 and k + 1 < n and tok[k+1].arvo == '(':
+            tulostelohkot.add(nyk)
+    tila_luetaan = TILA_LUETAAN.search(teksti) is not None
+
+    tulos = []
+    i = 0
+    while i < n:
+        if tok[i].laji != 'str':
+            i += 1
+            continue
+        loppu, sisalto, _ = str_ryhma(tok, i)
+        alku = i
+        i = loppu
+        if tok[alku].arvo.startswith(('u8', 'u"', 'U"')) or not re.search(r'[A-Za-zÄÖÅäöå]{2}', sisalto):
+            continue
+        if lohko[alku] in tulostelohkot or (tila_luetaan and sisalto in TILASANAT):
+            continue
+        # Kaikki ympäröivät kutsut
+        kutsut = []
+        s = ymparoiva[alku]
+        while s is not None:
+            if tok[s].arvo == '(' and s > 0 and tok[s-1].laji == 'ident':
+                kutsut.append((s, tok[s-1].arvo))
+            s = ymparoiva[s]
+        nimet = [k for _, k in kutsut]
+        if any(k in KAANNOSKUTSUT or k in ITSEKAANTYVAT or k in VERTAILUKUTSUT for k in nimet):
+            continue
+        edellinen = tok[alku-1].arvo if alku > 0 else ''
+        seuraava = tok[loppu].arvo if loppu < n else ''
+        if seuraava == '[' or edellinen in ('sizeof', '[') or edellinen == 'return' and not kutsut:
+            continue
+        if (alku >= 2 and edellinen == '=' and tok[alku-2].arvo in ('=', '!')) or \
+                (seuraava in ('=', '!') and loppu + 1 < n and tok[loppu+1].arvo == '='):
+            continue
+        # Lähin nimetty kutsu neutraalien kääreiden ohi
+        lahin = next((k for k in nimet if k not in NEUTRAALIT), None)
+        yhdistelma = edellinen == '+' or seuraava == '+'
+        laji = None
+        if lahin in UI_KUTSUT:
+            laji = 'ilmoitus'
+        elif lahin in UI_MUOTOILU:
+            s0 = next(s for s, k in kutsut if k == lahin)
+            params, _ = kutsun_parametrit(tok, s0)
+            if params and not (params[0][0] <= alku < params[0][1]) and nayttaa_tekstilta(sisalto):
+                laji = 'muotoilu'
+        elif lahin is None or lahin in UI_KOKOELMAMETODIT:
+            # Sijoitus: lauseen '=' tai '+=' samalla tasolla
+            k = alku - 1
+            taso = ymparoiva[alku] if not kutsut else None
+            while k >= 0 and tok[k].arvo not in (';', '{', '}', '='):
+                k -= 1
+            if k >= 1 and tok[k].arvo == '=' and tok[k-1].arvo not in ('=', '!', '<', '>'):
+                v = k - 1
+                if tok[v].arvo == '+':
+                    v -= 1
+                while v >= 0 and tok[v].arvo == ']':       # Cells[c][r]
+                    syv2 = 0
+                    while v >= 0:
+                        if tok[v].arvo == ']':
+                            syv2 += 1
+                        elif tok[v].arvo == '[':
+                            syv2 -= 1
+                            if syv2 == 0:
+                                break
+                        v -= 1
+                    v -= 1
+                if v >= 0 and tok[v].laji == 'ident' and tok[v].arvo in NAKYVAT_OMINAISUUDET \
+                        and on_nimike(sisalto):
+                    laji = 'yhdistelma' if yhdistelma else 'sijoitus'
+            elif lahin in UI_KOKOELMAMETODIT:
+                s0 = next(s for s, k in kutsut if k == lahin)
+                if s0 >= 3 and tok[s0-2].arvo in ('->', '.') and tok[s0-3].arvo in UI_KOKOELMAT \
+                        and on_nimike(sisalto):
+                    laji = 'yhdistelma' if yhdistelma else 'sijoitus'
+            del taso
+        if laji is not None:
+            tulos.append((tok[alku].rivi, laji, sisalto))
+    return tulos
+
+
+def kaantamattomat():
+    """[(tiedosto, rivi, laji, teksti)] kaikista käyttöliittymähakemistoista."""
+    tulos = []
+    for hak in KATTAVUUSHAK:
+        d = os.path.join(V52, hak)
+        for nimi in sorted(os.listdir(d)):
+            if nimi.lower().endswith(('.cpp', '.h', '.c')):
+                polku = os.path.join(d, nimi)
+                teksti, _ = lue_lahde(polku)
+                for rivi, laji, s in kaantamattomat_teksti(teksti):
+                    tulos.append((suhteellinen(polku), rivi, laji, s))
+    return tulos
+
+
+def _pohja_avain(tiedosto, laji, s):
+    return '%s\t%s\t%s' % (tiedosto, laji, s.replace('\\', '\\\\').replace('\n', '\\n').replace('\t', '\\t'))
+
+
+def kattavuus(argv):
+    """kattavuus [--paivita] [--lista]
+
+    Listaa käyttöliittymän tekstit, jotka eivät kulje TR():n kautta, ja vertaa niitä
+    hyväksyttyjen luetteloon kielet/kaantamattomat.txt. Uusi kääntämätön teksti on virhe
+    (paluuarvo 1): kääri se TR()-kutsuun tai, jos tekstiä ei pidä kääntää (avainsana,
+    tiedostonimi, verrattava arvo), lisää se luetteloon komennolla --paivita."""
+    loydetyt = kaantamattomat()
+    if '--lista' in argv:
+        for tied, rivi, laji, s in loydetyt:
+            print('%s:%d: [%s] %r' % (tied, rivi, laji, s))
+    lajit = {}
+    for _, _, laji, _ in loydetyt:
+        lajit[laji] = lajit.get(laji, 0) + 1
+    print('kääntämättömiä käyttöliittymätekstejä %d (%s)' % (
+        len(loydetyt), ', '.join('%s %d' % kv for kv in sorted(lajit.items()))))
+    avaimet = {}
+    for tied, rivi, laji, s in loydetyt:
+        avaimet.setdefault(_pohja_avain(tied, laji, s), (tied, rivi))
+    if '--paivita' in argv:
+        with open(KATTAVUUS_POHJA, 'w', encoding='utf-8', newline='\n') as f:
+            f.write('# Hyväksytyt kääntämättömät käyttöliittymätekstit (kielet.py kattavuus --paivita).\n'
+                    '# Luettelo saa vain lyhentyä: uusi käyttäjälle näkyvä teksti kääritään TR()-kutsuun.\n')
+            for a in sorted(avaimet):
+                f.write(a + '\n')
+        print('%s: %d tekstiä' % (suhteellinen(KATTAVUUS_POHJA), len(avaimet)))
+        return 0
+    pohja = set()
+    if os.path.exists(KATTAVUUS_POHJA):
+        with open(KATTAVUUS_POHJA, encoding='utf-8') as f:
+            pohja = {r.rstrip('\n') for r in f if r.strip() and not r.startswith('#')}
+    uudet = [a for a in avaimet if a not in pohja]
+    poistuneet = [a for a in pohja if a not in avaimet]
+    for a in sorted(uudet):
+        tied, rivi = avaimet[a]
+        print('UUSI %s:%d: %s' % (tied, rivi, a.split('\t', 2)[2]))
+    if poistuneet:
+        print('%d luettelon tekstiä on käännetty tai poistettu: aja kielet.py kattavuus --paivita'
+              % len(poistuneet))
+    if uudet:
+        print('%d uutta kääntämätöntä tekstiä: kääri TR()-kutsuun tai hyväksy (kattavuus --paivita)'
+              % len(uudet))
+        return 1
     return 0
 
 
 KOMENNOT = {'poimi': poimi, 'paivita': paivita, 'tarkista': tarkista, 'tilasto': tilasto, 'kaari': kaari,
-            'mittaa': mittaa}
+            'mittaa': mittaa, 'kattavuus': kattavuus}
 
 if __name__ == '__main__':
     if hasattr(sys.stdout, 'reconfigure'):

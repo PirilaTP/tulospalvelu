@@ -250,7 +250,7 @@ void __fastcall TFormEmit::InitTila(void)
 		BtnOhita->Visible = true;
 		if (esiluenta == 2) {
 			Caption = TR(L"Väliaikatulosteet");
-			EdtBdgMsg->Text = L"Lue kortti tai syötä KilpNo";
+			EdtBdgMsg->Text = TR(L"Lue kortti tai syötä KilpNo");
 			Height = 350 * Screen->PixelsPerInch / 96;
 			BtnOhita->Visible = false;
 			}
@@ -819,7 +819,7 @@ MESSAGE void __fastcall TFormEmit::DisplTimerHandler(TMyMessage &msg)
 		}
 	EdtBdgMsg->Color = TColor((1 + 256 + 65536) * BdgMsgKirkkaus);
 	if (BdgMsgKirkkaus <= 40 && esiluenta == 2) {
-		FormEmit->EdtBdgMsg->Text = L"Lue kortti tai syötä KilpNo";
+		FormEmit->EdtBdgMsg->Text = TR(L"Lue kortti tai syötä KilpNo");
 		EdtBdgMsg->Color = TColor((1 + 256 + 65536) * 255);
 		DKilp = 0;
 		if (Em.kilpno) {
@@ -887,7 +887,7 @@ MESSAGE void __fastcall TFormEmit::NewCardHandler(TMyMessage &msg)
 	if (KasittelyKesken)
 		return;
 	if (msg.wparam > 0) {
-		EdtBdgMsg->Text = UnicodeString(L"Luettu kortti ")+UnicodeString(msg.wparam);
+		EdtBdgMsg->Text = UnicodeString().sprintf(TR(L"Luettu kortti %d"), (int) msg.wparam);
 		BdgMsgKirkkaus = 256;
 		if (!DisplTimerThreadOn)
 			_beginthread(DisplTimerThread, 10240, &Vast);
@@ -909,7 +909,7 @@ MESSAGE void __fastcall TFormEmit::NewCardHandler(TMyMessage &msg)
 					return;
 				}
 			else if (OnkoMuutoksia()) {
-				EdtMessage->Text = L"Uusi kortti, kun muutoksia tallentamatta";
+				EdtMessage->Text = TR(L"Uusi kortti, kun muutoksia tallentamatta");
 				EdtMessage->Color = clYellow;
 				return;
 /*
@@ -949,7 +949,7 @@ MESSAGE void __fastcall TFormEmit::NewCardHandler(TMyMessage &msg)
 			EdtMessage->Text = msgtxt;
 			EdtMessage->Color = msgtxt[0] ? clYellow : clBtnFace;
 			}
-		EdtBdgMsg->Text = UnicodeString(L"Käsittelyyn kortti ")+UnicodeString(bdg);
+		EdtBdgMsg->Text = UnicodeString().sprintf(TR(L"Käsittelyyn kortti %d"), bdg);
 		BdgMsgKirkkaus = 256;
 		if (!DisplTimerThreadOn)
 			_beginthread(DisplTimerThread, 10240, &Vast);
@@ -1017,7 +1017,7 @@ int __fastcall TFormEmit::OtaTietue(int pos)
 	em.get(Tietue);
 	if (em.kilpno < minkilpno || getEmitJarr(em.kilpno , &Em.osuus) != pos) {
 		eiLiitetty = true;
-		EdtMessage->Text = L"Leimoja ei liitetty kilpailijaan";
+		EdtMessage->Text = TR(L"Leimoja ei liitetty kilpailijaan");
 		EdtMessage->Color = clYellow;
 		}
 	else {

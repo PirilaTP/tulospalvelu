@@ -68,7 +68,7 @@ void valikko(void)
 		}
 	do {
       clearscreen();
-      header=L"PÄÄVALIKKO";
+      header=TR(L"PÄÄVALIKKO");
       ajat_on = 0;
       status_on = 1;
       kehys(1);

@@ -348,7 +348,7 @@ void copydfile(datafile *datfb, INT oldfile)
 	wchar_t wch;
 	static wchar_t fname[50];
 
-	header = L"BACK-UP";
+	header = TR(L"BACK-UP");
 	clrln(ySize-3);
 	vidspwmsg(ySize-3, 0, 7, 0, TR(L"Anna backup-tiedoston nimi"));
 	inputwstr(fname, 49, 27, ySize-3, L"\r\x1b", &wch, 0);

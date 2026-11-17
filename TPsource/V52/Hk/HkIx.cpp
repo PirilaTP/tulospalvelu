@@ -1881,7 +1881,7 @@ int vaihdavaihe(int vaihe, int kielto)
 	svscr = savescr(2, 0, ySize - 5, 64);
 	virdrect(ySize - 3, 0, ySize - 3, 79, saveline, 0);
 	clearscreen();
-	header = L"VAIHEEN VAIHTO";
+	header = TR(L"VAIHEEN VAIHTO");
 	kehys(1);
 #endif
 	memcpy(tmpcomopen, comopen, sizeof(tmpcomopen));

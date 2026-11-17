@@ -173,7 +173,7 @@ void __fastcall TFormYLahdot::FormCreate(TObject *Sender)
 	SG1->Cells[2][0] = TR(L"Vaihto sulj.");
 	for (int os = 2; os <= kilpparam.ntosuus; os++) {
 		wchar_t as[20];
-		SG1->Cells[0][os-1] = UnicodeString(os)+L". osuus";
+		SG1->Cells[0][os-1] = UnicodeString().sprintf(TR(L"%d. osuus"), os);
 		}
 }
 //---------------------------------------------------------------------------

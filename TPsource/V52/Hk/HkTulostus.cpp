@@ -6728,10 +6728,10 @@ void autoruutu(void)
 		 _itow(autotulostusparam.viimsija, st, 10);
 		 wcscat(sl ,st);
 		 }
-	  swprintf(st, L" Laajuus %5s", sl);
+	  swprintf(st, TR(L" Laajuus %5s"), sl);
 	  viwrrectw(12,66,12,79,TR(L" Auto       ON"),7,0,0);
 	  viwrrectw(13,66,13,79,st,7,0,0);
-	  swprintf(st, L" Kynnys %6d", kynnys);
+	  swprintf(st, TR(L" Kynnys %6d"), kynnys);
 	  viwrrectw(14,66,14,79,st,7,0,0);
 	  viwrrectw(15,66,15,73,TR(L" Korkein"),7,0,0);
 	  }
@@ -7100,7 +7100,7 @@ int autofile(int kaikki)
 //		af_tied = new TextFl(autofileparam.afname, L"w+t");
 		if (!aftulparam.lstf) {
 			wchar_t msg[200];
-			swprintf(msg, L"Virhe autotulostustiedostoa %s avattaessa", autofileparam.afname);
+			swprintf(msg, TR(L"Virhe autotulostustiedostoa %s avattaessa"), autofileparam.afname);
 			writeerror_w(msg, 2000);
 			LeaveCriticalSection(&autotul_CriticalSection);
 			return(1);
@@ -7370,7 +7370,7 @@ int luePisteSrj(wchar_t *flnm)
 		wcsncpy(filenm, flnm, 199);
 	psrjfile = new TextFl(filenm, L"rt");
 	if (!psrjfile || !psrjfile->IsOpen()) {
-	   swprintf(msg, L"Tiedostoa %s ei löydy", filenm);
+	   swprintf(msg, TR(L"Tiedostoa %s ei löydy"), filenm);
 	   ret = 1;
 //	   writeerror_w(msg, 0);
 	   }

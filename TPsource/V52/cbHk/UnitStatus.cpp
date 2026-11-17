@@ -360,7 +360,7 @@ void __fastcall TFormStatus::Lukumaarat(void)
 				}
 			LkmGrid->ColCount = cc+kilpparam.maxvaluku;
 			for (int k = 1; k <= kilpparam.maxvaluku; k++)
-				LkmGrid->Cells[cc++][0] = UnicodeString(k)+UnicodeString(L".va");
+				LkmGrid->Cells[cc++][0] = UnicodeString().sprintf(TR(L"%d.va"), k);
 			if (VaiheenMahd->Checked || YhteisMahd->Checked) {
 				LkmGrid->ColCount++;
 				mahdCol = cc;

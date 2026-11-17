@@ -90,7 +90,7 @@ void __fastcall TFormVaPisteet::naytaTiedot(void)
 			}
 		}
 	for (int col = 2; col < VAGrid->ColCount-1; col++) {
-		Cells[0][col].text = UnicodeString(col-1)+UnicodeString(L". va");
+		Cells[0][col].text = UnicodeString().sprintf(TR(L"%d. va"), col-1);
 		}
 	Cells[0][0].text = UnicodeString(TR(L"Sarja"));
 	Cells[0][1].text = UnicodeString(TR(L"Tieto"));

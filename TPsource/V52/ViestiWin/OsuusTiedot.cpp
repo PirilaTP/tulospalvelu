@@ -118,16 +118,16 @@ void __fastcall TFormOsuus::naytaTiedot(void)
 		 TLahto->Clear();
 	  switch (kilp.ostiet[os].keskhyl) {
 		 case 'K' :
-				Tulos->Text = L"Kesk";
+				Tulos->Text = TR(L"Kesk");
 			break;
 		 case 'H' :
-			Tulos->Text = L"Hyl";
+			Tulos->Text = TR(L"Hyl");
 			break;
 		 case 'S' :
-			Tulos->Text = L"Sulj";
+			Tulos->Text = TR(L"Sulj");
 			break;
 		 case 'E' :
-			Tulos->Text = L"Eiläht.";
+			Tulos->Text = TR(L"Eiläht.");
 			break;
 		 case '-' :
 		 case 'T' :

@@ -238,7 +238,7 @@ void __fastcall TFormEmit::InitTila(void)
 		Panel1->Visible = false;
 		if (esitark == -2) {
 			Caption = TR(L"Väliaikatulosteet");
-			EdtBdgMsg->Text = L"Lue kortti tai syötä KilpNo";
+			EdtBdgMsg->Text = TR(L"Lue kortti tai syötä KilpNo");
 			Height = 500 * Screen->PixelsPerInch / 96;
 			}
 		else if (esitark) {
@@ -419,10 +419,10 @@ void __fastcall TFormEmit::NaytaKilp(void)
 		else
 			EdtMaali->Text = L"";
 		if (Kilp.Seuranta(Osuus) == L'G') {
-			EdtMessage->Text = L"Kilpailija GPS seurannassa";
+			EdtMessage->Text = TR(L"Kilpailija GPS seurannassa");
 			EdtMessage->Color = clYellow;
 			}
-		else if (!wcscmp(EdtMessage->Text.c_str(), L"Kilpailija GPS seurannassa")) {
+		else if (!wcscmp(EdtMessage->Text.c_str(), TR(L"Kilpailija GPS seurannassa"))) {
 			NollaaMessage();
 			}
 		}
@@ -535,11 +535,11 @@ void __fastcall TFormEmit::NaytaEmit(void)
 		}
 	if (on99 && EdtMessage->Text.Length() == 0) {
 		LeimSammCnt = 3;
-		EdtMessage->Text = L"Leimasin sammumassa (koodi 99)";
+		EdtMessage->Text = TR(L"Leimasin sammumassa (koodi 99)");
 		EdtMessage->Color = clYellow;
 		}
 	if (!on99 && LeimSammCnt) {
-		if (!Sail99varoitus->Checked && wcscmp(EdtMessage->Text.c_str(), L"Leimasin sammumassa (koodi 99)") == 0) {
+		if (!Sail99varoitus->Checked && wcscmp(EdtMessage->Text.c_str(), TR(L"Leimasin sammumassa (koodi 99)")) == 0) {
 			LeimSammCnt--;
 			if (LeimSammCnt <= 0) {
 				EdtMessage->Text = L"";
@@ -772,17 +772,17 @@ int __fastcall TFormEmit::KysyKilpailija(void)
 	if (Em.kilpno == 0) {
 		EdtKilpno->ReadOnly = false;
 		if (Em.badge == 200) {
-			EdtMessage->Text = L"Viallinen kortti, koodi 200. Syötä kilpno ja osuus";
+			EdtMessage->Text = TR(L"Viallinen kortti, koodi 200. Syötä kilpno ja osuus");
 			EdtMessage->Color = clYellow;
 			EdtMessage->Visible = true;
 			}
 		else if (!jalkisyotto) {
-			EdtMessage->Text = L"Tuntematon koodi. Syötä kilpailijan numero ja osuus";
+			EdtMessage->Text = TR(L"Tuntematon koodi. Syötä kilpailijan numero ja osuus");
 			EdtMessage->Color = clYellow;
 			EdtMessage->Visible = true;
 			}
 		else {
-			EdtMessage->Text = L"Syötä kilpailijan numero ja osuus";
+			EdtMessage->Text = TR(L"Syötä kilpailijan numero ja osuus");
 			EdtMessage->Color = clYellow;
 			EdtMessage->Visible = true;
 			}
@@ -796,7 +796,7 @@ int __fastcall TFormEmit::KysyKilpailija(void)
 		BtnMuutoksetClick(this);
 		}
 	else {
-		EdtMessage->Text = L"Kortin osuutta ei voitu määrittää. Anna osuus.";
+		EdtMessage->Text = TR(L"Kortin osuutta ei voitu määrittää. Anna osuus.");
 		EdtMessage->Color = clYellow;
 		EdtMessage->Visible = true;
 		DKilp = getpos(Em.kilpno);
@@ -969,7 +969,7 @@ MESSAGE void __fastcall TFormEmit::NewCardHandler(TMyMessage &msg)
 			else {
 				BtnLoppuun->Visible = false;
 				if (OnkoMuutoksia()) {
-					EdtMessage->Text = L"Uusi kortti, kun muutoksia tallentamatta";
+					EdtMessage->Text = TR(L"Uusi kortti, kun muutoksia tallentamatta");
 					EdtMessage->Color = clYellow;
 					return;
 /*
@@ -1006,7 +1006,7 @@ MESSAGE void __fastcall TFormEmit::NewCardHandler(TMyMessage &msg)
 			Application->MessageBoxW(msgtxt, TR(L"Virhe luennassa"), MB_OK);
 			return;
 			}
-		EdtBdgMsg->Text = UnicodeString(L"Käsittelyyn kortti ")+UnicodeString(bdg);
+		EdtBdgMsg->Text = UnicodeString().sprintf(TR(L"Käsittelyyn kortti %d"), bdg);
 		BdgMsgKirkkaus = 256;
 		if (!DisplTimerThreadOn)
 			_beginthread(DisplTimerThread, 10240, &Vast);
@@ -1077,7 +1077,7 @@ int __fastcall TFormEmit::OtaTietue(int pos)
 	lueem(&em, Tietue);
 	if (em.kilpno < minkilpno || EmitJarr(em.kilpno, em.osuus) != pos) {
 		eiLiitetty = true;
-		EdtMessage->Text = L"Leimoja ei liitetty kilpailijaan";
+		EdtMessage->Text = TR(L"Leimoja ei liitetty kilpailijaan");
 		EdtMessage->Color = clYellow;
 		}
 	else {

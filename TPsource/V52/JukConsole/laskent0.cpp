@@ -340,7 +340,7 @@ void copydfile(datafile *datfb, int oldfile)
 
    if( oldfile == 1) {
 
-      header = L"BACK-UP";
+      header = TR(L"BACK-UP");
       scpclr();
       kehys(1);
       prscr(&backupohje);
@@ -421,7 +421,7 @@ void asetukset()
    int rk = 2;
    for (l=2; l<ySize-4; l++) clrtxt(l,0,64);
    ch = ' ';
-   header = L"ASETUKSET";
+   header = TR(L"ASETUKSET");
    clrscr();
    kehys(1);
    prscr(&asetusvalikko);

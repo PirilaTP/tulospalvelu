@@ -6568,7 +6568,7 @@ void kaikki_tiedostoon(tulostusparamtp *tulprm, int sarja, int ens)
    int osv2, is, tulosfl;
 
 #ifdef _CONSOLE
-   header=L"TIEDOSTOON TULOSTUS";
+   header=TR(L"TIEDOSTOON TULOSTUS");
    if (kilpparam.maxnosuus == 1) {
 	   wselectopt(L"Tulosta V)aihtojen ajat, O)suusajat, E)i kumpiakaan", L"VOE", &ca);
 	   wselectopt(L"Tulosta V)aihtojen sijat, O)suussijat, E)i kumpiakaan", L"VOE", &cs);
@@ -7270,7 +7270,7 @@ int luePisteSrj(wchar_t *flnm)
 		wcsncpy(filenm, flnm, 199);
 	psrjfile = new TextFl(filenm, L"rt");
 	if (!psrjfile->IsOpen()) {
-	   swprintf(msg, L"Tiedostoa %s ei löydy", filenm);
+	   swprintf(msg, TR(L"Tiedostoa %s ei löydy"), filenm);
 	   writeerror_w(msg, 0, true);
 	   }
 	else {

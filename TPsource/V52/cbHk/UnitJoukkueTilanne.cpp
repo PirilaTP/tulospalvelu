@@ -140,7 +140,7 @@ void __fastcall TFormJoukkueTilanne::Uudetpisteetsijoituksista1Click(TObject *Se
 	Joukkuetietovaaditaan1->Visible = !Voittajallelispiste1->Visible;
 	CBSarja->Enabled = false;
 	CBSarja->ItemIndex = -1;
-	CBSarja->Text = L"Koko kilpailu";
+	CBSarja->Text = TR(L"Koko kilpailu");
 	tlsLaji = 3;
 }
 //---------------------------------------------------------------------------

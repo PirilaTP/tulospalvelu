@@ -459,7 +459,7 @@ void korjaa(INT d, kilptietue *kilp, INT tausta, kilptietue *entkilp)
    INT  exfl, comtarfl;
    kilptietue ekilp, kilp1;
 
-   if (!tausta) header=L"KORJAA    ";
+   if (!tausta) header=TR(L"KORJAA    ");
    kehys(2);
    for (;;) {
       ekilp = *kilp;
@@ -678,7 +678,7 @@ static void near deletekilp(void)
    kilptietue kilp;
 
    do {
-      header=L"POISTO    ";
+      header=TR(L"POISTO    ");
       if (kilp.find(&d, 0) || d <= 0)
          return;
       for (i = 0; i < Sarjat[kilp.Sarja()].valuku[k_pv]; i++)
@@ -713,7 +713,7 @@ void korjaukset()
    korjfl = TRUE;
    do {
       clrscr();
-      header=L"KORJAUKSET";
+      header=TR(L"KORJAUKSET");
       kehys(1);
       prscr(&korjvalikko);
       listfl = TRUE;
@@ -782,7 +782,7 @@ void laskenta()
 
    korjfl = FALSE;
    do {
-      header=L"LASKENTA  ";
+      header=TR(L"LASKENTA  ");
       exfl = kilp.find(&d, 0);
 	  entkilp = kilp;
       k_alku:
@@ -938,15 +938,15 @@ static void val_piste(INT *piste, INT valuku, INT paattele)
 
    memset(st, 0, sizeof(st));
    if (paattele) {
-      wcscpy(msg, L"Oletuspisteen valinta: A)utom., L)ähtö, M)aali");
+      wcscpy(msg, TR(L"Oletuspisteen valinta: A)utom., L)ähtö, M)aali"));
       wcscpy(st, L"ALM");
       }
    else {
-      wcscpy(msg, L"Hyväksy tai valitse piste: L)ähtö, M)aali");
+      wcscpy(msg, TR(L"Hyväksy tai valitse piste: L)ähtö, M)aali"));
       wcscpy(st, L"LM");
       }
    if (valuku > 0) {
-		wcscat(msg, L", Väliaika");
+		wcscat(msg, TR(L", Väliaika"));
 		if (kilpparam.maxvaluku > 9) {
 			vidspwmsg(ySize-3, 0, 7, 0, msg);
 			wcscpy(st, str_piste(*piste));
@@ -986,13 +986,15 @@ static void maalikorj(void)
    if (ch == ESC)
       return;
    if (ch == L'L' || ch == L'V') {
-      swprintf(msg, L"Anna %syksen määrä sekunnin kymmenyksinä", ch == L'L' ? L"Lisä" : L"Vähenn");
+      wcscpy(msg, ch == L'L' ? TR(L"Anna lisäyksen määrä sekunnin kymmenyksinä") :
+		 TR(L"Anna vähennyksen määrä sekunnin kymmenyksinä"));
       vidspwmsg(ySize-3,0,7,0,msg);
       inputlongw(&muutos, 5, 45, ySize-3, L"\r", &tc);
       if (ch == L'V') muutos = -muutos;
       }
    if (ch == L'P' || ch == L'K') {
-      swprintf(msg, L"Anna erojen %sys sekunnin kymmenyksinä tunnissa", ch == L'K' ? L"Lisä" : L"Vähenn");
+      wcscpy(msg, ch == L'K' ? TR(L"Anna erojen lisäys sekunnin kymmenyksinä tunnissa") :
+		 TR(L"Anna erojen vähennys sekunnin kymmenyksinä tunnissa"));
       vidspwmsg(ySize-3,0,7,0,msg);
       kerroin = 0;
       inputlongw(&kerroin, 5, 50, ySize-3, L"\r", &tc);
@@ -1117,33 +1119,33 @@ static void near naytarivi(INT ptime, INT r, INT r0, INT r1, INT k)
          else if (ip == 0) {
             switch (kilp.tark(k_pv)) {
                case L'H':
-                  wmemcpy(line+57,L"HYLÄTTY", 7);
+                  TRkentta(line+57, L"HYLÄTTY", 7);
                   break;
                case L'K':
-                  wmemcpy(line+57,L"KESKEYT", 7);
+                  TRkentta(line+57, L"KESKEYT", 7);
                   break;
                case L'E':
-                  wmemcpy(line+57,L"EI LÄHT", 7);
+                  TRkentta(line+57, L"EI LÄHT", 7);
                   break;
                }
             }
          }
       else if (pt.kno >= 10000) {
          switch (pt.kno) {
-            case 10000: wmemcpy(line+22,L"TAHDISTUSAIKA", 13);
+            case 10000: TRkentta(line+22, L"TAHDISTUSAIKA", 13);
                         break;
-            case 19998: wmemcpy(line+22,L"NOLLAUS - YLIMÄÄRÄINEN AIKA", 27);
+            case 19998: TRkentta(line+22, L"NOLLAUS - YLIMÄÄRÄINEN AIKA", 27);
                         break;
-            case 19999: wmemcpy(line+22,L"NOLLAUKSEN LOPPU", 16);
+            case 19999: TRkentta(line+22, L"NOLLAUKSEN LOPPU", 16);
                         break;
 			default:
 				if (pt.kno > 30000 && pt.kno <= 30000 + sarjaluku) {
 					wmemcpy(line + 14, L" S", 2);
-					wmemcpy(line + 19 + lisa, L"L  Sarjalähtö: ", 15);
+					TRkentta(line + 19 + lisa, L"L  Sarjalähtö: ", 15);
 					wmemcpy(line + 34 + lisa, Sarjat[pt.kno - 30001].sarjanimi, wcslen(Sarjat[pt.kno - 30001].sarjanimi));
 					}
 				if (pt.kno > 31000 && pt.kno < 32000) {
-					wmemcpy(line + 19 + lisa, L"L  Erälähtö: ", 13);
+					TRkentta(line + 19 + lisa, L"L  Erälähtö: ", 13);
 					line[32+lisa] = L'0' + (pt.kno % 1000) / 100;
 					line[33+lisa] = L'0' + (pt.kno % 100) / 10;
 					line[34+lisa] = L'0' + (pt.kno % 10);
@@ -1151,13 +1153,13 @@ static void near naytarivi(INT ptime, INT r, INT r0, INT r1, INT k)
 			}
          }
       else if (pt.t != TMAALI0*AIKAJAK) {
-			swprintf(line+22, L"Koodi%7ld Lähde %5d %c", pt.badge, (int)pt.kanava, 
+			swprintf(line+22, TR(L"Koodi%7ld Lähde %5d %c"), pt.badge, (int)pt.kanava, 
 				(pt.badge && pt.tapahtuma < 4) ? L"ADLT"[pt.tapahtuma] : pt.tapahtuma+L'0');
 			line[wcslen(line+22)+22] = L' ';
          }
 #if defined(SWIM2000)
       else if (pt.kanava && pt.t != TMAALI0*AIKAJAK) {
-         swprintf(line+22, L"Rata %d, Pää %c, Kosketus %d", ((int)pt.kanava)%10,
+         swprintf(line+22, TR(L"Rata %d, Pää %c, Kosketus %d"), ((int)pt.kanava)%10,
 				pt.kanava >= 100 ? L't' : L's', (((int)pt.kanava)/10)%10);
          line[wcslen(line+22)+22] = L' ';
          }
@@ -1428,25 +1430,25 @@ void ajanottoheader(int akttm)
 
 // #if defined(UINTI) || defined(MERI5)
   if (wcswcind(kilpparam.kilplaji, L"NPU") >= 0) {
-	   header = L"ERÄ     ";
+	   header = TR(L"ERÄ     ");
 	  }
 // #else
    else {
 	   if (!akttm || !lajatfl) {
-		  wcscpy(headerline, L"AJANOTTO  ");
+		  wcscpy(headerline, TR(L"AJANOTTO  "));
 		  if (maxjono) {
-			headerline[9] = L'1'+akttm;
+			headerline[wcslen(headerline)-1] = L'1'+akttm;
 			}
 		  if (vainoletus) {
 			  if (ol_piste == 0)
-				 wcscat(headerline, L" - Maali");
+				 wcscat(headerline, TR(L" - Maali"));
 			  else if (ol_piste > 0)
-				 swprintf(headerline+wcslen(headerline), L" - Piste : %d", ol_piste);
+				 swprintf(headerline+wcslen(headerline), TR(L" - Piste : %d"), ol_piste);
 			  }
 		  header = headerline;
 		  }
 	   else
-		  header = L"LÄHTÖAJAT";
+		  header = TR(L"LÄHTÖAJAT");
 	}
 // #endif
    clrtxt(0,0,25);
@@ -2022,14 +2024,14 @@ void ajanotto()
                                  AIKATOWSTRS(wbuf, kilp.p_aika(kierrosva[piste+2]),0)+1);
                               break;
                            case L'K':
-                              wcscpy(line, L"KESKEYT");
+                              wcscpy(line, TR(L"KESKEYT"));
                               break;
                            case L'H':
-                              wcscpy(line, L"HYLÄTTY");
+                              wcscpy(line, TR(L"HYLÄTTY"));
                               break;
                            case L'E':
                            case L'P':
-                              wcscpy(line, L"EI LÄHT");
+                              wcscpy(line, TR(L"EI LÄHT"));
                               break;
                            }
                         viwrrectw(r1-r0+2, 57, r1-r0+2, 63, line, 0,7,0);
@@ -2360,13 +2362,13 @@ void ajanotto()
                if (kierrosva[piste+2] >= 0) {
                   switch (tc) {
                      case L'K':
-                        wcscpy(line, L"KESKEYT");
+                        wcscpy(line, TR(L"KESKEYT"));
                         break;
                      case L'H':
-                        wcscpy(line, L"HYLÄTTY");
+                        wcscpy(line, TR(L"HYLÄTTY"));
                         break;
                      case L'E':
-                        wcscpy(line, L"EI LÄHT");
+                        wcscpy(line, TR(L"EI LÄHT"));
                         break;
                      case KB_CR :
                      case L'-':
@@ -2748,7 +2750,7 @@ void aikavert(void)
 			aktv[1] = 0;
 		}
    clrscr();
-   header = L"AJANOTTO";
+   header = TR(L"AJANOTTO");
 	lukum_fl = 0;
    kehys(0);
 	vidspwmsg(0, 60, 7, 0, header);
@@ -2902,13 +2904,13 @@ void aikavert(void)
                if (kierrosva[piste+2] >= 0) {
                   switch (tc) {
                      case L'K':
-                        wcscpy(line, L"KESKEYT");
+                        wcscpy(line, TR(L"KESKEYT"));
                         break;
                      case L'H':
-                        wcscpy(line, L"HYLÄTTY");
+                        wcscpy(line, TR(L"HYLÄTTY"));
                         break;
                      case L'E':
-                        wcscpy(line, L"EI LÄHT");
+                        wcscpy(line, TR(L"EI LÄHT"));
                         break;
                      case KB_CR :
                      case L'-':

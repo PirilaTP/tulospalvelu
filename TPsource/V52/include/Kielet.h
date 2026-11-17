@@ -58,6 +58,9 @@ int lataaKaannostiedosto(int kieli, const wchar_t *tiedosto);
 wchar_t *TRL(int kieli, const wchar_t *fi);
 // Käännös käyttöliittymän kielelle.
 wchar_t *TR(const wchar_t *fi);
+// Käännös kiinteän levyiseen kenttään (konsolin näyttörivit): kopioi käännöksestä enintään
+// leveys merkkiä kohteeseen ja täyttää loput välilyönneillä. Ei lisää loppunollaa.
+wchar_t *TRkentta(wchar_t *kohde, const wchar_t *fi, int leveys);
 // Käännös, jonka avaimena on lisäksi konteksti (.po-tiedoston msgctxt). Käytetään,
 // kun sama suomenkielinen teksti käännetään eri yhteyksissä eri tavoin.
 wchar_t *TRCL(int kieli, const wchar_t *konteksti, const wchar_t *fi);

@@ -216,13 +216,13 @@ void outkilp(kilptietue *kilp, int osuus)
       sjstr[0] = ' ';
       sjstr[1] = 0;
       switch (kilp1.Tark(os, 0)) {
-         case 'K' : memcpy(tarkstr, "Kes", 4); break;
-         case 'H' : memcpy(tarkstr, "Hyl", 4); break;
-         case 'E' : memcpy(tarkstr, "Eil", 4); break;
-         case 'S' : memcpy(tarkstr, "Slj", 4); break;
+         case 'K' : strncpy(tarkstr, TRA("Kes"), 3); break;
+         case 'H' : strncpy(tarkstr, TRA("Hyl"), 3); break;
+         case 'E' : strncpy(tarkstr, TRA("Eil"), 3); break;
+         case 'S' : strncpy(tarkstr, TRA("Slj"), 3); break;
          case 'I' : memcpy(tarkstr, "esI", 4); break;
-         case 'T' : memcpy(tarkstr, "Trk", 4); break;
-         case 'P' : memcpy(tarkstr, "Poi", 4); break;
+         case 'T' : strncpy(tarkstr, TRA("Trk"), 3); break;
+         case 'P' : strncpy(tarkstr, TRA("Poi"), 3); break;
          default  : memcpy(tarkstr, "  -", 4);
          }
 	  if (kilp1.tTark(os) == 'S')
@@ -1250,7 +1250,7 @@ void korjaa(int d, kilptietue *kilp, int *osuus, int tausta, kilptietue *entkilp
    int  exfl, comtarfl;
    kilptietue ekilp, kilp1;
 
-   if (!tausta) header=L"KORJAA    ";
+   if (!tausta) header=TR(L"KORJAA    ");
    kehys(1);
    for (;;) {
 	   ekilp = *kilp;
@@ -1506,7 +1506,7 @@ void laskenta()
    korjfl = FALSE;
    do {
       alku:
-      header=L"LASKENTA  ";
+      header=TR(L"LASKENTA  ");
       exfl = find(&d,&kilp,&osuus);
       memcpy(&entkilp, &kilp, sizeof(kilptietue));
       poimi = TMAALI0;
@@ -1668,7 +1668,7 @@ static void add(void)
    kilptietue kilp;
 
    do {
-      header=L"LISÄYS    ";
+      header=TR(L"LISÄYS    ");
       kehys(1);
       outform();
 	  kilp.nollaa();
@@ -1831,7 +1831,7 @@ static void deletekilp(void)
    if (nilmt <= 1) return;
    do {
       nextkilp:
-      header=L"POISTO    ";
+      header=TR(L"POISTO    ");
       kehys(1);
       osuus = 0;
       if (find(&d,&kilp,&osuus)) return;
@@ -1861,7 +1861,7 @@ void korjaukset()
    korjfl = TRUE;
    do {
       clrscr();
-      header=L"KORJAUKSET";
+      header=TR(L"KORJAUKSET");
       kehys(1);
       prscr(&korjvalikko);
       listfl = TRUE;
@@ -2039,21 +2039,21 @@ static void naytarivi(int pt, int r, int r0,
 				  lsra[l+1] = kilp.joukkue + L'0';
 #endif  // HALIKKO
 			  if (ptime.kno > 10000)
-				  wmemcpy(line + 54, L"NOLLAUS", 7);
+				  TRkentta(line + 54, L"NOLLAUS", 7);
 			  else {
 				  switch (kilp.Tark(ptosuus, true)) {
 				  case L'H':
-					  wmemcpy(line + 54, L"HYLÄTTY", 7);
+					  TRkentta(line + 54, L"HYLÄTTY", 7);
 					  break;
 				  case L'K':
-					  wmemcpy(line + 54, L"KESKEYT", 7);
+					  TRkentta(line + 54, L"KESKEYT", 7);
 					  break;
 				  case L'P':
 				  case L'E':
-					  wmemcpy(line + 54, L"EI LÄHT", 7);
+					  TRkentta(line + 54, L"EI LÄHT", 7);
 					  break;
 				  case L'S':
-					  wmemcpy(line + 54, L"SULJ.  ", 7);
+					  TRkentta(line + 54, L"SULJ.  ", 7);
 					  break;
 				  default:
 					  if (nayta_sija || nayta_nimi) {
@@ -2075,21 +2075,21 @@ static void naytarivi(int pt, int r, int r0,
          }
       else if (ptime.kno >= 10000) {
          switch (ptime.kno) {
-            case 10000: wmemcpy(line+28,L"TAHDISTUSAIKA", 13);
+            case 10000: TRkentta(line+28, L"TAHDISTUSAIKA", 13);
                         break;
-            case 19998: wmemcpy(line+28,L"NOLLAUS - YLIMÄÄRÄINEN AIKA", 27);
+            case 19998: TRkentta(line+28, L"NOLLAUS - YLIMÄÄRÄINEN AIKA", 27);
                         break;
-            case 19999: wmemcpy(line+28,L"NOLLAUKSEN LOPPU", 16);
+            case 19999: TRkentta(line+28, L"NOLLAUKSEN LOPPU", 16);
                         break;
 			default:
 				if (ptime.kno > 30000 && ptime.kno <= 30000 + sarjaluku) {
 					wmemcpy(line + 16, L" S", 2);
-					wmemcpy(line + 23, L"1 L  Sarjalähtö: ", 17);
+					TRkentta(line + 23, L"1 L  Sarjalähtö: ", 17);
 					wmemcpy(line + 40, Sarjat[ptime.kno - 30001].Sarjanimi(), wcslen(Sarjat[ptime.kno - 30001].Sarjanimi()));
 					}
 				if (ptime.kno > 31000 && ptime.kno < 32000) {
 					wmemcpy(line + 16, L" R", 2);
-					wmemcpy(line + 23, L"1 L  Erälähtö: ", 15);
+					TRkentta(line + 23, L"1 L  Erälähtö: ", 15);
 					line[39] = L'0' + (ptime.kno % 1000) / 100;
 					line[40] = L'0' + (ptime.kno % 100) / 10;
 					line[41] = L'0' + (ptime.kno % 10);
@@ -2358,13 +2358,13 @@ void ajanottoheader(int akttm, int ol_osuus, int va_mpiste)
 {
 	static wchar_t headerline[32];
 
-	wcscpy(headerline, L"AJANOTTO");
+	wcscpy(headerline, TR(L"AJANOTTO"));
 	if (maxjono) {
 		wcscat(headerline, L" ");
-		_itow(akttm+1, headerline+9, 10);
+		_itow(akttm+1, headerline+wcslen(headerline), 10);
 		}
 	if (ol_osuus) {
-		swprintf(headerline+wcslen(headerline), L" - Os %d", ol_osuus);
+		swprintf(headerline+wcslen(headerline), TR(L" - Os %d"), ol_osuus);
 		}
 	if (va_mpiste == 0)
 		wcscat(headerline, TR(L" - Maali"));
@@ -2407,7 +2407,7 @@ void ajanotto()
 //   char *p;
 
    clrscr();
-   header = L"AJANOTTO";
+   header = TR(L"AJANOTTO");
    kehys(1);
    jakorivi=3*ySize/4-7;
    maali_on = 1;
@@ -2696,7 +2696,7 @@ void ajanotto()
                      }
                   if (tc == 252) {					// Alt-L
 					 clrscr();
-				     header = L"LÄHESTYJÄT";
+				     header = TR(L"LÄHESTYJÄT");
 					 kehys(1);
                      lahestyjat_on = 1;
                      continue;
@@ -3336,7 +3336,7 @@ void lahestyjat(void)
 		}
 	if (!lahestyjat_on) {
 		clrscr();
-		header = L"AJANOTTO";
+		header = TR(L"AJANOTTO");
 		kehys(1);
 		return;
 		}

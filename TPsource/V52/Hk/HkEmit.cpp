@@ -1202,7 +1202,7 @@ INT add(void *em)
 
 	do {
 #ifdef _CONSOLE
-		if (!em) header=L"LISÄYS    ";
+		if (!em) header=TR(L"LISÄYS    ");
 		clrscr();
 		kehys(1);
 		outform();

@@ -2736,7 +2736,7 @@ void yhteydet(void)
 
    nrivi = min(ySize - 7, maxyhteys);
    clrscr();
-   header = L"YHTEYDET";
+   header = TR(L"YHTEYDET");
    kehys(1);
    server_on = 1;
    vidspwmsg(2,0,7,0, TR(L"Nro Portti  Vastaosoite            Suunta Tila Lähteviä Kirjattu"));

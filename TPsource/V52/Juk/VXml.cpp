@@ -1475,7 +1475,7 @@ int lueVainRadatXml(wchar_t *filename, IOFCourseData *CseData)
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
 				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ett‰ tagit ovat pari
 					er = 1;
-					swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
+					swprintf(msg, TR(L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"),
 						rv, tag, tree.node[jnode].tag);
 					break;
 					}
@@ -1502,16 +1502,16 @@ int lueVainRadatXml(wchar_t *filename, IOFCourseData *CseData)
 		}
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedoston %s lukeminen p‰‰ttyi rivill‰ %d tasolla %d, node %d", filename, rv, depth, inode);
+		swprintf(msg, TR(L"XML-tiedoston %s lukeminen p‰‰ttyi rivill‰ %d tasolla %d, node %d"), filename, rv, depth, inode);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivill‰ %d tai aikaisemmin", filename, rv);
+			swprintf(msg, TR(L"Tiedostossa %s virhe rivill‰ %d tai aikaisemmin"), filename, rv);
 			}
 		writeerror_w(msg, 0);
 		}
 #ifdef _DEBUG
-	swprintf(msg, L"XML-ratatiedostosta luettu %d rivi‰, 10000*%d nodea", rv, jt);
+	swprintf(msg, TR(L"XML-ratatiedostosta luettu %d rivi‰, 10000*%d nodea"), rv, jt);
 	writeerror_w(msg, 0);
 #endif
 	tree.nodecount = inode+1;
@@ -1660,7 +1660,7 @@ int lueEventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueOsanot
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
 				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ett‰ tagit ovat pari
 					er = 1;
-					swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
+					swprintf(msg, TR(L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"),
 						rv, tag, tree.node[jnode].tag);
 					break;
 					}
@@ -1687,11 +1687,11 @@ int lueEventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueOsanot
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s p‰‰ttyi rivill‰ %d tasolla %d", filename, rv, depth);
+		swprintf(msg, TR(L"XML-tiedosto %s p‰‰ttyi rivill‰ %d tasolla %d"), filename, rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivill‰ %d tai aikaisemmin", filename, rv);
+			swprintf(msg, TR(L"Tiedostossa %s virhe rivill‰ %d tai aikaisemmin"), filename, rv);
 			}
 		writeerror_w(msg, 0);
 		}

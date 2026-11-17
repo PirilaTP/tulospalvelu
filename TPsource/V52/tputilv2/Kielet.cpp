@@ -349,6 +349,18 @@ wchar_t *TR(const wchar_t *fi)
 	return(TRL(kayttokieli, fi));
 }
 
+wchar_t *TRkentta(wchar_t *kohde, const wchar_t *fi, int leveys)
+{
+	const wchar_t *t = TR(fi);
+	int i;
+
+	for (i = 0; i < leveys && t[i]; i++)
+		kohde[i] = t[i];
+	for (; i < leveys; i++)
+		kohde[i] = L' ';
+	return(kohde);
+}
+
 wchar_t *TRCL(int kieli, const wchar_t *konteksti, const wchar_t *fi)
 {
 	std::wstring avain;

@@ -75,6 +75,29 @@ class Mittari:
         s = teksti.replace('&&', '\0').replace('&', '').replace('\0', '&')
         return max((fontti.getlength(rivi) for rivi in s.split('\n')), default=0)
 
+    def rivikorkeus(self, fontti):
+        nousu, lasku = fontti.getmetrics()
+        return nousu + lasku
+
+    def rivit(self, teksti, fontti, leveys):
+        """Rivien määrä, kun teksti rivitetään välilyönneistä leveyteen (DrawText DT_WORDBREAK).
+        None, jos jokin sana on leveyttä leveämpi (Windows katkaisisi sen kesken)."""
+        s = teksti.replace('&&', '\0').replace('&', '').replace('\0', '&')
+        n = 0
+        for kappale in s.split('\n'):
+            rivi = ''
+            n += 1
+            for sana in kappale.split(' '):
+                if fontti.getlength(sana) > leveys:
+                    return None
+                koe = sana if not rivi else rivi + ' ' + sana
+                if fontti.getlength(koe) <= leveys:
+                    rivi = koe
+                else:
+                    n += 1
+                    rivi = sana
+        return n
+
 
 class Komponentti:
     def __init__(self, nimi, luokka, isa):
@@ -184,6 +207,25 @@ def kaikki(k):
         yield from kaikki(c)
 
 
+def tilaa_alla(k):
+    """Kuinka korkeaksi k voi kasvaa osumatta isän alareunaan tai alla olevaan sisarukseen."""
+    l, t, w, h = k.geometria()
+    raja = 10 ** 6
+    if k.isa is not None:
+        isa = k.isa
+        if isa.isa is None:
+            raja = isa.luku('ClientHeight', isa.luku('Height', raja))
+        elif 'Height' in isa.om:
+            raja = isa.luku('Height')
+        elif isa.luokka == 'TTabSheet' and 'Height' in isa.isa.om:
+            raja = isa.isa.luku('Height') - 28     # välilehtien otsikkorivi
+    for s in k.sisarukset():
+        sl, st, sw, sh = s.geometria()
+        if st >= t + h - 2 and sl < l + w and l < sl + sw:
+            raja = min(raja, st)
+    return raja - t
+
+
 def tilaa_oikealla(k, leveys):
     """Kuinka leveäksi k voi kasvaa osumatta isän reunaan tai oikealla olevaan sisarukseen."""
     l, t, w, h = k.geometria()
@@ -233,7 +275,36 @@ def mittaa_komponentti(k, kaannos, lyhyet, mittari):
         return '', '', 0
 
     cap = k.p('Caption')
-    if cap and cap in kaannos and k.luokka in MITATTAVAT:
+    if cap and cap in kaannos and k.luokka in MITATTAVAT and k.p('WordWrap') == 'True' \
+            and k.luokka in LYHENNETTAVAT and '\n' not in cap:
+        # Rivittyvä teksti (cbKielet.cpp: sovitaPainike, sovitaRivittyvaLabel): leveys kiinteä,
+        # rivien on mahduttava korkeuteen. Tarve ja tila ovat tällöin korkeuksia (px).
+        t = kaannos[cap]
+        l, top, w, h = k.geometria()
+        leveys = w - reunukset(k)
+        if k.luokka == 'TLabel':
+            korkeus = max(h, tilaa_alla(k)) if k.p('AutoSize', 'True') != 'False' else h
+        else:
+            korkeus = h - (6 if k.luokka in ('TButton', 'TBitBtn') else 0)
+        rk = mittari.rivikorkeus(f)
+
+        def tarvittava(s):
+            n = mittari.rivit(s, f, leveys)
+            return None if n is None else n * rk
+
+        tarve = tarvittava(t)
+        tarve_fi = tarvittava(cap)
+        # Suomenkielinen hyväksytään sellaisenaan: tilaa on vähintään sen verran
+        tila = max(korkeus, tarve_fi or 0)
+        if tarve is None or tarve > tila + TOL:
+            ratk, lyh, lpx = '', '', 0
+            if cap in lyhyet:
+                lyh = lyhyet[cap]
+                lt = tarvittava(lyh)
+                lpx = -1 if lt is None else lt
+                ratk = 'lyhyt' if lt is not None and lt <= tila + TOL else ''
+            tulos.append(('Caption (rivit)', cap, t, -1 if tarve is None else tarve, tila, ratk, lyh, lpx))
+    elif cap and cap in kaannos and k.luokka in MITATTAVAT:
         t = kaannos[cap]
         tarve = mittari.leveys(t, f)
         tarve_fi = mittari.leveys(cap, f)
@@ -253,7 +324,17 @@ def mittaa_komponentti(k, kaannos, lyhyet, mittari):
                 tila = tilaa_oikealla(k, tarve)
             tila = max(tila, tarve_fi)
             if tarve > tila + TOL:
-                tulos.append(('Caption', cap, t, tarve, tila) + ratkaise(cap, tila, False))
+                siirtyy = False
+                if k.p('Alignment') != 'taRightJustify':
+                    # cbKielet.cpp sovitaLabel: teksti siirtyy vasemmalle vapaaseen tilaan
+                    vapaa = 2
+                    for s in k.sisarukset():
+                        sl, st, sw, sh = s.geometria()
+                        if st < top + h and top < st + sh and sl + sw <= l + 2:
+                            vapaa = max(vapaa, sl + sw + 4)
+                    siirtyy = l + tila - vapaa >= tarve
+                tulos.append(('Caption', cap, t, tarve, tila) +
+                             (('siirtyy', '', 0) if siirtyy else ratkaise(cap, tila, False)))
         else:
             reuna = reunukset(k)
             tila = k.luku('Width') - reuna

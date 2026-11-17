@@ -124,7 +124,7 @@ void __fastcall TFormVaTuloste::NaytaKilpailijat(int badge)
 				KilpnoA[DG1->Row-1] = Kilpno;
 				OsuusA[DG1->Row-1] = Osuus;
 				JoukkueA[DG1->Row-1] = EdtJoukkue->Text;
-				Cells[0][DG1->Row].text = UnicodeString(Osuus+1)+L". osuus";
+				Cells[0][DG1->Row].text = UnicodeString().sprintf(TR(L"%d. osuus"), Osuus+1);
 				Cells[1][DG1->Row].text = Kilp.Nimi(st, kilpparam.lnimi, Osuus, -1);
 				Cells[2][DG1->Row].text = Kilp.ostiet[Osuus].badge[0];
 				Cells[3][DG1->Row].text = aikatowstr_cols_n(st, Kilp.Maali(Osuus, 0), t0, 0, 8);

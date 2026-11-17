@@ -194,7 +194,7 @@ void __fastcall TFormKilpailijaOnline::naytaTiedot(void)
 					switch (i) {
 						case 0:
 							PvGrid->Cells[PvGridCols[i].Order][pv-Sarjat[Kilp.Sarja()].enspv+1] =
-								UnicodeString(pv+1)+L". pv";
+								UnicodeString().sprintf(TR(L"%d. pv"), pv+1);
 							break;
 						case 1:
 							PvGrid->Cells[PvGridCols[i].Order][pv-Sarjat[Kilp.Sarja()].enspv+1] =
@@ -374,7 +374,7 @@ void __fastcall TFormKilpailijaOnline::naytaTiedot(void)
 					switch (i) {
 						case 0:
 							VaGrid->Cells[VaGridCols[i].Order][iva] =
-								UnicodeString(iva)+L". va";
+								UnicodeString().sprintf(TR(L"%d. va"), iva);
 							break;
 						case 1:
 							VaGrid->Cells[VaGridCols[i].Order][iva] =

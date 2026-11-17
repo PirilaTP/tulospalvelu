@@ -602,7 +602,7 @@ void __fastcall TFormStatus::FormSetup(void)
 	if (IkkParam.emitkoodeja)
 		FormStatus->LkmGrid->Cells[monisarja+IkkParam.ylahdot+IkkParam.esitykset+IkkParam.emittiedot+7][0] = TR(L"EmKoodit");
 	for (int va = 1; va <= kilpparam.maxvaluku; va++)
-		FormStatus->LkmGrid->Cells[monisarja+iLisa+va][0] = UnicodeString(va)+L".va";
+		FormStatus->LkmGrid->Cells[monisarja+iLisa+va][0] = UnicodeString().sprintf(TR(L"%d.va"), va);
 	FormStatus->LkmGrid->Cells[0][1] = TR(L"Yht.");
 	colMuutos = true;
 }

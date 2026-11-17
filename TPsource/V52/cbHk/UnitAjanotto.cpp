@@ -1371,7 +1371,7 @@ void __fastcall TFormAjanotto::Vaihdaer1Click(TObject *Sender)
 	inputint_prompt(&era, TR(L"Anna erän numero"), &ch, this);
 	if (era >= 0 && era < MAXERA) {
 		era_akt = era;
-		Caption = TR(L"Ajanotto - ") + UnicodeString(Ajanotto) + L" - Erä " + era_akt;
+		Caption = UnicodeString().sprintf(TR(L"Ajanotto - %d - Erä %d"), Ajanotto, (int) era_akt);
 		}
 	else
 		Caption = TR(L"Ajanotto - ") + UnicodeString(Ajanotto);
@@ -1884,7 +1884,7 @@ void __fastcall TFormAjanotto::Vaihdanytetynaikajonontiedosto1Click(TObject *Sen
 void __fastcall TFormAjanotto::Seuraavaer1Click(TObject *Sender)
 {
 	if (era_akt < MAXERA-1) {
-		Caption = TR(L"Ajanotto - ") + UnicodeString(Ajanotto) + L" - Erä " + (++era_akt);
+		Caption = UnicodeString().sprintf(TR(L"Ajanotto - %d - Erä %d"), Ajanotto, (int) ++era_akt);
 		}
 }
 //---------------------------------------------------------------------------
@@ -1892,7 +1892,7 @@ void __fastcall TFormAjanotto::Seuraavaer1Click(TObject *Sender)
 void __fastcall TFormAjanotto::Edellinener1Click(TObject *Sender)
 {
 	if (era_akt > 1) {
-		Caption = TR(L"Ajanotto - ") + UnicodeString(Ajanotto) + L" - Erä " + (--era_akt);
+		Caption = UnicodeString().sprintf(TR(L"Ajanotto - %d - Erä %d"), Ajanotto, (int) --era_akt);
 		}
 }
 //---------------------------------------------------------------------------

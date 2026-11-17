@@ -304,14 +304,14 @@ void __fastcall TTilanneForm::PaivitaGrid(bool scroll)
 
 	if (Va == 0) {
 		Caption = UnicodeString(Sarjat[Sarja].Sarjanimi(wst)) + L" - " + (Osuus == Sarjat[Sarja].osuusluku-1 ?
-			UnicodeString(L"Maali") : UnicodeString(Osuus+1) + L". osuus - vaihto");
+			UnicodeString(TR(L"Maali")) : UnicodeString().sprintf(TR(L"%d. osuus - vaihto"), Osuus+1));
 		}
 	else if (Va > 0) {
-		Caption = UnicodeString(Sarjat[Sarja].Sarjanimi(wst)) + L" - " + UnicodeString(Osuus+1) + L". osuus "
-			+ Va + L". väliaika " + Sarjat[Sarja].vaMatka(Osuus, Va-1, wln) + L"km";
+		Caption = UnicodeString().sprintf(TR(L"%s - %d. osuus %d. väliaika %skm"), Sarjat[Sarja].Sarjanimi(wst),
+			Osuus+1, Va, Sarjat[Sarja].vaMatka(Osuus, Va-1, wln));
 		}
 	else
-		Caption = UnicodeString(Sarjat[Sarja].Sarjanimi(wst)) + L" - " + UnicodeString(Osuus+1) + L". osuus";
+		Caption = UnicodeString().sprintf(TR(L"%s - %d. osuus"), Sarjat[Sarja].Sarjanimi(wst), Osuus+1);
 	EnterCriticalSection(&tall_CriticalSection);
 	if (Va < 0) {
 		IkkParam.Seuraa = 0;

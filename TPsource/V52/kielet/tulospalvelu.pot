@@ -259,6 +259,10 @@ msgid "E-koodi %ld liitetty kilpailijaan %d, ei poistettu"
 msgstr ""
 
 #: Hk/HkEmit.cpp JukConsole/vcons2.cpp
+msgid "LISÄYS    "
+msgstr ""
+
+#: Hk/HkEmit.cpp JukConsole/vcons2.cpp
 msgid "Kilpailijataulukko täyttyi. Kilpailijamäärää ei voi enää lisätä"
 msgstr ""
 
@@ -688,12 +692,12 @@ msgstr ""
 #: Hk/HkEmit.cpp Juk/VEmit.cpp HkConsole/HkCons0.cpp cbHk/TapUnit2.cpp
 #: cbHk/TulosUnit.cpp cbHk/UnitAjanotto.cpp cbHk/UnitComfile.cpp cbHk/UnitKilpailijaOnline.cpp
 #: cbHk/UnitKilpailijatiedot.cpp cbHk/UnitSarjatiedot.cpp cbHk/UnitVaPisteet.cpp ViestiWin/TapUnit2.cpp
-#: ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitJoukkuetiedot.cpp ViestiWin/UnitLuenta.cpp
-#: ViestiWin/UnitSarjatiedot.cpp ViestiWin/UnitVaTuloste.cpp cbTp/UnitEmitFile.cpp cbTp/UnitNappain.cpp
-#: cbHk/TapUnit2.dfm cbHk/TulosUnit.dfm cbHk/UnitCfg.dfm cbHk/UnitEmit.dfm
-#: cbHk/UnitKilpailijaEmit.dfm cbHk/UnitSarja.dfm ViestiWin/OsuusTiedot.dfm ViestiWin/TapUnit2.dfm
-#: ViestiWin/UnitCfg.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitLahestyjat.dfm ViestiWin/UnitSarja.dfm
-#: cbTp/UnitEmiTag.dfm cbTp/UnitRadat.dfm
+#: ViestiWin/TulosUnit.cpp ViestiWin/UnitAjanotto.cpp ViestiWin/UnitComfile.cpp ViestiWin/UnitJoukkuetiedot.cpp
+#: ViestiWin/UnitLuenta.cpp ViestiWin/UnitSarjatiedot.cpp ViestiWin/UnitVaTuloste.cpp cbTp/UnitEmitFile.cpp
+#: cbTp/UnitNappain.cpp cbHk/TapUnit2.dfm cbHk/TulosUnit.dfm cbHk/UnitCfg.dfm
+#: cbHk/UnitEmit.dfm cbHk/UnitKilpailijaEmit.dfm cbHk/UnitSarja.dfm ViestiWin/OsuusTiedot.dfm
+#: ViestiWin/TapUnit2.dfm ViestiWin/UnitCfg.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitLahestyjat.dfm
+#: ViestiWin/UnitSarja.dfm cbTp/UnitEmiTag.dfm cbTp/UnitRadat.dfm
 msgid "Maali"
 msgstr ""
 
@@ -1638,6 +1642,10 @@ msgid "     VAIHEEN VAIHTO     "
 msgstr ""
 
 #: Hk/HkIx.cpp
+msgid "VAIHEEN VAIHTO"
+msgstr ""
+
+#: Hk/HkIx.cpp
 msgid "Käynnistää uuteen vaiheeseen"
 msgstr ""
 
@@ -1679,6 +1687,27 @@ msgstr ""
 
 #: Hk/HkMuotoilu.cpp
 msgid "Tulostusmuotoilutiedoston kirjoitaminen ei onnistu!"
+msgstr ""
+
+#: Hk/HkMuotoilu.cpp Juk/VMuotoilu.cpp cbHk/UnitHylkRap.cpp ViestiWin/UnitHylkRap.cpp
+#: cbTp/UnitSivuTuloste.cpp
+#, c-format
+msgid ""
+"XML-muotoilun tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"
+msgstr ""
+
+#: Hk/HkMuotoilu.cpp Hk/HkXml.cpp Hk/HkXml_IOF30.cpp Juk/VMuotoilu.cpp
+#: Juk/VXml.cpp Juk/VXml_IOF30.cpp cbHk/UnitHylkRap.cpp cbHk/UnitKisaLuett.cpp
+#: ViestiWin/UnitHylkRap.cpp ViestiWin/WinParamXml.cpp cbTp/UnitSivuTuloste.cpp
+#, c-format
+msgid "XML-tiedosto %s päättyi rivillä %d tasolla %d"
+msgstr ""
+
+#: Hk/HkMuotoilu.cpp Hk/HkXml.cpp Hk/HkXml_IOF30.cpp Juk/VMuotoilu.cpp
+#: Juk/VXml.cpp Juk/VXml_IOF30.cpp cbHk/UnitHylkRap.cpp cbHk/UnitKisaLuett.cpp
+#: cbHk/WinParamXml.cpp ViestiWin/UnitHylkRap.cpp ViestiWin/WinParamXml.cpp cbTp/UnitSivuTuloste.cpp
+#, c-format
+msgid "Tiedostossa %s virhe rivillä %d tai aikaisemmin"
 msgstr ""
 
 #: Hk/HkSak.cpp
@@ -1845,12 +1874,12 @@ msgid "Aika"
 msgstr ""
 
 #: Hk/HkTulostus.cpp Juk/VTulostus.cpp HkConsole/HkKilp.cpp cbHk/HkKisaLahtLuet.cpp
-#: cbHk/UnitStatus.cpp ViestiWin/UnitStatus.cpp
+#: cbHk/UnitKilpailijaEmit.cpp cbHk/UnitStatus.cpp ViestiWin/OsuusTiedot.cpp ViestiWin/UnitStatus.cpp
 msgid "Kesk"
 msgstr ""
 
 #: Hk/HkTulostus.cpp Juk/VTulostus.cpp JukConsole/vcons2.cpp cbHk/HkKisaLahtLuet.cpp
-#: cbHk/UnitStatus.cpp ViestiWin/UnitStatus.cpp
+#: cbHk/UnitKilpailijaEmit.cpp cbHk/UnitStatus.cpp ViestiWin/OsuusTiedot.cpp ViestiWin/UnitStatus.cpp
 msgid "Hyl"
 msgstr ""
 
@@ -1876,7 +1905,17 @@ msgid "Yhteensä"
 msgstr ""
 
 #: Hk/HkTulostus.cpp
+#, c-format
+msgid " Laajuus %5s"
+msgstr ""
+
+#: Hk/HkTulostus.cpp
 msgid " Auto       ON"
+msgstr ""
+
+#: Hk/HkTulostus.cpp
+#, c-format
+msgid " Kynnys %6d"
 msgstr ""
 
 #: Hk/HkTulostus.cpp
@@ -1894,6 +1933,16 @@ msgstr ""
 
 #: Hk/HkTulostus.cpp Juk/VTulostus.cpp
 msgid "Tiedostosiirron TCP-yhteyden avaaminen ei onnistunut"
+msgstr ""
+
+#: Hk/HkTulostus.cpp
+#, c-format
+msgid "Virhe autotulostustiedostoa %s avattaessa"
+msgstr ""
+
+#: Hk/HkTulostus.cpp Juk/VTulostus.cpp
+#, c-format
+msgid "Tiedostoa %s ei löydy"
 msgstr ""
 
 #: Hk/HkTulostus.cpp Juk/VTulostus.cpp
@@ -1945,6 +1994,18 @@ msgstr ""
 
 #: Hk/HkTulostus.cpp
 msgid "Kirjoitinyhteyden avaaminen ei onnistunut"
+msgstr ""
+
+#: Hk/HkXml.cpp Hk/HkXml_IOF30.cpp Juk/VXml.cpp Juk/VXml_IOF30.cpp
+#: cbHk/UnitKisaLuett.cpp cbHk/WinParamXml.cpp ViestiWin/WinParamXml.cpp
+#, c-format
+msgid ""
+"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"
+msgstr ""
+
+#: Hk/HkXml.cpp
+#, c-format
+msgid "Tiedostossa virhe rivillä %d tai aikaisemmin"
 msgstr ""
 
 #: Hk/HkXmlTulokset.cpp
@@ -2007,7 +2068,7 @@ msgid "Lähetä K)aikki tai valitse S)arja, O)suus, M)olemmat, Esc: lopeta"
 msgstr ""
 
 #. valinta: 123456789
-#: Juk/VCom.cpp Juk/VEmit.cpp
+#: Juk/VCom.cpp Juk/VEmit.cpp ViestiWin/UnitLuenta.cpp
 msgid "Anna osuus"
 msgstr ""
 
@@ -2256,7 +2317,7 @@ msgstr ""
 msgid "Maaliaika %8.8s"
 msgstr ""
 
-#: Juk/VEmit.cpp JukConsole/laskemtn.cpp
+#: Juk/VEmit.cpp JukConsole/laskemtn.cpp ViestiWin/OsuusTiedot.cpp
 msgid "Sulj"
 msgstr ""
 
@@ -2863,7 +2924,7 @@ msgstr ""
 msgid "KESKEYTT."
 msgstr ""
 
-#: Juk/VTulostus.cpp
+#: Juk/VTulostus.cpp HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
 msgid "HYLÄTTY"
 msgstr ""
 
@@ -2956,6 +3017,10 @@ msgstr ""
 
 #: Juk/VTulostus.cpp JukConsole/VConTul.cpp
 msgid "Paina <Return> jatkaaksesi"
+msgstr ""
+
+#: Juk/VTulostus.cpp
+msgid "TIEDOSTOON TULOSTUS"
 msgstr ""
 
 #. valinta: VOE
@@ -3065,6 +3130,16 @@ msgstr ""
 
 #: Juk/VTulostus.cpp
 msgid "Lähtöajan yläraja:"
+msgstr ""
+
+#: Juk/VXml.cpp
+#, c-format
+msgid "XML-tiedoston %s lukeminen päättyi rivillä %d tasolla %d, node %d"
+msgstr ""
+
+#: Juk/VXml.cpp
+#, c-format
+msgid "XML-ratatiedostosta luettu %d riviä, 10000*%d nodea"
 msgstr ""
 
 #: Juk/XMLtulos.cpp
@@ -3270,6 +3345,10 @@ msgstr ""
 
 #: HkConsole/HkCons0.cpp JukConsole/laskent0.cpp
 msgid " LUKIJA/KELLO "
+msgstr ""
+
+#: HkConsole/HkCons0.cpp JukConsole/laskent0.cpp
+msgid "BACK-UP"
 msgstr ""
 
 #: HkConsole/HkCons0.cpp
@@ -3592,6 +3671,10 @@ msgid "Hae : S)euraava, E)dellinen, H)yväksy valinta, <Esc> : Poistu"
 msgstr ""
 
 #: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
+msgid "KORJAA    "
+msgstr ""
+
+#: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
 msgid "Kilpailijatietoihin tullut muutossanoma - tehdyt muutokset peruutetaan"
 msgstr ""
 
@@ -3609,12 +3692,20 @@ msgid "Maaliaika muuttunut yli 15 min - Hyväksytäänkö (K/E)?"
 msgstr ""
 
 #: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
+msgid "POISTO    "
+msgstr ""
+
+#: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
 msgid "Ei voi enää poistaa, merkitse ei läht.,  Paina <Return>"
 msgstr ""
 
 #. valinta: PL
 #: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
 msgid "P)oista kilpailija,  L)uovu poistosta"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
+msgid "KORJAUKSET"
 msgstr ""
 
 #. valinta: LKRP
@@ -3646,6 +3737,10 @@ msgstr ""
 msgid "L)isää, K)orjaa, P)oista, T)estaa <Esc> : poistu päävalintaan"
 msgstr ""
 
+#: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
+msgid "LASKENTA  "
+msgstr ""
+
 #: HkConsole/HkCons2.cpp
 msgid "Anna sakko,  <Return> : Hyväksy"
 msgstr ""
@@ -3666,10 +3761,76 @@ msgstr ""
 msgid "Tulos jo annettu, korjataanko? (K/E)"
 msgstr ""
 
+#: HkConsole/HkCons2.cpp
+msgid "Oletuspisteen valinta: A)utom., L)ähtö, M)aali"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+msgid "Hyväksy tai valitse piste: L)ähtö, M)aali"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+msgid ", Väliaika"
+msgstr ""
+
 #. valinta: LVPK
 #: HkConsole/HkCons2.cpp
 msgid ""
 "L)isää aikoihin, V)ähennä ajoista, P)ienennä / K)asvata eroja, Esc : Peruuta"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+msgid "Anna lisäyksen määrä sekunnin kymmenyksinä"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+msgid "Anna vähennyksen määrä sekunnin kymmenyksinä"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+msgid "Anna erojen lisäys sekunnin kymmenyksinä tunnissa"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+msgid "Anna erojen vähennys sekunnin kymmenyksinä tunnissa"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
+msgid "KESKEYT"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
+msgid "EI LÄHT"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
+msgid "TAHDISTUSAIKA"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
+msgid "NOLLAUS - YLIMÄÄRÄINEN AIKA"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
+msgid "NOLLAUKSEN LOPPU"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+msgid "L  Sarjalähtö: "
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+msgid "L  Erälähtö: "
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+#, c-format
+msgid "Koodi%7ld Lähde %5d %c"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+#, c-format
+msgid "Rata %d, Pää %c, Kosketus %d"
 msgstr ""
 
 #. valinta: TK
@@ -3687,6 +3848,27 @@ msgstr ""
 
 #: HkConsole/HkCons2.cpp
 msgid "Anna aktiivisen jonon aikakorjaus        (1/100 s)"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+msgid "ERÄ     "
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+msgid "AJANOTTO  "
+msgstr ""
+
+#: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
+msgid " - Maali"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+#, c-format
+msgid " - Piste : %d"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp
+msgid "LÄHTÖAJAT"
 msgstr ""
 
 #. valinta: KE
@@ -3766,10 +3948,6 @@ msgid "Edellinen maaliaika sama, poimitaanko viimeisin eroava (K/E)"
 msgstr ""
 
 #: HkConsole/HkCons2.cpp
-msgid "LÄHTÖAJAT"
-msgstr ""
-
-#: HkConsole/HkCons2.cpp
 msgid "AJANOTTO "
 msgstr ""
 
@@ -3821,6 +3999,10 @@ msgstr ""
 #. valinta: KE
 #: HkConsole/HkCons2.cpp
 msgid "Aika katkaistaan tasasekuntiin (K/E)"
+msgstr ""
+
+#: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
+msgid "AJANOTTO"
 msgstr ""
 
 #: HkConsole/HkCons2.cpp
@@ -3895,6 +4077,10 @@ msgstr ""
 
 #: HkConsole/HkCons3.cpp
 msgid "Noususumma (m)"
+msgstr ""
+
+#: HkConsole/HkCons3.cpp JukConsole/VConTul.cpp
+msgid "LEHDISTÖTULOSTEN EDITOINTI"
 msgstr ""
 
 #. valinta: KE
@@ -4083,6 +4269,10 @@ msgid "Paperikoko %2.2s   asento (P/V) %1.1s  merkistö (PC-8/Roman-8) %1.1s"
 msgstr ""
 
 #: HkConsole/HkCons3.cpp JukConsole/VConTul.cpp
+msgid "Lisäinitialisointi"
+msgstr ""
+
+#: HkConsole/HkCons3.cpp JukConsole/VConTul.cpp
 msgid "Merkkilaji  täsmennys  koko (pistettä)   riviväli (1/72 tuumaa)"
 msgstr ""
 
@@ -4242,6 +4432,26 @@ msgstr ""
 #. valinta: KE
 #: HkConsole/HkCons3.cpp
 msgid "Asetetaanko kirjoittimen vakio-oletuskoodit (K/E)"
+msgstr ""
+
+#: HkConsole/HkCons3.cpp JukConsole/VConTul.cpp
+msgid "Perusfontin valinta"
+msgstr ""
+
+#: HkConsole/HkCons3.cpp
+msgid "Pääotsikkofontin valinta"
+msgstr ""
+
+#: HkConsole/HkCons3.cpp
+msgid "Pääotsikkofontin loppu"
+msgstr ""
+
+#: HkConsole/HkCons3.cpp
+msgid "Aliotsikkofontin valinta"
+msgstr ""
+
+#: HkConsole/HkCons3.cpp
+msgid "Aliotsikkofontin loppu"
 msgstr ""
 
 #. valinta: KE
@@ -4567,6 +4777,10 @@ msgstr ""
 msgid "Järjestys: Y)hteistulokset vai T)ämä päivä"
 msgstr ""
 
+#: HkConsole/HkCons3.cpp JukConsole/VConTul.cpp
+msgid "LISTAT    "
+msgstr ""
+
 #. valinta: PM
 #: HkConsole/HkCons3.cpp
 msgid "P)äivän tulokset, M)onipäivälistaukset"
@@ -4703,6 +4917,62 @@ msgstr ""
 
 #: HkConsole/HkConsHelp.cpp JukConsole/lasktxt.cpp
 msgid "HELP,    sivu 2"
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp
+msgid "HELP,    sivu 3     TIETOJEN SYÖTTÖ JA MUUTTAMINEN"
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp
+msgid "Maaliajan syöttö tapahtuu laskentatoiminnossa käyttäen vain"
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp
+msgid "numeronäppäimiä sekä näppäintä 'Askelpalautus', joka kumoaa"
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp
+msgid "edellisen painalluksen vaikutuksen. Syötetyt numerot korvaavat"
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp
+msgid "aiemmat viimeisestä alkaen. Kilpailijanumero syötetään samoin."
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp
+msgid "Aikoja korjattaessa käytetään numeronäppäimiä, nuolia \x1b ja 2"
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp
+msgid "sekä näppäimä <Home> ja <End>. Korjaus tapahtuu korvaustoimin-"
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp
+msgid "tana (Replace). Nuolien sijasta voidaan käyttää"
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp
+msgid "näppäimiä <F7> ja <F8>"
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp JukConsole/lasktxt.cpp
+msgid "Muita tietoja korjattaessa voidaan käyttää lisäys (Insert) tai"
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp JukConsole/lasktxt.cpp
+msgid "korvaustoimintaa; toiminta vaihdetaan näppäimellä <Ins>"
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp
+msgid "Kentän loppuosan poistaa yhdistelmä <Ctrl-End> tai <Ctrl-Del>"
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp
+msgid "Käytettävissä on myös näppäimet \x1b, 2 F7, F8, Del, Askelpal."
+msgstr ""
+
+#: HkConsole/HkConsHelp.cpp
+msgid "Poista tulos antamalla sellainen maaliaika, että tulos on 0."
 msgstr ""
 
 #: HkConsole/HkConsHelp.cpp
@@ -5699,6 +5969,10 @@ msgstr ""
 msgid "ANNA SARJA"
 msgstr ""
 
+#: HkConsole/HkMain.cpp JukConsole/laskenta.cpp
+msgid "PÄÄVALIKKO"
+msgstr ""
+
 #. valinta: MKSTOAUYPB
 #: HkConsole/HkMain.cpp
 msgid ""
@@ -5853,6 +6127,22 @@ msgid "Asetetaanko HP PCL:N vakio-oletuskoodit (K/E)"
 msgstr ""
 
 #: JukConsole/VConTul.cpp
+msgid "Joukkuerivi, alku"
+msgstr ""
+
+#: JukConsole/VConTul.cpp
+msgid "Joukkuerivi, loppu"
+msgstr ""
+
+#: JukConsole/VConTul.cpp
+msgid "Osuusrivit, alku"
+msgstr ""
+
+#: JukConsole/VConTul.cpp
+msgid "Osuusrivit, loppu"
+msgstr ""
+
+#: JukConsole/VConTul.cpp
 msgid "Anna osuuksittaisen paperitulostuksen kenttien sijainnit"
 msgstr ""
 
@@ -5948,6 +6238,10 @@ msgstr ""
 #: JukConsole/VConTul.cpp
 msgid ""
 "Ensimmäinen sarja :               <F2>:Alusta, <F4>:Yhdistelmä, <Esc>:Poistu"
+msgstr ""
+
+#: JukConsole/laskemtn.cpp
+msgid "EMIT-TUNNISTUS"
 msgstr ""
 
 #: JukConsole/laskemtn.cpp ViestiWin/UnitLuenta.dfm
@@ -6139,6 +6433,10 @@ msgstr ""
 msgid "%4d tietuetta kopioitu"
 msgstr ""
 
+#: JukConsole/laskent0.cpp
+msgid "ASETUKSET"
+msgstr ""
+
 #. valinta: TAVLUDKC
 #: JukConsole/laskent0.cpp
 msgid ""
@@ -6285,6 +6583,10 @@ msgstr ""
 
 #: JukConsole/lasknum5.cpp
 msgid "Tiedonsiirtoa ei määritelty"
+msgstr ""
+
+#: JukConsole/lasknum5.cpp
+msgid "TULOSTAULU"
 msgstr ""
 
 #: JukConsole/lasknum5.cpp JukConsole/lasknum5u.cpp cbHk/UnitHylkRap.dfm ViestiWin/UnitGAZ.dfm
@@ -6494,14 +6796,6 @@ msgstr ""
 
 #: JukConsole/lasktxt.cpp
 msgid "aina käyttää näppäimiä <F7> ja <F8>"
-msgstr ""
-
-#: JukConsole/lasktxt.cpp
-msgid "Muita tietoja korjattaessa voidaan käyttää lisäys (Insert) tai"
-msgstr ""
-
-#: JukConsole/lasktxt.cpp
-msgid "korvaustoimintaa; toiminta vaihdetaan näppäimellä <Ins>"
 msgstr ""
 
 #: JukConsole/lasktxt.cpp
@@ -6961,7 +7255,24 @@ msgid "Pisteet:"
 msgstr ""
 
 #: JukConsole/vcons2.cpp
+msgid "Kes"
+msgstr ""
+
+#: JukConsole/vcons2.cpp ViestiWin/UnitStatus.cpp
+msgid "Eil"
+msgstr ""
+
+#: JukConsole/vcons2.cpp
 msgid "Slj"
+msgstr ""
+
+#: JukConsole/vcons2.cpp cbHk/TapUnit2.cpp cbHk/UnitAjanotto.cpp ViestiWin/TapUnit2.cpp
+#: ViestiWin/UnitAjanotto.cpp
+msgid "Trk"
+msgstr ""
+
+#: JukConsole/vcons2.cpp
+msgid "Poi"
 msgstr ""
 
 #: JukConsole/vcons2.cpp ViestiWin/UnitJoukkueet.cpp cbHk/UnitLisatiedot.dfm cbHk/UnitSuodatus.dfm
@@ -6993,23 +7304,6 @@ msgstr ""
 #: JukConsole/vcons2.cpp
 msgid ""
 "<Return> Up Dn Tab : Vaihda kenttää, + : Hyväksy, <Esc> : Peruuta ja poistu"
-msgstr ""
-
-#: JukConsole/vcons2.cpp
-msgid "Kes"
-msgstr ""
-
-#: JukConsole/vcons2.cpp
-msgid "Poi"
-msgstr ""
-
-#: JukConsole/vcons2.cpp ViestiWin/UnitStatus.cpp
-msgid "Eil"
-msgstr ""
-
-#: JukConsole/vcons2.cpp cbHk/TapUnit2.cpp cbHk/UnitAjanotto.cpp ViestiWin/TapUnit2.cpp
-#: ViestiWin/UnitAjanotto.cpp
-msgid "Trk"
 msgstr ""
 
 #: JukConsole/vcons2.cpp
@@ -7127,6 +7421,22 @@ msgid ""
 msgstr ""
 
 #: JukConsole/vcons2.cpp
+msgid "NOLLAUS"
+msgstr ""
+
+#: JukConsole/vcons2.cpp
+msgid "SULJ.  "
+msgstr ""
+
+#: JukConsole/vcons2.cpp
+msgid "1 L  Sarjalähtö: "
+msgstr ""
+
+#: JukConsole/vcons2.cpp
+msgid "1 L  Erälähtö: "
+msgstr ""
+
+#: JukConsole/vcons2.cpp
 #, c-format
 msgid " Bdg:%8d Port:%4d Lähde:%4d"
 msgstr ""
@@ -7145,7 +7455,8 @@ msgid "Anna aikakorjaus        (1/10 s)"
 msgstr ""
 
 #: JukConsole/vcons2.cpp
-msgid " - Maali"
+#, c-format
+msgid " - Os %d"
 msgstr ""
 
 #: JukConsole/vcons2.cpp
@@ -7195,6 +7506,10 @@ msgstr ""
 
 #: JukConsole/vcons2.cpp
 msgid "Anna käsiteltävä piste:    A: Automaattinen"
+msgstr ""
+
+#: JukConsole/vcons2.cpp
+msgid "LÄHESTYJÄT"
 msgstr ""
 
 #: JukConsole/vcons2.cpp
@@ -7467,6 +7782,10 @@ msgstr ""
 
 #: Tp/TpComY.cpp Tp/TpComY32.cpp
 msgid "Emit-väliaikojen uusintalähetys"
+msgstr ""
+
+#: Tp/TpComY.cpp Tp/TpComY32.cpp
+msgid "YHTEYDET"
 msgstr ""
 
 #: Tp/TpComY.cpp Tp/TpComY32.cpp
@@ -8128,13 +8447,13 @@ msgid "Pistekaavan kerroin virheellinen"
 msgstr ""
 
 #: cbHk/TakaaAjoUnit.cpp cbHk/TulostusUnit2.cpp cbHk/UnitArvonta.cpp cbHk/UnitEmit.cpp
-#: cbHk/UnitHylkRap.cpp cbHk/UnitImport.cpp cbHk/UnitKilpMaaritys.cpp cbHk/UnitLisaTietue.cpp
-#: cbHk/UnitLisatiedot.cpp cbHk/UnitSarja.cpp cbHk/UnitSprinthiihto.cpp cbHk/UnitStatus.cpp
-#: cbHk/UnitTaulu.cpp cbHk/UnitTuloskaava.cpp ViestiWin/UnitArvonta.cpp ViestiWin/UnitEmit.cpp
-#: ViestiWin/UnitGAZ.cpp ViestiWin/UnitHylkRap.cpp ViestiWin/UnitImport.cpp ViestiWin/UnitKilpMaaritys.cpp
-#: ViestiWin/UnitLisatiedot.cpp ViestiWin/UnitLuenta.cpp ViestiWin/UnitSarja.cpp ViestiWin/UnitVaTuloste.cpp
-#: cbTp/UnitEmiTag.cpp cbTp/UnitMTR.cpp cbTp/UnitRadat.cpp cbTp/UnitUusinta.cpp
-#: cbTp/cbTpApu.cpp cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm
+#: cbHk/UnitHylkRap.cpp cbHk/UnitImport.cpp cbHk/UnitKilpMaaritys.cpp cbHk/UnitKilpailijaEmit.cpp
+#: cbHk/UnitLisaTietue.cpp cbHk/UnitLisatiedot.cpp cbHk/UnitSarja.cpp cbHk/UnitSprinthiihto.cpp
+#: cbHk/UnitStatus.cpp cbHk/UnitTaulu.cpp cbHk/UnitTuloskaava.cpp ViestiWin/UnitArvonta.cpp
+#: ViestiWin/UnitEmit.cpp ViestiWin/UnitGAZ.cpp ViestiWin/UnitHylkRap.cpp ViestiWin/UnitImport.cpp
+#: ViestiWin/UnitKilpMaaritys.cpp ViestiWin/UnitLisatiedot.cpp ViestiWin/UnitLuenta.cpp ViestiWin/UnitSarja.cpp
+#: ViestiWin/UnitVaTuloste.cpp cbTp/UnitEmiTag.cpp cbTp/UnitMTR.cpp cbTp/UnitRadat.cpp
+#: cbTp/UnitUusinta.cpp cbTp/cbTpApu.cpp cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm
 msgid "Virhe"
 msgstr ""
 
@@ -8591,6 +8910,10 @@ msgstr ""
 msgid "Kenttäerotin"
 msgstr ""
 
+#: cbHk/TulostusUnit2.cpp ViestiWin/TulostusUnit2.cpp
+msgid "XML-standardi"
+msgstr ""
+
 #: cbHk/TulostusUnit2.cpp cbHk/TulostusUnit2.dfm
 msgid "Joukkueen koko"
 msgstr ""
@@ -8887,6 +9210,11 @@ msgstr ""
 #: cbHk/UnitAjanotto.cpp cbHk/UnitEmit.cpp cbHk/UnitIlm2.cpp ViestiWin/UnitAjanotto.cpp
 #: ViestiWin/UnitEmit.cpp
 msgid "Vahvista tallennus"
+msgstr ""
+
+#: cbHk/UnitAjanotto.cpp
+#, c-format
+msgid "Ajanotto - %d - Erä %d"
 msgstr ""
 
 #: cbHk/UnitAjanotto.cpp ViestiWin/TulostusUnit2.cpp ViestiWin/UnitAjanotto.cpp
@@ -9290,6 +9618,11 @@ msgstr ""
 msgid "Emit-tieto"
 msgstr ""
 
+#: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp
+#, c-format
+msgid "%d. leima"
+msgstr ""
+
 #: cbHk/UnitComfile.cpp cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp cbHk/UnitSeurat.cpp
 #: ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitSeurat.cpp cbHk/UnitLisatiedot.dfm ViestiWin/UnitLisatiedot.dfm
 msgid "Piiri"
@@ -9301,6 +9634,11 @@ msgstr ""
 
 #: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp cbHk/UnitAutoFile.dfm ViestiWin/UnitAutoFile.dfm
 msgid "Emitväliajat"
+msgstr ""
+
+#: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp
+#, c-format
+msgid "%d. rasti"
 msgstr ""
 
 #: cbHk/UnitComfile.cpp ViestiWin/UnitComfile.cpp
@@ -9431,6 +9769,10 @@ msgstr ""
 msgid "Väliaikatulosteet"
 msgstr ""
 
+#: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
+msgid "Lue kortti tai syötä KilpNo"
+msgstr ""
+
 #: cbHk/UnitEmit.cpp
 msgid "Kortti jo rekisteröity kilpailijalle "
 msgstr ""
@@ -9464,8 +9806,26 @@ msgstr ""
 msgid "Anna tiedot"
 msgstr ""
 
+#: cbHk/UnitEmit.cpp
+#, c-format
+msgid "Luettu kortti %d"
+msgstr ""
+
+#: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
+msgid "Uusi kortti, kun muutoksia tallentamatta"
+msgstr ""
+
 #: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
 msgid "Virhe luennassa"
+msgstr ""
+
+#: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
+#, c-format
+msgid "Käsittelyyn kortti %d"
+msgstr ""
+
+#: cbHk/UnitEmit.cpp ViestiWin/UnitEmit.cpp
+msgid "Leimoja ei liitetty kilpailijaan"
 msgstr ""
 
 #: cbHk/UnitEmit.cpp cbHk/UnitIlm2.cpp
@@ -9773,24 +10133,6 @@ msgstr ""
 msgid "Xml-tiedostot (*.xml) |*.xml|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
-#: cbHk/UnitHylkRap.cpp ViestiWin/UnitHylkRap.cpp cbTp/UnitSivuTuloste.cpp
-#, c-format
-msgid ""
-"XML-muotoilun tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"
-msgstr ""
-
-#: cbHk/UnitHylkRap.cpp cbHk/UnitKisaLuett.cpp ViestiWin/UnitHylkRap.cpp ViestiWin/WinParamXml.cpp
-#: cbTp/UnitSivuTuloste.cpp
-#, c-format
-msgid "XML-tiedosto %s päättyi rivillä %d tasolla %d"
-msgstr ""
-
-#: cbHk/UnitHylkRap.cpp cbHk/UnitKisaLuett.cpp cbHk/WinParamXml.cpp ViestiWin/UnitHylkRap.cpp
-#: ViestiWin/WinParamXml.cpp cbTp/UnitSivuTuloste.cpp
-#, c-format
-msgid "Tiedostossa %s virhe rivillä %d tai aikaisemmin"
-msgstr ""
-
 #: cbHk/UnitIlm2.cpp cbHk/UnitOsanottajat.cpp ViestiWin/UnitJoukkueet.cpp
 msgid "Id-no"
 msgstr ""
@@ -9920,6 +10262,10 @@ msgstr ""
 msgid "Toiminto suoritettu"
 msgstr ""
 
+#: cbHk/UnitJoukkueTilanne.cpp cbHk/UnitJoukkueTilanne.dfm cbHk/UnitSarja.dfm
+msgid "Koko kilpailu"
+msgstr ""
+
 #: cbHk/UnitJoukkueTilanne.cpp
 msgid "Anna pisteisiin oikeuttava huonoin sijoitus"
 msgstr ""
@@ -9944,10 +10290,10 @@ msgstr ""
 msgid "Mol"
 msgstr ""
 
-#: cbHk/UnitKaavaTaul.cpp cbHk/UnitTaulu.cpp ViestiWin/UnitGAZ.cpp cbTp/UnitEmiTag.cpp
-#: cbHk/MuotoiluUnit.dfm cbHk/UnitAjanotto.dfm cbHk/UnitArvonta.dfm cbHk/UnitCfg.dfm
-#: cbHk/UnitSarja.dfm ViestiWin/MuotoiluUnit.dfm ViestiWin/UnitAjanotto.dfm ViestiWin/UnitCfg.dfm
-#: cbTp/UnitSelect3.dfm
+#: cbHk/UnitKaavaTaul.cpp cbHk/UnitTaulu.cpp cbHk/UnitVaiheMaar.cpp ViestiWin/UnitGAZ.cpp
+#: cbTp/UnitEmiTag.cpp cbHk/MuotoiluUnit.dfm cbHk/UnitAjanotto.dfm cbHk/UnitArvonta.dfm
+#: cbHk/UnitCfg.dfm cbHk/UnitSarja.dfm ViestiWin/MuotoiluUnit.dfm ViestiWin/UnitAjanotto.dfm
+#: ViestiWin/UnitCfg.dfm cbTp/UnitSelect3.dfm
 msgid "Ei"
 msgstr ""
 
@@ -10203,8 +10549,34 @@ msgstr ""
 msgid "CSV-tiedostot (*.csv) | *.CSV|Kaikki tiedostot (*.*)|*.*"
 msgstr ""
 
+#: cbHk/UnitKilpSeurat.cpp cbHk/UnitKilpailijatiedot.cpp cbHk/UnitVaiheMaar.cpp
+#, c-format
+msgid "%d. vaihe"
+msgstr ""
+
+#: cbHk/UnitKilpailijaEmit.cpp
+msgid "EiAikaa"
+msgstr ""
+
+#: cbHk/UnitKilpailijaEmit.cpp ViestiWin/OsuusTiedot.cpp cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm
+msgid "Eiläht."
+msgstr ""
+
+#: cbHk/UnitKilpailijaEmit.cpp cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm
+msgid "Havaittu"
+msgstr ""
+
+#: cbHk/UnitKilpailijaEmit.cpp
+msgid "Vakant"
+msgstr ""
+
 #: cbHk/UnitKilpailijaEmit.cpp
 msgid "V-aika"
+msgstr ""
+
+#: cbHk/UnitKilpailijaEmit.cpp cbHk/UnitKilpailijaOnline.cpp cbHk/UnitVaPisteet.cpp
+#, c-format
+msgid "%d. va"
 msgstr ""
 
 #: cbHk/UnitKilpailijaEmit.cpp ViestiWin/OsuusTiedot.cpp
@@ -10266,6 +10638,11 @@ msgstr ""
 
 #: cbHk/UnitKilpailijaOnline.cpp
 msgid "Edellisestä"
+msgstr ""
+
+#: cbHk/UnitKilpailijaOnline.cpp
+#, c-format
+msgid "%d. pv"
 msgstr ""
 
 #: cbHk/UnitKilpailijaOnline.cpp
@@ -10406,12 +10783,6 @@ msgstr ""
 msgid "Konfiguraatio"
 msgstr ""
 
-#: cbHk/UnitKisaLuett.cpp cbHk/WinParamXml.cpp ViestiWin/WinParamXml.cpp
-#, c-format
-msgid ""
-"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"
-msgstr ""
-
 #: cbHk/UnitLahtoRistiriita.cpp
 msgid "Lähtöpaikka "
 msgstr ""
@@ -10532,6 +10903,11 @@ msgstr ""
 
 #: cbHk/UnitMaastossa.cpp ViestiWin/UnitMaastossa.cpp
 msgid "0 kilpailijaa"
+msgstr ""
+
+#: cbHk/UnitMaastossa.cpp ViestiWin/UnitMaastossa.cpp
+#, c-format
+msgid "%d kilpailijaa ilman tulosta"
 msgstr ""
 
 #: cbHk/UnitNollaus.cpp
@@ -11089,6 +11465,11 @@ msgstr ""
 msgid "Esit"
 msgstr ""
 
+#: cbHk/UnitStatus.cpp ViestiWin/UnitStatus.cpp
+#, c-format
+msgid "%d.va"
+msgstr ""
+
 #: cbHk/UnitStatus.cpp
 msgid "Mahd"
 msgstr ""
@@ -11473,6 +11854,21 @@ msgstr ""
 msgid "Os.sj"
 msgstr ""
 
+#: ViestiWin/TulosUnit.cpp
+#, c-format
+msgid "%d. osuus - vaihto"
+msgstr ""
+
+#: ViestiWin/TulosUnit.cpp
+#, c-format
+msgid "%s - %d. osuus %d. väliaika %skm"
+msgstr ""
+
+#: ViestiWin/TulosUnit.cpp
+#, c-format
+msgid "%s - %d. osuus"
+msgstr ""
+
 #: ViestiWin/TulosUnit.cpp ViestiWin/TulostusUnit2.cpp ViestiWin/UnitArvonta.cpp ViestiWin/UnitEmit.cpp
 #: ViestiWin/UnitEmitMuutokset.cpp ViestiWin/UnitHenkHaku.cpp ViestiWin/UnitJoukkueet.cpp ViestiWin/UnitLisatiedot.cpp
 #: ViestiWin/UnitNollaus.cpp ViestiWin/UnitOsuuskopiointi.cpp ViestiWin/UnitSeurGr.cpp ViestiWin/UnitSuodatus.cpp
@@ -11713,6 +12109,16 @@ msgid "Yhteislähtö"
 msgstr ""
 
 #: ViestiWin/UnitComfile.cpp
+#, c-format
+msgid "%d. os. ylähtö"
+msgstr ""
+
+#: ViestiWin/UnitComfile.cpp
+#, c-format
+msgid "%d. os. kynnys"
+msgstr ""
+
+#: ViestiWin/UnitComfile.cpp
 msgid "Binaaritiedosto"
 msgstr ""
 
@@ -11726,6 +12132,30 @@ msgstr ""
 
 #: ViestiWin/UnitEmit.cpp
 msgid "Ei rataa"
+msgstr ""
+
+#: ViestiWin/UnitEmit.cpp
+msgid "Kilpailija GPS seurannassa"
+msgstr ""
+
+#: ViestiWin/UnitEmit.cpp
+msgid "Leimasin sammumassa (koodi 99)"
+msgstr ""
+
+#: ViestiWin/UnitEmit.cpp
+msgid "Viallinen kortti, koodi 200. Syötä kilpno ja osuus"
+msgstr ""
+
+#: ViestiWin/UnitEmit.cpp
+msgid "Tuntematon koodi. Syötä kilpailijan numero ja osuus"
+msgstr ""
+
+#: ViestiWin/UnitEmit.cpp
+msgid "Syötä kilpailijan numero ja osuus"
+msgstr ""
+
+#: ViestiWin/UnitEmit.cpp
+msgid "Kortin osuutta ei voitu määrittää. Anna osuus."
 msgstr ""
 
 #: ViestiWin/UnitEmit.cpp
@@ -11743,6 +12173,30 @@ msgstr ""
 #: ViestiWin/UnitEmitMuutokset.cpp
 msgid ""
 "Tallentaminen valitulle kilpailijalle johtaa aeimmin kirjattujen tietojen menettämiseen. Haluatko aivan varmasti tallentaa?"
+msgstr ""
+
+#: ViestiWin/UnitEmitMuutokset.cpp
+msgid ""
+"Tällä kaavakkeella annetaan kilpailijan numero, kun kortti on viallinen tai väärä. Näytetty numero on vaihdettava."
+msgstr ""
+
+#: ViestiWin/UnitEmitMuutokset.cpp
+msgid ""
+"Kortti jo luettu samalle osuudelle. Valitse toinen osuus tai merkitse ohitetuksi."
+msgstr ""
+
+#: ViestiWin/UnitEmitMuutokset.cpp
+msgid ""
+"Kilpailijalle jo luettu Emit-tiedot. Yhteys aiempiin tietoihin menetetään tallennettaessa."
+msgstr ""
+
+#: ViestiWin/UnitEmitMuutokset.cpp
+msgid "Ei esteitä tietojen valitulle kilpailijalle tallentamiselle."
+msgstr ""
+
+#: ViestiWin/UnitEmitMuutokset.cpp
+msgid ""
+"Kortti viallinen tai tunnistamaton. Anna joukkueen numero ja kilpailijan osuus."
 msgstr ""
 
 #: ViestiWin/UnitHylkRap.cpp
@@ -11887,6 +12341,11 @@ msgstr ""
 msgid "Salli joukkueen numeron muuttaminen"
 msgstr ""
 
+#: ViestiWin/UnitJoukkuetiedot.cpp
+#, c-format
+msgid "%d. va."
+msgstr ""
+
 #: ViestiWin/UnitJoukkuetiedot.cpp ViestiWin/UnitLahestyjat.cpp
 msgid "Vaihto"
 msgstr ""
@@ -11950,6 +12409,12 @@ msgstr ""
 #: ViestiWin/UnitKilpMaaritys.cpp
 msgid ""
 "Joukkuekoon maksimin muuttaminen on mahdollista vain esivalmistelutilassa"
+msgstr ""
+
+#: ViestiWin/UnitKilpSeurat.cpp ViestiWin/UnitLuenta.cpp ViestiWin/UnitSarja.cpp ViestiWin/UnitVaTuloste.cpp
+#: ViestiWin/UnitYLahdot.cpp
+#, c-format
+msgid "%d. osuus"
 msgstr ""
 
 #: ViestiWin/UnitLahestyjat.cpp
@@ -12037,7 +12502,37 @@ msgid "Aiemmalla osuudella ei emit-koodia. Kirjataanko silti"
 msgstr ""
 
 #: ViestiWin/UnitLuenta.cpp
+msgid "Lue Emit-kortti"
+msgstr ""
+
+#: ViestiWin/UnitLuenta.cpp
+msgid "Viivakoodi virheellinen"
+msgstr ""
+
+#: ViestiWin/UnitLuenta.cpp
+msgid "Viallinen Emit-kortti (koodi 200). Kortti on vaihdettava. Paina Esc."
+msgstr ""
+
+#: ViestiWin/UnitLuenta.cpp
+msgid "Kortti jo luettu samalle kilpailijalle. Ei muutettavaa. Paina Esc."
+msgstr ""
+
+#: ViestiWin/UnitLuenta.cpp
+#, c-format
+msgid ""
+"Kortti on varattuna joukkueen %d osuudelle %d. Kortti on vaihdettava. Paina Esc."
+msgstr ""
+
+#: ViestiWin/UnitLuenta.cpp
 msgid "Tiedosto emitrek.lst käsitelty"
+msgstr ""
+
+#: ViestiWin/UnitLuenta.cpp
+msgid "Numero virheellinen"
+msgstr ""
+
+#: ViestiWin/UnitLuenta.cpp
+msgid "Numero tai osuus virheellinen"
 msgstr ""
 
 #: ViestiWin/UnitLuenta.cpp
@@ -12050,6 +12545,14 @@ msgstr ""
 
 #: ViestiWin/UnitLuenta.cpp
 msgid "Tiedoston emitrek.lst avaaminen ei onnistunut"
+msgstr ""
+
+#: ViestiWin/UnitLuenta.cpp
+msgid "Testi odottaa Emit-koodeja"
+msgstr ""
+
+#: ViestiWin/UnitLuenta.cpp
+msgid "Lue viivakoodi tai syötä joukkueen numero"
 msgstr ""
 
 #: ViestiWin/UnitMain.cpp
@@ -12152,6 +12655,11 @@ msgstr ""
 
 #: ViestiWin/UnitSarja.cpp
 msgid "Yht.l.kynnys"
+msgstr ""
+
+#: ViestiWin/UnitSarja.cpp
+#, c-format
+msgid "%d. va-matka"
 msgstr ""
 
 #: ViestiWin/UnitSarja.cpp
@@ -17106,20 +17614,12 @@ msgstr ""
 msgid "esItys"
 msgstr ""
 
-#: cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm
-msgid "Eiläht."
-msgstr ""
-
 #: cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm ViestiWin/UnitEmit.dfm ViestiWin/UnitSuodatus.dfm
 msgid "Vakantti"
 msgstr ""
 
 #: cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm
 msgid "Ei aikaa"
-msgstr ""
-
-#: cbHk/UnitEmit.dfm cbHk/UnitSuodatus.dfm
-msgid "Havaittu"
 msgstr ""
 
 #: cbHk/UnitEmit.dfm ViestiWin/UnitEmit.dfm
@@ -18344,10 +18844,6 @@ msgstr ""
 
 #: cbHk/UnitJoukkueTilanne.dfm
 msgid "Päivitä tilanne"
-msgstr ""
-
-#: cbHk/UnitJoukkueTilanne.dfm cbHk/UnitSarja.dfm
-msgid "Koko kilpailu"
 msgstr ""
 
 #: cbHk/UnitJoukkueTilanne.dfm

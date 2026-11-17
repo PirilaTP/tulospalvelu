@@ -394,7 +394,7 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		SGSanoma->Cells[1][6] = UnicodeString(aikatowstr_cols_n(st, KSEK*ComBuf.d.em.time, t0, 0, 11));
 		SGSanoma->Cells[1][7] = UnicodeString(aikatowstr_cols_n(st, KSEK*ComBuf.d.em.kirjaus, t0, 0, 11));
 		for (int rr = 0; rr < MAXNLEIMA; rr++) {
-			SGSanoma->Cells[0][8+rr] = UnicodeString(rr+1)+L". leima";
+			SGSanoma->Cells[0][8+rr] = UnicodeString().sprintf(TR(L"%d. leima"), rr+1);
 			SGSanoma->Cells[1][8+rr] = UnicodeString((int)(ComBuf.d.em.ctrlcode[rr])) +
 				L": "+ UnicodeString(ComBuf.d.em.ctrltime[rr]);
 			}
@@ -431,7 +431,7 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		SGSanoma->Cells[1][7] = UnicodeString(ComBuf.d.emva.rastiluku);
 		SGSanoma->Cells[1][8] = UnicodeString(ComBuf.d.emva.rata);
 		for (int rr = 0; rr <= ComBuf.d.emva.rastiluku && rr < MAXNLEIMA; rr++) {
-			SGSanoma->Cells[0][9+rr] = UnicodeString(rr+1)+L". rasti";
+			SGSanoma->Cells[0][9+rr] = UnicodeString().sprintf(TR(L"%d. rasti"), rr+1);
 			SGSanoma->Cells[1][9+rr] = UnicodeString(ComBuf.d.emva.rastit[rr][0]) +
 				L": "+ UnicodeString(ComBuf.d.emva.rastit[rr][1]);
 			}

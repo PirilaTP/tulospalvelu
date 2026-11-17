@@ -149,7 +149,7 @@ void __fastcall TFormJoukkuetiedot::GridDims(void)
 		TlsGrid->Cells[col][0] = UnicodeString(TRA("Osuus ")) + wosuuskoodi(Sarja, col-1, 0, 0);
 		}
 	for (int row = 1; row < TlsGrid->RowCount-1; row++) {
-		TlsGrid->Cells[0][row] = UnicodeString(row) + L". va.";
+		TlsGrid->Cells[0][row] = UnicodeString().sprintf(TR(L"%d. va."), row);
 		}
 	TlsGrid->Cells[0][TlsGrid->RowCount - 1] = TR(L"Vaihto");
 	FormResize(this);

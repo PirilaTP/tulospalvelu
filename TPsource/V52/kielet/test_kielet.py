@@ -43,5 +43,58 @@ class DfmTextTests(unittest.TestCase):
         ])
 
 
+class UntranslatedTextTests(unittest.TestCase):
+    def found(self, code):
+        return [(kind, text) for line, kind, text in kielet.kaantamattomat_teksti(code)]
+
+    def test_property_assignment_without_tr_is_reported(self):
+        code = 'void f() {\n  EdtMsg->Text = L"Lue kortti tai syötä numero";\n}\n'
+        self.assertEqual(self.found(code), [('sijoitus', 'Lue kortti tai syötä numero')])
+
+    def test_wrapped_text_is_not_reported(self):
+        code = 'void f() {\n  EdtMsg->Text = TR(L"Lue kortti");\n  header = TR(L"KORJAA    ");\n}\n'
+        self.assertEqual(self.found(code), [])
+
+    def test_joined_text_is_reported_as_concatenation(self):
+        code = 'void f() {\n  SG->Cells[0][1] = UnicodeString(i+1) + L". vaihe";\n}\n'
+        self.assertEqual(self.found(code), [('yhdistelma', '. vaihe')])
+
+    def test_compared_text_is_not_reported(self):
+        code = 'void f() {\n  if (Edt->Text == L"Kaikki sarjat") g();\n}\n'
+        self.assertEqual(self.found(code), [])
+
+    def test_message_box_without_tr_is_reported(self):
+        code = 'void f() {\n  Application->MessageBoxW(L"Tiedostoa ei löydy", L"Virhe", MB_OK);\n}\n'
+        self.assertIn(('ilmoitus', 'Tiedostoa ei löydy'), self.found(code))
+
+    def test_commented_out_code_is_not_reported(self):
+        code = 'void f() {\n/*\n  Edt->Text = L"Lue kortti";\n*/\n}\n'
+        self.assertEqual(self.found(code), [])
+
+
+try:
+    import PIL  # noqa: F401
+    import mitat
+except ImportError:
+    mitat = None
+
+
+@unittest.skipIf(mitat is None, 'mittaus vaatii Pillow-kirjaston')
+class WrapMeasureTests(unittest.TestCase):
+    def setUp(self):
+        self.m = mitat.Mittari()
+        self.f = self.m.fontti('Arial', 13, False)
+
+    def test_words_wrap_at_spaces(self):
+        self.assertEqual(self.m.rivit('Ta bort valda', self.f, 41), 2)
+
+    def test_word_wider_than_control_does_not_fit(self):
+        # Windows katkaisisi sanan kesken (Byt tävlande, ändra stämplingsuppgif-ter)
+        self.assertIsNone(self.m.rivit('stämplingsuppgifter', self.f, 91))
+
+    def test_hotkey_marker_is_not_measured(self):
+        self.assertEqual(self.m.rivit('&Lisää', self.f, 200), 1)
+
+
 if __name__ == '__main__':
     unittest.main()

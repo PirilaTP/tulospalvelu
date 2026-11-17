@@ -135,15 +135,36 @@ static void kaannaKomponentti(TComponent *C)
 //  - jos teksti ei silti mahdu, käytetään lyhyttä muotoa (.po: msgctxt "lyhyt"), jos
 //    sellainen on, tai katkaistaan teksti; koko teksti näytetään vihjeenä (Hint)
 //  - valintaryhmän vaihtoehdoille sama: lyhyt muoto ja vaihtoehdon oma vihje
+//  - rivittyvä teksti (WordWrap) mitataan rivitettynä: jos rivit eivät mahdu kontrollin
+//    korkeuteen tai yksittäinen sana on kontrollia leveämpi, käytetään lyhyttä muotoa.
+//    Automaattisesti korkeutta kasvattava TLabel rajataan alla olevaan kontrolliin asti.
 // Tekstit, jotka eivät mahdu, listaa: python kielet/kielet.py mittaa
 
-static int tekstinLeveys(TFont *Font, const UnicodeString &Teksti, bool Pikanappain)
+static TCanvas *mittari(TFont *Font)
 {
 	static Graphics::TBitmap *Mittari = NULL;
 	if (Mittari == NULL)
 		Mittari = new Graphics::TBitmap;
 	Mittari->Canvas->Font->Assign(Font);
-	return(Mittari->Canvas->TextWidth(Pikanappain ? StripHotkey(Teksti) : Teksti));
+	return(Mittari->Canvas);
+}
+
+static int tekstinLeveys(TFont *Font, const UnicodeString &Teksti, bool Pikanappain)
+{
+	return(mittari(Font)->TextWidth(Pikanappain ? StripHotkey(Teksti) : Teksti));
+}
+
+// Mahtuuko teksti rivitettynä alueeseen Leveys x Korkeus. Rivitys katkaisee vain välilyönneistä:
+// sanaa, joka on aluetta leveämpi, Windows katkaisisi kesken sanan, joten se ei mahdu.
+static bool mahtuuRivitettyna(TFont *Font, const UnicodeString &Teksti, int Leveys, int Korkeus,
+	bool Pikanappain)
+{
+	if (Leveys <= 0)
+		return(false);
+	TRect R(0, 0, Leveys, 0);
+	UINT liput = DT_CALCRECT | DT_WORDBREAK | (Pikanappain ? 0 : DT_NOPREFIX);
+	DrawTextW(mittari(Font)->Handle, Teksti.c_str(), -1, &R, liput);
+	return(R.Width() <= Leveys && R.Height() <= Korkeus);
 }
 
 static int isanLeveys(TControl *C)
@@ -190,6 +211,21 @@ static int vasenRaja(TControl *C, int VanhaVasen)
 	return(raja);
 }
 
+// Lähin este alapuolella: isän alareuna tai sisarkontrolli, joka alkaa kontrollin
+// alkuperäisen alareunan kohdalta tai sen alapuolelta ja on vaakasuunnassa samalla kohdalla
+static int alaRaja(TControl *C, int VanhaAla)
+{
+	TWinControl *P = C->Parent;
+	int raja = P->ClientHeight;
+	for (int i = 0; i < P->ControlCount; i++) {
+		TControl *S = P->Controls[i];
+		if (S != C && S->Visible && S->Top >= VanhaAla - 2 && S->Top < raja
+			&& S->Left < C->Left + C->Width && C->Left < S->Left + S->Width)
+			raja = S->Top;
+		}
+	return(raja);
+}
+
 template <class T> static void naytaVihjeena(T *C, const UnicodeString &Teksti)
 {
 	if (C->Hint.IsEmpty())
@@ -211,17 +247,29 @@ static const wchar_t *lyhytMuoto(const UnicodeString &Fi)
 struct Alku {
 	TControl *C;
 	UnicodeString Fi;                   // suomenkielinen teksti (käännösavain)
-	int Left, Width;
+	int Left, Top, Width, Height;
 	std::vector<UnicodeString> FiKohdat;  // valintaryhmän vaihtoehdot
 };
 
-// Painike, valintaruutu ja valintanappi. Reuna = kehyksen ja valintamerkin viemä tila (px, 96 DPI).
-template <class T> static void sovitaPainike(T *C, int Reuna, const UnicodeString &Fi)
+// Painike, valintaruutu ja valintanappi. Reuna = kehyksen ja valintamerkin viemä tila (px, 96 DPI)
+// vaakasuunnassa, Pysty pystysuunnassa.
+template <class T> static void sovitaPainike(T *C, int Reuna, int Pysty, const UnicodeString &Fi)
 {
 	UnicodeString pitka = C->Caption;
-	if (pitka.IsEmpty() || C->WordWrap || pitka.Pos(L"\n") > 0 || C->Parent == NULL)
+	if (pitka.IsEmpty() || pitka.Pos(L"\n") > 0 || C->Parent == NULL)
 		return;
 	int reuna = MulDiv(Reuna, Screen->PixelsPerInch, 96);
+	if (C->WordWrap) {
+		// Rivittyvä teksti: leveys on kiinteä, rivien on mahduttava korkeuteen
+		int leveys = C->Width - reuna;
+		int korkeus = C->Height - MulDiv(Pysty, Screen->PixelsPerInch, 96);
+		if (mahtuuRivitettyna(C->Font, pitka, leveys, korkeus, true))
+			return;
+		if (const wchar_t *lyhyt = lyhytMuoto(Fi))
+			C->Caption = lyhyt;
+		naytaVihjeena(C, pitka);
+		return;
+		}
 	int tarve = tekstinLeveys(C->Font, pitka, true) + reuna;
 	if (tarve <= C->Width)
 		return;
@@ -239,13 +287,38 @@ template <class T> static void sovitaPainike(T *C, int Reuna, const UnicodeStrin
 	naytaVihjeena(C, pitka);
 }
 
+// Rivittyvä TLabel: leveys pysyy, korkeus joko kiinteä tai kasvaa (AutoSize)
+static void sovitaRivittyvaLabel(const Alku &A)
+{
+	TLabel *Lb = static_cast<TLabel *>(A.C);
+	UnicodeString pitka = Lb->Caption;
+	// Kasvava teksti saa käyttää tilaa alla olevaan kontrolliin asti
+	int korkeus = Lb->AutoSize ? alaRaja(Lb, A.Top + A.Height) - A.Top : A.Height;
+	if (korkeus < A.Height)
+		korkeus = A.Height;
+	if (mahtuuRivitettyna(Lb->Font, pitka, A.Width, korkeus, Lb->ShowAccelChar))
+		return;
+	const wchar_t *lyhyt = lyhytMuoto(A.Fi);
+	if (lyhyt != NULL)
+		Lb->Caption = lyhyt;
+	if (Lb->AutoSize && !mahtuuRivitettyna(Lb->Font, Lb->Caption, A.Width, korkeus, Lb->ShowAccelChar)) {
+		// Ei saa peittää alla olevaa kontrollia: rajataan vapaaseen tilaan
+		Lb->AutoSize = false;
+		Lb->SetBounds(A.Left, A.Top, A.Width, korkeus);
+		}
+	naytaVihjeena(Lb, pitka);
+}
+
 static void sovitaLabel(const Alku &A)
 {
 	TLabel *Lb = static_cast<TLabel *>(A.C);
 	UnicodeString pitka = Lb->Caption;
-	if (Lb->Parent == NULL || pitka.IsEmpty() || pitka.Pos(L"\n") > 0 || Lb->WordWrap
-		|| Lb->Align != alNone)
+	if (Lb->Parent == NULL || pitka.IsEmpty() || pitka.Pos(L"\n") > 0 || Lb->Align != alNone)
 		return;
+	if (Lb->WordWrap) {
+		sovitaRivittyvaLabel(A);
+		return;
+		}
 	const wchar_t *lyhyt = lyhytMuoto(A.Fi);
 	if (!Lb->AutoSize) {
 		// Kiinteä leveys: lyhyt muoto tai katkaistu teksti
@@ -276,6 +349,17 @@ static void sovitaLabel(const Alku &A)
 		return;
 	if (Lb->Left >= vasen && Lb->Left + Lb->Width <= oikea)
 		return;
+	if (!oikealle) {
+		// Teksti on yleensä kentän nimi kentän vasemmalla puolella: jos vasemmalla on tilaa,
+		// siirretään tekstiä vasemmalle niin, että se päättyy entiseen oikeaan rajaan
+		int vapaa = vasenRaja(Lb, A.Left);
+		if (vapaa < 2)
+			vapaa = 2;
+		if (oikea - vapaa >= Lb->Width) {
+			Lb->Left = oikea - Lb->Width;
+			return;
+			}
+		}
 	if (lyhyt != NULL) {
 		Lb->Caption = lyhyt;        // AutoSize mitoittaa uudelleen
 		if (Lb->Left >= vasen && Lb->Left + Lb->Width <= oikea) {
@@ -347,13 +431,13 @@ static void sovitaLomake(const std::vector<Alku> &Alut)
 		const Alku &A = Alut[i];
 		TControl *C = A.C;
 		if (TBitBtn *BB = dynamic_cast<TBitBtn *>(C))
-			sovitaPainike(BB, (BB->Glyph->Empty && BB->Kind == bkCustom) ? 8 : 30, A.Fi);
+			sovitaPainike(BB, (BB->Glyph->Empty && BB->Kind == bkCustom) ? 8 : 30, 6, A.Fi);
 		else if (TButton *B = dynamic_cast<TButton *>(C))
-			sovitaPainike(B, 8, A.Fi);
+			sovitaPainike(B, 8, 6, A.Fi);
 		else if (TCheckBox *CB = dynamic_cast<TCheckBox *>(C))
-			sovitaPainike(CB, 18, A.Fi);
+			sovitaPainike(CB, 18, 0, A.Fi);
 		else if (TRadioButton *RB = dynamic_cast<TRadioButton *>(C))
-			sovitaPainike(RB, 18, A.Fi);
+			sovitaPainike(RB, 18, 0, A.Fi);
 		else if (dynamic_cast<TLabel *>(C) != NULL)
 			sovitaLabel(A);
 		else if (TRadioGroup *RG = dynamic_cast<TRadioGroup *>(C)) {
@@ -374,7 +458,9 @@ static void tallennaAlku(TComponent *Comp, std::vector<Alku> &Alut)
 	Alku a;
 	a.C = C;
 	a.Left = C->Left;
+	a.Top = C->Top;
 	a.Width = C->Width;
+	a.Height = C->Height;
 	if (TButton *B = dynamic_cast<TButton *>(C))
 		a.Fi = B->Caption;
 	else if (TCheckBox *CB = dynamic_cast<TCheckBox *>(C))

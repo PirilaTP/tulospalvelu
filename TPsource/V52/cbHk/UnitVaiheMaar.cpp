@@ -65,13 +65,13 @@ void TFormVaiheMaar::Paivita()
 {
 	for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
 		SG1->ColWidths[ipv+1] = 120 * Screen->PixelsPerInch / 96;
-		SG1->Cells[ipv+1][0] = UnicodeString(ipv+1) + L". vaihe";
+		SG1->Cells[ipv+1][0] = UnicodeString().sprintf(TR(L"%d. vaihe"), ipv+1);
 		SG1->Cells[ipv+1][1] = pvparam[ipv].RaceId;
 		SG1->Cells[ipv+1][2] = stDateNo(NULL, pvparam[ipv].Date);
 		SG1->Cells[ipv+1][3] = pvparam[ipv].Title;
 		SG1->Cells[ipv+1][4] = Pr[PyorIx(pvparam[ipv].pyor[2])];
 		SG1->Cells[ipv+1][5] = Pr[PyorIx(pvparam[ipv].pyor[3])];
-		SG1->Cells[ipv+1][6] = pvparam[ipv].hiihtolahto ? UnicodeString(TR(L"On")) : UnicodeString(L"Ei");
+		SG1->Cells[ipv+1][6] = pvparam[ipv].hiihtolahto ? UnicodeString(TR(L"On")) : UnicodeString(TR(L"Ei"));
 //		SG1->Cells[ipv+1][7] = pvparam[ipv].takaaAjoLisa ? UnicodeString(L"On") : UnicodeString(L"Ei");
 		}
 }
@@ -106,7 +106,8 @@ void __fastcall TFormVaiheMaar::Button1Click(TObject *Sender)
 		wcsncpy(pvparam[ipv].Title, SG1->Cells[ipv+1][3].c_str(), sizeof(pvparam[ipv].Title)/2-1);
 		pvparam[ipv].pyor[2] = pyorVal(SG1->Cells[ipv+1][4].c_str());;
 		pvparam[ipv].pyor[3] = pyorVal(SG1->Cells[ipv+1][5].c_str());;
-		pvparam[ipv].hiihtolahto = (towupper(SG1->Cells[ipv+1][6].c_str()[0]) == L'O' ? 1 : 0);
+		wchar_t hlch = towupper(SG1->Cells[ipv+1][6].c_str()[0]);
+		pvparam[ipv].hiihtolahto = (hlch == L'O' || hlch == towupper(TR(L"On")[0])) ? 1 : 0;
 //		pvparam[ipv].takaaAjoLisa = (towupper(SG1->Cells[ipv+1][7].c_str()[0]) == L'O' ? 1 : 0);
 		}
 	Close();

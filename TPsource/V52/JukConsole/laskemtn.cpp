@@ -327,7 +327,7 @@ INT leimat(void)
    if (ajat_on) status_on = 0;
    if (regnly[0] == 13 || regnly[1] == 13 || regnly[NREGNLY-1] == 13)
       strcpy(valtxt, valtxt_m);
-   header = L"EMIT-TUNNISTUS";
+   header = TR(L"EMIT-TUNNISTUS");
    if (luentatesti) {
       clrscr();
       kehys(1);

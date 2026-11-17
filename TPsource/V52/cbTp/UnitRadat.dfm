@@ -1760,7 +1760,7 @@
     Left = 574
     Top = 199
     Width = 86
-    Height = 194
+    Height = 206
     Ctl3D = True
     ParentCtl3D = False
     TabOrder = 5
@@ -1786,7 +1786,7 @@
       Left = 11
       Top = 131
       Width = 66
-      Height = 55
+      Height = 67
       Caption = 'Kirjoita radat ja rastit (xml)'
       TabOrder = 1
       WordWrap = True

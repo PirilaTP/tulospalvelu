@@ -131,6 +131,21 @@ TEST_CASE_FIXTURE(KieliFixture, "TR kaantaa ja palauttaa suomenkielisen, jos kaa
 	CHECK(TR(NULL) == NULL);
 }
 
+TEST_CASE_FIXTURE(KieliFixture, "TRkentta kopioi kaannoksen kiinteaan kenttaan")
+{
+	wchar_t rivi[12];
+
+	// Lyhyempi kaannos taytetaan valilyonneilla, eika loppunollaa kirjoiteta
+	wmemset(rivi, L'x', 11);
+	rivi[11] = 0;
+	TRkentta(rivi + 1, L"Viimeinen", 9);
+	CHECK(wcscmp(rivi, L"xSista    x") == 0);
+	// Pidempi kaannos katkaistaan kentan levyiseksi
+	wmemset(rivi, L'x', 11);
+	TRkentta(rivi, L"Viimeinen", 3);
+	CHECK(wcscmp(rivi, L"Sisxxxxxxxx") == 0);
+}
+
 TEST_CASE_FIXTURE(KieliFixture, "TRL kayttaa annettua kielta ja TRCL kontekstia")
 {
 	CHECK(wcscmp(TRL(KIELI_FI, L"Hyl\x00e4tty"), L"Hyl\x00e4tty") == 0);

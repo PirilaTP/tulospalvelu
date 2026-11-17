@@ -162,7 +162,7 @@ void __fastcall TFormSarja::naytaOsuudet(void)
 	if (lisarivit3)
 		SG1->Cells[0][5+lisarivit0+lisarivit1+lisarivit2] = TR(L"Lähtöväli");
 	for (int va = 0; va < valuku; va++) {
-		SG1->Cells[0][va+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = UnicodeString(va+1)+L". va-matka";
+		SG1->Cells[0][va+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = UnicodeString().sprintf(TR(L"%d. va-matka"), va+1);
 		}
 	if (lisarivit4) {
 		SG1->Cells[0][valuku+5+lisarivit0+lisarivit1+lisarivit2+lisarivit3] = L"Rinnakkaisosuuden tuloksen ratkaisee ensimmäisenä maaliin tullut, muita ei tarvita (1=kyllä)";
@@ -171,7 +171,7 @@ void __fastcall TFormSarja::naytaOsuudet(void)
 		}
 	for (int os = 0; os < Sarja1.ntosuus; os++) {
 		SG1->ColWidths[os+1] = 65 * Screen->PixelsPerInch / 96;
-		SG1->Cells[os+1][0] = UnicodeString(os+1) + L". osuus";
+		SG1->Cells[os+1][0] = UnicodeString().sprintf(TR(L"%d. osuus"), os+1);
 		if (lisarivit0)
 			SG1->Cells[os+1][1] = Sarja1.nosuus[os];
 		SG1->Cells[os+1][1+lisarivit0] = Sarja1.matka[os];

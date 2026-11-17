@@ -278,7 +278,7 @@ void __fastcall TFormKilpailijatiedot::naytaTiedot(void)
 					switch (i) {
 						case VaiheCol:
 							PvGrid->Cells[PvGridCols[i].Order][pv-epv+1] =
-								UnicodeString(pv+1)+L". vaihe";
+								UnicodeString().sprintf(TR(L"%d. vaihe"), pv+1);
 							break;
 						case BibCol:
 							PvGrid->Cells[PvGridCols[i].Order][pv-epv+1] =

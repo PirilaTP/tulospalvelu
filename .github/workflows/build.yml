@@ -18,11 +18,17 @@ jobs:
       - name: Check translation catalogs (kielet/)
         # tulospalvelu.pot must match the sources: run "python TPsource/V52/kielet/kielet.py poimi"
         # (and "paivita") after changing user-visible texts, and commit the result.
+        # kattavuus: user-visible text assigned in code without TR() must not grow (new ones fail;
+        # accepted exceptions are listed in kielet/kaantamattomat.txt).
+        # mittaa: translations that don't fit their form controls; the limit must not grow.
         run: |
+          python -m pip install --quiet pillow
           python -m unittest discover -s TPsource/V52/kielet -p test_*.py
           python TPsource/V52/kielet/kielet.py poimi
           git diff --exit-code -- TPsource/V52/kielet/tulospalvelu.pot
           python TPsource/V52/kielet/kielet.py tarkista
+          python TPsource/V52/kielet/kielet.py kattavuus
+          python TPsource/V52/kielet/kielet.py mittaa --raja en=8,sv=2
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2

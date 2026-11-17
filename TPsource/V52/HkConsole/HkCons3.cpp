@@ -430,7 +430,7 @@ static void near lehdisto(void)
 	INT32 tulos0;
 	INT piste, day;
 
-	header=L"LEHDIST÷TULOSTEN EDITOINTI";
+	header=TR(L"LEHDIST÷TULOSTEN EDITOINTI");
 	if ((buf = (wchar_t *) malloc(CBUFL)) == 0)
 		return;
 	ptr = buf;
@@ -917,7 +917,7 @@ static void near hpkoodit(void)
             break;
          case 3:
             clrln(ySize-3);
-            editkoodi(extra, L"Lis‰initialisointi");
+            editkoodi(extra, TR(L"Lis‰initialisointi"));
             break;
          case 4:
          case 5:
@@ -1368,7 +1368,7 @@ loppu:
                   case EPSON:
                      break;
                   }
-               editkoodi(init_fnt,L"Perusfontin valinta");
+               editkoodi(init_fnt,TR(L"Perusfontin valinta"));
                switch (lsttulparam.printer) {
                   case POSTSCRIPT:
                      wcscpy(pots_on, L"\x03pf ");
@@ -1377,9 +1377,9 @@ loppu:
                   case EPSON:
                      break;
                   }
-               editkoodi(pots_on,L"P‰‰otsikkofontin valinta");
+               editkoodi(pots_on,TR(L"P‰‰otsikkofontin valinta"));
                if (lsttulparam.printer != POSTSCRIPT)
-                  editkoodi(pots_pois,L"P‰‰otsikkofontin loppu");
+                  editkoodi(pots_pois,TR(L"P‰‰otsikkofontin loppu"));
                switch (lsttulparam.printer) {
                   case POSTSCRIPT:
                      wcscpy(aots_on, L"\x03of ");
@@ -1388,18 +1388,18 @@ loppu:
                   case EPSON:
                      break;
                   }
-               editkoodi(aots_on,L"Aliotsikkofontin valinta");
+               editkoodi(aots_on,TR(L"Aliotsikkofontin valinta"));
                if (lsttulparam.printer != POSTSCRIPT)
-                  editkoodi(aots_pois,L"Aliotsikkofontin loppu");
+                  editkoodi(aots_pois,TR(L"Aliotsikkofontin loppu"));
                }
             else {
-               editkoodi(init_fnt,L"Perusfontin valinta");
-               editkoodi(pots_on,L"P‰‰otsikkofontin valinta");
+               editkoodi(init_fnt,TR(L"Perusfontin valinta"));
+               editkoodi(pots_on,TR(L"P‰‰otsikkofontin valinta"));
                if (lsttulparam.printer != POSTSCRIPT)
-                  editkoodi(pots_pois,L"P‰‰otsikkofontin loppu");
-               editkoodi(aots_on,L"Aliotsikkofontin valinta");
+                  editkoodi(pots_pois,TR(L"P‰‰otsikkofontin loppu"));
+               editkoodi(aots_on,TR(L"Aliotsikkofontin valinta"));
                if (lsttulparam.printer != POSTSCRIPT)
-                  editkoodi(aots_pois,L"Aliotsikkofontin loppu");
+                  editkoodi(aots_pois,TR(L"Aliotsikkofontin loppu"));
                if (lsttulparam.printer == POSTSCRIPT) {
                   wcscpy(pots_pois, init_fnt);
                   wcscpy(aots_pois, init_fnt);
@@ -2312,7 +2312,7 @@ void tulostus(int oikaise)
 
    lineno = 0;
    clrscr();
-   header=L"LISTAT    ";
+   header=TR(L"LISTAT    ");
    kehys(1);
    prscr(&tulvalikko);
 

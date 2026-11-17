@@ -137,7 +137,7 @@ static void lehdisto(void)
       writeerror(TRA("Muisti ei riitä"),0);
       return;
       }
-   header=L"LEHDISTÖTULOSTEN EDITOINTI";
+   header=TR(L"LEHDISTÖTULOSTEN EDITOINTI");
    ch = vaihda ? 'K' : 'E';
    selectopt("Vaihdetaanko etu- ja sukunimien järjestys (K/E)","KE",&ch);
    vaihda = (ch == 'K');
@@ -709,7 +709,7 @@ static void near hpkoodit(void)
             break;
          case 3:
             clrln(ySize-3);
-            editkoodi(extra, L"Lisäinitialisointi");
+            editkoodi(extra, TR(L"Lisäinitialisointi"));
             break;
          case 4:
          case 5:
@@ -1068,11 +1068,11 @@ static void muotoilu(void)
          hpkoodit();
          }
       else {
-         editkoodi(init_fnt,L"Perusfontin valinta");
-         editkoodi(lih_on,L"Joukkuerivi, alku");
-         editkoodi(lih_pois,L"Joukkuerivi, loppu");
-         editkoodi(pienet_on,L"Osuusrivit, alku");
-         editkoodi(pienet_pois,L"Osuusrivit, loppu");
+         editkoodi(init_fnt,TR(L"Perusfontin valinta"));
+         editkoodi(lih_on,TR(L"Joukkuerivi, alku"));
+         editkoodi(lih_pois,TR(L"Joukkuerivi, loppu"));
+         editkoodi(pienet_on,TR(L"Osuusrivit, alku"));
+         editkoodi(pienet_pois,TR(L"Osuusrivit, loppu"));
          }
       }
    clrln(ySize-3);
@@ -1566,7 +1566,7 @@ void tulostus(int oikaise)
 
    tc = 0;
    clrscr();
-   header=L"LISTAT    ";
+   header=TR(L"LISTAT    ");
    kehys(1);
    prscr(&tulvalikko);
 	if (!oikaise) {

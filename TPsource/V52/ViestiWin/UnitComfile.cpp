@@ -389,7 +389,7 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		SGSanoma->Cells[1][7] = UnicodeString(aikatowstr_cols_n(st, KSEK*ComBuf.d.em.time, t0, 0, 11));
 		SGSanoma->Cells[1][8] = UnicodeString(aikatowstr_cols_n(st, KSEK*ComBuf.d.em.kirjaus, t0, 0, 11));
 		for (int rr = 0; rr < 50; rr++) {
-			SGSanoma->Cells[0][9+rr] = UnicodeString(rr+1)+L". leima";
+			SGSanoma->Cells[0][9+rr] = UnicodeString().sprintf(TR(L"%d. leima"), rr+1);
 			SGSanoma->Cells[1][9+rr] = UnicodeString((int)(ComBuf.d.em.ctrlcode[rr])) +
 				L": "+ UnicodeString(ComBuf.d.em.ctrltime[rr]);
 			}
@@ -420,9 +420,9 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		SGSanoma->Cells[1][3] = UnicodeString(ComBuf.d.y.sarja);
 		SGSanoma->Cells[1][4] = UnicodeString(ComBuf.d.y.fl);
 		for (int rr = 0; rr < kilpparam.n_os_akt; rr++) {
-			SGSanoma->Cells[0][5+2*rr] = UnicodeString(rr+1)+L". os. ylähtö";
+			SGSanoma->Cells[0][5+2*rr] = UnicodeString().sprintf(TR(L"%d. os. ylähtö"), rr+1);
 			SGSanoma->Cells[1][5+2*rr] = UnicodeString(aikatowstr_cols_n(st, ComBuf.d.y.ylahto[rr][0], t0, 0, 11));
-			SGSanoma->Cells[0][6+2*rr] = UnicodeString(rr+1)+L". os. kynnys";
+			SGSanoma->Cells[0][6+2*rr] = UnicodeString().sprintf(TR(L"%d. os. kynnys"), rr+1);
 			SGSanoma->Cells[1][6+2*rr] = UnicodeString(aikatowstr_cols_n(st, ComBuf.d.y.ylahto[rr][1], t0, 0, 11));
 			}
 		}
@@ -447,7 +447,7 @@ void __fastcall TFormComfile::naytaSanoma(int r)
 		SGSanoma->Cells[1][8] = UnicodeString(ComBuf.d.emva.rastiluku);
 		SGSanoma->Cells[1][9] = UnicodeString(ComBuf.d.emva.rata);
 		for (int rr = 0; rr <= ComBuf.d.emva.rastiluku && rr < 50; rr++) {
-			SGSanoma->Cells[0][10+rr] = UnicodeString(rr+1)+L". rasti";
+			SGSanoma->Cells[0][10+rr] = UnicodeString().sprintf(TR(L"%d. rasti"), rr+1);
 			SGSanoma->Cells[1][10+rr] = UnicodeString(ComBuf.d.emva.rastit[rr][0]) +
 				L": "+ UnicodeString(ComBuf.d.emva.rastit[rr][1]);
 			}
