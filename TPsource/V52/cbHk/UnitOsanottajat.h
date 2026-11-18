@@ -81,6 +81,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Vaiheensarja1;
 	TMenuItem *Sukupx1;
 	TMenuItem *Iksarjag1;
+	TMenuItem *Synt1;
 	TMenuItem *Rata1;
 	TMenuItem *oiminnot1;
 	TMenuItem *Lueemitkoodeja1;
@@ -94,6 +95,8 @@ __published:	// IDE-managed Components
 	TMenuItem *Ilmoittautumislista1;
 	TMenuItem *Vaihepist11;
 	TMenuItem *Vaihepist21;
+	TMenuItem *Ennatys1;
+	TMenuItem *Tavoite1;
 	void __fastcall FormResize(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall OoGridSelectCell(TObject *Sender, int ACol, int ARow, bool &CanSelect);
@@ -137,6 +140,7 @@ __published:	// IDE-managed Components
           bool &Handled);
 	void __fastcall Sukupx1Click(TObject *Sender);
 	void __fastcall Iksarjag1Click(TObject *Sender);
+	void __fastcall Synt1Click(TObject *Sender);
 	void __fastcall Rata1Click(TObject *Sender);
 	void __fastcall Lueemitkoodeja1Click(TObject *Sender);
 	void __fastcall Qual1Click(TObject *Sender);
@@ -150,6 +154,8 @@ __published:	// IDE-managed Components
 	void __fastcall Ilmoittautumislista1Click(TObject *Sender);
 	void __fastcall Vaihepist11Click(TObject *Sender);
 	void __fastcall Vaihepist21Click(TObject *Sender);
+	void __fastcall Ennatys1Click(TObject *Sender);
+	void __fastcall Tavoite1Click(TObject *Sender);
 //	void __fastcall BtnLisaaClick(TObject *Sender);
 //	void __fastcall BtnPoistaClick(TObject *Sender);
 
@@ -170,8 +176,8 @@ END_MESSAGE_MAP(TComponent)
 	void __fastcall hae_puutt_badge(void);
 	int aktrow;
 	int aktcol;
-	int ColIx[100];
-	int ColPv[100];
+	int ColIx[200];
+	int ColPv[200];
 	int npv;
 	int epv;
 	int Oo_pv;

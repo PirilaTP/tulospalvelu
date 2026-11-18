@@ -294,6 +294,7 @@ void dsp_fld(fld_tp *fld);
 void dsp_fld_set(fld_tp *flds);
 void khtostr(char kh, char *str);
 void khtowstr(wchar_t kh, wchar_t *str);
+void tark_selite(wchar_t kh, wchar_t *str);
 void clreol(void);
 void gotoxy(int x, int y);
 void getxy(int *x, int *y);

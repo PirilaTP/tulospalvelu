@@ -64,7 +64,7 @@ END_MESSAGE_MAP(TComponent)
 	int Aika;
 public:		// User declarations
 	__fastcall TFormNaytaTulos(TComponent* Owner);
-	void __fastcall NaytaTulos(wchar_t *nimi, wchar_t trk, int tls, int sj, int ntls);
+	void __fastcall NaytaTulos(wchar_t *nimi, wchar_t trk, int tls, int sj, int ntls, int nro, int osuus);
 	int applyParams(void);
 	void haeParams(void);
 	NaytaTulosIkkParamClass IkkParam;

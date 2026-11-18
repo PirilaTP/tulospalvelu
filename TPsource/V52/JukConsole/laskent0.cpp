@@ -32,6 +32,7 @@
 #include <sys/stat.h>
 
 #include "VDeclare.h"
+#include "TpLaitteet.h"
 #pragma hdrstop
 
 void addtapahtuma(kilptietue *kilp, int osuus, int piste) {}
@@ -279,7 +280,14 @@ void lukumaarat(void)
 		for (nc1 = 0; nc1 < NREGNLY; nc1++) {
 			if (regnly[nc1] > 0) {
 				yb++;
-				sprintf(ln, " %2d %8.8s  ", nc1+1, aikatostr_ls(as, regnlyhetki[nc1], t0));
+				// ZEBRA: lukijan juokseva kello = PC-nykyaika + mitattu poikkeama.
+				// Jukissa ei ole ZEBRA-lukijaa, joten tama haara ei aktivoidu;
+				// muut lukijat ennallaan: viimeksi nahty -aika (nakyma muuttumaton).
+				if (regnly[nc1] == LID_ZEBRA && zebraOffsetState[nc1] == 1)
+					sprintf(ln, " %2d %8.8s  ", nc1+1,
+						aikatostr_ls(as, t_time_l(biostime(0,0), t0) + zebraOffsetDs[nc1], t0));
+				else
+					sprintf(ln, " %2d %8.8s  ", nc1+1, aikatostr_ls(as, regnlyhetki[nc1], t0));
 				if ((comtype[MAX_LAHPORTTI+nc1] & comtpTCP) && !TCPyht_on(hComm[MAX_LAHPORTTI+nc1])) {
 					fg = 0;
 					bg = 7;

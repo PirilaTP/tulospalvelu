@@ -52,7 +52,7 @@ void __fastcall TTapForm::FormSetup(TObject *Sender)
 {
 	lev = IkkParam.FontSize + (IkkParam.Lihavoitu ? 2 : 0);
 	TapGrid->DefaultRowHeight = 18 * Screen->PixelsPerInch * IkkParam.FontSize / 960;
-	colCount1 = (k_pv > 0 ? 13 : 10) +
+	colCount1 = ((k_pv > 0 && Nytyhteistulokset1->Checked) ? 13 : 10) +
 		(wcswcind(kilpparam.kilplaji, L"NP") >= 0 ? 1 : 0);
 	colCount2 = colCount1;
 	TapGrid->ColCount = colCount1 +
@@ -68,7 +68,7 @@ void __fastcall TTapForm::FormSetup(TObject *Sender)
 	TapGrid->ColWidths[7] = IkkParam.ColW[7] * Screen->PixelsPerInch * lev / 960;
 	TapGrid->ColWidths[8] = IkkParam.ColW[8] * Screen->PixelsPerInch * lev / 960;
 	TapGrid->ColWidths[9] = IkkParam.ColW[9] * Screen->PixelsPerInch * lev / 960;
-	if (k_pv > 0) {
+	if (k_pv > 0 && Nytyhteistulokset1->Checked) {
 		TapGrid->ColWidths[10] = IkkParam.ColW[10] * Screen->PixelsPerInch * lev / 960;
 		TapGrid->ColWidths[11] = IkkParam.ColW[11] * Screen->PixelsPerInch * lev / 960;
 		TapGrid->ColWidths[12] = IkkParam.ColW[12] * Screen->PixelsPerInch * lev / 960;
@@ -379,8 +379,9 @@ void __fastcall TTapForm::Skaalaa(void)
 {
 	int GrdWidth;
 
-	colCount1 = (k_pv > 0 ? 13 : 10) +
+	colCount1 = ((k_pv > 0 && Nytyhteistulokset1->Checked) ? 13 : 10) +
 		(wcswcind(kilpparam.kilplaji, L"NP") >= 0 ? 1 : 0);
+	colCount2 = colCount1;
 	TapGrid->ColCount = colCount1 +
 		(IkkParam.Ennatys > 0 ? 1 : 0) +
 		(IkkParam.Tavoite > 0 ? 1 : 0);
@@ -423,10 +424,12 @@ void __fastcall TTapForm::Skaalaa(void)
 		Cells[12][0].text = L"Y-ero";
 		}
 	if (IkkParam.Ennatys) {
+		IkkParam.Ennatys = colCount2++;
 		TapGrid->ColWidths[IkkParam.Ennatys] = IkkParam.ColW[14] * Screen->PixelsPerInch * lev / 960;
 		Cells[IkkParam.Ennatys][0].text = L"Ennätys";
 		}
 	if (IkkParam.Tavoite) {
+		IkkParam.Tavoite = colCount2++;
 		TapGrid->ColWidths[IkkParam.Tavoite] = IkkParam.ColW[15] * Screen->PixelsPerInch * lev / 960;
 		Cells[IkkParam.Tavoite][0].text = L"Tavoite";
 		}

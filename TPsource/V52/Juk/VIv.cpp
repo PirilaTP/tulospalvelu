@@ -38,6 +38,7 @@
 #include "VDeclare.h"
 #endif
 #include "TpLaitteet.h"
+#include "IRfidReader.h"
 
 #include <wincom.h>
 #include <sys/timeb.h>
@@ -120,6 +121,7 @@ extern int viimrivi;
 
 #ifdef EMITLEIMAT
 INT32 uusi_emit;
+INT32 hylatty_emit;
 void prtemitsivu(void);
 void add_bdg_t(UINT32 badge, INT r_no, char byte9, UINT32 tms);
 
@@ -917,6 +919,14 @@ INT lueem(emittp *em, INT ep)
 
 void addluenta(emittp *em)
 {
+#ifndef _CONSOLE
+	// Sisäänluenta: edellinen kortti odottaa vielä tallennusta tai peruutusta.
+	// Uutta korttia ei oteta, jotta edellinen ei korvaudu huomaamatta.
+	if (sisaanluenta && !RastiVaTuloste && uusi_emit && uusi_emit != em->badge) {
+		hylatty_emit = em->badge;
+		return;
+		}
+#endif
 	uusi_emit = em->badge;
 }
 
@@ -1066,8 +1076,8 @@ static emittp *ed_em[NREGNLY];
 		for (i = MAXNLEIMA-1; i > 1; i--)
 			if (em.ctrlcode[i] > 0)
 				break;
-		if (IntInList(em.ctrlcode[i], L"240 243 244 250 253") < 0 &&
-			IntInList(em.ctrlcode[i-1], L"240 243 244 250 253") < 0)
+		if (IntInList(em.ctrlcode[i], L"240 243 244 250 251 252 253") < 0 &&
+			IntInList(em.ctrlcode[i-1], L"240 243 244 250 251 252 253") < 0)
 			return(0);
 	  em.maali = TMAALI0*10/SEK;
 	  }
@@ -1916,8 +1926,8 @@ int tall_regnly(san_type *vastaus, int r_no)
 	  vastaus->r6.tunnus = regnly_no[r_no] ? 'A' : 'F';
 	  }
 #ifdef LAJUNEN
-	else if (regnly[r_no] == 30) {           // SIRIT
-		siritaika((TMAALI *)&t, vastaus, &ut, &ino, r_no);
+	else if (regnly[r_no] == 30 || regnly[r_no] == LID_ZEBRA) {           // SIRIT
+		getRfidReader(r_no)->parseTime((INT32 *)&t, vastaus, &ut, &ino, r_no);
 		if (t == 20L*TMAALI0)
 			return(1);
 		bt = 0;

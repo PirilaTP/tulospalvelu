@@ -30,6 +30,17 @@ Build order:
 
 All `.cbproj` files are in `TPsource\V52\RADStudio10\`.
 
+Command-line build of the same projects: `TPsource\V52\RADStudio10\build-gui.ps1`
+(uses `bds.exe -b`, works with the Community Edition; `-Tool msbuild` for licensed
+editions). CI runs it in the `gui` job of `.github/workflows/build.yml` on the
+self-hosted Windows runner (labels `self-hosted, Windows, X64`).
+
+Releases: pushing a `v*` tag runs `.github/workflows/release.yml`, which builds
+console + GUI programs, collects the C++Builder runtime (BPL/DLL) files with
+`TPsource\V52\RADStudio10\collect-gui-runtime.ps1` and publishes one ZIP as a
+GitHub Release. The GUI programs link to runtime packages (`UsePackages`,
+`DynamicRTL`), so they need those files next to the .exe.
+
 If linker heap errors occur: run `bcdedit /set IncreaseUserVa 3072` as Administrator and reboot.
 
 There are no automated tests.

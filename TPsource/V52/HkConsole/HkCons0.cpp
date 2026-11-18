@@ -32,6 +32,7 @@
 #include <sys/stat.h>
 #include <dos.h>
 #include "HkDeclare.h"
+#include "TpLaitteet.h"
 #include "console.h"
 
 void rem_pr(void);
@@ -303,7 +304,13 @@ void lukumaarat()
 				for (nc1 = 0; nc1 < NREGNLY; nc1++) {
 					if (regnly[nc1] > 0) {
 						yb++;
-						sprintf(ln, " %2d %8.8s  ", nc1+1, aikatostr_ls(as, regnlyhetki[nc1], t0));
+						// ZEBRA: lukijan juokseva kello = PC-nykyaika + mitattu poikkeama.
+						// Muut lukijat (SIRIT ym.) ennallaan: viimeksi nahty -aika.
+						if (regnly[nc1] == LID_ZEBRA && zebraOffsetState[nc1] == 1)
+							sprintf(ln, " %2d %8.8s  ", nc1+1,
+								aikatostr_ls(as, t_time_l(biostime(0,0), t0) + zebraOffsetDs[nc1], t0));
+						else
+							sprintf(ln, " %2d %8.8s  ", nc1+1, aikatostr_ls(as, regnlyhetki[nc1], t0));
 						if ((comtype[MAX_LAHPORTTI+nc1] & comtpTCP) && !TCPyht_on(hComm[MAX_LAHPORTTI+nc1])) {
 							fg = 0;
 							bg = 7;

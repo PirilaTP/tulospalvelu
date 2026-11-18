@@ -394,6 +394,10 @@ void ajanotto(void);
    int t0_regn[NREGNLY];
    int port_regnly[NREGNLY];
    int regnlyhetki[NREGNLY];
+   int zebraOffsetDs[NREGNLY];      // ZEBRA: lukijan kellon poikkeama PC:hen (1/10 s)
+   int zebraOffsetState[NREGNLY];   // 0=ei mitattu, 1=UTC kelvollinen, 2=vain Uptime
+   int gpoActive[NREGNLY];          // ZEBRA: GPO1-summeripulssi paalla (1=on, 0=pois)
+   int gpoOnMs[NREGNLY];            // ZEBRA: mstimer() pulssin sytytyshetkella
    int regnly_open[NREGNLY];
    INT cn_regnly[2 * NREGNLY];
    long maxero = 2000000L;

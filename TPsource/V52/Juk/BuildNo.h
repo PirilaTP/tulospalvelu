@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define VERSIOKDI L"5.20"
-#define BUILD L"5.20.043/2015-07-06"
+#define BUILD L"5.20.044/2026-07-31"
 
 #ifdef KEHITYSLISTA
 

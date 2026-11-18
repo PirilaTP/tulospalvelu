@@ -41,6 +41,7 @@
 #define LID_FEIG		31
 #define LID_RESERV_1	32
 #define LID_IMPINJ		33
+#define LID_ZEBRA		34	// Zebra FX9600 (LLRP)
 #define LID_SW2000		36
 #define LID_KURVINEN	40
 #define LID_SIIMPORT	99

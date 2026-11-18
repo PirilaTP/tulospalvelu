@@ -85,6 +85,15 @@ int LueXMLMuotoilu(wchar_t *MuotFile);
 void TallXMLMuotoilu(wchar_t *MuotFile);
 wchar_t *css_string(tulostusparamtp *tulprm, int laji);
 
+// tulosmuottp.cssfl: 0: sis‰inen css, 1: css-tiedosto, 2: ei css:‰‰, 3: responsiivinen html
+#define CSS_RESP 3
+bool html_resp(tulostusparamtp *tulprm);
+const wchar_t *html_fldclass(int id);
+wchar_t *htmlesc(wchar_t *out, const wchar_t *in, int maxlen);
+wchar_t *htmlid(wchar_t *out, const wchar_t *in, int maxlen);
+wchar_t *htmlurl(wchar_t *out, const wchar_t *in, int maxlen);
+void htmlhead_resp(const wchar_t *title, tulostusparamtp *tulprm);
+
 typedef struct {
 	int id;
 	wchar_t name[20];

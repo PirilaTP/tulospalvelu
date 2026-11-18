@@ -34,6 +34,7 @@ USEFORM("..\ViestiWin\UnitLisatiedot.cpp", FormLisatiedot);
 USEFORM("..\ViestiWin\UnitLuenta.cpp", FormLuenta);
 USEFORM("..\ViestiWin\UnitKilpSeurat.cpp", FormKilpSeurat);
 USEFORM("..\ViestiWin\UnitJoukkueet.cpp", FormJoukkueet);
+USEFORM("..\ViestiWin\UnitMaastossa.cpp", FormMaastossa);
 USEFORM("..\ViestiWin\UnitJoukkuetiedot.cpp", FormJoukkuetiedot);
 USEFORM("..\ViestiWin\UnitKilpMaaritys.cpp", FormKilpMaaritys);
 USEFORM("..\ViestiWin\TulosUnit.cpp", TilanneForm);

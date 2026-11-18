@@ -810,6 +810,10 @@ extern   INT aika_com, com_aika, aika_esto, kello_esto;
 extern   char aika_int_mask;
 extern   INT regnly[NREGNLY];
 extern   int regnlyhetki[NREGNLY];
+extern   int zebraOffsetDs[NREGNLY];      // ZEBRA: lukijan kellon poikkeama PC:hen (1/10 s)
+extern   int zebraOffsetState[NREGNLY];   // 0=ei mitattu, 1=UTC kelvollinen, 2=vain Uptime
+extern   int gpoActive[NREGNLY];          // ZEBRA: GPO1-summeripulssi paalla (1=on, 0=pois)
+extern   int gpoOnMs[NREGNLY];            // ZEBRA: mstimer() pulssin sytytyshetkella
 extern   INT port_regnly[NREGNLY];
 extern   INT racpisteet;
 extern   INT aika_tunnus[NREGNLY][45];

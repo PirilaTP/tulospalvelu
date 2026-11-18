@@ -694,6 +694,37 @@ void paivJoukkLkm(int srj, int muutos)
 //
 //    kilpparam.valuku+5 : osuustulos vaihdossa/maalissa
 
+// Avoimien lukumaara osuudella. Kilpailussa, jossa on rinnakkaisosuuksia (maxnosuus > 1),
+// lasketaan joukkueet, joilla osuus on avoin (ei tulosta eika merkintaa, joukkue ei
+// suljettu); tavallisessa kilpailussa navoin (yksittaisia osanottajia, sisaltaa
+// aiemmin suljettujen joukkueiden osuudet). Sama maaritelma kuin tulosteiden otsikoissa.
+int avoinLkm(int srj, int os)
+{
+	int n = navoin[srj][os];
+
+	if (kilpparam.maxnosuus > 1 && srj >= 0 && srj < sarjaluku && os >= 0 &&
+		os < Sarjat[srj].ntosuus && Sarjat[srj].nosuus[os] > 1) {
+		n = nilm[srj] - ntulos[srj][os][0] - nkesk[srj][os] - nhyl[srj][os] - neil[srj][os];
+		if (n < 0)
+			n = 0;
+		}
+	else if (kilpparam.maxnosuus > 1 && srj >= 0 && srj < sarjaluku && os >= 0 &&
+		os < Sarjat[srj].ntosuus) {
+		kilptietue kilp;
+		int p = -1, lj = -1, aos = Sarjat[srj].aosuus[os] + 1;
+
+		n = 0;
+		EnterCriticalSection(&tall_CriticalSection);
+		while ((p = askellasarja(srj, os, 0, 0, p, &lj)) > 0) {
+			GETREC(&kilp, p);
+			if (kilp.osHyv(aos) && kilp.Maali(aos, 0) == TMAALI0 && !kilp.tSulj(os))
+				n++;
+			}
+		LeaveCriticalSection(&tall_CriticalSection);
+		}
+	return(n);
+}
+
 void addjarjarr(kilptietue *kilp, int d, int osuus, INT piste, int *keskeyta)
 	{
 	INT  tllj = -1,p,sj = 99999, yhd = 0, srj;
@@ -719,7 +750,8 @@ void addjarjarr(kilptietue *kilp, int d, int osuus, INT piste, int *keskeyta)
 				  nesitt++;
 				  nesit[srj]++;
 				  }
-			   if (kilp->osHyv(aos) && kilp->Maali(aos, 0) == TMAALI0) {
+			   if (kilp->osHyv(aos) && kilp->Maali(aos, 0) == TMAALI0 &&
+				  (Sarjat[kilp->sarja].nosuus[osuus] == 1 || onPaikkaKaytossa(kilp, aos))) {
 				  navoint[osuus]++;
 				  navoin[srj][osuus]++;
 				  }
@@ -865,7 +897,8 @@ void remjarjarr(kilptietue *kilp, int d, int osuus, INT piste, int *keskeyta)
 				  nesitt--;
 				  nesit[srj]--;
 				  }
-			   if (kilp->osHyv(aos) && kilp->Maali(aos, 0) == TMAALI0) {
+			   if (kilp->osHyv(aos) && kilp->Maali(aos, 0) == TMAALI0 &&
+				  (Sarjat[kilp->sarja].nosuus[osuus] == 1 || onPaikkaKaytossa(kilp, aos))) {
 				  navoint[osuus]--;
 				  navoin[srj][osuus]--;
 				  }

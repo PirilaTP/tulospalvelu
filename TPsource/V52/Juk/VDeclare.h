@@ -94,6 +94,8 @@ int teeindeksi(kilpindex *ind, bool uusi);
 int pyoristatls(int tls, int pyorista);
 INT32 osuuslahto(kilptietue *kilp, int osuus);
 INT32 tulos(kilptietue *kilp, int osuus, int va);
+bool onPaikkaKaytossa(kilptietue *kilp, int os);
+int avoinLkm(int srj, int os);
 INT32 ttulos(kilptietue *kilp, int tosuus, int va, int lisafl);
 INT32 osuustulos(kilptietue *kilp, int osuus, int va);
 __int64 jtulos(kilptietue *kilp, int osuus,int va);
@@ -650,6 +652,10 @@ extern   INT32 t0_regnly;
 extern   int t0_regn[NREGNLY];
 extern   int port_regnly[NREGNLY];
 extern   int regnlyhetki[NREGNLY];
+extern   int zebraOffsetDs[NREGNLY];      // ZEBRA: lukijan kellon poikkeama PC:hen (1/10 s)
+extern   int zebraOffsetState[NREGNLY];   // 0=ei mitattu, 1=UTC kelvollinen, 2=vain Uptime
+extern   int gpoActive[NREGNLY];          // ZEBRA: GPO1-summeripulssi paalla (1=on, 0=pois)
+extern   int gpoOnMs[NREGNLY];            // ZEBRA: mstimer() pulssin sytytyshetkella
 extern   int regnly_open[NREGNLY];
 extern   INT cn_regnly[2 * NREGNLY];
 extern   long maxero;

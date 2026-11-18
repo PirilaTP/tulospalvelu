@@ -364,10 +364,16 @@
     </PropertyGroup>
     <Import Condition="'$(Cfg_2)'!='' And Exists('OptionSet1.optset')" Project="OptionSet1.optset"/>
     <ItemGroup>
-        <LibFiles Include="..\..\..\TPexe\Lib\V521\debug_build\DBboxm-XE.lib" Condition="'$(Platform)'=='Win32'">
+        <LibFiles Include="..\..\..\TPexe\Lib\V521\debug_build\DBboxm-XE.lib" Condition="'$(Cfg_1_Win32)'=='true'">
             <BuildOrder>34</BuildOrder>
         </LibFiles>
-        <LibFiles Include="..\..\..\TPexe\Lib\V521\debug_build\Tputil-XE.lib" Condition="'$(Platform)'=='Win32'">
+        <LibFiles Include="..\..\..\TPexe\Lib\V521\release_build\DBboxm-XE.lib" Condition="'$(Cfg_2_Win32)'=='true'">
+            <BuildOrder>34</BuildOrder>
+        </LibFiles>
+        <LibFiles Include="..\..\..\TPexe\Lib\V521\debug_build\Tputil-XE.lib" Condition="'$(Cfg_1_Win32)'=='true'">
+            <BuildOrder>35</BuildOrder>
+        </LibFiles>
+        <LibFiles Include="..\..\..\TPexe\Lib\V521\release_build\Tputil-XE.lib" Condition="'$(Cfg_2_Win32)'=='true'">
             <BuildOrder>35</BuildOrder>
         </LibFiles>
         <CppCompile Include="..\cbTp\cbTpApu.cpp">
@@ -591,6 +597,12 @@
         <CppCompile Include="..\Juk\VIx.cpp">
             <BuildOrder>48</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\Juk\VRinnakkaisOsuus.cpp">
+            <BuildOrder>31</BuildOrder>
+        </CppCompile>
+        <None Include="..\Juk\VRinnakkaisOsuus.h">
+            <BuildOrder>31</BuildOrder>
+        </None>
         <CppCompile Include="..\Juk\vkilp.cpp">
             <BuildOrder>32</BuildOrder>
         </CppCompile>
@@ -637,6 +649,12 @@
         </None>
         <CppCompile Include="..\Tp\TpLaitteet.cpp">
             <BuildOrder>114</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\Tp\SiritReader.cpp">
+            <BuildOrder>146</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\Tp\ZebraReader.cpp">
+            <BuildOrder>147</BuildOrder>
         </CppCompile>
         <CppCompile Include="..\ViestiWin\ConvDat.cpp">
             <BuildOrder>101</BuildOrder>
@@ -769,6 +787,11 @@
             <Form>FormJoukkueet</Form>
             <DependentOn>..\ViestiWin\UnitJoukkueet.h</DependentOn>
             <BuildOrder>65</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\ViestiWin\UnitMaastossa.cpp">
+            <Form>FormMaastossa</Form>
+            <DependentOn>..\ViestiWin\UnitMaastossa.h</DependentOn>
+            <BuildOrder>130</BuildOrder>
         </CppCompile>
         <CppCompile Include="..\ViestiWin\UnitJoukkuetiedot.cpp">
             <Form>FormJoukkuetiedot</Form>
@@ -948,6 +971,7 @@
         <FormResources Include="..\ViestiWin\UnitLuenta.dfm"/>
         <FormResources Include="..\ViestiWin\UnitKilpSeurat.dfm"/>
         <FormResources Include="..\ViestiWin\UnitJoukkueet.dfm"/>
+        <FormResources Include="..\ViestiWin\UnitMaastossa.dfm"/>
         <FormResources Include="..\ViestiWin\UnitJoukkuetiedot.dfm"/>
         <FormResources Include="..\ViestiWin\UnitKilpMaaritys.dfm"/>
         <FormResources Include="..\ViestiWin\UnitEmithaku.dfm"/>
@@ -2239,5 +2263,18 @@
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>
+    <Target Name="BuildLibDependencies" BeforeTargets="Make;Build;Rebuild" Condition="'$(Platform)'=='Win32'">
+        <!-- Keep DBboxm-XE.lib / Tputil-XE.lib in the matching config (Debug vs Release)
+             up to date before linking, so a Release build never picks up a stale
+             Debug-built copy of either shared library (or vice versa). -->
+        <PropertyGroup>
+            <DepConfig_DBboxm Condition="'$(Cfg_1)'=='true'">Debug</DepConfig_DBboxm>
+            <DepConfig_DBboxm Condition="'$(Cfg_2)'=='true'">Release</DepConfig_DBboxm>
+            <DepConfig_Tputil Condition="'$(Cfg_1)'=='true'">Debug Build</DepConfig_Tputil>
+            <DepConfig_Tputil Condition="'$(Cfg_2)'=='true'">Release Build</DepConfig_Tputil>
+        </PropertyGroup>
+        <MSBuild Projects="DBboxm-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_DBboxm);Platform=$(Platform)" Condition="'$(DepConfig_DBboxm)'!=''"/>
+        <MSBuild Projects="Tputil-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_Tputil);Platform=$(Platform)" Condition="'$(DepConfig_Tputil)'!=''"/>
+    </Target>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
 </Project>
