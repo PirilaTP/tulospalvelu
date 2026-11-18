@@ -1257,7 +1257,7 @@ static void near muotoilu(void)
 	else
       swprintf(ln,TR(L"Sijainti %s, leveys merkkeinä"),
          (lsttulparam.printer == LJETII || lsttulparam.printer == POSTSCRIPT) ? TR(L"yksiköissä 1/72 in") :
-         L"merkkeinä");
+         TR(L"merkkeinä"));
    vidspwmsg(20,0,7,0, ln);
    fld = prtflds;
    nfld = n_prtflds;

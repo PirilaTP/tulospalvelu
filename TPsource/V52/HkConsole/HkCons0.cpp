@@ -143,10 +143,28 @@ void kirjKilpSQL(int d)
 {
 }
 
+// Yhteyden tila näkyy näytöllä kahdella merkillä. Kutsujat käyttävät suomenkielisiä
+// koodeja, jotka käännetään vasta näytöllä (konteksti "yhteys", käännös kaksi merkkiä).
+static const wchar_t *yhteystila(const wchar_t *st)
+{
+	if (st == NULL)
+		return(st);
+	if (!wcscmp(st, L"Ei"))
+		return(TRCL(kayttokieli, L"yhteys", L"Ei"));
+	if (!wcscmp(st, L"On"))
+		return(TRCL(kayttokieli, L"yhteys", L"On"));
+	if (!wcscmp(st, L"Hä"))
+		return(TRCL(kayttokieli, L"yhteys", L"Hä"));
+	if (!wcscmp(st, L"Su"))
+		return(TRCL(kayttokieli, L"yhteys", L"Su"));
+	return(st);
+}
+
 void WRITEYHT(wchar_t *st, INT cn)
    {
    INT r, y;
 
+   st = (wchar_t *) yhteystila(st);
 //   if (!status_on || comtype[cn] == 2)
    if (!status_on)
       return;
@@ -450,7 +468,7 @@ static void valitselahtosarja(void)
 	wchar_t ch, msg[20];
 
    if (tunn_srj == sarjaluku)
-      wcscpy(msg, L"kaikki");
+      wcscpy(msg, TR(L"kaikki"));
    else if (tunn_srj >= 0)
       wcscpy(msg, Sarjat[tunn_srj].sarjanimi);
    else msg[0] = 0;
@@ -777,12 +795,12 @@ void pistetunn(void)
    wchar_t msg[80];
    int k, m;
    extern scr pistetunnistus;
-   wchar_t *porttinimi[7] = {L"oletusvalinnan", L"sarjaporttinäppäimen", L"hiiren",
-      L"näppäimistön", L"maalikello/lähdön", L"maalikello/maalin",
-      L"maalikello/väliaikasanoman"};
-   wchar_t *porttinimi2[8] = {L"oletusvalinnan", L"sarjaporttinäppäimen", L"hiiren",
-      L"näppäimistön", L"maalikellon (banaani)", L"maalikellon (DIN)",
-      L"maalikellon (A)", L"maalikellon (C)"};
+   wchar_t *porttinimi[7] = {N_(L"oletusvalinnan"), N_(L"sarjaporttinäppäimen"), N_(L"hiiren"),
+      N_(L"näppäimistön"), N_(L"maalikello/lähdön"), N_(L"maalikello/maalin"),
+      N_(L"maalikello/väliaikasanoman")};
+   wchar_t *porttinimi2[8] = {N_(L"oletusvalinnan"), N_(L"sarjaporttinäppäimen"), N_(L"hiiren"),
+      N_(L"näppäimistön"), N_(L"maalikellon (banaani)"), N_(L"maalikellon (DIN)"),
+      N_(L"maalikellon (A)"), N_(L"maalikellon (C)")};
 
 	if (tunn_srj >= 0 && tunn_srj < sarjaluku) {
 		ch = L' ';
@@ -808,7 +826,7 @@ void pistetunn(void)
          return;
          }
       if (regnly[0] == 1)
-      porttinimi[4] = L"maalikellon";
+      porttinimi[4] = N_(L"maalikellon");
       clrscr();
       kehys(1);
       prscr(&pistetunnistus);
@@ -825,10 +843,10 @@ void pistetunn(void)
 		 if (pvparam[k_pv].hiihtolahto) {
             if (regnly[0] != 4)
                swprintf(msg, TR(L"Anna %s käyttökohde"
-	               L" (ALM123456789X)"), porttinimi[m+1]);
+	               L" (ALM123456789X)"), TR(porttinimi[m+1]));
 		    else
 			   swprintf(msg, TR(L"Anna %s käyttökohde"
-			       L" (ALM123456789X)"), porttinimi2[m+1]);
+			       L" (ALM123456789X)"), TR(porttinimi2[m+1]));
 			wselectopt(msg, L"ALM123456789X", &ch);
 			}
 		 else
@@ -836,12 +854,12 @@ void pistetunn(void)
 #ifndef MAASTO
              if (!m) continue;
              swprintf(msg, TR(L"Anna %s käyttökohde"
-                 L" (AM123456789X)"), porttinimi[m+1]);
+                 L" (AM123456789X)"), TR(porttinimi[m+1]));
 	         wselectopt(msg, L"AM123456789X", &ch);
 #else
 		     if (!m) continue;
 			 swprintf(msg, TR(L"Anna %s käyttökohde"
-			     L" (AMK)"), porttinimi[m+1]);
+			     L" (AMK)"), TR(porttinimi[m+1]));
 			 wselectopt(msg, L"AMK", &ch);
 #endif
 			 }
@@ -891,12 +909,12 @@ void asetukset()
    char *spawnargs[2] = {NULL, NULL};
    FILE *ohjefile = NULL;
    extern scr pistetunnistus;
-	wchar_t *porttinimi[7] = {L"oletusvalinnan", L"sarjaporttinäppäimen", L"hiiren",
-      L"näppäimistön", L"maalikello/lähdön", L"maalikello/maalin",
-      L"maalikello/väliaikasanoman"};
-   wchar_t *porttinimi2[8] = {L"oletusvalinnan", L"sarjaporttinäppäimen", L"hiiren",
-	  L"näppäimistön", L"maalikellon (banaani)", L"maalikellon (DIN)",
-      L"maalikellon (A)",L"maalikellon (C)"};
+	wchar_t *porttinimi[7] = {N_(L"oletusvalinnan"), N_(L"sarjaporttinäppäimen"), N_(L"hiiren"),
+      N_(L"näppäimistön"), N_(L"maalikello/lähdön"), N_(L"maalikello/maalin"),
+      N_(L"maalikello/väliaikasanoman")};
+   wchar_t *porttinimi2[8] = {N_(L"oletusvalinnan"), N_(L"sarjaporttinäppäimen"), N_(L"hiiren"),
+	  N_(L"näppäimistön"), N_(L"maalikellon (banaani)"), N_(L"maalikellon (DIN)"),
+      N_(L"maalikellon (A)"),N_(L"maalikellon (C)")};
 
    clearscreen();
    kehys(1);
@@ -1077,7 +1095,7 @@ void asetukset()
                      clrln(ySize-6);
                      clrln(ySize-5);
                      clrln(ySize-3);
-							swprintf(msg, TR(L"Sarjakohtainen %sen muutos"), ch == L'L' ? L"lähtöaikoj" : L"numeroid");
+							wcscpy(msg, ch == L'L' ? TR(L"Sarjakohtainen lähtöaikojen muutos") : TR(L"Sarjakohtainen numeroiden muutos"));
                      vidspwmsg(ySize-5,0,7,0, msg);
                      swprintf(msg, TR(L"Anna sarja              ja %s"),
                         ch == L'L' ? TR(L"lähtöajan siirto         sek") : TR(L"numeroiden muutos"));

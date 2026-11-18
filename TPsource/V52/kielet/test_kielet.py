@@ -81,6 +81,19 @@ class UntranslatedTextTests(unittest.TestCase):
         code = 'void f() {\n/*\n  Edt->Text = L"Lue kortti";\n*/\n}\n'
         self.assertEqual(self.found(code), [])
 
+    def test_message_in_printing_function_is_reported(self):
+        # Funktio kirjoittaa myös tulostetta (newline), mutta tämä muotoilu menee näytölle
+        code = ('void f() {\n  newline(prm, 1);\n'
+                '  swprintf(msg, L"Tiedoston %s avaaminen ei onnistu", nimi);\n'
+                '  writeerror_w(msg, 0);\n}\n')
+        self.assertEqual(self.found(code), [('muotoilu', 'Tiedoston %s avaaminen ei onnistu')])
+
+    def test_output_line_in_printing_function_is_not_reported(self):
+        # Tulosteeseen menevä muotoilu kuuluu tulosteen kieleen
+        code = ('void f() {\n  swprintf(line, L"Tulostettu %d kilpailijaa", n);\n'
+                '  sendwline(line, lstf);\n}\n')
+        self.assertEqual(self.found(code), [])
+
 
 try:
     import PIL  # noqa: F401

@@ -1364,7 +1364,7 @@ INT lueemitfile(void)
    if (!emitfl) return(1);
    if ((emitfile = open(emitfname, O_RDWR | O_CREAT | O_BINARY,
       S_IREAD | S_IWRITE)) < 0) {
-	  swprintf(msg, L"Tiedoston %s avaaminen tai luominen ei onnistu",
+	  swprintf(msg, TR(L"Tiedoston %s avaaminen tai luominen ei onnistu"),
          emitfname);
 	  writeerror_w(msg, 0);
       return(1);
@@ -1541,7 +1541,7 @@ void lueemitkoodit(void)
 		 nmuut++;
 		 }
 	  }
-   swprintf(msg, L"%d koodia tallennettu", nmuut);
+   swprintf(msg, TR(L"%d koodia tallennettu"), nmuut);
    writeerror_w(msg, 0, true);
    delete emitkdfile;
    if (nrot) free(nrot);
@@ -1858,7 +1858,7 @@ static void editkoodit(void)
 		 if (wch == L'K') {
 			leima_file = new TextFl(leimafname,L"w");
 			if (!leima_file->IsOpen()) {
-				swprintf(Buf, L"Tiedoston %s avaaminen ei onnistu", leimafname);
+				swprintf(Buf, TR(L"Tiedoston %s avaaminen ei onnistu"), leimafname);
 			   writeerror_w(Buf, 0, true);
 			   }
 			else {
@@ -2352,7 +2352,7 @@ INT lue_leimat(INT r)
 		if (!leima_file->IsOpen()) {
 			delete leima_file;
 			leima_file = 0;
-			swprintf(msg, L"Tiedoston LEIMAT.LST tai LEIMAT%c.LST avaaminen ei onnistu", L'1'+k_pv);
+			swprintf(msg, TR(L"Tiedoston LEIMAT.LST tai LEIMAT%c.LST avaaminen ei onnistu"), L'1'+k_pv);
 			vidspwmsg(r,5,7,0,msg);
 			}
 		}
@@ -2385,7 +2385,7 @@ INT lue_leimat(INT r)
 		  break;
 	  if (swscanf(Buf, L"%d %d\n", &tn, &k) < 2) break;
 	  if (tn > MAXTUNNUS) {
-		 swprintf(msg,L"Rastitunnus %d tiedostossa %s on liian suuri",
+		 swprintf(msg,TR(L"Rastitunnus %d tiedostossa %s on liian suuri"),
 			tn, leimafname);
 		 kirj_err_file(msg, 1);
 		 continue;
@@ -2829,7 +2829,7 @@ static int TarkKilpailijat(void)
 			if (!Sarjat[kilp.Sarja()].vakanttisarja) {
 				ratatp * rt;
 				if ((rt = haerata(&kilp)) == NULL) {
-					swprintf(msg, L"VIRHE: Kilpailijan %d sarjaa %s tai rataa %s ei radoissa. ",
+					swprintf(msg, TR(L"VIRHE: Kilpailijan %d sarjaa %s tai rataa %s ei radoissa. "),
 						kilp.id(), Sarjat[kilp.Sarja()].sarjanimi, kilp.pv[k_pv].rata);
 					kirj_err_file(msg, 1);
 					}
@@ -2886,7 +2886,7 @@ INT lue_radat(INT r)
 	  if (emitfl == -1) {
 		 return(0);
 		 }
-	  swprintf(line, L"Tiedoston %s avaaminen ei onnistu",
+	  swprintf(line, TR(L"Tiedoston %s avaaminen ei onnistu"),
 		 ratafname);
 	  writeerror_w(line, 0);
 	  emitfl = 0;
@@ -2924,7 +2924,7 @@ INT lue_radat(INT r)
 			if (!wcscmp(rata[i].tunnus, rnimi))
 				break;
 		if (i < rno) {
-			swprintf(msg, L"Rata %s toistuu ratatiedoissa", rnimi);
+			swprintf(msg, TR(L"Rata %s toistuu ratatiedoissa"), rnimi);
 			kirj_err_file(msg, 1);
 			}
 		srj = rno++;
@@ -2975,12 +2975,12 @@ INT lue_radat(INT r)
                 }
             if (tn <= MAXTUNNUS || tn == 10000 || tn == 10001) {
 			   if (tn <= MAXTUNNUS && !on_kuvio(tn)) {
-				  swprintf(msg, L"Radan %s rastin %d tunnusta %d ei tiedostossa %s",
+				  swprintf(msg, TR(L"Radan %s rastin %d tunnusta %d ei tiedostossa %s"),
 					 rnimi, ir+1, tn, leimafname);
 				  kirj_err_file(msg, 1);
                   }
                if (ir >= MAXNRASTI) {
-                  swprintf(msg, L"Radalla %s liikaa rasteja (yli %d)",
+                  swprintf(msg, TR(L"Radalla %s liikaa rasteja (yli %d)"),
 					 rnimi, MAXNRASTI);
 				  kirj_err_file(msg, 1);
 				  continue;
@@ -3006,9 +3006,9 @@ INT lue_radat(INT r)
 		 }
 	  }
    if (emitfl < 0)
-	  swprintf(msg, L"Tiedostosta %s luettu ajanottotavat", ratafname);
+	  swprintf(msg, TR(L"Tiedostosta %s luettu ajanottotavat"), ratafname);
    else
-	  swprintf(msg, L"Tiedostosta %s luettu %d rataa", ratafname, nr);
+	  swprintf(msg, TR(L"Tiedostosta %s luettu %d rataa"), ratafname, nr);
    vidspwmsg(r,5,7,0,msg);
    delete rata_file;
    if (emitfl > 0) {
@@ -3020,7 +3020,7 @@ INT lue_radat(INT r)
    free(rata);
    emitfl = 0;
    esc:
-   swprintf(msg,L"Virhe tiedostoa %s luettaessa. Rata %s",
+   swprintf(msg,TR(L"Virhe tiedostoa %s luettaessa. Rata %s"),
 	  ratafname, rnimi);
    kirj_err_file(msg, 1);
    delete rata_file;
@@ -3050,7 +3050,7 @@ INT lueemitfile(void)
    else {
 	   if ((emitfile = _wopen(emitfname, O_RDWR | O_CREAT | O_BINARY,
 		  S_IREAD | S_IWRITE)) < 0) {
-		  swprintf(msg, L"Tiedoston %s avaaminen tai luominen ei onnistu",
+		  swprintf(msg, TR(L"Tiedoston %s avaaminen tai luominen ei onnistu"),
 			 emitfname);
 		  writeerror_w(msg, 0);
 		  return(1);
@@ -3063,9 +3063,14 @@ INT lueemitfile(void)
    if (emithead) {
 	  if (!uusinta && ntulost+nhylt == 0 && !esitark && esiluenta != 1 && KuntoMaali >= 0) {
 		 ch = L' ';
-		 swprintf(msg, L"Ei tuloksia, mutta %d Emit-tietuetta. J)atka, "
-			L"T)uhoa Emit-tiedot, K)eskeytä", emithead);
-		 wselectopt(msg,L"JTK", &ch);
+		 {
+		 // Lukumäärä muotoillaan kehotteeseen: pohja ja pikanäppäimet käännetään ensin
+		 wchar_t tterm[4];
+		 swprintf(msg, kaannaValinta(L"Ei tuloksia, mutta %d Emit-tietuetta. J)atka, "
+			L"T)uhoa Emit-tiedot, K)eskeytä", L"JTK", tterm, 4), emithead);
+		 wselectopt(msg, tterm, &ch);
+		 ch = vastaavaMerkki(ch, tterm, L"JTK");
+		 }
 		 }
 	  else
 		 ch = L'J';
@@ -3095,8 +3100,8 @@ INT lueemitfile(void)
 					 }
 				  else {
 					 kysy++;
-					 swprintf(msg, L"Emit-koodia %ld vastaa eri kilpailijat "
-						L"KILP.DATissa %d ja %sissa %d",
+					 swprintf(msg, TR(L"Emit-koodia %ld vastaa eri kilpailijat "
+						L"KILP.DATissa %d ja %sissa %d"),
 						em.badge, bdg2kno(em.badge), emitfname, em.kilpno);
 					 kirj_err_file(msg, 0);
 					 }
@@ -3175,7 +3180,7 @@ INT naytatiedot(emittp *em, kilptietue *kilp, int loppuosa)
    if (em) {
 	  if (kilp && (viim = e_maaliaika(em, kilp, 0)) != TMAALI0 && kilp->maali(0) != TMAALI0) {
 		 viim = ((kilp->maali(0) - viim)/SEK + 36*3600L)%86400L - 43200L;
-		 swprintf(line, L"V.väli%6d", viim);
+		 swprintf(line, TR(L"V.väli%6d"), viim);
 		 vidspwmsg(3, 52, 7, 0, line);
          }
       if (loppuosa) {
@@ -3482,7 +3487,7 @@ wchar_t outleimat(kilptietue *kilp, emittp *em, INT selaus, int loppuosa)
 
    clrtxt(0, 0, 33);
    if (kilp) {
-      swprintf(line, L"Kilpailija %4d, kortti %6ld", kilp->id(), em->badge);
+      swprintf(line, TR(L"Kilpailija %4d, kortti %6ld"), kilp->id(), em->badge);
       vidspwmsg(0,0,7,0, line);
 	  }
    if (selaus) vidspwmsg(0,50,7,0,TR(L"SELAUS"));
@@ -3504,17 +3509,17 @@ wchar_t outleimat(kilptietue *kilp, emittp *em, INT selaus, int loppuosa)
             }
          }
       if (em->kilpno == kilp->id()) {
-		 swprintf(line, L"Lukemisaika %8.8s", aikatowstr_ls(st, em->time, t0));
+		 swprintf(line, TR(L"Lukemisaika %8.8s"), aikatowstr_ls(st, em->time, t0));
 		 vidspwmsg(3, 10, 7, 0, line);
 		 tm = kilp->maali(0);
 		 if (tm == TMAALI0)
 			tm = KSEK * em->maali;
          if (tm != TMAALI0) {
-			swprintf(line, L"Maaliaika %8.8s", AIKATOWSTRS(st, tm, t0));
+			swprintf(line, TR(L"Maaliaika %8.8s"), AIKATOWSTRS(st, tm, t0));
             vidspwmsg(3, 33, 7, 0, line);
             }
 		 if (kilp->p_aika(0)) {
-			swprintf(line, L"Tulos %8.8s", AIKATOWSTRS(st, kilp->p_aika(0), 0));
+			swprintf(line, TR(L"Tulos %8.8s"), AIKATOWSTRS(st, kilp->p_aika(0), 0));
 			vidspwmsg(4, 42, 7, 0, line);
             }
          else
@@ -3589,7 +3594,7 @@ static void emituudelleen(void)
    if (ch == L'\r' && eptr > 0 && eptr <= emithead) {
 	  eptr--;
 	  lueem(&em, eptr);
-	  swprintf(line, L"Alkuperäinen koodi %6ld, koodi nyt %6ld", em.badge0, em.badge);
+	  swprintf(line, TR(L"Alkuperäinen koodi %6ld, koodi nyt %6ld"), em.badge0, em.badge);
 	  vidspwmsg(2,0,7,0, line);
 	  emitptr0 = emitptr;
 	  emitptr = eptr;
@@ -3787,12 +3792,14 @@ INT leimat(void)
    INT32 badge = 0;
    kilptietue kilp, entkilp;
    emittp em;
-   static wchar_t valtxt[] = L"R)aportti, selaa: eD)ell S)eur A)lku V)iim, "
-		L"tU)hoa tietue, kO)odit, Esc: Pois      ";
-   static wchar_t valtxt_m[] = L"R)aportti, selaa: eD)ell S)eur A)lku V)iim, "
-	  L"tU)hoa tietue, M)TR, kO)odit, Esc: Pois";
-	static wchar_t numval[] = L"Numero : kilpailijavalinta, Tab : "
-	  L"Leimauskortin valinta, F1 : Muita komentoja";
+   // Alarivien kehotteet. Käännöksissä pikanäppäimet ovat samat kuin suomeksi: näppäilyt
+   // tulkitaan suomenkielisillä kirjaimilla, ja samassa silmukassa ovat myös tarkastusnäppäimet.
+   const wchar_t *valtxt = N_(L"R)aportti, selaa: eD)ell S)eur A)lku V)iim, "
+		L"tU)hoa tietue, kO)odit, Esc: Pois");
+   static const wchar_t *valtxt_m = N_(L"R)aportti, selaa: eD)ell S)eur A)lku V)iim, "
+	  L"tU)hoa tietue, M)TR, kO)odit, Esc: Pois");
+	static const wchar_t *numval = N_(L"Numero : kilpailijavalinta, Tab : "
+	  L"Leimauskortin valinta, F1 : Muita komentoja");
 
    if (emitfl != 1) {
 	  writeerror_w(TR(L"Leimantarkastustoimintoa ei ole käynnistetty"), 0, true);
@@ -3801,7 +3808,7 @@ INT leimat(void)
    ajat_on = ajat_on_loc;
    if (ajat_on) status_on = 0;
    if (regnly[0] == LID_MTR || regnly[1] == LID_MTR || regnly[NREGNLY-1] == LID_MTR)
-	  wcscpy(valtxt, valtxt_m);
+	  valtxt = valtxt_m;
    clrscr();
    kehys(1);
    for (k = k_pv; k < kilpparam.n_pv_akt; k++)
@@ -3815,7 +3822,7 @@ INT leimat(void)
 	  ct = 0;
 	  if (!kilpno || (d = getpos(kilpno)) <= 0) {
          badge = em.badge;
-         swprintf(line, L"Kilpailija %4d, kortti %6ld", kilpno, badge);
+         swprintf(line, TR(L"Kilpailija %4d, kortti %6ld"), kilpno, badge);
          clrtxt(0, 0, 33);
 		 vidspwmsg(0,0,7,0, line);
          if (selaus) vidspwmsg(0,50,7,0,TR(L"SELAUS"));
@@ -3823,11 +3830,11 @@ INT leimat(void)
          vidint(0, 57, 5, emitptr+1);
          for (i = 3; i < ySize-4; i++) clrtxt(i,0,64);
          if (em.time != TMAALI0/KSEK) {
-			swprintf(line, L"Lukemisaika %8.8s", aikatowstr_ls(st, em.time, t0));
+			swprintf(line, TR(L"Lukemisaika %8.8s"), aikatowstr_ls(st, em.time, t0));
 			vidspwmsg(3, 7, 7, 0, line);
 			}
 			if (em.maali != TMAALI0/KSEK) {
-				swprintf(line, L"Maaliaika %8.8s", aikatowstr_ls(st, em.maali, t0));
+				swprintf(line, TR(L"Maaliaika %8.8s"), aikatowstr_ls(st, em.maali, t0));
 			vidspwmsg(3, 30, 7, 0, line);
 			}
 		 if (emithead2) naytatiedot(&em, NULL, 0);
@@ -3836,7 +3843,7 @@ INT leimat(void)
 		 kilp.GETREC(d);
 		 line[18] = 0;
 		 if (kilp.maali(0) != TMAALI0) {
-			swprintf(line, L"Maaliaika %8.8s", AIKATOWSTRS(st, kilp.maali(0), t0));
+			swprintf(line, TR(L"Maaliaika %8.8s"), AIKATOWSTRS(st, kilp.maali(0), t0));
             }
          else
 			wmemset(line, L' ', 18);
@@ -3855,8 +3862,8 @@ INT leimat(void)
       trk = 0;
 
       do {
-         vidspwmsg(ySize-3,0,7,0,valtxt);
-		 vidspwmsg(ySize-1,0,7,0,numval);
+         vidspwmsg(ySize-3,0,7,0,TR(valtxt));
+		 vidspwmsg(ySize-1,0,7,0,TR(numval));
 
          // Tässä loopissa odotetaan tarkastusnäppäilyä tai uuden tietueen
 		 // valintaa. myös M)TR ja tU)hoa, kO)odit sekä Tab tunnistetaan.
@@ -4192,7 +4199,7 @@ INT leimat(void)
       do {
          clrln(ySize-3);
 		 vidspwmsg(ySize-3,0,7,0,TR(L"Esc: poistu numerovalinnasta"));
-         vidspwmsg(ySize-1,0,7,0,numval);
+         vidspwmsg(ySize-1,0,7,0,TR(numval));
          clrtxt(2,0,64);
          clrtxt(3,0,64);
 		 if (!bdgfl) {
@@ -5184,7 +5191,7 @@ void tarkraportit(tulostusparamtp *tulprm, wchar_t trk)
 	  enddoc(tulprm);
 	  LeaveCriticalSection(&print_CriticalSection);
       clrln(ySize-3);
-      swprintf(line, L"Tulostettu %d kilpailijaa     Paina näppäintä", n);
+      swprintf(line, TR(L"Tulostettu %d kilpailijaa     Paina näppäintä"), n);
       vidspwmsg(ySize-3,0,7,0,line);
 	  readkbd(&che,1,0);
 	  clrln(ySize-3);

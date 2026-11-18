@@ -2217,7 +2217,7 @@ int tall_regnly(san_type *vastaus, int r_no)
 		clrln(ySize-1);
 		vidspmsg(ySize-1,0,7,0,TRA("Maalikello on tietokoneen kelloa      s"));
 		vidint(ySize-1,32,5,(int)(labs(bt) / 10));
-		as = (bt > 0) ? "edellä" : "jäljessä";
+		as = (bt > 0) ? TRA("edellä") : TRA("jäljessä");
 		vidspmsg(ySize-1,40,7,0,as);
 #endif
 		}

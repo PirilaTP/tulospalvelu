@@ -241,3 +241,19 @@ TEST_CASE("Suomi palauttaa aina saman osoittimen")
 	CHECK(TR(s) == s);
 	CHECK(TRL(KIELI_FI, s) == s);
 }
+
+TEST_CASE_FIXTURE(KieliFixture, "Lyhyemman kaannoksen peraan valilyonteja suomenkielisen pituuteen asti")
+{
+	// Konsolin kiintean levyiset kirjoitukset (viwrrectw) lukevat suomenkielisen tekstin
+	// pituuden verran: "Viimeinen" (9) -> "Sista" (5), merkit 6-8 eivat saa olla roskaa.
+	const wchar_t *t = TR(L"Viimeinen");
+	CHECK(wcscmp(t, L"Sista") == 0);
+	CHECK(t[5] == 0);
+	for (int i = 6; i < 9; i++)
+		CHECK(t[i] == L' ');
+	const char *a = TRA("Viimeinen");
+	CHECK(strcmp(a, "Sista") == 0);
+	CHECK(a[5] == 0);
+	for (int i = 6; i < 9; i++)
+		CHECK(a[i] == ' ');
+}

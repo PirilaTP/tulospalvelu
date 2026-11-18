@@ -4371,12 +4371,14 @@ INT leimat(void)
    INT32 badge = 0;
    kilptietue kilp;
    emittp em;
-   static char valtxt[] =   "R)aportti, selaa: eD)ell S)eur V)iim, "
-      "tU)hoa tietue, kO)odit, Esc: Pois      ";
-   static char valtxt_m[] = "R)aportti, selaa: eD)ell S)eur V)iim, "
-      "tU)hoa tietue, M)TR, kO)odit, Esc: Pois";
-   static char numval[] = "Numero : kilpailijavalinta, Tab : "
-      "Leimauskortin valinta, X : Kilpailijan vaihto";
+   // Alarivien kehotteet. Käännöksissä pikanäppäimet ovat samat kuin suomeksi: näppäilyt
+   // tulkitaan suomenkielisillä kirjaimilla.
+   const char *valtxt = N_("R)aportti, selaa: eD)ell S)eur V)iim, "
+      "tU)hoa tietue, kO)odit, Esc: Pois");
+   static const char *valtxt_m = N_("R)aportti, selaa: eD)ell S)eur V)iim, "
+      "tU)hoa tietue, M)TR, kO)odit, Esc: Pois");
+   static const char *numval = N_("Numero : kilpailijavalinta, Tab : "
+      "Leimauskortin valinta, X : Kilpailijan vaihto");
 
    if (emitfl <= 0) {
       writeerror(TRA("Leimantarkastustoimintoa ei ole käynnistetty"), 0);
@@ -4386,7 +4388,7 @@ INT leimat(void)
       erv = ySize-8;
    if (ajat_on) status_on = 0;
    if (regnly[0] == 13 || regnly[1] == 13 || regnly[NREGNLY-1] == 13)
-      strcpy(valtxt, valtxt_m);
+      valtxt = valtxt_m;
    clrscr();
    kehys(1);
    rm = ySize == 50 ? 41 : ySize-4;
@@ -4447,8 +4449,8 @@ INT leimat(void)
       trk = 0;
 
       do {
-         vidspmsg(ySize-3,0,7,0,valtxt);
-         vidspmsg(ySize-1,0,7,0,numval);
+         vidspmsg(ySize-3,0,7,0,TRA(valtxt));
+         vidspmsg(ySize-1,0,7,0,TRA(numval));
 
          // Tässä loopissa odotetaan tarkastusnäppäilyä tai uuden tietueen
          // valintaa. myös M)TR ja tU)hoa, kO)odit sekä Tab tunnistetaan.
@@ -4751,7 +4753,7 @@ INT leimat(void)
       do {
          clrln(ySize-3);
          vidspmsg(ySize-3,0,7,0,TRA("Esc: poistu numerovalinnasta"));
-         vidspmsg(ySize-1,0,7,0,numval);
+         vidspmsg(ySize-1,0,7,0,TRA(numval));
          clrtxt(2,0,59+5*status_on);
 		 clrtxt(3,0,59+5*status_on);
          if (!bdgfl) {
@@ -5715,7 +5717,7 @@ void tarkraportit(tulostusparamtp *tulprm, char trk)
 	  enddoc(tulprm);
 	  LeaveCriticalSection(&print_CriticalSection);
 	  clrln(ySize-3);
-	  swprintf(line, L"Tulostettu %d kilpailijaa     Paina näppäintä", n);
+	  swprintf(line, TR(L"Tulostettu %d kilpailijaa     Paina näppäintä"), n);
 	  vidspwmsg(ySize-3,0,7,0,line);
 	  readkbd_w(&che,1);
 	  clrln(ySize-3);

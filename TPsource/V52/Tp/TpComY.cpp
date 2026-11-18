@@ -477,9 +477,9 @@ int lahettamatta(int cn)
 void buflah(int cn, combufrec *obuf)
    {
 	 static wchar_t tmsg[] = L"JONO   TÄYSI EI LÄHETETTY";
-    static wchar_t tmsg1[] = L"Tiedonsiirtojono täynnä, ei lähetetä";
-    static wchar_t tmsg2[] =
-        L"Lähtevien tietojen jono kasvaa, tarkista tiedonsiirto";
+    static const wchar_t *tmsg1 = N_(L"Tiedonsiirtojono täynnä, ei lähetetä");
+    static const wchar_t *tmsg2 =
+        N_(L"Lähtevien tietojen jono kasvaa, tarkista tiedonsiirto");
 	static int esto = 0, nj0 = 0;
     char *cb;
 	int  v, nj;
@@ -520,7 +520,7 @@ void buflah(int cn, combufrec *obuf)
     else {
         v = ((int) cjseur[cn] + 1) % OUTBUFL;
         if( (v == (INT) cjens[cn]) ) {
-			pmsg = tmsg1;
+			pmsg = TR(tmsg1);
 			if (loki) {
 					 tmsg[5] = cn + L'1';
 				wkirjloki(tmsg);
@@ -533,7 +533,7 @@ void buflah(int cn, combufrec *obuf)
             nj = ((int) cjseur[cn] + OUTBUFL - (int) cjens[cn]) % OUTBUFL;
             if(nj == OUTBUFL - OUTBUFL/2 || nj == OUTBUFL - OUTBUFL/4) {
                 if (nj > nj0) {
-                    pmsg = tmsg2;
+                    pmsg = TR(tmsg2);
                     }
                 }
             }
@@ -712,7 +712,7 @@ static void luepaketti(INT cn)
    static char inpakid[MAX_LAHPORTTIY];  /* odotettava paketin id */
    static INT  npak[MAX_LAHPORTTIY], sumerror[MAX_LAHPORTTIY];               /* Virhelaskuri */
    static INT  inq0[MAX_LAHPORTTIY] = {-10, -10};   /* saapuvan sanoman seuranta */
-   wchar_t tenerror[] = L"10 tiedonsiirtovirhettä paketin siirrossa";
+   const wchar_t *tenerror = N_(L"10 tiedonsiirtovirhettä paketin siirrossa");
 	wchar_t vmsg[] = L"Virhe   tiedonsiirrossa";
    static int od_alku[MAX_LAHPORTTIY];
   
@@ -851,7 +851,7 @@ static void luepaketti(INT cn)
 				wkirjloki(emsg);
 			}
 		if( ++sumerror[cn] == 10 ) {
-			writeerror_w(tenerror,0);
+			writeerror_w(TR(tenerror),0);
 			sumerror[cn] = 0;
 			npak[cn] = 0;
          }
@@ -890,7 +890,7 @@ static void opencomUDP(int cn)
 	if (inLopetus)
 		return;
    if (openportUDP(hComm+cn, ipparam+cn)) {
-	  swprintf(msg, L"UDP-yhteyden %d avaaminen ei onnistunut", cn+1);
+	  swprintf(msg, TR(L"UDP-yhteyden %d avaaminen ei onnistunut"), cn+1);
 		writeerror_w(msg, 0);
 	  return;
 	  }
@@ -936,7 +936,7 @@ void *luepakettiUDP(LPVOID lpCn)
 	long  edyht, tm;
 	char inpakid = 0;  /* odotettava paketin id */
 	int  npak = 0, sumerror = 0;          /* Virhelaskuri */
-	wchar_t tenerror[] = L"10 tiedonsiirtovirhettä paketin siirrossa";
+	const wchar_t *tenerror = N_(L"10 tiedonsiirtovirhettä paketin siirrossa");
 	wchar_t vmsg[] = L"Virhe   tiedonsiirrossa";
 	wchar_t emsg[100], emsg1[100] = L"";
 #ifdef PROFILOI
@@ -1072,7 +1072,7 @@ void *luepakettiUDP(LPVOID lpCn)
 					}
                 }
             if( ++sumerror == 10 ) {
-				writeerror_w(tenerror,0);
+				writeerror_w(TR(tenerror),0);
                 sumerror = 0;
 					 npak = 0;
                 }
@@ -1185,12 +1185,12 @@ static void opencomTCP(int cn)
 		   case WSAEACCES:
 		   case WSAEISCONN:
 		   case WSAEADDRINUSE:
-				swprintf(msg, L"TCP-yhteyden %d portti %d varattu toiseen käyttöön\n", cn+1, ipparam[cn].srvport);
+				swprintf(msg, TR(L"TCP-yhteyden %d portti %d varattu toiseen käyttöön\n"), cn+1, ipparam[cn].srvport);
 				poistu = true;
 				break;
 		   case WSAEADDRNOTAVAIL:
 		   case WSAENETUNREACH:
-				swprintf(msg, L"TCP-yhteyden %d osoite tuntematon\n", cn+1);
+				swprintf(msg, TR(L"TCP-yhteyden %d osoite tuntematon\n"), cn+1);
 				poistu = true;
 				break;
 		   case 99:   // WSA:n avvaminen ei ole onnistunut
@@ -1200,13 +1200,13 @@ static void opencomTCP(int cn)
 				break;
 		   case WSAEHOSTDOWN:
 		   case WSAECONNREFUSED:
-				swprintf(msg, L"TCP-yhteyden %d avaaminen ei onnistunut, yrityksia jatketaan\n", cn+1);
+				swprintf(msg, TR(L"TCP-yhteyden %d avaaminen ei onnistunut, yrityksia jatketaan\n"), cn+1);
 				break;
 		   case WSAEINPROGRESS:
 		   case WSAEWOULDBLOCK:
 				break;
 		   default :
-				swprintf(msg, L"TCP-yhteyden %d avaaminen ei onnistunut\n", cn+1);
+				swprintf(msg, TR(L"TCP-yhteyden %d avaaminen ei onnistunut\n"), cn+1);
 				poistu = true;
 				break;
 		   }
@@ -1937,7 +1937,7 @@ static void opencomTCPin(int cn)
 	wchar_t msg[80];
 
 	if (openportTCP(hComm+cn, ipparam+cn)) {
-		swprintf(msg, L"TCP-yhteyden %d avaaminen ei onnistunut, yrityksia jatketaan\n", cn+1);
+		swprintf(msg, TR(L"TCP-yhteyden %d avaaminen ei onnistunut, yrityksia jatketaan\n"), cn+1);
 #ifdef _CONSOLE
 		writeerror_w(msg, 2000);
 #else
@@ -2088,7 +2088,7 @@ void openlukijaUDP(int cn)
 		    case WSAEACCES:
 			case WSAEISCONN:
 			case WSAEADDRINUSE:
-				swprintf(msg, L"Laitteen %d UDP-portti %d varattu toiseen käyttöön\n",
+				swprintf(msg, TR(L"Laitteen %d UDP-portti %d varattu toiseen käyttöön\n"),
 					cn+1-max_lahportti, ipparam[cn].srvport);
 				poistu = true;
 				break;
@@ -2105,7 +2105,7 @@ void openlukijaUDP(int cn)
 			case WSAEWOULDBLOCK:
 				break;
 			default :
-				swprintf(msg, L"Laitteen %d UDP-yhteyden avaaminen ei onnistunut\n", cn+1-max_lahportti);
+				swprintf(msg, TR(L"Laitteen %d UDP-yhteyden avaaminen ei onnistunut\n"), cn+1-max_lahportti);
 				poistu = true;
 				break;
 			}
@@ -2133,7 +2133,7 @@ int openlukijaTCP(int cn)
 		   case WSAEACCES:
 		   case WSAEISCONN:
 		   case WSAEADDRINUSE:
-				swprintf(msg, L"Laitteen %d TCP-portti %d varattu toiseen käyttöön\n",
+				swprintf(msg, TR(L"Laitteen %d TCP-portti %d varattu toiseen käyttöön\n"),
 					cn+1-max_lahportti, ipparam[cn].srvport);
 				poistu = 1;
 				break;
@@ -2149,13 +2149,13 @@ int openlukijaTCP(int cn)
 				break;
 		   case WSAEHOSTDOWN:
 		   case WSAECONNREFUSED:
-				swprintf(msg, L"Laitteen %d TCP-yhteyden avaaminen ei onnistunut, yrityksia jatketaan\n", cn+1-max_lahportti);
+				swprintf(msg, TR(L"Laitteen %d TCP-yhteyden avaaminen ei onnistunut, yrityksia jatketaan\n"), cn+1-max_lahportti);
 				break;
 		   case WSAEINPROGRESS:
 		   case WSAEWOULDBLOCK:
 				break;
 		   default :
-				swprintf(msg, L"Laitteen %d TCP-yhteyden avaaminen ei onnistunut\n", cn+1-max_lahportti);
+				swprintf(msg, TR(L"Laitteen %d TCP-yhteyden avaaminen ei onnistunut\n"), cn+1-max_lahportti);
 				poistu = 1;
 				break;
 		   }
@@ -2169,7 +2169,7 @@ int openlukijaTCP(int cn)
 #ifdef EI_OLE
 			virhesanoma.on = false;
 			virhesanoma.kesto = 2000;
-			swprintf(virhesanoma.msg, L"Lukijan %d TCP-yhteyden avaaminen ei onnistunut\n"
+			swprintf(virhesanoma.msg, TR(L"Lukijan %d TCP-yhteyden avaaminen ei onnistunut\n")
 				 , cn+1-max_lahportti);
 			virhesanoma.on = true;
 			Sleep(7000);
@@ -2246,7 +2246,7 @@ static void openTCPloki(int cn)
 	if (err != 0) {
 		wchar_t msg[100];
 
-		swprintf(msg, L"TCP-lokin käynnistys ei onnistunut (%d)", err);
+		swprintf(msg, TR(L"TCP-lokin käynnistys ei onnistunut (%d)"), err);
 		writeerror_w(msg, 2000, true);
 		lokiTCP = 0;
 		}
@@ -2333,13 +2333,17 @@ int opencomfile(int vaihto)
 			if (av > 0) {
 				av -= lah;
 #ifdef _CONSOLE
-				swprintf(msg, L"Tiedostossa COMFILE %ld lähetettyä ja"
-					L" %ld lähetettävää tietoa S)äilytä T)uhoa", lah, av);
+				{
+				wchar_t tterm[4];
+				swprintf(msg, kaannaValinta(L"Tiedostossa COMFILE %ld lähetettyä ja"
+					L" %ld lähetettävää tietoa S)äilytä T)uhoa", L"ST", tterm, 4), lah, av);
 				ch = L' ';
-				wselectopt(msg, L"ST", &ch);
+				wselectopt(msg, tterm, &ch);
+				ch = vastaavaMerkki(ch, tterm, L"ST");
+				}
 #else
-				swprintf(msg, L"Tiedostossa COMFILE %ld lähetettyä ja"
-					L" %ld lähetettävää tietoa. Säilytetääänkö?", lah, av);
+				swprintf(msg, TR(L"Tiedostossa COMFILE %ld lähetettyä ja"
+					L" %ld lähetettävää tietoa. Säilytetääänkö?"), lah, av);
 				if (Application->MessageBoxW(msg, TR(L"Tietojen säilyttäminen"), MB_YESNO) == IDYES)
 					ch = L'S';
 				else
@@ -2431,7 +2435,8 @@ int initcom(int cn)
 
 void yhteysasetukset(void)
    {
-   wchar_t ch = L' ', ch2, lj, msg[81];
+   wchar_t ch = L' ', ch2, lj, msg[121], kohde[20], tterm[4];
+   const wchar_t *toiminto = L"";
    INT yno = 0, ala, yla;
    int x;
 
@@ -2536,30 +2541,32 @@ void yhteysasetukset(void)
       case ESC:
          return;
 	  case L'1':
-         wcscpy(msg, L"Avaa lähtevä yhteys: ");
+         toiminto = TR(L"Avaa lähtevä yhteys");
          break;
       case L'2':
-         wcscpy(msg, L"Avaa saapuva yhteys: ");
+         toiminto = TR(L"Avaa saapuva yhteys");
          break;
       case L'3':
-         wcscpy(msg, L"Avaa lähtevä ja saapuva yhteys: ");
+         toiminto = TR(L"Avaa lähtevä ja saapuva yhteys");
          break;
       case L'4':
-         wcscpy(msg, L"Sulje lähtevä yhteys: ");
+         toiminto = TR(L"Sulje lähtevä yhteys");
          break;
       case L'5':
-         wcscpy(msg, L"Sulje saapuva yhteys: ");
+         toiminto = TR(L"Sulje saapuva yhteys");
          break;
 		case L'6':
-         wcscpy(msg, L"Sulje lähtevä ja saapuva yhteys: ");
+         toiminto = TR(L"Sulje lähtevä ja saapuva yhteys");
          break;
       }
    if (yno < 0)
-      wcscat(msg, L"kaikki  - Vahvista (K/E)");
+      wcscpy(kohde, TR(L"kaikki"));
    else
-      swprintf(msg+wcslen(msg), L"%d  - Vahvista (K/E)", yno);
+      swprintf(kohde, L"%d", yno);
+   swprintf(msg, kaannaValinta(L"%s: %s  - Vahvista (K/E)", L"KE", tterm, 4), toiminto, kohde);
 	ch = L' ';
-	wselectopt(msg, L"KE", &ch);
+	wselectopt(msg, tterm, &ch);
+	ch = vastaavaMerkki(ch, tterm, L"KE");
    if (ch == L'E')
       return;
    for (yno = ala; yno <= yla; yno++) {
@@ -2662,10 +2669,14 @@ void uusintalahetys(void)
       ta = ty - jakso * 600L;
       if (ta < -12*36000L)
 			ta += 24*36000L;
-      swprintf(msg, L"Lähetä %8.8s jälkeiset sanomat K)aikkiin, Y)hteen yhteyteen, Esc: peruuta",
-		 aikatowstr_ls(as, ta, t0));
+      {
+      wchar_t tterm[4];
+      swprintf(msg, kaannaValinta(L"Lähetä %8.8s jälkeiset sanomat K)aikkiin, Y)hteen yhteyteen, Esc: peruuta",
+		 L"KY\x1b", tterm, 4), aikatowstr_ls(as, ta, t0));
       ch = L' ';
-      wselectopt(msg, L"KY\x1b", &ch);
+      wselectopt(msg, tterm, &ch);
+      ch = vastaavaMerkki(ch, tterm, L"KY\x1b");
+      }
       if (ch == ESC)
 		 return;
       }
@@ -2812,7 +2823,7 @@ void yhteydet(void)
          cn = r + yhteysalku;
 		 memset(line, 0, sizeof(line));
          if (!comopen[cn]) {
-            swprintf(line, L"%3d Ei avattu", cn+1);
+            swprintf(line, TR(L"%3d Ei avattu"), cn+1);
             wmemset(line+wcslen(line), L' ', 64-wcslen(line));
 				}
          else if (comtype[cn] >= 0) {

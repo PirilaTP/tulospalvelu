@@ -1885,8 +1885,8 @@ void ajanotto()
                         }
                      if (lajatfl) {
                         akttm = 1 - akttm;
-                        if (akttm) viwrrectw(0,0,0,8,TR(L"LÄHTÖAJAT"),7,0,0);
-                        else viwrrectw(0,0,0,8,TR(L"AJANOTTO "),7,0,0);
+                        // Otsikko vaihtelevan pituisena (kÄÄnnÖs), jononumero mukaan
+                        ajanottoheader(akttm);
                         }
                      }
                   else if (tc == 242) {

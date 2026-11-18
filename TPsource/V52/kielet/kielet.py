@@ -55,6 +55,8 @@ VALINTAFUNKTIOT = {
     'selectopt': (0, 1),
     'wselectxy': (2, 3),
     'selectxy': (2, 3),
+    # Muotoiltava kehotepohja: swprintf(msg, kaannaValinta(L"... %d ... K)yllä", L"KE", tterm, n), ...)
+    'kaannaValinta': (0, 1),
 }
 
 # Lomaketekstin lyhyt muoto: msgctxt "lyhyt", msgid = suomenkielinen teksti. kaannaLomake
@@ -704,7 +706,7 @@ def tilasto(argv):
 UI_KUTSUT = {'MessageBoxW', 'MessageBox', 'ShowMessage', 'writeerror_w', 'writeerror', 'writeerrorkysy',
              'writewarning_w', 'vidspwmsg', 'vidspmsg', 'viwrrect', 'viwrrectw', 'inputint_prompt',
              'inputstr_prompt', 'inputaika_prompt', 'select3', 'InputBox', 'InputQuery', 'MessageDlg',
-             'perr_w', 'perr'}
+             'perr_w', 'perr', 'kirj_err_file', 'kirj_err_file_w'}
 # Kokoelmien metodit (Items->Add(...), Lines->Add(...)), kun edellä on jokin näistä
 UI_KOKOELMAT = {'Items', 'Lines', 'Strings'}
 UI_KOKOELMAMETODIT = {'Add', 'Insert'}
@@ -1028,6 +1030,41 @@ NAKYVAT_OMINAISUUDET = UI_OMINAISUUDET | {'Text', 'Caption', 'Cells', 'header'}
 ITSEKAANTYVAT = set(VALINTAFUNKTIOT) | {'Win_wselectopt', 'Wselectopt'}
 
 
+def kohde_nakyy(tok, ymparoiva, lohko, kohde, sulku):
+    """Muotoilukutsun kohdepuskuri (parametri kohde = (alku, loppu)): päätyykö se seuraavaksi
+    käyttäjälle näkyvään kutsuun (UI_KUTSUT) samassa funktiossa? Käytetään funktioissa, jotka
+    myös kirjoittavat tulosteita: tulosteeseen menevät muotoilut kuuluvat tulosteen kieleen."""
+    nimi = next((tok[k].arvo for k in range(*kohde) if tok[k].laji == 'ident'
+                 and tok[k].arvo not in NEUTRAALIT), None)
+    if nimi is None:
+        return False
+    for j in range(sulku + 1, len(tok)):
+        if lohko[j] != lohko[sulku]:
+            return False
+        if tok[j].laji != 'ident' or tok[j].arvo != nimi:
+            continue
+        # Lähin nimetty kutsu, jonka parametrina puskuri on
+        s = ymparoiva[j]
+        while s is not None:
+            if tok[s].arvo == '(' and s > 0 and tok[s-1].laji == 'ident' and tok[s-1].arvo not in NEUTRAALIT:
+                break
+            s = ymparoiva[s]
+        if s is None:
+            continue                    # esim. sijoitus tai vertailu: katsotaan seuraava käyttö
+        kutsu = tok[s-1].arvo
+        if kutsu in UI_KUTSUT:
+            return True
+        if kutsu in TULOSTEKUTSUT:
+            return False
+        if kutsu in UI_MUOTOILU:
+            params, _ = kutsun_parametrit(tok, s)
+            if params and params[0][0] <= j < params[0][1] and kutsu in ('swprintf', 'swprintf_s',
+                    '_snwprintf', 'snwprintf', 'wsprintf', 'sprintf', 'wcscpy', 'strcpy', 'wcsncpy',
+                    'strncpy', 'wcscpy_s'):
+                return False            # puskuri kirjoitetaan uudelleen
+    return False
+
+
 def kaantamattomat_teksti(teksti):
     """Tekstin kääntämättömät käyttöliittymätekstit: [(rivi, laji, teksti)].
 
@@ -1071,8 +1108,11 @@ def kaantamattomat_teksti(teksti):
         i = loppu
         if tok[alku].arvo.startswith(('u8', 'u"', 'U"')) or not re.search(r'[A-Za-zÄÖÅäöå]{2}', sisalto):
             continue
-        if lohko[alku] in tulostelohkot or (tila_luetaan and sisalto in TILASANAT):
+        if tila_luetaan and sisalto in TILASANAT:
             continue
+        # Tulosteita kirjoittavassa funktiossa vain suoraan näyttöön tai ilmoitukseen menevät
+        # tekstit ja muotoilut, joiden kohdepuskuri päätyy niihin (ks. kohde_nakyy)
+        tulostelohko = lohko[alku] in tulostelohkot
         # Kaikki ympäröivät kutsut
         kutsut = []
         s = ymparoiva[alku]
@@ -1098,9 +1138,12 @@ def kaantamattomat_teksti(teksti):
             laji = 'ilmoitus'
         elif lahin in UI_MUOTOILU:
             s0 = next(s for s, k in kutsut if k == lahin)
-            params, _ = kutsun_parametrit(tok, s0)
-            if params and not (params[0][0] <= alku < params[0][1]) and nayttaa_tekstilta(sisalto):
+            params, sulku = kutsun_parametrit(tok, s0)
+            if params and not (params[0][0] <= alku < params[0][1]) and nayttaa_tekstilta(sisalto) and \
+                    (not tulostelohko or kohde_nakyy(tok, ymparoiva, lohko, params[0], sulku)):
                 laji = 'muotoilu'
+        elif tulostelohko:
+            pass
         elif lahin is None or lahin in UI_KOKOELMAMETODIT:
             # Sijoitus: lauseen '=' tai '+=' samalla tasolla
             k = alku - 1

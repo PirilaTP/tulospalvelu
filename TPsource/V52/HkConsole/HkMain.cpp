@@ -58,7 +58,7 @@ void valikko(void)
    extern scr paavalikko;
 #ifdef MAKI
 	if (k_pv == makipv)
-		paavalikko.l[1].t = L"M)äki           Mäkikilpailun tulospalvelu";
+		paavalikko.l[1].t = N_(L"M)äki           Mäkikilpailun tulospalvelu");
 #endif
 	if (bootfl & 8) {
 		int jj = (bootfl / 16) & 15;

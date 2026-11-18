@@ -276,6 +276,11 @@ msgid "Kilpailijataulukko täynnä - lisäystä ei tallennettu"
 msgstr "Tävlandetabellen full - tillägget sparades inte"
 
 #: Hk/HkEmit.cpp Juk/VEmit.cpp
+#, c-format
+msgid "Tiedoston %s avaaminen tai luominen ei onnistu"
+msgstr "Filen %s kan inte öppnas eller skapas"
+
+#: Hk/HkEmit.cpp Juk/VEmit.cpp
 msgid "Muisti ei riita lainaemitluettelolle"
 msgstr "Minnet räcker inte för hyrbrickslistan"
 
@@ -300,6 +305,11 @@ msgstr "Minnet räcker inte"
 #: Hk/HkEmit.cpp Juk/VEmit.cpp
 msgid "Merkitäänkö luetut koodit lainakorteiksi (K/E)"
 msgstr "Markera lästa koder som hyrbrickor (J/N)"
+
+#: Hk/HkEmit.cpp Juk/VEmit.cpp
+#, c-format
+msgid "%d koodia tallennettu"
+msgstr "%d koder sparade"
 
 #. valinta: LM
 #: Hk/HkEmit.cpp Juk/VEmit.cpp
@@ -340,10 +350,68 @@ msgstr "Kodtabellen full. Tillägg misslyckades"
 msgid "Kirjoitetaanko muutetut tiedot levylle (K/E)"
 msgstr "Skriva ändrade data till disk (J/N)"
 
+#: Hk/HkEmit.cpp Juk/VEmit.cpp JukConsole/vcons2.cpp
+#, c-format
+msgid "Tiedoston %s avaaminen ei onnistu"
+msgstr "Filen %s kan inte öppnas"
+
+#: Hk/HkEmit.cpp
+#, c-format
+msgid "Tiedoston LEIMAT.LST tai LEIMAT%c.LST avaaminen ei onnistu"
+msgstr "Det gick inte att öppna filen LEIMAT.LST eller LEIMAT%c.LST"
+
 #. valinta: JP
 #: Hk/HkEmit.cpp Juk/VEmit.cpp
 msgid "J)atka ilman tiedostoa LEIMAT.LST, P)oistu ohjelmasta"
 msgstr "F)ortsätt utan filen LEIMAT.LST, A)vsluta programmet"
+
+#: Hk/HkEmit.cpp cbTp/UnitRadat.cpp
+#, c-format
+msgid "Rastitunnus %d tiedostossa %s on liian suuri"
+msgstr "Kontrollkod %d i filen %s är för stor"
+
+#: Hk/HkEmit.cpp
+#, c-format
+msgid "VIRHE: Kilpailijan %d sarjaa %s tai rataa %s ei radoissa. "
+msgstr "FEL: Tävlande %d: klassen %s eller banan %s finns inte bland banorna. "
+
+#: Hk/HkEmit.cpp
+#, c-format
+msgid "Radan %s rastin %d tunnusta %d ei tiedostossa %s"
+msgstr "Bana %s, kontroll %d: koden %d finns inte i filen %s"
+
+#: Hk/HkEmit.cpp
+#, c-format
+msgid "Tiedostosta %s luettu ajanottotavat"
+msgstr "Tidtagningssätt lästa från filen %s"
+
+#: Hk/HkEmit.cpp
+#, c-format
+msgid "Tiedostosta %s luettu %d rataa"
+msgstr "Från filen %s lästes %d banor"
+
+#: Hk/HkEmit.cpp
+#, c-format
+msgid "Virhe tiedostoa %s luettaessa. Rata %s"
+msgstr "Fel vid läsning av filen %s. Bana %s"
+
+#. valinta: JTK
+#: Hk/HkEmit.cpp
+#, c-format
+msgid ""
+"Ei tuloksia, mutta %d Emit-tietuetta. J)atka, T)uhoa Emit-tiedot, K)eskeytä"
+msgstr ""
+"Inga resultat men %d Emit-poster. F)ortsätt, R)adera Emit-data, A)vbryt"
+
+#: Hk/HkEmit.cpp Juk/VEmit.cpp
+#, c-format
+msgid "Emit-koodia %ld vastaa eri kilpailijat KILP.DATissa %d ja %sissa %d"
+msgstr "Emit-kod %ld motsvarar olika tävlande i KILP.DAT %d och i %s %d"
+
+#: Hk/HkEmit.cpp Juk/VEmit.cpp
+#, c-format
+msgid "V.väli%6d"
+msgstr "M.int.%6d"
 
 #: Hk/HkEmit.cpp Juk/VEmit.cpp
 msgid "Leimasin sammumassa(koodi 99)         "
@@ -384,6 +452,11 @@ msgstr "Emit-data redan läst för vald tävlande - ändras inte"
 msgid "Valittu kilpailija poissaoleva - ei muuteta"
 msgstr "Vald tävlande frånvarande - ändras inte"
 
+#: Hk/HkEmit.cpp
+#, c-format
+msgid "Kilpailija %4d, kortti %6ld"
+msgstr "Tävlande %4d, bricka %6ld"
+
 #: Hk/HkEmit.cpp Juk/VEmit.cpp
 msgid "SELAUS"
 msgstr "BLÄDDRING"
@@ -395,6 +468,21 @@ msgstr " HYR "
 #: Hk/HkEmit.cpp
 msgid "KERÄÄ "
 msgstr "SAMLA "
+
+#: Hk/HkEmit.cpp Juk/VEmit.cpp
+#, c-format
+msgid "Lukemisaika %8.8s"
+msgstr "Lästid %8.8s"
+
+#: Hk/HkEmit.cpp Juk/VEmit.cpp
+#, c-format
+msgid "Maaliaika %8.8s"
+msgstr "Måltid %8.8s"
+
+#: Hk/HkEmit.cpp
+#, c-format
+msgid "Tulos %8.8s"
+msgstr "Resultat %8.8s"
 
 #: Hk/HkEmit.cpp Hk/HkTulostus.cpp Juk/VEmit.cpp cbHk/HkKisaLahtLuet.cpp
 #: cbHk/HkWinParam.cpp cbHk/TapUnit2.cpp cbHk/UnitAikavert.cpp cbHk/UnitAjanotto.cpp
@@ -457,6 +545,11 @@ msgstr "L) Tilläggstid:"
 msgid "Uudelleenkäsiteltävä tietue:       Esc : Peruuta"
 msgstr "Post att behandla om:              Esc : Avbryt"
 
+#: Hk/HkEmit.cpp
+#, c-format
+msgid "Alkuperäinen koodi %6ld, koodi nyt %6ld"
+msgstr "Ursprunglig kod %6ld, kod nu %6ld"
+
 #. valinta: KE
 #: Hk/HkEmit.cpp
 msgid "Haluatko varmasti käsitellä tietueen uudelleen (K/E)"
@@ -497,6 +590,23 @@ msgstr "Bekräfta byte av klass (J/N)"
 #: Hk/HkEmit.cpp
 msgid "Muutetaanko tarkistusmerkintä rataa vastaavaksi (K/E)"
 msgstr "Ändra kontrollmarkering enligt banan (J/N)"
+
+#: Hk/HkEmit.cpp
+msgid ""
+"R)aportti, selaa: eD)ell S)eur A)lku V)iim, tU)hoa tietue, kO)odit, Esc: Pois"
+msgstr ""
+"R)apport, bläddra: D)föreg S)nästa A)först V)sist, U)radera, O)koder, Esc: Slut"
+
+#: Hk/HkEmit.cpp
+msgid ""
+"R)aportti, selaa: eD)ell S)eur A)lku V)iim, tU)hoa tietue, M)TR, kO)odit, Esc: Pois"
+msgstr ""
+"R)apport, bläddra: D)föreg S)nästa A)först V)sist, U)radera, M)TR, O)koder, Esc: Slut"
+
+#: Hk/HkEmit.cpp
+msgid ""
+"Numero : kilpailijavalinta, Tab : Leimauskortin valinta, F1 : Muita komentoja"
+msgstr "Nummer : välj tävlande, Tab : välj stämpelkort, F1 : Fler kommandon"
 
 #: Hk/HkEmit.cpp Juk/VEmit.cpp JukConsole/laskemtn.cpp
 msgid "Leimantarkastustoimintoa ei ole käynnistetty"
@@ -609,11 +719,6 @@ msgstr "Klass %s, tävlande %d, %s"
 #, c-format
 msgid "Lähtöaika          %8.8s"
 msgstr "Starttid           %8.8s"
-
-#: Hk/HkEmit.cpp
-#, c-format
-msgid "Tulos %8.8s"
-msgstr "Resultat %8.8s"
 
 #: Hk/HkEmit.cpp
 #, c-format
@@ -805,6 +910,11 @@ msgstr "Tryck en tangent för att fortsätta, Esc : Avsluta"
 #: Hk/HkEmit.cpp Juk/VEmit.cpp
 msgid "Paina näppäintä jatkaaksesi"
 msgstr "Tryck en tangent för att fortsätta"
+
+#: Hk/HkEmit.cpp Juk/VEmit.cpp
+#, c-format
+msgid "Tulostettu %d kilpailijaa     Paina näppäintä"
+msgstr "Utskrivet %d tävlande     Tryck på en tangent"
 
 #: Hk/HkEmit.cpp Juk/VEmit.cpp
 msgid "Virhe väliaikatiedostoa avattaessa"
@@ -1144,6 +1254,14 @@ msgstr "RESULTAT REDAN GIVET"
 msgid "Maalikello on tietokoneen kelloa      s"
 msgstr "Målklockan mot datorklockan           s"
 
+#: Hk/HkIV.cpp Juk/VIv.cpp
+msgid "edellä"
+msgstr "före"
+
+#: Hk/HkIV.cpp Juk/VIv.cpp
+msgid "jäljessä"
+msgstr "efter"
+
 #: Hk/HkIV.cpp Tp/TpLaitteet.cpp
 msgid "Pyyntö"
 msgstr "Begäran"
@@ -1180,6 +1298,22 @@ msgstr "Över %d min tidsskillnad mellan mottagen mellantid och denna dator"
 #, c-format
 msgid "Tuntematon Emit-koodi %d saapunut, aika: %8.8s, piste: %d"
 msgstr "Okänd Emit-kod %d mottagen, tid: %8.8s, punkt: %d"
+
+#: Hk/HkIV.cpp
+msgid "Muistin varaaminen ei onnistunut"
+msgstr "Det gick inte att reservera minne"
+
+#: Hk/HkIV.cpp
+msgid "Virhe pyyntöä lähetettäessä"
+msgstr "Fel vid sändning av begäran"
+
+#: Hk/HkIV.cpp
+msgid "Yhteyden avaaminen ei onnistunut"
+msgstr "Det gick inte att öppna förbindelsen"
+
+#: Hk/HkIV.cpp
+msgid "Istunnon avaaminen ei onnistunut"
+msgstr "Det gick inte att öppna sessionen"
 
 #: Hk/HkIV.cpp
 #, c-format
@@ -1740,14 +1874,39 @@ msgid "Viallinen sanoma ampumapaikalta, virhe %d %s"
 msgstr "Felaktigt meddelande från skjutplatsen, fel %d %s"
 
 #: Hk/HkSrj.cpp
+#, c-format
+msgid "Tiedosto %s puuttuu"
+msgstr "Filen %s saknas"
+
+#: Hk/HkSrj.cpp
 msgid ""
 "Ohjelmaversio ei tue sarjatiedon mukaista päivien tai väliaikojan määrää"
 msgstr ""
 "Programversionen stöder inte antalet dagar eller mellantider enligt klassdata"
 
+#: Hk/HkSrj.cpp Juk/vSarjat.cpp
+#, c-format
+msgid "Tiedosto %s viallinen"
+msgstr "Filen %s är felaktig"
+
+#: Hk/HkSrj.cpp Juk/vSarjat.cpp
+#, c-format
+msgid "Virhe rivillä %d tai ennen sitä"
+msgstr "Fel på rad %d eller före den"
+
 #: Hk/HkSrj.cpp
 msgid "Poista tai korjaa tiedosto ennen uutta käynnistystä"
 msgstr "Ta bort eller rätta filen före ny start"
+
+#: Hk/HkSrj.cpp Juk/vSarjat.cpp
+#, c-format
+msgid "Liikaa sarjayhdistelmiä. Maksimimäärä on %d."
+msgstr "För många klasskombinationer. Max antal är %d."
+
+#: Hk/HkSrj.cpp Juk/vSarjat.cpp
+#, c-format
+msgid "Tiedostosta %s luettu %d sarjayhdistelmää"
+msgstr "Från filen %s lästes %d klasskombinationer"
 
 #: Hk/HkSrj.cpp Hk/HkXml.cpp Juk/VXml.cpp Juk/vSarjat.cpp
 msgid "Sarjatietotiedoston avaus kirjoitusta varten ei onnistu"
@@ -1822,10 +1981,25 @@ msgstr "Tot."
 msgid "Lopetetaanko automaattinen tulostus (K/E)"
 msgstr "Avsluta automatisk utskrift (J/N)"
 
+#: Hk/HkTulostus.cpp Juk/VTulostus.cpp
+#, c-format
+msgid "Virhe tiedostoon %s kirjoitettaessa"
+msgstr "Fel vid skrivning till filen %s"
+
 #. valinta: KE
 #: Hk/HkTulostus.cpp
 msgid "Käytetäänkö rankisarjoille vakionimiä?"
 msgstr "Använda standardnamn för rankingklasser?"
+
+#: Hk/HkTulostus.cpp
+#, c-format
+msgid "Anna sarjalle %s käytettävä nimi"
+msgstr "Ange namnet som används för klassen %s"
+
+#: Hk/HkTulostus.cpp
+#, c-format
+msgid "Sarja: %10s. Korjaa tarvittaessa matka       ja tapa %s"
+msgstr "Klass: %10s. Korrigera vid behov längd       o. sätt %s"
 
 #: Hk/HkTulostus.cpp
 msgid "Pisteiden laskenta käynnissä"
@@ -2018,7 +2192,7 @@ msgid "Kirjoitinyhteyden avaaminen ei onnistunut"
 msgstr "Kunde inte öppna skrivaranslutningen"
 
 #: Hk/HkXml.cpp Hk/HkXml_IOF30.cpp Juk/VXml.cpp Juk/VXml_IOF30.cpp
-#: cbHk/UnitKisaLuett.cpp cbHk/WinParamXml.cpp ViestiWin/WinParamXml.cpp
+#: tputilv2/xmlparser.cpp cbHk/UnitKisaLuett.cpp cbHk/WinParamXml.cpp ViestiWin/WinParamXml.cpp
 #, c-format
 msgid ""
 "XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"
@@ -2045,6 +2219,26 @@ msgstr "Filen hittas inte, avbryt genom att trycka Enter och ESC"
 #: Hk/HkXmlTulokset.cpp
 msgid "Kilpailun määritystiedostoa ei ole valittu"
 msgstr "Tävlingens definitionsfil har inte valts"
+
+#: Juk/VCom.cpp HkConsole/HkCons0.cpp
+msgctxt "yhteys"
+msgid "Ei"
+msgstr "Ej"
+
+#: Juk/VCom.cpp HkConsole/HkCons0.cpp
+msgctxt "yhteys"
+msgid "On"
+msgstr "Ja"
+
+#: Juk/VCom.cpp HkConsole/HkCons0.cpp
+msgctxt "yhteys"
+msgid "Hä"
+msgstr "Er"
+
+#: Juk/VCom.cpp HkConsole/HkCons0.cpp
+msgctxt "yhteys"
+msgid "Su"
+msgstr "St"
 
 #: Juk/VCom.cpp
 msgid ""
@@ -2130,11 +2324,6 @@ msgstr "Filen LEIMAT.LST kan inte öppnas"
 #: Juk/VEmit.cpp
 msgid "Tiedostoa EMITKDI.LST ei löydy"
 msgstr "Filen EMITKDI.LST hittas inte"
-
-#: Juk/VEmit.cpp
-#, c-format
-msgid "%d koodia tallennettu"
-msgstr "%d koder sparade"
 
 #: Juk/VEmit.cpp Juk/VTulostus.cpp
 msgid "Tulostettu"
@@ -2243,11 +2432,6 @@ msgstr "Lag %d sträcka %d saknar bana"
 msgid "Tiedoston AIKARAJAT.TXT avaaminen ei onnistu"
 msgstr "Filen AIKARAJAT.TXT kan inte öppnas"
 
-#: Juk/VEmit.cpp JukConsole/vcons2.cpp
-#, c-format
-msgid "Tiedoston %s avaaminen ei onnistu"
-msgstr "Filen %s kan inte öppnas"
-
 #: Juk/VEmit.cpp
 #, c-format
 msgid "Ratanimi %s liian pitkä"
@@ -2267,11 +2451,6 @@ msgstr "%d banor lästa från filen RADAT.LST"
 msgid "Virhe tiedostoa RADAT.LST luettaessa. Rata %s"
 msgstr "Fel vid läsning av filen RADAT.LST. Bana %s"
 
-#: Juk/VEmit.cpp
-#, c-format
-msgid "Tiedoston %s avaaminen tai luominen ei onnistu"
-msgstr "Filen %s kan inte öppnas eller skapas"
-
 #. valinta-kiintea: pidä suomenkieliset pikanäppäimet
 #: Juk/VEmit.cpp
 #, c-format
@@ -2287,11 +2466,6 @@ msgstr "Filen %s kan inte läsas"
 
 #: Juk/VEmit.cpp
 #, c-format
-msgid "Emit-koodia %ld vastaa eri kilpailijat KILP.DATissa %d ja %sissa %d"
-msgstr "Emit-kod %ld motsvarar olika tävlande i KILP.DAT %d och i %s %d"
-
-#: Juk/VEmit.cpp
-#, c-format
 msgid "%s ja KILP.DAT eivät yhteensopivia (%d eroa)"
 msgstr "%s och KILP.DAT är inte kompatibla (%d skillnader)"
 
@@ -2304,11 +2478,6 @@ msgstr "Kod %d på sträckorna"
 #, c-format
 msgid "%2d. os.%7d %s"
 msgstr "%2d. str.%7d %s"
-
-#: Juk/VEmit.cpp
-#, c-format
-msgid "V.väli%6d"
-msgstr "M.int.%6d"
 
 #. valinta: ON
 #: Juk/VEmit.cpp
@@ -2332,16 +2501,6 @@ msgstr "Samma emitkod även på annan sträcka. Byt först koden"
 msgid "Kilpailija %4d-%-2d, kortti %d"
 msgstr "Tävlande %4d-%-2d, bricka %d"
 
-#: Juk/VEmit.cpp
-#, c-format
-msgid "Lukemisaika %8.8s"
-msgstr "Lästid %8.8s"
-
-#: Juk/VEmit.cpp
-#, c-format
-msgid "Maaliaika %8.8s"
-msgstr "Måltid %8.8s"
-
 #: Juk/VEmit.cpp JukConsole/laskemtn.cpp ViestiWin/OsuusTiedot.cpp
 msgid "Sulj"
 msgstr "Stängd"
@@ -2358,6 +2517,23 @@ msgstr "Banan motsvarar sträcka %d"
 #: Juk/VEmit.cpp
 msgid "Anna uusi rata :               <Esc>: Poistu vaihtamatta rataa"
 msgstr "Ange ny bana   :               <Esc>: Avsluta utan att byta bana"
+
+#: Juk/VEmit.cpp
+msgid ""
+"R)aportti, selaa: eD)ell S)eur V)iim, tU)hoa tietue, kO)odit, Esc: Pois"
+msgstr ""
+"R)apport, bläddra: D)föreg S)nästa V)sist, U)radera, O)koder, Esc: Slut"
+
+#: Juk/VEmit.cpp
+msgid ""
+"R)aportti, selaa: eD)ell S)eur V)iim, tU)hoa tietue, M)TR, kO)odit, Esc: Pois"
+msgstr ""
+"R)apport, bläddra: D)föreg S)nästa V)sist, U)radera, M)TR, O)koder, Esc: Slut"
+
+#: Juk/VEmit.cpp
+msgid ""
+"Numero : kilpailijavalinta, Tab : Leimauskortin valinta, X : Kilpailijan vaihto"
+msgstr "Nummer : välj tävlande, Tab : välj stämpelkort, X : byt tävlande"
 
 #: Juk/VEmit.cpp
 #, c-format
@@ -2518,6 +2694,11 @@ msgstr "Ant"
 #: Juk/VEmitHtml.cpp
 msgid "ja paras aika"
 msgstr "och bästa tid"
+
+#. valinta
+#: Juk/VInit.cpp Tp/TpApu.cpp cbTp/TpApu.cpp
+msgid "J)atka, L)opeta nämä virheilmoitukset"
+msgstr "F)ortsätt, S)luta visa dessa felmeddelanden"
 
 #: Juk/VInit.cpp
 msgid "Tiedostoon DATA_ERR.TXT kirjoitettu luettelo virhetiedoista"
@@ -2952,6 +3133,11 @@ msgid "Väliaika"
 msgstr "Mellantid"
 
 #: Juk/VTulostus.cpp
+#, c-format
+msgid "Virhe html-tiedostoon %s kirjoitettaessa"
+msgstr "Fel vid skrivning till html-filen %s"
+
+#: Juk/VTulostus.cpp
 msgid "kierr."
 msgstr "varv"
 
@@ -3057,6 +3243,11 @@ msgstr "Skriver ut klass"
 #: Juk/VTulostus.cpp
 msgid "Paina <Esc> keskeyttääksesi"
 msgstr "Tryck <Esc> för att avbryta"
+
+#: Juk/VTulostus.cpp
+#, c-format
+msgid "Viim. maaliaika : %s"
+msgstr "Sista måltid : %s"
 
 #: Juk/VTulostus.cpp JukConsole/VConTul.cpp
 msgid "Paina <Return> jatkaaksesi"
@@ -3221,16 +3412,6 @@ msgstr ""
 
 #: Juk/vSarjat.cpp
 #, c-format
-msgid "Liikaa sarjayhdistelmiä. Maksimimäärä on %d."
-msgstr "För många klasskombinationer. Max antal är %d."
-
-#: Juk/vSarjat.cpp
-#, c-format
-msgid "Tiedostosta %s luettu %d sarjayhdistelmää"
-msgstr "Från filen %s lästes %d klasskombinationer"
-
-#: Juk/vSarjat.cpp
-#, c-format
 msgid "Suurin sallittu sarjaluku on %d"
 msgstr "Största tillåtna antal klasser är %d"
 
@@ -3238,16 +3419,6 @@ msgstr "Största tillåtna antal klasser är %d"
 #, c-format
 msgid "Suurin sallittu osuusluku on %d"
 msgstr "Största tillåtna antal sträckor är %d"
-
-#: Juk/vSarjat.cpp
-#, c-format
-msgid "Tiedosto %s viallinen"
-msgstr "Filen %s är felaktig"
-
-#: Juk/vSarjat.cpp
-#, c-format
-msgid "Virhe rivillä %d tai ennen sitä"
-msgstr "Fel på rad %d eller före den"
 
 #: Juk/vSarjat.cpp
 msgid "Korjaa tiedosto ennen uutta käynnistystä"
@@ -3419,6 +3590,10 @@ msgstr "Position (km)      Minimitid"
 msgid " + : Hyväksy,  Esc : Peruuta sarjan muutokset"
 msgstr " + : Godkänn,  Esc : Ångra klassens ändringar"
 
+#: HkConsole/HkCons0.cpp Tp/TpComY.cpp
+msgid "kaikki"
+msgstr "alla"
+
 #: HkConsole/HkCons0.cpp
 msgid "Anna lähtevä sarja tai 'kaikki':"
 msgstr "Ange klass att skicka eller 'kaikki':"
@@ -3427,6 +3602,50 @@ msgstr "Ange klass att skicka eller 'kaikki':"
 #: cbTp/TpApu.cpp
 msgid "Virheellinen sarja"
 msgstr "Felaktig klass"
+
+#: HkConsole/HkCons0.cpp
+msgid "oletusvalinnan"
+msgstr "standardvalet"
+
+#: HkConsole/HkCons0.cpp
+msgid "sarjaporttinäppäimen"
+msgstr "serieportsknappen"
+
+#: HkConsole/HkCons0.cpp
+msgid "hiiren"
+msgstr "musen"
+
+#: HkConsole/HkCons0.cpp
+msgid "näppäimistön"
+msgstr "tangentbordet"
+
+#: HkConsole/HkCons0.cpp
+msgid "maalikello/lähdön"
+msgstr "målklockan/starten"
+
+#: HkConsole/HkCons0.cpp
+msgid "maalikello/maalin"
+msgstr "målklockan/målet"
+
+#: HkConsole/HkCons0.cpp
+msgid "maalikello/väliaikasanoman"
+msgstr "målklockan/mellantidsmeddelandet"
+
+#: HkConsole/HkCons0.cpp
+msgid "maalikellon (banaani)"
+msgstr "målklockan (banan)"
+
+#: HkConsole/HkCons0.cpp
+msgid "maalikellon (DIN)"
+msgstr "målklockan (DIN)"
+
+#: HkConsole/HkCons0.cpp
+msgid "maalikellon (A)"
+msgstr "målklockan (A)"
+
+#: HkConsole/HkCons0.cpp
+msgid "maalikellon (C)"
+msgstr "målklockan (C)"
 
 #. valinta: VT
 #: HkConsole/HkCons0.cpp
@@ -3442,6 +3661,10 @@ msgstr "Behandla endast en punkts tider (J/N)"
 #: HkConsole/HkCons0.cpp
 msgid "Anna ajanoton käyttökohde (LM123456789X)"
 msgstr "Ange tidtagningens mål (LM123456789X)"
+
+#: HkConsole/HkCons0.cpp
+msgid "maalikellon"
+msgstr "målklockan"
 
 #. valinta-kiintea: pidä suomenkieliset pikanäppäimet
 #: HkConsole/HkCons0.cpp
@@ -3540,9 +3763,12 @@ msgid "Laaditaanko takaa-ajokisa (K/E)"
 msgstr "Skapa jaktstartstävling (J/N)"
 
 #: HkConsole/HkCons0.cpp
-#, c-format
-msgid "Sarjakohtainen %sen muutos"
-msgstr "Klassvis ändring av %s"
+msgid "Sarjakohtainen lähtöaikojen muutos"
+msgstr "Klassvis ändring av starttider"
+
+#: HkConsole/HkCons0.cpp
+msgid "Sarjakohtainen numeroiden muutos"
+msgstr "Klassvis ändring av nummer"
 
 #: HkConsole/HkCons0.cpp
 #, c-format
@@ -4006,10 +4232,6 @@ msgstr "Mellantidshämtning: F)ortsätt, A)vbryt, hämta från B)örjan igen"
 msgid "Edellinen maaliaika sama, poimitaanko viimeisin eroava (K/E)"
 msgstr "Föregående måltid samma, ta senaste avvikande (J/N)"
 
-#: HkConsole/HkCons2.cpp
-msgid "AJANOTTO "
-msgstr "TIDTAGNING "
-
 #: HkConsole/HkCons2.cpp JukConsole/vcons2.cpp
 msgid "TAHDISTUSAIKA    "
 msgstr "SYNKTID          "
@@ -4462,6 +4684,10 @@ msgstr "Position %s, bredd i tecken"
 #: HkConsole/HkCons3.cpp JukConsole/VConTul.cpp
 msgid "yksiköissä 1/72 in"
 msgstr "i enheter 1/72 in"
+
+#: HkConsole/HkCons3.cpp
+msgid "merkkeinä"
+msgstr "i tecken"
 
 #: HkConsole/HkCons3.cpp
 msgid "Paina <Esc> lopettaaksesi tämän sivun muutokset"
@@ -6039,6 +6265,10 @@ msgstr "Numret redan använt"
 #: HkConsole/HkKilp.cpp JukConsole/vcons2.cpp
 msgid "ANNA SARJA"
 msgstr "ANGE KLASS"
+
+#: HkConsole/HkMain.cpp
+msgid "M)äki           Mäkikilpailun tulospalvelu"
+msgstr "M)äki           Resultattjänst för backhoppning"
 
 #: HkConsole/HkMain.cpp JukConsole/laskenta.cpp
 msgid "PÄÄVALIKKO"
@@ -7644,6 +7874,15 @@ msgid "  Esc: palaa ajanottonäytölle                               "
 msgstr "  Esc: tillbaka till tidtagningsskärmen                     "
 
 #: Tp/TpApu.cpp cbTp/TpApu.cpp
+#, c-format
+msgid ""
+"%s \n"
+"Jatketaanko näiden virheilmoitusten näyttämistä"
+msgstr ""
+"%s \n"
+"Fortsätta att visa dessa felmeddelanden"
+
+#: Tp/TpApu.cpp cbTp/TpApu.cpp
 msgid "Toistuva virheilmoitus"
 msgstr "Upprepat felmeddelande"
 
@@ -7692,6 +7931,14 @@ msgid "Kone:%s;YhtLkm:%d;AvLkm:%d;Jonossa:%d;JonoLkm:%d"
 msgstr "Dator:%s;AnslAnt:%d;ÖppAnt:%d;IKö:%d;KöAnt:%d"
 
 #: Tp/TpComY.cpp
+msgid "Tiedonsiirtojono täynnä, ei lähetetä"
+msgstr "Överföringskön är full, skickas inte"
+
+#: Tp/TpComY.cpp
+msgid "Lähtevien tietojen jono kasvaa, tarkista tiedonsiirto"
+msgstr "Kön för utgående data växer, kontrollera dataöverföringen"
+
+#: Tp/TpComY.cpp
 msgid "Virhe rutiinissa 'buflah', koodi 1"
 msgstr "Fel i rutinen 'buflah', kod 1"
 
@@ -7714,9 +7961,18 @@ msgstr "IP %d: %s ping-tid  <10 ms   "
 msgid "IP %d: %s ping timed out     "
 msgstr "IP %d: %s ping timed out     "
 
+#: Tp/TpComY.cpp
+msgid "10 tiedonsiirtovirhettä paketin siirrossa"
+msgstr "10 överföringsfel vid paketöverföring"
+
 #: Tp/TpComY.cpp Tp/TpComY32.cpp
 msgid "Tiedonsiirtovirhe, väärä paketin numero"
 msgstr "Överföringsfel, fel paketnummer"
+
+#: Tp/TpComY.cpp Tp/TpComY32.cpp
+#, c-format
+msgid "UDP-yhteyden %d avaaminen ei onnistunut"
+msgstr "Det gick inte att öppna UDP-förbindelse %d"
 
 #: Tp/TpComY.cpp
 msgid "Virhe rutiinissa 'merk_uusinta', koodi 1"
@@ -7725,6 +7981,26 @@ msgstr "Fel i rutinen 'merk_uusinta', kod 1"
 #: Tp/TpComY.cpp
 msgid "Virhe rutiinissa 'merk_uusinta', koodi 2"
 msgstr "Fel i rutinen 'merk_uusinta', kod 2"
+
+#: Tp/TpComY.cpp
+#, c-format
+msgid "TCP-yhteyden %d portti %d varattu toiseen käyttöön\n"
+msgstr "TCP-förbindelse %d: porten %d används redan\n"
+
+#: Tp/TpComY.cpp
+#, c-format
+msgid "TCP-yhteyden %d osoite tuntematon\n"
+msgstr "TCP-förbindelse %d: okänd adress\n"
+
+#: Tp/TpComY.cpp Tp/TpComY32.cpp
+#, c-format
+msgid "TCP-yhteyden %d avaaminen ei onnistunut, yrityksia jatketaan\n"
+msgstr "Det gick inte att öppna TCP-förbindelse %d, försöken fortsätter\n"
+
+#: Tp/TpComY.cpp
+#, c-format
+msgid "TCP-yhteyden %d avaaminen ei onnistunut\n"
+msgstr "Det gick inte att öppna TCP-förbindelse %d\n"
 
 #: Tp/TpComY.cpp
 msgid "Virhe rutiinissa 'lahetapaketti', koodi 1"
@@ -7756,6 +8032,42 @@ msgid "Yhteysttä ei ole avattu"
 msgstr "Anslutningen har inte öppnats"
 
 #: Tp/TpComY.cpp
+#, c-format
+msgid "Laitteen %d UDP-portti %d varattu toiseen käyttöön\n"
+msgstr "Enhet %d: UDP-porten %d används redan\n"
+
+#: Tp/TpComY.cpp
+#, c-format
+msgid "Laitteen %d UDP-yhteyden avaaminen ei onnistunut\n"
+msgstr "Det gick inte att öppna UDP-förbindelsen till enhet %d\n"
+
+#: Tp/TpComY.cpp
+#, c-format
+msgid "Laitteen %d TCP-portti %d varattu toiseen käyttöön\n"
+msgstr "Enhet %d: TCP-porten %d används redan\n"
+
+#: Tp/TpComY.cpp
+#, c-format
+msgid "Laitteen %d TCP-yhteyden avaaminen ei onnistunut, yrityksia jatketaan\n"
+msgstr ""
+"Det gick inte att öppna TCP-förbindelsen till enhet %d, försöken fortsätter\n"
+
+#: Tp/TpComY.cpp
+#, c-format
+msgid "Laitteen %d TCP-yhteyden avaaminen ei onnistunut\n"
+msgstr "Det gick inte att öppna TCP-förbindelsen till enhet %d\n"
+
+#: Tp/TpComY.cpp Tp/TpComY32.cpp
+#, c-format
+msgid "Lukijan %d TCP-yhteyden avaaminen ei onnistunut\n"
+msgstr "Det gick inte att öppna TCP-förbindelsen till läsare %d\n"
+
+#: Tp/TpComY.cpp Tp/TpComY32.cpp
+#, c-format
+msgid "TCP-lokin käynnistys ei onnistunut (%d)"
+msgstr "Det gick inte att starta TCP-loggen (%d)"
+
+#: Tp/TpComY.cpp
 msgid "TCP-loki käynnistetty"
 msgstr "TCP-logg startad"
 
@@ -7779,6 +8091,21 @@ msgstr "Radera tidigare COMFILE.DAT"
 #: Tp/TpComY.cpp Tp/TpComY32.cpp
 msgid "Keskeytä ohjelman käynnistys"
 msgstr "Avbryt programstarten"
+
+#. valinta: ST
+#: Tp/TpComY.cpp
+#, c-format
+msgid ""
+"Tiedostossa COMFILE %ld lähetettyä ja %ld lähetettävää tietoa S)äilytä T)uhoa"
+msgstr ""
+"Filen COMFILE har %ld skickade och %ld oskickade meddelanden B)ehåll R)adera"
+
+#: Tp/TpComY.cpp Tp/TpComY32.cpp
+#, c-format
+msgid ""
+"Tiedostossa COMFILE %ld lähetettyä ja %ld lähetettävää tietoa. Säilytetääänkö?"
+msgstr ""
+"Filen COMFILE har %ld skickade och %ld oskickade meddelanden. Behålla dem?"
 
 #: Tp/TpComY.cpp Tp/TpComY32.cpp
 msgid "Tietojen säilyttäminen"
@@ -7861,6 +8188,36 @@ msgid ""
 msgstr ""
 "ÖPPNA: 1:utgående 2:inkommande 3:båda  STÄNG: 4:utgående 5:inkommande 6:båda"
 
+#: Tp/TpComY.cpp
+msgid "Avaa lähtevä yhteys"
+msgstr "Öppna utgående förbindelse"
+
+#: Tp/TpComY.cpp
+msgid "Avaa saapuva yhteys"
+msgstr "Öppna inkommande förbindelse"
+
+#: Tp/TpComY.cpp
+msgid "Avaa lähtevä ja saapuva yhteys"
+msgstr "Öppna utgående och inkommande förbindelse"
+
+#: Tp/TpComY.cpp
+msgid "Sulje lähtevä yhteys"
+msgstr "Stäng utgående förbindelse"
+
+#: Tp/TpComY.cpp
+msgid "Sulje saapuva yhteys"
+msgstr "Stäng inkommande förbindelse"
+
+#: Tp/TpComY.cpp
+msgid "Sulje lähtevä ja saapuva yhteys"
+msgstr "Stäng utgående och inkommande förbindelse"
+
+#. valinta: KE
+#: Tp/TpComY.cpp
+#, c-format
+msgid "%s: %s  - Vahvista (K/E)"
+msgstr "%s: %s  - Bekräfta (J/N)"
+
 #. valinta: LM
 #: Tp/TpComY.cpp Tp/TpComY32.cpp
 msgid ""
@@ -7871,6 +8228,14 @@ msgstr ""
 #: Tp/TpComY.cpp Tp/TpComY32.cpp
 msgid "Lähetä uudelleen viimeisten        minuutin sanomat"
 msgstr "Sänd om medd. från sista           minuterna"
+
+#. valinta: KY
+#: Tp/TpComY.cpp
+#, c-format
+msgid ""
+"Lähetä %8.8s jälkeiset sanomat K)aikkiin, Y)hteen yhteyteen, Esc: peruuta"
+msgstr ""
+"Skicka meddelanden efter %8.8s A)lla förbindelser, E)n förbindelse, Esc: avbryt"
 
 #. valinta: EM
 #: Tp/TpComY.cpp Tp/TpComY32.cpp
@@ -7916,9 +8281,19 @@ msgstr "Ange id för datorn som stängs        Esc : Avbryt"
 msgid "Väärä salasana"
 msgstr "Fel lösenord"
 
+#: Tp/TpComY.cpp
+#, c-format
+msgid "%3d Ei avattu"
+msgstr "%3d Ej öppnad"
+
 #: Tp/TpComY32.cpp
 msgid "Kommunikationsfel, nummer av paket fel"
 msgstr "Kommunikationsfel, fel paketnummer"
+
+#: Tp/TpComY32.cpp
+#, c-format
+msgid "Lukijan %d UDP-yhteyden avaaminen ei onnistunut\n"
+msgstr "Det gick inte att öppna UDP-förbindelsen till läsare %d\n"
 
 #: Tp/TpComY32.cpp
 msgid "TCP-lokin käynnistetty"
@@ -8122,6 +8497,25 @@ msgstr "Läsning av MTR:s statusdata misslyckades"
 msgid "MTR-laite no"
 msgstr "MTR-enhet nr"
 
+#: Tp/TpLaitteet.cpp
+#, c-format
+msgid "MTR-laitteen ilmoittama aika %02d.%02d.%02d  %s"
+msgstr "Tid enligt MTR-enheten %02d.%02d.%02d  %s"
+
+#: Tp/TpLaitteet.cpp
+#, c-format
+msgid "Ero tietokoneen kellosta %ld sek"
+msgstr "Skillnad mot datorns klocka %ld s"
+
+#: Tp/TpLaitteet.cpp
+#, c-format
+msgid "Pariston tila %s"
+msgstr "Batteristatus %s"
+
+#: Tp/TpLaitteet.cpp
+msgid "HEIKKO"
+msgstr "SVAGT"
+
 #: Tp/TpLaitteet.cpp cbTp/UnitMTR.cpp
 msgid "Laitteessa ei tietoja"
 msgstr "Inga data i enheten"
@@ -8133,6 +8527,21 @@ msgstr "Sessioner i enhetens minne"
 #: Tp/TpLaitteet.cpp
 msgid "Istunto   aloituspvm ja -aika  vanhin nro  uusin nro  lukumäärä"
 msgstr "Session   startdatum och tid   äldsta nr   nyaste nr  antal"
+
+#: Tp/TpLaitteet.cpp
+#, c-format
+msgid "%s  Tilatietojen lukeminen epäonnistui"
+msgstr "%s  Det gick inte att läsa statusuppgifterna"
+
+#: Tp/TpLaitteet.cpp
+#, c-format
+msgid "%s  Ei tietoja"
+msgstr "%s  Inga uppgifter"
+
+#: Tp/TpLaitteet.cpp
+#, c-format
+msgid "Kaikkiaan  %26ld%12ld%10ld"
+msgstr "Totalt     %26ld%12ld%10ld"
 
 #. valinta: LAIN
 #: Tp/TpLaitteet.cpp
@@ -8247,6 +8656,11 @@ msgid "Oletuskirjoittimen käyttöönotto ei onnistu"
 msgstr "Standardskrivaren kan inte tas i bruk"
 
 #: tputilv2/Wrttext.cpp
+#, c-format
+msgid "Ei tilaa tiedoston %s avaamiselle"
+msgstr "Inget utrymme för att öppna filen %s"
+
+#: tputilv2/Wrttext.cpp
 msgid "Virhe kirjoitintulostusta käynnistettäessä"
 msgstr "Fel vid start av skrivarutskrift"
 
@@ -8270,6 +8684,25 @@ msgstr ""
 msgid "Aika sallitun v„lin ulkopuolella"
 msgstr "Tiden utanför tillåtet intervall"
 
+#: tputilv2/xmlparser.cpp
+#, c-format
+msgid ""
+"XML-tiedoston tulkinta ei onnnistu. Varattu puskuritila (%d solmua) ei riitä"
+msgstr ""
+"Det gick inte att tolka XML-filen. Det reserverade buffertutrymmet (%d noder) räcker inte"
+
+#: tputilv2/xmlparser.cpp
+#, c-format
+msgid ""
+"XML-tiedoston tulkinta ei onnnistu. Rivi %d, avaava tag: <%.30s>, sulkeva poikkeaa"
+msgstr ""
+"Det gick inte att tolka XML-filen. Rad %d, öppnande tagg: <%.30s>, avslutande skiljer sig"
+
+#: tputilv2/xmlparser.cpp
+#, c-format
+msgid "XML-tiedosto päättyi rivillä %d tasolla %d"
+msgstr "XML-filen tog slut på rad %d på nivå %d"
+
 #: cbHk/HkArv2.cpp
 msgid "Ei tilaa arvonnalle"
 msgstr "Inget utrymme för lottning"
@@ -8285,6 +8718,13 @@ msgstr "Problem 2"
 #: cbHk/HkArv2.cpp
 msgid "Muisti ei riitä arvonnalle"
 msgstr "Minnet räcker inte för lottning"
+
+#: cbHk/HkArv2.cpp
+#, c-format
+msgid ""
+"Sarjassa %s yhteislähtö. Lähtöajat merkitään. Arvotaanko samalla kaikkien vaiheiden numerot?, Peruuta keskeyttää arvonnan"
+msgstr ""
+"Klassen %s har gemensam start. Starttiderna registreras. Lottas samtidigt nummer för alla etapper?, Avbryt avbryter lottningen"
 
 #: cbHk/HkArv2.cpp
 msgid "Yhteislähtösarja"
@@ -13239,11 +13679,6 @@ msgstr "LST-filer (*.lst)|*.LST|Alla filer (*.*)|*.*"
 #, c-format
 msgid "Leimasinkooditiedoston %s avaaminen ei onnistu"
 msgstr "Filen för stämplingsenhetskoder %s kan inte öppnas"
-
-#: cbTp/UnitRadat.cpp
-#, c-format
-msgid "Rastitunnus %d tiedostossa %s on liian suuri"
-msgstr "Kontrollkod %d i filen %s är för stor"
 
 #: cbTp/UnitRadat.cpp
 #, c-format
@@ -26535,6 +26970,12 @@ msgstr "Starttid (tom: från början)"
 #: cbTp/UnitUusinta.dfm
 msgid "Loppuhetki (tyhjä: loppuun)"
 msgstr "Sluttidpunkt (tom: till slutet)"
+
+#~ msgid "Sarjakohtainen %sen muutos"
+#~ msgstr "Klassvis ändring av %s"
+
+#~ msgid "AJANOTTO "
+#~ msgstr "TIDTAGNING "
 
 #~ msgid "luettu nykyhakemistosta, ei ohjelman hakemistosta"
 #~ msgstr "läst från aktuell mapp, inte från programmets mapp"

@@ -1392,7 +1392,7 @@ void tulostusparamtp::writehtml(wchar_t *rivi)
    err = tul_tied->WriteLine(rivi);
    if (err == WEOF) {
 		wchar_t msg[200];
-		swprintf(msg, 199, L"Virhe html-tiedostoon %s kirjoitettaessa", tul_tied->FileName);
+		swprintf(msg, 199, TR(L"Virhe html-tiedostoon %s kirjoitettaessa"), tul_tied->FileName);
 		writeerror_w(msg, 0);
 		closeprfile(lstf);
 		}
@@ -1414,7 +1414,7 @@ void tulostusparamtp::writeline(wchar_t *rv)
    *(++p) = 0;
    if (tul_tied->IsOpen() && tul_tied->WriteLine(rivi) == WEOF) {
 		wchar_t msg[200];
-		swprintf(msg, 199, L"Virhe tiedostoon %s kirjoitettaessa", tul_tied->FileName);
+		swprintf(msg, 199, TR(L"Virhe tiedostoon %s kirjoitettaessa"), tul_tied->FileName);
 		writeerror_w(msg, 0);
 	  }
    free(rivi);
@@ -1430,7 +1430,7 @@ void tulostusparamtp::puts_f(wchar_t *line)
    tul_tied = lstf->u.Fl;
    if (tul_tied->IsOpen() && tul_tied->WriteLine(line) == WEOF) {
 		wchar_t msg[200];
-		swprintf(msg, 199, L"Virhe tiedostoon %s kirjoitettaessa", tul_tied->FileName);
+		swprintf(msg, 199, TR(L"Virhe tiedostoon %s kirjoitettaessa"), tul_tied->FileName);
 		writeerror_w(msg, 0);
 	  closeprfile(lstf);
 	  }
@@ -6350,7 +6350,7 @@ void yhteenveto(tulostusparamtp *tulprm)
 	  vidspmsg(0,0,7,0,TRA("YHTEENVETO"));
 	  vidspwmsg(2,0,7,0,ots);
 	  clrln(ySize-3);
-	  swprintf(wline,L"Viim. maaliaika : %s",AIKATOWSTRS(as, tmaali,t0));
+	  swprintf(wline,TR(L"Viim. maaliaika : %s"),AIKATOWSTRS(as, tmaali,t0));
 	  vidspwmsg(ySize-3,49,7,0,wline);
 	  l = 4;
 	  srj = 0;

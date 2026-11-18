@@ -62,11 +62,19 @@ static void vapauta(void)
 	InterlockedExchange(&lukko, 0);
 }
 
-static const wchar_t *kopioi(const wchar_t *s, int len)
+// Kopioi merkkijonon. Jos vahintaan > len, loppunollan perään lisätään välilyöntejä niin,
+// että kopiosta voi lukea vahintaan merkkiä: konsolin kiinteän levyiset kirjoitukset
+// (viwrrectw) lukevat suomenkielisen tekstin pituuden verran, eikä lyhyempi käännös saa
+// tuoda näytölle muistissa sen perässä olevaa roskaa.
+static const wchar_t *kopioi(const wchar_t *s, int len, int vahintaan = 0)
 {
-	wchar_t *p = new wchar_t[len + 1];
+	int koko = len > vahintaan ? len : vahintaan;
+	wchar_t *p = new wchar_t[koko + 1];
 	wmemcpy(p, s, len);
 	p[len] = 0;
+	for (int i = len + 1; i < koko; i++)
+		p[i] = L' ';
+	p[koko] = 0;
 	return(p);
 }
 
@@ -200,10 +208,12 @@ static void lisaaKaannos(int kieli, const std::wstring &ktx, const std::wstring 
 		}
 	avain += id;
 	kaannostaulu::iterator it = taulu[kieli].find(avain.c_str());
+	// Käännöksen perään välilyöntejä suomenkielisen tekstin pituuteen asti (ks. kopioi)
 	if (it != taulu[kieli].end())
-		it->second = kopioi(str.c_str(), (int) str.length());
+		it->second = kopioi(str.c_str(), (int) str.length(), (int) id.length());
 	else
-		taulu[kieli][kopioi(avain.c_str(), (int) avain.length())] = kopioi(str.c_str(), (int) str.length());
+		taulu[kieli][kopioi(avain.c_str(), (int) avain.length())] =
+			kopioi(str.c_str(), (int) str.length(), (int) id.length());
 }
 
 // Lukee .po-tiedoston sisällön (UTF-8) muistista; kutsujan on pidettävä lukko.
@@ -479,9 +489,16 @@ char *TRA(const char *fi)
 		strcpy(kaan, fi);
 		}
 	else {
+		// n sisältää loppunollan. Perään välilyöntejä suomenkielisen tekstin pituuteen
+		// asti, kuten leveiden merkkien taulussa (ks. kopioi).
+		int pit = (int) strlen(fi), koko;
 		n = WideCharToMultiByte(1252, 0, wkaan, -1, NULL, 0, NULL, NULL);
-		kaan = new char[n + 1];
-		WideCharToMultiByte(1252, 0, wkaan, -1, kaan, n + 1, NULL, NULL);
+		koko = n > pit ? n : pit;
+		kaan = new char[koko + 1];
+		WideCharToMultiByte(1252, 0, wkaan, -1, kaan, n, NULL, NULL);
+		for (int i = n; i < koko; i++)
+			kaan[i] = ' ';
+		kaan[koko] = 0;
 		}
 	delete[] wfi;
 	char *avain = new char[strlen(fi) + 1];

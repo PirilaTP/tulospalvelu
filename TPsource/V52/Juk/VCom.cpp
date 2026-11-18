@@ -161,6 +161,23 @@ typedef union {
 #endif
 
 #ifdef _CONSOLE
+// Yhteyden tila näkyy näytöllä kahdella merkillä. Kutsujat käyttävät suomenkielisiä
+// koodeja, jotka käännetään vasta näytöllä (konteksti "yhteys", käännös kaksi merkkiä).
+static const wchar_t *yhteystila(const wchar_t *st)
+{
+	if (st == NULL)
+		return(st);
+	if (!wcscmp(st, L"Ei"))
+		return(TRCL(kayttokieli, L"yhteys", L"Ei"));
+	if (!wcscmp(st, L"On"))
+		return(TRCL(kayttokieli, L"yhteys", L"On"));
+	if (!wcscmp(st, L"Hä"))
+		return(TRCL(kayttokieli, L"yhteys", L"Hä"));
+	if (!wcscmp(st, L"Su"))
+		return(TRCL(kayttokieli, L"yhteys", L"Su"));
+	return(st);
+}
+
 void WRITEYHT(wchar_t *st, INT cn)
    {
    INT r;
@@ -170,7 +187,7 @@ void WRITEYHT(wchar_t *st, INT cn)
 	  return;
 	wcscpy(st2, L"  ");
 	if (st && *st)
-		wmemcpy(st2, st, 2);
+		wmemcpy(st2, yhteystila(st), 2);
    if (!server_on) {
 	  if (ySize <= 25) {
 		 if (((maxyhteys+cn-dcom)%maxyhteys)<3)

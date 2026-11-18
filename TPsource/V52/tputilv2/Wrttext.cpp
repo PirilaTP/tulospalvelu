@@ -268,7 +268,7 @@ PRFILE *openprfile(wchar_t *prtfname, int GDIkirjoitin, int wait, int append,
 			}
 		}
 	if (prf[nprf] == NULL) {
-		swprintf(wmsg, L"Ei tilaa tiedoston %s avaamiselle", prtfname);
+		swprintf(wmsg, TR(L"Ei tilaa tiedoston %s avaamiselle"), prtfname);
 		writeerror_w(wmsg, 0);
 		return(NULL);
 		}

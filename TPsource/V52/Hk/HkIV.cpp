@@ -3063,7 +3063,7 @@ INT tall_regnly(san_type *vastaus, INT r_no)
 	  writeerrorOn = 50;
 	  vidspwmsg(ySize-1,0,7,0,TR(L"Maalikello on tietokoneen kelloa      s"));
 	  vidint(ySize-1,32,5,(int)(labs(bt) / 10));
-	  wcscpy(wst, (bt > 0) ? L"edellä" : L"jäljessä");
+	  wcscpy(wst, (bt > 0) ? TR(L"edellä") : TR(L"jäljessä"));
 	  vidspwmsg(ySize-1,40,7,0,wst);
 #endif
 	  }
@@ -3505,10 +3505,10 @@ void vahaku(LPVOID lpCn)
 
 	int er = 0, keTserial;
 	static wchar_t *eMsg[] = {
-		L"Muistin varaaminen ei onnistunut",
-		L"Virhe pyyntöä lähetettäessä",
-		L"Yhteyden avaaminen ei onnistunut",
-		L"Istunnon avaaminen ei onnistunut",
+		N_(L"Muistin varaaminen ei onnistunut"),
+		N_(L"Virhe pyyntöä lähetettäessä"),
+		N_(L"Yhteyden avaaminen ei onnistunut"),
+		N_(L"Istunnon avaaminen ei onnistunut"),
 		L""};
 
 	inhttpHaku = 1;
@@ -3540,7 +3540,7 @@ void vahaku(LPVOID lpCn)
 		}
 	if ((er = httphaku(eTParam.eThost , eTParam.eTport, page, 0, eTParam.buf, eTParam.buflen, &eTParam.haettu)) != 0) {
 		if (er <= -3) {
-			swprintf(msg, TR(L"Virhe väliaikahaussa: %s"), eMsg[-3-er]);
+			swprintf(msg, TR(L"Virhe väliaikahaussa: %s"), TR(eMsg[-3-er]));
 			}
 		else {
 			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,

@@ -860,14 +860,14 @@ void kirj_err_file(wchar_t *msg, int nayta)
 		wchar_t ch = L'J';
 
 		vidspwmsg(ySize-1,0,0,7,msg);
-		wcscpy(msg2, L"J)atka, L)opeta nämä virheilmoitukset");
+		wcscpy(msg2, N_(L"J)atka, L)opeta nämä virheilmoitukset"));
 		wselectopt(msg2, L"JL", &ch);
 		if (ch == L'L')
 			lopilm = 1;
 #else
 		int vast;
 
-		swprintf(msg2, L"%s \nJatketaanko näiden virheilmoitusten näyttämistä", msg);
+		swprintf(msg2, TR(L"%s \nJatketaanko näiden virheilmoitusten näyttämistä"), msg);
 		vast = select3(2, msg2, TR(L"Toistuva virheilmoitus"), TR(L"Näytä edelleen"), TR(L"Ohita ilmoitukset jatkossa"), L"", 0);
 		if (vast == 2)
 			lopilm = 1;

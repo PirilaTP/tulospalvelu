@@ -768,7 +768,7 @@ int arvovaihe(int srj, int nn, int ipv, int sailpo, int hiihtoarv, bool osasarja
 			if (!Sarjat[srj].lahtovali[arv_pv]) {
 				int retval;
 
-				swprintf(msg, L"Sarjassa %s yhteislähtö. Lähtöajat merkitään. Arvotaanko samalla kaikkien vaiheiden numerot?, Peruuta keskeyttää arvonnan",
+				swprintf(msg, TR(L"Sarjassa %s yhteislähtö. Lähtöajat merkitään. Arvotaanko samalla kaikkien vaiheiden numerot?, Peruuta keskeyttää arvonnan"),
 					Sarjat[srj].sarjanimi);
 				if ((retval = Application->MessageBoxW(msg, TR(L"Yhteislähtösarja"), MB_YESNOCANCEL)) == IDYES) {
 #ifdef DBGARVONTA

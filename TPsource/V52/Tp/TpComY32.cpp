@@ -878,7 +878,7 @@ static void opencomUDP(int cn)
    put_profile(L"openportUDP 1", cn);
 #endif
    if (openportUDP(hComm+cn, ipparam+cn)) {
-	  swprintf(msg, L"UDP-yhteyden %d avaaminen ei onnistunut", cn+1);
+	  swprintf(msg, TR(L"UDP-yhteyden %d avaaminen ei onnistunut"), cn+1);
 		writeerror_w(msg, 0);
 	  return;
 	  }
@@ -1153,7 +1153,7 @@ static void opencomTCP(int cn)
    wchar_t msg[80];
 
    if (openportTCP(hComm+cn, ipparam+cn) && (comtype[cn] == comtpTCP)) {
-	  swprintf(msg, L"TCP-yhteyden %d avaaminen ei onnistunut, yrityksia jatketaan\n", cn+1);
+	  swprintf(msg, TR(L"TCP-yhteyden %d avaaminen ei onnistunut, yrityksia jatketaan\n"), cn+1);
 #ifdef _CONSOLE
 	  writeerror_w(msg, 2000);
 #endif
@@ -1905,7 +1905,7 @@ static void opencomTCPin(int cn)
 	wchar_t msg[80];
 
 	if (openportTCP(hComm+cn, ipparam+cn)) {
-		swprintf(msg, L"TCP-yhteyden %d avaaminen ei onnistunut, yrityksia jatketaan\n", cn+1);
+		swprintf(msg, TR(L"TCP-yhteyden %d avaaminen ei onnistunut, yrityksia jatketaan\n"), cn+1);
 #ifdef _CONSOLE
 		writeerror_w(msg, 2000);
 #endif
@@ -2049,7 +2049,7 @@ void openlukijaUDP(int cn)
 
    if ((comtype[cn] & comtpUDP) && openportUDP(hComm+cn, ipparam+cn)) {
 #ifdef _CONSOLE
-	  swprintf(msg, L"Lukijan %d UDP-yhteyden avaaminen ei onnistunut\n"
+	  swprintf(msg, TR(L"Lukijan %d UDP-yhteyden avaaminen ei onnistunut\n")
 		 , cn+1-max_lahportti);
 	  writeerror_w(msg, 4000);
 #endif
@@ -2065,7 +2065,7 @@ void openlukijaTCP(int cn)
 
    if (openportTCP(hComm+cn, ipparam+cn)) {
 #ifdef _CONSOLE
-	  swprintf(msg, L"Lukijan %d TCP-yhteyden avaaminen ei onnistunut\n"
+	  swprintf(msg, TR(L"Lukijan %d TCP-yhteyden avaaminen ei onnistunut\n")
 		 , cn+1-max_lahportti);
 		 writeerror_w(msg, 4000);
 #endif
@@ -2132,7 +2132,7 @@ static void openTCPloki(int cn)
 	if (err != 0) {
 		wchar_t msg[100];
 
-		swprintf(msg, L"TCP-lokin käynnistys ei onnistunut (%d)", err);
+		swprintf(msg, TR(L"TCP-lokin käynnistys ei onnistunut (%d)"), err);
 		writeerror_w(msg, 2000);
 		lokiTCP = 0;
 		}
@@ -2243,8 +2243,8 @@ int initcom(int cn)
 							ch = L' ';
 							wselectopt(msg, L"ST", &ch);
 #else
-							swprintf(msg, L"Tiedostossa COMFILE %ld lähetettyä ja"
-								L" %ld lähetettävää tietoa. Säilytetääänkö?", lah, av);
+							swprintf(msg, TR(L"Tiedostossa COMFILE %ld lähetettyä ja"
+								L" %ld lähetettävää tietoa. Säilytetääänkö?"), lah, av);
 							if (Application->MessageBoxW(msg, TR(L"Tietojen säilyttäminen"), MB_YESNO) == IDYES)
 								ch = L'S';
 							else

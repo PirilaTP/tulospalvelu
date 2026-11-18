@@ -1485,7 +1485,7 @@ void tulostusparamtp::puts_f(wchar_t *line)
    tul_tied = lstf->u.Fl;
    if (tul_tied->IsOpen() && tul_tied->WriteLine(line) == WEOF) {
 		wchar_t msg[200];
-		swprintf(msg, 199, L"Virhe tiedostoon %s kirjoitettaessa", tul_tied->FileName);
+		swprintf(msg, 199, TR(L"Virhe tiedostoon %s kirjoitettaessa"), tul_tied->FileName);
 		writeerror_w(msg, 0);
 		closeprfile(lstf);
 		}
@@ -1527,7 +1527,7 @@ void tulostusparamtp::writeline(wchar_t *rv)
    *(++p) = 0;
    if (tul_tied->IsOpen() && tul_tied->WriteLine(rivi) == WEOF) {
 		wchar_t msg[200];
-		swprintf(msg, 199, L"Virhe tiedostoon %s kirjoitettaessa", tul_tied->FileName);
+		swprintf(msg, 199, TR(L"Virhe tiedostoon %s kirjoitettaessa"), tul_tied->FileName);
 		writeerror_w(msg, 0);
 	  }
    free(rivi);
@@ -1997,7 +1997,7 @@ static void shltulos(kilptietue *kilp, int Sarja, tulostusparamtp *tulprm)
 		  clrln(ySize-3);
 		  wcsncpy(stsrj, Sarjat[kilp->Sarja()].sarjanimi, 10);
 		  stsrj[10] = 0;
-		  swprintf(msg, L"Anna sarjalle %s käytettävä nimi", Sarjat[kilp->Sarja()].sarjanimi);
+		  swprintf(msg, TR(L"Anna sarjalle %s käytettävä nimi"), Sarjat[kilp->Sarja()].sarjanimi);
 		  vidspwmsg(ySize-3,0,7,0,msg);
 		  inputwstr(stsrj, 10, 42, ySize-3, L"\r", &ch, 0);
 		  }
@@ -2063,7 +2063,7 @@ static void shltulos(kilptietue *kilp, int Sarja, tulostusparamtp *tulprm)
 	  if (laji[1] == L' ')
 		  laji[1] = 0;
 	  clrln(ySize-3);
-	  swprintf(msg, L"Sarja: %10s. Korjaa tarvittaessa matka       ja tapa %s", stsrj, laji);
+	  swprintf(msg, TR(L"Sarja: %10s. Korjaa tarvittaessa matka       ja tapa %s"), stsrj, laji);
 	  vidspwmsg(ySize-3,0,7,0,msg);
 	  inputwstr(stmatka, 4, 45, ySize-3, L"\r", &ch, 0);
 	  inputwstr(laji, 2, 60, ySize-3, L"\r", &ch, 0);

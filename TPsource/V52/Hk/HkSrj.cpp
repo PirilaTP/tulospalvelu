@@ -76,8 +76,9 @@ int luesarjat(void)
 		}
 	sarjaf = new TextFl(sarjafname,L"rt");
 	if (!sarjaf->IsOpen()) {
-		wcscpy(prs, L"Tiedosto ");
-		writeerror_w(wcscat(wcscat(prs, sarjaxmlfname), L" puuttuu"),0);
+		// s[300] riitt‰‰ tiedostonimelle (200) ja tekstille
+		swprintf(s, TR(L"Tiedosto %s puuttuu"), sarjaxmlfname);
+		writeerror_w(s,0);
 		scpclr();
 		delete sarjaf;
 		return(1);
@@ -492,9 +493,9 @@ wchar_t *ctx = NULL;
 		clrln(16);
 		clrln(17);
 		clrln(18);
-		swprintf(prs,L"Tiedosto %s viallinen", sarjafname);
+		swprintf(prs,TR(L"Tiedosto %s viallinen"), sarjafname);
 		vidspwmsg(15,0,7,0,prs);
-		swprintf(prs,L"Virhe rivill‰ %d tai ennen sit‰", er);
+		swprintf(prs,TR(L"Virhe rivill‰ %d tai ennen sit‰"), er);
 		vidspwmsg(16,0,7,0,prs);
 		vidspwmsg(17,0,7,0,
 			TR(L"Poista tai korjaa tiedosto ennen uutta k‰ynnistyst‰"));
@@ -523,7 +524,7 @@ void luesarjayhdistelmat(void)
 		p = wcstok(buf, L" \t\n", &ctx);
 		if (p) {
 			if (n >= MAXYHD) {
-				swprintf(buf, L"Liikaa sarjayhdistelmi‰. Maksimim‰‰r‰ on %d.", MAXYHD);
+				swprintf(buf, TR(L"Liikaa sarjayhdistelmi‰. Maksimim‰‰r‰ on %d."), MAXYHD);
 				writeerror_w(buf, 0);
 				}
 //			wcsncpy(yhdnimet[n], p, LSARJA);
@@ -582,7 +583,7 @@ void luesarjayhdistelmat(void)
 		}
 	nsarjayhd = n;
 	if (n > 0) {
-		swprintf(buf, L"Tiedostosta %s luettu %d sarjayhdistelm‰‰", yhdfilename, n);
+		swprintf(buf, TR(L"Tiedostosta %s luettu %d sarjayhdistelm‰‰"), yhdfilename, n);
 		vidspwmsg(1,5,7,0,buf);
 		}
 	delete yhdfile;

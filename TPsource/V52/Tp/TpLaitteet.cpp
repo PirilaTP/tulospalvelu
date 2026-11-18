@@ -2713,14 +2713,14 @@ void aseta_mtr(void)
 		600L * vastaus.r13st.t_min + 36000L * vastaus.r13st.t_hour + t0_regn[r_no] / KSEK;
 	vidspwmsg(2, 1, 7, 0, TR(L"MTR-laite no"));
 	vidint(2, 17, 0, vastaus.r13st.mtrid);
-	swprintf(msg, L"MTR-laitteen ilmoittama aika %02d.%02d.%02d  %s",
+	swprintf(msg, TR(L"MTR-laitteen ilmoittama aika %02d.%02d.%02d  %s"),
 		vastaus.r13st.t_day, vastaus.r13st.t_month, vastaus.r13st.t_year,
 		aikatowstr_ls(as, e_time, t0));
 	vidspwmsg(4, 1, 7, 0, msg);
 	e_time = (e_time - c_time) / 10;
-	swprintf(msg, L"Ero tietokoneen kellosta %ld sek", e_time);
+	swprintf(msg, TR(L"Ero tietokoneen kellosta %ld sek"), e_time);
 	vidspwmsg(5, 1, 7, 0, msg);
-	swprintf(msg, L"Pariston tila %s", vastaus.r13st.battery ? L"HEIKKO" : L"OK");
+	swprintf(msg, TR(L"Pariston tila %s"), vastaus.r13st.battery ? TR(L"HEIKKO") : L"OK");
 	vidspwmsg(7, 1, 7, 0, msg);
 	if (!vastaus.r13st.pkgno)
 		vidspwmsg(8, 1, 7, 0, TR(L"Laitteessa ei tietoja"));
@@ -2761,7 +2761,7 @@ void aseta_mtr(void)
 				if (nch < r_msg_len[r_no] || vast1.r13.alku != 0xffffffffL ||
 					vast1.r13.msglen != r_msg_len[r_no] - 4 || vast1.r13.tunnus != 'M' ||
 					r_tarksum(vast1.bytes, r_msg_len[r_no] - 2, vast1.r13.chksum2, 0)) {
-					swprintf(msg, L"%s  Tilatietojen lukeminen epäonnistui", ist);
+					swprintf(msg, TR(L"%s  Tilatietojen lukeminen epäonnistui"), ist);
 				}
 				else {
 					luku = ed_alku - vastaus.r13st.s_start[i];
@@ -2773,11 +2773,11 @@ void aseta_mtr(void)
 				ed_alku = vastaus.r13st.s_start[i];
 			}
 			else {
-				swprintf(msg, L"%s  Ei tietoja", ist);
+				swprintf(msg, TR(L"%s  Ei tietoja"), ist);
 			}
 			vidspwmsg(11 + i, 1, 7, 0, msg);
 		}
-		swprintf(msg, L"Kaikkiaan  %26ld%12ld%10ld",
+		swprintf(msg, TR(L"Kaikkiaan  %26ld%12ld%10ld"),
 			vastaus.r13st.oldestpkgno, vastaus.r13st.pkgno,
 			vastaus.r13st.pkgno - vastaus.r13st.oldestpkgno + 1);
 		vidspwmsg(ySize - 5, 1, 7, 0, msg);

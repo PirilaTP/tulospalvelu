@@ -13,6 +13,8 @@ Juk/VTulostus.cpp	muotoilu	%d. osuus
 Juk/VTulostus.cpp	muotoilu	%d. väliaika
 JukConsole/VConTul.cpp	muotoilu	Oik
 JukConsole/VConTul.cpp	muotoilu	Vas
+Tp/TpComY.cpp	muotoilu	Out
+Tp/TpComY32.cpp	muotoilu	Out
 ViestiWin/MuotoiluUnit.cpp	sijoitus	Oik
 ViestiWin/MuotoiluUnit.cpp	sijoitus	Vas
 ViestiWin/TulostusUnit2.cpp	sijoitus	Juoksujarj_

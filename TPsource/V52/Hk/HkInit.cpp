@@ -282,15 +282,19 @@ void lueKorRajat(void)
 #ifdef _CONSOLE
 static void nimio(INT clear)
    {
+   wchar_t rivi[100];
+   const wchar_t *otsikko;
 
    if (clear) scpclr();
    scbox(1,12,9,67,15,0,7);
-   viwrrectw(7,27,7,49,TR(L"Ohjelma HkMaali, versio"),7,0,0);
-   vidspwmsg(7,51,7,0,VersioNo());
+   // Otsikko ja versiorivi keskitetÄÄn alkuperÄisen kentÄn kohdalle: kÄÄnnÖs voi olla
+   // suomenkielistÄ pidempi tai lyhyempi (laatikon sisÄltÖ sarakkeet 13-66).
+   swprintf(rivi, L"%s %s", TR(L"Ohjelma HkMaali, versio"), VersioNo());
+   vidspwmsg(7, 27 + (28 - (int) wcslen(rivi)) / 2, 7, 0, rivi);
    vidspwmsg(8,42, 7, 0, TR(L"Build"));
    vidspwmsg(8, 48, 7, 0, Build());
-   viwrrectw(3,15,3,63,TR(L"HENKILÖKOHTAISEN KILPAILUN TULOSPALVELUOHJELMISTO"),
-	  7,0,0);
+   otsikko = TR(L"HENKILÖKOHTAISEN KILPAILUN TULOSPALVELUOHJELMISTO");
+   vidspwmsg(3, 15 + (49 - (int) wcslen(otsikko)) / 2, 7, 0, otsikko);
    viwrrectw(5,34,5,45,TR(L"Pekka Pirilä"),7,0,0);
 #ifdef DEMO
    vidspwmsg(8,24,7,0,TR(L"DEMO korkeintaan 30 osanottajaa"));   /* DEMO */

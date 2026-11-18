@@ -149,7 +149,7 @@ void kirj_err_file(char *msg, int nayta)
       erbeep();
       ch = 'J';
 #ifdef _CONSOLE
-      sprintf(msg2, "J)atka, L)opeta nämä virheilmoitukset");
+      strcpy(msg2, N_("J)atka, L)opeta nämä virheilmoitukset"));
 #else	  
 	  sprintf(msg2, "%s\nJ)atka, L)opeta nämä virheilmoitukset", msg);
 #endif	  
