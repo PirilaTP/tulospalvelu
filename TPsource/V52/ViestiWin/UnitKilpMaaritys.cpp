@@ -64,6 +64,18 @@ void __fastcall TFormKilpMaaritys::ButtonOKClick(TObject *Sender)
 	FILE *sfl;
 	int laika = 11, laika2 = 8, laikasj = 11;
 	int ed_n_os_akt;
+	int pvm;
+
+	// Kilpailun päivämäärä on pakollinen ja tallennetaan muodossa vvvv-kk-pp, koska se
+	// kirjoitetaan sellaisenaan IOF XML -tiedostojen Date-elementtiin
+	if ((pvm = DateNoTarkka(EdtPvm->Text.c_str())) <= 0) {
+		Application->MessageBoxW(L"Anna kilpailun päivämäärä muodossa vvvv-kk-pp tai pp.kk.vvvv"
+			L" (esim. 2026-09-27). Päivämäärä tarvitaan mm. IOF XML -tiedostoihin.",
+			L"Päivämäärä puuttuu tai on virheellinen", MB_OK);
+		EdtPvm->SetFocus();
+		return;
+		}
+	EdtPvm->Text = stDateNo(NULL, pvm);
 
 	kilpparam.n_os = _wtoi(EditTiedOsluku->Text.c_str());
 	kilpparam.valuku = _wtoi(EditTiedVa->Text.c_str());

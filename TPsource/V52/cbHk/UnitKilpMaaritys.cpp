@@ -164,6 +164,13 @@ void __fastcall TFormKilpMaaritys::NaytaArvot(void)
 		kilpparam.vuosi = now->tm_year + 1900;
 		}
 	EditVuosi->Text = UnicodeString(kilpparam.vuosi);
+	if (pvparam[0].Date > 0) {
+		wchar_t st[16];
+		swprintf(st, L"%d.%d.%d", dDateNo(pvparam[0].Date), mDateNo(pvparam[0].Date), yDateNo(pvparam[0].Date));
+		EdtPvm->Text = st;
+		}
+	else
+		EdtPvm->Text = L"";
 	switch (kilpparam.kilplaji) {
 		case L'S':
 			RGlaji->ItemIndex = 0;
@@ -457,6 +464,15 @@ void __fastcall TFormKilpMaaritys::EditPvExit(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+// Kilpailuvuosi p‰iv‰m‰‰r‰n mukaan, kun kelvollinen p‰iv‰m‰‰r‰ on annettu
+void __fastcall TFormKilpMaaritys::EdtPvmExit(TObject *Sender)
+{
+	int pvm = DateNoTarkka(EdtPvm->Text.c_str());
+
+	if (pvm > 0)
+		EditVuosi->Text = UnicodeString(yDateNo(pvm));
+}
+//---------------------------------------------------------------------------
 void __fastcall TFormKilpMaaritys::FormShow(TObject *Sender)
 {
 	static int init = 0;
@@ -513,6 +529,24 @@ void __fastcall TFormKilpMaaritys::FormCloseQuery(TObject *Sender, bool &CanClos
 		ModalResult = mrCancel;
 		}
 	else {
+		// Kilpailun p‰iv‰m‰‰r‰ on pakollinen (mm. IOF XML -tiedostot): tarkistetaan ennen
+		// muita muutoksia, jotta virheellinen kaavake j‰‰ auki muuttamatta tietoja
+		int pvm = DateNoTarkka(EdtPvm->Text.c_str());
+		if (pvm <= 0) {
+			Application->MessageBoxW(L"Anna kilpailun p‰iv‰m‰‰r‰ muodossa pp.kk.vvvv (esim. 27.9.2026)."
+				L" P‰iv‰m‰‰r‰ tarvitaan mm. IOF XML -tiedostoihin.", L"P‰iv‰m‰‰r‰ puuttuu tai on virheellinen", MB_OK);
+			EdtPvm->SetFocus();
+			CanClose = false;
+			hyvaksyMuutokset = 0;
+			return;
+			}
+		// 1. vaihe saa annetun p‰iv‰n, myˆhemm‰t ilman p‰iv‰m‰‰r‰‰ seuraavat p‰iv‰t
+		// (muutettavissa kohdassa Vaihekohtaiset lis‰m‰‰ritykset)
+		pvparam[0].Date = pvm;
+		for (int i = 1; i < _wtoi(EditPv->Text.c_str()) && i < N_PV; i++) {
+			if (pvparam[i].Date <= 0)
+				pvparam[i].Date = pvm + i;
+			}
 		wchar_t lajit[] = L"SHJAUM", muutlajit[] = L"PNB", alalajit[] = L" SEDA", NSrj = 0;
 		FILE *sfl;
 		int laika = 8, laika2 = 8, laikasj = 8;

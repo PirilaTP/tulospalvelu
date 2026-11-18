@@ -138,3 +138,36 @@ int DateNoFromSt(wchar_t *st)
 		}
 	return(pvm);
 }
+
+// Tarkistaa päivämäärämerkkijonon tiukasti ja muuntaa sen päivänumeroksi. Hyväksytyt muodot:
+// "pp.kk.vvvv", "pp.kk.vv" (vuosi 2000+) ja "vvvv-kk-pp", ympärillä saa olla välilyöntejä.
+// Päivän on oltava olemassa (karkausvuodet huomioiden) ja vuoden välillä 1901–2099, jolla
+// välillä DateNo on tarkka. Palauttaa päivänumeron tai 0, jos merkkijono ei kelpaa.
+int DateNoTarkka(const wchar_t *st)
+{
+	static const int pituus[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	int y = 0, m = 0, d = 0, n = 0, pv;
+
+	if (st == NULL)
+		return(0);
+	while (*st == L' ')
+		st++;
+	if (swscanf(st, L"%4d-%2d-%2d%n", &y, &m, &d, &n) == 3 && n == 10)
+		;
+	else if (n = 0, swscanf(st, L"%2d.%2d.%4d%n", &d, &m, &y, &n) == 3 && n >= 6) {
+		if (y < 100 && n <= 8 && st[n-3] == L'.')
+			y += 2000;
+		else if (y < 1000)
+			return(0);
+		}
+	else
+		return(0);
+	for (st += n; *st == L' '; st++)
+		;
+	if (*st != 0 || y < 1901 || y > 2099 || m < 1 || m > 12 || d < 1)
+		return(0);
+	pv = pituus[m-1] + (m == 2 && y % 4 == 0 ? 1 : 0);
+	if (d > pv)
+		return(0);
+	return(DateNo(y, m, d));
+}

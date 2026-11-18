@@ -489,6 +489,7 @@ int mDateNo(int dd);
 int dDateNo(int dd);
 wchar_t *stDateNo(wchar_t *st, int dd);
 int DateNoFromSt(wchar_t *st);
+int DateNoTarkka(const wchar_t *st);
 long msdaytime(void);
 wchar_t *ISOdatetime(int des, bool zone);
 wchar_t *ISOzoneLocal(const wchar_t *pvm, const wchar_t *aika);

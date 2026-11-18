@@ -93,6 +93,8 @@
     <ClCompile Include="..\..\Juk\VRinnakkaisOsuus.cpp" />
     <ClCompile Include="..\..\Tests\AikavyohykeTest.cpp" />
     <ClCompile Include="..\..\tputilv2\msdaytime.cpp" />
+    <ClCompile Include="..\..\Tests\PaivamaaraTest.cpp" />
+    <ClCompile Include="..\..\tputilv2\DateNo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Juk\VRinnakkaisOsuus.h" />

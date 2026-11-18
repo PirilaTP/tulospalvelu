@@ -98,9 +98,19 @@ static int pyorVal(wchar_t *st)
 
 void __fastcall TFormVaiheMaar::Button1Click(TObject *Sender)
 {
+	// Vaiheiden p‰iv‰m‰‰r‰t pakollisia ja tarkistettuja (mm. IOF XML -tiedostot)
+	for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
+		if (DateNoTarkka(SG1->Cells[ipv+1][2].c_str()) <= 0) {
+			wchar_t msg[200];
+			swprintf(msg, L"%d. vaiheen p‰iv‰m‰‰r‰ puuttuu tai on virheellinen."
+				L" Anna se muodossa pp.kk.vvvv tai vvvv-kk-pp.", ipv+1);
+			Application->MessageBoxW(msg, L"P‰iv‰m‰‰r‰", MB_OK);
+			return;
+			}
+		}
 	for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
 		wcsncpy(pvparam[ipv].RaceId, SG1->Cells[ipv+1][1].c_str(), sizeof(pvparam[ipv].RaceId)/2-1);
-		pvparam[ipv].Date = DateNoFromSt(SG1->Cells[ipv+1][2].c_str());
+		pvparam[ipv].Date = DateNoTarkka(SG1->Cells[ipv+1][2].c_str());
 		wcsncpy(pvparam[ipv].Title, SG1->Cells[ipv+1][3].c_str(), sizeof(pvparam[ipv].Title)/2-1);
 		pvparam[ipv].pyor[2] = pyorVal(SG1->Cells[ipv+1][4].c_str());;
 		pvparam[ipv].pyor[3] = pyorVal(SG1->Cells[ipv+1][5].c_str());;

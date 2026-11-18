@@ -47,6 +47,8 @@ __published:	// IDE-managed Components
 	TEdit *EditKoodi;
 	TLabel *Label6;
 	TEdit *EditVuosi;
+	TEdit *EdtPvm;
+	TLabel *LblPvm;
 	TLabel *Label7;
 	TButton *ButtonOK;
 	TButton *Button1;
@@ -112,6 +114,7 @@ __published:	// IDE-managed Components
 	void __fastcall RGtasmennysClick(TObject *Sender);
 	void __fastcall RGMuuLajiClick(TObject *Sender);
 	void __fastcall EditPvExit(TObject *Sender);
+	void __fastcall EdtPvmExit(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 	void __fastcall BtnVaiheMaarClick(TObject *Sender);
