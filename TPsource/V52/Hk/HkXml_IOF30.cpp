@@ -1137,11 +1137,13 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 		  emitvatp emva;
 		 tee_emva(&emva, &em);
 		 rt = haerata(&kilp);
-		 int last_punch = -1;
-		 for (int r = 0; r < emva.rastiluku; r++)
-			 if (emva.rastit[r][1]) last_punch = r;
-		 int loop_end = emva.tulos ? emva.rastiluku - 1 : last_punch;
-		 for (int r = 0; r <= loop_end; r++) {
+		 // IOF 3.0: maalia ei kirjoiteta SplitTime-elementiksi, mutta jokainen radan rasti kirjoitetaan
+		 // (leimaamaton status="Missing"). tee_emva jättää maalileimauksen pois vain, kun
+		 // maalileimasin on määritetty; radalla, jonka maalilaji > 1, viimeinen rasti on maali.
+		 int nrasti = emva.rastiluku;
+		 if (rt && rt->maalilaji > 1 && nrasti == rt->rastiluku)
+			 nrasti--;
+		 for (int r = 0; r < nrasti; r++) {
 			 if (emva.rastit[r][1]) {
 				tul_tied->put_wtag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), level++);
 				tul_tied->put_wxml_d(XMLhae_tagName(TAGControlCode, IOF3Tags, nIOF3Tags), emva.rastit[r][0], level);
@@ -1152,12 +1154,6 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 				if (rt)
 					tul_tied->put_wxml_d(XMLhae_tagName(TAGControlCode, IOF3Tags, nIOF3Tags), rt->rastikoodi[r], level);
 				}
-			tul_tied->put_wantitag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), --level);
-			}
-		 if (rt && emva.rastiluku < rt->rastiluku && emva.tulos) {
-			tul_tied->put_wtag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), level++);
-			tul_tied->put_wxml_d(XMLhae_tagName(TAGControlCode, IOF3Tags, nIOF3Tags), rt->rastikoodi[emva.rastiluku], level);
-			tul_tied->put_wxml_d(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), emva.tulos/SEK, level);
 			tul_tied->put_wantitag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), --level);
 			}
 		 }
