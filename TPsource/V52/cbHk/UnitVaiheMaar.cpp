@@ -65,7 +65,11 @@ void TFormVaiheMaar::Paivita()
 		SG1->ColWidths[ipv+1] = 120 * Screen->PixelsPerInch / 96;
 		SG1->Cells[ipv+1][0] = UnicodeString(ipv+1) + L". vaihe";
 		SG1->Cells[ipv+1][1] = pvparam[ipv].RaceId;
-		SG1->Cells[ipv+1][2] = stDateNo(NULL, pvparam[ipv].Date);
+		if (pvparam[ipv].Date > 0)
+			SG1->Cells[ipv+1][2] = UnicodeString(dDateNo(pvparam[ipv].Date)) + L"." +
+				UnicodeString(mDateNo(pvparam[ipv].Date)) + L"." + UnicodeString(yDateNo(pvparam[ipv].Date));
+		else
+			SG1->Cells[ipv+1][2] = L"";
 		SG1->Cells[ipv+1][3] = pvparam[ipv].Title;
 		SG1->Cells[ipv+1][4] = Pr[PyorIx(pvparam[ipv].pyor[2])];
 		SG1->Cells[ipv+1][5] = Pr[PyorIx(pvparam[ipv].pyor[3])];
@@ -111,6 +115,8 @@ void __fastcall TFormVaiheMaar::Button1Click(TObject *Sender)
 	for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
 		wcsncpy(pvparam[ipv].RaceId, SG1->Cells[ipv+1][1].c_str(), sizeof(pvparam[ipv].RaceId)/2-1);
 		pvparam[ipv].Date = DateNoTarkka(SG1->Cells[ipv+1][2].c_str());
+		if (ipv == 0)
+			kilpparam.vuosi = yDateNo(pvparam[0].Date);	// kilpailuvuosi 1. vaiheen päivämäärästä
 		wcsncpy(pvparam[ipv].Title, SG1->Cells[ipv+1][3].c_str(), sizeof(pvparam[ipv].Title)/2-1);
 		pvparam[ipv].pyor[2] = pyorVal(SG1->Cells[ipv+1][4].c_str());;
 		pvparam[ipv].pyor[3] = pyorVal(SG1->Cells[ipv+1][5].c_str());;

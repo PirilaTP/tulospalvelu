@@ -69,13 +69,12 @@ void __fastcall TFormKilpMaaritys::ButtonOKClick(TObject *Sender)
 	// Kilpailun päivämäärä on pakollinen ja tallennetaan muodossa vvvv-kk-pp, koska se
 	// kirjoitetaan sellaisenaan IOF XML -tiedostojen Date-elementtiin
 	if ((pvm = DateNoTarkka(EdtPvm->Text.c_str())) <= 0) {
-		Application->MessageBoxW(L"Anna kilpailun päivämäärä muodossa vvvv-kk-pp tai pp.kk.vvvv"
-			L" (esim. 2026-09-27). Päivämäärä tarvitaan mm. IOF XML -tiedostoihin.",
+		Application->MessageBoxW(L"Anna kilpailun päivämäärä muodossa pp.kk.vvvv"
+			L" (esim. 27.9.2026). Päivämäärä tarvitaan mm. IOF XML -tiedostoihin.",
 			L"Päivämäärä puuttuu tai on virheellinen", MB_OK);
 		EdtPvm->SetFocus();
 		return;
 		}
-	EdtPvm->Text = stDateNo(NULL, pvm);
 
 	kilpparam.n_os = _wtoi(EditTiedOsluku->Text.c_str());
 	kilpparam.valuku = _wtoi(EditTiedVa->Text.c_str());
@@ -101,8 +100,8 @@ void __fastcall TFormKilpMaaritys::ButtonOKClick(TObject *Sender)
 //	wcscpy(llparam.luetots0, kilpailu);
 	wcsncpy(kilpparam.kilpkoodi, EditKoodi->Text.c_str(), sizeof(kilpparam.kilpkoodi)/2-1);
 	wcsncpy(kilpparam.Name, EdtXmlNimi->Text.c_str(), sizeof(kilpparam.Name)/2-1);
-	wcsncpy(kilpparam.Date, EdtPvm->Text.c_str(), sizeof(kilpparam.Date)/2-1);
-	kilpparam.vuosi = EditVuosi->Text.ToInt();
+	stDateNo(kilpparam.Date, pvm);	// IOF XML: vvvv-kk-pp
+	kilpparam.vuosi = yDateNo(pvm);
 	if (lajit[RGlaji->ItemIndex] == L'M') {
 		kilpparam.kilplaji = muutlajit[RGMuuLaji->ItemIndex];
 		}
@@ -255,15 +254,13 @@ void __fastcall TFormKilpMaaritys::NaytaArvot(void)
 		wcscpy(kilpparam.kilpkoodi, L"0000");
 	EditKoodi->Text = UnicodeString(kilpparam.kilpkoodi);
 	EdtXmlNimi->Text = UnicodeString(kilpparam.Name);
-	EdtPvm->Text = UnicodeString(kilpparam.Date);
-	if (kilpparam.vuosi < 1900) {
-		time_t clock;
-		struct tm *now;
-		time(&clock);
-		now = localtime(&clock);
-		kilpparam.vuosi = now->tm_year + 1900;
-		}
-	EditVuosi->Text = UnicodeString(kilpparam.vuosi);
+	{
+	int pvm = DateNoTarkka(kilpparam.Date);
+	if (pvm > 0)
+		EdtPvm->Text = UnicodeString(dDateNo(pvm)) + L"." + UnicodeString(mDateNo(pvm)) + L"." + UnicodeString(yDateNo(pvm));
+	else
+		EdtPvm->Text = UnicodeString(kilpparam.Date);
+	}
 	RGlaji->ItemIndex = wcswcind(kilpparam.kilplaji, lajit);
 	if (RGlaji->ItemIndex < 0)
 		RGlaji->ItemIndex = 4;

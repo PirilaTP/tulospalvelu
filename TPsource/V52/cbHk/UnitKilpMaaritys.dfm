@@ -236,19 +236,6 @@ object FormKilpMaaritys: TFormKilpMaaritys
     Font.Style = []
     ParentFont = False
   end
-  object Label7: TLabel
-    Left = 392
-    Top = 160
-    Width = 31
-    Height = 16
-    Caption = 'Vuosi'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-  end
   object Label8: TLabel
     Left = 24
     Top = 54
@@ -528,9 +515,9 @@ object FormKilpMaaritys: TFormKilpMaaritys
   object LblPvm: TLabel
     Left = 266
     Top = 160
-    Width = 66
+    Width = 150
     Height = 16
-    Caption = 'P'#228'iv'#228'm'#228#228'r'#228
+    Caption = 'P'#228'iv'#228'm'#228#228'r'#228' (pp.kk.vvvv)'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -553,22 +540,7 @@ object FormKilpMaaritys: TFormKilpMaaritys
     ParentShowHint = False
     ShowHint = True
     TabOrder = 6
-    OnExit = EdtPvmExit
-  end
-  object EditVuosi: TEdit
-    Left = 345
-    Top = 157
-    Width = 41
-    Height = 24
-    Alignment = taRightJustify
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 6
-    Text = '1'
+    TextHint = 'pp.kk.vvvv'
   end
   object ButtonOK: TButton
     Left = 404

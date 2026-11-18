@@ -156,14 +156,6 @@ void __fastcall TFormKilpMaaritys::NaytaArvot(void)
 	if (!kilpparam.kilpkoodi[0])
 		wcscpy(kilpparam.kilpkoodi, L"0000");
 	EditKoodi->Text = UnicodeString(kilpparam.kilpkoodi);
-	if (kilpparam.vuosi < 1900) {
-		time_t clock;
-		struct tm *now;
-		time(&clock);
-		now = localtime(&clock);
-		kilpparam.vuosi = now->tm_year + 1900;
-		}
-	EditVuosi->Text = UnicodeString(kilpparam.vuosi);
 	if (pvparam[0].Date > 0) {
 		wchar_t st[16];
 		swprintf(st, L"%d.%d.%d", dDateNo(pvparam[0].Date), mDateNo(pvparam[0].Date), yDateNo(pvparam[0].Date));
@@ -464,15 +456,6 @@ void __fastcall TFormKilpMaaritys::EditPvExit(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-// Kilpailuvuosi päivämäärän mukaan, kun kelvollinen päivämäärä on annettu
-void __fastcall TFormKilpMaaritys::EdtPvmExit(TObject *Sender)
-{
-	int pvm = DateNoTarkka(EdtPvm->Text.c_str());
-
-	if (pvm > 0)
-		EditVuosi->Text = UnicodeString(yDateNo(pvm));
-}
-//---------------------------------------------------------------------------
 void __fastcall TFormKilpMaaritys::FormShow(TObject *Sender)
 {
 	static int init = 0;
@@ -575,7 +558,7 @@ void __fastcall TFormKilpMaaritys::FormCloseQuery(TObject *Sender, bool &CanClos
 		wcsncpy(kilpailu, EditKilpailu->Text.c_str(), sizeof(kilpailu)/2-1);
 		wcscpy(llparam.luetots0, kilpailu);
 		wcsncpy(kilpparam.kilpkoodi, EditKoodi->Text.c_str(), sizeof(kilpparam.kilpkoodi)/2-1);
-		kilpparam.vuosi = EditVuosi->Text.ToInt();
+		kilpparam.vuosi = yDateNo(pvm);
 		if (RGlaji->ItemIndex == 5) {
 			kilpparam.kilplaji = muutlajit[RGMuuLaji->ItemIndex];
 			if (kilpparam.kilplaji == L'B') {
