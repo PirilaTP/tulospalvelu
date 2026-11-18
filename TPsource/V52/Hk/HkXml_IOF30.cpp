@@ -1107,7 +1107,7 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
    swprintf(ln, L"raceNumber=\"%d\"", k_pv+1);
    tul_tied->put_wtagparams(XMLhae_tagName(TAGResult, IOF3Tags, nIOF3Tags), ln, false, level++);
    tul_tied->put_wxml_d(XMLhae_tagName(TAGBibNumber, IOF3Tags, nIOF3Tags), kilp.id(), level);
-   if (kilp.TLahto(0) != TMAALI0)
+   if (kilp.TLahto() != TMAALI0)
 		put_wxml_iofdatetime(tul_tied, XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), pvparam[k_pv].Date, kilp.TLahto(), level);
    if (kilp.maali(0) != TMAALI0)
 		put_wxml_iofdatetime(tul_tied, XMLhae_tagName(TAGFinishTime, IOF3Tags, nIOF3Tags), pvparam[k_pv].Date + (kilp.maali(0) < kilp.TLahto() ? 1 : 0),
@@ -1215,7 +1215,7 @@ static void put_wxml_iofdatetime(TextFl *tul_tied, wchar_t *tag, int Date, INT32
    {
    wchar_t st[48];
 
-   if (value == TMAALI0 || value == 0)
+   if (value == TMAALI0)		// 0 on kelvollinen kellonaika (nollahetki)
 	   return;
    aikatowstr_ts(st, value, t0);
    st[2] = L':';
