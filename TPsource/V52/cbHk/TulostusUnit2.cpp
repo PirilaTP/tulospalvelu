@@ -457,6 +457,13 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 					err = 1;
 					break;
 					}
+				// IOF XML vaatii päivämäärän (Event/StartTime/Date, lähtöajat päivämäärineen)
+				if (tiedTyyppi == L'X' && pvparam[Paivat-1].Date <= 0) {
+					Application->MessageBoxW(L"Vaiheen päivämäärä puuttuu. IOF XML -tiedostoon tarvitaan päivämäärä:"
+						L" anna se kohdassa Vaihekohtaiset määritykset.", L"Virhe", MB_OK);
+					err = 1;
+					break;
+					}
 				CBLlJarjPv->ItemIndex = Paivat;
 				}
 			if (OoTulostettava[CBOoSisalto->ItemIndex] == L'L') {
@@ -548,6 +555,13 @@ void __fastcall TTulosteForm::ButtonTulostaClick(TObject *Sender)
 			}
 
 		while (SisaltoIndex == 1) {
+			// IOF XML vaatii päivämäärän (Event/StartTime/Date, lähtö- ja maaliajat päivämäärineen)
+			if (KohdeIndex == 1 && tiedTyyppi == L'X' && pvparam[k_pv].Date <= 0) {
+				Application->MessageBoxW(L"Vaiheen päivämäärä puuttuu. IOF XML -tiedostoon tarvitaan päivämäärä:"
+					L" anna se kohdassa Vaihekohtaiset määritykset.", L"Virhe", MB_OK);
+				err = 1;
+				break;
+				}
 			Tulostettava = tulostettava[CBSisalto->ItemIndex];
 			pisteval = vaiheet[PisteVal->ItemIndex];
 			if (rajaus[CBRajVal->ItemIndex] == L'P') {

@@ -491,6 +491,7 @@ wchar_t *stDateNo(wchar_t *st, int dd);
 int DateNoFromSt(wchar_t *st);
 long msdaytime(void);
 wchar_t *ISOdatetime(int des, bool zone);
+wchar_t *ISOzoneLocal(const wchar_t *pvm, const wchar_t *aika);
 int MbsToWcs(wchar_t *wst, char *st, int len);
 int WcsToMbs(char *st, wchar_t *wst, int len);
 int wcscmpU(const wchar_t *s1, const wchar_t *s2);

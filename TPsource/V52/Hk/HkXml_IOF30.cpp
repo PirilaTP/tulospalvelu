@@ -964,6 +964,8 @@ void kirjIOF30VainRadatXml(wchar_t *outfname, IOFCourseData *CseData)
 //=============== IOF ResultList ================================
 
 static void put_wxml_iofdatetime(TextFl *tul_tied, wchar_t *tag, int Date, INT32 value, int level, int len = 8, wchar_t dcep = L'.');
+static void put_wxml_ioftime(TextFl *tul_tied, wchar_t *tag, int Date, INT32 value, int level);
+static INT32 IOF30vaiheenAlku(int i_pv);
 
 int xmlIOF30ots(tulostusparamtp *tulprm)
    {
@@ -991,7 +993,7 @@ int xmlIOF30ots(tulostusparamtp *tulprm)
 	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[k_pv].Title[0] ? pvparam[k_pv].Title : kilpailu, level);
 	outfl->put_wtag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), level++);
 	outfl->put_wxml_s(XMLhae_tagName(TAGDate, IOF3Tags, nIOF3Tags), stDateNo(NULL, pvparam[k_pv].Date), level);
-//	outfl->put_wxml_s(srjtag[TAGTime], , level);
+	put_wxml_ioftime(outfl, XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), pvparam[k_pv].Date, IOF30vaiheenAlku(k_pv), level);
 	outfl->put_wantitag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), --level);
 /*
 	outfl->put_wtag(srjtag[TAGEndTime], level++);
@@ -1174,6 +1176,40 @@ static wchar_t *IOF30zone(void)
    return(now + wcslen(now) - 6);
    }
 
+// Vaiheen alkuaika Event/StartTime/Time-elementtiin: aikaisin sarjan ensimmäinen lähtö niissä
+// sarjoissa, joissa on vaiheessa osanottajia (vuorokauden vaihde huomioiden).
+// TMAALI0, jos lähtöaikoja ei ole annettu.
+static INT32 IOF30vaiheenAlku(int i_pv)
+   {
+   INT32 alku = TMAALI0;
+
+   for (int srj = 0; srj < sarjaluku; srj++) {
+	   INT32 t = Sarjat[srj].enslahto[i_pv];
+	   if (t == TMAALI0 || nilm_pv[i_pv][srj] == 0)
+		   continue;
+	   if (alku == TMAALI0 || (t - alku + 48*TUNTI) % (24*TUNTI) > 12*TUNTI)
+		   alku = t;
+	   }
+   return(alku);
+   }
+
+// Kirjoittaa kellonaikaelementin aikavyöhykkeen siirtymän kanssa (esim. 10:00:00+03:00).
+// Siirtymä lasketaan päivän Date mukaan (kesäaika); Date <= 0: nykyhetken siirtymä.
+// Arvo 0 on kelvollinen kellonaika (nollahetki), vain TMAALI0 jätetään kirjoittamatta.
+static void put_wxml_ioftime(TextFl *tul_tied, wchar_t *tag, int Date, INT32 value, int level)
+   {
+   wchar_t st[48], pvm[16];
+
+   if (value == TMAALI0)
+	   return;
+   aikatowstr_ts(st, value, t0);
+   st[2] = L':';
+   st[5] = L':';
+   st[8] = 0;
+   wcscat(st, Date > 0 ? ISOzoneLocal(stDateNo(pvm, Date), st) : IOF30zone());
+   tul_tied->put_wxml_s(tag, st, level);
+   }
+
 // Kirjoittaa XML-paivamaara+kellonaika-elementin aikavyohykkeen siirtyman kanssa (esim. 2026-07-02T12:32:00+03:00).
 static void put_wxml_iofdatetime(TextFl *tul_tied, wchar_t *tag, int Date, INT32 value, int level, int len, wchar_t dcep)
    {
@@ -1194,7 +1230,7 @@ static void put_wxml_iofdatetime(TextFl *tul_tied, wchar_t *tag, int Date, INT32
 	   stDateNo(st, Date);
 	   st[10] = L'T';
 	   }
-   wcscat(st, IOF30zone());
+   wcscat(st, Date > 0 ? ISOzoneLocal(st, st+11) : IOF30zone());
    tul_tied->put_wxml_s(tag, st, level);
    }
 
@@ -1223,6 +1259,7 @@ int xmlIOF30LahtoOts(tulostusparamtp *tulprm, int i_pv)
 	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[i_pv].Title[0] ? pvparam[i_pv].Title : kilpailu, level);
 	outfl->put_wtag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), level++);
 	outfl->put_wxml_s(XMLhae_tagName(TAGDate, IOF3Tags, nIOF3Tags), stDateNo(NULL, pvparam[i_pv].Date), level);
+	put_wxml_ioftime(outfl, XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), pvparam[i_pv].Date, IOF30vaiheenAlku(i_pv), level);
 	outfl->put_wantitag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), --level);
 	outfl->put_wtag(XMLhae_tagName(TAGRace, IOF3Tags, nIOF3Tags), level++);
 	outfl->put_wxml_d(XMLhae_tagName(TAGRaceNumber, IOF3Tags, nIOF3Tags), i_pv+1, level);

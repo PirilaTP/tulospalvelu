@@ -937,6 +937,24 @@ int lueIOF30EventXml(wchar_t *filename, bool lueSarjat, bool lueRadat, bool lueO
 
 //=============== IOF ResultList ================================
 
+static wchar_t *ISOtimeLocal(wchar_t *datestr, int time);
+
+// Kilpailun alkuaika Event/StartTime/Time-elementtiin: aikaisin sarjan lähtöaika niissä
+// sarjoissa, joissa on osanottajia (vuorokauden vaihde huomioiden). TMAALI0, jos ei ole.
+static INT32 IOF30kilpailunAlku(void)
+{
+   INT32 alku = TMAALI0;
+
+   for (int srj = 0; srj < sarjaluku; srj++) {
+      INT32 t = Sarjat[srj].lahto;
+      if (t == TMAALI0 || nilm[srj] == 0)
+         continue;
+      if (alku == TMAALI0 || (t - alku + 48*TUNTI) % (24*TUNTI) > 12*TUNTI)
+         alku = t;
+      }
+   return(alku);
+}
+
 int xmlIOF30ots(tulostusparamtp *tulprm)
    {
    wchar_t ln[602], level = 0;
@@ -963,7 +981,14 @@ int xmlIOF30ots(tulostusparamtp *tulprm)
 	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), kilpparam.Name, level);
 	outfl->put_wtag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), level++);
 	outfl->put_wxml_s(XMLhae_tagName(TAGDate, IOF3Tags, nIOF3Tags), kilpparam.Date, level);
-//	outfl->put_wxml_s(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), , level);
+	{
+	INT32 alku = IOF30kilpailunAlku();
+	if (alku != TMAALI0)
+		{
+		wchar_t *p = ISOtimeLocal(kilpparam.Date, alku), *klo = wcschr(p, L'T');
+		outfl->put_wxml_s(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), klo ? klo + 1 : p, level);
+		}
+	}
 	outfl->put_wantitag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), --level);
 /*
 	outfl->put_wtag(XMLhae_tagName(TAGEndTime, IOF3Tags, nIOF3Tags), level++);
@@ -1047,10 +1072,8 @@ static wchar_t *ISOtimeLocal(wchar_t *datestr, int time)
    static wchar_t buf[40];
    wchar_t *p = ISOtime(NULL, datestr, time);
    wcscpy(buf, p);
-   wchar_t *dt = ISOdatetime(0, true);
-   wchar_t *tz = dt + wcslen(dt) - 6;
-   if (tz > dt + 10 && (tz[-1] == L'+' || tz[-1] == L'-'))
-      wcscat(buf, tz - 1);
+   wchar_t *klo = datestr ? wcschr(buf, L'T') : NULL;
+   wcscat(buf, ISOzoneLocal(klo ? datestr : NULL, klo ? klo + 1 : buf));
    return buf;
 }
 
