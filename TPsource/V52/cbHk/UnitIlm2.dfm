@@ -943,7 +943,7 @@ object FormIlm2: TFormIlm2
         OnKeyPress = EnterKeyPress
       end
       object EIkasrj: TEdit
-        Left = 311
+        Left = 323
         Top = 98
         Width = 22
         Height = 22

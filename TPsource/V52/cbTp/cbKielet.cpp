@@ -552,6 +552,27 @@ public:
 				kieliNimi(kieli), MB_OK);
 			}
 	}
+	// Näyttää, mistä käännökset luettiin: ohjelmaan upotetut vai ohjelman vieressä oleva
+	// tiedosto, joka korvaa upotetut (ja voi olla vanhempi kuin ohjelma).
+	void __fastcall NaytaTiedostot(TObject *Sender)
+	{
+		UnicodeString teksti;
+		static const int kielet[] = {KIELI_SV, KIELI_EN};
+
+		for (unsigned i = 0; i < sizeof(kielet) / sizeof(kielet[0]); i++) {
+			bool upotettu;
+			const wchar_t *tiedosto = kaannostiedosto(kielet[i], &upotettu);
+			teksti += UnicodeString(kieliNimi(kielet[i])) + L": ";
+			if (tiedosto[0])
+				teksti += tiedosto;
+			else if (upotettu)
+				teksti += TR(L"ohjelmaan upotettu käännös");
+			else
+				teksti += TR(L"ei löytynyt");
+			teksti += L"\n";
+			}
+		Application->MessageBoxW(teksti.c_str(), TR(L"Käännöstiedostot"), MB_OK);
+	}
 };
 
 void lisaaKielivalikko(TMenuItem *Valikko)
@@ -579,6 +600,11 @@ void lisaaKielivalikko(TMenuItem *Valikko)
 		MI->OnClick = Valitsin->Valitse;
 		Ylin->Add(MI);
 		}
+	Ylin->InsertNewLineAfter(Ylin->Items[Ylin->Count-1]);
+	TMenuItem *Tiedostot = new TMenuItem(Ylin);
+	Tiedostot->Caption = TR(L"Käännöstiedostot");
+	Tiedostot->OnClick = Valitsin->NaytaTiedostot;
+	Ylin->Add(Tiedostot);
 }
 
 class TTulostekieliValitsin : public TComponent

@@ -17,8 +17,9 @@
 // Kieliversiot (fi/en/sv).
 //
 // Ohjelman tekstit kirjoitetaan lähdekoodiin suomeksi ja käännetään ajon aikana
-// gettext-tyylisesti: avaimena on suomenkielinen teksti, käännökset luetaan
-// tiedostoista <ohjelmahakemisto>\kielet\en.po ja sv.po. Jos käännöstä ei ole,
+// gettext-tyylisesti: avaimena on suomenkielinen teksti, käännökset (en.po, sv.po) on
+// upotettu ohjelmaan (kielet/kielet.rc); <ohjelmahakemisto>\kielet\xx.po korvaa upotetun
+// (ks. kaannostiedosto()). Jos käännöstä ei ole,
 // käytetään suomenkielistä tekstiä, joten tekstejä voi kääntää vähitellen.
 //
 // Kieliä on kaksi erillistä:
@@ -51,6 +52,12 @@ const wchar_t *kieliNimi(int kieli);
 void asetaKaannoshakemisto(const wchar_t *hakemisto);
 // Lukee käännöstiedoston kielelle (korvaa aiemmin luetut). Palauttaa käännösten määrän tai -1.
 int lataaKaannostiedosto(int kieli, const wchar_t *tiedosto);
+// Mistä kielen käännökset luettiin; lukee ne tarvittaessa. Käännökset luetaan ensisijaisesti
+// tiedostosta <ohjelmahakemisto>\kielet\xx.po (tai asetaKaannoshakemisto()), muuten ohjelmaan
+// upotetusta resurssista (kielet/kielet.rc). Palauttaa tiedoston täyden polun tai tyhjän
+// merkkijonon, jos käännöksiä ei luettu tiedostosta. *upotettu (jos ei NULL) on tosi, jos
+// käännökset luettiin ohjelmaan upotetusta resurssista.
+const wchar_t *kaannostiedosto(int kieli, bool *upotettu = NULL);
 
 // Käännös kielelle kieli. Palauttaa fi:n, jos kieli on suomi tai käännöstä ei ole.
 // Palautettua merkkijonoa ei saa muuttaa. Paluuarvo on ei-const, jotta funktiota

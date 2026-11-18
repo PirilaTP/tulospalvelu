@@ -10,15 +10,22 @@ puuttuva käännös ei koskaan riko ohjelmaa.
 | `tulospalvelu.pot` | Kaikki käännettävät tekstit, tuotetaan lähdekoodista (`kielet.py poimi`). Älä muokkaa käsin. |
 | `en.po`, `sv.po` | Käännökset. Näitä muokataan, esim. tekstieditorilla tai [Poeditilla](https://poedit.net/). |
 | `kielet.py` | Työkalu: poiminta, päivitys, tarkistus ja `TR()`-käärintä. |
+| `kielet.rc` | Upottaa `en.po`:n ja `sv.po`:n ohjelmiin resursseina (`PO_EN`, `PO_SV`). |
 
-Ohjelma etsii käännökset hakemistosta `<ohjelman hakemisto>\kielet\`, ja jos niitä ei
-sieltä löydy, nykyhakemiston alta `kielet\`. Julkaisupaketissa tiedostot ovat valmiina
-`console\kielet\`- ja `gui\kielet\`-hakemistoissa.
+Käännökset upotetaan käännösvaiheessa ohjelmiin (`kielet.rc` on mukana HkKisaWin-,
+ViestiWin-, HkMaali-, JukMaali- ja JukLuenta-projekteissa), joten ohjelma toimii
+pelkkänä `.exe`-tiedostona. Kun `.po`-tiedostoa muutetaan, ohjelma on käännettävä uudelleen.
 
-HkKisaWin- ja ViestiWin-projektit kopioivat käännöstiedostot automaattisesti
-ohjelman viereen myös paikallisessa C++Builder-koonnissa (`RADStudio10/Kielet.targets`).
-Jos kieli ei vaihdu uudelleenkäynnistyksessä, tarkista, että käytössä olevan `.exe`-tiedoston
-vieressä on `kielet\en.po` ja `kielet\sv.po`. Kopioi ohjelmaa siirtäessäsi myös `kielet`-hakemisto.
+Ohjelma lukee kunkin kielen käännökset tässä järjestyksessä:
+
+1. `<ohjelman hakemisto>\kielet\xx.po`, jos sellainen on. Tällä voi korvata upotetun
+   käännöksen kääntämättä ohjelmaa uudelleen. Tiedosto korvaa upotetun kokonaan, joten
+   vanhentunut tiedosto ohjelman vieressä tuo vanhat käännökset takaisin.
+2. Ohjelmaan upotettu käännös.
+
+Nykyhakemiston `kielet\`-hakemistoa ei käytetä: kilpailuhakemistoon jäänyt vanha kopio
+tulisi muuten käyttöön huomaamatta. Windows-ohjelmissa *Kieli / Språk / Language →
+Käännöstiedostot* näyttää, kumpaa kullekin kielelle käytetään.
 
 ## Kaksi eri kieltä
 
@@ -127,10 +134,10 @@ python kielet/kielet.py mittaa      # käännökset, jotka eivät mahdu lomakkei
 jokaisen lomaketekstin käännöksen leveyden kontrollin omalla fontilla (96 DPI) ja listaa
 tekstit, jotka eivät mahdu ja joita `kaannaLomake` ei voi leventää eikä korvata lyhyellä
 muodolla (`--kaikki` listaa myös ne). Vertailukohtana on suomenkielinen teksti: sen leveys
-hyväksytään aina. Komento vaatii Pillow-kirjaston (`pip install pillow`) ja Windowsin
-fontit. Lisää listatuille teksteille lyhyt muoto tai muuta lomakkeen asettelua
-C++Builderin lomake-editorissa. `--raja en=8,sv=2` palauttaa virheen, jos ratkaisemattomia
-on enemmän (CI).
+hyväksytään aina. Komento vaatii Pillow-kirjaston (`python -m pip install pillow`) ja
+Windowsin fontit. Lisää listatuille teksteille lyhyt muoto tai muuta lomakkeen asettelua
+C++Builderin lomake-editorissa. `--raja en=0,sv=0` palauttaa virheen, jos ratkaisemattomia
+on enemmän (CI): yhtään mahtumatonta tekstiä ei hyväksytä.
 
 `python kielet/kielet.py kattavuus [--lista] [--paivita]` etsii käyttöliittymän tekstit, jotka
 sijoitetaan koodissa ilman `TR()`-kutsua (`->Text = L"..."`, `Caption`, `Cells[][]`, `header`,

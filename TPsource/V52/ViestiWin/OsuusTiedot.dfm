@@ -414,7 +414,7 @@ object FormOsuus: TFormOsuus
     OnClick = VaihdEdBtn
   end
   object EdHajonta: TEdit
-    Left = 582
+    Left = 596
     Top = 17
     Width = 78
     Height = 24

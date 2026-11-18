@@ -1,0 +1,5 @@
+// Translations embedded in the program (tputilv2/Kielet.cpp: lataaResurssi).
+// Kaannokset upotetaan ohjelmaan; ohjelman vieressa oleva kielet\xx.po korvaa ne.
+// File names are relative to this file (C++Builder) or found via the include path (Visual Studio).
+PO_SV RCDATA "sv.po"
+PO_EN RCDATA "en.po"

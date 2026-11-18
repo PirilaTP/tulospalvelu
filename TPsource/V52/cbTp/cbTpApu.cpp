@@ -453,7 +453,7 @@ MESSAGE void __fastcall TFormMain::errorMsgHandler(TMyMessage &msg)
 	vainok = (msg.wparam & 0x10000000) != 0;
 	if (TFormSelect3 *FS = new TFormSelect3(FormMain)) {
 		FS->Kysy(vainok ? 1 : 2, ((perr_ptrs_tp *) msg.lparam)->msg ,
-			((perr_ptrs_tp *) msg.lparam)->ots, L"OK", L"Poistu ohjelmasta", L"", wait);
+			((perr_ptrs_tp *) msg.lparam)->ots, L"OK", TR(L"Poistu ohjelmasta"), L"", wait);
 		retval = FS->ShowModal();
 		delete FS;
 		((perr_ptrs_tp *) msg.lparam)->vast = 3 - 2 * retval;

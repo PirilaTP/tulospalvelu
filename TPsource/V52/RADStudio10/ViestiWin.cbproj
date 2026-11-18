@@ -165,7 +165,6 @@
         <ILINK_StackCommitSize>0x10000</ILINK_StackCommitSize>
         <DCC_UnitSearchPath>..\COMM;.\;$(BDS)\lib;$(BDS)\lib\obj;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <ILINK_StackReserveSize>0x200000</ILINK_StackReserveSize>
-        <BRCC_UserSuppliedOptions> -I..\COMM;$(BDS)\include;$(BDS)\include\vcl;$(BDS)\include\dinkumware</BRCC_UserSuppliedOptions>
         <BCC_GenerateMultithreaded>true</BCC_GenerateMultithreaded>
         <DCC_DcuOutput>obj\</DCC_DcuOutput>
         <BCC_PCHCache>true</BCC_PCHCache>
@@ -631,6 +630,10 @@
         <CppCompile Include="ViestiWin.cpp">
             <BuildOrder>1</BuildOrder>
         </CppCompile>
+        <ResourceCompile Include="..\kielet\kielet.rc">
+            <Form>kielet.res</Form>
+            <BuildOrder>151</BuildOrder>
+        </ResourceCompile>
         <ResFiles Include="ViestiWin.res">
             <BuildOrder>101</BuildOrder>
         </ResFiles>
@@ -2279,6 +2282,5 @@
         <MSBuild Projects="DBboxm-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_DBboxm);Platform=$(Platform)" Condition="'$(DepConfig_DBboxm)'!=''"/>
         <MSBuild Projects="Tputil-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_Tputil);Platform=$(Platform)" Condition="'$(DepConfig_Tputil)'!=''"/>
     </Target>
-    <Import Project="Kielet.targets"/>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
 </Project>

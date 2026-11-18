@@ -128,12 +128,8 @@ jobs:
             if (-not (Test-Path "staging\gui\$exe")) { throw "GUI program missing from build output: $exe" }
           }
           Copy-Item staging\gui\* "$packageDir\gui" -Recurse
-
-          # Käännöstiedostot ohjelmien viereen: <ohjelmahakemisto>\kielet\en.po ja sv.po
-          foreach ($dir in @("console", "gui")) {
-            New-Item -ItemType Directory -Force -Path "$packageDir\$dir\kielet" | Out-Null
-            Copy-Item TPsource\V52\kielet\*.po "$packageDir\$dir\kielet"
-          }
+          # Käännökset (en.po, sv.po) on upotettu ohjelmiin (TPsource/V52/kielet/kielet.rc),
+          # erillistä kielet-hakemistoa ei tarvita.
 
           Copy-Item LICENSE $packageDir
           Copy-Item README.md $packageDir

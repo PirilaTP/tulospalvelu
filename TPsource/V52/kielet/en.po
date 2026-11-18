@@ -1341,8 +1341,8 @@ msgstr "Invalid TCP connection number"
 
 #: Hk/HkInit.cpp Juk/VInit.cpp
 #, c-format
-msgid "Tuntematon parametri %.17s %s %s"
-msgstr "Unknown parameter %.17s %s %s"
+msgid "Tuntematon parametri %.17s tiedostossa %s"
+msgstr "Unknown parameter %.17s in file %s"
 
 #: Hk/HkInit.cpp
 #, c-format
@@ -2626,6 +2626,11 @@ msgstr "Parameter PARTIO is no longer used. See instructions"
 #: Juk/VInit.cpp
 msgid "Parametri ROGAINING poistettu käytöstä. Katso ohjeita"
 msgstr "Parameter ROGAINING is no longer used. See instructions"
+
+#: Juk/VInit.cpp
+#, c-format
+msgid "Tuntematon parametri %.17s komentorivillä"
+msgstr "Unknown parameter %.17s on the command line"
 
 #: Juk/VInit.cpp
 msgid "Merkistö Postscr."
@@ -13624,12 +13629,28 @@ msgid "Kielivalinta tulee voimaan, kun ohjelma käynnistetään uudelleen."
 msgstr "Language selection takes effect when the program is restarted."
 
 #: cbTp/cbKielet.cpp
+msgid "ohjelmaan upotettu käännös"
+msgstr "translation built into the program"
+
+#: cbTp/cbKielet.cpp
+msgid "ei löytynyt"
+msgstr "not found"
+
+#: cbTp/cbKielet.cpp
+msgid "Käännöstiedostot"
+msgstr "Translation files"
+
+#: cbTp/cbKielet.cpp
 msgid "Tulosteiden kieli"
 msgstr "Output language"
 
 #: cbTp/cbTpApu.cpp
 msgid "Valitse hakemisto"
 msgstr "Select folder"
+
+#: cbTp/cbTpApu.cpp
+msgid "Poistu ohjelmasta"
+msgstr "Exit program"
 
 #: cbTp/cbTpApu.cpp
 #, c-format
@@ -26333,6 +26354,9 @@ msgstr "End time (empty: to the end)"
 msgctxt "lyhyt"
 msgid "Loppuhetki (tyhjä: loppuun)"
 msgstr "End time (empty: to end)"
+
+#~ msgid "luettu nykyhakemistosta, ei ohjelman hakemistosta"
+#~ msgstr "read from the current folder, not the program folder"
 
 #~ msgid "Ohit"
 #~ msgstr "Skip"

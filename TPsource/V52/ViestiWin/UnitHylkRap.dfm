@@ -623,7 +623,7 @@ object FormHylkRap: TFormHylkRap
     TabOrder = 21
   end
   object EdtRata: TEdit
-    Left = 165
+    Left = 179
     Top = 103
     Width = 65
     Height = 23

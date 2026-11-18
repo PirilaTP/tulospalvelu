@@ -1047,6 +1047,10 @@
         <CppCompile Include="HkKisaWin.cpp">
             <BuildOrder>0</BuildOrder>
         </CppCompile>
+        <ResourceCompile Include="..\kielet\kielet.rc">
+            <Form>kielet.res</Form>
+            <BuildOrder>151</BuildOrder>
+        </ResourceCompile>
         <CppCompile Include="..\Tp\mtrand.cpp">
             <BuildOrder>97</BuildOrder>
         </CppCompile>
@@ -2292,6 +2296,5 @@
         <MSBuild Projects="DBboxm-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_DBboxm);Platform=$(Platform)" Condition="'$(DepConfig_DBboxm)'!=''"/>
         <MSBuild Projects="Tputil-XE.cbproj" Targets="Make" Properties="Config=$(DepConfig_Tputil);Platform=$(Platform)" Condition="'$(DepConfig_Tputil)'!=''"/>
     </Target>
-    <Import Project="Kielet.targets"/>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
 </Project>

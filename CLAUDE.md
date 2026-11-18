@@ -84,6 +84,8 @@ Supports RS-232 (legacy), UDP, TCP, and XML message transport. The `comtp` and `
 
 Texts are written in Finnish and translated at run time, gettext style: the Finnish text is the
 key, translations come from `TPsource/V52/kielet/en.po` and `sv.po` (missing translation → Finnish).
+The .po files are embedded in the programs as resources (`kielet/kielet.rc`, in every GUI and
+console project); a `kielet\xx.po` next to the exe overrides the embedded one.
 API in `include/Kielet.h`: `TR()` (UI language), `TRA()` (char*), `TRL(lang, ...)` (output language,
 `tulostusparamtp::language`), `TRCL()` (with context), `N_()` (marks texts in static tables).
 Forms are translated by `kaannaLomake(this)` at the start of every form constructor

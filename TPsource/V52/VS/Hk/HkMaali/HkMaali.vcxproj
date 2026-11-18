@@ -253,6 +253,11 @@
     <ClCompile Include="..\..\..\Tp\SiritReader.cpp" />
     <ClCompile Include="..\..\..\Tp\ZebraReader.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\..\kielet\kielet.rc">
+      <AdditionalIncludeDirectories>..\..\..\kielet;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

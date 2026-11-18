@@ -2789,9 +2789,7 @@ static void lue_parametrit(int argc, wchar_t* argv[], wchar_t *cfgflname)
 			DeveloperMode = true;
 			continue;
 			}
-		 swprintf(msg, TR(L"Tuntematon parametri %.17s %s %s"), fldn,
-			L"tiedostossa ",
-            cfgfilename);
+		 swprintf(msg, TR(L"Tuntematon parametri %.17s tiedostossa %s"), fldn, cfgfilename);
 		 writeerror_w(msg,0);
 			}
       if (i <= 1) {

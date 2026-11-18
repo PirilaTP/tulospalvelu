@@ -1346,8 +1346,8 @@ msgstr "Felaktigt TCP-anslutningsnummer"
 
 #: Hk/HkInit.cpp Juk/VInit.cpp
 #, c-format
-msgid "Tuntematon parametri %.17s %s %s"
-msgstr "Okänd parameter %.17s %s %s"
+msgid "Tuntematon parametri %.17s tiedostossa %s"
+msgstr "Okänd parameter %.17s i filen %s"
 
 #: Hk/HkInit.cpp
 #, c-format
@@ -2637,6 +2637,11 @@ msgstr "Parametern PARTIO har tagits ur bruk. Se anvisningarna"
 #: Juk/VInit.cpp
 msgid "Parametri ROGAINING poistettu käytöstä. Katso ohjeita"
 msgstr "Parametern ROGAINING har tagits ur bruk. Se anvisningarna"
+
+#: Juk/VInit.cpp
+#, c-format
+msgid "Tuntematon parametri %.17s komentorivillä"
+msgstr "Okänd parameter %.17s på kommandoraden"
 
 #: Juk/VInit.cpp
 msgid "Merkistö Postscr."
@@ -13656,12 +13661,28 @@ msgid "Kielivalinta tulee voimaan, kun ohjelma käynnistetään uudelleen."
 msgstr "Språkvalet träder i kraft när programmet startas om."
 
 #: cbTp/cbKielet.cpp
+msgid "ohjelmaan upotettu käännös"
+msgstr "inbyggd översättning i programmet"
+
+#: cbTp/cbKielet.cpp
+msgid "ei löytynyt"
+msgstr "hittades inte"
+
+#: cbTp/cbKielet.cpp
+msgid "Käännöstiedostot"
+msgstr "Översättningsfiler"
+
+#: cbTp/cbKielet.cpp
 msgid "Tulosteiden kieli"
 msgstr "Utskrifternas språk"
 
 #: cbTp/cbTpApu.cpp
 msgid "Valitse hakemisto"
 msgstr "Välj katalog"
+
+#: cbTp/cbTpApu.cpp
+msgid "Poistu ohjelmasta"
+msgstr "Avsluta programmet"
 
 #: cbTp/cbTpApu.cpp
 #, c-format
@@ -26514,6 +26535,9 @@ msgstr "Starttid (tom: från början)"
 #: cbTp/UnitUusinta.dfm
 msgid "Loppuhetki (tyhjä: loppuun)"
 msgstr "Sluttidpunkt (tom: till slutet)"
+
+#~ msgid "luettu nykyhakemistosta, ei ohjelman hakemistosta"
+#~ msgstr "läst från aktuell mapp, inte från programmets mapp"
 
 #~ msgid "Ohit"
 #~ msgstr "Överh"

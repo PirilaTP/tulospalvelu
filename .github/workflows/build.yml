@@ -28,7 +28,7 @@ jobs:
           git diff --exit-code -- TPsource/V52/kielet/tulospalvelu.pot
           python TPsource/V52/kielet/kielet.py tarkista
           python TPsource/V52/kielet/kielet.py kattavuus
-          python TPsource/V52/kielet/kielet.py mittaa --raja en=8,sv=2
+          python TPsource/V52/kielet/kielet.py mittaa --raja en=0,sv=0
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
@@ -74,9 +74,7 @@ jobs:
           name: windows-gui-win32
           path: |
             TPexe/Hk/V521/HkKisaWin.exe
-            TPexe/Hk/V521/kielet/*.po
             TPexe/Juk/V521/ViestiWin.exe
-            TPexe/Juk/V521/kielet/*.po
           if-no-files-found: error
           retention-days: 30
 

@@ -1330,7 +1330,7 @@ msgstr ""
 
 #: Hk/HkInit.cpp Juk/VInit.cpp
 #, c-format
-msgid "Tuntematon parametri %.17s %s %s"
+msgid "Tuntematon parametri %.17s tiedostossa %s"
 msgstr ""
 
 #: Hk/HkInit.cpp
@@ -2603,6 +2603,11 @@ msgstr ""
 
 #: Juk/VInit.cpp
 msgid "Parametri ROGAINING poistettu käytöstä. Katso ohjeita"
+msgstr ""
+
+#: Juk/VInit.cpp
+#, c-format
+msgid "Tuntematon parametri %.17s komentorivillä"
 msgstr ""
 
 #: Juk/VInit.cpp
@@ -13437,11 +13442,27 @@ msgid "Kielivalinta tulee voimaan, kun ohjelma käynnistetään uudelleen."
 msgstr ""
 
 #: cbTp/cbKielet.cpp
+msgid "ohjelmaan upotettu käännös"
+msgstr ""
+
+#: cbTp/cbKielet.cpp
+msgid "ei löytynyt"
+msgstr ""
+
+#: cbTp/cbKielet.cpp
+msgid "Käännöstiedostot"
+msgstr ""
+
+#: cbTp/cbKielet.cpp
 msgid "Tulosteiden kieli"
 msgstr ""
 
 #: cbTp/cbTpApu.cpp
 msgid "Valitse hakemisto"
+msgstr ""
+
+#: cbTp/cbTpApu.cpp
+msgid "Poistu ohjelmasta"
 msgstr ""
 
 #: cbTp/cbTpApu.cpp

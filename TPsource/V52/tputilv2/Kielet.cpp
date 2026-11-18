@@ -46,6 +46,10 @@ static kaannostaulu8 taulu8[KIELILKM];
 static volatile LONG ladattu[KIELILKM];
 static volatile LONG lukko;
 static wchar_t kaannoshakemisto[MAX_PATH];
+// Tiedosto, josta kielen käännökset luettiin (täysi polku), tyhjä jos niitä ei luettu tiedostosta.
+static wchar_t luettuTiedosto[KIELILKM][MAX_PATH+40];
+// Käännökset luettiin ohjelmaan upotetusta resurssista.
+static bool upotettuKaannos[KIELILKM];
 
 static void lukitse(void)
 {
@@ -202,31 +206,19 @@ static void lisaaKaannos(int kieli, const std::wstring &ktx, const std::wstring 
 		taulu[kieli][kopioi(avain.c_str(), (int) avain.length())] = kopioi(str.c_str(), (int) str.length());
 }
 
-// Varsinainen lukeminen; kutsujan on pidettävä lukko.
-static int lataaTiedosto(int kieli, const wchar_t *tiedosto)
+// Lukee .po-tiedoston sisällön (UTF-8) muistista; kutsujan on pidettävä lukko.
+static int lataaTavut(int kieli, const unsigned char *tavut, long koko)
 {
-	FILE *f;
-	long koko;
-	unsigned char *tavut;
 	wchar_t *teksti;
 	int n, lkm = 0;
 	enum { EI, KTX, ID, STR, OHITA } kentta = EI;
 	std::wstring ktx, id, str;
 	bool fuzzy = false;
 
-	if ((f = _wfopen(tiedosto, L"rb")) == NULL)
-		return(-1);
-	fseek(f, 0, SEEK_END);
-	koko = ftell(f);
-	fseek(f, 0, SEEK_SET);
-	tavut = new unsigned char[koko + 1];
-	koko = (long) fread(tavut, 1, koko, f);
-	fclose(f);
 	teksti = new wchar_t[koko + 1];
 	n = (koko >= 3 && tavut[0] == 0xEF && tavut[1] == 0xBB && tavut[2] == 0xBF) ?
 		utf8ToWcs(teksti, tavut + 3, koko - 3) : utf8ToWcs(teksti, tavut, koko);
 	teksti[n] = 0;
-	delete[] tavut;
 
 	for (wchar_t *rivi = teksti; rivi; ) {
 		wchar_t *loppu = wcschr(rivi, L'\n');
@@ -286,6 +278,62 @@ static int lataaTiedosto(int kieli, const wchar_t *tiedosto)
 	return(lkm);
 }
 
+// Lukee .po-tiedoston; kutsujan on pidettävä lukko. Palauttaa -1, jos tiedostoa ei voi lukea.
+static int lataaTiedosto(int kieli, const wchar_t *tiedosto)
+{
+	FILE *f;
+	long koko;
+	unsigned char *tavut;
+	int lkm;
+
+	if ((f = _wfopen(tiedosto, L"rb")) == NULL)
+		return(-1);
+	fseek(f, 0, SEEK_END);
+	koko = ftell(f);
+	fseek(f, 0, SEEK_SET);
+	tavut = new unsigned char[koko + 1];
+	koko = (long) fread(tavut, 1, koko, f);
+	fclose(f);
+	lkm = lataaTavut(kieli, tavut, koko);
+	delete[] tavut;
+	return(lkm);
+}
+
+// Lukee ohjelmaan upotetun käännöksen (resurssi PO_SV, PO_EN; kielet/kielet.rc);
+// kutsujan on pidettävä lukko. Palauttaa -1, jos ohjelmassa ei ole resurssia.
+static int lataaResurssi(int kieli)
+{
+	wchar_t nimi[16];
+	HRSRC Res;
+	HGLOBAL Mem;
+	const unsigned char *tavut;
+
+	_snwprintf(nimi, 15, L"PO_%s", kielikoodit[kieli]);
+	nimi[15] = 0;
+	_wcsupr(nimi);
+	if ((Res = FindResourceW(NULL, nimi, MAKEINTRESOURCEW(10))) == NULL)		// RT_RCDATA
+		return(-1);
+	if ((Mem = LoadResource(NULL, Res)) == NULL ||
+		(tavut = (const unsigned char *) LockResource(Mem)) == NULL)
+		return(-1);
+	return(lataaTavut(kieli, tavut, (long) SizeofResource(NULL, Res)));
+}
+
+// Muistaa, mistä kielen käännökset luettiin (NULL: tiedostosta ei luettu); kutsujan on pidettävä lukko.
+static void muistaTiedosto(int kieli, const wchar_t *tiedosto, bool upotettu)
+{
+	const int koko = sizeof(luettuTiedosto[0]) / sizeof(luettuTiedosto[0][0]);
+
+	luettuTiedosto[kieli][0] = 0;
+	upotettuKaannos[kieli] = upotettu;
+	if (tiedosto == NULL)
+		return;
+	if (_wfullpath(luettuTiedosto[kieli], tiedosto, koko) == NULL) {
+		wcsncpy(luettuTiedosto[kieli], tiedosto, koko-1);
+		luettuTiedosto[kieli][koko-1] = 0;
+		}
+}
+
 int lataaKaannostiedosto(int kieli, const wchar_t *tiedosto)
 {
 	int n;
@@ -294,6 +342,7 @@ int lataaKaannostiedosto(int kieli, const wchar_t *tiedosto)
 		return(-1);
 	lukitse();
 	n = lataaTiedosto(kieli, tiedosto);
+	muistaTiedosto(kieli, n >= 0 ? tiedosto : NULL, false);
 	ladattu[kieli] = 1;
 	vapauta();
 	return(n);
@@ -302,31 +351,59 @@ int lataaKaannostiedosto(int kieli, const wchar_t *tiedosto)
 // Lukee kielen oletustiedoston, ellei sitä ole jo luettu.
 static void varmistaLadattu(int kieli)
 {
-	wchar_t hak[MAX_PATH], tiedosto[MAX_PATH+20];
+	// hak: ohjelman polku (alle MAX_PATH merkkiä) + "\kielet", tiedosto: hak + "\xx.po"
+	wchar_t hak[MAX_PATH+16], tiedosto[MAX_PATH+40];
+	int n = -1;
 
 	if (ladattu[kieli])
 		return;
 	lukitse();
 	if (!ladattu[kieli]) {
+		hak[0] = 0;
 		if (kaannoshakemisto[0])
 			wcscpy(hak, kaannoshakemisto);
 		else {
 			wchar_t *p;
-			GetModuleFileNameW(NULL, hak, MAX_PATH);
-			if ((p = wcsrchr(hak, L'\\')) != NULL)
-				*p = 0;
-			wcscat(hak, L"\\kielet");
+			DWORD pit = GetModuleFileNameW(NULL, hak, MAX_PATH);
+			// pit == MAX_PATH: polku on katkennut, eikä sitä voi käyttää
+			if (pit == 0 || pit >= MAX_PATH)
+				hak[0] = 0;
+			else {
+				if ((p = wcsrchr(hak, L'\\')) != NULL)
+					*p = 0;
+				wcscat(hak, L"\\kielet");
+				}
 			}
-		_snwprintf(tiedosto, MAX_PATH+19, L"%s\\%s.po", hak, kielikoodit[kieli]);
-		tiedosto[MAX_PATH+19] = 0;
-		if (lataaTiedosto(kieli, tiedosto) < 0) {
-			// Kehitysympäristössä ohjelma ajetaan usein kilpailuhakemistosta
-			_snwprintf(tiedosto, MAX_PATH+19, L"kielet\\%s.po", kielikoodit[kieli]);
-			lataaTiedosto(kieli, tiedosto);
+		// 1. Ohjelman vieressä oleva tiedosto, jolla upotetun käännöksen voi korvata ilman uutta
+		//    käännöstä. Nykyhakemistoa ei käytetä: kilpailuhakemistoon jäänyt vanha kielet-hakemisto
+		//    tulisi muuten käyttöön huomaamatta.
+		if (hak[0]) {
+			_snwprintf(tiedosto, MAX_PATH+39, L"%s\\%s.po", hak, kielikoodit[kieli]);
+			tiedosto[MAX_PATH+39] = 0;
+			n = lataaTiedosto(kieli, tiedosto);
+			if (n >= 0)
+				muistaTiedosto(kieli, tiedosto, false);
+			}
+		// 2. Ohjelmaan upotettu käännös
+		if (n < 0) {
+			n = lataaResurssi(kieli);
+			muistaTiedosto(kieli, NULL, n >= 0);
 			}
 		ladattu[kieli] = 1;
 		}
 	vapauta();
+}
+
+const wchar_t *kaannostiedosto(int kieli, bool *upotettu)
+{
+	if (upotettu)
+		*upotettu = false;
+	if (kieli <= KIELI_FI || kieli >= KIELILKM)
+		return(L"");
+	varmistaLadattu(kieli);
+	if (upotettu)
+		*upotettu = upotettuKaannos[kieli];
+	return(luettuTiedosto[kieli]);
 }
 
 // ---------------------------------------------------------------------
