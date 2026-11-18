@@ -978,7 +978,7 @@ int xmlIOF30ots(tulostusparamtp *tulprm)
 
 	outfl->put_wtag(XMLhae_tagName(TAGEvent, IOF3Tags, nIOF3Tags), level++);
 	outfl->put_wxml_s(XMLhae_tagName(TAGId, IOF3Tags, nIOF3Tags), kilpparam.kilpkoodi, level);
-	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), kilpparam.Name, level);
+	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), kilpparam.Name[0] ? kilpparam.Name : kilpailu, level);
 	outfl->put_wtag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), level++);
 	outfl->put_wxml_s(XMLhae_tagName(TAGDate, IOF3Tags, nIOF3Tags), kilpparam.Date, level);
 	{
@@ -1175,27 +1175,19 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 		  getem(&em, kilp.kilpno, os);
 		  if (em.kilpno == kilp.kilpno && em.osuus == os) {
 			  emitvatp emva;
-			  bool leim_ok = true;
 
 			 tee_emva(&emva, &em);
 			 rt = haerata(&kilp, os);
+			 // IOF 3.0: jokainen radan rasti; leimaamaton status="Missing". "Additional" tarkoittaa
+			 // rataan kuulumatonta leimausta, joten sitä ei käytetä radan rasteille.
 			 for (int r = 0; r < emva.rastiluku; r++) {
-				 if (kilp.wTark(os) != L'T' && emva.rastit[r][1] == 0)
-					 leim_ok = false;
-
 				 if (emva.rastit[r][1]) {
-					if (leim_ok)
-						tul_tied->put_wtag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), level++);
-					else
-						tul_tied->put_wtagparams(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), L"status=\"Additional\"", false, level++);
+					tul_tied->put_wtag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), level++);
 					tul_tied->put_wxml_d(XMLhae_tagName(TAGControlCode, IOF3Tags, nIOF3Tags), emva.rastit[r][0], level);
 					tul_tied->put_wxml_d(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), emva.rastit[r][1], level);
 					}
 				 else {
-					if (leim_ok)
-						tul_tied->put_wtag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), level++);
-					else
-						tul_tied->put_wtagparams(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), L"status=\"Missing\"", false, level++);
+					tul_tied->put_wtagparams(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), L"status=\"Missing\"", false, level++);
 					if (rt)
 						tul_tied->put_wxml_d(XMLhae_tagName(TAGControlCode, IOF3Tags, nIOF3Tags), rt->rastikoodi[r], level);
 					}
