@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitKirjoitinVal.h"
 #include "TulostusUnit2.h"
@@ -30,6 +31,7 @@ TFormKirjVal *FormKirjVal;
 __fastcall TFormKirjVal::TFormKirjVal(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 

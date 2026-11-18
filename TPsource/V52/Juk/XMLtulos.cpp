@@ -326,16 +326,12 @@ void xmltulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 			tul_tied->put_wxml_d(tag_a.tag_rank, sj1,0);
 			}
 		else if (wcswcind(kilp.Tark(os_yla, 1), L"KHSE") >= 0) {
-			if (tulprm->language > 0)
-				wcscpy(as, L"DidNotFinish");
-			else
-				wcscpy(as, L"Keskeyttänyt");
+			wcsncpy(as, TRCL(tulprm->language == KIELI_FI ? KIELI_FI : KIELI_EN, L"xml", L"Keskeyttänyt"), 15);
+			as[15] = 0;
 			for (os = os_ala; os <= os_yla; os++) {
 				if (kilp.Tark(os, 1) == L'H') {
-					if (tulprm->language > 0)
-						wcscpy(as, L"Disqualified");
-					else
-						wcscpy(as, L"Hylätty");
+					wcsncpy(as, TRCL(tulprm->language == KIELI_FI ? KIELI_FI : KIELI_EN, L"xml", L"Hylätty"), 15);
+					as[15] = 0;
 					break;
 					}
 				}
@@ -430,16 +426,12 @@ void xmltulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 				else if (wcswcind(kilp.Tark(os, 1), L"KH") >= 0) {
 					switch (kilp.Tark(os, 1)) {
 						case L'H':
-							if (tulprm->language > 0)
-								wcscpy(as, L"DQ");
-							else
-								wcscpy(as, L"Hylätty");
+							wcsncpy(as, TRL(tulprm->language, L"Hylätty"), 15);
+							as[15] = 0;
 							break;
 						case L'K':
-							if (tulprm->language > 0)
-								wcscpy(as, L"DNF");
-							else
-								wcscpy(as, L"Kesk.");
+							wcsncpy(as, TRL(tulprm->language, L"Kesk."), 15);
+							as[15] = 0;
 							break;
 						}
 //					tul_tied->put_wtag(tag_a.tag_ctl,0);

@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitTulkinta.h"
 #ifdef MAXOSUUSLUKU
@@ -34,6 +35,7 @@ TFormTulkinta *FormTulkinta;
 __fastcall TFormTulkinta::TFormTulkinta(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -41,10 +43,10 @@ __fastcall TFormTulkinta::TFormTulkinta(TComponent* Owner)
 	SG1->ColWidths[1] = 120*Screen->PixelsPerInch / 96;
 	SG1->ColWidths[2] = 200*Screen->PixelsPerInch / 96;
 	SG1->ColWidths[3] = 200*Screen->PixelsPerInch / 96;
-	SG1->Cells[0][0] = L"Kenttä";
-	SG1->Cells[1][0] = L"Sisältö";
-	SG1->Cells[2][0] = L"Luettu";
-	SG1->Cells[3][0] = L"Tulkittu";
+	SG1->Cells[0][0] = TR(L"Kenttä");
+	SG1->Cells[1][0] = TR(L"Sisältö");
+	SG1->Cells[2][0] = TR(L"Luettu");
+	SG1->Cells[3][0] = TR(L"Tulkittu");
 }
 //---------------------------------------------------------------------------
 

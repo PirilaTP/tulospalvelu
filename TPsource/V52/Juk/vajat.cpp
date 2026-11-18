@@ -26,6 +26,7 @@
 #include <bstrings.h>
 
 #pragma hdrstop
+#include "Kielet.h"
 #include <dos.h>
 #include <sys/stat.h>
 
@@ -93,11 +94,11 @@ __int64 datetime64(aikatp *tm)
 //
 //    utm      osoitin uuteen aikatietueeseen
 //    vtm      osoitin korvattavaan aikatietueeseen
-//    uptr     tï¿½ssï¿½ palautetaan uusi osoitin aktiiviseen aikatietueeseen
-//    kysy     ilmoittaa, ettï¿½ on kysyttï¿½vï¿½ vahvistusta. kysy == 1, jos
-//             tietoja syï¿½tetï¿½ï¿½n ko. tietokoneelta
+//    uptr     tässä palautetaan uusi osoitin aktiiviseen aikatietueeseen
+//    kysy     ilmoittaa, että on kysyttävä vahvistusta. kysy == 1, jos
+//             tietoja syötetään ko. tietokoneelta
 //    kielto   sen yhteyden numero, josta sanoma on tullut (kielto = 1 ... 3)
-//    pakota_lah  lï¿½hetï¿½ rivi, vaikka ei muutosta
+//    pakota_lah  lähetä rivi, vaikka ei muutosta
 //
 
 int tall_rivi(int ino, aikatp *utm, aikatp *vtm, int *uptr, int kysy,
@@ -130,11 +131,11 @@ int tall_rivi(int ino, aikatp *utm, aikatp *vtm, int *uptr, int kysy,
 	  kirjloki(line);
 	  }
 
-   // Seuraava lohko kï¿½sitellï¿½ï¿½n, jos vanhoja tietoja poistetaan tai korvataan
+   // Seuraava lohko käsitellään, jos vanhoja tietoja poistetaan tai korvataan
 
    if (vtm && purajak(vtm->t) != TMAALI0) {
 
-	  // Seuraavassa etsitï¿½ï¿½n korvattava rivi alkaen viimeisestï¿½
+	  // Seuraavassa etsitään korvattava rivi alkaen viimeisestä
 
 	  it1 = datetime64(vtm);
 	  for (rtm = aikajono[ino]->rwtime-1; rtm >= 0 &&
@@ -143,8 +144,8 @@ int tall_rivi(int ino, aikatp *utm, aikatp *vtm, int *uptr, int kysy,
 		 if (it2 == it1 && tm.kno == vtm->kno &&
 			(!vtm->kno || tm.osuus == vtm->osuus)) {
 
-			// Tï¿½ssï¿½ on lï¿½ydetty tietue, jossa aika, joukkue ja osuus oikeat
-			// Jos 'kysy' voimassa ja rivi vaihtuu kysytï¿½ï¿½n vahvistusta
+			// Tässä on löydetty tietue, jossa aika, joukkue ja osuus oikeat
+			// Jos 'kysy' voimassa ja rivi vaihtuu kysytään vahvistusta
 
 			if (kysy && utm && utm->t != AIKAJAK*TMAALI0 &&
 			   ((aikajono[ino]->rwtime - rtm > 1 && datetime64(utm) > datetime64(gettm(rtm+1,0, ino))) ||
@@ -152,7 +153,7 @@ int tall_rivi(int ino, aikatp *utm, aikatp *vtm, int *uptr, int kysy,
 //			   ((aikajono[ino]->rwtime - rtm > 1 && normtt(utm->t) > normtt(gettm(rtm+1,0, ino)->t)) ||
 //			   (rtm > 0 && normtt(utm->t) < normtt(gettm(rtm-1,0, ino)->t)))) {
 			   ch = ' ';
-			   selectopt("Aika ei vastaa riviï¿½ - vahvista tallennus (K/E)",
+			   selectopt("Aika ei vastaa riviä - vahvista tallennus (K/E)",
 				  "KE", &ch);
 			   if (ch == 'E') {
 				  if (loki)
@@ -162,7 +163,7 @@ int tall_rivi(int ino, aikatp *utm, aikatp *vtm, int *uptr, int kysy,
 				  }
 			   }
 
-			//  Poista vanha tietue ja pienennï¿½ maalilaskuria
+			//  Poista vanha tietue ja pienennä maalilaskuria
 
 			poistarivi(rtm, ino);
 			muutos = 1;
@@ -174,8 +175,8 @@ int tall_rivi(int ino, aikatp *utm, aikatp *vtm, int *uptr, int kysy,
 			}
 		 }
 	  if (kysy) {
-		  writeerror("Aikataulukkoon tullut muutossanoma - tallennus "
-			  "peruutetaan", 0);
+		  writeerror(TRA("Aikataulukkoon tullut muutossanoma - tallennus "
+			  "peruutetaan"), 0);
 		  if (loki)
 			  kirjloki("Tallennus peruutettu (muutos)\r\n");
 		}
@@ -184,13 +185,13 @@ int tall_rivi(int ino, aikatp *utm, aikatp *vtm, int *uptr, int kysy,
 	  }
    jatka:
 
-   // Seuraava lohko kï¿½sitellï¿½ï¿½n, jos kirjataan uusia tietoja
+   // Seuraava lohko käsitellään, jos kirjataan uusia tietoja
 
    if (utm && purajak(utm->t) != TMAALI0) {
 	  if((aikajono[ino]->rwtime - aikajono[ino]->mxtime) >= 0) {
-		 writeerror("AIKATAULUKKO Tï¿½YSI",0);
+		 writeerror(TRA("AIKATAULUKKO TÄYSI"),0);
 		  if (loki)
-			  kirjloki("Aikataulukko tï¿½ysi, tallennus peruutettu\r\n");
+			  kirjloki("Aikataulukko täysi, tallennus peruutettu\r\n");
 		 errret = 1;
 		 goto poistu;
 		 }
@@ -213,7 +214,7 @@ int tall_rivi(int ino, aikatp *utm, aikatp *vtm, int *uptr, int kysy,
 	  if (it1 != it2 || (utm->kno && utm->kno != tm.kno) ||
 		  tm.badge == 0 || tm.badge != utm->badge) {
 
-		  // varmista, ettï¿½ aika poikkeaa aiemmista ajoista
+		  // varmista, että aika poikkeaa aiemmista ajoista
 		  while (it1 == it2) {
 			  utm->t++;
 			  it1 = datetime64(utm);
@@ -225,7 +226,7 @@ int tall_rivi(int ino, aikatp *utm, aikatp *vtm, int *uptr, int kysy,
 		  muutos = 1;
 		  }
 
-      //  Ilmoita, minkï¿½ rivin tulee jï¿½ï¿½dï¿½ aktiiviseksi
+      //  Ilmoita, minkä rivin tulee jäädä aktiiviseksi
  
       if (uptr) {
          if (kysy) *uptr = rtm;
@@ -235,11 +236,11 @@ int tall_rivi(int ino, aikatp *utm, aikatp *vtm, int *uptr, int kysy,
 		 aikajono[ino]->fp1 = rtm;
 	  }
 
-   // Nï¿½ytï¿½ pï¿½ivitetty aikataulukko
+   // Näytä päivitetty aikataulukko
 
    writeajat();
 
-   // Lï¿½hetï¿½ muutostieto toisille tietokoneille
+   // Lähetä muutostieto toisille tietokoneille
 
 	if (muutos) {
 	   aikajono[ino]->haeAktAjat();
@@ -310,12 +311,12 @@ void writeaika(int ino, int p)
    char abuf[sizeof(aikatp)];
 
    if (_lseek(aikajono[ino]->afhandle, l = ((long)p + 1) * sizeof(aikatp), SEEK_SET) != l) {
-	  writeerror_w(L"Virhe rutiinissa 'writeaika', koodi 1", 0);
+	  writeerror_w(TR(L"Virhe rutiinissa 'writeaika', koodi 1"), 0);
 	  return;
 	  }
    gettm(p, (aikatp *)abuf, ino);
    if (_write(aikajono[ino]->afhandle, abuf, sizeof(aikatp)) != sizeof(aikatp))
-	  writeerror_w(L"Virhe rutiinissa 'writeaika', koodi 2", 0);
+	  writeerror_w(TR(L"Virhe rutiinissa 'writeaika', koodi 2"), 0);
    else {
       if (kirjheti & 8)
 		 fflush(aikajono[ino]->fafhandle);
@@ -337,7 +338,7 @@ void writeajat(void)
 		  continue;
 		if (_lseek(aikajono[ino]->afhandle, l = (aikajono[ino]->fp1+1)*sizeof(aikatp), SEEK_SET)
 			!= l) {
-			writeerror_w(L"Virhe rutiinissa 'writeajat', koodi 1", 0);
+			writeerror_w(TR(L"Virhe rutiinissa 'writeajat', koodi 1"), 0);
 			continue;
 			}
 		while (fl > 0) {
@@ -347,7 +348,7 @@ void writeajat(void)
 			 gettm(aikajono[ino]->fp1++, (aikatp *)abuf+r, ino);
 			 }
 		  if (_write(aikajono[ino]->afhandle, abuf, n*sizeof(aikatp)) != n*sizeof(aikatp)) {
-			 writeerror_w(L"Virhe rutiinissa 'writeajat', koodi 2", 0);
+			 writeerror_w(TR(L"Virhe rutiinissa 'writeajat', koodi 2"), 0);
 			 break;
 			 }
 		  }
@@ -414,7 +415,7 @@ void AjatTiedostoon(wchar_t *fname, int akttm)
 	wchar_t ln[120], st[80];
 
 	if ((outfl = _wfopen(fname, L"wt")) != NULL) {
-		fputws(L"Pvm\tKello\tJono\tStatus\tKilpno\tOsuus\tPiste\tBadge\tKanava\tLï¿½hde\tSeura\tJk\tTulos\tTark\tEro\n", outfl);
+		fputws(L"Pvm\tKello\tJono\tStatus\tKilpno\tOsuus\tPiste\tBadge\tKanava\tLähde\tSeura\tJk\tTulos\tTark\tEro\n", outfl);
 		for (ptime = 0; ptime - aikajono[akttm]->rwtime < 0; ptime++) {
 			rivi[akttm]++;
 			gettm(ptime, &ptm, akttm);
@@ -517,7 +518,7 @@ void AjatTiedostosta(wchar_t *fname, int akttm, bool vainajat)
 		}
 #ifndef _CONSOLE
 	else {
-		Application->MessageBoxW(L"Tiedoston avaaminen ei onnistunut", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Tiedoston avaaminen ei onnistunut"), TR(L"Este"), MB_OK);
 		}
 #endif
 	if (AikaFl)

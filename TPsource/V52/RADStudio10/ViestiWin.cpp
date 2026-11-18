@@ -20,6 +20,7 @@
 #include <tchar.h>
 #pragma hdrstop
 #include "UnitMain.h"
+#include "cbKielet.h"
 //---------------------------------------------------------------------------
 USEFORM("..\ViestiWin\UnitHenkHaku.cpp", FormHenkHaku);
 USEFORM("..\ViestiWin\UnitHylkRap.cpp", FormHylkRap);
@@ -112,6 +113,7 @@ WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
    try
    {
 	   Application->Initialize();
+	   alustaKayttokieli();
 	   Application->Title = L"ViestiWin";
 	   Application->Title = "ViestiWin";
 		Application->CreateForm(__classid(TFormMain), &FormMain);

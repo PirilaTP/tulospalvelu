@@ -32,7 +32,7 @@ void valikko(void)
    do {
       clrscr();
 	  status_on = 1;
-      header=L"PÄÄVALIKKO";
+      header=TR(L"PÄÄVALIKKO");
       kehys(1);
       prscr(&paavalikko);
       listfl = TRUE;
@@ -101,6 +101,8 @@ int wmain(int argc, wchar_t *argv[])
 
 //   initcon(ansitowcs(wst, argv[0], 79));
    initcon(argv[0]);
+   // Käyttöliittymän kieli käyttäjän asetuksista; KAYTTOKIELI= konfiguraatiossa voi vaihtaa sen
+   asetaKayttokieli(lueKayttokieliAsetus());
    SetConsoleOutputCP(850);
    SetConsoleCP(850);
    SetConsoleCtrlHandler((PHANDLER_ROUTINE)ExitHandler, TRUE);

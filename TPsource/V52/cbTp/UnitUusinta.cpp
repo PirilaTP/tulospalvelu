@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitUusinta.h"
 #ifdef MAXOSUUSLUKU
@@ -37,6 +38,7 @@ void uusintaTCPvalitut(int srj, wchar_t cp, int alku, int loppu, int cn);
 __fastcall TFormUusinta::TFormUusinta(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -49,12 +51,12 @@ void __fastcall TFormUusinta::Button1Click(TObject *Sender)
 	int ta, ty, cna, cny;
 
    if (CBYhteydet->ItemIndex < 0) {
-		Application->MessageBoxW(L"Valitse lähetettävät sanomat", L"Valitse", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse lähetettävät sanomat"), TR(L"Valitse"), MB_OK);
 		return;
 		}
    if (RGTapa->ItemIndex == 2 || RGTapa->ItemIndex == 3) {
 		if (CBYhteydet->ItemIndex <= 0) {
-			Application->MessageBoxW(L"Valitse yksi yhteys", L"Valitse", MB_OK);
+			Application->MessageBoxW(TR(L"Valitse yksi yhteys"), TR(L"Valitse"), MB_OK);
 			return;
 			}
 		if (RGTapa->ItemIndex == 2) {
@@ -100,9 +102,9 @@ void __fastcall TFormUusinta::Button2Click(TObject *Sender)
 void __fastcall TFormUusinta::FormShow(TObject *Sender)
 {
 	CBYhteydet->Items->Clear();
-	CBYhteydet->Items->Add(L"Kaikki yhteydet");
+	CBYhteydet->Items->Add(TR(L"Kaikki yhteydet"));
 	for	(int i = 0; i < maxyhteys; i++) {
-		CBYhteydet->Items->Add(L"Yhteys "+UnicodeString(i+1));
+		CBYhteydet->Items->Add(TR(L"Yhteys ")+UnicodeString(i+1));
 	}
 	CBYhteydet->ItemIndex = 0;
 	if (sulkusalasana[0])
@@ -114,11 +116,11 @@ void __fastcall TFormUusinta::Button4Click(TObject *Sender)
 	wchar_t str[80] = L"", ch;
 	char tunnus[4] = "";
 
-	inputstr_prompt(str, 20, L"Anna sulkusalasana", &ch, this);
+	inputstr_prompt(str, 20, TR(L"Anna sulkusalasana"), &ch, this);
 	if (ch == ESC)
 		return;
 	if (wcscmpU(str, sulkusalasana)) {
-		Application->MessageBoxW(L"Väärä salasana", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Väärä salasana"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (EdtSulku->Text.Length() > 0 && EdtSulku->Text != L"Kaikki")
@@ -207,7 +209,7 @@ void __fastcall TFormUusinta::RGTapaClick(TObject *Sender)
 			CBOsuudet->Visible = false;
 			break;
 		case 1:
-			Label2->Caption = L"Rajaava aika minuutteina";
+			Label2->Caption = TR(L"Rajaava aika minuutteina");
 			Label2->Visible = true;
 			Label4->Visible = false;
 			EdtRaja->Visible = true;
@@ -216,11 +218,11 @@ void __fastcall TFormUusinta::RGTapaClick(TObject *Sender)
 			break;
 		case 2:
 		case 3:
-			Label2->Caption = L"Lähetettävät sarjat";
+			Label2->Caption = TR(L"Lähetettävät sarjat");
 			Label2->Visible = true;
 			EdtRaja->Visible = false;
 			CBSarjat->Clear();
-			CBSarjat->Items->Add(L"Kaikki sarjat");
+			CBSarjat->Items->Add(TR(L"Kaikki sarjat"));
 			for (int srj = 0; srj < sarjaluku; srj++)
 				CBSarjat->Items->Add(Sarjat[srj].sarjanimi);
 			CBSarjat->ItemIndex = 0;
@@ -228,9 +230,9 @@ void __fastcall TFormUusinta::RGTapaClick(TObject *Sender)
 #ifdef MAXOSUUSLUKU
 			Label4->Visible = true;
 			CBOsuudet->Clear();
-			CBOsuudet->Items->Add(L"Kaikki osuudet");
+			CBOsuudet->Items->Add(TR(L"Kaikki osuudet"));
 			for (int os = 1; os < kilpparam.ntosuus; os++)
-				CBOsuudet->Items->Add(UnicodeString(os)+L". osuus");
+				CBOsuudet->Items->Add(UnicodeString(os)+TR(L". osuus"));
 			CBOsuudet->Visible = true;
 #endif
 			if (RGTapa->ItemIndex == 2)

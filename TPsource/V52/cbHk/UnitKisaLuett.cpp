@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "WinHk.h"
 #include "UnitKisaLuett.h"
@@ -49,6 +50,7 @@ static wchar_t *rctag[8] = {
 __fastcall TFormKisaLuett::TFormKisaLuett(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -62,11 +64,11 @@ void __fastcall TFormKisaLuett::FormCreate(TObject *Sender)
 	SG1->ColWidths[2] = 180 * Screen->PixelsPerInch / 96;
 	SG1->ColWidths[3] = 180 * Screen->PixelsPerInch / 96;
 	SG1->ColWidths[4] = 90 * Screen->PixelsPerInch / 96;
-	SG1->Cells[0][0] = L"Koodi";
-	SG1->Cells[1][0] = L"Pvm.";
-	SG1->Cells[2][0] = L"Nimi";
-	SG1->Cells[3][0] = L"Hakemisto";
-	SG1->Cells[4][0] = L"Konfiguraatio";
+	SG1->Cells[0][0] = TR(L"Koodi");
+	SG1->Cells[1][0] = TR(L"Pvm.");
+	SG1->Cells[2][0] = TR(L"Nimi");
+	SG1->Cells[3][0] = TR(L"Hakemisto");
+	SG1->Cells[4][0] = TR(L"Konfiguraatio");
 }
 //---------------------------------------------------------------------------
 void TFormKisaLuett::kirjKilpLuett(wchar_t *outfname, kisaLuettTp *kisat, int lkm)
@@ -240,7 +242,7 @@ int TFormKisaLuett::lueKilpLuett(wchar_t *infname, kisaLuettTp *kisat, int *lkm)
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
 				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, että tagit ovat pari
 					er = 1;
-					swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
+					swprintf(msg, TR(L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"),
 						rv, tag, tree.node[jnode].tag);
 					break;
 					}
@@ -265,11 +267,11 @@ int TFormKisaLuett::lueKilpLuett(wchar_t *infname, kisaLuettTp *kisat, int *lkm)
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s päättyi rivillä %d tasolla %d", infname, rv, depth);
+		swprintf(msg, TR(L"XML-tiedosto %s päättyi rivillä %d tasolla %d"), infname, rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivillä %d tai aikaisemmin", infname, rv);
+			swprintf(msg, TR(L"Tiedostossa %s virhe rivillä %d tai aikaisemmin"), infname, rv);
 			}
 		writeerror_w(msg, 0);
 		}
@@ -343,7 +345,7 @@ void TFormKisaLuett::haeLista(void)
 void __fastcall TFormKisaLuett::Button2Click(TObject *Sender)
 {
 	SaveDialog1->DefaultExt = L"xml";
-	SaveDialog1->Filter = L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*");
 	SaveDialog1->FileName = FormMain->InitDir+UnicodeString(L"\\")+fnameRacelist;
 	if (SaveDialog1->Execute()) {
 		haeLista();
@@ -441,7 +443,7 @@ void __fastcall TFormKisaLuett::BtnToteutaClick(TObject *Sender)
 
 void __fastcall TFormKisaLuett::BtnRunkoClick(TObject *Sender)
 {
-	OpenDialog1->Filter = L"Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		int l;
 		EdtRunko->Text = OpenDialog1->FileName;
@@ -459,7 +461,7 @@ void __fastcall TFormKisaLuett::BtnRunkoClick(TObject *Sender)
 void __fastcall TFormKisaLuett::Luekilpailuluettelo1Click(TObject *Sender)
 {
 	OpenDialog1->DefaultExt = L"xml";
-	OpenDialog1->Filter = L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*");
 	OpenDialog1->FileName = FormMain->InitDir+UnicodeString(L"\\")+fnameRacelist;
 	if (OpenDialog1->Execute()) {
 		kilpLkm = sizeof(kisaLuett)/sizeof(kisaLuett[0]);

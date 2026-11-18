@@ -369,7 +369,7 @@ object FormAikavert: TFormAikavert
       OnMouseWheelUp = DGajat1MouseWheelUp
     end
     object CBJono1: TComboBox
-      Left = 40
+      Left = 52
       Top = 1
       Width = 58
       Height = 22
@@ -381,7 +381,7 @@ object FormAikavert: TFormAikavert
         '1')
     end
     object BtnLuoUusi1: TButton
-      Left = 105
+      Left = 117
       Top = 2
       Width = 145
       Height = 21
@@ -492,7 +492,7 @@ object FormAikavert: TFormAikavert
       OnMouseWheelUp = DGajat1MouseWheelUp
     end
     object CBJono2: TComboBox
-      Left = 47
+      Left = 57
       Top = 1
       Width = 58
       Height = 22
@@ -504,7 +504,7 @@ object FormAikavert: TFormAikavert
         '1')
     end
     object BtnLuoUusi2: TButton
-      Left = 116
+      Left = 126
       Top = 1
       Width = 145
       Height = 22

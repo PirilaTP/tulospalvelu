@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include <time.h>
 #include "mtrand.h"
@@ -39,6 +40,7 @@ static int n_ix_jrj, ix_jrj[1000];
 __fastcall TFormArvonta::TFormArvonta(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -49,9 +51,9 @@ void __fastcall TFormArvonta::FormShow(TObject *Sender)
 {
 	CBLAOsuudet->Clear();
 	CBLAOsuudet->Clear();
-	CBLAOsuudet->Items->Add(L"Kaikki osuudet");
+	CBLAOsuudet->Items->Add(TR(L"Kaikki osuudet"));
 	for (int os = 0; os < kilpparam.osuusluku; os++)
-		CBLAOsuudet->Items->Add(UnicodeString(os-1)+L". osuus");
+		CBLAOsuudet->Items->Add(UnicodeString(os-1)+TR(L". osuus"));
 	CBLAOsuudet->ItemIndex = 0;
 	NaytaSarjavalinnat();
 }
@@ -79,15 +81,15 @@ int tarkNumeroVapaus(int srj, int siirto)
 		if (kilp.kilpstatus != 0 || kilp.sarja != srj)
 			continue;
 		if ((kno = kilp.kilpno + siirto) < minkilpno || kno > maxkilpno) {
-			Application->MessageBoxW(L"Siirto johtaisi liian pieneen tai liian suureen numeroon. Ei siirret‰",
-				L"Este", MB_OK);
+			Application->MessageBoxW(TR(L"Siirto johtaisi liian pieneen tai liian suureen numeroon. Ei siirret‰"),
+				TR(L"Este"), MB_OK);
 			return(1);
 			}
 		if ((dd = getpos(kno)) > 0) {
 			kilp.getrec(dd);
 			if (kilp.kilpstatus == 0 && kilp.sarja != srj) {
-				Application->MessageBoxW(L"Siirto johtaisi samaan numeroon kahdella kilpailijalla. Ei siirret‰",
-					L"Este", MB_OK);
+				Application->MessageBoxW(TR(L"Siirto johtaisi samaan numeroon kahdella kilpailijalla. Ei siirret‰"),
+					TR(L"Este"), MB_OK);
 				return(1);
 				}
 			}
@@ -124,7 +126,7 @@ int tarkNumerotila(bool kerro)
 			if (n1 == 0)
 				continue;
 			if (sa <= sa1 && sa1 <= sl) {
-				swprintf(msg+wcslen(msg), L"Sarjojen %s ja %s numeroalueet p‰‰llekk‰iset\n",
+				swprintf(msg+wcslen(msg), TR(L"Sarjojen %s ja %s numeroalueet p‰‰llekk‰iset\n"),
 					Sarjat[i].sarjanimi, Sarjat[j].sarjanimi);
 				}
 			if (wcslen(msg) > sizeof(msg)/2 - 100)
@@ -134,11 +136,11 @@ int tarkNumerotila(bool kerro)
 			break;
 		}
 	if (wcslen(msg) > 20) {
-		Application->MessageBox(UnicodeString(msg).c_str(), L"Virhe", MB_OK);
+		Application->MessageBox(UnicodeString(msg).c_str(), TR(L"Virhe"), MB_OK);
 		return(1);
 		}
 	else if(kerro)
-		Application->MessageBoxW(L"Ei p‰‰llekk‰isyyksi‰", L"OK", MB_OK);
+		Application->MessageBoxW(TR(L"Ei p‰‰llekk‰isyyksi‰"), TR(L"OK"), MB_OK);
 	return(0);
 }
 //---------------------------------------------------------------------------
@@ -351,17 +353,17 @@ int haeseurvapaa(int kno)
 int __fastcall TFormArvonta::varmista_vapaa(int kno, int d) {
 	int ok = 0;
 	if (kno < minkilpno || kno >= maxkilpno) {
-		Application->MessageBoxW((UnicodeString(L"Siirto johtaisi liian pieneen tai suureen numeroon ")
-			+ UnicodeString(kno) + L". Toiminto keskeytetty.").c_str(),
-			L"Virhe", MB_OK);
+		Application->MessageBoxW((UnicodeString(TR(L"Siirto johtaisi liian pieneen tai suureen numeroon "))
+			+ UnicodeString(kno) + TR(L". Toiminto keskeytetty.")).c_str(),
+			TR(L"Virhe"), MB_OK);
 		return(1);
 		}
 	if (ToimintaTila != 1) {
 		int dd;
 		if ((dd = getpos(kno)) > 0 && dd != d) {
-			Application->MessageBoxW((UnicodeString(L"Siirto johtaisi numeroon ")
-				+ UnicodeString(kno) + L"kahdella kilpailijalla. Toiminto keskeytetty.").c_str(),
-				L"Virhe", MB_OK);
+			Application->MessageBoxW((UnicodeString(TR(L"Siirto johtaisi numeroon "))
+				+ UnicodeString(kno) + TR(L"kahdella kilpailijalla. Toiminto keskeytetty.")).c_str(),
+				TR(L"Virhe"), MB_OK);
 			return(1);
 			}
 		}
@@ -393,9 +395,9 @@ void __fastcall TFormArvonta::BtnNumeroiClick(TObject *Sender)
 				}
 			}
 		else {
-			if (Application->MessageBoxW(L"Varoitus: Toteuta muutos vain, jos olet varma, "
-				L"ett‰ siirto ei johda tilap‰isestik‰‰n kahdelle joukkueelle samaan numeroon. Toteutetaanko?",
-				L"Varoitus", MB_YESNO) != IDYES)
+			if (Application->MessageBoxW(TR(L"Varoitus: Toteuta muutos vain, jos olet varma, "
+				L"ett‰ siirto ei johda tilap‰isestik‰‰n kahdelle joukkueelle samaan numeroon. Toteutetaanko?"),
+				TR(L"Varoitus"), MB_YESNO) != IDYES)
 				return;
 			}
 		}
@@ -477,7 +479,7 @@ void __fastcall TFormArvonta::BtnNumeroiClick(TObject *Sender)
 		}
 	kirjheti = kirjheti0;
 	if (!keskeyta)
-		Application->MessageBoxW(L"Toiminto toteutettu", L"Valmis", MB_OK);
+		Application->MessageBoxW(TR(L"Toiminto toteutettu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 
@@ -535,7 +537,7 @@ void __fastcall TFormArvonta::BtnLahtoajatClick(TObject *Sender)
 			siirto = SEK * _wtoi(EdtAikasiirto->Text.c_str());
 			break;
 		default:
-			Application->MessageBoxW(L"Valitse toiminto", L"Este", MB_OK);
+			Application->MessageBoxW(TR(L"Valitse toiminto"), TR(L"Este"), MB_OK);
 			return;
 		}
 	UINT32 kirjheti0 = kirjheti;

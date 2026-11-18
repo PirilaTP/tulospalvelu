@@ -249,6 +249,7 @@
     <ClCompile Include="..\..\TpUtilV2\Vidint.cpp" />
     <ClCompile Include="..\..\TpUtilV2\VIRDRECT.cpp" />
     <ClCompile Include="..\..\TpUtilV2\Viwrrect.cpp" />
+    <ClCompile Include="..\..\TpUtilV2\Kielet.cpp" />
     <ClCompile Include="..\..\TpUtilV2\WRITEERR.cpp" />
     <ClCompile Include="..\..\tputilv2\xmlparser.cpp" />
     <ClCompile Include="..\..\TpUtilV2\xml_put.cpp" />
@@ -256,6 +257,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\INCLUDE\Console.h" />
+    <ClInclude Include="..\..\INCLUDE\Kielet.h" />
     <ClInclude Include="..\..\INCLUDE\tptype.h" />
     <ClInclude Include="..\..\INCLUDE\tputil.h" />
   </ItemGroup>

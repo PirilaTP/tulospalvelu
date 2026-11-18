@@ -127,7 +127,7 @@ void inputkno(int *kno, int x, int y, char *term, char *tc)
        } else
          if ((*kno != 0) && (tarkno(*kno) != tarr[4] - 48))
          {
-           writeerror("Virheellinen kilpailunumero",1000);
+           writeerror(TRA("Virheellinen kilpailunumero"),1000);
            okk = FALSE;
          }
      }

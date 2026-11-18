@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitEmithaku.h"
 //---------------------------------------------------------------------------
@@ -27,6 +28,7 @@ TFormEmithaku *FormEmithaku;
 __fastcall TFormEmithaku::TFormEmithaku(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -38,11 +40,11 @@ void __fastcall TFormEmithaku::FormShow(TObject *Sender)
 	SG1->ColCount = 5;
 	SG1->ColWidths[3] = 60*Screen->PixelsPerInch / 96;
 	SG1->ColWidths[4] = 120*Screen->PixelsPerInch / 96;
-	SG1->Cells[0][0] = L"Emit-1";
-	SG1->Cells[1][0] = L"Emit-2";
-	SG1->Cells[2][0] = L"Kilpno";
-	SG1->Cells[3][0] = L"Sarja";
-	SG1->Cells[4][0] = L"Nimi";
+	SG1->Cells[0][0] = TR(L"Emit-1");
+	SG1->Cells[1][0] = TR(L"Emit-2");
+	SG1->Cells[2][0] = TR(L"Kilpno");
+	SG1->Cells[3][0] = TR(L"Sarja");
+	SG1->Cells[4][0] = TR(L"Nimi");
 	SG1->RowCount = 2;
 }
 //---------------------------------------------------------------------------

@@ -33,6 +33,7 @@
 #include <asynch_1.h>
 #endif
 #pragma hdrstop
+#include "Kielet.h"
 #include <sys/stat.h>
 #include <dos.h>
 #include "laskent.h"
@@ -79,7 +80,7 @@ static void opentaulu(void)
 	   }
 #ifdef BIT32
    if (openport_x(cn_gaz, taulu_com, taulu_baud, 'n', 8, 1, 0)) {
-      writeerror("GAZ-tiedonsiirron avaaminen ei onnistunut", 0);
+      writeerror(TRA("GAZ-tiedonsiirron avaaminen ei onnistunut"), 0);
       taulu_com = 0;
 	  udptaulu = 0;
       return;
@@ -91,7 +92,7 @@ static void opentaulu(void)
          er = 0;
       }
    if (er) {
-      writeerror("Tiedonsiirtoa taululle ei avata", 0);
+      writeerror(TRA("Tiedonsiirtoa taululle ei avata"), 0);
       taulu_com = 0;
       }
 #endif
@@ -249,7 +250,7 @@ void paiv_taulu(void)
 			 st[8] = 0;
 			}
 		 if (udptaulu) {
-			 sprintf(st2, "%2d. os %4d %8s", os+1, nt, st);
+			 sprintf(st2, TRA("%2d. os %4d %8s"), os+1, nt, st);
 			 memcpy(rivi[k]+etumerk, st2, strlen(st2));
 			 }
 		 else {
@@ -299,7 +300,7 @@ void algetaulu(void)
    long t;
 
    if (!taulu_com && !udptaulu) {
-      writeerror("Tiedonsiirtoa ei m„„ritelty", 0);
+      writeerror(TRA("Tiedonsiirtoa ei m„„ritelty"), 0);
       return;
       }
    clrscr();   
@@ -312,12 +313,12 @@ void algetaulu(void)
       else return;
       }
    for (;;) {
-      vidspmsg(9,0,7,0,"Valinnat");
+      vidspmsg(9,0,7,0,TRA("Valinnat"));
       for (k = 0; k < nosuus; k++) {
-         sprintf(msg, "%d. taulu   ", k+1);
+         sprintf(msg, TRA("%d. taulu   "), k+1);
          vidspmsg(11+k, 1, 7, 0, msg);
          strcpy(st, AIKATOSTR(tkarki[tosuus[k]-1], t0));
-         sprintf(msg, "%d. osuus   K„rki: %8.8s", tosuus[k], st);
+         sprintf(msg, TRA("%d. osuus   K„rki: %8.8s"), tosuus[k], st);
          vidspmsg(11+k, 11, 7, 0, msg);
          }
       ch = nosuus + '0';
@@ -327,13 +328,13 @@ void algetaulu(void)
          }
       nosuus = ch - '0';
       for (k = 0; k < nosuus; k++) {     
-         sprintf(msg, "%d. taulu   ", k+1);
+         sprintf(msg, TRA("%d. taulu   "), k+1);
          vidspmsg(11+k, 1, 7, 0, msg);
          cv = tosuus[k] + '0';
-         sprintf(msg, "Anna %d taulun osuuden numero", k+1);
+         sprintf(msg, TRA("Anna %d taulun osuuden numero"), k+1);
          selectopt(msg, "123456789", &cv);
          tosuus[k] = cv - '0';
-         sprintf(msg, "%d. osuus   ", tosuus[k]);
+         sprintf(msg, TRA("%d. osuus   "), tosuus[k]);
          vidspmsg(11+k, 11, 7, 0, msg);
 		 if (udptaulu)
 			lkmaikana[k] = 0;
@@ -353,13 +354,13 @@ void algetaulu(void)
                switch (cv) {
                   case 'T' :
                      autokarki[tosuus[k]-1] = 1;
-                     vidspmsg(ySize-3,0,7,0,"Anna viive ajanotosta");
+                     vidspmsg(ySize-3,0,7,0,TRA("Anna viive ajanotosta"));
                      inputaika_l(&kviive[tosuus[k]-1], 0, 8, 23, ySize-3, "\r", &ch);
                      break;
                   case 'N' :
                      t = t_time_l(biostime(0,0));
                   case 'S' :
-                     vidspmsg(ySize-3,0,7,0,"Vahvista tai sy”t„ aika, Esc: aikaa ei muuteta");
+                     vidspmsg(ySize-3,0,7,0,TRA("Vahvista tai sy”t„ aika, Esc: aikaa ei muuteta"));
                      inputaika_l(&t, t0, 8, 48, ySize-3, "\r\x1b", &ch);
                      if (ch == '\r')
                         tkarki[tosuus[k]-1] = t;

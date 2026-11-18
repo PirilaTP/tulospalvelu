@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitVaTuloste.h"
 #include "UnitKirjoitinVal.h"
@@ -33,6 +34,7 @@ extern INT32 uusi_emit;
 __fastcall TFormVaTuloste::TFormVaTuloste(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormVaTuloste::AinoaSuoraanClick(TObject *Sender)
@@ -122,7 +124,7 @@ void __fastcall TFormVaTuloste::NaytaKilpailijat(int badge)
 				KilpnoA[DG1->Row-1] = Kilpno;
 				OsuusA[DG1->Row-1] = Osuus;
 				JoukkueA[DG1->Row-1] = EdtJoukkue->Text;
-				Cells[0][DG1->Row].text = UnicodeString(Osuus+1)+L". osuus";
+				Cells[0][DG1->Row].text = UnicodeString().sprintf(TR(L"%d. osuus"), Osuus+1);
 				Cells[1][DG1->Row].text = Kilp.Nimi(st, kilpparam.lnimi, Osuus, -1);
 				Cells[2][DG1->Row].text = Kilp.ostiet[Osuus].badge[0];
 				Cells[3][DG1->Row].text = aikatowstr_cols_n(st, Kilp.Maali(Osuus, 0), t0, 0, 8);
@@ -306,7 +308,7 @@ void __fastcall TFormVaTuloste::Tulosta(void)
 	if (!EmitTulPrm.lstf) {
 		if ((EmitTulPrm.lstf = openprfile(EmitKirjoitin, 1, TRUE, FALSE, 0, FALSE))
 			== NULL) {
-			Application->MessageBoxW(L"Kirjoittimen käyttö ei onnistu", L"Virhe", MB_OK);
+			Application->MessageBoxW(TR(L"Kirjoittimen käyttö ei onnistu"), TR(L"Virhe"), MB_OK);
 			return;
 			}
 		if (EmitTulPrm.lstf && EmitTulPrm.lstf->prno == 2)
@@ -349,11 +351,11 @@ void __fastcall TFormVaTuloste::EdtVahvistusKeyPress(TObject *Sender, System::Wi
 //---------------------------------------------------------------------------
 void __fastcall TFormVaTuloste::FormCreate(TObject *Sender)
 {
-	Cells[0][0].text = L"Osuus";
-	Cells[1][0].text = L"Nimi";
-	Cells[2][0].text = L"Badge";
-	Cells[3][0].text = L"Maali";
-	Cells[4][0].text = L"Tark";
+	Cells[0][0].text = TR(L"Osuus");
+	Cells[1][0].text = TR(L"Nimi");
+	Cells[2][0].text = TR(L"Badge");
+	Cells[3][0].text = TR(L"Maali");
+	Cells[4][0].text = TR(L"Tark");
 	DG1->ColWidths[1] = 200 * Screen->PixelsPerInch / 96;
 	DG1->ColWidths[3] = 75 * Screen->PixelsPerInch / 96;
 }

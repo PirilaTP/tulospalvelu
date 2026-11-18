@@ -32,6 +32,7 @@
 #include <bscreens.h>
 #endif
 #include "wincom.h"
+#include "Kielet.h"
 #define SEL_FORE 15
 #define SEL_BACK 0
 #define FORE_O 7

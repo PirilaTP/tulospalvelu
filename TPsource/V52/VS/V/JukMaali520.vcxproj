@@ -217,6 +217,11 @@
     <ClInclude Include="..\..\Juk\VRinnakkaisOsuus.h" />
     <ClInclude Include="..\..\Juk\VMuotoilu.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\kielet\kielet.rc">
+      <AdditionalIncludeDirectories>..\..\kielet;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

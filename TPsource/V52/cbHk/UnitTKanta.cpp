@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "WinHk.h"
 #include "UnitTKanta.h"
@@ -58,21 +59,21 @@ static wchar_t erotin = L';';
 static kokonimi = false;
 static ColTp FileCols0[HT_FILECOLS]
  = {
-	{L"Id", 50, 1, 0, 0, true},
-	{L"Sukunimi", 80, 1, 1, 0, true},
-	{L"Etunimi", 80, 1, 2, 0, true},
-	{L"Seura", 100, 1, 3, 0, true},
-	{L"Maa", 30, 1, 4, 0, true},
-	{L"Joukkue", 55, 1, 11, 0, true},
-	{L"Sarja", 60, 1, 7, 0, true},
-	{L"Badge", 45, 1, 9, 0, true},
-	{L"Bib", 40, 1, 8, 0, false},
-	{L"Sukup.", 30, 1, 6, 0, false},
-	{L"Synt.", 30, 1, 5, 0, false},
-	{L"Ikä", 50, 1, 0, 0, false},
-	{L"OsOttoLkm", 60, 1, 0, 0, false},
-	{L"ViimOsOtto", 60, 1, 0, 0, false},
-	{L"Lisätieto", 60, 1, 0, 0, false}
+	{N_(L"Id"), 50, 1, 0, 0, true},
+	{N_(L"Sukunimi"), 80, 1, 1, 0, true},
+	{N_(L"Etunimi"), 80, 1, 2, 0, true},
+	{N_(L"Seura"), 100, 1, 3, 0, true},
+	{N_(L"Maa"), 30, 1, 4, 0, true},
+	{N_(L"Joukkue"), 55, 1, 11, 0, true},
+	{N_(L"Sarja"), 60, 1, 7, 0, true},
+	{N_(L"Badge"), 45, 1, 9, 0, true},
+	{N_(L"Bib"), 40, 1, 8, 0, false},
+	{N_(L"Sukup."), 30, 1, 6, 0, false},
+	{N_(L"Synt."), 30, 1, 5, 0, false},
+	{N_(L"Ikä"), 50, 1, 0, 0, false},
+	{N_(L"OsOttoLkm"), 60, 1, 0, 0, false},
+	{N_(L"ViimOsOtto"), 60, 1, 0, 0, false},
+	{N_(L"Lisätieto"), 60, 1, 0, 0, false}
 };
 
 #define HENKID_KILPID 	1
@@ -134,6 +135,7 @@ static int nflds;
 __fastcall TFormTKanta::TFormTKanta(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -608,7 +610,7 @@ int __fastcall TFormTKanta::LueHenkilot(wchar_t *flName, bool NaytaDialogi)
 		OpenDialog1->InitialDir = FormMain->CurrentDir;
 		OpenDialog1->FileName = UnicodeString(HenkTKantaNm);
 		OpenDialog1->DefaultExt = L"csv";
-		OpenDialog1->Filter = L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+		OpenDialog1->Filter = TR(L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 		if (OpenDialog1->Execute()) {
 			InFile = new TextFl(OpenDialog1->FileName.c_str(), L"t");
 			if (InFile->IsOpen())
@@ -738,7 +740,7 @@ int __fastcall TFormTKanta::NaytaHenkilot(wchar_t *alain, wchar_t *ylain, wchar_
 				hTGrid->ColCount = n+1;
 			ColContent[n] = i;
 			hTGridCols[i].Order = n;
-			hTGrid->Cells[n][0] = UnicodeString(hTGridCols[i].Caption);
+			hTGrid->Cells[n][0] = UnicodeString(TR(hTGridCols[i].Caption));
 			hTGrid->Cells[n][1] = UnicodeString(L"");
 			hTGrid->ColWidths[n] = hTGridCols[i].Width * Screen->PixelsPerInch / 96;
 			n += 1;
@@ -1381,13 +1383,13 @@ void TFormTKanta::kirjoitaTiedostoon(int aiempaan)
 		vast = aiempaan;
 		}
 	else {
-		vast = select3(3, L"Tallennetaanko muutokset aiempaan tiedostoon?", L"Kohdetiedosto",
-			L"Tallenna aimpaan tehden backup", L"Tallenna samaan ilman backup-tiedostoa", L"Tallenna uudella nimellä", this);
+		vast = select3(3, TR(L"Tallennetaanko muutokset aiempaan tiedostoon?"), TR(L"Kohdetiedosto"),
+			TR(L"Tallenna aimpaan tehden backup"), TR(L"Tallenna samaan ilman backup-tiedostoa"), TR(L"Tallenna uudella nimellä"), this);
 		}
 	if (vast == 3) {
 		SaveDialog1->InitialDir = FormMain->CurrentDir;
 		SaveDialog1->DefaultExt = L"csv";
-		SaveDialog1->Filter = L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute()) {
 			FName = SaveDialog1->FileName;
 			}
@@ -1410,17 +1412,17 @@ void TFormTKanta::kirjoitaTiedostoon(int aiempaan)
 				OutFile->WriteLine(Buf);
 				}
 			OutFile->Close();
-			Application->MessageBoxW((UnicodeString(L"Tiedosto ") + FName +
-				L" kirjoitettu. Kirjoitetut tiedot luetaan uudelleen ohjelmaan").c_str(), L"Valmis", MB_OK);
+			Application->MessageBoxW((UnicodeString(TR(L"Tiedosto ")) + FName +
+				TR(L" kirjoitettu. Kirjoitetut tiedot luetaan uudelleen ohjelmaan")).c_str(), TR(L"Valmis"), MB_OK);
 			LueHenkilot(FName.c_str(), false);
 			}
 		delete OutFile;
 		if (ToimintaTila == 2 && comfl && maxyhteys && memnullcmp((char *)lah_tiedostot, sizeof(lah_tiedostot))) {
-			if (Application->MessageBoxW(L"Lähetetäänkö tiedosto verkon muille tietokoneille?",
-				L"Lähetys", MB_YESNO) == IDYES) {
+			if (Application->MessageBoxW(TR(L"Lähetetäänkö tiedosto verkon muille tietokoneille?"),
+				TR(L"Lähetys"), MB_YESNO) == IDYES) {
 				if (lah_tiedosto(FName.c_str(), 0, 2))
-					Application->MessageBoxW(L"Tiedoston lähettäminen ei onnistunut.",
-						L"Ei lähetetty", MB_OK);
+					Application->MessageBoxW(TR(L"Tiedoston lähettäminen ei onnistunut."),
+						TR(L"Ei lähetetty"), MB_OK);
 				}
 			}
 		}

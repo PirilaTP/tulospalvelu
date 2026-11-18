@@ -28,6 +28,7 @@
 #include <butil.h>
 
 #pragma hdrstop
+#include "Kielet.h"
 
 #include "HkMuotoilu.h"
 //---------------------------------------------------------------------------
@@ -1428,13 +1429,13 @@ void lue_muotoilu(wchar_t *luetfnm, int kysy)
 	  wselectopt(L"Luetaanko muotoilu levylt‰ (K/E)", L"KE", &ch);
 	  clrln(ySize-3);
 	  if (ch == L'K') {
-		 vidspwmsg(ySize-3,0,7,0,L"Tiedoston nimi:");
+		 vidspwmsg(ySize-3,0,7,0,TR(L"Tiedoston nimi:"));
 		 for (;;) {
 #ifdef _CONSOLE
 			inputwstr(luetfnm, 39, 16, ySize-3, L"\r\x1b", &ch, FALSE);
 			clrln(ySize-1);
 #else
-			 inputstr_prompt(luetfnm, 39, L"Tiedoston nimi", &ch);
+			 inputstr_prompt(luetfnm, 39, TR(L"Tiedoston nimi"), &ch);
 #endif
 			if (ch == ESC)
 				return;
@@ -1443,7 +1444,7 @@ void lue_muotoilu(wchar_t *luetfnm, int kysy)
 				delete luetfmtf;
 				luetfmtf = NULL;
 			   erbeep();
-			   vidspwmsg(ySize-1,0,0,7,L"EI L÷YDY!");
+			   vidspwmsg(ySize-1,0,0,7,TR(L"EI L÷YDY!"));
 			   }
 			else break;
 			}
@@ -1455,7 +1456,7 @@ void lue_muotoilu(wchar_t *luetfnm, int kysy)
 	   luetfmtf = new TextFl(luetfnm,L"r");
 		if (!luetfmtf->IsOpen()) {
 			delete luetfmtf;
-			writeerror_w(L"Tulostusmuotoilutiedostoa ei lˆydy!",0, true);
+			writeerror_w(TR(L"Tulostusmuotoilutiedostoa ei lˆydy!"),0, true);
 			return;
 			}
 		}
@@ -1486,17 +1487,17 @@ void lue_muotoilu(wchar_t *luetfnm, int kysy)
 	lsttulparam.tulmuot = tulosmuot;
 #ifdef _CONSOLE
 	if (prnt == GDIPRINTER && lsttulparam.printer != prnt) {
-		writeerror_w(L"Windows kirjoitinajurin muotoilu ohitetaan", 0);
+		writeerror_w(TR(L"Windows kirjoitinajurin muotoilu ohitetaan"), 0);
 		return;
 		}
 	if (lsttulparam.printer == GDIPRINTER && lsttulparam.printer != prnt) {
-		writeerror_w(L"Muotoilu ei sovi Windows kirjoitinajurille", 0);
+		writeerror_w(TR(L"Muotoilu ei sovi Windows kirjoitinajurille"), 0);
 		return;
 		}
 	lsttulparam.printer = prnt;
 #else
 	if (prnt != GDIPRINTER) {
-		writeerror_w(L"Muotoilu ei sovi Windows kirjoitinajurille", 0, true);
+		writeerror_w(TR(L"Muotoilu ei sovi Windows kirjoitinajurille"), 0, true);
 		return;
 		}
 #endif
@@ -1640,7 +1641,7 @@ void tall_muotoilu(wchar_t *luetfnm) {
    luetfmtf = new TextFl(luetfnm,L"wt");
    if (!luetfmtf->IsOpen()) {
 	  delete luetfmtf;
-	  writeerror_w(L"Tulostusmuotoilutiedoston kirjoitaminen ei onnistu!",0, true);
+	  writeerror_w(TR(L"Tulostusmuotoilutiedoston kirjoitaminen ei onnistu!"),0, true);
 	  return;
 	  }
    else {
@@ -2980,7 +2981,7 @@ int LueXMLMuotoilu(wchar_t *MuotFile)
 				for (jnode = inode; jnode > 0 && tree.node[jnode].depth > depth; jnode--) ;
 				if (wcscmp(tag, tree.node[jnode].tag)) {      // Varmistetaan, ett‰ tagit ovat pari
 					er = 1;
-					swprintf(msg, L"XML-muotoilun tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
+					swprintf(msg, TR(L"XML-muotoilun tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"),
 						rv, tag, tree.node[jnode].tag);
 					break;
 					}
@@ -3004,11 +3005,11 @@ int LueXMLMuotoilu(wchar_t *MuotFile)
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto %s p‰‰ttyi rivill‰ %d tasolla %d", MuotFile, rv, depth);
+		swprintf(msg, TR(L"XML-tiedosto %s p‰‰ttyi rivill‰ %d tasolla %d"), MuotFile, rv, depth);
 		}
 	if (er) {
 		if (!msg[0]) {
-			swprintf(msg, L"Tiedostossa %s virhe rivill‰ %d tai aikaisemmin", MuotFile, rv);
+			swprintf(msg, TR(L"Tiedostossa %s virhe rivill‰ %d tai aikaisemmin"), MuotFile, rv);
 			}
 		writeerror_w(msg, 0, true);
 		}

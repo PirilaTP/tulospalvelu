@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <process.h>
 
 #include "UnitMySQL.h"
@@ -28,6 +29,7 @@ TFormMySQL *FormMySQL;
 __fastcall TFormMySQL::TFormMySQL(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	EdtServer->Text = sqlparam.hostname;
 	EdtDB->Text = sqlparam.database;
 	EdtUser->Text = sqlparam.User_Name;

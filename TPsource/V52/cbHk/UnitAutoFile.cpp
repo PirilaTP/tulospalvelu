@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitAutoFile.h"
 #include "WinHk.h"
@@ -31,6 +32,7 @@ TFormAutoFile *FormAutoFile;
 __fastcall TFormAutoFile::TFormAutoFile(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -114,7 +116,7 @@ void __fastcall TFormAutoFile::Button1Click(TObject *Sender)
 	SaveDialog1->InitialDir = FormMain->CurrentDir;
 	SaveDialog1->FileName = EdtHtmlFName->Text;
 	SaveDialog1->DefaultExt = L"html";
-	SaveDialog1->Filter = L"Html-tiedostot (*.html)|*.HTML|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Html-tiedostot (*.html)|*.HTML|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		EdtHtmlFName->Text = SaveDialog1->FileName;
 		}
@@ -141,7 +143,7 @@ void __fastcall TFormAutoFile::BtnValitseKomentoClick(TObject *Sender)
 	SaveDialog1->InitialDir = FormMain->CurrentDir;
 	SaveDialog1->FileName = EdtKomento->Text;
 	SaveDialog1->DefaultExt = L"cmd";
-	SaveDialog1->Filter = L"CMD-tiedostot (*.cmd)|*.cmd|BAT-tiedostot (*.bat)|*.bat|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"CMD-tiedostot (*.cmd)|*.cmd|BAT-tiedostot (*.bat)|*.bat|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		EdtKomento->Text = SaveDialog1->FileName;
 		}
@@ -203,7 +205,7 @@ void __fastcall TFormAutoFile::BtnLuoAFlstClick(TObject *Sender)
 			UnicodeString(Sarjat[srj].psarjanimi);
 		Memo1->Lines->Add(ln);
 		}
-	Application->MessageBoxW(L"Tietoja ei ole tallennettu", L"Varoitus", MB_OK);
+	Application->MessageBoxW(TR(L"Tietoja ei ole tallennettu"), TR(L"Varoitus"), MB_OK);
 }
 //---------------------------------------------------------------------------
 

@@ -467,7 +467,7 @@ object FormAjanotto: TFormAjanotto
       OnClick = BtnLuoUusiClick
     end
     object BitBtn1: TBitBtn
-      Left = 95
+      Left = 103
       Top = 1
       Width = 31
       Height = 31
@@ -569,7 +569,7 @@ object FormAjanotto: TFormAjanotto
       OnClick = BitBtn1Click
     end
     object CBJono: TComboBox
-      Left = 34
+      Left = 42
       Top = 9
       Width = 58
       Height = 22

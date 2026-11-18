@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <stdlib.h>
 #include "UnitHenkHaku.h"
 
@@ -33,6 +34,7 @@ TFormHenkHaku *FormHenkHaku;
 __fastcall TFormHenkHaku::TFormHenkHaku(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -48,15 +50,15 @@ void __fastcall TFormHenkHaku::FormShow(TObject *Sender)
 	SG1->ColWidths[2] = 140;
 	SG1->ColWidths[3] = 40;
 	SG1->ColWidths[4] = 160;
-	SG1->Cells[0][0] = L"Kilpno";
-	SG1->Cells[1][0] = L"Sarja";
-	SG1->Cells[2][0] = L"Joukkue";
-	SG1->Cells[3][0] = L"Osuus";
-	SG1->Cells[4][0] = L"Nimi";
+	SG1->Cells[0][0] = TR(L"Kilpno");
+	SG1->Cells[1][0] = TR(L"Sarja");
+	SG1->Cells[2][0] = TR(L"Joukkue");
+	SG1->Cells[3][0] = TR(L"Osuus");
+	SG1->Cells[4][0] = TR(L"Nimi");
 	CBOsuudet->Clear();
-	CBOsuudet->Items->Add(L"Kaikki osuudet");
+	CBOsuudet->Items->Add(TR(L"Kaikki osuudet"));
 	for (int os = 0; os < kilpparam.osuusluku; os++)
-		CBOsuudet->Items->Add(UnicodeString(os+1) + L". osuus");
+		CBOsuudet->Items->Add(UnicodeString(os+1) + TR(L". osuus"));
 	CBOsuudet->ItemIndex = 0;
 	NaytaNimet();
 }

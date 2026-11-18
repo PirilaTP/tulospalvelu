@@ -564,6 +564,9 @@
         <CppCompile Include="..\tputilv2\wPageedit.cpp">
             <BuildOrder>128</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\tputilv2\Kielet.cpp">
+            <BuildOrder>142</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\tputilv2\Writeerr.cpp">
             <BuildOrder>91</BuildOrder>
         </CppCompile>

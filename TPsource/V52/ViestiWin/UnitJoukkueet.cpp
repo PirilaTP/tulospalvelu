@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitJoukkueet.h"
 #include "UnitJoukkuetiedot.h"
@@ -55,31 +56,31 @@ TFormJoukkueet *FormJoukkueet;
 #define OCOLGPS		24
 
 ColTp OoGridCols0[] = {
-	{L"KilpNo", 40, 0, 1, 0, true},
-	{L"Sarja", 60, 0, 1, 0, true},
-	{L"Seura", 120, 0, 1, 0, true},
-	{L"Jk", 30, 0, 1, 0, true},
-	{L"Maa", 30, 0, 1, 0, true},
-	{L"Id-no", 50, 0, 1, 0, false},
-	{L"JoukkNimi", 70, 0, 1, 0, false},
-	{L"Piiri", 40, 0, 1, 0, false},
-	{L"Erä", 40, 0, 1, 0, false},
-	{L"Sukunimi", 80, 0, MAXOSUUSLUKU, 0, true},
-	{L"Etunimi", 80, 0, MAXOSUUSLUKU, 0, true},
-	{L"Lisenssi", 55, 0, MAXOSUUSLUKU, 0, false},
-	{L"Arvo", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"OsSeura", 80, 0, MAXOSUUSLUKU, 0, false},
-	{L"Badge", 55, 0, MAXOSUUSLUKU, 0, true},
-	{L"Badge2", 55, 0, MAXOSUUSLUKU, 0, false},
-	{L"Lna", 30, 0, MAXOSUUSLUKU, 0, true},
-	{L"Lähtö", 70, 0, MAXOSUUSLUKU, 0, true},
-	{L"Lht-lj", 40, 0, MAXOSUUSLUKU, 0, true},
-	{L"Aika", 70, 0, MAXOSUUSLUKU, 0, true},
-	{L"Tark", 40, 0, MAXOSUUSLUKU, 0, true},
-	{L"A-sakot", 55, 0, MAXOSUUSLUKU, 0, false},
-	{L"Sakko", 40, 0, MAXOSUUSLUKU, 0, false},
-	{L"Rata", 60, 0, MAXOSUUSLUKU, 0, true},
-	{L"GPS", 30, 0, MAXOSUUSLUKU, 0, true}
+	{N_(L"KilpNo"), 40, 0, 1, 0, true},
+	{N_(L"Sarja"), 60, 0, 1, 0, true},
+	{N_(L"Seura"), 120, 0, 1, 0, true},
+	{N_(L"Jk"), 30, 0, 1, 0, true},
+	{N_(L"Maa"), 30, 0, 1, 0, true},
+	{N_(L"Id-no"), 50, 0, 1, 0, false},
+	{N_(L"JoukkNimi"), 70, 0, 1, 0, false},
+	{N_(L"Piiri"), 40, 0, 1, 0, false},
+	{N_(L"Erä"), 40, 0, 1, 0, false},
+	{N_(L"Sukunimi"), 80, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Etunimi"), 80, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Lisenssi"), 55, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Arvo"), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"OsSeura"), 80, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Badge"), 55, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Badge2"), 55, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Lna"), 30, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Lähtö"), 70, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Lht-lj"), 40, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Aika"), 70, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Tark"), 40, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"A-sakot"), 55, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Sakko"), 40, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Rata"), 60, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"GPS"), 30, 0, MAXOSUUSLUKU, 0, true}
 };
 
 ColTp OoGridCols[sizeof(OoGridCols0)/sizeof(ColTp)];
@@ -91,6 +92,7 @@ static wchar_t *LLaji[4] = {L"Auto", L"Auto", L"Yksil", L"Kiint"};
 __fastcall TFormJoukkueet::TFormJoukkueet(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -310,14 +312,14 @@ void __fastcall TFormJoukkueet::setOoGrid(void)
 			for (int ipv = 0; ipv < OoGridCols[i].Count; ipv++) {
 				if (i == OCOLLIS && !Lisenssinumero1->Checked) {
 					if (Osuuspisteet11->Checked)
-						OoGrid->Cells[n+ipv*n_monios][0] = L"OsPist-1";
+						OoGrid->Cells[n+ipv*n_monios][0] = TR(L"OsPist-1");
 					if (Osuuspisteet21->Checked)
-						OoGrid->Cells[n+ipv*n_monios][0] = L"OsPist-2";
+						OoGrid->Cells[n+ipv*n_monios][0] = TR(L"OsPist-2");
 					if (Osuuspisteet31->Checked)
-						OoGrid->Cells[n+ipv*n_monios][0] = L"OsPist-3";
+						OoGrid->Cells[n+ipv*n_monios][0] = TR(L"OsPist-3");
 					}
 				else
-					OoGrid->Cells[n+ipv*n_monios][0] = UnicodeString(OoGridCols[i].Caption);
+					OoGrid->Cells[n+ipv*n_monios][0] = UnicodeString(TR(OoGridCols[i].Caption));
 				OoGrid->ColWidths[n+ipv*n_monios] = OoGridCols[i].Width * Screen->PixelsPerInch / 96;
 				}
 			n++;
@@ -574,7 +576,7 @@ int __fastcall TFormJoukkueet::tallennaTiedot(void)
 	int tl, tlsum, erolkm = 0, muutlkm = 0, viimos;
 	kilptietue Kilp, entKilp;
 
-	LblMuokkaus->Caption = L"Tallentaa tietoja";
+	LblMuokkaus->Caption = TR(L"Tallentaa tietoja");
 	LblMuokkaus->Visible = true;
 	OoGrid->Options >> goEditing;
 //	Lueemitkoodeja1->Enabled = false;
@@ -767,8 +769,8 @@ int __fastcall TFormJoukkueet::tallennaTiedot(void)
 				}
 			if (errrivi) {
 				LeaveCriticalSection(&tall_CriticalSection);
-				Application->MessageBox((UnicodeString(L"Virhe joukkueen ") + UnicodeString(errrivi)
-					+ UnicodeString(L" tiedoissa. Loppuja ei tallennettu.")).c_str(), L"Virhe", MB_OK);
+				Application->MessageBox((UnicodeString(TR(L"Virhe joukkueen ")) + UnicodeString(errrivi)
+					+ UnicodeString(TR(L" tiedoissa. Loppuja ei tallennettu."))).c_str(), L"Virhe", MB_OK);
 				EnterCriticalSection(&tall_CriticalSection);
 				break;
 				}
@@ -789,28 +791,28 @@ int __fastcall TFormJoukkueet::tallennaTiedot(void)
 		if (vaihe == 0) {
 			if (erolkm <= 0) {
 				LeaveCriticalSection(&tall_CriticalSection);
-				Application->MessageBox(L"Ei muutoksia tallennettavaksi", L"Ei muutoksia", MB_OK);
+				Application->MessageBox(TR(L"Ei muutoksia tallennettavaksi"), TR(L"Ei muutoksia"), MB_OK);
 				EnterCriticalSection(&tall_CriticalSection);
 				break;
 				}
 			if (erolkm > 0) {
 				LeaveCriticalSection(&tall_CriticalSection);
 				if (muutlkm == erolkm) {
-					Application->MessageBox(L"Ei tallennettavissa olevia muutoksia johtuen muualla tehdyistä samojen joukkueiden muutoksista", L"Ei tallenneta muutoksia", MB_OK);
+					Application->MessageBox(TR(L"Ei tallennettavissa olevia muutoksia johtuen muualla tehdyistä samojen joukkueiden muutoksista"), TR(L"Ei tallenneta muutoksia"), MB_OK);
 					EnterCriticalSection(&tall_CriticalSection);
 					break;
 					}
 				else if (muutlkm > 0) {
-					if (Application->MessageBox((UnicodeString(erolkm)+L" joukkueen tiedoissa muutos, näistä "+
-						UnicodeString(muutlkm)+L" ei voida tallentaa muualla tehdyn muutoksen takia, tallennetaanko loput").c_str(),
-						L"Muutoksia", MB_YESNO) != IDYES) {
+					if (Application->MessageBox((UnicodeString(erolkm)+TR(L" joukkueen tiedoissa muutos, näistä ")+
+						UnicodeString(muutlkm)+TR(L" ei voida tallentaa muualla tehdyn muutoksen takia, tallennetaanko loput")).c_str(),
+						TR(L"Muutoksia"), MB_YESNO) != IDYES) {
 						EnterCriticalSection(&tall_CriticalSection);
 						break;
 						}
 					}
 				else {
-					if (Application->MessageBox((UnicodeString(erolkm)+L" joukkueen tiedoissa muutos, tallennetaanko").c_str(),
-						L"Muutoksia", MB_YESNO) != IDYES) {
+					if (Application->MessageBox((UnicodeString(erolkm)+TR(L" joukkueen tiedoissa muutos, tallennetaanko")).c_str(),
+						TR(L"Muutoksia"), MB_YESNO) != IDYES) {
 						EnterCriticalSection(&tall_CriticalSection);
 						break;
 						}
@@ -820,7 +822,7 @@ int __fastcall TFormJoukkueet::tallennaTiedot(void)
 			}
 		}
 	LeaveCriticalSection(&tall_CriticalSection);
-	LblMuokkaus->Caption = L"Muokkaus sallittu";
+	LblMuokkaus->Caption = TR(L"Muokkaus sallittu");
 	LblMuokkaus->Visible = OoGrid->Options.Contains(goEditing);
 	return(0);
 }
@@ -838,9 +840,9 @@ void __fastcall TFormJoukkueet::FormShow(TObject *Sender)
 		else
 			CBJarjestys->ItemIndex = 0;
 		CBOsuudet->Clear();
-		CBOsuudet->Items->Add(L"Kaikki osuudet");
+		CBOsuudet->Items->Add(TR(L"Kaikki osuudet"));
 		for (int i = 0; i < kilpparam.osuusluku; i++) {
-			CBOsuudet->Items->Add(UnicodeString(i+1)+UnicodeString(L". osuus"));
+			CBOsuudet->Items->Add(UnicodeString(i+1)+UnicodeString(TR(L". osuus")));
 			}
 		Oo_os = 0;
 		CBOsuudet->ItemIndex = 0;
@@ -1139,8 +1141,8 @@ void __fastcall TFormJoukkueet::OoGridKeyDown(TObject *Sender, WORD &Key, TShift
 		}
 	if (aktrow > 0 && Key == VK_DELETE && !Shift.Contains(ssShift) && Shift.Contains(ssCtrl) && !Shift.Contains(ssAlt)) {
 		kilp.getrec(DKilp[aktrow]);
-		swprintf(msg, L"Vahvista joukkueen %s pysyvä poisto", kilp.Joukkue(buf, 49));
-		if (Application->MessageBox(msg, L"Poisto", MB_YESNO) == IDYES) {
+		swprintf(msg, TR(L"Vahvista joukkueen %s pysyvä poisto"), kilp.Joukkue(buf, 49));
+		if (Application->MessageBox(msg, TR(L"Poisto"), MB_YESNO) == IDYES) {
 			deltall(DKilp[aktrow], 0);
 			naytaTiedot();
 			aktrow = rr;
@@ -1495,7 +1497,7 @@ void __fastcall TFormJoukkueet::Kiinteitsarakkeita11Click(TObject *Sender)
 {
 	int FC = OoGrid->FixedCols;
 	wchar_t ret;
-	inputint_prompt(&FC, L"Anna kiinteiden sarakkeiden luku (1..12)", &ret, this);
+	inputint_prompt(&FC, TR(L"Anna kiinteiden sarakkeiden luku (1..12)"), &ret, this);
 	if (ret != ESC) {
 		if (FC < 1)
 			FC = 1;
@@ -1504,7 +1506,7 @@ void __fastcall TFormJoukkueet::Kiinteitsarakkeita11Click(TObject *Sender)
 		if (FC > OoGrid->ColCount)
 			FC = OoGrid->ColCount;
 		OoGrid->FixedCols = FC;
-		Kiinteitsarakkeita11->Caption = L"Kiinteitä sarakkeita "+UnicodeString(FC);
+		Kiinteitsarakkeita11->Caption = TR(L"Kiinteitä sarakkeita ")+UnicodeString(FC);
 		}
 	naytaTiedot();
 }

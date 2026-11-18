@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitJjVaihdot.h"
 #include "VDeclare.h"
@@ -31,6 +32,7 @@ extern TFormJjVaihdot *FormJjVaihdot;
 __fastcall TFormJjVaihdot::TFormJjVaihdot(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -60,8 +62,8 @@ void __fastcall TFormJjVaihdot::BtnJaaNimiClick(TObject *Sender)
 void __fastcall TFormJjVaihdot::FormShow(TObject *Sender)
 {
 	SG1->ColWidths[0] = 140 * Screen->PixelsPerInch / 96;
-	SG1->Cells[0][0] = L"Nimi";
-	SG1->Cells[1][0] = L"Uusi osuus";
+	SG1->Cells[0][0] = TR(L"Nimi");
+	SG1->Cells[1][0] = TR(L"Uusi osuus");
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormJjVaihdot::FormResize(TObject *Sender)

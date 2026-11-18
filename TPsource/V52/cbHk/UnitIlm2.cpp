@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <process.h>
 #include <bstrings.h>
 
@@ -35,30 +36,30 @@ int vakbiblisa = 6000;
 //---------------------------------------------------------------------------
 
 ColTp IlmGridCols0[] = {
-	{L"KilpNo", 40, 0, 1, 0, true},
-	{L"Sarja", 60, 0, 1, 0, true},
-	{L"Id-no", 40, 0, 1, 0, true},
-	{L"Sukunimi", 80, 0, 1, 0, true},
-	{L"Etunimi", 80, 0, 1, 0, true},
-	{L"Arvo", 50, 0, 1, 0, false},
-	{L"Seura", 100, 0, 1, 0, true},
-	{L"Seuralyh", 50, 0, 1, 0, true},
-	{L"Yhdistys", 50, 0, 1, 0, false},
-	{L"Joukkue", 50, 0, 1, 0, false},
-	{L"Maa", 30, 0, 1, 0, true},
-	{L"Piiri", 40, 0, 1, 0, false},
-	{L"WRkoodi", 50, 0, 1, 0, false},
-	{L"Ilm.lista", 50, 0, 1, 0, false},
-	{L"Arv.ryhmä", 50, 0, 1, 0, false},
-	{L"RintaNo", 50, 0, N_PV, 0, false},
-	{L"Badge", 45, 0, N_PV, 0, true},
-	{L"Laina", 30, 0, N_PV, 0, false},
-	{L"Tas.", 40, 0, N_PV, 0, false},
-	{L"Läsnä", 35, 0, N_PV, 0, true},
-	{L"Lähtö", 50, 0, N_PV, 0, true},
-	{L"Tulos", 50, 0, N_PV, 0, false},
-	{L"A-sakot", 50, 0, N_PV, 0, false},
-	{L"Teksti", 80, 0, N_PV, 0, false}
+	{N_(L"KilpNo"), 40, 0, 1, 0, true},
+	{N_(L"Sarja"), 60, 0, 1, 0, true},
+	{N_(L"Id-no"), 40, 0, 1, 0, true},
+	{N_(L"Sukunimi"), 80, 0, 1, 0, true},
+	{N_(L"Etunimi"), 80, 0, 1, 0, true},
+	{N_(L"Arvo"), 50, 0, 1, 0, false},
+	{N_(L"Seura"), 100, 0, 1, 0, true},
+	{N_(L"Seuralyh"), 50, 0, 1, 0, true},
+	{N_(L"Yhdistys"), 50, 0, 1, 0, false},
+	{N_(L"Joukkue"), 50, 0, 1, 0, false},
+	{N_(L"Maa"), 30, 0, 1, 0, true},
+	{N_(L"Piiri"), 40, 0, 1, 0, false},
+	{N_(L"WRkoodi"), 50, 0, 1, 0, false},
+	{N_(L"Ilm.lista"), 50, 0, 1, 0, false},
+	{N_(L"Arv.ryhmä"), 50, 0, 1, 0, false},
+	{N_(L"RintaNo"), 50, 0, N_PV, 0, false},
+	{N_(L"Badge"), 45, 0, N_PV, 0, true},
+	{N_(L"Laina"), 30, 0, N_PV, 0, false},
+	{N_(L"Tas."), 40, 0, N_PV, 0, false},
+	{N_(L"Läsnä"), 35, 0, N_PV, 0, true},
+	{N_(L"Lähtö"), 50, 0, N_PV, 0, true},
+	{N_(L"Tulos"), 50, 0, N_PV, 0, false},
+	{N_(L"A-sakot"), 50, 0, N_PV, 0, false},
+	{N_(L"Teksti"), 80, 0, N_PV, 0, false}
 };
 
 ColTp IlmGridCols[sizeof(IlmGridCols0)/sizeof(ColTp)];
@@ -96,6 +97,7 @@ void __fastcall TFormIlm2::OlEdits(void)
 __fastcall TFormIlm2::TFormIlm2(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -288,9 +290,9 @@ void __fastcall TFormIlm2::Initialisoi(void)
 		sallimuokkaus = true;
 		Kilp.nollaa();
 		CBPaivat->Clear();
-		CBPaivat->Items->Add(L"Kaikki");
+		CBPaivat->Items->Add(TR(L"Kaikki"));
 		for (int i = 0; i < kilpparam.n_pv_akt; i++) {
-			CBPaivat->Items->Add(UnicodeString(i+1)+UnicodeString(L". päivä"));
+			CBPaivat->Items->Add(UnicodeString(i+1)+UnicodeString(TR(L". päivä")));
 			}
 		CBPaivat->ItemIndex = 0;
 		CSarja->Items->Clear();
@@ -545,7 +547,7 @@ void __fastcall TFormIlm2::naytaTiedot(int kno)
 			IlmGridCols[i].Order = n;
 			IlmGridCols[i].Count = nlisa;
 			for (int ipv = 0; ipv < nlisa; ipv++) {
-				IlmGrid->Cells[n+ipv][0] = UnicodeString(IlmGridCols[i].Caption);
+				IlmGrid->Cells[n+ipv][0] = UnicodeString(TR(IlmGridCols[i].Caption));
 				IlmGrid->ColWidths[n+ipv] = IlmGridCols[i].Width * Screen->PixelsPerInch / 96;
 				}
 			n += nlisa;
@@ -876,8 +878,8 @@ int __fastcall TFormIlm2::tallennaTiedot(void)
 			}
 		if (errrivi) {
 			LeaveCriticalSection(&tall_CriticalSection);
-			Application->MessageBox((UnicodeString(L"Virhe kilpailijan ") + UnicodeString(errrivi)
-				+ UnicodeString(L" tiedoissa. Loppuja ei tallennettu.")).c_str(), L"Virhe", MB_OK);
+			Application->MessageBox((UnicodeString(TR(L"Virhe kilpailijan ")) + UnicodeString(errrivi)
+				+ UnicodeString(TR(L" tiedoissa. Loppuja ei tallennettu."))).c_str(), L"Virhe", MB_OK);
 			EnterCriticalSection(&tall_CriticalSection);
 			break;
 			}
@@ -1130,7 +1132,7 @@ void __fastcall TFormIlm2::IlmGridDblClick(TObject *Sender)
 void __fastcall TFormIlm2::CBPaivatChange(TObject *Sender)
 {
 	if (IlmGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -1145,7 +1147,7 @@ void __fastcall TFormIlm2::FormClose(TObject *Sender, TCloseAction &Action)
 
 {
 	if (IlmGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -1161,7 +1163,7 @@ void __fastcall TFormIlm2::FormClose(TObject *Sender, TCloseAction &Action)
 void __fastcall TFormIlm2::CBJarjestysChange(TObject *Sender)
 {
 	if (IlmGrid->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			tallennaTiedot();
 			}
@@ -1517,12 +1519,12 @@ void __fastcall TFormIlm2::tallennaKilpailija(bool kysy)
 	int d, kilpno, bdg;
 
 	if (RGLisays->ItemIndex == 0 && (Dk <= 0 || Dk >= nrec)) {
-		Application->MessageBoxW(L"Kilpailijaa ei voi lisätä muokkausmoodissa", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Kilpailijaa ei voi lisätä muokkausmoodissa"), L"Virhe", MB_OK);
 		return;
 		}
 	kilpno = _wtoi(EId->Text.c_str());
 	if (CSarja->ItemIndex < 0) {
-		Application->MessageBox(L"Sarja puuttuu", L"Virhe",	MB_OK);
+		Application->MessageBox(TR(L"Sarja puuttuu"), L"Virhe",	MB_OK);
 		return;
 		}
 	if (RGLisays->ItemIndex == 1) {
@@ -1531,25 +1533,25 @@ void __fastcall TFormIlm2::tallennaKilpailija(bool kysy)
 		kilpno = haeseurvapaa(kilpno);
 		}
 	if (kilpno < minkilpno || kilpno > maxkilpno) {
-		Application->MessageBox(L"Kilpailunumero virheellinen", L"Virhe", MB_OK);
+		Application->MessageBox(TR(L"Kilpailunumero virheellinen"), L"Virhe", MB_OK);
 		return;
 		}
 	if ((d = getpos(kilpno)) > 0 && d != Dk && d != DVKilp) {
-		Application->MessageBox(L"Kilpailunumero varattu", L"Virhe", MB_OK);
+		Application->MessageBox(TR(L"Kilpailunumero varattu"), L"Virhe", MB_OK);
 		return;
 		}
 	if (ilmkentat > 1 && CBNimiHThaku->Checked) {
 		bdg = _wtoi(EBadge1->Text.c_str());
 		if (!on_lainakortti(bdg) && HTBadge != 0 && bdg != HTBadge && bdg > 11000 &&
 			_wtoi(ELisno->Text.c_str()) != 0) {
-			if (Application->MessageBox(L"Vaihdetaanko tietokannan Emit-koodi?", L"Pysyvä muutos?",
+			if (Application->MessageBox(TR(L"Vaihdetaanko tietokannan Emit-koodi?"), TR(L"Pysyvä muutos?"),
 				MB_YESNO) != IDYES) {
 				Kilp.pv[k_pv].laina[1] = L'L';
 				}
 			}
 		}
 	if (kysy) {
-		if (Application->MessageBox(L"Vahvista tallennus", L"Vahvista",
+		if (Application->MessageBox(TR(L"Vahvista tallennus"), TR(L"Vahvista"),
 			MB_YESNO) != IDYES)
 		return;
 		}
@@ -1831,7 +1833,7 @@ void __fastcall TFormIlm2::EIdKeyDown(TObject *Sender, WORD &Key, TShiftState Sh
 		naytaTiedot(kno);
 		edkno = kno;
 		if (d <= 0) {
-			Application->MessageBox(L"Pyydetty kilpailijanumero ei ole käytössä", L"Ei löydy",
+			Application->MessageBox(TR(L"Pyydetty kilpailijanumero ei ole käytössä"), TR(L"Ei löydy"),
 				MB_OK);
 			}
 		else {

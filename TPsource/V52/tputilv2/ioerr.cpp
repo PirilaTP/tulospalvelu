@@ -16,6 +16,7 @@
 
 #include <windows.h>
 #include <console.h>
+#include <Kielet.h>
 
 void wperr(LPWSTR szFileName, int line, LPWSTR szApiName, DWORD dwError);
 
@@ -24,7 +25,7 @@ void wperr(LPWSTR szFileName, int line, LPWSTR szApiName, DWORD dwError);
 // Palauttaa aina 0.
 int ioerr(char *fname, int oper, long iores)
 {
-	perr((char *)fname, iores, "ioerr", oper);
+	perr((char *)fname, iores, TRA("ioerr"), oper);
 
    return(0);
 }

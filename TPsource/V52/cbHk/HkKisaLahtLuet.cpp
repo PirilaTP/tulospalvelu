@@ -26,6 +26,7 @@
 #include <bkeybrd.h>
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <dos.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -347,7 +348,7 @@ INT teejonot(int **ljonot, INT njono, wchar_t lahto, INT d, kilpindex *ind)
 	  lmax /= 2;
    *ljonot = (int *) calloc(lmax, sizeof(INT));
    if (*ljonot == 0) {
-	  writeerror_w(L"Ei muistitilaa jonojen muodostamiselle", 0);
+	  writeerror_w(TR(L"Ei muistitilaa jonojen muodostamiselle"), 0);
 	  return(0);
 	  }
    l = -1;
@@ -362,7 +363,7 @@ INT teejonot(int **ljonot, INT njono, wchar_t lahto, INT d, kilpindex *ind)
 	  if (l < lmax)
 		 (*ljonot)[l] = d;
 	  else {
-		 writeerror_w(L"Jonojen muodostus keskeytetty. Liian epätasaiset jonot", 0, true);
+		 writeerror_w(TR(L"Jonojen muodostus keskeytetty. Liian epätasaiset jonot"), 0, true);
 		 break;
 		 }
 	  ksrj[kilp.Sarja()] = (ksrj[kilp.Sarja()]+1) % njono;
@@ -566,6 +567,8 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
    npv = kilpparam.n_pv_akt;
    ind.ix = 0;
    tulprm.optiot = Options;
+   // Optio 0x10000000 pakottaa englannin (yhteensopivuus), muuten tulosteiden oletuskieli
+   tulprm.language = (Options & 0x10000000) ? KIELI_EN : tulostekieli;
    LLvaat = (Options & 0xe0) / 32;
    seuralistaMaa = Options & 0x08000000;
 
@@ -786,7 +789,7 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 				wchar_t esc[400];
 
 				tulprm.merkit = merkit;
-				tulprm.language = (Options & 0x10000000) ? 1 : 0;
+				tulprm.language = (Options & 0x10000000) ? KIELI_EN : tulostekieli;
 				htmlhead_resp(otsTeksti(NULL, llparam.luetots0, 100, ots_pv), &tulprm);
 				css_lahtoluettelo(&tulprm, laji);
 				sendln(tulprm.lstf, L"</head>\n<body>\n<h2 class=otsikko>");
@@ -1112,8 +1115,7 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 					  wcscat(lots, mtkst);
 					  }
 				   if (njono > 1) {
-					  wcscat(lots, L"  Jono  ");
-					  lots[wcslen(lots)-1] = '0'+kjono;
+					  swprintf(lots+wcslen(lots), L"  %s %d", TRL(tulprm.language, L"Jono"), kjono);
 					  }
 				   }
 			   if (llhtml) {
@@ -1170,7 +1172,7 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 					}
 			   if (njono <= 1)
 				  {
-				  swprintf(lots + wcslen(lots), L"Lähtö %d", (int)keyv[0]);
+				  swprintf(lots + wcslen(lots), L"%s %d", TRL(tulprm.language, L"Lähtö"), (int)keyv[0]);
 				  }
 			   if (llhtml) {
 					if (laji != 1 && llparam.luetots22[0]) {
@@ -1225,7 +1227,7 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 				  srj = kilp.Sarja(arv_pv);
 				  newline(&tulprm, 1);
 				  initline(&tulprm);
-				  swprintf(lots, L"   %s   Jono %d", Sarjat[srj].sarjanimi, kjono);
+				  swprintf(lots, L"   %s   %s %d", Sarjat[srj].sarjanimi, TRL(tulprm.language, L"Jono"), kjono);
 				  put_str(&tulprm, lots, 0);
 				  endline(&tulprm, 1);
 				  l++;
@@ -1272,7 +1274,7 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 				  if ((wcswcind(luetlaji, L"ABC") >= 0) && (ilmvert == 0))
 					 fldstr[LLF_SARJA][0] = 0;
 				  if (kilp.tark(arv_pv) == L'V') {
-					   wcscpy(fldstr[LLF_NIMI], L"VAKANTTI");
+					   wcsncpy(fldstr[LLF_NIMI], TRL(tulprm.language, L"VAKANTTI"), 79);
 					  }
 				  else {
 					  elimwbl(kilp.arvo);
@@ -1507,7 +1509,7 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 							  if (!tulprm.mahtuusivulle(l, 3)) {
 								 uusisivu = false;
 								 endpage(&tulprm);
-								 swprintf(lots, L"Lähtö %d", (int)keyv[0]);
+								 swprintf(lots, L"%s %d", TRL(tulprm.language, L"Lähtö"), (int)keyv[0]);
 								 put_str(&tulprm, lots, 0);
 								 endline(&tulprm, 1);
 								 l = 2;
@@ -1529,11 +1531,11 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 							 if (llhtml && tulprm.tulmuot.tauluhtml) {
 								  memset(fldstr, 0, sizeof(fldstr));
 								  wcsncpy(fldstr[LLF_AIKA], as1, 8);
-								  wcscpy(fldstr[LLF_NIMI], L"EI LÄHTIJÖITÄ");
+								  wcsncpy(fldstr[LLF_NIMI], TRL(tulprm.language, L"EI LÄHTIJÖITÄ"), 79);
 								  prt_kilp(&tulprm, laji);
 								}
 							 else {
-								  swprintf(st, L"%-8s    EI LÄHTIJÖITÄ", as1);
+								  swprintf(st, 120, L"%-8s    %s", as1, TRL(tulprm.language, L"EI LÄHTIJÖITÄ"));
 								  put_str(&tulprm, st, 0);
 								  }
 							  endline(&tulprm, 0);
@@ -1569,7 +1571,7 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 		 if (wcswcind(luetlaji, L"EF") >= 0 && ilmvert == 0 ) {
 			initline(&tulprm);
 		  if (nlaina) {
-			   swprintf(lots, L"Lainakortteja %d", nlaina);
+			   swprintf(lots, 500, TRL(tulprm.language, L"Lainakortteja %d"), nlaina);
 			   put_str(&tulprm, lots, tulkentta[tiedostoon][LLF_NIMI].pos[laji]);
 			   }
 			nlaina = 0;
@@ -1604,7 +1606,7 @@ void lahtoluettelo(wchar_t kohde, wchar_t tiedlaji, wchar_t luetlaji, int paiva,
 	  if ((wcswcind(luetlaji, L"EFKN") >= 0) && kilpparam.badgelaji > L' ' && !llhtml) {
 		 newline(&tulprm, 1);
 		 initline(&tulprm);
-		 swprintf(lots, L"Listalla emitkortteja: omat %d, laina %d, puuttuu %d ",
+		 swprintf(lots, 500, TRL(tulprm.language, L"Listalla emitkortteja: omat %d, laina %d, puuttuu %d "),
 			nomatot, nlainatot, neiemit);
 		 nomatot = 0;
 		 nlainatot = 0;
@@ -1656,13 +1658,14 @@ void tulosyhteenveto(tulostusparamtp *tulprm)
    co = tulprm->kohde;
    if (k_pv)
 	  ots = L"Sarja      Ilm Yht.aika Aika Kesk  Hyl Auki Kärkiaika "
-											L"Mahd.aika  Mahd.sija\n";
+											L"Mahd.aika  Mahd.sija";
    else
 	  ots = L"  Sarja      Ilm   Aika  Kesk  Hyl   Auki  Kärkiaika  "
-											L"Mahd.aika  Mahd.sija\n";
+											L"Mahd.aika  Mahd.sija";
    kaika[8] = 0;
    if (co != L'P') {
-	   sendln(tulprm->lstf, ots);
+	   sendln(tulprm->lstf, TRL(tulprm->language, ots));
+	   sendln(tulprm->lstf, L"\n");
 	  srj = 0;
 	  do {
 		 if (nilm[srj] > 0) {
@@ -1709,34 +1712,34 @@ void tulosyhteenveto(tulostusparamtp *tulprm)
 		 initpage(tulprm, NULL);
 	  l = 0;
 	  swprintf(line,
-		 L"Viim. maaliaika : %8.8s            kirjausaika : %s\r\n",
+		 TRL(tulprm->language, L"Viim. maaliaika : %8.8s            kirjausaika : %s\r\n"),
 		 AIKATOWSTRS(st, tmaali,t0),wkello());
 	  putfld(tulprm, line,prtflds[1].pos,80,0,0);
 	  endline(tulprm, 0);
 	  if (k_pv) {
-		 putfld(tulprm, L"Sarja", 2*scale, 5, 0, 0);
-		 putfld(tulprm, L"Ilm", 14*scale, 3, 1, 0);
-		 putfld(tulprm, L"Yht.aika", 18*scale, 8, 1, 0);
-		 putfld(tulprm, L"Aika", 26*scale, 4, 1, 0);
-		 putfld(tulprm, L"Kesk", 31*scale, 4, 1, 0);
-		 putfld(tulprm, L"Hyl", 38*scale, 3, 1, 0);
-		 putfld(tulprm, L"Auki", 43*scale, 4, 1, 0);
-		 putfld(tulprm, L"Kärkiaika", 49*scale, 9, 1, 0);
-		 putfld(tulprm, L"Mahd.aika", 60*scale, 9, 1, 0);
-		 putfld(tulprm, L"Mahd.sj", 70*scale, 9, 1, 0);
-		 putfld(tulprm, L"Mahd.ysj", 80*scale, 9, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Sarja"), 2*scale, 5, 0, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Ilm"), 14*scale, 3, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Yht.aika"), 18*scale, 8, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Aika"), 26*scale, 4, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Kesk"), 31*scale, 4, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Hyl"), 38*scale, 3, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Auki"), 43*scale, 4, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Kärkiaika"), 49*scale, 9, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Mahd.aika"), 60*scale, 9, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Mahd.sj"), 70*scale, 9, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Mahd.ysj"), 80*scale, 9, 1, 0);
 		 }
 	  else
 		 {
-		 putfld(tulprm, L"Sarja", 2*scale, 5, 0, 0);
-		 putfld(tulprm, L"Ilm", 14*scale, 3, 1, 0);
-		 putfld(tulprm, L"Aika", 19*scale, 4, 1, 0);
-		 putfld(tulprm, L"Kesk", 25*scale, 4, 1, 0);
-		 putfld(tulprm, L"Hyl", 32*scale, 3, 1, 0);
-		 putfld(tulprm, L"Auki", 37*scale, 4, 1, 0);
-		 putfld(tulprm, L"Kärkiaika", 43*scale, 9, 1, 0);
-		 putfld(tulprm, L"Mahd.aika", 54*scale, 9, 1, 0);
-		 putfld(tulprm, L"Mahd.sija", 64*scale, 9, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Sarja"), 2*scale, 5, 0, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Ilm"), 14*scale, 3, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Aika"), 19*scale, 4, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Kesk"), 25*scale, 4, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Hyl"), 32*scale, 3, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Auki"), 37*scale, 4, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Kärkiaika"), 43*scale, 9, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Mahd.aika"), 54*scale, 9, 1, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Mahd.sija"), 64*scale, 9, 1, 0);
 		 }
 	  endline(tulprm, 1);
 	  for (srj = 0; srj < sarjaluku; srj++) {
@@ -1792,13 +1795,13 @@ void tulosyhteenveto(tulostusparamtp *tulprm)
 			 }
 	  newline(tulprm, 1);
 	  if (k_pv) {
-		 swprintf(line,L"Yhteensä  %6d%6d%7d%5d%5d%5d",nilmt,nytulost,
+		 swprintf(line,L"%-10.10s%6d%6d%7d%5d%5d%5d",TRL(tulprm->language, L"Yhteensä"),nilmt,nytulost,
 			ntulost,nkeskt,nhylt,(nilmt - ntulost - nkeskt - nhylt - neilt));
 		 putfld(tulprm, line, 0, 80, 0, 0);
 		 }
 	  else
 		 {
-		 putfld(tulprm, L"Yhteensä", 2*scale, 11, 0, 0);
+		 putfld(tulprm, TRL(tulprm->language, L"Yhteensä"), 2*scale, 11, 0, 0);
 		 putfld(tulprm, _itow(nilmt,line,10), 13*scale, 4, 1, 0);
 		 putfld(tulprm, _itow(ntulost,line,10), 19*scale, 4, 1, 0);
 		 putfld(tulprm, _itow(nkeskt,line,10), 25*scale, 4, 1, 0);
@@ -1814,17 +1817,18 @@ void tulosyhteenveto(tulostusparamtp *tulprm)
 
 void ooyhteenveto(tulostusparamtp *tulprm)
 {
-	wchar_t ots[120] = L"Sarja      Ilmoitt.";
+	wchar_t ots[120] = L"";
 	wchar_t line[120], co;
 	INT l, srj;
 	int ni_pv[N_PV];
 
 	co = tulprm->kohde;
 	memset(ni_pv, 0, sizeof(ni_pv));
+	swprintf(ots, 120, L"%-10.10s %s", TRL(tulprm->language, L"Sarja"), TRL(tulprm->language, L"Ilmoitt."));
 	if (co != L'P') {
 		if (kilpparam.n_pv_akt > 1) {
 			for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++)
-				swprintf(ots+wcslen(ots), L" %4d. vaihe", ipv+1);
+				swprintf(ots+wcslen(ots), L" %4d. %-5s", ipv+1, TRL(tulprm->language, L"vaihe"));
 			}
 		wcscat(ots, L"\n");
 		sendln(tulprm->lstf, ots);
@@ -1842,7 +1846,7 @@ void ooyhteenveto(tulostusparamtp *tulprm)
 				sendln(tulprm->lstf, line);
 				}
 			}
-		swprintf(line,L" %-11s    %4d",L"Yhteensä",
+		swprintf(line,L" %-11s    %4d",TRL(tulprm->language, L"Yhteensä"),
 			nyilmt);
 		if (kilpparam.n_pv_akt > 1) {
 			for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
@@ -1863,11 +1867,11 @@ void ooyhteenveto(tulostusparamtp *tulprm)
 		else
 			initpage(tulprm, NULL);
 		l = 0;
-		putfld(tulprm, L"Sarja", 2*scale, 5, 0, 0);
-		putfld(tulprm, L"IlmYht", 10*scale, 6, 1, 0);
+		putfld(tulprm, TRL(tulprm->language, L"Sarja"), 2*scale, 5, 0, 0);
+		putfld(tulprm, TRL(tulprm->language, L"IlmYht"), 10*scale, 6, 1, 0);
 		if (kilpparam.n_pv_akt > 1) {
 			for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
-				swprintf(line, L" %4d. vaihe", ipv+1);
+				swprintf(line, L" %4d. %s", ipv+1, TRL(tulprm->language, L"vaihe"));
 				putfld(tulprm, line, (20+10*ipv)*scale, 8, 1, 0);
 				}
 			}
@@ -1891,7 +1895,7 @@ void ooyhteenveto(tulostusparamtp *tulprm)
 				}
 			}
 		newline(tulprm, 1);
-		putfld(tulprm, L"Yhteensä", 2*scale, 11, 0, 0);
+		putfld(tulprm, TRL(tulprm->language, L"Yhteensä"), 2*scale, 11, 0, 0);
 		putfld(tulprm, _itow(nyilmt,line,10), 13*scale, 4, 1, 0);
 		for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
 			putfld(tulprm, _itow(ni_pv[ipv],line,10), (23+10*ipv)*scale, 4, 1, 0);
@@ -1940,18 +1944,19 @@ void emityhteenveto(tulostusparamtp *tulprm)
 	if (co != L'P') {
 		if (kilpparam.n_pv_akt > 1) {
 			for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++)
-				swprintf(ots+wcslen(ots), L"     %4d. vaihe      ", ipv+1);
+				swprintf(ots+wcslen(ots), L"     %4d. %-11s", ipv+1, TRL(tulprm->language, L"vaihe"));
 			wcscat(ots, L"\n");
 			sendln(tulprm->lstf, ots);
 			}
-		wcscpy(ots, L"Sarja       ");
-		for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++)
-			swprintf(ots+wcslen(ots), L" Läsnä   On   Ei Laina");
+		swprintf(ots, L"%-12.12s", TRL(tulprm->language, L"Sarja"));
+		for (int ipv = 0; ipv < kilpparam.n_pv_akt && wcslen(ots) < 95; ipv++)
+			swprintf(ots+wcslen(ots), L" %5.5s%5.5s%5.5s%6.6s", TRCL(tulprm->language, L"emityhteenveto", L"Läsnä"),
+				TRCL(tulprm->language, L"emityhteenveto", L"On"), TRCL(tulprm->language, L"emityhteenveto", L"Ei"), TRCL(tulprm->language, L"emityhteenveto", L"Laina"));
 		wcscat(ots, L"\n");
 		sendln(tulprm->lstf, ots);
 		for (int i = -1; i < sarjaluku; i++) {
 			if (i < 0) {
-				swprintf(line,L"%-12s",L"Yhteensä");
+				swprintf(line,L"%-12s",TRL(tulprm->language, L"Yhteensä"));
 				srj = MAXSARJALUKU;
 				}
 			else {
@@ -1977,18 +1982,18 @@ void emityhteenveto(tulostusparamtp *tulprm)
 		else
 			initpage(tulprm, NULL);
 		l = 0;
-		putfld(tulprm, L"Sarja", 0, 5, 0, 0);
+		putfld(tulprm, TRL(tulprm->language, L"Sarja"), 0, 5, 0, 0);
 		for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
-			swprintf(line, L"%4d. vaihe", ipv+1);
+			swprintf(line, L"%4d. %s", ipv+1, TRL(tulprm->language, L"vaihe"));
 			putfld(tulprm, line, (19+22*ipv)*scale, 8, 0, 0);
 			}
 		endline(tulprm, 1);
 		l++;
 		for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
-			putfld(tulprm, L"Läsnä", (12+22*ipv)*scale, 5, 1, 0);
-			putfld(tulprm, L"On", (17+22*ipv)*scale, 5, 1, 0);
-			putfld(tulprm, L"Ei", (22+22*ipv)*scale, 5, 1, 0);
-			putfld(tulprm, L"Laina", (27+22*ipv)*scale, 5, 1, 0);
+			putfld(tulprm, TRCL(tulprm->language, L"emityhteenveto", L"Läsnä"), (12+22*ipv)*scale, 5, 1, 0);
+			putfld(tulprm, TRCL(tulprm->language, L"emityhteenveto", L"On"), (17+22*ipv)*scale, 5, 1, 0);
+			putfld(tulprm, TRCL(tulprm->language, L"emityhteenveto", L"Ei"), (22+22*ipv)*scale, 5, 1, 0);
+			putfld(tulprm, TRCL(tulprm->language, L"emityhteenveto", L"Laina"), (27+22*ipv)*scale, 5, 1, 0);
 			}
 		endline(tulprm, 1);
 		l++;
@@ -1998,7 +2003,7 @@ void emityhteenveto(tulostusparamtp *tulprm)
 				initpage(tulprm, NULL);
 				}
 			if (i < 0) {
-				putfld(tulprm, L"Yhteensä", 0, 8, 0, 0);
+				putfld(tulprm, TRL(tulprm->language, L"Yhteensä"), 0, 8, 0, 0);
 				srj = MAXSARJALUKU;
 				}
 			else {
@@ -2079,9 +2084,10 @@ void yhtveto(wchar_t kohde, wchar_t tiedlaji, wchar_t yvlaji, wchar_t *listflnm,
 
 			if (l == 0) {
 				swprintf(line, L"   %-30.30s %-10.10s %3.3s %4.4s    %5s",
-					L"Seura", L"Lyhenne", L"Maa", L"Lkm", L"Maksu");
+					TRL(tulprm.language, L"Seura"), TRL(tulprm.language, L"Lyhenne"), TRL(tulprm.language, L"Maa"),
+					TRL(tulprm.language, L"Lkm"), TRL(tulprm.language, L"Maksu"));
 				for	(int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++)
-					swprintf(line+wcslen(line), L" %d.pv", ipv+1);
+					swprintf(line+wcslen(line), L" %d.%s", ipv+1, TRL(tulprm.language, L"pv"));
 				wcscat(line, L"\n");
 				sendln(tulprm.lstf, line);
 //				endline(&tulprm, 0);
@@ -2156,7 +2162,7 @@ void yhtveto(wchar_t kohde, wchar_t tiedlaji, wchar_t yvlaji, wchar_t *listflnm,
 
 		initline(&tulprm);
 		swprintf(line, L"   %-30.30s                     %5d,%2.2d\n",
-				L"Yhteensä", mstot/100, mstot%100);
+				TRL(tulprm.language, L"Yhteensä"), mstot/100, mstot%100);
 		sendln(tulprm.lstf, line);
 		poistaindeksi(&ind);
 		}

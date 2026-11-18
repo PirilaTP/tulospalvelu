@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitEmitMuutokset.h"
 #include "UnitEmit.h"
@@ -29,6 +30,7 @@ TFormEmitMuutokset *FormEmitMuutokset;
 __fastcall TFormEmitMuutokset::TFormEmitMuutokset(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormEmitMuutokset::BtnPeruutaClick(TObject *Sender)
@@ -65,7 +67,7 @@ void __fastcall TFormEmitMuutokset::EdtKilpnoExit(TObject *Sender)
 	EdtKilpno->Text = kno;
 	d = getpos(kno);
 	if (d <= 0) {
-		Application->MessageBoxW(L"Kilpailunumero ei käytössä", L"", MB_OK);
+		Application->MessageBoxW(TR(L"Kilpailunumero ei käytössä"), L"", MB_OK);
 		return;
 		}
 	Nayta(d);
@@ -80,7 +82,7 @@ void __fastcall TFormEmitMuutokset::Nayta(int d)
 
 	kilp.GETREC(d);
 	if (kilp.tark(k_pv) == L'P') {
-		Application->MessageBoxW(L"Kilpailija merkitty poissaolevaksi", L"", MB_OK);
+		Application->MessageBoxW(TR(L"Kilpailija merkitty poissaolevaksi"), L"", MB_OK);
 		return;
 		}
 	dKilp = d;
@@ -212,7 +214,7 @@ void __fastcall TFormEmitMuutokset::BtnVaihdaClick(TObject *Sender)
 {
 int d;
 
-	if (Application->MessageBoxW(L"Tietojen vaihto toteutetaan ilman lisävahvistusta. Jatka", L"Vahvista", MB_YESNO) == IDYES) {
+	if (Application->MessageBoxW(TR(L"Tietojen vaihto toteutetaan ilman lisävahvistusta. Jatka"), TR(L"Vahvista"), MB_YESNO) == IDYES) {
 		d = getpos(_wtoi(EdtKilpno->Text.c_str()));
 		if (d > 0)
 			FormEmit->TallennaVaihto(d);

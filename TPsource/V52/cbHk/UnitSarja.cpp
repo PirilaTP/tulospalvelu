@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSarja.h"
 #include "UnitSarjatiedot.h"
@@ -32,6 +33,7 @@ wchar_t *luonteet[3] = {L"Itsenäinen", L"Jatko", L"Takaa-ajo"};
 __fastcall TFormSarja::TFormSarja(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -68,11 +70,11 @@ void __fastcall TFormSarja::naytaPaivat(void)
 		if (CBLuonne[ipv]->Visible) {
 			int ii = CBLuonne[ipv]->ItemIndex;
 			CBLuonne[ipv]->Clear();
-			CBLuonne[ipv]->Items->Add(L"Itsen.");
-			CBLuonne[ipv]->Items->Add(L"Jatko");
-			CBLuonne[ipv]->Items->Add(L"Tak-ajo");
+			CBLuonne[ipv]->Items->Add(TR(L"Itsen."));
+			CBLuonne[ipv]->Items->Add(TR(L"Jatko"));
+			CBLuonne[ipv]->Items->Add(TR(L"Tak-ajo"));
 			if (ipv > Sarja1.enspv && ipv < Sarja1.viimpv)
-				CBLuonne[ipv]->Items->Add(L"Ohita");
+				CBLuonne[ipv]->Items->Add(TR(L"Ohita"));
 			if (ipv == Sarja1.enspv)
 				CBLuonne[ipv]->ItemIndex = 0;
 			else {
@@ -342,8 +344,8 @@ void __fastcall TFormSarja::Button3Click(TObject *Sender)
 void __fastcall TFormSarja::Button4Click(TObject *Sender)
 {
 	if (sarjaluku > 1 && SarjaNo >= 0 && SarjaNo < sarjaluku) {
-		if (Application->MessageBoxW((UnicodeString(L"Vahvista sarjan '")+UnicodeString(Sarjat[SarjaNo].sarjanimi)+
-			UnicodeString(L"' poisto")).c_str(), L"Vahvistus", MB_YESNO) == IDYES) {
+		if (Application->MessageBoxW((UnicodeString(TR(L"Vahvista sarjan '"))+UnicodeString(Sarjat[SarjaNo].sarjanimi)+
+			UnicodeString(TR(L"' poisto"))).c_str(), TR(L"Vahvistus"), MB_YESNO) == IDYES) {
 			memmove(&Sarjat[SarjaNo], &Sarjat[SarjaNo+1], (sarjaluku-SarjaNo-1)*sizeof(Sarjat[0]));
 			vaihdakilpsrj(SarjaNo, sarjaluku-1, -1, true);
 			sarjaluku--;
@@ -356,7 +358,7 @@ void __fastcall TFormSarja::Button4Click(TObject *Sender)
 			}
 		}
 	else {
-		Application->MessageBoxW(L"Sarjan numero ei käytössä", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Sarjan numero ei käytössä"), TR(L"Virhe"), MB_OK);
 		}
 }
 //---------------------------------------------------------------------------
@@ -388,13 +390,13 @@ void __fastcall TFormSarja::BtnTallennaClick(TObject *Sender)
 		(srj == sarjaluku - 1 && Sarjat[sarjaluku-1].vakanttisarja && !Sarja1.vakanttisarja)) {
 		if (srj < sarjaluku) {
 			if (srj == sarjaluku - 1 && Sarjat[sarjaluku-1].vakanttisarja) {
-				if (Application->MessageBoxW(L"Sarja lisätään loppuun vakanttisarjan edelle. Vahvista",
-					L"Sarjan lisäys", MB_YESNO) != IDYES)
+				if (Application->MessageBoxW(TR(L"Sarja lisätään loppuun vakanttisarjan edelle. Vahvista"),
+					TR(L"Sarjan lisäys"), MB_YESNO) != IDYES)
 					return;
 				}
 			else
-				if (Application->MessageBoxW(L"Sarja lisätään annetun sarjanumeron paikalle. Vahvista",
-					L"Sarjan lisäys", MB_YESNO) != IDYES)
+				if (Application->MessageBoxW(TR(L"Sarja lisätään annetun sarjanumeron paikalle. Vahvista"),
+					TR(L"Sarjan lisäys"), MB_YESNO) != IDYES)
 					return;
 			memmove(&Sarjat[srj+1], &Sarjat[srj], (sarjaluku-srj)*sizeof(Sarjat[0]));
 			Sarjat[srj] = Sarja1;
@@ -402,16 +404,16 @@ void __fastcall TFormSarja::BtnTallennaClick(TObject *Sender)
 			vaihdakilpsrj(srj, sarjaluku-2, 1, true);
 			}
 		else {
-			if (Application->MessageBoxW(L"Sarja lisätään viimeiseksi. Vahvista",
-				L"Sarjan lisäys", MB_YESNO) != IDYES)
+			if (Application->MessageBoxW(TR(L"Sarja lisätään viimeiseksi. Vahvista"),
+				TR(L"Sarjan lisäys"), MB_YESNO) != IDYES)
 				return;
 			sarjaluku++;
 			Sarjat[srj] = Sarja1;
 			}
 		}
 	else if (srj != SarjaNo) {
-		if (Application->MessageBoxW(L"Sarja siirretään annetun sarjanumeron paikalle. Vahvista",
-			L"Sarjan siirto", MB_YESNO) != IDYES)
+		if (Application->MessageBoxW(TR(L"Sarja siirretään annetun sarjanumeron paikalle. Vahvista"),
+			TR(L"Sarjan siirto"), MB_YESNO) != IDYES)
 			return;
 		if (srj < SarjaNo) {
 			memmove(&Sarjat[srj+1], &Sarjat[srj], (SarjaNo-srj)*sizeof(Sarjat[0]));
@@ -429,8 +431,8 @@ void __fastcall TFormSarja::BtnTallennaClick(TObject *Sender)
 		   }
 		}
 	else {
-		if (Application->MessageBoxW(L"Mahdolliset muutokset tallennetaan. Vahvista",
-			L"Vahvistus", MB_YESNO) != IDYES)
+		if (Application->MessageBoxW(TR(L"Mahdolliset muutokset tallennetaan. Vahvista"),
+			TR(L"Vahvistus"), MB_YESNO) != IDYES)
 			return;
 		Sarjat[srj] = Sarja1;
 		}

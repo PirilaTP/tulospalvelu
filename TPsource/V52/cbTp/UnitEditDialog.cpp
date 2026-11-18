@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitEditDialog.h"
 //---------------------------------------------------------------------------
@@ -28,6 +29,7 @@ TEditDialog *EditDialog;
 __fastcall TEditDialog::TEditDialog(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TEditDialog::KysyArvo(UnicodeString Arvo, UnicodeString Nimi)

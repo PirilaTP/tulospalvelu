@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSeuratoimet.h"
 #include "UnitSeurat.h"
@@ -28,6 +29,7 @@ TFormSeuratoimet *FormSeuratoimet;
 __fastcall TFormSeuratoimet::TFormSeuratoimet(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormSeuratoimet::Button1Click(TObject *Sender)
@@ -47,21 +49,21 @@ void __fastcall TFormSeuratoimet::Button2Click(TObject *Sender)
 	vapaakoko = CBVapaaKoko->Checked;
 	if (RGToiminto->ItemIndex == 2 || RGToiminto->ItemIndex == 3) {
 		if (!FormSeurat->SeuraHakuOn()) {
-			Application->MessageBoxW(L"Avaa ensin seuraluettelo", L"Este", MB_OK);
+			Application->MessageBoxW(TR(L"Avaa ensin seuraluettelo"), TR(L"Este"), MB_OK);
 			return;
 			}
 		if (CBMaa->Checked == !FormSeurat->Maakooditkytss1->Checked) {
-			Application->MessageBoxW(L"Maakoodit eivät käytössä seuraluettelossa", L"Este", MB_OK);
+			Application->MessageBoxW(TR(L"Maakoodit eivät käytössä seuraluettelossa"), TR(L"Este"), MB_OK);
 			return;
 			}
 		}
 	else {
 		if (CBPiiri->Checked) {
-			Application->MessageBoxW(L"Piiri siirrettävissä vain seuraluettelosta", L"Este", MB_OK);
+			Application->MessageBoxW(TR(L"Piiri siirrettävissä vain seuraluettelosta"), TR(L"Este"), MB_OK);
 			return;
 			}
 		if (CBMaa->Checked) {
-			Application->MessageBoxW(L"Maa siirrettävissä vain seuraluettelosta", L"Este", MB_OK);
+			Application->MessageBoxW(TR(L"Maa siirrettävissä vain seuraluettelosta"), TR(L"Este"), MB_OK);
 			return;
 			}
 		}
@@ -152,8 +154,8 @@ void __fastcall TFormSeuratoimet::Button2Click(TObject *Sender)
 			}
 	   }
 	LeaveCriticalSection(&tall_CriticalSection);
-	Application->MessageBoxW((UnicodeString(L"Tallennettu ")+UnicodeString(n)+
-		UnicodeString(L" tietoa.")).c_str(), L"Valmis", MB_OK);
+	Application->MessageBoxW((UnicodeString(TR(L"Tallennettu "))+UnicodeString(n)+
+		UnicodeString(TR(L" tietoa."))).c_str(), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormSeuratoimet::RGToimintoClick(TObject *Sender)
@@ -184,13 +186,13 @@ void __fastcall TFormSeuratoimet::Button3Click(TObject *Sender)
 void __fastcall TFormSeuratoimet::FormShow(TObject *Sender)
 {
 	CBsrj1->Clear();
-	CBsrj1->Items->Add(L"Perussarja");
+	CBsrj1->Items->Add(TR(L"Perussarja"));
 	CBsrj2->Clear();
-	CBsrj2->Items->Add(L"Kaikki vaiheet");
-	CBsrj2->Items->Add(L"Perussarja");
+	CBsrj2->Items->Add(TR(L"Kaikki vaiheet"));
+	CBsrj2->Items->Add(TR(L"Perussarja"));
 	for (int i = 0;i < kilpparam.n_pv_akt; i++) {
-	   CBsrj1->Items->Add(UnicodeString(i+1)+L". vaiheen sarja");
-	   CBsrj2->Items->Add(UnicodeString(i+1)+L". vaiheen sarja");
+	   CBsrj1->Items->Add(UnicodeString(i+1)+TR(L". vaiheen sarja"));
+	   CBsrj2->Items->Add(UnicodeString(i+1)+TR(L". vaiheen sarja"));
 		}
 	CBsrj1->ItemIndex = 0;
 	CBsrj2->ItemIndex = 0;
@@ -200,8 +202,8 @@ void __fastcall TFormSeuratoimet::FormShow(TObject *Sender)
 void __fastcall TFormSeuratoimet::CBsrj2Change(TObject *Sender)
 {
 	if (!kilpparam.sarjavaihtelee && CBsrj2->ItemIndex != 0) {
-		Application->MessageBoxW(L"Kohteeksi voi valita vain kaikki vaiheet, kun sarja ei vaihtele",
-			L"Rajoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Kohteeksi voi valita vain kaikki vaiheet, kun sarja ei vaihtele"),
+			TR(L"Rajoitus"), MB_OK);
 		CBsrj2->ItemIndex = 0;
 		}
 }

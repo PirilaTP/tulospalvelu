@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include <stdlib.h>
 #include "UnitLahtoRistiriita.h"
@@ -56,6 +57,7 @@ static int __cdecl VertaaLahto(const void *a, const void *b)
 __fastcall TFormLahtoRistiriita::TFormLahtoRistiriita(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -126,9 +128,9 @@ void __fastcall TFormLahtoRistiriita::FormShow(TObject *Sender)
 		if (j - i >= 2) {
 			ongelmia = true;
 			aikatowstr_cols_n(aikast, taul[i].t, t0, 0, 8);
-			Memo1->Lines->Add(L"L\xE4ht\xF6paikka " + UnicodeString(taul[i].lno) +
-				L", l\xE4ht\xF6" L"aika " + UnicodeString(aikast) +
-				L", rasti " + UnicodeString(taul[i].rasti) + L":");
+			Memo1->Lines->Add(TR(L"L\xE4ht\xF6paikka ") + UnicodeString(taul[i].lno) +
+				TR(L", l\xE4ht\xF6" L"aika ") + UnicodeString(aikast) +
+				TR(L", rasti ") + UnicodeString(taul[i].rasti) + L":");
 			for (k = i; k < j; k++) {
 				Memo1->Lines->Add(L"    " + UnicodeString(taul[k].kilpno) + L" " +
 					UnicodeString(taul[k].nimi) + L" (" +
@@ -141,8 +143,8 @@ void __fastcall TFormLahtoRistiriita::FormShow(TObject *Sender)
 
 	if (!ongelmia) {
 		Memo1->Lines->Add(
-			L"Ei ongelmia. Yksik\xE4\xE4n kilpailija ei l\xE4hde samasta l\xE4ht\xF6paikasta "
-			L"samaan aikaan samalle ensimm\xE4iselle rastille kuin joku toinen.");
+			TR(L"Ei ongelmia. Yksik\xE4\xE4n kilpailija ei l\xE4hde samasta l\xE4ht\xF6paikasta "
+			L"samaan aikaan samalle ensimm\xE4iselle rastille kuin joku toinen."));
 		}
 
 	free(taul);

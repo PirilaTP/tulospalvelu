@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "WinHk.h"
 #include "UnitCfg.h"
@@ -31,6 +32,7 @@ INT yhteys_no(wchar_t *st, INT *pos);
 __fastcall TFormCfg::TFormCfg(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -41,14 +43,14 @@ __fastcall TFormCfg::TFormCfg(TComponent* Owner)
 void __fastcall TFormCfg::FormCreate(TObject *Sender)
 {
 	SG1->RowCount = MAX_LAHPORTTI+1;
-	SG1->Cells[0][0] = L"No";
-	SG1->Cells[1][0] = L"Laji";
+	SG1->Cells[0][0] = TR(L"No");
+	SG1->Cells[1][0] = TR(L"Laji");
 	SG1->Cells[2][0] = L"I/O";
-	SG1->Cells[3][0] = L"Portti";
-	SG1->Cells[4][0] = L"VastaIPosoite";
-	SG1->Cells[5][0] = L"VastaPortti";
-	SG1->Cells[6][0] = L"Sanomat";
-	SG1->Cells[7][0] = L"Ei väl.";
+	SG1->Cells[3][0] = TR(L"Portti");
+	SG1->Cells[4][0] = TR(L"VastaIPosoite");
+	SG1->Cells[5][0] = TR(L"VastaPortti");
+	SG1->Cells[6][0] = TR(L"Sanomat");
+	SG1->Cells[7][0] = TR(L"Ei väl.");
 	SG1->ColWidths[0] = 40 * Screen->PixelsPerInch / 96;
 	SG1->ColWidths[1] = 50 * Screen->PixelsPerInch / 96;
 	SG1->ColWidths[2] = 40 * Screen->PixelsPerInch / 96;
@@ -58,13 +60,13 @@ void __fastcall TFormCfg::FormCreate(TObject *Sender)
 	SG1->ColWidths[6] = 70 * Screen->PixelsPerInch / 96;
 	SG1->ColWidths[7] = 45 * Screen->PixelsPerInch / 96;
 	SGLeimat->RowCount = NREGNLY+1;
-	SGLeimat->Cells[0][0] = L"LaiteNo";
-	SGLeimat->Cells[1][0] = L"Laite";
-	SGLeimat->Cells[2][0] = L"Yhteys";
-	SGLeimat->Cells[3][0] = L"Portti";
-	SGLeimat->Cells[4][0] = L"VastaIPosoite";
-	SGLeimat->Cells[5][0] = L"VastaPortti";
-	SGLeimat->Cells[6][0] = L"Ajanotto";
+	SGLeimat->Cells[0][0] = TR(L"LaiteNo");
+	SGLeimat->Cells[1][0] = TR(L"Laite");
+	SGLeimat->Cells[2][0] = TR(L"Yhteys");
+	SGLeimat->Cells[3][0] = TR(L"Portti");
+	SGLeimat->Cells[4][0] = TR(L"VastaIPosoite");
+	SGLeimat->Cells[5][0] = TR(L"VastaPortti");
+	SGLeimat->Cells[6][0] = TR(L"Ajanotto");
 	SGLeimat->ColWidths[0] = 40 * Screen->PixelsPerInch / 96;
 	SGLeimat->ColWidths[1] = 50 * Screen->PixelsPerInch / 96;
 	SGLeimat->ColWidths[2] = 45 * Screen->PixelsPerInch / 96;
@@ -73,21 +75,21 @@ void __fastcall TFormCfg::FormCreate(TObject *Sender)
 	SGLeimat->ColWidths[5] = 60 * Screen->PixelsPerInch / 96;
 	SGLeimat->ColWidths[6] = 70 * Screen->PixelsPerInch / 96;
 	SGAjat->RowCount = 13;
-	SGAjat->Cells[0][0] = L"Lähde";
-	SGAjat->Cells[1][0] = L"Kohde";
-	SGAjat->Cells[2][0] = L"Jono";
-	SGAjat->Cells[0][1] = L"Sarjaportti";
-	SGAjat->Cells[0][2] = L"Varalla";
-	SGAjat->Cells[0][3] = L"Näppäimistö";
-	SGAjat->Cells[0][4] = L"Kellon kanava 0";
-	SGAjat->Cells[0][5] = L"Kellon kanava 1";
-	SGAjat->Cells[0][6] = L"Kellon kanava 2";
-	SGAjat->Cells[0][7] = L"Kellon kanava 3";
-	SGAjat->Cells[0][8] = L"Kellon kanava 4";
-	SGAjat->Cells[0][9] = L"Kellon kanava 5";
-	SGAjat->Cells[0][10] = L"Kellon kanava 6";
-	SGAjat->Cells[0][11] = L"Kellon kanava 7";
-	SGAjat->Cells[0][12] = L"Kellon kanava 8";
+	SGAjat->Cells[0][0] = TR(L"Lähde");
+	SGAjat->Cells[1][0] = TR(L"Kohde");
+	SGAjat->Cells[2][0] = TR(L"Jono");
+	SGAjat->Cells[0][1] = TR(L"Sarjaportti");
+	SGAjat->Cells[0][2] = TR(L"Varalla");
+	SGAjat->Cells[0][3] = TR(L"Näppäimistö");
+	SGAjat->Cells[0][4] = TR(L"Kellon kanava 0");
+	SGAjat->Cells[0][5] = TR(L"Kellon kanava 1");
+	SGAjat->Cells[0][6] = TR(L"Kellon kanava 2");
+	SGAjat->Cells[0][7] = TR(L"Kellon kanava 3");
+	SGAjat->Cells[0][8] = TR(L"Kellon kanava 4");
+	SGAjat->Cells[0][9] = TR(L"Kellon kanava 5");
+	SGAjat->Cells[0][10] = TR(L"Kellon kanava 6");
+	SGAjat->Cells[0][11] = TR(L"Kellon kanava 7");
+	SGAjat->Cells[0][12] = TR(L"Kellon kanava 8");
 	SGAjat->ColWidths[0] = 100 * Screen->PixelsPerInch / 96;
 	SGAjat->ColWidths[1] = 50 * Screen->PixelsPerInch / 96;
 	SGAjat->ColWidths[2] = 50 * Screen->PixelsPerInch / 96;
@@ -115,7 +117,7 @@ void __fastcall TFormCfg::Luetiedosto1Click(TObject *Sender)
 
 	OpenDialog1->InitialDir = FormMain->CurrentDir;
 	OpenDialog1->FileName = UnicodeString(L"laskenta.cfg");
-	OpenDialog1->Filter = L"Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		Memo1->Clear();
 		cfgfile = new TextFl(OpenDialog1->FileName.c_str(), L"r");
@@ -141,7 +143,7 @@ void __fastcall TFormCfg::Kirjoitatiedosto1Click(TObject *Sender)
 	TextFl *cfgfile;
 
 	SaveDialog1->InitialDir = FormMain->CurrentDir;
-	SaveDialog1->Filter = L"Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Konfiguraatiot (*.cfg)|*.CFG|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		cfgfile = new TextFl(SaveDialog1->FileName.c_str(), L"w");
 		if (cfgfile->IsOpen()) {
@@ -1372,11 +1374,11 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 				SG1->Cells[1][r] = UnicodeString(fldn+pos+1).SubString(1,3);
 				pos += 4;
 				if (towupper(fldn[pos]) == L'I') {
-					SG1->Cells[2][r] = L"In";
+					SG1->Cells[2][r] = TR(L"In");
 					pos++;
 					}
 				else if (towupper(fldn[pos]) == L'O') {
-					SG1->Cells[2][r] = L"Out";
+					SG1->Cells[2][r] = TR(L"Out");
 					pos++;
 					}
 				p = fldn+pos;
@@ -1421,11 +1423,11 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 					else {
 						j = -1;
 						}
-					SG1->Cells[2][r] = L"Out";
+					SG1->Cells[2][r] = TR(L"Out");
 					SG1->Cells[6][r] = SG1->Cells[6][r] + L"Xml";
 					}
 				if (towupper(fldn[pos+4]) == L'L') {
-					SG1->Cells[2][r] = L"Out";
+					SG1->Cells[2][r] = TR(L"Out");
 					SG1->Cells[6][r] = SG1->Cells[6][r] + L"Lki";
 					pos++;
 					j = -2;
@@ -1436,11 +1438,11 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 					pos++;
 					}
 				if (towupper(fldn[pos+4]) == L'I') {
-					SG1->Cells[2][r] = L"In";
+					SG1->Cells[2][r] = TR(L"In");
 					pos++;
 					}
 				else if (towupper(fldn[pos+4]) == L'O') {
-					SG1->Cells[2][r] = L"Out";
+					SG1->Cells[2][r] = TR(L"Out");
 					pos++;
 					}
 				p = fldn+pos+4;
@@ -1463,9 +1465,9 @@ void TFormCfg::TulkitseTiedot(bool tyhjenna)
 			SG1->Cells[3][r] = _wtoi(fldn+pos);
 			p = fldn + wcslen(fldn) - 1;
 			if (towupper(*p) == L'I')
-				SG1->Cells[2][r] = L"In";
+				SG1->Cells[2][r] = TR(L"In");
 			if (towupper(*p) == L'O')
-				SG1->Cells[2][r] = L"Out";
+				SG1->Cells[2][r] = TR(L"Out");
 			continue;
 			}
 		if (tyhjenna) {
@@ -2770,9 +2772,9 @@ void __fastcall TFormCfg::InOut1Click(TObject *Sender)
 	if (Sender == InOut1)
 		SG1->Cells[SG1->Col][SG1->Row] = L"";
 	else if (Sender == In1)
-		SG1->Cells[SG1->Col][SG1->Row] = L"In";
+		SG1->Cells[SG1->Col][SG1->Row] = TR(L"In");
 	else if (Sender == Out1)
-		SG1->Cells[SG1->Col][SG1->Row] = L"Out";
+		SG1->Cells[SG1->Col][SG1->Row] = TR(L"Out");
 }
 //---------------------------------------------------------------------------
 
@@ -2845,7 +2847,7 @@ void __fastcall TFormCfg::LaiteAjatClick(TObject *Sender)
 	else if (Sender == LaiteVuorot)
 		SGLeimat->Cells[SGLeimat->Col][SGLeimat->Row] = L"VAINA";
 	else if (Sender == Lahdekoodi1)
-		SGLeimat->Cells[SGLeimat->Col][SGLeimat->Row] = L"LÄHDExx";
+		SGLeimat->Cells[SGLeimat->Col][SGLeimat->Row] = TR(L"LÄHDExx");
 }
 //---------------------------------------------------------------------------
 

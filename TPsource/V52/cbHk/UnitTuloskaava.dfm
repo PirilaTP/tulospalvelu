@@ -3,7 +3,7 @@ object FormTuloskaava: TFormTuloskaava
   Top = 0
   Caption = 'Kaavan muokkaus'
   ClientHeight = 396
-  ClientWidth = 638
+  ClientWidth = 820
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -166,7 +166,7 @@ object FormTuloskaava: TFormTuloskaava
     ParentFont = False
   end
   object Label12: TLabel
-    Left = 191
+    Left = 240
     Top = 309
     Width = 36
     Height = 15
@@ -179,7 +179,7 @@ object FormTuloskaava: TFormTuloskaava
     ParentFont = False
   end
   object Label13: TLabel
-    Left = 191
+    Left = 240
     Top = 333
     Width = 38
     Height = 15
@@ -217,7 +217,7 @@ object FormTuloskaava: TFormTuloskaava
     ParentFont = False
   end
   object Label16: TLabel
-    Left = 191
+    Left = 240
     Top = 263
     Width = 200
     Height = 15
@@ -230,7 +230,7 @@ object FormTuloskaava: TFormTuloskaava
     ParentFont = False
   end
   object Label17: TLabel
-    Left = 307
+    Left = 395
     Top = 333
     Width = 100
     Height = 15
@@ -299,7 +299,7 @@ object FormTuloskaava: TFormTuloskaava
     ParentFont = False
   end
   object EdtYla: TEdit
-    Left = 128
+    Left = 170
     Top = 260
     Width = 49
     Height = 23
@@ -314,7 +314,7 @@ object FormTuloskaava: TFormTuloskaava
     Text = '0'
   end
   object EdtAla: TEdit
-    Left = 128
+    Left = 170
     Top = 283
     Width = 49
     Height = 23
@@ -329,7 +329,7 @@ object FormTuloskaava: TFormTuloskaava
     Text = '1'
   end
   object EdtAlaraja: TEdit
-    Left = 128
+    Left = 170
     Top = 330
     Width = 49
     Height = 23
@@ -344,7 +344,7 @@ object FormTuloskaava: TFormTuloskaava
     Text = '0'
   end
   object EdtKerroin: TEdit
-    Left = 128
+    Left = 170
     Top = 306
     Width = 49
     Height = 23
@@ -359,7 +359,7 @@ object FormTuloskaava: TFormTuloskaava
     Text = '1'
   end
   object EdtJakaja: TEdit
-    Left = 240
+    Left = 320
     Top = 306
     Width = 59
     Height = 23
@@ -374,7 +374,7 @@ object FormTuloskaava: TFormTuloskaava
     Text = '1'
   end
   object EdtYlaraja: TEdit
-    Left = 240
+    Left = 320
     Top = 330
     Width = 59
     Height = 23
@@ -389,9 +389,9 @@ object FormTuloskaava: TFormTuloskaava
     Text = '0'
   end
   object BtnTallenna: TButton
-    Left = 430
+    Left = 560
     Top = 285
-    Width = 194
+    Width = 240
     Height = 25
     Caption = 'Tallenna ja sulje kaavake'
     Font.Charset = DEFAULT_CHARSET
@@ -404,9 +404,9 @@ object FormTuloskaava: TFormTuloskaava
     OnClick = BtnTallennaClick
   end
   object BtnPoista: TButton
-    Left = 430
+    Left = 560
     Top = 318
-    Width = 194
+    Width = 240
     Height = 25
     Caption = 'Poista kaava k'#228'yt'#246'st'#228' ja sulje'
     Font.Charset = DEFAULT_CHARSET
@@ -419,9 +419,9 @@ object FormTuloskaava: TFormTuloskaava
     OnClick = BtnPoistaClick
   end
   object BtnKaikille: TButton
-    Left = 304
+    Left = 330
     Top = 19
-    Width = 232
+    Width = 470
     Height = 25
     Caption = 'Kopioi kaikille sarjoille ja tallenna'
     Font.Charset = DEFAULT_CHARSET
@@ -434,9 +434,9 @@ object FormTuloskaava: TFormTuloskaava
     OnClick = BtnKaikilleClick
   end
   object CBVaadiAla: TCheckBox
-    Left = 191
+    Left = 240
     Top = 285
-    Width = 97
+    Width = 285
     Height = 17
     Caption = 'Vaadi alatulos'
     Font.Charset = DEFAULT_CHARSET
@@ -448,9 +448,9 @@ object FormTuloskaava: TFormTuloskaava
     TabOrder = 2
   end
   object BtnPoistaKaikilta: TButton
-    Left = 304
+    Left = 330
     Top = 49
-    Width = 232
+    Width = 470
     Height = 25
     Caption = 'Poista kaava kaikilta sarjoilta ja tallenna'
     Font.Charset = DEFAULT_CHARSET
@@ -463,9 +463,9 @@ object FormTuloskaava: TFormTuloskaava
     OnClick = BtnPoistaKaikiltaClick
   end
   object Button2: TButton
-    Left = 430
+    Left = 560
     Top = 352
-    Width = 194
+    Width = 240
     Height = 25
     Caption = 'Poistu tallentamatta muutoksia'
     Font.Charset = DEFAULT_CHARSET
@@ -478,7 +478,7 @@ object FormTuloskaava: TFormTuloskaava
     OnClick = Button2Click
   end
   object EdtNollataso: TEdit
-    Left = 240
+    Left = 320
     Top = 354
     Width = 59
     Height = 23
@@ -539,9 +539,9 @@ object FormTuloskaava: TFormTuloskaava
     OnChange = CBLaskettavaChange
   end
   object EdtKaavaOn: TEdit
-    Left = 430
+    Left = 560
     Top = 244
-    Width = 194
+    Width = 240
     Height = 23
     Enabled = False
     Font.Charset = DEFAULT_CHARSET
@@ -553,9 +553,9 @@ object FormTuloskaava: TFormTuloskaava
     TabOrder = 16
   end
   object CBSakotPois: TCheckBox
-    Left = 191
+    Left = 240
     Top = 241
-    Width = 238
+    Width = 300
     Height = 17
     Caption = 'J'#228't'#228' sakot pois k'#228'ytett'#228'vist'#228' tuloksista'
     Font.Charset = DEFAULT_CHARSET

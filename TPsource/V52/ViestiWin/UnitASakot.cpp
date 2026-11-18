@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitASakot.h"
 //---------------------------------------------------------------------------
@@ -31,16 +32,17 @@ static CRITICAL_SECTION sakkoGrid_CriticalSection;
 __fastcall TFormASakot::TFormASakot(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
 		}
 	StringGrid1->ColWidths[3] = 200 * Screen->PixelsPerInch / 96;
-	StringGrid1->Cells[0][0] = L"Rivi";
-	StringGrid1->Cells[1][0] = L"KilpNo";
-	StringGrid1->Cells[2][0] = L"Osuus";
-	StringGrid1->Cells[3][0] = L"Joukkue";
-	StringGrid1->Cells[4][0] = L"Sakot";
+	StringGrid1->Cells[0][0] = TR(L"Rivi");
+	StringGrid1->Cells[1][0] = TR(L"KilpNo");
+	StringGrid1->Cells[2][0] = TR(L"Osuus");
+	StringGrid1->Cells[3][0] = TR(L"Joukkue");
+	StringGrid1->Cells[4][0] = TR(L"Sakot");
 	EditS[0] = EditS1;
 	EditS[1] = EditS2;
 	EditS[2] = EditS3;

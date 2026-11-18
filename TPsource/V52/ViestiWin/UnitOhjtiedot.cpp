@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitOhjtiedot.h"
 #include "VDeclare.h"
@@ -29,28 +30,29 @@ TFormOhjtiedot *FormOhjtiedot;
 __fastcall TFormOhjtiedot::TFormOhjtiedot(TComponent* Owner)
 	: TForm(Owner)
 {
-	Label3->Caption = L"Versio "+UnicodeString(VersioNo());
-	Label4->Caption = L"Build "+UnicodeString(Build());
+	kaannaLomake(this);
+	Label3->Caption = TR(L"Versio ")+UnicodeString(VersioNo());
+	Label4->Caption = TR(L"Build ")+UnicodeString(Build());
 	Memo1->Clear();
-	Memo1->Lines->Add(L"Osuuksien maksimiluku: "+UnicodeString(MAXOSUUSLUKU));
-	Memo1->Lines->Add(L"Rinnakkaisten juoksijoiden maksimiluku: "+UnicodeString(MAXNOSUUS));
-	Memo1->Lines->Add(L"Väliaikojen maksimiluku: "+UnicodeString(VAIKALUKU));
-	Memo1->Lines->Add(L"Suurin sallittu kilpailijanumero: "+UnicodeString(MAXKILPNO));
-	Memo1->Lines->Add(L"Sarjojen maksimiluku: "+UnicodeString(MAXSARJALUKU));
-	Memo1->Lines->Add(L"Sarjayhdistelmien maksimiluku: "+UnicodeString(MAXYHD));
-	Memo1->Lines->Add(L"Tiedonsiirtoyhteyksien maksimiluku: "+UnicodeString(MAX_LAHPORTTI));
-	Memo1->Lines->Add(L"Laiteyhteyksien maksimiluku: "+UnicodeString(NREGNLY));
-	Memo1->Lines->Add(L"Ajanottojonojen maksimiluku: "+UnicodeString(MAXJONO));
-	Memo1->Lines->Add(L"Yhden radan rastien maksimiluku: "+UnicodeString(MAXNRASTI));
-	Memo1->Lines->Add(L"Ratojen maksimiluku: "+UnicodeString(MAXNRATA));
-	Memo1->Lines->Add(L"Yhden radan variaatioiden maksimiluku: "+UnicodeString(MAXVARIATION));
-	Memo1->Lines->Add(L"Rastipisteide maksimiluku: "+UnicodeString(MAXNPISTE));
-	Memo1->Lines->Add(L"Ratatunnuksen pituus: "+UnicodeString(HAJONTA));
-	Memo1->Lines->Add(L"Seuranimikentän pituus: "+UnicodeString(LSEURA));
-	Memo1->Lines->Add(L"Nimikentän pituus: "+UnicodeString(OSNIMIL));
-	Memo1->Lines->Add(L"Sarjakoodin pituus: "+UnicodeString(LSARJA));
-	Memo1->Lines->Add(L"Pitkän sarjanimen pituus: "+UnicodeString(LPSARJA));
-	Memo1->Lines->Add(L"Sakkopisteiden maksimiluku: "+UnicodeString(LSAKOT-1));
+	Memo1->Lines->Add(TR(L"Osuuksien maksimiluku: ")+UnicodeString(MAXOSUUSLUKU));
+	Memo1->Lines->Add(TR(L"Rinnakkaisten juoksijoiden maksimiluku: ")+UnicodeString(MAXNOSUUS));
+	Memo1->Lines->Add(TR(L"Väliaikojen maksimiluku: ")+UnicodeString(VAIKALUKU));
+	Memo1->Lines->Add(TR(L"Suurin sallittu kilpailijanumero: ")+UnicodeString(MAXKILPNO));
+	Memo1->Lines->Add(TR(L"Sarjojen maksimiluku: ")+UnicodeString(MAXSARJALUKU));
+	Memo1->Lines->Add(TR(L"Sarjayhdistelmien maksimiluku: ")+UnicodeString(MAXYHD));
+	Memo1->Lines->Add(TR(L"Tiedonsiirtoyhteyksien maksimiluku: ")+UnicodeString(MAX_LAHPORTTI));
+	Memo1->Lines->Add(TR(L"Laiteyhteyksien maksimiluku: ")+UnicodeString(NREGNLY));
+	Memo1->Lines->Add(TR(L"Ajanottojonojen maksimiluku: ")+UnicodeString(MAXJONO));
+	Memo1->Lines->Add(TR(L"Yhden radan rastien maksimiluku: ")+UnicodeString(MAXNRASTI));
+	Memo1->Lines->Add(TR(L"Ratojen maksimiluku: ")+UnicodeString(MAXNRATA));
+	Memo1->Lines->Add(TR(L"Yhden radan variaatioiden maksimiluku: ")+UnicodeString(MAXVARIATION));
+	Memo1->Lines->Add(TR(L"Rastipisteide maksimiluku: ")+UnicodeString(MAXNPISTE));
+	Memo1->Lines->Add(TR(L"Ratatunnuksen pituus: ")+UnicodeString(HAJONTA));
+	Memo1->Lines->Add(TR(L"Seuranimikentän pituus: ")+UnicodeString(LSEURA));
+	Memo1->Lines->Add(TR(L"Nimikentän pituus: ")+UnicodeString(OSNIMIL));
+	Memo1->Lines->Add(TR(L"Sarjakoodin pituus: ")+UnicodeString(LSARJA));
+	Memo1->Lines->Add(TR(L"Pitkän sarjanimen pituus: ")+UnicodeString(LPSARJA));
+	Memo1->Lines->Add(TR(L"Sakkopisteiden maksimiluku: ")+UnicodeString(LSAKOT-1));
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormOhjtiedot::FormClose(TObject *Sender, TCloseAction &Action)

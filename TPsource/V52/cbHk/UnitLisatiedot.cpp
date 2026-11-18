@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitLisatiedot.h"
 #include "WinHk.h"
@@ -57,6 +58,7 @@ static double deskerroin = 1000.0;
 __fastcall TFormLisatiedot::TFormLisatiedot(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -93,39 +95,39 @@ void __fastcall TFormLisatiedot::SiirraTiedot(int sellaisinaan)
 		vpv = epv;
 		}
 	if (TunnSar <= 0 || TietoSar <= 0 || TunnSar == TietoSar) {
-		Application->MessageBoxW(L"Määrittele sarakkeet", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Määrittele sarakkeet"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (Tunniste < 0 || Tieto < 0) {
-		Application->MessageBoxW(L"Valitse molemmat kentät", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse molemmat kentät"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if ((Tunniste == 1 || Tunniste == 7 || Tunniste == 9) && kilpparam.n_pv_akt > 1
 		&& TunnPv < 0) {
-		Application->MessageBoxW(L"Valitse rintanumeron tai koodin päivä", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse rintanumeron tai koodin päivä"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (TietoPv < -1 && kilpparam.n_pv_akt > 1 && monivaiheTieto[Tieto] > '0') {
-		Application->MessageBoxW(L"Valitse kohdetiedon vaihe", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse kohdetiedon vaihe"), TR(L"Este"), MB_OK);
 		return;
 		}
 	if (Tunniste > 3 && Tunniste < 7 && Tieto < 7) {
-		Application->MessageBoxW(L"Mahdoton yhdistelmä", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Mahdoton yhdistelmä"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (!kilpparam.bibvaihtelee && Tieto < 2 && TietoPv >= 0) {
-		Application->MessageBoxW(L"Siirto mahdollista vain kaikille vaiheille, kun rintanumero ei vaihtele.", L"Rajoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Siirto mahdollista vain kaikille vaiheille, kun rintanumero ei vaihtele."), TR(L"Rajoitus"), MB_OK);
 		return;
 		}
 	if (!kilpparam.bibvaihtelee && Tunniste == 1) {
-		if (Application->MessageBoxW(L"Käytä valintaan perusnumeroa, kun rintanumero ei vaihtele. Käytetäänkö poikkeavasti vaiheen tietoa?", L"Huomautus", MB_YESNO) == IDNO)
+		if (Application->MessageBoxW(TR(L"Käytä valintaan perusnumeroa, kun rintanumero ei vaihtele. Käytetäänkö poikkeavasti vaiheen tietoa?"), TR(L"Huomautus"), MB_YESNO) == IDNO)
 			return;
 		}
 	if (ToimintaTila == 2 && ((Tieto == 0 && !kilpparam.bibvaihtelee) ||
 		(Tieto == 1 && epv <= k_pv && vpv >= k_pv))) {
-		if (Application->MessageBoxW(L"Tässä vaiheessa käytössä olevia numeroita koskeva siirto toimii ennustettavasti "
-			L"vain, jos numeroiden kohdealue on kokonaisuudessaan vapaa. Toteutetaanko siirto silti?",
-			L"Varoitus", MB_YESNO) == IDNO)
+		if (Application->MessageBoxW(TR(L"Tässä vaiheessa käytössä olevia numeroita koskeva siirto toimii ennustettavasti "
+			L"vain, jos numeroiden kohdealue on kokonaisuudessaan vapaa. Toteutetaanko siirto silti?"),
+			TR(L"Varoitus"), MB_YESNO) == IDNO)
 			return;
         }
 	switch (Tunniste) {
@@ -212,7 +214,7 @@ void __fastcall TFormLisatiedot::SiirraTiedot(int sellaisinaan)
 					nrv = FormTietoTulk->tietolkm;
 					}
 				if (nrv == 0) {
-					Application->MessageBoxW(L"Ei siirretävää tietoa", L"Virhe", MB_OK);
+					Application->MessageBoxW(TR(L"Ei siirretävää tietoa"), TR(L"Virhe"), MB_OK);
 					delete InFile;
 					return;
 					}
@@ -366,7 +368,7 @@ void __fastcall TFormLisatiedot::SiirraTiedot(int sellaisinaan)
 					}
 				}
 			else {
-				Application->MessageBoxW(L"Tiedoston avaaminen ei onnistunut", L"Este", MB_OK);
+				Application->MessageBoxW(TR(L"Tiedoston avaaminen ei onnistunut"), TR(L"Este"), MB_OK);
 				}
 			if (sellaisinaan == 0)
 				delete InFile;
@@ -656,9 +658,9 @@ void __fastcall TFormLisatiedot::SiirraTiedot(int sellaisinaan)
 			}
 		}
 	LeaveCriticalSection(&tall_CriticalSection);
-	Application->MessageBoxW((UnicodeString(L"Käsitelty ")+UnicodeString(nrv)+
-		L" siirto-ohjetta, siirretty "+UnicodeString(nsiirr)+L" tietoa").c_str(),
-		L"Valmis", MB_OK);
+	Application->MessageBoxW((UnicodeString(TR(L"Käsitelty "))+UnicodeString(nrv)+
+		TR(L" siirto-ohjetta, siirretty ")+UnicodeString(nsiirr)+TR(L" tietoa")).c_str(),
+		TR(L"Valmis"), MB_OK);
 	if (nton)
 		delete[] nton;
 	if (ntos)
@@ -699,14 +701,14 @@ void __fastcall TFormLisatiedot::FormShow(TObject *Sender)
 	CBTunnPv->Clear();
 	CBTietoPv->Clear();
 	CBEhtoVaihe->Clear();
-	CBTunnPv->Items->Add(L"Ei valittu");
-	CBTietoPv->Items->Add(L"Ei valittu");
-	CBTietoPv->Items->Add(L"Kaikki");
-	CBEhtoVaihe->Items->Add(L"Perustieto");
+	CBTunnPv->Items->Add(TR(L"Ei valittu"));
+	CBTietoPv->Items->Add(TR(L"Ei valittu"));
+	CBTietoPv->Items->Add(TR(L"Kaikki"));
+	CBEhtoVaihe->Items->Add(TR(L"Perustieto"));
 	for (int i = 0;i < kilpparam.n_pv_akt; i++) {
-	   CBTunnPv->Items->Add(UnicodeString(i+1)+L". vaihe");
-	   CBTietoPv->Items->Add(UnicodeString(i+1)+L". vaihe");
-	   CBEhtoVaihe->Items->Add(UnicodeString(i+1)+L". vaihe");
+	   CBTunnPv->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
+	   CBTietoPv->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
+	   CBEhtoVaihe->Items->Add(UnicodeString(i+1)+TR(L". vaihe"));
 	   }
 	if (kilpparam.n_pv_akt == 1) {
 		CBTunnPv->ItemIndex = 1;
@@ -737,7 +739,7 @@ void __fastcall TFormLisatiedot::Button3Click(TObject *Sender)
 
 	Tunniste = RGTunniste->ItemIndex;
 	if (Tunniste == RGTunniste->Items->Count-1) {
-		Application->MessageBoxW(L"Pohjustus ei mahdollinen tiedostoon kirjoitettaessa" , L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Pohjustus ei mahdollinen tiedostoon kirjoitettaessa") , TR(L"Virhe"), MB_OK);
 		}
 	Tieto = RGTieto->ItemIndex;
 	TunnPv = CBTunnPv->ItemIndex - 1;
@@ -752,24 +754,24 @@ void __fastcall TFormLisatiedot::Button3Click(TObject *Sender)
 		vpv = epv;
 		}
 	if (Tunniste < 0 || Tieto < 0) {
-		Application->MessageBoxW(L"Valitse molemmat kentät", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse molemmat kentät"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if ((Tunniste == 1 || Tunniste == 7 || Tunniste == 9) && kilpparam.n_pv_akt > 1
 		&& TunnPv < 0) {
-		Application->MessageBoxW(L"Valitse rintanumeron tai koodin päivä", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse rintanumeron tai koodin päivä"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (TietoPv < -1 && kilpparam.n_pv_akt > 1 && monivaiheTieto[Tieto] > '0') {
-		Application->MessageBoxW(L"Valitse kohdetiedon vaihe", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse kohdetiedon vaihe"), TR(L"Este"), MB_OK);
 		return;
 		}
 	if (Tunniste > 3 && Tunniste < 7 && Tieto < 7) {
-		Application->MessageBoxW(L"Mahdoton yhdistelmä", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Mahdoton yhdistelmä"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (!kilpparam.bibvaihtelee && Tunniste == 1) {
-		if (Application->MessageBoxW(L"Käytä valintaan perusnumeroa, kun rintanumero ei vaihtele. Käytetäänkö poikkeavasti vaiheen tietoa?", L"Huomautus", MB_YESNO) == IDNO)
+		if (Application->MessageBoxW(TR(L"Käytä valintaan perusnumeroa, kun rintanumero ei vaihtele. Käytetäänkö poikkeavasti vaiheen tietoa?"), TR(L"Huomautus"), MB_YESNO) == IDNO)
 			return;
 		}
 	TulkEhdot();
@@ -1033,11 +1035,11 @@ void __fastcall TFormLisatiedot::Button3Click(TObject *Sender)
 				}
 			}
 		else {
-			Application->MessageBoxW(L"Tiedoston avaaminen ei onnistunut", L"Este", MB_OK);
+			Application->MessageBoxW(TR(L"Tiedoston avaaminen ei onnistunut"), TR(L"Este"), MB_OK);
 			}
 		delete OutFile;
-		Application->MessageBoxW(UnicodeString(L"Siirretty "+UnicodeString(nsiirr)+L" tietoa").c_str(),
-			L"Valmis", MB_OK);
+		Application->MessageBoxW(UnicodeString(TR(L"Siirretty ")+UnicodeString(nsiirr)+TR(L" tietoa")).c_str(),
+			TR(L"Valmis"), MB_OK);
 		}
 }
 //---------------------------------------------------------------------------
@@ -1191,14 +1193,14 @@ void __fastcall TFormLisatiedot::RGTietoClick(TObject *Sender)
 		LblKerroin->Visible = false;
 		}
 	if (RGTunniste->ItemIndex == sarjaTunniste && RGTieto->ItemIndex == sarjaTieto)
-		Application->MessageBoxW(L"Sarjatietoja voidaan siirtää myös omalla kaavakkeellaan", L"Vihje", MB_OK);
+		Application->MessageBoxW(TR(L"Sarjatietoja voidaan siirtää myös omalla kaavakkeellaan"), TR(L"Vihje"), MB_OK);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TFormLisatiedot::RGTunnisteClick(TObject *Sender)
 {
 	if (RGTunniste->ItemIndex == sarjaTunniste && RGTieto->ItemIndex == sarjaTieto)
-		Application->MessageBoxW(L"Sarjatietoja voidaan siirtää myös omalla kaavakkeellaan", L"Vihje", MB_OK);
+		Application->MessageBoxW(TR(L"Sarjatietoja voidaan siirtää myös omalla kaavakkeellaan"), TR(L"Vihje"), MB_OK);
 }
 //---------------------------------------------------------------------------
 

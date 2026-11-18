@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSuodatus.h"
 #include "UnitJoukkueet.h"
@@ -30,6 +31,7 @@ TFormSuodatus *FormSuodatus;
 __fastcall TFormSuodatus::TFormSuodatus(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormSuodatus::BtnKaytaClick(TObject *Sender)
@@ -88,20 +90,20 @@ void __fastcall TFormSuodatus::FormCreate(TObject *Sender)
 	wchar_t (*seuralista)[LSEURA+5];
 
 	CBSarja->Clear();
-	CBSarja->Items->Add(L"Ei sarjasuodatusta");
+	CBSarja->Items->Add(TR(L"Ei sarjasuodatusta"));
 	for (int srj = 0; srj < sarjaluku; srj++)
 		CBSarja->Items->Add(UnicodeString(Sarjat[srj].sarjanimi));
 	CBSarja->ItemIndex = 0;
 
 	CBOsuus->Clear();
 	for (int os = 0; os < kilpparam.osuusluku; os++)
-		CBOsuus->Items->Add(UnicodeString(os+1)+L". osuus");
+		CBOsuus->Items->Add(UnicodeString(os+1)+TR(L". osuus"));
 	CBOsuus->ItemIndex = 0;
 
 	seuralista = new wchar_t[nilmt+1][LSEURA+5];
 //	HaeSeuraLista(0, k_pv+1, true, seuralista, &nsra, nilmt+10);
 	CBSeura->Clear();
-	CBSeura->Items->Add(L"Ei seurasuodatusta");
+	CBSeura->Items->Add(TR(L"Ei seurasuodatusta"));
 	for (int r = 0; r < nsra; r++) {
 		CBSeura->Items->Add(seuralista[r]);
 		}
