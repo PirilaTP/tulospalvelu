@@ -1012,6 +1012,31 @@ int xmlIOF30loppu(tulostusparamtp *tulprm)
 
 static INT32 s_legFastest[MAXOSUUSLUKU];
 static INT32 s_cumFastest[MAXOSUUSLUKU];
+// Sarjan osuusajat kasvavassa järjestyksessä osuussijoituksen laskemiseksi
+static INT32 *s_legTimes[MAXOSUUSLUKU];
+static int s_legCount[MAXOSUUSLUKU];
+static INT32 *s_legBuf;
+
+static int cmpINT32(const void *a, const void *b)
+{
+   INT32 x = *(const INT32 *)a, y = *(const INT32 *)b;
+   return(x < y ? -1 : (x > y ? 1 : 0));
+}
+
+// Osuussijoitus: 1 + niiden joukkueiden määrä, joiden osuusaika on pienempi
+static int IOF30osuusSija(int os, INT32 tl)
+{
+   int lo = 0, hi = s_legCount[os];
+
+   while (lo < hi) {
+      int mid = (lo + hi) / 2;
+      if (s_legTimes[os][mid] < tl)
+         lo = mid + 1;
+      else
+         hi = mid;
+      }
+   return(lo + 1);
+}
 
 int xmlIOF30srjots(int sarja, tulostusparamtp *tulprm)
    {
@@ -1035,9 +1060,20 @@ int xmlIOF30srjots(int sarja, tulostusparamtp *tulprm)
    // winner overwrites the global best), so we scan directly.
    int osuusluku = Sarjat[sarja].osuusluku;
    int ntosuus   = Sarjat[sarja].ntosuus;
-   for (int os = 0; os < osuusluku && os < MAXOSUUSLUKU; os++)
+   if (osuusluku > MAXOSUUSLUKU)
+      osuusluku = MAXOSUUSLUKU;
+   if (ntosuus > MAXOSUUSLUKU)
+      ntosuus = MAXOSUUSLUKU;
+   int nrec = (int)datf2.numrec;
+   if (s_legBuf)
+      free(s_legBuf);
+   s_legBuf = (INT32 *) malloc(sizeof(INT32) * (nrec > 0 ? nrec : 1) * (osuusluku > 0 ? osuusluku : 1));
+   for (int os = 0; os < MAXOSUUSLUKU; os++) {
       s_legFastest[os] = 0;
-   for (int os = 0; os < ntosuus && os < MAXOSUUSLUKU; os++)
+      s_legTimes[os] = (s_legBuf && os < osuusluku) ? s_legBuf + os * nrec : NULL;
+      s_legCount[os] = 0;
+      }
+   for (int os = 0; os < ntosuus; os++)
       s_cumFastest[os] = 0;
    kilptietue k;
    for (int d = 1; d < (int)datf2.numrec; d++) {
@@ -1047,6 +1083,8 @@ int xmlIOF30srjots(int sarja, tulostusparamtp *tulprm)
          INT32 t = k.osTulos(os, 0, true);
          if (t > 0 && (s_legFastest[os] == 0 || t < s_legFastest[os]))
             s_legFastest[os] = t;
+         if (t > 0 && s_legTimes[os])
+            s_legTimes[os][s_legCount[os]++] = t;
          }
       for (int os = 0; os < ntosuus; os++) {
          INT32 t = k.tTulos(os, 0);
@@ -1054,6 +1092,9 @@ int xmlIOF30srjots(int sarja, tulostusparamtp *tulprm)
             s_cumFastest[os] = t;
          }
       }
+   for (int os = 0; os < osuusluku; os++)
+      if (s_legTimes[os] && s_legCount[os] > 1)
+         qsort(s_legTimes[os], s_legCount[os], sizeof(INT32), cmpINT32);
 
    return(0);
    }
@@ -1075,6 +1116,23 @@ static wchar_t *ISOtimeLocal(wchar_t *datestr, int time)
    wchar_t *klo = datestr ? wcschr(buf, L'T') : NULL;
    wcscat(buf, ISOzoneLocal(klo ? datestr : NULL, klo ? klo + 1 : buf));
    return buf;
+}
+
+// Ajan päivämäärä: kilpailun päivä, tai seuraava päivä, jos aika on ennen
+// sarjan (tai joukkueen) lähtöaikaa eli puolenyön jälkeen.
+static wchar_t *IOF30aikaPvm(kilptietue& kilp, INT32 t)
+{
+   static wchar_t pvm[20];
+   INT32 alku = Sarjat[kilp.sarja].lahto;
+
+   if (alku == TMAALI0)
+      alku = kilp.Lahto(0);
+   if (alku != TMAALI0 && t < alku) {
+      int dd = DateNoTarkka(kilpparam.Date);
+      if (dd > 0)
+         return(stDateNo(pvm, dd + 1));
+      }
+   return(kilpparam.Date);
 }
 
 void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
@@ -1119,9 +1177,9 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 	   tul_tied->put_wxml_d(XMLhae_tagName(TAGLegOrder, IOF3Tags, nIOF3Tags), 1, level);
 	   tul_tied->put_wxml_d(XMLhae_tagName(TAGBibNumber, IOF3Tags, nIOF3Tags), kilp.kilpno, level);
 	   if (kilp.Lahto(os) != TMAALI0)
-			tul_tied->put_wxml_s(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), ISOtimeLocal(kilpparam.Date, kilp.Lahto(os)), level);
+			tul_tied->put_wxml_s(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), ISOtimeLocal(IOF30aikaPvm(kilp, kilp.Lahto(os)), kilp.Lahto(os)), level);
 	   if (kilp.Maali(os, 0) != TMAALI0)
-			tul_tied->put_wxml_s(XMLhae_tagName(TAGFinishTime, IOF3Tags, nIOF3Tags), ISOtimeLocal(kilpparam.Date, kilp.Maali(os, 0)), level);
+			tul_tied->put_wxml_s(XMLhae_tagName(TAGFinishTime, IOF3Tags, nIOF3Tags), ISOtimeLocal(IOF30aikaPvm(kilp, kilp.Maali(os, 0)), kilp.Maali(os, 0)), level);
 	   if ((tl = kilp.osTulos(os, 0, true)) != 0) {
 		   INT32 tl_fast = s_legFastest[os];
 		   tul_tied->put_wxml_s(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), sekTulos(NULL, tl, kilpparam.pyor[3]), level);
@@ -1130,16 +1188,11 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 			   tul_tied->put_wxml_s(XMLhae_tagName(TAGTimeBehind, IOF3Tags, nIOF3Tags),
 				   sekTulos(NULL, tb, kilpparam.pyor[3]), level, L"type=\"Leg\"");
 			   }
-		   // Count teams with strictly smaller leg time for class-wide position
-		   int leg_pos = 1;
-		   kilptietue k_pos;
-		   for (int dp = 1; dp < (int)datf2.numrec; dp++) {
-			   k_pos.getrec(dp);
-			   if (k_pos.kilpstatus != 0 || k_pos.sarja != kilp.sarja) continue;
-			   INT32 t2 = k_pos.osTulos(os, 0, true);
-			   if (t2 > 0 && t2 < tl) leg_pos++;
+		   // Osuussijoitus sarjan sisällä xmlIOF30srjots:ssa lasketuista ajoista
+		   if (os < MAXOSUUSLUKU && s_legTimes[os]) {
+			   int leg_pos = IOF30osuusSija(os, tl);
+			   tul_tied->put_wxml_d(XMLhae_tagName(TAGPosition, IOF3Tags, nIOF3Tags), leg_pos, level, L"type=\"Leg\"");
 			   }
-		   tul_tied->put_wxml_d(XMLhae_tagName(TAGPosition, IOF3Tags, nIOF3Tags), leg_pos, level, L"type=\"Leg\"");
 		   }
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGStatus, IOF3Tags, nIOF3Tags), IOFStatus(&kilp, os), level);
 	   tl_cum = kilp.tTulos(Sarjat[kilp.sarja].yosuus[os], 0);
