@@ -46,8 +46,8 @@ __published:	// IDE-managed Components
 	TLabel *Label5;
 	TEdit *EditKoodi;
 	TLabel *Label6;
-	TEdit *EditVuosi;
-	TLabel *Label7;
+	TEdit *EdtPvm;
+	TLabel *LblPvm;
 	TButton *ButtonOK;
 	TButton *Button1;
 	TLabel *Label8;

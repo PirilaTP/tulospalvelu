@@ -34,6 +34,13 @@ static wchar_t TunnType[] = L" ETSO", orig_laji, orig_alalajit[N_PV+1];;
 static int orig_n_pv;
 static wchar_t YhtTlsLaji[] = L"SLPV";
 
+// Päivämäärä muodossa p.k.vvvv (ilman etunollia)
+static wchar_t *pvmTeksti(wchar_t *st, int pvm)
+{
+	swprintf(st, L"%d.%d.%d", dDateNo(pvm), mDateNo(pvm), yDateNo(pvm));
+	return(st);
+}
+
 //---------------------------------------------------------------------------
 __fastcall TFormKilpMaaritys::TFormKilpMaaritys(TComponent* Owner)
 	: TForm(Owner)
@@ -156,14 +163,12 @@ void __fastcall TFormKilpMaaritys::NaytaArvot(void)
 	if (!kilpparam.kilpkoodi[0])
 		wcscpy(kilpparam.kilpkoodi, L"0000");
 	EditKoodi->Text = UnicodeString(kilpparam.kilpkoodi);
-	if (kilpparam.vuosi < 1900) {
-		time_t clock;
-		struct tm *now;
-		time(&clock);
-		now = localtime(&clock);
-		kilpparam.vuosi = now->tm_year + 1900;
+	if (pvparam[0].Date > 0) {
+		wchar_t st[16];
+		EdtPvm->Text = pvmTeksti(st, pvparam[0].Date);
 		}
-	EditVuosi->Text = UnicodeString(kilpparam.vuosi);
+	else
+		EdtPvm->Text = L"";
 	switch (kilpparam.kilplaji) {
 		case L'S':
 			RGlaji->ItemIndex = 0;
@@ -457,6 +462,7 @@ void __fastcall TFormKilpMaaritys::EditPvExit(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
 void __fastcall TFormKilpMaaritys::FormShow(TObject *Sender)
 {
 	static int init = 0;
@@ -513,6 +519,20 @@ void __fastcall TFormKilpMaaritys::FormCloseQuery(TObject *Sender, bool &CanClos
 		ModalResult = mrCancel;
 		}
 	else {
+		// Kilpailun päivämäärä on pakollinen (mm. IOF XML -tiedostot): tarkistetaan ennen
+		// muita muutoksia, jotta virheellinen kaavake jää auki muuttamatta tietoja
+		int pvm = DateNoTarkka(EdtPvm->Text.c_str());
+		if (pvm <= 0) {
+			Application->MessageBoxW(L"Anna kilpailun päivämäärä muodossa pp.kk.vvvv (esim. 27.9.2026)."
+				L" Päivämäärä tarvitaan mm. IOF XML -tiedostoihin.", L"Päivämäärä puuttuu tai on virheellinen", MB_OK);
+			EdtPvm->SetFocus();
+			CanClose = false;
+			hyvaksyMuutokset = 0;
+			return;
+			}
+		// 1. vaihe saa annetun päivän, myöhempien vaiheiden päivät annetaan kohdassa
+		// Vaihekohtaiset lisämääritykset
+		pvparam[0].Date = pvm;
 		wchar_t lajit[] = L"SHJAUM", muutlajit[] = L"PNB", alalajit[] = L" SEDA", NSrj = 0;
 		FILE *sfl;
 		int laika = 8, laika2 = 8, laikasj = 8;
@@ -541,7 +561,7 @@ void __fastcall TFormKilpMaaritys::FormCloseQuery(TObject *Sender, bool &CanClos
 		wcsncpy(kilpailu, EditKilpailu->Text.c_str(), sizeof(kilpailu)/2-1);
 		wcscpy(llparam.luetots0, kilpailu);
 		wcsncpy(kilpparam.kilpkoodi, EditKoodi->Text.c_str(), sizeof(kilpparam.kilpkoodi)/2-1);
-		kilpparam.vuosi = EditVuosi->Text.ToInt();
+		kilpparam.vuosi = yDateNo(pvm);
 		if (RGlaji->ItemIndex == 5) {
 			kilpparam.kilplaji = muutlajit[RGMuuLaji->ItemIndex];
 			if (kilpparam.kilplaji == L'B') {
@@ -723,6 +743,12 @@ void __fastcall TFormKilpMaaritys::BtnVaiheMaarClick(TObject *Sender)
 {
 	kilpparam.n_pv = _wtoi(EditTiedPv->Text.c_str());
 	kilpparam.n_pv_akt = EditPv->Text.ToInt();
+	// 1. vaiheen päivämäärä kilpailun päivämäärästä (peruutus palauttaa pvparam0:n)
+	{
+	int pvm = DateNoTarkka(EdtPvm->Text.c_str());
+	if (pvm > 0)
+		pvparam[0].Date = pvm;
+	}
 	if (CBJrjTarkkuus->ItemIndex < 4)
 		pvparam[0].pyor[2] =  SEK/powi(10, CBJrjTarkkuus->ItemIndex);
 	if (CBTulTarkkuus->ItemIndex < 4)
@@ -736,6 +762,11 @@ void __fastcall TFormKilpMaaritys::BtnVaiheMaarClick(TObject *Sender)
 	FormVaiheMaar = new TFormVaiheMaar(this);
 	FormVaiheMaar->ShowModal();
 	delete FormVaiheMaar;
+	// 1. vaiheen päivämäärä on voitu muuttaa vaihekohtaisissa määrityksissä
+	if (pvparam[0].Date > 0) {
+		wchar_t st[16];
+		EdtPvm->Text = pvmTeksti(st, pvparam[0].Date);
+		}
 	NaytaTarkkuudet();
 }
 //---------------------------------------------------------------------------

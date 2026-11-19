@@ -54,4 +54,48 @@ wchar_t *ISOdatetime(int des, bool zone)
    return(ln);
 }
 
+// Aikavyöhykkeen siirtymä annetulle paikalliselle päivälle ja kellonajalle, esim. L"+03:00".
+// Kesäaika määräytyy annetun päivän mukaan (ei nykyhetken), joten syyskuun kilpailu saa
+// kesäajan siirtymän, vaikka tiedosto kirjoitettaisiin talvella.
+// pvm: "YYYY-MM-DD..." (esim. ISO-päivämäärä tai -aikaleima) tai "D.M.YYYY",
+// aika: "HH:MM..." tai NULL (klo 12).
+// Jos päivämäärää ei voi tulkita, palautetaan nykyhetken siirtymä. Palauttaa staattisen puskurin.
+wchar_t *ISOzoneLocal(const wchar_t *pvm, const wchar_t *aika)
+{
+   static wchar_t zone[12];
+   SYSTEMTIME lt, ut;
+   FILETIME lf, uf;
+   int y = 0, mo = 0, d = 0, h = 12, mi = 0, minuutit;
+   __int64 ero;
+
+   if (pvm != NULL && swscanf(pvm, L"%d-%d-%d", &y, &mo, &d) != 3 &&
+	   swscanf(pvm, L"%d.%d.%d", &d, &mo, &y) != 3)
+	   y = 0;
+   if (pvm == NULL || y < 1601 || mo < 1 || mo > 12 || d < 1 || d > 31) {
+	   wchar_t *nyt = ISOdatetime(0, true);
+	   wcscpy(zone, nyt + wcslen(nyt) - 6);
+	   return(zone);
+	   }
+   if (aika)
+	   swscanf(aika, L"%d:%d", &h, &mi);
+   memset(&lt, 0, sizeof(lt));
+   lt.wYear = (WORD) y;
+   lt.wMonth = (WORD) mo;
+   lt.wDay = (WORD) d;
+   lt.wHour = (WORD) (h >= 0 && h < 24 ? h : 12);
+   lt.wMinute = (WORD) (mi >= 0 && mi < 60 ? mi : 0);
+   if (!TzSpecificLocalTimeToSystemTime(NULL, &lt, &ut) ||
+	   !SystemTimeToFileTime(&lt, &lf) || !SystemTimeToFileTime(&ut, &uf)) {
+	   wchar_t *nyt = ISOdatetime(0, true);
+	   wcscpy(zone, nyt + wcslen(nyt) - 6);
+	   return(zone);
+	   }
+   // FILETIME on 100 ns:n yksiköissä: paikallinen - UTC = siirtymä
+   ero = (((__int64) lf.dwHighDateTime << 32) | lf.dwLowDateTime) -
+	   (((__int64) uf.dwHighDateTime << 32) | uf.dwLowDateTime);
+   minuutit = (int) (ero / 600000000);
+   swprintf(zone, L"%c%02d:%02d", minuutit < 0 ? L'-' : L'+', abs(minuutit) / 60, abs(minuutit) % 60);
+   return(zone);
+}
+
 

@@ -86,6 +86,7 @@ static wchar_t *ControlType[6] = {L"Control", L"Start", L"Finish", L"CrossingPoi
 #define TAGTotal		       138
 #define TAGRaceCourseData 	   139
 #define TAGPosition            140
+#define TAGPlace               222
 #define TAGCourseFamily        141
 #define TAGLength              142
 #define TAGClimb               143
@@ -111,6 +112,12 @@ static wchar_t *ControlType[6] = {L"Control", L"Start", L"Finish", L"CrossingPoi
 #define TAGShortName 		   163
 #define TAGNationality 		   164
 #define TAGEntryList		   165
+#define TAGStartList		   166
+#define TAGClassStart		   167
+#define TAGPersonStart		   168
+#define TAGStart			   169
+#define TAGStartName		   170
+#define TAGRace				   171
 
 static tagListTp IOF3Tags[] = {
 	{TAGEvent, L"Event"},
@@ -165,6 +172,7 @@ static tagListTp IOF3Tags[] = {
 	{TAGTotal, L"Total"},
 	{TAGRaceCourseData, L"RaceCourseData"},
 	{TAGPosition, L"Position"},
+	{TAGPlace, L"Place"},
 	{TAGCourseFamily, L"CourseFamily"},
 	{TAGLength, L"Length"},
 	{TAGClimb, L"Climb"},
@@ -189,7 +197,13 @@ static tagListTp IOF3Tags[] = {
 	{TAGRaceNumber, L"RaceNumber"},
 	{TAGShortName, L"ShortName"},
 	{TAGNationality, L"Nationality"},
-	{TAGEntryList, L"EntryList"}
+	{TAGEntryList, L"EntryList"},
+	{TAGStartList, L"StartList"},
+	{TAGClassStart, L"ClassStart"},
+	{TAGPersonStart, L"PersonStart"},
+	{TAGStart, L"Start"},
+	{TAGStartName, L"StartName"},
+	{TAGRace, L"Race"}
 	};
 
 static int nIOF3Tags = sizeof(IOF3Tags)/sizeof(IOF3Tags[0]);
@@ -949,6 +963,10 @@ void kirjIOF30VainRadatXml(wchar_t *outfname, IOFCourseData *CseData)
 
 //=============== IOF ResultList ================================
 
+static void put_wxml_iofdatetime(TextFl *tul_tied, wchar_t *tag, int Date, INT32 value, int level, int len = 8, wchar_t dcep = L'.');
+static void put_wxml_ioftime(TextFl *tul_tied, wchar_t *tag, int Date, INT32 value, int level);
+static INT32 IOF30vaiheenAlku(int i_pv);
+
 int xmlIOF30ots(tulostusparamtp *tulprm)
    {
    wchar_t ln[602], level = 0;
@@ -972,10 +990,10 @@ int xmlIOF30ots(tulostusparamtp *tulprm)
 
 	outfl->put_wtag(XMLhae_tagName(TAGEvent, IOF3Tags, nIOF3Tags), level++);
 	outfl->put_wxml_s(XMLhae_tagName(TAGId, IOF3Tags, nIOF3Tags), pvparam[k_pv].RaceId, level);
-	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[k_pv].Title, level);
+	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[k_pv].Title[0] ? pvparam[k_pv].Title : kilpailu, level);
 	outfl->put_wtag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), level++);
 	outfl->put_wxml_s(XMLhae_tagName(TAGDate, IOF3Tags, nIOF3Tags), stDateNo(NULL, pvparam[k_pv].Date), level);
-//	outfl->put_wxml_s(srjtag[TAGTime], , level);
+	put_wxml_ioftime(outfl, XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), pvparam[k_pv].Date, IOF30vaiheenAlku(k_pv), level);
 	outfl->put_wantitag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), --level);
 /*
 	outfl->put_wtag(srjtag[TAGEndTime], level++);
@@ -983,6 +1001,10 @@ int xmlIOF30ots(tulostusparamtp *tulprm)
 	outfl->put_wxml_s(srjtag[TAGTime], kilpailu, level);
 	outfl->put_wantitag(srjtag[TAGEndTime], --level);
 */
+	outfl->put_wtag(XMLhae_tagName(TAGRace, IOF3Tags, nIOF3Tags), level++);
+	outfl->put_wxml_d(XMLhae_tagName(TAGRaceNumber, IOF3Tags, nIOF3Tags), k_pv+1, level);
+	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[k_pv].Title[0] ? pvparam[k_pv].Title : kilpailu, level);
+	outfl->put_wantitag(XMLhae_tagName(TAGRace, IOF3Tags, nIOF3Tags), --level);
 	outfl->put_wantitag(XMLhae_tagName(TAGEvent, IOF3Tags, nIOF3Tags), --level);
 
    return(0);
@@ -1000,6 +1022,7 @@ int xmlIOF30loppu(tulostusparamtp *tulprm)
 int xmlIOF30srjots(int sarja, tulostusparamtp *tulprm)
    {
    int level = 1;
+   wchar_t ln[40];
    TextFl *tul_tied;
    ratatp *rt;
 
@@ -1015,10 +1038,11 @@ int xmlIOF30srjots(int sarja, tulostusparamtp *tulprm)
    tul_tied->put_wantitag(XMLhae_tagName(TAGClass, IOF3Tags, nIOF3Tags), --level);
 
    if ((rt = haerata_sarja(sarja, k_pv)) != NULL) {
-	   tul_tied->put_wtag(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), level++);
+	   swprintf(ln, L"raceNumber=\"%d\"", k_pv+1);
+	   tul_tied->put_wtagparams(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), ln, false, level++);
 	   tul_tied->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->ratapit, level);
 	   if (rt->nousu)
-		   tul_tied->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->nousu, level);
+		   tul_tied->put_wxml_d(XMLhae_tagName(TAGClimb, IOF3Tags, nIOF3Tags), rt->nousu, level);
 	   tul_tied->put_wantitag(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), --level);
 	   }
 
@@ -1063,12 +1087,16 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
    tul_tied->put_wxml_s(XMLhae_tagName(TAGFamily, IOF3Tags, nIOF3Tags), kilp.sukunimi, level);
    tul_tied->put_wxml_s(XMLhae_tagName(TAGGiven, IOF3Tags, nIOF3Tags), kilp.etunimi, level);
    tul_tied->put_wantitag(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), --level);
+   if (kilp.maa[0]) {
+	   swprintf(ln, L"code=\"%s\"", kilp.maa);
+	   tul_tied->put_wxml_s(XMLhae_tagName(TAGNationality, IOF3Tags, nIOF3Tags), MaaNimi(kilp.maa), level, ln);
+	   }
    tul_tied->put_wantitag(XMLhae_tagName(TAGPerson, IOF3Tags, nIOF3Tags), --level);
 
    if (tulprm->xmlstd != L'J') {
 	   tul_tied->put_wtag(XMLhae_tagName(TAGOrganisation, IOF3Tags, nIOF3Tags), level++);
-	   tul_tied->put_wxml_s(XMLhae_tagName(TAGId, IOF3Tags, nIOF3Tags), kilp.seuralyh, level);
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), kilp.seura, level);
+	   tul_tied->put_wxml_s(XMLhae_tagName(TAGShortName, IOF3Tags, nIOF3Tags), kilp.seuralyh, level);
 	   if (kilp.maa[0]) {
 		   swprintf(ln, L"code=\"%s\"", kilp.maa);
 		   tul_tied->put_wxml_s(XMLhae_tagName(TAGCountry, IOF3Tags, nIOF3Tags), MaaNimi(kilp.maa), level, ln);
@@ -1076,13 +1104,14 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 	   tul_tied->put_wantitag(XMLhae_tagName(TAGOrganisation, IOF3Tags, nIOF3Tags), --level);
 	   }
 
-   tul_tied->put_wtag(XMLhae_tagName(TAGResult, IOF3Tags, nIOF3Tags), level++);
+   swprintf(ln, L"raceNumber=\"%d\"", k_pv+1);
+   tul_tied->put_wtagparams(XMLhae_tagName(TAGResult, IOF3Tags, nIOF3Tags), ln, false, level++);
    tul_tied->put_wxml_d(XMLhae_tagName(TAGBibNumber, IOF3Tags, nIOF3Tags), kilp.id(), level);
-   if (kilp.TLahto(0) != TMAALI0)
-		tul_tied->put_wxml_time(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), pvparam[k_pv].Date, kilp.TLahto(), t0, SEK, 8, L'.', level);
+   if (kilp.TLahto() != TMAALI0)
+		put_wxml_iofdatetime(tul_tied, XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), pvparam[k_pv].Date, kilp.TLahto(), level);
    if (kilp.maali(0) != TMAALI0)
-		tul_tied->put_wxml_time(XMLhae_tagName(TAGFinishTime, IOF3Tags, nIOF3Tags), pvparam[k_pv].Date + (kilp.maali(0) < kilp.TLahto() ? 1 : 0),
-			kilp.maali(0), t0, SEK, pvparam[k_pv].laika, L'.', level);
+		put_wxml_iofdatetime(tul_tied, XMLhae_tagName(TAGFinishTime, IOF3Tags, nIOF3Tags), pvparam[k_pv].Date + (kilp.maali(0) < kilp.TLahto() ? 1 : 0),
+			kilp.maali(0), level, pvparam[k_pv].laika, L'.');
    if (kilp.hyv() && kilp.tulos2(0)) {
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), sekTulos(NULL, kilp.tulos2(0), pvparam[k_pv].pyor[3]), level);
 	   tul_tied->put_wxml_s(XMLhae_tagName(TAGTimeBehind, IOF3Tags, nIOF3Tags), sekTulos(NULL, kilp.tulos2(0)-karki, pvparam[k_pv].pyor[3]), level);
@@ -1098,35 +1127,30 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
 	   if (rt) {
 		   tul_tied->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->ratapit, level);
 		   if (rt->nousu)
-			   tul_tied->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->nousu, level);
+			   tul_tied->put_wxml_d(XMLhae_tagName(TAGClimb, IOF3Tags, nIOF3Tags), rt->nousu, level);
 		   }
 	   tul_tied->put_wantitag(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), --level);
 	   }
-   if (tulprm->tulostettava == L'E') {
+   if (tulprm->tulostettava == L'E' || tulprm->tulostettava == L'F') {
 	  getem(&em, kilp.id(), 0);
 	  if (em.kilpno == kilp.id()) {
 		  emitvatp emva;
-		  bool leim_ok = true;
-
 		 tee_emva(&emva, &em);
 		 rt = haerata(&kilp);
-		 for (int r = 0; r < emva.rastiluku; r++) {
-			 if (kilp.tark() != L'T' && emva.rastit[r][1] == 0)
-				 leim_ok = false;
-
+		 // IOF 3.0: maalia ei kirjoiteta SplitTime-elementiksi, mutta jokainen radan rasti kirjoitetaan
+		 // (leimaamaton status="Missing"). tee_emva jättää maalileimauksen pois vain, kun
+		 // maalileimasin on määritetty; radalla, jonka maalilaji > 1, viimeinen rasti on maali.
+		 int nrasti = emva.rastiluku;
+		 if (rt && rt->maalilaji > 1 && nrasti == rt->rastiluku)
+			 nrasti--;
+		 for (int r = 0; r < nrasti; r++) {
 			 if (emva.rastit[r][1]) {
-				if (leim_ok)
-					tul_tied->put_wtag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), level++);
-				else
-					tul_tied->put_wtagparams(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), L"status=\"Additional\"", false, level++);
+				tul_tied->put_wtag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), level++);
 				tul_tied->put_wxml_d(XMLhae_tagName(TAGControlCode, IOF3Tags, nIOF3Tags), emva.rastit[r][0], level);
 				tul_tied->put_wxml_d(XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), emva.rastit[r][1], level);
 				}
 			 else {
-				if (leim_ok)
-					tul_tied->put_wtag(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), level++);
-				else
-					tul_tied->put_wtagparams(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), L"status=\"Missing\"", false, level++);
+				tul_tied->put_wtagparams(XMLhae_tagName(TAGSplitTime, IOF3Tags, nIOF3Tags), L"status=\"Missing\"", false, level++);
 				if (rt)
 					tul_tied->put_wxml_d(XMLhae_tagName(TAGControlCode, IOF3Tags, nIOF3Tags), rt->rastikoodi[r], level);
 				}
@@ -1138,3 +1162,204 @@ void xmlIOF30tulos(kilptietue& kilp, INT sj, tulostusparamtp *tulprm)
    tul_tied->put_wantitag(XMLhae_tagName(TAGPersonResult, IOF3Tags, nIOF3Tags), --level);
    }
 
+//=============== IOF StartList ================================
+
+// Palauttaa nykyisen aikavyohykkeen siirtyman muodossa "+02:00" / "-05:00".
+static wchar_t *IOF30zone(void)
+   {
+   wchar_t *now = ISOdatetime(0, 1);
+
+   return(now + wcslen(now) - 6);
+   }
+
+// Vaiheen alkuaika Event/StartTime/Time-elementtiin: aikaisin sarjan ensimmäinen lähtö niissä
+// sarjoissa, joissa on vaiheessa osanottajia (vuorokauden vaihde huomioiden).
+// TMAALI0, jos lähtöaikoja ei ole annettu.
+static INT32 IOF30vaiheenAlku(int i_pv)
+   {
+   INT32 alku = TMAALI0;
+
+   for (int srj = 0; srj < sarjaluku; srj++) {
+	   INT32 t = Sarjat[srj].enslahto[i_pv];
+	   if (t == TMAALI0 || nilm_pv[i_pv][srj] == 0)
+		   continue;
+	   if (alku == TMAALI0 || (t - alku + 48*TUNTI) % (24*TUNTI) > 12*TUNTI)
+		   alku = t;
+	   }
+   return(alku);
+   }
+
+// Kirjoittaa kellonaikaelementin aikavyöhykkeen siirtymän kanssa (esim. 10:00:00+03:00).
+// Siirtymä lasketaan päivän Date mukaan (kesäaika); Date <= 0: nykyhetken siirtymä.
+// Arvo 0 on kelvollinen kellonaika (nollahetki), vain TMAALI0 jätetään kirjoittamatta.
+static void put_wxml_ioftime(TextFl *tul_tied, wchar_t *tag, int Date, INT32 value, int level)
+   {
+   wchar_t st[48], pvm[16];
+
+   if (value == TMAALI0)
+	   return;
+   aikatowstr_ts(st, value, t0);
+   st[2] = L':';
+   st[5] = L':';
+   st[8] = 0;
+   wcscat(st, Date > 0 ? ISOzoneLocal(stDateNo(pvm, Date), st) : IOF30zone());
+   tul_tied->put_wxml_s(tag, st, level);
+   }
+
+// Kirjoittaa XML-paivamaara+kellonaika-elementin aikavyohykkeen siirtyman kanssa (esim. 2026-07-02T12:32:00+03:00).
+static void put_wxml_iofdatetime(TextFl *tul_tied, wchar_t *tag, int Date, INT32 value, int level, int len, wchar_t dcep)
+   {
+   wchar_t st[48];
+
+   if (value == TMAALI0)		// 0 on kelvollinen kellonaika (nollahetki)
+	   return;
+   aikatowstr_ts(st, value, t0);
+   st[2] = L':';
+   st[5] = L':';
+   if (dcep)
+	   st[8] = dcep;
+   st[abs(len)] = 0;
+   if (len < 0)
+	   elimwzb1(st);
+   if (Date > 0) {
+	   wmemmove(st+11, st, wcslen(st)+1);
+	   stDateNo(st, Date);
+	   st[10] = L'T';
+	   }
+   wcscat(st, Date > 0 ? ISOzoneLocal(st, st+11) : IOF30zone());
+   tul_tied->put_wxml_s(tag, st, level);
+   }
+
+int xmlIOF30LahtoOts(tulostusparamtp *tulprm, int i_pv)
+   {
+   wchar_t ln[602];
+   INT level = 0;
+   TextFl *outfl;
+
+   outfl = tulprm->lstf->u.Fl;
+
+	if (wcslen(kilpparam.kilpkoodi) == 0) {
+		wcscpy(kilpparam.kilpkoodi, L"KOODI");
+		}
+	outfl->WriteLine(L"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
+	swprintf(ln, L"%s xmlns=\"http://www.orienteering.org/datastandard/3.0\"\n"
+			L"\txmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+			L"\tiofVersion=\"3.0\"\n"
+			L"\tcreateTime=\"%s\"\n"
+			L"\tcreator=\"HkKisaWin %s\"",
+		XMLhae_tagName(TAGStartList, IOF3Tags, nIOF3Tags), ISOdatetime(0,1), Build());
+	outfl->put_wtag(ln, level++);
+
+	outfl->put_wtag(XMLhae_tagName(TAGEvent, IOF3Tags, nIOF3Tags), level++);
+	outfl->put_wxml_s(XMLhae_tagName(TAGId, IOF3Tags, nIOF3Tags), pvparam[i_pv].RaceId, level);
+	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[i_pv].Title[0] ? pvparam[i_pv].Title : kilpailu, level);
+	outfl->put_wtag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), level++);
+	outfl->put_wxml_s(XMLhae_tagName(TAGDate, IOF3Tags, nIOF3Tags), stDateNo(NULL, pvparam[i_pv].Date), level);
+	put_wxml_ioftime(outfl, XMLhae_tagName(TAGTime, IOF3Tags, nIOF3Tags), pvparam[i_pv].Date, IOF30vaiheenAlku(i_pv), level);
+	outfl->put_wantitag(XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), --level);
+	outfl->put_wtag(XMLhae_tagName(TAGRace, IOF3Tags, nIOF3Tags), level++);
+	outfl->put_wxml_d(XMLhae_tagName(TAGRaceNumber, IOF3Tags, nIOF3Tags), i_pv+1, level);
+	outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), pvparam[i_pv].Title[0] ? pvparam[i_pv].Title : kilpailu, level);
+	outfl->put_wantitag(XMLhae_tagName(TAGRace, IOF3Tags, nIOF3Tags), --level);
+	outfl->put_wantitag(XMLhae_tagName(TAGEvent, IOF3Tags, nIOF3Tags), --level);
+
+   return(0);
+   }
+
+int xmlIOF30LahtoLoppu(tulostusparamtp *tulprm)
+   {
+   TextFl *outfl;
+
+   outfl = tulprm->lstf->u.Fl;
+   outfl->put_wantitag(XMLhae_tagName(TAGStartList, IOF3Tags, nIOF3Tags), 0);
+   return(0);
+   }
+
+int xmlIOF30LahtoSrjOts(int sarja, int i_pv, tulostusparamtp *tulprm)
+   {
+   INT level = 1;
+   TextFl *outfl;
+   ratatp *rt;
+
+   outfl = tulprm->lstf->u.Fl;
+   outfl->put_wtag(XMLhae_tagName(TAGClassStart, IOF3Tags, nIOF3Tags), level++);
+
+   outfl->put_wtag(XMLhae_tagName(TAGClass, IOF3Tags, nIOF3Tags), level++);
+   outfl->put_wxml_s(XMLhae_tagName(TAGId, IOF3Tags, nIOF3Tags), Sarjat[sarja].sarjanimi, level);
+   if (Sarjat[sarja].psarjanimi[0])
+		outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), Sarjat[sarja].psarjanimi, level);
+   else
+		outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), Sarjat[sarja].sarjanimi, level);
+   outfl->put_wantitag(XMLhae_tagName(TAGClass, IOF3Tags, nIOF3Tags), --level);
+
+   if ((rt = haerata_sarja(sarja, i_pv)) != NULL) {
+	   outfl->put_wtag(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), level++);
+	   outfl->put_wxml_d(XMLhae_tagName(TAGLength, IOF3Tags, nIOF3Tags), rt->ratapit, level);
+	   if (rt->nousu)
+		   outfl->put_wxml_d(XMLhae_tagName(TAGClimb, IOF3Tags, nIOF3Tags), rt->nousu, level);
+	   outfl->put_wantitag(XMLhae_tagName(TAGCourse, IOF3Tags, nIOF3Tags), --level);
+	   }
+
+   if (Sarjat[sarja].lno[i_pv] > 0) {
+	   wchar_t ln[40];
+
+	   swprintf(ln, L"Start %d", Sarjat[sarja].lno[i_pv]);
+	   outfl->put_wxml_s(XMLhae_tagName(TAGStartName, IOF3Tags, nIOF3Tags), ln, level);
+	   }
+
+   return(0);
+   }
+
+int xmlIOF30LahtoSrjLoppu(tulostusparamtp *tulprm)
+   {
+   TextFl *outfl;
+
+   outfl = tulprm->lstf->u.Fl;
+   outfl->put_wantitag(XMLhae_tagName(TAGClassStart, IOF3Tags, nIOF3Tags), 1);
+   return(0);
+   }
+
+void xmlIOF30Lahto(kilptietue& kilp, int i_pv, tulostusparamtp *tulprm)
+   {
+   wchar_t ln[100];
+   INT level = 1;
+   TextFl *outfl;
+
+   outfl = tulprm->lstf->u.Fl;
+
+   outfl->put_wtag(XMLhae_tagName(TAGPersonStart, IOF3Tags, nIOF3Tags), level++);
+
+   outfl->put_wtag(XMLhae_tagName(TAGPerson, IOF3Tags, nIOF3Tags), level++);
+   if (kilp.lisno[1]) {
+	   outfl->put_wxml_d(XMLhae_tagName(TAGId, IOF3Tags, nIOF3Tags), kilp.lisno[1], level, L"type=\"IOF\"");
+	   }
+   outfl->put_wxml_d(XMLhae_tagName(TAGId, IOF3Tags, nIOF3Tags), kilp.lisno[0], level, L"type=\"local\"");
+   outfl->put_wtag(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), level++);
+   outfl->put_wxml_s(XMLhae_tagName(TAGFamily, IOF3Tags, nIOF3Tags), kilp.sukunimi, level);
+   outfl->put_wxml_s(XMLhae_tagName(TAGGiven, IOF3Tags, nIOF3Tags), kilp.etunimi, level);
+   outfl->put_wantitag(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), --level);
+   if (kilp.maa[0]) {
+	   swprintf(ln, L"code=\"%s\"", kilp.maa);
+	   outfl->put_wxml_s(XMLhae_tagName(TAGNationality, IOF3Tags, nIOF3Tags), MaaNimi(kilp.maa), level, ln);
+	   }
+   outfl->put_wantitag(XMLhae_tagName(TAGPerson, IOF3Tags, nIOF3Tags), --level);
+
+   outfl->put_wtag(XMLhae_tagName(TAGOrganisation, IOF3Tags, nIOF3Tags), level++);
+   outfl->put_wxml_s(XMLhae_tagName(TAGName, IOF3Tags, nIOF3Tags), kilp.seura, level);
+   outfl->put_wxml_s(XMLhae_tagName(TAGShortName, IOF3Tags, nIOF3Tags), kilp.seuralyh, level);
+   if (kilp.maa[0]) {
+	   swprintf(ln, L"code=\"%s\"", kilp.maa);
+	   outfl->put_wxml_s(XMLhae_tagName(TAGCountry, IOF3Tags, nIOF3Tags), MaaNimi(kilp.maa), level, ln);
+	   }
+   outfl->put_wantitag(XMLhae_tagName(TAGOrganisation, IOF3Tags, nIOF3Tags), --level);
+
+   swprintf(ln, L"raceNumber=\"%d\"", i_pv+1);
+   outfl->put_wtagparams(XMLhae_tagName(TAGStart, IOF3Tags, nIOF3Tags), ln, false, level++);
+   outfl->put_wxml_d(XMLhae_tagName(TAGBibNumber, IOF3Tags, nIOF3Tags), kilp.id(i_pv), level);
+   put_wxml_iofdatetime(outfl, XMLhae_tagName(TAGStartTime, IOF3Tags, nIOF3Tags), pvparam[i_pv].Date, kilp.TLahto(i_pv, false, 0), level);
+   if (kilp.pv[i_pv].badge[0])
+	   outfl->put_wxml_d(XMLhae_tagName(TAGControlCard, IOF3Tags, nIOF3Tags), kilp.pv[i_pv].badge[0], level);
+   outfl->put_wantitag(XMLhae_tagName(TAGStart, IOF3Tags, nIOF3Tags), --level);
+
+   outfl->put_wantitag(XMLhae_tagName(TAGPersonStart, IOF3Tags, nIOF3Tags), --level);
+   }
