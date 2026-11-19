@@ -27,6 +27,13 @@ TFormVaiheMaar *FormVaiheMaar;
 static wchar_t *Pr[4] = {L"1", L"0,1", L"0,01", L"0,001"};
 extern int PyorIx(int pyor);
 
+// Päivämäärä muodossa p.k.vvvv (ilman etunollia)
+static wchar_t *pvmTeksti(wchar_t *st, int pvm)
+{
+	swprintf(st, L"%d.%d.%d", dDateNo(pvm), mDateNo(pvm), yDateNo(pvm));
+	return(st);
+}
+
 //---------------------------------------------------------------------------
 __fastcall TFormVaiheMaar::TFormVaiheMaar(TComponent* Owner)
 	: TForm(Owner)
@@ -67,9 +74,7 @@ void TFormVaiheMaar::Paivita()
 		SG1->Cells[ipv+1][1] = pvparam[ipv].RaceId;
 		if (pvparam[ipv].Date > 0) {
 			wchar_t st[16];
-			swprintf(st, L"%d.%d.%d", dDateNo(pvparam[ipv].Date),
-				mDateNo(pvparam[ipv].Date), yDateNo(pvparam[ipv].Date));
-			SG1->Cells[ipv+1][2] = st;
+			SG1->Cells[ipv+1][2] = pvmTeksti(st, pvparam[ipv].Date);
 			}
 		else
 			SG1->Cells[ipv+1][2] = L"";
@@ -149,9 +154,15 @@ void TFormVaiheMaar::PaivitaCell(int row, int col)
 			case 3:
 				SG1->Cells[col][row] = SG1->Cells[col][row].Trim();
 				break;
-			case 2:
-				SG1->Cells[col][row] = stDateNo(NULL, DateNoFromSt(SG1->Cells[col][row].c_str()));
+			case 2: {
+				// kelvollinen päivämäärä muotoon p.k.vvvv; virheellinen jätetään
+				// ennalleen, jolloin OK-painike huomauttaa siitä
+				wchar_t st[16];
+				int pvm = DateNoTarkka(SG1->Cells[col][row].Trim().c_str());
+				if (pvm > 0)
+					SG1->Cells[col][row] = pvmTeksti(st, pvm);
 				break;
+				}
 			case 4:
 			case 5:
 				SG1->Cells[col][row] = Pr[PyorIx(pyorVal(SG1->Cells[col][row].c_str()))];
