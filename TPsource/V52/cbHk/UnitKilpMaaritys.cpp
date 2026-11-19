@@ -34,6 +34,13 @@ static wchar_t TunnType[] = L" ETSO", orig_laji, orig_alalajit[N_PV+1];;
 static int orig_n_pv;
 static wchar_t YhtTlsLaji[] = L"SLPV";
 
+// P‰iv‰m‰‰r‰ muodossa p.k.vvvv (ilman etunollia)
+static wchar_t *pvmTeksti(wchar_t *st, int pvm)
+{
+	swprintf(st, L"%d.%d.%d", dDateNo(pvm), mDateNo(pvm), yDateNo(pvm));
+	return(st);
+}
+
 //---------------------------------------------------------------------------
 __fastcall TFormKilpMaaritys::TFormKilpMaaritys(TComponent* Owner)
 	: TForm(Owner)
@@ -158,8 +165,7 @@ void __fastcall TFormKilpMaaritys::NaytaArvot(void)
 	EditKoodi->Text = UnicodeString(kilpparam.kilpkoodi);
 	if (pvparam[0].Date > 0) {
 		wchar_t st[16];
-		swprintf(st, L"%d.%d.%d", dDateNo(pvparam[0].Date), mDateNo(pvparam[0].Date), yDateNo(pvparam[0].Date));
-		EdtPvm->Text = st;
+		EdtPvm->Text = pvmTeksti(st, pvparam[0].Date);
 		}
 	else
 		EdtPvm->Text = L"";
@@ -456,25 +462,6 @@ void __fastcall TFormKilpMaaritys::EditPvExit(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-// Asettaa 1. vaiheen p‰iv‰m‰‰r‰ksi pvm1 ja t‰ydent‰‰ vaiheiden 2..npv p‰iv‰m‰‰r‰t:
-// tyhj‰ vaihe saa edellist‰ vaihetta seuraavan p‰iv‰n. Jos 1. vaiheen p‰iv‰ muuttuu, myˆhempi‰
-// vaiheita siirret‰‰n saman verran, jolloin vaiheiden v‰liset erot s‰ilyv‰t.
-static void taydennaVaihePaivat(int pvm1, int npv)
-{
-	int siirto = 0;
-
-	if (pvm1 <= 0)
-		return;
-	if (pvparam[0].Date > 0)
-		siirto = pvm1 - pvparam[0].Date;
-	pvparam[0].Date = pvm1;
-	for (int i = 1; i < npv && i < N_PV; i++) {
-		if (pvparam[i].Date <= 0)
-			pvparam[i].Date = pvparam[i-1].Date + 1;
-		else
-			pvparam[i].Date += siirto;
-		}
-}
 //---------------------------------------------------------------------------
 void __fastcall TFormKilpMaaritys::FormShow(TObject *Sender)
 {
@@ -543,9 +530,9 @@ void __fastcall TFormKilpMaaritys::FormCloseQuery(TObject *Sender, bool &CanClos
 			hyvaksyMuutokset = 0;
 			return;
 			}
-		// 1. vaihe saa annetun p‰iv‰n, myˆhemm‰t vaiheet t‰ydennet‰‰n (muutettavissa kohdassa
-		// Vaihekohtaiset lis‰m‰‰ritykset)
-		taydennaVaihePaivat(pvm, _wtoi(EditPv->Text.c_str()));
+		// 1. vaihe saa annetun p‰iv‰n, myˆhempien vaiheiden p‰iv‰t annetaan kohdassa
+		// Vaihekohtaiset lis‰m‰‰ritykset
+		pvparam[0].Date = pvm;
 		wchar_t lajit[] = L"SHJAUM", muutlajit[] = L"PNB", alalajit[] = L" SEDA", NSrj = 0;
 		FILE *sfl;
 		int laika = 8, laika2 = 8, laikasj = 8;
@@ -756,8 +743,12 @@ void __fastcall TFormKilpMaaritys::BtnVaiheMaarClick(TObject *Sender)
 {
 	kilpparam.n_pv = _wtoi(EditTiedPv->Text.c_str());
 	kilpparam.n_pv_akt = EditPv->Text.ToInt();
-	// vaiheiden p‰iv‰m‰‰r‰t valmiiksi lomakkeelle kilpailun p‰iv‰m‰‰r‰st‰
-	taydennaVaihePaivat(DateNoTarkka(EdtPvm->Text.c_str()), kilpparam.n_pv_akt);
+	// 1. vaiheen p‰iv‰m‰‰r‰ kilpailun p‰iv‰m‰‰r‰st‰ (peruutus palauttaa pvparam0:n)
+	{
+	int pvm = DateNoTarkka(EdtPvm->Text.c_str());
+	if (pvm > 0)
+		pvparam[0].Date = pvm;
+	}
 	if (CBJrjTarkkuus->ItemIndex < 4)
 		pvparam[0].pyor[2] =  SEK/powi(10, CBJrjTarkkuus->ItemIndex);
 	if (CBTulTarkkuus->ItemIndex < 4)
@@ -772,9 +763,10 @@ void __fastcall TFormKilpMaaritys::BtnVaiheMaarClick(TObject *Sender)
 	FormVaiheMaar->ShowModal();
 	delete FormVaiheMaar;
 	// 1. vaiheen p‰iv‰m‰‰r‰ on voitu muuttaa vaihekohtaisissa m‰‰rityksiss‰
-	if (pvparam[0].Date > 0)
-		EdtPvm->Text = UnicodeString(dDateNo(pvparam[0].Date)) + L"." +
-			UnicodeString(mDateNo(pvparam[0].Date)) + L"." + UnicodeString(yDateNo(pvparam[0].Date));
+	if (pvparam[0].Date > 0) {
+		wchar_t st[16];
+		EdtPvm->Text = pvmTeksti(st, pvparam[0].Date);
+		}
 	NaytaTarkkuudet();
 }
 //---------------------------------------------------------------------------

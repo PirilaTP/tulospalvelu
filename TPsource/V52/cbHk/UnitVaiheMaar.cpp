@@ -65,9 +65,12 @@ void TFormVaiheMaar::Paivita()
 		SG1->ColWidths[ipv+1] = 120 * Screen->PixelsPerInch / 96;
 		SG1->Cells[ipv+1][0] = UnicodeString(ipv+1) + L". vaihe";
 		SG1->Cells[ipv+1][1] = pvparam[ipv].RaceId;
-		if (pvparam[ipv].Date > 0)
-			SG1->Cells[ipv+1][2] = UnicodeString(dDateNo(pvparam[ipv].Date)) + L"." +
-				UnicodeString(mDateNo(pvparam[ipv].Date)) + L"." + UnicodeString(yDateNo(pvparam[ipv].Date));
+		if (pvparam[ipv].Date > 0) {
+			wchar_t st[16];
+			swprintf(st, L"%d.%d.%d", dDateNo(pvparam[ipv].Date),
+				mDateNo(pvparam[ipv].Date), yDateNo(pvparam[ipv].Date));
+			SG1->Cells[ipv+1][2] = st;
+			}
 		else
 			SG1->Cells[ipv+1][2] = L"";
 		SG1->Cells[ipv+1][3] = pvparam[ipv].Title;
