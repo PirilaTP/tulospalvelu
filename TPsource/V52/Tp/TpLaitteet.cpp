@@ -1828,6 +1828,57 @@ static void ecNaytaTila(wchar_t *msg)
 	vidspwmsg(ySize - 2, 0, 7, 0, txt);
 }
 
+// Asettaa aseman kellon tietokoneen kelloon ja tarkistaa aseman tilasanomasta, että ero on enintään 3 s.
+// txt saa tuloksen tekstin. Palauttaa true, jos kello vahvistettiin.
+static bool ecAsetaKelloAlussa(int r_no, wchar_t *txt)
+{
+	int lkm, yritys;
+	long ero;
+	bool vastasi = false;
+	char st[30], as[20];
+	wchar_t was[40];
+
+	lkm = ecInfoLkm[r_no];
+	sprintf(st, "/SC%8.8s\r\n/ST\r\n", aikatostr_ls(as, t_time_l(biostime(0, 0), t0), t0));
+	ecLahetaKomento(r_no, st);
+	for (yritys = 0; yritys < 3; yritys++) {
+		if (!ecOdotaInfo(r_no, lkm, 5000))
+			break;
+		vastasi = true;
+		ero = labs((long) (ecdata[r_no].devtime - ecdata[r_no].pctime));
+		if (ero > 12L * TUNTI)
+			ero = 24L * TUNTI - ero;
+		if (ero <= 3L * SEK) {
+			swprintf(txt, L"Kello asetettu %s (vahvistettu).", AIKATOWSTRS(was, ecdata[r_no].devtime, t0));
+			return(true);
+			}
+		lkm = ecInfoLkm[r_no];
+		}
+	if (!vastasi)
+		wcscpy(txt, L"Kellon asetus: asema ei vastannut.");
+	else
+		swprintf(txt, L"Kellon asetus epäonnistui, aseman kello %s.", AIKATOWSTRS(was, ecdata[r_no].devtime, t0));
+	return(false);
+}
+
+// Koodi on nyt asemalla oikein: asetetaan asemalle myös kellonaika ja näytetään tulos.
+// vanha = koodi ennen asetusta (-1 = tuntematon), koodi = nykyinen koodi.
+static void ecKoodiOnnistui(int r_no, int vanha, int koodi)
+{
+	wchar_t msg[300], kello[100];
+
+	if (vanha < 0)
+		swprintf(msg, L"Lukija %d: aseman koodi asetettu %d (vahvistettu).", r_no + 1, koodi);
+	else if (vanha == koodi)
+		swprintf(msg, L"Lukija %d: aseman koodi %d oikein.", r_no + 1, koodi);
+	else
+		swprintf(msg, L"Lukija %d: aseman koodi muutettu %d -> %d (vahvistettu).", r_no + 1, vanha, koodi);
+	ecAsetaKelloAlussa(r_no, kello);
+	wcscat(msg, L" ");
+	wcscat(msg, kello);
+	ecNaytaTila(msg);
+}
+
 // Asettaa emiTag-aseman koodin lukijalle r_no cfg-avaimen SETECUCODE mukaan ja näyttää tuloksen.
 // Jos asemalla on jo haluttu koodi, mitään ei lähetetä eikä ilmoiteta.
 static void ecAsetaKoodiAlussa(int r_no)
@@ -1855,8 +1906,10 @@ static void ecAsetaKoodiAlussa(int r_no)
 	ecLahetaKomento(r_no, "/ST\r\n");
 	if (ecOdotaInfo(r_no, lkm, 5000)) {
 		vanha = ecdata[r_no].code;
-		if (vanha == koodi)
+		if (vanha == koodi) {
+			ecKoodiOnnistui(r_no, vanha, koodi);
 			return;
+			}
 		}
 	lkm = ecInfoLkm[r_no];
 	sprintf(st, "/CD%03d\r\n/ST\r\n", koodi);
@@ -1867,11 +1920,7 @@ static void ecAsetaKoodiAlussa(int r_no)
 			break;
 		vastasi = true;
 		if (ecdata[r_no].code == koodi) {
-			if (vanha >= 0)
-				swprintf(msg, L"Lukija %d: aseman koodi muutettu %d -> %d (vahvistettu).", r_no + 1, vanha, koodi);
-			else
-				swprintf(msg, L"Lukija %d: aseman koodi asetettu %d (vahvistettu).", r_no + 1, koodi);
-			ecNaytaTila(msg);
+			ecKoodiOnnistui(r_no, vanha, koodi);
 			return;
 			}
 		lkm = ecInfoLkm[r_no];

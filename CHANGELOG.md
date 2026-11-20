@@ -3,7 +3,7 @@
 Muutoshistoria pääkehityshaaraan (main) tehdyistä committeista, uusin ensin.
 
 | Pvm | # | Muutos |
-| 2026-11-20 | #88 | emiTag-aseman koodi asetetaan automaattisesti käynnistyksessä (cfg SETECUCODE, SETECUCODEy); tulos pääikkunan viestikentässä |
+| 2026-11-20 | #88 | emiTag-aseman koodi asetetaan automaattisesti käynnistyksessä (cfg SETECUCODE, SETECUCODEy) ja samalla asemalle asetetaan tietokoneen kellonaika; tulos pääikkunan viestikentässä |
 | 2026-10-02 | #82 | Osanottajat: valinnaiset Ennätys- ja Tavoite-sarakkeet (Kentät-valikko), vaihekohtaiset, oletuksena piilossa; muokattavissa F9-tilassa; lajittelu ennätyksen tai tavoitteen mukaan (puuttuvat viimeisiksi) |
 | 2026-10-12 | — | HkKisaWin: emit-väliaikatuloste: Rata-sarake näytetään vain, jos sarjan kilpailijat kiertävät eri ratoja (aiemmin aina, kun sarjan nimi ei ollut radan nimi). Muutos koskee myös vanhaa (ei-responsiivista) html- ja tekstitulostetta |
 | 2026-10-02 | — | HkKisaWin: lähtöluettelo myös mobiili-HTML:nä (responsiivinen: sarakeluokat ja -leveydet, seura nimen alle kapealla näytöllä, ei sarjalinkkejä); Näytä heti ei enää avaa vanhaa tiedostoa, jos tulostus estettiin virheilmoituksella |

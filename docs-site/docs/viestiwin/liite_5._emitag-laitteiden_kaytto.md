@@ -74,8 +74,18 @@ Ilman y:tä koodi asetetaan kaikille emiTag-lukijoille, y:n kanssa vain
 yhteydelle y. Kun sarjaportti on avattu (ja TCP-yhteyden uudelleenyhdistämisen
 jälkeen) ohjelma kysyy aseman tilan. Jos asemalla on jo oikea koodi, mitään ei
 lähetetä. Muuten ohjelma asettaa koodin ja tarkistaa, että asema vahvistaa sen.
+Kun koodi on asemalla oikein (joko jo ennestään tai asetuksen jälkeen), ohjelma
+asettaa asemalle myös tietokoneen kellonajan ja tarkistaa aseman seuraavasta
+tilasanomasta, että aseman kello on enintään 3 sekuntia tietokoneen kellosta.
+Kelloa ei aseteta, jos asema ei vastaa tai koodin asetus epäonnistuu.
 Tulos näkyy pääikkunan viestikentässä (konsolissa alarivillä), eikä virhe
-pysäytä lukijaa.
+pysäytä lukijaa. Esimerkkejä viesteistä:
+
+```
+Lukija 1: aseman koodi muutettu 251 -> 253 (vahvistettu). Kello asetettu 12.00.00,000 (vahvistettu).
+Lukija 1: aseman koodi 253 oikein. Kello asetettu 12.00.00,000 (vahvistettu).
+Lukija 1: aseman koodi 253 oikein. Kellon asetus: asema ei vastannut.
+```
 
 Käynnistyksessä hyväksytään vain lukukoodit 240, 243, 244, 248 ja 250–253.
 Tavallisesti käytetään koodia 250:
