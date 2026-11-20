@@ -119,6 +119,17 @@ static int regnlystarted[NREGNLY];
 
 extern int lue_rno;
 ecdatatp ecdata[NREGNLY];
+// Käynnistyksessä asetettava aseman koodi (cfg: SETECUCODE=n tai SETECUCODEn=koodi), -1 = ei muuteta, -2 = virheellinen arvo
+int ecAsetaKoodi[NREGNLY];
+int ecAsetaKoodiKaikki = -1;
+// Laskuri vastaanotetuille emiTag-aseman tilasanomille (I), käytetään koodin asetuksen varmistukseen
+static volatile int ecInfoLkm[NREGNLY];
+static struct ecAsetaKoodiAlustus {
+	ecAsetaKoodiAlustus() {
+		for (int i = 0; i < NREGNLY; i++)
+			ecAsetaKoodi[i] = -1;
+		}
+	} ecAsetaKoodiAlustusOlio;
 extern FILE *emittallfile;
 extern int n_emittallfile;
 
@@ -405,6 +416,8 @@ int tulk_emiTag(char *buf, emittp *em, INT32 *emtm, int r_no)
 			}
 		p = strtok(NULL, "\t");
 		}
+	if (msgtp == 1 && r_no >= 0 && r_no < NREGNLY)
+		ecInfoLkm[r_no]++;
 	paivitaEcdata();
 	if (em) {
 		em->badge = badge;
@@ -1742,6 +1755,184 @@ int lue_regnly(INT r_no)
    return(nmsg[r_no]);
    }
 
+// Aseman koodi on sallittu: 0-240 sekä 243, 244, 248 ja 250-253.
+bool ecKoodiSallittu(int koodi)
+{
+	if (koodi < 0)
+		return(false);
+	return(koodi <= 240 || koodi == 243 || koodi == 244 || koodi == 248 ||
+		(koodi >= 250 && koodi <= 253));
+}
+
+// Käynnistyksessä asetettavaksi kelpaavat vain lukukoodit. Koodit 0-65 estävät tiedonsiirron
+// tai nollaavat aseman ja 66-239 saavat aseman lähettämään tietoja, joten ne eivät kelpaa.
+static bool ecAlkuKoodiSallittu(int koodi)
+{
+	return(koodi == 240 || koodi == 243 || koodi == 244 || koodi == 248 ||
+		(koodi >= 250 && koodi <= 253));
+}
+
+// Tulkitsee cfg-rivin SETECUCODE=koodi (kaikki emiTag-lukijat) tai SETECUCODEn=koodi (lukija n).
+// fldn on rivi muodossa AVAIN=ARVO, jossa avain alkaa merkkijonolla SETECUCODE.
+void ecAsetaKoodiCfg(wchar_t *fldn)
+{
+	wchar_t *p = fldn + 10, *eq = wcschr(fldn, L'=');
+	int ny = -1, arvo = -2;
+
+	if (eq == NULL)
+		return;
+	if (p < eq) {
+		ny = _wtoi(p) - 1;
+		if (ny < 0 || ny >= NREGNLY)
+			return;
+		}
+	for (eq++; *eq == L' '; eq++) ;
+	if (*eq >= L'0' && *eq <= L'9')
+		arvo = _wtoi(eq);
+	if (ny < 0)
+		ecAsetaKoodiKaikki = arvo;
+	else
+		ecAsetaKoodi[ny] = arvo;
+}
+
+static void ecLahetaKomento(int r_no, const char *st)
+{
+	for (const char *p = st; *p; p++) {
+		wrt_ch_x(cn_regnly[r_no], *p);
+		Sleep(*p == '\n' ? 100 : 5);
+		}
+}
+
+// Lukee lukijaa kunnes uusi tilasanoma (I) on käsitelty tai aika ms ylittyy. Palauttaa true, jos sanoma saatiin.
+static bool ecOdotaInfo(int r_no, int lkm0, int ms)
+{
+	int ts = (int) mstimer();
+
+	while (comfl && !inLopetus && regnly_open[r_no]) {
+		lue_regnly(r_no);
+		if (ecInfoLkm[r_no] != lkm0)
+			return(true);
+		if ((int) mstimer() - ts > ms)
+			break;
+		Sleep(50);
+		}
+	return(ecInfoLkm[r_no] != lkm0);
+}
+
+// Kirjoittaa tuloksen pääikkunan viestikenttään (konsolissa alariville).
+static void ecNaytaTila(wchar_t *msg)
+{
+	wchar_t txt[330];
+
+	swprintf(txt, L"emiTag: %s", msg);
+	vidspwmsg(ySize - 2, 0, 7, 0, txt);
+}
+
+// Asettaa aseman kellon tietokoneen kelloon ja tarkistaa aseman tilasanomasta, että ero on enintään 3 s.
+// txt saa tuloksen tekstin. Palauttaa true, jos kello vahvistettiin.
+static bool ecAsetaKelloAlussa(int r_no, wchar_t *txt)
+{
+	int lkm, yritys;
+	long ero;
+	bool vastasi = false;
+	char st[30], as[20];
+	wchar_t was[40];
+
+	lkm = ecInfoLkm[r_no];
+	sprintf(st, "/SC%8.8s\r\n/ST\r\n", aikatostr_ls(as, t_time_l(biostime(0, 0), t0), t0));
+	ecLahetaKomento(r_no, st);
+	for (yritys = 0; yritys < 3; yritys++) {
+		if (!ecOdotaInfo(r_no, lkm, 5000))
+			break;
+		vastasi = true;
+		ero = labs((long) (ecdata[r_no].devtime - ecdata[r_no].pctime));
+		if (ero > 12L * TUNTI)
+			ero = 24L * TUNTI - ero;
+		if (ero <= 3L * SEK) {
+			swprintf(txt, L"Kello asetettu %s (vahvistettu).", AIKATOWSTRS(was, ecdata[r_no].devtime, t0));
+			return(true);
+			}
+		lkm = ecInfoLkm[r_no];
+		}
+	if (!vastasi)
+		wcscpy(txt, L"Kellon asetus: asema ei vastannut.");
+	else
+		swprintf(txt, L"Kellon asetus epäonnistui, aseman kello %s.", AIKATOWSTRS(was, ecdata[r_no].devtime, t0));
+	return(false);
+}
+
+// Koodi on nyt asemalla oikein: asetetaan asemalle myös kellonaika ja näytetään tulos.
+// vanha = koodi ennen asetusta (-1 = tuntematon), koodi = nykyinen koodi.
+static void ecKoodiOnnistui(int r_no, int vanha, int koodi)
+{
+	wchar_t msg[300], kello[100];
+
+	if (vanha < 0)
+		swprintf(msg, L"Lukija %d: aseman koodi asetettu %d (vahvistettu).", r_no + 1, koodi);
+	else if (vanha == koodi)
+		swprintf(msg, L"Lukija %d: aseman koodi %d oikein.", r_no + 1, koodi);
+	else
+		swprintf(msg, L"Lukija %d: aseman koodi muutettu %d -> %d (vahvistettu).", r_no + 1, vanha, koodi);
+	ecAsetaKelloAlussa(r_no, kello);
+	wcscat(msg, L" ");
+	wcscat(msg, kello);
+	ecNaytaTila(msg);
+}
+
+// Asettaa emiTag-aseman koodin lukijalle r_no cfg-avaimen SETECUCODE mukaan ja näyttää tuloksen.
+// Jos asemalla on jo haluttu koodi, mitään ei lähetetä eikä ilmoiteta.
+static void ecAsetaKoodiAlussa(int r_no)
+{
+	int koodi = ecAsetaKoodi[r_no] != -1 ? ecAsetaKoodi[r_no] : ecAsetaKoodiKaikki;
+	int lkm, vanha = -1, yritys;
+	bool vastasi;
+	char st[20];
+	wchar_t msg[300];
+
+	if (koodi == -1)
+		return;
+	if (koodi == -2) {
+		swprintf(msg, L"Lukija %d: SETECUCODE-asetuksen arvo ei ole luku. Koodia ei asetettu.", r_no + 1);
+		ecNaytaTila(msg);
+		return;
+		}
+	if (!ecAlkuKoodiSallittu(koodi)) {
+		swprintf(msg, L"Lukija %d: SETECUCODE=%d ei ole sallittu lukukoodi (sallitut 240, 243, 244, 248, 250-253). Koodia ei asetettu.",
+			r_no + 1, koodi);
+		ecNaytaTila(msg);
+		return;
+		}
+	lkm = ecInfoLkm[r_no];
+	ecLahetaKomento(r_no, "/ST\r\n");
+	if (ecOdotaInfo(r_no, lkm, 5000)) {
+		vanha = ecdata[r_no].code;
+		if (vanha == koodi) {
+			ecKoodiOnnistui(r_no, vanha, koodi);
+			return;
+			}
+		}
+	lkm = ecInfoLkm[r_no];
+	sprintf(st, "/CD%03d\r\n/ST\r\n", koodi);
+	ecLahetaKomento(r_no, st);
+	vastasi = false;
+	for (yritys = 0; yritys < 3; yritys++) {
+		if (!ecOdotaInfo(r_no, lkm, 5000))
+			break;
+		vastasi = true;
+		if (ecdata[r_no].code == koodi) {
+			ecKoodiOnnistui(r_no, vanha, koodi);
+			return;
+			}
+		lkm = ecInfoLkm[r_no];
+		}
+	if (!vastasi)
+		swprintf(msg, L"Lukija %d: asema ei vastannut. Koodia %d ei voitu varmistaa.", r_no + 1, koodi);
+	else
+		swprintf(msg, L"Lukija %d: koodin asetus epäonnistui. Haluttu koodi %d, asemalla %d.",
+			r_no + 1, koodi, (int) ecdata[r_no].code);
+	ecNaytaTila(msg);
+}
+
 // Taustasäie lukijalaitteelle r_no: avaa yhteyden (RS-232/UDP/TCP/Sirit) ja kutsuu lue_regnly-silmukassa.
 // Hoitaa myös Sirit-pollaustilassa TCP-yhteyden ylläpidon ja lähetyspyynnöt.
 void lue_regnlyThread(LPVOID lpCn)
@@ -1800,6 +1991,8 @@ void lue_regnlyThread(LPVOID lpCn)
 	if (!comopen[cn])
 		return;
 	regnly_open[r_no] = 1;
+	if (regnly[r_no] == LID_EMITAG)
+		ecAsetaKoodiAlussa(r_no);
 	while (comfl && regnly_open[r_no] && !inLopetus) {
 
 #ifdef LAJUNEN
@@ -1862,6 +2055,8 @@ void lue_regnlyThread(LPVOID lpCn)
 				if (!comfl || inLopetus)
 					break;
 				reconnectTCP(hComm[cn_regnly[r_no]]);
+				if (regnly[r_no] == LID_EMITAG && regnly_open[r_no] && TCPyht_on(hComm[cn_regnly[r_no]]))
+					ecAsetaKoodiAlussa(r_no);
 				}
 			else {
 				lue_regnly(r_no);
@@ -2569,7 +2764,7 @@ void aseta_emitag(int r_no)
 					clrln(ySize - 3);
 					vidspwmsg(ySize - 3, 0, 7, 0, L"Anna aseman koodi: ");
 					inputlongw(&i, 3, 20, ySize - 3, L"\r\x1b", &ch);
-					if (i < 0 || (i > 240 && i != 243 && i != 244 && i != 248 && i != 250 && i != 251 && i != 252 && i != 253)) {
+					if (!ecKoodiSallittu(i)) {
 						writeerror_w(L"Koodi ei sallittu", 0, true);
 						continue;
 					}

@@ -119,6 +119,10 @@ typedef struct {
 
 extern UINT32 pkg_alku[NREGNLY], pkg_loppu[NREGNLY];
 extern ecdatatp ecdata[NREGNLY];
+extern int ecAsetaKoodi[NREGNLY];
+extern int ecAsetaKoodiKaikki;
+bool ecKoodiSallittu(int koodi);
+void ecAsetaKoodiCfg(wchar_t *fldn);
 extern int siritopen[NREGNLY];
 extern INT r_msg_len[NREGNLY];
 extern int SiritPoll[NREGNLY];

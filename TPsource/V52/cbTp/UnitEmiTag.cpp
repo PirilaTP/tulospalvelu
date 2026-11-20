@@ -156,7 +156,7 @@ void __fastcall TFormEmiTag::BtnCodeClick(TObject *Sender)
 	int i;
 
 	i = _wtoi(EdtCode->Text.c_str());
-	if (i < 0 || (i > 240 && IntInList(i, L"243 244 248 250 251 252 253") < 0)) {
+	if (!ecKoodiSallittu(i)) {
 		Application->MessageBoxW(L"Koodi ei sallittu", L"Virhe", MB_OK);
 		return;
 		}
