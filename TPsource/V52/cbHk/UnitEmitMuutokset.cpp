@@ -29,6 +29,11 @@ TFormEmitMuutokset *FormEmitMuutokset;
 __fastcall TFormEmitMuutokset::TFormEmitMuutokset(TComponent* Owner)
 	: TForm(Owner)
 {
+	ToinenTila = false;
+	ToinenValittu = false;
+	ToinenKno = 0;
+	ToinenSlot1 = 0;
+	ToinenValinta = 0;
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormEmitMuutokset::BtnPeruutaClick(TObject *Sender)
@@ -39,6 +44,22 @@ void __fastcall TFormEmitMuutokset::BtnPeruutaClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TFormEmitMuutokset::BtnTallennaClick(TObject *Sender)
 {
+	if (ToinenTila) {
+		if (_wtoi(EdtKilpno->Text.c_str()) != ToinenKno) {
+			wchar_t msg[100];
+			swprintf(msg, L"Toisen kortin voi liitt\u00e4\u00e4 vain kilpailijalle %d", ToinenKno);
+			Application->MessageBoxW(msg, L"", MB_OK);
+			return;
+			}
+		if (RGBadge->ItemIndex == ToinenSlot1) {
+			Application->MessageBoxW(L"Ensimm\u00e4isen kortin koodin paikkaa ei voi k\u00e4ytt\u00e4\u00e4. Valitse toinen koodi.", L"", MB_OK);
+			return;
+			}
+		ToinenValinta = RGBadge->ItemIndex + 1;
+		ToinenValittu = true;
+		Close();
+		return;
+		}
 	if (_wtoi(EdtKilpno->Text.c_str()) != FormEmit->Kilp.id()) {
 		FormEmit->SiirraKilpailijalle(_wtoi(EdtKilpno->Text.c_str()), RGBadge->ItemIndex);
 
@@ -259,6 +280,11 @@ void __fastcall TFormEmitMuutokset::FormShow(TObject *Sender)
 	dKilp = 0;
 	RGBadge->ItemIndex = 0;
 	RGBadge->Visible = kilpparam.kaksibadge == 2;
+	if (ToinenTila) {
+		RGBadge->Visible = true;
+		RGBadge->ItemIndex = 1 - ToinenSlot1;
+		Nayta(getpos(ToinenKno));
+		}
 	BtnEdell->Font->Color = clGrayText;
 	BtnSeur->Font->Color = clGrayText;
 	EdtKilpno->SetFocus();
@@ -321,3 +347,44 @@ void __fastcall TFormEmitMuutokset::BtnKasvataClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+// Avaa lomakkeen valitsemaan kilpailija, jolle tuntematon toinen kortti liitet\u00e4\u00e4n.
+// Palauttaa valitun koodipaikan + 1 (1 = Badge1, 2 = Badge2) tai 0, jos valinta peruttiin.
+int __fastcall TFormEmitMuutokset::ValitseToinenKortti(int badge, int kno)
+{
+	bool v1 = BtnVaihda->Visible, v2 = Button1->Visible, v3 = BtnPeruuta->Visible;
+	bool vm = MemoOhje->Visible;
+
+	ToinenTila = true;
+	ToinenValittu = false;
+	ToinenValinta = 0;
+	ToinenKno = kno;
+	{
+		emittp em1;
+		kilptietue k1;
+		int d1 = getpos(kno);
+		ToinenSlot1 = 0;
+		if (d1 > 0 && getem(&em1, kno, 0) >= 0) {
+			k1.GETREC(d1);
+			ToinenSlot1 = (em1.badge == k1.pv[k_pv].badge[0]) ? 0 : 1;
+			}
+	}
+	PageControl1->ActivePageIndex = 0;
+	BtnVaihda->Visible = false;
+	Button1->Visible = false;
+	BtnPeruuta->Visible = false;
+	Nayta(getpos(kno));
+	MemoOhje->Visible = true;
+	MemoOhje->Color = clWindow;
+	MemoOhje->Lines->Clear();
+	MemoOhje->Lines->Text = UnicodeString(L"Kortti ") + UnicodeString(badge) +
+		L" ei ole rekister\u00f6ity. Valitse koodikentt\u00e4 (Emit-koodi) ja Tallenna: kortti liitet\u00e4\u00e4n kilpailijalle ja puuttuvat rastit t\u00e4ydennet\u00e4\u00e4n."
+		L" Sulje kaavake hylk\u00e4\u00e4 kortin.";
+	ShowModal();
+	ToinenTila = false;
+	BtnVaihda->Visible = v1;
+	Button1->Visible = v2;
+	BtnPeruuta->Visible = v3;
+	MemoOhje->Visible = vm;
+	return(ToinenValinta);
+}
+//---------------------------------------------------------------------------

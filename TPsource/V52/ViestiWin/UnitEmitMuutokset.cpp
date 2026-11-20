@@ -30,6 +30,13 @@ TFormEmitMuutokset *FormEmitMuutokset;
 __fastcall TFormEmitMuutokset::TFormEmitMuutokset(TComponent* Owner)
 	: TForm(Owner)
 {
+	ToinenTila = false;
+	ToinenValittu = false;
+	ToinenKno = 0;
+	ToinenOs = 0;
+	ToinenSlot1 = 0;
+	ToinenValinta = 0;
+	RGToinen = NULL;
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -49,6 +56,22 @@ void __fastcall TFormEmitMuutokset::BtnPeruutaClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TFormEmitMuutokset::BtnTallennaClick(TObject *Sender)
 {
+	if (ToinenTila) {
+		if (_wtoi(EdtKilpno->Text.c_str()) != ToinenKno || CBOsuus->ItemIndex-1 != ToinenOs) {
+			wchar_t msg[120];
+			swprintf(msg, L"Toisen kortin voi liitt\u00e4\u00e4 vain joukkueen %d osuudelle %d", ToinenKno, ToinenOs+1);
+			Application->MessageBoxW(msg, L"", MB_OK);
+			return;
+			}
+		if (RGToinen->ItemIndex == ToinenSlot1) {
+			Application->MessageBoxW(L"Ensimm\u00e4isen kortin koodin paikkaa ei voi k\u00e4ytt\u00e4\u00e4. Valitse toinen koodi.", L"", MB_OK);
+			return;
+			}
+		ToinenValinta = RGToinen->ItemIndex + 1;
+		ToinenValittu = true;
+		Close();
+		return;
+		}
 	if (joTiedot) {
 		if (Application->MessageBoxW(L"Tallentaminen valitulle kilpailijalle johtaa aeimmin kirjattujen tietojen menettämiseen."
 			L" Haluatko aivan varmasti tallentaa?", L"Varoitus", MB_YESNO) != IDYES) {
@@ -393,3 +416,56 @@ void __fastcall TFormEmitMuutokset::BtnKasvataClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+// Avaa lomakkeen valitsemaan joukkue ja osuus, jolle tuntematon toinen kortti liitet\u00e4\u00e4n.
+// Palauttaa valitun koodipaikan + 1 (1 = Badge1, 2 = Badge2) tai 0, jos valinta peruttiin.
+int __fastcall TFormEmitMuutokset::ValitseToinenKortti(int badge, int kno, int os)
+{
+	bool v1 = BtnVaihda->Visible, v2 = Button1->Visible, v3 = BtnPeruuta->Visible;
+	bool vm = MemoOhje->Visible;
+
+	ToinenTila = true;
+	ToinenValittu = false;
+	ToinenValinta = 0;
+	ToinenKno = kno;
+	ToinenOs = os;
+	{
+		emittp em1;
+		kilptietue k1;
+		int d1 = getpos(kno), ep = EmitJarr(kno, os);
+		ToinenSlot1 = 0;
+		if (d1 > 0 && os >= 0 && ep >= 0 && lueem(&em1, ep) >= 0) {
+			k1.getrec(d1);
+			ToinenSlot1 = (em1.badge == k1.ostiet[os].badge[0]) ? 0 : 1;
+			}
+	}
+	if (!RGToinen) {
+		RGToinen = new TRadioGroup(this);
+		RGToinen->Parent = GroupBox1;
+		RGToinen->SetBounds(166, 164, 77, 52);
+		RGToinen->Caption = L"Emit-koodi";
+		RGToinen->Items->Add(L"1. koodi");
+		RGToinen->Items->Add(L"2. koodi");
+		}
+	RGToinen->ItemIndex = 1 - ToinenSlot1;
+	RGToinen->Visible = true;
+	PageControl1->ActivePageIndex = 0;
+	BtnVaihda->Visible = false;
+	Button1->Visible = false;
+	BtnPeruuta->Visible = false;
+	Nayta(getpos(kno), os);
+	MemoOhje->Visible = true;
+	MemoOhje->Color = clWindow;
+	MemoOhje->Lines->Clear();
+	MemoOhje->Lines->Text = UnicodeString(L"Kortti ") + UnicodeString(badge) +
+		L" ei ole rekister\u00f6ity. Valitse koodikentt\u00e4 (Emit-koodi) ja Tallenna: kortti liitet\u00e4\u00e4n osuudelle ja puuttuvat rastit t\u00e4ydennet\u00e4\u00e4n."
+		L" Sulje kaavake hylk\u00e4\u00e4 kortin.";
+	ShowModal();
+	ToinenTila = false;
+	BtnVaihda->Visible = v1;
+	Button1->Visible = v2;
+	BtnPeruuta->Visible = v3;
+	MemoOhje->Visible = vm;
+	RGToinen->Visible = false;
+	return(ToinenValinta);
+}
+//---------------------------------------------------------------------------

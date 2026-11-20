@@ -266,6 +266,14 @@ void __fastcall TFormJoukkueet::setOoGrid(void)
 	OoGridCols[OCOLARVO].Visible = Arvo1->Checked;
 	OoGridCols[OCOLOSRA].Visible = Seura1->Checked;
 	OoGridCols[OCOLBDG].Visible = Emitkoodi1->Checked;
+	{
+		static bool bdg2Oletus = false;	// Badge2 nakyviin oletuksena, kun 2 tunnistinta on kaytossa
+		if (!bdg2Oletus) {
+			bdg2Oletus = true;
+			if (kilpparam.kaksibadge)
+				N2ekoodi1->Checked = true;
+			}
+	}
 	OoGridCols[OCOLBDG2].Visible = N2ekoodi1->Checked;
 	OoGridCols[OCOLLNA].Visible = Laina1->Checked;
 	OoGridCols[OCOLLAHTO].Visible = Lhtaika1->Checked;

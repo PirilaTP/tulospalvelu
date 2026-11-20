@@ -157,6 +157,7 @@ __published:	// IDE-managed Components
 	TOpenDialog *OpenDialog1;
 	TMenuItem *Emitvaihdottuleville;
 	TBitBtn *BtnLoppuun;
+	TButton *BtnPeruToinen;
 	TLabel *Label17;
 	TMenuItem *Vaihdaluentaajat;
 	TMenuItem *Listietueksiteltvksi1;
@@ -267,6 +268,7 @@ __published:	// IDE-managed Components
 	void __fastcall Kirjoitakopioemittiedoista1Click(TObject *Sender);
 	void __fastcall EmitvaihdottulevilleClick(TObject *Sender);
 	void __fastcall BtnLoppuunClick(TObject *Sender);
+	void __fastcall BtnPeruToinenClick(TObject *Sender);
 	void __fastcall VaihdaluentaajatClick(TObject *Sender);
 	void __fastcall Listietueksiteltvksi1Click(TObject *Sender);
 	void __fastcall Luetietojatiedostosta1Click(TObject *Sender);
@@ -283,6 +285,7 @@ private:	// User declarations
    void __fastcall NaytaKilp(void);
    void __fastcall NaytaEmit(void);
    void __fastcall Paivita(emittp *pEm);
+   void __fastcall TarjoaToinenKortti(void);
 	bool __fastcall HakuEhto(bool ylos);
 	void __fastcall TallVals(void);
 	bool __fastcall OnkoMuutoksia(void);

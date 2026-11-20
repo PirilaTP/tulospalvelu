@@ -1144,6 +1144,44 @@ INT pros_emit(wchar_t *msg1)
       }
 
    em.kirjaus = T_TIME(biostime(0,0));
+   if (emitLisaKilpno > 0 && (INT32) time(NULL) - emitLisaAika > 180)
+	  emitLisaKilpno = 0;	// odotus vanhentunut
+   if (emitLisaKilpno > 0 && em.badge && !kilpparam.partio) {
+	  // Odotetaan osuuden toista korttia: puuttuvat rastit haetaan siita
+	  wchar_t cmsg[300], wmsg[160], wch;
+	  INT upos = emithead2, rek = 0, bk, tulos;
+
+	  kno = emitLisaKilpno;
+	  os = emitLisaOsuus;
+	  emitLisaKilpno = 0;
+	  cmsg[0] = 0;
+	  bk = bdg2kno(em.badge, 0);
+	  if (bk <= 0) {
+		 swprintf(wmsg, L"Kortti %ld ei ole rekister\u00f6ity. Liit\u00e4 joukkueelle %d osuudelle %d: 1)Badge1, 2)Badge2, E)i",
+			(long) em.badge, (int) kno, (int) os+1);
+		 wch = L' ';
+		 wselectopt(wmsg, L"12E", &wch);
+		 rek = (wch == L'1') ? 1 : ((wch == L'2') ? 2 : 0);
+		 }
+	  if (bk > 0 && bk != kno) {
+		 // Toisen joukkueen kortti: kasitellaan normaalisti
+		 writeerror_w(L"Kortti kuuluu toiselle joukkueelle - toista korttia ei k\u00e4ytetty.", 0);
+		 }
+	  else {
+		 tulos = lue_toinen_badge(&em, kno, os, &upos, rek, cmsg);
+		 if (tulos >= 0)
+			emithead2 = upos;
+		 else {
+			em.kilpno = 0;
+			em.osuus = -1;
+			putem(&em, emithead2, 0);
+			}
+		 writeerror_w(cmsg, 0);
+		 emithead2++;
+		 in_pros_emit = 0;
+		 return(0);
+		 }
+	  }
    vkoodi = 0;
 #ifdef JOUKKUEEMIT
 	if (joukkueemit) {
@@ -1698,6 +1736,18 @@ INT pros_emit(wchar_t *msg1)
 		}
 	if (vaadiaika && em.kilpno && kilp.Maali(os, 0) == TMAALI0)
 		writeerror("Kilpailijalla ei aikaa", 0);
+	if (d >= 0 && em.badge && em.kilpno && !esitark && !kilpparam.partio && kilpparam.kaksibadge && os >= 0) {
+		GETREC(&kilp, d);
+		if (stschind(kilp.Tark(os, 0), "I") >= 0 && tarkista(&em, &kilp, NULL, -1, 0) > 0) {
+			wchar_t wch = L' ';
+			wselectopt(L"Kortilta puuttuu rasteja. Luetaanko osuuden seuraava kortti (K/E)", L"KE", &wch);
+			if (wch == L'K') {
+				emitLisaKilpno = em.kilpno;
+				emitLisaOsuus = os;
+				emitLisaAika = (INT32) time(NULL);
+				}
+			}
+		}
 	emithead2++;
 	in_pros_emit = 0;
 	return(0);

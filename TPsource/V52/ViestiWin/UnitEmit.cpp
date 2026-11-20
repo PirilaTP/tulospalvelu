@@ -890,6 +890,8 @@ int __fastcall TFormEmit::ProsEmitMaali(void)
 	return(tallkilp);
 	}
 
+static bool EmitDialogOn;
+
 void __fastcall TFormEmit::ProsEmit(void)
 {
 	int kh, tallkilp;
@@ -902,6 +904,44 @@ void __fastcall TFormEmit::ProsEmit(void)
 	if (Em.badge == 0) {
 		putem(&Em, emithead2-1, 0);
 		return;
+		}
+	if (emitLisaKilpno > 0 && (INT32) time(NULL) - emitLisaAika > 180)
+		emitLisaKilpno = 0;	// odotus vanhentunut
+	if (emitLisaKilpno == 0)
+		BtnPeruToinen->Visible = false;
+	if (emitLisaKilpno > 0) {
+		// Odotetaan osuuden toista korttia: puuttuvat rastit haetaan siit‰
+		int kno = emitLisaKilpno, os = emitLisaOsuus, bk, tulos, t = -1;
+		wchar_t msgtxt[200] = L"";
+
+		emitLisaKilpno = 0;
+		bk = bdg2kno(Em.badge, &t);
+		if (bk <= 0 || bk == kno) {
+			int rek = 0, upos = emithead2-1;
+			if (bk <= 0 && Em.badge) {
+				if (!FormEmitMuutokset)
+					FormEmitMuutokset = new TFormEmitMuutokset(this);
+				EmitDialogOn = true;
+				rek = FormEmitMuutokset->ValitseToinenKortti(Em.badge, kno, os);
+				EmitDialogOn = false;
+				PostMessage(Handle, WM_MYMSGNEWCARD, 0, 0);
+				}
+			tulos = lue_toinen_badge(&Em, kno, os, &upos, rek, msgtxt);
+			if (tulos >= 0)
+				emithead2 = upos+1;
+			if (tulos < 0) {
+				Em.kilpno = 0;
+				Em.osuus = -1;
+				putem(&Em, emithead2-1, 0);
+				}
+			HaeTietue(emithead2-1, 0);
+			EdtMessage->Text = msgtxt;
+			EdtMessage->Color = clYellow;
+			if (tulos < 0)
+				TarjoaToinenKortti();
+			return;
+			}
+		// Toisen joukkueen kortti: k‰sitell‰‰n normaalisti
 		}
 	if (!jalkisyotto) {
 		if (HaeKilpailija())
@@ -941,6 +981,7 @@ void __fastcall TFormEmit::ProsEmit(void)
 			}
 		}
 	HaeTietue(emithead2-1, 0);
+	TarjoaToinenKortti();
 }
 //---------------------------------------------------------------------------
 
@@ -949,6 +990,8 @@ MESSAGE void __fastcall TFormEmit::NewCardHandler(TMyMessage &msg)
 	int Vast, bdg;
 	wchar_t msgtxt[200];
 
+	if (EmitDialogOn)
+		return;
 	if (msg.wparam > 0) {
 		HaeTulostukseen(msg.wparam);
 		return;
@@ -1012,6 +1055,46 @@ MESSAGE void __fastcall TFormEmit::NewCardHandler(TMyMessage &msg)
 		NollaaMessage();
 		ProsEmit();
 		}
+}
+//---------------------------------------------------------------------------
+
+// Kun osuuden kortilta puuttuu rasteja (tulos "Esitys"/I), kysyt‰‰n luetaanko
+// seuraava kortti. Seuraavasta kortista haetaan vain puuttuvat rastit.
+void __fastcall TFormEmit::TarjoaToinenKortti(void)
+{
+	if (esitark || kilpparam.partio || !kilpparam.kaksibadge || emitLisaKilpno > 0 || Osuus < 0 || !Kilp.kilpno ||
+		Em.kilpno != Kilp.kilpno || Em.osuus != Osuus)
+		return;
+	if (stschind(Kilp.Tark(Osuus, 0), "I") < 0)
+		return;
+	if (tarkista(&Em, &Kilp, NULL, -1, 0) <= 0)
+		return;
+	EmitDialogOn = true;
+	int Vast = Application->MessageBoxW(
+		L"Kortilta puuttuu rasteja.\n\nLuetaanko osuuden seuraava kortti? "
+		L"Siit‰ haetaan vain puuttuvat rastit.",
+		L"Puuttuvia rasteja", MB_YESNO | MB_ICONQUESTION);
+	EmitDialogOn = false;
+	if (Vast == IDYES) {
+		emitLisaKilpno = Kilp.kilpno;
+		emitLisaOsuus = Osuus;
+		emitLisaAika = (INT32) time(NULL);
+		EdtBdgMsg->Text = L"Lue osuuden seuraava kortti";
+		BtnPeruToinen->Visible = true;
+		BdgMsgKirkkaus = 256;
+		}
+	// Dialogin aikana luettu kortti k‰sitell‰‰n nyt
+	if (emithead2 < emithead)
+		PostMessage(Handle, WM_MYMSGNEWCARD, 0, 0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormEmit::BtnPeruToinenClick(TObject *Sender)
+{
+	emitLisaKilpno = 0;
+	BtnPeruToinen->Visible = false;
+	EdtBdgMsg->Text = L"Toisen kortin odotus peruttu";
+	BdgMsgKirkkaus = 256;
 }
 //---------------------------------------------------------------------------
 

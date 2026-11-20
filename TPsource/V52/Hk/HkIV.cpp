@@ -1201,6 +1201,54 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 	   in_pros_emit = 0;
 	   return(0);
 	   }
+   if (emitLisaKilpno > 0 && (INT32) time(NULL) - emitLisaAika > 180)
+	  emitLisaKilpno = 0;	// odotus vanhentunut
+   if (emitLisaKilpno > 0 && em.badge) {
+	  // Odotetaan kilpailijan toista korttia: puuttuvat rastit haetaan siita
+	  wchar_t cmsg[300];
+	  wchar_t *mt = msgtxt;
+	  INT upos = emithead2;
+
+	  if (!mt) {
+		 cmsg[0] = 0;
+		 mt = cmsg;
+		 }
+	  kno = emitLisaKilpno;
+	  emitLisaKilpno = 0;
+#ifdef _CONSOLE
+	  emitLisaRekisteroi = 0;
+	  if (bdg2kno(em.badge) <= 0 && kilpparam.kaksibadge) {
+		 swprintf(msg, L"Kortti %ld ei ole rekister\u00f6ity. Liit\u00e4 kilpailijalle %d: 1)Badge1, 2)Badge2, E)i",
+			(long) em.badge, (int) kno);
+		 wch = L' ';
+		 wselectopt(msg, L"12E", &wch);
+		 emitLisaRekisteroi = (wch == L'1') ? 1 : ((wch == L'2') ? 2 : 0);
+		 }
+#endif
+	  if (bdg2kno(em.badge) > 0 && bdg2kno(em.badge) != kno) {
+		 // Toisen kilpailijan kortti: kasitellaan normaalisti, ensimmainen tulos ei muutu
+		 wcscat(mt, L"Kortti kuuluu toiselle kilpailijalle - toista korttia ei k\u00e4ytetty. ");
+#ifdef _CONSOLE
+		 writeerror_w(mt, 0);
+#endif
+		 }
+	  else {
+		 if (lue_toinen_badge(&em, kno, &upos, emitLisaRekisteroi, mt) >= 0) {
+			emithead2 = upos;
+			emitLisaValmis = 1;	// kysymysta ei esiteta uudelleen
+			}
+		 else {
+			em.kilpno = 0;
+			putem(&em, emithead2, 0);
+			}
+#ifdef _CONSOLE
+		 writeerror_w(mt, 0);
+#endif
+		 emithead2++;
+		 in_pros_emit = 0;
+		 return(em.badge);
+		 }
+	  }
 #ifdef _CONSOLE
 	if (em.badge == 200 && memcmp(&em.sc, "emiTag", 6) != 0) {
 		kno = 0;
@@ -1861,6 +1909,20 @@ INT pros_emit(kilptietue *kilp0, wchar_t *msgtxt)
 	  emit_rap(emittulparam, em.kilpno);
    if (vaadiaika && em.kilpno && kilp.maali(0) == TMAALI0)
 	  writeerror_w(L"Kilpailijalla ei aikaa", 0, true);
+#ifdef _CONSOLE
+   if (em.badge && em.kilpno && !esiluenta && !luesuoraan && kilpparam.kaksibadge && kilpparam.kaksibadge != 2 &&
+	  (d = getpos(em.kilpno)) > 0) {
+	  kilp.GETREC(d);
+	  if (kilp.tark(k_pv) == L'I' && tarkista(&em, NULL, 0, &kilp) > 0) {
+		 wch = L' ';
+		 wselectopt(L"Kortilta puuttuu rasteja. Luetaanko kilpailijan seuraava kortti (K/E)", L"KE", &wch);
+		 if (wch == L'K') {
+			emitLisaKilpno = em.kilpno;
+			emitLisaAika = (INT32) time(NULL);
+			}
+		 }
+	  }
+#endif
    emithead2++;
    in_pros_emit = 0;
 

@@ -43,7 +43,7 @@ GitHub Release. The GUI programs link to runtime packages (`UsePackages`,
 
 If linker heap errors occur: run `bcdedit /set IncreaseUserVa 3072` as Administrator and reboot.
 
-There are no automated tests.
+There are no automated tests for the GUI or the database layers. Pure helper logic without dependencies (currently `TPsource/V52/include/emitmerge.h`) has standalone unit tests in `tests/`; run them with `tests\run-tests.ps1` (uses the clang-based `bcc32c` from the Embarcadero install, or pass `-Compiler`).
 
 ## Architecture
 

@@ -25,6 +25,7 @@
 #include <Vcl.Forms.hpp>
 #include <Vcl.ComCtrls.hpp>
 #include <Vcl.Buttons.hpp>
+#include <Vcl.ExtCtrls.hpp>
 //---------------------------------------------------------------------------
 class TFormEmitMuutokset : public TForm
 {
@@ -105,6 +106,14 @@ public:		// User declarations
 	bool NimiHaku;
 	bool JoukkueHaku;
 	bool OsuusHaku;
+	bool ToinenTila;	// Toisen kortin liittaminen odottavalle osuudelle
+	bool ToinenValittu;
+	int ToinenKno;
+	int ToinenOs;
+	int ToinenSlot1;	// ensimmaisen kortin koodin paikka (0/1)
+	int ToinenValinta;	// valittu paikka + 1, 0 = ei valintaa
+	TRadioGroup *RGToinen;
+	int __fastcall ValitseToinenKortti(int badge, int kno, int os);
 	bool joTiedot;
 };
 //---------------------------------------------------------------------------

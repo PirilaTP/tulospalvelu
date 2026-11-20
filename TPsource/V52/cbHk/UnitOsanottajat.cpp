@@ -51,22 +51,23 @@ TFormOsanottajat *FormOsanottajat;
 #define COLIDRintaNo	20
 #define COLIDVaihesarja 21
 #define COLIDBadge		22
-#define COLIDLaina		23
-#define COLIDTas		24
-#define COLIDLasna		25
-#define COLIDLahto		26
-#define COLIDTulos		27
-#define COLIDAsakot		28
-#define COLIDRata		29
-#define COLIDEra		30
-#define COLIDQual		31
-#define COLIDGSM		32
-#define COLIDVPist1		33
-#define COLIDVPist2		34
-#define COLIDTeksti		35
-#define COLIDSynt		36
-#define COLIDEnnatys	37
-#define COLIDTavoite	38
+#define COLIDBadge2		23
+#define COLIDLaina		24
+#define COLIDTas		25
+#define COLIDLasna		26
+#define COLIDLahto		27
+#define COLIDTulos		28
+#define COLIDAsakot		29
+#define COLIDRata		30
+#define COLIDEra		31
+#define COLIDQual		32
+#define COLIDGSM		33
+#define COLIDVPist1		34
+#define COLIDVPist2		35
+#define COLIDTeksti		36
+#define COLIDSynt		37
+#define COLIDEnnatys	38
+#define COLIDTavoite	39
 
 
 ColTp OoGridCols0[] = {
@@ -93,6 +94,7 @@ ColTp OoGridCols0[] = {
 	{L"RintaNo", 50, 0, N_PV, 0, true},
 	{L"Vaihesarja", 60, 0, N_PV, 0, false},
 	{L"Badge", 50, 0, N_PV, 0, true},
+	{L"Badge2", 50, 0, N_PV, 0, false},
 	{L"Laina", 30, 0, N_PV, 0, true},
 	{L"Tas.", 40, 0, N_PV, 0, false},
 	{L"Läsnä", 35, 0, N_PV, 0, true},
@@ -368,6 +370,7 @@ void __fastcall TFormOsanottajat::setOoGrid(void)
 	OoGridCols[COLIDRintaNo].Visible = Rintanumero1->Checked;
 	OoGridCols[COLIDVaihesarja].Visible = Vaiheensarja1->Checked;
 	OoGridCols[COLIDBadge].Visible = Emitkoodi1->Checked;
+	OoGridCols[COLIDBadge2].Visible = Emitkoodi1->Checked && kilpparam.kaksibadge != 0;
 	OoGridCols[COLIDLaina].Visible = Emitkoodi1->Checked;
 	OoGridCols[COLIDTas].Visible = (kilpparam.lsakmax == 0 && Sakot1->Checked);
 	OoGridCols[COLIDLasna].Visible = Lsn1->Checked;
@@ -567,6 +570,13 @@ void __fastcall TFormOsanottajat::naytaTiedot(void)
 							ColIx[col+ipv] = i;
 							ColPv[col+ipv] = ipv;
 							OoGrid->Cells[col+ipv][k] = UnicodeString(Kilp->pv[epv+ipv].badge[0]);
+							}
+						break;
+					case COLIDBadge2:
+						for (int ipv = 0; ipv < npv; ipv++) {
+							ColIx[col+ipv] = i;
+							ColPv[col+ipv] = ipv;
+							OoGrid->Cells[col+ipv][k] = UnicodeString(Kilp->pv[epv+ipv].badge[1]);
 							}
 						break;
 					case COLIDLaina:
@@ -813,6 +823,10 @@ int __fastcall TFormOsanottajat::tallennaTiedot(void)
 						case COLIDBadge:
 							for (int ipv = 0; ipv < npv; ipv++)
 								Kilp.pv[epv+ipv].badge[0] = OoGrid->Cells[col+ipv][k].ToInt();
+							break;
+						case COLIDBadge2:
+							for (int ipv = 0; ipv < npv; ipv++)
+								Kilp.pv[epv+ipv].badge[1] = OoGrid->Cells[col+ipv][k].ToInt();
 							break;
 						case COLIDLaina:
 							for (int ipv = 0; ipv < npv; ipv++)
@@ -1104,6 +1118,7 @@ int __fastcall TFormOsanottajat::paivitaMuutos(int col, int row)
 		case COLIDPist2:
 		case COLIDPist3:
 		case COLIDBadge:
+		case COLIDBadge2:
 		case COLIDTas:
 		case COLIDEra:
 			OoGrid->Cells[col][k] = UnicodeString(_wtoi(OoGrid->Cells[col][k].c_str()));

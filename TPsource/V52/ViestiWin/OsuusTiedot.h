@@ -93,6 +93,7 @@ private:	// User declarations
    int inNaytaTiedot;
    int laika;
 public:		// User declarations
+	TEdit *Ekoodi2;
    __fastcall TFormOsuus(TComponent* Owner);
    void __fastcall naytaOsuus(int KilpNo, int osuus);
    wchar_t Kohde[30];

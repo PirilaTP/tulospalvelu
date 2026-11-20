@@ -66,6 +66,7 @@ __published:	// IDE-managed Components
 	TButton *BtnTallenna;
 	TComboBox *CSarja;
 	TButton *BtnLoppuun;
+	TButton *BtnPeruToinen;
 	TMainMenu *MainMenu1;
 	TMenuItem *iedostot1;
 	TMenuItem *Lueratatiedotuudelleen1;
@@ -185,6 +186,7 @@ __published:	// IDE-managed Components
 	void __fastcall CSarjaKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
 	void __fastcall EdtKilpnoKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
 	void __fastcall BtnLoppuunClick(TObject *Sender);
+	void __fastcall BtnPeruToinenClick(TObject *Sender);
 	void __fastcall BtnPeruutaClick(TObject *Sender);
 	void __fastcall FormActivate(TObject *Sender);
 	void __fastcall SBTietueScroll(TObject *Sender, TScrollCode ScrollCode, int &ScrollPos);
@@ -259,6 +261,7 @@ private:	// User declarations
 	void __fastcall paivitaMuutos(void);
 	void __fastcall HaeTulostukseen(int badge);
 	void __fastcall ProsEmit(void);
+	void __fastcall TarjoaToinenKortti(void);
 	int __fastcall ProsEmitMaali(void);
 	int __fastcall HaeKilpailija(void);
 	int __fastcall KysyKilpailija(void);

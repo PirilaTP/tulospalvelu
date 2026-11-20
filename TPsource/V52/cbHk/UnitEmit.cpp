@@ -933,6 +933,21 @@ MESSAGE void __fastcall TFormEmit::NewCardHandler(TMyMessage &msg)
 	BtnLoppuun->Visible = false;
 	if (emithead2 < emithead) {
 		msgtxt[0] = 0;
+		if (emitLisaKilpno > 0 && (INT32) time(NULL) - emitLisaAika > 180)
+			emitLisaKilpno = 0;	// odotus vanhentunut
+		emitLisaRekisteroi = 0;
+		if (emitLisaKilpno > 0) {
+			emittp ek;
+			lueem(&ek, emithead2);
+			if (ek.badge && bdg2kno(ek.badge) <= 0 && kilpparam.kaksibadge) {
+				if (!FormEmitMuutokset)
+					FormEmitMuutokset = new TFormEmitMuutokset(this);
+				KasittelyKesken = true;
+				emitLisaRekisteroi = FormEmitMuutokset->ValitseToinenKortti(ek.badge, emitLisaKilpno);
+				KasittelyKesken = false;
+				PostMessage(Handle, WM_MYMSGNEWCARD, 0, 0);
+				}
+			}
 		bdg = pros_emit(&EKilp, msgtxt);
 		if (bdg <= 0) {
 			Application->MessageBoxW(msgtxt, L"Virhe luennassa", MB_OK);
@@ -953,7 +968,50 @@ MESSAGE void __fastcall TFormEmit::NewCardHandler(TMyMessage &msg)
 			_beginthread(DisplTimerThread, 10240, &Vast);
 		UusiTietue = true;
 		HaeTietue(emithead2-1, 0);
+		BtnPeruToinen->Visible = false;
+		if (emitLisaValmis)
+			emitLisaValmis = 0;
+		else
+			TarjoaToinenKortti();
 		}
+}
+//---------------------------------------------------------------------------
+
+// Kun kortilta puuttuu rasteja (tulos "Esitys"/I), kysyt‰‰n luetaanko
+// kilpailijan seuraava kortti. Seuraavasta kortista haetaan vain puuttuvat rastit.
+void __fastcall TFormEmit::TarjoaToinenKortti(void)
+{
+	if (esiluenta || kuntoLahto || emitLisaKilpno > 0 || !kilpparam.kaksibadge || kilpparam.kaksibadge == 2)
+		return;
+	if (!Kilp.kilpno || Em.kilpno != Kilp.id() || Kilp.tark(k_pv) != L'I')
+		return;
+	if (tarkista(&Em, NULL, 0, &Kilp) <= 0)
+		return;
+	KasittelyKesken = true;
+	int Vast = Application->MessageBoxW(
+		L"Kortilta puuttuu rasteja.\n\nLuetaanko kilpailijan seuraava kortti? "
+		L"Siit‰ haetaan vain puuttuvat rastit.",
+		L"Puuttuvia rasteja", MB_YESNO | MB_ICONQUESTION);
+	KasittelyKesken = false;
+	if (Vast == IDYES) {
+		emitLisaKilpno = Kilp.id();
+		emitLisaAika = (INT32) time(NULL);
+		EdtBdgMsg->Text = L"Lue kilpailijan seuraava kortti";
+		BtnPeruToinen->Visible = true;
+		BdgMsgKirkkaus = 256;
+		}
+	// Dialogin aikana luettu kortti k‰sitell‰‰n nyt
+	if (emithead2 < emithead)
+		PostMessage(Handle, WM_MYMSGNEWCARD, 0, 0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormEmit::BtnPeruToinenClick(TObject *Sender)
+{
+	emitLisaKilpno = 0;
+	BtnPeruToinen->Visible = false;
+	EdtBdgMsg->Text = L"Toisen kortin odotus peruttu";
+	BdgMsgKirkkaus = 256;
 }
 //---------------------------------------------------------------------------
 

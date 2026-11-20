@@ -101,6 +101,12 @@ public:		// User declarations
 	void __fastcall Nayta(int d);
 	bool NimiHaku;
 	int dKilp;
+	bool ToinenTila;	// Toisen kortin liittaminen odottavalle kilpailijalle
+	bool ToinenValittu;
+	int ToinenKno;
+	int ToinenSlot1;	// ensimmaisen kortin koodin paikka (0/1)
+	int ToinenValinta;	// valittu paikka + 1, 0 = ei valintaa
+	int __fastcall ValitseToinenKortti(int badge, int kno);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TFormEmitMuutokset *FormEmitMuutokset;

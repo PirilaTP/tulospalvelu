@@ -83,6 +83,9 @@ sarjatietue Sarjat[MAXSARJALUKU+MAXYHD];
 void ajanotto(void);
 
 	bool ProsEmitOn;
+	INT emitLisaKilpno = 0;	// Joukkue, jonka osuuden toista korttia odotetaan
+	INT emitLisaOsuus = 0;
+	INT32 emitLisaAika = 0;	// Odotuksen alkamisaika (time)
 	wchar_t sulkusalasana[12];
    INT  max_lahportti = MAX_LAHPORTTI, max_portti = MAX_PORTTI;
    int chkstk;

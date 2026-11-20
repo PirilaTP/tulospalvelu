@@ -30,6 +30,7 @@
 #include <conio.h>
 #include <dos.h>
 #include <sys\stat.h>
+#include <emitmerge.h>
 #include "HkDeclare.h"
 #include "HkMuotoilu.h"
 #include "TpLaitteet.h"
@@ -1654,6 +1655,21 @@ INT on_emit(emittp *em, int poista)
    return(0);
    }
 
+// Tosi, jos vastaanotettu tietue on jo tunnetun saman kortin ja lukuajan tietueen
+// taydennetty versio (laajennus: enemman leimoja ja kaikki vanhat leimat mukana).
+// Silloin sit\u00e4 ei pidet\u00e4 kaksoiskappaleena.
+static bool emit_taydennys(emittp *em)
+   {
+   emittp old;
+
+   if (!em->kilpno || !em->badge || getem(&old, em->kilpno, 0) < 0)
+	  return(false);
+   if (old.badge != em->badge || old.time != em->time)
+	  return(false);
+   return(emitmerge_laajennus(old.ctrlcode, old.ctrltime, em->ctrlcode, em->ctrltime,
+	  (int) (sizeof(old.ctrlcode)/sizeof(old.ctrlcode[0]))));
+   }
+
 INT addem(emittp *em, INT kielto)
    {
    int res = 0;
@@ -1663,7 +1679,7 @@ INT addem(emittp *em, INT kielto)
 	  return(1);
 #endif
    EnterCriticalSection(&emit_CriticalSection);
-   if (estaemittoisto && on_emit(em, 0))
+   if (estaemittoisto && on_emit(em, 0) && !emit_taydennys(em))
 	  res = 1;
    else {
 	  if (!putem(em, emithead, 1)) {
@@ -2026,12 +2042,14 @@ INT haelukija(emittp *em)
    }
 
 
-INT tarkista(emittp *em, INT *tulkinta, INT haku, kilptietue *kilp1)
+INT tarkista_oik(emittp *em, INT *tulkinta, INT haku, kilptietue *kilp1, INT *oikeita)
    {
    ratatp *rt = 0;
    INT i, j, k, m, kk = 999, kk2, oikeat[MAXNRASTI], nollattu = 0, vapaajarj = 0, lukija;
    kilptietue kilp;
 
+   if (oikeita)
+      *oikeita = 0;
    if (!haku) {
 	  if (tulkinta) memset(tulkinta, 0, MAXNLEIMA*sizeof(INT));
 	  if (esitark || esiluenta == 1)
@@ -2229,10 +2247,19 @@ INT tarkista(emittp *em, INT *tulkinta, INT haku, kilptietue *kilp1)
 			nollattu = 1;
 		 } while (!em->ctrlcode[j] && j != lukija);
 	  }
+   if (oikeita) {
+      for (i = 0; i < rt->rastiluku; i++)
+         if (oikeat[i] == 1) (*oikeita)++;
+      }
    for (i = 0; i < rt->rastiluku; i++)
       if (!oikeat[i]) break;
    if (i >= rt->rastiluku) return(-2*nollattu);
    else return(i + 1);
+   }
+
+INT tarkista(emittp *em, INT *tulkinta, INT haku, kilptietue *kilp1)
+   {
+   return(tarkista_oik(em, tulkinta, haku, kilp1, NULL));
    }
 
 INT etsierata(emittp *em)
@@ -2309,6 +2336,186 @@ INT tark_badge(emittp *em)
    LeaveCriticalSection(&tall_CriticalSection);
    if (er < 0)
 	  return(er);
+   return(0);
+   }
+
+// Sovitin: yhteinen yhdistamisalgoritmi (emitmerge.h) hakee radan ja tarkastuksen
+// henkilokilpailun funktioilla.
+struct HkTaydennys {
+   kilptietue *kilp;
+   ratatp *rt;
+
+   HkTaydennys(kilptietue *k) : kilp(k) { rt = haerata(k); }
+   bool kelvollinen(void) { return(rt != 0 && rt->rastiluku > 0); }
+   int tarkista(emittp *em, int *oikeita)
+	  {
+	  INT oik = 0, er = tarkista_oik(em, NULL, 0, kilp, &oik);
+
+	  *oikeita = oik;
+	  return(er == -1 ? -1 : (er <= 0 ? 0 : (int) er));
+	  }
+   int lukija(emittp *em) { return(haelukija(em)); }
+   bool kelpaa(emittp *em2, int j)
+	  {
+	  if (!em2->ctrlcode[j] || onlukija(em2->ctrlcode[j]) || em2->ctrlcode[j] == 254)
+		 return(false);
+	  for (int k = 0; k < rt->rastiluku; k++)
+		 if (oikeakoodi(rt, k, (UCHAR) em2->ctrlcode[j], 0) == 1)
+			return(true);
+	  return(false);
+	  }
+   // Kortit voidaan siirtaa samaan kelloon vain, jos molemmilla on lukijarivi ja lukuaika
+   bool kellot(emittp *em1, emittp *em2)
+	  {
+	  INT l1 = haelukija(em1), l2 = haelukija(em2);
+
+	  return(l1 >= 1 && l2 >= 1 && KSEK*em1->time != TMAALI0 && KSEK*em2->time != TMAALI0 &&
+		 em1->ctrltime[l1] && em2->ctrltime[l2]);
+	  }
+   long siirto(emittp *em1, emittp *em2)
+	  {
+	  INT l1 = haelukija(em1), l2 = haelukija(em2);
+
+	  if (!kellot(em1, em2))
+		 return(0);
+	  return(emitmerge_siirto(em1->ctrltime[l1], em2->ctrltime[l2], em1->time, em2->time, KSEK, SEK));
+	  }
+   };
+
+// Taydentaa kilpailijan ensimmaiselta kortilta (em1) puuttuvia rasteja toisen
+// kortin (em2) leimoilla (ks. emitmerge_taydenna). Palauttaa lisattyjen leimojen
+// maaran tai -1, jos rataa ei loydy.
+INT taydenna_toisella_kortilla(emittp *em1, emittp *em2, kilptietue *kilp)
+   {
+   HkTaydennys tk(kilp);
+
+   return(emitmerge_taydenna(em1, em2, tk, (int) (sizeof(em1->ctrlcode)/sizeof(em1->ctrlcode[0]))));
+   }
+
+// Kasittelee toisen kortin (em2) luennan kilpailijalle kno. Kortin on kuuluttava
+// samalle kilpailijalle kuin ensimmainen kortti, tai se liitetaan kilpailijalle
+// (rekisteroi = valittu koodipaikka + 1; 0 = ei liiteta). Puuttuvat rastit haetaan
+// toiselta kortilta. Toisen kortin oma tietue sailyy paikassa *uusipos ja
+// taydennetty tietue kirjoitetaan sen per\u00e4\u00e4n; *uusipos osoittaa lopuksi taydennettyyn
+// tietueeseen. Jos kaikki rastit ovat nyt paikallaan ja tarkastusmerkinta on - tai I,
+// tulos merkitaan OK.
+// Palauttaa 1 = kaikki rastit kunnossa, 0 = viela puutteita, -1 = kortti hylatty
+// (mikaan ei muutu). msg-tekstiin lisataan selitys.
+INT lue_toinen_badge(emittp *em2, INT kno, INT *uusipos, INT rekisteroi, wchar_t *msg)
+   {
+   INT d, lisatty, er, slot, bk, newpos;
+   int oik = 0;
+   bool muutettava;
+   emittp em1;
+   kilptietue kilp, entkilp;
+
+   if (kno < minkilpno || (d = getpos(kno)) < 1) {
+	  wcscat(msg, L"Kilpailijaa ei l\u00f6ydy - toista korttia ei k\u00e4ytetty. ");
+	  return(-1);
+	  }
+   if (getem(&em1, kno, 0) < 0) {
+	  wcscat(msg, L"Kilpailijalla ei ensimm\u00e4ist\u00e4 korttia - toista korttia ei k\u00e4ytetty. ");
+	  return(-1);
+	  }
+   if (em1.badge == em2->badge) {
+	  wcscat(msg, L"Sama kortti luettu jo - ei k\u00e4ytetty. ");
+	  return(-1);
+	  }
+   kilp.GETREC(d);
+   entkilp = kilp;
+   if ((bk = bdg2kno(em2->badge)) > 0 && bk != kno) {
+	  wcscat(msg, L"Kortti ei kuulu samalle kilpailijalle - ei k\u00e4ytetty. ");
+	  return(-1);
+	  }
+   {
+   // Rata ja tarkastus selvitetaan ennen kortin liittamista, jotta hylatty kortti ei jaa liitetyksi
+   HkTaydennys tk(&kilp);
+
+   if (!tk.kelvollinen() || tk.tarkista(&em1, &oik) < 0) {
+	  wcscat(msg, L"Rataa ei l\u00f6ytynyt - toista korttia ei k\u00e4ytetty. ");
+	  return(-1);
+	  }
+   }
+   if ((bk = bdg2kno(em2->badge)) != kno) {
+	  if (bk > 0 || !rekisteroi) {
+		 wcscat(msg, bk > 0 ? L"Kortti ei kuulu samalle kilpailijalle - ei k\u00e4ytetty. " :
+			L"Kortti ei ole rekister\u00f6ity - ei k\u00e4ytetty. ");
+		 return(-1);
+		 }
+	  if (!kilpparam.kaksibadge) {
+		 wcscat(msg, L"Toista korttia ei voi liitt\u00e4\u00e4, kun kahta korttia ei ole k\u00e4yt\u00f6ss\u00e4. ");
+		 return(-1);
+		 }
+	  // Tuntematon kortti liitet\u00e4\u00e4n kilpailijalle valittuun koodipaikkaan (ei ensimm\u00e4isen kortin paikka)
+	  slot = rekisteroi - 1;
+	  if (slot < 0 || slot > 1 || slot == ((em1.badge == kilp.Badge(k_pv, 0)) ? 0 : 1)) {
+		 wcscat(msg, L"Ensimm\u00e4isen kortin koodin paikkaa ei voi k\u00e4ytt\u00e4\u00e4. ");
+		 return(-1);
+		 }
+	  kilp.pv[k_pv].badge[slot] = em2->badge;
+	  EnterCriticalSection(&tall_CriticalSection);
+	  kilp.tallenna(d, TRUE, 0, 0, &entkilp);
+	  LeaveCriticalSection(&tall_CriticalSection);
+	  if (bdg2kno(em2->badge) != kno) {
+		 wcscat(msg, L"Kortin liitt\u00e4minen kilpailijalle ei onnistunut. ");
+		 return(-1);
+		 }
+	  entkilp = kilp;
+	  wcscat(msg, slot ? L"Kortti liitetty kilpailijan toiseksi kortiksi (Badge2). " :
+		 L"Kortti liitetty kilpailijan ensimm\u00e4iseksi kortiksi (Badge1). ");
+	  }
+   if ((lisatty = taydenna_toisella_kortilla(&em1, em2, &kilp)) < 0) {
+	  wcscat(msg, L"Rataa ei l\u00f6ytynyt - toista korttia ei k\u00e4ytetty. ");
+	  return(-1);
+	  }
+   if (lisatty > 0 && !HkTaydennys(&kilp).kellot(&em1, em2))
+	  wcscat(msg, L"Korttien kellojen eroa ei tiedet\u00e4 - ajat lis\u00e4tty siirt\u00e4m\u00e4tt\u00e4. ");
+   em1.kirjaus = em2->kirjaus;
+   // Toisen kortin omat tiedot s\u00e4ilyv\u00e4t paikassa *uusipos, t\u00e4ydennetty tietue
+   // kirjoitetaan per\u00e4\u00e4n ja liitet\u00e4\u00e4n kilpailijaan
+   newpos = *uusipos;
+   EnterCriticalSection(&emit_CriticalSection);
+   if (*uusipos == emithead-1) {
+	  em2->kilpno = kno;
+	  putem(em2, *uusipos, 1);
+	  newpos = emithead;
+	  }
+   putem(&em1, newpos, 1);
+   if (newpos == emithead)
+	  emithead++;
+   LeaveCriticalSection(&emit_CriticalSection);
+   *uusipos = newpos;
+   setEmitJarr(newpos, kno, 0);
+   laheta_em(&em1, 1, 0);
+   er = tarkista(&em1, NULL, 0, &kilp);
+   if (er <= 0 && er != -1) {
+	  // Tarkastusmerkinta muutetaan vain, jos sit\u00e4 ei ole asetettu k\u00e4sin (H, K, E, ...)
+	  muutettava = (kilp.tark(k_pv) == L'I' || kilp.tark(k_pv) == L'-');
+	  if (muutettava) {
+		 if (kilpparam.kaksibadge == 2 && kilp.Badge(k_pv, 1)) {
+			kilp.pv[k_pv].asakot[0] = L'T';
+			kilp.pv[k_pv].asakot[1] = L'T';
+			}
+		 kilp.set_tark(L'T', k_pv);
+		 EnterCriticalSection(&tall_CriticalSection);
+		 kilp.tallenna(d, TRUE, 0, 0, &entkilp);
+		 LeaveCriticalSection(&tall_CriticalSection);
+		 if (Sarjat[kilp.Sarja()].laskemtb[k_pv])
+			laskeEm_VA(d, false);
+		 }
+	  if (emittulparam && autorap && (autorap > 1 || autorapsrj[kilp.Sarja()]))
+		 emit_rap(emittulparam, kno);
+	  wcscat(msg, muutettava ? L"Puuttuvat rastit t\u00e4ydennetty toiselta kortilta - tulos OK. " :
+		 L"Puuttuvat rastit t\u00e4ydennetty toiselta kortilta. Tarkastusmerkint\u00e4\u00e4 ei muutettu. ");
+	  return(1);
+	  }
+   if (lisatty > 0) {
+	  wcscat(msg, L"Osa puuttuvista rasteista t\u00e4ydennetty toiselta kortilta, rasteja puuttuu viel\u00e4. ");
+	  if (emittulparam && autorap)
+		 emit_rap(emittulparam, kno);
+	  }
+   else
+	  wcscat(msg, L"Toiselta kortilta ei l\u00f6ytynyt puuttuvia rasteja. ");
    return(0);
    }
 

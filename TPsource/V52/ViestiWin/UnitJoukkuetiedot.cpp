@@ -36,6 +36,7 @@ ColTp OsGridCols0[] = {
 	{L"Seura", 80, 0, 1, 0, false},
 	{L"Lisenssi", 65, 0, 1, 0, false},
 	{L"Badge", 65, 0, 1, 0, true},
+	{L"Badge2", 65, 0, 1, 0, true},
 	{L"L", 15, 0, 1, 0, true},
 	{L"Tark", 45, 0, 1, 0, true},
 	{L"Lähtö", 75, 0, 1, 0, true},
@@ -123,8 +124,9 @@ void __fastcall TFormJoukkuetiedot::GridDims(void)
 //	OsGrid->Height = (OsGrid->DefaultRowHeight+3) * (OsGrid->RowCount+1);
 	OsGridCols[4].Visible = Lisenssinumero1->Checked;
 	OsGridCols[5].Visible = Badge1->Checked;
-	OsGridCols[13].Visible = Sarjat[Kilp.sarja].maxpaikat > 0;
-	OsGridCols[14].Visible = Sarjat[Kilp.sarja].taslaji/10 > 0;
+	OsGridCols[6].Visible = Badge1->Checked && kilpparam.kaksibadge != 0;
+	OsGridCols[14].Visible = Sarjat[Kilp.sarja].maxpaikat > 0;
+	OsGridCols[15].Visible = Sarjat[Kilp.sarja].taslaji/10 > 0;
 	n = 0;
 	for (int i = 0; i < sizeof(OsGridCols0)/sizeof(ColTp); i++) {
 		if (OsGridCols[i].Visible) {
@@ -284,9 +286,13 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 							break;
 						case 6:
 							OsGrid->Cells[OsGridCols[i].Order][os+1] =
-								UnicodeString(Kilp.ostiet[os].laina[0]);
+								UnicodeString(Kilp.ostiet[os].badge[1]);
 							break;
 						case 7:
+							OsGrid->Cells[OsGridCols[i].Order][os+1] =
+								UnicodeString(Kilp.ostiet[os].laina[0]);
+							break;
+						case 8:
 							if (kilpparam.partio && os != Sarjat[Kilp.sarja].osuusluku - 1) {
 								line[0] = 0;
 								}
@@ -318,7 +324,7 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 							OsGrid->Cells[OsGridCols[i].Order][os+1] =
 								UnicodeString(line);
 							break;
-						case 8:
+						case 9:
 							tl = Kilp.ostiet[os].ylahto;
 							if (tl != TMAALI0) {
 								AIKATOWSTRS(line, tl, t0);
@@ -329,11 +335,11 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 								OsGrid->Cells[OsGridCols[i].Order][os+1] =
 								UnicodeString(line);
 							break;
-						case 9:
+						case 10:
 							OsGrid->Cells[OsGridCols[i].Order][os+1] =
 								LLaji[Kilp.ostiet[os].lahtolaji+1];
 							break;
-						case 10:
+						case 11:
 							line[0] = 0;
 							tl = Kilp.Maali(os, 0);
 							if (tl != TMAALI0) {
@@ -343,7 +349,7 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 							OsGrid->Cells[OsGridCols[i].Order][os+1] =
 								UnicodeString(line);
 							break;
-						case 11:
+						case 12:
 							if (kilpparam.partio && os != Sarjat[Kilp.sarja].osuusluku - 1) {
 								line[0] = 0;
 								}
@@ -367,7 +373,7 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 							OsGrid->Cells[OsGridCols[i].Order][os+1] =
 								UnicodeString(line);
 							break;
-						case 12:
+						case 13:
 							if ((!kilpparam.partio || os == Sarjat[Kilp.sarja].osuusluku - 1) &&
 								Kilp.Tulos(os, 0))
 								OsGrid->Cells[OsGridCols[i].Order][os+1] =
@@ -375,20 +381,20 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 							else
 								OsGrid->Cells[OsGridCols[i].Order][os+1] = L"";
 							break;
-						case 13:
+						case 14:
 							OsGrid->Cells[OsGridCols[i].Order][os+1] = Kilp.Ampsakot(os);
 							break;
-						case 14:
+						case 15:
 							tl = Kilp.ostiet[os].sakko;
 							if (Sarjat[Kilp.sarja].tsak[os] != 0)
 								tl /= Sarjat[Kilp.sarja].tsak[os]*SEK;
 							OsGrid->Cells[OsGridCols[i].Order][os+1] = tl;
 							break;
-						case 15:
+						case 16:
 							OsGrid->Cells[OsGridCols[i].Order][os+1] =
 								UnicodeString(Kilp.ostiet[os].hajonta);
 							break;
-						case 16:
+						case 17:
 							tl = Kilp.osTulos(os, 0);
 							if (tl != 0) {
 								AIKATOWSTRS(line, tl, 0);
@@ -399,7 +405,7 @@ void __fastcall TFormJoukkuetiedot::naytaTiedot(void)
 							OsGrid->Cells[OsGridCols[i].Order][os+1] =
 								UnicodeString(line);
 							break;
-						case 17:
+						case 18:
 							if (Kilp.osTulos(os, 0))
 								OsGrid->Cells[OsGridCols[i].Order][os+1] =
 									UnicodeString(Kilp.Sija(os, 0));
@@ -662,10 +668,13 @@ int __fastcall TFormJoukkuetiedot::paivitaMuutos(int col, int row)
 //			OsGrid->Cells[col][k] = Kilp.ostiet[ipv].badge[0];
 			break;
 		case 6:
+			Kilp.ostiet[ipv].badge[1] = _wtoi(OsGrid->Cells[col][k].c_str());
+			break;
+		case 7:
 			Kilp.ostiet[ipv].laina[0] = wchartoansi(OsGrid->Cells[col][k].c_str()[0]);
 //			OsGrid->Cells[col][k] = ansitowchar(Kilp.pv[ipv].laina[0]);
 			break;
-		case 7:
+		case 8:
 			if (OsGrid->Cells[col][k].Length() == 0)
 				return(0);
 			kh = towupper(OsGrid->Cells[col][k].c_str()[0]);
@@ -683,7 +692,7 @@ int __fastcall TFormJoukkuetiedot::paivitaMuutos(int col, int row)
 				}
 			Kilp.SetTark(ipv, kh);
 			break;
-		case 8:
+		case 9:
 			wcsncpy(line,OsGrid->Cells[col][k].c_str(), laika);
 			line[laika] = 0;
 			elimwbl(line);
@@ -712,12 +721,12 @@ int __fastcall TFormJoukkuetiedot::paivitaMuutos(int col, int row)
 					Kilp.ostiet[ipv].lahtolaji = 1;
 				}
 			break;
-		case 9:
+		case 10:
 			Kilp.ostiet[ipv].lahtolaji = wcswcind(towupper(OsGrid->Cells[col][k].c_str()[0]), L"AYK");
 			if (Kilp.ostiet[ipv].lahtolaji > 2)
 				Kilp.ostiet[ipv].lahtolaji = 0;
 			break;
-		case 10:
+		case 11:
 			{   // tyhja solu poistaa ajan (wstrtoaika_vap antaisi 0 = 00:00:00, kun t0 == 0)
 			const wchar_t *cs = OsGrid->Cells[col][k].c_str();
 			bool tyhja = true;
@@ -731,7 +740,7 @@ int __fastcall TFormJoukkuetiedot::paivitaMuutos(int col, int row)
 			Kilp.setMaali(ipv, 0, tyhja ? TMAALI0 : wstrtoaika_vap(OsGrid->Cells[col][k].c_str(), t0));
 			}
 			break;
-		case 13:
+		case 14:
 			if (Sarjat[Kilp.sarja].paikat[ipv] > 0) {
 				wcsncpy(line, OsGrid->Cells[col][k].c_str(), Sarjat[Kilp.sarja].paikat[ipv]+1);
 				line[Sarjat[Kilp.sarja].paikat[ipv]] = 0;
@@ -743,13 +752,13 @@ int __fastcall TFormJoukkuetiedot::paivitaMuutos(int col, int row)
 					}
 				}
 			break;
-		case 14:
+		case 15:
 			tl = _wtoi(OsGrid->Cells[col][k].c_str());
 			if (Sarjat[Kilp.sarja].tsak[ipv])
 				tl *= Sarjat[Kilp.sarja].tsak[ipv] * SEK;
 			Kilp.ostiet[ipv].sakko = tl;
 			break;
-		case 15:
+		case 16:
 			memset(Kilp.ostiet[ipv].hajonta, 0, sizeof(Kilp.ostiet[ipv].hajonta));
 			Kilp.setHajonta(ipv, OsGrid->Cells[col][k].UpperCase().c_str());
 			break;
@@ -1406,6 +1415,7 @@ void __fastcall TFormJoukkuetiedot::BtnJjVaihtoClick(TObject *Sender)
 	FormJjVaihdot = new TFormJjVaihdot(this);
 	int lisno[MAXOSUUSLUKU];
 	int ekdi[MAXOSUUSLUKU];
+	int ekdi2[MAXOSUUSLUKU];
 	char lna[MAXOSUUSLUKU];
 	static int jjFormHeight;
 	char haj[MAXOSUUSLUKU][HAJONTA+1];
@@ -1422,6 +1432,7 @@ void __fastcall TFormJoukkuetiedot::BtnJjVaihtoClick(TObject *Sender)
 		strncpy(st[os], Kilp.ostiet[os].nimi, OSNIMIL);
 		lisno[os] = Kilp.ostiet[os].lisno;
 		ekdi[os] = Kilp.ostiet[os].badge[0];
+		ekdi2[os] = Kilp.ostiet[os].badge[1];
 		lna[os] = Kilp.ostiet[os].laina[0];
 		strncpy(haj[os], Kilp.ostiet[os].hajonta, HAJONTA);
 		}
@@ -1437,6 +1448,7 @@ void __fastcall TFormJoukkuetiedot::BtnJjVaihtoClick(TObject *Sender)
 						}
 					if (FormJjVaihdot->CBEmitkoodit->Checked) {
 						Kilp.ostiet[u].badge[0] = ekdi[os];
+						Kilp.ostiet[u].badge[1] = ekdi2[os];
 						Kilp.ostiet[u].laina[0] = lna[os];
 						}
 					if (FormJjVaihdot->CBHajonnat->Checked) {

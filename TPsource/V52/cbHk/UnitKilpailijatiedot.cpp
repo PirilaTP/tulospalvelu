@@ -237,6 +237,7 @@ void __fastcall TFormKilpailijatiedot::naytaTiedot(void)
 		PvGrid->Height = (PvGrid->DefaultRowHeight+3) * (PvGrid->RowCount+1);
 		PvGridCols[BibCol].Visible = kilpparam.bibvaihtelee;
 		PvGridCols[SarjaCol].Visible = kilpparam.sarjavaihtelee;
+		PvGridCols[Badge2Col].Visible = kilpparam.kaksibadge != 0;
 		if (wcswcind(kilpparam.kilplaji, L"NPU") >= 0)
 			PvGridCols[EraCol].Visible = true;
 		PvGridCols[EnnatysCol].Visible = Nytomaenntys1->Checked;

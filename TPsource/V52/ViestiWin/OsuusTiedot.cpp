@@ -144,6 +144,8 @@ void __fastcall TFormOsuus::naytaTiedot(void)
 		Sija->Text = psija(kilp.kilpno, kilp.sarja, os, 0);
 		OsSija->Text = psija(kilp.kilpno, kilp.sarja, os, kilpparam.maxvaluku+1);
 		Ekoodi->Text = kilp.ostiet[os].badge[0];
+		Ekoodi2->Visible = kilpparam.kaksibadge != 0;
+		Ekoodi2->Text = kilp.ostiet[os].badge[1];
 		if (naytahajonta)
 			EdHajonta->Text = kilp.ostiet[os].Hajonta(line);
 	  if (os > 0 && (sj = psija(kilp.kilpno, kilp.sarja, os-1, 0)) > 0)
@@ -427,6 +429,13 @@ void __fastcall TFormOsuus::ValSarjaChange(TObject *Sender)
 
 void __fastcall TFormOsuus::FormCreate(TObject *Sender)
 {
+	Ekoodi2 = new TEdit(this);
+	Ekoodi2->Parent = this;
+	Ekoodi2->SetBounds(Ekoodi->Left, Ekoodi->Top + Ekoodi->Height + 2, Ekoodi->Width, Ekoodi->Height);
+	Ekoodi2->Font->Assign(Ekoodi->Font);
+	Ekoodi2->ReadOnly = true;
+	Ekoodi2->TabStop = false;
+	Ekoodi2->Visible = false;
    ValSarja->Clear();
    for (int srj = 0; srj < sarjaluku; srj++)
       ValSarja->Items->Add(Sarjat[srj].sarjanimi);

@@ -204,6 +204,10 @@
    INT vakanttialku = 0;
    int seurVapaaBadge = 1;
 	bool ProsEmitOn = false;
+	INT emitLisaKilpno = 0;	// Kilpailija, jonka toista korttia odotetaan
+	INT32 emitLisaAika = 0;	// Odotuksen alkamisaika (time)
+	INT emitLisaValmis = 0;	// 1: toisen kortin luenta käsitelty (kysymystä ei esitetä uudelleen)
+	INT emitLisaRekisteroi = 0;	// 1: tuntematon toinen kortti liitetaan kilpailijalle
 //#if defined(MERI5)
 //	wchar_t *lajinimet[5], *lajinm[5] = {L"Obst", L"Lifesv", L"Seam", L"Util", L"CC"};
 	int meri3 = 0;

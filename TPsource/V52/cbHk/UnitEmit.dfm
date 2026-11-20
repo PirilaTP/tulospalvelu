@@ -1444,6 +1444,23 @@ object FormEmit: TFormEmit
     WordWrap = True
     OnClick = BtnLoppuunClick
   end
+  object BtnPeruToinen: TButton
+    Left = 379
+    Top = 77
+    Width = 127
+    Height = 36
+    Caption = 'Peru toisen kortin odotus'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -12
+    Font.Name = 'Arial'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 51
+    Visible = False
+    WordWrap = True
+    OnClick = BtnPeruToinenClick
+  end
   object CBSelSN: TComboBox
     Left = 5
     Top = 272
