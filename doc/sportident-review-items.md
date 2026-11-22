@@ -19,7 +19,7 @@ Vakavuus: **K** = korkea (virheellinen data tai rikkoutuva käännös/testi), **
 | SI-1 | K | Tietue luetaan lukon ulkopuolella `siParsePunch`-funktioissa (HK ja viesti) | Korjaa haarassa ennen mergeä | V-ARK-6 |
 | SI-2 | M | Lähtöleima korvaa lähtöajan aina | Päätös ja dokumentointi | V-SYO-3b, K23 |
 | SI-3 | M | SI Centerin haku useammalta instanssilta tallentaa samat leimat moneen kertaan | Ohje ja varoitus | V-WS-6c |
-| SI-4 | M | Ajan lähde ei välity verkossa | Tieto suunnittelulle | V-WS-6, K22 |
+| SI-4 | M | Ajan lähde ei välity verkossa | Tieto suunnittelulle. K22: kortinluenta ei tallenna `va[]`-aikoihin, joten lähdetietoa ei tarvita rajapinnalle | V-WS-6, K22 |
 | SI-5 | K | `Tests/run.sh`: mainin versio on rikki, haaran versio pudottaa mainin testit | Yhdistä listat mergessä | V-TST-5 |
 | SI-6 | M | CI:n testityöt eivät aja mainin testejä | Lisää mainin testit `TpTest.vcxproj`:iin | V-TST-5 |
 | SI-7 | A | IDE-artefakteja ja `.local`-tiedostoja versionhallinnassa | Erillinen siivous | — |

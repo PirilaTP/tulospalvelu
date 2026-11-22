@@ -276,7 +276,7 @@ luvun 2 tiedonsiirrolla, ja sen syötöt kulkevat samaa reittiä muille koneille
 | Kilpailijat ja joukkueet, perustiedot | V-KLP | HK `KILPT`, `KILPPVT`; viesti `KILPT`, `OSUUST` | Normaali vastaanottoyhteys | Viestin osuustiedot päivittyvät maskin mukaan. `lisno` kulkee, IOF-tunniste ei (ks. `doc/viesti-iof-tunniste-muutosehdotus.md`) |
 | Lähtöajat, yhteislähdöt | V-SRJ, V-TUR | HK `KILPPVT`, `VAIN_TULOST` (`vali` = −1), `EXTRA`/5; viesti `YHTEISLAHTOT`, `OSUUST` (0x4000) | Normaali | Sarjan perusasetukset (lähtöväli, luonne) eivät kulje sanomina: ne luetaan koneen omista tiedostoista. REST-koneella on oltava samat kilpailuasetukset (`FILESEND` tai kopio) |
 | Maali- ja väliajat, tila | V-SRJ, V-PST, V-STA | HK `VAIN_TULOST`; viesti `VAIN_TULOST`, `OSUUST` (0x10000) | Normaali | Sijat lasketaan vastaanottavalla koneella (`sijat2`/`merk_sijat`), eikä niitä siirretä |
-| Väliaikapisteen leimatapahtuma (WebSocket) | V-WS-6, V-WS-6c | `VAIN_TULOST` väliaikapisteelle, joka on tallentunut REST-koneelle (`tallenna` → `addtapahtuma`) | Normaali | Sanomassa ei ole tietoa ajan lähteestä (radio, kortinluenta, käsisyöttö), havainto SAN-9 / SI-4, K22 |
+| Väliaikapisteen leimatapahtuma (WebSocket) | V-WS-6, V-WS-6c | `VAIN_TULOST` väliaikapisteelle, joka on tallentunut REST-koneelle (`tallenna` → `addtapahtuma`) | Normaali | Sanomassa ei ole tietoa ajan lähteestä (radio, kortinluenta, käsisyöttö), havainto SAN-9 / SI-4. Kortinluenta ei tallenna väliaikapisteisiin (K22), joten tapahtuman määritelmä riittää |
 | Kortinluennat, luettujen määrä | V-STA-2, V-TUR-4 | `EMITT` | **`com_emit[cn] = 1` REST-koneen vastaanottoyhteydellä.** Muuten `tark_emit` hylkää sanoman | Lisättävä konfigurointiohjeeseen |
 | Maaliaikajono (kohdistamattomat ajat) | V-TUR (maalissa olevat) | `AIKAT` | `com_ajat[cn] ≥ 1` | Ilman tätä rajapinta ei näe kohdistamattomia maaliaikoja |
 | Emit-väliajat | (ei vaatimusta) | `EMITVA` | `com_emitva` | Käsitellään vain lokiin, ei tarvita |
@@ -289,6 +289,9 @@ luvun 2 tiedonsiirrolla, ja sen syötöt kulkevat samaa reittiä muille koneille
 |---|---|---|---|
 | DNS (ei lähtenyt) | V-SYO-1…2 | lukko → `GETREC` → `set_tark`/`SetTark` → `tallenna(kielto=0)` (V-ARK-6) | HK `VAIN_TULOST` (`vali = valuku+1`); viesti `OSUUST` (0x10000). XML-yhteyksille HK ei lähetä hyväksymismuutosta |
 | Uusi lähtöaika (väliaikalähtö) | V-SYO-3…4 | lukko → `GETREC` → lähtöajan asetus → `tallenna` | HK `KILPPVT` ja/tai `VAIN_TULOST` (`vali` = −1) |
+| Kortin (badge) vaihto | V-SYO-13…15 | lukko → `GETREC` → ristiriitatarkistus (`bdg2kno`) → `pv[k_pv].badge[]` / `ostiet[os].badge[]` → `tallenna` (korttihakemisto `addbadge`/`rembadge`) | HK `KILPPVT` (emit-koodit); viesti `OSUUST` (0x20/0x40 kortit, 0x80/0x100 laina) |
+| Ammunnan sakot | V-SYO-16…18 | lukko → `GETREC` → `tall_asakot` (HK) / `setAmpsakot` (viesti) → `tallenna` | HK `VAIN_TULOST` (`vali = valuku+2`) ja tuloksen muuttuessa maaliaika; viesti `OSUUST` (0x20000 ammuntasakot, 0x40000 sakko) |
+| Viestin juoksijan nimitiedot | V-SYO-19…21 | lukko → `GETREC` → `setNimi`, `lisno`, `osseura` → `tallenna` | Viesti `OSUUST` (0x1 nimi, 0x2 `lisno`, 0x4 seura) |
 
 Syötöt lähetetään kaikille yhteyksille (`kielto = 0`), ja vastaanottajat välittävät ne eteenpäin
 (2.3). Koska REST-kone on tavallinen verkkokone, syötön vaikutus näkyy muilla koneilla samalla
@@ -310,6 +313,26 @@ viiveellä kuin käyttöliittymästä tehty muutos. `pakota`-kenttää ei käyte
 5. **V-SEC:** Verkon tiedonsiirtoportti ei ole todennettu. Kuka tahansa samassa verkossa voi lähettää
    `EXTRA`/9-etäsulun tai muuttaa tietoja. REST-rajapinnan todennus ei suojaa tätä reittiä, joten
    suljettu verkko on edellytys (K7).
+
+### 11.4 Java-vertaisverkkototeutus (haara `poc-on-crossplatform-compilation-and-network-level-java-support`)
+
+Haarassa on sanomaprotokollan Java-toteutus (`pirila-comm`) ja sen protokollakuvaus
+`NETWORK_COMMUNICATION.md`. Se täydentää tätä dokumenttia seuraavilla havainnoilla (vaatimukset:
+`doc/rest-api-vaatimukset.md` luvut 2.5 ja 3.1):
+
+1. **`pakota`-kenttä.** Kohta 11.2 olettaa, ettei `pakota`-kenttää käytetä (oletus 0). Haaran
+   KILPPVT-lähetys asettaa sen arvoon 1 (`TulospalveluProtocol.buildKilppvtData`, `data[1]`). Ero
+   on selvitettävä: vaikuttaako pakotus vastaanottajan tarkistuksiin (V-VKA-4)? Dokumentti ja
+   toteutus korjataan sen mukaan.
+2. **Vastaanotto ja lähetys.** Haara vastaanottaa ALKUT-, KILPT-, KILPPVT-, VAIN_TULOST- ja EXTRA-sanomat
+   (checkpoint, shutdown) ja lähettää KILPPVT-, KILPT- ja VAIN_TULOST-sanomia. `NETWORK_COMMUNICATION.md`:n
+   Java-tilataulukko on vanhentunut (se väittää KILPT:n ja VAIN_TULOSTin puuttuvan).
+3. **ALKUT-kättely.** Vertainen hylätään, jos sen vaihe ei ole `k_pv+1`. Haara ilmoittaa aina vaiheen 1,
+   joten se toimii vain ensimmäisen päivän kanssa. Vertaisen ALKUT-sanomasta luetaan lisäksi `nrec`.
+4. **VAIN_TULOST.** `splitIndex` −1 = lähtö, 0 = maali, >0 = väliaika, aika 0 = tyhjennys.
+5. **Kuljetukset.** UDP (myös passiivinen) on testattu. Binääri-TCP on testaamaton. XML-TCP kattaa vain
+   KILPT-, VAIN_TULOST- ja EMITVA-sanomat, ja UDP-yleislähetys vain tulosrivin
+   (`KT:MSGNO:KILPNO:VAIHE:PISTE:AIKA`).
 
 ## 12. SportIdent-haaran muutokset sanomatasolla
 
@@ -350,7 +373,7 @@ Vakavuus kuten `doc/sportident-review-items.md`: **K** korkea, **M** keskitaso, 
 | SAN-6 | A | `SIIMPORT`-käännöksessä `opencom` käynnistää funktion `luepakettiTCP`, mutta toteutuksen nimi on `luepakettiTCPSI`. Ei käänny, jos `SIIMPORT` määritellään | `Tp/TpComY.cpp:2222`, `:1958` | Tieto. Korjaa, jos ominaisuus otetaan käyttöön |
 | SAN-7 | M | Paketissa ei ole versio- eikä rakennetunnistetta. Avaussanoma tarkistaa vain tietueiden määrän ja vaiheen. Eri versioiden tai käännösparametrien ohjelmat voivat tulkita paketit väärin, jos pituudet sattuvat täsmäämään | `tark_alku` | Lisää avaussanomaan rakenneversio ja tietueiden koot (`kilprecsize0`, `osrecsize0`). Edellytys IOF-tunnisteen muutosehdotukselle |
 | SAN-8 | M | `tallenna` kutsuu `paivita_aikanaytto` → `SendMessage(FormMain, WM_MYUUSIAIKA)` usein `tall_CriticalSection`-lukon sisällä. Lukon pitäjä odottaa käyttöliittymäsäiettä | `Hk/HkDat.cpp:1261`, `Juk/vdat.cpp:819` | REST-toteutuksessa: tallennuksen viive riippuu käyttöliittymästä, eikä REST-säie saa pitää muita lukkoja tallennuksen aikana. Harkitse `PostMessage`ia (erillinen muutos) |
-| SAN-9 | M | Ajan lähdettä (laite, radio, kortinluenta, käsisyöttö, verkko) ei siirretä sanomissa. Vastaanottaja tietää vain, että aika muuttui | `VAIN_TULOST` | Tieto vaatimuksille (V-WS-6, K22). Lähteen välitys vaatisi uuden kentän tai luokan ja SAN-7:n versioinnin |
+| SAN-9 | M | Ajan lähdettä (laite, radio, kortinluenta, käsisyöttö, verkko) ei siirretä sanomissa. Vastaanottaja tietää vain, että aika muuttui | `VAIN_TULOST` | Tieto vaatimuksille (V-WS-6). K22 päätetty: kortinluenta ei tallenna väliaikapisteisiin, joten lähdetietoa ei tarvita rajapinnalle. Lähteen välitys vaatisi uuden kentän tai luokan ja SAN-7:n versioinnin |
 | SAN-10 | I | SI-kortinluennan `package` = 30000000 + lukija. Vanha versio, joka ei tunne arvoa, käsittelee luennan emit-luentana. Badge-näyttö (`BADGEASKEL`) on haarassa ajonaikainen | haara `Hk/HkDef.h` | Kaikilla verkon koneilla sama versio mergen jälkeen. Kirjaa julkaisutietoihin |
 | SAN-11 | I | Tiedonsiirtoportit eivät todenna lähettäjää. `EXTRA`/9 sulkee ohjelman, ja `FILESEND` kirjoittaa tiedoston suhteellisella polulla, absoluuttisella vain jos `lahkaikkitied` | luvut 3.1 ja 7 | Suljettu verkko on edellytys (V-SEC, K7). Ei muutosta tässä työssä |
 

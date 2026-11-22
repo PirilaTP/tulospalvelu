@@ -1,8 +1,10 @@
 # REST-rajapinta: kilpailun status, kuuluttaja (CIS) ja tilannekuva — vaatimukset
 
-> Tila: luonnos 11 (2026-11-19). Perustuu koodin nykytilaan haarassa `main` (f7fe553) ja haaraan
-> `feature/sportident-reader` (51a17a3, luku 2.4; havainnot `doc/sportident-review-items.md`).
-> Päätökset K1–K21 ja K24 on päivitetty (luku 10), avoimet kysymykset K22–K23 (luku 13). Palvelun versio ja rajapintakuvaukset: luku 5.12. Käyttöönottomalli, edustapalvelin (Caddy) ja CIS- ja Tilannekuva-selainsovellusten jakelu: luku 9.6 (K24). Sanomien kartoitus: `doc/sanomat-ja-tiedonsiirto.md`. Välimuisti ja kuormitustesti: luvut 9.3–9.4. Tulosluettelot (HTML, JSON, PDF, IOF XML): luku 5.11, niiden välimuisti luku 9.5. Polut ja kenttänimet ovat ehdotuksia.
+> Tila: luonnos 13 (2026-11-22). Perustuu koodin nykytilaan haarassa `main` (f7fe553), haaraan
+> `feature/sportident-reader` (51a17a3, luku 2.4; havainnot `doc/sportident-review-items.md`) ja haaraan
+> `origin/poc-on-crossplatform-compilation-and-network-level-java-support` (5027805, luku 2.5, luku 3.1).
+> Päätökset K1–K22 ja K24 on päivitetty (luku 10), avoimet kysymykset K23 ja K25–K29 (luku 13). Palvelun versio ja rajapintakuvaukset: luku 5.12. Käyttöönottomalli, edustapalvelin (Caddy) ja CIS- ja Tilannekuva-selainsovellusten jakelu: luku 9.6 (K24). Sanomien kartoitus: `doc/sanomat-ja-tiedonsiirto.md`. Välimuisti ja kuormitustesti: luvut 9.3–9.4. Tulosluettelot (HTML, JSON, PDF, IOF XML): luku 5.11, niiden välimuisti luku 9.5. Polut ja kenttänimet ovat ehdotuksia.
+> Työn seuranta: GitHub-issue [#97](https://github.com/PirilaTP/tulospalvelu/issues/97) (kattoissue, vaiheet 0–5 ali-issueina).
 > Kenttänimet, polut ja OpenAPI-/AsyncAPI-dokumentaatio ovat englanniksi. Tämä vaatimusdokumentti on suomeksi.
 
 ## 1. Tavoite ja rajaus
@@ -16,10 +18,11 @@ sovellus saa:
    yhdistämistä varten mukaan lukien,
 3. **turvallisuuden tilannekuvan**: missä ja kuinka paljon kilpailijoita on maastossa,
 4. **väliaikapisteiden leimaukset viiveettä** WebSocketin kautta,
-5. **myöhemmässä julkaisussa** rajatut tietojen syötöt: *ei lähtenyt* ja *uusi lähtöaika*.
+5. **myöhemmässä julkaisussa** rajatut tietojen syötöt: *ei lähtenyt*, *uusi lähtöaika*, *kortin
+   (badge) vaihto*, *ammunnan sakot* ja *viestin osuuden juoksijan nimitiedot*.
 
 Loppukäyttäjille rajapinnan tiedot tarjotaan selainsovelluksilla **CIS** (kuuluttaja) ja
-**Tilannekuva** (turvallisuus). Ne käyttävät vain tätä rajapintaa, ja edustapalvelin (Caddy) jakaa
+**Tilannekuva** (turvallisuus, englanniksi *Competition Status Dashboard*). Ne käyttävät vain tätä rajapintaa, ja edustapalvelin (Caddy) jakaa
 ne samasta osoitteesta kuin rajapinnan (K24, luku 9.6.5). Sovellusten käyttöliittymävaatimukset
 määritellään erikseen. Tässä dokumentissa ovat niiden jakelun ja rajapinnan käytön vaatimukset.
 
@@ -63,6 +66,11 @@ ne toteutetaan vasta vaiheessa 5.
   (`AIKAJAK = 10000/SEK = 10`, muunnos `purajak`). Kellonajat ovat suhteessa `t0`:aan (tunteina),
   ja vuorokauden ylitys käsitellään `NORMKELLO`/`NORMTULOS`-makroilla. *(Korjattu luonnoksessa 9:
   aiemmin virheellisesti "1/10000 s".)*
+- **Lähtöajan esitys ja "ei asetettu" -arvo (haara `poc-…`):** kilpailijatietueen lähtöaika `tlahto`
+  on millisekunteina suhteessa keskipäivään (0 = 12:00, +3 600 000 = 13:00). "Ei asetettu" on
+  `TMAALI0` = −24 · `TUNTI` = −86 400 000. Haaran Java-koodissa yksikkö on kommenteissa
+  epäjohdonmukainen (`Competitor`: ms, `KilpReader` ja `MessageListener`: 1/100 s), joten yksikkö
+  ja nollakohta varmistetaan oikealla `KILP.DAT`-aineistolla ennen toteutusta (V-API-5).
 - **Samanaikaisuus:** tulosten käsittely suojataan `tall_CriticalSection`illa.
 - **Merkistö:** lähdekoodi on cp1252, merkkijonot `wchar_t` (viestissä osin `char`). JSON tarvitsee UTF-8-muunnoksen.
 - **Verkkokerros:** `com/WinUDP.cpp` sisältää Winsock-pohjaisen TCP-palvelimen. HTTP- ja
@@ -85,7 +93,7 @@ sekä g++- ja MSVC-yksikkötestit CI:hin. Rajapinnan kannalta olennaiset havainn
 
 | Havainto | Vaikutus vaatimuksiin |
 |---|---|
-| Ajan lähde ei välity verkossa, eikä kohdistamaton leima näy muille koneille (SI-4) | V-WS-6, K16, K22 |
+| Ajan lähde ei välity verkossa, eikä kohdistamaton leima näy muille koneille (SI-4) | V-WS-6, K16, K22 (päätetty) |
 | Lähtöleima korvaa lähtöajan aina (SI-2) | V-SYO-3b, V-SYO-4, V-PST-5, V-TUR-4, K23 |
 | SI Centerin haku usealta instanssilta tuplaa tallennukset (SI-3) | V-WS-6c |
 | Tietue luetaan lukon ulkopuolella (SI-1, myös mainin `tall_etulos`) | V-ARK-6 |
@@ -96,6 +104,32 @@ sekä g++- ja MSVC-yksikkötestit CI:hin. Rajapinnan kannalta olennaiset havainn
 | Valmis SI Centerin JSON-jäsennin `Tp/SICenterJson.cpp` | V-ARK-4 |
 | `httphaku`-katkaisun käsittely (SI-8) | V-SEC-2 |
 | Ristiriitaiset muutokset samoissa tiedostoissa (SI-11) | V-ARK-8, vaihe 0 |
+
+### 2.5 Java-vertaisverkkototeutus (haara `poc-on-crossplatform-compilation-and-network-level-java-support`)
+
+Haara sisältää Java-toteutuksen sovelluksen verkkoprotokollasta (`pirila-comm`: UDP ja TCP, Netty),
+`KILP.DAT`-lukijan ja -kirjoittajan (`KilpReader`), Spring Boot -sovelluksen `webadmin`, jossa on
+REST-rajapinta DNS-sovellukselle (`webadmin/API.md`), sekä moniverkkotestit oikeita C++-solmuja
+vastaan (`IT/jbang`). Haara on todiste siitä, että K2 (rajapinta verkon asiakkaana) on toteutettavissa
+sovelluksen ulkopuolella. Rajapinnan kannalta olennaiset havainnot:
+
+| Havainto | Vaikutus vaatimuksiin |
+|---|---|
+| C++-palvelin hylkää vertaisen, jonka ALKUT-sanoman vaihe ei ole `k_pv+1` (`tark_alku`). Haara kovakoodaa vaiheen 1 ja varoittaa, jos vertaisen `nrec` eroaa (`onPeerHandshake`) | V-VKA-1, K25 |
+| Haara lataa `KILP.DAT`-kopion ja päivittää sitä sanomilla. Täyssynkronointia (KILPT) ei ole toteutettu | V-VKA-2, K26 |
+| Kirjoitus tehdään lue-muokkaa-lähetä-tapana paikallisesta kopiosta koko `pv`-lohkolla ja pakotuslipulla (`pakota=1`). Kuittaus (ACK), uudelleenyritykset ja 10 s aikakatkaisu | V-VKA-4 |
+| Vastaanotetaan: ALKUT, KILPT, KILPPVT, VAIN_TULOST, EXTRA (checkpoint, shutdown). Ei vielä: AIKAT, EMITT, EMITVA, SEURAT, FILESEND | V-WS-6d, K28 |
+| VAIN_TULOST: `splitIndex` −1 = lähtö, 0 = maali, >0 = väliaika. Aika 0 tarkoittaa tyhjennystä. Väliajat eivät ole vielä haaran tietomallissa | V-PST-9 |
+| Lähtöaika keskipäivästä ja "ei asetettu" −24 h. Yksikkö epäjohdonmukainen koodikommenteissa | luku 2.2, V-API-5 |
+| `set_tark` hyväksyy tilakoodit `-TIHKOEVPXMB`. Haaran lukija käsittelee myös pienet kirjaimet | V-API-6 |
+| Kuljetukset: UDP (myös passiivinen) testattu, binääri-TCP testaamaton, XML-TCP (KILPT, VAIN_TULOST, EMITVA) ja UDP-yleislähetysrivi eivät kata kaikkia sanomia | V-VKA-5 |
+| DNS-rajapinta on jo olemassa ja DNS-sovelluksen käytössä: `POST /competitors/{kilpno}/dns`, `POST …/open`, `GET /ping` | V-SYO-22–25, K27, K29 |
+| Kortinvaihto etenee ensimmäisestä päättämättömästä vaiheesta kaikkiin seuraaviin (peilaa `HkConsole/HkKilp.cpp:970-973`) | V-SYO-13 |
+| `IT/jbang/Harness` ajaa oikeita C++-solmuja. Anonymisoitu `kisat/nikonserver/data/KILP.DAT` (1,2 MB) ja kilpailugeneraattori. Python-testit on poistettu | V-KUO-1, V-KUO-6 |
+
+Haaran `NETWORK_COMMUNICATION.md` on laajempi protokollakuvaus. Sen Java-tilataulukko on vanhentunut:
+VAIN_TULOST ja KILPT on toteutettu. Kustannusarvio sijalaskennan ja tilastojen toteuttamisesta
+Javalla on kohdassa K25 (luku 13).
 
 ## 3. Käyttöympäristö (K2)
 
@@ -108,6 +142,20 @@ sekä g++- ja MSVC-yksikkötestit CI:hin. Rajapinnan kannalta olennaiset havainn
 - Selainsovelluksia käytettäessä rajapintakoneelle asennetaan edustapalvelin (Caddy), joka jakaa
   sovellukset ja välittää polut `/api/*` sovellukselle (K24, luku 9.6).
 
+### 3.1 Verkkoasiakkaan vaatimukset (K2)
+
+Nämä vaatimukset seuraavat siitä, että rajapinnan instanssi on sovelluksen verkon vertainen. Ne
+koskevat toteutusta riippumatta siitä, onko se C++:ssa vai erillisessä sovelluksessa (K25). Perustana
+ovat haaran `poc-…` havainnot (luku 2.5).
+
+| Tunnus | Pri | Vaatimus |
+|---|---|---|
+| V-VKA-1 | M | **Vaihe ja kättely.** Instanssi ilmoittaa ALKUT-kättelyssä vaiheen, jota sen tiedot vastaavat. Pääkone hylkää vertaisen, jonka vaihe on eri kuin sen oma (`k_pv+1`). Instanssi lukee vertaisen ALKUT-sanomasta vaiheen ja tietuemäärän (`nrec`), antaa `stage`-kentän vastauksissa ja tekee kättelyn uudelleen, kun vaihe vaihtuu. Lukumalli rakennetaan silloin alusta. Vaiheen tai `nrec`:n ristiriita näkyy kohdassa `status/connections` ja `source`-kentässä, ja syötöt hylätään (503, `error: "stage_mismatch"`). Monipäiväisen kilpailun tuki on vaatimus (haaran toteutus on yksipäiväinen). |
+| V-VKA-2 | M | **Alkutila.** Instanssin tila ladataan määritellystä lähteestä (kilpailun datahakemisto: `KILP.DAT`, `KilpSrj.xml`, ratatiedot) ja pidetään ajan tasalla KILPT-, KILPPVT- ja VAIN_TULOST-sanomilla. Ennen latausta vastaus on 503 (`error: "not_ready"`). Latauksen jälkeen tarkistetaan `nrec`, ja ero näkyy `source`-kentässä. Täyssynkronoinnin (KILPT-sanomat pääkoneelta) tuki on avoin (K26). |
+| V-VKA-3 | M | **Yhteyden katkeaminen.** Kun yhteys pääkoneeseen katkeaa, `source.mode` kertoo tilan ja `stale` asetetaan, kun katkos ylittää `safety.stale_s` (V-API-10, V-TUR-9). Yhteyden palattua tapahtumia ei julkaista toistamiseen (V-WS-6b), ja tilan eheys tarkistetaan uudelleen (V-VKA-1, V-VKA-2). |
+| V-VKA-4 | M | **Kirjoituspolku.** Syöttö tehdään lue-muokkaa-lähetä-tapana replikasta, ja sanoma lähetetään pakotettuna. Siksi: (a) syöttö hylätään (503, `error: "stale_replica"`), jos yhteys on poissa tai replikan tuoreus ylittää `entry.max_stale_s` (oletus 5); (b) tilatarkistus (V-SYO-4, 409) tehdään tuoreesta replikasta ennen lähetystä; (c) `ETag` (V-SYO-5) johdetaan tietueen sisällöstä; (d) vain muutettava kenttä (kortti, tila, lähtöaika) vaihdetaan, ja muu `pv`-lohko lähetetään sellaisenaan; (e) lähetys odottaa kuittauksen, ja uudelleenyritykset ja aikakatkaisu ovat asetuksia (`entry.retries` oletus 3, `entry.ack_timeout_s` oletus 10). Kuittaamaton lähetys on 504 (`ack_timeout`), ja pääkoneen hylkäys 502 (`peer_rejected`). Protokollassa ei ole vertaa ja vaihda -mekanismia, joten lukemisen ja lähetyksen välissä pääkoneella tehty muutos voi jäädä huomaamatta. Tämä jäännösriski dokumentoidaan. |
+| V-VKA-5 | M | **Kuljetukset.** Tuetaan sovelluksen omia liitäntöjä (`laskenta.cfg`: `yhteys<n>`): UDP (myös passiivinen) ja TCP. `features` (V-VER-4) ilmoittaa TCP:n vasta, kun se on testattu pääkoneen kanssa (haarassa se on testaamaton). XML-TCP ja UDP-yleislähetys eivät kata kaikkia sanomaluokkia, joten ne eivät riitä instanssin ainoaksi lähteeksi. |
+
 ## 4. Käyttäjät, roolit ja käyttötapaukset
 
 ### 4.1 Roolit (K6)
@@ -118,7 +166,7 @@ sekä g++- ja MSVC-yksikkötestit CI:hin. Rajapinnan kannalta olennaiset havainn
 | `commentator` | Kuuluttaja / CIS | `public` + väliaikapisteet palvelimelle asetetusta julkisuustasosta alkaen, kilpailijatunnisteet (IOF, lisenssi), taustatietolinkit, ennätys ja tavoite, VIP-luokat, WebSocket |
 | `safety` | Turvallisuus / tilannekuva | `commentator` + kaikki pisteet julkisuudesta riippumatta, maastossa-listat, emit-/kortin numero, myöhässä olevat, CSV-vienti |
 | `operations` | Kilpailunjohto, tekninen tuki | Status mukaan lukien tiedonsiirtoyhteydet ja rajapinnan oma tila |
-| `entry` | Tietojen syöttö (vaihe 5) | Ei lähtenyt -merkintä ja uusi lähtöaika. Ei sisällä lukuoikeuksia, vaan ne annetaan erikseen |
+| `entry` | Tietojen syöttö (vaihe 5) | Ei lähtenyt -merkintä, uusi lähtöaika, kortin vaihto, ammunnan sakot ja viestin juoksijan nimitiedot. Avaimen syöttöoikeus voidaan rajata toimintoihin (V-SYO-12). Ei sisällä lukuoikeuksia, vaan ne annetaan erikseen |
 
 Avaimella voi olla useita rooleja. Rooli tarkistetaan jokaisessa päätepisteessä ja WebSocket-tilauksessa.
 
@@ -138,6 +186,9 @@ Avaimella voi olla useita rooleja. Rooli tarkistetaan jokaisessa päätepisteess
 | UC-10 | operations | Kokonaistilanne ja tiedonsiirtoyhteyksien tila |
 | UC-11 | entry | Ei lähtenyt -merkintä lähdöstä, joka poistaa kilpailijan maastossa-luvusta (vaihe 5) |
 | UC-12 | entry | Kilpailijan uusi lähtöaika (myöhästyminen, vaihto) väliaikalähtökilpailussa (vaihe 5) |
+| UC-13 | entry | Kilpailijan tai viestin osuuden juoksijan kortin (badge) vaihto, esim. lähtöpaikalla tai kortin rikkoutuessa (vaihe 5) |
+| UC-14 | entry | Ammuntapaikan sakkojen kirjaus ammunta kerrallaan, josta tulos ja kuuluttajan näkymä päivittyvät heti (vaihe 5) |
+| UC-15 | entry | Viestin osuuden juoksijan nimen (ja lisenssin, seuran) korjaus tai juoksijan vaihto ennen osuutta (vaihe 5) |
 
 ## 5. Toiminnalliset vaatimukset: lukurajapinta
 
@@ -152,8 +203,8 @@ Kunkin vaatimuksen domain-kattavuus on **HK+V**, ellei toisin mainita.
 | V-API-2 | M | Polut versioidaan: `/api/v1/...`. |
 | V-API-3 | M | Kaikki valinnat annetaan pyynnön parametreina (K5). Palvelin ei käytä avoimien ikkunoiden asetuksia. Jokaisella parametrilla on dokumentoitu oletusarvo. |
 | V-API-4 | M | Pisteet tunnistetaan vakaasti: `start`, `finish`, `total` (yhteistulos), ja väliaikapiste **rastikoodilla** muodossa `{code}` tai `{code}.{n}` (n:s ohitus, kun koodi toistuu) (K3). Sisäinen järjestysnumero annetaan vain tietokenttänä `index`. |
-| V-API-5 | M | Ajat annetaan millisekunteina (`time_ms`, `behind_ms`, `elapsed_ms`) ja näyttömuotoisena merkkijonona (`time`, `behind`) kilpailun tarkkuuden (`laika`) mukaan. Kellonajat ilmoitetaan ISO 8601 -muodossa paikallisaikana aikavyöhykepoikkeamineen. Muunnokset tehdään luvun 2.2 yksiköistä (tietueen ajat ms, aikajono 1/10000 s), ja niille on yksikkötestit. |
-| V-API-6 | M | Tila annetaan koodina IOF 3.0 `ResultStatus`-arvoina (`OK, DidNotStart, DidNotFinish, Disqualified, MissingPunch, NotCompeting, OverTime, Active, Inactive`) sekä ohjelman sisäisenä koodina (`H, K, E, M, O, X, B, V`). |
+| V-API-5 | M | Ajat annetaan millisekunteina (`time_ms`, `behind_ms`, `elapsed_ms`) ja näyttömuotoisena merkkijonona (`time`, `behind`) kilpailun tarkkuuden (`laika`) mukaan. Kellonajat ilmoitetaan ISO 8601 -muodossa paikallisaikana aikavyöhykepoikkeamineen. Muunnokset tehdään luvun 2.2 yksiköistä (tietueen ajat ms, aikajono 1/10000 s), ja niille on yksikkötestit. Lähtöaika on tietueessa keskipäivästä laskettuna, ja "ei asetettu" -arvo (`TMAALI0`, −24 h) annetaan `null`:ina. Testivektorit otetaan oikeasta `KILP.DAT`-aineistosta. |
+| V-API-6 | M | Tila annetaan koodina IOF 3.0 `ResultStatus`-arvoina (`OK, DidNotStart, DidNotFinish, Disqualified, MissingPunch, NotCompeting, OverTime, Active, Inactive`) sekä ohjelman sisäisenä koodina (`H, K, E, M, O, X, B, V`). Vastaavuustaulukko kattaa kaikki `set_tark`-koodit (`-TIHKOEVPXMB`). Pienet kirjaimet (`e`, `k`, `h`) luetaan kuten isot, kuten haaran `Competitor.formatResult`, kunnes niiden esiintyminen datassa on varmistettu. |
 | V-API-7 | M | Virheet palautetaan seuraavasti: 400 virheellinen parametri, 401 puuttuva tai virheellinen avain, 403 rooli ei riitä, 404 tuntematon sarja/koodi/kilpailija, 409 ristiriita (syötöt), 503 tieto ei saatavilla. Vastauksen runko on `{"error": "<code>", "message": "..."}`. |
 | V-API-8 | M | Sarjan voi antaa nimellä (`H21`) tai tunnisteella. Myös sarjayhdistelmä (`yhdsarjat`) kelpaa sarjaksi. |
 | V-API-9 | M | Nimi ja seura annetaan osina (`first_name`, `last_name`, `club`, `club_short`, `organisation`, `country`). Asiakas päättää esitysmuodon. |
@@ -219,10 +270,11 @@ Kunkin vaatimuksen domain-kattavuus on **HK+V**, ellei toisin mainita.
 | V-PST-2 | M | `code=all` palauttaa kaikkien pisteiden tapahtumat. |
 | V-PST-3 | M | `since={seq}` palauttaa vain uudemmat tapahtumat (pollausta varten). Sisältö on sama kuin WebSocket-viesteissä (V-WS-4). |
 | V-PST-4 | M | Tapahtumapuskuri toimii aina, kun rajapinta on päällä, riippumatta avoimista ikkunoista. Puskurin koko on asetettavissa (oletus 5000). |
-| V-PST-5 | M | Tapahtumatyypit: `passing` (väliaika tai maali), `status` (hyl., kesk., eil.), `correction` (aiempi aika muuttui), `start_change` (lähtöaika muuttui), `punch` (tallennettu leimaus, V-WS-6). |
+| V-PST-5 | M | Tapahtumatyypit: `passing` (väliaika tai maali), `status` (hyl., kesk., eil.), `correction` (aiempi aika muuttui), `start_change` (lähtöaika muuttui), `punch` (tallennettu leimaus, V-WS-6), `penalty` (ammunnan sakot muuttuivat, V-SYO-16) ja `competitor_update` (kilpailijan tai juoksijan perustiedot, esim. nimi tai kortti, muuttuivat, V-SYO-14, V-SYO-19). |
 | V-PST-6 | S | Johdetut CIS-tapahtumat: `new_leader` (uusi kärki pisteessä), `top_n` (sijoille 1..N, N parametrina), `vip_passing`. |
 | V-PST-7 | S | `GET /api/v1/controls/{code}/expected?classes=&window_s=` palauttaa kilpailijat, jotka ovat ohittaneet edellisen pisteen tai lähteneet mutta eivät vielä tätä pistettä. Kustakin annetaan arvioitu saapumisaika (V-ARV-1) ja virtuaalinen sija. Vastaa viestin *Lähestyjät*-näyttöä. |
 | V-PST-8 | S | `GET /api/v1/controls/{code}/best?classes=` palauttaa sarjoittain parhaan ajan ja kärjen pisteessä sekä parhaan rastivälin edelliseltä pisteeltä. |
+| V-PST-9 | M | **Tyhjennys.** VAIN_TULOST-sanoma, jonka aika on 0, tyhjentää aiemmin tallennetun ajan (lähtö, väliaika tai maali). Tapahtuma julkaistaan tyyppinä `correction` kentillä `time_ms: null` ja `cleared: true`, ja kilpailijan sija ja tila päivitetään samoin kuin muissa korjauksissa. Sanoman `splitIndex` (−1 lähtö, 0 maali, >0 väliaika) muunnetaan pistetunnukseksi (V-API-4). Muunnokselle on testivektorit, koska haaran toteutuksessa korjattiin virhe ±1-indeksoinnissa. |
 
 ### 5.7 Kilpailija ja taustatiedot (CIS, K8)
 
@@ -269,10 +321,11 @@ Pääkäyttötapa on pollaus (`since`). WebSocket on tarkoitettu väliaikapistei
 | V-WS-3 | M | Asiakas tilaa tapahtumia viestillä `{"op":"subscribe","controls":["150","151.2","finish"],"classes":["H21"],"types":["passing","new_leader"],"since":12345}`. Tilauksia voi lisätä ja poistaa (`unsubscribe`). |
 | V-WS-4 | M | Palvelin lähettää tapahtumat samassa muodossa kuin V-PST-1, jokaisessa `seq`. Jos `since` on annettu ja tapahtumat ovat vielä puskurissa, ne lähetetään ensin. Muuten lähetetään `{"type":"gap"}`, ja asiakas hakee tilanteen REST-rajapinnasta. |
 | V-WS-5 | M | Viive siitä, kun tieto on tallennettu tälle instanssille, WebSocket-viestiksi on alle 500 ms. Tapahtuma luodaan samassa kohdassa, jossa `addtapahtuma` nyt kutsutaan (`HkDat.cpp`, `vdat.cpp`), eli tallennuksen jälkeen. Vaatimus ei kata viivettä ennen tallennusta: SI Centerin hakuväli (`SIHAKUVÄLI`), GPRS-yhteys ja tiedonsiirto pääkoneelta. Tapahtumassa on `time_of_day` (leiman aika sellaisena kuin se on tallennettu, SRR:ssä `SRRKORTTIAIKA`-asetuksen mukaan leimasimen tai tietokoneen kello) ja `stored_at` (tallennushetki tällä instanssilla), jotta asiakas näkee kokonaisviiveen. |
-| V-WS-6 | M | **Leimaustiedot (K13, K16).** Rajapinta ei avaa omaa yhteyttä leimauslaitteisiin, SI Centeriin tai pääkoneelle. Instanssi saa tiedot olemassa olevilla sovelluksen tiedonsiirto- ja lukijamäärityksillä. Koska ajan lähde ei välity verkossa (SI-4), `punch`-tapahtuma määritellään näin: se syntyy, kun tälle instanssille tallennetussa kilpailijatietueessa **väliaikapisteen** (rastikoodilla tunnistettu piste, `index` ≥ 1) aika asetetaan tai muuttuu. Kortinluennan rastileimat eivät tuota `punch`-tapahtumia, koska ne tallentuvat emit-tietueisiin eivätkä väliaikapisteisiin (tarkistettava, K22). Maali- ja lähtöajan muutokset julkaistaan `passing`- ja `start_change`-tapahtumina, ei `punch`-tapahtumina. Tapahtumassa on rastikoodi, `time_of_day`, `stored_at`, kilpailija ja kortin numero (V-MAL-5) `safety`-roolille. Tapahtuma julkaistaan vasta tallennuksen jälkeen. Tallentamaton, hylätty (esim. `siSaaTallentaa` estää korvauksen) tai kilpailijaan kohdistamaton leima ei tuota tapahtumaa. |
+| V-WS-6 | M | **Leimaustiedot (K13, K16).** Rajapinta ei avaa omaa yhteyttä leimauslaitteisiin, SI Centeriin tai pääkoneelle. Instanssi saa tiedot olemassa olevilla sovelluksen tiedonsiirto- ja lukijamäärityksillä. Koska ajan lähde ei välity verkossa (SI-4), `punch`-tapahtuma määritellään näin: se syntyy, kun tälle instanssille tallennetussa kilpailijatietueessa **väliaikapisteen** (rastikoodilla tunnistettu piste, `index` ≥ 1) aika asetetaan tai muuttuu. Kortinluennan rastileimat eivät tuota `punch`-tapahtumia, koska emit-luenta tallentaa ne emit-tietueisiin eikä väliaikapisteiden aikoihin `va[]` (K22). Maali- ja lähtöajan muutokset julkaistaan `passing`- ja `start_change`-tapahtumina, ei `punch`-tapahtumina. Tapahtumassa on rastikoodi, `time_of_day`, `stored_at`, kilpailija ja kortin numero (V-MAL-5) `safety`-roolille. Tapahtuma julkaistaan vasta tallennuksen jälkeen. Tallentamaton, hylätty (esim. `siSaaTallentaa` estää korvauksen) tai kilpailijaan kohdistamaton leima ei tuota tapahtumaa. |
 | V-WS-6a | M | Jos leimauksen tallennus johtaa väliaikaan, `punch`- ja `passing`-tapahtumat julkaistaan samalla `seq`-järjestyksellä (`punch` ensin). Asiakas voi tilata kumman tahansa tai molemmat. |
 | V-WS-6b | S | Jos samaa leimausta vastaanotetaan useasti (uudelleenlähetys verkossa), tapahtuma julkaistaan vain kerran (kortti + koodi + aika). |
 | V-WS-6c | M | **Yksi leimojen hakija.** SI Centerin haku (`SIGPRS`) ja suoraan kytketyt lukijat konfiguroidaan vain yhdelle instanssille (yleensä pääkone). Rajapintakone saa leimat tiedonsiirrossa (SI-3). Rajapinta näyttää kohdassa `GET /api/v1/status/api`, onko tällä instanssilla oma leimalähde, ja kirjaa lokiin varoituksen, jos rajapinta on päällä ja `SIGPRS` on asetettu. |
+| V-WS-6d | S | **EXTRA-sanoman checkpoint lähteenä.** Haaran Java-kirjasto purkaa EXTRA-sanoman alatyypin 1 (kortti, aika, piste). Se on käytettävissä ennen kuin leima on tallennettu kilpailijan tietueeseen. Sen käyttö `punch`-tapahtuman lähteenä pienentäisi viivettä, mutta tuo kohdistamattoman leiman (SI-4) ja uudelleenlähetykset (V-WS-6b). Oletus on V-WS-6:n mukainen, eli vain tallennetut leimat. Päätös on avoin (K28). |
 | V-WS-7 | M | Palvelin lähettää pingin 30 s välein ja sulkee yhteyden, jos pongia ei tule. Yhteyksien enimmäismäärä on asetettavissa (oletus 32). Hidas asiakas katkaistaan, kun sen lähetysjono ylittää rajan, eikä se saa hidastaa muita. |
 | V-WS-8 | M | Viestit kuvataan AsyncAPI 3.0 -dokumentilla. OpenAPI-dokumentissa on päivityspäätepiste ja viittaus AsyncAPI-dokumenttiin. |
 
@@ -424,7 +477,7 @@ oikein. Ennen toteutusta päätepisteet palauttavat 501.
 | Tunnus | Pri | Vaatimus |
 |---|---|---|
 | V-SYO-1 | M | `POST /api/v1/competitors/{bib}/dns` merkitsee kilpailijan ei lähteneeksi aktiivisessa vaiheessa (`set_tark(L'E')`). Viestissä `POST /api/v1/teams/{bib}/legs/{leg}/dns` merkitsee osuuden juoksijan. |
-| V-SYO-2 | M | `DELETE /api/v1/competitors/{bib}/dns` peruu merkinnän, jos kilpailijan tila on edelleen `E` ja muutos on tehty rajapinnan kautta tai `force=true`. |
+| V-SYO-2 | M | `DELETE /api/v1/competitors/{bib}/dns` ja sen vastine `POST /api/v1/competitors/{bib}/open` (haaran toteutus, V-SYO-22) palauttavat kilpailijan avoimeksi. Toiminto on idempotentti: jo avoin kilpailija antaa 200 ja `changed: false`. Ehto, jolla `E`-tilan saa purkaa, on avoin (K27): haaran toteutus sallii sen aina, kun tila on `E` (myöhästynyt lähtijä tulee lähtöön), ja tämän luonnoksen aiempi sääntö vaati, että merkintä on tehty rajapinnan kautta tai `force=true`. |
 | V-SYO-3 | M | `PUT /api/v1/competitors/{bib}/start-time` rungolla `{"start": "13:42:30", "reason": "late"}` asettaa uuden lähtöajan (`tall_laika` / vaihekohtainen `tlahto`). |
 | V-SYO-3a | M | **Uusi lähtöaika sallitaan vain väliaikalähtökilpailuissa (K14):** kilpailijan sarjalla on aktiivisessa vaiheessa lähtöväli (`Sarjat[srj].lahtovali[k_pv] != 0`), eikä sarja ole takaa-ajo (`luonne[k_pv] != 2`). Lähtöporttilähtö (`hiihtolahto`) on väliaikalähtö. Yhteislähtö, takaa-ajo ja viesti hylätään vastauksella 422 (`error: "not_interval_start"`). Viestissä päätepistettä ei ole. `force` ei ohita tätä tarkistusta. |
 | V-SYO-4 | M | Syöttö hylätään (409), jos kilpailijalla on jo maalitulos (DNS), tai jos hänellä on väliaika tai maaliaika, joka on ristiriidassa uuden lähtöajan kanssa (lähtöaika). Uusi lähtöaika hylätään myös, jos kilpailijalla on toteutunut lähtöaika (lähtöleima tai lähtöportin aika), joka poikkeaa arvotusta lähtöajasta (`error: "actual_start_exists"`). `force=true` ohittaa tarkistuksen vain, jos avaimella on oikeus `entry:force`. |
@@ -436,6 +489,44 @@ oikein. Ennen toteutusta päätepisteet palauttavat 501.
 | V-SYO-9 | M | Syöttö näkyy tapahtumavirrassa tyyppinä `status` tai `start_change` (V-PST-5), jolloin tilannekuva päivittyy heti. |
 | V-SYO-10 | M | Syöttöpäätepisteet ovat käytössä vain, kun `entry.enabled` on päällä (V-KONF-2), vaikka avaimella olisi `entry`-rooli. Oletuksena ne ovat pois päältä. `force` edellyttää lisäksi asetusta `entry.allow_force`. |
 | V-SYO-11 | S | Erätoiminto `POST /api/v1/dns` listalle numeroita (lähdön ei lähteneet -lista). Rivikohtainen tulos palautetaan. |
+| V-SYO-12 | M | **Toimintokohtainen oikeus.** Avaimelle voidaan rajata sallitut syöttötoiminnot (`entry_ops`: `dns`, `start_time`, `badge`, `penalties`, `runner`), esim. ammuntapaikan avaimelle vain `penalties` ja lähdön avaimelle `dns`, `start_time` ja `badge`. Ilman rajausta `entry`-rooli sallii kaikki toiminnot, jotka on kytketty päälle asetuksessa `entry.operations` (V-KONF-2). Kielletty toiminto palauttaa 403 (`error: "operation_not_allowed"`). |
+
+### 7.1 Kortin (badge) vaihto
+
+| Tunnus | Pri | Vaatimus |
+|---|---|---|
+| V-SYO-13 | M | `PUT /api/v1/competitors/{bib}/badge` rungolla `{"card": 2045678, "slot": 0, "rental": false, "reason": "broken"}` asettaa kilpailijan kortin aktiivisesta vaiheesta alkaen (`pv[k_pv..].badge[slot]`, `laina[slot]`, ks. kohta *Vaiheet* alla). Viestissä `PUT /api/v1/teams/{bib}/legs/{leg}/badge` asettaa osuuden juoksijan kortin (`ostiet[os].badge[slot]`). `slot` 1 sallitaan vain, kun kilpailussa on kaksi korttia (`kaksibadge`). Numero annetaan kortin todellisena numerona, ja se muunnetaan tallennusmuotoon samalla tulkinnalla kuin näytössä (V-MAL-5, `BadgeAskel`). **Vaiheet:** monivaiheisessa kilpailussa vaihto koskee ensimmäisestä vaiheesta, jolla ei ole vielä tulosta tai päätettyä tilaa, kaikkia seuraavia vaiheita (haaran toteutus, peilaa `HkConsole/HkKilp.cpp:970-973`). Jos kaikki vaiheet on päätetty, päivitetään viimeinen. Sanoma lähetetään vaihetta kohden (KILPPVT:n `pv`-kenttä). |
+| V-SYO-14 | M | **Ristiriidat.** Jos kortti on jo toisella kilpailijalla tai juoksijalla (`bdg2kno`), vaihto hylätään (409, `error: "card_in_use"`, vastauksessa kortin haltijan numero). Rajapinta tekee tarkistuksen itse ennen tallennusta eikä koskaan siirrä korttia toiselta kilpailijalta, vaikka `tallenna` tiedonsiirron muutoksena sen tekisikin. `force` ei ohita tätä: kortti vapautetaan ensin sen nykyiseltä haltijalta. Tallennus tehdään samalla polulla kuin käyttöliittymän muutos, jolloin korttihakemisto (`bdg_kno`, `emitjarr`) päivittyy (`addbadge`/`rembadge`). Rajapinnan kautta ei avata käyttöliittymän kyselyikkunoita (`writeerror_w`, `kysyfl`). Onnistunut vaihto tuottaa `competitor_update`-tapahtuman `safety`-roolille (kortin numero, V-MAL-5). |
+| V-SYO-15 | M | **Jo luettu kortti.** Jos kilpailijalle on jo luettu kortti (emit-tietue), vaihto hylätään (409, `error: "readout_exists"`), ellei `force=true` ja avaimella ole oikeutta `entry:force`. Pakotetussa vaihdossa luetut tiedot säilyvät kilpailijalla, kuten käyttöliittymässä, ja vastauksessa on `readout_kept: true`. |
+
+### 7.2 Ammunnan sakot
+
+| Tunnus | Pri | Vaatimus |
+|---|---|---|
+| V-SYO-16 | M | `PUT /api/v1/competitors/{bib}/penalties` rungolla `{"shootings": [1, 0, 2, null]}` asettaa ammuntojen sakot aktiivisessa vaiheessa (`tall_asakot`). `null` tarkoittaa ammuntaa, jota ei ole vielä kirjattu (`-`). Yksittäinen ammunta kirjataan `PUT /api/v1/competitors/{bib}/penalties/{n}` rungolla `{"misses": 2}`, jolloin muut ammunnat säilyvät. Viestissä vastaavat polut ovat `/api/v1/teams/{bib}/legs/{leg}/penalties[/{n}]` (`ostiet[os].ampsakot`), ja sakkokierrosten laskuri (`ampsakot[LSAKOT]`, `UnitSakkoKierr`) säilyy ennallaan. Muutos tuottaa `penalty`-tapahtuman (`commentator`-rooli: kilpailija, ammunta, ohilaukaukset, yhteensä) ja tuloksen muuttuessa `correction`-tapahtuman. |
+| V-SYO-17 | M | **Tarkistukset.** Ammunnan numero on 1…ammuntojen määrä (`Sarjat[srj].lsak[k_pv]`, viestissä osuuden ammunnat), ja ohilaukausten määrä on 0…`kilpparam.maxasakko`. Muuten 422 (`error: "invalid_penalty"`). Jos kilpailussa ei käytetä ammuntasakkoja (`asakkolaji = 0`), vastaus on 422 (`error: "penalties_not_used"`). Ensimmäinen versio tukee ampumahiihdon sakkoja (`asakkolaji = 1`, `maxasakko` < 10). Muut sakkolajit (`asakkolaji` > 1, sotilasmoniottelu) palauttavat 422 (`error: "unsupported_penalty_type"`). |
+| V-SYO-18 | M | **Tuloksen päivitys.** Sakkoaika lasketaan uudelleen samoilla funktioilla kuin käyttöliittymässä (`tall_asakot` laskee sakkojen muutoksen tulokseen; viestissä `amptsak` × `ASakkoLkm`). Rajapinta ei laske sakkoaikaa itse. Yksittäisen ammunnan kirjaus ei vaadi `If-Match`-otsaketta (V-SYO-5), koska se muuttaa vain yhtä ammuntaa lukon sisällä. Koko taulukon asetus vaatii sen. Ammuntapaikan ikkuna (`UnitASakot`) päivittyy kuten tiedonsiirrosta tulleessa muutoksessa. |
+
+### 7.3 Viestin osuuden juoksijan nimitiedot
+
+| Tunnus | Pri | Vaatimus |
+|---|---|---|
+| V-SYO-19 | M | `PUT /api/v1/teams/{bib}/legs/{leg}/runner` rungolla `{"first_name": "Matti", "last_name": "Meikäläinen", "license": 123456, "club": "KyS", "reason": "runner_change"}` päivittää osuuden juoksijan nimen (`osrec::setNimi(etunimi, sukunimi)`) sekä valinnaisesti lisenssinumeron (`lisno`) ja juoksijan seuran (`osseura`). Kentät, joita ei anneta, säilyvät. Muutos tuottaa `competitor_update`-tapahtuman (`commentator`-rooli), ja kilpailijan tunnisteiden ja taustatietolinkkien välimuisti mitätöidään (V-KLP-2/3). |
+| V-SYO-20 | M | **Merkistö ja pituus.** Viestin nimikentät ovat 8-bittisiä (`char nimi[OSNIMIL+1]`, cp1252). Jos nimessä on merkki, jota ei voi esittää, tai nimi ei mahdu kenttään (`OSNIMIL`, sukunimi ja etunimi erottimineen), vastaus on 422 (`error: "unsupported_characters"` tai `"too_long"`). Nimeä ei katkaista eikä muunneta hiljaa. |
+| V-SYO-21 | M | **Rajaus.** Toiminto muuttaa vain yhden osuuden juoksijan tietoja. Juoksijoiden siirto osuuksien tai joukkueiden välillä (`UnitJjVaihdot`) ja henkilökilpailun nimitietojen muutos eivät kuulu rajapintaan. Muutos sallitaan osuuden tilasta riippumatta, koska nimen korjaus on tarpeen myös osuuden jälkeen. |
+
+### 7.4 Yhteensopivuus olemassa olevaan DNS-rajapintaan
+
+Haaran `webadmin` tarjoaa jo polkua `/api/v1` käyttävän rajapinnan (`webadmin/API.md`), jota
+DNS-lähtöpaikkasovellus käyttää. Jotta sama `v1` ei sisällä kahta eri sopimusta, seuraavat
+vaatimukset ottavat sen osaksi tätä määritystä. Vahvistus on avoin (K29).
+
+| Tunnus | Pri | Vaatimus |
+|---|---|---|
+| V-SYO-22 | M | `POST /api/v1/competitors/{bib}/dns` ja `POST /api/v1/competitors/{bib}/open` toimivat haaran sopimuksen mukaan (`{bib}` on sama kuin haaran `{kilpno}`). Vastaus on `{"kilpno": 101, "name": "…", "status": "E", "changed": true, "message": "…"}`. Idempotentti toisto: 200 ja `changed: false`. Tila, joka ei salli muutosta (tulos tai muu päätetty tila): 409, `changed: false` ja `message`, jossa nykyinen tila. |
+| V-SYO-23 | M | `GET /api/v1/ping` palauttaa 200 ja `{"ok": true, "connected": <bool>}` mille tahansa kelvolliselle avaimelle roolista riippumatta. 401 = avain puuttuu tai on väärä. Näin asiakas erottaa väärän avaimen tilanteesta, jossa pääkoneeseen ei ole yhteyttä. `connected` vastaa V-VKA-3:n tilaa. |
+| V-SYO-24 | M | Virheet noudattavat V-API-7:ää (`{"error": "<code>", "message": "…"}`), ja sitä täydennetään koodeilla 502 (`peer_rejected`, pääkone hylkäsi muutoksen) ja 504 (`ack_timeout`) sekä 503:n syillä `not_ready`, `stale_replica` ja `stage_mismatch` (V-VKA-1–4). Haaran toteutus vastaa nyt hieman eri rungoilla (`{"error": "…"}` suodattimessa, Springin oletusrunko muualla), ja ne yhdenmukaistetaan. |
+| V-SYO-25 | S | Avoimuus (V-SYO-4) tarkistetaan vähintään haaran toteutuksen tavoin (ei päätettyä tilaa, ei maaliaikaa eikä sijaa). Lisäksi otetaan huomioon väliaika ja lähtöleima (V-SYO-3b, SI-2), joita haaran toteutus ei tarkista. Ero kirjataan toteutuksen dokumentaatioon. |
 
 ## 8. Turvallisuus, tunnistautuminen ja julkisuus
 
@@ -445,7 +536,7 @@ oikein. Ennen toteutusta päätepisteet palauttavat 501.
 |---|---|---|
 | V-AUT-1 | M | Sovelluskohtaiset API-avaimet määritellään rajapinnan konfiguraatiossa (`restapi.xml`, V-KONF-2). Kullakin avaimella on tunnus (`client_id`), kuvaus, roolit ja valinnaisesti sallitut IP-osoitteet ja voimassaoloaika. Avaimesta tallennetaan tiiviste (SHA-256), ei selkotekstiä. |
 | V-AUT-2 | M | Avain välitetään otsakkeessa `Authorization: Bearer <key>` tai `X-Api-Key`. WebSocketissa sallitaan myös `?key=`. |
-| V-AUT-3 | M | Tunnistautumisen voi kytkeä pois suljetussa verkossa (`auth=off`). Silloin jokaisella pyynnöllä on asetuksen `auth.anonymous_roles` roolit (oletus `public, commentator`). Kun `auth.mode=on`, ilman avainta tulevalla pyynnöllä on vain `anonymous_roles`-roolit. `safety`, `operations` ja `entry` vaativat aina avaimen, ellei niitä ole erikseen sallittu. |
+| V-AUT-3 | M | Tunnistautumisen voi kytkeä pois suljetussa verkossa (`auth=off`). Silloin jokaisella pyynnöllä on asetuksen `auth.anonymous_roles` roolit (oletus `public, commentator`). Kun `auth.mode=on`, ilman avainta tulevalla pyynnöllä on vain `anonymous_roles`-roolit. `safety`, `operations` ja `entry` vaativat aina avaimen, ellei niitä ole erikseen sallittu. Haaran toteutus (`ApiKeyAuthFilter`) ei koskaan toimi avoimena: jos avainta ei ole asetettu, kaikki pyynnöt saavat 503. Tämä on oletus (`auth.mode=on`), ja `auth=off` on nimenomainen valinta. Avain luetaan otsakkeesta `X-API-Key` tai `Authorization: Bearer` ja verrataan vakioajassa. |
 | V-AUT-4 | S | Avaimia voi lisätä ja poistaa käynnistämättä ohjelmaa uudelleen (asetustiedoston uudelleenluku). |
 | V-AUT-5 | C | TLS (HTTPS/WSS). Ei 1. versiossa, koska verkko on suljettu. Tarvittaessa TLS hoidetaan edustapalvelimella (9.6, V-PRX-5). Sovellukseen ei toteuteta TLS:ää. |
 
@@ -470,7 +561,7 @@ V-KONF-2:n osat ja oletusarvot:
 | `websocket` | `max_clients`, `ping_interval_s`, `max_queue` | 32, 30, 1000 |
 | `safety` | `max_time_min`, `leader_factor`, `start_grace_min`, `stale_s` | 240, 2,0, 10, 60 |
 | `estimate` | `min_samples` | 3 |
-| `entry` | `enabled`, `allow_force` | ei, ei |
+| `entry` | `enabled`, `allow_force`, `operations` (sallitut toiminnot: `dns`, `start_time`, `badge`, `penalties`, `runner`) | ei, ei, kaikki |
 | `rate_limit` | `requests_per_min_per_key` | 600 |
 | `cache` | `max_bytes`, `rebuild_min_interval_ms`, `stale_max_ms`, `snapshot_interval_ms` | 64 MB, 250, 1000, 1000 |
 | `documents` | `html.format_file`, `pdf.format_file`, `pdf.printer`, `temp_dir`, `queue_max`, `timeout_s`, `min_interval_s` (HTML/JSON, PDF), `iof_min_interval_s`, `stale_max_s`, `format_check_interval_s`, `prewarm_minutes`, `prewarm_max`, `cache_max_bytes`, `disk_cache` | sovelluksen asetukset, sovelluksen asetukset, *Microsoft Print to PDF*, `restapi_tmp`, 10, 30, 10 / 30, 30, 120, 30, 10, 50, 128 MB, pois |
@@ -512,13 +603,20 @@ V-KONF-2:n osat ja oletusarvot:
 | V-DOK-1 | M | OpenAPI 3.1 (`doc/api/openapi.yaml`) ja AsyncAPI 3.0 (`doc/api/asyncapi.yaml`) englanniksi sekä käyttöohjeen luku `docs-site`-sivustolle (suomeksi). Samat tiedostot palautetaan palvelusta (V-SPEC-1–2). Kuvausten `info.version` on sama kuin `api_version` (V-VER-2). |
 | V-DOK-2 | M | Käyttöönotto-ohje: edustapalvelinprofiili (Caddy) selainsovelluksineen sekä pelkkä sisäänrakennettu palvelin ilman selainsovelluksia (`doc/api/deploy/`, V-PRX-8). |
 | V-TST-1 | M | Tietojen poiminta, JSON-sarjallistus, reititys, roolitarkistus ja WebSocket-kehysten käsittely yksikkötestataan `Tests/`-kehyksellä ilman GUI:ta. Molemmille domaineille tehdään testiaineisto. |
-| V-TST-2 | S | OpenAPI-skeemaa vasten tehdään sopimustesti (vastausten validointi). |
+| V-TST-2 | S | OpenAPI-skeemaa vasten tehdään sopimustesti (vastausten validointi). Skeema on sama, jonka V-TST-7 on validoinut. |
 | V-TST-3 | M | Lukumallin sijat ja erot ovat samat kuin `sijat2`/`merk_sijat`-laskennan tulos samalla aineistolla, myös tasatulosten ja hylättyjen osalta. Testataan molemmille domaineille (V-VM-3). |
 | V-TST-4 | M | Tulosluettelot: (a) muodostus rajapinnan kautta ei muuta kilpailutiedostoa eikä lähetä sanomia (tiedosto- ja sanomavertailu ennen ja jälkeen); (b) HTML:n sisältö vastaa sovelluksen HTML-tulostusta samoilla valinnoilla; (c) IOF XML validoituu IOF 3.0 -skeemaa vasten molemmissa domaineissa; (d) JSON-luettelon sarakkeet, rivit ja arvot ovat samat kuin HTML-luettelon solut samoilla parametreilla (vertailu HTML-taulukon soluista); (e) PDF:n kaappaus ja toisto tuottavat saman sivumäärän ja tekstin kuin suora GDI-tulostus. |
 | V-TST-5 | M | **Testattavuus SportIdent-haaran käytännön mukaan** (`Tests/README.md` haarassa). Testattava logiikka kirjoitetaan puhtaisiin käännösyksiköihin (`Tp/` tai vastaava), jotka eivät lue globaaleja eivätkä sisällä `windows.h`:ta tai VCL:ää. Sovitinosa (globaalit, Winsock, VCL) pidetään ohuena. Puhtaita yksiköitä ovat ainakin HTTP-pyynnön jäsennin, WebSocket-kehykset, JSON-kirjoitin ja -lukija, UTF-8-muunnos, tiivisteet, sijojen ja erojen laskenta taulukoista (V-VM-3), mediaaniarvio (V-ARV-1), vaihtoaluesäännöt (V-TUR-10–16), myöhässä-säännöt (V-TUR-3/4), kortin numeron tulkinta (V-MAL-5) ja välimuistin avain- ja versiologiikka. Testit ajetaan CI:ssä sekä g++:lla (`run.sh`, Linux, 32-bittinen `wchar_t`, etumerkillinen `char`) että MSVC:llä (`VS/Tests/TpTest.vcxproj`). UTF-8-muunnos käsittelee sekä 16-bittisen (korvausparit) että 32-bittisen `wchar_t`:n, ja `char`-arvojen käsittely ei riipu etumerkistä. |
 | V-TST-6 | M | **Kuvaus ja toteutus pysyvät samoina.** Yksikkötesti vertaa reitityskerroksen reittitaulukkoa (polku, metodi, roolit) OpenAPI-kuvauksen `paths`-osaan molempiin suuntiin, ja WebSocketin tapahtumatyyppien luetteloa AsyncAPI-kuvaukseen. Testi myös tarkistaa, että kuvausten `info.version` on sama kuin koodin `api_version`-vakio ja että sulautettu resurssi on sama kuin lähdetiedosto. Ero kaataa CI:n. |
+| V-TST-7 | M | **Kuvaukset validoidaan jokaisessa käännöksessä.** Käännöksen esivaihe, joka tuottaa sulautettavat JSON-kuvaukset (V-SPEC-2), validoi ensin lähteet: (a) `openapi.yaml` OpenAPI 3.1 -skeemaa ja `asyncapi.yaml` AsyncAPI 3.0 -skeemaa vasten, (b) lint-säännöt: jokaisella operaatiolla on `operationId`, kuvaus, roolit (`x-roles`) ja virhevastaukset, ja viittaukset (`$ref`) ratkeavat, (c) kuvauksen esimerkit (`examples`) skeemojaan vasten. Virhe keskeyttää käännöksen, eikä ohjelmaa voi kääntää virheellisellä kuvauksella. Validointi ajetaan samalla tavalla paikallisessa käännöksessä (`build-gui.ps1`) ja CI:ssä (sekä pull requestit että `main`). Työkalut ja sääntötiedosto ovat versionhallinnassa (`doc/api/`), ja työkalujen versiot on lukittu, jotta tulos on sama kaikilla koneilla. Validointi ei saa ohittua hiljaa: jos työkalu puuttuu, käännös keskeytyy selkeällä virheilmoituksella. Myös V-TST-6 ajetaan jokaisessa käännöksessä. |
 
 ### 9.2 Arkkitehtuuri
+
+> **Huomio (luonnos 13):** tämän luvun vaatimukset V-ARK-1…9 ja niihin liittyvät V-VM-*, V-TVM-8,
+> V-TLS-1/2/8/30, V-YHT-2/3 ja V-TST-5 olettavat toteutuksen sovelluksen sisällä (C++). Haara `poc-…`
+> osoittaa vaihtoehdon, jossa rajapinta on erillinen sovellus, joka käyttää verkkoprotokollaa
+> (`pirila-comm`, luku 2.5). Valinta on avoin (K25). Rajapintasopimus (luvut 5–8) on toteutuksesta
+> riippumaton, ja verkkoasiakkaan vaatimukset (luku 3.1) pätevät kummassakin vaihtoehdossa.
 
 | Tunnus | Pri | Vaatimus |
 |---|---|---|
@@ -561,14 +659,14 @@ ne päivitetään tallennuksen yhteydessä (`addjarjarr`).
 
 | Tunnus | Pri | Vaatimus |
 |---|---|---|
-| V-KUO-1 | M | **Testiaineisto.** Generaattori luo kilpailun, jossa on 3000 kilpailijaa (HK) tai 3000 joukkuetta kolmella osuudella (viesti) ja 10 väliaikapistettä. Kustakin domainista tehdään kaksi muunnelmaa: (a) 100 sarjaa, (b) yksi 3000 kilpailijan tai joukkueen sarja. |
+| V-KUO-1 | M | **Testiaineisto.** Generaattori luo kilpailun, jossa on 3000 kilpailijaa (HK) tai 3000 joukkuetta kolmella osuudella (viesti) ja 10 väliaikapistettä. Kustakin domainista tehdään kaksi muunnelmaa: (a) 100 sarjaa, (b) yksi 3000 kilpailijan tai joukkueen sarja. Lähtöaineistona voi käyttää haaran `poc-…` anonymisoitua `kisat/nikonserver/data/KILP.DAT`-tiedostoa ja generaattoria `IT/jbang/GenerateTwoMachineRace.java`. |
 | V-KUO-2 | M | **Tulosvirta.** Testi syöttää rajapintakoneelle tuloksia ja väliaikoja nykyisen tiedonsiirron kautta (sama UDP/TCP-yhteys kuin pääkoneelta). Tasainen kuorma on 20 tallennusta sekunnissa, ja massamaalipurske 100 tallennusta sekunnissa 60 sekunnin ajan. Mukana ovat myös korjaukset ja tilamuutokset. |
 | V-KUO-3 | M | **Asiakkaat.** 50 pollaavaa asiakasta, jotka kukin kyselevät kerran sekunnissa eri sarjaa tai osuutta (`standings`, osa parametrilla `splits=all`) ja käyttävät `If-None-Match`-otsaketta. Lisäksi 5 asiakasta kyselee `safety/summary`- ja `safety/changeover`-päätepisteitä, 5 asiakasta `controls/{code}/passings?since=`-päätepistettä ja 10 WebSocket-asiakasta tilaa rastitapahtumia. Pahin tapaus ajetaan myös siten, että kaikki 50 kyselevät samaa 3000 kilpailijan sarjaa. |
 | V-KUO-3a | M | **Dokumentit.** Edellisten lisäksi 5 asiakasta hakee 10 sekunnin välein satunnaisen sarjan tai osuuden HTML-, JSON- tai PDF-luettelon, ja 1 asiakas hakee koko kilpailun IOF XML:n minuutin välein. |
 | V-KUO-4 | M | **Mittaukset.** Vastausajat päätepisteittäin (mediaani, 95. ja 99. persentiili, suurin), 304-osuuksien osuus, lukumallin rakennusten määrä ja kesto, `tall_CriticalSection`in pitoaika rakennuksessa, tallennusviive (sanoman vastaanotosta tallennukseen) ilman rajapintaa ja rajapinnan kanssa, WebSocket-viive (tallennuksesta viestiin), suoritin ja muisti. Mittaukset luetaan V-VM-10-tiedoista ja kuormitustyökalusta. |
 | V-KUO-5 | M | **Hyväksymisrajat.** `standings`-vastausten 95. persentiili alle 200 ms ja `safety/summary`-vastausten alle 300 ms (V-SUO-2). Lukon pitoaika yhdessä rakennuksessa enintään 20 ms 3000 kilpailijan sarjalla. Tallennusviive kasvaa rajapinnan kanssa enintään 50 ms (95. persentiili). WebSocket-viive alle 500 ms (V-WS-5). Muisti pysyy `cache.max_bytes`-rajan ja lukumallien koon summan alla. Virheitä tai katkenneita yhteyksiä ei ole. Rajat ovat tavoitteita, ja ne tarkistetaan ensimmäisen mittauksen jälkeen. |
 | V-KUO-5a | M | **Dokumenttien hyväksymisrajat.** Välimuistista palautettu dokumentti alle 100 ms (95. persentiili). Uusi HTML alle 1 s ja uusi PDF alle 5 s yhdelle sarjalle. Koko kilpailun IOF XML (3000 kilpailijaa tai joukkuetta) alle 10 s. Lukon pitoaika yhden sarjan kaappauksessa enintään 50 ms 3000 kilpailijan sarjalla, myös PDF:ssä (V-TVM-8). Dokumenttien muodostus ei saa heikentää V-KUO-5:n `standings`-vastausaikoja eikä tallennusviivettä yli rajojen. |
-| V-KUO-6 | M | **Toteutus.** Kuormitustyökalu ja aineistogeneraattori sijoitetaan hakemistoon `Tests/load/` (Python-standardikirjasto tai oma C++-työkalu, ei uusia riippuvuuksia ohjelmaan). Testi ajetaan Windowsilla HkKisaWin- ja ViestiWin-ohjelmilla. Se voidaan käynnistää käsin tai GitHub Actionsin erillisellä työnkululla (`workflow_dispatch`) itse ylläpidetyllä Windows-ajokoneella. Tulokset tallennetaan raporttina (`Tests/load/results/`) versiotunnuksella. |
+| V-KUO-6 | M | **Toteutus.** Kuormitustyökalu ja aineistogeneraattori sijoitetaan hakemistoon `Tests/load/` (Java-skripti JBangilla haaran `IT/jbang/`-käytännön mukaan tai oma C++-työkalu. Haara luopui Python-testeistä. Ei uusia riippuvuuksia ohjelmaan). Testi ajetaan Windowsilla HkKisaWin- ja ViestiWin-ohjelmilla. Se voidaan käynnistää käsin tai GitHub Actionsin erillisellä työnkululla (`workflow_dispatch`) itse ylläpidetyllä Windows-ajokoneella. Tulokset tallennetaan raporttina (`Tests/load/results/`) versiotunnuksella. |
 | V-KUO-7 | M | Kuormitustesti ajetaan vaiheen 2 lopussa (sarjan tilanne ja välimuisti) ja vaiheen 3 lopussa (WebSocket ja tilannekuva), sekä ennen jokaista julkaisua, joka muuttaa poimintamoduuleja, välimuistia tai tallennuspolkua. |
 | V-KUO-8 | S | Vertailumittaus nykyisellä toteutustavalla, jossa jokainen pyyntö laskee tilanteen kuten Tilanne-ikkuna (`sijat2`), dokumentoidaan kerran perustelemaan välimuistin tarve. |
 
@@ -679,13 +777,13 @@ määritellään omissa dokumenteissaan. Alla ovat jakelun ja rajapinnan käytö
 
 | Tunnus | Pri | Vaatimus |
 |---|---|---|
-| V-PRX-10 | M | **Sama origin.** Edustapalvelin jakaa sovellukset poluissa `/cis/` ja `/tilannekuva/` samasta osoitteesta kuin rajapinnan `/api/*`. Sovellukset käyttävät suhteellisia polkuja (`/api/v1/…`, `/api/v1/ws`), joten ne toimivat sekä `http`- että `https`-profiilissa ilman asetuksia. Juuripolku `/` ohjaa sovellusten valintasivulle. |
+| V-PRX-10 | M | **Sama origin.** Edustapalvelin jakaa sovellukset poluissa `/cis/` ja `/dashboard/` samasta osoitteesta kuin rajapinnan `/api/*`. Sovellukset käyttävät suhteellisia polkuja (`/api/v1/…`, `/api/v1/ws`), joten ne toimivat sekä `http`- että `https`-profiilissa ilman asetuksia. Juuripolku `/` ohjaa sovellusten valintasivulle. |
 | V-PRX-11 | M | **Avaimet eivät ole sovelluksessa.** Sovellustiedostoissa ei ole API-avaimia. Käyttäjä syöttää avaimen sovelluksen aloitussivulla, tai sovellus toimii ilman avainta `auth.anonymous_roles`-rooleilla (V-AUT-3). Avain säilytetään selaimen istuntomuistissa (`sessionStorage`), ja se lähetetään otsakkeessa `Authorization` ja WebSocketissa parametrina `?key=` (V-WS-2). Tilannekuva vaatii `safety`-roolin avaimen (V-TUR-5). Edustapalvelin ei lisää avaimia pyyntöihin, koska silloin rooli ei enää olisi käyttäjäkohtainen. |
 | V-PRX-12 | M | **Avain ei päädy lokeihin.** Rajapinta (HkKisaWin/ViestiWin) ja edustapalvelin peittävät `key`-parametrin ja `Authorization`-otsakkeen pääsylokeista. Caddy-asetustiedosto (V-PRX-8) sisältää tämän suodatuksen. |
 | V-PRX-13 | M | **Versioiden yhteensopivuus.** Sovellus lukee käynnistyessään `GET /api/version` (V-VER-1). Jos `api_version`-pääversio ei ole tuettu tai tarvittava ominaisuus puuttuu `features`-listasta (esim. `safety`, `websocket`), sovellus näyttää selkeän ilmoituksen eikä yritä käyttää puuttuvaa toimintoa. WebSocket-yhteys pyytää aliprotokollaa `tulospalvelu.v1` (V-VER-5). |
-| V-PRX-14 | M | **Lähde ja jakelu.** Sovellusten lähdekoodi on versionhallinnassa (`web/cis/`, `web/tilannekuva/`). Release-paketti sisältää valmiit sovellustiedostot ja Caddy-asetustiedoston hakemistossa `web/`. Sovellukset eivät lataa skriptejä tai fontteja ulkoisista verkko-osoitteista, koska kilpailuverkko voi olla suljettu. |
+| V-PRX-14 | M | **Lähde ja jakelu.** Sovellusten lähdekoodi on versionhallinnassa (`web/cis/`, `web/dashboard/`). Release-paketti sisältää valmiit sovellustiedostot ja Caddy-asetustiedoston hakemistossa `web/`. Sovellukset eivät lataa skriptejä tai fontteja ulkoisista verkko-osoitteista, koska kilpailuverkko voi olla suljettu. |
 | V-PRX-15 | M | **Välimuistiohjeet.** Edustapalvelin palauttaa sovellusten `index.html`-tiedostot otsakkeella `Cache-Control: no-cache` ja versioidut resurssit (tiedostonimessä tiiviste) pitkällä välimuistiajalla. Uusi sovellusversio tulee näin käyttöön sivun uudelleenlatauksella. |
-| V-PRX-16 | S | **Lisärajaus Tilannekuvalle.** Caddy-asetustiedostossa on valmiina valinnainen IP-rajaus polulle `/tilannekuva/` (esim. vain kilpailukeskuksen verkko). Varsinainen suojaus on silti `safety`-rooli rajapinnassa (V-PRX-4). |
+| V-PRX-16 | S | **Lisärajaus Tilannekuvalle.** Caddy-asetustiedostossa on valmiina valinnainen IP-rajaus polulle `/dashboard/` (esim. vain kilpailukeskuksen verkko). Varsinainen suojaus on silti `safety`-rooli rajapinnassa (V-PRX-4). |
 | V-PRX-17 | M | **Yhteyskatkot.** Sovellukset näyttävät tiedon tuoreuden (`generated`, `stale`, V-API-10, V-TUR-9). Kun WebSocket-yhteys katkeaa, ne yhdistävät uudelleen viiveellä, joka kasvaa, ja jatkavat viimeisestä `seq`-arvosta (V-WS-4). Jos tapahtumat ovat jo poistuneet puskurista, ne hakevat tilanteen pollaamalla. |
 | V-PRX-18 | M | **Testaus.** Kummallekin sovellukselle tehdään päästä päähän -testi, joka ajetaan Caddyn kautta testidatalla (V-TST-5) ja varmistaa, että sovellus käyttää vain kuvauksessa (OpenAPI, AsyncAPI) olevia polkuja ja viestityyppejä. |
 
@@ -721,18 +819,22 @@ määritellään omissa dokumenteissaan. Alla ovat jakelun ja rajapinnan käytö
 | — | Tulosteiden välimuisti: versiopohjainen avain, vanhan version palautus muodostuksen ajaksi, kaappaus lukon sisällä ja toisto sen ulkopuolella (9.5). |
 | — | Suorituskyky varmistetaan lukumallilla ja vastausvälimuistilla (9.3), ja se todennetaan kuormitustestillä, jossa on 50 asiakasta ja 3000 kilpailijaa tai joukkuetta (9.4). |
 | — | Palvelun versio (`/api/version`, semanttinen versiointi, `X-Api-Version`, WebSocketin `hello` ja aliprotokolla) ja palvelusta haettavat OpenAPI- ja AsyncAPI-kuvaukset, jotka sulautetaan käännökseen (5.12). Vastausten muutoslaskurin nimi on `data_version`. |
+| K22 | Kortinluenta (Emit tai SportIdent) ei tallenna väliaikoja väliaikapisteiden aikoihin (`va[]`). Väliaikapisteen ajan muutos tulee siis radio- tai online-rastilta tai käsisyötöstä, ja `punch`-tapahtuman määritelmä (V-WS-6) riittää ilman ajan lähdetietoa sanomassa (SI-4). |
 | K24 | Edustapalvelin otetaan käyttöönottomalliin (vaihtoehto C), ja edustapalvelimeksi suositellaan Caddya. Sen avulla loppukäyttäjille tarjotaan REST-rajapintaan perustuvat selainsovellukset CIS ja Tilannekuva samasta osoitteesta kuin rajapinta. Rajapinta toimii edelleen myös ilman edustapalvelinta (9.6, V-PRX-1–18). |
+| — | Haaran `poc-…` havainnot viety vaatimuksiin: luku 2.5, verkkoasiakas luku 3.1 (V-VKA-1–5), V-PST-9, V-WS-6d, V-SYO-13/2, luku 7.4 (V-SYO-22–25), V-AUT-3, V-API-5/6, V-KUO-1/6. Arkkitehtuurikysymys on avoin (K25). |
 
 ## 11. Vaiheistus
+
+Vaiheiden eteneminen seurataan issuessa [#97](https://github.com/PirilaTP/tulospalvelu/issues/97). Kustakin vaiheesta tehdään ali-issue, ja muutokset viedään `main`-haaraan pull requesteina, jotka viittaavat ali-issueen ja toteutettuihin vaatimustunnuksiin.
 
 | Vaihe | Sisältö | Domain |
 |---|---|---|
 | 0. Esitehtävät | SportIdent-haaran merge korjauksin SI-1, SI-5, SI-6 (V-ARK-8). Testi-infrastruktuurin yhdistäminen (mainin ja haaran testit molempiin CI-töihin) | HK+V |
-| 1. Perusta | HTTP-palvelin, JSON, avaimet ja roolit, `/version`, `/health`, `/competition`, `/classes`, `/classes/{c}/splits`, `/controls`, `/status`, OpenAPI-runko ja AsyncAPI-luonnos, kuvausten sulautus ja jakelu (V-SPEC-1–5, 7), kuvauksen ja reittitaulukon vertailutesti (V-TST-6), edustapalvelinvalmius (V-PRX-1–5, V-SEC-5) ja Caddy-profiilin runko (V-PRX-8) | HK+V |
+| 1. Perusta | HTTP-palvelin, JSON, avaimet ja roolit, `/version`, `/health`, `/competition`, `/classes`, `/classes/{c}/splits`, `/controls`, `/status`, OpenAPI-runko ja AsyncAPI-luonnos, kuvausten sulautus ja jakelu (V-SPEC-1–5, 7), kuvausten validointi käännöksessä (V-TST-7), kuvauksen ja reittitaulukon vertailutesti (V-TST-6), edustapalvelinvalmius (V-PRX-1–5, V-SEC-5) ja Caddy-profiilin runko (V-PRX-8) | HK+V |
 | 2. CIS | Poimintamoduulit (V-ARK-1), muutoslaskurit ja lukumallit (V-VM-1–6), vastausvälimuisti ja ETag (V-VM-7–10), tapahtumapuskuri (V-ARK-2), `standings`, `passings`, `competitors` tunnisteineen. CIS-selainsovellus ja sen jakelu Caddyn kautta (V-PRX-6, 10–15, 18). Kuormitustesti (V-KUO-7) molemmissa profiileissa (V-PRX-9) | HK+V |
 | 3. WebSocket ja tilannekuva | `/ws` aliprotokollineen ja `hello`-viesteineen (V-VER-5), AsyncAPI-kuvaus valmiiksi (V-SPEC-8), koko kilpailun lukumalli (V-VM-5), `safety/*`, `expected`, johdetut tapahtumat. Tilannekuva-selainsovellus (V-PRX-16–18), CIS-sovellukseen WebSocket. WebSocket edustapalvelimen kautta (V-PRX-7). Kuormitustesti (V-KUO-7) molemmissa profiileissa | HK+V |
 | 4. Tulosluettelot ja viimeistely | HTML-, JSON-, PDF- ja IOF XML -tulosluettelot (5.11) ja niiden välimuisti (9.5), tulostusputken lukutila (V-TLS-2), CSV, historia, taustatietolinkit, sopimustestit, Tilanne-ikkunan siirto lukumalliin (V-VM-11), ohjesivu (V-SPEC-6), tulossivujen ja kuvausten katselimen jakelu edustapalvelimelta (V-PRX-6 b–c), käyttöönotto-ohje valmiiksi (V-DOK-2) | HK+V |
-| 5. Syötöt | DNS, uusi lähtöaika, audit-loki, `entry`-rooli käyttöön | HK+V |
+| 5. Syötöt | DNS, uusi lähtöaika, kortin vaihto, ammunnan sakot, viestin juoksijan nimitiedot (7.1–7.3), toimintokohtaiset oikeudet (V-SYO-12), audit-loki, `entry`-rooli käyttöön | HK+V |
 
 ## 12. Esimerkkejä (luonnos)
 
@@ -803,5 +905,9 @@ GET /api/v1/safety/changeover?class=H21          (rooli: safety, viesti)
 
 | # | Kysymys | Vaikutus |
 |---|---|---|
-| K22 | Tallentuvatko kortinluennan (Emit tai SportIdent) rastiajat koskaan väliaikapisteiden aikoihin (`va[]`)? Esimerkiksi jokin asetus voisi kopioida emit-väliajat tai maalilaji 4 voisi ottaa lopputuloksen kortilta. Jos tallentuvat, `punch`-tapahtumien määritelmä (V-WS-6) ei erota niitä radioleimoista, ja tarvitaan lisäehto tai sanomamuodon lähdetieto (SI-4). Tarkistetaan vaiheen 2 alussa. | V-WS-6, K16 |
 | K23 | Mikä on lähtöleiman ja käsin tai rajapinnan kautta asetetun lähtöajan sääntö (SI-2)? Vaihtoehdot: (a) nykyinen, eli leima korvaa aina; (b) leima korvaa vain, jos toteutunutta lähtöaikaa ei ole tai se on `uusinaika`-rajan sisällä; (c) käsin tai rajapinnan kautta asetettu aika on suojattu. Päätös koskee SportIdent-haaraa ja V-SYO-3b:tä. | V-SYO-3b, SI-2 |
+| K25 | Toteutetaanko rajapinta sovelluksen sisällä C++:lla (V-ARK-*) vai erillisenä sovelluksena, joka käyttää verkkoprotokollaa (`pirila-comm`, luku 2.5)? Karkea arvio erillisen sovelluksen lisätyöstä: sijalaskenta ja tilastot molemmille domaineille noin 2–3 kuukautta (kehittäjä), josta noin puolet on vertailutestejä C++-laskentaan. Lisäksi jokainen sääntömuutos (esim. rinnakkaisosuudet, #56) pitää tehdä kahteen paikkaan, eikä protokolla kerro, että laskentasääntö on muuttunut. Hyöty: ei C++-palvelinta, ei lukitusriskiä. Maalisijat voi lukea tietueesta (`ysija`), ja turvallisuuskuva ei tarvitse sijalaskentaa. | luvut 9.2–9.6, V-TST-*, V-YHT-* |
+| K26 | Mikä on instanssin alkutilan lähde: kopio `KILP.DAT`-tiedostosta vai täyssynkronointi pääkoneelta KILPT-sanomilla (V-VKA-2)? | V-VKA-2, V-API-10 |
+| K27 | Saako `E`-tilan purkaa aina (haaran toteutus, myöhästynyt lähtijä) vai vain rajapinnan kautta tehdyn merkinnän tai `force`:lla (V-SYO-2)? | V-SYO-2 |
+| K28 | Käytetäänkö EXTRA-sanoman checkpointia `punch`-tapahtuman lähteenä (V-WS-6d)? | V-WS-6, K16, K22 |
+| K29 | Otetaanko haaran DNS-rajapinnan sopimus (`POST …/dns`, `POST …/open`, `GET /ping`, vastausmuoto) osaksi `v1`:tä sellaisenaan (luku 7.4)? DNS-sovellus käyttää sitä jo. | V-SYO-22–25 |
