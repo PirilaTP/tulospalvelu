@@ -621,7 +621,7 @@ V-KONF-2:n osat ja oletusarvot:
 | Tunnus | Pri | Vaatimus |
 |---|---|---|
 | V-ARK-1 | M | Tiedot poimitaan VCL:stä riippumattomilla moduuleilla (`Hk/HkSeuranta.cpp`, `Juk/VSeuranta.cpp`), jotka palauttavat rakenteisia rivejä. Rajapinta käyttää niitä. `TulosUnit::PaivitaGrid` (HK ja Viesti) siirretään vaiheittain käyttämään samoja moduuleja, jotta ruutu ja rajapinta eivät erkane. |
-| V-ARK-2 | M | Tapahtumapuskuri siirretään GUI-yksiköistä jaettuun kerrokseen ilman `UnicodeString`-tyyppiä. Siihen lisätään juokseva `seq`, rastikoodi ja tapahtumatyyppi. Nykyiset *Viimeiset tapahtumat* -näytöt lukevat samaa puskuria. |
+| V-ARK-2 | M | Tapahtumapuskuri siirretään GUI-yksiköistä jaettuun kerrokseen ilman `UnicodeString`-tyyppiä. Siihen lisätään juokseva `seq`, rastikoodi ja tapahtumatyyppi. Nykyiset *Viimeiset tapahtumat* -näytöt lukevat samaa puskuria. Puskuriin kirjoitetaan synkronisesti tallennuksessa (V-VM-17), ei yhdistyvän jonon kautta. |
 | V-ARK-3 | M | HTTP/1.1- ja WebSocket-palvelin toteutetaan Winsockilla `com/`-kerrokseen. Perustelut: ohjelmassa on jo Winsock-pohjainen tiedonsiirto (`com/WinUDP.cpp`), sama toteutus kattaa HTTP:n ja WebSocketin, ja kerros pysyy VCL-riippumattomana ja yksikkötestattavana. C++Builderin Indy-komponentit (`TIdHTTPServer`) olisivat konsolirajauksen (K21) jälkeen mahdollinen vaihtoehto HTTP:lle, mutta WebSocket-tuki pitäisi silti tehdä itse. Palvelin palvelee vain dynaamista sisältöä ja omat kuvauksensa (5.12). Staattisen sisällön jakelu, selainsovellukset ja TLS jätetään edustapalvelimelle (9.6, K24). |
 | V-ARK-4 | M | JSON-kirjoitin (escape, UTF-8) ja suppea yleinen JSON-lukija (syöttöpäätepisteet, WebSocket-tilausviestit) tehdään puhtaina yksikköinä `Tp/`-hakemistoon SportIdent-haaran käytännön mukaan (V-TST-5). Haaran `Tp/SICenterJson.cpp` on SI Centerin vastauksiin erikoistunut jäsennin. Sitä ei muuteta tässä työssä, mutta sen voi myöhemmin siirtää käyttämään yleistä lukijaa. |
 | V-ARK-5 | M | Kerrokset: `com/` (HTTP, WS), `tputilv2` (JSON, tiivisteet), yhteinen reititys- ja roolikerros (domain-riippumaton), domain-kohtaiset poimintamoduulit (Hk, Juk). Rajapinta käynnistetään vain HkKisaWinissä ja ViestiWinissä. |
@@ -654,6 +654,36 @@ ne päivitetään tallennuksen yhteydessä (`addjarjarr`).
 | V-VM-10 | M | **Välimuistin tila** näkyy kohdassa `GET /api/v1/status/api` (V-STA-5): osumaprosentti, rakennusten määrä ja kesto (keskiarvo, 95. persentiili, suurin), lukon pitoaika rakennuksessa (95. persentiili, suurin), muistinkäyttö ja poistojen määrä. |
 | V-VM-11 | S | Tilanne-ikkuna (`TulosUnit`, HK ja viesti) siirretään lukemaan samaa lukumallia (V-ARK-1). Silloin näyttö ei enää kutsu `sijat2`-funktiota jokaisella päivityksellä. Siirto tehdään erillisenä muutoksena vaiheen 2 jälkeen. |
 | V-VM-12 | M | Tapahtumapuskuri ja WebSocket eivät käytä välimuistia. Tapahtumat julkaistaan suoraan puskurista (V-ARK-2, V-WS-5). |
+
+#### 9.3.1 Muutosten ilmoitus ja välimuistin täyttö (SQL-viennin kuvio)
+
+Taustaa: sovelluksen MySQL-vienti (`cbHk/UnitMySQL.cpp`, `ViestiWin/UnitMySQL.cpp`) on jo toimiva kuvio
+sille, miten tallennuksesta ilmoitetaan taustasäikeelle ilman, että tallennus odottaa. Tietueen
+`write(d, 1)` (HK `Hk/HkDat.cpp:592`) tai `tallenna` (viesti `Juk/vkilp.cpp:246`) kutsuu
+`kirjKilpSQL(d)`, joka lisää vain tietueen numeron kiertopuskuriin (`dKilpSQLjono`, `MAXSQLJONO` = 10 000).
+Oma säie (`kirjSQLTh`) lukee tietueen vasta käsittelyhetkellä, joten useat muutokset samaan tietueeseen
+yhdistyvät. Alkulataus tehdään käymällä kaikki tietueet läpi (`UnitExport::kirjSQL`, `UnitImport::lue_SQL`).
+Konsoliversiossa `kirjKilpSQL` on tyhjä (`HkConsole/HkCons0.cpp:141`). Tätä kuviota käytetään lukumallin
+ja välimuistin täyttöön seuraavin muutoksin. Vaatimukset koskevat C++-toteutusta (K25). Erillisessä
+sovelluksessa vastine on verkkosanomien käsittelijä (luku 3.1).
+
+| Tunnus | Pri | Vaatimus |
+|---|---|---|
+| V-VM-13 | M | **Kytkentäkohta.** Muutos ilmoitetaan samasta paikasta kuin SQL-vienti ja `addtapahtuma` (tallennuspolku `write(d, 1)` / viestin `tallenna`), lukon sisällä ja vakioajassa. Ilmoitus kasvattaa muutoslaskureita (V-VM-1) ja merkitsee tietueen likaiseksi, mutta ei laske mitään eikä odota taustasäiettä. Rajapinnan oma kytkentä ei ole riippuvainen SQL-viennin asetuksesta (`datatallfl[1]`, `SQLTALLENNUS`): se on päällä aina, kun rajapinta on päällä (V-PST-4). |
+| V-VM-14 | M | **Likaisten joukko, ei kiertopuskuria.** SQL-viennin kiertopuskuri ylikirjoittaa vanhimman merkinnän täyttyessään (`tailSQLjono` etenee), mikä ei sovi välimuistiin. Muutetut tietueet kerätään joukkoon (yksi merkintä tietuetta kohden) ja sarjakohtaiseen versioon. Joukko ei voi ylivuotaa, eikä päivitys voi hävitä. Sama tietue merkitään vain kerran, ja taustasäie lukee sen vasta käsittelyhetkellä (kuten `kirjSQLTh`). |
+| V-VM-15 | M | **Alkulataus.** Lukumalli täytetään käynnistyksessä ja vaiheen vaihdon jälkeen taustasäikeessä käymällä tietueet läpi (`1…maxrec`, kuten `UnitExport::kirjSQL`). Lukko varataan vain yhden tietueen kopioinnin ajaksi (V-SUO-1). Ennen valmistumista vastaus on 503 (`error: "not_ready"`, V-VKA-2). Täytön aikana tulevat muutokset merkitään likaisiksi ja käsitellään täytön jälkeen. |
+| V-VM-16 | M | **Lisäkytkentäkohdat.** `write(d, 1)` kattaa vain tietueet. Muutoslaskuri (V-VM-1) kasvaa lisäksi sarjatietojen, väliaikapisteiden ja ratojen muutoksesta, kilpailijan lisäyksestä ja poistosta (`addtall`, `deltall`) sekä vaiheen vaihdosta (vaiheen vaihto mitätöi koko välimuistin). SQL-viennin `deleteSQLrivi`-kutsuja ei löydy, joten poistojen kytkentä tehdään erikseen. |
+| V-VM-17 | M | **Tapahtumat eivät kulje likaisten joukon kautta.** Joukossa ei ole vanhaa arvoa, joten `passing`, `correction`, `punch`, `start_change` ja `penalty` (V-PST-5) muodostetaan synkronisesti tallennuksessa vertaamalla vanhaa ja uutta tietuetta. Ne kirjataan tapahtumapuskuriin (V-ARK-2) juoksevalla `seq`-numerolla. Puskurin ylivuoto näkyy asiakkaalle `gap`-viestinä (V-WS-4). Tapahtumavirta ei koskaan nojaa yhdistyvään jonoon. |
+| V-VM-18 | M | **Konsoliversiot.** Kytkentä on konsoliversioissa tyhjä funktio samoin kuin nykyinen `kirjKilpSQL` ja `addtapahtuma` (V-ARK-7). Viestissä kytkentä on `#ifndef _CONSOLE`-ehdon takana. |
+| V-VM-19 | S | **Ei pysyvää jonoa.** Välimuisti johdetaan muistissa olevasta tietuetaulukosta, ja se rakennetaan käynnistyksessä uudelleen. `SQLjonoVarm.dat`-tyyppistä jonotiedostoa ei tehdä. |
+| V-VM-20 | M | **Lukeminen lukon sisällä.** Rakentaja kopioi tietueen lukon sisällä. `kirjSQLrivi` lukee tietueen (`GETREC`) lukon ulkopuolella, mikä on sama virhe kuin SI-1 ja SAN-1, eikä sitä kopioida. |
+
+**Hylätty vaihtoehto: rajapinta lukee viedystä MySQL-peilistä.** Vienti tekee jokaiselle tietueelle
+`SELECT` ja `INSERT`/`UPDATE` transaktiossa, ja yhden säikeen läpivirtaus on rajallinen. Purskeet
+(V-KUO-2, 100 tallennusta/s) kasvattaisivat jonoa, ja peilissä ei ole tapahtumia, ratatietoja
+eikä rastikoodeja. Se vaatisi lisäksi MySQL-palvelimen kilpailupaikalle. SQL-viennin SQL-lauseet
+muodostetaan merkkijonoina ilman lainausmerkkien suojausta (nimi, jossa on `'`, rikkoo lauseen).
+Siksi MySQL-vienti pidetään rinnakkaisena toimintona, eikä rajapinta käytä sitä lähteenä.
 
 ### 9.4 Kuormitustesti
 
@@ -822,6 +852,7 @@ määritellään omissa dokumenteissaan. Alla ovat jakelun ja rajapinnan käytö
 | K22 | Kortinluenta (Emit tai SportIdent) ei tallenna väliaikoja väliaikapisteiden aikoihin (`va[]`). Väliaikapisteen ajan muutos tulee siis radio- tai online-rastilta tai käsisyötöstä, ja `punch`-tapahtuman määritelmä (V-WS-6) riittää ilman ajan lähdetietoa sanomassa (SI-4). |
 | K24 | Edustapalvelin otetaan käyttöönottomalliin (vaihtoehto C), ja edustapalvelimeksi suositellaan Caddya. Sen avulla loppukäyttäjille tarjotaan REST-rajapintaan perustuvat selainsovellukset CIS ja Tilannekuva samasta osoitteesta kuin rajapinta. Rajapinta toimii edelleen myös ilman edustapalvelinta (9.6, V-PRX-1–18). |
 | — | Haaran `poc-…` havainnot viety vaatimuksiin: luku 2.5, verkkoasiakas luku 3.1 (V-VKA-1–5), V-PST-9, V-WS-6d, V-SYO-13/2, luku 7.4 (V-SYO-22–25), V-AUT-3, V-API-5/6, V-KUO-1/6. Arkkitehtuurikysymys on avoin (K25). |
+| — | Välimuistin täyttö ja muutosten ilmoitus perustuvat SQL-viennin kuvioon (kytkentä `write(d, 1)`-polkuun, taustasäie, alkulataus läpikäynnillä), mutta kiertopuskurin tilalla on likaisten joukko, ja tapahtumat kirjataan synkronisesti omaan puskuriinsa (9.3.1, V-VM-13…20). MySQL-peiliä ei käytetä lähteenä. |
 
 ## 11. Vaiheistus
 
