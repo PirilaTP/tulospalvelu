@@ -2,7 +2,8 @@
   "comment": "Core component tests run by Tests/run_core_tests.py, one process per entry. kind: info = build facts, control = must PASS, defect = known finding (XFAIL when the mechanism is observed, XPASS when it is not). See doc/arkkitehtuuri/testaus.md.",
   "programs": {
     "TpCoreJuk": "VS/Tests/Release/TpCoreJuk.exe",
-    "TpCoreHk": "VS/Tests/Release/TpCoreHk.exe"
+    "TpCoreHk": "VS/Tests/Release/TpCoreHk.exe",
+    "TpCoreHkAsan": "VS/Tests/Asan/TpCoreHk.exe"
   },
   "tests": [
     {
@@ -25,6 +26,14 @@
       "test_case": "TpCoreHk smoke: sandbox and build constants",
       "kind": "control",
       "expected": "PASS: HK core runs in the sandbox",
+      "timeout": 30
+    },
+    {
+      "id": "hk-asan-build-info",
+      "program": "TpCoreHkAsan",
+      "test_case": "tp_build_info",
+      "kind": "info",
+      "needs_asan_runtime": true,
       "timeout": 30
     },
     {
@@ -71,7 +80,12 @@
       "test_case": "H-042 control: in-limit KilpSrj.xml is read",
       "kind": "control",
       "expected": "PASS: luesarjat returns 0 with n_os = n_os_akt = MAXOSUUSLUKU, valuku = VAIKALUKU",
-      "data": [ { "src": "data/juk/h042_in_limit.xml", "dst": "KilpSrj.xml" } ],
+      "data": [
+        {
+          "src": "data/juk/h042_in_limit.xml",
+          "dst": "KilpSrj.xml"
+        }
+      ],
       "timeout": 30
     },
     {
@@ -82,8 +96,162 @@
       "finding": "H-042",
       "mechanism": "xml-counts-not-clamped",
       "expected": "Correct: file rejected or counts clamped to MAXOSUUSLUKU / VAIKALUKU. Defect: luesarjat returns 0 and kilpparam keeps n_os = n_os_akt = MAXOSUUSLUKU+1, valuku = VAIKALUKU+1.",
-      "data": [ { "src": "data/juk/h042_over_limit.xml", "dst": "KilpSrj.xml" } ],
+      "data": [
+        {
+          "src": "data/juk/h042_over_limit.xml",
+          "dst": "KilpSrj.xml"
+        }
+      ],
       "timeout": 30
+    },
+    {
+      "id": "H-041a",
+      "program": "TpCoreHk",
+      "test_case": "H-041a HK record size vs KILPBUFSIZE at shipped limits",
+      "kind": "defect",
+      "finding": "H-041",
+      "mechanism": "record-larger-than-kilpbufsize",
+      "expected": "Correct: with n_pv = N_PV (5) and valuku = VALUKU (250), which the only limit (Hk/HkSrj.cpp:158) accepts, kilprecsize <= KILPBUFSIZE (10000). Defect: kilprecsize > KILPBUFSIZE. Configuration fact computed by the production luekentat; the limit check itself is not exercised (setStages calls luekentat directly).",
+      "timeout": 30
+    },
+    {
+      "id": "H-041b3",
+      "program": "TpCoreHk",
+      "test_case": "H-041b3 HK pack writes past KILPBUFSIZE (heap guard)",
+      "kind": "defect",
+      "finding": "H-041",
+      "mechanism": "pack-writes-past-kilpbufsize",
+      "expected": "Proxy evidence: the production pack() writes exactly kilprecsize bytes, more than KILPBUFSIZE, the size of the stack buffer write/read/addfrec pass to it (that link is by reading the code; H-041b2 shows the actual overrun). Correct: pack writes at most KILPBUFSIZE bytes.",
+      "timeout": 30
+    },
+    {
+      "id": "H-041b2",
+      "program": "TpCoreHkAsan",
+      "test_case": "H-041b2 HK write overflows its stack buffer (ASan)",
+      "kind": "defect",
+      "finding": "H-041",
+      "mechanism": "write-stack-buffer-overflow",
+      "termination": "asan",
+      "expect_exit": [
+        "77"
+      ],
+      "needs_asan_runtime": true,
+      "env": {
+        "ASAN_OPTIONS": "exitcode=77:halt_on_error=1:print_scariness=0"
+      },
+      "evidence": {
+        "bug_type": "stack-buffer-overflow",
+        "access": "WRITE",
+        "frame": "kilptietue::write",
+        "variable": "buf",
+        "variable_size": 10000,
+        "stack_contains": [
+          "kilptietue::write"
+        ]
+      },
+      "expected": "Correct: kilptietue::write(1, 0) runs without an ASan report. Defect: ASan reports a stack-buffer-overflow WRITE on variable buf (10000 bytes) in frame kilptietue::write.",
+      "timeout": 60
+    },
+    {
+      "id": "H-031-control",
+      "program": "TpCoreHk",
+      "test_case": "H-031 control: allowed stage change proceeds",
+      "kind": "control",
+      "expected": "PASS: an allowed first stage change sets k_pv = 1, clears vaiheenvaihto and leaves tall/ajat/emit locks free",
+      "timeout": 60
+    },
+    {
+      "id": "H-031",
+      "program": "TpCoreHk",
+      "test_case": "H-031 refused stage change blocks a later allowed change",
+      "kind": "defect",
+      "finding": "H-031",
+      "mechanism": "refused-change-blocks-later-change",
+      "expected": "Correct: after a refused change, a later allowed change proceeds (k_pv = 1). Defect: vaiheenvaihto stays set, the later call returns 0 and does nothing.",
+      "timeout": 60
+    },
+    {
+      "id": "H-008-control",
+      "program": "TpCoreHk",
+      "test_case": "H-008 control: lock probe and early error path",
+      "kind": "control",
+      "expected": "PASS: probe sees free/held/free; an unknown bib returns before the lock and leaves tall_CriticalSection free",
+      "timeout": 30
+    },
+    {
+      "id": "H-008-control-valid",
+      "program": "TpCoreHk",
+      "test_case": "H-008 control: valid penalty message releases the lock",
+      "kind": "control",
+      "expected": "PASS: a valid penalty message takes and leaves tall_CriticalSection (lsak 3), stores the penalty, no message",
+      "timeout": 30
+    },
+    {
+      "id": "H-008",
+      "program": "TpCoreHk",
+      "test_case": "H-008 HK tall_sak error path leaves tall_CriticalSection held",
+      "kind": "defect",
+      "finding": "H-008",
+      "mechanism": "tall-sak-error-leaves-lock-held",
+      "expected": "Correct: after the -3 error path returns, another thread can take tall_CriticalSection. Defect: the lock stays owned by the (ended) worker thread.",
+      "timeout": 30
+    },
+    {
+      "id": "H-024-control",
+      "program": "TpCoreJuk",
+      "test_case": "H-024 control: mismatching TARKT packet releases the lock",
+      "kind": "control",
+      "expected": "PASS: a mismatching TARKT packet is consumed, two messages, tall_CriticalSection free",
+      "timeout": 30
+    },
+    {
+      "id": "H-024",
+      "program": "TpCoreJuk",
+      "test_case": "H-024 relay tark_trk announcer path leaves tall_CriticalSection held",
+      "kind": "defect",
+      "finding": "H-024",
+      "mechanism": "tark-trk-announcer-path-leaves-lock-held",
+      "expected": "Correct: after the TARKT packet is processed, another thread can take tall_CriticalSection. Defect: the lock stays owned by the ended tarkcom worker.",
+      "timeout": 30
+    },
+    {
+      "id": "H-027-control",
+      "program": "TpCoreHk",
+      "test_case": "H-027 control: attempt listener counts and rejects or accepts",
+      "kind": "control",
+      "expected": "PASS: the 127.0.0.1 listener counts one rejected and one accepted attempt",
+      "timeout": 30
+    },
+    {
+      "id": "H-027a",
+      "program": "TpCoreHk",
+      "test_case": "H-027a TCP client does not retry after a failed connect",
+      "kind": "defect",
+      "finding": "H-027",
+      "mechanism": "tcp-client-no-retry",
+      "expected": "Correct: after a failed first attempt the client thread keeps running and connects when the listener accepts (retry about every 4-6 s). Defect: one attempt that fails, the thread ends, no attempt in the next 15 s.",
+      "timeout": 60
+    },
+    {
+      "id": "H-027b",
+      "program": "TpCoreHk",
+      "test_case": "H-027b TCPXML client dereferences a freed connection",
+      "kind": "defect",
+      "finding": "H-027",
+      "mechanism": "tcpxml-reconnect-null-deref",
+      "termination": "exception",
+      "expect_exit": [
+        "0xC0000005"
+      ],
+      "evidence": {
+        "code": "0xC0000005",
+        "access": "read",
+        "target": "0x0000000C",
+        "thread": "tcp-client",
+        "symbol": "reconnectTCP"
+      },
+      "expected": "Correct: no crash; the client retries. Defect: read access violation at 0x0000000C (TCPyhteys[yhtno]->ipparam with NULL) in reconnectTCP on the client thread.",
+      "timeout": 60
     }
   ]
 }

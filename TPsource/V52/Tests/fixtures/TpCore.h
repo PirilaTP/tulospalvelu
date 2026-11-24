@@ -61,7 +61,8 @@ std::string fmt(const char *format, ...);
 
 // Tries to enter cs from a separate thread and leaves it again on success.
 // Returns 1 if the other thread got the lock, 0 if it did not, -1 if the
-// probe thread could not be run. A probe from the owning thread would always
+// probe thread could not be run, -2 if the probe thread happens to be the
+// recorded owner (thread id reuse; the result would be meaningless). A probe from the owning thread would always
 // succeed because CRITICAL_SECTION is recursive.
 int lockFreeForOtherThread(CRITICAL_SECTION *cs);
 
@@ -72,6 +73,74 @@ struct UiMessage {
 	int kesto;
 };
 std::vector<UiMessage> &uiMessages();
+
+// ---- Controlled threads (TpCore.cpp) ----
+// The main thread never waits without a limit for production code that may
+// block. fn runs on a new thread; arg must be heap or static (a blocked
+// thread may outlive the caller's frame). THREAD_BLOCKED registers the
+// thread; CoreMain then ends the process with TerminateProcess after the
+// doctest summary and prints TPEXIT|blocked_threads=N.
+enum ThreadOutcome { THREAD_START_FAILED = -1, THREAD_FINISHED = 0, THREAD_BLOCKED = 1 };
+typedef void (*ThreadFn)(void *arg);
+struct ThreadRun {
+	ThreadOutcome outcome;
+	DWORD threadId;
+	DWORD elapsedMs;
+};
+// The thread handle is never closed, so its id stays unique for the rest
+// of the process.
+ThreadRun runOnThread(ThreadFn fn, void *arg, DWORD timeoutMs, const char *tag = "");
+int blockedThreadCount();
+// Tag of the current thread set by runOnThread ("" on other threads).
+const char *threadTag();
+// Sets the tag of the current thread (for threads not started by
+// runOnThread).
+void setThreadTag(const char *tag);
+// Owner thread id of a CRITICAL_SECTION (internal field OwningThread).
+DWORD lockOwnerThread(CRITICAL_SECTION *cs);
+
+// ---- Loopback helpers (TpNet.cpp; 127.0.0.1 only) ----
+// A free TCP port on 127.0.0.1 (bind to port 0, read it, close; no listen).
+// 0 if none could be obtained.
+unsigned short freeLoopbackPort();
+// Reserves a 127.0.0.1 port that refuses connections: the socket stays
+// bound (not listening, SO_EXCLUSIVEADDRUSE) until releaseHeldPort, so no
+// other process can take the port meanwhile. 0 on failure.
+unsigned short holdRefusingLoopbackPort();
+void releaseHeldPort();
+// Attempt-counting listener on 127.0.0.1 (one at a time). Uses
+// SO_CONDITIONAL_ACCEPT, so every connection attempt is seen and either
+// rejected (phase 1) or accepted and closed (phase 2). Returns the port, 0
+// on failure.
+unsigned short startAttemptListener();
+void attemptListenerAccept(bool accept);     // switch phase
+int attemptListenerCount(int phase);         // attempts seen in phase 1 or 2
+void stopAttemptListener();
+// Connects to 127.0.0.1:port once; 0 on success, else the WSA error code.
+int loopbackConnect(unsigned short port);
+
+// ---- Crash evidence (TpCrash.cpp) ----
+// armCrash prints TPARM. Afterwards a crash is reported by the ASan report
+// callback (ASan builds) or by the vectored exception handler installed with
+// installExceptionEvidence (non-ASan builds), which print TPCRASH/TPRESULT
+// lines. disarmCrash prints TPDISARM; a test may report observed=0 only after
+// disarming. The runner checks the same evidence independently.
+void armCrash(const char *finding, const char *mechanism, const char *source,
+	const char *const *expectSubstrings = 0);
+void disarmCrash();
+struct ExceptionExpect {
+	DWORD code;              // e.g. EXCEPTION_ACCESS_VIOLATION
+	int access;              // 0 read, 1 write, 8 execute
+	ULONG_PTR target;        // faulting data address
+	const char *threadTag;   // only exceptions on this tagged thread count
+	const char *symbol;      // function expected in the symbol chain
+};
+// Initialises DbgHelp (symbols from the exe directory only) and installs the
+// handler. Returns false if not possible (then the test must not arm).
+bool installExceptionEvidence(const ExceptionExpect &e);
+#ifdef __SANITIZE_ADDRESS__
+void asanReportCallback(const char *report);
+#endif
 
 // Size of a file in bytes, -1 if it cannot be opened.
 long long fileSize(const char *name);

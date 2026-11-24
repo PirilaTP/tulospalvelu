@@ -10,7 +10,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 |---|---|
 | Haara / branch | `testit/vikojen-todentaminen` (tehty / created from `arkkitehtuuri-selvitys` @ `f5d793b`); dokumentaatiohaara / docs branch `arkkitehtuuri-selvitys` |
 | Analysoitu revisio / analysed revision | `f7fe553` (`TPsource/` ei muutettu sen jälkeen / unchanged since) |
-| Commitit `main`in päällä / commits on top of `main` | `1b72ec4` dokumentit / docs, `c273b9f` CLAUDE.md, `c651980` agentit, rekisteri, erä 1 / agents, register, batch 1, `3b1d978` tarkistuspiste / checkpoint, `851129f` erä / batch C-2, `bcd0098` erä / batch C-3, `f5d793b` C-11-suunnitelma / plan. Testihaaralla commitoimatta / uncommitted on the test branch: C-11 vaihe 1 (testikoodi ja dokumenttipäivitykset) / stage 1 (test code and doc updates) |
+| Commitit `main`in päällä / commits on top of `main` | `1b72ec4` dokumentit / docs, `c273b9f` CLAUDE.md, `c651980` agentit, rekisteri, erä 1 / agents, register, batch 1, `3b1d978` tarkistuspiste / checkpoint, `851129f` erä / batch C-2, `bcd0098` erä / batch C-3, `f5d793b` C-11-suunnitelma / plan, `79d9957` C-11 vaihe 1 / stage 1 ja seuraava commit C-11 vaihe 2 / and the next commit stage 2 (`test(audit): reproduce H-041, H-031, H-008, H-024, H-027 ...`), molemmat testihaaralla / both on the test branch |
 | Push / PR / issuet / issues | ei tehty; estetty paikallisesti / none; blocked locally |
 
 ## Valmiit erät / Completed batches
@@ -22,6 +22,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | C-1 | `kilptietue::tallenna()`: säikeet, kutsupaikat, lukot, tallennus, SQL, replikointi / threads, call sites, locks, persistence, SQL, replication | `tallenna-samanaikaisuus.md` |
 | C-2 | Työasemien tiedonsiirto: kuljetus, kehys, kuittaus, kättely, sarjallistaminen, välitys, jonot, vikatilanteet, HK/viesti-erot, käännösvalitsimet, testattavuus / workstation communication | `tiedonsiirto.md` |
 | C-3 | Pysyvät tiedostot ja eheys: `KILP.DAT` (dbboxm, HK- ja viestitietue, vanha muoto), `COMFILE.DAT`, emit, AJAT, `SQLjonoVarm.dat`, konfiguraatio, mitatut koot MSVC/bcc32, vikatilanteet / persistent files and integrity | `tiedostomuodot.md` |
+| C-11 vaihe 2 / stage 2 | HkFixture, hallitut säikeet, kaatumistodisteet (ASan, poikkeuskäsittelijä), loopback-apu, Asan-konfiguraatio; H-041, H-031, H-008, H-024, H-027 toistettu testikehyksessä; neljä agenttia + riippumaton tarkastus / five findings reproduced in test harness | `testaus.md` luku / section 14 |
 | C-11 vaihe 1 / stage 1 | Testiajuri (Python), TpCoreJuk/TpCoreHk, fixturet, synteettinen aineisto; H-025, H-040, H-042 toistettu testikehyksessä; kaksi tarkastusta / runner, projects, fixtures, data; three findings reproduced in test harness; two reviews | `testaus.md` luku / section 13 |
 | C-11 (suunnittelu / planning) | Testausarkkitehtuuri, testiprojektit `TpCoreHk`/`TpCoreJuk`, fixturet, eristys, testisuunnitelmat 17 korkean havainnolle, ensimmäinen toteutuserä; ei toteutusta / test architecture, projects, fixtures, isolation, plans for 17 high findings, first batch; nothing implemented | `testaus.md` |
 
@@ -29,13 +30,13 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 
 | Mittari / Metric | Arvo / Value |
 |---|---|
-| Lähdetiedostoja / source files | 631 (270 050 riviä / lines) + 8 C-11-testitiedostoa / test files |
+| Lähdetiedostoja / source files | 631 (270 050 riviä / lines) + 15 C-11-testitiedostoa / test files |
 | Taso 1, vain inventoitu / inventoried only | 538 |
 | Taso 2, kohdennetusti luettu / read in a targeted way | 81 |
 | Taso 3, rakenne luettu / structure read | 12 (luettelo / list: `rekisteri/moduulit.md`) |
-| Taso 4, kokonaan katselmoitu / fully reviewed | 0 tuotantotiedostoa / production files; 8 testitiedostoa / test files (C-11) |
+| Taso 4, kokonaan katselmoitu / fully reviewed | 0 tuotantotiedostoa / production files; 15 testitiedostoa / test files (C-11) |
 | Havaintoja / findings | 54 vikaa / defects (H), 19 teknistä velkaa / technical debt (T) |
-| Lähdeviittauksia tarkistettu / source references checked | 801 (`tarkista_auditointi.py`) |
+| Lähdeviittauksia tarkistettu / source references checked | 812 (`tarkista_auditointi.py`) |
 
 Koko koodipohjaa ei ole katselmoitu. Hakemistotason ja skriptillä tehty
 analyysi on taso 1. Moduulikohtaisesti: `rekisteri/moduulit.md`.
@@ -54,7 +55,8 @@ Rekisteri erottaa neljä asiaa. / The register separates four things:
    another agent re-read the code and tried to refute the claim. Still static.
 3. **Toistettu testikehyksessä / reproduced in test harness** (C-11): muuttamattomat
    tuotannon funktiot, toimitetuin käännösasetuksin, näyttivät vikamekanismin
-   automaattisessa testissä, jonka tila on asetettu käsin. **H-025, H-040, H-042.**
+   automaattisessa testissä, jonka tila on asetettu käsin. **H-025, H-040, H-042 (vaihe 1);
+   H-041, H-031, H-008, H-024, H-027 (vaihe 2).**
    Ei osoita vian laukeamista eikä seurauksia käynnissä olevassa ohjelmassa. /
    unchanged production functions with shipped build settings showed the defect
    mechanism in an automated test with hand-set state. Does not show triggering or
@@ -83,7 +85,7 @@ Täydet tiedot: `rekisteri/havainnot.md`. / Full details: `rekisteri/havainnot.m
 | Riippumaton lähdetarkastus, osittain / partly | H-010, H-021, H-030, H-032, H-034, H-035, H-044, H-047, H-049, H-051, H-052 |
 | Ei riippumatonta tarkastusta / no independent review | H-001–H-006, H-017, H-019, H-038, H-039 |
 | Ei ratkea staattisesti / not statically decidable | H-020 |
-| Toistettu testikehyksessä / reproduced in test harness | H-025, H-040, H-042 (`testaus.md`, luku / section 13) |
+| Toistettu testikehyksessä / reproduced in test harness | H-025, H-040, H-042 (`testaus.md`, luku / section 13); H-041, H-031, H-008, H-024, H-027 (luku / section 14) |
 | Ajonaikaisesti todennettu / verified at run time | – (testisuunnitelma / test plan: `testaus.md`) |
 
 Vakavimmat / most severe (korkea / high, 17 kpl): H-001, H-002 (muistin korruptio /
@@ -128,25 +130,33 @@ osittain). Tärkeimmät / most important:
 
 ## Seuraava askel / Next step
 
-**C-11 testauksen ensimmäinen vaihe valmis – odottaa tarkastusta.** Toteutus ja
-tulokset: `testaus.md`, luku 13. Testikoodi on haaralla `testit/vikojen-todentaminen`
-commitoimatta; sitä ei commitoida ilman käyttäjän erillistä hyväksyntää. Seuraavia
-viittä testiä (H-041, H-031, H-008, H-024, H-027) ei aloiteta ennen hyväksyntää.
+**C-11 toinen testausvaihe valmis, hyväksytty ja commitoitu.** Tulokset: `testaus.md`,
+luku 14. Seuraavaa erää (H-026, H-032, H-022, H-023, H-007, H-001, H-002; toimitetun
+HkMaali.exe:n musta laatikko) ei aloiteta ennen hyväksyntää.
 
-**C-11 testing stage 1 done – awaiting review.** Implementation and results:
-`testaus.md`, section 13. Test code is uncommitted on `testit/vikojen-todentaminen`
-and is not committed without separate approval. The next five tests are not
-started before approval.
+**C-11 testing stage 2 done, approved and committed.** Results: `testaus.md`,
+section 14. The next batch is not started before approval.
 
-**Tarkka tehtävä luvan jälkeen / exact task after approval:** "Jatka C-11:n vaihetta 2:
-lisää `HkFixture` ja testit H-041 (a, b1, b3), H-031, H-008, H-024 ja H-027 (a, b)
-`testaus.md`:n lukujen 5–7 ja 13 mukaisesti. Ei tuotantokoodin muutoksia, ei
-testikoukkuja, ei CI-muutoksia. Ensimmäisen kaatuvan testin (H-041 b) kohdalla
-todenna, ettei virhedialogi avaudu. Riippumaton tarkastus lopuksi."
+**Tarkka tehtävä luvan jälkeen / exact task after approval:** "Jatka C-11:n
+vaiheeseen 3: H-026, H-032, H-022, H-023, H-007, H-001, H-002
+`testaus.md`:n lukujen 6, 7 ja 14 mukaan; ei tuotantokoodin muutoksia, ei
+testikoukkuja, ei CI-muutoksia; riippumaton tarkastus lopuksi."
 
-Vaihtoehto / alternative: **C-4 muistiturvallisuus** (kääntäjävaroitukset molemmilla
-kääntäjillä, MSVC `/analyze`); hyötyisi C-11:n ASan-konfiguraatiosta. / C-4 memory
-safety; would benefit from C-11's ASan configuration.
+Vaihtoehto / alternative: **C-4 muistiturvallisuus**; Asan-konfiguraatio on nyt
+valmiina. / C-4 memory safety; the Asan configuration now exists.
+
+## Resurssien käyttö / Resource usage (C-11 vaihe 2 / stage 2)
+
+| Agentti / Agent | Tokenit / tokens | Työkalukutsut / tool calls |
+|---|--:|--:|
+| `build-dependency-analyst` (Sonnet; ASan) | 50 667 | 21 |
+| `defect-concurrency-auditor` (fixture-reseptit / recipes) | 204 831 | 32 |
+| `architecture-analyst` (ajurin laajennus / runner design) | 134 226 | 27 |
+| `independent-verifier` (toteutus / implementation) | 131 191 | 43 |
+| **Yhteensä / total** | **520 915** | **123** |
+
+Kaksi agenttia keskeytyi käyttörajaan ja jatkoi `SendMessage`-viestillä. / Two
+agents hit the usage limit and were resumed with `SendMessage`.
 
 ## Resurssien käyttö / Resource usage (C-11 vaihe 1 / stage 1)
 
@@ -184,9 +194,10 @@ Figures as reported by the harness. The C-3 figure was 745 489 / 360.
 2. Tarkista tila / check state:
    ```sh
    git branch --show-current          # testit/vikojen-todentaminen
-   git status --short                 # C-11 vaihe 1 commitoimatta / stage 1 uncommitted (Tests/, VS/Tests/, doc/)
-   git log --oneline main..           # 7 committia / commits (viimeisin / last f5d793b)
-   python -I TPsource/V52/Tests/run_core_tests.py   # PASS=5, XFAIL=4 (vaatii käännöksen / needs build, testaus.md 13.6)
+   git status --short                 # pitäisi olla tyhjä / should be empty
+   git log --oneline main..           # 9 committia / commits (viimeisin / last: C-11 vaihe 2 / stage 2)
+   python -I TPsource/V52/Tests/test_run_core_tests.py   # 43 OK
+   python -I TPsource/V52/Tests/run_core_tests.py   # PASS=11, XFAIL=12 (vaatii Release- ja TpCoreHk Asan -käännöksen / needs Release and TpCoreHk Asan builds, testaus.md 13.6, 14)
    python -I doc/arkkitehtuuri/tyokalut/tarkista_auditointi.py .   # OK
    ```
 3. Rajoitukset (voimassa, kunnes käyttäjä toisin sanoo) / constraints (in force

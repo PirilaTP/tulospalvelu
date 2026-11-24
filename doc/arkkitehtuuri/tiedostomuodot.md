@@ -153,12 +153,13 @@ Perustiedot, `kilprecsize0` = 360 [todennettu laskemalla taulukosta / summed]:
 | 340 | 8 | `maa[4]` |
 | 348 | 12 | `sarja`, `sukup`, `ikasarja`, `alisarja`, `synt`, `arvryhma` (2 tavua kukin / 2 bytes each) |
 
-Vaihetta kohden 154 tavua (`kilppvtpsize0`, kun `HAJONTA` = 11) ja `valuku+2`
+Vaihetta kohden 152 tavua (`kilppvtpsize0`, kun `HAJONTA` = 11; C-11 mittasi ajossa 152, aiempi
+luku 154 oli laskuvirhe) ja `valuku+2`
 väliaikaa à 8 tavua (int32 `vatulos`, int16 `vasija`, int16 `vakoodi`):
 
-    kilprecsize = 360 + n_pv * (154 + (valuku + 2) * 8)      (Hk/HkDat.cpp:176-177)
+    kilprecsize = 360 + n_pv * (152 + (valuku + 2) * 8)      (Hk/HkDat.cpp:176-177)
 
-Per stage 154 bytes plus `valuku+2` split entries of 8 bytes. `n_pv` ja `valuku`
+Per stage 152 bytes (C-11 measured 152 at run time; the earlier 154 was an arithmetic slip) plus `valuku+2` split entries of 8 bytes. `n_pv` ja `valuku`
 luetaan sarjatiedostosta tai XML:stä ajon aikana (`Hk/HkSrj.cpp:100-158`,
 `Hk/HkXml.cpp:439-442`); käännösaikaiset `N_PV` ja `VALUKU` ovat vain ylärajoja.
 `n_pv` and `valuku` come from the series file or XML at run time; compile-time
@@ -365,7 +366,7 @@ gives a warning; fixed buffers (H-052).
 | ID | Löydös / Finding | Vakavuus / Severity | Tarkastus / Review |
 |---|---|---|---|
 | H-040 | Viesti: `addfrec` ottaa `kilpdat_CS`:n kahdesti eikä vapauta (`Juk/vdat.cpp:183`, `:190`); verkotetussa viestissä joukkueen lisäys yhdellä säikeellä ja lisäys tai poisto toisella → ohjelma jumiutuu (toinen pitää `tall_CS`:ää) / relay `addfrec` never releases its lock → freeze when a second thread adds or deletes a team | korkea / high | VAHVISTETTU (myös pääistunto / also main session) |
-| H-041 | HK: `char buf[KILPBUFSIZE]` = 10 000, mutta toimitetuissa Release-käännöksissä (`VALUKU` 250, `N_PV` 5) tietue voi olla 11 210 tavua (n_pv 5, valuku ≥ 220) → pinon ylivuoto `getrec`issa (`Hk/HkDef.h:98-103`; `Hk/HkDat.cpp:565`, `:583`, `:629`, `:1433`; `cbHk/UnitExport.cpp:464`; vain raja-arvotarkistus `Hk/HkSrj.cpp:156`) / stack overflow in shipped Release builds | korkea | VAHVISTETTU (ristiriita ratkaistu / conflict resolved) |
+| H-041 | HK: `char buf[KILPBUFSIZE]` = 10 000, mutta toimitetuissa Release-käännöksissä (`VALUKU` 250, `N_PV` 5) tietue voi olla 11 200 tavua (C-11: mitattu ajossa / measured at run time; aiemmin / earlier 11 210) (n_pv 5, valuku ≥ 220) → pinon ylivuoto `getrec`issa (`Hk/HkDef.h:98-103`; `Hk/HkDat.cpp:565`, `:583`, `:629`, `:1433`; `cbHk/UnitExport.cpp:464`; vain raja-arvotarkistus `Hk/HkSrj.cpp:156`) / stack overflow in shipped Release builds | korkea | VAHVISTETTU (ristiriita ratkaistu / conflict resolved) |
 | H-042 | Viesti: XML:n osuus-, väliaika- ja aktiivisten osuuksien määriä ei rajata käännösaikaisiin rajoihin (`Juk/VXml.cpp:442-445`, `:482`; ainoa raja `ViestiWin/UnitKilpMaaritys.cpp:271-276`) → `char buf[KILPRECSIZE]` (`Juk/vdat.cpp:145`, `:153`, `:181`) ja `valuku[MAXOSUUSLUKU]` (`Juk/vSarjat.cpp:60-70`) ylivuotavat / relay XML counts unclamped → buffer overflows | korkea | VAHVISTETTU (pahempi / worse) |
 | H-043 | `SQLjonoVarm.dat` avataan append-tilassa (`a+b`), joten päivitys `fseek(-4)`+`fwrite` lisää 4 tavua loppuun ~300 ms välein → tiedosto kasvaa (~1 Mt/vrk), parit menevät sekaisin, uudelleenkäynnistys lähettää vääriä tietueita SQL:ään ja hukkaa oikeat (`cbHk/UnitMySQL.cpp:663`, `:703-719`; `ViestiWin/UnitMySQL.cpp:610`, `:657-658`) / append mode breaks in-place update | keskitaso / medium (vain `CBVarmista` / opt-in) | VAHVISTETTU |
 | H-044 | `COMFILE.DAT`-kirjoitusvirhe kasvattaa silti `cjseur`ia → edellinen paketti lähetetään uudelleen uudella id:llä tai nollattu paikka merkitään lähetetyksi; uudelleenkäynnistys pysähtyy ensimmäiseen aukkoon; `KIRJHETI & 2` ei vaikuta (`Tp/TpComY.cpp:497-517`, `:1415`, `:1465-1513`, `:2316-2324`, `:503`) / write failure still advances the queue | keskitaso | OSITTAIN (laukaisin levy täynnä tai I/O-virhe / trigger disk full or I/O error) |
@@ -431,7 +432,7 @@ production systems. Most are unit tests for the existing `TpTest` project
 | ID | Testi / Test | Odotettu / Expected | Vika näkyy / Failure | Deterministinen / Deterministic |
 |---|---|---|---|---|
 | H-040 | `addtall` säikeessä A; sen jälkeen `kilpdat_CriticalSection.OwningThread`/`RecursionCount` tai `deltall` säikeessä B aikakatkaisulla / then check lock owner or call `deltall` on thread B with timeout | Lukko vapaa / lock free | B ei palaa / B never returns | kyllä / yes |
-| H-041 | `kilptietue::read` tietueella n_pv 5, valuku 250 `/RTC`- tai ASan-käännöksessä; tai `static_assert(KILPBUFSIZE >= 360 + N_PV*(154+(VALUKU+2)*8))` | Ei ylivuotoa / no overflow | Pinon korruptio / stack corruption | kyllä |
+| H-041 | `kilptietue::read` tietueella n_pv 5, valuku 250 `/RTC`- tai ASan-käännöksessä; tai `static_assert(KILPBUFSIZE >= 360 + N_PV*(152+(VALUKU+2)*8))` | Ei ylivuotoa / no overflow | Pinon korruptio / stack corruption | kyllä |
 | H-042 | `loadSoftwareData` XML:llä, jossa `Legs` > `MAXOSUUSLUKU` | Hylätään / rejected | Ylivuoto / overflow | kyllä |
 | H-043 | Avaa "a+b", kirjoita 8 tavua, `fseek(-4, SEEK_END)`, kirjoita 4 | Koko 8 / size 8 | Koko 12 / size 12 | kyllä |
 | H-015 | Synteettinen `KILP.DAT`, otsake `int2 = numrec+1`; `openfile` | Korjaus tai selvä virhe / repair or clear error | Käynnistys estyy / start refused | kyllä |
@@ -445,8 +446,8 @@ Ehdotus: lisää `TpTest`iin `static_assert`-tarkistukset kaikille mitatuille ko
 eroavat. / Proposal: add `static_assert`s for all measured sizes to `TpTest`, so a
 build fails if a layout changes or builds diverge.
 
-**C-11:** H-041:n kaava ei sovi `static_assert`iin: 360 ja 154 lasketaan ajossa, ja
-nykyarvoilla (11 210 > 10 000) tarkistus estäisi käännöksen. Korvattu ajonaikaisella
+**C-11:** H-041:n kaava ei sovi `static_assert`iin: 360 ja 152 lasketaan ajossa, ja
+nykyarvoilla (11 200 > 10 000) tarkistus estäisi käännöksen. Korvattu ajonaikaisella
 tarkistuksella; tämän taulukon testit on tarkennettu tiedostossa `testaus.md`. /
 H-041's formula does not suit a `static_assert` (computed at run time; would break
 the build today). Replaced by a run-time check; the tests above are refined in

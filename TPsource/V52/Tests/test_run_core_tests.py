@@ -108,6 +108,146 @@ class Classify(unittest.TestCase):
     def test_control_with_result_line_is_fail(self):
         self.assertEqual(self.st(CONTROL, 0, False, out(extra=OBS1)), 'FAIL')
 
+    # ---- crash tests with evidence (termination asan / exception)
+
+    ASAN_T = {'kind': 'defect', 'finding': 'H-041', 'mechanism': 'm', 'termination': 'asan',
+              'expect_exit': ['77'],
+              'evidence': {'bug_type': 'stack-buffer-overflow', 'access': 'WRITE',
+                           'frame': 'kilptietue::write', 'variable': 'buf', 'variable_size': 10000,
+                           'stack_contains': ['kilptietue::write']}}
+    VEH_T = {'kind': 'defect', 'finding': 'H-027', 'mechanism': 'n', 'termination': 'exception',
+             'expect_exit': ['0xC0000005'],
+             'evidence': {'code': '0xC0000005', 'access': 'read', 'target': '0x0000000C',
+                          'thread': 'tcp-client', 'symbol': 'reconnectTCP'}}
+    ASAN_ERR = ('==1==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x1 at pc 0x2\n'
+                'WRITE of size 8 at 0x0113f978 thread T0\n'
+                '    #0 0x6556d00d in _asan_memset+0x1 (x.dll+0x1)\n'
+                '    #1 0x004911a8 in kilppvtp::pack C:\\a\\HkDat.cpp:221\n'
+                '    #2 0x004911b0 in kilptietue::write C:\\a\\HkDat.cpp:586\n'
+                'Address 0x0113f978 is located in stack of thread T0 at offset 10016 in frame\n'
+                '    #0 0x0049112f in kilptietue::write C:\\a\\HkDat.cpp:581\n'
+                '  This frame has 1 object(s):\n'
+                "    [16, 10016) 'buf' <== Memory access at offset 10016 overflows this variable\n"
+                '==1==ABORTING\n')
+    ARM_A = 'TPARM|finding=H-041|mechanism=m|source=asan\n'
+    RES_A = 'TPRESULT|finding=H-041|mechanism=m|observed=1|source=asan|detail=x\n'
+    ARM_V = 'TPARM|finding=H-027|mechanism=n|source=exception\n'
+    CRASH_V = ('TPCRASH|source=veh|code=0xC0000005|access=read|target=0x0000000C|thread=tcp-client|'
+               'symbols=reconnectTCP>tiedonsiirtoTCP\n')
+    RES_V = 'TPRESULT|finding=H-027|mechanism=n|observed=1|source=exception|detail=x\n'
+
+    def test_asan_full_evidence_is_xfail(self):
+        self.assertEqual(r.classify(self.ASAN_T, 77, False, self.ARM_A + self.RES_A, self.ASAN_ERR)[0], 'XFAIL')
+
+    def test_asan_report_without_tpresult_is_fail(self):
+        self.assertEqual(r.classify(self.ASAN_T, 77, False, self.ARM_A, self.ASAN_ERR)[0], 'FAIL')
+
+    def test_asan_tpresult_without_report_is_fail(self):
+        self.assertEqual(r.classify(self.ASAN_T, 77, False, self.ARM_A + self.RES_A, '')[0], 'FAIL')
+
+    def test_asan_wrong_exit_is_fail(self):
+        self.assertEqual(r.classify(self.ASAN_T, 1, False, self.ARM_A + self.RES_A, self.ASAN_ERR)[0], 'FAIL')
+
+    def test_asan_without_arm_is_fail(self):
+        self.assertEqual(r.classify(self.ASAN_T, 77, False, self.RES_A, self.ASAN_ERR)[0], 'FAIL')
+
+    def test_asan_wrong_variable_size_is_fail(self):
+        err = self.ASAN_ERR.replace('[16, 10016)', '[16, 9016)')
+        self.assertEqual(r.classify(self.ASAN_T, 77, False, self.ARM_A + self.RES_A, err)[0], 'FAIL')
+
+    def test_asan_wrong_frame_is_fail(self):
+        err = self.ASAN_ERR.replace('#0 0x0049112f in kilptietue::write', '#0 0x0049112f in other')
+        self.assertEqual(r.classify(self.ASAN_T, 77, False, self.ARM_A + self.RES_A, err)[0], 'FAIL')
+
+    def test_asan_two_reports_is_fail(self):
+        self.assertEqual(r.classify(self.ASAN_T, 77, False, self.ARM_A + self.RES_A,
+                                    self.ASAN_ERR + self.ASAN_ERR)[0], 'FAIL')
+
+    def test_asan_check_failed_before_crash_is_fail(self):
+        out = 'x.cpp(1): ERROR: REQUIRE( a ) is NOT correct!\n' + self.ARM_A + self.RES_A
+        self.assertEqual(r.classify(self.ASAN_T, 77, False, out, self.ASAN_ERR)[0], 'FAIL')
+
+    def test_asan_timeout_is_fail(self):
+        self.assertEqual(r.classify(self.ASAN_T, None, True, self.ARM_A + self.RES_A, self.ASAN_ERR)[0], 'FAIL')
+
+    def test_crash_test_survived_observed1_is_fail(self):
+        o = self.ARM_A + 'TPDISARM|\n' + self.RES_A + '[doctest] test cases: 1 | 1 passed | 0 failed | 0 skipped\n'
+        self.assertEqual(r.classify(self.ASAN_T, 0, False, o, '')[0], 'FAIL')
+
+    def test_crash_test_survived_disarmed_observed0_is_xpass(self):
+        o = (self.ARM_A + 'TPDISARM|\n' + self.RES_A.replace('observed=1', 'observed=0')
+             + '[doctest] test cases: 1 | 1 passed | 0 failed | 0 skipped\n')
+        self.assertEqual(r.classify(self.ASAN_T, 0, False, o, '')[0], 'XPASS')
+
+    def test_veh_full_evidence_is_xfail(self):
+        self.assertEqual(r.classify(self.VEH_T, 0xC0000005, False, self.ARM_V + self.CRASH_V + self.RES_V,
+                                    '')[0], 'XFAIL')
+
+    def test_veh_wrong_target_is_fail(self):
+        c = self.CRASH_V.replace('0x0000000C', '0x00000010')
+        self.assertEqual(r.classify(self.VEH_T, 0xC0000005, False, self.ARM_V + c + self.RES_V, '')[0], 'FAIL')
+
+    def test_veh_wrong_symbol_is_fail(self):
+        c = self.CRASH_V.replace('reconnectTCP>', 'other>')
+        self.assertEqual(r.classify(self.VEH_T, 0xC0000005, False, self.ARM_V + c + self.RES_V, '')[0], 'FAIL')
+
+    def test_veh_crash_without_tpcrash_is_fail(self):
+        self.assertEqual(r.classify(self.VEH_T, 0xC0000005, False, self.ARM_V + self.RES_V, '')[0], 'FAIL')
+
+    def test_unarmed_crash_in_normal_test_is_fail(self):
+        self.assertEqual(self.st(DEFECT, 0xC0000005, False, OBS1 + self.CRASH_V), 'FAIL')
+
+    def test_blocked_threads_must_match_manifest(self):
+        t = dict(DEFECT, blocked_threads=1)
+        self.assertEqual(self.st(t, 0, False, out(extra=OBS1)), 'FAIL')
+        self.assertEqual(self.st(t, 0, False, out(extra=OBS1 + 'TPEXIT|blocked_threads=1|mode=terminate\n')),
+                         'XFAIL')
+        self.assertEqual(self.st(DEFECT, 0, False, out(extra=OBS1 + 'TPEXIT|blocked_threads=1\n')), 'FAIL')
+
+    def test_arm_in_normal_test_is_fail(self):
+        self.assertEqual(self.st(DEFECT, 0, False, out(extra=self.ARM_A.replace('H-041', 'H-040') + OBS1)), 'FAIL')
+
+    def test_survived_result_before_disarm_is_fail(self):
+        o = (self.ARM_A + self.RES_A.replace('observed=1', 'observed=0') + 'TPDISARM|\n'
+             + '[doctest] test cases: 1 | 1 passed | 0 failed | 0 skipped\n')
+        self.assertEqual(r.classify(self.ASAN_T, 0, False, o, '')[0], 'FAIL')
+
+    def test_veh_out_of_process_symbol_mismatch_is_fail(self):
+        saved = r.resolve_rva
+        try:
+            r.resolve_rva = lambda exe, rva: 'otherFunction'
+            c = self.CRASH_V.replace('|symbols=', '|rva=0x00002E97|symbols=')
+            self.assertEqual(r.classify(self.VEH_T, 0xC0000005, False, self.ARM_V + c + self.RES_V, '',
+                                        'x.exe')[0], 'FAIL')
+            r.resolve_rva = lambda exe, rva: 'reconnectTCP'
+            self.assertEqual(r.classify(self.VEH_T, 0xC0000005, False, self.ARM_V + c + self.RES_V, '',
+                                        'x.exe')[0], 'XFAIL')
+        finally:
+            r.resolve_rva = saved
+
+    def test_base_env_strips_sanitizer_and_tp_variables(self):
+        keys = ['ASAN_OPTIONS', 'ASAN_SYMBOLIZER_PATH', 'UBSAN_OPTIONS', 'TP_SANDBOX_TOKEN', '_NT_SYMBOL_PATH']
+        saved = {k: os.environ.get(k) for k in keys}
+        try:
+            for k in keys:
+                os.environ[k] = 'x'
+            env = r.base_env()
+            for k in keys:
+                self.assertNotIn(k, env)
+        finally:
+            for k, v in saved.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+
+    def test_parse_asan_fields(self):
+        b = r.parse_asan(self.ASAN_ERR)[0]
+        self.assertEqual((b['bug_type'], b['access'], b['size'], b['frame']),
+                         ('stack-buffer-overflow', 'WRITE', '8', 'kilptietue::write'))
+        self.assertIn('kilptietue::write', b['stack'])
+        self.assertEqual(b['vars'], [{'name': 'buf', 'size': 10000, 'flagged': True}])
+
     def test_manifest_names_are_literal(self):
         # doctest splits --test-case filters at commas and treats * and ? as
         # wildcards; the runner also checks exact names with --list-test-cases.

@@ -21,12 +21,21 @@
 // TP_CORE_NAME is defined by the project (TpCoreHk / TpCoreJuk), unquoted.
 
 #define DOCTEST_CONFIG_IMPLEMENT
+// doctest must not catch crashes itself: a crash ends the process with its
+// real exit code, and only the evidence protocol in TpCrash.cpp (checked by
+// the runner) can turn a crash into a result.
+#define DOCTEST_CONFIG_NO_WINDOWS_SEH
+#define DOCTEST_CONFIG_NO_POSIX_SIGNALS
 #include "../doctest.h"
 
 #include <windows.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <crtdbg.h>
+#include <iostream>
+#ifdef __SANITIZE_ADDRESS__
+#include <sanitizer/asan_interface.h>
+#endif
 #include "../fixtures/TpCore.h"
 
 #define TP_STR2(x) #x
@@ -87,11 +96,29 @@ TEST_CASE("tp_build_info")
 int main(int argc, char **argv)
 {
 	quietErrors();
+	// Unbuffered output, so check failures printed before a deliberate
+	// crash reach the runner.
+	setvbuf(stdout, NULL, _IONBF, 0);
+	std::cout << std::unitbuf;
+#ifdef __SANITIZE_ADDRESS__
+	__asan_set_error_report_callback(tp::asanReportCallback);
+#endif
 	doctest::Context context;
 	context.setOption("no-colors", true);
 	context.applyCommandLine(argc, argv);
 	int res = context.run();
 	fflush(stdout);
 	fflush(stderr);
+	// A test may leave a production thread blocked on a lock on purpose.
+	// Normal exit would run static destructors and DLL detach while that
+	// thread holds locks, so end the process directly; the doctest summary
+	// is already printed and the runner checks the count against the
+	// manifest.
+	int blocked = tp::blockedThreadCount();
+	if (blocked > 0) {
+		printf("TPEXIT|blocked_threads=%d|mode=terminate\n", blocked);
+		fflush(stdout);
+		TerminateProcess(GetCurrentProcess(), (UINT) res);
+	}
 	return res;
 }

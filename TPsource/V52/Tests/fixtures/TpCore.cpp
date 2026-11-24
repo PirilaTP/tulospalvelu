@@ -93,6 +93,12 @@ struct ProbeArg {
 static unsigned __stdcall probeThread(void *p)
 {
 	ProbeArg *a = (ProbeArg *) p;
+	// A probe on the owning thread would succeed recursively (thread id
+	// reuse); report that instead of a wrong answer.
+	if ((DWORD) (ULONG_PTR) a->cs->OwningThread == GetCurrentThreadId()) {
+		a->result = -2;
+		return 0;
+	}
 	if (TryEnterCriticalSection(a->cs)) {
 		LeaveCriticalSection(a->cs);
 		a->result = 1;
@@ -118,6 +124,80 @@ int lockFreeForOtherThread(CRITICAL_SECTION *cs)
 	if (w != WAIT_OBJECT_0)
 		return -1;
 	return a.result;
+}
+
+// ---- controlled threads ----
+
+static __declspec(thread) const char *t_threadTag = "";
+static volatile LONG g_blockedThreads = 0;
+
+struct RunCtx {
+	ThreadFn fn;
+	void *arg;
+	const char *tag;
+};
+
+static unsigned __stdcall runThread(void *p)
+{
+	RunCtx *c = (RunCtx *) p;   // heap, never freed if the thread blocks
+	t_threadTag = c->tag;
+	c->fn(c->arg);
+	return 0;
+}
+
+ThreadRun runOnThread(ThreadFn fn, void *arg, DWORD timeoutMs, const char *tag)
+{
+	ThreadRun r;
+	r.outcome = THREAD_START_FAILED;
+	r.threadId = 0;
+	r.elapsedMs = 0;
+	RunCtx *c = new RunCtx;
+	c->fn = fn;
+	c->arg = arg;
+	c->tag = tag ? tag : "";
+	unsigned id = 0;
+	DWORD t0 = GetTickCount();
+	HANDLE h = (HANDLE) _beginthreadex(NULL, 0, runThread, c, 0, &id);
+	if (h == 0) {
+		delete c;
+		return r;
+	}
+	r.threadId = id;
+	DWORD w = WaitForSingleObject(h, timeoutMs);
+	r.elapsedMs = GetTickCount() - t0;
+	if (w == WAIT_OBJECT_0) {
+		r.outcome = THREAD_FINISHED;
+		// The handle is kept open until the process ends, so the thread id
+		// cannot be reused (e.g. by a probe thread) while a test compares
+		// lock owners with it.
+		delete c;
+	}
+	else {
+		r.outcome = THREAD_BLOCKED;
+		InterlockedIncrement(&g_blockedThreads);
+		// handle and context are left to the process end on purpose
+	}
+	return r;
+}
+
+int blockedThreadCount()
+{
+	return (int) g_blockedThreads;
+}
+
+const char *threadTag()
+{
+	return t_threadTag;
+}
+
+void setThreadTag(const char *tag)
+{
+	t_threadTag = tag ? tag : "";
+}
+
+DWORD lockOwnerThread(CRITICAL_SECTION *cs)
+{
+	return (DWORD) (ULONG_PTR) cs->OwningThread;
 }
 
 std::vector<UiMessage> &uiMessages()

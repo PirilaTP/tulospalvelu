@@ -16,14 +16,14 @@ separately from test coverage.
 | C, erä 2: työasemien tiedonsiirto / batch 2: workstation communication | valmis, tarkastettu / done, reviewed (`tiedonsiirto.md`) | 2026-11-24 |
 | C, erä 3: pysyvät tiedostot ja eheys / batch 3: persistent files and integrity | valmis, tarkastettu / done, reviewed (`tiedostomuodot.md`) | 2026-11-24 |
 | C, erä 11: testiautomaatio, suunnittelu / batch 11: test automation, planning | valmis, tarkastettu, commitoitu `f5d793b` / done, reviewed, committed (`testaus.md`) | 2026-11-24 |
-| C, erä 11, vaihe 1: H-025, H-040, H-042 / batch 11, stage 1 | valmis, tarkastettu, commitoimatta haaralla `testit/vikojen-todentaminen`; odottaa käyttäjän tarkastusta / done, reviewed, uncommitted; awaiting user review (`testaus.md` luku 13) | 2026-11-24 |
+| C, erä 11, vaihe 1: H-025, H-040, H-042 / batch 11, stage 1 | valmis, hyväksytty, commitoitu `79d9957` / done, approved, committed (`testaus.md` luku 13) | 2026-11-24 |
+| C, erä 11, vaihe 2: H-041, H-031, H-008, H-024, H-027 / batch 11, stage 2 | valmis, hyväksytty, commitoitu / done, approved, committed (`testaus.md` luku 14) | 2026-11-24 |
 | C, erät 4–10 / batches 4–10 | ei aloitettu / not started (`suunnitelma.md`); erä 5 osittain / batch 5 partly | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** käyttäjä tarkastaa C-11:n vaiheen 1 (`testaus.md`,
-luku 13) ja päättää testikoodin commitoinnista sekä seuraavien viiden testin
-(H-041, H-031, H-008, H-024, H-027) aloittamisesta. / The user reviews C-11 stage 1,
-decides on committing the test code and on starting the next five tests.
+**Seuraava askel / Next step:** käyttäjä päättää C-11:n vaiheen 3 aloittamisesta
+(H-026, H-032, H-022, H-023, H-007, H-001, H-002; `testaus.md` luku 14.5). / The
+user decides on starting C-11 stage 3.
 
 Havainnot (H/T) ja niiden todennustila: `rekisteri/havainnot.md`.
 Findings (H/T) and their verification status: `rekisteri/havainnot.md`.

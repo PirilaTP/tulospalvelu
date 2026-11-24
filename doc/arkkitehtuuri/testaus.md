@@ -290,7 +290,7 @@ Each has: (1) function and refs, (2) goal, (3) environment, (4) data, (5) steps,
    rivi); asetetaan **ennen** ensimmäistä `kilptietue`-oliota. `KILP.DAT`, jossa
    `recl = kilprecsize` ja täysi tietue 1 (lyhyt tietue → `perr` → MessageBox).
 5. **Vaiheet / steps:** (a) `luekentat(0)`; tarkista lisäksi, että se antaa
-   `kilprecsize0` 360, `kilppvtpsize0` 154 ja `vatpsize` 8; sitten
+   `kilprecsize0` 360, `kilppvtpsize0` 152 ja `vatpsize` 8 (C-11: 152 mitattu ajossa; suunnitelmassa ollut 154 oli virhe / 152 measured, the planned 154 was wrong); sitten
    `CHECK(kilpparam.kilprecsize <= KILPBUFSIZE)`. (b1) `/GS`: `k.read(1, 0)` →
    `getrec` lukee tasan `recl` tavua (`dbboxm/dbbox1.cpp:74`). (b2) Asan: `write()`-
    tai `pack()`-polku, koska ASan ei todennäköisesti näe ytimen `ReadFile`-kirjoitusta
@@ -298,15 +298,15 @@ Each has: (1) function and refs, (2) goal, (3) environment, (4) data, (5) steps,
    `KILPBUFSIZE` + vartijatavut / canary.
 6. **Oikea toiminta / correct:** `kilprecsize <= 10000`, tai konfiguraatio hylätään
    ennen tietueiden käsittelyä.
-7. **Vika / defect:** (a) 360 + 5·(154 + 252·8) = **11 210**; deterministinen, ei
+7. **Vika / defect:** (a) 360 + 5·(152 + 252·8) = **11 200** (mitattu / measured, luku 14); deterministinen, ei
    kaadu. (b1) poistumiskoodi `0xC0000409`; (b2) ASan stack-buffer-overflow;
    (b3) vartija muuttunut. **Kumoaa / refutes:** (a) ≤ 10000 tai käynnistystarkistus
    hylkää n_pv 5 / valuku 250.
 8. **Automatisointi:** (a), (b) CI hosted. Toimitetun `HkMaali.exe`:n musta laatikko
    (kerros d) myöhemmin; HkKisaWin (bcc32, ei `/GS`) käsin.
 9. **Muutokset:** vain testit. **Käännösaikaista `static_assert`ia ei tehdä**: 360 ja
-   154 lasketaan ajossa kenttätaulukoista, joten käännösaikainen kaava olisi käsin
-   kopioitu, ja nykyarvoilla se **estäisi käännöksen** (11 210 > 10 000). Ajonaikainen
+   152 lasketaan ajossa kenttätaulukoista, joten käännösaikainen kaava olisi käsin
+   kopioitu, ja nykyarvoilla se **estäisi käännöksen** (11 200 > 10 000). Ajonaikainen
    tarkistus merkitään odotetusti epäonnistuvaksi, kunnes vika korjataan;
    `static_assert` voi tulla vasta korjauksen mukana. Tämä korvaa
    `tiedostomuodot.md`:n ehdotuksen. / No compile-time assert: it would be a
@@ -463,7 +463,7 @@ approval) CI; **no production code changes or test hooks**.
 | 1.4 | H-040 | sama / same | 〃 |
 | 1.5 | H-042 (a) (+ (b) Asan-konfiguraatiossa / in Asan config) | sama + `Tests/data/xml/` | 〃 |
 | 1.6 | `TpCoreHk`-projekti, `HkFixture` (sis. `wmain`in oletukset / incl. `wmain` defaults) | uusi / new VS/Tests/TpCoreHk.vcxproj, `Tests/fixtures/` | tyhjä testi ajetaan |
-| 1.7 | H-041 (a) + (b1) `/GS` + (b3) vartija; asettelutarkistus 360/154/8 | uusi / new Tests/core/HkCoreTests.cpp, LayoutHk.cpp | 〃 |
+| 1.7 | H-041 (a) + (b1) `/GS` + (b3) vartija; asettelutarkistus 360/152/8 | uusi / new Tests/core/HkCoreTests.cpp, LayoutHk.cpp | 〃 |
 | 1.8 | H-031, H-008 | sama | 〃 |
 | 1.9 | H-024 | VCoreTests.cpp | 〃 |
 | 1.10 | H-027 (a)+(b) loopback | VCoreTests.cpp | 〃 |
@@ -718,3 +718,104 @@ Luvun 7 järjestyksessä / in the order of section 7: H-041 (a, b1, b3), H-031, 
 H-024, H-027 (a, b). Ne vaativat `HkFixture`n (`wmain`in oletukset, `HkConsole/HkMain.cpp:185-201`)
 ja ensimmäisen kaatuvan testin käsittelyn. / They need `HkFixture` and the first
 crashing test.
+
+## 14. Toteutus, vaihe 2 / Implementation, stage 2 (H-041, H-031, H-008, H-024, H-027)
+
+Vaihe 1 commitoitiin `79d9957` ja vaihe 2 sen jälkeen samalle haaralle
+`testit/vikojen-todentaminen`. Tuotantokoodi ja CI ovat muuttumattomat (`git diff fc03b67` ilman
+testihakemistoja: ei eroja).
+
+Stage 1 was committed as `79d9957` and stage 2 after it on the same branch.
+Production code and CI are unchanged.
+
+### 14.1 Lisäykset / Additions
+
+| Tiedosto / File | Sisältö / Content |
+|---|---|
+| `Tests/core/HkCoreTests.cpp` | H-041a, H-041b3, H-041b2 (vain ASan-käännöksessä / ASan build only), H-031 + kontrolli |
+| `Tests/core/HkLockTests.cpp` | H-008 + kaksi kontrollia (varhainen virhe, kelvollinen sanoma) / two controls |
+| `Tests/core/VComTests.cpp` | H-024 + kontrolli (julkinen `tarkcom`, ei `#include`a / public `tarkcom`, no include) |
+| `Tests/core/TcpClientTests.cpp` | H-027 kontrolli, H-027a, H-027b (julkinen `tiedonsiirtoTCP`) |
+| `Tests/fixtures/HkFixture.{h,cpp}` | HK-käynnistyksen osat: lukot, `wmain`in oletukset, `luekentat`, tyhjä `KILP.DAT` / HK start-up parts |
+| `Tests/fixtures/TpCore.{h,cpp}` | `runOnThread` (aikaraja, kahvat pidetään auki → säietunnus ei kierrä), säietunnisteet, lukon omistaja, koetin hylkää omistajasäikeen / controlled threads, owner, probe guard |
+| `Tests/fixtures/TpCrash.cpp` | `armCrash`/`disarmCrash`, ASan-raportin takaisinkutsu, vektoroitu poikkeuskäsittelijä + DbgHelp (symbolit vain exe-hakemistosta) / crash evidence |
+| `Tests/fixtures/TpNet.cpp` | Vain 127.0.0.1: vapaa portti, varattu hylkäävä portti, yritykset laskeva kuuntelija (`SO_CONDITIONAL_ACCEPT`), testin oma `connect` / loopback only |
+| `Tests/core/CoreMain.cpp` | doctestin SEH- ja signaalikäsittely pois (kaatuminen päättää prosessin oikealla koodilla), puskuroimaton tuloste, ASan-takaisinkutsu, `TerminateProcess`-loppu estyneille säikeille / doctest crash handling off |
+| `Tests/run_core_tests.py` | `termination: asan / exception`: XFAIL vain, jos TPARM, käsittelijän TPRESULT, ajurin itse jäsentämä todiste (ASan-raportti stderr:stä; TPCRASH + symbolin ratkaisu prosessin ulkopuolella DbgHelpillä) ja odotettu poistumiskoodi täsmäävät; selvinnyt kaatumistesti vain järjestyksessä TPARM < TPDISARM < TPRESULT ja `observed=0` → XPASS; XPASS-huomio stdout/stderr/`results.md`, paluuarvo 3; ympäristöstä poistetaan `ASAN_*`, `*SAN_OPTIONS`, `_NT_SYMBOL_PATH`, `TP_*`; revisiot `production_rev`, `tests_rev`, likaisuusliput, PDB-, ASan-DLL- ja `doctest.h`-tiivisteet; vanhentuneisuus ohjelmakohtaisesti / runner extensions |
+| `Tests/test_run_core_tests.py` | 43 itsetestiä (oli 20) / self-tests (was 20) |
+| `VS/Tests/TpCore*.vcxproj`, `TpCore.sln`, `VS/Tests/.gitignore` | `Asan|Win32` = Release + `EnableASAN`, `/Zi`, ASan-DLL:n kopio; tulosteet git-ohitettu / Asan configuration |
+
+AddressSanitizer (VS 18, MSVC 14.52, x86) toimii `/MT /GL /GS`:n kanssa ja
+instrumentoimattomien `tputilv2.lib`/`dbboxm.lib`:n kanssa. Se näkee
+instrumentoidun koodin `memset`/`memmove`-kirjoitukset, ei ytimen `ReadFile`-
+kirjoitusta (`getrec`), jonka vain `/GS` havaitsee palatessa (0xC0000409, ei
+täsmällinen). Siksi H-041:n ylitys näytetään kirjoituspolulla. VS 2022:n
+v143-ASan-ajonaikaista ei ole tällä koneella [tuntematon CI:lle].
+
+AddressSanitizer works with the shipped settings; it sees instrumented writes,
+not the kernel `ReadFile` write, so H-041 is shown on the write path.
+
+### 14.2 Tulokset / Results
+
+| | |
+|---|---|
+| Revisiot / revisions | tuotanto / production `fc03b67` (muuttamaton / unchanged), testit / tests `79d9957` + vaihe 2 ajettuna ennen sen commitia, tunnistettu tiivisteillä `results.json`:ssa / stage 2 run before its commit, identified by hashes |
+| Käännös / build | MSVC 19.52.37029 (v145), Release/Win32 `/J /GL /MT /O2 /GS`; TpCoreHk Asan: sama + `/fsanitize=address /Zi`; ASan-DLL 14.52.37025 |
+| Komento / command | `python -I TPsource/V52/Tests/run_core_tests.py` |
+| Ajot / runs | 2026-11-24, 3 + 1 virallinen ajo korjausten jälkeen: kaikki PASS=11, XFAIL=12, FAIL 0, XPASS 0, paluuarvo 0; kesto ~23 s |
+| Aineisto / data | testien itse luomat tiedostot hiekkalaatikossa; H-042: `data/juk/h042_*.xml` (sha256 `d299275b…`, `da3e60a5…`) |
+
+| ID | Tila / Status | Todellinen / Actual |
+|---|---|---|
+| H-041a | XFAIL | n_pv 5, valuku 250: `kilprecsize0` 360, `kilppvtpsize0` **152**, `vatpsize` 8 → `kilprecsize` **11 200** > `KILPBUFSIZE` 10 000 |
+| H-041b3 | XFAIL | tuotannon `pack` kirjoitti tasan [0, 11 200), 1 200 tavua kohdasta 10 000 eteenpäin / wrote exactly [0, 11 200) |
+| H-041b2 | XFAIL | ASan: `stack-buffer-overflow`, `WRITE of size 8`, pino `vatp::pack` (`Hk/HkDat.cpp:221`) ← `kilppvtp::pack` ← `kilptietue::pack` ← `kilptietue::write` (`:586`); muuttuja `buf` [16, 10016) eli 10 000 tavua; poistumiskoodi 77 |
+| H-031-control | PASS | sallittu ensimmäinen vaihto: `k_pv` 1, lippu nollattu, lukot vapaat / allowed change proceeds |
+| H-031 | XFAIL | evätty vaihto (r1 = 1) jättää lipun; myöhempi sallittu kutsu: r2 = 0, `k_pv` 0, `lah_alku` 0, ei viestejä, lippu yhä päällä |
+| H-008-control, -control-valid | PASS | koetin vapaa/varattu/vapaa; tuntematon numero palaa ennen lukkoa; kelvollinen sanoma ottaa ja vapauttaa lukon / valid message releases the lock |
+| H-008 | XFAIL | sanoma "  12 1 3", `lsak` 0: virhe -3 -viesti, työsäie palasi; toinen säie ei saa `tall_CS`:ää, omistaja = päättynyt työsäie |
+| H-024-control | PASS | väärän numeron TARKT kulkee virhepolun kautta, kaksi viestiä, lukko vapaa |
+| H-024 | XFAIL | TARKT 'I' K-osuudelle kuuluttajatilassa: paketti käsitelty, `tarkcom`-säie päättyi normaalisti, `tall_CS` jää sen omistukseen; osuuden tila yhä K |
+| H-027-control | PASS | kuuntelija näki hylätyn (`WSAECONNREFUSED` 10061) ja hyväksytyn yrityksen |
+| H-027a | XFAIL | (i) hylkäysvaiheessa SYN-paketteja 5 (yksi `connect`), `hComm[0]` 1, `TCP_on[0]` 127.0.0.1, `comopen` 0; (ii) säie päättyi ~2 000 ms:ssä, hyväksyvässä vaiheessa 15 s:ssa 0 yritystä |
+| H-027b | XFAIL | lukuvirhe osoitteessa 0x0000000C asiakassäikeessä, käsittelijän symboli `reconnectTCP`; ajuri ratkaisi saman RVA:n prosessin ulkopuolella `reconnectTCP`:ksi; poistumiskoodi 0xC0000005 |
+
+### 14.3 Mitä kukin testi todisti ja mitä ei / What each test proved and did not
+
+| ID | Todisti / Proved | Ei todistanut / Did not prove |
+|---|---|---|
+| H-041 | Toimitetuilla määrityksillä hyväksytty kokoonpano (n_pv 5, valuku 250) tuottaa 11 200 tavun tietueen; tuotannon `kilptietue::write` kirjoittaa oman 10 000 tavun pinopuskurinsa yli (ASan, b2). b3 on välillinen näyttö (`pack`in kirjoitusmäärä). / accepted configuration gives 11 200 bytes; `write` overruns its own stack buffer (ASan) | Toimitetun HkMaali.exe:n tai HkKisaWinin (bcc32) kaatumista; luku-polun (`read`, `ReadFile`) ylitystä; käynnistyspolkua `luesarjat`in kautta (a kutsuu `luekentat`ia suoraan); onko valuku ≥ 221 käytössä oikeissa kilpailuissa / shipped program, read path, start-up path, real-world use |
+| H-031 | Evätty vaihto jättää `vaiheenvaihto`-lipun, ja myöhempi sallittu vaihto ei tee mitään; kontrolli osoittaa, että sallittu vaihto toimii samassa fixturessa / refused change blocks a later allowed one | Emit-, merkki- ja taustakäsittelyn pysähtymistä (`Hk/HkIV.cpp:796`, `:3714`, `Hk/HkEmit.cpp:3873`); konsolivalikon polkua; GUI ei kuulu (vain `_CONSOLE`) / background stop, menu path |
+| H-008 | Virhepolku -3 palaa `tall_CS` varattuna; lukko jää päättyneelle säikeelle; kelvollinen polku vapauttaa sen / -3 path leaves the lock held | Jumiutumista seuraavassa tallennuksessa; laitesanoman (`Tp/TpLaitteet.cpp:1670`) tai verkkopaketin reittiä; `sak_laji` ≠ 0 -polkuja / the freeze, device or network route |
+| H-024 | Kuuluttajapolku palaa `tall_CS` varattuna `tarkcom`-säikeessä, joka sitten päättyy; kontrollin virhepolku vapauttaa / announcer path leaves the lock held | Ohjelman jumiutumista (toinen `tall_CS`:n käyttäjä); oikeaa verkkoyhteyttä (paketti syötettiin jonoon) / freeze, real network |
+| H-027 | (i) yksi yritys tehtiin ja epäonnistui, (ii) säie päättyy eikä yritä uudelleen, vaikka kuuntelija hyväksyy 15 s; TCPXML: NULL-osoittimen luku `reconnectTCP`:ssä vapautetun yhteyden takia / one failed attempt and no retry; TCPXML NULL read | Palvelinpuolen avausvirheen ohitusta (palvelintila sitoo `INADDR_ANY`, ei ajettu); HK/viesti-ohjelman käyttäytymistä yhteyden katketessa käytössä; muita TCP-tyyppejä kuin comtpTCP ja comtpTCPXML / server-side open error, live behaviour, other types |
+
+Yhteistä: mikään tulos ei ole "vahvistettu ajamalla"; testit ajavat muuttamatonta
+tuotantokoodia toimitetuin käännösasetuksin, mutta tila asetetaan käsin. / No result
+is "confirmed by running"; the state is set by hand.
+
+### 14.4 Tarkastukset ja korjaukset / Reviews and fixes
+
+| Agentti / Agent | Tehtävä / Task | Tulos ja korjaukset / Result and fixes |
+|---|---|---|
+| `build-dependency-analyst` (Sonnet) | ASanin soveltuvuus ja Asan-konfiguraatio / ASan feasibility | Toimii; havaitsee `memmove`n, ei `ReadFile`ä; raportin muoto, takaisinkutsu, poistumiskoodit, ei dialogeja |
+| `defect-concurrency-auditor` | Fixture-reseptit viidelle testille / fixture recipes | Korjasi suunnitelman: `kilppvtpsize0` 152 (ei 154) → 11 200; `sak_laji`-oletus 2; H-024 ja H-027 julkisten funktioiden kautta ilman `#include`a; H-031:n kontrolli |
+| `architecture-analyst` | Ajurin laajennus, prosessien hallinta / runner design | Kaatumistodisteiden protokolla, `/GS` ei kelpaa todisteeksi, `TerminateProcess`, XPASS-näkyvyys, revisiot, ympäristön siivous |
+| `independent-verifier` | Toteutuksen tarkastus / implementation review | Ei estäviä ongelmia; tuotanto muuttamaton; H-027b:n vika varmistettu myös disassemblystä. Korjattu: säietunnuksen kierto (kahvat auki, koetin hylkää omistajan, omistaja REQUIRE), H-008:n viestin ja H-024:n tilan REQUIRE:t, H-008:n kelvollisen polun kontrolli, H-027a:n esiehdot REQUIRE:iksi ja `WSAECONNREFUSED`-tarkistus, hylkäävä portti pidetään varattuna, H-041b2 selviytyessä XPASS eikä FAIL, rivijärjestyksen tarkistus, symbolin ratkaisu prosessin ulkopuolella, ympäristön etuliitesiivous, `git status` -sarakkeen säilytys, PDB- ja `doctest.h`-tiivisteet, ASan-ohjelman käännöstiedot |
+
+Ensimmäisessä ajossa löytyneet testivirheet (korjattu ennen tarkastusta): yksi
+hylätty `connect` näkyy kuuntelijalle useana SYN-pakettina, joten hylkäysvaiheen
+laskuria ei käytetä sovellustason yritysten määränä; doctestin oma kaatumiskäsittely
+peitti H-027b:n poistumiskoodin. / First-run test bugs fixed before review: SYN
+retransmissions; doctest's own crash handler masked the exit code.
+
+### 14.5 Avoimet / Open
+
+- ASanin saatavuus `windows-latest`-koneella (v143) [tuntematon] (Q35).
+- `LockCount`-koettimen tarvetta ei ollut; H-007 on seuraavassa erässä.
+- H-027a:n oikean toiminnan (XPASS) tapauksessa tuotannon `TCPrcvTh` voi jäädä
+  käyntiin prosessin lopussa [päätelty]. / In the XPASS case a production receive
+  thread may outlive the test.
+- Seuraava erä (luku 7): H-026, H-032, H-022, H-023, H-007, H-001, H-002;
+  kerros (d) toimitetulle `HkMaali.exe`:lle (H-041 todellisessa ohjelmassa). /
+  Next batch per section 7.
