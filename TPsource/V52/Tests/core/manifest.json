@@ -499,6 +499,20 @@
           "dst": "KILP.SRJ"
         }
       ]
+    },
+    {
+      "id": "hk-data-run1-kilpsrj",
+      "program": "TpCoreHk",
+      "test_case": "HK synthetic KilpSrj.xml for black-box run 1 is read",
+      "kind": "control",
+      "expected": "PASS: the synthetic series file of black-box run 1 is read by the production luesarjat (0, no messages); n_pv 1, valuku 2, sarjaluku 1, kilprecsize 544",
+      "timeout": 30,
+      "data": [
+        {
+          "src": "data/hk/run1_kilpsrj.xml",
+          "dst": "KilpSrj.xml"
+        }
+      ]
     }
   ]
 }

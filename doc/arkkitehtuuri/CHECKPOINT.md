@@ -132,20 +132,29 @@ osittain). Tärkeimmät / most important:
 
 ## Seuraava askel / Next step
 
-**C-11 kolmas testausvaihe valmis, hyväksytty ja commitoitu.** Tulokset: `testaus.md`,
-luku 15. Kaikki 17 korkean
-vakavuuden havaintoa paitsi H-009 ja H-014 (GUI, käsin) on nyt toistettu
-testikehyksessä. Toimitetun HkMaali.exe:n ajosuunnitelma on luvussa 16; ohjelmaa **ei
-ole ajettu**, ja jokainen ajo vaatii erillisen hyväksynnän.
+**C-11 vaihe 3 commitoitu (`c11231b`). HkMaali.exe:n koeajot 0 ja 1 tehty onnistuneesti
+palomuurieristyksellä** (`testaus.md`, luvut 17.7–17.10). Ensimmäinen AppContainer-yritys
+keskeytyi (konsolin luku estetty, luku 17.3); palomuurisäännöt (käyttäjän luomat) +
+kirjoitusrajoitettu tunnus + Job-objekti; ennen käynnistystä TCP-esto ajon omalla
+koeohjelmalla ja UDP-esto aiemmalla, enintään 2 h vanhalla lokitodennuksella; kunkin ajon
+koepaketit (TCP ja UDP) todennettu pudotuslokista porttien ja ajan perusteella jälkikäteen; lokitusasetukset palautettu. Ajo 0: kaksi kehotetta, lopetus 0, ei tiedostoja.
+Ajo 1: KILP.DAT 544 tavua, otsakekuvauksen mukainen, lopetus valikosta (poistumiskoodi
+aina 0). Lokissa ei ohjelman polusta estettyä ulkoverkkoliikennettä (ei kata DNS:ää,
+silmukkaa, muiden prosessien liikennettä). Riippumaton tarkastus: raakaluvut oikein,
+liioittelut korjattu (luku 17.12). Yhtään H-havaintoa ei vahvistettu
+ajamalla. Ajotyökalut (`TPsource/V52/Tests/blackbox/`, `Tests/core/HkDataTests.cpp`,
+`Tests/data/hk/`) ja luku 17 ovat commitoimatta.
 
-**C-11 testing stage 3 done, approved and committed.** Results: `testaus.md`, section 15. All 17 high findings
-except H-009 and H-014 (GUI, manual) are now reproduced in the test harness. The
-HkMaali.exe run plan is in section 16; the program has **not** been run and each
-run needs separate approval.
+**C-11 stage 3 committed. HkMaali.exe runs 0 and 1 done successfully under firewall
+isolation** (sections 17.7–17.10): user-created firewall rules, write-restricted token,
+job object; before start: TCP blocking by the run's own probe, UDP by an earlier (<= 2 h)
+log verification; each run's probe packets matched in the drop log afterwards; logging restored. Independent review: raw numbers correct,
+overstatements corrected (17.12). No H finding confirmed by running. Run
+tools and section 17 are uncommitted.
 
-**Tarkka tehtävä luvan jälkeen / exact task after approval:** "Commitoi C-11:n
-vaihe 3. Aja HkMaali.exe:n ajo 0 (ja ajo 1, jos hyväksytty) `testaus.md`:n luvun 16
-menettelyllä; ei tuotantokoodin muutoksia; jälkitarkastus ja raportti."
+**Seuraava / next (luvan jälkeen / after approval):** commit of the run tools and
+section 17; then either C-11 stage 4 (H-041 in the shipped program, two-process loopback
+layer) or C-4 memory safety.
 
 Vaihtoehto / alternative: **C-4 muistiturvallisuus**; Asan-konfiguraatio on nyt
 valmiina. / C-4 memory safety; the Asan configuration now exists.
@@ -208,8 +217,8 @@ Figures as reported by the harness. The C-3 figure was 745 489 / 360.
 2. Tarkista tila / check state:
    ```sh
    git branch --show-current          # testit/vikojen-todentaminen
-   git status --short                 # pitäisi olla tyhjä / should be empty
-   git log --oneline main..           # 10 committia / commits (viimeisin / last: C-11 vaihe 3 / stage 3)
+   git status --short                 # commitoimatta / uncommitted: Tests/blackbox/, Tests/core/HkDataTests.cpp, Tests/data/hk/, manifest, VS/Tests/TpCoreHk.vcxproj, doc/ (luku 17)
+   git log --oneline main..           # 10 committia / commits (viimeisin / last c11231b)
    python -I TPsource/V52/Tests/test_run_core_tests.py   # 46 OK
    python -I TPsource/V52/Tests/run_core_tests.py   # PASS=19, XFAIL=23 (vaatii Release- ja TpCoreHk Asan -käännöksen / needs Release and TpCoreHk Asan builds, testaus.md 13.6, 14)
    python -I doc/arkkitehtuuri/tyokalut/tarkista_auditointi.py .   # OK

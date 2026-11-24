@@ -985,3 +985,304 @@ two-process loopback layer.
   Job-objektiin [tuntematon].
 - WER:n käyttäytyminen toimitetun ohjelman pikakaatumisessa [tuntematon].
 - Pienin kelvollinen HK:n `KilpSrj.xml` [tuntematon]; tuotetaan tuotannon kirjoittajalla.
+
+## 17. HkMaali.exe:n koeajot 0 ja 1 / Black-box runs 0 and 1 (2026-11-24)
+
+Käyttäjä hyväksyi ajot 0 ja 1 ehdolla, että verkkoyhteydet estetään ennakolta
+todennettavalla menetelmällä. Ensimmäinen ajo 0 AppContainerissa keskeytyi
+odottamattomaan tilaan (17.1–17.6); ajot 0 ja 1 tehtiin sen jälkeen palomuurieristyksellä
+(17.7–17.10) ja tarkastettiin riippumattomasti (17.12). Yhtään H-havaintoa ei merkitty
+"vahvistettu ajamalla". Työkalut: `TPsource/V52/Tests/blackbox/` (`run_hkmaali.py`,
+`verify_log.py`, `isolation_probe.c`, `console_probe.c`), aineisto `Tests/data/hk/`,
+aineiston tarkistus `Tests/core/HkDataTests.cpp`.
+
+The user approved runs 0 and 1 provided network access is blocked beforehand in a
+verifiable way. The first run 0 in an AppContainer stopped in an unexpected state
+(17.1–17.6); runs 0 and 1 were then done under firewall isolation (17.7–17.10) and
+reviewed independently (17.12). No H finding was marked "confirmed by running".
+
+### 17.1 Ohjelma / Program
+
+| | |
+|---|---|
+| Ohjelma / binary | `TPexe/Hk/V521/HkMaali.exe`, 1 156 096 tavua, SHA-256 `61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d`; PDB `HkMaali.pdb` SHA-256 `68ec2cd7…`, RSDS-GUID {B0500861-3E83-4118-B0DA-E8E331F12614} täsmää / matches |
+| Alkuperä / provenance | `build-dependency-analyst`: PE-aikaleima 2026-11-24 00:16:10, linker 14.52, x86 CUI, `/MT`; tuonnit vain järjestelmä-DLL:istä (ws2_32, winhttp, kernel32, user32, gdi32, winspool); ei advapi32:n rekisterikutsuja; uusi käännös samasta vcxproj:sta (Release) tuottaa identtiset otsakkeet ja tuonnit ja saman `.text`-koon. Päätelmä: uskollinen Release-käännös tuotantokoodista `fc03b67` [päätelty; määrityksiä ei ole tlogissa] |
+| Revisio / revision | haara `testit/vikojen-todentaminen`, HEAD `c11231b`; tuotantokoodi muuttamaton |
+
+### 17.2 Eristys / Isolation
+
+Ylläpitäjän oikeuksia ei ole eikä Windows Sandboxia ole asennettu, joten palomuurisääntöä
+tai virtuaalikonetta ei voitu käyttää. Käytettiin **AppContainer**ia ilman
+kyvykkyyksiä (verkko estetty käyttöjärjestelmän WFP-kerroksessa) + Job-objekti
+(`KILL_ON_JOB_CLOSE`, `DIE_ON_UNHANDLED_EXCEPTION`) + uusi hiekkalaatikkohakemisto
+`%TEMP%\hkmaali_run_*\sandbox`, johon vain AppContainerin SID:llä on oikeudet. Ennen
+ohjelmaa ajetaan samassa säiliössä `isolation_probe`; jos yksikin tarkistus epäonnistuu,
+ohjelmaa ei käynnistetä (tapahtui ensimmäisellä yrityksellä konsolikahvojen vuoksi;
+korjattu ennen ajoa 0).
+
+No admin rights and no Windows Sandbox, so no firewall rule or VM. An AppContainer
+without capabilities + job object + fresh sandbox was used; a probe in the same
+container checks isolation first and blocks the run on any failure.
+
+| Tarkistus (ajo 0:n alussa) / check | Tulos / result |
+|---|---|
+| Konsolisyöte / console input | näppäin vastaanotettu / key received |
+| Kirjoitus hiekkalaatikkoon / write in sandbox | onnistuu / ok |
+| Kirjoitus sen ulkopuolelle / write outside | estetty, virhe 5 / refused |
+| TCP 127.0.0.1 (ohjaajan kuuntelija / driver listener) | epäonnistui 10060 / failed, 0 yhteyttä / 0 accepts |
+| TCP 192.0.2.1:9 (TEST-NET-1, RFC 5737) | estetty heti, 10013 / refused at once (access denied) |
+| Silmukkapoikkeus / loopback exemption | säiliön SID ei listalla (`CheckNetIsolation -s`); BFE ja palomuuri päällä / not exempt; firewall on |
+
+Rajaus (riippumaton tarkastus): todennettu vain TCP:lle; UDP, kuuntelu, IPv6, DNS ja
+järjestelmäpalvelujen välittämä liikenne (WinHTTP-välityspalvelimen haku) eivät olleet
+mukana. / Limit: proven for TCP only; UDP, listening, IPv6, DNS and service-proxied
+traffic were not tested.
+
+### 17.3 Ajo 0 / Run 0
+
+| | |
+|---|---|
+| Komento / command | `python -I Tests/blackbox/run_hkmaali.py --exe TPexe/Hk/V521/HkMaali.exe --probe isolation_probe.exe --script run0.json` |
+| Ohjelman komento / program command line | `HkMaali.exe BOOT`, cwd = hiekkalaatikko / sandbox, ei asetustiedostoja / no config files |
+| Aineisto / data | ei mitään (tyhjä hakemisto) / none |
+| Odotettu / expected | kehote "Tiedosto KilpSrj.xml puuttuu" + Enter, "Sarjatietojen lukeminen ei onnistunut" + Enter, lopetus, ei tiedostoja |
+| Toteutunut / actual | konsolipuskuri tyhjä koko ajan; ensimmäistä kehotetta ei näkynyt 10 s:ssa; ohjaaja lopetti Job-objektin (poistumiskoodi 0xDEAD0001); ei ikkunoita, ei verkkopäätepisteitä, ei uusia tiedostoja hiekkalaatikossa (vain `HkMaali.exe`, tiiviste ennallaan); muutokset hiekkalaatikon ulkopuolella vain MSRDC-jäljitystiedostoja, joita esiintyi myös koeohjelma-ajoissa (järjestelmän muu toiminta) |
+| Prosessit / processes | ei jäänteitä (`tasklist`) / none left |
+
+**Syy / cause (todennettu koeohjelmalla, ei HkMaalia ajamalla / verified with a probe,
+not by running HkMaali):** samassa säiliössä ja konsolijärjestelyssä `console_probe`
+osoitti, että `ReadConsoleOutputW` ja `ReadConsoleOutputA` epäonnistuvat virheellä 5
+(pääsy estetty), kun taas kirjoitus, koko puskurin tyhjennys (9001 riviä 250 ms:ssa),
+tila- ja otsikkokutsut onnistuvat. HkMaalin näyttörutiinit lukevat puskurin ennen
+kirjoitusta ja ohittavat kirjoituksen hiljaa, jos luku epäonnistuu
+(`tputilv2/viwrrectw.cpp`, `tputilv2/Viwrrect.cpp:61-64`, `tputilv2/virdrect.cpp:42-45`);
+`writeerror_w` (`tputilv2/Writeerr.cpp:66-95`) jää silti odottamaan näppäintä. Tämä
+selittää kaiken havaitun. Puskuri, jonka DACL salli säiliön SID:n, ei auttanut: luku
+estyy silti (Windowsin rajoitus AppContainer-prosessille [päätelty]). / ReadConsoleOutput
+is denied to the container process; the program's screen routines then skip every write
+silently while the prompt still waits for a key. A buffer DACL granting the container
+did not help.
+
+**Tulkinta / interpretation:** kyse on eristysmenetelmän ja ohjelman näyttörutiinien
+yhteisvaikutuksesta, ei HkMaalin virheestä normaalikäytössä; ajo ei todista eikä kumoa
+mitään H-havaintoa. Havainto, että näyttörutiinit ohittavat virheet hiljaa, on
+huomionarvoinen mutta ei tässä erässä uusi H-havainto (vain koetilanteessa). / An
+interaction of the isolation method with the screen routines, not a defect in normal use;
+the run proves or refutes no finding.
+
+### 17.4 Mitä ajo 0 todisti ja mitä ei / What run 0 showed and did not
+
+- Todisti / showed: ohjelma käynnistyy säiliössä ilman verkkoyhteyttä, ilman
+  ikkunoita ja ilman tiedostomuutoksia, ja prosessi saadaan aina lopetettua; eristyksen
+  esitarkastus toimii (esti kerran ajon, kun konsoli ei ollut kunnossa).
+- Ei todistanut / did not show: puuttuvan sarjatiedoston käsittelyä, normaalia
+  lopetusta eikä poistumiskoodia 0, koska kehotteita ei voitu nähdä.
+
+### 17.5 Este ja vaihtoehdot / Blocker and options (päätös käyttäjälle / user decision)
+
+AppContainer on ainoa tässä ympäristössä ilman ylläpitäjää todennettavissa oleva
+verkkoeristys, mutta se estää konsolin luvun, jota HkMaali tarvitsee. Vaihtoehdot:
+
+1. **Windowsin palomuurin estosäännöt** ohjelmapolulle (sisään ja ulos, kaikki
+   protokollat) – vaatii ylläpitäjän; ohjelma ajetaan tavallisena prosessina
+   hiekkalaatikkohakemistossa, ja sama koeohjelma todentaa eston saman polun alta ennen
+   ajoa (kopioidaan koeohjelma samaan polkuun / sääntö koskee hakemistoa).
+2. **Windows Sandbox** (`.wsb`, `<Networking>Disable</Networking>`) tai virtuaalikone
+   ilman verkkokorttia – vaatii ominaisuuden käyttöönoton (ylläpitäjä).
+3. **Ei verkkoeristystä** – ei hyväksyttävä käyttäjän ehtojen mukaan.
+
+Ajo 1:tä ei tehdä ennen kuin jokin vaihtoehdoista 1–2 on hyväksytty ja ajo 0 toistettu
+onnistuneesti.
+
+### 17.6 Jäänteet / Leftovers
+
+- AppContainer-profiili `tulospalvelu.c11.hkmaali` on rekisteröity (voidaan poistaa
+  `DeleteAppContainerProfile`-kutsulla, kun sitä ei enää tarvita).
+- `%TEMP%\hkmaali_run_*`-hakemistot (todisteet; sisältävät kopion ohjelmasta ja
+  koeohjelmista) säilytetty tarkastusta varten.
+- Ohjaajan ja koeohjelmien tulokset: `run.json`, `screens.log`, `probe_result.txt`,
+  `console_probe.txt` (tilapäishakemisto, ei repossa).
+
+### 17.7 Palomuurieristys (käyttäjän valitsema vaihtoehto 1) / Firewall isolation (option 1)
+
+Käyttäjä loi järjestelmänvalvojana estosäännöt (sisään ja ulos, kaikki protokollat ja
+profiilit) kiinteälle ohjelmapolulle
+`%LOCALAPPDATA%\tulospalvelu-c11\hkmaali-fw\HkMaali.exe` (säännöt `TP C11 HkMaali block
+in/out`). Ohjain tarkistaa ennen jokaista ajoa, että säännöt ovat käytössä, osoittavat
+tähän polkuun ja että palomuuri on päällä kaikissa profiileissa.
+
+The user created block rules (in and out, all protocols, all profiles) for a fixed
+program path; the driver checks them before every run.
+
+**Tiedostoeristys / file isolation:** matala eheystaso estää myös konsolin luvun
+(`console_probe`: `ReadConsoleOutput` virhe 5), joten käytettiin **kirjoitusrajoitettua
+tunnusta** (`CreateRestrictedToken`, `WRITE_RESTRICTED`, rajoittava SID `S-1-5-12`
+RESTRICTED): kirjoitus vaatii lisäksi oikeuden tälle SID:lle, joka on vain
+testihakemistolla; luku ei muutu, joten konsolin luku toimii. Ei vaadi ylläpitäjää.
+Konsolin koko asetetaan valmiiksi 80×50 (ohjelman oma koonmuutos olisi muuten
+epäonnistunut `perr`-ikkunaan). / Low integrity also denies console reads, so a
+write-restricted token was used: writes need a grant to the restricting SID, which only
+the sandbox has; reads (and the console) work.
+
+**UDP-todennus / UDP verification:** UDP:n `sendto` palauttaa onnistumisen myös
+estettynä (palomuuri pudottaa hiljaa), joten se ei ole todiste. Käyttäjä otti
+järjestelmänvalvojana pudotettujen pakettien lokituksen käyttöön testin omaan
+hakemistoon (`Set-NetFirewallProfile -LogBlocked True -LogFileName …`; palvelulle
+`NT SERVICE\mpssvc` annettiin kirjoitusoikeus); palvelu suojaa lokin, joten käyttäjä
+kopioi sen luettavaksi. Koeohjelma lähettää TCP- ja UDP-paketin satunnaisiin
+kohdeportteihin osoitteeseen 192.0.2.1 (TEST-NET-1) ja kirjaa lähdeportit ja ajan;
+`verify_log.py` hyväksyy vain DROP-merkinnät, joissa protokolla, kohdeosoite, kohde- ja
+lähdeportti täsmäävät ja aika on ±3 min. Ohjelma käynnistyy vain, jos tällainen
+todennus on hyväksytty enintään 2 h sitten samalla sääntöjoukolla; kunkin ajon oma
+koepaketti todennetaan lisäksi jälkikäteen. Alkuperäiset lokitusasetukset (kaikissa
+profiileissa `LogBlocked` False, `%systemroot%\system32\LogFiles\Firewall\pfirewall.log`)
+palautettiin kokeen jälkeen ja tarkistettiin. / sendto success is no evidence; the drop
+log, copied by the administrator, is matched on protocol, address, both ports and time;
+the original logging settings were restored and checked.
+
+| Tarkistus / check | Tulos / result |
+|---|---|
+| Säännöt / rules | 2 käytössä, Block, Any, ohjelma = kiinteä polku / enabled, Block, Any, program = fixed path |
+| Koeohjelman tunnus / probe token | rajoitettu (restricted=1), eheys 0x2000 (keskitaso), ei ylläpitäjäjäsenyyttä / restricted, medium, not admin |
+| Konsoli / console | näppäin vastaanotettu, luku ja kirjoitus toimivat / key received, read and write work |
+| Kirjoitus ulkopuolelle / write outside | `%TEMP%`, profiili, Dokumentit, `LOCALAPPDATA`: kaikki estetty (virhe 5) / all refused |
+| TCP 192.0.2.1 | `connect` estetty heti (10013); lokissa DROP TCP, portit täsmäävät / refused; DROP logged |
+| UDP 192.0.2.1 | `sendto` palautti onnistumisen; lokissa DROP UDP, portit täsmäävät / DROP logged |
+| Loopback 127.0.0.1 | yhteys syntyi: palomuuri ei suodata silmukkaliikennettä (tieto, ei vaatimus) / connected: loopback not filtered (information) |
+
+Pudotusloki (koko sisältö, 6 merkintää; viimeinen sarake = prosessin pid) / the whole
+drop log:
+
+```
+2026-11-24 21:06:30 DROP TCP 192.168.2.199 192.0.2.1 52840 46499 ... SEND 108528   (eristyskoe / isolation probe)
+2026-11-24 21:06:30 DROP UDP 192.168.2.199 192.0.2.1 60933 48541 ... SEND 108528
+2026-11-24 21:10:30 DROP TCP 192.168.2.199 192.0.2.1 57086 43519 ... SEND 70264    (ajo 0:n koe / run 0 probe)
+2026-11-24 21:10:30 DROP UDP 192.168.2.199 192.0.2.1 52597 48663 ... SEND 70264
+2026-11-24 21:11:30 DROP TCP 192.168.2.199 192.0.2.1 61919 46217 ... SEND 108212   (ajo 1:n koe / run 1 probe)
+2026-11-24 21:11:30 DROP UDP 192.168.2.199 192.0.2.1 54033 41374 ... SEND 108212
+```
+
+Lokissa ei ole muita pudotusmerkintöjä: ajojen aikana HkMaali.exe:n polusta ei lähtenyt
+palomuurin estämää ja lokiin kirjattua IP-liikennettä ulkoverkkoon. Se, että säännöt
+koskivat myös HkMaali.exe:tä, on [päätelty]: säännöt kohdistuvat polkuun, ja ohjelma ajettiin
+samasta polusta kuin koeohjelma. Loki **ei kata** DNS-kyselyjä (Dnscache-palvelu tekee
+ne), silmukkaliikennettä (ei suodateta eikä kirjata), muiden prosessien ohjelman puolesta
+tekemää liikennettä (tulostusjono, WinHTTP-palvelu, synkronoidut asemat, lapsiprosessit)
+eikä kuuntelevia soketteja (netstat 2–3 näytettä). HkMaali.exe:n pid:tä ei tallennettu,
+joten lokin pid-saraketta ei voitu käyttää. Palomuurin eston todennus (koeohjelma) ja
+havainto ohjelman omista yhteysyrityksistä ovat siis eri asioita.
+
+No other drop entries: no blocked, logged IP traffic to external addresses left the
+HkMaali.exe path during the runs. That the rules also covered HkMaali.exe is inferred
+(path rule, same path). The log does not cover DNS (Dnscache service), loopback,
+traffic made by other processes on the program's behalf, or listening sockets (2–3
+netstat samples); HkMaali's pid was not recorded. Verifying the block (probe) and
+observing the program's own connection attempts are different things.
+
+### 17.8 Ajo 0 uudelleen (palomuurieristys) / Run 0 again (firewall isolation)
+
+| | |
+|---|---|
+| Ohjelma / program | `HkMaali.exe` SHA-256 `61034e5d…7d297d` (kopio testipolussa sama / copy identical) |
+| Komento / command | `run_hkmaali.py --mode firewall --udp-verified udp_verified.json --exe TPexe/Hk/V521/HkMaali.exe --probe isolation_probe.exe --script run0.json`; ohjelma: `HkMaali.exe BOOT`, cwd = testihakemisto |
+| Aineisto / data | ei mitään / none |
+| Kulku / sequence | otsikkolaatikko (HkMaali 5.21, Build 5.22.002/2026-07-31); havaittu viimeistään 0,21 s "Tiedosto KilpSrj.xml puuttuu" → Enter; 0,73 s "Sarjatietojen lukeminen ei onnistunut" → Enter (ajat = havaintohetket: 0,2 s kysely + 0,3 s viive ennen näppäintä / detection times: 0.2 s polling + 0.3 s delay before each key) |
+| Lopetus / end | ohjelma päättyi itse 1,44 s, poistumiskoodi 0. Poistumiskoodi on aina 0 (`HkConsole/HkMain.cpp:233`), myös virhepolulla; se osoittaa vain, ettei prosessi kaatunut eikä sitä lopetettu / exit code is always 0, also on the error path; it only shows no crash or kill |
+| Tiedostot / files | lopputilassa vain `HkMaali.exe` (ennallaan) / final state: only the program |
+| Muut / other | ei ikkunoita; netstat 2 näytettä ilman päätepisteitä (ei lopetusvaiheessa); ei muutoksia seuratuissa hakemistoissa (`%TEMP%`, CrashDumps, WER; syvyys ≤ 3, koko ja aikaleima) / no windows; 2 netstat samples without endpoints (none during shutdown); no changes in the watched directories |
+
+### 17.9 Ajo 1 / Run 1
+
+| | |
+|---|---|
+| Komento / command | kuten ajo 0, `--script run1.json --data Tests/data/hk/run1_kilpsrj.xml=KilpSrj.xml` |
+| Aineisto / data | `Tests/data/hk/run1_kilpsrj.xml` (SHA-256 `23ebf0b8…015ab7e`): 1 vaihe, 2 väliaikaa, 1 sarja H21; tarkistettu ennen ajoa tuotannon lukijalla komponenttitestissä `hk-data-run1-kilpsrj` (PASS: `luesarjat` 0, ei viestejä, `kilprecsize` 544) |
+| Kulku / sequence | havaittu viimeistään 0,21 s "Tiedostoa KILP.DAT ei ole. Luodaan uusi tiedosto." → Enter; 0,73 s PÄÄVALIKKO (rivi "P)oistu") → P; 1,25 s "Haluatko varmasti poistua ohjelmasta (K/E)" → K (havaintohetket, ks. ajo 0 / detection times) |
+| Lopetus / end | ohjelma päättyi itse 2,16 s, poistumiskoodi 0 (aina 0, ks. ajo 0 / always 0) |
+| Tiedostot / files | `KILP.DAT` 544 tavua (SHA-256 `f1d3fa28…af985`) + syötetiedostot ennallaan / input files unchanged |
+| KILP.DAT | tasan yksi otsaketietue: `firstfree` FFFF, `numberfree` 0, `int1` 0, `int2` 1; `maaliajat[0]` 0, `[1..8]` −86 400 000 (TMAALI0), `[9]` 0; tavut 56–543 nollia. Rakenne vastaa `tiedostomuodot.md`:n otsakekuvausta; arvot selittyvät koodista (`dbboxm/dbbox1.cpp:34-44`, `:214-222`; `Hk/HkInit.cpp:3388-3392`, `:3497`; otsakkeen kirjoitti lopetuksen `closefile`, `Hk/HkInit.cpp:3790`). Arvoja ei ollut ennustettu kirjallisesti ennen ajoa. Tavut 56–543 ovat nollia, koska `tarecbuf` oli käyttämätön (ei taattu, H-051) / layout matches the header description; values follow from the code (closefile at exit); not predicted in writing before the run; zero tail not guaranteed (H-051) |
+| Muut / other | ei ikkunoita; netstat 3 näytettä ilman päätepisteitä (ei lopetusvaiheessa); ei muutoksia seuratuissa hakemistoissa. Lopputilassa hiekkalaatikossa uutena vain KILP.DAT; tiedosto-operaatioita (luvut, poistetut väliaikaistiedostot, estetyt kirjoitusyritykset) ei jäljitetty – Procmon-todennus (luku 16) tekemättä / final state: only KILP.DAT new; file operations were not traced (no Procmon) |
+
+### 17.10 Mitä koeajot osoittivat ja mitä eivät / What the runs showed and did not
+
+Osoittivat / showed:
+- Toimitettu HkMaali.exe (alkuperä varmistettu) käynnistyy ja toimii eristettynä.
+  Palomuuri esti testipolusta lähtevän IPv4 TCP- ja UDP-liikenteen (todennettu lokista
+  koeohjelmalla). NTFS-kirjoitukset rajattiin testihakemistoon kirjoitusrajoitetulla
+  tunnuksella [päätelty mekanismista; testattu neljällä hakemistolla: `%TEMP%`, profiili,
+  Dokumentit, `LOCALAPPDATA`]. Ei testattu: rekisteri (HKCU antaa RESTRICTED-SID:lle vain
+  luvun), D:, G: (Google Drive, FAT32 – ACL-suojaus ei välttämättä päde), verkkojaot,
+  nimetyt objektit. Job-objekti ja käynnistys keskeytettynä toimivat; aikarajan ylitys ja
+  lopetus nähtiin vain AppContainer-ajossa (0xDEAD0001).
+- Puuttuvan sarjatiedoston käsittely: kaksi ilmoitusta ja lopetus itsestään (poistumiskoodi
+  0, joka ei erota virhepolkua onnistumisesta), ei tiedostoja.
+- Synteettisen sarjatiedoston luku, KILP.DAT:n luonti (otsakekuvauksen mukainen) ja
+  lopetus valikosta.
+- Lokissa ei ole ohjelman polusta estettyä ja kirjattua ulkoverkkoliikennettä (rajaukset
+  17.7).
+
+Eivät osoittaneet / did not show:
+- **Yhtään H-havaintoa ei vahvistettu eikä kumottu ajamalla**; vikamekanismeja ei
+  yritetty toistaa (H-041 toimitetussa ohjelmassa vaatii erillisen ajon ja arvion).
+- Ettei ohjelma yrittänyt verkkoyhteyksiä lainkaan: DNS, silmukkaliikenne, muiden
+  prosessien välittämä liikenne ja kuuntelevat soketit jäivät lokin ulkopuolelle; netstat
+  vain 2 (ajo 0) / 3 (ajo 1) näytettä, ei lopetusvaiheessa.
+- Silmukkaliikenteen (127.0.0.1) estoa: palomuuri ei suodata sitä.
+- IPv6:ta, DNS:ää ja kuuntelua ei testattu koeohjelmalla (säännöt koskevat kaikkia
+  protokollia [päätelty]).
+- Tiedosto-operaatioita (Procmon) eikä lapsiprosesseja (Job-objektin laskuri) seurattu.
+- Kaatumisraporttien ohjautumista: kaatumisia ei tapahtunut (`DIE_ON_UNHANDLED_EXCEPTION`
+  käytössä).
+
+In English (17.10): shown – the shipped program starts and runs isolated; the firewall
+blocked IPv4 TCP/UDP from the test path (log, probe); NTFS writes confined by the
+write-restricted token (inferred, four directories tested; registry, D:, G: (FAT32,
+Google Drive), shares and named objects not tested); timeout kill only seen in the
+AppContainer run; missing series file → two messages and self-exit (exit 0 does not tell
+the error path apart); synthetic series file read, KILP.DAT created per the header
+description; no blocked, logged external traffic from the program path. Not shown – no H
+finding confirmed or refuted; that the program made no network attempts at all (DNS,
+loopback, other processes, listening sockets; 2–3 netstat samples); IPv6/DNS/listen not
+probed; file operations and child processes not traced.
+
+### 17.11 Jäänteet / Leftovers (päivitetty / updated)
+
+- Palomuurisäännöt `TP C11 HkMaali block in/out` ovat yhä käytössä (poisto
+  järjestelmänvalvojana: `Remove-NetFirewallRule -DisplayName 'TP C11 HkMaali block*'`).
+- Lokitusasetukset palautettu ja tarkistettu.
+- `%LOCALAPPDATA%\tulospalvelu-c11\` (testihakemisto, lokikopio; palvelun suojaama
+  `pfirewall.log` voi vaatia järjestelmänvalvojan poistoon).
+- AppContainer-profiili `tulospalvelu.c11.hkmaali` ja `%TEMP%\hkmaali_run_*` (luku 17.6).
+- Tulokset: `run.json`, `screens.log`, `sandbox_copy/`, `udp_verified.json`,
+  `fwrun0_log.json`, `fwrun1_log.json` (tilapäishakemisto, ei repossa).
+
+### 17.12 Riippumaton tarkastus / Independent review (2026-11-24)
+
+`independent-verifier` tarkasti ajot 0 ja 1, ajurin, eristyksen, lokin tulkinnan,
+aineiston, KILP.DAT-tarkistuksen ja dokumentaation. **Raakaluvut vastasivat
+tulostiedostoja** (tiivisteet, ajat, poistumiskoodit, tiedostoluettelot, lokirivit,
+KILP.DAT-tavut, aineiston tarkistus ennen ajoa 1). Korjatut liioittelut: väite "ohjelma
+ei yrittänyt verkkoliikennettä" (rajattu lokin kattavuuteen, 17.7), "kirjoitukset
+rajattu testihakemistoon" (rajattu NTFS:ään ja testattuihin hakemistoihin), "ei
+odottamattomia tiedosto-operaatioita" (lopputila, ei jäljitystä), "ei ulkopuolisia
+muutoksia" (seuratut hakemistot), "täsmälleen ennusteen mukainen" (otsakekuvauksen
+mukainen, arvot selitetty koodista), poistumiskoodin tulkinta, vaiheajat havaintohetkinä
+ja luvun 17 vanhentunut johdanto.
+
+Raw numbers matched the result files; the overstatements listed above were corrected.
+
+Ajuriin ei tehty muutoksia ajojen jälkeen: commitoitu `run_hkmaali.py` on sama, jolla
+ajot tehtiin. Tarkastuksen työkaluehdotukset ovat vaiheen 4 esiehtoja (kirjataan vaiheen 4 suunnitelmaan ennen H-041-ajoa):
+HkMaali.exe:n pid `run.json`:iin ja lokin täsmäytykseen; netstat jokaisella kyselyllä
+myös lopetusvaiheessa; Job-objektin prosessilaskuri (lapsiprosessit); koeohjelman
+lopetus 30 s jälkeen; ulkoisen TCP:n hyväksyntä vain virheellä 10013 palomuuritilassa;
+D:, G: ja HKCU-kirjoitus ulkopuolisiin tarkistuksiin (tai dokumentoidaan
+testaamattomiksi); prosessikahvojen sulkeminen; moduulin kuvausteksti ajan tasalle.
+
+The driver was not changed after the runs (committed = as run). The review's tool
+proposals are prerequisites of stage 4 (to be recorded in the stage 4 plan before any H-041 run).
+
+Avoimet kysymykset / open: valvooko G: (Google Drive, FAT32) ACL:iä rajoitettua tunnusta
+vastaan; kattoiko 21.12.38 otettu lokikopio varmasti 21.11.31–33 pudotukset (päätelty
+lokin muutosajasta 21.11.56); yrittikö ohjelma estettyjä kirjoituksia tai odottamattomia
+lukuja (Procmon); DNS/IPv6/kuuntelu koeohjelmalla.

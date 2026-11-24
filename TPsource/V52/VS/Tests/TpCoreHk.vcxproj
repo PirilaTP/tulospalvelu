@@ -154,6 +154,7 @@
     <ClCompile Include="..\..\Tests\core\HkLockTests.cpp" />
     <ClCompile Include="..\..\Tests\core\TcpClientTests.cpp" />
     <ClCompile Include="..\..\Tests\core\HkRecvTests.cpp" />
+    <ClCompile Include="..\..\Tests\core\HkDataTests.cpp" />
     <ClCompile Include="..\..\Tests\fixtures\TpCore.cpp" />
     <ClCompile Include="..\..\Tests\fixtures\TpCrash.cpp" />
     <ClCompile Include="..\..\Tests\fixtures\TpNet.cpp" />
