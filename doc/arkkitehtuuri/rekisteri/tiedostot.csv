@@ -1,0 +1,632 @@
+polku,hakemisto,rivit,merkisto,projektit,analyysitaso,arkkitehtuuri,kommentointi,tarkistettu_rev,havainnot,huomiot,inventoitu_rev
+cbHk/AsetusUnit.cpp,cbHk,69,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/AsetusUnit.h,cbHk,59,ascii,-,1,-,-,,,,f7fe553
+cbHk/HkArv2.cpp,cbHk,1274,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/HkKisaLahtLuet.cpp,cbHk,2180,cp1252,HkKisaWin,2,tallenna-samanaikaisuus,-,f7fe553,,ei tallenna-kutsuja; tall_CS lukusilmukoissa,f7fe553
+cbHk/HkWinApu.cpp,cbHk,95,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/HkWinDef.h,cbHk,444,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/HkWinParam.cpp,cbHk,169,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/LoppuKilpUnit.cpp,cbHk,1195,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/LoppuKilpUnit.h,cbHk,323,ascii,-,1,-,-,,,,f7fe553
+cbHk/MuotoiluUnit.cpp,cbHk,1027,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/MuotoiluUnit.h,cbHk,335,ascii,-,1,-,-,,,,f7fe553
+cbHk/TakaaAjoUnit.cpp,cbHk,494,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/TakaaAjoUnit.h,cbHk,100,ascii,-,1,-,-,,,,f7fe553
+cbHk/TapUnit2.cpp,cbHk,743,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/TapUnit2.h,cbHk,119,ascii,-,1,-,-,,,,f7fe553
+cbHk/TulostusUnit2.cpp,cbHk,1632,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/TulostusUnit2.h,cbHk,267,cp1252,-,1,-,-,,,,f7fe553
+cbHk/TulosUnit.cpp,cbHk,2616,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/TulosUnit.h,cbHk,362,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitAikaSiirto.cpp,cbHk,395,cp1252,HkKisaWin,2,tallenna-samanaikaisuus,-,f7fe553,H-010,lukitsemattomat kutsut,f7fe553
+cbHk/UnitAikaSiirto.h,cbHk,77,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitAikavert.cpp,cbHk,929,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitAikavert.h,cbHk,178,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitAjanotto.cpp,cbHk,1961,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitAjanotto.h,cbHk,268,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitArvonta.cpp,cbHk,1270,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitArvonta.h,cbHk,164,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitASakot.cpp,cbHk,394,cp1252,HkKisaWin,2,tallenna-samanaikaisuus,-,f7fe553,H-009 H-020,add_sakko,f7fe553
+cbHk/UnitASakot.h,cbHk,87,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitASuunn.cpp,cbHk,343,ascii,HkKisaWin,2,tallenna-samanaikaisuus,-,f7fe553,H-020,add_sakko,f7fe553
+cbHk/UnitASuunn.h,cbHk,89,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitAutoFile.cpp,cbHk,216,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitAutoFile.h,cbHk,83,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitAvausMaar.cpp,cbHk,174,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitAvausMaar.h,cbHk,62,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitCfg.cpp,cbHk,2936,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitCfg.h,cbHk,381,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitComfile.cpp,cbHk,1098,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitComfile.h,cbHk,146,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitEmit.cpp,cbHk,3798,cp1252,HkKisaWin,2,tallenna-samanaikaisuus,-,f7fe553,H-010 H-017,"tallenna-kutsut, NewCardHandler",f7fe553
+cbHk/UnitEmit.h,cbHk,390,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitEmit_VA.cpp,cbHk,149,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitEmit_VA.h,cbHk,65,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitEmithaku.cpp,cbHk,133,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitEmithaku.h,cbHk,58,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitEmitKoodit.cpp,cbHk,163,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitEmitKoodit.h,cbHk,56,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitEmitMuutokset.cpp,cbHk,323,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitEmitMuutokset.h,cbHk,108,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitExport.cpp,cbHk,635,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitExport.h,cbHk,95,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitHylkRap.cpp,cbHk,712,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitHylkRap.h,cbHk,118,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitIlm2.cpp,cbHk,2407,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitIlm2.h,cbHk,333,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitImport.cpp,cbHk,1595,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitImport.h,cbHk,100,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitJoukkueTilanne.cpp,cbHk,272,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitJoukkueTilanne.h,cbHk,92,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitKaavaTaul.cpp,cbHk,211,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitKaavaTaul.h,cbHk,56,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitKilpailijaEmit.cpp,cbHk,418,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitKilpailijaEmit.h,cbHk,87,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitKilpailijaOnline.cpp,cbHk,1517,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitKilpailijaOnline.h,cbHk,139,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitKilpailijatiedot.cpp,cbHk,1900,cp1252,HkKisaWin,2,tallenna-samanaikaisuus,-,f7fe553,H-017,optimistinen tarkistus 613-626,f7fe553
+cbHk/UnitKilpailijatiedot.h,cbHk,208,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitKilpMaaritys.cpp,cbHk,771,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitKilpMaaritys.h,cbHk,136,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitKilpSeurat.cpp,cbHk,433,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitKilpSeurat.h,cbHk,103,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitKisaLuett.cpp,cbHk,473,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitKisaLuett.h,cbHk,84,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitLahtoRistiriita.cpp,cbHk,150,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitLahtoRistiriita.h,cbHk,42,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitLisatiedot.cpp,cbHk,1204,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitLisatiedot.h,cbHk,105,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitLisaTietue.cpp,cbHk,151,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitLisaTietue.h,cbHk,53,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitMaastossa.cpp,cbHk,248,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitMaastossa.h,cbHk,45,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitMySQL.cpp,cbHk,770,ascii,HkKisaWin,2,tallenna-samanaikaisuus,-,f7fe553,H-014 H-018,"kirjKilpSQL, kirjSQLTh",f7fe553
+cbHk/UnitMySQL.h,cbHk,96,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitNollaus.cpp,cbHk,203,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitNollaus.h,cbHk,72,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitOhjtiedot.cpp,cbHk,73,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitOhjtiedot.h,cbHk,46,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitOsanottajat.cpp,cbHk,1939,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitOsanottajat.h,cbHk,201,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitPiirival.cpp,cbHk,170,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitPiirival.h,cbHk,69,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitPistelasku.cpp,cbHk,521,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitPistelasku.h,cbHk,154,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitSakkoKierr.cpp,cbHk,264,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitSakkoKierr.h,cbHk,76,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitSarja.cpp,cbHk,735,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitSarja.h,cbHk,240,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitSarjatiedot.cpp,cbHk,1733,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitSarjatiedot.h,cbHk,171,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitSeurat.cpp,cbHk,572,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitSeurat.h,cbHk,110,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitSeuratoimet.cpp,cbHk,209,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitSeuratoimet.h,cbHk,65,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitSeuraval.cpp,cbHk,162,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitSeuraval.h,cbHk,69,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitSHLTul.cpp,cbHk,155,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitSHLTul.h,cbHk,52,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitSprinthiihto.cpp,cbHk,712,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitSprinthiihto.h,cbHk,113,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitSprintSarja.cpp,cbHk,236,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitSprintSarja.h,cbHk,85,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitStatus.cpp,cbHk,730,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitStatus.h,cbHk,84,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitSuodatus.cpp,cbHk,107,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitSuodatus.h,cbHk,60,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitTapahtSiirrot.cpp,cbHk,110,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitTapahtSiirrot.h,cbHk,57,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitTarkMerk.cpp,cbHk,443,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitTarkMerk.h,cbHk,184,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitTaulu.cpp,cbHk,1353,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitTaulu.h,cbHk,212,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitTKanta.cpp,cbHk,1628,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitTKanta.h,cbHk,162,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitTuloskaava.cpp,cbHk,168,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitTuloskaava.h,cbHk,89,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitVaGr.cpp,cbHk,374,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitVaGr.h,cbHk,59,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitVaiheMaar.cpp,cbHk,165,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitVaiheMaar.h,cbHk,53,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitVakLisays.cpp,cbHk,94,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitVakLisays.h,cbHk,63,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitValitseKilp.cpp,cbHk,128,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitValitseKilp.h,cbHk,52,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitValSarjat.cpp,cbHk,146,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitValSarjat.h,cbHk,61,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitVaPisteet.cpp,cbHk,797,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitVaPisteet.h,cbHk,121,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitVaToisto.cpp,cbHk,45,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitVaToisto.h,cbHk,59,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitYhdistetty.cpp,cbHk,141,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitYhdistetty.h,cbHk,55,ascii,-,1,-,-,,,,f7fe553
+cbHk/UnitYv.cpp,cbHk,137,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitYv.h,cbHk,55,ascii,-,1,-,-,,,,f7fe553
+cbHk/valinnat.h,cbHk,17,ascii,-,1,-,-,,,,f7fe553
+cbHk/VertAikaUnit.cpp,cbHk,67,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/VertAikaUnit.h,cbHk,53,ascii,-,1,-,-,,,,f7fe553
+cbHk/WinHk.cpp,cbHk,2310,cp1252,HkKisaWin,2,tallenna-samanaikaisuus yleiskuva,-,f7fe553,H-018,"Initialisoi 252-285; ProsEmitThread, LukumaaratTh, VaihdaVaiheHandler",f7fe553
+cbHk/WinHk.h,cbHk,332,ascii,-,1,-,-,,,,f7fe553
+cbHk/WinParamXml.cpp,cbHk,1796,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbTp/cbTpApu.cpp,cbTp,641,cp1252,HkKisaWin ViestiWin,2,tallenna-samanaikaisuus,-,f7fe553,H-009 H-019,writeerror_w,f7fe553
+cbTp/TpApu.cpp,cbTp,757,cp1252,-,1,-,-,,,,f7fe553
+cbTp/UnitAikakorjaus.cpp,cbTp,161,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitAikakorjaus.h,cbTp,75,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitAmpPaikat.cpp,cbTp,218,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbTp/UnitAmpPaikat.h,cbTp,54,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitAnnaAika.cpp,cbTp,88,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitAnnaAika.h,cbTp,50,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitAnnaArvo.cpp,cbTp,77,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitAnnaArvo.h,cbTp,48,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitAnnaTeksti.cpp,cbTp,77,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitAnnaTeksti.h,cbTp,50,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitBrowser.cpp,cbTp,79,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitBrowser.h,cbTp,51,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitEditDialog.cpp,cbTp,52,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitEditDialog.h,cbTp,43,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitEmiTag.cpp,cbTp,573,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitEmiTag.h,cbTp,145,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitEmitFile.cpp,cbTp,151,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitEmitFile.h,cbTp,56,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitEmitnouto.cpp,cbTp,144,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbTp/UnitEmitnouto.h,cbTp,87,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitEmitSQL.cpp,cbTp,551,cp1252,HkKisaWin ViestiWin,2,tallenna-samanaikaisuus,-,f7fe553,,haeSQLTh,f7fe553
+cbTp/UnitEmitSQL.h,cbTp,159,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitFIS.cpp,cbTp,500,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitFIS.h,cbTp,107,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitHtmlEdit.cpp,cbTp,268,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitHtmlEdit.h,cbTp,79,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitIlmoitus.cpp,cbTp,38,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitIlmoitus.h,cbTp,40,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitKartta.cpp,cbTp,651,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitKartta.h,cbTp,113,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitKirjoitinVal.cpp,cbTp,50,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitKirjoitinVal.h,cbTp,42,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitKohdistus.cpp,cbTp,379,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitKohdistus.h,cbTp,120,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitLisaTekstit.cpp,cbTp,151,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitLisaTekstit.h,cbTp,58,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitMaalikello.cpp,cbTp,514,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitMaalikello.h,cbTp,208,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitMessages.cpp,cbTp,75,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitMessages.h,cbTp,41,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitMsgs.cpp,cbTp,52,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitMsgs.h,cbTp,42,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitMTR.cpp,cbTp,409,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitMTR.h,cbTp,96,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitNappain.cpp,cbTp,104,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitNappain.h,cbTp,60,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitNaytaTulos.cpp,cbTp,248,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitNaytaTulos.h,cbTp,75,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitPiikit.cpp,cbTp,451,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitPiikit.h,cbTp,82,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitRadat.cpp,cbTp,3411,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitRadat.h,cbTp,356,cp1252,-,1,-,-,,,,f7fe553
+cbTp/UnitSarjaVal.cpp,cbTp,66,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitSarjaVal.h,cbTp,50,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitSelect.cpp,cbTp,96,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitSelect.h,cbTp,51,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitSelect2.cpp,cbTp,71,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitSelect2.h,cbTp,48,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitSelect3.cpp,cbTp,129,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitSelect3.h,cbTp,62,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitSivuTuloste.cpp,cbTp,410,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbTp/UnitSivuTuloste.h,cbTp,71,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitTietoTulk.cpp,cbTp,190,ascii,HkKisaWin,1,-,-,,,,f7fe553
+cbTp/UnitTietoTulk.h,cbTp,79,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitTulkinta.cpp,cbTp,100,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitTulkinta.h,cbTp,60,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitUusinta.cpp,cbTp,252,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitUusinta.h,cbTp,69,ascii,-,1,-,-,,,,f7fe553
+cbTp/UnitYhteysStatus.cpp,cbTp,42,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitYhteysStatus.h,cbTp,40,ascii,-,1,-,-,,,,f7fe553
+cbTp/WinTp.h,cbTp,22,ascii,-,1,-,-,,,,f7fe553
+com/gethttp.cpp,com,165,cp1252,HkKisaWin ViestiWin HkMaali JukMaali520,1,-,-,,,,f7fe553
+com/winCom.cpp,com,244,ascii,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+com/WinUDP.cpp,com,1398,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+dbboxm/addkey.cpp,dbboxm,146,utf-8,DBboxm-XE dbboxm,1,-,-,,,,f7fe553
+dbboxm/Boxtest.cpp,dbboxm,168,utf-8,-,1,-,-,,,,f7fe553
+dbboxm/BOXTEST_F.cpp,dbboxm,172,utf-8,-,1,-,-,,,,f7fe553
+dbboxm/Dbbox.cpp,dbboxm,955,utf-8,-,1,-,-,,,,f7fe553
+dbboxm/dbbox1.cpp,dbboxm,284,utf-8,DBboxm-XE dbboxm,2,tallenna-samanaikaisuus,-,f7fe553,H-015,getrec/putrec,f7fe553
+dbboxm/dbbox2.cpp,dbboxm,155,cp1252,DBboxm-XE dbboxm,1,-,-,,,,f7fe553
+dbboxm/DBboxm.cpp,dbboxm,16,ascii,DBboxm-XE,1,-,-,,,,f7fe553
+dbboxm/DBINT.H,dbboxm,11,ascii,dbboxm,1,-,-,,,,f7fe553
+dbboxm/DBINTF.H,dbboxm,11,ascii,-,1,-,-,,,,f7fe553
+dbboxm/delkey.cpp,dbboxm,217,utf-8,DBboxm-XE dbboxm,1,-,-,,,,f7fe553
+dbboxm/findkey.cpp,dbboxm,98,utf-8,DBboxm-XE dbboxm,1,-,-,,,,f7fe553
+dbboxm/nextkey.cpp,dbboxm,71,utf-8,DBboxm-XE dbboxm,1,-,-,,,,f7fe553
+dbboxm/prevkey.cpp,dbboxm,71,utf-8,DBboxm-XE dbboxm,1,-,-,,,,f7fe553
+Hk/BuildNo.h,Hk,101,utf-8-bom,HkKisaWin HkMaali,1,-,-,,,,f7fe553
+Hk/HkAjat.cpp,Hk,550,utf-8,HkKisaWin HkMaali,2,merkistot,-,f7fe553,H-004,U+FFFD-rivit,f7fe553
+Hk/HkApu.cpp,Hk,841,cp1252,HkKisaWin HkMaali,1,-,-,,,,f7fe553
+Hk/HkApuC.c,Hk,57,ascii,-,1,-,-,,,,f7fe553
+Hk/HkCom32.cpp,Hk,1332,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tietorakenteet-ja-tila yleiskuva,-,f7fe553,H-007 H-016,"pakettiluokat 46-56; laheta 167-235; tark_kilp alku; tark_kilp, laheta, tarkcom-kasittely",f7fe553
+Hk/HkConsoleDef.h,Hk,147,ascii,HkMaali,1,-,-,,,,f7fe553
+Hk/HkDat.cpp,Hk,1447,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tietorakenteet-ja-tila yleiskuva,-,f7fe553,H-007 H-009 H-010 H-011,read/write/GETREC/PUTREC/addfrec/delfrec luettu; tallenna osittain; tallenna 897-1385 kaytiin lapi (erä 1),f7fe553
+Hk/HkDeclare.h,Hk,974,cp1252,HkKisaWin HkMaali,2,yleiskuva tietorakenteet-ja-tila,-,f7fe553,T-001,include-lohko 18-28; extern-maara laskettu,f7fe553
+Hk/HkDef.h,Hk,1697,cp1252,HkKisaWin HkMaali,2,tietorakenteet-ja-tila inventaario,-,f7fe553,T-009,luokkaluettelo; vatp/kilppvtp/kilptietue luettu; valitsinlohko 26-130,f7fe553
+Hk/HkEmit.cpp,Hk,6432,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus,-,f7fe553,H-011 H-012,"putem/lueem, badge-taulukot, vaihdakilp, laskeEm_VA",f7fe553
+Hk/HkEnnTav.cpp,Hk,49,ascii,HkKisaWin TpTest,1,-,-,,,,f7fe553
+Hk/HkEnnTav.h,Hk,50,ascii,TpTest,1,-,-,,,,f7fe553
+Hk/HkGlobals.cpp,Hk,675,cp1252,HkKisaWin HkMaali,2,tietorakenteet-ja-tila,-,f7fe553,,"ToimintaTila, kilparr",f7fe553
+Hk/HkInit.cpp,Hk,3833,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tietorakenteet-ja-tila yleiskuva,-,f7fe553,H-014,"aloitus 3079- kutsujarjestys; aloitus, lopetus1, CS-alustus",f7fe553
+Hk/HkInitVanha.cpp,Hk,549,utf-8-bom,HkKisaWin,1,-,-,,,,f7fe553
+Hk/HkIV.cpp,Hk,4304,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus yleiskuva,-,f7fe553,H-010,"opengaz sijainti; pros_emit, tall_regnly, tall_etulos, tee_aika, pros_bdg_t",f7fe553
+Hk/HkIx.cpp,Hk,2005,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tietorakenteet-ja-tila,-,f7fe553,H-010 H-013,"teejarj sijainti vain; teejarj, vaihdavaihe, jarjarr, posarr",f7fe553
+Hk/HkMuotoilu.cpp,Hk,3020,cp1252,HkKisaWin HkMaali,1,-,-,,,,f7fe553
+Hk/HkMuotoilu.h,Hk,192,cp1252,-,1,-,-,,,,f7fe553
+Hk/HkSak.cpp,Hk,253,utf-8,HkKisaWin HkMaali,2,tallenna-samanaikaisuus,-,f7fe553,H-008,"tall_sak, tall_ampsakko",f7fe553
+Hk/HkSrj.cpp,Hk,941,cp1252,HkKisaWin HkMaali,1,-,-,,,,f7fe553
+Hk/HkTls.cpp,Hk,1966,cp1252,HkKisaWin HkMaali,1,-,-,,,,f7fe553
+Hk/HkTulostus.cpp,Hk,8840,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus yleiskuva,-,f7fe553,H-003 H-010,"rivi 3602; startaf 6979 sijainti; sijat2, tulostasarja-lukitus 5850-6419",f7fe553
+Hk/HkTV.cpp,Hk,233,cp1252,-,1,-,-,,,,f7fe553
+Hk/HkXml.cpp,Hk,2460,cp1252,HkKisaWin HkMaali,2,merkistot,-,f7fe553,H-003,rivi 1833,f7fe553
+Hk/HkXml_IOF30.cpp,Hk,1140,cp1252,HkKisaWin HkMaali,1,-,-,,,,f7fe553
+Hk/HkXmlTulokset.cpp,Hk,1944,cp1252,HkKisaWin HkMaali,2,-,-,f7fe553,H-003,rivi 1384,f7fe553
+HkConsole/GetHttp.h,HkConsole,68,ascii,HkMaali,1,-,-,,,,f7fe553
+HkConsole/HkCons0.cpp,HkConsole,1327,cp1252,HkMaali,2,tallenna-samanaikaisuus,-,f7fe553,H-010,"pyyda_vaihdavaihe, sprintsiirrot",f7fe553
+HkConsole/HkCons2.cpp,HkConsole,3118,cp1252,HkMaali,1,-,-,,,,f7fe553
+HkConsole/HkCons3.cpp,HkConsole,2937,cp1252,HkMaali,1,-,-,,,,f7fe553
+HkConsole/HkConsHelp.cpp,HkConsole,436,cp1252,HkMaali,1,-,-,,,,f7fe553
+HkConsole/HkKilp.cpp,HkConsole,1450,cp1252,HkMaali,1,-,-,,,,f7fe553
+HkConsole/HkMain.cpp,HkConsole,234,cp1252,HkMaali,2,yleiskuva,-,f7fe553,,wmain 178-233,f7fe553
+HkConsole/valinnat.h,HkConsole,35,ascii,HkMaali,1,-,-,,,,f7fe553
+include/bkeybrd.h,include,34,ascii,-,1,-,-,,,,f7fe553
+include/box.h,include,108,ascii,-,1,-,-,,,,f7fe553
+include/boxf.h,include,127,ascii,-,1,-,-,,,,f7fe553
+include/boxm.h,include,90,ascii,dbboxm,1,-,-,,,,f7fe553
+include/boxr.h,include,79,ascii,-,2,yleiskuva,-,f7fe553,,API 60-72,f7fe553
+include/bscreens.h,include,73,ascii,-,1,-,-,,,,f7fe553
+include/bstrings.h,include,63,ascii,-,1,-,-,,,,f7fe553
+include/butil.h,include,117,ascii,-,1,-,-,,,,f7fe553
+include/bvideo.h,include,16,ascii,-,1,-,-,,,,f7fe553
+include/Console.h,include,30,ascii,tputilv2,2,merkistot,-,f7fe553,,PERR-makro,f7fe553
+include/globals.h,include,17,ascii,-,1,-,-,,,,f7fe553
+include/IRfidReader.h,include,54,utf-8,HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+include/SiritReader.h,include,33,ascii,HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+include/sitypes.h,include,96,ascii,-,1,-,-,,,,f7fe553
+include/size.h,include,13,ascii,-,1,-,-,,,,f7fe553
+include/TpLaitteet.h,include,135,utf-8,HkKisaWin,2,yleiskuva,-,f7fe553,,LID-luettelo 17-47,f7fe553
+include/tptype.h,include,44,ascii,tputilv2 JukMaali520,1,-,-,,,,f7fe553
+include/tputil.h,include,532,cp1252,Tputil-XE ViestiWin HkMaali tputilv2 JukMaali520,1,-,-,,,,f7fe553
+include/wincom.h,include,116,ascii,HkKisaWin,2,yleiskuva riippuvuudet,-,f7fe553,,yhteystyypit 28-36,f7fe553
+include/xmlparser.h,include,70,ascii,-,1,-,-,,,,f7fe553
+include/ZebraReader.h,include,36,ascii,HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/BuildNo.h,Juk,60,cp1252,ViestiWin JukMaali520,1,-,-,,,,f7fe553
+Juk/vajat.cpp,Juk,525,utf-8,ViestiWin JukMaali520,2,merkistot,-,f7fe553,H-004,U+FFFD-rivit,f7fe553
+Juk/vApu.cpp,Juk,1037,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/VCom.cpp,Juk,1668,cp1252,ViestiWin JukLuenta520 JukMaali520,2,-,-,f7fe553,H-003,rivi 862,f7fe553
+Juk/vdat.cpp,Juk,972,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tallenna-samanaikaisuus,-,f7fe553,,relay tallenna lukitsee itse 496-850,f7fe553
+Juk/VDeclare.h,Juk,789,cp1252,ViestiWin JukLuenta520 JukMaali520,2,yleiskuva,-,f7fe553,T-001,include-lohko,f7fe553
+Juk/VDef.h,Juk,1526,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tietorakenteet-ja-tila,-,f7fe553,,luokkaluettelo; osrec luettu,f7fe553
+Juk/VEmit.cpp,Juk,6221,cp1252,ViestiWin JukMaali520,2,-,-,f7fe553,H-003,swprintf-rivit 5256-5875,f7fe553
+Juk/VEmitHtml.cpp,Juk,294,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/VGlobals.cpp,Juk,554,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/VInit.cpp,Juk,2966,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/VIv.cpp,Juk,2974,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/VIx.cpp,Juk,1380,cp1252,ViestiWin JukLuenta520 JukMaali520,2,-,-,f7fe553,H-003,rivi 1198,f7fe553
+Juk/vkilp.cpp,Juk,1738,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/VMuotoilu.cpp,Juk,2069,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/VMuotoilu.h,Juk,128,ascii,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/VRinnakkaisOsuus.cpp,Juk,95,ascii,ViestiWin TpTest JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/VRinnakkaisOsuus.h,Juk,108,ascii,ViestiWin TpTest JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/vSarjat.cpp,Juk,565,cp1252,ViestiWin JukLuenta520 JukMaali520,2,-,-,f7fe553,H-002,"rivit 377, 400",f7fe553
+Juk/VTulostus.cpp,Juk,9151,cp1252,ViestiWin JukLuenta520 JukMaali520,2,-,-,f7fe553,H-001 H-003,"rivit 352, 2228, 3981",f7fe553
+Juk/VXml.cpp,Juk,2193,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/VXml_IOF30.cpp,Juk,1125,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/XMLtulos.cpp,Juk,467,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+JukConsole/laskemtn.cpp,JukConsole,782,cp1252,JukLuenta520,1,-,-,,,,f7fe553
+JukConsole/laskent0.cpp,JukConsole,826,cp1252,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+JukConsole/laskenta.cpp,JukConsole,141,cp1252,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+JukConsole/laskhelp.cpp,JukConsole,101,utf-8,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+JukConsole/lasknum5.cpp,JukConsole,304,cp1252,JukMaali520,1,-,-,,,,f7fe553
+JukConsole/lasknum5u.cpp,JukConsole,378,cp1252,-,1,-,-,,,,f7fe553
+JukConsole/lasktxt.cpp,JukConsole,321,cp1252,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+JukConsole/valinnat.h,JukConsole,17,ascii,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+JukConsole/vcons2.cpp,JukConsole,3376,cp1252,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+JukConsole/VConTul.cpp,JukConsole,2025,cp1252,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+RADStudio10/HkKisaWin.cpp,RADStudio10,251,ascii,HkKisaWin,2,yleiskuva,-,f7fe553,,"_tWinMain, CreateForm",f7fe553
+RADStudio10/ViestiWin.cpp,RADStudio10,185,ascii,ViestiWin,1,-,-,,,,f7fe553
+Tests/doctest.h,Tests,7106,ascii,TpTest,1,-,-,,,,f7fe553
+Tests/DoctestMain.cpp,Tests,22,ascii,TpTest,1,-,-,,,,f7fe553
+Tests/HkEnnTavTest.cpp,Tests,164,ascii,TpTest,1,-,-,,,,f7fe553
+Tests/VRinnakkaisOsuusTest.cpp,Tests,335,ascii,TpTest,1,-,-,,,,f7fe553
+Tests/WideString.h,Tests,78,ascii,TpTest,1,-,-,,,,f7fe553
+Tp/mtrand.cpp,Tp,72,utf-8,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+Tp/mtrand.h,Tp,153,ascii,-,2,riippuvuudet,-,f7fe553,,lisenssi,f7fe553
+Tp/mttest.cpp,Tp,41,ascii,-,1,-,-,,,,f7fe553
+Tp/SiritReader.cpp,Tp,92,ascii,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Tp/TpApu.cpp,Tp,1043,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Tp/TpApuC.c,Tp,67,ascii,-,1,-,-,,,,f7fe553
+Tp/TpComY.cpp,Tp,3185,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,2,tallenna-samanaikaisuus yleiskuva,-,f7fe553,H-021,"buflah sijainti, saikeet; buflah, lahetapaketti, tarkcom-kaynnistys, addseur",f7fe553
+Tp/TpComY32.cpp,Tp,2797,cp1252,-,1,-,-,,,,f7fe553
+Tp/TpDef.h,Tp,154,ascii,ViestiWin HkMaali JukLuenta520,1,-,-,,,,f7fe553
+Tp/TpLaitteet.cpp,Tp,2954,utf-8,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,2,merkistot tallenna-samanaikaisuus yleiskuva,-,f7fe553,H-005 H-008,"include-valinta 38-42; rivi 2581; lue_regnlyThread, comajanotto",f7fe553
+Tp/TpMuot.cpp,Tp,17,ascii,-,1,-,-,,,,f7fe553
+Tp/TpMuot.h,Tp,55,utf-8,-,1,-,-,,,,f7fe553
+Tp/ZebraReader.cpp,Tp,1074,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+tputilv2/aakjarjs-2.cpp,tputilv2,78,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/aakjarjs-v.cpp,tputilv2,77,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/aakjarjs.cpp,tputilv2,78,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/aakjarjs2-2.cpp,tputilv2,77,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/aakjarjs2-v.cpp,tputilv2,76,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/aakjarjs2.cpp,tputilv2,77,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/aakjarjws-2.cpp,tputilv2,78,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/aakjarjws-v.cpp,tputilv2,77,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/aakjarjws.cpp,tputilv2,82,mixed,Tputil-XE tputilv2,2,merkistot,-,f7fe553,T-004,sekoitettu merkisto,f7fe553
+tputilv2/aakjarjws2-2.cpp,tputilv2,77,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/aakjarjws2-v.cpp,tputilv2,76,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/aakjarjws2.cpp,tputilv2,81,mixed,Tputil-XE tputilv2,2,merkistot,-,f7fe553,T-004,sekoitettu merkisto,f7fe553
+tputilv2/aikatos2.cpp,tputilv2,49,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/aikatos2_s.cpp,tputilv2,48,cp1252,tputilv2,1,-,-,,,,f7fe553
+tputilv2/AIKATOSH.cpp,tputilv2,91,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/aikatosh_s.cpp,tputilv2,89,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Aikatosl.cpp,tputilv2,52,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/aikatosl_s.cpp,tputilv2,51,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/aikatost.cpp,tputilv2,45,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/aikatost_s.cpp,tputilv2,44,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/aikatows2_s.cpp,tputilv2,48,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/aikatowsh_s.cpp,tputilv2,86,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/aikatowsl_s.cpp,tputilv2,49,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/aikatowst_s.cpp,tputilv2,44,cp1252,Tputil-XE tputilv2 TpTest,1,-,-,,,,f7fe553
+tputilv2/aiktostc.cpp,tputilv2,31,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/aiktostc_s.cpp,tputilv2,31,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/aiktowstc_s.cpp,tputilv2,28,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/ansi2oem.cpp,tputilv2,104,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/atold.cpp,tputilv2,98,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/attnbeep.cpp,tputilv2,29,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/bsrchint.cpp,tputilv2,77,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/c-files/ioerr.c,tputilv2,36,ascii,-,1,-,-,,,,f7fe553
+tputilv2/chint.cpp,tputilv2,35,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/clearfra.cpp,tputilv2,32,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/clreol.cpp,tputilv2,29,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/consolesize.cpp,tputilv2,117,utf-8,tputilv2,1,-,-,,,,f7fe553
+tputilv2/conststr.cpp,tputilv2,34,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/ctrlhndl.cpp,tputilv2,50,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/DateNo.cpp,tputilv2,140,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/dbindex.cpp,tputilv2,245,cp1252,Tputil-XE tputilv2,2,tallenna-samanaikaisuus,-,f7fe553,H-010,delix/addix ilman lukkoa,f7fe553
+tputilv2/delchar.cpp,tputilv2,61,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/drawlines.cpp,tputilv2,102,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Elimbl1.cpp,tputilv2,65,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/elimz.cpp,tputilv2,63,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/elimzb1.cpp,tputilv2,47,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/erbeep.cpp,tputilv2,29,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/esnimet-2.cpp,tputilv2,72,utf-8,tputilv2,1,-,-,,,,f7fe553
+tputilv2/esnimet.cpp,tputilv2,97,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/getfields.cpp,tputilv2,82,utf-8,Tputil-XE,1,-,-,,,,f7fe553
+tputilv2/globals.cpp,tputilv2,36,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/gotoxy.cpp,tputilv2,67,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/haesarja.cpp,tputilv2,49,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/haesarja_w.cpp,tputilv2,49,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/haeStrIx.cpp,tputilv2,30,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/initcon.cpp,tputilv2,95,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Inpknoo2.cpp,tputilv2,78,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Inpknoos.cpp,tputilv2,204,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Inpknoot.cpp,tputilv2,201,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/input_no.cpp,tputilv2,138,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Inputai2.cpp,tputilv2,93,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/INPUTAIH.cpp,tputilv2,162,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Inputaik.cpp,tputilv2,92,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Inputail.cpp,tputilv2,93,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Inputch.cpp,tputilv2,72,utf-8,tputilv2,1,-,-,,,,f7fe553
+tputilv2/Inputi_o.cpp,tputilv2,51,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Inputint.cpp,tputilv2,59,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/inputkno.cpp,tputilv2,156,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Inputlon.cpp,tputilv2,60,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Inputs_p.cpp,tputilv2,63,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Inputstr.cpp,tputilv2,197,utf-8,tputilv2,1,-,-,,,,f7fe553
+tputilv2/Inputwstr.cpp,tputilv2,193,utf-8,tputilv2,1,-,-,,,,f7fe553
+tputilv2/inschar.cpp,tputilv2,52,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/instroik.cpp,tputilv2,109,utf-8,tputilv2,1,-,-,,,,f7fe553
+tputilv2/IntInList.cpp,tputilv2,45,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/ioerr.cpp,tputilv2,42,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/itoa1.cpp,tputilv2,53,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/kbdrdy.cpp,tputilv2,28,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/kbflush.cpp,tputilv2,25,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/Kbflush_1.cpp,tputilv2,29,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/kbready.cpp,tputilv2,77,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/kbready_w.cpp,tputilv2,87,cp1252,tputilv2,1,-,-,,,,f7fe553
+tputilv2/kello.cpp,tputilv2,51,ascii,Tputil-XE tputilv2,2,merkistot,-,f7fe553,,objektivertailun testitiedosto,f7fe553
+tputilv2/keyfromn.cpp,tputilv2,63,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/khtostr.cpp,tputilv2,108,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/LibTest.cpp,tputilv2,63,utf-8,LibTest,1,-,-,,,,f7fe553
+tputilv2/locasena.cpp,tputilv2,58,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/locasesc.cpp,tputilv2,54,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/locasest.cpp,tputilv2,42,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/lswab.cpp,tputilv2,29,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/lue_v_pv.cpp,tputilv2,50,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/m_swab.cpp,tputilv2,28,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/MbsWcs.cpp,tputilv2,51,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/memnullcmp.cpp,tputilv2,26,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/msdaytime.cpp,tputilv2,57,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/mstimer.cpp,tputilv2,42,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/nimiint.cpp,tputilv2,41,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/nimilong.cpp,tputilv2,40,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/oem2ansi.cpp,tputilv2,122,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Pageedit.cpp,tputilv2,210,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/paiva.cpp,tputilv2,47,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/perr.cpp,tputilv2,96,utf-8,Tputil-XE tputilv2,2,merkistot,-,f7fe553,H-003,__LINE__; rivi 80,f7fe553
+tputilv2/poistano.cpp,tputilv2,38,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/processspecialkey.cpp,tputilv2,27,utf-8,Tputil-XE,1,-,-,,,,f7fe553
+tputilv2/prtbuf.cpp,tputilv2,155,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/putint_r.cpp,tputilv2,44,utf-8,Tputil-XE tputilv2 TpTest,1,-,-,,,,f7fe553
+tputilv2/QSORTINT.cpp,tputilv2,126,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Readkbd.cpp,tputilv2,97,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/readkbd_w.cpp,tputilv2,97,utf-8,tputilv2,1,-,-,,,,f7fe553
+tputilv2/SAVESCR.cpp,tputilv2,39,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/scanconv.cpp,tputilv2,64,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/SCATTRIB.cpp,tputilv2,44,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/scbox.cpp,tputilv2,185,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/scclrmsg.cpp,tputilv2,38,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/sccurset.cpp,tputilv2,41,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/sccurst.cpp,tputilv2,62,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/scpclr.cpp,tputilv2,43,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/scwrite.cpp,tputilv2,59,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/select.cpp,tputilv2,87,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/selectxy.cpp,tputilv2,77,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/STPCVT.cpp,tputilv2,304,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/STPEXPAN.cpp,tputilv2,93,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/STPJUST.cpp,tputilv2,105,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/STPTABFY.cpp,tputilv2,89,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/STPXLATE.cpp,tputilv2,71,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/str2aika.cpp,tputilv2,71,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/strtoai2.cpp,tputilv2,61,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/strtoaih.cpp,tputilv2,82,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/strtoaik.cpp,tputilv2,58,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/strtoail.cpp,tputilv2,54,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/StrToDouble.cpp,tputilv2,33,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/STSCHIND.cpp,tputilv2,58,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/t_time.cpp,tputilv2,34,ascii,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/T_time_l.cpp,tputilv2,44,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/tarkno.cpp,tputilv2,32,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/tarknoos.cpp,tputilv2,32,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/tarknost.cpp,tputilv2,41,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/testucode.cpp,tputilv2,36,cp1252,-,1,-,-,,,,f7fe553
+tputilv2/TextFileClass-2.cpp,tputilv2,441,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/TextFileClass.cpp,tputilv2,869,utf-8,Tputil-XE LibTest tputilv2 JukLuenta520,1,-,-,,,,f7fe553
+tputilv2/tick.cpp,tputilv2,26,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/timeticks.cpp,tputilv2,34,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/timofday.cpp,tputilv2,29,ascii,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Tputil.cpp,tputilv2,23,ascii,Tputil-XE,1,-,-,,,,f7fe553
+tputilv2/transl.cpp,tputilv2,40,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Trimline.cpp,tputilv2,41,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/tuwupper2.cpp,tputilv2,40,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/UnitTest.cpp,tputilv2,608,utf-8,LibTest,1,-,-,,,,f7fe553
+tputilv2/UnitTest.h,tputilv2,61,ascii,-,1,-,-,,,,f7fe553
+tputilv2/upcasesc.cpp,tputilv2,51,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/upcasest.cpp,tputilv2,51,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Utf8Conv.cpp,tputilv2,39,utf-8,-,1,-,-,,,,f7fe553
+tputilv2/vaihdanm.cpp,tputilv2,96,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/vidint.cpp,tputilv2,49,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/virdrect.cpp,tputilv2,59,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Viwrrect.cpp,tputilv2,96,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/viwrrectw.cpp,tputilv2,114,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/w_aakjarjs.cpp,tputilv2,89,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/wconcat.cpp,tputilv2,33,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/wcr2oem.cpp,tputilv2,77,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/wcscmpU.cpp,tputilv2,57,ascii,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/wPageedit.cpp,tputilv2,209,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Writeerr.cpp,tputilv2,94,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Wrttext.cpp,tputilv2,961,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/wSelectxy.cpp,tputilv2,85,utf-8,tputilv2,1,-,-,,,,f7fe553
+tputilv2/wxml_put.cpp,tputilv2,191,ascii,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/wxml_set.cpp,tputilv2,158,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/xml_put.cpp,tputilv2,76,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/xml_set.cpp,tputilv2,127,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/xmlparser.cpp,tputilv2,541,cp1252,Tputil-XE HkMaali tputilv2 JukLuenta520 JukMaali520,2,merkistot,-,f7fe553,,objektivertailun testitiedosto,f7fe553
+ViestiWin/ConvDat.cpp,ViestiWin,236,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/MuotoiluUnit.cpp,ViestiWin,648,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/MuotoiluUnit.h,ViestiWin,235,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/OsuusTiedot.cpp,ViestiWin,476,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/OsuusTiedot.h,ViestiWin,103,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/TapUnit2.cpp,ViestiWin,545,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/TapUnit2.h,ViestiWin,114,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/TulostusUnit2.cpp,ViestiWin,1232,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/TulostusUnit2.h,ViestiWin,193,cp1252,-,1,-,-,,,,f7fe553
+ViestiWin/TulosUnit.cpp,ViestiWin,1155,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/TulosUnit.h,ViestiWin,197,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitAikavert.cpp,ViestiWin,901,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitAikavert.h,ViestiWin,177,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitAjanotto.cpp,ViestiWin,1754,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitAjanotto.h,ViestiWin,238,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitArvonta.cpp,ViestiWin,611,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitArvonta.h,ViestiWin,106,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitASakot.cpp,ViestiWin,357,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitASakot.h,ViestiWin,84,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitAutoFile.cpp,ViestiWin,192,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitAutoFile.h,ViestiWin,81,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitAvausMaar.cpp,ViestiWin,178,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitAvausMaar.h,ViestiWin,62,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitCfg.cpp,ViestiWin,2352,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitCfg.h,ViestiWin,327,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitComfile.cpp,ViestiWin,1032,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitComfile.h,ViestiWin,145,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitEmit.cpp,ViestiWin,3091,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitEmit.h,ViestiWin,346,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitEmit_VA.cpp,ViestiWin,150,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitEmit_VA.h,ViestiWin,65,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitEmithaku.cpp,ViestiWin,152,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitEmithaku.h,ViestiWin,60,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitEmitMuutokset.cpp,ViestiWin,395,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitEmitMuutokset.h,ViestiWin,113,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitExport.cpp,ViestiWin,585,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitExport.h,ViestiWin,93,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitGAZ.cpp,ViestiWin,1373,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitGAZ.h,ViestiWin,214,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitHenkHaku.cpp,ViestiWin,161,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitHenkHaku.h,ViestiWin,68,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitHylkRap.cpp,ViestiWin,705,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitHylkRap.h,ViestiWin,122,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitImport.cpp,ViestiWin,1210,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitImport.h,ViestiWin,82,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitJjVaihdot.cpp,ViestiWin,78,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitJjVaihdot.h,ViestiWin,55,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitJoukkueet.cpp,ViestiWin,1566,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitJoukkueet.h,ViestiWin,175,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitJoukkuetiedot.cpp,ViestiWin,1639,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitJoukkuetiedot.h,ViestiWin,186,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitKilpMaaritys.cpp,ViestiWin,449,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitKilpMaaritys.h,ViestiWin,119,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitKilpSeurat.cpp,ViestiWin,255,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitKilpSeurat.h,ViestiWin,76,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitLahestyjat.cpp,ViestiWin,267,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitLahestyjat.h,ViestiWin,83,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitLisatiedot.cpp,ViestiWin,1077,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitLisatiedot.h,ViestiWin,80,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitLuenta.cpp,ViestiWin,747,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitLuenta.h,ViestiWin,124,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitMaastossa.cpp,ViestiWin,295,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitMaastossa.h,ViestiWin,45,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitMain.cpp,ViestiWin,1995,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitMain.h,ViestiWin,307,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitMerkKoodeja.cpp,ViestiWin,175,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitMerkKoodeja.h,ViestiWin,52,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitMySQL.cpp,ViestiWin,704,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitMySQL.h,ViestiWin,94,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitNollaus.cpp,ViestiWin,224,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitNollaus.h,ViestiWin,71,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitOhjtiedot.cpp,ViestiWin,67,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitOhjtiedot.h,ViestiWin,46,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitOsuuskopiointi.cpp,ViestiWin,133,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitOsuuskopiointi.h,ViestiWin,65,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitPartio.cpp,ViestiWin,423,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitPartio.h,ViestiWin,67,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitPiirival.cpp,ViestiWin,170,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitPiirival.h,ViestiWin,69,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitSakkoKierr.cpp,ViestiWin,294,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitSakkoKierr.h,ViestiWin,79,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitSarja.cpp,ViestiWin,601,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitSarja.h,ViestiWin,123,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitSarjatiedot.cpp,ViestiWin,1189,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitSarjatiedot.h,ViestiWin,124,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitSeurat.cpp,ViestiWin,515,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitSeurat.h,ViestiWin,105,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitSeuraval.cpp,ViestiWin,159,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitSeuraval.h,ViestiWin,65,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitSeurGr.cpp,ViestiWin,586,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitSeurGr.h,ViestiWin,71,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitSHLTul.cpp,ViestiWin,170,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitSHLTul.h,ViestiWin,52,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitStatus.cpp,ViestiWin,668,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitStatus.h,ViestiWin,85,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitSuodatus.cpp,ViestiWin,112,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitSuodatus.h,ViestiWin,64,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitVaGr.cpp,ViestiWin,410,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitVaGr.h,ViestiWin,63,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitValSarjat.cpp,ViestiWin,147,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitValSarjat.h,ViestiWin,61,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitVaTuloste.cpp,ViestiWin,371,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitVaTuloste.h,ViestiWin,106,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitYLahdot.cpp,ViestiWin,260,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitYLahdot.h,ViestiWin,71,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/UnitYv.cpp,ViestiWin,167,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitYv.h,ViestiWin,56,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/valinnat.h,ViestiWin,19,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/VertAikaUnit.cpp,ViestiWin,89,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/VertAikaUnit.h,ViestiWin,63,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/VWinApu.cpp,ViestiWin,40,ascii,-,1,-,-,,,,f7fe553
+ViestiWin/VWinDef.h,ViestiWin,291,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/VWinParam.cpp,ViestiWin,80,ascii,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/WinParamXml.cpp,ViestiWin,1374,cp1252,ViestiWin,1,-,-,,,,f7fe553
+VS/Libs/MbsWcs.cpp,VS,45,ascii,-,1,-,-,,,,f7fe553

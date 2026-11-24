@@ -130,21 +130,19 @@ Shared state is protected by named `CRITICAL_SECTION`s initialised in `aloitus()
 `seur_badge`, `loki`, `print`, `autotul`, `prof`, `tls`, `SQL`, `sakkoGrid`,
 `sakkoKierr`.
 
-Havainto: `kilptietue::tallenna()`:n alussa on kommentoitu rivi
-`// EnterCriticalSection(&tall_CriticalSection);` (`Hk/HkDat.cpp:941`), eli funktio ei
-itse lukitse. Osa kutsujista lukitsee (`cbHk/HkKisaLahtLuet.cpp:381` ym.), ja sitä
-kutsutaan myös tiedonsiirrosta (`Hk/HkCom32.cpp:331`, `:395`). Jos kutsuja on
-useasta säikeestä samanaikaisesti, tallennukset voivat mennä limittäin. On
-selvitettävä, missä säikeessä tiedonsiirron käsittely ajetaan. [todennettu: rivit;
-tuntematon: säikeistys → `seuranta.md`]
+HK:n `kilptietue::tallenna()` ei lukitse itse (`Hk/HkDat.cpp:941` kommentoitu).
+Sitä kutsuu seitsemän eri säiettä, ja noin 35 kutsupaikkaa 145:stä ei pidä
+`tall_CriticalSection`-lukkoa. Selvitys, säiekartta ja löydökset:
+`tallenna-samanaikaisuus.md`. (Korjaus 2026-11-24: aiempi maininta, että
+`cbHk/HkKisaLahtLuet.cpp:381` lukitsee `tallenna`-kutsun, oli väärä; tiedosto
+lukitsee vain lukusilmukoita.) [todennettu, tarkastettu]
 
-Observation: `kilptietue::tallenna()` has, near its start, the commented-out line
-`// EnterCriticalSection(&tall_CriticalSection);` (`Hk/HkDat.cpp:941`), so the function
-does not lock by itself. Some callers lock (`cbHk/HkKisaLahtLuet.cpp:381` and
-others), and it is also called from communications (`Hk/HkCom32.cpp:331`, `:395`).
-If it is called from several threads at once, saves may interleave. It must be
-established which thread runs the communications handling. [verified: lines;
-unknown: threading → `seuranta.md`]
+HK `kilptietue::tallenna()` does not lock by itself (`Hk/HkDat.cpp:941` commented
+out). Seven different threads call it, and about 35 of 145 call sites do not hold
+`tall_CriticalSection`. Investigation, thread map and findings:
+`tallenna-samanaikaisuus.md`. (Correction 2026-11-24: the earlier statement that
+`cbHk/HkKisaLahtLuet.cpp:381` locks around a `tallenna` call was wrong; that file
+only locks read loops.) [verified, reviewed]
 
 ## Levymuoto ja yhteensopivuus / Disk format and compatibility
 

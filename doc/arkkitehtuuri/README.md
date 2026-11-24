@@ -23,6 +23,8 @@ code references appear only once.
 | [riippuvuudet.md](riippuvuudet.md) | Käännös- ja ajonaikaiset riippuvuudet, protokollat, tiedostot / Build and runtime dependencies, protocols, files |
 | [tietorakenteet-ja-tila.md](tietorakenteet-ja-tila.md) | Keskeiset rakenteet, globaali tila, säikeet / Core structures, global state, threads |
 | [merkistot.md](merkistot.md) | Merkistöt ja turvallinen muokkausmenettely / Encodings and the safe editing procedure |
+| [tallenna-samanaikaisuus.md](tallenna-samanaikaisuus.md) | Syväauditointi 1: `tallenna()`, säikeet ja lukot / Deep audit 1: `tallenna()`, threads and locks |
+| [rekisteri/](rekisteri/README.md) | Auditointirekisteri: tiedostot, moduulit, havainnot / Audit register: files, modules, findings |
 | [dokumentointistandardi.md](dokumentointistandardi.md) | Kommentointikäytännöt / Commenting conventions |
 | [suunnitelma.md](suunnitelma.md) | Moduulikohtainen arvio ja vaiheistus / Per-module assessment and phasing |
 | [seuranta.md](seuranta.md) | Edistyminen, avoimet kysymykset, epäillyt viat / Progress, open questions, suspected defects |

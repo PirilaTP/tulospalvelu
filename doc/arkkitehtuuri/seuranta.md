@@ -10,13 +10,20 @@ separately from test coverage.
 | Vaihe / Phase | Tila / State | Päivä / Date |
 |---|---|---|
 | A. Selvitys, kierros 1 (inventaario, yleiskuva, merkistöt, suunnitelma) / audit round 1 | valmis, odottaa katselmointia / done, awaiting review | 2026-11-24 |
+| Auditointirekisteri ja projektin agentit / audit register and project agents (`rekisteri/`, `.claude/agents/`) | valmis / done | 2026-11-24 |
 | B. Vikakorjaukset / bug fixes | ei aloitettu / not started | – |
-| C. Syventävät dokumentit / deeper documents | ei aloitettu / not started | – |
+| C, erä 1: `tallenna()`-samanaikaisuus / batch 1: `tallenna()` concurrency | valmis, tarkastettu / done, reviewed (`tallenna-samanaikaisuus.md`) | 2026-11-24 |
+| C, erät 2–11 / batches 2–11 | ei aloitettu / not started (`suunnitelma.md`) | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** ylläpitäjät katselmoivat vaiheen A ja päättävät
-vaiheista B–D (`suunnitelma.md`). / Maintainers review phase A and decide on
-phases B–D.
+**Seuraava askel / Next step:** käyttäjä katselmoi erän 1 ja päättää seuraavasta
+erästä (ehdotus: erä 2 tiedonsiirto tai erä 11 testiautomaatio) sekä siitä, mitkä
+H-löydökset viedään issueiksi. / The user reviews batch 1 and decides the next
+batch (proposal: batch 2 communications or batch 11 test automation) and which H
+findings become issues.
+
+Havainnot (H/T) ja niiden todennustila: `rekisteri/havainnot.md`.
+Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
 
 ## Moduulien dokumentointi / Module documentation
 
@@ -34,7 +41,12 @@ phases B–D.
 
 | # | Kysymys / Question | Missä / Where |
 |---|---|---|
-| Q1 | Missä säikeessä vastaanotetut sanomat käsitellään (`tark_kilp` → `tallenna`)? Voiko `tallenna` ajautua samanaikaisesti kahdesta säikeestä? / In which thread are received messages processed? Can `tallenna` run concurrently? | `Hk/HkCom32.cpp:331`, `Hk/HkDat.cpp:941` |
+| ~~Q1~~ | **Ratkaistu / resolved 2026-11-24:** työsäie `tarkcom`; samanaikaisuus mahdollinen lukitsemattomien kutsujen kautta / worker thread `tarkcom`; concurrency possible via unlocked callers (`tallenna-samanaikaisuus.md`, H-007, H-010) | – |
+| Q12 | Kumpi `add_sakko` linkitetään HkKisaWiniin? / Which `add_sakko` is linked? | `cbHk/UnitASakot.cpp:269`, `cbHk/UnitASuunn.cpp:289` |
+| Q13 | Ylikirjoittaako `unpack0` kaikki kentät (KILPT-paketin vaikutus paikallisiin kenttiin)? / Does `unpack0` overwrite every field? | `Hk/HkDat.cpp` |
+| Q14 | Kutsuuko `tulostasarja` lukon aikana `SendMessage`-polkua? / Does `tulostasarja` reach a `SendMessage` while holding the lock? | `Hk/HkTulostus.cpp:5850`–`:6419` |
+| Q15 | Voiko VCL-poikkeus `tallenna`-polulla jättää lukon päälle? / Can a VCL exception leave the lock held? | `tallenna-samanaikaisuus.md` |
+| Q16 | Viestin vastaanottopolku ja lukitus / relay receive path and locking | `Juk/VCom.cpp` |
 | Q2 | Mitä kukin ominaisuusvalitsin tekee (`GAZ`, `ORAVA`, `VERTAA`, `MERI5`, `LAJUNEN`, `PARTIO` …)? Miksi konsoli- ja GUI-HK eroavat? / What does each feature switch do? Why do console and GUI HK differ? | `inventaario.md` |
 | Q3 | `combufrec`-sanomien tavumuoto ja versioyhteensopivuus / byte format and version compatibility of messages | `Tp/TpComY.cpp`, `Hk/HkCom32.cpp` |
 | Q4 | `KILP.DAT`-muoto ja vanhan muodon muunnos (`Hk/HkInitVanha.cpp`) / format and old-format conversion | `Hk/HkDat.cpp`, `dbboxm/` |
@@ -80,10 +92,11 @@ Recorded as issue drafts (local `issue-drafts/`, not in the repo).
 | 2026-11-24 | Uudet koodikommentit englanniksi ja ASCII:na / new code comments English, ASCII | Merkistöongelmat (`merkistot.md`) / encoding problems |
 | 2026-11-24 | Pekan alkuperäiset kommentit säilytetään / Pekka's original comments are kept | Historiallinen tieto / historical knowledge |
 | 2026-11-24 | Ensimmäisellä kierroksella ei muuteta `TPsource/`-hakemistoa / no `TPsource/` changes in round 1 | Ensin ymmärrys, sitten muutokset / understanding before changes |
+| 2026-11-24 | Syväauditointi erinä riskijärjestyksessä, enintään 3 analyysiagenttia rinnakkain, jokainen erä riippumattomasti tarkastettu / deep audit in risk-ordered batches, max 3 parallel analysis agents, each batch independently reviewed | Käyttäjän ohje / user instruction |
 
 ## Oletukset, joita ei ole todennettu / Unverified assumptions
 
 - Viestin (`Juk/`) päävirta vastaa HK:n virtaa (`yleiskuva.md`) / relay main flow matches HK
-- Säikeiden tehtävät on päätelty nimistä ja käynnistyspaikoista / thread tasks inferred from names and start sites
+- Säikeiden tehtävät on päätelty nimistä ja käynnistyspaikoista; `tallenna`-polut on jäljitetty erässä 1, muut tehtävät eivät / thread tasks inferred from names and start sites; `tallenna` paths traced in batch 1, other tasks not
 - Tiedostojen roolit on päätelty nimistä (`riippuvuudet.md`) / file roles inferred from names
 - `bcc32` käsittelee kaikki UTF-8-tiedostot oikein (todennettu yhdellä merkkijonolla) / handles all UTF-8 files correctly (verified with one string)

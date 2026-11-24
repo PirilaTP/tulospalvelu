@@ -105,3 +105,39 @@ Työmäärä: vaihe C noin 2–3 istuntoa, vaihe D noin 10–15 istuntoa. Arvio 
 karkea. [päätelty]
 Effort: phase C about 2–3 sessions, phase D about 10–15 sessions. The estimate is
 rough. [inferred]
+
+## Syväauditoinnin erät / Deep audit batches
+
+Vaihe C toteutetaan erinä. Järjestys perustuu riskiin: mitä vakavampi seuraus
+(tietojen katoaminen tai korruptio kilpailun aikana) ja mitä todennäköisempi
+vika, sitä aiemmin. Hakemiston koko ei ratkaise järjestystä. Jokainen erä
+päättyy riippumattomaan tarkastukseen (`independent-verifier`) ja rekisterin
+päivitykseen (`rekisteri/`). Rinnakkain enintään kolme analyysiagenttia.
+
+Phase C is done in batches. The order is based on risk: the more serious the
+consequence (data loss or corruption during a competition) and the more likely
+the defect, the earlier. Directory size does not decide the order. Every batch
+ends with an independent review (`independent-verifier`) and a register update
+(`rekisteri/`). At most three analysis agents run in parallel.
+
+| Erä / Batch | Aihe / Topic | Riski / Risk | Agentit / Agents | Tuotos / Output |
+|---|---|---|---|---|
+| 1 | `tallenna()`-samanaikaisuus / concurrency | korkea / high | architecture-analyst, defect-concurrency-auditor ×2, independent-verifier | `tallenna-samanaikaisuus.md`, H-007–H-021 — **valmis / done 2026-11-24** |
+| 2 | Työasemien tiedonsiirto: vastaanotto, lähetys, kuittaus, uudelleenlähetys, versioyhteensopivuus / workstation sync protocol | korkea / high | architecture-analyst, legacy-encoding-analyst (sanomamuodot / message layouts), defect-concurrency-auditor | `tiedonsiirto.md`; Q3 |
+| 3 | Pysyvät tiedostot ja eheys: `KILP.DAT`, emit-tiedot, `ajat.txt`, `SQLjonoVarm.dat`, vanha muoto / persistent files and integrity | korkea / high | legacy-encoding-analyst, defect-concurrency-auditor | `tiedostomuodot.md`; Q4, Q5 |
+| 4 | Muistiturvallisuus ja määrittelemätön käytös: kääntäjävaroitusten läpikäynti molemmilla kääntäjillä, MSVC `/analyze`, puskurit ja muotoilumerkkijonot / memory safety and UB | korkea / high | defect-concurrency-auditor, build-dependency-analyst | H-numerot, issue-luonnokset / H entries, issue drafts |
+| 5 | Kääntäjäkohtainen käytös: `#pragma -K -a1` (43 tiedostoa, vain bcc32) ja rakenteiden asettelu käännösyksiköiden välillä, `/J` (unsigned char), `wchar_t`, merkistöt / compiler-specific behaviour | korkea / high (jos asettelu eroaa / if layouts differ) | legacy-encoding-analyst, build-dependency-analyst | `merkistot.md` laajennus; Q7 |
+| 6 | Säikeiden omistajuus ja synkronointi kokonaisuutena: kaikki säikeet, lukot, lukitusjärjestys, lopetus / thread ownership and synchronisation | keskitaso–korkea / medium–high | defect-concurrency-auditor, architecture-analyst | `tietorakenteet-ja-tila.md` laajennus |
+| 7 | GUI:n liiketoimintalogiikka: `cbHk/UnitEmit.cpp`, `UnitAjanotto`, `UnitArvonta`, `UnitKilpailijatiedot`, `ViestiWin/UnitEmit.cpp` / GUI business logic | keskitaso–korkea | architecture-analyst, defect-concurrency-auditor | moduulikuvaukset / module descriptions |
+| 8 | Globaali muuttuva tila: kuka kirjoittaa mitäkin, alustus, nollaus kilpailun vaihdossa / global mutable state | keskitaso / medium | architecture-analyst | `tietorakenteet-ja-tila.md` |
+| 9 | Virheenkäsittely ja resurssit: palautusarvojen tarkistus, tiedostokahvat, muistivuodot, `writeerror`-polut / error handling and resources | keskitaso / medium | defect-concurrency-auditor | H/T-numerot |
+| 10 | Ulkoiset riippuvuudet: MySQL/dbExpress, WinHTTP, laiteprotokollat, BPL-ajonaikaiset paketit / external dependencies | matala–keskitaso | build-dependency-analyst | `riippuvuudet.md` |
+| 11 | Käännös- ja testiautomaatio: testit CI:hin, `run.sh`, GUI-todennus kommenttimuutoksille / build and test automation | matala riski, suuri hyöty / low risk, high leverage | build-dependency-analyst | ehdotukset / proposals (H-006, Q8) |
+
+Erät 2–5 ovat riippumattomia toisistaan ja voidaan ajaa missä järjestyksessä
+tahansa erän 1 jälkeen. Erä 11 on nopea ja hyödyttää kaikkia muita, joten sen
+voi tehdä milloin tahansa. Arvio: 1 istunto per erä. [päätelty]
+
+Batches 2–5 are independent and can run in any order after batch 1. Batch 11 is
+quick and benefits all others, so it can be done at any time. Estimate: one
+session per batch. [inferred]
