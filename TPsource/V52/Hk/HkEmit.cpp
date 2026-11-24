@@ -4793,7 +4793,7 @@ static void emit_syyrivit(tulostusparamtp *tulprm, wchar_t *txt, INT pos, INT le
 // jarjestyksessa (pisin yhteinen osajono). Kun yksi rasti on leimattu vaarin, muut rastit
 // pysyvat oikein, vaikka tarkastus (tarkista_oik) kayttaytyy silloin eri tavalla.
 // tila: 0 hyvaksytty, 1 puuttuu (ei leimaa), 2 vaara leima (lk = leiman koodi),
-// 3 leimattu vaarassa jarjestyksessa.
+// 3 leimattu vaarassa jarjestyksessa, 4 leimausta ei vaadita (emit-koodi 2).
 struct EmitAnalyysi {
    INT n;
    INT nbad;
@@ -4801,6 +4801,7 @@ struct EmitAnalyysi {
    INT rk[MAXNRASTI];
    INT tila[MAXNRASTI];
    INT lk[MAXNRASTI];
+   INT kaikki[MAXNRASTI];   // emit-koodi 1: mika tahansa leima kelpaa
    INT nex;
    INT ex[MAXNLEIMA];
    };
@@ -4887,6 +4888,10 @@ static bool emit_analyysi(emittp *em, ratatp *rt, EmitAnalyysi *a)
 	  ri[nr] = idx;
 	  a->nr[nr] = nr + 1;
 	  a->rk[nr] = rt->rastikoodi[idx];
+	  if (oikeakoodi(rt, idx, 1, 0) == 2)
+		 a->tila[nr] = 4;     // emit-koodi 2: leimausta ei vaadita
+	  else if (oikeakoodi(rt, idx, 1, 0) == 1)
+		 a->kaikki[nr] = 1;
 	  nr++;
 	  }
    a->n = nr;
@@ -4973,7 +4978,7 @@ static bool emit_analyysi(emittp *em, ratatp *rt, EmitAnalyysi *a)
 		 }
 	  }
    for (i = 0; i < nr; i++)
-	  if (a->tila[i])
+	  if (a->tila[i] && a->tila[i] != 4)
 		 a->nbad++;
    for (j = 0; j < m; j++)
 	  if (!kaytetty[j])
@@ -5020,7 +5025,7 @@ static void emit_syy(tulostusparamtp *tulprm, emittp *em, ratatp *rt, INT tarkvi
 		 wchar_t kr[70];
 
 		 for (idx = 0; idx < an.n; idx++) {
-			if (!an.tila[idx])
+			if (!an.tila[idx] || an.tila[idx] == 4)
 			   continue;
 			mn[nm] = an.nr[idx];
 			mk[nm] = an.rk[idx];
@@ -5032,7 +5037,7 @@ static void emit_syy(tulostusparamtp *tulprm, emittp *em, ratatp *rt, INT tarkvi
 		 swprintf(txt, L"Syy: radan rasteista ei hyv\u00e4ksytty %d kpl: %s.", (int) nm, lm);
 		 emit_syyrivit(tulprm, txt, pos, leveys);
 		 for (idx = 0; idx < an.n && nrivi < 12; idx++) {
-			if (!an.tila[idx])
+			if (!an.tila[idx] || an.tila[idx] == 4)
 			   continue;
 			nrivi++;
 			if (an.tila[idx] == 1) {
@@ -5062,6 +5067,30 @@ static void emit_syy(tulostusparamtp *tulprm, emittp *em, ratatp *rt, INT tarkvi
 			}
 		 if (nm > nrivi) {
 			swprintf(txt, L"... ja %d muuta rastia.", (int) (nm - nrivi));
+			emit_syyrivit(tulprm, txt, pos, leveys);
+			}
+		 lo[0] = 0;
+		 for (idx = 0; idx < an.n; idx++) {
+			if (an.tila[idx] != 4)
+			   continue;
+			swprintf(tmp, L"%s%d (%d)", lo[0] ? L", " : L"", (int) an.nr[idx], (int) an.rk[idx]);
+			if (wcslen(lo) + wcslen(tmp) < 590)
+			   wcscat(lo, tmp);
+			}
+		 if (lo[0]) {
+			swprintf(txt, L"Rastia ei tarvita (emit-koodi 2): %s.", lo);
+			emit_syyrivit(tulprm, txt, pos, leveys);
+			}
+		 lo[0] = 0;
+		 for (idx = 0; idx < an.n; idx++) {
+			if (!an.kaikki[idx])
+			   continue;
+			swprintf(tmp, L"%s%d (%d)", lo[0] ? L", " : L"", (int) an.nr[idx], (int) an.rk[idx]);
+			if (wcslen(lo) + wcslen(tmp) < 590)
+			   wcscat(lo, tmp);
+			}
+		 if (lo[0]) {
+			swprintf(txt, L"Rastilla kelpaa mik\u00e4 tahansa leima (emit-koodi 1): %s.", lo);
 			emit_syyrivit(tulprm, txt, pos, leveys);
 			}
 		 emit_ylimaaraiset(tulprm, &an, pos, leveys);
@@ -5170,7 +5199,7 @@ static void emit_syy(tulostusparamtp *tulprm, emittp *em, ratatp *rt, INT tarkvi
 		 }
 	  }
    else if (tarkvirhe == -2)
-	  wcscpy(txt, L"Syy: kortin kello on nollattu kesken radan.");
+	  wcscpy(txt, L"Kortti py\u00f6r\u00e4ht\u00e4nyt ymp\u00e4ri. Tarkista kaikki leimat piikkikuviosta.");
    else if (tarkvirhe == -1)
 	  wcscpy(txt, L"Syy: tarkastusta ei voitu tehd\u00e4, koska rataa tai lukijan merkint\u00e4\u00e4 ei l\u00f6ydy.");
    else {

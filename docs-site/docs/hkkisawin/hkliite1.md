@@ -178,7 +178,7 @@ mutta sen kaikkia alamäärityksiä ei voi tehdä.
 | LÄHEMVAn | \*\*\* | Normaalien Emit-tietojen sijaan lähetetään niistä lasketut väliajat. |
 | AUTORAP | \*\*\* | Pyytää tulostamaan automaattisesti jokaisen luetun kortin tiedot |
 | AUTORAP=x | \*\* | x=1, H tai S. Tulostaa osan em. raporteista (ei hyväksytyt) |
-| COMAUTORAP COMAUTORAP=H | \*\*\* | AUTORAP-toiminta voimassa vastaanottavalla koneella. Jos H annettu, koskee vain hylkäysesityksiä. Parametri annetaan koneella, jolla tulostus tapahtuu. |
+| COMAUTORAP COMAUTORAP=H | \*\*\* | AUTORAP-toiminta voimassa vastaanottavalla koneella. Jos H annettu, koskee vain hylkäysesityksiä, joiden tulosteeseen tulee hylkäyksen syyselitys ([luku 6.1.2](6.1_leimantarkastuskaavake.md)). Parametri annetaan koneella, jolla tulostus tapahtuu. |
 | RAPORTTIHAK=xxxx |  | Hylkäysten käsittelyä koskevat raportit kirjoitetaan hakemistoon xxxx ([luku 6.16](6.16_hylkaysesitysten_kasittely.md)) |
 | ANNASEUR |  | Uuden kilpailijanumeron kyselyn toistuessa tarjoaa aina seuraavaa numeroa. |
 | AUTOSARJA | \*\*\* | Vaihda Emit-korttia luettaessa sarja leimoja vastaavaksi |
