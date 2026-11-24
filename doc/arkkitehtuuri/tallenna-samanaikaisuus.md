@@ -10,6 +10,16 @@ the HK programs (HkKisaWin, HkMaali); relay differences at the end. Nothing was
 run: this is static analysis, and every key claim was reviewed independently
 (`independent-verifier`). Finding numbers: `rekisteri/havainnot.md`.
 
+Taulukoiden VAHVISTETTU / OSITTAIN tarkoittaa, että riippumaton tarkastaja luki
+koodin uudelleen eikä onnistunut kumoamaan väitettä. Se ei ole ajonaikainen
+todennus: yhtäkään tämän dokumentin vikaa ei ole toistettu käynnissä olevassa
+ohjelmassa (ks. "Miten todennetaan ajossa").
+
+In the tables, VAHVISTETTU / OSITTAIN (confirmed / partly) means an independent
+reviewer re-read the code and could not refute the claim. It is not runtime
+verification: no defect in this document has been reproduced in the running
+program (see "How to verify at run time").
+
 ## Johtopäätös / Conclusion
 
 HK:n `tallenna()` ei lukitse itse (`Hk/HkDat.cpp:941` ja `:1383` kommentoitu).

@@ -45,8 +45,17 @@ Jokaisella havainnolla on / Every finding has:
 - **Näyttö / evidence**: `polku:rivi`, suhteessa / relative to `TPsource/V52/`
 - **Vakavuus / severity**: kriittinen / korkea / keskitaso / matala (critical / high / medium / low)
 - **Varmuus / confidence**: [todennettu] / [päätelty] / [tuntematon]
-- **Todennus / verification**: `ei tarkastettu` (not reviewed), `tarkastettu` (independently reviewed), `vahvistettu ajamalla` (confirmed by running), `kumottu` (refuted)
+- **Todennus / verification**: `ei tarkastettu` (not reviewed), `riippumaton lähdetarkastus` (independent source review: another agent re-read the code and tried to refute the claim), `vahvistettu ajamalla` (confirmed by running the product), `kumottu` (refuted), `ei todennettavissa staattisesti` (cannot be settled by reading code)
 - **Revisio / revision**: commit, jota vastaan havainto tehtiin / commit analysed
+- **Näytön laji / evidence type**: `staattinen` (lähdekoodi luettu; mitään ei ajettu / source read, nothing run), tai mitä muuta näyttöä on: kääntäjävaroitus, käännöstulos, testiajo / or what other evidence exists: compiler warning, build output, test run
+
+Riippumaton lähdetarkastus ei ole ajonaikainen todennus. Havainto on
+"vahvistettu ajamalla" vasta, kun vika on toistettu käynnissä olevassa ohjelmassa.
+Tällä hetkellä yksikään H-havainto ei ole sellainen.
+
+An independent source review is not runtime verification. A finding is
+"confirmed by running" only when the defect has been reproduced in the running
+program. At present no H finding is.
 
 ## Päivittäminen / Updating
 

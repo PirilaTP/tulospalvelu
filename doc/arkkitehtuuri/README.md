@@ -18,6 +18,7 @@ code references appear only once.
 
 | Tiedosto / File | Sisältö / Content |
 |---|---|
+| [CHECKPOINT.md](CHECKPOINT.md) | Tilanne ja jatkamisohjeet / current state and resume instructions |
 | [yleiskuva.md](yleiskuva.md) | Arkkitehtuuri, moduulit, päävirrat, kaaviot / Architecture, modules, main flows, diagrams |
 | [inventaario.md](inventaario.md) | Projektit, binäärit, hakemistot, koot, merkistöt / Projects, binaries, directories, sizes, encodings |
 | [riippuvuudet.md](riippuvuudet.md) | Käännös- ja ajonaikaiset riippuvuudet, protokollat, tiedostot / Build and runtime dependencies, protocols, files |
@@ -43,14 +44,22 @@ Claims are marked as follows:
 - **[päätelty] / inferred** – derived from code, but not run or fully traced
 - **[tuntematon] / unknown** – not established; see `seuranta.md`
 
+[todennettu] kertoo, että väite on tarkistettu koodista; se ei tarkoita, että vika
+olisi toistettu käynnissä olevassa ohjelmassa. Staattisen analyysin,
+riippumattoman lähdetarkastuksen ja ajonaikaisen todennuksen ero: `CHECKPOINT.md`.
+
+[verified] means the claim was checked against the code; it does not mean the
+defect was reproduced in the running program. Static analysis vs independent
+source review vs runtime verification: `CHECKPOINT.md`.
+
 ## Jatkaminen myöhemmissä istunnoissa / Continuing in later sessions
 
-Aloita tiedostosta `seuranta.md`: siinä on tehdyt vaiheet, avoimet kysymykset ja
+Aloita tiedostosta `CHECKPOINT.md` ja sitten `seuranta.md`: niissä on tehdyt vaiheet, avoimet kysymykset ja
 seuraava askel. Inventaarion luvut on tuotettu skriptillä, joka käy läpi hakemiston
 `TPsource/V52` (ks. `inventaario.md`, kohta "Miten tuotettu"). Jos koodi muuttuu
 paljon, luvut kannattaa tuottaa uudelleen ennen kuin niihin luotetaan.
 
-Start from `seuranta.md`: it lists completed steps, open questions and the next
+Start from `CHECKPOINT.md`, then `seuranta.md`: they list completed steps, open questions and the next
 step. Inventory figures were produced by a script that walks `TPsource/V52` (see
 `inventaario.md`, "How it was produced"). If the code changes significantly,
 regenerate the figures before relying on them.

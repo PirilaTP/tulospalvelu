@@ -153,7 +153,7 @@ without checking: some may be used by other branches or external builds.
 - `VS/Libs/MbsWcs.cpp`, `ViestiWin/VWinApu.cpp`, `cbTp/TpApu.cpp`
 - `dbboxm/Boxtest.cpp`, `dbboxm/BOXTEST_F.cpp`, `dbboxm/Dbbox.cpp`, `dbboxm/DBINTF.H`
 - `include/sitypes.h`
-- `tputilv2/`: `TextFileClass-2.cpp`, `Utf8Conv.cpp`, `aakjarjs-2.cpp`, `aakjarjs-v.cpp`, `aakjarjs2-2.cpp`, `aakjarjs2-v.cpp`, `aakjarjws-2.cpp`, `aakjarjws-v.cpp`, `aakjarjws2-2.cpp`, `aakjarjws2-v.cpp`, `c-files/ioerr.c`, `globals.cpp`, `haesarja.cpp`, `haesarja_w.cpp`, `kbflush.cpp`, `scbox.cpp`, `testucode.cpp`
+- `tputilv2/`: `TextFileClass-2.cpp`, `Utf8Conv.cpp`, `aakjarjs-2.cpp`, `aakjarjs-v.cpp`, `aakjarjs2-2.cpp`, `aakjarjs2-v.cpp`, `aakjarjws-2.cpp`, `aakjarjws-v.cpp`, `aakjarjws2-2.cpp`, `aakjarjws2-v.cpp`, `tputilv2/c-files/ioerr.c`, `globals.cpp`, `haesarja.cpp`, `haesarja_w.cpp`, `kbflush.cpp`, `scbox.cpp`, `testucode.cpp`
 
 ## Muut hakemistot / Other directories
 
