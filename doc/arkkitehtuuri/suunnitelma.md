@@ -132,7 +132,7 @@ ends with an independent review (`independent-verifier`) and a register update
 | 8 | Globaali muuttuva tila: kuka kirjoittaa mitäkin, alustus, nollaus kilpailun vaihdossa / global mutable state | keskitaso / medium | architecture-analyst | `tietorakenteet-ja-tila.md` |
 | 9 | Virheenkäsittely ja resurssit: palautusarvojen tarkistus, tiedostokahvat, muistivuodot, `writeerror`-polut / error handling and resources | keskitaso / medium | defect-concurrency-auditor | H/T-numerot |
 | 10 | Ulkoiset riippuvuudet: MySQL/dbExpress, WinHTTP, laiteprotokollat, BPL-ajonaikaiset paketit / external dependencies | matala–keskitaso | build-dependency-analyst | `riippuvuudet.md` |
-| 11 | Käännös- ja testiautomaatio: testit CI:hin, `run.sh`, GUI-todennus kommenttimuutoksille / build and test automation | matala riski, suuri hyöty / low risk, high leverage | build-dependency-analyst | ehdotukset / proposals (H-006, Q8) |
+| 11 | Käännös- ja testiautomaatio: testit CI:hin, `run.sh`, GUI-todennus kommenttimuutoksille / build and test automation | matala riski, suuri hyöty / low risk, high leverage | build-dependency-analyst, architecture-analyst, defect-concurrency-auditor, independent-verifier ×2 | `testaus.md` — **suunnitelma valmis / plan done 2026-11-24**; toteutus odottaa lupaa / implementation awaits approval (Q35–Q42). GUI-kommenttien todennus (Q8) ei vielä / GUI comment verification not yet |
 
 Erät 2–5 ovat riippumattomia toisistaan ja voidaan ajaa missä järjestyksessä
 tahansa erän 1 jälkeen. Erä 11 on nopea ja hyödyttää kaikkia muita, joten sen

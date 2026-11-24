@@ -445,6 +445,13 @@ Ehdotus: lisää `TpTest`iin `static_assert`-tarkistukset kaikille mitatuille ko
 eroavat. / Proposal: add `static_assert`s for all measured sizes to `TpTest`, so a
 build fails if a layout changes or builds diverge.
 
+**C-11:** H-041:n kaava ei sovi `static_assert`iin: 360 ja 154 lasketaan ajossa, ja
+nykyarvoilla (11 210 > 10 000) tarkistus estäisi käännöksen. Korvattu ajonaikaisella
+tarkistuksella; tämän taulukon testit on tarkennettu tiedostossa `testaus.md`. /
+H-041's formula does not suit a `static_assert` (computed at run time; would break
+the build today). Replaced by a run-time check; the tests above are refined in
+`testaus.md`.
+
 ## Avoimet kysymykset / Open questions
 
 | # | Kysymys / Question |

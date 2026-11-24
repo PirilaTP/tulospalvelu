@@ -15,13 +15,15 @@ separately from test coverage.
 | C, erä 1: `tallenna()`-samanaikaisuus / batch 1: `tallenna()` concurrency | valmis, tarkastettu / done, reviewed (`tallenna-samanaikaisuus.md`) | 2026-11-24 |
 | C, erä 2: työasemien tiedonsiirto / batch 2: workstation communication | valmis, tarkastettu / done, reviewed (`tiedonsiirto.md`) | 2026-11-24 |
 | C, erä 3: pysyvät tiedostot ja eheys / batch 3: persistent files and integrity | valmis, tarkastettu / done, reviewed (`tiedostomuodot.md`) | 2026-11-24 |
-| C, erät 4–11 / batches 4–11 | ei aloitettu / not started (`suunnitelma.md`); erä 5 osittain / batch 5 partly | – |
+| C, erä 11: testiautomaatio, suunnittelu / batch 11: test automation, planning | suunnitelma valmis, tarkastettu; toteutus odottaa lupaa / plan done, reviewed; implementation awaits approval (`testaus.md`) | 2026-11-24 |
+| C, erät 4–10 / batches 4–10 | ei aloitettu / not started (`suunnitelma.md`); erä 5 osittain / batch 5 partly | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** käyttäjä katselmoi erän 3. Suositeltu seuraava erä
-on C-11 (testiautomaatio ja ajonaikainen todennus); perustelut `CHECKPOINT.md`. /
-The user reviews batch 3. Recommended next batch: C-11 (test automation and
-runtime verification); rationale in `CHECKPOINT.md`.
+**Seuraava askel / Next step:** käyttäjä päättää erän C-11 toteutusluvasta ja
+`testaus.md`:n luvun 12 päätöksistä. Toteutuksen ensimmäinen erä on kuvattu
+`testaus.md`:n luvussa 7. / The user decides on implementation approval for C-11
+and the decisions in `testaus.md` section 12. The first implementation batch is in
+section 7.
 
 Havainnot (H/T) ja niiden todennustila: `rekisteri/havainnot.md`.
 Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
@@ -51,6 +53,7 @@ Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
 | ~~Q17~~, ~~Q18~~ | **Ratkaistu / resolved (C-3):** bcc32 noudattaa `-K`:ta kesken yksikön, tarkistussummat täsmäävät; koot mitattu kaikista käännöksistä / bcc32 honours `-K` mid-unit; sizes measured for all builds | `tiedostomuodot.md` |
 | Q19–Q25 | Erän C-2 kysymykset (AIKAT-kaksoiskappaleet, TCP-virta, rengas, `tark_ylahto`, `Kysy`, kirjastot, MONITORI-portti) / batch C-2 questions | `tiedonsiirto.md`, "Avoimet kysymykset" |
 | Q26–Q34 | Erän C-3 kysymykset (HK:n XML-rajat, NTFS-katkos, `initindex`, viestin vienti, vaiheen vaihto, viestin 250-käännös, `t_time_l`, `mbtowc`, konstruktorijärjestys) / batch C-3 questions | `tiedostomuodot.md`, "Avoimet kysymykset" |
+| Q35–Q42 | Erän C-11 kysymykset (v143 ja ASan CI:ssä, `LockCount`, H-041 käynnistyksessä, H-001:n sisääntulo, `/we4789` ja LTCG, interaktiivinen CI-istunto, viestin `addtall`-säikeet, HK:n luokkapituudet) / batch C-11 questions | `testaus.md`, "Avoimet kysymykset" |
 | Q2 | Mitä kukin ominaisuusvalitsin tekee (`GAZ`, `ORAVA`, `VERTAA`, `MERI5`, `LAJUNEN`, `PARTIO` …)? Miksi konsoli- ja GUI-HK eroavat? / What does each feature switch do? Why do console and GUI HK differ? | `inventaario.md` |
 | ~~Q3~~ | **Osittain ratkaistu / partly resolved (C-2):** kehys, kuittaus ja yhteensopivuus kuvattu; tarkat koot avoinna (Q18) / frame, ack and compatibility documented; exact sizes open | `tiedonsiirto.md` |
 | ~~Q4~~ | **Ratkaistu / resolved (C-3):** muoto kuvattu tavutasolla; vanhaa muotoa ei tunnisteta automaattisesti, vain GUI-tuonti käyttäjän parametrein / layout documented; no automatic old-format detection, only GUI import with user parameters | `tiedostomuodot.md` |

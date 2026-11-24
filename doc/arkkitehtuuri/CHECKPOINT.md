@@ -10,7 +10,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 |---|---|
 | Haara / branch | `arkkitehtuuri-selvitys` (tehty / created from `main`) |
 | Analysoitu revisio / analysed revision | `f7fe553` (`TPsource/` ei muutettu sen jälkeen / unchanged since) |
-| Commitit `main`in päällä / commits on top of `main` | `1b72ec4` dokumentit / docs, `c273b9f` CLAUDE.md, `c651980` agentit, rekisteri, erä 1 / agents, register, batch 1, `3b1d978` tarkistuspiste / checkpoint, `851129f` erä / batch C-2, erä C-3 seuraava commit / batch C-3 in the next commit (`docs(audit): analyze persistent files batch C-3`) |
+| Commitit `main`in päällä / commits on top of `main` | `1b72ec4` dokumentit / docs, `c273b9f` CLAUDE.md, `c651980` agentit, rekisteri, erä 1 / agents, register, batch 1, `3b1d978` tarkistuspiste / checkpoint, `851129f` erä / batch C-2, `bcd0098` erä / batch C-3; C-11-suunnitelma commitoimatta / C-11 plan uncommitted (työpuussa / in the working tree) |
 | Push / PR / issuet / issues | ei tehty; estetty paikallisesti / none; blocked locally |
 
 ## Valmiit erät / Completed batches
@@ -22,18 +22,19 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | C-1 | `kilptietue::tallenna()`: säikeet, kutsupaikat, lukot, tallennus, SQL, replikointi / threads, call sites, locks, persistence, SQL, replication | `tallenna-samanaikaisuus.md` |
 | C-2 | Työasemien tiedonsiirto: kuljetus, kehys, kuittaus, kättely, sarjallistaminen, välitys, jonot, vikatilanteet, HK/viesti-erot, käännösvalitsimet, testattavuus / workstation communication | `tiedonsiirto.md` |
 | C-3 | Pysyvät tiedostot ja eheys: `KILP.DAT` (dbboxm, HK- ja viestitietue, vanha muoto), `COMFILE.DAT`, emit, AJAT, `SQLjonoVarm.dat`, konfiguraatio, mitatut koot MSVC/bcc32, vikatilanteet / persistent files and integrity | `tiedostomuodot.md` |
+| C-11 (suunnittelu / planning) | Testausarkkitehtuuri, testiprojektit `TpCoreHk`/`TpCoreJuk`, fixturet, eristys, testisuunnitelmat 17 korkean havainnolle, ensimmäinen toteutuserä; ei toteutusta / test architecture, projects, fixtures, isolation, plans for 17 high findings, first batch; nothing implemented | `testaus.md` |
 
 ## Kattavuus / Coverage
 
 | Mittari / Metric | Arvo / Value |
 |---|---|
 | Lähdetiedostoja / source files | 631 (270 050 riviä / lines) |
-| Taso 1, vain inventoitu / inventoried only | 547 |
-| Taso 2, kohdennetusti luettu / read in a targeted way | 72 |
+| Taso 1, vain inventoitu / inventoried only | 538 |
+| Taso 2, kohdennetusti luettu / read in a targeted way | 81 |
 | Taso 3, rakenne luettu / structure read | 12 (luettelo / list: `rekisteri/moduulit.md`) |
 | Taso 4, kokonaan katselmoitu / fully reviewed | 0 |
 | Havaintoja / findings | 54 vikaa / defects (H), 19 teknistä velkaa / technical debt (T) |
-| Lähdeviittauksia tarkistettu / source references checked | 690 (`tarkista_auditointi.py`) |
+| Lähdeviittauksia tarkistettu / source references checked | 786 (`tarkista_auditointi.py`) |
 
 Koko koodipohjaa ei ole katselmoitu. Hakemistotason ja skriptillä tehty
 analyysi on taso 1. Moduulikohtaisesti: `rekisteri/moduulit.md`.
@@ -62,6 +63,7 @@ only for:
 - Merkistökäyttäytyminen: MSVC-testiohjelma ajettu ja binäärien tavut tarkistettu (H-005) / encoding behaviour: MSVC test program run and binary bytes inspected
 - Kommenttimuutosten objektivertailu testattu `tputilv2`:lla (0/146 vs 1/146) / object comparison for comment changes tested
 - C-3: levylle ja verkkoon kirjoitettavien rakenteiden `sizeof`/`offsetof` mitattu koeohjelmilla MSVC:llä ja bcc32:lla; bcc32:n `#pragma option -K`/`-a1`-käytös mitattu (Q17). Koskee kokoja, ei vikojen toistamista. / sizes measured with probes in both compilers; `-K`/`-a1` behaviour measured. Sizes only, no defect reproduced.
+- C-11 (koeohjelmat, ei vikojen toistamista / probes, no defect reproduced): HkMaali- ja JukMaali-lähdelistat ilman pääohjelmaa linkittyvät testiohjelmaksi; `writeerror_w(...,0)` palaa 0 ms:ssa ilman konsolia; doctest ei käänny bcc32:lla, `static_assert` kääntyy; C4789 `Juk/VTulostus.cpp:2228`, `:3981`; suljettuun loopback-porttiin yhdistäminen epäonnistuu 2000 ms:ssa; `LockCount`-odottajakoetin 200/200 / core lists link without main; `writeerror_w` returns in 0 ms; doctest fails on bcc32; C4789 reproduced; loopback refusal 2000 ms; waiter probe 200/200 (`testaus.md`)
 
 ## Havainnot / Findings
 
@@ -73,7 +75,7 @@ Täydet tiedot: `rekisteri/havainnot.md`. / Full details: `rekisteri/havainnot.m
 | Riippumaton lähdetarkastus, osittain / partly | H-010, H-021, H-030, H-032, H-034, H-035, H-044, H-047, H-049, H-051, H-052 |
 | Ei riippumatonta tarkastusta / no independent review | H-001–H-006, H-017, H-019, H-038, H-039 |
 | Ei ratkea staattisesti / not statically decidable | H-020 |
-| Ajonaikaisesti todennettu / verified at run time | – |
+| Ajonaikaisesti todennettu / verified at run time | – (testisuunnitelma / test plan: `testaus.md`) |
 
 Vakavimmat / most severe (korkea / high, 17 kpl): H-001, H-002 (muistin korruptio /
 memory corruption), H-007 (menetetty päivitys / lost update), H-008, H-024 (lukko jää
@@ -115,59 +117,41 @@ osittain). Tärkeimmät / most important:
 - Q30: HK:n vaiheen vaihto ja tiedostojen uudelleenavaus säikeiden ollessa käynnissä / stage change reopen with threads running
 - Q34: kilptietueen konstruktori ennen `valuku`n lukemista / constructor before `valuku` is read
 
-## Seuraava suositeltu erä / Next recommended batch
+## Seuraava askel / Next step
 
-**C-11: testiautomaatio ja ajonaikainen todennus** (`suunnitelma.md`, erä 11).
+**C-11-suunnitelma valmis – odottaa toteutuslupaa.** Suunnitelma: `testaus.md`.
+Ennen toteutusta käyttäjän päätettävä (`testaus.md`, luku 12): toteutuslupa
+`TPsource/V52/Tests/`- ja `VS/Tests/`-hakemistoihin, erillinen lupa CI-muutokselle,
+uusi todennusarvo "toistettu testikehyksessä", tunnettujen vikojen käsittely CI:ssä,
+ajurin kieli, `run.sh`, myöhemmät testikoukut ja haara.
 
-Perustelut / rationale:
-- 17 korkean vakavuuden havaintoa on todennettu vain staattisesti. Erä C-3 tuotti
-  tiedostomuodot, joilla synteettiset testiaineistot voidaan rakentaa, ja suurin osa
-  C-3:n havainnoista on testattavissa yksikkötesteinä ilman verkkoa (H-040, H-041,
-  H-042, H-043, H-046, H-015, H-025; `tiedostomuodot.md`, "Testattavuus").
-- `static_assert`-tarkistukset mitatuille koille estäisivät rakenteiden
-  huomaamattoman muuttumisen ja kääntäjien eriytymisen.
-- `TpTest` toimii jo (46/46), mutta CI ei aja sitä (H-006, issue-luonnos 05).
-- Seuraavat staattiset erät (C-4 muistiturvallisuus, C-6 säikeet) hyötyvät, kun
-  löydökset voidaan vahvistaa ajamalla.
+**C-11 plan done – awaiting implementation approval.** Plan: `testaus.md`. Decisions
+needed first (section 12): implementation approval under `Tests/` and `VS/Tests/`,
+separate CI approval, new verification value, known defects in CI, runner language,
+`run.sh`, later test hooks, branch.
 
-**Tarkka tehtävä / exact task:** "Jatka auditointia erällä C-11: testiautomaatio ja
-ajonaikainen todennus. Suunnittele ja dokumentoi (ei vielä toteuta tuotantokoodiin)
-testit korkean vakavuuden havainnoille `tiedostomuodot.md`:n ja `tiedonsiirto.md`:n
-testattavuustaulukoiden pohjalta: mitkä voidaan tehdä `TpTest`iin yksikkötesteinä,
-mitkä tarvitsevat testikoukun tai kahden prosessin ympäristön, ja miten `TpTest`
-lisätään CI:hin. Arvioi `static_assert`-kokotarkistukset (mitatut koot). Selvitä,
-voiko `dbboxm`in, `pack`/`unpack`in ja `addfrec`in testata ilman GUI:ta. Agentit:
-`build-dependency-analyst` (TpTest-projekti, CI, linkitys), `architecture-analyst`
-(testattavat rajapinnat ja riippuvuudet), `defect-concurrency-auditor`
-(testitapaukset ja odotetut tulokset), lopuksi `independent-verifier`. Tuotos:
-`testaus.md`, rekisterin ja tarkistuspisteen päivitys. Ei muutoksia
-`TPsource/`-hakemistoon ilman erillistä lupaa."
+**Tarkka tehtävä luvan jälkeen / exact task after approval:** "Toteuta erän C-11
+ensimmäinen toteutuserä `testaus.md`:n luvun 7 mukaan (1.1–1.11) hyväksytyin
+päätöksin. Ei tuotantokoodin muutoksia. Jokaisen testin tulos (toistettu / kumottu /
+ei ratkea) rekisteriin; riippumaton tarkastus lopuksi."
 
 Vaihtoehto / alternative: **C-4 muistiturvallisuus** (kääntäjävaroitukset molemmilla
-kääntäjillä, MSVC `/analyze`). C-3 löysi useita puskurirajaongelmia (H-041, H-042,
-H-049, H-050, H-052), joten järjestelmällinen läpikäynti löytäisi todennäköisesti lisää.
+kääntäjillä, MSVC `/analyze`); hyötyisi C-11:n ASan-konfiguraatiosta. / C-4 memory
+safety; would benefit from C-11's ASan configuration.
 
-**C-11: test automation and runtime verification.** 17 high-severity findings are
-verified only statically. C-3 produced the file layouts needed for synthetic test
-data, and most C-3 findings can be unit-tested without a network. `static_assert`s
-for measured sizes would stop silent layout changes. Alternative: C-4 memory
-safety, since C-3 found several buffer-bound problems.
-
-## Resurssien käyttö / Resource usage (C-3)
+## Resurssien käyttö / Resource usage (C-11)
 
 | Agentti / Agent | Tokenit / tokens | Työkalukutsut / tool calls |
 |---|--:|--:|
-| `legacy-encoding-analyst` (tiedostomuodot / file formats) | 209 510 | 88 |
-| `defect-concurrency-auditor` (eheys / integrity) | 136 457 | 58 |
-| `build-dependency-analyst` (koot / sizes) | 185 448 | 81 |
-| Tarkastaja / verifier 1 (V1–V9) | 90 650 | 46 |
-| Tarkastaja / verifier 2 (M1–M13) | 123 424 | 87 |
-| **Yhteensä / total** | **745 489** | **360** |
+| `build-dependency-analyst` (TpTest, linkitys, CI / link, CI) | 122 865 | 40 |
+| `architecture-analyst` (rajapinnat, fixturet / seams, fixtures) | 172 934 | 97 |
+| `defect-concurrency-auditor` (testisuunnitelmat / test plans) | 158 326 | 68 |
+| Tarkastaja / verifier V1 (H-040, H-041, H-042, H-025, H-027) | 134 500 | 71 |
+| Tarkastaja / verifier V2 (infrastruktuuri, muut / infrastructure, others) | 99 786 | 67 |
+| **Yhteensä / total** | **688 411** | **343** |
 
-Luvut ovat agenttien raportoimia. Pääistunnon kontekstin käyttöä ei voi mitata
-tarkasti. Erässä C-2 vastaava luku oli 782 559 / 247.
-Figures as reported by the agents. The main session's context use cannot be
-measured precisely. The C-2 figure was 782 559 / 247.
+Luvut ovat ajoympäristön raportoimia. Erässä C-3 vastaava luku oli 745 489 / 360.
+Figures as reported by the harness. The C-3 figure was 745 489 / 360.
 
 ## Jatkaminen `/clear`:n jälkeen / Resuming after `/clear`
 
@@ -178,7 +162,7 @@ measured precisely. The C-2 figure was 782 559 / 247.
    ```sh
    git branch --show-current          # arkkitehtuuri-selvitys
    git status --short                 # pitäisi olla tyhjä / should be empty
-   git log --oneline main..           # 6 committia / commits
+   git log --oneline main..           # 6 committia / commits (C-11 commitoimatta / uncommitted)
    python -I doc/arkkitehtuuri/tyokalut/tarkista_auditointi.py .   # OK
    ```
 3. Rajoitukset (voimassa, kunnes käyttäjä toisin sanoo) / constraints (in force

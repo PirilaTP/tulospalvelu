@@ -270,7 +270,7 @@ HkConsole/HkCons2.cpp,HkConsole,3118,cp1252,HkMaali,1,-,-,,,,f7fe553
 HkConsole/HkCons3.cpp,HkConsole,2937,cp1252,HkMaali,1,-,-,,,,f7fe553
 HkConsole/HkConsHelp.cpp,HkConsole,436,cp1252,HkMaali,1,-,-,,,,f7fe553
 HkConsole/HkKilp.cpp,HkConsole,1450,cp1252,HkMaali,1,-,-,,,,f7fe553
-HkConsole/HkMain.cpp,HkConsole,234,cp1252,HkMaali,2,yleiskuva,-,f7fe553,,wmain 178-233,f7fe553
+HkConsole/HkMain.cpp,HkConsole,234,cp1252,HkMaali,2,yleiskuva testaus,-,f7fe553,,wmain 178-233; C-11: vain valikko ja wmain; kilpparam-oletukset,f7fe553
 HkConsole/valinnat.h,HkConsole,35,ascii,HkMaali,1,-,-,,,,f7fe553
 include/bkeybrd.h,include,34,ascii,-,1,-,-,,,,f7fe553
 include/box.h,include,108,ascii,-,1,-,-,,,,f7fe553
@@ -318,7 +318,7 @@ Juk/VXml_IOF30.cpp,Juk,1125,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f
 Juk/XMLtulos.cpp,Juk,467,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
 JukConsole/laskemtn.cpp,JukConsole,782,cp1252,JukLuenta520,1,-,-,,,,f7fe553
 JukConsole/laskent0.cpp,JukConsole,826,cp1252,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
-JukConsole/laskenta.cpp,JukConsole,141,cp1252,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+JukConsole/laskenta.cpp,JukConsole,141,cp1252,JukLuenta520 JukMaali520,2,testaus,-,f7fe553,,C-11: vain valikko ja wmain,f7fe553
 JukConsole/laskhelp.cpp,JukConsole,101,utf-8,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
 JukConsole/lasknum5.cpp,JukConsole,304,cp1252,JukMaali520,1,-,-,,,,f7fe553
 JukConsole/lasknum5u.cpp,JukConsole,378,cp1252,-,1,-,-,,,,f7fe553
@@ -329,10 +329,10 @@ JukConsole/VConTul.cpp,JukConsole,2025,cp1252,JukLuenta520 JukMaali520,1,-,-,,,,
 RADStudio10/HkKisaWin.cpp,RADStudio10,251,ascii,HkKisaWin,2,yleiskuva,-,f7fe553,,"_tWinMain, CreateForm",f7fe553
 RADStudio10/ViestiWin.cpp,RADStudio10,185,ascii,ViestiWin,1,-,-,,,,f7fe553
 Tests/doctest.h,Tests,7106,ascii,TpTest,1,-,-,,,,f7fe553
-Tests/DoctestMain.cpp,Tests,22,ascii,TpTest,1,-,-,,,,f7fe553
-Tests/HkEnnTavTest.cpp,Tests,164,ascii,TpTest,1,-,-,,,,f7fe553
-Tests/VRinnakkaisOsuusTest.cpp,Tests,335,ascii,TpTest,1,-,-,,,,f7fe553
-Tests/WideString.h,Tests,78,ascii,TpTest,1,-,-,,,,f7fe553
+Tests/DoctestMain.cpp,Tests,22,ascii,TpTest,2,testaus,-,f7fe553,,C-11: testimalli / test pattern,f7fe553
+Tests/HkEnnTavTest.cpp,Tests,164,ascii,TpTest,2,testaus,-,f7fe553,,C-11: testimalli / test pattern,f7fe553
+Tests/VRinnakkaisOsuusTest.cpp,Tests,335,ascii,TpTest,2,testaus,-,f7fe553,,C-11: testimalli / test pattern,f7fe553
+Tests/WideString.h,Tests,78,ascii,TpTest,2,testaus,-,f7fe553,,C-11: doctest-apu / helper,f7fe553
 Tp/mtrand.cpp,Tp,72,utf-8,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 Tp/mtrand.h,Tp,153,ascii,-,2,riippuvuudet,-,f7fe553,,lisenssi,f7fe553
 Tp/mttest.cpp,Tp,41,ascii,-,1,-,-,,,,f7fe553
@@ -400,7 +400,7 @@ tputilv2/gotoxy.cpp,tputilv2,67,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/haesarja.cpp,tputilv2,49,utf-8,-,1,-,-,,,,f7fe553
 tputilv2/haesarja_w.cpp,tputilv2,49,utf-8,-,1,-,-,,,,f7fe553
 tputilv2/haeStrIx.cpp,tputilv2,30,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
-tputilv2/initcon.cpp,tputilv2,95,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/initcon.cpp,tputilv2,95,utf-8,Tputil-XE tputilv2,2,testaus,-,f7fe553,,"C-11: konsolivaatimus, hConIn",f7fe553
 tputilv2/Inpknoo2.cpp,tputilv2,78,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/Inpknoos.cpp,tputilv2,204,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/Inpknoot.cpp,tputilv2,201,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
@@ -446,13 +446,13 @@ tputilv2/nimilong.cpp,tputilv2,40,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/oem2ansi.cpp,tputilv2,122,utf-8,Tputil-XE tputilv2,3,tiedostomuodot,-,f7fe553,H-049,C-3: ansitowcs/oemtowcs,f7fe553
 tputilv2/Pageedit.cpp,tputilv2,210,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/paiva.cpp,tputilv2,47,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
-tputilv2/perr.cpp,tputilv2,96,utf-8,Tputil-XE tputilv2,2,merkistot,-,f7fe553,H-003,__LINE__; rivi 80,f7fe553
+tputilv2/perr.cpp,tputilv2,96,utf-8,Tputil-XE tputilv2,2,merkistot testaus,-,f7fe553,H-003,__LINE__; rivi 80; C-11: MessageBoxA,f7fe553
 tputilv2/poistano.cpp,tputilv2,38,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/processspecialkey.cpp,tputilv2,27,utf-8,Tputil-XE,1,-,-,,,,f7fe553
 tputilv2/prtbuf.cpp,tputilv2,155,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/putint_r.cpp,tputilv2,44,utf-8,Tputil-XE tputilv2 TpTest,1,-,-,,,,f7fe553
 tputilv2/QSORTINT.cpp,tputilv2,126,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
-tputilv2/Readkbd.cpp,tputilv2,97,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Readkbd.cpp,tputilv2,97,utf-8,Tputil-XE tputilv2,2,testaus,-,f7fe553,,C-11: palaa heti kun hConIn NULL,f7fe553
 tputilv2/readkbd_w.cpp,tputilv2,97,utf-8,tputilv2,1,-,-,,,,f7fe553
 tputilv2/SAVESCR.cpp,tputilv2,39,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/scanconv.cpp,tputilv2,64,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
@@ -507,9 +507,9 @@ tputilv2/wconcat.cpp,tputilv2,33,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/wcr2oem.cpp,tputilv2,77,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/wcscmpU.cpp,tputilv2,57,ascii,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/wPageedit.cpp,tputilv2,209,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
-tputilv2/Writeerr.cpp,tputilv2,94,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
+tputilv2/Writeerr.cpp,tputilv2,94,utf-8,Tputil-XE tputilv2,2,testaus,-,f7fe553,,C-11: ei odota ilman konsolia; symbolit writeerror/_w/On,f7fe553
 tputilv2/Wrttext.cpp,tputilv2,961,cp1252,Tputil-XE tputilv2,1,-,-,,,,f7fe553
-tputilv2/wSelectxy.cpp,tputilv2,85,utf-8,tputilv2,1,-,-,,,,f7fe553
+tputilv2/wSelectxy.cpp,tputilv2,85,utf-8,tputilv2,2,testaus,-,f7fe553,,C-11: ikuinen silmukka ilman konsolia,f7fe553
 tputilv2/wxml_put.cpp,tputilv2,191,ascii,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/wxml_set.cpp,tputilv2,158,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/xml_put.cpp,tputilv2,76,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553

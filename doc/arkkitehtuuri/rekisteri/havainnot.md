@@ -33,7 +33,7 @@ Fields and values: `README.md`. Paths relative to `TPsource/V52/`.
 | H-024 | Viesti: `tark_trk` palaa lukkoa vapauttamatta kuuluttajatilassa / relay `tark_trk` returns holding `tall_CS` in announcer mode | `Juk/VCom.cpp:690`, `:699-701`, `:706`; `Juk/VInit.cpp:701-702` | korkea / high | [todennettu] koodi; [päätelty] jumiutuminen / hang | riippumaton lähdetarkastus / independent source review | f7fe553 | `../tiedonsiirto.md` | staattinen, lähdekoodi / static, source |
 | H-025 | Viesti: `combufsize` ilman 14 tavun otsaketta → muistijonon ylivuoto ja suurimman paketin loppuosa korruptoituu ennen tarkistussummaa (myös levyjonossa) / relay `combufsize` lacks header → overrun and corrupted packet tail before checksum | `Juk/VCom.cpp:1228`, `:1236-1240`; `Tp/TpComY.cpp:509`, `:529-530`, `:1470`, `:1494-1495`, `:1507-1508`, `:2409` | korkea / high | [todennettu] aritmetiikka; mitattu / measured (C-3); todellinen polku levyjono, loppu edellisestä paketista kelvollisella tarkistussummalla / real path is the disk queue | riippumaton lähdetarkastus / independent source review | f7fe553 | `../tiedonsiirto.md` | staattinen, lähdekoodi / static, source |
 | H-026 | Viesti: tuntematon pakettiluokka pysäyttää koko vastaanoton pysyvästi (`lisa=0`, `inbens` ei etene) / relay: unknown packet class stops all receiving permanently | `Juk/VCom.cpp:971-974`, `:981`; `Tp/TpComY.cpp:649-650`, `:1001` | korkea / high | [todennettu] | riippumaton lähdetarkastus / independent source review | f7fe553 | `../tiedonsiirto.md` | staattinen, lähdekoodi / static, source |
-| H-027 | TCP-asiakas ei yritä yhteyttä uudelleen (operaattorien sidontajärjestys); palvelimen avausvirhe ohitetaan vanhentuneella kahvalla; TCPXML-uudelleenyhteys voi kaatua null-osoittimeen / TCP client never retries; server open errors ignored; possible null deref | `Tp/TpComY.cpp:1179`, `:1219-1220`, `:1273-1275`, `:1290-1292`; `com/WinUDP.cpp:736`, `:812-817`, `:847` | korkea / high | [todennettu] koodi; [päätelty] null-osoitin / null deref | riippumaton lähdetarkastus / independent source review | f7fe553 | `../tiedonsiirto.md` | staattinen, lähdekoodi / static, source |
+| H-027 | TCP-asiakas ei yritä yhteyttä uudelleen (operaattorien sidontajärjestys); palvelimen avausvirhe ohitetaan vanhentuneella kahvalla; TCPXML-uudelleenyhteys voi kaatua null-osoittimeen / TCP client never retries; server open errors ignored; possible null deref | `Tp/TpComY.cpp:1179`, `:1219-1220`, `:1273-1275`, `:1290-1292`; `com/WinUDP.cpp:736`, `:812-817`, `:847` (C-11: tarkat rivit / exact lines `com/WinUDP.cpp:737`, `:848`, kutsu / call `Tp/TpComY.cpp:1289`) | korkea / high | [todennettu] koodi; [päätelty] null-osoitin / null deref | riippumaton lähdetarkastus / independent source review | f7fe553 | `../tiedonsiirto.md` | staattinen, lähdekoodi / static, source |
 | H-028 | TCP-palvelin: uusi yhteys korvaa vanhan sulkematta, kaksi lukusäiettä samaan puskuriin, `break` lukon ollessa varattuna / second accept replaces socket, two reader threads, break holding `tcpip_CS` | `com/WinUDP.cpp:569`, `:656-667` | keskitaso / medium | [todennettu] | riippumaton lähdetarkastus / independent source review | f7fe553 | `../tiedonsiirto.md` | staattinen, lähdekoodi / static, source |
 | H-029 | UDP: mikä tahansa datagrammi vaihtaa yhteyden kohdeosoitteen ja -portin, myös konfiguroidulle osoitteelle / any datagram redirects destination address and port | `com/WinUDP.cpp:1115-1121`, `:1161-1162`, `:1269-1270` | keskitaso (turvallisuus / security) | [todennettu] | riippumaton lähdetarkastus / independent source review | f7fe553 | `../tiedonsiirto.md` | staattinen, lähdekoodi / static, source |
 | H-030 | Uudelleenlähetystyökalu (`merk_uusinta`) lähettää levyjonosta vanhoja, jo kuitattuja tilannekuvia → kumoaa vastaanottajan uudemmat muutokset; ajetaan automaattisesti XML-TCP:lle / resend tool replays old acknowledged snapshots | `Tp/TpComY.cpp:509`, `:1111-1167`, `:1467-1470`; `cbTp/UnitUusinta.cpp:82-92`; `Hk/HkCom32.cpp:986-987` | keskitaso / medium | [todennettu] uudelleenlähetys; [päätelty] vaikutus / effect | riippumaton lähdetarkastus, osittain / independent source review, partly | f7fe553 | `../tiedonsiirto.md` | staattinen, lähdekoodi / static, source |
@@ -61,6 +61,25 @@ Fields and values: `README.md`. Paths relative to `TPsource/V52/`.
 | H-052 | Konfiguraatio: `wcscpy` puskureihin `tunn_srj_nimi[12]` ja `baudst[][20]`; `line[l-1]`, kun `l == 0` / config buffer overflows | `Hk/HkInit.cpp:63`, `:93`, `:360`, `:1253`, `:2088`; `Hk/HkDef.h:122` | matala / low | [todennettu] | riippumaton lähdetarkastus, osittain / independent source review, partly | f7fe553 | `../tiedostomuodot.md` | staattinen, lähdekoodi / static, source |
 | H-053 | `lueem` ohittaa `_read`-tuloksen; viesti vertaa `_read(...) < sizeof(emittp)` ilman muunnosta, joten -1 jää huomaamatta / read errors undetected | `Hk/HkEmit.cpp:1581`; `Juk/VEmit.cpp:3631`, `:4937`, `:5928` | matala / low | [todennettu] | riippumaton lähdetarkastus / independent source review | f7fe553 | `../tiedostomuodot.md` | staattinen, lähdekoodi / static, source |
 | H-054 | AJAT-jono: viesti kirjoittaa uudelleen vain `mxtime-1` tietuetta; virhepolut kutsuvat `_close` pituudella eikä kahvalla / last record lost, wrong handle closed | `Juk/VIv.cpp:2698`, `:2771`; `Hk/HkIV.cpp:4023`, `:4113` | matala / low | [todennettu] | riippumaton lähdetarkastus / independent source review | f7fe553 | `../tiedostomuodot.md` | staattinen, lähdekoodi / static, source |
+
+## Ajonaikaisen todennuksen suunnitelma / Runtime verification plan (C-11)
+
+Testisuunnitelma kaikille 17 korkean vakavuuden havainnolle: `../testaus.md`.
+Suunnitelma ei muuta yhdenkään havainnon todennustilaa; sarake "Todennus" päivitetään
+vasta, kun testi on ajettu. Ensimmäinen toteutuserä (ehdotus, odottaa lupaa): H-025,
+H-040, H-042, H-041, H-031, H-008, H-024, H-027. Toinen erä: H-026, H-032, H-022, H-023,
+H-007, H-001, H-002. Käsin: H-009, H-014.
+
+Test plan for all 17 high-severity findings: `../testaus.md`. The plan changes no
+finding's verification state; the "Verification" column is updated only after a
+test has run. Proposed first batch (awaiting approval): H-025, H-040, H-042, H-041,
+H-031, H-008, H-024, H-027. Second batch: H-026, H-032, H-022, H-023, H-007, H-001,
+H-002. Manual: H-009, H-014.
+
+C-11:n tarkastus korjasi / the C-11 review corrected: H-027:n rivit (ks. rivi / see
+row); H-041:n `static_assert`-ehdotus (`../tiedostomuodot.md`) hylätty, koska kaava
+lasketaan ajossa ja nykyarvoilla tarkistus estäisi käännöksen / rejected, the formula
+is computed at run time and would break the build today.
 
 ## Tekninen velka / Technical debt (T)
 
