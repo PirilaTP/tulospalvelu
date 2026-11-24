@@ -272,6 +272,41 @@ static void testTaydenna(void)
 	CHECK(emitmerge_taydenna(&f1, &f2, k2, N) == 1);
 	CHECK(f1.ctrlcode[1] == (C) 32 && f1.ctrltime[1] == 200);
 
+	// Yhteinen rasti ankkurina: kellojen siirto (-1000) ei kelpaisi, mutta rasti 31 on
+	// molemmilla korteilla ja antaa siirroksi -50. Puuttuva 32 tulee oikeaan kohtaan.
+	TestiEm<C> h1, h2;
+	TestiSovitin<C> k4;
+	k4.delta = -1000;
+	h1.aseta(0, 31, 100); h1.aseta(1, 33, 300); h1.aseta(2, 250, 500);
+	h2.aseta(0, 31, 150); h2.aseta(1, 32, 250); h2.aseta(2, 33, 350); h2.aseta(3, 250, 700);
+	CHECK(emitmerge_taydenna(&h1, &h2, k4, N) == 1);
+	CHECK(h1.ctrlcode[0] == (C) 31 && h1.ctrltime[0] == 100);
+	CHECK(h1.ctrlcode[1] == (C) 32 && h1.ctrltime[1] == 200);
+	CHECK(h1.ctrlcode[2] == (C) 33 && h1.ctrltime[2] == 300);
+
+	// Ankkuri vaikuttaa vain aikaan: kortilla 1 on vain 33, kortilla 2 on 31, 32, 33.
+	// Kaikki siirtyvat ankkurin 33 mukaan (-50) ja jarjestys on 31, 32, 33.
+	TestiEm<C> m1, m2;
+	TestiSovitin<C> k5;
+	k5.delta = -1000;
+	m1.aseta(0, 33, 300); m1.aseta(1, 250, 500);
+	m2.aseta(0, 31, 150); m2.aseta(1, 32, 250); m2.aseta(2, 33, 350); m2.aseta(3, 250, 700);
+	CHECK(emitmerge_taydenna(&m1, &m2, k5, N) == 2);
+	CHECK(m1.ctrlcode[0] == (C) 31 && m1.ctrltime[0] == 100);
+	CHECK(m1.ctrlcode[1] == (C) 32 && m1.ctrltime[1] == 200);
+	CHECK(m1.ctrlcode[2] == (C) 33 && m1.ctrltime[2] == 300);
+
+	// Selvitys: siirretty aika alle 1 -> tila 3, ei kelpaa.
+	TestiEm<C> s1, s2;
+	TestiSovitin<C> k6;
+	int tl[N];
+	long aj[N];
+	k6.delta = -1000;
+	s1.aseta(0, 31, 100); s1.aseta(1, 33, 300); s1.aseta(2, 250, 500);
+	s2.aseta(0, 32, 200); s2.aseta(1, 250, 700);
+	CHECK(emitmerge_taydenna(&s1, &s2, k6, N, tl, aj) == 0);
+	CHECK(tl[0] == 3 && aj[0] == -800);
+
 	// Siirretty aika menisi alle 1: leimaa ei kayteta.
 	TestiEm<C> g1, g2;
 	TestiSovitin<C> k3;

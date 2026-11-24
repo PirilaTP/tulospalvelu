@@ -9,6 +9,8 @@
 #ifndef EMITMERGE_H
 #define EMITMERGE_H
 
+#include <stdlib.h>
+
 // Lisaa leiman (ncode, ntime) leimataulukkoon code[0..n-1] / time[0..n-1]
 // aikajarjestyksessa ennen lukijan koodia.
 //
@@ -92,7 +94,8 @@ bool emitmerge_laajennus(const C *vanha, const unsigned short *vaika,
 // puuttuvat rastit lisataan: jos sama rasti on molemmilla korteilla, kortin 1
 // aikaleima sailyy. Jokainen kortin 2 leima kokeillaan kortin 1 kopioon ja
 // pidetaan vain, jos tasmaavien rastien maara kasvaa. Kortin 2 ajat siirretaan
-// kortin 1 kelloon (emitmerge_siirto).
+// kortin 1 kelloon: ensisijaisesti molemmilla korteilla olevan (lahimman) rastin
+// aikojen erotuksella, muuten korttien lukijarivien avulla (emitmerge_siirto).
 //
 // EM: emit-tietue, jossa taulukot ctrlcode[] ja ctrltime[] (n alkiota).
 // K: sovitin, jonka funktiot
@@ -102,15 +105,24 @@ bool emitmerge_laajennus(const C *vanha, const unsigned short *vaika,
 //   bool kelpaa(EM *, int j)      leima j on rataan kuuluva rastileima (ei lukija)
 //   long siirto(EM *, EM *)       ajan siirto kortista 2 kortin 1 kelloon
 //
+// tilat (valinnainen): kortin 2 leimalle j: 0 ei kasitelty, 1 rasti on jo kortilla 1,
+// 2 lisatty, 3 siirretty aika ei kelpaa (ajat[j] = aika, valinnainen), 4 ei parantanut
+// tarkastusta (esim. jarjestys ei tasmaa).
+//
 // Palauttaa lisattyjen leimojen maaran tai -1, jos rataa ei ole tai tarkistus
 // epaonnistuu.
 template <class EM, class K>
-int emitmerge_taydenna(EM *em1, EM *em2, K &k, int n)
+int emitmerge_taydenna(EM *em1, EM *em2, K &k, int n, int *tilat = 0, long *ajat = 0)
 {
+	const int MAXANK = 256;
 	EM tmp;
-	int lukija1, lukija2, j, er, ennen = 0, oik = 0, lisatty = 0;
-	long delta, t;
+	int lukija1, lukija2, i, j, a, er, ennen = 0, oik = 0, lisatty = 0;
+	int na = 0, aidx[MAXANK], paras, etaisyys;
+	long delta0, delta, adel[MAXANK], t;
 
+	if (tilat)
+		for (j = 0; j < n; j++)
+			tilat[j] = 0;
 	if (!k.kelvollinen())
 		return(-1);
 	er = k.tarkista(em1, &ennen);
@@ -121,13 +133,63 @@ int emitmerge_taydenna(EM *em1, EM *em2, K &k, int n)
 	lukija2 = k.lukija(em2);
 	if (lukija2 < 1 || lukija2 > n-1)
 		return(0);
-	delta = k.siirto(em1, em2);
+	delta0 = k.siirto(em1, em2);
+
+	// Ankkurit: rastit, jotka ovat molemmilla korteilla. Sama leimaus on tehty
+	// molempiin kortteihin yhtaaikaa, joten ankkurin aikojen erotus on kortin 2
+	// siirto kortin 1 kelloon. Ankkurin avulla puuttuvan rastin paikka kortilla 1
+	// voidaan varmistaa: se on ankkurirastien valissa samassa jarjestyksessa kuin
+	// kortilla 2.
+	lukija1 = k.lukija(em1);
+	if (lukija1 < 0 || lukija1 > n)
+		lukija1 = 0;
+	for (j = 0; j < lukija2 && na < MAXANK; j++) {
+		if (!em2->ctrltime[j] || !k.kelpaa(em2, j))
+			continue;
+		for (i = 0; i < lukija1; i++) {
+			if (em1->ctrltime[i] && em1->ctrlcode[i] == em2->ctrlcode[j]) {
+				aidx[na] = j;
+				adel[na] = (long) em1->ctrltime[i] - (long) em2->ctrltime[j];
+				na++;
+				break;
+				}
+			}
+		}
+
 	for (j = 0; j < lukija2; j++) {
 		if (!em2->ctrltime[j] || !k.kelpaa(em2, j))
 			continue;
-		t = (long) em2->ctrltime[j] + delta;
-		if (t < 1 || t > 65535L)
+		delta = delta0;
+		paras = -1;
+		etaisyys = 0;
+		for (a = 0; a < na; a++) {
+			if (aidx[a] == j) {		// rasti on jo kortilla 1
+				paras = -2;
+				break;
+				}
+			if (paras < 0 || abs(aidx[a] - j) < etaisyys) {
+				paras = a;
+				etaisyys = abs(aidx[a] - j);
+				}
+			}
+		if (paras == -2) {
+			if (tilat)
+				tilat[j] = 1;
 			continue;
+			}
+		if (paras >= 0)
+			delta = adel[paras];	// lahin ankkuri kortilla 2
+		t = (long) em2->ctrltime[j] + delta;
+		if (t < 1 || t > 65535L) {
+			if (tilat) {
+				tilat[j] = 3;
+				if (ajat)
+					ajat[j] = t;
+				}
+			continue;
+			}
+		if (tilat)
+			tilat[j] = 4;
 		tmp = *em1;
 		lukija1 = k.lukija(&tmp);
 		if (emitmerge_lisaa(tmp.ctrlcode, tmp.ctrltime, n, lukija1,
@@ -140,6 +202,8 @@ int emitmerge_taydenna(EM *em1, EM *em2, K &k, int n)
 			*em1 = tmp;
 			ennen = oik;
 			lisatty++;
+			if (tilat)
+				tilat[j] = 2;
 			if (er == 0)
 				break;
 			}

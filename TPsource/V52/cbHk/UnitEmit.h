@@ -134,6 +134,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Laskeuudelleen1;
 	TButton *BtnOhita;
 	TButton *BtnNaytaKartta;
+	TButton *BtnToinenKortti;
 	TLabel *Label18;
 	TComboBox *CBVaadi;
 	TMenuItem *Suljekaavake1;
@@ -254,6 +255,10 @@ __published:	// IDE-managed Components
 	void __fastcall EdtENimiKeyPress(TObject *Sender, System::WideChar &Key);
 	void __fastcall BtnOhitaClick(TObject *Sender);
 	void __fastcall BtnNaytaKarttaClick(TObject *Sender);
+	void __fastcall BtnToinenKorttiClick(TObject *Sender);
+	void __fastcall NaytaTietueSuoraan(int pos);
+	int __fastcall KorttiLista(int *pos);
+	void __fastcall PaivitaKorttiNappi(void);
 	void __fastcall CBVaadiChange(TObject *Sender);
 	void __fastcall Suljekaavake1Click(TObject *Sender);
 	void __fastcall Lhetnytetytleimattiedonsiirtoon1Click(TObject *Sender);

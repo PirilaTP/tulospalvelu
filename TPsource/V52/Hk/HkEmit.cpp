@@ -26,6 +26,7 @@
 #include <bkeybrd.h>
 #include <bstrings.h>
 #include <algorithm>
+#include <math.h>
 #pragma hdrstop
 #include <conio.h>
 #include <dos.h>
@@ -4760,6 +4761,434 @@ void prtemitsivu(tulostusparamtp *tulprm)
 	  }
    }
 
+// Leimausraportin tarkastuksen tuloksen paasyy suomeksi, usealla rivilla: mika rasti
+// puuttuu tai on leimattu vaarin, ja jos rasti loytyy toiselta kortilta, miksi sita ei
+// voitu liittaa.
+static void emit_syyrivit(tulostusparamtp *tulprm, wchar_t *txt, INT pos, INT leveys)
+   {
+   wchar_t line[121], *p = txt;
+   INT len, cut;
+
+   while (*p) {
+	  len = (INT) wcslen(p);
+	  if (len > leveys) {
+		 cut = leveys;
+		 while (cut > 0 && p[cut] != L' ')
+			cut--;
+		 if (cut == 0)
+			cut = leveys;
+		 len = cut;
+		 }
+	  wmemcpy(line, p, len);
+	  line[len] = 0;
+	  putfld(tulprm, line, pos, len, 0, 0);
+	  endline(tulprm, 0);
+	  p += len;
+	  while (*p == L' ')
+		 p++;
+	  }
+   }
+
+// Rastikohtainen analyysi: kortin leimat ja radan rastit sovitetaan toisiinsa radan
+// jarjestyksessa (pisin yhteinen osajono). Kun yksi rasti on leimattu vaarin, muut rastit
+// pysyvat oikein, vaikka tarkastus (tarkista_oik) kayttaytyy silloin eri tavalla.
+// tila: 0 hyvaksytty, 1 puuttuu (ei leimaa), 2 vaara leima (lk = leiman koodi),
+// 3 leimattu vaarassa jarjestyksessa.
+struct EmitAnalyysi {
+   INT n;
+   INT nbad;
+   INT nr[MAXNRASTI];
+   INT rk[MAXNRASTI];
+   INT tila[MAXNRASTI];
+   INT lk[MAXNRASTI];
+   INT nex;
+   INT ex[MAXNLEIMA];
+   };
+
+// Kaikki rastit, joilla on tama emit-koodi: "91, 166, 274 tai 294". Palauttaa lukumaaran.
+static INT emit_koodirastit(INT koodi, wchar_t *out, INT maxlen)
+   {
+   INT k, n = 0, i, rst[40];
+   wchar_t tmp[12];
+
+   out[0] = 0;
+   for (k = 0; k < nkuvio && n < 40; k++) {
+	  if (kuvio[k].koodi != koodi)
+		 continue;
+	  for (i = 0; i < n; i++)
+		 if (rst[i] == kuvio[k].rasti)
+			break;
+	  if (i == n)
+		 rst[n++] = kuvio[k].rasti;
+	  }
+   for (i = 0; i < n; i++) {
+	  swprintf(tmp, L"%s%d", i == 0 ? L"" : (i == n-1 ? L" tai " : L", "), (int) rst[i]);
+	  if ((INT) (wcslen(out) + wcslen(tmp)) < maxlen - 1)
+		 wcscat(out, tmp);
+	  }
+   return(n);
+   }
+
+// Koodin rasteista (emit_koodirastit) se, joka on lahinna odotettua rastia kartalla. Vain
+// rastit, joiden koordinaatit tunnetaan. Palauttaa rastin tai 0; *etaisyys metrein.
+static INT emit_lahinrasti(INT koodi, INT odotettu, INT *etaisyys)
+   {
+   INT k, paras = 0, ix, ix0;
+   double d, dmin = 0, dx, dy;
+   wchar_t tn[12];
+
+   if (Map.scale < 1)
+      return(0);
+   swprintf(tn, L"%d", (int) odotettu);
+   if ((ix0 = haekoordix(tn)) < 0 || (rastikoord[ix0].mapX == 0 && rastikoord[ix0].mapY == 0))
+      return(0);
+   for (k = 0; k < nkuvio; k++) {
+      if (kuvio[k].koodi != koodi || kuvio[k].rasti == odotettu)
+         continue;
+      swprintf(tn, L"%d", (int) kuvio[k].rasti);
+      if ((ix = haekoordix(tn)) < 0 || (rastikoord[ix].mapX == 0 && rastikoord[ix].mapY == 0))
+         continue;
+      dx = rastikoord[ix].mapX - rastikoord[ix0].mapX;
+      dy = rastikoord[ix].mapY - rastikoord[ix0].mapY;
+      d = sqrt(dx*dx + dy*dy) * Map.scale / 1000.0;
+      if (!paras || d < dmin) {
+         paras = kuvio[k].rasti;
+         dmin = d;
+         }
+      }
+   if (paras)
+      *etaisyys = (INT) (dmin + 0.5);
+   return(paras);
+   }
+
+static INT emit_rastikoodi(INT rasti)
+   {
+   for (INT k = 0; k < nkuvio; k++)
+	  if (kuvio[k].rasti == rasti)
+		 return(kuvio[k].koodi);
+   return(0);
+   }
+
+static bool emit_analyysi(emittp *em, ratatp *rt, EmitAnalyysi *a)
+   {
+   INT idx, i, j, m = 0, nr = 0, lukija, c, ri[MAXNRASTI], pc[MAXNLEIMA], mc[MAXNRASTI];
+   INT dp[MAXNRASTI+1][MAXNLEIMA+1];
+   bool kaytetty[MAXNLEIMA];
+
+   memset(a, 0, sizeof(*a));
+   lukija = haelukija(em);
+   if (lukija < 1 || lukija > MAXNLEIMA-1)
+	  return(false);
+   for (idx = 0; idx < rt->rastiluku && nr < MAXNRASTI; idx++) {
+	  if (rt->rastikoodi[idx] == 10000 || rt->rastikoodi[idx] == 10001)
+		 return(false);
+	  if (rt->rastikoodi[idx] > 9999)
+		 continue;
+	  ri[nr] = idx;
+	  a->nr[nr] = nr + 1;
+	  a->rk[nr] = rt->rastikoodi[idx];
+	  nr++;
+	  }
+   a->n = nr;
+   for (j = 0; j < lukija; j++) {
+	  c = (UCHAR) em->ctrlcode[j];
+	  if (!c || onlukija(c) || c == 254)
+		 continue;
+	  pc[m++] = c;
+	  }
+   memset(dp, 0, sizeof(dp));
+   for (i = 1; i <= nr; i++) {
+	  for (j = 1; j <= m; j++) {
+		 if (oikeakoodi(rt, ri[i-1], pc[j-1], 0) == 1)
+			dp[i][j] = dp[i-1][j-1] + 1;
+		 else
+			dp[i][j] = dp[i-1][j] > dp[i][j-1] ? dp[i-1][j] : dp[i][j-1];
+		 }
+	  }
+   for (i = 0; i < nr; i++)
+	  mc[i] = -1;
+   for (j = 0; j < m; j++)
+	  kaytetty[j] = false;
+   i = nr;
+   j = m;
+   while (i > 0 && j > 0) {
+	  if (oikeakoodi(rt, ri[i-1], pc[j-1], 0) == 1 && dp[i][j] == dp[i-1][j-1] + 1) {
+		 mc[i-1] = j-1;
+		 kaytetty[j-1] = true;
+		 i--;
+		 j--;
+		 }
+	  else if (dp[i-1][j] >= dp[i][j-1])
+		 i--;
+	  else
+		 j--;
+	  }
+   // Rasti, jonka leima on muualla kortilla: vaarassa jarjestyksessa
+   for (i = 0; i < nr; i++) {
+	  if (mc[i] >= 0)
+		 continue;
+	  for (j = 0; j < m; j++) {
+		 if (!kaytetty[j] && oikeakoodi(rt, ri[i], pc[j], 0) == 1) {
+			kaytetty[j] = true;
+			a->tila[i] = 3;
+			a->lk[i] = pc[j];
+			break;
+			}
+		 }
+	  }
+   // Muut puuttuvat rastit: jos vierekkaisten oikeiden rastien valissa on ylimaarainen
+   // leima, se on rastin vaara leima. Muuten rasti puuttuu.
+   for (i = 0; i < nr; ) {
+	  INT i2, ed, seur, jj;
+
+	  if (mc[i] >= 0 || a->tila[i]) {
+		 i++;
+		 continue;
+		 }
+	  for (i2 = i; i2 < nr && mc[i2] < 0; i2++)
+		 ;
+	  ed = -1;
+	  for (jj = i-1; jj >= 0; jj--)
+		 if (mc[jj] >= 0) {
+			ed = mc[jj];
+			break;
+			}
+	  seur = m;
+	  if (i2 < nr)
+		 seur = mc[i2];
+	  jj = ed + 1;
+	  for (; i < i2; i++) {
+		 if (a->tila[i])
+			continue;
+		 while (jj < seur && kaytetty[jj])
+			jj++;
+		 if (jj < seur) {
+			kaytetty[jj] = true;
+			a->tila[i] = 2;
+			a->lk[i] = pc[jj];
+			jj++;
+			}
+		 else
+			a->tila[i] = 1;
+		 }
+	  }
+   for (i = 0; i < nr; i++)
+	  if (a->tila[i])
+		 a->nbad++;
+   for (j = 0; j < m; j++)
+	  if (!kaytetty[j])
+		 a->ex[a->nex++] = pc[j];
+   return(true);
+   }
+
+static void emit_ylimaaraiset(tulostusparamtp *tulprm, EmitAnalyysi *an, INT pos, INT leveys)
+   {
+   wchar_t txt[300], tmp[40], lo[200];
+   INT idx;
+   wchar_t kr[70];
+
+   if (an->nex < 1)
+      return;
+   lo[0] = 0;
+   for (idx = 0; idx < an->nex; idx++) {
+      emit_koodirastit(an->ex[idx], kr, 70);
+      if (kr[0])
+         swprintf(tmp, L"%s%d (rasti %s)", idx ? L"; " : L"", (int) an->ex[idx], kr);
+      else
+         swprintf(tmp, L"%s%d", idx ? L", " : L"", (int) an->ex[idx]);
+      if (wcslen(lo) + wcslen(tmp) < 190)
+         wcscat(lo, tmp);
+      }
+   swprintf(txt, an->nex == 1 ? L"Ylim\u00e4\u00e4r\u00e4inen leima, ei kuulu t\u00e4m\u00e4n radan rasteihin: koodi %s." :
+      L"Ylim\u00e4\u00e4r\u00e4iset leimat, eiv\u00e4t kuulu t\u00e4m\u00e4n radan rasteihin: koodit %s.", lo);
+   emit_syyrivit(tulprm, txt, pos, leveys);
+   }
+
+static void emit_syy(tulostusparamtp *tulprm, emittp *em, ratatp *rt, INT tarkvirhe,
+	INT *tulkinta, wchar_t tark, kilptietue *kilp, INT pos, INT leveys)
+   {
+   wchar_t txt[1000], tmp[60], lm[200], lt[600], lo[600], le[600];
+   INT idx, jj, n = 0, nm = 0, mn[MAXNRASTI], mk[MAXNRASTI];
+   bool loytyi;
+   EmitAnalyysi an;
+
+   txt[0] = 0;
+   if (tarkvirhe > 0) {
+	  lm[0] = 0;
+	  if (emit_analyysi(em, rt, &an) && an.nbad > 0) {
+		 INT nrivi = 0, lahin, etaisyys = 0;
+		 wchar_t kr[70];
+
+		 for (idx = 0; idx < an.n; idx++) {
+			if (!an.tila[idx])
+			   continue;
+			mn[nm] = an.nr[idx];
+			mk[nm] = an.rk[idx];
+			swprintf(tmp, L"%s%d (%d)", nm ? L", " : L"", (int) mn[nm], (int) mk[nm]);
+			if (wcslen(lm) + wcslen(tmp) < 190)
+			   wcscat(lm, tmp);
+			nm++;
+			}
+		 swprintf(txt, L"Syy: radan rasteista ei hyv\u00e4ksytty %d kpl: %s.", (int) nm, lm);
+		 emit_syyrivit(tulprm, txt, pos, leveys);
+		 for (idx = 0; idx < an.n && nrivi < 12; idx++) {
+			if (!an.tila[idx])
+			   continue;
+			nrivi++;
+			if (an.tila[idx] == 1) {
+			   swprintf(txt, L"Rasti %d (%d): leimaa ei l\u00f6ydy kortilta (koodi %d).",
+				  (int) an.nr[idx], (int) an.rk[idx], (int) emit_rastikoodi(an.rk[idx]));
+			   }
+			else if (an.tila[idx] == 2) {
+			   emit_koodirastit(an.lk[idx], kr, 70);
+			   lahin = emit_lahinrasti(an.lk[idx], an.rk[idx], &etaisyys);
+			   if (kr[0])
+				  swprintf(txt, L"Rasti %d (%d): v\u00e4\u00e4r\u00e4 rasti leimattu, kortilla koodi %d (rasti %s). Oikea koodi olisi %d.",
+					 (int) an.nr[idx], (int) an.rk[idx], (int) an.lk[idx], kr, (int) emit_rastikoodi(an.rk[idx]));
+			   else
+				  swprintf(txt, L"Rasti %d (%d): v\u00e4\u00e4r\u00e4 leima, kortilla koodi %d, jota ei l\u00f6ydy radoilta. Oikea koodi olisi %d.",
+					 (int) an.nr[idx], (int) an.rk[idx], (int) an.lk[idx], (int) emit_rastikoodi(an.rk[idx]));
+			   }
+			else {
+			   swprintf(txt, L"Rasti %d (%d): rasti on leimattu, mutta v\u00e4\u00e4r\u00e4ss\u00e4 j\u00e4rjestyksess\u00e4.",
+				  (int) an.nr[idx], (int) an.rk[idx]);
+			   }
+			emit_syyrivit(tulprm, txt, pos, leveys);
+			if (an.tila[idx] == 2 && lahin) {
+			   swprintf(txt, L"L\u00e4hin vaihtoehto rastille %d: rasti %d, noin %d m p\u00e4\u00e4ss\u00e4.",
+				  (int) an.rk[idx], (int) lahin, (int) etaisyys);
+			   emit_syyrivit(tulprm, txt, pos, leveys);
+			   }
+			}
+		 if (nm > nrivi) {
+			swprintf(txt, L"... ja %d muuta rastia.", (int) (nm - nrivi));
+			emit_syyrivit(tulprm, txt, pos, leveys);
+			}
+		 emit_ylimaaraiset(tulprm, &an, pos, leveys);
+		 txt[0] = 0;
+		 }
+	  else {
+		 for (idx = 0; idx < rt->rastiluku && nm < MAXNRASTI; idx++) {
+			if (rt->rastikoodi[idx] > 9999)
+			   continue;
+			n++;
+			loytyi = false;
+			for (jj = 0; jj < MAXNLEIMA; jj++) {
+			   if (tulkinta[jj] == n) {
+				  loytyi = true;
+				  break;
+				  }
+			   }
+			if (!loytyi) {
+			   mn[nm] = n;
+			   mk[nm] = rt->rastikoodi[idx];
+			   swprintf(tmp, L"%s%d (%d)", nm ? L", " : L"", (int) n, (int) rt->rastikoodi[idx]);
+			   if (wcslen(lm) + wcslen(tmp) < 190)
+				  wcscat(lm, tmp);
+			   nm++;
+			   }
+			}
+		 if (!nm)
+			swprintf(txt, L"Syy: rasti %d puuttuu tai on v\u00e4\u00e4r\u00e4ss\u00e4 j\u00e4rjestyksess\u00e4.", (int) tarkvirhe);
+		 else
+			swprintf(txt, L"Syy: radalta puuttuvat rastit %s.", lm);
+		 emit_syyrivit(tulprm, txt, pos, leveys);
+		 txt[0] = 0;
+		 }
+	  if (nm && kilpparam.kaksibadge) {
+		 emittp e2, ensim;
+		 INT16 z = 0;
+		 INT m = getEmitJarr(kilp->id(), &z), found = -1, j;
+		 INT32 bo;
+		 int tilat[MAXNLEIMA], nt = 0, no = 0, ne = 0;
+		 long ajat[MAXNLEIMA], minaika = 0;
+
+		 bo = (em->badge == kilp->pv[k_pv].badge[0]) ? kilp->pv[k_pv].badge[1] : kilp->pv[k_pv].badge[0];
+		 for (idx = emithead-1; bo > 0 && idx >= 0; idx--) {
+			if (idx != m && e2.get(idx) == 0 && e2.badge == bo) {
+			   found = idx;
+			   break;
+			   }
+			}
+		 if (bo > 0 && found < 0) {
+			wcscpy(txt, L"Kilpailijan toista korttia ei ole luettu.");
+			}
+		 else if (found >= 0) {
+			HkTaydennys tk(kilp);
+
+			ensim = *em;
+			memset(ajat, 0, sizeof(ajat));
+			emitmerge_taydenna(&ensim, &e2, tk, MAXNLEIMA, tilat, ajat);
+			lt[0] = lo[0] = le[0] = 0;
+			for (idx = 0; idx < nm; idx++) {
+			   swprintf(tmp, L"%d (%d)", (int) mn[idx], (int) mk[idx]);
+			   for (j = 0; j < MAXNLEIMA; j++)
+				  if ((UCHAR) e2.ctrlcode[j] == mk[idx] && tilat[j] >= 2)
+					 break;
+			   if (j >= MAXNLEIMA) {
+				  if (le[0])
+					 wcscat(le, L", ");
+				  wcscat(le, tmp);
+				  ne++;
+				  }
+			   else if (tilat[j] == 3) {
+				  if (lt[0])
+					 wcscat(lt, L", ");
+				  wcscat(lt, tmp);
+				  if (!nt || ajat[j] < minaika)
+					 minaika = ajat[j];
+				  nt++;
+				  }
+			   else if (tilat[j] == 4) {
+				  if (lo[0])
+					 wcscat(lo, L", ");
+				  wcscat(lo, tmp);
+				  no++;
+				  }
+			   }
+			if (nt) {
+			   swprintf(txt, L"Rastit %s l\u00f6ytyv\u00e4t toiselta kortilta (%ld), mutta niiden aikaa ei voitu siirt\u00e4\u00e4 ensimm\u00e4isen kortin aikaan",
+				  lt, (long) e2.badge);
+			   if (minaika < 1)
+				  swprintf(txt+wcslen(txt), L": aika olisi noin %d min ennen ensimm\u00e4isen kortin nollausta", (int) ((1 - minaika + 30)/60));
+			   else
+				  wcscat(txt, L": aika ei mahdu kortin aikaskaalaan");
+			   wcscat(txt, L". Siksi rasteja ei voitu liitt\u00e4\u00e4 tulokseen.");
+			   emit_syyrivit(tulprm, txt, pos, leveys);
+			   txt[0] = 0;
+			   }
+			if (no) {
+			   swprintf(txt, L"Rastit %s l\u00f6ytyv\u00e4t toiselta kortilta (%ld), mutta ne eiv\u00e4t sopineet oikeaan j\u00e4rjestykseen ensimm\u00e4isen kortin leimojen kanssa. Siksi rasteja ei voitu liitt\u00e4\u00e4 tulokseen.",
+				  lo, (long) e2.badge);
+			   emit_syyrivit(tulprm, txt, pos, leveys);
+			   txt[0] = 0;
+			   }
+			if (ne) {
+			   swprintf(txt, L"Rastit %s eiv\u00e4t l\u00f6ydy my\u00f6sk\u00e4\u00e4n toiselta kortilta (%ld).", le, (long) e2.badge);
+			   }
+			}
+		 }
+	  }
+   else if (tarkvirhe == -2)
+	  wcscpy(txt, L"Syy: kortin kello on nollattu kesken radan.");
+   else if (tarkvirhe == -1)
+	  wcscpy(txt, L"Syy: tarkastusta ei voitu tehd\u00e4, koska rataa tai lukijan merkint\u00e4\u00e4 ei l\u00f6ydy.");
+   else {
+	  wcscpy(txt, L"Kaikki radan rastit on leimattu oikeassa j\u00e4rjestyksess\u00e4.");
+	  if (tark == L'I' || tark == L'H' || tark == L'K' || tark == L'M' || tark == L'X')
+		 wcscat(txt, L" Tilaa ei ole asetettu t\u00e4m\u00e4n tarkastuksen perusteella.");
+	  if (emit_analyysi(em, rt, &an) && an.nex > 0) {
+		 emit_syyrivit(tulprm, txt, pos, leveys);
+		 txt[0] = 0;
+		 emit_ylimaaraiset(tulprm, &an, pos, leveys);
+		 }
+	  }
+   if (txt[0])
+	  emit_syyrivit(tulprm, txt, pos, leveys);
+   endline(tulprm, 0);
+   }
+
+
 void emit_rap(tulostusparamtp *tulprm, INT kilpno)
    {
    ratatp *rt;
@@ -4768,6 +5197,7 @@ void emit_rap(tulostusparamtp *tulprm, INT kilpno)
    INT32 enn, edaika, tls;
 	wchar_t line[81], ln1[81], ln2[81], st[61], as[13], aero[13];
    kilptietue kilp;
+   INT tarkvirhe;
 
    if (tulprm->lstf == NULL)
 	   return;
@@ -4780,6 +5210,7 @@ void emit_rap(tulostusparamtp *tulprm, INT kilpno)
    if (!rt || !rt->rastiluku) return;
 	getem(&em, kilpno, 0);
    i = tarkista(&em, tulkinta, 0, 0);
+   tarkvirhe = i;
    EnterCriticalSection(&print_CriticalSection);
    if (emitsivu > 0 && i) {
 	  kokosivu = 1;
@@ -4960,7 +5391,14 @@ void emit_rap(tulostusparamtp *tulprm, INT kilpno)
 			}
 		}
 	putfld(tulprm, line, 4*tulprm->tulmuot.numlev, wcslen(line), 0, 0);
-	endline(tulprm, 1);
+	// Syy tulostetaan vain, kun tarkastus ei mennyt läpi; hyväksytyn kortin raportti pysyy ennallaan
+	if (tarkvirhe == 0)
+		endline(tulprm, 1);
+	else {
+		endline(tulprm, 0);
+		emit_syy(tulprm, &em, rt, tarkvirhe, tulkinta, kilp.tark(k_pv), &kilp,
+			emitsivu == -1 ? 0 : 4*tulprm->tulmuot.numlev, emitsivu == -1 ? 38 : 76);
+		}
 	edaika = 0;
 	enn = haeennakko(&em, &kilp);
 	if (emitsivu == -1) {

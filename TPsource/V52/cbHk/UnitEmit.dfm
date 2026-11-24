@@ -1323,6 +1323,16 @@ object FormEmit: TFormEmit
     Visible = False
     OnClick = BtnOhitaClick
   end
+  object BtnToinenKortti: TButton
+    Left = 378
+    Top = 47
+    Width = 130
+    Height = 26
+    Caption = 'Toinen kortti'
+    TabOrder = 52
+    Visible = False
+    OnClick = BtnToinenKorttiClick
+  end
   object BtnNaytaKartta: TButton
     Left = 531
     Top = 702

@@ -86,6 +86,7 @@ void __fastcall TFormEmit::FormCreate(TObject *Sender)
 	Cells[5][0].text = L"Korj.";
 	Cells[6][0].text = L"Kello";
 	LblPari->Visible = kilpparam.kaksibadge == 2;
+	BtnToinenKortti->Visible = kilpparam.kaksibadge != 0;
 	EdtTark1->Visible = kilpparam.kaksibadge == 2;
 	EdtTark2->Visible = kilpparam.kaksibadge == 2;
 	if (kilpparam.kaksibadge == 2) {
@@ -455,7 +456,7 @@ void __fastcall TFormEmit::NaytaEmit(void)
 	if (_wtoi(EdtOrigBadge->Text.c_str()) == 0)
 		EdtOrigBadge->Text = Em.badge0;
 	memset(tulkinta, 0, sizeof(tulkinta));
-	if (Kilp.id() > 0 && Kilp.id() == Em.kilpno && Kilp.Badge(k_pv, Em.osuus) == Em.badge) {
+	if (Kilp.id() > 0 && Kilp.id() == Em.kilpno && (Kilp.Badge(k_pv, Em.osuus) == Em.badge || (kilpparam.kaksibadge == 1 && Kilp.Badge(k_pv, 1) == Em.badge))) {
 		if (Em.time != TMAALI0) {
 			aikatowstr_ls(st, Em.time, t0);
 			st[pvparam[k_pv].laika] = 0;
@@ -518,7 +519,7 @@ void __fastcall TFormEmit::NaytaEmit(void)
 			Cells[col][i+1].style = style;
 			}
 		}
-	if (Kilp.id() > 0 && Kilp.id() == Em.kilpno && Kilp.Badge(k_pv, Em.osuus) == Em.badge &&
+	if (Kilp.id() > 0 && Kilp.id() == Em.kilpno && (Kilp.Badge(k_pv, Em.osuus) == Em.badge || (kilpparam.kaksibadge == 1 && Kilp.Badge(k_pv, 1) == Em.badge)) &&
 		TViimRasti != TMAALI0 && Kilp.maali(0) != TMAALI0) {
 		EdtEro->Text = UnicodeString((Kilp.maali(0)-TViimRasti)/SEK);
 		}
@@ -535,6 +536,7 @@ void __fastcall TFormEmit::NaytaEmit(void)
 			}
 		}
 	EmitGrid->Refresh();
+	PaivitaKorttiNappi();
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormEmit::Nayta(void)
@@ -1099,6 +1101,10 @@ void __fastcall TFormEmit::EdtTietueExit(TObject *Sender)
 	  }
    else {
 	  pos = _wtoi(EdtTietue->Text.c_str());
+	  }
+   if (kilpparam.kaksibadge && pos >= 1 && pos <= emithead) {
+	  NaytaTietueSuoraan(pos-1);
+	  return;
 	  }
    HaeTietue(pos-1, 0);
 }
@@ -3546,6 +3552,118 @@ void __fastcall TFormEmit::BtnOhitaClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+
+// HaeTietue selaa vain kilpailijaan liitettyja tietueita. Tama nayttaa tietueen pos sellaisenaan,
+// myos kortin oman (korvatun tai yhdistamattoman) tietueen.
+void __fastcall TFormEmit::NaytaTietueSuoraan(int pos)
+{
+	emittp em;
+
+	if (pos < 0 || pos >= emithead)
+		return;
+	eiLiitetty = false;
+	emitptr = pos;
+	Tietue = pos;
+	em.get(Tietue);
+	SBTietue->SetParams(Tietue, 0, (emithead2 > 1) ? (emithead2 - 1) : 1);
+	EdtTietue->Text = UnicodeString(Tietue+1);
+	Paivita(&em);
+}
+//---------------------------------------------------------------------------
+
+// Kaksi tunnistetta: kilpailijan kortit omissa tietueissaan. pos[0] = ensimmainen kortti,
+// pos[1] = toinen kortti, pos[2] = yhdistelma (kilpailijaan liitetty tietue); -1 = ei ole.
+// Palauttaa 0, jos jarjestelya ei voi kayttaa.
+int __fastcall TFormEmit::KorttiLista(int *pos)
+{
+	emittp e;
+	INT16 z = 0;
+	int kno = Kilp.id(), m, bm, bo;
+
+	pos[0] = pos[1] = pos[2] = -1;
+	if (kilpparam.kaksibadge != 1 || kno <= 0)
+		return(0);
+	m = getEmitJarr(kno, &z);
+	if (m < 0 || e.get(m) != 0)
+		return(0);
+	bm = e.badge;
+	bo = (bm == Kilp.pv[k_pv].badge[0]) ? Kilp.pv[k_pv].badge[1] : Kilp.pv[k_pv].badge[0];
+	pos[2] = m;
+	for (int i = m-1; i >= 0; i--) {
+		if (e.get(i) == 0 && e.badge == bm) {
+			pos[0] = i;
+			break;
+			}
+		}
+	for (int i = emithead-1; bo > 0 && i >= 0; i--) {
+		if (i != m && e.get(i) == 0 && e.badge == bo) {
+			pos[1] = i;
+			break;
+			}
+		}
+	return(1);
+}
+//---------------------------------------------------------------------------
+
+// Painikkeen teksti kertoo, mika tietue on nyt nakyvissa (painallus siirtyy seuraavaan)
+void __fastcall TFormEmit::PaivitaKorttiNappi(void)
+{
+	int p[3], n = 0;
+
+	if (kilpparam.kaksibadge != 1)
+		return;
+	// Painike nakyy vain, jos kilpailijalla on ainakin kaksi nakyvaa tietuetta
+	if (KorttiLista(p))
+		for (int i = 0; i < 3; i++)
+			if (p[i] >= 0)
+				n++;
+	BtnToinenKortti->Visible = n >= 2;
+	if (!KorttiLista(p))
+		BtnToinenKortti->Caption = L"Toinen kortti";
+	else if (Tietue == p[0])
+		BtnToinenKortti->Caption = L"1. kortti  >";
+	else if (Tietue == p[1])
+		BtnToinenKortti->Caption = L"2. kortti  >";
+	else if (Tietue == p[2])
+		BtnToinenKortti->Caption = L"Yhdistelm\u00e4  >";
+	else
+		BtnToinenKortti->Caption = L"Toinen kortti";
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormEmit::BtnToinenKorttiClick(TObject *Sender)
+{
+	emittp em2;
+	int ip2 = -1;
+
+	if (!kilpparam.kaksibadge || Kilp.id() <= 0)
+		return;
+	if (kilpparam.kaksibadge == 2)
+		ip2 = em2.getbykno(Kilp.id(), 1-Em.osuus);
+	else {
+		// Kaksi tunnistetta: kierto ensimmainen kortti -> toinen kortti -> yhdistelma
+		int p[3], lista[3], n = 0, cur = -1;
+
+		if (KorttiLista(p)) {
+			for (int i = 0; i < 3; i++) {
+				if (p[i] >= 0) {
+					if (p[i] == Tietue)
+						cur = n;
+					lista[n++] = p[i];
+					}
+				}
+			if (n >= 2)
+				ip2 = lista[(cur+1)%n];
+			}
+		}
+	if (ip2 < 0) {
+		EdtMessage->Text = L"Toista korttia ei ole luettu";
+		EdtMessage->Color = clYellow;
+		return;
+		}
+	NaytaTietueSuoraan(ip2);
+}
+//---------------------------------------------------------------------------
 
 void __fastcall TFormEmit::BtnNaytaKarttaClick(TObject *Sender)
 {
