@@ -1868,11 +1868,15 @@ H-005:stä on merkistökoeohjelma (tavut), ei vian toistoa.
   (`ajot-0-1/`), vaihe 4 (`vaihe4/`: koeohjelma-ajo, kontrolli, ylitys, arvio, itsetesti,
   komponenttitestit, palomuurilokin kopio). Binäärejä ei arkistoitu; tiivisteet
   `BINARIES.sha256`.
-- Tilapäishakemistot poistettu arkistoinnin jälkeen (`%TEMP%\claude_c11s4*`,
-  `%TEMP%\hkmaali_run_*`, `%TEMP%\c11rev`, `%LOCALAPPDATA%\tulospalvelu-c11\` paitsi
-  palvelun suojaama `fwlog\pfirewall.log`, jos se ei poistu ilman ylläpitäjää).
+- Tilapäishakemistot poistettu arkistoinnin jälkeen ja poisto tarkistettu:
+  `%TEMP%\claude_c11s4*`, `%TEMP%\hkmaali_run_*`, `%TEMP%\c11rev`, edellisen istunnon
+  ajot 0–1 -hakemisto ja koko `%LOCALAPPDATA%\tulospalvelu-c11\` (myös `fwlog`).
 - Palomuurisääntöjen poisto valmisteltu (käyttäjä, ylläpitäjä): poistetaan vain
-  `TP C11 HkMaali block in` ja `TP C11 HkMaali block out`; muihin asetuksiin ei kosketa.
+  `TP C11 HkMaali block in` (`{8938806e-fcd7-4c9b-8995-066d8ea2f13a}`) ja
+  `TP C11 HkMaali block out` (`{a7ef54e3-734c-4ca9-974d-7d25d7206022}`) yksilöivillä
+  nimillään; tarkistettu, ettei muita C11- tai tulospalvelu-sääntöjä ole; muihin
+  asetuksiin ei kosketa:
+  `Remove-NetFirewallRule -Name '{8938806e-fcd7-4c9b-8995-066d8ea2f13a}','{a7ef54e3-734c-4ca9-974d-7d25d7206022}'`.
   Pudotuslokitus palautettu jo (19.9).
 - AppContainer-profiili `tulospalvelu.c11.hkmaali` (luku 17.6) jätetty; poisto on
   käyttäjän päätös (ei järjestelmäasetus, mutta C-11:n jäänne).
