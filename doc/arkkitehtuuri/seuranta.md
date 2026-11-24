@@ -13,14 +13,14 @@ separately from test coverage.
 | Auditointirekisteri ja projektin agentit / audit register and project agents (`rekisteri/`, `.claude/agents/`) | valmis / done | 2026-11-24 |
 | B. Vikakorjaukset / bug fixes | ei aloitettu / not started | – |
 | C, erä 1: `tallenna()`-samanaikaisuus / batch 1: `tallenna()` concurrency | valmis, tarkastettu / done, reviewed (`tallenna-samanaikaisuus.md`) | 2026-11-24 |
-| C, erät 2–11 / batches 2–11 | ei aloitettu / not started (`suunnitelma.md`) | – |
+| C, erä 2: työasemien tiedonsiirto / batch 2: workstation communication | valmis, tarkastettu / done, reviewed (`tiedonsiirto.md`) | 2026-11-24 |
+| C, erät 3–11 / batches 3–11 | ei aloitettu / not started (`suunnitelma.md`) | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** käyttäjä katselmoi erän 1 ja päättää seuraavasta
-erästä (ehdotus: erä 2 tiedonsiirto tai erä 11 testiautomaatio) sekä siitä, mitkä
-H-löydökset viedään issueiksi. / The user reviews batch 1 and decides the next
-batch (proposal: batch 2 communications or batch 11 test automation) and which H
-findings become issues.
+**Seuraava askel / Next step:** käyttäjä katselmoi erän 2. Suositeltu seuraava erä
+on C-3 (pysyvät tiedostot ja eheys); perustelut `CHECKPOINT.md`. / The user
+reviews batch 2. Recommended next batch: C-3 (persistent files and integrity);
+rationale in `CHECKPOINT.md`.
 
 Havainnot (H/T) ja niiden todennustila: `rekisteri/havainnot.md`.
 Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
@@ -32,7 +32,7 @@ Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
 | `Hk/` | yleiskuva, päävirta / overview, main flow | – |
 | `Juk/` | yleiskuva (päätelty HK:n pohjalta) / overview (inferred from HK) | – |
 | `Tp/` | yleiskuva, säikeet / overview, threads | – |
-| `com/` | luettelo / listed | – |
+| `com/` | kuljetus (`tiedonsiirto.md`) / transport | – |
 | `cbHk/`, `ViestiWin/`, `cbTp/` | logiikkaa sisältävät tunnistettu / forms with logic identified | – |
 | `tputilv2/`, `include/`, `dbboxm/` | rajapinta mainittu / interface mentioned | – |
 | `HkConsole/`, `JukConsole/` | käynnistys / startup | – |
@@ -43,12 +43,13 @@ Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
 |---|---|---|
 | ~~Q1~~ | **Ratkaistu / resolved 2026-11-24:** työsäie `tarkcom`; samanaikaisuus mahdollinen lukitsemattomien kutsujen kautta / worker thread `tarkcom`; concurrency possible via unlocked callers (`tallenna-samanaikaisuus.md`, H-007, H-010) | – |
 | Q12 | Kumpi `add_sakko` linkitetään HkKisaWiniin? / Which `add_sakko` is linked? | `cbHk/UnitASakot.cpp:269`, `cbHk/UnitASuunn.cpp:289` |
-| Q13 | Ylikirjoittaako `unpack0` kaikki kentät (KILPT-paketin vaikutus paikallisiin kenttiin)? / Does `unpack0` overwrite every field? | `Hk/HkDat.cpp` |
+| ~~Q13~~ | **Ratkaistu / resolved (C-2):** kyllä, kaikki perustiedot paitsi koon 0 kentät; ei vaiheita / yes, all base fields except size-0 fields; no stages (`tiedonsiirto.md`) | – |
 | Q14 | Kutsuuko `tulostasarja` lukon aikana `SendMessage`-polkua? / Does `tulostasarja` reach a `SendMessage` while holding the lock? | `Hk/HkTulostus.cpp:5850`–`:6419` |
 | Q15 | Voiko VCL-poikkeus `tallenna`-polulla jättää lukon päälle? / Can a VCL exception leave the lock held? | `tallenna-samanaikaisuus.md` |
-| Q16 | Viestin vastaanottopolku ja lukitus / relay receive path and locking | `Juk/VCom.cpp` |
+| ~~Q16~~ | **Ratkaistu / resolved (C-2):** viestin vastaanotto lukitsee ennen lukua, ei H-007:ää; omat viat H-024–H-026 / relay locks before reading, no H-007; own defects H-024–H-026 | – |
+| Q17–Q25 | Erän C-2 kysymykset (bcc32 `-K`, `sizeof(combufrec)`, AIKAT-kaksoiskappaleet, TCP-virta, rengas, `tark_ylahto`, `Kysy`, kirjastot, MONITORI-portti) / batch C-2 questions | `tiedonsiirto.md`, "Avoimet kysymykset" |
 | Q2 | Mitä kukin ominaisuusvalitsin tekee (`GAZ`, `ORAVA`, `VERTAA`, `MERI5`, `LAJUNEN`, `PARTIO` …)? Miksi konsoli- ja GUI-HK eroavat? / What does each feature switch do? Why do console and GUI HK differ? | `inventaario.md` |
-| Q3 | `combufrec`-sanomien tavumuoto ja versioyhteensopivuus / byte format and version compatibility of messages | `Tp/TpComY.cpp`, `Hk/HkCom32.cpp` |
+| ~~Q3~~ | **Osittain ratkaistu / partly resolved (C-2):** kehys, kuittaus ja yhteensopivuus kuvattu; tarkat koot avoinna (Q18) / frame, ack and compatibility documented; exact sizes open | `tiedonsiirto.md` |
 | Q4 | `KILP.DAT`-muoto ja vanhan muodon muunnos (`Hk/HkInitVanha.cpp`) / format and old-format conversion | `Hk/HkDat.cpp`, `dbboxm/` |
 | Q5 | MySQL-taulujen rakenne ja milloin SQL on käytössä / SQL table layout and when SQL is used | `cbHk/UnitMySQL.cpp` |
 | Q6 | Ovatko kirjastoon käännetyt `main`-funktiot (`tputilv2/ctrlhndl.cpp` ym.) esikääntäjällä pois? / Are the `main` functions in the library excluded by the preprocessor? | `inventaario.md` |

@@ -145,7 +145,7 @@ cbHk/UnitYv.h,cbHk,55,ascii,-,1,-,-,,,,f7fe553
 cbHk/valinnat.h,cbHk,17,ascii,-,1,-,-,,,,f7fe553
 cbHk/VertAikaUnit.cpp,cbHk,67,ascii,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/VertAikaUnit.h,cbHk,53,ascii,-,1,-,-,,,,f7fe553
-cbHk/WinHk.cpp,cbHk,2310,cp1252,HkKisaWin,2,tallenna-samanaikaisuus yleiskuva,-,f7fe553,H-018,"Initialisoi 252-285; ProsEmitThread, LukumaaratTh, VaihdaVaiheHandler",f7fe553
+cbHk/WinHk.cpp,cbHk,2310,cp1252,HkKisaWin,2,tallenna-samanaikaisuus tiedonsiirto yleiskuva,-,f7fe553,H-018 H-023,"Initialisoi 252-285; ProsEmitThread, LukumaaratTh, VaihdaVaiheHandler; C-2: vaiheen vaihdon eväys",f7fe553
 cbHk/WinHk.h,cbHk,332,ascii,-,1,-,-,,,,f7fe553
 cbHk/WinParamXml.cpp,cbHk,1796,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbTp/cbTpApu.cpp,cbTp,641,cp1252,HkKisaWin ViestiWin,2,tallenna-samanaikaisuus,-,f7fe553,H-009 H-019,writeerror_w,f7fe553
@@ -216,14 +216,14 @@ cbTp/UnitTietoTulk.cpp,cbTp,190,ascii,HkKisaWin,1,-,-,,,,f7fe553
 cbTp/UnitTietoTulk.h,cbTp,79,ascii,-,1,-,-,,,,f7fe553
 cbTp/UnitTulkinta.cpp,cbTp,100,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 cbTp/UnitTulkinta.h,cbTp,60,ascii,-,1,-,-,,,,f7fe553
-cbTp/UnitUusinta.cpp,cbTp,252,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitUusinta.cpp,cbTp,252,cp1252,HkKisaWin ViestiWin,2,tiedonsiirto,-,f7fe553,H-030,C-2: uudelleenlähetys,f7fe553
 cbTp/UnitUusinta.h,cbTp,69,ascii,-,1,-,-,,,,f7fe553
 cbTp/UnitYhteysStatus.cpp,cbTp,42,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 cbTp/UnitYhteysStatus.h,cbTp,40,ascii,-,1,-,-,,,,f7fe553
 cbTp/WinTp.h,cbTp,22,ascii,-,1,-,-,,,,f7fe553
-com/gethttp.cpp,com,165,cp1252,HkKisaWin ViestiWin HkMaali JukMaali520,1,-,-,,,,f7fe553
+com/gethttp.cpp,com,165,cp1252,HkKisaWin ViestiWin HkMaali JukMaali520,2,tiedonsiirto,-,f7fe553,,C-2: WinHTTP 1-60,f7fe553
 com/winCom.cpp,com,244,ascii,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
-com/WinUDP.cpp,com,1398,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+com/WinUDP.cpp,com,1398,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,3,tiedonsiirto,-,f7fe553,H-027 H-028 H-029 H-037,C-2: luettu paitsi read_TCP-sisus ja RTT-apurit,f7fe553
 dbboxm/addkey.cpp,dbboxm,146,utf-8,DBboxm-XE dbboxm,1,-,-,,,,f7fe553
 dbboxm/Boxtest.cpp,dbboxm,168,utf-8,-,1,-,-,,,,f7fe553
 dbboxm/BOXTEST_F.cpp,dbboxm,172,utf-8,-,1,-,-,,,,f7fe553
@@ -237,35 +237,35 @@ dbboxm/delkey.cpp,dbboxm,217,utf-8,DBboxm-XE dbboxm,1,-,-,,,,f7fe553
 dbboxm/findkey.cpp,dbboxm,98,utf-8,DBboxm-XE dbboxm,1,-,-,,,,f7fe553
 dbboxm/nextkey.cpp,dbboxm,71,utf-8,DBboxm-XE dbboxm,1,-,-,,,,f7fe553
 dbboxm/prevkey.cpp,dbboxm,71,utf-8,DBboxm-XE dbboxm,1,-,-,,,,f7fe553
-Hk/BuildNo.h,Hk,101,utf-8-bom,HkKisaWin HkMaali,1,-,-,,,,f7fe553
+Hk/BuildNo.h,Hk,101,utf-8-bom,HkKisaWin HkMaali,2,tiedonsiirto,-,f7fe553,,C-2: versio,f7fe553
 Hk/HkAjat.cpp,Hk,550,utf-8,HkKisaWin HkMaali,2,merkistot,-,f7fe553,H-004,U+FFFD-rivit,f7fe553
-Hk/HkApu.cpp,Hk,841,cp1252,HkKisaWin HkMaali,1,-,-,,,,f7fe553
+Hk/HkApu.cpp,Hk,841,cp1252,HkKisaWin HkMaali,2,tiedonsiirto,-,f7fe553,,C-2: TCP-loki,f7fe553
 Hk/HkApuC.c,Hk,57,ascii,-,1,-,-,,,,f7fe553
-Hk/HkCom32.cpp,Hk,1332,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tietorakenteet-ja-tila yleiskuva,-,f7fe553,H-007 H-016,"pakettiluokat 46-56; laheta 167-235; tark_kilp alku; tark_kilp, laheta, tarkcom-kasittely",f7fe553
+Hk/HkCom32.cpp,Hk,1332,cp1252,HkKisaWin HkMaali,3,tallenna-samanaikaisuus tiedonsiirto tietorakenteet-ja-tila yleiskuva,-,f7fe553,H-007 H-016 H-022 H-023 H-030 H-033 H-035 T-013,"pakettiluokat 46-56; laheta 167-235; tark_kilp alku; tark_kilp, laheta, tarkcom-kasittely; C-2: kaikki toiminnallinen koodi 30-1332 luettu",f7fe553
 Hk/HkConsoleDef.h,Hk,147,ascii,HkMaali,1,-,-,,,,f7fe553
-Hk/HkDat.cpp,Hk,1447,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tietorakenteet-ja-tila yleiskuva,-,f7fe553,H-007 H-009 H-010 H-011,read/write/GETREC/PUTREC/addfrec/delfrec luettu; tallenna osittain; tallenna 897-1385 kaytiin lapi (erä 1),f7fe553
+Hk/HkDat.cpp,Hk,1447,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tiedonsiirto tietorakenteet-ja-tila yleiskuva,-,f7fe553,H-007 H-009 H-010 H-011 H-022,"read/write/GETREC/PUTREC/addfrec/delfrec luettu; tallenna osittain; tallenna 897-1385 kaytiin lapi (erä 1); C-2: kenttätaulukot, pack/unpack 20-495",f7fe553
 Hk/HkDeclare.h,Hk,974,cp1252,HkKisaWin HkMaali,2,yleiskuva tietorakenteet-ja-tila,-,f7fe553,T-001,include-lohko 18-28; extern-maara laskettu,f7fe553
-Hk/HkDef.h,Hk,1697,cp1252,HkKisaWin HkMaali,2,tietorakenteet-ja-tila inventaario,-,f7fe553,T-009,luokkaluettelo; vatp/kilppvtp/kilptietue luettu; valitsinlohko 26-130,f7fe553
-Hk/HkEmit.cpp,Hk,6432,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus,-,f7fe553,H-011 H-012,"putem/lueem, badge-taulukot, vaihdakilp, laskeEm_VA",f7fe553
+Hk/HkDef.h,Hk,1697,cp1252,HkKisaWin HkMaali,2,inventaario tiedonsiirto tietorakenteet-ja-tila,-,f7fe553,H-022 T-009,"luokkaluettelo; vatp/kilppvtp/kilptietue luettu; valitsinlohko 26-130; C-2: combufrec 1235-1313, OUTBUFL",f7fe553
+Hk/HkEmit.cpp,Hk,6432,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tiedonsiirto,-,f7fe553,H-011 H-012 H-034,"putem/lueem, badge-taulukot, vaihdakilp, laskeEm_VA; C-2: emit-kaksoiskappaleiden esto",f7fe553
 Hk/HkEnnTav.cpp,Hk,49,ascii,HkKisaWin TpTest,1,-,-,,,,f7fe553
 Hk/HkEnnTav.h,Hk,50,ascii,TpTest,1,-,-,,,,f7fe553
-Hk/HkGlobals.cpp,Hk,675,cp1252,HkKisaWin HkMaali,2,tietorakenteet-ja-tila,-,f7fe553,,"ToimintaTila, kilparr",f7fe553
-Hk/HkInit.cpp,Hk,3833,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tietorakenteet-ja-tila yleiskuva,-,f7fe553,H-014,"aloitus 3079- kutsujarjestys; aloitus, lopetus1, CS-alustus",f7fe553
+Hk/HkGlobals.cpp,Hk,675,cp1252,HkKisaWin HkMaali,2,tiedonsiirto tietorakenteet-ja-tila,-,f7fe553,,"ToimintaTila, kilparr; C-2: levypusk, tcpkaynnistys",f7fe553
+Hk/HkInit.cpp,Hk,3833,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tiedonsiirto tietorakenteet-ja-tila yleiskuva,-,f7fe553,H-014 H-038,"aloitus 3079- kutsujarjestys; aloitus, lopetus1, CS-alustus; C-2: ip-jäsennys 360-530, yhteysavaimet 1025-1265, initcom, lopetus",f7fe553
 Hk/HkInitVanha.cpp,Hk,549,utf-8-bom,HkKisaWin,1,-,-,,,,f7fe553
-Hk/HkIV.cpp,Hk,4304,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus yleiskuva,-,f7fe553,H-010,"opengaz sijainti; pros_emit, tall_regnly, tall_etulos, tee_aika, pros_bdg_t",f7fe553
-Hk/HkIx.cpp,Hk,2005,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tietorakenteet-ja-tila,-,f7fe553,H-010 H-013,"teejarj sijainti vain; teejarj, vaihdavaihe, jarjarr, posarr",f7fe553
+Hk/HkIV.cpp,Hk,4304,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tiedonsiirto yleiskuva,-,f7fe553,H-010 H-031,"opengaz sijainti; pros_emit, tall_regnly, tall_etulos, tee_aika, pros_bdg_t; C-2: pros_bdg_t, taustaThr",f7fe553
+Hk/HkIx.cpp,Hk,2005,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tiedonsiirto tietorakenteet-ja-tila,-,f7fe553,H-010 H-013 H-031,"teejarj sijainti vain; teejarj, vaihdavaihe, jarjarr, posarr; C-2: vaihdavaihe",f7fe553
 Hk/HkMuotoilu.cpp,Hk,3020,cp1252,HkKisaWin HkMaali,1,-,-,,,,f7fe553
 Hk/HkMuotoilu.h,Hk,192,cp1252,-,1,-,-,,,,f7fe553
 Hk/HkSak.cpp,Hk,253,utf-8,HkKisaWin HkMaali,2,tallenna-samanaikaisuus,-,f7fe553,H-008,"tall_sak, tall_ampsakko",f7fe553
 Hk/HkSrj.cpp,Hk,941,cp1252,HkKisaWin HkMaali,1,-,-,,,,f7fe553
-Hk/HkTls.cpp,Hk,1966,cp1252,HkKisaWin HkMaali,1,-,-,,,,f7fe553
+Hk/HkTls.cpp,Hk,1966,cp1252,HkKisaWin HkMaali,2,tiedonsiirto,-,f7fe553,H-023,C-2: tall_tulos,f7fe553
 Hk/HkTulostus.cpp,Hk,8840,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus yleiskuva,-,f7fe553,H-003 H-010,"rivi 3602; startaf 6979 sijainti; sijat2, tulostasarja-lukitus 5850-6419",f7fe553
 Hk/HkTV.cpp,Hk,233,cp1252,-,1,-,-,,,,f7fe553
 Hk/HkXml.cpp,Hk,2460,cp1252,HkKisaWin HkMaali,2,merkistot,-,f7fe553,H-003,rivi 1833,f7fe553
 Hk/HkXml_IOF30.cpp,Hk,1140,cp1252,HkKisaWin HkMaali,1,-,-,,,,f7fe553
 Hk/HkXmlTulokset.cpp,Hk,1944,cp1252,HkKisaWin HkMaali,2,-,-,f7fe553,H-003,rivi 1384,f7fe553
 HkConsole/GetHttp.h,HkConsole,68,ascii,HkMaali,1,-,-,,,,f7fe553
-HkConsole/HkCons0.cpp,HkConsole,1327,cp1252,HkMaali,2,tallenna-samanaikaisuus,-,f7fe553,H-010,"pyyda_vaihdavaihe, sprintsiirrot",f7fe553
+HkConsole/HkCons0.cpp,HkConsole,1327,cp1252,HkMaali,2,tallenna-samanaikaisuus tiedonsiirto,-,f7fe553,H-010 H-031,"pyyda_vaihdavaihe, sprintsiirrot; C-2: pyyda_vaihdavaihe",f7fe553
 HkConsole/HkCons2.cpp,HkConsole,3118,cp1252,HkMaali,1,-,-,,,,f7fe553
 HkConsole/HkCons3.cpp,HkConsole,2937,cp1252,HkMaali,1,-,-,,,,f7fe553
 HkConsole/HkConsHelp.cpp,HkConsole,436,cp1252,HkMaali,1,-,-,,,,f7fe553
@@ -288,22 +288,22 @@ include/SiritReader.h,include,33,ascii,HkMaali JukLuenta520 JukMaali520,1,-,-,,,
 include/sitypes.h,include,96,ascii,-,1,-,-,,,,f7fe553
 include/size.h,include,13,ascii,-,1,-,-,,,,f7fe553
 include/TpLaitteet.h,include,135,utf-8,HkKisaWin,2,yleiskuva,-,f7fe553,,LID-luettelo 17-47,f7fe553
-include/tptype.h,include,44,ascii,tputilv2 JukMaali520,1,-,-,,,,f7fe553
-include/tputil.h,include,532,cp1252,Tputil-XE ViestiWin HkMaali tputilv2 JukMaali520,1,-,-,,,,f7fe553
-include/wincom.h,include,116,ascii,HkKisaWin,2,yleiskuva riippuvuudet,-,f7fe553,,yhteystyypit 28-36,f7fe553
+include/tptype.h,include,44,ascii,tputilv2 JukMaali520,2,tiedonsiirto,-,f7fe553,,C-2: kokonaislukutyypit,f7fe553
+include/tputil.h,include,532,cp1252,Tputil-XE ViestiWin HkMaali tputilv2 JukMaali520,2,tiedonsiirto,-,f7fe553,,C-2: pragma -K -a1,f7fe553
+include/wincom.h,include,116,ascii,HkKisaWin,3,riippuvuudet tiedonsiirto yleiskuva,-,f7fe553,,yhteystyypit 28-36; C-2: koko tiedosto,f7fe553
 include/xmlparser.h,include,70,ascii,-,1,-,-,,,,f7fe553
 include/ZebraReader.h,include,36,ascii,HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
-Juk/BuildNo.h,Juk,60,cp1252,ViestiWin JukMaali520,1,-,-,,,,f7fe553
+Juk/BuildNo.h,Juk,60,cp1252,ViestiWin JukMaali520,2,tiedonsiirto,-,f7fe553,,C-2: versio,f7fe553
 Juk/vajat.cpp,Juk,525,utf-8,ViestiWin JukMaali520,2,merkistot,-,f7fe553,H-004,U+FFFD-rivit,f7fe553
 Juk/vApu.cpp,Juk,1037,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
-Juk/VCom.cpp,Juk,1668,cp1252,ViestiWin JukLuenta520 JukMaali520,2,-,-,f7fe553,H-003,rivi 862,f7fe553
+Juk/VCom.cpp,Juk,1668,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedonsiirto,-,f7fe553,H-003 H-024 H-025 H-026,"rivi 862; C-2: vastaanottokäsittelijät, combufsize, tarkcom",f7fe553
 Juk/vdat.cpp,Juk,972,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tallenna-samanaikaisuus,-,f7fe553,,relay tallenna lukitsee itse 496-850,f7fe553
 Juk/VDeclare.h,Juk,789,cp1252,ViestiWin JukLuenta520 JukMaali520,2,yleiskuva,-,f7fe553,T-001,include-lohko,f7fe553
-Juk/VDef.h,Juk,1526,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tietorakenteet-ja-tila,-,f7fe553,,luokkaluettelo; osrec luettu,f7fe553
+Juk/VDef.h,Juk,1526,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedonsiirto tietorakenteet-ja-tila,-,f7fe553,,luokkaluettelo; osrec luettu; C-2: combufrec,f7fe553
 Juk/VEmit.cpp,Juk,6221,cp1252,ViestiWin JukMaali520,2,-,-,f7fe553,H-003,swprintf-rivit 5256-5875,f7fe553
 Juk/VEmitHtml.cpp,Juk,294,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
-Juk/VGlobals.cpp,Juk,554,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
-Juk/VInit.cpp,Juk,2966,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/VGlobals.cpp,Juk,554,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedonsiirto,-,f7fe553,H-036,"C-2: katkkierto, levypusk",f7fe553
+Juk/VInit.cpp,Juk,2966,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedonsiirto,-,f7fe553,H-036,"C-2: VALITA, KATKKIER, COMFILE",f7fe553
 Juk/VIv.cpp,Juk,2974,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
 Juk/VIx.cpp,Juk,1380,cp1252,ViestiWin JukLuenta520 JukMaali520,2,-,-,f7fe553,H-003,rivi 1198,f7fe553
 Juk/vkilp.cpp,Juk,1738,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
@@ -337,10 +337,10 @@ Tp/mtrand.cpp,Tp,72,utf-8,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 Tp/mtrand.h,Tp,153,ascii,-,2,riippuvuudet,-,f7fe553,,lisenssi,f7fe553
 Tp/mttest.cpp,Tp,41,ascii,-,1,-,-,,,,f7fe553
 Tp/SiritReader.cpp,Tp,92,ascii,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
-Tp/TpApu.cpp,Tp,1043,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Tp/TpApu.cpp,Tp,1043,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,2,tiedonsiirto,-,f7fe553,,C-2: VersioInt,f7fe553
 Tp/TpApuC.c,Tp,67,ascii,-,1,-,-,,,,f7fe553
-Tp/TpComY.cpp,Tp,3185,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,2,tallenna-samanaikaisuus yleiskuva,-,f7fe553,H-021,"buflah sijainti, saikeet; buflah, lahetapaketti, tarkcom-kaynnistys, addseur",f7fe553
-Tp/TpComY32.cpp,Tp,2797,cp1252,-,1,-,-,,,,f7fe553
+Tp/TpComY.cpp,Tp,3185,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,3,tallenna-samanaikaisuus tiedonsiirto yleiskuva,-,f7fe553,H-021 H-025 H-026 H-027 H-030 H-032 H-034 H-037 H-038 T-012 T-014,"buflah sijainti, saikeet; buflah, lahetapaketti, tarkcom-kaynnistys, addseur; C-2: lähes koko tiedosto luettu (paitsi profilointi ja SIIMPORT)",f7fe553
+Tp/TpComY32.cpp,Tp,2797,cp1252,-,2,tiedonsiirto,-,f7fe553,T-011,C-2: vertailtu TpComY.cpp:hen,f7fe553
 Tp/TpDef.h,Tp,154,ascii,ViestiWin HkMaali JukLuenta520,1,-,-,,,,f7fe553
 Tp/TpLaitteet.cpp,Tp,2954,utf-8,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,2,merkistot tallenna-samanaikaisuus yleiskuva,-,f7fe553,H-005 H-008,"include-valinta 38-42; rivi 2581; lue_regnlyThread, comajanotto",f7fe553
 Tp/TpMuot.cpp,Tp,17,ascii,-,1,-,-,,,,f7fe553

@@ -243,9 +243,10 @@ Työasemat vaihtavat tietoja yhteyksillä, joiden tyyppi on määritelty tiedost
 `combufrec`-paketteja, joiden luokka kertoo sisällön (`Hk/HkCom32.cpp:46-56`):
 `KILPT` (koko kilpailija), `KILPPVT` (yhden vaiheen tiedot), `VAIN_TULOST` (yksi
 aika), `AIKAT` (ajanottoaika), `EMITT` (emit-kortti), `SEURAT`, `FILESEND`,
-`EMITVA`, `EXTRA`. Lisäksi tulokset voidaan lähettää UDP-yleislähetyksenä
-(`broadcasttulos`, `Hk/HkCom32.cpp:143`). Sanomien tavutason muotoa ei ole vielä
-dokumentoitu. [todennettu: tyypit ja luokat; tuntematon: tavumuoto]
+`EMITVA`, `EXTRA`. Kehys, kuittaus, kättely, välitys ja vikatilanteet on kuvattu
+tiedostossa `tiedonsiirto.md`. (Korjaus erässä C-2: `broadcasttulos`,
+`Hk/HkCom32.cpp:143`, on HK:ssa kuollutta koodia, T-013; toimiva "yleislähetys" on
+UDP-yhteys `YHTEYSy=BRO`.) [todennettu, tarkastettu]
 
 Workstations exchange data over connections whose types are defined in
 `include/wincom.h:28-36`: serial port (`comtpRS`), UDP, UDP stream, TCP client and
@@ -253,9 +254,10 @@ server, TCP-XML and special types for logging and import. Messages are
 `combufrec` packets whose class tells the content (`Hk/HkCom32.cpp:46-56`):
 `KILPT` (whole competitor), `KILPPVT` (one stage), `VAIN_TULOST` (a single time),
 `AIKAT` (timing time), `EMITT` (emit card), `SEURAT`, `FILESEND`, `EMITVA`,
-`EXTRA`. Results can also be sent as UDP broadcasts (`broadcasttulos`,
-`Hk/HkCom32.cpp:143`). The byte-level message format is not documented yet.
-[verified: types and classes; unknown: byte format]
+`EXTRA`. Frame, acknowledgement, handshake, forwarding and failure behaviour are
+described in `tiedonsiirto.md`. (Correction in batch C-2: `broadcasttulos` is dead
+code in HK, T-013; the working "broadcast" is a UDP link `YHTEYSy=BRO`.)
+[verified, reviewed]
 
 ## Laitteet / Devices
 
