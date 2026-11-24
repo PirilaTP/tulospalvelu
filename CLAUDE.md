@@ -88,7 +88,7 @@ Both domains share the same utility and database layers, and compile to both a c
 - `TpDef.h` (in `TPsource/V52/Tp/`) — global constants and keyboard codes
 - `wincom.h` — network abstraction (RS-232, UDP, TCP, XML)
 
-**Database** (`TPsource/V52/dbboxm/`): Custom binary record files with fixed-size records, block compression, and in-memory indexing (`kilpindex`). Records are accessed by numeric `DATAREF`. Competitor records can additionally be written to MySQL (optional, `kilptietue::write`).
+**Database** (`TPsource/V52/dbboxm/`): Custom binary record files with fixed-size records and no index files; indexes are built in memory at startup. File layouts: `doc/arkkitehtuuri/tiedostomuodot.md`. Records are accessed by numeric `DATAREF`. Competitor records can additionally be written to MySQL (optional, `kilptietue::write`).
 
 ### Key data structures
 

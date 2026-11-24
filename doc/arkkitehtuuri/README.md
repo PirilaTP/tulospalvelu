@@ -26,6 +26,7 @@ code references appear only once.
 | [merkistot.md](merkistot.md) | Merkistöt ja turvallinen muokkausmenettely / Encodings and the safe editing procedure |
 | [tallenna-samanaikaisuus.md](tallenna-samanaikaisuus.md) | Syväauditointi 1: `tallenna()`, säikeet ja lukot / Deep audit 1: `tallenna()`, threads and locks |
 | [tiedonsiirto.md](tiedonsiirto.md) | Syväauditointi 2: työasemien tiedonsiirto ja synkronointi / Deep audit 2: workstation communication and sync |
+| [tiedostomuodot.md](tiedostomuodot.md) | Syväauditointi 3: pysyvät tiedostot, tavuasettelut, mitatut koot ja eheys / Deep audit 3: persistent files, byte layouts, measured sizes and integrity |
 | [rekisteri/](rekisteri/README.md) | Auditointirekisteri: tiedostot, moduulit, havainnot / Audit register: files, modules, findings |
 | [dokumentointistandardi.md](dokumentointistandardi.md) | Kommentointikäytännöt / Commenting conventions |
 | [suunnitelma.md](suunnitelma.md) | Moduulikohtainen arvio ja vaiheistus / Per-module assessment and phasing |

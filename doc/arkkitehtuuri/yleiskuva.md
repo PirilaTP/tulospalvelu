@@ -297,8 +297,11 @@ Zebra parameters are described in `doc/fx9600-parametrit.md`.
 3. **Paljon jaettua muuttuvaa tilaa ja säikeitä.** `HkDeclare.h`:ssa on noin 450
    `extern`-määrittelyä, ja ohjelmassa on kymmeniä säikeitä, joita suojaavat
    nimetyt `CRITICAL_SECTION`it (`tietorakenteet-ja-tila.md`).
-4. **Levymuoto on muistirakenne.** `KILP.DAT` muuttuu, jos tietueen kenttiä
-   muutetaan. Vanhojen tiedostojen yhteensopivuus on varmistettava erikseen.
+4. **Levymuoto riippuu koodista ja kilpailun asetuksista.** HK sarjallistaa
+   kentät taulukoista, viesti kopioi muistin rakenteen paloina. Tiedostoissa ei
+   ole tunnistetta eikä versiota, ja tietuekoko riippuu vaiheiden, osuuksien ja
+   väliaikojen määrästä (`tiedostomuodot.md`). Kenttämuutos rikkoo vanhat
+   tiedostot; vanhaa muotoa ei tunnisteta automaattisesti.
 5. **Merkistöt vaikuttavat ohjelman teksteihin.** UTF-8-tiedosto ilman BOMia
    kääntyy MSVC:llä väärin mutta C++Builderilla oikein (`merkistot.md`).
 
@@ -311,7 +314,10 @@ Zebra parameters are described in `doc/fx9600-parametrit.md`.
 3. **Much shared mutable state and many threads.** `HkDeclare.h` has about 450
    `extern` declarations, and the program runs dozens of threads protected by
    named `CRITICAL_SECTION`s (`tietorakenteet-ja-tila.md`).
-4. **The disk format is the in-memory structure.** `KILP.DAT` changes if record
-   fields change. Compatibility with old files must be checked separately.
+4. **The disk format depends on the code and competition settings.** HK
+   serialises fields from tables; the relay copies the in-memory struct in pieces.
+   Files have no magic or version, and record size depends on the number of
+   stages, legs and splits (`tiedostomuodot.md`). A field change breaks old
+   files; old formats are not detected automatically.
 5. **Encodings affect program text.** A UTF-8 file without BOM compiles wrongly
    with MSVC but correctly with C++Builder (`merkistot.md`).

@@ -14,13 +14,14 @@ separately from test coverage.
 | B. Vikakorjaukset / bug fixes | ei aloitettu / not started | – |
 | C, erä 1: `tallenna()`-samanaikaisuus / batch 1: `tallenna()` concurrency | valmis, tarkastettu / done, reviewed (`tallenna-samanaikaisuus.md`) | 2026-11-24 |
 | C, erä 2: työasemien tiedonsiirto / batch 2: workstation communication | valmis, tarkastettu / done, reviewed (`tiedonsiirto.md`) | 2026-11-24 |
-| C, erät 3–11 / batches 3–11 | ei aloitettu / not started (`suunnitelma.md`) | – |
+| C, erä 3: pysyvät tiedostot ja eheys / batch 3: persistent files and integrity | valmis, tarkastettu / done, reviewed (`tiedostomuodot.md`) | 2026-11-24 |
+| C, erät 4–11 / batches 4–11 | ei aloitettu / not started (`suunnitelma.md`); erä 5 osittain / batch 5 partly | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** käyttäjä katselmoi erän 2. Suositeltu seuraava erä
-on C-3 (pysyvät tiedostot ja eheys); perustelut `CHECKPOINT.md`. / The user
-reviews batch 2. Recommended next batch: C-3 (persistent files and integrity);
-rationale in `CHECKPOINT.md`.
+**Seuraava askel / Next step:** käyttäjä katselmoi erän 3. Suositeltu seuraava erä
+on C-11 (testiautomaatio ja ajonaikainen todennus); perustelut `CHECKPOINT.md`. /
+The user reviews batch 3. Recommended next batch: C-11 (test automation and
+runtime verification); rationale in `CHECKPOINT.md`.
 
 Havainnot (H/T) ja niiden todennustila: `rekisteri/havainnot.md`.
 Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
@@ -47,10 +48,12 @@ Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
 | Q14 | Kutsuuko `tulostasarja` lukon aikana `SendMessage`-polkua? / Does `tulostasarja` reach a `SendMessage` while holding the lock? | `Hk/HkTulostus.cpp:5850`–`:6419` |
 | Q15 | Voiko VCL-poikkeus `tallenna`-polulla jättää lukon päälle? / Can a VCL exception leave the lock held? | `tallenna-samanaikaisuus.md` |
 | ~~Q16~~ | **Ratkaistu / resolved (C-2):** viestin vastaanotto lukitsee ennen lukua, ei H-007:ää; omat viat H-024–H-026 / relay locks before reading, no H-007; own defects H-024–H-026 | – |
-| Q17–Q25 | Erän C-2 kysymykset (bcc32 `-K`, `sizeof(combufrec)`, AIKAT-kaksoiskappaleet, TCP-virta, rengas, `tark_ylahto`, `Kysy`, kirjastot, MONITORI-portti) / batch C-2 questions | `tiedonsiirto.md`, "Avoimet kysymykset" |
+| ~~Q17~~, ~~Q18~~ | **Ratkaistu / resolved (C-3):** bcc32 noudattaa `-K`:ta kesken yksikön, tarkistussummat täsmäävät; koot mitattu kaikista käännöksistä / bcc32 honours `-K` mid-unit; sizes measured for all builds | `tiedostomuodot.md` |
+| Q19–Q25 | Erän C-2 kysymykset (AIKAT-kaksoiskappaleet, TCP-virta, rengas, `tark_ylahto`, `Kysy`, kirjastot, MONITORI-portti) / batch C-2 questions | `tiedonsiirto.md`, "Avoimet kysymykset" |
+| Q26–Q34 | Erän C-3 kysymykset (HK:n XML-rajat, NTFS-katkos, `initindex`, viestin vienti, vaiheen vaihto, viestin 250-käännös, `t_time_l`, `mbtowc`, konstruktorijärjestys) / batch C-3 questions | `tiedostomuodot.md`, "Avoimet kysymykset" |
 | Q2 | Mitä kukin ominaisuusvalitsin tekee (`GAZ`, `ORAVA`, `VERTAA`, `MERI5`, `LAJUNEN`, `PARTIO` …)? Miksi konsoli- ja GUI-HK eroavat? / What does each feature switch do? Why do console and GUI HK differ? | `inventaario.md` |
 | ~~Q3~~ | **Osittain ratkaistu / partly resolved (C-2):** kehys, kuittaus ja yhteensopivuus kuvattu; tarkat koot avoinna (Q18) / frame, ack and compatibility documented; exact sizes open | `tiedonsiirto.md` |
-| Q4 | `KILP.DAT`-muoto ja vanhan muodon muunnos (`Hk/HkInitVanha.cpp`) / format and old-format conversion | `Hk/HkDat.cpp`, `dbboxm/` |
+| ~~Q4~~ | **Ratkaistu / resolved (C-3):** muoto kuvattu tavutasolla; vanhaa muotoa ei tunnisteta automaattisesti, vain GUI-tuonti käyttäjän parametrein / layout documented; no automatic old-format detection, only GUI import with user parameters | `tiedostomuodot.md` |
 | Q5 | MySQL-taulujen rakenne ja milloin SQL on käytössä / SQL table layout and when SQL is used | `cbHk/UnitMySQL.cpp` |
 | Q6 | Ovatko kirjastoon käännetyt `main`-funktiot (`tputilv2/ctrlhndl.cpp` ym.) esikääntäjällä pois? / Are the `main` functions in the library excluded by the preprocessor? | `inventaario.md` |
 | Q7 | Kääntääkö `bcc32` UTF-8 BOMilla -tiedostot oikein? / Does `bcc32` compile UTF-8 with BOM correctly? | `merkistot.md` |
@@ -82,6 +85,7 @@ Recorded as issue drafts (local `issue-drafts/`, not in the repo).
 - JukLuenta linkittää vanhaan `vc10/`-hakemistoon / links against old `vc10/`
 - 32 orpoa tiedostoa / 32 orphan files (`inventaario.md`)
 - Konsoli- ja GUI-versiot eri valitsimilla / console and GUI versions with different switches
+- Tiedostoissa ei tunnistetta, versiota eikä tarkistussummaa; ei korjaustyökalua (T-019); pragma-hygienia (T-016); dbboxm:n kuollut indeksikerros (T-018) / no magic, version or checksum; pragma hygiene; dead index layer
 - `makitp maki;` luokan ulkopuolella `#ifdef MAKI`-lohkossa (`Hk/HkDef.h`, `kilppvtp`:n jälkeen) – ei käännetä nykyisillä asetuksilla / outside a class in an `#ifdef MAKI` block – not compiled with current settings
 
 ## Päätökset / Decisions

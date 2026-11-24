@@ -152,7 +152,8 @@ koko on `kilpparam.kilprecsize`. Vanhan muodon lukemiseen on erillinen koodi
 on tarkistettava sekä `pack`/`unpack` että vanhan muodon muunnos. Tiedonsiirron
 paketit käyttävät samoja `pack`-funktioita (`Hk/HkCom32.cpp:198-216`), joten
 muutos vaikuttaa myös eri versioiden väliseen tiedonsiirtoon. [todennettu:
-kutsut; päätelty: seuraukset]
+kutsut; päätelty: seuraukset] Tavutason kuvaus, mitatut koot ja eheys:
+`tiedostomuodot.md` (erä C-3).
 
 `KILP.DAT` holds the bytes produced by `kilptietue::pack()`, and the record size
 is `kilpparam.kilprecsize`. There is separate code for reading the old format
@@ -160,4 +161,5 @@ is `kilpparam.kilprecsize`. There is separate code for reading the old format
 record, both `pack`/`unpack` and the old-format conversion must be checked.
 Communication packets use the same `pack` functions (`Hk/HkCom32.cpp:198-216`),
 so the change also affects communication between different versions. [verified:
-calls; inferred: consequences]
+calls; inferred: consequences] Byte-level layout, measured sizes and integrity:
+`tiedostomuodot.md` (batch C-3).
