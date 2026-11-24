@@ -819,3 +819,169 @@ retransmissions; doctest's own crash handler masked the exit code.
 - Seuraava erä (luku 7): H-026, H-032, H-022, H-023, H-007, H-001, H-002;
   kerros (d) toimitetulle `HkMaali.exe`:lle (H-041 todellisessa ohjelmassa). /
   Next batch per section 7.
+
+## 15. Toteutus, vaihe 3 / Implementation, stage 3 (H-026, H-032, H-022, H-023, H-007, H-001, H-002)
+
+Vaihe 2 commitoitiin `cad2781` ja vaihe 3 sen jälkeen samalle haaralle. Tuotantokoodi ja CI ovat muuttumattomat (`fc03b67`).
+
+Stage 2 was committed as `cad2781` and stage 3 after it.
+
+### 15.1 Lisäykset / Additions
+
+| Tiedosto / File | Sisältö / Content |
+|---|---|
+| `Tests/core/VRecvTests.cpp` | H-032 kontrolli, H-032a (suojakuvio vastaanottolohkon jälkeen), H-032b (ASan); H-026 kontrolli ja vikatesti (silmukka jää pyörimään) |
+| `Tests/core/HkRecvTests.cpp` | H-022 kontrolli ja vikatesti, H-023a, H-023b + kaksi kontrollia, H-007 kontrolli (`LockCount`-odottajakoetin) ja vikatesti (pakotettu järjestys) |
+| `Tests/core/VTulostusTests.cpp` | sisällyttää `Juk/VTulostus.cpp`:n (staattiset funktiot), joka poistettiin TpCoreJukin lähdelistasta; H-001a/b vain ASan-käännöksessä |
+| `Tests/core/VSrjTests.cpp` | H-002 kontrolli, H-002a/b vain Release-käännöksessä (ASanin varjomuisti on osoitteessa 0x30000000-) |
+| `Tests/data/juk/h002_*.srj` | synteettiset vanhan muodon sarjatiedostot (6, 7 ja 9 kenttää) / synthetic legacy series files |
+| `Tests/fixtures/TpCore.*` | korvaajien atominen kutsulaskuri ja hiljainen tila tietylle säietunnisteelle (tuotannon silmukka, joka raportoi virheen joka kierroksella) / stub call counter, quiet mode |
+| `Tests/run_core_tests.py` | estynyt säie vain havaitun vian osana (muuten FAIL); vika puuttuu ja säie päättyi → XPASS; ASan-todisteisiin `size` ja `summary_contains` |
+| `VS/Tests/TpCoreJuk.vcxproj` | `Juk\VTulostus.cpp` pois listasta (testitiedosto sisällyttää sen); Asan-konfiguraatio käännetty ensimmäistä kertaa |
+
+### 15.2 Tulokset / Results
+
+| | |
+|---|---|
+| Revisiot / revisions | tuotanto / production `fc03b67` (muuttamaton / unchanged, `production_dirty` false); testit / tests `cad2781` + vaihe 3 (tiivisteet `results.json`) |
+| Käännös / build | MSVC 19.52.37029 (v145), Release/Win32 `/J /GL /MT /O2 /GS`; TpCoreJuk ja TpCoreHk Asan = Release + `/fsanitize=address /Zi`, ASan-DLL 14.52.37025 |
+| Ajot / runs | 2026-11-24, kolme ajoa tarkastuskorjausten jälkeen: PASS=19, XFAIL=23, FAIL 0, XPASS 0, identtiset; itsetestit 46 OK |
+| Aineisto / data | testien luomat tiedostot ja paketit; `data/juk/h002_{six,seven,nine}_fields.srj` (sha256 `results.json`:ssa) |
+
+| ID | Tila | Todellinen / Actual |
+|---|---|---|
+| H-032-control | PASS | rajoissa oleva TARKT-paketti viimeiseen paikkaan: suojakuvio koskematon |
+| H-032a | XFAIL | luokka 7 (`class_len` 0), len 1000, paikka 49/51 × 258 tavua: lohkon jälkeen tasan 498 tavua paketin dataa (odotettu 498) |
+| H-032b | XFAIL | ASan heap-buffer-overflow WRITE of size 1014, `TpComY.cpp:654 in addseur`, "0 bytes after 13158-byte region" (51 × 258) |
+| H-026-control | PASS | kaksi kelvollista pakettia käsitelty, silmukka päättyy `comfl = 0`:n jälkeen |
+| H-026 | XFAIL | `inbens` jää tuntemattomaan pakettiin, seuraava kelvollinen paketti käsittelemättä, silmukka pyörii `comfl = 0`:n jälkeen (merkitsee paikan uudelleen, 6 virhekutsua 300 ms:ssa); prosessi päätetään `TerminateProcess`illa (`TPEXIT|blocked_threads=1`) |
+| H-022-control | PASS | oikean numeron (12) VAIN_TULOST tallentuu tietueelle 1, lukko vapaa |
+| H-022 | XFAIL | numeron 13 paketti tallentuu tietueelle 1 (numero 12) täsmälleen kuten kontrolli; ei viestejä |
+| H-023a | XFAIL | vaiheen 2 paketti (`d.v.k_pv` 1), vastaanottaja `k_pv` 0: tallentuu vaiheelle 1, vaihe 2 koskematon |
+| H-023b-control-refused / -allowed | PASS | vaihtopyynnöttä toisen vaiheen yhteys hylätään; sallittu vaihto tehdään (`k_pv` 1) |
+| H-023b | XFAIL | vaihto evätään (`vaihdavaihe`n viesti "...estävät vaihdon", `k_pv` 0), mutta `tark_alku` palauttaa false eli hyväksyy yhteyden |
+| H-007-control | PASS | odottajalaskuri 0 / 0 / 1 / 0 (vapaa, varattu, odottaja, vapautettu) |
+| H-007 | XFAIL | vastaanottosäie odotti `tall_CS`:ää (odottaja nähty, `inbens` 0), paikallinen muutos UUSI tallennettiin, paketin jälkeen seura = VANHA, tasoitus 600 |
+| H-001a / H-001b | XFAIL | ASan stack-buffer-overflow WRITE of size 160 kohdissa `VTulostus.cpp:2228 in textjtulos` ja `:3981 in textosuus` |
+| H-002-control | PASS | 7 kentän rivi jäsennetään (sarja H21, 1 osuus), varattu sivu koskematon |
+| H-002a / H-002b | XFAIL | osoitteessa 0x30303030 tasan "4242\0" (5 tavua) / "TPH002\0" (7 tavua) |
+
+**H-001:n todisteen tarkkuus / evidence specificity:** MSVC:n x86-ASan listaa
+`textjtulos`-kehyksen muuttujat päällekkäisillä siirtymillä (kehyskuvaaja on väärä ja
+yhteinen molemmille funktioille), joten muuttujan nimeä ei käytetä todisteena.
+Riippumaton tarkastaja disassembloi Asan-ohjelman: kummassakin funktiossa on tasan yksi
+0xA0 (160) tavun `memset`, jonka kohde on `stsk` (heti perään `stsk[0] = L'('` samaan
+osoitteeseen); todellinen asettelu st [16,176), stjk [208,328), stsk [360,400), ln
+[432,1032), ja ASanin raportoima ensimmäinen virheellinen tavu on siirtymässä 400 eli
+`stsk`:n lopussa. / The ASan frame listing is wrong on MSVC x86; disassembly confirms
+the single 160-byte memset targets stsk and the first bad byte is at stsk's end.
+
+### 15.3 Mitä kukin testi todisti ja mitä ei / What each test proved and did not
+
+| ID | Todisti / Proved | Ei todistanut / Did not prove |
+|---|---|---|
+| H-032 | Luokan, jonka `class_len` on 0, paketti kopioidaan `len+14` tavun pituisena vastaanottopaikkaan ja yli tuotannon kokoisen lohkon (498 tavua; ASan: 1014 tavun kirjoitus) / unchecked length overruns the receive block | Itse UDP-tarkistuksen ohitusta `luepakettiUDP`:ssä (näytetään vain `class_len` 0:lla, testi kutsuu `addseur`ia suoraan); `class_len[pkgclass]`-lukua indeksillä ≥ 15; loopback-datagrammia; HK:ta / the receive predicate itself, OOB class_len read, loopback, HK |
+| H-026 | Tuntematon luokka pysäyttää vastaanoton pysyvästi: jono ei etene, seuraava paketti jää käsittelemättä, silmukka ei noudata `comfl`ia / receiving stops permanently | Reittiä UDP:n kautta (luokka 7 pääsee jonoon H-032:n takia, vain koodin luvulla); vaikutusta käynnissä olevaan kilpailuun / UDP route, live effect |
+| H-022 | VAIN_TULOST tallentuu tietueelle `dk` tarkistamatta paketin numeroa / no bib check | KILPPVT-versiota; kahden aseman saman tietuenumeron varausta (`Hk/HkDat.cpp:626-636`, vaatii kahden prosessin kerroksen) / KILPPVT, the two-station half |
+| H-023 | (a) Tulos tallentuu vastaanottajan vaiheeseen, lähettäjän `d.v.k_pv` ohitetaan; (b) yhteys hyväksytään, vaikka vaiheen vaihto evättiin / (a) wrong stage, (b) link accepted | Seuraavien pakettien väärää soveltamista kahden aseman välillä; GUI-polkua (`cbHk/WinHk.cpp:2149-2160`, `:2231`) / multi-station sequence, GUI path |
+| H-007 | Vastaanotto lukee tietueen ennen lukkoa ja kumoaa välissä tehdyn paikallisen muutoksen; järjestys pakotettu (odottaja nähty) / lost update with forced ordering | Muutoksen leviämistä vertaisille (`maxyhteys` 0); kuinka usein ikkuna esiintyy oikeassa ajossa; `LockCount`-koodaus on dokumentoimaton (kontrolli tarkistaa sen tällä koneella) / propagation, real-world frequency |
+| H-001 | Kumpikin funktio kirjoittaa 160 tavua 40 tavun `stsk`-puskuriin (ASan + disassembly) / 160-byte write into 40-byte stsk | Release-käännöksen vaikutusta (vain C4789-varoitus; ei ajonaikaista havaintoa); julkista polkua `tulostasarja` (funktiot kutsuttiin suoraan) / Release effect, public path |
+| H-002 | Vanhan muodon sarjatiedoston 6- ja 9-kenttäiset rivit kirjoittavat merkkijonon osoitteeseen 0x30303030 / write through the int value | Mitä tapahtuu, kun osoite ei ole varattu (kaatuminen tai muun muistin korruptio); ohjelman oma kirjoittaja tuottaa 8 kenttää eikä laukaise vikaa (`Juk/vSarjat.cpp:514`) / unreserved address effect; own writer does not trigger it |
+
+Mikään tulos ei ole "vahvistettu ajamalla". / No result is "confirmed by running".
+
+### 15.4 Tarkastukset / Reviews
+
+| Agentti / Agent | Tehtävä / Task | Tulos / Result |
+|---|---|---|
+| `defect-concurrency-auditor` | Reseptit H-026, H-032, H-022, H-023, H-007 | Sisääntulot (`addseur`, `tark_alku`, julkinen `tarkcom`), paketit, fixturet, H-007:n pakotettu järjestys; kaksi kehikkomuutosta (hiljainen tila, estyneen säikeen XPASS) |
+| `architecture-analyst` | H-001, H-002 ja HkMaali.exe:n ajosuunnitelma | `VTulostus.cpp`:n sisällytys; vanhan muodon rivimuodot; ASanin varjomuisti osoitteessa 0x30000000-; luku 16 |
+| `build-dependency-analyst` (Sonnet) | TpCoreJuk Asan, `memset`-instrumentointi, 0x30300000 | Asan-käännös toimii; `memset` → `___asan_memset`; osoite vapaa Releasessa 10/10, ei ASanissa; kasan ylivuoto havaitaan, lohkon sisäinen ei. Agentin erillinen `cl`-ajo jätti `TPsource/V52/VS/V/vc140.pdb`:n, joka poistettiin |
+| `independent-verifier` | Toteutuksen tarkastus / review | Kaikki testit osoittavat oikean mekanismin, ei vääriä XFAIL-tuloksia; H-001 vahvistettu disassemblystä. Korjattu: estynyt säie ilman havaittua vikaa on nyt FAIL (oli XPASS); H-026 vaatii elävän silmukan, jos säie jää käyntiin; H-032b:n todisteisiin koko 1014 ja `TpComY.cpp:654 in addseur` |
+
+### 15.5 Avoimet / Open
+
+- `class_len[pkgclass]`-luku indeksillä 15–255 (`Tp/TpComY.cpp:1001`) ilman testiä.
+- H-022:n kahden aseman osuus ja KILPPVT-versio; H-023:n ja H-026/H-032:n GUI-polut.
+- Kahden prosessin loopback-kerros (e) ja toimitetun ohjelman ajo (luku 16, odottaa
+  hyväksyntää).
+
+## 16. Toimitetun HkMaali.exe:n turvallinen ajo (suunnitelma, ei ajettu) / Safe run of the shipped HkMaali.exe (plan, not run)
+
+Tätä ohjelmaa **ei ole ajettu**. Jokainen alla kuvattu ajo vaatii käyttäjän erillisen
+hyväksynnän. Selvitys: `architecture-analyst` (koodin luku, ei ajoa), 2026-11-24,
+revisio `f7fe553`.
+
+This program has **not been run**. Each run below needs separate user approval.
+
+### 16.1 Käynnistyksen sivuvaikutukset / Start-up side effects
+
+| Asia / Item | Havainto / Finding | Näyttö / Evidence |
+|---|---|---|
+| Käynnistysjärjestys / start order | `initcon` (vaatii konsolin; epäonnistuessa `perr` → MessageBox; jos kursori ei ole 0,0: `FreeConsole` + `AllocConsole`) → koodisivu 850, Ctrl-käsittelijä, `WorkingDir = GetCurrentDirectory` → `aloitus` → `valikko` → `lopetus` | `HkConsole/HkMain.cpp:178-235`; `tputilv2/initcon.cpp:49-84`; `tputilv2/perr.cpp:51` [todennettu] |
+| Luettavat tiedostot / files read | kaikki suhteellisia nimiä nykyhakemistossa: `peruscfg.cfg`, `LASKENTA.CFG` tai `CFG=` (voi olla absoluuttinen), argv; `KilpSrj.xml` → `KILP.SRJ`; `TLSKERR.LST`, `SARJAYHD.LST`; `KILP.DAT`; emit- ja ratatiedostot vain, jos `emitfl == 1` (ei oletuksena) / all relative to cwd | `Hk/HkInit.cpp:59`, `:332-345`, `:567-583`, `:2793`, `:3487-3496`, `:3590-3615`; `Hk/HkSrj.cpp:72-83`, `:510` [todennettu] |
+| Ympäristö, rekisteri, moduulipolku / environment, registry, module path | ei konsolilähteissä (getenv, rekisteri, `GetModuleFileName`, `GetTempPath` vain GUI:ssa) / none in console sources | grep Hk, HkConsole, Tp, tputilv2, com, dbboxm [todennettu] |
+| Kirjoitettavat tiedostot / files written | `KILP.DAT` (luodaan, jos puuttuu; otsake `closefile`issa), `DATA_ERR.TXT` vain datavirheissä, `LOKI1.LST` vain LOKI-asetuksella, `AJAT*.LST` vain ajanotossa, `COMFILE*.DAT` vain yhteyksillä; ei poistoja eikä uudelleennimeämisiä konsolipolulla | `Hk/HkInit.cpp:3487-3491`; `dbboxm/dbbox1.cpp:214-222`; `Tp/TpApu.cpp:876`, `:938` [todennettu; täydellisyys päätelty, vahvistettava Procmonilla] |
+| Verkko / network | avataan vain asetuksilla: YHTEYS/COM, BRO, MONITORI, TCPLUKIJA/REGNLY, emiTag HTTP, FILETCP/TCPTULOS, AUTO+KOMENTO (`system()`); **ei mitään oletuksena**; käytössä UDP ja TCP-palvelin sitovat `INADDR_ANY` / none by default; when enabled, binds INADDR_ANY | `Hk/HkInit.cpp:1101-1160`, `:2135-2150`, `:3636-3666`; `com/WinUDP.cpp:291`, `:795`; `Hk/HkTulostus.cpp:7341-7345` [todennettu] |
+| Tietokanta / database | ei konsolikäännöksessä (`kirjKilpSQL` tyhjä) / none in the console build | `HkConsole/HkCons0.cpp:141` [todennettu] |
+| Laitteet ja tulostin / devices, printer | ei COM-porttia eikä lukijaa ilman asetuksia; `listfname` = "NUL" / no COM port or reader without config | `Hk/HkGlobals.cpp:282`; `Hk/HkInit.cpp:3409`, `:3565-3568` [todennettu] |
+| Säikeet / threads | vain `taustaThr` (10 ms: kello, laskurit, `autotulostus` palaa, kun `lstf` NULL) / only the background clock thread | `Hk/HkInit.cpp:3708`; `Hk/HkIV.cpp:3711`; `Hk/HkTulostus.cpp:974-984` [todennettu] |
+| Kehotteet / prompts | (a) aloitusvalinnat (ohitetaan argv `BOOT`), (b) `KilpSrj.xml` puuttuu → lopetus, (c) `KILP.DAT` puuttuu → luodaan, (d) vaihekysely vain, jos `n_pv_akt > 1`, (e) tuntematon parametri; kehotteet tyhjentävät näppäinpuskurin ensin; Enter hyväksyy oletuksen; `aani` 1 → äänimerkki / prompts | `Hk/HkInit.cpp:1052`, `:3060-3068`, `:3233-3236`, `:3311-3320`, `:3488`, `:2765-2768`; `Hk/HkSrj.cpp:79`; `tputilv2/wSelectxy.cpp:37`, `:70` [todennettu] |
+| Lopetus / quitting | näppäimet `P`, `K` → `lopetus1` sulkee tiedostot, `cleanWSA`, `_exit(0)`; `CTRL_CLOSE_EVENT` → `lopetus`; poistumiskoodi 0 myös käynnistysvirheessä; ei lapsiprosesseja / keys P, K; exit 0 also on start-up failure | `HkConsole/HkMain.cpp:160-176`; `HkConsole/HkCons0.cpp:85-99`; `Hk/HkInit.cpp:3730-3832` [todennettu] |
+
+### 16.2 Suoritusmenettely / Execution procedure
+
+1. **Hyväksyntä / approval:** käyttäjä hyväksyy yksittäisen ajon (ajo 0 tai 1, alla).
+2. **Ohjelma / binary:** `TPexe/Hk/V521/HkMaali.exe`; kirjataan sha256 ja PDB:n sha256
+   sekä käännösaika ennen ajoa. Ei kopioida muualle kuin hiekkalaatikkoon. / record hashes.
+3. **Hiekkalaatikko / sandbox:** uusi tyhjä hakemisto `%TEMP%`:n alla (ei repossa), cwd =
+   hiekkalaatikko, vain suhteelliset nimet; ei `CFG=`-polkua. Synteettiset tiedostot
+   luodaan testiohjelmalla (esim. HK:n `KilpSrj.xml` tuotannon kirjoittajalla
+   `kirjEventXml`, `Hk/HkXml.cpp:2422`) – ei oikeaa aineistoa. / new empty dir, relative
+   names, synthetic files only.
+4. **Asetukset / configuration:** ei `peruscfg.cfg`- eikä `LASKENTA.CFG`-tiedostoa (ei
+   yhteyksiä, laitteita, tulostusta, HTTP:tä eikä `KOMENTO`a); argv `BOOT`. /
+   no config files, so no network, devices, printing or commands.
+5. **Prosessinhallinta / process control:** Python (ctypes, ei kolmannen osapuolen
+   kirjastoja): `CreateProcessW(CREATE_NEW_CONSOLE | CREATE_SUSPENDED)`, Job-objekti
+   (`JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE`, ei vaadi ylläpitäjää), sitten jatko. stdoutia ei
+   ohjata (muuten `initcon` epäonnistuu). / job object, new console.
+6. **Konsolin ohjaus / driving the console:** `AttachConsole(pid)`; odotetaan kehotteen
+   tekstiä `ReadConsoleOutputCharacterW`:llä ennen jokaista näppäintä (kehote tyhjentää
+   puskurin); `WriteConsoleInputW` (näppäin alas + ylös, oikea virtuaalikoodi);
+   `FreeConsole`. / wait for prompt text, then send keys.
+7. **Aikarajat / timeouts:** 10 s per kehote, 60 s yhteensä; ylityksessä `WM_CLOSE`
+   konsoli-ikkunalle, 5 s jälkeen `TerminateJobObject`. / timeouts and kill.
+8. **Verkon valvonta / network watch:** ajon aikana 100 ms välein
+   `Get-NetTCPConnection`/`Get-NetUDPEndpoint -OwningProcess <pid>`: odotetaan tyhjää;
+   mikä tahansa avoin päätepiste keskeyttää ajon. Valinnainen (vaatii ylläpitäjän):
+   Windowsin palomuurin estosäännöt ohjelmapolulle sisään ja ulos (loopback sallittu
+   oletuksena); **pakollinen** myöhemmille YHTEYS-ajoille `INADDR_ANY`-sidonnan vuoksi. /
+   no endpoints expected; firewall rules mandatory for later link runs.
+9. **Jälkitarkastus / afterwards:** hiekkalaatikon tiedostolista tiivisteineen;
+   `git status --porcelain --ignored` muuttumaton; ajon aikana muuttuneet tiedostot
+   `%TEMP%`:ssä, `%LOCALAPPDATA%\CrashDumps`:ssa ja WER-hakemistoissa; valinnaisesti
+   Procmon (erillinen hyväksyntä). Käyttöjärjestelmä voi kirjoittaa prefetch-, WER- ja
+   AppCompat-tietoja. / verify nothing outside the sandbox changed.
+10. **Tulos / result:** kirjataan testaus.md:hen ja rekisteriin tasolla "vahvistettu
+    ajamalla" vain, jos vika toistuu toimitetussa ohjelmassa havaintokohtaisella
+    näytöllä. / "confirmed by running" only with finding-specific evidence.
+
+### 16.3 Ehdotetut ensimmäiset ajot / Proposed first runs
+
+| Ajo / Run | Sisältö / Content | Odotettu / Expected |
+|---|---|---|
+| 0 | Tyhjä hakemisto, ei argv:tä; Enter kehotteisiin (a), (b) / empty dir | ohjelma lopettaa (KilpSrj.xml puuttuu), poistumiskoodi 0, ei luotuja tiedostoja, ei verkkopäätepisteitä [päätelty] |
+| 1 | argv `BOOT`, synteettinen `KilpSrj.xml` (1 sarja, 1 vaihe, vähän väliaikoja); (c) Enter; päävalikko; `P`, `K` / synthetic series file | vain `KILP.DAT` syntyy, siisti lopetus, ei verkkoa |
+| 2 (myöhemmin / later) | H-041 toimitetussa ohjelmassa: n_pv 5, valuku 250, kilpailijan lisäys (`Hk/HkDat.cpp:583`) ja kontrolli valuku 10 / H-041 in the shipped binary | 0xC0000409 on vain yhdenmukainen vian kanssa (ei täsmällinen todiste, luku 14.1); WER voi näyttää dialogin tai kirjoittaa hiekkalaatikon ulkopuolelle → vaatii erillisen arvion |
+
+H-031 toimitetussa ohjelmassa vaatii avoimen yhteyden lähettämättömine sanomineen eli
+kahden prosessin loopback-kerroksen (e); ei ensimmäisissä ajoissa. / H-031 needs the
+two-process loopback layer.
+
+### 16.4 Avoimet / Open
+
+- Konsolin toiminta AppContainerissa tai Windows Sandboxissa; sijoittuuko conhost
+  Job-objektiin [tuntematon].
+- WER:n käyttäytyminen toimitetun ohjelman pikakaatumisessa [tuntematon].
+- Pienin kelvollinen HK:n `KilpSrj.xml` [tuntematon]; tuotetaan tuotannon kirjoittajalla.

@@ -73,6 +73,12 @@ struct UiMessage {
 	int kesto;
 };
 std::vector<UiMessage> &uiMessages();
+// Number of stub calls so far (all four stubs, all threads; atomic).
+long stubCallCount();
+// On threads whose tag equals tag, the stubs only count the call and sleep
+// min(kesto, 50) ms; they neither record nor print (for production loops
+// that report an error on every pass, e.g. H-026). 0 switches it off.
+void setQuietStubTag(const char *tag);
 
 // ---- Controlled threads (TpCore.cpp) ----
 // The main thread never waits without a limit for production code that may

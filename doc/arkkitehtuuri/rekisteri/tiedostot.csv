@@ -328,6 +328,10 @@ JukConsole/vcons2.cpp,JukConsole,3376,cp1252,JukLuenta520 JukMaali520,1,-,-,,,,f
 JukConsole/VConTul.cpp,JukConsole,2025,cp1252,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
 RADStudio10/HkKisaWin.cpp,RADStudio10,251,ascii,HkKisaWin,2,yleiskuva,-,f7fe553,,"_tWinMain, CreateForm",f7fe553
 RADStudio10/ViestiWin.cpp,RADStudio10,185,ascii,ViestiWin,1,-,-,,,,f7fe553
+Tests/core/HkRecvTests.cpp,Tests,402,ascii,TpCoreHk,4,testaus,-,cad2781,,C-11 vaihe 3 testikoodi; kirjoitettu ja tarkastettu kokonaan,cad2781
+Tests/core/VRecvTests.cpp,Tests,262,ascii,TpCoreJuk,4,testaus,-,cad2781,,C-11 vaihe 3 testikoodi; kirjoitettu ja tarkastettu kokonaan,cad2781
+Tests/core/VSrjTests.cpp,Tests,105,ascii,TpCoreJuk,4,testaus,-,cad2781,,C-11 vaihe 3 testikoodi; kirjoitettu ja tarkastettu kokonaan,cad2781
+Tests/core/VTulostusTests.cpp,Tests,88,ascii,TpCoreJuk,4,testaus,-,cad2781,,C-11 vaihe 3 testikoodi; kirjoitettu ja tarkastettu kokonaan,cad2781
 Tests/core/HkLockTests.cpp,Tests,145,ascii,TpCoreHk,4,testaus,-,79d9957,,C-11 vaihe 2 testikoodi; kirjoitettu ja tarkastettu kokonaan,79d9957
 Tests/core/TcpClientTests.cpp,Tests,163,ascii,TpCoreHk,4,testaus,-,79d9957,,C-11 vaihe 2 testikoodi; kirjoitettu ja tarkastettu kokonaan,79d9957
 Tests/core/VComTests.cpp,Tests,151,ascii,TpCoreJuk,4,testaus,-,79d9957,,C-11 vaihe 2 testikoodi; kirjoitettu ja tarkastettu kokonaan,79d9957
@@ -339,8 +343,8 @@ Tests/core/CoreMain.cpp,Tests,124,ascii,TpCoreHk TpCoreJuk,4,testaus,-,f5d793b,,
 Tests/core/HkCoreTests.cpp,Tests,229,ascii,TpCoreHk,4,testaus,-,f5d793b,,C-11 testikoodi; kirjoitettu ja tarkastettu kokonaan,f5d793b
 Tests/core/VAddfrecTests.cpp,Tests,100,ascii,TpCoreJuk,4,testaus,-,f5d793b,,C-11 testikoodi; kirjoitettu ja tarkastettu kokonaan,f5d793b
 Tests/core/VCoreTests.cpp,Tests,233,ascii,TpCoreJuk,4,testaus,-,f5d793b,,C-11 testikoodi; kirjoitettu ja tarkastettu kokonaan,f5d793b
-Tests/fixtures/TpCore.cpp,Tests,286,ascii,TpCoreHk TpCoreJuk,4,testaus,-,f5d793b,,C-11 testikoodi; kirjoitettu ja tarkastettu kokonaan,f5d793b
-Tests/fixtures/TpCore.h,Tests,153,ascii,TpCoreHk TpCoreJuk,4,testaus,-,f5d793b,,C-11 testikoodi; kirjoitettu ja tarkastettu kokonaan,f5d793b
+Tests/fixtures/TpCore.cpp,Tests,321,ascii,TpCoreHk TpCoreJuk,4,testaus,-,f5d793b,,C-11 testikoodi; kirjoitettu ja tarkastettu kokonaan,f5d793b
+Tests/fixtures/TpCore.h,Tests,159,ascii,TpCoreHk TpCoreJuk,4,testaus,-,f5d793b,,C-11 testikoodi; kirjoitettu ja tarkastettu kokonaan,f5d793b
 Tests/fixtures/VFixture.cpp,Tests,54,ascii,TpCoreJuk,4,testaus,-,f5d793b,,C-11 testikoodi; kirjoitettu ja tarkastettu kokonaan,f5d793b
 Tests/fixtures/VFixture.h,Tests,41,ascii,TpCoreJuk,4,testaus,-,f5d793b,,C-11 testikoodi; kirjoitettu ja tarkastettu kokonaan,f5d793b
 Tests/doctest.h,Tests,7106,ascii,TpTest,1,-,-,,,,f7fe553

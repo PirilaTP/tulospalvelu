@@ -240,7 +240,10 @@ def parse_asan(stderr):
     parts = re.split(r'^==\d+==ERROR: AddressSanitizer: ', stderr, flags=re.M)
     for part in parts[1:]:
         b = {'bug_type': part.split()[0] if part.split() else '', 'access': '', 'size': '',
-             'thread': '', 'stack': [], 'frame': '', 'vars': []}
+             'thread': '', 'stack': [], 'frame': '', 'vars': [], 'summary': ''}
+        m = re.search(r'^SUMMARY: AddressSanitizer: (.*)$', part, re.M)
+        if m:
+            b['summary'] = m.group(1).strip()
         m = re.search(r'^(READ|WRITE) of size (\d+) at \S+ thread (T\d+)', part, re.M)
         if m:
             b['access'], b['size'], b['thread'] = m.group(1), m.group(2), m.group(3)
@@ -313,6 +316,10 @@ def _asan_evidence_problem(ev, blocks):
     for k in ('bug_type', 'access', 'frame'):
         if k in ev and b.get(k) != ev[k]:
             return 'ASan %s is %r, expected %r' % (k, b.get(k), ev[k])
+    if 'size' in ev and b.get('size') != str(ev['size']):
+        return 'ASan access size %r, expected %r' % (b.get('size'), ev['size'])
+    if 'summary_contains' in ev and ev['summary_contains'] not in b.get('summary', ''):
+        return 'ASan SUMMARY %r does not contain %r' % (b.get('summary'), ev['summary_contains'])
     if 'variable' in ev:
         hit = [v for v in b['vars'] if v['name'] == ev['variable'] and v['flagged']]
         if not hit:
@@ -372,8 +379,18 @@ def classify(test, rc, timed_out, stdout, stderr='', exe=None):
             return 'FAIL', 'precondition or check failed (doctest failed=%d, exit %s)' % (failed, rc), None
         if crashes or asan:
             return 'FAIL', 'crash evidence in a run that ended normally', None
-        if blocked != test.get('blocked_threads', 0):
-            return 'FAIL', 'blocked threads %d, manifest expects %d' % (blocked, test.get('blocked_threads', 0)), None
+        want = test.get('blocked_threads', 0)
+        r0 = results[0] if len(results) == 1 else {}
+        if blocked > 0 and r0.get('observed') != '1':
+            # A left-over thread is only acceptable as part of an observed
+            # defect; otherwise something hung in an unexpected way.
+            return 'FAIL', 'blocked thread(s) without an observed defect', None
+        if blocked != want:
+            # A test that expects a blocked thread when the defect is present
+            # may end without one when the defect is absent (then observed=0
+            # must follow and gives XPASS); anything else is FAIL.
+            if not (blocked == 0 and want > 0 and r0.get('observed') == '0'):
+                return 'FAIL', 'blocked threads %d, manifest expects %d' % (blocked, want), None
         skips = parse_lines(stdout, 'TPSKIP')
         if skips:
             return 'SKIP', 'test reported TPSKIP: ' + skips[0].get('reason', ''), None

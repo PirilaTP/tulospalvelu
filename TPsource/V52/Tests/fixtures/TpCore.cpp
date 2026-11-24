@@ -230,10 +230,39 @@ size_t readAt(const char *name, long long pos, void *buf, size_t len)
 
 // ---- UI stubs (replace tputilv2 WRITEERR.obj) ----
 
+namespace tp {
+static volatile LONG g_stubCalls = 0;
+static const char *volatile g_quietTag = 0;
+
+long stubCallCount()
+{
+	return g_stubCalls;
+}
+
+void setQuietStubTag(const char *tag)
+{
+	g_quietTag = tag;
+}
+
+// Counts the call; true if this call must stay quiet (see TpCore.h).
+static bool stubEnter(int kesto)
+{
+	InterlockedIncrement(&g_stubCalls);
+	const char *q = g_quietTag;
+	if (q && strcmp(threadTag(), q) == 0) {
+		Sleep(kesto > 0 && kesto < 50 ? kesto : 50);
+		return true;
+	}
+	return false;
+}
+}  // namespace tp
+
 int writeerrorOn;
 
 void writeerror(char *msg, int kesto)
 {
+	if (tp::stubEnter(kesto))
+		return;
 	tp::UiMessage m;
 	m.text = msg ? msg : "";
 	m.kesto = kesto;
@@ -243,6 +272,8 @@ void writeerror(char *msg, int kesto)
 
 void writeerror_w(wchar_t *msg, int kesto)
 {
+	if (tp::stubEnter(kesto))
+		return;
 	char buf[400];
 	int i = 0;
 	// ASCII-only transcription; other characters become '?'.
@@ -260,6 +291,8 @@ void writeerror_w(wchar_t *msg, int kesto)
 
 void perr(char *szFileName, int line, char *szApiName, unsigned long dwError)
 {
+	if (tp::stubEnter(0))
+		return;
 	tp::UiMessage m;
 	m.text = tp::fmt("perr: %s line %d %s error %lu", szFileName ? szFileName : "",
 		line, szApiName ? szApiName : "", dwError);
@@ -270,6 +303,8 @@ void perr(char *szFileName, int line, char *szApiName, unsigned long dwError)
 
 void wperr(LPWSTR szFileName, int line, LPWSTR szApiName, DWORD dwError)
 {
+	if (tp::stubEnter(0))
+		return;
 	char f[200], a[100];
 	int i;
 	for (i = 0; szFileName && szFileName[i] && i < 199; i++)

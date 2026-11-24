@@ -17,13 +17,16 @@ separately from test coverage.
 | C, erä 3: pysyvät tiedostot ja eheys / batch 3: persistent files and integrity | valmis, tarkastettu / done, reviewed (`tiedostomuodot.md`) | 2026-11-24 |
 | C, erä 11: testiautomaatio, suunnittelu / batch 11: test automation, planning | valmis, tarkastettu, commitoitu `f5d793b` / done, reviewed, committed (`testaus.md`) | 2026-11-24 |
 | C, erä 11, vaihe 1: H-025, H-040, H-042 / batch 11, stage 1 | valmis, hyväksytty, commitoitu `79d9957` / done, approved, committed (`testaus.md` luku 13) | 2026-11-24 |
-| C, erä 11, vaihe 2: H-041, H-031, H-008, H-024, H-027 / batch 11, stage 2 | valmis, hyväksytty, commitoitu / done, approved, committed (`testaus.md` luku 14) | 2026-11-24 |
+| C, erä 11, vaihe 2: H-041, H-031, H-008, H-024, H-027 / batch 11, stage 2 | valmis, hyväksytty, commitoitu `cad2781` / done, approved, committed (`testaus.md` luku 14) | 2026-11-24 |
+| C, erä 11, vaihe 3: H-026, H-032, H-022, H-023, H-007, H-001, H-002 / batch 11, stage 3 | valmis, hyväksytty, commitoitu / done, approved, committed (`testaus.md` luku 15) | 2026-11-24 |
+| HkMaali.exe:n turvallinen ajo / safe run of HkMaali.exe | suunniteltu, ei ajettu; odottaa hyväksyntää / planned, not run; awaiting approval (`testaus.md` luku 16) | 2026-11-24 |
 | C, erät 4–10 / batches 4–10 | ei aloitettu / not started (`suunnitelma.md`); erä 5 osittain / batch 5 partly | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** käyttäjä päättää C-11:n vaiheen 3 aloittamisesta
-(H-026, H-032, H-022, H-023, H-007, H-001, H-002; `testaus.md` luku 14.5). / The
-user decides on starting C-11 stage 3.
+**Seuraava askel / Next step:** käyttäjä tarkastaa C-11:n vaiheen 3 (`testaus.md`,
+luku 15), päättää sen commitoinnista ja hyväksyy tai hylkää HkMaali.exe:n ensimmäisen
+ajon (luku 16). / The user reviews stage 3, decides on committing it and on the first
+HkMaali.exe run.
 
 Havainnot (H/T) ja niiden todennustila: `rekisteri/havainnot.md`.
 Findings (H/T) and their verification status: `rekisteri/havainnot.md`.

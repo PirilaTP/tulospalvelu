@@ -2,7 +2,7 @@
 <!--
   TpCoreJuk: core component tests (doc/arkkitehtuuri/testaus.md).
   Production sources and compile settings copied from
-  VS/V/JukMaali520.vcxproj Release|Win32, minus JukConsole\laskenta.cpp (wmain) and Juk\vdat.cpp (included by Tests\core\VAddfrecTests.cpp).
+  VS/V/JukMaali520.vcxproj Release|Win32, minus JukConsole\laskenta.cpp (wmain), Juk\vdat.cpp (included by Tests\core\VAddfrecTests.cpp) and Juk\VTulostus.cpp (included by Tests\core\VTulostusTests.cpp).
   Keep the define set, /J and the source list identical to that project.
   Deliberate differences: Tests\fixtures\TpCore.cpp replaces the tputilv2
   library members WRITEERR.obj (writeerror, writeerror_w, writeerrorOn) and
@@ -146,7 +146,6 @@
     <ClCompile Include="..\..\Juk\vkilp.cpp" />
     <ClCompile Include="..\..\Juk\VMuotoilu.cpp" />
     <ClCompile Include="..\..\Juk\vSarjat.cpp" />
-    <ClCompile Include="..\..\Juk\VTulostus.cpp" />
     <ClCompile Include="..\..\Juk\VXml.cpp" />
     <ClCompile Include="..\..\Juk\VXml_IOF30.cpp" />
     <ClCompile Include="..\..\Juk\XMLtulos.cpp" />
@@ -156,6 +155,9 @@
     <ClCompile Include="..\..\Tests\core\VCoreTests.cpp" />
     <ClCompile Include="..\..\Tests\core\VAddfrecTests.cpp" />
     <ClCompile Include="..\..\Tests\core\VComTests.cpp" />
+    <ClCompile Include="..\..\Tests\core\VRecvTests.cpp" />
+    <ClCompile Include="..\..\Tests\core\VTulostusTests.cpp" />
+    <ClCompile Include="..\..\Tests\core\VSrjTests.cpp" />
     <ClCompile Include="..\..\Tests\fixtures\TpCore.cpp" />
     <ClCompile Include="..\..\Tests\fixtures\TpCrash.cpp" />
     <ClCompile Include="..\..\Tests\fixtures\TpNet.cpp" />

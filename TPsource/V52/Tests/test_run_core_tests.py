@@ -241,6 +241,26 @@ class Classify(unittest.TestCase):
                 else:
                     os.environ[k] = v
 
+    def test_asan_size_and_summary_evidence(self):
+        err = self.ASAN_ERR.replace('==1==ABORTING', 'SUMMARY: AddressSanitizer: stack-buffer-overflow '
+                                    'C:\\a\\HkDat.cpp:221 in vatp::pack\n==1==ABORTING')
+        t = dict(self.ASAN_T)
+        t['evidence'] = dict(self.ASAN_T['evidence'], size=8, summary_contains='HkDat.cpp:221 in vatp::pack')
+        self.assertEqual(r.classify(t, 77, False, self.ARM_A + self.RES_A, err)[0], 'XFAIL')
+        t['evidence'] = dict(t['evidence'], size=160)
+        self.assertEqual(r.classify(t, 77, False, self.ARM_A + self.RES_A, err)[0], 'FAIL')
+        t['evidence'] = dict(t['evidence'], size=8, summary_contains='VTulostus.cpp:2228')
+        self.assertEqual(r.classify(t, 77, False, self.ARM_A + self.RES_A, err)[0], 'FAIL')
+
+    def test_blocked_thread_with_observed0_is_fail(self):
+        t = dict(DEFECT, blocked_threads=1)
+        self.assertEqual(self.st(t, 0, False, out(extra=OBS0 + 'TPEXIT|blocked_threads=1\n')), 'FAIL')
+
+    def test_blocked_thread_absent_with_observed0_is_xpass(self):
+        t = dict(DEFECT, blocked_threads=1)
+        self.assertEqual(self.st(t, 0, False, out(extra=OBS0)), 'XPASS')
+        self.assertEqual(self.st(t, 0, False, out(extra=OBS1)), 'FAIL')
+
     def test_parse_asan_fields(self):
         b = r.parse_asan(self.ASAN_ERR)[0]
         self.assertEqual((b['bug_type'], b['access'], b['size'], b['frame']),
