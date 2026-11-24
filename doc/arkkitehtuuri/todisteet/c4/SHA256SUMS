@@ -1,8 +1,9 @@
-4f5e73cc3d2894ba15e0f6ca5b9a6c6eff07158f8f0c97101d684a74df23596b *./README.md
+378006590427b7c8e0678e23b7b02f3b1e6cd556d540e52400680b80c677bf3a *./README.md
 f415f7ecdd922eaf05a4415a3921b106a9e97402cebf68f54c6b1e0b32bdcace *./commands.txt
 1af1919dd27b50fd952278452cb9c909dc9b0b00bc70cfd659afac4e116a69cb *./coverage.json
 d1f47aa3dadfbd0ea6edec74f115bffa0fb1ea1adfb7efd3b449590d181e1c21 *./lokit/bcc32-outputs.json.gz
 e92a837125e50d4a514d038b21f214ad9d167f59a31e9f7b89b606cd1f5200d4 *./lokit/msvc-warn-logs.tgz
+b61671cfbf2d73edf71e46ceabb562931cd3802a7f08a3ec9633816271ae57d0 *./muunnos_ehdokkaat.csv
 ba05dd383198162bdd1645fc605b39c9fd3a562e8a24302759474103b70acadb *./skriptit/base.props
 7b2ba28688348672dc46561714600c1a5d8af14645a5003cad85e96af0330de9 *./skriptit/bcc_run.py
 f0716e95ebfd593468a37d6dbd2c6508a103c0fdfe032c6af36236c5dd17e5ab *./skriptit/build.sh
@@ -19,4 +20,5 @@ d68057b84cf646b75d53b1f565f7a77b623de99679a058f2dd603714cd859767 *./triage_A1_lu
 e64fb03a19b1fbceeb41d03ec0fcd4d11f97c2e96eed62525a0b873c3bae4568 *./triage_A2_luokitus.csv
 d073b73e6263a2ac7a38bc961f145f8ffb95eac84d4d07350baaf3ed71cd4787 *./triage_B.csv
 f78a332fd6555cce4ebde5fb7f06e46165528ebf94fa5eb4b4569129fb7004d2 *./triage_B_luokitus.csv
+277c398881e6a82939c7238abefef7b10439b42e38a9e52ca215dbc3b250f14d *./tutkittavat_vaihe2.csv
 a1d9493bdc3cb07ea1cc935c1f6af396895b9d65f08e38dd98986aba84ff0be5 *./warnings_unique.csv.gz

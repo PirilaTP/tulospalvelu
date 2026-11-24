@@ -12,6 +12,8 @@ Produced on 2026-11-24 from revision `f7fe553`. Description and interpretation:
 | `warnings_unique.csv.gz` | Kaikki varoitukset yksilöllisinä (kääntäjä, koodi, tiedosto, rivi, viesti, kokoonpanot, läheinen H-havainto ±3 riviä) / all warnings, unique, with configurations and nearby H finding |
 | `triage_A1.csv`, `triage_A2.csv`, `triage_B.csv` | Luokitteluagenttien syötteet (275 riviä) / triage inputs |
 | `triage_*_luokitus.csv` | Riveittäinen luokitus agenttien raporteista (vaihe 2) / per-row verdicts from the auditor reports |
+| `tutkittavat_vaihe2.csv` | Vaiheen 2 ratkaisut 33 tutkittavalle riville / step 2 verdicts for the 33 investigate rows |
+| `muunnos_ehdokkaat.csv` | Vaiheen 2 riskiperusteiset muunnosvaroitukset (522 riviä) / step 2 conversion warning candidates |
 | `commands.txt` | Ensimmäinen `CL.exe`- ja linkityskomento kustakin MSVC-käännöksestä; tallennettu ja uudelleenajettu bcc32-komento / first compile and link commands; recorded and re-run bcc32 commands |
 | `coverage.json` | Kunkin kääntäjän käännösyksiköt ja kääntämättömät tiedostot / translation units per compiler, uncompiled files |
 | `lokit/msvc-warn-logs.tgz` | MSBuildin varoituslokit ja konsolitulosteet / MSBuild warning logs and console output |

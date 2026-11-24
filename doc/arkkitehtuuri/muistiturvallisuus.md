@@ -15,6 +15,19 @@ mitään ohjelmaa ei ajettu. Varoitusta ei ole luokiteltu viaksi ilman koodin lu
 All results of this step are **static**: code was read and compiled, no program was
 run. No warning was classified as a defect without reading the code.
 
+**Todennuksen tasot tässä dokumentissa / verification levels in this document.**
+"Vahvistettu" (CONFIRMED, [todennettu]) tarkoittaa koko C-4:ssä **staattisesti
+vahvistettua vikamekanismia**: koodi luettu, mekanismi osoitettu ja (rekisterin
+havainnoissa) riippumattomasti tarkastettu. Se ei tarkoita, että vika olisi toistettu
+testikehyksessä tai käynnissä olevassa ohjelmassa. C-4:n 23 uudesta havainnosta yksikään
+ei ole toistettu tai ajossa vahvistettu; koko rekisterissä ajossa vahvistettu on vain
+H-041 (C-11). Vaikutukset (kaatuminen, korruptio, hyödynnettävyys) ovat päätelmiä.
+
+"Confirmed" throughout C-4 means a **statically confirmed defect mechanism** (code read,
+mechanism shown, independently reviewed for register entries), not a defect reproduced in
+a harness or in the running program. None of the 23 new C-4 findings has been reproduced
+or confirmed by running; the only finding confirmed by running is still H-041 (C-11).
+
 ## 1. Kääntäjät ja käännökset / Compilers and builds
 
 | Kääntäjä / Compiler | Versio / Version | Käytetty / Used for |
@@ -305,6 +318,8 @@ Investigate rows (33) include the above.
 
 ## 8. Ehdotus seuraavaksi vaiheeksi / Proposed next step
 
+*Vaiheen 1 ehdotus. Käyttäjä rajasi vaiheen 2 toisin (ei ASan-toistoja); ks. luku 9. / Step 1 proposal; step 2 was scoped differently, see section 9.*
+
 **C-4 vaihe 2: korkean ja keskitason uusien havaintojen toisto testikehyksessä ja
 kohdennettu luenta.** Rajaus:
 
@@ -323,6 +338,366 @@ kohdennettu luenta.** Rajaus:
 settle H-061 by disassembly, read the 33 investigate rows and conversion warnings in
 input-handling functions. No GUI runs, CI changes or fixes.
 
+## 9. Vaihe 2: rajaus ja menetelmä / Step 2: scope and method
+
+Käyttäjä hyväksyi vaiheen 1 ja rajasi vaiheen 2 analyysiksi: ei ASan-testisarjoja, ei
+uusia testikehyksiä, ei GUI-ajoja, ei korjauksia. Luvun 8 ehdotuksesta toteutettiin
+kohdat 2–3 (lukemalla); toistoja ei tehty. Kaikki vaiheen 2 tulokset ovat staattisia.
+
+The user approved step 1 and limited step 2 to analysis: no ASan series, no new
+harnesses, no GUI runs, no fixes. Items 2–3 of section 8 were done by reading; no
+reproduction. All step 2 results are static.
+
+| Työ / Work | Agentti / Agent | Tulos / Result |
+|---|---|---|
+| Vaiheen 1 johtopäätösten uudelleentarkastus K1–K9 / re-review of step 1 | `independent-verifier` | 5 vahvistettu, 4 osittain; korjaukset tehty (luku 2, 4, 6) / 5 confirmed, 4 partly; corrected |
+| ±1-poikkeama / count discrepancy | pääistunto / main session | ks. luku 4 / see section 4 |
+| H-055 ja H-056 syvemmin / in depth | `architecture-analyst` | luku 10 / section 10 |
+| 33 tutkittavaa riviä / investigate rows | `defect-concurrency-auditor` | luku 11, `todisteet/c4/tutkittavat_vaihe2.csv` |
+| Muunnosvaroitukset riskitiedostoissa (522 riviä) / conversion warnings | `defect-concurrency-auditor` | luku 12, `todisteet/c4/muunnos_ehdokkaat.csv` |
+| Uusien korkeiden tarkastus / review of new high findings | `independent-verifier` ×2 | luku 14 |
+| Kattavuuden arviointi / coverage assessment | pääistunto / main session | luku 13 |
+
+Erän 1 kokonaisuus commitoitiin paikallisesti ennen vaihetta 2 (`81bcad9`). / Step 1
+was committed locally before step 2.
+
+## 10. H-055 ja H-056 syvemmin / in depth
+
+### H-055 `tulk_emiTag`
+
+| Ohjelma / Program | Vikapolku / Defect path | Syöte / Input |
+|---|---|---|
+| HkMaali (kaikki kokoonpanot / all configs) | kyllä / yes | sarja/USB-lukija (`EMITAGn=`), HTTP-pollaus (`ETGPRS`/`ETSQL`) |
+| ViestiMaali (kaikki / all) | kyllä / yes | sarja/USB, HTTP |
+| ViestiLuenta | kyllä / yes | sarja/USB (`EMITHTTP` ei määritelty / not defined) |
+| HkKisaWin | kyllä / yes | sarja/USB, **TCP-palvelin `TCPS`** (lomake / form `cbTp/UnitEmiTag.cpp:331-334`), HTTP |
+| ViestiWin | kyllä / yes | sarja/USB, **TCP-palvelin `TCPS`**, HTTP |
+
+- **Kutsuketju / call chain:** `lue_regnlyThread` (säie / thread, `Tp/TpComY.cpp:2233`) →
+  `lue_regnly` → `lue_EMITAG` (`Tp/TpLaitteet.cpp:1299-1373`) → `tall_emit`
+  (`Hk/HkIV.cpp:1074`, `Juk/VIv.cpp:1065`) → `tulk_emiTag`. HTTP: `etHaku`/`vahaku` →
+  `httphaku(..., secure = 0, ...)` (`Hk/HkIV.cpp:3540`) → rivit yli 30 merkkiä →
+  `tulk_emiTag` (`Hk/HkIV.cpp:3591`, `Juk/VIv.cpp:2485`).
+- **Tarkistukset / checks:** puskurin koko rajataan (`r_buflen` 15 000); kehyksessä
+  vaaditaan ETX yli 15 tavun kohdalla, STX:ää ei vaadita alussa, **tarkistussummaa ei ole**;
+  `P`-kentässä vaaditaan kaksi `-`-merkkiä; indeksiä `i` ei rajata (`j > 255`
+  -tarkistus on kommentoitu pois). Mikään tarkistus ei estä vikaa. [todennettu]
+- **Syötteen luotettavuus / trust:** laiteperäinen (lukijan sarja- tai USB-väylä);
+  **verkko**: GUI:n TCP-palvelin kuuntelee kaikissa osoitteissa ilman vertaisen
+  suodatusta (`com/WinUDP.cpp:645-676`, `:795`), joten kuka tahansa samassa verkossa voi
+  lähettää kehyksen; HTTP-vastauksen voi väärentää kuka tahansa yhteyden reitillä
+  (salaamaton HTTP, oletuspalvelin `Hk/HkGlobals.cpp:624`). Voiko kilpailijan emiTag-kortti
+  vaikuttaa `P`-indeksiin, on [tuntematon].
+- **Ehdot / conditions:** emiTag-lukija tai HTTP-pollaus käytössä; yksi kehys, jossa
+  `P<i>-<j>-...` ja `i` ≥ 500.
+- **Pahin perusteltu vaikutus / worst justified impact:** 2 + 4 tavun kirjoitus
+  lähettäjän valitsemalla siirtymällä ja osin valitulla arvolla. 32-bittisessä
+  aritmetiikassa `i` ≥ 2^29 kiertää osoitteen myös taulukon alapuolelle, joten
+  "negatiivinen indeksi ei mahdollinen" ei rajaa ulottuvuutta. Yksittäinen indeksoitu
+  kirjoitus voi ohittaa /GS-evästeen (MSVC); bcc32-GUI:ssa evästettä ei ole.
+  **Perusteltu:** tietojen korruptio ja koko ajanotto-ohjelman kaatuminen. **Spekulatiivinen:**
+  koodin suoritus (vaatii kehysasettelun ja ASLR/DEP-ohituksen) [tuntematon]. [päätelty]
+- **Altistavat tilanteet / exposure:** suunnistuksen tai hiihdon maali emiTag-lukijalla
+  (häiriintynyt linja, lukijan laiteohjelmistovika); GUI:n `TCPS`-tila tapahtuman lähiverkossa;
+  GPRS/online-väliajat julkisen tai tapahtumapaikan Wi-Fin yli.
+- **Vakavuus / severity:** korkea (säilyy) / high (kept).
+
+### H-056 `lue_ARES` (ja `lue_Sirit`, `lue_EMITAG`)
+
+| Ohjelma / Program | ARES | Sirit (`LAJUNEN`) | emiTag |
+|---|---|---|---|
+| HkMaali, HkKisaWin | kyllä (`ARESn=`, sarja tai TCP-asiakas) / yes | kyllä / yes | kyllä / yes |
+| ViestiMaali, ViestiWin | ei avainsanaa / no keyword | kyllä / yes | kyllä / yes |
+| ViestiLuenta | ei / no | ei (`LAJUNEN` puuttuu) / no | kyllä / yes |
+
+- **Kutsuketju / chain:** `lue_regnlyThread` → `lue_regnly` → `lue_ARES`
+  (`Tp/TpLaitteet.cpp:696-736`) / `lue_Sirit` (`:741-797`) / `lue_EMITAG`.
+- **Mekanismi / mechanism:** `lue_ARES` synkronoi SOH:hon ja silmukoi `while (*nmsg >= 41)`;
+  jos EOT ei ole kohdissa 19 ja 40 eikä puskurissa ole NUL-tavua, `strstr` palauttaa
+  puskurin alun (tai NULL) eikä mikään haara etene → ikuinen silmukka. ARES-kehys on
+  ASCII-muotoinen, joten yksi kadonnut tai ylimääräinen tavu riittää. [todennettu]
+  silmukka, [päätelty] kehyksen muoto (Q44). `lue_Sirit`: osittainen rivi ilman `\r`:ää
+  riittää samaan. `lue_EMITAG`: 15 000 tavua ilman ETX:ää pysäyttää lukijan pysyvästi.
+- **Vaikutus / impact:** lukijasäie pyörii 100 % yhdellä ytimellä, kyseisen laitteen
+  ajanottosyöte pysähtyy eikä ohjelma voi lopettaa säiettä. Lukkoa ei pidetä, joten muu
+  ohjelma jatkaa. Yhden tavun kasakirjoitus vaatii noin 15 kt:n purskeen ja osuu
+  todennäköisesti varauksen täytetilaan. Koodin suoritusta ei voi perustella.
+- **Syöte / input:** laiteperäinen (sarjaportti) tai ARES-TCP-yhdyskäytävä (lähtevä
+  yhteys).
+- **Altistavat tilanteet / exposure:** hiihdon tai ampumahiihdon maali ARES-laitteella
+  RS-232:n yli: linjahäiriö, löysä kaapeli, väärä pariteetti, laitteen uudelleenkäynnistys
+  kesken kehyksen.
+- **Vakavuus / severity:** korkea ARES-, Sirit- tai emiTag-käytössä (ajanoton
+  menetys), muuten ei vaikutusta / high where the device is used.
+
+## 11. Tutkittavat rivit / Investigate rows (33)
+
+| Luokka / Category | Määrä / Count | Rivit / Rows |
+|---|--:|---|
+| Vahvistettu / confirmed | 11 | 9 uutta (H-069:n lisäkohta `ViestiWin/UnitAjanotto.cpp:1096`, H-075 `JukConsole/vcons2.cpp:2200`, H-077 `ViestiWin/UnitGAZ.cpp:1047`, `:1072`, matalat näyttö- ja tulostearvot) + 2 = H-058 (`Juk/VEmit.cpp:3500`, `:3553`) |
+| Todennäköinen / likely | 6 | H-076 (`Juk/VTulostus.cpp:1019`, `:1021`), `Hk/HkEmit.cpp:723`, `Juk/VTulostus.cpp:1868`, `Juk/VIv.cpp:1690`, `Juk/VIv.cpp:786` (T-020) |
+| Jää auki / remains open | 2 | `Hk/HkXmlTulokset.cpp:1211`, `Juk/VIv.cpp:2226` (vain arvo tai näyttö / value or display only) |
+| Väärä positiivinen / false positive | 14 | mm. kuollut `seur_kno`, W8079-tyyppisekoitukset / e.g. dead code, type mixes |
+
+Tarkastus kumosi `ViestiWin/UnitGAZ.cpp:997`:n (`TauluJako`): kutsujat rajaavat
+`nikk` ≤ 4. Rivikohtaiset tiedot: `todisteet/c4/tutkittavat_vaihe2.csv`. / The review
+refuted `UnitGAZ.cpp:997`; per-row data in the CSV.
+
+## 12. Muunnosvaroitukset / Conversion warnings
+
+522 yksilöllistä C4244/C4245/C4389/C4018/W8071/W8012-riviä tiedostoissa, jotka käsittelevät
+verkkopaketteja, laitesanomia, kilpailijatietueita, emit-dataa ja tiedostoja, ryhmiteltiin
+juurisyyn mukaan ja ryhmien edustajat jäljitettiin käyttöön asti.
+
+522 unique conversion warnings in input-handling files were grouped by root cause and
+representatives were traced to their use.
+
+| Kuvio / Pattern | ~Määrä / count | Muistin kannalta / Memory-relevant | Tulos / Verdict |
+|---|--:|---|---|
+| Merkki- ja taulukkomuunnokset (int → char/wchar_t) / character conversions | 108 | ei / no | harmiton / benign |
+| `class_len`/`combufsize` → pakettipituus / packet length | 33 | pituus / length | harmiton; tunnetut H-025, H-032, H-061 |
+| Lähetyspuolen INT16-kentät / send-side INT16 fields | 23 | vastaanottajan indeksi / receiver index | harmiton (vastaanottaja tarkistaa; H-033) |
+| `aikatp`/`emittp`-kentät / fields | 85 | osin / partly | harmiton paitsi emiTag `F` (H-055) |
+| Konfiguraatiotiedostojen INT16-indeksit / config INT16 indices | 55 | kyllä / yes | **H-074** |
+| Emit- ja ratarakenteet / emit and course structures | 83 | osin / partly | harmiton; negatiivinen väliaika kiertyy 65xxx:ksi ja pidentää H-073:n tekstiä |
+| `sizeof`-vertailut / comparisons | 34 | rajatarkistukset / bounds checks | suojaavia / protective |
+| I/O-koot / sizes | 9 | kyllä / yes | H-053, H-049; `Tp/TpComY.cpp:3022` → **H-071** |
+| XML/jäsennin / parser | 44 | syvyys / depth | H-057; muut harmittomia / others benign |
+| Portit / ports | 12 | ei / no | harmiton / benign |
+| Tietueen kenttätaulukko / record field table | 10 | `memcpy`-koko / size | harmiton (käännösaikaiset vakiot); tietueen koko on H-041 |
+| Muut / other | ~16 | tietuelinkit / record links | harmiton (tietueita ≤ 9 999) |
+
+**Tulos / result:** yksikään muunnosvaroitus ei sellaisenaan ole muistivian syy;
+numerot ja tietuenumerot on rajattu (`MAXKILPNO` 9999). Käyttöpaikkojen jäljitys löysi
+kuitenkin neljä uutta vikaa: H-071, H-072, H-073, H-074; kahdessa kavennus on osa
+mekanismia (viestin INT16-`os`, UINT16-väliaika). / No conversion warning by itself
+causes a memory defect; tracing the uses found H-071–H-074. Noin 300 riviä luokiteltiin
+harmittomiksi kuvion perusteella avaamatta. / About 300 lines were classed benign by
+pattern without opening them.
+
+## 13. Kattavuuden arviointi / Coverage assessment
+
+**Kääntämättä jääneet 55 tiedostoa** (HEAD): 23 C-11-testitiedostoa, 2 `LibTest.cbproj`-
+testiohjelman tiedostoa ja 30 orpoa tiedostoa (`inventaario.md`). Yksikään ei ole
+toimitetun ohjelman lähdelistassa eikä `#include`-direktiivin kautta mukana; konsoliohjelmat
+linkittyivät tässä analyysissä ja GUI-ohjelmat tallennetussa käännöksessä ilman niitä.
+Orpojen joukossa on vanhoja kopioita (`Tp/TpComY32.cpp`, `tputilv2/*-2.cpp`, `*-v.cpp`),
+joiden vikoja ei ole tarkoituksenmukaista analysoida. / None is production code.
+
+**Analyysin ulkopuolelle jääneet kokoonpanot / configurations not analysed:**
+
+| Projekti / Project | Kokoonpanot / Configs | Ero analysoituun / Difference |
+|---|---|---|
+| HkMaali | Debug, DebugV200, Demo | `_DEBUG`, `NREGNLY`, `VALUKU=200` (katettu ReleaseVA200:lla / covered), `DEMO` |
+| JukMaali520 | Debug, Debug250 | samat rajat kuin Release / Release150os / same limits |
+| JukLuenta520 | Debug, Debug250, Release150os | samat määritykset (T-017) / identical defines |
+| HkKisaWin, ViestiWin | Debug, Win64, Win64x | ei koskaan toimitettu / never shipped [päätelty] |
+| TpTest, TpCoreHk, TpCoreJuk, LibTest | kaikki / all | testiohjelmia / test programs |
+| bcc32c, bcc64 (Clang) | – | tuotantoa ei käännetä niillä / not used for production |
+
+**Kääntäjävaroitusten ulkopuolelle jäävät vikaluokat / defect classes outside compiler
+warnings** (havaittu tässä erässä / observed in this batch):
+
+1. Ajonaikaisesti lasketut koot: tietueen koko konfiguraatiosta (H-041, H-042) — ei
+   yhtään varoitusta.
+2. Ulkoisesta syötteestä tulevat indeksit ja pituudet ilman rajatarkistusta (H-055, H-060,
+   H-070, H-071, H-072) — kääntäjä ei tiedä arvon alkuperää.
+3. Laskenta- ja täyttökierroksen erot (H-058, H-074) — vaativat kahden silmukan vertailun.
+4. Etenemättömät silmukat ja palvelunesto (H-056) — ei muistivirhe kääntäjälle.
+5. Samanaikaisuus, lukot ja elinkaari (H-007–H-021, H-040) — erät C-1/C-2, ei varoituksia.
+6. Tiedostopolut ja oikeudet (H-071:n `"wb"`-avaus) — ei muistikysymys kääntäjälle.
+7. GUI:n muotoilumerkkijonot ja puskurit: bcc32 ei tarkista (T-021).
+8. Rakenteiden asettelu kääntäjien välillä (`-a1`, `-K`, `/J`) — erä C-5.
+
+**Riskialueet, joita varoitusinventaario ei kata / risky areas not covered by the
+inventory:**
+
+- **Laitejäsentimet** `Tp/TpLaitteet.cpp` (`tulk_*`, `lue_*`): neljä uutta vikaa
+  (H-055, H-056, H-070, H-055:n `F`-kenttä) löytyi lukemalla, ei varoituksista.
+  Kaikkia jäsentimiä ei ole luettu (mm. `lue_regnly`n yleinen haara `:1611-1640`,
+  RTR-, Alge-, Kurvinen-jäsentimet). [tuntematon]
+- **Verkkopaketin hyötykuorman käsittelijät** (`tark_*`, `Hk/HkCom32.cpp`,
+  `Juk/VCom.cpp`): H-071 ja H-072 löytyivät muunnosten jäljityksestä; kaikkia
+  pakettiluokkia ei ole käyty läpi kenttä kentältä.
+- **GUI-lomakkeet** (`cbHk/`, `ViestiWin/`, `cbTp/`, 178 käännösyksikköä vain bcc32:lla):
+  tuonti (`UnitImport`), MySQL, näyttötaulut (`UnitGAZ`, `UnitTaulu`), COMFILE-katselin
+  (H-050).
+- **XML-tuonnin "säilytä paikat" -tila** (`cbHk/UnitImport.cpp:99-110`): `addtall`-silmukka
+  XML:n avaimeen asti, käytös `maxrec`-rajalla [tuntematon].
+
+## 14. Uudet havainnot vaiheessa 2 / New findings in step 2
+
+| ID | Vakavuus / Severity | Lyhyesti / Summary | Syöte / Input | Ohjelmat / Programs | Todennus / Verification |
+|---|---|---|---|---|---|
+| H-070 | korkea FEIG-lukijalla / high with a FEIG reader | `lue_FEIG`: laitteen pituus → `memcpy` 15 001 tavun kasalohkoon | laite / device (sarja, TCP-asiakas) | HkMaali, HkKisaWin, ViestiMaali, ViestiWin | riippumaton / independent |
+| H-071 | korkea / high | FILESEND: pituus tarkistamatta, verkon valitsema tiedostopolku `"wb"` | **verkko / network** | kaikki 5 / all | riippumaton / independent |
+| H-072 | korkea / high | `EXTRA`: HK `eralahto[d2]`, viesti `Sarjat[sarja]` verkon indeksillä | **verkko / network** | kaikki 5 / all | riippumaton / independent |
+| H-073 | keskitaso / medium | `kirjemvaloki`: `msg[400]`-pinoylivuoto | verkko (EMITVA), `EMVALOKI` | HkMaali, HkKisaWin, ViestiMaali, ViestiWin | riippumaton / independent |
+| H-074 | keskitaso / medium | lähdepiste- ja lähdejonotiedostot: laskenta/täyttö, negatiivinen osuus | paikallinen tiedosto / local file | HK ja viesti / HK and relay | riippumaton, osittain / partly |
+| H-075 | keskitaso / medium | viestin konsoli: alustamaton kirjasinosoitin | operaattori / operator | ViestiMaali | riippumaton / independent |
+| H-076 | keskitaso / medium | `ossijat`: kasan ylivuoto XML-osuustuloksissa | operaattori / operator | viesti / relay | riippumaton / independent |
+| H-077 | matala / low | C-Power-taulun loppumerkki pinopuskurin yli | operaattori / operator | HkKisaWin, ViestiWin | riippumaton, osittain / partly |
+
+Laajennetut / extended: **H-055** (verkkosaavutettavuus, osoitteen kierto, `F`-kenttä),
+**H-056** (`lue_Sirit`, `lue_EMITAG`), **H-059** (viestin konsolin `ln[120]`),
+**H-069** (`srj` ajanottoruudukossa). Uutta H:ta ei luotu, kun kyse oli rekisteröidyn
+vian toisesta ilmenemismuodosta. / No new H for another manifestation of a registered one.
+
+Muita, rekisteriin kirjaamattomia matalia / other low, not registered:
+`Juk/VTulostus.cpp:3076` (alustamaton `st` HTML:ään), `:1868` (päättämätön kopio),
+`Juk/XMLtulos.cpp:446` (alustamaton `tag_cn`), `Juk/VIv.cpp:1690` (`ESITARK=-1`),
+`Hk/HkEmit.cpp:723` (ratavienti, `Point[-1]`), `HkConsole/HkCons2.cpp:2663` ja
+`JukConsole/vcons2.cpp:2064` (näyttö), `Tp/TpLaitteet.cpp:257-288` (`ec_strtoaika`
+etumerkillinen ylivuoto), `:401-404` (`F`-kentän yliluku), `Juk/VTulostus.cpp:3061`
+(`buf[-1]`).
+
+## 15. Muistiturvallisuuden kokonaisarvio / Overall assessment
+
+**Suomeksi.** Koodipohjassa ei ole järjestelmällistä syötteen validointia: laitteiden
+sanomat, verkkopakettien hyötykuorma ja asetustiedostot jäsennetään kiinteän kokoisiin
+puskureihin ja taulukoihin, ja indeksit ja pituudet otetaan syötteestä sellaisenaan.
+Verkkoprotokollassa ei ole todennusta (H-029) eikä avaimellista eheystarkistusta, joten
+tarkistamaton hyötykuorman kenttä on **mahdollisesti** lähiverkosta saavutettava.
+Saavutettavuus on osoitettu havaintokohtaisella kutsu- ja verkkopolkuanalyysillä vain
+alla olevan taulukon havainnoille; muiden pakettikenttien saavutettavuutta ei ole
+analysoitu, eikä sitä voi päätellä yleisestä protokollan ominaisuudesta. Vakavimmat viat
+ovat verkosta tai laitteelta tulevat kirjoitukset (H-071, H-072, H-055, H-070, H-032),
+joista H-071 sallii myös tiedostojen korvaamisen ilman muistivirhettä. Pinon
+ylivuodot syntyvät rajaamattomasta `swprintf`ista (`_CRT_NON_CONFORMING_SWPRINTFS`) ja
+kiinteistä rivipuskureista (H-059, H-073). Tietueen ja taulukoiden koot riippuvat
+käännösvalitsimista ja ajonaikaisista asetuksista (H-041, H-042), mitä kääntäjä ei
+näe. Kääntäjävaroitus osui suoraan vikakohtaan 16:ssa C-4:n 23 uudesta havainnosta; 7
+(H-055, H-060, H-070–H-074) löytyi lukemalla tai jäljittämällä varoitusten ympäristöä. Mikään C-4:n uusista havainnoista ei ole ajossa
+vahvistettu; ainoa ajossa vahvistettu muistivika on edelleen H-041.
+
+**In English.** There is no systematic input validation: device messages, network
+payloads and configuration files are parsed into fixed buffers and arrays, with indices
+and lengths taken from the input. The protocol has no authentication (H-029) and no keyed
+integrity check, so an unchecked payload field is **potentially** reachable from the LAN.
+Reachability has been shown by per-finding call and network path analysis only for the
+findings in the table below; other packet fields have not been analysed and their
+reachability cannot be inferred from the protocol property alone. The most severe
+defects are network- or device-originated writes (H-071, H-072, H-055, H-070, H-032);
+H-071 also allows overwriting files. Stack overflows come from unbounded
+`swprintf` and fixed line buffers. Record and array sizes depend on build switches and
+run-time settings that the compiler cannot see. Warnings found about half of this
+batch's defects directly; the rest were found by reading around them. None of the new
+C-4 findings is confirmed by running; H-041 remains the only memory defect confirmed by
+running.
+
+### Priorisointi / Prioritisation (vakavuus × saavutettavuus / severity × reachability)
+
+| Prioriteetti / Priority | Havainnot / Findings | Peruste / Rationale |
+|---|---|---|
+| **P1: verkosta, ilman erityisasetuksia / network, default settings** | H-071, H-072, H-032, H-061 (sarja/TCP) | Yksi väärennetty paketti; ei todennusta. / One forged packet. |
+| **P2: verkosta tai laitteelta tietyillä asetuksilla / network or device with a setting** | H-055 (GUI `TCPS`, HTTP, lukija), H-070 (FEIG), H-056 (ARES, Sirit, emiTag: palvelunesto), H-060 (ampumapaikka, myös verkon sanomatyyppi 6), H-073 (`EMVALOKI`) | Tavallinen laitekäyttö tai lähiverkko. / Normal device use or LAN. |
+| **P3: toimitetussa käännöksessä tavallisella datalla / shipped build, ordinary data** | H-041 (ajossa vahvistettu / confirmed by running), H-042, H-001, H-059, H-076, H-062 | Ei hyökkääjää; riittää iso kilpailu tai tietty tulostevalinta. / No attacker needed. |
+| **P4: paikallinen tiedosto tai operaattori / local file or operator** | H-002, H-057, H-058, H-074, H-065, H-063, H-064, H-075, H-052, H-049 | Vaatii virheellisen tai muokatun tiedoston tai tietyn valinnan. / Needs a bad file or choice. |
+| **P5: matala / low** | H-066, H-067, H-068, H-069, H-077, H-003 | Väärä arvo tai näyttö, pieni yliluku. / Wrong value or display. |
+
+### Havaintokohtainen saavutettavuus / Per-finding reachability
+
+| ID | Syöte ja polku / Input and path | Portti tai laite / Gate | Analyysi / Analysis |
+|---|---|---|---|
+| H-071 | UDP, sarja, binääri-TCP → `addseur` → pakettiluokan käsittely (`Hk/HkCom32.cpp:939-940`, `Juk/VCom.cpp:968`) → `tark_tiedosto` (`Tp/TpComY.cpp:3004-3037`) | ainoa ehto: vastaanotto käytössä (`vastcom`), yhteys auki; ei asetuslippua / only receiving enabled | C-4 vaihe 2, riippumaton tarkastus F1 |
+| H-072 | sama verkkopolku → `EXTRA` (`Hk/HkCom32.cpp:640-645`, `Juk/VCom.cpp:1617-1618`) | `comopen`; ei asetuslippua / no setting | F2, F3 |
+| H-032 | UDP-vastaanotto (`Tp/TpComY.cpp:1001`) | UDP-yhteys / UDP link | C-2, C-11 testikehys / harness |
+| H-061 | sarja ja binääri-TCP, pala-ajoin saapuva paketti (`Tp/TpComY.cpp:805-818`) | sarja- tai TCP-yhteys / link | D1 (ajonaikainen arvo [tuntematon] / runtime value unknown) |
+| H-055 | emiTag-lukija (sarja/USB), GUI:n `TCPS`-palvelin, HTTP-pollaus (`Hk/HkIV.cpp:3540`) | emiTag-lukija, `TCPS` tai `ETGPRS`/`ETSQL` / reader, TCPS or polling configured | luku 10, E2 |
+| H-070 | FEIG-lukija (sarja tai lähtevä TCP) → `lue_FEIG` | FEIG-avainsana / keyword | E1 |
+| H-060 | Kurvinen-laite tai verkon sanomatyyppi 6 (`Hk/HkCom32.cpp:647`) | `sak_laji` 2 (oletus / default) | vaihe 1, C2 |
+| H-073 | vastaanotettu EMITVA-paketti → `kirjemvaloki` | `EMVALOKI` | F4 |
+| H-056 | ARES/Sirit/emiTag-laite → lukijasäie | laite konfiguroitu / device configured | luku 10, E3 |
+
+### Kiireellisesti korjattavat / Urgent fixes
+
+**H-071, H-072, H-055 ja H-070** merkitään kiireellisesti korjattaviksi: kolme ensimmäistä
+on osoitettu saavutettaviksi verkosta (H-055 tietyillä asetuksilla), H-070 laitteelta, ja
+kaikki antavat kirjoituksen syötteen valitsemaan paikkaan. Korjaukset ovat
+rajatarkistuksia ja polun rajaus; ne tehdään omissa haaroissaan erillisellä päätöksellä.
+Muiden havaintojen prioriteetit P1–P5 säilyvät ennallaan (P1: H-032, H-061; P2: H-056,
+H-060, H-073).
+
+**H-071, H-072, H-055 and H-070** are marked as urgent fixes. Other priorities P1–P5 are
+unchanged (P1: H-032, H-061; P2: H-056, H-060, H-073).
+
+### Väliaikaiset suojaustoimenpiteet (suositus) / Interim mitigations (recommendation)
+
+Suosituksia ylläpitäjille ja käyttäjille ennen korjauksia. Tämä auditointi ei muuttanut
+verkko-, palomuuri- eikä ohjelma-asetuksia. / Recommendations only; this audit changed no
+network, firewall or program settings.
+
+1. **Erillinen ajanottoverkko** (H-071, H-072, H-032, H-061): työasemat omaan suljettuun
+   verkkoonsa tai VLANiin; ei yleisö-, vieras- tai julkista Wi-Fiä. / Dedicated closed
+   timing network.
+2. **Palomuurin sallittujen lista** tiedonsiirtoporttien UDP/TCP-liikenteelle vain tunnettujen
+   työasemien osoitteista (Windowsin palomuurin saapuvan liikenteen säännöt). / Firewall
+   allow-list of known peers.
+3. **Vähimmät oikeudet ja oma työhakemisto** (H-071): ohjelma tavallisena käyttäjänä
+   kilpailukohtaisessa hakemistossa, ei järjestelmänvalvojana; varmuuskopiot
+   kilpailutiedostoista erilliseen paikkaan. / Least privilege, dedicated folder, backups.
+4. **emiTag** (H-055): GUI:n `TCPS`-tilaa ei käytetä jaetussa verkossa tai se rajataan
+   palomuurilla lukijan osoitteeseen; HTTP-pollaus (`ETGPRS`/`ETSQL`) vain luotetun
+   yhteyden tai VPN:n yli. / Avoid TCPS on shared networks; polling over trusted links.
+5. **Laitelukijat** (H-056, H-070): luotettavat kaapelit ja oikeat sarjaportin asetukset;
+   seurataan, että ajanottosyöte etenee, ja käynnistetään ohjelma uudelleen, jos lukija
+   pysähtyy; FEIG-, ARES- ja Sirit-lukijat vain suoraan kytkettyinä. / Reliable cabling;
+   watch input; restart procedure.
+6. **`EMVALOKI` pois päältä** (H-073), ellei sitä tarvita. / Keep `EMVALOKI` off.
+7. **Asetus- ja tuontitiedostot** (H-057, H-058, H-065, H-074): käytetään ohjelman itse
+   tuottamia tai tarkistettuja tiedostoja; ei käsin muokattuja tiedostoja tuotannossa ilman
+   koeajoa. / Use program-generated or checked files.
+
+### Korjattavat ja myöhemmin todennettavat / To fix vs to verify later
+
+- **Korjattavissa nykyisellä näytöllä** (mekanismi vahvistettu koodista ja
+  riippumattomasti, korjaus on rajatarkistus tai alustus; ei vaadi ajoa ennen korjausta) /
+  **fixable on current evidence**: H-071, H-072, H-055, H-070, H-056, H-060, H-073,
+  H-059, H-074, H-058, H-057, H-076, H-075, H-062, H-063, H-064, H-065, H-066–H-069, H-077.
+- **Todennettava ennen korjausta tai vaikutuksen arvioimiseksi** / **verify first**:
+  H-061 (`pkglen`-arvo: disassembly, Q43), H-055:n hyödynnettävyys (kehysasettelu, ASLR; ei
+  vaikuta korjaukseen), H-056:n kehysoletus (Q44), H-076:n valikkoyhdistelmä konsolissa
+  (Q52), `Hk/HkXmlTulokset.cpp:1211`, `Juk/VIv.cpp:2226`.
+- **Ehdotettu myöhempi ajonaikainen todennus** (erillisellä luvalla, ei tässä erässä) /
+  **proposed later runtime checks**: H-071 ja H-072 yhdellä paketilla eristetyssä
+  HkMaali-instanssissa; H-055 ja H-070 TpCore-kehyksen olemassa olevalla syötepolulla.
+
+## 16. Avoimet riskit / Open risks
+
+- Laitejäsentimiä ja pakettiluokkia ei ole luettu kokonaan (luku 13); samaa kuviota on
+  todennäköisesti lisää. [päätelty]
+- GUI-lomakkeiden muistiturvallisuus on analysoitu vain bcc32:n heikoilla varoituksilla.
+- Kaikki C-4:n havainnot ovat staattisia; vaikutukset (kaatuminen, korruptio,
+  hyödynnettävyys) ovat päätelmiä.
+- Noin 6 500 varoitusta (kokonaislukumuunnokset riskitiedostojen ulkopuolella,
+  käyttämättömät, varjostus, pakkaus) jäi luokittelematta.
+- H-071 ja H-072 tekevät lähiverkosta luotetun alueen; tapahtumaverkkoa, jossa on
+  muita laitteita tai yleisö, ei voi pitää turvallisena ennen korjauksia.
+
+## 17. C-4:n loppuyhteenveto / Final summary of C-4
+
+| Mittari / Metric | Arvo / Value |
+|---|---|
+| Kääntäjät / compilers | MSVC 19.52 (v145), bcc32 7.80 |
+| Kokoonpanot / configurations | 7 MSVC (5 projektia / projects), 4 bcc32 |
+| Varoitusrivejä / warning rows | 11 027 |
+| Yksilöllisiä / unique | 7 036 (MSVC 1 605, bcc32 5 431) |
+| Luokiteltu riveittäin / triaged per row | 275 + 33 uudelleen / re-examined |
+| Muunnosvaroituksia ryhmittäin / conversion warnings by group | 522 |
+| Uusia H-havaintoja / new H findings | 23 (H-055–H-077): korkea / high 5, keskitaso / medium 13, matala / low 5 |
+| Uusia T-havaintoja / new T findings | 2 (T-020, T-021) |
+| Laajennettuja / extended | H-055, H-056, H-059, H-069 |
+| Riippumattomia tarkastuksia / independent reviews | 5 |
+| Ajossa vahvistettu / confirmed by running | 0 uutta / new |
+
+Korkeat / high: H-055, H-056 (laitekäytössä / with the device), H-070, H-071, H-072;
+keskitaso / medium: H-057–H-065, H-073–H-076; matala / low: H-066–H-069, H-077.
+
+**C-4 on valmis ja suljettu (käyttäjän hyväksyntä 2026-11-25).** Seuraava työvaihe
+alkuperäisen suunnitelman mukaan on erä C-5 (kääntäjäkohtainen käytös); se aloitetaan vain
+erillisellä luvalla. / **C-4 is complete and closed (approved 2026-11-25).** Next per the
+original plan: batch C-5 (compiler-specific behaviour), on separate approval.
+
 ## Avoimet kysymykset / Open questions
 
 | # | Kysymys / Question | Ratkaisu / How to settle |
@@ -333,3 +708,11 @@ input-handling functions. No GUI runs, CI changes or fixes.
 | Q46 | Mikä globaali seuraa `mrivi`ä kussakin exessä? (H-067) | linkkerin kartta / linker map |
 | Q47 | Käytetäänkö kentällä käsin muokattuja `RADAT.LST`-tiedostoja tai yli 50 rastin ratoja? (H-058) | ylläpitäjät / maintainers |
 | Q48 | Miten GUI-tiedostojen muotoilumerkkijonot tarkistetaan, kun bcc32 ei sitä tee? (T-021) | esim. MSVC-syntaksitarkistus GUI-ytimelle / e.g. MSVC syntax-only pass |
+| Q49 | Onko bcc32-GUI-ohjelmissa ASLR ja jokin pinosuoja? (H-055) / ASLR and stack protection in bcc32 GUI builds? | linkkerin asetukset, PE-otsake / linker settings, PE header |
+| Q50 | Voiko konsolin asetusavainsana asettaa emiTag-lukijan TCP-palvelimeksi? (H-055) / Can a console keyword make the emiTag reader a TCP server? | `Hk/HkInit.cpp`, `Juk/VInit.cpp` |
+| Q51 | Tukeeko viesti FEIG-lukijaa TCP:n yli? (H-070) / FEIG over TCP in relay? | `Juk/VInit.cpp` |
+| Q52 | Voiko konsolin tai AutoFilen valikoista valita XML + `H` + kaikki osuudet? (H-076) / menu reachability | valikot / menus |
+| Q53 | Voiko `EMVALOKI`n asettaa GUI:sta? (H-073) / `EMVALOKI` from the GUI? | `cbHk/`, `ViestiWin/` |
+| Q54 | Mikä rajaa `len`in `lahriviCPower`issa? (H-077) / bound of `len` | `ViestiWin/UnitGAZ.cpp:918`, `cbHk/UnitTaulu.cpp:858` |
+| Q55 | XML-tuonnin "säilytä paikat": `addtall`-silmukka `maxrec`-rajalla / keep-positions loop at `maxrec` | `cbHk/UnitImport.cpp:99-110` |
+| Q56 | Voiko emiTag-kortin sisältö vaikuttaa `P`-indeksiin vai tuottaako sen vain lukijan laiteohjelmisto? (H-055) / can card contents influence the `P` index? | valmistajan protokolla / vendor protocol |

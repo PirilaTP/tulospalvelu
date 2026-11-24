@@ -25,7 +25,7 @@ riippumaton lähdetarkastus (ei ajonaikainen) / independent source review (not r
 | `Tests/` | 5 | 0 | 0 | riippuvuudet / dependencies | testiajo 46/46 (ajonaikainen) / test run 46/46 (runtime) |
 | `RADStudio10/`, `VS/` | 3 | 1 | 0 | inventaario, käännösvalitsimet, toimitetut konfiguraatiot / inventory, build switches, shipped configurations | C-3: määritykset ja koot mitattu / defines and sizes measured |
 
-Yhteenveto / summary (C-4): 631 tuotannon tiedostoa; taso 1: 501, taso 2: 118, taso 3: 12
+Yhteenveto / summary (C-4): 631 tuotannon tiedostoa; taso 1: 499, taso 2: 120, taso 3: 12
 (C-2: `Tp/TpComY.cpp`, `Hk/HkCom32.cpp`, `com/WinUDP.cpp`, `include/wincom.h`; C-3:
 `dbboxm/dbbox1.cpp`, `dbboxm/dbbox2.cpp`, `include/boxr.h`, `include/boxm.h`,
 `Hk/HkInitVanha.cpp`, `ViestiWin/ConvDat.cpp`, `tputilv2/oem2ansi.cpp`,
@@ -33,6 +33,6 @@ Yhteenveto / summary (C-4): 631 tuotannon tiedostoa; taso 1: 501, taso 2: 118, t
 vikojen varalta. C-4 nosti tasolle 2 tiedostot, joiden varoituksia luokiteltiin;
 niistä on luettu vain varoitusten kohdat. 19 C-11-testitiedostoa ovat tasolla 4.
 
-631 production files; level 1: 501, level 2: 118, level 3: 12, level 4: 0. No file has
+631 production files; level 1: 499, level 2: 120, level 3: 12, level 4: 0. No file has
 been fully reviewed for defects. C-4 raised files with triaged warnings to level 2;
 only the warning sites were read. The 19 C-11 test files are at level 4.
