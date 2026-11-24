@@ -162,6 +162,46 @@
       "timeout": 60
     },
     {
+      "id": "H-041b4-control",
+      "program": "TpCoreHkAsan",
+      "test_case": "H-041b4 control: HK addfrec at valuku 220 (ASan)",
+      "kind": "control",
+      "needs_asan_runtime": true,
+      "env": {
+        "ASAN_OPTIONS": "exitcode=77:halt_on_error=1:print_scariness=0"
+      },
+      "expected": "PASS: with n_pv 5 / valuku 220 (kilprecsize 10000 = KILPBUFSIZE) the production kilptietue::addfrec runs without an ASan report; KILP.DAT holds the header and one record (20000 bytes).",
+      "timeout": 60
+    },
+    {
+      "id": "H-041b4",
+      "program": "TpCoreHkAsan",
+      "test_case": "H-041b4 HK addfrec overflows its stack buffer at valuku 221 (ASan)",
+      "kind": "defect",
+      "finding": "H-041",
+      "mechanism": "addfrec-stack-buffer-overflow",
+      "termination": "asan",
+      "expect_exit": [
+        "77"
+      ],
+      "needs_asan_runtime": true,
+      "env": {
+        "ASAN_OPTIONS": "exitcode=77:halt_on_error=1:print_scariness=0"
+      },
+      "evidence": {
+        "bug_type": "stack-buffer-overflow",
+        "access": "WRITE",
+        "frame": "kilptietue::addfrec",
+        "variable": "buf",
+        "variable_size": 10000,
+        "stack_contains": [
+          "kilptietue::addfrec"
+        ]
+      },
+      "expected": "Correct: kilptietue::addfrec runs without an ASan report at n_pv 5 / valuku 221 (or the configuration is refused). Defect: ASan reports a stack-buffer-overflow WRITE on variable buf (10000 bytes) in frame kilptietue::addfrec. Rebuilt ASan code, not the shipped program.",
+      "timeout": 60
+    },
+    {
       "id": "H-031-control",
       "program": "TpCoreHk",
       "test_case": "H-031 control: allowed stage change proceeds",
@@ -510,6 +550,34 @@
       "data": [
         {
           "src": "data/hk/run1_kilpsrj.xml",
+          "dst": "KilpSrj.xml"
+        }
+      ]
+    },
+    {
+      "id": "hk-data-h041-v220",
+      "program": "TpCoreHk",
+      "test_case": "HK synthetic KilpSrj.xml for H-041 control (valuku 220) is read",
+      "kind": "control",
+      "expected": "PASS: data/hk/h041_v220.xml is read by the production luesarjat (0, no messages); n_pv 5, n_pv_akt 1, valuku 220, sarjaluku 1, kilprecsize 10000 (KILPBUFSIZE 10000)",
+      "timeout": 30,
+      "data": [
+        {
+          "src": "data/hk/h041_v220.xml",
+          "dst": "KilpSrj.xml"
+        }
+      ]
+    },
+    {
+      "id": "hk-data-h041-v221",
+      "program": "TpCoreHk",
+      "test_case": "HK synthetic KilpSrj.xml for H-041 boundary (valuku 221) is read",
+      "kind": "control",
+      "expected": "PASS: data/hk/h041_v221.xml is read by the production luesarjat (0, no messages); n_pv 5, n_pv_akt 1, valuku 221, sarjaluku 1, kilprecsize 10040 (KILPBUFSIZE 10000)",
+      "timeout": 30,
+      "data": [
+        {
+          "src": "data/hk/h041_v221.xml",
           "dst": "KilpSrj.xml"
         }
       ]

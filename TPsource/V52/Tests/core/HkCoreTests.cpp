@@ -144,6 +144,67 @@ TEST_CASE("H-041b2 HK write overflows its stack buffer (ASan)")
 	tp::reportResult("H-041", "write-stack-buffer-overflow", false,
 		sizeDetail() + "; no ASan report from kilptietue::write");
 }
+
+// (b4) C-11 stage 4, method C (testaus.md section 19). The write path of
+// the black-box run: kilptietue::addfrec (Hk/HkDat.cpp:626-636) packs the
+// record into char buf[KILPBUFSIZE] before addrec writes it to KILP.DAT.
+// Sizes as in data/hk/h041_v220.xml / h041_v221.xml: n_pv 5, valuku 220
+// (record 10000 bytes, fits exactly) and 221 (10040, 40 bytes too many).
+// Fixture as H-031: empty KILP.DAT, indexes and kilparr from the
+// production teejarj(false).
+static void addfrecFixture(int valuku, int expectSize)
+{
+	REQUIRE(tp::sandboxOk());
+	tph::initBase();
+	REQUIRE(KILPBUFSIZE == 10000);
+	maxkilpno = 100;
+	sarjaluku = 0;
+	nsarjayhd = 0;
+	emitfl = 0;
+	k_pv = 0;
+	tph::setStages(5, valuku);
+	REQUIRE(kilpparam.kilprecsize == expectSize);
+	tph::makeEmptyKilpDat();
+	REQUIRE(teejarj(false) == 0);
+	REQUIRE(kilparr != 0);
+	tp::info(sizeDetail() + tp::fmt("; maxrec=%d", (int) maxrec));
+}
+
+// Control: at valuku 220 the record fits; addfrec runs without an ASan
+// report and the file holds the header record plus one record.
+TEST_CASE("H-041b4 control: HK addfrec at valuku 220 (ASan)")
+{
+	addfrecFixture(220, 10000);
+	kilptietue *k = new kilptietue;
+	k->nollaa();
+	void (kilptietue::*volatile add)(int *) = &kilptietue::addfrec;
+	int d = -1;
+	(k->*add)(&d);
+	tp::info(tp::fmt("d=%d numrec=%d", d, (int) datf2.numrec));
+	CHECK(d >= 1);
+	closefile(&datf2);
+	long long size = tp::fileSize("KILP.DAT");
+	tp::info(tp::fmt("KILP.DAT size=%lld", size));
+	CHECK(size == 2 * 10000);
+}
+
+// Defect: at valuku 221 ASan must report a stack-buffer-overflow WRITE on
+// variable 'buf' (KILPBUFSIZE bytes) in frame kilptietue::addfrec.
+TEST_CASE("H-041b4 HK addfrec overflows its stack buffer at valuku 221 (ASan)")
+{
+	addfrecFixture(221, 10040);
+	kilptietue *k = new kilptietue;
+	k->nollaa();
+	void (kilptietue::*volatile add)(int *) = &kilptietue::addfrec;
+	static const char *const expect[] = { "stack-buffer-overflow", "WRITE of size", "'buf'",
+		"kilptietue::addfrec", 0 };
+	tp::armCrash("H-041", "addfrec-stack-buffer-overflow", "asan", expect);
+	int d = -1;
+	(k->*add)(&d);
+	tp::disarmCrash();
+	tp::reportResult("H-041", "addfrec-stack-buffer-overflow", false,
+		sizeDetail() + "; no ASan report from kilptietue::addfrec");
+}
 #endif
 
 // ---------------------------------------------------------------- H-031

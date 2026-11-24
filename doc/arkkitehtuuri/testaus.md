@@ -1286,3 +1286,385 @@ Avoimet kysymykset / open: valvooko G: (Google Drive, FAT32) ACL:iä rajoitettua
 vastaan; kattoiko 21.12.38 otettu lokikopio varmasti 21.11.31–33 pudotukset (päätelty
 lokin muutosajasta 21.11.56); yrittikö ohjelma estettyjä kirjoituksia tai odottamattomia
 lukuja (Procmon); DNS/IPv6/kuuntelu koeohjelmalla.
+
+## 18. C-11 vaihe 4: H-041 toimitetussa HkMaali.exe:ssä – suunnitelma / Stage 4 plan (2026-11-24)
+
+**Tila / status: hyväksytty päätöksin (luku 19.1); esiehdot toteutettu, ajot odottavat
+(luku 19).** / Approved with decisions (19.1); prerequisites done, runs pending (19).
+Lähteet: `architecture-analyst` (polku ja aineisto), oma staattinen
+tarkistus toimitetusta binääristä ja PDB:stä (ohjelmaa ei käynnistetty), luvun 17.12
+tarkastus.
+
+### 18.1 Vikapolku toimitetussa ohjelmassa / Fault path in the shipped program
+
+- **Aineisto / data:** `luekentat`: `kilprecsize = 360 + n_pv * (152 + (valuku + 2) * 8)`
+  (`Hk/HkDat.cpp:105-180`, `:137`, `:177`). `n_pv` ja `valuku` luetaan XML:stä
+  (`<FileFormat><Races>`, `<Intermediaries>`, `Hk/HkXml.cpp:438-443`) ilman rajatarkistusta;
+  `luesarjat` palaa heti onnistuneen XML-luvun jälkeen (`Hk/HkSrj.cpp:72-75`), joten
+  rajatarkistus `:158` koskee vain vanhaa tekstimuotoa (ja N_PV 5 / VALUKU 250 ovat
+  sallittuja maksimeja muutenkin) [todennettu]. Raja `n_pv` 5: `valuku` 220 → 10 000
+  (mahtuu tasan), 221 → 10 040 (ensimmäinen ylitys), 250 → 11 200.
+- **Käynnistys ei vielä ylitä / startup does not overflow:** tyhjän KILP.DAT:n luonti ja
+  avaus käyttävät kekopuskuria `tarecbuf` (`dbboxm/dbbox1.cpp:103-134`, `:161`), ja
+  `teejarj`-lukusilmukka ohitetaan, kun tietueita ei ole (`Hk/HkIx.cpp:1663-1668`)
+  [todennettu]. Lukupolku (`kilptietue::read` käynnistyksessä) vaatisi valmiin
+  11 200-tavuisen kilpailijatietueen – rajataan pois vaiheesta 4.
+- **Kirjoituspolku / write path (vähin syöte):** PÄÄVALIKKO `K` → `korjaukset`
+  (`HkConsole/HkMain.cpp:138`) → `L)isää` → `add(0)` (`HkConsole/HkCons2.cpp:805`) →
+  `kilp.inputkilp(1)` (sukunimi + `+` hyväksyy, `HkConsole/HkKilp.cpp:932`) →
+  `addtall` (`Hk/HkEmit.cpp:1265`) → `addfrec` (`Hk/HkDat.cpp:629-633`): `pack(buf)`
+  kirjoittaa `kilprecsize` tavua pinopuskuriin `char buf[KILPBUFSIZE]`. Näppäinjärjestys
+  lomakkeessa on [päätelty] ja varmistetaan kontrolliajossa.
+- **Toimitetun binäärin rakenne (staattinen, PDB) / shipped binary (static, PDB):**
+  `kilptietue::addfrec` = 0x00423120 (285 tavua). Kehys: `mov eax,2718h; call
+  __alloca_probe`; eväste `[ebp-4]` = `__security_cookie ^ ebp`; `buf` = `ebp-2714h`,
+  joten puskurin loppu on **täsmälleen eväste** (`ebp-4`). Ylitys `kilprecsize − 10 000`
+  tavua kirjoittaa evästeen, tallennetun EBP:n, paluuosoitteen, parametrin `d` ja kutsujan
+  kehystä (11 200: 1 196 tavua `ebp`:n yli; 10 040: 36 tavua). `pack` → `addrec`
+  (`WriteFile` KILP.DAT:iin) → `kilparr`-kopio → kumpikin paluupolku kutsuu
+  `__security_check_cookie` (0x00423232 → paluu 0x00423237; virhehaara 0x004231FB →
+  0x00423200) ennen `ret`-käskyä. Kuvassa on `/GS`-eväste (`dumpbin /loadconfig`:
+  Security Cookie 0x004F8700), DEP ja ASLR (DLL characteristics 0x8140). `d` luetaan
+  ylityksen jälkeen kehyksen alapuolelta (`ebp-2718h`), ei ylitetyltä alueelta
+  [todennettu disassemblystä].
+- **Odotettu tulos / expected:** tietue kirjoittuu KILP.DAT:iin (11 200 tavua) ja
+  `addfrec`-paluussa evästetarkistus epäonnistuu → `__report_gsfailure` → `__fastfail(2)`
+  → STATUS_STACK_BUFFER_OVERRUN 0xC0000409. Paluuosoitetta ei koskaan käytetä
+  [päätelty disassemblystä; ei havaittu ajossa].
+
+### 18.2 Vaihtoehdot / Options
+
+| | Mitä todistaa / proves | Mitä ei / does not prove |
+|---|---|---|
+| **A. Toimitettu HkMaali.exe, ei instrumentointia; ajuri debuggerina + PDB** | Vika laukeaa toimitetussa ohjelmassa käyttöliittymän kautta: 0xC0000409 (alikoodi 2) `addfrec`-funktion evästetarkistuksessa, KILP.DAT:ssa 11 200-tavuinen tietue, rajapari 220/221 erottaa ylityksen. Taso: **vahvistettu ajamalla** (toimitettu ohjelma). | Ylityksen tavumäärää ei nähdä suoraan (vain eväste rikki + tiedoston koko); `/GS` kertoo, että eväste muuttui, ei kuka kirjoitti; lukupolkua ei. |
+| **B. ASan-käännös samasta tuotantokoodista** (uusi projekti `VS/Tests/`-hakemistoon) | Tarkka WRITE-osoite, koko ja kehys koko ohjelman UI-polulla. | Ei toimitettu ohjelma: eri pinoasettelu (punaiset vyöhykkeet), ei `/GS`-käytöstä. Taso: toistettu testikehyksessä / uudelleenkäännetyssä ohjelmassa – **ei** vahvistettu ajamalla toimitetussa. Suuri työ (konsoliohjelman koko lähdejoukko). |
+| **C. Komponenttitestien täydennys** (TpCoreHk Release + Asan) | Halpa: `addfrec`-polun ASan-ylitys (nyt vain `write`), lukupolku muokatulla KILP.DAT:lla (`getrec` → `read`), XML-rajapari 220/221 tuotannon lukijalla. | Ei ohjelma-ajoa; taso pysyy "toistettu testikehyksessä". |
+
+**Suositus / recommendation:** A ensisijaisena; C sen esiehtona ja täydennyksenä
+(aineistotarkistus + `addfrec`-ASan). B vain, jos A jää epäselväksi. Tuloksia ei
+yhdistetä: A:n havainto merkitään toimitetulle ohjelmalle, B:n ja C:n testikehykselle /
+uudelleenkäännetylle ohjelmalle erikseen.
+
+### 18.3 Menetelmä A / Method A
+
+1. **Esiehdot (ei ohjelma-ajoa) / prerequisites:**
+   - Ajurikorjaukset luvusta 17.12: HkMaali.exe:n pid `run.json`:iin ja lokin
+     täsmäytykseen; netstat jokaisella kyselyllä myös lopetusvaiheessa; Job-objektin
+     prosessilaskuri (lapsiprosessit) ja `ACTIVE_PROCESS` 1; koeohjelman lopetus 30 s
+     jälkeen; ulkoinen TCP hyväksytään vain virheellä 10013; prosessikahvat suljetaan;
+     moduulin kuvaus ajan tasalle; D:, G: ja HKCU-kirjoitus ulkoisiin tarkistuksiin tai
+     dokumentoidaan testaamattomiksi.
+   - **Debuggeritila:** ajuri käynnistää ohjelman `DEBUG_ONLY_THIS_PROCESS`-lipulla (sama
+     rajoitettu tunnus, Job-objekti, konsoli), käsittelee `WaitForDebugEvent`-silmukan,
+     tallentaa jokaisen poikkeuksen (koodi, osoite, ensimmäinen/toinen mahdollisuus,
+     `ExceptionInformation`), säikeen kontekstin ja pinon (EBP-ketju + DbgHelp, PDB:n
+     GUID tarkistettu) ja lopettaa prosessin 0xC0000409:n jälkeen. Syy: Windowsin
+     virheraportointi on käytössä (WerSvc, ei `Disabled`, ei LocalDumps) – ilman
+     debuggeria pikakaatuminen käynnistäisi WerFaultin, joka toimii Job-objektin ja
+     palomuurisäännön ulkopuolella, kirjoittaa `ProgramData\…\WER`-hakemistoon ja voi
+     lähettää raportin verkkoon.
+   - **Mekanismin kontrolli:** oma pieni testiohjelma, joka kutsuu `__fastfail(2)` ja
+     tavallisen käsittelemättömän poikkeuksen; ajuri debuggerina näkee molemmat, WerFault-
+     prosessia ei synny eikä WER-hakemistoihin tule raportteja. Jos tämä ei pidä,
+     keskeytetään.
+   - **Aineisto:** `Tests/data/hk/h041_v220.xml`, `h041_v221.xml`, (`h041_v250.xml`):
+     ajon 1 tiedosto, jossa `Races` 5 ja `Intermediaries` 220/221/250. Tarkistetaan
+     TpCoreHk:ssa: `luesarjat` 0, `kilprecsize` 10 000 / 10 040 / 11 200.
+   - Palomuurin pudotuslokitus otetaan uudelleen tilapäisesti käyttöön (järjestelmänvalvoja)
+     ja palautetaan lopuksi, kuten luvussa 17.7.
+2. **Kontrolliajo / control run (valuku 220, `kilprecsize` 10 000):** BOOT → KILP.DAT
+   luodaan → `K` → `L` → sukunimi → `+` → poistu valikkoon → `P` → `K`. Odotus: ei
+   poikkeusta, KILP.DAT = 2 × 10 000 = 20 000 tavua (otsake + 1 tietue), itse lopetus.
+   Ajo vahvistaa myös näppäinjärjestyksen ja sen, että kirjoituspolku todella kulkee
+   (tiedoston kasvu yhdellä tietueella).
+3. **Rajanylitysajo / boundary run (valuku 221, 10 040):** sama näppäinsarja. Valinnainen
+   lisäajo valuku 250 (11 200).
+
+### 18.4 Hyväksymiskriteerit / Acceptance criteria (H-041 "vahvistettu ajamalla")
+
+Kaikki seuraavat / all of:
+1. Eristys todennettu ennen ajoa (luku 17.7 + esiehtojen korjaukset), alkuperä
+   (SHA-256 `61034e5d…7d297d`, PDB-GUID `{B0500861-3E83-4118-B0DA-E8E331F12614}`).
+2. Kontrolliajo (220) PASS: ei poikkeusta, KILP.DAT 20 000 tavua, tietueen koko
+   10 000, itse lopetus.
+3. Ylitysajossa (221) näytöt etenevät samoin kuin kontrollissa hyväksyntään (`+`) asti.
+4. Debuggeri saa poikkeuksen 0xC0000409, `ExceptionInformation[0]` = 2
+   (FAST_FAIL_STACK_COOKIE_CHECK_FAILURE); pinossa paluuosoite 0x00423237 tai 0x00423200
+   (`kilptietue::addfrec`, PDB:n mukaan) ja kutsuja `addtall`; ennen sitä ei muita
+   käsittelemättömiä poikkeuksia.
+5. Evästepaikka `[ebp-4]` poikkeaa arvosta `__security_cookie ^ ebp` (luetaan prosessin
+   muistista poikkeushetkellä).
+6. KILP.DAT = 2 × 10 040 = 20 080 tavua (otsake + tietue kirjoitettu ennen
+   evästetarkistusta).
+7. Ei WerFault-prosessia, ei uusia WER-raportteja, ei ohjelman pid:n pudotusmerkintöjä,
+   ei muutoksia seuratuissa hakemistoissa.
+
+Pelkkä kaatuminen, aikakatkaisu tai poistumiskoodi ei riitä. Jos kohdat 4–6 täyttyvät
+mutta 2 ei, tulos on epäselvä (ei vahvistettu).
+
+### 18.5 Keskeytyskriteerit / Abort criteria
+
+Keskeytä ja raportoi ennen seuraavaa ajoa, jos / stop and report if:
+- eristystä (verkko, tiedostot, konsoli, debuggeritila, WER-kontrolli) ei voida todentaa;
+- kontrolliajo poikkeaa odotuksesta (poikkeus, eri tiedostokoko, eri näytöt);
+- ylitysajossa tulee muu poikkeus tai poikkeus muualla kuin `addfrec`-paluussa
+  (kirjataan havainnoksi, ei luokitella H-041:ksi);
+- WerFault-prosessi, uusi WER-raportti tai ohjelman pid:n pudotusmerkintä havaitaan;
+- aikaraja ylittyy (prosessi lopetetaan, tulos ei ole todiste);
+- tiedostoja syntyy testihakemiston ulkopuolelle.
+
+### 18.6 Riskit ja eristysvaatimukset / Risks and isolation
+
+- **Muistikorruptio:** rajoittuu prosessin omaan pinoon (nollia ja oletusarvoja
+  pakatusta tietueesta, ei ulkoista syötettä). Ylityksen ja evästetarkistuksen välissä
+  ohjelma tekee vain `WriteFile`-kirjoituksen KILP.DAT:iin (testihakemisto),
+  `kilparr`-kopion ja `LeaveCriticalSection`-kutsun; paluuosoitetta ei käytetä
+  [päätelty disassemblystä]. Testihakemiston ulkopuolelle vaikutus voisi kulkea vain
+  prosessin omien oikeuksien kautta (kirjoitusrajoitettu tunnus, palomuuri).
+- **WER** on suurin eristysriski (ks. 18.3); debuggeritila tai käyttäjän erillinen lupa
+  WER:n tilapäiseen poistoon (HKCU `Windows Error Reporting\Disabled` = 1, ei vaadi
+  järjestelmänvalvojaa, mutta on asetusmuutos).
+- **Jumiutuminen:** Job-objekti + aikaraja; debuggeritilassa prosessi ei jatka
+  0xC0000409:n jälkeen.
+- **Debuggerin vaikutus:** debuggerin alla Windows käyttää eri keon
+  tarkistusasetuksia; pinon `/GS`-käytös ei muutu [päätelty].
+- **Lukupolku** (käynnistyksessä, `teejarj` → `read`) jää todentamatta; se vaatisi
+  käsin tehdyn KILP.DAT:n.
+
+### 18.7 Päätökset ennen ajoa / decisions needed
+
+1. Hyväksytäänkö menetelmä A (debuggeritila) ensisijaiseksi ja C sen esiehdoksi; tehdäänkö
+   B lainkaan.
+2. Ajetaanko ylitys rajalla 221, lisäksi 250, vai vain toinen.
+3. WER: riittääkö debuggeritila (ja sen kontrolli), vai sallitaanko HKCU-tason WER:n
+   tilapäinen poisto lisävarmistukseksi.
+4. Palomuurin pudotuslokituksen tilapäinen käyttöönotto uudelleen (järjestelmänvalvoja).
+5. Saako ajurin esiehtokorjaukset ja aineistot commitoida ennen ajoa erillisenä committina.
+
+In English: stage 4 reproduces H-041 in the shipped HkMaali.exe through K → L → add →
+`addfrec` with a synthetic series file (`Races` 5, `Intermediaries` 221; control 220).
+Static disassembly with the PDB shows `buf` ends exactly at the `/GS` cookie and both
+return paths check it, so the expected result is 0xC0000409 (fast-fail code 2) at the
+`addfrec` return after the record is written. The driver runs the program as a debugger
+so WER (enabled on this machine) never starts. Acceptance needs the control run, the
+exception code and subcode, the return address in `addfrec`, the broken cookie, the
+KILP.DAT size and clean isolation evidence; a crash alone is not enough. Option B (ASan
+rebuild) and C (component tests) prove the overrun only in rebuilt code and are recorded
+separately.
+
+## 19. C-11 vaihe 4: esiehdot ja H-041-koeajo / Stage 4: prerequisites and the H-041 runs (2026-11-24)
+
+### 19.1 Käyttäjän päätökset / User decisions
+
+| | Päätös / decision |
+|---|---|
+| Menetelmä / method | A (toimitettu HkMaali.exe debuggerin hallinnassa) ja C (komponenttitestit ensin); B (ASan-uudelleenkäännös) ei tässä vaiheessa / A and C; no B |
+| Rajapari / boundary pair | 5 vaihetta / 220 väliaikaa (10 000 tavua) ja 5 / 221 (10 040); 250 ei / not 250 |
+| WER | debuggeritila; ei WER-asetusmuutoksia; jos debuggeri ei estä WER:iä luotettavasti → pysähdy ja pyydä lupa HKCU-muutokseen / debugger mode, no settings change |
+| Palomuuri / firewall | pudotuslokituksen järjestelmänvalvojan komennot ajaa käyttäjä; alkuperäiset asetukset kirjataan ja palautetaan; säännöt voimassa koko ajan / the user runs the admin commands |
+| Commit | esiehdot erillisenä paikallisena committina; koeajojen tuloksia ei commitoida ilman erillistä hyväksyntää; ei pushia / prerequisites in a separate local commit; run results only with approval |
+| Rajaukset / limits | ei tuotantokoodin, CI:n eikä muiden havaintojen tasojen muutoksia; ei oikeita kilpailutietoja; ei muita vikatoistoja / no production, CI or other-finding changes |
+
+### 19.2 Aineisto ja komponenttitestit (menetelmä C) / Data and component tests (method C)
+
+| Tiedosto / file | Sisältö / content | SHA-256 |
+|---|---|---|
+| `Tests/data/hk/h041_v220.xml` | ajon 1 tiedosto, `Races` 5, `Intermediaries` 220, `RaceCount` 1 | `8cb8262c7338881ebcf5995510cacb865f8c8f48187a86216c8d46d41bf42de2` |
+| `Tests/data/hk/h041_v221.xml` | sama, `Intermediaries` 221 | `2ed216acdfa9b3071541f1efad52c0c417e299a6e3ca96d6ae3b5b8e5c445a42` |
+
+| Testi / test (`run_core_tests.py`) | Tulos / result |
+|---|---|
+| `hk-data-h041-v220` (TpCoreHk Release, tuotannon `luesarjat` + `luekentat`) | PASS: `luesarjat` 0, ei viestejä, n_pv 5, n_pv_akt 1, valuku 220, `kilprecsize` **10 000** (= KILPBUFSIZE) |
+| `hk-data-h041-v221` | PASS: valuku 221, `kilprecsize` **10 040**; tulostettu havainto (ei tarkistus): `pack` kirjoittaa `nollaa()`-tyhjennetylle tietueelle tavuihin 10 000–10 039 nollia (käyttöliittymän tietue on eri tietue; kriteeri 6 vertaa tiedoston tavuihin) / printed observation for a cleared record, not an assertion |
+| `H-041b4-control` (TpCoreHkAsan) | PASS: `kilptietue::addfrec` valuku 220:llä ilman ASan-raporttia, KILP.DAT 20 000 tavua |
+| `H-041b4` (TpCoreHkAsan) | XFAIL: ASan `stack-buffer-overflow` WRITE muuttujaan `buf` (10 000) kehyksessä `kilptietue::addfrec` valuku 221:llä |
+| Koko sarja / whole suite | PASS 23, XFAIL 24, ei FAIL/XPASS; `test_run_core_tests.py` 46/46 |
+
+Seuraus nollista / consequence of the zeros: pinon ja tietueen tavujen vertailu yksin
+olisi heikko todiste (nolla vastaa nollaa). Siksi debuggeri tallentaa kehyksen arvot
+**ennen** ylitystä (keskeytyskohta funktion alussa) ja vertaa niitä poikkeushetken
+arvoihin (19.4). / Comparing stack and record bytes alone would be weak (zeros), so the
+frame values are recorded before the overflow and compared after.
+
+`H-041b4` on uudelleenkäännettyä koodia (ASan), ei toimitettu ohjelma; taso pysyy
+"toistettu testikehyksessä". / Rebuilt code; level stays "reproduced in test harness".
+
+### 19.3 Ajurin korjaukset (luvut 17.12, 18.3) / Driver fixes
+
+Työkalut / tools: `Tests/blackbox/run_hkmaali.py`, uusi `hkdebug.py`, `verify_log.py`,
+`isolation_probe.c`, uusi `crash_probe.c`, `build_probes.cmd` (käännös repositorion
+ulkopuolelle), `scripts/h041_v220.json`, `scripts/h041_v221.json`, offline-testit
+`test_run_hkmaali.py` (39 testiä).
+
+| Vaatimus / requirement | Toteutus / implementation | Todennus / verified by |
+|---|---|---|
+| PID tallennetaan / pid recorded | `run.pid`, `probe.pid`; `verify_log.py` hakee pudotukset ohjelman pid:llä ja ajoikkunassa (±60 s) | offline-testi `ProgramDrops` |
+| Prosessit ja lapsiprosessit / processes and children | jokaiselle käynnistykselle oma Job-objekti, `ActiveProcessLimit` 1 (lapsiprosessi ei käynnisty), kirjanpito (`TotalProcesses`, `ActiveProcesses`); prosessilistan seuranta 0,1 s välein (lapset ja WER-prosessit) | crash control: lapsi estetty (virhe 1816, `TotalProcesses` 1); ilman rajaa lapsi nähtiin ja kuoli Job-objektin mukana; 300 ms:n prosessi havaittiin |
+| Verkkoseuranta / network monitoring | iphlpapi: TCP (kaikki tilat) ja UDP, IPv4 ja IPv6, ohjelman pid; jokaisella kyselyllä, myös lopetusta odotettaessa ja lopun jälkeen | positiivinen kontrolli: ajurin omat TCP-, UDP- ja TCP6-pistokkeet löytyivät |
+| Koeohjelman aikakatkaisu / probe timeout | 30 s kokonaisraja (myös READY-odotus), sitten `TerminateProcess` ja "ei todennettu" | itsetesti: jumiutuva koeohjelma lopetettiin 5 s:n rajalla (5,16 s), ei todennettu |
+| Ulkoinen TCP vain 10013 / external TCP only 10013 | koeohjelma ja ajuri vaativat virheen 10013 (muu virhe, estetty soketti tai aikakatkaisu = ei todennettu) | koe: `error 10013 after 0 ms` |
+| D:, G:, HKCU | ulkopuoliset kirjoituskohteet `D:\`, `G:\`, `G:\Oma Drive\`; HKCU: avaimen luonti ja `KEY_SET_VALUE`; jäljelle jäänyt avain hylkää koeohjelman tuloksen (`run_probe`) | koe: kaikki virhe 5; HKCU 5 ja 5 (19.5) |
+| Lokin kattavuus / log coverage | toinen koeohjelma-ajo ohjelman **jälkeen** (`post_probe`); `verify_log.py` vaatii myös sen paketit lokikopiosta (`covers_run`), ei pudotuksia ohjelman pid:llä eikä muiden kuin koeohjelmien lähteviä (SEND) pudotuksia ajoikkunassa | offline-testit `ProgramDrops` |
+| Kahvat / handles | `close_pi`, Job- ja token-kahvat suljetaan; debug-tapahtumien `hFile` suljetaan | koodi |
+
+### 19.4 Debuggeritila ja WER-kontrolli / Debugger mode and WER control
+
+**Toteutus / implementation (`hkdebug.Debugger`):** ajuri käynnistää ohjelman
+`DEBUG_ONLY_THIS_PROCESS`-lipulla omassa säikeessään (sama kirjoitusrajoitettu tunnus,
+Job-objekti ja konsoli) ja käsittelee jokaisen debug-tapahtuman. Ensimmäisen
+mahdollisuuden poikkeukset annetaan ohjelmalle ja kirjataan. Kohtalokas poikkeus
+(0xC0000409, toinen mahdollisuus tai jatkokelvoton) → konteksti (`Wow64GetThreadContext`),
+EBP-ketju, pinon koodiosoitteet, valvotun funktion kehys → `TerminateProcess` (koodi
+0xDEAD0409) **ennen** jatkamista, joten WER ei käynnisty. Valinnainen `--watch`:
+kertakäyttöinen int3 funktion alkuun (PDB:stä, ASLR-kanta huomioiden); siinä tallennetaan
+paluuosoite, kutsujan EBP, ensimmäinen parametri ja evästeen odotusarvo
+(`__security_cookie ^ EBP`), ja asetetaan toinen int3 paluukohtaan. Paluukohdassa
+(normaali paluu) luetaan kehyksen paikat uudelleen. Alkuperäinen tavu palautetaan ja EIP
+asetetaan takaisin; binääriä levyllä ei muuteta. DbgHelp `SYMOPT_EXACT_SYMBOLS`; PDB:n
+GUID verrataan EXE:n RSDS-tietoon.
+
+The driver is the program's debugger; fatal exceptions are recorded and the process is
+terminated before it is continued, so WER never starts. One-shot breakpoints at the
+watched function's entry and return site record the frame before and after; the binary
+on disk is not changed.
+
+**Kontrolli / control (`crash_probe.c`, x86 `/GS /Oy-`, `victim()`: 64 tavun puskuri
+päättyy evästeeseen kuten `addfrec`issa; "gs 104" ylittää 40 tavulla nollilla):**
+
+| Skenaario / scenario | Tulos / result |
+|---|---|
+| `gs 64` (ei ylitystä) | poistumiskoodi 0; alun keskeytys: kutsuja `main+0x6C`; paluukohdassa eväste, tallennettu EBP ja paluuosoite ennallaan |
+| `gs 104` | 0xC0000409, alikoodi 2, toinen mahdollisuus, `__report_gsfailure+0x5`; [ESP] = `victim+0x41`; EBP = valvottu kehys; eväste-, EBP-, paluu- ja parametripaikat = 0 (ennen: paluu `main+0x6C`, eväste odotusarvossaan); 40 ensimmäistä tavua nollia; prosessi lopetettu (0xDEAD0409) |
+| `fastfail` | 0xC0000409, alikoodi 2, lopetettu |
+| `av` | 0xC0000005 ensin 1. mahdollisuus, sitten 2. mahdollisuus → lopetettu |
+| `child` + raja 1 | lapsen luonti estetty (virhe 1816), `TotalProcesses` 1; 0xC0000409 |
+| `child` ilman rajaa | lapsi luotiin (havaittu prosessilistassa), kuoli Job-objektin sulkemisessa |
+| WER (kaikki) | WerSvc STOPPED ennen ja jälkeen; ei WerFault/WerFaultSecure/wermgr-prosesseja; Application-lokissa 0 tapahtumaa 1000/1001/1002/1005 kontrollin ajalta; ei muutoksia WER- ja CrashDumps-hakemistoissa |
+
+Havainto / finding: tämän CRT:n `__report_gsfailure` on kehyksetön: paluuosoite
+epäonnistuneeseen funktioon on [ESP]:ssä ja EBP on yhä sen kehys (ei EBP+4). Luvun 18.4
+kohta 4 tarkennettiin tämän mukaan. / The CRT's `__report_gsfailure` is frameless: the
+return address is at [ESP]; criterion 4 adjusted.
+
+Rajaus / limit: WER-ilmaisimille ei tehty positiivista kontrollia (se vaatisi oikean
+kaatumisen ilman debuggeria, jolloin WER toimisi eristyksen ulkopuolella). Prosessilistan
+seuranta havaitsi 300 ms:n prosessin; WerSvc-tila ja tapahtumaloki ovat pysyviä
+ilmaisimia. / No positive control for the WER detectors (it would need WER to run outside
+the isolation).
+
+Päätelmä / conclusion: viidessä tarkoituksellisessa kaatumisessa (kuudes skenaario ei
+kaadu) yksikään ilmaisin ei nähnyt WER-toimintaa; debuggeri lopetti prosessin ennen
+jatkamista. Että WER *estyi*, on päätelmä mekanismista ja ilmaisimista, joilla ei ole
+positiivista kontrollia. Tämä riittää käyttäjän ehdon mukaiseen jatkamiseen ilman
+HKCU-muutosta. / In five deliberate crashes no detector saw WER activity; "prevented" is
+inferred from the mechanism, the detectors have no positive control. No HKCU change.
+
+### 19.5 Eristystarkistukset / Isolation checks (koeohjelma palomuurin alaisessa polussa / probe at the firewalled path)
+
+| Tarkistus / check | Tulos / result |
+|---|---|
+| Tunnus / token | rajoitettu, keskitaso, ei ylläpitäjä / restricted, medium, not admin |
+| `%TEMP%`, profiili, Dokumentit, `LOCALAPPDATA` | virhe 5 / error 5 |
+| `D:\` (NTFS) | virhe 5 |
+| `G:\` ja `G:\Oma Drive\` (Google Drive, ilmoittaa FAT32) | virhe 5 (testattu kirjoittamalla, ei oletettu ACL:stä) / error 5, tested by writing |
+| HKCU: avaimen luonti, `KEY_SET_VALUE` | 5 ja 5; avainta ei jäänyt |
+| TCP 192.0.2.1 | 10013 heti / at once |
+| TCP6 [2001:db8::1] (tieto / info) | 10051 (ei IPv6-reittiä; palomuuria ei testattu IPv6:lla) / no IPv6 route |
+| Silmukka / loopback (tieto) | yhteys syntyi (palomuuri ei suodata) |
+| UDP | `sendto` onnistui; todiste vain pudotuslokista (19.7) |
+
+Ei testattu / not tested: verkkojaot, nimetyt objektit, muut rekisterihaarat kuin HKCU,
+siirrettävät asemat (ei kytkettynä). / Shares, named objects, other hives, removable drives.
+
+### 19.6 Tarkennetut hyväksymiskriteerit / Refined acceptance criteria
+
+Luvun 18.4 kriteerit koodina: `hkdebug.evaluate_h041(control, overflow, logs)`
+(offline-testit: 31 tapausta, joissa yksikin poikkeama antaa "not confirmed"). Kriteerit
+on kiinnitetty ennen ajoja; niitä ei muuteta tulosten nähtyä. Tarkennukset / refinements:
+- (1) EXE:n ja kopion SHA-256 = `61034e5d…7d297d` ja PDB-GUID = `{B0500861-…}`
+  (kiinnitetyt arvot, ei vain "kopio = lähde"); koeohjelma ennen ja jälkeen todennettu.
+- (2) kontrolli: ei kohtalokasta poikkeusta, ei toisen mahdollisuuden poikkeuksia, ei
+  odottamattomia int3-pysähdyksiä.
+- (4) poikkeus 0xC0000409, alikoodi 2, RVA 0xA1295 (`__report_gsfailure+5`; HkMaalin
+  `___report_gsfailure` 0x4A1290 on `mov ecx,2; int 29h`, kehyksetön); paluuosoite [ESP]:ssä
+  (tai EBP-ketjussa) RVA 0x23237 tai 0x23200; EBP = `addfrec`in kehys; täsmälleen yksi
+  kohtalokas poikkeus ja se on ensimmäinen toisen mahdollisuuden poikkeus (debuggeri
+  säilyttää ensimmäisen); sama säie kuin alun keskeytyksessä; ei odottamattomia
+  int3-pysähdyksiä; debuggeri lopetti prosessin (0xDEAD0409); **kutsuja `addtall`** luetaan
+  alun keskeytyksestä (ylityksen jälkeen paluuosoite on ylikirjoitettu).
+- (5) evästepaikka ≠ `__security_cookie ^ EBP` **ja** paluupaikka ≠ alussa tallennettu
+  paluuosoite.
+- (6) KILP.DAT 20 080 tavua **ja** pinon tavut [EBP−4, EBP+36) = tietueen 1 tavut
+  [10 000, 10 040) (nollia; ks. 19.2).
+- (7) kummassakin ajossa: ei WER-prosesseja (seurattu), ei WER-tapahtumia ohjelmasta,
+  WerSvc pysähdyksissä lopussa, ei verkkopäätepisteitä, Job `TotalProcesses` 1, ei
+  ulkopuolista tiedostoa eikä HKCU-avainta, ei muutoksia seuratuissa hakemistoissa paitsi
+  ennalta kiinnitetty kohina (`hkdebug.outside_noise`: `%TEMP%\DiagOutputDir\RdClientAutoTrace\*.etl`,
+  Etätyöpöytäasiakkaan jäljitys, nähty kaikissa C-11-ajoissa ohjelmasta riippumatta; WER-
+  ja CrashDumps-muutokset eivät koskaan ole kohinaa); **ja** `verify_log.py`: koepaketit
+  täsmäävät, ei pudotuksia ohjelman pid:llä, ei muiden kuin koeohjelmien lähteviä
+  pudotuksia ajoikkunassa, jälkimmäisen koeohjelman paketit kopiossa (kopio kattaa ajon).
+- Kontrolli (2): paluukohdan keskeytyksessä eväste ja paluuosoite ennallaan.
+
+Keskeytyskohdat muuttavat prosessin koodia hetkellisesti (int3, palautetaan heti);
+pinon asetteluun tai `/GS`-käytökseen ne eivät vaikuta [päätelty]. / Breakpoints touch
+code bytes briefly; no effect on stack layout or /GS [inferred].
+
+### 19.7 Ajomenettely ja järjestelmänvalvojan komennot / Run procedure and admin commands
+
+Alkuperäiset lokitusasetukset (luettu 2026-11-24 ennen muutoksia) / original logging
+settings: kaikissa profiileissa (Domain, Private, Public) `Enabled` True, `LogBlocked`
+False, `LogAllowed` False, `LogFileName` `%systemroot%\system32\LogFiles\Firewall\pfirewall.log`,
+`LogMaxSizeKilobytes` 4096. Säännöt `TP C11 HkMaali block in/out` käytössä.
+
+1. Käyttäjä (ylläpitäjä): `run_hkmaali.LOGGING_ON_COMMAND` (lokitus testihakemistoon).
+2. Ajuri: `--probe-only` → koepaketit.
+3. Käyttäjä: `LOG_COPY_COMMAND` (lokikopio luettavaksi); ajuri: `verify_log.py` →
+   `udp_verified.json` (portti-, aika- ja protokollatäsmäys).
+4. Kontrolliajo 220: `--mode firewall --debug --watch kilptietue::addfrec --udp-verified …
+   --script scripts/h041_v220.json --data Tests/data/hk/h041_v220.xml=KilpSrj.xml`.
+5. Käyttäjä: lokikopio; ajuri: `verify_log.py` (koepaketit ennen ja jälkeen, ohjelman
+   pid, kattavuus). Jos kontrolli tai eristys poikkeaa → keskeytys.
+6. Ylitysajo 221 samoin (`h041_v221.json`, `h041_v221.xml`).
+7. Käyttäjä: lokikopio ja `LOGGING_RESTORE_COMMAND`; ajuri: `verify_log.py` ja
+   lokitusasetusten tarkistus alkuperäisiksi.
+
+Ajojen tulokset kirjataan lukuun 19.9 (ei commitoida ilman hyväksyntää). / Results go to
+19.9, not committed without approval.
+
+### 19.8 Riippumaton tarkastus / Independent review (esiehdot / prerequisites)
+
+`independent-verifier` (vain luku; ajoi offline-testit, dumpbin HkMaali.exe ja crash_probe):
+C1 (aineisto), C2 (H-041b4), C3 (`addfrec`in kehys toimitetussa binäärissä; myös HkMaalin
+`___report_gsfailure` kehyksetön) ja C5 (kaatumiskontrolli; `victim` uskollinen malli)
+**vahvistettu**. Osittain: C4 (debuggeri), C6 (koeohjelma), C7 (arviointi heikompi kuin
+dokumentti), C8 (lokin kattavuus), C9 (näppäinpolku vain staattisesti), C10 (liioittelut).
+Korjattu ennen committia / fixed before the commit:
+
+1. Lokin kattavuus: jälkimmäinen koeohjelma-ajo ja `covers_run`; `verify_log`-tulos osaksi
+   kriteeriä 7 (`evaluate_h041(…, logs)`).
+2. Kriteeri 1 kiinnitettyihin SHA-256- ja GUID-arvoihin.
+3. Ensimmäinen kohtalokas poikkeus säilytetään, `fatal_count`; vaaditaan täsmälleen yksi;
+   mahdoton offline-testi korvattu realistisella.
+4. Kohinasääntö `outside_changes`ille kiinnitetty ennen ajoa (yllä).
+5. Odottamattomat int3-pysähdykset (yli kaksi WOW64-käynnistyksen pysähdystä) kirjataan ja
+   hylkäävät.
+6. Kriteeri 4: poikkeuksen RVA, säie, `terminated_by_debugger`, 0xDEAD0409.
+7. Puuttuvat negatiiviset testit lisätty (EBP, paluuosoite ennallaan, PDB, tiiviste,
+   pistokkeet, ulkopuoliset muutokset, WerSvc, loki); 39 offline-testiä.
+8. Koeohjelman aikakatkaisu kokonaisrajaksi (5,16 s itsetestissä); koeohjelmien tiivisteet
+   itsetestin tulokseen; jäljelle jäänyt HKCU-avain hylätään `run_probe`ssa.
+9. Dokumentti: 19.2 havainto vs. tarkistus, 19.3 aikaraja, 19.4 päätelmä (viisi kaatumista,
+   "ei havaittu" eikä "estetty").
+
+Lisäksi: jos debug-silmukka ei pääty, kahvoja ei suljeta (C4 d). Avoimet: `Sarjat[-1]`-luku
+`inputkilp`in alussa (`Sarja()` = −1) ja `ProcessSpecialKey` Tab-näppäimelle – kontrolliajo
+näyttää; WER-ilmaisimilla ei positiivista kontrollia. Tarkastajan mukaan esiehdot riittävät
+kontrolliajoon; kohdat 1–4 piti korjata ennen 221-ajon luokittelua (korjattu).
+
+Itsetesti korjausten jälkeen / self-test after the fixes: kaikki 6 osaa OK; crash control:
+kussakin kaatumisessa `fatal_count` 1, 2 käynnistyspysähdystä, 0 odottamatonta.
+
+### 19.9 Koeajot / Runs
+
+Ei vielä ajettu. / Not run yet.

@@ -19,14 +19,15 @@ separately from test coverage.
 | C, erä 11, vaihe 1: H-025, H-040, H-042 / batch 11, stage 1 | valmis, hyväksytty, commitoitu `79d9957` / done, approved, committed (`testaus.md` luku 13) | 2026-11-24 |
 | C, erä 11, vaihe 2: H-041, H-031, H-008, H-024, H-027 / batch 11, stage 2 | valmis, hyväksytty, commitoitu `cad2781` / done, approved, committed (`testaus.md` luku 14) | 2026-11-24 |
 | C, erä 11, vaihe 3: H-026, H-032, H-022, H-023, H-007, H-001, H-002 / batch 11, stage 3 | valmis, hyväksytty, commitoitu / done, approved, committed (`testaus.md` luku 15) | 2026-11-24 |
-| HkMaali.exe:n koeajot 0 ja 1 / black-box runs 0 and 1 | tehty palomuurieristyksellä, molemmat odotetusti; ensimmäinen AppContainer-yritys keskeytyi; ei H-vahvistuksia; commitoimatta / done under firewall isolation, both as expected; first AppContainer attempt stopped; no H confirmed; uncommitted (`testaus.md` luku 17) | 2026-11-24 |
+| HkMaali.exe:n koeajot 0 ja 1 / black-box runs 0 and 1 | tehty palomuurieristyksellä, molemmat odotetusti; ensimmäinen AppContainer-yritys keskeytyi; ei H-vahvistuksia; done under firewall isolation, both as expected; first AppContainer attempt stopped; no H confirmed (`432ea3d`, `testaus.md` luku 17) | 2026-11-24 |
+| C-11 vaihe 4: H-041 toimitetussa ohjelmassa / stage 4 | hyväksytty (A + C, 220/221, debuggeritila); esiehdot tehty ja testattu, HkMaali-ajot tekemättä / approved; prerequisites done and tested, HkMaali runs pending (`testaus.md` luvut 18, 19) | 2026-11-24 |
 | C, erät 4–10 / batches 4–10 | ei aloitettu / not started (`suunnitelma.md`); erä 5 osittain / batch 5 partly | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** käyttäjä päättää ajotyökalujen ja luvun 17
-commitoinnista, palomuurisääntöjen poistosta sekä seuraavasta erästä (C-11 vaihe 4 tai
-C-4). / The user decides on committing the run tools and section 17, removing the
-firewall rules and the next batch.
+**Seuraava askel / Next step:** esiehtojen commit, sitten pudotuslokitus (käyttäjä,
+järjestelmänvalvoja) ja H-041-ajot luvun 19.7 mukaan; palomuurisäännöt pysyvät voimassa.
+/ Commit the prerequisites, then drop logging (user, admin) and the H-041 runs per 19.7;
+the firewall rules stay in place.
 
 Havainnot (H/T) ja niiden todennustila: `rekisteri/havainnot.md`.
 Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
@@ -105,6 +106,7 @@ Recorded as issue drafts (local `issue-drafts/`, not in the repo).
 | 2026-11-24 | Ensimmäisellä kierroksella ei muuteta `TPsource/`-hakemistoa / no `TPsource/` changes in round 1 | Ensin ymmärrys, sitten muutokset / understanding before changes |
 | 2026-11-24 | C-11: testit haaralle `testit/vikojen-todentaminen`, ajuri Pythonilla, uusi todennustaso `toistettu testikehyksessä`; ei tuotantokoodin muutoksia, testikoukkuja eikä CI-muutoksia; testikoodi commitoidaan vain erillisellä hyväksynnällä / tests on their own branch, Python runner, new verification level; no production, hook or CI changes; test code committed only with approval | Käyttäjän ohje / user instruction |
 | 2026-11-24 | Syväauditointi erinä riskijärjestyksessä, enintään 3 analyysiagenttia rinnakkain, jokainen erä riippumattomasti tarkastettu / deep audit in risk-ordered batches, max 3 parallel analysis agents, each batch independently reviewed | Käyttäjän ohje / user instruction |
+| 2026-11-24 | C-11 vaihe 4: menetelmät A (toimitettu HkMaali.exe debuggerin alla) + C (komponenttitestit), ei B; rajapari 220/221, ei 250; WER vain debuggeritilalla, HKCU-muutos vain erillisellä luvalla; pudotuslokituksen ylläpitäjäkomennot ajaa käyttäjä; esiehdot erillisenä paikallisena committina, ajotuloksia ei commitoida ilman hyväksyntää; H-041 "vahvistettu ajamalla" vain yksiselitteisellä näytöllä / stage 4: methods A + C, no B; pair 220/221; WER via debugger mode only; user runs admin commands; prerequisites committed separately, run results only with approval | Käyttäjän ohje / user instruction |
 
 ## Oletukset, joita ei ole todennettu / Unverified assumptions
 

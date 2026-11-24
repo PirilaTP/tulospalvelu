@@ -52,13 +52,47 @@ Mode "firewall" (--mode firewall, chosen by the user after run 0):
   - Loopback (127.0.0.1) is not filtered by Windows Firewall; the probe
     records it as information only.
 
+C-11 stage 4 additions (testaus.md section 19), firewall mode only:
+  - The probe must see the external TCP connect refused with 10013 exactly;
+    it also checks that HKCU writes are refused, and the outside list
+    includes D:\\ and G:\\ (G: is Google Drive reporting FAT32, so NTFS
+    ACLs cannot be assumed: only the probe's actual write attempt counts).
+    A drive that is not present is recorded as such. The probe is killed
+    after 30 s and then counts as not verified.
+  - Every launched process gets its own job (ActiveProcessLimit 1, so no
+    child process can start; accounting recorded). The program's pid is
+    recorded for the firewall log match (verify_log.py).
+  - TCP/UDP, IPv4/IPv6 endpoints of the program (iphlpapi) are sampled on
+    every poll, including the wait for exit; WER processes and children of
+    the program are watched in the process list; Application log WER
+    events and the WerSvc state are recorded (hkdebug.py).
+  - --debug: the driver is the program's debugger (hkdebug.Debugger):
+    every exception is recorded; a fatal one (0xC0000409, second chance,
+    non-continuable) gets context, stack and frame evidence and the process
+    is terminated before WER can start. --watch NAME sets a one-shot
+    breakpoint at that function (PDB next to --exe) and at its return
+    site, recording the frame before and after.
+  - --crash-control: the debugger mode on crash_probe.exe (deliberate
+    crashes), no HkMaali. --self-test: endpoint, process watcher, probe
+    timeout, symbol and crash-control checks.
+  - Script steps may wait for a cursor position ("cursor": [x, y]) and
+    navigate with a key until the cursor reaches a field ("nav").
+
 Usage:
   python -I run_hkmaali.py --exe PATH --probe PATH --script SCRIPT.json --out DIR
                            [--data SRC=DST ...] [--mode appcontainer|firewall]
+                           [--debug] [--watch FUNCTION]
+  python -I run_hkmaali.py --crash-control --crash-probe PATH --out DIR
+  python -I run_hkmaali.py --self-test --exe PATH --probe PATH --crash-probe PATH --out DIR
 SCRIPT.json: {"args": ["BOOT"], "steps": [{"wait": "text", "key": "\\r"}, ...],
               "expect_exit": true, "total_timeout": 60, "step_timeout": 10}
-A step with "key": null only waits for the text. After the last step the
-driver waits for the process to exit.
+A step with "key": null only waits for the text. Optional in a step:
+"cursor": [x, y] (also wait for the cursor there), "key_delay": seconds
+between keys. A navigation step {"nav": "\\t", "until_cursor": [x, y],
+"max": 30} presses the key until the cursor is at (x, y). After the last
+step the driver waits for the process to exit. Optional "record_check":
+{"recsize": N, "bufsize": M} compares the stack bytes past the watched
+frame's buffer with the record bytes [M, N) of record 1 in KILP.DAT.
 """
 
 import argparse
@@ -75,6 +109,9 @@ import tempfile
 import threading
 import time
 from ctypes import wintypes
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import hkdebug  # noqa: E402
 
 k32 = ctypes.WinDLL('kernel32', use_last_error=True)
 adv = ctypes.WinDLL('advapi32', use_last_error=True)
@@ -216,18 +253,53 @@ def grant(path, sidstr):
         raise RuntimeError('icacls: ' + r.stdout + r.stderr)
 
 
+class JOBOBJECT_BASIC_ACCOUNTING_INFORMATION(ctypes.Structure):
+    _fields_ = [('TotalUserTime', ctypes.c_longlong), ('TotalKernelTime', ctypes.c_longlong),
+                ('ThisPeriodTotalUserTime', ctypes.c_longlong), ('ThisPeriodTotalKernelTime', ctypes.c_longlong),
+                ('TotalPageFaultCount', wintypes.DWORD), ('TotalProcesses', wintypes.DWORD),
+                ('ActiveProcesses', wintypes.DWORD), ('TotalTerminatedProcesses', wintypes.DWORD)]
+
+
+JOB_LIMIT_ACTIVE_PROCESS = 0x00000008
+
+
 class Job:
-    def __init__(self):
+    """KILL_ON_JOB_CLOSE + DIE_ON_UNHANDLED_EXCEPTION; with active_limit the
+    job refuses any process beyond that many (no child processes)."""
+    def __init__(self, active_limit=None):
         k32.CreateJobObjectW.restype = wintypes.HANDLE
         self.h = k32.CreateJobObjectW(None, None)
         check(self.h, 'CreateJobObject')
         info = JOBOBJECT_EXTENDED_LIMIT_INFORMATION()
         info.BasicLimitInformation.LimitFlags = JOB_KILL_ON_CLOSE | JOB_DIE_ON_UNHANDLED_EXCEPTION
+        if active_limit:
+            info.BasicLimitInformation.LimitFlags |= JOB_LIMIT_ACTIVE_PROCESS
+            info.BasicLimitInformation.ActiveProcessLimit = active_limit
+        self.active_limit = active_limit
         check(k32.SetInformationJobObject(self.h, 9, ctypes.byref(info), ctypes.sizeof(info)),
               'SetInformationJobObject')
 
     def terminate(self):
         k32.TerminateJobObject(self.h, 0xDEAD0001)   # recognisable: killed by the driver
+
+    def accounting(self):
+        a = JOBOBJECT_BASIC_ACCOUNTING_INFORMATION()
+        if not k32.QueryInformationJobObject(self.h, 1, ctypes.byref(a), ctypes.sizeof(a), None):
+            return {'error': ctypes.get_last_error()}
+        return {'TotalProcesses': a.TotalProcesses, 'ActiveProcesses': a.ActiveProcesses,
+                'TotalTerminatedProcesses': a.TotalTerminatedProcesses, 'ActiveProcessLimit': self.active_limit}
+
+    def close(self):
+        if self.h:
+            k32.CloseHandle(self.h)   # KILL_ON_JOB_CLOSE
+            self.h = None
+
+
+def close_pi(pi):
+    for h in (pi.hThread, pi.hProcess):
+        if h:
+            k32.CloseHandle(h)
+    pi.hThread = pi.hProcess = None
 
 
 RESTRICTING_SID = 'S-1-5-12'   # NT AUTHORITY\RESTRICTED
@@ -286,11 +358,13 @@ def low_integrity_token():
     return new
 
 
-def launch(job, sid, exe, args, cwd, con, token=None):
+def launch(job, sid, exe, args, cwd, con, token=None, debug=False):
     """Starts exe suspended, either in the AppContainer (sid) or with the
     given token (low integrity), with the driver's console as its standard
     input/output/error (and no other inherited handle); assigns it to the
-    job; resumes. Returns PROCESS_INFORMATION."""
+    job; resumes. With debug the calling thread becomes its debugger
+    (DEBUG_ONLY_THIS_PROCESS) and must run the debug loop.
+    Returns PROCESS_INFORMATION (the caller closes its handles)."""
     size = ctypes.c_size_t()
     k32.InitializeProcThreadAttributeList(None, 2, 0, ctypes.byref(size))
     attr = ctypes.create_string_buffer(size.value)
@@ -315,27 +389,28 @@ def launch(job, sid, exe, args, cwd, con, token=None):
     si.lpAttributeList = ctypes.cast(attr, ctypes.c_void_p)
     pi = PROCESS_INFORMATION()
     cmd = ctypes.create_unicode_buffer(subprocess.list2cmdline([exe] + list(args)))
+    flags = EXTENDED_STARTUPINFO_PRESENT | CREATE_SUSPENDED | (hkdebug.DEBUG_ONLY_THIS_PROCESS if debug else 0)
     if token is None:
         k32.CreateProcessW.argtypes = [wintypes.LPCWSTR, wintypes.LPWSTR, ctypes.c_void_p, ctypes.c_void_p,
                                        wintypes.BOOL, wintypes.DWORD, ctypes.c_void_p, wintypes.LPCWSTR,
                                        ctypes.c_void_p, ctypes.POINTER(PROCESS_INFORMATION)]
-        check(k32.CreateProcessW(exe, cmd, None, None, True,
-                                 EXTENDED_STARTUPINFO_PRESENT | CREATE_SUSPENDED,
+        check(k32.CreateProcessW(exe, cmd, None, None, True, flags,
                                  None, cwd, ctypes.byref(si), ctypes.byref(pi)), 'CreateProcess')
     else:
         adv.CreateProcessAsUserW.argtypes = [wintypes.HANDLE, wintypes.LPCWSTR, wintypes.LPWSTR, ctypes.c_void_p,
                                              ctypes.c_void_p, wintypes.BOOL, wintypes.DWORD, ctypes.c_void_p,
                                              wintypes.LPCWSTR, ctypes.c_void_p, ctypes.POINTER(PROCESS_INFORMATION)]
-        check(adv.CreateProcessAsUserW(token, exe, cmd, None, None, True,
-                                       EXTENDED_STARTUPINFO_PRESENT | CREATE_SUSPENDED,
+        check(adv.CreateProcessAsUserW(token, exe, cmd, None, None, True, flags,
                                        None, cwd, ctypes.byref(si), ctypes.byref(pi)), 'CreateProcessAsUser')
+    k32.DeleteProcThreadAttributeList(attr)
     if not k32.AssignProcessToJobObject(job.h, pi.hProcess):
         k32.TerminateProcess(pi.hProcess, 1)
+        close_pi(pi)
         raise RuntimeError('AssignProcessToJobObject failed (%d)' % ctypes.get_last_error())
     if k32.ResumeThread(pi.hThread) == 0xFFFFFFFF:
         k32.TerminateProcess(pi.hProcess, 1)
+        close_pi(pi)
         raise RuntimeError('ResumeThread failed (%d)' % ctypes.get_last_error())
-    k32.DeleteProcThreadAttributeList(attr)
     return pi
 
 
@@ -397,8 +472,14 @@ class Console:
         text = buf[:n.value]
         return '\n'.join(text[i:i + w].rstrip() for i in range(0, len(text), w))
 
+    def cursor(self):
+        info = CSBI()
+        if not k32.GetConsoleScreenBufferInfo(self.out, ctypes.byref(info)):
+            return None
+        return [info.dwCursorPosition.X, info.dwCursorPosition.Y]
+
     def key(self, ch):
-        vk = {'\r': 0x0D, '\x1b': 0x1B}.get(ch, user32.VkKeyScanW(ord(ch)) & 0xFF)
+        vk = {'\r': 0x0D, '\x1b': 0x1B, '\t': 0x09}.get(ch, user32.VkKeyScanW(ord(ch)) & 0xFF)
         scan = user32.MapVirtualKeyW(vk, 0)
         recs = (INPUT_RECORD * 2)()
         for i, down in enumerate((True, False)):
@@ -504,21 +585,42 @@ class Listener:
 
 # ---------------------------------------------------------------- runs
 
-def run_probe(job, sid, sandbox, probe, outside, token=None, mode='appcontainer', ports=None):
+PROBE_TIMEOUT_S = 30
+
+
+def run_probe(job, sid, sandbox, probe, outside, token=None, mode='appcontainer', ports=None,
+              timeout_s=PROBE_TIMEOUT_S, args_override=None):
+    """Runs the isolation probe; it is killed after timeout_s and then
+    counts as not verified. args_override is for the driver self-test."""
     lst = Listener()
     con = Console()
     args = [outside, str(lst.port)] + ([str(ports[0]), str(ports[1])] if ports else [])
+    if args_override is not None:
+        args = args_override
     pi = launch(job, sid, probe, args, sandbox, con, token)
+    pid = pi.dwProcessId
     t0 = time.time()
-    while 'PROBE READY' not in con.screen() and time.time() - t0 < 10:
+    while 'PROBE READY' not in con.screen() and time.time() - t0 < min(10, timeout_s):
+        if k32.WaitForSingleObject(pi.hProcess, 0) == 0:
+            break
         time.sleep(0.1)
     con.key('X')
-    k32.WaitForSingleObject(pi.hProcess, 30000)
+    left = max(0, timeout_s - (time.time() - t0))
+    timed_out = k32.WaitForSingleObject(pi.hProcess, int(left * 1000)) != 0
+    if timed_out:
+        k32.TerminateProcess(pi.hProcess, 0xDEAD0003)
+        k32.WaitForSingleObject(pi.hProcess, 5000)
     code = wintypes.DWORD()
     k32.GetExitCodeProcess(pi.hProcess, ctypes.byref(code))
+    close_pi(pi)
     con.close()
     lst.close()
-    res = {'exit_code': code.value, 'listener_accepts': lst.accepts, 'checks': {}}
+    res = {'exit_code': code.value, 'exit_code_hex': '0x%08X' % code.value, 'pid': pid, 'timed_out': timed_out,
+           'duration_s': round(time.time() - t0, 2), 'listener_accepts': lst.accepts, 'checks': {}}
+    if timed_out:
+        res['isolation_verified'] = False
+        res['error'] = 'probe killed after %d s' % timeout_s
+        return res
     try:
         with open(os.path.join(sandbox, 'probe_result.txt'), encoding='ascii') as f:
             for line in f:
@@ -527,63 +629,143 @@ def run_probe(job, sid, sandbox, probe, outside, token=None, mode='appcontainer'
                     res['checks'][k] = v
     except OSError as e:
         res['error'] = str(e)
+    ext10013 = True
     if mode == 'firewall':
         # Windows Firewall does not filter loopback: informational only.
-        required = ('cwd', 'console', 'outside', 'external')
+        # External TCP counts only when refused with 10013 (the firewall's
+        # WSAEACCES), checked here too, not only in the probe.
+        required = ('cwd', 'console', 'outside', 'external', 'registry')
         loop_ok = True
+        ext10013 = ', error 10013 after ' in res['checks'].get('external', '')
+        res['external_10013'] = ext10013
     else:
         required = ('cwd', 'console', 'outside', 'loopback', 'external')
         loop_ok = lst.accepts == 0
-    ok = (res['checks'].get('done') == '1' and loop_ok and
+    if mode == 'firewall':
+        res['registry_key_left'] = reg_probe_key_exists()
+    ok = (res['checks'].get('done') == '1' and loop_ok and ext10013 and code.value == 0 and
+          not res.get('registry_key_left') and
           all(res['checks'].get(k, '').startswith('isolated_or_ok') for k in required) and
-          not any(os.path.exists(o) for o in outside.split(';')))
+          not any(os.path.exists(o) for o in outside.split(';') if o))
     res['required_checks'] = list(required)
     res['isolation_verified'] = ok
     return res
 
 
-def run_program(job, sid, sandbox, exe, script, log, token=None):
+def _poll_net(pid, net):
+    try:
+        s = hkdebug.endpoints([pid])
+    except OSError as e:
+        s = ['endpoint query failed: %s' % e]
+    if s:
+        net.append({'t': round(time.time(), 2), 'endpoints': s})
+    return s
+
+
+def _kilp_size(sandbox):
+    p = os.path.join(sandbox, 'KILP.DAT')
+    return os.path.getsize(p) if os.path.exists(p) else None
+
+
+def run_program(job, sid, sandbox, exe, script, log, token=None, debug=False, image_path=None, watch=None):
+    """Runs the program with the console script. Every poll samples the
+    program's network endpoints (also while waiting for the exit), windows
+    and the KILP.DAT size. With debug the program runs under hkdebug's
+    Debugger (image_path: the original exe with its PDB, for symbols)."""
     con = Console()
-    pi = launch(job, sid, exe, script.get('args', []), sandbox, con, token)
+    args = script.get('args', [])
+    wer_since = hkdebug.utcnow()
+    wersvc_before = hkdebug.wersvc_state()
+    watcher = hkdebug.ProcWatcher()
+    watcher.start()
+    dbg = None
+    if debug:
+        dbg = hkdebug.Debugger(lambda: launch(job, sid, exe, args, sandbox, con, token, debug=True),
+                               image_path=image_path, watch=watch)
+        dbg.start()
+        dbg.ready.wait(30)
+        if dbg.error or dbg.pi is None:
+            watcher.stop()
+            con.close()
+            return {'status': 'launch failed: %s' % dbg.error, 'exited_by_itself': False}
+        pi = dbg.pi
+    else:
+        pi = launch(job, sid, exe, args, sandbox, con, token)
     pid = pi.dwProcessId
+    watcher.watch_pid(pid)
     total = script.get('total_timeout', 60)
     t0 = time.time()
     steps = []
     net = []
     status = 'ok'
     windows = []
+    polls = [0]
+
+    def alive():
+        return k32.WaitForSingleObject(pi.hProcess, 0) != 0
+
+    def poll():
+        polls[0] += 1
+        _poll_net(pid, net)
+        w = windows_of(pid)
+        if w:
+            windows.append(w)
+        return w
+
     for st in script.get('steps', []):
         deadline = time.time() + script.get('step_timeout', 10)
         seen = False
-        waits = st['wait'] if isinstance(st['wait'], list) else [st['wait']]
-        while time.time() < deadline and time.time() - t0 < total:
-            scr = con.screen()
-            w = windows_of(pid)
-            if w:
-                windows.append(w)
-                break
-            if all(x in scr for x in waits):
-                seen = True
-                break
-            if k32.WaitForSingleObject(pi.hProcess, 0) == 0:
-                break
-            s = sockets_of(pid)
-            if s:
-                net.append(s)
-            time.sleep(0.2)
-        steps.append({'wait': st['wait'], 'seen': seen, 'key': st.get('key'),
-                      't': round(time.time() - t0, 2)})
-        log.write('--- screen after waiting for %r (seen=%s) ---\n%s\n' % (st['wait'], seen, con.screen()))
+        rec = {'t_start': round(time.time() - t0, 2)}
+        if 'nav' in st:
+            target = st['until_cursor']
+            trail = []
+            for _ in range(st.get('max', 30)):
+                if not alive() or time.time() - t0 >= total:
+                    break
+                cur = con.cursor()
+                trail.append(cur)
+                if cur == target:
+                    seen = True
+                    break
+                time.sleep(0.3)
+                con.key(st['nav'])
+                end = time.time() + 3
+                while time.time() < end and con.cursor() == cur and alive():
+                    poll()
+                    time.sleep(0.1)
+            rec.update({'nav': st['nav'], 'until_cursor': target, 'seen': seen, 'cursor_trail': trail})
+        else:
+            waits = st['wait'] if isinstance(st['wait'], list) else [st['wait']]
+            want_cur = st.get('cursor')
+            while time.time() < deadline and time.time() - t0 < total:
+                scr = con.screen()
+                if poll():
+                    break
+                if all(x in scr for x in waits) and (want_cur is None or con.cursor() == want_cur):
+                    seen = True
+                    break
+                if not alive():
+                    break
+                time.sleep(0.2)
+            rec.update({'wait': st['wait'], 'cursor_wanted': want_cur, 'cursor': con.cursor(), 'seen': seen,
+                        'key': st.get('key')})
+        rec['t'] = round(time.time() - t0, 2)
+        rec['kilp_dat_size'] = _kilp_size(sandbox)
+        steps.append(rec)
+        log.write('--- screen after step %d %r (seen=%s, cursor=%s, KILP.DAT=%s) ---\n%s\n' % (
+            len(steps), st.get('wait', st.get('nav')), seen, con.cursor(), rec['kilp_dat_size'], con.screen()))
         if windows:
             status = 'window opened by the program: %r' % windows[-1]
             break
         if not seen:
-            status = 'prompt not seen: %r' % st['wait']
+            status = 'step not completed: %r' % (st.get('wait') or st.get('until_cursor'))
             break
         if st.get('key') is not None:
             time.sleep(0.3)   # the program flushes the key buffer before reading
             for ch in st['key']:
                 con.key(ch)
+                if st.get('key_delay'):
+                    time.sleep(st['key_delay'])
     last = con.screen()
     exited = False
     if status == 'ok':
@@ -592,39 +774,103 @@ def run_program(job, sid, sandbox, exe, script, log, token=None):
             if k32.WaitForSingleObject(pi.hProcess, 200) == 0:
                 exited = True
                 break
-            w = windows_of(pid)
-            if w:
-                windows.append(w)
-                status = 'window opened by the program: %r' % w
+            if poll():
+                status = 'window opened by the program: %r' % windows[-1]
                 break
-    exited = exited or k32.WaitForSingleObject(pi.hProcess, 0) == 0
+    exited = exited or not alive()
     if not exited:
         status = status if status != 'ok' else 'did not exit in time'
         log.write('--- final screen (killing) ---\n%s\n' % con.screen())
+        if dbg:
+            dbg.stop()
         job.terminate()
         k32.WaitForSingleObject(pi.hProcess, 5000)
+    _poll_net(pid, net)   # after exit: should be empty; recorded if not
     code = wintypes.DWORD()
     k32.GetExitCodeProcess(pi.hProcess, ctypes.byref(code))
     log.write('--- last screen ---\n%s\n' % last)
+    out = {'status': status, 'exited_by_itself': exited, 'exit_code': code.value, 'windows': windows,
+           'exit_code_hex': '0x%08X' % code.value, 'pid': pid, 'steps': steps, 'sockets_seen': net,
+           'endpoint_polls': polls[0], 'duration_s': round(time.time() - t0, 2),
+           'kilp_dat_size': _kilp_size(sandbox), 'job': job.accounting()}
+    if dbg:
+        dbg.done.wait(15)
+        d = dict(dbg.rec)
+        d['loop_finished'] = dbg.done.is_set()
+        d['error'] = dbg.error
+        if not dbg.done.is_set():
+            d['error'] = (d['error'] or '') + ' debug loop still running; handles left open'
+            out['debugger'] = d
+            out['status'] = 'debugger did not finish'
+            con.close()
+            watcher.stop()
+            return out
+        out['debugger'] = d
+        f = d.get('fatal')
+        if f:
+            out['status'] = 'fatal exception %s at %s (%s), process terminated by the debugger' % (
+                f.get('code'), f.get('address'), f.get('sym'))
+            out['exited_by_itself'] = False
+    close_pi(pi)
     con.close()
-    return {'status': status, 'exited_by_itself': exited, 'exit_code': code.value, 'windows': windows,
-            'exit_code_hex': '0x%08X' % code.value, 'steps': steps, 'sockets_seen': net,
-            'duration_s': round(time.time() - t0, 2)}
+    time.sleep(1.5)   # WER would start within this time after a crash
+    proc = watcher.stop()
+    ev_all, ev_hit = hkdebug.wer_events(wer_since, [os.path.basename(exe), 'crash_probe'])
+    out['wer'] = {'processes': proc, 'events_since_start': ev_all, 'events_matching': ev_hit,
+                  'wersvc_before': wersvc_before, 'wersvc_after': hkdebug.wersvc_state()}
+    rc = script.get('record_check')
+    if rc and out.get('debugger', {}).get('fatal'):
+        out['stack_vs_record'] = stack_vs_record(out['debugger']['fatal'], sandbox, rc)
+    return out
+
+
+def stack_vs_record(fatal, sandbox, rc):
+    """Compares the bytes past the watched frame's buffer (slots read at the
+    fatal exception, starting at frame EBP-4 = end of the buffer) with the
+    record bytes [bufsize, recsize) of record 1 in KILP.DAT."""
+    wf = (fatal.get('evidence') or {}).get('watched_frame') or {}
+    hx = wf.get('slots_hex')
+    if not hx:
+        return {'error': 'no frame slots'}
+    stack = bytes.fromhex(hx)
+    n = rc['recsize'] - rc['bufsize']
+    try:
+        with open(os.path.join(sandbox, 'KILP.DAT'), 'rb') as f:
+            f.seek(rc['recsize'] + rc['bufsize'])
+            rec = f.read(n)
+    except OSError as e:
+        return {'error': str(e)}
+    cmp_n = min(n, len(stack))
+    return {'compared_bytes': cmp_n, 'stack_hex': stack[:cmp_n].hex(), 'record_hex': rec[:cmp_n].hex(),
+            'equal': cmp_n == n and stack[:cmp_n] == rec[:cmp_n], 'record_all_zero': not any(rec)}
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--exe', required=True)
-    ap.add_argument('--probe', required=True)
-    ap.add_argument('--script', required=True)
+    ap.add_argument('--exe')
+    ap.add_argument('--probe')
+    ap.add_argument('--script')
     ap.add_argument('--out', required=True)
     ap.add_argument('--data', action='append', default=[], help='SRC=DST copied into the sandbox')
     ap.add_argument('--probe-only', action='store_true')
     ap.add_argument('--mode', choices=('appcontainer', 'firewall'), default='appcontainer')
     ap.add_argument('--udp-verified', help='verification JSON written by verify_log.py (firewall mode)')
+    ap.add_argument('--debug', action='store_true', help='run the program under the driver as debugger')
+    ap.add_argument('--watch', help='function to trace with one-shot breakpoints (needs --debug and the PDB)')
+    ap.add_argument('--crash-control', action='store_true', help='debugger-mode control with crash_probe.exe')
+    ap.add_argument('--self-test', action='store_true', help='driver self-tests (includes the crash control)')
+    ap.add_argument('--crash-probe', help='crash_probe.exe built by build_probes.cmd')
     a = ap.parse_args()
+    if a.crash_control:
+        return crash_control_main(a)
+    if a.self_test:
+        return self_test_main(a)
+    if not (a.exe and a.probe and a.script):
+        ap.error('--exe, --probe and --script are required for a run')
     if a.mode == 'firewall':
         return main_firewall(a)
+    if a.debug:
+        ap.error('--debug is only supported with --mode firewall')
     os.makedirs(a.out, exist_ok=True)
     script = json.load(open(a.script, encoding='utf-8'))
     rec = {'started': datetime.datetime.now().isoformat(timespec='seconds'),
@@ -844,12 +1090,60 @@ def fresh_fw_dir():
         raise RuntimeError('icacls grant: ' + r.stdout + r.stderr)
 
 
+PROBE_NAME = 'tp_c11_outside_probe.txt'
+REG_PROBE_KEY = r'Software\tp_c11_outside_probe'
+
+
+def outside_paths():
+    """Files the probe must fail to create: user folders (NTFS) plus the
+    roots of D: and G: and G:\\Oma Drive (Google Drive, reports FAT32, so
+    NTFS ACLs cannot be assumed there). Returns (paths, drive info)."""
+    env = os.environ.get
+    outs = [os.path.join(env('TEMP', ''), PROBE_NAME),
+            os.path.join(env('USERPROFILE', ''), PROBE_NAME),
+            os.path.join(env('USERPROFILE', ''), 'Documents', PROBE_NAME),
+            os.path.join(env('LOCALAPPDATA', ''), PROBE_NAME)]
+    drives = {}
+    for root in ('D:\\', 'G:\\'):
+        present = os.path.isdir(root)
+        drives[root] = {'present': present}
+        if present:
+            outs.append(os.path.join(root, PROBE_NAME))
+    if os.path.isdir('G:\\Oma Drive'):
+        outs.append(os.path.join('G:\\Oma Drive', PROBE_NAME))
+        drives['G:\\']['oma_drive'] = True
+    for o in outs:
+        if os.path.exists(o):
+            raise RuntimeError('outside probe file already exists: ' + o)
+    return outs, drives
+
+
+def reg_probe_key_exists():
+    import winreg
+    try:
+        winreg.CloseKey(winreg.OpenKey(winreg.HKEY_CURRENT_USER, REG_PROBE_KEY))
+        return True
+    except OSError:
+        return False
+
+
+def provenance(exe):
+    pdb = os.path.splitext(exe)[0] + '.pdb'
+    info = {'exe_sha256': sha256(exe), 'pe': hkdebug.pe_info(exe)}
+    if os.path.exists(pdb):
+        info['pdb'] = pdb
+        info['pdb_sha256'] = sha256(pdb)
+    return info
+
+
 def main_firewall(a):
     os.makedirs(a.out, exist_ok=True)
     script = json.load(open(a.script, encoding='utf-8'))
     rec = {'started': datetime.datetime.now().isoformat(timespec='seconds'), 'mode': 'firewall',
-           'exe': os.path.abspath(a.exe), 'exe_sha256': sha256(a.exe),
+           'started_epoch': time.time(), 'exe': os.path.abspath(a.exe), 'exe_sha256': sha256(a.exe),
+           'provenance': provenance(a.exe), 'debug': a.debug, 'watch': a.watch,
            'probe_sha256': sha256(a.probe), 'driver_sha256': sha256(os.path.abspath(__file__)),
+           'hkdebug_sha256': sha256(hkdebug.__file__),
            'script': script, 'script_sha256': sha256(a.script), 'fw_exe': FW_EXE,
            'firewall_commands': FIREWALL_COMMANDS}
     state, fw_ok = firewall_state()
@@ -860,14 +1154,12 @@ def main_firewall(a):
     rec['logging_ok'] = log_ok
     rec['logging_commands'] = {'on': LOGGING_ON_COMMAND, 'restore': LOGGING_RESTORE_COMMAND}
     fw_ok = fw_ok and log_ok
-    outs = [os.path.join(os.environ.get('TEMP', ''), 'tp_c11_outside_probe.txt'),
-            os.path.join(os.environ.get('USERPROFILE', ''), 'tp_c11_outside_probe.txt'),
-            os.path.join(os.environ.get('USERPROFILE', ''), 'Documents', 'tp_c11_outside_probe.txt'),
-            os.path.join(os.environ.get('LOCALAPPDATA', ''), 'tp_c11_outside_probe.txt')]
-    for o in outs:
-        if os.path.exists(o):
-            raise RuntimeError('outside probe file already exists: ' + o)
+    outs, drives = outside_paths()
+    rec['outside_paths'] = outs
+    rec['drives'] = drives
     outside = ';'.join(outs)
+    if reg_probe_key_exists():
+        raise RuntimeError('HKCU\\' + REG_PROBE_KEY + ' already exists')
     if not fw_ok:
         rec['result'] = ('NOT RUN: firewall block rules for %s missing/disabled, firewall off, '
                          'or drop logging not on into %s' % (FW_EXE, FW_LOG))
@@ -878,13 +1170,16 @@ def main_firewall(a):
         before = snapshot(dirs, skip)
         k32.SetErrorMode(0x0001 | 0x0002)
         token = write_restricted_token()
-        job = Job()
-        # 1. probe at the program's own path (same firewall rules)
+        # 1. probe at the program's own path (same firewall rules), own job
         shutil.copyfile(a.probe, FW_EXE)
         import random
         ports = (random.randint(40000, 49999), random.randint(40000, 49999))
         rec['probe_ports'] = {'tcp': ports[0], 'udp': ports[1]}
-        rec['probe'] = run_probe(job, None, FW_DIR, FW_EXE, outside, token, 'firewall', ports)
+        pjob = Job(active_limit=1)
+        rec['probe'] = run_probe(pjob, None, FW_DIR, FW_EXE, outside, token, 'firewall', ports)
+        rec['probe']['job'] = pjob.accounting()
+        pjob.close()
+        rec['probe']['registry_key_left'] = reg_probe_key_exists()
         # UDP drops cannot be read at run time (log ACL). Gate: an earlier
         # probe run's TCP+UDP drops matched in the log copy (verify_log.py),
         # same rules, at most 2 hours old. This run's own packets are matched
@@ -892,13 +1187,14 @@ def main_firewall(a):
         gate_ok, gate = udp_gate(a.udp_verified, state)
         rec['probe']['udp_gate'] = gate
         rec['probe']['firewall_log_check'] = 'pending: match after the run from a new log copy (verify_log.py)'
-        rec['probe']['isolation_verified'] = rec['probe']['isolation_verified'] and gate_ok
+        rec['probe']['isolation_verified'] = (rec['probe']['isolation_verified'] and gate_ok and
+                                              not rec['probe']['registry_key_left'])
         if not rec['probe']['isolation_verified']:
             rec['result'] = 'NOT RUN: isolation not verified'
         elif a.probe_only:
             rec['result'] = 'probe only'
         else:
-            # 2. fresh directory, the real program at the same path
+            # 2. fresh directory, the real program at the same path, own job
             fresh_fw_dir()
             data = []
             for d in a.data:
@@ -909,15 +1205,22 @@ def main_firewall(a):
             shutil.copyfile(a.exe, FW_EXE)
             rec['exe_copy_sha256'] = sha256(FW_EXE)
             rec['files_before'] = sorted(os.listdir(FW_DIR))
+            job = Job(active_limit=1)
+            rec['program_started_epoch'] = time.time()
             with open(os.path.join(a.out, 'screens.log'), 'w', encoding='utf-8') as log:
-                rec['run'] = run_program(job, None, FW_DIR, FW_EXE, script, log, token)
+                rec['run'] = run_program(job, None, FW_DIR, FW_EXE, script, log, token, debug=a.debug,
+                                         image_path=os.path.abspath(a.exe), watch=a.watch)
+            rec['program_finished_epoch'] = time.time()
             rec['result'] = rec['run']['status']
-        k32.CloseHandle(job.h)   # KILL_ON_JOB_CLOSE
+            job.close()
         time.sleep(1)
         after = snapshot(dirs, skip)
         rec['outside_changes'] = sorted(p for p in after if after[p] != before.get(p)) + \
             sorted('deleted: ' + p for p in before if p not in after)
+        rec['outside_changes_not_noise'] = [x for x in rec['outside_changes']
+                                            if not hkdebug.outside_noise(x.replace('deleted: ', ''))]
         rec['outside_probe_file_exists'] = any(os.path.exists(o) for o in outs)
+        rec['registry_key_exists_after'] = reg_probe_key_exists()
         files = {}
         for f in sorted(os.listdir(FW_DIR)):
             p = os.path.join(FW_DIR, f)
@@ -927,13 +1230,302 @@ def main_firewall(a):
         rec['sandbox_files'] = files
         # keep a copy of the sandbox for the report
         shutil.copytree(FW_DIR, os.path.join(a.out, 'sandbox_copy'), dirs_exist_ok=True)
+        if rec.get('run'):
+            # 3. bracketing probe AFTER the program: its packets must also be
+            # in the log copy, which shows the copy covers the whole program
+            # window (the log is appended in time order; verify_log.py
+            # post_probe_ok / covers_run).
+            fresh_fw_dir()
+            shutil.copyfile(a.probe, FW_EXE)
+            ports2 = (random.randint(40000, 49999), random.randint(40000, 49999))
+            rec['post_probe_ports'] = {'tcp': ports2[0], 'udp': ports2[1]}
+            pjob = Job(active_limit=1)
+            rec['post_probe'] = run_probe(pjob, None, FW_DIR, FW_EXE, outside, token, 'firewall', ports2)
+            rec['post_probe']['job'] = pjob.accounting()
+            pjob.close()
+            fresh_fw_dir()
+        k32.CloseHandle(token)
     rec['git_status'] = subprocess.run(['git', '-C', os.path.dirname(os.path.abspath(__file__)), 'status',
                                         '--porcelain', '--ignored'], capture_output=True, text=True).stdout
     rec['finished'] = datetime.datetime.now().isoformat(timespec='seconds')
+    rec['finished_epoch'] = time.time()
+    rec['program_window_epoch'] = [rec.get('program_started_epoch'), rec.get('program_finished_epoch')]
     with open(os.path.join(a.out, 'run.json'), 'w', encoding='utf-8') as f:
         json.dump(rec, f, indent=2)
     print(json.dumps({k: rec.get(k) for k in ('result', 'sandbox', 'firewall_ok')}, indent=1))
     return 0
+
+
+# ---------------------------------------------------------------- crash control
+
+CRASH_DIR = os.path.join(os.environ.get('LOCALAPPDATA', ''), 'tulospalvelu-c11', 'crashctl')
+
+# (name, args, job active limit, expectation function name)
+CRASH_SCENARIOS = [
+    ('gs64_no_overflow', ['gs', '64'], 1),
+    ('gs104_overflow', ['gs', '104'], 1),
+    ('fastfail', ['fastfail'], 1),
+    ('access_violation', ['av'], 1),
+    ('child_refused_by_job', ['child'], 1),
+    ('child_killed_with_job', ['child'], None),
+]
+
+
+def fresh_dir(path):
+    os.makedirs(path, exist_ok=True)
+    for n in os.listdir(path):
+        p = os.path.join(path, n)
+        shutil.rmtree(p) if os.path.isdir(p) else os.remove(p)
+    r = subprocess.run(['icacls', path, '/grant', '*%s:(OI)(CI)M' % RESTRICTING_SID], capture_output=True, text=True)
+    if r.returncode != 0:
+        raise RuntimeError('icacls grant: ' + r.stdout + r.stderr)
+
+
+def _ok(cond, msg, problems):
+    if not cond:
+        problems.append(msg)
+
+
+def check_crash_scenario(name, r, extra):
+    """Expectations of one crash-control scenario; returns problems."""
+    p = []
+    d = r.get('debugger') or {}
+    f = d.get('fatal') or {}
+    ev = f.get('evidence') or {}
+    wf = ev.get('watched_frame') or {}
+    _ok(d.get('loop_finished'), 'debug loop did not finish', p)
+    _ok(not d.get('error'), 'debugger error %r' % d.get('error'), p)
+    _ok((d.get('symbols') or {}).get('pdb_ok'), 'PDB not matched', p)
+    # the child of child_killed_with_job is still in the job until the job is closed
+    want_active = 1 if name == 'child_killed_with_job' else 0
+    _ok(r.get('job', {}).get('ActiveProcesses') == want_active, 'job active processes %r' % r.get('job'), p)
+    if name == 'gs64_no_overflow':
+        ret = [b for b in d.get('breakpoints', []) if b.get('kind') == 'return' and 'cookie_intact' in b]
+        ent = [b for b in d.get('breakpoints', []) if b.get('kind') == 'entry' and 'return_address' in b]
+        _ok(not f, 'unexpected fatal exception', p)
+        _ok(r.get('exit_code') == 0, 'exit code %r' % r.get('exit_code_hex'), p)
+        _ok(ent and (ent[0].get('return_sym') or '').startswith('main+'), 'entry breakpoint caller not main', p)
+        _ok(ret and ret[0].get('cookie_intact') and ret[0].get('return_intact') and ret[0].get('saved_ebp_intact'),
+            'return breakpoint: frame not intact', p)
+    else:
+        code = '0xC0000005' if name == 'access_violation' else '0xC0000409'
+        _ok(f.get('code') == code, 'fatal code %r, expected %s' % (f.get('code'), code), p)
+        _ok(d.get('terminated_by_debugger'), 'not terminated by the debugger', p)
+        _ok(r.get('exit_code') == hkdebug.KILLED_BY_DEBUGGER, 'exit code %r' % r.get('exit_code_hex'), p)
+        if code == '0xC0000409':
+            _ok((f.get('params') or [None])[0] == '0x00000002', 'fast-fail code %r' % f.get('params'), p)
+        else:
+            _ok(f.get('first_chance') is False, 'AV fatal not second chance', p)
+            _ok(any(e.get('code') == code and e.get('first_chance') for e in d.get('exceptions', [])),
+                'first-chance AV not recorded', p)
+        if name in ('gs104_overflow', 'child_refused_by_job', 'child_killed_with_job'):
+            _ok(((ev.get('ret_at_esp') or {}).get('sym') or '').startswith('victim+'),
+                'stack: return address at ESP not in victim', p)
+            _ok((ev.get('context') or {}).get('Ebp') == wf.get('frame_ebp'), 'EBP is not the victim frame', p)
+            _ok((f.get('sym') or '').startswith('__report_gsfailure+'), 'exception not in __report_gsfailure', p)
+            _ok(wf.get('cookie_intact') is False and wf.get('return_intact') is False and
+                wf.get('saved_ebp_intact') is False, 'watched frame not overwritten', p)
+            _ok((wf.get('slots_hex') or '')[:80] == '00' * 40, 'overwritten bytes not the 40 zero bytes', p)
+    if name == 'child_refused_by_job':
+        _ok(extra.get('child_txt', '').startswith('failed') and r.get('job', {}).get('TotalProcesses') == 1,
+            'child not refused: %r, job %r' % (extra.get('child_txt'), r.get('job')), p)
+    if name == 'child_killed_with_job':
+        txt = extra.get('child_txt', '')
+        _ok(txt.startswith('created pid='), 'child not created: %r' % txt, p)
+        _ok(extra.get('child_alive_after_job_close') is False, 'child survived the job', p)
+        _ok(any('child of' in ' '.join(x.get('why', [])) for x in r['wer']['processes'].get('found', [])),
+            'process watcher did not see the child', p)
+    werp = [x for x in r['wer']['processes'].get('found', []) if 'name' in x.get('why', [])]
+    _ok(not werp, 'WER process seen: %r' % werp, p)
+    _ok(not r['wer'].get('events_matching'), 'WER/Application Error event mentions the program', p)
+    return p
+
+
+def crash_control(probe_exe, out_dir):
+    """Runs every scenario of CRASH_SCENARIOS under the debugger with the
+    write-restricted token, each in its own job. Returns the record."""
+    os.makedirs(out_dir, exist_ok=True)
+    exe = os.path.join(CRASH_DIR, 'crash_probe.exe')
+    res = {'probe_sha256': sha256(probe_exe), 'crash_dir': CRASH_DIR, 'scenarios': {},
+           'wersvc_before': hkdebug.wersvc_state()}
+    since = hkdebug.utcnow()
+    dirs = watched_dirs(CRASH_DIR)
+    skip = [CRASH_DIR, os.path.abspath(out_dir), os.path.join(os.environ.get('TEMP', ''), 'claude')]
+    before = snapshot(dirs, skip)
+    k32.SetErrorMode(0x0001 | 0x0002)
+    token = write_restricted_token()
+    all_ok = True
+    for name, args, limit in CRASH_SCENARIOS:
+        fresh_dir(CRASH_DIR)
+        shutil.copyfile(probe_exe, exe)
+        shutil.copyfile(os.path.splitext(probe_exe)[0] + '.pdb', os.path.join(CRASH_DIR, 'crash_probe.pdb'))
+        job = Job(active_limit=limit)
+        script = {'args': args, 'steps': [], 'total_timeout': 20}
+        with open(os.path.join(out_dir, 'crash_%s.log' % name), 'w', encoding='utf-8') as log:
+            r = run_program(job, None, CRASH_DIR, exe, script, log, token, debug=True, image_path=exe,
+                            watch='victim')
+        extra = {}
+        cp = os.path.join(CRASH_DIR, 'child.txt')
+        if os.path.exists(cp):
+            extra['child_txt'] = open(cp, encoding='ascii').read().strip()
+        job.close()
+        time.sleep(0.5)
+        if extra.get('child_txt', '').startswith('created pid='):
+            cpid = int(extra['child_txt'].split('=')[1])
+            extra['child_pid'] = cpid
+            extra['child_alive_after_job_close'] = hkdebug.pid_alive(cpid)
+        r['extra'] = extra
+        r['problems'] = check_crash_scenario(name, r, extra)
+        r['ok'] = not r['problems']
+        all_ok = all_ok and r['ok']
+        res['scenarios'][name] = r
+    k32.CloseHandle(token)
+    time.sleep(3)
+    after = snapshot(dirs, skip)
+    res['outside_changes'] = sorted(p for p in after if after[p] != before.get(p)) + \
+        sorted('deleted: ' + p for p in before if p not in after)
+    ev_all, ev_hit = hkdebug.wer_events(since, ['crash_probe'])
+    res['wer_events_since_start'] = ev_all
+    res['wer_events_matching'] = ev_hit
+    res['wersvc_after'] = hkdebug.wersvc_state()
+    wer_dirs_changed = [p for p in res['outside_changes'] if '\\WER\\' in p.upper() or 'CRASHDUMPS' in p.upper()]
+    res['wer_dirs_changed'] = wer_dirs_changed
+    res['ok'] = all_ok and not ev_hit and not wer_dirs_changed
+    return res
+
+
+def crash_control_main(a):
+    if not a.crash_probe:
+        raise SystemExit('--crash-probe is required')
+    res = crash_control(a.crash_probe, a.out)
+    with open(os.path.join(a.out, 'crash_control.json'), 'w', encoding='utf-8') as f:
+        json.dump(res, f, indent=2)
+    print(json.dumps({'ok': res['ok'], 'scenarios': {k: v['problems'] for k, v in res['scenarios'].items()},
+                      'wer_events_matching': len(res['wer_events_matching']),
+                      'outside_changes': res['outside_changes']}, indent=1))
+    return 0 if res['ok'] else 1
+
+
+# ---------------------------------------------------------------- self-test
+
+HKMAALI_EXPECT = hkdebug.HKMAALI_EXPECT
+
+
+def self_test_main(a):
+    os.makedirs(a.out, exist_ok=True)
+    res = {'started': datetime.datetime.now().isoformat(timespec='seconds'),
+           'driver_sha256': sha256(os.path.abspath(__file__)), 'hkdebug_sha256': sha256(hkdebug.__file__),
+           'isolation_probe_sha256': sha256(a.probe), 'crash_probe_sha256': sha256(a.crash_probe),
+           'tests': {}}
+    T = res['tests']
+
+    # 1. endpoint enumeration finds this process's own sockets (positive control)
+    socks = []
+    try:
+        s4 = socket.socket()
+        s4.bind(('127.0.0.1', 0))
+        s4.listen(1)
+        u4 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        u4.bind(('127.0.0.1', 0))
+        socks += [s4, u4]
+        want = ['TCP 127.0.0.1:%d' % s4.getsockname()[1], 'UDP 127.0.0.1:%d' % u4.getsockname()[1]]
+        try:
+            s6 = socket.socket(socket.AF_INET6)
+            s6.bind(('::1', 0))
+            s6.listen(1)
+            socks.append(s6)
+            want.append('TCP6 [0:0:0:0:0:0:0:1]:%d' % s6.getsockname()[1])
+        except OSError:
+            pass
+        got = hkdebug.endpoints([os.getpid()])
+        miss = [w for w in want if not any(g.startswith(w) for g in got)]
+        T['endpoints_positive_control'] = {'ok': not miss, 'wanted': want, 'missing': miss, 'got': got}
+    finally:
+        for s in socks:
+            s.close()
+
+    # 2. process watcher catches a short-lived process (positive control)
+    fresh_dir(CRASH_DIR)
+    cexe = os.path.join(CRASH_DIR, 'crash_probe.exe')
+    shutil.copyfile(a.crash_probe, cexe)
+    w = hkdebug.ProcWatcher(names=('crash_probe.exe',))
+    w.start()
+    job = Job(active_limit=1)
+    con = Console()
+    pi = launch(job, None, cexe, ['sleep', '300'], CRASH_DIR, con)
+    spid = pi.dwProcessId
+    k32.WaitForSingleObject(pi.hProcess, 10000)
+    close_pi(pi)
+    con.close()
+    time.sleep(0.3)
+    wr = w.stop()
+    job.close()
+    T['process_watcher_positive_control'] = {'ok': any(x['pid'] == spid for x in wr['found']),
+                                             'process_lifetime_ms': 300, 'watcher': wr}
+
+    # 3. probe timeout: a probe that never finishes is killed and not verified
+    job = Job(active_limit=1)
+    pr = run_probe(job, None, CRASH_DIR, cexe, '', None, 'firewall', None, timeout_s=5,
+                   args_override=['sleep', '60000'])
+    job.close()
+    T['probe_timeout'] = {'ok': pr.get('timed_out') is True and pr.get('isolation_verified') is False and
+                          not hkdebug.pid_alive(pr['pid']), 'probe': pr}
+
+    # 4. symbols of the shipped program at its preferred base
+    st = {}
+    try:
+        pe = hkdebug.pe_info(a.exe)
+        sym = hkdebug.Symbols(a.exe, HKMAALI_EXPECT['image_base'])
+        st = {'pe': pe, 'module': sym.module, 'pdb_ok': sym.pdb_ok(pe['rsds']),
+              'addfrec': hkdebug.hexs(sym.addr('kilptietue::addfrec')),
+              'ret_site_names': [sym.name(x) for x in HKMAALI_EXPECT['ret_sites']],
+              'cookie': hkdebug.hexs(sym.addr('__security_cookie', '___security_cookie')),
+              'addtall': hkdebug.hexs(sym.addr('kilptietue::addtall'))}
+        sym.close()
+        st['ok'] = (pe['rsds'] and pe['rsds']['guid'] == HKMAALI_EXPECT['rsds_guid'] and st['pdb_ok'] and
+                    st['addfrec'] == hkdebug.hexs(HKMAALI_EXPECT['addfrec']) and
+                    st['cookie'] == hkdebug.hexs(HKMAALI_EXPECT['cookie']) and
+                    all((n or '').startswith('kilptietue::addfrec+') for n in st['ret_site_names']))
+    except Exception as e:   # noqa: BLE001
+        st = {'ok': False, 'error': repr(e)}
+    T['hkmaali_symbols'] = st
+
+    # 5. isolation probe at the firewall path (rules must exist; drop log not needed)
+    state, fw_ok = firewall_state()
+    if not fw_ok:
+        T['isolation_probe_direct'] = {'ok': False, 'error': 'firewall rules not in place', 'state': state}
+    else:
+        outs, drives = outside_paths()
+        fresh_fw_dir()
+        shutil.copyfile(a.probe, FW_EXE)
+        token = write_restricted_token()
+        job = Job(active_limit=1)
+        import random
+        ports = (random.randint(40000, 49999), random.randint(40000, 49999))
+        pr = run_probe(job, None, FW_DIR, FW_EXE, ';'.join(outs), token, 'firewall', ports)
+        job.close()
+        k32.CloseHandle(token)
+        pr['registry_key_left'] = reg_probe_key_exists()
+        pr['outside_file_left'] = any(os.path.exists(o) for o in outs)
+        T['isolation_probe_direct'] = {'ok': pr.get('isolation_verified') and not pr['registry_key_left'] and
+                                       not pr['outside_file_left'], 'drives': drives, 'outside_paths': outs,
+                                       'probe': pr, 'note': 'UDP drop not verified here (needs the drop log)'}
+        fresh_fw_dir()
+
+    # 6. debugger mode on deliberate crashes
+    cc = crash_control(a.crash_probe, a.out)
+    T['crash_control'] = {'ok': cc['ok'], 'problems': {k: v['problems'] for k, v in cc['scenarios'].items()},
+                          'wer_events_matching': cc['wer_events_matching'], 'wer_dirs_changed': cc['wer_dirs_changed'],
+                          'outside_changes': cc['outside_changes']}
+    with open(os.path.join(a.out, 'crash_control.json'), 'w', encoding='utf-8') as f:
+        json.dump(cc, f, indent=2)
+    res['ok'] = all(t.get('ok') for t in T.values())
+    res['finished'] = datetime.datetime.now().isoformat(timespec='seconds')
+    with open(os.path.join(a.out, 'self_test.json'), 'w', encoding='utf-8') as f:
+        json.dump(res, f, indent=2)
+    print(json.dumps({k: bool(v.get('ok')) for k, v in T.items()}, indent=1))
+    print('self-test ok' if res['ok'] else 'SELF-TEST FAILED')
+    return 0 if res['ok'] else 1
 
 
 if __name__ == '__main__':

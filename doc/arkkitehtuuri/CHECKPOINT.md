@@ -142,19 +142,35 @@ Ajo 1: KILP.DAT 544 tavua, otsakekuvauksen mukainen, lopetus valikosta (poistumi
 aina 0). Lokissa ei ohjelman polusta estettyä ulkoverkkoliikennettä (ei kata DNS:ää,
 silmukkaa, muiden prosessien liikennettä). Riippumaton tarkastus: raakaluvut oikein,
 liioittelut korjattu (luku 17.12). Yhtään H-havaintoa ei vahvistettu
-ajamalla. Ajotyökalut (`TPsource/V52/Tests/blackbox/`, `Tests/core/HkDataTests.cpp`,
-`Tests/data/hk/`) ja luku 17 ovat commitoimatta.
+ajamalla. Ajotyökalut, aineisto ja luku 17 commitoitu (`432ea3d`).
+
+**C-11 vaihe 4 (H-041 toimitetussa ohjelmassa): käyttäjä hyväksyi menetelmät A + C,
+rajaparin 220/221 (ei 250) ja debuggeritilan (ei WER-asetusmuutoksia).** Esiehdot tehty
+(`testaus.md` luku 19): aineistot `h041_v220/221.xml` ja komponenttitestit (PASS; tietue
+10 000 / 10 040; ylitystavut nollia), `H-041b4` addfrec-ASan (control PASS, defect XFAIL);
+ajurin korjaukset (pid, Job-raja 1 + kirjanpito, iphlpapi-verkkoseuranta, 30 s
+aikakatkaisu, ulkoinen TCP vain 10013, D:/G:/HKCU-kirjoitukset estetty, kahvat);
+`hkdebug.py`-debuggeri, joka lopettaa prosessin ennen WER:iä, ja kertakäyttöiset
+keskeytyskohdat `addfrec`in alkuun ja paluukohtaan; kaatuvalla koeohjelmalla 6/6
+skenaariota oikein, WER ei käynnistynyt (WerSvc pysähdyksissä, ei prosesseja,
+tapahtumia eikä raportteja). Ajurin itsetesti OK, offline-testit 21/21. Riippumaton
+tarkastus tehty (luku 19.8), havainnot 1–9 korjattu; HkMaali-ajoja ei ole tehty. Seuraavaksi: commit esiehdoista, sitten
+pudotuslokitus (käyttäjä) ja ajot luvun 19.7 mukaan.
 
 **C-11 stage 3 committed. HkMaali.exe runs 0 and 1 done successfully under firewall
 isolation** (sections 17.7–17.10): user-created firewall rules, write-restricted token,
 job object; before start: TCP blocking by the run's own probe, UDP by an earlier (<= 2 h)
 log verification; each run's probe packets matched in the drop log afterwards; logging restored. Independent review: raw numbers correct,
 overstatements corrected (17.12). No H finding confirmed by running. Run
-tools and section 17 are uncommitted.
+tools, data and section 17 committed (`432ea3d`). Stage 4 approved (methods A + C, pair
+220/221, debugger mode, no WER settings change); prerequisites done (section 19): data and
+component tests, driver fixes, debugger mode checked on a crashing probe (WER never
+started), self-test OK. HkMaali runs not done yet.
 
-**Seuraava / next (luvan jälkeen / after approval):** commit of the run tools and
-section 17; then either C-11 stage 4 (H-041 in the shipped program, two-process loopback
-layer) or C-4 memory safety.
+**Seuraava / next:** riippumaton tarkastus ja korjaukset → esiehtojen paikallinen commit →
+käyttäjä ottaa pudotuslokituksen käyttöön → koeajo-, kontrolli- ja ylitysajo (luku 19.7) →
+lokitus palautetaan. / independent review and fixes → local commit of the prerequisites →
+the user enables drop logging → probe, control and boundary runs → logging restored.
 
 Vaihtoehto / alternative: **C-4 muistiturvallisuus**; Asan-konfiguraatio on nyt
 valmiina. / C-4 memory safety; the Asan configuration now exists.

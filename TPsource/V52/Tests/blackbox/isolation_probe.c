@@ -23,7 +23,13 @@
      outside  - a file can NOT be created at argv[1] (outside the sandbox)
      loopback - a TCP connect to 127.0.0.1:argv[2] (driver's listener) fails
      external - a TCP connect to 192.0.2.1:9 (TEST-NET-1, RFC 5737, no real
-                host) fails immediately with an access error
+                host) fails immediately with WSAEACCES (10013); any other
+                error, a refused socket or a timeout is a PROBLEM (C-11
+                stage 4: only the firewall's own refusal counts)
+     registry - HKCU writes are refused: creating the key
+                HKCU\Software\tp_c11_outside_probe and opening HKCU\Software
+                for KEY_SET_VALUE both fail with ERROR_ACCESS_DENIED
+     external6_info - TCP connect to [2001:db8::1] (RFC 3849), recorded only
    No other network use. Usage:
      isolation_probe <outside-files> <loopback-port> [<tcp-port> <udp-port>]
    The external TCP/UDP destination ports default to 9; the driver passes
@@ -37,6 +43,7 @@
 
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "advapi32.lib")
+#include <ws2tcpip.h>
 
 static FILE *out;
 
@@ -193,8 +200,8 @@ int main(int argc, char **argv)
 	utcStamp(ts);
 	r = tryConnect(inet_addr("192.0.2.1"), tcpPort, &err, &ms);
 	fprintf(out, "tcp_sent=%s|dst=192.0.2.1:%u|src_port=%u\n", ts, tcpPort, g_lastLocalPort);
-	/* isolated: refused at once with WSAEACCES (10013) or socket refused */
-	int blocked = r == -1 || (r == 0 && (err == WSAEACCES || err == WSAENETUNREACH) && ms < 1000);
+	/* isolated: refused at once with WSAEACCES (10013) only */
+	int blocked = r == 0 && err == WSAEACCES && ms < 1000;
 	sprintf(buf, "connect 192.0.2.1:%u -> %s, error %d after %lu ms", tcpPort, r == 1 ? "CONNECTED" : "failed", err, ms);
 	res("external", blocked, buf);
 	/* UDP: a single datagram to TEST-NET-1; blocked means sendto is refused
@@ -227,7 +234,46 @@ int main(int argc, char **argv)
 			ur >= 0 ? "success" : "failure", uerr);
 		res("udp_sendto_info", 1, buf);
 	}
+	/* IPv6, information only: a host without IPv6 connectivity fails
+	   with another error before the firewall is involved. */
+	{
+		SOCKET s6 = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
+		int e6 = 0;
+		if (s6 == INVALID_SOCKET)
+			e6 = WSAGetLastError();
+		else {
+			struct sockaddr_in6 a6;
+			memset(&a6, 0, sizeof(a6));
+			a6.sin6_family = AF_INET6;
+			a6.sin6_port = htons(tcpPort);
+			inet_pton(AF_INET6, "2001:db8::1", &a6.sin6_addr);
+			e6 = connect(s6, (struct sockaddr *) &a6, sizeof(a6)) == 0 ? 0 : WSAGetLastError();
+			closesocket(s6);
+		}
+		sprintf(buf, "connect [2001:db8::1]:%u -> error %d", tcpPort, e6);
+		res("external6_info", 1, buf);
+	}
 	WSACleanup();
+
+	/* HKCU writes must be refused (HKCU grants RESTRICTED read only). */
+	{
+		HKEY h = NULL;
+		DWORD disp = 0;
+		LONG c1 = RegCreateKeyExW(HKEY_CURRENT_USER, L"Software\\tp_c11_outside_probe", 0, NULL, 0,
+			KEY_WRITE, NULL, &h, &disp);
+		LONG c2;
+		if (c1 == ERROR_SUCCESS) {
+			RegCloseKey(h);
+			RegDeleteKeyW(HKEY_CURRENT_USER, L"Software\\tp_c11_outside_probe");
+		}
+		h = NULL;
+		c2 = RegOpenKeyExW(HKEY_CURRENT_USER, L"Software", 0, KEY_SET_VALUE, &h);
+		if (c2 == ERROR_SUCCESS)
+			RegCloseKey(h);
+		sprintf(buf, "RegCreateKeyEx HKCU\\Software\\tp_c11_outside_probe -> %ld; "
+			"RegOpenKeyEx HKCU\\Software KEY_SET_VALUE -> %ld", c1, c2);
+		res("registry", c1 == ERROR_ACCESS_DENIED && c2 == ERROR_ACCESS_DENIED, buf);
+	}
 	fprintf(out, "done=1\n");
 	fclose(out);
 	return 0;

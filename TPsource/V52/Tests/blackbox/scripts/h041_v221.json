@@ -1,0 +1,55 @@
+{
+  "comment": "C-11 stage 4 boundary run: data/hk/h041_v221.xml (valuku 221, record 10040 bytes, 40 past KILPBUFSIZE). Same keys up to H21+; no further steps. Expected (testaus.md 18.4): 0xC0000409 subcode 2 at the addfrec return, KILP.DAT 20080 bytes.",
+  "args": [
+    "BOOT"
+  ],
+  "total_timeout": 60,
+  "step_timeout": 15,
+  "record_check": {
+    "recsize": 10040,
+    "bufsize": 10000
+  },
+  "steps": [
+    {
+      "wait": "KILP.DAT ei ole",
+      "key": "\r"
+    },
+    {
+      "wait": "P)oistu",
+      "key": "K"
+    },
+    {
+      "wait": [
+        "KORJAUKSET",
+        "L)is"
+      ],
+      "key": "L"
+    },
+    {
+      "wait": "+ : Hyv",
+      "cursor": [
+        7,
+        7
+      ],
+      "key": "TESTI",
+      "key_delay": 0.05
+    },
+    {
+      "nav": "\t",
+      "until_cursor": [
+        8,
+        2
+      ],
+      "max": 30
+    },
+    {
+      "wait": "+ : Hyv",
+      "cursor": [
+        8,
+        2
+      ],
+      "key": "H21+",
+      "key_delay": 0.05
+    }
+  ]
+}

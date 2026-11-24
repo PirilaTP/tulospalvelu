@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Event>
+<Software>
+<VersionId>HK520</VersionId>
+<FileFormat>
+<Races>5</Races>
+<Intermediaries>221</Intermediaries>
+</FileFormat>
+</Software>
+<EventData>
+<EventCode>TEST</EventCode>
+<Title>Testikilpailu</Title>
+<RaceCount>1</RaceCount>
+<ClassCount>1</ClassCount>
+</EventData>
+<Races>
+<Race RaceNo="1">
+</Race>
+</Races>
+<Classes>
+<Class ClassNo="1">
+<ClassId>H21</ClassId>
+<FirstRace>1</FirstRace>
+<LastRace>1</LastRace>
+</Class>
+</Classes>
+</Event>

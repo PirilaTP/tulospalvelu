@@ -45,3 +45,60 @@ TEST_CASE("HK synthetic KilpSrj.xml for black-box run 1 is read")
 	tp::info(tp::fmt("kilprecsize=%d", kilpparam.kilprecsize));
 	CHECK(kilpparam.kilprecsize == 544);
 }
+
+// C-11 stage 4 (testaus.md section 18/19): data/hk/h041_v220.xml and
+// h041_v221.xml are run1_kilpsrj.xml with <Races> 5 and <Intermediaries>
+// 220 / 221 (RaceCount stays 1). The production reader must accept them
+// without messages, and luekentat must give
+// 360 + 5 * (152 + (valuku + 2) * 8) = 10000 / 10040 bytes, i.e. exactly
+// KILPBUFSIZE (control) and KILPBUFSIZE + 40 (first size past the buffer).
+// The test also prints the bytes the production pack() writes at offsets
+// [KILPBUFSIZE, kilprecsize) for a cleared record, so the run report can
+// tell whether a stack comparison against them is meaningful (all-zero
+// bytes would be weak evidence).
+static void checkH041Data(int valuku, int expectSize)
+{
+	REQUIRE(tp::sandboxOk());
+	tph::initBase();
+	REQUIRE(KILPBUFSIZE == 10000);
+	REQUIRE(tp::fileSize("KilpSrj.xml") > 0);
+	wcscpy(sarjaxmlfname, L"KilpSrj.xml");
+	int r = luesarjat();
+	tp::info(tp::fmt("luesarjat=%d n_pv=%d n_pv_akt=%d valuku=%d sarjaluku=%d messages=%d", r,
+		kilpparam.n_pv, kilpparam.n_pv_akt, kilpparam.valuku, sarjaluku, (int) tp::uiMessages().size()));
+	CHECK(r == 0);
+	CHECK(kilpparam.n_pv == 5);
+	CHECK(kilpparam.n_pv_akt == 1);
+	CHECK(kilpparam.valuku == valuku);
+	CHECK(sarjaluku == 1);
+	CHECK(tp::uiMessages().empty());
+	luekentat(0);
+	tp::info(tp::fmt("kilprecsize=%d KILPBUFSIZE=%d", kilpparam.kilprecsize, (int) KILPBUFSIZE));
+	REQUIRE(kilpparam.kilprecsize == expectSize);
+	// Constructed only now (Q34): pv[n_pv] and va[valuku+2] use the final counts.
+	kilptietue *k = new kilptietue;
+	k->nollaa();
+	std::vector<unsigned char> buf(KILPBUFSIZE + 4096, 0xA5);
+	k->pack((char *) &buf[0]);
+	std::string tail;
+	int nonzero = 0;
+	for (int i = KILPBUFSIZE; i < kilpparam.kilprecsize; i++) {
+		tail += tp::fmt("%02x", buf[i]);
+		if (buf[i])
+			nonzero++;
+	}
+	tp::info(tp::fmt("pack bytes [%d,%d) of a cleared record: %s (nonzero %d)", (int) KILPBUFSIZE,
+		kilpparam.kilprecsize, tail.empty() ? "(none)" : tail.c_str(), nonzero));
+	CHECK(buf[kilpparam.kilprecsize] == 0xA5);
+	delete k;
+}
+
+TEST_CASE("HK synthetic KilpSrj.xml for H-041 control (valuku 220) is read")
+{
+	checkH041Data(220, 10000);
+}
+
+TEST_CASE("HK synthetic KilpSrj.xml for H-041 boundary (valuku 221) is read")
+{
+	checkH041Data(221, 10040);
+}
