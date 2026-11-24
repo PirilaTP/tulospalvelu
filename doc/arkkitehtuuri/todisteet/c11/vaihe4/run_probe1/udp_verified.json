@@ -1,0 +1,68 @@
+{
+  "run_json": "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\claude_c11s4\\run_probe1\\run.json",
+  "fw_exe": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+  "log_copy": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall_copy.log",
+  "log_copy_sha256": "28245bdb04ac49410f8a7875ba99978d77d16bc764c388a7adaf8a894a9fa46c",
+  "log_copy_mtime": "2026-11-24T22:41:03",
+  "drop_entries_total": 8,
+  "log_has_pid_field": true,
+  "rules": [
+    {
+      "Name": "TP C11 HkMaali block in",
+      "Enabled": "True",
+      "Action": "Block",
+      "Direction": "Inbound",
+      "Program": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+      "Profile": "Any"
+    },
+    {
+      "Name": "TP C11 HkMaali block out",
+      "Enabled": "True",
+      "Action": "Block",
+      "Direction": "Outbound",
+      "Program": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+      "Profile": "Any"
+    }
+  ],
+  "log": {
+    "expected": {
+      "TCP": {
+        "time_local": "2026-11-24T22:40:11+02:00",
+        "dst_port": "45332",
+        "src_port": "59327"
+      },
+      "UDP": {
+        "time_local": "2026-11-24T22:40:11+02:00",
+        "dst_port": "45592",
+        "src_port": "59024"
+      }
+    },
+    "log_fields": [
+      "date",
+      "time",
+      "action",
+      "protocol",
+      "src-ip",
+      "dst-ip",
+      "src-port",
+      "dst-port",
+      "size",
+      "tcpflags",
+      "tcpsyn",
+      "tcpack",
+      "tcpwin",
+      "icmptype",
+      "icmpcode",
+      "info",
+      "path",
+      "pid"
+    ],
+    "matched_lines": {
+      "TCP": "2026-11-24 22:40:11 DROP TCP 192.168.2.199 192.0.2.1 59327 45332 0 - 0 0 0 - - - SEND 110008",
+      "UDP": "2026-11-24 22:40:11 DROP UDP 192.168.2.199 192.0.2.1 59024 45592 0 - - - - - - - SEND 110008"
+    }
+  },
+  "ok": true,
+  "verified_epoch": 1795552876.3274143,
+  "verified": "2026-11-24T22:41:16"
+}

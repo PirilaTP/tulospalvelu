@@ -1,0 +1,825 @@
+{
+  "started": "2026-11-24T22:42:27",
+  "mode": "firewall",
+  "started_epoch": 1795552947.8173394,
+  "exe": "C:\\dev\\tulospalvelu\\TPexe\\Hk\\V521\\HkMaali.exe",
+  "exe_sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d",
+  "provenance": {
+    "exe_sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d",
+    "pe": {
+      "image_base": 4194304,
+      "size_of_image": 36364288,
+      "machine": "0x0000014C",
+      "dll_characteristics": "0x00008140",
+      "rsds": {
+        "guid": "{B0500861-3E83-4118-B0DA-E8E331F12614}",
+        "age": 1,
+        "pdb_path": "C:\\dev\\tulospalvelu\\TPexe\\Hk\\V521\\HkMaali.pdb"
+      }
+    },
+    "pdb": "../../../../TPexe/Hk/V521/HkMaali.pdb",
+    "pdb_sha256": "68ec2cd772e95e29cab5eece26c7f93533c6a15b28c372746fd5079d11306691"
+  },
+  "debug": true,
+  "watch": "kilptietue::addfrec",
+  "probe_sha256": "ab593f6ea6d747fe9896be5ab7bd56026c79e9baad0650822ca4b79b64b5e9c5",
+  "driver_sha256": "46ef171d83b9fbaec9db1e845f92361dad86bfddd87f12d5590623b427b018f5",
+  "hkdebug_sha256": "d2e2a0c0d77b4f1d5182dd753445f54381a5e7dac7b69266be57540b93aec7ae",
+  "script": {
+    "comment": "C-11 stage 4 boundary run: data/hk/h041_v221.xml (valuku 221, record 10040 bytes, 40 past KILPBUFSIZE). Same keys up to H21+; no further steps. Expected (testaus.md 18.4): 0xC0000409 subcode 2 at the addfrec return, KILP.DAT 20080 bytes.",
+    "args": [
+      "BOOT"
+    ],
+    "total_timeout": 60,
+    "step_timeout": 15,
+    "record_check": {
+      "recsize": 10040,
+      "bufsize": 10000
+    },
+    "steps": [
+      {
+        "wait": "KILP.DAT ei ole",
+        "key": "\r"
+      },
+      {
+        "wait": "P)oistu",
+        "key": "K"
+      },
+      {
+        "wait": [
+          "KORJAUKSET",
+          "L)is"
+        ],
+        "key": "L"
+      },
+      {
+        "wait": "+ : Hyv",
+        "cursor": [
+          7,
+          7
+        ],
+        "key": "TESTI",
+        "key_delay": 0.05
+      },
+      {
+        "nav": "\t",
+        "until_cursor": [
+          8,
+          2
+        ],
+        "max": 30
+      },
+      {
+        "wait": "+ : Hyv",
+        "cursor": [
+          8,
+          2
+        ],
+        "key": "H21+",
+        "key_delay": 0.05
+      }
+    ]
+  },
+  "script_sha256": "dd33791e8a6ed3bda4f518b8e1fd75d3bf3b67c21c07443c03c5bcdcf75ad61a",
+  "fw_exe": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+  "firewall_commands": [
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block out' -Direction Outbound -Program 'C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any",
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block in' -Direction Inbound -Program 'C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any"
+  ],
+  "firewall": {
+    "rules": [
+      {
+        "Name": "TP C11 HkMaali block in",
+        "Enabled": "True",
+        "Action": "Block",
+        "Direction": "Inbound",
+        "Program": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+        "Profile": "Any"
+      },
+      {
+        "Name": "TP C11 HkMaali block out",
+        "Enabled": "True",
+        "Action": "Block",
+        "Direction": "Outbound",
+        "Program": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+        "Profile": "Any"
+      }
+    ],
+    "profiles": [
+      {
+        "Name": "Domain",
+        "Enabled": "True"
+      },
+      {
+        "Name": "Private",
+        "Enabled": "True"
+      },
+      {
+        "Name": "Public",
+        "Enabled": "True"
+      }
+    ]
+  },
+  "firewall_ok": true,
+  "logging": [
+    {
+      "Name": "Domain",
+      "LogBlocked": "True",
+      "LogFileName": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+    },
+    {
+      "Name": "Private",
+      "LogBlocked": "True",
+      "LogFileName": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+    },
+    {
+      "Name": "Public",
+      "LogBlocked": "True",
+      "LogFileName": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+    }
+  ],
+  "logging_ok": true,
+  "logging_commands": {
+    "on": "Set-NetFirewallProfile -Profile Domain,Private,Public -LogBlocked True -LogFileName 'C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log'",
+    "restore": "Set-NetFirewallProfile -Profile Domain,Private,Public -LogBlocked False -LogFileName '%systemroot%\\system32\\LogFiles\\Firewall\\pfirewall.log'"
+  },
+  "outside_paths": [
+    "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt",
+    "C:\\Users\\Niko-Petteri Salo\\tp_c11_outside_probe.txt",
+    "C:\\Users\\Niko-Petteri Salo\\Documents\\tp_c11_outside_probe.txt",
+    "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tp_c11_outside_probe.txt",
+    "D:\\tp_c11_outside_probe.txt",
+    "G:\\tp_c11_outside_probe.txt",
+    "G:\\Oma Drive\\tp_c11_outside_probe.txt"
+  ],
+  "drives": {
+    "D:\\": {
+      "present": true
+    },
+    "G:\\": {
+      "present": true,
+      "oma_drive": true
+    }
+  },
+  "probe_ports": {
+    "tcp": 45115,
+    "udp": 41346
+  },
+  "probe": {
+    "exit_code": 0,
+    "exit_code_hex": "0x00000000",
+    "pid": 108320,
+    "timed_out": false,
+    "duration_s": 0.3,
+    "listener_accepts": 1,
+    "checks": {
+      "cwd": "isolated_or_ok|probe_result.txt created in the sandbox",
+      "token": "info|restricted=1 integrity_rid=0x2000 admin_member=0",
+      "console": "isolated_or_ok|key X received",
+      "outside": "isolated_or_ok|C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\Documents\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tp_c11_outside_probe.txt refused 5; D:\\tp_c11_outside_probe.txt refused 5; G:\\tp_c11_outside_probe.txt refused 5; G:\\Oma Drive\\tp_c11_outside_probe.txt refused 5;",
+      "wsastartup": "isolated_or_ok|WSAStartup=0",
+      "loopback": "PROBLEM|connect 127.0.0.1:55127 -> CONNECTED, error 0 after 0 ms",
+      "tcp_sent": "2026-11-24T20:42:30.371Z|dst=192.0.2.1:45115|src_port=55129",
+      "external": "isolated_or_ok|connect 192.0.2.1:45115 -> failed, error 10013 after 0 ms",
+      "udp_sent": "2026-11-24T20:42:30.371Z|dst=192.0.2.1:41346|src_port=58738",
+      "udp_sendto_info": "isolated_or_ok|udp sendto 192.0.2.1:41346 returned success, error 0 (see firewall log)",
+      "external6_info": "isolated_or_ok|connect [2001:db8::1]:45115 -> error 10051",
+      "registry": "isolated_or_ok|RegCreateKeyEx HKCU\\Software\\tp_c11_outside_probe -> 5; RegOpenKeyEx HKCU\\Software KEY_SET_VALUE -> 5",
+      "done": "1"
+    },
+    "external_10013": true,
+    "registry_key_left": false,
+    "required_checks": [
+      "cwd",
+      "console",
+      "outside",
+      "external",
+      "registry"
+    ],
+    "isolation_verified": true,
+    "job": {
+      "TotalProcesses": 1,
+      "ActiveProcesses": 0,
+      "TotalTerminatedProcesses": 0,
+      "ActiveProcessLimit": 1
+    },
+    "udp_gate": {
+      "file": "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp/claude_c11s4/run_probe1/udp_verified.json",
+      "ok": true,
+      "age_s": 74,
+      "same_rules": true,
+      "matched_lines": {
+        "TCP": "2026-11-24 22:40:11 DROP TCP 192.168.2.199 192.0.2.1 59327 45332 0 - 0 0 0 - - - SEND 110008",
+        "UDP": "2026-11-24 22:40:11 DROP UDP 192.168.2.199 192.0.2.1 59024 45592 0 - - - - - - - SEND 110008"
+      }
+    },
+    "firewall_log_check": "pending: match after the run from a new log copy (verify_log.py)"
+  },
+  "data": [
+    {
+      "src": "../data/hk/h041_v221.xml",
+      "dst": "KilpSrj.xml",
+      "sha256": "2ed216acdfa9b3071541f1efad52c0c417e299a6e3ca96d6ae3b5b8e5c445a42"
+    }
+  ],
+  "exe_copy_sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d",
+  "files_before": [
+    "HkMaali.exe",
+    "KilpSrj.xml"
+  ],
+  "program_started_epoch": 1795552950.9803474,
+  "run": {
+    "status": "fatal exception 0xC0000409 at 0x005E1295 (__report_gsfailure+0x5), process terminated by the debugger",
+    "exited_by_itself": false,
+    "exit_code": 3735880713,
+    "windows": [],
+    "exit_code_hex": "0xDEAD0409",
+    "pid": 111916,
+    "steps": [
+      {
+        "t_start": 0.0,
+        "wait": "KILP.DAT ei ole",
+        "cursor_wanted": null,
+        "cursor": [
+          0,
+          0
+        ],
+        "seen": true,
+        "key": "\r",
+        "t": 0.2,
+        "kilp_dat_size": null
+      },
+      {
+        "t_start": 0.5,
+        "wait": "P)oistu",
+        "cursor_wanted": null,
+        "cursor": [
+          78,
+          47
+        ],
+        "seen": true,
+        "key": "K",
+        "t": 0.71,
+        "kilp_dat_size": 10040
+      },
+      {
+        "t_start": 1.01,
+        "wait": [
+          "KORJAUKSET",
+          "L)is"
+        ],
+        "cursor_wanted": null,
+        "cursor": [
+          69,
+          47
+        ],
+        "seen": true,
+        "key": "L",
+        "t": 1.21,
+        "kilp_dat_size": 10040
+      },
+      {
+        "t_start": 1.51,
+        "wait": "+ : Hyv",
+        "cursor_wanted": [
+          7,
+          7
+        ],
+        "cursor": [
+          7,
+          7
+        ],
+        "seen": true,
+        "key": "TESTI",
+        "t": 1.71,
+        "kilp_dat_size": 10040
+      },
+      {
+        "t_start": 2.27,
+        "nav": "\t",
+        "until_cursor": [
+          8,
+          2
+        ],
+        "seen": true,
+        "cursor_trail": [
+          [
+            12,
+            7
+          ],
+          [
+            32,
+            7
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            11,
+            9
+          ],
+          [
+            39,
+            9
+          ],
+          [
+            50,
+            9
+          ],
+          [
+            8,
+            11
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            52,
+            11
+          ],
+          [
+            62,
+            11
+          ],
+          [
+            5,
+            16
+          ],
+          [
+            8,
+            2
+          ]
+        ],
+        "t": 6.69,
+        "kilp_dat_size": 10040
+      },
+      {
+        "t_start": 6.69,
+        "wait": "+ : Hyv",
+        "cursor_wanted": [
+          8,
+          2
+        ],
+        "cursor": [
+          8,
+          2
+        ],
+        "seen": true,
+        "key": "H21+",
+        "t": 6.69,
+        "kilp_dat_size": 10040
+      }
+    ],
+    "sockets_seen": [],
+    "endpoint_polls": 20,
+    "duration_s": 7.2,
+    "kilp_dat_size": 20080,
+    "job": {
+      "TotalProcesses": 1,
+      "ActiveProcesses": 0,
+      "TotalTerminatedProcesses": 0,
+      "ActiveProcessLimit": 1
+    },
+    "debugger": {
+      "events": {
+        "create_process": 1,
+        "load_dll": 26,
+        "exception": 4,
+        "create_thread": 4,
+        "exit_thread": 4,
+        "exit_process": 1
+      },
+      "exceptions": [
+        {
+          "code": "0xC0000409",
+          "flags": "0x00000001",
+          "address": "0x005E1295",
+          "first_chance": false,
+          "params": [
+            "0x00000002"
+          ],
+          "thread": 111932,
+          "t": 1795552958.4286258,
+          "sym": "__report_gsfailure+0x5",
+          "rva": "0x000A1295",
+          "fatal": true,
+          "evidence": {
+            "context": {
+              "Eip": "0x005E1295",
+              "Esp": "0x02AFD1C8",
+              "Ebp": "0x02AFF8E4",
+              "Eax": "0x00000000",
+              "Ebx": "0x02AFF9D8",
+              "Ecx": "0x00000002",
+              "Edx": "0x00480008",
+              "Esi": "0x02AFF9E0",
+              "Edi": "0x00000001",
+              "EFlags": "0x00000217"
+            },
+            "ebp_chain": [
+              {
+                "ebp": "0x02AFF8E4",
+                "next_ebp": "0x00000000",
+                "ret": "0x00000000",
+                "ret_sym": null
+              }
+            ],
+            "stack_scan_code_addresses": [
+              {
+                "at": "0x02AFD1C8",
+                "value": "0x00563237",
+                "sym": "kilptietue::addfrec+0x117"
+              },
+              {
+                "at": "0x02AFD204",
+                "value": "0x00540053",
+                "sym": "__mb_cur_max+0x0"
+              }
+            ],
+            "ret_at_esp": {
+              "value": "0x00563237",
+              "sym": "kilptietue::addfrec+0x117",
+              "rva": "0x00023237"
+            },
+            "watched_frame": {
+              "frame_ebp": "0x02AFF8E4",
+              "slots_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000d8f9af02",
+              "cookie_slot": "0x00000000",
+              "expected_cookie_slot": "0xBE324C8D",
+              "cookie_intact": false,
+              "saved_ebp_slot": "0x00000000",
+              "saved_ebp_at_entry": "0x02AFF9B0",
+              "saved_ebp_intact": false,
+              "return_slot": "0x00000000",
+              "return_at_entry": "0x005637BA",
+              "return_intact": false,
+              "return_slot_sym": null,
+              "arg0_slot": "0x00000000",
+              "arg0_at_entry": "0x02AFF9D8",
+              "arg0_intact": false,
+              "entry_return_sym": "kilptietue::addtall+0x36A",
+              "entry_thread": 111932
+            },
+            "stack_scan_above_frame_heuristic": [
+              {
+                "at": "0x02AFF994",
+                "value": "0x006D004F",
+                "sym": "ntulos+0x3848F"
+              },
+              {
+                "at": "0x02AFF9A0",
+                "value": "0x00694EEC",
+                "sym": "tall_CriticalSection+0x0"
+              },
+              {
+                "at": "0x02AFF9B4",
+                "value": "0x005694B5",
+                "sym": "add+0x4B5"
+              },
+              {
+                "at": "0x02AFFA14",
+                "value": "0x00540053",
+                "sym": "__mb_cur_max+0x0"
+              },
+              {
+                "at": "0x02AFFB4C",
+                "value": "0x006154E0",
+                "sym": "`string'+0x0"
+              },
+              {
+                "at": "0x02AFFB58",
+                "value": "0x006093F0",
+                "sym": "_floor_default+0x1B0"
+              },
+              {
+                "at": "0x02AFFB64",
+                "value": "0x00547285",
+                "sym": "korjaukset+0x225"
+              },
+              {
+                "at": "0x02AFFB90",
+                "value": "0x005E170B",
+                "sym": "operator delete[]+0xB"
+              },
+              {
+                "at": "0x02AFFB9C",
+                "value": "0x0058FAD4",
+                "sym": "kbdiv1+0x694"
+              },
+              {
+                "at": "0x02AFFBB0",
+                "value": "0x0058FAF0",
+                "sym": "kbdiv1+0x6B0"
+              }
+            ],
+            "module_rva_of_eip": "0x000A1295"
+          }
+        }
+      ],
+      "fatal": {
+        "code": "0xC0000409",
+        "flags": "0x00000001",
+        "address": "0x005E1295",
+        "first_chance": false,
+        "params": [
+          "0x00000002"
+        ],
+        "thread": 111932,
+        "t": 1795552958.4286258,
+        "sym": "__report_gsfailure+0x5",
+        "rva": "0x000A1295",
+        "fatal": true,
+        "evidence": {
+          "context": {
+            "Eip": "0x005E1295",
+            "Esp": "0x02AFD1C8",
+            "Ebp": "0x02AFF8E4",
+            "Eax": "0x00000000",
+            "Ebx": "0x02AFF9D8",
+            "Ecx": "0x00000002",
+            "Edx": "0x00480008",
+            "Esi": "0x02AFF9E0",
+            "Edi": "0x00000001",
+            "EFlags": "0x00000217"
+          },
+          "ebp_chain": [
+            {
+              "ebp": "0x02AFF8E4",
+              "next_ebp": "0x00000000",
+              "ret": "0x00000000",
+              "ret_sym": null
+            }
+          ],
+          "stack_scan_code_addresses": [
+            {
+              "at": "0x02AFD1C8",
+              "value": "0x00563237",
+              "sym": "kilptietue::addfrec+0x117"
+            },
+            {
+              "at": "0x02AFD204",
+              "value": "0x00540053",
+              "sym": "__mb_cur_max+0x0"
+            }
+          ],
+          "ret_at_esp": {
+            "value": "0x00563237",
+            "sym": "kilptietue::addfrec+0x117",
+            "rva": "0x00023237"
+          },
+          "watched_frame": {
+            "frame_ebp": "0x02AFF8E4",
+            "slots_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000d8f9af02",
+            "cookie_slot": "0x00000000",
+            "expected_cookie_slot": "0xBE324C8D",
+            "cookie_intact": false,
+            "saved_ebp_slot": "0x00000000",
+            "saved_ebp_at_entry": "0x02AFF9B0",
+            "saved_ebp_intact": false,
+            "return_slot": "0x00000000",
+            "return_at_entry": "0x005637BA",
+            "return_intact": false,
+            "return_slot_sym": null,
+            "arg0_slot": "0x00000000",
+            "arg0_at_entry": "0x02AFF9D8",
+            "arg0_intact": false,
+            "entry_return_sym": "kilptietue::addtall+0x36A",
+            "entry_thread": 111932
+          },
+          "stack_scan_above_frame_heuristic": [
+            {
+              "at": "0x02AFF994",
+              "value": "0x006D004F",
+              "sym": "ntulos+0x3848F"
+            },
+            {
+              "at": "0x02AFF9A0",
+              "value": "0x00694EEC",
+              "sym": "tall_CriticalSection+0x0"
+            },
+            {
+              "at": "0x02AFF9B4",
+              "value": "0x005694B5",
+              "sym": "add+0x4B5"
+            },
+            {
+              "at": "0x02AFFA14",
+              "value": "0x00540053",
+              "sym": "__mb_cur_max+0x0"
+            },
+            {
+              "at": "0x02AFFB4C",
+              "value": "0x006154E0",
+              "sym": "`string'+0x0"
+            },
+            {
+              "at": "0x02AFFB58",
+              "value": "0x006093F0",
+              "sym": "_floor_default+0x1B0"
+            },
+            {
+              "at": "0x02AFFB64",
+              "value": "0x00547285",
+              "sym": "korjaukset+0x225"
+            },
+            {
+              "at": "0x02AFFB90",
+              "value": "0x005E170B",
+              "sym": "operator delete[]+0xB"
+            },
+            {
+              "at": "0x02AFFB9C",
+              "value": "0x0058FAD4",
+              "sym": "kbdiv1+0x694"
+            },
+            {
+              "at": "0x02AFFBB0",
+              "value": "0x0058FAF0",
+              "sym": "kbdiv1+0x6B0"
+            }
+          ],
+          "module_rva_of_eip": "0x000A1295"
+        }
+      },
+      "breakpoints": [
+        {
+          "kind": "entry",
+          "addr": "0x00563120",
+          "set": true,
+          "sym": "kilptietue::addfrec+0x0"
+        },
+        {
+          "kind": "return",
+          "addr": "0x005637BA",
+          "set": true,
+          "sym": "kilptietue::addtall+0x36A"
+        },
+        {
+          "kind": "entry",
+          "addr": "0x00563120",
+          "sym": "kilptietue::addfrec+0x0",
+          "t": 1795552958.4275286,
+          "thread": 111932,
+          "context": {
+            "Eip": "0x00563121",
+            "Esp": "0x02AFF8E8",
+            "Ebp": "0x02AFF9B0",
+            "Eax": "0x00000000",
+            "Ebx": "0x02AFF9D8",
+            "Ecx": "0x02AFF9E0",
+            "Edx": "0x00000000",
+            "Esi": "0x02AFF9E0",
+            "Edi": "0x00000001",
+            "EFlags": "0x00000246"
+          },
+          "return_address": "0x005637BA",
+          "return_sym": "kilptietue::addtall+0x36A",
+          "caller_ebp": "0x02AFF9B0",
+          "arg0": "0x02AFF9D8",
+          "frame_ebp": "0x02AFF8E4",
+          "cookie_addr": "0x00638700",
+          "cookie": "0xBC9DB469",
+          "expected_cookie_slot": "0xBE324C8D"
+        }
+      ],
+      "exit_code": 3735880713,
+      "dlls_loaded": 26,
+      "initial_breakpoints": 2,
+      "terminated_by_debugger": true,
+      "fatal_count": 1,
+      "unexpected_breakpoints": [],
+      "image_base": "0x00540000",
+      "symbols": {
+        "sym_type": 3,
+        "loaded_pdb": "C:\\dev\\tulospalvelu\\TPexe\\Hk\\V521\\HkMaali.pdb",
+        "pdb_guid": "{B0500861-3E83-4118-B0DA-E8E331F12614}",
+        "pdb_age": 1,
+        "pdb_unmatched": false,
+        "image_size": 36364288,
+        "pdb_ok": true,
+        "image_rsds": {
+          "guid": "{B0500861-3E83-4118-B0DA-E8E331F12614}",
+          "age": 1,
+          "pdb_path": "C:\\dev\\tulospalvelu\\TPexe\\Hk\\V521\\HkMaali.pdb"
+        }
+      },
+      "watch": {
+        "name": "kilptietue::addfrec",
+        "addr": "0x00563120",
+        "rva": "0x00023120"
+      },
+      "exit_code_hex": "0xDEAD0409",
+      "loop_finished": true,
+      "error": null
+    },
+    "wer": {
+      "processes": {
+        "polls": 78,
+        "period_s": 0.1,
+        "names": [
+          "werfault.exe",
+          "werfaultsecure.exe",
+          "wermgr.exe"
+        ],
+        "parents": [
+          111916
+        ],
+        "found": []
+      },
+      "events_since_start": {
+        "query_since_utc": "2026-11-24T20:42:31.000Z",
+        "returncode": 0,
+        "stderr": "",
+        "count": 0,
+        "events": []
+      },
+      "events_matching": [],
+      "wersvc_before": "1  STOPPED",
+      "wersvc_after": "1  STOPPED"
+    },
+    "stack_vs_record": {
+      "compared_bytes": 40,
+      "stack_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "record_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "equal": true,
+      "record_all_zero": true
+    }
+  },
+  "program_finished_epoch": 1795552960.1432552,
+  "result": "fatal exception 0xC0000409 at 0x005E1295 (__report_gsfailure+0x5), process terminated by the debugger",
+  "outside_changes": [
+    "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_0.etl",
+    "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_1.etl",
+    "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_2.etl"
+  ],
+  "outside_changes_not_noise": [],
+  "outside_probe_file_exists": false,
+  "registry_key_exists_after": false,
+  "sandbox": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw",
+  "sandbox_files": {
+    "HkMaali.exe": {
+      "size": 1156096,
+      "sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d"
+    },
+    "KILP.DAT": {
+      "size": 20080,
+      "sha256": "a0885c5bc17e7860e95ccb894d44166d6911aeaf64756ecbfd534774c3016bc1"
+    },
+    "KilpSrj.xml": {
+      "size": 487,
+      "sha256": "2ed216acdfa9b3071541f1efad52c0c417e299a6e3ca96d6ae3b5b8e5c445a42"
+    }
+  },
+  "post_probe_ports": {
+    "tcp": 48759,
+    "udp": 41574
+  },
+  "post_probe": {
+    "exit_code": 0,
+    "exit_code_hex": "0x00000000",
+    "pid": 106912,
+    "timed_out": false,
+    "duration_s": 0.3,
+    "listener_accepts": 1,
+    "checks": {
+      "cwd": "isolated_or_ok|probe_result.txt created in the sandbox",
+      "token": "info|restricted=1 integrity_rid=0x2000 admin_member=0",
+      "console": "isolated_or_ok|key X received",
+      "outside": "isolated_or_ok|C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\Documents\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tp_c11_outside_probe.txt refused 5; D:\\tp_c11_outside_probe.txt refused 5; G:\\tp_c11_outside_probe.txt refused 5; G:\\Oma Drive\\tp_c11_outside_probe.txt refused 5;",
+      "wsastartup": "isolated_or_ok|WSAStartup=0",
+      "loopback": "PROBLEM|connect 127.0.0.1:55133 -> CONNECTED, error 0 after 0 ms",
+      "tcp_sent": "2026-11-24T20:42:41.718Z|dst=192.0.2.1:48759|src_port=55135",
+      "external": "isolated_or_ok|connect 192.0.2.1:48759 -> failed, error 10013 after 0 ms",
+      "udp_sent": "2026-11-24T20:42:41.718Z|dst=192.0.2.1:41574|src_port=62861",
+      "udp_sendto_info": "isolated_or_ok|udp sendto 192.0.2.1:41574 returned success, error 0 (see firewall log)",
+      "external6_info": "isolated_or_ok|connect [2001:db8::1]:48759 -> error 10051",
+      "registry": "isolated_or_ok|RegCreateKeyEx HKCU\\Software\\tp_c11_outside_probe -> 5; RegOpenKeyEx HKCU\\Software KEY_SET_VALUE -> 5",
+      "done": "1"
+    },
+    "external_10013": true,
+    "registry_key_left": false,
+    "required_checks": [
+      "cwd",
+      "console",
+      "outside",
+      "external",
+      "registry"
+    ],
+    "isolation_verified": true,
+    "job": {
+      "TotalProcesses": 1,
+      "ActiveProcesses": 0,
+      "TotalTerminatedProcesses": 0,
+      "ActiveProcessLimit": 1
+    }
+  },
+  "git_status": "!! .claude/scheduled_tasks.lock\n!! TPexe/\n!! TPsource/V52/RADStudio10/Release_Build/\n!! TPsource/V52/RADStudio10/Win32/\n!! TPsource/V52/RADStudio10/build-logs/\n!! TPsource/V52/RADStudio10/obj/\n!! TPsource/V52/Tests/__pycache__/\n!! TPsource/V52/Tests/blackbox/__pycache__/\n!! TPsource/V52/VS/Libs/Release/\n!! TPsource/V52/VS/Libs/dbboxm/Release/\n!! TPsource/V52/VS/Tests/Asan/\n!! TPsource/V52/VS/Tests/Release/\n!! TPsource/V52/VS/Tests/TpCoreHk/\n!! TPsource/V52/VS/Tests/TpCoreJuk/\n!! TPsource/V52/VS/Tests/TpTest/\n!! TPsource/V52/VS/V/ViestiLuenta/\n!! TPsource/V52/VS/V/ViestiMaali/\n!! issue-drafts/\n!! vc10/\n",
+  "finished": "2026-11-24T22:42:42",
+  "finished_epoch": 1795552962.1752164,
+  "program_window_epoch": [
+    1795552950.9803474,
+    1795552960.1432552
+  ]
+}

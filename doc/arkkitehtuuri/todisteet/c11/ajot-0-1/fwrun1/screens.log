@@ -1,0 +1,204 @@
+--- screen after waiting for ['Tiedostoa KILP.DAT ei ole', 'Paina Enter'] (seen=True) ---
+
+            ╔══════════════════════════════════════════════════════╗
+            ║                                                      ║
+            ║  HENKILÖKOHTAISEN KILPAILUN TULOSPALVELUOHJELMISTO   ║
+            ║                                                      ║
+            ║                     Pekka Pirilä                     ║
+            ║                                                      ║
+            ║              Ohjelma HkMaali, versio 5.21            ║
+            ║                             Build 5.22.002/2026-07-31║
+            ╚══════════════════════════════════════════════════════╝
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tiedostoa KILP.DAT ei ole. Luodaan uusi tiedosto.                    Paina Enter
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--- screen after waiting for ['VALIKKO', 'P)oistu'] (seen=True) ---
+PÄÄVALIKKO                          21.11.31                     ║ Ilmoitt.    0
+═════════════════════════════════════════════════════════════════╣ Tulos       0
+Valitse toiminto painamalla tunnuskirjainta                      ║ Keskeytt.   0
+M)aali          Käyttö tosiaikaiseen ajanottoon maalissa         ║ Hylätty     0
+                                                                 ║ Ei läht.    0
+L)askenta       Tulosten, käsinsyöttö esim. maalipöytäkirjoista  ║ Avoinna     0
+                                                                 ║ Esitys      0
+K)orjaukset     Kilpailijoiden lisäykset, poistot ja korjaukset  ╠══════════════
+                                                                 ║ TULOSTUS
+T)ulosluettelot Tulostus näytölle tai paperille, automaattisen   ║ Tausta     EI
+                tulostuksen käynnistys. 'O': Oikaise kysymyksiä  ║
+                                                                 ║
+lE)imat         EMIT-leimauskorttien tietojen käsittely,         ║ Auto       EI
+                                                                 ║
+Y)hteys         Tiedonsiirron seuranta ja hallinta,              ║
+                                                                 ║
+A)setukset      Muuta ohjelman erilaisia asetuksia,              ╠══════════════
+B)ackup         Tiedoston KILP.DAT kopiointi levykkeelle,        ║
+P)oistu         Lopeta ohjelman käyttö                           ║
+                                                                 ║
+Ohjeita saa aina ruudulle painamalla näppäintä <F1>              ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+═════════════════════════════════════════════════════════════════╩══════════════
+M)aali, L)ask, K)orj, T)ulos, lE)imat, Y)hteys, A)setukset, B)ackup, P)oistu:
+════════════════════════════════════════════════════════════════════════════════
+
+--- screen after waiting for ['Haluatko varmasti poistua ohjelmasta'] (seen=True) ---
+PÄÄVALIKKO                          21.11.32                     ║ Ilmoitt.    0
+═════════════════════════════════════════════════════════════════╣ Tulos       0
+Valitse toiminto painamalla tunnuskirjainta                      ║ Keskeytt.   0
+M)aali          Käyttö tosiaikaiseen ajanottoon maalissa         ║ Hylätty     0
+                                                                 ║ Ei läht.    0
+L)askenta       Tulosten, käsinsyöttö esim. maalipöytäkirjoista  ║ Avoinna     0
+                                                                 ║ Esitys      0
+K)orjaukset     Kilpailijoiden lisäykset, poistot ja korjaukset  ╠══════════════
+                                                                 ║ TULOSTUS
+T)ulosluettelot Tulostus näytölle tai paperille, automaattisen   ║ Tausta     EI
+                tulostuksen käynnistys. 'O': Oikaise kysymyksiä  ║
+                                                                 ║
+lE)imat         EMIT-leimauskorttien tietojen käsittely,         ║ Auto       EI
+                                                                 ║
+Y)hteys         Tiedonsiirron seuranta ja hallinta,              ║
+                                                                 ║
+A)setukset      Muuta ohjelman erilaisia asetuksia,              ╠══════════════
+B)ackup         Tiedoston KILP.DAT kopiointi levykkeelle,        ║
+P)oistu         Lopeta ohjelman käyttö                           ║
+                                                                 ║
+Ohjeita saa aina ruudulle painamalla näppäintä <F1>              ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+═════════════════════════════════════════════════════════════════╩══════════════
+Haluatko varmasti poistua ohjelmasta (K/E):
+════════════════════════════════════════════════════════════════════════════════
+
+--- last screen ---
+PÄÄVALIKKO                          21.11.32                     ║ Ilmoitt.    0
+═════════════════════════════════════════════════════════════════╣ Tulos       0
+Valitse toiminto painamalla tunnuskirjainta                      ║ Keskeytt.   0
+M)aali          Käyttö tosiaikaiseen ajanottoon maalissa         ║ Hylätty     0
+                                                                 ║ Ei läht.    0
+L)askenta       Tulosten, käsinsyöttö esim. maalipöytäkirjoista  ║ Avoinna     0
+                                                                 ║ Esitys      0
+K)orjaukset     Kilpailijoiden lisäykset, poistot ja korjaukset  ╠══════════════
+                                                                 ║ TULOSTUS
+T)ulosluettelot Tulostus näytölle tai paperille, automaattisen   ║ Tausta     EI
+                tulostuksen käynnistys. 'O': Oikaise kysymyksiä  ║
+                                                                 ║
+lE)imat         EMIT-leimauskorttien tietojen käsittely,         ║ Auto       EI
+                                                                 ║
+Y)hteys         Tiedonsiirron seuranta ja hallinta,              ║
+                                                                 ║
+A)setukset      Muuta ohjelman erilaisia asetuksia,              ╠══════════════
+B)ackup         Tiedoston KILP.DAT kopiointi levykkeelle,        ║
+P)oistu         Lopeta ohjelman käyttö                           ║
+                                                                 ║
+Ohjeita saa aina ruudulle painamalla näppäintä <F1>              ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+═════════════════════════════════════════════════════════════════╩══════════════
+Haluatko varmasti poistua ohjelmasta (K/E):
+════════════════════════════════════════════════════════════════════════════════
+

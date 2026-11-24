@@ -1,0 +1,66 @@
+command: VS\Tests\Asan\TpCoreJuk.exe "--test-case=H-032b relay addseur heap-buffer-overflow (ASan)" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x0000004D timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPARM|finding=H-032|mechanism=addseur-heap-buffer-overflow|source=asan
+TPRESULT|finding=H-032|mechanism=addseur-heap-buffer-overflow|observed=1|source=asan|detail=ASan report matched all expected strings; WRITE of size 1014 at 0x05a03466 thread T0
+
+--- stderr ---
+=================================================================
+==25036==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x05a03466 at pc 0x652dce45 bp 0x00def3e8 sp 0x00deefc8
+WRITE of size 1014 at 0x05a03466 thread T0
+    #0 0x652dce44 in _asan_memcpy+0x204 (C:\dev\tulospalvelu\TPsource\V52\VS\Tests\Asan\clang_rt.asan_dynamic-i386.dll+0x1003ce44)
+    #1 0x00116a1d in addseur C:\dev\tulospalvelu\TPsource\V52\Tp\TpComY.cpp:654
+    #2 0x001874c7 in DOCTEST_ANON_FUNC_6 C:\dev\tulospalvelu\TPsource\V52\Tests\core\VRecvTests.cpp:161
+    #3 0x0014c535 in doctest::Context::run C:\dev\tulospalvelu\TPsource\V52\Tests\doctest.h:7007
+    #4 0x0014deec in main C:\dev\tulospalvelu\TPsource\V52\Tests\core\CoreMain.cpp:109
+    #5 0x001984f1 in __scrt_common_main_seh F:\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #6 0x75435d48 in BaseThreadInitThunk+0x18 (C:\WINDOWS\System32\KERNEL32.DLL+0x10015d48)
+    #7 0x770cc75a in RtlInitializeExceptionChain+0x6a (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec75a)
+    #8 0x770cc6e0 in RtlGetAppContainerNamedObjectPath+0x230 (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec6e0)
+
+0x05a03466 is located 0 bytes after 13158-byte region [0x05a00100,0x05a03466)
+allocated by thread T0 here:
+    #0 0x652e34e1 in _asan_wrap_calloc+0x21 (C:\dev\tulospalvelu\TPsource\V52\VS\Tests\Asan\clang_rt.asan_dynamic-i386.dll+0x100434e1)
+    #1 0x0018717e in DOCTEST_ANON_FUNC_6 C:\dev\tulospalvelu\TPsource\V52\Tests\core\VRecvTests.cpp:154
+    #2 0x0014c535 in doctest::Context::run C:\dev\tulospalvelu\TPsource\V52\Tests\doctest.h:7007
+    #3 0x0014deec in main C:\dev\tulospalvelu\TPsource\V52\Tests\core\CoreMain.cpp:109
+    #4 0x001984f1 in __scrt_common_main_seh F:\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #5 0x75435d48 in BaseThreadInitThunk+0x18 (C:\WINDOWS\System32\KERNEL32.DLL+0x10015d48)
+    #6 0x770cc75a in RtlInitializeExceptionChain+0x6a (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec75a)
+    #7 0x770cc6e0 in RtlGetAppContainerNamedObjectPath+0x230 (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec6e0)
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow C:\dev\tulospalvelu\TPsource\V52\Tp\TpComY.cpp:654 in addseur
+Shadow bytes around the buggy address:
+  0x05a03180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x05a03200: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x05a03280: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x05a03300: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x05a03380: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x05a03400: 00 00 00 00 00 00 00 00 00 00 00 00[06]fa fa fa
+  0x05a03480: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x05a03500: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x05a03580: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x05a03600: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x05a03680: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==25036==ABORTING
+

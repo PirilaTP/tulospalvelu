@@ -1,0 +1,10 @@
+command: VS\Tests\Release\TpCoreHk.exe "--test-case=H-027b TCPXML client dereferences a freed connection" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0xC0000005 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPARM|finding=H-027|mechanism=tcpxml-reconnect-null-deref|source=exception
+TPCRASH|source=veh|code=0xC0000005|access=read|target=0x0000000C|thread=tcp-client|rva=0x00003997|symbols=reconnectTCP
+TPRESULT|finding=H-027|mechanism=tcpxml-reconnect-null-deref|observed=1|source=exception|detail=read access to 0x0000000C on thread tcp-client in reconnectTCP
+
+--- stderr ---
+

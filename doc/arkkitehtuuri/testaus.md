@@ -1665,6 +1665,248 @@ kontrolliajoon; kohdat 1–4 piti korjata ennen 221-ajon luokittelua (korjattu).
 Itsetesti korjausten jälkeen / self-test after the fixes: kaikki 6 osaa OK; crash control:
 kussakin kaatumisessa `fatal_count` 1, 2 käynnistyspysähdystä, 0 odottamatonta.
 
-### 19.9 Koeajot / Runs
+### 19.9 Koeajot / Runs (2026-11-24, commitoimatta / uncommitted)
 
-Ei vielä ajettu. / Not run yet.
+Ajuri `c6205d2`; koeohjelmat `build_probes.cmd`-käännös (isolation_probe SHA-256
+`ab593f6e…`, crash_probe `b27fd06e…`); tulokset tilapäishakemistossa
+`%TEMP%\claude_c11s4\` (`run_probe1`, `run_v220`, `run_v221`, `h041_evaluation.json`);
+arkistoitu myöhemmin hakemistoon `todisteet/c11/vaihe4/` ja tilapäishakemisto poistettu
+(luku 20.6). Ohjelma molemmissa ajoissa SHA-256 `61034e5d…7d297d` (lähde ja kopio), PDB-GUID
+täsmää, `HkMaali.exe BOOT` debuggerin alla, `--watch kilptietue::addfrec`.
+
+| Vaihe / step | Tulos / result |
+|---|---|
+| Lokitus päälle (käyttäjä) / logging on | kaikki profiilit `LogBlocked` True, testihakemiston tiedosto |
+| Koeohjelma-ajo / probe-only (22.40.11) | paikalliset tarkistukset OK; TCP ja UDP DROP täsmäsivät lokissa (pid 110008) → `udp_verified.json`, jota **molemmat** ajot käyttivät UDP-porttina (ikä 8 s ja 74 s); kunkin ajon omat koepaketit (ennen ja jälkeen) täsmättiin vasta jälkikäteen `verify_log`illa |
+| Kontrolli 220 (ohjelma 22.41.27–22.41.37, ajuri valmis 22.41.39) | ks. alla; loki: koepaketit ennen (pid 106764) ja jälkeen (26236) täsmäävät, ei pudotuksia ohjelman pid:llä 66180, ei muita lähteviä pudotuksia → `verify_log` OK |
+| Ylitys 221 (ohjelma 22.42.31–22.42.40, ajuri valmis 22.42.42) | ks. alla; loki: koepaketit ennen (108320) ja jälkeen (106912) täsmäävät, ei pudotuksia ohjelman pid:llä 111916, kopio kattaa ajon; **`program_ok` False** (ks. arvio) |
+| Lokitus palautettu (käyttäjä) | tarkistettu `Get-NetFirewallProfile`-luvulla tässä istunnossa (ei tallennettu ajojen JSON-tiedostoihin): kaikki profiilit `LogBlocked` False, `LogAllowed` False, `%systemroot%\system32\LogFiles\Firewall\pfirewall.log`, 4096 kt; estosäännöt yhä käytössä |
+
+**Kontrolli 220 / control:** kaikki 10 vaihetta nähty; Tab-navigointi 11 painalluksella
+sarjakenttään (8,2); KILP.DAT 10 000 → **20 000** tavua (tietue 1 sisältää nimen TESTI
+UTF-16-muodossa); itse lopetus 9,6 s, koodi 0. `addfrec`in alku: kutsuja
+`kilptietue::addtall+0x36A`; paluukohdassa evästepaikka = `__security_cookie ^ EBP`
+(0xC0CE10D0), paluuosoite ja tallennettu EBP ennallaan. Ei kohtalokkaita eikä toisen
+mahdollisuuden poikkeuksia, 2 käynnistyspysähdystä, ei odottamattomia. Job 1 prosessi,
+ei ikkunoita, ei verkkopäätepisteitä (30 näytettä), ei WER-prosesseja (99 näytettä) eikä
+tapahtumia, WerSvc STOPPED ennen ja jälkeen, ulkopuolella vain sovittu .etl-kohina.
+
+**Ylitys 221 / boundary:** samat 6 vaihetta "H21+":aan asti nähty; sen jälkeen (7,2 s):
+
+| Kohta / item | Havainto / observation |
+|---|---|
+| Poikkeus / exception | **0xC0000409**, alikoodi **2**, toinen mahdollisuus, jatkokelvoton, RVA 0xA1295 `__report_gsfailure+0x5`; ainoa poikkeus (`fatal_count` 1), sama säie kuin `addfrec`in alussa |
+| Paikka / place | [ESP] = `kilptietue::addfrec+0x117` (RVA 0x23237, toisen `__security_check_cookie`-kutsun paluukohta); EBP = `addfrec`in kehys 0x02AFF8E4 (ASLR-kanta 0x00540000) |
+| Kutsupino / call stack | alussa: paluuosoite `kilptietue::addtall+0x36A`; EBP-ketju katkeaa (tallennettu EBP = 0); heuristinen pinoskannaus ylempää: `add+0x4B5`, `korjaukset+0x225` |
+| Kehys ennen → jälkeen / frame before → after | eväste 0xBE324C8D → 0; tallennettu EBP 0x02AFF9B0 → 0; paluuosoite `addtall+0x36A` → 0; parametri `d` 0x02AFF9D8 → 0 |
+| Ylityksen laajuus / extent | [EBP−4, EBP+36) = 40 nollatavua = KILP.DAT:n tietueen 1 tavut [10 000, 10 040) (nollia; yksinään heikko). Ajojen välinen ero: kontrollin paluukohdassa sana EBP+32 oli nollasta poikkeava (kutsujan osoitin 0x029DF450), 221:ssä 0; sana EBP+36 säilyi (0x02AFF9D8 = parametrin arvo alussa) → muutos päättyy tasan 40 tavuun. EBP+12…+28 olivat nollia jo kontrollissa, joten niiden muutosta ei voi nähdä. Muuttuneita sanoja havaittiin 5 (eväste, EBP, paluu, parametri, EBP+32) |
+| KILP.DAT | 10 040 → **20 080** tavua (tietue kirjoitettu ennen evästetarkistusta) |
+| Lopputila / end state | debuggeri lopetti prosessin (0xDEAD0409); Job 1 prosessi; ei ikkunoita, verkkopäätepisteitä (20 näytettä), WER-prosesseja (78), WER-tapahtumia; WerSvc STOPPED ennen ja jälkeen; ei HKCU-avainta eikä ulkopuolisia tiedostoja; vain sovittu kohina |
+
+**Ennalta kiinnitetty arvio / pre-fixed evaluation (`evaluate_h041`): "not confirmed".**
+Kriteerit 1–6 täyttyvät; kriteeri 7 ei: 221-ajon `verify_log` antoi `program_ok` False,
+koska ±60 s:n ikkunaan osui kaksi lähtevää pudotusta klo 22.41.38 pid:ltä 26236. Pid 26236
+on kontrolliajon jälkimmäinen koeohjelma (`run_v220/run.json` `post_probe.pid`), jonka
+paketit on jo täsmätty kontrolliajon lokitarkistuksessa; 221-ohjelma käynnistyi 22.42.31.
+Kun kontrolliajon koeohjelmien pid:t (106764, 26236) jätetään pois, selittämättömiä
+pudotuksia ei jää; ohjelman omalla ikkunalla (22.42.31–22.42.40 + 1 s) vain 221-ajon omat
+koeohjelmat. Kyse on ikkunan toleranssin ja peräkkäisten ajojen yhteisvaikutuksesta, ei
+eristyksen pettämisestä [päätelty lokista ja pid-kirjanpidosta]. Kriteeriä ei muutettu
+tulosten nähtyä eikä ajoa toistettu.
+
+The pre-fixed evaluation says "not confirmed": criteria 1–6 hold; criterion 7 fails on
+two drops from pid 26236 inside the ±60 s window, which is the control run's own,
+already matched post-run probe. Excluding it leaves no unexplained drop. The criterion
+was not changed after the results and nothing was re-run.
+
+**Todennustaso / verification level (tilanne ennen päätöstä; päätös: luku 19.11 /
+status before the decision, see 19.11):** H-041 pidetään toistaiseksi tasolla
+"toistettu testikehyksessä"; tason nosto "vahvistettu ajamalla" -tasolle on käyttäjän
+päätös, koska ennalta kiinnitetty kriteeri ei täyttynyt kirjaimellisesti. Muiden
+havaintojen tasoja ei muutettu. / H-041 stays at "reproduced in test harness" until the
+user decides; no other finding changed.
+
+**Mitä osoitettiin / shown:** toimitetussa HkMaali.exe:ssä tavallisen konsolikäyttöliittymän
+kautta (K → L → lisäys) ja rajaparilla 220/221: 10 040-tavuinen tietue pakataan
+`addfrec`in 10 000-tavuiseen pinopuskuriin; puskurin yli menevät 40 tavua ylikirjoittavat
+`/GS`-evästeen, tallennetun EBP:n, paluuosoitteen ja parametrin; tietue kirjoitetaan
+KILP.DAT:iin ennen evästetarkistusta; `/GS` lopettaa prosessin (fast fail) ennen kuin
+ylikirjoitettua paluuosoitetta käytetään. Valuku 220:llä samat paikat pysyvät ehjinä.
+Että juuri `pack` kirjoitti muuttuneet sanat, on [päätelty] disassemblystä (puskuri
+`[ebp-2714h]`, ainoa kirjoitus siihen ennen tarkistusta on `pack`) ja tavujen
+täsmäämisestä; kirjoitusvahtia ei käytetty.
+
+**Mitä ei osoitettu / not shown:** hyödynnettävyyttä; käytöstä ilman `/GS`:ää; käytöstä
+ilman debuggeria (WER-polku, käyttäjälle näkyvä kaatuminen [päätelty]); WER:n poissaolo
+perustuu ilmaisimiin, joilla ei ole positiivista kontrollia ("ei havaittu", ei "estetty");
+lukupolkua
+käynnistyksessä; muita `n_pv`/`valuku`-yhdistelmiä (250 ajamatta); käytetäänkö tällaisia
+kokoonpanoja käytännössä; ylitystavujen muuta sisältöä kuin nollia (UI-tietueen loppu on
+nollia).
+
+### 19.10 Riippumaton tarkastus / Independent review (ajot / runs)
+
+`independent-verifier` (vain luku; JSON-todisteet, lokikopio, KILP.DAT-kopiot, dumpbin;
+offline-testit 39/39): **R1 alkuperä, R2 kontrolli, R3 ylitys, R4 eristys ja R5
+kriteerin 7 epäonnistumisen syy vahvistettu**; R6 (mitä osoitettiin) osittain:
+sanamuotokorjaukset tehty yllä (UDP-portin uudelleenkäyttö, `pack`-päätelmä merkitty,
+EBP+32-ero ajojen välillä, ajoikkunat, WER "ei havaittu"). Tarkastaja vahvisti
+disassemblystä: `buf` = `[ebp-2714h]`, joten buf[10 000…10 039] = [EBP−4, EBP+36);
+0x423232 on normaalipolun evästetarkistus (paluu 0x423237); `___report_gsfailure`
+0x4A1290 = `mov ecx,2; int 29h` (0x4A1295). ESP 0x02AFD1C8 = EBP − 0x271C sopii kehykseen.
+
+Havaitut viat (eivät muuta tulosta) / defects (no verdict change):
+1. `evaluate_h041` laskee EBP-ketjun nollapaluuosoitteesta näennäis-RVA:n 0xFFAC0000
+   (merkkijono `'0x00000000'` on tosi); kosmeettinen, ei voi täsmätä paluukohtaan. Koodia
+   ei muutettu ajojen jälkeen.
+2. `verify_log.program_drops`: ±60 s:n ikkuna osuu edellisen ajon koeohjelmaan, kun ajot
+   ovat alle minuutin välein; kriteeriä ei ollut suunniteltu näin tiheille ajoille.
+
+Suositus / recommendation: pitää taso "toistettu testikehyksessä" ja jättää päätös
+käyttäjälle. Vaihtoehdot: (i) käyttäjän hyväksymä, dokumentoitu poikkeama, joka nimeää
+pid:n 26236 (luvun 18.4 alkuperäinen kohta 7 – ei pudotuksia ohjelman pid:llä – täyttyy),
+tai (ii) pelkän 221-ajon toisto yli 60 s minkä tahansa aiemman koeohjelman jälkeen
+muuttamattomin kriteerein (yksi hallittu kaatuminen lisää; vaatii taas lokituksen).
+Avoimet: nollasta poikkeavat ylitystavut vaatisivat eri aineiston (esim. viimeisen vaiheen
+väliajat); WER-käytös ilman debuggeria testaamatta tarkoituksella.
+
+### 19.11 Hyväksymispäätös / Acceptance decision (käyttäjä / user, 2026-11-24)
+
+**Alkuperäinen arvio säilyy:** `evaluate_h041` ennalta kiinnitetyin kriteerein =
+**"not confirmed"** (`todisteet/c11/vaihe4/h041_evaluation.json`); syy: kriteerin 7
+loki-ikkunan (±60 s) osuma, luku 19.9. Raakatuloksia, kriteerejä eikä arviointikoodia
+muutettu jälkikäteen.
+
+**Erillinen päätös:** käyttäjä hyväksyi dokumentoidun poikkeaman. Poikkeaman aiheuttaja on
+**prosessi 26236 = kontrolliajon 220 jälkikoeohjelma** (`isolation_probe` testipolussa,
+`run_v220/run.json` `post_probe.pid`), sen kaksi pudotusmerkintää klo 22.41.38
+(TCP 58467 → 192.0.2.1:41038, UDP 58735 → 192.0.2.1:42000) on täsmätty kontrolliajon
+lokitarkistuksessa. Perustelu: merkinnät ovat tunnistetun koeohjelman liikennettä, eivät
+osoita HkMaali.exe:n verkkoliikennettä eivätkä eristyksen pettämistä; ohjelman pid:llä
+(66180, 111916) ei ole yhtään pudotusta; luvun 18.4 alkuperäinen kohta 7 täyttyy; muut
+kriteerit (1–6 ja kohdan 7 muut osat) täyttyvät; riippumaton tarkastus vahvisti syyn (19.10).
+Uutta H-041-ajoa ei tehdä.
+
+**Luokitus:** H-041 → **vahvistettu ajamalla / confirmed by running** (toimitettu
+HkMaali.exe, rajapari 220/221, debuggerin alla) *poikkeamapäätöksellä*; tason peruste on
+tämä päätös, ei automaattinen arvio. Laajuus: luvun 19.9 "Mitä osoitettiin" – ei
+lukupolkua, ei 250:tä, ei käytöstä ilman `/GS`:ää tai debuggeria.
+
+The original verdict "not confirmed" stands as recorded; by a separate user decision the
+deviation caused by process 26236 (the control run's post-run probe) is accepted and
+H-041 is classified "confirmed by running" on that basis. No raw result, criterion or
+evaluation code was changed; no new run.
+
+Lopullisen luokituksen riippumaton tarkastus: luku 20.7. / Independent check of the
+final classification: section 20.7.
+
+## 20. C-11 loppuyhteenveto / Final summary (2026-11-24)
+
+**C-11 on valmis.** / C-11 is complete. Raakatulokset ja tiivisteet:
+`todisteet/c11/` (`SHA256SUMS`, `BINARIES.sha256`).
+
+### 20.1 Toistettu testikehyksessä / Reproduced in test harness (15)
+
+Muuttamaton tuotantokoodi, toimitetut käännösasetukset, käsin asetettu tila (TpCoreHk,
+TpCoreJuk, Release/Asan); `run_core_tests.py`: PASS 23, XFAIL 24, ei FAIL/XPASS (ajettu
+`432ea3d`:n päällä commitoimattomin testimuutoksin, jotka commitoitiin sellaisinaan
+`c6205d2`:ssa / run on 432ea3d with the test changes later committed as c6205d2).
+
+| Vaihe / stage | Havainnot / findings |
+|---|---|
+| 1 (luku 13) | H-025, H-040, H-042 |
+| 2 (luku 14) | H-041, H-031, H-008, H-024, H-027 |
+| 3 (luku 15) | H-026, H-032, H-022, H-023, H-007, H-001, H-002 |
+| 4 (luku 19, menetelmä C) | H-041 lisäksi `addfrec`-polulla (H-041b4) |
+
+### 20.2 Vahvistettu toimitetussa ohjelmassa / Confirmed in the shipped program (1)
+
+| Havainto | Peruste / basis |
+|---|---|
+| H-041 | HkMaali.exe (SHA-256 `61034e5d…`), konsolikäyttöliittymä, 220/221, debuggeri; käyttäjän poikkeamapäätös (19.11) |
+
+Muita havaintoja ei ajettu toimitetuissa ohjelmissa; ajot 0 ja 1 (luku 17) eivät
+vahvistaneet eivätkä kumonneet mitään.
+
+### 20.3 Vain staattinen analyysi / Static analysis only (39)
+
+H-003–H-006, H-009–H-021, H-028–H-030, H-033–H-039, H-043–H-054 (39 kpl; H-020 ei ratkea
+staattisesti). Korkean vakavuuden joukossa **H-009** ja **H-014** (käsitestit, 20.4); ehdollisesti
+korkea myös **H-016** (keskitaso, korkea epävakaalla verkolla), jolle ei ole
+testisuunnitelmaa C-11:ssä.
+H-005:stä on merkistökoeohjelma (tavut), ei vian toistoa.
+
+### 20.4 Myöhemmin tehtävät testit / Tests left for later (avoimet jatkotehtävät / open follow-ups)
+
+| Tehtävä / task | Peruste / reference |
+|---|---|
+| **H-009** käsitesti GUI:ssa (pakotettu ajoitus debuggerilla tai erillisellä luvalla koukulla) | luku 6; ei estä C-11:n sulkemista |
+| **H-014** käsitesti: HkKisaWin + paikallinen MySQL, vaiheen vaihto | luku 6; ei estä C-11:n sulkemista |
+| Kahden prosessin loopback-kerros (e): H-022 kahden aseman kilpa, H-032 väärennetty UDP-datagrammi, H-027 todellinen uudelleenyhdistys | luvut 14.5, 15.5 |
+| H-041: lukupolku käynnistyksessä (Q37), valuku 250, nollasta poikkeavat ylitystavut | 18.1, 19.10 |
+| H-001: julkinen sisääntulo (Q38) ja Release-vaikutus; `/we4789` ja LTCG (Q39) | 6, 11 |
+| H-002 varaamattomalla osoitteella; H-040 todellinen jumiutuminen ViestiWinissä (Q41) | 15, 11 |
+| H-023/H-026/H-032 GUI-polut; `class_len[pkgclass]` indeksillä 15–255 | 15.5 |
+| Testit CI:hin (Q35, Q36, Q40); `Tests/run.sh` rikki | 11, CLAUDE.md |
+| WER-ilmaisimien positiivinen kontrolli (vain, jos ajonaikaisia kaatumisia jatketaan) | 19.4 |
+
+### 20.5 Tärkeimmät jatkotoimenpiteet / Most important next actions
+
+1. **C-4 muistiturvallisuus** (suunnitelman erä 4) – seuraava auditointierä; Asan-konfiguraatio
+   ja testikehys valmiina (20.8).
+2. Korjaussuunnitelma toistetuille korkean vakavuuden vioille (erillinen hyväksyntä; ei
+   tehty C-11:ssä): H-041 (konfiguraation raja tai kekopuskuri), lukot H-040/H-008/H-024/H-031,
+   puskurirajat H-025/H-032/H-042/H-001/H-002, tiedonsiirto H-022/H-023/H-026/H-027, H-007.
+   Testit toimivat korjausten regressiotesteinä (XFAIL → PASS).
+3. Testien vienti CI:hin (Q35–Q40), kun push-kielto puretaan.
+4. Avoimet käsitestit H-009 ja H-014 (20.4).
+5. Issue-luonnokset 01–05 (H-001–H-006) GitHubiin vasta push/issue-luvan jälkeen.
+
+### 20.6 Siivous / Clean-up
+
+- Raakatulokset arkistoitu: `todisteet/c11/` – ajot 0–1 ja AppContainer-yritykset
+  (`ajot-0-1/`), vaihe 4 (`vaihe4/`: koeohjelma-ajo, kontrolli, ylitys, arvio, itsetesti,
+  komponenttitestit, palomuurilokin kopio). Binäärejä ei arkistoitu; tiivisteet
+  `BINARIES.sha256`.
+- Tilapäishakemistot poistettu arkistoinnin jälkeen (`%TEMP%\claude_c11s4*`,
+  `%TEMP%\hkmaali_run_*`, `%TEMP%\c11rev`, `%LOCALAPPDATA%\tulospalvelu-c11\` paitsi
+  palvelun suojaama `fwlog\pfirewall.log`, jos se ei poistu ilman ylläpitäjää).
+- Palomuurisääntöjen poisto valmisteltu (käyttäjä, ylläpitäjä): poistetaan vain
+  `TP C11 HkMaali block in` ja `TP C11 HkMaali block out`; muihin asetuksiin ei kosketa.
+  Pudotuslokitus palautettu jo (19.9).
+- AppContainer-profiili `tulospalvelu.c11.hkmaali` (luku 17.6) jätetty; poisto on
+  käyttäjän päätös (ei järjestelmäasetus, mutta C-11:n jäänne).
+
+### 20.7 Lopullisen luokituksen tarkastus / Check of the final classification
+
+`independent-verifier` (vain luku; `git diff`, `sha256sum -c`, validaattori):
+- F1 vahvistettu: 19.9 säilyttää arvion "not confirmed" ja syyn; 19.11 nimeää pid:n 26236
+  ja perustelun (portit täsmäävät lokikopioon); arkistoitu arvio "not confirmed";
+  `git diff c6205d2 -- TPsource/` tyhjä (koodia tai kriteerejä ei muutettu ajojen jälkeen);
+  ohjelman pid:illä ei pudotuksia, joten 18.4:n alkuperäinen kohta 7 täyttyy.
+- F2 vahvistettu: rekisterissä muuttui vain H-041:n rivi ja suunnitelmakappale.
+- F3 vahvistettu: 15 / 1 / 39 täsmää rekisterin Todennus-sarakkeeseen; 20.8 vastaa
+  suunnitelman erää 4. Korjattu: H-016 mainittu ehdollisesti korkeana (20.3).
+- F4 pääosin vahvistettu; merkistöt ja rivinvaihdot ennallaan. Korjattu: CHECKPOINTin
+  ajonaikaisen näytön luettelo.
+- F5 vahvistettu: `sha256sum -c` 111/111; run.json-tiivisteet = arkistoidut KILP.DAT- ja
+  KilpSrj.xml-kopiot; `BINARIES.sha256` = nykyinen HkMaali.exe.
+- F6 vahvistettu: validaattori OK.
+
+Tarkastajan päätelmä: H-041:n luokitus "vahvistettu ajamalla" on kirjattu oikein ja
+avoimesti; automaattinen "not confirmed" säilyy ja taso perustuu käyttäjän päätökseen,
+jonka raakanäyttö tukee. Muut korjaukset (19.9:n vanhentuneet kohdat, 20.1:n
+alkuperämerkintä) tehty. / The verifier found the final classification correctly and
+transparently recorded; the minor fixes were applied.
+
+### 20.8 C-4:n aloitusvalmius / Readiness for C-4
+
+Suunnitelman (`suunnitelma.md`, syväauditoinnin erät) erä 4: *muistiturvallisuus ja
+määrittelemätön käytös – kääntäjävaroitusten läpikäynti molemmilla kääntäjillä, MSVC
+`/analyze`, puskurit ja muotoilumerkkijonot*; agentit `defect-concurrency-auditor`,
+`build-dependency-analyst` (+ riippumaton tarkastus); tuotos H-numerot ja
+issue-luonnokset. Lähtötiedot valmiina: H-001–H-003 ja H-041/H-042/H-052 (puskurit ja
+muotoilu), C4789/C4477-varoitukset, TpCoreHk/TpCoreJuk Asan -kokoonpanot, C-3:n rakennekoot.
+Ensimmäinen askel (luvan jälkeen): koneellinen varoitusinventaario molemmilla kääntäjillä
+(MSVC `/W4` + `/analyze`, bcc32) ilman tuotantokoodin muutoksia, sitten kohdennettu
+luenta riskijärjestyksessä. Ei aloitettu.

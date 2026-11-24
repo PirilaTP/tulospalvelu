@@ -1,0 +1,167 @@
+{
+  "started": "2026-11-24T22:33:25",
+  "driver_sha256": "46ef171d83b9fbaec9db1e845f92361dad86bfddd87f12d5590623b427b018f5",
+  "hkdebug_sha256": "d2e2a0c0d77b4f1d5182dd753445f54381a5e7dac7b69266be57540b93aec7ae",
+  "isolation_probe_sha256": "ab593f6ea6d747fe9896be5ab7bd56026c79e9baad0650822ca4b79b64b5e9c5",
+  "crash_probe_sha256": "b27fd06e90469f0598260a165ce42fd31cd182fb750fd2b0623a590bcfce33cf",
+  "tests": {
+    "endpoints_positive_control": {
+      "ok": true,
+      "wanted": [
+        "TCP 127.0.0.1:64489",
+        "UDP 127.0.0.1:49734",
+        "TCP6 [0:0:0:0:0:0:0:1]:64490"
+      ],
+      "missing": [],
+      "got": [
+        "TCP 127.0.0.1:64489 -> 0.0.0.0:0 state 2 pid 108308",
+        "TCP6 [0:0:0:0:0:0:0:1]:64490 -> [0:0:0:0:0:0:0:0]:0 state 2 pid 108308",
+        "UDP 127.0.0.1:49734 pid 108308"
+      ]
+    },
+    "process_watcher_positive_control": {
+      "ok": true,
+      "process_lifetime_ms": 300,
+      "watcher": {
+        "polls": 7,
+        "period_s": 0.1,
+        "names": [
+          "crash_probe.exe"
+        ],
+        "parents": [],
+        "found": [
+          {
+            "pid": 85736,
+            "ppid": 108308,
+            "name": "crash_probe.exe",
+            "first_seen": 1795552405.5293646,
+            "why": [
+              "name"
+            ]
+          }
+        ]
+      }
+    },
+    "probe_timeout": {
+      "ok": true,
+      "probe": {
+        "exit_code": 3735879683,
+        "exit_code_hex": "0xDEAD0003",
+        "pid": 44904,
+        "timed_out": true,
+        "duration_s": 5.16,
+        "listener_accepts": 0,
+        "checks": {},
+        "isolation_verified": false,
+        "error": "probe killed after 5 s"
+      }
+    },
+    "hkmaali_symbols": {
+      "pe": {
+        "image_base": 4194304,
+        "size_of_image": 36364288,
+        "machine": "0x0000014C",
+        "dll_characteristics": "0x00008140",
+        "rsds": {
+          "guid": "{B0500861-3E83-4118-B0DA-E8E331F12614}",
+          "age": 1,
+          "pdb_path": "C:\\dev\\tulospalvelu\\TPexe\\Hk\\V521\\HkMaali.pdb"
+        }
+      },
+      "module": {
+        "sym_type": 3,
+        "loaded_pdb": "C:\\dev\\tulospalvelu\\TPexe\\Hk\\V521\\HkMaali.pdb",
+        "pdb_guid": "{B0500861-3E83-4118-B0DA-E8E331F12614}",
+        "pdb_age": 1,
+        "pdb_unmatched": false,
+        "image_size": 36364288
+      },
+      "pdb_ok": true,
+      "addfrec": "0x00423120",
+      "ret_site_names": [
+        "kilptietue::addfrec+0x117",
+        "kilptietue::addfrec+0xE0"
+      ],
+      "cookie": "0x004F8700",
+      "addtall": "0x00423450",
+      "ok": true
+    },
+    "isolation_probe_direct": {
+      "ok": true,
+      "drives": {
+        "D:\\": {
+          "present": true
+        },
+        "G:\\": {
+          "present": true,
+          "oma_drive": true
+        }
+      },
+      "outside_paths": [
+        "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt",
+        "C:\\Users\\Niko-Petteri Salo\\tp_c11_outside_probe.txt",
+        "C:\\Users\\Niko-Petteri Salo\\Documents\\tp_c11_outside_probe.txt",
+        "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tp_c11_outside_probe.txt",
+        "D:\\tp_c11_outside_probe.txt",
+        "G:\\tp_c11_outside_probe.txt",
+        "G:\\Oma Drive\\tp_c11_outside_probe.txt"
+      ],
+      "probe": {
+        "exit_code": 0,
+        "exit_code_hex": "0x00000000",
+        "pid": 110892,
+        "timed_out": false,
+        "duration_s": 0.3,
+        "listener_accepts": 1,
+        "checks": {
+          "cwd": "isolated_or_ok|probe_result.txt created in the sandbox",
+          "token": "info|restricted=1 integrity_rid=0x2000 admin_member=0",
+          "console": "isolated_or_ok|key X received",
+          "outside": "isolated_or_ok|C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\Documents\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tp_c11_outside_probe.txt refused 5; D:\\tp_c11_outside_probe.txt refused 5; G:\\tp_c11_outside_probe.txt refused 5; G:\\Oma Drive\\tp_c11_outside_probe.txt refused 5;",
+          "wsastartup": "isolated_or_ok|WSAStartup=0",
+          "loopback": "PROBLEM|connect 127.0.0.1:64493 -> CONNECTED, error 0 after 0 ms",
+          "tcp_sent": "2026-11-24T20:33:33.461Z|dst=192.0.2.1:47205|src_port=64495",
+          "external": "isolated_or_ok|connect 192.0.2.1:47205 -> failed, error 10013 after 0 ms",
+          "udp_sent": "2026-11-24T20:33:33.461Z|dst=192.0.2.1:44458|src_port=63651",
+          "udp_sendto_info": "isolated_or_ok|udp sendto 192.0.2.1:44458 returned success, error 0 (see firewall log)",
+          "external6_info": "isolated_or_ok|connect [2001:db8::1]:47205 -> error 10051",
+          "registry": "isolated_or_ok|RegCreateKeyEx HKCU\\Software\\tp_c11_outside_probe -> 5; RegOpenKeyEx HKCU\\Software KEY_SET_VALUE -> 5",
+          "done": "1"
+        },
+        "external_10013": true,
+        "registry_key_left": false,
+        "required_checks": [
+          "cwd",
+          "console",
+          "outside",
+          "external",
+          "registry"
+        ],
+        "isolation_verified": true,
+        "outside_file_left": false
+      },
+      "note": "UDP drop not verified here (needs the drop log)"
+    },
+    "crash_control": {
+      "ok": true,
+      "problems": {
+        "gs64_no_overflow": [],
+        "gs104_overflow": [],
+        "fastfail": [],
+        "access_violation": [],
+        "child_refused_by_job": [],
+        "child_killed_with_job": []
+      },
+      "wer_events_matching": [],
+      "wer_dirs_changed": [],
+      "outside_changes": [
+        "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_0.etl",
+        "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_1.etl",
+        "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_2.etl",
+        "deleted: C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\e61840b8-2c1b-4c2c-a559-1c84a2c4bd83.tmp"
+      ]
+    }
+  },
+  "ok": true,
+  "finished": "2026-11-24T22:33:51"
+}

@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreHk.exe "--test-case=H-007 HK received packet overwrites a concurrent local change" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPRESULT|finding=H-007|mechanism=receive-read-before-lock-lost-update|observed=1|detail=local club change to UUSI made while the receive thread waited at tall_CS; after the packet: club=VANHA, tasoitus=600
+===============================================================================
+[doctest] test cases:  1 |  1 passed | 0 failed | 22 skipped
+[doctest] assertions: 18 | 18 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

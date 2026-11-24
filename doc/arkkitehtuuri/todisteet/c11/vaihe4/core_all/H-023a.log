@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreHk.exe "--test-case=H-023a HK stage result applied to the receiver's own stage" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPRESULT|finding=H-023|mechanism=vain-tulost-to-receiver-stage|observed=1|detail=packet for stage 2 (d.v.k_pv=1), receiver k_pv=0: stage 1 tasoitus=600, stage 2 tasoitus=0, messages=0
+===============================================================================
+[doctest] test cases:  1 |  1 passed | 0 failed | 22 skipped
+[doctest] assertions: 13 | 13 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

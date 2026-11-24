@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreJuk.exe "--test-case=H-024 relay tark_trk announcer path leaves tall_CriticalSection held" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPRESULT|finding=H-024|mechanism=tark-trk-announcer-path-leaves-lock-held|observed=1|detail=packet consumed; worker ended in 31 ms; other thread got lock=0; owner=67208 worker=67208 (worker ended: lock orphaned); leg 1 status still K
+===============================================================================
+[doctest] test cases:  1 |  1 passed | 0 failed | 15 skipped
+[doctest] assertions: 17 | 17 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

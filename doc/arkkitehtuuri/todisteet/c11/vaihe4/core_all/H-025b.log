@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreJuk.exe "--test-case=H-025b relay disk queue stores whole packet" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPRESULT|finding=H-025|mechanism=disk-slot-truncates-packet|observed=1|detail=n_os=4 class=13 len=204 header=14 packet=218 stride(combufsize)=204 bytes_not_stored=14 file_size=612 (=3 strides) slot1_whole=0 slot1_tail_position_holds_slot2_header=1; n_os=30 class=9 len=244 header=14 packet=258 stride(combufsize)=244 bytes_not_stored=14 file_size=732 (=3 strides) slot1_whole=0 slot1_tail_position_holds_slot2_header=1; 
+===============================================================================
+[doctest] test cases:  1 |  1 passed | 0 failed | 15 skipped
+[doctest] assertions: 25 | 25 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

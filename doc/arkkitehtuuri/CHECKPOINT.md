@@ -10,7 +10,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 |---|---|
 | Haara / branch | `testit/vikojen-todentaminen` (tehty / created from `arkkitehtuuri-selvitys` @ `f5d793b`); dokumentaatiohaara / docs branch `arkkitehtuuri-selvitys` |
 | Analysoitu revisio / analysed revision | `f7fe553` (`TPsource/` ei muutettu sen jälkeen / unchanged since) |
-| Commitit `main`in päällä / commits on top of `main` | `1b72ec4` dokumentit / docs, `c273b9f` CLAUDE.md, `c651980` agentit, rekisteri, erä 1 / agents, register, batch 1, `3b1d978` tarkistuspiste / checkpoint, `851129f` erä / batch C-2, `bcd0098` erä / batch C-3, `f5d793b` C-11-suunnitelma / plan, `79d9957` C-11 vaihe 1 / stage 1, `cad2781` C-11 vaihe 2 / stage 2 ja seuraava commit C-11 vaihe 3 / and the next commit stage 3 (testihaaralla / on the test branch) |
+| Commitit `main`in päällä / commits on top of `main` | `1b72ec4` dokumentit / docs, `c273b9f` CLAUDE.md, `c651980` agentit, rekisteri, erä 1 / agents, register, batch 1, `3b1d978` tarkistuspiste / checkpoint, `851129f` erä / batch C-2, `bcd0098` erä / batch C-3, `f5d793b` C-11-suunnitelma / plan, `79d9957` C-11 vaihe 1 / stage 1, `cad2781` C-11 vaihe 2 / stage 2, `c11231b` vaihe 3 / stage 3, `432ea3d` koeajot 0–1 / runs 0–1, `c6205d2` vaihe 4 esiehdot / stage 4 prerequisites ja C-11:n päätöscommit / and the C-11 closing commit (testihaaralla / on the test branch) |
 | Push / PR / issuet / issues | ei tehty; estetty paikallisesti / none; blocked locally |
 
 ## Valmiit erät / Completed batches
@@ -22,6 +22,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | C-1 | `kilptietue::tallenna()`: säikeet, kutsupaikat, lukot, tallennus, SQL, replikointi / threads, call sites, locks, persistence, SQL, replication | `tallenna-samanaikaisuus.md` |
 | C-2 | Työasemien tiedonsiirto: kuljetus, kehys, kuittaus, kättely, sarjallistaminen, välitys, jonot, vikatilanteet, HK/viesti-erot, käännösvalitsimet, testattavuus / workstation communication | `tiedonsiirto.md` |
 | C-3 | Pysyvät tiedostot ja eheys: `KILP.DAT` (dbboxm, HK- ja viestitietue, vanha muoto), `COMFILE.DAT`, emit, AJAT, `SQLjonoVarm.dat`, konfiguraatio, mitatut koot MSVC/bcc32, vikatilanteet / persistent files and integrity | `tiedostomuodot.md` |
+| C-11 valmis / complete | Vaihe 4: H-041 toimitetussa HkMaali.exe:ssä debuggerin alla (220/221), käyttäjän poikkeamapäätöksellä "vahvistettu ajamalla"; loppuyhteenveto, raakatulosten arkisto (`todisteet/c11/`), siivous / stage 4: H-041 confirmed by running (user-approved deviation); final summary, archive, clean-up | `testaus.md` luvut / sections 18–20 |
 | C-11 vaihe 3 / stage 3 | Vastaanottojonon testit (relay, HK), `VTulostus.cpp`:n sisällytys, vanhan muodon sarjatiedostot, korvaajien hiljainen tila, TpCoreJuk Asan; H-026, H-032, H-022, H-023, H-007, H-001, H-002 toistettu testikehyksessä; HkMaali.exe:n ajosuunnitelma (ei ajettu) / seven findings reproduced in test harness; HkMaali.exe run plan (not run) | `testaus.md` luvut / sections 15, 16 |
 | C-11 vaihe 2 / stage 2 | HkFixture, hallitut säikeet, kaatumistodisteet (ASan, poikkeuskäsittelijä), loopback-apu, Asan-konfiguraatio; H-041, H-031, H-008, H-024, H-027 toistettu testikehyksessä; neljä agenttia + riippumaton tarkastus / five findings reproduced in test harness | `testaus.md` luku / section 14 |
 | C-11 vaihe 1 / stage 1 | Testiajuri (Python), TpCoreJuk/TpCoreHk, fixturet, synteettinen aineisto; H-025, H-040, H-042 toistettu testikehyksessä; kaksi tarkastusta / runner, projects, fixtures, data; three findings reproduced in test harness; two reviews | `testaus.md` luku / section 13 |
@@ -64,11 +65,17 @@ Rekisteri erottaa neljä asiaa. / The register separates four things:
    mechanism in an automated test with hand-set state. Does not show triggering or
    effects in the running program.
 4. **Ajonaikainen todennus / runtime verification**: vika toistettu käynnissä
-   olevassa ohjelmassa. **Yhtäkään H-havaintoa ei ole todennettu ajossa.** /
-   defect reproduced in the running program. **No H finding is verified at run time.**
+   olevassa ohjelmassa. **Vain H-041** (toimitettu HkMaali.exe, C-11 vaihe 4; ennalta
+   kiinnitetty arvio "not confirmed", taso käyttäjän poikkeamapäätöksellä, `testaus.md`
+   19.11). / defect reproduced in the running program. **Only H-041** (by a user-approved
+   deviation from the pre-fixed verdict).
 
 Ajonaikaista tai käännösnäyttöä on vain näistä / runtime or build evidence exists
 only for:
+
+- C-11 vaihe 4: toimitettu HkMaali.exe debuggerin alla, rajapari 220/221 → H-041
+  vahvistettu ajamalla käyttäjän poikkeamapäätöksellä (`testaus.md` 19.9–19.11); ajot 0–1
+  (luku 17) eivät vahvistaneet havaintoja / shipped HkMaali.exe under the debugger → H-041
 
 - Kaikki 6 ohjelmaa (HkKisaWin, ViestiWin, HkMaali, ViestiMaali, ViestiLuenta, TpTest) kääntyvät paikallisesti (MSVC v145, C++Builder 13 + Windows SDK 10.0.26100.4188) / all 6 programs build locally
 - `TpTest.exe`: 46/46 testiä läpi / tests pass (testit eivät kata H-havaintoja / tests do not cover H findings)
@@ -88,7 +95,7 @@ Täydet tiedot: `rekisteri/havainnot.md`. / Full details: `rekisteri/havainnot.m
 | Ei riippumatonta tarkastusta / no independent review | H-001–H-006, H-017, H-019, H-038, H-039 |
 | Ei ratkea staattisesti / not statically decidable | H-020 |
 | Toistettu testikehyksessä / reproduced in test harness | H-025, H-040, H-042 (`testaus.md`, luku / section 13); H-041, H-031, H-008, H-024, H-027 (luku / section 14); H-026, H-032, H-022, H-023, H-007, H-001, H-002 (luku / section 15) |
-| Ajonaikaisesti todennettu / verified at run time | – (testisuunnitelma / test plan: `testaus.md`) |
+| Ajonaikaisesti todennettu / verified at run time | H-041 (toimitettu HkMaali.exe, poikkeamapäätös / user-approved deviation, `testaus.md` 19.11) |
 
 Vakavimmat / most severe (korkea / high, 17 kpl): H-001, H-002 (muistin korruptio /
 memory corruption), H-007 (menetetty päivitys / lost update), H-008, H-024 (lukko jää
@@ -132,48 +139,25 @@ osittain). Tärkeimmät / most important:
 
 ## Seuraava askel / Next step
 
-**C-11 vaihe 3 commitoitu (`c11231b`). HkMaali.exe:n koeajot 0 ja 1 tehty onnistuneesti
-palomuurieristyksellä** (`testaus.md`, luvut 17.7–17.10). Ensimmäinen AppContainer-yritys
-keskeytyi (konsolin luku estetty, luku 17.3); palomuurisäännöt (käyttäjän luomat) +
-kirjoitusrajoitettu tunnus + Job-objekti; ennen käynnistystä TCP-esto ajon omalla
-koeohjelmalla ja UDP-esto aiemmalla, enintään 2 h vanhalla lokitodennuksella; kunkin ajon
-koepaketit (TCP ja UDP) todennettu pudotuslokista porttien ja ajan perusteella jälkikäteen; lokitusasetukset palautettu. Ajo 0: kaksi kehotetta, lopetus 0, ei tiedostoja.
-Ajo 1: KILP.DAT 544 tavua, otsakekuvauksen mukainen, lopetus valikosta (poistumiskoodi
-aina 0). Lokissa ei ohjelman polusta estettyä ulkoverkkoliikennettä (ei kata DNS:ää,
-silmukkaa, muiden prosessien liikennettä). Riippumaton tarkastus: raakaluvut oikein,
-liioittelut korjattu (luku 17.12). Yhtään H-havaintoa ei vahvistettu
-ajamalla. Ajotyökalut, aineisto ja luku 17 commitoitu (`432ea3d`).
+**C-11 valmis (2026-11-24).** Loppuyhteenveto: `testaus.md` luku 20. Toistettu
+testikehyksessä 15 havaintoa (H-001, H-002, H-007, H-008, H-022–H-027, H-031, H-032,
+H-040–H-042); vahvistettu toimitetussa ohjelmassa 1 (H-041: HkMaali.exe, rajapari
+220/221 debuggerin alla, 221 → 0xC0000409/2 `addfrec`in evästetarkistuksessa; ennalta
+kiinnitetty arvio "not confirmed" kriteerin 7 loki-ikkunaosuman vuoksi, taso käyttäjän
+poikkeamapäätöksellä, prosessi 26236 = kontrolliajon jälkikoeohjelma, luku 19.11); vain
+staattinen 39. Avoimet jatkotehtävät: käsitestit H-009 ja H-014, kahden prosessin
+loopback-kerros, H-041:n lukupolku, testit CI:hin (luku 20.4). Raakatulokset ja tiivisteet:
+`todisteet/c11/`. Tilapäishakemistot poistettu; palomuurisääntöjen
+`TP C11 HkMaali block in/out` poisto valmisteltu käyttäjälle (luku 20.6).
 
-**C-11 vaihe 4 (H-041 toimitetussa ohjelmassa): käyttäjä hyväksyi menetelmät A + C,
-rajaparin 220/221 (ei 250) ja debuggeritilan (ei WER-asetusmuutoksia).** Esiehdot tehty
-(`testaus.md` luku 19): aineistot `h041_v220/221.xml` ja komponenttitestit (PASS; tietue
-10 000 / 10 040; ylitystavut nollia), `H-041b4` addfrec-ASan (control PASS, defect XFAIL);
-ajurin korjaukset (pid, Job-raja 1 + kirjanpito, iphlpapi-verkkoseuranta, 30 s
-aikakatkaisu, ulkoinen TCP vain 10013, D:/G:/HKCU-kirjoitukset estetty, kahvat);
-`hkdebug.py`-debuggeri, joka lopettaa prosessin ennen WER:iä, ja kertakäyttöiset
-keskeytyskohdat `addfrec`in alkuun ja paluukohtaan; kaatuvalla koeohjelmalla 6/6
-skenaariota oikein, WER ei käynnistynyt (WerSvc pysähdyksissä, ei prosesseja,
-tapahtumia eikä raportteja). Ajurin itsetesti OK, offline-testit 21/21. Riippumaton
-tarkastus tehty (luku 19.8), havainnot 1–9 korjattu; HkMaali-ajoja ei ole tehty. Seuraavaksi: commit esiehdoista, sitten
-pudotuslokitus (käyttäjä) ja ajot luvun 19.7 mukaan.
+**Seuraava / next: C-4 muistiturvallisuus ja määrittelemätön käytös** (`suunnitelma.md`
+erä 4; aloitusvalmius `testaus.md` 20.8). Ensimmäinen askel luvan jälkeen: koneellinen
+varoitusinventaario (MSVC `/W4` + `/analyze`, bcc32) ilman tuotantokoodin muutoksia.
 
-**C-11 stage 3 committed. HkMaali.exe runs 0 and 1 done successfully under firewall
-isolation** (sections 17.7–17.10): user-created firewall rules, write-restricted token,
-job object; before start: TCP blocking by the run's own probe, UDP by an earlier (<= 2 h)
-log verification; each run's probe packets matched in the drop log afterwards; logging restored. Independent review: raw numbers correct,
-overstatements corrected (17.12). No H finding confirmed by running. Run
-tools, data and section 17 committed (`432ea3d`). Stage 4 approved (methods A + C, pair
-220/221, debugger mode, no WER settings change); prerequisites done (section 19): data and
-component tests, driver fixes, debugger mode checked on a crashing probe (WER never
-started), self-test OK. HkMaali runs not done yet.
-
-**Seuraava / next:** riippumaton tarkastus ja korjaukset → esiehtojen paikallinen commit →
-käyttäjä ottaa pudotuslokituksen käyttöön → koeajo-, kontrolli- ja ylitysajo (luku 19.7) →
-lokitus palautetaan. / independent review and fixes → local commit of the prerequisites →
-the user enables drop logging → probe, control and boundary runs → logging restored.
-
-Vaihtoehto / alternative: **C-4 muistiturvallisuus**; Asan-konfiguraatio on nyt
-valmiina. / C-4 memory safety; the Asan configuration now exists.
+**C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
+program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
+Open: manual tests H-009/H-014, two-process loopback layer, H-041 read path, CI. Next:
+C-4 memory safety (plan batch 4), starting with a warning inventory on both compilers.
 
 ## Resurssien käyttö / Resource usage (C-11 vaihe 3 / stage 3)
 

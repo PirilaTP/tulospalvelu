@@ -1,0 +1,7 @@
+{"args": ["BOOT"],
+ "step_timeout": 10, "total_timeout": 60,
+ "steps": [
+  {"wait": ["Tiedostoa KILP.DAT ei ole", "Paina Enter"], "key": "\r"},
+  {"wait": ["VALIKKO", "P)oistu"], "key": "P"},
+  {"wait": ["Haluatko varmasti poistua ohjelmasta"], "key": "K"}
+ ]}

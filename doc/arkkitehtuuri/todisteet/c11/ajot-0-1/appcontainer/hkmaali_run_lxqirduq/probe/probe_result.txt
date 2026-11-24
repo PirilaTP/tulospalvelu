@@ -1,0 +1,7 @@
+cwd=isolated_or_ok|probe_result.txt created in the sandbox
+console=PROBLEM|no key received in 20 s
+outside=isolated_or_ok|create refused, error 5
+wsastartup=isolated_or_ok|WSAStartup=0
+loopback=isolated_or_ok|connect 127.0.0.1:57458 -> failed, error 10060 after 3000 ms
+external=isolated_or_ok|connect 192.0.2.1:9 -> failed, error 10013 after 15 ms
+done=1

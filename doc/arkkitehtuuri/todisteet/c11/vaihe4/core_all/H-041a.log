@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreHk.exe "--test-case=H-041a HK record size vs KILPBUFSIZE at shipped limits" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPRESULT|finding=H-041|mechanism=record-larger-than-kilpbufsize|observed=1|detail=n_pv=5 valuku=250 kilprecsize0=360 kilppvtpsize0=152 vatpsize=8 kilppvtpsize=2168 kilprecsize=11200 KILPBUFSIZE=10000
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 22 skipped
+[doctest] assertions: 7 | 7 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

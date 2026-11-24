@@ -1,0 +1,13 @@
+command: VS\Tests\Release\TpCoreJuk.exe "--test-case=H-024 control: mismatching TARKT packet releases the lock" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPINFO|writeerror: Tiedostot eri koneilla eiv�t ole yht�pit�vi� (kesto 0)
+TPINFO|writeerror: Poistu ohjelmasta, kopioi KILP.DATl�hett�v�lt� t�lle koneelle (kesto 0)
+===============================================================================
+[doctest] test cases:  1 |  1 passed | 0 failed | 15 skipped
+[doctest] assertions: 15 | 15 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

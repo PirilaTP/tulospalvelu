@@ -1,0 +1,357 @@
+--- screen after step 1 'KILP.DAT ei ole' (seen=True, cursor=[0, 0], KILP.DAT=None) ---
+
+            ╔══════════════════════════════════════════════════════╗
+            ║                                                      ║
+            ║  HENKILÖKOHTAISEN KILPAILUN TULOSPALVELUOHJELMISTO   ║
+            ║                                                      ║
+            ║                     Pekka Pirilä                     ║
+            ║                                                      ║
+            ║              Ohjelma HkMaali, versio 5.21            ║
+            ║                             Build 5.22.002/2026-07-31║
+            ╚══════════════════════════════════════════════════════╝
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tiedostoa KILP.DAT ei ole. Luodaan uusi tiedosto.                    Paina Enter
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--- screen after step 2 'P)oistu' (seen=True, cursor=[78, 47], KILP.DAT=10040) ---
+PÄÄVALIKKO                          22.42.32                     ║ Ilmoitt.    0
+═════════════════════════════════════════════════════════════════╣ Tulos       0
+Valitse toiminto painamalla tunnuskirjainta                      ║ Keskeytt.   0
+M)aali          Käyttö tosiaikaiseen ajanottoon maalissa         ║ Hylätty     0
+                                                                 ║ Ei läht.    0
+L)askenta       Tulosten, käsinsyöttö esim. maalipöytäkirjoista  ║ Avoinna     0
+                                                                 ║ Esitys      0
+K)orjaukset     Kilpailijoiden lisäykset, poistot ja korjaukset  ╠══════════════
+                                                                 ║ TULOSTUS
+T)ulosluettelot Tulostus näytölle tai paperille, automaattisen   ║ Tausta     EI
+                tulostuksen käynnistys. 'O': Oikaise kysymyksiä  ║
+                                                                 ║
+lE)imat         EMIT-leimauskorttien tietojen käsittely,         ║ Auto       EI
+                                                                 ║
+Y)hteys         Tiedonsiirron seuranta ja hallinta,              ║
+                                                                 ║
+A)setukset      Muuta ohjelman erilaisia asetuksia,              ╠══════════════
+B)ackup         Tiedoston KILP.DAT kopiointi levykkeelle,        ║
+P)oistu         Lopeta ohjelman käyttö                           ║
+                                                                 ║
+Ohjeita saa aina ruudulle painamalla näppäintä <F1>              ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+═════════════════════════════════════════════════════════════════╩══════════════
+M)aali, L)ask, K)orj, T)ulos, lE)imat, Y)hteys, A)setukset, B)ackup, P)oistu:
+════════════════════════════════════════════════════════════════════════════════
+
+--- screen after step 3 ['KORJAUKSET', 'L)is'] (seen=True, cursor=[69, 47], KILP.DAT=10040) ---
+KORJAUKSET                          22.42.32                     ║ Ilmoitt.    0
+═════════════════════════════════════════════════════════════════╣ Tulos       0
+                                                                 ║ Keskeytt.   0
+                                                                 ║ Hylätty     0
+                                                                 ║ Ei läht.    0
+L)isää    : Lisää kilpailijoita. Tuloksia ei voi antaa           ║ Avoinna     0
+            lisäystoiminnossa                                    ║ Esitys      0
+                                                                 ╠══════════════
+K)orjaa   : Korjaa kilpailijatietoja tai tuloksia                ║ TULOSTUS
+                                                                 ║ Tausta     EI
+P)oista   : Poista kilpailija. Poistoa ei voi tehdä, jos         ║
+            tulos tai hylkäysmerkintä on jo tehty.               ║
+            Merkintä 'Poissa' tai 'Ei lähtenyt' voidaan          ║ Auto       EI
+            tehdä toiminnossa K)orjaa                            ║
+                                                                 ║
+Kilpailija voidaan hakea käsiteltäväksi numeron tai nimen        ║
+perusteella. Nimihakuun päästään syöttämällä tyhjä numerokenttä  ╠══════════════
+Nimihaussa voidaan antaa nimestä vain alkuosa ja täydentää       ║
+selaamalla näppäimillä 'S' ja 'E'                                ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+═════════════════════════════════════════════════════════════════╩══════════════
+L)isää, K)orjaa, E)mitkoodit, P)oista,  <Esc> : poistu päävalintaan:
+════════════════════════════════════════════════════════════════════════════════
+
+--- screen after step 4 '+ : Hyv' (seen=True, cursor=[7, 7], KILP.DAT=10040) ---
+LISÄYS                              22.42.33                     ║ Ilmoitt.    0
+═════════════════════════════════════════════════════════════════╣ Tulos       0
+Sarja :                                                          ║ Keskeytt.   0
+                                          Maaliaika :            ║ Hylätty     0
+Kilpno :                                                         ║ Ei läht.    0
+                                                                 ║ Avoinna     0
+                                                                 ║ Esitys      0
+Nimi : ________________________                                  ╠══════════════
+Arvo :                                                           ║ TULOSTUS
+Lisenssi :            Kilpailukortti :                           ║ Tausta     EI
+                                                                 ║
+Seura :                                      Alue :     Maa :    ║
+Seuralyh :                                                       ║ Auto       EI
+                                                                 ║
+ Pv │ Lähtöaika │   Tulos   │ Tark │ Yht.tulos │ Sija  │ Yht.sj  ║
+ ───┼───────────┼───────────┼──────┼───────────┼───────┼───────  ║
+  1 │           │           │      │           │       │         ╠══════════════
+                                                                 ║
+                                                                 ║
+ Väliaika   1   │           │      │           │       │         ║
+            2   │           │      │           │       │         ║
+    │       3   │           │      │           │       │         ║
+    │       4   │           │      │           │       │         ║
+    │       5   │           │      │           │       │         ║
+    │       6   │           │      │           │       │         ║
+    │       7   │           │      │           │       │         ║
+    │       8   │           │      │           │       │         ║
+    │       9   │           │      │           │       │         ║
+    │      10   │           │      │           │       │         ║
+    │      11   │           │      │           │       │         ║
+    │      12   │           │      │           │       │         ║
+    │      13   │           │      │           │       │         ║
+    │      14   │           │      │           │       │         ║
+    │      15   │           │      │           │       │         ║
+    │      16   │           │      │           │       │         ║
+    │      17   │           │      │           │       │         ║
+    │      18   │           │      │           │       │         ║
+    │      19   │           │      │           │       │         ║
+    │      20   │           │      │           │       │         ║
+    │      21   │           │      │           │       │         ║
+    │      22   │           │      │           │       │         ║
+    │      23   │           │      │           │       │         ║
+    │      24   │           │      │           │       │         ║
+    │      25   │           │      │           │       │         ║
+    │      26   │           │      │           │       │         ║
+           27                                                    ║
+═════════════════════════════════════════════════════════════════╩══════════════
+<Return>,    : Vaihda kenttää,  + : Hyväksy,  <Esc> : Peruuta ja poistu     R
+════════════════════════════════════════════════════════════════════════════════
+
+--- screen after step 5 '\t' (seen=True, cursor=[8, 2], KILP.DAT=10040) ---
+LISÄYS                              22.42.38                     ║ Ilmoitt.    0
+═════════════════════════════════════════════════════════════════╣ Tulos       0
+Sarja : __________                                               ║ Keskeytt.   0
+                                          Maaliaika : 00.00.00   ║ Hylätty     0
+Kilpno :8000                                                     ║ Ei läht.    0
+                                                                 ║ Avoinna     0
+                                                                 ║ Esitys      0
+Nimi : TESTI                                                     ╠══════════════
+Arvo :                                                           ║ TULOSTUS
+Lisenssi :         0  Kilpailukortti :        0   Oma            ║ Tausta     EI
+                                                                 ║
+Seura :                                      Alue :  0  Maa :    ║
+Seuralyh :                                                       ║ Auto       EI
+                                                                 ║
+ Pv │ Lähtöaika │   Tulos   │ Tark │ Yht.tulos │ Sija  │ Yht.sj  ║
+ ───┼───────────┼───────────┼──────┼───────────┼───────┼───────  ║
+  1 │           │  ----     │ -    │           │       │         ╠══════════════
+                                                                 ║
+                                                                 ║
+ Väliaika   1   │           │      │           │       │         ║
+            2   │           │      │           │       │         ║
+    │       3   │           │      │           │       │         ║
+    │       4   │           │      │           │       │         ║
+    │       5   │           │      │           │       │         ║
+    │       6   │           │      │           │       │         ║
+    │       7   │           │      │           │       │         ║
+    │       8   │           │      │           │       │         ║
+    │       9   │           │      │           │       │         ║
+    │      10   │           │      │           │       │         ║
+    │      11   │           │      │           │       │         ║
+    │      12   │           │      │           │       │         ║
+    │      13   │           │      │           │       │         ║
+    │      14   │           │      │           │       │         ║
+    │      15   │           │      │           │       │         ║
+    │      16   │           │      │           │       │         ║
+    │      17   │           │      │           │       │         ║
+    │      18   │           │      │           │       │         ║
+    │      19   │           │      │           │       │         ║
+    │      20   │           │      │           │       │         ║
+    │      21   │           │      │           │       │         ║
+    │      22   │           │      │           │       │         ║
+    │      23   │           │      │           │       │         ║
+    │      24   │           │      │           │       │         ║
+    │      25   │           │      │           │       │         ║
+    │      26   │           │      │           │       │         ║
+           27                                                    ║
+═════════════════════════════════════════════════════════════════╩══════════════
+<Return>,    : Vaihda kenttää,  + : Hyväksy,  <Esc> : Peruuta ja poistu     R
+════════════════════════════════════════════════════════════════════════════════
+
+--- screen after step 6 '+ : Hyv' (seen=True, cursor=[8, 2], KILP.DAT=10040) ---
+LISÄYS                              22.42.38                     ║ Ilmoitt.    0
+═════════════════════════════════════════════════════════════════╣ Tulos       0
+Sarja : __________                                               ║ Keskeytt.   0
+                                          Maaliaika : 00.00.00   ║ Hylätty     0
+Kilpno :8000                                                     ║ Ei läht.    0
+                                                                 ║ Avoinna     0
+                                                                 ║ Esitys      0
+Nimi : TESTI                                                     ╠══════════════
+Arvo :                                                           ║ TULOSTUS
+Lisenssi :         0  Kilpailukortti :        0   Oma            ║ Tausta     EI
+                                                                 ║
+Seura :                                      Alue :  0  Maa :    ║
+Seuralyh :                                                       ║ Auto       EI
+                                                                 ║
+ Pv │ Lähtöaika │   Tulos   │ Tark │ Yht.tulos │ Sija  │ Yht.sj  ║
+ ───┼───────────┼───────────┼──────┼───────────┼───────┼───────  ║
+  1 │           │  ----     │ -    │           │       │         ╠══════════════
+                                                                 ║
+                                                                 ║
+ Väliaika   1   │           │      │           │       │         ║
+            2   │           │      │           │       │         ║
+    │       3   │           │      │           │       │         ║
+    │       4   │           │      │           │       │         ║
+    │       5   │           │      │           │       │         ║
+    │       6   │           │      │           │       │         ║
+    │       7   │           │      │           │       │         ║
+    │       8   │           │      │           │       │         ║
+    │       9   │           │      │           │       │         ║
+    │      10   │           │      │           │       │         ║
+    │      11   │           │      │           │       │         ║
+    │      12   │           │      │           │       │         ║
+    │      13   │           │      │           │       │         ║
+    │      14   │           │      │           │       │         ║
+    │      15   │           │      │           │       │         ║
+    │      16   │           │      │           │       │         ║
+    │      17   │           │      │           │       │         ║
+    │      18   │           │      │           │       │         ║
+    │      19   │           │      │           │       │         ║
+    │      20   │           │      │           │       │         ║
+    │      21   │           │      │           │       │         ║
+    │      22   │           │      │           │       │         ║
+    │      23   │           │      │           │       │         ║
+    │      24   │           │      │           │       │         ║
+    │      25   │           │      │           │       │         ║
+    │      26   │           │      │           │       │         ║
+           27                                                    ║
+═════════════════════════════════════════════════════════════════╩══════════════
+<Return>,    : Vaihda kenttää,  + : Hyväksy,  <Esc> : Peruuta ja poistu     R
+════════════════════════════════════════════════════════════════════════════════
+
+--- last screen ---
+LISÄYS                              22.42.38                     ║ Ilmoitt.    0
+═════════════════════════════════════════════════════════════════╣ Tulos       0
+Sarja : H21                                                      ║ Keskeytt.   0
+                                          Maaliaika : 00.00.00   ║ Hylätty     0
+Kilpno :8000                                                     ║ Ei läht.    0
+                                       Rata :                    ║ Avoinna     0
+                                                                 ║ Esitys      0
+Nimi : TESTI                                                     ╠══════════════
+Arvo :                                                           ║ TULOSTUS
+Lisenssi :         0  Kilpailukortti :        0   Oma            ║ Tausta     EI
+                                                                 ║
+Seura :                                      Alue :  0  Maa :    ║
+Seuralyh :                                                       ║ Auto       EI
+                                                                 ║
+ Pv │ Lähtöaika │   Tulos   │ Tark │ Yht.tulos │ Sija  │ Yht.sj  ║
+ ───┼───────────┼───────────┼──────┼───────────┼───────┼───────  ║
+  1 │           │  ----     │ -    │           │       │         ╠══════════════
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+                                                                 ║
+═════════════════════════════════════════════════════════════════╩══════════════
+<Return>,    : Vaihda kenttää,  + : Hyväksy,  <Esc> : Peruuta ja poistu     R
+════════════════════════════════════════════════════════════════════════════════
+

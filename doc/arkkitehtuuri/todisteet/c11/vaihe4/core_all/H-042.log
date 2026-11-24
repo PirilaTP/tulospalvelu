@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreJuk.exe "--test-case=H-042 relay XML counts above compile-time limits" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPRESULT|finding=H-042|mechanism=xml-counts-not-clamped|observed=1|detail=luesarjat=0 n_os=31 (max 30) n_os_akt=31 valuku=13 (max 12) ui_messages=0; derived kilprecsize=7330 vs KILPRECSIZE=6918 (overflow itself not run)
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 15 skipped
+[doctest] assertions: 2 | 2 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

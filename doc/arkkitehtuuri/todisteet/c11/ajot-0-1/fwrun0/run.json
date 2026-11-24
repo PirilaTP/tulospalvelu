@@ -1,0 +1,179 @@
+{
+  "started": "2026-11-24T21:10:28",
+  "mode": "firewall",
+  "exe": "C:\\dev\\tulospalvelu\\TPexe\\Hk\\V521\\HkMaali.exe",
+  "exe_sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d",
+  "probe_sha256": "023463e57c31ef539f41e5aedcababef9e00e8f4d03aa39ee2c9a392b907d615",
+  "driver_sha256": "6371bab33b6044332bb64caa28c43b0f635ce711af2953db2d1362dcf4cc17ea",
+  "script": {
+    "args": [
+      "BOOT"
+    ],
+    "step_timeout": 10,
+    "total_timeout": 60,
+    "steps": [
+      {
+        "wait": [
+          "KilpSrj.xml puuttuu",
+          "Paina Enter"
+        ],
+        "key": "\r"
+      },
+      {
+        "wait": [
+          "Sarjatietojen lukeminen ei onnistunut",
+          "Paina Enter"
+        ],
+        "key": "\r"
+      }
+    ]
+  },
+  "script_sha256": "f1123dc1eaa6e3567fa4e8439ba408132d2afb8125be3488eee3ae767be71826",
+  "fw_exe": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+  "firewall_commands": [
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block out' -Direction Outbound -Program 'C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any",
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block in' -Direction Inbound -Program 'C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any"
+  ],
+  "firewall": {
+    "rules": [
+      {
+        "Name": "TP C11 HkMaali block in",
+        "Enabled": "True",
+        "Action": "Block",
+        "Direction": "Inbound",
+        "Program": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+        "Profile": "Any"
+      },
+      {
+        "Name": "TP C11 HkMaali block out",
+        "Enabled": "True",
+        "Action": "Block",
+        "Direction": "Outbound",
+        "Program": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+        "Profile": "Any"
+      }
+    ],
+    "profiles": [
+      {
+        "Name": "Domain",
+        "Enabled": "True"
+      },
+      {
+        "Name": "Private",
+        "Enabled": "True"
+      },
+      {
+        "Name": "Public",
+        "Enabled": "True"
+      }
+    ]
+  },
+  "firewall_ok": true,
+  "logging": [
+    {
+      "Name": "Domain",
+      "LogBlocked": "True",
+      "LogFileName": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+    },
+    {
+      "Name": "Private",
+      "LogBlocked": "True",
+      "LogFileName": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+    },
+    {
+      "Name": "Public",
+      "LogBlocked": "True",
+      "LogFileName": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+    }
+  ],
+  "logging_ok": true,
+  "logging_commands": {
+    "on": "Set-NetFirewallProfile -Profile Domain,Private,Public -LogBlocked True -LogFileName 'C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log'",
+    "restore": "Set-NetFirewallProfile -Profile Domain,Private,Public -LogBlocked False -LogFileName '%systemroot%\\system32\\LogFiles\\Firewall\\pfirewall.log'"
+  },
+  "probe_ports": {
+    "tcp": 43519,
+    "udp": 48663
+  },
+  "probe": {
+    "exit_code": 0,
+    "listener_accepts": 1,
+    "checks": {
+      "cwd": "isolated_or_ok|probe_result.txt created in the sandbox",
+      "token": "info|restricted=1 integrity_rid=0x2000 admin_member=0",
+      "console": "isolated_or_ok|key X received",
+      "outside": "isolated_or_ok|C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\Documents\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tp_c11_outside_probe.txt refused 5;",
+      "wsastartup": "isolated_or_ok|WSAStartup=0",
+      "loopback": "PROBLEM|connect 127.0.0.1:57084 -> CONNECTED, error 0 after 0 ms",
+      "tcp_sent": "2026-11-24T19:10:30.857Z|dst=192.0.2.1:43519|src_port=57086",
+      "external": "isolated_or_ok|connect 192.0.2.1:43519 -> failed, error 10013 after 0 ms",
+      "udp_sent": "2026-11-24T19:10:30.857Z|dst=192.0.2.1:48663|src_port=52597",
+      "udp_sendto_info": "isolated_or_ok|udp sendto 192.0.2.1:48663 returned success, error 0 (see firewall log)",
+      "done": "1"
+    },
+    "required_checks": [
+      "cwd",
+      "console",
+      "outside",
+      "external"
+    ],
+    "isolation_verified": true,
+    "udp_gate": {
+      "file": "C:/Users/NIKO-P~1/AppData/Local/Temp/claude/a25cf22582434270/d69a576d-8644-421c-aa92-2fbac90dcaa8/scratchpad/bb/udp_verified.json",
+      "ok": true,
+      "age_s": 12,
+      "same_rules": true,
+      "matched_lines": {
+        "TCP": "2026-11-24 21:06:30 DROP TCP 192.168.2.199 192.0.2.1 52840 46499 0 - 0 0 0 - - - SEND 108528",
+        "UDP": "2026-11-24 21:06:30 DROP UDP 192.168.2.199 192.0.2.1 60933 48541 0 - - - - - - - SEND 108528"
+      }
+    },
+    "firewall_log_check": "pending: match after the run from a new log copy (verify_log.py)"
+  },
+  "data": [],
+  "exe_copy_sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d",
+  "files_before": [
+    "HkMaali.exe"
+  ],
+  "run": {
+    "status": "ok",
+    "exited_by_itself": true,
+    "exit_code": 0,
+    "windows": [],
+    "exit_code_hex": "0x00000000",
+    "steps": [
+      {
+        "wait": [
+          "KilpSrj.xml puuttuu",
+          "Paina Enter"
+        ],
+        "seen": true,
+        "key": "\r",
+        "t": 0.21
+      },
+      {
+        "wait": [
+          "Sarjatietojen lukeminen ei onnistunut",
+          "Paina Enter"
+        ],
+        "seen": true,
+        "key": "\r",
+        "t": 0.73
+      }
+    ],
+    "sockets_seen": [],
+    "duration_s": 1.44
+  },
+  "result": "ok",
+  "outside_changes": [],
+  "outside_probe_file_exists": false,
+  "sandbox": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw",
+  "sandbox_files": {
+    "HkMaali.exe": {
+      "size": 1156096,
+      "sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d"
+    }
+  },
+  "git_status": " M doc/arkkitehtuuri/CHECKPOINT.md\n M doc/arkkitehtuuri/seuranta.md\n M doc/arkkitehtuuri/testaus.md\n?? TPsource/V52/Tests/blackbox/\n!! TPexe/\n!! TPsource/V52/RADStudio10/Release_Build/\n!! TPsource/V52/RADStudio10/Win32/\n!! TPsource/V52/RADStudio10/build-logs/\n!! TPsource/V52/RADStudio10/obj/\n!! TPsource/V52/Tests/__pycache__/\n!! TPsource/V52/Tests/blackbox/__pycache__/\n!! TPsource/V52/VS/Libs/Release/\n!! TPsource/V52/VS/Libs/dbboxm/Release/\n!! TPsource/V52/VS/Tests/Asan/\n!! TPsource/V52/VS/Tests/Release/\n!! TPsource/V52/VS/Tests/TpCoreHk/\n!! TPsource/V52/VS/Tests/TpCoreJuk/\n!! TPsource/V52/VS/Tests/TpTest/\n!! TPsource/V52/VS/V/ViestiLuenta/\n!! TPsource/V52/VS/V/ViestiMaali/\n!! issue-drafts/\n!! vc10/\n",
+  "finished": "2026-11-24T21:10:34"
+}

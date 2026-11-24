@@ -1,0 +1,13 @@
+command: VS\Tests\Release\TpCoreJuk.exe "--test-case=H-026 relay unknown packet class stops receiving permanently" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPRESULT|finding=H-026|mechanism=unknown-class-stops-receiving|observed=1|detail=worker still running after comfl=0; inbens=0 (valid packet at slot 1 processed=0); loop alive=1, error calls in 300 ms=6, total=85
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 15 skipped
+[doctest] assertions: 6 | 6 passed | 0 failed |
+[doctest] Status: SUCCESS!
+TPEXIT|blocked_threads=1|mode=terminate
+
+--- stderr ---
+

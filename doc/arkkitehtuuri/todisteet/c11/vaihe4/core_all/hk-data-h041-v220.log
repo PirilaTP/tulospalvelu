@@ -1,0 +1,14 @@
+command: VS\Tests\Release\TpCoreHk.exe "--test-case=HK synthetic KilpSrj.xml for H-041 control (valuku 220) is read" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPINFO|luesarjat=0 n_pv=5 n_pv_akt=1 valuku=220 sarjaluku=1 messages=0
+TPINFO|kilprecsize=10000 KILPBUFSIZE=10000
+TPINFO|pack bytes [10000,10000) of a cleared record: (none) (nonzero 0)
+===============================================================================
+[doctest] test cases:  1 |  1 passed | 0 failed | 22 skipped
+[doctest] assertions: 11 | 11 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

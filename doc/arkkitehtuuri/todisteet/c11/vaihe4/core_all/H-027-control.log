@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreHk.exe "--test-case=H-027 control: attempt listener counts and rejects or accepts" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPINFO|phase1 connect=10061 phase2 connect=0 attempts1=5 attempts2=1
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 22 skipped
+[doctest] assertions: 6 | 6 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

@@ -1,0 +1,13 @@
+command: VS\Tests\Release\TpCoreHk.exe "--test-case=H-031 control: allowed stage change proceeds" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPINFO|writeerror_w: Tiedosto KilpSrj.xml puuttuu (kesto 0)
+TPINFO|r=0 k_pv=1 arv_pv=1 vaiheenvaihto=0 comopen0=1 lah_alku0=1 ui=1
+===============================================================================
+[doctest] test cases:  1 |  1 passed | 0 failed | 22 skipped
+[doctest] assertions: 15 | 15 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

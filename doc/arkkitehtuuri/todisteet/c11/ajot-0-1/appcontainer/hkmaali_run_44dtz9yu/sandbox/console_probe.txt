@@ -1,0 +1,11 @@
+GetConsoleScreenBufferInfo=ok|error 0
+cursor=0,0 size=120,9001
+SetConsoleOutputCP(850)=ok|error 0
+SetConsoleTitle=ok|error 0
+GetConsoleMode(stdin)=ok|error 0
+SetConsoleMode(stdin)=ok|error 0
+WriteConsoleOutputCharacterW=ok|error 0
+SetConsoleScreenBufferSize(80x50)=FAILED|error 87
+SetConsoleWindowInfo=ok|error 0
+Beep=FAILED|0 ms
+done=1

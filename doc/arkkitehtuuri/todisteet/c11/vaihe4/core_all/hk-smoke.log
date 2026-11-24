@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreHk.exe "--test-case=TpCoreHk smoke: sandbox and build constants" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPINFO|N_PV=5 VALUKU=250 KILPBUFSIZE=10000
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 22 skipped
+[doctest] assertions: 2 | 2 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

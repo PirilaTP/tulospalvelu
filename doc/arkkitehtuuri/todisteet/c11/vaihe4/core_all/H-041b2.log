@@ -1,0 +1,66 @@
+command: VS\Tests\Asan\TpCoreHk.exe "--test-case=H-041b2 HK write overflows its stack buffer (ASan)" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x0000004D timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPINFO|n_pv=5 valuku=250 kilprecsize0=360 kilppvtpsize0=152 vatpsize=8 kilppvtpsize=2168 kilprecsize=11200 KILPBUFSIZE=10000
+TPARM|finding=H-041|mechanism=write-stack-buffer-overflow|source=asan
+TPRESULT|finding=H-041|mechanism=write-stack-buffer-overflow|observed=1|source=asan|detail=ASan report matched all expected strings; WRITE of size 8 at 0x02cff738 thread T0
+
+--- stderr ---
+=================================================================
+==105004==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x02cff738 at pc 0x652dd139 bp 0x02cfcf98 sp 0x02cfcb78
+WRITE of size 8 at 0x02cff738 thread T0
+    #0 0x652dd138 in _asan_memset+0xb8 (C:\dev\tulospalvelu\TPsource\V52\VS\Tests\Asan\clang_rt.asan_dynamic-i386.dll+0x1003d138)
+    #1 0x005d9e9c in vatp::pack C:\dev\tulospalvelu\TPsource\V52\Hk\HkDat.cpp:221
+    #2 0x005daec0 in kilppvtp::pack C:\dev\tulospalvelu\TPsource\V52\Hk\HkDat.cpp:307
+    #3 0x005dc6f7 in kilptietue::pack C:\dev\tulospalvelu\TPsource\V52\Hk\HkDat.cpp:428
+    #4 0x005dd9d2 in kilptietue::write C:\dev\tulospalvelu\TPsource\V52\Hk\HkDat.cpp:586
+    #5 0x0063ede1 in DOCTEST_ANON_FUNC_8 C:\dev\tulospalvelu\TPsource\V52\Tests\core\HkCoreTests.cpp:139
+    #6 0x0061b7b5 in doctest::Context::run C:\dev\tulospalvelu\TPsource\V52\Tests\doctest.h:7007
+    #7 0x0061cfdc in main C:\dev\tulospalvelu\TPsource\V52\Tests\core\CoreMain.cpp:109
+    #8 0x0066de91 in __scrt_common_main_seh F:\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #9 0x75435d48 in BaseThreadInitThunk+0x18 (C:\WINDOWS\System32\KERNEL32.DLL+0x10015d48)
+    #10 0x770cc75a in RtlInitializeExceptionChain+0x6a (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec75a)
+    #11 0x770cc6e0 in RtlGetAppContainerNamedObjectPath+0x230 (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec6e0)
+
+Address 0x02cff738 is located in stack of thread T0 at offset 10016 in frame
+    #0 0x005dd94f in kilptietue::write C:\dev\tulospalvelu\TPsource\V52\Hk\HkDat.cpp:582
+
+  This frame has 1 object(s):
+    [16, 10016) 'buf' <== Memory access at offset 10016 overflows this variable
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+      (longjmp, SEH and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-buffer-overflow C:\dev\tulospalvelu\TPsource\V52\Hk\HkDat.cpp:221 in vatp::pack
+Shadow bytes around the buggy address:
+  0x02cff480: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x02cff500: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x02cff580: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x02cff600: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x02cff680: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x02cff700: 00 00 00 00 00 00 00[f3]f3 f3 f3 00 00 00 00 00
+  0x02cff780: 00 00 00 f1 f1 00 00 00 f2 f2 f2 f2 00 00 00 f2
+  0x02cff800: f2 f2 f2 00 00 00 f3 f3 f3 f3 00 00 00 00 00 00
+  0x02cff880: 00 00 00 00 00 00 f1 f1 00 00 00 00 00 00 00 00
+  0x02cff900: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x02cff980: f2 f2 f2 f2 04 f2 00 04 f2 f2 f2 f2 f8 f8 f8 f2
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==105004==ABORTING
+

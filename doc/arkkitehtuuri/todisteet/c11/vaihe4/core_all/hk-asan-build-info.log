@@ -1,0 +1,17 @@
+command: VS\Tests\Asan\TpCoreHk.exe --test-case=tp_build_info --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPINFO|program=TpCoreHk
+TPINFO|msc_full_ver=195237029
+TPINFO|config=Release
+TPINFO|asan=1
+TPINFO|char_unsigned=1
+TPINFO|sizeof_void_ptr=4
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 25 skipped
+[doctest] assertions: 1 | 1 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+
