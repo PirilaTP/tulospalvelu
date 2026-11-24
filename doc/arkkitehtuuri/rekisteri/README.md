@@ -45,17 +45,23 @@ Jokaisella havainnolla on / Every finding has:
 - **Näyttö / evidence**: `polku:rivi`, suhteessa / relative to `TPsource/V52/`
 - **Vakavuus / severity**: kriittinen / korkea / keskitaso / matala (critical / high / medium / low)
 - **Varmuus / confidence**: [todennettu] / [päätelty] / [tuntematon]
-- **Todennus / verification**: `ei tarkastettu` (not reviewed), `riippumaton lähdetarkastus` (independent source review: another agent re-read the code and tried to refute the claim), `vahvistettu ajamalla` (confirmed by running the product), `kumottu` (refuted), `ei todennettavissa staattisesti` (cannot be settled by reading code)
+- **Todennus / verification**: `ei tarkastettu` (not reviewed), `riippumaton lähdetarkastus` (independent source review: another agent re-read the code and tried to refute the claim), `toistettu testikehyksessä` (reproduced in test harness: the unchanged production functions, compiled with the shipped build settings, showed the defect mechanism in an automated test with a synthetic fixture; the actual program was not run, see `../testaus.md`), `vahvistettu ajamalla` (confirmed by running the product), `kumottu` (refuted), `ei todennettavissa staattisesti` (cannot be settled by reading code)
 - **Revisio / revision**: commit, jota vastaan havainto tehtiin / commit analysed
 - **Näytön laji / evidence type**: `staattinen` (lähdekoodi luettu; mitään ei ajettu / source read, nothing run), tai mitä muuta näyttöä on: kääntäjävaroitus, käännöstulos, testiajo / or what other evidence exists: compiler warning, build output, test run
 
-Riippumaton lähdetarkastus ei ole ajonaikainen todennus. Havainto on
+Riippumaton lähdetarkastus ei ole ajonaikainen todennus. "Toistettu
+testikehyksessä" tarkoittaa, että tuotannon funktiot näyttivät vikamekanismin
+testiohjelmassa, jonka tila on asetettu käsin; se ei osoita, että vika laukeaa
+tai millaiset seuraukset sillä on käynnissä olevassa ohjelmassa. Havainto on
 "vahvistettu ajamalla" vasta, kun vika on toistettu käynnissä olevassa ohjelmassa.
 Tällä hetkellä yksikään H-havainto ei ole sellainen.
 
-An independent source review is not runtime verification. A finding is
-"confirmed by running" only when the defect has been reproduced in the running
-program. At present no H finding is.
+An independent source review is not runtime verification. "Reproduced in test
+harness" means the production functions showed the defect mechanism in a test
+program whose state was set by hand; it does not show that the defect triggers,
+or what it causes, in the running program. A finding is "confirmed by running"
+only when the defect has been reproduced in the running program. At present no
+H finding is.
 
 ## Päivittäminen / Updating
 

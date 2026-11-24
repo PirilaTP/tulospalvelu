@@ -15,15 +15,15 @@ separately from test coverage.
 | C, erä 1: `tallenna()`-samanaikaisuus / batch 1: `tallenna()` concurrency | valmis, tarkastettu / done, reviewed (`tallenna-samanaikaisuus.md`) | 2026-11-24 |
 | C, erä 2: työasemien tiedonsiirto / batch 2: workstation communication | valmis, tarkastettu / done, reviewed (`tiedonsiirto.md`) | 2026-11-24 |
 | C, erä 3: pysyvät tiedostot ja eheys / batch 3: persistent files and integrity | valmis, tarkastettu / done, reviewed (`tiedostomuodot.md`) | 2026-11-24 |
-| C, erä 11: testiautomaatio, suunnittelu / batch 11: test automation, planning | suunnitelma valmis, tarkastettu; toteutus odottaa lupaa / plan done, reviewed; implementation awaits approval (`testaus.md`) | 2026-11-24 |
+| C, erä 11: testiautomaatio, suunnittelu / batch 11: test automation, planning | valmis, tarkastettu, commitoitu `f5d793b` / done, reviewed, committed (`testaus.md`) | 2026-11-24 |
+| C, erä 11, vaihe 1: H-025, H-040, H-042 / batch 11, stage 1 | valmis, tarkastettu, commitoimatta haaralla `testit/vikojen-todentaminen`; odottaa käyttäjän tarkastusta / done, reviewed, uncommitted; awaiting user review (`testaus.md` luku 13) | 2026-11-24 |
 | C, erät 4–10 / batches 4–10 | ei aloitettu / not started (`suunnitelma.md`); erä 5 osittain / batch 5 partly | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** käyttäjä päättää erän C-11 toteutusluvasta ja
-`testaus.md`:n luvun 12 päätöksistä. Toteutuksen ensimmäinen erä on kuvattu
-`testaus.md`:n luvussa 7. / The user decides on implementation approval for C-11
-and the decisions in `testaus.md` section 12. The first implementation batch is in
-section 7.
+**Seuraava askel / Next step:** käyttäjä tarkastaa C-11:n vaiheen 1 (`testaus.md`,
+luku 13) ja päättää testikoodin commitoinnista sekä seuraavien viiden testin
+(H-041, H-031, H-008, H-024, H-027) aloittamisesta. / The user reviews C-11 stage 1,
+decides on committing the test code and on starting the next five tests.
 
 Havainnot (H/T) ja niiden todennustila: `rekisteri/havainnot.md`.
 Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
@@ -100,6 +100,7 @@ Recorded as issue drafts (local `issue-drafts/`, not in the repo).
 | 2026-11-24 | Uudet koodikommentit englanniksi ja ASCII:na / new code comments English, ASCII | Merkistöongelmat (`merkistot.md`) / encoding problems |
 | 2026-11-24 | Pekan alkuperäiset kommentit säilytetään / Pekka's original comments are kept | Historiallinen tieto / historical knowledge |
 | 2026-11-24 | Ensimmäisellä kierroksella ei muuteta `TPsource/`-hakemistoa / no `TPsource/` changes in round 1 | Ensin ymmärrys, sitten muutokset / understanding before changes |
+| 2026-11-24 | C-11: testit haaralle `testit/vikojen-todentaminen`, ajuri Pythonilla, uusi todennustaso `toistettu testikehyksessä`; ei tuotantokoodin muutoksia, testikoukkuja eikä CI-muutoksia; testikoodi commitoidaan vain erillisellä hyväksynnällä / tests on their own branch, Python runner, new verification level; no production, hook or CI changes; test code committed only with approval | Käyttäjän ohje / user instruction |
 | 2026-11-24 | Syväauditointi erinä riskijärjestyksessä, enintään 3 analyysiagenttia rinnakkain, jokainen erä riippumattomasti tarkastettu / deep audit in risk-ordered batches, max 3 parallel analysis agents, each batch independently reviewed | Käyttäjän ohje / user instruction |
 
 ## Oletukset, joita ei ole todennettu / Unverified assumptions

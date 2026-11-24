@@ -570,3 +570,151 @@ global state the fixtures end up needing.
    hooks and extractions: allowed, and in their own branch?
 8. Haara: toteutetaanko testit tällä dokumentaatiohaaralla vai omalla haarallaan
    (`suunnitelma.md`: korjaukset ja dokumentit erillään)? / Branch for the tests.
+
+### 12.1 Päätökset / Decisions (2026-11-24)
+
+Käyttäjä hyväksyi suunnitelman rajauksin / the user approved the plan with limits:
+testit omalle haaralle `testit/vikojen-todentaminen`; ajuri Pythonilla; uusi
+todennustaso `toistettu testikehyksessä`; ei tuotantokoodin muutoksia, testikoukkuja
+eikä CI-muutoksia; ensin vain H-025, H-040 ja H-042; testikoodia ei commitoida ilman
+erillistä hyväksyntää. Kohdat 4 (CI:n odotetut epäonnistumiset), 6 (`run.sh`) ja 7
+(myöhemmät koukut) ovat yhä auki.
+
+Tests on their own branch; Python runner; new verification level; no production
+changes, hooks or CI changes; H-025, H-040 and H-042 first; test code not committed
+without separate approval. Items 4, 6 and 7 remain open.
+
+## 13. Toteutus, vaihe 1 / Implementation, stage 1 (H-025, H-040, H-042)
+
+### 13.1 Mitä tehtiin / What was built
+
+Kaikki uudet tiedostot ovat hakemistoissa `TPsource/V52/Tests/` ja
+`TPsource/V52/VS/Tests/`; tuotantokoodia ei muutettu (`production_dirty = false`
+ajurin tuloksissa). Tiedostot ovat ASCII-muotoisia, LF-rivinvaihdoin.
+
+All new files are under `Tests/` and `VS/Tests/`; no production code changed.
+Files are ASCII with LF line endings.
+
+| Tiedosto / File | Tehtävä / Purpose |
+|---|---|
+| `Tests/run_core_tests.py` | Ajuri: yksi prosessi ja oma väliaikaishakemisto per testi, aikakatkaisu ja prosessipuun lopetus, tarkka testinimi (`--list-test-cases`), luokittelu PASS/XFAIL/XPASS/FAIL/SKIP, `results.json` + `results.md` + lokit / runner |
+| `Tests/test_run_core_tests.py` | Ajurin luokittelun itsetestit (20 kpl): kaatuminen, aikakatkaisu, väärä mekanismi, TPSKIP + virhe jne. eivät koskaan anna XFAIL:ia / self-tests: crash, timeout, wrong mechanism never give XFAIL |
+| `Tests/core/manifest.json` | Testiluettelo: ohjelma, testitapaus, laji, havainto, mekanismi, odotettu tulos, aineisto, aikaraja / test list |
+| `Tests/core/CoreMain.cpp` | doctest-main, virhedialogit pois, `tp_build_info` / main, dialogs off, build facts |
+| `Tests/core/VCoreTests.cpp` | H-025a, H-025b, H-042 + kontrolli / control |
+| `Tests/core/VAddfrecTests.cpp` | H-040 + kontrolli; sisällyttää `Juk/vdat.cpp`:n (staattinen `addfrec`) / includes `Juk/vdat.cpp` |
+| `Tests/core/HkCoreTests.cpp` | TpCoreHk:n savutesti / smoke test |
+| `Tests/fixtures/TpCore.{h,cpp}` | Hiekkalaatikkotarkistus, TPRESULT-protokolla, lukkokoetin, tyngät `writeerror`/`writeerror_w`/`writeerrorOn` ja `perr`/`wperr` / sandbox check, result protocol, lock probe, stubs |
+| `Tests/fixtures/VFixture.{h,cpp}` | Viestin käynnistyksen osat: lukot, `asetaOletusarvot`, tietuekoot / relay start-up parts |
+| `Tests/data/juk/h042_*.xml` | Synteettinen `KilpSrj.xml`, rajoissa ja yli / synthetic, in and over limits |
+| `VS/Tests/TpCore.sln`, `TpCoreJuk.vcxproj`, `TpCoreHk.vcxproj` | Release/Win32, v145; tuotantolähteet ja -asetukset JukMaali/HkMaali Releasesta / production sources and settings |
+
+Tahalliset erot toimitettuun ohjelmaan / deliberate differences from the shipped
+program: pääohjelmatiedosto (`laskenta.cpp`, `HkMain.cpp`) pois; `Juk/vdat.cpp`
+käännetään testitiedoston sisällä; `tputilv2`:n `WRITEERR.obj` ja `perr.obj`
+korvataan tallentavilla tyngillä; fixture asettaa tilan käsin `aloitus`-funktion
+sijaan. Riippumaton tarkastaja vertasi käännös- ja linkityskomennot tlog-tiedostoista:
+tuotantotiedostojen liput ovat identtiset.
+
+Huomio: `Juk/VDef.h:29` määrittelee `__fastcall`in tyhjäksi, mikä rikkoo sen jälkeen
+sisällytetyt C++-standardiotsikot (C2953). Testitiedostoissa standardi- ja
+apuotsikot sisällytetään siksi ennen tuotanto-otsikoita. / `Juk/VDef.h:29` defines
+`__fastcall` away, breaking standard headers included after it; test files include
+standard headers first.
+
+### 13.2 Luokittelu / Classification
+
+| Tila / Status | Merkitys / Meaning | Todennustaso / Verification level |
+|---|---|---|
+| PASS | Kontrolli: kaikki tarkistukset läpi / control passed | – |
+| XFAIL | Vikatesti tulosti täsmälleen yhden TPRESULT-rivin oikealla havainnolla ja mekanismilla, `observed=1`, kaikki esiehdot läpi, poistumiskoodi 0 / exactly one result line, right finding and mechanism, preconditions passed, exit 0 | toistettu testikehyksessä / reproduced in test harness |
+| XPASS | Kuten yllä, mutta `observed=0`: mekanismia ei näkynyt / mechanism not seen | ei toistunut; havainto tarkastettava / not reproduced; review the finding |
+| FAIL | Aikakatkaisu, kaatuminen, epäonnistunut esiehto, puuttuva tai kahdennettu tulosrivi, väärä mekanismi, testiä ei löydy tarkalla nimellä, ohjelmaa ei ole käännetty / timeout, crash, failed precondition, missing or duplicate result, wrong mechanism, inexact name, not built | ei ratkennut / undecided |
+| SKIP | Testi ilmoitti TPSKIP eikä mikään epäonnistunut, tai `--allow-missing` / reported TPSKIP and nothing failed | ei ratkennut / undecided |
+
+Kaatumista tai aikakatkaisua ei koskaan lueta vian näytöksi. Ajurin paluuarvo on 1,
+jos yksikin tulos on FAIL tai XPASS.
+
+A crash or a timeout is never evidence of a defect. The runner exits 1 on any FAIL
+or XPASS.
+
+### 13.3 Tulokset / Results
+
+| | |
+|---|---|
+| Git-revisio / revision | `f5d793b` (haara / branch `testit/vikojen-todentaminen`); testikoodi commitoimatta, tunnistettu sha256-tiivisteillä `results.json`:ssa (`harness_sha256`) / test code uncommitted, identified by sha256 |
+| Tuotantokoodi / production code | muuttamaton / unchanged (`production_dirty = false`) |
+| Käännösympäristö / build | VS 18 Build Tools, MSVC 19.52.37029 (v145), Release/Win32, `/J` (`char_unsigned=1`), `/GL`, `/MT`, `/O2`, `/GS`; JukMaali Release -määritykset (`MAXOSUUSLUKU=30`, `VAIKALUKU=12`, `MAXSARJALUKU=250`); `tputilv2.lib`, `dbboxm.lib` (Release, sha256 kirjattu / recorded) |
+| doctest | 2.4.11 |
+| Ympäristö / host | Windows 11 10.0.26100, Python 3.13 |
+| Komento / command | `python -I TPsource/V52/Tests/run_core_tests.py`; testi: `VS\Tests\Release\TpCoreJuk.exe "--test-case=<nimi>" --no-colors=true --no-version=true` (cwd = hiekkalaatikko / sandbox) |
+| Ajot / runs | 2026-11-24, 5 täyttä ajoa ennen korjauksia ja 4 korjausten jälkeen; kaikki PASS=5, XFAIL=4, poistumiskoodit 0x00000000 / 5 runs before and 4 after fixes, identical |
+
+| ID | Aineisto / Data | Odotettu oikea / Expected correct | Todellinen / Actual | Tila / Status | Todennus / Verification |
+|---|---|---|---|---|---|
+| H-025a | ei tiedostoja; `n_os` 4 ja 30 / no files | `combufsize >= 14 + class_len[i]` kaikille luokille / for all classes | n_os 4: `combufsize` 204, suurin luokka 13 (EMITVA) 204 → 218 ei mahdu; n_os 30: 244, luokka 9 (YHTEISLAHTOT) 244 → 258 ei mahdu / does not fit | XFAIL | toistettu testikehyksessä |
+| H-025b | testin luoma levyjono / queue file created by the test (`COMFILE4.DAT`, `COMFILE.DAT`) | jokaisessa paikassa koko paketti (otsake + len) / whole packet per slot | molemmissa: paikan pituus = `combufsize`, 14 tavua jää tallentamatta, tiedosto 3 paikkaa (612 / 732 tavua), paikan 1 lopun kohdalla alkaa paikka 2 / 14 bytes never stored | XFAIL | toistettu testikehyksessä |
+| H-040-control | testin luoma `KILP.DAT` | koetin: vapaa/varattu/vapaa; tuotannon `delfrec` vapauttaa lukon / production `delfrec` releases | kuten odotettu / as expected | PASS | – |
+| H-040 | testin luoma `KILP.DAT` | `addfrec`in jälkeen toinen säie saa `kilpdat_CriticalSection`in / another thread gets the lock | toinen säie ei saa lukkoa; omistaja = kutsuja; RecursionCount 2 / not free, owned by caller | XFAIL | toistettu testikehyksessä |
+| H-042-control | `h042_in_limit.xml` (sha256 `d299275b…`) | `luesarjat` 0; 30/30/12 sellaisinaan | kuten odotettu | PASS | – |
+| H-042 | `h042_over_limit.xml` (sha256 `da3e60a5…`): Legs 31, LegCount 31, Intermediaries 13 | hylätään tai rajataan / rejected or clamped | `luesarjat` 0, ei virheilmoitusta, `n_os` 31, `n_os_akt` 31, `valuku` 13; johdettu `kilprecsize` 7330 > `KILPRECSIZE` 6918 / derived record size exceeds buffer | XFAIL | toistettu testikehyksessä |
+| juk/hk-build-info, hk-smoke | – | käännöstiedot, HK-ydin käynnistyy hiekkalaatikossa / build facts, HK core runs | kuten odotettu | PASS | – |
+
+### 13.4 Mitä tulokset eivät osoita / What the results do not show
+
+- **H-025:** lähetetyn paketin korruptoitunutta loppua (luku `Tp/TpComY.cpp:1470`,
+  tarkistussumma `:1507-1508`) ei toistettu. Vika koskee vain paketteja, joiden pituus
+  > `combufsize` − 14: oletuksin EMITVA, joka lähetetään vain LÄHEMVA-asetuksella
+  (`Juk/VInit.cpp:2017-2020`), tai YHTEISLAHTOT, kun `n_os` ≥ 24. Häntä jää
+  kirjoittamatta, ei ylikirjoitu. `maxyhteys` > 1 -tapausta ei testattu. Muistijonon
+  ylivuoto ei ole viestissä saavutettavissa (`levypusk` on aina 1).
+  / The corrupted send is not reproduced; only packets longer than `combufsize` − 14
+  are affected (EMITVA with LÄHEMVA, or YHTEISLAHTOT at `n_os` ≥ 24); the tail is never
+  written, not overwritten; `maxyhteys` > 1 not tested; the memory queue is
+  unreachable in relay builds.
+- **H-040:** ohjelman jumiutumista ei toistettu. Se vaatii lisäyksen tai poiston
+  kahdesta eri säikeestä (pääsäie ja `tarkcom`); ilman verkkoa (`comfl` 0) kaikki
+  lisäykset tehdään pääsäikeessä eikä mikään jumiudu, rekursiolaskuri vain kasvaa.
+  `vdat.cpp` käännetään testitiedoston sisällä; liput ovat samat, koodin generointia
+  ei verrattu. / The freeze is not reproduced; it needs adds/deletes from two
+  threads. Code generation of `addfrec` in the test was not compared with the product.
+- **H-042:** puskurien ylivuotoa (`Juk/vdat.cpp:145`, `:153`, `:181`;
+  `Juk/vSarjat.cpp:60-70`) ei ajettu (suunnitelman vaihe b). ViestiWinin osittainen
+  rajaus (`ViestiWin/UnitKilpMaaritys.cpp:271-276`) ja sen XML-painikkeen polku
+  (`:316`) eivät ole testissä mukana. / The overflow itself is not run; ViestiWin's
+  partial clamp and its XML button path are not covered.
+- Mikään tulos ei ole "vahvistettu ajamalla": varsinaista ohjelmaa ei ajettu. / No
+  result is "confirmed by running": the actual program was not run.
+
+### 13.5 Tarkastukset ja korjaukset / Reviews and fixes
+
+| Tarkastaja / Reviewer | Tulos / Result | Korjattu / Fixed |
+|---|---|---|
+| `build-dependency-analyst` (Sonnet) | Tuotantolähteet ja -asetukset koottiin, koelinkitys onnistui / sources and settings, probe link OK | – |
+| `defect-concurrency-auditor` | Kaikki neljä vikatestiä päteviä, kolme rajauksin; ei vääriä positiivisia; oikea toteutus antaisi `observed=0` / all valid, three with caveats; no false positives | H-040-kontrolli käyttää tuotannon `delfrec`iä (`putrec_1` ei ole käytössä tuotannossa); H-025b myös n_os 4 / EMITVA ja `fsize == 3 × stride`; H-042 raportoi johdetun tietuekoon; koettimen odotus ilman aikarajaa (ei pinomuuttujan käyttöä vapautuksen jälkeen) / control uses production `delfrec`; H-025b two configs; H-042 reports derived size; probe wait fixed |
+| `independent-verifier` | Projektit vastaavat tuotantoa; eristys, toistettavuus (3 ajoa) ja merkistö OK; kolme ajurivikaa / projects faithful; isolation, reproducibility, encoding OK; three runner defects | TPINFO-rivit katosivat (käännöstiedot tyhjiä) → korjattu; TPSKIP peitti epäonnistumisen → virhe tarkistetaan ensin; aikakatkaisu ei pitänyt aliprosessin kanssa → `taskkill /T /F` ja rajattu odotus; lisäksi: tarkka nimi `--list-test-cases`:lla, käännöksen puuttuminen = FAIL, yksittäinen virhe ei kaada ajoa, `perr`/`wperr`-tyngät, harness-tiedostojen ja kirjastojen sha256, doctest-versio, ajon yhteenveto, ohjelma vs. lähteiden aikaleima / TPINFO lost, SKIP masked FAIL, timeout with child process; plus exact names, missing build = FAIL, per-test error isolation, perr stubs, hashes, versions |
+
+Avoimet / open: `SEM_NOGPFAULTERRORBOX` ja `/GS`-kaatumisen (0xC0000409) dialogi
+testataan, kun ensimmäinen kaatuva testi (H-041 b) lisätään; verkkohiljaisuus on
+todettu vain koodia lukemalla. / Fast-fail dialog behaviour is checked with the first
+crashing test (H-041 b); network silence checked by reading code only.
+
+### 13.6 Ajaminen / How to run
+
+```
+msbuild TPsource\V52\VS\Libs\tputilv2.sln /p:Configuration=Release /p:Platform=Win32
+msbuild TPsource\V52\VS\Tests\TpCore.sln  /p:Configuration=Release /p:Platform=Win32
+python -I TPsource\V52\Tests\test_run_core_tests.py
+python -I TPsource\V52\Tests\run_core_tests.py [--out DIR] [--filter H-040] [--keep]
+```
+
+Tulokset oletuksena `TPsource/V52/Tests/results/<aika>/` (git ohittaa). Linkitys
+kestää noin 2 minuuttia (`/GL` + LTCG). / Results go to `Tests/results/<time>/`
+(ignored by git); linking takes about 2 minutes.
+
+### 13.7 Seuraavat viisi testiä (odottavat lupaa) / Next five tests (awaiting approval)
+
+Luvun 7 järjestyksessä / in the order of section 7: H-041 (a, b1, b3), H-031, H-008,
+H-024, H-027 (a, b). Ne vaativat `HkFixture`n (`wmain`in oletukset, `HkConsole/HkMain.cpp:185-201`)
+ja ensimmäisen kaatuvan testin käsittelyn. / They need `HkFixture` and the first
+crashing test.

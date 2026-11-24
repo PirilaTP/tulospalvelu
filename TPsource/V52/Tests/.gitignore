@@ -1,0 +1,3 @@
+# Core test runner output (run_core_tests.py)
+results/
+__pycache__/

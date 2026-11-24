@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Event>
+<Software>
+<VersionId>tp-test</VersionId>
+<FileFormat>
+<Legs>30</Legs>
+<Intermediaries>12</Intermediaries>
+</FileFormat>
+</Software>
+<EventData>
+<LegCount>30</LegCount>
+<ClassCount>0</ClassCount>
+</EventData>
+</Event>

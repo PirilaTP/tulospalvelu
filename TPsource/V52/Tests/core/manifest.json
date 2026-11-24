@@ -1,0 +1,89 @@
+{
+  "comment": "Core component tests run by Tests/run_core_tests.py, one process per entry. kind: info = build facts, control = must PASS, defect = known finding (XFAIL when the mechanism is observed, XPASS when it is not). See doc/arkkitehtuuri/testaus.md.",
+  "programs": {
+    "TpCoreJuk": "VS/Tests/Release/TpCoreJuk.exe",
+    "TpCoreHk": "VS/Tests/Release/TpCoreHk.exe"
+  },
+  "tests": [
+    {
+      "id": "juk-build-info",
+      "program": "TpCoreJuk",
+      "test_case": "tp_build_info",
+      "kind": "info",
+      "timeout": 30
+    },
+    {
+      "id": "hk-build-info",
+      "program": "TpCoreHk",
+      "test_case": "tp_build_info",
+      "kind": "info",
+      "timeout": 30
+    },
+    {
+      "id": "hk-smoke",
+      "program": "TpCoreHk",
+      "test_case": "TpCoreHk smoke: sandbox and build constants",
+      "kind": "control",
+      "expected": "PASS: HK core runs in the sandbox",
+      "timeout": 30
+    },
+    {
+      "id": "H-025a",
+      "program": "TpCoreJuk",
+      "test_case": "H-025a relay combufsize vs header plus largest class",
+      "kind": "defect",
+      "finding": "H-025",
+      "mechanism": "combufsize-excludes-header",
+      "expected": "Correct: combufsize >= 14 + class_len[i] for every class (as in HK). Defect: combufsize == max(class_len) < 14 + max(class_len), at n_os 4 and 30.",
+      "timeout": 30
+    },
+    {
+      "id": "H-025b",
+      "program": "TpCoreJuk",
+      "test_case": "H-025b relay disk queue stores whole packet",
+      "kind": "defect",
+      "finding": "H-025",
+      "mechanism": "disk-slot-truncates-packet",
+      "expected": "Correct: each disk-queue slot holds header + len bytes of the queued packet. Defect: slot stride is combufsize, the last 14 bytes of a largest-class packet are never stored and their file position is the start of the next slot. Checked at n_os 4 (EMITVA) and n_os 30 (YHTEISLAHTOT).",
+      "timeout": 30
+    },
+    {
+      "id": "H-040-control",
+      "program": "TpCoreJuk",
+      "test_case": "H-040 control: lock probe and balanced lock use",
+      "kind": "control",
+      "expected": "PASS: probe sees free/held/free; production delfrec leaves kilpdat_CriticalSection free (RecursionCount 0)",
+      "timeout": 30
+    },
+    {
+      "id": "H-040",
+      "program": "TpCoreJuk",
+      "test_case": "H-040 relay addfrec leaves kilpdat_CriticalSection held",
+      "kind": "defect",
+      "finding": "H-040",
+      "mechanism": "addfrec-lock-not-released",
+      "expected": "Correct: after addfrec returns, another thread can enter kilpdat_CriticalSection. Defect: another thread cannot; the caller still owns it.",
+      "timeout": 30
+    },
+    {
+      "id": "H-042-control",
+      "program": "TpCoreJuk",
+      "test_case": "H-042 control: in-limit KilpSrj.xml is read",
+      "kind": "control",
+      "expected": "PASS: luesarjat returns 0 with n_os = n_os_akt = MAXOSUUSLUKU, valuku = VAIKALUKU",
+      "data": [ { "src": "data/juk/h042_in_limit.xml", "dst": "KilpSrj.xml" } ],
+      "timeout": 30
+    },
+    {
+      "id": "H-042",
+      "program": "TpCoreJuk",
+      "test_case": "H-042 relay XML counts above compile-time limits",
+      "kind": "defect",
+      "finding": "H-042",
+      "mechanism": "xml-counts-not-clamped",
+      "expected": "Correct: file rejected or counts clamped to MAXOSUUSLUKU / VAIKALUKU. Defect: luesarjat returns 0 and kilpparam keeps n_os = n_os_akt = MAXOSUUSLUKU+1, valuku = VAIKALUKU+1.",
+      "data": [ { "src": "data/juk/h042_over_limit.xml", "dst": "KilpSrj.xml" } ],
+      "timeout": 30
+    }
+  ]
+}
