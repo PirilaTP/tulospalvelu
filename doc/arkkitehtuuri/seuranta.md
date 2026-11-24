@@ -22,13 +22,14 @@ separately from test coverage.
 | HkMaali.exe:n koeajot 0 ja 1 / black-box runs 0 and 1 | tehty palomuurieristyksellä, molemmat odotetusti; ensimmäinen AppContainer-yritys keskeytyi; ei H-vahvistuksia; done under firewall isolation, both as expected; first AppContainer attempt stopped; no H confirmed (`432ea3d`, `testaus.md` luku 17) | 2026-11-24 |
 | C-11 vaihe 4: H-041 toimitetussa ohjelmassa / stage 4 | esiehdot `c6205d2`; ajot 220/221; ennalta kiinnitetty arvio "not confirmed" (kriteeri 7, loki-ikkuna); käyttäjän poikkeamapäätöksellä H-041 **vahvistettu ajamalla** / pre-fixed verdict not confirmed; H-041 confirmed by running by user-approved deviation (`testaus.md` 19.9–19.11) | 2026-11-24 |
 | **C, erä 11 (C-11) kokonaisuutena / batch 11 as a whole** | **valmis / complete**; loppuyhteenveto / final summary `testaus.md` luku 20; raakatulokset / raw results `todisteet/c11/` | 2026-11-24 |
-| C, erä 4 (C-4) muistiturvallisuus / memory safety | seuraava, ei aloitettu; aloitusvalmius / readiness `testaus.md` 20.8 / next, not started | – |
+| C, erä 4 (C-4) muistiturvallisuus, vaihe 1: varoitusinventaario / memory safety, step 1: warning inventory | valmis, hyväksytty, riippumattomasti uudelleentarkastettu, commitoitu / done, approved, re-reviewed, committed (`muistiturvallisuus.md`, H-055–H-069, T-020, T-021, `todisteet/c4/`) | 2026-11-24 |
 | C, erät 5–10 / batches 5–10 | ei aloitettu / not started (`suunnitelma.md`); erä 5 osittain / batch 5 partly | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** C-4 muistiturvallisuus (`suunnitelma.md` erä 4) luvan
-jälkeen; ensin varoitusinventaario molemmilla kääntäjillä. / C-4 memory safety after
-approval, starting with a warning inventory on both compilers.
+**Seuraava askel / Next step:** C-4:n ensimmäinen vaihe odottaa tarkastusta. Ehdotus
+vaiheeksi 2 (luvan jälkeen): H-055–H-060 testikehyksessä, H-061 disassemblyllä, 33
+tutkittavaa riviä (`muistiturvallisuus.md` luku 8). / C-4 step 1 awaits review; proposed
+step 2: reproduce H-055–H-060 in the harness, H-061 by disassembly, 33 investigate rows.
 
 **Avoimet jatkotehtävät C-11:stä / open follow-ups from C-11** (eivät estäneet
 sulkemista / did not block closing; `testaus.md` 20.4):
@@ -68,6 +69,7 @@ Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
 | Q19–Q25 | Erän C-2 kysymykset (AIKAT-kaksoiskappaleet, TCP-virta, rengas, `tark_ylahto`, `Kysy`, kirjastot, MONITORI-portti) / batch C-2 questions | `tiedonsiirto.md`, "Avoimet kysymykset" |
 | Q26–Q34 | Erän C-3 kysymykset (HK:n XML-rajat, NTFS-katkos, `initindex`, viestin vienti, vaiheen vaihto, viestin 250-käännös, `t_time_l`, `mbtowc`, konstruktorijärjestys) / batch C-3 questions | `tiedostomuodot.md`, "Avoimet kysymykset" |
 | Q35–Q42 | Erän C-11 kysymykset (v143 ja ASan CI:ssä, `LockCount`, H-041 käynnistyksessä, H-001:n sisääntulo, `/we4789` ja LTCG, interaktiivinen CI-istunto, viestin `addtall`-säikeet, HK:n luokkapituudet) / batch C-11 questions | `testaus.md`, "Avoimet kysymykset" |
+| Q43–Q48 | Erän C-4 kysymykset (`pkglen` kutsujen välillä, ARES-kehys, bcc32:n `atoi`, `mrivi`n naapuri, `RADAT.LST`-käytäntö, GUI:n muotoilumerkkijonot) / batch C-4 questions | `muistiturvallisuus.md`, "Avoimet kysymykset" |
 | Q2 | Mitä kukin ominaisuusvalitsin tekee (`GAZ`, `ORAVA`, `VERTAA`, `MERI5`, `LAJUNEN`, `PARTIO` …)? Miksi konsoli- ja GUI-HK eroavat? / What does each feature switch do? Why do console and GUI HK differ? | `inventaario.md` |
 | ~~Q3~~ | **Osittain ratkaistu / partly resolved (C-2):** kehys, kuittaus ja yhteensopivuus kuvattu; tarkat koot avoinna (Q18) / frame, ack and compatibility documented; exact sizes open | `tiedonsiirto.md` |
 | ~~Q4~~ | **Ratkaistu / resolved (C-3):** muoto kuvattu tavutasolla; vanhaa muotoa ei tunnisteta automaattisesti, vain GUI-tuonti käyttäjän parametrein / layout documented; no automatic old-format detection, only GUI import with user parameters | `tiedostomuodot.md` |
@@ -117,6 +119,7 @@ Recorded as issue drafts (local `issue-drafts/`, not in the repo).
 | 2026-11-24 | C-11: testit haaralle `testit/vikojen-todentaminen`, ajuri Pythonilla, uusi todennustaso `toistettu testikehyksessä`; ei tuotantokoodin muutoksia, testikoukkuja eikä CI-muutoksia; testikoodi commitoidaan vain erillisellä hyväksynnällä / tests on their own branch, Python runner, new verification level; no production, hook or CI changes; test code committed only with approval | Käyttäjän ohje / user instruction |
 | 2026-11-24 | Syväauditointi erinä riskijärjestyksessä, enintään 3 analyysiagenttia rinnakkain, jokainen erä riippumattomasti tarkastettu / deep audit in risk-ordered batches, max 3 parallel analysis agents, each batch independently reviewed | Käyttäjän ohje / user instruction |
 | 2026-11-24 | C-11 vaihe 4: menetelmät A (toimitettu HkMaali.exe debuggerin alla) + C (komponenttitestit), ei B; rajapari 220/221, ei 250; WER vain debuggeritilalla, HKCU-muutos vain erillisellä luvalla; pudotuslokituksen ylläpitäjäkomennot ajaa käyttäjä; esiehdot erillisenä paikallisena committina, ajotuloksia ei commitoida ilman hyväksyntää; H-041 "vahvistettu ajamalla" vain yksiselitteisellä näytöllä / stage 4: methods A + C, no B; pair 220/221; WER via debugger mode only; user runs admin commands; prerequisites committed separately, run results only with approval | Käyttäjän ohje / user instruction |
+| 2026-11-24 | C-4 vaihe 1: vain varoitusinventaario ja luokittelu; ei tuotantokoodin, projektiasetusten tai CI:n muutoksia; analyysikäännökset väliaikaishakemistoon MSBuildin `ForceImportAfterCppTargets`-ohjauksella; ReleaseVA200 ajettu `PlatformToolset=v145`-ohituksella; ei committia ilman hyväksyntää / warning inventory and triage only; no production, project or CI changes; analysis builds redirected to scratch; ReleaseVA200 with a toolset override; no commit without approval | Käyttäjän ohje / user instruction |
 | 2026-11-24 | H-041: ennalta kiinnitetty arvio "not confirmed" säilyy; käyttäjä hyväksyi dokumentoidun poikkeaman (prosessi 26236 = kontrolliajon jälkikoeohjelma, ei HkMaali.exe:n liikennettä) ja H-041 nostetaan tasolle "vahvistettu ajamalla"; raakatuloksia ja kriteerejä ei muuteta; uutta ajoa ei tehdä; C-11 suljetaan, H-009 ja H-014 jäävät avoimiksi; seuraavaksi C-4 / pre-fixed verdict kept; user-approved deviation (pid 26236); H-041 confirmed by running; C-11 closed; next C-4 | Käyttäjän päätös / user decision |
 
 ## Oletukset, joita ei ole todennettu / Unverified assumptions

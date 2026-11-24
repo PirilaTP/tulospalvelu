@@ -1913,4 +1913,4 @@ issue-luonnokset. Lähtötiedot valmiina: H-001–H-003 ja H-041/H-042/H-052 (pu
 muotoilu), C4789/C4477-varoitukset, TpCoreHk/TpCoreJuk Asan -kokoonpanot, C-3:n rakennekoot.
 Ensimmäinen askel (luvan jälkeen): koneellinen varoitusinventaario molemmilla kääntäjillä
 (MSVC `/W4` + `/analyze`, bcc32) ilman tuotantokoodin muutoksia, sitten kohdennettu
-luenta riskijärjestyksessä. Ei aloitettu.
+luenta riskijärjestyksessä. **Vaihe 1 tehty 2026-11-24: `muistiturvallisuus.md`.** / Step 1 done: `muistiturvallisuus.md`.

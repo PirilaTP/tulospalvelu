@@ -22,6 +22,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | C-1 | `kilptietue::tallenna()`: säikeet, kutsupaikat, lukot, tallennus, SQL, replikointi / threads, call sites, locks, persistence, SQL, replication | `tallenna-samanaikaisuus.md` |
 | C-2 | Työasemien tiedonsiirto: kuljetus, kehys, kuittaus, kättely, sarjallistaminen, välitys, jonot, vikatilanteet, HK/viesti-erot, käännösvalitsimet, testattavuus / workstation communication | `tiedonsiirto.md` |
 | C-3 | Pysyvät tiedostot ja eheys: `KILP.DAT` (dbboxm, HK- ja viestitietue, vanha muoto), `COMFILE.DAT`, emit, AJAT, `SQLjonoVarm.dat`, konfiguraatio, mitatut koot MSVC/bcc32, vikatilanteet / persistent files and integrity | `tiedostomuodot.md` |
+| C-4 vaihe 1 / step 1 (hyväksytty, uudelleentarkastettu, commitoitu / approved, re-reviewed, committed) | Varoitusinventaario: MSVC 19.52 `/W3`, `/W3`+LTCG, `/W4 /analyze` (5 projektia, 7 kokoonpanoa), bcc32 7.80 tallennettu + `-w` (4 GUI-projektia); 11 027 riviä, 7 036 yksilöllistä; 275 tärkeintä luokiteltu (37 vahvistettu, 64 todennäköinen, 33 tutkittava, 141 väärä positiivinen; luvut korjattu riveittäisistä luokituksista); uudet H-055–H-069, T-020, T-021; kaksi riippumatonta tarkastusta / warning inventory on both compilers, triage, new findings, two independent reviews | `muistiturvallisuus.md`, `todisteet/c4/` |
 | C-11 valmis / complete | Vaihe 4: H-041 toimitetussa HkMaali.exe:ssä debuggerin alla (220/221), käyttäjän poikkeamapäätöksellä "vahvistettu ajamalla"; loppuyhteenveto, raakatulosten arkisto (`todisteet/c11/`), siivous / stage 4: H-041 confirmed by running (user-approved deviation); final summary, archive, clean-up | `testaus.md` luvut / sections 18–20 |
 | C-11 vaihe 3 / stage 3 | Vastaanottojonon testit (relay, HK), `VTulostus.cpp`:n sisällytys, vanhan muodon sarjatiedostot, korvaajien hiljainen tila, TpCoreJuk Asan; H-026, H-032, H-022, H-023, H-007, H-001, H-002 toistettu testikehyksessä; HkMaali.exe:n ajosuunnitelma (ei ajettu) / seven findings reproduced in test harness; HkMaali.exe run plan (not run) | `testaus.md` luvut / sections 15, 16 |
 | C-11 vaihe 2 / stage 2 | HkFixture, hallitut säikeet, kaatumistodisteet (ASan, poikkeuskäsittelijä), loopback-apu, Asan-konfiguraatio; H-041, H-031, H-008, H-024, H-027 toistettu testikehyksessä; neljä agenttia + riippumaton tarkastus / five findings reproduced in test harness | `testaus.md` luku / section 14 |
@@ -33,12 +34,12 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | Mittari / Metric | Arvo / Value |
 |---|---|
 | Lähdetiedostoja / source files | 631 (270 050 riviä / lines) + 19 C-11-testitiedostoa / test files |
-| Taso 1, vain inventoitu / inventoried only | 538 |
-| Taso 2, kohdennetusti luettu / read in a targeted way | 81 |
+| Taso 1, vain inventoitu / inventoried only | 501 |
+| Taso 2, kohdennetusti luettu / read in a targeted way | 118 (C-4: varoitusten kohdat / warning sites) |
 | Taso 3, rakenne luettu / structure read | 12 (luettelo / list: `rekisteri/moduulit.md`) |
 | Taso 4, kokonaan katselmoitu / fully reviewed | 0 tuotantotiedostoa / production files; 19 testitiedostoa / test files (C-11) |
-| Havaintoja / findings | 54 vikaa / defects (H), 19 teknistä velkaa / technical debt (T) |
-| Lähdeviittauksia tarkistettu / source references checked | 847 (`tarkista_auditointi.py`) |
+| Havaintoja / findings | 69 vikaa / defects (H), 21 teknistä velkaa / technical debt (T) |
+| Lähdeviittauksia tarkistettu / source references checked | 997 (`tarkista_auditointi.py`) |
 
 Koko koodipohjaa ei ole katselmoitu. Hakemistotason ja skriptillä tehty
 analyysi on taso 1. Moduulikohtaisesti: `rekisteri/moduulit.md`.
@@ -82,6 +83,7 @@ only for:
 - Merkistökäyttäytyminen: MSVC-testiohjelma ajettu ja binäärien tavut tarkistettu (H-005) / encoding behaviour: MSVC test program run and binary bytes inspected
 - Kommenttimuutosten objektivertailu testattu `tputilv2`:lla (0/146 vs 1/146) / object comparison for comment changes tested
 - C-3: levylle ja verkkoon kirjoitettavien rakenteiden `sizeof`/`offsetof` mitattu koeohjelmilla MSVC:llä ja bcc32:lla; bcc32:n `#pragma option -K`/`-a1`-käytös mitattu (Q17). Koskee kokoja, ei vikojen toistamista. / sizes measured with probes in both compilers; `-K`/`-a1` behaviour measured. Sizes only, no defect reproduced.
+- C-4: varoitusinventaario molemmilla kääntäjillä (MSVC `/W4 /analyze`, LTCG-linkitys; bcc32 `-w`); bcc32:n uudelleenajo tuotti täsmälleen tallennetut varoitukset; käännösnäyttöä, ei ajoja eikä vikojen toistamista (`muistiturvallisuus.md`) / warning inventory, build evidence only, nothing run
 - C-11 (koeohjelmat, ei vikojen toistamista / probes, no defect reproduced): HkMaali- ja JukMaali-lähdelistat ilman pääohjelmaa linkittyvät testiohjelmaksi; `writeerror_w(...,0)` palaa 0 ms:ssa ilman konsolia; doctest ei käänny bcc32:lla, `static_assert` kääntyy; C4789 `Juk/VTulostus.cpp:2228`, `:3981`; suljettuun loopback-porttiin yhdistäminen epäonnistuu 2000 ms:ssa; `LockCount`-odottajakoetin 200/200 / core lists link without main; `writeerror_w` returns in 0 ms; doctest fails on bcc32; C4789 reproduced; loopback refusal 2000 ms; waiter probe 200/200 (`testaus.md`)
 
 ## Havainnot / Findings
@@ -90,14 +92,14 @@ Täydet tiedot: `rekisteri/havainnot.md`. / Full details: `rekisteri/havainnot.m
 
 | Todennustila / Verification state | Havainnot / Findings |
 |---|---|
-| Riippumaton lähdetarkastus / independent source review | H-007, H-008, H-009, H-011–H-016, H-018, H-022–H-029, H-031, H-033, H-036, H-037, H-040–H-043, H-045, H-046, H-048, H-050, H-053, H-054 |
-| Riippumaton lähdetarkastus, osittain / partly | H-010, H-021, H-030, H-032, H-034, H-035, H-044, H-047, H-049, H-051, H-052 |
+| Riippumaton lähdetarkastus / independent source review | H-007, H-008, H-009, H-011–H-016, H-018, H-022–H-029, H-031, H-033, H-036, H-037, H-040–H-043, H-045, H-046, H-048, H-050, H-053, H-054, H-056, H-058, H-059, H-061, H-062, H-064, H-066–H-069 |
+| Riippumaton lähdetarkastus, osittain / partly | H-010, H-021, H-030, H-032, H-034, H-035, H-044, H-047, H-049, H-051, H-052, H-055, H-057, H-060, H-063, H-065 |
 | Ei riippumatonta tarkastusta / no independent review | H-001–H-006, H-017, H-019, H-038, H-039 |
 | Ei ratkea staattisesti / not statically decidable | H-020 |
 | Toistettu testikehyksessä / reproduced in test harness | H-025, H-040, H-042 (`testaus.md`, luku / section 13); H-041, H-031, H-008, H-024, H-027 (luku / section 14); H-026, H-032, H-022, H-023, H-007, H-001, H-002 (luku / section 15) |
 | Ajonaikaisesti todennettu / verified at run time | H-041 (toimitettu HkMaali.exe, poikkeamapäätös / user-approved deviation, `testaus.md` 19.11) |
 
-Vakavimmat / most severe (korkea / high, 17 kpl): H-001, H-002 (muistin korruptio /
+Vakavimmat / most severe (korkea / high, 19 kpl; C-4 lisäsi / added H-055 emiTag-indeksi pinoon / emiTag index into stack, H-056 ARES-lukijan ikuinen silmukka / ARES reader infinite loop): H-001, H-002 (muistin korruptio /
 memory corruption), H-007 (menetetty päivitys / lost update), H-008, H-024 (lukko jää
 päälle / lock left held), H-009 (lukkiutumisvaara / deadlock risk), H-014 (MySQL
 pysähtyy / SQL writer stops), H-022 (tieto väärälle kilpailijalle / data to wrong
@@ -124,7 +126,7 @@ controlled) and correspond to findings H-001–H-006.
 
 ## Avoimet kysymykset / Open questions
 
-Täydet tiedot: `seuranta.md` (Q2–Q34; Q1, Q4, Q13, Q16, Q17 ja Q18 ratkaistu, Q3
+Täydet tiedot: `seuranta.md` (Q2–Q48; C-4:n Q43–Q48 `muistiturvallisuus.md`; Q1, Q4, Q13, Q16, Q17 ja Q18 ratkaistu, Q3
 osittain). Tärkeimmät / most important:
 
 - Q7: kääntääkö `bcc32` UTF-8 BOMilla oikein / does bcc32 handle UTF-8 with BOM
@@ -150,14 +152,35 @@ loopback-kerros, H-041:n lukupolku, testit CI:hin (luku 20.4). Raakatulokset ja 
 `todisteet/c11/`. Tilapäishakemistot poistettu; palomuurisääntöjen
 `TP C11 HkMaali block in/out` poisto valmisteltu käyttäjälle (luku 20.6).
 
-**Seuraava / next: C-4 muistiturvallisuus ja määrittelemätön käytös** (`suunnitelma.md`
-erä 4; aloitusvalmius `testaus.md` 20.8). Ensimmäinen askel luvan jälkeen: koneellinen
-varoitusinventaario (MSVC `/W4` + `/analyze`, bcc32) ilman tuotantokoodin muutoksia.
+**C-4 vaihe 1 valmis (2026-11-24), käyttäjä hyväksyi; riippumaton uudelleentarkastus (K1–K9) ja korjaukset tehty; commitoitu paikallisesti.**
+Raportti `muistiturvallisuus.md`; raakatulokset `todisteet/c4/`. Uudet havainnot
+H-055–H-069 (2 korkeaa, 9 keskitasoa, 4 matalaa) ja T-020, T-021; kaikki staattisia.
+Tunnetuista puskurivioista H-041, H-042 ja H-052 ei varoittanut mikään kääntäjä.
+
+**Ehdotus / proposal, C-4 vaihe 2 (luvan jälkeen / after approval):** H-055–H-060
+TpCore-testikehyksessä ASanilla ilman tuotantokoodin muutoksia; H-061 disassemblyllä
+(Q43); 33 tutkittavaa riviä ja muunnosvaroitukset syötteitä käsittelevissä funktioissa
+(`muistiturvallisuus.md` luku 8). Ei GUI-ajoja, ei CI-muutoksia, ei korjauksia.
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
 Open: manual tests H-009/H-014, two-process loopback layer, H-041 read path, CI. Next:
-C-4 memory safety (plan batch 4), starting with a warning inventory on both compilers.
+C-4 memory safety (plan batch 4). **C-4 step 1 done (warning inventory, H-055–H-069),
+approved, re-reviewed, committed locally.** Proposed step 2: reproduce H-055–H-060 in the harness.
+
+## Resurssien käyttö / Resource usage (C-4 vaihe 1 / step 1)
+
+| Agentti / Agent | Tokenit / tokens | Työkalukutsut / tool calls |
+|---|--:|--:|
+| `defect-concurrency-auditor` A1 (`Hk/`, `HkConsole/`, 96 riviä / rows) | 130 241 | 55 |
+| `defect-concurrency-auditor` A2 (`Tp/`, `tputilv2/`, `dbboxm/`, `com/`, `cbHk/`, 79) | 119 286 | 58 |
+| `defect-concurrency-auditor` B (`Juk/`, `JukConsole/`, `ViestiWin/`, 99) | 114 045 | 63 |
+| `independent-verifier` C1–C7 | 80 944 | 44 |
+| `independent-verifier` D1–D8 | 86 180 | 44 |
+| **Yhteensä / total** | **530 696** | **264** |
+
+Käännökset ja tilastot teki pääistunto; `build-dependency-analyst`ia ei tarvittu. /
+Builds and statistics by the main session.
 
 ## Resurssien käyttö / Resource usage (C-11 vaihe 3 / stage 3)
 
@@ -217,8 +240,8 @@ Figures as reported by the harness. The C-3 figure was 745 489 / 360.
 2. Tarkista tila / check state:
    ```sh
    git branch --show-current          # testit/vikojen-todentaminen
-   git status --short                 # commitoimatta / uncommitted: Tests/blackbox/, Tests/core/HkDataTests.cpp, Tests/data/hk/, manifest, VS/Tests/TpCoreHk.vcxproj, doc/ (luku 17)
-   git log --oneline main..           # 10 committia / commits (viimeisin / last c11231b)
+   git status --short                 # commitoimatta / uncommitted: C-4 vaihe 1 / step 1 (doc/arkkitehtuuri/: muistiturvallisuus.md, rekisteri/, todisteet/c4/, seuranta.md, suunnitelma.md, README.md, CHECKPOINT.md, testaus.md)
+   git log --oneline main..           # 14 committia / commits (viimeisin / last 72279b9)
    python -I TPsource/V52/Tests/test_run_core_tests.py   # 46 OK
    python -I TPsource/V52/Tests/run_core_tests.py   # PASS=19, XFAIL=23 (vaatii Release- ja TpCoreHk Asan -käännöksen / needs Release and TpCoreHk Asan builds, testaus.md 13.6, 14)
    python -I doc/arkkitehtuuri/tyokalut/tarkista_auditointi.py .   # OK
