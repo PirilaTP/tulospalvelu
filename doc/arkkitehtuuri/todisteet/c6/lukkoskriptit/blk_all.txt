@@ -1,0 +1,122 @@
+Hk/HkAjat.cpp:129-291 ajat 
+     {'wselectopt': [191], 'writeerror_w': [217, 234]}
+Hk/HkApu.cpp:666-704 seura 
+     {'TextFl': [669], 'Close': [697]}
+Hk/HkApu.cpp:713-744 seura 
+     {'TextFl': [715, 717], 'Close': [741]}
+Hk/HkCom32.cpp:1059-1075 outb 
+     {'Sleep': [1061]}
+Hk/HkEmit.cpp:1337-1353 emit 
+     {'fflush': [1344]}
+Hk/HkEmit.cpp:1665-1691 emit 
+     {'fflush': [1676]}
+Hk/HkEmit.cpp:5165-5255 print 
+     {'vidspwmsg': [5171, 5176, 5202, 5229, 5244], 'readkbd': [5205, 5245]}
+Hk/HkEmit.cpp:5189-5204 tall 
+     {'vidspwmsg': [5202]}
+Hk/HkEmit.cpp:5206-5241 tall 
+     {'vidspwmsg': [5229]}
+Hk/HkIV.cpp:2674-3028 ajat 
+     {'writeerror_w': [2779, 2781, 2856, 2917], 'vidspwmsg': [2853, 2914]}
+Hk/HkInit.cpp:3650-3668 inb 
+     {'writeerror_w': [3660]}
+Hk/HkIx.cpp:1897-1986 tall 
+     {'vidspwmsg': [1933], 'writeerror_w': [1938, 1944]}
+Hk/HkIx.cpp:1898-1985 ajat 
+     {'vidspwmsg': [1933], 'writeerror_w': [1938, 1944]}
+Hk/HkIx.cpp:1899-1984 emit 
+     {'vidspwmsg': [1933], 'writeerror_w': [1938, 1944]}
+Hk/HkTulostus.cpp:985-1039 autotul 
+     {'wselectopt': [1029], 'readkbd': [1031]}
+Hk/HkTulostus.cpp:5850-6419 tall LONG
+     {'readkbd': [6005], 'writeerror_w': [6018], 'vidspwmsg': [6406, 6415, 6416]}
+Hk/HkTulostus.cpp:7106-7114 autotul 
+     {'writeerror_w': [7113]}
+Juk/VCom.cpp:258-296 outb 
+     {'readkbd': [274], 'Sleep': [275]}
+Juk/VCom.cpp:1186-1202 outb 
+     {'Sleep': [1189], 'writeerror_w': [1196]}
+Juk/VCom.cpp:1380-1386 outb 
+     {'writeerror_w': [1385]}
+Juk/VEmit.cpp:1458-1470 emit 
+     {'writeerror_w': [1460, 1465]}
+Juk/VEmit.cpp:1510-1542 emit 
+     {'fflush': [1518]}
+Juk/VEmit.cpp:5771-5900 print 
+     {'vidspwmsg': [5777, 5782, 5846, 5872, 5889]}
+Juk/VEmit.cpp:5832-5848 tall 
+     {'vidspwmsg': [5846]}
+Juk/VEmit.cpp:5850-5884 tall 
+     {'vidspwmsg': [5872]}
+Juk/VInit.cpp:2921-2928 inb 
+     {'Sleep': [2924]}
+Juk/VTulostus.cpp:704-752 autotul 
+     {'wselectopt': [742], 'readkbd': [744]}
+Juk/VTulostus.cpp:5746-6325 tall LONG
+     {'vidspwmsg': [5934], 'readkbd': [6001], 'writeerror': [6020]}
+Juk/VTulostus.cpp:7154-7454 tcp NOLEAVE
+     {'TextFl': [7161, 7398], 'writeerror_w': [7174, 7401], 'Close': [7310], '_beginthread': [7314], 'wselectopt': [7371], 'vidspwmsg': [7377, 7421], 'readkbd': [7378]}
+Juk/VTulostus.cpp:7157-7176 autotul 
+     {'TextFl': [7161], 'writeerror_w': [7174]}
+Juk/VTulostus.cpp:7497-7571 print 
+     {'FormMsgs->Show': [7515, 7564]}
+Juk/vajat.cpp:116-257 ajat 
+     {'selectopt': [155], 'writeerror': [177, 191]}
+Juk/vdat.cpp:496-850 tall 
+     {'writeerror': [632, 672, 704, 725]}
+Juk/vdat.cpp:867-904 tall 
+     {'writeerror': [885]}
+JukConsole/laskent0.cpp:356-400 tall 
+     {'WriteFile': [386]}
+JukConsole/laskent0.cpp:359-400 tall 
+     {'WriteFile': [386]}
+Tp/TpComY.cpp:1122-1166 outb 
+     {'Sleep': [1123], 'writeerror_w': [1133, 1154]}
+Tp/TpComY.cpp:1464-1488 outb 
+     {'writeerror_w': [1471, 1474, 1485]}
+Tp/TpComY.cpp:1582-1619 outb 
+     {'writeerror_w': [1602]}
+Tp/TpComY.cpp:2387-2425 outb 
+     {'fopen': [2392], '_beginthread': [2415], 'writeerror_w': [2422]}
+ViestiWin/UnitAikavert.cpp:206-242 tall 
+     {'Refresh': [238]}
+ViestiWin/UnitExport.cpp:377-394 tall 
+     {'Refresh': [390], 'Sleep': [391]}
+ViestiWin/UnitExport.cpp:411-435 tall 
+     {'Refresh': [428], 'Sleep': [430]}
+ViestiWin/UnitHylkRap.cpp:292-304 print 
+     {'Application->MessageBoxW': [295]}
+ViestiWin/UnitJoukkueet.cpp:800-822 tall 
+     {'Application->MessageBox': [804, 812]}
+ViestiWin/UnitJoukkueet.cpp:807-822 tall 
+     {'Application->MessageBox': [812]}
+ViestiWin/UnitLisatiedot.cpp:350-597 tall 
+     {'Refresh': [585], 'Sleep': [586]}
+ViestiWin/UnitLisatiedot.cpp:961-1052 tall 
+     {'Application->MessageBoxW': [1033, 1037], 'Refresh': [1046], 'Sleep': [1047]}
+ViestiWin/UnitMySQL.cpp:609-640 SQL 
+     {'_wfopen': [610]}
+ViestiWin/UnitMySQL.cpp:655-660 SQL 
+     {'fflush': [659]}
+cbHk/UnitExport.cpp:426-450 tall 
+     {'Refresh': [443], 'Sleep': [445]}
+cbHk/UnitHylkRap.cpp:276-288 print 
+     {'Application->MessageBoxW': [279]}
+cbHk/UnitImport.cpp:1129-1156 tall 
+     {'Refresh': [1151, 1152], 'Sleep': [1153]}
+cbHk/UnitMySQL.cpp:662-693 SQL 
+     {'_wfopen': [663]}
+cbHk/UnitMySQL.cpp:712-717 SQL 
+     {'fflush': [716]}
+cbHk/UnitOsanottajat.cpp:978-1006 tall 
+     {'Application->MessageBox': [983, 988, 996]}
+cbHk/UnitOsanottajat.cpp:984-1006 tall 
+     {'Application->MessageBox': [988, 996]}
+cbHk/UnitOsanottajat.cpp:991-1006 tall 
+     {'Application->MessageBox': [996]}
+com/WinUDP.cpp:335-352 tcpip 
+     {'closesocket': [340, 342], 'Sleep': [343]}
+com/WinUDP.cpp:661-673 tcpip 
+     {'_beginthread': [662]}
+com/WinUDP.cpp:907-936 tcpip 
+     {'select': [911], 'send': [918]}

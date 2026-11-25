@@ -461,7 +461,7 @@ the build today). Replaced by a run-time check; the tests above are refined in
 | Q27 | Voiko NTFS jättää kirjoitusläpäisevän lisäyksen jälkeen pituuden, joka ei ole tietuekoon monikerta (sähkökatko)? / Can NTFS leave a non-multiple length after a power cut? |
 | Q28 | Voiko dbboxm:n `initindex` voittaa linkityksessä `Hk/HkIx.cpp`:n tai `Juk/VIx.cpp`:n version? / Can dbboxm `initindex` win at link time? |
 | Q29 | Mihin viestin viety `.dat` käytetään; avataanko se `KILP.DAT`:na (H-046 → tietojen menetys)? / How is the relay export used downstream? |
-| Q30 | Miten HK:n vaiheen vaihto sulkee ja avaa `KILP.DAT`:n ja emit-tiedoston säikeiden ollessa käynnissä (`Hk/HkIx.cpp:1898-1985`)? / Stage change reopen with threads running? |
+| ~~Q30~~ | **Ratkaistu C-6:ssa / resolved in C-6** (`saikeet-ja-lukot.md` luku 5): `KILP.DAT`:ia ei suljeta; emit- ja aikatiedostot suljetaan kolmen lukon alla, lukijasäikeitä ei pysäytetä (H-094, H-102). Alkuperäinen: miten HK:n vaiheen vaihto sulkee ja avaa `KILP.DAT`:n ja emit-tiedoston säikeiden ollessa käynnissä (`Hk/HkIx.cpp:1898-1985`)? / KILP.DAT is not closed; reader threads not paused |
 | Q31 | Onko ViestiWinin `MAXOSUUSLUKU` 250 -käännöksissä H-041:n kaltainen puskuriraja? / H-041 analogue in relay 250 builds? |
 | Q32 | `t_time_l`-aikaleiman (`lahetetty`) yksikkö ja kierto / unit and wraparound |
 | Q33 | Miten `mbtowc` (`ansitowchar`) käsittelee tavuja > 127 "C"-lokaalissa MSVC:llä ja bcc32:lla (ANSI/OEM-konfiguraatiot, vanhat tuonnit)? / `mbtowc` above 127 in the "C" locale? |

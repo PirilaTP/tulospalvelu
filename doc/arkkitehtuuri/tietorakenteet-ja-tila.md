@@ -91,11 +91,15 @@ Tärkeimpiä / Most important [todennettu: esittelyt; päätelty: roolit]:
 
 ## Säikeet / Threads
 
-Säikeet käynnistetään funktioilla `_beginthread` tai `CreateThread`.
-[todennettu: käynnistyskohdat; tuntematon: tarkka elinikä ja lopetus]
+Säikeet käynnistetään funktiolla `_beginthread` (`CreateThread`-kohdat ovat kommenteissa).
+Täydellinen säiekartta (56 aktiivista käynnistyskohtaa, 29 säiefunktiota), elinikä, lopetus
+ja vaiheen vaihto: `saikeet-ja-lukot.md` luvut 3–5 (C-6). Yhtäkään säiettä ei odoteta
+lopetuksessa; lopetus perustuu lippuihin ja `Sleep`-viiveisiin. `luepakettiTCP` ei käänny
+(`SIIMPORT`). [todennettu, tarkastettu]
 
-Threads are started with `_beginthread` or `CreateThread`. [verified: start sites;
-unknown: exact lifetime and shutdown]
+Threads are started with `_beginthread` (`CreateThread` sites are commented out). Full thread
+map, lifetime, shutdown and stage change: `saikeet-ja-lukot.md` sections 3–5 (C-6). No thread
+is joined at shutdown. `luepakettiTCP` does not compile. [verified, reviewed]
 
 | Säie / Thread | Käynnistetään / Started in | Tehtävä / Task [päätelty / inferred] |
 |---|---|---|
@@ -128,7 +132,9 @@ Shared state is protected by named `CRITICAL_SECTION`s initialised in `aloitus()
 `kilpdat` (kilparr ja KILP.DAT), `tall`, `idindex`, `ajat`, `emit`, `rastiva`,
 `inb`/`outb` (tiedonsiirron jonot / comms queues), `tcpip`, `tcp`, `seura`,
 `seur_badge`, `loki`, `print`, `autotul`, `prof`, `tls`, `SQL`, `sakkoGrid`,
-`sakkoKierr`.
+`sakkoKierr`, `etls`, `seur` (yhteensä 22 nimeä / 22 names in total).
+Lukkokartta, alustus ja poisto, lukitusjärjestys ja syklit: `saikeet-ja-lukot.md`
+luvut 6–7 (C-6). / Lock map, init and delete, lock order and cycles: see there.
 
 HK:n `kilptietue::tallenna()` ei lukitse itse (`Hk/HkDat.cpp:941` kommentoitu).
 Sitä kutsuu seitsemän eri säiettä, ja noin 35 kutsupaikkaa 145:stä ei pidä

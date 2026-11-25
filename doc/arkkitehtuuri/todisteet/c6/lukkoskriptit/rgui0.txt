@@ -1,0 +1,56 @@
+ajat -> outb
+    Juk/vajat.cpp:247 tall_rivi via laheta_aika
+ajat -> tall
+    Juk/vajat.cpp:155 tall_rivi via selectopt
+autotul -> print
+    Juk/VTulostus.cpp:723 autotulostus direct
+autotul -> tall
+    Juk/VTulostus.cpp:730 autotulostus via tulostasarja
+emit -> outb
+    Juk/VEmit.cpp:1526 addem via laheta_em
+    Juk/VEmit.cpp:1560 haeEmiterot via lueem
+emit -> print
+    Juk/VEmit.cpp:1536 addem via emit_rap
+emit -> rastiva
+    Juk/VEmit.cpp:1524 addem via addemitanal
+    Juk/VEmit.cpp:6129 lueRatatiedotUudelleen direct
+loki -> tcpip
+    Juk/vApu.cpp:119 wkirjloki via wrt_st_TCP
+outb -> tall
+    Juk/VCom.cpp:1193 lahetaXML_TCP via T_TIME
+print -> rastiva
+    Juk/VEmit.cpp:5062 tulostaRastiVa direct
+    Juk/VEmitHtml.cpp:223 EmitHtmlOsuus direct
+print -> tall
+    Juk/VEmit.cpp:5832 tarkraportit direct
+    Juk/VTulostus.cpp:730 autotulostus via tulostasarja
+tall -> SQL
+    ViestiWin/UnitExport.cpp:421 TFormExport::kirjSQL via kirjKilpSQL
+tall -> ajat
+    Juk/VIv.cpp:642 tall_etulos via tall_rivi
+    Juk/VIv.cpp:2188 tall_regnly via tall_rivi
+tall -> emit
+    Juk/vdat.cpp:657 tallenna via putem
+tall -> kilpdat
+    Juk/vdat.cpp:894 addtall via addfrec
+    Juk/vdat.cpp:935 deltall via delfrec
+tall -> outb
+    Juk/vdat.cpp:775 tallenna via laheta
+    Juk/vdat.cpp:813 tallenna via laheta_emva
+    Juk/vdat.cpp:902 addtall via laheta
+    Juk/vdat.cpp:936 deltall via laheta
+tall -> print
+    Juk/VTulostus.cpp:6244 tulostasarja via EmitHtmlOsuus
+    ViestiWin/UnitEmit.cpp:2231 TFormEmit::TallennaMuutokset via emit_rap
+tall -> rastiva
+    Juk/VTulostus.cpp:6244 tulostasarja via EmitHtmlOsuus
+    ViestiWin/OsuusTiedot.cpp:286 TFormOsuus::OsKarkiBtnClick via naytaTiedot
+    ViestiWin/OsuusTiedot.cpp:309 TFormOsuus::OsSeurClick via naytaTiedot
+    ViestiWin/OsuusTiedot.cpp:332 TFormOsuus::OsEdClick via naytaTiedot
+    ViestiWin/OsuusTiedot.cpp:349 TFormOsuus::VaihdKarkiBtn via naytaTiedot
+    ViestiWin/OsuusTiedot.cpp:369 TFormOsuus::VaihdSeurBtn via naytaTiedot
+    ViestiWin/OsuusTiedot.cpp:390 TFormOsuus::VaihdEdBtn via naytaTiedot
+    ViestiWin/UnitEmit.cpp:2235 TFormEmit::TallennaMuutokset via addemitanal
+    ViestiWin/UnitJoukkuetiedot.cpp:839 TFormJoukkuetiedot::SrjKarkiBtn via naytaTiedot
+    ViestiWin/UnitJoukkuetiedot.cpp:906 TFormJoukkuetiedot::SeurBtnClick via naytaTiedot
+    ViestiWin/UnitJoukkuetiedot.cpp:963 TFormJoukkuetiedot::EdBtnClick via naytaTiedot

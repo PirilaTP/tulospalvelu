@@ -10,15 +10,15 @@ riippumaton lähdetarkastus (ei ajonaikainen) / independent source review (not r
 
 | Moduuli / Module | Tiedostot / Files | T2 | T3 | Arkkitehtuuri / Architecture | Todennus / Verification |
 |---|--:|--:|--:|---|---|
-| `Hk/` | 27 | 19 | 2 | yleiskuva, `tallenna`, tiedonsiirto, tiedostomuodot / overview, `tallenna`, communications, file formats | C-1, C-2, C-3: lähdetarkastus / source review |
-| `Juk/` | 23 | 19 | 0 | vastaanotto, lukitus, `combufsize`, tietueen pakkaus / receive, locking, record packing | C-1 (lukitus / locking), C-2, C-3 |
-| `Tp/` | 13 | 4 | 1 | säikeet, jonot, kehys, kättely / threads, queues, frame, handshake | C-1, C-2 |
-| `com/` | 3 | 1 | 1 | kuljetus / transport (UDP, TCP, WinHTTP) | C-2 |
-| `cbHk/` | 149 | 14 | 0 | käynnistys, säikeet, vaiheen vaihto, vienti, tuonti, MySQL-jono / startup, threads, stage change, export, import, SQL queue | C-1, C-2, C-3 osittain / partly |
-| `ViestiWin/` | 114 | 10 | 1 | vienti, tuonti, vanha muoto, MySQL-jono / export, import, old format, SQL queue | C-3 osittain / partly |
-| `cbTp/` | 73 | 4 | 0 | `writeerror_w`, `haeSQLTh`, uudelleenlähetys / resend | C-1, C-2 |
-| `HkConsole/` | 8 | 4 | 0 | käynnistys, vaiheen vaihto / startup, stage change | C-2 |
-| `JukConsole/` | 10 | 5 | 0 | – | C-4: varoitusten triage / warning triage |
+| `Hk/` | 27 | 19 | 2 | yleiskuva, `tallenna`, tiedonsiirto, tiedostomuodot / overview, `tallenna`, communications, file formats, säikeet ja lukot / threads and locks | C-1, C-2, C-3: lähdetarkastus / source review, C-6 |
+| `Juk/` | 23 | 20 | 0 | vastaanotto, lukitus, `combufsize`, tietueen pakkaus / receive, locking, record packing, säikeet ja lukot / threads and locks | C-1 (lukitus / locking), C-2, C-3, C-6 |
+| `Tp/` | 13 | 4 | 1 | säikeet, jonot, kehys, kättely / threads, queues, frame, handshake, säikeet ja lukot / threads and locks | C-1, C-2, C-6 |
+| `com/` | 3 | 1 | 1 | kuljetus / transport (UDP, TCP, WinHTTP), säikeet ja lukot / threads and locks | C-2, C-6 |
+| `cbHk/` | 149 | 21 | 0 | käynnistys, säikeet, vaiheen vaihto, vienti, tuonti, MySQL-jono / startup, threads, stage change, export, import, SQL queue, säikeet ja lukot / threads and locks | C-1, C-2, C-3 osittain / partly, C-6 |
+| `ViestiWin/` | 114 | 15 | 1 | vienti, tuonti, vanha muoto, MySQL-jono / export, import, old format, SQL queue, säikeet ja lukot / threads and locks | C-3 osittain / partly, C-6 |
+| `cbTp/` | 73 | 10 | 0 | `writeerror_w`, `haeSQLTh`, uudelleenlähetys / resend, säikeet ja lukot / threads and locks | C-1, C-2, C-6 |
+| `HkConsole/` | 8 | 4 | 0 | käynnistys, vaiheen vaihto / startup, stage change, säikeet ja lukot / threads and locks | C-2, C-6 |
+| `JukConsole/` | 10 | 5 | 0 | säikeet ja lukot / threads and locks | C-4: varoitusten triage / warning triage, C-6 |
 | `tputilv2/` | 169 | 24 | 2 | merkistöt, `dbindex`, merkistömuunnokset, konfiguraation luku / encodings, conversions, config reading | objektivertailu testattu / object comparison tested; C-3 |
 | `include/` | 21 | 4 | 3 | yleiskuva, tiedonsiirto, dbboxm-rakenteet, pragmat / overview, communications, dbboxm structs, pragmas | C-2 (`wincom.h`), C-3 (`boxr.h`, `boxm.h`, `tputil.h`) |
 | `dbboxm/` | 13 | 5 | 2 | tiedostokerros, otsake, kuollut indeksikerros / file layer, header, dead index layer | C-1, C-3 |

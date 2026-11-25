@@ -127,7 +127,7 @@ ends with an independent review (`independent-verifier`) and a register update
 | 3 | Pysyvät tiedostot ja eheys: `KILP.DAT`, emit-tiedot, `ajat.txt`, `SQLjonoVarm.dat`, vanha muoto / persistent files and integrity | korkea / high | legacy-encoding-analyst, defect-concurrency-auditor, build-dependency-analyst | `tiedostomuodot.md`; Q4, Q17, Q18 — **valmis / done 2026-11-24** (H-040–H-054, T-015–T-019); Q5 (SQL-taulut / tables) siirtyy erään 10 / moves to batch 10 |
 | 4 | Muistiturvallisuus ja määrittelemätön käytös: kääntäjävaroitusten läpikäynti molemmilla kääntäjillä, MSVC `/analyze`, puskurit ja muotoilumerkkijonot / memory safety and UB | korkea / high | defect-concurrency-auditor, build-dependency-analyst | **valmis ja suljettu / done and closed 2026-11-25** (`muistiturvallisuus.md`, H-055–H-077, T-020–T-022); H-numerot, issue-luonnokset / H entries, issue drafts |
 | 5 | Kääntäjäkohtainen käytös: `#pragma -K -a1` (43 tiedostoa, vain bcc32) ja rakenteiden asettelu käännösyksiköiden välillä, `/J` (unsigned char), `wchar_t`, merkistöt / compiler-specific behaviour | korkea / high (jos asettelu eroaa / if layouts differ) | legacy-encoding-analyst, build-dependency-analyst | **vaihe 1 valmis / step 1 done 2026-11-25** (`kaantajaerot.md`, H-078–H-081, T-023–T-028; Q7 ratkaistu / resolved; `merkistot.md` korjattu / corrected); vaihe 2 valmis / step 2 done (`kaantajaerot.md` luku 13: Q8, H-082–H-086, T-029); **valmis ja suljettu / done and closed 2026-11-25** (`b17d536`, `55897eb`); avoinna / open Q60, Q63, Q64. Alkuperäinen tuotos / original output: `merkistot.md` laajennus; Q7. Osittain tehty erässä C-3: levylle ja verkkoon kirjoitettavien rakenteiden koot ja `-K`/`-a1` mitattu (`tiedostomuodot.md`) / partly done in C-3 |
-| 6 | Säikeiden omistajuus ja synkronointi kokonaisuutena: kaikki säikeet, lukot, lukitusjärjestys, lopetus / thread ownership and synchronisation | keskitaso–korkea / medium–high | defect-concurrency-auditor, architecture-analyst | `tietorakenteet-ja-tila.md` laajennus — **vaihe 1 rajattu, ei aloitettu / step 1 scoped, not started** (alla / below) |
+| 6 | Säikeiden omistajuus ja synkronointi kokonaisuutena: kaikki säikeet, lukot, lukitusjärjestys, lopetus / thread ownership and synchronisation | keskitaso–korkea / medium–high | defect-concurrency-auditor, architecture-analyst | `tietorakenteet-ja-tila.md` laajennus — **vaihe 1 valmis / step 1 done 2026-11-25** (`saikeet-ja-lukot.md`, H-087–H-102, T-030–T-032, Q30 ratkaistu / resolved); vaihe 2 erillisellä päätöksellä / step 2 on a separate decision |
 | 7 | GUI:n liiketoimintalogiikka: `cbHk/UnitEmit.cpp`, `UnitAjanotto`, `UnitArvonta`, `UnitKilpailijatiedot`, `ViestiWin/UnitEmit.cpp` / GUI business logic | keskitaso–korkea | architecture-analyst, defect-concurrency-auditor | moduulikuvaukset / module descriptions |
 | 8 | Globaali muuttuva tila: kuka kirjoittaa mitäkin, alustus, nollaus kilpailun vaihdossa / global mutable state | keskitaso / medium | architecture-analyst | `tietorakenteet-ja-tila.md` |
 | 9 | Virheenkäsittely ja resurssit: palautusarvojen tarkistus, tiedostokahvat, muistivuodot, `writeerror`-polut / error handling and resources | keskitaso / medium | defect-concurrency-auditor | H/T-numerot |
@@ -147,7 +147,12 @@ Jatkotehtävä C-5:stä (ei numeroitu erä): syötteiden kokonaislukujäsennykse
 Follow-up from C-5 (not a numbered batch): integer-parse review, 161 candidates; may be
 merged with batch 7.
 
-### C-6 vaihe 1: ehdotettu rajaus / Step 1: proposed scope (ei aloitettu / not started)
+### C-6 vaihe 1: rajaus / Step 1: scope (**valmis / done 2026-11-25**, `saikeet-ja-lukot.md`)
+
+Toteutus poikkesi rajauksesta: käyttäjän ohjeella ei tokenbudjettia (kulutus noin 950 k), ja
+osan E tarkastus tehtiin Opuksella. Lähtöluvut korjattu: 56 aktiivista käynnistyskohtaa,
+22 lukkoa (`saikeet-ja-lukot.md` luvut 3.3, 6). / Deviations: no token budget by the user's
+instruction (about 950 k used), part E reviewed with Opus; starting figures corrected.
 
 Suunnitelman erän 6 ensimmäinen, rajattu osa: kaikki säikeet ja lukot luetteloituina,
 lukitusjärjestysehdokkaat ja lopetuspolut. Aiempia eriä ei analysoida uudelleen: C-1

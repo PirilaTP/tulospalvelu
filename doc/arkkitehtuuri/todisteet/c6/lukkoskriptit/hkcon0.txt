@@ -1,0 +1,43 @@
+ajat -> loki
+    Hk/HkAjat.cpp:156 tall_rivi via wkirjloki
+autotul -> print
+    Hk/HkTulostus.cpp:1004 autotulostus direct
+autotul -> tall
+    Hk/HkTulostus.cpp:1017 autotulostus via tulostasarja
+idindex -> kilpdat
+    Hk/HkIx.cpp:318 luo_posarr via GETREC
+    Hk/HkTulostus.cpp:2550 meri3pisteet via GETREC
+loki -> tcpip
+    Hk/HkApu.cpp:576 wkirjloki via wrt_st_TCP
+outb -> kilpdat
+    Hk/HkCom32.cpp:200 laheta via GETREC
+print -> idindex
+    Hk/HkTulostus.cpp:8139 tulostahyppyjarj via getpos
+print -> kilpdat
+    Hk/HkTulostus.cpp:7801 joukkuetul via GETREC
+    Hk/HkTulostus.cpp:8142 tulostahyppyjarj via GETREC
+print -> tall
+    Hk/HkTulostus.cpp:1017 autotulostus via tulostasarja
+    Hk/HkTulostus.cpp:1077 tulostaParhaat via tulostasarja
+    Hk/HkTulostus.cpp:6664 yhteenveto direct
+tall -> kilpdat
+    Hk/HkApu.cpp:423 asetaSrjLahto via GETREC
+    Hk/HkApu.cpp:456 asetaEraLahto via GETREC
+    Hk/HkCom32.cpp:1167 uusintaTCPvalitut via GETREC
+    Hk/HkEmit.cpp:1171 vaihda_badge via GETREC
+    Hk/HkEmit.cpp:1181 vaihda_badge via PUTREC
+    Hk/HkIV.cpp:166 lahtija via GETREC
+    Hk/HkIV.cpp:186 auto_lahtija via GETREC
+    Hk/HkIV.cpp:573 tall_elahto via GETREC
+    Hk/HkIV.cpp:2360 atol via GETREC
+    Hk/HkTulostus.cpp:4744 onko_piiri via GETREC
+    Hk/HkTulostus.cpp:4792 onkosrjera via GETREC
+    Hk/HkTulostus.cpp:6027 tulostasarja via GETREC
+    Hk/HkTulostus.cpp:6118 tulostasarja via PUTREC
+    Hk/HkTulostus.cpp:7453 joukkuepisteet via GETREC
+    Hk/HkTulostus.cpp:7688 joukkuetul via GETREC
+tall -> outb
+    Hk/HkCom32.cpp:1184 uusintaTCPvalitut via laheta
+    Hk/HkEmit.cpp:1183 vaihda_badge via laheta
+tall -> seur_badge
+    Hk/HkEmit.cpp:1178 vaihda_badge via haeSeurVapaaBadge

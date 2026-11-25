@@ -1,0 +1,139 @@
+ajat -> loki
+    Hk/HkAjat.cpp:156 tall_rivi via wkirjloki
+autotul -> print
+    Hk/HkTulostus.cpp:1004 autotulostus direct
+autotul -> tall
+    Hk/HkTulostus.cpp:1017 autotulostus via tulostasarja
+idindex -> kilpdat
+    Hk/HkIx.cpp:318 luo_posarr via GETREC
+    Hk/HkTulostus.cpp:2550 meri3pisteet via GETREC
+    cbHk/UnitArvonta.cpp:227 TFormArvonta::SeurPos via GETREC
+    cbHk/UnitSakkoKierr.cpp:74 TFormSakkoKierr::PaivitaAvoimet via GETREC
+loki -> tcpip
+    Hk/HkApu.cpp:576 wkirjloki via wrt_st_TCP
+outb -> kilpdat
+    Hk/HkCom32.cpp:200 laheta via GETREC
+print -> idindex
+    Hk/HkTulostus.cpp:8139 tulostahyppyjarj via getpos
+print -> kilpdat
+    Hk/HkTulostus.cpp:7801 joukkuetul via GETREC
+    Hk/HkTulostus.cpp:8142 tulostahyppyjarj via GETREC
+    cbHk/HkKisaLahtLuet.cpp:1042 lahtoluettelo via GETREC
+    cbHk/HkKisaLahtLuet.cpp:2095 yhtveto via GETREC
+print -> tall
+    Hk/HkTulostus.cpp:1017 autotulostus via tulostasarja
+    Hk/HkTulostus.cpp:1077 tulostaParhaat via tulostasarja
+    Hk/HkTulostus.cpp:6664 yhteenveto direct
+    cbHk/HkKisaLahtLuet.cpp:904 lahtoluettelo via onkolasna
+    cbHk/HkKisaLahtLuet.cpp:2168 yhtveto via tulosyhteenveto
+sakkoKierrCriticalSection -> idindex
+    cbHk/UnitSakkoKierr.cpp:66 TFormSakkoKierr::PaivitaAvoimet direct
+    cbHk/UnitSakkoKierr.cpp:68 TFormSakkoKierr::PaivitaAvoimet via getpos
+    cbHk/UnitSakkoKierr.cpp:82 TFormSakkoKierr::PaivitaAvoimet via nextpos
+sakkoKierrCriticalSection -> kilpdat
+    cbHk/UnitSakkoKierr.cpp:74 TFormSakkoKierr::PaivitaAvoimet via GETREC
+tall -> SQL
+    cbHk/UnitExport.cpp:436 TFormExport::kirjSQL via kirjKilpSQL
+tall -> idindex
+    cbHk/UnitArvonta.cpp:421 TFormArvonta::BtnToteutaClick via SeurPos
+    cbTp/UnitAikakorjaus.cpp:132 TFormAikakorjaus::BtnToteutaClick via getpos
+    cbHk/LoppuKilpUnit.cpp:773 TLoppuKilpForm::Button1Click via getpos
+    cbHk/UnitTarkMerk.cpp:252 TFormTarkMerk::Button1Click via getpos
+    cbHk/UnitAikavert.cpp:104 TFormAikavert::naytaRivi via getpos
+    cbHk/UnitAjanotto.cpp:260 TFormAjanotto::naytaRivi via getpos
+    cbHk/UnitAjanotto.cpp:656 TFormAjanotto::BtnTall2Click via getpos
+    cbHk/UnitAjanotto.cpp:1231 TFormAjanotto::DGajat1KeyPress via getpos
+    cbHk/UnitArvonta.cpp:589 TFormArvonta::BtnNumeroiClick via SeurPos
+    cbHk/UnitArvonta.cpp:921 TFormArvonta::ToteutaJako via SeurPos
+    cbHk/UnitEmit.cpp:1614 TFormEmit::tallennaKilpailija via getpos
+    cbHk/UnitEmit.cpp:2608 TFormEmit::TallennaMuutokset via getpos
+    cbHk/UnitEmit.cpp:2768 TFormEmit::TallennaVaihto via getpos
+    cbHk/UnitIlm2.cpp:758 TFormIlm2::tallennaTiedot via getpos
+    cbHk/UnitKilpailijaOnline.cpp:617 TFormKilpailijaOnline::SeurBtnClick via getpos
+    cbHk/UnitKilpailijaOnline.cpp:618 TFormKilpailijaOnline::SeurBtnClick via nextpos
+    cbHk/UnitKilpailijatiedot.cpp:1120 TFormKilpailijatiedot::SeurBtnClick via getpos
+    cbHk/UnitKilpailijatiedot.cpp:1121 TFormKilpailijatiedot::SeurBtnClick via nextpos
+    cbHk/UnitKilpailijaOnline.cpp:675 TFormKilpailijaOnline::EdBtnClick via getpos
+    cbHk/UnitKilpailijaOnline.cpp:676 TFormKilpailijaOnline::EdBtnClick via prevpos
+    cbHk/UnitKilpailijatiedot.cpp:1179 TFormKilpailijatiedot::EdBtnClick via getpos
+    cbHk/UnitKilpailijatiedot.cpp:1180 TFormKilpailijatiedot::EdBtnClick via prevpos
+    cbHk/UnitVaGr.cpp:137 TFormVaGr::PiirraBtnClick via getpos
+tall -> kilpdat
+    Hk/HkApu.cpp:423 asetaSrjLahto via GETREC
+    Hk/HkApu.cpp:456 asetaEraLahto via GETREC
+    Hk/HkCom32.cpp:1167 uusintaTCPvalitut via GETREC
+    Hk/HkEmit.cpp:1171 vaihda_badge via GETREC
+    Hk/HkEmit.cpp:1181 vaihda_badge via PUTREC
+    Hk/HkIV.cpp:166 lahtija via GETREC
+    Hk/HkIV.cpp:186 auto_lahtija via GETREC
+    Hk/HkIV.cpp:573 tall_elahto via GETREC
+    Hk/HkIV.cpp:2360 atol via GETREC
+    Hk/HkTulostus.cpp:4744 onko_piiri via GETREC
+    Hk/HkTulostus.cpp:4792 onkosrjera via GETREC
+    Hk/HkTulostus.cpp:6027 tulostasarja via GETREC
+    Hk/HkTulostus.cpp:6118 tulostasarja via PUTREC
+    Hk/HkTulostus.cpp:7453 joukkuepisteet via GETREC
+    Hk/HkTulostus.cpp:7688 joukkuetul via GETREC
+    cbHk/UnitSakkoKierr.cpp:226 TFormSakkoKierr::BtnPeruutaClick via GETREC
+    cbHk/HkKisaLahtLuet.cpp:383 onkolasna via GETREC
+    cbHk/LoppuKilpUnit.cpp:646 TLoppuKilpForm::BtnToteutaClick via GETREC
+    cbTp/UnitAikakorjaus.cpp:149 TFormAikakorjaus::BtnToteutaClick via GETREC
+    cbHk/LoppuKilpUnit.cpp:774 TLoppuKilpForm::Button1Click via GETREC
+    cbHk/UnitASuunn.cpp:218 TFormASuunn::Button1Click via GETREC
+    cbHk/UnitNollaus.cpp:63 TFormNollaus::Button1Click via GETREC
+    cbHk/UnitTarkMerk.cpp:254 TFormTarkMerk::Button1Click via GETREC
+    cbHk/UnitSeuratoimet.cpp:73 TFormSeuratoimet::Button2Click via GETREC
+    cbHk/TakaaAjoUnit.cpp:308 TTakaaAjoForm::Button22Click via GETREC
+    cbHk/UnitAikavert.cpp:105 TFormAikavert::naytaRivi via GETREC
+    cbHk/UnitAjanotto.cpp:261 TFormAjanotto::naytaRivi via GETREC
+    cbHk/UnitAjanotto.cpp:657 TFormAjanotto::BtnTall2Click via GETREC
+    cbHk/UnitAjanotto.cpp:1232 TFormAjanotto::DGajat1KeyPress via GETREC
+    cbHk/UnitArvonta.cpp:591 TFormArvonta::BtnNumeroiClick via GETREC
+    cbHk/UnitArvonta.cpp:883 TFormArvonta::JaaSeuratKoossa via GETREC
+    cbHk/UnitArvonta.cpp:927 TFormArvonta::ToteutaJako via GETREC
+    cbHk/UnitASakot.cpp:217 TFormASakot::BtnHyvaksyClick via GETREC
+    cbHk/UnitHylkRap.cpp:334 TFormHylkRap::BtnTallennaClick via GETREC
+    cbHk/UnitEmit.cpp:2609 TFormEmit::TallennaMuutokset via GETREC
+    cbHk/UnitEmit.cpp:2769 TFormEmit::TallennaVaihto via GETREC
+    cbHk/UnitExport.cpp:404 TFormExport::kirjCsv via GETREC
+    cbHk/UnitExport.cpp:428 TFormExport::kirjSQL via GETREC
+    cbHk/UnitIlm2.cpp:762 TFormIlm2::tallennaTiedot via GETREC
+    cbHk/UnitOsanottajat.cpp:719 TFormOsanottajat::tallennaTiedot via GETREC
+    cbHk/UnitKilpailijatiedot.cpp:1081 TFormKilpailijatiedot::SrjKarkiBtn via GETREC
+    cbHk/UnitKilpailijaEmit.cpp:307 TFormKilpailijaEmit::SeurBtnClick via GETREC
+    cbHk/UnitKilpailijaOnline.cpp:644 TFormKilpailijaOnline::SeurBtnClick via GETREC
+    cbHk/UnitKilpailijatiedot.cpp:1147 TFormKilpailijatiedot::SeurBtnClick via GETREC
+    cbHk/UnitKilpailijaEmit.cpp:330 TFormKilpailijaEmit::EdBtnClick via GETREC
+    cbHk/UnitKilpailijaOnline.cpp:702 TFormKilpailijaOnline::EdBtnClick via GETREC
+    cbHk/UnitKilpailijatiedot.cpp:1206 TFormKilpailijatiedot::EdBtnClick via GETREC
+    cbHk/UnitKilpailijaOnline.cpp:1182 TFormKilpailijaOnline::naytaSeuranta via GETREC
+    cbHk/UnitLisatiedot.cpp:382 TFormLisatiedot::SiirraTiedot via GETREC
+    cbHk/UnitNollaus.cpp:127 KerroKaikkiAjat via GETREC
+    cbHk/UnitNollaus.cpp:159 Nimimuoto via GETREC
+    cbHk/UnitPistelasku.cpp:211 LaskeVaiheSarja via GETREC
+    cbHk/UnitPistelasku.cpp:298 LaskeYhtPisteet via GETREC
+    cbHk/UnitSakkoKierr.cpp:102 TFormSakkoKierr::LaskeAvoimet via GETREC
+    cbHk/UnitSakkoKierr.cpp:137 TFormSakkoKierr::EdtKirjausKeyPress via GETREC
+    cbHk/UnitSprinthiihto.cpp:113 TFormSprinthiihto::Karsinnasta via GETREC
+    cbHk/UnitSprinthiihto.cpp:206 TFormSprinthiihto::Semi via GETREC
+    cbHk/UnitSprinthiihto.cpp:333 TFormSprinthiihto::Finaalit via GETREC
+    cbHk/UnitSprinthiihto.cpp:518 TFormSprinthiihto::BtnPohjustaClick via GETREC
+    cbHk/UnitSprinthiihto.cpp:553 TFormSprinthiihto::BtnPalautaClick via GETREC
+    cbHk/UnitVaGr.cpp:86 TFormVaGr::PaivitaClick via GETREC
+    cbHk/UnitVaGr.cpp:138 TFormVaGr::PiirraBtnClick via GETREC
+    cbTp/UnitFIS.cpp:191 TFormFIS::BtnLuePisteetClick via GETREC
+    cbTp/UnitFIS.cpp:247 TFormFIS::BtnLueNimetClick via GETREC
+tall -> outb
+    Hk/HkCom32.cpp:1184 uusintaTCPvalitut via laheta
+    Hk/HkEmit.cpp:1183 vaihda_badge via laheta
+tall -> rastiva
+    cbHk/UnitKilpailijatiedot.cpp:1085 TFormKilpailijatiedot::SrjKarkiBtn via naytaTiedot
+    cbHk/UnitKilpailijaEmit.cpp:310 TFormKilpailijaEmit::SeurBtnClick via naytaTiedot
+    cbHk/UnitKilpailijaOnline.cpp:647 TFormKilpailijaOnline::SeurBtnClick via naytaTiedot
+    cbHk/UnitKilpailijatiedot.cpp:1151 TFormKilpailijatiedot::SeurBtnClick via naytaTiedot
+    cbHk/UnitKilpailijaEmit.cpp:333 TFormKilpailijaEmit::EdBtnClick via naytaTiedot
+    cbHk/UnitKilpailijaOnline.cpp:705 TFormKilpailijaOnline::EdBtnClick via naytaTiedot
+    cbHk/UnitKilpailijatiedot.cpp:1210 TFormKilpailijatiedot::EdBtnClick via naytaTiedot
+tall -> seur_badge
+    Hk/HkEmit.cpp:1178 vaihda_badge via haeSeurVapaaBadge
+    cbHk/UnitEmit.cpp:2690 TFormEmit::TallennaMuutokset via haeSeurVapaaBadge

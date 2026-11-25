@@ -17,6 +17,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 
 | Erä / Batch | Sisältö / Content | Dokumentit / Documents |
 |---|---|---|
+| **C-6 vaihe 1 valmis / step 1 complete** (riippumattomasti tarkastettu, commitoitu paikallisesti / independently reviewed, committed locally) | Säiekartta (56 aktiivista käynnistyskohtaa, 29 säiefunktiota, ei yhtään odotusta), elinkaari ja lopetus, Q30 ratkaistu (vaiheen vaihto ei sulje `KILP.DAT`:ia), lukkokartta (22 lukkoa), lukitusjärjestys (3 todellista ABBA-paria), estävät kutsut lukon alla; uudet H-087–H-102, T-030–T-032; H-018, H-031, H-038 laajennettu; 20 väitettä kahdella Opus-tarkastajalla / thread map, lifecycle, Q30, lock map, lock order, blocking under locks; new findings; 20 claims reviewed | `saikeet-ja-lukot.md`, `todisteet/c6/` |
 | Kierros 1 / round 1 | Koneellinen inventaario, yleiskuva, riippuvuudet, tietorakenteet, merkistöt, standardi, suunnitelma / scripted inventory, overview, dependencies, structures, encodings, standard, plan | `README.md` ja sen listaamat / and those it lists |
 | Infrastruktuuri / infrastructure | 6 projektiagenttia, auditointirekisteri, validointiskripti / 6 project agents, audit register, validation script | `.claude/agents/`, `rekisteri/`, `tyokalut/tarkista_auditointi.py` |
 | C-1 | `kilptietue::tallenna()`: säikeet, kutsupaikat, lukot, tallennus, SQL, replikointi / threads, call sites, locks, persistence, SQL, replication | `tallenna-samanaikaisuus.md` |
@@ -38,12 +39,12 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | Mittari / Metric | Arvo / Value |
 |---|---|
 | Lähdetiedostoja / source files | 631 (270 050 riviä / lines) + 19 C-11-testitiedostoa / test files |
-| Taso 1, vain inventoitu / inventoried only | 492 |
-| Taso 2, kohdennetusti luettu / read in a targeted way | 127 (C-4: varoitusten ja havaintojen kohdat; C-5: kääntäjäerojen kohdat / warning, finding and compiler-difference sites) |
+| Taso 1, vain inventoitu / inventoried only | 482 |
+| Taso 2, kohdennetusti luettu / read in a targeted way | 137 (C-4: varoitusten ja havaintojen kohdat; C-5: kääntäjäerojen kohdat; C-6: säikeiden ja lukkojen kohdat / warning, finding, compiler-difference, thread and lock sites) |
 | Taso 3, rakenne luettu / structure read | 12 (luettelo / list: `rekisteri/moduulit.md`) |
 | Taso 4, kokonaan katselmoitu / fully reviewed | 0 tuotantotiedostoa / production files; 19 testitiedostoa / test files (C-11) |
-| Havaintoja / findings | 86 vikaa / defects (H), 29 teknistä velkaa / technical debt (T) |
-| Lähdeviittauksia tarkistettu / source references checked | 1 257 (`tarkista_auditointi.py`) |
+| Havaintoja / findings | 102 vikaa / defects (H), 32 teknistä velkaa / technical debt (T) |
+| Lähdeviittauksia tarkistettu / source references checked | 1 591 (`tarkista_auditointi.py`) |
 
 Koko koodipohjaa ei ole katselmoitu. Hakemistotason ja skriptillä tehty
 analyysi on taso 1. Moduulikohtaisesti: `rekisteri/moduulit.md`.
@@ -97,9 +98,9 @@ Täydet tiedot: `rekisteri/havainnot.md`. / Full details: `rekisteri/havainnot.m
 
 | Todennustila / Verification state | Havainnot / Findings |
 |---|---|
-| Riippumaton lähdetarkastus / independent source review | H-007, H-008, H-009, H-011–H-016, H-018, H-022–H-029, H-031, H-033, H-036, H-037, H-040–H-043, H-045, H-046, H-048, H-050, H-053, H-054, H-055, H-056, H-058, H-059, H-061, H-062, H-064, H-066–H-073, H-075, H-076, H-004, H-005, H-078, H-079, H-081, H-082, H-083, H-084, H-086 |
-| Riippumaton lähdetarkastus, osittain / partly | H-010, H-021, H-030, H-032, H-034, H-035, H-044, H-047, H-049, H-051, H-052, H-057, H-060, H-063, H-065, H-074, H-077, H-080, H-085 |
-| Ei riippumatonta tarkastusta / no independent review | H-001–H-003, H-006, H-017, H-019, H-038, H-039 |
+| Riippumaton lähdetarkastus / independent source review | H-007, H-008, H-009, H-011–H-016, H-018, H-022–H-029, H-031, H-033, H-036, H-037, H-040–H-043, H-045, H-046, H-048, H-050, H-053, H-054, H-055, H-056, H-058, H-059, H-061, H-062, H-064, H-066–H-073, H-075, H-076, H-004, H-005, H-078, H-079, H-081, H-082, H-083, H-084, H-086, H-087, H-088, H-090–H-094, H-097–H-099 |
+| Riippumaton lähdetarkastus, osittain / partly | H-010, H-021, H-030, H-032, H-034, H-035, H-044, H-047, H-049, H-051, H-052, H-057, H-060, H-063, H-065, H-074, H-077, H-080, H-085, H-038, H-089, H-095, H-096, H-100–H-102 |
+| Ei riippumatonta tarkastusta / no independent review | H-001–H-003, H-006, H-017, H-019, H-039 |
 | Ei ratkea staattisesti / not statically decidable | H-020 |
 | Toistettu testikehyksessä / reproduced in test harness | H-025, H-040, H-042 (`testaus.md`, luku / section 13); H-041, H-031, H-008, H-024, H-027 (luku / section 14); H-026, H-032, H-022, H-023, H-007, H-001, H-002 (luku / section 15) |
 | Ajonaikaisesti todennettu / verified at run time | H-041 (toimitettu HkMaali.exe, poikkeamapäätös / user-approved deviation, `testaus.md` 19.11) |
@@ -116,7 +117,10 @@ H-032 (viesti: väärennetty UDP-paketti ylivuotaa kasan / relay: forged UDP pac
 overflows the heap; nostettu / raised C-3), H-040 (viestin `addfrec` ei vapauta lukkoa /
 relay `addfrec` never releases its lock), H-041 (HK Release: tietue suurempi kuin
 pinopuskuri / record larger than stack buffer), H-042 (viesti: XML:n määrät rajaamatta
-→ ylivuoto / relay XML counts unclamped → overflow).
+→ ylivuoto / relay XML counts unclamped → overflow). C-6 lisäsi / added (24 kpl yhteensä / in total):
+H-087 (viestin HTML-emit-tuloste ei vapauta `print`-lukkoa → työsäikeet ja GUI jäätyvät /
+relay HTML emit output never releases `print` → freeze), H-091 (HK tall ↔ print -lukkiutuminen
+jatkuvalla sivutulosteella / tall↔print deadlock with continuous page printing).
 
 Kumotut väitteet erässä C-2 / refuted in C-2: pakotetun paketin kierto HK-renkaassa,
 WinUDP:n taulukon ylitys, uudelleenkäynnistyksen kuitattujen lähetys, etumerkillinen
@@ -134,8 +138,8 @@ controlled) and correspond to findings H-001–H-006.
 
 ## Avoimet kysymykset / Open questions
 
-Täydet tiedot: `seuranta.md` (Q2–Q48; C-4:n Q43–Q48 `muistiturvallisuus.md`; Q1, Q4, Q13, Q16, Q17 ja Q18 ratkaistu, Q3
-osittain). Tärkeimmät / most important:
+Täydet tiedot: `seuranta.md` (Q2–Q74; C-4:n Q43–Q48 `muistiturvallisuus.md`; C-6:n Q65–Q74 `saikeet-ja-lukot.md` luku 10; Q1, Q4, Q13, Q16, Q17, Q18 ja Q30 ratkaistu, Q3
+ja Q14 osittain). Tärkeimmät / most important:
 
 - ~~Q7~~ ratkaistu C-5:ssä / resolved in C-5 (`kaantajaerot.md` luku 5)
 - ~~Q8~~ ratkaistu C-5:ssä: `tyokalut/vertaa_omf.py` / resolved in C-5
@@ -147,7 +151,9 @@ osittain). Tärkeimmät / most important:
 - Q19: sovelletaanko AIKAT-kaksoiskappale kahdesti / is a duplicate AIKAT applied twice
 - Q26: rajataanko HK:n XML:stä luetut `n_pv`/`valuku` (H-041:n toinen reitti) / are HK XML counts clamped
 - Q29: käytetäänkö viestin vientiä `KILP.DAT`:na (H-046 → tietojen menetys) / is the relay export used as KILP.DAT
-- Q30: HK:n vaiheen vaihto ja tiedostojen uudelleenavaus säikeiden ollessa käynnissä / stage change reopen with threads running
+- ~~Q30~~ ratkaistu C-6:ssa / resolved in C-6 (`saikeet-ja-lukot.md` luku 5)
+- Q65, Q66, Q67: ei-omistajan `Leave` (H-089), lokisoketin rekursio (H-093), `aloitus` kahdesti /
+  non-owner Leave, log-socket recursion, `aloitus` twice
 - Q34: kilptietueen konstruktori ennen `valuku`n lukemista / constructor before `valuku` is read
 
 ## Seuraava askel / Next step
@@ -189,9 +195,14 @@ Q8 ratkaistu (`tyokalut/vertaa_omf.py`); uudet H-082–H-086 ja T-029; avoinna Q
 **C-5 valmis ja suljettu (2026-11-25), käyttäjä hyväksyi.** Jatkotehtävät ja priorisoitu
 korjausjono (H-071, H-072, H-055, H-070 kiireellisinä): `seuranta.md`.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP: C-6 vaihe 1** (säie- ja lukkoinventaario), rajaus ja
-tokenbudjetti (noin 380 k) `suunnitelma.md` "C-6 vaihe 1"; ei aloitettu, odottaa
-käyttäjän aloituslupaa. Työtapa: `suunnitelma.md` "Työtapa erästä C-6 alkaen".
+**C-6 vaihe 1 valmis (2026-11-25), riippumattomasti tarkastettu, commitoitu paikallisesti.**
+Raportti `saikeet-ja-lukot.md`; todisteet `todisteet/c6/`. Uudet H-087–H-102 (korkea 2,
+keskitaso–korkea 2, keskitaso 5, matala–keskitaso 1, matala 6) ja T-030–T-032; kaikki staattisia.
+Q30 ratkaistu; uudet Q65–Q74.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP:** C-6 vaihe 2 käyttäjän päätöksellä (ehdokkaiden syväanalyysi,
+H-087, H-091, H-090 ja H-094 testikehyksessä, Q65–Q67, Q69, Q74; `saikeet-ja-lukot.md` luku 12).
+Ei aloitettu. Työtapa: `suunnitelma.md` "Työtapa erästä C-6 alkaen".
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
@@ -199,8 +210,21 @@ Open: manual tests H-009/H-014, two-process loopback layer, H-041 read path, CI.
 C-4 memory safety (plan batch 4). **C-4 complete and closed:** step 1 (`81bcad9`) and step 2 committed locally. Urgent
 fixes: H-071, H-072, H-055, H-070. **C-5 step 1 complete** (`kaantajaerot.md`, H-078–H-081, T-023–T-028);
 **C-5 step 2 complete** (Q8 resolved, H-082–H-086, T-029). **C-5 closed** on approval.
-Next: C-6 step 1 (thread and lock inventory, budget about 380 k tokens), not started,
-awaiting approval.
+**C-6 step 1 complete** (`saikeet-ja-lukot.md`, H-087–H-102, T-030–T-032, Q30 resolved).
+Next: C-6 step 2 on the user's decision, not started.
+
+## Resurssien käyttö / Resource usage (C-6 vaihe 1 / step 1)
+
+| Agentti / Agent | Tokenit / tokens | Työkalukutsut / tool calls |
+|---|--:|--:|
+| `architecture-analyst` (Sonnet; A + D säiekartta, elinkaari / thread map, lifecycle) | 315 799 | 162 |
+| `defect-concurrency-auditor` (Sonnet; B + C lukkokartta, järjestys / lock map, order) | 378 168 | 131 |
+| `independent-verifier` (Opus; L1–L10) | 122 321 | 81 |
+| `independent-verifier` (Opus; T1–T10) | 133 585 | 65 |
+| **Yhteensä / total** | **949 873** | **439** |
+
+Käyttäjän ohjeella ei tokenbudjettia tälle erälle. Raakadata ja dokumentointi pääistunnossa. /
+No token budget for this batch by the user's instruction. Raw data and write-up by the main session.
 
 ## Resurssien käyttö / Resource usage (C-5 vaihe 2 / step 2)
 
@@ -310,7 +334,7 @@ Figures as reported by the harness. The C-3 figure was 745 489 / 360.
    ```sh
    git branch --show-current          # testit/vikojen-todentaminen
    git status --short                 # puhdas / clean
-   git log --oneline main..           # 19 committia / commits (viimeisin / last: C-5:n sulkeminen / C-5 closure)
+   git log --oneline main..           # 21 committia / commits (viimeisin / last: C-6 vaihe 1 / step 1)
    python -I TPsource/V52/Tests/test_run_core_tests.py   # 46 OK
    python -I TPsource/V52/Tests/run_core_tests.py   # PASS=19, XFAIL=23 (vaatii Release- ja TpCoreHk Asan -käännöksen / needs Release and TpCoreHk Asan builds, testaus.md 13.6, 14)
    python -I doc/arkkitehtuuri/tyokalut/tarkista_auditointi.py .   # OK

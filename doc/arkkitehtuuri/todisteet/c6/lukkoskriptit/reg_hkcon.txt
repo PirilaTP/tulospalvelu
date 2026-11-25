@@ -1,0 +1,137 @@
+Hk/HkAjat.cpp:129-291 ajat 
+   CALL 156 wkirjloki -> loki
+Hk/HkApu.cpp:421-444 tall 
+   CALL 423 GETREC -> kilpdat
+Hk/HkApu.cpp:454-474 tall 
+   CALL 456 GETREC -> kilpdat
+Hk/HkApu.cpp:560-587 loki 
+   CALL 576 wrt_st_TCP -> tcpip
+Hk/HkCom32.cpp:186-236 outb 
+   CALL 200 GETREC -> kilpdat
+Hk/HkCom32.cpp:391-396 tall 
+   CALL 392 GETREC -> kilpdat
+Hk/HkCom32.cpp:1159-1188 tall 
+   CALL 1167 GETREC -> kilpdat
+   CALL 1184 laheta -> outb
+Hk/HkEmit.cpp:1170-1185 tall 
+   CALL 1171 GETREC -> kilpdat
+   CALL 1178 haeSeurVapaaBadge -> seur_badge
+   CALL 1181 PUTREC -> kilpdat
+   CALL 1183 laheta -> outb
+Hk/HkEmit.cpp:1337-1353 emit 
+   CALL 1347 laheta_em -> outb
+Hk/HkEmit.cpp:1531-1539 tall 
+   CALL 1532 GETREC -> kilpdat
+Hk/HkEmit.cpp:1665-1691 emit 
+   CALL 1681 laheta_em -> outb
+Hk/HkEmit.cpp:1703-1728 emit 
+   CALL 1710 getpos -> idindex
+   CALL 1711 GETREC -> kilpdat
+Hk/HkEmit.cpp:2272-2280 tall 
+   CALL 2273 GETREC -> kilpdat
+Hk/HkEmit.cpp:3251-3254 tall 
+   CALL 3252 getpos -> idindex
+Hk/HkEmit.cpp:3390-3392 tall 
+   CALL 3391 getpos -> idindex
+Hk/HkEmit.cpp:4279-4325 emit 
+   DIRECT 4280 print
+   CALL 4294 getpos -> idindex
+   CALL 4295 GETREC -> kilpdat
+Hk/HkEmit.cpp:4280-4324 print 
+   CALL 4294 getpos -> idindex
+   CALL 4295 GETREC -> kilpdat
+Hk/HkEmit.cpp:4355-4542 print 
+   DIRECT 4387 rastiva
+   CALL 4492 GETREC -> kilpdat
+Hk/HkEmit.cpp:5165-5255 print 
+   DIRECT 5189 tall
+   DIRECT 5206 tall
+   CALL 5198 GETREC -> kilpdat
+Hk/HkEmit.cpp:5189-5204 tall 
+   CALL 5198 GETREC -> kilpdat
+Hk/HkEmit.cpp:5288-5330 emit 
+   CALL 5293 getpos -> idindex
+   CALL 5295 GETREC -> kilpdat
+Hk/HkEmit.cpp:5367-5444 tall 
+   DIRECT 5368 emit
+   CALL 5381 GETREC -> kilpdat
+Hk/HkEmit.cpp:5368-5443 emit 
+   CALL 5381 GETREC -> kilpdat
+Hk/HkEmit.cpp:5622-5639 tall 
+   CALL 5625 GETREC -> kilpdat
+Hk/HkEmit.cpp:5731-6086 tall 
+   CALL 5857 GETREC -> kilpdat
+Hk/HkEmit.cpp:6405-6419 emit 
+   DIRECT 6406 rastiva
+Hk/HkInit.cpp:3650-3668 inb 
+   CALL 3666 openportBroadcast -> tcpip
+Hk/HkIV.cpp:163-168 tall 
+   CALL 166 GETREC -> kilpdat
+Hk/HkIV.cpp:185-190 tall 
+   CALL 186 GETREC -> kilpdat
+Hk/HkIV.cpp:572-580 tall 
+   CALL 573 GETREC -> kilpdat
+Hk/HkIV.cpp:1913-1923 idindex 
+   CALL 1916 GETREC -> kilpdat
+Hk/HkIV.cpp:2359-2363 tall 
+   CALL 2360 GETREC -> kilpdat
+Hk/HkIV.cpp:2674-3028 ajat 
+   DIRECT 2999 tall
+   CALL 2733 getpos -> idindex
+   CALL 2734 GETREC -> kilpdat
+   CALL 2755 lahetaeralahto -> outb
+   CALL 2805 wkirjloki -> loki
+   CALL 2963 lahtija -> tall
+Hk/HkIV.cpp:2999-3004 tall 
+   CALL 3000 GETREC -> kilpdat
+Hk/HkIx.cpp:309-321 idindex 
+   CALL 318 GETREC -> kilpdat
+Hk/HkIx.cpp:1897-1986 tall 
+   DIRECT 1898 ajat
+   DIRECT 1899 emit
+Hk/HkIx.cpp:1898-1985 ajat 
+   DIRECT 1899 emit
+Hk/HkSak.cpp:89-103 tall 
+   CALL 90 GETREC -> kilpdat
+Hk/HkTulostus.cpp:985-1039 autotul 
+   DIRECT 1004 print
+   CALL 1017 tulostasarja -> tall
+Hk/HkTulostus.cpp:1004-1021 print 
+   CALL 1017 tulostasarja -> tall
+Hk/HkTulostus.cpp:1074-1081 print 
+   CALL 1077 tulostasarja -> tall
+Hk/HkTulostus.cpp:2547-2576 idindex 
+   CALL 2550 GETREC -> kilpdat
+Hk/HkTulostus.cpp:4708-4725 tall 
+   CALL 4714 GETREC -> kilpdat
+Hk/HkTulostus.cpp:4738-4754 tall 
+   CALL 4744 GETREC -> kilpdat
+Hk/HkTulostus.cpp:4764-4777 tall 
+   CALL 4769 GETREC -> kilpdat
+Hk/HkTulostus.cpp:4787-4798 tall 
+   CALL 4792 GETREC -> kilpdat
+Hk/HkTulostus.cpp:5850-6419 tall 
+   CALL 6027 GETREC -> kilpdat
+   CALL 6118 PUTREC -> kilpdat
+Hk/HkTulostus.cpp:6430-6518 tall 
+   CALL 6437 GETREC -> kilpdat
+Hk/HkTulostus.cpp:6628-6721 print 
+   DIRECT 6664 tall
+   DIRECT 6680 tall
+Hk/HkTulostus.cpp:7042-7061 tcp 
+   CALL 7046 wrt_st_TCP -> tcpip
+Hk/HkTulostus.cpp:7448-7492 tall 
+   CALL 7453 GETREC -> kilpdat
+Hk/HkTulostus.cpp:7683-7748 tall 
+   CALL 7688 GETREC -> kilpdat
+Hk/HkTulostus.cpp:7777-7901 print 
+   CALL 7801 GETREC -> kilpdat
+Hk/HkTulostus.cpp:8132-8155 print 
+   CALL 8139 getpos -> idindex
+   CALL 8142 GETREC -> kilpdat
+HkConsole/HkCons2.cpp:2188-2198 tall 
+   CALL 2189 GETREC -> kilpdat
+HkConsole/HkCons2.cpp:2291-2304 tall 
+   CALL 2292 GETREC -> kilpdat
+HkConsole/HkCons2.cpp:2308-2328 tall 
+   CALL 2309 GETREC -> kilpdat
