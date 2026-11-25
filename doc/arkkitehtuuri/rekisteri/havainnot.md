@@ -154,7 +154,9 @@ samoin). Kaikki tarkastettu riippumattomasti; kumotut ja heikentyneet väitteet:
 Vaihe 2 (`../kaantajaerot.md` luku 13): uudet H-082–H-086 ja T-029 (GUI-lomakkeiden
 puuttuvat rajatarkistukset, `TextFl::Open`in lisäystila); H-042 ja H-079 laajennettu;
 T-023, T-025 ja T-026 tarkennettu. / Step 2: new H-082–H-086 and T-029; H-042 and H-079
-extended; T-023, T-025, T-026 refined. / Step 1:
+extended; T-023, T-025, T-026 refined. **C-5 suljettu 2026-11-25 / closed**; alustava
+sijoitus korjausjonoon ja jatkotehtävät (H-079:n uudelleenarviointi) `../seuranta.md` /
+provisional fix-queue placement and follow-ups in `../seuranta.md`. / Step 1:
 new H-078–H-081 and T-023–T-028; H-004 and H-005 extended (H-005's earlier "MSVC only"
 scope was wrong). All independently reviewed; refuted and weakened claims in section 9.
 

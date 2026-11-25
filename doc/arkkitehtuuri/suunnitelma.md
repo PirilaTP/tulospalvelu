@@ -126,8 +126,8 @@ ends with an independent review (`independent-verifier`) and a register update
 | 2 | Työasemien tiedonsiirto: vastaanotto, lähetys, kuittaus, uudelleenlähetys, versioyhteensopivuus / workstation sync protocol | korkea / high | architecture-analyst, legacy-encoding-analyst (sanomamuodot / message layouts), defect-concurrency-auditor | `tiedonsiirto.md`; Q3 — **valmis / done 2026-11-24** (H-022–H-039, T-011–T-014) |
 | 3 | Pysyvät tiedostot ja eheys: `KILP.DAT`, emit-tiedot, `ajat.txt`, `SQLjonoVarm.dat`, vanha muoto / persistent files and integrity | korkea / high | legacy-encoding-analyst, defect-concurrency-auditor, build-dependency-analyst | `tiedostomuodot.md`; Q4, Q17, Q18 — **valmis / done 2026-11-24** (H-040–H-054, T-015–T-019); Q5 (SQL-taulut / tables) siirtyy erään 10 / moves to batch 10 |
 | 4 | Muistiturvallisuus ja määrittelemätön käytös: kääntäjävaroitusten läpikäynti molemmilla kääntäjillä, MSVC `/analyze`, puskurit ja muotoilumerkkijonot / memory safety and UB | korkea / high | defect-concurrency-auditor, build-dependency-analyst | **valmis ja suljettu / done and closed 2026-11-25** (`muistiturvallisuus.md`, H-055–H-077, T-020–T-022); H-numerot, issue-luonnokset / H entries, issue drafts |
-| 5 | Kääntäjäkohtainen käytös: `#pragma -K -a1` (43 tiedostoa, vain bcc32) ja rakenteiden asettelu käännösyksiköiden välillä, `/J` (unsigned char), `wchar_t`, merkistöt / compiler-specific behaviour | korkea / high (jos asettelu eroaa / if layouts differ) | legacy-encoding-analyst, build-dependency-analyst | **vaihe 1 valmis / step 1 done 2026-11-25** (`kaantajaerot.md`, H-078–H-081, T-023–T-028; Q7 ratkaistu / resolved; `merkistot.md` korjattu / corrected); vaihe 2 valmis / step 2 done (`kaantajaerot.md` luku 13: Q8, H-082–H-086, T-029); ehdotus: erä suljetaan / proposal: close the batch. Alkuperäinen tuotos / original output: `merkistot.md` laajennus; Q7. Osittain tehty erässä C-3: levylle ja verkkoon kirjoitettavien rakenteiden koot ja `-K`/`-a1` mitattu (`tiedostomuodot.md`) / partly done in C-3 |
-| 6 | Säikeiden omistajuus ja synkronointi kokonaisuutena: kaikki säikeet, lukot, lukitusjärjestys, lopetus / thread ownership and synchronisation | keskitaso–korkea / medium–high | defect-concurrency-auditor, architecture-analyst | `tietorakenteet-ja-tila.md` laajennus |
+| 5 | Kääntäjäkohtainen käytös: `#pragma -K -a1` (43 tiedostoa, vain bcc32) ja rakenteiden asettelu käännösyksiköiden välillä, `/J` (unsigned char), `wchar_t`, merkistöt / compiler-specific behaviour | korkea / high (jos asettelu eroaa / if layouts differ) | legacy-encoding-analyst, build-dependency-analyst | **vaihe 1 valmis / step 1 done 2026-11-25** (`kaantajaerot.md`, H-078–H-081, T-023–T-028; Q7 ratkaistu / resolved; `merkistot.md` korjattu / corrected); vaihe 2 valmis / step 2 done (`kaantajaerot.md` luku 13: Q8, H-082–H-086, T-029); **valmis ja suljettu / done and closed 2026-11-25** (`b17d536`, `55897eb`); avoinna / open Q60, Q63, Q64. Alkuperäinen tuotos / original output: `merkistot.md` laajennus; Q7. Osittain tehty erässä C-3: levylle ja verkkoon kirjoitettavien rakenteiden koot ja `-K`/`-a1` mitattu (`tiedostomuodot.md`) / partly done in C-3 |
+| 6 | Säikeiden omistajuus ja synkronointi kokonaisuutena: kaikki säikeet, lukot, lukitusjärjestys, lopetus / thread ownership and synchronisation | keskitaso–korkea / medium–high | defect-concurrency-auditor, architecture-analyst | `tietorakenteet-ja-tila.md` laajennus — **vaihe 1 rajattu, ei aloitettu / step 1 scoped, not started** (alla / below) |
 | 7 | GUI:n liiketoimintalogiikka: `cbHk/UnitEmit.cpp`, `UnitAjanotto`, `UnitArvonta`, `UnitKilpailijatiedot`, `ViestiWin/UnitEmit.cpp` / GUI business logic | keskitaso–korkea | architecture-analyst, defect-concurrency-auditor | moduulikuvaukset / module descriptions |
 | 8 | Globaali muuttuva tila: kuka kirjoittaa mitäkin, alustus, nollaus kilpailun vaihdossa / global mutable state | keskitaso / medium | architecture-analyst | `tietorakenteet-ja-tila.md` |
 | 9 | Virheenkäsittely ja resurssit: palautusarvojen tarkistus, tiedostokahvat, muistivuodot, `writeerror`-polut / error handling and resources | keskitaso / medium | defect-concurrency-auditor | H/T-numerot |
@@ -141,3 +141,60 @@ voi tehdä milloin tahansa. Arvio: 1 istunto per erä. [päätelty]
 Batches 2–5 are independent and can run in any order after batch 1. Batch 11 is
 quick and benefits all others, so it can be done at any time. Estimate: one
 session per batch. [inferred]
+
+Jatkotehtävä C-5:stä (ei numeroitu erä): syötteiden kokonaislukujäsennyksen läpikäynti,
+161 ehdokasta (`seuranta.md`, "Avoimet jatkotehtävät C-5:stä"); voidaan yhdistää erään 7.
+Follow-up from C-5 (not a numbered batch): integer-parse review, 161 candidates; may be
+merged with batch 7.
+
+### C-6 vaihe 1: ehdotettu rajaus / Step 1: proposed scope (ei aloitettu / not started)
+
+Suunnitelman erän 6 ensimmäinen, rajattu osa: kaikki säikeet ja lukot luetteloituina,
+lukitusjärjestysehdokkaat ja lopetuspolut. Aiempia eriä ei analysoida uudelleen: C-1
+(`tall_CriticalSection` ja `tallenna()`, H-007–H-021), C-2 (tiedonsiirtosäikeet, H-022–H-039, erityisesti H-027 ja H-028)
+ja C-3 (H-040, H-045, H-047, H-051) otetaan lähtötiedoiksi viittauksin.
+
+Lähtötiedot (raakaosumat `TPsource/V52`, sis. kommentit, 2026-11-25) [todennettu: laskenta]:
+`_beginthread` 76 osumaa 35 tiedostossa, `CreateThread` 2/2, `TThread` 0;
+`EnterCriticalSection` 487/95, 24 nimettyä lukkoa, joista `tall_CriticalSection` 272 (C-1),
+`outb` 48, `print` 33, `emit` 18, `seura` 15, `kilpdat` 12, muut ≤ 11;
+`InitializeCriticalSection` 71/21, `DeleteCriticalSection` 37/11; `WaitFor*` 15/6;
+`_endthread`/`ExitThread`/`TerminateThread` 2/2.
+
+| Osa / Part | Sisältö / Content | Agentti, malli, budjetti / Agent, model, budget |
+|---|---|---|
+| A | Säiekartta: jokainen käynnistyskohta → aloitusfunktio, käynnistäjä, ohjelmat, elinikä, lopetus (lippu, odotus, ei mitään); täydentää `tietorakenteet-ja-tila.md` "Säikeet" ([tuntematon: elinikä ja lopetus]) / thread map | `architecture-analyst`, Sonnet, 150 k |
+| B | Lukkokartta: 24 lukkoa – alustus, poisto, suojattu tila, ottavat säikeet; `tall_CS`:n kutsupaikat vain viittauksena / lock map | `defect-concurrency-auditor`, Sonnet, 150 k (B + C) |
+| C | Lukitusjärjestys: sisäkkäiset `Enter`-parit funktion sisällä ja yhden kutsutason yli koneellisesti; ristiriitaiset parit lukkiutumisehdokkaiksi; jo kirjatut H-008, H-009, H-012, H-021, H-024, H-040 vain viittauksena / lock order candidates | sama / same |
+| D | Lopetus: ohjelman sulku ja vaiheen tai kilpailun vaihto säikeiden ollessa käynnissä (liittyy Q30) / shutdown and stage change | A:n agentti / A's agent |
+| E | Riippumaton tarkastus vain uusille korkea- ja keskitasoväitteille ja lukkiutumisehdokkaille; Sonnet, Opus vain monitasoiselle korkealle väitteelle / risk-based review | `independent-verifier`, 80 k |
+
+Yhteensä enintään noin 380 k tokenia (C-5: noin 1,56 milj.). Jos budjetti uhkaa ylittyä,
+agentti palauttaa keskeneräisen listan, ja loput kirjataan avoimiksi. Rajattu pois:
+ajonaikaiset kokeet, uudet koeohjelmat ja testikehykset, VCL-säieturvallisuus muuten kuin
+H-018:n laajennuksena, korjaukset. Valmis, kun säiekartta kattaa kaikki käynnistyskohdat
+(tai syy puuttumiseen on kirjattu), lukkokartta kaikki 24 lukkoa, järjestysparit on listattu,
+uudet havainnot on tarkastettu riskiperusteisesti ja validaattori menee läpi. Vaihe 2
+(ehdokkaiden syväanalyysi) erillisellä päätöksellä. [ehdotus]
+
+First bounded part of batch 6: thread map (A), lock map (B), lock-order candidates (C) and
+shutdown paths (D); earlier batches are inputs, not re-analysed. Starting data above.
+Agents run on Sonnet; review (E) only for new high/medium claims and deadlock candidates,
+Opus only for multi-level high claims. Total budget about 380 k tokens; an agent that would
+exceed it returns a partial list and the rest is recorded as open. Out of scope: run-time
+experiments, new probes or harnesses, VCL thread safety beyond extending H-018, fixes.
+Step 2 (deep analysis of candidates) on a separate decision. [proposal]
+
+### Työtapa erästä C-6 alkaen / Working method from batch C-6 on
+
+Käyttäjän päätös 2026-11-25 (C-5:n agenttikulutus noin 1,56 milj. tokenia): Sonnet on
+oletusmalli (agenttikutsun `model: sonnet`, agenttimäärittelyjä ei muuteta); Opus vain
+perustelluissa vaativissa tarkastuksissa; ei päällekkäistä analyysiä; jokaiselle työerälle
+rajaus ja tokenbudjetti etukäteen; olemassa olevat todisteet ennen uusia koeohjelmia;
+riippumaton tarkastus riskiperusteisesti. Tämä korvaa yllä olevan säännön, että jokainen
+erä päättyy täyteen riippumattomaan tarkastukseen.
+
+User decision: Sonnet by default (per-call model override, agent definitions unchanged),
+Opus only for justified demanding reviews, no overlapping analysis, scope and token budget
+up front, existing evidence before new probes, risk-based independent review. This replaces
+the rule above that every batch ends with a full independent review.

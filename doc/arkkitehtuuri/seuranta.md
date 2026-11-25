@@ -25,17 +25,19 @@ separately from test coverage.
 | **C, erä 4 (C-4) valmis / complete**, vaihe 2: syväanalyysi, tutkittavat rivit, muunnokset, kattavuus, kokonaisarvio / step 2 | **valmis, hyväksytty, suljettu, commitoitu** / done, approved, closed, committed (`muistiturvallisuus.md` luvut 9–17, H-070–H-077, T-022) | 2026-11-25 |
 | C, erä 4 (C-4) muistiturvallisuus, vaihe 1: varoitusinventaario / memory safety, step 1: warning inventory | valmis, hyväksytty, riippumattomasti uudelleentarkastettu, commitoitu / done, approved, re-reviewed, committed (`muistiturvallisuus.md`, H-055–H-069, T-020, T-021, `todisteet/c4/`) | 2026-11-24 |
 | **C, erä 5 (C-5) kääntäjäkohtainen käytös / compiler-specific behaviour, vaihe 1 / step 1** | **valmis, riippumattomasti tarkastettu, commitoitu** / done, independently reviewed, committed (`kaantajaerot.md`, H-078–H-081, T-023–T-028, H-004/H-005 laajennettu / extended, `todisteet/c5/`) | 2026-11-25 |
-| C, erä 5 (C-5), vaihe 2 / step 2 | **valmis, riippumattomasti tarkastettu, commitoitu** / done, independently reviewed, committed (`kaantajaerot.md` luku 13: Q8 ratkaistu, `tyokalut/vertaa_omf.py`, H-082–H-086, T-029, H-042/H-079 laajennettu / extended; `todisteet/c5/vaihe2/`); ehdotus: C-5 suljetaan / proposal: close C-5 | 2026-11-25 |
-| C, erät 6–10 / batches 6–10 | ei aloitettu / not started (`suunnitelma.md`) | – |
+| C, erä 5 (C-5), vaihe 2 / step 2 | **valmis, riippumattomasti tarkastettu, commitoitu** / done, independently reviewed, committed `55897eb` (`kaantajaerot.md` luku 13: Q8 ratkaistu, `tyokalut/vertaa_omf.py`, H-082–H-086, T-029, H-042/H-079 laajennettu / extended; `todisteet/c5/vaihe2/`) | 2026-11-25 |
+| **C, erä 5 (C-5) kokonaisuutena / batch 5 as a whole** | **valmis ja suljettu käyttäjän hyväksynnällä / complete and closed on approval** (`b17d536`, `55897eb`; sulkeminen `kaantajaerot.md` 13.7); avoinna Q60 (omistaja / owner), Q63, Q64; jatkotehtävät alla / follow-ups below | 2026-11-25 |
+| C, erä 6 (C-6) säikeet ja synkronointi / threads and synchronisation | **valmisteltu, ei aloitettu / prepared, not started**: vaiheen 1 rajaus ja tokenbudjetti `suunnitelma.md` "C-6 vaihe 1"; odottaa aloituslupaa / awaiting approval | 2026-11-25 |
+| C, erät 7–10 / batches 7–10 | ei aloitettu / not started (`suunnitelma.md`) | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** C-5:n vaiheet 1 ja 2 ovat valmiit (`kaantajaerot.md`).
-Ehdotus: C-5 suljetaan, ja GUI-lomakkeiden syötteiden tarkistus otetaan omaksi eräkseen
-(`kaantajaerot.md` luku 13.6); päätös käyttäjältä. Kiireellisesti
+**Seuraava askel / Next step:** C-5 on suljettu. Seuraavaksi C-6:n vaihe 1 (säie- ja
+lukkoinventaario), rajaus ja budjetti `suunnitelma.md` "C-6 vaihe 1"; alkaa vasta
+käyttäjän luvalla. Kiireellisesti
 korjattavat H-071, H-072, H-055 ja H-070 korjataan omissa haaroissaan erillisellä
-päätöksellä; väliaikaiset suojaussuositukset `muistiturvallisuus.md` luku 15. / C-5 steps 1
-and 2 done; proposal: close C-5, GUI form input validation as its own batch; urgent fixes H-071,
-H-072, H-055, H-070 on separate decision.
+päätöksellä; väliaikaiset suojaussuositukset `muistiturvallisuus.md` luku 15. / C-5 closed;
+next C-6 step 1 (thread and lock inventory) on approval; urgent fixes H-071, H-072, H-055,
+H-070 on separate decision (queue below).
 
 **Avoimet jatkotehtävät C-11:stä / open follow-ups from C-11** (eivät estäneet
 sulkemista / did not block closing; `testaus.md` 20.4):
@@ -46,8 +48,59 @@ sulkemista / did not block closing; `testaus.md` 20.4):
 - palomuurisääntöjen `TP C11 HkMaali block in/out` poisto (käyttäjä, ylläpitäjä) /
   removal of the C-11 firewall rules (user, admin)
 
+**Avoimet jatkotehtävät C-5:stä / open follow-ups from C-5** (eivät estäneet sulkemista /
+did not block closing; `kaantajaerot.md` 13.6–13.7):
+- **Syötteiden jäsennyksen läpikäynti / integer-parse review:** 161 lukematonta
+  kokonaislukujäsennysehdokasta (`_wtoi`, `_wtol`, `atoi`; indeksi, varaus tai silmukan raja)
+  GUI-ohjelmiin käännettävissä yksiköissä: lomakkeet `cbHk/` 60, `ViestiWin/` 34, `cbTp/` 11;
+  ydin `Hk/` 32, `Juk/` 23, `Tp/` 1 (ydin käännetään myös konsoliin). Lista:
+  `todisteet/c5/vaihe2/dca.tgz` → `dca/atoi_index_candidates.csv`. Erillinen jatkotehtävä;
+  ei vielä numeroitu erä, voidaan yhdistää erään 7 (GUI:n liiketoimintalogiikka) päätöksellä. /
+  161 unread candidates (105 in form units, 56 in core units); separate follow-up, may be
+  merged with batch 7 by decision.
+- **H-079: saavutettavuus ja vakavuuden uudelleenarviointi / reachability and severity
+  re-assessment:** nykyinen vakavuus matala. Selvitettävä (staattisesti): (1) avaako jokin
+  saavutettava polku tavallisessa käytössä UTF-16-tiedoston uudelleen (`UnitSakkoKierr`
+  molemmissa GUI:issa, `HkConsole/HkCons3.cpp:1564`) ja voiko ohjelma itse tuottaa sellaisen
+  tiedoston; (2) ovatko ylivuotavat merkit aina kiinteä `", ccs=UTF-16LE"`/`BE`-loppu, jolloin
+  vaikutus rajautuu kaatumiseen [päätelty, ei todennettu]; (3) voiko tiedosto tulla verkosta
+  (esim. H-071:n tiedostokirjoitus) – ei analysoitu. Ajonaikainen vahvistus toimitetulla
+  ohjelmalla vain erillisellä luvalla. / Static questions: reachable re-open in normal use,
+  whether the overflowing bytes are always the fixed suffix (crash only), whether the file
+  can arrive over the network (not analysed); run-time check only with permission.
+- **Q60** omistajan päätettäväksi (`KUNTOSUUNN`-ero, H-081); **Q63** ja **Q64** avoimia
+  teknisiä kysymyksiä (pieni koeohjelma tai lukeminen riittää). / Q60 owner decision; Q63, Q64
+  open technical questions.
+- Ajonaikaiset vahvistukset toimitetuilla ohjelmilla (FPU-sana / `VersioInt`, H-078, H-079)
+  vain erillisellä luvalla. / Run-time confirmations only with permission.
+
 Havainnot (H/T) ja niiden todennustila: `rekisteri/havainnot.md`.
 Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
+
+## Priorisoitu korjausjono / Prioritised fix queue
+
+Lähde: `muistiturvallisuus.md` luku 15 (C-4); tämä tiivistelmä ei muuta sen prioriteetteja.
+Korjaukset tehdään omissa haaroissaan erillisellä päätöksellä, eikä yhtäkään ole aloitettu.
+Väliaikaiset suojaussuositukset: `muistiturvallisuus.md` luku 15. / Source: memory-safety
+section 15; this summary does not change its priorities. Fixes go in their own branches on a
+separate decision; none started.
+
+| # | Havainto / Finding | Syöte / Input | Tila / Status |
+|--:|---|---|---|
+| 1 | **H-071** FILESEND: pituus ja tiedostopolku / length and file path | verkko, oletusasetukset / network, default settings | **kiireellinen / urgent** (P1) |
+| 2 | **H-072** `EXTRA`-paketin indeksit / indices | verkko, oletusasetukset / network, default settings | **kiireellinen / urgent** (P1) |
+| 3 | **H-055** emiTag `P`-kentän indeksi / index | lukija, GUI `TCPS`, HTTP-pollaus (asetus) / reader, TCPS, polling (setting) | **kiireellinen / urgent** (P2) |
+| 4 | **H-070** FEIG-lukijan kasaylivuoto / heap overflow | laite / device | **kiireellinen / urgent** (P2) |
+| 5 | H-032, H-061 | verkko (UDP; sarja, binääri-TCP) / network | P1; H-061:n `pkglen` todennettava ensin (Q43) / verify first |
+| 6 | H-056, H-060, H-073 | laite tai verkko asetuksella / device or network with a setting | P2 |
+| 7 | P3–P5 | tavallinen data, paikallinen tiedosto, operaattori / ordinary data, local file, operator | `muistiturvallisuus.md` luku 15 |
+
+C-5:n havainnoille (H-078–H-086) ei ole osoitettu verkkosaavutettavuutta; ne vaativat
+paikallisen tiedoston tai operaattorin syötteen. Alustava sijoitus [päätelty]: P4 H-078,
+H-079 (uudelleenarviointi kesken, ks. jatkotehtävät), H-082, H-085; P5 H-080, H-081, H-083,
+H-084, H-086. H-042:n laajennus kuuluu H-042:n mukana P3:een. / C-5 findings have no shown
+network reachability; provisional placement [inferred] P4 H-078, H-079 (re-assessment
+pending), H-082, H-085; P5 the rest; H-042 stays P3.
 
 ## Moduulien dokumentointi / Module documentation
 
@@ -82,7 +135,7 @@ Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
 | Q5 | MySQL-taulujen rakenne ja milloin SQL on käytössä / SQL table layout and when SQL is used | `cbHk/UnitMySQL.cpp` |
 | Q6 | Ovatko kirjastoon käännetyt `main`-funktiot (`tputilv2/ctrlhndl.cpp` ym.) esikääntäjällä pois? / Are the `main` functions in the library excluded by the preprocessor? | `inventaario.md` |
 | ~~Q7~~ | **Ratkaistu / resolved (C-5):** kyllä, kapeat ja leveät merkkijonot sekä merkkivakiot oikein myös sisällytetyissä otsikoissa; BOMiton UTF-8 on väärin molemmilla kääntäjillä / yes; UTF-8 without BOM is wrong on both compilers | `kaantajaerot.md` luku 5 |
-| Q57–Q64 | Erän C-5 kysymykset; Q57–Q59, Q61 ja Q62 ratkaistu vaiheessa 2; avoinna Q60 (`KUNTOSUUNN`-eron tarkoitus, omistajan päätös), Q63 (bcc32:n negatiivinen `new`), Q64 (`UnitSakkoKierr`in kumoamispolun jäsennys) / batch C-5 questions; open Q60, Q63, Q64 | `kaantajaerot.md`, "Avoimet kysymykset" |
+| Q57–Q64 | Erän C-5 kysymykset; Q57–Q59, Q61 ja Q62 ratkaistu vaiheessa 2; avoinna Q60 (`KUNTOSUUNN`-eron tarkoitus, **omistajan päätös**), Q63 (bcc32:n negatiivinen `new`) ja Q64 (`UnitSakkoKierr`in kumoamispolun jäsennys) **avoimina teknisinä kysymyksinä** C-5:n sulkemisen jälkeen / batch C-5 questions; Q60 owner decision, Q63 and Q64 open technical questions after closing C-5 | `kaantajaerot.md`, "Avoimet kysymykset" |
 | ~~Q8~~ | **Ratkaistu / resolved (C-5 vaihe 2):** bcc32-objektien OMF-vertailu `tyokalut/vertaa_omf.py` / OMF comparison of bcc32 objects | `kaantajaerot.md` luku 13.1, `merkistot.md` |
 | Q9 | Sallitaanko C++11 tuotantokoodissa? / Is C++11 allowed in production code? | `riippuvuudet.md` |
 | Q10 | Ovatko orvot tiedostot käytössä jossain (muut haarat, ulkoiset käännökset)? / Are orphan files used anywhere? | `inventaario.md` |
@@ -127,6 +180,7 @@ Recorded as issue drafts (local `issue-drafts/`, not in the repo).
 | 2026-11-24 | Syväauditointi erinä riskijärjestyksessä, enintään 3 analyysiagenttia rinnakkain, jokainen erä riippumattomasti tarkastettu / deep audit in risk-ordered batches, max 3 parallel analysis agents, each batch independently reviewed | Käyttäjän ohje / user instruction |
 | 2026-11-24 | C-11 vaihe 4: menetelmät A (toimitettu HkMaali.exe debuggerin alla) + C (komponenttitestit), ei B; rajapari 220/221, ei 250; WER vain debuggeritilalla, HKCU-muutos vain erillisellä luvalla; pudotuslokituksen ylläpitäjäkomennot ajaa käyttäjä; esiehdot erillisenä paikallisena committina, ajotuloksia ei commitoida ilman hyväksyntää; H-041 "vahvistettu ajamalla" vain yksiselitteisellä näytöllä / stage 4: methods A + C, no B; pair 220/221; WER via debugger mode only; user runs admin commands; prerequisites committed separately, run results only with approval | Käyttäjän ohje / user instruction |
 | 2026-11-24 | C-4 vaihe 1: vain varoitusinventaario ja luokittelu; ei tuotantokoodin, projektiasetusten tai CI:n muutoksia; analyysikäännökset väliaikaishakemistoon MSBuildin `ForceImportAfterCppTargets`-ohjauksella; ReleaseVA200 ajettu `PlatformToolset=v145`-ohituksella; ei committia ilman hyväksyntää / warning inventory and triage only; no production, project or CI changes; analysis builds redirected to scratch; ReleaseVA200 with a toolset override; no commit without approval | Käyttäjän ohje / user instruction |
+| 2026-11-25 | C-5 suljettu käyttäjän hyväksynnällä; ei uusia C-5-analyysejä tai -testejä; Q60 omistajalle, Q63–Q64 avoimina; 161 jäsennysehdokasta ja H-079:n uudelleenarviointi jatkotehtäviksi; C-6 valmistellaan mutta ei aloiteta. Työtapa C-6:sta alkaen: Sonnet oletusmallina, Opus vain perustelluissa vaativissa tarkastuksissa, ei päällekkäistä analyysiä, työerälle ennalta rajaus ja tokenbudjetti, olemassa olevat todisteet ennen uusia koeohjelmia, riippumaton tarkastus riskiperusteisesti / C-5 closed; follow-ups recorded; C-6 prepared, not started; working method from C-6: Sonnet by default, Opus only for justified demanding reviews, no overlapping analysis, scope and token budget fixed up front, existing evidence before new probes, risk-based independent review | Käyttäjän päätös; C-5:n agenttien kulutus noin 1,56 milj. tokenia / user decision; C-5 agents used about 1.56 M tokens |
 | 2026-11-25 | C-5 vaihe 1: riippumaton tarkastus ja dokumentointi ilman välihyväksyntöjä, paikallinen commit sallittu, ei pushia; sen jälkeen C-5:n jäljellä olevat tavoitteet rajattuna staattisena työeränä; ei tuotantokoodin, projektiasetusten tai CI:n muutoksia, ei toimitettujen ohjelmien ajoja eikä verkkokokeita, ei uusia laajoja testikehyksiä; epäselvyydet avoimiksi kysymyksiksi / step 1 review and write-up without intermediate approvals, local commit allowed, no push; then the remaining C-5 goals as a bounded static step; no production, project or CI changes, no runs of shipped programs, no network tests, no new large harnesses | Käyttäjän ohje / user instruction |
 | 2026-11-25 | C-4 suljettu käyttäjän hyväksynnällä; H-071, H-072, H-055 ja H-070 kiireellisesti korjattaviksi; väliaikaiset suojaukset vain suosituksina, verkko- tai tuotantoasetuksia ei muutettu; C-5 seuraavaksi aloitusluvan jälkeen / C-4 closed on approval; urgent fixes marked; mitigations as recommendations only; C-5 next on approval | Käyttäjän päätös / user decision |
 | 2026-11-25 | C-4 vaihe 2 (viimeinen): vain analyysi; ei ASan-sarjoja, uusia testikehyksiä, GUI-ajoja, korjauksia eikä CI-muutoksia; vaihe 1 commitoitiin hyväksynnän ja uudelleentarkastuksen jälkeen (`81bcad9`), vaihetta 2 ei commitoida ilman hyväksyntää; uusi H vain, jos kyse ei ole rekisteröidyn vian toisesta ilmenemismuodosta / analysis only; step 1 committed after approval and re-review; step 2 not committed without approval | Käyttäjän ohje / user instruction |

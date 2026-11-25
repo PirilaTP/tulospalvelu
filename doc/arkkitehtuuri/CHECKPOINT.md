@@ -22,6 +22,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | C-1 | `kilptietue::tallenna()`: säikeet, kutsupaikat, lukot, tallennus, SQL, replikointi / threads, call sites, locks, persistence, SQL, replication | `tallenna-samanaikaisuus.md` |
 | C-2 | Työasemien tiedonsiirto: kuljetus, kehys, kuittaus, kättely, sarjallistaminen, välitys, jonot, vikatilanteet, HK/viesti-erot, käännösvalitsimet, testattavuus / workstation communication | `tiedonsiirto.md` |
 | C-3 | Pysyvät tiedostot ja eheys: `KILP.DAT` (dbboxm, HK- ja viestitietue, vanha muoto), `COMFILE.DAT`, emit, AJAT, `SQLjonoVarm.dat`, konfiguraatio, mitatut koot MSVC/bcc32, vikatilanteet / persistent files and integrity | `tiedostomuodot.md` |
+| **C-5 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi / approved 2026-11-25) | Vaiheet 1 (`b17d536`) ja 2 (`55897eb`); avoinna Q60 (omistaja / owner), Q63, Q64; jatkotehtävät (161 jäsennysehdokasta, H-079:n uudelleenarviointi) ja korjausjono `seuranta.md` / follow-ups and fix queue | `kaantajaerot.md` 13.7, `seuranta.md` |
 | **C-5 vaihe 2 valmis / step 2 complete** (riippumattomasti tarkastettu, commitoitu / independently reviewed, committed) | Q8: bcc32-objektien vertailu `tyokalut/vertaa_omf.py` (10 yksikköä; tarkastus löysi ja korjattiin COMENT FB -puute); GUI-tyyppejä ei kirjoiteta raakana; T-026:n kohdista vain 5 voi katketa; koeohjelmat Q57–Q59, Q61, Q62; uudet H-082–H-086 (GUI-lomakkeiden rajatarkistukset, `TextFl::Open` "a"), T-029; H-042, H-079 laajennettu / bcc32 object comparison; GUI-only types not raw-written; probes; new GUI form bound-check defects | `kaantajaerot.md` luku 13, `todisteet/c5/vaihe2/` |
 | **C-5 vaihe 1 valmis / step 1 complete** (riippumattomasti tarkastettu, commitoitu / independently reviewed, committed) | Käännösasetusten matriisi, MSVC:n asetteluraportti 251 yksiköstä (ei eroja), bcc32:n pragmatila 405 yksiköstä (`-a1`/`-a8`, piilevä), merkistö (bcc32 lukee BOMittoman UTF-8:n väärin, Q7 ratkaistu, `merkistot.md` korjattu, 36 literaalia), tyypit, muotoilu, RTL-erot; uudet H-078–H-081, T-023–T-028, H-004/H-005 laajennettu; `utf8_literaalit.py` korjattu / option matrix, MSVC layout (no differences), bcc32 pack state (latent), encoding (bcc32 also wrong, Q7 resolved), types, formatting, RTL | `kaantajaerot.md`, `todisteet/c5/` |
 | **C-4 valmis ja suljettu / complete and closed** (vaihe 2 hyväksytty ja commitoitu / step 2 approved and committed) | Vaihe 2: H-055/H-056 syvemmin (verkkosaavutettavuus), 33 tutkittavaa riviä, 522 muunnosvaroitusta ryhmittäin, kattavuusarvio, kokonaisarvio ja priorisointi; uudet H-070–H-077, T-022; laajennettu H-055, H-056, H-059, H-069; kolme riippumatonta tarkastusta / step 2: deep analysis, investigate rows, conversions, coverage, overall assessment; new H-070–H-077, T-022 | `muistiturvallisuus.md` luvut / sections 9–17 |
@@ -138,6 +139,9 @@ osittain). Tärkeimmät / most important:
 
 - ~~Q7~~ ratkaistu C-5:ssä / resolved in C-5 (`kaantajaerot.md` luku 5)
 - ~~Q8~~ ratkaistu C-5:ssä: `tyokalut/vertaa_omf.py` / resolved in C-5
+- Q60: onko H-081:n `KUNTOSUUNN`-ero tarkoituksellinen – omistajan päätös / owner decision
+- Q63, Q64: bcc32:n negatiivinen `new` (H-085), `UnitSakkoKierr`in kumoamisjäsennys (H-082) /
+  open technical questions
 - Q12: kumpi `add_sakko` linkitetään / which `add_sakko` is linked (H-020)
 - Q15: voiko VCL-poikkeus jättää lukon päälle / can a VCL exception leave a lock held
 - Q19: sovelletaanko AIKAT-kaksoiskappale kahdesti / is a duplicate AIKAT applied twice
@@ -182,16 +186,21 @@ bcc32:n `-a1`/`-a8`-erot ovat piileviä (T-023). Merkittävimmät: H-078 (UTF-16
 **C-5 vaihe 2 valmis (2026-11-25), riippumattomasti tarkastettu, commitoitu paikallisesti.**
 Q8 ratkaistu (`tyokalut/vertaa_omf.py`); uudet H-082–H-086 ja T-029; avoinna Q60, Q63, Q64.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP:** ehdotus: C-5 suljetaan ja GUI-lomakkeiden syötteiden
-tarkistus otetaan omaksi eräkseen (`kaantajaerot.md` luku 13.6); odottaa käyttäjän päätöstä.
+**C-5 valmis ja suljettu (2026-11-25), käyttäjä hyväksyi.** Jatkotehtävät ja priorisoitu
+korjausjono (H-071, H-072, H-055, H-070 kiireellisinä): `seuranta.md`.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP: C-6 vaihe 1** (säie- ja lukkoinventaario), rajaus ja
+tokenbudjetti (noin 380 k) `suunnitelma.md` "C-6 vaihe 1"; ei aloitettu, odottaa
+käyttäjän aloituslupaa. Työtapa: `suunnitelma.md` "Työtapa erästä C-6 alkaen".
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
 Open: manual tests H-009/H-014, two-process loopback layer, H-041 read path, CI. Next:
 C-4 memory safety (plan batch 4). **C-4 complete and closed:** step 1 (`81bcad9`) and step 2 committed locally. Urgent
 fixes: H-071, H-072, H-055, H-070. **C-5 step 1 complete** (`kaantajaerot.md`, H-078–H-081, T-023–T-028);
-**C-5 step 2 complete** (Q8 resolved, H-082–H-086, T-029); proposal: close C-5, awaiting
-the user's decision.
+**C-5 step 2 complete** (Q8 resolved, H-082–H-086, T-029). **C-5 closed** on approval.
+Next: C-6 step 1 (thread and lock inventory, budget about 380 k tokens), not started,
+awaiting approval.
 
 ## Resurssien käyttö / Resource usage (C-5 vaihe 2 / step 2)
 
@@ -300,8 +309,8 @@ Figures as reported by the harness. The C-3 figure was 745 489 / 360.
 2. Tarkista tila / check state:
    ```sh
    git branch --show-current          # testit/vikojen-todentaminen
-   git status --short                 # puhdas C-4:n jälkeen / clean after C-4
-   git log --oneline main..           # 16 committia / commits (viimeisin / last: C-4 vaihe 2 / step 2)
+   git status --short                 # puhdas / clean
+   git log --oneline main..           # 19 committia / commits (viimeisin / last: C-5:n sulkeminen / C-5 closure)
    python -I TPsource/V52/Tests/test_run_core_tests.py   # 46 OK
    python -I TPsource/V52/Tests/run_core_tests.py   # PASS=19, XFAIL=23 (vaatii Release- ja TpCoreHk Asan -käännöksen / needs Release and TpCoreHk Asan builds, testaus.md 13.6, 14)
    python -I doc/arkkitehtuuri/tyokalut/tarkista_auditointi.py .   # OK
@@ -325,10 +334,12 @@ Figures as reported by the harness. The C-3 figure was 745 489 / 360.
 5. Agentit / agents (`.claude/agents/`): `architecture-analyst`,
    `defect-concurrency-auditor`, `independent-verifier` (Opus);
    `build-dependency-analyst`, `legacy-encoding-analyst`, `doc-writer` (Sonnet).
-   Enintään kolme analyysiagenttia rinnakkain; jokainen erä päättyy
-   riippumattomaan tarkastukseen ja rekisterin päivitykseen. / At most three
-   analysis agents in parallel; every batch ends with independent review and a
-   register update.
+   Enintään kolme analyysiagenttia rinnakkain; erä päättyy rekisterin päivitykseen.
+   C-6:sta alkaen: Sonnet oletuksena (agenttikutsun `model: sonnet`), Opus vain
+   perustellusti, rajaus ja tokenbudjetti etukäteen, olemassa olevat todisteet ensin,
+   riippumaton tarkastus riskiperusteisesti (`suunnitelma.md`). / At most three analysis
+   agents in parallel; from C-6: Sonnet by default, Opus only when justified, scope and
+   token budget up front, existing evidence first, risk-based independent review.
 6. Rekisterin päivitys erän jälkeen / register update after a batch:
    ```sh
    python -I doc/arkkitehtuuri/tyokalut/inventaario.py . <tmp>/inv.json

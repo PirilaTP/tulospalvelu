@@ -471,3 +471,16 @@ Remaining: Q60, Q63, Q64; 161 unread integer-parse candidates in GUI units (belo
 a GUI form input review, not to compiler differences); run-time confirmations that
 need permission to run the shipped programs. Proposal: close C-5 here and make GUI form
 input validation its own batch.
+
+### 13.7 Sulkeminen / Closure
+
+Käyttäjä hyväksyi C-5:n sulkemisen 2026-11-25 (`b17d536`, `55897eb`). Uusia C-5-analyysejä
+tai -testejä ei tehty. Q60 jää omistajan ratkaistavaksi, Q63 ja Q64 avoimiksi teknisiksi
+kysymyksiksi. Jatkotehtävät (161 jäsennysehdokasta, joista 105 lomakeyksiköissä ja 56
+ytimessä; H-079:n saavutettavuus ja vakavuus; ajonaikaiset vahvistukset luvalla) ja C-5:n
+havaintojen alustava sijoitus korjausjonoon: `seuranta.md`.
+
+The user approved closing C-5 on 2026-11-25. No new C-5 analysis or tests. Q60 stays with
+the owner; Q63 and Q64 stay open. Follow-ups (161 parse candidates: 105 in form units, 56
+in core units; H-079 reachability and severity; run-time checks with permission) and the
+provisional fix-queue placement of C-5 findings: `seuranta.md`.
