@@ -1,0 +1,7 @@
+# C-8 closing probe cases: program|test case|timeout s (aja.py)
+C8ProbeHk|tp_build_info|30
+C8ProbeHk|C8 H-128 control: walk by bib visits every live entry|30
+C8ProbeHk|C8 H-128a setpos to zero leaves a stale entry that stops the walk|30
+C8ProbeHk|C8 H-128b lowering a bib into a free number drops it from the index|30
+C8ProbeHk|C8 H-129 control: luo_posarr resets idindex->nrec|30
+C8ProbeHk|C8 H-129 stage change keeps idindex->nrec|30

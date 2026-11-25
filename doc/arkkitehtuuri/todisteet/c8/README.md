@@ -26,8 +26,23 @@ interpretation.
 | `osaC-eheys.md` | `defect-concurrency-auditor`, Sonnet | osa C: invariantit, N-C1–N-C15, L-1–L-7 / part C |
 | `osaD-saikeet.md` | `defect-concurrency-auditor`, Sonnet | osa D: N-D1–N-D6, hylätyt / part D |
 | `osaE-tarkastus.md` | `independent-verifier`, Opus | riippumaton tarkastus / independent review |
+| `koeohjelmat/` | pääistunto (sulkeminen) / main session (closing) | H-128- ja H-129-koeohjelmat C-6:n eristetyllä mallilla: `tee_projektit.py` (tuottaa `C8ProbeHk.vcxproj`:n `VS/Tests/TpCoreHk.vcxproj`:sta), `c8_hk_probes.cpp`, `tapaukset.txt`, `rakenna.cmd`, `aja.py`, `tulokset/` (kaksi ajoa, käännösloki) / isolated probes for H-128 and H-129 |
 | `SHA256SUMS` | – | tiivisteet / hashes |
 
 CSV-tiedostot voi tuottaa uudelleen / CSVs can be regenerated (except `luokittelu.csv`):
 `python -I doc/arkkitehtuuri/tyokalut/globaalit.py . <hakemisto/dir>` repon juuresta / from the
 repository root.
+
+Koeohjelmien toisto / reproduce the probes (Git Bash, `koeohjelmat/`-hakemistosta / from
+`koeohjelmat/`; tarvitsee / needs `tputilv2.lib` ja / and `dbboxm.lib`, `VS/Libs/tputilv2.sln`
+Release; käännös repositorion ulkopuolelle / build outside the repository):
+
+```sh
+python -I tee_projektit.py
+cmd //c "$(cygpath -w "$PWD/rakenna.cmd")" "C:\temp\c8build"
+python -I aja.py "C:\temp\c8build" tulokset/uusi.txt
+```
+
+Tulkinta: `../../globaali-tila.md` luku 11. Mitään toimitettua ohjelmaa ei käynnistetty, eikä
+`TPsource/`-puuhun tehty muutoksia. / Interpretation in section 11; no shipped program was
+started and nothing under `TPsource/` was changed.

@@ -129,8 +129,8 @@ ends with an independent review (`independent-verifier`) and a register update
 | 5 | Kääntäjäkohtainen käytös: `#pragma -K -a1` (43 tiedostoa, vain bcc32) ja rakenteiden asettelu käännösyksiköiden välillä, `/J` (unsigned char), `wchar_t`, merkistöt / compiler-specific behaviour | korkea / high (jos asettelu eroaa / if layouts differ) | legacy-encoding-analyst, build-dependency-analyst | **vaihe 1 valmis / step 1 done 2026-11-25** (`kaantajaerot.md`, H-078–H-081, T-023–T-028; Q7 ratkaistu / resolved; `merkistot.md` korjattu / corrected); vaihe 2 valmis / step 2 done (`kaantajaerot.md` luku 13: Q8, H-082–H-086, T-029); **valmis ja suljettu / done and closed 2026-11-25** (`b17d536`, `55897eb`); avoinna / open Q60, Q63, Q64. Alkuperäinen tuotos / original output: `merkistot.md` laajennus; Q7. Osittain tehty erässä C-3: levylle ja verkkoon kirjoitettavien rakenteiden koot ja `-K`/`-a1` mitattu (`tiedostomuodot.md`) / partly done in C-3 |
 | 6 | Säikeiden omistajuus ja synkronointi kokonaisuutena: kaikki säikeet, lukot, lukitusjärjestys, lopetus / thread ownership and synchronisation | keskitaso–korkea / medium–high | defect-concurrency-auditor, architecture-analyst | `tietorakenteet-ja-tila.md` laajennus — **vaihe 1 valmis / step 1 done 2026-11-25** (`saikeet-ja-lukot.md`, H-087–H-102, T-030–T-032, Q30 ratkaistu / resolved); **vaihe 2 valmis / step 2 done 2026-11-25** (luku 13: koeohjelmat, H-103–H-108, T-033, H-099 kumottu / refuted); **valmis ja suljettu / done and closed 2026-11-25** (`bf5b566`, `2767145`); avoimet jatkotehtävät `seuranta.md` / open follow-ups in `seuranta.md` |
 | 7 | GUI:n liiketoimintalogiikka: `cbHk/UnitEmit.cpp`, `UnitAjanotto`, `UnitArvonta`, `UnitKilpailijatiedot`, `ViestiWin/UnitEmit.cpp` / GUI business logic | keskitaso–korkea | architecture-analyst, defect-concurrency-auditor | moduulikuvaukset / module descriptions — **vaihe 1 valmis ja suljettu / step 1 done and closed 2026-11-25** (`gui-liiketoimintalogiikka.md`, H-109–H-127, T-034–T-037; jatkotyöjono / follow-up queue J7-1–J7-7) |
-| 8 | Globaali muuttuva tila: kuka kirjoittaa mitäkin, alustus, nollaus kilpailun vaihdossa / global mutable state | keskitaso / medium | architecture-analyst | `tietorakenteet-ja-tila.md` — **vaihe 1 valmis / step 1 done 2026-11-26** (`globaali-tila.md`, H-128–H-144, T-038–T-039) |
-| 9 | Virheenkäsittely ja resurssit: palautusarvojen tarkistus, tiedostokahvat, muistivuodot, `writeerror`-polut / error handling and resources | keskitaso / medium | defect-concurrency-auditor | H/T-numerot |
+| 8 | Globaali muuttuva tila: kuka kirjoittaa mitäkin, alustus, nollaus kilpailun vaihdossa / global mutable state | keskitaso / medium | architecture-analyst | `tietorakenteet-ja-tila.md` — **vaihe 1 valmis ja suljettu / step 1 done and closed 2026-11-26** (`globaali-tila.md`, H-128–H-144, T-038–T-039) |
+| 9 | Virheenkäsittely ja resurssit: palautusarvojen tarkistus, tiedostokahvat, muistivuodot, `writeerror`-polut / error handling and resources | keskitaso / medium | defect-concurrency-auditor | H/T-numerot — **vaihe 1 rajattu, ei aloitettu / step 1 scoped, not started** (alla / below) |
 | 10 | Ulkoiset riippuvuudet: MySQL/dbExpress, WinHTTP, laiteprotokollat, BPL-ajonaikaiset paketit / external dependencies | matala–keskitaso | build-dependency-analyst | `riippuvuudet.md` |
 | 11 | Käännös- ja testiautomaatio: testit CI:hin, `run.sh`, GUI-todennus kommenttimuutoksille / build and test automation | matala riski, suuri hyöty / low risk, high leverage | build-dependency-analyst, architecture-analyst, defect-concurrency-auditor, independent-verifier ×2 | `testaus.md` — **valmis / done 2026-11-24** (luku / section 20; 15 toistettu testikehyksessä, H-041 vahvistettu ajamalla / 15 reproduced, H-041 confirmed by running); CI-vienti avoin / CI integration open (Q35–Q42). GUI-kommenttien todennus (Q8) ei vielä / GUI comment verification not yet |
 
@@ -147,7 +147,58 @@ Jatkotehtävä C-5:stä (ei numeroitu erä): syötteiden kokonaislukujäsennykse
 Follow-up from C-5 (not a numbered batch): integer-parse review, 161 candidates; may be
 merged with batch 7.
 
-### C-8 vaihe 1: rajaus / Step 1: scope (**valmis / done 2026-11-26**, `globaali-tila.md`)
+### C-9 vaihe 1: rajaus / Step 1: scope (**valmisteltu, ei aloitettu / prepared, not started**)
+
+Suunnitelman erä 9: virheenkäsittely ja resurssit – palautusarvojen tarkistus, tiedostokahvat,
+muistivuodot, `writeerror`-polut; riski keskitaso; agentti `defect-concurrency-auditor`; tuotos
+H- ja T-numerot. Rajaus pitää tavoitteen ja painottaa kilpailun aikaista riskiä: kirjoitus-
+virhe, joka hukkaa tuloksen hiljaa, on vakavampi kuin käynnistyksessä kerran vuotava muisti.
+
+**Lähtötiedot [todennettu: raaka grep, 2026-11-26; `Hk/`, `Juk/`, `Tp/`, `com/`, `cbTp/`,
+`tputilv2/`, `dbboxm/`, `cbHk/`, `ViestiWin/`, `HkConsole/`, `JukConsole/`]:** `fopen`/`_wfopen`
+108, `new TextFl(` 196, `_open`/`open` 18, `openfile` 14, `CreateFile` 6, `fclose`/`_close`/`close`
+129; `malloc`/`calloc`/`realloc` 177, `free` 186, `new` 835, `delete` 558; `fwrite`/`_write`/`write`
+71; `writeerror_w(` 396; `catch`/`__finally` 22. Luvut ovat raakoja osumia.
+
+**Lähtötiedot, ei analysoida uudelleen / inputs, not re-analysed:** C-1 (`tallenna`, H-007–H-021);
+C-2 (yhteysjonot ja lähetysvirheet, H-022–H-039, H-027); C-3 (tiedostomuodot, `_read`-tarkistukset,
+H-040–H-054, H-054 AJAT-jonon `_close`); C-4 (muistiturvallisuus, H-055–H-077; T-020
+varauksen tulosta ei tarkisteta, `fclose(NULL)` H-063); C-5 (H-078, H-079 `TextFl`-tilat; T-026);
+C-6 (lukot ja säikeet, H-087–H-108; T-030 lopetus, T-032 `writeerror_w` lukon alla, H-009, H-019);
+C-7 (lomakelogiikka H-109–H-127; T-036 VCL-poikkeus lukon alla); C-8 (H-133 `aloitus`-uusinnan
+vuodot, `lopetus1` ei vapauta, H-105). Niihin viitataan, niitä ei toisteta.
+
+| Osa / Part | Sisältö / Content | Agentti, malli / Agent, model |
+|---|---|---|
+| A | Inventaario: skripti (`tyokalut/`, raakatulos `todisteet/c9/`) luettelee resurssin hankinta- ja vapautuskohdat (tiedostot, `TextFl`, `openfile`, kahvat, pistokkeet, muistivaraukset) ja jokaisen kirjoitus- ja avauskutsun palautusarvon käytön (tarkistettu / sijoitettu tarkistamatta / ohitettu) sekä `writeerror_w`-kutsun jälkeisen toiminnan (paluu, jatko, `exit`); agentti luokittelee ja valitsee kilpailun aikana toistuvat polut osille B–D / scripted inventory of acquire/release sites, return-value use and what follows `writeerror_w`; classification | skripti + `architecture-analyst`, Sonnet |
+| B | Pysyvän datan virhepolut: `KILP.DAT` (`dbboxm` `write`/`PUTREC`/`addrec`), emit-tiedosto, AJAT-jono, `COMFILE`-levyjono, SQL-varmistusjono, lokit ja tulosteet levylle: havaitaanko epäonnistunut kirjoitus (levy täynnä, verkkolevy katkeaa, tiedosto lukittu), ilmoitetaanko, yritetäänkö uudelleen, voiko tulos kadota hiljaa tai jäädä muistiin eri arvoon kuin levylle / persistent-data error paths: silent loss, memory vs disk divergence | `defect-concurrency-auditor`, Sonnet; Opus monivaiheiseen tietojen katoamisen päättelyyn / Opus for multi-step data-loss reasoning |
+| C | Resurssien elinkaari kilpailun aikana: kahvat ja muisti, jotka vuotavat virhepolulla tai toistuvassa toiminnossa (tuloste, vienti, kortin luku, vaiheen vaihto, uudelleenyhteys), kasvu tapahtumaa kohden ja raja (kahvat, GDI, muisti); käynnistyksen kertaluonteiset vuodot vain mainintana / handle and memory leaks per repeated event | `defect-concurrency-auditor`, Sonnet |
+| D | Virheilmoituksen jälkeinen tila: jatkaako ohjelma `writeerror_w`:n, epäonnistuneen avauksen tai varauksen jälkeen epäjohdonmukaisessa tilassa (puolikas päivitys, NULL-osoitin, jatkuva virhesilmukka), `exit`/`abort`-polut kesken kilpailun ja tallentamaton tieto niissä; ei lukko- eikä VCL-poikkeusnäkökulmaa (C-6, T-036) / state after an error report; exit paths during a competition | `defect-concurrency-auditor`, Sonnet |
+| E | Riippumaton tarkastus uusille korkeille ja keskitason väitteille ja olemassa olevia havaintoja muuttaville väitteille / independent review | `independent-verifier`, Opus |
+| F | Dokumentointi: uusi `virheenkasittely.md` (kaksikielinen), rekisterit, `seuranta.md`, `CHECKPOINT.md`; raakatulokset `todisteet/c9/`; validaattori; paikallinen commit, ei pushia / documentation, local commit | pääistunto / main session |
+
+A ensin (B, C ja D käyttävät sen luetteloa); B, C ja D rinnakkain; E niiden jälkeen. Ei
+keinotekoista tokenbudjettia; päällekkäisyys estetään lähtötietoluettelolla ja jakamalla kohteet
+osien välillä (B: pysyvä data, C: elinkaari ja vuodot, D: tila virheen jälkeen). Rajattu pois:
+muistiturvallisuus ja puskurit (C-4), lukot ja säikeiden lopetus (C-6), yhteysprotokollan
+virheet (C-2, paitsi resurssivuodot), lomakkeiden syötteet (C-7), ulkoiset kirjastot (C-10),
+korjaukset. Ajonaikainen todennus vain eristetyllä koeohjelmalla (C-6/C-8-malli, esim.
+levyvirheen simulointi tiedostokahvaa sulkemalla) ja vain erillisellä päätöksellä. Valmis, kun
+osan A luettelo kattaa kohdehakemistot (tai syy puuttumiseen on kirjattu), jokaisen pysyvän
+tiedoston kirjoitusvirheen käsittely on kuvattu, toistuvien toimintojen vuodot on käyty läpi,
+uudet merkittävät havainnot on tarkastettu riippumattomasti ja validaattori menee läpi. Vaihe 2
+erillisellä päätöksellä. [ehdotus]
+
+Batch 9, step 1: (A) scripted inventory of resource acquire/release sites, return-value use and
+what follows `writeerror_w`, classified by an agent; (B) error paths of persistent data (silent
+loss, memory/disk divergence); (C) handle and memory leaks per repeated competition event; (D)
+program state after an error report and exit paths; (E) Opus review of new high/medium claims;
+(F) new `virheenkasittely.md`, registers, evidence `todisteet/c9/`, local commit. Sonnet for
+inventory and analysis, Opus for review and multi-step data-loss reasoning; no token budget;
+earlier findings are inputs. Out of scope: memory safety, locks, protocol errors, form input,
+external libraries, fixes; isolated probes only on a separate decision. [proposal]
+
+### C-8 vaihe 1: rajaus / Step 1: scope (**valmis ja suljettu / done and closed 2026-11-26**, `globaali-tila.md`)
 
 Toteutus: rajauksen mukaan; osan A skriptiin lisättiin funktiokohdistuksen varamenetelmä
 (sarake 0), ja osien B ja D agentit tallensivat raporttinsa itse, C:n ja E:n pääistunto.

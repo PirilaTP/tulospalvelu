@@ -232,8 +232,14 @@ Raportti `globaali-tila.md`; raakatulokset `todisteet/c8/`; skripti `tyokalut/gl
 Uudet H-128–H-144 (korkea 1: H-129 kekoylivuoto vaiheen vaihdossa; keskitaso–korkea 1: H-128
 `setpos`; keskitaso 2; muut matalampia) ja T-038–T-039; Q78–Q82. Kaikki staattisia.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP:** käyttäjän tarkastus ja C-8:n sulkemispäätös; sen jälkeen
-C-9:n rajaus (virheenkäsittely ja resurssit) erillisellä luvalla.
+**C-8 valmis ja suljettu (2026-11-26), käyttäjä hyväksyi** rajattujen tarkistusten jälkeen
+(`globaali-tila.md` luvut 3.3, 11, 12): lukumäärät täsmäytetty; H-128 ja H-129:n mekanismi
+toistettu eristetyllä koeohjelmalla `todisteet/c8/koeohjelmat/` (ei toimitetussa ohjelmassa);
+H-129 korjausjonoon P2 (alustava); poikkeamat ja jatkotehtävät `seuranta.md`.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP: C-9 vaihe 1** (virheenkäsittely ja resurssit: inventaario,
+pysyvän datan virhepolut, resurssien elinkaari, tila virheen jälkeen), rajaus `suunnitelma.md`
+"C-9 vaihe 1"; ei aloitettu, odottaa käyttäjän aloituslupaa.
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
@@ -247,7 +253,9 @@ new H-103–H-108, T-033). **C-6 closed** on approval; open items needing runs d
 **C-7 step 1 complete** (`gui-liiketoimintalogiikka.md`, H-109–H-127, T-034–T-037; H-017
 narrowed; 9 parse candidates resolved). **C-7 closed** on approval after a coverage check;
 gaps in follow-up queue J7-1–J7-7. **C-8 step 1 complete** (`globaali-tila.md`, H-128–H-144, T-038–T-039, Q78–Q82;
-H-129 high). Next: user review and closing decision for C-8, then scope C-9.
+H-129 high). **C-8 closed** on approval (counts reconciled; H-128 and H-129 mechanism reproduced with an
+isolated probe, not in a shipped program; H-129 in the fix queue as P2). Next: C-9 step 1
+(error handling and resources, scope in `suunnitelma.md`), not started, awaiting approval.
 
 ## Resurssien käyttö / Resource usage (C-6 vaihe 2 / step 2)
 

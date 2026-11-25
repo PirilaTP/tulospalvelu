@@ -1,4 +1,4 @@
-# Globaali muuttuva tila / Global mutable state (C-8 vaihe 1 / step 1)
+# Globaali muuttuva tila / Global mutable state (C-8 vaihe 1 / step 1, **suljettu / closed**)
 
 Erä C-8, vaihe 1: globaalien ja staattisten muuttujien inventaario (osa A), elinkaari ja
 vaiheen vaihto (osa B), johdettujen rakenteiden eheys (osa C), säikeiden yhteinen tila, jota
@@ -138,6 +138,30 @@ tiedostotason nimeä: 139 `tag_*`-merkkijonotaulukkoa, 35 lomakeosoitinta, 17 kr
 16 säiekahvaa, 9 skriptin virheosumaa, 1 käyttämätön. / Function-local statics: 197 classified;
 217 file-level names skipped with reasons.
 
+### 3.3 Lukumäärien täsmäytys / Reconciliation of the counts
+
+Tarkistettu sulkemisessa CSV-tiedostoista (`todisteet/c8/osaA/`; skriptiä ei tarvinnut ajaa
+uudelleen). / Checked at closing from the CSVs; no re-run needed.
+
+| Joukko / Set | Määrä / Count | Selitys / Explanation |
+|---|--:|---|
+| Määrittelyrivit / definition rows (`maarittelyt.csv`) | 1 751 | 1 479 globaalia, 261 tiedoston `static`, 6 jäsennysvirhettä, 5 otsikossa / 1,479 global, 261 file static, 6 parse errors, 5 in headers |
+| **Eri tiedostotason nimet / distinct file-level names** | **1 200** | Rivit nimittäin yhdistettyinä: 326 nimeä on sekä `HkGlobals.cpp`:ssä että `VGlobals.cpp`:ssä (sama muuttuja kahdessa ohjelmassa) ja yhteensä 514 nimeä useammassa kuin yhdessä tiedostossa; 9 nimeä on toisaalla globaali ja toisaalla `static` / rows merged by name; 326 names are in both globals files (one variable in two programs), 514 in more than one file |
+| – luokiteltu / classified | 983 | luokat K1–K7 / categories |
+| – ohitettu / skipped | 217 | 139 `tag_*`-vakiotaulukkoa, 35 lomakeosoitinta, 17 kriittistä osiota, 16 säiekahvaa, 9 skriptin virheosumaa, 1 käyttämätön; syy rivikohtaisesti `luokittelu.csv`:ssä / reasons per row |
+| **Funktion sisäiset staattiset / function-local statics** (`staattiset_funktiossa.csv`) | **370** | rivejä (muuttuja funktiossa), eri nimiä 191; erillinen joukko tiedostotason nimistä (8 nimeä esiintyy myös tiedostotason nimenä, ne ovat eri muuttujia) / rows, 191 distinct names; separate from the file-level set |
+| – rajauksessa (`Hk/`, `Juk/`) / in scope | 217 | 126 + 91 |
+| – – luokiteltu / classified | 197 | |
+| – – ohitettu / skipped | 20 | vakiotaulukot, merkkijonot, säiekahvat / const tables, literals, thread handles |
+| – rajauksen ulkopuolella / out of scope | 153 | `Tp/` 103, `tputilv2/` 33, `cbTp/` 13, `com/` 4 (poikkeama, luku 12 / deviation, section 12) |
+| **Luokiteltu yhteensä / classified total** | **1 180** | 983 tiedostotason nimeä + 197 funktion staattista; eri yksiköt (nimi vs. muuttuja funktiossa), joten summa on vain laskennallinen / different units, the sum is arithmetic only |
+
+Joukot eivät ole päällekkäisiä luokittelussa: jokainen 1 200 nimestä on `luokittelu.csv`:ssä
+täsmälleen kerran (983 + 217), ja funktion staattiset ovat omina `funktio::nimi`-riveinään (197).
+Päällekkäisyys on vain lähtöriveissä (sama nimi useassa tiedostossa) ja viittauksissa
+(samannimiset muuttujat yhdistyvät, luku 8). / The classification sets do not overlap; overlap
+exists only in definition rows and in references.
+
 Luokittelu on nimen ja määrittelyn perusteella tehty [päätelty], ellei osan A raportissa ole
 riviviitettä. K3-rakenteiden ylläpitäjät ja K4-lippujen kirjoittajat ja lukevat säikeet:
 `todisteet/c8/osaA-luokittelu.md` havainnot 1–2. / Classification by name [inferred] unless a
@@ -271,8 +295,8 @@ raw reports; severity as corrected by the reviewer.
 
 | ID | N | Lyhyesti / In short | Vakavuus / Severity | Tarkastus / Review |
 |---|---|---|---|---|
-| H-128 | N-C1, N-C2 | `setpos` ei poista; numerojärjestyksen läpikäynnit katkeavat; numeron lasku voi pudottaa kilpailijan hakemistosta / never deletes, walks stop, lowered bib can vanish | keskitaso–korkea / medium-high | vahvistettu / confirmed |
-| H-129 | N-C3 | `teejarj(true)` ei nollaa `idindex->nrec` → kekoylivuoto / heap overflow at stage change | korkea / high | vahvistettu / confirmed |
+| H-128 | N-C1, N-C2 | `setpos` ei poista; numerojärjestyksen läpikäynnit katkeavat; numeron lasku voi pudottaa kilpailijan hakemistosta / never deletes, walks stop, lowered bib can vanish | keskitaso–korkea / medium-high | vahvistettu; **toistettu eristetysti** (luku 11) / confirmed; reproduced in isolation |
+| H-129 | N-C3 | `teejarj(true)` ei nollaa `idindex->nrec` → kekoylivuoto / heap overflow at stage change | korkea / high | vahvistettu; **mekanismi toistettu eristetysti** (luku 11) / confirmed; mechanism reproduced |
 | H-130 | N-C10 | viestin sarjanvaihto ei päivitä `nilm`iä (kuollut haara); `ossijat`-ylivuoto kapeammalla ehdolla / relay team counts | keskitaso / medium | osittain / partly |
 | H-131 | N-B3 | vaiheen vaihto ei päivitä `aikaflname`-pohjaa / time-queue template stale | keskitaso / medium | vahvistettu / confirmed |
 | H-132 | tarkastajan vihje / reviewer lead | yksivaiheisessa kilpailussa `AJAT=`-nimen 5. merkki poistetaan / one-stage `AJAT=` name loses its 5th character | matala–keskitaso / low-medium | pääistunto todensi koodista / verified from code by main session |
@@ -301,10 +325,36 @@ Tekninen velka / technical debt:
   H-130, H-135, H-139, H-140). / Derived structures maintained by hand-paired calls, no
   invariant check or mid-run rebuild.
 
+Vaikutusarvio kolmelle tärkeimmälle / impact of the three most important [päätelty / inferred]:
+
+- **H-129:** kekoylivuoto kesken kilpailun vaiheen vaihdossa; seuraus voi olla kaatuminen tai
+  muun muistin hiljainen korruptio, joka ei korjaudu ennen uudelleenkäynnistystä. / heap overflow
+  at the stage change: crash or silent memory corruption.
+- **H-128:** **hiljainen tietojen oikeellisuusongelma.** Ohjelma ei anna virheilmoitusta, vaan
+  numerojärjestyksessä etenevät toiminnot jättävät kilpailijoita pois: vienti numerojärjestyksessä,
+  arvonnan läpikäynti (`SeurPos`), sakkokierroslista, meri3-pisteet ja radan tunnistus
+  (`haeratakilp`). Numeron lasku voi lisäksi kadottaa kilpailijan numerohaulta, jolloin emit- ja
+  koodilinkit jäävät hiljaa tekemättä. Korjautuu uudelleenkäynnistyksellä tai arvonnan lopun
+  `luo_posarr`illa, mutta jo tuotettu vienti tai lista on puutteellinen. / silent data-correctness
+  problem: no error message, competitors silently missing from bib-order exports, draw walk,
+  penalty list, points and course identification; output already produced stays incomplete.
+- **H-131:** **eri vaiheiden tiedostojen sekoittuminen.** Vaiheen vaihdon jälkeen luotu aikajono
+  käyttää edellisen vaiheen nimipohjaa, joten vaiheen n+1 ajat kirjoitetaan vaiheen n tiedostoon
+  (esim. `AJAT1.LST`), jossa ovat jo vaiheen n ajat. Kun vaiheen n aikoja myöhemmin luetaan, mukana
+  on toisen vaiheen aikoja, ja vaiheen n+1 omasta tiedostosta ne puuttuvat. / times of stage n+1
+  are written into stage n's file and mix with stage n's times.
+
 Korjausjärjestys [päätelty] / fix priority [inferred]: H-129 (yksirivinen: `idindex->nrec = 0`
 `memset`in viereen) ja H-128 (`setpos`) ensin, koska ne koskevat jokaista monivaiheista HK-
 kilpailua ja niille voi kirjoittaa doctest-testin (`Tests/`, `HkIx.cpp` + `dbindex.cpp`); sitten
 H-130, H-131, H-132. / H-129 and H-128 first, both testable with doctest; then H-130–H-132.
+H-129 on lisätty kiireelliseen korjausjonoon alustavalla prioriteetilla P2 (`seuranta.md`). /
+H-129 added to the urgent fix queue, provisional P2.
+
+T-038 ja T-039 ovat arkkitehtuurin kehityskohteita, eivät yksittäisiä korjauksia: ne kannattaa
+ottaa huomioon, kun vaiheen vaihtoa tai johdettuja rakenteita korjataan (keskitetty nollaus,
+invarianttitarkistus tai uudelleenrakennus). / T-038 and T-039 are architectural development
+items, to be considered when the stage change or derived structures are fixed.
 
 ## 8. Osan A korjaukset ja skriptin rajoitukset / Part A corrections and script limitations
 
@@ -375,3 +425,78 @@ sections of the part reports.
 Ei tokenbudjettia (rajauksen mukaisesti). Skripti, pääistunnon todennus (H-132) ja dokumentointi
 pääistunnossa. / No token budget per the scope; script, H-132 check and documentation in the main
 session.
+
+## 11. Eristetty todennus / Isolated verification (H-128, H-129; sulkeminen / closing 2026-11-26)
+
+Toteutettu C-6:n vaiheen 2 eristetyn koeohjelman mallilla (`todisteet/c6/vaihe2/`): projekti
+`C8ProbeHk` tuotetaan kopioimalla `VS/Tests/TpCoreHk.vcxproj` (samat tuotantolähteet,
+määrittelyt ja asetukset), testilähteeksi vaihdetaan `todisteet/c8/koeohjelmat/c8_hk_probes.cpp`,
+ja käännös tehdään repositorion ulkopuolelle (`C:\temp\c8build`, MSVC 19.52, Release, Win32).
+`TPsource/`-puuhun, projektiasetuksiin tai CI:hin ei tehty muutoksia. Testit kutsuvat tuotannon
+funktioita (`setpos`, `getpos`, `nextpos`, `luo_posarr`, `vaihdavaihe` → `teejarj(true)`)
+sellaisinaan; vain globaali tila valmistellaan (kiinnike kuten H-031:n testissä: tyhjä
+`KILP.DAT`, tuotannon `teejarj(false)`). Jokainen tapaus ajettiin omassa prosessissaan ja
+hiekkalaatikossaan kahdesti; tulokset olivat samat.
+
+Done with the C-6 step 2 isolated-probe pattern: a generated copy of the core test project with
+this batch's probe file, built outside the repository. No change under `TPsource/`, to project
+settings or CI. The probes call the production functions unchanged; only global state is
+prepared. Each case ran in its own sandboxed process, twice, with identical results.
+
+| Tapaus / Case | Tulos / Result |
+|---|---|
+| H-128 kontrolli / control | läpikäynti numerosta 104 käy 6, 7, 8 / walk visits 6, 7, 8 |
+| H-128a (N-C1) | `setpos(105, 0)`:n jälkeen `idindex->nrec` 3 → 4 (rivi lisättiin, ei poistettu) ja läpikäynti pysähtyy: `6 (stop 0)`, numero 106 jää pois / entry added, walk stops, bib 106 missed — **TPRESULT observed=1** |
+| H-128b (N-C2) | numeron 61 → 60 vaihdon jälkeen `getpos(60)` = −1 (oikein 7); `setpos(60, 7)` ei lisännyt riviä / bib lowered becomes unfindable — **observed=1** |
+| H-129 kontrolli / control | tuotannon `luo_posarr` nollaa `idindex->nrec`in (5 → 0) / resets the count |
+| H-129 (N-C3) | tuotannon `vaihdavaihe(1, 0)` (r = 0, `k_pv` = 1) jättää `idindex->nrec` = 5, vaikka `KILP.DAT`:ssa ei ole tietueita (oikein 0); seuraava `setpos` lisää perään (6) / count kept, next add appends — **observed=1** |
+
+Näytön tasot / levels of evidence:
+
+| Havainto / Finding | Lähdekoodista vahvistettu / confirmed from source | Eristetyllä testillä toistettu / reproduced in an isolated test | Toimitetussa ohjelmassa vahvistettu / confirmed in a shipped program |
+|---|---|---|---|
+| H-128 (N-C1, N-C2) | kyllä (osa C, Opus-tarkastus) / yes | **kyllä**: molemmat mekanismit / yes, both mechanisms | **ei** / no |
+| H-129 (N-C3) | kyllä, rajat korjattu / yes, thresholds corrected | **mekanismi kyllä** (laskuri ei nollaudu, lisäys perään); itse kekoylivuotoa (yli `maxrec + 2` rivin) ei ajettu, se on laskennallinen seuraus / mechanism yes; the overflow itself was not run, it is an arithmetic consequence | **ei** / no |
+
+Toimitetun ohjelman (`HkKisaWin.exe`, `HkMaali.exe`) käyttäytymistä ei ole ajonaikaisesti
+vahvistettu. Ylivuodon todentaminen vaatisi noin 1 500 kilpailijan tietueet ja kekotarkistimen
+(PageHeap tai ASan-käännös); se jätetään jatkotehtäväksi. / Shipped-program behaviour is not
+verified at run time; reproducing the overflow itself needs about 1,500 records and a heap
+checker, left as a follow-up.
+
+Raakatulokset / raw results: `todisteet/c8/koeohjelmat/tulokset/` (kaksi ajoa, käännösloki /
+two runs, build log).
+
+## 12. Sulkeminen / Closure (2026-11-26)
+
+Vertailu rajaukseen (`suunnitelma.md` "C-8 vaihe 1") / comparison with the scope:
+
+| Rajauksen tavoite / Scope goal | Toteutus / Done | Tila / State |
+|---|---|---|
+| A: koneellinen luettelo ytimen globaaleista ja staattisista, kirjoittajat ja lukijat; luokittelu / scripted inventory, writers and readers, classification | `globaalit.py`, CSV:t, 1 200 nimeä luokiteltu tai ohitettu syineen; täsmäytys luku 3.3 / all 1,200 names classified or skipped with reasons | täyttyy / met |
+| B: alustusjärjestys, vaiheen vaihdon nollaustaulukko, uudelleenavaus, `aloitus` kahdesti, lopetus / lifecycle | luku 4, osan B taulukko / section 4 | täyttyy / met |
+| C: johdettujen rakenteiden invariantit, ylläpitäjät, rikkovat polut, vaikutus tuloksiin / derived structures | luku 5, osa C / section 5 | täyttyy / met |
+| D: säikeiden yhteinen tila C-6:n ulkopuolelta / shared state beyond C-6 | luku 6, osa D / section 6 | täyttyy, poikkeama alla / met, deviation below |
+| E: riippumaton tarkastus uusille korkeille ja keskitason väitteille / independent review | 16 väitettä, Opus / 16 claims | täyttyy / met |
+| F: dokumentointi, rekisterit, todisteet, validaattori, paikallinen commit / documentation | `4884374` ja tämä sulkemiscommit / and this closing commit | täyttyy / met |
+
+Poikkeamat (eivät estä sulkemista; kirjattu jatkotehtäviksi) / deviations (do not block
+closing; recorded as follow-ups):
+
+1. Funktion sisäiset staattiset luokiteltiin vain `Hk/`- ja `Juk/`-hakemistoista; `Tp/`-,
+   `tputilv2/`-, `cbTp/`- ja `com/`-hakemistojen 153 funktion staattista ovat luettelossa
+   (`staattiset_funktiossa.csv`) mutta luokittelematta. Osa D kävi ne läpi säikeiden kannalta
+   (esim. H-138, hylätyt `tputilv2`-apufunktiot). / 153 function-local statics outside `Hk/`
+   and `Juk/` are listed but not classified; part D covered them for thread use.
+2. Osa D ei kattanut kuutta C-6:n säiettä (`HaeAvoimetTh`, `haeSQLTh`, `ScrollThread`,
+   `DisplTimerThread`, `NaytaTulosTimerThread`, TCP/UDP-vastaanotto); ne ovat C-6:n, C-2:n tai
+   lomakkeiden sisäisen tilan aluetta. / six C-6 threads not covered by part D.
+3. Osan A luokittelu tehtiin ennen funktiokohdistuksen varamenetelmää, joten sen
+   kirjoittajaluettelot ovat alarajoja (luku 8). / part A writer lists are lower bounds.
+4. Matalat kokoomarivit H-142–H-144 ovat yhden agentin tuloksia ilman riippumatonta
+   tarkastusta. / H-142–H-144 not independently reviewed.
+
+Olennaista tavoitetta ei puutu: rajauksen valmistumisehdot (luku 10) täyttyvät. **C-8 on
+suljettu käyttäjän hyväksynnällä 2026-11-26.** Avoimet asiat: `seuranta.md` "Avoimet
+jatkotehtävät C-8:sta". / No essential goal is missing; completion criteria met. **C-8 closed
+with the user's approval.** Open items: `seuranta.md`.
