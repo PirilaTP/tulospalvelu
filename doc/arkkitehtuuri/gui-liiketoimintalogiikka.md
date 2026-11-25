@@ -1,4 +1,4 @@
-# GUI:n liiketoimintalogiikka / GUI business logic (C-7 vaihe 1 / step 1)
+# GUI:n liiketoimintalogiikka / GUI business logic (C-7 vaihe 1 / step 1, **suljettu / closed**)
 
 Erä C-7, vaihe 1: moduulikuvaukset (osa A), liiketoimintalogiikan virheet (osa B), C-5:n
 yhdeksän jäsennysehdokasta (osa C) ja riippumaton tarkastus (osa D). Revisio `7be7480`
@@ -13,7 +13,8 @@ Merkinnät / tags: [todennettu] = koodi luettu / code read; [päätelty] / [infe
 [tuntematon] / [unknown]. Kaikki tulokset ovat **staattisia**: mitään ohjelmaa ei ajettu eikä
 käännetty. / All results are **static**; nothing was run or built.
 
-Raakatulokset / raw results: `todisteet/c7/` (README siellä / README there).
+Raakatulokset / raw results: `todisteet/c7/` (README siellä / README there). Sulkeminen,
+kattavuus ja jatkotyöjono: luku 13. / Closure, coverage and follow-up queue: section 13.
 
 ## 1. Yhteenveto / Summary
 
@@ -383,10 +384,13 @@ H-115 (VCL-poikkeus ja lukon laskuri), H-116 (X → 2 tässä C++Builder-versios
 C-4:n asteikolla (`muistiturvallisuus.md` luku 15) ja C-6:n sijoituksen rinnalla:
 **P2** H-109, H-110 (tietojen korruptio tai työsäikeiden pysähtyminen tavallisella
 käytöllä kilpailun aikana); **P3** H-111, H-112, H-113, H-114, H-115, H-116, H-117;
-**P4** H-118–H-125; **P5** H-126, H-127. Korjauksia ei aloitettu.
+**P4** H-118–H-125; **P5** H-126, H-127. Korjauksia ei aloitettu. H-114 on P3:ssa, vaikka se ei
+kaada ohjelmaa: viestissä joukkue siirtyy hiljaa sarjaan 0 ja tallentuu (ydin `kilpTarkasta`),
+joten virhe näkyy vasta tuloksissa; HK:ssa sama syöte voi kaataa (`sijat(-1)`).
 
 On the C-4 scale: P2 H-109, H-110; P3 H-111–H-117; P4 H-118–H-125; P5 H-126, H-127. No
-fixes started.
+fixes started. H-114 is P3 although it does not crash in relay: the team is silently moved to
+series 0 and saved, so the error only shows in the results.
 
 ## 12. Resurssien käyttö / Resource usage
 
@@ -398,3 +402,48 @@ fixes started.
 | `independent-verifier` (Opus; kierros 1 / round 1) | 126 440 | 64 |
 | `independent-verifier` (Opus; kierros 2 / round 2) | 131 759 | 68 |
 | **Yhteensä / total** | **1 004 861** | **342** |
+
+## 13. Sulkeminen ja kattavuus / Closure and coverage (2026-11-25)
+
+C-7 suljettiin käyttäjän hyväksynnällä sillä ehdolla, että kattavuus tarkistetaan ja tekemättä
+jääneet osat kirjataan erikseen. Uusia analyysejä ei tehty.
+
+C-7 was closed on the user's approval, conditional on a coverage check and on recording what
+was left undone. No new analysis was done.
+
+### 13.1 Alkuperäiset tavoitteet / Original goals
+
+| Tavoite / Goal (`suunnitelma.md`) | Tila / State |
+|---|---|
+| Erän 7 viisi nimettyä yksikköä: `cbHk/UnitEmit`, `UnitAjanotto`, `UnitArvonta`, `UnitKilpailijatiedot`, `ViestiWin/UnitEmit` / five named units | **täytetty / met**: moduulikuvaus ja kysymykset 1–5 jokaisesta (luvut 3, 9) |
+| Vaiheen 1 laajennus: viestin vastinyksiköt (`UnitAjanotto`, `UnitArvonta`, `UnitJoukkuetiedot`) / relay counterparts | **täytetty / met** |
+| Osa C: yhdeksän jäsennysehdokasta / nine parse candidates | **täytetty / met** (luku 7) |
+| Osa D: uudet korkeat ja keskitason väitteet tarkastettu / high and medium claims reviewed | **täytetty / met** (16 väitettä); viisi matalaa tai matala–keskitason riviä tarkastamatta (H-122–H-124, H-126, H-127) |
+| Kysymys 4: arvonnan oikeellisuus / draw correctness | **osittain / partly**: numerointi, sarjan jako ja viestin satunnaisnumerointi tutkittu; itse lähtöjärjestyksen arvonta on `cbHk/HkArv2.cpp`:ssä, joka rajattiin pois → J7-1 |
+| Valmis-ehto: validaattori / validator | **täytetty / met** |
+
+Arvio: alkuperäinen pakollinen tavoite täyttyi. Olennainen puute on arvonta-algoritmi, joka ei
+ollut kohdetiedostoissa; se on jatkotehtävä J7-1. **GUI-syötteiden tarkastus ei ole valmis
+kokonaisuutena:** C-7 kattoi 8 lomakeyksikköä ja 9 jäsennysehdokasta; vähintään 41 muuta
+kilpailutietoja kirjoittavaa lomaketiedostoa ja 152 jäsennysehdokasta ovat tutkimatta (J7-2,
+J7-3). Myöskään `ViestiWin/OsuusTiedot.cpp` (vain katselu) ja HK:n `cbHk/UnitEmitMuutokset.cpp`
+(kutsuu `FormEmit`in funktioita) eivät saaneet omaa vikakatselmusta.
+
+Assessment: the mandatory goal was met. The material gap is the draw algorithm, which was not
+in the target files (J7-1). **The review of GUI input is not complete as a whole:** at least 41
+other form files writing competition data and 152 parse candidates remain (J7-2, J7-3).
+
+### 13.2 Jatkotyöjono / Follow-up queue
+
+| # | Tehtävä / Task | Sisältö / Content | Tyyppi / Type |
+|---|---|---|---|
+| J7-1 | Arvonta-algoritmi / draw algorithm | `cbHk/HkArv2.cpp` (`arvo`, `arvovaihe`, `arvonumerot`; 1 274 riviä, taso 1): kaksoisnumerot ja -ajat, rajat, uudelleenarvonta, jo lähteneet; C-7:n kysymys 4 jäi tältä osin auki / C-7 question 4 open for the draw itself | staattinen / static |
+| J7-2 | Muut kilpailutietoja kirjoittavat lomakkeet / other forms writing competition data | 41 lomaketiedostoa `cbHk/`, `ViestiWin/`, `cbTp/` (koneellinen haku: `tallenna`, `addtall`, `deltall`, `putem`, `tall_rivi`, `setMaali`, `tall_tulos`, `set_tulos`). Ensin: `cbHk/UnitSprinthiihto.cpp`, `cbHk/UnitAikaSiirto.cpp`, `cbTp/UnitAikakorjaus.cpp`, `cbHk/UnitNollaus.cpp`, `ViestiWin/UnitNollaus.cpp`, `cbTp/UnitFIS.cpp`, `cbHk/UnitIlm2.cpp`, `cbHk/LoppuKilpUnit.cpp`, `ViestiWin/UnitLuenta.cpp`, `cbHk/UnitPistelasku.cpp`, `cbHk/UnitKilpailijaOnline.cpp`, `cbHk/UnitEmitMuutokset.cpp`; tuonti (`UnitImport`) käsitelty osittain C-3:ssa / first the listed units; import partly covered in C-3 | staattinen / static |
+| J7-3 | 152 jäsennysehdokasta / parse candidates | `todisteet/c5/vaihe2/dca.tgz` → `dca/atoi_index_candidates.csv` ilman C-7:n yhdeksää: lomakkeet 96 (`cbHk/` 55, `ViestiWin/` 30, `cbTp/` 11), ydin 56 (`Hk/` 32, `Juk/` 23, `Tp/` 1); voidaan yhdistää J7-2:een tiedostoittain / may be merged with J7-2 per file | staattinen / static |
+| J7-4 | Ajonaikaiset vahvistukset / run-time confirmations | ensisijaisesti **H-109** (`kilparr[-1]`, kaksoispoisto ja sitä seuraavat lisäykset, `remjarjarr` irrotetulle tietueelle), **H-110** (työsäikeiden pysähtyminen "Lähtöajat"-painalluksen jälkeen), **H-116** (X → 2 tässä C++Builder-versiossa); lisäksi H-111, H-112, H-113, H-114, H-115, H-120, H-125 (luku 10) | ajo, erillinen lupa / run, separate permission |
+| J7-5 | Riippumaton tarkastus / independent review | H-122, H-123, H-124, H-126, H-127 (yhden agentin tulokset) ennen niiden korjaamista / before fixing | staattinen / static |
+| J7-6 | Avoimet kysymykset / open questions | Q75 (kuntosuunnistustilat), Q76 (viestin jonotallennus ja joukkuetietue), Q77 (haarojen ikä, versiohistoria), Q15:n jäljellä oleva osa (`tallenna`-polun poikkeukset itse ytimessä) | staattinen / static |
+| J7-7 | Korjaussuunnittelu / fix planning | T-034: jokainen HK- tai viestilomakkeen korjaus tarkistetaan myös vastinhaarasta (luku 4); T-035, T-036, T-037 yhteisinä korjausmalleina / check every fix against the other fork | korjausvaihe / fix phase |
+
+Jono on myös tiedostossa `seuranta.md`. Mikään jonon tehtävä ei ole aloitettu. / The queue is
+also in `seuranta.md`; nothing in it has been started.

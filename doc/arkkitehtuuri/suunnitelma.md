@@ -128,8 +128,8 @@ ends with an independent review (`independent-verifier`) and a register update
 | 4 | Muistiturvallisuus ja määrittelemätön käytös: kääntäjävaroitusten läpikäynti molemmilla kääntäjillä, MSVC `/analyze`, puskurit ja muotoilumerkkijonot / memory safety and UB | korkea / high | defect-concurrency-auditor, build-dependency-analyst | **valmis ja suljettu / done and closed 2026-11-25** (`muistiturvallisuus.md`, H-055–H-077, T-020–T-022); H-numerot, issue-luonnokset / H entries, issue drafts |
 | 5 | Kääntäjäkohtainen käytös: `#pragma -K -a1` (43 tiedostoa, vain bcc32) ja rakenteiden asettelu käännösyksiköiden välillä, `/J` (unsigned char), `wchar_t`, merkistöt / compiler-specific behaviour | korkea / high (jos asettelu eroaa / if layouts differ) | legacy-encoding-analyst, build-dependency-analyst | **vaihe 1 valmis / step 1 done 2026-11-25** (`kaantajaerot.md`, H-078–H-081, T-023–T-028; Q7 ratkaistu / resolved; `merkistot.md` korjattu / corrected); vaihe 2 valmis / step 2 done (`kaantajaerot.md` luku 13: Q8, H-082–H-086, T-029); **valmis ja suljettu / done and closed 2026-11-25** (`b17d536`, `55897eb`); avoinna / open Q60, Q63, Q64. Alkuperäinen tuotos / original output: `merkistot.md` laajennus; Q7. Osittain tehty erässä C-3: levylle ja verkkoon kirjoitettavien rakenteiden koot ja `-K`/`-a1` mitattu (`tiedostomuodot.md`) / partly done in C-3 |
 | 6 | Säikeiden omistajuus ja synkronointi kokonaisuutena: kaikki säikeet, lukot, lukitusjärjestys, lopetus / thread ownership and synchronisation | keskitaso–korkea / medium–high | defect-concurrency-auditor, architecture-analyst | `tietorakenteet-ja-tila.md` laajennus — **vaihe 1 valmis / step 1 done 2026-11-25** (`saikeet-ja-lukot.md`, H-087–H-102, T-030–T-032, Q30 ratkaistu / resolved); **vaihe 2 valmis / step 2 done 2026-11-25** (luku 13: koeohjelmat, H-103–H-108, T-033, H-099 kumottu / refuted); **valmis ja suljettu / done and closed 2026-11-25** (`bf5b566`, `2767145`); avoimet jatkotehtävät `seuranta.md` / open follow-ups in `seuranta.md` |
-| 7 | GUI:n liiketoimintalogiikka: `cbHk/UnitEmit.cpp`, `UnitAjanotto`, `UnitArvonta`, `UnitKilpailijatiedot`, `ViestiWin/UnitEmit.cpp` / GUI business logic | keskitaso–korkea | architecture-analyst, defect-concurrency-auditor | moduulikuvaukset / module descriptions — **vaihe 1 valmis / step 1 done 2026-11-25** (`gui-liiketoimintalogiikka.md`, H-109–H-127, T-034–T-037) |
-| 8 | Globaali muuttuva tila: kuka kirjoittaa mitäkin, alustus, nollaus kilpailun vaihdossa / global mutable state | keskitaso / medium | architecture-analyst | `tietorakenteet-ja-tila.md` |
+| 7 | GUI:n liiketoimintalogiikka: `cbHk/UnitEmit.cpp`, `UnitAjanotto`, `UnitArvonta`, `UnitKilpailijatiedot`, `ViestiWin/UnitEmit.cpp` / GUI business logic | keskitaso–korkea | architecture-analyst, defect-concurrency-auditor | moduulikuvaukset / module descriptions — **vaihe 1 valmis ja suljettu / step 1 done and closed 2026-11-25** (`gui-liiketoimintalogiikka.md`, H-109–H-127, T-034–T-037; jatkotyöjono / follow-up queue J7-1–J7-7) |
+| 8 | Globaali muuttuva tila: kuka kirjoittaa mitäkin, alustus, nollaus kilpailun vaihdossa / global mutable state | keskitaso / medium | architecture-analyst | `tietorakenteet-ja-tila.md` — **vaihe 1 rajattu, ei aloitettu / step 1 scoped, not started** (alla / below) |
 | 9 | Virheenkäsittely ja resurssit: palautusarvojen tarkistus, tiedostokahvat, muistivuodot, `writeerror`-polut / error handling and resources | keskitaso / medium | defect-concurrency-auditor | H/T-numerot |
 | 10 | Ulkoiset riippuvuudet: MySQL/dbExpress, WinHTTP, laiteprotokollat, BPL-ajonaikaiset paketit / external dependencies | matala–keskitaso | build-dependency-analyst | `riippuvuudet.md` |
 | 11 | Käännös- ja testiautomaatio: testit CI:hin, `run.sh`, GUI-todennus kommenttimuutoksille / build and test automation | matala riski, suuri hyöty / low risk, high leverage | build-dependency-analyst, architecture-analyst, defect-concurrency-auditor, independent-verifier ×2 | `testaus.md` — **valmis / done 2026-11-24** (luku / section 20; 15 toistettu testikehyksessä, H-041 vahvistettu ajamalla / 15 reproduced, H-041 confirmed by running); CI-vienti avoin / CI integration open (Q35–Q42). GUI-kommenttien todennus (Q8) ei vielä / GUI comment verification not yet |
@@ -146,6 +146,58 @@ Jatkotehtävä C-5:stä (ei numeroitu erä): syötteiden kokonaislukujäsennykse
 161 ehdokasta (`seuranta.md`, "Avoimet jatkotehtävät C-5:stä"); voidaan yhdistää erään 7.
 Follow-up from C-5 (not a numbered batch): integer-parse review, 161 candidates; may be
 merged with batch 7.
+
+### C-8 vaihe 1: rajaus / Step 1: scope (**valmisteltu, ei aloitettu / prepared, not started**)
+
+Suunnitelman erä 8: globaali muuttuva tila – kuka kirjoittaa mitäkin, alustus, nollaus
+kilpailun vaihdossa; riski keskitaso; agentti `architecture-analyst`; tuotos
+`tietorakenteet-ja-tila.md`. Rajaus pitää tavoitteen ja lisää kaksi C-1–C-7:n perusteella
+tarpeellista näkökulmaa: johdettujen tietorakenteiden eheys (vaikuttaa tulosten
+oikeellisuuteen) ja säikeiden yhteinen tila niiltä osin kuin C-6 ei sitä kattanut.
+
+**Lähtötiedot [todennettu: laskenta, 2026-11-25]:** määrittelyt `Hk/HkGlobals.cpp` (675 riviä,
+noin 490 lausetta) ja `Juk/VGlobals.cpp` (554, noin 430); `extern`-esittelyjä `Hk/HkDeclare.h`
+453 ja `Juk/VDeclare.h` 396 (`tietorakenteet-ja-tila.md`); tiedostotason `static`-määrittelyjä
+(sarake 0) `Hk/` 102, `Juk/` 74, `Tp/` 21, `com/` 12, `cbTp/` 49, `tputilv2/` 27, `cbHk/` 131,
+`ViestiWin/` 81; funktion sisäisiä `static`-muuttujia `Hk/` 108, `Juk/` 88, `Tp/` 90, `tputilv2/`
+33, `cbHk/` 46, `ViestiWin/` 40, muut ≤ 10. Luvut ovat raakoja grep-osumia.
+
+**Lähtötiedot, ei analysoida uudelleen / inputs, not re-analysed:** C-1 (`tallenna`, H-007–H-021);
+C-2 (yhteysjonot, H-022–H-039); C-3 (tiedostot ja `datf2`, H-040–H-054, H-047); C-5
+(rakenteiden asettelu); C-6 (säie- ja lukkokartta, vaiheen vaihto Q30, H-087–H-108, erityisesti
+H-094, H-097, H-102, T-030, T-033; avoin Q67); C-7 (H-109:n laskurit, H-114, T-035).
+Niihin viitataan, niitä ei toisteta.
+
+| Osa / Part | Sisältö / Content | Agentti, malli / Agent, model |
+|---|---|---|
+| A | Inventaario: koneellinen luettelo ytimen (`Hk/`, `Juk/`, `Tp/`, `com/`, `cbTp/`, `tputilv2/`) globaaleista ja staattisista muuttujista; kirjoittajat ja lukijat funktioittain (skripti, raakatulos `todisteet/c8/`); agentti luokittelee: asetus (kirjoitetaan alustuksessa), kilpailudata (`kilparr`, `Sarjat`, indeksit), johdettu tila (laskurit, järjestysketjut, hakemistot), ajonaikaiset liput ja tilat, yhteyspuskurit, lomakkeiden yhteiset muuttujat / inventory and classification | skripti + `architecture-analyst`, Sonnet |
+| B | Elinkaari: alustusjärjestys (`aloitus`, `luesarjat`, `teejarj`, `initajat`), HK:n vaiheen vaihto (`vaihdavaihe`: mitkä globaalit nollataan tai lasketaan uudelleen ja mitkä jäävät edellisen vaiheen arvoon, esim. `k_pv`:stä riippuvat taulukot ja välimuistit), kilpailun uudelleenavaus tuonnin kautta (H-047) ja kahdesti ajettu `aloitus` (Q67), lopetus vain H-038:n ulkopuolisilta osin / lifecycle | `architecture-analyst`, Sonnet |
+| C | Johdettujen rakenteiden eheys: `nilm`/`nyilm`-laskurit, järjestysketjut (`jalku`, `remjarjarr`), `sarjaindex`, `idindex`/`getpos`, `bdg_kno`/`EmitJarr`, `pkarki`, `ntulos`: invariantit, ylläpitäjät ja polut, jotka voivat jättää ne ristiriitaan `kilparr`in kanssa (esim. H-109:n kaksoisvähennys), ja miten ristiriita näkyy tuloksissa / derived-structure integrity | `defect-concurrency-auditor`, Sonnet; Opus monivaiheiseen tulosvaikutuksen päättelyyn / Opus for multi-step result-impact reasoning |
+| D | Jaettu muuttuva tila säikeiden välillä: osan A muuttujat, joita kirjoittaa yksi säie ja lukee toinen (C-6:n säiekartta), ilman C-6:n lukkokartan suojaa; vain uudet tapaukset, ei C-6:n havaintoja; liput ilman `volatile`a tai muistiestettä vain, jos niillä on havaittava seuraus / shared state not covered by C-6 | `defect-concurrency-auditor`, Sonnet |
+| E | Riippumaton tarkastus uusille korkeille ja keskitason väitteille ja olemassa olevia havaintoja muuttaville väitteille / independent review | `independent-verifier`, Opus |
+| F | Dokumentointi: uusi `globaali-tila.md` (kaksikielinen) ja tiivistelmä `tietorakenteet-ja-tila.md`:n lukuun "Globaali tila"; rekisterit; `seuranta.md`, `CHECKPOINT.md`; raakatulokset `todisteet/c8/`; validaattori; paikallinen commit, ei pushia / documentation, local commit | pääistunto / main session |
+
+A ensin (B, C ja D käyttävät sen luetteloa); B, C ja D rinnakkain; E niiden jälkeen. Ei
+keinotekoista tokenbudjettia; päällekkäisyys estetään lähtötietoluettelolla ja jakamalla
+muuttujat osien välillä (B: alustus ja nollaus, C: johdetut rakenteet, D: säikeiden yhteiset).
+Rajattu pois: lomakeyksiköiden sisäinen tila (C-7, J7-2), lukitusjärjestys ja säikeiden
+elinkaari (C-6), tiedostomuodot (C-3), kääntäjäerot (C-5), konsoliohjelmien käyttöliittymätila,
+korjaukset, ajonaikaiset kokeet (puhtaan laskentafunktion eristetty koeohjelma vain erillisellä
+päätöksellä). Valmis, kun osan A luettelo kattaa ytimen globaalit ja staattiset (tai syy
+puuttumiseen on kirjattu), vaiheen vaihdon nollaustaulukko on tehty, johdettujen rakenteiden
+invariantit ja ylläpitäjät on listattu, uudet merkittävät havainnot on tarkastettu
+riippumattomasti ja validaattori menee läpi. Vaihe 2 erillisellä päätöksellä. [ehdotus]
+
+Batch 8, step 1: (A) scripted inventory of core globals and statics with writers and readers,
+classified by an agent; (B) lifecycle: initialisation order, which globals the HK stage change
+resets or leaves stale, reopen via import, `aloitus` twice; (C) integrity of derived structures
+(counters, rank chains, indexes, badge maps) and how inconsistency reaches results; (D) shared
+state between threads not covered by C-6; (E) Opus review of new high/medium claims; (F) new
+`globaali-tila.md`, summary in `tietorakenteet-ja-tila.md`, registers, evidence `todisteet/c8/`,
+local commit. Sonnet for inventory and analysis, Opus for review and multi-step result-impact
+reasoning; no token budget; earlier findings are inputs. Out of scope: form-internal state,
+lock order and thread lifecycle (C-6), file formats, compiler differences, fixes, run-time
+probes. [proposal]
 
 ### C-7 vaihe 1: rajaus / Step 1: scope (**valmis / done 2026-11-25**, `gui-liiketoimintalogiikka.md`)
 

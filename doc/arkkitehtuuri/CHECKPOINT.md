@@ -221,8 +221,15 @@ L-rivi maaliriviksi; keskitaso 6; matala–keskitaso 7; matala 3) ja T-034–T-0
 kavennettu, H-085 ja H-069 laajennettu; 9 jäsennysehdokasta ratkaistu; Q15 osittain, uudet
 Q75–Q77. Kaikki staattisia.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP:** käyttäjän katselmointi ja päätös C-7:n sulkemisesta tai
-vaiheesta 2 (muut lomakeyksiköt, 152 jäsennysehdokasta) tai erästä 8 (globaali tila).
+**C-7 valmis ja suljettu (2026-11-25), käyttäjä hyväksyi** kattavuustarkistuksen jälkeen
+(`gui-liiketoimintalogiikka.md` luku 13). GUI-syötteiden tarkastus ei ole valmis kokonaisuutena:
+jatkotyöjono J7-1–J7-7 (`seuranta.md`): arvonta-algoritmi `cbHk/HkArv2.cpp`, 41 muuta
+kilpailutietoja kirjoittavaa lomaketta, 152 jäsennysehdokasta, H-109/H-110/H-116:n ajonaikaiset
+vahvistukset, tarkastamattomat H-122–H-124/H-126/H-127, Q15/Q75–Q77, haarojen korjaussuunnittelu.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP: C-8 vaihe 1** (globaali muuttuva tila: inventaario,
+elinkaari ja vaiheen vaihto, johdettujen rakenteiden eheys, säikeiden yhteinen tila), rajaus
+`suunnitelma.md` "C-8 vaihe 1"; ei aloitettu, odottaa käyttäjän aloituslupaa.
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
@@ -234,7 +241,9 @@ fixes: H-071, H-072, H-055, H-070. **C-5 step 1 complete** (`kaantajaerot.md`, H
 **C-6 step 2 complete** (section 13; probes for H-090, H-091, H-093, H-094; H-099 refuted;
 new H-103–H-108, T-033). **C-6 closed** on approval; open items needing runs deferred.
 **C-7 step 1 complete** (`gui-liiketoimintalogiikka.md`, H-109–H-127, T-034–T-037; H-017
-narrowed; 9 parse candidates resolved). Next: user review; close C-7, step 2, or batch 8.
+narrowed; 9 parse candidates resolved). **C-7 closed** on approval after a coverage check;
+gaps in follow-up queue J7-1–J7-7. Next: C-8 step 1 (global mutable state, scope in
+`suunnitelma.md`), not started, awaiting approval.
 
 ## Resurssien käyttö / Resource usage (C-6 vaihe 2 / step 2)
 
