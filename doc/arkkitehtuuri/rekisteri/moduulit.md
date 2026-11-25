@@ -14,8 +14,8 @@ riippumaton lähdetarkastus (ei ajonaikainen) / independent source review (not r
 | `Juk/` | 23 | 20 | 0 | vastaanotto, lukitus, `combufsize`, tietueen pakkaus / receive, locking, record packing, säikeet ja lukot / threads and locks | C-1 (lukitus / locking), C-2, C-3, C-6 |
 | `Tp/` | 13 | 4 | 1 | säikeet, jonot, kehys, kättely / threads, queues, frame, handshake, säikeet ja lukot / threads and locks | C-1, C-2, C-6 |
 | `com/` | 3 | 1 | 1 | kuljetus / transport (UDP, TCP, WinHTTP), säikeet ja lukot / threads and locks | C-2, C-6 |
-| `cbHk/` | 149 | 21 | 0 | käynnistys, säikeet, vaiheen vaihto, vienti, tuonti, MySQL-jono / startup, threads, stage change, export, import, SQL queue, säikeet ja lukot / threads and locks | C-1, C-2, C-3 osittain / partly, C-6 |
-| `ViestiWin/` | 114 | 15 | 1 | vienti, tuonti, vanha muoto, MySQL-jono / export, import, old format, SQL queue, säikeet ja lukot / threads and locks | C-3 osittain / partly, C-6 |
+| `cbHk/` | 149 | 22 | 0 | käynnistys, säikeet, vaiheen vaihto, vienti, tuonti, MySQL-jono / startup, threads, stage change, export, import, SQL queue, säikeet ja lukot, VCL-säieturvallisuus / threads and locks, VCL thread safety | C-1, C-2, C-3 osittain / partly, C-6 |
+| `ViestiWin/` | 114 | 16 | 1 | vienti, tuonti, vanha muoto, MySQL-jono / export, import, old format, SQL queue, säikeet ja lukot, VCL-säieturvallisuus / threads and locks, VCL thread safety | C-3 osittain / partly, C-6 |
 | `cbTp/` | 73 | 10 | 0 | `writeerror_w`, `haeSQLTh`, uudelleenlähetys / resend, säikeet ja lukot / threads and locks | C-1, C-2, C-6 |
 | `HkConsole/` | 8 | 4 | 0 | käynnistys, vaiheen vaihto / startup, stage change, säikeet ja lukot / threads and locks | C-2, C-6 |
 | `JukConsole/` | 10 | 5 | 0 | säikeet ja lukot / threads and locks | C-4: varoitusten triage / warning triage, C-6 |

@@ -28,13 +28,15 @@ separately from test coverage.
 | C, erä 5 (C-5), vaihe 2 / step 2 | **valmis, riippumattomasti tarkastettu, commitoitu** / done, independently reviewed, committed `55897eb` (`kaantajaerot.md` luku 13: Q8 ratkaistu, `tyokalut/vertaa_omf.py`, H-082–H-086, T-029, H-042/H-079 laajennettu / extended; `todisteet/c5/vaihe2/`) | 2026-11-25 |
 | **C, erä 5 (C-5) kokonaisuutena / batch 5 as a whole** | **valmis ja suljettu käyttäjän hyväksynnällä / complete and closed on approval** (`b17d536`, `55897eb`; sulkeminen `kaantajaerot.md` 13.7); avoinna Q60 (omistaja / owner), Q63, Q64; jatkotehtävät alla / follow-ups below | 2026-11-25 |
 | **C, erä 6 (C-6) säikeet ja synkronointi, vaihe 1 / threads and synchronisation, step 1** | **valmis, riippumattomasti tarkastettu, commitoitu paikallisesti / done, independently reviewed, committed locally** (`saikeet-ja-lukot.md`, H-087–H-102, T-030–T-032, H-018/H-031/H-038 laajennettu / extended, Q30 ratkaistu / resolved, `todisteet/c6/`); vaihe 2 erillisellä päätöksellä / step 2 on a separate decision | 2026-11-25 |
+| **C-6 vaihe 2 / step 2** (todennus ja jatkoanalyysi / verification and follow-up) | **valmis, riippumattomasti tarkastettu, commitoitu paikallisesti / done, independently reviewed, committed locally** (`saikeet-ja-lukot.md` luku 13; H-090, H-091 reunat, H-093, H-094 toistettu eristetyllä koeohjelmalla / reproduced with isolated probes, `todisteet/c6/vaihe2/`; H-090, H-093 → korkea; H-099 kumottu / refuted; uudet / new H-103–H-108, T-033; Q65, Q66, Q69, Q70–Q72, Q74 ratkaistu / resolved, Q67 osittain / partly); C-6:n sulkeminen käyttäjän päätöksellä / closing C-6 on the user's decision | 2026-11-25 |
 | C, erät 7–10 / batches 7–10 | ei aloitettu / not started (`suunnitelma.md`) | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** C-6:n vaihe 1 on valmis (`saikeet-ja-lukot.md`). Seuraavaksi
-käyttäjän päätöksellä C-6:n vaihe 2 (ehdokkaiden syväanalyysi ja testikehystodennus:
-H-087, H-091, H-090, H-094; Q65–Q67, Q69, Q74; `saikeet-ja-lukot.md` luku 12). / C-6 step 1
-done; next, on the user's decision, C-6 step 2 (deep analysis and harness verification).
+**Seuraava askel / Next step:** C-6:n vaiheet 1 ja 2 ovat valmiit (`saikeet-ja-lukot.md`,
+luvut 1–13). Seuraavaksi käyttäjän päätös C-6:n sulkemisesta; ehdotus: sulje C-6, jäljellä
+olevat ajonaikaiset kysymykset (bcc32-ajo, H-087/H-103 GUI:ssa, Q67:n apusäikeet, Q68, Q73)
+korjausvaiheen tai käsitestien yhteyteen. C-7:ää ei aloiteta ennen päätöstä. / C-6 steps 1 and
+2 done; next, the user's decision on closing C-6; C-7 not started before that.
 Kiireellisesti
 korjattavat H-071, H-072, H-055 ja H-070 korjataan omissa haaroissaan erillisellä
 päätöksellä; väliaikaiset suojaussuositukset `muistiturvallisuus.md` luku 15. / C-5 closed;
@@ -97,13 +99,15 @@ separate decision; none started.
 | 6 | H-056, H-060, H-073 | laite tai verkko asetuksella / device or network with a setting | P2 |
 | 7 | P3–P5 | tavallinen data, paikallinen tiedosto, operaattori / ordinary data, local file, operator | `muistiturvallisuus.md` luku 15 |
 
-C-6:n havainnot (H-087–H-102) ovat lukkiutumisia, vapauttamattomia lukkoja ja elinkaaren
-kilpailutilanteita; verkosta laukeavia syötevirheitä ei ole. Alustava sijoitus [päätelty]:
-P2 H-087, H-091 (jäätyminen kilpailun aikana, käyttäjän toiminto tai asetus); P3 H-090,
-H-093, H-094, H-088, H-089, H-092, H-097; P4 H-095, H-096, H-099, H-100, H-101, H-102, H-098.
-/ C-6 findings are hangs, unreleased locks and lifecycle races, no network-triggered input
-defects; provisional placement [inferred] P2 H-087, H-091; P3 H-090, H-093, H-094, H-088,
-H-089, H-092, H-097; P4 the rest.
+C-6:n havainnot (H-087–H-108) ovat lukkiutumisia, vapauttamattomia lukkoja, elinkaaren
+kilpailutilanteita ja VCL-käyttöä työsäikeistä; verkosta laukeavia syötevirheitä ei ole.
+Päivitetty sijoitus vaiheen 2 jälkeen [päätelty] (`saikeet-ja-lukot.md` 13.9): **P2** H-087,
+H-091, H-090, H-093 (jäätyminen tai kaatuminen kilpailun aikana; H-090 ja H-093 todennettu
+koeohjelmalla), H-107 (kaatuminen ensimmäisestä luennasta asetuksella); **P3** H-094, H-103,
+H-104, H-105, H-106, H-088, H-089, H-092, H-097; **P4** H-095, H-096, H-098, H-100, H-101,
+H-102, H-108; H-099 kumottu ja poistettu jonosta. / Updated after step 2 [inferred]: P2 H-087,
+H-091, H-090, H-093, H-107; P3 H-094, H-103–H-106, H-088, H-089, H-092, H-097; P4 the rest;
+H-099 refuted and removed.
 
 C-5:n havainnoille (H-078–H-086) ei ole osoitettu verkkosaavutettavuutta; ne vaativat
 paikallisen tiedoston tai operaattorin syötteen. Alustava sijoitus [päätelty]: P4 H-078,
@@ -129,7 +133,7 @@ pending), H-082, H-085; P5 the rest; H-042 stays P3.
 | # | Kysymys / Question | Missä / Where |
 |---|---|---|
 | ~~Q1~~ | **Ratkaistu / resolved 2026-11-24:** työsäie `tarkcom`; samanaikaisuus mahdollinen lukitsemattomien kutsujen kautta / worker thread `tarkcom`; concurrency possible via unlocked callers (`tallenna-samanaikaisuus.md`, H-007, H-010) | – |
-| Q65–Q74 | Erän C-6 kysymykset (ei-omistajan `Leave`, lokisoketin virheen pysyvyys, `aloitus` kahdesti, `opencomfile(1)` yhdellä yhteydellä, emit-muistin lukijat vaihdon aikana, `TCPrcvTh` vapautuksen jälkeen, viestin `tark_aika` lopetuksessa, `LAJUNEN`, konsolin `CTRL_CLOSE`, syvemmät lukitusreunat) / batch C-6 questions | `saikeet-ja-lukot.md`, luku / section 10 |
+| Q65–Q74 | Erän C-6 kysymykset (ei-omistajan `Leave`, lokisoketin virheen pysyvyys, `aloitus` kahdesti, `opencomfile(1)` yhdellä yhteydellä, emit-muistin lukijat vaihdon aikana, `TCPrcvTh` vapautuksen jälkeen, viestin `tark_aika` lopetuksessa, `LAJUNEN`, konsolin `CTRL_CLOSE`, syvemmät lukitusreunat) / batch C-6 questions. **Vaihe 2:** Q65, Q66, Q69, Q70, Q71, Q72, Q74 ratkaistu, Q67 osittain; Q68 ja Q73 avoinna / step 2: resolved except Q67 (partly), Q68, Q73 | `saikeet-ja-lukot.md`, luvut / sections 10, 13.5 |
 | Q12 | Kumpi `add_sakko` linkitetään HkKisaWiniin? / Which `add_sakko` is linked? | `cbHk/UnitASakot.cpp:269`, `cbHk/UnitASuunn.cpp:289` |
 | ~~Q13~~ | **Ratkaistu / resolved (C-2):** kyllä, kaikki perustiedot paitsi koon 0 kentät; ei vaiheita / yes, all base fields except size-0 fields; no stages (`tiedonsiirto.md`) | – |
 | Q14 | Kutsuuko `tulostasarja` lukon aikana `SendMessage`-polkua? **Osittain ratkaistu (C-6):** GUI-polulta ei löytynyt; konsolin kehotteet vapauttavat lukon / Does `tulostasarja` reach a `SendMessage` while holding the lock? **Partly resolved (C-6):** none found on the GUI path | `Hk/HkTulostus.cpp:5850`–`:6419` |
@@ -193,6 +197,7 @@ Recorded as issue drafts (local `issue-drafts/`, not in the repo).
 | 2026-11-24 | C-4 vaihe 1: vain varoitusinventaario ja luokittelu; ei tuotantokoodin, projektiasetusten tai CI:n muutoksia; analyysikäännökset väliaikaishakemistoon MSBuildin `ForceImportAfterCppTargets`-ohjauksella; ReleaseVA200 ajettu `PlatformToolset=v145`-ohituksella; ei committia ilman hyväksyntää / warning inventory and triage only; no production, project or CI changes; analysis builds redirected to scratch; ReleaseVA200 with a toolset override; no commit without approval | Käyttäjän ohje / user instruction |
 | 2026-11-25 | C-5 suljettu käyttäjän hyväksynnällä; ei uusia C-5-analyysejä tai -testejä; Q60 omistajalle, Q63–Q64 avoimina; 161 jäsennysehdokasta ja H-079:n uudelleenarviointi jatkotehtäviksi; C-6 valmistellaan mutta ei aloiteta. Työtapa C-6:sta alkaen: Sonnet oletusmallina, Opus vain perustelluissa vaativissa tarkastuksissa, ei päällekkäistä analyysiä, työerälle ennalta rajaus ja tokenbudjetti, olemassa olevat todisteet ennen uusia koeohjelmia, riippumaton tarkastus riskiperusteisesti / C-5 closed; follow-ups recorded; C-6 prepared, not started; working method from C-6: Sonnet by default, Opus only for justified demanding reviews, no overlapping analysis, scope and token budget fixed up front, existing evidence before new probes, risk-based independent review | Käyttäjän päätös; C-5:n agenttien kulutus noin 1,56 milj. tokenia / user decision; C-5 agents used about 1.56 M tokens |
 | 2026-11-25 | C-6 vaihe 1 aloitettu ja tehty käyttäjän luvalla; tälle erälle ei keinotekoisia tokenrajoja (suunnitelman 380 k ei sitova), Sonnet inventointiin, Opus vakavien väitteiden riippumattomaan tarkastukseen; paikallinen commit sallittu, ei pushia / C-6 step 1 started and done on approval; no artificial token limits for this batch, Sonnet for inventory, Opus for reviewing severe claims; local commit allowed, no push | Käyttäjän ohje / user instruction |
+| 2026-11-25 | C-6 vaihe 2 tehty käyttäjän luvalla: eristetyt koeohjelmat sallittu (ei tuotantotietoja, ei verkkoyhteyksiä, ei toimitettujen ohjelmien käynnistystä); koeohjelmat ja niiden projekti todisteina `todisteet/c6/vaihe2/`, ei muutoksia `TPsource/`-puuhun; ei tokenrajoja; paikallinen commit, ei pushia; C-7 vasta C-6:n sulkemispäätöksen jälkeen / C-6 step 2 done on approval; isolated probes allowed, kept as evidence outside TPsource | Käyttäjän ohje / user instruction |
 | 2026-11-25 | C-5 vaihe 1: riippumaton tarkastus ja dokumentointi ilman välihyväksyntöjä, paikallinen commit sallittu, ei pushia; sen jälkeen C-5:n jäljellä olevat tavoitteet rajattuna staattisena työeränä; ei tuotantokoodin, projektiasetusten tai CI:n muutoksia, ei toimitettujen ohjelmien ajoja eikä verkkokokeita, ei uusia laajoja testikehyksiä; epäselvyydet avoimiksi kysymyksiksi / step 1 review and write-up without intermediate approvals, local commit allowed, no push; then the remaining C-5 goals as a bounded static step; no production, project or CI changes, no runs of shipped programs, no network tests, no new large harnesses | Käyttäjän ohje / user instruction |
 | 2026-11-25 | C-4 suljettu käyttäjän hyväksynnällä; H-071, H-072, H-055 ja H-070 kiireellisesti korjattaviksi; väliaikaiset suojaukset vain suosituksina, verkko- tai tuotantoasetuksia ei muutettu; C-5 seuraavaksi aloitusluvan jälkeen / C-4 closed on approval; urgent fixes marked; mitigations as recommendations only; C-5 next on approval | Käyttäjän päätös / user decision |
 | 2026-11-25 | C-4 vaihe 2 (viimeinen): vain analyysi; ei ASan-sarjoja, uusia testikehyksiä, GUI-ajoja, korjauksia eikä CI-muutoksia; vaihe 1 commitoitiin hyväksynnän ja uudelleentarkastuksen jälkeen (`81bcad9`), vaihetta 2 ei commitoida ilman hyväksyntää; uusi H vain, jos kyse ei ole rekisteröidyn vian toisesta ilmenemismuodosta / analysis only; step 1 committed after approval and re-review; step 2 not committed without approval | Käyttäjän ohje / user instruction |

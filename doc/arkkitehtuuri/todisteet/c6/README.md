@@ -18,6 +18,7 @@ in `raaka-manifest.sha256` and `lukkoskriptit/scan.py` regenerates it.
 | `lukkoskriptit/` | Lukkoagentin kertakäyttöskriptit (`scan.py` sisäkkäiset parit, `reg.py` lukitut alueet, `blk.py` estävät kutsut, `unbal.py` vapauttamattomat polut, `cnt.py` laskenta) ja tulosteet (`live.txt` elävät osumat ilman kommentteja, `blk_*.txt`, `reg_*.txt`, `*0.txt`) / throwaway scripts and outputs of the lock agent |
 | `raaka-manifest.sha256` | Kaikkien väliaikaistiedostojen tiivisteet (myös pois jätetyn) / hashes of all scratch files, including the excluded one |
 | `SHA256SUMS` | Tämän hakemiston tiedostojen tiivisteet / hashes of the files here |
+| `vaihe2/` | Vaihe 2: eristetyt koeohjelmat ja niiden tulokset, oma README ja tiivisteet / step 2: isolated probes and results, own README and hashes |
 
 Syötteiden tuotanto / how the inputs were produced (Git Bash, `TPsource/V52`):
 

@@ -29,7 +29,7 @@ code references appear only once.
 | [tiedostomuodot.md](tiedostomuodot.md) | Syväauditointi 3: pysyvät tiedostot, tavuasettelut, mitatut koot ja eheys / Deep audit 3: persistent files, byte layouts, measured sizes and integrity |
 | [muistiturvallisuus.md](muistiturvallisuus.md) | Erä C-4: kääntäjävaroitukset (MSVC `/W4 /analyze`, bcc32 `-w`), luokittelu, uudet muistiviat / Batch C-4: compiler warnings, triage, new memory defects |
 | [kaantajaerot.md](kaantajaerot.md) | Erä C-5: kääntäjäkohtainen käytös (asetukset, rakenteiden asettelu käännösyksiköiden välillä, merkistö, ajonaikaiset erot) / Batch C-5: compiler-specific behaviour |
-| [saikeet-ja-lukot.md](saikeet-ja-lukot.md) | Erä C-6 vaihe 1: säiekartta, elinkaari ja lopetus, lukkokartta, lukitusjärjestys, Q30 / Batch C-6 step 1: thread map, lifecycle, lock map, lock order |
+| [saikeet-ja-lukot.md](saikeet-ja-lukot.md) | Erä C-6 vaiheet 1–2: säiekartta, elinkaari ja lopetus, lukkokartta, lukitusjärjestys, Q30; vaihe 2: polkujen todennus eristetyillä koeohjelmilla, VCL-säieturvallisuus / Batch C-6 steps 1–2: thread map, lifecycle, lock map, lock order; step 2: probe verification, VCL thread safety |
 | [testaus.md](testaus.md) | Erä C-11: testausstrategia ja ajonaikaisen todennuksen suunnitelma / Batch C-11: test strategy and runtime verification plan |
 | [rekisteri/](rekisteri/README.md) | Auditointirekisteri: tiedostot, moduulit, havainnot / Audit register: files, modules, findings |
 | [dokumentointistandardi.md](dokumentointistandardi.md) | Kommentointikäytännöt / Commenting conventions |

@@ -1,0 +1,89 @@
+=== C6ProbeHk | tp_build_info | exit=0 | 0.0 s
+TPINFO|program=C6ProbeHk
+TPINFO|msc_full_ver=195237029
+TPINFO|config=Release
+TPINFO|asan=0
+TPINFO|char_unsigned=1
+TPINFO|sizeof_void_ptr=4
+[doctest] test cases: 1 | 1 passed | 0 failed | 17 skipped
+[doctest] assertions: 1 | 1 passed | 0 failed |
+=== C6ProbeHk | C6 H-090 control: tunnjono off and same message leaves ajat free | exit=0 | 0.0 s
+TPINFO|writeerror_w: AJANOTTOA EI K?YNNISTETTY, MUTTA YRITET??N K?YTT?? (kesto 0)
+TPINFO|control thread 111916 ret=1 ajat owner=0 rec=0 lockcount=-1 waiters=0
+[doctest] test cases:  1 |  1 passed | 0 failed | 17 skipped
+[doctest] assertions: 10 | 10 passed | 0 failed |
+=== C6ProbeHk | C6 H-090 tall_regnly time queue not started returns at 2782 holding ajat | exit=0 | 0.0 s
+TPINFO|writeerror_w: AJANOTTOA EI K?YNNISTETTY, MUTTA YRITET??N K?YTT?? (kesto 0)
+TPRESULT|finding=H-090|mechanism=tall-regnly-2782-queue-missing|observed=1|detail=path :2674 enter, :2777-2782 return (message 'AJANOTTOA EI KAYNNISTETTY'); tall_regnly returned 1 in 0 ms on thread 110496, which has ended; other thread got ajat lock=0; ajat owner=110496 rec=1 lockcount=-2 waiters=0
+[doctest] test cases:  1 |  1 passed | 0 failed | 17 skipped
+[doctest] assertions: 11 | 11 passed | 0 failed |
+=== C6ProbeHk | C6 H-090 tall_regnly clock difference over maxero returns at 2776 holding ajat | exit=0 | 0.0 s
+TPRESULT|finding=H-090|mechanism=tall-regnly-2776-maxero|observed=1|detail=path :2674 enter, :2774-2776 return (labs(bt) > maxero, first try); maxero set to 0; tall_regnly returned 1 in 0 ms on thread 115536, which has ended; other thread got ajat lock=0; ajat owner=115536 rec=1 lockcount=-2 waiters=0
+[doctest] test cases:  1 |  1 passed | 0 failed | 17 skipped
+[doctest] assertions: 10 | 10 passed | 0 failed |
+=== C6ProbeHk | C6 H-090 tall_regnly KELLO_ESTO returns at 2771 holding ajat | exit=0 | 0.0 s
+TPINFO|writeerror_w: AJANOTTOA EI K?YNNISTETTY, MUTTA YRITET??N K?YTT?? (kesto 0)
+TPRESULT|finding=H-090|mechanism=tall-regnly-2771-kello-esto|observed=1|detail=path :2674 enter, :2770-2771 return (second time 1 s after the first, kello_esto=200); tall_regnly returned 0 in 0 ms on thread 114068, which has ended; other thread got ajat lock=0; ajat owner=114068 rec=1 lockcount=-2 waiters=0
+[doctest] test cases:  1 |  1 passed | 0 failed | 17 skipped
+[doctest] assertions: 17 | 17 passed | 0 failed |
+=== C6ProbeHk | C6 H-090 tall_regnly code G returns at 3074 holding ajat | exit=0 | 0.0 s
+TPRESULT|finding=H-090|mechanism=tall-regnly-3074-code-outside-a-f|observed=1|detail=path :2674 enter, :2773 skipped (code G), :3074 return; tall_regnly returned 0 in 0 ms on thread 108956, which has ended; other thread got ajat lock=0; ajat owner=108956 rec=1 lockcount=-2 waiters=0
+[doctest] test cases:  1 |  1 passed | 0 failed | 17 skipped
+[doctest] assertions: 10 | 10 passed | 0 failed |
+=== C6ProbeHk | C6 H-093 control: TCP log down without reconnect returns | exit=0 | 0.1 s
+TPINFO|TCPyhteys at 0x02BAFD20 (PDB), element size 172, offsets checked
+TPINFO|control returned=1 caught=0 loki owner=0 rec=0 lockcount=-1 waiters=0
+[doctest] test cases:  1 |  1 passed | 0 failed | 17 skipped
+[doctest] assertions: 14 | 14 passed | 0 failed |
+=== C6ProbeHk | C6 H-093 wkirjloki TCP log reconnect recursion overflows the stack | exit=0 | 0.1 s
+TPINFO|TCPyhteys at 0x02BAFD20 (PDB), element size 172, offsets checked
+TPRESULT|finding=H-093|mechanism=wkirjloki-wrt_st_TCP-reconnect-recursion|observed=1|detail=exception 0xC00000FD caught=1 returned=0; nested wkirjloki frames holding loki at the fault=501; stack used 1036764 bytes (base 0x05A70000, fault 0x05972E24), about 2069 bytes per level; reconnectTCP reached=0 (writeerrorOn=12345, sockdata=INVALID_SOCKET); loki owner=113248 rec=501 lockcount=-2 waiters=0
+[doctest] test cases: 1 | 1 passed | 0 failed | 17 skipped
+[doctest] assertions: 9 | 9 passed | 0 failed |
+=== C6ProbeHk | C6 H-093 control: send error with free locks returns | exit=0 | 0.1 s
+TPINFO|TCPyhteys at 0x02BAFD20 (PDB), element size 172, offsets checked
+[doctest] test cases:  1 |  1 passed | 0 failed | 17 skipped
+[doctest] assertions: 13 | 13 passed | 0 failed |
+=== C6ProbeHk | C6 H-093 edge loki to tcpip: wkirjloki holds loki and waits for tcpip | exit=0 | 2.1 s
+TPINFO|TCPyhteys at 0x02BAFD20 (PDB), element size 172, offsets checked
+TPRESULT|finding=H-093|mechanism=edge-loki-then-tcpip|observed=1|detail=X=114432 blocked >= 2000 ms; loki owner=114432 rec=1 lockcount=-2 waiters=0; tcpip owner=114732 rec=1 lockcount=-6 waiters=1 (holder = test thread 114732)
+[doctest] test cases: 1 | 1 passed | 0 failed | 17 skipped
+[doctest] assertions: 9 | 9 passed | 0 failed |
+TPEXIT|blocked_threads=1|mode=terminate
+=== C6ProbeHk | C6 H-093 edge tcpip to loki: send error holds tcpip and waits for loki | exit=0 | 2.1 s
+TPINFO|TCPyhteys at 0x02BAFD20 (PDB), element size 172, offsets checked
+TPRESULT|finding=H-093|mechanism=edge-tcpip-then-loki|observed=1|detail=Y=21684 blocked >= 2000 ms; tcpip owner=21684 rec=1 lockcount=-2 waiters=0; loki owner=100968 rec=1 lockcount=-6 waiters=1 (holder = test thread 100968)
+[doctest] test cases: 1 | 1 passed | 0 failed | 17 skipped
+[doctest] assertions: 9 | 9 passed | 0 failed |
+TPEXIT|blocked_threads=1|mode=terminate
+=== C6ProbeHk | C6 H-093 two-thread deadlock loki and tcpip | exit=0 | 4.1 s
+TPINFO|TCPyhteys at 0x02BAFD20 (PDB), element size 172, offsets checked
+TPRESULT|finding=H-093|mechanism=deadlock-loki-tcpip-two-threads|observed=1|detail=2 s after release: X=114904 alive=1, Y=114828 alive=1; loki owner=114904 rec=1 lockcount=-6 waiters=1; tcpip owner=114828 rec=1 lockcount=-6 waiters=1; other thread got loki=0 tcpip=0; X overflow caught=0 depth=0
+[doctest] test cases:  1 |  1 passed | 0 failed | 17 skipped
+[doctest] assertions: 12 | 12 passed | 0 failed |
+TPEXIT|blocked_threads=2|mode=terminate
+=== C6ProbeHk | C6 H-094 control: without vaiheenvaihto the badge reaches tall_bdg_t | exit=0 | 0.1 s
+TPINFO|control: processed=1 regnlyhetki[0]=351464 threads before=4 after=5 (consumer alive)
+[doctest] test cases: 1 | 1 passed | 0 failed | 17 skipped
+[doctest] assertions: 4 | 4 passed | 0 failed |
+=== C6ProbeHk | C6 H-094 add_bdg_t during vaiheenvaihto: consumer exits and badge is never processed | exit=0 | 2.2 s
+TPRESULT|finding=H-094|mechanism=add-bdg-t-consumer-exits-in-vaiheenvaihto|observed=1|detail=two badges added 1 s apart; regnlyhetki[0]=-777777 (sentinel -777777) after 1 s each; process threads before=4 after first=4 after second=4 (no consumer left running)
+[doctest] test cases: 1 | 1 passed | 0 failed | 17 skipped
+[doctest] assertions: 3 | 3 passed | 0 failed |
+=== C6ProbeHk | C6 H-091 control: tall_elahto saves the start without page printing | exit=0 | 0.1 s
+[doctest] test cases:  1 |  1 passed | 0 failed | 17 skipped
+[doctest] assertions: 13 | 13 passed | 0 failed |
+=== C6ProbeHk | C6 H-091 edge tall to print: tall_elahto holds tall and waits for print | exit=0 | 3.1 s
+TPRESULT|finding=H-091|mechanism=edge-tall-then-print|observed=1|detail=A=114216 blocked >= 3000 ms; tall owner=114216 rec=1 lockcount=-2 waiters=0; print owner=108604 rec=1 lockcount=-6 waiters=1 (holder = test thread 108604); lisaToimetOn and GDIPRINTER set by the probe (GUI-only settings)
+[doctest] test cases:  1 |  1 passed | 0 failed | 17 skipped
+[doctest] assertions: 11 | 11 passed | 0 failed |
+TPEXIT|blocked_threads=1|mode=terminate
+=== C6ProbeHk | C6 H-091 control: autotulostus prints a class with free locks | exit=0 | 0.1 s
+TPINFO|control: prior[0]=0 after the run (0 = class printed and priority reset)
+[doctest] test cases:  1 |  1 passed | 0 failed | 17 skipped
+[doctest] assertions: 14 | 14 passed | 0 failed |
+=== C6ProbeHk | C6 H-091 edge print to tall: autotulostus holds print and waits for tall | exit=0 | 3.1 s
+TPRESULT|finding=H-091|mechanism=edge-print-then-tall|observed=1|detail=B=108828 blocked >= 3000 ms; print owner=108828 rec=1 lockcount=-2 waiters=0; autotul owner=108828 rec=1 lockcount=-2 waiters=0; tall owner=26012 rec=1 lockcount=-6 waiters=1 (holder = test thread 26012)
+[doctest] test cases:  1 |  1 passed | 0 failed | 17 skipped
+[doctest] assertions: 12 | 12 passed | 0 failed |
+TPEXIT|blocked_threads=1|mode=terminate
