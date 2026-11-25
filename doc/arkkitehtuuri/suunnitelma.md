@@ -147,7 +147,12 @@ Jatkotehtävä C-5:stä (ei numeroitu erä): syötteiden kokonaislukujäsennykse
 Follow-up from C-5 (not a numbered batch): integer-parse review, 161 candidates; may be
 merged with batch 7.
 
-### C-9 vaihe 1: rajaus / Step 1: scope (**valmisteltu, ei aloitettu / prepared, not started**)
+### C-9 vaihe 1: rajaus / Step 1: scope (**valmis / done 2026-11-26**, `virheenkasittely.md`)
+
+Toteutus: rajauksen mukaan; osan A skripti korjattiin agentin otoksen perusteella (v2), osan B
+monivaiheinen päättely tehtiin Sonnetilla ja Opus vain osassa E; tarkastajan löytämä H-149
+todennettiin pääistunnossa. Agentit noin 1,22 milj. tokenia. / Done per the scope; script fixed
+(v2) after the agent's sample; Opus only in part E; about 1.22 M agent tokens.
 
 Suunnitelman erä 9: virheenkäsittely ja resurssit – palautusarvojen tarkistus, tiedostokahvat,
 muistivuodot, `writeerror`-polut; riski keskitaso; agentti `defect-concurrency-auditor`; tuotos

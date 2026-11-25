@@ -1,6 +1,6 @@
 # Tarkistuspiste / Checkpoint
 
-Päivitetty / updated: 2026-11-25. Tämä tiedosto riittää työn jatkamiseen tyhjästä
+Päivitetty / updated: 2026-11-26. Tämä tiedosto riittää työn jatkamiseen tyhjästä
 istunnosta (esim. `/clear`:n jälkeen).
 This file is enough to resume the work from an empty session (e.g. after `/clear`).
 
@@ -237,9 +237,13 @@ Uudet H-128–H-144 (korkea 1: H-129 kekoylivuoto vaiheen vaihdossa; keskitaso�
 toistettu eristetyllä koeohjelmalla `todisteet/c8/koeohjelmat/` (ei toimitetussa ohjelmassa);
 H-129 korjausjonoon P2 (alustava); poikkeamat ja jatkotehtävät `seuranta.md`.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP: C-9 vaihe 1** (virheenkäsittely ja resurssit: inventaario,
-pysyvän datan virhepolut, resurssien elinkaari, tila virheen jälkeen), rajaus `suunnitelma.md`
-"C-9 vaihe 1"; ei aloitettu, odottaa käyttäjän aloituslupaa.
+**C-9 vaihe 1 valmis (2026-11-26), riippumattomasti tarkastettu, commitoitu paikallisesti.**
+Raportti `virheenkasittely.md`; raakatulokset ja raportit `todisteet/c9/`; skripti
+`tyokalut/resurssit.py` (v2). Uudet H-145–H-157 (keskitaso 9, matala 4) ja T-040–T-041; Q83–Q90;
+H-044, H-071 ja H-105 laajennettu. Kaikki staattisia.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP:** käyttäjän katselmointi; sitten C-9:n sulkeminen, vaihe 2
+(eristetyt koeohjelmat, `virheenkasittely.md` luku 11) tai C-10.
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
@@ -254,8 +258,10 @@ new H-103–H-108, T-033). **C-6 closed** on approval; open items needing runs d
 narrowed; 9 parse candidates resolved). **C-7 closed** on approval after a coverage check;
 gaps in follow-up queue J7-1–J7-7. **C-8 step 1 complete** (`globaali-tila.md`, H-128–H-144, T-038–T-039, Q78–Q82;
 H-129 high). **C-8 closed** on approval (counts reconciled; H-128 and H-129 mechanism reproduced with an
-isolated probe, not in a shipped program; H-129 in the fix queue as P2). Next: C-9 step 1
-(error handling and resources, scope in `suunnitelma.md`), not started, awaiting approval.
+isolated probe, not in a shipped program; H-129 in the fix queue as P2). **C-9 step 1 complete**
+(`virheenkasittely.md`, H-145–H-157, T-040–T-041, Q83–Q90; nothing high on static evidence, H-149
+relay `autofile` double free may be high, Q85). Next: the user's review; then close, step 2
+(isolated probes) or C-10.
 
 ## Resurssien käyttö / Resource usage (C-6 vaihe 2 / step 2)
 
