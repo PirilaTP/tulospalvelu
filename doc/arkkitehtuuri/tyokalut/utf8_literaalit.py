@@ -1,7 +1,10 @@
 """List non-ASCII string literals in UTF-8 (no BOM) source files.
 
-MSVC reads such files as the system code page (cp1252), so these literals
-are compiled wrong in the console programs. See doc/arkkitehtuuri/merkistot.md.
+Both MSVC and classic bcc32 read such files as the system ANSI code page
+(cp1252), so these literals are compiled wrong in all programs (verified in C-5,
+see doc/arkkitehtuuri/kaantajaerot.md). See doc/arkkitehtuuri/merkistot.md.
+C-5 fix: the old character class excluded the letter n instead of a newline,
+the escape branch matched only a dot, and only 3 hits per file were printed.
 Usage: python -I utf8_literaalit.py <inventory.json> <repo>/TPsource/V52
 The JSON comes from inventaario.py.
 """
@@ -9,7 +12,7 @@ import sys, os, re, json
 sys.stdout.reconfigure(encoding="utf-8")
 inv = json.load(open(sys.argv[1], encoding='utf-8'))
 root = sys.argv[2]
-lit = re.compile(r'(L?)"((?:[^"\\n]|\.)*)"')
+lit = re.compile(r'(L?)"((?:[^"\\\n]|\\.)*)"')
 for f in inv['files']:
     if f['encoding'] != 'utf-8' or not f['path'].lower().endswith(('.c', '.cpp', '.h')):
         continue
@@ -23,5 +26,5 @@ for f in inv['files']:
                 hits.append((i, m.group(1) + '"' + m.group(2)[:50] + '"'))
     if hits:
         print(f"{f['path']}  [{', '.join(p.split('/')[-1] for p in f['projects']) or '-'}]  {len(hits)} kpl")
-        for h in hits[:3]:
+        for h in hits:
             print('    ', h[0], h[1])

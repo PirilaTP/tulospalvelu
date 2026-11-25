@@ -38,56 +38,73 @@ The system ANSI code page on this machine is 1252. The GUI programs are built wi
 the **classic `bcc32` compiler** (not the Clang-based `bcc32c`), as the build log
 shows (`RADStudio10/build-logs/*.log`: "bcc32 command line").
 
+*Korjattu erässä C-5 (2026-11-25). Aiempi versio väitti bcc32:n lukevan BOMittoman
+UTF-8:n oikein; väite oli väärä. Yksityiskohdat ja todisteet: `kaantajaerot.md` luku 5. /
+Corrected in batch C-5. The earlier version claimed bcc32 reads UTF-8 without a BOM
+correctly; that was wrong. Details: `kaantajaerot.md` section 5.*
+
 | Tiedoston merkistö / File encoding | MSVC (konsoli / console) | bcc32 (GUI) |
 |---|---|---|
 | cp1252 | oikein / correct | oikein / correct |
-| UTF-8 ilman BOMia / without BOM | **väärin / wrong**: `ä` → `Ã¤` | oikein / correct |
-| UTF-8 BOMilla / with BOM | oikein / correct | ei testattu / not tested |
+| UTF-8 ilman BOMia / without BOM | **väärin / wrong**: `ä` → `Ã¤` | **väärin / wrong**: `ä` → `Ã¤` (C-5) |
+| UTF-8 BOMilla / with BOM | oikein / correct | oikein / correct (C-5, Q7) |
 
 Miten todennettu / How verified:
 
 - **MSVC:** testiohjelma, jossa `L"äö"` ja `"äö"` tallennettuna kolmella
   merkistöllä, käännettynä `cl /J`:llä ja ajettuna. UTF-8 ilman BOMia tuotti
   merkit `00C3 00A4 00C3 00B6`, muut `00E4 00F6`. [todennettu]
-- **bcc32:** Community Edition ei salli komentorivikäännöstä, joten tarkistus
-  tehtiin valmiista ohjelmista. UTF-8-tiedoston `Tp/TpLaitteet.cpp:2581` teksti
-  "Asema lähettää" on `HkKisaWin.exe`:ssä ja `ViestiWin.exe`:ssä oikein
-  (`00E4`), mutta MSVC:llä käännetyssä `HkMaali.exe`:ssä väärin (`00C3 00A4`).
-  cp1252-tiedoston `Hk/HkXml.cpp` teksti "rivillä" on oikein molemmissa.
-  [todennettu]
+- **bcc32 (C-5):** `bcc32.exe` toimii komentoriviltä. Sama koeohjelma kolmella
+  merkistöllä tuotti täsmälleen samat tavut kuin MSVC: BOMiton UTF-8 väärin, BOM ja
+  cp1252 oikein, myös merkkivakioissa ja sisällytetyissä otsikoissa. Aiempi
+  todiste oli väärin tulkittu: `Tp/TpLaitteet.cpp:2581` on `#ifdef _CONSOLE`
+  -lohkossa, eikä bcc32 käännä sitä; GUI:n oikea teksti tulee cp1252-tiedostosta
+  `cbTp/UnitEmiTag.cpp:168`. Toimitetuissa GUI-ohjelmissa on BOMittomien
+  UTF-8-tiedostojen tekstit rikkinäisinä. [todennettu]
 
 - **MSVC:** a test program with `L"äö"` and `"äö"` saved in three encodings,
   compiled with `cl /J` and run. UTF-8 without BOM produced `00C3 00A4 00C3 00B6`,
   the others `00E4 00F6`. [verified]
-- **bcc32:** the Community Edition does not allow command-line compiling, so the
-  check was made on the built programs. The text "Asema lähettää" from the UTF-8
-  file `Tp/TpLaitteet.cpp:2581` is correct in `HkKisaWin.exe` and `ViestiWin.exe`
-  (`00E4`) but wrong in the MSVC-built `HkMaali.exe` (`00C3 00A4`). The text
-  "rivillä" from the cp1252 file `Hk/HkXml.cpp` is correct in both. [verified]
+- **bcc32 (C-5):** `bcc32.exe` runs from the command line. The same probe gave
+  exactly the same bytes as MSVC. The earlier evidence was misattributed:
+  `Tp/TpLaitteet.cpp:2581` is inside `#ifdef _CONSOLE` and not compiled by bcc32; the
+  correct GUI text comes from the cp1252 file `cbTp/UnitEmiTag.cpp:168`. The shipped
+  GUI programs contain the UTF-8 texts broken. [verified]
 
-Johtopäätös: koodipohjaa **ei voi muuntaa** yhteen merkistöön muuttamatta
-jommankumman ohjelmaryhmän tekstejä, ellei samalla muuteta käännösasetuksia
-(esim. MSVC:n `/utf-8` tai BOM kaikkiin UTF-8-tiedostoihin). Sellainen muutos
-on oma, erikseen testattava työnsä.
+Johtopäätös: kumpikin kääntäjä lukee BOMittoman tiedoston käännöskoneen
+ANSI-koodisivuna (tällä koneella 1252) ja BOMillisen oikein. BOMittomat
+UTF-8-tiedostot, joissa on ei-ASCII-merkkijonoja, ovat siis väärin **kaikissa**
+ohjelmissa, ja BOMin lisääminen niihin korjaisi molemmat ohjelmaryhmät ilman
+käännösasetusten muutosta. Sellainen muutos on silti oma, erikseen testattava
+työnsä (H-004, H-005).
 
-Conclusion: the code base **cannot be converted** to a single encoding without
-changing the text of one group of programs, unless build settings change too
-(e.g. MSVC `/utf-8` or a BOM in every UTF-8 file). Such a change is a separate
-piece of work that must be tested on its own.
+Conclusion: both compilers read a file without a BOM as the build host's ANSI code
+page (1252 here) and a file with a BOM correctly. UTF-8 files without a BOM that
+contain non-ASCII literals are therefore wrong in **all** programs, and adding a BOM
+would fix both program groups without changing build settings. Such a change is still
+separate work to be tested on its own (H-004, H-005).
 
 ## Ohjelman tekstejä koskevat viat / Defects in program text
 
 Skripti `tyokalut/utf8_literaalit.py` listaa UTF-8-tiedostojen ei-ASCII-merkkijonot,
-jotka eivät ole kommenteissa. Tulos 2026-11-24:
+jotka eivät ole kommenteissa. Skriptin 2026-11-24 tulos (3 kohtaa) oli vajaa:
+säännöllinen lauseke hylkäsi kirjaimen `n`, ja skripti tulosti vain kolme osumaa
+tiedostoa kohti. Korjattu C-5:ssä; tulos 2026-11-25: **36 merkkijonoa** kolmessa
+tiedostossa (`Hk/HkAjat.cpp` 3, `Juk/vajat.cpp` 4, `Tp/TpLaitteet.cpp` 29), joista 34
+käännetään johonkin ohjelmaan. Ohjelmakohtainen taulukko: `kaantajaerot.md` luku 5.
 
 The script `tyokalut/utf8_literaalit.py` lists non-ASCII string literals outside
-comments in UTF-8 files. Result on 2026-11-24:
+comments in UTF-8 files. Its 2026-11-24 result (3 places) was incomplete: the regex
+excluded the letter `n` and only three hits per file were printed. Fixed in C-5;
+result on 2026-11-25: **36 literals** in three files, 34 of them compiled into some
+program. Per-program table: `kaantajaerot.md` section 5.
 
 | Paikka / Location | Teksti / Text | Vaikutus / Effect |
 |---|---|---|
-| `Hk/HkAjat.cpp:234` | `L"AIKATAULUKKO T�YSI"` (U+FFFD) | Rikki kaikissa HK-ohjelmissa / broken in all HK programs |
-| `Juk/vajat.cpp:191` | `"AIKATAULUKKO T�YSI"` (U+FFFD) | Rikki kaikissa viestiohjelmissa / broken in all relay programs |
-| `Tp/TpLaitteet.cpp:2581` | `L"Koodi %d - Asema lähettää tietoja…"` | Rikki konsoliohjelmissa / broken in console programs |
+| `Hk/HkAjat.cpp:191`, `:234`, `:235` | esim. / e.g. `L"AIKATAULUKKO T�YSI"` (U+FFFD) | Rikki HK-ohjelmissa kääntäjästä riippumatta / broken in HK programs with any compiler |
+| `Juk/vajat.cpp:155`, `:191`, `:193` | esim. / e.g. `"AIKATAULUKKO T�YSI"` (U+FFFD) | Rikki viestiohjelmissa kääntäjästä riippumatta / broken in relay programs with any compiler |
+| `Juk/vajat.cpp:417` | `L"…Lähde…"` | Rikki ViestiWinissä / broken in ViestiWin |
+| `Tp/TpLaitteet.cpp` (29 kpl, esim. / e.g. `:1548`, `:2581`) | esim. / e.g. `L"Muisti ei riitä sanomapuskureille"` | Rikki kaikissa ohjelmissa, joihin rivi käännetään (GUI ja konsoli) / broken in every program the line is compiled into |
 
 U+FFFD-merkit syntyivät commitissa `5a65c64`, kun tiedosto muunnettiin UTF-8:ksi
 ja alkuperäiset cp1252-merkit korvautuivat. Alkuperäiset tekstit ovat commitissa

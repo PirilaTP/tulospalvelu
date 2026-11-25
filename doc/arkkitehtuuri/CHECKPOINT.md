@@ -1,6 +1,6 @@
 # Tarkistuspiste / Checkpoint
 
-Päivitetty / updated: 2026-11-24. Tämä tiedosto riittää työn jatkamiseen tyhjästä
+Päivitetty / updated: 2026-11-25. Tämä tiedosto riittää työn jatkamiseen tyhjästä
 istunnosta (esim. `/clear`:n jälkeen).
 This file is enough to resume the work from an empty session (e.g. after `/clear`).
 
@@ -22,6 +22,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | C-1 | `kilptietue::tallenna()`: säikeet, kutsupaikat, lukot, tallennus, SQL, replikointi / threads, call sites, locks, persistence, SQL, replication | `tallenna-samanaikaisuus.md` |
 | C-2 | Työasemien tiedonsiirto: kuljetus, kehys, kuittaus, kättely, sarjallistaminen, välitys, jonot, vikatilanteet, HK/viesti-erot, käännösvalitsimet, testattavuus / workstation communication | `tiedonsiirto.md` |
 | C-3 | Pysyvät tiedostot ja eheys: `KILP.DAT` (dbboxm, HK- ja viestitietue, vanha muoto), `COMFILE.DAT`, emit, AJAT, `SQLjonoVarm.dat`, konfiguraatio, mitatut koot MSVC/bcc32, vikatilanteet / persistent files and integrity | `tiedostomuodot.md` |
+| **C-5 vaihe 1 valmis / step 1 complete** (riippumattomasti tarkastettu, commitoitu / independently reviewed, committed) | Käännösasetusten matriisi, MSVC:n asetteluraportti 251 yksiköstä (ei eroja), bcc32:n pragmatila 405 yksiköstä (`-a1`/`-a8`, piilevä), merkistö (bcc32 lukee BOMittoman UTF-8:n väärin, Q7 ratkaistu, `merkistot.md` korjattu, 36 literaalia), tyypit, muotoilu, RTL-erot; uudet H-078–H-081, T-023–T-028, H-004/H-005 laajennettu; `utf8_literaalit.py` korjattu / option matrix, MSVC layout (no differences), bcc32 pack state (latent), encoding (bcc32 also wrong, Q7 resolved), types, formatting, RTL | `kaantajaerot.md`, `todisteet/c5/` |
 | **C-4 valmis ja suljettu / complete and closed** (vaihe 2 hyväksytty ja commitoitu / step 2 approved and committed) | Vaihe 2: H-055/H-056 syvemmin (verkkosaavutettavuus), 33 tutkittavaa riviä, 522 muunnosvaroitusta ryhmittäin, kattavuusarvio, kokonaisarvio ja priorisointi; uudet H-070–H-077, T-022; laajennettu H-055, H-056, H-059, H-069; kolme riippumatonta tarkastusta / step 2: deep analysis, investigate rows, conversions, coverage, overall assessment; new H-070–H-077, T-022 | `muistiturvallisuus.md` luvut / sections 9–17 |
 | C-4 vaihe 1 / step 1 (hyväksytty, uudelleentarkastettu, commitoitu / approved, re-reviewed, committed) | Varoitusinventaario: MSVC 19.52 `/W3`, `/W3`+LTCG, `/W4 /analyze` (5 projektia, 7 kokoonpanoa), bcc32 7.80 tallennettu + `-w` (4 GUI-projektia); 11 027 riviä, 7 036 yksilöllistä; 275 tärkeintä luokiteltu (37 vahvistettu, 64 todennäköinen, 33 tutkittava, 141 väärä positiivinen; luvut korjattu riveittäisistä luokituksista); uudet H-055–H-069, T-020, T-021; kaksi riippumatonta tarkastusta / warning inventory on both compilers, triage, new findings, two independent reviews | `muistiturvallisuus.md`, `todisteet/c4/` |
 | C-11 valmis / complete | Vaihe 4: H-041 toimitetussa HkMaali.exe:ssä debuggerin alla (220/221), käyttäjän poikkeamapäätöksellä "vahvistettu ajamalla"; loppuyhteenveto, raakatulosten arkisto (`todisteet/c11/`), siivous / stage 4: H-041 confirmed by running (user-approved deviation); final summary, archive, clean-up | `testaus.md` luvut / sections 18–20 |
@@ -35,12 +36,12 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | Mittari / Metric | Arvo / Value |
 |---|---|
 | Lähdetiedostoja / source files | 631 (270 050 riviä / lines) + 19 C-11-testitiedostoa / test files |
-| Taso 1, vain inventoitu / inventoried only | 499 |
-| Taso 2, kohdennetusti luettu / read in a targeted way | 120 (C-4: varoitusten ja havaintojen kohdat / warning and finding sites) |
+| Taso 1, vain inventoitu / inventoried only | 495 |
+| Taso 2, kohdennetusti luettu / read in a targeted way | 124 (C-4: varoitusten ja havaintojen kohdat; C-5: kääntäjäerojen kohdat / warning, finding and compiler-difference sites) |
 | Taso 3, rakenne luettu / structure read | 12 (luettelo / list: `rekisteri/moduulit.md`) |
 | Taso 4, kokonaan katselmoitu / fully reviewed | 0 tuotantotiedostoa / production files; 19 testitiedostoa / test files (C-11) |
-| Havaintoja / findings | 77 vikaa / defects (H), 22 teknistä velkaa / technical debt (T) |
-| Lähdeviittauksia tarkistettu / source references checked | 1 089 (`tarkista_auditointi.py`) |
+| Havaintoja / findings | 81 vikaa / defects (H), 28 teknistä velkaa / technical debt (T) |
+| Lähdeviittauksia tarkistettu / source references checked | 1 219 (`tarkista_auditointi.py`) |
 
 Koko koodipohjaa ei ole katselmoitu. Hakemistotason ja skriptillä tehty
 analyysi on taso 1. Moduulikohtaisesti: `rekisteri/moduulit.md`.
@@ -85,6 +86,7 @@ only for:
 - Kommenttimuutosten objektivertailu testattu `tputilv2`:lla (0/146 vs 1/146) / object comparison for comment changes tested
 - C-3: levylle ja verkkoon kirjoitettavien rakenteiden `sizeof`/`offsetof` mitattu koeohjelmilla MSVC:llä ja bcc32:lla; bcc32:n `#pragma option -K`/`-a1`-käytös mitattu (Q17). Koskee kokoja, ei vikojen toistamista. / sizes measured with probes in both compilers; `-K`/`-a1` behaviour measured. Sizes only, no defect reproduced.
 - C-4: varoitusinventaario molemmilla kääntäjillä (MSVC `/W4 /analyze`, LTCG-linkitys; bcc32 `-w`); bcc32:n uudelleenajo tuotti täsmälleen tallennetut varoitukset; käännösnäyttöä, ei ajoja eikä vikojen toistamista (`muistiturvallisuus.md`) / warning inventory, build evidence only, nothing run
+- C-5: MSVC `/d1reportAllClassLayout` 251 yksiköstä; bcc32 `cpp32`-esikäsittely 405 yksiköstä ja `-S`-koettimet; merkistö-, muotoilu-, tyyppi- ja RTL-koeohjelmat molemmilla kääntäjillä; `tdump` toimitetuista GUI-objekteista; merkkijonohaku `TPexe/`-ohjelmista. Käännös- ja koeohjelmanäyttöä, toimitettuja ohjelmia ei ajettu (`kaantajaerot.md`) / layout reports, pack-state trace, probes on both compilers, object dumps, string search in shipped binaries; products not run
 - C-11 (koeohjelmat, ei vikojen toistamista / probes, no defect reproduced): HkMaali- ja JukMaali-lähdelistat ilman pääohjelmaa linkittyvät testiohjelmaksi; `writeerror_w(...,0)` palaa 0 ms:ssa ilman konsolia; doctest ei käänny bcc32:lla, `static_assert` kääntyy; C4789 `Juk/VTulostus.cpp:2228`, `:3981`; suljettuun loopback-porttiin yhdistäminen epäonnistuu 2000 ms:ssa; `LockCount`-odottajakoetin 200/200 / core lists link without main; `writeerror_w` returns in 0 ms; doctest fails on bcc32; C4789 reproduced; loopback refusal 2000 ms; waiter probe 200/200 (`testaus.md`)
 
 ## Havainnot / Findings
@@ -93,9 +95,9 @@ Täydet tiedot: `rekisteri/havainnot.md`. / Full details: `rekisteri/havainnot.m
 
 | Todennustila / Verification state | Havainnot / Findings |
 |---|---|
-| Riippumaton lähdetarkastus / independent source review | H-007, H-008, H-009, H-011–H-016, H-018, H-022–H-029, H-031, H-033, H-036, H-037, H-040–H-043, H-045, H-046, H-048, H-050, H-053, H-054, H-055, H-056, H-058, H-059, H-061, H-062, H-064, H-066–H-073, H-075, H-076 |
-| Riippumaton lähdetarkastus, osittain / partly | H-010, H-021, H-030, H-032, H-034, H-035, H-044, H-047, H-049, H-051, H-052, H-057, H-060, H-063, H-065, H-074, H-077 |
-| Ei riippumatonta tarkastusta / no independent review | H-001–H-006, H-017, H-019, H-038, H-039 |
+| Riippumaton lähdetarkastus / independent source review | H-007, H-008, H-009, H-011–H-016, H-018, H-022–H-029, H-031, H-033, H-036, H-037, H-040–H-043, H-045, H-046, H-048, H-050, H-053, H-054, H-055, H-056, H-058, H-059, H-061, H-062, H-064, H-066–H-073, H-075, H-076, H-004, H-005, H-078, H-079, H-081 |
+| Riippumaton lähdetarkastus, osittain / partly | H-010, H-021, H-030, H-032, H-034, H-035, H-044, H-047, H-049, H-051, H-052, H-057, H-060, H-063, H-065, H-074, H-077, H-080 |
+| Ei riippumatonta tarkastusta / no independent review | H-001–H-003, H-006, H-017, H-019, H-038, H-039 |
 | Ei ratkea staattisesti / not statically decidable | H-020 |
 | Toistettu testikehyksessä / reproduced in test harness | H-025, H-040, H-042 (`testaus.md`, luku / section 13); H-041, H-031, H-008, H-024, H-027 (luku / section 14); H-026, H-032, H-022, H-023, H-007, H-001, H-002 (luku / section 15) |
 | Ajonaikaisesti todennettu / verified at run time | H-041 (toimitettu HkMaali.exe, poikkeamapäätös / user-approved deviation, `testaus.md` 19.11) |
@@ -133,7 +135,7 @@ controlled) and correspond to findings H-001–H-006.
 Täydet tiedot: `seuranta.md` (Q2–Q48; C-4:n Q43–Q48 `muistiturvallisuus.md`; Q1, Q4, Q13, Q16, Q17 ja Q18 ratkaistu, Q3
 osittain). Tärkeimmät / most important:
 
-- Q7: kääntääkö `bcc32` UTF-8 BOMilla oikein / does bcc32 handle UTF-8 with BOM
+- ~~Q7~~ ratkaistu C-5:ssä / resolved in C-5 (`kaantajaerot.md` luku 5)
 - Q8: miten GUI-tiedostojen kommenttimuutokset todennetaan / how to verify GUI comment changes
 - Q12: kumpi `add_sakko` linkitetään / which `add_sakko` is linked (H-020)
 - Q15: voiko VCL-poikkeus jättää lukon päälle / can a VCL exception leave a lock held
@@ -170,16 +172,32 @@ verkosta saavutettavia (H-071, H-072, H-055, H-032) ja laiteperäisiä (H-070, H
 Kaikki C-4:n havainnot ovat staattisesti vahvistettuja mekanismeja; yhtäkään ei ole
 toistettu eikä ajossa vahvistettu (ainoa ajossa vahvistettu on H-041).
 
-**SEURAAVA TYÖVAIHE / NEXT STEP: C-5 kääntäjäkohtainen käytös** (`suunnitelma.md` erä 5);
-odottaa aloituslupaa / awaiting approval to start.
-Aloitusvalmius: C-3:n mitatut rakennekoot ja `-K`/`-a1`-mittaukset, C-4:n `char`-etumerkki-
-ja /GS-erot (luku 6) ja W8059-varoitukset (373 kpl, `todisteet/c4/`) ovat valmiina.
+**C-5 vaihe 1 valmis (2026-11-25), riippumattomasti tarkastettu, commitoitu paikallisesti.**
+Raportti `kaantajaerot.md`; todisteet `todisteet/c5/`. Levylle ja verkkoon kirjoitettavat rakenteet ovat
+molemmilla kääntäjillä samat jäsenten offsetteja myöten; MSVC:ssä ei asetteluerojä käännösyksiköiden välillä;
+bcc32:n `-a1`/`-a8`-erot ovat piileviä (T-023). Merkittävimmät: H-078 (UTF-16BE kaataa konsolin), H-005
+(UTF-8-tekstit väärin myös GUI:ssa; `merkistot.md` korjattu). Avoimet Q57–Q62.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP: C-5 vaihe 2** (rajattu staattinen työerä, `kaantajaerot.md` luku 12).
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
 Open: manual tests H-009/H-014, two-process loopback layer, H-041 read path, CI. Next:
 C-4 memory safety (plan batch 4). **C-4 complete and closed:** step 1 (`81bcad9`) and step 2 committed locally. Urgent
-fixes: H-071, H-072, H-055, H-070. Next step: C-5, awaiting approval to start.
+fixes: H-071, H-072, H-055, H-070. **C-5 step 1 complete** (`kaantajaerot.md`, H-078–H-081, T-023–T-028);
+next: C-5 step 2, a bounded static step.
+
+## Resurssien käyttö / Resource usage (C-5 vaihe 1 / step 1)
+
+| Agentti / Agent | Tokenit / tokens | Työkalukutsut / tool calls |
+|---|--:|--:|
+| `build-dependency-analyst` (optiomatriisi, ehdollinen koodi, bcc32-pakkaustila / option matrix, conditional code, pack state) | 305 039 | 139 |
+| `legacy-encoding-analyst` (merkistö, muotoilu, tyypit, `char`, RTL / encoding, formatting, types, RTL) | 301 102 | 180 |
+| `independent-verifier` (C1–C10) | 293 523 | 158 |
+| **Yhteensä / total** | **899 664** | **477** |
+
+MSVC-asetteluraportti, korjattu literaalihaku ja dokumentointi tehtiin pääistunnossa. / MSVC layout run, literal search
+and write-up by the main session.
 
 ## Resurssien käyttö / Resource usage (C-4 vaihe 2 / step 2)
 
