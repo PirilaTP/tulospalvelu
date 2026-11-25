@@ -191,14 +191,19 @@ Rajoitukset / Limitations:
   oikeasti: `tputilv2/perr.cpp`, `tputilv2/consolesize.cpp`, `tputilv2/initcon.cpp`
   (`PERR`-makro, `include/Console.h:18`). Niihin kommentit vain rivien perään tai
   hyväksytään ero tietoisesti.
-- Menettely kattaa vain MSVC:llä käännettävät tiedostot. GUI-hakemistot
-  (`cbHk/`, `ViestiWin/`, `cbTp/`) käännetään vain C++Builderilla, eikä niille ole
-  vielä vastaavaa todennusta. [tuntematon → `seuranta.md`]
+- Yllä oleva menettely kattaa MSVC:llä käännettävät tiedostot. GUI-hakemistoille
+  (`cbHk/`, `ViestiWin/`, `cbTp/`), jotka käännetään vain C++Builderilla, on C-5:ssä
+  tehty vastine: käännä tallennetulla bcc32-komentorivillä (`RADStudio10/build-logs/*.log`,
+  tulosteet väliaikaishakemistoon, sama `-H`-asetus molemmilla kerroilla) ja vertaa
+  `python -I tyokalut/vertaa_omf.py <ennen> <jälkeen>`. Testattu 10 yksiköllä; ks.
+  `kaantajaerot.md` luku 13.1. [todennettu] (Q8 ratkaistu)
 
 - In files using the `__LINE__` macro, adding lines really changes the code:
   `tputilv2/perr.cpp`, `tputilv2/consolesize.cpp`, `tputilv2/initcon.cpp`
   (`PERR` macro, `include/Console.h:18`). Use trailing comments there, or accept
   the difference knowingly.
-- The procedure covers only files built with MSVC. The GUI directories (`cbHk/`,
-  `ViestiWin/`, `cbTp/`) are built only with C++Builder and have no equivalent
-  check yet. [unknown → `seuranta.md`]
+- The procedure above covers files built with MSVC. For the GUI directories, built
+  only with C++Builder, C-5 added an equivalent: build with the recorded bcc32 command
+  line (outputs redirected, the same `-H` setting both times) and compare with
+  `python -I tyokalut/vertaa_omf.py <before> <after>`. Tested on 10 units; see
+  `kaantajaerot.md` section 13.1. [verified] (Q8 resolved)

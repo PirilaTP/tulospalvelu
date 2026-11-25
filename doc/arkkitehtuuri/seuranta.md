@@ -24,14 +24,17 @@ separately from test coverage.
 | **C, erä 11 (C-11) kokonaisuutena / batch 11 as a whole** | **valmis / complete**; loppuyhteenveto / final summary `testaus.md` luku 20; raakatulokset / raw results `todisteet/c11/` | 2026-11-24 |
 | **C, erä 4 (C-4) valmis / complete**, vaihe 2: syväanalyysi, tutkittavat rivit, muunnokset, kattavuus, kokonaisarvio / step 2 | **valmis, hyväksytty, suljettu, commitoitu** / done, approved, closed, committed (`muistiturvallisuus.md` luvut 9–17, H-070–H-077, T-022) | 2026-11-25 |
 | C, erä 4 (C-4) muistiturvallisuus, vaihe 1: varoitusinventaario / memory safety, step 1: warning inventory | valmis, hyväksytty, riippumattomasti uudelleentarkastettu, commitoitu / done, approved, re-reviewed, committed (`muistiturvallisuus.md`, H-055–H-069, T-020, T-021, `todisteet/c4/`) | 2026-11-24 |
-| **C, erä 5 (C-5) kääntäjäkohtainen käytös / compiler-specific behaviour, vaihe 1 / step 1** | **valmis, riippumattomasti tarkastettu, commitoitu** / done, independently reviewed, committed (`kaantajaerot.md`, H-078–H-081, T-023–T-028, H-004/H-005 laajennettu / extended, `todisteet/c5/`) | 2026-11-25 || C, erät 6–10 / batches 6–10 | ei aloitettu / not started (`suunnitelma.md`) | – |
+| **C, erä 5 (C-5) kääntäjäkohtainen käytös / compiler-specific behaviour, vaihe 1 / step 1** | **valmis, riippumattomasti tarkastettu, commitoitu** / done, independently reviewed, committed (`kaantajaerot.md`, H-078–H-081, T-023–T-028, H-004/H-005 laajennettu / extended, `todisteet/c5/`) | 2026-11-25 |
+| C, erä 5 (C-5), vaihe 2 / step 2 | **valmis, riippumattomasti tarkastettu, commitoitu** / done, independently reviewed, committed (`kaantajaerot.md` luku 13: Q8 ratkaistu, `tyokalut/vertaa_omf.py`, H-082–H-086, T-029, H-042/H-079 laajennettu / extended; `todisteet/c5/vaihe2/`); ehdotus: C-5 suljetaan / proposal: close C-5 | 2026-11-25 |
+| C, erät 6–10 / batches 6–10 | ei aloitettu / not started (`suunnitelma.md`) | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** C-5:n vaihe 1 on valmis (`kaantajaerot.md`). Seuraavaksi
-C-5:n jäljellä olevat tavoitteet rajattuna, staattisena työeränä (vaihe 2). Kiireellisesti
+**Seuraava askel / Next step:** C-5:n vaiheet 1 ja 2 ovat valmiit (`kaantajaerot.md`).
+Ehdotus: C-5 suljetaan, ja GUI-lomakkeiden syötteiden tarkistus otetaan omaksi eräkseen
+(`kaantajaerot.md` luku 13.6); päätös käyttäjältä. Kiireellisesti
 korjattavat H-071, H-072, H-055 ja H-070 korjataan omissa haaroissaan erillisellä
-päätöksellä; väliaikaiset suojaussuositukset `muistiturvallisuus.md` luku 15. / C-5 step 1
-done; next the remaining C-5 goals as a bounded static step 2; urgent fixes H-071,
+päätöksellä; väliaikaiset suojaussuositukset `muistiturvallisuus.md` luku 15. / C-5 steps 1
+and 2 done; proposal: close C-5, GUI form input validation as its own batch; urgent fixes H-071,
 H-072, H-055, H-070 on separate decision.
 
 **Avoimet jatkotehtävät C-11:stä / open follow-ups from C-11** (eivät estäneet
@@ -79,8 +82,8 @@ Findings (H/T) and their verification status: `rekisteri/havainnot.md`.
 | Q5 | MySQL-taulujen rakenne ja milloin SQL on käytössä / SQL table layout and when SQL is used | `cbHk/UnitMySQL.cpp` |
 | Q6 | Ovatko kirjastoon käännetyt `main`-funktiot (`tputilv2/ctrlhndl.cpp` ym.) esikääntäjällä pois? / Are the `main` functions in the library excluded by the preprocessor? | `inventaario.md` |
 | ~~Q7~~ | **Ratkaistu / resolved (C-5):** kyllä, kapeat ja leveät merkkijonot sekä merkkivakiot oikein myös sisällytetyissä otsikoissa; BOMiton UTF-8 on väärin molemmilla kääntäjillä / yes; UTF-8 without BOM is wrong on both compilers | `kaantajaerot.md` luku 5 |
-| Q57–Q62 | Erän C-5 kysymykset (FPU-ohjaussana ja `VersioInt`, dynaamisen RTL:n `wcstok`, /GS ja H-079, `KUNTOSUUNN`-eron tarkoitus, asetteluraportin kattavuus, PCH ja VCL/RTL-inline-koodi) / batch C-5 questions | `kaantajaerot.md`, "Avoimet kysymykset" |
-| Q8 | Miten GUI-tiedostojen kommenttimuutokset todennetaan? (ehdotus: kommentit poistava vertailu) / How to verify comment changes in GUI files? | `suunnitelma.md` |
+| Q57–Q64 | Erän C-5 kysymykset; Q57–Q59, Q61 ja Q62 ratkaistu vaiheessa 2; avoinna Q60 (`KUNTOSUUNN`-eron tarkoitus, omistajan päätös), Q63 (bcc32:n negatiivinen `new`), Q64 (`UnitSakkoKierr`in kumoamispolun jäsennys) / batch C-5 questions; open Q60, Q63, Q64 | `kaantajaerot.md`, "Avoimet kysymykset" |
+| ~~Q8~~ | **Ratkaistu / resolved (C-5 vaihe 2):** bcc32-objektien OMF-vertailu `tyokalut/vertaa_omf.py` / OMF comparison of bcc32 objects | `kaantajaerot.md` luku 13.1, `merkistot.md` |
 | Q9 | Sallitaanko C++11 tuotantokoodissa? / Is C++11 allowed in production code? | `riippuvuudet.md` |
 | Q10 | Ovatko orvot tiedostot käytössä jossain (muut haarat, ulkoiset käännökset)? / Are orphan files used anywhere? | `inventaario.md` |
 | Q11 | Mihin `Tp/TpComY32.cpp` (vanha kopio) ja `tputilv2/*-2.cpp`, `*-v.cpp` -versiot liittyvät? / What are the old copies for? | `inventaario.md` |

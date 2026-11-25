@@ -24,7 +24,7 @@ cbHk/UnitAikavert.cpp,cbHk,929,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitAikavert.h,cbHk,178,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitAjanotto.cpp,cbHk,1961,cp1252,HkKisaWin,2,kaantajaerot,-,f7fe553,H-080,C-5: date_time_t-kutsut,f7fe553
 cbHk/UnitAjanotto.h,cbHk,268,ascii,-,1,-,-,,,,f7fe553
-cbHk/UnitArvonta.cpp,cbHk,1270,cp1252,HkKisaWin,1,-,-,,,,f7fe553
+cbHk/UnitArvonta.cpp,cbHk,1270,cp1252,HkKisaWin,2,kaantajaerot,-,f7fe553,H-085,"C-5 vaihe 2: ValmisteleJako, BtnJaaClick",f7fe553
 cbHk/UnitArvonta.h,cbHk,164,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitASakot.cpp,cbHk,394,cp1252,HkKisaWin,2,tallenna-samanaikaisuus,-,f7fe553,H-009 H-020,add_sakko,f7fe553
 cbHk/UnitASakot.h,cbHk,87,ascii,-,1,-,-,,,,f7fe553
@@ -92,7 +92,7 @@ cbHk/UnitPiirival.cpp,cbHk,170,ascii,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitPiirival.h,cbHk,69,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitPistelasku.cpp,cbHk,521,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitPistelasku.h,cbHk,154,ascii,-,1,-,-,,,,f7fe553
-cbHk/UnitSakkoKierr.cpp,cbHk,264,ascii,HkKisaWin,2,kaantajaerot,-,f7fe553,H-079,C-5: TextFl::Open,f7fe553
+cbHk/UnitSakkoKierr.cpp,cbHk,264,ascii,HkKisaWin,2,kaantajaerot,-,f7fe553,H-079 H-086,"C-5: TextFl::Open; C-5 vaihe 2: Open(""at"")",f7fe553
 cbHk/UnitSakkoKierr.h,cbHk,76,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitSarja.cpp,cbHk,735,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitSarja.h,cbHk,240,ascii,-,1,-,-,,,,f7fe553
@@ -118,7 +118,7 @@ cbHk/UnitTapahtSiirrot.cpp,cbHk,110,ascii,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitTapahtSiirrot.h,cbHk,57,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitTarkMerk.cpp,cbHk,443,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitTarkMerk.h,cbHk,184,ascii,-,1,-,-,,,,f7fe553
-cbHk/UnitTaulu.cpp,cbHk,1353,cp1252,HkKisaWin,2,muistiturvallisuus,-,f7fe553,H-077,C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta,f7fe553
+cbHk/UnitTaulu.cpp,cbHk,1353,cp1252,HkKisaWin,2,muistiturvallisuus kaantajaerot,-,f7fe553,H-077 H-084,C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5 vaihe 2: lomakeindeksit,f7fe553
 cbHk/UnitTaulu.h,cbHk,212,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitTKanta.cpp,cbHk,1628,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitTKanta.h,cbHk,162,ascii,-,1,-,-,,,,f7fe553
@@ -148,7 +148,7 @@ cbHk/VertAikaUnit.h,cbHk,53,ascii,-,1,-,-,,,,f7fe553
 cbHk/WinHk.cpp,cbHk,2310,cp1252,HkKisaWin,2,tallenna-samanaikaisuus tiedonsiirto yleiskuva,-,f7fe553,H-018 H-023,"Initialisoi 252-285; ProsEmitThread, LukumaaratTh, VaihdaVaiheHandler; C-2: vaiheen vaihdon eväys",f7fe553
 cbHk/WinHk.h,cbHk,332,ascii,-,1,-,-,,,,f7fe553
 cbHk/WinParamXml.cpp,cbHk,1796,cp1252,HkKisaWin,1,-,-,,,,f7fe553
-cbTp/cbTpApu.cpp,cbTp,641,cp1252,HkKisaWin ViestiWin,2,tallenna-samanaikaisuus,-,f7fe553,H-009 H-019,writeerror_w,f7fe553
+cbTp/cbTpApu.cpp,cbTp,641,cp1252,HkKisaWin ViestiWin,2,tallenna-samanaikaisuus kaantajaerot,-,f7fe553,H-009 H-019 T-026,writeerror_w; C-5 vaihe 2: writeerror_w,f7fe553
 cbTp/TpApu.cpp,cbTp,757,cp1252,-,1,-,-,,,,f7fe553
 cbTp/UnitAikakorjaus.cpp,cbTp,161,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 cbTp/UnitAikakorjaus.h,cbTp,75,ascii,-,1,-,-,,,,f7fe553
@@ -186,7 +186,7 @@ cbTp/UnitKohdistus.cpp,cbTp,379,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 cbTp/UnitKohdistus.h,cbTp,120,ascii,-,1,-,-,,,,f7fe553
 cbTp/UnitLisaTekstit.cpp,cbTp,151,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 cbTp/UnitLisaTekstit.h,cbTp,58,ascii,-,1,-,-,,,,f7fe553
-cbTp/UnitMaalikello.cpp,cbTp,514,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
+cbTp/UnitMaalikello.cpp,cbTp,514,cp1252,HkKisaWin ViestiWin,2,kaantajaerot,-,f7fe553,H-083,"C-5 vaihe 2: laite 2, destaddr",f7fe553
 cbTp/UnitMaalikello.h,cbTp,208,ascii,-,1,-,-,,,,f7fe553
 cbTp/UnitMessages.cpp,cbTp,75,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 cbTp/UnitMessages.h,cbTp,41,ascii,-,1,-,-,,,,f7fe553
@@ -259,7 +259,7 @@ Hk/HkMuotoilu.h,Hk,192,cp1252,-,1,-,-,,,,f7fe553
 Hk/HkSak.cpp,Hk,253,utf-8,HkKisaWin HkMaali,2,tallenna-samanaikaisuus muistiturvallisuus,-,f7fe553,H-008 H-060,"tall_sak, tall_ampsakko; C-4: varoitusten triage",f7fe553
 Hk/HkSrj.cpp,Hk,941,cp1252,HkKisaWin HkMaali,2,tiedostomuodot muistiturvallisuus,-,f7fe553,H-041,C-3: 85-175 n_pv/valuku-rajat; C-4: varoitusten triage,f7fe553
 Hk/HkTls.cpp,Hk,1966,cp1252,HkKisaWin HkMaali,2,tiedonsiirto muistiturvallisuus,-,f7fe553,H-023,C-2: tall_tulos; C-4: varoitusten triage,f7fe553
-Hk/HkTulostus.cpp,Hk,8840,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus yleiskuva muistiturvallisuus,-,f7fe553,H-003 H-010 H-067,"rivi 3602; startaf 6979 sijainti; sijat2, tulostasarja-lukitus 5850-6419; C-4: varoitusten triage",f7fe553
+Hk/HkTulostus.cpp,Hk,8840,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus yleiskuva muistiturvallisuus kaantajaerot,-,f7fe553,H-003 H-010 H-067 T-026,"rivi 3602; startaf 6979 sijainti; sijat2, tulostasarja-lukitus 5850-6419; C-4: varoitusten triage; C-5 vaihe 2: swprintf 1486, 1528",f7fe553
 Hk/HkTV.cpp,Hk,233,cp1252,-,1,-,-,,,,f7fe553
 Hk/HkXml.cpp,Hk,2460,cp1252,HkKisaWin HkMaali,2,merkistot muistiturvallisuus,-,f7fe553,H-003 H-057,rivi 1833; C-4: varoitusten triage,f7fe553
 Hk/HkXml_IOF30.cpp,Hk,1140,cp1252,HkKisaWin HkMaali,2,muistiturvallisuus,-,f7fe553,H-057,C-4: varoitusten triage,f7fe553
@@ -301,7 +301,7 @@ Juk/vdat.cpp,Juk,972,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tallenna-samana
 Juk/VDeclare.h,Juk,789,cp1252,ViestiWin JukLuenta520 JukMaali520,2,yleiskuva,-,f7fe553,T-001,include-lohko,f7fe553
 Juk/VDef.h,Juk,1526,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedonsiirto tietorakenteet-ja-tila tiedostomuodot kaantajaerot,-,f7fe553,H-046 T-024,"luokkaluettelo; osrec luettu; C-2: combufrec; C-3: osrec, kilptietue, emittp, combufrec; sizeof mitattu; C-5: NREGNLY",f7fe553
 Juk/VEmit.cpp,Juk,6221,cp1252,ViestiWin JukMaali520,2,tiedostomuodot muistiturvallisuus,-,f7fe553,H-003 H-053 H-058 H-064 H-073,swprintf-rivit 5256-5875; C-3: _read-tarkistukset; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta,f7fe553
-Juk/VEmitHtml.cpp,Juk,294,cp1252,ViestiWin JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Juk/VEmitHtml.cpp,Juk,294,cp1252,ViestiWin JukLuenta520 JukMaali520,2,kaantajaerot,-,f7fe553,T-029,C-5 vaihe 2: swprintf 216,f7fe553
 Juk/VGlobals.cpp,Juk,554,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedonsiirto muistiturvallisuus,-,f7fe553,H-036 H-072,"C-2: katkkierto, levypusk; C-4 vaihe 2: kohdennettu luenta",f7fe553
 Juk/VInit.cpp,Juk,2966,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedonsiirto tiedostomuodot muistiturvallisuus kaantajaerot,-,f7fe553,H-036 H-015 H-042 H-070 H-073 T-023 T-024,"C-2: VALITA, KATKKIER, COMFILE; C-3: oletukset 2440-2490, kilprecsize 2655-2665, avaus 2715-2745; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5: NREGNLY-rajaus 1771-1875",f7fe553
 Juk/VIv.cpp,Juk,2974,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedostomuodot muistiturvallisuus kaantajaerot,-,f7fe553,H-054 H-055 H-074 T-024 T-025,"C-3: AJAT-jono 2686-2790; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5: kanava 562, AJAT-lukija 2701",f7fe553
@@ -312,7 +312,7 @@ Juk/VMuotoilu.h,Juk,128,ascii,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
 Juk/VRinnakkaisOsuus.cpp,Juk,95,ascii,ViestiWin TpTest JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
 Juk/VRinnakkaisOsuus.h,Juk,108,ascii,ViestiWin TpTest JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
 Juk/vSarjat.cpp,Juk,565,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedostomuodot muistiturvallisuus,-,f7fe553,H-002 H-042 H-065,"rivit 377, 400; C-3: 60-70, 170-260; C-4: varoitusten triage",f7fe553
-Juk/VTulostus.cpp,Juk,9151,cp1252,ViestiWin JukLuenta520 JukMaali520,2,muistiturvallisuus,-,f7fe553,H-001 H-003 H-063 H-067 H-075 H-076,"rivit 352, 2228, 3981; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta",f7fe553
+Juk/VTulostus.cpp,Juk,9151,cp1252,ViestiWin JukLuenta520 JukMaali520,2,muistiturvallisuus kaantajaerot,-,f7fe553,H-001 H-003 H-063 H-067 H-075 H-076 T-026,"rivit 352, 2228, 3981; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5 vaihe 2: swprintf 1372-1410",f7fe553
 Juk/VXml.cpp,Juk,2193,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedostomuodot muistiturvallisuus,-,f7fe553,H-042 H-057,C-3: loadSoftwareData 430-490; C-4: varoitusten triage,f7fe553
 Juk/VXml_IOF30.cpp,Juk,1125,cp1252,ViestiWin JukLuenta520 JukMaali520,2,muistiturvallisuus,-,f7fe553,H-057,C-4: varoitusten triage,f7fe553
 Juk/XMLtulos.cpp,Juk,467,cp1252,ViestiWin JukLuenta520 JukMaali520,2,muistiturvallisuus,-,f7fe553,H-076,C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta,f7fe553
@@ -503,7 +503,7 @@ tputilv2/tarknoos.cpp,tputilv2,32,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/tarknost.cpp,tputilv2,41,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/testucode.cpp,tputilv2,36,cp1252,-,1,-,-,,,,f7fe553
 tputilv2/TextFileClass-2.cpp,tputilv2,441,utf-8,-,1,-,-,,,,f7fe553
-tputilv2/TextFileClass.cpp,tputilv2,869,utf-8,Tputil-XE LibTest tputilv2 JukLuenta520,2,tiedostomuodot kaantajaerot,-,f7fe553,H-078 H-079,"C-3: merkistotunnistus 125-222, ReadLine 382-448; C-5: ccs-tilat 301-303, 347-359",f7fe553
+tputilv2/TextFileClass.cpp,tputilv2,869,utf-8,Tputil-XE LibTest tputilv2 JukLuenta520,2,tiedostomuodot kaantajaerot,-,f7fe553,H-078 H-079 H-086,"C-3: merkistotunnistus 125-222, ReadLine 382-448; C-5: ccs-tilat 301-303, 347-359; C-5 vaihe 2: Open-tilat",f7fe553
 tputilv2/tick.cpp,tputilv2,26,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/timeticks.cpp,tputilv2,34,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/timofday.cpp,tputilv2,29,ascii,Tputil-XE tputilv2,1,-,-,,,,f7fe553
@@ -571,7 +571,7 @@ ViestiWin/UnitEmitMuutokset.cpp,ViestiWin,395,cp1252,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitEmitMuutokset.h,ViestiWin,113,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitExport.cpp,ViestiWin,585,cp1252,ViestiWin,2,tiedostomuodot,-,f7fe553,H-046,C-3: 470-485,f7fe553
 ViestiWin/UnitExport.h,ViestiWin,93,ascii,-,1,-,-,,,,f7fe553
-ViestiWin/UnitGAZ.cpp,ViestiWin,1373,cp1252,ViestiWin,2,muistiturvallisuus,-,f7fe553,H-077,C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta,f7fe553
+ViestiWin/UnitGAZ.cpp,ViestiWin,1373,cp1252,ViestiWin,2,muistiturvallisuus kaantajaerot,-,f7fe553,H-077 H-084,C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5 vaihe 2: Osuus-kentat,f7fe553
 ViestiWin/UnitGAZ.h,ViestiWin,214,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitHenkHaku.cpp,ViestiWin,161,ascii,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitHenkHaku.h,ViestiWin,68,ascii,-,1,-,-,,,,f7fe553
@@ -613,9 +613,9 @@ ViestiWin/UnitPartio.cpp,ViestiWin,423,cp1252,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitPartio.h,ViestiWin,67,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitPiirival.cpp,ViestiWin,170,ascii,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitPiirival.h,ViestiWin,69,ascii,-,1,-,-,,,,f7fe553
-ViestiWin/UnitSakkoKierr.cpp,ViestiWin,294,ascii,ViestiWin,2,kaantajaerot,-,f7fe553,H-079,C-5: TextFl::Open,f7fe553
+ViestiWin/UnitSakkoKierr.cpp,ViestiWin,294,ascii,ViestiWin,2,kaantajaerot,-,f7fe553,H-079 H-082 H-086,"C-5: TextFl::Open; C-5 vaihe 2: osuusindeksi 153-256, Open(""at"")",f7fe553
 ViestiWin/UnitSakkoKierr.h,ViestiWin,79,ascii,-,1,-,-,,,,f7fe553
-ViestiWin/UnitSarja.cpp,ViestiWin,601,cp1252,ViestiWin,2,tiedostomuodot,-,f7fe553,H-047,C-3: vaihdakilpsrj 50-63,f7fe553
+ViestiWin/UnitSarja.cpp,ViestiWin,601,cp1252,ViestiWin,2,tiedostomuodot kaantajaerot,-,f7fe553,H-047 H-042,C-3: vaihdakilpsrj 50-63; C-5 vaihe 2: osuusluku ennen maaraaOsuusluku,f7fe553
 ViestiWin/UnitSarja.h,ViestiWin,123,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitSarjatiedot.cpp,ViestiWin,1189,cp1252,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitSarjatiedot.h,ViestiWin,124,ascii,-,1,-,-,,,,f7fe553

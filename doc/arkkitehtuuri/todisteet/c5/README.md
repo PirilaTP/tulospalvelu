@@ -23,6 +23,7 @@ scripts and outputs. Large or binary intermediates were left out; their hashes a
 | `utf8_literaalit_c5.out` | Korjatun `../../tyokalut/utf8_literaalit.py`:n tulos: 36 merkkijonoa / output of the fixed tool |
 | `litexe_main.out` | Mitkä UTF-8-merkkijonot ovat rikkinäisinä missäkin `TPexe/`-ohjelmassa / which broken literals are in which shipped program |
 | `skriptit/` | `msvc_layout.py`, `compare_layout.py`, `compare_sets.py`, `litexe_main.py` |
+| `vaihe2/` | Vaiheen 2 raakatulokset omine tiivisteineen (`vaihe2/README.md`) / step 2 raw results with their own hashes |
 | `raaka-manifest.sha256` | Kaikkien väliaikaishakemiston raakatiedostojen tiivisteet (myös pois jätettyjen) / hashes of all raw scratch files, including excluded ones |
 | `SHA256SUMS` | Tämän hakemiston tiedostojen tiivisteet / hashes of the files here |
 

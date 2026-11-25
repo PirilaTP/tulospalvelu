@@ -22,6 +22,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | C-1 | `kilptietue::tallenna()`: säikeet, kutsupaikat, lukot, tallennus, SQL, replikointi / threads, call sites, locks, persistence, SQL, replication | `tallenna-samanaikaisuus.md` |
 | C-2 | Työasemien tiedonsiirto: kuljetus, kehys, kuittaus, kättely, sarjallistaminen, välitys, jonot, vikatilanteet, HK/viesti-erot, käännösvalitsimet, testattavuus / workstation communication | `tiedonsiirto.md` |
 | C-3 | Pysyvät tiedostot ja eheys: `KILP.DAT` (dbboxm, HK- ja viestitietue, vanha muoto), `COMFILE.DAT`, emit, AJAT, `SQLjonoVarm.dat`, konfiguraatio, mitatut koot MSVC/bcc32, vikatilanteet / persistent files and integrity | `tiedostomuodot.md` |
+| **C-5 vaihe 2 valmis / step 2 complete** (riippumattomasti tarkastettu, commitoitu / independently reviewed, committed) | Q8: bcc32-objektien vertailu `tyokalut/vertaa_omf.py` (10 yksikköä; tarkastus löysi ja korjattiin COMENT FB -puute); GUI-tyyppejä ei kirjoiteta raakana; T-026:n kohdista vain 5 voi katketa; koeohjelmat Q57–Q59, Q61, Q62; uudet H-082–H-086 (GUI-lomakkeiden rajatarkistukset, `TextFl::Open` "a"), T-029; H-042, H-079 laajennettu / bcc32 object comparison; GUI-only types not raw-written; probes; new GUI form bound-check defects | `kaantajaerot.md` luku 13, `todisteet/c5/vaihe2/` |
 | **C-5 vaihe 1 valmis / step 1 complete** (riippumattomasti tarkastettu, commitoitu / independently reviewed, committed) | Käännösasetusten matriisi, MSVC:n asetteluraportti 251 yksiköstä (ei eroja), bcc32:n pragmatila 405 yksiköstä (`-a1`/`-a8`, piilevä), merkistö (bcc32 lukee BOMittoman UTF-8:n väärin, Q7 ratkaistu, `merkistot.md` korjattu, 36 literaalia), tyypit, muotoilu, RTL-erot; uudet H-078–H-081, T-023–T-028, H-004/H-005 laajennettu; `utf8_literaalit.py` korjattu / option matrix, MSVC layout (no differences), bcc32 pack state (latent), encoding (bcc32 also wrong, Q7 resolved), types, formatting, RTL | `kaantajaerot.md`, `todisteet/c5/` |
 | **C-4 valmis ja suljettu / complete and closed** (vaihe 2 hyväksytty ja commitoitu / step 2 approved and committed) | Vaihe 2: H-055/H-056 syvemmin (verkkosaavutettavuus), 33 tutkittavaa riviä, 522 muunnosvaroitusta ryhmittäin, kattavuusarvio, kokonaisarvio ja priorisointi; uudet H-070–H-077, T-022; laajennettu H-055, H-056, H-059, H-069; kolme riippumatonta tarkastusta / step 2: deep analysis, investigate rows, conversions, coverage, overall assessment; new H-070–H-077, T-022 | `muistiturvallisuus.md` luvut / sections 9–17 |
 | C-4 vaihe 1 / step 1 (hyväksytty, uudelleentarkastettu, commitoitu / approved, re-reviewed, committed) | Varoitusinventaario: MSVC 19.52 `/W3`, `/W3`+LTCG, `/W4 /analyze` (5 projektia, 7 kokoonpanoa), bcc32 7.80 tallennettu + `-w` (4 GUI-projektia); 11 027 riviä, 7 036 yksilöllistä; 275 tärkeintä luokiteltu (37 vahvistettu, 64 todennäköinen, 33 tutkittava, 141 väärä positiivinen; luvut korjattu riveittäisistä luokituksista); uudet H-055–H-069, T-020, T-021; kaksi riippumatonta tarkastusta / warning inventory on both compilers, triage, new findings, two independent reviews | `muistiturvallisuus.md`, `todisteet/c4/` |
@@ -36,12 +37,12 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | Mittari / Metric | Arvo / Value |
 |---|---|
 | Lähdetiedostoja / source files | 631 (270 050 riviä / lines) + 19 C-11-testitiedostoa / test files |
-| Taso 1, vain inventoitu / inventoried only | 495 |
-| Taso 2, kohdennetusti luettu / read in a targeted way | 124 (C-4: varoitusten ja havaintojen kohdat; C-5: kääntäjäerojen kohdat / warning, finding and compiler-difference sites) |
+| Taso 1, vain inventoitu / inventoried only | 492 |
+| Taso 2, kohdennetusti luettu / read in a targeted way | 127 (C-4: varoitusten ja havaintojen kohdat; C-5: kääntäjäerojen kohdat / warning, finding and compiler-difference sites) |
 | Taso 3, rakenne luettu / structure read | 12 (luettelo / list: `rekisteri/moduulit.md`) |
 | Taso 4, kokonaan katselmoitu / fully reviewed | 0 tuotantotiedostoa / production files; 19 testitiedostoa / test files (C-11) |
-| Havaintoja / findings | 81 vikaa / defects (H), 28 teknistä velkaa / technical debt (T) |
-| Lähdeviittauksia tarkistettu / source references checked | 1 219 (`tarkista_auditointi.py`) |
+| Havaintoja / findings | 86 vikaa / defects (H), 29 teknistä velkaa / technical debt (T) |
+| Lähdeviittauksia tarkistettu / source references checked | 1 257 (`tarkista_auditointi.py`) |
 
 Koko koodipohjaa ei ole katselmoitu. Hakemistotason ja skriptillä tehty
 analyysi on taso 1. Moduulikohtaisesti: `rekisteri/moduulit.md`.
@@ -95,8 +96,8 @@ Täydet tiedot: `rekisteri/havainnot.md`. / Full details: `rekisteri/havainnot.m
 
 | Todennustila / Verification state | Havainnot / Findings |
 |---|---|
-| Riippumaton lähdetarkastus / independent source review | H-007, H-008, H-009, H-011–H-016, H-018, H-022–H-029, H-031, H-033, H-036, H-037, H-040–H-043, H-045, H-046, H-048, H-050, H-053, H-054, H-055, H-056, H-058, H-059, H-061, H-062, H-064, H-066–H-073, H-075, H-076, H-004, H-005, H-078, H-079, H-081 |
-| Riippumaton lähdetarkastus, osittain / partly | H-010, H-021, H-030, H-032, H-034, H-035, H-044, H-047, H-049, H-051, H-052, H-057, H-060, H-063, H-065, H-074, H-077, H-080 |
+| Riippumaton lähdetarkastus / independent source review | H-007, H-008, H-009, H-011–H-016, H-018, H-022–H-029, H-031, H-033, H-036, H-037, H-040–H-043, H-045, H-046, H-048, H-050, H-053, H-054, H-055, H-056, H-058, H-059, H-061, H-062, H-064, H-066–H-073, H-075, H-076, H-004, H-005, H-078, H-079, H-081, H-082, H-083, H-084, H-086 |
+| Riippumaton lähdetarkastus, osittain / partly | H-010, H-021, H-030, H-032, H-034, H-035, H-044, H-047, H-049, H-051, H-052, H-057, H-060, H-063, H-065, H-074, H-077, H-080, H-085 |
 | Ei riippumatonta tarkastusta / no independent review | H-001–H-003, H-006, H-017, H-019, H-038, H-039 |
 | Ei ratkea staattisesti / not statically decidable | H-020 |
 | Toistettu testikehyksessä / reproduced in test harness | H-025, H-040, H-042 (`testaus.md`, luku / section 13); H-041, H-031, H-008, H-024, H-027 (luku / section 14); H-026, H-032, H-022, H-023, H-007, H-001, H-002 (luku / section 15) |
@@ -136,7 +137,7 @@ Täydet tiedot: `seuranta.md` (Q2–Q48; C-4:n Q43–Q48 `muistiturvallisuus.md`
 osittain). Tärkeimmät / most important:
 
 - ~~Q7~~ ratkaistu C-5:ssä / resolved in C-5 (`kaantajaerot.md` luku 5)
-- Q8: miten GUI-tiedostojen kommenttimuutokset todennetaan / how to verify GUI comment changes
+- ~~Q8~~ ratkaistu C-5:ssä: `tyokalut/vertaa_omf.py` / resolved in C-5
 - Q12: kumpi `add_sakko` linkitetään / which `add_sakko` is linked (H-020)
 - Q15: voiko VCL-poikkeus jättää lukon päälle / can a VCL exception leave a lock held
 - Q19: sovelletaanko AIKAT-kaksoiskappale kahdesti / is a duplicate AIKAT applied twice
@@ -178,14 +179,30 @@ molemmilla kääntäjillä samat jäsenten offsetteja myöten; MSVC:ssä ei aset
 bcc32:n `-a1`/`-a8`-erot ovat piileviä (T-023). Merkittävimmät: H-078 (UTF-16BE kaataa konsolin), H-005
 (UTF-8-tekstit väärin myös GUI:ssa; `merkistot.md` korjattu). Avoimet Q57–Q62.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP: C-5 vaihe 2** (rajattu staattinen työerä, `kaantajaerot.md` luku 12).
+**C-5 vaihe 2 valmis (2026-11-25), riippumattomasti tarkastettu, commitoitu paikallisesti.**
+Q8 ratkaistu (`tyokalut/vertaa_omf.py`); uudet H-082–H-086 ja T-029; avoinna Q60, Q63, Q64.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP:** ehdotus: C-5 suljetaan ja GUI-lomakkeiden syötteiden
+tarkistus otetaan omaksi eräkseen (`kaantajaerot.md` luku 13.6); odottaa käyttäjän päätöstä.
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
 Open: manual tests H-009/H-014, two-process loopback layer, H-041 read path, CI. Next:
 C-4 memory safety (plan batch 4). **C-4 complete and closed:** step 1 (`81bcad9`) and step 2 committed locally. Urgent
 fixes: H-071, H-072, H-055, H-070. **C-5 step 1 complete** (`kaantajaerot.md`, H-078–H-081, T-023–T-028);
-next: C-5 step 2, a bounded static step.
+**C-5 step 2 complete** (Q8 resolved, H-082–H-086, T-029); proposal: close C-5, awaiting
+the user's decision.
+
+## Resurssien käyttö / Resource usage (C-5 vaihe 2 / step 2)
+
+| Agentti / Agent | Tokenit / tokens | Työkalukutsut / tool calls |
+|---|--:|--:|
+| `defect-concurrency-auditor` (2B, 2C) | 276 656 | 120 |
+| `legacy-encoding-analyst` (2D: Q57–Q59, Q61, Q62) | 207 063 | 118 |
+| `independent-verifier` (A–D) | 178 522 | 101 |
+| **Yhteensä / total** | **662 241** | **339** |
+
+Tehtävä 2A (bcc32-vertailu) ja dokumentointi pääistunnossa. / Task 2A and write-up by the main session.
 
 ## Resurssien käyttö / Resource usage (C-5 vaihe 1 / step 1)
 
