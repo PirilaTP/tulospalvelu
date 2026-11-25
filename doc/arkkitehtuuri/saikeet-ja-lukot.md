@@ -1,4 +1,4 @@
-# Säikeet ja lukot / Threads and locks (C-6 vaiheet 1–2 / steps 1–2)
+# Säikeet ja lukot / Threads and locks (C-6 vaiheet 1–2 / steps 1–2, **suljettu / closed**)
 
 Erä C-6, vaihe 1: säiekartta, elinkaari ja lopetus (osat A + D), lukkokartta ja
 lukitusjärjestys (osat B + C) sekä riippumaton tarkastus (osa E). Revisio `f7fe553`
@@ -674,3 +674,17 @@ Q67:n uudelleenalustus.
 All five requested findings, the open questions, all 11 section-9 candidates and the VCL questions
 were covered; 11 static claims and all probes independently reviewed. Run-time evidence comes only
 from isolated MSVC console probes; H-087 and H-103 rest on source evidence.
+
+### 13.11 Sulkeminen / Closure
+
+**C-6 suljettu 2026-11-25 käyttäjän hyväksynnällä** (vaihe 1 `bf5b566`, vaihe 2 `2767145`).
+Uusia C-6-analyysejä tai -testejä ei tehdä. Luvun 13.10 avoimet asiat siirrettiin
+myöhempään testaus- tai korjausvaiheeseen (`seuranta.md`, "Avoimet jatkotehtävät C-6:sta"):
+bcc32-käännöksen ajonaikainen todennus, H-087 ja H-103 ViestiWinissä, Q67:n apusäikeet,
+Q68, Q73 ja muut toimitetun ohjelman ajamista vaativat. H-099 on kumottu eikä ole
+korjausjonossa. Q65:n vaikutus on kirjattu H-088:aan ja H-089:ään. Alustava korjausjärjestys
+(luku 13.9) säilyy; P2: H-087, H-090, H-091, H-093, H-107.
+
+C-6 closed on 2026-11-25 with the user's approval. No further C-6 analyses or tests. Open items
+moved to a later test or fix phase; H-099 refuted and out of the queue; fix order 13.9 kept.
+

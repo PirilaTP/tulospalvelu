@@ -127,8 +127,8 @@ ends with an independent review (`independent-verifier`) and a register update
 | 3 | Pysyvät tiedostot ja eheys: `KILP.DAT`, emit-tiedot, `ajat.txt`, `SQLjonoVarm.dat`, vanha muoto / persistent files and integrity | korkea / high | legacy-encoding-analyst, defect-concurrency-auditor, build-dependency-analyst | `tiedostomuodot.md`; Q4, Q17, Q18 — **valmis / done 2026-11-24** (H-040–H-054, T-015–T-019); Q5 (SQL-taulut / tables) siirtyy erään 10 / moves to batch 10 |
 | 4 | Muistiturvallisuus ja määrittelemätön käytös: kääntäjävaroitusten läpikäynti molemmilla kääntäjillä, MSVC `/analyze`, puskurit ja muotoilumerkkijonot / memory safety and UB | korkea / high | defect-concurrency-auditor, build-dependency-analyst | **valmis ja suljettu / done and closed 2026-11-25** (`muistiturvallisuus.md`, H-055–H-077, T-020–T-022); H-numerot, issue-luonnokset / H entries, issue drafts |
 | 5 | Kääntäjäkohtainen käytös: `#pragma -K -a1` (43 tiedostoa, vain bcc32) ja rakenteiden asettelu käännösyksiköiden välillä, `/J` (unsigned char), `wchar_t`, merkistöt / compiler-specific behaviour | korkea / high (jos asettelu eroaa / if layouts differ) | legacy-encoding-analyst, build-dependency-analyst | **vaihe 1 valmis / step 1 done 2026-11-25** (`kaantajaerot.md`, H-078–H-081, T-023–T-028; Q7 ratkaistu / resolved; `merkistot.md` korjattu / corrected); vaihe 2 valmis / step 2 done (`kaantajaerot.md` luku 13: Q8, H-082–H-086, T-029); **valmis ja suljettu / done and closed 2026-11-25** (`b17d536`, `55897eb`); avoinna / open Q60, Q63, Q64. Alkuperäinen tuotos / original output: `merkistot.md` laajennus; Q7. Osittain tehty erässä C-3: levylle ja verkkoon kirjoitettavien rakenteiden koot ja `-K`/`-a1` mitattu (`tiedostomuodot.md`) / partly done in C-3 |
-| 6 | Säikeiden omistajuus ja synkronointi kokonaisuutena: kaikki säikeet, lukot, lukitusjärjestys, lopetus / thread ownership and synchronisation | keskitaso–korkea / medium–high | defect-concurrency-auditor, architecture-analyst | `tietorakenteet-ja-tila.md` laajennus — **vaihe 1 valmis / step 1 done 2026-11-25** (`saikeet-ja-lukot.md`, H-087–H-102, T-030–T-032, Q30 ratkaistu / resolved); **vaihe 2 valmis / step 2 done 2026-11-25** (luku 13: koeohjelmat, H-103–H-108, T-033, H-099 kumottu / refuted); sulkeminen käyttäjän päätöksellä / closing on the user's decision |
-| 7 | GUI:n liiketoimintalogiikka: `cbHk/UnitEmit.cpp`, `UnitAjanotto`, `UnitArvonta`, `UnitKilpailijatiedot`, `ViestiWin/UnitEmit.cpp` / GUI business logic | keskitaso–korkea | architecture-analyst, defect-concurrency-auditor | moduulikuvaukset / module descriptions |
+| 6 | Säikeiden omistajuus ja synkronointi kokonaisuutena: kaikki säikeet, lukot, lukitusjärjestys, lopetus / thread ownership and synchronisation | keskitaso–korkea / medium–high | defect-concurrency-auditor, architecture-analyst | `tietorakenteet-ja-tila.md` laajennus — **vaihe 1 valmis / step 1 done 2026-11-25** (`saikeet-ja-lukot.md`, H-087–H-102, T-030–T-032, Q30 ratkaistu / resolved); **vaihe 2 valmis / step 2 done 2026-11-25** (luku 13: koeohjelmat, H-103–H-108, T-033, H-099 kumottu / refuted); **valmis ja suljettu / done and closed 2026-11-25** (`bf5b566`, `2767145`); avoimet jatkotehtävät `seuranta.md` / open follow-ups in `seuranta.md` |
+| 7 | GUI:n liiketoimintalogiikka: `cbHk/UnitEmit.cpp`, `UnitAjanotto`, `UnitArvonta`, `UnitKilpailijatiedot`, `ViestiWin/UnitEmit.cpp` / GUI business logic | keskitaso–korkea | architecture-analyst, defect-concurrency-auditor | moduulikuvaukset / module descriptions — **vaihe 1 rajattu, ei aloitettu / step 1 scoped, not started** (alla / below) |
 | 8 | Globaali muuttuva tila: kuka kirjoittaa mitäkin, alustus, nollaus kilpailun vaihdossa / global mutable state | keskitaso / medium | architecture-analyst | `tietorakenteet-ja-tila.md` |
 | 9 | Virheenkäsittely ja resurssit: palautusarvojen tarkistus, tiedostokahvat, muistivuodot, `writeerror`-polut / error handling and resources | keskitaso / medium | defect-concurrency-auditor | H/T-numerot |
 | 10 | Ulkoiset riippuvuudet: MySQL/dbExpress, WinHTTP, laiteprotokollat, BPL-ajonaikaiset paketit / external dependencies | matala–keskitaso | build-dependency-analyst | `riippuvuudet.md` |
@@ -146,6 +146,53 @@ Jatkotehtävä C-5:stä (ei numeroitu erä): syötteiden kokonaislukujäsennykse
 161 ehdokasta (`seuranta.md`, "Avoimet jatkotehtävät C-5:stä"); voidaan yhdistää erään 7.
 Follow-up from C-5 (not a numbered batch): integer-parse review, 161 candidates; may be
 merged with batch 7.
+
+### C-7 vaihe 1: rajaus / Step 1: scope (**valmisteltu, ei aloitettu / prepared, not started**)
+
+Suunnitelman erä 7: GUI:n liiketoimintalogiikka. Alkuperäinen tavoite (taulukko yllä): lomake-
+yksiköiden `cbHk/UnitEmit.cpp`, `UnitAjanotto`, `UnitArvonta`, `UnitKilpailijatiedot` ja
+`ViestiWin/UnitEmit.cpp` liiketoimintalogiikka; riski keskitaso–korkea; agentit
+`architecture-analyst` ja `defect-concurrency-auditor`; tuotos moduulikuvaukset. Rajaus pitää
+tavoitteen ennallaan; viestin vastinyksiköt otetaan mukaan vertailuun, koska ne jakavat saman
+logiikan.
+
+**Kohde / target (8 tiedostoa, noin 16 300 riviä, kaikki nyt tasolla 2):** `cbHk/UnitEmit.cpp`
+(3 798), `cbHk/UnitAjanotto.cpp` (1 961), `cbHk/UnitArvonta.cpp` (1 270),
+`cbHk/UnitKilpailijatiedot.cpp` (1 900), `ViestiWin/UnitEmit.cpp` (3 091),
+`ViestiWin/UnitAjanotto.cpp` (1 754), `ViestiWin/UnitArvonta.cpp` (611) ja viestin
+kilpailijatietolomakkeen vastine (agentti tunnistaa; `UnitKilpailijatiedot` puuttuu
+viestistä). Otsakkeet (`.h`) vain tarpeen mukaan.
+
+**Lähtötiedot, ei analysoida uudelleen / inputs, not re-analysed:** näissä tiedostoissa jo
+kirjatut H-010 (`tallenna` ilman lukkoa, C-1), H-017, H-069, H-080, H-085, H-089, H-092, H-107;
+C-6:n säie-, lukko- ja VCL-havainnot (`saikeet-ja-lukot.md`); C-5:n kääntäjäerot
+(`kaantajaerot.md`). Niihin viitataan, niitä ei toisteta.
+
+| Osa / Part | Sisältö / Content | Agentti, malli / Agent, model |
+|---|---|---|
+| A | Moduulikuvaus jokaisesta kohdeyksiköstä: vastuut, tärkeimmät tapahtumankäsittelijät, mitä kilpailutietoja ne lukevat ja muuttavat (`kilparr`, `tallenna`, emit-tietueet, aikajonot, arvonta), kutsut ytimeen, HK- ja viestiversioiden erot / module description per unit | `architecture-analyst`, Sonnet |
+| B | Liiketoimintalogiikan virheet: syötteiden tarkistus ja rajat (käyttäjän syöttämät numerot, ajat, rivi- ja sarjaindeksit), emit-kortin kohdistus kilpailijaan ja korjaus, käsiajanoton tallennus ja korjaus, arvonnan oikeellisuus (kaksoisnumerot, rajat, satunnaisuus, uudelleenarvonta), tilan johdonmukaisuus peruutuksissa ja keskeytyksissä; HK ja viesti rinnakkain / logic defects | `defect-concurrency-auditor`, Sonnet; Opus vain monivaiheiseen korkean riskin päättelyyn / Opus only for multi-step high-risk reasoning |
+| C | C-5:n jäsennysehdokkaista ne 9, jotka ovat kohdetiedostoissa (`cbHk/UnitEmit.cpp:2819`, `:2820`, `:2974`; `cbHk/UnitArvonta.cpp:916`; `cbHk/UnitKilpailijatiedot.cpp:757`; `ViestiWin/UnitEmit.cpp:2356`, `:2357`, `:2504`; `ViestiWin/UnitAjanotto.cpp:633`), osana B:tä. Muut 152 ehdokasta jäävät erilliseksi jatkotehtäväksi (ei laajenneta erää) / the 9 C-5 parse candidates in the target files, as part of B | B:n agentti / B's agent |
+| D | Riippumaton tarkastus kaikille uusille korkean ja keskitason havainnoille sekä väitteille, jotka muuttavat olemassa olevan havainnon arviota; tarkastaja yrittää kumota (saavutettavuus GUI:ssa, käyttäjän toiminto, asetukset, ytimen tarkistukset kutsujassa) / independent review | `independent-verifier`, Opus |
+| E | Dokumentointi: uusi `gui-liiketoimintalogiikka.md` (kaksikielinen), rekisterit (`havainnot.md`, `tiedostot.csv`, `moduulit.md`), `seuranta.md`, `CHECKPOINT.md`; raakatulokset `todisteet/c7/`; validaattori; paikallinen commit, ei pushia / documentation, local commit | pääistunto / main session |
+
+A ja B voivat edetä rinnakkain (B käyttää A:n tuloksia vain lopussa); D A:n ja B:n jälkeen.
+Ei keinotekoista tokenbudjettia (käyttäjän linja C-6:sta); päällekkäisyys estetään antamalla
+agenteille lähtötietojen luettelo. Rajattu pois: säikeet, lukot ja VCL-säieturvallisuus
+(C-6), kääntäjäerot (C-5), muut lomakeyksiköt, ajonaikaiset kokeet (GUI-koodia ei voi
+linkittää konsolikoeohjelmaan; mahdolliset puhtaat laskentafunktiot ytimessä voidaan
+todentaa eristetyllä koeohjelmalla vain erillisellä päätöksellä), korjaukset. Valmis, kun
+jokaisesta kohdeyksiköstä on moduulikuvaus, B:n kysymykset on käyty läpi kaikissa
+yksiköissä, 9 jäsennysehdokasta on ratkaistu, uudet merkittävät havainnot on tarkastettu
+riippumattomasti ja validaattori menee läpi. Vaihe 2 (esim. muut lomakeyksiköt tai jäljelle
+jäävät 152 jäsennysehdokasta) erillisellä päätöksellä. [ehdotus]
+
+Batch 7 (GUI business logic), step 1: module descriptions (A) and logic defects (B) for the
+five planned units plus their relay counterparts; the 9 C-5 parse candidates in these files
+(C); Opus review of new high/medium findings (D); new document `gui-liiketoimintalogiikka.md`,
+register updates, evidence `todisteet/c7/`, local commit (E). No token budget; earlier findings
+are inputs. Out of scope: threads/locks/VCL (C-6), compiler differences (C-5), other forms,
+run-time probes, fixes; the other 152 parse candidates stay a separate follow-up. [proposal]
 
 ### C-6 vaihe 1: rajaus / Step 1: scope (**valmis / done 2026-11-25**, `saikeet-ja-lukot.md`)
 

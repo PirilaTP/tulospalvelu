@@ -17,6 +17,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 
 | Erä / Batch | Sisältö / Content | Dokumentit / Documents |
 |---|---|---|
+| **C-6 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi / approved 2026-11-25) | Vaiheet 1 (`bf5b566`) ja 2 (`2767145`); H-099 kumottu; korjausjärjestys P2 H-087, H-090, H-091, H-093, H-107; ajoa vaativat avoimet asiat (bcc32, H-087/H-103 ViestiWinissä, Q67:n apusäikeet, Q68, Q73) jatkotehtävinä `seuranta.md` / open items needing runs deferred | `saikeet-ja-lukot.md` 13.11, `seuranta.md` |
 | **C-6 vaihe 2 valmis / step 2 complete** (riippumattomasti tarkastettu, commitoitu paikallisesti / independently reviewed, committed locally) | Viiden havainnon polut; H-090, H-091 (reunat), H-093 (rekursio ja kahden säikeen lukkiutuminen) ja H-094 (menetys) toistettu eristetyllä koeohjelmalla tuotantokoodista; Q65 Win32-kokeella; H-090 ja H-093 → korkea, H-099 kumottu; uudet H-103–H-108, T-033; VCL-säieturvallisuus; luvun 9 ehdokkaat; 11 väitettä + kaikki kokeet kahdella Opus-tarkastajalla / five findings' paths, isolated probes, VCL, new H-103–H-108 | `saikeet-ja-lukot.md` luku 13, `todisteet/c6/vaihe2/` |
 | **C-6 vaihe 1 valmis / step 1 complete** (riippumattomasti tarkastettu, commitoitu paikallisesti / independently reviewed, committed locally) | Säiekartta (56 aktiivista käynnistyskohtaa, 29 säiefunktiota, ei yhtään odotusta), elinkaari ja lopetus, Q30 ratkaistu (vaiheen vaihto ei sulje `KILP.DAT`:ia), lukkokartta (22 lukkoa), lukitusjärjestys (3 todellista ABBA-paria), estävät kutsut lukon alla; uudet H-087–H-102, T-030–T-032; H-018, H-031, H-038 laajennettu; 20 väitettä kahdella Opus-tarkastajalla / thread map, lifecycle, Q30, lock map, lock order, blocking under locks; new findings; 20 claims reviewed | `saikeet-ja-lukot.md`, `todisteet/c6/` |
 | Kierros 1 / round 1 | Koneellinen inventaario, yleiskuva, riippuvuudet, tietorakenteet, merkistöt, standardi, suunnitelma / scripted inventory, overview, dependencies, structures, encodings, standard, plan | `README.md` ja sen listaamat / and those it lists |
@@ -210,9 +211,13 @@ Raportti `saikeet-ja-lukot.md` luku 13; koeohjelmat ja tulokset `todisteet/c6/va
 (eristetyt, MSVC-konsolikäännös tuotantokoodista; ei toimitettuja ohjelmia, ei verkkoa).
 H-090 ja H-093 → korkea; H-099 kumottu; uudet H-103–H-108 ja T-033.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP:** käyttäjän päätös C-6:n sulkemisesta (ehdotus: sulje;
-jäljellä olevat ajonaikaiset kysymykset korjausvaiheeseen tai käsitesteihin). C-7:ää ei
-aloiteta ennen päätöstä. Työtapa: `suunnitelma.md` "Työtapa erästä C-6 alkaen".
+**C-6 valmis ja suljettu (2026-11-25), käyttäjä hyväksyi.** Avoimet ajoa vaativat asiat
+jatkotehtävinä (`seuranta.md` "Avoimet jatkotehtävät C-6:sta"); korjauksia ei aloitettu.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP: C-7 vaihe 1** (GUI:n liiketoimintalogiikka: moduulikuvaukset
+ja logiikkavirheet kahdeksassa lomakeyksikössä + 9 C-5:n jäsennysehdokasta), rajaus
+`suunnitelma.md` "C-7 vaihe 1"; ei aloitettu, odottaa käyttäjän aloituslupaa. Työtapa:
+`suunnitelma.md` "Työtapa erästä C-6 alkaen" (käyttäjän linja: ei keinotekoisia tokenrajoja).
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
@@ -222,7 +227,8 @@ fixes: H-071, H-072, H-055, H-070. **C-5 step 1 complete** (`kaantajaerot.md`, H
 **C-5 step 2 complete** (Q8 resolved, H-082–H-086, T-029). **C-5 closed** on approval.
 **C-6 step 1 complete** (`saikeet-ja-lukot.md`, H-087–H-102, T-030–T-032, Q30 resolved).
 **C-6 step 2 complete** (section 13; probes for H-090, H-091, H-093, H-094; H-099 refuted;
-new H-103–H-108, T-033). Next: the user's decision on closing C-6; C-7 not started.
+new H-103–H-108, T-033). **C-6 closed** on approval; open items needing runs deferred.
+Next: C-7 step 1 (GUI business logic, scope in `suunnitelma.md`), not started, awaiting approval.
 
 ## Resurssien käyttö / Resource usage (C-6 vaihe 2 / step 2)
 
@@ -360,7 +366,7 @@ Figures as reported by the harness. The C-3 figure was 745 489 / 360.
    ```sh
    git branch --show-current          # testit/vikojen-todentaminen
    git status --short                 # puhdas / clean
-   git log --oneline main..           # 22 committia / commits (viimeisin / last: C-6 vaihe 2 / step 2)
+   git log --oneline main..           # 23 committia / commits (viimeisin / last: C-6:n sulkeminen / C-6 closure)
    python -I TPsource/V52/Tests/test_run_core_tests.py   # 46 OK
    python -I TPsource/V52/Tests/run_core_tests.py   # PASS=19, XFAIL=23 (vaatii Release- ja TpCoreHk Asan -käännöksen / needs Release and TpCoreHk Asan builds, testaus.md 13.6, 14)
    python -I doc/arkkitehtuuri/tyokalut/tarkista_auditointi.py .   # OK
