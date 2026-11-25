@@ -89,6 +89,20 @@ Tärkeimpiä / Most important [todennettu: esittelyt; päätelty: roolit]:
 - `comopen[]`, `comtype[]`, `lahcom[]`, `outbuf[]`, `inbuf` – yhteydet ja jonot / connections and queues
 - `nameindex` – nimihakemisto / name index
 
+C-8 (2026-11-26, `globaali-tila.md`): ytimessä on 1 200 eri globaalia tai tiedostotason
+staattista nimeä ja 370 funktion sisäistä staattista muuttujaa. Ne on luokiteltu seitsemään
+luokkaan (asetus, kilpailudata, johdettu tila, ajonaikaiset liput, yhteyspuskurit, tulostus,
+muu; `todisteet/c8/osaA/luokittelu.csv`). Johdetut rakenteet (laskurit, sijoitusketjut,
+`idindex`, `nameindex`, `bdg_kno`, `emitjarr`) ovat vain muistissa: ne rakennetaan
+käynnistyksessä ja ylläpidetään käsin pareittain (T-039). HK:n vaiheen vaihto nollaa tilaa
+tapauskohtaisesti (T-038); nollaustaulukko on luvussa 4.2. Merkittävimmät viat: H-129
+(kekoylivuoto vaiheen vaihdossa) ja H-128 (numerohakemisto ei poista rivejä).
+
+C-8: the core has 1,200 distinct global or file-static names and 370 function-local statics,
+classified into seven categories. Derived structures are memory-only, rebuilt at start and
+maintained by hand-paired calls (T-039). The HK stage change resets state case by case (T-038);
+reset table in `globaali-tila.md` section 4.2. Most significant defects: H-129 and H-128.
+
 ## Säikeet / Threads
 
 Säikeet käynnistetään funktiolla `_beginthread` (`CreateThread`-kohdat ovat kommenteissa).

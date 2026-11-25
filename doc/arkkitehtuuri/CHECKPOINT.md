@@ -227,9 +227,13 @@ jatkotyöjono J7-1–J7-7 (`seuranta.md`): arvonta-algoritmi `cbHk/HkArv2.cpp`, 
 kilpailutietoja kirjoittavaa lomaketta, 152 jäsennysehdokasta, H-109/H-110/H-116:n ajonaikaiset
 vahvistukset, tarkastamattomat H-122–H-124/H-126/H-127, Q15/Q75–Q77, haarojen korjaussuunnittelu.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP: C-8 vaihe 1** (globaali muuttuva tila: inventaario,
-elinkaari ja vaiheen vaihto, johdettujen rakenteiden eheys, säikeiden yhteinen tila), rajaus
-`suunnitelma.md` "C-8 vaihe 1"; ei aloitettu, odottaa käyttäjän aloituslupaa.
+**C-8 vaihe 1 valmis (2026-11-26), riippumattomasti tarkastettu, commitoitu paikallisesti.**
+Raportti `globaali-tila.md`; raakatulokset `todisteet/c8/`; skripti `tyokalut/globaalit.py`.
+Uudet H-128–H-144 (korkea 1: H-129 kekoylivuoto vaiheen vaihdossa; keskitaso–korkea 1: H-128
+`setpos`; keskitaso 2; muut matalampia) ja T-038–T-039; Q78–Q82. Kaikki staattisia.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP:** käyttäjän tarkastus ja C-8:n sulkemispäätös; sen jälkeen
+C-9:n rajaus (virheenkäsittely ja resurssit) erillisellä luvalla.
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
@@ -242,8 +246,8 @@ fixes: H-071, H-072, H-055, H-070. **C-5 step 1 complete** (`kaantajaerot.md`, H
 new H-103–H-108, T-033). **C-6 closed** on approval; open items needing runs deferred.
 **C-7 step 1 complete** (`gui-liiketoimintalogiikka.md`, H-109–H-127, T-034–T-037; H-017
 narrowed; 9 parse candidates resolved). **C-7 closed** on approval after a coverage check;
-gaps in follow-up queue J7-1–J7-7. Next: C-8 step 1 (global mutable state, scope in
-`suunnitelma.md`), not started, awaiting approval.
+gaps in follow-up queue J7-1–J7-7. **C-8 step 1 complete** (`globaali-tila.md`, H-128–H-144, T-038–T-039, Q78–Q82;
+H-129 high). Next: user review and closing decision for C-8, then scope C-9.
 
 ## Resurssien käyttö / Resource usage (C-6 vaihe 2 / step 2)
 

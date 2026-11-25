@@ -1,0 +1,1398 @@
+name,defined_in,category,domain,writers_summary,thread_note,stage_dependent,note
+xSize,Hk/HkApuC.c;Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>; +1 unattributed writes (script lost function name) e.g. Hk/HkApuC.c:34,,n,
+ySize,Hk/HkApuC.c;Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"2 writer fn (Hk/HkConsole/Juk): <file scope>,initscreens; +1 unattributed writes (script lost function name) e.g. Hk/HkApuC.c:34",direct refs in thread fn: TCPrcvTh(R); gazTh(R); naytaluentaTh(R),n,
+spoolfl,Hk/HkApuC.c;Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K6,both,"2 writer fn (Hk/Juk/tputilv2): <file scope>,openprfile; +1 unattributed writes (script lost function name) e.g. Hk/HkApuC.c:35",,n,
+aani,Hk/HkApuC.c;Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K1,both,"4 writer fn (Hk/Juk/tputilv2): <file scope>,ConsoleAloitus,leimat,lue_parametrit; +1 unattributed writes (script lost function name) e.g. Hk/HkApuC.c:36",,n,
+errMsgBox,Hk/HkApuC.c;Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>; +1 unattributed writes (script lost function name) e.g. Hk/HkApuC.c:39,,n,
+alkut,Hk/HkCom32.cpp;Juk/VCom.cpp,K1,both,"1 writer fn (JukConsole): leimat; +2 unattributed writes (script lost function name) e.g. Hk/HkCom32.cpp:65,Juk/VCom.cpp:84",,n,
+hComm,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"2 writer fn (Tp): ZebraReader::openConnection,openSirit2",direct refs in thread fn: lue_regnlyThread(R); naytatulosTh(R); sendtcpfile(R),n,no lexical writer found (never written or written via pointer/bulk)
+ackreq,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+yhtfl,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"0 writer fn (): ; +6 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:977,Tp/TpComY.cpp:983,Tp/TpComY.cpp:1862",,n,
+keyclose,Hk/HkCom32.cpp;Juk/VCom.cpp,K4,both,"1 writer fn (cbTp): TFormUusinta::Button3Click; +16 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2042,Tp/TpComY.cpp:2066,Tp/TpComY.cpp:2570",,n,
+autoclose,Hk/HkCom32.cpp;Juk/VCom.cpp;Tp/TpComY.cpp;Tp/TpComY32.cpp,K4,both,1 writer fn (Hk/Juk): tarkcom,direct refs in thread fn: tarkcom(RW),n,
+initid,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"0 writer fn (): ; +14 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:765,Tp/TpComY.cpp:777,Tp/TpComY.cpp:1013",,n,
+inbuf,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"1 writer fn (Hk): tarkcom; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2399,Tp/TpComY32.cpp:2173",direct refs in thread fn: tarkcom(RW),n,
+outbuf,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2409,Tp/TpComY32.cpp:2282",,n,
+combufsize,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"1 writer fn (Hk/Juk): init_class_len; +2 unattributed writes (script lost function name) e.g. ViestiWin/UnitComfile.cpp:136,cbHk/UnitComfile.cpp:146",,n,written from GUI dir(s): ViestiWin/cbHk
+combuf,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"0 writer fn (): ; +14 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2401,Tp/TpComY.cpp:3149,Tp/TpComY32.cpp:2175",,n,written from GUI dir(s): ViestiWin/cbHk
+lahfl,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"1 writer fn (Hk/Juk): lahetaXML_TCP; +17 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:876,Tp/TpComY.cpp:1394,Tp/TpComY.cpp:1431",,n,
+vkesken,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"0 writer fn (): ; +6 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:735,Tp/TpComY.cpp:751,Tp/TpComY.cpp:877",,n,
+chcomkesto,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"0 writer fn (): ; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1675,Tp/TpComY.cpp:1677,Tp/TpComY32.cpp:1616",,n,
+hyvkesken,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"0 writer fn (): ; +8 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1319,Tp/TpComY.cpp:1641,Tp/TpComY.cpp:1644",,n,
+outpakid,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"0 writer fn (): ; +10 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1292,Tp/TpComY.cpp:1299,Tp/TpComY.cpp:1434",,n,
+vastcom0,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2423,Tp/TpComY32.cpp:2296",direct refs in thread fn: tarkcom(R),n,
+lahcomserver,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"2 writer fn (Tp/cbTp): TFormUusinta::Button3Click,opencomRS; +12 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:903,Tp/TpComY.cpp:1232,Tp/TpComY.cpp:2591",,n,
+class_len,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,1 writer fn (Hk/Juk): init_class_len,,n,
+yhteysalku,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"0 writer fn (): ; +10 unattributed writes (script lost function name) e.g. Hk/HkCom32.cpp:91,Juk/VCom.cpp:110,Tp/TpComY.cpp:2798",,n,
+tcpautoalku,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+ts_close,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"0 writer fn (): ; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1104,Tp/TpComY.cpp:2018,Tp/TpComY32.cpp:1081",,n,
+acn,Hk/HkCom32.cpp;Juk/VCom.cpp,K5,both,"1 writer fn (Tp): openSirit; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2198,Tp/TpComY32.cpp:2084",,n,
+comparam,Hk/HkCom32.cpp;Juk/VCom.cpp,K1,both,"0 writer fn (): ; +8 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2206,Tp/TpComY.cpp:2207,Tp/TpComY.cpp:2208",,n,
+vanhaXMLsan,Hk/HkCom32.cpp,K1,Hk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkCom32.cpp:970,,n,
+kuvio,Hk/HkEmit.cpp;Juk/VEmit.cpp,K2,both,"3 writer fn (Hk/Juk): editkoodit,lue_leimat,vapautaemitmuisti; +20 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:309,Hk/HkEmit.cpp:369,Hk/HkEmit.cpp:379",,?,
+nkuvio,Hk/HkEmit.cpp;Juk/VEmit.cpp,K2,both,"2 writer fn (Hk/Juk): editkoodit,lue_leimat; +10 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:364,Hk/HkEmit.cpp:382,Hk/HkEmit.cpp:389",,?,
+maxnkuvio,Hk/HkEmit.cpp;Juk/VEmit.cpp,K2,both,"2 writer fn (Hk/Juk): lue_leimat,vapautaemitmuisti; +7 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:370,Hk/HkEmit.cpp:401,Hk/HkEmit.cpp:857",,n,
+emitosa,Hk/HkEmit.cpp;Juk/VEmit.cpp,K1,both,"2 writer fn (Hk/Juk): emit_rap,prtemitsivu",,n,
+ajat_on_loc,Hk/HkEmit.cpp,K1,Hk,"2 writer fn (Hk): lueemitfile,ohj_aikaruutu",,n,
+vakvapautus_bdg,Hk/HkEmit.cpp,K1,Hk,1 writer fn (Hk): rembadge,,n,
+emitptr_kno,Hk/HkEmit.cpp,K3,Hk,"2 writer fn (Hk): leimat,putem",,n,
+vapautettu_bdg,Hk/HkEmit.cpp,K2,Hk,1 writer fn (Hk): rembadge,,n,
+rvalit,Hk/HkEmit.cpp;Juk/VEmit.cpp,K2,both,"5 writer fn (Hk/Juk): addemitanal,analradat,laskevertaika,tarkkilpradat,...",,?,
+rvluku,Hk/HkEmit.cpp;Juk/VEmit.cpp,K2,both,1 writer fn (Hk/Juk): analradat,,?,
+analvertosuus,Hk/HkEmit.cpp;Juk/VEmit.cpp,K1,both,"1 writer fn (ViestiWin/cbHk): TVertAikaFrm::OKBtnClick; +2 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:78,Juk/VEmit.cpp:111",,n,written from GUI dir(s): ViestiWin/cbHk
+analvertmax,Hk/HkEmit.cpp;Juk/VEmit.cpp,K1,both,"1 writer fn (ViestiWin/cbHk): TVertAikaFrm::OKBtnClick; +2 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:79,Juk/VEmit.cpp:112",,n,written from GUI dir(s): ViestiWin/cbHk
+EmitErot,Hk/HkEmit.cpp;Juk/VEmit.cpp,K2,both,1 writer fn (Hk/Juk): haeEmiterot,,?,
+nEmitErot,Hk/HkEmit.cpp;Juk/VEmit.cpp,K2,both,1 writer fn (Hk/Juk): haeEmiterot,,?,
+rastiva,Hk/HkEmit.cpp;Juk/VEmit.cpp,K2,both,"4 writer fn (Hk/Juk): TarkKilpailijat,addemitanal,analradat,vapautaemitmuisti",,?,
+rastikoord,Hk/HkEmit.cpp;Juk/VEmit.cpp,K2,both,"3 writer fn (cbTp): TFormRadat::BtnLueKoordCsvClick,TFormRadat::BtnTyhjKoordClick,TFormRadat::Liskaikkiinratoihinmaalinrastikoodi1Click; +2 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:361,Juk/VEmit.cpp:409",,n,
+Map,Hk/HkEmit.cpp;Juk/VEmit.cpp,K2,both,"11 writer fn (cbTp): TFormKohdistus::Button1Click,TFormKohdistus::Button3Click,TFormKohdistus::LaskeKohdistus,TFormKohdistus::UpDownMapLClick,...; +2 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:859,Juk/VEmit.cpp:900",,?,
+emitkdit,Hk/HkEmit.cpp;Juk/VEmit.cpp,K1,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+lainaemit,Hk/HkEmit.cpp;Juk/VEmit.cpp,K2,both,"2 writer fn (Hk/Juk): lue_lainat,vapautaemitmuisti",,?,
+lainatied,Hk/HkEmit.cpp;Juk/VEmit.cpp,K1,both,"2 writer fn (Hk/Juk): lue_lainat,lue_parametrit",,n,
+maxlaina,Hk/HkEmit.cpp;Juk/VEmit.cpp,K1,both,1 writer fn (Hk/Juk): lue_lainat,,n,
+lainafname,Hk/HkEmit.cpp;Juk/VEmit.cpp,K1,both,"1 writer fn (Hk): lue_parametrit; +2 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:1399,Juk/VEmit.cpp:939",,n,
+vapg,Hk/HkEmit.cpp,K1,Hk,"2 writer fn (Hk): addvaline,initvapage",,n,
+valn,Hk/HkEmit.cpp,K1,Hk,"2 writer fn (Hk): addvaline,initvapage",,n,
+taustaon,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"3 writer fn (Hk/Juk): <file scope>,aloitus,lopetus1",direct refs in thread fn: DisplTimerThread(R); HaeAvoimetTh(R); LukumaaratTh(R); NaytaTulosTimerThread(R); PaivThread(R); ProsEmitThread(R); ScrollThread(R); comajanotto(R); haeSQLTh(R); kirjSQLTh(R); pros_bdg_t(R); sendtcpfile(R); taustaThr(R),n,
+taustasulj,Hk/HkGlobals.cpp,K4,Hk,"2 writer fn (Hk): <file scope>,taustaThr",direct refs in thread fn: taustaThr(W),n,
+inGDIdoc,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"3 writer fn (Hk/Juk): abortdoc,enddoc,initdoc",,n,
+inLopetus,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"3 writer fn (Hk/Juk): initajat,kilptietue::tallenna,lopetus1",direct refs in thread fn: lue_regnlyThread(R),n,
+katkaisuPyydetty,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"5 writer fn (ViestiWin/cbHk/cbTp): TFormEmiTag::BtnSuljeYhteysClick,TFormGAZ::BtnSuljeYhtClick,TFormMaalikello::BtnLaite1SuljeClick,TFormMaalikello::BtnLaite2SuljeClick,...",direct refs in thread fn: lue_regnlyThread(R),n,written from GUI dir(s): ViestiWin/cbHk
+TestiToiminnot,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk/cbHk): <file scope>,TAsetusForm::CheckBox1Click",,n,written from GUI dir(s): cbHk
+ok,Hk/HkGlobals.cpp;tputilv2/globals.cpp,K7,Hk,"22 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin/cbHk/tputilv2): LaskeVaiheSarja,Seuraava,TFormArvonta::JaaSeuratKoossa,TFormArvonta::SeurPos,...; +13 unattributed writes (script lost function name) e.g. Juk/vSarjat.cpp:321,Juk/vSarjat.cpp:492,Tp/TpComY.cpp:2378",,n,generic error flag/temp (lexically merged with locals); written from GUI dir(s): ViestiWin/cbHk
+exeName,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (ViestiWin/cbHk): TFormMain::Aloita,,n,written from GUI dir(s): ViestiWin/cbHk; no lexical writer found (never written or written via pointer/bulk)
+hav_virheet,Hk/HkGlobals.cpp;Juk/vApu.cpp,K4,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit; +1 unattributed writes (script lost function name) e.g. Juk/vApu.cpp:56",,n,
+autofileparam,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"9 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin/cbHk): TFormAutoFile::BtnOtakayttoonClick,TFormAutoFile::CBVaadiMuutosClick,afasetukset,aloitus,...",direct refs in thread fn: LukumaaratTh(R),n,written from GUI dir(s): ViestiWin/cbHk
+WorkingDir,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (ViestiWin/cbHk): TFormMain::Initialisoi,,n,written from GUI dir(s): ViestiWin/cbHk; no lexical writer found (never written or written via pointer/bulk)
+nakviive,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"4 writer fn (Hk/Juk/JukConsole/cbHk): <file scope>,TAsetusForm::BtnOKClick,asetukset,lue_parametrit; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2493,Tp/TpComY32.cpp:2366",,n,written from GUI dir(s): cbHk
+ohitavirheet,Hk/HkGlobals.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+maxemvalah,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+pros_emit_on,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+emitluenta,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"3 writer fn (Hk/Tp/ViestiWin/cbHk): <file scope>,emitTarkOn,start_regnly",,n,written from GUI dir(s): ViestiWin/cbHk
+emitTunnistus,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+suljesuoraan,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"4 writer fn (Hk/Juk/ViestiWin/cbHk/cbTp): <file scope>,TFormMain::CloseReqHandler,TFormMain::errorMsgHandler,tark_extra",direct refs in thread fn: LukumaaratTh(R); tarkcom(R),n,written from GUI dir(s): ViestiWin/cbHk
+siimport,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+sulkusalasana,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,no lexical writer found (never written or written via pointer/bulk)
+max_lahportti,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,,n,
+max_portti,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,,n,
+minvakanttiluku,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+lisavakanttialku,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+sailTiedPos,Hk/HkGlobals.cpp,K6,Hk,"2 writer fn (Hk/cbHk): <file scope>,TFormImport::Button1Click",,n,written from GUI dir(s): cbHk
+ch_piste,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,,n,
+aika_jono,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"2 writer fn (Hk/Juk/cbTp): TFormMaalikello::LaiteAvaa,lue_parametrit",,n,
+jonopiste,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+maxjono,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk/Tp/cbTp): inittimer,lue_parametrit,lueyhteysjonot",,n,
+tl_ylaraja,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): <file scope>,,n,
+tunn_srj,Hk/HkGlobals.cpp,K1,Hk,"4 writer fn (Hk/HkConsole): <file scope>,aloitus,pistetunn,valitselahtosarja",,n,
+tunn_raja,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+tyhjarivi,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+dhigh,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+shigh,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+ndhigh,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+nshigh,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+kierrosva,Hk/HkGlobals.cpp,K2,Hk,"2 writer fn (Hk): aloitus,lue_parametrit",,n,lexical writers only <file scope>/init
+kierrosvafl,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+va_vuoro,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+vavuoro_ala,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+vavuoro_yla,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+JoKirjattuKesto,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk/cbHk): <file scope>,TFormAjanotto::oistuvantiedonvaroitus1Click",,n,written from GUI dir(s): cbHk
+nktarra,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+wtarra,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+nrtarra,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+sgl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+nchsgle,Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K6,both,"2 writer fn (Hk/Juk): <file scope>,luekorkeat",,n,
+dbl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+nchdble,Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K6,both,"2 writer fn (Hk/Juk): <file scope>,luekorkeat",,n,
+sgle,Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K6,both,"2 writer fn (Hk/Juk): <file scope>,luekorkeat",,n,
+dble,Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K6,both,"2 writer fn (Hk/Juk): <file scope>,luekorkeat",,n,
+alkulayout,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,no lexical writer found (never written or written via pointer/bulk)
+dataf2name,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,,n,
+dataf3name,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,,n,
+datafbname,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,,n,
+namefname,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,,n,
+sarjafname,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,,n,
+sarjaxmlfname,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,,n,
+obfilename,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk): <file scope>,aloitus,vaihdavaihe",,y,
+lokifname,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk): <file scope>,aloitus,lue_parametrit",,n,
+leimafname,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk): <file scope>,editkoodit,lue_leimat",,n,
+ratafname,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_radat",,n,
+rataxmlfname,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>; +1 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:852,,n,
+ratatiedot,Hk/HkGlobals.cpp;Juk/VEmit.cpp,K1,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:861,Juk/VEmit.cpp:919",,n,
+luetfnm,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,lexical writers only <file scope>/init
+ll_luetfnm,Hk/HkGlobals.cpp,K6,Hk,1 writer fn (Hk): <file scope>,,n,lexical writers only <file scope>/init
+ToimintaTila,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"6 writer fn (Hk/Juk/ViestiWin/cbHk): <file scope>,TFormMain::Aloita,TFormMain::BtnIlmTilaClick,TFormMain::BtnTulPalvClick,...",,n,written from GUI dir(s): ViestiWin/cbHk
+EnvData,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,1 writer fn (cbTp): setBrowserEmulation,,n,
+poistaSulje,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+k_pv,Hk/HkGlobals.cpp,K4,Hk,"3 writer fn (Hk): aloitus,lue_parametrit,vaihdavaihe",,y,
+arv_pv,Hk/HkGlobals.cpp,K4,Hk,"16 writer fn (Hk/cbHk): ASCLahdot,LaskeVaiheSarja,TFormArvonta::BtnJaaClick,TFormArvonta::BtnMuodostettavatClick,...",,y,written from GUI dir(s): cbHk
+vaihevalinta,Hk/HkGlobals.cpp,K4,Hk,1 writer fn (Hk): lue_parametrit,,n,lexical writers only <file scope>/init
+valparas,Hk/HkGlobals.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+vaiheenvaihto,Hk/HkGlobals.cpp;cbTp/UnitEmitSQL.cpp;cbTp/UnitNaytaTulos.cpp,K4,Hk,"3 writer fn (Hk/cbHk): TFormMain::VaihdaVaiheHandler,TFormMain::Vaiheenvaihto1Click,vaihdavaihe; +2 unattributed writes (script lost function name) e.g. cbTp/UnitEmitSQL.cpp:30,cbTp/UnitNaytaTulos.cpp:30",direct refs in thread fn: DisplTimerThread(R); HaeAvoimetTh(R); LukumaaratTh(R); NaytaTulosTimerThread(R); ProsEmitThread(R); ScrollThread(R); haeSQLTh(R); kirjSQLTh(R); pros_bdg_t(R); taustaThr(R),n,written from GUI dir(s): cbHk
+Sarjat,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,"61 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin/cbHk): LaskeKaikkiPisteet,PisteKarki,TFormAjanotto::SarjaLahto,TFormEmit_VA::TallSarja,...; +51 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:650,Hk/HkEmit.cpp:655,Hk/HkTls.cpp:398",,y,written from GUI dir(s): ViestiWin/cbHk
+pkarki,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"2 writer fn (Hk/Juk): addjarjarr,remjarjarr",,y,
+kilparr,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,"3 writer fn (Hk/Juk): kilptietue::PUTREC,suljekilpailu,teejarj",,n,
+ilmkentat,Hk/HkGlobals.cpp,K3,Hk,1 writer fn (Hk): lue_parametrit; +1 unattributed writes (script lost function name) e.g. cbHk/UnitIlm2.cpp:214,,n,written from GUI dir(s): cbHk
+kuntosuunnmoodi,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk/cbHk): TFormMain::Aloita,lue_parametrit",,n,written from GUI dir(s): cbHk
+vakanttialku,Hk/HkGlobals.cpp,K1,Hk,"3 writer fn (Hk): <file scope>,haeSeurVakantti,lue_parametrit",,n,
+seurVapaaBadge,Hk/HkGlobals.cpp,K1,Hk,"3 writer fn (Hk): <file scope>,haeSeurVapaaBadge,lue_parametrit",,n,
+ProsEmitOn,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"8 writer fn (Hk/Juk/ViestiWin/cbHk): <file scope>,TFormEmit,TFormMain::Initialisoi,TFormMain::VaihdaVaiheHandler,...",direct refs in thread fn: ProsEmitThread(R),n,written from GUI dir(s): ViestiWin/cbHk
+meri3,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): <file scope>,,n,
+m3vert,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): aloitus,meri3pisteet",,n,
+sotilas,Hk/HkGlobals.cpp,K1,Hk,"3 writer fn (Hk/cbHk): TFormKilpMaaritys::RGlajiClick,aloitus,lue_parametrit",,n,written from GUI dir(s): cbHk
+timerfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"4 writer fn (Hk/Juk/cbHk): <file scope>,TFormOsanottajat::Lueemitkoodeja1Click,inittimer,remtimer",direct refs in thread fn: pros_bdg_t(R),n,written from GUI dir(s): cbHk
+selostaja,Hk/HkGlobals.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+bootfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"3 writer fn (Hk/HkConsole/Juk/ViestiWin/cbHk): TFormMain::Aloita,lue_parametrit,valikko",,n,written from GUI dir(s): ViestiWin/cbHk
+kfirstfree,Hk/HkGlobals.cpp,K2,Hk,1 writer fn (Hk): teejarj,,n,
+nrec,Hk/HkGlobals.cpp,K2,Hk,"2 writer fn (Hk): kilptietue::addfrec,teejarj",,n,
+maxrec,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,"2 writer fn (Hk/Juk): <file scope>,teejarj",,n,
+datf2,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,"14 writer fn (Hk/HkConsole/Juk/ViestiWin/cbHk): TFormImport::Button1Click,addfrec,addtall,aloitus,...; +1 unattributed writes (script lost function name) e.g. Juk/vkilp.cpp:244",,n,written from GUI dir(s): ViestiWin/cbHk; no lexical writer found (never written or written via pointer/bulk)
+datf3,Hk/HkGlobals.cpp,K2,Hk,1 writer fn (HkConsole): valikko,,n,no lexical writer found (never written or written via pointer/bulk)
+jarjtulos,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"5 writer fn (Hk/Juk): AllocJarjSeur,DeAllocJarjSeur,SetJarjTulos,addjarjarr,...",,y,
+jrjseur,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"5 writer fn (Hk/Juk): AllocJarjSeur,DeAllocJarjSeur,SetJarjSeur,suljekilpailu,...",,y,
+xmlsarja,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,lexical writers only <file scope>/init
+tcptulos,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,lexical writers only <file scope>/init
+server_on,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"0 writer fn (): ; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2740,Tp/TpComY.cpp:2858,Tp/TpComY32.cpp:2609",,n,
+vaintaulu,Hk/HkGlobals.cpp,K2,Hk,1 writer fn (HkConsole): valikko,,n,
+udptaulu,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk/JukConsole): <file scope>,lue_parametrit,opentaulu",,n,
+ixarr,Hk/HkGlobals.cpp;Juk/VIx.cpp,K3,both,"2 writer fn (Hk/Juk): initindex,teeindeksi",,y,
+ljarjindex,Hk/HkGlobals.cpp,K3,Hk,"2 writer fn (Hk/cbHk): TFormArvonta::SeurPos,initindex",,y,written from GUI dir(s): cbHk
+sarjaindex,Hk/HkGlobals.cpp,K3,Hk,"2 writer fn (Hk/cbHk): TFormArvonta::BtnNumeroiClick,initindex",,y,written from GUI dir(s): cbHk
+srjaakindex,Hk/HkGlobals.cpp;Juk/VIx.cpp,K3,both,1 writer fn (Hk/Juk): initindex,,y,
+seuraindex,Hk/HkGlobals.cpp,K3,Hk,1 writer fn (Hk): initindex,,y,
+seuranoindex,Hk/HkGlobals.cpp,K3,Hk,1 writer fn (Hk): initindex,,y,
+lahtoindex,Hk/HkGlobals.cpp,K3,Hk,1 writer fn (Hk): initindex,,y,
+aakkosindex,Hk/HkGlobals.cpp,K3,Hk,1 writer fn (Hk): initindex,,y,
+nroindex,Hk/HkGlobals.cpp,K3,Hk,1 writer fn (Hk): initindex,,y,
+srjnroindex,Hk/HkGlobals.cpp;Juk/VIx.cpp,K3,both,1 writer fn (Hk/Juk): initindex,,y,
+idindex,Hk/HkGlobals.cpp,K3,Hk,"4 writer fn (Hk): initindex,luo_posarr,suljekilpailu,teejarj",,y,
+rataindex,Hk/HkGlobals.cpp,K3,Hk,1 writer fn (Hk): initindex,,y,
+nameindex,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"30 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin/cbHk): Seuraava,TFormArvonta::SeurPos,TFormEmit::BtnHaeEdClick,TFormEmit::BtnHaeSeurClick,...; +2 unattributed writes (script lost function name) e.g. cbHk/UnitIlm2.cpp:476,cbHk/UnitIlm2.cpp:479",,y,written from GUI dir(s): ViestiWin/cbHk
+pstindex,Hk/HkGlobals.cpp,K3,Hk,"5 writer fn (Hk/cbHk): TFormArvonta::SeurPos,initindex,list,teesarjapisteindeksi,...",,y,written from GUI dir(s): cbHk
+vaihetlsindex,Hk/HkGlobals.cpp,K3,Hk,"2 writer fn (Hk/cbHk): LaskeVaiheSarja,initindex",,y,written from GUI dir(s): cbHk
+reindex,Hk/HkGlobals.cpp;Juk/VIx.cpp,K3,both,"4 writer fn (Hk/Juk/ViestiWin/cbHk): TFormArvonta::ToteutaJako,TTulosteForm::CBJoukkHyvClick,arvo,teeindeksi",,n,written from GUI dir(s): ViestiWin/cbHk
+finfirst,Hk/HkGlobals.cpp,K3,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+lahtojarjfl,Hk/HkGlobals.cpp,K3,Hk,"3 writer fn (cbHk): ASCLahdot,lahtoluettelo,webScorerLahdot",,n,written from GUI dir(s): cbHk
+takaa_ajofl,Hk/HkGlobals.cpp,K3,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+keylen,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,1 writer fn (Hk/Juk): teejarj,,n,
+kilpailu,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,"5 writer fn (Hk/ViestiWin/cbHk): TFormKilpMaaritys::ButtonOKClick,TFormKilpMaaritys::FormCloseQuery,TFormValitseKilp::BtnValittuClick,loadEventData,...; +1 unattributed writes (script lost function name) e.g. Juk/vSarjat.cpp:336",,n,written from GUI dir(s): ViestiWin/cbHk
+lsttulparam,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"13 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin/cbHk/cbTp): LueXMLMuotoilu,TFormEmit::Automaattinentulostus1Click,TFormEmit::Automaattinenvliaikatuloste1Click,TFormLisaTekstit::CheckBox1Click,...; +5 unattributed writes (script lost function name) e.g. Juk/VMuotoilu.cpp:894,Juk/VMuotoilu.cpp:904,cbHk/UnitStatus.cpp:701",,n,written from GUI dir(s): ViestiWin/cbHk
+tartulparam,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+lokitulparam,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"2 writer fn (Hk/Juk): aloitus,lopetus1",,n,
+aftulparam,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"7 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin/cbHk): TFormAutoFile::BtnOtakayttoonClick,afasetukset,aloitus,asetaOletusarvot,...; +2 unattributed writes (script lost function name) e.g. Juk/VMuotoilu.cpp:506,Juk/VMuotoilu.cpp:507",,n,written from GUI dir(s): ViestiWin/cbHk
+emittulparam,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"3 writer fn (Hk/Juk/ViestiWin/cbHk): TFormEmit::Automaattinentulostus1Click,TFormEmit::Automaattinenvliaikatuloste1Click,aloitus",,n,written from GUI dir(s): ViestiWin/cbHk
+autotulostusparam,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"5 writer fn (Hk/HkConsole/JukConsole/ViestiWin/cbHk): TFormMuotoilu::BtnOta1Click,TTulosteForm::Automaattinentulostus1Click,aloitus,autoalku,...",,n,written from GUI dir(s): ViestiWin/cbHk
+sivutulostusparam,Hk/HkGlobals.cpp,K6,Hk,"2 writer fn (cbTp): TFormSivuTuloste::BtnKirjoitaClick,TFormSivuTuloste::CBJatkuvaClick",,n,
+lisaToimetOn,Hk/HkGlobals.cpp,K6,Hk,1 writer fn (cbTp): TFormSivuTuloste::CBJatkuvaClick,,n,
+prblockbits,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"2 writer fn (Hk/Juk): <file scope>,aloitus",,n,lexical writers only <file scope>/init
+origverify,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+esta_tall,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+konetunn,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Juk): lue_parametrit,,n,no lexical writer found (never written or written via pointer/bulk)
+talltaul,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,,n,
+iono,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,,n,
+tarfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"3 writer fn (Hk/Juk/JukConsole): <file scope>,ConsoleAloitus,asetukset",,n,
+eiltarra,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"2 writer fn (Hk/Juk/JukConsole): <file scope>,asetukset",,n,
+lahtarfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"4 writer fn (Hk/Juk/JukConsole): <file scope>,ConsoleAloitus,aloitus,asetukset",,n,
+hptarra,Hk/HkGlobals.cpp,K6,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+ktarra,Hk/HkGlobals.cpp,K6,Hk,1 writer fn (HkConsole): tarra,,n,
+rtarra,Hk/HkGlobals.cpp,K6,Hk,1 writer fn (Hk): <file scope>,,n,lexical writers only <file scope>/init
+ntarra,Hk/HkGlobals.cpp,K6,Hk,1 writer fn (Hk): <file scope>,,n,lexical writers only <file scope>/init
+ftarra,Hk/HkGlobals.cpp,K6,Hk,1 writer fn (Hk): <file scope>,,n,lexical writers only <file scope>/init
+listfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K6,both,"5 writer fn (Hk/HkConsole/JukConsole): <file scope>,find,kilptietue::find,korjaukset,...",,n,
+yvfl,Hk/HkGlobals.cpp,K6,Hk,"2 writer fn (Hk/HkConsole): <file scope>,kilptietue::find",,n,
+lisaa_edelle,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+dec_sep,Hk/HkGlobals.cpp,K6,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,lexical writers only <file scope>/init
+wdec_sep,Hk/HkGlobals.cpp,K6,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,lexical writers only <file scope>/init
+tarknofl,Hk/HkGlobals.cpp,K6,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,lexical writers only <file scope>/init
+lajat_p,Hk/HkGlobals.cpp,K6,Hk,1 writer fn (HkConsole): ajanotto,,n,
+autofl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"5 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin/cbHk): <file scope>,TTulosteForm::Automaattinentulostus1Click,autoalku,autotulasetukset,...",direct refs in thread fn: LukumaaratTh(R),n,written from GUI dir(s): ViestiWin/cbHk
+pscr,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): merkisto,,n,
+psinit,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): merkisto,,n,
+innpfl,Hk/HkGlobals.cpp;Juk/vdat.cpp,K6,both,"3 writer fn (Hk/Juk): kilptietue::tallenna,remjarjarr,tallenna",,n,
+kynnys,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"4 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin/cbHk): <file scope>,TTulosteForm::Automaattinentulostus1Click,autoalku,autotulasetukset",,n,written from GUI dir(s): ViestiWin/cbHk
+pfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"2 writer fn (Hk/Juk): <file scope>,kilptietue::tallenna",,n,
+stopprt,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+verify,Hk/HkGlobals.cpp,K6,Hk,1 writer fn (Hk): <file scope>,,n,lexical writers only <file scope>/init
+listfname,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"7 writer fn (Hk/Juk/ViestiWin/cbHk): <file scope>,ConsoleAloitus,TTulosteForm::Button1Click,aloitus,...",,n,written from GUI dir(s): ViestiWin/cbHk
+tarfname,Hk/HkGlobals.cpp,K6,Hk,1 writer fn (Hk): <file scope>,,n,lexical writers only <file scope>/init
+t0,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,direct refs in thread fn: TCPrcvTh(R); UDPstreamrcvTh(R),n,
+t0tics,Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K1,both,"3 writer fn (Hk/Juk/tputilv2): <file scope>,t_time,t_time_l",,n,
+t0_regnly,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk/Tp): <file scope>,start_regnly; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2034,Tp/TpComY32.cpp:2000",,n,
+t0_regn,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"4 writer fn (Hk/HkConsole/Juk/JukConsole/Tp): aloitus,asetaOletusarvot,asetukset,start_regnly",,n,
+minkilpno,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+maxkilpno,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,"2 writer fn (Hk/Juk): <file scope>,aloitus",,n,lexical writers only <file scope>/init
+sarjaluku,Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K2,both,"10 writer fn (Hk/Juk/ViestiWin/cbHk/tputilv2): <file scope>,TFormKilpMaaritys::ButtonOKClick,TFormKilpMaaritys::FormCloseQuery,TFormSarja::BtnTallennaClick,...; +1 unattributed writes (script lost function name) e.g. Juk/vSarjat.cpp:338",direct refs in thread fn: LukumaaratTh(R),n,written from GUI dir(s): ViestiWin/cbHk
+maxlsak,Hk/HkGlobals.cpp,K3,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+nsarjayhd,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,1 writer fn (Hk): luesarjayhdistelmat; +1 unattributed writes (script lost function name) e.g. Juk/vSarjat.cpp:297,direct refs in thread fn: LukumaaratTh(R),n,
+nsarjayhd_tul,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+sarjayhdva,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+yhdsarjat,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,1 writer fn (Hk): luesarjayhdistelmat; +1 unattributed writes (script lost function name) e.g. Juk/vSarjat.cpp:283,,n,
+vainalarajat,Hk/HkGlobals.cpp,K1,Hk,"3 writer fn (Hk): <file scope>,aloitus,lue_parametrit",,n,
+vainvaliajat,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+pistefl,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): htmltulos,,n,
+ol_piste,Hk/HkGlobals.cpp,K1,Hk,"5 writer fn (Hk/HkConsole): <file scope>,ajanotto,lue_parametrit,luesarjat,...",,n,
+header,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"21 writer fn (Hk/HkConsole/Juk/JukConsole): <file scope>,add,aikavert,ajanotto,...; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2738,Tp/TpComY32.cpp:2607",,n,
+kaynnistysvaihe,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): aloitus,teejarj",,n,
+nilmt,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"6 writer fn (Hk/Juk): addjarjarr,paivJoukkLkm,remjarjarr,teejarj,...",,y,
+ntulost,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"4 writer fn (Hk/Juk): addjarjarr,remjarjarr,uusijarj,vaihdavaihe",,y,
+nhylt,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"4 writer fn (Hk/Juk): addjarjarr,remjarjarr,uusijarj,vaihdavaihe",,y,
+nkeskt,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"4 writer fn (Hk/Juk): addjarjarr,remjarjarr,uusijarj,vaihdavaihe",,y,
+neilt,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"4 writer fn (Hk/Juk): addjarjarr,remjarjarr,uusijarj,vaihdavaihe",,y,
+nvakt,Hk/HkGlobals.cpp,K3,Hk,"3 writer fn (Hk): addjarjarr,remjarjarr,vaihdavaihe",,y,
+nva,Hk/HkGlobals.cpp,K3,Hk,"11 writer fn (Hk/HkConsole/Juk/ViestiWin/cbHk): MaastossaNva,TFormMaastossa::asetaSarakkeet,TFormMaastossa::haeKilpailijat,addemitanal,...; +2 unattributed writes (script lost function name) e.g. cbHk/TulosUnit.cpp:274,cbHk/TulosUnit.cpp:279",,y,written from GUI dir(s): ViestiWin/cbHk
+nilm,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"4 writer fn (Hk/Juk): addjarjarr,paivJoukkLkm,remjarjarr,teejarj",,y,
+nyilm,Hk/HkGlobals.cpp,K3,Hk,"2 writer fn (Hk): addjarjarr,remjarjarr",,y,
+ntulos,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"3 writer fn (Hk/Juk): addjarjarr,nollaayhdlkm,remjarjarr",,y,
+nhyl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"3 writer fn (Hk/Juk): addjarjarr,nollaayhdlkm,remjarjarr",,y,
+nkesk,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"3 writer fn (Hk/Juk): addjarjarr,nollaayhdlkm,remjarjarr",,y,
+neil,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"2 writer fn (Hk/Juk): addjarjarr,remjarjarr",,y,
+nvak,Hk/HkGlobals.cpp,K3,Hk,"2 writer fn (Hk): addjarjarr,remjarjarr",,y,
+neilaika,Hk/HkGlobals.cpp,K3,Hk,"2 writer fn (Hk): addjarjarr,remjarjarr",,y,
+nilm_pv,Hk/HkGlobals.cpp,K3,Hk,"2 writer fn (Hk): addjarjarr,remjarjarr",,y,
+yhdsija,Hk/HkGlobals.cpp,K3,Hk,"2 writer fn (Hk): sijat2,teejarj",,n,
+backfl,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): aloitus,,n,
+nimiixfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): aloitus,,n,
+korjfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/HkConsole/JukConsole): korjaukset,laskenta,leimat",,n,
+initkehys,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+initform,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+fprior,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"3 writer fn (Hk/Juk): autofile,kilptietue::tallenna,tallenna",,?,
+prior,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"6 writer fn (Hk/Juk/cbHk): LukumaaratTh,autotulostus,kilptietue::tallenna,tallenna,...",direct refs in thread fn: LukumaaratTh(RW),?,written from GUI dir(s): cbHk
+prior0,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,1 writer fn (Hk/Juk): aloitus,,?,lexical writers only <file scope>/init
+vaaditarkastus,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+tauko,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk): autotulostus,inittimer,tausta",,n,
+tofs,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+maxyhteys,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): aloitus,lue_parametrit; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2285,Tp/TpComY32.cpp:2192",direct refs in thread fn: tarkcom(R),n,
+portbase,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+portti,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk/Tp): ConsoleAloitus,aloitus,start_regnly",,n,
+comtype,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"10 writer fn (Hk/Juk/Tp/ViestiWin/cbHk/cbTp): TFormEmiTag::BtnAvaaClick,TFormGAZ::BtnAvaaYhtClick,TFormMaalikello::LaiteAvaa,TFormTaulu::BtnAvaaYhtClick,...; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2117,Tp/TpComY32.cpp:2057",direct refs in thread fn: lue_regnlyThread(R),n,written from GUI dir(s): ViestiWin/cbHk
+ipparam,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"12 writer fn (Hk/Juk/Tp/ViestiWin/cbHk/cbTp): TFormEmiTag::BtnAvaaClick,TFormGAZ::BtnAvaaYhtClick,TFormMaalikello::LaiteAvaa,TFormTaulu::BtnAvaaYhtClick,...",,n,written from GUI dir(s): ViestiWin/cbHk
+broadcasts,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): aloitus,,n,
+fileyht,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1222,Tp/TpComY32.cpp:1161",direct refs in thread fn: sendtcpfile(R),n,
+tcpyhteys,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+tcpkaynnistys,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"2 writer fn (Hk/Juk/com): lahetaXML_TCP,reconnectTCP; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1301,Tp/TpComY32.cpp:1244",,n,
+trlate,Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K6,both,1 writer fn (Juk): merkisto,,n,
+trlst,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,lexical writers only <file scope>/init
+trtar,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+trloki,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+f_ansi,Hk/HkGlobals.cpp,K6,Hk,1 writer fn (Hk): <file scope>,,n,lexical writers only <file scope>/init
+iobufr,Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K5,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+iobufmaxnr,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+kaksoistar,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+savebox,Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K6,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+errbox,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+tulfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,tulostasarja",,n,
+comfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"2 writer fn (Hk/Juk/Tp): <file scope>,openSirit; +8 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1892,Tp/TpComY.cpp:1916,Tp/TpComY.cpp:2204",direct refs in thread fn: TCPacceptTh(R); TCPrcvTh(R); UDPstreamrcvTh(R); lue_regnlyThread(R); sendtcpfile(R); tarkcom(R),n,
+tcomfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K4,both,"11 writer fn (Hk/HkConsole/Juk/JukConsole): <file scope>,copydfile,find,help,...",,n,
+estavalitys,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+immed,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+kirjheti,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"11 writer fn (Hk/Juk/ViestiWin): <file scope>,TFormArvonta::BtnLahtoajatClick,TFormArvonta::BtnNumeroiClick,TFormImport::Button1Click,...",,n,written from GUI dir(s): ViestiWin
+comopen,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"5 writer fn (Hk/Juk/Tp): ZebraReader::openConnection,openSirit2,opencomRS,startaf,...; +12 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:899,Tp/TpComY.cpp:1227,Tp/TpComY.cpp:1887",direct refs in thread fn: lue_regnlyThread(R),n,
+comclose,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"5 writer fn (cbTp): TFormEmiTag::BtnAvaaClick,TFormEmiTag::BtnSuljeYhteysClick,TFormMaalikello::BtnLaite1SuljeClick,TFormMaalikello::BtnLaite2SuljeClick,...",direct refs in thread fn: lue_regnlyThread(R),n,
+lahec,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+lahkello,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk): lue_parametrit,,n,lexical writers only <file scope>/init
+lahkelloraja,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk): lue_parametrit,,n,lexical writers only <file scope>/init
+lahkellovain,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk): lue_parametrit,,n,lexical writers only <file scope>/init
+comkesto,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"2 writer fn (Hk/Juk): ConsoleAloitus,aloitus",,n,
+nprtch,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,1 writer fn (Hk/Juk): <file scope>,,n,lexical writers only <file scope>/init
+obfile,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"1 writer fn (Hk/Juk): <file scope>; +8 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2270,Tp/TpComY.cpp:2350,Tp/TpComY32.cpp:2178",,n,written from GUI dir(s): ViestiWin/cbHk
+levypusk,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,lexical writers only <file scope>/init
+fobfile,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+inbens,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk/Juk): tarkcom,direct refs in thread fn: tarkcom(RW),n,
+inbseur,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Tp): addseur,direct refs in thread fn: tarkcom(R),n,
+cjens,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"1 writer fn (Hk/Juk): lahetaXML_TCP; +12 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1158,Tp/TpComY.cpp:1487,Tp/TpComY.cpp:1604",,n,
+cjseur,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"1 writer fn (Tp): buflah; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2320,Tp/TpComY.cpp:2357,Tp/TpComY32.cpp:2225",,n,
+lah_alku,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"4 writer fn (Hk/Juk/Tp/cbTp): TFormUusinta::Button3Click,lahetaXML_TCP,opencomRS,vaihdavaihe; +16 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:901,Tp/TpComY.cpp:1159,Tp/TpComY.cpp:1230",,n,
+lah_vaihto,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"2 writer fn (Hk): alkusanoma,vaihdavaihe; +1 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1587",,n,
+lahcom,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"3 writer fn (Hk/Juk/cbTp): ConsoleAloitus,TFormUusinta::Button3Click,aloitus; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2590,Tp/TpComY.cpp:2602,Tp/TpComY32.cpp:2463",,n,
+vastcom,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"4 writer fn (Hk/Juk/cbTp): ConsoleAloitus,TFormUusinta::Button3Click,aloitus,tarkcom; +8 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2587,Tp/TpComY.cpp:2599,Tp/TpComY.cpp:2604",direct refs in thread fn: tarkcom(W),n,
+yhteys_on,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"0 writer fn (): ; +31 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1280,Tp/TpComY.cpp:1286,Tp/TpComY.cpp:1304",,n,
+lah_tiedostot,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+lahkaikkitied,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+dcom,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,,n,
+jonokynnys,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): <file scope>,,n,
+monitoriLkm,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Tp): addMonitori,,n,
+virhesanoma,Hk/HkGlobals.cpp,K1,Hk,"1 writer fn (cbHk): LukumaaratTh; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2169,Tp/TpComY.cpp:2170,Tp/TpComY.cpp:2171",direct refs in thread fn: LukumaaratTh(RW),n,written from GUI dir(s): cbHk
+taulu_com,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"6 writer fn (Hk/Juk/JukConsole/ViestiWin/cbHk): TFormGAZ::BtnAvaaYhtClick,TFormGAZ::opentaulu,TFormTaulu::BtnAvaaYhtClick,TFormTaulu::opentaulu,...",,n,written from GUI dir(s): ViestiWin/cbHk
+taulu_irq,Hk/HkGlobals.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+taulu_addr,Hk/HkGlobals.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+taulu_baud,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk/JukConsole): <file scope>,lue_parametrit,opentaulu",,n,
+bytecount,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"12 writer fn (Tp/cbTp): TFormMaalikello::Button1Click,aseta_mtr,aseta_s4,lue_ARES,...",direct refs in thread fn: ProsEmitThread(R),n,
+bytecountmax,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk/Juk): <file scope>,direct refs in thread fn: ProsEmitThread(R),n,lexical writers only <file scope>/init
+ennakoi,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+aikaero,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"5 writer fn (Hk/Juk/cbHk/cbTp): TFormMaalikello::LaiteAvaa,aloitus,asetaOletusarvot,lahtoluettelo,...",,n,written from GUI dir(s): cbHk
+aikajono,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,"22 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin/cbHk): TFormAikavert::Nytmysohitetutajat1Click,TFormAikavert::Nytmysohitetutajat2Click,TFormAjanotto::Nytmysohitetutajat1Click,TFormAjanotto::Vaihdanytetynaikajonontiedosto1Click,...",,y,written from GUI dir(s): ViestiWin/cbHk
+muut_time,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (HkConsole/JukConsole): ajanotto,,n,
+od_fl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (HkConsole/JukConsole): aikavert,ajanotto",,n,
+lajatfl,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+akttm,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,"3 writer fn (HkConsole/JukConsole): aikavert,ajanotto,valikko",,n,
+taustaaika,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+yhtjonot,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,1 writer fn (Juk): lue_parametrit,,?,lexical writers only <file scope>/init
+odota,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"3 writer fn (Hk/Juk): tall_regnly,tark_aika,tee_aika",,n,
+od_aika,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,"4 writer fn (Hk/HkConsole/Juk/JukConsole): ajanotto,tall_regnly,tark_aika,tee_aika",,n,
+modif,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"3 writer fn (Hk/Juk): addjarjarr,remjarjarr,tulostasarja",,?,
+tlsmuutos,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"3 writer fn (Hk/Juk): addjarjarr,kilptietue::tallenna,remjarjarr; +2 unattributed writes (script lost function name) e.g. ViestiWin/UnitStatus.cpp:412,cbHk/UnitStatus.cpp:299",,?,written from GUI dir(s): ViestiWin/cbHk
+timefl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): tausta,,n,
+n_lisaa,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+kunto,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+seurvapaa,Hk/HkGlobals.cpp,K1,Hk,"3 writer fn (Hk): <file scope>,add,lue_parametrit",,n,
+loki,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk): lopetus1,lue_parametrit,talljarj",direct refs in thread fn: TCPrcvTh(R); vahaku(R),n,
+lokiTCP,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"0 writer fn (): ; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2250,Tp/TpComY.cpp:2254,Tp/TpComY32.cpp:2136",,n,
+hLoki,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"1 writer fn (Hk/Juk): lopetus1; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2242,Tp/TpComY32.cpp:2128",,n,no lexical writer found (never written or written via pointer/bulk)
+com_ajat,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+rukkausvali,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+rukkaa,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+edista,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+ajat_on,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"4 writer fn (Hk/HkConsole/Juk): leimat,lue_parametrit,ohj_aikaruutu,valikko",,n,
+status_on,Hk/HkGlobals.cpp;Juk/VGlobals.cpp;tputilv2/globals.cpp,K4,both,"11 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin): <file scope>,TForm,aikavert,ajanotto,...",direct refs in thread fn: tarkcom(R),n,written from GUI dir(s): ViestiWin
+kuulpiste,Hk/HkGlobals.cpp,K3,Hk,"2 writer fn (HkConsole): kilptietue::inputkilp,laskenta",,n,
+pakotalaika,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+pakotalaikaraja,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+html_sail_nimi,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+nyilmt,Hk/HkGlobals.cpp,K3,Hk,"2 writer fn (Hk): addjarjarr,remjarjarr",,n,
+nytulost,Hk/HkGlobals.cpp,K3,Hk,"2 writer fn (Hk): addjarjarr,remjarjarr",,n,
+sjfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"5 writer fn (Hk/Juk): aloitus,htmltulos,kilptietue::tallenna,sijat2,...",,?,
+jalku,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"3 writer fn (Hk/Juk): addjarjarr,remjarjarr,teejarj",,y,
+va_kello,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): <file scope>,,n,
+va_kuollut,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+yhtlahto,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk/cbHk): lue_parametrit,webScorerLahdot",,n,written from GUI dir(s): cbHk
+vaikavert,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+ilmtunt,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+vaajat,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+tv_fl,Hk/HkGlobals.cpp,K1,Hk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkTV.cpp:167,,n,
+tv_test,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+tv_com,Hk/HkGlobals.cpp,K1,Hk,"3 writer fn (Hk): <file scope>,lue_parametrit,opentv; +5 unattributed writes (script lost function name) e.g. Hk/HkTV.cpp:97,Hk/HkTV.cpp:177,Hk/HkTV.cpp:180",,n,
+tv_baud,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+cn_tv,Hk/HkGlobals.cpp,K5,Hk,1 writer fn (Hk): opentv,,n,
+lukum_fl,Hk/HkGlobals.cpp,K1,Hk,"3 writer fn (Hk/HkConsole): <file scope>,aikavert,ajanotto",,n,
+form,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+kehys1,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K6,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+aika_int_mask,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+aika_esto,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",direct refs in thread fn: comajanotto(R),n,
+kello_esto,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+vainoletus,Hk/HkGlobals.cpp,K1,Hk,"4 writer fn (Hk/HkConsole): ajanotto,lue_parametrit,luesarjat,pistetunn",,n,
+maxntime,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): inittimer,,n,
+mxtime,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Tp): aikajonotp::aikajonotp,,n,
+ajanottofl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"6 writer fn (Hk/HkConsole/Juk/Tp/ViestiWin/cbHk/cbTp): <file scope>,TFormAjanotto::FormCreate,TFormEmiTag::BtnAvaaClick,ajanotto,...",,n,written from GUI dir(s): ViestiWin/cbHk
+sail_ajat,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): initajat,lue_parametrit",,n,
+syotto,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk/HkConsole): asetukset,lue_parametrit",,n,
+aika_com,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"3 writer fn (Hk/Juk): <file scope>,inittimer,lue_parametrit",,n,
+com_aika,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+regnly,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"6 writer fn (Hk/Juk/ViestiWin/cbHk/cbTp): TFormEmiTag::BtnAvaaClick,TFormGAZ::BtnAvaaYhtClick,TFormMaalikello::LaiteAvaa,TFormTaulu::BtnAvaaYhtClick,...",direct refs in thread fn: lue_regnlyThread(R),n,written from GUI dir(s): ViestiWin/cbHk
+regnlyhetki,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"3 writer fn (Hk/Juk): tall_bdg_t,tall_emit,tall_regnly",,n,
+zebraOffsetDs,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Tp): handleTagReport,measureClockOffset",,n,
+zebraOffsetState,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Tp): handleTagReport,measureClockOffset",,n,
+gpoActive,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"3 writer fn (Tp): ZebraReader::openConnection,ZebraReader::readTags,activeSee",,n,
+gpoOnMs,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Tp): ZebraReader::openConnection,activeSee",,n,
+port_regnly,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"5 writer fn (Hk/Juk/ViestiWin/cbHk/cbTp): TFormEmiTag::BtnAvaaClick,TFormGAZ::BtnAvaaYhtClick,TFormMaalikello::LaiteAvaa,TFormTaulu::BtnAvaaYhtClick,...",,n,written from GUI dir(s): ViestiWin/cbHk
+regnly_open,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"4 writer fn (Hk/Juk/Tp): lue_regnlyThread,rem_regnly,remtimer,start_regnly; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2112,Tp/TpComY.cpp:2163",direct refs in thread fn: lue_regnlyThread(RW),n,
+cn_regnly,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"2 writer fn (Hk/Juk): aloitus,asetaOletusarvot",direct refs in thread fn: lue_regnlyThread(R); naytatulosTh(R),n,
+racpisteet,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+estaylim,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+ylimraja,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+estaneg,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+uusinaika,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+samapisteraja,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+erataul,Hk/HkGlobals.cpp,K2,Hk,"2 writer fn (Hk): addjarjarr,teejarj",,n,
+swimlaji,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): <file scope>,,n,
+aika_tunnus_lkm,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk): <file scope>,,n,
+lahdepisteet,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,1 writer fn (Hk/Juk): luelahdepisteet,,n,
+lahdejonot,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,1 writer fn (Hk/Juk): luelahdejonot,,n,
+kello_baud,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk/cbTp): TFormMaalikello::LaiteAvaa,lue_parametrit",,n,
+regnly_no,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+kello_bits,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+sak_com,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+sak_baud,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+sak_laji,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+od_regnly,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk/Tp): <file scope>,lue_parametrit,start_regnly",,n,
+maxero,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+kerro_regnly,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/HkConsole/Juk/JukConsole): asetukset,tall_regnly",,n,
+usb_regnly,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk/cbTp): TFormEmiTag::BtnAvaaClick,lue_parametrit",,n,
+pyyntoviive,Hk/HkGlobals.cpp;Tp/TpLaitteet.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit; +1 unattributed writes (script lost function name) e.g. Tp/TpLaitteet.cpp:117",,n,
+aikaTCPstatus,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"2 writer fn (Tp): ZebraReader::openConnection,openSirit2",,n,
+tv_pty,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): <file scope>,,n,
+tv_bits,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): <file scope>,,n,
+tv_fc,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): <file scope>,,n,
+tv_open,Hk/HkGlobals.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+suoracom,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+kl_kaava,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): <file scope>,,n,
+kl_ohjeaika,Hk/HkGlobals.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+kl_x,Hk/HkGlobals.cpp,K2,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+kl_y,Hk/HkGlobals.cpp,K2,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+osarja,Hk/HkGlobals.cpp,K2,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+era_akt,Hk/HkGlobals.cpp,K3,Hk,"5 writer fn (Hk/cbHk): TFormAjanotto::Edellinener1Click,TFormAjanotto::Seuraavaer1Click,TFormAjanotto::Vaihdaer1Click,TFormMain::Valitseer1Click,...",,?,written from GUI dir(s): cbHk
+era_lahdot,Hk/HkGlobals.cpp,K3,Hk,1 writer fn (Hk): lue_parametrit,,n,lexical writers only <file scope>/init
+emitjono,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk): lue_parametrit,,n,
+elahtojono,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): <file scope>,,n,
+tunnjono,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+bdg_kno,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"4 writer fn (Hk/Juk/JukConsole): addbadge,rembadge,suljekilpailu,teejarj",,?,
+emitfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"5 writer fn (Hk/Juk): aloitus,lue_parametrit,lue_radat,teejarj,...",,?,
+nbadge,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"3 writer fn (Hk/Juk/JukConsole): addbadge,rembadge,teejarj",,?,
+emitloki,Hk/HkGlobals.cpp,K5,Hk,1 writer fn (Hk): lue_parametrit,,n,lexical writers only <file scope>/init
+emitjarr,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"3 writer fn (Hk/Juk): lueemitfile,setEmitJarr,teejarj",,?,
+emittime,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K7,both,1 writer fn (Hk/Juk): lue_parametrit,,n,emit-time scratch value (no stable role found); lexical writers only <file scope>/init
+pollaa,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"3 writer fn (Hk/HkConsole/Tp): ajanotto,leimat,lue_LUKIJA",,n,
+TCPpoll,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+ohitatoisto,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk): <file scope>,aloitus,lue_parametrit",,n,
+siritreuna,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+siritloki,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+siritsync,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"3 writer fn (Hk/Juk/Tp): <file scope>,lue_parametrit,openSirit2",,n,
+sirithead,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Tp): lue_Sirit,,n,
+sirittail,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk): wkirjloki,,n,
+siritbuf,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Tp): lue_Sirit,,n,
+muutoskysely,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+valonaytto,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,direct refs in thread fn: naytatulosTh(R),n,
+com_emit,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+emitfile,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lueemitfile,,?,
+emitfname,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"4 writer fn (Hk/Juk): <file scope>,aloitus,lueemitfile,vaihdavaihe",,y,
+emithead,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"2 writer fn (Hk/Juk): addem,lueemitfile",direct refs in thread fn: ProsEmitThread(R),?,
+emithead2,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"6 writer fn (Hk/Juk/ViestiWin): TFormEmit::NewCardHandler,TFormEmit::ProsEmit,addem,emituudelleen,...",,?,written from GUI dir(s): ViestiWin
+annaseur,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+com_emitva,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+femitfile,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"2 writer fn (Hk/Juk): lueemitfile,vaihdavaihe",,n,
+estaemittoisto,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk): <file scope>,aloitus,lue_parametrit",,n,
+sallisummavirhe,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (ViestiWin/cbHk): TFormEmit::Luemysviallisetkortit1Click,,n,written from GUI dir(s): ViestiWin/cbHk
+lukutoisto,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk/ViestiWin/cbHk): <file scope>,TFormEmit::Vaadikaksoisluenta1Click,lue_parametrit",,n,written from GUI dir(s): ViestiWin/cbHk
+emitajat,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): inittimer,lue_parametrit",,n,
+lahtopoikk,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+eNollausAjat,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+emitaglisa,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): <file scope>,lue_parametrit",,n,
+emitvaloki,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+CourseData,Hk/HkGlobals.cpp;Juk/VEmit.cpp,K2,both,"3 writer fn (Hk/Juk): kirjEventXml,lueEventXml,lueIOF30EventXml",,n,no lexical writer found (never written or written via pointer/bulk)
+DeveloperMode,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk): <file scope>,aloitus,lue_parametrit",,n,
+aktkilpailija,Hk/HkGlobals.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+kilpailijataulu,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): <file scope>,,n,
+tuomari_yht,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+yhdistetty,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+aktkierros,Hk/HkGlobals.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+viimkierros,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): <file scope>,,n,
+makipv,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,luesarjat",,n,
+nkierros,Hk/HkGlobals.cpp,K2,Hk,"2 writer fn (Hk/cbHk): TLoppuKilpForm::BtnToteutaClick,luesarjat",,n,written from GUI dir(s): cbHk
+ptspermin,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+tuomariluku,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+pituuskerroin,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+kpiste,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+pituuscomet,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+nopeuscomet,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+cometluku,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+makiotsikko,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,no lexical writer found (never written or written via pointer/bulk)
+makihaku,Hk/HkGlobals.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+autoselostaja,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+yhteispisteet,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+yhdist_katto,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): <file scope>,,n,
+tmaali,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"4 writer fn (HkConsole/JukConsole): aikavert,ajanotto,laskenta,maaliaika",,?,
+maaliajat,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"4 writer fn (Hk/HkConsole/JukConsole/Tp): aloitus,asetukset,kilptietue::tallenna,start_regnly; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2035,Tp/TpComY32.cpp:2001",,?,
+ajatfl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+ilmlainat,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+emitkd,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,1 writer fn (HkConsole): korjaukset,,n,
+relax,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+monirata,Hk/HkGlobals.cpp;Juk/VEmit.cpp,K1,both,"2 writer fn (Hk): <file scope>,lue_radat; +2 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:427,Juk/VEmit.cpp:65",,n,
+emitsivu,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/HkConsole/Juk/cbHk): TFormEmit::Kapealeimausraportti1Click,asetukset,lue_parametrit",,n,written from GUI dir(s): cbHk
+ohitaleimat,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+eilavoin,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+maalileimasin,Hk/HkGlobals.cpp;Juk/VEmit.cpp,K1,both,"1 writer fn (Hk): lue_parametrit; +4 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:535,Hk/HkEmit.cpp:539,Juk/VEmit.cpp:586",,n,
+rata,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,"6 writer fn (Hk/Juk/cbTp): TFormRadat::TallRata,keyrata,lue_radat,lueeratiedot,...; +4 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:858,Hk/HkTls.cpp:92,Juk/VEmit.cpp:903",,?,
+nrata,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,"2 writer fn (Hk/Juk): lue_radat,vapautaemitmuisti; +6 unattributed writes (script lost function name) e.g. Hk/HkEmit.cpp:424,Hk/HkEmit.cpp:458,Hk/HkEmit.cpp:858",,?,
+kaikki_ajat,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"5 writer fn (Hk/Juk/cbHk/cbTp): TFormEmiTag::BtnAvaaClick,TFormOsanottajat::Lueemitkoodeja1Click,aloitus,asetaOletusarvot,...",,?,written from GUI dir(s): cbHk
+vaadiaika,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+esitark,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"2 writer fn (Hk/Juk): leimat,lue_parametrit",,n,
+esiluenta,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk/cbHk): TFormCfg::TulkitseTiedot,lue_parametrit",,n,written from GUI dir(s): cbHk
+vainpiste,Hk/HkGlobals.cpp,K1,Hk,"5 writer fn (Hk/Juk/cbTp): <file scope>,TFormEmiTag::BtnAvaaClick,aloitus,asetaOletusarvot,...",,n,
+luesuoraan,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+lukijalahde,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K5,both,"2 writer fn (Hk/Juk/cbTp): TFormEmiTag::BtnAvaaClick,lue_parametrit",,n,
+luesuoraanviive,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+autosarja,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+autorata,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+nesitt,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"4 writer fn (Hk/Juk): addjarjarr,remjarjarr,uusijarj,vaihdavaihe",,y,
+nesit,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"2 writer fn (Hk/Juk): addjarjarr,remjarjarr",,y,
+maalitp,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+emitptr,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"10 writer fn (Hk/Juk/ViestiWin/cbHk): <file scope>,TFormEmit::HaeTietue,TFormEmit::OtaTietue,emittp::LueEdellinen,...",,?,written from GUI dir(s): ViestiWin/cbHk
+emitpos,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,no lexical writers,,?,no lexical writer found (never written or written via pointer/bulk)
+autorap,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"4 writer fn (Hk/HkConsole/Juk/ViestiWin/cbHk): TFormEmit::Automaattinentulostus1Click,TFormEmit::Automaattinenvliaikatuloste1Click,asetukset,lue_parametrit",,n,written from GUI dir(s): ViestiWin/cbHk
+comautorap,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk/ViestiWin/cbHk): TFormEmit::Automaattinentulostus1Click,TFormEmit::Automaattinenvliaikatuloste1Click,lue_parametrit",,n,written from GUI dir(s): ViestiWin/cbHk
+autorapsrj,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (HkConsole): asetukset,,n,
+ennakko,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"0 writer fn (): ; +5 unattributed writes (script lost function name) e.g. Hk/BuildNo.h:23,Hk/HkEmit.cpp:164,Hk/HkEmit.cpp:183",,n,
+viimtark,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+autokilp,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"2 writer fn (Hk/HkConsole/Juk): asetukset,lue_parametrit",,n,
+seurkrivi,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"6 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin): TFormEmit::ProsEmitMaali,ajanotto,asetukset,inittimer,...",,n,written from GUI dir(s): ViestiWin
+selaus,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk/Juk): leimat,,n,
+lahdepistehaku,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K3,both,"3 writer fn (Hk/Juk): <file scope>,lue_parametrit,luelahdepisteet",,n,
+lkmThreadOn,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"5 writer fn (Hk/Juk/ViestiWin/cbHk): SuljeKaikki,TFormMain::Initialisoi,TFormMain::VaihdaVaiheHandler,TFormMain::Vaiheenvaihto1Click,...",direct refs in thread fn: DisplTimerThread(R); LukumaaratTh(R); NaytaTulosTimerThread(R); ProsEmitThread(R); ScrollThread(R),n,written from GUI dir(s): ViestiWin/cbHk
+kilpparam,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K2,both,"34 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin/cbHk): TForm,TFormAjanotto::Lhtryhmnkoko1Click,TFormArvonta::FormShow,TFormArvonta::RGPoissaClick,...; +12 unattributed writes (script lost function name) e.g. Hk/HkSrj.cpp:849,Juk/vSarjat.cpp:174,Juk/vSarjat.cpp:175",,n,written from GUI dir(s): ViestiWin/cbHk
+rataTunnistus,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+in_data,Hk/HkGlobals.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+fnameRacelist,Hk/HkGlobals.cpp,K1,Hk,1 writer fn (Hk): <file scope>,,n,
+seuraTiedNm,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit; +1 unattributed writes (script lost function name) e.g. ViestiWin/UnitSeurat.cpp:39",,n,written from GUI dir(s): ViestiWin
+KuntoMaali,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+pvparam,Hk/HkGlobals.cpp,K2,Hk,"11 writer fn (Hk/HkConsole/cbHk): TForm,TFormKilpMaaritys::BtnVaiheMaarClick,TFormKilpMaaritys::CBLahtoporttiClick,TFormKilpMaaritys::FormCloseQuery,...",,y,written from GUI dir(s): cbHk
+NimiHTHaku,Hk/HkGlobals.cpp,K1,Hk,"4 writer fn (Hk/cbHk): <file scope>,TFormEmit::FormShow,TFormTKanta::FormClose,lue_parametrit; +6 unattributed writes (script lost function name) e.g. cbHk/UnitEmit.cpp:543,cbHk/UnitIlm2.cpp:241,cbHk/UnitIlm2.cpp:306",,n,written from GUI dir(s): cbHk
+seurahaku,Hk/HkGlobals.cpp,K1,Hk,"3 writer fn (Hk/cbHk): <file scope>,TFormSeurat::FormClose,lue_parametrit; +6 unattributed writes (script lost function name) e.g. cbHk/UnitEmit.cpp:547,cbHk/UnitIlm2.cpp:245,cbHk/UnitIlm2.cpp:308",,n,written from GUI dir(s): cbHk
+vahvistaaina,Hk/HkGlobals.cpp,K1,Hk,"3 writer fn (Hk/cbHk): <file scope>,TFormEmit::Vahvistaaina1Click,lue_parametrit",,n,written from GUI dir(s): cbHk
+emitanal_fl,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"3 writer fn (Hk/Juk/cbHk): TVertAikaFrm::CBAnalClick,lue_parametrit,uusiemitanalyysi",,n,written from GUI dir(s): cbHk
+origemvabadge,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+korRaja,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,"3 writer fn (Hk/Juk/cbHk): lueKorRajat,seurIkkParamClass::readParams,seurIkkParamClass::seurIkkParamClass",,n,written from GUI dir(s): cbHk
+vipLaji,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lueKorRajat,,n,
+bibsiirtoalue,Hk/HkGlobals.cpp,K1,Hk,"2 writer fn (Hk): <file scope>,lue_parametrit",,n,
+inhttpHaku,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,1 writer fn (Hk/Juk): vahaku,direct refs in thread fn: vahaku(W),n,
+inkirjSQLThread,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K4,both,"3 writer fn (Hk/Juk/ViestiWin/cbHk): <file scope>,kirjSQLTh,lopetus1",direct refs in thread fn: kirjSQLTh(RW),n,written from GUI dir(s): ViestiWin/cbHk
+testi,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,direct refs in thread fn: tarkcom(R); vahaku(R),n,
+dbgtofile,Hk/HkGlobals.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+esto,Hk/HkIV.cpp;Juk/VIv.cpp,K4,both,"3 writer fn (Hk/Juk): inittimer,kbdiv1,val_gaz; +2 unattributed writes (script lost function name) e.g. Hk/HkIV.cpp:100,Juk/VIv.cpp:98",,n,
+htime,Hk/HkIV.cpp;Juk/VIv.cpp,K3,both,"4 writer fn (Hk/Juk): initajat,kbdiv1,tall_regnly,tee_aika",,n,
+siritopen,Hk/HkIV.cpp;Juk/VIv.cpp,K4,both,1 writer fn (Tp): openSirit2,,n,
+aika_head,Hk/HkIV.cpp;Juk/VIv.cpp,K3,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+aika_tail,Hk/HkIV.cpp;Juk/VIv.cpp,K3,both,1 writer fn (Hk): tee_aika,,n,
+int_aika,Hk/HkIV.cpp;Juk/VIv.cpp,K5,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+r_no_file,Hk/HkIV.cpp;Juk/VIv.cpp,K5,both,1 writer fn (Tp): start_regnly,,n,
+aika_syy,Hk/HkIV.cpp;Juk/VIv.cpp,K5,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+nivkeys,Hk/HkIV.cpp;Juk/VIv.cpp,K4,both,"1 writer fn (Hk/Juk): inittimer; +2 unattributed writes (script lost function name) e.g. Hk/HkIV.cpp:120,Juk/VIv.cpp:117",,n,
+bdg_t,Hk/HkIV.cpp;Juk/VIv.cpp,K5,both,"2 writer fn (Hk/Juk): hae_bdg_t,tall_bdg_t",,n,
+pkg_alku,Hk/HkIV.cpp;Juk/VIv.cpp,K5,both,"4 writer fn (Tp/cbTp): TFormMTR::Button1Click,aseta_mtr,lue_MTR,start_regnly",,n,
+pkg_loppu,Hk/HkIV.cpp;Juk/VIv.cpp,K5,both,"3 writer fn (Tp/cbTp): TFormMTR::Button1Click,aseta_mtr,lue_MTR",,n,
+lue_rno,Hk/HkIV.cpp;Juk/VIv.cpp,K5,both,"2 writer fn (Tp/cbTp): TFormMTR::Button1Click,aseta_mtr",,n,
+viim_regnly,Hk/HkIV.cpp;Juk/VGlobals.cpp,K5,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+r_msg_len,Hk/HkIV.cpp;Juk/VIv.cpp,K5,both,1 writer fn (Tp): start_regnly,,n,
+ratakno,Hk/HkIV.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+lahdejonohaku,Hk/HkIV.cpp;Juk/VIv.cpp,K3,both,"1 writer fn (Hk/Juk): luelahdejonot; +2 unattributed writes (script lost function name) e.g. Hk/HkIV.cpp:374,Juk/VIv.cpp:373",,n,
+etls,Hk/HkIV.cpp;Juk/VIv.cpp,K5,both,"2 writer fn (Hk/Juk): add_bdg_t,close_bdg_t",direct refs in thread fn: pros_bdg_t(R),n,
+etls_head,Hk/HkIV.cpp;Juk/VIv.cpp,K5,both,1 writer fn (Hk/Juk): add_bdg_t,direct refs in thread fn: pros_bdg_t(R),n,
+etls_tail,Hk/HkIV.cpp;Juk/VIv.cpp,K5,both,"2 writer fn (Hk/Juk): add_bdg_t,pros_bdg_t",direct refs in thread fn: pros_bdg_t(RW),n,
+emitinfile,Hk/HkIV.cpp;cbTp/UnitEmitFile.cpp,K5,Hk,"2 writer fn (Hk/Juk/cbTp): TFormEmitFile::Button1Click,file2emit",,n,
+in_pros_emit,Hk/HkIV.cpp,K4,Hk,"2 writer fn (Hk): lueSeuraavaEmit,pros_emit",,n,
+gates,Hk/HkIV.cpp,K5,Hk,1 writer fn (Hk): addgatepiste,,n,
+gaz_com,Hk/HkIV.cpp,K1,Hk,"2 writer fn (Hk): lue_parametrit,opengaz",,n,
+gaz_irq,Hk/HkIV.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+gaz_addr,Hk/HkIV.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+gazvaihe,Hk/HkIV.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,direct refs in thread fn: gazTh(R),n,
+gaz_kno,Hk/HkIV.cpp,K5,Hk,"2 writer fn (Hk): val_gaz,writegaz",,n,
+nayta_gaz,Hk/HkIV.cpp,K1,Hk,1 writer fn (Hk): val_gaz; +1 unattributed writes (script lost function name) e.g. Hk/HkIV.cpp:3105,direct refs in thread fn: gazTh(R),n,
+gaztapptr,Hk/HkIV.cpp,K5,Hk,"2 writer fn (Hk): add_gaztapahtuma,writegaz; +1 unattributed writes (script lost function name) e.g. Hk/HkIV.cpp:3105",,n,
+gazviive,Hk/HkIV.cpp,K5,Hk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkIV.cpp:3105,,n,
+gaz_comopen,Hk/HkIV.cpp,K4,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+cn_gaz,Hk/HkIV.cpp,K5,Hk,"4 writer fn (Hk/JukConsole/ViestiWin/cbHk): TFormGAZ::opentaulu,TFormTaulu::opentaulu,opengaz,opentaulu",direct refs in thread fn: gazTh(R),n,written from GUI dir(s): ViestiWin/cbHk
+gazline,Hk/HkIV.cpp,K5,Hk,"2 writer fn (Hk): gazTh,writegaz",direct refs in thread fn: gazTh(RW),n,
+gazline0,Hk/HkIV.cpp,K5,Hk,"2 writer fn (Hk): gazTh,writegaz",direct refs in thread fn: gazTh(RW),n,no lexical writer found (never written or written via pointer/bulk)
+gazrata,Hk/HkIV.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+gazpiste,Hk/HkIV.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,
+gazluku,Hk/HkIV.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit; +1 unattributed writes (script lost function name) e.g. Hk/HkIV.cpp:3108,,n,
+gaztap,Hk/HkIV.cpp,K5,Hk,"2 writer fn (Hk): add_gaztapahtuma,writegaz",,n,
+gazline1,Hk/HkIV.cpp,K5,Hk,"2 writer fn (Hk): gazTh,writegaz",direct refs in thread fn: gazTh(RW),n,
+ingazThread,Hk/HkIV.cpp,K4,Hk,1 writer fn (Hk): gazTh,direct refs in thread fn: gazTh(W),n,
+varasti,Hk/HkIV.cpp;Juk/VIv.cpp,K2,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+port_autova,Hk/HkIV.cpp,K1,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+autova_open,Hk/HkIV.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): start_autova,,n,
+t0_autova,Hk/HkIV.cpp;Juk/VGlobals.cpp,K1,both,1 writer fn (Hk/Juk): start_autova,,n,
+RaporttiHak,Hk/HkInit.cpp;Juk/VInit.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,no lexical writer found (never written or written via pointer/bulk)
+setySize,Hk/HkInit.cpp;Juk/VInit.cpp,K6,both,"1 writer fn (Hk/Juk): lue_parametrit; +2 unattributed writes (script lost function name) e.g. Hk/HkInit.cpp:52,Juk/VInit.cpp:56",,n,
+sarjano,Hk/HkInit.cpp;Juk/VInit.cpp,K1,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkInit.cpp:53,Juk/VInit.cpp:69",,n,
+snostr,Hk/HkInit.cpp;Juk/VInit.cpp,K6,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+tarkkuusparam,Hk/HkInit.cpp,K6,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+tarra1,Hk/HkInit.cpp,K6,Hk,1 writer fn (Hk): ConsoleAloitus,,n,
+muotoilufl,Hk/HkInit.cpp;Juk/VInit.cpp,K6,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+ll_muotoilufl,Hk/HkInit.cpp,K6,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+cfgparam,Hk/HkInit.cpp;Juk/VInit.cpp,K1,both,1 writer fn (Hk): lue_parametrit,,n,
+comdir,Hk/HkInit.cpp;Juk/VInit.cpp,K1,both,"2 writer fn (Hk/Juk): getipparam,lue_parametrit",,n,
+merkit,Hk/HkInit.cpp;Juk/VInit.cpp,K1,both,"4 writer fn (Hk/Juk/cbHk): ConsoleAloitus,aloitus,lahtoluettelo,lue_parametrit; +2 unattributed writes (script lost function name) e.g. Hk/HkInit.cpp:58,Juk/VInit.cpp:72",,n,written from GUI dir(s): cbHk
+cfgfilename,Hk/HkInit.cpp;Juk/VInit.cpp,K1,both,"1 writer fn (Hk/Juk): lue_parametrit; +2 unattributed writes (script lost function name) e.g. Hk/HkInit.cpp:59,Juk/VInit.cpp:74",,n,
+autostr,Hk/HkInit.cpp;Juk/VInit.cpp,K1,both,"1 writer fn (Hk): lue_parametrit; +2 unattributed writes (script lost function name) e.g. Hk/HkInit.cpp:59,Juk/VInit.cpp:75",,n,
+korkeat,Hk/HkInit.cpp;Juk/VInit.cpp,K6,both,"2 writer fn (Hk): ConsoleAloitus,lue_parametrit; +2 unattributed writes (script lost function name) e.g. Hk/HkInit.cpp:61,Juk/VInit.cpp:76",,n,
+star,Hk/HkInit.cpp;Juk/VInit.cpp,K6,both,"2 writer fn (Hk): ConsoleAloitus,lue_parametrit; +2 unattributed writes (script lost function name) e.g. Hk/HkInit.cpp:62,Juk/VInit.cpp:77",,n,
+portparam,Hk/HkInit.cpp;Juk/VInit.cpp,K1,both,"5 writer fn (Hk/Juk): ConsoleAloitus,getipparam,gettcpipparam,getudpstreamipparam,...",,n,
+aikakorjaus,Hk/HkInit.cpp;Juk/VInit.cpp,K1,both,1 writer fn (Hk/Juk): lue_parametrit,,n,
+nopeuta,Hk/HkInit.cpp;Juk/VInit.cpp,K1,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkInit.cpp:66,Juk/VInit.cpp:80",,n,
+ikkunaots,Hk/HkInit.cpp;Juk/VInit.cpp,K6,both,1 writer fn (Hk/Juk): lue_parametrit,,n,lexical writers only <file scope>/init; no lexical writer found (never written or written via pointer/bulk)
+HenkTKantaNm,Hk/HkInit.cpp,K1,Hk,"2 writer fn (Hk/cbHk): TFormTKanta::LueHenkilot,lue_parametrit; +1 unattributed writes (script lost function name) e.g. Hk/HkInit.cpp:85",,n,written from GUI dir(s): cbHk
+tunn_srj_nimi,Hk/HkInit.cpp,K1,Hk,1 writer fn (Hk): lue_parametrit,,n,no lexical writer found (never written or written via pointer/bulk)
+aptr,Hk/HkInit.cpp,K1,Hk,"3 writer fn (Hk/tputilv2): lue_parametrit,printbuf,printwbuf",,n,
+kilpparam_v,Hk/HkInitVanha.cpp,K2,Hk,"2 writer fn (Hk/cbHk): TFormImport::Button1Click,luekentat_v",,n,written from GUI dir(s): cbHk
+lseuramax,Hk/HkInitVanha.cpp,K1,Hk,1 writer fn (cbHk): TFormImport::Button1Click; +1 unattributed writes (script lost function name) e.g. Hk/HkInitVanha.cpp:143,,n,written from GUI dir(s): cbHk
+valuku_vanha,Hk/HkInitVanha.cpp,K1,Hk,"2 writer fn (Hk/ViestiWin/cbHk): TFormImport::FormShow,luesarjat",,n,written from GUI dir(s): ViestiWin/cbHk
+kentat,Hk/HkInitVanha.cpp,K7,Hk,1 writer fn (Hk): luekentat_v,,n,old-format conversion map (HkInitVanha.cpp)
+datf2v,Hk/HkInitVanha.cpp,K2,Hk,"2 writer fn (Hk): luevanha,readkilp_v",,n,no lexical writer found (never written or written via pointer/bulk)
+njarjpst,Hk/HkIx.cpp,K3,Hk,1 writer fn (Hk): AllocJarjSeur,,n,
+tulosmuot,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"10 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin/cbHk): TFormMuotoilu::BtnOta1Click,TFormMuotoilu::BtnOtaTul3Click,TallXMLMuotoilu,aloitus,...; +22 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:668,Juk/VMuotoilu.cpp:513,Juk/VMuotoilu.cpp:514",,n,written from GUI dir(s): ViestiWin/cbHk
+filetulosmuot,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"12 writer fn (Hk/Juk/ViestiWin/cbHk): TFormMuotoilu::BtnOta1Click,TFormMuotoilu::BtnOta4Click,TFormMuotoilu::BtnOtaHtmlClick,TFormMuotoilu::BtnOtaTul3Click,...; +17 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:670,Juk/VMuotoilu.cpp:881,Juk/VMuotoilu.cpp:881",,n,written from GUI dir(s): ViestiWin/cbHk
+mobiltulosmuot,Hk/HkMuotoilu.cpp,K6,Hk,"4 writer fn (Hk/cbHk): TFormMuotoilu::BtnOta1Click,TFormMuotoilu::BtnOtaHtmlClick,aloitus,tulkXMLTlMuotoilut; +8 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:671,Hk/HkMuotoilu.cpp:672,Hk/HkMuotoilu.cpp:673",,n,written from GUI dir(s): cbHk
+init_fnt,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"2 writer fn (HkConsole/JukConsole): hpkoodit,muotoilu",,n,
+pots_on,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"2 writer fn (HkConsole/JukConsole): hpkoodit,muotoilu",,n,
+pots_pois,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"2 writer fn (HkConsole/JukConsole): hpkoodit,muotoilu",,n,
+aots_on,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"2 writer fn (HkConsole/JukConsole): hpkoodit,muotoilu",,n,
+aots_pois,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"2 writer fn (HkConsole/JukConsole): hpkoodit,muotoilu",,n,
+n_prtflds,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:573,Juk/VMuotoilu.cpp:388",,n,
+n_prtfldsm,Hk/HkMuotoilu.cpp,K6,Hk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:574,,n,
+n_prtflds1,Hk/HkMuotoilu.cpp,K6,Hk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:575,,n,
+n_dspflds,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:576,Juk/VMuotoilu.cpp:390",,n,
+n_fileflds,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:577,Juk/VMuotoilu.cpp:391",,n,
+n_mobilflds,Hk/HkMuotoilu.cpp,K6,Hk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:578,,n,
+paaots,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"4 writer fn (Hk/Juk/ViestiWin/cbHk): TFormMuotoilu::BtnOta1Click,aloitus,lue_muotoilu,tulkXMLTlMuotoilut; +3 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:580,Juk/VMuotoilu.cpp:394,Juk/VMuotoilu.cpp:983",,n,written from GUI dir(s): ViestiWin/cbHk
+sarjaots,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"4 writer fn (Hk/Juk/ViestiWin/cbHk): TFormMuotoilu::BtnOta1Click,aloitus,lue_muotoilu,tulkXMLTlMuotoilut; +3 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:581,Juk/VMuotoilu.cpp:395,Juk/VMuotoilu.cpp:988",,n,written from GUI dir(s): ViestiWin/cbHk
+alaots,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"3 writer fn (Hk/Juk/ViestiWin/cbHk): TFormMuotoilu::BtnOta1Click,lue_muotoilu,tulkXMLTlMuotoilut; +3 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:582,Juk/VMuotoilu.cpp:396,Juk/VMuotoilu.cpp:993",,n,written from GUI dir(s): ViestiWin/cbHk
+initfont_emrap,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"1 writer fn (Hk): merkisto; +2 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:586,Juk/VMuotoilu.cpp:399",,n,
+initfont_emva,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"2 writer fn (Hk/HkConsole/JukConsole): hpkoodit,merkisto; +2 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:588,Juk/VMuotoilu.cpp:401",,n,
+valinelendef,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,1 writer fn (Hk): lue_parametrit,,n,lexical writers only <file scope>/init
+vapagelendef,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,1 writer fn (Hk): lue_parametrit,,n,lexical writers only <file scope>/init
+vapageskip,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,1 writer fn (Hk): lue_parametrit,,n,lexical writers only <file scope>/init
+tarkrappageskip,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,1 writer fn (Hk): lue_parametrit,,n,lexical writers only <file scope>/init
+valinelen,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"2 writer fn (Hk): lue_parametrit,vasivu; +7 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:592,Juk/VMuotoilu.cpp:405,Juk/VMuotoilu.cpp:738",,n,
+vapagelen,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp,K6,both,"2 writer fn (Hk): lue_parametrit,vasivu; +7 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:592,Juk/VMuotoilu.cpp:405,Juk/VMuotoilu.cpp:739",,n,
+cssstr,Hk/HkMuotoilu.cpp;Juk/VTulostus.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:698,Juk/VTulostus.cpp:96",,n,
+nFrmTags,Hk/HkMuotoilu.cpp;Juk/VMuotoilu.cpp;cbTp/UnitSivuTuloste.cpp,K6,both,"0 writer fn (): ; +3 unattributed writes (script lost function name) e.g. Hk/HkMuotoilu.cpp:2004,Juk/VMuotoilu.cpp:1230,cbTp/UnitSivuTuloste.cpp:62",,n,
+sak_msglen,Hk/HkSak.cpp,K1,Hk,1 writer fn (Hk): tall_ampsakko; +1 unattributed writes (script lost function name) e.g. Hk/HkSak.cpp:43,,n,
+paikat,Hk/HkSak.cpp,K1,Hk,"2 writer fn (Hk): tall_ampsakko,tall_sak",,n,
+cn_sakko,Hk/HkSak.cpp,K5,Hk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+err_kno,Hk/HkSak.cpp,K1,Hk,1 writer fn (Hk): tall_sak,,n,
+err_paikka,Hk/HkSak.cpp,K1,Hk,1 writer fn (Hk): tall_sak,,n,
+paikkafl,Hk/HkSak.cpp,K1,Hk,1 writer fn (Hk): tall_ampsakko,,n,
+tv_file,Hk/HkTV.cpp,K1,Hk,1 writer fn (Hk): opentv,,n,
+tv_val,Hk/HkTV.cpp,K2,Hk,1 writer fn (Hk): opentv,,n,
+rivi,Hk/HkTV.cpp;tputilv2/Pageedit.cpp;tputilv2/wPageedit.cpp,K7,Hk,"19 writer fn (Hk/HkConsole/Juk/JukConsole/ViestiWin/cbHk/tputilv2): AjatTiedostoon,TFormGAZ::paiv_taulu,TFormImport::lue_kilpcsv,TFormMaastossa::haeKilpailijat,...; +1 unattributed writes (script lost function name) e.g. Hk/HkTV.cpp:147",,n,"lexically merged: Pageedit.cpp static line counter, HkTV locals; written from GUI dir(s): ViestiWin/cbHk"
+edkarki,Hk/HkTV.cpp,K1,Hk,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkTV.cpp:129,Hk/HkTV.cpp:131",,n,
+n,Hk/HkTV.cpp,K7,Hk,"126 writer fn (Hk/HkConsole/Juk/JukConsole/Tp/ViestiWin/cbHk/cbTp/com/tputilv2): AmpPLkm,EmitHtmlOsuus,MaastossaMaxNva,TFormAjanotto::naytaAjat2,...; +49 unattributed writes (script lost function name) e.g. Hk/HkTV.cpp:122,Hk/HkTV.cpp:156,Hk/HkTulostus.cpp:197",direct refs in thread fn: kirjSQLTh(RW),n,lexically merged generic name (HkTV.cpp global counter and locals); written from GUI dir(s): ViestiWin/cbHk
+piste2,Hk/HkTV.cpp,K7,Hk,"1 writer fn (Hk): lahetaXML_TCP; +2 unattributed writes (script lost function name) e.g. Hk/HkTV.cpp:113,Hk/HkTV.cpp:116",,n,HkTV.cpp TV-board temp
+edsrj,Hk/HkTV.cpp,K1,Hk,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkTV.cpp:107,Hk/HkTV.cpp:134",,n,
+kilp0,Hk/HkTV.cpp,K2,Hk,"2 writer fn (Hk/ViestiWin): TFormEmit::TallennaMuutokset,pros_emit",,n,written from GUI dir(s): ViestiWin
+yhttl,Hk/HkTulostus.cpp;Juk/VTulostus.cpp;Juk/XMLtulos.cpp,K6,both,"0 writer fn (): ; +3 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:33,Juk/VTulostus.cpp:45,Juk/XMLtulos.cpp:41",,n,
+lisatxt,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,1 writer fn (cbTp): TFormLisaTekstit::Luetekstit1Click,,n,
+PageFieldCount,Hk/HkTulostus.cpp,K6,Hk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:72,,n,
+palk,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,1 writer fn (Hk): yhteenveto,,n,
+lastpos,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,"2 writer fn (Hk/Juk): initline,putfld",,n,
+TiedRivi,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,"2 writer fn (Hk/Juk): list,tulostusparamtp::writeline",,n,
+wtitle,Hk/HkTulostus.cpp,K6,Hk,1 writer fn (Hk): htmlrunko; +1 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:78,,n,
+wheader,Hk/HkTulostus.cpp,K6,Hk,1 writer fn (Hk): htmlrunko; +1 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:79,,n,
+ssltlsfl,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,"3 writer fn (Hk/HkConsole/Juk): list,tiedostovalinnat,tulostus; +2 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:81,Juk/VTulostus.cpp:90",,n,
+lahetacr,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,"1 writer fn (Hk): lue_parametrit; +2 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:82,Juk/VTulostus.cpp:93",,n,
+potsfl,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,"7 writer fn (Hk/HkConsole/Juk/JukConsole): autofile,kirjhtmlotsikot,kirjhtmlotsikot_resp,kirjoitinpaaotsikot,...; +2 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:83,Juk/VTulostus.cpp:94",,n,
+htmlpitkat,Hk/HkTulostus.cpp,K6,Hk,"2 writer fn (Hk/HkConsole): list,tulostus",,n,
+tulera,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,1 writer fn (HkConsole): tulostus,,n,
+tul_tied_nimi,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:86,Juk/VTulostus.cpp:102",,n,
+karkikierr,Hk/HkTulostus.cpp,K6,Hk,"2 writer fn (Hk): htmltulos,prttulos; +1 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:87",,n,
+TLpKarki,Hk/HkTulostus.cpp,K6,Hk,1 writer fn (Hk): list; +1 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:88,,n,
+srix,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K3,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+sr_nimet,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K3,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+seuranimi,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K2,both,"4 writer fn (Hk/HkConsole/Juk): list,seuralista,seuratulval_toist,tulostus",,n,
+piiriluku,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:142,Juk/VTulostus.cpp:161",,n,
+piirifl,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K3,both,"9 writer fn (HkConsole/ViestiWin/cbHk): TFormPiiriVal::BtnLisKaikkiClick,TFormPiiriVal::BtnLisValitutClick,TFormPiiriVal::BtnPoisKaikkiClick,TFormPiiriVal::BtnPoisValitutClick,...",,n,written from GUI dir(s): ViestiWin/cbHk
+seurat,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K2,both,"3 writer fn (HkConsole/Juk/JukConsole): joukkuetul,seuraluettelo,tulostus",,n,
+sarjayhdfl,Hk/HkTulostus.cpp,K2,Hk,"2 writer fn (HkConsole/Juk): joukkuetul,tulostus",,n,
+yhdseur,Hk/HkTulostus.cpp,K3,Hk,"2 writer fn (Hk/HkConsole/Juk): joukkuetul,tulostus",,n,
+tauluval,Hk/HkTulostus.cpp,K6,Hk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:4024,,n,
+htmlalkufl,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,"2 writer fn (Hk/Juk): htmlalku,htmlloppu",,n,
+htmlIndexName,Hk/HkTulostus.cpp,K6,Hk,"2 writer fn (Hk): htmlrunko,list",,n,
+afsrj,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,1 writer fn (Hk/Juk): autofile,,n,no lexical writer found (never written or written via pointer/bulk)
+afva,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+afnparas,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:7354,Juk/VTulostus.cpp:7339",,n,
+sijaluvut,Hk/HkTulostus.cpp;Juk/VTulostus.cpp,K3,both,1 writer fn (Hk/Juk): joukkuetul,,n,
+kirjXMLkaikki,Hk/HkXml.cpp;Juk/VXml.cpp,K6,both,1 writer fn (ViestiWin/cbHk): TFormExport::Button1Click,,n,written from GUI dir(s): ViestiWin/cbHk
+Dis,Hk/HkXml.cpp;Juk/VXml.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkXml.cpp:46,Juk/VXml.cpp:50",,n,
+DisSt,Hk/HkXml.cpp;Juk/VXml.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkXml.cpp:46,Juk/VXml.cpp:50",,n,
+Sub,Hk/HkXml.cpp;Juk/VXml.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkXml.cpp:48,Juk/VXml.cpp:51",,n,
+Stat,Hk/HkXml.cpp;Juk/VXml.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkXml.cpp:52,Juk/VXml.cpp:53",,n,
+StatSt,Hk/HkXml.cpp;Juk/VXml.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkXml.cpp:52,Juk/VXml.cpp:53",,n,
+Bdg,Hk/HkXml.cpp;Juk/VXml.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkXml.cpp:53,Juk/VXml.cpp:54",,n,
+BdgSt,Hk/HkXml.cpp;Juk/VXml.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkXml.cpp:53,Juk/VXml.cpp:54",,n,
+YhtTls,Hk/HkXml.cpp,K6,Hk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkXml.cpp:54,,n,
+YhtTlsSt,Hk/HkXml.cpp,K6,Hk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkXml.cpp:54,,n,
+flatxml,Hk/HkXmlTulokset.cpp,K6,Hk,1 writer fn (HkConsole): xmlvalinnat; +1 unattributed writes (script lost function name) e.g. Hk/HkXmlTulokset.cpp:25,,n,
+xmlpiste,Hk/HkXmlTulokset.cpp,K6,Hk,1 writer fn (Hk): xmlsrjots,,n,
+xmlorder,Hk/HkXmlTulokset.cpp,K6,Hk,"2 writer fn (Hk): xmlsrjots,xmltulos",,n,
+xmlfisranked,Hk/HkXmlTulokset.cpp,K6,Hk,"2 writer fn (Hk): xmlfissrjots,xmlfistulos",,n,
+fvalue,Hk/HkXmlTulokset.cpp,K6,Hk,1 writer fn (Hk): xmlfissrjots; +1 unattributed writes (script lost function name) e.g. Hk/HkXmlTulokset.cpp:1150,,n,
+minpenalty,Hk/HkXmlTulokset.cpp,K6,Hk,1 writer fn (Hk): xmlfissrjots; +1 unattributed writes (script lost function name) e.g. Hk/HkXmlTulokset.cpp:1150,,n,
+fispenalty,Hk/HkXmlTulokset.cpp,K6,Hk,1 writer fn (Hk): laskefispisteet; +1 unattributed writes (script lost function name) e.g. Hk/HkXmlTulokset.cpp:1150,,n,
+fislist,Hk/HkXmlTulokset.cpp,K6,Hk,1 writer fn (Hk): xmlfissrjots,,n,
+fis_dec_sep,Hk/HkXmlTulokset.cpp,K6,Hk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkXmlTulokset.cpp:1151,,n,
+fisdiscipline,Hk/HkXmlTulokset.cpp,K6,Hk,1 writer fn (Hk): xmlfissrjots; +1 unattributed writes (script lost function name) e.g. Hk/HkXmlTulokset.cpp:1151,,n,
+fissex,Hk/HkXmlTulokset.cpp,K6,Hk,1 writer fn (Hk): xmlfissrjots; +1 unattributed writes (script lost function name) e.g. Hk/HkXmlTulokset.cpp:1151,,n,
+fislevel,Hk/HkXmlTulokset.cpp,K6,Hk,1 writer fn (Hk): xmlfissrjots; +1 unattributed writes (script lost function name) e.g. Hk/HkXmlTulokset.cpp:1152,,n,
+fisvarlevels,Hk/HkXmlTulokset.cpp,K6,Hk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkXmlTulokset.cpp:1152,,n,
+fisvariablelevel,Hk/HkXmlTulokset.cpp,K6,Hk,1 writer fn (Hk): xmlfissrjots,,n,
+nTulosTags,Hk/HkXmlTulokset.cpp,K6,Hk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkXmlTulokset.cpp:1663,,n,
+nIOF3Tags,Hk/HkXml_IOF30.cpp;Juk/VXml_IOF30.cpp,K6,both,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Hk/HkXml_IOF30.cpp:195,Juk/VXml_IOF30.cpp:224",,n,
+in_tark_kello,Juk/VCom.cpp,K4,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+dfl,Juk/VCom.cpp;Tp/TpComY.cpp;Tp/TpComY32.cpp,K5,Juk,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2392,Tp/TpComY32.cpp:2166",,n,
+dflb,Juk/VCom.cpp;Tp/TpComY.cpp;Tp/TpComY32.cpp,K5,Juk,"2 writer fn (Juk/Tp): addseur,tarkcom; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2393,Tp/TpComY32.cpp:2167",direct refs in thread fn: tarkcom(RW),n,no lexical writer found (never written or written via pointer/bulk)
+vapaaemit,Juk/VEmit.cpp,K2,Juk,"2 writer fn (Juk/JukConsole): ensvapaa,lue_parametrit; +2 unattributed writes (script lost function name) e.g. Juk/VEmit.cpp:94,JukConsole/laskemtn.cpp:66",,n,
+partiorap,Juk/VEmit.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+sulkemassa,Juk/VGlobals.cpp,K4,Juk,1 writer fn (Juk): lopetus1,,n,
+kuuluttaja,Juk/VGlobals.cpp,K1,Juk,"2 writer fn (Juk/ViestiWin): TVertAikaFrm::Kuuluttajarajoitukset1Click,lue_parametrit",,n,written from GUI dir(s): ViestiWin
+naytavaroitukset,Juk/VGlobals.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+autokomento,Juk/VGlobals.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+emitvafl,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+emitfiletest,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): seur_mtr,,n,
+sisaanluenta,Juk/VGlobals.cpp,K4,Juk,"3 writer fn (Juk/ViestiWin): TFormMain::Emitluenta1Click,TFormMain::SisLuentaClick,lue_parametrit",direct refs in thread fn: ProsEmitThread(R),n,written from GUI dir(s): ViestiWin
+RastiVaTuloste,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,direct refs in thread fn: ProsEmitThread(R),n,
+analmaxosuuskesto,Juk/VGlobals.cpp,K1,Juk,"2 writer fn (Juk/ViestiWin): <file scope>,TVertAikaFrm::Maksimikesto1Click",,n,written from GUI dir(s): ViestiWin
+kbdwait,Juk/VGlobals.cpp,K4,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+osd,Juk/VGlobals.cpp,K1,Juk,"3 writer fn (Juk): <file scope>,initscreens,tulostasarja",,n,
+chkstk,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+kone,Juk/VGlobals.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+aikaflname,Juk/VGlobals.cpp,K1,Juk,"3 writer fn (Hk/Juk): <file scope>,aloitus,lue_parametrit",,n,
+njrec,Juk/VGlobals.cpp,K3,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+fdatf2,Juk/VGlobals.cpp,K2,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+localparam,Juk/VGlobals.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+filetulparam,Juk/VGlobals.cpp,K6,Juk,"2 writer fn (Juk): aloitus,asetaOletusarvot; +8 unattributed writes (script lost function name) e.g. Juk/VMuotoilu.cpp:487,Juk/VMuotoilu.cpp:489,Juk/VMuotoilu.cpp:491",,n,
+lahhajonta,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+lataus,Juk/VGlobals.cpp,K4,Juk,"2 writer fn (Juk): <file scope>,teejarj",,n,
+jjfl,Juk/VGlobals.cpp,K1,Juk,"2 writer fn (Juk/JukConsole): <file scope>,korjaukset",,n,
+tarkfl,Juk/VGlobals.cpp,K1,Juk,"2 writer fn (Juk): <file scope>,lue_parametrit",,n,
+enslahto,Juk/VGlobals.cpp,K2,Juk,"2 writer fn (Hk/Juk): <file scope>,takaa_ajolahdot; +6 unattributed writes (script lost function name) e.g. Juk/vSarjat.cpp:159,Juk/vSarjat.cpp:162,Juk/vSarjat.cpp:167",,n,
+nilmtt,Juk/VGlobals.cpp,K3,Juk,"2 writer fn (Juk): <file scope>,paivJoukkLkm",,n,
+maxosuusluku,Juk/VGlobals.cpp,K2,Juk,"1 writer fn (ViestiWin): luevanha; +2 unattributed writes (script lost function name) e.g. Juk/vSarjat.cpp:342,Juk/vSarjat.cpp:395",,n,written from GUI dir(s): ViestiWin
+osuus,Juk/VGlobals.cpp,K2,Juk,"28 writer fn (Juk/JukConsole/ViestiWin): TFormEmitMuutokset::Nayta,TFormHenkHaku::NaytaNimet,TTulosteForm::ButtonTulostaClick,add,...; +5 unattributed writes (script lost function name) e.g. Juk/VDef.h:766,Juk/VDef.h:767,Juk/vkilp.cpp:1437",,n,written from GUI dir(s): ViestiWin
+varkynnys,Juk/VGlobals.cpp,K1,Juk,"3 writer fn (Juk/JukConsole): aloitus,asetukset,lue_parametrit",,n,
+lkm_srj,Juk/VGlobals.cpp,K3,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+lkm_os,Juk/VGlobals.cpp,K3,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+nost,Juk/VGlobals.cpp,K3,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+navoint,Juk/VGlobals.cpp,K3,Juk,"2 writer fn (Juk): addjarjarr,remjarjarr",,n,
+ntulosix,Juk/VGlobals.cpp,K3,Juk,"3 writer fn (Juk): addjarjarr,nollaayhdlkm,remjarjarr",,n,
+nekoodi,Juk/VGlobals.cpp,K3,Juk,"2 writer fn (Juk): addjarjarr,remjarjarr",,n,
+ntulos2,Juk/VGlobals.cpp,K3,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+ylmyoh,Juk/VGlobals.cpp,K1,Juk,"4 writer fn (Juk/JukConsole): <file scope>,aloitus,asetukset,tark_ylahto",,n,
+njoukhyl,Juk/VGlobals.cpp,K3,Juk,1 writer fn (Juk): ossijat,,n,
+njoukkesk,Juk/VGlobals.cpp,K3,Juk,1 writer fn (Juk): ossijat,,n,
+navoin,Juk/VGlobals.cpp,K3,Juk,"2 writer fn (Juk): addjarjarr,remjarjarr; +1 unattributed writes (script lost function name) e.g. cbHk/UnitStatus.cpp:522",,n,written from GUI dir(s): cbHk
+nylahto,Juk/VGlobals.cpp,K3,Juk,"2 writer fn (Juk): addjarjarr,remjarjarr",,n,
+josalku,Juk/VGlobals.cpp,K3,Juk,"2 writer fn (Juk): setJosAlku,teejarj",,n,
+jarjostulos,Juk/VGlobals.cpp,K2,Juk,"2 writer fn (Juk): AllocJarjSeur,SetJarjOsTulos",,n,
+jrjosseur,Juk/VGlobals.cpp,K2,Juk,"2 writer fn (Juk): AllocJarjSeur,SetOsJarjSeur",,n,
+kilpnoix,Juk/VGlobals.cpp,K2,Juk,"3 writer fn (Juk): setpos,teejarj,uusiKilpnoIx",,n,
+enstls,Juk/VGlobals.cpp,K2,Juk,"2 writer fn (Juk): tallenna,tulostasarja",,n,
+laajuus,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Hk/Juk): autofile,,n,
+nparas,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Hk): emitvaliajat,,n,
+wincom,Juk/VGlobals.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+ch_pty,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): <file scope>,,n,
+maxnblock,Juk/VGlobals.cpp;tputilv2/globals.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+nprch,Juk/VGlobals.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+leimacomopen,Juk/VGlobals.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+leimacom,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): <file scope>,,n,
+katkkierto,Juk/VGlobals.cpp,K5,Juk,1 writer fn (Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+baud,Juk/VGlobals.cpp,K1,Juk,"4 writer fn (Hk/Juk): <file scope>,ConsoleAloitus,aloitus,asetaOletusarvot",,n,
+yhtaikajono,Juk/VGlobals.cpp,K5,Juk,1 writer fn (Juk): lue_parametrit,,n,lexical writers only <file scope>/init
+viim_time,Juk/VGlobals.cpp,K2,Juk,1 writer fn (Juk): tall_rivi,,n,
+mloki,Juk/VGlobals.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+lah_kello,Juk/VGlobals.cpp,K5,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+lah_kello_nyt,Juk/VGlobals.cpp,K5,Juk,1 writer fn (JukConsole): asetukset,,n,
+printer,Juk/VGlobals.cpp,K6,Juk,1 writer fn (Hk): tall_muotoilu,,n,
+lokifile,Juk/VGlobals.cpp,K5,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+tvalmis,Juk/VGlobals.cpp,K2,Juk,1 writer fn (Juk): <file scope>,,n,lexical writers only <file scope>/init
+valiajat,Juk/VGlobals.cpp,K1,Juk,"4 writer fn (Juk): <file scope>,aloitus,lue_parametrit,vatulkinta",,n,
+maxnvaika,Juk/VGlobals.cpp,K2,Juk,"3 writer fn (Juk): <file scope>,lue_parametrit,teejarj",,n,
+va_mpiste,Juk/VGlobals.cpp,K2,Juk,"5 writer fn (Juk/JukConsole/ViestiWin): TFormAjanotto::CBPisteValClick,TFormAjanotto::Kaavakkeenoletuspiste1Click,ajanotto,aloitus,...",,n,written from GUI dir(s): ViestiWin
+ol_osuus,Juk/VGlobals.cpp,K2,Juk,"2 writer fn (Juk/JukConsole): ajanotto,lue_parametrit",,n,
+os_raja,Juk/VGlobals.cpp,K2,Juk,"3 writer fn (Juk/JukConsole): <file scope>,ajanotto,lue_parametrit",,n,
+int_autova,Juk/VGlobals.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+addr_autova,Juk/VGlobals.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+emittoisto,Juk/VGlobals.cpp,K1,Juk,"2 writer fn (Juk): <file scope>,lue_parametrit",,n,
+maxpaikat_t,Juk/VGlobals.cpp,K3,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+ratavalpit,Juk/VGlobals.cpp,K1,Juk,"2 writer fn (Juk): <file scope>,lue_parametrit",,n,
+ampusakot,Juk/VGlobals.cpp,K2,Juk,1 writer fn (Juk): <file scope>,,n,lexical writers only <file scope>/init
+maxaika,Juk/VGlobals.cpp,K2,Juk,1 writer fn (Juk): lue_rogsakot,,n,
+sakkoaskel,Juk/VGlobals.cpp,K2,Juk,1 writer fn (Juk): lue_rogsakot,,n,
+askelsakko,Juk/VGlobals.cpp,K2,Juk,1 writer fn (Juk): lue_rogsakot,,n,
+joustoviesti,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+joustopakotavaihto,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+esta_uusikaytto,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): <file scope>,,n,
+jalkisyotto,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+joukkueemit,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+salli_emit_ensin,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+lahtoryhma,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+huomaatark,Juk/VGlobals.cpp,K1,Juk,"2 writer fn (Juk): <file scope>,lue_parametrit",,n,
+maalirastipois,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): analradat,,n,
+bdg_muutt,Juk/VGlobals.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+naytahajonta,Juk/VGlobals.cpp,K1,Juk,"2 writer fn (Juk): <file scope>,lue_parametrit",,n,
+val_korkein,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+profiloi,Juk/VGlobals.cpp;Tp/TpComY32.cpp,K1,Juk,"2 writer fn (Juk/Tp): close_profile,lue_parametrit; +1 unattributed writes (script lost function name) e.g. Tp/TpComY32.cpp:207",,n,
+XMLtietue,Juk/VGlobals.cpp,K1,Juk,"2 writer fn (Juk): <file scope>,lue_parametrit",,n,
+tarktapahtumat,Juk/VGlobals.cpp,K1,Juk,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. ViestiWin/TapUnit2.cpp:153,ViestiWin/TapUnit2.cpp:372",,n,written from GUI dir(s): ViestiWin
+vuorokaudet,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+kierrokset,Juk/VGlobals.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+cpower,Juk/VInit.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+afvali0,Juk/VInit.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+err_file,Juk/VInit.cpp;Tp/TpApu.cpp;cbTp/TpApu.cpp,K1,Juk,"2 writer fn (Juk/Tp/cbTp): close_err_file,kirj_err_file",,n,
+oletuskieli,Juk/VInit.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit; +1 unattributed writes (script lost function name) e.g. Juk/VInit.cpp:81,,n,
+pisteparam,Juk/VInit.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+luentaloki,Juk/VInit.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+tarkavoimet,Juk/VInit.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+luentatesti,Juk/VInit.cpp,K1,Juk,1 writer fn (Juk): lue_parametrit,,n,
+tietofl,Juk/VInit.cpp,K1,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+uusi_emit,Juk/VIv.cpp,K1,Juk,"4 writer fn (Juk/JukConsole/ViestiWin): TFormLuenta::Nollaa,addluenta,leimat,tall_emit",,n,written from GUI dir(s): ViestiWin
+hylatty_emit,Juk/VIv.cpp,K1,Juk,1 writer fn (Juk): addluenta; +1 unattributed writes (script lost function name) e.g. ViestiWin/UnitLuenta.cpp:429,,n,written from GUI dir(s): ViestiWin
+lukuvali,Juk/VIv.cpp,K1,Juk,1 writer fn (Juk): seur_mtr; +1 unattributed writes (script lost function name) e.g. Juk/VIv.cpp:812,,n,
+ostlsindex,Juk/VIx.cpp,K2,Juk,"2 writer fn (Juk): initindex,tlsSeuraava",,n,
+lih_on,Juk/VMuotoilu.cpp,K6,Juk,1 writer fn (JukConsole): muotoilu,,n,
+lih_pois,Juk/VMuotoilu.cpp,K6,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+pienet_on,Juk/VMuotoilu.cpp,K6,Juk,1 writer fn (JukConsole): muotoilu,,n,
+pienet_pois,Juk/VMuotoilu.cpp,K6,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+n_prtfldsk,Juk/VMuotoilu.cpp,K6,Juk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Juk/VMuotoilu.cpp:389,,n,
+n_filefldsk,Juk/VMuotoilu.cpp,K6,Juk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Juk/VMuotoilu.cpp:392,,n,
+av,Juk/VTulostus.cpp,K6,Juk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Juk/VTulostus.cpp:58,,n,
+fldname,Juk/VTulostus.cpp,K6,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+scale,Juk/VTulostus.cpp,K6,Juk,"5 writer fn (Hk/cbHk/cbTp): TFormRadat::Laskerastivlienmatkatkoordinaateista1Click,emityhteenveto,ooyhteenveto,tulosyhteenveto,...; +5 unattributed writes (script lost function name) e.g. Juk/VMuotoilu.cpp:1003,Juk/VMuotoilu.cpp:1005,Juk/VMuotoilu.cpp:1007",,n,written from GUI dir(s): cbHk
+n_fld,Juk/VTulostus.cpp,K6,Juk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Hk/HkTulostus.cpp:188,,n,
+tul_val_prm,Juk/VTulostus.cpp,K6,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+af_prm,Juk/VTulostus.cpp,K6,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+karkiaika,Juk/VTulostus.cpp,K6,Juk,1 writer fn (Juk): tulostasarja,,n,
+piirisijat,Juk/VTulostus.cpp,K6,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+rivpit,Juk/VTulostus.cpp,K6,Juk,"2 writer fn (JukConsole): naytarivi,opentaulu; +2 unattributed writes (script lost function name) e.g. Juk/VMuotoilu.cpp:441,Juk/VTulostus.cpp:92",,n,
+tsakfl2,Juk/VTulostus.cpp,K6,Juk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Juk/VTulostus.cpp:97,,n,
+tsakfly,Juk/VTulostus.cpp,K6,Juk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Juk/VTulostus.cpp:98,,n,
+tsakflm,Juk/VTulostus.cpp,K6,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+pitkaseuram,Juk/VTulostus.cpp,K6,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+rinnLuvut,Juk/VTulostus.cpp,K6,Juk,"2 writer fn (Juk): ossijatRinn,tulostasarja",,n,
+hajalku,Juk/VTulostus.cpp,K2,Juk,1 writer fn (Juk): seur_rata,,n,
+hajfname,Juk/VTulostus.cpp,K6,Juk,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. Juk/VTulostus.cpp:8615,,n,
+hajfile,Juk/VTulostus.cpp,K6,Juk,1 writer fn (Juk): seur_rata,,n,
+tag_a,Juk/XMLtulos.cpp,K6,Juk,1 writer fn (Juk): xmlots,,n,
+yhtj,Juk/vajat.cpp;Tp/TpApu.cpp;cbTp/TpApu.cpp,K6,Juk,1 writer fn (Tp/cbTp): lueyhteysjonot,,n,
+nyhtjono,Juk/vajat.cpp;Tp/TpApu.cpp;cbTp/TpApu.cpp,K6,Juk,1 writer fn (Tp/cbTp): lueyhteysjonot,,n,
+enst,Juk/vdat.cpp,K6,Juk,1 writer fn (Juk): tallenna,,n,
+tls_muutos,Juk/vdat.cpp,K6,Juk,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+sql,Juk/vdat.cpp,K2,Juk,1 writer fn (Juk): opensql,,n,
+n_err_file,Tp/TpApu.cpp;cbTp/TpApu.cpp,K1,shared,1 writer fn (Tp/cbTp): kirj_err_file,,n,
+UDPviive_lue,Tp/TpComY.cpp;Tp/TpComY32.cpp,K1,shared,"1 writer fn (Hk/Juk): lue_parametrit; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:63,Tp/TpComY.cpp:2503,Tp/TpComY32.cpp:68",,n,
+UDPviive_lah,Tp/TpComY.cpp;Tp/TpComY32.cpp,K1,shared,"1 writer fn (Hk/Juk): lue_parametrit; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:64,Tp/TpComY.cpp:2511,Tp/TpComY32.cpp:69",,n,
+UDPviive_ts,Tp/TpComY.cpp;Tp/TpComY32.cpp,K1,shared,"1 writer fn (Hk/Juk): lue_parametrit; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:65,Tp/TpComY.cpp:2507,Tp/TpComY32.cpp:70",,n,
+UDPCliWait,Tp/TpComY.cpp;Tp/TpComY32.cpp,K1,shared,"3 writer fn (Hk/Juk/cbHk): TAsetusForm::BtnOKClick,aloitus,lue_parametrit; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2497,Tp/TpComY32.cpp:2370",,n,written from GUI dir(s): cbHk
+TCPviive_lah,Tp/TpComY.cpp;Tp/TpComY32.cpp,K1,shared,"1 writer fn (Hk/Juk): lue_parametrit; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1268,Tp/TpComY.cpp:2473,Tp/TpComY32.cpp:1207",,n,
+TCPviive_nak,Tp/TpComY.cpp;Tp/TpComY32.cpp,K1,shared,"1 writer fn (Hk/Juk): lue_parametrit; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1270,Tp/TpComY.cpp:2465,Tp/TpComY32.cpp:1209",,n,
+TCPviive_pak,Tp/TpComY.cpp;Tp/TpComY32.cpp,K1,shared,"1 writer fn (Hk/Juk): lue_parametrit; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1272,Tp/TpComY.cpp:2457,Tp/TpComY32.cpp:1211",,n,
+UDPvarmistamaton,Tp/TpComY.cpp;Tp/TpComY32.cpp,K1,shared,1 writer fn (Hk/Juk): lue_parametrit,,n,
+lah_tied_seur,Tp/TpComY.cpp,K5,shared,"0 writer fn (): ; +3 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:2877,Tp/TpComY.cpp:2892,Tp/TpComY.cpp:2985",,n,
+tiedostosanoma,Tp/TpComY.cpp,K4,shared,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1432,Tp/TpComY.cpp:1461",,n,
+com_keskeytt,Tp/TpComY.cpp,K4,shared,1 writer fn (Tp): addseur,,n,
+sendtestparam,Tp/TpComY.cpp,K5,shared,"1 writer fn (ViestiWin): TFormComfile::BtnLahValClick; +49 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:3044,Tp/TpComY.cpp:3045,Tp/TpComY.cpp:3046",,n,written from GUI dir(s): ViestiWin/cbHk
+hcMon,Tp/TpComY.cpp;Tp/TpComY32.cpp,K5,shared,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+ipParamMon,Tp/TpComY.cpp;Tp/TpComY32.cpp,K5,shared,"2 writer fn (Tp): addMonitori,lahetaMonitorille",,n,
+monitoriVali,Tp/TpComY.cpp;Tp/TpComY32.cpp,K1,shared,"1 writer fn (Hk/Juk): lue_parametrit; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:83,Tp/TpComY32.cpp:80",,n,
+monportbase,Tp/TpComY.cpp;Tp/TpComY32.cpp,K1,shared,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:84,Tp/TpComY32.cpp:81",,n,
+varaserver,Tp/TpComY.cpp;Tp/TpComY32.cpp,K1,shared,1 writer fn (Hk/Juk): lue_parametrit,,n,
+TCP_on,Tp/TpComY.cpp;Tp/TpComY32.cpp,K4,shared,1 writer fn (com): openportTCP,,n,
+luepaketteja,Tp/TpComY.cpp;Tp/TpComY32.cpp,K4,shared,"0 writer fn (): ; +4 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:140,Tp/TpComY.cpp:1911,Tp/TpComY32.cpp:134",,n,
+profarr,Tp/TpComY.cpp;Tp/TpComY32.cpp,K7,shared,"2 writer fn (Tp): open_profile,put_profile",,n,profiling sample buffer
+profptr,Tp/TpComY.cpp;Tp/TpComY32.cpp,K7,shared,1 writer fn (Tp): put_profile,,n,profiling buffer index
+proffile,Tp/TpComY.cpp;Tp/TpComY32.cpp,K7,shared,"2 writer fn (Tp): close_profile,open_profile",,n,profiling output file
+in_aseta_mtr,Tp/TpLaitteet.cpp,K4,shared,"6 writer fn (Tp/cbTp): PaivThread,TFormMTR::BtnSeurClick,TFormMTR::Button1Click,TFormMTR::FormClose,...",direct refs in thread fn: PaivThread(W),n,
+mtr_pyynto,Tp/TpLaitteet.cpp,K4,shared,"3 writer fn (Tp/cbTp): TFormMTR::Button1Click,aseta_mtr,lue_MTR",,n,
+mtr_yksi,Tp/TpLaitteet.cpp,K4,shared,"2 writer fn (Tp/cbTp): TFormMTR::Button1Click,aseta_mtr",,n,
+TauluParam,Tp/TpLaitteet.cpp,K1,shared,"3 writer fn (Juk/ViestiWin/cbHk): TFormGAZ::BtnAvaaYhtClick,TFormTaulu::BtnAvaaYhtClick,asetaOletusarvot",,n,written from GUI dir(s): ViestiWin/cbHk
+LatestSirit,Tp/TpLaitteet.cpp,K5,shared,"4 writer fn (Tp): lue_Sirit,lue_SiritCmd,lue_regnly,openSirit2",direct refs in thread fn: lue_regnlyThread(R),n,
+LatestSiritPoll,Tp/TpLaitteet.cpp,K5,shared,"2 writer fn (Tp): lue_regnly,lue_regnlyThread",direct refs in thread fn: lue_regnlyThread(RW),n,
+SiritEiVastaa,Tp/TpLaitteet.cpp,K4,shared,"2 writer fn (Tp): lue_Sirit,lue_SiritCmd",,n,
+SiritPoll,Tp/TpLaitteet.cpp,K5,shared,"2 writer fn (Hk/Juk/cbHk): TFormAjanotto::Sirityhteydenpollaus1Click,lue_parametrit",direct refs in thread fn: lue_regnlyThread(R),n,written from GUI dir(s): cbHk
+reconnectSirit,Tp/TpLaitteet.cpp,K4,shared,"3 writer fn (HkConsole/JukConsole/Tp/cbHk): TFormAjanotto::KynnistSirityhteysuudelleen1Click,asetukset,lue_regnlyThread",direct refs in thread fn: lue_regnlyThread(RW),n,written from GUI dir(s): cbHk
+siritarrive,Tp/TpLaitteet.cpp,K1,shared,1 writer fn (Hk): lue_parametrit; +1 unattributed writes (script lost function name) e.g. Tp/TpLaitteet.cpp:112,,n,
+siritdepart,Tp/TpLaitteet.cpp,K1,shared,1 writer fn (Hk): lue_parametrit; +1 unattributed writes (script lost function name) e.g. Tp/TpLaitteet.cpp:113,,n,
+SiritMask,Tp/TpLaitteet.cpp,K1,shared,1 writer fn (Hk): lue_parametrit,,n,no lexical writer found (never written or written via pointer/bulk)
+viimrivi,Tp/TpLaitteet.cpp,K5,shared,1 writer fn (Juk): tall_regnly,,n,
+regnlystarted,Tp/TpLaitteet.cpp,K4,shared,"3 writer fn (Tp): lue_regnlyThread,rem_regnly,start_regnly",direct refs in thread fn: lue_regnlyThread(W),n,
+ecdata,Tp/TpLaitteet.cpp,K2,shared,1 writer fn (Tp): tulk_emiTag,,n,
+dbgfile,Tp/TpLaitteet.cpp,K5,shared,"10 writer fn (Tp/cbTp): TFormMTR::LueMTRTiedot,aseta_mtr,closedbgfile,lue_EMITAG,...",,n,
+valo_on,Tp/TpLaitteet.cpp,K4,shared,"2 writer fn (Tp): naytatulos,naytatulosTh",direct refs in thread fn: naytatulosTh(W),n,
+ZebraGpiPort,Tp/ZebraReader.cpp,K1,shared,1 writer fn (Hk/Juk): lue_parametrit; +1 unattributed writes (script lost function name) e.g. Tp/ZebraReader.cpp:45,,n,
+g_msgid,Tp/ZebraReader.cpp,K1,shared,1 writer fn (Tp): sendLLRP; +1 unattributed writes (script lost function name) e.g. Tp/ZebraReader.cpp:112,,n,
+ZebraDepart,Tp/ZebraReader.cpp,K1,shared,1 writer fn (Hk): lue_parametrit; +1 unattributed writes (script lost function name) e.g. Tp/ZebraReader.cpp:468,,n,
+ZebraDepartCleanup,Tp/ZebraReader.cpp,K1,shared,1 writer fn (Hk): lue_parametrit; +1 unattributed writes (script lost function name) e.g. Tp/ZebraReader.cpp:478,,n,
+g_active,Tp/ZebraReader.cpp,K2,shared,"3 writer fn (Tp): activeSee,checkDepartures,clearActive",,n,
+g_rx,Tp/ZebraReader.cpp,K5,shared,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+g_rxlen,Tp/ZebraReader.cpp,K5,shared,"2 writer fn (Tp): ZebraReader::openConnection,ZebraReader::readTags",,n,
+p,Tp/mtrand.cpp,K7,shared,"302 writer fn (Hk/HkConsole/Juk/JukConsole/Tp/ViestiWin/cbHk/cbTp/com/tputilv2): AjatTiedostosta,ConsoleAloitus,DateNoFromSt,IntInList,...; +110 unattributed writes (script lost function name) e.g. Hk/HkSrj.cpp:728,Hk/HkSrj.cpp:733,Hk/HkSrj.cpp:736",direct refs in thread fn: TCPrcvTh(RW); UDPstreamrcvTh(RW),n,MTRand_int32 static member: Mersenne Twister index; written from GUI dir(s): ViestiWin/cbHk
+init,Tp/mtrand.cpp,K7,shared,"17 writer fn (Hk/HkConsole/Juk/Tp/ViestiWin/cbHk): TFormJoukkuetiedot::FormResize,TFormKilpMaaritys::FormActivate,TFormKilpMaaritys::FormShow,TFormMain::Aloita,...; +24 unattributed writes (script lost function name) e.g. Tp/TpComY.cpp:1225,Tp/TpComY.cpp:1416,Tp/TpComY.cpp:1429",,n,MTRand_int32 static member: RNG seeded flag; written from GUI dir(s): ViestiWin/cbHk
+emittallfile,cbTp/UnitEmiTag.cpp,K1,shared,"4 writer fn (cbTp): TFormEmiTag::Button2Click,TFormEmiTag::FormClose,TFormMTR::Button1Click,TFormMTR::FormClose",,n,
+n_emittallfile,cbTp/UnitEmiTag.cpp,K1,shared,"3 writer fn (Hk/Juk/cbTp): TFormEmiTag::Button2Click,TFormMTR::Button1Click,tall_emit",,n,
+PaivOn,cbTp/UnitEmiTag.cpp;cbTp/UnitMTR.cpp,K4,shared,"4 writer fn (cbTp): TFormEmiTag::Button2Click,TFormEmiTag::FormClose,TFormMTR::Button1Click,TFormMTR::FormClose",direct refs in thread fn: PaivThread(R),n,
+nemit,cbTp/UnitEmitFile.cpp,K2,shared,1 writer fn (cbTp): TFormEmitFile::Button1Click,,n,
+emarr,cbTp/UnitEmitFile.cpp,K2,shared,1 writer fn (cbTp): TFormEmitFile::Button1Click,,n,
+temp_html_flnm,cbTp/UnitHtmlEdit.cpp,K1,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitHtmlEdit.cpp:34,,n,
+clRata,cbTp/UnitKartta.cpp,K1,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitKartta.cpp:36,,n,
+clVirhe,cbTp/UnitKartta.cpp,K1,shared,1 writer fn (cbTp): TFormKartta::Tummatvirheet1Click; +1 unattributed writes (script lost function name) e.g. cbTp/UnitKartta.cpp:37,,n,
+wdthRata,cbTp/UnitKartta.cpp,K1,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitKartta.cpp:38,,n,
+rastiHalk,cbTp/UnitKartta.cpp,K1,shared,"3 writer fn (cbTp): TFormKartta::KeskikokClick,TFormKartta::PienetClick,TFormKartta::Suuretsymbolit1Click; +1 unattributed writes (script lost function name) e.g. cbTp/UnitKartta.cpp:39",,n,
+fntSize,cbTp/UnitKartta.cpp,K1,shared,"3 writer fn (cbTp): TFormKartta::KeskikokClick,TFormKartta::PienetClick,TFormKartta::Suuretsymbolit1Click; +1 unattributed writes (script lost function name) e.g. cbTp/UnitKartta.cpp:40",,n,
+laiteLkm,cbTp/UnitMaalikello.cpp,K1,shared,1 writer fn (cbTp): TForm; +1 unattributed writes (script lost function name) e.g. cbTp/UnitMaalikello.cpp:32,,n,
+NaytaTulosTimerThreadOn,cbTp/UnitNaytaTulos.cpp,K4,shared,"2 writer fn (cbTp): NaytaTulosTimerThread,TFormNaytaTulos::DisplTimerHandler",direct refs in thread fn: NaytaTulosTimerThread(RW),n,
+hScale,cbTp/UnitPiikit.cpp,K1,shared,1 writer fn (cbTp): TFormPiikit::Piirra; +1 unattributed writes (script lost function name) e.g. cbTp/UnitPiikit.cpp:64,,n,
+vScale,cbTp/UnitPiikit.cpp,K1,shared,1 writer fn (cbTp): TFormPiikit::Piirra; +1 unattributed writes (script lost function name) e.g. cbTp/UnitPiikit.cpp:64,,n,
+marg2,cbTp/UnitPiikit.cpp;cbTp/UnitRadat.cpp,K1,shared,"0 writer fn (): ; +2 unattributed writes (script lost function name) e.g. cbTp/UnitPiikit.cpp:64,cbTp/UnitRadat.cpp:95",,n,
+BMtop,cbTp/UnitPiikit.cpp,K1,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitPiikit.cpp:65,,n,
+BMleft,cbTp/UnitPiikit.cpp,K1,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitPiikit.cpp:65,,n,
+kilp,cbTp/UnitRadat.cpp,K2,shared,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+vsc,cbTp/UnitRadat.cpp,K1,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitRadat.cpp:94,,n,
+psc,cbTp/UnitRadat.cpp,K1,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitRadat.cpp:94,,n,
+marg_re,cbTp/UnitRadat.cpp,K1,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitRadat.cpp:95,,n,
+top,cbTp/UnitRadat.cpp,K7,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitRadat.cpp:95,,n,UnitRadat drawing temp
+step,cbTp/UnitRadat.cpp,K7,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitRadat.cpp:95,,n,UnitRadat drawing temp
+ckdi,cbTp/UnitRadat.cpp,K1,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitRadat.cpp:96,,n,
+errfile,cbTp/UnitRadat.cpp,K1,shared,1 writer fn (cbTp): kirj_error,,n,
+initialisoitu,cbTp/UnitRadat.cpp,K4,shared,"2 writer fn (cbTp): TFormRadat::FormCloseQuery,TFormRadat::FormShow",,n,
+errcount,cbTp/UnitRadat.cpp,K1,shared,1 writer fn (cbTp): kirj_error,,n,
+sallialle31,cbTp/UnitRadat.cpp,K1,shared,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+rrlisa,cbTp/UnitRadat.cpp,K1,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitRadat.cpp:101,,n,
+rataxmlname,cbTp/UnitRadat.cpp,K1,shared,"2 writer fn (cbTp): TFormRadat::FormShow,TFormRadat::kirjXmlTiedot; +1 unattributed writes (script lost function name) e.g. cbTp/UnitRadat.cpp:103",,n,
+rataxmlname0,cbTp/UnitRadat.cpp,K1,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitRadat.cpp:104,,n,
+Maalikoodi,cbTp/UnitRadat.cpp,K1,shared,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+AjanottoTapa,cbTp/UnitRadat.cpp,K1,shared,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+Ennakko,cbTp/UnitRadat.cpp,K1,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. cbTp/UnitRadat.cpp:2032,,n,
+KestoAika,cbTp/UnitSelect3.cpp,K1,shared,"2 writer fn (cbTp): TFormSelect3::FormShow,TFormSelect3::Kysy",,n,
+SelTimerThreadOn,cbTp/UnitSelect3.cpp,K4,shared,"4 writer fn (cbTp): SelTimerThread,TFormSelect3::Button1Click,TFormSelect3::Button2Click,TFormSelect3::Button3Click",direct refs in thread fn: SelTimerThread(RW),n,
+perr_ots,cbTp/cbTpApu.cpp,K7,shared,no lexical writers,,n,static message buffer; no lexical writer found (never written or written via pointer/bulk)
+perr_msg,cbTp/cbTpApu.cpp,K7,shared,no lexical writers,,n,static message buffer; no lexical writer found (never written or written via pointer/bulk)
+perr_ots2,cbTp/cbTpApu.cpp,K7,shared,no lexical writers,,n,static message buffer; no lexical writer found (never written or written via pointer/bulk)
+perr_msg2,cbTp/cbTpApu.cpp,K7,shared,no lexical writers,,n,static message buffer; no lexical writer found (never written or written via pointer/bulk)
+WSAstarted,com/WinUDP.cpp,K4,shared,"3 writer fn (com): openportBroadcast,openportTCP,openportUDP",,n,
+UDPlukum,com/WinUDP.cpp,K1,shared,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+TCPlukum,com/WinUDP.cpp,K1,shared,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+WSAdata,com/WinUDP.cpp,K1,shared,"3 writer fn (com): openportBroadcast,openportTCP,openportUDP",,n,no lexical writer found (never written or written via pointer/bulk)
+yhtnot,com/WinUDP.cpp,K5,shared,"3 writer fn (com): TCPacceptTh,openportTCP,openportUDP",direct refs in thread fn: TCPacceptTh(RW),n,
+konetn,com/WinUDP.cpp,K1,shared,1 writer fn (com): UDPsetkonetunn,,n,no lexical writer found (never written or written via pointer/bulk)
+UDPcliWait,com/WinUDP.cpp,K1,shared,1 writer fn (com): UDPsetCliWait; +1 unattributed writes (script lost function name) e.g. com/WinUDP.cpp:63,,n,
+UDPyhteys,com/WinUDP.cpp,K5,shared,"10 writer fn (com): UDPnaapuri,UDPstreamrcvTh,closeportUDP,i_flush_UDPstream,...",direct refs in thread fn: UDPstreamrcvTh(RW),n,
+TCPyhteys,com/WinUDP.cpp,K5,shared,"7 writer fn (com): TCPacceptTh,TCPrcvTh,closeportTCP,i_flush_TCP,...",direct refs in thread fn: TCPacceptTh(RW); TCPrcvTh(RW),n,
+broadcastyhteys,com/WinUDP.cpp,K5,shared,1 writer fn (com): openportBroadcast,,n,
+nBroadcast,com/WinUDP.cpp,K5,shared,1 writer fn (com): openportBroadcast; +1 unattributed writes (script lost function name) e.g. com/WinUDP.cpp:134,,n,
+timeouts0,com/winCom.cpp,K1,shared,"2 writer fn (com): closeport,setportparam",,n,
+monirivi,tputilv2/Inputstr.cpp;tputilv2/Inputwstr.cpp,K6,shared,"2 writer fn (tputilv2): pageedit,wpageedit; +2 unattributed writes (script lost function name) e.g. tputilv2/Inputstr.cpp:30,tputilv2/Inputwstr.cpp:30",,n,
+iscurpos,tputilv2/Inputstr.cpp;tputilv2/Inputwstr.cpp,K6,shared,"7 writer fn (tputilv2): inputstr,inputwstr2,pageedit,wpageedit,...; +2 unattributed writes (script lost function name) e.g. tputilv2/Inputstr.cpp:31,tputilv2/Inputwstr.cpp:31",,n,
+rivptr,tputilv2/Pageedit.cpp,K6,shared,"2 writer fn (HkConsole/JukConsole/tputilv2): lehdisto,wrapstr",,n,
+rm,tputilv2/Pageedit.cpp;tputilv2/wPageedit.cpp,K6,shared,"3 writer fn (tputilv2): pageedit,wpageedit,wrapstr",,n,
+rl,tputilv2/Pageedit.cpp;tputilv2/wPageedit.cpp,K6,shared,"2 writer fn (tputilv2): pageedit,wpageedit",,n,
+rluku,tputilv2/Pageedit.cpp;tputilv2/wPageedit.cpp,K6,shared,"2 writer fn (tputilv2): pageedit,wpageedit",,n,
+rofs,tputilv2/Pageedit.cpp;tputilv2/wPageedit.cpp,K6,shared,"3 writer fn (tputilv2): pageedit,wpageedit,wrapstr",,n,
+rofs0,tputilv2/Pageedit.cpp;tputilv2/wPageedit.cpp,K6,shared,"3 writer fn (tputilv2): pageedit,wpageedit,wrapstr",,n,
+newline,tputilv2/Pageedit.cpp;tputilv2/wPageedit.cpp,K6,shared,"2 writer fn (tputilv2): pageedit,wpageedit",,n,
+norm_fore,tputilv2/Viwrrect.cpp,K6,shared,1 writer fn (Hk/Juk): lue_parametrit; +1 unattributed writes (script lost function name) e.g. tputilv2/Viwrrect.cpp:23,,n,
+norm_back,tputilv2/Viwrrect.cpp,K6,shared,1 writer fn (Hk/Juk): lue_parametrit; +1 unattributed writes (script lost function name) e.g. tputilv2/Viwrrect.cpp:24,,n,
+inv_back,tputilv2/Viwrrect.cpp,K6,shared,1 writer fn (Hk/Juk): lue_parametrit; +1 unattributed writes (script lost function name) e.g. tputilv2/Viwrrect.cpp:25,,n,
+inv_fore,tputilv2/Viwrrect.cpp,K6,shared,1 writer fn (Hk/Juk): lue_parametrit; +1 unattributed writes (script lost function name) e.g. tputilv2/Viwrrect.cpp:26,,n,
+writeerrorOn,tputilv2/Writeerr.cpp,K6,shared,"6 writer fn (Hk/Tp/com/tputilv2): openSirit2,reconnectTCP,tall_regnly,tausta,...",,n,
+prf,tputilv2/Wrttext.cpp,K6,shared,"2 writer fn (tputilv2): closeprfile,openprfile",,n,
+prblocksize,tputilv2/Wrttext.cpp,K6,shared,1 writer fn (Hk): aloitus; +1 unattributed writes (script lost function name) e.g. tputilv2/Wrttext.cpp:101,,n,
+tehotausta,tputilv2/Wrttext.cpp,K6,shared,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+naytajono,tputilv2/Wrttext.cpp,K6,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. tputilv2/Wrttext.cpp:103,,n,
+GDItopmarginDef,tputilv2/Wrttext.cpp,K6,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. tputilv2/Wrttext.cpp:110,,n,
+GDInormalWeightDef,tputilv2/Wrttext.cpp,K6,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. tputilv2/Wrttext.cpp:111,,n,
+GDIboldWeightDef,tputilv2/Wrttext.cpp,K6,shared,0 writer fn (): ; +1 unattributed writes (script lost function name) e.g. tputilv2/Wrttext.cpp:112,,n,
+__tputil__ok,tputilv2/dbindex.cpp,K7,shared,"6 writer fn (tputilv2): addix,bsrch,delix,nextix,...",,n,tputilv2 db index ok flag
+sarjanimi,tputilv2/globals.cpp,K7,shared,"1 writer fn (Hk/Juk): sarjatietue::nollaa; +2 unattributed writes (script lost function name) e.g. Hk/HkSrj.cpp:713,Juk/vSarjat.cpp:75",,n,tputilv2 db temp; no lexical writer found (never written or written via pointer/bulk)
+dr1,tputilv2/globals.cpp,K7,shared,no lexical writers,,n,tputilv2 db temp; no lexical writer found (never written or written via pointer/bulk)
+wait,tputilv2/globals.cpp,K7,shared,"4 writer fn (cbTp/tputilv2): SelTimerThread,TFormMain::errorMsgHandler,writewarning_w,wselectxy",direct refs in thread fn: SelTimerThread(RW),n,tputilv2 console wait flag/temp
+copybuf,tputilv2/globals.cpp,K6,shared,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+hStdIn,tputilv2/initcon.cpp,K7,shared,1 writer fn (tputilv2): initcon,,n,console handle
+hStdOut,tputilv2/initcon.cpp,K7,shared,1 writer fn (tputilv2): initcon,,n,console handle
+hConIn,tputilv2/initcon.cpp,K7,shared,1 writer fn (tputilv2): initcon,,n,console handle
+hConOut,tputilv2/initcon.cpp,K7,shared,1 writer fn (tputilv2): initcon,,n,console handle
+alkuaika,tputilv2/mstimer.cpp,K7,shared,1 writer fn (tputilv2): initmstimer,,n,mstimer.cpp timer start
+boxchar,tputilv2/scbox.cpp,K6,shared,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+attrib,tputilv2/scbox.cpp,K6,shared,no lexical writers,,n,no lexical writer found (never written or written via pointer/bulk)
+wrivptr,tputilv2/wPageedit.cpp,K6,shared,1 writer fn (tputilv2): wrapstr,,n,
+gettm::caika,Hk/HkAjat.cpp:55,K7,Hk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+AjatTiedostoon::alku,Hk/HkAjat.cpp:415,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+AjatTiedostoon::rivi,Hk/HkAjat.cpp:416,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+otsTeksti::buf,Hk/HkApu.cpp:53,K7,Hk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+str_piste::st,Hk/HkApu.cpp:147,K7,Hk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+maaraa_piste::td,Hk/HkApu.cpp:318,K7,Hk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+broadcasttulos::msgno,Hk/HkCom32.cpp:147,K5,Hk,function-local static; communication/message buffer or counter,,n,
+tark_aika::initca,Hk/HkCom32.cpp:406,K5,Hk,function-local static; communication/message buffer or counter,called from tarkcom thread chain (Hk/HkCom32.cpp:905; Juk/VCom.cpp:936) [paatelty],n,
+tark_aika::initbufptr,Hk/HkCom32.cpp:406,K5,Hk,function-local static; communication/message buffer or counter,called from tarkcom thread chain (Hk/HkCom32.cpp:905; Juk/VCom.cpp:936) [paatelty],n,
+tark_aika::initbuf,Hk/HkCom32.cpp:407,K5,Hk,function-local static; communication/message buffer or counter,called from tarkcom thread chain (Hk/HkCom32.cpp:905; Juk/VCom.cpp:936) [paatelty],n,
+tark_alku::var,Hk/HkCom32.cpp:823,K4,Hk,function-local static; run-time state/flag kept between calls,called from tarkcom thread chain [paatelty],n,
+tark_alku::edvaihto,Hk/HkCom32.cpp:844,K4,Hk,function-local static; run-time state/flag kept between calls,called from tarkcom thread chain [paatelty],n,
+on_emit::emitvaraus,Hk/HkEmit.cpp:1305,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+on_emit::nemitvar,Hk/HkEmit.cpp:1306,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+on_emit::emitvaraus,Hk/HkEmit.cpp:1629,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+on_emit::nemitvar,Hk/HkEmit.cpp:1630,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+laskeemitvaliajat::ev,Hk/HkEmit.cpp:2657,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+laskeemitvaliajat::rst,Hk/HkEmit.cpp:2658,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+lue_radat::init,Hk/HkEmit.cpp:2863,K4,Hk,function-local static; first-call/initialised flag,,n,
+leimat::emithead0,Hk/HkEmit.cpp:3785,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+emitlista::elistaalku,Hk/HkEmit.cpp:4244,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+luelahdepisteet::luettu,Hk/HkIV.cpp:204,K4,Hk,function-local static; first-call/initialised flag,,n,
+tall_bdg_t::edbadge,Hk/HkIV.cpp:756,K3,Hk,function-local static; previous-value/dedupe cache between calls,called from pros_bdg_t (Hk/HkIV.cpp:807; Juk/VIv.cpp:741),n,
+add_bdg_t::edbadge,Hk/HkIV.cpp:822,K3,Hk,function-local static; previous-value/dedupe cache between calls,starts pros_bdg_t (Hk/HkIV.cpp:831; Juk/VIv.cpp:763),n,
+tall_emit::uusin,Hk/HkIV.cpp:957,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+tall_emit::ed_em,Hk/HkIV.cpp:961,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+pros_emit::uusin,Hk/HkIV.cpp:1164,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+pros_emit::edkno,Hk/HkIV.cpp:1164,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+importsifile::ifilename,Hk/HkIV.cpp:1961,K1,Hk,"function-local static; setting default (static, may be changed by user)",,n,
+tall_regnly::yritys,Hk/HkIV.cpp:1991,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+tall_regnly::et,Hk/HkIV.cpp:1995,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+tall_regnly::edaika,Hk/HkIV.cpp:1995,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+tall_regnly::edtunn,Hk/HkIV.cpp:1996,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+tall_regnly::edrivit,Hk/HkIV.cpp:2000,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+tall_regnly::ed_bdg,Hk/HkIV.cpp:2009,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+tall_regnly::ed_t,Hk/HkIV.cpp:2009,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+val_gaz::esto,Hk/HkIV.cpp:3154,K4,Hk,function-local static; run-time state/flag kept between calls,,n,
+writegaz::t_ed,Hk/HkIV.cpp:3233,K3,Hk,function-local static; previous-value/dedupe cache between calls,called from tausta -> taustaThr (Hk/HkIV.cpp:3642),n,
+writegaz::edkno,Hk/HkIV.cpp:3235,K3,Hk,function-local static; previous-value/dedupe cache between calls,called from tausta -> taustaThr (Hk/HkIV.cpp:3642),n,
+writegaz::edtls,Hk/HkIV.cpp:3236,K3,Hk,function-local static; previous-value/dedupe cache between calls,called from tausta -> taustaThr (Hk/HkIV.cpp:3642),n,
+writegaz::inwritegaz,Hk/HkIV.cpp:3237,K4,Hk,function-local static; run-time state/flag kept between calls,called from tausta -> taustaThr (Hk/HkIV.cpp:3642),n,
+etHaku::edhaku,Hk/HkIV.cpp:3561,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+etHaku::inhttpVa,Hk/HkIV.cpp:3561,K4,Hk,function-local static; run-time state/flag kept between calls,,n,
+etHaku::keTserial,Hk/HkIV.cpp:3561,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+etHaku::httpbuf,Hk/HkIV.cpp:3562,K5,Hk,function-local static; communication/message buffer or counter,,n,
+etHaku::eTp,Hk/HkIV.cpp:3563,K5,Hk,function-local static; communication/message buffer or counter,,n,
+etHaku::eTp1,Hk/HkIV.cpp:3563,K5,Hk,function-local static; communication/message buffer or counter,,n,
+tausta::init,Hk/HkIV.cpp:3613,K4,Hk,function-local static; first-call/initialised flag,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::msgno,Hk/HkIV.cpp:3613,K5,Hk,function-local static; communication/message buffer or counter,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::keTserial,Hk/HkIV.cpp:3613,K3,Hk,function-local static; previous-value/dedupe cache between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::t_edell,Hk/HkIV.cpp:3613,K3,Hk,function-local static; previous-value/dedupe cache between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::saika,Hk/HkIV.cpp:3614,K7,Hk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::st,Hk/HkIV.cpp:3614,K7,Hk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::httpbuf,Hk/HkIV.cpp:3615,K5,Hk,function-local static; communication/message buffer or counter,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::eTp,Hk/HkIV.cpp:3618,K5,Hk,function-local static; communication/message buffer or counter,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::eTp1,Hk/HkIV.cpp:3618,K5,Hk,function-local static; communication/message buffer or counter,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::ed_lkm_t,Hk/HkIV.cpp:3619,K3,Hk,function-local static; previous-value/dedupe cache between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::edlahkello,Hk/HkIV.cpp:3620,K3,Hk,function-local static; previous-value/dedupe cache between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::prev_t,Hk/HkIV.cpp:3621,K3,Hk,function-local static; previous-value/dedupe cache between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::edhaku,Hk/HkIV.cpp:3621,K3,Hk,function-local static; previous-value/dedupe cache between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::inhttpVa,Hk/HkIV.cpp:3621,K4,Hk,function-local static; run-time state/flag kept between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::alku_pv,Hk/HkIV.cpp:3622,K4,Hk,function-local static; run-time state/flag kept between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::t_af,Hk/HkIV.cpp:3625,K4,Hk,function-local static; run-time state/flag kept between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+initajat::chs,Hk/HkIV.cpp:3975,K7,Hk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+inittimer::initialized,Hk/HkIV.cpp:4181,K4,Hk,function-local static; first-call/initialised flag,,n,
+teeindeksi::eday,Hk/HkIx.cpp:240,K4,Hk,function-local static; run-time state/flag kept between calls,,n,
+css_string::prs,Hk/HkMuotoilu.cpp:965,K7,Hk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+css_string::bgred,Hk/HkMuotoilu.cpp:966,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+css_string::bggreen,Hk/HkMuotoilu.cpp:966,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+css_string::bgblue,Hk/HkMuotoilu.cpp:966,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+tall_ampsakko::inrec,Hk/HkSak.cpp:113,K4,Hk,function-local static; run-time state/flag kept between calls,,n,
+tall_ampsakko::valid,Hk/HkSak.cpp:113,K4,Hk,function-local static; run-time state/flag kept between calls,,n,
+kilptietue::SarjaNimi::buf,Hk/HkTls.cpp:565,K7,Hk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+kilptietue::yhteisotieto::st,Hk/HkTls.cpp:608,K7,Hk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+kilptietue::asakkoStr::st,Hk/HkTls.cpp:879,K7,Hk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+kilptietue::asakkoStr::p,Hk/HkTls.cpp:879,K7,Hk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+kilptietue::ytulos_wstr_cols_n::as0,Hk/HkTls.cpp:1420,K7,Hk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+bold_on::BoldFnt,Hk/HkTulostus.cpp:1577,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+wretulos::edsija,Hk/HkTulostus.cpp:1905,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+shltulos::vak,Hk/HkTulostus.cpp:1977,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+shltulos::srj,Hk/HkTulostus.cpp:1977,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+shltulos::kilptunnus,Hk/HkTulostus.cpp:1977,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+shltulos::laji,Hk/HkTulostus.cpp:1977,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+shltulos::stsrj,Hk/HkTulostus.cpp:1978,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+shltulos::stmatka,Hk/HkTulostus.cpp:1978,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+htmlmakitulos::tkarki,Hk/HkTulostus.cpp:2244,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+htmlmakitulos::edtls,Hk/HkTulostus.cpp:2244,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+prtmakitulos::tkarki,Hk/HkTulostus.cpp:2351,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+prtmakitulos::edtls,Hk/HkTulostus.cpp:2351,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+prtmakitulos::fissija,Hk/HkTulostus.cpp:2362,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+outtulos_csv_5ott::tkarki,Hk/HkTulostus.cpp:2822,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+outtulos_csv_5ott::sj1,Hk/HkTulostus.cpp:2824,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+outtulos_5ott::tkarki,Hk/HkTulostus.cpp:2872,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+outtulos_5ott::sj1,Hk/HkTulostus.cpp:2874,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+prttulos::fissija,Hk/HkTulostus.cpp:2958,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+outtulos_csv::tkarki,Hk/HkTulostus.cpp:3464,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+outtulos_csv::sj1,Hk/HkTulostus.cpp:3465,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+outtulos::tkarki,Hk/HkTulostus.cpp:3759,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+outtulos::sj1,Hk/HkTulostus.cpp:3760,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+taulutulos::tkarki,Hk/HkTulostus.cpp:4079,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+htmltulos::karkitls,Hk/HkTulostus.cpp:4129,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+htmltulos::karkitls,Hk/HkTulostus.cpp:4352,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+tlsSeuraava::keyn,Hk/HkTulostus.cpp:4856,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+tlsSeuraava::keyv,Hk/HkTulostus.cpp:4856,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+tlsSeuraava::ySj,Hk/HkTulostus.cpp:4857,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+joukkuetul::jkoko,Hk/HkTulostus.cpp:7622,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+joukkuetul::ytfl,Hk/HkTulostus.cpp:7623,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+xmltulos::karki,Hk/HkXmlTulokset.cpp:297,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+xmlfistulos::karki,Hk/HkXmlTulokset.cpp:1413,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+xmlfistulos::edtls,Hk/HkXmlTulokset.cpp:1414,K3,Hk,function-local static; previous-value/dedupe cache between calls,,n,
+xmlfistulos::fissj,Hk/HkXmlTulokset.cpp:1414,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+xmlfistulos::totfissj,Hk/HkXmlTulokset.cpp:1414,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+xmlTulostulos::karki,Hk/HkXmlTulokset.cpp:1783,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+xmlIOF30tulos::karki,Hk/HkXml_IOF30.cpp:1044,K6,Hk,function-local static; output/print carry-over state between calls,,n,
+tark_aika::initca,Juk/VCom.cpp:432,K5,Juk,function-local static; communication/message buffer or counter,called from tarkcom thread chain (Hk/HkCom32.cpp:905; Juk/VCom.cpp:936) [paatelty],n,
+tark_aika::initbufptr,Juk/VCom.cpp:432,K5,Juk,function-local static; communication/message buffer or counter,called from tarkcom thread chain (Hk/HkCom32.cpp:905; Juk/VCom.cpp:936) [paatelty],n,
+tark_aika::initbuf,Juk/VCom.cpp:433,K5,Juk,function-local static; communication/message buffer or counter,called from tarkcom thread chain (Hk/HkCom32.cpp:905; Juk/VCom.cpp:936) [paatelty],n,
+tark_alku::var,Juk/VCom.cpp:853,K4,Juk,function-local static; run-time state/flag kept between calls,called from tarkcom thread chain [paatelty],n,
+vaihda_badge::seurbdg,Juk/VEmit.cpp:1241,K3,Juk,function-local static; previous-value/dedupe cache between calls,,n,
+on_emit::emitvaraus,Juk/VEmit.cpp:1477,K3,Juk,function-local static; previous-value/dedupe cache between calls,,n,
+on_emit::nemitvar,Juk/VEmit.cpp:1478,K3,Juk,function-local static; previous-value/dedupe cache between calls,,n,
+laskeemitvaliajat::ev,Juk/VEmit.cpp:3131,K3,Juk,function-local static; previous-value/dedupe cache between calls,,n,
+laskeemitvaliajat::rst,Juk/VEmit.cpp:3132,K3,Juk,function-local static; previous-value/dedupe cache between calls,,n,
+leimat::selaus,Juk/VEmit.cpp:4445,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+leimat::emithead0,Juk/VEmit.cpp:4445,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+emitlista::elistaalku,Juk/VEmit.cpp:4889,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+EmitHtmlOsuus::otsrivit,Juk/VEmitHtml.cpp:202,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+kirj_err_file::lopilm,Juk/VInit.cpp:134,K4,Juk,function-local static; run-time state/flag kept between calls,,n,
+luelahdepisteet::luettu,Juk/VIv.cpp:167,K4,Juk,function-local static; first-call/initialised flag,,n,
+luelahdejonot::luettu,Juk/VIv.cpp:383,K4,Juk,function-local static; first-call/initialised flag,,n,
+add_bdg_t::init,Juk/VIv.cpp:753,K4,Juk,function-local static; first-call/initialised flag,starts pros_bdg_t (Hk/HkIV.cpp:831; Juk/VIv.cpp:763),n,
+add_bdg_t::edbadge,Juk/VIv.cpp:755,K3,Juk,function-local static; previous-value/dedupe cache between calls,starts pros_bdg_t (Hk/HkIV.cpp:831; Juk/VIv.cpp:763),n,
+file2emit::emitinfile,Juk/VIv.cpp:816,K5,Juk,function-local static; communication/message buffer or counter,starts file2emitThread (Juk/VIv.cpp:892),n,
+tall_emit::ed_em,Juk/VIv.cpp:952,K3,Juk,function-local static; previous-value/dedupe cache between calls,,n,
+pros_emit::in_pros_emit,Juk/VIv.cpp:1120,K4,Juk,function-local static; run-time state/flag kept between calls,,n,
+tall_regnly::yritys,Juk/VIv.cpp:1769,K3,Juk,function-local static; previous-value/dedupe cache between calls,,n,
+tall_regnly::eosat,Juk/VIv.cpp:1769,K3,Juk,function-local static; previous-value/dedupe cache between calls,,n,
+tall_regnly::et,Juk/VIv.cpp:1772,K3,Juk,function-local static; previous-value/dedupe cache between calls,,n,
+tausta::init,Juk/VIv.cpp:2407,K4,Juk,function-local static; first-call/initialised flag,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::msgno,Juk/VIv.cpp:2407,K5,Juk,function-local static; communication/message buffer or counter,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::keTserial,Juk/VIv.cpp:2407,K3,Juk,function-local static; previous-value/dedupe cache between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::saika,Juk/VIv.cpp:2408,K7,Juk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::httpbuf,Juk/VIv.cpp:2409,K5,Juk,function-local static; communication/message buffer or counter,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::eTp,Juk/VIv.cpp:2412,K5,Juk,function-local static; communication/message buffer or counter,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::eTp1,Juk/VIv.cpp:2412,K5,Juk,function-local static; communication/message buffer or counter,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::tfl,Juk/VIv.cpp:2413,K4,Juk,function-local static; run-time state/flag kept between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::prev_t,Juk/VIv.cpp:2414,K3,Juk,function-local static; previous-value/dedupe cache between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::edhaku,Juk/VIv.cpp:2414,K3,Juk,function-local static; previous-value/dedupe cache between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::inhttpVa,Juk/VIv.cpp:2414,K4,Juk,function-local static; run-time state/flag kept between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::alku_pv,Juk/VIv.cpp:2415,K4,Juk,function-local static; run-time state/flag kept between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+tausta::t_af,Juk/VIv.cpp:2419,K4,Juk,function-local static; run-time state/flag kept between calls,function runs on taustaThr (Hk/HkIV.cpp:3715; Juk/VIv.cpp:2542),n,
+kbdiv1::helpfl,Juk/VIv.cpp:2593,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+inittimer::initialized,Juk/VIv.cpp:2835,K4,Juk,function-local static; first-call/initialised flag,,n,
+inittimer::maxtime,Juk/VIv.cpp:2853,K4,Juk,function-local static; run-time state/flag kept between calls,,n,
+naytatulos::tls,Juk/VTulostus.cpp:1962,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+texttulos::tls,Juk/VTulostus.cpp:2245,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+htmltulos::tls,Juk/VTulostus.cpp:2412,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+prttulos::tls,Juk/VTulostus.cpp:2584,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+htmlkaikki_jkrivi::fistls,Juk/VTulostus.cpp:2851,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+htmlkaikki_jkrivi::fissija,Juk/VTulostus.cpp:2851,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+liittotulos::vak,Juk/VTulostus.cpp:3335,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+liittotulos::kilptunnus,Juk/VTulostus.cpp:3335,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+liittotulos::laji,Juk/VTulostus.cpp:3335,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+liittotulos::stsrj,Juk/VTulostus.cpp:3335,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+liittotulos::stmatka,Juk/VTulostus.cpp:3335,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+prtkaikki::fistls,Juk/VTulostus.cpp:3428,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+prtkaikki::fissija,Juk/VTulostus.cpp:3428,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+prttulos_nt::tls64,Juk/VTulostus.cpp:4107,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+tlsSeuraava::keyn,Juk/VTulostus.cpp:4561,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+tlsSeuraava::keyv,Juk/VTulostus.cpp:4561,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+tlsSeuraava::osjarj,Juk/VTulostus.cpp:4563,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+tlsSeuraava::osdk,Juk/VTulostus.cpp:4563,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+tlsSeuraava::n_osjarj,Juk/VTulostus.cpp:4564,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+tlsSeuraava::kilpno,Juk/VTulostus.cpp:4564,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+tlsSeuraava::n_varaus,Juk/VTulostus.cpp:4564,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+kaikki_tiedostoon::vaihda,Juk/VTulostus.cpp:6690,K4,Juk,function-local static; run-time state/flag kept between calls,,n,
+kaikki_tiedostoon::ca,Juk/VTulostus.cpp:6693,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+kaikki_tiedostoon::cs,Juk/VTulostus.cpp:6694,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+joukkuetul::jkoko,Juk/VTulostus.cpp:7692,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+joukkuetul::ytfl,Juk/VTulostus.cpp:7693,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+joukkuetul::srlj,Juk/VTulostus.cpp:7698,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+joukkuetul::jkoko,Juk/VTulostus.cpp:7944,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+joukkuetul::ytfl,Juk/VTulostus.cpp:7945,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+joukkuetul::ch,Juk/VTulostus.cpp:8191,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+metsassa::traja,Juk/VTulostus.cpp:8561,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+seur_rata::init,Juk/VTulostus.cpp:8621,K4,Juk,function-local static; first-call/initialised flag,,n,
+seur_rata::haj,Juk/VTulostus.cpp:8622,K3,Juk,function-local static; previous-value/dedupe cache between calls,,n,
+seur_rata::tiedostosta,Juk/VTulostus.cpp:8626,K4,Juk,function-local static; first-call/initialised flag,,n,
+xmltulos::order,Juk/XMLtulos.cpp:275,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+keyname::key,Juk/vApu.cpp:182,K7,Juk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+osuuskoodi::buf,Juk/vApu.cpp:193,K7,Juk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+wosuuskoodi::buf,Juk/vApu.cpp:210,K7,Juk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+str_piste::st,Juk/vApu.cpp:280,K7,Juk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+merk_yl::inmerk_yl,Juk/vApu.cpp:572,K4,Juk,function-local static; run-time state/flag kept between calls,,n,
+gettm::caika,Juk/vajat.cpp:49,K7,Juk,"function-local static; static return/format buffer, shared by all callers (not reentrant)",,n,
+AjatTiedostoon::alku,Juk/vajat.cpp:406,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+AjatTiedostoon::rivi,Juk/vajat.cpp:407,K6,Juk,function-local static; output/print carry-over state between calls,,n,
+hPingThread,Hk/HkCom32.cpp,SKIP,,,,n,thread handle
+vlkm,Hk/HkCom32.cpp,SKIP,,,,n,"static, never written (unused)"
+getpos,Hk/HkDeclare.h,SKIP,,,,n,function prototype (script false positive)
+pyoristatls,Hk/HkDeclare.h,SKIP,,,,n,function prototype (false positive)
+luesarja,Hk/HkDeclare.h,SKIP,,,,n,function prototype (false positive)
+maki,Hk/HkDef.h,SKIP,,,,n,"header declaration HkDef.h:493 (extern in header, definition not seen by script)"
+idindex_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+tall_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+print_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+autotul_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+loki_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+inb_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+outb_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+kilpdat_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+ajat_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+emit_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+rastiva_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+tcpip_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+tcp_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+seura_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+seur_badge_CriticalSection,Hk/HkGlobals.cpp,SKIP,,,,n,critical section object
+hTarkcomThread,Hk/HkGlobals.cpp,SKIP,,,,n,thread handle
+hTsThread,Hk/HkGlobals.cpp,SKIP,,,,n,thread handle
+hLuepakThread,Hk/HkGlobals.cpp,SKIP,,,,n,thread handle
+taustaThread,Hk/HkGlobals.cpp,SKIP,,,,n,thread handle
+hLkmThread,Hk/HkGlobals.cpp,SKIP,,,,n,thread handle
+hAikacomThread,Hk/HkGlobals.cpp,SKIP,,,,n,thread handle
+httphakuThread,Hk/HkGlobals.cpp,SKIP,,,,n,thread handle
+hProsEmitThread,Hk/HkGlobals.cpp,SKIP,,,,n,thread handle
+hPros_EmitThread,Hk/HkGlobals.cpp,SKIP,,,,n,thread handle
+etls_CriticalSection,Hk/HkIV.cpp,SKIP,,,,n,critical section object
+hgazThread,Hk/HkIV.cpp,SKIP,,,,n,thread handle
+std,Hk/HkInitVanha.cpp,SKIP,,,,n,using namespace (false positive)
+AnsiString,Hk/HkInitVanha.cpp,SKIP,,,,n,template argument (false positive)
+ast,Hk/HkTV.cpp,SKIP,,,,n,local variable (parse-error row)
+tulkp,Hk/HkTV.cpp,SKIP,,,,n,local variable (parse-error row)
+tag_event,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_evnm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_evcode,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_cl,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_clnm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_clnml,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_clsty,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_cldst,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_cmptor,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_stnr,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_order,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_id,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_nm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fnm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_gnm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_clubid,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_clubnm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_nat,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_st,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_stsecs,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_res,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_ressecs,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_behind,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_rank,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_status,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_splitts,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_splitt,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_splittpos,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_ce,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_ctl,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_ctdst,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_cn,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_cr,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_cc,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_ct,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_ctsecs,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_update,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_key,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_msgno,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_esplits,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_cmptors,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_pnts,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_rounds,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_round,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_rndno,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_rndrank,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_rndpnts,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_speed,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_dist,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_distpts,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_jdga,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_jdgb,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_jdgc,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_jdgd,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_jdge,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_jdg,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_judges,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_judge,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_jdgpt,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_pttype,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_pt,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_penal,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisresults,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisevent,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisseason,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisevcode,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisdiscipline,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fiscategory,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisraceinfo,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisracedate,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisday,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fismonth,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisyear,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisplace,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisdelegate,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fistd,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fistdnumber,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fistdfnm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fistdgnm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fistdnat,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fislist,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fispenalty,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fiscalcpenalty,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisfvalue,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisclassified,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisnotclassified,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisranked,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisnotranked,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisevnm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fiscl,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisclnm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisclsty,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fiscldst,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fiscmptor,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisstnr,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisorder,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisid,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisnm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisfnm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisgnm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fissex,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisyearbirth,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisclubid,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisclubnm,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisnat,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisresult,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fistime,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fislevel,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fispoints,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisrank,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fissplitts,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fissplitt,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fissplittpos,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisupdate,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fiskey,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fismsgno,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisesplits,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fiscmptors,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fispnts,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisrounds,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisround,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisrndno,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisrndrank,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisrndpnts,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisspeed,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisdist,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisdistpts,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisjdga,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisjdgb,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisjdgc,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisjdgd,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisjdge,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisjdg,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisjudges,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisjudge,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fisjdgpt,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fispttype,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fispt,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+tag_fispenal,Hk/HkXmlTulokset.cpp,SKIP,,,,n,"string literal table (XML tag names), only <file scope> init writer"
+prof_CriticalSection,Tp/TpComY.cpp,SKIP,,,,n,critical section object
+IV_KEY,Tp/TpDef.h,SKIP,,,,n,typedef/macro (false positive)
+FormAikakorjaus,cbTp/UnitAikakorjaus.cpp,SKIP,,,,n,form pointer
+FormAmpPaikat,cbTp/UnitAmpPaikat.cpp,SKIP,,,,n,form pointer
+FormAnnaAika,cbTp/UnitAnnaAika.cpp,SKIP,,,,n,form pointer
+FormAnnaArvo,cbTp/UnitAnnaArvo.cpp,SKIP,,,,n,form pointer
+FormAnnaTeksti,cbTp/UnitAnnaTeksti.cpp,SKIP,,,,n,form pointer
+FormBrowser,cbTp/UnitBrowser.cpp,SKIP,,,,n,form pointer
+EditDialog,cbTp/UnitEditDialog.cpp,SKIP,,,,n,form pointer
+FormEmiTag,cbTp/UnitEmiTag.cpp,SKIP,,,,n,form pointer
+hPaivThread,cbTp/UnitEmiTag.cpp,SKIP,,,,n,thread handle
+hTiedotThread,cbTp/UnitEmiTag.cpp,SKIP,,,,n,thread handle
+FormEmitFile,cbTp/UnitEmitFile.cpp,SKIP,,,,n,form pointer
+FormEmitSQL,cbTp/UnitEmitSQL.cpp,SKIP,,,,n,form pointer
+FormEmitNouto,cbTp/UnitEmitnouto.cpp,SKIP,,,,n,form pointer
+FormFIS,cbTp/UnitFIS.cpp,SKIP,,,,n,form pointer
+FormHtmlEdit,cbTp/UnitHtmlEdit.cpp,SKIP,,,,n,form pointer
+FormIlmoitus,cbTp/UnitIlmoitus.cpp,SKIP,,,,n,form pointer
+FormKartta,cbTp/UnitKartta.cpp,SKIP,,,,n,form pointer
+FormKirjVal,cbTp/UnitKirjoitinVal.cpp,SKIP,,,,n,form pointer
+FormKohdistus,cbTp/UnitKohdistus.cpp,SKIP,,,,n,form pointer
+FormLisaTekstit,cbTp/UnitLisaTekstit.cpp,SKIP,,,,n,form pointer
+FormMTR,cbTp/UnitMTR.cpp,SKIP,,,,n,form pointer
+FormMaalikello,cbTp/UnitMaalikello.cpp,SKIP,,,,n,form pointer
+FormMessages,cbTp/UnitMessages.cpp,SKIP,,,,n,form pointer
+FormMsgs,cbTp/UnitMsgs.cpp,SKIP,,,,n,form pointer
+FormNappain,cbTp/UnitNappain.cpp,SKIP,,,,n,form pointer
+FormNaytaTulos,cbTp/UnitNaytaTulos.cpp,SKIP,,,,n,form pointer
+FormPiikit,cbTp/UnitPiikit.cpp,SKIP,,,,n,form pointer
+FormRadat,cbTp/UnitRadat.cpp,SKIP,,,,n,form pointer
+FormSarjaVal,cbTp/UnitSarjaVal.cpp,SKIP,,,,n,form pointer
+FormThis,cbTp/UnitSelect3.cpp,SKIP,,,,n,form pointer
+FormSivuTuloste,cbTp/UnitSivuTuloste.cpp,SKIP,,,,n,form pointer
+FormTietoTulk,cbTp/UnitTietoTulk.cpp,SKIP,,,,n,form pointer
+FormTulkinta,cbTp/UnitTulkinta.cpp,SKIP,,,,n,form pointer
+FormUusinta,cbTp/UnitUusinta.cpp,SKIP,,,,n,form pointer
+FormYhteysStatus,cbTp/UnitYhteysStatus.cpp,SKIP,,,,n,form pointer
+FSwarning,cbTp/cbTpApu.cpp,SKIP,,,,n,form pointer
+TCPacceptThread,com/WinUDP.cpp,SKIP,,,,n,thread handle
+TCPrcvThread,com/WinUDP.cpp,SKIP,,,,n,thread handle
+UDPstreamThread,com/WinUDP.cpp,SKIP,,,,n,thread handle
+Form1,tputilv2/UnitTest.cpp,SKIP,,,,n,form pointer
