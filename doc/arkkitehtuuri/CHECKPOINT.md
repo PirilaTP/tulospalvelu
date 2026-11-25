@@ -144,7 +144,7 @@ controlled) and correspond to findings H-001–H-006.
 
 ## Avoimet kysymykset / Open questions
 
-Täydet tiedot: `seuranta.md` (Q2–Q74; C-4:n Q43–Q48 `muistiturvallisuus.md`; C-6:n Q65–Q74 `saikeet-ja-lukot.md` luvut 10 ja 13.5; Q1, Q4, Q13, Q16, Q17, Q18, Q30, Q65, Q66, Q69–Q72 ja Q74 ratkaistu, Q3,
+Täydet tiedot: `seuranta.md` (Q2–Q77; C-7:n Q75–Q77 `gui-liiketoimintalogiikka.md` luku 10; C-4:n Q43–Q48 `muistiturvallisuus.md`; C-6:n Q65–Q74 `saikeet-ja-lukot.md` luvut 10 ja 13.5; Q1, Q4, Q13, Q16, Q17, Q18, Q30, Q65, Q66, Q69–Q72 ja Q74 ratkaistu, Q3,
 Q14 ja Q67 osittain). Tärkeimmät / most important:
 
 - ~~Q7~~ ratkaistu C-5:ssä / resolved in C-5 (`kaantajaerot.md` luku 5)
@@ -214,10 +214,15 @@ H-090 ja H-093 → korkea; H-099 kumottu; uudet H-103–H-108 ja T-033.
 **C-6 valmis ja suljettu (2026-11-25), käyttäjä hyväksyi.** Avoimet ajoa vaativat asiat
 jatkotehtävinä (`seuranta.md` "Avoimet jatkotehtävät C-6:sta"); korjauksia ei aloitettu.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP: C-7 vaihe 1** (GUI:n liiketoimintalogiikka: moduulikuvaukset
-ja logiikkavirheet kahdeksassa lomakeyksikössä + 9 C-5:n jäsennysehdokasta), rajaus
-`suunnitelma.md` "C-7 vaihe 1"; ei aloitettu, odottaa käyttäjän aloituslupaa. Työtapa:
-`suunnitelma.md` "Työtapa erästä C-6 alkaen" (käyttäjän linja: ei keinotekoisia tokenrajoja).
+**C-7 vaihe 1 valmis (2026-11-25), riippumattomasti tarkastettu, commitoitu paikallisesti.**
+Raportti `gui-liiketoimintalogiikka.md`; raakatulokset `todisteet/c7/`. Uudet H-109–H-127
+(korkea 3: H-109 poisto ilman tarkistusta, H-110 viestin lähtöaikojen lukkovuoto, H-111
+L-rivi maaliriviksi; keskitaso 6; matala–keskitaso 7; matala 3) ja T-034–T-037; H-017
+kavennettu, H-085 ja H-069 laajennettu; 9 jäsennysehdokasta ratkaistu; Q15 osittain, uudet
+Q75–Q77. Kaikki staattisia.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP:** käyttäjän katselmointi ja päätös C-7:n sulkemisesta tai
+vaiheesta 2 (muut lomakeyksiköt, 152 jäsennysehdokasta) tai erästä 8 (globaali tila).
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
@@ -228,7 +233,8 @@ fixes: H-071, H-072, H-055, H-070. **C-5 step 1 complete** (`kaantajaerot.md`, H
 **C-6 step 1 complete** (`saikeet-ja-lukot.md`, H-087–H-102, T-030–T-032, Q30 resolved).
 **C-6 step 2 complete** (section 13; probes for H-090, H-091, H-093, H-094; H-099 refuted;
 new H-103–H-108, T-033). **C-6 closed** on approval; open items needing runs deferred.
-Next: C-7 step 1 (GUI business logic, scope in `suunnitelma.md`), not started, awaiting approval.
+**C-7 step 1 complete** (`gui-liiketoimintalogiikka.md`, H-109–H-127, T-034–T-037; H-017
+narrowed; 9 parse candidates resolved). Next: user review; close C-7, step 2, or batch 8.
 
 ## Resurssien käyttö / Resource usage (C-6 vaihe 2 / step 2)
 

@@ -14,8 +14,8 @@ riippumaton lähdetarkastus (ei ajonaikainen) / independent source review (not r
 | `Juk/` | 23 | 20 | 0 | vastaanotto, lukitus, `combufsize`, tietueen pakkaus / receive, locking, record packing, säikeet ja lukot / threads and locks | C-1 (lukitus / locking), C-2, C-3, C-6 |
 | `Tp/` | 13 | 4 | 1 | säikeet, jonot, kehys, kättely / threads, queues, frame, handshake, säikeet ja lukot / threads and locks | C-1, C-2, C-6 |
 | `com/` | 3 | 1 | 1 | kuljetus / transport (UDP, TCP, WinHTTP), säikeet ja lukot / threads and locks | C-2, C-6 |
-| `cbHk/` | 149 | 22 | 0 | käynnistys, säikeet, vaiheen vaihto, vienti, tuonti, MySQL-jono / startup, threads, stage change, export, import, SQL queue, säikeet ja lukot, VCL-säieturvallisuus / threads and locks, VCL thread safety | C-1, C-2, C-3 osittain / partly, C-6 |
-| `ViestiWin/` | 114 | 16 | 1 | vienti, tuonti, vanha muoto, MySQL-jono / export, import, old format, SQL queue, säikeet ja lukot, VCL-säieturvallisuus / threads and locks, VCL thread safety | C-3 osittain / partly, C-6 |
+| `cbHk/` | 149 | 18 | 4 | käynnistys, säikeet, vaiheen vaihto, vienti, tuonti, MySQL-jono / startup, threads, stage change, export, import, SQL queue, säikeet ja lukot, VCL-säieturvallisuus / threads and locks, VCL thread safety, GUI:n liiketoimintalogiikka / GUI business logic | C-1, C-2, C-3 osittain / partly, C-6, C-7 |
+| `ViestiWin/` | 114 | 15 | 5 | vienti, tuonti, vanha muoto, MySQL-jono / export, import, old format, SQL queue, säikeet ja lukot, VCL-säieturvallisuus / threads and locks, VCL thread safety, GUI:n liiketoimintalogiikka / GUI business logic | C-3 osittain / partly, C-6, C-7 |
 | `cbTp/` | 73 | 10 | 0 | `writeerror_w`, `haeSQLTh`, uudelleenlähetys / resend, säikeet ja lukot / threads and locks | C-1, C-2, C-6 |
 | `HkConsole/` | 8 | 4 | 0 | käynnistys, vaiheen vaihto / startup, stage change, säikeet ja lukot / threads and locks | C-2, C-6 |
 | `JukConsole/` | 10 | 5 | 0 | säikeet ja lukot / threads and locks | C-4: varoitusten triage / warning triage, C-6 |
@@ -36,3 +36,10 @@ niistä on luettu vain varoitusten kohdat. 19 C-11-testitiedostoa ovat tasolla 4
 631 production files; level 1: 499, level 2: 120, level 3: 12, level 4: 0. No file has
 been fully reviewed for defects. C-4 raised files with triaged warnings to level 2;
 only the warning sites were read. The 19 C-11 test files are at level 4.
+
+C-7 (2026-11-25): taso 1: 477, taso 2: 134, taso 3: 20. Tasolle 3 nousivat kahdeksan
+GUI-lomakeyksikköä (`cbHk/UnitEmit.cpp`, `UnitAjanotto.cpp`, `UnitArvonta.cpp`,
+`UnitKilpailijatiedot.cpp`; `ViestiWin/UnitEmit.cpp`, `UnitAjanotto.cpp`, `UnitArvonta.cpp`,
+`UnitJoukkuetiedot.cpp`); tasolle 2 `ViestiWin/OsuusTiedot.cpp` ja
+`ViestiWin/UnitEmitMuutokset.cpp`. / C-7: level 1: 477, level 2: 134, level 3: 20; eight GUI
+form units raised to level 3, two relay units to level 2.

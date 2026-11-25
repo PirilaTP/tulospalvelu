@@ -22,9 +22,9 @@ cbHk/UnitAikaSiirto.cpp,cbHk,395,cp1252,HkKisaWin,2,tallenna-samanaikaisuus,-,f7
 cbHk/UnitAikaSiirto.h,cbHk,77,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitAikavert.cpp,cbHk,929,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitAikavert.h,cbHk,178,ascii,-,1,-,-,,,,f7fe553
-cbHk/UnitAjanotto.cpp,cbHk,1961,cp1252,HkKisaWin,2,kaantajaerot,-,f7fe553,H-080,C-5: date_time_t-kutsut,f7fe553
+cbHk/UnitAjanotto.cpp,cbHk,1961,cp1252,HkKisaWin,3,kaantajaerot gui-liiketoimintalogiikka,-,f7fe553,H-080 H-111 H-117 H-127,C-5: date_time_t-kutsut; C-7: moduulikuvaus ja logiikkavirheet,f7fe553
 cbHk/UnitAjanotto.h,cbHk,268,ascii,-,1,-,-,,,,f7fe553
-cbHk/UnitArvonta.cpp,cbHk,1270,cp1252,HkKisaWin,2,kaantajaerot,-,f7fe553,H-085,"C-5 vaihe 2: ValmisteleJako, BtnJaaClick",f7fe553
+cbHk/UnitArvonta.cpp,cbHk,1270,cp1252,HkKisaWin,3,kaantajaerot gui-liiketoimintalogiikka,-,f7fe553,H-085 H-113 H-124 H-125,"C-5 vaihe 2: ValmisteleJako, BtnJaaClick; C-7: moduulikuvaus ja logiikkavirheet",f7fe553
 cbHk/UnitArvonta.h,cbHk,164,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitASakot.cpp,cbHk,394,cp1252,HkKisaWin,2,tallenna-samanaikaisuus,-,f7fe553,H-009 H-020,add_sakko,f7fe553
 cbHk/UnitASakot.h,cbHk,87,ascii,-,1,-,-,,,,f7fe553
@@ -38,7 +38,7 @@ cbHk/UnitCfg.cpp,cbHk,2936,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitCfg.h,cbHk,381,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitComfile.cpp,cbHk,1098,cp1252,HkKisaWin,2,tiedostomuodot saikeet-ja-lukot,-,f7fe553,H-050 H-101,"C-3: 139-176, 265, 485; C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
 cbHk/UnitComfile.h,cbHk,146,ascii,-,1,-,-,,,,f7fe553
-cbHk/UnitEmit.cpp,cbHk,3798,cp1252,HkKisaWin,2,tallenna-samanaikaisuus saikeet-ja-lukot,-,f7fe553,H-010 H-017 H-089 H-092 H-107,"tallenna-kutsut, NewCardHandler; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL",f7fe553
+cbHk/UnitEmit.cpp,cbHk,3798,cp1252,HkKisaWin,3,tallenna-samanaikaisuus saikeet-ja-lukot gui-liiketoimintalogiikka,-,f7fe553,H-010 H-017 H-089 H-092 H-107 H-109 H-116 H-119 H-120 H-127,"tallenna-kutsut, NewCardHandler; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-7: moduulikuvaus ja logiikkavirheet",f7fe553
 cbHk/UnitEmit.h,cbHk,390,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitEmit_VA.cpp,cbHk,149,ascii,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitEmit_VA.h,cbHk,65,ascii,-,1,-,-,,,,f7fe553
@@ -64,7 +64,7 @@ cbHk/UnitKilpailijaEmit.cpp,cbHk,418,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitKilpailijaEmit.h,cbHk,87,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitKilpailijaOnline.cpp,cbHk,1517,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitKilpailijaOnline.h,cbHk,139,ascii,-,1,-,-,,,,f7fe553
-cbHk/UnitKilpailijatiedot.cpp,cbHk,1900,cp1252,HkKisaWin,2,tallenna-samanaikaisuus,-,f7fe553,H-017,optimistinen tarkistus 613-626,f7fe553
+cbHk/UnitKilpailijatiedot.cpp,cbHk,1900,cp1252,HkKisaWin,3,tallenna-samanaikaisuus gui-liiketoimintalogiikka,-,f7fe553,H-017 H-109 H-114 H-115 H-127,optimistinen tarkistus 613-626; C-7: moduulikuvaus ja logiikkavirheet,f7fe553
 cbHk/UnitKilpailijatiedot.h,cbHk,208,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitKilpMaaritys.cpp,cbHk,771,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitKilpMaaritys.h,cbHk,136,ascii,-,1,-,-,,,,f7fe553
@@ -148,7 +148,7 @@ cbHk/VertAikaUnit.h,cbHk,53,ascii,-,1,-,-,,,,f7fe553
 cbHk/WinHk.cpp,cbHk,2310,cp1252,HkKisaWin,2,tallenna-samanaikaisuus tiedonsiirto yleiskuva saikeet-ja-lukot,-,f7fe553,H-018 H-023 H-091 H-094 H-099 H-104 H-107 T-033,"Initialisoi 252-285; ProsEmitThread, LukumaaratTh, VaihdaVaiheHandler; C-2: vaiheen vaihdon eväys; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL",f7fe553
 cbHk/WinHk.h,cbHk,332,ascii,-,1,-,-,,,,f7fe553
 cbHk/WinParamXml.cpp,cbHk,1796,cp1252,HkKisaWin,1,-,-,,,,f7fe553
-cbTp/cbTpApu.cpp,cbTp,641,cp1252,HkKisaWin ViestiWin,2,tallenna-samanaikaisuus kaantajaerot saikeet-ja-lukot,-,f7fe553,H-009 H-019 T-026 T-033,"writeerror_w; C-5 vaihe 2: writeerror_w; C-6 vaihe 2: polut, koeohjelmat, VCL",f7fe553
+cbTp/cbTpApu.cpp,cbTp,641,cp1252,HkKisaWin ViestiWin,2,tallenna-samanaikaisuus kaantajaerot saikeet-ja-lukot gui-liiketoimintalogiikka,-,f7fe553,H-009 H-019 T-026 T-033 H-116,"writeerror_w; C-5 vaihe 2: writeerror_w; C-6 vaihe 2: polut, koeohjelmat, VCL; C-7: select3",f7fe553
 cbTp/TpApu.cpp,cbTp,757,cp1252,-,1,-,-,,,,f7fe553
 cbTp/UnitAikakorjaus.cpp,cbTp,161,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 cbTp/UnitAikakorjaus.h,cbTp,75,ascii,-,1,-,-,,,,f7fe553
@@ -208,7 +208,7 @@ cbTp/UnitSelect.cpp,cbTp,96,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 cbTp/UnitSelect.h,cbTp,51,ascii,-,1,-,-,,,,f7fe553
 cbTp/UnitSelect2.cpp,cbTp,71,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 cbTp/UnitSelect2.h,cbTp,48,ascii,-,1,-,-,,,,f7fe553
-cbTp/UnitSelect3.cpp,cbTp,129,ascii,HkKisaWin ViestiWin,2,saikeet-ja-lukot,-,f7fe553,,"C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
+cbTp/UnitSelect3.cpp,cbTp,129,ascii,HkKisaWin ViestiWin,2,saikeet-ja-lukot gui-liiketoimintalogiikka,-,f7fe553,H-116,"C-6: säikeet ja lukot, kohdennettu luenta; C-7: ModalResult ja X-sulku",f7fe553
 cbTp/UnitSelect3.h,cbTp,62,ascii,-,1,-,-,,,,f7fe553
 cbTp/UnitSivuTuloste.cpp,cbTp,410,cp1252,HkKisaWin,2,saikeet-ja-lukot,-,f7fe553,H-091,"C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
 cbTp/UnitSivuTuloste.h,cbTp,71,ascii,-,1,-,-,,,,f7fe553
@@ -537,7 +537,7 @@ tputilv2/xmlparser.cpp,tputilv2,541,cp1252,Tputil-XE HkMaali tputilv2 JukLuenta5
 ViestiWin/ConvDat.cpp,ViestiWin,236,ascii,ViestiWin,3,tiedostomuodot,-,f7fe553,H-049,C-3: viestin vanhan muodon muunnos luettu,f7fe553
 ViestiWin/MuotoiluUnit.cpp,ViestiWin,648,cp1252,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/MuotoiluUnit.h,ViestiWin,235,ascii,-,1,-,-,,,,f7fe553
-ViestiWin/OsuusTiedot.cpp,ViestiWin,476,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/OsuusTiedot.cpp,ViestiWin,476,cp1252,ViestiWin,2,gui-liiketoimintalogiikka,-,f7fe553,,"C-7: katselulomake, ei kirjoituksia",f7fe553
 ViestiWin/OsuusTiedot.h,ViestiWin,103,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/TapUnit2.cpp,ViestiWin,545,cp1252,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/TapUnit2.h,ViestiWin,114,ascii,-,1,-,-,,,,f7fe553
@@ -547,9 +547,9 @@ ViestiWin/TulosUnit.cpp,ViestiWin,1155,cp1252,ViestiWin,2,saikeet-ja-lukot,-,f7f
 ViestiWin/TulosUnit.h,ViestiWin,197,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitAikavert.cpp,ViestiWin,901,cp1252,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitAikavert.h,ViestiWin,177,ascii,-,1,-,-,,,,f7fe553
-ViestiWin/UnitAjanotto.cpp,ViestiWin,1754,cp1252,ViestiWin,2,muistiturvallisuus,-,f7fe553,H-069,C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta,f7fe553
+ViestiWin/UnitAjanotto.cpp,ViestiWin,1754,cp1252,ViestiWin,3,muistiturvallisuus gui-liiketoimintalogiikka,-,f7fe553,H-069 H-111 H-116 H-121 H-126,C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-7: moduulikuvaus ja logiikkavirheet,f7fe553
 ViestiWin/UnitAjanotto.h,ViestiWin,238,ascii,-,1,-,-,,,,f7fe553
-ViestiWin/UnitArvonta.cpp,ViestiWin,611,cp1252,ViestiWin,2,muistiturvallisuus,-,f7fe553,H-069,C-4: varoitusten triage,f7fe553
+ViestiWin/UnitArvonta.cpp,ViestiWin,611,cp1252,ViestiWin,3,muistiturvallisuus gui-liiketoimintalogiikka,-,f7fe553,H-069 H-110 H-113 H-118 H-122 H-123,C-4: varoitusten triage; C-7: moduulikuvaus ja logiikkavirheet,f7fe553
 ViestiWin/UnitArvonta.h,ViestiWin,106,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitASakot.cpp,ViestiWin,357,ascii,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitASakot.h,ViestiWin,84,ascii,-,1,-,-,,,,f7fe553
@@ -561,13 +561,13 @@ ViestiWin/UnitCfg.cpp,ViestiWin,2352,cp1252,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitCfg.h,ViestiWin,327,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitComfile.cpp,ViestiWin,1032,cp1252,ViestiWin,2,tiedostomuodot saikeet-ja-lukot,-,f7fe553,H-050 H-101,"C-3: 129-160; C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
 ViestiWin/UnitComfile.h,ViestiWin,145,ascii,-,1,-,-,,,,f7fe553
-ViestiWin/UnitEmit.cpp,ViestiWin,3091,cp1252,ViestiWin,2,muistiturvallisuus saikeet-ja-lukot,-,f7fe553,H-092,"C-4: varoitusten triage; C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
+ViestiWin/UnitEmit.cpp,ViestiWin,3091,cp1252,ViestiWin,3,muistiturvallisuus saikeet-ja-lukot gui-liiketoimintalogiikka,-,f7fe553,H-092 H-112 H-113 H-116 H-126,"C-4: varoitusten triage; C-6: säikeet ja lukot, kohdennettu luenta; C-7: moduulikuvaus ja logiikkavirheet",f7fe553
 ViestiWin/UnitEmit.h,ViestiWin,346,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitEmit_VA.cpp,ViestiWin,150,ascii,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitEmit_VA.h,ViestiWin,65,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitEmithaku.cpp,ViestiWin,152,ascii,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitEmithaku.h,ViestiWin,60,ascii,-,1,-,-,,,,f7fe553
-ViestiWin/UnitEmitMuutokset.cpp,ViestiWin,395,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitEmitMuutokset.cpp,ViestiWin,395,cp1252,ViestiWin,2,gui-liiketoimintalogiikka,-,f7fe553,H-112 H-113,C-7: Vaihda- ja Siirrä-kutsut,f7fe553
 ViestiWin/UnitEmitMuutokset.h,ViestiWin,113,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitExport.cpp,ViestiWin,585,cp1252,ViestiWin,2,tiedostomuodot,-,f7fe553,H-046,C-3: 470-485,f7fe553
 ViestiWin/UnitExport.h,ViestiWin,93,ascii,-,1,-,-,,,,f7fe553
@@ -583,7 +583,7 @@ ViestiWin/UnitJjVaihdot.cpp,ViestiWin,78,ascii,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitJjVaihdot.h,ViestiWin,55,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitJoukkueet.cpp,ViestiWin,1566,cp1252,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitJoukkueet.h,ViestiWin,175,ascii,-,1,-,-,,,,f7fe553
-ViestiWin/UnitJoukkuetiedot.cpp,ViestiWin,1639,cp1252,ViestiWin,1,-,-,,,,f7fe553
+ViestiWin/UnitJoukkuetiedot.cpp,ViestiWin,1639,cp1252,ViestiWin,3,gui-liiketoimintalogiikka,-,f7fe553,H-109 H-114 H-126 H-127,C-7: moduulikuvaus ja logiikkavirheet,f7fe553
 ViestiWin/UnitJoukkuetiedot.h,ViestiWin,186,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitKilpMaaritys.cpp,ViestiWin,449,cp1252,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitKilpMaaritys.h,ViestiWin,119,ascii,-,1,-,-,,,,f7fe553
