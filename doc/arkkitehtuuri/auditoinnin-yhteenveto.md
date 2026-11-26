@@ -704,3 +704,43 @@ loops, the 56 core parse candidates moved to stage 1, fix-choice decisions added
 document, a re-base and re-check step for unmerged branches. Two points were only partly accepted
 (H-040 stays an independent wave-1 fix; H-001 and H-064 keep their priorities with the reasons
 written down).
+
+## 12. Vaiheen C sulkeminen / Closing of phase C
+
+Käyttäjä hyväksyi 2026-11-26 erän C-13 ja koko vaiheen C sulkemisen sekä korjaus- ja
+testaussuunnitelman D-vaiheen lähtökohdaksi. Hyväksyntä ei ole lupa aloittaa tuotantokoodin
+korjaamista.
+
+| # | Sulkemisen edellytys / Closing condition (`suunnitelma.md`) | Toteutuma / Outcome |
+|--:|---|---|
+| 1 | C-13 valmis ja käyttäjän hyväksymä | kyllä (commit `e8daa65`, hyväksyntä 2026-11-26) |
+| 2 | Jokaisen erän C-1–C-13 tila "suljettu" | kyllä: C-4–C-10 ja C-12 aiemmilla päätöksillä, C-11 päätöksellä 2026-11-24, C-1–C-3 ja C-13 tällä päätöksellä (`seuranta.md`) |
+| 3 | Avoimet kysymykset luokiteltu | kyllä: 32 ratkaistu, 39 ajonaikaiseen todennukseen D-vaiheessa, 16 omistajan päätökseksi, 25 hyväksytty avoimiksi (luku 6) |
+| 4 | Korjaus- ja testaussuunnitelma hyväksytty D-vaiheen lähtökohdaksi | kyllä, käyttäjän päätös 2026-11-26 |
+| 5 | Omistajan päätöslista toimitettu; päätöksiä odottavat kokonaisuudet merkitty | kyllä: `omistajan-paatokset.md` käyttäjällä, 18 kohtaa avoinna; riippuvat kokonaisuudet rekisterin sarakkeessa `omistajan_paatokset` |
+| 6 | `CHECKPOINT.md` ja `README.md` kuvaavat lopputuloksen | kyllä |
+| 7 | Validaattori menee läpi | kyllä (`tarkista_auditointi.py`, `synteesi.py --tarkista`, `tarkistus_a0.py`) |
+| 8 | Kaikki commitoitu paikallisesti | kyllä; pushia ei ole tehty |
+
+**Mitä sulkeminen tarkoittaa ja mitä ei.** Vaihe C on suljettu, koska sen suunnitellut erät on
+tehty ja niiden tulokset koottu. Se ei tarkoita, että koko lähdekoodi olisi katselmoitu:
+
+- 474 tiedostoa ja 97 956 riviä (36 %) on vain inventoitu skriptillä; niiden koodia ei ole luettu.
+- Yhtäkään tuotantotiedostoa ei ole luettu kokonaan vikojen varalta (taso 4: 0).
+- 284 GUI-lomaketiedostoa, arvonta-algoritmi, 41 muuta kilpailutietoja kirjoittavaa lomaketta,
+  152 jäsennysehdokasta ja 153 funktion staattista muuttujaa ovat tutkimatta.
+- 177 havainnosta yksi on vahvistettu toimitetussa ohjelmassa ja 26 toistettu koeohjelmalla tai
+  testikehyksessä; muut perustuvat koodin lukemiseen. GUI-ohjelmia ei ole ajettu.
+- Havaintojen määrä on alaraja. H-033:n tapaus osoitti, että myös kirjattujen havaintojen
+  aiempi vakavuusarvio voi olla väärä; rajattu seulonta on D-vaiheen ennakkotehtävä
+  (`korjaussuunnitelma.md` luku 9.1).
+
+Jatko: D-vaiheen ennakkotehtävät E-1–E-4 (`korjaussuunnitelma.md` luku 9) ja vaihe K, ohjelmiston
+tietopohja ja käsikirja (`k-vaihe-suunnitelma.md`). Kumpaakaan ei ole aloitettu.
+
+/ The user approved the closing of C-13 and of phase C on 2026-11-26 and accepted the fix and
+test plans as the starting point of phase D, which is not permission to start fixing. All eight
+closing conditions are met. Closing does not mean the code base has been fully reviewed: 36 % of
+the lines are inventory only, no production file was read in full, the GUI forms are largely
+unread, one defect is confirmed in a shipped program and 26 mechanisms are reproduced; the number
+of findings is a lower bound. Next: the preparatory tasks E-1..E-4 and phase K, neither started.

@@ -14,6 +14,28 @@ end users; the user manual lives in `docs-site/`. Documents are bilingual: each
 section has Finnish text first and English text after it. Tables, diagrams and
 code references appear only once.
 
+## Tila ja kattavuuden rajat / State and limits of coverage
+
+**Vaihe C (syväauditointi, erät C-1–C-13) on suljettu 2026-11-26.** Yhtään vikaa ei ole korjattu.
+Dokumentaatio kuvaa sen, mitä on tutkittu; se ei ole koko lähdekoodin katselmointi:
+
+- 631 tuotantotiedostosta 474 (36 % riveistä) on vain inventoitu skriptillä, 135 luettu
+  kohdennetusti ja 22 rakenteen tasolla; yhtäkään ei ole luettu kokonaan vikojen varalta.
+- 177 havainnosta yksi on vahvistettu toimitetussa ohjelmassa ja 26 toistettu koeohjelmalla tai
+  testikehyksessä; muut perustuvat koodin lukemiseen. GUI-ohjelmia ei ole ajettu.
+- Havaintojen määrä on alaraja. Yksityiskohdat: `auditoinnin-yhteenveto.md` luvut 3, 4, 10 ja 12.
+
+**Phase C (the deep audit, batches C-1..C-13) was closed on 2026-11-26.** No defect has been
+fixed. The documentation describes what was examined; it is not a review of the whole code base:
+474 of the 631 production files (36 % of the lines) are inventory only, no file was read in full,
+one of the 177 findings is confirmed in a shipped program and 26 are reproduced with a probe or the
+harness. The number of findings is a lower bound.
+
+Aineisto sisältää yksityiskohtia korjaamattomista tietoturvavioista. Sitä ei julkaista eikä
+pushata julkiseen repositorioon ilman erillistä hyväksyntää. / The material contains details of
+unfixed security defects and must not be published or pushed to a public repository without
+separate approval.
+
 ## Lukujärjestys / Reading order
 
 | Tiedosto / File | Sisältö / Content |
@@ -25,6 +47,7 @@ code references appear only once.
 | [korjaussuunnitelma.md](korjaussuunnitelma.md) | Erä C-13: 34 korjauskokonaisuutta, riippuvuudet ja toteutusjärjestys, yhteensopivuus, D-vaiheen kehittämissuunnitelma ja ensimmäinen toteutuserä / batch C-13: fix packages, order, compatibility, development plan for phase D and its first batch |
 | [regressiotestaussuunnitelma.md](regressiotestaussuunnitelma.md) | Erä C-13: testilajit, testit kokonaisuuksittain, infrastruktuurityöt, julkaisun testaus / batch C-13: kinds of tests, tests per package, infrastructure work, release testing |
 | [omistajan-paatokset.md](omistajan-paatokset.md) | Erä C-13: omistajan päätöstä vaativat asiat OP-1–OP-18 vaihtoehtoineen / batch C-13: owner decisions with options |
+| [k-vaihe-suunnitelma.md](k-vaihe-suunnitelma.md) | Vaiheen K suunnitelma (ei toteutettu): asiantuntija-agentti, selkokielinen vikakortisto, toiminnallinen käsikirja, paikallinen portaali, tietopohjan ylläpito / plan of phase K (not implemented): expert agent, plain-language defect cards, functional handbook, local portal, maintenance |
 | [riippuvuudet.md](riippuvuudet.md) | Käännös- ja ajonaikaiset riippuvuudet, protokollat, tiedostot; luvut 7–19: erä C-10 (tuotekohtainen inventaario, tietokanta, HTTP, laitteet, jakelu; H-159–H-170, T-043–T-049) / Build and runtime dependencies, protocols, files; sections 7–19: batch C-10 |
 | [tietorakenteet-ja-tila.md](tietorakenteet-ja-tila.md) | Keskeiset rakenteet, globaali tila, säikeet / Core structures, global state, threads |
 | [merkistot.md](merkistot.md) | Merkistöt ja turvallinen muokkausmenettely / Encodings and the safe editing procedure |
@@ -79,6 +102,6 @@ step. Inventory figures were produced by a script that walks `TPsource/V52` (see
 regenerate the figures before relying on them.
 
 Selvitys tehtiin 2026-11-24–26 commitin `f7fe553` päälle; vaiheen C synteesi (C-13) valmistui
-2026-11-26. Tuotantokoodia ei ole muutettu.
+2026-11-26, ja vaihe C suljettiin samana päivänä. Tuotantokoodia ei ole muutettu.
 The audit was made on top of commit `f7fe553` on 2026-11-24..26; the synthesis of phase C (C-13)
-was completed on 2026-11-26. No production code has been changed.
+was completed on 2026-11-26 and phase C was closed the same day. No production code has been changed.

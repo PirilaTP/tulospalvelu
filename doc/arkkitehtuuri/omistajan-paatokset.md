@@ -12,6 +12,15 @@ or maintainer of the software is collected here. **No decision is made in this d
 Recommendations are proposals based only on the audit evidence. Missing decisions do not block
 closing phase C: the effect of each is recorded and the dependent packages are marked.
 
+**Tila 2026-11-26 (vaiheen C sulkeminen):** kaikki 18 päätöskohtaa ovat avoinna; yhtäkään ei ole
+merkitty tehdyksi. OP-1, OP-2 ja OP-3 käsitellään ennen D-vaiheen aloittamista. Käyttäjän ohje
+samalta päivältä on voimassa oleva rajoitus eikä OP-1:n ratkaisu: auditointihaaraa ei pushata
+julkiseen repositorioon ilman erillistä hyväksyntää, ja aineistosta tarvitaan yksityinen
+varmuuskopio (`korjaussuunnitelma.md` luku 9.3). / Status at the closing of phase C: all 18 items
+are open; OP-1..OP-3 are handled before phase D starts. The user's instruction not to push the
+audit branch to a public repository without separate approval is a standing constraint, not the
+resolution of OP-1.
+
 Kentät: **Asia** (mitä päätetään), **Miksi** (miksi päätös tarvitaan), **Vaihtoehdot ja
 vaikutukset**, **Suositus**, **Riippuvat kokonaisuudet**, **Viimeistään** (missä kehittämisvaiheessa
 päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).

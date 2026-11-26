@@ -8,6 +8,10 @@ Written on 2026-11-26 in batch C-13 (part F). This is a plan: **nothing was buil
 none of the new tests described here exists yet.** "Run" always refers to stored results of earlier
 batches. CI has not been changed.
 
+**Tila 2026-11-26:** käyttäjä on hyväksynyt tämän suunnitelman D-vaiheen lähtökohdaksi vaiheen C
+sulkemisen yhteydessä. Hyväksyntä ei ole lupa aloittaa korjauksia eikä ajaa testejä.
+/ Status: approved by the user as the starting point of phase D; not a permission to start.
+
 | Tieto / Data | Lähde / Source |
 |---|---|
 | Testausarkkitehtuuri ja C-11:n kehys / test architecture and the C-11 harness | `testaus.md` (ei toisteta tässä / not repeated here) |

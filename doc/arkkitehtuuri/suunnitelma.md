@@ -158,7 +158,7 @@ they replace nothing. Both were done on 2026-11-26 (state in the table).
 | Erä / Batch | Aihe / Topic | Tavoite / Goal | Tila / State |
 |---|---|---|---|
 | C-12 (uusi / new) | Ominaisuusvalitsimien dokumentointi / feature switch documentation | Toteuttaa alkuperäisen vaiheen C kohdan 3 (mitä kukin `#define` tekee) sekä käsittelee Q2:n ja T-008:n: kattava ominaisuus-, asetus- ja konfiguraatioinventaario ja pohja myöhemmälle regressiotestimatriisille. C-10 käsittelee valitsimia vain siltä osin kuin ne kytkevät ulkoisen riippuvuuden; C-10:n `makrot.csv` ja `tyokalut/riippuvuudet.py` ovat syötteitä. / Implements original phase C item 3, Q2 and T-008: a complete feature, setting and configuration inventory and the basis for a later regression test matrix; C-10 output is an input | **valmis ja suljettu / done and closed** 2026-11-26 (`ominaisuusvalitsimet.md` luku 13) |
-| C-13 (uusi / new) | Auditoinnin synteesi ja korjaussuunnitelma / audit synthesis and fix plan | Yhdistää kaikkien erien tulokset, tarkistaa kattavuuden, tunnistaa yhteiset juurisyyt ja muodostaa perustellun korjaus- ja modernisointisuunnitelman (syötteinä mm. korjausjono `seuranta.md`, KK-C9-1–3, C-10:n modernisointiriskit). / Combines all batch results, checks coverage, identifies common root causes and builds a justified fix and modernisation plan | valmis 2026-11-26, odottaa käyttäjän hyväksyntää / done, awaiting the user's approval (`auditoinnin-yhteenveto.md`, `korjaussuunnitelma.md`) |
+| C-13 (uusi / new) | Auditoinnin synteesi ja korjaussuunnitelma / audit synthesis and fix plan | Yhdistää kaikkien erien tulokset, tarkistaa kattavuuden, tunnistaa yhteiset juurisyyt ja muodostaa perustellun korjaus- ja modernisointisuunnitelman (syötteinä mm. korjausjono `seuranta.md`, KK-C9-1–3, C-10:n modernisointiriskit). / Combines all batch results, checks coverage, identifies common root causes and builds a justified fix and modernisation plan | valmis ja suljettu 2026-11-26 / done and closed (`auditoinnin-yhteenveto.md`, `korjaussuunnitelma.md`) |
 
 ### C-12 vaihe 1: rajaus / Step 1: scope (**valmis ja suljettu / done and closed 2026-11-26**, `ominaisuusvalitsimet.md`; laadittu C-10:n sulkemisessa / written at the C-10 closing)
 
@@ -271,7 +271,7 @@ kaikkien yhdistelmien testaus. Testimatriisin ajaminen vaatii erillisen päätö
 analysis, Opus for review, no artificial token budget; static only, no runs, connections, dependency
 updates, code, project or CI changes, no push; fixes, C-13, switch removal and commenting out of scope.
 
-### C-13 vaihe 1: rajaus / Step 1: scope (**valmis 2026-11-26, odottaa käyttäjän hyväksyntää / done, awaiting the user's approval**; tulokset / results `auditoinnin-yhteenveto.md`, `korjaussuunnitelma.md`; laadittu C-12:n sulkemisessa 2026-11-26 / written at the C-12 closing)
+### C-13 vaihe 1: rajaus / Step 1: scope (**valmis ja suljettu 2026-11-26 käyttäjän hyväksynnällä / done and closed on the user's approval**; tulokset / results `auditoinnin-yhteenveto.md`, `korjaussuunnitelma.md`; laadittu C-12:n sulkemisessa 2026-11-26 / written at the C-12 closing)
 
 **Luonne ja tavoite / nature and goal.** C-13 on vaiheen C päätöserä. Siinä ei tehdä uutta koko
 lähdekoodin syväauditointia. Erä yhdistää C-1–C-12:n tulokset:
@@ -405,6 +405,19 @@ validator, local commit.
 6. `CHECKPOINT.md` ja `README.md` kuvaavat vaiheen C lopputuloksen.
 7. Validaattori menee läpi.
 8. Kaikki on commitoitu paikallisesti. Pushista ja PR:stä päätetään erikseen (`no-push`-rajoitus).
+
+**Vaihe C suljettu 2026-11-26** käyttäjän päätöksellä; kaikki kahdeksan edellytystä täyttyvät
+(`auditoinnin-yhteenveto.md` luku 12). Sulkeminen ei tarkoita koko lähdekoodin katselmointia:
+kattavuusrajoitteet ovat samassa luvussa. / Phase C closed on 2026-11-26 by the user's decision;
+all eight conditions are met; closing does not mean the whole code base was reviewed.
+
+### Vaiheen C jälkeen / After phase C (**lisätty / added 2026-11-26**)
+
+| Vaihe / Phase | Sisältö / Content | Tila / State |
+|---|---|---|
+| D-vaiheen ennakkotehtävät E-1–E-4 / preparatory tasks | rajattu riskiseulonta, haarojen täsmäytys, aineiston säilytys ja varmuuskopio, OP-1–OP-3 / bounded risk screening, branch reconciliation, retention and backup, owner decisions | kirjattu, ei aloitettu / recorded, not started (`korjaussuunnitelma.md` luku 9) |
+| K. Ohjelmiston tietopohja ja käsikirja / knowledge base and handbook | K-0 rekisterien täydennys, K-1 asiantuntija-agentti ja skill, K-2 selkokielinen vikakortisto, K-3 toiminnallinen käsikirja, K-4 paikallinen portaali; ei uusi auditointi eikä tuotantokoodin kehitystä / not a new audit and not development | suunniteltu, ei aloitettu / planned, not started (`k-vaihe-suunnitelma.md`) |
+| D. Kehittämisvaihe / development phase | viisi vaihetta, ensimmäinen toteutuserä `korjaussuunnitelma.md` luku 7 / five stages, first batch | ei aloitettu; vaatii erillisen luvan / not started; needs separate permission |
 
 ### C-10 vaihe 1: rajaus / Step 1: scope (**valmis ja suljettu / done and closed 2026-11-26**, `riippuvuudet.md` luvut 7–19)
 

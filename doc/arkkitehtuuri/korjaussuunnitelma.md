@@ -9,6 +9,15 @@ laajaa auditointia.
 Written on 2026-11-26 in batch C-13 (parts D, E and G). **Nothing has been fixed and phase D has not
 started.** This is the plan from which development can start without a new broad audit.
 
+**Tila 2026-11-26:** käyttäjä on hyväksynyt tämän suunnitelman ja
+`regressiotestaussuunnitelma.md`:n D-vaiheen lähtökohdaksi vaiheen C sulkemisen yhteydessä.
+**Hyväksyntä ei ole lupa aloittaa tuotantokoodin korjaamista.** Ennen D-vaihetta tehdään luvun 9
+ennakkotehtävät ja käsitellään omistajan päätökset OP-1–OP-3. Ennen korjauksia on lisäksi
+suunniteltu vaihe K (ohjelmiston tietopohja, `k-vaihe-suunnitelma.md`). / Status: approved by the
+user as the starting point of phase D when phase C was closed. **The approval is not permission to
+start fixing production code**; the preparatory tasks of section 9 and owner decisions OP-1..OP-3
+come first.
+
 Totuuden lähteet ovat rekisterit; tämä asiakirja selittää ne eikä toista havaintojen sisältöä:
 
 | Tieto / Data | Lähde / Source |
@@ -1307,3 +1316,111 @@ branch and PR structure, acceptance criteria and what must not be done yet.
 
 / Roll-up rows are split into items with their own identifiers before their package starts; fixes
 are recorded on the register rows, nothing is deleted.
+
+## 9. D-vaiheen ennakkotehtävät / Preparatory tasks before phase D
+
+Kirjattu vaiheen C sulkemisessa 2026-11-26 käyttäjän päätöksellä. Tehtävät tehdään ennen
+ensimmäistä korjaus-PR:ää; ne täydentävät luvun 7.2 valmisteluja. **Yhtäkään ei ole aloitettu.**
+
+| Tunnus / Id | Tehtävä / Task | Tila / State |
+|---|---|---|
+| E-1 | Aikaisempien havaintojen rajattu riskiseulonta / bounded risk screening of earlier findings | suunniteltu, ei aloitettu |
+| E-2 | Git-haarojen `origin/88`, `origin/90`, `origin/92` ja `origin/95` täsmäytys / reconciliation of four branches | kirjattu, ei aloitettu |
+| E-3 | Auditointiaineiston säilytys ja yksityinen varmuuskopio / retention and private backup | rajoitus voimassa; varmuuskopio tekemättä |
+| E-4 | Omistajan päätökset OP-1, OP-2 ja OP-3 / owner decisions | avoinna |
+
+### 9.1 E-1: aikaisempien havaintojen rajattu riskiseulonta
+
+**Miksi.** H-033 oli erässä C-2 vakavuudeltaan matala, ja C-13:n riskiarvio jätti sen ensin
+P4:ään; riippumaton tarkastus osoitti koodista, että se on verkosta oletusasetuksin laukeava
+kekokirjoitus (P1). Erien C-1–C-3 havainnot on kirjattu ennen kuin riskiulottuvuudet ja
+prioriteettiasteikko olivat käytössä, ja niiden vakavuus on voinut jäädä tarkistamatta samalla
+tavalla. Muita rivejä ei käyty C-13:ssa uudelleen läpi.
+
+**Tämä ei ole uusi syväauditointi.** Seulonta lukee vain kunkin havainnon viittaamat rivit ja
+niiden lähimmän kutsujan, vastaa viiteen kysymykseen ja joko vahvistaa prioriteetin tai ehdottaa
+muutosta. Uusia vikoja ei etsitä; jos lukiessa näkyy muu vika, se kirjataan ehdokkaaksi.
+
+**Seulottavat rivit** (62; laskettu `rekisteri/riskiarvio.csv`:stä 2026-11-26):
+
+| Ryhmä / Group | Peruste / Criterion | Rivit / Rows |
+|---|---|---|
+| A (40) | kierroksen 1 ja erien C-1–C-3 havainnot, joiden prioriteetti on P3–P5 | H-001–H-006, H-009–H-021, H-030, H-034–H-039, H-041–H-054 |
+| B (22) | muiden erien havainnot, joissa riskiulottuvuus ja prioriteetti näyttävät eri suuntiin: ulkoinen syöte (verkko tai laite) ja P3–P5; suora vaikutus tuloksiin ja P4–P5; tiedot eivät palautettavissa ja P3–P5; normaalikäytössä pysäyttävä ja P3–P5 | H-066, H-069, H-080, H-082, H-086, H-088, H-092, H-094, H-101, H-102, H-118–H-120, H-122–H-124, H-127, H-135, H-136, H-148, H-168, H-170 |
+
+Ryhmässä A samoja merkkejä kantavat rivit (H-016, H-017, H-030, H-039, H-044, H-048, H-054)
+käydään ensin.
+
+**Viisi kysymystä jokaisesta rivistä:**
+
+1. Onko ulkoinen syöte (verkko, laite, tiedosto) saavutettavissa viitattuun kohtaan, ja millä
+   asetuksilla?
+2. Kirjoittaako tai lukeeko kohta muistia rajojen ulkopuolelta?
+3. Voiko seurauksena olla tulosten hiljainen vääristyminen?
+4. Voiko tietoja kadota ilman jälkeä?
+5. Toistuuko vakava toimintahäiriö normaalissa käytössä?
+
+**Menettely.** Opus-tarkastaja (vaativa tulkinta), enintään kolme agenttia rinnakkain, rivit
+tiedostoittain ryhmiteltyinä. Jokaisesta rivistä kirjataan vastaukset, luetut rivit ja arvio:
+prioriteetti ennallaan, muutosehdotus perusteluineen tai "ei ratkea lukemalla" (siirtyy
+testaussuunnitelmaan). Pääistunto arvioi muutosehdotukset ennen rekisterin päivitystä, kuten
+C-13:ssa. Tulos kirjataan `riskiarvio.csv`:hen (sarakkeet `muutos`, `peruste`, `huomio`), ja
+muutokset viedään kokonaisuuksiin ja ensimmäiseen toteutuserään.
+
+**Valmis, kun:** jokaisella 62 rivillä on kirjattu seulontatulos; muuttuneet prioriteetit on
+viety rekisteriin ja tähän suunnitelmaan; tarkistukset menevät läpi. Mitään ei käännetä eikä
+ajeta.
+
+### 9.2 E-2: Git-haarojen täsmäytys
+
+Paikallisten etähaaraviitteiden mukaan neljä marraskuussa 2026 päivättyä haaraa sisältää
+committeja, jotka eivät ole `main`issa ja jotka muuttavat tuotantokoodia analysoidun revision
+`f7fe553` jälkeen [todennettu tiedostoluettelot paikallisista viitteistä 2026-11-26; haarojen
+sisältöä ei ole luettu, eikä verkosta ole haettu]:
+
+| Haara / Branch | Päivätty / Dated | Committeja / Commits | Muutetut tuotantotiedostot / Production files changed | Koskee kokonaisuuksia / Touches packages |
+|---|---|--:|---|---|
+| `origin/88-...` (emiTag-aseman koodin asetus käynnistyksessä) | 2026-11-20 | 4 | `Hk/HkInit.cpp`, `Juk/VInit.cpp`, `Tp/TpLaitteet.cpp`, `cbTp/UnitEmiTag.cpp`, `cbTp/cbTpApu.cpp`, `include/TpLaitteet.h` | KK-C12-2 (H-171, H-052), KK-C13-2, KK-C10-2, KK-C13-5 ja KK-C13-14 (`cbTp/cbTpApu.cpp`: H-116, H-153) |
+| `origin/90-...` (päivävaiheen valinta tiedostoon siirrossa) | 2026-11-16 | 3 | Hk/HkExportPv.h (uusi tiedosto haarassa), `cbHk/UnitExport.cpp` ja sen lomaketiedostot | KK-C13-11 (H-041:n puskuri `cbHk/UnitExport.cpp`:ssä), KK-C13-3 (H-128:n läpikäynti) |
+| `origin/92-...` (yhdistys henkilötietokantaan) | 2026-11-16 | 7 | `Hk/HkDef.h`, Hk/HkHenkKopio.h (uusi tiedosto haarassa), `cbHk/HkWinDef.h`, `cbHk/HkWinParam.cpp`, `cbHk/UnitIlm2.cpp`, `cbHk/UnitTKanta.cpp` ja muita | tietuemäärittelyt (`Hk/HkDef.h`): KK-C13-11, KK-C13-15 |
+| `origin/95-...` (emiTag: toisen kortin luku) | 2026-11-20 | 2 | `Hk/HkDeclare.h`, `Hk/HkEmit.cpp`, `Hk/HkGlobals.cpp`, `Hk/HkIV.cpp`, `Juk/VDeclare.h`, `Juk/VEmit.cpp`, `Juk/VGlobals.cpp` ja muita | emit-polku: KK-C9-2 (H-145), KK-C10-2 (H-168), KK-C13-8 (H-094), KK-C13-2 |
+
+Selvitettävä ennen korjausten aloittamista:
+
+1. Mitä muutoksia kukin haara sisältää (muutos kerrallaan, ei vain tiedostoluettelo).
+2. Ovatko ne korjanneet tai muuttaneet jonkin auditointihavainnon kohdan.
+3. Vaikuttavatko ne suunniteltuihin korjauskokonaisuuksiin: rivinumerot, mekanismit ja se,
+   syntyykö uusia samojen juurisyiden kohtia.
+4. Mikä on oikea lähtökohta D-vaiheen kehitykselle: `main` sellaisenaan, `main` haarojen
+   yhdistämisen jälkeen vai muu (OP-18).
+
+**Haaroja ei yhdistetä eikä verkosta haeta mitään ennen erillistä päätöstä.** Muiden, vanhempien
+etähaarojen tila (yhdistetty vai ei) kuuluu samaan selvitykseen. Jos lähtökohta muuttuu,
+rekisterin viitteet tarkistetaan uudelleen (`k-vaihe-suunnitelma.md` luku 9.3).
+
+### 9.3 E-3: auditointiaineiston säilytys
+
+- Auditointiaineisto (`doc/arkkitehtuuri/`, testikoodi ja myöhemmin `doc/tietopohja/`) sisältää
+  yksityiskohtaisia tietoja korjaamattomista tietoturvavioista, muun muassa verkosta
+  oletusasetuksin laukeavista muistivioista.
+- **Auditointihaaraa (`testit/vikojen-todentaminen`, `arkkitehtuuri-selvitys`) ei saa pushata
+  julkiseen repositorioon ilman käyttäjän erillistä hyväksyntää** [käyttäjän ohje 2026-11-26].
+  Paikalliset estosäännöt ovat voimassa. Tämä on voimassa oleva rajoitus; se ei ratkaise
+  päätöstä OP-1 (milloin ja miten aineisto julkaistaan).
+- **Yksityinen varmuuskopio tarvitaan.** Aineisto on nyt vain yhdessä paikallisessa työpuussa
+  (36 paikallista committia, joita ei ole missään muualla). Varmuuskopiota ei ole tehty.
+  Vaihtoehtoja käyttäjän päätettäväksi: Git-niputus (`git bundle`) salatulle ulkoiselle levylle
+  tai yksityiseen pilvitallennukseen, tai yksityinen etärepositorio, johon on pääsy vain
+  ylläpitäjillä. Julkista repositoriota tai sen haarukkaa ei käytetä.
+
+### 9.4 E-4: omistajan päätökset ennen D-vaihetta
+
+OP-1 (julkaisu, push ja suojausohjeet), OP-2 (testi- ja CI-käytäntö) ja OP-3 (C++-standardi)
+käsitellään ennen D-vaiheen aloittamista (`omistajan-paatokset.md`). Kaikki 18 päätöskohtaa ovat
+avoinna; yhtäkään ei ole merkitty tehdyksi.
+
+/ Recorded at the closing of phase C: a bounded risk screening of 62 earlier or inconsistent rows
+(five questions per row, cited lines only, not a new deep audit), reconciliation of four unmerged
+branches that touch fix sites (no merge, no fetch yet), retention of the audit material (no push
+of the audit branch to a public repository without separate approval; a private backup is needed
+and has not been made) and owner decisions OP-1..OP-3. None of these has been started.

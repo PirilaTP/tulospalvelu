@@ -11,13 +11,15 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | Haara / branch | `testit/vikojen-todentaminen` (tehty / created from `arkkitehtuuri-selvitys` @ `f5d793b`); dokumentaatiohaara / docs branch `arkkitehtuuri-selvitys` |
 | Analysoitu revisio / analysed revision | `f7fe553` (`TPsource/` ei muutettu sen jälkeen / unchanged since) |
 | Commitit `main`in päällä / commits on top of `main` | `1b72ec4` dokumentit / docs, `c273b9f` CLAUDE.md, `c651980` agentit, rekisteri, erä 1 / agents, register, batch 1, `3b1d978` tarkistuspiste / checkpoint, `851129f` erä / batch C-2, `bcd0098` erä / batch C-3, `f5d793b` C-11-suunnitelma / plan, `79d9957` C-11 vaihe 1 / stage 1, `cad2781` C-11 vaihe 2 / stage 2, `c11231b` vaihe 3 / stage 3, `432ea3d` koeajot 0–1 / runs 0–1, `c6205d2` vaihe 4 esiehdot / stage 4 prerequisites ja C-11:n päätöscommit / and the C-11 closing commit (testihaaralla / on the test branch); sen jälkeen erät C-4–C-13 paikallisina committeina samalla haaralla, viimeisimmät C-12:n sulkeminen `3f378e2` ja C-13 (`git log --oneline main..`) / then batches C-4..C-13 as local commits on the same branch |
-| Push / PR / issuet / issues | ei tehty; estetty paikallisesti / none; blocked locally |
+| Push / PR / issuet / issues | ei tehty; estetty paikallisesti / none; blocked locally. **Auditointihaaraa ei pushata julkiseen repositorioon ilman käyttäjän erillistä hyväksyntää** (aineistossa on korjaamattomien tietoturvavikojen yksityiskohtia); yksityinen varmuuskopio on tekemättä (`korjaussuunnitelma.md` 9.3) / the audit branch must not be pushed to a public repository without separate approval; a private backup has not been made |
+| Vaiheen tila / phase state | **Vaihe C suljettu 2026-11-26** käyttäjän päätöksellä; vaihe K suunniteltu, ei aloitettu; D-vaihe ei aloitettu / phase C closed; phase K planned, not started; phase D not started |
 
 ## Valmiit erät / Completed batches
 
 | Erä / Batch | Sisältö / Content | Dokumentit / Documents |
 |---|---|---|
-| **C-13 valmis, odottaa käyttäjän hyväksyntää / complete, awaiting the user's approval** (riippumattomasti tarkastettu, commitoitu paikallisesti / independently reviewed, committed locally) | Vaiheen C päätöserä, synteesi (ei uutta lähdeauditointia, mitään ei käännetty eikä ajettu): koneellinen pohja `tyokalut/synteesi.py` (tarkistettu ennen agenttikäyttöä), kattavuus ja todennuksen vahvuus, 15 juurisyytä JS-1–JS-15, yhtenäinen riskiarvio (P1 5, P2 35, P3 62, P4 47, P5 27; jokaisella avoimella H:lla prioriteetti), 34 korjauskokonaisuutta (10 aiempaa tunnusta + KK-C13-1–24), riippuvuusmalli ja aallot 0–6, regressiotestaussuunnitelma, D-vaiheen viisi vaihetta ja ensimmäinen toteutuserä (25 havaintoa), omistajan päätökset OP-1–OP-18; Opus-kokonaisarvio K1–K17 käsitelty (H-033 → P1); H-116 ja H-052 laajennettu; Q3, Q24, Q26, Q53 ratkaistu / final batch of phase C: synthesis, machine base, coverage, root causes, uniform risk assessment, 34 fix packages, order, test plan, development plan, owner decisions; independent review handled | `auditoinnin-yhteenveto.md`, `korjaussuunnitelma.md`, `regressiotestaussuunnitelma.md`, `omistajan-paatokset.md`, `rekisteri/riskiarvio.csv`, `rekisteri/korjauskokonaisuudet.csv`, `todisteet/c13/` |
+| **Vaihe C suljettu / phase C closed** (käyttäjän päätös / user decision 2026-11-26) | Erät C-1–C-13 suljettu; korjaus- ja testaussuunnitelma hyväksytty D-vaiheen lähtökohdaksi (ei lupa aloittaa korjauksia); D-vaiheen ennakkotehtävät E-1–E-4 kirjattu; vaihe K suunniteltu. **Koko lähdekoodia ei ole katselmoitu**: 36 % riveistä vain inventoitu, taso 4: 0 tuotantotiedostoa / batches closed; plans approved as the starting point of phase D; preparatory tasks recorded; phase K planned. The code base has not been fully reviewed | `auditoinnin-yhteenveto.md` 12, `korjaussuunnitelma.md` 9, `k-vaihe-suunnitelma.md` |
+| **C-13 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi / approved 2026-11-26; riippumattomasti tarkastettu, commit `e8daa65`) | Vaiheen C päätöserä, synteesi (ei uutta lähdeauditointia, mitään ei käännetty eikä ajettu): koneellinen pohja `tyokalut/synteesi.py` (tarkistettu ennen agenttikäyttöä), kattavuus ja todennuksen vahvuus, 15 juurisyytä JS-1–JS-15, yhtenäinen riskiarvio (P1 5, P2 35, P3 62, P4 47, P5 27; jokaisella avoimella H:lla prioriteetti), 34 korjauskokonaisuutta (10 aiempaa tunnusta + KK-C13-1–24), riippuvuusmalli ja aallot 0–6, regressiotestaussuunnitelma, D-vaiheen viisi vaihetta ja ensimmäinen toteutuserä (25 havaintoa), omistajan päätökset OP-1–OP-18; Opus-kokonaisarvio K1–K17 käsitelty (H-033 → P1); H-116 ja H-052 laajennettu; Q3, Q24, Q26, Q53 ratkaistu / final batch of phase C: synthesis, machine base, coverage, root causes, uniform risk assessment, 34 fix packages, order, test plan, development plan, owner decisions; independent review handled | `auditoinnin-yhteenveto.md`, `korjaussuunnitelma.md`, `regressiotestaussuunnitelma.md`, `omistajan-paatokset.md`, `rekisteri/riskiarvio.csv`, `rekisteri/korjauskokonaisuudet.csv`, `todisteet/c13/` |
 | **C-9 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi / approved 2026-11-26) | Vaiheet 1 (`f1eb195`) ja 2 (`920930c`), sulkeminen `4b48749`: virheenkäsittely ja resurssit; H-145–H-158, T-040–T-042; H-149 korkea; KK-C9-1–3 / error handling and resources | `virheenkasittely.md`, `todisteet/c9/` |
 | **C-8 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi / approved 2026-11-26) | Vaihe 1 `4884374`, sulkeminen `7aaca40`: globaali muuttuva tila; H-128–H-144, T-038–T-039; H-128 ja H-129 toistettu eristetyllä koeohjelmalla / global mutable state | `globaali-tila.md`, `todisteet/c8/` |
 | **C-7 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi / approved 2026-11-25) | Vaihe 1 `e3a8b67`, sulkeminen `be52dbf`: GUI:n liiketoimintalogiikka, kahdeksan lomakeyksikköä; H-109–H-127, T-034–T-037; jatkotyöjono J7-1–J7-7 / GUI business logic | `gui-liiketoimintalogiikka.md`, `todisteet/c7/` |
@@ -54,7 +56,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | Taso 3, rakenne luettu / structure read | 22 (luettelo / list: `todisteet/c13/raportit/osaA-kattavuus.md` 4.1; aiempi luku 12 oli erän C-4 tilanne / the earlier 12 was the C-4 figure) |
 | Taso 4, kokonaan katselmoitu / fully reviewed | 0 tuotantotiedostoa / production files; 19 testitiedostoa / test files (C-11) |
 | Havaintoja / findings | 177 vikaa / defects (H-001–H-177; H-099 kumottu / refuted), 52 teknistä velkaa / technical debt (T-001–T-052) |
-| Lähdeviittauksia tarkistettu / source references checked | 2 449 (`tarkista_auditointi.py`, C-13; tarkistaa vain tiedoston ja rivin olemassaolon, ei sisältöä / checks existence and range only, not content) |
+| Lähdeviittauksia tarkistettu / source references checked | 2 477 (`tarkista_auditointi.py`, C-13; tarkistaa vain tiedoston ja rivin olemassaolon, ei sisältöä / checks existence and range only, not content) |
 | Riskiarvio ja korjauskokonaisuudet / risk register and fix packages | 176 avointa H:ta arvioitu (P1 5, P2 35, P3 62, P4 47, P5 27); 34 kokonaisuutta; tarkistus / check `python -I doc/arkkitehtuuri/tyokalut/synteesi.py . <out> --tarkista` |
 
 Koko koodipohjaa ei ole katselmoitu. Hakemistotason ja skriptillä tehty
@@ -312,19 +314,30 @@ luku 13): H-171 korkea ja P2; P3 H-134 (H-129:n kanssa), H-172, H-173, H-174; P4
 KK-C12-1 julkaisutiedostot, KK-C12-2 asetusten hallinta, KK-C12-3 valitsinhygienia; Q107, Q108, Q110
 ajonaikaiseen todennukseen; Q111 omistajalle; Q112 avoin.
 
-**C-13 valmis (2026-11-26), riippumattomasti tarkastettu, commitoitu paikallisesti; odottaa
-käyttäjän hyväksyntää.** Osat A0 ja A–I tehty rajauksen mukaan (`suunnitelma.md`, "C-13 vaihe 1:
+**C-13 valmis ja suljettu (2026-11-26), riippumattomasti tarkastettu, commit `e8daa65`; käyttäjä
+hyväksyi.** Osat A0 ja A–I tehty rajauksen mukaan (`suunnitelma.md`, "C-13 vaihe 1:
 rajaus"). Tulokset: `auditoinnin-yhteenveto.md` (kattavuus, juurisyyt, riskimalli, valmiusehdot,
 tarkastuksen käsittely), `korjaussuunnitelma.md` (34 kokonaisuutta, järjestys, D-vaiheen viisi
 vaihetta, ensimmäinen toteutuserä), `regressiotestaussuunnitelma.md`, `omistajan-paatokset.md`
 (OP-1–OP-18). Mitään ei korjattu, käännetty eikä ajettu; D-vaihetta ei aloitettu.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP:** käyttäjän katselmointi ja päätös C-13:n ja koko vaiheen C
-sulkemisesta. Sulkemisen edellytykset (`suunnitelma.md`, C-13:n rajaus): C-13 hyväksytty; erien
-C-1–C-3 sulkemismerkintä (`seuranta.md`: niillä on vain "valmis, tarkastettu"); korjaus- ja
-testaussuunnitelman hyväksyntä D-vaiheen lähtökohdaksi; omistajan päätöslistan toimitus
-omistajalle. **Vaihetta C ei ole merkitty suljetuksi.** D-vaihe alkaa vasta erillisellä päätöksellä
-`korjaussuunnitelma.md`:n luvun 7 pohjalta; sitä ennen päätökset OP-1–OP-3.
+**VAIHE C SULJETTU (2026-11-26)** käyttäjän päätöksellä. Kaikki kahdeksan sulkemisen edellytystä
+täyttyvät (`auditoinnin-yhteenveto.md` luku 12, `seuranta.md`). Sulkeminen ei tarkoita, että koko
+lähdekoodi olisi katselmoitu: 474 tiedostoa ja 36 % riveistä on vain inventoitu, yhtäkään
+tuotantotiedostoa ei ole luettu kokonaan, GUI-lomakkeet ovat pääosin lukematta, ja havaintojen
+määrä on alaraja.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP:**
+
+1. **Vaihe K** (ohjelmiston tietopohja ja käsikirja) käyttäjän aloitusluvalla:
+   `k-vaihe-suunnitelma.md`. Osat K-0 (rekisterien täydennys), K-1 (agentti `pirila-expert` ja
+   skill `pirila-ask`), K-2 (229 selkokielistä vikakorttia), K-3 (toiminnallinen käsikirja), K-4
+   (paikallinen staattinen portaali). **Mitään K-vaiheen tuotosta ei ole vielä tehty.**
+2. **D-vaiheen ennakkotehtävät** (`korjaussuunnitelma.md` luku 9), ei aloitettu: E-1 rajattu
+   riskiseulonta 62 riville (H-033:n perusteella), E-2 haarojen `origin/88`, `origin/90`,
+   `origin/92` ja `origin/95` täsmäytys (ei yhdistetä, ei haeta verkosta), E-3 aineiston
+   yksityinen varmuuskopio, E-4 päätökset OP-1–OP-3.
+3. **D-vaihe** (korjaukset) vasta erillisellä luvalla `korjaussuunnitelma.md`:n luvun 7 pohjalta.
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
@@ -356,8 +369,13 @@ H-171 high and P2). **C-13 complete, awaiting the user's approval**: synthesis o
 coverage, 15 root causes, uniform risk assessment with P1 5 / P2 35 / P3 62 / P4 47 / P5 27, 34 fix
 packages, dependency model and waves, regression test plan, five-stage development plan, first
 implementation batch, owner decisions OP-1..OP-18; independent review K1..K17 handled, H-033 raised
-to P1). Nothing fixed, built or run. Phase C is NOT marked closed; next: the user's review and the
-closing decision, then phase D on a separate decision.
+to P1). Nothing fixed, built or run. **Phase C was closed on 2026-11-26 by the user's decision**; the
+fix and test plans are approved as the starting point of phase D, which is not permission to start
+fixing. Closing does not mean the code base was fully reviewed (36 % of the lines are inventory
+only; no production file read in full). Next: phase K (knowledge base, `k-vaihe-suunnitelma.md`,
+planned, not started) on the user's go-ahead, and the preparatory tasks E-1..E-4
+(`korjaussuunnitelma.md` section 9). The audit branch must not be pushed to a public repository
+without separate approval.
 
 ## Resurssien käyttö / Resource usage (C-13)
 
@@ -531,7 +549,7 @@ Figures as reported by the harness. The C-3 figure was 745 489 / 360.
    ```sh
    git branch --show-current          # testit/vikojen-todentaminen
    git status --short                 # puhdas / clean
-   git log --oneline main..           # 35 committia / commits (viimeisin / last: C-13)
+   git log --oneline main..           # 36 committia / commits (viimeisin / last: vaiheen C sulkeminen / closing of phase C)
    python -I TPsource/V52/Tests/test_run_core_tests.py   # 46 OK
    python -I TPsource/V52/Tests/run_core_tests.py   # viimeisin tallennettu ajo / last stored run 2026-11-24: PASS=23, XFAIL=24 (vaatii Release- ja Asan-käännökset / needs the Release and Asan builds, testaus.md 13.6, 14; ei ajettu C-13:ssa / not run in C-13)
    python -I doc/arkkitehtuuri/tyokalut/tarkista_auditointi.py .   # OK
@@ -548,6 +566,10 @@ Figures as reported by the harness. The C-3 figure was 745 489 / 360.
      omiin haaroihinsa, ei dokumentaation kanssa. / No `TPsource/` changes without
      separate approval; bug fixes in their own branches, not with docs.
    - Ei massakommentointia. / No bulk commenting.
+   - D-vaihetta (korjauksia) ja K-vaiheen toteutusta ei aloiteta ilman erillistä lupaa. /
+     Neither phase D (fixes) nor the implementation of phase K starts without separate permission.
+   - Haaroja `origin/88`, `90`, `92`, `95` ei yhdistetä eikä verkosta haeta ennen päätöstä. /
+     No merge of those branches and no fetch before a decision.
    - Commitit vain paikallisesti ja pyydettäessä. / Commits only locally and when asked.
 4. Kielisäännöt / language rules: dokumentit kaksikielisinä samassa tiedostossa,
    suomi ensin; uudet koodikommentit englanniksi ASCII-merkein; Pekan kommentit
