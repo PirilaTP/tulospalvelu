@@ -599,6 +599,14 @@ static bool pakotalaika_hyvaksy(INT32 stored, INT32 t, INT32 tlahto)
 		|| abs((long)NORMKELLO(t - stored)) <= (long)pakotalaikaraja * SEK;
 	}
 
+// GETREC -> muutos -> tallenna samassa tall_CriticalSection-lukossa: muuten rinnakkainen
+// tallennus (tiedonsiirto, kayttoliittyma) voi hukkua, kun vanha kopio kirjoitetaan paalle.
+// CRITICAL_SECTION on rekursiivinen, joten tallenna():n oma lukko sopii.
+struct SiTallLukko {
+	SiTallLukko() { EnterCriticalSection(&tall_CriticalSection); }
+	~SiTallLukko() { LeaveCriticalSection(&tall_CriticalSection); }
+};
+
 void tall_etulos(INT32 badge, INT32 t, INT32 tms, INT r_no, int Jono)
    {
    INT kno, d, piste = -2, jono = 0;
@@ -654,6 +662,7 @@ void tall_etulos(INT32 badge, INT32 t, INT32 tms, INT r_no, int Jono)
 		int tt;
 
 		itm.kno = kno;
+		SiTallLukko tallLukko;   // lukko ennen GETREC, ks. SiTallLukko
 		kilp.GETREC(d);
 		entkilp = kilp;
 		t += aikajono[jono]->aikakorjaus;
@@ -719,9 +728,7 @@ void tall_etulos(INT32 badge, INT32 t, INT32 tms, INT r_no, int Jono)
 				}
 			}
 		if (tallfl) {
-			EnterCriticalSection(&tall_CriticalSection);
 			kilp.tallenna(d,TRUE, 0, 0, &entkilp);
-			LeaveCriticalSection(&tall_CriticalSection);
 			}
 		}
 	else {
@@ -3670,14 +3677,6 @@ static bool siSaaTallentaa(INT32 ed, INT32 tm, int kno, INT32 badge, int piste)
 		}
 	return false;
 }
-
-// GETREC -> muutos -> tallenna samassa tall_CriticalSection-lukossa: muuten rinnakkainen
-// tallennus (tiedonsiirto, kayttoliittyma) voi hukkua, kun vanha kopio kirjoitetaan paalle.
-// CRITICAL_SECTION on rekursiivinen, joten tallenna():n oma lukko sopii.
-struct SiTallLukko {
-	SiTallLukko() { EnterCriticalSection(&tall_CriticalSection); }
-	~SiTallLukko() { LeaveCriticalSection(&tall_CriticalSection); }
-};
 
 // Handles one punch returned by the SportIdent Center REST API:
 // looks up the competitor by card number (bdg2kno, as with other
