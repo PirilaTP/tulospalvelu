@@ -765,7 +765,7 @@ def check_registers(root, hrows, trows, qs):
                                   % (p["kk"], p["aalto"], d, pk[d]["aalto"]))
             except ValueError:
                 errors.append("%s or %s: wave is not a number" % (p["kk"], d))
-    # every P1/P2 finding sits in a package of wave 1 or 2 unless the package says why not
+    errors += check_k0(doc, risk, hk, tk)
     print("registers: %d risk rows, %d packages, %d primary members"
           % (len(risk), len(packs), len(primary)))
     pc = {}
@@ -776,6 +776,115 @@ def check_registers(root, hrows, trows, qs):
         print("ERROR", e)
     print("OK" if not errors else "%d errors" % len(errors))
     return 1 if errors else 0
+
+
+# ------------------------------------------- phase K data model (K-0) checks ---
+JS_OK = re.compile(r"JS-(?:[1-9]|1[0-5])$")
+PROGRAMS = ("HkKisaWin", "HkMaali", "ViestiWin", "ViestiMaali", "ViestiLuenta")
+STATES = ("avoin", "korjattu", "kumottu", "ei_korjata")
+IMPACT_VALUES = ("vahvistettu", "mahdollinen", "ei_perusteltu", "ei_tiedossa", "ei_sovellu")
+# riskiarvio.csv value that rules out an impact, and values that assert one
+IMPACT_RISK = {
+    "tulokset": ("tulosten_oikeellisuus", ("ei",), ("suora", "epasuora")),
+    "ajanotto": ("ajanoton_jatkuvuus", ("ei",), ("pysayttaa", "hairitsee")),
+    "tietoturva": ("tietoturva", ("ei",), ("verkko", "paikallinen")),
+}
+
+
+def check_k0(doc, risk, hk, tk):
+    """Columns added in phase K-0: root cause, programs, state; T table; impacts; OP status."""
+    errs = []
+
+    def k0_row(where, r):
+        js = r.get("juurisyy")
+        if js is None:
+            errs.append("%s: K-0 columns missing" % where)
+            return
+        refuted = r.get("tila") == "kumottu"
+        if not (JS_OK.match(js) or js == "yksittainen" or (refuted and js == "-")):
+            errs.append("%s %s: bad juurisyy %r" % (where, r["id"], js))
+        for j in r.get("juurisyy_muut", "").split():
+            if not JS_OK.match(j) or j == js:
+                errs.append("%s %s: bad juurisyy_muut %r" % (where, r["id"], j))
+        progs = r.get("ohjelmat", "").split()
+        if progs != ["ei_tiedossa"] and (not progs or any(p not in PROGRAMS for p in progs)):
+            errs.append("%s %s: bad ohjelmat %r" % (where, r["id"], r.get("ohjelmat")))
+        basis = r.get("ohjelmat_peruste")
+        if basis not in ("tiedosto", "tarkistettu", "ei_tiedossa"):
+            errs.append("%s %s: bad ohjelmat_peruste %r" % (where, r["id"], basis))
+        if (progs == ["ei_tiedossa"]) != (basis == "ei_tiedossa"):
+            errs.append("%s %s: ohjelmat and ohjelmat_peruste disagree" % (where, r["id"]))
+        if r.get("tila") not in STATES:
+            errs.append("%s %s: bad tila %r" % (where, r["id"], r.get("tila")))
+        if r.get("tila") == "korjattu" and not r.get("korjaus"):
+            errs.append("%s %s: state korjattu without korjaus (commit, test)" % (where, r["id"]))
+
+    for r in risk:
+        k0_row("riskiarvio.csv", r)
+        refuted = hk.get(r["id"], {}).get("vakavuus") == "kumottu"
+        if refuted != (r.get("tila") == "kumottu"):
+            errs.append("riskiarvio.csv %s: tila %r but register severity %r"
+                        % (r["id"], r.get("tila"), hk.get(r["id"], {}).get("vakavuus")))
+    tpath = os.path.join(doc, "rekisteri", "tekninen-velka.csv")
+    if not os.path.exists(tpath):
+        errs.append("rekisteri/tekninen-velka.csv missing")
+    else:
+        with io.open(tpath, encoding="utf-8", newline="") as fh:
+            trs = list(csv.DictReader(fh))
+        if sorted(r["id"] for r in trs) != sorted(tk):
+            errs.append("tekninen-velka.csv: rows differ from the T register")
+        for r in trs:
+            k0_row("tekninen-velka.csv", r)
+    # impacts: long format, one row per (id, dimension); a missing row = not assessed
+    dpath = os.path.join(doc, "rekisteri", "vaikutusulottuvuudet.csv")
+    vpath = os.path.join(doc, "rekisteri", "vaikutukset.csv")
+    with io.open(dpath, encoding="utf-8", newline="") as fh:
+        dims = {r["ulottuvuus"]: r for r in csv.DictReader(fh)}
+    rk = {r["id"]: r for r in risk}
+    seen = set()
+    with io.open(vpath, encoding="utf-8", newline="") as fh:
+        imp = list(csv.DictReader(fh))
+    for r in imp:
+        key = (r["id"], r["ulottuvuus"])
+        where = "vaikutukset.csv %s/%s" % key
+        if key in seen:
+            errs.append(where + ": duplicate row")
+        seen.add(key)
+        if r["id"] not in hk and r["id"] not in tk:
+            errs.append(where + ": unknown id")
+        if r["ulottuvuus"] not in dims:
+            errs.append(where + ": unknown dimension")
+        if r["arvo"] not in IMPACT_VALUES:
+            errs.append(where + ": bad value %r" % r["arvo"])
+        if not r["peruste"].strip():
+            errs.append(where + ": no reason (peruste)")
+        if r["arvo"] in ("vahvistettu", "mahdollinen", "ei_perusteltu") and not r["lahde"].strip():
+            errs.append(where + ": no source (lahde)")
+        if dims.get(r["ulottuvuus"], {}).get("ryhma") == "ilmeneminen" and r["arvo"] == "ei_sovellu":
+            errs.append(where + ": ei_sovellu is not allowed for an occurrence dimension")
+        if hk.get(r["id"], {}).get("vakavuus") == "kumottu" and r["arvo"] not in ("ei_sovellu", "ei_perusteltu"):
+            errs.append(where + ": refuted finding can only have ei_sovellu or ei_perusteltu")
+        rule = IMPACT_RISK.get(r["ulottuvuus"])
+        if rule and r["id"] in rk:
+            v = rk[r["id"]][rule[0]]
+            if v in rule[1] and r["arvo"] in ("vahvistettu", "mahdollinen"):
+                errs.append(where + ": %s but riskiarvio.csv %s=%s" % (r["arvo"], rule[0], v))
+            if v in rule[2] and r["arvo"] == "ei_perusteltu":
+                errs.append(where + ": ei_perusteltu but riskiarvio.csv %s=%s" % (rule[0], v))
+    assessed = sorted({i for i, _ in seen})
+    print("impacts: %d rows for %d ids (%d dimensions; other ids not assessed)"
+          % (len(imp), len(assessed), len(dims)))
+    # owner decisions: every OP section has a status line
+    op = read(os.path.join(doc, "omistajan-paatokset.md"))
+    secs = re.findall(r"^## (OP-\d+) .*?(?=^## |\Z)", op, re.S | re.M)
+    st = re.findall(r"^## (OP-\d+) [^\n]*\n\n- \*\*Tila / status\.\*\* (avoin / open|päätetty \d{4}-\d\d-\d\d / decided \d{4}-\d\d-\d\d)\n",
+                    op, re.M)
+    if len(secs) != 18 or len(st) != 18:
+        errs.append("omistajan-paatokset.md: %d OP sections, %d with a valid status line (expected 18)"
+                    % (len(secs), len(st)))
+    print("owner decisions: %d open, %d decided"
+          % (sum(1 for _, s in st if s.startswith("avoin")), sum(1 for _, s in st if not s.startswith("avoin"))))
+    return errs
 
 
 if __name__ == "__main__":

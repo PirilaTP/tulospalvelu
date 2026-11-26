@@ -9,10 +9,10 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | | |
 |---|---|
 | Haara / branch | `testit/vikojen-todentaminen` (tehty / created from `arkkitehtuuri-selvitys` @ `f5d793b`); dokumentaatiohaara / docs branch `arkkitehtuuri-selvitys` |
-| Analysoitu revisio / analysed revision | `f7fe553` (`TPsource/` ei muutettu sen jälkeen / unchanged since) |
+| Analysoitu revisio / analysed revision | `f7fe553` (`TPsource/`:n tuotantokoodi ei muuttunut sen jälkeen; vain C-11:n testit `Tests/` ja `VS/Tests/` lisätty, tarkistettu `git diff --stat f7fe553 HEAD -- TPsource` 2026-11-27 / production code unchanged since; only the C-11 tests added) |
 | Commitit `main`in päällä / commits on top of `main` | `1b72ec4` dokumentit / docs, `c273b9f` CLAUDE.md, `c651980` agentit, rekisteri, erä 1 / agents, register, batch 1, `3b1d978` tarkistuspiste / checkpoint, `851129f` erä / batch C-2, `bcd0098` erä / batch C-3, `f5d793b` C-11-suunnitelma / plan, `79d9957` C-11 vaihe 1 / stage 1, `cad2781` C-11 vaihe 2 / stage 2, `c11231b` vaihe 3 / stage 3, `432ea3d` koeajot 0–1 / runs 0–1, `c6205d2` vaihe 4 esiehdot / stage 4 prerequisites ja C-11:n päätöscommit / and the C-11 closing commit (testihaaralla / on the test branch); sen jälkeen erät C-4–C-13 paikallisina committeina samalla haaralla, viimeisimmät C-12:n sulkeminen `3f378e2` ja C-13 (`git log --oneline main..`) / then batches C-4..C-13 as local commits on the same branch |
 | Push / PR / issuet / issues | ei tehty; estetty paikallisesti / none; blocked locally. **Auditointihaaraa ei pushata julkiseen repositorioon ilman käyttäjän erillistä hyväksyntää** (aineistossa on korjaamattomien tietoturvavikojen yksityiskohtia); yksityinen varmuuskopio on tekemättä (`korjaussuunnitelma.md` 9.3) / the audit branch must not be pushed to a public repository without separate approval; a private backup has not been made |
-| Vaiheen tila / phase state | **Vaihe C suljettu 2026-11-26** käyttäjän päätöksellä; vaihe K suunniteltu, ei aloitettu; D-vaihe ei aloitettu / phase C closed; phase K planned, not started; phase D not started |
+| Vaiheen tila / phase state | **Vaihe C suljettu 2026-11-26** käyttäjän päätöksellä; **vaihe K käynnistetty 2026-11-27**: K-0 ja K-1 valmiit, K-2:n pilotti (12 korttia) odottaa käyttäjän hyväksyntää, K-3–K-5 ei aloitettu; D-vaihe ei aloitettu / phase K started: K-0 and K-1 done, K-2 pilot awaits approval; phase D not started |
 
 ## Valmiit erät / Completed batches
 
@@ -332,7 +332,11 @@ määrä on alaraja.
 1. **Vaihe K** (ohjelmiston tietopohja ja käsikirja) käyttäjän aloitusluvalla:
    `k-vaihe-suunnitelma.md`. Osat K-0 (rekisterien täydennys), K-1 (agentti `pirila-expert` ja
    skill `pirila-ask`), K-2 (229 selkokielistä vikakorttia), K-3 (toiminnallinen käsikirja), K-4
-   (paikallinen staattinen portaali). **Mitään K-vaiheen tuotosta ei ole vielä tehty.**
+   (paikallinen staattinen portaali), K-5 (lopputarkastus). **Tila 2026-11-27:** K-0 ja K-1
+   valmiit; K-2:n pilotti (H-033, H-041, H-071, H-093, H-099, H-109, H-129, H-145, H-159, H-171,
+   T-038, T-042) Opus-tarkastettu ja korjattu, odottaa käyttäjän hyväksyntää ennen muita 217
+   korttia (`doc/tietopohja/`). Agentti ja skill latautuvat vasta uudessa istunnossa
+   (`doc/tietopohja/laatu/tarkastukset/k1-testiajo.md`).
 2. **D-vaiheen ennakkotehtävät** (`korjaussuunnitelma.md` luku 9), ei aloitettu: E-1 rajattu
    riskiseulonta 62 riville (H-033:n perusteella), E-2 haarojen `origin/88`, `origin/90`,
    `origin/92` ja `origin/95` täsmäytys (ei yhdistetä, ei haeta verkosta), E-3 aineiston

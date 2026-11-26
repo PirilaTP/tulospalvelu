@@ -50,6 +50,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-1 Auditointitulosten julkaisu, push ja suojausohjeet
 
+- **Tila / status.** avoin / open
 - **Asia.** Milloin ja miten auditointidokumentit, testikoodi ja korjaukset viedään julkiseen
   repositorioon, ja julkaistaanko käyttäjille väliaikaiset suojausohjeet ennen korjauksia.
 - **Miksi.** Dokumentit kuvaavat verkosta oletusasetuksin laukeavia muistivikoja (H-071, H-072,
@@ -70,6 +71,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-2 Testi- ja CI-käytäntö
 
+- **Tila / status.** avoin / open
 - **Asia.** (1) Miten tunnettu, korjaamaton vika näkyy testiajossa ja miten korjattu vika muuttuu
   pysyväksi regressiotestiksi. (2) Korjataanko vai poistetaanko `Tests/run.sh` (H-006). (3) Saako
   tuotantokoodiin lisätä testikoukkuja. (4) Ajetaanko testit CI:ssä ja käytetäänkö itseisännöityä
@@ -88,6 +90,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-3 C++-standardi tuotantokoodissa
 
+- **Tila / status.** avoin / open
 - **Asia.** Sallitaanko C++11 tai uudempi tuotantokoodissa (Q9).
 - **Miksi.** Projektien kielitaso on C++03; yksikkötestit vaativat C++11:n. Lukkovartijat ja
   omistajuuden ilmaiseminen ovat helpompia uudemmalla standardilla, mutta klassisen bcc32:n tuki
@@ -101,6 +104,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-4 Yhteensopivuuspolitiikka
 
+- **Tila / status.** avoin / open
 - **Asia.** (1) Pitääkö eri ohjelmaversioiden toimia samassa verkossa, vai päivitetäänkö kaikki
   työasemat aina yhtä aikaa. (2) Saako tiedostojen ja sanomien muotoa muuttaa (versio,
   tarkistussumma, todennus) ja millä ehdoilla. (3) Saako UDP-vastapuolen osoitteen vaihtumista
@@ -127,6 +131,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-5 FILESEND-tiedostonsiirron rajaus
 
+- **Tila / status.** avoin / open
 - **Asia.** Saako vastaanottava ohjelma rajata verkosta vastaanotetun tiedoston kohdehakemiston.
 - **Miksi.** Tiedostonsiirto työasemien välillä on dokumentoitu ominaisuus (`LÄHTIEDOSTOT`,
   käyttöohjeen liitteet). Vastaanottaja ei tarkista mitään: nimetty tiedosto avataan
@@ -142,6 +147,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-6 Vaiheen vaihdon tuettu käyttötapa ja nimeäminen
 
+- **Tila / status.** avoin / open
 - **Asia.** (1) Onko vaiheen vaihto käynnissä olevassa prosessissa tuettu käyttötapa, vai
   ohjeistetaanko käynnistämään ohjelma uudelleen (Q78). (2) Onko aikajonotiedoston nimen viidennen
   merkin poisto yksivaiheisessa kilpailussa tarkoitettu nimeämiskäytäntö (H-132). (3) Tarkoittaako
@@ -161,6 +167,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-7 MySQL-peilin asema, tuonti ja jakelu
 
+- **Tila / status.** avoin / open
 - **Asia.** (1) Tuetaanko MySQL-peilausta jatkossa. (2) Hyväksytäänkö periaate, ettei valinnaisen
   peilin virhe saa lopettaa ohjelmaa eikä pysäyttää tallennusta. (3) Mitä SQL-tuonnin (`lue_SQL`)
   kuuluu tehdä tietueille, joita kannassa ei ole (H-169). (4) Jaetaanko `dbxmys.dll` ja
@@ -179,6 +186,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-8 Kolmannen osapuolen lähdekoodin ehdot
 
+- **Tila / status.** avoin / open
 - **Asia.** Miten käsitellään Blaise Computing Inc:n (16 tiedostoa, "Version 6.00 (C) 1983–1989")
   ja Microsoftin esimerkkikoodin (3 tiedostoa, 1993–1997) tiedostot, joissa ei ole lisenssitekstiä
   eikä GPL-otsikkoa (OM-C10-1, Q101, T-047).
@@ -194,6 +202,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-9 Ominaisuuksien tarkoituksellisuus
 
+- **Tila / status.** avoin / open
 - **Asia.** Onko seuraava käytös tarkoitettua:
   (1) kuntosuunnistustilan emit-koodin vaihto vain GUI-ohjelmassa (`KUNTOSUUNN`, H-081, Q60);
   (2) `kuntosuunnmoodi`n arvojen 1, 2, 3, 98, 99 merkitys (Q75; H-119, H-120);
@@ -222,6 +231,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-10 Kuolleen koodin, orpojen tiedostojen ja valitsinten poisto
 
+- **Tila / status.** avoin / open
 - **Asia.** Saako poistaa koskaan määrittelemättömien valitsinten haarat (noin 7 400 riviä,
   T-050), kuolleen riippuvuuskoodin (T-049), vanhat kopiot (T-011) ja 32 orpoa tiedostoa (T-007);
   ovatko orvot käytössä muualla (Q10, Q11).
@@ -236,6 +246,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-11 Asetusavainten kanoninen muoto ja yksiköt
 
+- **Tila / status.** avoin / open
 - **Asia.** (1) `AIKAKORJAUSn`: HK kertoo arvon `SEK / 100`, viesti `SEK`; kumpi yksikkö on
   tarkoitettu (Q112). (2) Editorit kirjoittavat avaimia, joita jäsennin ei tunne (`AIKACOM=` ym.,
   H-173): kumpi kirjoitusasu on oikea. (3) `UDPVIIVEET=` hukkaa ensimmäisen arvon (H-176).
@@ -251,6 +262,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-12 Tuetut tuotteet, kokoonpanot ja käyttöjärjestelmät
 
+- **Tila / status.** avoin / open
 - **Asia.** Mitkä ohjelmat ja käännöskokoonpanot ovat tuettuja: viisi toimitettavaa ohjelmaa,
   toimittamattomat kokoonpanot (`VALUKU=200`, `MAXOSUUSLUKU=250`; T-051, T-017), viestin
   `NREGNLY` 8 konsolissa ja 32 ViestiWinissä (T-024), ViestiLuenta, sekä tuetut Windows-versiot.
@@ -266,6 +278,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-13 Laitteet ja ulkoiset palvelut
 
+- **Tila / status.** avoin / open
 - **Asia.** (1) Mitkä laitteet ovat käytettävissä testaukseen (Emit, emiTag, Sirit/Zebra, FEIG,
   ARES, ampumalaite, C-Power). (2) Lukijan kuittauksen merkitys: pitääkö lukija kuittausta
   lopullisena, ja saako saman kortin toisen luennan hyväksyä (Q86, Q100; H-145, H-168).
@@ -282,6 +295,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-14 Kentän käyttötavat (tietopyyntö)
 
+- **Tila / status.** avoin / open
 - **Asia.** Tietoja siitä, miten ohjelmia käytetään kilpailuissa: avataanko viestin vientitiedosto
   `KILP.DAT`:na (Q29, H-046); käytetäänkö käsin muokattuja `RADAT.LST`-tiedostoja tai yli 50
   rastin ratoja (Q47); useita lukijoita yhdellä HK-instanssilla (Q81); ajetaanko ilman levypuskuria
@@ -294,6 +308,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-15 Merkistökäytäntö
 
+- **Tila / status.** avoin / open
 - **Asia.** Miten korjataan lähdetiedostojen sekalaiset merkistöt: lisätäänkö BOM, otetaanko
   `/utf-8` käyttöön tai koodataanko tiedostoja uudelleen (H-004, H-005, T-004, T-027).
 - **Miksi.** Molemmat kääntäjät lukevat BOMittoman UTF-8:n väärin, joten osa teksteistä näkyy
@@ -309,6 +324,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-16 HK- ja viestihaarojen lähentämisen tavoite
 
+- **Tila / status.** avoin / open
 - **Asia.** Halutaanko HK- ja viestikoodia yhdistää, ja kumpi haara on ohjeellinen, kun korjaus on
   tehty vain toiseen (Q77, T-034).
 - **Miksi.** Haarat ovat erkaantuneet kopioimalla sekä lomakkeissa että ytimessä. Git-historiassa
@@ -323,6 +339,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-17 Modernisoinnin selvityskohteet
 
+- **Tila / status.** avoin / open
 - **Asia.** Mitkä pitkän aikavälin vaihtoehdot selvitetään: GUI-kääntäjä (klassinen bcc32 vai
   C++Builderin Clang-kääntäjä, 64-bittisyys), kielistandardi, `TWebBrowser`in (IE-moottori)
   korvaaminen, tietokanta-ajuri (dbExpress vai FireDAC), IPv6, konsoliohjelmien asema.
@@ -336,6 +353,7 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-18 Korjausjulkaisujen käytäntö
 
+- **Tila / status.** avoin / open
 - **Asia.** Julkaistaanko välittömät korjaukset omana julkaisunaan vai kootaanko ne; miten versio
   numeroidaan; kuka hyväksyy julkaisun; miten julkaisupaketti testataan (Q98). Lisäksi: missä
   järjestyksessä avoimet ominaisuushaarat ja korjaukset yhdistetään. Paikallisten viitteiden mukaan

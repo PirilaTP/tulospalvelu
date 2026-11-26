@@ -1,11 +1,20 @@
 # Vaihe K: ohjelmiston tietopohja ja käsikirja – toteutussuunnitelma / Phase K: knowledge base and handbook – implementation plan
 
-Laadittu 2026-11-26 vaiheen C sulkemisen yhteydessä käyttäjän pyynnöstä. **Tämä on suunnitelma:
-yhtään K-vaiheen tuotosta ei ole vielä tehty, eikä agenttia, skilliä, vikakortteja, käsikirjaa tai
-portaalia ole luotu.** Toteutus alkaa vasta käyttäjän aloitusluvalla.
+Laadittu 2026-11-26 vaiheen C sulkemisen yhteydessä; käyttäjä hyväksyi suunnitelman ja käynnisti
+vaiheen K 2026-11-27 tarkennuksin (pilotin korttivalinta, vaikutusten koneluettava luokitus, K-4:n
+lisävaatimukset luku 8.2a, uusi K-5 luku 8a).
 
-Written on 2026-11-26 at the closing of phase C. **This is a plan: no phase K output exists yet.**
-Implementation starts only on the user's go-ahead.
+**Toteutuksen tila 2026-11-27:**
+
+| Osa | Tila | Missä |
+|---|---|---|
+| K-0 | **valmis**: rekisterisarakkeet `juurisyy`, `juurisyy_muut`, `ohjelmat`, `ohjelmat_peruste`, `tila`, `korjaus`; `rekisteri/tekninen-velka.csv`; vaikutusrekisteri `rekisteri/vaikutusulottuvuudet.csv` + `rekisteri/vaikutukset.csv` (luku 4.1); OP-kohtien tilarivit; `synteesi.py --tarkista` laajennettu; `tyokalut/tietopohja.py`, `tyokalut/viitteet.py`; korttipohjat, kirjoitusohje, sanaston runko | `rekisteri/README.md`, `doc/tietopohja/` |
+| K-1 | **valmis**: agentti `pirila-expert`, skill `pirila-ask`, 32 kysymyksen pankki ajettu ja arvioitu | `doc/tietopohja/laatu/` |
+| K-2 | **pilotti valmis tarkastettavaksi** (10 H + 2 T, Opus-tarkastettu ja korjattu); muut 217 korttia odottavat pilotin hyväksyntää | `doc/tietopohja/vikakortit/` |
+| K-3, K-4, K-5 | ei aloitettu | – |
+
+Written on 2026-11-26; approved and started by the user on 2026-11-27. K-0 and K-1 are done, the K-2
+pilot awaits the user's review; K-3 to K-5 not started.
 
 ## 1. Tarkoitus ja rajaus / Purpose and scope
 
@@ -109,6 +118,27 @@ omana askeleenaan. Olemassa olevia arvoja ei muuteta.
 **Valmis, kun:** tarkistus menee läpi; jokaisella avoimella H:lla on `juurisyy`, `ohjelmat` ja
 `tila`; epävarmat `ohjelmat`-arvot on lueteltu.
 
+### 4.1 Toteutettu tietomalli / Data model as implemented (2026-11-27)
+
+Ero suunnitelmaan: käytännön vaikutukset tulivat omaan pitkämuotoiseen rekisteriinsä eivätkä
+riskiarvion sarakkeiksi, jotta luokitus ei muutu kyllä/ei-valinnaksi eikä samaa tietoa kopioida.
+
+| Tieto | Paikka | Arvot | Huomio |
+|---|---|---|---|
+| juurisyy, pahentavat | `riskiarvio.csv`, `tekninen-velka.csv` | JS-1–JS-15, `yksittainen` | 23 H-riviä ja T-010, T-047 `yksittainen` |
+| ohjelmat | sama | viisi ohjelmaa tai `ei_tiedossa`; peruste `tiedosto` (yläraja) / `tarkistettu` | 9 H:ta ja T-038 tarkistettu pilotissa; H-006 ja 14 T-riviä `ei_tiedossa` |
+| tila, korjaus | sama | `avoin`, `korjattu`, `kumottu`, `ei_korjata`; commit ja testi | kaikki avoimia, H-099 kumottu |
+| T-rivin kokonaisuus | vain `korjauskokonaisuudet.csv` | – | ei kopioida |
+| käytännön vaikutukset | `vaikutusulottuvuudet.csv` (16 ulottuvuutta, 3 ryhmää) + `vaikutukset.csv` (rivi = havainto × ulottuvuus) | `vahvistettu`, `mahdollinen`, `ei_perusteltu`, `ei_tiedossa`, `ei_sovellu`; puuttuva rivi = ei arvioitu | ohjelmointivirheen todennus on erikseen `riskiarvio.csv`:n `todennus`-sarakkeessa |
+| OP:n tila | `omistajan-paatokset.md`, rivi "Tila / status" | `avoin / open` tai `päätetty pvm` | kaikki 18 avoimia |
+
+Tarkistukset (`synteesi.py --tarkista`): sallitut arvot; ristiriidat riskiarvioon (tulokset,
+ajanotto, tietoturva: "ei" estää vahvistettu/mahdollinen, vaikutus estää ei_perusteltu); kumotulla
+vain ei_sovellu/ei_perusteltu; ilmenemisulottuvuuksissa ei ei_sovellu; lähde pakollinen.
+Viitteiden kiinnitys: `viitteet.py` lukee jokaisen rivin viitteet sen revisiosta (`git show`) ja
+raportoi siirtymät nykyiseen työpuuhun (1 278 viitettä, 0 virhettä; H-090:n neljä viitettä oli
+kirjattu väärän tiedoston perään ja korjattiin `Hk/HkIV.cpp`:lle).
+
 ## 5. K-1: asiantuntija-agentti `pirila-expert` ja skill `pirila-ask`
 
 ### 5.1 Tavoite / Goal
@@ -204,6 +234,15 @@ tulospalvelun käyttäjä ja kilpailun järjestäjä, ei ohjelmoija. Kortit ovat
 
 ### 6.2 Kortin rakenne / Card structure
 
+**Toteutettu rakenne (2026-11-27)** poikkeaa alla olevasta luonnoksesta: kortissa on kolme
+generoitua lohkoa (yhteenveto alussa, vaikutustaulukko luvussa 6, tekniset tiedot luvussa 14) ja 12
+kirjoitettua lukua käyttäjän 17 kysymyksen mukaan: 1 Lyhyesti, 2 Mitä ohjelma yrittää tehdä, 3 Mikä
+menee vikaan, 4 Missä tilanteessa, 5 Mitä käyttäjä voi huomata, 7 Mitä kilpailun aikana voi tapahtua,
+8 Palautuminen ja uudelleenkäynnistys, 9 Mitä käyttäjä voi tehdä, 10 Tekninen juurisyy, 11 Mitä on
+todennettu (ohjelmointivirhe ja käytännön seuraus erikseen), 12 Mitä ei vielä tiedetä, 13 Miten on
+tarkoitus korjata. Pohjat ja säännöt: `doc/tietopohja/vikakortit/_malli-*.md`,
+`doc/tietopohja/kirjoitusohje.md`. Alla oleva taulukko on alkuperäinen luonnos.
+
 Jokaisessa H-kortissa on kaksi osaa.
 
 **A. Tekninen tietolohko (generoitu, ei käsin).** Rekistereistä: tunnus, erä, tila, prioriteetti,
@@ -259,7 +298,7 @@ tiedetä.
 
 | Vaihe / Step | Sisältö / Content | Tekijä / By |
 |---|---|---|
-| 1 Pilotti | 10 korttia eri tyypeistä: P1-verkkovika (H-071), lukon jääminen (H-110), hiljainen tulosvirhe (H-111), vaiheen vaihto (H-129), laite (H-159), GUI (H-109), asetus (H-171), kokoomarivi (H-170), kumottu (H-099), tekninen velka (T-034) | Sonnet; Opus tarkastaa; **käyttäjä hyväksyy pohjan ja tyylin ennen jatkoa** |
+| 1 Pilotti | käyttäjän valinnan (2026-11-27) mukaan H-033, H-041, H-071, H-093, H-099 (kumottu), H-109, H-129, H-145, H-159, H-171 sekä T-038 ja T-042 | Sonnet; Opus tarkastaa kaikki 12; **käyttäjä hyväksyy pohjan ja tyylin ennen jatkoa** |
 | 2 Rungot | kaikkien korttien generoitu lohko | skripti |
 | 3 Kirjoitus | erissä korjauskokonaisuuksittain, P1 ja P2 ensin; syötteenä rekisteririvi, riskirivi, kokonaisuuden kuvaus ja raportin kohta | Sonnet, enintään kolme rinnakkain |
 | 4 Vaikeat havainnot | säikeet ja lukot, replikointi, vaiheen vaihto, muistiviat, joiden seuraus on päätelty: tulkinta ennen kirjoitusta tai sen tarkastus | Opus |
@@ -341,7 +380,7 @@ P1–P3-havainnot on kytketty toimintoihin; luku 14 kertoo kattavuusrajoitteen.
 
 | Näkymä / View | Sisältö / Content | Lähde / Source |
 |---|---|---|
-| Havainnot | taulukko ja haku; suodattimet: ohjelma, prioriteetti, vakavuus, todennus, tila, erä, juurisyy, kokonaisuus | `riskiarvio.csv`, `havainnot.md` |
+| Havainnot | taulukko ja haku; suodattimet: ohjelma, prioriteetti, vakavuus, todennus, tila, erä, juurisyy, kokonaisuus ja käytännön vaikutukset (luku 8.2a) | `riskiarvio.csv`, `tekninen-velka.csv`, `vaikutukset.csv`, `havainnot.md` |
 | Vikakortti | selkokielinen kortti, tekninen lohko, lähdeotteet, linkit raportteihin | kortit, rekisterit |
 | Juurisyyt | JS-1–JS-15 jäsenineen ja kokonaisuuksineen | `riskiarvio.csv`, `auditoinnin-yhteenveto.md` 7 |
 | Korjauskokonaisuudet | taulukko, kokonaisuuden sivu, riippuvuuskaavio aalloittain (skriptin piirtämä SVG) | `korjauskokonaisuudet.csv` |
@@ -351,6 +390,25 @@ P1–P3-havainnot on kytketty toimintoihin; luku 14 kertoo kattavuusrajoitteen.
 | Kysymykset | Q1–Q112 luokkineen | `seuranta.md`, `todisteet/c13/osaA0/kysymykset.csv` |
 | Kattavuus | analyysitasot hakemistoittain, tutkimattomat alueet; **pysyvä huomautus jokaisella sivulla** | `tiedostot.csv`, `auditoinnin-yhteenveto.md` 3 |
 | Asiakirjat | linkit teknisiin asiakirjoihin ja käsikirjaan | hakemistot |
+
+### 8.2a Käyttäjän tarkennukset 2026-11-27 / User refinements
+
+Käyttäjä lisäsi portaalille seuraavat vaatimukset K-vaiheen käynnistyksessä. Ne ovat osa K-4:n
+valmiusehtoa.
+
+| # | Vaatimus / Requirement | Toteutustapa / How |
+|--:|---|---|
+| 1 | Vikakortin kopiointi | painike kopioi kortin Markdown-tekstin leikepöydälle (`navigator.clipboard`; jos selain estää sen paikallisesta tiedostosta, tekstialue valmiiksi valittuna) |
+| 2 | Vikakortin tulostus | tulostustyylit (`@media print`): vain kortti, ei navigaatiota; generoidut lohkot mukana |
+| 3 | Suodatus käytännön vaikutusten mukaan | suodatin jokaiselle `vaikutusulottuvuudet.csv`:n ulottuvuudelle; valittavissa arvot (vahvistettu, mahdollinen, ei vaikutusta perustellusti, ei tiedossa, ei sovellu, **ei arvioitu**) erikseen, ei kyllä/ei-valintaa; oletus "vahvistettu tai mahdollinen" |
+| 4 | Käsikirjan ja vikakorttien linkitys | molempiin suuntiin `kasikirja/toiminnot.csv`:n kautta: luvun sivulla sen toimintojen kortit, kortilla luvut, joissa vika mainitaan |
+| 5 | Valmiin pirila-ask-kysymyksen kopiointi | kortilla ja havaintorivillä painike, joka kopioi esimerkiksi `/pirila-ask Mitä H-033 tarkoittaa kilpailun järjestäjälle, ja onko se korjattu?`; portaali ei itse kutsu agenttia |
+| 6 | Revisio ja ajantasaisuus näkyvissä | jokaisen sivun alatunnisteessa datan tuottoaika, työpuun commit, rekisterien tiivisteet ja viitteiden revisio; varoitus, jos `tietopohja.py`:n tarkistus havaitsee lähteiden muuttuneen tuoton jälkeen |
+| 7 | Avoimet, historialliset, korjatut ja kumotut erikseen | tila-suodatin (`tila`: avoin, korjattu, kumottu, ei korjata) oletuksena "avoin"; korjatulla kortilla korjauksen commit ja testi; kumotulla kumoamisen peruste; historiallinen tieto (aiempi prioriteetti, erän alkuperäinen vakavuus) näytetään merkittynä |
+| 8 | Ei ulkoisia palveluita | ei verkkoresursseja, kirjastoja, API-avaimia eikä palvelinta; tarkistus etsii lähdetiedostoista `http`-, `https`- ja `//`-alkuiset resurssiviittaukset |
+
+Paikallinen esikatselu pilotin arviointia varten jätettiin tekemättä: kortit ovat Markdownia ja
+luettavissa sellaisinaan, ja erillinen esikatselu olisi ollut K-4:n päällekkäistä työtä.
 
 ### 8.3 Lähdekoodiviittaukset / Source references
 
@@ -380,6 +438,25 @@ työpuusta muokkaimessa, ja merkintä, jos rivi on siirtynyt tai muuttunut (luku
 **Valmis, kun:** portaali avautuu ilman palvelinta ja verkkoa; jokainen pyydetty toiminto on
 käytettävissä; luvut täsmäävät rekistereihin; rekisterin muutos näkyy uudelleentuoton jälkeen ja
 tarkistus huomaa vanhentuneen datan.
+
+## 8a. K-5: kokonaisuuden laadunvarmistus / Overall quality assurance
+
+Lisätty käyttäjän pyynnöstä 2026-11-27. Tehdään, kun K-1–K-4 ovat valmiit. **K-5 ei ole
+tuotantokoodin auditointi**: se tarkistaa tietopohjan, ei ohjelmaa. Jos tarkistuksessa huomataan
+mahdollinen uusi vika, se kirjataan ehdokkaaksi `seuranta.md`:hen.
+
+| # | Tarkistus / Check | Menetelmä / Method | Tekijä / By |
+|--:|---|---|---|
+| 1 | Sisäinen johdonmukaisuus | kaikki validaattorit (`tarkista_auditointi.py`, `synteesi.py --tarkista`, `tietopohja.py tarkista`, `viitteet.py`) virheettä; kortin, käsikirjan, portaalin ja rekisterin luvut täsmäävät koneellisesti; yksikään kortti ei ole vanhentunut | skripti |
+| 2 | Lähdeviittaukset | otos (vähintään 10 % korteista ja käsikirjan väitteistä, kaikki P1–P2) väite kerrallaan lähdettä vasten; viitteet kiinnitetyssä revisiossa; siirtymäraportti avoimille | Opus |
+| 3 | Käytettävyys | tehtäväpohjainen läpikäynti järjestäjän näkökulmasta (esim. "mitkä viat voivat pysäyttää ajanoton viestissä", "mitä teen, jos RFID-lukija katkeaa"); portaalin suodattimet, kopiointi ja tulostus; agentin vastaukset kysymyspankkiin (versio 2) | käyttäjä; Sonnet valmistelee |
+| 4 | Ylläpidettävyys | koeajo: yksi rekisteririvi muutetaan väliaikaisesti haarassa, ja tarkistetaan, että lohkot, vanhentumisilmoitus, portaalin data ja agentin vastaus seuraavat; muutos perutaan | Sonnet |
+| 5 | Ajantasaisuus | portaalin data ja kortit vastaavat rekisterien nykyistä tilaa; dokumentaation tilatiedot (README, CHECKPOINT, seuranta) ajan tasalla | skripti, Sonnet |
+| 6 | Kattavuusrajoite ja luottamuksellisuus | rajoite näkyy jokaisessa tuotoksessa; ei hyödyntämisohjeita; säilytysrajoitus kirjattu | Opus |
+| 7 | Tunnukset | H-, T-, Q-, JS-, KK- ja OP-tunnukset ennallaan (vertailu vaiheen C sulkemiscommitiin) | skripti |
+
+**Valmis, kun:** kaikki tarkistukset läpi tai poikkeamat käsitelty; tarkastusraportti
+`doc/tietopohja/laatu/tarkastukset/`; käyttäjä hyväksyy; paikallinen sulkemiscommit.
 
 ## 9. Tietopohjan ylläpito / Maintaining the knowledge base
 
@@ -478,7 +555,7 @@ hyväksyntäkohdat: K-0:n sarakkeet, K-2:n pilottikortit, K-3:n sisällysluettel
 | K-2 | 229 korttia, sanasto, tarkastusraportit | luku 6.4 |
 | K-3 | 15 lukua, `toiminnot.csv` | luku 7.4 |
 | K-4 | portaalin lähdetiedostot ja datan tuotto | luku 8.5 |
-| K-5 | lopputarkastus ja sulkeminen | kaikki tarkistukset läpi; kattavuusrajoite näkyy jokaisessa tuotoksessa; tunnukset ennallaan; ylläpito-ohje `doc/tietopohja/README.md`:ssä; paikallinen commit |
+| K-5 | lopputarkastus ja sulkeminen (luku 8a) | kaikki tarkistukset läpi; kattavuusrajoite näkyy jokaisessa tuotoksessa; tunnukset ennallaan; ylläpito-ohje `doc/tietopohja/README.md`:ssä; paikallinen commit |
 
 Koko vaiheen K ehdot: tuotantokoodi, projektit ja CI ennallaan; mitään ei käännetty, ajettu eikä
 pushattu; rekisteri on edelleen ensisijainen lähde; yksikään johdannainen ei ole ristiriidassa
