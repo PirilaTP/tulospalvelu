@@ -28,15 +28,33 @@ voi viitata siihen.
 4. **Ei yleisyysarvioita** (usein, harvoin, todennäköisesti, yleensä, tyypillisesti), ellei lähde
    sano niin. Jos yleisyys riippuu käyttötavasta, sanotaan, mistä se riippuu. Tarkistus varoittaa
    näistä sanoista; jokainen varoitus pitää voida perustella lähteellä.
-5. **Kiertotapana tai palautumiskeinona mainitaan vain aineistossa kirjattu keino**, esimerkiksi
-   väliaikaiset suojaussuositukset (`muistiturvallisuus.md` luku 15) tai riskiarvion
-   palautettavuus. Muuten: "Aineistossa ei ole kirjattua keinoa." Kirjoittajan oma järkeily
-   merkitään "päätelty" ja sen perusteet kerrotaan, tai se jätetään pois.
+5. **Toimintaohjeet kolmella tasolla** (luku 9; käyttäjän täsmennys 2026-11-27). Jokainen ohje
+   merkitään yhdellä kolmesta:
+   - **[Todennettu toimintaohje]** – keinon teho on osoitettu kokeella, testikehyksessä tai
+     ohjelmaa ajamalla; kerro missä.
+   - **[Perusteltu, testaamaton suositus]** – johdettu lähdekoodista, testituloksista tai
+     auditointiaineistosta (esim. `muistiturvallisuus.md` luku 15, tunnettu laukaisuehto); kerro
+     peruste ja se, ettei tehoa ole kokeiltu. Yksittäisen kokeen tulosta ei yleistetä turvalliseksi
+     käyttörajaksi (esim. H-041: vältä tunnettua ongelmallista kokoonpanoa, mutta 220 pisteen
+     onnistunut koe ei tarkoita, että 220 olisi turvallinen raja kaikissa kokoonpanoissa).
+   - **[Ei tunnettua turvallista toimintaohjetta]** – kun perusteltua ohjetta ei ole.
+   Kiertotapoja ei keksitä eikä niiden toimivuutta luvata.
 6. **Kirjoitetussa tekstissä ei ole rivinumeroita eikä prioriteettia.** Ne ovat generoidussa
    lohkossa, jotta ne eivät vanhene erikseen. Funktioiden ja tiedostojen nimet saa kirjoittaa.
 7. **Ei ohjeita vian hyödyntämiseen.** Verkkovioista kerrotaan, että verkossa oleva laite voi
    lähettää virheellisen sanoman, mutta ei sanoman rakennetta.
 8. **Ei omia korjausehdotuksia.** Luku 13 kertoo vain, mitä `korjaussuunnitelma.md` sanoo.
+13. **Palautuminen (luku 8)** jaetaan aina viiteen kohtaan, kukin omalla rivillään:
+    **Virhetilan poistaminen**, **Normaalin toiminnan palauttaminen**, **Tietojen palauttaminen**,
+    **Uusiutuminen** ja **Muut työasemat**. Riskiarvion palautettavuuskenttä ei yksin riitä. Jos
+    uudelleenkäynnistys toistaa saman vian (esim. vika laukeaa joka avauksessa), se sanotaan
+    selvästi kohdassa Uusiutuminen.
+14. **Vaikutusten perusteluissa** (vaikutusrivit ja luku 7) erotetaan tarvittaessa ohjelmaprosessin
+    suora seuraus, välillinen vaikutus kilpailuun ja vaikutus muihin työasemiin. Yhden
+    ajanottotyöaseman pysähtyminen ei ole koko kilpailun ajanoton pysähtyminen.
+15. **Esimerkit** ovat kilpailutoiminnan konkreettisia tilanteita, jotka perustuvat todelliseen
+    toimintapolkuun (koodi tai raportti). Kuvitteellinen tilanne kirjoitetaan konditionaalissa
+    ("jos maalissa luetaan ..."), ei toteutuneena tapahtumana. Vertaus on sallittu, kun se auttaa.
 9. Samaa asiaa ei toisteta useassa luvussa; myöhempi luku viittaa aiempaan. Erityisesti
    vahvistetun ja mahdollisen erottelu tehdään luvussa 1 lyhyesti ja luvussa 11 kokonaan; luku 7
    kuvaa vain tilanteen ja viittaa lukuun 11.
@@ -96,9 +114,10 @@ tehoa ei ole kokeiltu.
 
 Tarkennukset (pilotin kysymykset):
 
-- **Kiertotapa ja palautuminen:** jos aineistossa ei ole kirjattua keinoa, arvo on
-  `ei_tiedossa` (peruste "aineistossa ei ole kirjattua keinoa"). `ei_perusteltu` vain, jos aineisto
-  osoittaa, ettei keinoa voi olla. Omistajan päätöksen vaihtoehto ei ole kirjattu keino.
+- **Kiertotapa ja palautuminen:** `vahvistettu` = todennettu toimintaohje; `mahdollinen` =
+  kirjattu keino tai perusteltu, testaamaton suositus (peruste kertoo kumpi); `ei_tiedossa` = ei
+  tunnettua turvallista toimintaohjetta. `ei_perusteltu` vain, jos aineisto osoittaa, ettei keinoa
+  voi olla. Omistajan päätöksen vaihtoehto ei ole keino.
 - **Normaalikäyttö ja poikkeustilanne** arvioidaan erikseen, eikä `ei_sovellu` ole niissä
   sallittu. Poikkeustilanne tarkoittaa virhettä, katkosta, virheellistä syötettä tai harvinaista
   asetusta. Jos vika laukeaa tavallisessa käytössä ilman mitään näistä, poikkeustilanne on

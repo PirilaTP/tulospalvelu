@@ -110,6 +110,53 @@ tarkastettu" and do not rate it.
    (`doc/arkkitehtuuri/todisteet/c13/osaA0/makroartefaktit.csv`, for example relay `MAX_PORTTI`
    is 132, not 1); `#ifdef _CONSOLE` separates console and GUI code paths.
 
+## 3a. Broad functional questions (end-to-end chains)
+
+A question like "what happens from X until Y" spans several subsystems. The audit material usually
+covers each subsystem even when no document describes the whole chain: "the chain is not
+documented end to end" does not mean "not audited". Work like this:
+
+1. **Decompose** the chain into stages (input or device, parsing, in-memory state, threads and
+   locks, persistent files, transmission, reception on other workstations, publication) and name
+   the functions or files of each stage.
+2. **Documents first, per stage.** Start from the knowledge base (`doc/tietopohja/kasikirja/`,
+   including `aineisto/`, and `kasikirja/toiminnot.csv`), then the subsystem report:
+
+   | Subsystem | Audit report |
+   |---|---|
+   | persistent files, record layouts, integrity | `tiedostomuodot.md` (C-3) |
+   | external input, buffers, parsing of packets and device data | `muistiturvallisuus.md` (C-4) |
+   | compiler and configuration differences (MSVC vs bcc32) | `kaantajaerot.md` (C-5) |
+   | threads, locks, blocking calls | `saikeet-ja-lukot.md` (C-6) |
+   | `kilptietue::tallenna`, concurrent saving | `tallenna-samanaikaisuus.md` (C-1) |
+   | workstation communication, queues, acknowledgements, reconnects | `tiedonsiirto.md` (C-2) |
+   | global state, derived structures, stage change | `globaali-tila.md` (C-8) |
+   | error handling, whether a save or write succeeded | `virheenkasittely.md` (C-9) |
+   | devices, protocols, external dependencies, SQL | `riippuvuudet.md` 13, `todisteet/c10/raportit/osaD-laitteet.md` (C-10) |
+   | compile switches, settings, command line | `ominaisuusvalitsimet.md`, `rekisteri/valitsimet.csv`, `rekisteri/asetusavaimet.csv` (C-12) |
+   | risks, root causes, fix packages | `auditoinnin-yhteenveto.md`, `korjaussuunnitelma.md` (C-13) |
+   | detail behind any of the above | the batch's own reports `doc/arkkitehtuuri/todisteet/<batch>/raportit/*.md` and `todisteet/<batch>/*.md` (for example device frames and acknowledgements, persistent-data error paths) |
+
+   Grep these documents for the stage's function and file names before reading code: use every
+   function name of the chain you know, including callees and message or packet names, not only
+   the names in the question. Do not shorten the document search because the answer is taking
+   long; a complete answer is better than a fast one.
+3. **Compile switches per program** for every stage (`#if` around the code, `valitsimet.csv`, the
+   project definitions in `TPsource/V52/VS/**/*.vcxproj` and `TPsource/V52/RADStudio10/*.cbproj`):
+   say which of the five programs run which branch.
+4. **Code only for the gaps**, and label it "luettu koodista nyt". Check `tiedostot.csv`
+   (`analyysitaso`) for the files you use: level 2 or 3 means the audit read them.
+5. **Known findings per stage**: Grep `havainnot.md` for each stage's functions and files and
+   attach every finding that applies to the stage where it can occur, with the condition
+   (program, switch, setting). Do not attach a finding only because it shares a word with the
+   question; say so if you checked one and it does not apply.
+6. **Keep apart** a call and its success: calling a write function is not a successful save,
+   putting a message into a send queue is not sending it, sending is not receipt, and receipt is
+   not an acknowledgement.
+7. **Answer layout** for such questions: a stage table (stage, what happens, programs, source:
+   document or code now, findings), then alternative paths, then open questions. Report in
+   "Tarkistukset" which documents you read for which stage.
+
 ## 4a. Reading the registers correctly (added after the first test run)
 
 1. Read priority, state and package from the register every time: `riskiarvio.csv` columns

@@ -225,6 +225,32 @@ Kysymystyypin mukainen hakureitti kirjataan agentin ohjeeseen:
 yhtään keksittyä väitettä eikä virheellistä viitettä; jokainen "ei tiedossa" -kysymys on
 tunnistettu sellaiseksi; validaattori hyväksyy agenttimäärittelyn.
 
+### 5.7 Laajat toiminnalliset kysymykset ja `pirila-learn` (suunnitelma) / Broad questions and pirila-learn (plan)
+
+**Havainto 2026-11-27.** Kysymykseen Emit-kortin luennasta kortin lukemisesta tuloksen välitykseen
+asti agentti vastasi lähes kokonaan uudella lähdekoodin lukemisella (vertailuajo: 3 asiakirjan ja
+13 lähdetiedoston lukua, `doc/tietopohja/laatu/tarkastukset/emit/perusvastaus.md`), vaikka erät
+C-1–C-3, C-6, C-9, C-10 ja C-12 kattavat ketjun vaiheet. Agentin ohjeen hakureitit olivat
+kysymystyyppikohtaisia, eivät vaihekohtaisia, eikä ohje sanonut, että kokonaisketjun puuttuminen
+asiakirjoista ei tarkoita auditoimattomuutta. Agentin ohjeeseen lisättiin yleinen luku 3a
+(ketjun jako vaiheisiin, vaihekohtainen raporttitaulukko, valitsimet ohjelmittain, koodi vain
+aukkoihin, havainnot vaiheisiin, kutsun ja onnistumisen erottaminen, vastauksen rakenne).
+Emit-ketjun tarkastettu selvitys on K-3:n aineistoa (`doc/tietopohja/kasikirja/aineisto/`), ja
+agentti löytää sen lähdekerroksesta 3.
+
+**`pirila-learn` [ehdotus, ei toteutettu].** Käyttäjä voi myöhemmin tallentaa erikseen hyväksymänsä
+toiminnallisen selvityksen tietopohjaan. Periaatteet:
+
+| # | Periaate |
+|--:|---|
+| 1 | `pirila-ask` pysyy vain luku -toimintona. `pirila-learn` on erillinen skill, jonka vain käyttäjä käynnistää (`disable-model-invocation: true`); agentti ei voi kutsua sitä. |
+| 2 | Syöte on käyttäjän nimeämä vastaus- tai selvitystiedosto ja käyttäjän nimenomainen hyväksyntä samassa komennossa. Ilman hyväksyntää ei kirjoiteta mitään. |
+| 3 | Tulos on uusi tiedosto `doc/tietopohja/kasikirja/aineisto/<aihe>.md` otsakkeineen: kysymys, päiväys, agentin versio (commit), malli, hyväksyjä, tila "käyttäjän hyväksymä, ei riippumattomasti tarkastettu", lähdeluettelo ja lähteiden tiivisteet. Olemassa olevaa tiedostoa ei korvata. |
+| 4 | Rekistereihin (H, T, Q, KK, OP, vaikutukset) ei kirjoiteta koskaan. Selvityksessä mainitut uudet ehdokkaat siirretään `seuranta.md`:n ehdokastaulukkoon vain käyttäjän erillisellä päätöksellä. |
+| 5 | Tallennuksen jälkeen ajetaan `tietopohja.py tarkista` ja `portaali.py`; selvitys näkyy portaalin käsikirjaosassa merkinnällä "aineisto". |
+| 6 | Kun lähteet muuttuvat, tarkistus merkitsee aineiston vanhentuneeksi (sama tiivistemenettely kuin korteissa). |
+| 7 | Toteutus vasta käyttäjän erillisellä luvalla; ennen sitä aineisto tallennetaan käsin tai pääistunnon avulla. |
+
 ## 6. K-2: selkokielinen vikakortisto / Plain-language defect cards
 
 ### 6.1 Laajuus ja kohderyhmä / Scope and audience

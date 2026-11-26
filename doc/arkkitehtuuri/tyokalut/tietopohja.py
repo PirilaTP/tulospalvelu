@@ -7,6 +7,10 @@ Usage (from the repository root):
     python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . kuittaa <id> ...  record the register state
                                                                            the text was checked against
     python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . tarkista          check all cards (exit 1 on error)
+    python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . kasikirja         rebuild the findings block of every
+                                                                           handbook chapter from kasikirja/toiminnot.csv
+    python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . tuo <csv> ...     import writer fragments (impacts,
+                                                                           checked programs) into the registers
     python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . kooste            generated reading document of all
                                                                            cards (doc/tietopohja/laatu/vikakorttipilotti.md)
 
@@ -67,6 +71,10 @@ T_HEADINGS = [
     "Mitä ei tiedetä",
     "Tekniset tiedot ja lähteet",
 ]
+RECOVERY_LABELS = ["Virhetilan poistaminen", "Normaalin toiminnan palauttaminen", "Tietojen palauttaminen",
+                   "Uusiutuminen", "Muut työasemat"]
+ADVICE_LABELS = ["Todennettu toimintaohje", "Perusteltu, testaamaton suositus",
+                 "Ei tunnettua turvallista toimintaohjetta"]
 GENERATED_SECTIONS = {"Vaikutukset kilpailuun", "Tekniset tiedot ja lähteet"}
 
 VALUE_LABEL = {
@@ -391,6 +399,15 @@ def cmd_tarkista(data):
                 errors.append("%s: section '%s' is empty" % (i, h))
             elif h not in GENERATED_SECTIONS and ts.strip() and ts.strip() in s:
                 errors.append("%s: section '%s' still has the template text" % (i, h))
+        if data.kind(i) == "H":
+            sec = dict(zip(found, sections))
+            s8 = sec.get("Palautuminen ja uudelleenkäynnistys", "")
+            for lab in RECOVERY_LABELS:
+                if "**%s:**" % lab not in s8:
+                    errors.append("%s: section 8 lacks '%s'" % (i, lab))
+            s9 = sec.get("Mitä käyttäjä voi tehdä riskin pienentämiseksi", "")
+            if not any(re.search(r"\[%s\.?\]" % re.escape(lab), s9) for lab in ADVICE_LABELS):
+                errors.append("%s: section 9 has no advice level label" % i)
         if "<selkokielinen otsikko" in text or "<mitä alun perin" in text:
             errors.append("%s: title not written" % i)
         for n, line in enumerate(body.splitlines(), 1):
@@ -408,6 +425,7 @@ def cmd_tarkista(data):
         for x in set(re.findall(r"\bJS-\d+\b", body)):
             if x not in own:
                 warnings.append("%s: mentions %s, which is not its root cause in the register" % (i, x))
+    check_handbook(data, errors, warnings)
     kp = os.path.join(data.root, KOOSTE_PATH)
     if os.path.exists(kp):
         cur = read_text(kp)
@@ -560,6 +578,168 @@ def cmd_kooste(data):
     print("written", KOOSTE_PATH)
 
 
+CHAPTER_HEADINGS = ["Mitä tapahtuu", "Erot ohjelmien välillä", "Asetukset ja käännösvalitsimet",
+                    "Vaihtoehtoiset polut ja virhetilanteet", "Tunnetut viat tässä toiminnossa",
+                    "Mihin tieto perustuu", "Mitä ei ole selvitetty"]
+
+
+def handbook_dir(data):
+    return os.path.join(data.root, "doc", "tietopohja", "kasikirja")
+
+
+def chapters(data):
+    d = handbook_dir(data)
+    if not os.path.isdir(d):
+        return []
+    return sorted(f[:-3] for f in os.listdir(d) if re.match(r"\d{2}-[a-z0-9-]+\.md$", f))
+
+
+def functions(data):
+    p = os.path.join(handbook_dir(data), "toiminnot.csv")
+    return rcsv(p) if os.path.exists(p) else []
+
+
+def viat_block(data, chapter):
+    rows = [r for r in functions(data) if r["luku"] == chapter]
+    if not rows:
+        return ["Tähän lukuun ei ole kytketty toimintoja (`kasikirja/toiminnot.csv`)."]
+    L = ["| Toiminto | Havainto | Tila | Prioriteetti | Kuvaus |", "|---|---|---|---|---|"]
+    for r in rows:
+        for i in r["havainnot"].split():
+            if i not in data.reg:
+                continue
+            sr = data.state_row(i)
+            title = data.reg[i]["otsikko"].replace("|", "/")
+            card = data.path(i)
+            if os.path.exists(card):
+                t = read_text(card).split("\n", 1)[0]
+                if "<selkokielinen" not in t:
+                    title = t[2:].split(" – ", 1)[-1].replace("|", "/")
+            L.append("| %s | [%s](../vikakortit/%s/%s.md) | %s | %s | %s |" % (
+                r["toiminto"], i, i[0], i, sr.get("tila", ""), data.risk.get(i, {}).get("prioriteetti", "-"), title))
+    L.append("")
+    L.append("Generoitu tiedostosta `kasikirja/toiminnot.csv` ja rekistereistä (tila, prioriteetti); älä muokkaa käsin.")
+    return L
+
+
+def cmd_kasikirja(data):
+    for ch in chapters(data):
+        p = os.path.join(handbook_dir(data), ch + ".md")
+        old = read_text(p)
+        new = BLOCK_RE.sub(lambda m: "\n".join(wrap(m.group(1), viat_block(data, ch))) if m.group(1) == "viat" else m.group(0), old)
+        if new != old:
+            write_text(p, new)
+            print("updated", ch)
+
+
+def check_handbook(data, errors, warnings):
+    chs = chapters(data)
+    if not chs:
+        return
+    fn = functions(data)
+    for r in fn:
+        if r["luku"] not in chs:
+            errors.append("toiminnot.csv: unknown chapter %r (%s)" % (r["luku"], r["toiminto"]))
+        for i in r["havainnot"].split():
+            if i not in data.reg:
+                errors.append("toiminnot.csv: unknown id %s (%s)" % (i, r["toiminto"]))
+        for p in r.get("ohjelmat", "").split():
+            if p not in ("HkKisaWin", "HkMaali", "ViestiWin", "ViestiMaali", "ViestiLuenta"):
+                errors.append("toiminnot.csv: bad program %r (%s)" % (p, r["toiminto"]))
+    for ch in chs:
+        t = read_text(os.path.join(handbook_dir(data), ch + ".md"))
+        found = re.findall(r"^## (?:\d+\. )?(.+?)\s*$", t, re.M)
+        if found != CHAPTER_HEADINGS:
+            errors.append("kasikirja/%s.md: headings differ from the template" % ch)
+        blk = BLOCK_RE.search(t)
+        if not blk or "\n".join(wrap("viat", viat_block(data, ch))) != blk.group(0):
+            errors.append("kasikirja/%s.md: generated findings block out of date (run: tietopohja.py . kasikirja)" % ch)
+        if not t.startswith("# %s " % ch[:2]):
+            errors.append("kasikirja/%s.md: first line must be '# %s <title>'" % (ch, ch[:2]))
+    linked = {i for r in fn for i in r["havainnot"].split()}
+    missing = sorted(i for i, r in data.risk.items() if r.get("tila") == "avoin" and r.get("prioriteetti") in ("P1", "P2", "P3")
+                     and i not in linked)
+    if len(chs) >= 15 and missing:
+        errors.append("handbook: %d open P1-P3 findings not linked to any function: %s" % (len(missing), " ".join(missing)))
+    elif missing:
+        warnings.append("handbook incomplete: %d open P1-P3 findings not yet linked" % len(missing))
+
+
+def write_rows(path, header, rows):
+    out = io.StringIO(newline="")
+    w = csv.writer(out, lineterminator="\n")
+    w.writerow(header)
+    w.writerows(rows)
+    with open(path, "wb") as fh:
+        fh.write(out.getvalue().encode("utf-8"))
+
+
+def cmd_tuo(data, files):
+    """Import writer fragments: vaikutukset_*.csv (id,ulottuvuus,arvo,peruste,lahde) and
+    ohjelmat_*.csv (id,ohjelmat,peruste). Existing impact rows of the same (id, dimension) are
+    replaced; every value is validated first and nothing is written if anything is wrong."""
+    reg = os.path.join(data.doc, "rekisteri")
+    dims = [d["ulottuvuus"] for d in data.dims]
+    values = ("vahvistettu", "mahdollinen", "ei_perusteltu", "ei_tiedossa", "ei_sovellu")
+    progs_ok = ("HkKisaWin", "HkMaali", "ViestiWin", "ViestiMaali", "ViestiLuenta")
+    imp_new, prog_new, errs = {}, {}, []
+    for f in files:
+        rows = list(csv.DictReader(io.open(f, encoding="utf-8-sig", newline="")))
+        base = os.path.basename(f)
+        for r in rows:
+            r = {k.strip(): (v or "").strip() for k, v in r.items() if k}
+            i = r.get("id", "")
+            if i not in data.reg:
+                errs.append("%s: unknown id %r" % (base, i))
+                continue
+            if "ulottuvuus" in r:
+                if r["ulottuvuus"] not in dims or r.get("arvo") not in values or not r.get("peruste"):
+                    errs.append("%s: bad impact row %s/%s/%s" % (base, i, r.get("ulottuvuus"), r.get("arvo")))
+                    continue
+                key = (i, r["ulottuvuus"])
+                if key in imp_new:
+                    errs.append("%s: duplicate %s/%s" % (base, i, r["ulottuvuus"]))
+                imp_new[key] = [i, r["ulottuvuus"], r["arvo"], r["peruste"], r.get("lahde", "")]
+            elif "ohjelmat" in r:
+                p = r["ohjelmat"].replace(",", " ").split()
+                if not p or any(x not in progs_ok for x in p):
+                    errs.append("%s: bad programs for %s: %r" % (base, i, r["ohjelmat"]))
+                    continue
+                prog_new[i] = " ".join(x for x in progs_ok if x in p)
+    for i in {k[0] for k in imp_new}:
+        if data.kind(i) == "H":
+            missing = [d for d in dims if (i, d) not in imp_new and d not in data.imp.get(i, {})]
+            if missing:
+                errs.append("%s: impact dimensions missing: %s" % (i, " ".join(missing)))
+    if errs:
+        for e in errs:
+            print("ERROR", e.encode("ascii", "replace").decode())
+        print("nothing written")
+        return 1
+    vpath = os.path.join(reg, "vaikutukset.csv")
+    cur = {(r["id"], r["ulottuvuus"]): [r["id"], r["ulottuvuus"], r["arvo"], r["peruste"], r["lahde"]]
+           for r in rcsv(vpath)}
+    cur.update(imp_new)
+    order = {d: n for n, d in enumerate(dims)}
+    rows = sorted(cur.values(), key=lambda r: (r[0], order[r[1]]))
+    write_rows(vpath, ["id", "ulottuvuus", "arvo", "peruste", "lahde"], rows)
+    for name in ("riskiarvio.csv", "tekninen-velka.csv"):
+        p = os.path.join(reg, name)
+        with io.open(p, encoding="utf-8", newline="") as fh:
+            rr = list(csv.reader(fh))
+        h = rr[0]
+        n = 0
+        for r in rr[1:]:
+            if r[0] in prog_new:
+                r[h.index("ohjelmat")] = prog_new[r[0]]
+                r[h.index("ohjelmat_peruste")] = "tarkistettu"
+                n += 1
+        write_rows(p, h, rr[1:])
+        print("%s: programs updated for %d rows" % (name, n))
+    print("impacts: %d rows imported, register now %d rows" % (len(imp_new), len(rows)))
+    return 0
+
+
 def main(argv):
     if len(argv) < 3:
         print(__doc__)
@@ -572,6 +752,10 @@ def main(argv):
         cmd_lohkot(data, ids)
     elif cmd == "kuittaa":
         cmd_kuittaa(data, ids)
+    elif cmd == "kasikirja":
+        cmd_kasikirja(data)
+    elif cmd == "tuo":
+        return cmd_tuo(data, ids)
     elif cmd == "kooste":
         cmd_kooste(data)
     elif cmd == "tarkista":

@@ -44,12 +44,16 @@ mahdollista. Ei yleisyysarvioita ilman lähdettä.
 
 ## 8. Palautuminen ja uudelleenkäynnistys
 
-Voiko tilanteesta palautua kilpailun aikana, auttaako ohjelman uudelleenkäynnistys, ja koskeeko
-vika muita työasemia. Vain aineistossa kirjattu.
+- **Virhetilan poistaminen:** miten vian aiheuttama tila poistuu (esim. ohjelman sulkeminen).
+- **Normaalin toiminnan palauttaminen:** miten ohjelma saadaan taas toimimaan.
+- **Tietojen palauttaminen:** voiko menetetyn tai vioittuneen tiedon palauttaa ja miten.
+- **Uusiutuminen:** laukeaako vika uudelleen, esim. heti uudelleenkäynnistyksen jälkeen.
+- **Muut työasemat:** koskeeko vika tai palautuminen muita työasemia.
 
 ## 9. Mitä käyttäjä voi tehdä riskin pienentämiseksi
 
-Vain auditoinnissa kirjatut keinot ja niiden lähde. Muuten: "Aineistossa ei ole kirjattua keinoa."
+Jokainen ohje merkitään: [Todennettu toimintaohje], [Perusteltu, testaamaton suositus] tai
+[Ei tunnettua turvallista toimintaohjetta]. Peruste ja lähde jokaiselle.
 
 ## 10. Tekninen juurisyy
 
