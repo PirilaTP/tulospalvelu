@@ -1,9 +1,8 @@
 # Virheenkäsittely ja resurssit / Error handling and resources (C-9 vaihe 1 / step 1)
 
-Tila / status: vaihe 1 valmis ja tarkastettu (`f1eb195`); vaihe 2 (eristetyt koeohjelmat,
-luku 12) valmis ja riippumattomasti tarkastettu, odottaa käyttäjän katselmointia ja
-sulkemispäätöstä (2026-11-26). / Step 1 done (`f1eb195`); step 2 (isolated probes, section 12) done
-and independently reviewed; awaiting the user's review and closing decision.
+Tila / status: **valmis ja suljettu / done and closed 2026-11-26** käyttäjän hyväksynnällä.
+Vaihe 1 `f1eb195`, vaihe 2 (eristetyt koeohjelmat, luku 12) `920930c`, sulkeminen luku 13. /
+Step 1 `f1eb195`, step 2 (section 12) `920930c`, closure in section 13.
 
 Analysoitu revisio / analysed revision: `7aaca40` (tuotantolähdekoodi ennallaan revisiosta
 `f7fe553` / production sources unchanged since `f7fe553`). Polut suhteessa `TPsource/V52/`, ellei
@@ -457,7 +456,7 @@ wrong; items 13 and 17 duplicates.
 - **Uusi T-042:** `closeprfile` ottaa osoittimen arvona eikä voi nollata kutsujan kenttää; kutsujat
   nollaavat sen tapauskohtaisesti tai eivät lainkaan (H-149, H-151, H-152, N1).
 
-### 12.9 Korjausjärjestys / fix priority [päätelty / inferred]
+### 12.9 Korjausjärjestys / fix priority [päätelty / inferred] (viimeistelty luvussa 13.3 / finalised in 13.3)
 
 P2 (kiireellinen) **H-149** (konsolin viestiohjelmat kaatuvat oletuskonfiguraatiossa). P3 H-145,
 H-146, H-151, H-147, H-150. P4 H-148, H-152, H-153, H-154, H-155. P5 H-156, H-157, H-158. Korjaukset
@@ -488,3 +487,117 @@ GUI-ajon, VCL-koeohjelman tai laitteen eivätkä estä sulkemista. Suositus: **C
 käyttäjän hyväksynnällä; avoimet asiat siirretään jatkotehtäviksi (`seuranta.md`). / Step 2 goals
 met; open items need a GUI run, a VCL probe or hardware and do not block closing. Recommendation:
 C-9 can be closed on the user's approval, with the open items moved to follow-ups.
+
+## 13. Sulkeminen / Closure (2026-11-26)
+
+C-9 suljettiin käyttäjän hyväksynnällä. Vaihe 1 `f1eb195`, vaihe 2 `920930c`, sulkeminen tässä
+commitissa. Uusia analyyseja tai koeohjelmia ei tehty sulkemisessa. / C-9 closed on the user's
+approval; step 1 `f1eb195`, step 2 `920930c`; no new analysis or probes at closing.
+
+### 13.1 Kattavuus suhteessa rajaukseen / Coverage against the scope
+
+| Rajauksen valmis-ehto / done criterion (`suunnitelma.md` "C-9 vaihe 1") | Toteutuma / status |
+|---|---|
+| Osan A luettelo kattaa kohdehakemistot / inventory covers the target directories | **täytetty / met**: 11 hakemistoa, 417 tiedostoa; 242 tiedostoa ilman rivejä perusteltu (luku 10); v1/v2-erotus käyty läpi (12.6) |
+| Jokaisen pysyvän tiedoston kirjoitusvirheen käsittely kuvattu / every persistent file's write-error handling described | **täytetty / met**: luku 4 ja kokonaiskuva 12.7 (`KILP.DAT`, emit, AJAT, `COMFILE`, SQL-jono, lokit, tulostiedostot, `vaihevalinta.cfg`) |
+| Toistuvien toimintojen vuodot käyty läpi / leaks in repeated operations reviewed | **täytetty / met**: luku 5; H-150 mitattu (12.5) |
+| Tila virheen jälkeen ja lopetuspolut / state after errors and exit paths (osa D) | **täytetty / met**: luku 6; noin 55 kohtaa luettu otoksena, lopetustaulukko; `tark_alku`n konsolikysely lisätty vaiheessa 2 (12.6) |
+| Uudet merkittävät havainnot tarkastettu riippumattomasti / new significant findings reviewed | **täytetty / met**: vaihe 1 Opus (19 väitettä), vaihe 2 Opus (9 kohtaa + N1); matalat kokoomarivit H-156 ja H-157 vain osittain |
+| Validaattori / validator | **täytetty / met** |
+| Vaihe 2 erillisellä päätöksellä / step 2 on a separate decision | **tehty / done** (luku 12) |
+
+Rajatut ulos alusta asti: muistiturvallisuus (C-4), lukot (C-6), protokolla (C-2), lomakesyötteet
+(C-7), ulkoiset kirjastot (C-10), korjaukset. Puutteet, jotka eivät estä sulkemista: H-152:n ajo,
+GUI- ja C++Builder-käännösten ajonaikainen käytös (Q91, Q92, Q95), laitteen kuittaus (Q86),
+yksittäiset matalat kohdat H-156/H-157:ssä.
+
+### 13.2 Todentamisen rajat / Limits of verification
+
+| Todennuksen laji / kind | Havainnot / findings |
+|---|---|
+| Vain staattinen (lähdekoodi luettu) / static only | H-148, H-152, H-153, H-154, H-155, H-156, H-157, H-158; T-040, T-041; vaiheen 1 lopetus- ja säiepäätelmät (luku 6) |
+| Eristetty koeohjelma muuttamattomalla tuotantokoodilla, tila- tai käytöstarkistus (MSVC Release) / isolated probe with unchanged production code | H-145, H-146, H-147, H-150; H-149:n Release-seuraukset ja N1 (prosessin päättyminen kirjataan seurauksena, ei mekanismin todisteena) |
+| ASanilla todennettu muistiturvallisuusvirhe (MSVC Asan) / memory-safety defect shown by ASan | H-149 (a) käyttö vapautuksen jälkeen, (b) kaksoisvapautus, (d) käyttö vapautuksen jälkeen; (c) kaksoispoisto näkyy ASanissa käyttöoikeusvirheenä instrumentoimattomassa `~TextFl`:ssä ja on todiste vain yhdessä koodin kanssa; H-151 käyttö vapautuksen jälkeen |
+| Toimitetulla ohjelmalla vahvistettu / confirmed with a shipped program | **ei yhtään / none** C-9:ssä. Kaikki vaikutukset toimitettuihin ohjelmiin (HkMaali, ViestiMaali, ViestiLuenta, HkKisaWin, ViestiWin) ovat päättelyä koeohjelmista ja koodista |
+| C++Builderin ajonaikaiskirjaston koe (ei tuotantokoodia) / bcc32 RTL probe | Q83, Q84 ja Q85:n RTL-osa; konsoliohjelma `-WCMR`, ei VCL:ää eikä ajonaikaisia paketteja |
+
+**MSVC ja C++Builder / MSVC and C++Builder.** Kaikki koeohjelmat ovat MSVC-käännöksiä samalla
+`/MT`-asetuksella kuin konsolituotteet (HkMaali, ViestiMaali, ViestiLuenta). Niiden tulos
+(esim. H-149:n `0xC0000374`) kuvaa MSVC:n CRT:n ja Windowsin keon käytöstä; konsolituotteiden
+odotetaan käyttäytyvän samoin, mutta sitä ei ole ajettu. GUI-tuotteet (HkKisaWin, ViestiWin)
+käännetään bcc32:lla ja käyttävät ajonaikaisia paketteja; niistä tiedetään vain RTL-kokeen
+tulokset:
+
+| Asia / item | MSVC (koeohjelma / probe) | C++Builder (RTL-koe tai tuntematon / RTL probe or unknown) |
+|---|---|---|
+| `fputs`/`fputws` virheessä / on error | −1 kaikilla tyypeillä | −1 (RTL-koe) → H-147:n tarkistus kuollut myös GUI:ssa |
+| CRT-virtojen raja / stream limit | 512 | 50 (RTL-koe; GUI:n vakiotila tuntematon, Q95) |
+| Kaksoisvapautus / double free | prosessi päättyy `0xC0000374` | pelkkä RTL: hiljainen; VCL-muistinhallinta tuntematon (Q91) |
+| `_wfopen_s`-kirjoitusvirran jakotila / share mode | yksinoikeus (virhe 32 muille) | tuntematon (Q92) |
+
+MSVC-koeohjelman kaatumista ei siis yleistetä GUI-tuotteiden käytökseksi; GUI:ssa H-149 on
+todennettu vain mekanismina (sama lähdekoodi), ei vaikutuksena.
+
+### 13.3 Korjausjärjestyksen viimeistely / Final fix priority
+
+Luvun 12.9 järjestys säilyy, yhdellä perustellulla muutoksella (H-150). Prioriteettitasot
+`muistiturvallisuus.md` luku 15: P1 verkosta oletusasetuksin, P2 verkosta tai laitteelta tietyllä
+asetuksella, P3 toimitetussa käännöksessä tavallisella datalla; C-8 sijoitti hyökkääjästä
+riippumattoman H-129:n P2:een, mikä on vertailukohta. / Levels as in memory-safety section 15;
+H-129 (no attacker) in P2 is the precedent.
+
+- **H-149: P2, jonon kärkeen (ei P1) / P2, first (not P1).** Peruste: ASanilla todennettu
+  muistivirhe, joka toteutuu tavallisessa konfiguraatiossa joka kierroksella ja kaataa
+  MSVC-konsoliohjelman ensimmäisellä kierroksella. P1 on varattu verkosta yhdellä väärennetyllä
+  paketilla laukeaville vioille; H-149:ää ei voi laukaista verkosta, ja se näkyy jo käyttöönotossa
+  (ensimmäinen automaattitulostus), mikä pienentää riskiä jäädä huomaamatta kilpailun alkuun asti.
+  H-149 sijoitetaan P2:ssa H-129:n edelle, koska se on deterministinen ja todennettu, kun H-129
+  vaatii noin 1 500 kilpailijaa ja vaiheen vaihdon. Vakavuus korkea ennallaan.
+- **H-145: P3, P3:n kärkeen / P3, first in P3.** Tulosten oikeellisuus: epäonnistunut kortti ei
+  päädy kilpailijalle, joten kilpailijalta puuttuu emit-tieto ja hänen tuloksensa tai
+  leimantarkastuksensa jää puuttumaan tai virheelliseksi, kunnes tieto syötetään käsin. Lukija
+  saa onnistumiskuittauksen (Emit-kello), joten kilpailijaa ei pyydetä lukemaan uudelleen.
+  Palautettavuus: oletusasetuksella ei saman istunnon aikana tavallisella uudelleenluvulla; käsin
+  syöttö tai uudelleenkäynnistys ja uusi luku palauttaa. Laukeaminen vaatii ympäristövirheen
+  (levy täynnä, verkkolevy, lukitus), ja operaattori saa ilmoituksen. Siksi P3 eikä P2;
+  vakavuus keskitaso ennallaan.
+- **H-150: P3 → P2 (muutos) / changed.** Peruste on tiedostovirtojen loppuminen, ei muistivuoto
+  (86 tavua kierrokselta on merkityksetön). Konfiguraatiossa XML-automaattivienti vaiheessa ≥ 2
+  ja `AUTOFILE.LST` hakemistossa virrat loppuvat varmasti saman kilpailupäivän aikana:
+
+  | Julkaisuväli / interval | MSVC (≈ 508 kierrosta, mitattu / measured) | C++Builder (≤ ≈ 45 kierrosta, RTL-raja 50 / limit) |
+  |---|---|---|
+  | 10 s | ≈ 1 h 25 min | ≤ ≈ 7,5 min |
+  | 30 s | ≈ 4 h 15 min | ≤ ≈ 22 min |
+  | 60 s (oletus / default) | ≈ 8 h 30 min | ≤ ≈ 45 min |
+
+  Sen jälkeen kaikki muut tiedostoavaukset epäonnistuvat (viennit, listat, lokit; emit-tiedoston
+  `_wfdopen` seuraavassa vaiheen vaihdossa voi johtaa `setvbuf(NULL)`:iin) [päätelty, Q95].
+  Asetuksesta riippuva, kilpailupäivän sisällä varma resurssin loppuminen vastaa P2:n määritelmää
+  "tietyllä asetuksella". Vakavuus pysyy keskitasona, koska tietojen katoamista tai kaatumista ei
+  ole todennettu (tarkastajan suositus: korkea vasta GUI/bcc32-ajon jälkeen). Kuinka yleinen
+  `AUTOFILE.LST` XML-viennin rinnalla on, on tuntematon.
+
+Lopullinen C-9-jono / final C-9 queue: **P2** H-149, H-150; **P3** H-145, H-146, H-151, H-147;
+**P4** H-148, H-152, H-153, H-154, H-155; **P5** H-156, H-157, H-158.
+
+### 13.4 Korjauskokonaisuudet myöhempää korjausvaihetta varten / Fix packages for the later fix phase
+
+| Kokonaisuus / package | Juurisyy / root cause | Havainnot / findings | Syöte / input |
+|---|---|---|---|
+| **KK-C9-1 `PRFILE`-osoittimien elinkaari / PRFILE pointer lifecycle** | T-042 (`closeprfile` ei voi nollata kutsujan osoitinta; osoitin kopioidaan rakenteiden välillä) | H-149 (myös N1), H-151, H-152; samassa funktiossa H-158 | 12.1, 12.5; koeohjelmat toimivat regressiotesteinä (ASan-tapausten pitää muuttua havaitsemattomiksi) |
+| **KK-C9-2 Tallennusvirheiden välitys, kuittaus ja palautus / propagation, acknowledgement and recovery of write failures** | T-040 (virheet ilmoituksina, ei paluuarvoina), T-041 (ei atomista eikä kestävää kirjoitusta) | H-015, H-145, H-146, H-147, H-148, H-153, H-156; liittyy H-044 | kokonaiskuva 12.7 (havaitseminen, välittyminen, uudelleenyritys, muisti, levy, kuittaus, palautettavuus, uudelleenkäynnistys) |
+| **KK-C9-3 Toistuvien toimintojen resurssit / resources in repeated operations** | kahvan tai olion omistaja epäselvä virhe- ja silmukkapoluilla | H-150, H-155 | 12.5, luku 5 |
+
+Kokonaisuudet ovat korjaussuunnittelun syöte; korjauksia ei ole aloitettu, ja ne tehdään omissa
+haaroissaan erillisellä päätöksellä. / Inputs to fix planning; no fix started.
+
+### 13.5 Jatkotyöjono / Follow-up queue
+
+Siirretään `seuranta.md`:hen ("Avoimet jatkotehtävät C-9:stä"): H-152:n toisto GUI-käsittelijällä;
+GUI/bcc32-ajot Q91 (VCL-muistinhallinta ja H-149), Q92 (`_wfopen_s`-jakotila), Q95 (virrat ja
+vaiheen vaihto, H-150); laite Q86 (kuittaus); Q87 (verkkolevyn kahva), Q89 (konsolin näppäin
+työsäikeessä), Q90 (muistipuskuri), Q93 (`sendtcpfile` tiedonsiirtoyhteydellä), Q94 (AJAT-rivit
+tuloksissa); H-153:n lukkiutuminen GUI-ajossa; H-149:n vahvistus toimitetulla konsoliohjelmalla
+vain erillisellä luvalla; matalat kokoomarivit H-156 ja H-157 yksitellen. / Moved to the tracking
+file's C-9 follow-ups.

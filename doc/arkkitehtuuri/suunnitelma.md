@@ -130,8 +130,8 @@ ends with an independent review (`independent-verifier`) and a register update
 | 6 | Säikeiden omistajuus ja synkronointi kokonaisuutena: kaikki säikeet, lukot, lukitusjärjestys, lopetus / thread ownership and synchronisation | keskitaso–korkea / medium–high | defect-concurrency-auditor, architecture-analyst | `tietorakenteet-ja-tila.md` laajennus — **vaihe 1 valmis / step 1 done 2026-11-25** (`saikeet-ja-lukot.md`, H-087–H-102, T-030–T-032, Q30 ratkaistu / resolved); **vaihe 2 valmis / step 2 done 2026-11-25** (luku 13: koeohjelmat, H-103–H-108, T-033, H-099 kumottu / refuted); **valmis ja suljettu / done and closed 2026-11-25** (`bf5b566`, `2767145`); avoimet jatkotehtävät `seuranta.md` / open follow-ups in `seuranta.md` |
 | 7 | GUI:n liiketoimintalogiikka: `cbHk/UnitEmit.cpp`, `UnitAjanotto`, `UnitArvonta`, `UnitKilpailijatiedot`, `ViestiWin/UnitEmit.cpp` / GUI business logic | keskitaso–korkea | architecture-analyst, defect-concurrency-auditor | moduulikuvaukset / module descriptions — **vaihe 1 valmis ja suljettu / step 1 done and closed 2026-11-25** (`gui-liiketoimintalogiikka.md`, H-109–H-127, T-034–T-037; jatkotyöjono / follow-up queue J7-1–J7-7) |
 | 8 | Globaali muuttuva tila: kuka kirjoittaa mitäkin, alustus, nollaus kilpailun vaihdossa / global mutable state | keskitaso / medium | architecture-analyst | `tietorakenteet-ja-tila.md` — **vaihe 1 valmis ja suljettu / step 1 done and closed 2026-11-26** (`globaali-tila.md`, H-128–H-144, T-038–T-039) |
-| 9 | Virheenkäsittely ja resurssit: palautusarvojen tarkistus, tiedostokahvat, muistivuodot, `writeerror`-polut / error handling and resources | keskitaso / medium | defect-concurrency-auditor | H/T-numerot — **vaihe 1 rajattu, ei aloitettu / step 1 scoped, not started** (alla / below) |
-| 10 | Ulkoiset riippuvuudet: MySQL/dbExpress, WinHTTP, laiteprotokollat, BPL-ajonaikaiset paketit / external dependencies | matala–keskitaso | build-dependency-analyst | `riippuvuudet.md` |
+| 9 | Virheenkäsittely ja resurssit: palautusarvojen tarkistus, tiedostokahvat, muistivuodot, `writeerror`-polut / error handling and resources | keskitaso / medium | defect-concurrency-auditor | H/T-numerot — **valmis ja suljettu / done and closed 2026-11-26** (`virheenkasittely.md`, H-145–H-158, T-040–T-042; vaiheet / steps `f1eb195`, `920930c`) |
+| 10 | Ulkoiset riippuvuudet: MySQL/dbExpress, WinHTTP, laiteprotokollat, BPL-ajonaikaiset paketit / external dependencies | matala–keskitaso | build-dependency-analyst | `riippuvuudet.md` — **vaihe 1 rajattu, ei aloitettu / step 1 scoped, not started** (alla / below) |
 | 11 | Käännös- ja testiautomaatio: testit CI:hin, `run.sh`, GUI-todennus kommenttimuutoksille / build and test automation | matala riski, suuri hyöty / low risk, high leverage | build-dependency-analyst, architecture-analyst, defect-concurrency-auditor, independent-verifier ×2 | `testaus.md` — **valmis / done 2026-11-24** (luku / section 20; 15 toistettu testikehyksessä, H-041 vahvistettu ajamalla / 15 reproduced, H-041 confirmed by running); CI-vienti avoin / CI integration open (Q35–Q42). GUI-kommenttien todennus (Q8) ei vielä / GUI comment verification not yet |
 
 Erät 2–5 ovat riippumattomia toisistaan ja voidaan ajaa missä järjestyksessä
@@ -146,6 +146,65 @@ Jatkotehtävä C-5:stä (ei numeroitu erä): syötteiden kokonaislukujäsennykse
 161 ehdokasta (`seuranta.md`, "Avoimet jatkotehtävät C-5:stä"); voidaan yhdistää erään 7.
 Follow-up from C-5 (not a numbered batch): integer-parse review, 161 candidates; may be
 merged with batch 7.
+
+### C-10 vaihe 1: rajaus / Step 1: scope (**valmisteltu, ei aloitettu / prepared, not started**)
+
+Suunnitelman erä 10 (taulukko yllä, ennallaan): ulkoiset riippuvuudet – MySQL/dbExpress, WinHTTP,
+laiteprotokollat, BPL-ajonaikaiset paketit; riski matala–keskitaso; agentti
+`build-dependency-analyst`; tuotos `riippuvuudet.md`. Erään 10 on siirretty Q5 (SQL-taulujen
+rakenne ja milloin SQL on käytössä, C-3). Rajaus pitää tavoitteen ja tuotoksen ennallaan ja
+painottaa sitä, mitä riippuvuuden puuttuminen, väärä versio tai vika tekee kilpailun aikana.
+
+**Lähtötiedot, ei analysoida uudelleen / inputs, not re-analysed:** `riippuvuudet.md`
+(hakemistoriippuvuudet, kirjastot ja linkitys, kolmannen osapuolen koodi, ajonaikaiset
+tiedostot, kehitysympäristö; T-005 Indy ja ODBC ilman käyttöä); C-2 (työasemien protokolla,
+H-022–H-039; ei laiteprotokollia); C-3 (`SQLjonoVarm.dat`, H-043); C-4 (laitesanomien jäsennyksen
+muistiturvallisuus H-055, H-056, H-060, H-070; P1/P2-jono); C-5 (kääntäjät, RTL-erot, T-023–T-029);
+C-6 (MySQL-jonon lukitus H-100, lukijasäikeet H-090, H-107); C-1 (H-014 MySQL-kirjoitus); C-9
+(H-145 lukijan kuittaus, H-157 `vahaku`/`FormatMessage`, bcc32-RTL-koe Q83–Q85); C-11
+(testikehys, CI-kysymykset Q35–Q42). Niihin viitataan, niitä ei toisteta.
+
+**C-10:n aihepiiriin kuuluvat avoimet kysymykset / open questions in scope:** Q5 (SQL),
+Q86 (laitteen kuittauksen tulkinta – staattisesti protokollan osalta), Q91 (ViestiWinin
+muistinhallinta ajonaikaisten pakettien kanssa – staattisesti: mikä muistinhallinta linkittyy),
+Q92 (bcc32-RTL:n `_wfopen_s`-jakotila – RTL-lähteistä, jos ne ovat asennuksessa), T-005.
+Q2 (ominaisuusvalitsimet) vain siltä osin kuin valitsin kytkee ulkoisen riippuvuuden päälle
+(esim. `EMITHTTP`, `TCPSIIRTO`, `EMITAG`, `TCPLUKIJA`); koko Q2 ei kuulu erään 10.
+
+| Osa / Part | Sisältö / Content | Agentti, malli / Agent, model |
+|---|---|---|
+| A | Inventaario tuotteittain (HkMaali, ViestiMaali, ViestiLuenta, HkKisaWin, ViestiWin): linkitettävät kirjastot (`.vcxproj`, `.cbproj` `PackageImports`/`#pragma link`), ajonaikaiset paketit ja DLL:t (`collect-gui-runtime.ps1`, `release.yml`), dynaamiset lataukset (`LoadLibrary`), VCL-komponentit `.dfm`-tiedostoissa (`TSQLConnection`, `TEdgeBrowser`/`TWebBrowser` ym.), Windows-API-alueet, ulkoiset tiedostot ja rekisteri, verkkopäätepisteet (portit, URL:t), laitetyypit `LID_*`; versiot ja niiden kiinnityskohdat; lisenssit; mitkä ominaisuusvalitsimet kytkevät riippuvuuden; raakatulos `todisteet/c10/` / per-product inventory | skripti + `build-dependency-analyst`, Sonnet |
+| B | Tietokanta: dbExpress/MySQL-ajurit ja asiakaskirjasto, `dbxkilp.ini`, Q5 (taulut, kentät, milloin SQL on käytössä), yhteyden avaus ja katkos, tunnistetietojen säilytys, ajurin tai palvelimen puuttumisen seuraus kilpailun aikana; H-014, H-043, H-100 vain viitteinä / database dependency | `architecture-analyst`, Sonnet |
+| C | HTTP ja selain: `com/gethttp.cpp` (WinHTTP) ja sen käyttäjät (`EMITHTTP`-pollaus, muut haut), aikakatkaisut, TLS ja varmenteiden tarkistus, välityspalvelin, virheiden käsittely; `TEdgeBrowser`/WebView2-ajonaikaisympäristö ja `TWebBrowser`; mitä puuttuva ajonaikaisympäristö tai palvelin tekee / HTTP and browser | `defect-concurrency-auditor`, Sonnet |
+| D | Laiteprotokollat: jokaisesta `LID_*`-laitteesta kuljetus (sarja, TCP, UDP, HTTP), kehystys, kuittaus ja uudelleenlähetys, aikakatkaisut, laiteohjelmistoon tai protokollaversioon sidotut oletukset ja mitä tapahtuu, kun laite katoaa tai lähettää odottamatonta; Q86 staattisesti; ei jäsennyksen muistiturvallisuutta (C-4) eikä säikeitä (C-6) / device protocols | `architecture-analyst`, Sonnet; `legacy-encoding-analyst`, Sonnet sanomarakenteiden tavutasolle tarvittaessa / for byte layouts if needed |
+| E | Ajonaikaiset paketit ja jakelu: GUI-tuotteiden BPL/DLL-joukko ja sen täydellisyys julkaisu-ZIP:ssä, C++Builder 13- ja Windows SDK -versioriippuvuudet, `DynamicRTL`/`UsePackages`, muistinhallinta (Q91 staattisesti), RTL-erot (Q92), MSVC:n staattinen CRT (`/MT`), käyttämättömät riippuvuudet (T-005), CI-ympäristön riippuvuudet (`.github/workflows/`) / runtime packages and deployment | `build-dependency-analyst`, Sonnet |
+| F | Riippumaton tarkastus uusille keskitason ja vakavammille väitteille sekä olemassa olevia havaintoja muuttaville väitteille / independent review | `independent-verifier`, Opus |
+| G | Dokumentointi: `riippuvuudet.md` laajennetaan (kaksikielinen luku "Ulkoiset riippuvuudet" ja tuotekohtainen taulukko), rekisterit, `seuranta.md`, `CHECKPOINT.md`; raakatulokset `todisteet/c10/`; validaattori; paikallinen commit, ei pushia / documentation | pääistunto / main session |
+
+A ensin (B–E käyttävät sen luetteloa); B, C ja D rinnakkain (enintään kolme analyysiagenttia);
+E A:n jälkeen joko rinnakkain B–D:n kanssa, jos kolmen agentin raja sallii, tai niiden jälkeen; F
+lopuksi. Ei keinotekoista tokenbudjettia; päällekkäisyys estetään lähtötietoluettelolla ja jakamalla
+kohteet (B tietokanta, C HTTP ja selain, D laitteet, E paketit ja jakelu). Rajattu pois:
+jäsennyksen muistiturvallisuus (C-4), työasemien välinen protokolla (C-2), lukot ja säikeet (C-6),
+korjaukset, kommentointi, koko Q2. Ajonaikaiset kokeet vain erillisellä päätöksellä ja vain
+eristettyinä (ei MySQL-palvelinta, ei verkkoa, ei laitteita, ei toimitettuja ohjelmia); vaiheessa 1
+ei ajeta mitään. Valmis, kun jokaisen tuotteen ulkoiset riippuvuudet on luetteloitu versioineen ja
+kiinnityskohtineen, jokaisen riippuvuuden puuttumisen tai vian seuraus kilpailun aikana on kuvattu
+(tai syy puuttumiseen kirjattu), Q5 on ratkaistu tai rajattu, uudet merkittävät havainnot on
+tarkastettu riippumattomasti ja validaattori menee läpi. Vaihe 2 erillisellä päätöksellä. [ehdotus]
+
+Batch 10, step 1: (A) scripted per-product inventory of external dependencies (libraries,
+runtime packages and DLLs, dynamic loads, VCL components in forms, Windows API areas, external
+files and registry, network endpoints, device types; versions and where they are pinned;
+licences; which feature switches enable them); (B) database: dbExpress/MySQL drivers, Q5, connect
+and loss, credentials; (C) HTTP (WinHTTP) and browser runtime; (D) device protocols per `LID_*`:
+transport, framing, acknowledgement, timeouts, loss of device; Q86 statically; (E) runtime
+packages and deployment: BPL/DLL set, C++Builder and SDK version coupling, memory manager (Q91
+statically), RTL differences (Q92), static MSVC CRT, unused dependencies (T-005), CI; (F) Opus
+review; (G) extend `riippuvuudet.md`, registers, evidence `todisteet/c10/`, local commit. Sonnet
+for inventory and analysis, Opus for review; no token budget; earlier findings are inputs. Out of
+scope: parser memory safety, workstation protocol, threads, fixes, commenting, the whole of Q2;
+no runs in step 1. [proposal]
 
 ### C-9 vaihe 2 / Step 2 (**valmis / done 2026-11-26**, `virheenkasittely.md` luku 12)
 

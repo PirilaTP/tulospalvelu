@@ -250,8 +250,17 @@ ensimmäiseen automaattiseen HTML-tulosteeseen); H-145, H-146, H-147, H-150, H-1
 testikehyksessä; uudet H-158, T-042, Q91–Q95; Q83, Q84, Q85, Q88 ratkaistu. Tulkinta
 `virheenkasittely.md` luku 12.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP:** käyttäjän sulkemispäätös C-9:stä (suositus: sulkea,
-`virheenkasittely.md` 12.11); C-10 vain erillisellä luvalla.
+**C-9 valmis ja suljettu (2026-11-26), käyttäjä hyväksyi** (`virheenkasittely.md` luku 13):
+kattavuus tarkistettu rajausta vasten; todentamisen rajat ja MSVC/C++Builder-erot kirjattu
+(koeohjelmien kaatumisia ei yleistetä toimitettuihin eikä C++Builder-ohjelmiin); lopullinen
+korjausjärjestys P2 H-149, H-150 (P3 → P2 tiedostovirtojen loppumisen perusteella), P3 H-145,
+H-146, H-151, H-147; korjauskokonaisuudet KK-C9-1 (`PRFILE`-elinkaari, T-042: H-149, H-151,
+H-152, H-158), KK-C9-2 (tallennusvirheiden välitys ja palautus, T-040, T-041), KK-C9-3
+(resurssit); jatkotehtävät `seuranta.md`.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP: C-10 vaihe 1** (ulkoiset riippuvuudet: tuotekohtainen
+inventaario, tietokanta ja Q5, HTTP ja selain, laiteprotokollat, ajonaikaiset paketit ja jakelu),
+rajaus `suunnitelma.md` "C-10 vaihe 1"; ei aloitettu, odottaa käyttäjän aloituslupaa.
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
@@ -270,8 +279,10 @@ isolated probe, not in a shipped program; H-129 in the fix queue as P2). **C-9 s
 (`virheenkasittely.md`, H-145–H-157, T-040–T-041, Q83–Q90; nothing high on static evidence, H-149
 relay `autofile` double free may be high, Q85). **C-9 step 2 complete**
 (isolated probes, `todisteet/c9/vaihe2/`; H-149 raised to high, six findings reproduced in the
-test harness; H-158, T-042, Q91–Q95). Next: the user's closing decision (recommended: close);
-C-10 only on separate approval.
+test harness; H-158, T-042, Q91–Q95). **C-9 closed** on approval (section
+13: limits of verification, final priority with H-150 moved to P2, fix packages KK-C9-1..3).
+Next: C-10 step 1 (external dependencies), scoped in `suunnitelma.md`, not started, awaiting
+approval.
 
 ## Resurssien käyttö / Resource usage (C-6 vaihe 2 / step 2)
 

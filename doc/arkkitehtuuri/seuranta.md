@@ -32,26 +32,31 @@ separately from test coverage.
 | **C, erä 7 (C-7) GUI:n liiketoimintalogiikka, vaihe 1 / GUI business logic, step 1** | **valmis ja suljettu käyttäjän hyväksynnällä / done and closed on approval** (`e3a8b67`; `gui-liiketoimintalogiikka.md`; H-109–H-127, T-034–T-037; H-017 kavennettu / narrowed, H-085 ja H-069 laajennettu / extended; 9 jäsennysehdokasta ratkaistu / parse candidates resolved; Q15 osittain / partly, uudet / new Q75–Q77; `todisteet/c7/`); kattavuus ja jatkotyöjono J7-1–J7-7 luku 13 / coverage and follow-up queue in section 13 | 2026-11-25 |
 | **C, erä 8 (C-8) globaali muuttuva tila, vaihe 1 / global mutable state, step 1** | **valmis ja suljettu käyttäjän hyväksynnällä / done and closed on approval** (`4884374` + sulkemiscommit / closing commit; `globaali-tila.md` luvut 11–12; H-128–H-144, T-038–T-039; Q78–Q82; H-128 ja H-129:n mekanismi toistettu eristetyllä koeohjelmalla / reproduced with an isolated probe; `todisteet/c8/`); jatkotehtävät alla / follow-ups below | 2026-11-26 |
 | **C, erä 9 (C-9) virheenkäsittely ja resurssit, vaihe 1 / error handling and resources, step 1** | **valmis, riippumattomasti tarkastettu, commitoitu paikallisesti / done, independently reviewed, committed locally** (`virheenkasittely.md`; H-145–H-157, T-040–T-041, Q83–Q90; H-044, H-071, H-105 laajennettu / extended; skripti / script `tyokalut/resurssit.py`; `todisteet/c9/`; noin 1,22 milj. tokenia agenteille / about 1.22 M agent tokens); odottaa käyttäjän katselmointia / awaiting the user's review | 2026-11-26 |
-| **C, erä 9 (C-9), vaihe 2: todentaminen eristetyillä koeohjelmilla / step 2: isolated probes** | **valmis, riippumattomasti tarkastettu, commitoitu paikallisesti / done, independently reviewed, committed locally** (`virheenkasittely.md` luku 12; `todisteet/c9/vaihe2/`; H-145, H-146, H-147, H-149, H-150, H-151 toistettu testikehyksessä / reproduced in test harness; H-149 → korkea / high; uudet / new H-158, T-042, Q91–Q95; Q83, Q84, Q85, Q88 ratkaistu / resolved); odottaa käyttäjän sulkemispäätöstä / awaiting the closing decision | 2026-11-26 |
-| C, erä 10 / batch 10 | ei aloitettu / not started (`suunnitelma.md`) | – |
+| **C, erä 9 (C-9), vaihe 2: todentaminen eristetyillä koeohjelmilla / step 2: isolated probes** | **valmis, riippumattomasti tarkastettu, commitoitu paikallisesti / done, independently reviewed, committed locally** (`virheenkasittely.md` luku 12; `todisteet/c9/vaihe2/`; H-145, H-146, H-147, H-149, H-150, H-151 toistettu testikehyksessä / reproduced in test harness; H-149 → korkea / high; uudet / new H-158, T-042, Q91–Q95; Q83, Q84, Q85, Q88 ratkaistu / resolved); **C-9 valmis ja suljettu käyttäjän hyväksynnällä / C-9 done and closed on approval** (sulkeminen / closure `virheenkasittely.md` luku 13: kattavuus, todentamisen rajat, H-150 P3 → P2, korjauskokonaisuudet KK-C9-1–3) | 2026-11-26 |
+| C, erä 10 (C-10) ulkoiset riippuvuudet / external dependencies | **vaihe 1 rajattu, ei aloitettu / step 1 scoped, not started** (`suunnitelma.md` "C-10 vaihe 1"); odottaa aloituslupaa / awaiting approval | 2026-11-26 |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** C-9:n vaiheet 1 ja 2 ovat valmiit (2026-11-26); vaihe 2 suosittaa
-sulkemista (`virheenkasittely.md` 12.11). Odottaa käyttäjän sulkemispäätöstä; C-10 alkaa vasta
-erillisellä luvalla. / C-9 steps 1 and 2 done; step 2 recommends closing; awaiting the user's
-decision; C-10 only on separate approval.
+**Seuraava askel / Next step:** C-9 on suljettu (2026-11-26). Seuraavaksi C-10:n vaihe 1
+(ulkoiset riippuvuudet), rajaus `suunnitelma.md` "C-10 vaihe 1"; alkaa vasta käyttäjän luvalla.
+Alkuperäisestä suunnitelmasta on C-10:n lisäksi tekemättä vaiheen C kohta 3 (ominaisuusvalitsimet,
+Q2, T-008), jota ei ole numeroitu eräksi; C-11:n avoimet kohdat ovat jatkotehtäviä (alla).
+Kiireelliset korjaukset (H-071, H-072, H-055, H-070, H-129, H-149) tehdään omissa haaroissaan
+erillisellä päätöksellä (korjausjono alla). / C-9 closed; next C-10 step 1 on approval; phase C
+item 3 (feature switches, Q2) is not done and not a numbered batch; urgent fixes on a separate
+decision.
 
-**Avoimet jatkotehtävät C-9:stä / open follow-ups from C-9** (`virheenkasittely.md` 12.10, 12.11):
-- H-152 GUI-käsittelijällä ja tulostettavilla tuloksilla / with the GUI handler and printable results
+**Avoimet jatkotehtävät C-9:stä / open follow-ups from C-9** (eivät estäneet sulkemista / did not
+block closing; `virheenkasittely.md` 13.5). GUI-, C++Builder- tai laiteajoa vaativat / need a GUI,
+C++Builder or device run:
+- H-152: toisto GUI-käsittelijällä ja tulostettavilla tuloksilla / reproduce with the GUI handler
 - Q91 ViestiWinin VCL-muistinhallinta ja H-149:n kaksoisvapautus (VCL-koeohjelma) / VCL memory manager
-- Q92 bcc32-RTL:n `_wfopen_s`-jakotila; Q95 HkKisaWinin virrat ja vaiheen vaihto (H-150) / bcc32 share mode; HkKisaWin streams
-- Q93 `sendtcpfile` tavallisella tiedonsiirtoyhteydellä; Q94 AJAT-rivien käyttö tuloksissa; Q86 lukijan kuittaus (laite) / peer link stream; AJAT rows; reader ACK
+- Q92 bcc32-RTL:n `_wfopen_s`-jakotila (H-147); Q95 HkKisaWinin virrat ja vaiheen vaihto (H-150) / bcc32 share mode; HkKisaWin streams
+- Q86 lukijan kuittaus (laite; C-10 osa D staattisesti) / reader ACK (device; statically in C-10 part D)
+- H-153:n lukkiutuminen GUI-ajossa; H-149:n vahvistus toimitetulla konsoliohjelmalla vain erillisellä luvalla / H-153 deadlock in a GUI run; H-149 in a shipped console program only with permission
+Muut / other:
+- Q87 verkkolevyn kahva katkon jälkeen, Q89 konsolin näppäin työsäikeessä, Q90 muistipuskuri, Q93 `sendtcpfile` tiedonsiirtoyhteydellä, Q94 AJAT-rivit tuloksissa / other open questions
 - matalat kokoomarivit H-156, H-157 yksitellen tarkastamatta / low roll-up rows not reviewed one by one
-Kiireellisesti
-korjattavat H-071, H-072, H-055 ja H-070 korjataan omissa haaroissaan erillisellä
-päätöksellä; väliaikaiset suojaussuositukset `muistiturvallisuus.md` luku 15. / C-5 closed;
-next C-6 step 1 (thread and lock inventory) on approval; urgent fixes H-071, H-072, H-055,
-H-070 on separate decision (queue below).
+- korjauskokonaisuudet KK-C9-1 (`PRFILE`-elinkaari, T-042), KK-C9-2 (tallennusvirheiden välitys ja palautus, T-040, T-041; kokonaiskuva `virheenkasittely.md` 12.7), KK-C9-3 (resurssit) korjaussuunnittelun syötteeksi / fix packages as input to fix planning
 
 **Avoimet jatkotehtävät C-11:stä / open follow-ups from C-11** (eivät estäneet
 sulkemista / did not block closing; `testaus.md` 20.4):
@@ -160,11 +165,15 @@ separate decision; none started. Rivi 4b (H-129) lisätty C-8:n sulkemisessa / r
 | 6 | H-056, H-060, H-073 | laite tai verkko asetuksella / device or network with a setting | P2 |
 | 7 | P3–P5 | tavallinen data, paikallinen tiedosto, operaattori / ordinary data, local file, operator | `muistiturvallisuus.md` luku 15 |
 
-C-9:n havainnot (H-145–H-158) [päätelty] (`virheenkasittely.md` 12.9): **P2** H-149 (konsolin
-viestiohjelmat kaatuvat ensimmäiseen automaattiseen HTML-tulosteeseen tavallisessa
-konfiguraatiossa; todennettu koeohjelmalla); **P3** H-145, H-146, H-151, H-147, H-150; **P4** H-148,
-H-152, H-153, H-154, H-155; **P5** H-156, H-157, H-158. / C-9 findings: P2 H-149; P3 H-145, H-146,
-H-151, H-147, H-150; P4 H-148, H-152–H-155; P5 H-156–H-158.
+C-9:n havainnot (H-145–H-158), lopullinen [päätelty] (`virheenkasittely.md` 13.3): **P2** H-149
+(ASanilla todennettu, tavallisessa konfiguraatiossa joka kierroksella; ei P1, koska ei laukea
+verkosta; P2:ssa H-129:n edelle), H-150 (muutos P3 → P2: tiedostovirrat loppuvat konfiguraatiossa
+XML-vienti + vaihe ≥ 2 + `AUTOFILE.LST` saman päivän aikana, MSVC noin 1,4–8,5 h ja C++Builder alle
+7,5–45 min 10–60 s välillä; vakavuus keskitaso ennallaan); **P3** H-145 (kärkeen: kortti kuitataan
+mutta puuttuu tuloksista, palautus käsin), H-146, H-151, H-147; **P4** H-148, H-152, H-153, H-154,
+H-155; **P5** H-156, H-157, H-158. Korjauskokonaisuudet KK-C9-1–3 (13.4). / C-9 final: P2 H-149,
+H-150 (changed from P3 on stream exhaustion); P3 H-145 (first), H-146, H-151, H-147; P4 H-148,
+H-152–H-155; P5 H-156–H-158; fix packages KK-C9-1..3.
 
 C-6:n havainnot (H-087–H-108) ovat lukkiutumisia, vapauttamattomia lukkoja, elinkaaren
 kilpailutilanteita ja VCL-käyttöä työsäikeistä; verkosta laukeavia syötevirheitä ei ole.
@@ -301,6 +310,7 @@ Recorded as issue drafts (local `issue-drafts/`, not in the repo).
 | 2026-11-26 | C-8 suljettu käyttäjän hyväksynnällä rajattujen tarkistusten jälkeen: lukumäärät täsmäytetty, H-128 ja H-129:n mekanismi toistettu eristetyllä koeohjelmalla (ei toimitetussa ohjelmassa), H-129 korjausjonoon P2; poikkeamat kirjattu; C-9:n vaihe 1 rajataan mutta ei aloiteta / C-8 closed on approval after bounded checks; C-9 step 1 scoped, not started | Käyttäjän päätös / user decision |
 | 2026-11-26 | C-9:n vaihe 1 tehty käyttäjän pyynnöstä ("Otetaan sitten työstöön C9") rajauksen mukaisesti: osat A–F, Sonnet osissa A–D, Opus osassa E; osan A skripti korjattiin agentin otoksen perusteella (v2), ja H-149 (tarkastajan löytö) todennettiin pääistunnossa koodista; ei pushia / C-9 step 1 done on the user's request per the scope | Käyttäjän päätös / user decision |
 | 2026-11-26 | C-9:n vaihe 2 tehty käyttäjän hyväksynnällä ("Hyväksyn C-9:n toisen työerän"): eristetyt koeohjelmat C9ProbeHk/C9ProbeJuk (Release, Asan) muuttamattomalla tuotantokoodilla, virheinjektio kuvaajan vaihdolla, bcc32-RTL-koe; Opus-tarkastus, jonka ehdottamat lisäkokeet (polku c TCP:llä, N1) ajettiin; H-149 → korkea; ei tuotantokoodin, projektien eikä CI:n muutoksia; ei pushia / C-9 step 2 done on approval | Käyttäjän päätös / user decision |
+| 2026-11-26 | C-9 suljettu käyttäjän hyväksynnällä ("Hyväksyn C-9:n sulkemisen"): kattavuus tarkistettu rajausta vasten, todentamisen rajat ja kääntäjäerot kirjattu, korjausjärjestys viimeistelty (H-149 P2 kärkeen, ei P1; H-145 P3 kärkeen; H-150 P3 → P2 tiedostovirtojen loppumisen perusteella), korjauskokonaisuudet KK-C9-1–3; C-10:n vaihe 1 rajattu mutta ei aloitettu; ei pushia / C-9 closed on approval; C-10 step 1 scoped, not started | Käyttäjän päätös / user decision |
 | 2026-11-25 | C-5 vaihe 1: riippumaton tarkastus ja dokumentointi ilman välihyväksyntöjä, paikallinen commit sallittu, ei pushia; sen jälkeen C-5:n jäljellä olevat tavoitteet rajattuna staattisena työeränä; ei tuotantokoodin, projektiasetusten tai CI:n muutoksia, ei toimitettujen ohjelmien ajoja eikä verkkokokeita, ei uusia laajoja testikehyksiä; epäselvyydet avoimiksi kysymyksiksi / step 1 review and write-up without intermediate approvals, local commit allowed, no push; then the remaining C-5 goals as a bounded static step; no production, project or CI changes, no runs of shipped programs, no network tests, no new large harnesses | Käyttäjän ohje / user instruction |
 | 2026-11-25 | C-4 suljettu käyttäjän hyväksynnällä; H-071, H-072, H-055 ja H-070 kiireellisesti korjattaviksi; väliaikaiset suojaukset vain suosituksina, verkko- tai tuotantoasetuksia ei muutettu; C-5 seuraavaksi aloitusluvan jälkeen / C-4 closed on approval; urgent fixes marked; mitigations as recommendations only; C-5 next on approval | Käyttäjän päätös / user decision |
 | 2026-11-25 | C-4 vaihe 2 (viimeinen): vain analyysi; ei ASan-sarjoja, uusia testikehyksiä, GUI-ajoja, korjauksia eikä CI-muutoksia; vaihe 1 commitoitiin hyväksynnän ja uudelleentarkastuksen jälkeen (`81bcad9`), vaihetta 2 ei commitoida ilman hyväksyntää; uusi H vain, jos kyse ei ole rekisteröidyn vian toisesta ilmenemismuodosta / analysis only; step 1 committed after approval and re-review; step 2 not committed without approval | Käyttäjän ohje / user instruction |
