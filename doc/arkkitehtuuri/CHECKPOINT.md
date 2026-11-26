@@ -17,6 +17,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 
 | Erä / Batch | Sisältö / Content | Dokumentit / Documents |
 |---|---|---|
+| **C-10 vaihe 1 valmis / step 1 complete** (riippumattomasti tarkastettu, commitoitu paikallisesti / independently reviewed, committed locally) | Tuotekohtainen riippuvuusinventaario (skripti tarkistettu ennen agenttikäyttöä), tietokanta ja Q5, HTTP ja selain, laiteprotokollat ja Q86, ajonaikaiset paketit ja jakelu (Q91, Q92, T-005), versiot ja modernisointiriskit; uudet H-159–H-170, T-043–T-049; 15 väitettä Opus-tarkastajalla / per-product inventory, database, HTTP and browser, devices, packages and deployment, versions; new findings; 15 claims reviewed | `riippuvuudet.md` luvut 7–18, `todisteet/c10/` |
 | **C-6 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi / approved 2026-11-25) | Vaiheet 1 (`bf5b566`) ja 2 (`2767145`); H-099 kumottu; korjausjärjestys P2 H-087, H-090, H-091, H-093, H-107; ajoa vaativat avoimet asiat (bcc32, H-087/H-103 ViestiWinissä, Q67:n apusäikeet, Q68, Q73) jatkotehtävinä `seuranta.md` / open items needing runs deferred | `saikeet-ja-lukot.md` 13.11, `seuranta.md` |
 | **C-6 vaihe 2 valmis / step 2 complete** (riippumattomasti tarkastettu, commitoitu paikallisesti / independently reviewed, committed locally) | Viiden havainnon polut; H-090, H-091 (reunat), H-093 (rekursio ja kahden säikeen lukkiutuminen) ja H-094 (menetys) toistettu eristetyllä koeohjelmalla tuotantokoodista; Q65 Win32-kokeella; H-090 ja H-093 → korkea, H-099 kumottu; uudet H-103–H-108, T-033; VCL-säieturvallisuus; luvun 9 ehdokkaat; 11 väitettä + kaikki kokeet kahdella Opus-tarkastajalla / five findings' paths, isolated probes, VCL, new H-103–H-108 | `saikeet-ja-lukot.md` luku 13, `todisteet/c6/vaihe2/` |
 | **C-6 vaihe 1 valmis / step 1 complete** (riippumattomasti tarkastettu, commitoitu paikallisesti / independently reviewed, committed locally) | Säiekartta (56 aktiivista käynnistyskohtaa, 29 säiefunktiota, ei yhtään odotusta), elinkaari ja lopetus, Q30 ratkaistu (vaiheen vaihto ei sulje `KILP.DAT`:ia), lukkokartta (22 lukkoa), lukitusjärjestys (3 todellista ABBA-paria), estävät kutsut lukon alla; uudet H-087–H-102, T-030–T-032; H-018, H-031, H-038 laajennettu; 20 väitettä kahdella Opus-tarkastajalla / thread map, lifecycle, Q30, lock map, lock order, blocking under locks; new findings; 20 claims reviewed | `saikeet-ja-lukot.md`, `todisteet/c6/` |
@@ -41,12 +42,12 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | Mittari / Metric | Arvo / Value |
 |---|---|
 | Lähdetiedostoja / source files | 631 (270 050 riviä / lines) + 19 C-11-testitiedostoa / test files |
-| Taso 1, vain inventoitu / inventoried only | 480 |
-| Taso 2, kohdennetusti luettu / read in a targeted way | 139 (C-4: varoitusten ja havaintojen kohdat; C-5: kääntäjäerojen kohdat; C-6: säikeiden ja lukkojen kohdat / warning, finding, compiler-difference, thread and lock sites) |
+| Taso 1, vain inventoitu / inventoried only | 474 |
+| Taso 2, kohdennetusti luettu / read in a targeted way | 135 (C-10: riippuvuuskohdat / dependency sites; C-4: varoitusten ja havaintojen kohdat; C-5: kääntäjäerojen kohdat; C-6: säikeiden ja lukkojen kohdat / warning, finding, compiler-difference, thread and lock sites) |
 | Taso 3, rakenne luettu / structure read | 12 (luettelo / list: `rekisteri/moduulit.md`) |
 | Taso 4, kokonaan katselmoitu / fully reviewed | 0 tuotantotiedostoa / production files; 19 testitiedostoa / test files (C-11) |
-| Havaintoja / findings | 108 vikaa / defects (H; H-099 kumottu / refuted), 33 teknistä velkaa / technical debt (T) |
-| Lähdeviittauksia tarkistettu / source references checked | 1 705 (`tarkista_auditointi.py`) |
+| Havaintoja / findings | 170 vikaa / defects (H-001–H-170; H-099 kumottu / refuted), 49 teknistä velkaa / technical debt (T-001–T-049) |
+| Lähdeviittauksia tarkistettu / source references checked | 2 223 (`tarkista_auditointi.py`, C-10) |
 
 Koko koodipohjaa ei ole katselmoitu. Hakemistotason ja skriptillä tehty
 analyysi on taso 1. Moduulikohtaisesti: `rekisteri/moduulit.md`.
@@ -127,6 +128,7 @@ relay HTML emit output never releases `print` → freeze), H-091 (HK tall ↔ pr
 jatkuvalla sivutulosteella / tall↔print deadlock with continuous page printing), vaiheessa 2
 nostetut / raised in step 2: H-090 (`tall_regnly` jättää `ajat`-lukon, `TUNNJONO` / keeps `ajat`),
 H-093 (HK TCP-loki: rajaton rekursio → pinon ylivuoto / unbounded recursion → stack overflow).
+C-10 lisäsi / added: H-159 (Sirit/Zebra-uudelleenyhteys lopettaa RFID-luennan / RFID reconnect ends reading), H-160 (SQL-virhe lopettaa GUI-ohjelman, korkea SQL-peilausta käytettäessä / SQL error ends the GUI program, high when the mirror is used).
 
 Kumotut väitteet erässä C-2 / refuted in C-2: pakotetun paketin kierto HK-renkaassa,
 WinUDP:n taulukon ylitys, uudelleenkäynnistyksen kuitattujen lähetys, etumerkillinen
@@ -147,6 +149,7 @@ controlled) and correspond to findings H-001–H-006.
 Täydet tiedot: `seuranta.md` (Q2–Q77; C-7:n Q75–Q77 `gui-liiketoimintalogiikka.md` luku 10; C-4:n Q43–Q48 `muistiturvallisuus.md`; C-6:n Q65–Q74 `saikeet-ja-lukot.md` luvut 10 ja 13.5; Q1, Q4, Q13, Q16, Q17, Q18, Q30, Q65, Q66, Q69–Q72 ja Q74 ratkaistu, Q3,
 Q14 ja Q67 osittain). Tärkeimmät / most important:
 
+- ~~Q5~~, ~~Q92~~ ratkaistu C-10:ssä / resolved in C-10; Q86, Q91 osittain / partly; uudet / new Q96–Q104 (`riippuvuudet.md` luku 17)
 - ~~Q7~~ ratkaistu C-5:ssä / resolved in C-5 (`kaantajaerot.md` luku 5)
 - ~~Q8~~ ratkaistu C-5:ssä: `tyokalut/vertaa_omf.py` / resolved in C-5
 - Q60: onko H-081:n `KUNTOSUUNN`-ero tarkoituksellinen – omistajan päätös / owner decision
@@ -258,9 +261,18 @@ H-146, H-151, H-147; korjauskokonaisuudet KK-C9-1 (`PRFILE`-elinkaari, T-042: H-
 H-152, H-158), KK-C9-2 (tallennusvirheiden välitys ja palautus, T-040, T-041), KK-C9-3
 (resurssit); jatkotehtävät `seuranta.md`.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP: C-10 vaihe 1** (ulkoiset riippuvuudet: tuotekohtainen
-inventaario, tietokanta ja Q5, HTTP ja selain, laiteprotokollat, ajonaikaiset paketit ja jakelu),
-rajaus `suunnitelma.md` "C-10 vaihe 1"; ei aloitettu, odottaa käyttäjän aloituslupaa.
+**C-10 vaihe 1 valmis (2026-11-26), riippumattomasti tarkastettu, commitoitu paikallisesti.**
+Raportti `riippuvuudet.md` luvut 7–18 (kierroksen 1 osuus korjattu); skripti
+`tyokalut/riippuvuudet.py` (tarkistettu C-5:n tallentamia käännöksiä vasten ennen agenttikäyttöä,
+viisi skriptivirhettä korjattu); raakatulos ja raportit `todisteet/c10/`. Uudet H-159–H-170
+(korkea H-159 Sirit/Zebra-uudelleenyhteys; H-160 korkea SQL-peilausta käytettäessä) ja T-043–T-049;
+T-005 tarkennettu; Q5 ja Q92 ratkaistu, Q86 ja Q91 osittain, uudet Q96–Q104. Suunnitelmaan
+lisätty uudet erät C-12 (ominaisuusvalitsimet) ja C-13 (synteesi ja korjaussuunnitelma), ei
+aloitettu. Kaikki staattisia.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP:** käyttäjän katselmointi; päätös C-10:n sulkemisesta tai
+vaiheesta 2 (eristetyt ajokokeet Q96–Q98, Q102; `riippuvuudet.md` luku 18). Sen jälkeen C-12
+tai C-13 vain käyttäjän luvalla.
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
@@ -281,8 +293,26 @@ relay `autofile` double free may be high, Q85). **C-9 step 2 complete**
 (isolated probes, `todisteet/c9/vaihe2/`; H-149 raised to high, six findings reproduced in the
 test harness; H-158, T-042, Q91–Q95). **C-9 closed** on approval (section
 13: limits of verification, final priority with H-150 moved to P2, fix packages KK-C9-1..3).
-Next: C-10 step 1 (external dependencies), scoped in `suunnitelma.md`, not started, awaiting
-approval.
+**C-10 step 1 complete** (`riippuvuudet.md` sections 7–18, script `tyokalut/riippuvuudet.py`
+validated before agent use; H-159–H-170 with H-159 high and H-160 high when SQL is used,
+T-043–T-049; Q5 and Q92 resolved, Q86 and Q91 partly, Q96–Q104 new). New batches C-12 (feature
+switches) and C-13 (synthesis and fix plan) added to the plan, not started. Next: the user's
+review; close C-10 or run a step 2 of isolated runs.
+
+## Resurssien käyttö / Resource usage (C-10 vaihe 1 / step 1)
+
+| Agentti / Agent | Tokenit / tokens | Työkalukutsut / tool calls |
+|---|--:|--:|
+| `build-dependency-analyst` (Sonnet; A luokittelu / classification) | 185 942 | 64 |
+| `architecture-analyst` (Sonnet; B tietokanta / database) | 169 255 | 53 |
+| `defect-concurrency-auditor` (Sonnet; C HTTP ja selain / HTTP and browser) | 122 096 | 29 |
+| `architecture-analyst` (Sonnet; D laitteet / devices) | 280 945 | 94 |
+| `build-dependency-analyst` (Sonnet; E paketit ja jakelu / packages and deployment) | 230 964 | 94 |
+| `independent-verifier` (Opus; F, K1–K15) | 208 904 | 105 |
+| **Yhteensä / total** | **1 198 106** | **439** |
+
+Käyttäjän ohjeella ei tokenbudjettia; skripti, sen tarkistus ja dokumentointi pääistunnossa. /
+No token budget by the user's instruction; script, its validation and the write-up by the main session.
 
 ## Resurssien käyttö / Resource usage (C-6 vaihe 2 / step 2)
 

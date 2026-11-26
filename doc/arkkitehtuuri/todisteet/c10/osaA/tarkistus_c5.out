@@ -1,0 +1,22 @@
+MSVC (C-5 recorded command lines vs. project evaluation)
+  HkMaali    sources recorded 32, script 32; only recorded []; only script []
+             defines only recorded []; only script []
+             runtime script=MultiThreaded recorded=['/MT']
+  JukMaali   sources recorded 34, script 34; only recorded []; only script []
+             defines only recorded []; only script []
+             runtime script=MultiThreaded recorded=['/MT']
+  JukLuenta  sources recorded 32, script 32; only recorded []; only script []
+             defines only recorded []; only script []
+             runtime script=MultiThreaded recorded=['/MT']
+  tputilv2   sources recorded 146, script 146; only recorded []; only script []
+             defines only recorded ['_VC80_UPGRADE=0x0710']; only script []
+             runtime script=MultiThreaded recorded=['/MT']
+  dbboxm     sources recorded 7, script 7; only recorded []; only script []
+             defines only recorded ['_VC80_UPGRADE=0x0710']; only script []
+             runtime script=MultiThreaded recorded=['/MT']
+bcc32 (C-5 recorded translation units vs. project evaluation)
+  DBboxm-XE  recorded 8, script 8; only recorded []; only script []
+  HkKisaWin  recorded 141, script 141; only recorded []; only script []
+  Tputil-XE  recorded 139, script 139; only recorded []; only script []
+  ViestiWin  recorded 117, script 117; only recorded []; only script []
+RESULT: match

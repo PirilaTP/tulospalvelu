@@ -131,7 +131,7 @@ ends with an independent review (`independent-verifier`) and a register update
 | 7 | GUI:n liiketoimintalogiikka: `cbHk/UnitEmit.cpp`, `UnitAjanotto`, `UnitArvonta`, `UnitKilpailijatiedot`, `ViestiWin/UnitEmit.cpp` / GUI business logic | keskitaso–korkea | architecture-analyst, defect-concurrency-auditor | moduulikuvaukset / module descriptions — **vaihe 1 valmis ja suljettu / step 1 done and closed 2026-11-25** (`gui-liiketoimintalogiikka.md`, H-109–H-127, T-034–T-037; jatkotyöjono / follow-up queue J7-1–J7-7) |
 | 8 | Globaali muuttuva tila: kuka kirjoittaa mitäkin, alustus, nollaus kilpailun vaihdossa / global mutable state | keskitaso / medium | architecture-analyst | `tietorakenteet-ja-tila.md` — **vaihe 1 valmis ja suljettu / step 1 done and closed 2026-11-26** (`globaali-tila.md`, H-128–H-144, T-038–T-039) |
 | 9 | Virheenkäsittely ja resurssit: palautusarvojen tarkistus, tiedostokahvat, muistivuodot, `writeerror`-polut / error handling and resources | keskitaso / medium | defect-concurrency-auditor | H/T-numerot — **valmis ja suljettu / done and closed 2026-11-26** (`virheenkasittely.md`, H-145–H-158, T-040–T-042; vaiheet / steps `f1eb195`, `920930c`) |
-| 10 | Ulkoiset riippuvuudet: MySQL/dbExpress, WinHTTP, laiteprotokollat, BPL-ajonaikaiset paketit / external dependencies | matala–keskitaso | build-dependency-analyst | `riippuvuudet.md` — **vaihe 1 rajattu, ei aloitettu / step 1 scoped, not started** (alla / below) |
+| 10 | Ulkoiset riippuvuudet: MySQL/dbExpress, WinHTTP, laiteprotokollat, BPL-ajonaikaiset paketit / external dependencies | matala–keskitaso | build-dependency-analyst | `riippuvuudet.md` — **vaihe 1 valmis / step 1 done 2026-11-26** (`riippuvuudet.md` luvut 7–18, H-159–H-170, T-043–T-049; Q5, Q92 ratkaistu / resolved); odottaa katselmointia / awaiting review |
 | 11 | Käännös- ja testiautomaatio: testit CI:hin, `run.sh`, GUI-todennus kommenttimuutoksille / build and test automation | matala riski, suuri hyöty / low risk, high leverage | build-dependency-analyst, architecture-analyst, defect-concurrency-auditor, independent-verifier ×2 | `testaus.md` — **valmis / done 2026-11-24** (luku / section 20; 15 toistettu testikehyksessä, H-041 vahvistettu ajamalla / 15 reproduced, H-041 confirmed by running); CI-vienti avoin / CI integration open (Q35–Q42). GUI-kommenttien todennus (Q8) ei vielä / GUI comment verification not yet |
 
 Erät 2–5 ovat riippumattomia toisistaan ja voidaan ajaa missä järjestyksessä
@@ -147,7 +147,28 @@ Jatkotehtävä C-5:stä (ei numeroitu erä): syötteiden kokonaislukujäsennykse
 Follow-up from C-5 (not a numbered batch): integer-parse review, 161 candidates; may be
 merged with batch 7.
 
-### C-10 vaihe 1: rajaus / Step 1: scope (**valmisteltu, ei aloitettu / prepared, not started**)
+### Uudet erät C-12 ja C-13 / New batches C-12 and C-13 (**lisätty / added 2026-11-26**)
+
+Alkuperäisessä suunnitelmassa on numeroidut erät 1–11 (taulukko yllä, ennallaan). Käyttäjä
+lisäsi 2026-11-26 C-10:n aloituspäätöksen yhteydessä kaksi **uutta** erää. Ne eivät korvaa
+alkuperäisiä eriä; niitä ei ole aloitettu. / The original plan has numbered batches 1–11 (table
+above, unchanged). On 2026-11-26 the user added two **new** batches; they replace nothing and
+have not been started.
+
+| Erä / Batch | Aihe / Topic | Tavoite / Goal | Tila / State |
+|---|---|---|---|
+| C-12 (uusi / new) | Ominaisuusvalitsimien dokumentointi / feature switch documentation | Toteuttaa alkuperäisen vaiheen C kohdan 3 (mitä kukin `#define` tekee) sekä käsittelee Q2:n ja T-008:n: kattava ominaisuus-, asetus- ja konfiguraatioinventaario ja pohja myöhemmälle regressiotestimatriisille. C-10 käsittelee valitsimia vain siltä osin kuin ne kytkevät ulkoisen riippuvuuden; C-10:n `makrot.csv` ja `tyokalut/riippuvuudet.py` ovat syötteitä. / Implements original phase C item 3, Q2 and T-008: a complete feature, setting and configuration inventory and the basis for a later regression test matrix; C-10 output is an input | ei aloitettu / not started |
+| C-13 (uusi / new) | Auditoinnin synteesi ja korjaussuunnitelma / audit synthesis and fix plan | Yhdistää kaikkien erien tulokset, tarkistaa kattavuuden, tunnistaa yhteiset juurisyyt ja muodostaa perustellun korjaus- ja modernisointisuunnitelman (syötteinä mm. korjausjono `seuranta.md`, KK-C9-1–3, C-10:n modernisointiriskit). / Combines all batch results, checks coverage, identifies common root causes and builds a justified fix and modernisation plan | ei aloitettu / not started |
+
+### C-10 vaihe 1: rajaus / Step 1: scope (**valmis / done 2026-11-26**, `riippuvuudet.md` luvut 7–18)
+
+Toteutus: rajauksen mukaan. Osan A skripti (`tyokalut/riippuvuudet.py`) tarkistettiin C-5:n
+tallentamia käännöksiä vasten ja korjattiin viidesti ennen kuin osat B–E saivat sen tuloksen;
+B, C ja D rinnakkain, E C:n ja A:n luokittelu B:n vapauttamalle paikalle (enintään kolme
+samanaikaista agenttia); Sonnet osissa A–E, Opus osassa F; agentit noin 1,20 milj. tokenia.
+Ei käännöksiä, ajoja, yhteyksiä eikä muutoksia tuotantokoodiin, projekteihin tai CI:hin. / Done per
+the scope; the script was validated and fixed before agent use; at most three agents at once;
+Sonnet for A–E, Opus for F; about 1.20 M agent tokens; nothing built, run or connected.
 
 Suunnitelman erä 10 (taulukko yllä, ennallaan): ulkoiset riippuvuudet – MySQL/dbExpress, WinHTTP,
 laiteprotokollat, BPL-ajonaikaiset paketit; riski matala–keskitaso; agentti

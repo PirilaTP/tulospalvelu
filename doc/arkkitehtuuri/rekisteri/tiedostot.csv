@@ -48,13 +48,13 @@ cbHk/UnitEmitKoodit.cpp,cbHk,163,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitEmitKoodit.h,cbHk,56,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitEmitMuutokset.cpp,cbHk,323,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitEmitMuutokset.h,cbHk,108,ascii,-,1,-,-,,,,f7fe553
-cbHk/UnitExport.cpp,cbHk,635,cp1252,HkKisaWin,2,tiedostomuodot saikeet-ja-lukot virheenkasittely,-,f7fe553,H-041 H-051 H-100 T-032 H-156,"C-3: 455-485; C-6: säikeet ja lukot, kohdennettu luenta; C-9: kirjKilpDat-vienti",f7fe553
+cbHk/UnitExport.cpp,cbHk,635,cp1252,HkKisaWin,2,tiedostomuodot saikeet-ja-lukot virheenkasittely riippuvuudet,-,f7fe553,H-041 H-051 H-100 T-032 H-156 H-162,"C-3: 455-485; C-6: säikeet ja lukot, kohdennettu luenta; C-9: kirjKilpDat-vienti",f7fe553
 cbHk/UnitExport.h,cbHk,95,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitHylkRap.cpp,cbHk,712,cp1252,HkKisaWin,2,saikeet-ja-lukot,-,f7fe553,H-088,"C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
 cbHk/UnitHylkRap.h,cbHk,118,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitIlm2.cpp,cbHk,2407,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitIlm2.h,cbHk,333,ascii,-,1,-,-,,,,f7fe553
-cbHk/UnitImport.cpp,cbHk,1595,cp1252,HkKisaWin,2,tiedostomuodot,-,f7fe553,H-047 H-049,"C-3: 1105-1106, 1212-1214, 1405-1440",f7fe553
+cbHk/UnitImport.cpp,cbHk,1595,cp1252,HkKisaWin,2,tiedostomuodot riippuvuudet,-,f7fe553,H-047 H-049 H-169,"C-3: 1105-1106, 1212-1214, 1405-1440",f7fe553
 cbHk/UnitImport.h,cbHk,100,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitJoukkueTilanne.cpp,cbHk,272,ascii,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitJoukkueTilanne.h,cbHk,92,ascii,-,1,-,-,,,,f7fe553
@@ -80,7 +80,7 @@ cbHk/UnitLisaTietue.cpp,cbHk,151,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitLisaTietue.h,cbHk,53,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitMaastossa.cpp,cbHk,248,cp1252,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitMaastossa.h,cbHk,45,ascii,-,1,-,-,,,,f7fe553
-cbHk/UnitMySQL.cpp,cbHk,770,ascii,HkKisaWin,2,tallenna-samanaikaisuus tiedostomuodot saikeet-ja-lukot virheenkasittely,-,f7fe553,H-014 H-018 H-043 H-100 H-156,"kirjKilpSQL, kirjSQLTh; C-3: SQLjonoVarm 600-760; C-6: säikeet ja lukot, kohdennettu luenta; C-9: kirjSQLTh",f7fe553
+cbHk/UnitMySQL.cpp,cbHk,770,ascii,HkKisaWin,2,tallenna-samanaikaisuus tiedostomuodot saikeet-ja-lukot virheenkasittely riippuvuudet,-,f7fe553,H-014 H-018 H-043 H-100 H-156 H-160 H-161 H-163,"kirjKilpSQL, kirjSQLTh; C-3: SQLjonoVarm 600-760; C-6: säikeet ja lukot, kohdennettu luenta; C-9: kirjSQLTh",f7fe553
 cbHk/UnitMySQL.h,cbHk,96,ascii,-,1,-,-,,,,f7fe553
 cbHk/UnitNollaus.cpp,cbHk,203,ascii,HkKisaWin,1,-,-,,,,f7fe553
 cbHk/UnitNollaus.h,cbHk,72,ascii,-,1,-,-,,,,f7fe553
@@ -145,10 +145,10 @@ cbHk/UnitYv.h,cbHk,55,ascii,-,1,-,-,,,,f7fe553
 cbHk/valinnat.h,cbHk,17,ascii,-,1,-,-,,,,f7fe553
 cbHk/VertAikaUnit.cpp,cbHk,67,ascii,HkKisaWin,2,tiedostomuodot,-,f7fe553,H-045,C-3: 55-65,f7fe553
 cbHk/VertAikaUnit.h,cbHk,53,ascii,-,1,-,-,,,,f7fe553
-cbHk/WinHk.cpp,cbHk,2310,cp1252,HkKisaWin,2,tallenna-samanaikaisuus tiedonsiirto yleiskuva saikeet-ja-lukot virheenkasittely,-,f7fe553,H-018 H-023 H-091 H-094 H-099 H-104 H-107 T-033 H-153,"Initialisoi 252-285; ProsEmitThread, LukumaaratTh, VaihdaVaiheHandler; C-2: vaiheen vaihdon eväys; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-9: FormCloseQuery, LukumaaratTh",f7fe553
+cbHk/WinHk.cpp,cbHk,2310,cp1252,HkKisaWin,2,tallenna-samanaikaisuus tiedonsiirto yleiskuva saikeet-ja-lukot virheenkasittely riippuvuudet,-,f7fe553,H-018 H-023 H-091 H-094 H-099 H-104 H-107 T-033 H-153 H-163,"Initialisoi 252-285; ProsEmitThread, LukumaaratTh, VaihdaVaiheHandler; C-2: vaiheen vaihdon eväys; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-9: FormCloseQuery, LukumaaratTh",f7fe553
 cbHk/WinHk.h,cbHk,332,ascii,-,1,-,-,,,,f7fe553
 cbHk/WinParamXml.cpp,cbHk,1796,cp1252,HkKisaWin,1,-,-,,,,f7fe553
-cbTp/cbTpApu.cpp,cbTp,641,cp1252,HkKisaWin ViestiWin,2,tallenna-samanaikaisuus kaantajaerot saikeet-ja-lukot gui-liiketoimintalogiikka virheenkasittely,-,f7fe553,H-009 H-019 T-026 T-033 H-116 H-153 T-040,"writeerror_w; C-5 vaihe 2: writeerror_w; C-6 vaihe 2: polut, koeohjelmat, VCL; C-7: select3; C-9: GUI writeerror_w 440-495",f7fe553
+cbTp/cbTpApu.cpp,cbTp,641,cp1252,HkKisaWin ViestiWin,2,tallenna-samanaikaisuus kaantajaerot saikeet-ja-lukot gui-liiketoimintalogiikka virheenkasittely riippuvuudet,-,f7fe553,H-009 H-019 T-026 T-033 H-116 H-153 T-040 H-167 T-046,"writeerror_w; C-5 vaihe 2: writeerror_w; C-6 vaihe 2: polut, koeohjelmat, VCL; C-7: select3; C-9: GUI writeerror_w 440-495",f7fe553
 cbTp/TpApu.cpp,cbTp,757,cp1252,-,1,-,-,,,,f7fe553
 cbTp/UnitAikakorjaus.cpp,cbTp,161,cp1252,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 cbTp/UnitAikakorjaus.h,cbTp,75,ascii,-,1,-,-,,,,f7fe553
@@ -170,7 +170,7 @@ cbTp/UnitEmitFile.cpp,cbTp,151,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 cbTp/UnitEmitFile.h,cbTp,56,ascii,-,1,-,-,,,,f7fe553
 cbTp/UnitEmitnouto.cpp,cbTp,144,ascii,HkKisaWin,1,-,-,,,,f7fe553
 cbTp/UnitEmitnouto.h,cbTp,87,ascii,-,1,-,-,,,,f7fe553
-cbTp/UnitEmitSQL.cpp,cbTp,551,cp1252,HkKisaWin ViestiWin,2,tallenna-samanaikaisuus saikeet-ja-lukot,-,f7fe553,H-097,"haeSQLTh; C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
+cbTp/UnitEmitSQL.cpp,cbTp,551,cp1252,HkKisaWin ViestiWin,2,tallenna-samanaikaisuus saikeet-ja-lukot riippuvuudet,-,f7fe553,H-097 H-161,"haeSQLTh; C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
 cbTp/UnitEmitSQL.h,cbTp,159,ascii,-,1,-,-,,,,f7fe553
 cbTp/UnitFIS.cpp,cbTp,500,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 cbTp/UnitFIS.h,cbTp,107,ascii,-,1,-,-,,,,f7fe553
@@ -221,9 +221,9 @@ cbTp/UnitUusinta.h,cbTp,69,ascii,-,1,-,-,,,,f7fe553
 cbTp/UnitYhteysStatus.cpp,cbTp,42,ascii,HkKisaWin ViestiWin,1,-,-,,,,f7fe553
 cbTp/UnitYhteysStatus.h,cbTp,40,ascii,-,1,-,-,,,,f7fe553
 cbTp/WinTp.h,cbTp,22,ascii,-,1,-,-,,,,f7fe553
-com/gethttp.cpp,com,165,cp1252,HkKisaWin ViestiWin HkMaali JukMaali520,2,tiedonsiirto muistiturvallisuus,-,f7fe553,H-055,C-2: WinHTTP 1-60; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta,f7fe553
-com/winCom.cpp,com,244,ascii,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
-com/WinUDP.cpp,com,1398,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,3,tiedonsiirto muistiturvallisuus saikeet-ja-lukot virheenkasittely,-,f7fe553,H-027 H-028 H-029 H-037 T-020 H-055 H-093 H-096 T-031 H-155,"C-2: luettu paitsi read_TCP-sisus ja RTT-apurit; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-9: openportTCP/UDP, closeport, TCPrcvTh",f7fe553
+com/gethttp.cpp,com,165,cp1252,HkKisaWin ViestiWin HkMaali JukMaali520,2,tiedonsiirto muistiturvallisuus riippuvuudet,-,f7fe553,H-055 H-166 H-170 T-043,C-2: WinHTTP 1-60; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta,f7fe553
+com/winCom.cpp,com,244,ascii,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,2,riippuvuudet,-,f7fe553,H-164,,f7fe553
+com/WinUDP.cpp,com,1398,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,3,tiedonsiirto muistiturvallisuus saikeet-ja-lukot virheenkasittely riippuvuudet,-,f7fe553,H-027 H-028 H-029 H-037 T-020 H-055 H-093 H-096 T-031 H-155 T-043 T-045 T-046 T-048,"C-2: luettu paitsi read_TCP-sisus ja RTT-apurit; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-9: openportTCP/UDP, closeport, TCPrcvTh",f7fe553
 dbboxm/addkey.cpp,dbboxm,146,utf-8,DBboxm-XE dbboxm,2,muistiturvallisuus,-,f7fe553,,C-4: varoitusten triage,f7fe553
 dbboxm/Boxtest.cpp,dbboxm,168,utf-8,-,1,-,-,,,,f7fe553
 dbboxm/BOXTEST_F.cpp,dbboxm,172,utf-8,-,1,-,-,,,,f7fe553
@@ -245,14 +245,14 @@ Hk/HkCom32.cpp,Hk,1332,cp1252,HkKisaWin HkMaali,3,tallenna-samanaikaisuus tiedon
 Hk/HkConsoleDef.h,Hk,147,ascii,HkMaali,1,-,-,,,,f7fe553
 Hk/HkDat.cpp,Hk,1447,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tiedonsiirto tietorakenteet-ja-tila yleiskuva tiedostomuodot muistiturvallisuus saikeet-ja-lukot globaali-tila,-,f7fe553,H-007 H-009 H-010 H-011 H-022 H-015 H-041 H-046 H-091 H-100 H-104 H-128 H-133 H-135 H-140 T-039,"read/write/GETREC/PUTREC/addfrec/delfrec luettu; tallenna osittain; tallenna 897-1385 kaytiin lapi (erä 1); C-2: kenttätaulukot, pack/unpack 20-495; C-3: read/write 560-651, kenttataulukot ja kilprecsize 44-195, vienti 1427-1446; C-4: varoitusten triage; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-8: tallenna badge/id-lohko 1040-1225, addtall/deltall",f7fe553
 Hk/HkDeclare.h,Hk,974,cp1252,HkKisaWin HkMaali,2,yleiskuva tietorakenteet-ja-tila,-,f7fe553,T-001,include-lohko 18-28; extern-maara laskettu,f7fe553
-Hk/HkDef.h,Hk,1697,cp1252,HkKisaWin HkMaali,2,inventaario tiedonsiirto tietorakenteet-ja-tila tiedostomuodot,-,f7fe553,H-022 T-009 H-041,"luokkaluettelo; vatp/kilppvtp/kilptietue luettu; valitsinlohko 26-130; C-2: combufrec 1235-1313, OUTBUFL; C-3: koot, combufrec, KILPBUFSIZE; sizeof mitattu",f7fe553
+Hk/HkDef.h,Hk,1697,cp1252,HkKisaWin HkMaali,2,inventaario tiedonsiirto tietorakenteet-ja-tila tiedostomuodot riippuvuudet,-,f7fe553,H-022 T-009 H-041 T-045,"luokkaluettelo; vatp/kilppvtp/kilptietue luettu; valitsinlohko 26-130; C-2: combufrec 1235-1313, OUTBUFL; C-3: koot, combufrec, KILPBUFSIZE; sizeof mitattu",f7fe553
 Hk/HkEmit.cpp,Hk,6432,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tiedonsiirto tiedostomuodot muistiturvallisuus saikeet-ja-lukot globaali-tila virheenkasittely,-,f7fe553,H-011 H-012 H-034 H-045 H-053 H-058 H-073 H-089 H-092 H-105 T-033 H-135 H-137 H-140 H-141 H-145,"putem/lueem, badge-taulukot, vaihdakilp, laskeEm_VA; C-2: emit-kaksoiskappaleiden esto; C-3: putem/lueem 1572-1690, lueemitfile 3029-3110, 6403-6431; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-8: addbadge/rembadge, addem, on_emit, vapautaemitmuisti; C-9: addem/putem virhepolku",f7fe553
 Hk/HkEnnTav.cpp,Hk,49,ascii,HkKisaWin TpTest,1,-,-,,,,f7fe553
 Hk/HkEnnTav.h,Hk,50,ascii,TpTest,1,-,-,,,,f7fe553
-Hk/HkGlobals.cpp,Hk,675,cp1252,HkKisaWin HkMaali,2,tiedonsiirto tietorakenteet-ja-tila muistiturvallisuus saikeet-ja-lukot globaali-tila,-,f7fe553,H-072 H-097 H-129 H-132,"ToimintaTila, kilparr; C-2: levypusk, tcpkaynnistys; C-4 vaihe 2: kohdennettu luenta; C-6: säikeet ja lukot, kohdennettu luenta; C-8: inventaario (globaalit.py)",f7fe553
-Hk/HkInit.cpp,Hk,3833,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tiedonsiirto tietorakenteet-ja-tila yleiskuva tiedostomuodot muistiturvallisuus kaantajaerot saikeet-ja-lukot globaali-tila virheenkasittely,-,f7fe553,H-014 H-038 H-015 H-052 H-055 H-070 H-073 H-078 H-081 T-023 H-090 H-095 H-099 T-030 T-031 H-104 H-105 H-107 H-131 H-132 H-133 H-134 H-143 T-038 H-152 H-156,"aloitus 3079- kutsujarjestys; aloitus, lopetus1, CS-alustus; C-2: ip-jäsennys 360-530, yhteysavaimet 1025-1265, initcom, lopetus; C-3: readcfg 327-386, KILP.DAT-avaus 3476-3492, konfiguraatiopuskurit; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5: KUNTOSUUNN 796-803, utrlate 141-211; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-8: aloitus 3079-3716 ja lopetus1 luettu; C-9: lopetus1 3720-3830, vaihevalinta 290-325",f7fe553
+Hk/HkGlobals.cpp,Hk,675,cp1252,HkKisaWin HkMaali,2,tiedonsiirto tietorakenteet-ja-tila muistiturvallisuus saikeet-ja-lukot globaali-tila riippuvuudet,-,f7fe553,H-072 H-097 H-129 H-132 T-043,"ToimintaTila, kilparr; C-2: levypusk, tcpkaynnistys; C-4 vaihe 2: kohdennettu luenta; C-6: säikeet ja lukot, kohdennettu luenta; C-8: inventaario (globaalit.py)",f7fe553
+Hk/HkInit.cpp,Hk,3833,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tiedonsiirto tietorakenteet-ja-tila yleiskuva tiedostomuodot muistiturvallisuus kaantajaerot saikeet-ja-lukot globaali-tila virheenkasittely riippuvuudet,-,f7fe553,H-014 H-038 H-015 H-052 H-055 H-070 H-073 H-078 H-081 T-023 H-090 H-095 H-099 T-030 T-031 H-104 H-105 H-107 H-131 H-132 H-133 H-134 H-143 T-038 H-152 H-156 H-167,"aloitus 3079- kutsujarjestys; aloitus, lopetus1, CS-alustus; C-2: ip-jäsennys 360-530, yhteysavaimet 1025-1265, initcom, lopetus; C-3: readcfg 327-386, KILP.DAT-avaus 3476-3492, konfiguraatiopuskurit; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5: KUNTOSUUNN 796-803, utrlate 141-211; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-8: aloitus 3079-3716 ja lopetus1 luettu; C-9: lopetus1 3720-3830, vaihevalinta 290-325",f7fe553
 Hk/HkInitVanha.cpp,Hk,549,utf-8-bom,HkKisaWin,3,tiedostomuodot,-,f7fe553,H-049,C-3: vanhan muodon tuonti luettu,f7fe553
-Hk/HkIV.cpp,Hk,4304,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tiedonsiirto yleiskuva tiedostomuodot muistiturvallisuus kaantajaerot saikeet-ja-lukot globaali-tila virheenkasittely,-,f7fe553,H-010 H-031 H-054 H-055 H-072 H-074 H-081 T-025 T-028 H-090 H-091 H-094 H-095 H-102 T-030 T-032 H-104 H-105 H-107 H-108 H-131 H-136 H-137 H-141 H-143 H-144 H-145 H-157,"opengaz sijainti; pros_emit, tall_regnly, tall_etulos, tee_aika, pros_bdg_t; C-2: pros_bdg_t, taustaThr; C-3: AJAT-jono 3990-4140; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5: _BORLAND_ 1663-1673, CONSOLE 1637, AJAT_V; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-8: bdg_t, pros_emit, inittimer, tausta, GAZ; C-9: tall_emit, samatleimat, vahaku",f7fe553
+Hk/HkIV.cpp,Hk,4304,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus tiedonsiirto yleiskuva tiedostomuodot muistiturvallisuus kaantajaerot saikeet-ja-lukot globaali-tila virheenkasittely riippuvuudet,-,f7fe553,H-010 H-031 H-054 H-055 H-072 H-074 H-081 T-025 T-028 H-090 H-091 H-094 H-095 H-102 T-030 T-032 H-104 H-105 H-107 H-108 H-131 H-136 H-137 H-141 H-143 H-144 H-145 H-157 H-166 H-168,"opengaz sijainti; pros_emit, tall_regnly, tall_etulos, tee_aika, pros_bdg_t; C-2: pros_bdg_t, taustaThr; C-3: AJAT-jono 3990-4140; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5: _BORLAND_ 1663-1673, CONSOLE 1637, AJAT_V; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-8: bdg_t, pros_emit, inittimer, tausta, GAZ; C-9: tall_emit, samatleimat, vahaku",f7fe553
 Hk/HkIx.cpp,Hk,2005,cp1252,HkKisaWin HkMaali,3,tallenna-samanaikaisuus tiedonsiirto tietorakenteet-ja-tila tiedostomuodot muistiturvallisuus saikeet-ja-lukot globaali-tila virheenkasittely,-,f7fe553,H-010 H-013 H-031 T-018 H-102 H-105 T-033 H-128 H-129 H-131 H-133 H-134 H-139 H-141 T-038 T-039 H-157,"teejarj sijainti vain; teejarj, vaihdavaihe, jarjarr, posarr; C-2: vaihdavaihe; C-3: latausilmukka 1655-1700; C-4: varoitusten triage; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-8: setpos/getpos, teejarj, vaihdavaihe, addjarjarr/remjarjarr luettu; C-9: vaihdavaihe 1855-2005, teejarj",f7fe553
 Hk/HkMuotoilu.cpp,Hk,3020,cp1252,HkKisaWin HkMaali,2,muistiturvallisuus kaantajaerot,-,f7fe553,H-057 T-026,C-4: varoitusten triage; C-5: htmlid,f7fe553
 Hk/HkMuotoilu.h,Hk,192,cp1252,-,1,-,-,,,,f7fe553
@@ -272,7 +272,7 @@ HkConsole/HkConsHelp.cpp,HkConsole,436,cp1252,HkMaali,1,-,-,,,,f7fe553
 HkConsole/HkKilp.cpp,HkConsole,1450,cp1252,HkMaali,1,-,-,,,,f7fe553
 HkConsole/HkMain.cpp,HkConsole,234,cp1252,HkMaali,2,yleiskuva testaus muistiturvallisuus,-,f7fe553,,wmain 178-233; C-11: vain valikko ja wmain; kilpparam-oletukset; C-4: varoitusten triage,f7fe553
 HkConsole/valinnat.h,HkConsole,35,ascii,HkMaali,1,-,-,,,,f7fe553
-include/bkeybrd.h,include,34,ascii,-,1,-,-,,,,f7fe553
+include/bkeybrd.h,include,34,ascii,-,2,riippuvuudet,-,f7fe553,T-047,,f7fe553
 include/box.h,include,108,ascii,-,1,-,-,,,,f7fe553
 include/boxf.h,include,127,ascii,-,1,-,-,,,,f7fe553
 include/boxm.h,include,90,ascii,dbboxm,3,tiedostomuodot,-,f7fe553,T-018,"C-3: muistin indeksirakenteet, ei pack-pragmaa",f7fe553
@@ -295,16 +295,16 @@ include/xmlparser.h,include,70,ascii,-,1,-,-,,,,f7fe553
 include/ZebraReader.h,include,36,ascii,HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
 Juk/BuildNo.h,Juk,60,cp1252,ViestiWin JukMaali520,2,tiedonsiirto,-,f7fe553,,C-2: versio,f7fe553
 Juk/vajat.cpp,Juk,525,utf-8,ViestiWin JukMaali520,2,merkistot muistiturvallisuus kaantajaerot virheenkasittely,-,f7fe553,H-004 H-005 H-080 H-146,U+FFFD-rivit; C-4: varoitusten triage; C-5: U+FFFD-literaalit; C-9: writeajat 327-358,f7fe553
-Juk/vApu.cpp,Juk,1037,cp1252,ViestiWin JukLuenta520 JukMaali520,2,muistiturvallisuus saikeet-ja-lukot,-,f7fe553,H-066 H-093 H-095 T-030,"C-4: varoitusten triage; C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
+Juk/vApu.cpp,Juk,1037,cp1252,ViestiWin JukLuenta520 JukMaali520,2,muistiturvallisuus saikeet-ja-lukot riippuvuudet,-,f7fe553,H-066 H-093 H-095 T-030 H-167,"C-4: varoitusten triage; C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
 Juk/VCom.cpp,Juk,1668,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedonsiirto tiedostomuodot muistiturvallisuus saikeet-ja-lukot,-,f7fe553,H-003 H-024 H-025 H-026 H-040 H-048 H-071 H-072 H-092 H-103,"rivi 862; C-2: vastaanottokäsittelijät, combufsize, tarkcom; C-3: class_len ja combufsize 1205-1245, 1366-1400; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL",f7fe553
-Juk/vdat.cpp,Juk,972,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tallenna-samanaikaisuus tiedostomuodot muistiturvallisuus globaali-tila virheenkasittely,-,f7fe553,H-040 H-042 H-046 H-047 H-072 H-130 H-140 H-142 H-148,"relay tallenna lukitsee itse 496-850; C-3: pack/unpack 85-205, addtall/deltall 855-955; C-4 vaihe 2: kohdennettu luenta; C-8: tallenna sarjanvaihto 720-760, deltall; C-9: addfrec 178-192",f7fe553
+Juk/vdat.cpp,Juk,972,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tallenna-samanaikaisuus tiedostomuodot muistiturvallisuus globaali-tila virheenkasittely riippuvuudet,-,f7fe553,H-040 H-042 H-046 H-047 H-072 H-130 H-140 H-142 H-148 T-049,"relay tallenna lukitsee itse 496-850; C-3: pack/unpack 85-205, addtall/deltall 855-955; C-4 vaihe 2: kohdennettu luenta; C-8: tallenna sarjanvaihto 720-760, deltall; C-9: addfrec 178-192",f7fe553
 Juk/VDeclare.h,Juk,789,cp1252,ViestiWin JukLuenta520 JukMaali520,2,yleiskuva,-,f7fe553,T-001,include-lohko,f7fe553
 Juk/VDef.h,Juk,1526,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedonsiirto tietorakenteet-ja-tila tiedostomuodot kaantajaerot,-,f7fe553,H-046 T-024,"luokkaluettelo; osrec luettu; C-2: combufrec; C-3: osrec, kilptietue, emittp, combufrec; sizeof mitattu; C-5: NREGNLY",f7fe553
 Juk/VEmit.cpp,Juk,6221,cp1252,ViestiWin JukMaali520,2,tiedostomuodot muistiturvallisuus saikeet-ja-lukot globaali-tila,-,f7fe553,H-003 H-053 H-058 H-064 H-073 H-087 H-092 T-032 H-103 H-137 H-140,"swprintf-rivit 5256-5875; C-3: _read-tarkistukset; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-8: addem, setEmitJarr",f7fe553
 Juk/VEmitHtml.cpp,Juk,294,cp1252,ViestiWin JukLuenta520 JukMaali520,2,kaantajaerot saikeet-ja-lukot,-,f7fe553,T-029 H-087,"C-5 vaihe 2: swprintf 216; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL",f7fe553
-Juk/VGlobals.cpp,Juk,554,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedonsiirto muistiturvallisuus saikeet-ja-lukot globaali-tila,-,f7fe553,H-036 H-072,"C-2: katkkierto, levypusk; C-4 vaihe 2: kohdennettu luenta; C-6: säikeet ja lukot, kohdennettu luenta; C-8: inventaario (globaalit.py)",f7fe553
+Juk/VGlobals.cpp,Juk,554,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedonsiirto muistiturvallisuus saikeet-ja-lukot globaali-tila riippuvuudet,-,f7fe553,H-036 H-072 T-043,"C-2: katkkierto, levypusk; C-4 vaihe 2: kohdennettu luenta; C-6: säikeet ja lukot, kohdennettu luenta; C-8: inventaario (globaalit.py)",f7fe553
 Juk/VInit.cpp,Juk,2966,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedonsiirto tiedostomuodot muistiturvallisuus kaantajaerot saikeet-ja-lukot,-,f7fe553,H-036 H-015 H-042 H-070 H-073 T-023 T-024,"C-2: VALITA, KATKKIER, COMFILE; C-3: oletukset 2440-2490, kilprecsize 2655-2665, avaus 2715-2745; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5: NREGNLY-rajaus 1771-1875; C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
-Juk/VIv.cpp,Juk,2974,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedostomuodot muistiturvallisuus kaantajaerot saikeet-ja-lukot globaali-tila virheenkasittely,-,f7fe553,H-054 H-055 H-074 T-024 T-025 H-094 H-103 H-106 H-136 H-137 H-145 H-157,"C-3: AJAT-jono 2686-2790; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5: kanava 562, AJAT-lukija 2701; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-8: bdg_t, pros_emit-kuluttaja; C-9: tall_emit, samatleimat",f7fe553
+Juk/VIv.cpp,Juk,2974,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedostomuodot muistiturvallisuus kaantajaerot saikeet-ja-lukot globaali-tila virheenkasittely riippuvuudet,-,f7fe553,H-054 H-055 H-074 T-024 T-025 H-094 H-103 H-106 H-136 H-137 H-145 H-157 H-166 H-168,"C-3: AJAT-jono 2686-2790; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5: kanava 562, AJAT-lukija 2701; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-8: bdg_t, pros_emit-kuluttaja; C-9: tall_emit, samatleimat",f7fe553
 Juk/VIx.cpp,Juk,1380,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedostomuodot muistiturvallisuus globaali-tila,-,f7fe553,H-003 T-018 H-130 H-142,"rivi 1198; C-3: latausilmukka; C-4: varoitusten triage; C-8: addjarjarr/remjarjarr, paivJoukkLkm, teejarj",f7fe553
 Juk/vkilp.cpp,Juk,1738,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedostomuodot muistiturvallisuus,-,f7fe553,T-015,"C-3: 234-250, 926-960, 1379-1421; C-4: varoitusten triage",f7fe553
 Juk/VMuotoilu.cpp,Juk,2069,cp1252,ViestiWin JukLuenta520 JukMaali520,2,muistiturvallisuus,-,f7fe553,H-057,C-4: varoitusten triage,f7fe553
@@ -361,10 +361,10 @@ Tp/TpApuC.c,Tp,67,ascii,-,1,-,-,,,,f7fe553
 Tp/TpComY.cpp,Tp,3185,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,3,tallenna-samanaikaisuus tiedonsiirto yleiskuva tiedostomuodot muistiturvallisuus kaantajaerot saikeet-ja-lukot globaali-tila virheenkasittely,-,f7fe553,H-021 H-025 H-026 H-027 H-030 H-032 H-034 H-037 H-038 T-012 T-014 H-044 H-048 H-061 H-071 H-093 H-095 H-096 H-099 H-101 T-030 T-031 T-032 H-138 H-153 H-156 H-157,"buflah sijainti, saikeet; buflah, lahetapaketti, tarkcom-kaynnistys, addseur; C-2: lähes koko tiedosto luettu (paitsi profilointi ja SIIMPORT); C-3: COMFILE-otsake ja uudelleenkaynnistys 2258-2380, buflah virhepolut; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5: Y_san_type 154 paikallinen tyyppi; C-6: säikeet ja lukot, kohdennettu luenta; C-8: openlukijaTCP; C-9: buflah, lahetapaketti, kirjaahyv, opencomfile, FILESEND",f7fe553
 Tp/TpComY32.cpp,Tp,2797,cp1252,-,2,tiedonsiirto,-,f7fe553,T-011,C-2: vertailtu TpComY.cpp:hen,f7fe553
 Tp/TpDef.h,Tp,154,ascii,ViestiWin HkMaali JukLuenta520,1,-,-,,,,f7fe553
-Tp/TpLaitteet.cpp,Tp,2954,utf-8,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,2,merkistot tallenna-samanaikaisuus yleiskuva muistiturvallisuus kaantajaerot saikeet-ja-lukot virheenkasittely,-,f7fe553,H-005 H-008 H-055 H-056 H-070 H-094 H-098 H-108 H-145,"include-valinta 38-42; rivi 2581; lue_regnlyThread, comajanotto; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5: UTF-8-literaalit, _CONSOLE 2505-2954; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-9: kuittaus 905-920, 1240-1260",f7fe553
+Tp/TpLaitteet.cpp,Tp,2954,utf-8,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,2,merkistot tallenna-samanaikaisuus yleiskuva muistiturvallisuus kaantajaerot saikeet-ja-lukot virheenkasittely riippuvuudet,-,f7fe553,H-005 H-008 H-055 H-056 H-070 H-094 H-098 H-108 H-145 H-159 H-164 H-168 H-170 T-048,"include-valinta 38-42; rivi 2581; lue_regnlyThread, comajanotto; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5: UTF-8-literaalit, _CONSOLE 2505-2954; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-9: kuittaus 905-920, 1240-1260",f7fe553
 Tp/TpMuot.cpp,Tp,17,ascii,-,1,-,-,,,,f7fe553
 Tp/TpMuot.h,Tp,55,utf-8,-,1,-,-,,,,f7fe553
-Tp/ZebraReader.cpp,Tp,1074,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
+Tp/ZebraReader.cpp,Tp,1074,cp1252,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,2,riippuvuudet,-,f7fe553,H-159 T-048,,f7fe553
 tputilv2/aakjarjs-2.cpp,tputilv2,78,utf-8,-,1,-,-,,,,f7fe553
 tputilv2/aakjarjs-v.cpp,tputilv2,77,utf-8,-,1,-,-,,,,f7fe553
 tputilv2/aakjarjs.cpp,tputilv2,78,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553
@@ -569,7 +569,7 @@ ViestiWin/UnitEmithaku.cpp,ViestiWin,152,ascii,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitEmithaku.h,ViestiWin,60,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitEmitMuutokset.cpp,ViestiWin,395,cp1252,ViestiWin,2,gui-liiketoimintalogiikka,-,f7fe553,H-112 H-113,C-7: Vaihda- ja Siirrä-kutsut,f7fe553
 ViestiWin/UnitEmitMuutokset.h,ViestiWin,113,ascii,-,1,-,-,,,,f7fe553
-ViestiWin/UnitExport.cpp,ViestiWin,585,cp1252,ViestiWin,2,tiedostomuodot,-,f7fe553,H-046,C-3: 470-485,f7fe553
+ViestiWin/UnitExport.cpp,ViestiWin,585,cp1252,ViestiWin,2,tiedostomuodot riippuvuudet,-,f7fe553,H-046 H-162,C-3: 470-485,f7fe553
 ViestiWin/UnitExport.h,ViestiWin,93,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitGAZ.cpp,ViestiWin,1373,cp1252,ViestiWin,2,muistiturvallisuus kaantajaerot,-,f7fe553,H-077 H-084,C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5 vaihe 2: Osuus-kentat,f7fe553
 ViestiWin/UnitGAZ.h,ViestiWin,214,ascii,-,1,-,-,,,,f7fe553
@@ -577,7 +577,7 @@ ViestiWin/UnitHenkHaku.cpp,ViestiWin,161,ascii,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitHenkHaku.h,ViestiWin,68,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitHylkRap.cpp,ViestiWin,705,cp1252,ViestiWin,2,saikeet-ja-lukot,-,f7fe553,H-088,"C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
 ViestiWin/UnitHylkRap.h,ViestiWin,122,ascii,-,1,-,-,,,,f7fe553
-ViestiWin/UnitImport.cpp,ViestiWin,1210,cp1252,ViestiWin,2,tiedostomuodot muistiturvallisuus,-,f7fe553,H-047 H-069,C-3: 1095-1120; C-4: varoitusten triage,f7fe553
+ViestiWin/UnitImport.cpp,ViestiWin,1210,cp1252,ViestiWin,2,tiedostomuodot muistiturvallisuus riippuvuudet,-,f7fe553,H-047 H-069 H-169,C-3: 1095-1120; C-4: varoitusten triage,f7fe553
 ViestiWin/UnitImport.h,ViestiWin,82,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitJjVaihdot.cpp,ViestiWin,78,ascii,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitJjVaihdot.h,ViestiWin,55,ascii,-,1,-,-,,,,f7fe553
@@ -597,11 +597,11 @@ ViestiWin/UnitLuenta.cpp,ViestiWin,747,cp1252,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitLuenta.h,ViestiWin,124,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitMaastossa.cpp,ViestiWin,295,cp1252,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitMaastossa.h,ViestiWin,45,ascii,-,1,-,-,,,,f7fe553
-ViestiWin/UnitMain.cpp,ViestiWin,1995,cp1252,ViestiWin,2,saikeet-ja-lukot,-,f7fe553,H-106,"C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL",f7fe553
+ViestiWin/UnitMain.cpp,ViestiWin,1995,cp1252,ViestiWin,2,saikeet-ja-lukot riippuvuudet,-,f7fe553,H-106 H-163,"C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL",f7fe553
 ViestiWin/UnitMain.h,ViestiWin,307,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitMerkKoodeja.cpp,ViestiWin,175,ascii,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitMerkKoodeja.h,ViestiWin,52,ascii,-,1,-,-,,,,f7fe553
-ViestiWin/UnitMySQL.cpp,ViestiWin,704,ascii,ViestiWin,2,tiedostomuodot saikeet-ja-lukot,-,f7fe553,H-043 H-100,"C-3: SQLjonoVarm 589-684; C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
+ViestiWin/UnitMySQL.cpp,ViestiWin,704,ascii,ViestiWin,2,tiedostomuodot saikeet-ja-lukot riippuvuudet,-,f7fe553,H-043 H-100 H-160 H-161 H-163,"C-3: SQLjonoVarm 589-684; C-6: säikeet ja lukot, kohdennettu luenta",f7fe553
 ViestiWin/UnitMySQL.h,ViestiWin,94,ascii,-,1,-,-,,,,f7fe553
 ViestiWin/UnitNollaus.cpp,ViestiWin,224,cp1252,ViestiWin,1,-,-,,,,f7fe553
 ViestiWin/UnitNollaus.h,ViestiWin,71,ascii,-,1,-,-,,,,f7fe553
