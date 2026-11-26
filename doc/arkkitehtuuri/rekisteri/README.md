@@ -19,6 +19,8 @@ end of every analysis batch.
 | [havainnot.md](havainnot.md) | Viat, tekninen velka ja muut löydökset todisteineen / defects, technical debt and other findings with evidence |
 | [valitsimet.csv](valitsimet.csv) | C-12: jokainen ehtona testattu makro: luokka, merkitys, arvo tuotteittain ja kokoonpanoittain, määrityskohdat, tila (`../tyokalut/valitsinrekisteri.py`) / every tested macro |
 | [asetusavaimet.csv](asetusavaimet.csv) | C-12: asetusjäsentimien ja -editorien avaimet: verrattu pituus, rivit, ehto, voimassaolo tuotteittain / config keys of parsers and editors |
+| [riskiarvio.csv](riskiarvio.csv) | C-13: yksi rivi kutakin H-havaintoa kohden: tekninen vakavuus, saavutettavuus, todennus, vaikutus tuloksiin ja ajanoton jatkuvuuteen, palautettavuus, tietoturva, prioriteetti P1–P5, aiempi prioriteetti ja muutos, ensisijainen korjauskokonaisuus (`kk`) ja toissijaiset (`kk_muut`), peruste ja huomiot. Prioriteetin ja kokonaisuuden osalta tämä tiedosto on ajantasainen lähde; `havainnot.md`:n riveillä olevat P- ja KK-merkinnät ovat erien historiaa / C-13: one row per H finding with the risk dimensions, priority and fix package; the current source for priority and package |
+| [korjauskokonaisuudet.csv](korjauskokonaisuudet.csv) | C-13: yksi rivi kutakin korjauskokonaisuutta kohden (34 + rivi `ULKOPUOLELLA`): jäsenet, juurisyy, riippuvuudet, aalto, työmäärä, muutosriski, yhteensopivuus, testit, omistajan päätökset, haara. Tarkistus: `python -I doc/arkkitehtuuri/tyokalut/synteesi.py . <out> --tarkista` (jokainen H ja T täsmälleen yhdessä kokonaisuudessa, ei syklejä, aallot riippuvuuksien mukaiset) / C-13: one row per fix package; checked by the script |
 
 Avoimet kysymykset ovat tiedostossa `../seuranta.md` (Q-numerot).
 Open questions are in `../seuranta.md` (Q numbers).
@@ -39,13 +41,18 @@ kokonaan; hakemistotason tai skriptillä tehty analyysi on aina taso 1.
 The level is never raised automatically. Level 4 requires reading the whole file;
 directory-level or scripted analysis is always level 1.
 
+Tasolla 4 on vain 19 C-11:n testitiedostoa, jotka auditointi itse kirjoitti; yhtäkään
+tuotantotiedostoa ei ole tasolla 4. Erät C-10 ja C-12 eivät päivittäneet tiedostokohtaisia tasoja
+(skripti-inventaario on taso 1). / Only the 19 C-11 test files written by the audit are at level 4;
+no production file is. Batches C-10 and C-12 did not update per-file levels.
+
 ## Havaintojen kentät / Finding fields
 
 Jokaisella havainnolla on / Every finding has:
 
 - **ID**: `H-nnn` (vika / defect), `T-nnn` (tekninen velka / technical debt)
 - **Näyttö / evidence**: `polku:rivi`, suhteessa / relative to `TPsource/V52/`
-- **Vakavuus / severity**: kriittinen / korkea / keskitaso / matala (critical / high / medium / low)
+- **Vakavuus / severity**: korkea / keskitaso / matala (high / medium / low); käytössä ovat myös välimuodot keskitaso–korkea ja matala–keskitaso sekä ehdolliset arvot (esim. "korkea SQL-käytössä"); kriittistä ei ole annettu yhdellekään riville. Normalisoitu arvo: `../todisteet/c13/osaA0/havainnot.csv` / intermediate and conditional values are also in use; no row is critical
 - **Varmuus / confidence**: [todennettu] / [päätelty] / [tuntematon]
 - **Todennus / verification**: `ei tarkastettu` (not reviewed), `riippumaton lähdetarkastus` (independent source review: another agent re-read the code and tried to refute the claim), `toistettu testikehyksessä` (reproduced in test harness: the unchanged production functions, compiled with the shipped build settings, showed the defect mechanism in an automated test with a synthetic fixture; the actual program was not run, see `../testaus.md`), `vahvistettu ajamalla` (confirmed by running the product), `kumottu` (refuted), `ei todennettavissa staattisesti` (cannot be settled by reading code)
 - **Revisio / revision**: commit, jota vastaan havainto tehtiin / commit analysed
@@ -56,14 +63,15 @@ testikehyksessä" tarkoittaa, että tuotannon funktiot näyttivät vikamekanismi
 testiohjelmassa, jonka tila on asetettu käsin; se ei osoita, että vika laukeaa
 tai millaiset seuraukset sillä on käynnissä olevassa ohjelmassa. Havainto on
 "vahvistettu ajamalla" vasta, kun vika on toistettu käynnissä olevassa ohjelmassa.
-Tällä hetkellä yksikään H-havainto ei ole sellainen.
+Tällä hetkellä ainoa sellainen on H-041 (toimitettu HkMaali.exe, C-11 vaihe 4, käyttäjän
+poikkeamapäätöksellä; `../testaus.md` 19.11).
 
 An independent source review is not runtime verification. "Reproduced in test
 harness" means the production functions showed the defect mechanism in a test
 program whose state was set by hand; it does not show that the defect triggers,
 or what it causes, in the running program. A finding is "confirmed by running"
-only when the defect has been reproduced in the running program. At present no
-H finding is.
+only when the defect has been reproduced in the running program. At present only
+H-041 is (shipped HkMaali.exe, C-11 stage 4, by a user-approved deviation).
 
 ## Päivittäminen / Updating
 

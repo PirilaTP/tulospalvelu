@@ -1,0 +1,229 @@
+id,luokka,toissijainen_luokka,perustelu
+H-001,BUF_INT,,"memset 120 bytes into 40-byte stack buffer (C4789, ASan)"
+H-002,FMT,BUF_FILE,sscanf %s into int slot; legacy class-file lines
+H-003,FMT,,"16 format/argument mismatches, 2 can crash"
+H-004,ENCODING,,"U+FFFD bytes in UI strings, wrong with any compiler"
+H-005,ENCODING,,BOM-less UTF-8 read as ANSI by both compilers
+H-006,TEST_CI,,"Tests/run.sh broken, tests not in CI"
+H-007,RACE,PROTO,tark_kilp reads record before tall_CS; local change reverted and propagated
+H-008,LOCK_LEAK,BUF_DEV,tall_sak returns holding tall_CS on bad device message
+H-009,LOCK_ORDER,,lock held across SendMessage (deadlock risk)
+H-010,RACE,,about 35 unlocked tallenna call sites
+H-011,RACE,,emit file written without emit_CS
+H-012,LOCK_LEAK,,vaihdakilp returns holding tall_CS (console)
+H-013,DERIVED,,"teejarj loop variable bug, only record 1 saved"
+H-014,SQL,STAGE_RESET,"SQL writer thread stops after stage change, failures lost"
+H-015,IO_ERR,,"KILP.DAT write error ignored, dialog under lock"
+H-016,PROTO,,"replication without version/timestamp/origin, last arrival wins"
+H-017,GUI_LOGIC,RACE,long-held form record copy overwrites intervening changes
+H-018,RACE,,VCL touched from worker threads
+H-019,RACE,,writeerror_w global buffer without lock
+H-020,DEAD_SWITCH,,add_sakko defined twice in one program
+H-021,LOCK_ORDER,IO_ERR,queue-full warning dialog with locks held; packet dropped
+H-022,PROTO,DERIVED,concurrent adds get same record number; stage data to wrong competitor
+H-023,PROTO,STAGE_RESET,VAIN_TULOST applied to receiver own stage
+H-024,LOCK_LEAK,,relay tark_trk returns holding tall_CS in announcer mode
+H-025,BUF_INT,PROTO,"relay combufsize lacks 14-byte header, queue overrun"
+H-026,PROTO,BUF_NET,unknown packet class stops all receiving permanently
+H-027,DEV_CONN,UNINIT_NULL,"TCP client never retries, stale handle, null deref"
+H-028,DEV_CONN,LOCK_LEAK,"second accept replaces socket, two readers, break holding tcpip_CS"
+H-029,PROTO,,any UDP datagram redirects destination; no authentication
+H-030,PROTO,,resend tool replays old acknowledged snapshots
+H-031,STAGE_RESET,RACE,refused stage change leaves vaiheenvaihto flag set
+H-032,BUF_NET,,"UDP length check skipped for class_len 0, unbounded pkgclass"
+H-033,BUF_NET,,tark_kilp uses wire stage index unchecked
+H-034,PROTO,,in-flight packet applied twice after reconnect/restart
+H-035,BUF_NET,DEAD_SWITCH,pre-timer AIKAT buffer misaligned; path practically dead
+H-036,BUF_FILE,CONFIG,"KATKKIER config index unchecked, OOB write"
+H-037,DEV_CONN,,tcpkaynnistys written at handle-1 read at handle
+H-038,THREAD_LIFE,,"shutdown without joins, KILP.DAT closed while tarkcom writes"
+H-039,PROTO,,mesh forwarding lets old state arrive by another route
+H-040,LOCK_LEAK,,"relay addfrec takes kilpdat_CS twice, never releases"
+H-041,BUF_INT,,KILPBUFSIZE 10000 < record 11200 in shipped Release builds
+H-042,BUF_FILE,BUF_GUI,"relay XML/GUI counts unclamped, fixed buffers overflow"
+H-043,SQL,IO_ERR,SQLjonoVarm.dat append mode breaks in-place update
+H-044,IO_ERR,,COMFILE write/read error still advances queue
+H-045,RACE,,emit file reloaded without emit_CS
+H-046,FORK_DIV,,relay KILP.DAT export writes raw object not pack() result
+H-047,RACE,PTR_OWN,relay KILP.DAT written/closed/reopened without lock
+H-048,BUF_INT,,resend reads disk queue with wrong stride
+H-049,BUF_FILE,,"old-format import: unbounded params, fixed buf[1000]"
+H-050,BUF_FILE,RACE,"comfile viewer overwrites global stride, stack overflow, div by zero"
+H-051,RACE,,shared static tarecbuf across files without lock
+H-052,BUF_FILE,,config wcscpy into fixed buffers; line[l-1] with l==0
+H-053,IO_ERR,,_read result ignored in lueem
+H-054,IO_ERR,,"AJAT queue: last record lost, wrong handle closed on error path"
+H-055,BUF_DEV,BUF_NET,"emiTag P index unchecked, stack write; reachable from network"
+H-056,BUF_DEV,DEV_CONN,"lue_ARES/lue_Sirit loops do not advance, reader spins"
+H-057,BUF_FILE,BUF_NET,"XML reader depth -1 writes, NULL wcsncpy, no depth limit"
+H-058,BUF_FILE,,"RADAT count/fill loops disagree, heap overflow"
+H-059,BUF_INT,,unbounded swprintf into ln[120]; fclose(NULL)
+H-060,BUF_DEV,BUF_NET,shooting message index unchecked (case 1)
+H-061,BUF_NET,,"luepaketti uninitialised pkglen, class_len beyond N_CLASS (H-032 class)"
+H-062,UNINIT_NULL,,sendwline writes uninitialised stack line
+H-063,UNINIT_NULL,IO_ERR,fclose(NULL) aborts ViestiMaali when HAJONNAT.LST missing
+H-064,UNINIT_NULL,,tark_partio and/or precedence lets tulprm NULL through
+H-065,UNINIT_NULL,BUF_FILE,luesarjayhdistelmat j uninitialised; MAXYHD overrun
+H-066,BUF_INT,,club key hkey[22] used as 30/50 byte key
+H-067,BUF_INT,,INT mrivi[3] indexed with 3
+H-068,UNINIT_NULL,,pointer ss uninitialised then written
+H-069,UNINIT_NULL,FORK_DIV,never-assigned locals in ViestiWin
+H-070,BUF_DEV,,"FEIG frame length unchecked, stack/heap overflow"
+H-071,BUF_NET,PROTO,"FILESEND length unchecked, arbitrary file write from network"
+H-072,BUF_NET,,"EXTRA packet indices unchecked, write anywhere"
+H-073,BUF_INT,BUF_NET,kirjemvaloki unbounded swprintf into msg[400]
+H-074,BUF_FILE,,"source-point files count/fill mismatch, negative index"
+H-075,UNINIT_NULL,FORK_DIV,relay console font pointer uninitialised; HK sets 0
+H-076,BUF_INT,,ossijat heap overflow on XML path
+H-077,BUF_INT,,display board end marker written past stack buffers
+H-078,ENCODING,,UTF-16BE mode aborts MSVC console programs
+H-079,BUF_INT,ENCODING,TextFl::Open mode[16] stack overflow by 1-2 chars
+H-080,ENCODING,,"bcc32 32-bit time_t, post-2038 date stored as 0"
+H-081,FORK_DIV,ENCODING,fitness-orienteering badge swap only in GUI (_BORLAND_ block)
+H-082,BUF_GUI,,penalty-lap form leg number unchecked
+H-083,BUF_GUI,,finish-clock form device number and IP text unbounded
+H-084,BUF_GUI,,display-board form indices unbounded
+H-085,BUF_GUI,UNINIT_NULL,draw split n1=-1 heap write d[-1]; msrj uninitialised
+H-086,IO_ERR,GUI_LOGIC,"TextFl append mode opens wb, penalty-lap log emptied"
+H-087,LOCK_LEAK,,relay EmitHtmlOsuus takes print_CS and never releases
+H-088,LOCK_LEAK,,UnitHylkRap returns holding print_CS; Leave without Enter
+H-089,LOCK_LEAK,,tarkraportit double Leave of tall on ESC (console)
+H-090,LOCK_LEAK,,tall_regnly keeps ajat_CS on several paths
+H-091,LOCK_ORDER,,ABBA tall-print
+H-092,LOCK_ORDER,,ABBA emit-print (and tall-emit edge)
+H-093,LOCK_ORDER,,ABBA loki-tcpip and unbounded recursion
+H-094,PTR_OWN,RACE,pros_bdg_t frees etls while add_bdg_t may write
+H-095,PTR_OWN,THREAD_LIFE,shutdown deletes time queues while tarkcom reads
+H-096,PTR_OWN,RACE,TCPacceptTh touches freed connection struct during close
+H-097,THREAD_LIFE,STAGE_RESET,HK GUI threads exit on vaiheenvaihto and are not restarted
+H-098,THREAD_LIFE,,PaivThread _endthread without clearing handle
+H-100,RACE,SQL,"SQL queue head/tail unlocked, double consumer"
+H-101,THREAD_LIFE,RACE,SendCopyThread startable twice remotely
+H-102,RACE,STAGE_RESET,teejarj(true) zeroes idindex without idindex_CS
+H-103,LOCK_ORDER,,relay ABBA rastiva-emit
+H-104,THREAD_LIFE,,lopetus1 returns early when inLopetus pre-set
+H-105,STAGE_RESET,PTR_OWN,stale emit fd after fclose(femitfile) at stage change
+H-106,RACE,FORK_DIV,ViestiWin writes TEdit from worker threads
+H-107,UNINIT_NULL,RACE,GUI hook dereferences NULL form from worker thread
+H-108,RACE,DEV_CONN,openSirit passes pointer to static acn to threads
+H-109,GUI_LOGIC,DERIVED,delete competitor without dKilp/state check corrupts free list
+H-110,LOCK_LEAK,,BtnLahtoajatClick continue skips Leave of tall
+H-111,GUI_LOGIC,,missing else turns A/L rows into finish rows
+H-112,UNINIT_NULL,GUI_LOGIC,"TallennaVaihto uninitialised kno, d/os -1"
+H-113,BUF_GUI,GUI_LOGIC,combobox ItemIndex -1 as array index; shifted labels
+H-114,BUF_GUI,,series combobox -1 stored or used as index
+H-115,LOCK_LEAK,GUI_LOGIC,"grid exception inside tall lock, no try/finally"
+H-116,GUI_LOGIC,,select3 close X equals destructive button 2
+H-117,GUI_LOGIC,FORK_DIV,out-of-range point clears old result; relay guards
+H-118,GUI_LOGIC,,bib used as record cursor in renumber
+H-119,GUI_LOGIC,,lueKilp3 overwrites existing competitor without confirmation
+H-120,GUI_LOGIC,,placeholder keeps card when number typed by hand
+H-121,GUI_LOGIC,FORK_DIV,relay tall_rivi argument shift; HK correct
+H-122,GUI_LOGIC,,silent 1000-team cap in teeRankiJarj
+H-123,GUI_LOGIC,FORK_DIV,renumber pre-check and run-time check differ; success shown after abort
+H-124,GUI_LOGIC,,HK renumber without range/duplicate check
+H-125,GUI_LOGIC,LOCK_LEAK,division by pari inside lock
+H-126,GUI_LOGIC,,roll-up of minor relay GUI defects
+H-127,GUI_LOGIC,,roll-up of minor HK GUI defects
+H-128,DERIVED,,setpos never deletes number-index row; unreachable branch
+H-129,DERIVED,BUF_INT,"teejarj(true) does not reset idindex nrec, heap overflow"
+H-130,DERIVED,FORK_DIV,relay tallenna series-change count update is dead code
+H-131,STAGE_RESET,,"stage change keeps aikaflname base, later queues write old file"
+H-132,STAGE_RESET,CONFIG,single-stage aloitus drops 5th char of AJAT file name
+H-133,STAGE_RESET,,"aloitus not re-runnable; counters double, nrec not reset"
+H-134,STAGE_RESET,IO_ERR,missing RADAT XML sets emitfl=0 after memory freed; parse error treated as success
+H-135,DERIVED,,bdg_kno maintenance asymmetric in tallenna
+H-136,RACE,,"bdg_t[8] table unlocked, pros_bdg_t writes after unlock"
+H-137,RACE,,emithead2 check-then-act without lock
+H-138,RACE,DEV_CONN,shared static reconnect counter in openlukijaTCP
+H-139,DERIVED,STAGE_RESET,nvak asymmetry; nyilmt/nytulost never reset
+H-140,DERIVED,,"emitjarr not cleared on delete, slot reuse inherits link"
+H-141,STAGE_RESET,,eralahto and nemitvar not reset at stage change
+H-142,DERIVED,,roll-up of minor integrity defects
+H-143,STAGE_RESET,,roll-up of minor lifecycle defects
+H-144,RACE,,"roll-up of minor thread defects (static return buffers, perr_ptrs2)"
+H-145,IO_ERR,,emit write error: ACK sent before persistence
+H-146,IO_ERR,,AJAT row marked written before _write succeeds
+H-147,IO_ERR,ENCODING,result file write errors undetected (WEOF vs EOF)
+H-148,IO_ERR,,"relay addfrec ignores openfile result, team lost on disk full"
+H-149,PTR_OWN,,relay autofile use after free / double free of PRFILE
+H-150,LEAK,,HK autofile leaks TextFl and FILE per run
+H-151,PTR_OWN,,aftulparam.lstf dangling after sendtcpfile thread
+H-152,PTR_OWN,,autotulostusparam holds stale PRFILE alias
+H-153,LOCK_ORDER,IO_ERR,exit choice in error dialog while worker holds lock
+H-154,IO_ERR,PTR_OWN,"printer DC lost after one error, printing stops silently"
+H-155,LEAK,DEV_CONN,socket leaks on open-failure and disconnect paths
+H-156,IO_ERR,,roll-up of minor persistence error paths (no _commit etc.)
+H-157,LEAK,,roll-up of minor error-path and shutdown defects
+H-158,DEAD_SWITCH,PTR_OWN,relay auto XML holds only closing part (writexml commented out)
+H-159,DEV_CONN,,Sirit/Zebra reconnect tests return value inverted
+H-160,SQL,THREAD_LIFE,SQL exception in writer thread terminates program
+H-161,SQL,,invalid SQL UPDATE statements with ordinary data
+H-162,SQL,LOCK_LEAK,SQL exception in export leaves tall_CriticalSection held
+H-163,SQL,UNINIT_NULL,"SQL start-up failure skips initialisation, NULL form deref"
+H-164,DEV_CONN,,vanished serial reader never reopened or reported
+H-165,BUILD_DEPLOY,SQL,"release ZIP lacks dbxmys.dll, libmysql.dll, schema files"
+H-166,DEV_CONN,PROTO,"emiTag HTTP: no status check, no timeouts, chunk joined wrongly"
+H-167,THREAD_LIFE,LOCK_ORDER,GUI shutdown waits for HTTP thread stuck in SendMessage
+H-168,IO_ERR,,samatleimat compares times with themselves; real re-read dropped and ACKed
+H-169,SQL,,lue_SQL import overwrites local records destructively
+H-170,DEV_CONN,SQL,roll-up of minor external-dependency defects
+H-171,BUF_INT,CONFIG,wcsncpy 120 chars into cfgfilename[41] on every ViestiWin open
+H-172,DEAD_SWITCH,CONFIG,relay console XML blocks under undefined XML macro
+H-173,CONFIG,,settings editors write keys the parser does not know
+H-174,CONFIG,IO_ERR,XML parse error silently falls back to stale KILP.SRJ
+H-175,GUI_LOGIC,CONFIG,emit form menu ticks diverge from behaviour variables
+H-176,CONFIG,DEAD_SWITCH,roll-up of minor settings and switch defects
+H-177,DEAD_SWITCH,,console club results and ORAVA compiled out
+T-001,ARCH,,core includes GUI headers
+T-002,ARCH,,"dependency cycles Hk/Tp, Juk/Tp, cbTp/cbHk"
+T-003,ARCH,RACE,about 850 extern globals
+T-004,ENCODING,,mixed encodings in two files
+T-005,BUILD_DEPLOY,,unused Indy and ODBC dependencies
+T-006,BUILD_DEPLOY,,JukLuenta links against vc10/
+T-007,DEAD_SWITCH,,32 orphan files
+T-008,FORK_DIV,DEAD_SWITCH,console and GUI builds have different feature switches
+T-009,DEAD_SWITCH,,makitp maki outside class in MAKI block
+T-010,BUILD_DEPLOY,,outdated CLAUDE.md (fixed)
+T-011,DEAD_SWITCH,,"old copy Tp/TpComY32.cpp, not built"
+T-012,DEAD_SWITCH,,SIIMPORT code dead and would not link
+T-013,DEAD_SWITCH,,broadcasttulos dead in HK
+T-014,CONFIG,,MONITORI port code 14770 vs manual 14900
+T-015,DEAD_SWITCH,,dead truncation loops (WcsToMbs never negative)
+T-016,ENCODING,,pragma -K -a1 hygiene in bcc32
+T-017,BUILD_DEPLOY,CONFIG,JukLuenta520 identical defines in all configurations
+T-018,DEAD_SWITCH,,"dead B-tree layer, initindex name clash"
+T-019,PROTO,IO_ERR,"data files lack magic, version, record length, checksum"
+T-020,UNINIT_NULL,IO_ERR,"unchecked allocations, fclose(NULL), no invalid-parameter handler"
+T-021,TEST_CI,FMT,warning hygiene; bcc32 does not check format strings
+T-022,BUF_NET,BUF_DEV,no systematic validation of external input
+T-023,ENCODING,,bcc32 -a1/-a8 struct size differences across units
+T-024,FORK_DIV,CONFIG,"relay NREGNLY 8 in console, 32 in ViestiWin"
+T-025,ENCODING,,VersioInt differs between compilers
+T-026,ENCODING,,"RTL semantic differences (swprintf truncation, _wtoi, iswalnum)"
+T-027,ENCODING,,encoding depends on build host code page
+T-028,DEAD_SWITCH,,ifdef CONSOLE typo always false
+T-029,DEAD_SWITCH,FMT,garbled dead-store swprintf call
+T-030,THREAD_LIFE,,"no joins, flag plus sleep shutdown lifecycle"
+T-031,LOCK_ORDER,,one global tcpip_CS held across blocking network calls
+T-032,LOCK_ORDER,,blocking and UI-waiting calls under locks
+T-033,RACE,LOCK_ORDER,UI marshalling only via synchronous SendMessage
+T-034,FORK_DIV,,HK and relay forms diverged by copying
+T-035,UNINIT_NULL,FORK_DIV,relay kilptietue has no constructor
+T-036,LOCK_LEAK,,no try/finally around lock pairs in form handlers
+T-037,BUF_GUI,,editable comboboxes used as pick lists with unchecked ItemIndex
+T-038,STAGE_RESET,,no central reset of stage-dependent state
+T-039,DERIVED,,derived structures maintained by hand without invariants
+T-040,IO_ERR,,"errors as modal dialogs from worker threads, not return values"
+T-041,IO_ERR,,no atomic or durable file writes
+T-042,PTR_OWN,,closeprfile cannot clear the caller pointer
+T-043,PROTO,SQL,"unencrypted, unauthenticated external links and credentials"
+T-044,BUILD_DEPLOY,,"distribution and build not verified, obsolete packages"
+T-045,DEAD_SWITCH,CONFIG,feature switches defined outside project files
+T-046,BUILD_DEPLOY,,dependencies tied to ageing platform components
+T-047,BUILD_DEPLOY,,third-party code provenance and licence unclear
+T-048,DEV_CONN,,no device liveness detection
+T-049,DEAD_SWITCH,,"dead dependency code, 31 unbuilt files"
+T-050,DEAD_SWITCH,,"switch hygiene: undefined macros, about 7400 dead lines"
+T-051,CONFIG,FORK_DIV,configuration and parser drift between products
+T-052,FORK_DIV,DEAD_SWITCH,ViestiLuenta reduced build undocumented

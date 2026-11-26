@@ -21,7 +21,11 @@ code references appear only once.
 | [CHECKPOINT.md](CHECKPOINT.md) | Tilanne ja jatkamisohjeet / current state and resume instructions |
 | [yleiskuva.md](yleiskuva.md) | Arkkitehtuuri, moduulit, päävirrat, kaaviot / Architecture, modules, main flows, diagrams |
 | [inventaario.md](inventaario.md) | Projektit, binäärit, hakemistot, koot, merkistöt / Projects, binaries, directories, sizes, encodings |
-| [riippuvuudet.md](riippuvuudet.md) | Käännös- ja ajonaikaiset riippuvuudet, protokollat, tiedostot / Build and runtime dependencies, protocols, files |
+| [auditoinnin-yhteenveto.md](auditoinnin-yhteenveto.md) | **Erä C-13: vaiheen C yhteenveto**: kattavuus, todennuksen vahvuus, juurisyyt JS-1–JS-15, yhtenäinen riskiarvio P1–P5, riippumattoman tarkastuksen käsittely / **batch C-13: summary of phase C**: coverage, strength of verification, root causes, uniform risk assessment, handling of the independent review |
+| [korjaussuunnitelma.md](korjaussuunnitelma.md) | Erä C-13: 34 korjauskokonaisuutta, riippuvuudet ja toteutusjärjestys, yhteensopivuus, D-vaiheen kehittämissuunnitelma ja ensimmäinen toteutuserä / batch C-13: fix packages, order, compatibility, development plan for phase D and its first batch |
+| [regressiotestaussuunnitelma.md](regressiotestaussuunnitelma.md) | Erä C-13: testilajit, testit kokonaisuuksittain, infrastruktuurityöt, julkaisun testaus / batch C-13: kinds of tests, tests per package, infrastructure work, release testing |
+| [omistajan-paatokset.md](omistajan-paatokset.md) | Erä C-13: omistajan päätöstä vaativat asiat OP-1–OP-18 vaihtoehtoineen / batch C-13: owner decisions with options |
+| [riippuvuudet.md](riippuvuudet.md) | Käännös- ja ajonaikaiset riippuvuudet, protokollat, tiedostot; luvut 7–19: erä C-10 (tuotekohtainen inventaario, tietokanta, HTTP, laitteet, jakelu; H-159–H-170, T-043–T-049) / Build and runtime dependencies, protocols, files; sections 7–19: batch C-10 |
 | [tietorakenteet-ja-tila.md](tietorakenteet-ja-tila.md) | Keskeiset rakenteet, globaali tila, säikeet / Core structures, global state, threads |
 | [merkistot.md](merkistot.md) | Merkistöt ja turvallinen muokkausmenettely / Encodings and the safe editing procedure |
 | [tallenna-samanaikaisuus.md](tallenna-samanaikaisuus.md) | Syväauditointi 1: `tallenna()`, säikeet ja lukot / Deep audit 1: `tallenna()`, threads and locks |
@@ -31,11 +35,11 @@ code references appear only once.
 | [kaantajaerot.md](kaantajaerot.md) | Erä C-5: kääntäjäkohtainen käytös (asetukset, rakenteiden asettelu käännösyksiköiden välillä, merkistö, ajonaikaiset erot) / Batch C-5: compiler-specific behaviour |
 | [gui-liiketoimintalogiikka.md](gui-liiketoimintalogiikka.md) | Erä C-7 vaihe 1: kahdeksan GUI-lomakeyksikön moduulikuvaukset, HK/viesti-erot, liiketoimintalogiikan viat H-109–H-127, C-5:n jäsennysehdokkaat / Batch C-7 step 1: module descriptions of eight GUI form units, HK/relay differences, business-logic defects, parse candidates |
 | [globaali-tila.md](globaali-tila.md) | Erä C-8 vaihe 1: globaalien ja staattisten muuttujien inventaario ja luokittelu, elinkaari ja vaiheen vaihdon nollaustaulukko, johdettujen rakenteiden eheys, säikeiden yhteinen tila, viat H-128–H-144 / Batch C-8 step 1: inventory and classification of globals and statics, lifecycle and stage-change reset table, derived-structure integrity, shared state between threads |
-| [virheenkasittely.md](virheenkasittely.md) | Erä C-9 vaihe 1: virheenkäsittely ja resurssit: resurssi- ja virhekutsujen inventaario, pysyvän datan kirjoitusvirheiden käsittely tiedostoittain, resurssien elinkaari kilpailun aikana, tila virheilmoituksen jälkeen ja lopetuspolut; H-145–H-157, T-040–T-041 / batch C-9 step 1: error handling and resources |
+| [virheenkasittely.md](virheenkasittely.md) | Erä C-9 vaihe 1: virheenkäsittely ja resurssit: resurssi- ja virhekutsujen inventaario, pysyvän datan kirjoitusvirheiden käsittely tiedostoittain, resurssien elinkaari kilpailun aikana, tila virheilmoituksen jälkeen ja lopetuspolut; vaihe 2: eristetyt koeohjelmat; H-145–H-158, T-040–T-042 / batch C-9 steps 1–2: error handling and resources |
 | [ominaisuusvalitsimet.md](ominaisuusvalitsimet.md) | Erä C-12 vaihe 1: ominaisuusvalitsimet ja asetukset: esikääntäjän valitsinten luokittelu ja merkitys (Q2), konsoli vs. GUI (T-008), asetusavaimet ja komentorivi, muut kytkimet, ominaisuus- ja testimatriisi; H-171–H-177, T-050–T-052 / batch C-12 step 1: feature switches and settings |
 | [saikeet-ja-lukot.md](saikeet-ja-lukot.md) | Erä C-6 vaiheet 1–2: säiekartta, elinkaari ja lopetus, lukkokartta, lukitusjärjestys, Q30; vaihe 2: polkujen todennus eristetyillä koeohjelmilla, VCL-säieturvallisuus / Batch C-6 steps 1–2: thread map, lifecycle, lock map, lock order; step 2: probe verification, VCL thread safety |
-| [testaus.md](testaus.md) | Erä C-11: testausstrategia ja ajonaikaisen todennuksen suunnitelma / Batch C-11: test strategy and runtime verification plan |
-| [rekisteri/](rekisteri/README.md) | Auditointirekisteri: tiedostot, moduulit, havainnot / Audit register: files, modules, findings |
+| [testaus.md](testaus.md) | Erä C-11: testausstrategia, testikehys (`TpCoreHk`, `TpCoreJuk`, ajuri) ja vaiheiden 1–4 tulokset: 15 havaintoa toistettu testikehyksessä, H-041 toimitetussa ohjelmassa / Batch C-11: test strategy, the harness and the results of stages 1–4 |
+| [rekisteri/](rekisteri/README.md) | Auditointirekisteri: tiedostot, moduulit, havainnot, valitsimet, asetusavaimet, riskiarvio, korjauskokonaisuudet / Audit register: files, modules, findings, switches, config keys, risk assessment, fix packages |
 | [dokumentointistandardi.md](dokumentointistandardi.md) | Kommentointikäytännöt / Commenting conventions |
 | [suunnitelma.md](suunnitelma.md) | Moduulikohtainen arvio ja vaiheistus / Per-module assessment and phasing |
 | [seuranta.md](seuranta.md) | Edistyminen, avoimet kysymykset, epäillyt viat / Progress, open questions, suspected defects |
@@ -74,5 +78,7 @@ step. Inventory figures were produced by a script that walks `TPsource/V52` (see
 `inventaario.md`, "How it was produced"). If the code changes significantly,
 regenerate the figures before relying on them.
 
-Selvitys tehtiin 2026-11-24 commitin `f7fe553` päälle.
-The audit was made on top of commit `f7fe553` on 2026-11-24.
+Selvitys tehtiin 2026-11-24–26 commitin `f7fe553` päälle; vaiheen C synteesi (C-13) valmistui
+2026-11-26. Tuotantokoodia ei ole muutettu.
+The audit was made on top of commit `f7fe553` on 2026-11-24..26; the synthesis of phase C (C-13)
+was completed on 2026-11-26. No production code has been changed.

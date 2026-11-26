@@ -10,13 +10,17 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 |---|---|
 | Haara / branch | `testit/vikojen-todentaminen` (tehty / created from `arkkitehtuuri-selvitys` @ `f5d793b`); dokumentaatiohaara / docs branch `arkkitehtuuri-selvitys` |
 | Analysoitu revisio / analysed revision | `f7fe553` (`TPsource/` ei muutettu sen jälkeen / unchanged since) |
-| Commitit `main`in päällä / commits on top of `main` | `1b72ec4` dokumentit / docs, `c273b9f` CLAUDE.md, `c651980` agentit, rekisteri, erä 1 / agents, register, batch 1, `3b1d978` tarkistuspiste / checkpoint, `851129f` erä / batch C-2, `bcd0098` erä / batch C-3, `f5d793b` C-11-suunnitelma / plan, `79d9957` C-11 vaihe 1 / stage 1, `cad2781` C-11 vaihe 2 / stage 2, `c11231b` vaihe 3 / stage 3, `432ea3d` koeajot 0–1 / runs 0–1, `c6205d2` vaihe 4 esiehdot / stage 4 prerequisites ja C-11:n päätöscommit / and the C-11 closing commit (testihaaralla / on the test branch) |
+| Commitit `main`in päällä / commits on top of `main` | `1b72ec4` dokumentit / docs, `c273b9f` CLAUDE.md, `c651980` agentit, rekisteri, erä 1 / agents, register, batch 1, `3b1d978` tarkistuspiste / checkpoint, `851129f` erä / batch C-2, `bcd0098` erä / batch C-3, `f5d793b` C-11-suunnitelma / plan, `79d9957` C-11 vaihe 1 / stage 1, `cad2781` C-11 vaihe 2 / stage 2, `c11231b` vaihe 3 / stage 3, `432ea3d` koeajot 0–1 / runs 0–1, `c6205d2` vaihe 4 esiehdot / stage 4 prerequisites ja C-11:n päätöscommit / and the C-11 closing commit (testihaaralla / on the test branch); sen jälkeen erät C-4–C-13 paikallisina committeina samalla haaralla, viimeisimmät C-12:n sulkeminen `3f378e2` ja C-13 (`git log --oneline main..`) / then batches C-4..C-13 as local commits on the same branch |
 | Push / PR / issuet / issues | ei tehty; estetty paikallisesti / none; blocked locally |
 
 ## Valmiit erät / Completed batches
 
 | Erä / Batch | Sisältö / Content | Dokumentit / Documents |
 |---|---|---|
+| **C-13 valmis, odottaa käyttäjän hyväksyntää / complete, awaiting the user's approval** (riippumattomasti tarkastettu, commitoitu paikallisesti / independently reviewed, committed locally) | Vaiheen C päätöserä, synteesi (ei uutta lähdeauditointia, mitään ei käännetty eikä ajettu): koneellinen pohja `tyokalut/synteesi.py` (tarkistettu ennen agenttikäyttöä), kattavuus ja todennuksen vahvuus, 15 juurisyytä JS-1–JS-15, yhtenäinen riskiarvio (P1 5, P2 35, P3 62, P4 47, P5 27; jokaisella avoimella H:lla prioriteetti), 34 korjauskokonaisuutta (10 aiempaa tunnusta + KK-C13-1–24), riippuvuusmalli ja aallot 0–6, regressiotestaussuunnitelma, D-vaiheen viisi vaihetta ja ensimmäinen toteutuserä (25 havaintoa), omistajan päätökset OP-1–OP-18; Opus-kokonaisarvio K1–K17 käsitelty (H-033 → P1); H-116 ja H-052 laajennettu; Q3, Q24, Q26, Q53 ratkaistu / final batch of phase C: synthesis, machine base, coverage, root causes, uniform risk assessment, 34 fix packages, order, test plan, development plan, owner decisions; independent review handled | `auditoinnin-yhteenveto.md`, `korjaussuunnitelma.md`, `regressiotestaussuunnitelma.md`, `omistajan-paatokset.md`, `rekisteri/riskiarvio.csv`, `rekisteri/korjauskokonaisuudet.csv`, `todisteet/c13/` |
+| **C-9 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi / approved 2026-11-26) | Vaiheet 1 (`f1eb195`) ja 2 (`920930c`), sulkeminen `4b48749`: virheenkäsittely ja resurssit; H-145–H-158, T-040–T-042; H-149 korkea; KK-C9-1–3 / error handling and resources | `virheenkasittely.md`, `todisteet/c9/` |
+| **C-8 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi / approved 2026-11-26) | Vaihe 1 `4884374`, sulkeminen `7aaca40`: globaali muuttuva tila; H-128–H-144, T-038–T-039; H-128 ja H-129 toistettu eristetyllä koeohjelmalla / global mutable state | `globaali-tila.md`, `todisteet/c8/` |
+| **C-7 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi / approved 2026-11-25) | Vaihe 1 `e3a8b67`, sulkeminen `be52dbf`: GUI:n liiketoimintalogiikka, kahdeksan lomakeyksikköä; H-109–H-127, T-034–T-037; jatkotyöjono J7-1–J7-7 / GUI business logic | `gui-liiketoimintalogiikka.md`, `todisteet/c7/` |
 | **C-12 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi ilman toista työerää / approved without a step 2, 2026-11-26) | Vaihe 1 `7b4ed46` ja sulkemiscommit / step 1 and closing commit; sulkeminen / closure `ominaisuusvalitsimet.md` luku 13: kattavuus ja rekisterien johdonmukaisuus, H-171 → korkea, P2 (sijoittelu bcc32-objektista), H-134 H-129:n kanssa, KK-C12-1–3, Q107/Q108/Q110 ajonaikaiseen todennukseen, Q111 omistajalle, Q112 avoin; testimatriisia ei ajettu / test matrix not run | `ominaisuusvalitsimet.md` 13 |
 | **C-12 vaihe 1 valmis / step 1 complete** (riippumattomasti tarkastettu, commitoitu paikallisesti, odottaa katselmointia / independently reviewed, committed locally, awaiting review) | Esikääntäjän valitsimet (435 makroa, `tyokalut/valitsimet.py` tarkistettu ennen agenttikäyttöä), asetusavaimet ja komentorivi (`tyokalut/asetusavaimet.py`), muut kytkimet, rekisterit `rekisteri/valitsimet.csv` ja `asetusavaimet.csv`, ominaisuus- ja testimatriisi; Q2 ratkaistu, T-008 arvioitu; uudet H-171–H-177, T-050–T-052; H-036, H-134 laajennettu; Q107–Q112; 19 väitettä Opus-tarkastajalla / switches, keys, other switches, registers, matrices; Q2 resolved | `ominaisuusvalitsimet.md`, `todisteet/c12/` |
 | **C-10 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi ilman toista työerää / approved without a step 2, 2026-11-26) | Vaihe 1 `46509f9` ja sulkemiscommit / step 1 and closing commit; sulkeminen / closure `riippuvuudet.md` luku 19: P2 H-159, H-160 (P3 → P2), P3–P5 muut; korjauskokonaisuudet / fix packages KK-C10-1–4; lisenssit omistajalle / licences to the owner OM-C10-1; tuoteinventaario täsmäytetty, `/MT` tarkennettu / product inventory reconciled; Q105, Q106; ei ajonaikaista todennusta / not verified at run time | `riippuvuudet.md` 19 |
@@ -46,11 +50,12 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 |---|---|
 | Lähdetiedostoja / source files | 631 (270 050 riviä / lines) + 19 C-11-testitiedostoa / test files |
 | Taso 1, vain inventoitu / inventoried only | 474 |
-| Taso 2, kohdennetusti luettu / read in a targeted way | 135 (C-10: riippuvuuskohdat / dependency sites; C-4: varoitusten ja havaintojen kohdat; C-5: kääntäjäerojen kohdat; C-6: säikeiden ja lukkojen kohdat / warning, finding, compiler-difference, thread and lock sites) |
-| Taso 3, rakenne luettu / structure read | 12 (luettelo / list: `rekisteri/moduulit.md`) |
+| Taso 2, kohdennetusti luettu / read in a targeted way | 135 (erät C-10 ja C-12 eivät muuttaneet tiedostokohtaisia tasoja / batches C-10 and C-12 did not change per-file levels; C-4: varoitusten ja havaintojen kohdat; C-5: kääntäjäerojen kohdat; C-6: säikeiden ja lukkojen kohdat / warning, finding, compiler-difference, thread and lock sites) |
+| Taso 3, rakenne luettu / structure read | 22 (luettelo / list: `todisteet/c13/raportit/osaA-kattavuus.md` 4.1; aiempi luku 12 oli erän C-4 tilanne / the earlier 12 was the C-4 figure) |
 | Taso 4, kokonaan katselmoitu / fully reviewed | 0 tuotantotiedostoa / production files; 19 testitiedostoa / test files (C-11) |
 | Havaintoja / findings | 177 vikaa / defects (H-001–H-177; H-099 kumottu / refuted), 52 teknistä velkaa / technical debt (T-001–T-052) |
-| Lähdeviittauksia tarkistettu / source references checked | 2 249 (`tarkista_auditointi.py`, C-10:n sulkeminen / C-10 closing) |
+| Lähdeviittauksia tarkistettu / source references checked | 2 449 (`tarkista_auditointi.py`, C-13; tarkistaa vain tiedoston ja rivin olemassaolon, ei sisältöä / checks existence and range only, not content) |
+| Riskiarvio ja korjauskokonaisuudet / risk register and fix packages | 176 avointa H:ta arvioitu (P1 5, P2 35, P3 62, P4 47, P5 27); 34 kokonaisuutta; tarkistus / check `python -I doc/arkkitehtuuri/tyokalut/synteesi.py . <out> --tarkista` |
 
 Koko koodipohjaa ei ole katselmoitu. Hakemistotason ja skriptillä tehty
 analyysi on taso 1. Moduulikohtaisesti: `rekisteri/moduulit.md`.
@@ -102,18 +107,27 @@ only for:
 
 Täydet tiedot: `rekisteri/havainnot.md`. / Full details: `rekisteri/havainnot.md`.
 
-| Todennustila / Verification state | Havainnot / Findings |
+| Todennuksen vahvuus / Strength of verification (C-13, vahvin näyttö / strongest evidence) | Havainnot / Findings |
 |---|---|
-| Riippumaton lähdetarkastus / independent source review | H-007, H-008, H-009, H-011–H-016, H-018, H-022–H-029, H-031, H-033, H-036, H-037, H-040–H-043, H-045, H-046, H-048, H-050, H-053, H-054, H-055, H-056, H-058, H-059, H-061, H-062, H-064, H-066–H-073, H-075, H-076, H-004, H-005, H-078, H-079, H-081, H-082, H-083, H-084, H-086, H-087, H-088, H-090–H-094, H-097–H-099, H-103–H-107 |
-| Riippumaton lähdetarkastus, osittain / partly | H-010, H-021, H-030, H-032, H-034, H-035, H-044, H-047, H-049, H-051, H-052, H-057, H-060, H-063, H-065, H-074, H-077, H-080, H-085, H-038, H-089, H-095, H-096, H-100–H-102 |
-| Ei riippumatonta tarkastusta / no independent review | H-001–H-003, H-006, H-017, H-019, H-039, H-108 |
-| Ei ratkea staattisesti / not statically decidable | H-020 |
-| Toistettu testikehyksessä / reproduced in test harness | H-025, H-040, H-042 (`testaus.md`, luku / section 13); H-041, H-031, H-008, H-024, H-027 (luku / section 14); H-026, H-032, H-022, H-023, H-007, H-001, H-002 (luku / section 15) |
-| Toistettu eristetyllä koeohjelmalla / reproduced with an isolated probe (C-6) | H-090, H-091 (reunat / edges), H-093, H-094 (menetys / loss); H-089:n seuraus Win32-kokeella / H-089 effect via Win32 probe (Q65) (`saikeet-ja-lukot.md` 13.3) |
-| Kumottu / refuted | H-099 (C-6 vaihe 2) |
-| Ajonaikaisesti todennettu / verified at run time | H-041 (toimitettu HkMaali.exe, poikkeamapäätös / user-approved deviation, `testaus.md` 19.11) |
+| a. Kumottu / refuted | 1: H-099 |
+| b. Vahvistettu toimitetussa ohjelmassa / confirmed in a shipped program | 1: H-041 (poikkeamapäätös / user-approved deviation, `testaus.md` 19.11) |
+| c. Toistettu koeohjelmalla tai testikehyksessä / reproduced with a probe or the harness | 26: C-11 H-001, H-002, H-007, H-008, H-022–H-027, H-031, H-032, H-040, H-042; C-6 H-090, H-091, H-093, H-094; C-8 H-128, H-129; C-9 H-145, H-146, H-147, H-149, H-150, H-151 |
+| d. Riippumaton lähdetarkastus, täysi / independent source review, full | 89 |
+| e. Riippumaton lähdetarkastus, osittain / partly | 43 |
+| f. Tarkastajan löytö, pääistunto todensi / reviewer's find | 3: H-132, H-158, H-162 |
+| g. Ei riippumatonta tarkastusta / never independently reviewed | 13: H-003, H-006, H-019, H-039, H-108, H-122, H-123, H-124, H-126, H-127, H-142, H-143, H-144 |
+| h. Ei ratkea staattisesti / not statically decidable | 1: H-020 |
 
-Vakavimmat / most severe (korkea / high, 22 kpl; C-4 lisäsi / added H-055 emiTag-indeksi pinoon, myös verkosta / emiTag index into stack, also from the network; H-056 laitelukijoiden ikuiset silmukat / device reader infinite loops; H-070 FEIG-lukijan kasaylivuoto / FEIG heap overflow; H-071 FILESEND: verkon pituus ja tiedostopolku / network length and file path; H-072 `EXTRA`-paketin indeksit / EXTRA packet indices): H-001, H-002 (muistin korruptio /
+Havaintokohtainen tila: `todisteet/c13/osaA0/havainnot.csv` ja `rekisteri/riskiarvio.csv`
+(sarake `todennus`). H-017 on tarkastettu erässä C-7; aiempi merkintä "ei tarkastettu" oli
+vanhentunut. / Per-finding state in the two CSV files; H-017 was reviewed in C-7.
+
+**C-13:** rekisterissä on 34 korkean vakavuuden riviä; riskiarviossa lisäksi H-033 (korkea, P1).
+Prioriteetit: P1 H-032, H-033, H-061, H-071, H-072; P2 35 riviä (`rekisteri/riskiarvio.csv`).
+Alla oleva luettelo on erien C-1–C-10 kertymä. / 34 high-severity rows in the register, plus H-033
+in the risk register; the list below is the accumulation of batches C-1..C-10.
+
+Vakavimmat / most severe (korkea / high, 22 kpl erän C-4 jälkeen / after C-4; C-4 lisäsi / added H-055 emiTag-indeksi pinoon, myös verkosta / emiTag index into stack, also from the network; H-056 laitelukijoiden ikuiset silmukat / device reader infinite loops; H-070 FEIG-lukijan kasaylivuoto / FEIG heap overflow; H-071 FILESEND: verkon pituus ja tiedostopolku / network length and file path; H-072 `EXTRA`-paketin indeksit / EXTRA packet indices): H-001, H-002 (muistin korruptio /
 memory corruption), H-007 (menetetty päivitys / lost update), H-008, H-024 (lukko jää
 päälle / lock left held), H-009 (lukkiutumisvaara / deadlock risk), H-014 (MySQL
 pysähtyy / SQL writer stops), H-022 (tieto väärälle kilpailijalle / data to wrong
@@ -149,7 +163,13 @@ controlled) and correspond to findings H-001–H-006.
 
 ## Avoimet kysymykset / Open questions
 
-Täydet tiedot: `seuranta.md` (Q2–Q77; C-7:n Q75–Q77 `gui-liiketoimintalogiikka.md` luku 10; C-4:n Q43–Q48 `muistiturvallisuus.md`; C-6:n Q65–Q74 `saikeet-ja-lukot.md` luvut 10 ja 13.5; Q1, Q4, Q13, Q16, Q17, Q18, Q30, Q65, Q66, Q69–Q72 ja Q74 ratkaistu, Q3,
+**C-13:** kysymyksiä on Q1–Q112, joista 32 on ratkaistu. Loput 80 on luokiteltu vaiheen C
+sulkemista varten: 39 ajonaikaiseen todennukseen D-vaiheessa, 16 omistajan päätökseksi ja 25
+hyväksytty avoimiksi (`auditoinnin-yhteenveto.md` luku 6). / Q1..Q112; 32 resolved, the other 80
+classified: 39 run-time verification in phase D, 16 owner decisions, 25 accepted as open.
+
+Täydet tiedot: `seuranta.md` (alla oleva luettelo on erien C-1–C-7 tilanne / the list below is the
+state of batches C-1..C-7: Q2–Q77; C-7:n Q75–Q77 `gui-liiketoimintalogiikka.md` luku 10; C-4:n Q43–Q48 `muistiturvallisuus.md`; C-6:n Q65–Q74 `saikeet-ja-lukot.md` luvut 10 ja 13.5; Q1, Q4, Q13, Q16, Q17, Q18, Q30, Q65, Q66, Q69–Q72 ja Q74 ratkaistu, Q3,
 Q14 ja Q67 osittain). Tärkeimmät / most important:
 
 - ~~Q5~~, ~~Q92~~ ratkaistu C-10:ssä / resolved in C-10; Q86, Q91 osittain / partly; uudet / new Q96–Q104 (`riippuvuudet.md` luku 17) ja Q105, Q106 (luku 19); Q101 omistajalle / to the owner (OM-C10-1)
@@ -292,9 +312,19 @@ luku 13): H-171 korkea ja P2; P3 H-134 (H-129:n kanssa), H-172, H-173, H-174; P4
 KK-C12-1 julkaisutiedostot, KK-C12-2 asetusten hallinta, KK-C12-3 valitsinhygienia; Q107, Q108, Q110
 ajonaikaiseen todennukseen; Q111 omistajalle; Q112 avoin.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP:** C-13 (auditoinnin synteesi ja korjaussuunnitelma) käyttäjän
-aloitusluvalla; rajaus `suunnitelma.md`, "C-13 vaihe 1: rajaus" (osat A0, A–I, tuotokset,
-valmiusehdot, vaiheen C sulkemisen edellytykset).
+**C-13 valmis (2026-11-26), riippumattomasti tarkastettu, commitoitu paikallisesti; odottaa
+käyttäjän hyväksyntää.** Osat A0 ja A–I tehty rajauksen mukaan (`suunnitelma.md`, "C-13 vaihe 1:
+rajaus"). Tulokset: `auditoinnin-yhteenveto.md` (kattavuus, juurisyyt, riskimalli, valmiusehdot,
+tarkastuksen käsittely), `korjaussuunnitelma.md` (34 kokonaisuutta, järjestys, D-vaiheen viisi
+vaihetta, ensimmäinen toteutuserä), `regressiotestaussuunnitelma.md`, `omistajan-paatokset.md`
+(OP-1–OP-18). Mitään ei korjattu, käännetty eikä ajettu; D-vaihetta ei aloitettu.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP:** käyttäjän katselmointi ja päätös C-13:n ja koko vaiheen C
+sulkemisesta. Sulkemisen edellytykset (`suunnitelma.md`, C-13:n rajaus): C-13 hyväksytty; erien
+C-1–C-3 sulkemismerkintä (`seuranta.md`: niillä on vain "valmis, tarkastettu"); korjaus- ja
+testaussuunnitelman hyväksyntä D-vaiheen lähtökohdaksi; omistajan päätöslistan toimitus
+omistajalle. **Vaihetta C ei ole merkitty suljetuksi.** D-vaihe alkaa vasta erillisellä päätöksellä
+`korjaussuunnitelma.md`:n luvun 7 pohjalta; sitä ennen päätökset OP-1–OP-3.
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
@@ -321,7 +351,33 @@ T-043–T-049; Q5 and Q92 resolved, Q86 and Q91 partly, Q96–Q104 new). New bat
 switches) and C-13 (synthesis and fix plan) added to the plan, not started. **C-10 closed** on
 approval without a step 2 (section 19: final priorities with H-160 moved to P2, fix packages
 KK-C10-1..4, licences to owner decision OM-C10-1, product inventory reconciled, `/MT` refined,
-Q105, Q106). C-12 step 1 scoped. Next: C-12 step 1 on the user's go-ahead; C-13 not started.
+Q105, Q106). **C-12 complete and closed** (`ominaisuusvalitsimet.md`; H-171..H-177, T-050..T-052;
+H-171 high and P2). **C-13 complete, awaiting the user's approval**: synthesis of phase C (machine base,
+coverage, 15 root causes, uniform risk assessment with P1 5 / P2 35 / P3 62 / P4 47 / P5 27, 34 fix
+packages, dependency model and waves, regression test plan, five-stage development plan, first
+implementation batch, owner decisions OP-1..OP-18; independent review K1..K17 handled, H-033 raised
+to P1). Nothing fixed, built or run. Phase C is NOT marked closed; next: the user's review and the
+closing decision, then phase D on a separate decision.
+
+## Resurssien käyttö / Resource usage (C-13)
+
+| Agentti / Agent | Tokenit / tokens | Työkalukutsut / tool calls |
+|---|--:|--:|
+| `architecture-analyst` (Sonnet; A kattavuus / coverage) | 365 458 | 107 |
+| `architecture-analyst` (Sonnet; B inventointi / inventory) | 256 555 | 49 |
+| `build-dependency-analyst` (Sonnet; F testausaineisto / test assets) | 372 601 | 83 |
+| `doc-writer` (Sonnet; yhteenvedon luvut 1–6 / summary sections 1–6) | 71 935 | 7 |
+| `architecture-analyst` (Opus; B juurisyyt / root causes) | 297 393 | 67 |
+| `architecture-analyst` (Opus; C riskiarvio / risk assessment) | 282 967 | 55 |
+| `legacy-encoding-analyst` (Opus; yhteensopivuuskysymykset / compatibility questions) | 159 460 | 82 |
+| `independent-verifier` (Opus; H kokonaisarvio / overall review) | 324 582 | 106 |
+| **Yhteensä / total** | **2 130 951** | **556** |
+
+Käyttäjän ohjeella ei tokenbudjettia; enintään kolme analyysiagenttia rinnakkain. Pääistunto
+(Fable) teki A0:n, korjauskokonaisuudet, järjestyksen, kehittämissuunnitelman, testaussuunnitelman,
+omistajan päätösten koonnin ja agenttien ehdotusten arvioinnin. / No token budget by the user's
+instruction; at most three analysis agents in parallel; packages, order, development plan, test
+plan, owner decisions and the assessment of agent proposals by the main session.
 
 ## Resurssien käyttö / Resource usage (C-10 vaihe 1 / step 1)
 
@@ -468,16 +524,18 @@ Figures as reported by the harness. The C-3 figure was 745 489 / 360.
 ## Jatkaminen `/clear`:n jälkeen / Resuming after `/clear`
 
 1. Lue / read: `CLAUDE.md`, tämä tiedosto / this file, `doc/arkkitehtuuri/seuranta.md`,
-   `doc/arkkitehtuuri/rekisteri/havainnot.md`. Muut dokumentit tarpeen mukaan /
-   other documents as needed (`doc/arkkitehtuuri/README.md`).
+   `doc/arkkitehtuuri/auditoinnin-yhteenveto.md`, `doc/arkkitehtuuri/korjaussuunnitelma.md` ja
+   rekisterit `doc/arkkitehtuuri/rekisteri/` (havainnot, riskiarvio, korjauskokonaisuudet). Muut
+   dokumentit tarpeen mukaan / other documents as needed (`doc/arkkitehtuuri/README.md`).
 2. Tarkista tila / check state:
    ```sh
    git branch --show-current          # testit/vikojen-todentaminen
    git status --short                 # puhdas / clean
-   git log --oneline main..           # 23 committia / commits (viimeisin / last: C-6:n sulkeminen / C-6 closure)
+   git log --oneline main..           # 35 committia / commits (viimeisin / last: C-13)
    python -I TPsource/V52/Tests/test_run_core_tests.py   # 46 OK
-   python -I TPsource/V52/Tests/run_core_tests.py   # PASS=19, XFAIL=23 (vaatii Release- ja TpCoreHk Asan -käännöksen / needs Release and TpCoreHk Asan builds, testaus.md 13.6, 14)
+   python -I TPsource/V52/Tests/run_core_tests.py   # viimeisin tallennettu ajo / last stored run 2026-11-24: PASS=23, XFAIL=24 (vaatii Release- ja Asan-käännökset / needs the Release and Asan builds, testaus.md 13.6, 14; ei ajettu C-13:ssa / not run in C-13)
    python -I doc/arkkitehtuuri/tyokalut/tarkista_auditointi.py .   # OK
+   python -I doc/arkkitehtuuri/tyokalut/synteesi.py . <tmp>/c13 --tarkista   # OK (rekisterit / registers)
    ```
 3. Rajoitukset (voimassa, kunnes käyttäjä toisin sanoo) / constraints (in force
    until the user says otherwise):
