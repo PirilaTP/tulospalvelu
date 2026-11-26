@@ -23,9 +23,25 @@ korttia, ei tarkoita, että toiminto on virheetön.
 | `vikakortit/H/`, `vikakortit/T/` | vikakortit / defect cards | pilotti: 10 H + 2 T |
 | `laatu/kysymyspankki.md` | agentin testikysymykset / agent test questions | K-1 |
 | `laatu/tarkastukset/` | testiajot ja Opus-tarkastukset / test runs and reviews | K-1, K-2-pilotti |
+| `laatu/vikakorttipilotti.md` | pilottikorttien generoitu lukudokumentti (`tietopohja.py . kooste`) / generated reading document | K-2-pilotti |
 | `kasikirja/`, `portaali/` | ei vielä / not yet (K-3, K-4) | – |
 
-Asiantuntija-agentti: `.claude/agents/pirila-expert.md`, skill `.claude/skills/pirila-ask/SKILL.md`.
+## Asiantuntija-agentti / Expert agent
+
+Agentti `.claude/agents/pirila-expert.md` (vain Read, Grep, Glob). Kaksi käynnistystapaa, molemmat
+fail-closed (`laatu/tarkastukset/k1-testiajo.md` luku 5):
+
+```
+doc/tietopohja/pirila-ask.ps1 "<kysymys>"             # PowerShell; -Model opus vaativiin kysymyksiin
+doc/tietopohja/pirila-ask.sh "<kysymys>"              # Git Bash; PIRILA_MODEL=opus vaativiin
+/pirila-ask <kysymys>                                 # Claude Code -istunnossa (skill)
+```
+
+Komentorivi käynnistää uuden prosessin, jonka työkalut rajataan prosessitasolla; jos agenttia ei
+löydy, kysymykseen ei vastata. Skill kutsuu agenttia ja lopettaa, jos agenttia ei voi käynnistää.
+**Agentin tai skillin muuttamisen jälkeen käynnistä Claude Code -istunto uudelleen** ennen kuin
+käytät `/pirila-ask`ia; komentorivi lataa määrittelyn aina tuoreena. Agentin vastauksissa on yhä
+yksittäisiä vääriä yksityiskohtia (`laatu/tarkastukset/k1-arvio.md`): tarkista lähteet ennen päätöksiä.
 
 ## Lähteet ja ylläpito / Sources and maintenance
 
@@ -48,6 +64,7 @@ python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . runko H-NNN      # uusi kor
 python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . lohkot           # generoidut lohkot uusiksi
 python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . kuittaa H-NNN    # teksti tarkistettu nykyistä riviä vasten
 python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . tarkista         # korttien koneellinen tarkistus
+python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . kooste           # lukudokumentti laatu/vikakorttipilotti.md
 python -I doc/arkkitehtuuri/tyokalut/synteesi.py . <tmp> --tarkista   # rekisterit, myös K-0-sarakkeet
 python -I doc/arkkitehtuuri/tyokalut/viitteet.py . [--raportti x.csv] # viitteet kiinnitettyä revisiota vasten
 ```

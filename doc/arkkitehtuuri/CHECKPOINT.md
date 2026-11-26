@@ -562,10 +562,10 @@ Figures as reported by the harness. The C-3 figure was 745 489 / 360.
 3. Rajoitukset (voimassa, kunnes käyttäjä toisin sanoo) / constraints (in force
    until the user says otherwise):
    - Ei pushia, PR:iä eikä GitHub-issueita. `.claude/settings.local.json` estää
-     `git push` ja `gh pr create` (deny-säännöt). Tällä haaralla tiedosto on
-     `--skip-worktree`-tilassa, joten se ei näy muutoksena; älä commitoi sitä. /
+     pushin ja PR:n luonnin myös kiertoteitse (83 deny-sääntöä, `doc/tietopohja/laatu/tarkastukset/k1-testiajo.md` luku 6).
+     Tiedosto on `.gitignore`:ssa; älä commitoi sitä. /
      No push, PRs or GitHub issues; deny rules in `.claude/settings.local.json`
-     (marked skip-worktree on this branch; do not commit it).
+     (the file is in .gitignore; do not commit it).
    - Ei muutoksia `TPsource/`-hakemistoon ilman erillistä lupaa; vikakorjaukset
      omiin haaroihinsa, ei dokumentaation kanssa. / No `TPsource/` changes without
      separate approval; bug fixes in their own branches, not with docs.

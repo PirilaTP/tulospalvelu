@@ -7,6 +7,8 @@ Usage (from the repository root):
     python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . kuittaa <id> ...  record the register state
                                                                            the text was checked against
     python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . tarkista          check all cards (exit 1 on error)
+    python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . kooste            generated reading document of all
+                                                                           cards (doc/tietopohja/laatu/vikakorttipilotti.md)
 
 A card has three generated blocks (summary, impacts, technical data) between
 <!-- generoitu:NAME alku --> and <!-- generoitu:NAME loppu --> markers. They are
@@ -406,6 +408,12 @@ def cmd_tarkista(data):
         for x in set(re.findall(r"\bJS-\d+\b", body)):
             if x not in own:
                 warnings.append("%s: mentions %s, which is not its root cause in the register" % (i, x))
+    kp = os.path.join(data.root, KOOSTE_PATH)
+    if os.path.exists(kp):
+        cur = read_text(kp)
+        norm = lambda t: re.sub(r"`[0-9a-f]{7,12}`|[0-9a-f]{12}", "#", t)
+        if norm(cur) != norm(build_kooste(data)):
+            errors.append("%s is out of date (run: tietopohja.py . kooste)" % KOOSTE_PATH.replace(os.sep, "/"))
     print("cards: %d (H %d, T %d)" % (len(ids), sum(1 for i in ids if i[0] == "H"), sum(1 for i in ids if i[0] == "T")))
     for w in warnings:
         print("WARNING", w.encode("ascii", "replace").decode())
@@ -413,6 +421,143 @@ def cmd_tarkista(data):
         print("ERROR", e.encode("ascii", "replace").decode())
     print("OK" if not errors else "%d errors" % len(errors))
     return 1 if errors else 0
+
+
+KOOSTE_HEAD = """# Vikakorttipilotti: lukudokumentti
+
+> **Generoitu tarkastusaineisto - älä muokkaa käsin.** Tuotettu komennolla
+> `python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . kooste`. Sisältö on korttien
+> (`doc/tietopohja/vikakortit/`) sellaisenaan koottu kopio; korjaukset tehdään kortteihin tai
+> rekistereihin, minkä jälkeen dokumentti tuotetaan uudelleen. `tietopohja.py tarkista` ilmoittaa,
+> jos dokumentti on vanhentunut. Tämä ei ole vikarekisteri: ensisijainen lähde on
+> `doc/arkkitehtuuri/rekisteri/`.
+>
+> **Luottamuksellinen:** kuvaa korjaamattomia vikoja, myös verkosta laukeavia. Ei julkiseen
+> repositorioon ilman omistajan hyväksyntää (OP-1).
+
+"""
+
+KOOSTE_LEGEND = """## Lukuohje
+
+### Tekninen vakavuus ja korjausprioriteetti
+
+Kortin yhteenvedossa ja teknisissä tiedoissa on kaksi eri asiaa:
+
+- **Tekninen vakavuus** kertoo, kuinka paha seuraus on, jos vika laukeaa: korkea,
+  keskitaso-korkea, keskitaso, matala-keskitaso tai matala. Erän alkuperäinen vakavuus
+  ("Vakavuus (rekisteri)") voi poiketa vaiheen C-13 yhtenäisestä arviosta ("Riskiarvio",
+  `riskiarvio.csv`); tällöin jälkimmäinen on voimassa ja ero on perusteltu.
+- **Prioriteetti P1-P5** on korjausjärjestyksen arvio, joka yhdistää vakavuuden ja sen, kuka tai
+  mikä vian voi laukaista (`auditoinnin-yhteenveto.md` luku 9.2):
+  - **P1** verkossa oleva kolmas osapuoli voi laukaista oletusasetuksin, ja seuraus on muistin tai
+    tiedoston ylikirjoitus, tiedoston korvaus tai tulosten hiljainen vääristyminen;
+  - **P2** verkosta oletusasetuksin mutta lievempi seuraus, verkosta asetuksella tai laitteelta,
+    tai tavallisessa käytössä toistuva pysähtyminen, jumiutuminen, kaatuminen tai tulosten hiljainen
+    virhe;
+  - **P3** toimitetussa ohjelmassa, mutta kapeampi seuraus tai harvinaisempi edellytys;
+  - **P4** vaatii virheellisen paikallisen tiedoston tai käyttäjän virheen, tai matala vakavuus;
+  - **P5** kosmeettinen, kuollut tai toimittamaton koodi, kokoomarivit.
+
+Vakava vika voi olla matalalla prioriteetilla, jos sen laukaiseminen vaatii harvinaisen
+tilanteen, ja päinvastoin.
+
+### Todentamistasot
+
+"Ohjelmointivirheen todennus" kertoo, miten **itse virhe** on osoitettu. Se ei kerro, onko
+käytännön seuraus osoitettu (siihen on vaikutustaulukko).
+
+| Taso | Merkitys |
+|---|---|
+{todennus}
+
+Varmuusmerkinnät tekstissä: [todennettu] = osoitettu lähteestä tai koodista; [päätelty] =
+johdettu, ei osoitettu; [tuntematon] / ei tiedossa = aineisto ei ratkaise.
+
+### Käytännön vaikutusten luokat
+
+Luvun 6 taulukko tulee rekisteristä `vaikutukset.csv`. Jokaiselle 16 kysymykselle on yksi arvo:
+
+| Arvo | Merkitys |
+|---|---|
+| **Vahvistettu** | Juuri tämä seuraus on osoitettu kokeella, testikehyksessä tai ohjelmaa ajamalla. Koodin lukeminen ei riitä. |
+| Mahdollinen | Seuraus johtuu koodista, mutta sitä ei ole osoitettu; tai se riippuu perusteessa nimetyistä olosuhteista. |
+| Ei vaikutusta (perusteltu) | Aineisto osoittaa, ettei seurausta synny. |
+| Ei tiedossa | Aineisto ei ratkaise kysymystä. **Tiedon puute ei tarkoita, ettei vaikutusta ole.** |
+| Ei sovellu | Kysymys ei koske tätä vikaa. |
+| _Ei arvioitu_ | Riviä ei ole vielä arvioitu. |
+
+### Auditoinnin kattavuusrajoite
+
+Auditointi ei kata koko lähdekoodia: noin 36 % riveistä on vain inventoitu, yhtäkään
+tuotantotiedostoa ei ole katselmoitu kokonaan, ja havaintojen määrä on alaraja
+(`auditoinnin-yhteenveto.md` luvut 3, 4 ja 10). Vain yksi vika (H-041) on vahvistettu ajamalla
+toimitettua ohjelmaa. Kortin puuttuminen ei tarkoita, että toiminto on virheetön.
+
+### Lähderevisio
+
+{revisio}
+
+"""
+
+
+def git_out(root, *args):
+    import subprocess
+    p = subprocess.run(["git", "-C", root] + list(args), stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    return p.stdout.decode("utf-8", "replace").strip() if p.returncode == 0 else "?"
+
+
+KOOSTE_PATH = os.path.join("doc", "tietopohja", "laatu", "vikakorttipilotti.md")
+
+
+def build_kooste(data):
+    ids = card_ids(data)
+    revs = sorted({data.reg[i]["rev"] for i in ids if i in data.reg})
+    reg_files = ["havainnot.md", "riskiarvio.csv", "tekninen-velka.csv", "vaikutukset.csv",
+                 "korjauskokonaisuudet.csv"]
+    hashes = []
+    for f in reg_files:
+        b = open(os.path.join(data.doc, "rekisteri", f), "rb").read()
+        hashes.append("`%s` %s" % (f, hashlib.sha256(b).hexdigest()[:12]))
+    revisio = "\n".join([
+        "- Korttien lähdeviitteet (rivinumerot) on kirjattu revisioihin: %s. Tuotantokoodi "
+        "`TPsource/` ei ole muuttunut revision `f7fe553` jälkeen (`doc/arkkitehtuuri/CHECKPOINT.md`)."
+        % ", ".join("`%s`" % r for r in revs),
+        "- Kortit ja rekisterit luettiin työpuusta, jonka viimeisin commit oli `%s`."
+        % git_out(data.root, "rev-parse", "--short", "HEAD"),
+        "- Rekisteritiedostojen tiivisteet tuottohetkellä (SHA-256, 12 merkkiä): " + "; ".join(hashes) + ".",
+        "- Jokaisen kortin teksti on tarkistettu sen omien rekisteririvien tilaa vastaan; tiiviste on "
+        "kortin teknisissä tiedoissa (\"Rekisteririvien tiiviste nyt\")."])
+    tod = "\n".join("| %s | %s |" % (k, v) for k, v in TODENNUS.items() if k != "-")
+    out = [KOOSTE_HEAD, "## Sisällys\n", "| Kortti | Otsikko | Tila | Prioriteetti | Tekninen vakavuus | Ohjelmointivirheen todennus |",
+           "|---|---|---|---|---|---|"]
+    bodies = []
+    for i in ids:
+        text = read_text(data.path(i))
+        title = text.splitlines()[0][2:].strip()
+        sr = data.state_row(i)
+        rk = data.risk.get(i, {})
+        anchor = i.lower()
+        out.append("| [%s](#%s) | %s | %s | %s | %s | %s |" % (
+            i, anchor, title.split(" – ", 1)[-1].replace("|", "/"), sr.get("tila", "?"),
+            rk.get("prioriteetti", "-") if i.startswith("H") else "-",
+            rk.get("tekninen_vakavuus", data.reg[i]["vakavuus"]) if i.startswith("H") else data.reg[i]["vakavuus"],
+            TODENNUS.get(rk.get("todennus", ""), "-") if i.startswith("H") else "-"))
+        body = re.sub(r"<!--.*?-->\n?", "", text, flags=re.S)
+        body = re.sub(r"^(#+) ", lambda m: "#" + m.group(1) + " ", body, flags=re.M)
+        body = body.replace("](../../", "](../")
+        body = re.sub(r"\n{3,}", "\n\n", body).strip() + "\n"
+        bodies.append('\n---\n\n<a id="%s"></a>\n\n%s' % (anchor, body))
+    out.append("")
+    out.append(KOOSTE_LEGEND.format(todennus=tod, revisio=revisio))
+    out.append("## Kortit\n")
+    out += bodies
+    return "\n".join(out)
+
+
+def cmd_kooste(data):
+    p = os.path.join(data.root, KOOSTE_PATH)
+    write_text(p, build_kooste(data))
+    print("written", KOOSTE_PATH)
 
 
 def main(argv):
@@ -427,6 +572,8 @@ def main(argv):
         cmd_lohkot(data, ids)
     elif cmd == "kuittaa":
         cmd_kuittaa(data, ids)
+    elif cmd == "kooste":
+        cmd_kooste(data)
     elif cmd == "tarkista":
         return cmd_tarkista(data)
     else:

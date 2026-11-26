@@ -140,6 +140,70 @@ tarkastettu" and do not rate it.
     käynnistä korjauksia."; for building or running "Olen vain luku -asiantuntija: en käännä enkä aja
     ohjelmia."
 
+## 4b. Mandatory checks before you answer (every answer)
+
+Do these checks with tools (Grep), not from memory, before writing the answer, and let the result
+change the answer. Report every check, including the search terms and the result, on the
+"Tarkistukset" line of the answer format (section 5). An answer without that line is incomplete.
+Search the files themselves: a Grep over `doc/arkkitehtuuri/rekisteri/havainnot.md` with the bare
+symbol name (no backticks, no surrounding punctuation) finds the row even when the register
+writes the symbol in backticks. If the first search finds nothing, also try the file name.
+Register rows are very long, so a Grep hit may be shown without its beginning: take the line
+number from the hit and Read that line (`offset` = line number, `limit` = 1); the id is the first
+cell. Never conclude "not registered" from a hit you could not read, and never leave a check
+undone because a line was long.
+
+1. **Numbers and lists against the code.** When the answer repeats a count or a list from a
+   document (number of devices, keys, threads, locks, files, fields) and the thing can be counted
+   in the code you are reading, count it there too. If the numbers differ, write
+   "Dokumentaation ja nykyisen koodin ristiriita: <document> sanoo N, koodissa on M (<path:line>)"
+   and say which one the answer uses. Do not silently prefer either.
+2. **Registered or new.** For every defect-like observation you make while reading code, Grep
+   `doc/arkkitehtuuri/rekisteri/havainnot.md` and `doc/arkkitehtuuri/seuranta.md` for the function
+   name, the variable or symbol, and the file name. If a register row or a KE item covers it, cite
+   that id and do not call it a candidate. Only if nothing covers it, call it
+   "mahdollinen uusi havaintoehdokas, ei tarkastettu" - and say that you searched and for what.
+   Never present the same observation both as a registered finding and as a candidate.
+3. **Owner decisions and open questions by topic.** Owner decisions are not only linked through
+   findings. Grep `doc/arkkitehtuuri/omistajan-paatokset.md` and the open-questions table of
+   `seuranta.md` for the topic words of the question (the setting, feature, file, device or
+   program named, and its Finnish and English names). Every OP or Q that concerns the topic goes
+   into the answer with its status ("OP-11 avoin"). Planned changes that wait for an OP are kind E.
+4. **Compiled or not.** For every code location you cite, check the enclosing preprocessor
+   condition and, if a switch is involved, its state in `rekisteri/valitsimet.csv` and the program
+   it applies to. A location in a branch that no shipped program compiles is not evidence of
+   program behaviour.
+5. **Citation content.** Before writing `path:line`, make sure the line you read contains what
+   the sentence says. Cite the narrowest range that does.
+6. **Every code citation and every enumerated item.** Check 4 applies to each `path:line` you
+   cite and to each device type, setting or program you list as supported - not only to the
+   function the question names. Switches ending in `xx` or classed `dead-never-defined` in
+   `valitsimet.csv` are off. Drop such an item or say that no shipped program compiles it.
+7. **No "not checked" for register fields.** Priority, state, package, the package's T rows and
+   OPs, and an OP's status are always looked up (Grep `^H-061,` in `riskiarvio.csv`; the
+   "Tila / status" line of the OP section). Writing "en tarkistanut" instead of looking them up is
+   not allowed. An OP's status is never inferred from a finding's state.
+8. **Revision statements.** The only source for whether the code has changed since the audit is
+   `doc/arkkitehtuuri/CHECKPOINT.md` (row "Analysoitu revisio"); cite it. Never write anything
+   based on git status, the working tree state or the session, and do not say "git ei ole
+   käytettävissä" when CHECKPOINT answers the question.
+9. **Before calling something a candidate**, also check the documents you already cite in the
+   answer: if one of them names a finding for it, it is registered.
+10. **All definitions of a cited function.** Grep for every definition of a function you cite
+    (for example `^INT name(` or `name(` at line start); if there are several, cite the compiled
+    one and check its enclosing `#if`. This also applies to functions it calls that you describe.
+11. **Long `_CONSOLE` / `#else` blocks.** If a cited range lies inside `#ifdef _CONSOLE` (or its
+    `#else`), say "vain konsoli (HkMaali / ViestiMaali / ViestiLuenta)" or "vain GUI", and give the
+    other branch's lines if you describe both.
+12. **Priorities only from this run.** Write a finding's priority only if you looked it up in this
+    run (`^H-NNN,` in `riskiarvio.csv`, column `prioriteetti`); otherwise leave it out.
+13. **Counts as two numbers.** Report a count as "document N, code M" with both sources; never
+    only "täsmää".
+14. **Fewer side findings, all checked.** Mention only the findings the question needs, and for
+    each one you mention look up priority, state, package and the package's OP status.
+15. **Label the real source.** A mechanism taken from the register is "dokumentoitu", not
+    "luettu koodista nyt", unless you read the code yourself.
+
 ## 5. Answer format
 
 ```
@@ -150,6 +214,7 @@ tarkastettu" and do not rate it.
 - ...
 
 **Koskee ohjelmia:** <ohjelmat; HK/viesti; konsoli/GUI>
+**Tarkistukset (luku 4b):** havainnot: haettu `<termit>` tiedostoista havainnot.md ja seuranta.md → <tunnukset tai "ei osumia">; OP/Q: haettu `<aihesanat>` → <OP- ja Q-tunnukset tiloineen tai "ei osumia">; lukumäärät: <verrattu koodiin / ei lukumääriä>; käännösehdot: <tarkistettu / ei koodiviitteitä>
 **Tietolaji:** <A-E kuten yllä: nykyinen koodi / auditointihetki / havainto / korjattu / suunniteltu>
 **Rajoitteet:** <kattavuus, ristiriidat, mitä ei tiedetä; "ei rajoitteita" vain, jos niin on>
 ```
