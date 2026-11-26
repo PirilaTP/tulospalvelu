@@ -43,7 +43,8 @@ Polut ovat suhteessa hakemistoon `TPsource/V52/`. Merkinnät: [todennettu] = koo
   `KilpSrj.xml` → `KILP.SRJ`), `ikkunat.xml`, `Init.cfg`, yksi rekisteriarvo ja kilpailuparametrit
   (`kilplaji`, `alalaji`, kortin laji, `partio`, `rogaining`). Ympäristömuuttujia tuotekoodi ei lue.
 - **Uudet havainnot** H-171–H-177 ja T-050–T-052. Laajennetut: H-036, H-134 ja T-008. Merkittävimmät:
-  - H-171 (keskitaso): ViestiWin kirjoittaa joka käynnistyksessä 79 merkkiä `cfgfilename[41]`:n yli.
+  - H-171 (korkea, P2 sulkemisessa): ViestiWin kirjoittaa jokaisessa kilpailun avauksessa 158 tavua
+    `cfgfilename[41]`:n yli viereiseen staattiseen muistiin (luku 13.2).
   - H-172 (keskitaso): viestin konsolin X)ML-valinta tuottaa lähes tyhjän tiedoston.
 - **Tuotokset:** ominaisuusmatriisi (luku 9) ja riskiperusteinen testimatriisi (luku 10).
 
@@ -467,7 +468,7 @@ Uudet ja muuttuneet havainnot (`rekisteri/havainnot.md`):
 
 | ID | Lyhyesti / Briefly | Vakavuus |
 |---|---|---|
-| H-171 | ViestiWin: `wcsncpy(cfgfilename, ..., 120)` 41 merkin puskuriin joka käynnistyksessä | keskitaso / medium |
+| H-171 | ViestiWin: `wcsncpy(cfgfilename, ..., 120)` 41 merkin puskuriin jokaisessa kilpailun avauksessa | korkea / high (P2, luku 13.2) |
 | H-172 | Viestin konsolin X)ML tuottaa tiedoston ilman XML-kehystä (`XML` määrittelemätön, vanhentunut lohko) | keskitaso / medium |
 | H-173 | Asetuseditorit kirjoittavat avaimia, joita jäsennin ei tunne; `AIKACOM=`/`AIKA_COM=` -kierros kadottaa asetuksen | matala–keskitaso |
 | H-174 | `KilpSrj.xml`:n jäsennysvirhe johtaa hiljaa vanhaan `KILP.SRJ`:hen; väärät ilmoitukset | matala–keskitaso |
@@ -515,3 +516,139 @@ commitissa.
 
 / Static, lexical; meanings of retired switches partly name-based; fixes, C-13, switch removal,
 commenting and running the matrix out of scope; runs only on permission.
+
+## 13. Sulkeminen / Closure (2026-11-26)
+
+Käyttäjä hyväksyi C-12:n sulkemisen ilman toista työerää. Tässä luvussa ei tehty uutta laajaa
+analyysiä. Siihen sisältyvät kattavuuden ja johdonmukaisuuden tarkistus, H-171:n vakavuuden
+rajattu tarkistus, havaintojen liittäminen korjauskokonaisuuksiin ja avoimien kysymysten
+sijoittaminen. / Closed on approval without a second step; no new broad analysis.
+
+### 13.1 Kattavuus ja johdonmukaisuus / Coverage and consistency
+
+**Valmiusehdot ja vaiheen C kohta 3.**
+
+- Kaikki seitsemän valmiusehtoa täyttyvät (luku 2).
+- Alkuperäisen vaiheen C kohta 3 ("mitä kukin `#define` tekee") on toteutettu esikääntäjän
+  valitsinten osalta kokonaan: kaikki ehtona testatut makrot on luokiteltu, ja
+  ominaisuusvalitsimille on annettu merkitys.
+- Ehtoina testaamattomat `#define`-vakiot (1 681 nimeä, `todisteet/c12/osaA0/maaritykset.csv`)
+  eivät ole ominaisuusvalitsimia. Ne on luetteloitu mutta niitä ei ole selitetty; tämä on
+  tietoinen rajaus.
+
+**Tilamerkinnät.**
+
+- Q2 on merkitty ratkaistuksi (`seuranta.md`).
+- T-008 on arvioitu (luku 5). Jäljellä olevat kehittämistarpeet ovat T-051:ssä:
+  - yhteinen avainluettelo jäsentimille ja editoreille;
+  - `DBGFILE`-, `ESITARK`- ja `EMITFILE`-erojen tarkoituksellisuuden kirjaaminen;
+  - toimittamattomien kokoonpanojen kokojen yhtenäistäminen tai merkitseminen.
+
+  Nämä kuuluvat korjauskokonaisuuteen KK-C12-2 (13.3).
+
+**Rekisterien johdonmukaisuus.** Tarkistettu koneellisesti.
+
+- Luvun 3.1–3.2 arvosarakkeiden 29 makroa vastaavat `rekisteri/valitsimet.csv`:tä.
+- Luokkamäärät (435) ja `rekisteri/asetusavaimet.csv`:n 750 riviä vastaavat lukua 1.
+- Rekisterit tuotetaan raakatuloksista skriptillä (`tyokalut/valitsinrekisteri.py`), ja A0- ja
+  B0-tulosteet syntyvät uudelleen tavulleen samoina.
+
+**Arvioijan artefaktit.** Lausekkeella määritellyt makrot näkyvät arvolla 1, koska leksikaalinen
+arvioija ei laske lausekkeita. Ehtona testattuja tällaisia ovat esimerkiksi `LENIMI`, `LSNIMI`,
+`KSEK` ja `LANG` (22 makroa, joista 13 on testikehyksen `DOCTEST_*`-makroja). Sama koskee C-10:n
+`makrot.csv`:tä: siinä viestin `MAX_PORTTI=1`, vaikka todellinen arvo on 64 + 2·32 + 4 = 132
+(`Juk/VDef.h:62`). Johtopäätöksiin tämä ei vaikuta, sillä H-171:ssä arvo luettiin lähteestä ja
+objektitiedostosta.
+
+**Matriisien kattavuus.**
+
+- Ominaisuusmatriisi (luku 9) kattaa toimitettavat kokoonpanot ja 20 ominaisuutta. Toimittamattomat
+  kokoonpanot ovat luvussa 3.3 ja T-051:ssä.
+- Testimatriisi (luku 10) kattaa kaikki rajauksen vaatimat rivit:
+  - normaalit käyttökokoonpanot T1–T4, T6 ja T7;
+  - merkittävät ohjelmakohtaiset erot T15–T17;
+  - rajauksessa nimetyt vikoja aktivoivat yhdistelmät: H-149 ja H-150 (T6), H-129 (T8), H-159 (T4),
+    H-160 ja H-161 (T7), H-055 ja H-166 (T9);
+  - C-12:n omat havainnot T5 ja T10–T14 sekä H-036 (T18).
+- **Testimatriisia ei ole ajettu.** Mikään sen rivi ei ole todennettu tulos.
+
+**Kuollut koodi.** Kuolleiden haarojen, käyttämättömien valitsinten tai ominaisuuksien poistamisesta
+ei ole tehty päätöksiä. Ne odottavat omistajan päätöstä (Q111) ja C-13:n korjaussuunnitelmaa.
+
+/ All criteria met; phase C item 3 done for switches; Q2 resolved; T-008 needs in T-051/KK-C12-2;
+registers checked against the report; expression-valued macros show as 1 (incl. C-10 `MAX_PORTTI`);
+matrices cover the required rows; the test matrix has not been run; no removal decisions.
+
+### 13.2 H-171:n vakavuus / severity of H-171
+
+| Peruste / Criterion | Havainto / Finding | Näyttö |
+|---|---|---|
+| Puskurin koko / buffer size | `static wchar_t cfgfilename[41]`: 41 merkkiä = 82 tavua (bcc32:ssa `wchar_t` on 2 tavua) | `Juk/VInit.cpp:74` |
+| Kirjoitettava pituus / length written | `wcsncpy(..., cfgflname, 120)` kirjoittaa aina 120 merkkiä = 240 tavua (lähde ja nollatäyte), eli 79 merkkiä = 158 tavua yli puskurin, polun pituudesta riippumatta; yli 119 merkin polulla tulos jää lisäksi päättämättä | `Juk/VInit.cpp:651-653` |
+| Sijainti / location | tiedoston staattinen, alustettu data (`_DATA`). Nykyisen lähteen bcc32-objektissa (`RADStudio10/Release_Build/obj/VInit.obj`, käännetty 2026-11-24 muuttumattomasta lähteestä) `L"LASKENTA.CFG"` on siirtymässä 0xA ja `baudst`in alkuarvo siirtymässä 0x98. Väli vastaa lähdejärjestystä `cfgfilename`, `autostr[25]`, `korkeat`, `star`, `baudst`, kun int-muuttujat tasataan 4 tavuun | `Juk/VInit.cpp:74-78`; objektin `_DATA`-alkuarvot (LEDATA), luettu skriptillä, ei ajettu |
+| Ylikirjoitettava alue / overwritten | siirtymät 0xA–0xF9 kokonaan: `autostr` (0x5C–0x8D), `korkeat` (0x90), `star` (0x94), `baudst[0]` ja `baudst[1]` sekä 9 merkkiä `baudst[2]`:sta (`baudst` on `MAX_PORTTI` × 20 = 132 × 20 merkkiä) | `Juk/VDef.h:62` |
+| Seuraukset / consequences | Lyhyellä polulla alueelle tulee nollia. Porttien 1–3 oletus `9600,n,8,1` häviää, sillä `asetaOletusarvot` kopioi sen kaikille porteille ennen `lue_parametrit`ia. Sarjayhteys ilman `BAUDn=`-avainta jää näillä porteilla numeeristen oletusten varaan [päätelty]. Polun merkit päätyvät dataan seuraavasti: merkki 65 `autostr[24]`:een, jolloin arvo `'1'` ohjaa GUI:n listauksen tulostimelle (`:2685`); merkit 71– `baudst[0]`:aan. `korkeat` ja `star` ovat kuolleita. Ajonaikaiset vaikutukset ovat [tuntematon] (Q107) | `Juk/VInit.cpp:2460-2506`, `:2570`, `:2601`, `:2685` |
+| Saavutettavuus / reachability | Jokainen ViestiWinin kilpailun avaus: `Initialisoi` (avausdialogi `ViestiWin/UnitMain.cpp:1403`, `:1426` tai `Init.cfg`:n `CFG=` `:1542`) → `aloitus(0, 0, cfgflnm)` (`:220`) → `lue_parametrit`. Nimi on aina ei-tyhjä täysi polku. Konsoliohjelmat kutsuvat polkua `cfgflname = NULL`/`0`, joten ne eivät ylitä. HK:ssa puskuri on 201 merkkiä | `ViestiWin/UnitMain.cpp:192-220`; `Hk/HkInit.cpp:59` |
+| Toistuvuus / recurrence | Joka kerta, kun ViestiWin avaa kilpailun, myös uudelleenavauksessa. Ylikirjoitus on deterministinen; uhrit riippuvat kääntäjän sijoittelusta ja muuttuvat, kun tiedostoon lisätään muuttujia | – |
+
+**Arvio.** Kyseessä on normaalissa käytössä toistuva staattisen muistin ylikirjoitus (158 tavua),
+joten vakavuus on **korkea** ja prioriteetti **P2**. P1 ei ole perusteltu, koska ylitystä ei voi
+laukaista verkosta: syöte on paikallisen operaattorin valitsema tiedostopolku.
+
+Ajonaikaista kaatumista ei edellytetty eikä väitetä. Ylitys, sen koko ja polku on todennettu
+lähteestä ja sijoittelu olemassa olevasta objektitiedostosta; ajonaikaiset seuraukset ovat
+avoimena kysymyksenä Q107.
+
+/ A recurring 158-byte overwrite of static data on every ViestiWin competition open: **high, P2**
+(not P1: not triggerable from the network). The layout was read from the existing object file,
+not from a run; run-time effects are open (Q107).
+
+### 13.3 Havaintojen kytkökset ja korjauskokonaisuudet / Links and fix packages
+
+**H-134.** H-134 on kytketty seuraaviin:
+
+- vaiheen vaihdon havainnot: H-129, joka on samassa `vaihdavaihe`-polussa, sekä H-131–H-133;
+- globaali tila ja nollaus: T-038 ja T-039 (C-8);
+- virheenkäsittely: KK-C9-2, jossa virhe ilmoitetaan mutta tila jatkuu;
+- muistirakenteiden elinkaari: C-4:n vapautetun muistin käytön luokka.
+
+H-134 korjataan vaiheen vaihdon kokonaisuudessa yhdessä H-129:n kanssa (`rekisteri/havainnot.md`).
+
+**Korjauskokonaisuudet** C-13:n syötteeksi; mitään ei ole korjattu:
+
+| Tunnus | Sisältö / Content | Havainnot |
+|---|---|---|
+| KK-C12-1 | XML-, HTML- ja automaattiset julkaisutiedostot / XML, HTML and automatic publication files | H-172, H-149 ja H-150 (myös KK-C9-1:n `PRFILE`-elinkaari), H-176:n HTML-pohjaosa |
+| KK-C12-2 | Asetusten hallinta: jäsentimet, editorit, kokoonpanot / settings management | H-171, H-173, H-036, H-176:n asetusosat, T-051 |
+| KK-C12-3 | Valitsinhygienia ja kuollut koodi / switch hygiene and dead code | T-050, T-052, H-177; ei poistopäätöksiä, vaatii omistajan päätöksen (Q111) |
+
+**Prioriteetit** [päätelty]:
+
+- **P2:** H-171.
+- **P3:** H-134 (yhdessä H-129:n kanssa), H-172, H-173, H-174.
+- **P4:** H-175.
+- **P5:** H-176, H-177.
+
+Rekisteriin jäävät H-171–H-177, T-050–T-052 sekä laajennetut H-036, H-134 ja T-008.
+
+### 13.4 Avoimet kysymykset / Open questions
+
+- **Q107, Q108 ja Q110** on siirretty myöhempään ajonaikaiseen todentamiseen. Ne ajetaan vain
+  erillisellä luvalla.
+- **Q109** jää avoimeksi staattisena kysymyksenä.
+- **Q111** odottaa omistajan päätöstä. Sitä ei ratkaista oletuksilla. Avoimia osia on kolme:
+  - onko konsolin seuratulosten (`SEURATUL`, `ORAVA`) poistuminen tarkoituksellinen;
+  - tarvitaanko ViestiLuennassa RFID-tukea;
+  - saako kuolleet ominaisuusvalitsimet poistaa.
+- **Q112** jää avoimeksi. Havaittu ero säilyy: HK kertoo arvon `SEK / 100`
+  (`Hk/HkInit.cpp:1464`), viesti `SEK` (`Juk/VInit.cpp:1693`).
+  - Käyttöohjeet eivät kerro yksikköä. Molemmissa ohjeissa avain on muodossa `AIKAKORJAUSy=xx`
+    (`docs-site/docs/hkkisawin/hkliite1.md:130`, `docs-site/docs/viestiwin/hkliite1.md:92`).
+  - Repossa ei ole esimerkkiasetuksia, joissa avain esiintyisi.
+  - Git-historiassa on vain vuoden 2015 tuonti (`50db2f8`).
+  - HK:n konsolin interaktiivinen kysymys "(1/100 s)" (`HkConsole/HkCons2.cpp:1465`) koskee eri
+    syöttöpolkua, eikä se ole yksiselitteinen vastaus.
+- Ohjelmien toimintaa ei muutettu.
+
+/ Q107, Q108, Q110 moved to later run-time verification; Q111 is the owner's decision; Q112 stays open
+because the manuals, examples and history give no unambiguous unit.

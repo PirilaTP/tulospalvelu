@@ -17,6 +17,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 
 | Erä / Batch | Sisältö / Content | Dokumentit / Documents |
 |---|---|---|
+| **C-12 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi ilman toista työerää / approved without a step 2, 2026-11-26) | Vaihe 1 `7b4ed46` ja sulkemiscommit / step 1 and closing commit; sulkeminen / closure `ominaisuusvalitsimet.md` luku 13: kattavuus ja rekisterien johdonmukaisuus, H-171 → korkea, P2 (sijoittelu bcc32-objektista), H-134 H-129:n kanssa, KK-C12-1–3, Q107/Q108/Q110 ajonaikaiseen todennukseen, Q111 omistajalle, Q112 avoin; testimatriisia ei ajettu / test matrix not run | `ominaisuusvalitsimet.md` 13 |
 | **C-12 vaihe 1 valmis / step 1 complete** (riippumattomasti tarkastettu, commitoitu paikallisesti, odottaa katselmointia / independently reviewed, committed locally, awaiting review) | Esikääntäjän valitsimet (435 makroa, `tyokalut/valitsimet.py` tarkistettu ennen agenttikäyttöä), asetusavaimet ja komentorivi (`tyokalut/asetusavaimet.py`), muut kytkimet, rekisterit `rekisteri/valitsimet.csv` ja `asetusavaimet.csv`, ominaisuus- ja testimatriisi; Q2 ratkaistu, T-008 arvioitu; uudet H-171–H-177, T-050–T-052; H-036, H-134 laajennettu; Q107–Q112; 19 väitettä Opus-tarkastajalla / switches, keys, other switches, registers, matrices; Q2 resolved | `ominaisuusvalitsimet.md`, `todisteet/c12/` |
 | **C-10 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi ilman toista työerää / approved without a step 2, 2026-11-26) | Vaihe 1 `46509f9` ja sulkemiscommit / step 1 and closing commit; sulkeminen / closure `riippuvuudet.md` luku 19: P2 H-159, H-160 (P3 → P2), P3–P5 muut; korjauskokonaisuudet / fix packages KK-C10-1–4; lisenssit omistajalle / licences to the owner OM-C10-1; tuoteinventaario täsmäytetty, `/MT` tarkennettu / product inventory reconciled; Q105, Q106; ei ajonaikaista todennusta / not verified at run time | `riippuvuudet.md` 19 |
 | **C-10 vaihe 1 valmis / step 1 complete** (riippumattomasti tarkastettu, commitoitu paikallisesti / independently reviewed, committed locally) | Tuotekohtainen riippuvuusinventaario (skripti tarkistettu ennen agenttikäyttöä), tietokanta ja Q5, HTTP ja selain, laiteprotokollat ja Q86, ajonaikaiset paketit ja jakelu (Q91, Q92, T-005), versiot ja modernisointiriskit; uudet H-159–H-170, T-043–T-049; 15 väitettä Opus-tarkastajalla / per-product inventory, database, HTTP and browser, devices, packages and deployment, versions; new findings; 15 claims reviewed | `riippuvuudet.md` luvut 7–18, `todisteet/c10/` |
@@ -286,8 +287,14 @@ skriptit `tyokalut/valitsimet.py`, `asetusavaimet.py`, `valitsinrekisteri.py`; `
 lisätty `build_model()` (C-10:n tulosteet ennallaan). Uudet H-171 (ViestiWin `cfgfilename`-ylitys joka
 käynnistyksessä), H-172 (viestin konsolin X)ML lähes tyhjä), H-173–H-177, T-050–T-052; Q2 ratkaistu.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP:** C-12:n katselmointi ja sulkeminen käyttäjän päätöksellä;
-ajot Q107, Q108, Q110 vain erillisellä luvalla. C-13 ei aloitettu.
+**C-12 suljettu (2026-11-26)** käyttäjän hyväksynnällä ilman toista työerää (`ominaisuusvalitsimet.md`
+luku 13): H-171 korkea ja P2; P3 H-134 (H-129:n kanssa), H-172, H-173, H-174; P4 H-175; P5 H-176, H-177;
+KK-C12-1 julkaisutiedostot, KK-C12-2 asetusten hallinta, KK-C12-3 valitsinhygienia; Q107, Q108, Q110
+ajonaikaiseen todennukseen; Q111 omistajalle; Q112 avoin.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP:** C-13 (auditoinnin synteesi ja korjaussuunnitelma) käyttäjän
+aloitusluvalla; rajaus `suunnitelma.md`, "C-13 vaihe 1: rajaus" (osat A0, A–I, tuotokset,
+valmiusehdot, vaiheen C sulkemisen edellytykset).
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.

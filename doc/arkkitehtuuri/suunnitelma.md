@@ -157,10 +157,10 @@ have not been started.
 
 | Erä / Batch | Aihe / Topic | Tavoite / Goal | Tila / State |
 |---|---|---|---|
-| C-12 (uusi / new) | Ominaisuusvalitsimien dokumentointi / feature switch documentation | Toteuttaa alkuperäisen vaiheen C kohdan 3 (mitä kukin `#define` tekee) sekä käsittelee Q2:n ja T-008:n: kattava ominaisuus-, asetus- ja konfiguraatioinventaario ja pohja myöhemmälle regressiotestimatriisille. C-10 käsittelee valitsimia vain siltä osin kuin ne kytkevät ulkoisen riippuvuuden; C-10:n `makrot.csv` ja `tyokalut/riippuvuudet.py` ovat syötteitä. / Implements original phase C item 3, Q2 and T-008: a complete feature, setting and configuration inventory and the basis for a later regression test matrix; C-10 output is an input | vaihe 1 valmis / step 1 done 2026-11-26 (`ominaisuusvalitsimet.md`) |
-| C-13 (uusi / new) | Auditoinnin synteesi ja korjaussuunnitelma / audit synthesis and fix plan | Yhdistää kaikkien erien tulokset, tarkistaa kattavuuden, tunnistaa yhteiset juurisyyt ja muodostaa perustellun korjaus- ja modernisointisuunnitelman (syötteinä mm. korjausjono `seuranta.md`, KK-C9-1–3, C-10:n modernisointiriskit). / Combines all batch results, checks coverage, identifies common root causes and builds a justified fix and modernisation plan | ei aloitettu / not started |
+| C-12 (uusi / new) | Ominaisuusvalitsimien dokumentointi / feature switch documentation | Toteuttaa alkuperäisen vaiheen C kohdan 3 (mitä kukin `#define` tekee) sekä käsittelee Q2:n ja T-008:n: kattava ominaisuus-, asetus- ja konfiguraatioinventaario ja pohja myöhemmälle regressiotestimatriisille. C-10 käsittelee valitsimia vain siltä osin kuin ne kytkevät ulkoisen riippuvuuden; C-10:n `makrot.csv` ja `tyokalut/riippuvuudet.py` ovat syötteitä. / Implements original phase C item 3, Q2 and T-008: a complete feature, setting and configuration inventory and the basis for a later regression test matrix; C-10 output is an input | **valmis ja suljettu / done and closed** 2026-11-26 (`ominaisuusvalitsimet.md` luku 13) |
+| C-13 (uusi / new) | Auditoinnin synteesi ja korjaussuunnitelma / audit synthesis and fix plan | Yhdistää kaikkien erien tulokset, tarkistaa kattavuuden, tunnistaa yhteiset juurisyyt ja muodostaa perustellun korjaus- ja modernisointisuunnitelman (syötteinä mm. korjausjono `seuranta.md`, KK-C9-1–3, C-10:n modernisointiriskit). / Combines all batch results, checks coverage, identifies common root causes and builds a justified fix and modernisation plan | rajattu, ei aloitettu / scoped, not started (alla / below) |
 
-### C-12 vaihe 1: rajaus / Step 1: scope (**valmis / done 2026-11-26**, `ominaisuusvalitsimet.md`; laadittu C-10:n sulkemisessa / written at the C-10 closing)
+### C-12 vaihe 1: rajaus / Step 1: scope (**valmis ja suljettu / done and closed 2026-11-26**, `ominaisuusvalitsimet.md`; laadittu C-10:n sulkemisessa / written at the C-10 closing)
 
 Toteutus: rajauksen mukaan. A0 (`tyokalut/valitsimet.py`) ja B0 (`tyokalut/asetusavaimet.py`, lisätty
 rajaukseen: jäsentimien vertailuluettelo osan B pohjaksi) pääistunnossa ja tarkistettu ennen
@@ -270,6 +270,141 @@ kaikkien yhdistelmien testaus. Testimatriisin ajaminen vaatii erillisen päätö
 / A0 first, then A, B, C in parallel (at most three agents), D last, E in the main session; Sonnet for
 analysis, Opus for review, no artificial token budget; static only, no runs, connections, dependency
 updates, code, project or CI changes, no push; fixes, C-13, switch removal and commenting out of scope.
+
+### C-13 vaihe 1: rajaus / Step 1: scope (**ehdotus, ei aloitettu / proposal, not started**; laadittu C-12:n sulkemisessa 2026-11-26 / written at the C-12 closing)
+
+**Luonne ja tavoite / nature and goal.** C-13 on vaiheen C päätöserä. Siinä ei tehdä uutta koko
+lähdekoodin syväauditointia. Erä yhdistää C-1–C-12:n tulokset:
+
+- tarkistaa auditoinnin kattavuuden ja luotettavuuden;
+- yhtenäistää havaintorekisterin;
+- arvioi riskit yhtenäisillä perusteilla;
+- muodostaa toteutettavat korjauskokonaisuudet ja niiden järjestyksen;
+- laatii riskiperusteisen regressiotestaussuunnitelman ja D-vaiheen kehittämissuunnitelman.
+
+Lopputuloksesta pitää voida myöhemmin muodostaa työtehtäviä, haaroja ja pull requesteja.
+Lähdekoodia luetaan vain, kun väite pitää tarkistaa tai kahden havainnon riippuvuus todeta.
+
+/ Final batch of phase C: synthesis, not a new deep audit. Combines C-1..C-12 into coverage, a
+unified register, a uniform risk assessment, fix packages and order, a test strategy and a
+development plan concrete enough to derive tasks, branches and pull requests from.
+
+**Lähtötiedot, ei analysoida uudelleen / inputs, not re-analysed:**
+
+- **Rekisterit.**
+  - `rekisteri/havainnot.md`: 177 H, joista H-099 kumottu, ja 52 T.
+  - `rekisteri/tiedostot.csv`: analyysitasot.
+  - `rekisteri/moduulit.md`, `rekisteri/valitsimet.csv`, `rekisteri/asetusavaimet.csv`.
+- **Seuranta.** `seuranta.md`: Q1–Q112, priorisoitu korjausjono ja päätökset.
+- **Erien raportit:**
+
+| Erä / Batch | Raportti / Report |
+|---|---|
+| C-1 | `tallenna-samanaikaisuus.md` |
+| C-2 | `tiedonsiirto.md` |
+| C-3 | `tiedostomuodot.md` |
+| C-4 | `muistiturvallisuus.md` (P1–P5-määrittely luku 15) |
+| C-5 | `kaantajaerot.md` |
+| C-6 | `saikeet-ja-lukot.md` |
+| C-7 | `gui-liiketoimintalogiikka.md` (J7-1–J7-7) |
+| C-8 | `globaali-tila.md` |
+| C-9 | `virheenkasittely.md` (KK-C9-1–3) |
+| C-10 | `riippuvuudet.md` (KK-C10-1–4, OM-C10-1) |
+| C-11 | `testaus.md` |
+| C-12 | `ominaisuusvalitsimet.md` (KK-C12-1–3) |
+
+- **Todisteet.** `todisteet/c4`–`c12`, mukaan lukien eristetyt koeohjelmat (C-6, C-8, C-9) ja C-11:n
+  testikehys.
+- **Kierros 1.** `yleiskuva.md` ja `inventaario.md`.
+
+**Osat / parts:**
+
+| Osa / Part | Sisältö / Content | Tekijä, malli / By, model |
+|---|---|---|
+| A0 | Koneellinen pohja ennen agenttikäyttöä. Skripti `tyokalut/synteesi.py` jäsentää `havainnot.md`:n, `seuranta.md`:n Q-taulukon ja korjausjonon sekä erien KK-taulukot. Tuotos on yksi rivi kutakin H-, T- ja Q-tunnusta kohden: erä, vakavuus, varmuus, todennuksen laji (staattinen, riippumattomasti tarkastettu, eristetty koe tai testikehys, toimitettu ohjelma), nykyinen prioriteetti, KK-tunnukset, viittaukset muihin tunnuksiin ja ristiviittaavat Q:t. Raakatulos tallennetaan `todisteet/c13/`:hen. Skripti tarkistetaan ennen agenttikäyttöä C-10:n ja C-12:n tapaan: määrät `CHECKPOINT.md`:tä vastaan, otanta käsin ja rekisterin tunnukset validaattorin listaa vastaan / machine base, validated first | pääistunto / main session |
+| A | Kattavuus ja luotettavuus. Kunkin erän tavoitteet ja valmiusehdot toteutuneeseen verrattuna. Kirjataan tutkitut ohjelmat, kokoonpanot ja lähdealueet (tasot 1–4), tutkimatta jääneet alueet (esim. C-7:n J7-1–J7-7, 41 muuta tallentavaa lomaketta, 152 jäsennysehdokasta) ja havainnot todennuksen vahvuuden mukaan. Mukaan tulevat myös kumotut ja osittain vahvistetut havainnot, avoimet kysymykset ja testausrajoitteet. Lähdeviittausten validointi (`tarkista_auditointi.py`) pidetään erillään havaintojen teknisestä todennuksesta / coverage and reliability; reference validation kept apart from technical verification | `architecture-analyst`, Sonnet |
+| B | Rekisterin yhtenäistäminen. Tunnistetaan päällekkäiset havainnot (esim. C-12 C3 = H-063, B1 = H-036), yhteiset juurisyyt (esim. rajaamattomat puskurikopiot, `PRFILE`-elinkaari T-042, vaiheriippuvan tilan nollaus T-038, kahdennettu HK- ja viestikoodi T-034), toisistaan riippuvat viat, ketjut joissa yksi korjaus ratkaisee muita, sekä omistajan päätöstä vaativat havainnot. Alkuperäiset tunnukset ja historia säilyvät; yhdistäminen tehdään viittauksin eikä havaintoja poisteta / register unification by references, nothing deleted | inventointi `architecture-analyst` (Sonnet), juurisyysynteesi `architecture-analyst` (Opus) |
+| C | Yhtenäinen riskiarvio. Kullekin H:lle erilliset ulottuvuudet: tekninen vakavuus, käytännön saavutettavuus (verkko, laite, asetus, tavallinen data, paikallinen tiedosto tai operaattori, ei toimitetussa), todennuksen vahvuus, vaikutus tulosten oikeellisuuteen, vaikutus ajanoton jatkuvuuteen, tietojen palautettavuus, tietoturvavaikutus ja korjausprioriteetti. P1–P5 säilyy (`muistiturvallisuus.md` luku 15: vakavuus × saavutettavuus). Myöhempien erien käyttötapa kirjataan: P2 myös normaalikäytössä toistuville vioille, kuten H-149 ja H-171. Jos asteikkoa tarkennetaan, vanhan ja uuden vastaavuus dokumentoidaan / uniform risk dimensions; P1–P5 kept, later usage documented | `architecture-analyst`, Opus (perusteet, rajatapaukset / criteria, borderline cases); taulukon täyttö pääistunto A0:n pohjalta |
+| D | Korjauskokonaisuudet. Aiemmat KK-C9-1–3, KK-C10-1–4 ja KK-C12-1–3 sekä C-4:n korjausjono yhdistetään, eikä jokaisesta havainnosta tehdä omaa tehtävää. Käsiteltävät alueet: verkkoprotokollien turvallisuus; muistiturvallisuus; osoittimien ja resurssien omistajuus; säikeet, lukot ja elinkaari; tallennusvirheet, kuittaukset ja palautuminen; globaali tila; vaiheen vaihto; johdettujen rakenteiden eheys; GUI-liiketoimintalogiikka; HK- ja viestihaarojen erkaantuminen; SQL; laiteyhteydet; XML-, HTML- ja julkaisutiedostot; merkistöt ja kääntäjäriippuvuudet; ulkoiset riippuvuudet ja jakelu; valitsimet ja asetukset; kuollut koodi; testaus ja CI. Kustakin kirjataan havainnot, juurisyy, korjausperiaate (ei toteutusta), vaikutus tiedosto- ja protokollayhteensopivuuteen, tarvittava testaus, omistajan päätökset ja ehdotettu haara / fix packages | `architecture-analyst`, Opus |
+| E | Riippuvuudet ja toteutusjärjestys. Ratkaistaan: mitkä korjataan heti (P1/P2), mitkä vaativat ensin testausinfrastruktuuria, mitkä tehdään yhdessä (esim. H-129 + H-134), mitkä ovat riippumattomia ja turvallisia, mitkä muuttavat tiedosto- tai protokollamuotoa, mitkä vaativat GUI-, laite- tai verkkotestauksen ja mitkä omistajan päätöksen. Laajat teknisen velan refaktoroinnit eivät saa viivästyttää vakavien vikojen korjausta / dependencies and order; refactoring must not delay severe fixes | sama Opus-agentti kuin D:ssä (jatkoviesti, ei päällekkäistä analyysiä) / same agent as D |
+| F | Regressiotestaussuunnitelma. Pohjana C-11:n testikehys (`TpCoreHk`, `TpCoreJuk`, `TpTest`), C-4–C-9:n eristetyt koeohjelmat, C-12:n testimatriisi T1–T18, nykyinen CI (`.github/workflows/build.yml`, `release.yml`; testejä ei ajeta, `Tests/run.sh` rikki) ja avoimet ajotehtävät (Q107, Q108, Q110 ym.). Määritellään, mitä testataan ennen korjausta (toisto), korjauksen jälkeen ja ennen julkaisua. Testit jaetaan automaattisiin, integraatio-, GUI-, laite- ja käsitesteihin. CI-muutoksia ei toteuteta / test strategy; no CI changes | `build-dependency-analyst`, Sonnet |
+| G | D-vaiheen kehittämissuunnitelma viidessä vaiheessa: (1) stabilointi, (2) testattavuus ja julkaisuvarmuus, (3) teknisen velan hallittu vähentäminen, (4) arkkitehtuurin refaktorointi, (5) pitkän aikavälin modernisointi. Ohjelmistoa ei oleteta kirjoitettavaksi uudelleen. Kieltä, käyttöliittymätekniikkaa, tietokantaa tai kääntäjää ei lukita; ne ovat omistajan päätöksiä. Nykyinen toiminnallisuus ja yhteensopivuus ovat lähtökohta / development plan in five stages; no rewrite, no technology lock-in | pääistunto luonnostelee D:n ja E:n pohjalta / main session drafts |
+| H | Riippumaton kokonaisarvio. Kyseenalaistetaan kattavuus, vakavuus- ja prioriteettiluokitukset, kokonaisuuksien muodostus, riippuvuudet ja järjestys, testausstrategian riittävyys ja modernisointisuunnitelman realistisuus. Koko lähdekoodia ei lueta uudelleen; tarkastaja otantaa rekisteristä ja tarkistaa rajatapaukset koodista / independent overall review | `independent-verifier`, Opus |
+| I | Dokumentointi, rekisterit, validaattori, paikallinen commit / documentation, registers, local commit | pääistunto, tarvittaessa `doc-writer` (Sonnet) |
+
+**Työnjako / division of work:**
+
+1. A0 tehdään ensin.
+2. Sen jälkeen A, B (inventointi) ja F ajetaan rinnakkain; enintään kolme analyysiagenttia kerrallaan.
+3. Sitten B (juurisyyt), C, D ja E Opusilla. Kokonaisuuksien muodostus ja järjestys tehdään yhdellä
+   agentilla jatkoviesteinä, jotta päätelmät eivät hajoa.
+4. G tehdään pääistunnossa.
+5. Lopuksi H ja I.
+
+Sonnet tekee inventoinnit, rekisterien täsmäytyksen ja testausaineiston kokoamisen. Opus käsittelee
+juurisyyt, riskiperusteet, kokonaisuudet, järjestyksen ja riippumattoman arvion. Keinotekoisia
+tokenbudjetteja ei aseteta. Päällekkäisyys estetään A0:n yhteisellä pohjalla ja sillä, että agentit
+viittaavat erien raportteihin eivätkä analysoi niitä uudelleen.
+
+**Ehdotetut tuotokset / proposed outputs.** Päällekkäisyyttä vältetään: rekisterit pysyvät totuuden
+lähteenä, ja asiakirjat viittaavat niihin.
+
+| Tuotos / Output | Sisältö / Content |
+|---|---|
+| `auditoinnin-yhteenveto.md` | osat A, B ja C: kattavuus, todennuksen vahvuus, juurisyyt, riskimalli ja P1–P5-käyttö; vaiheen C kokonaistulos / coverage, root causes, risk model |
+| `korjaussuunnitelma.md` | osat D, E ja G: korjauskokonaisuudet, riippuvuudet, toteutusjärjestys, yhteensopivuusvaikutukset ja D-vaiheen viisi vaihetta. Modernisointi (vaiheet 4–5) on samassa asiakirjassa omana lukunaan, ei erillisenä `modernisointisuunnitelma.md`:nä, jotta stabilointi ja modernisointi eivät erkane; erillinen asiakirja vain, jos luku kasvaa liian suureksi / fix plan incl. development stages |
+| `regressiotestaussuunnitelma.md` | osa F; viittaa `testaus.md`:hen (C-11:n kehys) eikä toista sitä / test strategy, refers to `testaus.md` |
+| `omistajan-paatokset.md` | kaikki omistajan päätöstä vaativat kohdat yhdessä paikassa (OM-C10-1/Q101, Q60, Q111, Q112, yhteensopivuuden muutokset, teknologiavalinnat), kukin vaihtoehtoineen ja vaikutuksineen / owner decisions |
+| `rekisteri/riskiarvio.csv` | yksi rivi kutakin H:ta kohden: riskiulottuvuudet, prioriteetti ja KK / per-finding risk dimensions |
+| `rekisteri/korjauskokonaisuudet.csv` | yksi rivi kutakin kokonaisuutta kohden: havainnot, juurisyy, riippuvuudet, järjestysnumero, yhteensopivuusvaikutus, testitarve (automaattinen, integraatio, GUI, laite, käsi), omistajan päätökset, ehdotettu haaran nimi / per-package register |
+| `tyokalut/synteesi.py`, `todisteet/c13/` | A0:n skripti, raakatulos ja agenttien raportit / script, raw data, reports |
+
+**Valmiusehdot / completion criteria [ehdotus]:**
+
+1. Jokaisen erän C-1–C-12 tavoitteiden toteutuma on kirjattu, ja tutkimatta jääneet alueet on
+   lueteltu syineen.
+2. Jokainen H, T ja Q on mukana A0:n pohjassa. Jokaisella H:lla on todennuksen laji, ja kumotut
+   ja osittain vahvistetut on merkitty.
+3. Päällekkäisyydet ja juurisyyt on merkitty viittauksin. Yhtään tunnusta ei ole poistettu, ja
+   historia on säilynyt.
+4. Jokaisella avoimella H:lla on riskiulottuvuudet ja prioriteetti. P1–P5:n käyttö on dokumentoitu,
+   ja mahdolliset muutokset on kuvattu vanhan ja uuden vastaavuutena.
+5. Jokainen avoin H ja T kuuluu korjauskokonaisuuteen tai on perustellusti jätetty sen ulkopuolelle
+   (esim. hyväksytty riski tai omistajan päätös). Kullakin kokonaisuudella on järjestys,
+   riippuvuudet, yhteensopivuusvaikutus, testitarve ja ehdotettu haara.
+6. Regressiotestaussuunnitelma kattaa jokaisen P1–P3-kokonaisuuden: ennen korjausta, jälkeen ja
+   ennen julkaisua, testilajeittain.
+7. D-vaiheen suunnitelma erottaa viisi vaihetta eikä lukitse teknologiaa.
+8. Omistajan päätökset on koottu.
+9. Opus-tarkastus on tehty ja sen huomiot käsitelty, validaattori menee läpi ja muutokset on
+   commitoitu paikallisesti.
+
+/ All batch goals reconciled; every id in the base; duplicates and root causes by reference;
+uniform risk with P1–P5 kept; every open finding in a package or explicitly excluded; test plan for
+P1–P3 packages; five-stage plan without technology lock-in; owner decisions collected; Opus review,
+validator, local commit.
+
+**Rajaukset / limits.**
+
+- Tuotantokoodia, projektiasetuksia ja CI:tä ei muuteta.
+- Mitään ei käännetä tai ajeta, eikä verkkoyhteyksiä muodosteta.
+- Kuollutta koodia ei poisteta, eikä vikoja korjata.
+- D-vaihetta ei aloiteta, eikä pushata.
+- Ajoa vaativat avoimet kysymykset (esim. Q107, Q108, Q110 ja C-9:n ja C-10:n ajotehtävät)
+  sijoitetaan testaussuunnitelmaan, mutta niitä ei ajeta.
+
+**Vaiheen C sulkemisen edellytykset / conditions for closing phase C [ehdotus]:**
+
+1. C-13 on valmis ja käyttäjä on hyväksynyt sen.
+2. Jokaisen erän C-1–C-13 tila on `seuranta.md`:ssä "suljettu".
+3. Avoimet kysymykset on luokiteltu: ratkaistu, ajonaikainen todennus (D-vaihe), omistajan päätös tai
+   hyväksytty avoimeksi.
+4. Korjaussuunnitelma ja testaussuunnitelma on hyväksytty D-vaiheen lähtökohdaksi.
+5. Omistajan päätöslista on toimitettu omistajalle. Päätöksiä ei tarvitse olla tehty, mutta
+   päätöksiä odottavat kokonaisuudet on merkitty.
+6. `CHECKPOINT.md` ja `README.md` kuvaavat vaiheen C lopputuloksen.
+7. Validaattori menee läpi.
+8. Kaikki on commitoitu paikallisesti. Pushista ja PR:stä päätetään erikseen (`no-push`-rajoitus).
 
 ### C-10 vaihe 1: rajaus / Step 1: scope (**valmis ja suljettu / done and closed 2026-11-26**, `riippuvuudet.md` luvut 7–19)
 
