@@ -131,7 +131,7 @@ ends with an independent review (`independent-verifier`) and a register update
 | 7 | GUI:n liiketoimintalogiikka: `cbHk/UnitEmit.cpp`, `UnitAjanotto`, `UnitArvonta`, `UnitKilpailijatiedot`, `ViestiWin/UnitEmit.cpp` / GUI business logic | keskitaso–korkea | architecture-analyst, defect-concurrency-auditor | moduulikuvaukset / module descriptions — **vaihe 1 valmis ja suljettu / step 1 done and closed 2026-11-25** (`gui-liiketoimintalogiikka.md`, H-109–H-127, T-034–T-037; jatkotyöjono / follow-up queue J7-1–J7-7) |
 | 8 | Globaali muuttuva tila: kuka kirjoittaa mitäkin, alustus, nollaus kilpailun vaihdossa / global mutable state | keskitaso / medium | architecture-analyst | `tietorakenteet-ja-tila.md` — **vaihe 1 valmis ja suljettu / step 1 done and closed 2026-11-26** (`globaali-tila.md`, H-128–H-144, T-038–T-039) |
 | 9 | Virheenkäsittely ja resurssit: palautusarvojen tarkistus, tiedostokahvat, muistivuodot, `writeerror`-polut / error handling and resources | keskitaso / medium | defect-concurrency-auditor | H/T-numerot — **valmis ja suljettu / done and closed 2026-11-26** (`virheenkasittely.md`, H-145–H-158, T-040–T-042; vaiheet / steps `f1eb195`, `920930c`) |
-| 10 | Ulkoiset riippuvuudet: MySQL/dbExpress, WinHTTP, laiteprotokollat, BPL-ajonaikaiset paketit / external dependencies | matala–keskitaso | build-dependency-analyst | `riippuvuudet.md` — **vaihe 1 valmis / step 1 done 2026-11-26** (`riippuvuudet.md` luvut 7–18, H-159–H-170, T-043–T-049; Q5, Q92 ratkaistu / resolved); odottaa katselmointia / awaiting review |
+| 10 | Ulkoiset riippuvuudet: MySQL/dbExpress, WinHTTP, laiteprotokollat, BPL-ajonaikaiset paketit / external dependencies | matala–keskitaso | build-dependency-analyst | `riippuvuudet.md` — **vaihe 1 valmis / step 1 done 2026-11-26** (`riippuvuudet.md` luvut 7–18, H-159–H-170, T-043–T-049; Q5, Q92 ratkaistu / resolved); **valmis ja suljettu / done and closed 2026-11-26** käyttäjän hyväksynnällä ilman vaihetta 2 / on approval without a step 2 (`46509f9` + sulkemiscommit / closing commit; luku / section 19) |
 | 11 | Käännös- ja testiautomaatio: testit CI:hin, `run.sh`, GUI-todennus kommenttimuutoksille / build and test automation | matala riski, suuri hyöty / low risk, high leverage | build-dependency-analyst, architecture-analyst, defect-concurrency-auditor, independent-verifier ×2 | `testaus.md` — **valmis / done 2026-11-24** (luku / section 20; 15 toistettu testikehyksessä, H-041 vahvistettu ajamalla / 15 reproduced, H-041 confirmed by running); CI-vienti avoin / CI integration open (Q35–Q42). GUI-kommenttien todennus (Q8) ei vielä / GUI comment verification not yet |
 
 Erät 2–5 ovat riippumattomia toisistaan ja voidaan ajaa missä järjestyksessä
@@ -157,10 +157,113 @@ have not been started.
 
 | Erä / Batch | Aihe / Topic | Tavoite / Goal | Tila / State |
 |---|---|---|---|
-| C-12 (uusi / new) | Ominaisuusvalitsimien dokumentointi / feature switch documentation | Toteuttaa alkuperäisen vaiheen C kohdan 3 (mitä kukin `#define` tekee) sekä käsittelee Q2:n ja T-008:n: kattava ominaisuus-, asetus- ja konfiguraatioinventaario ja pohja myöhemmälle regressiotestimatriisille. C-10 käsittelee valitsimia vain siltä osin kuin ne kytkevät ulkoisen riippuvuuden; C-10:n `makrot.csv` ja `tyokalut/riippuvuudet.py` ovat syötteitä. / Implements original phase C item 3, Q2 and T-008: a complete feature, setting and configuration inventory and the basis for a later regression test matrix; C-10 output is an input | ei aloitettu / not started |
+| C-12 (uusi / new) | Ominaisuusvalitsimien dokumentointi / feature switch documentation | Toteuttaa alkuperäisen vaiheen C kohdan 3 (mitä kukin `#define` tekee) sekä käsittelee Q2:n ja T-008:n: kattava ominaisuus-, asetus- ja konfiguraatioinventaario ja pohja myöhemmälle regressiotestimatriisille. C-10 käsittelee valitsimia vain siltä osin kuin ne kytkevät ulkoisen riippuvuuden; C-10:n `makrot.csv` ja `tyokalut/riippuvuudet.py` ovat syötteitä. / Implements original phase C item 3, Q2 and T-008: a complete feature, setting and configuration inventory and the basis for a later regression test matrix; C-10 output is an input | rajattu, ei aloitettu / scoped, not started (alla / below) |
 | C-13 (uusi / new) | Auditoinnin synteesi ja korjaussuunnitelma / audit synthesis and fix plan | Yhdistää kaikkien erien tulokset, tarkistaa kattavuuden, tunnistaa yhteiset juurisyyt ja muodostaa perustellun korjaus- ja modernisointisuunnitelman (syötteinä mm. korjausjono `seuranta.md`, KK-C9-1–3, C-10:n modernisointiriskit). / Combines all batch results, checks coverage, identifies common root causes and builds a justified fix and modernisation plan | ei aloitettu / not started |
 
-### C-10 vaihe 1: rajaus / Step 1: scope (**valmis / done 2026-11-26**, `riippuvuudet.md` luvut 7–18)
+### C-12 vaihe 1: rajaus / Step 1: scope (**ehdotus, ei aloitettu / proposal, not started**; laadittu C-10:n sulkemisessa 2026-11-26 / written at the C-10 closing)
+
+**Tavoite / goal:** kattava ominaisuus- ja konfiguraatioinventaario: mitä kukin valitsin, asetus
+ja ehto tekee, missä ohjelmissa, millä oletusarvolla ja mihin muihin valitsimiin se kytkeytyy.
+Tämä toteuttaa alkuperäisen vaiheen C kohdan 3 ("mitä kukin `#define` tekee") sekä ratkaisee Q2:n
+ja arvioi T-008:n. Tuotos on myös pohja riskiperusteiselle regressiotestimatriisille. Työ yhdistää
+olemassa olevan tiedon ja täydentää puuttuvat osat; koko lähdekoodia ei käydä uudelleen läpi. /
+Goal: a complete feature and configuration inventory; resolves Q2, assesses T-008; combines existing
+knowledge and fills gaps without re-reading the whole code base.
+
+**Lähtötiedot, ei analysoida uudelleen / inputs, not re-analysed:**
+
+| Lähde / Source | Mitä C-12 saa siitä / What C-12 takes from it |
+|---|---|
+| `inventaario.md` (kierros 1 / round 1) | projektien valitsimet kaikista kokoonpanoista yhdistettynä, Q2:n lähtölista, T-008 / project switches, Q2 seed list |
+| C-10: `tyokalut/riippuvuudet.py`, `todisteet/c10/osaA/` (`makrot.csv`, `kaannosyksikot.csv`, `osumat.csv`), `riippuvuudet.md` luvut 10 ja 19.6, T-045 | tuotekohtaiset lopulliset makrojoukot Release-kokoonpanoissa, kolmiarvoinen `#if`-arvioija, ehdollinen include-sulkeuma, riippuvuuksia kytkevät valitsimet, projektien ulkopuoliset määritykset; tuntemattomat `MAKI`, `HIIHTO`, `EMITFILE` / final macro sets, evaluator, dependency switches, unknowns |
+| C-5: `kaantajaerot.md` (luku 3, T-023–T-029, H-081, Q60) | MSVC- ja bcc32-erot, `/J` ja `-K`, `NREGNLY` (T-024), `VersioInt` (T-025), `KUNTOSUUNN` / compiler differences |
+| C-3: `tiedostomuodot.md` | `.cfg`-, `KilpSrj.xml`- ja `radat.xml`-muodot, kääntäjävalitsimet (Q17) / file formats |
+| C-8: `globaali-tila.md` luku 4.1 | alustusjärjestys ja nollaus kilpailun vaihdossa / initialisation order |
+| C-2, C-9, C-10 | yhteys-, `AUTOFILE`-, `FILETCP`-, `HTML=`-, `XML=`-, `SQL*`- ja laiteasetusten vaikutukset havaintoineen (H-149, H-150, H-159–H-166) / setting-dependent findings |
+| C-7: `gui-liiketoimintalogiikka.md` | lomakkeiden asetukset ja toiminnot / form settings |
+| C-11: `testaus.md` | testikehys (`TpCoreHk`, `TpCoreJuk`), toistetut havainnot; pohja testimatriisille / harness, basis for the matrix |
+
+**Osat / parts:**
+
+| Osa / Part | Sisältö / Content | Agentti, malli / Agent, model |
+|---|---|---|
+| A0 | Skripti `tyokalut/valitsimet.py` käyttää `riippuvuudet.py`:n funktioita. Jokaisesta `#if`/`#ifdef`/`#ifndef`/`defined()`-ehdossa testatusta makrosta se kirjaa: määrityskohta (projekti ja kokoonpano, otsikko, käännösyksikkö), arvo tuotteittain ja kokoonpanoittain (Release ja muut määritellyt kokoonpanot erikseen), käyttökohtien määrä ja tiedostot, johdetut määritykset (esim. `TCPSIIRTO` → `AUTOFILE`) ja aina epätodet haarat. Ennen agenttikäyttöä skripti tarkistetaan C-10:n `makrot.csv`:tä ja `inventaario.md`:n valitsintaulukkoa vasten, kuten C-10:ssä. Raakatulos `todisteet/c12/` / script reuses the C-10 evaluator; validated against C-10 output before agent use | pääistunto / main session |
+| A | Esikääntäjän valitsimet: luokittelu ominaisuusvalitsimeksi, vakioksi, include-suojaksi tai alusta- ja kääntäjämakroksi; merkitys ja vaikutus (Q2: `GAZ`, `ORAVA`, `VERTAA`, `MERI5`, `LAJUNEN`, `PARTIO` ym.); ohjelmakohtaiset erot, HK ja viesti, konsoli ja GUI (T-008), MSVC ja C++Builder; keskinäiset riippuvuudet ja ristiriidat; kuolleet ja saavuttamattomat ominaisuudet (T-011, T-049) / preprocessor switches | `build-dependency-analyst`, Sonnet |
+| B | Ajonaikaiset asetukset: asetustiedostojen avaimet ja arvot sekä komentoriviparametrit. Jäsentimet: `Hk/HkInit.cpp` (noin 245 avainta), `Juk/VInit.cpp` (noin 169), `cbHk/UnitCfg.cpp` (noin 230) ja `ViestiWin/UnitCfg.cpp` (noin 96); määrät ovat `grep`-arvioita. Kirjataan avain, tyyppi, oletusarvo ja sen alustus, asetettava muuttuja, ohjelmat sekä konsoli- ja GUI-jäsentimen erot; erillisten jäsentimien ajautuminen erilleen on oma riskinsä. Selvitetään, mitkä tiedostot ja avaimet ovat käynnistyksen edellytyksiä (C-10 19.6) / run-time settings and command line; console vs GUI parser drift; mandatory files | `architecture-analyst`, Sonnet |
+| C | Muut ominaisuuksien kytkimet: tiedoston olemassaoloon perustuvat ominaisuudet (esim. `AUTOFILE.LST`, `*.LST`), käyttöliittymän pysyvät asetukset (`ikkunat.xml`, rekisteri, lomakkeiden valinnat), ympäristömuuttujat ja kilpailukohtaiset parametrit (`KilpSrj.xml`, `kilpparam`), jotka kytkevät toimintoja. Kilpailuparametreista kirjataan vain toimintoja kytkevät; tietosisältöä ei käsitellä / file-presence features, GUI and registry settings, behaviour-switching competition parameters | `architecture-analyst`, Sonnet |
+| D | Riippumaton tarkastus: merkitystä, kuollutta koodia, ristiriitoja ja testimatriisin havaintoyhdistelmiä koskevat väitteet sekä olemassa olevia havaintoja muuttavat väitteet / independent review | `independent-verifier`, Opus |
+| E | Ohjelmakohtainen ominaisuusmatriisi ja riskiperusteinen konfiguraatio- ja regressiotestimatriisi (alla); dokumentointi, rekisterit, validaattori, paikallinen commit, ei pushia / matrices and documentation | pääistunto / main session |
+
+**Testimatriisin rajaus / test matrix scope:** kaikkia yhdistelmiä ei kateta. Matriisi kattaa:
+
+- normaalit käyttökokoonpanot kustakin viidestä ohjelmasta: yksittäinen työasema, verkko,
+  emit-luenta, RFID-lukija, automaattinen tulostus ja SQL-peili;
+- merkittävät ohjelmakohtaiset erot: HK ja viesti, konsoli ja GUI, MSVC ja C++Builder (esim.
+  `NREGNLY` T-024, `VersioInt` T-025, `KUNTOSUUNN` H-081);
+- tunnettuja vikoja aktivoivat yhdistelmät, esimerkkeinä:
+  - H-149: viestin `autofile` ilman `AUTOFILE.LST`:ia;
+  - H-150: XML-vienti, vaihe ≥ 2 ja `AUTOFILE.LST`;
+  - H-129: HK:n vaiheen vaihto;
+  - H-159: Sirit/Zebra-uudelleenyhteys;
+  - H-160 ja H-161: viestin SQL-peili;
+  - H-055: emiTag-`TCPS` tai -HTTP;
+  - H-166: `ETGPRS`.
+
+Jokaisesta rivistä kirjataan, voiko sen ajaa C-11:n testikehyksessä vai vaatiiko se toimitetun
+ohjelman, laitteen tai verkon. / Normal configurations, significant program differences and
+combinations that activate known defects; each row notes whether the C-11 harness can run it.
+
+**Ehdotetut tuotokset / proposed outputs [ehdotus]:**
+
+- `ominaisuusvalitsimet.md`: kaksikielinen pääraportti. / Bilingual main report.
+- `rekisteri/valitsimet.csv` (tai JSON): koneellisesti käsiteltävä rekisteri. Sarakkeita voivat
+  olla tunniste, nimi, laji (esikääntäjä, asetusavain, komentorivi, tiedoston olemassaolo, GUI,
+  rekisteri, kilpailuparametri), tyyppi, oletusarvo, ohjelmat, kääntäjä tai kokoonpano,
+  määrityskohta, käyttökohdat, vaikutus, riippuvuudet ja ristiriidat, tila (käytössä, kuollut,
+  saavuttamaton), H-, T- ja Q-tunnisteet sekä todennusmerkintä. **Rakennetta ei lukita ennen
+  A0:n ja olemassa olevan aineiston tarkistusta**; esikääntäjän ja ajonaikaisten asetusten
+  rekisterit voivat osoittautua järkevämmiksi erillisinä. / Register; structure fixed only after
+  checking the material.
+- Ohjelmakohtainen ominaisuusmatriisi (`ominaisuusvalitsimet.md`:ssä tai CSV:nä) ja testimatriisi.
+  Testimatriisi voidaan sijoittaa myös `testaus.md`:hen C-11:n jatkoksi. / Feature matrix and test
+  matrix.
+- `tyokalut/valitsimet.py` ja raakatulokset `todisteet/c12/` tiivisteineen. / Script and raw results.
+
+**Valmiusehdot / completion criteria [ehdotus]:**
+
+1. Jokainen viiden tuotteen käännetyissä tiedostoissa ehtona testattu makro on luokiteltu.
+   Ominaisuusvalitsimille on kirjattu merkitys, arvo tuotteittain ja määrityskohta, ja
+   luokittelematta jääneet on lueteltu syineen.
+2. Neljän jäsentimen asetusavaimet ja komentoriviparametrit on luetteloitu ohjelmittain
+   oletusarvoineen, ja konsolin ja GUI:n erot on kirjattu.
+3. Tiedoston olemassaoloon, GUI-asetuksiin, rekisteriin ja kilpailuparametreihin perustuvat
+   kytkimet on luetteloitu.
+4. Q2 on ratkaistu tai jäljelle jäävä osa rajattu perustellusti, ja T-008 on arvioitu.
+5. Riippuvuudet, ristiriidat ja kuolleet tai saavuttamattomat ominaisuudet on merkitty näyttöineen.
+6. Ominaisuusmatriisi ja testimatriisi kattavat edellä luetellut rivit.
+7. Merkittävät väitteet on tarkastettu riippumattomasti, validaattori menee läpi ja muutokset on
+   commitoitu paikallisesti.
+
+/ All tested macros classified; all keys of the four parsers and the command line listed; other
+switches listed; Q2 resolved or bounded, T-008 assessed; dependencies, conflicts and dead features
+marked; matrices done; review, validator, local commit.
+
+**Työnjako ja rajaukset / division of work and limits:** A0 ensin. Sen jälkeen A, B ja C rinnakkain
+(enintään kolme analyysiagenttia), D lopuksi ja E pääistunnossa. Sonnet inventointiin ja analyysiin,
+Opus riippumattomaan tarkastukseen; ei keinotekoista tokenbudjettia. Päällekkäisyys estetään
+lähtötietoluettelolla ja jakamalla kohteet: A esikääntäjä, B asetukset ja komentorivi, C muut
+kytkimet.
+
+Staattinen analyysi: ei käännöksiä, ajoja, verkko-, tietokanta- tai laiteyhteyksiä eikä
+riippuvuuspäivityksiä; tuotantokoodia, projektiasetuksia ja CI:tä ei muuteta, eikä pushata.
+Rajattu pois: korjaukset, C-13, valitsinten poistaminen tai yhdistäminen, kommentointi (vaihe D) ja
+kaikkien yhdistelmien testaus. Testimatriisin ajaminen vaatii erillisen päätöksen.
+
+/ A0 first, then A, B, C in parallel (at most three agents), D last, E in the main session; Sonnet for
+analysis, Opus for review, no artificial token budget; static only, no runs, connections, dependency
+updates, code, project or CI changes, no push; fixes, C-13, switch removal and commenting out of scope.
+
+### C-10 vaihe 1: rajaus / Step 1: scope (**valmis ja suljettu / done and closed 2026-11-26**, `riippuvuudet.md` luvut 7–19)
 
 Toteutus: rajauksen mukaan. Osan A skripti (`tyokalut/riippuvuudet.py`) tarkistettiin C-5:n
 tallentamia käännöksiä vasten ja korjattiin viidesti ennen kuin osat B–E saivat sen tuloksen;

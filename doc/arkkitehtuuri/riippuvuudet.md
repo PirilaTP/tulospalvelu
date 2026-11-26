@@ -164,7 +164,8 @@ mitään ei käännetty eikä ajettu, eikä yhteyksiä muodostettu. Tärkeimmät
 
 - **Konsoliohjelmat** (HkMaali, ViestiMaali, ViestiLuenta) ovat lähes omavaraisia: staattinen
   MSVC-ajonaikainen kirjasto (`/MT`), ulkoisina vain Windowsin DLL:t (Winsock, WinHTTP kahdessa,
-  GDI ja taustatulostus). Ei tietokantaa, ei selainta.
+  GDI ja taustatulostus). Ei tietokantaa, ei selainta. Tarkennus: tämä koskee tuontitaulun DLL:iä;
+  käyttöjärjestelmän palvelut, ajurit, asetus- ja kilpailutiedostot luvussa 19.6.
 - **GUI-ohjelmat** (HkKisaWin, ViestiWin) tarvitsevat 11 C++Builder 13 -ajonaikaistiedostoa
   (9 BPL:ää, `borlndmm.dll`, `cc32370mt.dll`) sekä valinnaisesti MySQL-ajurin (`dbxmys.dll`),
   MySQL-asiakaskirjaston (`libmysql.dll`, versio tuntematon), IE/MSHTML-selainmoottorin ja HTML
@@ -469,7 +470,8 @@ osalta; MTR:n `pkg_alku` ei tuo uutta H-145:een; tarkastaja löysi E1 (H-162), E
 (H-170). Pääistunto todensi koodista H-159:n, H-161:n ja H-162:n mekanismit. Korjausjärjestys:
 H-159 P2 (laitesyötteen pysähtyminen kilpailun aikana), H-160–H-163 ja H-165 yhdessä
 korjauskokonaisuutena KK-C10-1 (SQL-polku ja jakelu), H-164 ja T-048 kokonaisuutena KK-C10-2
-(laitteiden valvonta), muut P3–P4; lopullinen järjestys erässä C-13.
+(laitteiden valvonta), muut P3–P4; lopullinen järjestys erässä C-13. **Korvattu luvulla 19.3–19.4
+(sulkeminen) / superseded by 19.3–19.4.**
 
 Independent review: 15 claims, 11 confirmed, 4 partly. K6 consequence corrected (the program
 ends) → H-160 high when SQL is used; K2 lowered to medium; N-9 refuted for HK; reviewer found
@@ -510,3 +512,292 @@ staattisen näytön varassa.
 Step 1 was static; nothing built, run, connected or updated, and no production code, project
 settings or CI changed. The step's completion criteria are met. A step 2 (isolated runs Q96–Q98,
 Q102) is needed only to confirm H-159, H-160 and H-165 at run time before fixing.
+
+## 19. Sulkeminen / Closure (2026-11-26)
+
+Käyttäjä hyväksyi C-10:n sulkemisen ilman toista työerää ("Hyväksyn C-10:n sulkemisen ilman toista
+työerää"). Luvut 16–18 jäävät ennalleen historiana. Tämä luku viimeistelee prioriteetit ja
+korjauskokonaisuudet ja korvaa luvun 16 alustavan korjausjärjestyksen. Uusia analyysejä tai
+koeohjelmia ei tehty; sulkemisen tarkistukset ovat olemassa olevan aineiston ja koodin lukemista. /
+The user approved closing C-10 without a second step. Sections 16–18 stay as history; this section
+finalises priorities and fix packages and supersedes the provisional order in section 16. No new
+analysis or probes; the closing checks only read existing material and code.
+
+### 19.1 Kattavuus suhteessa rajaukseen / Coverage against the scope
+
+| Osa / Part | Rajaus (`suunnitelma.md`) / Scope | Toteutus / Done | Puutteet / Gaps |
+|---|---|---|---|
+| A | Tuotekohtainen inventaario, versiot, lisenssit, valitsimet / per-product inventory | luvut 8–10, 15; `todisteet/c10/osaA/`; skripti tarkistettu C-5:tä vasten / script validated against C-5 | `MAKI`, `HIIHTO`, `EMITFILE` (ViestiLuenta) tuntemattomia; 31 tiedostoa ei käännetä / unknown macros; 31 unbuilt files |
+| B | Tietokanta, Q5 / database | luku 11; Q5 ratkaistu / resolved | palvelinkäytös ajamatta / server behaviour not run (Q97) |
+| C | HTTP ja selain / HTTP and browser | luku 12 | palvelimen vastausmuoto tuntematon / server format unknown (Q99) |
+| D | Laitteet, Q86 / devices | luku 13; 27/27 `LID_*` | laitteiden käytös dokumentaation varassa / device behaviour needs documentation (Q100) |
+| E | Paketit ja jakelu, Q91, Q92, T-005 / packages, deployment | luku 14; Q92 ratkaistu, Q91 osittain / partly | puhdas kone ajamatta / clean machine not run (Q98); PE luettu 2026-11-24:n käännöksistä / PE read from the 2026-11-24 builds |
+| F | Riippumaton tarkastus / independent review | luku 16; K1–K15, E1–E3 (Opus) | H-170:n rivit vain osittain tarkastettu / roll-up items only partly reviewed |
+| G | Dokumentointi / documentation | luvut 7–19, rekisterit / registers, `todisteet/c10/` | – |
+
+Suunnitelman valmiusehdot täyttyvät (luku 18). Rajauksen ulkopuolelle jätettiin tarkoituksella
+haavoittuvuustietokannat, ajokokeet, kääntäminen ja verkkotarkistukset (Q103). / The plan's completion
+criteria are met; vulnerability databases, runs, builds and online checks were left out on purpose.
+
+### 19.2 Todentamisen rajat / Limits of verification
+
+C-10:ssä ei ajettu mitään. Rekisterin rivit H-159–H-170 ja T-043–T-049 on merkitty
+"ei ajonaikaista todennusta / not verified at run time", ja niiden ajonaikainen vaikutus on
+[päätelty]. Mekanismit, jotka pääistunto tai tarkastaja luki koodista (H-159, H-160, H-161, H-162,
+H-163, H-169), ovat [todennettu] vain koodipolun osalta. Ajossa vahvistettavat: H-159 (Q96), H-160
+ja H-162 (Q97), H-163 ja H-165 (Q98), H-161:n toistuvuus (Q104) ja H-169:n leviäminen (Q106).
+H-160:n RTL-käytös on luettu C++Builderin RTL-lähteistä, ei ajettu. / Nothing was run in C-10; every
+new H and T entry is marked not verified at run time; mechanisms read from code are verified only as
+code paths.
+
+### 19.3 Korjausprioriteetit / Fix priorities [päätelty / inferred]
+
+Periaate on sama kuin C-4:ssä ja C-9:ssä:
+
+- **P1:** laukeaa verkosta oletusasetuksilla.
+- **P2:** voi pysäyttää ajanoton tai tulospalvelun tai korruptoida tietoja kilpailun aikana
+  tavallisella käytöllä tai yleisellä asetuksella.
+- **P3:** keskitason vaikutus tai harvinaisempi edellytys.
+- **P4:** matala vaikutus.
+- **P5:** kokoomarivit ja kosmeettiset viat.
+
+Vakavuuksia ei muutettu. / Same principle as C-4 and C-9; no severity changed.
+
+| ID | P | Perustelu / Rationale |
+|---|---|---|
+| H-159 | **P2** | Sirit/Zebra-lukijan ensimmäinen yhteyskatko kilpailun aikana lopettaa luennan, kunnes ohjelma käynnistetään uudelleen; koskee neljää tuotetta (käyttäjän esitys vahvistettu) / the first link drop ends reading until restart; user's proposal confirmed |
+| H-160 | **P2** (muutettu / changed P3 → P2) | Kun SQL-peilaus on käytössä, ohjelman lopettaa palvelinkatko, heittomerkki nimessä tai H-161:n viestin `vosanotot`-lause (syntaksivirhe aina, kun otsikko eroaa, Q104). Vakavuus ennallaan: korkea vain SQL-peilauksen kanssa. Ei P1, koska vika ei laukea verkosta oletusasetuksilla. Aiempi P3 perustui siihen, että SQL on valinnainen. Käyttäjän esitys P2 hyväksytään, koska käytössä ollessaan vika lopettaa koko tulospalvelun eikä vain valinnaista peiliä / when the mirror is on, an outage, an apostrophe or H-161 ends the whole program |
+| H-162 | P3 (kärkeen / first) | Vienti (valinta 3) kilpailun aikana ja SQL-virhe pysäyttävät hiljaa tietoja tallentavat työsäikeet, vaikka käyttöliittymä näyttää toimivan; edellytys on harvinainen ja käyttäjän käynnistämä / silent stall of saving threads; rare, operator-started |
+| H-169 | P3 | Tuhoava mutta käyttäjän käynnistämä; edellytykset ja palautettavuus luvussa 19.3.2 / destructive but operator-started; see 19.3.2 |
+| H-164 | P3 | Laitesyöte katkeaa hiljaa. Uudelleenkäynnistys palauttaa luennan ja Emit-kortit voi lukea uudelleen, mutta muiden sarjalaitteiden ajat voivat jäädä saamatta / silent feed loss; recoverable for Emit cards |
+| H-166 | P3 | Väärä väliaika on mahdollinen (lohkojen liitos), ja nouto voi pysähtyä pysyvästi; vain `ETGPRS`-asetuksella / possible wrong split; only with `ETGPRS` |
+| H-163 | P3 | Laukeaa käynnistyksessä ja on yleensä havaittavissa ennen kilpailua; H-165 tekee siitä todennäköisen julkaisu-ZIP:stä asennettaessa (DLL:t puuttuvat) / at start-up, usually visible before the event; H-165 makes it likely |
+| H-161 | P3 | Toiminnallinen vaikutus luvussa 19.3.1; korjataan samassa kokonaisuudessa kuin H-160 / fixed with H-160 |
+| H-165 | P3 | MySQL ja ohjeet eivät toimi julkaisusta sellaisenaan; ei tietovaikutusta ja korjaus on halpa, mutta puute laukaisee H-163:n / no data effect, cheap fix, triggers H-163 |
+| H-167 | P4 | Sulkeminen jumittuu, mutta tiedostot on jo suljettu / shutdown hang after files are closed |
+| H-168 | P4 | Aito toinen luenta samoin rastikoodein hylätään hiljaa; harvinainen / genuine re-read dropped; rare |
+| H-170 | P5 | Kokoomarivi; sen kohdat jaetaan luvun 19.4 korjauskokonaisuuksiin / roll-up, items go to the packages |
+
+C-10:n P2-havainnoista H-159 menee ennen H-160:tä, koska H-159 koskee kaikkia RFID-asennuksia ja
+H-160 vain SQL-asennuksia. Lopullinen sijoitus muiden erien P2-havaintojen joukkoon tehdään
+C-13:ssa. / H-159 before H-160; placement among other batches' P2 items in C-13.
+
+#### 19.3.1 H-161: toiminnallinen vaikutus ja injektio erikseen / functional effect and injection separately
+
+- **Toiminnallinen vaikutus [todennettu koodista / from code]:** lauseet ovat virheellisiä myös
+  tavallisella datalla, joten vika ei edellytä vihamielistä syötettä:
+  - viestin `vosanotot`-UPDATE päättyy pilkkuun ennen `WHERE`:ä;
+  - joukkueen nimi kirjoitetaan int-sarakkeeseen;
+  - `osuudet` kirjoittaa `badge=` `lisno`n sijaan;
+  - merkkikentät ovat ilman lainausmerkkejä;
+  - HK:n lause viittaa olemattomaan sarakkeeseen `salisarja`.
+
+  Seurauksena joko H-160 lopettaa ohjelman, tai peili jää vanhentuneeksi tai vääräksi. Peilin
+  varassa toimivat käyttäjät, kuten tulosnäytöt ja H-169:n tuonti, saavat väärää tietoa.
+  Toistuvuus on [päätelty] (Q104).
+- **Mahdollinen SQL-injektio [päätelty, ei todennettu / inferred, not verified]:** merkkijonot
+  liitetään lauseeseen ilman suojausta, joten heittomerkki rikkoo lauseen; tämä mekanismi on
+  todennettu. Varsinainen injektio edellyttäisi, että hyökkääjä hallitsee kentän sisältöä. Kentät
+  tulevat kolmesta lähteestä:
+  - operaattorin syötteestä;
+  - tuontitiedostoista (CSV/XML);
+  - muiden työasemien sanomista, joiden lähettäjää ei todenneta (T-043, C-2).
+
+  Tuntemattomia ovat [tuntematon]: näiden reittien saavutettavuus SQL-lauseeseen asti, lauseen
+  pituusrajat, MySQL-käyttäjän oikeudet ja se, salliiko ajuri useita lauseita. Injektiota ei siksi
+  väitetä vahvistetuksi; kysymys Q105. / Malformed statements fail with ordinary data (verified);
+  injection is only inferred: origin and reachability of the input, privileges and multi-statement
+  support are unknown (Q105).
+
+#### 19.3.2 H-169: paikallisten tietojen eheys / integrity of local data
+
+- **Mitä tapahtuu [todennettu / verified]:**
+  - `lue_SQL` (`cbHk/UnitImport.cpp:1064-1088`) käy läpi tietuenumerot 1–9 998.
+  - Jokainen paikallinen tietue, jolle SQL:ssä ei ole riviä, korvataan poistetulla tietueella
+    (`kilpstatus=0xffff`).
+  - Muut tietueet korvataan pelkillä peilatuilla kentillä, joten peilaamattomat tiedot
+    nollautuvat (`kilp.nollaa()` ja `readSQLrivi`, `cbHk/UnitMySQL.cpp:255-259`).
+  - Kirjoitus menee suoraan `KILP.DAT`:iin (`datf2`, `Hk/HkGlobals.cpp:121`,
+    `kilp.tallenna(i, 0, 0, 0, 0)`).
+  - Valinta 6 kysyy vain yhteyden. Erillistä vahvistusta tai varmuuskopiota ei tehdä, ja
+    lomakkeen ainoa varoitus koskee hitautta (`cbHk/UnitImport.dfm:224-231`).
+- **Edellytykset:** käyttäjä valitsee tuonnin valinnan 6, ja SQL-yhteys on auki. Tuonti tuhoaa
+  tietoja, kun jokin seuraavista pätee:
+  - SQL-taulu on vajaa tai vanhentunut; tämä on todennäköistä H-160:n tai H-161:n jälkeen tai kun
+    kilpailijoita on yli 9 998;
+  - taulun `kilpailu` tai `tietue` ei vastaa paikallista numerointia.
+
+  Jos kysely epäonnistuu kesken, `Open()` heittää poikkeuksen pääsäikeessä [päätelty], ja jo
+  korvatut tietueet jäävät korvatuiksi.
+- **Palautettavuus:** ohjelma ei tee palautuspistettä. Tiedot saa takaisin vain ulkoisesta
+  kopiosta, kuten operaattorin varmuuskopiosta, toiselta työasemalta tai alkuperäisestä
+  tuontitiedostosta. [tuntematon]: leviävätkö korvaukset `tallenna`n kautta muille työasemille,
+  jolloin vahinko monistuisi (Q106).
+- **Korjauksen lähtökohta:** tuonti uuteen tiedostoon tai varmuuskopio ja vahvistus ennen
+  korvaamista, eikä poistoja pelkän puuttuvan SQL-rivin perusteella.
+
+/ Destructive overwrite of live KILP.DAT without confirmation or backup; becomes destructive when the
+SQL table is incomplete; recovery only from external copies; propagation unknown (Q106).
+
+### 19.4 Korjauskokonaisuudet C-13:a varten / Fix packages for C-13 [ehdotus / proposal]
+
+Kokonaisuudet korvaavat luvun 16 alustavat KK-C10-1:n ja KK-C10-2:n; sisältö jaettiin uudelleen
+käyttäjän esityksen mukaan. / These replace the provisional KK-C10-1/-2 of section 16.
+
+**KK-C10-1 SQL-integraatio / SQL integration:** H-160, H-161, H-162, H-163, H-169; lisäksi H-170:n
+kohdat D9 ja D10 ja T-043:n tunnukset.
+
+- Arkkitehtuurinen lähtökohta: `KILP.DAT` on ensisijainen tietolähde ja MySQL valinnainen
+  rinnakkainen peili (luku 11). Valinnaisen integraation epäonnistuminen ei saa lopettaa
+  tulospalvelua eikä pysäyttää tallennusta.
+- Poikkeukset siepataan kirjoitussäikeessä ja viennissä, lukko vapautetaan kaikilla poluilla,
+  peili merkitään epäsynkroniseksi, ja käynnistys jatkuu ilman SQL:ää.
+- Lauseet parametrisoidaan; tämä korjaa H-161:n toiminnallisen vian ja sulkee Q105:n riskin.
+- Tuonti ei saa tehdä peilistä tuhoavasti master-tietoa.
+- Riippuvuudet: H-014 (C-1), H-043 (`SQLjonoVarm.dat`, C-3), H-100 (jonon lukitus, C-6).
+
+/ Optional mirror failure must not stop the service; parameterised statements; import must not make
+the mirror destructively authoritative.
+
+**KK-C10-2 Laiteyhteyksien hallinta / device connection management:** H-159, H-164 ja T-048, joka
+vastaa laitteiden elävyyden valvontaa [todennettu, `rekisteri/havainnot.md`]. Lisäksi H-166 ja
+H-167, koska emiTag-HTTP on ajanottosyöte samaan tapaan kuin lukija, sekä H-170:n laitekohdat N-5,
+N-7, N-8, N-11, N-13 ja N-15.
+
+- **Aiemmat havainnot, jotka koskevat säikeiden elinkaarta, yhteyskatkoja ja palautumista:**
+  - H-027: TCP-asiakas ei yhdistä uudelleen;
+  - H-034: matkalla ollut paketti sovelletaan kahdesti;
+  - H-056: ARES-silmukka pysäyttää syötteen;
+  - H-108: `openSirit`in staattinen `acn`;
+  - H-138: jaettu `static count`;
+  - H-155: pistokevuoto lukijan uusintasilmukassa;
+  - H-145: kuittaus ennen tallennusta;
+  - H-090 ja H-107: lukijasäikeen lukitus ja GUI-koukut.
+- Jäsennyksen muistiturvallisuus (H-055, H-070) pysyy erikseen C-4:n P2-jonossa, vaikka koodi on
+  samoissa tiedostoissa.
+- **Selvityskohde, ei päätös:** korjaussuunnittelussa selvitetään yhteinen laiteyhteyksien
+  hallintakerros. Se kattaisi avauksen, uudelleenyhteyden oikealla paluuarvolla, elävyyden
+  valvonnan, tilan ilmaisun käyttäjälle ja säikeen hallitun lopetuksen.
+
+/ Device lifecycle, reconnect, liveness and status reporting; a common device connection layer is to
+be studied in C-13, not decided.
+
+**KK-C10-3 Jakelu ja ulkoiset riippuvuudet / deployment and external dependencies:** H-165, T-005,
+T-044, T-046 (elinkaari / life cycle), T-049 (kuolleen koodin rajaus / dead code), Q98, Q102, Q103.
+Sisältö:
+
+1. Dynaamisesti ladattavat `dbxmys.dll` ja 32-bittinen `libmysql.dll`: kerääjä ohittaa ne, koska
+   ne eivät ole staattisia tuonteja. Lisenssi ja jakeluoikeus selvitetään ennen kuin ne otetaan
+   mukaan.
+2. SQL-taulujen luontitiedostot `kilpsql.txt` ja `vkilpsql.txt`.
+3. Ohjetiedostot `.chm`, joita ei ole repossa.
+4. Tarpeettomat ajonaikaiset paketit `IndySystem370` ja `vcledge370` sekä vanhentuneet paketti- ja
+   polkulistat (T-044).
+5. Julkaistavan ZIP-paketin todennus puhtaassa ympäristössä (Q98) ja käynnistystesti CI:hin.
+
+/ Dynamic-load DLLs, schema files, help files, unneeded packages, clean-environment verification of
+the release ZIP.
+
+**KK-C10-4 Ulkoisten yhteyksien turvallisuus / security of external connections:**
+
+- T-043:
+  - emiTag-HTTP selväkielisenä kovakoodattuun osoitteeseen ilman tunnistusta;
+  - MySQL ilman TLS-asetusta;
+  - tunnukset selväkielisinä asetustiedostossa ja komentorivillä, salasana näkyvissä lomakkeella,
+    dokumentoitu oletussalasana;
+  - UDP/TCP-palvelimet `INADDR_ANY`:ssä ilman suodatusta;
+  - salaamattomat laitelinkit.
+- H-166: HTTP-tilaa ei tarkisteta.
+- H-161:n injektioriski (Q105, ei vahvistettu).
+- Aiemmista eristä: työasemaprotokollan todentamaton verkkosyöte (C-2) sekä verkosta laukeavat
+  P1-viat H-071 ja H-072, jotka pysyvät omassa jonossaan.
+
+Uusia verkkotestejä ei tehty. / Plain-text links and credentials, no TLS, unfiltered listeners; no
+network tests made.
+
+### 19.5 Lisenssit ja lähdekoodin alkuperä / Licences and provenance (omistajan päätös / owner decision **OM-C10-1**)
+
+Tämä on erillinen kokonaisuus, joka edellyttää omistajan päätöstä (Q101, T-047). Tiedostoja ei
+poistettu eikä merkintöjä muutettu. Alla on vain se, mikä aineistosta näkyy; oikeudellisia
+johtopäätöksiä ei tehdä. / A separate owner-decision item; files and notices untouched; facts only,
+no legal conclusions.
+
+| Ryhmä / Group | Tiedostot / Files | Merkintä tiedostossa / Notice in the file | Tuotteissa / In products |
+|---|---|---|---|
+| Blaise Computing Inc. | `include/bkeybrd.h`, `include/bscreens.h`, `include/bstrings.h`, `include/butil.h`; `tputilv2/STPCVT.cpp`, `STPEXPAN.cpp`, `STPJUST.cpp`, `STPTABFY.cpp`, `STPXLATE.cpp`, `STSCHIND.cpp`, `scclrmsg.cpp`, `sccurset.cpp`, `sccurst.cpp`, `scpclr.cpp`, `scwrite.cpp`, `scbox.cpp` (16) | "Version 6.00 (C)Copyright Blaise Computing Inc." vuosiluvuin / with years 1983–1989 (`include/bkeybrd.h:5`, `tputilv2/STPCVT.cpp:46`, `tputilv2/scwrite.cpp:26`); ei lisenssitekstiä eikä GPL-otsikkoa / no licence text or GPL header | 11 tiedostoa käännetään kirjastoihin `tputilv2` ja `Tputil-XE`, `scbox.cpp` ei käänny. Linkittyvätkö objektit kuhunkin EXE:en, on [tuntematon], koska staattisesta kirjastosta linkitetään vain viitatut / compiled into the libraries; whether linked into each exe is unknown |
+| Microsoft Source Code Samples | `include/Console.h`, `include/size.h` (1993), `tputilv2/consolesize.cpp` (1993–1997) | "Copyright (C) 1993[-1997] Microsoft Corporation. All rights reserved. This source code is only intended as a supplement to Microsoft Development Tools and/or WinHelp documentation." (`include/Console.h:2-9`, `tputilv2/consolesize.cpp:4-7`); ei GPL-otsikkoa / no GPL header | `consolesize.cpp` vain MSVC-kirjastossa `tputilv2`, `Console.h` `tputilv2/initcon.cpp`:n kautta / only in the MSVC library |
+
+**Alkuperästä tiedetään:**
+
+- Tiedostot ovat olleet repossa ensimmäisestä commitista `50db2f8` (2016-10-15, "2015-07-18
+  version…") alkaen.
+- Projektin README:n mukaan "Pekan perhe julkaisi lähdekoodin … GPLv3-lisenssin alaiseksi"
+  (`README.md:8-9`).
+- Blaise-tiedostot ovat ilmeisesti 1980-luvun kaupallisen C-kirjaston muokattua lähdekoodia ja
+  Microsoftin tiedostot kehitystyökalujen esimerkkikoodia [päätelty].
+
+**Epäselvää:**
+
+- Oliko alkuperäisellä tekijällä oikeus jakaa tiedostot edelleen?
+- Kattaako perheen GPLv3-julkaisu kolmannen osapuolen osat?
+- Mitkä olivat alkuperäiset käyttöehdot (Blaise-kirjaston ostajan lisenssi, Microsoftin
+  esimerkkikoodin ehdot)?
+- Koskeeko asia myös julkaistuja binäärejä?
+
+Ratkaisuvaihtoehdot ovat omistajan päätettäviä. Niitä ovat esimerkiksi selvityspyyntö
+oikeudenhaltijoilta, korvaaminen omalla toteutuksella tai merkintä README:hen. / Known: present since
+the first commit; the README states the family released the code under GPLv3. Unclear: redistribution
+rights, whether the GPLv3 release covers third-party parts, the original terms, and whether binaries
+are affected; the options are the owner's.
+
+### 19.6 Tuoteinventaarion täsmäytys / Product inventory reconciliation
+
+**Tuotteet / products [todennettu / verified]:** alkuperäinen inventaario (`inventaario.md`,
+"Projektit") listaa 11 projektia:
+
+- 5 ohjelmaa: HkMaali, ViestiMaali/JukMaali, ViestiLuenta/JukLuenta, HkKisaWin ja ViestiWin;
+- 4 kirjastoa: `tputilv2`, `dbboxm`, `Tputil-XE` ja `DBboxm-XE`;
+- `TpTest` ja `LibTest`.
+
+Julkaisu-ZIP sisältää täsmälleen viisi ohjelmaa (`.github/workflows/release.yml:121-147`). C-10:n
+"viisi tuotetta ja neljä kirjastoprojektia" vastaa siis inventaariota. Muut EXE-tiedostot on rajattu
+pois seuraavin perustein:
+
+| Ohjelma / Program | Syy / Reason |
+|---|---|
+| `TpTest.exe`, `TpCoreHk.exe`, `TpCoreJuk.exe` (`VS/Tests/`) | testikehyksiä, eivät ole julkaisussa eivätkä CI:ssä; `TpCore*` lisättiin C-11:ssä (`79d9957`) alkuperäisen inventaarion jälkeen / test harnesses, not shipped; added after the inventory |
+| `LibTest` (`tputilv2/LibTest.cbproj`) | vanha testiohjelma, ei missään käännöksessä (`Libs.groupproj`, `build-gui.ps1`, CI) / old, never built |
+| `main`-funktiot `tputilv2/ctrlhndl.cpp`, `esnimet.cpp`, `vaihdanm.cpp`, `esnimet-2.cpp`; `Tp/mttest.cpp`, `dbboxm/Boxtest.cpp`, `dbboxm/BOXTEST_F.cpp` | eivät ole erillisiä EXE:jä, vaan ovat kirjastossa tai ilman projektia / not separate exes |
+| `TPexe/`-binäärit / binaries | paikallisia käännöksiä versionhallinnan ulkopuolella; vain PE-luennan lähde / local builds, untracked |
+
+**Konsoliohjelmien `/MT`-johtopäätöksen tarkennus / refinement of the `/MT` conclusion:** staattinen
+CRT tarkoittaa vain, ettei VC++-ajonaikaispakettia tai CRT-DLL:ää tarvita. Luvun 7 lausuma "ulkoisina
+vain Windowsin DLL:t" koskee pelkkiä tuontitaulun DLL:iä; ohjelman toiminta tarvitsee lisäksi muuta:
+
+| Laji / Kind | Konsoliohjelmien tarpeet / Needs of the console programs | Tila / Status |
+|---|---|---|
+| Käyttöjärjestelmän kirjastot / OS libraries | `kernel32`, `user32`, `gdi32`, `winspool.drv`, `ws2_32`; `winhttp` HkMaalissa ja ViestiMaalissa; ei viivästettyjä tuonteja eikä `LoadLibrary`-kutsuja lähteissä / no delay imports, no `LoadLibrary` | [todennettu] PE (2026-11-24) ja `grep` |
+| Käyttöjärjestelmän palvelut / OS services | konsoli-isäntä (näyttöpuskurirajapinta, T-046; Windows Terminal -käytös avoin), taustatulostus ja tulostinajurit (GDI/PostScript), `cmd.exe` `system()`-automaattikomennolle | [todennettu] kutsut; [tuntematon] Windows Terminal |
+| Ohjelmistoriippuvuudet ja ajurit / software and drivers | ei kolmannen osapuolen DLL:iä; USB-sarjasovittimien ajurit (laitevalmistajan); käyttäjän omat ohjelmat automaattikomennossa (esim. `rsync`/`ssh`, käyttöohjeen liite A10); ulkoiset palvelimet ja muut työasemat asetuksista | [päätelty] |
+| Asetustiedostot / configuration | `laskenta.cfg` ja muut `.cfg`-tiedostot, komentoriviparametrit, `POSTSCRI.INI` | nimet [todennettu]; mitkä ovat pakollisia → C-12 / which are mandatory → C-12 |
+| Kilpailun tiedostot / competition data | `KILP.DAT`, `KilpSrj.xml`, `radat.xml`, `*.LST`, emit- ja `ajat`-tiedostot (C-3) | muodot `tiedostomuodot.md`; käynnistyksen edellytykset → C-12 |
+
+Luvun 9 taulukon merkintä "ei ajonaikaista tiedostoa" tarkoittaa siis vain CRT:tä. / The "no runtime
+file" entry refers to the CRT only; console programs also need OS services, drivers, optional user
+tools, configuration and competition files; which of these are mandatory goes to C-12.
+
+### 19.7 Jatkotyöjono / Follow-up queue
+
+- **Avoimiksi jäävät:**
+  - Q96–Q104 (luku 17);
+  - uudet Q105 (H-161:n injektion saavutettavuus) ja Q106 (H-169:n korvausten leviäminen muille
+    työasemille ja palautus);
+  - Q86 ja Q91, jotka ratkesivat vain osittain;
+  - Q101 omistajalle (OM-C10-1);
+  - haavoittuvuustietokantojen tarkastus erikseen.
+- **C-12:een siirtyvät** valitsimiin liittyvät syötteet: T-045, `todisteet/c10/osaA/makrot.csv`
+  sekä tuntemattomat makrot `MAKI`, `HIIHTO` ja `EMITFILE`.
+- **C-13:een siirtyvät** korjauskokonaisuudet KK-C10-1–4.
+
+/ Open: Q96–Q104, new Q105, Q106; Q86, Q91 partly; Q101 to the owner; switch inputs go to C-12; fix
+packages KK-C10-1..4 to C-13.

@@ -74,6 +74,11 @@ Ratkaisut / Solutions: `VS/Libs/tputilv2.sln` (tputilv2 + dbboxm),
 `VS/Hk/HkMaali520.sln`, `VS/V/JukMaali520.sln` (JukMaali + JukLuenta),
 `VS/Tests/TpTest.sln`; C++Builder: `RADStudio10/Libs.groupproj`.
 
+Täsmäytys C-10:n sulkemisessa / reconciled at the C-10 closing (`riippuvuudet.md` 19.6): julkaisu sisältää
+viisi ohjelmaa; myöhemmin lisätyt testikehykset `VS/Tests/TpCoreHk.vcxproj` ja `TpCoreJuk.vcxproj`
+(C-11, `79d9957`) ja `TpTest` eivät ole toimitettavia. / The release has five programs; the test
+harnesses added later are not shipped.
+
 ## Esikääntäjän ominaisuusvalitsimet / Preprocessor feature switches
 
 Valitsimet poimittiin kaikista projektin konfiguraatioista yhteensä, joten

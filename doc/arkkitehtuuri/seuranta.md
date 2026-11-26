@@ -33,17 +33,26 @@ separately from test coverage.
 | **C, erä 8 (C-8) globaali muuttuva tila, vaihe 1 / global mutable state, step 1** | **valmis ja suljettu käyttäjän hyväksynnällä / done and closed on approval** (`4884374` + sulkemiscommit / closing commit; `globaali-tila.md` luvut 11–12; H-128–H-144, T-038–T-039; Q78–Q82; H-128 ja H-129:n mekanismi toistettu eristetyllä koeohjelmalla / reproduced with an isolated probe; `todisteet/c8/`); jatkotehtävät alla / follow-ups below | 2026-11-26 |
 | **C, erä 9 (C-9) virheenkäsittely ja resurssit, vaihe 1 / error handling and resources, step 1** | **valmis, riippumattomasti tarkastettu, commitoitu paikallisesti / done, independently reviewed, committed locally** (`virheenkasittely.md`; H-145–H-157, T-040–T-041, Q83–Q90; H-044, H-071, H-105 laajennettu / extended; skripti / script `tyokalut/resurssit.py`; `todisteet/c9/`; noin 1,22 milj. tokenia agenteille / about 1.22 M agent tokens); odottaa käyttäjän katselmointia / awaiting the user's review | 2026-11-26 |
 | **C, erä 9 (C-9), vaihe 2: todentaminen eristetyillä koeohjelmilla / step 2: isolated probes** | **valmis, riippumattomasti tarkastettu, commitoitu paikallisesti / done, independently reviewed, committed locally** (`virheenkasittely.md` luku 12; `todisteet/c9/vaihe2/`; H-145, H-146, H-147, H-149, H-150, H-151 toistettu testikehyksessä / reproduced in test harness; H-149 → korkea / high; uudet / new H-158, T-042, Q91–Q95; Q83, Q84, Q85, Q88 ratkaistu / resolved); **C-9 valmis ja suljettu käyttäjän hyväksynnällä / C-9 done and closed on approval** (sulkeminen / closure `virheenkasittely.md` luku 13: kattavuus, todentamisen rajat, H-150 P3 → P2, korjauskokonaisuudet KK-C9-1–3) | 2026-11-26 |
-| **C, erä 10 (C-10) ulkoiset riippuvuudet, vaihe 1 / external dependencies, step 1** | **valmis, riippumattomasti tarkastettu, commitoitu paikallisesti / done, independently reviewed, committed locally** (`riippuvuudet.md` luvut 7–18; skripti / script `tyokalut/riippuvuudet.py`, tarkistettu ennen agenttikäyttöä / validated before agent use; H-159–H-170, T-043–T-049; Q5 ja Q92 ratkaistu / resolved, Q86 ja Q91 osittain / partly, T-005 tarkennettu / refined; Q96–Q104; `todisteet/c10/`; noin 1,20 milj. tokenia agenteille / about 1.20 M agent tokens); odottaa käyttäjän katselmointia / awaiting the user's review | 2026-11-26 |
+| **C, erä 10 (C-10) ulkoiset riippuvuudet, vaihe 1 / external dependencies, step 1** | **valmis, riippumattomasti tarkastettu, commitoitu paikallisesti / done, independently reviewed, committed locally** (`riippuvuudet.md` luvut 7–18; skripti / script `tyokalut/riippuvuudet.py`, tarkistettu ennen agenttikäyttöä / validated before agent use; H-159–H-170, T-043–T-049; Q5 ja Q92 ratkaistu / resolved, Q86 ja Q91 osittain / partly, T-005 tarkennettu / refined; Q96–Q104; `todisteet/c10/`; noin 1,20 milj. tokenia agenteille / about 1.20 M agent tokens); **C-10 valmis ja suljettu käyttäjän hyväksynnällä ilman toista työerää / C-10 done and closed on approval without a step 2** (sulkeminen / closure `riippuvuudet.md` luku 19: kattavuus, todentamisen rajat, H-160 P3 → P2, korjauskokonaisuudet / fix packages KK-C10-1–4, lisenssit omistajalle / licences to the owner OM-C10-1, tuoteinventaarion täsmäytys / product inventory reconciliation; Q105, Q106) | 2026-11-26 |
+| C, erä 12 (C-12) ominaisuusvalitsimet / feature switches | rajattu, ei aloitettu / scoped, not started (`suunnitelma.md`, "C-12 vaihe 1: rajaus") | 2026-11-26 |
+| C, erä 13 (C-13) synteesi ja korjaussuunnitelma / synthesis and fix plan | ei aloitettu / not started | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** C-10:n vaihe 1 on valmis (2026-11-26) ja odottaa käyttäjän
-katselmointia. Käyttäjä päättää, suljetaanko C-10 vai tehdäänkö vaihe 2 (eristetyt ajokokeet
-Q96–Q98, Q102; `riippuvuudet.md` luku 18). Suunnitelmaan on lisätty uudet erät C-12
-(ominaisuusvalitsimet, Q2, T-008) ja C-13 (synteesi ja korjaussuunnitelma); niitä ei ole aloitettu.
-Kiireelliset korjaukset (H-071, H-072, H-055, H-070, H-129, H-149) ja C-10:n H-159 tehdään omissa
-haaroissaan erillisellä päätöksellä. / C-10 step 1 is done and awaits review; the user decides
-whether to close C-10 or run a step 2 of isolated runs. New batches C-12 and C-13 were added to
-the plan, not started. Urgent fixes and H-159 on a separate decision.
+**Seuraava askel / Next step:** C-10 on suljettu (2026-11-26, `riippuvuudet.md` luku 19).
+C-12:n vaihe 1 on rajattu (`suunnitelma.md`, "C-12 vaihe 1: rajaus") ja odottaa käyttäjän
+aloituslupaa; C-13:a ei ole aloitettu. Kiireelliset korjaukset (H-071, H-072, H-055, H-070, H-129,
+H-149) ja C-10:n P2-havainnot H-159 ja H-160 tehdään omissa haaroissaan erillisellä päätöksellä. /
+C-10 is closed; C-12 step 1 is scoped and awaits the user's go-ahead; C-13 not started. Urgent fixes
+and C-10's P2 items H-159, H-160 on a separate decision.
+
+**Avoimet jatkotehtävät C-10:stä / open follow-ups from C-10** (eivät estäneet sulkemista / did not
+block closing; `riippuvuudet.md` 19.7): ajokokeet Q96–Q98, Q102 ja Q104 vain erillisellä luvalla;
+Q99 ja Q100 vaativat palvelimen tai laitteen dokumentaation; Q101 omistajalle (OM-C10-1); Q103
+verkkotarkistus erikseen; uudet Q105 (H-161:n injektion saavutettavuus) ja Q106 (H-169:n
+leviäminen ja palautus); haavoittuvuustietokantojen tarkastus erikseen; korjauskokonaisuudet
+KK-C10-1–4 C-13:n syötteeksi; valitsinsyötteet (T-045, `MAKI`, `HIIHTO`, `EMITFILE`) C-12:lle. /
+Runs only with permission; owner question Q101; new Q105, Q106; fix packages to C-13; switch inputs to
+C-12.
 
 **Avoimet jatkotehtävät C-9:stä / open follow-ups from C-9** (eivät estäneet sulkemista / did not
 block closing; `virheenkasittely.md` 13.5). GUI-, C++Builder- tai laiteajoa vaativat / need a GUI,
@@ -165,12 +174,16 @@ separate decision; none started. Rivi 4b (H-129) lisätty C-8:n sulkemisessa / r
 | 6 | H-056, H-060, H-073 | laite tai verkko asetuksella / device or network with a setting | P2 |
 | 7 | P3–P5 | tavallinen data, paikallinen tiedosto, operaattori / ordinary data, local file, operator | `muistiturvallisuus.md` luku 15 |
 
-C-10:n havainnot (H-159–H-170), alustava [päätelty] (`riippuvuudet.md` luku 16): **P2** H-159
-(RFID-lukijan uudelleenyhteys lopettaa luennan kilpailun aikana); **P3** korjauskokonaisuus
-**KK-C10-1** (SQL-polku ja jakelu: H-160, H-161, H-162, H-163, H-165, H-169) ja **KK-C10-2**
-(laitteiden valvonta: H-164, T-048), H-166; **P4** H-167, H-168; **P5** H-170. H-160 on korkea vain
-SQL-peilausta käyttävissä asennuksissa, siksi P3. / C-10 provisional: P2 H-159; P3 fix packages
-KK-C10-1 (SQL path and deployment) and KK-C10-2 (device liveness), H-166; P4 H-167, H-168; P5 H-170.
+C-10:n havainnot (H-159–H-170), lopullinen [päätelty] (`riippuvuudet.md` 19.3): **P2** H-159
+(RFID-lukijan uudelleenyhteys lopettaa luennan kilpailun aikana), H-160 (muutos P3 → P2: SQL-peilin
+ollessa käytössä palvelinkatko, heittomerkki tai H-161:n lause lopettaa koko ohjelman; vakavuus
+ennallaan); **P3** H-162 (kärkeen), H-169, H-164, H-166, H-163, H-161, H-165; **P4** H-167, H-168;
+**P5** H-170. Korjauskokonaisuudet (19.4): **KK-C10-1** SQL-integraatio (H-160–H-163, H-169),
+**KK-C10-2** laiteyhteyksien hallinta (H-159, H-164, T-048, H-166, H-167), **KK-C10-3** jakelu ja
+ulkoiset riippuvuudet (H-165, T-005, T-044), **KK-C10-4** ulkoisten yhteyksien turvallisuus (T-043,
+H-161:n injektioriski, ei vahvistettu); lisenssit omistajan päätökseen **OM-C10-1** (19.5). / C-10
+final: P2 H-159, H-160 (changed from P3); P3 H-162 (first), H-169, H-164, H-166, H-163, H-161, H-165;
+P4 H-167, H-168; P5 H-170; fix packages KK-C10-1..4; licences to owner decision OM-C10-1.
 
 C-9:n havainnot (H-145–H-158), lopullinen [päätelty] (`virheenkasittely.md` 13.3): **P2** H-149
 (ASanilla todennettu, tavallisessa konfiguraatiossa joka kierroksella; ei P1, koska ei laukea
@@ -254,10 +267,12 @@ pending), H-082, H-085; P5 the rest; H-042 stays P3.
 | Q98 | GUI-ohjelmien käynnistys ja SQL julkaisu-ZIP:stä puhtaalla koneella (H-163, H-165) / clean-machine start | `riippuvuudet.md` luku 17 |
 | Q99 | `get_stream.php`:n vastausmuoto; palvelimen `195.159.103.189:1379` omistaja (H-166) / server format and owner | `riippuvuudet.md` luku 17 |
 | Q100 | Emit-kellon käytös ilman kuittausta; kehyksen tarkistussumma (Q86) / Emit clock behaviour without ACK | `riippuvuudet.md` luku 13 |
-| Q101 | Blaise Computing- ja Microsoft-esimerkkikoodin ehdot (T-047) – omistajan päätös / owner decision | `riippuvuudet.md` luku 17 |
+| Q101 | Blaise Computing- ja Microsoft-esimerkkikoodin ehdot (T-047) – omistajan päätös / owner decision (OM-C10-1) | `riippuvuudet.md` 19.5 |
 | Q102 | Voiko `IndySystem`in poistaa linkityksestä? (T-005, T-044) / can IndySystem be removed | `riippuvuudet.md` luku 14 |
 | Q103 | `windows-latest`-kuvan `v143` ja `upload/download-artifact@v7` (T-044) / CI image and action versions | `riippuvuudet.md` luku 15 |
 | Q104 | Viestin `vert0` SQL-kierroksen jälkeen (H-161) / relay `vert0` after an SQL round trip | `riippuvuudet.md` luku 17 |
+| Q105 | H-161: voiko SQL-lauseisiin liitettävää merkkijonoa ohjata ulkopuolelta (operaattori, tuontitiedosto, työasemien sanomat), mitkä ovat MySQL-käyttäjän oikeudet, ja salliiko ajuri useita lauseita? Injektio ei ole vahvistettu / can the spliced strings be controlled from outside; privileges; multi-statement support; injection not confirmed | `riippuvuudet.md` 19.3.1 |
+| Q106 | H-169: leviävätkö `lue_SQL`:n korvaukset `tallenna`n kautta muille työasemille, ja miten tiedot palautetaan? / does the SQL import overwrite propagate to other workstations; recovery | `riippuvuudet.md` 19.3.2 |
 | ~~Q16~~ | **Ratkaistu / resolved (C-2):** viestin vastaanotto lukitsee ennen lukua, ei H-007:ää; omat viat H-024–H-026 / relay locks before reading, no H-007; own defects H-024–H-026 | – |
 | ~~Q17~~, ~~Q18~~ | **Ratkaistu / resolved (C-3):** bcc32 noudattaa `-K`:ta kesken yksikön, tarkistussummat täsmäävät; koot mitattu kaikista käännöksistä / bcc32 honours `-K` mid-unit; sizes measured for all builds | `tiedostomuodot.md` |
 | Q19–Q25 | Erän C-2 kysymykset (AIKAT-kaksoiskappaleet, TCP-virta, rengas, `tark_ylahto`, `Kysy`, kirjastot, MONITORI-portti) / batch C-2 questions | `tiedonsiirto.md`, "Avoimet kysymykset" |
@@ -296,7 +311,7 @@ Recorded as issue drafts (local `issue-drafts/`, not in the repo).
 - Noin 850 `extern`-globaalia / about 850 extern globals
 - Sekoitetut merkistöt; kaksi sekoitettua tiedostoa / mixed encodings; two mixed files
 - Indy- ja ODBC-riippuvuudet ilman käyttöä / Indy and ODBC dependencies without use (`riippuvuudet.md`; tarkennettu C-10: T-005, T-044)
-- C-10: suojaamattomat ulkoiset yhteydet (T-043), jakelun todennus (T-044), valitsimet projektien ulkopuolella (T-045, syöte C-12:lle), vanhentuvat alustan osat (T-046), kolmannen osapuolen koodin ehdot (T-047), laitteiden elävyys (T-048), kuollut riippuvuuskoodi (T-049) / C-10 technical debt
+- C-10: suojaamattomat ulkoiset yhteydet (T-043), jakelun todennus (T-044), valitsimet projektien ulkopuolella (T-045, syöte C-12:lle), vanhentuvat alustan osat (T-046), kolmannen osapuolen koodin ehdot (T-047, omistajan päätös OM-C10-1), laitteiden elävyys (T-048), kuollut riippuvuuskoodi (T-049); kokonaisuudet / packages KK-C10-2–4 (`riippuvuudet.md` 19.4) / C-10 technical debt
 - JukLuenta linkittää vanhaan `vc10/`-hakemistoon / links against old `vc10/` (vain kokoonpanot `Debug250`, `Release150os`, C-10 / only two configurations)
 - 32 orpoa tiedostoa / 32 orphan files (`inventaario.md`)
 - Konsoli- ja GUI-versiot eri valitsimilla / console and GUI versions with different switches
@@ -330,6 +345,7 @@ Recorded as issue drafts (local `issue-drafts/`, not in the repo).
 | 2026-11-26 | C-9:n vaihe 2 tehty käyttäjän hyväksynnällä ("Hyväksyn C-9:n toisen työerän"): eristetyt koeohjelmat C9ProbeHk/C9ProbeJuk (Release, Asan) muuttamattomalla tuotantokoodilla, virheinjektio kuvaajan vaihdolla, bcc32-RTL-koe; Opus-tarkastus, jonka ehdottamat lisäkokeet (polku c TCP:llä, N1) ajettiin; H-149 → korkea; ei tuotantokoodin, projektien eikä CI:n muutoksia; ei pushia / C-9 step 2 done on approval | Käyttäjän päätös / user decision |
 | 2026-11-26 | C-9 suljettu käyttäjän hyväksynnällä ("Hyväksyn C-9:n sulkemisen"): kattavuus tarkistettu rajausta vasten, todentamisen rajat ja kääntäjäerot kirjattu, korjausjärjestys viimeistelty (H-149 P2 kärkeen, ei P1; H-145 P3 kärkeen; H-150 P3 → P2 tiedostovirtojen loppumisen perusteella), korjauskokonaisuudet KK-C9-1–3; C-10:n vaihe 1 rajattu mutta ei aloitettu; ei pushia / C-9 closed on approval; C-10 step 1 scoped, not started | Käyttäjän päätös / user decision |
 | 2026-11-26 | C-10:n vaihe 1 tehty käyttäjän luvalla suunnitelman rajauksella: B, C ja D rinnakkain, enintään kolme analyysiagenttia, Sonnet inventointiin ja analyysiin, Opus riippumattomaan tarkastukseen, ei keinotekoisia tokenbudjetteja; inventaarioskripti tarkistettava ennen agenttikäyttöä; staattinen analyysi: ei käännöksiä, ajoja, verkko-, tietokanta- tai laiteyhteyksiä, riippuvuuspäivityksiä, tuotantokoodin, projektiasetusten tai CI:n muutoksia, ei pushia; paikallinen commit sallittu. Suunnitelmaan lisätty uudet erät C-12 (ominaisuusvalitsimet, Q2, T-008) ja C-13 (synteesi ja korjaussuunnitelma), ei aloitettu / C-10 step 1 done on approval within the planned scope; new batches C-12 and C-13 added to the plan, not started | Käyttäjän päätös; alkuperäinen suunnitelma ja historia säilytetään / user decision; original plan and history kept |
+| 2026-11-26 | C-10 suljettu käyttäjän hyväksynnällä ilman toista työerää ("Hyväksyn C-10:n sulkemisen ilman toista työerää"): kattavuus tarkistettu rajausta vasten; ajonaikaisesti todentamattomat havainnot merkitty; prioriteetit H-159 P2, H-160 P2 (P3 → P2 perusteltu, vakavuus ennallaan), muut P3–P5 perustein; H-161:n toiminnallinen vaikutus ja injektio eroteltu (injektio ei vahvistettu, Q105); H-169:n eheys, edellytykset ja palautettavuus (Q106); korjauskokonaisuudet KK-C10-1–4; lisenssit omistajan päätökseen OM-C10-1; tuoteinventaario täsmäytetty ja `/MT`-johtopäätös tarkennettu; C-12:n vaihe 1 rajattu mutta ei aloitettu; C-13 ei aloitettu; ei uusia analyysejä, koeohjelmia eikä pushia / C-10 closed on approval without a step 2; C-12 step 1 scoped, not started | Käyttäjän päätös / user decision |
 | 2026-11-25 | C-5 vaihe 1: riippumaton tarkastus ja dokumentointi ilman välihyväksyntöjä, paikallinen commit sallittu, ei pushia; sen jälkeen C-5:n jäljellä olevat tavoitteet rajattuna staattisena työeränä; ei tuotantokoodin, projektiasetusten tai CI:n muutoksia, ei toimitettujen ohjelmien ajoja eikä verkkokokeita, ei uusia laajoja testikehyksiä; epäselvyydet avoimiksi kysymyksiksi / step 1 review and write-up without intermediate approvals, local commit allowed, no push; then the remaining C-5 goals as a bounded static step; no production, project or CI changes, no runs of shipped programs, no network tests, no new large harnesses | Käyttäjän ohje / user instruction |
 | 2026-11-25 | C-4 suljettu käyttäjän hyväksynnällä; H-071, H-072, H-055 ja H-070 kiireellisesti korjattaviksi; väliaikaiset suojaukset vain suosituksina, verkko- tai tuotantoasetuksia ei muutettu; C-5 seuraavaksi aloitusluvan jälkeen / C-4 closed on approval; urgent fixes marked; mitigations as recommendations only; C-5 next on approval | Käyttäjän päätös / user decision |
 | 2026-11-25 | C-4 vaihe 2 (viimeinen): vain analyysi; ei ASan-sarjoja, uusia testikehyksiä, GUI-ajoja, korjauksia eikä CI-muutoksia; vaihe 1 commitoitiin hyväksynnän ja uudelleentarkastuksen jälkeen (`81bcad9`), vaihetta 2 ei commitoida ilman hyväksyntää; uusi H vain, jos kyse ei ole rekisteröidyn vian toisesta ilmenemismuodosta / analysis only; step 1 committed after approval and re-review; step 2 not committed without approval | Käyttäjän ohje / user instruction |

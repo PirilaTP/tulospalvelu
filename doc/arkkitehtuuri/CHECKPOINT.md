@@ -17,6 +17,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 
 | Erä / Batch | Sisältö / Content | Dokumentit / Documents |
 |---|---|---|
+| **C-10 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi ilman toista työerää / approved without a step 2, 2026-11-26) | Vaihe 1 `46509f9` ja sulkemiscommit / step 1 and closing commit; sulkeminen / closure `riippuvuudet.md` luku 19: P2 H-159, H-160 (P3 → P2), P3–P5 muut; korjauskokonaisuudet / fix packages KK-C10-1–4; lisenssit omistajalle / licences to the owner OM-C10-1; tuoteinventaario täsmäytetty, `/MT` tarkennettu / product inventory reconciled; Q105, Q106; ei ajonaikaista todennusta / not verified at run time | `riippuvuudet.md` 19 |
 | **C-10 vaihe 1 valmis / step 1 complete** (riippumattomasti tarkastettu, commitoitu paikallisesti / independently reviewed, committed locally) | Tuotekohtainen riippuvuusinventaario (skripti tarkistettu ennen agenttikäyttöä), tietokanta ja Q5, HTTP ja selain, laiteprotokollat ja Q86, ajonaikaiset paketit ja jakelu (Q91, Q92, T-005), versiot ja modernisointiriskit; uudet H-159–H-170, T-043–T-049; 15 väitettä Opus-tarkastajalla / per-product inventory, database, HTTP and browser, devices, packages and deployment, versions; new findings; 15 claims reviewed | `riippuvuudet.md` luvut 7–18, `todisteet/c10/` |
 | **C-6 valmis ja suljettu / complete and closed** (käyttäjä hyväksyi / approved 2026-11-25) | Vaiheet 1 (`bf5b566`) ja 2 (`2767145`); H-099 kumottu; korjausjärjestys P2 H-087, H-090, H-091, H-093, H-107; ajoa vaativat avoimet asiat (bcc32, H-087/H-103 ViestiWinissä, Q67:n apusäikeet, Q68, Q73) jatkotehtävinä `seuranta.md` / open items needing runs deferred | `saikeet-ja-lukot.md` 13.11, `seuranta.md` |
 | **C-6 vaihe 2 valmis / step 2 complete** (riippumattomasti tarkastettu, commitoitu paikallisesti / independently reviewed, committed locally) | Viiden havainnon polut; H-090, H-091 (reunat), H-093 (rekursio ja kahden säikeen lukkiutuminen) ja H-094 (menetys) toistettu eristetyllä koeohjelmalla tuotantokoodista; Q65 Win32-kokeella; H-090 ja H-093 → korkea, H-099 kumottu; uudet H-103–H-108, T-033; VCL-säieturvallisuus; luvun 9 ehdokkaat; 11 väitettä + kaikki kokeet kahdella Opus-tarkastajalla / five findings' paths, isolated probes, VCL, new H-103–H-108 | `saikeet-ja-lukot.md` luku 13, `todisteet/c6/vaihe2/` |
@@ -47,7 +48,7 @@ This file is enough to resume the work from an empty session (e.g. after `/clear
 | Taso 3, rakenne luettu / structure read | 12 (luettelo / list: `rekisteri/moduulit.md`) |
 | Taso 4, kokonaan katselmoitu / fully reviewed | 0 tuotantotiedostoa / production files; 19 testitiedostoa / test files (C-11) |
 | Havaintoja / findings | 170 vikaa / defects (H-001–H-170; H-099 kumottu / refuted), 49 teknistä velkaa / technical debt (T-001–T-049) |
-| Lähdeviittauksia tarkistettu / source references checked | 2 223 (`tarkista_auditointi.py`, C-10) |
+| Lähdeviittauksia tarkistettu / source references checked | 2 249 (`tarkista_auditointi.py`, C-10:n sulkeminen / C-10 closing) |
 
 Koko koodipohjaa ei ole katselmoitu. Hakemistotason ja skriptillä tehty
 analyysi on taso 1. Moduulikohtaisesti: `rekisteri/moduulit.md`.
@@ -128,7 +129,7 @@ relay HTML emit output never releases `print` → freeze), H-091 (HK tall ↔ pr
 jatkuvalla sivutulosteella / tall↔print deadlock with continuous page printing), vaiheessa 2
 nostetut / raised in step 2: H-090 (`tall_regnly` jättää `ajat`-lukon, `TUNNJONO` / keeps `ajat`),
 H-093 (HK TCP-loki: rajaton rekursio → pinon ylivuoto / unbounded recursion → stack overflow).
-C-10 lisäsi / added: H-159 (Sirit/Zebra-uudelleenyhteys lopettaa RFID-luennan / RFID reconnect ends reading), H-160 (SQL-virhe lopettaa GUI-ohjelman, korkea SQL-peilausta käytettäessä / SQL error ends the GUI program, high when the mirror is used).
+C-10 lisäsi / added: H-159 (Sirit/Zebra-uudelleenyhteys lopettaa RFID-luennan / RFID reconnect ends reading), H-160 (SQL-virhe lopettaa GUI-ohjelman, korkea SQL-peilausta käytettäessä / SQL error ends the GUI program, high when the mirror is used); molemmat P2 sulkemisessa / both P2 at the closing.
 
 Kumotut väitteet erässä C-2 / refuted in C-2: pakotetun paketin kierto HK-renkaassa,
 WinUDP:n taulukon ylitys, uudelleenkäynnistyksen kuitattujen lähetys, etumerkillinen
@@ -149,7 +150,7 @@ controlled) and correspond to findings H-001–H-006.
 Täydet tiedot: `seuranta.md` (Q2–Q77; C-7:n Q75–Q77 `gui-liiketoimintalogiikka.md` luku 10; C-4:n Q43–Q48 `muistiturvallisuus.md`; C-6:n Q65–Q74 `saikeet-ja-lukot.md` luvut 10 ja 13.5; Q1, Q4, Q13, Q16, Q17, Q18, Q30, Q65, Q66, Q69–Q72 ja Q74 ratkaistu, Q3,
 Q14 ja Q67 osittain). Tärkeimmät / most important:
 
-- ~~Q5~~, ~~Q92~~ ratkaistu C-10:ssä / resolved in C-10; Q86, Q91 osittain / partly; uudet / new Q96–Q104 (`riippuvuudet.md` luku 17)
+- ~~Q5~~, ~~Q92~~ ratkaistu C-10:ssä / resolved in C-10; Q86, Q91 osittain / partly; uudet / new Q96–Q104 (`riippuvuudet.md` luku 17) ja Q105, Q106 (luku 19); Q101 omistajalle / to the owner (OM-C10-1)
 - ~~Q7~~ ratkaistu C-5:ssä / resolved in C-5 (`kaantajaerot.md` luku 5)
 - ~~Q8~~ ratkaistu C-5:ssä: `tyokalut/vertaa_omf.py` / resolved in C-5
 - Q60: onko H-081:n `KUNTOSUUNN`-ero tarkoituksellinen – omistajan päätös / owner decision
@@ -270,9 +271,15 @@ T-005 tarkennettu; Q5 ja Q92 ratkaistu, Q86 ja Q91 osittain, uudet Q96–Q104. S
 lisätty uudet erät C-12 (ominaisuusvalitsimet) ja C-13 (synteesi ja korjaussuunnitelma), ei
 aloitettu. Kaikki staattisia.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP:** käyttäjän katselmointi; päätös C-10:n sulkemisesta tai
-vaiheesta 2 (eristetyt ajokokeet Q96–Q98, Q102; `riippuvuudet.md` luku 18). Sen jälkeen C-12
-tai C-13 vain käyttäjän luvalla.
+**C-10 suljettu (2026-11-26)** käyttäjän hyväksynnällä ilman toista työerää (`riippuvuudet.md`
+luku 19): kattavuus tarkistettu, ajonaikaisesti todentamattomat merkitty, prioriteetit P2 H-159 ja
+H-160 (P3 → P2), P3 H-162, H-169, H-164, H-166, H-163, H-161, H-165, P4 H-167, H-168, P5 H-170;
+korjauskokonaisuudet KK-C10-1 (SQL-integraatio), KK-C10-2 (laiteyhteydet), KK-C10-3 (jakelu),
+KK-C10-4 (yhteyksien turvallisuus); lisenssit omistajan päätökseen OM-C10-1; tuoteinventaario
+täsmäytetty (5 ohjelmaa ja 4 kirjastoa, testi-EXE:t rajattu pois) ja `/MT`-johtopäätös tarkennettu;
+uudet Q105, Q106. C-12:n vaihe 1 rajattu (`suunnitelma.md`, "C-12 vaihe 1: rajaus").
+
+**SEURAAVA TYÖVAIHE / NEXT STEP:** C-12:n vaihe 1 käyttäjän aloitusluvalla. C-13 ei aloitettu.
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
@@ -296,8 +303,10 @@ test harness; H-158, T-042, Q91–Q95). **C-9 closed** on approval (section
 **C-10 step 1 complete** (`riippuvuudet.md` sections 7–18, script `tyokalut/riippuvuudet.py`
 validated before agent use; H-159–H-170 with H-159 high and H-160 high when SQL is used,
 T-043–T-049; Q5 and Q92 resolved, Q86 and Q91 partly, Q96–Q104 new). New batches C-12 (feature
-switches) and C-13 (synthesis and fix plan) added to the plan, not started. Next: the user's
-review; close C-10 or run a step 2 of isolated runs.
+switches) and C-13 (synthesis and fix plan) added to the plan, not started. **C-10 closed** on
+approval without a step 2 (section 19: final priorities with H-160 moved to P2, fix packages
+KK-C10-1..4, licences to owner decision OM-C10-1, product inventory reconciled, `/MT` refined,
+Q105, Q106). C-12 step 1 scoped. Next: C-12 step 1 on the user's go-ahead; C-13 not started.
 
 ## Resurssien käyttö / Resource usage (C-10 vaihe 1 / step 1)
 
