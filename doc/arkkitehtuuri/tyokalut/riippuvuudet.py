@@ -135,6 +135,9 @@ def eval_project(path, cfg_name):
         conf, plat = cfg_name.split("|")
         props["Configuration"] = conf
         props["Platform"] = plat
+    elif cfg_name:
+        # .cbproj: a preset Config skips the "'$(Config)'==''" default group
+        props["Config"] = cfg_name
     items = defaultdict(list)
     itemdefs = defaultdict(dict)
     groups_used = []
@@ -213,7 +216,7 @@ def project_info(src, compiler, rel, cfg):
         txt = open(path, "rb").read().decode("utf-8", errors="replace")
         m = re.search(r"<Config Condition=\"'\$\(Config\)'==''\">([^<]+)</Config>", txt)
         cfgname = cfg or (m.group(1) if m else "Release")
-        props, items, idefs = eval_project(path, None)
+        props, items, idefs = eval_project(path, cfg)
         # eval_project sets Config from the default; check it
         info["config"] = props.get("Config", cfgname)
         defs = []
@@ -717,10 +720,12 @@ def parse_dfm(path):
 
 # --------------------------------------------------------------- main
 
-def main():
-    root, out = sys.argv[1], sys.argv[2]
+def build_model(root, cfg_override=None):
+    """Evaluate projects, include closures and macro sets. Returns a namespace.
+    cfg_override: {owner: configuration} to evaluate another configuration
+    (C-12 valitsimet.py); None = shipped configurations as in C-10."""
+    cfg_override = cfg_override or {}
     src = norm(os.path.join(root, "TPsource", "V52"))
-    os.makedirs(out, exist_ok=True)
 
     # all source files under V52
     all_files = {}
@@ -735,11 +740,11 @@ def main():
 
     owners = {}   # owner name -> info
     for name, comp, rel, cfg, libs in PRODUCTS:
-        owners[name] = project_info(src, comp, rel, cfg)
+        owners[name] = project_info(src, comp, rel, cfg_override.get(name, cfg))
         owners[name]["kind"] = "product"
         owners[name]["libs"] = libs
     for name, (comp, rel, cfg) in LIBS.items():
-        owners[name] = project_info(src, comp, rel, cfg)
+        owners[name] = project_info(src, comp, rel, cfg_override.get(name, cfg))
         owners[name]["kind"] = "library"
         owners[name]["libs"] = []
 
@@ -955,6 +960,19 @@ def main():
         if ":?" in r:
             return "unknown"
         return "no"
+
+    from types import SimpleNamespace
+    return SimpleNamespace(**locals())
+
+
+def main():
+    root, out = sys.argv[1], sys.argv[2]
+    os.makedirs(out, exist_ok=True)
+    m = build_model(root)
+    src, cache, owners, owner_files, odefs = m.src, m.cache, m.owners, m.owner_files, m.odefs
+    file_owners, pnames, reach, summarize = m.file_owners, m.pnames, m.reach, m.summarize
+    by_base, all_files, product_owners = m.by_base, m.all_files, m.product_owners
+    unresolved, ambiguous, tu_rows = m.unresolved, m.ambiguous, m.tu_rows
 
     # ---- scan markers
     rows = []

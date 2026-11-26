@@ -17,6 +17,8 @@ end of every analysis batch.
 | [tiedostot.csv](tiedostot.csv) | Jokainen lähdetiedosto: koko, merkistö, projektit, analyysitaso, dokumentit, havainnot, tarkistettu revisio / every source file |
 | [moduulit.md](moduulit.md) | Moduulikohtainen kattavuus / per-module coverage |
 | [havainnot.md](havainnot.md) | Viat, tekninen velka ja muut löydökset todisteineen / defects, technical debt and other findings with evidence |
+| [valitsimet.csv](valitsimet.csv) | C-12: jokainen ehtona testattu makro: luokka, merkitys, arvo tuotteittain ja kokoonpanoittain, määrityskohdat, tila (`../tyokalut/valitsinrekisteri.py`) / every tested macro |
+| [asetusavaimet.csv](asetusavaimet.csv) | C-12: asetusjäsentimien ja -editorien avaimet: verrattu pituus, rivit, ehto, voimassaolo tuotteittain / config keys of parsers and editors |
 
 Avoimet kysymykset ovat tiedostossa `../seuranta.md` (Q-numerot).
 Open questions are in `../seuranta.md` (Q numbers).

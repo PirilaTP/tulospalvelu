@@ -1,0 +1,25 @@
+1. Release values vs C-10 makrot.csv: 435 rows x 9 owners, mismatches 0
+2. HkKisaWin  script-only=[]  table-only=['VERSIONO']
+2. ViestiWin  script-only=[]  table-only=[]
+2. HkMaali    script-only=[]  table-only=[]
+2. JukMaali   script-only=[]  table-only=[]
+2. JukLuenta  script-only=[]  table-only=[]
+2. tputilv2   script-only=[]  table-only=[]
+2. Tputil-XE  script-only=[]  table-only=[]
+3. raw #if/#ifdef/#ifndef/#elif/#else (comments stripped) = 2491, sites = 2491
+4. HkMaali      Debug|Win32          OK
+4. HkMaali      DebugV200|Win32      OK
+4. HkMaali      Release|Win32        OK
+4. HkMaali      ReleaseVA200|Win32   OK
+4. HkMaali      Demo|Win32           OK
+4. ViestiMaali  Debug|Win32          OK
+4. ViestiMaali  Debug250|Win32       OK
+4. ViestiMaali  Release|Win32        OK
+4. ViestiMaali  Release150os|Win32   OK
+4. ViestiLuenta Debug|Win32          OK
+4. ViestiLuenta Debug250|Win32       OK
+4. ViestiLuenta Release|Win32        OK
+4. ViestiLuenta Release150os|Win32   OK
+4. tputilv2     Debug|Win32          OK
+4. tputilv2     Release|Win32        OK
+RESULT OK

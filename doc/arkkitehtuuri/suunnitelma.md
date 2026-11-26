@@ -157,10 +157,18 @@ have not been started.
 
 | Erä / Batch | Aihe / Topic | Tavoite / Goal | Tila / State |
 |---|---|---|---|
-| C-12 (uusi / new) | Ominaisuusvalitsimien dokumentointi / feature switch documentation | Toteuttaa alkuperäisen vaiheen C kohdan 3 (mitä kukin `#define` tekee) sekä käsittelee Q2:n ja T-008:n: kattava ominaisuus-, asetus- ja konfiguraatioinventaario ja pohja myöhemmälle regressiotestimatriisille. C-10 käsittelee valitsimia vain siltä osin kuin ne kytkevät ulkoisen riippuvuuden; C-10:n `makrot.csv` ja `tyokalut/riippuvuudet.py` ovat syötteitä. / Implements original phase C item 3, Q2 and T-008: a complete feature, setting and configuration inventory and the basis for a later regression test matrix; C-10 output is an input | rajattu, ei aloitettu / scoped, not started (alla / below) |
+| C-12 (uusi / new) | Ominaisuusvalitsimien dokumentointi / feature switch documentation | Toteuttaa alkuperäisen vaiheen C kohdan 3 (mitä kukin `#define` tekee) sekä käsittelee Q2:n ja T-008:n: kattava ominaisuus-, asetus- ja konfiguraatioinventaario ja pohja myöhemmälle regressiotestimatriisille. C-10 käsittelee valitsimia vain siltä osin kuin ne kytkevät ulkoisen riippuvuuden; C-10:n `makrot.csv` ja `tyokalut/riippuvuudet.py` ovat syötteitä. / Implements original phase C item 3, Q2 and T-008: a complete feature, setting and configuration inventory and the basis for a later regression test matrix; C-10 output is an input | vaihe 1 valmis / step 1 done 2026-11-26 (`ominaisuusvalitsimet.md`) |
 | C-13 (uusi / new) | Auditoinnin synteesi ja korjaussuunnitelma / audit synthesis and fix plan | Yhdistää kaikkien erien tulokset, tarkistaa kattavuuden, tunnistaa yhteiset juurisyyt ja muodostaa perustellun korjaus- ja modernisointisuunnitelman (syötteinä mm. korjausjono `seuranta.md`, KK-C9-1–3, C-10:n modernisointiriskit). / Combines all batch results, checks coverage, identifies common root causes and builds a justified fix and modernisation plan | ei aloitettu / not started |
 
-### C-12 vaihe 1: rajaus / Step 1: scope (**ehdotus, ei aloitettu / proposal, not started**; laadittu C-10:n sulkemisessa 2026-11-26 / written at the C-10 closing)
+### C-12 vaihe 1: rajaus / Step 1: scope (**valmis / done 2026-11-26**, `ominaisuusvalitsimet.md`; laadittu C-10:n sulkemisessa / written at the C-10 closing)
+
+Toteutus: rajauksen mukaan. A0 (`tyokalut/valitsimet.py`) ja B0 (`tyokalut/asetusavaimet.py`, lisätty
+rajaukseen: jäsentimien vertailuluettelo osan B pohjaksi) pääistunnossa ja tarkistettu ennen
+agenttikäyttöä; A, B ja C rinnakkain (Sonnet), D (Opus), E pääistunnossa
+(`tyokalut/valitsinrekisteri.py`); rekisterit tehtiin erillisinä (`rekisteri/valitsimet.csv`,
+`rekisteri/asetusavaimet.csv`); testimatriisi `ominaisuusvalitsimet.md` luvussa 10. Agentit noin
+0,73 milj. tokenia. / Done per the scope; B0 added as input for part B; separate registers; about
+0.73 M agent tokens.
 
 **Tavoite / goal:** kattava ominaisuus- ja konfiguraatioinventaario: mitä kukin valitsin, asetus
 ja ehto tekee, missä ohjelmissa, millä oletusarvolla ja mihin muihin valitsimiin se kytkeytyy.

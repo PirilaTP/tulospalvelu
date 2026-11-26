@@ -1,0 +1,85 @@
+C-12 part A0 switch inventory (valitsimet.py)
+
+configurations evaluated (shipped first):
+  HkMaali      shipped=Release|Win32 other=Debug|Win32, DebugV200|Win32, Demo|Win32, ReleaseVA200|Win32
+  ViestiMaali  shipped=Release|Win32 other=Debug|Win32, Debug250|Win32, Release150os|Win32
+  ViestiLuenta shipped=Release|Win32 other=Debug|Win32, Debug250|Win32, Release150os|Win32
+  HkKisaWin    shipped=Release other=Debug, 200Debug, 200Release, Demo
+  ViestiWin    shipped=Release Build other=Debug Build, Debug150os, Demo, Release150os
+  tputilv2     shipped=Release|Win32 other=Debug|Win32
+  dbboxm       shipped=Release|Win32 other=Debug|Win32
+  Tputil-XE    shipped=Release Build other=Debug Build
+  DBboxm-XE    shipped=Release other=Debug
+
+runs: [{'HkMaali': 'Debug|Win32', 'ViestiMaali': 'Debug|Win32', 'ViestiLuenta': 'Debug|Win32', 'HkKisaWin': 'Debug', 'ViestiWin': 'Debug Build', 'tputilv2': 'Debug|Win32', 'dbboxm': 'Debug|Win32', 'Tputil-XE': 'Debug Build', 'DBboxm-XE': 'Debug'}, {'HkMaali': 'DebugV200|Win32', 'ViestiMaali': 'Debug250|Win32', 'ViestiLuenta': 'Debug250|Win32', 'HkKisaWin': '200Debug', 'ViestiWin': 'Debug150os'}, {'HkMaali': 'Demo|Win32', 'ViestiMaali': 'Release150os|Win32', 'ViestiLuenta': 'Release150os|Win32', 'HkKisaWin': '200Release', 'ViestiWin': 'Demo'}, {'HkMaali': 'ReleaseVA200|Win32', 'HkKisaWin': 'Demo', 'ViestiWin': 'Release150os'}]
+
+tested macros: 435   test sites: 2491   files with sites: 357
+macros #defined or #undef'd anywhere: 1938
+
+suggested classes: {'compiler-platform': 39, 'constant': 4, 'default-constant': 27, 'feature': 76, 'function-macro': 6, 'include-guard': 152, 'never-defined': 113, 'tu-local': 17, 'variant': 1}
+site status: {'always': 632, 'dead': 499, 'not-in-product': 430, 'unknown': 86, 'unreachable': 105, 'varies': 739}
+body lines in dead/unreachable branches (in products, nested counted twice): 7366
+
+unknown (?) macros per owner:
+  HkMaali: HIIHTO;MAKI
+  ViestiMaali: 
+  ViestiLuenta: 
+  HkKisaWin: HIIHTO;MAKI
+  ViestiWin: 
+  tputilv2: 
+  dbboxm: 
+  Tputil-XE: WIN32
+  DBboxm-XE: WIN32
+
+feature-like macros with values differing between products:
+  _BORLAND_        HkMaali=- ViestiMaali=- ViestiLuenta=- HkKisaWin=1 ViestiWin=-
+  AIKAVERT         HkMaali=1 ViestiMaali=- ViestiLuenta=- HkKisaWin=- ViestiWin=-
+  ALGETAULU        HkMaali=- ViestiMaali=1 ViestiLuenta=- HkKisaWin=- ViestiWin=1
+  AUTOVA           HkMaali=1 ViestiMaali=1 ViestiLuenta=- HkKisaWin=1 ViestiWin=1
+  DBGFILE          HkMaali=- ViestiMaali=1 ViestiLuenta=1 HkKisaWin=1 ViestiWin=-
+  EMITFILE         HkMaali=1 ViestiMaali=1 ViestiLuenta=- HkKisaWin=1 ViestiWin=-
+  EMITHTTP         HkMaali=1 ViestiMaali=1 ViestiLuenta=- HkKisaWin=1 ViestiWin=1
+  ENNAKOI          HkMaali=1 ViestiMaali=1 ViestiLuenta=- HkKisaWin=- ViestiWin=-
+  ESITARK          HkMaali=- ViestiMaali=1 ViestiLuenta=- HkKisaWin=- ViestiWin=-
+  GAZ              HkMaali=1 ViestiMaali=1 ViestiLuenta=- HkKisaWin=- ViestiWin=1
+  HAJONTA          HkMaali=11 ViestiMaali=8 ViestiLuenta=8 HkKisaWin=11 ViestiWin=8
+  HIIHTO           HkMaali=? ViestiMaali=- ViestiLuenta=- HkKisaWin=? ViestiWin=-
+  HIIHTOLAHTO      HkMaali=1 ViestiMaali=- ViestiLuenta=- HkKisaWin=1 ViestiWin=-
+  JOUKKUEPISTEET   HkMaali=1 ViestiMaali=- ViestiLuenta=- HkKisaWin=1 ViestiWin=-
+  JOUKKUETUL       HkMaali=- ViestiMaali=- ViestiLuenta=- HkKisaWin=1 ViestiWin=-
+  LAJUNEN          HkMaali=1 ViestiMaali=1 ViestiLuenta=- HkKisaWin=1 ViestiWin=1
+  LENIMI           HkMaali=24 ViestiMaali=- ViestiLuenta=- HkKisaWin=24 ViestiWin=1
+  LJK              HkMaali=15 ViestiMaali=30 ViestiLuenta=30 HkKisaWin=15 ViestiWin=30
+  LLYH             HkMaali=15 ViestiMaali=- ViestiLuenta=- HkKisaWin=15 ViestiWin=-
+  LPSARJA          HkMaali=31 ViestiMaali=40 ViestiLuenta=40 HkKisaWin=31 ViestiWin=40
+  LSAKKO           HkMaali=6 ViestiMaali=- ViestiLuenta=- HkKisaWin=6 ViestiWin=-
+  LSAKOT           HkMaali=- ViestiMaali=5 ViestiLuenta=5 HkKisaWin=- ViestiWin=5
+  LSEURA           HkMaali=31 ViestiMaali=50 ViestiLuenta=50 HkKisaWin=31 ViestiWin=50
+  LSNIMI           HkMaali=24 ViestiMaali=- ViestiLuenta=- HkKisaWin=24 ViestiWin=1
+  LUENTA           HkMaali=- ViestiMaali=- ViestiLuenta=1 HkKisaWin=- ViestiWin=-
+  LWRKOODI         HkMaali=9 ViestiMaali=- ViestiLuenta=- HkKisaWin=9 ViestiWin=-
+  LYHD             HkMaali=15 ViestiMaali=- ViestiLuenta=- HkKisaWin=15 ViestiWin=-
+  MAKI             HkMaali=? ViestiMaali=- ViestiLuenta=- HkKisaWin=? ViestiWin=-
+  MAXMAALI         HkMaali=- ViestiMaali=3 ViestiLuenta=3 HkKisaWin=- ViestiWin=3
+  MAXNOSUUS        HkMaali=- ViestiMaali=4 ViestiLuenta=4 HkKisaWin=- ViestiWin=4
+  MAXNSEURA        HkMaali=600 ViestiMaali=2000 ViestiLuenta=2000 HkKisaWin=600 ViestiWin=2000
+  MAXOSUUSLUKU     HkMaali=- ViestiMaali=30 ViestiLuenta=30 HkKisaWin=- ViestiWin=30
+  MAXSARJALUKU     HkMaali=200 ViestiMaali=250 ViestiLuenta=250 HkKisaWin=200 ViestiWin=250
+  MAXTUNNUS        HkMaali=- ViestiMaali=- ViestiLuenta=- HkKisaWin=899 ViestiWin=899
+  MAXYHD           HkMaali=40 ViestiMaali=10 ViestiLuenta=10 HkKisaWin=40 ViestiWin=10
+  MERI5            HkMaali=1 ViestiMaali=- ViestiLuenta=- HkKisaWin=1 ViestiWin=-
+  N_PV             HkMaali=5 ViestiMaali=- ViestiLuenta=- HkKisaWin=5 ViestiWin=-
+  NOCOM_AIKA       HkMaali=- ViestiMaali=- ViestiLuenta=1 HkKisaWin=- ViestiWin=-
+  NOMOUSE          HkMaali=1 ViestiMaali=- ViestiLuenta=- HkKisaWin=1 ViestiWin=-
+  NREGNLY          HkMaali=32 ViestiMaali=8 ViestiLuenta=8 HkKisaWin=32 ViestiWin=32
+  ORAVA            HkMaali=1 ViestiMaali=- ViestiLuenta=- HkKisaWin=- ViestiWin=-
+  OSNIMIL          HkMaali=- ViestiMaali=40 ViestiLuenta=40 HkKisaWin=- ViestiWin=40
+  PARTIO           HkMaali=- ViestiMaali=1 ViestiLuenta=1 HkKisaWin=- ViestiWin=1
+  PROFILOI         HkMaali=- ViestiMaali=1 ViestiLuenta=1 HkKisaWin=- ViestiWin=1
+  SAKKOCOM         HkMaali=1 ViestiMaali=- ViestiLuenta=- HkKisaWin=1 ViestiWin=-
+  SERVER           HkMaali=1 ViestiMaali=1 ViestiLuenta=1 HkKisaWin=- ViestiWin=-
+  SEURAVAL         HkMaali=1 ViestiMaali=- ViestiLuenta=- HkKisaWin=1 ViestiWin=-
+  TESTIAJAT        HkMaali=- ViestiMaali=1 ViestiLuenta=- HkKisaWin=- ViestiWin=-
+  VAIKALUKU        HkMaali=- ViestiMaali=12 ViestiLuenta=12 HkKisaWin=- ViestiWin=12
+  VALUKIJA         HkMaali=1 ViestiMaali=1 ViestiLuenta=- HkKisaWin=1 ViestiWin=1
+  VALUKU           HkMaali=250 ViestiMaali=- ViestiLuenta=- HkKisaWin=250 ViestiWin=-
