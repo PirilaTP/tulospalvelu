@@ -2553,6 +2553,14 @@ static bool siSaaTallentaa(INT32 ed, INT32 tm, int kno, INT32 badge, int piste)
 	return false;
 }
 
+// GETREC -> muutos -> tallenna samassa tall_CriticalSection-lukossa: muuten rinnakkainen
+// tallennus (tiedonsiirto, kayttoliittyma) voi hukkua, kun vanha kopio kirjoitetaan paalle.
+// CRITICAL_SECTION on rekursiivinen, joten tallenna():n oma lukko sopii.
+struct SiTallLukko {
+	SiTallLukko() { EnterCriticalSection(&tall_CriticalSection); }
+	~SiTallLukko() { LeaveCriticalSection(&tall_CriticalSection); }
+};
+
 // Handles one punch returned by the SportIdent Center REST API:
 // looks up the competitor by card number (as with other Sportident/Emit
 // punches), determines the leg via siHaeOsuus, and stores the start,
@@ -2624,6 +2632,7 @@ static void siParsePunch(SIPunchTp *pu)
 			}
 		return;
 		}
+	SiTallLukko tallLukko;
 	GETREC(&kilp, d);
 	memcpy(&entkilp, &kilp, sizeof(kilptietue));
 
@@ -2686,9 +2695,7 @@ static void siParsePunch(SIPunchTp *pu)
 			kno, (long) badge, osuus, pu->type, pu->code, (long) tm);
 		kirjloki(msg);
 		}
-	EnterCriticalSection(&tall_CriticalSection);
 	tallenna(&kilp, d, TRUE, 0, 0, &entkilp);
-	LeaveCriticalSection(&tall_CriticalSection);
 }
 
 // Kuluvan vuorokauden alku (paikallista aikaa) millisekunteina epokista -
