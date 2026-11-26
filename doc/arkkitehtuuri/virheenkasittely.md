@@ -1,7 +1,9 @@
 # Virheenkäsittely ja resurssit / Error handling and resources (C-9 vaihe 1 / step 1)
 
-Tila / status: vaihe 1 valmis, riippumattomasti tarkastettu, odottaa käyttäjän katselmointia
-(2026-11-26). / Step 1 done and independently reviewed; awaiting the user's review.
+Tila / status: vaihe 1 valmis ja tarkastettu (`f1eb195`); vaihe 2 (eristetyt koeohjelmat,
+luku 12) valmis ja riippumattomasti tarkastettu, odottaa käyttäjän katselmointia ja
+sulkemispäätöstä (2026-11-26). / Step 1 done (`f1eb195`); step 2 (isolated probes, section 12) done
+and independently reviewed; awaiting the user's review and closing decision.
 
 Analysoitu revisio / analysed revision: `7aaca40` (tuotantolähdekoodi ennallaan revisiosta
 `f7fe553` / production sources unchanged since `f7fe553`). Polut suhteessa `TPsource/V52/`, ellei
@@ -45,6 +47,11 @@ virheilmoituksen jälkeen. Pääpiirteet:
 Uudet havainnot: H-145–H-157 (9 keskitason, 4 matalaa, joista 2 kokoomarivejä), T-040–T-041,
 Q83–Q90; laajennukset H-044, H-071, H-105. Yksikään havainto ei ole korkea tai kriittinen
 staattisen näytön perusteella; H-149 voi nousta korkeaksi, jos ajo osoittaa kaatumisen (Q85).
+
+**Vaihe 2 (luku 12):** H-149 todennettiin ja nostettiin korkeaksi: konsolin viestiohjelmat
+kaatuvat ensimmäiseen automaattiseen HTML-tulosteeseen tavallisessa konfiguraatiossa. H-145,
+H-146, H-147, H-150 ja H-151 toistettiin testikehyksessä; uudet H-158 ja T-042. / Step 2: H-149
+confirmed and raised to high; H-145, H-146, H-147, H-150, H-151 reproduced; new H-158, T-042.
 
 The batch examined failed writes, opens and allocations during a competition, leaks in repeated
 operations, and the program state after an error report. Errors are mostly detected but never
@@ -250,10 +257,234 @@ matalat osat yksitellen, GUI-valikoiden `new TForm` -käsittelijät (U-vaihe), s
 write-error handling described; repeated-operation leaks reviewed; medium claims reviewed. Not
 covered: low items one by one, GUI menu form handlers, three threads' console prompts.
 
-## 11. Vaihe 2 / Step 2 (ehdotus / proposal, erillisellä päätöksellä / on a separate decision)
+## 11. Vaihe 2 / Step 2 (ehdotus vaiheen 1 lopussa; toteutus luvussa 12 / proposal at the end of step 1; done in section 12)
 
 Eristetyt koeohjelmat C-6/C-8-mallilla, toimitettua ohjelmaa ajamatta: (1) H-149 viestin
 `autofile` kahdesti H-yksitiedostotilassa MSVC:n ja mahdollisuuksien mukaan bcc32:n keolla (Q85);
 (2) H-145 `tall_emit` suljetulla emit-kahvalla; (3) H-146 `writeajat` epäonnistuvalla kahvalla;
 (4) H-147 `WriteLine`:n paluuarvo täydellä levyllä (Q83); (5) H-150 virtojen määrä 600 kierroksen
 jälkeen (Q84). / Isolated probes for H-149, H-145, H-146, H-147 and H-150.
+
+## 12. Vaihe 2: todentaminen eristetyillä koeohjelmilla / Step 2: verification with isolated probes (2026-11-26)
+
+Käyttäjän hyväksymä vaihe 2. Koeohjelmat ovat C-6:n ja C-8:n mallia: projektit tuotetaan
+`VS/Tests/TpCoreHk.vcxproj`:sta ja `TpCoreJuk.vcxproj`:sta (samat tuotantolähteet, määrittelyt ja
+asetukset, Release ja Asan), käännetään repositorion ulkopuolelle, ja jokainen tapaus ajetaan omassa
+hiekkalaatikossaan. Koeohjelma kutsuu muuttamatonta tuotantokoodia; vain globaali tila valmistellaan
+ja kirjoitusvirhe injektoidaan tuotantokoodin ulkopuolelta. Toimitettuja ohjelmia ei ajettu, verkkoa
+ei avattu, eikä `TPsource/`-puuhun tehty muutoksia. Lisäksi C++Builderin `bcc32`-ajonaikaiskirjaston
+käytös mitattiin pienellä erillisellä ohjelmalla (ei tuotantokoodia). Todisteet:
+`todisteet/c9/vaihe2/`; lopullinen ajo `koeohjelmat/tulokset/ajo5.txt` (27 tapausta), raakatulosteet
+ja ASan-raportit `koeohjelmat/tulokset/raw/`.
+
+Step 2, approved by the user: isolated probes in the C-6/C-8 pattern (projects generated from the
+core test projects, built outside the repository, one sandboxed process per case), calling
+unchanged production code with only global state prepared and the write failure injected from
+outside. No shipped program, no network, nothing under `TPsource/` changed. A small bcc32 RTL
+probe measured the C++Builder run-time library. Evidence in `todisteet/c9/vaihe2/`.
+
+**Virheinjektiot / fault injection.** Emit-tiedosto ja AJAT-jono: tuotannon tiedostokuvaaja
+vaihdetaan saman tiedoston vain luku -kuvaajaan, jolloin `_lseek` onnistuu ja `_write` palauttaa
+−1 (sama paluupolku kuin levyn täyttyessä tai verkkolevyn kadotessa). Tulostiedostot: `TextFl`
+avaa tiedoston CRT:n suojatussa jakotilassa, joten toista avausta ei voi tehdä; avauksen jälkeen
+virran kuvaaja vaihdetaan (`_dup2`) sen oman kahvan vain luku -kopioon (`DuplicateHandle`), jolloin
+stdio-puskurin huuhtelu epäonnistuu kuten levyn täyttyessä kirjoituksen aikana. / Emit and AJAT:
+the fd is swapped for a read-only fd of the same file; result files: after the open the stream's fd
+is replaced by a read-only duplicate of its own handle, so the stdio flush fails.
+
+### 12.1 H-149: viestin automaattitiedosto / relay automatic output file — **korkea / high**
+
+| Mekanismi / mechanism | Koodi / code | Todennus / verification |
+|---|---|---|
+| (a) yhden tiedoston tila: `closeprfile` vapauttaa `PRFILE`n nollaamatta osoitinta, `htmlloppu` kirjoittaa sen kautta | `Juk/VTulostus.cpp:7200`, `:7299` | ASan heap-use-after-free `writehtml` (`Juk/VTulostus.cpp:1366`), vapautus `:7200` |
+| (b) T-tila: sama rakenne vapautetaan uudelleen | `:7321` | ASan double-free `closeprfile` (`tputilv2/Wrttext.cpp:297`) |
+| (c) erilliset tiedostot ilman `AUTOFILE.LST`:ia: `delete aflst` kahdesti; lisäksi (a) ja `fileyht < 0`:lla (b) | `:7162-7164`, `:7295-7296` | ASan: käyttöoikeusvirhe `fclose`:ssa, kutsuttu `~TextFl` ← `autofile:7295` (`TextFl` on instrumentoimattomassa kirjastossa; todiste yhdessä koodin kanssa) |
+| (d) X-tila palaa `lstf` vapautettuna; seuraava ajo lukee sen | `:7179-7185`, `:7150` | ASan heap-use-after-free `:7150` |
+| N1 listatila + TCP-yhteys: `sendtcpfile` vapauttaa `lstf`:n, seuraava ajo sulkee sen uudelleen | `:7131`, `:7150`, `:7260-7262` | Release: prosessi päättyy `0xC0000374` (seuraus, ei mekanismin todiste; mekanismi koodista ja tarkastajan resepti) |
+
+**Saavutettavuus / reachability.** Tavallinen konfiguraatio (`HTML=nimi` konsolissa tai GUI:n
+automaattitiedostodialogi oletusvalinnalla "erilliset tiedostot") ilman `AUTOFILE.LST`:ia johtaa
+polkuun (c) (`Juk/VInit.cpp:919-929`, `:2526`; `ViestiWin/UnitAutoFile.cpp:49`, `:68`). Polku (a)
+syntyy konsolin valikosta, `FILETCP`-asetuksesta tai GUI:n valinnasta "yhteen tiedostoon".
+`fileyht` saa arvon jo ensimmäisestä minkä tahansa TCP-tiedonsiirtoyhteyden avauksesta
+(`Tp/TpComY.cpp:1221-1222`). Koodi käännetään ViestiMaaliin, ViestiLuentaan (MSVC) ja
+ViestiWiniin (bcc32); `AUTOFILE` on määritelty kaikissa (`RADStudio10/ViestiWin.cbproj:134`,
+`VS/V/JukMaali520.vcxproj:97`).
+
+**Release-käytös (MSVC, `/MT` kuten tuotanto) / Release behaviour (Q85).**
+
+| Tila / mode | `fileyht < 0` | `fileyht ≥ 0` (TCP-yhteys, ilman verkkoa / no network) |
+|---|---|---|
+| (c) erilliset ilman listaa (oletus) / separate, no list (default) | kaatuu 1. kierroksella `0xC0000374` | kaatuu 1. kierroksella `0xC0000374` |
+| (a) yksi tiedosto / single file | kaatuu 1. kierroksella | ei kaadu 10 kierroksella, keko kunnossa; vapautetun muistin lukuja; tiedostoa ei siirretä TCP:llä [päätelty] |
+| T | kaatuu 1. kierroksella | – |
+| listatila / list mode | ei kaadu 30 kierroksella (kontrolli ei kuitenkaan kirjoita sarjoja) | N1: kaatuu toisella kierroksella `0xC0000374` |
+
+C++Builderin RTL (erillinen konsolikoe, `-WCMR`): toinen `free` palaa hiljaa ja lohko annetaan
+uudelleen käyttöön. ViestiWin on VCL-ohjelma ajonaikaisine paketteineen, joten sen muistinhallinta
+voi olla eri; vaikutus ViestiWinissä on mittaamatta (Q91). / bcc32 RTL: a second free returns
+silently; ViestiWin's VCL memory manager is unmeasured.
+
+**Vakavuus korkea [todennettu: koeohjelma]:** konsolin viestiohjelmat (ViestiMaali, ViestiLuenta)
+kaatuvat ensimmäiseen automaattiseen HTML-tulosteeseen tavallisessa konfiguraatiossa ilman
+listatiedostoa riippumatta TCP-yhteydestä, ja listatiedostonkin kanssa toiseen tulosteeseen, jos
+TCP-yhteys on auki (N1). Kaatuminen toistuu jokaisella käynnistyksellä niin kauan kuin
+automaattitiedosto on päällä. GUI:ssa kaksoisvapautus ja vapautetun muistin käyttö toistuvat joka
+kierros `LukumaaratTh`-säikeessä, vaikutus mittaamatta. Tallennettu kilpailudata (`KILP.DAT`) ei
+korruptoidu tämän vuoksi, mutta ohjelma pysähtyy kesken kilpailun. / High: the console relay
+programs crash at the first automatic HTML output in the common configuration without a list file,
+with or without a TCP link, and at the second one with a list file and a TCP link (N1); repeats
+on every start while the feature is on. GUI: double free and use after free every cycle, effect
+unmeasured.
+
+### 12.2 H-145: emit-kortin tallennusvirhe / emit card write failure — keskitaso / medium
+
+Toistettu testikehyksessä (`tall_emit` MTR-tietueella, emit-kuvaaja vain luku -tilassa):
+
+| Vaihe / step | Tulos / result |
+|---|---|
+| kortin vastaanotto / card received | `tall_emit` → `addem` → `putem` → `_write` −1; yksi `wperr`-ilmoitus (operaatiokoodi 3, H-156) |
+| muisti / memory | kortti `ed_em`-välimuistissa ja `on_emit`-taulussa ennen kirjoitusta; `emithead` ei kasva |
+| kuittaus / acknowledgement | `tall_emit` palauttaa 0 aina; Emit-kellolla tästä seuraa kuittaus (`Tp/TpLaitteet.cpp:911-917`), muilla lukijoilla sanoma kulutetaan joka tapauksessa (MTR-pakettilaskuri etenee `:1247-1255`) |
+| saman kortin uusi luku / same card again | vain vahvistus (`vahvistus` = korttinumero), ei tallennusta |
+| toinen kortti välissä / another card in between | oletuksella `estaemittoisto = 1` kortti hylätään kaksoiskappaleena eikä tallennu koskaan saman istunnon aikana; arvolla 0 se tallentuu |
+| muut työasemat / peers | `pros_emit` käsittelee vain `emithead2..emithead`, joten korttia ei yhdistetä kilpailijaan eikä lähetetä (`laheta_em` vain onnistuneelle) [todennettu: koodi] |
+| uudelleenkäynnistys / restart | korttia ei ole tiedostossa; välimuistit ovat muistissa, joten uudelleenkäynnistyksen jälkeen kortin uusi luku tallentaa sen |
+
+Johtopäätös: menetys ei ole hiljainen (ilmoitus), mutta tavallinen uudelleenluku ei palauta korttia
+saman istunnon aikana; palautus vaatii käsin syötön tai uudelleenkäynnistyksen ja uuden luvun. /
+Not silent, but an ordinary re-read does not recover the card within the session; recovery needs
+manual entry or a restart and a re-read.
+
+### 12.3 H-146: AJAT-jonon aukko / AJAT queue hole — keskitaso / medium
+
+Toistettu testikehyksessä (`tall_rivi` → `writeajat`, aloitus `initajat(0, 1)` = oletus-
+käynnistys, `ajanottofl = -1`; arvolla 1 kutsuja täyttää rivit samalla paikkamerkillä, joten
+tilat ovat samat): epäonnistuneella rivillä `fp1` 2 → 3, ilmoitus annetaan; seuraavat rivit
+kirjoittuvat oikeisiin paikkoihinsa, mutta epäonnistuneen rivin paikka jää käynnistyksessä
+kirjoitetuksi paikkamerkiksi (`t = TMAALI0*AIKAJAK`, `kno = 0`). Uudelleenkäynnistyksessä rivi
+puuttuu, ja jonon keskelle jää tyhjä rivi, jonka aika on pienin mahdollinen; myöhempi aika
+lisätään sen jälkeen. Aukko korjautuu vain, jos rivi tai aiempi rivi muuttuu myöhemmin
+(`fp1` lasketaan) tai vaihe vaihtuu. Vaikutus tuloksiin [päätelty]: kilpailijalle jo kirjatut
+ajat ovat `KILP.DAT`:ssa erillisen polun kautta, joten menetys koskee AJAT-jonon riviä ja sen
+kohdistamatonta aikaa (Q94). / fp1 advances on the failed row; the slot keeps the start-up
+placeholder; after a restart the row is missing and an empty row stays inside the queue.
+
+### 12.4 H-147: tulostiedostot / result files — keskitaso / medium
+
+| Väite / claim | Tulos / result |
+|---|---|
+| `WriteLine == WEOF` -tarkistus | MSVC: epäonnistunut huuhtelu palauttaa −1 tyypeillä A, W ja 8 (WEOF = 65535); `puts_f`/`writeline` eivät ilmoita mitään; tyyppi V palauttaa merkkimäärän. bcc32-RTL: myös `fputws` palauttaa −1 → tarkistus on kuollut kaikissa viidessä tuotteessa (Q83) |
+| tiedoston tyhjennys / truncation | `autofile`:n avaus (`openprfile(..., 2, ...)`, `Hk/HkTulostus.cpp:7108`) tyhjentää tiedoston heti (0 tavua ennen ensimmäistä kirjoitusta) |
+| epäonnistunut kirjoitus / failed write | tiedosto jää tyhjäksi (huuhtelu epäonnistui ensimmäisellä kerralla) tai yleisesti osittaiseksi; ei ilmoitusta; vanha ehjä tiedosto on menetetty |
+| lukijat generoinnin aikana / readers | MSVC: lukija saa jakorikkomuksen (virhe 32), ei osittaista sisältöä; epäonnistuneen ajon jälkeen lukija näkee tyhjän tai osittaisen tiedoston seuraavaan onnistuneeseen ajoon asti. bcc32: avaustila mittaamatta (Q92) |
+| lukija pitää tiedostoa auki / a reader holds the file | `autofile`:n avaus epäonnistuu: kaksi ilmoitusta (`openprfile` ja `autofile`, jälkimmäinen 2 s), vanha tiedosto säilyy; ilmoitukset pysäyttävät taustasäikeen `autotul`-lukon alla |
+
+Kilpailutiedon eheys muistissa ja `KILP.DAT`:ssa ei riipu tulostiedostosta; vaikutus rajoittuu
+julkaistuun tulokseen, joka voi olla tyhjä, osittainen tai vanha ilman merkintää. / In-memory and
+KILP.DAT data are unaffected; the published file can be empty, partial or stale without notice.
+
+Korjaus vaiheen 1 tekstiin: vaiheen 1 väite "lukija näkee tyhjän tai osittaisen tiedoston
+generoinnin aikana" ei päde MSVC-ohjelmissa (jakorikkomus); se pätee epäonnistuneen ajon jälkeen.
+Tarkastajan maininta `tputilv2/Wrttext.cpp:447`:stä ei ole samaa vikaa: `fputwc` palauttaa
+virheessä `WEOF`:in, joten se vertailu toimii.
+
+### 12.5 Resurssit / resources: H-150, H-151, H-152
+
+- **H-150 (keskitaso / medium) toistettu:** XML-automaattivienti vaiheessa ≥ 2 vuotaa joka
+  kierroksella `TextFl`-olion (86 tavua keosta). Jos `AUTOFILE.LST` on olemassa, myös yksi
+  CRT-virta ja yksi ytimen kahva: MSVC:ssä virrat täyttyivät 511/512:een noin 508 kierroksessa
+  (60 s välillä noin 8,5 h), minkä jälkeen kaikilla muilla samanaikaisilla avauksilla on käytössä
+  enintään yksi vapaa paikka; itse vienti jatkoi. bcc32-RTL:ssä virtoja on 50 (47 + 3 vakiovirtaa),
+  joten HkKisaWinissä raja tulee alle 45 kierroksessa (alle 45 min). Seuraukset GUI:ssa
+  (ilmoitukset joka kierros, emit-tiedoston `_wfdopen` NULL seuraavassa vaiheen vaihdossa) ovat
+  päättelyä (Q95). Ilman `AUTOFILE.LST`:ia vuoto on noin 124 kt vuorokaudessa 60 s välillä, ei
+  käytännön merkitystä. Vakavuus pysyy keskitasona kapean konfiguraation vuoksi; nousee korkeaksi,
+  jos GUI-ajo osoittaa tietojen katoavan.
+- **H-151 (keskitaso / medium) toistettu ASanilla:** `sendtcpfile`-säie vapauttaa
+  `aftulparam.lstf`:n, ja seuraava `autofile` lukee sen (`Hk/HkTulostus.cpp:7093`). Koe tehtiin
+  ilman verkkoa (`hComm` 0, `wrt_st_TCP` palaa heti, `com/WinUDP.cpp:903-904`); vapautus tapahtuu
+  lähetyksen tuloksesta riippumatta, joten asetelma edustaa todellista yhteyttä. Mikä tahansa
+  TCP-yhteys riittää.
+- **H-152 siirretty myöhempään testausvaiheeseen / deferred:** todentaminen vaatii GUI-käsittelijän
+  (`cbHk/UnitStatus.cpp:698-706`) ja tulostettavat tulokset; tarkastaja yhtyy.
+
+### 12.6 Inventaarioskriptin kattavuus / inventory script coverage
+
+| | |
+|---|---|
+| Korjattu v2:ssa / fixed in v2 | S1 (ehdoton `if`/`for` ei ole tarkistus), S2 (`openfile`/`makefile` palauttavat arvon; `putrec_i`, `addrec0`), S3 (tarkistusikkuna lauseen lopusta, uudelleensijoitus katkaisee), S5 (VCL-olioiden `Open`/`Close` pois), S6 (määrittelyt ja esittelyt pois), S7 (`built`-sarake), S8 (käärefunktiot `openprfile`/`closeprfile`, `_wfdopen`, `_chsize`, `_wfopen_s`, `CopyFile`, `system`, `lopetus`, `perr`/`wperr`/`iowerr`) |
+| Korjaamatta / not fixed | S4 epäsuora tarkistus (tavumäärä ulostuloparametrissa, kertyvä paluuarvo) – vaatisi funktiokohtaisen mallin; S9 `new`-tulosten luokittelu – `new` heittää poikkeuksen, ja `TextFl`-avaukset käytiin läpi käsin (180/186 tarkistetaan); S10 esikääntäjä – vaikutus mitattu mitättömäksi; S11 varamenetelmän funktiokohdistus – osoittautui oikeaksi otoksessa; S12 kuollut koodi – vaatisi tietovuoanalyysin. Nämä ovat luokittelun tarkkuusrajoja, eivät puuttuvia kohteita |
+| Määrät / counts | v1 3 130, v2 3 234 riviä; yhteisiä 3 019; vain v1:ssä 111 (82 VCL-olion `Open`/`Close`, 29 määrittelyä); vain v2:ssa 215 (uudet nimet) |
+| Puuttuneet kohteet / missing sites | v2:n uusista riveistä 22 tarkistamatonta ydinriviä ei mainittu missään raportissa. Pääistunto ja tarkastaja lukivat ne: 3 × `putrec_i` (H-015:n malli), 3 × `lopetus` (käynnistys; konsolin J/P-kysely `tark_alku`ssa tietoliikennesäikeessä, H-153:n perhettä), 16 × `closeprfile` (15 harmitonta; `Juk/VTulostus.cpp:7131` on `sendtcpfile` → N1, liitetty H-149:ään) |
+| Vaikutus osiin B ja C / effect on parts B and C | 67 riviä siirtyi "checked" → "ignored" (S1). Ydinkirjoitukset niistä: `fflush` (H-156), käynnistyksen varaukset, `teejarj` (H-157), `DBG`-vianetsintätiedostot (`DBG` ei määritelty missään). Agentit lukivat koodin suoraan eivätkä nojanneet luokitukseen, joten johtopäätökset eivät muuttuneet; ainoa uusi asia oli N1 |
+
+Riippumattoman tarkastuksen lukumäärät (vaihe 1, osa E) täsmäytettynä: 19 väitettä, joista
+kohta 19 jaettiin kolmeksi (19a–c) → 21 riviä. Vahvistettu 16 (1, 2, 5, 6, 7, 8, 9, 11, 12, 13,
+14, 15, 17, 18, 19b, 19c), osittain 5 (3, 4, 10, 16, 19a). Osaväitteet: kohdan 7 osa "viestin
+`autofile` ei käänny" kumottiin (kohta itse vahvistettiin HK:lle); kohdan 12 osa "ensimmäisestä
+virheestä tulee ilmoitus" oli väärin; kohdat 13 ja 17 vahvistettiin mutta todettiin H-044:n ja
+H-105:n kaksoiskappaleiksi. / Step 1 review reconciled: 19 claims, item 19 split into three → 21
+rows; 16 confirmed, 5 partly; sub-claims: item 7's relay part refuted, item 12's message wording
+wrong; items 13 and 17 duplicates.
+
+### 12.7 Palautuminen kriittisten tietojen kirjoitusvirheistä / Recovery from write failures of critical data
+
+| | `KILP.DAT` | emit-tiedosto / emit file | AJAT-jono / queue | julkaistava tulostiedosto / published result file |
+|---|---|---|---|---|
+| Havaitaanko / detected | kyllä (tavumäärä) | kyllä | kyllä | ei (H-147); vain avausvirhe |
+| Välittyykö kutsujalle / reported to caller | ei (−1 ohitetaan, `write` palauttaa 0; H-015) | ei (`tall_emit` palauttaa 0; H-145) | ei (`writeajat` void, `tall_rivi`n tulos ohitetaan; H-117) | ei |
+| Ilmoitus / operator told | modaali Kyllä/Ei, "Ei" lopettaa (H-153) | modaali, väärä virhekoodi (H-156) | modaali | ei; avausvirheessä kaksi ilmoitusta |
+| Uudelleenyritys / retry | ei | ei | ei (osoitin jo edennyt; H-146) | seuraava kierros |
+| Tieto muistissa / in memory | kyllä (muisti ensin) | vain välimuistissa, ei käsittelyssä | kyllä | kilpailudata kyllä |
+| Tieto levyllä / on disk | vanha tietue; lisäyksessä otsikko voi olla ristiriidassa (H-148) | puuttuu | aukko (paikkamerkki) | tyhjä tai osittainen; vanha menetetty |
+| Onnistumiskuittaus virheestä huolimatta / success acknowledged anyway | – (muisti päivitetty, lähetys muille tehty) | kyllä: Emit-kellon kuittaus; muut lukijat kuluttavat sanoman | – | ohjelma ei erota onnistumista epäonnistumisesta; `autokomento` ajetaan |
+| Palautettavissa / recoverable | sama tietue uudelleen tallennettaessa; vienti "DAT" muistista | käsin syöttö tai uudelleenkäynnistys + uusi luku | aiemman rivin muutos tai vaiheen vaihto | seuraava onnistunut kierros (paitsi `vainMuutt`) |
+| Uudelleenkäynnistys / restart | lataa vanhan tietueen; otsikkoristiriita estää käynnistyksen | korttia ei ole | rivi puuttuu, tyhjä rivi keskellä | tiedosto kirjoitetaan seuraavalla kierroksella |
+| Näyttö / evidence | koodi (osa B), H-015, H-148 | koeohjelma | koeohjelma | koeohjelma |
+
+### 12.8 Muutokset rekisteriin / register changes
+
+- **H-149** keskitaso → **korkea**; mekanismit (a)–(d) toistettu ASanilla, Release-kaatuminen
+  mitattu; saavutettavuus korjattu (oletuspolku (c)); N1 liitetty (tarkastajan löytö, toistettu
+  Release-seurauksena).
+- **H-145, H-146, H-147, H-150, H-151:** todennus "toistettu testikehyksessä"; tekstit tarkennettu
+  (H-145: kuittaus vain Emit-kellolla, menetys istunnon ajaksi; H-147: kaikki tyypit ja molemmat
+  kääntäjät).
+- **Uusi H-158 (matala):** viestin automaattinen XML-tiedosto sisältää vain loppuosan, koska
+  `writexml` on kommentoitu pois (`Juk/VTulostus.cpp:7179-7181`). Tarkastajan sivuhavainto,
+  pääistunto luki koodin.
+- **Uusi T-042:** `closeprfile` ottaa osoittimen arvona eikä voi nollata kutsujan kenttää; kutsujat
+  nollaavat sen tapauskohtaisesti tai eivät lainkaan (H-149, H-151, H-152, N1).
+
+### 12.9 Korjausjärjestys / fix priority [päätelty / inferred]
+
+P2 (kiireellinen) **H-149** (konsolin viestiohjelmat kaatuvat oletuskonfiguraatiossa). P3 H-145,
+H-146, H-151, H-147, H-150. P4 H-148, H-152, H-153, H-154, H-155. P5 H-156, H-157, H-158. Korjaukset
+tehdään omissa haaroissaan erillisellä päätöksellä; mitään ei ole aloitettu. / P2 H-149; P3 H-145,
+H-146, H-151, H-147, H-150; P4 H-148, H-152–H-155; P5 H-156–H-158. No fix started.
+
+### 12.10 Kysymykset / questions
+
+Ratkaistu / resolved: **Q83** (bcc32 `fputws` palauttaa −1, ei `WEOF`:ia), **Q84** (bcc32-RTL:ssä
+50 virtaa; GUI:n vakiotilan virtamäärä Q95:ssä), **Q85** MSVC:n osalta (STATUS_HEAP_CORRUPTION
+ensimmäisellä kierroksella; bcc32-RTL:n pelkkä `free` hiljainen; VCL-muistinhallinta Q91:ssä),
+**Q88** (viestin GUI ajaa `autofile`:n `LukumaaratTh`-työsäikeessä, `ViestiWin/UnitMain.cpp:535-541`).
+Kavennettu / narrowed: **Q86** (kuittaus koskee vain Emit-kelloa; laitteen tulkinta avoin).
+Uudet / new: **Q91** ViestiWinin VCL-muistinhallinnan reaktio H-149:n kaksoisvapautukseen;
+**Q92** avaako bcc32-RTL:n `_wfopen_s` kirjoitusvirran yksinoikeudella; **Q93** rikkooko
+`sendtcpfile`n STX/tiedosto/ETX-virta vastapään pakettijäsennyksen, kun `fileyht` on tavallinen
+tiedonsiirtoyhteys; **Q94** käytetäänkö AJAT-riviä koskaan tulosten uudelleenrakentamiseen
+(H-146); **Q95** HkKisaWinin virtamäärä vakiotilassa ja `femitfile`-NULLin vaikutus vaiheen
+vaihdossa (H-150).
+
+### 12.11 Sulkemisarvio / closing assessment
+
+Vaiheen 2 tavoitteet täyttyivät: H-149 todennettu ja vakavuus nostettu, H-145–H-147 todennettu
+virheinjektiolla, H-150:n vuoto mitattu, H-151 toistettu, H-152 perustellusti siirretty,
+inventaarion erotus käyty läpi, palautumisen kokonaiskuva kirjattu, uudet väitteet tarkastettu
+riippumattomasti ja validaattori menee läpi. Avoimet asiat (Q86, Q91–Q95, H-152:n ajo) vaativat
+GUI-ajon, VCL-koeohjelman tai laitteen eivätkä estä sulkemista. Suositus: **C-9 voidaan sulkea**
+käyttäjän hyväksynnällä; avoimet asiat siirretään jatkotehtäviksi (`seuranta.md`). / Step 2 goals
+met; open items need a GUI run, a VCL probe or hardware and do not block closing. Recommendation:
+C-9 can be closed on the user's approval, with the open items moved to follow-ups.

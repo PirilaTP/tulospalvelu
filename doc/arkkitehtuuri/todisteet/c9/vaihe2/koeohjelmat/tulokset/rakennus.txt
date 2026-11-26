@@ -1,0 +1,40 @@
+'vswhere.exe' is not recognized as an internal or external command,
+operable program or batch file.
+
+  c9_hk_probes.cpp
+C:\dev\tulospalvelu\TPsource\V52\Include\bstrings.h(63,1): warning C5298: ignoring spurious 'U+1a' character in source [C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\C9ProbeHk.vcxproj]
+  (compiling source file 'c9_hk_probes.cpp')
+  
+C:\dev\tulospalvelu\TPsource\V52\Include\butil.h(117,1): warning C5298: ignoring spurious 'U+1a' character in source [C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\C9ProbeHk.vcxproj]
+  (compiling source file 'c9_hk_probes.cpp')
+  
+C:\dev\tulospalvelu\TPsource\V52\Include\bscreens.h(73,1): warning C5298: ignoring spurious 'U+1a' character in source [C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\C9ProbeHk.vcxproj]
+  (compiling source file 'c9_hk_probes.cpp')
+  
+  Generating code
+  78 of 2623 functions ( 3.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    48 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  C9ProbeHk.vcxproj -> C:\temp\c9build\Release\C9ProbeHk.exe
+
+  C9ProbeJuk.vcxproj -> C:\temp\c9build\Release\C9ProbeJuk.exe
+
+  c9_hk_probes.cpp
+C:\dev\tulospalvelu\TPsource\V52\Include\bstrings.h(63,1): warning C5298: ignoring spurious 'U+1a' character in source [C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\C9ProbeHk.vcxproj]
+  (compiling source file 'c9_hk_probes.cpp')
+  
+C:\dev\tulospalvelu\TPsource\V52\Include\butil.h(117,1): warning C5298: ignoring spurious 'U+1a' character in source [C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\C9ProbeHk.vcxproj]
+  (compiling source file 'c9_hk_probes.cpp')
+  
+C:\dev\tulospalvelu\TPsource\V52\Include\bscreens.h(73,1): warning C5298: ignoring spurious 'U+1a' character in source [C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\C9ProbeHk.vcxproj]
+  (compiling source file 'c9_hk_probes.cpp')
+  
+  Generating code
+  Incremental LTCG not compatible with Address Sanitizer, build without incremental LTCG.
+  Finished generating code
+  C9ProbeHk.vcxproj -> C:\temp\c9build\Asan\C9ProbeHk.exe
+          1 file(s) copied.
+
+  C9ProbeJuk.vcxproj -> C:\temp\c9build\Asan\C9ProbeJuk.exe
+          1 file(s) copied.

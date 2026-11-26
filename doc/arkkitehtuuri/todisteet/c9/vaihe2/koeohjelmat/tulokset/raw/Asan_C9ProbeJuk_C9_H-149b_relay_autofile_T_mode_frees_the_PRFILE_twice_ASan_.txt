@@ -1,0 +1,43 @@
+[doctest] run with "--help" for options
+TPARM|finding=H-149|mechanism=t-mode-double-free|source=asan
+=================================================================
+==67232==ERROR: AddressSanitizer: attempting double-free on 0x05703a00 in thread T0:
+    #0 0x64d03eb7 in _asan_wrap_static_crt_free+0x77 (C:\temp\c9build\Asan\clang_rt.asan_dynamic-i386.dll+0x10043eb7)
+    #1 0x0100f929 in closeprfile C:\dev\tulospalvelu\TPsource\V52\tputilv2\Wrttext.cpp:297
+    #2 0x01008d15 in autofile C:\dev\tulospalvelu\TPsource\V52\Juk\VTulostus.cpp:7321
+    #3 0x0100a0aa in DOCTEST_ANON_FUNC_6 C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\c9_juk_probes.cpp:91
+    #4 0x00fcc0b5 in doctest::Context::run C:\dev\tulospalvelu\TPsource\V52\Tests\doctest.h:7007
+    #5 0x00fcda7c in main C:\dev\tulospalvelu\TPsource\V52\Tests\core\CoreMain.cpp:109
+    #6 0x010125a1 in __scrt_common_main_seh F:\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #7 0x75435d48 in BaseThreadInitThunk+0x18 (C:\WINDOWS\System32\KERNEL32.DLL+0x10015d48)
+    #8 0x770cc75a in RtlInitializeExceptionChain+0x6a (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec75a)
+    #9 0x770cc6e0 in RtlGetAppContainerNamedObjectPath+0x230 (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec6e0)
+
+0x05703a00 is located 0 bytes inside of 476-byte region [0x05703a00,0x05703bdc)
+freed by thread T0 here:
+    #0 0x64d03eb7 in _asan_wrap_static_crt_free+0x77 (C:\temp\c9build\Asan\clang_rt.asan_dynamic-i386.dll+0x10043eb7)
+    #1 0x0100f929 in closeprfile C:\dev\tulospalvelu\TPsource\V52\tputilv2\Wrttext.cpp:297
+    #2 0x01008c91 in autofile C:\dev\tulospalvelu\TPsource\V52\Juk\VTulostus.cpp:7200
+    #3 0x0100a0aa in DOCTEST_ANON_FUNC_6 C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\c9_juk_probes.cpp:91
+    #4 0x00fcc0b5 in doctest::Context::run C:\dev\tulospalvelu\TPsource\V52\Tests\doctest.h:7007
+    #5 0x00fcda7c in main C:\dev\tulospalvelu\TPsource\V52\Tests\core\CoreMain.cpp:109
+    #6 0x010125a1 in __scrt_common_main_seh F:\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #7 0x75435d48 in BaseThreadInitThunk+0x18 (C:\WINDOWS\System32\KERNEL32.DLL+0x10015d48)
+    #8 0x770cc75a in RtlInitializeExceptionChain+0x6a (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec75a)
+    #9 0x770cc6e0 in RtlGetAppContainerNamedObjectPath+0x230 (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec6e0)
+
+previously allocated by thread T0 here:
+    #0 0x64d032fd in _asan_wrap_malloc+0x1d (C:\temp\c9build\Asan\clang_rt.asan_dynamic-i386.dll+0x100432fd)
+    #1 0x0100faf4 in openprfile C:\dev\tulospalvelu\TPsource\V52\tputilv2\Wrttext.cpp:163
+    #2 0x01008a3a in autofile C:\dev\tulospalvelu\TPsource\V52\Juk\VTulostus.cpp:7166
+    #3 0x0100a0aa in DOCTEST_ANON_FUNC_6 C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\c9_juk_probes.cpp:91
+    #4 0x00fcc0b5 in doctest::Context::run C:\dev\tulospalvelu\TPsource\V52\Tests\doctest.h:7007
+    #5 0x00fcda7c in main C:\dev\tulospalvelu\TPsource\V52\Tests\core\CoreMain.cpp:109
+    #6 0x010125a1 in __scrt_common_main_seh F:\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #7 0x75435d48 in BaseThreadInitThunk+0x18 (C:\WINDOWS\System32\KERNEL32.DLL+0x10015d48)
+    #8 0x770cc75a in RtlInitializeExceptionChain+0x6a (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec75a)
+    #9 0x770cc6e0 in RtlGetAppContainerNamedObjectPath+0x230 (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec6e0)
+
+SUMMARY: AddressSanitizer: double-free C:\dev\tulospalvelu\TPsource\V52\tputilv2\Wrttext.cpp:297 in closeprfile
+TPRESULT|finding=H-149|mechanism=t-mode-double-free|observed=1|source=asan|detail=ASan report matched all expected strings; 
+==67232==ABORTING

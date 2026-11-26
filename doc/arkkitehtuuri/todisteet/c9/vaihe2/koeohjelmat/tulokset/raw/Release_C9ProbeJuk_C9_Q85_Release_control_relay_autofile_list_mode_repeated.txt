@@ -1,0 +1,7 @@
+[doctest] run with "--help" for options
+TPINFO|list mode: 30 cycles, 0 with a heap check failure or non-zero return
+TPRESULT|finding=Q85|mechanism=release-control-list-mode|observed=0|detail=0 bad cycles of 30
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 7 skipped
+[doctest] assertions: 3 | 3 passed | 0 failed |
+[doctest] Status: SUCCESS!

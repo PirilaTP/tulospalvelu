@@ -1,0 +1,11 @@
+[doctest] run with "--help" for options
+TPINFO|program=C9ProbeHk
+TPINFO|msc_full_ver=195237029
+TPINFO|config=Release
+TPINFO|asan=0
+TPINFO|char_unsigned=1
+TPINFO|sizeof_void_ptr=4
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 12 skipped
+[doctest] assertions: 1 | 1 passed | 0 failed |
+[doctest] Status: SUCCESS!

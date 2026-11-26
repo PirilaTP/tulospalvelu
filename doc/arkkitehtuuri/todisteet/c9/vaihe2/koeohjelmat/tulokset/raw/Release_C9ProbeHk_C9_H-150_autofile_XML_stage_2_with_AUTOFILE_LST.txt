@@ -1,0 +1,14 @@
+[doctest] run with "--help" for options
+TPINFO|run 1: streams 4 (+1), handles 111 (+1), heap used 146703 (+86)
+TPINFO|run 100: streams 103 (+100), handles 210 (+100), heap used 155217 (+8600)
+TPINFO|run 200: streams 203 (+200), handles 310 (+200), heap used 163817 (+17200)
+TPINFO|run 300: streams 303 (+300), handles 410 (+300), heap used 172417 (+25800)
+TPINFO|run 400: streams 403 (+400), handles 510 (+400), heap used 181017 (+34400)
+TPINFO|run 500: streams 503 (+500), handles 610 (+500), heap used 189617 (+43000)
+TPINFO|run 600: streams 511 (+508), handles 618 (+508), heap used 198217 (+51600)
+TPINFO|run 700: streams 511 (+508), handles 618 (+508), heap used 206817 (+60200)
+TPRESULT|finding=H-150|mechanism=xml-stage2-leak-with-list|observed=1|detail=700 runs, first failing run 0, streams +508, handles +508, heap +60200 bytes (86.0 per run)
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 12 skipped
+[doctest] assertions: 3 | 3 passed | 0 failed |
+[doctest] Status: SUCCESS!

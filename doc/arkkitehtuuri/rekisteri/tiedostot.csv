@@ -259,7 +259,7 @@ Hk/HkMuotoilu.h,Hk,192,cp1252,-,1,-,-,,,,f7fe553
 Hk/HkSak.cpp,Hk,253,utf-8,HkKisaWin HkMaali,2,tallenna-samanaikaisuus muistiturvallisuus,-,f7fe553,H-008 H-060,"tall_sak, tall_ampsakko; C-4: varoitusten triage",f7fe553
 Hk/HkSrj.cpp,Hk,941,cp1252,HkKisaWin HkMaali,2,tiedostomuodot muistiturvallisuus,-,f7fe553,H-041,C-3: 85-175 n_pv/valuku-rajat; C-4: varoitusten triage,f7fe553
 Hk/HkTls.cpp,Hk,1966,cp1252,HkKisaWin HkMaali,2,tiedonsiirto muistiturvallisuus,-,f7fe553,H-023,C-2: tall_tulos; C-4: varoitusten triage,f7fe553
-Hk/HkTulostus.cpp,Hk,8840,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus yleiskuva muistiturvallisuus kaantajaerot saikeet-ja-lukot virheenkasittely,-,f7fe553,H-003 H-010 H-067 T-026 H-091 T-032 H-147 H-150 H-151 H-152,"rivi 3602; startaf 6979 sijainti; sijat2, tulostasarja-lukitus 5850-6419; C-4: varoitusten triage; C-5 vaihe 2: swprintf 1486, 1528; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-9: puts_f/writeline, autofile 7040-7350, autotulostus",f7fe553
+Hk/HkTulostus.cpp,Hk,8840,cp1252,HkKisaWin HkMaali,2,tallenna-samanaikaisuus yleiskuva muistiturvallisuus kaantajaerot saikeet-ja-lukot virheenkasittely,-,f7fe553,H-003 H-010 H-067 T-026 H-091 T-032 H-147 H-150 H-151 H-152 T-042,"rivi 3602; startaf 6979 sijainti; sijat2, tulostasarja-lukitus 5850-6419; C-4: varoitusten triage; C-5 vaihe 2: swprintf 1486, 1528; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-9: puts_f/writeline, autofile 7040-7350, autotulostus; C-9 vaihe 2: autofile, puts_f koeohjelmat",f7fe553
 Hk/HkTV.cpp,Hk,233,cp1252,-,1,-,-,,,,f7fe553
 Hk/HkXml.cpp,Hk,2460,cp1252,HkKisaWin HkMaali,2,merkistot muistiturvallisuus,-,f7fe553,H-003 H-057,rivi 1833; C-4: varoitusten triage,f7fe553
 Hk/HkXml_IOF30.cpp,Hk,1140,cp1252,HkKisaWin HkMaali,2,muistiturvallisuus,-,f7fe553,H-057,C-4: varoitusten triage,f7fe553
@@ -312,7 +312,7 @@ Juk/VMuotoilu.h,Juk,128,ascii,JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
 Juk/VRinnakkaisOsuus.cpp,Juk,95,ascii,ViestiWin TpTest JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
 Juk/VRinnakkaisOsuus.h,Juk,108,ascii,ViestiWin TpTest JukLuenta520 JukMaali520,1,-,-,,,,f7fe553
 Juk/vSarjat.cpp,Juk,565,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedostomuodot muistiturvallisuus,-,f7fe553,H-002 H-042 H-065,"rivit 377, 400; C-3: 60-70, 170-260; C-4: varoitusten triage",f7fe553
-Juk/VTulostus.cpp,Juk,9151,cp1252,ViestiWin JukLuenta520 JukMaali520,2,muistiturvallisuus kaantajaerot saikeet-ja-lukot globaali-tila virheenkasittely,-,f7fe553,H-001 H-003 H-063 H-067 H-075 H-076 T-026 H-087 H-106 H-130 H-149,"rivit 352, 2228, 3981; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5 vaihe 2: swprintf 1372-1410; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-8: ossijat 949-1060; C-9: autofile 7030-7330",f7fe553
+Juk/VTulostus.cpp,Juk,9151,cp1252,ViestiWin JukLuenta520 JukMaali520,2,muistiturvallisuus kaantajaerot saikeet-ja-lukot globaali-tila virheenkasittely,-,f7fe553,H-001 H-003 H-063 H-067 H-075 H-076 T-026 H-087 H-106 H-130 H-149 H-158,"rivit 352, 2228, 3981; C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta; C-5 vaihe 2: swprintf 1372-1410; C-6: säikeet ja lukot, kohdennettu luenta; C-6 vaihe 2: polut, koeohjelmat, VCL; C-8: ossijat 949-1060; C-9: autofile 7030-7330; C-9 vaihe 2: autofile koeohjelmat (H-149 a-d, N1)",f7fe553
 Juk/VXml.cpp,Juk,2193,cp1252,ViestiWin JukLuenta520 JukMaali520,2,tiedostomuodot muistiturvallisuus,-,f7fe553,H-042 H-057,C-3: loadSoftwareData 430-490; C-4: varoitusten triage,f7fe553
 Juk/VXml_IOF30.cpp,Juk,1125,cp1252,ViestiWin JukLuenta520 JukMaali520,2,muistiturvallisuus,-,f7fe553,H-057,C-4: varoitusten triage,f7fe553
 Juk/XMLtulos.cpp,Juk,467,cp1252,ViestiWin JukLuenta520 JukMaali520,2,muistiturvallisuus,-,f7fe553,H-076,C-4: varoitusten triage; C-4 vaihe 2: kohdennettu luenta,f7fe553
@@ -527,7 +527,7 @@ tputilv2/wcr2oem.cpp,tputilv2,77,utf-8,Tputil-XE tputilv2,2,muistiturvallisuus,-
 tputilv2/wcscmpU.cpp,tputilv2,57,ascii,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/wPageedit.cpp,tputilv2,209,utf-8,Tputil-XE tputilv2,2,muistiturvallisuus,-,f7fe553,,C-4: varoitusten triage,f7fe553
 tputilv2/Writeerr.cpp,tputilv2,94,utf-8,Tputil-XE tputilv2,2,testaus virheenkasittely,-,f7fe553,T-040,C-11: ei odota ilman konsolia; symbolit writeerror/_w/On; C-9: konsolin writeerror_w,f7fe553
-tputilv2/Wrttext.cpp,tputilv2,961,cp1252,Tputil-XE tputilv2,2,muistiturvallisuus virheenkasittely,-,f7fe553,H-062 H-147 H-149 H-154 T-041,"C-4: varoitusten triage; C-9: openprfile/closeprfile, GDI-virhepolut",f7fe553
+tputilv2/Wrttext.cpp,tputilv2,961,cp1252,Tputil-XE tputilv2,2,muistiturvallisuus virheenkasittely,-,f7fe553,H-062 H-147 H-149 H-154 T-041 T-042,"C-4: varoitusten triage; C-9: openprfile/closeprfile, GDI-virhepolut; C-9 vaihe 2: closeprfile osoitin arvona",f7fe553
 tputilv2/wSelectxy.cpp,tputilv2,85,utf-8,tputilv2,2,testaus,-,f7fe553,,C-11: ikuinen silmukka ilman konsolia,f7fe553
 tputilv2/wxml_put.cpp,tputilv2,191,ascii,Tputil-XE tputilv2,1,-,-,,,,f7fe553
 tputilv2/wxml_set.cpp,tputilv2,158,utf-8,Tputil-XE tputilv2,1,-,-,,,,f7fe553

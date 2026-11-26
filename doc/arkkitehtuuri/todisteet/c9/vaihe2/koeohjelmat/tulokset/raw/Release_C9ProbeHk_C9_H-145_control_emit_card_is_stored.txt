@@ -1,0 +1,6 @@
+[doctest] run with "--help" for options
+TPINFO|tall_emit=0 emithead=1 file=188 cards=1 msgs=
+===============================================================================
+[doctest] test cases:  1 |  1 passed | 0 failed | 12 skipped
+[doctest] assertions: 12 | 12 passed | 0 failed |
+[doctest] Status: SUCCESS!

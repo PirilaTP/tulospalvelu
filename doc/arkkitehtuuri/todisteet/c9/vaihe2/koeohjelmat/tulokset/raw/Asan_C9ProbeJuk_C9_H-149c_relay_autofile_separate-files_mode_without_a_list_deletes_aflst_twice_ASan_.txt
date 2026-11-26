@@ -1,0 +1,25 @@
+[doctest] run with "--help" for options
+TPARM|finding=H-149|mechanism=no-list-double-delete|source=asan
+=================================================================
+==116704==ERROR: AddressSanitizer: access-violation on unknown address 0x00000096 (pc 0x01024226 bp 0x00e6ee0c sp 0x00e6eddc T0)
+==116704==The signal is caused by a READ memory access.
+==116704==HINT: address points to the zero page.
+    #0 0x01024225 in _fclose_internal minkernel\crts\ucrt\src\appcrt\stdio\fclose.cpp:80
+    #1 0x01024330 in fclose minkernel\crts\ucrt\src\appcrt\stdio\fclose.cpp:85
+    #2 0x0100cdee in TextFl::~TextFl C:\dev\tulospalvelu\TPsource\V52\TPUTILv2\TextFileClass.cpp:315
+    #3 0x01008ce4 in autofile C:\dev\tulospalvelu\TPsource\V52\Juk\VTulostus.cpp:7295
+    #4 0x0100a21a in DOCTEST_ANON_FUNC_8 C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\c9_juk_probes.cpp:101
+    #5 0x00fcc0b5 in doctest::Context::run C:\dev\tulospalvelu\TPsource\V52\Tests\doctest.h:7007
+    #6 0x00fcda7c in main C:\dev\tulospalvelu\TPsource\V52\Tests\core\CoreMain.cpp:109
+    #7 0x010125a1 in __scrt_common_main_seh F:\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #8 0x75435d48 in BaseThreadInitThunk+0x18 (C:\WINDOWS\System32\KERNEL32.DLL+0x10015d48)
+    #9 0x770cc75a in RtlInitializeExceptionChain+0x6a (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec75a)
+    #10 0x770cc6e0 in RtlGetAppContainerNamedObjectPath+0x230 (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec6e0)
+
+==116704==Register values:
+eax = e6edfc  ebx = e6f2b4  ecx = 5703c80  edx = e6ee20  
+edi = 5300e60  esi = 8a  ebp = e6ee0c  esp = e6eddc  
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: access-violation minkernel\crts\ucrt\src\appcrt\stdio\fclose.cpp:80 in _fclose_internal
+TPRESULT|finding=H-149|mechanism=no-list-double-delete|observed=1|source=asan|detail=ASan report matched all expected strings; 
+==116704==ABORTING

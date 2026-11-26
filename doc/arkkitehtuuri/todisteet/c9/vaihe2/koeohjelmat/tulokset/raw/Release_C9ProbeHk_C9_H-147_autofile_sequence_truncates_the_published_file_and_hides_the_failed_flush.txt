@@ -1,0 +1,7 @@
+[doctest] run with "--help" for options
+TPINFO|old 2600 bytes; right after open 0; a reader opening during generation: error 32; after the writes and close 0 bytes; messages=0 ()
+TPRESULT|finding=H-147|mechanism=truncate-then-silent-flush-failure|observed=1|detail=old file 2600 bytes, 0 at open: yes, after failed writes 0 bytes, 0 messages
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 12 skipped
+[doctest] assertions: 6 | 6 passed | 0 failed |
+[doctest] Status: SUCCESS!

@@ -22,6 +22,7 @@ same N-C IDs for other items); mapping to H IDs in section 7 of the interpretati
 | `osaC-elinkaari.md` | `defect-concurrency-auditor`, Sonnet | osa C: N-C1–N-C8 / part C |
 | `osaD-virheen-jalkeen.md` | `defect-concurrency-auditor`, Sonnet | osa D: N-D1–N-D8, lopetuspolut / part D |
 | `osaE-tarkastus.md` | `independent-verifier`, Opus | riippumaton tarkastus / independent review |
+| `vaihe2/` | pääistunto, `independent-verifier` (Opus) | vaihe 2: eristetyt koeohjelmat, bcc32-RTL-koe, inventaarion erotus, tarkastus; ks. `vaihe2/README.md` / step 2: isolated probes |
 | `SHA256SUMS` | – | tiivisteet / hashes |
 
 CSV-tiedostot voi tuottaa uudelleen / CSVs can be regenerated: `python -I

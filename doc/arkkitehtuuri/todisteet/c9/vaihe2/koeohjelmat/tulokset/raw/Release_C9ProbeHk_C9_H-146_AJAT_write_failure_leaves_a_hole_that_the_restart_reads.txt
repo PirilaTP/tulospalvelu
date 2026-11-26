@@ -1,0 +1,12 @@
+[doctest] run with "--help" for options
+TPINFO|wperr: AJAT1.LST line 66 iowerr error 2
+TPINFO|fp1 before failed row 2, after 3; messages: [-100] wperr: AJAT1.LST line 66 iowerr error 2; 
+TPINFO|memory before restart: row0:kno=101,t=3601000; row1:kno=102,t=3602000; row2:kno=103,t=3603000; row3:kno=104,t=3604000; 
+TPINFO|file before restart: slot1:kno=101,t=3601000; slot2:kno=0,t=-864000000; slot3:kno=103,t=3603000; slot4:kno=104,t=3604000; slot5:kno=0,t=-864000000; 
+TPINFO|after restart: rwtime=4 rtime=4: row0:kno=101,t=3601000; row1:kno=0,t=-864000000; row2:kno=103,t=3603000; row3:kno=104,t=3604000; 
+TPINFO|after restart + row 105 (10:00:25): row0:kno=101,t=3601000; row1:kno=0,t=-864000000; row2:kno=105,t=3602500; row3:kno=103,t=3603000; row4:kno=104,t=3604000; 
+TPRESULT|finding=H-146|mechanism=fp1-advanced-before-failed-write|observed=1|detail=fp1 2->3 on the failed row; slot 2 kno=0 t=-864000000; row 102 after restart missing
+===============================================================================
+[doctest] test cases:  1 |  1 passed | 0 failed | 12 skipped
+[doctest] assertions: 10 | 10 passed | 0 failed |
+[doctest] Status: SUCCESS!

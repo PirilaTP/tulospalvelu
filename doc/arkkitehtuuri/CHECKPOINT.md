@@ -242,8 +242,16 @@ Raportti `virheenkasittely.md`; raakatulokset ja raportit `todisteet/c9/`; skrip
 `tyokalut/resurssit.py` (v2). Uudet H-145–H-157 (keskitaso 9, matala 4) ja T-040–T-041; Q83–Q90;
 H-044, H-071 ja H-105 laajennettu. Kaikki staattisia.
 
-**SEURAAVA TYÖVAIHE / NEXT STEP:** käyttäjän katselmointi; sitten C-9:n sulkeminen, vaihe 2
-(eristetyt koeohjelmat, `virheenkasittely.md` luku 11) tai C-10.
+**C-9 vaihe 2 valmis (2026-11-26), riippumattomasti tarkastettu, commitoitu paikallisesti.**
+Eristetyt koeohjelmat `todisteet/c9/vaihe2/koeohjelmat/` (C9ProbeHk, C9ProbeJuk; Release ja Asan;
+käännös repositorion ulkopuolelle `C:\temp\c9build`; ajo `aja.py`, lopullinen `tulokset/ajo5.txt`)
+ja bcc32-RTL-koe. H-149 toistettu ja nostettu korkeaksi (konsolin viestiohjelmat kaatuvat
+ensimmäiseen automaattiseen HTML-tulosteeseen); H-145, H-146, H-147, H-150, H-151 toistettu
+testikehyksessä; uudet H-158, T-042, Q91–Q95; Q83, Q84, Q85, Q88 ratkaistu. Tulkinta
+`virheenkasittely.md` luku 12.
+
+**SEURAAVA TYÖVAIHE / NEXT STEP:** käyttäjän sulkemispäätös C-9:stä (suositus: sulkea,
+`virheenkasittely.md` 12.11); C-10 vain erillisellä luvalla.
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.
@@ -260,8 +268,10 @@ gaps in follow-up queue J7-1–J7-7. **C-8 step 1 complete** (`globaali-tila.md`
 H-129 high). **C-8 closed** on approval (counts reconciled; H-128 and H-129 mechanism reproduced with an
 isolated probe, not in a shipped program; H-129 in the fix queue as P2). **C-9 step 1 complete**
 (`virheenkasittely.md`, H-145–H-157, T-040–T-041, Q83–Q90; nothing high on static evidence, H-149
-relay `autofile` double free may be high, Q85). Next: the user's review; then close, step 2
-(isolated probes) or C-10.
+relay `autofile` double free may be high, Q85). **C-9 step 2 complete**
+(isolated probes, `todisteet/c9/vaihe2/`; H-149 raised to high, six findings reproduced in the
+test harness; H-158, T-042, Q91–Q95). Next: the user's closing decision (recommended: close);
+C-10 only on separate approval.
 
 ## Resurssien käyttö / Resource usage (C-6 vaihe 2 / step 2)
 

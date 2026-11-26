@@ -1,0 +1,14 @@
+[doctest] run with "--help" for options
+TPINFO|program=C9ProbeJuk
+TPINFO|msc_full_ver=195237029
+TPINFO|config=Release
+TPINFO|asan=0
+TPINFO|char_unsigned=1
+TPINFO|MAXOSUUSLUKU=30
+TPINFO|VAIKALUKU=12
+TPINFO|MAXSARJALUKU=250
+TPINFO|sizeof_void_ptr=4
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 7 skipped
+[doctest] assertions: 1 | 1 passed | 0 failed |
+[doctest] Status: SUCCESS!

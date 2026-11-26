@@ -147,6 +147,15 @@ Jatkotehtävä C-5:stä (ei numeroitu erä): syötteiden kokonaislukujäsennykse
 Follow-up from C-5 (not a numbered batch): integer-parse review, 161 candidates; may be
 merged with batch 7.
 
+### C-9 vaihe 2 / Step 2 (**valmis / done 2026-11-26**, `virheenkasittely.md` luku 12)
+
+Käyttäjän hyväksymä toteutus: H-149:n todentaminen (omistajuus, vapautukset, saavutettavuus,
+Release-käytös, Q85), H-145–H-147 virheinjektiolla, H-150:n vuodon mittaus, H-151:n ja H-152:n
+testattavuus, inventaarion v1/v2-erotus, palautumisen kokonaiskuva, Opus-tarkastus. Eristetyt
+koeohjelmat C-6/C-8-mallilla (`todisteet/c9/vaihe2/koeohjelmat/`); ei tuotantokoodin,
+projektiasetusten eikä CI:n muutoksia, ei toimitettuja ohjelmia, ei verkkoa. / Done on approval:
+isolated probes, no production, project or CI changes.
+
 ### C-9 vaihe 1: rajaus / Step 1: scope (**valmis / done 2026-11-26**, `virheenkasittely.md`)
 
 Toteutus: rajauksen mukaan; osan A skripti korjattiin agentin otoksen perusteella (v2), osan B

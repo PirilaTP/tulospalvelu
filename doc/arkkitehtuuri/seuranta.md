@@ -32,13 +32,21 @@ separately from test coverage.
 | **C, erä 7 (C-7) GUI:n liiketoimintalogiikka, vaihe 1 / GUI business logic, step 1** | **valmis ja suljettu käyttäjän hyväksynnällä / done and closed on approval** (`e3a8b67`; `gui-liiketoimintalogiikka.md`; H-109–H-127, T-034–T-037; H-017 kavennettu / narrowed, H-085 ja H-069 laajennettu / extended; 9 jäsennysehdokasta ratkaistu / parse candidates resolved; Q15 osittain / partly, uudet / new Q75–Q77; `todisteet/c7/`); kattavuus ja jatkotyöjono J7-1–J7-7 luku 13 / coverage and follow-up queue in section 13 | 2026-11-25 |
 | **C, erä 8 (C-8) globaali muuttuva tila, vaihe 1 / global mutable state, step 1** | **valmis ja suljettu käyttäjän hyväksynnällä / done and closed on approval** (`4884374` + sulkemiscommit / closing commit; `globaali-tila.md` luvut 11–12; H-128–H-144, T-038–T-039; Q78–Q82; H-128 ja H-129:n mekanismi toistettu eristetyllä koeohjelmalla / reproduced with an isolated probe; `todisteet/c8/`); jatkotehtävät alla / follow-ups below | 2026-11-26 |
 | **C, erä 9 (C-9) virheenkäsittely ja resurssit, vaihe 1 / error handling and resources, step 1** | **valmis, riippumattomasti tarkastettu, commitoitu paikallisesti / done, independently reviewed, committed locally** (`virheenkasittely.md`; H-145–H-157, T-040–T-041, Q83–Q90; H-044, H-071, H-105 laajennettu / extended; skripti / script `tyokalut/resurssit.py`; `todisteet/c9/`; noin 1,22 milj. tokenia agenteille / about 1.22 M agent tokens); odottaa käyttäjän katselmointia / awaiting the user's review | 2026-11-26 |
+| **C, erä 9 (C-9), vaihe 2: todentaminen eristetyillä koeohjelmilla / step 2: isolated probes** | **valmis, riippumattomasti tarkastettu, commitoitu paikallisesti / done, independently reviewed, committed locally** (`virheenkasittely.md` luku 12; `todisteet/c9/vaihe2/`; H-145, H-146, H-147, H-149, H-150, H-151 toistettu testikehyksessä / reproduced in test harness; H-149 → korkea / high; uudet / new H-158, T-042, Q91–Q95; Q83, Q84, Q85, Q88 ratkaistu / resolved); odottaa käyttäjän sulkemispäätöstä / awaiting the closing decision | 2026-11-26 |
 | C, erä 10 / batch 10 | ei aloitettu / not started (`suunnitelma.md`) | – |
 | D. Kommentointi / commenting | ei aloitettu / not started | – |
 
-**Seuraava askel / Next step:** C-9:n vaihe 1 on valmis (2026-11-26) ja odottaa käyttäjän
-katselmointia (`virheenkasittely.md`). Vaihtoehdot: sulkeminen, vaihe 2 (eristetyt koeohjelmat
-H-149, H-145, H-146, H-147, H-150; `virheenkasittely.md` luku 11) tai erä C-10. / C-9 step 1 done,
-awaiting review; options: close, step 2 (isolated probes), or batch C-10.
+**Seuraava askel / Next step:** C-9:n vaiheet 1 ja 2 ovat valmiit (2026-11-26); vaihe 2 suosittaa
+sulkemista (`virheenkasittely.md` 12.11). Odottaa käyttäjän sulkemispäätöstä; C-10 alkaa vasta
+erillisellä luvalla. / C-9 steps 1 and 2 done; step 2 recommends closing; awaiting the user's
+decision; C-10 only on separate approval.
+
+**Avoimet jatkotehtävät C-9:stä / open follow-ups from C-9** (`virheenkasittely.md` 12.10, 12.11):
+- H-152 GUI-käsittelijällä ja tulostettavilla tuloksilla / with the GUI handler and printable results
+- Q91 ViestiWinin VCL-muistinhallinta ja H-149:n kaksoisvapautus (VCL-koeohjelma) / VCL memory manager
+- Q92 bcc32-RTL:n `_wfopen_s`-jakotila; Q95 HkKisaWinin virrat ja vaiheen vaihto (H-150) / bcc32 share mode; HkKisaWin streams
+- Q93 `sendtcpfile` tavallisella tiedonsiirtoyhteydellä; Q94 AJAT-rivien käyttö tuloksissa; Q86 lukijan kuittaus (laite) / peer link stream; AJAT rows; reader ACK
+- matalat kokoomarivit H-156, H-157 yksitellen tarkastamatta / low roll-up rows not reviewed one by one
 Kiireellisesti
 korjattavat H-071, H-072, H-055 ja H-070 korjataan omissa haaroissaan erillisellä
 päätöksellä; väliaikaiset suojaussuositukset `muistiturvallisuus.md` luku 15. / C-5 closed;
@@ -152,6 +160,12 @@ separate decision; none started. Rivi 4b (H-129) lisätty C-8:n sulkemisessa / r
 | 6 | H-056, H-060, H-073 | laite tai verkko asetuksella / device or network with a setting | P2 |
 | 7 | P3–P5 | tavallinen data, paikallinen tiedosto, operaattori / ordinary data, local file, operator | `muistiturvallisuus.md` luku 15 |
 
+C-9:n havainnot (H-145–H-158) [päätelty] (`virheenkasittely.md` 12.9): **P2** H-149 (konsolin
+viestiohjelmat kaatuvat ensimmäiseen automaattiseen HTML-tulosteeseen tavallisessa
+konfiguraatiossa; todennettu koeohjelmalla); **P3** H-145, H-146, H-151, H-147, H-150; **P4** H-148,
+H-152, H-153, H-154, H-155; **P5** H-156, H-157, H-158. / C-9 findings: P2 H-149; P3 H-145, H-146,
+H-151, H-147, H-150; P4 H-148, H-152–H-155; P5 H-156–H-158.
+
 C-6:n havainnot (H-087–H-108) ovat lukkiutumisia, vapauttamattomia lukkoja, elinkaaren
 kilpailutilanteita ja VCL-käyttöä työsäikeistä; verkosta laukeavia syötevirheitä ei ole.
 Päivitetty sijoitus vaiheen 2 jälkeen [päätelty] (`saikeet-ja-lukot.md` 13.9): **P2** H-087,
@@ -205,14 +219,19 @@ pending), H-082, H-085; P5 the rest; H-042 stays P3.
 | Q80 | Kaatuuko saman kilpailun uusintayritys `KILP.DAT`:n jakorikkomukseen? / Sharing violation on retry (H-133, Q67) | `Hk/HkInit.cpp:3486-3491` |
 | Q81 | Useita lukijoita yhdellä HK-instanssilla; sammutetun TCP-lukijan Winsock-virhe? / Multiple readers in practice (H-136, H-138) | `globaali-tila.md` luku 9 |
 | Q82 | Mihin `tmaali` kirjoitetaan? / Where is `tmaali` written? (H-143) | `Hk/HkTulostus.cpp:6562` |
-| Q83 | Palauttavatko C++Builderin `fputs`/`fputws` virheessä `EOF`:n vai `WEOF`:n? / bcc32 RTL return on error (H-147) | `virheenkasittely.md` luku 9 |
-| Q84 | Rajoittaako bcc32-RTL avoimet virrat 50:een? / bcc32 stream limit (H-150) | `virheenkasittely.md` luku 9 |
-| Q85 | Miten keko reagoi viestin `autofile`:n kaksoisvapautukseen? / heap reaction to the double free (H-149) | `Juk/VTulostus.cpp:7200` |
-| Q86 | Pitääkö lukija kuittausta lopullisena? / reader ACK semantics (H-145) | `Tp/TpLaitteet.cpp:911-916` |
+| ~~Q83~~ | **Ratkaistu / resolved (C-9 vaihe 2):** bcc32-RTL:n `fputws` ja `fputs` palauttavat virheessä −1, eivät `WEOF`:ia (H-147) / both return -1 | `todisteet/c9/vaihe2/koeohjelmat/tulokset/rtl_bcc32.txt` |
+| ~~Q84~~ | **Ratkaistu / resolved (C-9 vaihe 2):** bcc32-RTL:ssä 50 virtaa (47 + 3); GUI:n vakiotila Q95:ssä (H-150) / 50 streams | `todisteet/c9/vaihe2/koeohjelmat/tulokset/rtl_bcc32.txt` |
+| ~~Q85~~ | **Ratkaistu MSVC:n osalta / resolved for MSVC (C-9 vaihe 2):** STATUS_HEAP_CORRUPTION (`0xC0000374`) ensimmäisellä kierroksella; bcc32-RTL:n `free` hiljainen; VCL Q91:ssä (H-149) / fail-fast in MSVC | `virheenkasittely.md` 12.1 |
+| Q86 | Pitääkö lukija kuittausta lopullisena? **Kavennettu (C-9 vaihe 2):** kuittaus vain Emit-kellolla (`Tp/TpLaitteet.cpp:911-917`); laitteen tulkinta avoin / reader ACK semantics, Emit clock only (H-145) | `Tp/TpLaitteet.cpp:911-916` |
 | Q87 | Verkkolevyn kahva katkon jälkeen? / SMB handle after a drop (H-146, H-015) | `virheenkasittely.md` luku 9 |
-| Q88 | Missä säikeessä viestin GUI ajaa `autofile`:n? / relay GUI autofile thread (H-147) | `ViestiWin/UnitMain.cpp:520` |
+| ~~Q88~~ | **Ratkaistu / resolved (C-9 vaihe 2):** viestin GUI ajaa `autofile`:n `LukumaaratTh`-työsäikeessä (H-147, H-149) / worker thread | `ViestiWin/UnitMain.cpp:535-541` |
 | Q89 | Konsolin ilmoituksen näppäin työsäikeessä? / console key routing to worker-thread prompts (H-157) | `tputilv2/Writeerr.cpp:66-94` |
 | Q90 | Ajetaanko kilpailuja ilman levypuskuria? / memory-only outbuf in practice | `virheenkasittely.md` luku 6 |
+| Q91 | Miten ViestiWinin VCL-muistinhallinta reagoi H-149:n kaksoisvapautukseen? / VCL memory manager and the H-149 double free | `virheenkasittely.md` 12.1 |
+| Q92 | Avaako bcc32-RTL:n `_wfopen_s` kirjoitusvirran yksinoikeudella? / bcc32 `_wfopen_s` share mode (H-147) | `tputilv2/TextFileClass.cpp:305` |
+| Q93 | Rikkooko `sendtcpfile`n STX/tiedosto/ETX-virta vastapään jäsennyksen tavallisella tiedonsiirtoyhteydellä? / file stream on a peer data link (H-149, H-151) | `Juk/VTulostus.cpp:7116-7128` |
+| Q94 | Käytetäänkö AJAT-riviä tulosten uudelleenrakentamiseen? / are AJAT rows used to rebuild results (H-146) | `virheenkasittely.md` 12.3 |
+| Q95 | HkKisaWinin virtamäärä vakiotilassa ja NULL-`femitfile` vaiheen vaihdossa (H-150) / HkKisaWin streams at steady state | `Hk/HkEmit.cpp:3057-3058` |
 | ~~Q16~~ | **Ratkaistu / resolved (C-2):** viestin vastaanotto lukitsee ennen lukua, ei H-007:ää; omat viat H-024–H-026 / relay locks before reading, no H-007; own defects H-024–H-026 | – |
 | ~~Q17~~, ~~Q18~~ | **Ratkaistu / resolved (C-3):** bcc32 noudattaa `-K`:ta kesken yksikön, tarkistussummat täsmäävät; koot mitattu kaikista käännöksistä / bcc32 honours `-K` mid-unit; sizes measured for all builds | `tiedostomuodot.md` |
 | Q19–Q25 | Erän C-2 kysymykset (AIKAT-kaksoiskappaleet, TCP-virta, rengas, `tark_ylahto`, `Kysy`, kirjastot, MONITORI-portti) / batch C-2 questions | `tiedonsiirto.md`, "Avoimet kysymykset" |
@@ -281,6 +300,7 @@ Recorded as issue drafts (local `issue-drafts/`, not in the repo).
 | 2026-11-26 | C-8:n vaihe 1 aloitettu käyttäjän pyynnöstä ("C-8:n analyysi") rajauksen mukaisesti ilman tokenbudjettia; skripti-inventaario + Sonnet-analyysi (A–D) + Opus-tarkastus (E); valmis, odottaa tarkastusta / C-8 step 1 started at the user's request per the scope; done, awaiting review | Käyttäjän pyyntö / user request |
 | 2026-11-26 | C-8 suljettu käyttäjän hyväksynnällä rajattujen tarkistusten jälkeen: lukumäärät täsmäytetty, H-128 ja H-129:n mekanismi toistettu eristetyllä koeohjelmalla (ei toimitetussa ohjelmassa), H-129 korjausjonoon P2; poikkeamat kirjattu; C-9:n vaihe 1 rajataan mutta ei aloiteta / C-8 closed on approval after bounded checks; C-9 step 1 scoped, not started | Käyttäjän päätös / user decision |
 | 2026-11-26 | C-9:n vaihe 1 tehty käyttäjän pyynnöstä ("Otetaan sitten työstöön C9") rajauksen mukaisesti: osat A–F, Sonnet osissa A–D, Opus osassa E; osan A skripti korjattiin agentin otoksen perusteella (v2), ja H-149 (tarkastajan löytö) todennettiin pääistunnossa koodista; ei pushia / C-9 step 1 done on the user's request per the scope | Käyttäjän päätös / user decision |
+| 2026-11-26 | C-9:n vaihe 2 tehty käyttäjän hyväksynnällä ("Hyväksyn C-9:n toisen työerän"): eristetyt koeohjelmat C9ProbeHk/C9ProbeJuk (Release, Asan) muuttamattomalla tuotantokoodilla, virheinjektio kuvaajan vaihdolla, bcc32-RTL-koe; Opus-tarkastus, jonka ehdottamat lisäkokeet (polku c TCP:llä, N1) ajettiin; H-149 → korkea; ei tuotantokoodin, projektien eikä CI:n muutoksia; ei pushia / C-9 step 2 done on approval | Käyttäjän päätös / user decision |
 | 2026-11-25 | C-5 vaihe 1: riippumaton tarkastus ja dokumentointi ilman välihyväksyntöjä, paikallinen commit sallittu, ei pushia; sen jälkeen C-5:n jäljellä olevat tavoitteet rajattuna staattisena työeränä; ei tuotantokoodin, projektiasetusten tai CI:n muutoksia, ei toimitettujen ohjelmien ajoja eikä verkkokokeita, ei uusia laajoja testikehyksiä; epäselvyydet avoimiksi kysymyksiksi / step 1 review and write-up without intermediate approvals, local commit allowed, no push; then the remaining C-5 goals as a bounded static step; no production, project or CI changes, no runs of shipped programs, no network tests, no new large harnesses | Käyttäjän ohje / user instruction |
 | 2026-11-25 | C-4 suljettu käyttäjän hyväksynnällä; H-071, H-072, H-055 ja H-070 kiireellisesti korjattaviksi; väliaikaiset suojaukset vain suosituksina, verkko- tai tuotantoasetuksia ei muutettu; C-5 seuraavaksi aloitusluvan jälkeen / C-4 closed on approval; urgent fixes marked; mitigations as recommendations only; C-5 next on approval | Käyttäjän päätös / user decision |
 | 2026-11-25 | C-4 vaihe 2 (viimeinen): vain analyysi; ei ASan-sarjoja, uusia testikehyksiä, GUI-ajoja, korjauksia eikä CI-muutoksia; vaihe 1 commitoitiin hyväksynnän ja uudelleentarkastuksen jälkeen (`81bcad9`), vaihetta 2 ei commitoida ilman hyväksyntää; uusi H vain, jos kyse ei ole rekisteröidyn vian toisesta ilmenemismuodosta / analysis only; step 1 committed after approval and re-review; step 2 not committed without approval | Käyttäjän ohje / user instruction |

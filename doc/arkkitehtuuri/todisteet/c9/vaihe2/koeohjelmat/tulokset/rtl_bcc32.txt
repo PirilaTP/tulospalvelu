@@ -1,0 +1,22 @@
+Embarcadero C++ 7.80 for Win32 Copyright (c) 1993-2025 Embarcadero Technologies, Inc.
+C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\rtl_bcc32.c:
+Turbo Incremental Link 7.00 Copyright (c) 1997-2025 Embarcadero Technologies, Inc.
+== weof
+RTL|fputs on a read-only stream returned -1 (EOF=-1)
+RTL|fputws on a read-only stream returned -1 (WEOF as int=65535, EOF=-1, sizeof(wint_t)=2)
+RTL|fputws result == WEOF: 0
+RTL|end
+exit=0
+== nfile
+RTL|fopen succeeded 47 times before failing (plus stdin, stdout, stderr)
+RTL|end
+exit=0
+== dfree
+RTL|first free done
+RTL|second free of the same block returned
+RTL|malloc after double free: 01E18A28 (freed block was 01E18A28)
+RTL|malloc after double free: 01E18A90 (freed block was 01E18A28)
+RTL|malloc after double free: 01E18AF8 (freed block was 01E18A28)
+RTL|malloc after double free: 01E18B60 (freed block was 01E18A28)
+RTL|end
+exit=0
