@@ -90,6 +90,20 @@ bool emitmerge_laajennus(const C *vanha, const unsigned short *vaika,
 	return(true);
 }
 
+// Muuntaa henkilokilpailun tarkastuksen tuloksen (tarkista_oik) sovittimen
+// tarkista-funktion arvoksi: 0 kaikki rastit kunnossa, >0 ei hyvaksytty, <0 virhe
+// (rataa ei loydy). Arvo -2 tarkoittaa, etta kortin kello on nollattu kesken
+// radan: kortti ei ole hyvaksytty, joten se ei saa tulla tulkituksi
+// onnistuneeksi tarkastukseksi.
+inline int emitmerge_tulos(int er)
+{
+	if (er == 0)
+		return(0);
+	if (er == -1)
+		return(-1);
+	return(er > 0 ? er : 1);
+}
+
 // Taydentaa kortin 1 (em1) puuttuvia rasteja kortin 2 (em2) leimoilla. Vain
 // puuttuvat rastit lisataan: jos sama rasti on molemmilla korteilla, kortin 1
 // aikaleima sailyy. Jokainen kortin 2 leima kokeillaan kortin 1 kopioon ja

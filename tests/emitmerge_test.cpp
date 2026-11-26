@@ -356,8 +356,18 @@ static void ajaKaikki(void)
 	testUseita<C>();
 }
 
+static void testTulos(void)
+{
+	CHECK(emitmerge_tulos(0) == 0);
+	CHECK(emitmerge_tulos(-1) == -1);
+	CHECK(emitmerge_tulos(3) == 3);
+	// Kello nollattu kesken radan (-2): ei hyvaksytty, ei virhe
+	CHECK(emitmerge_tulos(-2) > 0);
+}
+
 int main(void)
 {
+	testTulos();
 	testSiirto();
 	ajaKaikki<unsigned char>();   // Juk: UCHAR ctrlcode[]
 	ajaKaikki<char>();            // Hk: char ctrlcode[] (koodi 250 on etumerkillinen)

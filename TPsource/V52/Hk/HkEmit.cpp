@@ -32,6 +32,7 @@
 #include <dos.h>
 #include <sys\stat.h>
 #include <emitmerge.h>
+#include <emitanalyysi.h>
 #include "HkDeclare.h"
 #include "HkMuotoilu.h"
 #include "TpLaitteet.h"
@@ -2353,7 +2354,7 @@ struct HkTaydennys {
 	  INT oik = 0, er = tarkista_oik(em, NULL, 0, kilp, &oik);
 
 	  *oikeita = oik;
-	  return(er == -1 ? -1 : (er <= 0 ? 0 : (int) er));
+	  return(emitmerge_tulos((int) er));
 	  }
    int lukija(emittp *em) { return(haelukija(em)); }
    bool kelpaa(emittp *em2, int j)
@@ -2489,7 +2490,7 @@ INT lue_toinen_badge(emittp *em2, INT kno, INT *uusipos, INT rekisteroi, wchar_t
    setEmitJarr(newpos, kno, 0);
    laheta_em(&em1, 1, 0);
    er = tarkista(&em1, NULL, 0, &kilp);
-   if (er <= 0 && er != -1) {
+   if (er == 0) {
 	  // Tarkastusmerkinta muutetaan vain, jos sit\u00e4 ei ole asetettu k\u00e4sin (H, K, E, ...)
 	  muutettava = (kilp.tark(k_pv) == L'I' || kilp.tark(k_pv) == L'-');
 	  if (muutettava) {
@@ -4794,17 +4795,7 @@ static void emit_syyrivit(tulostusparamtp *tulprm, wchar_t *txt, INT pos, INT le
 // pysyvat oikein, vaikka tarkastus (tarkista_oik) kayttaytyy silloin eri tavalla.
 // tila: 0 hyvaksytty, 1 puuttuu (ei leimaa), 2 vaara leima (lk = leiman koodi),
 // 3 leimattu vaarassa jarjestyksessa, 4 leimausta ei vaadita (emit-koodi 2).
-struct EmitAnalyysi {
-   INT n;
-   INT nbad;
-   INT nr[MAXNRASTI];
-   INT rk[MAXNRASTI];
-   INT tila[MAXNRASTI];
-   INT lk[MAXNRASTI];
-   INT kaikki[MAXNRASTI];   // emit-koodi 1: mika tahansa leima kelpaa
-   INT nex;
-   INT ex[MAXNLEIMA];
-   };
+typedef EmitAnalyysiT<MAXNRASTI, MAXNLEIMA> EmitAnalyysi;
 
 // Kaikki rastit, joilla on tama emit-koodi: "91, 166, 274 tai 294". Palauttaa lukumaaran.
 static INT emit_koodirastit(INT koodi, wchar_t *out, INT maxlen)
@@ -4870,119 +4861,46 @@ static INT emit_rastikoodi(INT rasti)
    return(0);
    }
 
+// Sovitin: radan rasti i (vain numeeriset rastit) emitanalyysi.h:n algoritmille
+struct HkAnalyysiRata {
+   ratatp *rt;
+   INT ri[MAXNRASTI];
+   int nr;
+
+   HkAnalyysiRata(ratatp *r) : rt(r), nr(0) {}
+   int rasti(int i) { return(rt->rastikoodi[ri[i]]); }
+   int tyyppi(int i)
+	  {
+	  INT v = oikeakoodi(rt, ri[i], 1, 0);
+	  return(v == 2 ? 2 : (v == 1 ? 1 : 0));
+	  }
+   bool sopii(int i, int koodi) { return(oikeakoodi(rt, ri[i], koodi, 0) == 1); }
+   };
+
 static bool emit_analyysi(emittp *em, ratatp *rt, EmitAnalyysi *a)
    {
-   INT idx, i, j, m = 0, nr = 0, lukija, c, ri[MAXNRASTI], pc[MAXNLEIMA], mc[MAXNRASTI];
-   INT dp[MAXNRASTI+1][MAXNLEIMA+1];
-   bool kaytetty[MAXNLEIMA];
+   INT idx, j, m = 0, lukija, c;
+   int pc[MAXNLEIMA];
+   HkAnalyysiRata k(rt);
 
    memset(a, 0, sizeof(*a));
    lukija = haelukija(em);
    if (lukija < 1 || lukija > MAXNLEIMA-1)
 	  return(false);
-   for (idx = 0; idx < rt->rastiluku && nr < MAXNRASTI; idx++) {
+   for (idx = 0; idx < rt->rastiluku && k.nr < MAXNRASTI; idx++) {
 	  if (rt->rastikoodi[idx] == 10000 || rt->rastikoodi[idx] == 10001)
 		 return(false);
 	  if (rt->rastikoodi[idx] > 9999)
 		 continue;
-	  ri[nr] = idx;
-	  a->nr[nr] = nr + 1;
-	  a->rk[nr] = rt->rastikoodi[idx];
-	  if (oikeakoodi(rt, idx, 1, 0) == 2)
-		 a->tila[nr] = 4;     // emit-koodi 2: leimausta ei vaadita
-	  else if (oikeakoodi(rt, idx, 1, 0) == 1)
-		 a->kaikki[nr] = 1;
-	  nr++;
+	  k.ri[k.nr++] = idx;
 	  }
-   a->n = nr;
    for (j = 0; j < lukija; j++) {
 	  c = (UCHAR) em->ctrlcode[j];
 	  if (!c || onlukija(c) || c == 254)
 		 continue;
 	  pc[m++] = c;
 	  }
-   memset(dp, 0, sizeof(dp));
-   for (i = 1; i <= nr; i++) {
-	  for (j = 1; j <= m; j++) {
-		 if (oikeakoodi(rt, ri[i-1], pc[j-1], 0) == 1)
-			dp[i][j] = dp[i-1][j-1] + 1;
-		 else
-			dp[i][j] = dp[i-1][j] > dp[i][j-1] ? dp[i-1][j] : dp[i][j-1];
-		 }
-	  }
-   for (i = 0; i < nr; i++)
-	  mc[i] = -1;
-   for (j = 0; j < m; j++)
-	  kaytetty[j] = false;
-   i = nr;
-   j = m;
-   while (i > 0 && j > 0) {
-	  if (oikeakoodi(rt, ri[i-1], pc[j-1], 0) == 1 && dp[i][j] == dp[i-1][j-1] + 1) {
-		 mc[i-1] = j-1;
-		 kaytetty[j-1] = true;
-		 i--;
-		 j--;
-		 }
-	  else if (dp[i-1][j] >= dp[i][j-1])
-		 i--;
-	  else
-		 j--;
-	  }
-   // Rasti, jonka leima on muualla kortilla: vaarassa jarjestyksessa
-   for (i = 0; i < nr; i++) {
-	  if (mc[i] >= 0)
-		 continue;
-	  for (j = 0; j < m; j++) {
-		 if (!kaytetty[j] && oikeakoodi(rt, ri[i], pc[j], 0) == 1) {
-			kaytetty[j] = true;
-			a->tila[i] = 3;
-			a->lk[i] = pc[j];
-			break;
-			}
-		 }
-	  }
-   // Muut puuttuvat rastit: jos vierekkaisten oikeiden rastien valissa on ylimaarainen
-   // leima, se on rastin vaara leima. Muuten rasti puuttuu.
-   for (i = 0; i < nr; ) {
-	  INT i2, ed, seur, jj;
-
-	  if (mc[i] >= 0 || a->tila[i]) {
-		 i++;
-		 continue;
-		 }
-	  for (i2 = i; i2 < nr && mc[i2] < 0; i2++)
-		 ;
-	  ed = -1;
-	  for (jj = i-1; jj >= 0; jj--)
-		 if (mc[jj] >= 0) {
-			ed = mc[jj];
-			break;
-			}
-	  seur = m;
-	  if (i2 < nr)
-		 seur = mc[i2];
-	  jj = ed + 1;
-	  for (; i < i2; i++) {
-		 if (a->tila[i])
-			continue;
-		 while (jj < seur && kaytetty[jj])
-			jj++;
-		 if (jj < seur) {
-			kaytetty[jj] = true;
-			a->tila[i] = 2;
-			a->lk[i] = pc[jj];
-			jj++;
-			}
-		 else
-			a->tila[i] = 1;
-		 }
-	  }
-   for (i = 0; i < nr; i++)
-	  if (a->tila[i] && a->tila[i] != 4)
-		 a->nbad++;
-   for (j = 0; j < m; j++)
-	  if (!kaytetty[j])
-		 a->ex[a->nex++] = pc[j];
+   emitanalyysi_laske(a, k, k.nr, pc, m);
    return(true);
    }
 
