@@ -8,7 +8,7 @@ set -e
 OUT=${OUT:-./TpTest}
 
 ${CXX:-g++} -Wall -o "$OUT" \
-	-I include -I Tp -I Juk -I Tests \
+	-I include -I Tp -I Hk -I Juk -I Tests \
 	Tests/DoctestMain.cpp \
 	Tests/VRinnakkaisOsuusTest.cpp \
 	Juk/VRinnakkaisOsuus.cpp \

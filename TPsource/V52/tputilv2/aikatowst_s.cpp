@@ -18,6 +18,7 @@
 /*  tt0 on lis„ys tunteihin */
 
 #include <string.h>
+#include <wchar.h>
 
 wchar_t *aikatowstr_s(wchar_t *astr, int aika, int tt0)
 
