@@ -85,19 +85,34 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Tests\DoctestMain.cpp" />
+    <ClCompile Include="..\..\Tests\TulkSITest.cpp" />
+    <ClCompile Include="..\..\Tests\SICenterJsonTest.cpp" />
+    <ClCompile Include="..\..\Tests\SID3PunchTest.cpp" />
+    <ClCompile Include="..\..\Tests\EmitBadgeTest.cpp" />
+    <ClCompile Include="..\..\Tp\SITulkinta.cpp" />
+    <ClCompile Include="..\..\Tp\SICenterJson.cpp" />
+    <ClCompile Include="..\..\Tp\SID3Punch.cpp" />
+    <ClCompile Include="..\..\Tp\EmitBadge.cpp" />
+    <ClCompile Include="..\..\tputilv2\T_time_l.cpp" />
     <ClCompile Include="..\..\Tests\HkEnnTavTest.cpp" />
     <ClCompile Include="..\..\Hk\HkEnnTav.cpp" />
     <ClCompile Include="..\..\tputilv2\aikatowst_s.cpp" />
-    <ClCompile Include="..\..\tputilv2\putint_r.cpp" />                                                                  
+    <ClCompile Include="..\..\tputilv2\putint_r.cpp" />
     <ClCompile Include="..\..\Tests\VRinnakkaisOsuusTest.cpp" />
     <ClCompile Include="..\..\Juk\VRinnakkaisOsuus.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Juk\VRinnakkaisOsuus.h" />
+    <ClInclude Include="..\..\include\tptype.h" />
+    <ClInclude Include="..\..\include\sitypes.h" />
+    <ClInclude Include="..\..\Tp\SITulkinta.h" />
+    <ClInclude Include="..\..\Tp\SICenterJson.h" />
+    <ClInclude Include="..\..\Tp\SID3Punch.h" />
+    <ClInclude Include="..\..\Tp\EmitBadge.h" />
     <ClInclude Include="..\..\Tests\doctest.h" />
     <ClInclude Include="..\..\Tests\WideString.h" />
+    <ClInclude Include="..\..\Tp\TpDef.h" />
+    <ClInclude Include="..\..\Juk\VRinnakkaisOsuus.h" />
     <ClInclude Include="..\..\Hk\HkEnnTav.h" />
-    <ClInclude Include="..\..\Tests\doctest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

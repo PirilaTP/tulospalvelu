@@ -11,6 +11,8 @@ __recovery
 Debug_Build
 Release_Build
 obj
+TpTest
+TpTest.exe
 build-logs
 
 # Working document tracking changes to the GitHub issue (#97)

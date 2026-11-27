@@ -22,6 +22,7 @@
 #include "UnitEmitMuutokset.h"
 #include "UnitEmit.h"
 #include "VDeclare.h"
+#include "TpLaitteet.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -133,8 +134,8 @@ void __fastcall TFormEmitMuutokset::Nayta(int d, int osuus)
 				}
 			else {
 				MemoOhje->Lines->Clear();
-				MemoOhje->Lines->Text = L"Kilpailijalle jo luettu Emit-tiedot. Yhteys aiempiin "
-					L"tietoihin menetetään tallennettaessa.";
+				MemoOhje->Lines->Text = SIsana(L"Kilpailijalle jo luettu Emit-tiedot. Yhteys aiempiin "
+					L"tietoihin menetetään tallennettaessa.");
 				MemoOhje->Color = clFuchsia;
 				}
 			}
@@ -318,6 +319,8 @@ void __fastcall TFormEmitMuutokset::Button2Click(TObject *Sender)
 
 void __fastcall TFormEmitMuutokset::FormShow(TObject *Sender)
 {
+	if (IsSportidentInUse())
+		Caption = L"Sportident-muutokset";
 	if (JoukkueHaku || OsuusHaku) {
 		BtnVaihda->Visible = false;
 		MemoOhje->Visible = true;

@@ -236,7 +236,9 @@ int haeSeurVapaaBadge(int entbadge)
 			bdg += BADGEASKEL;
 			} while (haebdg(bdg) >= 0);
 		}
-	if (bdg <= 30000 || bdg > 9999999) {
+	// Enintaan 9 askelta (Emit: 9 999 999, SportIdent-kilpailu: 99 999 999,
+	// ks. BADGEASKEL), muuten vapaa arvo pienten lukujen alueelta (EMITALKU).
+	if (bdg <= 30000 || bdg > 10L * BADGEASKEL - 1) {
 		for (; haebdg(seurVapaaBadge) >= 0; seurVapaaBadge++) ;
 		bdg = seurVapaaBadge++;
 		}

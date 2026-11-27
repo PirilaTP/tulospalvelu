@@ -52,6 +52,8 @@
 #include "UnitMessages.h"
 #include "UnitMsgs.h"
 #include "UnitIlmoitus.h"
+#include "TpLaitteet.h"
+#include <System.TypInfo.hpp>
 
 void rem_pr(void);
 
@@ -268,13 +270,177 @@ int select3(int nButton, wchar_t *Teksti, wchar_t *Otsikko,
 	if (!Sender)
 		Sender = FormMain;
 	if (TFormSelect3 *FS = new TFormSelect3(Sender)) {
-		FS->Kysy(nButton, Teksti, Otsikko, Vast1, Vast2, Vast3);
+		UnicodeString siTeksti = SIsana(Teksti);
+		FS->Kysy(nButton, siTeksti.c_str(), Otsikko, Vast1, Vast2, Vast3);
 		retval = FS->ShowModal();
 		delete FS;
 	}
 	return(retval);
 }
 
+
+//---------------------------------------------------------------------------
+// SportIdent-sanasto: kun kilpailussa on kaytossa SportIdent
+// (IsSportidentInUse()), kayttoliittyman "Emit"-sanat naytetaan
+// "Sportident"-sanoina. Tallennettuja avaimia (asetusparametrit, XML-tagit,
+// tiedostonimet, ohjeen avainsanat) ei muuteta - vain naytettavat tekstit.
+//
+// Muutetaan: "Emit" -> "Sportident", "Emit-" -> "Sportident-",
+//   yhdyssana "Emitluenta" -> "Sportident-luenta",
+//   "Emit&yhteenveto" -> "Sportident-&yhteenveto", pienella kirjaimella samoin.
+// Ei muuteta (Emit-laitteisto ja -palvelut, tallennetut avaimet):
+//   "emiTag...", "EMIT..." (isoin), "EmitSQL" (iso kirjain perassa),
+//   "Emitin" (Emit-yhtion palvelin), "Emit RTR2" (laitemalli),
+//   "Emitkello"/"Emit-kello", tiedostonimet ("emitrek.lst").
+
+static bool siIso(wchar_t c)
+{
+	return (c >= L'A' && c <= L'Z') || (c >= 0xC0 && c <= 0xDE && c != 0xD7);
+}
+
+static bool siPieni(wchar_t c)
+{
+	return (c >= L'a' && c <= L'z') || (c >= 0xDF && c <= 0xFF && c != 0xF7);
+}
+
+static bool siKirjain(wchar_t c)
+{
+	return siIso(c) || siPieni(c);
+}
+
+static bool siAlkaa(const std::wstring &s, size_t i, const wchar_t *sana)
+{
+	for (; *sana; sana++, i++)
+		if (i >= s.size() || towlower(s[i]) != *sana)
+			return false;
+	return true;
+}
+
+UnicodeString SIsana(const UnicodeString &teksti)
+{
+	std::wstring s, t;
+	size_t i, j, k;
+
+	if (teksti.Pos(L"mit") == 0 || !IsSportidentInUse())
+		return teksti;
+	s = teksti.c_str();
+	for (i = 0; i + 6 <= s.size(); i++)         // emiTag-laitteen tekstit ennallaan
+		if (siAlkaa(s, i, L"emitag"))
+			return teksti;
+	for (i = 0; i < s.size(); i++) {
+		bool muuta = false;
+		wchar_t ed = i ? s[i-1] : 0, seur;
+
+		if ((s[i] == L'E' || s[i] == L'e') && s.compare(i+1, 3, L"mit") == 0 &&
+			(!siKirjain(ed) || (s[i] == L'E' && siPieni(ed)))) {
+			j = i + 4;
+			seur = j < s.size() ? s[j] : 0;
+			muuta = true;
+			if (siIso(seur))                                   // EmitSQL, emiTag
+				muuta = false;
+			else if (siAlkaa(s, j, L"in") && (j+2 >= s.size() || !siKirjain(s[j+2])))
+				muuta = false;                                 // Emitin (yhtio)
+			else if (siAlkaa(s, j, L"kello") || siAlkaa(s, j, L"-kello"))
+				muuta = false;                                 // Emit-kello
+			else if (seur == L' ' && j+2 < s.size() && siIso(s[j+1]) && siIso(s[j+2]))
+				muuta = false;                                 // Emit RTR2
+			else {
+				for (k = j; k < s.size() && siKirjain(s[k]); k++) ;
+				if (k+1 < s.size() && s[k] == L'.' && siKirjain(s[k+1]))
+					muuta = false;                             // emitrek.lst
+				}
+			if (muuta) {
+				t += (s[i] == L'E') ? L"Sportident" : L"sportident";
+				if (siPieni(seur) || (seur == L'&' && j+1 < s.size() && siPieni(s[j+1])))
+					t += L'-';                                 // yhdyssana
+				i += 3;
+				continue;
+				}
+			}
+		t += s[i];
+		}
+	return UnicodeString(t.c_str());
+}
+
+// Lomakkeen komponentit, joita ei muuteta: tunnistinlajin valinta (siina
+// on seka Emit-kortti etta SportIdent), laitemallien listat seka emiTag-
+// ja Emit-laitteiden ohjausikkuna (UnitEmiTag, vain Emit-laitteille).
+static const wchar_t *SIohitettavat[] = {
+	L"CBTunnistin", L"CBLaite1", L"FormEmiTag", L"emiTagluennanohjaus1",
+	L"Emitlaitteidenyhteydetjaohjaus1", L"emiTagohjaus1", NULL};
+
+static void siMerkkijono(TComponent *c, const wchar_t *ominaisuus)
+{
+	if (IsPublishedProp(c, ominaisuus) && PropIsType(c, ominaisuus, tkUString)) {
+		UnicodeString vanha = GetStrProp(c, ominaisuus), uusi = SIsana(vanha);
+		if (uusi != vanha)
+			SetStrProp(c, ominaisuus, uusi);
+		}
+}
+
+static void siLista(TStrings *lista)
+{
+	for (int i = 0; i < lista->Count; i++) {
+		UnicodeString uusi = SIsana(lista->Strings[i]);
+		if (uusi != lista->Strings[i])
+			lista->Strings[i] = uusi;
+		}
+}
+
+static void siKomponentti(TComponent *c)
+{
+	for (int i = 0; SIohitettavat[i]; i++)
+		if (c->Name == SIohitettavat[i])
+			return;
+	siMerkkijono(c, L"Caption");
+	siMerkkijono(c, L"Hint");
+	if (TRadioGroup *rg = dynamic_cast<TRadioGroup *>(c))
+		siLista(rg->Items);                    // ItemIndex sailyy
+	else if (TComboBox *cb = dynamic_cast<TComboBox *>(c)) {
+		int valittu = cb->ItemIndex;           // Strings[i]:n vaihto nollaisi valinnan
+		siLista(cb->Items);
+		if (cb->ItemIndex != valittu)
+			cb->ItemIndex = valittu;
+		}
+	for (int i = 0; i < c->ComponentCount; i++)
+		siKomponentti(c->Components[i]);
+}
+
+// Vaihtaa lomakkeen (ja sen omistamien komponenttien, myos valikoiden)
+// kuvatekstit, vihjeet ja luettelovalinnat. Idempotentti: "Sportident"
+// ei sisalla sanaa "emit", joten toistuva kutsu ei muuta mitaan.
+void SIsanatLomakkeelle(TComponent *lomake)
+{
+	if (lomake && !lomake->ComponentState.Contains(csDestroying) && IsSportidentInUse())
+		siKomponentti(lomake);
+}
+
+// Screen->OnActiveFormChange: aina kun lomake aktivoituu, sen tekstit ja
+// paaikkunan tekstit (valikko) paivitetaan. Paaikkuna luodaan ennen kuin
+// asetukset (esim. SPORTIDENT1=) on luettu, joten se paivitetaan tassa
+// myohemmin eika jo luonnissa.
+class TSIsanasto : public TObject
+{
+public:
+	void __fastcall AktiivinenMuuttui(TObject *Sender)
+	{
+		if (!IsSportidentInUse())
+			return;
+		SIsanatLomakkeelle(FormMain);
+		if (Screen->ActiveForm && Screen->ActiveForm != FormMain)
+			SIsanatLomakkeelle(Screen->ActiveForm);
+	}
+};
+
+static TSIsanasto *SIsanasto;
+
+void SIsanastoKaynnista(void)
+{
+	if (!SIsanasto) {
+		SIsanasto = new TSIsanasto;
+		Screen->OnActiveFormChange = SIsanasto->AktiivinenMuuttui;
+		}
+}
 INT luesarja(wchar_t *snimi, wchar_t *tc, bool salliyhd)
 {
 	return(0);
@@ -411,7 +577,7 @@ MESSAGE void __fastcall TFormMain::warnMsgHandler(TMyMessage &msg)
 	if (FSwarning)
 		return;
 	if ((FSwarning = new TFormIlmoitus(FormMain)) != NULL) {
-		FSwarning->Teksti = ((perr_ptrs_tp *) msg.lparam)->msg;
+		FSwarning->Teksti = SIsana(((perr_ptrs_tp *) msg.lparam)->msg);
 		FSwarning->Otsikko = ((perr_ptrs_tp *) msg.lparam)->ots;
 		FSwarning->Show();
 		}
@@ -451,7 +617,7 @@ MESSAGE void __fastcall TFormMain::errorMsgHandler(TMyMessage &msg)
 	wait = (msg.wparam & 0x0000ffff);
 	vainok = (msg.wparam & 0x10000000) != 0;
 	if (TFormSelect3 *FS = new TFormSelect3(FormMain)) {
-		FS->Kysy(vainok ? 1 : 2, ((perr_ptrs_tp *) msg.lparam)->msg ,
+		FS->Kysy(vainok ? 1 : 2, SIsana(((perr_ptrs_tp *) msg.lparam)->msg).c_str() ,
 			((perr_ptrs_tp *) msg.lparam)->ots, L"OK", L"Poistu ohjelmasta", L"", wait);
 		retval = FS->ShowModal();
 		delete FS;

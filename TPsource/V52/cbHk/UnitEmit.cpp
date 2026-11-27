@@ -102,6 +102,20 @@ void __fastcall TFormEmit::FormCreate(TObject *Sender)
 		if (regnly[i] == LID_EMITAG)
 			emiTagluennanohjaus1->Visible = true;
 		}
+	if (IsSportidentInUse()) {
+		Caption = L"Sportident-tiedot";
+		Label2->AutoSize = true;
+		Label2->Caption = L"Sportident";
+		if (kilpparam.kaksibadge != 2) {
+			LblOrigBadge->AutoSize = true;
+			LblOrigBadge->Caption = L"Luettu sportident";
+			}
+		EdtBadge->Left     = 90;
+		LblOrigBadge->Left = 162;
+		EdtOrigBadge->Left = 280;
+		Label9->Left       = 341;
+		EdtTietue->Left    = 381;
+		}
 #ifdef DBGFILE
 	if (dbgtofile)
 		{
@@ -434,7 +448,8 @@ void __fastcall TFormEmit::NaytaKilp(void)
 void __fastcall TFormEmit::NaytaEmit(void)
 {
 	wchar_t st[60];
-	int tm = 0, nc = 0, lk = -1, n_lk = 0, enn, virhe = 0, tulkinta[MAXNLEIMA+1], style = 0;
+	int tm = 0, nc = 0, lk = -1, n_lk = 0, enn = 0, virhe = 0, tulkinta[MAXNLEIMA+1], style = 0;
+	bool lukijaOk = false;
 	UnicodeString AS;
 	ratatp *rt;
 
@@ -467,6 +482,7 @@ void __fastcall TFormEmit::NaytaEmit(void)
 		if (lk >= 0 && lk < MAXNLEIMA-1) {
 			tm = Em.ctrltime[lk];
 			n_lk = tulkinta[lk];
+			lukijaOk = true;
 			}
 		}
 	for (nc = MAXNLEIMA-1; nc > 0; nc--)
@@ -509,7 +525,10 @@ void __fastcall TFormEmit::NaytaEmit(void)
 		aikatowstr_ls(st, 10*(Em.ctrltime[i]-enn), 0);
 		st[pvparam[k_pv].laika] = 0;
 		Cells[5][i+1].text = st;
-		aikatowstr_ls(st, Em.time+10*(Em.ctrltime[i]-tm), t0);
+		if (lukijaOk)
+			aikatowstr_ls(st, Em.time+10*(Em.ctrltime[i]-tm), t0);
+		else
+			aikatowstr_ls(st, 10*(Em.ctrltime[i]-enn), 0);
 		st[pvparam[k_pv].laika] = 0;
 		Cells[6][i+1].text = st;
 		if (tulkinta[i] == (n_lk - 1))
@@ -673,7 +692,7 @@ void __fastcall TFormEmit::Paivita(emittp *pEm)
 				if (n > 1) {
 					erbeep();
 					erbeep();
-					Application->MessageBoxW(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä", L"Valitse", MB_OK);
+					Application->MessageBoxW(SIsana(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä").c_str(), L"Valitse", MB_OK);
 					EdtBadge->Color = clLime;
 					FocusControl(EdtBadge);
 					}
@@ -1493,9 +1512,9 @@ int __fastcall TFormEmit::tallennaKilpailija(bool kysy)
 		bdg = _wtoi(EdtBadge->Text.c_str());
 		orgbdg = _wtoi(EdtOrigBadge->Text.c_str());
 		if (Kilp.pv[k_pv].laina[1] != L'L' && !(on_lainakortti(bdg) || on_lainakortti(orgbdg)) && HTBadge != 0 &&
-			((bdg != HTBadge && bdg > 30000 && bdg < 1000000) || (orgbdg != HTBadge && orgbdg > 30000 && bdg < 1000000)) &&
+			((bdg != HTBadge && bdg > 30000 && bdg < BADGEASKEL) || (orgbdg != HTBadge && orgbdg > 30000 && bdg < BADGEASKEL)) &&
 			_wtoi(EdtLisno->Text.c_str()) != 0) {
-			if (Application->MessageBox(L"Vaihdetaanko tietokannan Emit-koodi?", L"Pysyvä muutos?",
+			if (Application->MessageBox(SIsana(L"Vaihdetaanko tietokannan Emit-koodi?").c_str(), L"Pysyvä muutos?",
 				MB_YESNO) != IDYES) {
 				Kilp.pv[k_pv].laina[1] = L'L';
 				}
@@ -1923,7 +1942,7 @@ void __fastcall TFormEmit::BadgeHaku(void)
 		FocusControl(EdtSNimi);
 		}
 	if (n > 1) {
-		Application->MessageBoxW(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä", L"Valitse", MB_OK);
+		Application->MessageBoxW(SIsana(L"Valitse osanottaja luettelosta käyttäen alas/ylös -näppäimiä Emit-kentässä").c_str(), L"Valitse", MB_OK);
 		EdtBadge->Color = clLime;
 		FocusControl(EdtBadge);
 		}
@@ -2064,7 +2083,7 @@ void __fastcall TFormEmit::BtnHaeSeurClick(TObject *Sender)
 {
 	wchar_t txt[62];
 	char key[MAXINDL+1];
-	int d, i, count = 0;
+	int d, i, k, count = 0;
 
 	do {
 		JatkaHakua = 1;
@@ -2096,9 +2115,19 @@ void __fastcall TFormEmit::BtnHaeSeurClick(TObject *Sender)
 				break;
 			case 2:
 				i = _wtoi(EdtHakuArvo->Text.c_str());
-				EdtHakuArvo->Text = UnicodeString(i+1);
-				if (i > 999999)
+				k = haebdg(i);
+				// Seuraava koodi indeksista (kuten ViestiWinissa). Ent. i+1 ja kiintea
+				// ylaraja 999999, jolloin SportIdent-kortteja (SI9:sta alkaen yli
+				// 1 000 000) ja siirrettyja koodeja (BADGEASKEL) ei selattu.
+				if (k >= 0 && k < nbadge-1) {
+					i = bdg_kno[k+1].badge;
+					}
+				else if (k < 0 && -k - 1 < nbadge) {
+					i = bdg_kno[-k - 1].badge;
+					}
+				else
 					JatkaHakua = 0;
+				EdtHakuArvo->Text = UnicodeString(i);
 				break;
 			case 3:
 				i = _wtoi(EdtHakuArvo->Text.c_str());
@@ -2124,7 +2153,7 @@ void __fastcall TFormEmit::BtnHaeEdClick(TObject *Sender)
 {
 	wchar_t txt[62];
 	char key[MAXINDL+1];
-	int d, i;
+	int d, i, k;
 
 	do {
 		JatkaHakua = 1;
@@ -2149,11 +2178,28 @@ void __fastcall TFormEmit::BtnHaeEdClick(TObject *Sender)
 				MuutosHaku = true;
 				break;
 			case 1:
-			case 2:
 			case 3:
 				i = _wtoi(EdtHakuArvo->Text.c_str());
 				if (i > 1)
 					EdtHakuArvo->Text = UnicodeString(i-1);
+				else
+					JatkaHakua = 0;
+				break;
+			case 2:
+				// Edellinen koodi indeksista (kuten ViestiWinissa), ks. BtnHaeSeurClick
+				i = _wtoi(EdtHakuArvo->Text.c_str());
+				if (i > 1) {
+					k = haebdg(i);
+					if (k > 0) {
+						i = bdg_kno[k-1].badge;
+						}
+					else if (k < -1) {
+						i = bdg_kno[-k - 2].badge;
+						}
+					else
+						i--;
+					EdtHakuArvo->Text = UnicodeString(i);
+					}
 				else
 					JatkaHakua = 0;
 				break;
@@ -3656,7 +3702,13 @@ void __fastcall TFormEmit::EmitvaihdottulevilleClick(TObject *Sender)
 void __fastcall TFormEmit::BtnLoppuunClick(TObject *Sender)
 {
 	if (EmitMuutosFlag) {
-		Application->MessageBoxW(L"Luenta voi jatkua vasta, kun kaavake \"Emit-muutokset\" on suljettu", L"Ohje", MB_OK);
+		{
+		bool isSI = IsSportidentInUse();
+		Application->MessageBoxW(
+			isSI ? L"Luenta voi jatkua vasta, kun kaavake \"Sportident-muutokset\" on suljettu"
+			     : L"Luenta voi jatkua vasta, kun kaavake \"Emit-muutokset\" on suljettu",
+			L"Ohje", MB_OK);
+		}
 		return;
 		}
 	if (OnkoMuutoksia()) {
