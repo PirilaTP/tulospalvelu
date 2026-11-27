@@ -11,7 +11,7 @@ ${CXX:-g++} -Wall -o "$OUT" \
 	-I include -I Tp -I Juk -I Tests \
 	Tests/DoctestMain.cpp \
 	Tests/VRinnakkaisOsuusTest.cpp \
-	Juk/VRinnakkaisOsuus.cpp
+	Juk/VRinnakkaisOsuus.cpp \
 	Tests/HkEnnTavTest.cpp \
 	Hk/HkEnnTav.cpp \
 	tputilv2/aikatowst_s.cpp \
