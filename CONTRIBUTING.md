@@ -87,8 +87,9 @@ Rekisterit pysyvät kanonisena lähteenä; GitHubin työkalut viittaavat niihin 
   `dokumentaatio`, `tietopohja`, `P1`–`P5`.
 - **Tietoturva.** Älä julkaise hyödyntämisohjeita äläkä avaa julkista issueta uudesta, rekisterissä
   olemattomasta tietoturvaviasta. Ilmoita siitä ensin yksityisesti repositorion ylläpitäjälle.
-  Pysyvä ilmoituskanava (esim. GitHubin yksityinen haavoittuvuusilmoitus) on vielä päättämättä;
-  se kuuluu omistajan päätökseen OP-1 (`doc/arkkitehtuuri/omistajan-paatokset.md`).
+  Pysyvä ilmoituskanava (esim. GitHubin yksityinen haavoittuvuusilmoitus) on vielä päättämättä
+  (`doc/arkkitehtuuri/omistajan-paatokset.md`, OP-1). Auditoinnin jo tuntemat viat ovat julkisia
+  (OP-1, vaihtoehto a).
 
 ## English summary
 

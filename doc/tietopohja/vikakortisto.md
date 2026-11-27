@@ -310,7 +310,7 @@ toimitettua ohjelmaa. Kortin puuttuminen ei tarkoita, että toiminto on virheet�
 ### Lähderevisio
 
 - Korttien lähdeviitteet (rivinumerot) on kirjattu revisioihin: `4b48749`, `7aaca40`, `ab10f88`, `c273b9f`, `f7fe553`. Tuotantokoodi `TPsource/` ei ole muuttunut revision `f7fe553` jälkeen (`doc/arkkitehtuuri/CHECKPOINT.md`).
-- Kortit ja rekisterit luettiin työpuusta, jonka viimeisin commit oli `6e83210`.
+- Kortit ja rekisterit luettiin työpuusta, jonka viimeisin commit oli `e62f2e7`.
 - Rekisteritiedostojen tiivisteet tuottohetkellä (SHA-256, 12 merkkiä): `havainnot.md` cb94426a9dd9; `riskiarvio.csv` ce2bb33511ab; `tekninen-velka.csv` 2c2e74f31f23; `vaikutukset.csv` 474b97661aec; `korjauskokonaisuudet.csv` 5c19cce94bf2.
 - Jokaisen kortin teksti on tarkistettu sen omien rekisteririvien tilaa vastaan; tiiviste on kortin teknisissä tiedoissa ("Rekisteririvien tiiviste nyt").
 
@@ -1270,7 +1270,7 @@ toiminnan päätellyksi.
 
 `korjaussuunnitelma.md`, kokonaisuus KK-C13-18 (aalto 0, testausinfra): sarja a korjaa tai poistaa
 `Tests/run.sh`:n (PR 3), ja sarja b (aalto 3) ajaa testit CI:ssä. Päätökset odottavat: OP-2 (korjataanko
-vai poistetaanko `run.sh`, ajetaanko testit CI:ssä) ja OP-1, jota CI-muutos edellyttää. Kokonaisuuden
+vai poistetaanko `run.sh`, ajetaanko testit CI:ssä); CI-muutoksen edellyttämä OP-1 on päätetty 2026-11-27. Kokonaisuuden
 hyväksymiskriteerit: yksi komento kääntää ja ajaa testit paikallisesti, ja CI ajaa `TpTest`in ja
 ydintestit jokaisesta PR:stä.
 
@@ -1294,7 +1294,7 @@ ydintestit jokaisesta PR:stä.
 | Ohjelmat | ei_tiedossa (peruste: ei_tiedossa) |
 | Korjauskokonaisuus | KK-C13-18 Testaus-, CI- ja varoitusperusta; vaihe 1, aalto 0; haara `testit/regressioperusta` |
 | Omistajan päätökset, joissa havainto mainitaan | OP-2 Testi- ja CI-käytäntö (avoin) |
-| Kokonaisuuden KK-C13-18 omistajan päätökset | OP-1 Auditointitulosten julkaisu, push ja suojausohjeet (avoin) |
+| Kokonaisuuden KK-C13-18 omistajan päätökset | OP-1 Auditointitulosten julkaisu, push ja suojausohjeet (päätetty 2026-11-27) |
 | Kysymykset | - |
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Tests/run.sh:14`; merge `6107c8f`; `.github/workflows/build.yml` |
@@ -6423,8 +6423,8 @@ tulosten vioittumista ei ole osoitettu.
 - Miten UDP-tarkistuksen ohitus ja lajinumeron raja käyttäytyvät oikeassa ohjelmassa (ei ajettu).
 - Mitä ylikirjoitus vioittaa oikeassa ohjelmassa, ja miten henkilökilpailun ohjelma käyttäytyy
   (vain koodista luettu).
-- Havainnon julkaisu on omistajan päätettävänä (OP-1), koska aineisto kuvaa vian riittävän
-  tarkasti hyödynnettäväksi.
+- Omistaja päätti 2026-11-27 (OP-1, vaihtoehto a), että auditointiaineisto julkaistaan ennen
+  korjauksia, vaikka se kuvaa vian riittävän tarkasti hyödynnettäväksi.
 
 ### 13. Miten vika on tarkoitus korjata
 
@@ -6434,8 +6434,8 @@ pituus ylittää paikan, ja hylkäys kirjataan lokiin. Sanomamuoto ei muutu. Ain
 hylätty UDP-paketti ei saa jäädä kuittaamatta ilman harkintaa, koska väärä raja pysäyttäisi
 lähettäjän.
 
-Päätöstä odottaa OP-1 (auditointitulosten julkaisu ja suojausohjeet). Kokonaisuuden FILESEND-osa
-(OP-5) ei koske tätä vikaa.
+OP-1 (auditointitulosten julkaisu) on päätetty 2026-11-27: aineisto julkaistaan ennen korjauksia.
+Kokonaisuuden FILESEND-osa (OP-5) ei koske tätä vikaa.
 
 ### 14. Tekniset tiedot ja lähteet
 
@@ -6456,7 +6456,7 @@ Päätöstä odottaa OP-1 (auditointitulosten julkaisu ja suojausohjeet). Kokona
 | Juurisyy | JS-1 Ulkoista syötettä ei validoida rajalla |
 | Ohjelmat | HkKisaWin HkMaali ViestiWin ViestiMaali ViestiLuenta (peruste: tarkistettu) |
 | Korjauskokonaisuus | KK-C13-1 Työasemaprotokollan vastaanoton rajatarkistukset; vaihe 1, aalto 1; haara `korjaus/kk-c13-1-vastaanoton-rajatarkistukset` |
-| Omistajan päätökset, joissa havainto mainitaan | OP-1 Auditointitulosten julkaisu, push ja suojausohjeet (avoin) |
+| Omistajan päätökset, joissa havainto mainitaan | OP-1 Auditointitulosten julkaisu, push ja suojausohjeet (päätetty 2026-11-27) |
 | Kokonaisuuden KK-C13-1 omistajan päätökset | OP-5 FILESEND-tiedostonsiirron rajaus (avoin) |
 | Kysymykset | Q18 (ratkaistu) |
 | Liittyvät havainnot | - |
@@ -13118,7 +13118,7 @@ Juurisyy on JS-1: ulkoista syötettä ei validoida rajalla. Vika löytyi C4389-v
 
 Korjaussuunnitelman kokonaisuus KK-C13-1 (Työasemaprotokollan vastaanoton rajatarkistukset). Sisäinen pituus rajataan luokan pituuteen omana pull requestinaan. Tämä ei riko tiedostonsiirto-ominaisuutta. Tiedostopolun rajaus tehdään vasta päätöksen OP-5 jälkeen omana pull requestinaan, koska rajaus rikkoisi `/K`-valitsimen ja ylähakemistoon lähetyksen. Sanomamuoto ei muutu, joten korjattu ja korjaamaton ohjelma toimivat yhdessä. Korjaus tehdään sekä HK:n että viestin vastaanottopolkuun.
 
-Päätöstä odottavat osat: OP-5 (FILESEND-tiedostonsiirron rajaus, avoin; vaihtoehdot: ei rajausta, vain työhakemisto oletuksena tai vastaanotto asetuksen taakse). Havainto mainitaan myös päätöksessä OP-1 (auditointitulosten julkaisu ja suojausohjeet).
+Päätöstä odottavat osat: OP-5 (FILESEND-tiedostonsiirron rajaus, avoin; vaihtoehdot: ei rajausta, vain työhakemisto oletuksena tai vastaanotto asetuksen taakse). Havainto mainitaan myös päätöksessä OP-1 (auditointitulosten julkaisu; päätetty 2026-11-27: julkaistaan ennen korjauksia).
 
 ### 14. Tekniset tiedot ja lähteet
 
@@ -13140,7 +13140,7 @@ Päätöstä odottavat osat: OP-5 (FILESEND-tiedostonsiirron rajaus, avoin; vaih
 | Ohjelmat | HkKisaWin HkMaali ViestiWin ViestiMaali ViestiLuenta (peruste: tarkistettu) |
 | Korjauskokonaisuus | KK-C13-1 Työasemaprotokollan vastaanoton rajatarkistukset; vaihe 1, aalto 1; haara `korjaus/kk-c13-1-vastaanoton-rajatarkistukset` |
 | Muut kokonaisuudet | KK-C10-4 |
-| Omistajan päätökset, joissa havainto mainitaan | OP-1 Auditointitulosten julkaisu, push ja suojausohjeet (avoin), OP-5 FILESEND-tiedostonsiirron rajaus (avoin) |
+| Omistajan päätökset, joissa havainto mainitaan | OP-1 Auditointitulosten julkaisu, push ja suojausohjeet (päätetty 2026-11-27), OP-5 FILESEND-tiedostonsiirron rajaus (avoin) |
 | Kysymykset | - |
 | Liittyvät havainnot | H-029 H-156 |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Tp/TpComY.cpp:1001`, `:2399`, `:3004-3037`; `Hk/HkCom32.cpp:939-940`, `:1105`; `Juk/VCom.cpp:968`, `:1240`; `Hk/HkDef.h:1301-1307`; `Juk/VDef.h:1247-1253` |
@@ -13301,8 +13301,8 @@ tekemättä.
 - Käytetäänkö taulukon viereisiä tietoja tavalla, joka näkyy käyttäjälle; vaikutus tulosten
   laskentaan on päätelty, ei osoitettu.
 - Kaikkia ohjaussanoman tyyppejä ei ole vielä käyty läpi (korjaussuunnitelma ottaa ne mukaan).
-- Havainnon julkaisu on omistajan päätettävänä (OP-1), koska aineisto kuvaa vian riittävän
-  tarkasti hyödynnettäväksi.
+- Omistaja päätti 2026-11-27 (OP-1, vaihtoehto a), että auditointiaineisto julkaistaan ennen
+  korjauksia, vaikka se kuvaa vian riittävän tarkasti hyödynnettäväksi.
 
 ### 13. Miten vika on tarkoitus korjata
 
@@ -13311,8 +13311,8 @@ taulukon kokoon, hylättyä arvoa ei välitetä edelleen, ja kaikki sanomatyypit
 Sanomamuoto ei muutu. Aineiston mukaan lailliset lähettäjät käyttävät omaa taulukkoaan, joten rajaus
 ei hylkää laillisia sanomia.
 
-Päätöstä odottaa OP-1 (auditointitulosten julkaisu ja suojausohjeet). Kokonaisuuden FILESEND-osa
-(OP-5) koskee H-071:ää.
+OP-1 (auditointitulosten julkaisu) on päätetty 2026-11-27: aineisto julkaistaan ennen korjauksia.
+Kokonaisuuden FILESEND-osa (OP-5) koskee H-071:ää.
 
 ### 14. Tekniset tiedot ja lähteet
 
@@ -13333,7 +13333,7 @@ Päätöstä odottaa OP-1 (auditointitulosten julkaisu ja suojausohjeet). Kokona
 | Juurisyy | JS-1 Ulkoista syötettä ei validoida rajalla |
 | Ohjelmat | HkKisaWin HkMaali ViestiWin ViestiMaali ViestiLuenta (peruste: tarkistettu) |
 | Korjauskokonaisuus | KK-C13-1 Työasemaprotokollan vastaanoton rajatarkistukset; vaihe 1, aalto 1; haara `korjaus/kk-c13-1-vastaanoton-rajatarkistukset` |
-| Omistajan päätökset, joissa havainto mainitaan | OP-1 Auditointitulosten julkaisu, push ja suojausohjeet (avoin) |
+| Omistajan päätökset, joissa havainto mainitaan | OP-1 Auditointitulosten julkaisu, push ja suojausohjeet (päätetty 2026-11-27) |
 | Kokonaisuuden KK-C13-1 omistajan päätökset | OP-5 FILESEND-tiedostonsiirron rajaus (avoin) |
 | Kysymykset | - |
 | Liittyvät havainnot | - |
@@ -34177,7 +34177,7 @@ koodausvirheitä pääsemästä sisään [päätelty; suunnitelma ei esitä mita
 `korjaussuunnitelma.md`, kokonaisuus KK-C13-18 (aalto 0; työmäärä M, muutosriski matala, ei vaikuta
 tuotantokoodiin). Sarja b (aalto 3): testien ajo CI:ssä, työkaluversion riippumattomuus (Q35),
 varoitusten perustaso ja uusien varoitusten esto (T-021) sekä `/analyze`-ajo erillisenä työnä.
-Päätökset odottavat: OP-2 (testi- ja CI-käytäntö) ja OP-1, jota CI-muutos edellyttää. Kaikki muut
+Päätös odottaa: OP-2 (testi- ja CI-käytäntö); CI-muutoksen edellyttämä OP-1 on päätetty 2026-11-27. Kaikki muut
 korjauskokonaisuudet riippuvat KK-C13-18:n sarjasta a.
 
 ### 6. Mitä ei tiedetä
@@ -34205,7 +34205,7 @@ korjauskokonaisuudet riippuvat KK-C13-18:n sarjasta a.
 | Ohjelmat | HkKisaWin HkMaali ViestiWin ViestiMaali ViestiLuenta (peruste: tarkistettu) |
 | Korjauskokonaisuus | KK-C13-18 Testaus-, CI- ja varoitusperusta; vaihe 1, aalto 0; haara `testit/regressioperusta` |
 | Omistajan päätökset, joissa havainto mainitaan | - |
-| Kokonaisuuden KK-C13-18 omistajan päätökset | OP-1 Auditointitulosten julkaisu, push ja suojausohjeet (avoin), OP-2 Testi- ja CI-käytäntö (avoin) |
+| Kokonaisuuden KK-C13-18 omistajan päätökset | OP-1 Auditointitulosten julkaisu, push ja suojausohjeet (päätetty 2026-11-27), OP-2 Testi- ja CI-käytäntö (avoin) |
 | Kysymykset | Q48 (avoin) |
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `VS/Hk/HkMaali/HkMaali.vcxproj`; `RADStudio10/HkKisaWin.cbproj`; `../muistiturvallisuus.md` |

@@ -18,4 +18,4 @@ K,vaihe,"Vaihe K: tietopohja (vikakortit, käsikirja, portaali, agentti)",toteut
 C-14,vaihe,Koko tuotantolähdekoodin katselmointi,lähtötaso mitattu; suunnitelma odottaa hyväksyntää; katselmointia ei aloitettu,2026-11-27,c14-suunnitelma.md,
 E,vaihe,D-vaiheen ennakkotehtävät E-1–E-4,ei aloitettu,2026-11-26,korjaussuunnitelma.md,
 D,vaihe,Vaihe D: korjaukset,ei aloitettu,2026-11-26,korjaussuunnitelma.md,vaatii erillisen luvan
-S,vaihe,Tietopohjan liittäminen dokumentaatiosivustoon,toteutettu paikallisesti; julkaisu edellyttää omistajan päätöstä OP-1,2026-11-27,,päivitetään julkaisun yhteydessä
+S,vaihe,Tietopohjan liittäminen dokumentaatiosivustoon,"toteutettu paikallisesti; julkaisu sallittu (OP-1 päätetty 2026-11-27), push ja julkaisuajo odottavat hyväksyntää",2026-11-27,,päivitetään julkaisun yhteydessä

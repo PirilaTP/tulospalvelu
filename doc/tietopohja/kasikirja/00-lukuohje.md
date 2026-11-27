@@ -13,9 +13,9 @@ sidottu. Lue se ennen muita lukuja. Polut ovat suhteessa hakemistoon `TPsource/V
 ala `doc/`, `docs-site/` tai `.github/`. Lyhenteet: **HKM** = HkMaali, **HKW** = HkKisaWin,
 **VM** = ViestiMaali, **VL** = ViestiLuenta, **VW** = ViestiWin.
 
-**Luottamuksellisuus.** Käsikirja ja vikakortit kuvaavat korjaamattomia vikoja, myös sellaisia,
-jotka voivat laueta verkosta. Niitä koskee sama rajoitus kuin auditointiaineistoa: ei julkiseen
-repositorioon ilman omistajan erillistä hyväksyntää (`doc/tietopohja/README.md`; OP-1 luvussa 14).
+**Julkisuus.** Käsikirja ja vikakortit kuvaavat korjaamattomia vikoja, myös sellaisia, jotka voivat
+laueta verkosta. Omistaja päätti 2026-11-27 (OP-1, vaihtoehto a), että ne julkaistaan ennen
+korjauksia (`doc/tietopohja/README.md`; OP-1 luvussa 14).
 
 ## 1. Mitä tapahtuu
 

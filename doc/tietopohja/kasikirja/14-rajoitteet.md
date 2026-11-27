@@ -265,7 +265,7 @@ Päätösten tila ei ole luvun muissa osissa; tarkista se tiedostosta.
 
 | Tunnus | Asia | Liittyvät kohdat | Tila | Viimeistään |
 |---|---|---|---|---|
-| OP-1 | Auditointitulosten julkaisu, push ja suojausohjeet | - | avoin | ennen D-vaiheen alkua |
+| OP-1 | Auditointitulosten julkaisu, push ja suojausohjeet | - | päätetty 2026-11-27: (a) julkaistaan ennen korjauksia | ennen D-vaiheen alkua |
 | OP-2 | Testi- ja CI-käytäntö | Q35, Q40 | avoin | aalto 0 |
 | OP-3 | C++-standardi tuotantokoodissa | Q9 | avoin | aalto 1 (oletus riittää) |
 | OP-4 | Yhteensopivuuspolitiikka: sekaversiot, tiedosto- ja protokollamuutokset | H-016, H-029, T-019, T-043 | avoin | aalto 2; vaihe 4 |
@@ -284,8 +284,8 @@ Päätösten tila ei ole luvun muissa osissa; tarkista se tiedostosta.
 | OP-17 | Modernisoinnin selvityskohteet | T-046 | avoin | vaihe 5 |
 | OP-18 | Korjausjulkaisujen käytäntö | T-025, T-044, Q98 | avoin | ennen ensimmäistä D-julkaisua |
 
-Käsikirjan lukujen kannalta olennaisimmat: **OP-1** (luottamuksellisuus: käsikirja ja kortit eivät saa mennä julkiseen
-repositorioon ilman omistajan hyväksyntää; käyttäjän ohje 2026-11-26 on voimassa oleva rajoitus eikä OP-1:n ratkaisu), **OP-6**
+Käsikirjan lukujen kannalta olennaisimmat: **OP-1** (julkaisu: päätetty 2026-11-27, aineisto julkaistaan ennen
+korjauksia; jokainen julkaisutoimi hyväksytään erikseen), **OP-6**
 (luku 08), **OP-9** (luvut 05, 06, 11, 12), **OP-11** (luku 12), **OP-12** (luvut 01, 12), **OP-13** (luvut 04, 05, 10) ja **OP-14**
 (käytännön käyttötavat). Odottavatko päätökset korjausta, katso `korjaussuunnitelma.md` ja `rekisteri/korjauskokonaisuudet.csv`.
 Käsikirja ei tee eikä oleta päätöksiä: kun se sanoo "omistajan päätös", kyseinen kohta on yllä.

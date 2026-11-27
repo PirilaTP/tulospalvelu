@@ -21,6 +21,10 @@ are open; OP-1..OP-3 are handled before phase D starts. The user's instruction n
 audit branch to a public repository without separate approval is a standing constraint, not the
 resolution of OP-1.
 
+**Tila 2026-11-27:** OP-1 päätetty (vaihtoehto a: julkaistaan ennen korjauksia); muut 17 avoinna.
+Push, PR ja sivuston julkaisuajo hyväksytään edelleen kukin erikseen. / OP-1 decided (option a);
+the other 17 are open; each publishing step is still approved separately.
+
 Kentät: **Asia** (mitä päätetään), **Miksi** (miksi päätös tarvitaan), **Vaihtoehdot ja
 vaikutukset**, **Suositus**, **Riippuvat kokonaisuudet**, **Viimeistään** (missä kehittämisvaiheessa
 päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
@@ -50,7 +54,13 @@ päätös tarvitaan; vaiheet ja aallot: `korjaussuunnitelma.md` luvut 4 ja 6).
 
 ## OP-1 Auditointitulosten julkaisu, push ja suojausohjeet
 
-- **Tila / status.** avoin / open
+- **Tila / status.** päätetty 2026-11-27 / decided 2026-11-27
+- **Päätös / decision.** Vaihtoehto (a): auditointiaineisto, tietopohja ja testikoodi julkaistaan
+  julkisessa repositoriossa ja dokumentaatiosivustolla ennen korjauksia (omistajan päätös
+  2026-11-27). Julkaisu tehdään edelleen erikseen hyväksyttynä toimena (push, PR, sivuston
+  julkaisuajo). Avoimina jäävät uusien tietoturvavikojen ilmoituskanava ja se, julkaistaanko
+  suojausohjeet käyttöohjeessa erikseen. / Option (a): publish before the fixes; each publishing
+  step is still approved separately; reporting channel and user-facing protection advice open.
 - **Asia.** Milloin ja miten auditointidokumentit, testikoodi ja korjaukset viedään julkiseen
   repositorioon, ja julkaistaanko käyttäjille väliaikaiset suojausohjeet ennen korjauksia.
 - **Miksi.** Dokumentit kuvaavat verkosta oletusasetuksin laukeavia muistivikoja (H-071, H-072,

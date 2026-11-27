@@ -7,9 +7,9 @@ sanasto, paikallinen selainportaali ja asiantuntija-agentti. Suunnitelma ja tila
 **Julkisuus.** Tietopohja on tarkoitettu julkaistavaksi dokumentaatiosivustolla
 (<https://pirilatp.github.io/tulospalvelu/>, osiot *Kehittäjille* ja *Ohjelmiston laatu*), jotta
 muut kehittäjät ja käyttäjät voivat hyödyntää sitä. Kortit kuvaavat korjaamattomia vikoja, myös
-verkosta laukeavia, mutta eivät hyödyntämisohjeita. Julkaisun ajankohta ja tapa ovat omistajan
-päätös OP-1 (`doc/arkkitehtuuri/omistajan-paatokset.md`); kunnes se on kirjattu päätetyksi,
-aineistoa ei viedä julkiseen repositorioon.
+verkosta laukeavia, mutta eivät hyödyntämisohjeita. Omistaja päätti 2026-11-27 (OP-1, vaihtoehto a),
+että aineisto julkaistaan ennen korjauksia (`doc/arkkitehtuuri/omistajan-paatokset.md`); jokainen
+julkaisutoimi (push, PR, sivuston julkaisuajo) hyväksytään silti erikseen.
 
 **Kattavuusrajoite.** Auditointi ei kata koko lähdekoodia: noin 36 % riveistä on vain inventoitu,
 yhtäkään tuotantotiedostoa ei ole katselmoitu kokonaan, ja havaintojen määrä on alaraja
