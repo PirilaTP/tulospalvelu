@@ -118,7 +118,8 @@ Tiedonsiirto välittää tilan, ei operaatioita; yhden yhteyden sisällä toimit
 |---|---|---|
 | Yhteys katkeaa, levyjono käytössä | lähtevät paketit jäävät `COMFILE.DAT`:iin ja lähtevät yhteyden palattua alkuperäisessä järjestyksessä; yhteys alkaa `ALKUT`-paketilla ja järjestysnumero nollautuu | [todennettu, tarkastettu: `tiedonsiirto.md`] |
 | Yhteys katkeaa, muistijono (`COMFILE=EI`, HK) | täysi jono pudottaa paketin; varoitusdialogi jo 25 ja 38 jonossa olevan kohdalla, lukkojen ollessa varattuina | H-021 |
-| TCP-asiakasyhteys katkeaa tai ei avaudu | asiakas ei yritä uudelleen (operaattorien sidontajärjestys), joten replikointi loppuu käynnistykseen asti; TCPXML-uudelleenyhteys voi kaataa ohjelman | H-027 |
+| TCP-asiakasyhteys ei avaudu | epäonnistunut ensimmäinen avaus on pysyvä: asiakas ei yritä uudelleen (operaattorien sidontajärjestys), joten replikointi loppuu käynnistykseen asti | H-027 |
+| TCP-asiakasyhteys katkeaa jo muodostuneena | koodissa on uudelleenyhteyspolku (`Tp/TpComY.cpp:1285-1290`, `com/WinUDP.cpp:617-627`), joten katko ei ole pysyvä; polun toimivuutta ei ole ajettu; TCPXML-uudelleenyhteys voi silti kaataa ohjelman | H-027, KE-19 [luettu koodista, ei ajettu] |
 | TCP-palvelinporttiin tulee toinen yhteys | korvaa elävän yhteyden sulkematta sitä; kaksi lukusäiettä samaan puskuriin | H-028 |
 | UDP-paketti tulee väärästä osoitteesta | mikä tahansa datagrammi voi siirtää yhteyden kohdeosoitteen (myös käsin asetetun) | H-029 |
 | Yhteyskatkon aikana muutetaan samaa tietoa kahdella asemalla | muutokset voivat vaihtua ristiin; ohjelma ei huomaa eikä korjaa | H-016 |
@@ -166,11 +167,19 @@ on koottu luvussa 10 kohdassa 1.9 (lähde `riippuvuudet.md` luku 13 ja laiterapo
   puskurit (H-070).
 - **Emit-kellon kuittaus:** `+\r`, kun `tall_emit` palauttaa 0, myös epäonnistuneelle tallennukselle
   (H-145) ja hylätylle kaksoiskappaleelle (H-168); `?\r` pyytää uudelleen enintään 200 ms välein (Q86)
-  [todennettu: `riippuvuudet.md` luku 13].
+  [todennettu: `riippuvuudet.md` luku 13]. Kuittaus seuraa kutsutun funktion paluuarvoa
+  (`Tp/TpLaitteet.cpp:910-916`: arvo 0 antaa `+`, muu arvo `?`): `tall_regnly` (RTR ym.) palauttaa 1,
+  kun ajanottojono on alustamatta tai täynnä, ja kun RTR:n kellon ja koneen kellon ero ylittää rajan
+  ensimmäisen kerran; tällöin ei kuitata vaan pyydetään uusinta (`Hk/HkIV.cpp:2771-2784`), kun taas
+  `KELLO_ESTO`-hylkäys palauttaa 0 ja kuitataan. Timy ja muut laitteet eivät käytä paluuarvoa
+  (`Tp/TpLaitteet.cpp:716`, `:780`) [luettu käsikirjaa varten, ei tarkastettu; riippumaton tarkastus
+  K-5 04-10].
 - **Kellosanoma, joka ei ole tunnettu:** asetuksella `TUNNJONO` mikä tahansa muu koodi kuin A-F jättää
   `ajat_CS`-lukon pysyvästi varatuksi lukijasäikeelle (HK) ja pysäyttää käsin kirjattavat ajat ja
   vaiheen vaihdon (H-090). Virheellinen ampumasakkosanoma tai ampumapaikka voi jättää tallennuksen
-  lukon päälle (H-008) tai kirjoittaa taulukon ulkopuolelle (H-060, H-055).
+  lukon päälle (H-008) tai kirjoittaa taulukon ulkopuolelle (H-060, H-055). H-008 ei vaadi erityistä
+  asetusta: lukko jää päälle myös oletuksella `SAKKO_LAJI`=2, kun sanoma tulee ampumalaitteelta, ja sanoma
+  välitetään muille asemille (KE-15; `Hk/HkSak.cpp:187-196`) [luettu koodista, ei ajettu].
 - **Viestin kuuluttajatila:** tavallinen TARKT-paketti jättää `tall_CS`:n päälle ja jäädyttää aseman
   (H-024).
 - **Vaiheen vaihdon aikana saapuva laitemerkki** jää käsittelemättä (H-094).
@@ -356,8 +365,8 @@ säie odottaa pääsäikeen ikkunaa; seuraukset lukon alla ovat samanlaiset.
 | Asetus tai valitsin | Ohjelmat | Vaikutus virhetilanteissa | Lähde |
 |---|---|---|---|
 | `errMsgBox` (muuttuja, ei asetusavain) | kaikki | konsolikäännöksissä oletus 0: ilmoitus ruudun alarivillä; GUI-käännöksissä 1 | `Hk/HkGlobals.cpp:559-563`; `Juk/VGlobals.cpp:57-61` (luettu käsikirjaa varten) |
-| `COMFILE=EI` | HK | muistijono: täysi jono pudottaa paketteja (H-021) | `tiedonsiirto.md`; [KO] |
-| `COMFILE=S` | HK | levyjono säilytetään käynnistyksessä kysymättä | [KO: `hkkisawin/hkliite1.md`] |
+| `COMFILE=EI` | HK (viestissä jäsennin ohittaa; koko ohjelman asetus) | muistijono: täysi jono pudottaa paketteja (H-021) | `tiedonsiirto.md`; [KO] |
+| `COMFILE=S` | HK ja viesti (`Juk/VInit.cpp:1219`) | levyjono säilytetään käynnistyksessä kysymättä | [KO: `hkkisawin/hkliite1.md`] |
 | `AJAT=nimi/S` | HK | ajanottotiedosto säilytetään kysymättä | [KO] |
 | `BOOT` | HK | käynnistys ilman vahvistuksia | [KO] |
 | `CBVarmista`, `SQLSTART`, `SQLTALLENNUS` | HKW, VW | SQL-peili ja varmistustiedosto | `riippuvuudet.md` luku 11 |

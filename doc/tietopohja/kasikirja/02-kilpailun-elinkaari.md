@@ -167,7 +167,11 @@ sarjan tulospalvelutilassa; muuten kaikilla vaiheilla on sama sarja (`Hk/HkTls.c
 Jos tiedostonsiirto on otettu käyttöön, tallennus voi siirtää tiedostot muille koneille, mutta
 siirretyt tiedot tulevat käyttöön vasta kun tiedot luetaan uudelleen (käynnistys, vaiheen vaihto tai
 valinta *Lue sarjat ja muut tiedot uudelleen*), ja nämä toiminnot käynnistyvät koko verkossa vain,
-jos millään koneella ei ole lähetysjonossa odottavia sanomia [KO: hkkisawin 2.2.5].
+jos millään koneella ei ole lähetysjonossa odottavia sanomia [KO: hkkisawin 2.2.5]. HKW:n valinta
+*Lue sarjat ja muut tiedot uudelleen* ei ole erillinen luku: se kutsuu vaiheen vaihdon funktiota
+nykyisellä vaiheella ja lähettää vaihtopyynnön muille asemille (`cbHk/WinHk.cpp:2060-2061`, `:2121`;
+kohta 1.9), joten vaiheen vaihdon viat (H-129) koskevat myös yksivaiheista kilpailua (KE-21)
+[luettu koodista, ei ajettu; päätelty `seuranta.md` KE-21:stä].
 
 **Viesti.** Viestissä sarja määrittelee osuuksien määrän, rinnakkaisosuudet, osuuksien
 yhteislähtöajat ja lähtövälin; sarjatiedot ovat samassa `KilpSrj.xml`-muodossa (`Juk/vSarjat.cpp`)
@@ -359,6 +363,13 @@ HKW:ssa valinta on päävalikon kohdassa *Tiedosto*, HKM:ssä *Asetukset*-valiko
 (`HkConsole/HkCons0.cpp:924-929`) [KO: hkkisawin 10.5]. Vaiheen vaihto lähettää sanoman muille
 koneille, jotka vaihtavat vaihetta, ja edellyttää, ettei millään koneella ole lähetysjonossa
 odottavia sanomia; vaihetta ei pidä vaihtaa, kun jollain koneella muokataan tietoja [KO: hkkisawin 10.5].
+Pyynnön lähetys riippuu vaihtavan aseman omasta, koko ohjelman levyjonoasetuksesta (`levypusk`,
+`Hk/HkGlobals.cpp:363`), ei vastaanottajan yhteyden jonotyypistä: vain jos `levypusk` on päällä,
+`vaihdavaihe` merkitsee avoimet yhteydet aloituspaketin ja vaihtopyynnön lähetettäviksi
+(`lah_alku`, `lah_vaihto`; lähdeyhteydelle vain aloituspaketti, `Hk/HkIx.cpp:1974-1981`). Jos
+vaihtavalla asemalla on `COMFILE=EI` (muistijono), pyyntöä tai aloituspakettia ei lähde millekään
+yhteydelle [luettu koodista, riippumattomasti tarkastettu 2026-11-27 (`laatu/tarkastukset/k5/kasikirja.md`
+08-4, 08-5); ei ajettu].
 Käyttöohje neuvoo antamaan asetuksen `vaihe=v` ja huolehtimaan, että `vaihevalinta.cfg` osoittaa
 oikeaan vaiheeseen, koska uudelleenkäynnistys väärään vaiheeseen aiheuttaa lieviä ongelmia [KO:
 hkkisawin 10.5].
@@ -370,7 +381,10 @@ johdetut rakenteet (`teejarj(true)`) [AA: `globaali-tila.md` 4.2]. Säie- ja luk
 
 - aikajonotiedoston nimipohja `aikaflname` (H-131);
 - `kilpparam.maxvaluku`, `lsakmax`, sarjojen `mno`/`lsak`-rajaukset, `maaliajat`, korostusrajat,
-  `eralahto`/`era_akt` (H-141, H-143);
+  `eralahto`/`era_akt` (H-141, H-143); H-141:n kaksoiskorttien eston laskurivirhe on myös viestissä
+  (`Juk/VEmit.cpp:1475-1503`, `on_emit`: `nemitvar` ei nollaudu, kun taulu vapautetaan), ja siellä
+  laukaisijoita ovat radan uudelleenluku ja emit-analyysin uusinta, koska viestissä ei ole vaiheen
+  vaihtoa (KE-20) [luettu koodista, ei ajettu];
 - numerohakemiston rivimäärä: `teejarj(true)` nollaa hakemiston sisällön mutta ei `idindex->nrec`iä
   (H-129).
 
@@ -443,7 +457,7 @@ GUI-projektien osalta; HkArv2.cpp:n kuuluminen vain HKW:hen on tarkistettu proje
 | Poistetun tai uudelleennumeroidun kilpailijan jäännösrivi hakemistossa | Numerojärjestyksessä etenevät toiminnot pysähtyvät ja jättävät loput pois ilman ilmoitusta | [AA: H-128] |
 | Poistetun tietueen paikka otetaan uudelleen käyttöön | Uusi kilpailija perii vanhan Emit-linkin ja näyttää jo luetulta | [AA: H-140] |
 | Sarjavalikon valinta tyhjä (`ItemIndex -1`) | Viestissä joukkue siirtyy sarjaan 0; HK:ssa voi kaatua | [AA: H-114] |
-| Vaiheen vaihto monivaiheisessa kilpailussa | Numerohakemiston laskuri ei nollaudu; kekoylivuoto mahdollinen noin 1 500 kilpailijasta alkaen; vaiheen vaihtopyyntö verkosta ei kysy vahvistusta | [AA: H-129; KE-2] |
+| Vaiheen vaihto monivaiheisessa kilpailussa | Numerohakemiston laskuri ei nollaudu; kekoylivuoto mahdollinen noin 1 500 kilpailijasta alkaen; vaiheen vaihtopyyntö verkosta ei kysy vahvistusta | [AA: H-129; KE-2, KE-21] |
 | Vaiheen vaihto evätään konsolissa | `vaiheenvaihto`-lippu jää päälle, myöhemmät vaihdot ja emit-käsittely estyvät | [AA: H-031] |
 | Vaiheen vaihto ja verkko | `VAIN_TULOST` sovelletaan vastaanottajan omaan vaiheeseen | [AA: H-023] |
 | Arvonta: jako sarjoihin, kohdesarja jo täydempi | Alustamaton tai negatiivinen taulukkoindeksi; virheellisen sarjan nimi välirivillä antaa alustamattoman sarjaindeksin | [AA: H-085] |
@@ -568,6 +582,11 @@ jälkimmäisessä).
 - **Q80** Kaatuuko saman kilpailun uusintayritys `KILP.DAT`:n jakorikkomukseen (GUI-koe) [AA: sama].
 - **KE-2** Verkosta tuleva vaiheen vaihtopyyntö käynnistää vaihdon ilman vahvistusta ja toistettuna
   voi kasvattaa hakemiston laskuria (`Hk/HkCom32.cpp:843-848`) [päätelty; `seuranta.md` KE-2].
+- **KE-20** H-141:n kaksoiskorttien eston laskurivirhe on myös viestissä (`Juk/VEmit.cpp:1475-1503`);
+  laukaisijoina radan uudelleenluku ja emit-analyysin uusinta [luettu koodista; `seuranta.md` KE-20].
+- **KE-21** HKW:n valikko *Lue sarjat ja muut tiedot uudelleen* ajaa vaiheen vaihdon nykyisellä
+  vaiheella ja lähettää pyynnön muille, joten H-129 koskee myös yksivaiheista kilpailua
+  (`cbHk/WinHk.cpp`) [luettu koodista; `seuranta.md` KE-21].
 - **KE-5** HK:n `deltall` jatkaa nollatulla tietueella, kun `GETREC` antaa virheilmoituksen
   tietuenumerolla -1 [luettu koodista; `seuranta.md` KE-5].
 - **KE-7** `initindex` ei nollaa `idindex->nrec`iä (H-129:n täydennys) [päätelty; `seuranta.md` KE-7].

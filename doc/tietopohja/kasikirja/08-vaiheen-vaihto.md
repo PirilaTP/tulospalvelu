@@ -41,7 +41,9 @@ tulospalvelua [KO: hkkisawin 10.5]. Rakenne on seuraava:
   ratatiedosto `RADAT<n>.XML`. Tiedostonimen vaihenumero asetetaan käynnistyksessä merkki
   kerrallaan: monivaiheisessa kilpailussa nimestä korvataan numero `1` vaiheen numerolla, yksivaiheisessa
   kilpailussa siitä poistetaan merkki (`Hk/HkInit.cpp:3356-3376`, H-132)
-  [luettu käsikirjaa varten, ei tarkastettu].
+  [luettu käsikirjaa varten, ei tarkastettu]. Lokitiedoston nimen vaihenumero (`LOKI1.`)
+  asetetaan vain käynnistyksessä (`Hk/HkInit.cpp:3367`); `vaihdavaihe` ei muuta sitä, joten loki
+  jatkuu todennäköisesti alkuperäisen vaiheen nimellä [päätelty; ei ajettu, kohta 7].
 
 ### 1.2 Mihin vaiheeseen ohjelma käynnistyy
 
@@ -58,9 +60,13 @@ tulospalvelua [KO: hkkisawin 10.5]. Rakenne on seuraava:
   koneelle tulee huomautus, ja tilanne palautuu, kun kone siirretään muun verkon vaiheeseen. Virhe
   voi jäädä joksikin aikaa huomaamatta [KO: hkkisawin 10.5].
 - Jos `vaihevalinta.cfg` sisältää arvon 0, ohjelma kysyy käynnistyksessä vaihetta
-  ("Vahvista kilpailupäivä (tai vaihe) tai vaihda antamalla numero", `Hk/HkInit.cpp:3314-3322`).
-  Muulloin kysymystä ei esitetä [luettu käsikirjaa varten, ei tarkastettu]. Jos annettu vaihe on
-  suurempi kuin vaiheiden määrä, ohjelma käyttää viimeistä vaihetta (`Hk/HkInit.cpp:3381-3382`).
+  ("Vahvista kilpailupäivä (tai vaihe) tai vaihda antamalla numero", `Hk/HkInit.cpp:3314-3322`),
+  mutta vain tulospalvelutilassa (`ToimintaTila == 2`) ja kun vaiheita on yli yksi
+  (`n_pv_akt > 1`; `Hk/HkInit.cpp:3314-3316`). Kysymys tulee vain cfg-tiedoston arvosta 0
+  (`luevaihevalinta`, `:289-311`): suora asetus `VAIHE=0` leikataan nollaksi eli vaiheeksi 1
+  eikä kysy mitään (`:708-709`). Muulloin kysymystä ei esitetä [todennettu: koodi]. Jos annettu
+  vaihe on suurempi kuin vaiheiden määrä, ohjelma käyttää viimeistä vaihetta
+  (`Hk/HkInit.cpp:3381-3382`) [luettu käsikirjaa varten, ei tarkastettu].
 
 ### 1.3 Vaiheen vaihto käyttäjän näkökulmasta
 
@@ -115,20 +121,31 @@ vaiheelta [AA: `globaali-tila.md` 4.2; `saikeet-ja-lukot.md` 5, tarkastettu] ja 
    tekstimuotoisia rata- ja leimaustiedostoja, joihin käynnistys palaisi (H-134). Onnistuessa
    emit-tiedosto `EMIT<n>.DAT` avataan ja luetaan; lukuvirhe poistaa emit-tarkastuksen samoin
    (`:1936-1951`).
-9. **Ajanotto.** Aikajonot alustetaan uudelleen (`initajat`) niille jonoille, joilla ajanotto on
-   käytössä (`:1958-1972`).
-10. **Yhteydet.** Jokaiselle aiemmin avoimelle yhteydelle, joka käyttää levyjonoa (`levypusk`),
-    asetetaan merkintä "lähetä aloituspaketti vaihtopyyntölipulla" (`lah_alku`, `lah_vaihto`), paitsi
-    yhteydelle, jolta pyyntö tuli (`kielto`) (`:1974-1982`). Avoimet yhteydet palautetaan
-    (`:1983`). Vaihekohtaista lähetysjonoa (`opencomfile(1)`) ei avata ensimmäiselle levyjonoyhteydelle;
-    mitä tämä tarkoittaa yhden yhteyden asemassa, on avoin (Q68).
+9. **Ajanotto.** Aikajonot alustetaan uudelleen (`initajat`), mutta vain jos `aikajono[0]` oli
+   olemassa: koko käsittely ohittuu, jos sitä ei ole (`:1900`). Ajanottoa koskeva
+   ehto ("ajanotto käytössä": `ajanottofl > 0` tai jokin kello asetettu) koskee vain jonoa 0;
+   muut jonot alustetaan ehdotta (`:1958-1972`) [todennettu: koodi]. Jos jonoa 0 ei ole mutta
+   jono 1 (LAJAT) on, jono 1 nimetään uudelleen ilman sulkemista ja uudelleenlukua; seurausta
+   ei ole ajettu (kohta 7, A4).
+10. **Yhteydet.** `levypusk` on koko ohjelman asetus (`COMFILE`; `Hk/HkGlobals.cpp:363`,
+    `Hk/HkInit.cpp:1256-1259`), ei yhteyskohtainen. Jos se on päällä (arvo 1 tai 2),
+    jokaiselle aiemmin avoimelle yhteydelle asetetaan `lah_alku = 1` (lähetä aloituspaketti), myös
+    yhteydelle, jolta pyyntö tuli; vain `lah_vaihto` (vaihtopyyntölippu) on 0 sille yhteydelle
+    (`kielto`) (`:1974-1982`). Jos `levypusk` on pois (`COMFILE=EI`), mitään merkintää ei aseteta
+    millekään yhteydelle: vaihdon yhteydessä ei lähde pyyntöä eikä aloituspakettia
+    [todennettu: koodi]. Avoimet yhteydet palautetaan (`:1983`). Vaihekohtainen lähetysjono
+    (`opencomfile(1)`) avataan toisesta yhteydestä alkaen kerran yhteyttä kohden, ei
+    ensimmäiselle (`:1976-1978`); mitä tämä tarkoittaa yhden yhteyden asemassa, on avoin (Q68).
 11. **Lopetus.** Lukot vapautetaan, konsolin näyttö palautetaan ja lippu nollataan; `vaihevalinta.cfg`
     kirjoitetaan, jos `VAIHE=V` on annettu; GUI palauttaa aloitusasettelun ikkunat, jos se on annettu (`haeIkkunat`) (`:1987-2004`).
 
 GUI:n käsittelijä ympäröi tämän vielä seuraavilla toimilla (`cbHk/WinHk.cpp:2080-2144`): lippu
 `vaiheenvaihto` asetetaan, `LukumaaratTh` pysäytetään (`lkmThreadOn = 0`) ja emit-säie pysäytetään
 (`ProsEmitOn = false`), 500 ms odotetaan, lomakkeet suljetaan ja poistetaan, ja vaihdon jälkeen
-`LukumaaratTh` ja emit-säie (`ProsEmitThread`) käynnistetään uudelleen. Ne säikeet, jotka poistuvat
+`LukumaaratTh` ja emit-säie (`ProsEmitThread`) käynnistetään uudelleen. Etäpyynnön käsittelijä
+(`VaihdaVaiheHandler`) pysäyttää samat kaksi säiettä mutta ei odota 500 ms (vrt. valikon
+`Sleep(500)`, `cbHk/WinHk.cpp:2084`, ja käsittelijä `:2157-2160`) [todennettu: koodi]; onko
+tällä merkitystä esimerkiksi kortin luennan aikana, ei ole selvitetty (kohta 7, A2). Ne säikeet, jotka poistuvat
 `vaiheenvaihto`-lipun vuoksi eikä niitä käynnistetä uudelleen, ovat `ScrollThread`, `HaeAvoimetTh`,
 `haeSQLTh` ja `kirjSQLTh` (H-097, H-014) [AA: `saikeet-ja-lukot.md` 5]. Lukijasäie
 `lue_regnlyThread` ja CTS-ajanotto `comajanotto` **eivät pysähdy** vaihdon ajaksi (H-094, H-102).
@@ -156,7 +173,8 @@ tai edellisen lukukerran mukaiseksi.
 | Rata- ja emit-muisti | vapautetaan ja luetaan uudelleen | puuttuva tai virheellinen `RADAT<n>.XML` (H-134) |
 | `emithead`, `emithead2`, `emitptr` | luetaan uudelleen | esitarkastus- ja esiluentatilassa uudelleenavaus ohitetaan ja emit-kahva voi jäädä suljetuksi (H-105) |
 | Emit-kaksoiskappaleiden eston taulu `on_emit::emitvaraus` | taulu vapautetaan, **laskuri `nemitvar` ei** | esto lakkaa toimimasta noin kolmannessa vaiheen vaihdossa (H-141) |
-| Aikajonojen sisältö | luetaan uudelleen | ei, jos jono on olemassa mutta ajanotto pois päältä [päätelty] |
+| Aikajonojen sisältö | luetaan uudelleen | vain jos `aikajono[0]` oli olemassa; jonon 0 uudelleenluku vaatii lisäksi ajanoton käyttöön (`ajanottofl > 0` tai kello), muut jonot luetaan ehdotta (`Hk/HkIx.cpp:1900`, `:1958-1972`) [todennettu: koodi] |
+| Lokitiedoston nimi (`LOKI1.`) | **vanha** | nimi asetetaan vain käynnistyksessä (`Hk/HkInit.cpp:3367`) [päätelty; ei ajettu] |
 | Korostusrajat `korRaja`, `vipLaji` (GUI) | **vanha** | (H-143, N-B10) |
 | Lähtöpistetiedosto (`luelahdepisteet`) | luetaan vain kerran | vaihekohtaista tiedostoa ei lueta uudelleen (H-143, N-B9) |
 | Asetustiedostot (`peruscfg.cfg`, `LASKENTA.CFG`) | **ei lueta** | asetusmuutokset tulevat voimaan vasta uudelleenkäynnistyksessä [luettu käsikirjaa varten, ei tarkastettu: `vaihdavaihe` ei kutsu parametrien lukua] |
@@ -188,28 +206,34 @@ sequenceDiagram
 
 Vaiheet koodissa [luettu käsikirjaa varten, ei tarkastettu; AA: `saikeet-ja-lukot.md` 5]:
 
-1. **Lähettäjä.** `vaihdavaihe` asettaa jokaiselle aiemmin avoimelle, levyjonoa käyttävälle
-   yhteydelle merkinnän `lah_alku = 1` ja `lah_vaihto = 1`, paitsi yhteydelle, jolta pyyntö tuli
-   (`Hk/HkIx.cpp:1974-1982`). Lähetyssäie muodostaa aloituspaketin funktiolla `alkusanoma`
+1. **Lähettäjä.** Jos levyjono on käytössä (`levypusk`, koko ohjelman asetus; `COMFILE=EI`
+   kytkee sen pois), `vaihdavaihe` asettaa jokaiselle aiemmin avoimelle yhteydelle merkinnän
+   `lah_alku = 1` ja `lah_vaihto = 1`; yhteydelle, jolta pyyntö tuli, `lah_alku` on silti 1 ja
+   vain `lah_vaihto` on 0 (`Hk/HkIx.cpp:1974-1981`). Lähetyssäie muodostaa aloituspaketin
+   funktiolla `alkusanoma`
    (`Hk/HkCom32.cpp:811-819`): paketti sisältää vaiheen numeron (`k_pv + 1`), `KILP.DAT`:n
-   tietuemäärän ja liput; bitti 1 merkitsee vaihtopyyntöä. Yhteyksillä, jotka eivät käytä levyjonoa
-   (`COMFILE=EI`, muistijono), merkintää ei aseteta, joten pyyntöä ei koodin mukaan lähetetä
-   [päätelty koodista].
+   tietuemäärän ja liput; bitti 1 merkitsee vaihtopyyntöä. Kehys on siis vaihtavan aseman oma
+   asetus, ei vastaanottajan: jos vaihtavalla asemalla on `COMFILE=EI`, merkintää ei aseteta
+   millekään yhteydelle, eikä pyyntöä tai aloituspakettia lähde, vaikka vastaanottajalla olisi
+   levyjono. Vastaanottajan jonotyypillä ei ole merkitystä [todennettu: koodi; seuranta.md
+   KE-22].
 2. **Vastaanottaja.** `tark_alku` (`Hk/HkCom32.cpp:821-866`) ajetaan vastaanottosäikeessä. Jos
-   lähettäjän `KILP.DAT`:n tietuemäärä poikkeaa omasta, ohjelma vain varoittaa. Jos lipun bitti 1
+   lähettäjän `KILP.DAT`:n tietuemäärä poikkeaa omasta, ohjelma varoittaa; konsolissa
+   (`_CONSOLE`) vastaanottosäie kysyy lisäksi "J)atka, P)oistu ohjelmasta", ja vastaus P kutsuu
+   `lopetus()`ia (`Hk/HkCom32.cpp:857-864`) [todennettu: koodi]. Jos lipun bitti 1
    on päällä ja joko yli 5 sekuntia on kulunut edellisestä pyynnöstä tai lähettäjän vaihe poikkeaa
    omasta, ohjelma kutsuu `pyyda_vaihdavaihe(vaihe − 1, yhteys)`. Vahvistuskysymystä ei ole.
 3. **GUI.** `pyyda_vaihdavaihe` lähettää synkronisen `SendMessage`-viestin pääikkunalle
    (`cbHk/WinHk.cpp:2231-2235`); vastaanottosäie odottaa, kunnes pääsäie on käsitellyt viestin.
    Käsittelijä `VaihdaVaiheHandler` (`:2149-2229`) ohittaa pyynnön, jos vaihto on jo käynnissä, kieltäytyy
    lähtemättömien sanomien vuoksi virheilmoituksella ja ohittaa vaiheen numeron, joka ei ole
-   välillä 0…`n_pv_akt − 1`. Muuten se tekee saman kuin valikkotoiminto. Ilmoitus on
+   välillä 0…`n_pv_akt − 1`. Muuten se tekee saman kuin valikkotoiminto, paitsi ettei se odota 500 ms säikeiden pysäytyksen jälkeen (`cbHk/WinHk.cpp:2084` vs. `:2157-2160`) [todennettu: koodi]. Ilmoitus on
    "Vaiheen vaihto tai uusintakäynnistys. Odota muutama sekunti."
 4. **Konsoli.** `pyyda_vaihdavaihe` kutsuu `vaihdavaihe`a suoraan vastaanottosäikeestä
    (`HkConsole/HkCons0.cpp:869-871`).
 5. **Eteenpäin.** Vastaanottajan oma `vaihdavaihe` asettaa lipun kaikille muille yhteyksille kuin
    sille, jolta pyyntö tuli (`kielto`), joten pyyntö etenee ketjussa tai tähdessä. Silmukassa
-   (mesh) 5 sekunnin raja on ainoa pysäytys [päätelty koodista].
+   (mesh) 5 sekunnin raja on ainoa pysäytys [todennettu: koodi; 5 s:n aikaraja on staattinen `edvaihto`, yhteinen kaikille yhteyksille, `Hk/HkCom32.cpp:844-848`; lisäksi `vaiheenvaihto`-lippu pysäyttää rinnakkaisen vaihdon, `cbHk/WinHk.cpp:2154`, `Hk/HkIx.cpp:1868`].
 
 Jos asemat ovat eri vaiheissa eikä lippua ole, lähetys estyy: vastaanottaja varoittaa "Eri vaiheessa
 oleva kone pyytää yhteyttä" ja palauttaa estävän arvon [AA: `tiedonsiirto.md`; luettu käsikirjaa
@@ -277,7 +301,7 @@ aina 0 ja hylkää HK:n pyynnön viestillä "Henkilökohtainsen kilpailun ohjelm
 (`Juk/VCom.cpp:842-865`), joten HK- ja viestiasemat eivät voi keskustella keskenään
 [todennettu; AA: `tiedonsiirto.md`]. Viestin `k_pv`-viittaukset `Juk/VTulostus.cpp`:ssä ovat
 kommentoiduissa tai valitsimien `JOUKKUEPISTEET` (ei viestissä käytössä), `TAULU_2` tai `JOUKKUETUL`
-(kuollut viestissä) taakse jäävissä lohkoissa [päätelty: `rekisteri/valitsimet.csv`]. Viestissä
+(kuollut viestissä) taakse jäävissä lohkoissa [todennettu: `Juk/VTulostus.cpp:7274`, `:7338`, `:7351`, `:7672`; `rekisteri/valitsimet.csv:181`, `:182`, `:275`]. Viestissä
 monta "osaa" kilpailusta tarkoittaa osuuksia ja sarjakohtaisia yhteislähtöjä (luku 07).
 
 ## 3. Asetukset ja käännösvalitsimet
@@ -287,7 +311,7 @@ monta "osaa" kilpailusta tarkoittaa osuuksia ja sarjakohtaisia yhteislähtöjä 
 | `VAIHE=n`, `PÄIVÄ=n` | HKM, HKW | aloitusvaihe | `Hk/HkInit.cpp:703-711` [luettu käsikirjaa varten, ei tarkastettu] |
 | `VAIHE=V` | HKM, HKW | käytä `vaihevalinta.cfg`-tiedostoa: luku käynnistyksessä, kirjoitus vaihdon jälkeen | `Hk/HkInit.cpp:289-325`, `Hk/HkIx.cpp:1997` [todennettu: koodi]; [KO: hkkisawin 10.5] |
 | `vaihevalinta.cfg` | HKM, HKW | pysyvä vaihetieto | sama |
-| `COMFILE=EI` (muistijono) | HKM, HKW | vaihtopyyntölippua ei aseteta muistijonoyhteyksille [päätelty] | `Hk/HkIx.cpp:1974-1982`; [AA: `tiedonsiirto.md` "Jonot ja levypuskuri"] |
+| `COMFILE=EI` (muistijono; `COMFILE=S` antaa levypusk-arvon 2) | HKM, HKW | koko ohjelman asetus (`levypusk`, `Hk/HkGlobals.cpp:363`): vaihtavalla asemalla `COMFILE=EI` -> vaihtopyyntölippua ja aloituspakettia ei aseteta millekään yhteydelle; vastaanottajan jonotyypillä ei ole merkitystä | `Hk/HkIx.cpp:1974-1981`, `Hk/HkInit.cpp:1256-1259` [todennettu: koodi]; [AA: `tiedonsiirto.md` "Jonot ja levypuskuri"]; seuranta.md KE-22 |
 | `n_lisaa` (oletus 1000) | HKM, HKW | numerohakemiston mitoitus; H-129:n raja riippuu siitä | [AA: H-129, Q78] |
 | `estaemittoisto` (oletus 1) | HKM, HKW | emit-kaksoiskappaleiden esto; vaiheen vaihto ei nollaa sen laskuria (H-141) | [AA: H-141] |
 | `AJAT=`, `LAJAT=` | HKM, HKW | ajanottotiedoston nimi; yksivaiheisessa kilpailussa nimestä poistetaan viides merkki (H-132) | [AA: H-132] |
@@ -302,7 +326,7 @@ monta "osaa" kilpailusta tarkoittaa osuuksia ja sarjakohtaisia yhteislähtöjä 
 | Avoimella yhteydellä on lähtemättömiä sanomia | vaihto evätään virheilmoituksella; GUI:ssa lippua ei aseteta, konsolissa se jää päälle ja estää myöhemmät vaihdot sekä emit- ja taustakäsittelyn | GUI, HKM | [AA: H-031]; `Hk/HkIx.cpp:1868-1876`; `cbHk/WinHk.cpp:2054-2059` |
 | Valittu nykyinen vaihe valikosta *Vaiheen vaihto* | "Valittu nykyinen vaihe. Toimenpide peruutettu"; *Lue uudelleen* sen sijaan ajetaan | HKW | `cbHk/WinHk.cpp:2064-2070` [luettu käsikirjaa varten, ei tarkastettu] |
 | Vaihto on jo käynnissä | "Vaihto jo käynnissä" (valikko); etäpyyntö ohitetaan ilman ilmoitusta | HKW | `cbHk/WinHk.cpp:2073-2076`, `:2154-2155` |
-| Vaihtopyyntö asemalta, jonka `KILP.DAT` on eri pituinen | varoitus, vaihto jatkuu | HKM, HKW | `Hk/HkCom32.cpp:829-840` |
+| Vaihtopyyntö asemalta, jonka `KILP.DAT` on eri pituinen | varoitus; konsolissa (HKM) lisäksi kysymys "J)atka, P)oistu ohjelmasta" vastaanottosäikeessä, ja P lopettaa ohjelman; GUI:ssa vaihto jatkuu | HKM, HKW | `Hk/HkCom32.cpp:829-864` [todennettu: koodi] |
 | Rata-XML puuttuu | virheilmoitus ja emit-tarkastus pois vaiheen ajaksi, ei tekstivarapolkua | HKM, HKW | [AA: H-134] |
 | Rata-XML ei jäsenny | virhe käsitellään kuin onnistuminen ja käsitellään vapautettua ratamuistia; ajoa ei ole (Q110) | HKM, HKW | [AA: H-134] |
 | Emit-tiedoston luku epäonnistuu | "Leimaustietotiedoston lukeminen ei onnistunut" ja `emitfl = 0` | HKM, HKW | `Hk/HkIx.cpp:1943-1946` [todennettu: koodi] |
@@ -392,14 +416,24 @@ Generoitu tiedostosta `kasikirja/toiminnot.csv` ja rekistereistä (tila, priorit
   vahvistusta ja toistettuna kasvattaa hakemiston laskuria; riskiarvion `tietoturva` = ei ja
   `saavutettavuus` = asetus ovat ristiriidassa tämän kanssa; käsittely E-1:ssä
   [AA: `seuranta.md` KE-2; H-129].
-- **Ehdokas (uusi, ei tarkastettu): uudelleenluku ajaa saman funktion.** Kohdan 1.7 mukaan *Lue
-  sarjat ja muut tiedot uudelleen* ajaa `vaihdavaihe`n nykyisellä vaiheella ja lähettää pyynnön muille
-  asemille. Siksi H-129:n laskurivika ja kohdan 1.5 vanhaksi jäävät arvot koskisivat myös tätä
-  toimintoa, myös yksivaiheisessa kilpailussa, ja jokainen käyttökerta voisi kasvattaa laskuria.
-  Kortti H-129 ja KE-taulukko eivät mainitse tätä laukaisijaa [päätelty koodista; ei ajettu].
-- **Ehdokas (ei tarkastettu): vaihtopyyntö vain levyjonoyhteyksille.** Koodin mukaan pyyntölippu
-  asetetaan vain yhteyksille, jotka käyttävät levyjonoa; muistijonoyhteydellä oleva asema ei saisi
-  pyyntöä, vaikka käyttöohje lupaa vaihdon leviävän "verkon kaikilla koneilla" [päätelty koodista;
-  ei ajettu, `Hk/HkIx.cpp:1975`].
+- **Ehdokas KE-21 (ei tarkastettu, ei rekisterissä): uudelleenluku ajaa saman funktion.** Kohdan
+  1.7 mukaan *Lue sarjat ja muut tiedot uudelleen* ajaa `vaihdavaihe`n nykyisellä vaiheella ja
+  lähettää pyynnön muille asemille. Siksi H-129:n laskurivika ja kohdan 1.5 vanhaksi jäävät arvot
+  koskisivat myös tätä toimintoa, myös yksivaiheisessa kilpailussa, ja jokainen käyttökerta
+  voisi kasvattaa laskuria. Asia on kirjattu KE-21:ksi (`doc/arkkitehtuuri/seuranta.md`, rivi
+  388) [päätelty koodista; ei ajettu].
+- **Vaihtopyynnön lippu on koko ohjelman asetus (KE-22).** Aiempi ehdokas "pyyntö vain
+  levyjonoyhteyksille" oli väärä kehys: `levypusk` on yksi globaali asetus, ei yhteyskohtainen.
+  Ratkaisevaa on vaihtavan aseman oma `COMFILE=EI`: silloin pyyntöä tai aloituspakettia ei lähde
+  millekään yhteydelle, ja vastaanottajan jonotyypillä ei ole merkitystä
+  (`Hk/HkIx.cpp:1974-1981`, `Hk/HkGlobals.cpp:363`) [todennettu: koodi; ei ajettu]. Käyttöohjeen
+  lupaus vaihdon leviämisestä "verkon kaikilla koneilla" ei siis päde, jos vaihtavalla asemalla on
+  `COMFILE=EI`.
+- **A2 (avoin):** vaikuttaako 500 ms:n odotuksen puuttuminen etäpyynnössä (kohta 1.4)? Selviää
+  ajolla, jossa kortti luetaan vaihtopyynnön aikana.
+- **A4 (avoin):** kun `aikajono[0]` puuttuu mutta jono 1 (LAJAT) on olemassa, jono 1 nimetään
+  uudelleen ilman sulkemista ja uudelleenlukua (`Hk/HkIx.cpp:1890-1903`); kirjoittaako se vanhat
+  rivit uuden vaiheen tiedostoon? Selviää ajolla.
+- **A5 (avoin):** lokitiedoston nimi vaiheen vaihdon jälkeen (kohta 1.1). Selviää ajolla.
 - Viestin sarja- ja osuusrakenteen "vaiheet" (osuudet, yhteislähdöt) kuuluvat lukuun 07; viestissä
   ei ole vaihetta.

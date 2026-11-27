@@ -156,3 +156,34 @@ Q4, Q10 ja Q11 ajettiin kohtien 10–15 jälkeen (`k1-vastaukset-v4/`):
 Suositus: kilpailun järjestäjän kysymyksiin Sonnet riittää johtopäätösten tasolla; kehittäjän
 kysymyksiin ja kaikkeen, mitä käytetään päätöksen pohjana, `-Model opus` ja lähteiden tarkistus.
 Seuraava kokonainen arvio tehdään versiolle 2 (kortit lähteinä) K-5:ssä.
+
+## 9. Tietopohjan valmistuttua (versio 2, K-5)
+
+Samat 14 kysymystä kuin luvussa 6 sekä uusi laaja ketjukysymys Q39 (Emit-kortin luenta → tallennus
+→ välitys) ajettiin fail-closed-käynnistyksellä (Sonnet), kun 229 korttia ja 15 käsikirjan lukua
+olivat valmiit (`k1-vastaukset-v5/`). Riippumaton Opus-arvio: `k5/agentti.md`.
+
+| Mittari | Luku 6 (v3) | v5 |
+|---|---|---|
+| Hyväksytty / huomautuksin / hylätty | 7 / 7 / 0 | 8 / 7 / 0 |
+| Väärät prioriteetit | H-164 kahdesti | 0 |
+| Väärät lähdeviitteet | noin 8–10 % | noin 4 % (4 / noin 95) |
+| Kuollut koodi lähteenä | 1 (`TALLEMIT`-`addem`) | 0 |
+| Puutteelliset pakolliset haut | useita | Q5, Q7, Q28, Q39 (pääosin agentin itse ilmoittamia) |
+
+- Q39: perusvastauksen virhe (raakatietueen lähetys) poistui; noin 60 % vastauksesta perustuu
+  tarkastettuun aineistoon ja noin 40 % sen väitteiden kohdennettuun uudelleenlukuun koodista
+  (perusvastauksessa 3 asiakirjan ja 13 lähdetiedoston lukua).
+- Tietopohjaa käytettiin vain kolmessa vastauksessa 15:stä (Q4, Q11, Q39); tarkistetut
+  tietopohjaan perustuvat väitteet pitivät.
+- Jäljellä: JS-tunnukset puuttuvat, sarakesekaannus korjauskokonaisuuksien rekisterissä (Q34),
+  aiheen oma OP jää tunnistamatta (Q28), Tarkistukset-rivin "ei osumia" ei ole luotettava (Q39),
+  työkalulokeja ei tallenneta.
+
+Käsittely: agentin ohjeeseen kohdat 16–18 (tietopohja ensin: kortti jokaiselle mainitulle
+havainnolle ja JS rekisteristä, käsikirjan luku `toiminnot.csv`:n kautta; aiheen oma OP;
+sarakkeiden nimet). Kohdennettu uusinta Q7, Q28, Q34 ja Q39 (`k1-vastaukset-v6/`, pääistunnon
+pistokoe arvioijan nimeämistä kohdista, **ei riippumatonta arviota**): Q7 tunnistaa JS-14:n ja OP-11:n;
+Q28 OP-9:n kohdan 6; Q34 ei enää raportoi kokonaisuuden saraketta tilana; Q39 liittää havaintoihin
+juurisyyt (JS) rekisteristä, mutta jättää edelleen vastaanoton P1-havainnot H-032 ja H-033 pois
+(laajoissa vastauksissa havaintojen karsinta ilman priorisointia jää puutteeksi). Kokonaisuuden riippumaton uusinta-arvio kuuluu seuraavaan tarkastukseen.

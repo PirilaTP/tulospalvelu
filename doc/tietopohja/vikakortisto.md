@@ -310,7 +310,7 @@ toimitettua ohjelmaa. Kortin puuttuminen ei tarkoita, että toiminto on virheet�
 ### Lähderevisio
 
 - Korttien lähdeviitteet (rivinumerot) on kirjattu revisioihin: `4b48749`, `7aaca40`, `ab10f88`, `c273b9f`, `f7fe553`. Tuotantokoodi `TPsource/` ei ole muuttunut revision `f7fe553` jälkeen (`doc/arkkitehtuuri/CHECKPOINT.md`).
-- Kortit ja rekisterit luettiin työpuusta, jonka viimeisin commit oli `3e654bf`.
+- Kortit ja rekisterit luettiin työpuusta, jonka viimeisin commit oli `6e83210`.
 - Rekisteritiedostojen tiivisteet tuottohetkellä (SHA-256, 12 merkkiä): `havainnot.md` cb94426a9dd9; `riskiarvio.csv` ce2bb33511ab; `tekninen-velka.csv` 2c2e74f31f23; `vaikutukset.csv` 474b97661aec; `korjauskokonaisuudet.csv` 5c19cce94bf2.
 - Jokaisen kortin teksti on tarkistettu sen omien rekisteririvien tilaa vastaan; tiiviste on kortin teknisissä tiedoissa ("Rekisteririvien tiiviste nyt").
 

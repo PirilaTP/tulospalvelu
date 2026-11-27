@@ -131,8 +131,7 @@ luettu käsikirjaa varten]:
 - *Osuuden tulos* `Tulos(osuus, va)`: perustilanteessa maali − sarjan lähtöaika + sakkoaika
   kumulatiivisesti; yhteislähdössä tai partiossa osuuden `ylahto`:sta; muulloin edellisen osuuden
   tulos + (osuuden maali − edellisen osuuden maali tai oma lähtö). Tulos on 0, ellei osuus ole
-  hyväksytty (`Hyv(osuus)`) tai asetus `SÄILHYL` ole päällä (`kilpparam.sailhyl`; oletus
-  [päätelty] pois) (`:610-668`).
+  hyväksytty (`Hyv(osuus)`) tai asetus `SÄILHYL` ole päällä (`kilpparam.sailhyl`; oletus pois: ainoa asetuskohta on `Juk/VInit.cpp:978-979`, jossa `SÄILHYL=E` tai `=0` asettaa arvon pois ja muu arvo päälle, ja `kilpparam` on globaali ilman alkuarvoa, `Juk/VGlobals.cpp:79`) (`:610-668`) [luettu käsikirjaa varten, ei tarkastettu].
 - *Osuusaika* `osTulos`: osuuden maali − osuuden lähtö + osuuden sakot (`:671-710`).
 - *Lähtöaika* `Lahto(osuus)` lasketaan edellisen osuuden tuloksesta, yhteislähdöstä tai
   rinnakkaisosuuksien maalista (`:329-409`); `SKMKV`-haara ei ole käännöksessä (`valitsimet.csv`).
@@ -360,7 +359,7 @@ ei-lähteneeksi (`E`) merkitty, jolle luetaan aika, saa merkinnän `B` ja pysyy 
 | `SÄILHYL` | – | – | kyllä | kyllä |
 | `HYVHAVAITUT`, `POISSAMUKAAN`, `VAADITARK` (HK) | kyllä | kyllä | `VAADITARK` kyllä (`UnitCfg`), muut [tuntematon] | [tuntematon] |
 | Tuloksen laskenta sakoista (ampumahiihto) | `'B'` kyllä | kyllä | `amptsak`, `ampsakot` | sama kuin VW |
-| Sakkojen syöttö laitteesta (`SAKKOCOM`) | kyllä (valitsimen kautta) | kyllä | ei [päätelty: `valitsimet.csv`] | ei |
+| Sakkojen syöttö laitteesta (`SAKKOCOM`) | kyllä (valitsimen kautta) | kyllä | ei [`valitsimet.csv` rivi 254: `SAKKOCOM` pakotettu päälle vain HK:ssa (`Hk/HkDef.h:124-125`); ViestiWin.cbproj ja viestin vcxproj-tiedostot eivät määrittele sitä] | ei |
 
 Eroja HK:n ja viestin lomakkeiden välillä, jotka vaikuttavat tuloksen muuttamiseen: HK:n ajanotto suojaa
 sarjan rajan ylittävää pistettä huonommin kuin viesti (H-117), viestin ajanoton `tall_rivi`-kutsusta puuttuu
@@ -400,7 +399,7 @@ valitsimien osalta [päätelty: tiedoston `#if`-ehtoja ei käyty läpi kokonaan]
 | Emit-lomakkeen *Muutokset*-dialogi on auki, kun toinen asema muuttaa tietuetta | Dialogin pitämä kopio korvaa väliin tulleen muutoksen kokonaisena | [AA: H-017] |
 | Emit-dialogin sulkeminen X:llä | Palautuu painikkeena 2, joka useassa emit-dialogissa on tuhoava (siirto menettäen leimat, muutosten hylkäys, kortin uudelleenkäyttö) | [AA: H-116] |
 | Käsin kirjoitettu väärä numero kortille | HKW kopioi paikanpitäjän tilan, tuloksen ja lähtöajan olemassa olevalle kilpailijalle ilman kysymystä (kuntosuunnistus); paikanpitäjä jää omistamaan kortin tiloissa 0 ja 1 | [AA: H-119, H-120] |
-| Sakkoindeksi verkosta tai laitteelta ylittää rajan | `tall_ampsakko` kirjoittaa taulukon ulkopuolelle; `tall_sak` jättää `tall`-lukon ja palaa, kun `lsak == 0` | [AA: H-060, H-008] |
+| Sakkoindeksi verkosta tai laitteelta ylittää rajan | `tall_ampsakko` kirjoittaa taulukon ulkopuolelle; `tall_sak` jättää `tall`-lukon ja palaa, kun `lsak == 0`; lukko jää päälle myös oletuksella `SAKKO_LAJI`=2, kun sanoma tulee ampumalaitteelta, ja sanoma välitetään muille asemille (KE-15) | [AA: H-060, H-008; KE-15 luettu koodista, ei ajettu] |
 | `add_sakko` pitää lukkoa SendMessage-kutsun ajan | Lukkiutumisvaara tapahtumanäytön päivityksessä | [AA: H-009] |
 | Viestin sakkokierroslomakkeen osuusnumero rajaamaton | Kirjoitus tietueen viereiseen kenttään tai pinoon | [AA: H-082] |
 | Sakkokierroslokin avaus | `TextFl::Open` tyhjentää lokin joka kerta (tila `"a"` käsitellään `"wb"`-tilana) | [AA: H-086] |

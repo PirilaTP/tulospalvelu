@@ -359,7 +359,7 @@ def main(argv):
             print("portal data missing: run portaali.py . (not an error before the first build)")
             return 1
         cur = open(out, "rb").read().decode("utf-8")
-        m = re.search(r'"lahdetiiviste": "([0-9a-f]+)"', cur)
+        m = re.search(r'"lahdetiiviste":\s*"([0-9a-f]+)"', cur)
         want = source_digest(tp.Data(root))
         if not m or m.group(1) != want:
             print("portal data is stale (sources changed since it was generated): run portaali.py .")

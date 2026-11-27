@@ -122,7 +122,7 @@ ja luku 5; `Hk/HkInit.cpp:350`, `:374`, `:612-629`, `Juk/VInit.cpp:476`, `:673-6
   "poistettu käytöstä" eivätkä tee mitään (`Juk/VInit.cpp:748-778`).
 - **Oletukset** ovat pääosin globaalien alkuarvoja (yleensä 0), joita ei ole käyty läpi yksitellen. Nimetyt
   oletukset: asetustiedosto `LASKENTA.CFG`, rivimäärä 50 (`setySize`), UDP-viiveet 10/20/20, monitorointiväli
-  10 000 ms, `AUTOFILE.LST`, Siritin portit 50008 ja 50007 ym. [todennettu: `osaB` "Defaults"].
+  10 000 ms (`Tp/TpComY.cpp:83`; `MONITORVÄLI=n` luetaan sekunteina ja muunnetaan millisekunneiksi, `Hk/HkInit.cpp:1097-1100`), `AUTOFILE.LST`, Siritin portit 50008 ja 50007 ym. [todennettu: `osaB` "Defaults"].
 
 ### 1.5 Asetuseditori (HKW ja VW)
 
@@ -266,9 +266,9 @@ yksitellen [todennettu: `ominaisuusvalitsimet.md` luku 12].
 |---|---|---|
 | Käynnistys ja ikkuna | `CFG=`, `VAIHE=`/`PÄIVÄ=` (V: vaihevalinta), `IKKUNAT`, `IKKUNAOTS=`, `BOOT`, `RIVIT=25`/`50`, `KIRKAS`, `VÄRIT=`, `SULKUSALASANA=`, `LISÄÄ=`, `KONE=` | HK ja viesti (osa vain konsoli) |
 | Kilpailun käyttö | `KUNTOSUUNN`, `KUNTOMAALI`, `KUNTOLÄHTÖ`, `VAKANTTILUKU=`, `VAKANTTIALKU=`, `EMITALKU=`, `POISSAMUKAAN`, `TARKNO`, `VAADITARK`, `SÄILHYL` (viesti) | HK ja viesti |
-| Tiedonsiirto | `COMn`, `YHTEYSn`, `UDP`, `BRO`, `TCP`, `SX`/`XS`, `PORTBASE=`, `MAXYHTEYS=`, `BAUDn=`, `COMFILE`, `UDPVIIVEET=`, `TCPVIIVEETn=`, `NAKVIIVE=`, `UDPJARRU=`, `MONITORI`, `MONITORVÄLI=`, `LÄHTIEDOSTOT`, `KATKKIERn` (viesti) | HK ja viesti; luku 09 |
+| Tiedonsiirto | `COMn`, `YHTEYSn`, `UDP`, `BRO`, `TCP`, `SX`/`XS`, `PORTBASE=`, `MAXYHTEYS=`, `BAUDn=`, `COMFILE` (`EI` vain HK, `S` kumpikin; koko ohjelman asetus), `UDPVIIVEET=`, `TCPVIIVEETn=`, `NAKVIIVE=`, `UDPJARRU=`, `MONITORI`, `MONITORVÄLI=`, `LÄHTIEDOSTOT`, `KATKKIERn` (viesti) | HK ja viesti; luku 09 |
 | Ajanotto | `AJAT`, `LAJAT`, `AIKA_COM=`, `AIKAERO`, `AIKAKORJAUSn`, `REGNLY`, `ALGE`, `COMET`, `TIMY`, `TDC`, `KELLOBAUD=`, `ESTÄNEG`, `ESTÄHAAMUT`, `ESTÄYLIM`, `JONOT`, `MAXJONO=`, `TUNNJONO`, `PISTEET=` | HK ja viesti; luku 04 |
-| Emit ja leimat | `EMIT`, `LEIMAT=E`, `ESITARK`, `ESILUENTA`, `LAINAT`, `LAINALUETTELO`, `LUKIJAn`, `MTRn`, `EMITAGn`, `ETSQLn`, `ETGPRSn`, `LUKUTOISTO`, `SALLIEMITTOISTO`, `EMITANAL` | HK ja viesti; luvut 05, 10 |
+| Emit ja leimat | `EMIT`, `LEIMAT=E`, `ESITARK`, `ESILUENTA`, `LAINAT`, `LAINALUETTELO`, `LUKIJAn`, `MTRn`, `EMITAGn`, `ETSQLn`, `ETGPRSn`, `LUKUTOISTO`, `SALLIEMITTOISTO`, `EMITANAL` | HK ja viesti; luvut 05, 10; `ESITARK` viestissä vain VM (`valitsimet.csv:152`, `Juk/VInit.cpp:2111`), ei VW:ssä eikä VL:ssä |
 | RFID | `SIRIT`, `ZEBRA`, `FEIG`, `IMPINJ`, `SIRITARRIVE=`, `SIRITDEPART=`, `SIRITEVENTPORT=`, `SIRITCMDPORT=`, `SIRITPOLL=`, `ZEBRAGPI=` | ei VL |
 | Tulostus ja julkaisu | `HTML=`, `MHTML=`, `XML=`, `HTMLTIT`, `HTMLOTS`, `KOMENTO`, `AUTORAP`, `COMAUTORAP`, `TCPTULOS=`, `FILETCPn`, `XMLSARJA=`, `MUOTOILU`, `LISTA`, `MERKIT=`, `DESEROTIN=` | HK ja viesti; luku 11 |
 | Näytöt ja taulut | `TAULU_COM=`, `TAULU_BAUD=`, `GAZ=`, `CPOWER`, `RTNM`, `VALONÄYTTÖ=` | vaihtelee; luku 10 |
@@ -295,7 +295,7 @@ yksitellen [todennettu: `ominaisuusvalitsimet.md` luku 12].
 | `AIKAKORJAUSn` | HK, viesti | yksikkö eri (`SEK / 100` vs. `SEK`) | T-051, Q112, OP-11 |
 | `MONITORI` | kaikki | oletusportti koodissa 14770 (jokainen seuraava rivi +1), käyttöohjeessa 14900 | T-014, Q25, OP-11 |
 | `LUKIJAn`, `MTRn`, `EMITAGn`, `ETGPRSn` | viesti | enimmäismäärä 8 (VM, VL) tai 32 (VW); suuri numero rajataan arvoon `NREGNLY`-1, eli konsolissa `LUKIJA9`-`LUKIJA32` kuvautuvat laitteeksi 8 | T-024 |
-| `COMFILE=EI` | HK (viestissä jäsennin ohittaa) | käyttöohje listaa avaimen myös viestille, mutta viestin jäsennin ohittaa sen [luettu käsikirjaa varten, ei tarkastettu: `Juk/VInit.cpp:1218`] | luku 09 |
+| `COMFILE=EI` | HK (viestissä jäsennin ohittaa) | käyttöohje listaa avaimen myös viestille, mutta viestin jäsennin ohittaa sen (rivi on kommentoitu) [todennettu: `Juk/VInit.cpp:1216-1220`; riippumaton tarkastus K-5 09-14] | luku 09 |
 
 Luku 5 listaa nämä havainnot tilaan ja prioriteettiin sidottuina; tässä taulukossa on vain kuvaus.
 
@@ -372,6 +372,7 @@ Generoitu tiedostosta `kasikirja/toiminnot.csv` ja rekistereistä (tila, priorit
 - **Q107** mitä ViestiWinissä `cfgfilename`-puskurin ylitys käytännössä ylikirjoittaa ja nollautuvatko sarjaporttien oletusasetukset
   (ajonaikainen todennus); **KE-8** alustamaton `baud`-arvo sarjayhteyden avauksessa, kun `baudst` on nollattu, ja käyttävätkö
   laitepolut `baudst`-taulua [päätelty; `seuranta.md`].
+- **KE-23** `LÄHTÖIKKUNA=x` (HK) luetaan millisekunteina (`Hk/HkInit.cpp:1924`, ei `*SEK`-kerrointa; oletus 3000 ms, `Hk/HkGlobals.cpp:96`), vaikka käyttöohje (`hkkisawin/hkliite1.md:127`) sanoo sekunteja: `LÄHTÖIKKUNA=3` tarkoittaisi 3 ms [luettu koodista, ei ajettu; `seuranta.md` KE-23, riippumaton tarkastus K-5 04-12]. Muissa asetuksissa yksikköä ei ole käyty läpi jäsentimestä: `MONITORVÄLI` sekuntia, `AIKAKORJAUSn` HK:ssa sadasosasekunteina ja viestissä sekunteina (kohta 1.6).
 - **Q112 / OP-11** `AIKAKORJAUSn`-yksikkö; **Q25 / OP-11** MONITORI-portin oikea arvo; molemmat odottavat omistajan päätöstä
   (OP-11 on `omistajan-paatokset.md`:n mukaan avoin). **OP-12** tuetut tuotteet ja kokoonpanot (T-051, T-024, T-052);
   **Q111** onko RFID tarkoituksella pois ViestiLuennasta.

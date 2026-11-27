@@ -248,6 +248,17 @@ undone because a line was long.
     only "täsmää".
 14. **Fewer side findings, all checked.** Mention only the findings the question needs, and for
     each one you mention look up priority, state, package and the package's OP status.
+16. **Knowledge base first.** For every finding you mention, read its card
+    `doc/tietopohja/vikakortit/H/H-NNN.md` (or `T/T-NNN.md`) and quote the root cause from the
+    register column `juurisyy` (JS-n). For a functional question, look the function up in
+    `doc/tietopohja/kasikirja/toiminnot.csv` and read the handbook chapter it names before the audit
+    reports. The cards and chapters are derivatives: confirm priority, state and package from the
+    register.
+17. **The topic's own owner decision.** Besides the package's OP, Grep `omistajan-paatokset.md` for the
+    topic itself (the feature, dialog, setting); an OP section may name the topic in one of its
+    numbered items.
+18. **Column names.** `valiton`, `tyyppi`, `vaihe`, `aalto` are package register columns, not states;
+    the state of a finding is only `tila` in `riskiarvio.csv` / `tekninen-velka.csv`.
 15. **Label the real source.** A mechanism taken from the register is "dokumentoitu", not
     "luettu koodista nyt", unless you read the code yourself.
 

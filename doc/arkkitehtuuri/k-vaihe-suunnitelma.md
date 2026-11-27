@@ -10,11 +10,13 @@ lisävaatimukset luku 8.2a, uusi K-5 luku 8a).
 |---|---|---|
 | K-0 | **valmis**: rekisterisarakkeet `juurisyy`, `juurisyy_muut`, `ohjelmat`, `ohjelmat_peruste`, `tila`, `korjaus`; `rekisteri/tekninen-velka.csv`; vaikutusrekisteri `rekisteri/vaikutusulottuvuudet.csv` + `rekisteri/vaikutukset.csv` (luku 4.1); OP-kohtien tilarivit; `synteesi.py --tarkista` laajennettu; `tyokalut/tietopohja.py`, `tyokalut/viitteet.py`; korttipohjat, kirjoitusohje, sanaston runko | `rekisteri/README.md`, `doc/tietopohja/` |
 | K-1 | **valmis**: agentti `pirila-expert`, skill `pirila-ask`, 32 kysymyksen pankki ajettu ja arvioitu | `doc/tietopohja/laatu/` |
-| K-2 | **pilotti valmis tarkastettavaksi** (10 H + 2 T, Opus-tarkastettu ja korjattu); muut 217 korttia odottavat pilotin hyväksyntää | `doc/tietopohja/vikakortit/` |
-| K-3, K-4, K-5 | ei aloitettu | – |
+| K-2 | **valmis**: 177 H + 52 T, kaikki kuitattu; 2816 vaikutusriviä (176 avointa H × 16) | `doc/tietopohja/vikakortit/`, `vikakortisto.md` |
+| K-3 | **valmis**: 15 lukua, 167 toimintokytkentää, Emit-aineisto | `doc/tietopohja/kasikirja/` |
+| K-4 | **valmis**: paikallinen portaali, ei verkkoa | `doc/tietopohja/portaali/` |
+| K-5 | **valmis**: koneelliset tarkistukset, Opus-sisältötarkastus (83 korttia, 4 käsikirjan lukua), agentin uusintatesti | `doc/tietopohja/laatu/tarkastukset/k5/` |
 
-Written on 2026-11-26; approved and started by the user on 2026-11-27. K-0 and K-1 are done, the K-2
-pilot awaits the user's review; K-3 to K-5 not started.
+Written on 2026-11-26; approved and started by the user on 2026-11-27. K-0 to K-5 were implemented on
+2026-11-27 and await the user's review.
 
 ## 1. Tarkoitus ja rajaus / Purpose and scope
 

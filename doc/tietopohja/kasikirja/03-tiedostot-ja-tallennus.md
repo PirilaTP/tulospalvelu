@@ -178,8 +178,10 @@ rivi 0 on otsake, ja yhteyden `cn` paketti `n` on kohdassa `((n+1)*maxyhteys + c
 Paketin otsake on 14 tavua (`lahetetty`, portti, `so`, `id`, `iid`, `pkgclass`, `len`,
 `checksum`) [todennettu: `tiedostomuodot.md` "COMFILE.DAT"; `Tp/TpComY.cpp:476-530`]. Levyjono on
 oletus sekä HK:ssa että viestissä; viestissä sitä ei voi kytkeä pois (`Juk/VInit.cpp:1217-1219`).
-HK:ssa muistijono kytketään asetuksella `COMFILE=EI` (käyttöohje `hkkisawin/hkliite1.md`), ja se
-pudottaa paketin, kun jono (`OUTBUFL` = 50) on täynnä (H-021) [todennettu: `tiedonsiirto.md` "Jonot ja
+HK:ssa muistijono kytketään asetuksella `COMFILE=EI` (käyttöohje `hkkisawin/hkliite1.md`; muuttuja
+`levypusk`, `Hk/HkInit.cpp:1256-1259`). Asetus koskee koko ohjelmaa, ei yksittäistä yhteyttä: kaikki
+yhteydet käyttävät samaa jonotyyppiä, ja `levypusk` ratkaisee myös, lähteekö vaiheen vaihdon
+pyyntö (luku 02 kohta 1.9). Muistijono pudottaa paketin, kun jono (`OUTBUFL` = 50) on täynnä (H-021) [todennettu: `tiedonsiirto.md` "Jonot ja
 levypuskuri"].
 
 Kirjoitus, lähetys ja kuittaus ovat kolme eri asiaa: pakettia ei merkitä lähetetyksi ennen kuin
@@ -268,7 +270,7 @@ Vastaus *Aiemmat tuhotaan* on peruuttamaton: ohjelma kirjoittaa tiedoston avates
 (`Tp/TpComY.cpp:2306-2330`). Jos tiedostossa on lähettämättömiä paketteja, ohjelma kysyy: konsolissa
 "Tiedostossa COMFILE N lähetettyä ja M lähetettävää tietoa S)äilytä T)uhoa" ja GUI:ssa
 "Säilytetäänkö?" (Kyllä/Ei) (`Tp/TpComY.cpp:2335-2360`) [luettu käsikirjaa varten, ei
-tarkastettu]. Asetus `COMFILE=S` säilyttää tiedoston kysymättä [KO: `hkkisawin/hkliite1.md`]. Vastaus
+tarkastettu]. Asetus `COMFILE=S` säilyttää tiedoston kysymättä [KO: `hkkisawin/hkliite1.md`]; se toimii myös viestissä (`levypusk = 2`, `Juk/VInit.cpp:1219`), ja kysymys ohitetaan myös vaiheen vaihdossa (ehto `levypusk == 1 && !vaihto`, `Tp/TpComY.cpp:2331`) [luettu käsikirjaa varten, ei tarkastettu]. Vastaus
 "Ei" tai "Tuhoa" hävittää lähettämättömät paketit pysyvästi (H-038). Jos otsake on yhteensopimaton
 (`MAXYHTEYS` tai tietuekoko eri), ohjelma kysyy, tuhotaanko vanha tiedosto vai keskeytetäänkö
 käynnistys; jos otsake on rikki mutta tiedoston pituus on `so*len`, tiedosto katkaistaan kysymättä
@@ -355,7 +357,7 @@ HK:n ja viestin tiedostot ovat yhteensopimattomia, eikä HK- ja viestiasema voi 
 | Asetus tai valitsin | Ohjelmat | Vaikutus | Lähde |
 |---|---|---|---|
 | `AJAT=nimi[/S]`, `LAJAT=nimi` | HK | ajanottotiedoston nimi; `/S` säilyttää kysymättä | [KO: `hkkisawin/hkliite1.md`]; `rekisteri/asetusavaimet.csv` (`MAALI`-ehto) |
-| `COMFILE=S`, `COMFILE=EI`, `MAXYHTEYS=n` | HK (viestissä levyjono aina) | levyjonon säilytys kysymättä; muistijono; `COMFILE.DAT`:n rivimäärä | [KO: `hkkisawin/hkliite1.md`, `viestiwin/hkliite1.md`]; `tiedonsiirto.md` |
+| `COMFILE=S`, `COMFILE=EI`, `MAXYHTEYS=n` | `S`: HK ja viesti; `EI`: vain HK (viestissä levyjono aina, jäsennin ohittaa `EI`:n); koko ohjelman asetus | levyjonon säilytys kysymättä; muistijono; `COMFILE.DAT`:n rivimäärä | [KO: `hkkisawin/hkliite1.md`, `viestiwin/hkliite1.md`]; `tiedonsiirto.md` |
 | `BOOT` | HK | käynnistys ilman vahvistuksia; muut kyselyt ohitetaan erikseen (`AJAT=/S`, `COMFILE=S`) | [KO: `hkkisawin/hkliite1.md`] |
 | `vaihe=v`, `vaihevalinta.cfg` | HK | vaiheen valinta käynnistyksessä | luku 02 kohta 1.3 |
 | `CFG=` | kaikki | vaihtoehtoinen asetustiedosto | `tiedostomuodot.md` |

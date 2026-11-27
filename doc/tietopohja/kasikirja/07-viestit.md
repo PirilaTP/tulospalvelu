@@ -201,8 +201,7 @@ tallentaa saapuneet yhteislähtöajat sarjatietoihinsa ja kirjoittaa sarja-XML:n
 
 **Eralähtö ja lähtökello.** Kun lähtöaikataulu ei ole ennalta määrätty, lähtöajat voidaan ottaa
 lähtökellon signaalista ja syöttää joukkueiden numerot käsin ajan kohdalle; aika kirjataan joukkueelle
-yksilölliseksi lähtöajaksi (piste `L`). Parametri `LÄHTÖRYHMÄ=n` lisää n peräkkäistä riviä samalla
-signaalilla [KO: viestiwin 5.7; AA: luku 04 kohta 1.9].
+yksilölliseksi lähtöajaksi (piste `L`). Parametri `LÄHTÖRYHMÄ=n` lisää kellopolussa (`tall_regnly`) lähtöpisteen (piste -1) kirjaukseen n-1 lisäriviä, joiden aika kasvaa yhdellä aikayksiköllä rivistä toiseen, ja kaikki rivit kirjataan samalle joukkueelle (`Juk/VIv.cpp:2190-2194`) [luettu käsikirjaa varten, ei tarkastettu]. HK toimii toisin: lisärivit ovat rivejä ilman kilpailijaa (kno = 0), ja kilpailija kohdistetaan vain lajeissa N, P ja U (`Hk/HkIV.cpp:2970-2991`, riippumaton tarkastus K-5 04-13), joten HK:n kuvausta ei voi lukea viestiin [KO: viestiwin 5.7; AA: luku 04 kohta 1.9].
 
 ### 1.6 Vaihto: ajan kirjaus ja seuraavan osuuden lähtö
 
@@ -219,10 +218,9 @@ aika tallennetaan aikajonoon. Tässä vain tulokseen vaikuttava osa:
   `JOUSTOVIESTI` muuttavat valintaa), kirjoittaa ajan osuudelle (`setMaali`) ja tallentaa tietueen
   `tallenna`lla. Osuuden koodi on siksi oltava tallennettu etukäteen, esimerkiksi sisäänluennalla
   (kohta 1.11). Asetus `VUOROMAALI` ohjaa tämän polun pisteen valintaa: kun kaikki osuuden väliajat
-  on kirjattu ja maalia ei ole, piste 0 (vaihto/maali) valitaan automaattisesti. Käyttöohjeen virke
+  on kirjattu ja maalia ei ole, piste 0 (vaihto/maali) valitaan automaattisesti; ilman asetusta piste jää arvoon `valuku+1` (`Juk/VIv.cpp:620-626`; asetuksen asettaa `Juk/VInit.cpp:1457-1458`). Maalikellon `tall_regnly` ei käytä asetusta. Käyttöohjeen virke
   ("ellei ole annettu parametria VUOROMAALI, joka kieltää antamasta aikaa vaihdolle/maalille") on
-  koodin vasta-asetelma; käytös on kuvattu koodista (`Juk/VIv.cpp:626`) [luettu käsikirjaa varten, ei
-  tarkastettu]. Ks. kohta 7.
+  koodin vasta-asetelma; käytös on kuvattu koodista (`Juk/VIv.cpp:626`) [todennettu: riippumaton tarkastus K-5 04-25, `laatu/tarkastukset/k5/kasikirja.md`]. Ks. kohta 7.
 - **Osuuden lähtöaika** (`kilptietue::Lahto(osuus)`, `Juk/vkilp.cpp:329-409`) valitaan tavallisessa
   viestissä (`maxnosuus == 1`) tässä järjestyksessä: (1) osuuden oma `ylahto` (yksilöllinen tai
   yhteislähtö); (2) muussa kuin partiossa edellisen osuuden vaihtoaika (`Maali(osuus − 1, 0)`); (3)
@@ -257,7 +255,7 @@ lisäksi `S` (suljettu) [todennettu: `Juk/vkilp.cpp:1064-1160`, `:1317-1320`, `:
 - **Suljettu osuus** (`Sulj(n)`): jos jokin edellinen osuus ei ole hyväksytty, osuus on suljettu.
   Osuuden tulos lasketaan silti vain, jos osuus on hyväksytty ja joukkue hyväksytty osuuteen asti tai
   asetus `SÄILHYL` (`kilpparam.sailhyl`) on päällä [todennettu: `Juk/vkilp.cpp:610-668`, `:671-715`;
-  [KO: viestiwin 9.4]; oletus pois päältä on päätelty luvusta 06].
+  [KO: viestiwin 9.4]; oletus on pois päältä: `Juk/VInit.cpp:978-979` on ainoa asetuskohta ja `kilpparam` on alustamaton globaali, ks. luku 06 kohta 1.3] [luettu käsikirjaa varten, ei tarkastettu].
 - **Joukkueen tila** (`Tark(−1)`, `TarkStr(−1)`): alkuosuuden `E` tai `P` ratkaisee; muuten joukkue on
   `K`, jos viimeinen osuus ei ole hyväksytty ja kukaan ei ole hylätty, `H`, jos jokin osuus on
   hylätty, ja `T`, jos kaikki osuudet on tarkastettu [todennettu: `Juk/vkilp.cpp:1147-1190`].
@@ -485,7 +483,7 @@ analyysitaso 1) ei ole luettu.
 | `TARKAVOIMET`, `SALLIEMITENSIN` | VL | varoitus aiemman osuuden lukemattomasta kortista; kortti ennen osuuden valintaa | `Juk/VInit.cpp:2151-2162` |
 | `esta_uusikaytto` (muuttuja, oletus päällä; asetusavainta ei etsitty) | VM, VL | saman kortin uudelleenkäytön esto | `Juk/VGlobals.cpp:424` |
 | `JOUSTOVIESTI`, `JOUSTOPAKOTA` | VW, VM, VL | osuuden valinta tunnisteesta | luku 04 |
-| `OSUUSOLETUS=`, `OSUUSRAJA=`, `VUOROMAALI`, `SAMAPISTE`, `UUSINAIKA` | VW, VM, VL | osuuden ja pisteen päättely ajanotossa | luku 04; `Juk/VInit.cpp:1349-1457` |
+| `OSUUSOLETUS=`, `OSUUSRAJA=`, `VUOROMAALI`, `SAMAPISTE`, `UUSINAIKA` | jäsennetään VW, VM, VL; vaikuttaa VW, VM (VL:ssä ei ole `tall_etulos`-polkua, `LUENTA`, `Juk/VIv.cpp:157`) | osuuden ja pisteen päättely ajanotossa | luku 04; `Juk/VInit.cpp:1349-1457` |
 | `SÄILHYL` | VW, VM, VL | hylätyn osuuden aika säilytetään tuloksissa (`kilpparam.sailhyl`) | `Juk/VInit.cpp:977`; [KO: viestiwin 9.4] |
 | `NÄYTÄHAJONTA=EI`, `RATAVAL=`, `TCPHAJONTA` | VW; VW, VM, VL; VM, VW, VL | hajonnan näyttö, tilankäyttö tulosteessa, lähetys TCP-sanomassa | `Juk/VInit.cpp:902`, `:961`, `:1226` |
 | `KATKKIERTO` | VW, VM, VL | silmukan katkaisu tiedonsiirrossa; indeksi tarkistamatta (H-036) | `Juk/VInit.cpp:1137` |
@@ -625,8 +623,7 @@ Generoitu tiedostosta `kasikirja/toiminnot.csv` ja rekistereistä (tila, priorit
   "Aikaa ei kirjata väliaikapisteiden täytyttyä vaihdolle/maalille, ellei ole annettu parametria
   VUOROMAALI, joka kieltää antamasta aikaa vaihdolle/maalille." Koodi (`Juk/VInit.cpp:1457`, kommentti
   "Antaa ajan maaliajaksi, kun väliajat ovat täynnä"; `Juk/VIv.cpp:626`) valitsee asetuksella pisteeksi
-  0, kun väliajat ovat täynnä. Luvun 04 taulukon maininta "VUOROMAALI kieltää maalin automaattivalinnassa"
-  noudattaa käyttöohjetta. Kumpi on tarkoitettu, ei ole ratkaistu [tuntematon]; vain tunnistinpolku
+  0, kun väliajat ovat täynnä. Luku 04 kuvaa koodin mukaisen toiminnan (`valuku+1` ilman asetusta). Kumpi on tarkoitettu, ei ole ratkaistu [tuntematon]; vain tunnistinpolku
   (`tall_etulos`) on luettu.
 - **Osuuden ja pisteen päättely**, ajanottolomakkeen ydinpolku (Q76), Emit-lomakkeen sisäinen toiminta
   viestissä ja `tark_partio` ovat luvuissa 04-05 tai lukematta.

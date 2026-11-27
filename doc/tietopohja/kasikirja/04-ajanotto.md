@@ -26,10 +26,10 @@ Lyhenteet: HKM = HkMaali, HKW = HkKisaWin, VM = ViestiMaali, VW = ViestiWin, VL 
   kaikista otetuista ajoista. Yksi rivi (`aikatp`) sisältää ajan (`t`) ja päivän (`date`),
   kilpailijanumeron (`kno`, 0 = ei vielä kohdistettu), pisteen (`piste`), tunnisteen (`badge`),
   lukijan kanavan (`kanava`), jonon (`jono`) ja tilan (`status`); HK:ssa lisäksi tapahtuman
-  (`tapahtuma`), viestissä osuuden ja lähteen (`Hk/HkDef.h:937-947`; viestin kentät luettu
-  `Juk/VIv.cpp` käytöstä) [luettu käsikirjaa varten, ei tarkastettu].
+  (`tapahtuma`), viestissä osuuden ja lähteen (HK `Hk/HkDef.h:937-947`, viesti
+  `Juk/VDef.h:1029-1040`) [todennettu: koodi].
   Jonoja on HK:ssa enintään 4 (`MAXJONO`, `Hk/HkDef.h:74`) ja viestissä enintään 24
-  (`Juk/VDef.h:36`) [todennettu: koodi]. Käyttöohje sanoo todellisen määrän näkyvän
+  (`Juk/VDef.h:36`, ehdoton määrittely, joten myös VL) [todennettu: koodi]. Käyttöohje sanoo todellisen määrän näkyvän
   valikossa *Help/Tiedot*.
 - **Piste** kertoo, mihin kilpailijan tulokseen aika kuuluu: `-1` (kirjain `L`) lähtö, `0` (`M`)
   maali tai viestissä vaihto, `1...` väliaikapiste, `-2` (`A`) = ohjelma päättelee pisteen
@@ -57,15 +57,18 @@ luvut 1-2 (laitteet); funktiot ja rivit luettu käsikirjaa varten, ei tarkastett
 
 ### 1.3 Mitä `tall_rivi` tekee
 
-`tall_rivi` on ainoa funktio, joka kirjoittaa ajanottojonoon (`Hk/HkAjat.cpp:114`, viestissä
-`Juk/vajat.cpp:103`) [luettu käsikirjaa varten, ei tarkastettu]. Kaikki edellä olevat lähteet
-päätyvät sen kautta jonoon.
+`tall_rivi` on ainoa ajonaikainen funktio, joka kirjoittaa ajanottojonoon (`Hk/HkAjat.cpp:114`,
+viestissä `Juk/vajat.cpp:103`) [luettu käsikirjaa varten, ei tarkastettu]. Kaikki edellä olevat
+lähteet päätyvät sen kautta jonoon. Poikkeuksena jonon alustus ja tiedostosta luku kirjoittavat
+rivit suoraan `puttm`illa (`Hk/HkIV.cpp:4008`, `:4096`, `:4223`) [todennettu: koodi].
 
 1. Jos jonoa ei ole alustettu (`mxtime == 0`), funktio palaa virhekoodilla 1.
 2. Funktio ottaa `ajat`-lukon (jollei kutsuja jo pidä sitä).
 3. **Korvaus tai poisto.** Jos kutsuja antaa vanhan rivin (`vtm`), funktio etsii jonosta rivin,
    jolla on sama aika, kilpailijanumero ja piste (tai piste `A`), ja poistaa sen. Jos riviä ei
    löydy eikä kutsu tule toiselta työasemalta, tallennus peruutetaan viestillä "Tallennus ei onnistu".
+   Konsolissa (`_CONSOLE`) korvaus voi lisäksi kysyä vahvistuksen K/E ("Aika ei vastaa riviä -
+   vahvista tallennus"); vastaus E peruuttaa tallennuksen (`Hk/HkAjat.cpp:170-196`) [todennettu: koodi].
 4. **Lisäys.** Uusi rivi sijoitetaan aikajärjestykseen. Jos jonossa on jo rivi, jolla on sama aika
    ja sama kilpailijanumero ja tunniste, uutta riviä ei lisätä (tulkitaan aiemman tiedon toistoksi).
    Jos aika on sama mutta muu tieto poikkeaa, aikaa kasvatetaan yhdellä (1/10 000 s), kunnes se on
@@ -77,7 +80,8 @@ päätyvät sen kautta jonoon.
    muutoksen muille asemille (`laheta_aika`, kohta 1.8).
 
 `tall_rivi`n paluuarvoa ei tarkisteta GUI:n ajanottokaavakkeella (H-117), ja `tall_regnly` tallentaa kilpailijan tuloksen rivin lisäyksestä
-riippumatta [luettu käsikirjaa varten, ei tarkastettu].
+riippumatta: `set_tulos` tehdään muistissa ennen riviä, `tall_rivi`n paluuarvo hylätään ja
+`tallenna` ajetaan `tall`-lukon alla (`Hk/HkIV.cpp:2986-3025`) [todennettu: koodi].
 
 ### 1.4 Maalikellon aika (HK) ja sen kulku
 
@@ -133,7 +137,11 @@ flowchart TD
 8. **Tulos jo annettu.** Jos kilpailijalla on jo aika samalle pisteelle, uutta tulosta ei kirjoiteta,
    ellei sitä salli `UUSINAIKA` (aika korvataan, kun uusi aika on enintään asetetun sekuntimäärän
    päässä aiemmasta) tai `ESTÄYLIM` (kohta 4). Ilmoitus on "TULOS JO ANNETTU". Ajan
-   rivi tallennetaan jonoon silti.
+   rivi tallennetaan jonoon silti: kun `ESTÄYLIM` tai `ESTÄNEG` on päällä ja kilpailijalla on jo
+   tulos, rivi kirjoitetaan jonoon `status`-merkinnällä (`status = olitulos`) eikä kilpailijan
+   tulosta muuteta (`Hk/HkIV.cpp:3011-3016`, [todennettu: koodi]). Se, näkyykö tällainen rivi
+   ajanottonäytössä, riippuu aktiivisten aikojen peitteestä (`atimemask`, `haeAktAjat`,
+   `Tp/TpLaitteet.cpp:195`); peitteen oletusarvoa ei ole selvitetty [tuntematon].
 9. **Tallennus.** `tall_rivi` kirjoittaa rivin jonoon (kohta 1.3). Sen jälkeen, jos tulos
    muuttui (`tall_fl`), `kilp.tallenna` kirjoittaa kilpailijan `tall`-lukon alla ja lähettää
    muutoksen muille asemille. Järjestys on siis rivi ensin, kilpailija toiseksi.
@@ -159,20 +167,28 @@ käyttöohjeesta `5.2`, `5.3`]:
    (`haelahdepiste`, `Hk/HkIV.cpp:335`). Tiedoston rivi on `sarja piste koodit`, ja
    lähdekoodi 1...9999 vie ajan määrättyyn pisteeseen; sama koodi voi esiintyä usealla
    pisteellä, jolloin ensimmäinen vapaa piste valitaan [AA: käyttöohje `5.3.1`].
-3. Pisteeksi voi tulla `-1` (lähtö, kirjain `L`) vain, kun asetus `PAKOTALAIKA` on annettu tai
-   hiihtolähtö on käytössä. `PAKOTALAIKA`: ensimmäinen lähtöajaksi tunnistettu luku hyväksytään
-   aina; myöhemmät vain `PAKOTALAIKARAJA`-sekuntien rajoissa (`pakotalaika_hyvaksy`,
-   `Hk/HkIV.cpp:589`).
-4. Aika tallennetaan kilpailijalle vain, jos kilpailijan lähtöaika on olemassa ja pisteelle ei ole
-   vielä aikaa (tai `UUSINAIKA` sallii korvauksen). Aika tallennetaan jonoon joka tapauksessa.
+3. Pisteeksi `-1` (lähtö, kirjain `L`) voi tulla `AIKALUKIJAx=VAINL`-asetuksesta tai
+   lähdepistetiedostosta (kohta 2). Se, kirjataanko lähtöaika kilpailijalle, riippuu erikseen
+   hiihtolähdöstä tai asetuksesta `PAKOTALAIKA` (`Hk/HkIV.cpp:687-707`) [todennettu: koodi].
+   `PAKOTALAIKA`: ensimmäinen lähtöajaksi tunnistettu luku hyväksytään aina; myöhemmät vain
+   `PAKOTALAIKARAJA`-sekuntien rajoissa (`pakotalaika_hyvaksy`, `Hk/HkIV.cpp:589`). Ilman
+   `PAKOTALAIKARAJA`a (oletus 0, `Hk/HkGlobals.cpp:404`; käyttöohje: 0 = ei rajoitusta) jokainen
+   luku korvaa aiemman (`Hk/HkIV.cpp:591`) [todennettu: koodi].
+4. Aika tallennetaan kilpailijalle, kun pisteelle ei ole vielä aikaa ja kilpailijan lähtöaika on
+   olemassa, tai kun `UUSINAIKA`-ehto täyttyy. Ehdon ohjelmakoodi on muotoa `A && B || C`
+   (`Hk/HkIV.cpp:676`), joten `UUSINAIKA`-haara ohittaa lähtöaikaehdon, ja silloin vertailun
+   `tls0` voi olla alustamaton (sivuhavainto, ehdokas, ei rekisterissä; ks. kohta 7). Aika
+   tallennetaan jonoon joka tapauksessa.
 5. Jos asetus `ESTÄNEG` on päällä ja aika on lähtöajasta negatiivinen tai yli 20 tuntia, aika
-   hylätään kokonaan (`return` ilman jonoriviä).
+   hylätään kokonaan (`return` ilman jonoriviä; vain kun `piste >= 0`, `Hk/HkIV.cpp:671-675`).
 
 `TUNNJONO`: kun asetus on annettu, tunnistinjono toimii vain kilpailijan tunnistamiseen
 (esimerkiksi valokennon ottaman ajan kohdistamiseen), ja aika kohdistetaan kilpailijalle jonosta
 (`tunn_hae_aika`, `tunn_hae_kno`; `Hk/HkIV.cpp:470-545`) [AA: käyttöohje `hkliite1.md:148`].
 Tässä tilassa `tall_regnly` ottaa `ajat`-lukon ehdollisesti ja saattaa jättää sen vapauttamatta
-(H-090, ks. kohta 4).
+(H-090, ks. kohta 4). Lukijan koodi-aika-taulu (`bdg_t`), josta tunnisteen luentahetki haetaan,
+voi lisäksi menettää rivin vaiheen vaihdon aikana (H-094) tai ilman lukkoa käsiteltynä
+(H-136, joka voi siirtää maali- ja väliaikoja) (kohta 4).
 
 ### 1.6 Käsin syöttö ja korjaus
 
@@ -210,15 +226,24 @@ aika. Maalikellon tai tunnistimen antama lähtöaika (`piste -1`) ei korvaa sit�
 seuraavista ole voimassa: hiihtolähtö (`hiihtolahto`), `PAKOTALAIKA` tai erälähtö [luettu
 käsikirjaa varten, ei tarkastettu]:
 
-- **Hiihtolähtö.** `lahtija` etsii kilpailijan, jonka suunniteltu lähtöaika on lähtöikkunan
-  (`tunn_raja`, asetus `LÄHTÖIKKUNA=x` sekunteina; käyttöohjeen mukaan oletus 3 s molempiin
-  suuntiin) sisällä (`Hk/HkIV.cpp:154`, `Hk/HkInit.cpp:1924`); aika tallennetaan hänelle
-  lähtöajaksi. Jos ikkunaan osuu useampi kilpailija, ensimmäinen valitaan [päätelty: silmukka
-  palauttaa ensimmäisen osuman].
+- **Hiihtolähtö.** `lahtija` toimii vain, kun hiihtolähtö on käytössä (`hiihtolahto`) ja
+  tunnistinlukijalle on annettu sarja (`tunn_srj >= 0`); se etsii kilpailijan, jonka suunniteltu
+  lähtöaika on lähtöikkunan (`tunn_raja`, asetus `LÄHTÖIKKUNA=x`) sisällä molempiin suuntiin
+  (`Hk/HkIV.cpp:153-175`); aika tallennetaan hänelle lähtöajaksi. Jos ikkunaan osuu useampi
+  kilpailija, ensimmäinen valitaan [todennettu: silmukka palauttaa ensimmäisen osuman
+  `Hk/HkIV.cpp:167-171`]. **Yksikkö:** jäsennin lukee arvon sellaisenaan
+  (`tunn_raja = _wtoi(...)`, `Hk/HkInit.cpp:1924`, ei kerrointa `SEK`), ja oletus on
+  `3*SEK` = 3000 millisekuntia (`Hk/HkGlobals.cpp:96`); vertailu tehdään millisekunteina.
+  `LÄHTÖIKKUNA=3` tarkoittaa siis 3 ms. Käyttöohje sanoo arvon olevan sekunteja
+  (`docs-site/docs/hkkisawin/hkliite1.md:127`). Tämä on ristiriita koodin ja käyttöohjeen
+  välillä (seuranta.md KE-23, ei vielä H-tunnusta) [todennettu: koodi; ei ajettu].
 - **Erälähtö ja lähtöryhmä.** Asetus `LÄHTÖRYHMÄ=n` ja erän numero (konsolissa Ctrl-E, GUI:ssa
-  valikko): yksi lähtösignaali kirjataan kaikille erän osanottajille. Rivit saavat peräkkäiset
-  ajat (aika + 1/10 000 s jokaiselle) (`Hk/HkIV.cpp:2986-2999`). Ratakohtaiseen ajanottoon
-  (uinti) tarkoitettu tapa kuvataan käyttöohjeessa `5.7`.
+  valikko): yksi lähtösignaali kirjataan n peräkkäiselle riville. Rivit saavat peräkkäiset
+  ajat (aika + 1/10 000 s jokaiselle) (`Hk/HkIV.cpp:2986-3010`). Rivi kohdistetaan erän
+  kilpailijalle ja tämän tulokseen vain, kun laji on N, P tai U (`haeratakilp`,
+  `Hk/HkIV.cpp:2994-2995`); muissa lajeissa kaikki n riviä kirjataan ilman kilpailijaa (`kno` = 0)
+  [todennettu: koodi]. Ratakohtaiseen ajanottoon (uinti) tarkoitettu tapa kuvataan
+  käyttöohjeessa `5.7`.
 - **Sarjalle tai erälle käsin:** `S` ja `R` ajanottonäytöllä (kohta 1.6).
 
 **Väliaikapisteen päättely.** Kun aika kuuluu kilpailijalle mutta pistettä ei tiedetä
@@ -250,16 +275,21 @@ paketin luokka `AIKAT`, paketissa pakotuslippu sekä kaksi `aikatp`-tietuetta)
 [luettu käsikirjaa varten, ei tarkastettu; luokka mainitaan `yleiskuva.md`:ssä]. Paketti
 sisältää vanhan rivin (`daika`) ja uuden rivin (`iaika`), joten vastaanottaja voi korvata rivin.
 
-- Paketti lähtee vain yhteydelle, jolle on annettu asetus **`LÄHAIKAy`** (tai `LÄHAIKAy=V`, jolloin
-  yhteydelle lähtee **vain** AIKAT-paketteja: `com_ajat == 2`). `y` on yhteyden numero kuten
-  `YHTEYSy`-asetuksessa. Lähettäjä ei lähetä pakettia takaisin yhteydelle, josta muutos tuli
+- Paketti lähtee vain yhteydelle, jolle on annettu asetus **`LÄHAIKAy`** (`com_ajat == 1`).
+  `y` on yhteyden numero kuten `YHTEYSy`-asetuksessa. Asetus **`LÄHAIKAy=V`** (`com_ajat == 2`)
+  rajaa viestissä yhteyden lähetykset vain AIKAT-paketteihin (`Juk/VCom.cpp:260`, `:363`,
+  `:768`, `:799`). **HK:ssa rajaus on suppeampi:** HK:n `laheta` (KILPT, KILPPVT, VAIN_TULOST,
+  `Hk/HkCom32.cpp:186-188`) ja `laheta_em` (EMITT, `:773-775`) eivät tarkista `com_ajat == 2`:ta,
+  joten ne lähtevät silti; rajaus koskee HK:ssa vain seura-, EXTRA-, tiedosto- ja
+  kopiolähetystä (`:469`, `:529`, `:681`, `:701`, `:1319`; `Tp/TpComY.cpp:2980`)
+  [todennettu: koodi, ei ajettu]. Lähettäjä ei lähetä pakettia takaisin yhteydelle, josta muutos tuli
   (`kielto`); kun muutos tuli toiselta yhteydeltä, paketti ei mene myöskään yhteyksille, joilla
   `estavalitys` on päällä (`Hk/HkCom32.cpp:371-372`).
 - **Vastaanotto:** `tark_aika` (`Hk/HkCom32.cpp:400`) ottaa paketin vastaan, jos yhteydellä on
   `com_ajat`. Se ohjaa rivin jonoon `ino` paketin jononumeron (`jono`-kenttä) mukaan ja kutsuu
   `tall_rivi`ä. Vastaanotto kirjoittaa **vain jonon rivin**; kilpailijan tulos tulee erikseen
   KILPPVT- tai VAIN_TULOST-paketilla, jos lähettäjän asema lähetti ne (luku 05, aineisto G2)
-  [luettu käsikirjaa varten, ei tarkastettu; päätelty, ettei `tark_aika` muuta kilpailijaa].
+  [todennettu: `Hk/HkCom32.cpp:401-455`; ainoa kilpailijahaara `talltulos` on `#if defined(TARK_LEIMAT)`, kuollut koodi, `valitsimet.csv:272`].
 - Ennen kuin ajastin (`timerfl`) on käynnistynyt, vastaanotettavat AIKAT-paketit ovat jonossa
   (enintään 30); jonon puskurin siirtymä on väärä (H-035), mutta polku on päätelty
   tavoittamattomaksi toimitetuissa HK-ohjelmissa (riskiarvion saavutettavuus: ei toimitetussa).
@@ -270,7 +300,8 @@ sisältää vanhan rivin (`daika`) ja uuden rivin (`iaika`), joten vastaanottaja
   muistissa.
 
 Viesti käyttää samaa ajatusta (`Juk/VCom.cpp:487` `tall_rivi(ino, &ia, &da, ...)`;
-lähdeyhteyden esto jää pois, kun `com_ajat == 3` [päätelty koodista]). ViestiWinin
+lähdeyhteyden esto jää pois, kun `com_ajat == 3`; arvo tulee asetuksesta `LÄHAIKAy=P`, joka on
+vain viestissä, `Juk/VInit.cpp:1265-1266`) [todennettu: koodi]. ViestiWinin
 ajanottolomakkeen pakotettu uudelleenlähetys (Ctrl+Enter) ei toimi (H-121).
 
 ### 1.9 Viestin erityispiirteet
@@ -289,8 +320,14 @@ Viestissä aika kuuluu **osuudelle**, ja `tall_regnly` päättelee osuuden ja pi
   olevalle osuudelle, ja tunnisteen kautta haetaan juoksijan nimi (`haejoustoosuus`,
   `Juk/VIv.cpp:1733-1760`).
 - **Piste.** Jos pistettä ei ole annettu, `haeseurpiste` valitsee ensimmäisen väliajan, jolle
-  ei ole aikaa, ja kun väliajat ovat täynnä, vaihdon/maalin. Asetus `VUOROMAALI` kieltää maalin
-  automaattivalinnassa; `SAMAPISTE` on sama kuin HK:n vastaava (oletus 10 s).
+  ei ole aikaa, ja kun väliajat ovat täynnä, vaihdon/maalin (ilman `VUOROMAALI`a piste on
+  `valuku+1`). Asetus `VUOROMAALI` toimii koodissa päinvastoin kuin käyttöohje sanoo: se
+  **valitsee** pisteeksi 0 (maali), kun väliajat ovat täynnä eikä osuudelle ole vielä maaliaikaa
+  (`Juk/VIv.cpp:626`, vain viestin `tall_etulos`; jäsentimen kommentti: "antaa ajan
+  maaliajaksi, kun väliajat ovat täynnä", `Juk/VInit.cpp:1457`), kun käyttöohje
+  (`viestiwin/5.4_valiaikapisteiden_kasittely.md:89`) sanoo sen kieltävän maalin antamisen.
+  Maalikellon `tall_regnly` ei käytä asetusta [todennettu: koodi; ristiriita käyttöohjeen
+  kanssa on ehdokas, ei rekisterissä]. `SAMAPISTE` on sama kuin HK:n vastaava (oletus 10 s).
 - **Varoitukset.** "OSUUS ON JO MERKITTY EI LÄHTENEEKSI" ja "POIKKEAVAN HYVÄ OSUUSAIKA"
   (osuusaika alle sarjan `varkynnys`-rajan tai yli 20 tuntia) ilmoitetaan, mutta aika tallennetaan.
 - **Lähtöaika.** Yhteis- ja erälähdöt (`5.5`) kirjataan lähtöajoiksi jonoon (piste `L`);
@@ -320,10 +357,10 @@ luettu.
 | Asia | HKM | HKW | VM | VW | VL |
 |---|---|---|---|---|---|
 | Tyyppi | konsoli | GUI | konsoli | GUI | konsoli (supistettu käännös, `LUENTA`) |
-| Aikajonojen määrä (`MAXJONO`) | 4 | 4 | 24 | 24 | 24 [päätelty: `Juk/VDef.h`] |
+| Aikajonojen määrä (`MAXJONO`) | 4 | 4 | 24 | 24 | 24 [todennettu: `Juk/VDef.h:36`] |
 | Ajanottokaavake | konsolin `ajanotto()` | `TFormAjanotto` | konsolin ajanottonäyttö (`JukConsole`) | `TFormAjanotto` | ei |
 | `tall_regnly` (kellojen vastaanotto) | kyllä | kyllä | kyllä | kyllä | `#if !defined(LUENTA)`: runko käännetty pois [luettu: `Juk/VIv.cpp:1764`] |
-| Maalikellotuki | Timy, ALGE S3, S4, Comet, ASC, TDC, ARES, RTR1, RTR2, RADIOEMIT | sama | ALGE, ALGE4, Comet, Timy, RTR (ei ARES, ASC, TDC, RADIOEMIT) | sama kuin VM | ei (ks. kohta 3) |
+| Maalikellotuki | Timy, ALGE S3, S4, Comet, ASC, TDC, ARES, RTR1, RTR2, RADIOEMIT | sama | ALGE, ALGE4, Comet, Timy, RTR sekä lukijat FEIG, IMPINJ, SIRIT, ZEBRA (`Juk/VInit.cpp:1594-1625`; ei ARES, ASC, TDC, RADIOEMIT) | sama kuin VM | ei (ks. kohta 3) |
 | `AIKA_COM` (CTS-pulssi) | kyllä | kyllä | kyllä | kyllä | ei (`NOCOM_AIKA`) |
 | Tunnistinajanotto (`tall_etulos`) | kyllä (`EMITLEIMAT`) | kyllä | kyllä (`Juk/VIv.cpp:539`) | kyllä | ei |
 | Osuus | ei | ei | kyllä | kyllä | - |
@@ -357,14 +394,14 @@ jäsentimet: `rekisteri/asetusavaimet.csv`. Ohjelmat: HK = HKM ja HKW, viesti = 
 | `AIKALUKIJAx=VAINz` / `LÄHDEz`, `LÄHDEPISTEET`, `LÄHDEJONOT` | HK ja viesti | tunnistinlukijan ajan piste ja jono | [AA: käyttöohje `5.2`, `5.3`] |
 | `VAVUOROT[=sama/ala/ylä]`, `VAINVÄLIAJAT`, `VAINALARAJAT[=EI]` | HK; viestissä `SAMAPISTE`, `VUOROMAALI` | pisteen päättely | [AA: käyttöohje `5.3.2`] |
 | `UUSINAIKA[=n]` | HK ja viesti | uusi aika korvaa aiemman, oletus 120 s | [AA: käyttöohje `5.3.2`] |
-| `ESTÄNEG`, `ESTÄYLIM`, `YLIMRAJA` | HK ja viesti | negatiivisen tai haamuajan ja kilpailijan toisen ajan esto; `ESTÄYLIM`: ajanottorivin tallennus estetään, kun kilpailijalla jo tulos | `Hk/HkIV.cpp:2870-2935` [luettu] ja käyttöohje `hkliite1.md:144` |
+| `ESTÄNEG`, `ESTÄYLIM`, `YLIMRAJA` | HK ja viesti | negatiivisen tai haamuajan ja kilpailijan toisen ajan esto; `ESTÄYLIM`: kilpailijan toista tulosta ei kirjata; ajanottorivi tallennetaan silti `status`-merkinnällä (`Hk/HkIV.cpp:3011-3016`) | `Hk/HkIV.cpp:2870-2935` [luettu] ja käyttöohje `hkliite1.md:144` |
 | `KELLO_ESTO=`, `AIKA_ESTO=`, `AIKA_COM=` | HK ja viesti; `AIKA_COM`/`AIKA_ESTO` ei VL | kaksoisaikojen esto; CTS-pulssi tietokoneen kellosta | [AA: osaD luku 1 "AIKA_COM"] |
 | `AIKAERO`, `AIKAKORJAUSy=` | HK ja viesti | kellon siirtymä, jonokohtainen korjaus (`aikakorjaus`) | [AA: käyttöohje `hkliite1.md:130`; luettu `Hk/HkIV.cpp:3743`] |
-| `PAKOTALAIKA`, `PAKOTALAIKARAJA=n`, `LÄHTÖIKKUNA=x` | HK | lähtöajan kirjaus tunnistimesta | [AA: käyttöohje `5.1`, `hkliite1.md:125-126`] |
+| `PAKOTALAIKA`, `PAKOTALAIKARAJA=n`, `LÄHTÖIKKUNA=x` | HK | lähtöajan kirjaus tunnistimesta; `PAKOTALAIKARAJA` sekunteina, oletus 0 = ei rajoitusta; `LÄHTÖIKKUNA` luetaan **millisekunteina**, oletus 3000 ms (käyttöohje sanoo sekunteja; ristiriita, KE-23) | `Hk/HkInit.cpp:1924`, `Hk/HkGlobals.cpp:96`, `:404` [todennettu: koodi]; käyttöohje `5.1`, `hkliite1.md:125-127` |
 | `LÄHTÖRYHMÄ=n` | HK ja viesti | erän osanottajamäärä | [AA: käyttöohje `5.7`] |
 | `TUNNJONO[=y]`, `TUNNRAJAT=` | HK | tunnistinjono vain kilpailijan tunnistukseen | [AA: käyttöohje `hkliite1.md:148`] |
 | `EMITAJAT[=n]` | HK ja viesti | kortilla määrätyt ajat jonoon n | [AA: käyttöohje `hkliite1.md:207`] |
-| `AJAT=nimi`, `LÄHAIKAy[=V]`, `YHTEYSAJAT` / `VA-AJAT`, `LÄHECODEy` | HK ja viesti | jonotiedoston nimi; aikojen siirto yhteydelle | `Hk/HkInit.cpp:1301`, `:1501-1510` [luettu] |
+| `AJAT=nimi`, `LÄHAIKAy[=V]`, `LÄHAIKAy=P` (vain viesti), `YHTEYSAJAT` / `VA-AJAT`, `LÄHECODEy` | HK ja viesti | jonotiedoston nimi; aikojen siirto yhteydelle; `=V` rajaa lähetyksen AIKAT-paketteihin täysin vain viestissä (HK: ks. kohta 1.8); `=P` poistaa lähdeyhteyden eston (viesti, `Juk/VInit.cpp:1265`) | `Hk/HkInit.cpp:1301`, `:1501-1510` [luettu] |
 | `JOUSTOVIESTI`, `VUOROMAALI`, `SAMAPISTE` | viesti | osuuden ja pisteen päättely | [AA: käyttöohje `viestiwin/5.4`] |
 | `ENNAKOI` (käännösvalitsin) | HKM ja VM | ennakkonumeroiden syöttö konsolin ajanottonäytöllä | `valitsimet.csv` |
 
@@ -393,7 +430,7 @@ Käännösvalitsimet (projektien määritykset tarkistettu 2026-11-27 `VS/Hk/HkM
 
 | Tilanne | Mitä tapahtuu | Ohjelmat | Lähde |
 |---|---|---|---|
-| Ajanottojonoa ei ole alustettu | ilmoitus "AJANOTTOA EI KÄYNNISTETTY, MUTTA YRITETÄÄN KÄYTTÄÄ"; aika ei tallennu; kello kuittaa tai ei kuittaa laitetyypin mukaan (luku 10) | kaikki | [luettu] `Hk/HkIV.cpp:2777-2781`, `:3747-3749` |
+| Ajanottojonoa ei ole alustettu | ilmoitus "AJANOTTOA EI KÄYNNISTETTY, MUTTA YRITETÄÄN KÄYTTÄÄ"; aika ei tallennu; paluuarvo 1, joten Emit-kello saa uusintapyynnön eikä kuittausta (ks. "Kellon kuittaus" alla; luku 10) | kaikki | [luettu] `Hk/HkIV.cpp:2777-2781`, `:3747-3749` |
 | Jono täynnä | ilmoitus "AIKATAULUKKO TÄYSI"; `tall_rivi` palauttaa 1; `tee_aika` nollaa näppäinjonon | kaikki | [luettu] `Hk/HkAjat.cpp:233-236`, `Hk/HkIV.cpp:3754-3760` |
 | Tallennus jonoon epäonnistuu levyllä | ilmoitus; kutsuja ei saa tietoa; epäonnistunut rivi jää tyhjäksi riviksi tiedostoon (alin mahdollinen aika) ja korjautuu vain, kun rivi tai aiempi rivi muuttuu tai vaihe vaihtuu (`fp1`) | HKM, HKW, VM, VW | [AA: H-146; `virheenkasittely.md` 12.3] |
 | Jonotiedoston viimeinen tietue kirjoitetaan uudelleen | viestissä `mxtime-1` tietuetta: täydessä jonossa viimeinen katoaa; virhepolut sulkevat väärän kahvan | VM, VW (vika viestissä; HK:n vastaava `Hk/HkIV.cpp:4023`, `:4113`) | [AA: H-054] |
@@ -406,14 +443,21 @@ Käännösvalitsimet (projektien määritykset tarkistettu 2026-11-27 `VS/Hk/HkM
 | Kellon aika tulee ennen kuin ajastin on käynnistynyt | AIKAT-paketit puskuroidaan; puskurin siirtymä on väärä; polun on päätelty olevan tavoittamaton | HKM, HKW | [AA: H-035] |
 | CTS-pulssi (`AIKA_COM`) ja vaiheen vaihto | `comajanotto` → `tee_aika` → `getpos` ilman `tall`-lukkoa; vaiheen vaihdon aikana väärä tai puuttuva kilpailija | HKM, HKW | [AA: H-102] |
 | `AIKACOM=` (editorin kirjoittama avain) | jäsennin tuntee vain `AIKA_COM=`; asetus ei tule voimaan | HKW | [AA: H-173] |
-| Vaihe vaihtuu kesken lukijasyötön | lukijan tunnistejono (`bdg_t`) voi menettää rivin; jonon vapautus ilman lukkoa | HKM, HKW | [AA: H-094, H-136] |
+| Vaihe vaihtuu kesken lukijasyötön | lukijan koodi-aika-taulu (`bdg_t`) voi menettää rivin; jonon vapautus ilman lukkoa (H-094, HK) | HKM, HKW | [AA: H-094] |
+| Koodi-aika-taulun (`bdg_t`) lukitsematon käsittely | menetetty tai repeytynyt rivi antaa väärän luentahetken, mikä siirtää maali- ja väliaikoja; todennäköisin seuraus on menetetty rivi; vaatii käytännössä kaksi tai useampia lukijasäikeitä | HKM, HKW, VM, VW (viestissä `hae_bdg_t` vain lukee) | [AA: H-136] |
+| Lukijan sarjasäie jää pyörimään (ARES, Sirit) | etenemätön silmukka, kun puskurissa on 41+ tavua ilman kehystä: ajanottosyöte pysähtyy; ARES vain HK | HKM, HKW (ARES); Sirit myös viesti | [AA: H-056] |
 | Kello ja tietokone eri aikaa (RTR) | kehys `G` ilmoittaa eron; ensimmäinen ylitys hylätään | HK, viesti (RTR) | [luettu] `Hk/HkIV.cpp:2775`, `:3058` |
 | Päivän vaihtuminen | `t0_regn` asetetaan käsin; laitteen uudelleenkäynnistystä ei havaita | kaikki | [AA: osaD A12; päätelty] |
 
-**Kellon kuittaus ja jonoon tallennus.** Kellon kuittaus (`+`) kertoo, että `tall_regnly` palasi
-arvolla 0. Se ei kerro, että aika on tallennettu jonoon tai kilpailijalle: aika voidaan hylätä
-ilmoituksella (jono täynnä, ei alustettu), `KELLO_ESTO` ohittaa kehyksen paluuarvolla 0, ja
-`tall_rivi`n kirjoitusvirhe ei välity [päätelty luetuista paluuarvoista; AA: osaD luku 4, H-146].
+**Kellon kuittaus ja jonoon tallennus.** Kuittauksen (`+`) saa Emit-kello (`lue_EmitKello`,
+`Tp/TpLaitteet.cpp:910-916`): kun `tall_regnly` palaa arvolla 0, kello saa kuittauksen `+`, ja
+kun arvo on nollasta poikkeava, kello saa uusintapyynnön `?`. Muut lukijafunktiot (esimerkiksi
+`Tp/TpLaitteet.cpp:716`, `:780`) eivät käytä paluuarvoa [todennettu: koodi]. Kuittaus ei siis
+kerro, että aika on tallennettu jonoon tai kilpailijalle: `KELLO_ESTO` ohittaa kehyksen
+paluuarvolla 0 (`Hk/HkIV.cpp:2771-2777`), ja `tall_rivi`n kirjoitusvirhe ei välity
+(H-146). Sen sijaan jono täynnä tai ei alustettu palauttaa arvon **1**
+(`Hk/HkIV.cpp:2778-2784`): aikaa ei tallenneta, ilmoitus näytetään ja Emit-kello saa
+uusintapyynnön eikä kuittausta [todennettu: koodi; kellon todellista käytöstä ei ole ajettu].
 
 ## 5. Tunnetut viat tässä toiminnossa
 
@@ -427,11 +471,15 @@ ilmoituksella (jono täynnä, ei alustettu), `KELLO_ESTO` ohittaa kehyksen paluu
 | Ajanottojonon rivin tallennus ja korvaus (tall_rivi, AJAT-tiedosto) | [H-131](../vikakortit/H/H-131.md) | avoin | P3 | Vaiheen vaihdon jälkeen avattu aikajono voi tallentaa ajat edellisen vaiheen tiedostoon |
 | Ajanottojonon rivin tallennus ja korvaus (tall_rivi, AJAT-tiedosto) | [H-132](../vikakortit/H/H-132.md) | avoin | P4 | Yksivaiheisessa kilpailussa ohjelma poistaa ajanottotiedoston nimestä yhden merkin, myös käyttäjän antamasta nimestä |
 | Maalikellon ajanotto (kellosanoma, tall_regnly) | [H-090](../vikakortit/H/H-090.md) | avoin | P2 | HK: kellosanoman käsittely jättää aikajonon lukon päälle asetuksella TUNNJONO, ja käsin kirjattavat ajat ja vaiheen vaihto estyvät |
+| Maalikellon ajanotto (kellosanoma, tall_regnly) | [H-056](../vikakortit/H/H-056.md) | avoin | P2 | Viallinen sanoma ARES-, Sirit- tai emiTag-lukijalta voi jättää lukijasäikeen pyörimään ja pysäyttää kyseisen laitteen syötteen |
 | Ajanotto tietokoneen kellosta ja CTS-pulssista (tee_aika, comajanotto, AIKA_COM) | [H-102](../vikakortit/H/H-102.md) | avoin | P4 | Vaiheen vaihto tyhjentää numerohakemiston samalla, kun toinen työ hakee siitä kilpailijaa |
 | Ajanotto tietokoneen kellosta ja CTS-pulssista (tee_aika, comajanotto, AIKA_COM) | [H-173](../vikakortit/H/H-173.md) | avoin | P3 | Asetuseditorit tallentavat avaimia, joita ohjelma ei tunne, ja aikalähteen asetus AIKA_COM katoaa tallennettaessa editorilla |
 | Ajanotto tietokoneen kellosta ja CTS-pulssista (tee_aika, comajanotto, AIKA_COM) | [H-170](../vikakortit/H/H-170.md) | avoin | P5 | Kokoomarivi: laitteiden, HTTP:n, selaimen ja SQL-sarakkeiden pienet viat (15 erillistä kohtaa) |
 | Tunnistinajanotto (tall_etulos, tall_ec, emiTag-väliajat) | [H-166](../vikakortit/H/H-166.md) | avoin | P3 | emiTag-väliaikojen nouto verkosta voi liittää kaksi sanomaa yhdeksi riviksi, pysähtyä lyhyeen riviin tai jäsentää virhesivun tietona |
 | Tunnistinajanotto (tall_etulos, tall_ec, emiTag-väliajat) | [H-097](../vikakortit/H/H-097.md) | avoin | P3 | HkKisaWinissa vaiheen vaihdon jälkeen jatkuva SQL-emit-haku, tulosten vieritys ja avointen haku jäävät pois käytöstä |
+| Tunnistinajanotto (tall_etulos, tall_ec, emiTag-väliajat) | [H-090](../vikakortit/H/H-090.md) | avoin | P2 | HK: kellosanoman käsittely jättää aikajonon lukon päälle asetuksella TUNNJONO, ja käsin kirjattavat ajat ja vaiheen vaihto estyvät |
+| Tunnistinajanotto (tall_etulos, tall_ec, emiTag-väliajat) | [H-136](../vikakortit/H/H-136.md) | avoin | P3 | Lukijan kortti-aikataulu on kahden säikeen yhteinen eikä lukittu, joten kortin aika voi mennä väärin ja siirtää maali- ja väliaikoja |
+| Tunnistinajanotto (tall_etulos, tall_ec, emiTag-väliajat) | [H-094](../vikakortit/H/H-094.md) | avoin | P3 | Vaiheen vaihdon aikana lukijalta tullut merkki jää käsittelemättä, ja merkkijono voidaan vapauttaa kirjoituksen alta |
 | Väliaikapisteen päättely (maaraa_piste, lähdepistetiedostot) | [H-074](../vikakortit/H/H-074.md) | avoin | P4 | Lähdepiste- ja lähdejonotiedostot (LAHDEPISTEET, LAHDEJONOT, BOXOHJE) voivat ylittää taulukon tai jättää viestiohjelman silmukkaan |
 | Ajanottolomake ja käsin syöttö (aikojen muokkaus, ennakkonumerot) | [H-111](../vikakortit/H/H-111.md) | avoin | P2 | Ajanoton "Tallenna muutos" muuttaa lähtö- tai automaattipisteen rivin maaliriviksi ja voi kirjoittaa lähtökellon ajan kilpailijan maaliajaksi |
 | Ajanottolomake ja käsin syöttö (aikojen muokkaus, ennakkonumerot) | [H-117](../vikakortit/H/H-117.md) | avoin | P3 | HkKisaWinin ajanotossa sarjan rajan ylittävä piste tyhjentää kilpailijan vanhan tuloksen eikä tallenna uutta |
@@ -485,6 +533,15 @@ Generoitu tiedostosta `kasikirja/toiminnot.csv` ja rekistereistä (tila, priorit
   Palvelin- ja SQL-puolen ajanotto (H-166, H-097) on vaihtoehtoinen polku, ei selvitetty tässä.
 - Aikajonojen vertailu, lähtökello, `KUULDEMO`/`TAULU`-näytöt: sisältöä ei ole luettu.
 - `COMETNO`-, `MAKI`- ja muita kuolleita haaroja ei kuvata toimitettujen ohjelmien ominaisuuksina.
-- Aikajonojen kokonaiskoko (`maxntime`) ja sen asetus: ei selvitetty.
+- Aikajonon kokonaiskoko (`maxntime`, HK): jos arvo on 0, `initajat` laskee sen kaavalla
+  `(maxvaluku + (lajatfl ? 2 : 1)) * maxrec + 50 + maxrec / 4`, vähintään 1000, ja lisää
+  5000 (`Hk/HkIV.cpp:4210-4215`) [todennettu: koodi]. Muuttujalle ei löytynyt asetusavainta
+  `Hk/`- eikä `Juk/`-hakemistojen haulla; viestin koon määräytymistä ei ole selvitetty.
+- Ehdokkaat (ei tarkastettu, ei rekisterissä): `LÄHTÖIKKUNA`-yksikkö (KE-23, kohta 1.7);
+  `tall_etulos`: `UUSINAIKA`-haara ohittaa lähtöaikaehdon ja `tls0` voi olla alustamaton
+  (`Hk/HkIV.cpp:676`, K-5-tarkastuksen sivuhavainto L2); `VUOROMAALI`-käyttöohjeen ristiriita
+  (kohta 1.9).
+- Aktiivisten aikojen peitteen `atimemask` oletusarvo ja se, piiloutuvatko `ESTÄYLIM`-rivit
+  ajanottonäkymästä: ei selvitetty (K-5-tarkastus A1).
 - Ajanottoa koskevia tunnettuja vikoja, joita ei ole kytketty (`toiminnot.csv`): ks. luvun 5 luettelo;
   puuttuvat kytkennät on listattu loppuraportissa.

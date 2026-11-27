@@ -56,8 +56,10 @@ koodi luettu käsikirjaa varten, ei tarkastettu]:
   (`lue_radat_xml`, `Hk/HkEmit.cpp:847`) tai tekstimuotoisesta `RADAT*.LST`-tiedostosta
   (`lue_radat`, `Hk/HkEmit.cpp:2857`) [AA: H-058, H-134].
 - **Rastien leimasinkoodit:** HK lukee tiedoston `LEIMAT.LST` tai vaihekohtaisen `LEIMAT<n>.LST`
-  (`Hk/HkInit.cpp:2354`; jos tiedostoa ei löydy, ohjelma kysyy, jatketaanko ilman sitä)
-  [luettu käsikirjaa varten, ei tarkastettu].
+  (`lue_leimat`, `Hk/HkEmit.cpp:2335-2370`). Jos kumpaakaan tiedostoa ei löydy, ohjelma
+  ilmoittaa "EMIT-koodit asetataan samoiksi kuin rastitunnukset" ja kysyy (ellei `ohitaleimat`
+  ole päällä), jatketaanko ilman tiedostoa vai poistutaanko; jatkettaessa leimasinkoodit ovat
+  samat kuin rastitunnukset (`:2359-2360`) [todennettu: koodi].
 
 Ilman rataa leimantarkastus ei onnistu: `tark_badge` palauttaa virhekoodin, ja käsittelijä näyttää
 ilmoituksen "jo tarkastusmerkintä tai rataa ei löytynyt" (`Hk/HkIV.cpp:1633-1651`)
@@ -103,7 +105,9 @@ Tässä kuvataan toiminta tulosten kannalta; algoritmin yksityiskohdat ovat kood
 - **Paluuarvo.** 0 = kaikki rastit löytyivät, -1 = rataa tai kilpailijaa ei löytynyt, positiivinen
   luku = ensimmäisen puuttuvan rastin järjestysnumero, -2 = kaikki rastit löytyivät mutta
   kortin kello on nollautunut kesken radan, joten aikojen laskenta ei ole mahdollista
-  (`Hk/HkEmit.cpp:2231-2236`).
+  (`Hk/HkEmit.cpp:2231-2236`). Nämä paluuarvot koskevat HK:n `tarkista`a: viestin
+  `tarkista`ssa ei ole arvoa -2, ja viestin `tark_badge` käsittelee negatiivisen arvon
+  epäonnistumisena (`Juk/VEmit.cpp:2695-2697`) [todennettu: koodi].
 - **Tulkinta.** Kun kutsuja pyytää tulkintataulukon (`tulkinta`), `tarkista` kirjaa jokaiselle
   kortin leimalle, mitä radan rastia se vastaa (positiivinen = oikea, negatiivinen = virheellinen
   tai ylimääräinen). Taulukkoa käyttävät leimaruudun värit, väliaikalaskenta ja raportit.
@@ -111,7 +115,8 @@ Tässä kuvataan toiminta tulosten kannalta; algoritmin yksityiskohdat ovat kood
 Hyväksytyn suorituksen kriteeri on siis rastien löytyminen radan järjestyksessä (tai vapaan
 järjestyksen osuudella missä järjestyksessä tahansa). Aineisto ei kerro, onko ajoaikaisia
 rajoituksia (esimerkiksi rastien välinen vähimmäisaika) tarkastuksessa; koodissa ei luetun osan
-perusteella ole sellaista [päätelty; kohdan 7 avoin kysymys].
+perusteella ole sellaista [päätelty; koko `tarkista`- ja `kuvio`-ketjua ei ole luettu, joten
+asiaa ei voi todentaa; kohdan 7 avoin kysymys].
 
 ### 1.6 Tarkastusmerkintä ja hylkäys
 
@@ -134,7 +139,7 @@ hylkäysesitys. Kohdassa *Tarkastus* on sitten valittava suoritusta vastaava vai
 [luettu käsikirjaa varten, ei tarkastettu].
 
 `I` ei sulje kilpailijaa tuloksista: `hyv_pv` laskee hyväksytyiksi merkit `-`, `I` ja `T`
-(`Hk/HkTls.cpp:1208-1211`), joten hylkäysesityksen saanut kilpailija on tuloslistalla, kunnes
+sekä merkin `B`, kun asetus `hyvHavaittu` on päällä (`Hk/HkTls.cpp:1208-1211`) [todennettu: koodi], joten hylkäysesityksen saanut kilpailija on tuloslistalla, kunnes
 tarkastusmerkintä muutetaan [luettu käsikirjaa varten, ei tarkastettu]. Monivaiheisessa
 kilpailussa `ytark` käsittelee `I`:n kuin `-` (`Hk/HkTls.cpp:1517`, `:1534`).
 
@@ -200,8 +205,11 @@ rastiväleistä sisältyy tulokseen ja osa ohitetaan (`hkkisawin/6.14_tulosten_l
 [AA: käyttöohje]. Sama rasti: vain kortin ensimmäinen leimaus kelpaa. Laskenta ajetaan, kun kortti
 on käsitelty ja sarjalle on valittu "laske kortilta" (`laskemtb`; `Hk/HkIV.cpp:1854-1855`), tai
 käyttäjän painikkeella kaikille kerralla. `laskeEm_VA(d, false)` kutsuu `tallenna`a ilman `tall`-lukkoa
-(H-010; aineisto D11). Jos kortilta puuttuu loppurasti, aika asetetaan 5 tunniksi (`Hk/HkEmit.cpp:6226-6228`):
-tuloksena on siis tarkoituksellisen suuri arvo eikä tyhjä.
+(H-010; aineisto D11). Jos kortilta puuttuu loppurasti, loppuajaksi asetetaan 5 tuntia (`Hk/HkEmit.cpp:6226-6228`),
+ja tulos on 5 h + `pohja` - alkurastin aika (`:6219-6232`): tuloksena on siis tarkoituksellisen
+suuri arvo eikä tyhjä. Jos kortilta puuttuu alkurasti, `rastiVA` palauttaa 0 (`:6184-6195`),
+alkuaikaa ei vähennetä, eikä puuttumisesta ilmoiteta; tulokseksi tulee silloin pelkkä loppuaika
+(+ `pohja`) [todennettu: koodi].
 
 **b) Rastivälianalyysi (`emitanal`).** Kun asetus `EMITANAL` on päällä, `addemitanal` laskee
 jokaisesta hyväksytystä kortista rastivälien ajat (`laskeemitvaliajat`) ja päivittää
@@ -279,20 +287,23 @@ luku 6).
 | Asia | HKM | HKW | VM | VW | VL |
 |---|---|---|---|---|---|
 | Emit-tiedoston luku ja tallennus | kyllä | kyllä | kyllä | kyllä | ei (kortti vain sisäänluentanäkymälle) |
-| Leimantarkastus (`tarkista`, `tark_badge`) | kyllä (`Hk/HkEmit.cpp`) | kyllä | kyllä (`Juk/VEmit.cpp`, osuuskohtainen) | kyllä | ei [päätelty: `LUENTA`-käännös ei tallenna emit-tietuetta, aineisto luku 7] |
+| Leimantarkastus (`tarkista`, `tark_badge`) | kyllä (`Hk/HkEmit.cpp`) | kyllä | kyllä (`Juk/VEmit.cpp`, osuuskohtainen) | kyllä | ei [todennettu: `Juk/VEmit.cpp` ei ole VL:n projektissa, `VS/V/JukLuenta520.vcxproj:165-197`; kutsu on `#ifndef LUENTA` -lohkossa, `Juk/VIv.cpp:1116`, `:1581`; huom. `EMITLEIMAT` on silti määritelty VL:ssä, `Juk/VDef.h:74-76`] |
 | Käsittelyn käynnistys | `leimat()`-näyttö | Emit-lomake, `ProsEmitThread` | konsolin `pros_emit` | `ProsEmitThread`, `TFormEmit::ProsEmit` | sisäänluentanäkymä |
 | Käyttäjän kysymykset (tuntematon kortti, jo luettu) | kysely | automaattinen valinta, ilmoitus | kysely | `KysyKilpailija` | - |
 | Tarkastusmerkintä | `kilptietue::tark` | sama | osuuskohtainen (`Tark(os, ...)`) | sama | - |
 | Rastivälianalyysi (`EMITANAL`) | kyllä | kyllä | kyllä (`laskeemitvaliajat` `Juk/VEmit.cpp:3126`) | kyllä | ei |
 | `laskeEm_VA` (väliajat kortilta) | kyllä | kyllä | kyllä (`Juk/VEmit.cpp:6178`, osuuskohtainen) | kyllä | ei |
 | Kuntosuunnistuksen koodinvaihto | ei (vain `_BORLAND_`) | kyllä (`kuntosuunnmoodi`) | ei | ei | - |
-| Esitarkastus (`ESITARK`) | asetus | asetus | käännösmakro ja asetus | asetus | ei |
+| Esitarkastus (`ESITARK`) | asetus | asetus | käännösvalitsin `ESITARK` ja asetus (`Juk/VInit.cpp:2111`, `#ifdef ESITARK`; valitsin vain VM:ssä: `JukMaali520.vcxproj:97`, `valitsimet.csv:152`) | ei: ViestiWinin käännös ei sisällä jäsenninkohtaa, joten asetusta ei voi antaa | ei |
 
 [Taulukko perustuu aineiston lukuihin 6-7 ja `Hk/HkIV.cpp`-, `Juk/VEmit.cpp`-lukuun; VW:n osuus on
 päätelty VM:n yhteisestä koodista ja aineiston luvusta 7.]
 
-HK:ssa leimantarkastus ja kilpailijan haku tehdään `tall`-lukon ulkopuolella kortin luvussa
-(`pros_emit` pääsäikeessä) ja `tark_badge` ottaa lukon vain tarkastusmerkinnän tallennukseksi.
+HK:ssa kilpailijan haku kortin koodilla (`bdg2kno`, `getpos`) tehdään `tall`-lukon ulkopuolella
+(HKW:ssa `pros_emit` ajetaan pääsäikeessä: `cbHk/WinHk.cpp:1611-1637` → `SendMessage`,
+`cbHk/UnitEmit.cpp:962`, `:969`). `tark_badge` ottaa `tall`-lukon ennen `GETREC`iä ja pitää sitä
+`tarkista`n ja `tallenna`n yli (`Hk/HkEmit.cpp:2271-2307`), eli lukko kattaa tietueen luvun,
+leimantarkastuksen ja tarkastusmerkinnän tallennuksen [todennettu: koodi].
 Viestin `tallenna` lukitsee itse, HK:n ei (aineisto luku 7) [AA].
 
 ## 3. Asetukset ja käännösvalitsimet
@@ -310,7 +321,7 @@ käsikirjaa varten (`Hk/HkInit.cpp`, `Juk/VInit.cpp`); avainten lista:
 | `ESTÄEMITTOISTO` / `SALLIEMITTOISTO` | HK ja viesti | `on_emit`-hylkäys (oletus: estetty) | aineisto luku 6 |
 | `LUKUTOISTO` | HK ja viesti | LUKIJAn vaatimat identtiset sanomat | aineisto luku 6; H-175 |
 | `AUTOSARJA`, `AUTORATA` | HK | rata tai sarja leimojen perusteella | `Hk/HkIV.cpp:1675-1699` [luettu] |
-| `ESITARK`, `ESILUENTA` | HK; viestissä `ESITARK` | `ESITARK.DAT`; tarkastusta ei tehdä | aineisto luku 4, 6 |
+| `ESITARK`, `ESILUENTA` | HK; viestissä `ESITARK` vain VM:ssä (jäsennin `#ifdef ESITARK`, `Juk/VInit.cpp:2111`; valitsin vain `JukMaali520.vcxproj:97`, `valitsimet.csv:152`; VW ja VL eivät tunne asetusta) | `ESITARK.DAT`; tarkastusta ei tehdä | aineisto luku 4, 6 |
 | `AUTORAP` | HK ja viesti | automaattinen leimausraportti | `Hk/HkInit.cpp:2561` [luettu] |
 | `EMITANAL` | HK ja viesti | rastivälianalyysi | `Hk/HkInit.cpp:2356` [luettu] |
 | `LÄHEMITn[=I/O/V]`, `LÄHEMVA` | HK ja viesti | EMITT- ja EMITVA-paketit yhteydelle | aineisto luku 6; `Hk/HkInit.cpp:2726` [luettu] |
@@ -350,7 +361,10 @@ Seuraus, jonka vuoksi leimantarkastusta ei voi käsitellä erillään tallennuks
 tallentaa tarkastusmerkinnän omassa `tallenna`-kutsussaan (`Hk/HkEmit.cpp:2308`), ja
 `pros_emit` tallentaa kilpailijan sen jälkeen uudelleen maaliajan kanssa (aineisto D8). Kilpailijan
 tarkastusmerkintä voi siis olla tallessa ilman maaliaikaa, jos käsittely keskeytyy tai jälkimmäinen
-tallennus epäonnistuu (`KILP.DAT`-virhe: aineisto E5, H-015) [päätelty luetusta järjestyksestä].
+tallennus epäonnistuu (`KILP.DAT`-virhe: aineisto E5, H-015). Järjestys on todennettu:
+`tark_badge` tallentaa ensin (`Hk/HkIV.cpp:1632`), ja maaliajan kanssa tallennus tehdään vasta
+sen jälkeen (`:1657`, `tallkilp`) [todennettu: koodi]; seurauksen näyttäminen vaatisi
+vikaruiskutusajon, eikä sitä ole ajettu [päätelty].
 
 ## 5. Tunnetut viat tässä toiminnossa
 
@@ -437,8 +451,6 @@ tallennus epäonnistuu (`KILP.DAT`-virhe: aineisto E5, H-015) [päätelty luetus
 | Emit-tietueen ja tuloksen välitys ja vastaanotto (EMITT, KILPT, jonot) | [H-026](../vikakortit/H/H-026.md) | avoin | P2 | Viestiohjelma lakkaa käsittelemästä saapuvia tietoja, kun se saa paketin, jonka lajia se ei tunne |
 | Emit-tietueen ja tuloksen välitys ja vastaanotto (EMITT, KILPT, jonot) | [H-016](../vikakortit/H/H-016.md) | avoin | P3 | Yhteyskatkon aikana kahdella asemalla tehdyt muutokset samaan tietoon voivat vaihtua ristiin, eikä ohjelma huomaa sitä |
 | Emit-tietueen ja tuloksen välitys ja vastaanotto (EMITT, KILPT, jonot) | [H-039](../vikakortit/H/H-039.md) | avoin | P3 | Jos asemat on kytketty silmukaksi, vanha tieto voi saapua toista reittiä ja korvata uudemman |
-| Emit-tietueen ja tuloksen välitys ja vastaanotto (EMITT, KILPT, jonot) | [H-110](../vikakortit/H/H-110.md) | avoin | P2 | ViestiWin: Lähtöajat-painike jättää kilpailijatietojen lukon päälle, ja vastaanotto- ja lukijasäikeet pysähtyvät ohjelman loppuun asti |
-| Emit-tietueen ja tuloksen välitys ja vastaanotto (EMITT, KILPT, jonot) | [H-162](../vikakortit/H/H-162.md) | avoin | P3 | SQL-vienti voi virheeseen pysähtyessään jättää tallennuslukon päälle, jolloin tietoja vastaanottavat säikeet jäävät odottamaan |
 | Kilpailijan tuloksen tallennus Emit-käsittelyssä (tallenna, KILP.DAT, SQL-peili) | [H-015](../vikakortit/H/H-015.md) | avoin | P3 | Jos kilpailijatiedoston KILP.DAT kirjoitus levylle epäonnistuu, ohjelma jatkaa muistissa olevilla tiedoilla ja levylle jää vanha tieto |
 | Kilpailijan tuloksen tallennus Emit-käsittelyssä (tallenna, KILP.DAT, SQL-peili) | [H-153](../vikakortit/H/H-153.md) | avoin | P3 | Jos virheilmoituksen antanut työsäie pitää lukkoa, ilmoituksen valinta "Poistu ohjelmasta" jättää ohjelman jumiin eikä sulje sitä |
 | Kilpailijan tuloksen tallennus Emit-käsittelyssä (tallenna, KILP.DAT, SQL-peili) | [H-009](../vikakortit/H/H-009.md) | avoin | P3 | HkKisaWin voi jäädä odottamaan itseään, kun työsäie pyytää käyttöliittymältä jotain kilpailijatietojen lukko hallussaan |
@@ -484,5 +496,8 @@ Generoitu tiedostosta `kasikirja/toiminnot.csv` ja rekistereistä (tila, priorit
   "Virhe luennassa" -ikkuna). Q86, Q100, OP-13: lukijan kuittauksen merkitys laitteessa.
 - Viestin osuuden valinnan yksityiskohdat (`val_korkein`, joustoviesti, partio) on vain mainittu;
   `tark_partio`n tarkastus on lukematta.
+- Ehdokas (ei tarkastettu, ei rekisterissä; K-5-tarkastuksen sivuhavainto L3): `tark_badge`:ssa
+  paluuarvomuuttuja `er` on alustamaton, kun `esiluenta == 1` (`Hk/HkEmit.cpp:2273-2275`,
+  `:2308`).
 - Kuntosuunnistustilojen (`kuntosuunnmoodi` 1-3) käyttö ja `kaksibadge`-käyttötapaus: Q75, OP-9.
 - EMITVA:n vastaanottajan käyttötapaus (mikä ohjelma sitä käyttää): ei aineistossa.

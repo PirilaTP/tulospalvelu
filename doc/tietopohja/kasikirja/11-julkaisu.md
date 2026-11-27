@@ -140,7 +140,7 @@ valitun aikavälin (oletus minuutti) välein luku kerrotaan 1,5:llä; kun sarja 
 1001:llä. Jos jokin vertailuluku ylittää kynnysarvon (oletus 10), ohjelma tulostaa sarjan, jolla luku on suurin.
 Kynnysarvo yli 16 000 voi jättää sarjan pysyvästi tulostamatta, ja yli 24 000 estää automaattitulostuksen
 kokonaan [todennettu: käyttöohje `hkkisawin/9.6_automaattinen_tulostus.md`]. Käynnistys tulostuskaavakkeen
-valinnasta tai HK:n asetuksella `AUTO=x/k/a/mmmm` (laajuus, kynnys, aika-askel, maalit); viestin asetustiedoston
+valinnasta tai HK:n asetuksella `AUTO=x/k/a/mmmm` (laajuus, kynnys, aika-askel, maalit; aika-askel luetaan sekunteina ja hyväksytään vain arvoilla 6-999, muuten jää oletus 60 s, `Hk/HkTulostus.cpp:6794-6795`, `Hk/HkIV.cpp:53`; kynnyksen oletus 10, `Hk/HkGlobals.cpp:278`); viestin asetustiedoston
 jäsennin ei tunne avainta `AUTO=` (haettu merkkijonolla `AUTO` `Juk/VInit.cpp`:stä) [luettu käsikirjaa varten, ei
 tarkastettu: `Hk/HkInit.cpp:1061`; `Hk/HkTulostus.cpp:969-1060`, `:6764-6830`].
 
@@ -328,7 +328,7 @@ joka kierros, mutta vaikutusta ei ole mitattu (Q91) [todennettu: vikakortti H-14
 
 | Avain | Ohjelmat | Vaikutus |
 |---|---|---|
-| `HTML=väli`, `HTML=nimi/väli[/S]`, `MHTML=...` | kaikki (`AUTOFILE`) | automaattinen HTML- tai mobiili-HTML-tulostus; välin yksikkö sekuntia |
+| `HTML=väli`, `HTML=nimi/väli[/S]`, `MHTML=...` | kaikki (`AUTOFILE`) | automaattinen HTML- tai mobiili-HTML-tulostus; välin yksikkö sekuntia; HK:ssa oletusväli 60 s, kun tiedoston nimi annetaan ilman väliä ja väliä ei ole annettu aiemmin (`Hk/HkInit.cpp:979-999`; viestin jäsentimen oletusta ei ole tarkistettu) |
 | `XML=...` | kaikki (`AUTOFILE`) | automaattinen XML-tulostus; viestissä vain loppuosa (H-158) |
 | `HTMLTIT=`, `HTMLOTS=` | kaikki (`AUTOFILE`) | sivun nimi ja otsikko |
 | `AUTO=x/k/a/mmmm` | HK | automaattitulostus kirjoittimelle |

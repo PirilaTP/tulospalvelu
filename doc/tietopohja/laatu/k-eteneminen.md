@@ -11,10 +11,10 @@ E-1:tä eikä D-vaihetta; omistajan päätöksiä ei tehdä.
 |---|---|
 | Emit-selvitys (K-3-aineisto) | `kasikirja/aineisto/emit-luenta.md` kirjoitettu (Opus), riippumattomasti tarkastettu ja korjattu (`tarkastukset/emit/`); ehdokkaat KE-10–KE-13 |
 | Agentin kehitys | luku 3a (laajat ketjukysymykset), reittitaulukko erien raportteihin; `pirila-learn` suunniteltu (suunnitelma 5.7) |
-| K-2 kortit | erät `k2-erat.json` (E01–E18, 217 korttia) + 9 pilottikortin päivitys uuteen muotoon; kaikki 229 korttia kirjoitettu ja kuitattu (E01–E18, pilotin päivitys); Opus-laadunvarmistus seuraavaksi |
-| K-3 käsikirja | pohja `kasikirja/_malli-luku.md`, ohje `k3-kirjoittajan-ohje.md`; ei aloitettu |
+| K-2 kortit | valmis: 229 korttia kirjoitettu, kuitattu, Opus-tarkastettu (k5/Q1–Q6) ja korjattu (S1–S14) |
+| K-3 käsikirja | valmis: 15 lukua, `toiminnot.csv`; luvut 04, 05, 08, 09 Opus-tarkastettu (k5/kasikirja.md), muut luvut korjattu samoista virhetyypeistä |
 | K-4 portaali | `portaali/index.html`, `app.js`, `tyyli.css`, generaattori `tyokalut/portaali.py`, savutesti `tyokalut/portaali_testi.js` |
-| K-5 | ei aloitettu |
+| K-5 | valmis: `tarkastukset/k5/kasittely.md` |
 
 ## Jatkaminen
 

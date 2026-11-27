@@ -62,7 +62,7 @@ numero. Avaimen arvo kertoo tyypin ja osoitteen [todennettu: käyttöohje `hkkis
 | Sarjaportti (RS-232) | `COMy=n`, `BAUDy=...` | aseman välinen yhteys nollamodeemilla; vanhin tyyppi | tiukka vuorottelu: seuraava paketti vasta vastapuolen kuittauksen (NAK-kyselyn) jälkeen; yksi säie hoitaa molemmat suunnat [todennettu: tiedonsiirto.md] |
 | UDP | `YHTEYSy=UDP:oma_portti/osoite:kohdeportti`, suuntarajaus `UDPI`/`UDPO` | tavallinen yhteys työasemien välillä (käyttöohje: "normaalisti käytettävä yhteysprotokolla") | oletusportti `PORTBASE` (15900) + yhteyden numero; kaksi säiettä (vastaanotto, lähetys) yhteyttä kohti; `UDPI` vain vastaanotto, `UDPO` vain lähetys [todennettu: käyttöohje; `Hk/HkInit.cpp:388-415`] |
 | UDP, kuittaamaton ("BRO") | `YHTEYSy=BRO...` | yksisuuntainen lähetys ilman odotusta | lähettäjä merkitsee paketin lähetetyksi odottamatta kuittausta; tarkoitettu, ei vika [luettu käsikirjaa varten, ei tarkastettu: `Hk/HkInit.cpp:1112-1115`, `Tp/TpComY.cpp:1531-1536`] |
-| TCP-asiakas / -palvelin | `YHTEYSy=TCP:osoite:portti` (asiakas), palvelinmuoto `TCPS` | tavallinen aseman välinen yhteys TCP:llä sekä ulkoiset lukijat ja palvelut | asiakas ei yritä yhteyttä uudelleen (H-027); toinen saapuva yhteys korvaa elävän (H-028) |
+| TCP-asiakas / -palvelin | `YHTEYSy=TCP:osoite:portti` (asiakas), palvelinmuoto `TCPS` | tavallinen aseman välinen yhteys TCP:llä sekä ulkoiset lukijat ja palvelut | jo muodostetulla asiakasyhteydellä on uudelleenyhteys, mutta epäonnistunut ensimmäinen avaus on pysyvä (H-027, kohta 1.8); toinen saapuva yhteys korvaa elävän (H-028) |
 | TCP, XML (`TCPX`, `TCPSX`) | `YHTEYSy=TCPX:osoite:portti` | lähtevä XML-muotoinen tulosvirta ulkoiselle palvelulle (esim. verkkotulospalvelu) | vain lähtösuunta [todennettu: tiedonsiirto.md]; ks. kohta 1.8 ja luku 11 |
 | TCP, loki (`TCPL`) | `YHTEYSy=TCPL:...` | lokirivien lähetys TCP:llä | ei aseman välinen tietojen jäljennös; H-093 koskee tätä yhteyttä (HK) |
 | UDP-virta (laitteet, tulostaulut) | laiteavaimet (esim. `TAULU_COM=`) | laitteet ja tulostaulut | ei työasemien välinen [päätelty: tiedonsiirto.md]; ks. luku 10 |
@@ -97,14 +97,20 @@ vastaanottosäikeessä [todennettu: tiedonsiirto.md "Kättely ja lopetus"]:
 
 **Yhteyden tila näkyy käyttäjälle** UDP-yhteydellä seuraavasti [luettu käsikirjaa varten, ei
 tarkastettu: `Tp/TpComY.cpp:975-985`, `:1805-1830`]: jokainen vastaanotettu paketti nostaa
-yhteyskohtaisen elossaolo-laskurin arvoon 5, ja lähettäjä vähentää sitä jokaisesta tyhjäkäynnin
-kyselystä (NAK, jota käytetään myös tyhjäkäynnin kyselynä). Kun laskuri on ollut nollassa yli kymmenen
+yhteyskohtaisen elossaolo-laskurin arvoon 5 (`Tp/TpComY.cpp:976-990`). Laskuria vähentää kaksi
+tahoa: lähettäjäsäie jokaisesta omasta tyhjäkäynnin kyselystään (NAK, jota käytetään myös
+tyhjäkäynnin kyselynä; `:1861-1862`), ja vastaanottosäie, kun yli sekunti on kulunut ilman
+saapunutta pakettia (`:982-983`). Koska myös vastapuolen NAK on saapunut paketti ja nostaa
+laskurin arvoon 5, tila "On" voi tarkoittaa pelkkiä vastapuolen tyhjäkäyntikyselyjä
+[todennettu: koodi]. Kun laskuri on ollut nollassa yli kymmenen
 tyhjäkierroksen ajan, yhteyden tilaksi näytetään "Ei", muuten "On" tai, jos valitsin `KONETUNN` on käytössä
 (kaikissa viidessä ohjelmassa), naapurin konetunnus. Konsoliohjelmissa tila on tilariveillä, GUI-ohjelmissa
 yhteystilalomakkeessa (`cbTp/UnitYhteysStatus.cpp`, taulukko `YhteysGrid`). "On" tarkoittaa, että
 paketteja on tullut vastapuolelta äskettäin; se ei takaa, että vastapuolen ohjelma on käsitellyt mitään.
-Koodi ei tee erillistä elävyysvalvontaa muille yhteystyypeille kuin tämä [päätelty: UDP-polku luettu,
-muut yhteystyypit eivät luettu tältä osin]; ks. T-048 lukijayhteyksistä.
+Tämä laskuri on UDP:n elävyysvalvonta. TCP-yhteydellä on oma "Ei"-tila: kun `TCPyht_on` ei
+pidä, säie kirjoittaa yhteyden tilaksi "Ei" ja yrittää uudelleenyhteyttä
+(`Tp/TpComY.cpp:1285-1287`) [todennettu: koodi]; muiden yhteystyyppien (RS ym.) osalta ei ole
+luettu, onko erillistä valvontaa [tuntematon]; ks. T-048 lukijayhteyksistä.
 
 Valinnainen `MONITORI` (`MONITORVÄLI`, oletus 10 s) lähettää säännöllisesti tilasanomia, joita
 erillinen `InstanssiMonitori`-ohjelma voi seurata. Käyttöohje antaa oletusportiksi 14900, koodi 14770
@@ -259,16 +265,23 @@ Uudelleenlähetys tapahtuu neljällä eri tasolla:
 
 1. **Saman paketin toisto yhteyden sisällä.** Jos kuittaus ei tule, lähettäjä lähettää saman paketin
    uudelleen samalla numerolla; vastaanottaja kuittaa toiston soveltamatta sitä. UDP:ssä
-   vastaanottaja tunnistaa edellisen tai kahden edellisen numeron toistoksi. Lähettäjä pitää kutakin
+   vastaanottaja tunnistaa edellisen tai kahden edellisen numeron toistoksi, mutta kuittaa
+   toistona vain välittömästi edellisen paketin; vanhemmat eivät saa toistokuittausta
+   (`Tp/TpComY.cpp:1019-1030`, `hyvp` asetetaan vain, kun `id == inpakid`) [todennettu: koodi]. Lähettäjä pitää kutakin
    yhteyttä kohti yhden kuittaamattoman paketin [todennettu: tiedonsiirto.md "Kehys ja kuittaus"; luettu
    käsikirjaa varten, ei tarkastettu: `Tp/TpComY.cpp:1008-1030`]. UDP-lähettäjä odottaa kuittausta
    toistuvasti kasvavan viiveen ajan ennen kuin yrittää uudelleen [luettu käsikirjaa varten, ei
    tarkastettu: `Tp/TpComY.cpp:1531-1560`]. TCP-virtayhteyksillä saa kuittaamattomia paketteja useita
    kerrallaan vai ei, on avoin (Q20).
 2. **Yhteyden uudelleenavaus.** Alkusanoma nollaa kuittausnumeron ja kättely käydään uudelleen (1.3). Katkon
-   aikana matkalla ollut paketti voidaan soveltaa kahdesti (H-034, kohta 1.9). **TCP-asiakas ei yritä
-   yhteyttä uudelleen**: jos palvelin on alhaalla tai yhteys katkeaa, yhteys ei palaa ennen ohjelman
-   uudelleenkäynnistystä (H-027); TCP-palvelimessa uusi saapuva yhteys korvaa elävän yhteyden sulkematta sitä
+   aikana matkalla ollut paketti voidaan soveltaa kahdesti (H-034, kohta 1.9). **TCP-asiakkaan
+   uudelleenyhteys:** jo muodostetulla asiakasyhteydellä on uudelleenyhteyspolku: kun
+   yhteys katkeaa, säie kutsuu `reconnectTCP`:tä (`Tp/TpComY.cpp:1285-1290`,
+   `com/WinUDP.cpp:617-627`). Pysyvä on vain epäonnistunut ensimmäinen avaus: jos palvelin on
+   alhaalla jo ensimmäisellä yrityksellä, yhteyssäie päättyy eikä yritä uudelleen
+   (`Tp/TpComY.cpp:1273-1275`) ennen ohjelman uudelleenkäynnistystä. TCPXML-yhteyden
+   uudelleenyhteys voi lisäksi kaataa ohjelman (H-027-kortti; seuranta.md KE-19). Uudelleenyhteyspolun
+   toimivuutta ei ole kokeiltu [luettu koodista, ei ajettu]; TCP-palvelimessa uusi saapuva yhteys korvaa elävän yhteyden sulkematta sitä
    (H-028); UDP-yhteyden kohdeosoite ja -portti voivat vaihtua minkä tahansa vastaanotetun datagrammin
    perusteella, myös kiinteästi määritellyllä osoitteella (H-029) [todennettu: tiedonsiirto.md "Löydökset"].
    RS-yhteydellä avausvirhe tuottaa ilmoituksen eikä uudelleenyritystä [todennettu: luku 10 kohta 1.1].
@@ -287,7 +300,7 @@ Uudelleenlähetys tapahtuu neljällä eri tasolla:
    `cbTp/UnitUusinta.cpp:47-90`]. Vanha jono ei siis ole luotettava keino palauttaa vastaanottajan tila.
 
 **XML-TCP ei kuittaa samalla tavoin.** XML-TCP-yhteyden lähetys (`lahetaXML_TCP`) siirtää jonoa sen perusteella,
-että kirjoitus yhteyteen onnistui (kirjoitettu tavumäärä vastaa pituutta), ja merkitsee lähetysajan jonoon
+että kirjoitus yhteyteen onnistui (kirjoitettu tavumäärä vastaa pituutta; myös pituudeltaan 0 oleva paketti siirtää jonoa, `len == nsent_tot`), ja merkitsee lähetysajan jonoon
 [luettu käsikirjaa varten, ei tarkastettu: `Hk/HkCom32.cpp:1058-1074`]. Vastaanottavan ulkoisen palvelun
 kuittausta ei odoteta tällä polulla; kyse on kutsun onnistumisesta, ei vastapään kuittauksesta.
 
@@ -340,7 +353,10 @@ Kolmen tai viiden aseman renkaassa ristiriitaisten muutosten asettuminen on avoi
 
 Käynnistyksessä (`initcom` → `opencomfile`, `Tp/TpComY.cpp:2258-2370`) ohjelma lukee levyjonon ja laskee kutakin
 yhteyttä kohti, montako peräkkäistä kelvollista pakettia on laitettu jonoon ja montako niistä on lähetetty
-[luettu käsikirjaa varten, ei tarkastettu]. Jos tiedostossa on lähetettävää, ohjelma kysyy: konsolissa
+[luettu käsikirjaa varten, ei tarkastettu]. Kysymys esitetään, kun tiedostossa on yksikin
+paketti (lähetetty tai lähettämätön), levyjono on tilassa `COMFILE` (`levypusk == 1`) eikä kyse
+ole vaiheen vaihdosta; vaiheen vaihdossa (`opencomfile(1)`) kysymystä ei esitetä
+(`Tp/TpComY.cpp:2331`) [todennettu: koodi]. Kun kysymys esitetään, ohjelma kysyy: konsolissa
 "Tiedostossa COMFILE N lähetettyä ja M lähetettävää tietoa. S)äilytä T)uhoa", GUI:ssa "...Säilytetäänkö?"
 (Kyllä/Ei). **Vastaus "Ei" tai T hävittää lähettämättömät paketit pysyvästi** (H-038). Asetus `COMFILE=S` jättää
 kysymyksen pois ja säilyttää jonon (ja HK:ssa `COMFILE=EI` kytkee levyjonon pois). Jos tiedoston
@@ -408,7 +424,7 @@ jäsentimissään (`Hk/HkInit.cpp`, `Juk/VInit.cpp`); alla ohjelmat ovat ne, joi
 | `MAXYHTEYS=` | kaikki | yhteyksien enimmäismäärä; vaikuttaa vain `COMFILE.DAT`:n rakenteeseen; jätetään ottamatta huomioon, jos tiedosto sisältää jo sanomia |
 | `KONE=xx` | kaikki | kaksikirjaiminen asematunnus, näkyy vastapuolella |
 | `VÄLITÄy=EI` | kaikki | ei välitetä saapuvia muutoksia eteenpäin tälle yhteydelle |
-| `HYVKAIKKI<n>` | kaikki | vastaanottaja ohittaa yhteyden n paketeilta järjestysnumeron tarkistuksen ja kuittaa ne; käyttöohje ei kuvaa asetusta, tarkoitus on päätelty koodista [luettu käsikirjaa varten, ei tarkastettu: `Hk/HkInit.cpp:1090-1096`, `Tp/TpComY.cpp:1038-1039`] |
+| `HYVKAIKKI<n>` | kaikki | vastaanottaja ohittaa yhteyden n paketeilta järjestysnumeron tarkistuksen ja kuittaa ne (`hyvp` asetetaan ennen `addseur`ia, joten myös jonoon mahtumaton paketti kuitataan: kuittaus ei tarkoita vastaanottoa); käyttöohje ei kuvaa asetusta, tarkoitus on päätelty koodista [todennettu: koodi `Hk/HkInit.cpp:1092-1096`, `Tp/TpComY.cpp:1008`, `:1038-1056`] |
 | `COMFILE`, `COMFILE=S`, `COMFILE=EI` | kaikki; `=EI` vain HK (viestissä kommentoitu pois, mutta käyttöohje `viestiwin/hkliite1.md` listaa sen) | levyjono; `S` jättää säilytyskysymyksen pois; `EI` muistijono |
 | `NAKVIIVE`, `UDPVIIVEET`, `TCPVIIVEET` | kaikki | tiedonsiirron viritysparametrit (käyttöohje: "ei yleensä tarpeen"); viestin `UDPVIIVEET=` hukkaa ensimmäisen arvon (H-176) |
 | `LÄHEMITn[=I/O/V]`, `LÄHEMVAn` | kaikki paitsi ViestiLuenta (emit-lähetys) | emit-kortin ja emit-väliaikojen lähetys yhteydelle (luku 05) |
@@ -444,7 +460,7 @@ Valitsimien tila: `rekisteri/valitsimet.csv` ja projektien määritykset `VS/Hk/
 | Tilanne | Mitä tapahtuu | Lähde |
 |---|---|---|
 | Yhteys katkeaa, UDP | tila "Ei" ilmestyy yli kymmenen tyhjäkierroksen jälkeen; lähettäjä toistaa; palatessa kättely nollaa numeron; matkalla ollut paketti voidaan soveltaa kahdesti (H-034); katkon aikana tehdyt muutokset ristiin (H-016) | [todennettu: tiedonsiirto.md; luettu käsikirjaa varten, ei tarkastettu: `Tp/TpComY.cpp:1805-1860`] |
-| Yhteys katkeaa, TCP-asiakas | ei uudelleenyritystä (H-027); XML-TCP-uudelleenyhteys voi kaatua null-osoittimeen | [todennettu: H-027] |
+| Yhteys katkeaa, TCP-asiakas | muodostettu yhteys yritetään avata uudelleen (`Tp/TpComY.cpp:1285-1290`, `com/WinUDP.cpp:617-627`) [luettu koodista, ei ajettu]; pysyvä on vain epäonnistunut ensimmäinen avaus (`Tp/TpComY.cpp:1273-1275`); XML-TCP-uudelleenyhteys voi kaatua null-osoittimeen (H-027) | [todennettu: H-027-kortti, seuranta.md KE-19] |
 | TCP-palvelin saa toisen yhteyden | uusi korvaa vanhan sulkematta; kaksi lukusäiettä samaan puskuriin (H-028) | [todennettu: H-028] |
 | Vastapuoli alhaalla, levyjono | paketit kertyvät jonoon rajatta; käynnistyksessä kysytään säilytys (1.11) | [todennettu: tiedonsiirto.md] |
 | Vastapuoli alhaalla, muistijono | täysi jono pudottaa paketin; varoitusdialogi kohdissa 25 ja 38 lukkojen ollessa varattuina, lukkiutumisehdokas (H-021) | [todennettu, osittain tarkastettu: H-021] |
@@ -498,7 +514,8 @@ ja tieto lähtee eteenpäin myös muille yhteyksille (H-015 koskee tallennuksen 
 | Levyjono COMFILE.DAT: kirjoitus, lukeminen ja käynnistyksessä jatkaminen | [H-156](../vikakortit/H/H-156.md) | avoin | P5 | Pysyvän tiedon kirjoituksen pienet virhepolut: osa kirjoitusvirheistä jää huomaamatta tai ohjelma ilmoittaa onnistumisesta epäonnistuneen kirjoituksen jälkeen |
 | Muistijono (COMFILE=EI, vain HK) | [H-021](../vikakortit/H/H-021.md) | avoin | P3 | Kun lähetysjono pidetään muistissa (COMFILE=EI), täysi jono pudottaa sanomia, ja jonon täyttymisestä varoittava ilmoitus voi jäädä odottamaan käyttäjää lukkojen ollessa varattuina |
 | Vastaanotto ja kuittaus (addseur, saapuvien jono, tarkcom-jako) | [H-026](../vikakortit/H/H-026.md) | avoin | P2 | Viestiohjelma lakkaa käsittelemästä saapuvia tietoja, kun se saa paketin, jonka lajia se ei tunne |
-| Vastaanotto ja kuittaus (addseur, saapuvien jono, tarkcom-jako) | [H-095](../vikakortit/H/H-095.md) | avoin | P4 | Lopetuksessa ajanottojonot poistetaan, vaikka vastaanottosäie voi vielä käyttää niitä |
+| Vastaanotto ja kuittaus (addseur, saapuvien jono, tarkcom-jako) | [H-110](../vikakortit/H/H-110.md) | avoin | P2 | ViestiWin: Lähtöajat-painike jättää kilpailijatietojen lukon päälle, ja vastaanotto- ja lukijasäikeet pysähtyvät ohjelman loppuun asti |
+| Vastaanotto ja kuittaus (addseur, saapuvien jono, tarkcom-jako) | [H-162](../vikakortit/H/H-162.md) | avoin | P3 | SQL-vienti voi virheeseen pysähtyessään jättää tallennuslukon päälle, jolloin tietoja vastaanottavat säikeet jäävät odottamaan |
 | Kilpailijapakettien vastaanotto ja soveltaminen (HK: tark_kilp) | [H-007](../vikakortit/H/H-007.md) | avoin | P2 | Toiselta asemalta tullut päivitys voi kumota samaan aikaan paikallisesti tehdyn muutoksen ja levittää vanhan tiedon muille asemille (HK) |
 | Kilpailijapakettien vastaanotto ja soveltaminen (HK: tark_kilp) | [H-022](../vikakortit/H/H-022.md) | avoin | P2 | Kahden aseman samanaikaiset lisäykset voivat saada saman tietuenumeron, ja vaihetieto tallentuu väärälle kilpailijalle ilman numeron tarkistusta (HK) |
 | Kilpailijapakettien vastaanotto ja soveltaminen (HK: tark_kilp) | [H-023](../vikakortit/H/H-023.md) | avoin | P2 | Monivaiheisessa kilpailussa tulos voi tallentua vastaanottajan omaan vaiheeseen, ja yhteys hyväksytään, vaikka vaiheen vaihto evätään (HK) |
@@ -587,8 +604,8 @@ annettu tunnusta:
   lähtökohtana (`inpakid = id - 1`). Ohitettujen pakettien menetyksen mahdollisuus on päättelemättä
   (`Tp/TpComY.cpp:1008-1036`, `:1011-1013`) [luettu käsikirjaa varten, ei tarkastettu].
 - **XML-TCP:n kuittaus.** XML-TCP-lähetys siirtää jonoa soketille kirjoituksen onnistuessa eikä odota vastapään
-  kuittausta; yhdistettynä H-027:ään (TCP-asiakas ei yritä uudelleen) jonosta voi siirtyä paketteja pois ilman, että
-  vastapää on saanut ne [päätelty; `Hk/HkCom32.cpp:1058-1074`].
+  kuittausta; jonosta voi siirtyä paketteja pois ilman, että
+  vastapää on saanut ne (esimerkiksi katkon aikana; ks. H-027 ja kohta 1.8) [päätelty; `Hk/HkCom32.cpp:1058-1074`].
 
 **Aiemmin kirjatut ehdokkaat, jotka sivuavat tätä lukua** (`seuranta.md` KE-taulukko): KE-2 (toisen työaseman
 vaiheen vaihtopyyntö käynnistää vaihdon ilman paikallisen käyttäjän vahvistusta; luku 08 ja H-129), KE-10 ja KE-11

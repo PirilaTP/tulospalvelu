@@ -57,7 +57,7 @@ käytössä ole `/P`-kysely (LUKIJA) tai `SIRITPOLL` (T-048).
 | **Emit MTR** | kortin leimat (vetoprotokolla `/GB`) | sarja 9600 | `MTRx=n` | `lue_MTR` (`:1126-1295`) |
 | **emiTag** (ECB1, ETS1, ECU1) | leimat ja väliajat | sarja 9600 (`/U` 115200, `/C` 19200) | `EMITAGx=n` | `lue_EMITAG` (`:1299-1372`) |
 | **emiTag palvelimelta** | väliajat HTTP:llä tai SQL:llä | WinHTTP, SQL SSH:n yli | `ETGPRSy`, `ETSQL`, `ETHOST`, `ETHAKUVÄLI`, `ETDATE`, `ETTIME` | `vahaku`, `haeSQLTh` |
-| **ALGE Timy, S3, S4, Comet, ASC, TDC** | maalikellon, lähtökellon ajat | sarja: S3 2400 (7 databittiä, 2 stop), S4 4800, Comet 2400, Timy 9600, ASC 2400 | `TIMYx=n`, `ALGE=n`, `ALGE4=n`, `COMET=n`, `ASC=n` | yleinen rivinlukija (`:1584-1695`) |
+| **ALGE Timy, S3, S4, Comet, ASC, TDC** | maalikellon, lähtökellon ajat | sarja: S3 2400 (7 databittiä, 2 stop), S4 4800, Comet 2400, Timy 9600, ASC 2400 | `TIMYx=n`, `ALGE=n`, `ALGE4=n`, `COMET=n`, `ASC=n` | yleinen rivinlukija (`:1584-1695`); HK:n asetuksista `TDC`-, `S3`- ja `S4`-avaimet eivät pääse jäsentimen ulomman ehdon läpi (`Hk/HkInit.cpp:1799-1810`), joten TDC8001-kelloa ei voi ottaa käyttöön asetuksella; `ALGE=n` ja `ALGE4=n` toimivat (H-176 kohta 3) [luettu käsikirjaa varten, ei tarkastettu; H-176-kortti] |
 | **ARES** | maalikello (SOH-EOT, 41 tavua) | sarja 9600 | `ARESn` | `lue_ARES` (`:696-736`) |
 | **RADIOEMIT** | radiolinkillä välitetty Emit | sarja 9600 | `RADIOEMIT` | yleinen rivinlukija; laite on aineistosta tuntematon |
 | **Sirit, Zebra FX9600** (RFID, UHF) | tunniste ja luentahetki | TCP: Sirit 50008/50007, Zebra 5084 (LLRP v1) | `SIRITn=TCP:..`, `ZEBRAn=TCP:..` | Sirit: `openSirit2`, `siritaika`; Zebra: `Tp/ZebraReader.cpp` |
@@ -79,7 +79,7 @@ Kortinlukijoiden (EMITKELLO, LUKIJA, MTR, emiTag) tekniikka on kuvattu luvuissa 
 | Laite | Kuittaus lukijalle | Kaksoisluennan esto | Tarkiste |
 |---|---|---|---|
 | Emit-kello (EMITKELLO) | `+\r`, kun `tall_emit` palauttaa 0 (myös hylätylle kaksoiskappaleelle ja kun tallennus epäonnistui, H-145); muuten `?\r` uusintapyyntö enintään 200 ms välein | `tall_emit` (`samatleimat`, H-168) ja `addem` (`on_emit`) | kenttäpituudet |
-| RTR1, RTR2 | kellon kuittaus `tall_regnly`:n paluuarvosta | - | RTR2: 7-bittinen summa; RTR1: kenttäpituudet |
+| RTR1, RTR2 | kellon kuittaus `tall_regnly`:n paluuarvosta (0 = kuittaus; 1 = uusintapyyntö, kun jono on alustamatta tai täynnä tai RTR:n kellon ero ylittää rajan ensimmäisen kerran; `Hk/HkIV.cpp:2771-2784`, `Tp/TpLaitteet.cpp:910-916`; luku 13) | - | RTR2: 7-bittinen summa; RTR1: kenttäpituudet |
 | LUKIJA | ei kuittausta | kortti hyväksytään, kun puskurissa on `lukutoisto` (oletus 2) identtistä sanomaa; 6 tikin portti | kaksi tarkistussummaa (XOR 0xDF) |
 | MTR | vetoprotokolla: ohjelma pyytää `/GB` + pakettinumero; `pkg_alku` etenee `tall_emit`-kutsun jälkeen paluuarvosta riippumatta (N-6) | `addem` | summa |
 | emiTag | ei kuittausta | `addem` | ei tarkistetta |
@@ -97,7 +97,7 @@ Maalikello antaa ajan tai sarjan aikoja; laitteen kanava kuvautuu pisteeksi ja j
 (`PISTEET=`, `JONOT=`; luku 04 kohta 1.4). Laitteen mukaan ohjelma tulkitsee sen kehyksen eri
 tavalla [luettu käsikirjaa varten, ei tarkastettu: `Hk/HkIV.cpp:1984-2560`]:
 
-- **Timy / TDC8001:** rivit 27 tavua; aikalaji `C` tai `F`; tunnus `c` (rivin peruutus) ja `h`/`k`/`e` (tilamerkinnät, vain kun kello lähettää kilpailijanumeron: `TIMYNO`); kanava 0...8;
+- **Timy / TDC8001:** (TDC8001-kelloa ei voi ottaa käyttöön asetuksella, H-176 kohta 3) rivit 27 tavua; aikalaji `C` tai `F`; tunnus `c` (rivin peruutus) ja `h`/`k`/`e` (tilamerkinnät, vain kun kello lähettää kilpailijanumeron: `TIMYNO`); kanava 0...8;
   laitenumero 1 oletuksena, toinen Timy `TIMYn=` (useita samanaikaisesti, käyttöohje `5.1.3`).
   Timy voidaan liittää USB:llä apuohjelman `AlgeTimyUsbToTcp` kautta TCP:llä; ohjelmat eivät tue
   Timyn suoraa USB-yhteyttä [AA: käyttöohje `liite_7`].
@@ -257,7 +257,7 @@ Taulukko osaD luvusta 3 ja `valitsimet.csv`:stä; projektien määritykset tarki
 | RFID (`LAJUNEN`: Sirit, Zebra, FEIG, Impinj) | kyllä | kyllä | **ei** (avaimet hyväksytään hiljaa ja valitsevat ALGE-ajanoton: H-176, T-052) | kyllä | kyllä |
 | `TCPLUKIJA` | kyllä | kyllä | kyllä | kyllä | kyllä |
 | Maalikellot (ALGE, Timy, Comet, RTR) | kyllä | kyllä | ei | kyllä | kyllä |
-| ARES, ASC, TDC, RADIOEMIT | kyllä | ei | ei | kyllä | ei |
+| ARES, ASC, TDC, RADIOEMIT | kyllä (`TDC` ei asetuksista: H-176) | ei | ei | kyllä (`TDC` ei asetuksista: H-176) | ei |
 | `AIKA_COM` (CTS-pulssi) | kyllä | kyllä | ei (`NOCOM_AIKA`) | kyllä | kyllä |
 | `VALUKIJA`, `AUTOVA` | kyllä | kyllä | ei | kyllä | kyllä |
 | `GAZ` | kyllä | kyllä | ei | ei (vain `GAZCOM`) | kyllä |
@@ -279,7 +279,7 @@ Avaimet: `rekisteri/asetusavaimet.csv`; käyttöohjeen taulukko `hkkisawin/hklii
 | Asetus | Ohjelmat | Vaikutus | Lähde |
 |---|---|---|---|
 | `TIMYx=n`, `ALGE=n`, `ALGE4=n`, `COMET=n`, `ASC=n` | HK; viestissä ALGE, ALGE4, COMET, TIMY | maalikello ja portti | [AA: osaD luku 1] |
-| `ARES`, `RADIOEMIT`, `TDC`, `ASC` | vain HK | kello | [AA: osaD luku 3] |
+| `ARES`, `RADIOEMIT`, `TDC` (ei käytettävissä asetuksista, H-176), `ASC` | vain HK | kello | [AA: osaD luku 3] |
 | `REGNLYx=n/...`, `EMITKELLO=n[/w/i/a]` | HK ja viesti (ei VL) | Emit-kello | [AA: osaD luku 1] |
 | `LUKIJAx=n` / `TCP:ip:portti` / `UDP` / `/P` / `/U`, `MTRx=n`, `EMITAGx=n[/U/C]` | kaikki | kortinlukijat | [AA: osaD luku 1] |
 | `KELLOBAUD=` | HK, viesti | maalikellon nopeus (indeksi 2...9, enintään 38400) | [AA: osaD luku 6] |

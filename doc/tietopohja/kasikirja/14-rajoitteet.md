@@ -174,7 +174,7 @@ kilpailuja ilman levypuskuria, ajetaanko useita lukijoita yhdellä HK-instanssil
 
 ### 1.5 Kirjoittajien ehdokkaat: KE-taulukko
 
-`seuranta.md` sisältää taulukon "Vaiheen K ehdokkaat ja tarkistuskohteet" (KE-1-KE-22). Vaihe K ei ole auditointi: kohdille ei
+`seuranta.md` sisältää taulukon "Vaiheen K ehdokkaat ja tarkistuskohteet" (KE-1-KE-23). Vaihe K ei ole auditointi: kohdille ei
 anneta H-tunnusta, riskiarviota ei muuteta, eikä niitä ole tarkastettu. Käsittely on suunniteltu riskiseulontaan E-1 tai korjauksen
 yhteyteen; E-1:tä ei ole aloitettu. Alla on tiivistelmä [luettu 2026-11-27; varmuus kunkin rivin omasta sarakkeesta].
 
@@ -202,6 +202,7 @@ yhteyteen; E-1:tä ei ole aloitettu. Alla on tiivistelmä [luettu 2026-11-27; va
 | KE-20 | H-141 | kaksoiskorttien eston laskurivirhe on myös viestissä | päätelty |
 | KE-21 | H-129 | HKW:n valikko "Lue sarjat ja muut tiedot uudelleen" kutsuu vaiheen vaihdon funktiota nykyisellä vaiheella ja lähettää pyynnön muille, joten H-129 koskee myös yksivaiheista kilpailua | päätelty |
 | KE-22 | useita | kokoomarivi: noin 15 uutta ehdokasta, ei tarkastettu (alla) | päätelty tai luettu koodista |
+| KE-23 | - (asetus `LÄHTÖIKKUNA`, HK) | `LÄHTÖIKKUNA=x` luetaan millisekunteina (`Hk/HkInit.cpp:1924`; oletus 3000 ms, `Hk/HkGlobals.cpp:96`), käyttöohjeen mukaan sekunteina; `LÄHTÖIKKUNA=3` tarkoittaisi 3 ms | luettu koodista, ei ajettu; riippumaton tarkastus K-5 vahvisti luvun 04 osalta |
 
 **KE-22:n ehdokkaat** (kokoomarivi `seuranta.md`:ssä; ei rekisterissä, ei tarkastettu): ViestiWinin `MTRn`/`EMITAGn`/`ETGPRSn`
 lukevat laitenumeron yhdestä merkistä; `kirjSQLrivi` palauttaa `false` ja jonon häntä siirtyy; sarja- ja TCP-polulla pituudeltaan 0
@@ -210,7 +211,7 @@ ilmoitettu määrittelemätön luokka voi läpäistä tarkistuksen; `kirjsarjat`
 H-070:n tarkistussumman luku voi ylittää 40 kt:n pinon; H-094: NULL-kirjoitus, kun uusi käsittelysäie ajaa `close_bdg_t`:n ennen
 ensimmäistä korttia; `kilptietue::tarkstr` tyhjentää vain osoittimen koon verran; `Juk/vSarjat.cpp`:n `strcpy(sarjanimi, s)` rajaamatta;
 `ViestiWin/UnitKilpMaaritys.cpp`:n puuttuva `else` (`partio`); juoksujärjestyksen vaihto ilman yksikäsitteisyystarkistusta;
-vaiheen vaihtopyynnön lippu vain levyjonoyhteyksille; `openprfile` ilman oletustulostinta avaa tiedoston `PRN`;
+vaiheen vaihtopyyntö lähetetään vain, kun lähettävällä asemalla on levyjono käytössä (`levypusk` on koko ohjelman asetus, ei yhteyskohtainen; `COMFILE=EI`-asemalta pyyntö ei lähde millekään yhteydelle; kehys korjattu riippumattomassa tarkastuksessa, `Hk/HkIx.cpp:1974-1981`); `openprfile` ilman oletustulostinta avaa tiedoston `PRN`;
 `kirjemvaloki`: `ansitowcs(st, rata, 39)` kenttään `rata[8]`.
 
 **Lukujen 7-kohtien ehdokkaat, jotka eivät ole KE-taulukossa.** Seuraavat kirjoittajat kirjasivat ehdokkaiksi, eikä niitä löytynyt
@@ -219,8 +220,8 @@ vaiheen vaihtopyynnön lippu vain levyjonoyhteyksille; `openprfile` ilman oletus
 - **UDP:n väärän paketin numeron resynkronointi** (`initid`): väärän numeron paketti asettaa merkin, jonka jälkeen seuraava paketti
   hyväksytään uutena lähtökohtana; ohitettujen pakettien menetyksen mahdollisuus on päättelemättä (`Tp/TpComY.cpp:1008-1036`;
   luku 09) [luettu käsikirjaa varten, ei tarkastettu].
-- **XML-TCP:n kuittaus:** jono etenee soketille kirjoituksen onnistuessa ilman vastapään kuittausta; yhdessä H-027:n kanssa paketteja
-  voi siirtyä jonosta pois ilman, että vastapää on saanut ne (`Hk/HkCom32.cpp:1058-1074`; luku 09) [päätelty].
+- **XML-TCP:n kuittaus:** jono etenee soketille kirjoituksen onnistuessa ilman vastapään kuittausta; katkotilanteessa paketteja
+  voi siirtyä jonosta pois ilman, että vastapää on saanut ne (H-027:n pysyvä katko koskee vain epäonnistunutta ensimmäistä avausta, KE-19) (`Hk/HkCom32.cpp:1058-1074`; luku 09) [päätelty].
 - **"Vain muuttuneet" -valinta** (`fprior`): jos laskuri ei kasva, valinta voi jättää sarjat kirjoittamatta (`Hk/HkTulostus.cpp:7264`,
   `Juk/VTulostus.cpp:7253`; luku 11) [luettu käsikirjaa varten, ei tarkastettu].
 - **XML-automaatti monivaiheisessa kilpailussa:** `xmlots` kutsutaan kahdesti, `xmlloppu` kerran (`Hk/HkTulostus.cpp:7140-7141`, `:7314-7324`;
@@ -243,7 +244,7 @@ rekisterit, raportit, kortit, käyttöohje, koodi; koodi on totuus siitä, mitä
 | `COMFILE=EI` viestissä | käyttöohje (`viestiwin/hkliite1.md`) listaa; viestin jäsennin ohittaa (kommentoitu, `Juk/VInit.cpp:1218`) | ratkaisematta |
 | ViestiLuennan asema | käyttöohje: ei enää versiossa 5.20; julkaisutyönkulku rakentaa ja paketoi (`.github/workflows/release.yml`) | OP-12 |
 | `GAZ`-valitsin | `valitsimet.csv`: HK-konsoli, viestissä ei käyttäjää; VM:n ja VW:n projektit määrittelevät, VW:ssä on `UnitGAZ.cpp` | ratkaisematta |
-| `EMITAG` ViestiWinissä | valitsin määritelty vain osassa kokoonpanoja eikä testata missään `#if`-ehdossa | ei vaikutusta toimintaan (päätelty) |
+| `EMITAG` ViestiWinissä | valitsin määritelty vain osassa kokoonpanoja eikä testata missään `#if`-ehdossa | ei vaikutusta toimintaan [todennettu: `ViestiWin.cbproj:195` määrittelee valitsimen; haku `#if`/`#ifdef`-ehdoista `Juk/`, `Hk/`, `ViestiWin/` ei löydä `EMITAG`-testiä; luettu käsikirjaa varten] |
 | H-056:n ohjelmat | riskiarvio listaa viisi ohjelmaa; ARES-avain on vain HK:ssa | ratkaisematta |
 | `sarjatietue.luonne` | kommentti (`Hk/HkDef.h`) vs. koodin negatiivisen arvon käsittely | ratkaisematta |
 | Käyttöohjeen tiedosto 6.14 | tiedoston otsikko on "6.15" | käyttöohjeen sisäinen epäjohdonmukaisuus (K-3-huomiot, luku 02) |
@@ -349,7 +350,7 @@ Kattavuuden ja todentamisen rajoitteet koskevat kaikkia näitä luetteloita: lö
 ## 6. Mihin tieto perustuu
 
 - Asiakirjat: `doc/arkkitehtuuri/auditoinnin-yhteenveto.md` (luvut 3, 4, 6, 10), `seuranta.md` (avoimet kysymykset ja
-  "Vaiheen K ehdokkaat ja tarkistuskohteet" KE-1-KE-22), `omistajan-paatokset.md` (OP-1-OP-18, kenttä "Tila / status"),
+  "Vaiheen K ehdokkaat ja tarkistuskohteet" KE-1-KE-23), `omistajan-paatokset.md` (OP-1-OP-18, kenttä "Tila / status"),
   `rekisteri/README.md` (analyysitasot), `doc/tietopohja/README.md` (kattavuusrajoite, luottamuksellisuus),
   `doc/tietopohja/laatu/k3-kirjoittajien-huomiot.md` (kirjoittajien ehdokkaat ja ristiriidat).
 - Käsikirjan luvut: kunkin luvun kohta 7 (luvut 02-13) luettu tätä lukua varten ja koottu kohtaan 1.3.
@@ -358,7 +359,7 @@ Kattavuuden ja todentamisen rajoitteet koskevat kaikkia näitä luetteloita: lö
   kirjauksista [luettu käsikirjaa varten, ei tarkastettu].
 - Todentamisen taso: luvun luvut (kattavuus, todennusluokat, kysymysluokat) on poimittu asiakirjoista sellaisinaan; ne ovat
   C-13:n tilanne. Tarkistus nykyisiä rekistereitä vasten on tehty vain OP-kohtien tilan osalta (kaikki avoin) ja KE-taulukon osalta
-  (22 riviä).
+  (23 riviä).
 
 ## 7. Mitä ei ole selvitetty
 
@@ -366,7 +367,7 @@ Kattavuuden ja todentamisen rajoitteet koskevat kaikkia näitä luetteloita: lö
   `seuranta.md` on voinut muuttua. Sitä, onko kaikki Q-luokan 1 kysymykset ja Q14, Q31 ja Q42 merkitty ratkaistuiksi, ei ole selvitetty.
 - Luvun 09 kohta 7 on osin vanhentunut (Q17, Q18, Q24): kirjoittajan kuvaus perustuu aiempaan tilaan; muita lukujen 7-kohtien Q-viittauksia
   ei ole tarkistettu rivi riviltä seuranta.md:tä vasten.
-- Ehdokkaiden (KE-1-KE-22 ja lukujen ehdokkaat) todellinen luonne on selvittämättä: ne voivat olla vikoja, jo tunnettujen vikojen
+- Ehdokkaiden (KE-1-KE-23 ja lukujen ehdokkaat) todellinen luonne on selvittämättä: ne voivat olla vikoja, jo tunnettujen vikojen
   ilmentymiä, kuollutta koodia tai väärin luettuja. Tarkistus on suunniteltu E-1:een, jota ei ole aloitettu.
 - Käsikirjan lukujen riippumaton tarkastus on tekemättä (Emit-aineistoa lukuun ottamatta).
 - Kuinka kattava käsikirja on käyttäjän näkökulmasta: ei ole selvitetty, tuleeko käytännön kilpailutilanteita, joita yksikään luku
