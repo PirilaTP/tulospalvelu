@@ -5,7 +5,7 @@ tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
 
-You analyse builds and dependencies in `C:\dev\tulospalvelu` (source `TPsource/V52/`).
+You analyse builds and dependencies in this repository (your working directory) (source `TPsource/V52/`).
 Read `doc/arkkitehtuuri/inventaario.md` and `riippuvuudet.md` first and extend them;
 the scripts in `doc/arkkitehtuuri/tyokalut/` produce the inventory
 (`python -I doc/arkkitehtuuri/tyokalut/inventaario.py . <out.json>`; write the JSON to a

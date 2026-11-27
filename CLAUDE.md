@@ -2,6 +2,9 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+Rules for all AI agents, the map of the knowledge base and the maintenance commands are in
+`AGENTS.md` (shared with Codex and other tools): @AGENTS.md
+
 ## What this project is
 
 Pekka Pirilä's sports timekeeping suite ("tulospalvelu"), originally developed around 1986, released under GPLv3. It handles competitor timing, split recording, results calculation and publishing — primarily for orienteering, with extensions for skiing, biathlon, and relay races. The UI and most variable names/comments are in Finnish.

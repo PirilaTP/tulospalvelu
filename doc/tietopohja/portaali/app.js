@@ -37,9 +37,19 @@
       if (ok) { done(); } else { window.prompt("Kopioi teksti (Ctrl+C):", text); }
     }
   }
-  var COVERAGE = '<p class="coverage"><strong>Kattavuusrajoite:</strong> auditointi ei kata koko lähdekoodia – noin 36 % ' +
-    'riveistä on vain inventoitu, yhtäkään tuotantotiedostoa ei ole katselmoitu kokonaan, ja havaintojen määrä on alaraja. ' +
+  // coverage figures are computed from the data (rekisteri/tiedostot.csv), never written here
+  var COV = (function () {
+    var lines = 0, l1 = 0, full = 0;
+    Object.keys(D.kattavuus).forEach(function (k) {
+      var d = D.kattavuus[k]; lines += d.rivit; l1 += d.r1 || 0;
+      if (k !== "Tests" && k !== "VS") { full += d["4"] || 0; }
+    });
+    return { share1: lines ? Math.round(100 * l1 / lines) : 0, full: full };
+  })();
+  var COVERAGE = '<p class="coverage"><strong>Kattavuusrajoite:</strong> auditointi ei kata koko lähdekoodia – ' + COV.share1 + " % " +
+    "riveistä on vain inventoitu, kokonaan katselmoituja tuotantotiedostoja on " + COV.full + ", ja havaintojen määrä on alaraja. " +
     'Kortin puuttuminen ei tarkoita, että toiminto on virheetön. <a href="#/kattavuus">Kattavuus</a></p>';
+  var SITE = D.meta.sivusto || "";
 
   // ------------------------------------------------------------- views ---
   function viewSummary() {
@@ -138,7 +148,8 @@
     s += '<div class="tabs"><button data-n="kayttaja" class="' + (mode === "kayttaja" ? "on" : "") + '">Käyttäjänäkymä</button>' +
       '<button data-n="tekninen" class="' + (mode === "tekninen" ? "on" : "") + '">Tekninen näkymä (koko kortti)</button></div>';
     s += '<div class="actions" style="margin:.5rem 0"><button id="kopioi">Kopioi kortti (Markdown)</button><button id="tulosta">Tulosta</button>' +
-      '<button id="kysy">Kopioi pirila-ask-kysymys</button></div>';
+      '<button id="kysy">Kopioi pirila-ask-kysymys</button>' +
+      (SITE ? ' <a href="' + esc(SITE + "laatu/vikakortit/" + h.id + "/") + '">Pysyvä osoite (sivusto)</a>' : "") + "</div>";
     if (h.tila !== "avoin") { s += '<p class="warn">Tila: <strong>' + esc(h.tila) + "</strong>" + (h.korjaus ? " – korjaus: " + esc(h.korjaus) : "") + "</p>"; }
     s += h.yhteenveto;
     s += mode === "tekninen" ? h.tekninen : h.kayttaja;
@@ -255,7 +266,21 @@
     s += "<table><thead><tr><th>Hakemisto</th><th>Tiedostoja</th><th>Rivejä</th><th>Taso 1</th><th>Taso 2</th><th>Taso 3</th><th>Taso 4</th></tr></thead><tbody>";
     Object.keys(D.kattavuus).sort().forEach(function (k) { var d = D.kattavuus[k];
       s += "<tr><td>" + esc(k) + "</td><td>" + d.tiedostot + "</td><td>" + d.rivit + "</td><td>" + (d["1"] || 0) + "</td><td>" + (d["2"] || 0) + "</td><td>" + (d["3"] || 0) + "</td><td>" + (d["4"] || 0) + "</td></tr>"; });
-    return s + "</tbody></table>";
+    s += "</tbody></table>";
+    var F = D.kattavuus_funktiot || [];
+    if (F.length) {
+      s += "<h2>Funktiot ja lähdeviitteet</h2><p class=\"note\">Lähde: <code>" + esc(D.meta.kattavuus_lahde) + "/hakemistot.csv</code> " +
+        "(<code>tyokalut/kattavuus.py</code>; kaikki tunnistetut funktiot, myös testit). <strong>Viite ei ole katselmointi:</strong> se kertoo vain, " +
+        "että kohtaa on katsottu jonkin väitteen vuoksi. Kokonaan katselmoituja funktioita ei ole ennen C-14:ää.</p>";
+      s += "<table><thead><tr><th>Hakemisto</th><th>Funktioita</th><th>Rivejä</th><th>Ei viitteitä</th><th>Vain johdettu</th><th>Yksi näkökulma</th><th>Useita</th></tr></thead><tbody>";
+      F.forEach(function (r) {
+        s += "<tr><td>" + esc(r.hakemisto) + "</td><td>" + esc(r.funktiot) + "</td><td>" + esc(r.funktiorivit) + "</td><td>" + esc(r.ei_viitteita_f) +
+          "</td><td>" + esc(r.vain_johdettu_f) + "</td><td>" + esc(r.yksi_nakokulma_f) + "</td><td>" + esc(r.useita_f) + "</td></tr>";
+      });
+      s += "</tbody></table>";
+    }
+    if (SITE) { s += '<p>Tarkempi näkymä: <a href="' + esc(SITE + "laatu/kattavuus/") + '">Kattavuus ja rajoitteet</a> (sivusto).</p>'; }
+    return s;
   }
   function viewHandbook(id) {
     if (!D.kasikirja.length) { return "<h1>Käsikirja</h1><p>Käsikirjaa ei ole vielä tuotettu.</p>"; }
@@ -325,10 +350,20 @@
     e.preventDefault(); location.hash = "#/haku?q=" + encodeURIComponent(document.getElementById("haku").value);
   });
   var m = D.meta;
-  document.getElementById("alatunniste").innerHTML = "Data tuotettu työpuun commitista <code>" + esc(m.commit) + "</code> (" + esc(m.tuotettu) +
+  var web = m.tila === "verkko";
+  document.getElementById("tila").textContent = web ? "verkkoversio" : "paikallinen versio";
+  if (SITE) {
+    var back = document.getElementById("sivustolinkki");
+    back.setAttribute("href", SITE + "laatu/"); back.hidden = false;
+  }
+  var prod = m.tuotantokoodi_muuttunut === 0 ? "tuotantokoodi ennallaan auditoinnin perusrevisiosta <code>" + esc(m.perusrevisio) + "</code>" :
+    m.tuotantokoodi_muuttunut > 0 ? "<strong>tuotantokoodissa " + m.tuotantokoodi_muuttunut + " muuttunutta tiedostoa</strong> perusrevision <code>" + esc(m.perusrevisio) + "</code> jälkeen; viitteet koskevat niiden omaa revisiota" : "";
+  document.getElementById("alatunniste").innerHTML = "Data tuotettu commitista <code>" + esc(m.commit) + "</code> (" + esc(m.tuotettu) +
     "), lähdetiiviste <code>" + esc(m.lahdetiiviste) + "</code>. Lähdeviitteiden revisiot: " + m.viiterevisiot.map(function (x) { return "<code>" + esc(x) + "</code>"; }).join(", ") +
-    " (tuotantokoodi ennallaan revisiosta <code>f7fe553</code>, ks. CHECKPOINT.md). Ajantasaisuus: <code>python -I doc/arkkitehtuuri/tyokalut/portaali.py . --tarkista</code>. " +
-    "Ei verkkoyhteyttä, ei ulkoisia palveluita. Luottamuksellinen: ei julkiseen repositorioon ilman omistajan hyväksyntää (OP-1).";
+    (prod ? " (" + prod + ")" : "") + ". Lähdekoodiviitteet ovat linkkejä GitHubiin väitteen revisiossa. " +
+    (web ? "Verkkoversio on tuotettu dokumentaatiosivuston rakennuksessa samasta aineistosta kuin sivusto. "
+      : "Ajantasaisuus: <code>python -I doc/arkkitehtuuri/tyokalut/portaali.py . --tarkista</code>. ") +
+    "Portaali ei hae mitään verkosta.";
   window.addEventListener("hashchange", route);
   route();
 })();

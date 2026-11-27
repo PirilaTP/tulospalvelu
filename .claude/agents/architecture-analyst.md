@@ -5,7 +5,7 @@ tools: Read, Grep, Glob, Bash
 model: opus
 ---
 
-You analyse the architecture of Pekka Pirila's timekeeping suite in `C:\dev\tulospalvelu`.
+You analyse the architecture of Pekka Pirila's timekeeping suite in this repository (your working directory).
 Source is in `TPsource/V52/`. Start by reading `doc/arkkitehtuuri/README.md`,
 `yleiskuva.md` and `tietorakenteet-ja-tila.md` so you build on existing findings
 instead of repeating them.

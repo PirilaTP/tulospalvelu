@@ -65,12 +65,26 @@ markdown_extensions:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.details
+  - pymdownx.tilde:
+      subscript: false
 
 plugins:
   - search:
       lang: fi
+
+# Sections "Kehittäjille" and "Ohjelmiston laatu": pages, navigation and the web portal are
+# generated at build time from ../doc/ by hooks/tietopohja.py (doc/arkkitehtuuri/tyokalut/sivusto.py).
+hooks:
+  - hooks/tietopohja.py
+
+extra_css:
+  - stylesheets/tietopohja.css
 
 extra:
   social:
@@ -110,7 +124,9 @@ def main():
 
     lines.append("  - PDF-manuaalit: pdf-manuaalit.md")
 
-    OUT.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    # LF on every platform (the file is kept with LF line endings)
+    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write("\n".join(lines) + "\n")
     print(f"Wrote {OUT}")
 
 

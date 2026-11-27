@@ -4,9 +4,12 @@ Vaiheen K tuotokset: selkokieliset vikakortit (229), toiminnallinen käsikirja (
 sanasto, paikallinen selainportaali ja asiantuntija-agentti. Suunnitelma ja tila:
 `doc/arkkitehtuuri/k-vaihe-suunnitelma.md`.
 
-**Luottamuksellinen.** Kortit kuvaavat korjaamattomia vikoja, myös verkosta laukeavia. Niitä
-koskee sama rajoitus kuin auditointiaineistoa: ei julkiseen repositorioon ilman omistajan
-erillistä hyväksyntää (`doc/arkkitehtuuri/korjaussuunnitelma.md` 9.3, OP-1).
+**Julkisuus.** Tietopohja on tarkoitettu julkaistavaksi dokumentaatiosivustolla
+(<https://pirilatp.github.io/tulospalvelu/>, osiot *Kehittäjille* ja *Ohjelmiston laatu*), jotta
+muut kehittäjät ja käyttäjät voivat hyödyntää sitä. Kortit kuvaavat korjaamattomia vikoja, myös
+verkosta laukeavia, mutta eivät hyödyntämisohjeita. Julkaisun ajankohta ja tapa ovat omistajan
+päätös OP-1 (`doc/arkkitehtuuri/omistajan-paatokset.md`); kunnes se on kirjattu päätetyksi,
+aineistoa ei viedä julkiseen repositorioon.
 
 **Kattavuusrajoite.** Auditointi ei kata koko lähdekoodia: noin 36 % riveistä on vain inventoitu,
 yhtäkään tuotantotiedostoa ei ole katselmoitu kokonaan, ja havaintojen määrä on alaraja
@@ -28,6 +31,8 @@ korttia, ei tarkoita, että toiminto on virheetön.
 | `kasikirja/00-…14-*.md`, `kasikirja/toiminnot.csv` | toiminnallinen käsikirja ja toiminto → havainnot -kytkentä / functional handbook | K-3 |
 | `kasikirja/aineisto/` | tarkastetut toiminnalliset selvitykset (Emit-luenta) / reviewed functional studies | K-3 |
 | `portaali/` | paikallinen selainportaali (`index.html`, `app.js`, `tyyli.css`; `data/` generoitu) / local portal | K-4 |
+| `kasikirja/kayttoohjeet.csv` | käyttöohjesivu → käsikirjan luku, toiminnot ja tarkistetut havainnot; sivuston tietolaatikot / user-manual page links | S |
+| sivusto / site | `doc/arkkitehtuuri/tyokalut/sivusto.py` generoi dokumentaatiosivuston osiot ja portaalin verkkoversion samoista lähteistä (`docs-site/README.md`) / generates the site sections and the web portal | S |
 
 ## Asiantuntija-agentti / Expert agent
 
@@ -108,7 +113,9 @@ rekisteriin komennolla `tietopohja.py . tuo <csv>`.
 4. `tietopohja.py . kasikirja` (käsikirjan vikaluettelot) ja `tietopohja.py . kooste` (lukudokumentti).
 5. `portaali.py .` ja savutesti.
 6. Kaikki tarkistukset läpi: `tarkista_auditointi.py`, `synteesi.py --tarkista`, `viitteet.py`,
-   `tietopohja.py tarkista`, `portaali.py --tarkista`, `portaali_testi.js`.
+   `tietopohja.py tarkista`, `portaali.py --tarkista`, `portaali_testi.js`, `sivusto.py . --tarkista`.
+7. Sivusto ja sen portaali päivittyvät itsestään seuraavassa rakennuksessa (`docs-site/README.md`);
+   vaiheen tilan muutos kirjataan `rekisteri/vaiheet.csv`:hen.
 
 Tarkistusten raja: ne todentavat rakenteen, lukumäärät, rekisterivastaavuuden, linkkien ja viitteiden
 olemassaolon sekä ajantasaisuuden, eivät väitteiden teknistä sisältöä. Sisältö on tarkastettu

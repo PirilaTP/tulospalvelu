@@ -18,6 +18,7 @@ import io
 import json
 import os
 import re
+import collections
 import subprocess
 import sys
 
@@ -28,6 +29,7 @@ import synteesi  # noqa: E402
 import tietopohja as tp  # noqa: E402
 
 OUT_REL = os.path.join("doc", "tietopohja", "portaali", "data", "data.js")
+REPO_URL = "https://github.com/PirilaTP/tulospalvelu"
 
 # ------------------------------------------------------------------ markdown ---
 INLINE_CODE = re.compile(r"`([^`]+)`")
@@ -35,6 +37,11 @@ LINK = re.compile(r"\[([^\]]+)\]\(([^)\s]+)\)")
 BOLD = re.compile(r"\*\*(.+?)\*\*")
 ITAL = re.compile(r"(?<![\w*])_(?!_)(.+?)_(?![\w])")
 IDREF = re.compile(r"\b(H-\d{3}|T-\d{3})\b")
+
+# Source references as GitHub links (lahdelinkit.Linker); set by build(). CTX holds the
+# revision of the claim being converted (register Rev of a card) and the previous reference.
+LINKER = None
+CTX = {"rev": None, "last": None}
 
 
 def inline(text, link_ids=True):
@@ -46,9 +53,16 @@ def inline(text, link_ids=True):
         pos = m.end()
     parts.append(("t", text[pos:]))
     out = []
+    CTX["last"] = None
     for kind, s in parts:
         if kind == "c":
-            out.append("<code>%s</code>" % html.escape(s))
+            url = None
+            if LINKER is not None:
+                url, CTX["last"] = LINKER.code(s, rev=CTX["rev"], last=CTX["last"])
+            if url:
+                out.append('<a href="%s"><code>%s</code></a>' % (html.escape(url), html.escape(s)))
+            else:
+                out.append("<code>%s</code>" % html.escape(s))
             continue
         links = []
 
@@ -244,8 +258,26 @@ def source_digest(data):
     return h.hexdigest()[:16]
 
 
-def build(root):
+def coverage_table(path):
+    """Function-level reference coverage per directory (kattavuus.py output hakemistot.csv)."""
+    if not path or not os.path.exists(path):
+        return []
+    return [dict(r) for r in tp.rcsv(path)]
+
+
+def build(root, web=None, kattavuus_dir=None):
+    """Portal data. web: None for the local portal, or {"sivusto": relative site root,
+    "linker": lahdelinkit.Linker, "tila": "verkko"} for the web version on the documentation
+    site. kattavuus_dir: kattavuus.py output (default: the committed C-14 baseline)."""
+    global LINKER
     data = tp.Data(root)
+    revs_all = collections.Counter(data.reg[i]["rev"] for i in data.reg)
+    audit_rev = revs_all.most_common(1)[0][0] if revs_all else "HEAD"
+    if web and web.get("linker"):
+        LINKER = web["linker"]
+    else:
+        import lahdelinkit
+        LINKER = lahdelinkit.Linker(root, REPO_URL, audit_rev)
     reg = os.path.join(data.doc, "rekisteri")
     dims = data.dims
     ids = sorted(data.reg, key=lambda x: (x[0], x))
@@ -267,10 +299,12 @@ def build(root):
                 ctitle, summary, secs = card_parts(text)
                 title = ctitle.split(" – ", 1)[-1]
                 want = {"H": USER_H, "K": USER_K, "T": USER_T}[data.kind(i)]
+                CTX["rev"] = r["rev"]
                 summary_html = md_to_html(summary)
                 user_html = "".join("<h3>%s</h3>%s" % (html.escape(h), md_to_html(secs.get(h, "")))
                                     for h in want if h in secs)
                 tech_html = md_to_html(md.split("\n", 1)[1])
+        CTX["rev"] = None
         kk = data.primary.get(i, "-")
         items.append({
             "id": i, "laji": "H" if i.startswith("H") else "T", "otsikko": title,
@@ -330,6 +364,7 @@ def build(root):
     for r in tp.rcsv(os.path.join(reg, "tiedostot.csv")):
         d = levels.setdefault(r["hakemisto"], {"1": 0, "2": 0, "3": 0, "4": 0, "rivit": 0, "tiedostot": 0})
         d[r["analyysitaso"]] = d.get(r["analyysitaso"], 0) + 1
+        d["r" + r["analyysitaso"]] = d.get("r" + r["analyysitaso"], 0) + int(r["rivit"] or 0)
         d["rivit"] += int(r["rivit"] or 0)
         d["tiedostot"] += 1
     sanasto = md_to_html(tp.read_text(os.path.join(root, "doc", "tietopohja", "sanasto.md")).split("\n", 1)[1], False)
@@ -337,7 +372,15 @@ def build(root):
     for name, f in (("yhteenveto", "auditoinnin-yhteenveto.md"), ("regressio", "regressiotestaussuunnitelma.md")):
         docs[name] = md_to_html(synteesi.read(os.path.join(data.doc, f)).split("\n", 1)[1])
     revs = sorted({data.reg[i]["rev"] for i in ids})
+    kdir = kattavuus_dir or os.path.join(data.doc, "todisteet", "c14", "lahtotaso")
+    changed = git_out(root, "diff", "--name-only", audit_rev, "HEAD", "--", "TPsource/V52",
+                      ":(exclude)TPsource/V52/Tests", ":(exclude)TPsource/V52/VS/Tests")
     meta = {
+        "tila": (web or {}).get("tila", "paikallinen"),
+        "sivusto": (web or {}).get("sivusto", ""),
+        "perusrevisio": audit_rev,
+        "tuotantokoodi_muuttunut": len([c for c in changed.splitlines() if c]) if changed != "?" else -1,
+        "kattavuus_lahde": os.path.relpath(kdir, root).replace(os.sep, "/"),
         "tuotettu": git_out(root, "log", "-1", "--format=%ci"),
         "commit": git_out(root, "rev-parse", "--short", "HEAD"),
         "lahdetiiviste": source_digest(data),
@@ -348,6 +391,7 @@ def build(root):
     }
     return {"meta": meta, "havainnot": items, "kokonaisuudet": packs, "juurisyyt": js, "paatokset": ops,
             "kysymykset": qs, "kasikirja": handbook, "toiminnot": functions, "kattavuus": levels,
+            "kattavuus_funktiot": coverage_table(os.path.join(kdir, "hakemistot.csv")),
             "sanasto": sanasto, "asiakirjat": docs}
 
 

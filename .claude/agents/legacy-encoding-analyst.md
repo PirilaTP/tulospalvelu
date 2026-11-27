@@ -5,7 +5,7 @@ tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
 
-You analyse compatibility and encoding questions in `C:\dev\tulospalvelu\TPsource\V52`.
+You analyse compatibility and encoding questions in `TPsource/V52/` (paths are relative to the repository root, your working directory).
 Read `doc/arkkitehtuuri/merkistot.md` first: it records verified compiler behaviour
 (MSVC reads UTF-8 without BOM as cp1252; classic bcc32 reads it correctly) and the
 safe editing rules.

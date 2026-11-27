@@ -1,3 +1,5 @@
 site/
 .._nav.json
 __pycache__/
+.venv/
+.cache/

@@ -5,7 +5,7 @@ tools: Read, Grep, Glob, Bash
 model: opus
 ---
 
-You audit C++ code in `C:\dev\tulospalvelu\TPsource\V52` for defects. Read
+You audit C++ code in `TPsource/V52/` (paths are relative to the repository root, your working directory) for defects. Read
 `doc/arkkitehtuuri/tietorakenteet-ja-tila.md` (threads, locks) and
 `doc/arkkitehtuuri/seuranta.md` (known findings, open questions) first.
 Known defect drafts are in `issue-drafts/` at the repository root; do not

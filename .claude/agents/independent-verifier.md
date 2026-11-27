@@ -5,7 +5,7 @@ tools: Read, Grep, Glob, Bash
 model: opus
 ---
 
-You independently verify audit claims about `C:\dev\tulospalvelu\TPsource\V52`.
+You independently verify audit claims about `TPsource/V52/` (paths are relative to the repository root, your working directory).
 You did not produce the claims; treat them as unproven.
 
 Method for each claim:

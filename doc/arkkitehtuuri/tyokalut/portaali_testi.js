@@ -1,12 +1,14 @@
 // Smoke test of the knowledge-base portal without a browser (phase K-4/K-5).
-// Usage (from the repository root): node doc/arkkitehtuuri/tyokalut/portaali_testi.js
-// Loads doc/tietopohja/portaali/data/data.js and app.js into a minimal DOM stub, visits every
-// route, and fails if a view throws, renders nothing, or the page refers to a network resource.
+// Usage (from the repository root): node doc/arkkitehtuuri/tyokalut/portaali_testi.js [portal_dir]
+// Loads <portal_dir>/data/data.js and app.js into a minimal DOM stub, visits every route, and
+// fails if a view throws, renders nothing, or the page refers to a network resource.
+// portal_dir defaults to the local portal doc/tietopohja/portaali; for the web version give the
+// built site's laatu/portaali/app directory.
 "use strict";
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
-const dir = path.join("doc", "tietopohja", "portaali");
+const dir = process.argv[2] || path.join("doc", "tietopohja", "portaali");
 const failures = [];
 
 for (const f of ["index.html", "app.js", "tyyli.css"]) {
@@ -19,7 +21,7 @@ for (const f of ["index.html", "app.js", "tyyli.css"]) {
 
 function el() {
   return { innerHTML: "", value: "", textContent: "", classList: { toggle() {} }, style: {},
-    addEventListener() {}, getAttribute() { return null; }, querySelectorAll() { return []; }, appendChild() {}, removeChild() {}, select() {} };
+    addEventListener() {}, getAttribute() { return null; }, setAttribute() {}, querySelectorAll() { return []; }, appendChild() {}, removeChild() {}, select() {} };
 }
 const els = {};
 let listeners = {};
@@ -68,7 +70,15 @@ for (const h of D.havainnot.filter(x => x.kortti && x.laji === "H" && x.tila ===
   if (h.kayttaja.indexOf("Tekniset tiedot ja lähteet") >= 0) failures.push(h.id + ": technical section in user view");
   if (h.tekninen.indexOf("Lähdeviitteet") < 0) failures.push(h.id + ": technical view lacks source references");
 }
-console.log("routes visited: " + n + ", findings: " + D.havainnot.length + ", cards: " + D.havainnot.filter(x => x.kortti).length +
+// web version: every card view links to its permanent page on the documentation site
+if (D.meta.sivusto) {
+  for (const h of D.havainnot.filter(x => x.kortti)) {
+    location.hash = "#/kortti/" + h.id;
+    listeners.hashchange();
+    if (els.sisalto.innerHTML.indexOf(D.meta.sivusto + "laatu/vikakortit/" + h.id + "/") < 0) failures.push(h.id + ": no permanent link");
+  }
+}
+console.log("mode: " + (D.meta.tila || "?") + ", routes visited: " + n + ", findings: " + D.havainnot.length + ", cards: " + D.havainnot.filter(x => x.kortti).length +
   ", chapters: " + D.kasikirja.length);
 failures.slice(0, 40).forEach(f => console.log("FAIL " + f));
 console.log(failures.length ? failures.length + " failures" : "OK");

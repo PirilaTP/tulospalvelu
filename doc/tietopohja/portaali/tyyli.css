@@ -1,10 +1,11 @@
+/* accent and header follow the indigo palette of the documentation site (mkdocs-material) */
 :root {
-  --bg: #fbfbfa; --fg: #1d1f21; --muted: #5d6166; --line: #d9dbde; --accent: #1f5f99;
+  --bg: #fbfbfa; --fg: #1d1f21; --muted: #5d6166; --line: #d9dbde; --accent: #3949ab;
   --p1: #a3141c; --p2: #c4521a; --p3: #8a6d00; --p4: #3d6b2f; --p5: #5d6166;
   --warn-bg: #fff4d6; --warn-line: #e2c25b; --card: #ffffff;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #16181b; --fg: #e6e6e6; --muted: #a0a4a8; --line: #353a40; --accent: #79b0e6;
+  :root { --bg: #16181b; --fg: #e6e6e6; --muted: #a0a4a8; --line: #353a40; --accent: #9fa8da;
           --card: #1f2226; --warn-bg: #3a3218; --warn-line: #7a6522; }
 }
 * { box-sizing: border-box; }
@@ -14,6 +15,10 @@ header.top { position: sticky; top: 0; z-index: 2; background: var(--card); bord
   padding: .5rem 1rem; display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; }
 .brand { font-weight: 600; }
 .tag { font-weight: 400; font-size: .8em; color: var(--muted); margin-left: .4em; }
+header.top { border-top: 4px solid #3f51b5; }
+.back { font-weight: 400; font-size: .85em; margin-right: .6em; padding: .1em .5em; border: 1px solid var(--line);
+  border-radius: 3px; text-decoration: none; }
+.back::before { content: "\2190 "; }
 nav a { margin-right: .7rem; text-decoration: none; font-size: .93em; }
 nav a.active { font-weight: 600; text-decoration: underline; }
 .search input { padding: .3rem .5rem; width: 18rem; max-width: 100%; border: 1px solid var(--line); border-radius: 4px;
