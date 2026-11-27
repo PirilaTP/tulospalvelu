@@ -337,11 +337,16 @@ määrä on alaraja.
    `doc/tietopohja/portaali/avaa.ps1`) ja K-5 (tarkastus `doc/tietopohja/laatu/tarkastukset/k5/`)
    toteutettu 2026-11-27, odottavat käyttäjän tarkastusta. Avoimet ehdokkaat KE-10–KE-24. Agentti ja skill latautuvat vasta uudessa istunnossa
    (`doc/tietopohja/laatu/tarkastukset/k1-testiajo.md`).
-2. **D-vaiheen ennakkotehtävät** (`korjaussuunnitelma.md` luku 9), ei aloitettu: E-1 rajattu
+2. **C-14: koko tuotantolähdekoodin katselmointi** (`c14-suunnitelma.md`): lähtötaso mitattu
+   2026-11-27 (`todisteet/c14/lahtotaso/`, `tyokalut/kattavuus.py`): 6 381 aktiivista funktiota,
+   181 361 riviä, joista 52 % ilman yhtään viitettä; yhtäkään funktiota ei ole kirjattu
+   katselmoiduksi. Toteutussuunnitelma (noin 81 yksikköä, pilotti ensin) **odottaa käyttäjän
+   hyväksyntää**; katselmointia ei ole aloitettu. Suositus: E-2 ennen C-14:ää, E-1 C-14:n osaksi.
+3. **D-vaiheen ennakkotehtävät** (`korjaussuunnitelma.md` luku 9), ei aloitettu: E-1 rajattu
    riskiseulonta 62 riville (H-033:n perusteella), E-2 haarojen `origin/88`, `origin/90`,
    `origin/92` ja `origin/95` täsmäytys (ei yhdistetä, ei haeta verkosta), E-3 aineiston
    yksityinen varmuuskopio, E-4 päätökset OP-1–OP-3.
-3. **D-vaihe** (korjaukset) vasta erillisellä luvalla `korjaussuunnitelma.md`:n luvun 7 pohjalta.
+4. **D-vaihe** (korjaukset) vasta erillisellä luvalla `korjaussuunnitelma.md`:n luvun 7 pohjalta.
 
 **C-11 complete.** 15 findings reproduced in the test harness, 1 confirmed in the shipped
 program (H-041, by a user-approved deviation from the pre-fixed verdict), 39 static only.

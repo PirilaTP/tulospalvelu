@@ -1,0 +1,651 @@
+polku,rivit,tiedostoluokka,tuotteet,projektit,taso,funktiot,funktiot_viitteella,viitteet,viitteet_funktioiden_ulkopuolella,nakokulmat,if0_rivit
+Hk/BuildNo.h,101,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkKisaWin HkMaali,2,0,0,7,7,C-10 riippuvuudet/tietoturva; C-8 tila/elinkaari; K tietopohja; rekisteri,0
+Hk/HkAjat.cpp,550,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,14,7,117,9,C-0 merkistot; C-12 valitsimet/asetukset; C-13 synteesi; C-2 tiedonsiirto; C-3 tiedostot/eheys; C-5 kaantajaerot; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+Hk/HkApu.cpp,841,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,32,10,51,7,C-13 synteesi; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+Hk/HkApuC.c,57,orpo,,-,1,2,0,0,0,,0
+Hk/HkCom32.cpp,1332,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,3,36,26,370,31,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-2 tiedonsiirto; C-3 tiedostot/eheys; C-5 kaantajaerot; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Hk/HkConsoleDef.h,147,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkMaali,1,0,0,0,0,,0
+Hk/HkDat.cpp,1447,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,39,26,409,23,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-2 tiedonsiirto; C-3 tiedostot/eheys; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Hk/HkDeclare.h,974,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkKisaWin HkMaali,2,0,0,14,14,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-13 synteesi; C-5 muistiturvallisuus; K tietopohja; muu dokumentti; rekisteri,0
+Hk/HkDef.h,1697,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkKisaWin HkMaali,2,0,0,197,195,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-2 tiedonsiirto; C-3 tiedostot/eheys; C-5 kaantajaerot; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Hk/HkEmit.cpp,6432,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,155,55,480,42,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-3 tiedostot/eheys; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Hk/HkEnnTav.cpp,49,tuote,HkKisaWin,HkKisaWin TpTest,1,3,0,0,0,,0
+Hk/HkEnnTav.h,50,tuote,HkKisaWin,TpTest,1,0,0,0,0,,0
+Hk/HkGlobals.cpp,675,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,0,0,118,118,C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-3 tiedostot/eheys; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Hk/HkIV.cpp,4304,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,50,40,804,53,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-3 tiedostot/eheys; C-5 kaantajaerot; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Hk/HkInit.cpp,3833,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,19,16,724,44,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-2 tiedonsiirto; C-3 tiedostot/eheys; C-5 kaantajaerot; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Hk/HkInitVanha.cpp,549,tuote,HkKisaWin,HkKisaWin,3,5,2,19,6,C-12 valitsimet/asetukset; C-3 tiedostot/eheys; K tietopohja; rekisteri,0
+Hk/HkIx.cpp,2005,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,3,35,22,398,9,C-1 tallennus/rinnakkaisuus; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-2 tiedonsiirto; C-3 tiedostot/eheys; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Hk/HkMuotoilu.cpp,3020,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,35,4,9,0,C-5 kaantajaerot; C-9 virheenkasittely; K tietopohja; rekisteri,0
+Hk/HkMuotoilu.h,192,tuote,HkMaali HkKisaWin ViestiWin,-,1,0,0,4,4,C-12 valitsimet/asetukset; K tietopohja,0
+Hk/HkSak.cpp,253,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,7,3,57,9,C-1 tallennus/rinnakkaisuus; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-5 muistiturvallisuus; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Hk/HkSrj.cpp,941,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,26,5,70,1,C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-3 tiedostot/eheys; C-5 kaantajaerot; C-5 muistiturvallisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+Hk/HkTV.cpp,233,orpo,,-,1,3,2,5,0,C-12 valitsimet/asetukset; C-8 tila/elinkaari; C-9 virheenkasittely,0
+Hk/HkTls.cpp,1966,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,81,44,77,8,C-1 tallennus/rinnakkaisuus; C-12 valitsimet/asetukset; C-5 muistiturvallisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; K tietopohja; rekisteri,0
+Hk/HkTulostus.cpp,8840,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,137,43,338,30,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-5 kaantajaerot; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Hk/HkXml.cpp,2460,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,29,8,58,4,C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-3 tiedostot/eheys; C-5 kaantajaerot; C-7 GUI-logiikka; C-8 tila/elinkaari; K tietopohja; rekisteri,0
+Hk/HkXmlTulokset.cpp,1944,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,27,7,13,1,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-5 muistiturvallisuus; C-8 tila/elinkaari; K tietopohja,0
+Hk/HkXml_IOF30.cpp,1140,tuote,HkMaali HkKisaWin,HkKisaWin HkMaali,2,15,7,10,0,C-10 riippuvuudet/tietoturva; K tietopohja; rekisteri,0
+HkConsole/GetHttp.h,68,tuote,HkMaali,HkMaali,1,0,0,0,0,,0
+HkConsole/HkCons0.cpp,1327,tuote,HkMaali,HkMaali,2,23,10,60,9,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-5 kaantajaerot; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+HkConsole/HkCons2.cpp,3118,tuote,HkMaali,HkMaali,2,25,8,43,3,C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-5 muistiturvallisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+HkConsole/HkCons3.cpp,2937,tuote,HkMaali,HkMaali,2,27,9,65,16,C-12 valitsimet/asetukset; C-13 synteesi; C-5 kaantajaerot; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+HkConsole/HkConsHelp.cpp,436,tuote,HkMaali,HkMaali,1,2,0,0,0,,0
+HkConsole/HkKilp.cpp,1450,tuote,HkMaali,HkMaali,1,8,3,6,3,C-11 testaus; C-12 valitsimet/asetukset; K tietopohja,0
+HkConsole/HkMain.cpp,234,tuote,HkMaali,HkMaali,2,2,2,32,9,C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti,0
+HkConsole/valinnat.h,35,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkMaali,1,0,0,1,1,C-12 valitsimet/asetukset,0
+Juk/BuildNo.h,60,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,ViestiWin JukMaali520,2,0,0,0,0,,0
+Juk/VCom.cpp,1668,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,38,26,206,18,C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-2 tiedonsiirto; C-3 tiedostot/eheys; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Juk/VDeclare.h,789,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,0,0,13,13,C-12 valitsimet/asetukset; C-7 GUI-logiikka; K tietopohja; muu dokumentti; rekisteri,0
+Juk/VDef.h,1526,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,0,0,147,146,C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-3 tiedostot/eheys; C-5 kaantajaerot; C-7 GUI-logiikka; C-8 tila/elinkaari; K tietopohja; muu dokumentti; rekisteri,0
+Juk/VEmit.cpp,6221,tuote,ViestiMaali ViestiWin,ViestiWin JukMaali520,2,145,43,224,20,C-12 valitsimet/asetukset; C-13 synteesi; C-3 tiedostot/eheys; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Juk/VEmitHtml.cpp,294,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,4,1,24,1,C-13 synteesi; C-5 kaantajaerot; C-6 rinnakkaisuus; C-9 virheenkasittely; K tietopohja; rekisteri,0
+Juk/VGlobals.cpp,554,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,0,0,49,49,C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-7 GUI-logiikka; C-9 virheenkasittely; K tietopohja; rekisteri,0
+Juk/VInit.cpp,2966,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,20,8,400,33,C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-2 tiedonsiirto; C-3 tiedostot/eheys; C-5 kaantajaerot; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Juk/VIv.cpp,2974,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,37,26,237,50,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-13 synteesi; C-3 tiedostot/eheys; C-5 kaantajaerot; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Juk/VIx.cpp,1380,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,27,9,65,8,C-12 valitsimet/asetukset; C-3 tiedostot/eheys; C-5 muistiturvallisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+Juk/VMuotoilu.cpp,2069,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,21,3,5,0,C-9 virheenkasittely; K tietopohja; rekisteri,0
+Juk/VMuotoilu.h,128,tuote,ViestiMaali ViestiLuenta ViestiWin,JukLuenta520 JukMaali520,1,0,0,1,1,C-12 valitsimet/asetukset,0
+Juk/VRinnakkaisOsuus.cpp,95,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin TpTest JukLuenta520 JukMaali520,1,6,0,0,0,,0
+Juk/VRinnakkaisOsuus.h,108,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin TpTest JukLuenta520 JukMaali520,1,0,0,1,1,C-11 testaus,0
+Juk/VTulostus.cpp,9151,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,156,35,313,42,C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-5 kaantajaerot; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Juk/VXml.cpp,2193,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,29,6,37,4,C-11 testaus; C-12 valitsimet/asetukset; C-3 tiedostot/eheys; C-5 kaantajaerot; C-5 muistiturvallisuus; K tietopohja; rekisteri,0
+Juk/VXml_IOF30.cpp,1125,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,14,3,8,0,C-10 riippuvuudet/tietoturva; K tietopohja; rekisteri,0
+Juk/XMLtulos.cpp,467,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,5,5,16,8,C-12 valitsimet/asetukset; C-5 muistiturvallisuus; K tietopohja; rekisteri,0
+Juk/vApu.cpp,1037,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,38,18,70,11,C-10 riippuvuudet/tietoturva; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+Juk/vSarjat.cpp,565,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,18,5,46,0,C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-3 tiedostot/eheys; C-5 muistiturvallisuus; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Juk/vajat.cpp,525,tuote,ViestiMaali ViestiWin,ViestiWin JukMaali520,2,16,6,61,14,C-0 merkistot; C-5 kaantajaerot; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-9 virheenkasittely; K tietopohja; rekisteri,0
+Juk/vdat.cpp,972,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,27,24,214,13,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-13 synteesi; C-3 tiedostot/eheys; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+Juk/vkilp.cpp,1738,tuote,ViestiMaali ViestiLuenta ViestiWin,ViestiWin JukLuenta520 JukMaali520,2,124,29,62,4,C-10 riippuvuudet/tietoturva; C-3 tiedostot/eheys; C-5 muistiturvallisuus; C-7 GUI-logiikka; C-9 virheenkasittely; K tietopohja; rekisteri,0
+JukConsole/VConTul.cpp,2025,tuote,ViestiMaali ViestiLuenta,JukLuenta520 JukMaali520,2,21,9,39,1,C-12 valitsimet/asetukset; C-13 synteesi; C-9 virheenkasittely; K tietopohja; rekisteri,0
+JukConsole/laskemtn.cpp,782,tuote,ViestiLuenta,JukLuenta520,2,9,2,8,2,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; K tietopohja,0
+JukConsole/laskent0.cpp,826,tuote,ViestiMaali ViestiLuenta,JukLuenta520 JukMaali520,2,13,5,13,3,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja,0
+JukConsole/laskenta.cpp,141,tuote,ViestiMaali ViestiLuenta,JukLuenta520 JukMaali520,2,2,2,19,9,C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-6 rinnakkaisuus; K tietopohja; muu dokumentti,0
+JukConsole/laskhelp.cpp,101,tuote,ViestiMaali ViestiLuenta,JukLuenta520 JukMaali520,1,2,0,0,0,,0
+JukConsole/lasknum5.cpp,304,tuote,ViestiMaali,JukMaali520,1,6,3,14,3,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-9 virheenkasittely; K tietopohja; rekisteri,0
+JukConsole/lasknum5u.cpp,378,orpo,,-,1,6,2,2,0,C-8 tila/elinkaari,0
+JukConsole/lasktxt.cpp,321,tuote,ViestiMaali ViestiLuenta,JukLuenta520 JukMaali520,1,0,0,1,1,C-12 valitsimet/asetukset,0
+JukConsole/valinnat.h,17,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,JukLuenta520 JukMaali520,1,0,0,0,0,,0
+JukConsole/vcons2.cpp,3376,tuote,ViestiMaali ViestiLuenta,JukLuenta520 JukMaali520,2,29,6,29,2,C-12 valitsimet/asetukset; C-13 synteesi; C-5 muistiturvallisuus; C-8 tila/elinkaari; K tietopohja; rekisteri,0
+RADStudio10/HkKisaWin.cpp,251,tuote,HkKisaWin,HkKisaWin,2,1,1,8,6,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-6 rinnakkaisuus; K tietopohja; muu dokumentti,0
+RADStudio10/ViestiWin.cpp,185,tuote,ViestiWin,ViestiWin,1,1,1,5,3,C-10 riippuvuudet/tietoturva; C-6 rinnakkaisuus; muu dokumentti,0
+Tests/DoctestMain.cpp,22,testi,,TpTest,2,0,0,1,1,C-12 valitsimet/asetukset,0
+Tests/HkEnnTavTest.cpp,164,testi,,TpTest,2,17,0,0,0,,0
+Tests/VRinnakkaisOsuusTest.cpp,335,testi,,TpTest,2,31,0,0,0,,0
+Tests/WideString.h,78,testi,,TpTest,2,2,0,0,0,,0
+Tests/core/CoreMain.cpp,124,testi,,TpCoreHk TpCoreJuk,4,3,1,3,2,C-12 valitsimet/asetukset; K tietopohja,0
+Tests/core/HkCoreTests.cpp,229,testi,,TpCoreHk,4,12,0,7,7,C-13 synteesi,0
+Tests/core/HkLockTests.cpp,145,testi,,TpCoreHk,4,5,2,5,3,C-13 synteesi; K tietopohja,0
+Tests/core/HkRecvTests.cpp,402,testi,,TpCoreHk,4,18,1,10,9,C-13 synteesi,0
+Tests/core/TcpClientTests.cpp,163,testi,,TpCoreHk,4,5,0,5,5,C-13 synteesi,0
+Tests/core/VAddfrecTests.cpp,100,testi,,TpCoreJuk,4,3,0,3,3,C-13 synteesi,0
+Tests/core/VComTests.cpp,151,testi,,TpCoreJuk,4,7,0,2,2,C-13 synteesi,0
+Tests/core/VCoreTests.cpp,233,testi,,TpCoreJuk,4,7,0,4,4,C-13 synteesi,0
+Tests/core/VRecvTests.cpp,262,testi,,TpCoreJuk,4,11,0,7,7,C-13 synteesi,0
+Tests/core/VSrjTests.cpp,105,testi,,TpCoreJuk,4,7,0,3,3,C-13 synteesi,0
+Tests/core/VTulostusTests.cpp,88,testi,,TpCoreJuk,4,3,0,2,2,C-13 synteesi,0
+Tests/doctest.h,7106,testi,,TpTest,1,366,1,7,6,C-10 riippuvuudet/tietoturva; C-11 testaus; C-13 synteesi,0
+Tests/fixtures/HkFixture.cpp,86,testi,,TpCoreHk,4,3,0,0,0,,0
+Tests/fixtures/HkFixture.h,45,testi,,TpCoreHk,4,0,0,0,0,,0
+Tests/fixtures/TpCore.cpp,321,testi,,TpCoreHk TpCoreJuk,4,24,1,2,0,C-12 valitsimet/asetukset,0
+Tests/fixtures/TpCore.h,159,testi,,TpCoreHk TpCoreJuk,4,0,0,0,0,,0
+Tests/fixtures/TpCrash.cpp,231,testi,,TpCoreHk TpCoreJuk,4,7,0,0,0,,0
+Tests/fixtures/TpNet.cpp,190,testi,,TpCoreHk TpCoreJuk,4,12,0,0,0,,0
+Tests/fixtures/VFixture.cpp,54,testi,,TpCoreJuk,4,2,0,0,0,,0
+Tests/fixtures/VFixture.h,41,testi,,TpCoreJuk,4,0,0,0,0,,0
+Tp/SiritReader.cpp,92,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,1,7,7,3,1,C-10 riippuvuudet/tietoturva,0
+Tp/TpApu.cpp,1043,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,2,44,8,41,8,C-11 testaus; C-12 valitsimet/asetukset; C-5 kaantajaerot; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Tp/TpApuC.c,67,orpo,,-,1,1,0,0,0,,0
+Tp/TpComY.cpp,3185,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,3,56,35,713,139,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-2 tiedonsiirto; C-3 tiedostot/eheys; C-5 kaantajaerot; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Tp/TpComY32.cpp,2797,orpo,,-,2,48,0,3,3,K tietopohja,0
+Tp/TpDef.h,154,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,ViestiWin HkMaali JukLuenta520,1,0,0,14,14,C-12 valitsimet/asetukset; C-3 tiedostot/eheys; C-7 GUI-logiikka; C-8 tila/elinkaari; K tietopohja,0
+Tp/TpLaitteet.cpp,2954,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,2,43,27,455,32,C-0 merkistot; C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-5 kaantajaerot; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+Tp/TpMuot.cpp,17,orpo,,-,1,0,0,0,0,,0
+Tp/TpMuot.h,55,orpo,,-,1,0,0,0,0,,0
+Tp/ZebraReader.cpp,1074,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,2,31,4,37,7,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-8 tila/elinkaari; K tietopohja; rekisteri,0
+Tp/mtrand.cpp,72,kolmas_osapuoli,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,3,0,2,2,C-10 riippuvuudet/tietoturva,0
+Tp/mtrand.h,153,kolmas_osapuoli,HkKisaWin ViestiWin,-,2,22,2,5,4,C-10 riippuvuudet/tietoturva; C-7 GUI-logiikka,0
+Tp/mttest.cpp,41,orpo,,-,1,1,1,1,0,muu dokumentti,0
+VS/Libs/MbsWcs.cpp,45,orpo,,-,1,2,0,0,0,,0
+ViestiWin/ConvDat.cpp,236,tuote,ViestiWin,ViestiWin,3,1,1,11,6,C-12 valitsimet/asetukset; C-3 tiedostot/eheys; K tietopohja; rekisteri,0
+ViestiWin/MuotoiluUnit.cpp,648,tuote,ViestiWin,ViestiWin,1,38,0,0,0,,0
+ViestiWin/MuotoiluUnit.h,235,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/OsuusTiedot.cpp,476,tuote,ViestiWin,ViestiWin,2,18,7,6,3,C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely,0
+ViestiWin/OsuusTiedot.h,103,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/TapUnit2.cpp,545,tuote,ViestiWin,ViestiWin,1,26,0,0,0,,0
+ViestiWin/TapUnit2.h,114,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/TulosUnit.cpp,1155,tuote,ViestiWin,ViestiWin,2,43,3,4,1,C-6 rinnakkaisuus; C-8 tila/elinkaari,0
+ViestiWin/TulosUnit.h,197,tuote,ViestiWin,-,1,0,0,3,3,C-6 rinnakkaisuus; K tietopohja,0
+ViestiWin/TulostusUnit2.cpp,1232,tuote,ViestiWin,ViestiWin,2,50,4,23,7,C-10 riippuvuudet/tietoturva; C-5 muistiturvallisuus; C-6 rinnakkaisuus; K tietopohja; rekisteri,0
+ViestiWin/TulostusUnit2.h,193,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitASakot.cpp,357,tuote,ViestiWin,ViestiWin,1,22,0,5,5,C-6 rinnakkaisuus; K tietopohja,0
+ViestiWin/UnitASakot.h,84,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitAikavert.cpp,901,tuote,ViestiWin,ViestiWin,1,54,0,0,0,,0
+ViestiWin/UnitAikavert.h,177,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitAjanotto.cpp,1754,tuote,ViestiWin,ViestiWin,3,72,7,68,0,C-10 riippuvuudet/tietoturva; C-13 synteesi; C-5 muistiturvallisuus; C-7 GUI-logiikka; K tietopohja; muu dokumentti; rekisteri,0
+ViestiWin/UnitAjanotto.h,238,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitArvonta.cpp,611,tuote,ViestiWin,ViestiWin,3,28,7,98,7,C-13 synteesi; C-5 muistiturvallisuus; C-7 GUI-logiikka; K tietopohja; rekisteri,0
+ViestiWin/UnitArvonta.h,106,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitAutoFile.cpp,192,tuote,ViestiWin,ViestiWin,1,13,2,4,0,C-9 virheenkasittely,0
+ViestiWin/UnitAutoFile.h,81,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitAvausMaar.cpp,178,tuote,ViestiWin,ViestiWin,1,9,1,1,0,C-12 valitsimet/asetukset,0
+ViestiWin/UnitAvausMaar.h,62,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitCfg.cpp,2352,tuote,ViestiWin,ViestiWin,1,42,2,19,1,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; K tietopohja; rekisteri,0
+ViestiWin/UnitCfg.h,327,tuote,ViestiWin,-,1,0,0,3,3,C-10 riippuvuudet/tietoturva,0
+ViestiWin/UnitComfile.cpp,1032,tuote,ViestiWin,ViestiWin,2,38,6,13,0,C-13 synteesi; C-3 tiedostot/eheys; C-6 rinnakkaisuus; C-9 virheenkasittely; K tietopohja; rekisteri,0
+ViestiWin/UnitComfile.h,145,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitEmit.cpp,3091,tuote,ViestiWin,ViestiWin,3,132,18,99,5,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-6 rinnakkaisuus; C-7 GUI-logiikka; K tietopohja; muu dokumentti; rekisteri,0
+ViestiWin/UnitEmit.h,346,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitEmitMuutokset.cpp,395,tuote,ViestiWin,ViestiWin,2,28,2,6,0,K tietopohja; rekisteri,0
+ViestiWin/UnitEmitMuutokset.h,113,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitEmit_VA.cpp,150,tuote,ViestiWin,ViestiWin,1,11,0,0,0,,0
+ViestiWin/UnitEmit_VA.h,65,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitEmithaku.cpp,152,tuote,ViestiWin,ViestiWin,1,10,0,0,0,,0
+ViestiWin/UnitEmithaku.h,60,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitExport.cpp,585,tuote,ViestiWin,ViestiWin,2,18,2,12,0,C-10 riippuvuudet/tietoturva; C-3 tiedostot/eheys; C-6 rinnakkaisuus; K tietopohja; rekisteri,0
+ViestiWin/UnitExport.h,93,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitGAZ.cpp,1373,tuote,ViestiWin,ViestiWin,2,31,10,32,0,C-10 riippuvuudet/tietoturva; C-13 synteesi; C-5 kaantajaerot; C-5 muistiturvallisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+ViestiWin/UnitGAZ.h,214,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitHenkHaku.cpp,161,tuote,ViestiWin,ViestiWin,1,11,0,0,0,,0
+ViestiWin/UnitHenkHaku.h,68,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitHylkRap.cpp,705,tuote,ViestiWin,ViestiWin,2,23,1,6,0,K tietopohja; rekisteri,0
+ViestiWin/UnitHylkRap.h,122,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitImport.cpp,1210,tuote,ViestiWin,ViestiWin,2,14,2,21,0,C-10 riippuvuudet/tietoturva; C-3 tiedostot/eheys; C-6 rinnakkaisuus; C-9 virheenkasittely; K tietopohja; rekisteri,0
+ViestiWin/UnitImport.h,82,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitJjVaihdot.cpp,78,tuote,ViestiWin,ViestiWin,1,8,1,2,0,C-7 GUI-logiikka,0
+ViestiWin/UnitJjVaihdot.h,55,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitJoukkueet.cpp,1566,tuote,ViestiWin,ViestiWin,1,55,1,4,0,C-8 tila/elinkaari; K tietopohja,0
+ViestiWin/UnitJoukkueet.h,175,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitJoukkuetiedot.cpp,1639,tuote,ViestiWin,ViestiWin,3,65,10,51,1,C-7 GUI-logiikka; C-8 tila/elinkaari; K tietopohja; rekisteri,0
+ViestiWin/UnitJoukkuetiedot.h,186,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitKilpMaaritys.cpp,449,tuote,ViestiWin,ViestiWin,1,17,4,9,0,C-11 testaus; C-3 tiedostot/eheys; K tietopohja; rekisteri,0
+ViestiWin/UnitKilpMaaritys.h,119,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitKilpSeurat.cpp,255,tuote,ViestiWin,ViestiWin,1,14,0,0,0,,0
+ViestiWin/UnitKilpSeurat.h,76,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitLahestyjat.cpp,267,tuote,ViestiWin,ViestiWin,1,11,0,0,0,,0
+ViestiWin/UnitLahestyjat.h,83,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitLisatiedot.cpp,1077,tuote,ViestiWin,ViestiWin,1,11,0,0,0,,0
+ViestiWin/UnitLisatiedot.h,80,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitLuenta.cpp,747,tuote,ViestiWin,ViestiWin,1,35,3,6,0,K tietopohja,0
+ViestiWin/UnitLuenta.h,124,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitMaastossa.cpp,295,tuote,ViestiWin,ViestiWin,1,15,0,0,0,,0
+ViestiWin/UnitMaastossa.h,45,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitMain.cpp,1995,tuote,ViestiWin,ViestiWin,2,120,25,123,7,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-13 synteesi; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+ViestiWin/UnitMain.h,307,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitMerkKoodeja.cpp,175,tuote,ViestiWin,ViestiWin,1,6,0,0,0,,0
+ViestiWin/UnitMerkKoodeja.h,52,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitMySQL.cpp,704,tuote,ViestiWin,ViestiWin,2,23,11,76,3,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-3 tiedostot/eheys; C-6 rinnakkaisuus; C-9 virheenkasittely; K tietopohja; rekisteri,0
+ViestiWin/UnitMySQL.h,94,tuote,HkMaali HkKisaWin ViestiWin,-,1,0,0,1,1,C-10 riippuvuudet/tietoturva,0
+ViestiWin/UnitNollaus.cpp,224,tuote,ViestiWin,ViestiWin,1,10,0,0,0,,0
+ViestiWin/UnitNollaus.h,71,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitOhjtiedot.cpp,67,tuote,ViestiWin,ViestiWin,1,3,0,0,0,,0
+ViestiWin/UnitOhjtiedot.h,46,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitOsuuskopiointi.cpp,133,tuote,ViestiWin,ViestiWin,1,6,0,0,0,,0
+ViestiWin/UnitOsuuskopiointi.h,65,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitPartio.cpp,423,tuote,ViestiWin,ViestiWin,1,8,0,0,0,,0
+ViestiWin/UnitPartio.h,67,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitPiirival.cpp,170,tuote,ViestiWin,ViestiWin,1,13,0,0,0,,0
+ViestiWin/UnitPiirival.h,69,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitSHLTul.cpp,170,tuote,ViestiWin,ViestiWin,1,7,0,0,0,,0
+ViestiWin/UnitSHLTul.h,52,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitSakkoKierr.cpp,294,tuote,ViestiWin,ViestiWin,2,16,5,37,3,C-5 kaantajaerot; C-6 rinnakkaisuus; K tietopohja; rekisteri,0
+ViestiWin/UnitSakkoKierr.h,79,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitSarja.cpp,601,tuote,ViestiWin,ViestiWin,2,34,4,16,0,C-3 tiedostot/eheys; C-5 kaantajaerot; K tietopohja; rekisteri,0
+ViestiWin/UnitSarja.h,123,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitSarjatiedot.cpp,1189,tuote,ViestiWin,ViestiWin,1,40,0,0,0,,0
+ViestiWin/UnitSarjatiedot.h,124,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitSeurGr.cpp,586,tuote,ViestiWin,ViestiWin,2,14,2,2,0,C-6 rinnakkaisuus,0
+ViestiWin/UnitSeurGr.h,71,tuote,ViestiWin,-,1,0,0,3,3,C-6 rinnakkaisuus; K tietopohja,0
+ViestiWin/UnitSeurat.cpp,515,tuote,ViestiWin,ViestiWin,1,27,0,0,0,,0
+ViestiWin/UnitSeurat.h,105,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitSeuraval.cpp,159,tuote,ViestiWin,ViestiWin,1,13,0,0,0,,0
+ViestiWin/UnitSeuraval.h,65,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitStatus.cpp,668,tuote,ViestiWin,ViestiWin,2,23,3,10,0,C-13 synteesi; C-6 rinnakkaisuus; C-8 tila/elinkaari; K tietopohja; rekisteri,0
+ViestiWin/UnitStatus.h,85,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitSuodatus.cpp,112,tuote,ViestiWin,ViestiWin,1,10,0,0,0,,0
+ViestiWin/UnitSuodatus.h,64,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitVaGr.cpp,410,tuote,ViestiWin,ViestiWin,1,10,0,0,0,,0
+ViestiWin/UnitVaGr.h,63,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitVaTuloste.cpp,371,tuote,ViestiWin,ViestiWin,1,24,0,0,0,,0
+ViestiWin/UnitVaTuloste.h,106,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitValSarjat.cpp,147,tuote,ViestiWin,ViestiWin,1,11,0,0,0,,0
+ViestiWin/UnitValSarjat.h,61,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitYLahdot.cpp,260,tuote,ViestiWin,ViestiWin,1,17,0,1,0,K tietopohja,0
+ViestiWin/UnitYLahdot.h,71,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/UnitYv.cpp,167,tuote,ViestiWin,ViestiWin,1,9,1,2,0,C-9 virheenkasittely,0
+ViestiWin/UnitYv.h,56,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/VWinApu.cpp,40,orpo,,-,1,0,0,0,0,,0
+ViestiWin/VWinDef.h,291,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,ViestiWin,1,0,0,0,0,,0
+ViestiWin/VWinParam.cpp,80,tuote,ViestiWin,ViestiWin,1,0,0,0,0,,0
+ViestiWin/VertAikaUnit.cpp,89,tuote,ViestiWin,ViestiWin,1,7,1,1,0,C-12 valitsimet/asetukset,0
+ViestiWin/VertAikaUnit.h,63,tuote,ViestiWin,-,1,0,0,0,0,,0
+ViestiWin/WinParamXml.cpp,1374,tuote,ViestiWin,ViestiWin,1,26,0,0,0,,0
+ViestiWin/valinnat.h,19,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbHk/AsetusUnit.cpp,69,tuote,HkKisaWin,HkKisaWin,1,6,1,3,0,C-12 valitsimet/asetukset; C-8 tila/elinkaari,0
+cbHk/AsetusUnit.h,59,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/HkArv2.cpp,1274,tuote,HkKisaWin,HkKisaWin,1,20,11,31,7,C-12 valitsimet/asetukset; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+cbHk/HkKisaLahtLuet.cpp,2180,tuote,HkKisaWin,HkKisaWin,2,23,7,29,0,C-12 valitsimet/asetukset; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+cbHk/HkWinApu.cpp,95,tuote,HkKisaWin,HkKisaWin,1,7,1,1,0,K tietopohja,0
+cbHk/HkWinDef.h,444,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkKisaWin,1,0,0,0,0,,0
+cbHk/HkWinParam.cpp,169,tuote,HkKisaWin,HkKisaWin,1,0,0,0,0,,0
+cbHk/LoppuKilpUnit.cpp,1195,tuote,HkKisaWin,HkKisaWin,1,78,1,1,0,C-1 tallennus/rinnakkaisuus,0
+cbHk/LoppuKilpUnit.h,323,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/MuotoiluUnit.cpp,1027,tuote,HkKisaWin,HkKisaWin,1,56,1,1,0,C-9 virheenkasittely,0
+cbHk/MuotoiluUnit.h,335,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/TakaaAjoUnit.cpp,494,tuote,HkKisaWin,HkKisaWin,1,18,2,8,0,C-7 GUI-logiikka; K tietopohja; rekisteri,0
+cbHk/TakaaAjoUnit.h,100,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/TapUnit2.cpp,743,tuote,HkKisaWin,HkKisaWin,1,34,0,0,0,,0
+cbHk/TapUnit2.h,119,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/TulosUnit.cpp,2616,tuote,HkKisaWin,HkKisaWin,2,126,9,28,1,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-13 synteesi; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+cbHk/TulosUnit.h,362,tuote,HkKisaWin,-,1,0,0,4,4,C-12 valitsimet/asetukset; C-6 rinnakkaisuus; K tietopohja,0
+cbHk/TulostusUnit2.cpp,1632,tuote,HkKisaWin,HkKisaWin,2,56,6,18,0,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-9 virheenkasittely; K tietopohja; rekisteri,0
+cbHk/TulostusUnit2.h,267,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbHk/UnitASakot.cpp,394,tuote,HkKisaWin,HkKisaWin,2,21,2,14,8,C-1 tallennus/rinnakkaisuus; C-6 rinnakkaisuus; C-8 tila/elinkaari; K tietopohja; muu dokumentti; rekisteri,0
+cbHk/UnitASakot.h,87,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitASuunn.cpp,343,tuote,HkKisaWin,HkKisaWin,2,23,0,8,8,C-1 tallennus/rinnakkaisuus; C-6 rinnakkaisuus; K tietopohja; muu dokumentti; rekisteri,0
+cbHk/UnitASuunn.h,89,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitAikaSiirto.cpp,395,tuote,HkKisaWin,HkKisaWin,2,16,1,2,0,C-1 tallennus/rinnakkaisuus,0
+cbHk/UnitAikaSiirto.h,77,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitAikavert.cpp,929,tuote,HkKisaWin,HkKisaWin,1,56,1,1,0,C-13 synteesi,0
+cbHk/UnitAikavert.h,178,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitAjanotto.cpp,1961,tuote,HkKisaWin,HkKisaWin,3,86,16,104,3,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-13 synteesi; C-5 kaantajaerot; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+cbHk/UnitAjanotto.h,268,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitArvonta.cpp,1270,tuote,HkKisaWin,HkKisaWin,3,44,9,92,0,C-12 valitsimet/asetukset; C-13 synteesi; C-5 kaantajaerot; C-7 GUI-logiikka; C-8 tila/elinkaari; K tietopohja; muu dokumentti; rekisteri,0
+cbHk/UnitArvonta.h,164,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitAutoFile.cpp,216,tuote,HkKisaWin,HkKisaWin,1,14,2,2,0,K tietopohja,0
+cbHk/UnitAutoFile.h,83,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitAvausMaar.cpp,174,tuote,HkKisaWin,HkKisaWin,1,9,2,3,0,C-12 valitsimet/asetukset; C-9 virheenkasittely,0
+cbHk/UnitAvausMaar.h,62,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitCfg.cpp,2936,tuote,HkKisaWin,HkKisaWin,1,53,2,29,4,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; K tietopohja; rekisteri,0
+cbHk/UnitCfg.h,381,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitComfile.cpp,1098,tuote,HkKisaWin,HkKisaWin,2,41,10,34,0,C-13 synteesi; C-3 tiedostot/eheys; C-6 rinnakkaisuus; C-9 virheenkasittely; K tietopohja; rekisteri,0
+cbHk/UnitComfile.h,146,tuote,HkKisaWin,-,1,0,0,3,3,K tietopohja; rekisteri,0
+cbHk/UnitEmit.cpp,3798,tuote,HkKisaWin,HkKisaWin,3,151,35,216,2,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-13 synteesi; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+cbHk/UnitEmit.h,390,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbHk/UnitEmitKoodit.cpp,163,tuote,HkKisaWin,HkKisaWin,1,8,1,1,0,C-1 tallennus/rinnakkaisuus,0
+cbHk/UnitEmitKoodit.h,56,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitEmitMuutokset.cpp,323,tuote,HkKisaWin,HkKisaWin,1,27,0,0,0,,0
+cbHk/UnitEmitMuutokset.h,108,tuote,HkKisaWin,-,1,0,0,4,4,C-5 kaantajaerot; K tietopohja; rekisteri,0
+cbHk/UnitEmit_VA.cpp,149,tuote,HkKisaWin,HkKisaWin,1,11,0,0,0,,0
+cbHk/UnitEmit_VA.h,65,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitEmithaku.cpp,133,tuote,HkKisaWin,HkKisaWin,1,9,0,0,0,,0
+cbHk/UnitEmithaku.h,58,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitExport.cpp,635,tuote,HkKisaWin,HkKisaWin,2,20,5,50,0,C-10 riippuvuudet/tietoturva; C-11 testaus; C-13 synteesi; C-3 tiedostot/eheys; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+cbHk/UnitExport.h,95,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitHylkRap.cpp,712,tuote,HkKisaWin,HkKisaWin,2,24,1,6,0,K tietopohja; rekisteri,0
+cbHk/UnitHylkRap.h,118,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitIlm2.cpp,2407,tuote,HkKisaWin,HkKisaWin,1,85,2,4,0,C-8 tila/elinkaari,0
+cbHk/UnitIlm2.h,333,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitImport.cpp,1595,tuote,HkKisaWin,HkKisaWin,2,19,4,34,0,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-3 tiedostot/eheys; C-5 kaantajaerot; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+cbHk/UnitImport.h,100,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitJoukkueTilanne.cpp,272,tuote,HkKisaWin,HkKisaWin,1,22,0,0,0,,0
+cbHk/UnitJoukkueTilanne.h,92,tuote,HkMaali HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitKaavaTaul.cpp,211,tuote,HkKisaWin,HkKisaWin,1,9,0,0,0,,0
+cbHk/UnitKaavaTaul.h,56,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitKilpMaaritys.cpp,771,tuote,HkKisaWin,HkKisaWin,1,22,2,2,0,C-12 valitsimet/asetukset; C-9 virheenkasittely,0
+cbHk/UnitKilpMaaritys.h,136,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitKilpSeurat.cpp,433,tuote,HkKisaWin,HkKisaWin,1,27,1,1,0,C-8 tila/elinkaari,0
+cbHk/UnitKilpSeurat.h,103,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitKilpailijaEmit.cpp,418,tuote,HkKisaWin,HkKisaWin,1,16,1,2,0,C-9 virheenkasittely,0
+cbHk/UnitKilpailijaEmit.h,87,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitKilpailijaOnline.cpp,1517,tuote,HkKisaWin,HkKisaWin,1,33,4,13,0,C-10 riippuvuudet/tietoturva; C-8 tila/elinkaari; K tietopohja; rekisteri,0
+cbHk/UnitKilpailijaOnline.h,139,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitKilpailijatiedot.cpp,1900,tuote,HkKisaWin,HkKisaWin,3,71,19,106,2,C-1 tallennus/rinnakkaisuus; C-13 synteesi; C-7 GUI-logiikka; C-8 tila/elinkaari; K tietopohja; muu dokumentti; rekisteri,0
+cbHk/UnitKilpailijatiedot.h,208,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitKisaLuett.cpp,473,tuote,HkKisaWin,HkKisaWin,1,17,2,4,0,C-12 valitsimet/asetukset; C-9 virheenkasittely,0
+cbHk/UnitKisaLuett.h,84,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitLahtoRistiriita.cpp,150,tuote,HkKisaWin,HkKisaWin,1,5,1,1,0,K tietopohja,0
+cbHk/UnitLahtoRistiriita.h,42,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitLisaTietue.cpp,151,tuote,HkKisaWin,HkKisaWin,1,5,1,3,0,C-9 virheenkasittely,0
+cbHk/UnitLisaTietue.h,53,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitLisatiedot.cpp,1204,tuote,HkKisaWin,HkKisaWin,1,19,0,0,0,,0
+cbHk/UnitLisatiedot.h,105,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitMaastossa.cpp,248,tuote,HkKisaWin,HkKisaWin,1,14,0,0,0,,0
+cbHk/UnitMaastossa.h,45,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitMySQL.cpp,770,tuote,HkKisaWin,HkKisaWin,2,24,19,201,13,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-3 tiedostot/eheys; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+cbHk/UnitMySQL.h,96,tuote,HkMaali HkKisaWin,-,1,0,0,1,1,C-10 riippuvuudet/tietoturva,0
+cbHk/UnitNollaus.cpp,203,tuote,HkKisaWin,HkKisaWin,1,12,1,5,0,C-8 tila/elinkaari; K tietopohja; rekisteri,0
+cbHk/UnitNollaus.h,72,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitOhjtiedot.cpp,73,tuote,HkKisaWin,HkKisaWin,1,3,0,0,0,,0
+cbHk/UnitOhjtiedot.h,46,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitOsanottajat.cpp,1939,tuote,HkKisaWin,HkKisaWin,2,69,4,10,0,C-6 rinnakkaisuus; C-8 tila/elinkaari; K tietopohja; rekisteri,0
+cbHk/UnitOsanottajat.h,201,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitPiirival.cpp,170,tuote,HkKisaWin,HkKisaWin,1,13,0,1,1,C-12 valitsimet/asetukset,0
+cbHk/UnitPiirival.h,69,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitPistelasku.cpp,521,tuote,HkKisaWin,HkKisaWin,1,28,8,13,0,C-1 tallennus/rinnakkaisuus; C-8 tila/elinkaari; K tietopohja,0
+cbHk/UnitPistelasku.h,154,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitSHLTul.cpp,155,tuote,HkKisaWin,HkKisaWin,1,7,0,0,0,,0
+cbHk/UnitSHLTul.h,52,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitSakkoKierr.cpp,264,tuote,HkKisaWin,HkKisaWin,2,15,9,46,2,C-13 synteesi; C-5 kaantajaerot; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+cbHk/UnitSakkoKierr.h,76,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitSarja.cpp,735,tuote,HkKisaWin,HkKisaWin,1,44,6,11,0,C-8 tila/elinkaari; K tietopohja; rekisteri,0
+cbHk/UnitSarja.h,240,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitSarjatiedot.cpp,1733,tuote,HkKisaWin,HkKisaWin,1,59,5,8,0,C-13 synteesi; C-9 virheenkasittely; K tietopohja,0
+cbHk/UnitSarjatiedot.h,171,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitSeurat.cpp,572,tuote,HkKisaWin,HkKisaWin,2,29,1,4,0,C-5 kaantajaerot; K tietopohja; rekisteri,0
+cbHk/UnitSeurat.h,110,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitSeuratoimet.cpp,209,tuote,HkKisaWin,HkKisaWin,1,8,0,0,0,,0
+cbHk/UnitSeuratoimet.h,65,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitSeuraval.cpp,162,tuote,HkKisaWin,HkKisaWin,1,14,0,0,0,,0
+cbHk/UnitSeuraval.h,69,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitSprintSarja.cpp,236,tuote,HkKisaWin,HkKisaWin,1,13,0,0,0,,0
+cbHk/UnitSprintSarja.h,85,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitSprinthiihto.cpp,712,tuote,HkKisaWin,HkKisaWin,1,17,0,0,0,,0
+cbHk/UnitSprinthiihto.h,113,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitStatus.cpp,730,tuote,HkKisaWin,HkKisaWin,2,23,5,21,0,C-13 synteesi; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+cbHk/UnitStatus.h,84,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitSuodatus.cpp,107,tuote,HkKisaWin,HkKisaWin,1,9,0,0,0,,0
+cbHk/UnitSuodatus.h,60,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitTKanta.cpp,1628,tuote,HkKisaWin,HkKisaWin,1,59,1,7,0,C-13 synteesi; C-9 virheenkasittely; K tietopohja,0
+cbHk/UnitTKanta.h,162,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitTapahtSiirrot.cpp,110,tuote,HkKisaWin,HkKisaWin,1,4,1,2,0,C-1 tallennus/rinnakkaisuus,0
+cbHk/UnitTapahtSiirrot.h,57,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitTarkMerk.cpp,443,tuote,HkKisaWin,HkKisaWin,1,37,0,0,0,,0
+cbHk/UnitTarkMerk.h,184,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitTaulu.cpp,1353,tuote,HkKisaWin,HkKisaWin,2,31,9,24,0,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-5 kaantajaerot; C-5 muistiturvallisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+cbHk/UnitTaulu.h,212,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitTuloskaava.cpp,168,tuote,HkKisaWin,HkKisaWin,1,11,0,0,0,,0
+cbHk/UnitTuloskaava.h,89,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitVaGr.cpp,374,tuote,HkKisaWin,HkKisaWin,1,10,0,0,0,,0
+cbHk/UnitVaGr.h,59,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitVaPisteet.cpp,797,tuote,HkKisaWin,HkKisaWin,1,36,0,0,0,,0
+cbHk/UnitVaPisteet.h,121,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitVaToisto.cpp,45,tuote,HkKisaWin,HkKisaWin,1,3,0,0,0,,0
+cbHk/UnitVaToisto.h,59,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitVaiheMaar.cpp,165,tuote,HkKisaWin,HkKisaWin,1,11,1,1,0,C-5 kaantajaerot,0
+cbHk/UnitVaiheMaar.h,53,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitVakLisays.cpp,94,tuote,HkKisaWin,HkKisaWin,1,5,0,0,0,,0
+cbHk/UnitVakLisays.h,63,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitValSarjat.cpp,146,tuote,HkKisaWin,HkKisaWin,1,11,0,0,0,,0
+cbHk/UnitValSarjat.h,61,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitValitseKilp.cpp,128,tuote,HkKisaWin,HkKisaWin,1,7,2,3,0,C-12 valitsimet/asetukset; C-8 tila/elinkaari,0
+cbHk/UnitValitseKilp.h,52,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitYhdistetty.cpp,141,tuote,HkKisaWin,HkKisaWin,1,6,1,2,0,C-1 tallennus/rinnakkaisuus,0
+cbHk/UnitYhdistetty.h,55,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/UnitYv.cpp,137,tuote,HkKisaWin,HkKisaWin,1,8,1,2,0,C-9 virheenkasittely,0
+cbHk/UnitYv.h,55,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/VertAikaUnit.cpp,67,tuote,HkKisaWin,HkKisaWin,2,5,1,4,0,C-3 tiedostot/eheys; K tietopohja; rekisteri,0
+cbHk/VertAikaUnit.h,53,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbHk/WinHk.cpp,2310,tuote,HkKisaWin,HkKisaWin,2,130,31,258,14,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-5 kaantajaerot; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+cbHk/WinHk.h,332,tuote,HkMaali HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbHk/WinParamXml.cpp,1796,tuote,HkKisaWin,HkKisaWin,1,23,5,7,3,C-12 valitsimet/asetukset; C-9 virheenkasittely,0
+cbHk/valinnat.h,17,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/TpApu.cpp,757,orpo,,-,1,39,1,2,1,C-12 valitsimet/asetukset; C-9 virheenkasittely,0
+cbTp/UnitAikakorjaus.cpp,161,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,8,0,0,0,,0
+cbTp/UnitAikakorjaus.h,75,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitAmpPaikat.cpp,218,tuote,HkKisaWin,HkKisaWin,2,8,3,8,0,C-5 muistiturvallisuus; K tietopohja; rekisteri,0
+cbTp/UnitAmpPaikat.h,54,tuote,HkKisaWin,-,1,0,0,2,2,K tietopohja,0
+cbTp/UnitAnnaAika.cpp,88,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,7,0,0,0,,0
+cbTp/UnitAnnaAika.h,50,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitAnnaArvo.cpp,77,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,7,0,0,0,,0
+cbTp/UnitAnnaArvo.h,48,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitAnnaTeksti.cpp,77,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,7,0,0,0,,0
+cbTp/UnitAnnaTeksti.h,50,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitBrowser.cpp,79,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,5,3,6,0,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset,0
+cbTp/UnitBrowser.h,51,tuote,HkMaali HkKisaWin ViestiWin,-,1,0,0,4,4,C-10 riippuvuudet/tietoturva; K tietopohja; rekisteri,0
+cbTp/UnitEditDialog.cpp,52,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,4,0,0,0,,0
+cbTp/UnitEditDialog.h,43,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitEmiTag.cpp,573,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,2,26,6,29,1,C-0 merkistot; C-5 kaantajaerot; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+cbTp/UnitEmiTag.h,145,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitEmitFile.cpp,151,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,7,0,0,0,,0
+cbTp/UnitEmitFile.h,56,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitEmitSQL.cpp,551,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,2,30,7,36,12,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-13 synteesi; C-6 rinnakkaisuus; C-8 tila/elinkaari; K tietopohja; muu dokumentti; rekisteri,0
+cbTp/UnitEmitSQL.h,159,tuote,HkKisaWin ViestiWin,-,1,0,0,1,1,C-10 riippuvuudet/tietoturva,0
+cbTp/UnitEmitnouto.cpp,144,tuote,HkKisaWin,HkKisaWin,1,9,2,3,0,C-10 riippuvuudet/tietoturva,0
+cbTp/UnitEmitnouto.h,87,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbTp/UnitFIS.cpp,500,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,13,2,2,0,C-9 virheenkasittely,0
+cbTp/UnitFIS.h,107,tuote,HkKisaWin ViestiWin,-,1,0,0,1,1,C-12 valitsimet/asetukset,0
+cbTp/UnitHtmlEdit.cpp,268,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,15,2,4,1,C-10 riippuvuudet/tietoturva; C-9 virheenkasittely,0
+cbTp/UnitHtmlEdit.h,79,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitIlmoitus.cpp,38,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,2,0,0,0,,0
+cbTp/UnitIlmoitus.h,40,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitKartta.cpp,651,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,33,3,3,0,C-9 virheenkasittely,0
+cbTp/UnitKartta.h,113,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitKirjoitinVal.cpp,50,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,4,0,0,0,,0
+cbTp/UnitKirjoitinVal.h,42,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitKohdistus.cpp,379,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,27,0,0,0,,0
+cbTp/UnitKohdistus.h,120,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitLisaTekstit.cpp,151,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,8,1,1,0,C-9 virheenkasittely,0
+cbTp/UnitLisaTekstit.h,58,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitMTR.cpp,409,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,2,14,5,22,4,C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+cbTp/UnitMTR.h,96,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitMaalikello.cpp,514,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,2,22,5,19,0,C-10 riippuvuudet/tietoturva; C-5 kaantajaerot; C-8 tila/elinkaari; K tietopohja; rekisteri,0
+cbTp/UnitMaalikello.h,208,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitMessages.cpp,75,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,4,0,0,0,,0
+cbTp/UnitMessages.h,41,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitMsgs.cpp,52,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,4,0,0,0,,0
+cbTp/UnitMsgs.h,42,tuote,ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitNappain.cpp,104,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,10,0,0,0,,0
+cbTp/UnitNappain.h,60,tuote,HkKisaWin ViestiWin,-,1,0,0,4,4,C-5 kaantajaerot; K tietopohja; rekisteri,0
+cbTp/UnitNaytaTulos.cpp,248,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,2,15,2,9,5,C-13 synteesi; C-6 rinnakkaisuus; C-8 tila/elinkaari; muu dokumentti,0
+cbTp/UnitNaytaTulos.h,75,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitPiikit.cpp,451,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,16,0,0,0,,0
+cbTp/UnitPiikit.h,82,tuote,HkKisaWin ViestiWin,-,1,0,0,1,1,C-12 valitsimet/asetukset,0
+cbTp/UnitRadat.cpp,3411,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,134,1,2,0,C-13 synteesi; C-9 virheenkasittely,0
+cbTp/UnitRadat.h,356,tuote,HkKisaWin ViestiWin,-,1,0,0,1,1,C-12 valitsimet/asetukset,0
+cbTp/UnitSarjaVal.cpp,66,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,4,0,0,0,,0
+cbTp/UnitSarjaVal.h,50,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitSelect.cpp,96,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,5,0,0,0,,0
+cbTp/UnitSelect.h,51,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitSelect2.cpp,71,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,4,0,0,0,,0
+cbTp/UnitSelect2.h,48,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitSelect3.cpp,129,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,2,8,7,30,2,C-10 riippuvuudet/tietoturva; C-13 synteesi; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; K tietopohja; muu dokumentti; rekisteri,0
+cbTp/UnitSelect3.h,62,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitSivuTuloste.cpp,410,tuote,HkKisaWin,HkKisaWin,2,14,1,5,0,C-6 rinnakkaisuus; K tietopohja; rekisteri,0
+cbTp/UnitSivuTuloste.h,71,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbTp/UnitTietoTulk.cpp,190,tuote,HkKisaWin,HkKisaWin,1,12,0,0,0,,0
+cbTp/UnitTietoTulk.h,79,tuote,HkKisaWin,-,1,0,0,0,0,,0
+cbTp/UnitTulkinta.cpp,100,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,6,0,0,0,,0
+cbTp/UnitTulkinta.h,60,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitUusinta.cpp,252,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,2,9,1,6,0,C-2 tiedonsiirto; K tietopohja; rekisteri,0
+cbTp/UnitUusinta.h,69,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/UnitYhteysStatus.cpp,42,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,1,2,0,0,0,,0
+cbTp/UnitYhteysStatus.h,40,tuote,HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/WinTp.h,22,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+cbTp/cbTpApu.cpp,641,tuote,HkKisaWin ViestiWin,HkKisaWin ViestiWin,2,51,10,132,5,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-5 kaantajaerot; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+com/WinUDP.cpp,1398,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,3,47,18,294,21,C-10 riippuvuudet/tietoturva; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-2 tiedonsiirto; C-5 muistiturvallisuus; C-6 rinnakkaisuus; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+com/gethttp.cpp,165,tuote,HkMaali ViestiMaali HkKisaWin ViestiWin,HkKisaWin ViestiWin HkMaali JukMaali520,2,2,2,32,1,C-10 riippuvuudet/tietoturva; C-9 virheenkasittely; K tietopohja; rekisteri,0
+com/winCom.cpp,244,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkKisaWin ViestiWin HkMaali JukLuenta520 JukMaali520,2,13,8,23,2,C-10 riippuvuudet/tietoturva; C-2 tiedonsiirto; C-9 virheenkasittely; K tietopohja; rekisteri,0
+dbboxm/BOXTEST_F.cpp,172,orpo,,-,1,5,0,1,1,muu dokumentti,0
+dbboxm/Boxtest.cpp,168,orpo,,-,1,4,0,1,1,muu dokumentti,0
+dbboxm/DBINT.H,11,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,dbboxm,1,0,0,0,0,,0
+dbboxm/DBINTF.H,11,orpo,,-,1,0,0,0,0,,0
+dbboxm/DBboxm.cpp,16,tuote,HkKisaWin ViestiWin,DBboxm-XE,1,0,0,0,0,,0
+dbboxm/Dbbox.cpp,955,orpo,,-,1,37,1,9,3,C-7 GUI-logiikka; C-8 tila/elinkaari; K tietopohja; rekisteri,0
+dbboxm/addkey.cpp,146,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,DBboxm-XE dbboxm,2,3,0,0,0,,0
+dbboxm/dbbox1.cpp,284,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,DBboxm-XE dbboxm,3,15,13,123,10,C-1 tallennus/rinnakkaisuus; C-11 testaus; C-12 valitsimet/asetukset; C-13 synteesi; C-3 tiedostot/eheys; C-6 rinnakkaisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; C-9 virheenkasittely; K tietopohja; rekisteri,0
+dbboxm/dbbox2.cpp,155,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,DBboxm-XE dbboxm,3,15,3,7,4,C-9 virheenkasittely; K tietopohja; rekisteri,0
+dbboxm/delkey.cpp,217,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,DBboxm-XE dbboxm,2,4,0,0,0,,0
+dbboxm/findkey.cpp,98,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,DBboxm-XE dbboxm,2,3,1,1,0,C-5 muistiturvallisuus,0
+dbboxm/nextkey.cpp,71,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,DBboxm-XE dbboxm,2,1,0,0,0,,0
+dbboxm/prevkey.cpp,71,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,DBboxm-XE dbboxm,2,1,0,0,0,,0
+include/Console.h,30,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,tputilv2,2,0,0,9,9,C-0 merkistot; C-10 riippuvuudet/tietoturva; K tietopohja; rekisteri,0
+include/IRfidReader.h,54,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkMaali JukLuenta520 JukMaali520,1,1,0,4,4,C-10 riippuvuudet/tietoturva; K tietopohja,0
+include/SiritReader.h,33,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkMaali JukLuenta520 JukMaali520,1,0,0,6,6,C-12 valitsimet/asetukset,0
+include/TpLaitteet.h,135,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkKisaWin,2,0,0,13,13,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; K tietopohja; muu dokumentti,0
+include/ZebraReader.h,36,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkMaali JukLuenta520 JukMaali520,1,0,0,1,1,C-12 valitsimet/asetukset,0
+include/bkeybrd.h,34,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,2,0,0,8,8,C-10 riippuvuudet/tietoturva; K tietopohja; rekisteri,0
+include/box.h,108,orpo,,-,1,0,0,0,0,,0
+include/boxf.h,127,orpo,,-,1,0,0,0,0,,0
+include/boxm.h,90,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,dbboxm,3,0,0,0,0,,0
+include/boxr.h,79,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,3,0,0,5,5,C-5 kaantajaerot; C-9 virheenkasittely; muu dokumentti,0
+include/bscreens.h,73,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+include/bstrings.h,63,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+include/butil.h,117,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,2,2,C-12 valitsimet/asetukset,0
+include/bvideo.h,16,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+include/globals.h,17,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+include/sitypes.h,96,orpo,,-,1,0,0,0,0,,0
+include/size.h,13,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,0,0,,0
+include/tptype.h,44,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,tputilv2 JukMaali520,2,0,0,0,0,,0
+include/tputil.h,532,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE ViestiWin HkMaali tputilv2 JukMaali520,2,0,0,36,36,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-13 synteesi; C-2 tiedonsiirto; C-3 tiedostot/eheys; C-5 kaantajaerot; C-8 tila/elinkaari; K tietopohja; rekisteri,0
+include/wincom.h,116,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,HkKisaWin,3,0,0,11,11,C-10 riippuvuudet/tietoturva; C-2 tiedonsiirto; K tietopohja; muu dokumentti; rekisteri,0
+include/xmlparser.h,70,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,-,1,0,0,3,3,K tietopohja; rekisteri,0
+tputilv2/AIKATOSH.cpp,91,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,2,0,4,4,C-3 tiedostot/eheys; K tietopohja; rekisteri,0
+tputilv2/Aikatosl.cpp,52,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/DateNo.cpp,140,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,6,1,2,1,C-5 kaantajaerot; C-5 muistiturvallisuus,0
+tputilv2/Elimbl1.cpp,65,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,4,0,0,0,,0
+tputilv2/INPUTAIH.cpp,162,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,4,0,0,0,,0
+tputilv2/Inpknoo2.cpp,78,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/Inpknoos.cpp,204,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,0,0,0,0,,0
+tputilv2/Inpknoot.cpp,201,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,2,2,C-12 valitsimet/asetukset,0
+tputilv2/Inputai2.cpp,93,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/Inputaik.cpp,92,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,2,0,1,1,C-10 riippuvuudet/tietoturva,0
+tputilv2/Inputail.cpp,93,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/Inputch.cpp,72,tuote,HkMaali ViestiMaali ViestiLuenta,tputilv2,1,1,0,0,0,,0
+tputilv2/Inputi_o.cpp,51,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/Inputint.cpp,59,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/Inputlon.cpp,60,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/Inputs_p.cpp,63,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/Inputstr.cpp,197,tuote,HkMaali ViestiMaali ViestiLuenta,tputilv2,2,2,0,0,0,,0
+tputilv2/Inputwstr.cpp,193,tuote,HkMaali ViestiMaali ViestiLuenta,tputilv2,2,1,1,1,0,C-5 muistiturvallisuus,0
+tputilv2/IntInList.cpp,45,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,1,1,C-5 kaantajaerot,0
+tputilv2/Kbflush_1.cpp,29,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/LibTest.cpp,63,orpo,,LibTest,1,1,0,1,1,muu dokumentti,0
+tputilv2/MbsWcs.cpp,51,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,3,2,1,3,0,K tietopohja; rekisteri,0
+tputilv2/Pageedit.cpp,210,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,4,0,0,0,,0
+tputilv2/QSORTINT.cpp,126,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,1,1,3,0,C-5 muistiturvallisuus,0
+tputilv2/Readkbd.cpp,97,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,1,1,1,0,C-11 testaus,0
+tputilv2/SAVESCR.cpp,39,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/SCATTRIB.cpp,44,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/STPCVT.cpp,304,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,6,6,C-10 riippuvuudet/tietoturva; K tietopohja; rekisteri,0
+tputilv2/STPEXPAN.cpp,93,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/STPJUST.cpp,105,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/STPTABFY.cpp,89,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/STPXLATE.cpp,71,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/STSCHIND.cpp,58,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,1,1,0,C-7 GUI-logiikka,0
+tputilv2/StrToDouble.cpp,33,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/T_time_l.cpp,44,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/TextFileClass-2.cpp,441,orpo,,-,1,19,0,0,0,,0
+tputilv2/TextFileClass.cpp,869,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE LibTest tputilv2 JukLuenta520,2,32,10,70,0,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-13 synteesi; C-3 tiedostot/eheys; C-5 kaantajaerot; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+tputilv2/Tputil.cpp,23,tuote,HkKisaWin ViestiWin,Tputil-XE,1,0,0,0,0,,0
+tputilv2/Trimline.cpp,41,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/UnitTest.cpp,608,orpo,,LibTest,1,26,2,2,0,C-9 virheenkasittely,0
+tputilv2/UnitTest.h,61,orpo,,-,1,0,0,0,0,,0
+tputilv2/Utf8Conv.cpp,39,orpo,,-,1,2,0,0,0,,0
+tputilv2/Viwrrect.cpp,96,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,1,1,0,C-11 testaus,0
+tputilv2/Writeerr.cpp,94,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,2,1,13,1,C-10 riippuvuudet/tietoturva; C-11 testaus; C-9 virheenkasittely; K tietopohja; muu dokumentti; rekisteri,0
+tputilv2/Wrttext.cpp,961,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,24,14,107,6,C-10 riippuvuudet/tietoturva; C-12 valitsimet/asetukset; C-13 synteesi; C-5 muistiturvallisuus; C-9 virheenkasittely; K tietopohja; rekisteri,0
+tputilv2/aakjarjs-2.cpp,78,orpo,,-,1,1,0,0,0,,0
+tputilv2/aakjarjs-v.cpp,77,orpo,,-,1,1,0,0,0,,0
+tputilv2/aakjarjs.cpp,78,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/aakjarjs2-2.cpp,77,orpo,,-,1,1,0,0,0,,0
+tputilv2/aakjarjs2-v.cpp,76,orpo,,-,1,1,0,0,0,,0
+tputilv2/aakjarjs2.cpp,77,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/aakjarjws-2.cpp,78,orpo,,-,1,1,0,0,0,,0
+tputilv2/aakjarjws-v.cpp,77,orpo,,-,1,1,0,0,0,,0
+tputilv2/aakjarjws.cpp,82,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,1,0,0,0,,0
+tputilv2/aakjarjws2-2.cpp,77,orpo,,-,1,1,0,0,0,,0
+tputilv2/aakjarjws2-v.cpp,76,orpo,,-,1,1,0,0,0,,0
+tputilv2/aakjarjws2.cpp,81,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,1,0,0,0,,0
+tputilv2/aikatos2.cpp,49,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/aikatos2_s.cpp,48,tuote,HkMaali ViestiMaali ViestiLuenta,tputilv2,1,1,0,0,0,,0
+tputilv2/aikatosh_s.cpp,89,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/aikatosl_s.cpp,51,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/aikatost.cpp,45,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/aikatost_s.cpp,44,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/aikatows2_s.cpp,48,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/aikatowsh_s.cpp,86,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/aikatowsl_s.cpp,49,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/aikatowst_s.cpp,44,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2 TpTest,1,1,0,0,0,,0
+tputilv2/aiktostc.cpp,31,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/aiktostc_s.cpp,31,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/aiktowstc_s.cpp,28,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/ansi2oem.cpp,104,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,4,0,0,0,,0
+tputilv2/atold.cpp,98,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,1,1,C-5 kaantajaerot,0
+tputilv2/attnbeep.cpp,29,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/bsrchint.cpp,77,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,1,0,0,0,,0
+tputilv2/c-files/ioerr.c,36,orpo,,-,1,2,0,0,0,,0
+tputilv2/chint.cpp,35,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/clearfra.cpp,32,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/clreol.cpp,29,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/consolesize.cpp,117,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta,tputilv2,1,2,0,6,6,C-10 riippuvuudet/tietoturva; K tietopohja; rekisteri,0
+tputilv2/conststr.cpp,34,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/ctrlhndl.cpp,50,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,1,1,muu dokumentti,0
+tputilv2/dbindex.cpp,245,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,3,10,7,41,0,C-1 tallennus/rinnakkaisuus; C-13 synteesi; C-5 muistiturvallisuus; C-7 GUI-logiikka; C-8 tila/elinkaari; K tietopohja; rekisteri,0
+tputilv2/delchar.cpp,61,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/drawlines.cpp,102,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,7,0,0,0,,0
+tputilv2/elimz.cpp,63,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/elimzb1.cpp,47,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/erbeep.cpp,29,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/esnimet-2.cpp,72,tuote,HkMaali ViestiMaali ViestiLuenta,tputilv2,1,2,0,0,0,,0
+tputilv2/esnimet.cpp,97,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,3,0,1,1,muu dokumentti,0
+tputilv2/getfields.cpp,82,tuote,HkKisaWin ViestiWin,Tputil-XE,1,2,0,0,0,,0
+tputilv2/globals.cpp,36,orpo,,-,1,1,1,4,2,C-9 virheenkasittely,0
+tputilv2/gotoxy.cpp,67,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,4,0,0,0,,0
+tputilv2/haeStrIx.cpp,30,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/haesarja.cpp,49,orpo,,-,1,1,0,0,0,,0
+tputilv2/haesarja_w.cpp,49,orpo,,-,1,1,0,0,0,,0
+tputilv2/initcon.cpp,95,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,1,1,7,1,C-10 riippuvuudet/tietoturva; C-11 testaus; K tietopohja; rekisteri,0
+tputilv2/input_no.cpp,138,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/inputkno.cpp,156,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/inschar.cpp,52,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/instroik.cpp,109,tuote,HkMaali ViestiMaali ViestiLuenta,tputilv2,1,1,0,0,0,,0
+tputilv2/ioerr.cpp,42,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/itoa1.cpp,53,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/kbdrdy.cpp,28,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/kbflush.cpp,25,orpo,,-,1,1,0,0,0,,0
+tputilv2/kbready.cpp,77,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/kbready_w.cpp,87,tuote,HkMaali ViestiMaali ViestiLuenta,tputilv2,1,2,0,0,0,,0
+tputilv2/kello.cpp,51,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,2,0,0,0,,0
+tputilv2/keyfromn.cpp,63,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/khtostr.cpp,108,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,3,0,0,0,,0
+tputilv2/locasena.cpp,58,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/locasesc.cpp,54,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/locasest.cpp,42,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/lswab.cpp,29,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/lue_v_pv.cpp,50,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,1,9,0,C-10 riippuvuudet/tietoturva; C-9 virheenkasittely; K tietopohja; rekisteri,0
+tputilv2/m_swab.cpp,28,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/memnullcmp.cpp,26,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/msdaytime.cpp,57,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,1,1,0,C-10 riippuvuudet/tietoturva,0
+tputilv2/mstimer.cpp,42,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/nimiint.cpp,41,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/nimilong.cpp,40,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/oem2ansi.cpp,122,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,3,6,3,6,0,K tietopohja; rekisteri,0
+tputilv2/paiva.cpp,47,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/perr.cpp,96,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,2,2,40,1,C-1 tallennus/rinnakkaisuus; C-10 riippuvuudet/tietoturva; C-11 testaus; C-9 virheenkasittely; K tietopohja; rekisteri,0
+tputilv2/poistano.cpp,38,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/processspecialkey.cpp,27,tuote,HkKisaWin ViestiWin,Tputil-XE,1,1,0,0,0,,0
+tputilv2/prtbuf.cpp,155,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,6,0,0,0,,0
+tputilv2/putint_r.cpp,44,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2 TpTest,1,2,0,0,0,,0
+tputilv2/readkbd_w.cpp,97,tuote,HkMaali ViestiMaali ViestiLuenta,tputilv2,1,1,0,0,0,,0
+tputilv2/scanconv.cpp,64,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/scbox.cpp,185,kolmas_osapuoli,,-,1,0,0,0,0,,0
+tputilv2/scclrmsg.cpp,38,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/sccurset.cpp,41,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/sccurst.cpp,62,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/scpclr.cpp,43,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/scwrite.cpp,59,kolmas_osapuoli,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,1,1,C-10 riippuvuudet/tietoturva,0
+tputilv2/select.cpp,87,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/selectxy.cpp,77,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/str2aika.cpp,71,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/strtoai2.cpp,61,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/strtoaih.cpp,82,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,4,0,0,0,,0
+tputilv2/strtoaik.cpp,58,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/strtoail.cpp,54,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/t_time.cpp,34,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/tarkno.cpp,32,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/tarknoos.cpp,32,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/tarknost.cpp,41,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/testucode.cpp,36,orpo,,-,1,1,0,0,0,,0
+tputilv2/tick.cpp,26,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/timeticks.cpp,34,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/timofday.cpp,29,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/transl.cpp,40,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/tuwupper2.cpp,40,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/upcasesc.cpp,51,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,1,4,0,C-5 kaantajaerot; K tietopohja; rekisteri,0
+tputilv2/upcasest.cpp,51,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/vaihdanm.cpp,96,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,3,0,1,1,muu dokumentti,0
+tputilv2/vidint.cpp,49,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,1,0,0,0,,0
+tputilv2/virdrect.cpp,59,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,1,1,0,C-11 testaus,0
+tputilv2/viwrrectw.cpp,114,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,2,0,0,0,,0
+tputilv2/wPageedit.cpp,209,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,4,0,0,0,,0
+tputilv2/wSelectxy.cpp,85,tuote,HkMaali ViestiMaali ViestiLuenta,tputilv2,2,2,1,3,0,C-11 testaus,0
+tputilv2/w_aakjarjs.cpp,89,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,1,0,0,0,,0
+tputilv2/wconcat.cpp,33,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,1,0,0,0,,0
+tputilv2/wcr2oem.cpp,77,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,2,2,1,1,0,C-5 muistiturvallisuus,0
+tputilv2/wcscmpU.cpp,57,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,4,0,0,0,,0
+tputilv2/wxml_put.cpp,191,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,9,0,0,0,,0
+tputilv2/wxml_set.cpp,158,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,9,0,0,0,,0
+tputilv2/xml_put.cpp,76,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,4,0,0,0,,0
+tputilv2/xml_set.cpp,127,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE tputilv2,1,8,0,0,0,,0
+tputilv2/xmlparser.cpp,541,tuote,HkMaali ViestiMaali ViestiLuenta HkKisaWin ViestiWin,Tputil-XE HkMaali tputilv2 JukLuenta520 JukMaali520,2,20,4,17,0,C-11 testaus; C-13 synteesi; C-5 muistiturvallisuus; C-9 virheenkasittely; K tietopohja; rekisteri,0
