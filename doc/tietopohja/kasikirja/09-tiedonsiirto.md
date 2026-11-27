@@ -390,7 +390,7 @@ odottamiseen, eikä hyvästelypakettia ole. Kuittaamattomat levyjonon paketit s�
 varten, ei tarkastettu: `Juk/VCom.cpp:62-77`, `:893-990`; ViestiLuennan osalta emit-luenta luku 7]. MSVC- ja bcc32-asemat
 tuottavat todennäköisesti tavulleen samat paketit (sama pakkaus, samat kokonaislukutyypit, `char` etumerkitön
 molemmissa); tarkistussumma riippuu kuitenkin `char`-tyypin etumerkistä parittomilla pituuksilla, ja toimiiko
-bcc32:ssa `#pragma option -K` kesken käännösyksikön, on avoin (Q17) [päätelty: tiedonsiirto.md]. Yhteensopivuuden
+bcc32:ssa `#pragma option -K` kesken käännösyksikön, on ratkaistu: bcc32 noudattaa sitä (Q17, `tiedostomuodot.md`). Yhteensopivuuden
 rikkoo siis asetus, ei kääntäjä.
 
 ## 3. Asetukset ja käännösvalitsimet
@@ -563,15 +563,13 @@ Lähteet:
 
 **Avoimet kysymykset (tiedonsiirto.md ja seuranta.md):**
 
-- Q17: noudattaako bcc32 `#pragma option -K` -direktiiviä kesken käännösyksikön (HkKisaWinissä ei projektiasetusta);
-  ratkaisee, ovatko HKW:n ja MSVC-asemien tarkistussummat samat parittomilla pituuksilla.
-- Q18: `sizeof(combufrec)` ja suurin pakettiluokan pituus kussakin käännöksessä (rajaa H-025:n ja H-032:n laajuuden).
+- Q17 ja Q18 on ratkaistu erässä C-3 (bcc32 noudattaa `-K`:ta kesken käännösyksikön; koot mitattu kaikista käännöksistä, `tiedostomuodot.md`).
 - Q19: sovelletaanko kaksoiskappale-ajanottopaketti (`AIKAT`) kahdesti.
 - Q20: sallivatko TCP-virtayhteydet useamman kuittaamattoman paketin samanaikaisesti.
 - Q21: asettuvatko ristikkäiset samanaikaiset muutokset 3–5 aseman renkaassa.
 - Q22: kiertääkö viestin `tark_ylahto` muuttumatonta tietoa renkaassa, kun `KATKKIERTO` ei ole päällä.
 - Q23: odottaako `Kysy(..., wait=0)` käyttäjää vai sulkeutuuko itsestään (H-021:n varoitusdialogin pysyvyys).
-- Q24: mistä bcc32-käännökset saavat `ws2_32`- ja `winhttp.lib`-kirjastot (`cbHk/winhttp.lib` puuttuu repossa).
+- Q24 on ratkaistu erässä C-13 (kirjastot tuotteittain, `riippuvuudet.md` luku 9).
 - Q90: ajetaanko kilpailuja käytännössä ilman levypuskuria (`COMFILE=EI`).
 - Kahden aseman toimintaa kilpailukäytössä ei ole ajettu. Testikehyksessä on toistettu vain yksittäisiä vikoja
   (H-007, H-008); verkkoa ei ole ajettu (`seuranta.md`, H-007 rivi).
