@@ -12,3 +12,6 @@ Debug_Build
 Release_Build
 obj
 build-logs
+
+# Working document tracking changes to the GitHub issue (#97)
+doc/rest-api-issue.md
