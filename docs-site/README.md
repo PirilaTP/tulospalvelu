@@ -61,7 +61,9 @@ Generoidut sivut voi kirjoittaa tarkasteltaviksi hakemistoon:
 
 ## Tarkistukset
 
-Repon juuresta, kuten CI:
+Repon juuresta, kuten CI (Git Bash; Linuxissa `.venv/bin/mkdocs`, PowerShellissa
+`.venv\Scripts\mkdocs` ja `cd` erillisinä komentoina). Julkaisun portti:
+`python -I docs-site/scripts/julkaisulupa.py .` (sallii julkaisun vain, kun OP-1 on päätetty).
 
 ```
 python -I doc/arkkitehtuuri/tyokalut/sivusto.py . --tarkista

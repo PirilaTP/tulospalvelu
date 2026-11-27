@@ -12,9 +12,10 @@ Revision rule (never "latest main"):
 - if that revision is not the audit base but the file is byte-identical in the audit base
   (same blob), the audit base is used instead, because the audit base is a published
   commit of main and the audit branch commits may not be published;
-- a file that does not exist in the claim revision (for example tests added later) is
-  linked at the build commit if it exists there; otherwise it is not linked;
-- documents and tools outside TPsource/V52 are linked at the build commit.
+- a file that does not exist in the claim revision (for example tests added later) must
+  exist in the build commit; it is linked on the published branch (main);
+- documents and tools outside TPsource/V52 must exist in the build commit and are linked on
+  the published branch (main), so the links survive a squash merge.
 Line numbers are checked against the file in the linked revision; a line past the end
 drops the line anchor and is counted as a warning.
 
@@ -126,7 +127,8 @@ class Git:
 class Linker:
     """Turns reference code spans into GitHub URLs; collects statistics and warnings."""
 
-    def __init__(self, root, repo_url, audit_rev, build_rev="HEAD"):
+    def __init__(self, root, repo_url, audit_rev, build_rev="HEAD", branch="main"):
+        self.branch = branch
         self.git = Git(root)
         self.repo = repo_url.rstrip("/")
         self.audit = self.git.full(audit_rev) or audit_rev
@@ -201,7 +203,11 @@ class Linker:
         return None
 
     def url(self, path, rev, span=None, kind="blob"):
-        u = "%s/%s/%s/%s" % (self.repo, kind, rev, path)
+        # files resolved in the build commit (documents, tools, tests added after the audit) are
+        # linked on the published branch, so the link survives any merge strategy; lines are
+        # still checked against the build commit
+        shown = self.branch if rev == self.build else rev
+        u = "%s/%s/%s/%s" % (self.repo, kind, shown, path)
         if span:
             n = self.git.lines(rev, path)
             a, b = span
@@ -240,6 +246,7 @@ class Linker:
         rpath, rrev = got
         span = first_span(spec) if spec else None
         self.stats["lahdelinkki"] += 1
-        # a bare follow-up `:N` continues a source file, never a document or a table
-        keep = (rpath, rrev) if not rpath.lower().endswith((".md", ".csv", ".json", ".txt")) else None
+        # a bare follow-up `:N` continues only a source-file reference that itself had lines
+        # (`a.cpp:12`, `:15`); after a bare path or a document it is too ambiguous to link
+        keep = (rpath, rrev) if spec and not rpath.lower().endswith((".md", ".csv", ".json", ".txt")) else None
         return self.url(rpath, rrev, span), keep

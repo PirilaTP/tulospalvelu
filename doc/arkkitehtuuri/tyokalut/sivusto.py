@@ -325,7 +325,7 @@ class Site:
         return r + ("#" + anchor if anchor else "")
 
     def gh(self, path, rev=None, kind="blob"):
-        return "%s/%s/%s/%s" % (self.repo, kind, rev or self.linker.build, path)
+        return "%s/%s/%s/%s" % (self.repo, kind, rev or self.linker.branch, path)
 
     # -------------------------------------------------- markdown transform ---
     def transform(self, md, page_uri, src_path=None, rev=None, autolink=True):
@@ -472,6 +472,8 @@ class Site:
                     url, last = self.linker.code(inner, rev=rev, last=last, doc_dir=src_dir)
                 out.append(hold("[%s](%s)" % (full, url)) if url else hold(full))
             else:
+                if "|" in p[1]:
+                    last = None  # a new table cell: a bare `:N` never continues the previous cell
                 t = URL_BARE.sub(lambda m: hold("<%s>" % m.group(1)), p[1])
                 if autolink:
                     t = ID_RE.sub(lambda m: self.id_link(m.group(1), page_uri, hold), t)
@@ -709,10 +711,44 @@ class Site:
         tot = sum(v["rivit"] for v in lv.values())
         l1 = lv.get("1", {}).get("rivit", 0)
         prod4 = self.product_full_files()
-        return ('!!! warning "Kattavuusrajoite"\n    Auditointi ei kata koko lähdekoodia: %s riveistä on vain '
-                "inventoitu, ja kokonaan katselmoituja tuotantotiedostoja on %d. Havaintojen määrä on alaraja. "
-                "Kortin puuttuminen ei tarkoita, että toiminto on virheetön. [Kattavuus](%s)" % (
-                    pct(l1, tot), prod4, self.rel(uri, "laatu/kattavuus/index.md")))
+        c = self.coverage_summary()
+        return ('!!! warning "Kattavuusrajoite"\n    Auditointi ei kata koko lähdekoodia. Tuotantokoodin '
+                "funktioriveistä %s on sellaisia, joihin ei ole viitattu yhdessäkään auditoinnin asiakirjassa, ja "
+                "%s kaikista lähdekoodiriveistä on tiedostoissa, jotka on vain inventoitu. Viitattukaan koodi ei ole "
+                "katselmoitu: kokonaan katselmoituja tuotantotiedostoja on %d ja C-14:n tasolle K4 kirjattuja "
+                "koodialueita %d. Havaintojen määrä on alaraja; kortin puuttuminen ei tarkoita, että toiminto on "
+                "virheetön. [Kattavuus](%s)" % (pct(c["ei_r"], c["rivit"]), pct(l1, tot), prod4, c["k4"],
+                                               self.rel(uri, "laatu/kattavuus/index.md")))
+
+    def coverage_summary(self):
+        """Function-level figures used by the coverage banner (kattavuus.py, C-14 registers)."""
+        if not hasattr(self, "_covsum"):
+            funcs = rcsv(os.path.join(self.coverage_run(), "funktiot.csv"))
+            prod = [f for f in funcs if f["tiedostoluokka"] == "tuote" and f["aktiivinen"].strip()]
+            best, stale = self.review_state()
+            self._covsum = {"rivit": sum(int(f["rivit"] or 0) for f in prod),
+                            "ei_r": sum(int(f["rivit"] or 0) for f in prod if f["luokka"] == "ei_viitteita"),
+                            "k4": sum(1 for v in best.values() if v >= "K4")}
+        return self._covsum
+
+    def review_state(self):
+        """C-14: valid level per code area and the stale areas (c14-suunnitelma.md 3.4).
+        The valid level is the highest level among reviews whose hash equals the current hash;
+        an area is stale when it has reviews but none at the current hash."""
+        reg = os.path.join(self.doc, "rekisteri")
+        cur = {a["alue"]: a for a in rcsv(os.path.join(reg, "koodialueet.csv"))}
+        best, seen = {}, set()
+        for r in rcsv(os.path.join(reg, "katselmoinnit.csv")):
+            a = cur.get(r.get("alue"))
+            if not a:
+                continue
+            seen.add(a["alue"])
+            if a.get("tiiviste") and r.get("tiiviste") and a["tiiviste"] != r["tiiviste"]:
+                continue
+            lvl = r.get("syvyys", "K0")
+            if lvl > best.get(a["alue"], "K0"):
+                best[a["alue"]] = lvl
+        return best, seen - set(best)
 
     def file_levels(self):
         if not hasattr(self, "_levels"):
@@ -1020,20 +1056,8 @@ class Site:
         changed = [c for c in changed.split("\n") if c]
         head = self.git.out("rev-parse", "--short", "HEAD") or "?"
         # current state per code area (C-14 registers, when they exist)
-        cur = {a["alue"]: a for a in alueet}
-        best = {}
-        stale = set()
-        for r in reviews:
-            a = cur.get(r.get("alue"))
-            if not a:
-                continue
-            lvl = r.get("syvyys", "K0")
-            if a.get("tiiviste") and r.get("tiiviste") and a["tiiviste"] != r["tiiviste"]:
-                stale.add(a["alue"])
-                continue
-            if lvl > best.get(a["alue"], "K0"):
-                best[a["alue"]] = lvl
-        k4 = sum(1 for v in best.values() if v >= "K4")
+        best, stale = self.review_state()
+        k4 =sum(1 for v in best.values() if v >= "K4")
         k5 = sum(1 for v in best.values() if v >= "K5")
         L = ["# Auditoinnin kattavuus ja rajoitteet", "",
              '!!! warning "Lähdeviite ei ole katselmointi"\n    Se, että lähdekoodikohtaan on viitattu jossakin auditoinnin '
@@ -1136,6 +1160,11 @@ class Site:
             L.append("| %s | %s | %s | %s | %s | %s | %d | %d | %d |" % (
                 w[0], self.transform(cell(w[1]), uri), w[2].strip(), w[3].strip(), w[4].strip(),
                 d["alueet"] if alueet else "–", d["k4"], d["k5"], d["vanha"]))
+        planned = {w[0] for w in wp}
+        for name in sorted(k for k in pk if k not in planned):
+            d = pk[name]
+            L.append("| %s | *paketti puuttuu suunnitelman taulukosta* | – | – | – | %d | %d | %d | %d |" % (
+                cell(name), d["alueet"], d["k4"], d["k5"], d["vanha"]))
         L += ["", ("Koodialueiden rekisteriä `rekisteri/koodialueet.csv` ei ole vielä tuotettu, joten katselmointia ei ole "
                    "aloitettu: yhtäkään aluetta ei ole kirjattu tasolle K4." if not alueet else
                    "Alueet: `rekisteri/koodialueet.csv`; katselmoinnit: `rekisteri/katselmoinnit.csv`."),
@@ -1229,7 +1258,7 @@ class Site:
                  self.rel(uri, "laatu/korjauskokonaisuudet/index.md"), self.rel(uri, "laatu/raportit/korjaussuunnitelma.md")), "",
              "## Nykytila", "", "| Vaihe | Tila | Päivitetty |", "|---|---|---|"]
         for r in self.phases():
-            if r["vaihe"] in ("C", "K", "C-14", "E", "D", "S"):
+            if r.get("taso") == "vaihe":
                 L.append("| %s %s | %s | %s |" % (r["vaihe"], cell(r["nimi"]), cell(r["tila"]), r["pvm"]))
         L += ["", "Kaikki vaiheet: [Eteneminen](%s)." % self.rel(uri, "laatu/eteneminen.md"), "",
               "## Havainnot", "",

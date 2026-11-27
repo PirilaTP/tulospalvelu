@@ -2,8 +2,9 @@
 
 Instructions for AI coding agents (Claude Code, Codex and others) working in this repository.
 Human contributors: see `CONTRIBUTING.md`. Build details: `CLAUDE.md` (sections "Build
-instructions" and "Architecture"). Published version of the knowledge base:
-https://pirilatp.github.io/tulospalvelu/ (sections "Kehittäjille" and "Ohjelmiston laatu").
+instructions" and "Architecture"). Published version of the knowledge base (once the site has been deployed):
+https://pirilatp.github.io/tulospalvelu/ (sections "Kehittäjille" and "Ohjelmiston laatu");
+build it locally as described in `docs-site/README.md`.
 
 ## Project in one paragraph
 
@@ -80,6 +81,7 @@ python -I doc/arkkitehtuuri/tyokalut/tarkista_auditointi.py .           # regist
 python -I doc/arkkitehtuuri/tyokalut/synteesi.py . <tmp_dir> --tarkista  # risk register and fix packages
 python -I doc/arkkitehtuuri/tyokalut/viitteet.py .                       # references against their revision
 python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . tarkista            # defect cards and handbook
+python -I doc/arkkitehtuuri/tyokalut/portaali.py .                       # build the local portal data (generated, not in git)
 python -I doc/arkkitehtuuri/tyokalut/portaali.py . --tarkista            # local portal data up to date
 node doc/arkkitehtuuri/tyokalut/portaali_testi.js                        # portal smoke test
 python -I doc/arkkitehtuuri/tyokalut/sivusto.py . --tarkista             # site mapping files and links
@@ -107,7 +109,9 @@ For a change to `TPsource/`:
 ## Agent definitions
 
 `.claude/agents/` holds the audit agents (architecture, build, defect and concurrency, encoding,
-documentation, independent verifier, expert). They are read-only except `doc-writer`, which
-writes only in `doc/arkkitehtuuri/`. Personal settings (`.claude/settings.local.json`) are never
+documentation, independent verifier, expert). All except `doc-writer` are instructed to be
+read-only, and `doc-writer` writes only in `doc/arkkitehtuuri/`; this is an instruction, not a
+technical limit, for the agents that have Bash. Only `pirila-expert` is restricted by its tool list
+(Read, Grep, Glob), and the `pirila-ask` launchers enforce that per process. Personal settings (`.claude/settings.local.json`) are never
 shared. Model choice used in the audit: Sonnet for inventories and writing, Opus for hard technical
 interpretation and independent review.

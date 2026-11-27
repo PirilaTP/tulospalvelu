@@ -85,8 +85,10 @@ Rekisterit pysyvät kanonisena lähteenä; GitHubin työkalut viittaavat niihin 
   avoin kysymys, se kirjataan `seuranta.md`:hen Q-numerolla ja keskusteluun linkki.
 - **Tunnisteet (labels).** Ehdotus: `havainto`, `tekninen-velka`, `korjauskokonaisuus`,
   `dokumentaatio`, `tietopohja`, `P1`–`P5`.
-- **Tietoturva.** Uusista, rekisterissä olemattomista tietoturvavioista ilmoitetaan omistajan
-  ohjeistamalla tavalla (omistajan päätös OP-1); älä julkaise hyödyntämisohjeita.
+- **Tietoturva.** Älä julkaise hyödyntämisohjeita äläkä avaa julkista issueta uudesta, rekisterissä
+  olemattomasta tietoturvaviasta. Ilmoita siitä ensin yksityisesti repositorion ylläpitäjälle.
+  Pysyvä ilmoituskanava (esim. GitHubin yksityinen haavoittuvuusilmoitus) on vielä päättämättä;
+  se kuuluu omistajan päätökseen OP-1 (`doc/arkkitehtuuri/omistajan-paatokset.md`).
 
 ## English summary
 

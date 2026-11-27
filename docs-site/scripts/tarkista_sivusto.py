@@ -136,6 +136,9 @@ def main(argv):
                 if not os.path.exists(full):
                     report(src, "missing target %s" % link)
                     continue
+                if target.endswith(".html") and target not in pages:
+                    report(src, "target differs in letter case (fails on a case-sensitive server): %s" % link)
+                    continue
             stats["sisainen"] += 1
             if anchor and target.endswith(".html") and not anchor.startswith("/"):
                 tp = pages.get(target)

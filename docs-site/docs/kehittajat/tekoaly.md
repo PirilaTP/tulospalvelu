@@ -41,8 +41,9 @@ Auditoinnin agentit (`.claude/agents/`). Taulukko on luettu määrittelytiedosto
 
 <!-- tp:agentit -->
 
-Kaikki muut paitsi `doc-writer` ovat vain luku -agentteja; `doc-writer` kirjoittaa vain
-hakemistoon `doc/arkkitehtuuri/`. Auditoinnissa käytettiin Sonnetia inventointiin ja kirjoittamiseen
+Kaikki muut paitsi `doc-writer` on ohjeistettu toimimaan vain lukien, ja `doc-writer` kirjoittaa vain
+hakemistoon `doc/arkkitehtuuri/`. Bash-työkalun saaneilla agenteilla tämä on ohje eikä tekninen
+rajoitus; vain `pirila-expert` on rajattu työkaluluettelollaan (Read, Grep, Glob). Auditoinnissa käytettiin Sonnetia inventointiin ja kirjoittamiseen
 sekä Opusta vaikeaan tekniseen tulkintaan ja riippumattomaan tarkastukseen.
 
 ## Skillit

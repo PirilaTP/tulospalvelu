@@ -71,7 +71,8 @@ Lookup routes:
 
 ## 3. Areas the audit did not cover
 
-The audit did not review the whole code base: about 36 % of the lines were only inventoried, no
+The audit did not review the whole code base: a large share of the lines was only inventoried (the
+current figures are computed from `rekisteri/tiedostot.csv` and `todisteet/c14/lahtotaso/`), no
 production file was reviewed completely, and the number of findings is a lower bound
 (`auditoinnin-yhteenveto.md` sections 3, 4, 10). `rekisteri/tiedostot.csv` column `analyysitaso`
 tells per file: 1 = only inventoried, 2 = read in a targeted way, 3 = structure read.

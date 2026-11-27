@@ -4,13 +4,15 @@ name: Docs
 # - pull requests and pushes that touch the documentation: validate the knowledge base,
 #   build the site, check links, source links and the portal (no deployment);
 # - deployment to GitHub Pages only by a manual run ("Run workflow") on main with
-#   "julkaise" checked, through the github-pages environment.
+#   "julkaise" checked, through the github-pages environment, and only when owner decision
+#   OP-1 (publication of the audit material) is recorded as decided (julkaisulupa.py).
 
 on:
   pull_request:
     paths:
       - "docs-site/**"
       - "doc/**"
+      - "TPsource/**"
       - ".claude/agents/**"
       - ".claude/skills/**"
       - "AGENTS.md"
@@ -21,6 +23,7 @@ on:
     paths:
       - "docs-site/**"
       - "doc/**"
+      - "TPsource/**"
       - ".claude/agents/**"
       - ".claude/skills/**"
       - "AGENTS.md"
@@ -37,8 +40,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: docs-${{ github.ref }}
-  cancel-in-progress: true
+  group: docs-${{ github.ref }}-${{ github.event_name }}
+  # superseded pull request builds are cancelled; runs on main (and a deployment) never are
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
@@ -70,7 +74,16 @@ jobs:
         run: |
           python -I docs-site/scripts/tarkista_sivusto.py site --osoitteet docs-site/scripts/osoitteet.txt
           node doc/arkkitehtuuri/tyokalut/portaali_testi.js site/laatu/portaali/app
+      - name: Local portal (doc/tietopohja/portaali) still builds and works
+        run: |
+          python -I doc/arkkitehtuuri/tyokalut/portaali.py .
+          python -I doc/arkkitehtuuri/tyokalut/portaali.py . --tarkista
+          node doc/arkkitehtuuri/tyokalut/portaali_testi.js
+      - name: Publication gate (owner decision OP-1 must be recorded as decided)
+        if: github.event_name == 'workflow_dispatch' && inputs.julkaise
+        run: python -I docs-site/scripts/julkaisulupa.py .
       - name: Keep the built site for review
+        if: github.event_name != 'workflow_dispatch' || !inputs.julkaise
         uses: actions/upload-artifact@v4
         with:
           name: docs-site

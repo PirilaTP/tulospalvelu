@@ -1,21 +1,21 @@
-vaihe,nimi,tila,pvm,asiakirja,huomio
-K1,Kierros 1: koneellinen inventaario ja yleiskuva,valmis,2026-11-24,inventaario.md,havaintojen erä K1
-C-1,Tallennus ja rinnakkaisuus (kilptietue::tallenna),suljettu vaiheen C mukana,2026-11-26,tallenna-samanaikaisuus.md,
-C-2,Työasemien tiedonsiirto,suljettu vaiheen C mukana,2026-11-26,tiedonsiirto.md,
-C-3,Pysyvät tiedostot ja eheys,suljettu vaiheen C mukana,2026-11-26,tiedostomuodot.md,
-C-4,Muistiturvallisuus ja varoitusinventaario,suljettu,2026-11-25,muistiturvallisuus.md,
-C-5,Kääntäjäerot MSVC ja bcc32,suljettu,2026-11-25,kaantajaerot.md,
-C-6,Säikeet ja lukot,suljettu,2026-11-25,saikeet-ja-lukot.md,
-C-7,GUI:n liiketoimintalogiikka,suljettu,2026-11-25,gui-liiketoimintalogiikka.md,jatkotyöjono J7-1–J7-7
-C-8,Globaali muuttuva tila,suljettu,2026-11-26,globaali-tila.md,
-C-9,Virheenkäsittely ja resurssit,suljettu,2026-11-26,virheenkasittely.md,
-C-10,Riippuvuudet ja laiteyhteydet,suljettu,2026-11-26,riippuvuudet.md,
-C-11,Testausarkkitehtuuri ja vikojen todentaminen,valmis,2026-11-24,testaus.md,
-C-12,Ominaisuusvalitsimet ja asetukset,suljettu,2026-11-26,ominaisuusvalitsimet.md,
-C-13,Synteesi ja korjaussuunnitelma,suljettu,2026-11-26,auditoinnin-yhteenveto.md,
-C,Vaihe C: auditointi,suljettu,2026-11-26,auditoinnin-yhteenveto.md,koko lähdekoodia ei ole katselmoitu
-K,"Vaihe K: tietopohja (vikakortit, käsikirja, portaali, agentti)",toteutettu; odottaa käyttäjän tarkastusta,2026-11-27,k-vaihe-suunnitelma.md,
-C-14,Koko tuotantolähdekoodin katselmointi,lähtötaso mitattu; suunnitelma odottaa hyväksyntää; katselmointia ei aloitettu,2026-11-27,c14-suunnitelma.md,
-E,D-vaiheen ennakkotehtävät E-1–E-4,ei aloitettu,2026-11-26,korjaussuunnitelma.md,
-D,Vaihe D: korjaukset,ei aloitettu,2026-11-26,korjaussuunnitelma.md,vaatii erillisen luvan
-S,Tietopohjan liittäminen dokumentaatiosivustoon,toteutettu paikallisesti; julkaisu odottaa hyväksyntää,2026-11-27,,
+vaihe,taso,nimi,tila,pvm,asiakirja,huomio
+K1,era,Kierros 1: koneellinen inventaario ja yleiskuva,valmis,2026-11-24,inventaario.md,havaintojen erä K1
+C-1,era,Tallennus ja rinnakkaisuus (kilptietue::tallenna),suljettu vaiheen C mukana,2026-11-26,tallenna-samanaikaisuus.md,
+C-2,era,Työasemien tiedonsiirto,suljettu vaiheen C mukana,2026-11-26,tiedonsiirto.md,
+C-3,era,Pysyvät tiedostot ja eheys,suljettu vaiheen C mukana,2026-11-26,tiedostomuodot.md,
+C-4,era,Muistiturvallisuus ja varoitusinventaario,suljettu,2026-11-25,muistiturvallisuus.md,
+C-5,era,Kääntäjäerot MSVC ja bcc32,suljettu,2026-11-25,kaantajaerot.md,
+C-6,era,Säikeet ja lukot,suljettu,2026-11-25,saikeet-ja-lukot.md,
+C-7,era,GUI:n liiketoimintalogiikka,suljettu,2026-11-25,gui-liiketoimintalogiikka.md,jatkotyöjono J7-1–J7-7
+C-8,era,Globaali muuttuva tila,suljettu,2026-11-26,globaali-tila.md,
+C-9,era,Virheenkäsittely ja resurssit,suljettu,2026-11-26,virheenkasittely.md,
+C-10,era,Riippuvuudet ja laiteyhteydet,suljettu,2026-11-26,riippuvuudet.md,
+C-11,era,Testausarkkitehtuuri ja vikojen todentaminen,valmis,2026-11-24,testaus.md,
+C-12,era,Ominaisuusvalitsimet ja asetukset,suljettu,2026-11-26,ominaisuusvalitsimet.md,
+C-13,era,Synteesi ja korjaussuunnitelma,suljettu,2026-11-26,auditoinnin-yhteenveto.md,
+C,vaihe,Vaihe C: auditointi,suljettu,2026-11-26,auditoinnin-yhteenveto.md,koko lähdekoodia ei ole katselmoitu
+K,vaihe,"Vaihe K: tietopohja (vikakortit, käsikirja, portaali, agentti)",toteutettu; odottaa käyttäjän tarkastusta,2026-11-27,k-vaihe-suunnitelma.md,
+C-14,vaihe,Koko tuotantolähdekoodin katselmointi,lähtötaso mitattu; suunnitelma odottaa hyväksyntää; katselmointia ei aloitettu,2026-11-27,c14-suunnitelma.md,
+E,vaihe,D-vaiheen ennakkotehtävät E-1–E-4,ei aloitettu,2026-11-26,korjaussuunnitelma.md,
+D,vaihe,Vaihe D: korjaukset,ei aloitettu,2026-11-26,korjaussuunnitelma.md,vaatii erillisen luvan
+S,vaihe,Tietopohjan liittäminen dokumentaatiosivustoon,toteutettu paikallisesti; julkaisu edellyttää omistajan päätöstä OP-1,2026-11-27,,päivitetään julkaisun yhteydessä

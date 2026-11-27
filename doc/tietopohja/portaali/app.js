@@ -44,10 +44,14 @@
       var d = D.kattavuus[k]; lines += d.rivit; l1 += d.r1 || 0;
       if (k !== "Tests" && k !== "VS") { full += d["4"] || 0; }
     });
-    return { share1: lines ? Math.round(100 * l1 / lines) : 0, full: full };
+    var tot = (D.kattavuus_funktiot || []).filter(function (r) { return r.hakemisto === "YHTEENSA"; })[0];
+    var noref = tot && +tot.funktiorivit ? Math.round(100 * tot.ei_viitteita_r / tot.funktiorivit) : null;
+    return { share1: lines ? Math.round(100 * l1 / lines) : 0, full: full, noref: noref };
   })();
-  var COVERAGE = '<p class="coverage"><strong>Kattavuusrajoite:</strong> auditointi ei kata koko lähdekoodia – ' + COV.share1 + " % " +
-    "riveistä on vain inventoitu, kokonaan katselmoituja tuotantotiedostoja on " + COV.full + ", ja havaintojen määrä on alaraja. " +
+  var COVERAGE = '<p class="coverage"><strong>Kattavuusrajoite:</strong> auditointi ei kata koko lähdekoodia. ' +
+    (COV.noref !== null ? "Tunnistetuista funktioriveistä " + COV.noref + " % on sellaisia, joihin ei ole viitattu yhdessäkään auditoinnin asiakirjassa, ja " : "") +
+    COV.share1 + " % kaikista lähdekoodiriveistä on tiedostoissa, jotka on vain inventoitu. Viitattukaan koodi ei ole katselmoitu: " +
+    "kokonaan katselmoituja tuotantotiedostoja on " + COV.full + ". Havaintojen määrä on alaraja. " +
     'Kortin puuttuminen ei tarkoita, että toiminto on virheetön. <a href="#/kattavuus">Kattavuus</a></p>';
   var SITE = D.meta.sivusto || "";
 
@@ -235,7 +239,7 @@
     return s;
   }
   function viewQuestions() {
-    var s = "<h1>Avoimet kysymykset</h1><p class=\"note\">Lähde: <code>seuranta.md</code> (Q1–Q112). Tila on koneellisesti luettu taulukosta; tarkista epäselvät seuranta.md:stä.</p>";
+    var s = "<h1>Avoimet kysymykset</h1><p class=\"note\">Lähde: <code>seuranta.md</code> (" + esc(D.kysymykset.length ? D.kysymykset[0].q + "–" + D.kysymykset[D.kysymykset.length - 1].q : "") + "). Tila on koneellisesti luettu taulukosta; tarkista epäselvät seuranta.md:stä.</p>";
     var st = count(D.kysymykset, function (q) { return q.tila; });
     s += "<p>" + Object.keys(st).map(function (k) { return esc(k) + " " + st[k]; }).join(" · ") + "</p>";
     s += "<table><thead><tr><th>Q</th><th>Tila</th><th>Kuvaus</th></tr></thead><tbody>";
