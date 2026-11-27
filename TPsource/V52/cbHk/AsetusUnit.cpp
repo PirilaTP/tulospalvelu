@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "HkDeclare.h"
 #include "AsetusUnit.h"
@@ -28,6 +29,7 @@ TAsetusForm *AsetusForm;
 __fastcall TAsetusForm::TAsetusForm(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

@@ -251,7 +251,7 @@ object TakaaAjoForm: TTakaaAjoForm
   object Label5: TLabel
     Left = 436
     Top = 81
-    Width = 49
+    Width = 80
     Height = 30
     Caption = 'L'#228'ht'#246'v'#228'li lopuille'
     Font.Charset = DEFAULT_CHARSET
@@ -309,7 +309,7 @@ object TakaaAjoForm: TTakaaAjoForm
   object Label11: TLabel
     Left = 436
     Top = 143
-    Width = 53
+    Width = 80
     Height = 30
     Caption = 'Aaltokoko lopuille'
     Font.Charset = DEFAULT_CHARSET

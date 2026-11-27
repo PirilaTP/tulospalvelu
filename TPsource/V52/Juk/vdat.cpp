@@ -25,6 +25,7 @@
 #include <malloc.h>
 #include <bstrings.h>
 #pragma hdrstop
+#include "Kielet.h"
 #include <dos.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -629,7 +630,7 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
 							if (os != os1 &&
 								kilp.ostiet[os].badge[ibdg] == kilp.ostiet[os1].badge[ibdg])
 								{
-								writeerror("Sama Emit-koodi kahdella osuudella.", 0);
+								writeerror(TRA("Sama Emit-koodi kahdella osuudella."), 0);
 								}
 							}
 						}
@@ -669,7 +670,7 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
 							if (ebadge[ibdg])
 								addbadge(ebadge[ibdg], kilp.kilpno, d, ibdg, kysyfl);
 							if (kysyfl)
-								writeerror("Muutos peruutettu", 0);
+								writeerror(TRA("Muutos peruutettu"), 0);
 							}
 						else if (ep >= 0)
 							{
@@ -701,7 +702,7 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
 						ekilp->kilpno, d, ibdg, kysyfl)) {
 						ekilp->ostiet[os].badge[ibdg] = ebadge[ibdg];
 						addbadge(ebadge[ibdg], kilp.kilpno, d, ibdg,  kysyfl);
-						if (kysyfl) writeerror("Muutos peruutettu", 0);
+						if (kysyfl) writeerror(TRA("Muutos peruutettu"), 0);
 						}
 					 }
 				  }
@@ -722,7 +723,7 @@ void tallenna(kilptietue *ekilp, int d, int comtarfl, int kielto,
 						ekilp->kilpno, d, 0, kysyfl)) {
 						ekilp->ostiet[os].badge[ibdg] = ebadge[ibdg];
 						addbadge(ebadge[ibdg], kilp.kilpno, d, ibdg, kysyfl);
-						if (kysyfl) writeerror("Muutos peruutettu", 0);
+						if (kysyfl) writeerror(TRA("Muutos peruutettu"), 0);
 						}
 					 }
 				  }
@@ -879,7 +880,7 @@ void addtall(kilptietue *kilp, int *dataf, int kielto)
 			 if (kilp->ostiet[os].badge[ibdg]) {
 				if (addbadge(kilp->ostiet[os].badge[ibdg],
 				   kilp->kilpno, uusiPos, ibdg, 1)) {
-				   sprintf(msg,"Emit-koodi %ld jo käytössä. Koodia ei tallennettu",
+				   sprintf(msg,TRA("Emit-koodi %ld jo käytössä. Koodia ei tallennettu"),
 					  kilp->ostiet[os].badge[ibdg]);
 				   kilp->ostiet[os].badge[ibdg] = 0;
 				   writeerror(msg, 0);

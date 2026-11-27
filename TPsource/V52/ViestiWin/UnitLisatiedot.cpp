@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitLisatiedot.h"
 #include "UnitMain.h"
@@ -37,6 +38,7 @@ static int KopioTunnus = 11;
 __fastcall TFormLisatiedot::TFormLisatiedot(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 }
 typedef struct {
 	char in[MAXKEYPIT+1];
@@ -87,8 +89,8 @@ void __fastcall TFormLisatiedot::SiirraTiedot(bool sellaisinaan)
 	TietoSar = EditTieto->Text.ToInt();
 	Ehtolaji = RGEhto->ItemIndex;
 	if (!sellaisinaan && TietoPv == -1 && Tieto == PohjTunnus) {
-		if (Application->MessageBoxW(L"T‰ss‰ valinnassa siirret‰‰n ensimm‰inen hajontakoodi jokaiselle osuudelle. Jatketaanko?",
-			L"Varoitus", MB_YESNO) != IDYES)
+		if (Application->MessageBoxW(TR(L"T‰ss‰ valinnassa siirret‰‰n ensimm‰inen hajontakoodi jokaiselle osuudelle. Jatketaanko?"),
+			TR(L"Varoitus"), MB_YESNO) != IDYES)
 			return;
 		}
 	switch (Ehtolaji) {
@@ -111,22 +113,22 @@ void __fastcall TFormLisatiedot::SiirraTiedot(bool sellaisinaan)
 		vpv = epv;
 		}
 	if (TunnSar <= 0 || TietoSar <= 0 || TunnSar == TietoSar) {
-		Application->MessageBoxW(L"M‰‰rittele sarakkeet", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"M‰‰rittele sarakkeet"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (Tunniste < 0 || Tieto < 0) {
-		Application->MessageBoxW(L"Valitse molemmat kent‰t", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse molemmat kent‰t"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (Tunniste == 5 || Tunniste == 6 || Tunniste == 8 || Tunniste == 9) {
 		if (TunnPv < 0 && TietoPv < 0) {
-			if (Application->MessageBoxW(L"Toimenpide kohdistetaan jokaiseen osuuteen vuorollaan. Toteutetaanko?",
-				L"Varoitus", MB_YESNO) != IDYES)
+			if (Application->MessageBoxW(TR(L"Toimenpide kohdistetaan jokaiseen osuuteen vuorollaan. Toteutetaanko?"),
+				TR(L"Varoitus"), MB_YESNO) != IDYES)
 				return;
 			TunnPvY = kilpparam.osuusluku - 1;
 			}
 		else if (TunnPv < 0) {
-			Application->MessageBoxW(L"Mahdoton yhdistelm‰", L"Virhe", MB_OK);
+			Application->MessageBoxW(TR(L"Mahdoton yhdistelm‰"), TR(L"Virhe"), MB_OK);
 			return;
 			}
 		else {
@@ -135,7 +137,7 @@ void __fastcall TFormLisatiedot::SiirraTiedot(bool sellaisinaan)
 			}
 		}
 	if (Tunniste > 1 && Tunniste < 4 && Tieto == 0) {
-		Application->MessageBoxW(L"Mahdoton yhdistelm‰", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Mahdoton yhdistelm‰"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	switch (Tunniste) {
@@ -210,7 +212,7 @@ void __fastcall TFormLisatiedot::SiirraTiedot(bool sellaisinaan)
 						nrv++;
 					}
 				if (nrv == 0) {
-					Application->MessageBoxW(L"Ei siirret‰v‰‰ tietoa", L"Virhe", MB_OK);
+					Application->MessageBoxW(TR(L"Ei siirret‰v‰‰ tietoa"), TR(L"Virhe"), MB_OK);
 					delete InFile;
 					return;
 					}
@@ -335,7 +337,7 @@ void __fastcall TFormLisatiedot::SiirraTiedot(bool sellaisinaan)
 					}
 				}
 			else {
-				Application->MessageBoxW(L"Tiedoston avaaminen ei onnistunut", L"Este", MB_OK);
+				Application->MessageBoxW(TR(L"Tiedoston avaaminen ei onnistunut"), TR(L"Este"), MB_OK);
 				}
 			delete InFile;
 			}
@@ -596,11 +598,11 @@ void __fastcall TFormLisatiedot::SiirraTiedot(bool sellaisinaan)
 	kirjheti = kirjheti0;
 	LeaveCriticalSection(&tall_CriticalSection);
 	if (err)
-		Application->MessageBoxW(L"Tietojen siirto keskeytyi virheelliseen tietoon (esim. liian pitk‰ merkkijono)",
-			L"Virhe", MB_OK);
-	Application->MessageBoxW((UnicodeString(L"K‰sitelty ")+UnicodeString(nrv)+
-		L" siirto-ohjetta, siirretty "+UnicodeString(nsiirr)+L" tietoa").c_str(),
-		L"Valmis", MB_OK);
+		Application->MessageBoxW(TR(L"Tietojen siirto keskeytyi virheelliseen tietoon (esim. liian pitk‰ merkkijono)"),
+			TR(L"Virhe"), MB_OK);
+	Application->MessageBoxW((UnicodeString(TR(L"K‰sitelty "))+UnicodeString(nrv)+
+		TR(L" siirto-ohjetta, siirretty ")+UnicodeString(nsiirr)+TR(L" tietoa")).c_str(),
+		TR(L"Valmis"), MB_OK);
 	if (nton)
 		delete[] nton;
 	if (ntos)
@@ -643,11 +645,11 @@ void __fastcall TFormLisatiedot::FormShow(TObject *Sender)
 {
 	CBTunnPv->Clear();
 	CBTietoPv->Clear();
-	CBTunnPv->Items->Add(L"Kaikki vuorollan");
-	CBTietoPv->Items->Add(L"Kaikki");
+	CBTunnPv->Items->Add(TR(L"Kaikki vuorollan"));
+	CBTietoPv->Items->Add(TR(L"Kaikki"));
 	for (int i = 0;i < kilpparam.osuusluku; i++) {
-	   CBTunnPv->Items->Add(UnicodeString(i+1)+L". osuus");
-	   CBTietoPv->Items->Add(UnicodeString(i+1)+L". osuus");
+	   CBTunnPv->Items->Add(UnicodeString(i+1)+TR(L". osuus"));
+	   CBTietoPv->Items->Add(UnicodeString(i+1)+TR(L". osuus"));
 	   }
 	CBTunnPv->ItemIndex = 0;
 	CBTietoPv->ItemIndex = 0;
@@ -666,7 +668,7 @@ void __fastcall TFormLisatiedot::Button3Click(TObject *Sender)
 	Sleep(10);
 	Tunniste = RGTunniste->ItemIndex;
 	if (Tunniste == RGTunniste->Items->Count-1) {
-		Application->MessageBoxW(L"Pohjustus ei mahdollinen tiedostoon kirjoitettaessa" , L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Pohjustus ei mahdollinen tiedostoon kirjoitettaessa") , TR(L"Virhe"), MB_OK);
 		}
 	Tieto = RGTieto->ItemIndex;
 	TunnPv = CBTunnPv->ItemIndex - 1;
@@ -689,17 +691,17 @@ void __fastcall TFormLisatiedot::Button3Click(TObject *Sender)
 		vpv = epv;
 		}
 	if (Tunniste < 0 || Tieto < 0) {
-		Application->MessageBoxW(L"Valitse molemmat kent‰t", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse molemmat kent‰t"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 	if (Tunniste == 5 || Tunniste == 6 || Tunniste == 8 || Tunniste == 9) {
 		if (TunnPv < 0 && TietoPv >= 0) {
-			Application->MessageBoxW(L"Valitse tunnistavan tiedon osuus", L"Virhe", MB_OK);
+			Application->MessageBoxW(TR(L"Valitse tunnistavan tiedon osuus"), TR(L"Virhe"), MB_OK);
 			return;
 			}
 		else if (TunnPv < 0) {
-			Application->MessageBoxW(L"Jokaiselle riville kirjoitetaan toiseen sarakkeeseen osuuden numero",
-				L"Varoitus", MB_OK);
+			Application->MessageBoxW(TR(L"Jokaiselle riville kirjoitetaan toiseen sarakkeeseen osuuden numero"),
+				TR(L"Varoitus"), MB_OK);
 			TunnPvY = kilpparam.osuusluku - 1;
 			}
 		else {
@@ -708,7 +710,7 @@ void __fastcall TFormLisatiedot::Button3Click(TObject *Sender)
 			}
 		}
 	if (Tunniste > 1 && Tunniste < 4 && Tieto == 0) {
-		Application->MessageBoxW(L"Mahdoton yhdistelm‰", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Mahdoton yhdistelm‰"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 
@@ -911,11 +913,11 @@ void __fastcall TFormLisatiedot::Button3Click(TObject *Sender)
 				}
 			}
 		else {
-			Application->MessageBoxW(L"Tiedoston avaaminen ei onnistunut", L"Este", MB_OK);
+			Application->MessageBoxW(TR(L"Tiedoston avaaminen ei onnistunut"), TR(L"Este"), MB_OK);
 			}
 		delete OutFile;
-		Application->MessageBoxW(UnicodeString(L"Siirretty "+UnicodeString(nsiirr)+L" tietoa").c_str(),
-			L"Valmis", MB_OK);
+		Application->MessageBoxW(UnicodeString(TR(L"Siirretty ")+UnicodeString(nsiirr)+TR(L" tietoa")).c_str(),
+			TR(L"Valmis"), MB_OK);
 		}
 }
 
@@ -934,7 +936,7 @@ void __fastcall TFormLisatiedot::KopioiTiedot(void)
 	TietoPv = CBTietoPv->ItemIndex - 1;
 	Ehtolaji = RGEhto->ItemIndex;
 	if (TunnPv < 0) {
-		Application->MessageBoxW(L"Valitse kopioitavan tiedon osuus", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse kopioitavan tiedon osuus"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 
@@ -954,7 +956,7 @@ void __fastcall TFormLisatiedot::KopioiTiedot(void)
 		vpv = epv;
 		}
 	if (Tieto < 0) {
-		Application->MessageBoxW(L"Valitse kopioitava tieto", L"Virhe", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse kopioitava tieto"), TR(L"Virhe"), MB_OK);
 		return;
 		}
 
@@ -1030,11 +1032,11 @@ void __fastcall TFormLisatiedot::KopioiTiedot(void)
 				case 12:
 				case 13:
 				case 15:
-					Application->MessageBoxW(L"Siirr‰ nimi muodossa 'Sukunimi Etunimi'", L"Este", MB_OK);
+					Application->MessageBoxW(TR(L"Siirr‰ nimi muodossa 'Sukunimi Etunimi'"), TR(L"Este"), MB_OK);
 					d = 9999999;
 				   break;
 				default :
-					Application->MessageBoxW(L"Tieto ei ole osuuskohtainen", L"Este", MB_OK);
+					Application->MessageBoxW(TR(L"Tieto ei ole osuuskohtainen"), TR(L"Este"), MB_OK);
 					d = 9999999;
 				}
 			if (d >= datf2.numrec)
@@ -1050,8 +1052,8 @@ void __fastcall TFormLisatiedot::KopioiTiedot(void)
 		}
 	kirjheti = kirjheti0;
 	LeaveCriticalSection(&tall_CriticalSection);
-	Application->MessageBoxW(UnicodeString(L"Siirretty "+UnicodeString(nsiirr)+L" tietoa").c_str(),
-		L"Valmis", MB_OK);
+	Application->MessageBoxW(UnicodeString(TR(L"Siirretty ")+UnicodeString(nsiirr)+TR(L" tietoa")).c_str(),
+		TR(L"Valmis"), MB_OK);
 }
 
 //---------------------------------------------------------------------------
@@ -1061,9 +1063,9 @@ void __fastcall TFormLisatiedot::RGTunnisteClick(TObject *Sender)
 	GroupBox1->Visible = L"01111122122P2"[RGTunniste->ItemIndex+1] == L'2';
 	GroupBox4->Visible = L"01111122122P2"[RGTunniste->ItemIndex+1] == L'P';
 	if (RGTunniste->ItemIndex == KopioTunnus)
-		GroupBox1->Caption = L" Kopioitavan tiedon osuus ";
+		GroupBox1->Caption = TR(L" Kopioitavan tiedon osuus ");
 	else
-		GroupBox1->Caption = L" Tunnistavan tiedon osuus ";
+		GroupBox1->Caption = TR(L" Tunnistavan tiedon osuus ");
 	GroupBox3->Visible = !GroupBox4->Visible;
 	Button3->Visible = !GroupBox4->Visible;
 }

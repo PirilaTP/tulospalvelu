@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitVaToisto.h"
 //---------------------------------------------------------------------------
@@ -27,6 +28,7 @@ TFormVaToisto *FormVaToisto;
 __fastcall TFormVaToisto::TFormVaToisto(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

@@ -20,6 +20,7 @@
 #include "VDeclare.h"
 #endif
 #include "VRinnakkaisOsuus.h"
+#include "Kielet.h"
 
 // Onko joukkueen paikalla os kilpailija (nimi, Emit-koodi tai aika), ks. PaikkaKaytossa
 static bool paikkaKaytossa(kilptietue *kilp, int os, int va)
@@ -1188,45 +1189,23 @@ wchar_t *kilptietue::TarkStr(int osuus, bool naytasulj /* = false */, int lang /
 				}
 			}
 		}
-	if (lang == 0) {
-		switch (kh) {
-			case L'T' :
-				return(L"Tark.");
-			case L'H' :
-				return(L"Hyl.");
-			case L'I' :
-				return(L"H-esit.");
-			case L'K' :
-				return(L"Kesk.");
-			case L'E' :
-				return(L"Ei läht.");
-			case L'P' :
-				return(L"Poissa");
-			case L'S' :
-				return(L"Sulj.");
-			default:
-				return(L"Avoinna");
-			}
-		}
-	else {
-		switch (kh) {
-			case L'T' :
-				return(L"OK");
-			case L'H' :
-				return(L"DQ");
-			case L'I' :
-				return(L"Recheck");
-			case L'K' :
-				return(L"DNF");
-			case L'E' :
-				return(L"DNS");
-			case L'P' :
-				return(L"Absent");
-			case L'S' :
-				return(L"Closed");
-			default:
-				return(L"Open");
-			}
+	switch (kh) {
+		case L'T' :
+			return(TRL(lang, L"Tark."));
+		case L'H' :
+			return(TRL(lang, L"Hyl."));
+		case L'I' :
+			return(TRL(lang, L"H-esit."));
+		case L'K' :
+			return(TRL(lang, L"Kesk."));
+		case L'E' :
+			return(TRL(lang, L"Ei läht."));
+		case L'P' :
+			return(TRL(lang, L"Poissa"));
+		case L'S' :
+			return(TRL(lang, L"Sulj."));
+		default:
+			return(TRL(lang, L"Avoinna"));
 		}
 }
 
@@ -1260,45 +1239,23 @@ wchar_t *kilptietue::tTarkStr(int osuus, int lang /* = 0 */)
 			kh = L'S';
 			}
 		}
-	if (lang == 0) {
-		switch (kh) {
-			case L'T' :
-				return(L"Tark.");
-			case L'H' :
-				return(L"Hyl.");
-			case L'I' :
-				return(L"H-esit.");
-			case L'K' :
-				return(L"Kesk.");
-			case L'E' :
-				return(L"Ei läht.");
-			case L'P' :
-				return(L"Poissa");
-			case L'S' :
-				return(L"Sulj.");
-			default:
-				return(L"Avoinna");
-			}
-		}
-	else {
-		switch (kh) {
-			case L'T' :
-				return(L"OK");
-			case L'H' :
-				return(L"DQ");
-			case L'I' :
-				return(L"Recheck");
-			case L'K' :
-				return(L"DNF");
-			case L'E' :
-				return(L"DNS");
-			case L'P' :
-				return(L"Absent");
-			case L'S' :
-				return(L"Closed");
-			default:
-				return(L"Open");
-			}
+	switch (kh) {
+		case L'T' :
+			return(TRL(lang, L"Tark."));
+		case L'H' :
+			return(TRL(lang, L"Hyl."));
+		case L'I' :
+			return(TRL(lang, L"H-esit."));
+		case L'K' :
+			return(TRL(lang, L"Kesk."));
+		case L'E' :
+			return(TRL(lang, L"Ei läht."));
+		case L'P' :
+			return(TRL(lang, L"Poissa"));
+		case L'S' :
+			return(TRL(lang, L"Sulj."));
+		default:
+			return(TRL(lang, L"Avoinna"));
 		}
 }
 

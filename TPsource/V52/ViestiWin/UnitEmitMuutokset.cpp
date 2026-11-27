@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitEmitMuutokset.h"
 #include "UnitEmit.h"
@@ -30,14 +31,15 @@ TFormEmitMuutokset *FormEmitMuutokset;
 __fastcall TFormEmitMuutokset::TFormEmitMuutokset(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
 		}
 	CBOsuus->Items->Clear();
-	CBOsuus->Items->Add(L"Ei valittu");
+	CBOsuus->Items->Add(TR(L"Ei valittu"));
 	for (int os = 1; os <= kilpparam.osuusluku; os++)
-		CBOsuus->Items->Add(UnicodeString(os)+L". osuus");
+		CBOsuus->Items->Add(UnicodeString(os)+TR(L". osuus"));
 	CBOsuus->ItemIndex = 0;
 }
 //---------------------------------------------------------------------------
@@ -50,8 +52,8 @@ void __fastcall TFormEmitMuutokset::BtnPeruutaClick(TObject *Sender)
 void __fastcall TFormEmitMuutokset::BtnTallennaClick(TObject *Sender)
 {
 	if (joTiedot) {
-		if (Application->MessageBoxW(L"Tallentaminen valitulle kilpailijalle johtaa aeimmin kirjattujen tietojen menettämiseen."
-			L" Haluatko aivan varmasti tallentaa?", L"Varoitus", MB_YESNO) != IDYES) {
+		if (Application->MessageBoxW(TR(L"Tallentaminen valitulle kilpailijalle johtaa aeimmin kirjattujen tietojen menettämiseen."
+			L" Haluatko aivan varmasti tallentaa?"), TR(L"Varoitus"), MB_YESNO) != IDYES) {
 			return;
 			}
 		}
@@ -73,8 +75,8 @@ void __fastcall TFormEmitMuutokset::naytaMemoOhje(bool nayta)
 {
 	if (nayta) {
 		MemoOhje->Lines->Clear();
-		MemoOhje->Lines->Text = L"Tällä kaavakkeella annetaan kilpailijan numero, kun kortti "
-			L"on viallinen tai väärä. Näytetty numero on vaihdettava.";
+		MemoOhje->Lines->Text = TR(L"Tällä kaavakkeella annetaan kilpailijan numero, kun kortti "
+			L"on viallinen tai väärä. Näytetty numero on vaihdettava.");
 		MemoOhje->Color = clYellow;
 		}
 	else {
@@ -91,7 +93,7 @@ void __fastcall TFormEmitMuutokset::EdtKilpnoExit(TObject *Sender)
 	EdtKilpno->Text = kno;
 	DKilp = getpos(kno);
 	if (kno > 0 && DKilp <= 0) {
-		Application->MessageBoxW(L"Kilpailunumero ei käytössä", L"", MB_OK);
+		Application->MessageBoxW(TR(L"Kilpailunumero ei käytössä"), L"", MB_OK);
 		return;
 		}
 	Nayta(DKilp, CBOsuus->ItemIndex-1);
@@ -127,20 +129,20 @@ void __fastcall TFormEmitMuutokset::Nayta(int d, int osuus)
 			joTiedot = true;
 			if (((kilp.ostiet[osuus].badge[0] - FormEmit->Em.badge0) % BADGEASKEL) == 0) {
 				MemoOhje->Lines->Clear();
-				MemoOhje->Lines->Text = L"Kortti jo luettu samalle osuudelle. Valitse toinen osuus tai merkitse"
-					L" ohitetuksi.";
+				MemoOhje->Lines->Text = TR(L"Kortti jo luettu samalle osuudelle. Valitse toinen osuus tai merkitse"
+					L" ohitetuksi.");
 				MemoOhje->Color = clFuchsia;
 				}
 			else {
 				MemoOhje->Lines->Clear();
-				MemoOhje->Lines->Text = L"Kilpailijalle jo luettu Emit-tiedot. Yhteys aiempiin "
-					L"tietoihin menetetään tallennettaessa.";
+				MemoOhje->Lines->Text = TR(L"Kilpailijalle jo luettu Emit-tiedot. Yhteys aiempiin "
+					L"tietoihin menetetään tallennettaessa.");
 				MemoOhje->Color = clFuchsia;
 				}
 			}
 		else {
 			MemoOhje->Lines->Clear();
-			MemoOhje->Lines->Text = L"Ei esteitä tietojen valitulle kilpailijalle tallentamiselle.";
+			MemoOhje->Lines->Text = TR(L"Ei esteitä tietojen valitulle kilpailijalle tallentamiselle.");
 			MemoOhje->Color = clWindow;
 			}
 		}
@@ -276,7 +278,7 @@ void __fastcall TFormEmitMuutokset::BtnVaihdaClick(TObject *Sender)
 {
 int d;
 
-	if (Application->MessageBoxW(L"Tietojen vaihto toteutetaan ilman lisävahvistusta. Jatka", L"Vahvista", MB_YESNO) == IDYES) {
+	if (Application->MessageBoxW(TR(L"Tietojen vaihto toteutetaan ilman lisävahvistusta. Jatka"), TR(L"Vahvista"), MB_YESNO) == IDYES) {
 		d = getpos(_wtoi(EdtKilpno->Text.c_str()));
 		FormEmit->TallennaVaihto(d, CBOsuus->ItemIndex-1);
 		}
@@ -322,8 +324,8 @@ void __fastcall TFormEmitMuutokset::FormShow(TObject *Sender)
 		BtnVaihda->Visible = false;
 		MemoOhje->Visible = true;
 		MemoOhje->Lines->Clear();
-		MemoOhje->Lines->Text = L"Kortti viallinen tai tunnistamaton. Anna joukkueen numero ja"
-			L" kilpailijan osuus.";
+		MemoOhje->Lines->Text = TR(L"Kortti viallinen tai tunnistamaton. Anna joukkueen numero ja"
+			L" kilpailijan osuus.");
 //		MemoOhje->Lines->Add(L"Kortti viallinen tai tunnistamaton");
 //		MemoOhje->Lines->Add(L"Anna joukkueen nimero ja");
 //		MemoOhje->Lines->Add(L"kilpailijan osuus.");

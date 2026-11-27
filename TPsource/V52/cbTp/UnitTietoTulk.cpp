@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitTietoTulk.h"
 //---------------------------------------------------------------------------
@@ -32,6 +33,7 @@ wchar_t *wcstokch(wchar_t *st, wchar_t erotin);
 __fastcall TFormTietoTulk::TFormTietoTulk(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -114,7 +116,7 @@ void __fastcall TFormTietoTulk::Button1Click(TObject *Sender)
 	r1 = CBOtsRivi->Checked ? 3 : 2;
 	SG1->RowCount = max(r, r1);
 	SG1->FixedRows = r1 - 1;
-	SG1->Cells[0][0] = L"Rivi";
+	SG1->Cells[0][0] = TR(L"Rivi");
 	for (int c = 1; c < SG1->ColCount; c++) {
 		SG1->Cells[c][0] = c;
 		}

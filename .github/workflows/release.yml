@@ -128,6 +128,8 @@ jobs:
             if (-not (Test-Path "staging\gui\$exe")) { throw "GUI program missing from build output: $exe" }
           }
           Copy-Item staging\gui\* "$packageDir\gui" -Recurse
+          # Käännökset (en.po, sv.po) on upotettu ohjelmiin (TPsource/V52/kielet/kielet.rc),
+          # erillistä kielet-hakemistoa ei tarvita.
 
           Copy-Item LICENSE $packageDir
           Copy-Item README.md $packageDir

@@ -84,7 +84,7 @@ void wperr(LPWSTR szFileName, int line, LPWSTR szApiName, DWORD dwError)
 	wcscat(szTemp, msgBuf);
   wcscat(szTemp, L"\n\nContinue execution?");
   MessageBeep(MB_ICONEXCLAMATION);
-  iButtonPressed = MessageBoxW(NULL, szTemp, L"Console API Error",
+  iButtonPressed = MessageBoxW(NULL, szTemp, TR(L"Console API Error"),
 	  MB_ICONEXCLAMATION | MB_YESNO | MB_SETFOREGROUND);
   /* free the message buffer returned to us by the system */
   if (cMsgLen)

@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include <time.h>
 #include "UnitKilpMaaritys.h"
@@ -38,6 +39,7 @@ static wchar_t YhtTlsLaji[] = L"SLPV";
 __fastcall TFormKilpMaaritys::TFormKilpMaaritys(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -48,8 +50,8 @@ __fastcall TFormKilpMaaritys::TFormKilpMaaritys(TComponent* Owner)
 	CBVaihe[2] = CBVaihe3;
 	CBVaihe[3] = CBVaihe4;
 	CBVaihe[4] = CBVaihe5;
-	Label3->Caption = L"Vaiheiden tilavaraus (version max. "+UnicodeString(N_PV)+L")";
-	Label4->Caption = L"V‰liaikojen tilavaraus (version max. "+UnicodeString(VALUKU)+L")";
+	Label3->Caption = TR(L"Vaiheiden tilavaraus (version max. ")+UnicodeString(N_PV)+L")";
+	Label4->Caption = TR(L"V‰liaikojen tilavaraus (version max. ")+UnicodeString(VALUKU)+L")";
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormKilpMaaritys::ButtonOKClick(TObject *Sender)
@@ -229,7 +231,7 @@ void __fastcall TFormKilpMaaritys::BtnLueSrjClick(TObject *Sender)
 {
 	OpenDialog1->FileName = UnicodeString(L"KilpSrj.xml");
 	OpenDialog1->DefaultExt = L"xml";
-	OpenDialog1->Filter = L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		lueEventXml(OpenDialog1->FileName.c_str(), true, false, false);
 		orig_n_pv = kilpparam.n_pv_akt;
@@ -255,19 +257,19 @@ void __fastcall TFormKilpMaaritys::EditTiedPvExit(TObject *Sender)
 
 	n = _wtoi(EditTiedPv->Text.c_str());
 	if (ToimintaTila > 0 && n != kilpparam.n_pv) {
-		Application->MessageBox(L"Vaiheiden tilavarausta ei voi muuttaa, kun kilpailijatiedot on jo luotu",
-			L"Rajoitus", MB_OK);
+		Application->MessageBox(TR(L"Vaiheiden tilavarausta ei voi muuttaa, kun kilpailijatiedot on jo luotu"),
+			TR(L"Rajoitus"), MB_OK);
 		EditTiedPv->Text = kilpparam.n_pv;
 		}
 	else if (n < 1 || n > N_PV) {
-		Application->MessageBox(L"Vaiheiden tilavaraus ei sallitulla alueella", L"Virhe",
+		Application->MessageBox(TR(L"Vaiheiden tilavaraus ei sallitulla alueella"), TR(L"Virhe"),
 			MB_OK);
 		EditTiedPv->Text = kilpparam.n_pv;
 		}
 	else {
 		if (_wtoi(EditPv->Text.c_str()) > n) {
-			Application->MessageBoxW((L"Kilpailun aktiivisten vaiheiden lukum‰‰r‰ksi asetettu "+UnicodeString(n)).c_str(),
-				L"Muutos", MB_OK);
+			Application->MessageBoxW((TR(L"Kilpailun aktiivisten vaiheiden lukum‰‰r‰ksi asetettu ")+UnicodeString(n)).c_str(),
+				TR(L"Muutos"), MB_OK);
 			}
 		EditPv->Text = n;
 		}
@@ -280,12 +282,12 @@ void __fastcall TFormKilpMaaritys::EditTiedVaExit(TObject *Sender)
 
 	n = _wtoi(EditTiedVa->Text.c_str());
 	if (ToimintaTila > 0 && n != kilpparam.valuku) {
-		Application->MessageBox(L"Vaiheiden tilavarausta ei voi muuttaa, kun kilpailijatiedot on jo luotu",
-			L"Rajoitus", MB_OK);
+		Application->MessageBox(TR(L"Vaiheiden tilavarausta ei voi muuttaa, kun kilpailijatiedot on jo luotu"),
+			TR(L"Rajoitus"), MB_OK);
 		EditTiedVa->Text = kilpparam.valuku;
 		}
 	if (n < 1 || n > VALUKU) {
-		Application->MessageBox(L"V‰liaikojen tilavaraus ei sallitulla alueella", L"Virhe",
+		Application->MessageBox(TR(L"V‰liaikojen tilavaraus ei sallitulla alueella"), TR(L"Virhe"),
 			MB_OK);
 		EditTiedVa->Text = kilpparam.valuku;
 		}
@@ -323,7 +325,7 @@ void __fastcall TFormKilpMaaritys::RGlajiClick(TObject *Sender)
 	else if (RGlaji->ItemIndex == 5) {
 		if (!sotilas && wcswcind(kilpparam.kilplaji, L"NPB") < 0) {
 			wchar_t st[20] = L"", ch = 0;
-			inputstr_prompt(st, 19, L"Anna lis‰toimintojen tunnus", &ch, this);
+			inputstr_prompt(st, 19, TR(L"Anna lis‰toimintojen tunnus"), &ch, this);
 			if (wmemcmpU(st, L"SOTILASLA", 9) == 0)
 				sotilas = 1;
 			}
@@ -378,8 +380,8 @@ void __fastcall TFormKilpMaaritys::RGMuuLajiClick(TObject *Sender)
 	int tark[3] = {1, 1, 0};
 
 	if (ToimintaTila > 0 && kilpparam.n_pv < 5 && RGMuuLaji->ItemIndex < 2) {
-		Application->MessageBoxW(L"Kilpailu jo muodostettu alle 5-vaiheisena. "
-			L"Lajin vaihto vaatii tiedoston KILP.DAT poistamisen", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Kilpailu jo muodostettu alle 5-vaiheisena. "
+			L"Lajin vaihto vaatii tiedoston KILP.DAT poistamisen"), TR(L"Este"), MB_OK);
 		RGMuuLaji->ItemIndex = 2;
 		return;
 		}
@@ -396,11 +398,11 @@ void __fastcall TFormKilpMaaritys::RGMuuLajiClick(TObject *Sender)
 //		CBIntPenth->Visible = true;
 		for (int i = 0; i < 5; i++) {
 			CBVaihe[i]->Items->Clear();
-			CBVaihe[i]->Items->Add(L"Ammunta");
-			CBVaihe[i]->Items->Add(L"Esterata");
-			CBVaihe[i]->Items->Add(L"Esteuinti");
-			CBVaihe[i]->Items->Add(L"Heitto");
-			CBVaihe[i]->Items->Add(L"Maastojuoksu");
+			CBVaihe[i]->Items->Add(TR(L"Ammunta"));
+			CBVaihe[i]->Items->Add(TR(L"Esterata"));
+			CBVaihe[i]->Items->Add(TR(L"Esteuinti"));
+			CBVaihe[i]->Items->Add(TR(L"Heitto"));
+			CBVaihe[i]->Items->Add(TR(L"Maastojuoksu"));
 			CBVaihe[i]->ItemIndex = i;
 			}
 		}
@@ -409,11 +411,11 @@ void __fastcall TFormKilpMaaritys::RGMuuLajiClick(TObject *Sender)
 		EditPv->Text = 5;
 		for (int i = 0; i < 5; i++) {
 			CBVaihe[i]->Items->Clear();
-			CBVaihe[i]->Items->Add(L"Esterata");
-			CBVaihe[i]->Items->Add(L"Pelastusuinti");
-			CBVaihe[i]->Items->Add(L"Teht‰v‰uinti");
-			CBVaihe[i]->Items->Add(L"Merimiestaito");
-			CBVaihe[i]->Items->Add(L"Maastorata");
+			CBVaihe[i]->Items->Add(TR(L"Esterata"));
+			CBVaihe[i]->Items->Add(TR(L"Pelastusuinti"));
+			CBVaihe[i]->Items->Add(TR(L"Teht‰v‰uinti"));
+			CBVaihe[i]->Items->Add(TR(L"Merimiestaito"));
+			CBVaihe[i]->Items->Add(TR(L"Maastorata"));
 			CBVaihe[i]->ItemIndex = i;
 			}
 		}
@@ -424,11 +426,11 @@ void __fastcall TFormKilpMaaritys::RGMuuLajiClick(TObject *Sender)
 			}
 		for (int i = 0; i < 5; i++) {
 			CBVaihe[i]->Items->Clear();
-			CBVaihe[i]->Items->Add(L"Ei vaihetta");
-			CBVaihe[i]->Items->Add(L"Ammunta");
-			CBVaihe[i]->Items->Add(L"Kartanluku");
-			CBVaihe[i]->Items->Add(L"Suunnistus");
-			CBVaihe[i]->Items->Add(L"Tauko");
+			CBVaihe[i]->Items->Add(TR(L"Ei vaihetta"));
+			CBVaihe[i]->Items->Add(TR(L"Ammunta"));
+			CBVaihe[i]->Items->Add(TR(L"Kartanluku"));
+			CBVaihe[i]->Items->Add(TR(L"Suunnistus"));
+			CBVaihe[i]->Items->Add(TR(L"Tauko"));
 			CBVaihe[i]->ItemIndex = i < 3 ? i+1 : 0;
 			}
 		}
@@ -440,18 +442,18 @@ void __fastcall TFormKilpMaaritys::EditPvExit(TObject *Sender)
 	int n = _wtoi(EditPv->Text.c_str());
 	if (ToimintaTila == 2 && n != kilpparam.n_pv_akt) {
 		n = kilpparam.n_pv_akt;
-		Application->MessageBoxW(L"Kilpailun vaiheiden lukum‰‰r‰n muuttaminen on mahdollista vain esivalmistelutilassa",
-			L"Rajoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Kilpailun vaiheiden lukum‰‰r‰n muuttaminen on mahdollista vain esivalmistelutilassa"),
+			TR(L"Rajoitus"), MB_OK);
 		}
 	else if (n < 1) {
 		n = 1;
-		Application->MessageBoxW((L"Kilpailun vaiheiden lukum‰‰r‰ksi asetettu "+UnicodeString(n)).c_str(),
-			L"Rajoitus", MB_OK);
+		Application->MessageBoxW((TR(L"Kilpailun vaiheiden lukum‰‰r‰ksi asetettu ")+UnicodeString(n)).c_str(),
+			TR(L"Rajoitus"), MB_OK);
 		}
 	else if (n > _wtoi(EditTiedPv->Text.c_str())) {
 		n = _wtoi(EditTiedPv->Text.c_str());
-		Application->MessageBoxW((L"Kilpailun vaiheiden lukum‰‰r‰ksi asetettu "+UnicodeString(n)+
-			L". Muuta tarvittaessa tiedostomuoto ensin.").c_str(), L"Rajoitus", MB_OK);
+		Application->MessageBoxW((TR(L"Kilpailun vaiheiden lukum‰‰r‰ksi asetettu ")+UnicodeString(n)+
+			TR(L". Muuta tarvittaessa tiedostomuoto ensin.")).c_str(), TR(L"Rajoitus"), MB_OK);
 		}
 	EditPv->Text = n;
 }
@@ -491,8 +493,8 @@ void __fastcall TFormKilpMaaritys::FormShow(TObject *Sender)
 void __fastcall TFormKilpMaaritys::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
 	if (hyvaksyMuutokset == 0) {
-		int vast = Application->MessageBoxW(L"Kaavake suljetaan. Hyv‰ksyt‰‰ntˆ tehdyt muutokset? (Cancel: Palaa kaavakkeelle)",
-			L"Muutosten vahvistus", MB_YESNOCANCEL);
+		int vast = Application->MessageBoxW(TR(L"Kaavake suljetaan. Hyv‰ksyt‰‰ntˆ tehdyt muutokset? (Cancel: Palaa kaavakkeelle)"),
+			TR(L"Muutosten vahvistus"), MB_YESNOCANCEL);
 		switch (vast) {
 			case idYes:
 				hyvaksyMuutokset = 1;
@@ -524,14 +526,14 @@ void __fastcall TFormKilpMaaritys::FormCloseQuery(TObject *Sender, bool &CanClos
 		kilpparam.n_pv = _wtoi(EditTiedPv->Text.c_str());
 		kilpparam.valuku = _wtoi(EditTiedVa->Text.c_str());
 		if (EditPv->Text.ToInt() > kilpparam.n_pv) {
-			Application->MessageBox(L"Kilpailun vaiheiden lukum‰‰r‰ ei voi ylitt‰‰ tiedoston tilavarausta. Korjaa tiedot.", L"Virhe",
+			Application->MessageBox(TR(L"Kilpailun vaiheiden lukum‰‰r‰ ei voi ylitt‰‰ tiedoston tilavarausta. Korjaa tiedot."), TR(L"Virhe"),
 				MB_OK);
 			return;
 			}
 		ed_n_pv_akt = kilpparam.n_pv_akt;
 		if (ToimintaTila == 1 && nyilmt > 0 && EditPv->Text.ToInt() > ed_n_pv_akt) {
-			pohjustus = select3(3, L"Pohjustetaanko lis‰tyt vaiheet? Pohjustus h‰vitt‰‰ mahdolliset vanhat tiedot, mutta on tarpeen, ellei vanhoja tietoja ole.", L"Tallennus",
-				L"Pohjusta", L"Ohita pohjustus", L"Peruuta muutosten tallennus", this);
+			pohjustus = select3(3, TR(L"Pohjustetaanko lis‰tyt vaiheet? Pohjustus h‰vitt‰‰ mahdolliset vanhat tiedot, mutta on tarpeen, ellei vanhoja tietoja ole."), TR(L"Tallennus"),
+				TR(L"Pohjusta"), TR(L"Ohita pohjustus"), TR(L"Peruuta muutosten tallennus"), this);
 			if (pohjustus == 3)
 				return;
 			if (pohjustus == 2)
@@ -610,7 +612,7 @@ void __fastcall TFormKilpMaaritys::FormCloseQuery(TObject *Sender, bool &CanClos
 				FILE *sfl;
 				if ((sfl = _wfopen(sarjaxmlfname, L"rt")) != NULL) {
 					fclose(sfl);
-					if (Application->MessageBox(L"Sarjatiedosto jo olemassa, korvataanko uudella?", L"Vahvista",
+					if (Application->MessageBox(TR(L"Sarjatiedosto jo olemassa, korvataanko uudella?"), TR(L"Vahvista"),
 						MB_YESNO) != IDYES) {
 						return;
 						}
@@ -647,7 +649,7 @@ void __fastcall TFormKilpMaaritys::FormCloseQuery(TObject *Sender, bool &CanClos
 				kirjEventXml(sarjaxmlfname, true, false, false);
 				}
 			else {
-				Application->MessageBox(L"Sarjalukum‰‰r‰ ei sallitulla alueella", L"Virhe",
+				Application->MessageBox(TR(L"Sarjalukum‰‰r‰ ei sallitulla alueella"), TR(L"Virhe"),
 					MB_OK);
 				return;
 				}
@@ -655,12 +657,12 @@ void __fastcall TFormKilpMaaritys::FormCloseQuery(TObject *Sender, bool &CanClos
 		if (sarjaluku > 0) {
 			if (sarjaluku < MAXSARJALUKU && kilpparam.kilplaji == L'S' && !Sarjat[sarjaluku-1].vakanttisarja && haesarja_w(L"VAKANTIT", false) < 0) {
 				if (ToimintaTila == 0)
-					vakantit = select3(2, L"Sarjojen viimeiseksi suositellaan suunnistuksessa vakanttisarjaa. Lis‰t‰‰nkˆ", L"Vakanttisarja",
-						L"Lis‰‰ sarja", L"ƒl‰ lis‰‰ sarjaa", L"", this);
+					vakantit = select3(2, TR(L"Sarjojen viimeiseksi suositellaan suunnistuksessa vakanttisarjaa. Lis‰t‰‰nkˆ"), TR(L"Vakanttisarja"),
+						TR(L"Lis‰‰ sarja"), TR(L"ƒl‰ lis‰‰ sarjaa"), L"", this);
 				else
-					vakantit = select3(3, L"Sarjojen viimeiseksi suositellaan suunnistuksessa vakanttisarjaa ja siihen v‰hint‰‰n 20 kilpailijaa. Lis‰t‰‰nkˆ", L"Vakanttisarja",
-						L"Lis‰‰ sarja", L"ƒl‰ lis‰‰ sarjaa",
-							(UnicodeString(L"Lis‰‰ sarja ja ") + UnicodeString(minvakanttiluku) + L" vakanttikilpailijaa").c_str(), this);
+					vakantit = select3(3, TR(L"Sarjojen viimeiseksi suositellaan suunnistuksessa vakanttisarjaa ja siihen v‰hint‰‰n 20 kilpailijaa. Lis‰t‰‰nkˆ"), TR(L"Vakanttisarja"),
+						TR(L"Lis‰‰ sarja"), TR(L"ƒl‰ lis‰‰ sarjaa"),
+							(UnicodeString(TR(L"Lis‰‰ sarja ja ")) + UnicodeString(minvakanttiluku) + TR(L" vakanttikilpailijaa")).c_str(), this);
 				if (vakantit != 2) {
 					sarjaluku++;
 					Sarjat[sarjaluku-1].nollaa();
@@ -676,10 +678,10 @@ void __fastcall TFormKilpMaaritys::FormCloseQuery(TObject *Sender, bool &CanClos
 					vakantit = 0;
 				}
 			if (!CBSarjat->Checked) {
-				if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset sarjatiedostoon?", L"Tallennus",
+				if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset sarjatiedostoon?"), TR(L"Tallennus"),
 					MB_YESNO) != IDYES) {
-					Application->MessageBox(L"Valitse \"Poistu tallentamatta muutoksia\", jos et halua tallentaa",
-						L"Rajoitus", MB_OK);
+					Application->MessageBox(TR(L"Valitse \"Poistu tallentamatta muutoksia\", jos et halua tallentaa"),
+						TR(L"Rajoitus"), MB_OK);
 					return;
 					}
 				if (kilpparam.kilplaji == L'P') {
@@ -704,8 +706,8 @@ void __fastcall TFormKilpMaaritys::FormCloseQuery(TObject *Sender, bool &CanClos
 			kirjEventXml(sarjaxmlfname, true, false, false);
 			}
 		else {
-			 Application->MessageBox(L"Kilpailua koskevat valinnat tallennetaan vasta, kun sarjatiedosto on muodostettu.",
-				L"Rajoitus", MB_OK);
+			 Application->MessageBox(TR(L"Kilpailua koskevat valinnat tallennetaan vasta, kun sarjatiedosto on muodostettu."),
+				TR(L"Rajoitus"), MB_OK);
 			return;
 			}
 		if (pohjustus)
@@ -762,8 +764,8 @@ void __fastcall TFormKilpMaaritys::Kvlisenssinumero1Click(TObject *Sender)
 	wchar_t ch;
 
 	kdi = kilpparam.kvlisno;
-	inputint_prompt(&kdi, L"Anna nollasta eroava numero, jos maakoodi kirjoitetaan lisenssinumeron "
-		L"alkuun. Annettu numeroarvo kertoo lisenssikoodin numero-osan minimipituuden", &ch, this);
+	inputint_prompt(&kdi, TR(L"Anna nollasta eroava numero, jos maakoodi kirjoitetaan lisenssinumeron "
+		L"alkuun. Annettu numeroarvo kertoo lisenssikoodin numero-osan minimipituuden"), &ch, this);
 	if (ch != ESC)
 		kilpparam.kvlisno = kdi;
 }

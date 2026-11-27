@@ -20,6 +20,7 @@
 #pragma hdrstop
 #include <tchar.h>
 #include "WinHk.h"
+#include "cbKielet.h"
 //---------------------------------------------------------------------------
 
 USEFORM("..\cbTp\UnitMaalikello.cpp", FormMaalikello);
@@ -133,6 +134,7 @@ WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 	try
 	{
 		Application->Initialize();
+		alustaKayttokieli();
 //		Application->MainFormOnTaskBar = true;
 		Application->Title = "HkKisaWin";
 		Application->CreateForm(__classid(TFormMain), &FormMain);

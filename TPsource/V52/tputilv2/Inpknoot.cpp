@@ -171,7 +171,7 @@ void inputkno_os_t(int *kno, int *os, int x, int y, char *term, char *tc)
             *os = tarr[4] - '0';
             if ((*kno != 0) &&
                 (*os < 1 || tarkno_os(*kno,*os) != tarr[5] - '0')) {
-               writeerror("Virheellinen kilpailunumero tai osuus",1000);
+               writeerror(TRA("Virheellinen kilpailunumero tai osuus"),1000);
                okk = FALSE;
                }
             }

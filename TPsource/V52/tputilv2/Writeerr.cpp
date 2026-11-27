@@ -53,7 +53,7 @@ void writeerror(char *msgin, int kesto)
 	   Sleep(kesto);
    else {
 	  kbflush();
-	  viwrrect(ySize-1, 68, ySize-1, 79, " Paina Enter", 0, 7, 0);
+	  viwrrect(ySize-1, 68, ySize-1, 79, TRA(" Paina Enter"), 0, 7, 0);
 	  readkbd(msg, 1, 0);
 	  kbflush();
 	  }
@@ -85,7 +85,7 @@ void writeerror_w(wchar_t *msgin, int kesto)
 	   Sleep(kesto);
    else {
 	  kbflush();
-	  vidspwmsg(ySize-1, 68, 0, 7, L" Paina Enter");
+	  vidspwmsg(ySize-1, 68, 0, 7, TR(L" Paina Enter"));
 	  readkbd(&che, 1, 0);
 	  kbflush();
 	  }

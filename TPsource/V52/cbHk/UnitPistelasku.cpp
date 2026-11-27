@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitPistelasku.h"
 #include "UnitKaavaTaul.h"
@@ -28,6 +29,7 @@ TFormPistelasku *FormPistelasku;
 __fastcall TFormPistelasku::TFormPistelasku(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -100,8 +102,8 @@ void TFormPistelasku::NaytaSarjavalinnat(void)
 void TFormPistelasku::HaeKertoimet(pistekaavatp *kaava)
 {
 	if (nytulost > 0 && CBYPisteTls->Checked != ((kaava->yhtpiston & 4) != 0)) {
-		if (Application->MessageBoxW(L"Yhteistuloksen m‰‰r‰ytymistavan muutos, kun yhteistuloksia jo on, voi synnytt‰‰ indeksointivirheit‰ ja vaatii ohjelman uudelleenk‰ynnistyksen. Muutetaanko m‰‰r‰ytymistapa",
-			L"Vahvista valinta", MB_YESNO) != IDYES) {
+		if (Application->MessageBoxW(TR(L"Yhteistuloksen m‰‰r‰ytymistavan muutos, kun yhteistuloksia jo on, voi synnytt‰‰ indeksointivirheit‰ ja vaatii ohjelman uudelleenk‰ynnistyksen. Muutetaanko m‰‰r‰ytymistapa"),
+			TR(L"Vahvista valinta"), MB_YESNO) != IDYES) {
 			CBYPisteTls->Checked = ((kaava->yhtpiston & 4) != 0);
 			return;
 			}
@@ -392,8 +394,8 @@ void __fastcall TFormPistelasku::Luesnnttiedostosta1Click(TObject *Sender)
 			}
 		}
 	if (is == sarjaluku) {
-		Application->MessageBoxW(L"Sarjaa ei ole valittu, haettu vain aiemmin m‰‰ritelty‰ kaavaa vastaavat sarjat",
-			L"Varoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Sarjaa ei ole valittu, haettu vain aiemmin m‰‰ritelty‰ kaavaa vastaavat sarjat"),
+			TR(L"Varoitus"), MB_OK);
 		}
 	for (is = 0; is < sarjaluku; is++) {
 		SarjaValinnat[is] = memcmp(&kv, &Sarjat[is].pistekaava[k_pv], sizeof(kv)) == 0;
@@ -486,7 +488,7 @@ void __fastcall TFormPistelasku::Kopioitmnvaiheenkaavattoisellevaiheelle1Click(T
 	wchar_t ch;
 	if (ipv == kilpparam.n_pv_akt)
 		ipv = 1;
-	inputint_prompt(&ipv, L"Anna vaihe jolle kopioidaan. Kopiointi koskee valittuja sarjoja.", &ch, this);
+	inputint_prompt(&ipv, TR(L"Anna vaihe jolle kopioidaan. Kopiointi koskee valittuja sarjoja."), &ch, this);
 	if (ch != ESC) {
 		ipv--;
 		for (int srj = 0; srj < sarjaluku+nsarjayhd; srj++) {
@@ -505,8 +507,8 @@ void __fastcall TFormPistelasku::Laskeaiempivaihe1Click(TObject *Sender)
 	int ipv = k_pv;
 	wchar_t ch;
 
-	inputint_prompt(&ipv, L"Valittujen sarjojen laskenta tapahtuu tallennetun kaavan mukaisesti. "
-		L"Anna vaihe. (Esc peruuttaa laskennan)", &ch, this);
+	inputint_prompt(&ipv, TR(L"Valittujen sarjojen laskenta tapahtuu tallennetun kaavan mukaisesti. "
+		L"Anna vaihe. (Esc peruuttaa laskennan)"), &ch, this);
 	ipv--;
 	if (ch != ESC && ipv >= 0 && ipv < k_pv) {
 		for (int srj = 0; srj < sarjaluku + nsarjayhd; srj++) {

@@ -18,6 +18,7 @@
 #include <vcl.h>
 #include <Clipbrd.hpp>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "HkDeclare.h"
 #include "UnitKilpailijaEmit.h"
@@ -33,6 +34,7 @@ extern rastivatp *rastiva;
 __fastcall TFormKilpailijaEmit::TFormKilpailijaEmit(TComponent* Owner)
    : TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -104,25 +106,25 @@ void __fastcall TFormKilpailijaEmit::naytaTiedot(void)
          TLahto->Clear();
 		switch (Kilp->tark(k_pv)) {
          case L'K' :
-				Tulos->Text = UnicodeString(L"Kesk");
+				Tulos->Text = UnicodeString(TR(L"Kesk"));
 				break;
 			case L'H' :
-				Tulos->Text = UnicodeString(L"Hyl");
+				Tulos->Text = UnicodeString(TR(L"Hyl"));
 				break;
 			case L'M' :
-				Tulos->Text = UnicodeString(L"Virhe");
+				Tulos->Text = UnicodeString(TR(L"Virhe"));
 				break;
 			case L'X' :
-				Tulos->Text = UnicodeString(L"EiAikaa");
+				Tulos->Text = UnicodeString(TR(L"EiAikaa"));
 				break;
 			case L'E' :
-				Tulos->Text = UnicodeString(L"Eiläht.");
+				Tulos->Text = UnicodeString(TR(L"Eiläht."));
 				break;
 			case L'B' :
-				Tulos->Text = UnicodeString(L"Havaittu");
+				Tulos->Text = UnicodeString(TR(L"Havaittu"));
 				break;
 			case L'V' :
-				Tulos->Text = UnicodeString(L"Vakant");
+				Tulos->Text = UnicodeString(TR(L"Vakant"));
 				break;
 			case L'-' :
 			case L'T' :
@@ -140,10 +142,10 @@ void __fastcall TFormKilpailijaEmit::naytaTiedot(void)
 		VaGrid->RowCount = 1 + Sarjat[Kilp->Sarja()].valuku[k_pv];
 		VaGrid->DefaultRowHeight = 18 * Screen->PixelsPerInch / 96;
 		if (Sarjat[Kilp->Sarja()].valuku[k_pv]) {
-			VaGrid->Cells[1][0] = UnicodeString(L"Sija");
-		 VaGrid->Cells[2][0] = UnicodeString(L"V-aika");
+			VaGrid->Cells[1][0] = UnicodeString(TR(L"Sija"));
+		 VaGrid->Cells[2][0] = UnicodeString(TR(L"V-aika"));
 		 for (i = 1; i <= Sarjat[Kilp->Sarja()].valuku[k_pv]; i++) {
-            VaGrid->Cells[0][i] = UnicodeString(i)+L". va";
+            VaGrid->Cells[0][i] = UnicodeString().sprintf(TR(L"%d. va"), i);
 				if ((tl = Kilp->p_aika(i)) > 0) {
 			   VaGrid->Cells[1][i] = UnicodeString(Kilp->p_sija(i));
 			   AIKATOWSTRS(line, tl, 0);
@@ -183,19 +185,19 @@ void __fastcall TFormKilpailijaEmit::naytaTiedot(void)
 				EmitGrid->ColWidths[11] = 65 * Screen->PixelsPerInch / 96;
 				EmitGrid->ColWidths[12] = 55 * Screen->PixelsPerInch / 96;
 				EmitGrid->Width = (80+70+350+95+65+55) * Screen->PixelsPerInch / 96;
-				EmitGrid->Cells[0][0] = UnicodeString(L"Nro");
-				EmitGrid->Cells[1][0] = UnicodeString(L"Koodi");
-				EmitGrid->Cells[2][0] = UnicodeString(L"Aika");
-				EmitGrid->Cells[3][0] = UnicodeString(L"Ero/nop.");
-				EmitGrid->Cells[4][0] = UnicodeString(L"Sj/")+nradalla;
-				EmitGrid->Cells[5][0] = UnicodeString(L"R-väli");
-				EmitGrid->Cells[6][0] = UnicodeString(L"Suht rv.");
-				EmitGrid->Cells[7][0] = UnicodeString(L"Vert.aik");
-				EmitGrid->Cells[8][0] = UnicodeString(L"Ero/nop.");
-				EmitGrid->Cells[9][0] = UnicodeString(L"Nopein");
-				EmitGrid->Cells[10][0] = UnicodeString(L"Sj/")+nsarjasta;
-				EmitGrid->Cells[11][0] = UnicodeString(L"Suht yht.");
-				EmitGrid->Cells[12][0] = UnicodeString(L"min/km");
+				EmitGrid->Cells[0][0] = UnicodeString(TR(L"Nro"));
+				EmitGrid->Cells[1][0] = UnicodeString(TR(L"Koodi"));
+				EmitGrid->Cells[2][0] = UnicodeString(TR(L"Aika"));
+				EmitGrid->Cells[3][0] = UnicodeString(TR(L"Ero/nop."));
+				EmitGrid->Cells[4][0] = UnicodeString(TR(L"Sj/"))+nradalla;
+				EmitGrid->Cells[5][0] = UnicodeString(TR(L"R-väli"));
+				EmitGrid->Cells[6][0] = UnicodeString(TR(L"Suht rv."));
+				EmitGrid->Cells[7][0] = UnicodeString(TR(L"Vert.aik"));
+				EmitGrid->Cells[8][0] = UnicodeString(TR(L"Ero/nop."));
+				EmitGrid->Cells[9][0] = UnicodeString(TR(L"Nopein"));
+				EmitGrid->Cells[10][0] = UnicodeString(TR(L"Sj/"))+nsarjasta;
+				EmitGrid->Cells[11][0] = UnicodeString(TR(L"Suht yht."));
+				EmitGrid->Cells[12][0] = UnicodeString(TR(L"min/km"));
 				tlsum = 0;
 				for (i = 0; i < emvaluku; i++) {
 				   int mtk;

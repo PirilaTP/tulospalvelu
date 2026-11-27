@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitHtmlEdit.h"
 #ifdef MAXOSUUSLUKU
@@ -37,6 +38,7 @@ wchar_t temp_html_flnm[80] = L"___tmp_html_1.html";
 __fastcall TFormHtmlEdit::TFormHtmlEdit(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -189,7 +191,7 @@ void __fastcall TFormHtmlEdit::Luetiedosto1Click(TObject *Sender)
 {
 	OpenDialog1->InitialDir = CurrentDir;
 	OpenDialog1->DefaultExt = L"html";
-	OpenDialog1->Filter = L"Html-tiedostot (*.html, *htm)|*.html;*.htm|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Html-tiedostot (*.html, *htm)|*.html;*.htm|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		FileName = OpenDialog1->FileName;
 		ReadHtmlFile(FileName.c_str());
@@ -205,7 +207,7 @@ bool __fastcall TFormHtmlEdit::TallennaNimella(void)
 	SaveDialog1->InitialDir = CurrentDir;
 	SaveDialog1->FileName = FileName;
 	SaveDialog1->DefaultExt = L"html";
-	SaveDialog1->Filter = L"Html-tiedostot (*.html, *htm)|*.html;*.htm|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Html-tiedostot (*.html, *htm)|*.html;*.htm|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		FileName = SaveDialog1->FileName;
 		WriteHtmlFile(FileName.c_str(), RGLuonne->ItemIndex == 0, ISO885911->Checked);

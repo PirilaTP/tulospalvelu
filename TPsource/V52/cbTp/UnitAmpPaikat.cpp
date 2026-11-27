@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitAmpPaikat.h"
 //---------------------------------------------------------------------------
@@ -28,6 +29,7 @@ TFormAmpPaikat *FormAmpPaikat;
 __fastcall TFormAmpPaikat::TFormAmpPaikat(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -112,18 +114,18 @@ void __fastcall TFormAmpPaikat::FormCreate(TObject *Sender)
 	Vara = 0;
 	DG1->RowCount = tauluLkm + 1;
 	DG1->ColCount = (Vara > 0) ? 12 : 11;
-	Cells[0][0].text = L"Taulu";
-	Cells[1][0].text = L"Pka";
-	Cells[2][0].text = L"Nro";
-	Cells[3][0].text = L"Nimi";
-	Cells[4][0].text = L"Sakot";
+	Cells[0][0].text = TR(L"Taulu");
+	Cells[1][0].text = TR(L"Pka");
+	Cells[2][0].text = TR(L"Nro");
+	Cells[3][0].text = TR(L"Nimi");
+	Cells[4][0].text = TR(L"Sakot");
 	Cells[5][0].text = L"1";
 	Cells[6][0].text = L"2";
 	Cells[7][0].text = L"3";
 	Cells[8][0].text = L"4";
 	Cells[9][0].text = L"5";
-	Cells[10][0].text = L"Ohi";
-	Cells[11][0].text = L"Vara";
+	Cells[10][0].text = TR(L"Ohi");
+	Cells[11][0].text = TR(L"Vara");
 	DG1->ColWidths[0] = 30 * Screen->PixelsPerInch / 96;
 	DG1->ColWidths[1] = 30 * Screen->PixelsPerInch / 96;
 	DG1->ColWidths[2] = 40 * Screen->PixelsPerInch / 96;

@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitMsgs.h"
 //---------------------------------------------------------------------------
@@ -28,6 +29,7 @@ TFormMsgs *FormMsgs;
 __fastcall TFormMsgs::TFormMsgs(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);

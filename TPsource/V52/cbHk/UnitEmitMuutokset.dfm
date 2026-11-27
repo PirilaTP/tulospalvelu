@@ -3,7 +3,7 @@ object FormEmitMuutokset: TFormEmitMuutokset
   Top = 0
   Caption = 'Emit-muutokset'
   ClientHeight = 549
-  ClientWidth = 304
+  ClientWidth = 344
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,7 +18,7 @@ object FormEmitMuutokset: TFormEmitMuutokset
   object PageControl1: TPageControl
     Left = 8
     Top = 8
-    Width = 291
+    Width = 331
     Height = 529
     ActivePage = TabSheet1
     Font.Charset = DEFAULT_CHARSET

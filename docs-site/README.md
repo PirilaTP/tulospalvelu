@@ -34,6 +34,31 @@ cd docs-site
 .venv/bin/python scripts/build_mkdocs_config.py
 ```
 
+## Kieliversiot (fi / sv / en)
+
+Sivusto käännetään kolmelle kielelle
+[mkdocs-static-i18n](https://github.com/ultrabug/mkdocs-static-i18n)-laajennuksella
+(pääteperusteinen rakenne):
+
+- `sivu.md` – suomi (oletuskieli, julkaistaan juureen `/`)
+- `sivu.sv.md` – ruotsi (julkaistaan polkuun `/sv/`)
+- `sivu.en.md` – englanti (julkaistaan polkuun `/en/`)
+
+Jos käännös puuttuu, kyseinen sivu näytetään kieliversiossa suomeksi.
+Linkit kirjoitetaan kaikissa kieliversioissa suomenkieliseen tiedostonimeen
+(`[luku 9.7](9.7_automaattinen_tiedostotulostus.md)`); laajennus ohjaa ne
+saman kielen sivulle. Kuvat ovat yhteisiä.
+
+Kun suomenkielistä sivua muutetaan, päivitä myös `.sv.md`- ja `.en.md`-versio.
+Käyttöliittymän nimikkeet (valikot, painikkeet, kentät) käännetään samoin kuin
+ohjelman käyttöliittymässä: ks. `TPsource/V52/kielet/sv.po` ja `en.po`.
+
+Navigaation otsikoiden käännökset ovat tiedostossa
+`scripts/nav_translations.json`. Kielikohtaiset asetukset (sivuston nimi,
+teemavalitsimen tekstit) ovat `scripts/build_mkdocs_config.py`:n
+`LANGUAGES`-listassa; molempien muutosten jälkeen aja
+`scripts/build_mkdocs_config.py` uudelleen.
+
 ## Rakenne
 
 ```

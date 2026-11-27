@@ -321,7 +321,7 @@ int	xml_tree::loadbranch(TextFl *infile, int *inode, int depth, int *rv, wchar_t
 			}
 		if (*inode >= maxnode-1) {
 			er = 1;
-			swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Varattu puskuritila (%d solmua) ei riit‰", maxnode);
+			swprintf(msg, TR(L"XML-tiedoston tulkinta ei onnnistu. Varattu puskuritila (%d solmua) ei riit‰"), maxnode);
 
 			break;
 			}
@@ -330,7 +330,7 @@ int	xml_tree::loadbranch(TextFl *infile, int *inode, int depth, int *rv, wchar_t
 			continue;
 		if (lntype == -3) {
 			er = 1;
-			swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, avaava tag: <%.30s>, sulkeva poikkeaa",
+			swprintf(msg, TR(L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, avaava tag: <%.30s>, sulkeva poikkeaa"),
 				*rv, node[*inode].tag);
 			break;
 			}
@@ -368,7 +368,7 @@ int	xml_tree::loadbranch(TextFl *infile, int *inode, int depth, int *rv, wchar_t
 			for (jnode = *inode; jnode > inode_in && node[jnode].depth > depth; jnode--) ;
 			if (wcscmp(tag, node[jnode].tag)) {      // Varmistetaan, ett‰ tagit ovat pari
 				er = 1;
-				swprintf(msg, L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'",
+				swprintf(msg, TR(L"XML-tiedoston tulkinta ei onnnistu. Rivi %d, Tag: '%.30s', odotettu: '%.30s'"),
 					*rv, tag, node[jnode].tag);
 				break;
 				}
@@ -447,7 +447,7 @@ int	xml_tree::loadtree(wchar_t *filename)
 	delete infile;
 	if (depth) {
 		er = 1;
-		swprintf(msg, L"XML-tiedosto p‰‰ttyi rivill‰ %d tasolla %d", rv, depth);
+		swprintf(msg, TR(L"XML-tiedosto p‰‰ttyi rivill‰ %d tasolla %d"), rv, depth);
 		}
 	if (er)
 		writeerror_w(msg, 0);

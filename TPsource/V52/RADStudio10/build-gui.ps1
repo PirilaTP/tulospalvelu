@@ -48,8 +48,15 @@
     Directory for per-project build logs. Defaults to build-logs next to this
     script (git-ignored).
 
+.PARAMETER Visible
+    Run the IDE on the normal desktop. By default (bds tool) it runs on a separate,
+    invisible desktop, so no IDE windows or dialogs appear on the screen during the
+    build; the script dismisses the dialogs itself either way. Use -Visible to see a
+    dialog the script does not recognise.
+
 .EXAMPLE
     .\build-gui.ps1
+    .\build-gui.ps1 -Visible
     .\build-gui.ps1 -Tool msbuild -StudioRoot 'C:\Program Files (x86)\Embarcadero\Studio\23.0'
 #>
 [CmdletBinding()]
@@ -58,7 +65,11 @@ param(
     [ValidateSet('bds', 'msbuild')]
     [string]$Tool = 'bds',
     [int]$TimeoutMinutes = 10,
-    [string]$LogDir
+    [string]$LogDir,
+    # Show the IDE on the normal desktop. By default (bds tool) the IDE runs on a separate,
+    # invisible desktop so that its windows and dialogs do not appear on the user's screen;
+    # the script dismisses the dialogs itself in both cases.
+    [switch]$Visible
 )
 
 $ErrorActionPreference = 'Stop'
@@ -114,6 +125,54 @@ Add-Type -Namespace Tp -Name Win32 -MemberDefinition @"
     [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)] public static extern int GetWindowText(System.IntPtr hWnd, System.Text.StringBuilder text, int count);
     [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)] public static extern int GetClassName(System.IntPtr hWnd, System.Text.StringBuilder text, int count);
     [System.Runtime.InteropServices.DllImport("user32.dll")] public static extern bool PostMessage(System.IntPtr hWnd, uint msg, System.IntPtr wParam, System.IntPtr lParam);
+    [System.Runtime.InteropServices.DllImport("user32.dll")] public static extern bool EnumDesktopWindows(System.IntPtr hDesktop, EnumWindowsProc cb, System.IntPtr lParam);
+    [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode, SetLastError = true)]
+    static extern System.IntPtr CreateDesktopW(string name, System.IntPtr device, System.IntPtr devmode, uint flags, uint access, System.IntPtr sa);
+
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+    struct STARTUPINFO {
+        public int cb; public string lpReserved; public string lpDesktop; public string lpTitle;
+        public int dwX, dwY, dwXSize, dwYSize, dwXCountChars, dwYCountChars, dwFillAttribute, dwFlags;
+        public short wShowWindow, cbReserved2; public System.IntPtr lpReserved2, hStdInput, hStdOutput, hStdError;
+    }
+    struct PROCESS_INFORMATION { public System.IntPtr hProcess, hThread; public int dwProcessId, dwThreadId; }
+    [System.Runtime.InteropServices.DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode, SetLastError = true)]
+    static extern bool CreateProcessW(string app, System.Text.StringBuilder cmdLine, System.IntPtr pa, System.IntPtr ta, bool inherit,
+        uint flags, System.IntPtr env, string dir, ref STARTUPINFO si, out PROCESS_INFORMATION pi);
+    [System.Runtime.InteropServices.DllImport("kernel32.dll")] static extern bool CloseHandle(System.IntPtr h);
+
+    // Desktop the IDE runs on (Zero = the current, visible desktop).
+    public static System.IntPtr Desktop = System.IntPtr.Zero;
+    public static string DesktopName = null;
+
+    // Creates (or opens) an invisible desktop in the current window station. Windows on it
+    // never appear on the user's screen, but messages can still be posted to them.
+    public static void UseHiddenDesktop(string name) {
+        System.IntPtr h = CreateDesktopW(name, System.IntPtr.Zero, System.IntPtr.Zero, 0, 0x10000000 /* GENERIC_ALL */, System.IntPtr.Zero);
+        if (h == System.IntPtr.Zero) throw new System.ComponentModel.Win32Exception();
+        Desktop = h;
+        DesktopName = name;
+    }
+
+    // Starts a program on Desktop (or the visible desktop); returns the process id.
+    public static int Start(string exe, string args) {
+        var si = new STARTUPINFO();
+        si.cb = System.Runtime.InteropServices.Marshal.SizeOf(si);
+        si.lpDesktop = DesktopName;
+        PROCESS_INFORMATION pi;
+        var cmd = new System.Text.StringBuilder("\"" + exe + "\" " + args);
+        if (!CreateProcessW(exe, cmd, System.IntPtr.Zero, System.IntPtr.Zero, false, 0, System.IntPtr.Zero, null, ref si, out pi))
+            throw new System.ComponentModel.Win32Exception();
+        CloseHandle(pi.hThread);
+        CloseHandle(pi.hProcess);
+        return pi.dwProcessId;
+    }
+
+    // EnumWindows only sees the calling thread's desktop; the IDE may be on another one.
+    static void EnumTopLevel(EnumWindowsProc cb) {
+        if (Desktop != System.IntPtr.Zero) EnumDesktopWindows(Desktop, cb, System.IntPtr.Zero);
+        else EnumWindows(cb, System.IntPtr.Zero);
+    }
 
     static string Text(System.IntPtr hWnd) { var sb = new System.Text.StringBuilder(512); GetWindowText(hWnd, sb, sb.Capacity); return sb.ToString(); }
     static string Class(System.IntPtr hWnd) { var sb = new System.Text.StringBuilder(256); GetClassName(hWnd, sb, sb.Capacity); return sb.ToString(); }
@@ -123,14 +182,14 @@ Add-Type -Namespace Tp -Name Win32 -MemberDefinition @"
     // dialogs (e.g. the Community Edition EULA reminder) show up as "TFooForm:".
     public static System.Collections.Generic.List<string> WindowTitles(uint targetPid) {
         var titles = new System.Collections.Generic.List<string>();
-        EnumWindows((hWnd, lParam) => {
+        EnumTopLevel((hWnd, lParam) => {
             uint pid; GetWindowThreadProcessId(hWnd, out pid);
             if (pid == targetPid && IsWindowVisible(hWnd)) {
                 string cls = Class(hWnd);
                 if (!IsTooltip(cls)) titles.Add(cls + ":" + Text(hWnd));
             }
             return true;
-        }, System.IntPtr.Zero);
+        });
         return titles;
     }
 
@@ -164,7 +223,7 @@ Add-Type -Namespace Tp -Name Win32 -MemberDefinition @"
     // button (BM_CLICK) when one is found, otherwise posts WM_CLOSE. Returns what was done.
     public static System.Collections.Generic.List<string> DismissDialogs(uint targetPid, string mainMarker, string[] keepTitles) {
         var done = new System.Collections.Generic.List<string>();
-        EnumWindows((hWnd, lParam) => {
+        EnumTopLevel((hWnd, lParam) => {
             uint pid; GetWindowThreadProcessId(hWnd, out pid);
             if (pid == targetPid && IsWindowVisible(hWnd)) {
                 string cls = Class(hWnd);
@@ -188,10 +247,15 @@ Add-Type -Namespace Tp -Name Win32 -MemberDefinition @"
                 }
             }
             return true;
-        }, System.IntPtr.Zero);
+        });
         return done;
     }
 "@
+
+if ($Tool -eq 'bds' -and -not $Visible) {
+    [Tp.Win32]::UseHiddenDesktop('TpGuiBuild')
+    Write-Host "The IDE runs on an invisible desktop; its dialogs are handled by this script (-Visible shows it)."
+}
 
 function Get-ProcessWindowTitles([int]$processId) {
     try { return @([Tp.Win32]::WindowTitles([uint32]$processId)) } catch { return @() }
@@ -233,7 +297,8 @@ function Invoke-BdsBuild([string]$projectPath, [string]$logPath) {
     # -b build, -ns no splash screen, -o<file> write build output to file.
     $bdsArgs = @("`"$projectPath`"", '-b', '-ns', "-o`"$logPath`"")
     Write-Host "  $bdsExe $($bdsArgs -join ' ')"
-    $proc = Start-Process -FilePath $bdsExe -ArgumentList $bdsArgs -PassThru
+    $proc = Get-Process -Id ([Tp.Win32]::Start($bdsExe, ($bdsArgs -join ' ')))
+    $null = $proc.Handle   # open the handle now so that ExitCode can be read after the IDE exits
     $deadline = (Get-Date).AddMinutes($TimeoutMinutes)
     $lastTitles = ''
     $lastCpu = -1
@@ -358,6 +423,12 @@ foreach ($p in $projects) {
     else {
         $status = 'OK'
         Write-Host "$($p.Project): OK -> $($p.Output) (${elapsed}s)"
+        # Translations are embedded in the program (TPsource\V52\kielet\kielet.rc). A kielet\
+        # folder next to the exe would override them, so warn about a leftover one.
+        $kieliDir = Join-Path (Split-Path $outputPath -Parent) 'kielet'
+        if ($p.Output -like '*.exe' -and (Test-Path (Join-Path $kieliDir '*.po'))) {
+            Write-Warning "$kieliDir\*.po overrides the translations embedded in $($p.Output). Delete the folder unless that is intended."
+        }
     }
     $summary += [pscustomobject]@{ Project = $p.Project; Output = $p.Output; Status = $status; Seconds = $elapsed }
 

@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitSarjatiedot.h"
 #include "UnitSarja.h"
@@ -30,47 +31,47 @@ TFormSarjatiedot *FormSarjatiedot;
 //extern TFormVaPisteet *FormVaPisteet;
 
 ColTp GridCols0[] = {
-	{L"Nro", 30, 0, 1, 0, true},
-	{L"Sarja", 55, 0, 1, 0, true},
-	{L"AlkuNo", 55, 0, 1, 0, true},
-	{L"Osuusluku", 55, 0, 1, 0, true},
-	{L"Henk.lkm", 55, 0, 1, 0, true},
-	{L"Lähtöaika", 60, 0, 1, 0, true},
-	{L"Sakollinen", 60, 0, 1, 0, false},
-	{L"Lähtöpaikka", 40, 0, 1, 0, false},
-	{L"Maali", 40, 0, 1, 0, false},
-	{L"Osuuslähtö", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"Lähtöväli", 45, 0, MAXOSUUSLUKU, 0, false},
-	{L"Amp.paikat", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"Sakkoyks.", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"Maksu", 60, 0, 1, 0, true},
-	{L"Maksu-ale", 60, 0, 1, 0, false},
-	{L"Matka", 60, 0, MAXOSUUSLUKU, 0, true},
-	{L"Pitkä nimi", 180, 0, 1, 0, true},
-	{L"Lukum", 40, 0, 1, 0, false}
+	{N_(L"Nro"), 30, 0, 1, 0, true},
+	{N_(L"Sarja"), 55, 0, 1, 0, true},
+	{N_(L"AlkuNo"), 55, 0, 1, 0, true},
+	{N_(L"Osuusluku"), 55, 0, 1, 0, true},
+	{N_(L"Henk.lkm"), 55, 0, 1, 0, true},
+	{N_(L"Lähtöaika"), 60, 0, 1, 0, true},
+	{N_(L"Sakollinen"), 60, 0, 1, 0, false},
+	{N_(L"Lähtöpaikka"), 40, 0, 1, 0, false},
+	{N_(L"Maali"), 40, 0, 1, 0, false},
+	{N_(L"Osuuslähtö"), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Lähtöväli"), 45, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Amp.paikat"), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Sakkoyks."), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Maksu"), 60, 0, 1, 0, true},
+	{N_(L"Maksu-ale"), 60, 0, 1, 0, false},
+	{N_(L"Matka"), 60, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Pitkä nimi"), 180, 0, 1, 0, true},
+	{N_(L"Lukum"), 40, 0, 1, 0, false}
 };
 
 ColTp *GridCols1;
 
 ColTp GridColsArv[] = {
-	{L"Nro", 30, 0, 1, 0, true},
-	{L"Sarja", 55, 0, 1, 0, true},
-	{L"AlkuNo", 55, 0, 1, 0, true},
-	{L"Osuusluku", 55, 0, 1, 0, true},
-	{L"Henk.lkm", 55, 0, 1, 0, true},
-	{L"Lähtöaika", 60, 0, 1, 0, true},
-	{L"Sakollinen", 60, 0, 1, 0, false},
-	{L"Lähtöpaikka", 40, 0, 1, 0, false},
-	{L"Maali", 40, 0, 1, 0, false},
-	{L"Osuuslähtö", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"Lähtöväli", 45, 0, MAXOSUUSLUKU, 0, false},
-	{L"Amp.paikat", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"Sakkoyks.", 60, 0, MAXOSUUSLUKU, 0, false},
-	{L"Maksu", 60, 0, 1, 0, true},
-	{L"Maksu-ale", 60, 0, 1, 0, false},
-	{L"Matka", 60, 0, MAXOSUUSLUKU, 0, true},
-	{L"Pitkä nimi", 180, 0, 1, 0, true},
-	{L"Lukum", 40, 0, 1, 0, false}
+	{N_(L"Nro"), 30, 0, 1, 0, true},
+	{N_(L"Sarja"), 55, 0, 1, 0, true},
+	{N_(L"AlkuNo"), 55, 0, 1, 0, true},
+	{N_(L"Osuusluku"), 55, 0, 1, 0, true},
+	{N_(L"Henk.lkm"), 55, 0, 1, 0, true},
+	{N_(L"Lähtöaika"), 60, 0, 1, 0, true},
+	{N_(L"Sakollinen"), 60, 0, 1, 0, false},
+	{N_(L"Lähtöpaikka"), 40, 0, 1, 0, false},
+	{N_(L"Maali"), 40, 0, 1, 0, false},
+	{N_(L"Osuuslähtö"), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Lähtöväli"), 45, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Amp.paikat"), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Sakkoyks."), 60, 0, MAXOSUUSLUKU, 0, false},
+	{N_(L"Maksu"), 60, 0, 1, 0, true},
+	{N_(L"Maksu-ale"), 60, 0, 1, 0, false},
+	{N_(L"Matka"), 60, 0, MAXOSUUSLUKU, 0, true},
+	{N_(L"Pitkä nimi"), 180, 0, 1, 0, true},
+	{N_(L"Lukum"), 40, 0, 1, 0, false}
 };
 
 static int GridCols1Count;
@@ -125,6 +126,7 @@ static void teesarjajarj(int jrj)
 __fastcall TFormSarjatiedot::TFormSarjatiedot(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -193,7 +195,7 @@ void __fastcall TFormSarjatiedot::NaytaSarjat(void)
 			if (GridCols[ic].Count == MAXOSUUSLUKU)
 				n = kilpparam.ntosuus;
 			for (int i = 0; i < n; i++) {
-				SG1->Cells[GridCols[ic].Order+i][0] = UnicodeString(GridCols[ic].Caption);
+				SG1->Cells[GridCols[ic].Order+i][0] = UnicodeString(TR(GridCols[ic].Caption));
 				SG1->ColWidths[GridCols[ic].Order+i] = GridCols[ic].Width * Screen->PixelsPerInch / 96;
 				}
 			}
@@ -410,8 +412,8 @@ void __fastcall TFormSarjatiedot::TallennaSarjat(void)
 						if (kilpparam.maxnosuus == 1) {
 							Sarjat[srj].ntosuus = SG1->Cells[col][ir].ToInt();
 							if (Sarjat[srj].ntosuus > kilpparam.n_os_akt) {
-								Application->MessageBoxW((UnicodeString(L"Kilpailun osuusluvuksi on määritelty ")+
-									UnicodeString(kilpparam.n_os_akt)).c_str(), L"Rajoitus", MB_OK);
+								Application->MessageBoxW((UnicodeString(TR(L"Kilpailun osuusluvuksi on määritelty "))+
+									UnicodeString(kilpparam.n_os_akt)).c_str(), TR(L"Rajoitus"), MB_OK);
 								Sarjat[srj].ntosuus = kilpparam.n_os_akt;
 								}
 							Sarjat[srj].osuusluku = Sarjat[srj].ntosuus;
@@ -518,7 +520,7 @@ void __fastcall TFormSarjatiedot::FormClose(TObject *Sender, TCloseAction &Actio
 
 {
 	if (SG1->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			TallennaSarjat();
 			}
@@ -532,7 +534,7 @@ void __fastcall TFormSarjatiedot::SG1DblClick(TObject *Sender)
 {
 
 	if (SG1->Options.Contains(goEditing)) {
-		if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+		if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 			MB_YESNO) == IDYES) {
 			TallennaSarjat();
 			}
@@ -606,7 +608,7 @@ void __fastcall TFormSarjatiedot::SG1KeyDown(TObject *Sender, WORD &Key, TShiftS
 	cc = aktcol;
 	if (Key == VK_F9 && !Shift.Contains(ssShift) && !Shift.Contains(ssCtrl) && !Shift.Contains(ssAlt)) {
 		if (SG1->Options.Contains(goEditing)) {
-			if (Application->MessageBox(L"Tallennetaanko mahdolliset muutokset?", L"Tallenna",
+			if (Application->MessageBox(TR(L"Tallennetaanko mahdolliset muutokset?"), TR(L"Tallenna"),
 				MB_YESNO) == IDYES) {
 				TallennaSarjat();
 				}
@@ -927,7 +929,7 @@ void __fastcall TFormSarjatiedot::Kirjoitacsvtiedostoon1Click(TObject *Sender)
 
 	SaveDialog1->FileName = UnicodeString(L"sarjat.csv");
 	SaveDialog1->DefaultExt = L"csv";
-	SaveDialog1->Filter = L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	SaveDialog1->Filter = TR(L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (SaveDialog1->Execute()) {
 		OutFl = new TextFl(SaveDialog1->FileName.c_str(), L"wt");
 		if (OutFl->IsOpen()) {
@@ -1108,7 +1110,7 @@ void __fastcall TFormSarjatiedot::Luecsvtiedostosta1Click(TObject *Sender)
 
 	OpenDialog1->FileName = UnicodeString(L"sarjat.csv");
 	OpenDialog1->DefaultExt = L"csv";
-	OpenDialog1->Filter = L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		InFl = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 		while (InFl->IsOpen() && !InFl->Feof()) {
@@ -1164,7 +1166,7 @@ void __fastcall TFormSarjatiedot::Kiinteitsarakkeita11Click(TObject *Sender)
 {
 	int FC = SG1->FixedCols;
 	wchar_t ret;
-	inputint_prompt(&FC, L"Anna kiinteiden sarakkeiden luku (1..8)", &ret, this);
+	inputint_prompt(&FC, TR(L"Anna kiinteiden sarakkeiden luku (1..8)"), &ret, this);
 	if (ret != ESC) {
 		if (FC < 1)
 			FC = 1;
@@ -1173,7 +1175,7 @@ void __fastcall TFormSarjatiedot::Kiinteitsarakkeita11Click(TObject *Sender)
 		if (FC > SG1->ColCount)
 			FC = SG1->ColCount;
 		SG1->FixedCols = FC;
-		Kiinteitsarakkeita11->Caption = L"Kiinteitä sarakkeita "+UnicodeString(FC);
+		Kiinteitsarakkeita11->Caption = TR(L"Kiinteitä sarakkeita ")+UnicodeString(FC);
 		}
 }
 //---------------------------------------------------------------------------

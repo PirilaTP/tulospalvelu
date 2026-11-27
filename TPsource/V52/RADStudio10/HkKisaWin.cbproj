@@ -759,6 +759,9 @@
         <CppCompile Include="..\cbHk\WinParamXml.cpp">
             <BuildOrder>117</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\cbTp\cbKielet.cpp">
+            <BuildOrder>150</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\cbTp\cbTpApu.cpp">
             <BuildOrder>106</BuildOrder>
         </CppCompile>
@@ -1044,6 +1047,10 @@
         <CppCompile Include="HkKisaWin.cpp">
             <BuildOrder>0</BuildOrder>
         </CppCompile>
+        <ResourceCompile Include="..\kielet\kielet.rc">
+            <Form>kielet.res</Form>
+            <BuildOrder>151</BuildOrder>
+        </ResourceCompile>
         <CppCompile Include="..\Tp\mtrand.cpp">
             <BuildOrder>97</BuildOrder>
         </CppCompile>

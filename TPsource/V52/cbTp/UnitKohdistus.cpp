@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitKohdistus.h"
 #include "UnitKartta.h"
@@ -31,6 +32,7 @@ bool rastiKoord(wchar_t *tunnus, double *y, double *x);
 __fastcall TFormKohdistus::TFormKohdistus(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -205,7 +207,7 @@ void __fastcall TFormKohdistus::Button4Click(TObject *Sender)
 void __fastcall TFormKohdistus::FormShow(TObject *Sender)
 {
 	if (!FormKartta->Image1 || FormKartta->Image1->Width < 10 || !rastikoord[0].tunnus[0]) {
-		Application->MessageBoxW(L"Karttaa tai rastikoordinaatteja ei ladattuna", L"Este", MB_OK);
+		Application->MessageBoxW(TR(L"Karttaa tai rastikoordinaatteja ei ladattuna"), TR(L"Este"), MB_OK);
 		Close();
 		return;
 		}
@@ -289,8 +291,8 @@ void __fastcall TFormKohdistus::Button2Click(TObject *Sender)
 {
 	if (FormRadat) {
 		FormRadat->nayta_koordinaatit();
-		Application->MessageBoxW(L"Muutosten tallentaminen tiedostoon on tehtävä kaavakkella Ratatiedot",
-			L"Ohje", MB_OK);
+		Application->MessageBoxW(TR(L"Muutosten tallentaminen tiedostoon on tehtävä kaavakkella Ratatiedot"),
+			TR(L"Ohje"), MB_OK);
 		}
 }
 //---------------------------------------------------------------------------

@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 #include <ctype.h>
 
 #include "WinHk.h"
@@ -31,10 +32,10 @@ TFormSeurat *FormSeurat;
 extern TEditDialog *EditDialog;
 
 ColTp SraGridCols0[] = {
-	{L"Piiri", 40, 0, 1, 0, true},
-	{L"Maa", 40, 0, 1, 0, false},
-	{L"Lyhenne", 80, 0, 1, 0, true},
-	{L"Nimi", 200, 0, 1, 0, true}
+	{N_(L"Piiri"), 40, 0, 1, 0, true},
+	{N_(L"Maa"), 40, 0, 1, 0, false},
+	{N_(L"Lyhenne"), 80, 0, 1, 0, true},
+	{N_(L"Nimi"), 200, 0, 1, 0, true}
 };
 
 ColTp SraGridCols[sizeof(SraGridCols0)/sizeof(ColTp)];
@@ -44,6 +45,7 @@ static wchar_t erotin[8] = L" ;\t";
 __fastcall TFormSeurat::TFormSeurat(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -70,7 +72,7 @@ void __fastcall TFormSeurat::KirjSeurat(UnicodeString FName)
 		SaveDialog1->InitialDir = FormMain->CurrentDir;
 		SaveDialog1->FileName = UnicodeString(seuraTiedNm);
 		SaveDialog1->DefaultExt = L"csv";
-		SaveDialog1->Filter = L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute())
 			FName = SaveDialog1->FileName;
 		}
@@ -122,7 +124,7 @@ int __fastcall TFormSeurat::LueSeurat(UnicodeString FName)
 		OpenDialog1->InitialDir = FormMain->CurrentDir;
 		OpenDialog1->FileName = UnicodeString(L"seuraTiedNm");
 		OpenDialog1->DefaultExt = L"csv";
-		OpenDialog1->Filter = L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+		OpenDialog1->Filter = TR(L"Teksti/csv-tiedosto (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 		if (OpenDialog1->Execute()) {
 			FName = OpenDialog1->FileName;
 			}
@@ -213,7 +215,7 @@ int __fastcall TFormSeurat::NaytaSeurat(wchar_t *alain, wchar_t *ylain)
 			if (n+1 > SraGrid->ColCount)
 				SraGrid->ColCount = n+1;
 			SraGridCols[i].Order = n;
-			SraGrid->Cells[n][0] = UnicodeString(SraGridCols[i].Caption);
+			SraGrid->Cells[n][0] = UnicodeString(TR(SraGridCols[i].Caption));
 			SraGrid->Cells[n][1] = UnicodeString(L"");
 			SraGrid->ColWidths[n] = SraGridCols[i].Width * Screen->PixelsPerInch / 96;
 			n += 1;

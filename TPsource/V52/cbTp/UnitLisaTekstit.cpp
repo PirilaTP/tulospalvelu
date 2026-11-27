@@ -18,6 +18,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitLisaTekstit.h"
 #ifndef MAXOSUUSLUKU
@@ -37,6 +38,7 @@ extern lisatxttp lisatxt[4];
 __fastcall TFormLisaTekstit::TFormLisaTekstit(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -61,7 +63,7 @@ void __fastcall TFormLisaTekstit::Luetekstit1Click(TObject *Sender)
 	TextFl *inFile;
 	OpenDialog1->FileName = FormMain->CurrentDir+UnicodeString(L"\\lisatekstit.csv");
 	OpenDialog1->DefaultExt = L"csv";
-	OpenDialog1->Filter = L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*";
+	OpenDialog1->Filter = TR(L"Csv-tiedostot (*.csv)|*.CSV|Kaikki tiedostot (*.*)|*.*");
 	if (OpenDialog1->Execute()) {
 		inFile = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 

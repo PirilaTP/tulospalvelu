@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "UnitImport.h"
 #include <bstrings.h>
@@ -121,6 +122,7 @@ void kilptietue::SiirraPvEhdoin(kilppvtp *Pv, int ipv)
 __fastcall TFormImport::TFormImport(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 	Scaled = false;
 	if (Screen->PixelsPerInch != 96) {
 		ScaleBy(Screen->PixelsPerInch, 96);
@@ -798,8 +800,8 @@ int tulkIrmaRivi(wchar_t *iBuf, kilptietue *kilp, int rNo, wchar_t erotin)
 		kilp->setSarjaAll(haesarja_w(st, false));
 		if (kilp->sarja < 0) {
 			kilp->setSarjaAll(sarjaluku-1);
-			Application->MessageBoxW((UnicodeString(L"Virheellinen sarja ")+
-				UnicodeString(st)).c_str(), L"Virhe", MB_OK);
+			Application->MessageBoxW((UnicodeString(TR(L"Virheellinen sarja "))+
+				UnicodeString(st)).c_str(), TR(L"Virhe"), MB_OK);
 			ret = ESC;
 			break;
 			}
@@ -958,8 +960,8 @@ int tulkIrmaRivi(wchar_t *iBuf, kilptietue *kilp, int rNo, wchar_t erotin)
 			kilp->sarja = haesarja_w(st, false);
 			if (kilp->sarja < 0) {
 				kilp->sarja = sarjaluku-1;
-				Application->MessageBoxW((UnicodeString(L"Virheellinen sarja ")+
-					UnicodeString(st)).c_str(), L"Virhe", MB_OK);
+				Application->MessageBoxW((UnicodeString(TR(L"Virheellinen sarja "))+
+					UnicodeString(st)).c_str(), TR(L"Virhe"), MB_OK);
 				return(ESC);
 				}
 //			kilp->synt = _wtoi(fields[2]);
@@ -1004,8 +1006,8 @@ int tulkIrmaRivi(wchar_t *iBuf, kilptietue *kilp, int rNo, wchar_t erotin)
 				kilp->setSarjaAll(srj);
 			else {
 				kilp->setSarjaAll(sarjaluku-1);
-				Application->MessageBoxW((UnicodeString(L"Virheellinen sarja ")+
-					UnicodeString(st)).c_str(), L"Virhe", MB_OK);
+				Application->MessageBoxW((UnicodeString(TR(L"Virheellinen sarja "))+
+					UnicodeString(st)).c_str(), TR(L"Virhe"), MB_OK);
 				ret = ESC;
 				break;
 				}
@@ -1111,7 +1113,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 			erotin = erottimet[CBerotin->ItemIndex];
 
 			OpenDialog1->DefaultExt = L"csv";
-			OpenDialog1->Filter = L"Teksti/csv-tiedostot (*.csv), *.txt|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TR(L"Teksti/csv-tiedostot (*.csv), *.txt|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 			if (OpenDialog1->Execute()) {
 				InFile = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 				if (InFile->IsOpen()) {
@@ -1157,7 +1159,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 					delete[] exp_kentat_local;
 					}
 				else {
-					Application->MessageBoxW(L"Tiedoston avaaminen ei onnistunut", L"Este", MB_OK);
+					Application->MessageBoxW(TR(L"Tiedoston avaaminen ei onnistunut"), TR(L"Este"), MB_OK);
 					}
 				delete InFile;
 				}
@@ -1166,7 +1168,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 			n = -nilmt;
 			sailTiedPos = CBsailPos->Checked;
 			OpenDialog1->DefaultExt = L"xml";
-			OpenDialog1->Filter = L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*");
 			if (OpenDialog1->Execute()) {
 				if (RGXMLLaji->ItemIndex == 1)
 					lueEventXml(OpenDialog1->FileName.c_str(), false, false, true);
@@ -1179,7 +1181,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 			erotin = erottimet[CBerotin->ItemIndex];
 
 			OpenDialog1->DefaultExt = L"csv";
-			OpenDialog1->Filter = L"Teksti/csv-tiedostot (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TR(L"Teksti/csv-tiedostot (*.csv, *.txt)|*.csv;*.txt|Kaikki tiedostot (*.*)|*.*");
 			if (OpenDialog1->Execute()) {
 				InFile = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 				if (InFile->IsOpen()) {
@@ -1200,14 +1202,14 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 					LeaveCriticalSection(&tall_CriticalSection);
 					}
 				else {
-					Application->MessageBoxW(L"Tiedoston avaaminen ei onnistunut", L"Este", MB_OK);
+					Application->MessageBoxW(TR(L"Tiedoston avaaminen ei onnistunut"), TR(L"Este"), MB_OK);
 					}
 				delete InFile;
 				}
 			break;
 		case 3:
 			OpenDialog1->DefaultExt = L"dat";
-			OpenDialog1->Filter = L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TR(L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*");
 			if (OpenDialog1->Execute()) {
 				kilpparam_v.n_pv = n_pv_v;
 				kilpparam_v.n_pv_va = n_pv_v;
@@ -1223,7 +1225,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 			irmaflds[6].pos = RGmaa->ItemIndex;
 			OpenDialog1->DefaultExt = L"txt";
 			OpenDialog1->FileName = L"Ilmoittautumiset.csv";
-			OpenDialog1->Filter = L"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TR(L"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*");
 			if (OpenDialog1->Execute()) {
 
 				InFile = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
@@ -1245,7 +1247,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 								}
 							OpenDialog2->DefaultExt = L"csv";
 							OpenDialog2->FileName = seuraTiedNm;
-							OpenDialog2->Filter = L"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*";
+							OpenDialog2->Filter = TR(L"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*");
 							if (OpenDialog2->Execute()) {
 								SeuraFile = new TextFl(OpenDialog2->FileName.c_str(), L"rt");
 								if (SeuraFile && !SeuraFile->IsOpen()) {
@@ -1300,7 +1302,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 							}
 						}
 					if (nTiedRivi == 0) {
-						Application->MessageBoxW(L"Tiedostosta ei löytynyt osanottajatietoja", L"Virhe", MB_OK);
+						Application->MessageBoxW(TR(L"Tiedostosta ei löytynyt osanottajatietoja"), TR(L"Virhe"), MB_OK);
 						delete InFile;
 						return;
 						}
@@ -1330,12 +1332,12 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 						}
 					if (n == 0 || n < nTiedRivi) {
 						wchar_t msg[200];
-						swprintf(msg, L"Tiedostossa %d riviä, joista luettu %d osanottajaa. "
+						swprintf(msg, TR(L"Tiedostossa %d riviä, joista luettu %d osanottajaa. "
 							L"Tallennetaanko puutteellisen luennan tiedot? "
-							L"(Ellei tallenneta, voidaan lukeminen aloitta alusta, kun ongelma on korjattu.)", nTiedRivi, n);
+							L"(Ellei tallenneta, voidaan lukeminen aloitta alusta, kun ongelma on korjattu.)"), nTiedRivi, n);
 						if (n > 0)
-							vast = select3(2, msg, L"Luenta puutteellinen", L"Tallenna luetut tiedot",
-								L"Jätä tallentamatta", L"", this);
+							vast = select3(2, msg, TR(L"Luenta puutteellinen"), TR(L"Tallenna luetut tiedot"),
+								TR(L"Jätä tallentamatta"), L"", this);
 						if (n == 0 || vast == 2) {
 							vast = ESC;
 							delete InFile;
@@ -1351,7 +1353,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 					delete[] temparr;
 					}
 				else {
-					Application->MessageBoxW(L"Tiedoston avaaminen ei onnistunut", L"Este", MB_OK);
+					Application->MessageBoxW(TR(L"Tiedoston avaaminen ei onnistunut"), TR(L"Este"), MB_OK);
 					}
 				delete InFile;
 				}
@@ -1360,7 +1362,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 			erotin = erottimet[CBerotin->ItemIndex];
 
 			OpenDialog1->DefaultExt = L"txt";
-			OpenDialog1->Filter = L"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*";
+			OpenDialog1->Filter = TR(L"Teksti/csv-tiedostot (*.txt, *.csv)|*.txt;*.csv|Kaikki tiedostot (*.*)|*.*");
 			if (OpenDialog1->Execute()) {
 				InFile = new TextFl(OpenDialog1->FileName.c_str(), L"rt");
 				if (InFile->IsOpen()) {
@@ -1373,7 +1375,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 							}
 						}
 					if (nTiedRivi == 0) {
-						Application->MessageBoxW(L"Tiedostosta ei löytynyt osanottajatietoja", L"Virhe", MB_OK);
+						Application->MessageBoxW(TR(L"Tiedostosta ei löytynyt osanottajatietoja"), TR(L"Virhe"), MB_OK);
 						delete InFile;
 						return;
 						}
@@ -1393,12 +1395,12 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 						}
 					if (n == 0 || n < nTiedRivi) {
 						wchar_t msg[200];
-						swprintf(msg, L"Tiedostossa %d riviä, joista luettu %d osanottajaa. "
+						swprintf(msg, TR(L"Tiedostossa %d riviä, joista luettu %d osanottajaa. "
 							L"Tallennetaanko puutteellisen luennan tiedot? "
-							L"(Ellei tallenneta, voidaan lukeminen aloitta alusta, kun ongelma on korjattu.)", nTiedRivi, n);
+							L"(Ellei tallenneta, voidaan lukeminen aloitta alusta, kun ongelma on korjattu.)"), nTiedRivi, n);
 						if (n > 0)
-							vast = select3(2, msg, L"Luenta puutteellinen", L"Tallenna luetut tiedot",
-								L"Jätä tallentamatta", L"", this);
+							vast = select3(2, msg, TR(L"Luenta puutteellinen"), TR(L"Tallenna luetut tiedot"),
+								TR(L"Jätä tallentamatta"), L"", this);
 						if (n == 0 || vast == 2) {
 							vast = ESC;
 							delete InFile;
@@ -1414,7 +1416,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 					delete[] temparr;
 					}
 				else {
-					Application->MessageBoxW(L"Tiedoston avaaminen ei onnistunut", L"Este", MB_OK);
+					Application->MessageBoxW(TR(L"Tiedoston avaaminen ei onnistunut"), TR(L"Este"), MB_OK);
 					}
 				delete InFile;
 				}
@@ -1428,7 +1430,7 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 				}
 			if (FormMySQL->SQLConnection1->Connected) {
 				n = lue_SQL();
-				Application->MessageBoxW(L"Tiedot luettu", L"Valmis", MB_OK);
+				Application->MessageBoxW(TR(L"Tiedot luettu"), TR(L"Valmis"), MB_OK);
 				}
 			break;
 		}
@@ -1438,12 +1440,12 @@ void __fastcall TFormImport::Button1Click(TObject *Sender)
 	EditLuettu->Text = UnicodeString(n);
 	EditLuettuTot->Text = UnicodeString(ntot);
 	if (n > 1 && ((laikaerot > SEK && !pvparam[k_pv].hiihtolahto) || laikaerot > n * 3 * SEK))
-		Application->MessageBoxW(L"Toteutunnet lähtöajat eroavat odottamattomasti arvotuista. Tarkasta tiedot", L"Varoitus", MB_OK);
+		Application->MessageBoxW(TR(L"Toteutunnet lähtöajat eroavat odottamattomasti arvotuista. Tarkasta tiedot"), TR(L"Varoitus"), MB_OK);
 	if (vast == ESC) {
-		Application->MessageBoxW(L"Toiminto keskeytetty mahdolliseen virheeseen", L"Valmis", MB_OK);
+		Application->MessageBoxW(TR(L"Toiminto keskeytetty mahdolliseen virheeseen"), TR(L"Valmis"), MB_OK);
 		}
 	else
-		Application->MessageBoxW(L"Toiminto suoritettu", L"Valmis", MB_OK);
+		Application->MessageBoxW(TR(L"Toiminto suoritettu"), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormImport::FormShow(TObject *Sender)

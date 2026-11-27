@@ -17,6 +17,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include "cbKielet.h"
 
 #include "WinHk.h"
 #include "UnitExport.h"
@@ -33,6 +34,7 @@ extern bool kirjXMLkaikki;
 __fastcall TFormExport::TFormExport(TComponent* Owner)
 	: TForm(Owner)
 {
+	kaannaLomake(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormExport::RGLajiClick(TObject *Sender)
@@ -413,8 +415,8 @@ void TFormExport::kirjCsv(wchar_t *flname)
 	delete outfl;
 	if (ind.ix)
 		poistaindeksi(&ind);
-	Application->MessageBoxW((UnicodeString(L"Kirjoitettu ")+UnicodeString(nrv)+
-		L" tietuetta").c_str(), L"Valmis", MB_OK);
+	Application->MessageBoxW((UnicodeString(TR(L"Kirjoitettu "))+UnicodeString(nrv)+
+		TR(L" tietuetta")).c_str(), TR(L"Valmis"), MB_OK);
 }
 //---------------------------------------------------------------------------
 void TFormExport::kirjSQL(void)
@@ -450,8 +452,8 @@ void TFormExport::kirjSQL(void)
 	LeaveCriticalSection(&tall_CriticalSection);
 	EdtSQLlkm->Text = UnicodeString(nrv);
 	EdtSQLlkm->Refresh();
-	Application->MessageBoxW((UnicodeString(L"Kirjoitettu ")+UnicodeString(nrv)+
-		L" tietuetta").c_str(), L"Valmis", MB_OK);
+	Application->MessageBoxW((UnicodeString(TR(L"Kirjoitettu "))+UnicodeString(nrv)+
+		TR(L" tietuetta")).c_str(), TR(L"Valmis"), MB_OK);
 }
 
 //---------------------------------------------------------------------------
@@ -488,7 +490,7 @@ int TFormExport::kirjKilpDat(wchar_t *fname, int rajaus)
 void __fastcall TFormExport::Button1Click(TObject *Sender)
 {
 	if (RGLaji->ItemIndex < 0) {
-		Application->MessageBoxW(L"Valitse tiedoston tyyppi", L"Valitse", MB_OK);
+		Application->MessageBoxW(TR(L"Valitse tiedoston tyyppi"), TR(L"Valitse"), MB_OK);
 		return;
 		}
 	kirjXMLkaikki = CBLaajennettu->Checked;
@@ -496,29 +498,29 @@ void __fastcall TFormExport::Button1Click(TObject *Sender)
 	SaveDialog1->InitialDir = FormMain->CurrentDir;
 	if (RGLaji->ItemIndex == 0) {
 		SaveDialog1->DefaultExt = L"xml";
-		SaveDialog1->Filter = L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"XML-tiedostot (*.xml)|*.XML|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute()) {
 			kirjEventXml(SaveDialog1->FileName.c_str() , CBXMLSarjat->Checked,
 				CBXMLRadat->Checked, CBXMLKilpailijat->Checked);
-			Application->MessageBoxW(L"Tiedosto kirjoitettu", L"Valmis", MB_OK);
+			Application->MessageBoxW(TR(L"Tiedosto kirjoitettu"), TR(L"Valmis"), MB_OK);
 			}
 		}
 	if (RGLaji->ItemIndex == 1) {
 		SaveDialog1->DefaultExt = L"csv";
-		SaveDialog1->Filter = L"CSV-tiedostot (*.csv)|*.csv|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"CSV-tiedostot (*.csv)|*.csv|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute()) {
 			kirjCsv(SaveDialog1->FileName.c_str());
 			}
 		}
 	if (RGLaji->ItemIndex == 2) {
 		kirjsarjat();
-		Application->MessageBoxW(L"Tiedosto kirjoitettu", L"Valmis", MB_OK);
+		Application->MessageBoxW(TR(L"Tiedosto kirjoitettu"), TR(L"Valmis"), MB_OK);
 		}
 	if (RGLaji->ItemIndex == 3) {
 		if (!FormMySQL)
 			FormMySQL = new TFormMySQL(FormMain);
 		if (!FormMySQL->SQLConnection1->Connected) {
-			Application->MessageBoxW(L"Tiedonsiirto käynnistyy, kun SQL-määritysikkuna suljetaan", L"", MB_OK);
+			Application->MessageBoxW(TR(L"Tiedonsiirto käynnistyy, kun SQL-määritysikkuna suljetaan"), L"", MB_OK);
 			FormMySQL->ShowModal();
 			}
 		if (FormMySQL->SQLConnection1->Connected) {
@@ -527,10 +529,10 @@ void __fastcall TFormExport::Button1Click(TObject *Sender)
 		}
 	if (RGLaji->ItemIndex == 4) {
 		SaveDialog1->DefaultExt = L"dat";
-		SaveDialog1->Filter = L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*";
+		SaveDialog1->Filter = TR(L"DAT-tiedostot (*.dat)|*.DAT|Kaikki tiedostot (*.*)|*.*");
 		if (SaveDialog1->Execute()) {
 			kirjKilpDat(SaveDialog1->FileName.c_str(), RGdatRajaus->ItemIndex);
-			Application->MessageBoxW(L"Tiedosto kirjoitettu", L"Valmis", MB_OK);
+			Application->MessageBoxW(TR(L"Tiedosto kirjoitettu"), TR(L"Valmis"), MB_OK);
 			}
 		}
 	SetCurrentDir(FormMain->CurrentDir);

@@ -1,0 +1,3 @@
+# Verksamhet under tävlingen
+
+
