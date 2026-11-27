@@ -100,10 +100,10 @@
     ]
   },
   "script_sha256": "2e7a94cfd64fbc04608f43784c783e4da2dafe1277901402193fc2fa2b2e54d9",
-  "fw_exe": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+  "fw_exe": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
   "firewall_commands": [
-    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block out' -Direction Outbound -Program 'C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any",
-    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block in' -Direction Inbound -Program 'C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any"
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block out' -Direction Outbound -Program 'C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any",
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block in' -Direction Inbound -Program 'C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any"
   ],
   "firewall": {
     "rules": [
@@ -112,7 +112,7 @@
         "Enabled": "True",
         "Action": "Block",
         "Direction": "Inbound",
-        "Program": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+        "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
         "Profile": "Any"
       },
       {
@@ -120,7 +120,7 @@
         "Enabled": "True",
         "Action": "Block",
         "Direction": "Outbound",
-        "Program": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+        "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
         "Profile": "Any"
       }
     ],
@@ -144,29 +144,29 @@
     {
       "Name": "Domain",
       "LogBlocked": "True",
-      "LogFileName": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+      "LogFileName": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
     },
     {
       "Name": "Private",
       "LogBlocked": "True",
-      "LogFileName": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+      "LogFileName": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
     },
     {
       "Name": "Public",
       "LogBlocked": "True",
-      "LogFileName": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+      "LogFileName": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
     }
   ],
   "logging_ok": true,
   "logging_commands": {
-    "on": "Set-NetFirewallProfile -Profile Domain,Private,Public -LogBlocked True -LogFileName 'C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log'",
+    "on": "Set-NetFirewallProfile -Profile Domain,Private,Public -LogBlocked True -LogFileName 'C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log'",
     "restore": "Set-NetFirewallProfile -Profile Domain,Private,Public -LogBlocked False -LogFileName '%systemroot%\\system32\\LogFiles\\Firewall\\pfirewall.log'"
   },
   "outside_paths": [
-    "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt",
-    "C:\\Users\\Niko-Petteri Salo\\tp_c11_outside_probe.txt",
-    "C:\\Users\\Niko-Petteri Salo\\Documents\\tp_c11_outside_probe.txt",
-    "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tp_c11_outside_probe.txt",
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt",
+    "C:\\Users\\kayttaja\\tp_c11_outside_probe.txt",
+    "C:\\Users\\kayttaja\\Documents\\tp_c11_outside_probe.txt",
+    "C:\\Users\\kayttaja\\AppData\\Local\\tp_c11_outside_probe.txt",
     "D:\\tp_c11_outside_probe.txt",
     "G:\\tp_c11_outside_probe.txt",
     "G:\\Oma Drive\\tp_c11_outside_probe.txt"
@@ -195,7 +195,7 @@
       "cwd": "isolated_or_ok|probe_result.txt created in the sandbox",
       "token": "info|restricted=1 integrity_rid=0x2000 admin_member=0",
       "console": "isolated_or_ok|key X received",
-      "outside": "isolated_or_ok|C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\Documents\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tp_c11_outside_probe.txt refused 5; D:\\tp_c11_outside_probe.txt refused 5; G:\\tp_c11_outside_probe.txt refused 5; G:\\Oma Drive\\tp_c11_outside_probe.txt refused 5;",
+      "outside": "isolated_or_ok|C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\Documents\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\AppData\\Local\\tp_c11_outside_probe.txt refused 5; D:\\tp_c11_outside_probe.txt refused 5; G:\\tp_c11_outside_probe.txt refused 5; G:\\Oma Drive\\tp_c11_outside_probe.txt refused 5;",
       "wsastartup": "isolated_or_ok|WSAStartup=0",
       "loopback": "PROBLEM|connect 127.0.0.1:59325 -> CONNECTED, error 0 after 0 ms",
       "tcp_sent": "2026-11-24T20:40:11.988Z|dst=192.0.2.1:45332|src_port=59327",
@@ -230,7 +230,7 @@
   "outside_changes_not_noise": [],
   "outside_probe_file_exists": false,
   "registry_key_exists_after": false,
-  "sandbox": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw",
+  "sandbox": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw",
   "sandbox_files": {
     "HkMaali.exe": {
       "size": 134144,

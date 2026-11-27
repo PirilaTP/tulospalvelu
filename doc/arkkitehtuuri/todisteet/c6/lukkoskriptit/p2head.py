@@ -1,7 +1,7 @@
 BS=chr(92)
 import re,sys,os,json,collections
 ROOT='C:/dev/tulospalvelu/TPsource/V52'
-SP='C:/Users/NIKO-P~1/AppData/Local/Temp/claude/a25cf22582434270/5b064a44-a282-45a7-b0ea-7cf5eac38f0c/scratchpad/c6'
+SP='C:/Users/KAYTTA~1/AppData/Local/Temp/claude/a25cf22582434270/5b064a44-a282-45a7-b0ea-7cf5eac38f0c/scratchpad/c6'
 files={}
 # all files in the project list (built) from cs_prod_proj + any file in built dirs
 for l in open(SP+'/cs_prod_proj.txt',encoding='utf-8',errors='replace'):

@@ -38,7 +38,7 @@ kun ne esiintyvät. Älä etsi uusia vikoja.
 ## Tuotokset
 
 - Korjatut kortit.
-- `C:\Users\NIKO-P~1\AppData\Local\Temp\claude\a25cf22582434270\acb6ada1-4283-4682-805b-353a58fe6cff\scratchpad\k5korj\vaikutukset_<osa>.csv` ja `ohjelmat_<osa>.csv` (vain muuttuvat rivit).
+- `C:\Users\KAYTTA~1\AppData\Local\Temp\claude\a25cf22582434270\acb6ada1-4283-4682-805b-353a58fe6cff\scratchpad\k5korj\vaikutukset_<osa>.csv` ja `ohjelmat_<osa>.csv` (vain muuttuvat rivit).
 - Loppuraportti: osa 1 kohta kerrallaan (tehty / ei tehty, miksi); osa 2 virhetyyppi kerrallaan
   korjatut kortit; uudet ristiriidat rekisterin kanssa.
 

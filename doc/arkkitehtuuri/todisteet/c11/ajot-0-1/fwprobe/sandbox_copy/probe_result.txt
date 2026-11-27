@@ -1,6 +1,6 @@
 cwd=isolated_or_ok|probe_result.txt created in the sandbox
 console=isolated_or_ok|key X received
-outside=isolated_or_ok|C:\Users\NIKO-P~1\AppData\Local\Temp\tp_c11_outside_probe.txt refused 5; C:\Users\Niko-Petteri Salo\tp_c11_outside_probe.txt refused 5; C:\Users\Niko-Petteri Salo\Documents\tp_c11_outside_probe.txt refused 5; C:\Users\Niko-Petteri Salo\AppData\Local\tp_c11_outside_probe.txt refused 5; 
+outside=isolated_or_ok|C:\Users\KAYTTA~1\AppData\Local\Temp\tp_c11_outside_probe.txt refused 5; C:\Users\kayttaja\tp_c11_outside_probe.txt refused 5; C:\Users\kayttaja\Documents\tp_c11_outside_probe.txt refused 5; C:\Users\kayttaja\AppData\Local\tp_c11_outside_probe.txt refused 5; 
 wsastartup=isolated_or_ok|WSAStartup=0
 loopback=PROBLEM|connect 127.0.0.1:55105 -> CONNECTED, error 0 after 0 ms
 external=isolated_or_ok|connect 192.0.2.1:9 -> failed, error 10013 after 0 ms

@@ -1,7 +1,7 @@
 {
-  "run_json": "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\claude_c11s4\\run_v221\\run.json",
-  "fw_exe": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
-  "log_copy": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall_copy.log",
+  "run_json": "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\claude_c11s4\\run_v221\\run.json",
+  "fw_exe": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+  "log_copy": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall_copy.log",
   "log_copy_sha256": "a2a95c1987c6d8f1147db222af7d987463dc0e10c2991c20be5a082138f80ac6",
   "log_copy_mtime": "2026-11-24T22:43:21",
   "drop_entries_total": 16,
@@ -12,7 +12,7 @@
       "Enabled": "True",
       "Action": "Block",
       "Direction": "Inbound",
-      "Program": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+      "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
       "Profile": "Any"
     },
     {
@@ -20,7 +20,7 @@
       "Enabled": "True",
       "Action": "Block",
       "Direction": "Outbound",
-      "Program": "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+      "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
       "Profile": "Any"
     }
   ],

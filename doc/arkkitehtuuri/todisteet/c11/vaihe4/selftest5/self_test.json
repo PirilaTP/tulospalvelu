@@ -98,10 +98,10 @@
         }
       },
       "outside_paths": [
-        "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt",
-        "C:\\Users\\Niko-Petteri Salo\\tp_c11_outside_probe.txt",
-        "C:\\Users\\Niko-Petteri Salo\\Documents\\tp_c11_outside_probe.txt",
-        "C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tp_c11_outside_probe.txt",
+        "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt",
+        "C:\\Users\\kayttaja\\tp_c11_outside_probe.txt",
+        "C:\\Users\\kayttaja\\Documents\\tp_c11_outside_probe.txt",
+        "C:\\Users\\kayttaja\\AppData\\Local\\tp_c11_outside_probe.txt",
         "D:\\tp_c11_outside_probe.txt",
         "G:\\tp_c11_outside_probe.txt",
         "G:\\Oma Drive\\tp_c11_outside_probe.txt"
@@ -117,7 +117,7 @@
           "cwd": "isolated_or_ok|probe_result.txt created in the sandbox",
           "token": "info|restricted=1 integrity_rid=0x2000 admin_member=0",
           "console": "isolated_or_ok|key X received",
-          "outside": "isolated_or_ok|C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\Documents\\tp_c11_outside_probe.txt refused 5; C:\\Users\\Niko-Petteri Salo\\AppData\\Local\\tp_c11_outside_probe.txt refused 5; D:\\tp_c11_outside_probe.txt refused 5; G:\\tp_c11_outside_probe.txt refused 5; G:\\Oma Drive\\tp_c11_outside_probe.txt refused 5;",
+          "outside": "isolated_or_ok|C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\Documents\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\AppData\\Local\\tp_c11_outside_probe.txt refused 5; D:\\tp_c11_outside_probe.txt refused 5; G:\\tp_c11_outside_probe.txt refused 5; G:\\Oma Drive\\tp_c11_outside_probe.txt refused 5;",
           "wsastartup": "isolated_or_ok|WSAStartup=0",
           "loopback": "PROBLEM|connect 127.0.0.1:64493 -> CONNECTED, error 0 after 0 ms",
           "tcp_sent": "2026-11-24T20:33:33.461Z|dst=192.0.2.1:47205|src_port=64495",
@@ -155,10 +155,10 @@
       "wer_events_matching": [],
       "wer_dirs_changed": [],
       "outside_changes": [
-        "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_0.etl",
-        "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_1.etl",
-        "C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_2.etl",
-        "deleted: C:\\Users\\NIKO-P~1\\AppData\\Local\\Temp\\e61840b8-2c1b-4c2c-a559-1c84a2c4bd83.tmp"
+        "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_0.etl",
+        "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_1.etl",
+        "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_2.etl",
+        "deleted: C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\e61840b8-2c1b-4c2c-a559-1c84a2c4bd83.tmp"
       ]
     }
   },

@@ -1,7 +1,7 @@
 BS=chr(92)
 import re,sys,os,json,collections
 ROOT='C:/dev/tulospalvelu/TPsource/V52'
-SP='C:/Users/NIKO-P~1/AppData/Local/Temp/claude/a25cf22582434270/5b064a44-a282-45a7-b0ea-7cf5eac38f0c/scratchpad/c6'
+SP='C:/Users/KAYTTA~1/AppData/Local/Temp/claude/a25cf22582434270/5b064a44-a282-45a7-b0ea-7cf5eac38f0c/scratchpad/c6'
 files={}
 # all files in the project list (built) from cs_prod_proj + any file in built dirs
 for l in open(SP+'/cs_prod_proj.txt',encoding='utf-8',errors='replace'):
@@ -76,7 +76,7 @@ for f,proj in sorted(files.items()):
     res[f]=dict(proj=proj,funcs=funcs,ev=ev,s=s)
     lines=s
 import pickle
-pickle.dump(res,open('C:/Users/NIKO-P~1/AppData/Local/Temp/claude/a25cf22582434270/5b064a44-a282-45a7-b0ea-7cf5eac38f0c/scratchpad/c6b/scan.pkl','wb'))
+pickle.dump(res,open('C:/Users/KAYTTA~1/AppData/Local/Temp/claude/a25cf22582434270/5b064a44-a282-45a7-b0ea-7cf5eac38f0c/scratchpad/c6b/scan.pkl','wb'))
 # live lock hits
 cnt=collections.Counter();per=collections.defaultdict(collections.Counter)
 live=[]
@@ -87,7 +87,7 @@ for f,r in res.items():
             ln=s.count('\n',0,pos)+1
             live.append((f,ln,a,b,r['proj']))
             cnt[(a,b)]+=1
-open('C:/Users/NIKO-P~1/AppData/Local/Temp/claude/a25cf22582434270/5b064a44-a282-45a7-b0ea-7cf5eac38f0c/scratchpad/c6b/live.txt','w').write('\n'.join('%s:%d %s %s [%s]'%x for x in live))
+open('C:/Users/KAYTTA~1/AppData/Local/Temp/claude/a25cf22582434270/5b064a44-a282-45a7-b0ea-7cf5eac38f0c/scratchpad/c6b/live.txt','w').write('\n'.join('%s:%d %s %s [%s]'%x for x in live))
 print(len(live))
 c2=collections.Counter()
 for f,ln,a,b,pr in live:

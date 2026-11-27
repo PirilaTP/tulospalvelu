@@ -1,7 +1,7 @@
 #!/bin/sh
 # usage: build.sh <mode base|w4a> <name> <vcxproj> <config>
 MSB="/c/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/MSBuild/Current/Bin/amd64/MSBuild.exe"
-S=C:/Users/NIKO-P~1/AppData/Local/Temp/claude/a25cf22582434270/4e70ca9a-c468-40d9-9c1d-031b60074777/scratchpad/c4
+S=C:/Users/KAYTTA~1/AppData/Local/Temp/claude/a25cf22582434270/4e70ca9a-c468-40d9-9c1d-031b60074777/scratchpad/c4
 mode=$1; name=$2; proj=$3; cfg=$4
 out="$S/out/$mode/$name/$cfg/"
 extra="-p:ForceImportAfterCppTargets=$S/base.props"
