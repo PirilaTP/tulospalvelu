@@ -1880,7 +1880,8 @@ static void ecKoodiOnnistui(int r_no, int vanha, int koodi)
 }
 
 // Asettaa emiTag-aseman koodin lukijalle r_no cfg-avaimen SETECUCODE mukaan ja näyttää tuloksen.
-// Jos asemalla on jo haluttu koodi, mitään ei lähetetä eikä ilmoiteta.
+// Jos asemalla on jo haluttu koodi, koodia ei muuteta (/CD:tä ei lähetetä), mutta asemalle asetetaan
+// silti kellonaika ja tulos näytetään (ecKoodiOnnistui).
 static void ecAsetaKoodiAlussa(int r_no)
 {
 	int koodi = ecAsetaKoodi[r_no] != -1 ? ecAsetaKoodi[r_no] : ecAsetaKoodiKaikki;

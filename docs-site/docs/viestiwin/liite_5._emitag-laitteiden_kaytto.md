@@ -78,6 +78,7 @@ Kun koodi on asemalla oikein (joko jo ennestään tai asetuksen jälkeen), ohjel
 asettaa asemalle myös tietokoneen kellonajan ja tarkistaa aseman seuraavasta
 tilasanomasta, että aseman kello on enintään 3 sekuntia tietokoneen kellosta.
 Kelloa ei aseteta, jos asema ei vastaa tai koodin asetus epäonnistuu.
+Kello asetetaan joka kerta, kun koodin tarkistus onnistuu: myös ohjelman uudelleenkäynnistyksen ja TCP-yhteyden uudelleenyhdistämisen yhteydessä kesken kilpailun. Koodilla 248 (maalin ajanotto ECB1:llä) aseman kello antaa maaliajat, joten kellon asettaminen kesken kilpailun voi siirtää myöhempiä aikoja: /SC:n tarkkuus on sekunti ja tarkistus hyväksyy enintään 3 sekunnin eron. Kellon asettamista ei voi kytkeä erikseen pois.
 Tulos näkyy pääikkunan viestikentässä (konsolissa alarivillä), eikä virhe
 pysäytä lukijaa. Esimerkkejä viesteistä:
 
@@ -111,7 +112,7 @@ Koodit ja niiden merkitykset:
 
 | Koodi | Merkitys |
 |---|---|
-| 0–65 | Estää tiedonsiirron tai nollaa aseman. Vain erityiskäyttöön. |
+| 0–64 | Estää tiedonsiirron tai nollaa aseman. Vain erityiskäyttöön. |
 | 65–239 | Väliaikapiste: koodi on rastin numero. |
 | 240, 243 | Leimantarkastusmoodi, tuo 5 viimeisen päivän tiedot eli usein turhaakin tietoa. |
 | 244 | Hyväksytty koodi, jonka merkitystä ei ole kuvattu tässä ohjeessa. |
