@@ -100,6 +100,7 @@ __published:	// IDE-managed Components
 	TEdit *EdtMessage;
 	TEdit *EdtBdgMsg;
 	TMemo *MemoMessage;
+	TPanel *PnlMessage;
 	TMenuItem *Valitsekirjoitin1;
 	TMenuItem *Kirjoitintulosteet1;
 	TMenuItem *Kortintiedot1;

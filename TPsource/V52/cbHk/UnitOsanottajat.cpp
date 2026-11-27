@@ -21,6 +21,7 @@
 #include "UnitOsanottajat.h"
 #include "UnitKilpailijatiedot.h"
 #include "UnitSuodatus.h"
+#include "HkEnnTav.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -64,6 +65,8 @@ TFormOsanottajat *FormOsanottajat;
 #define COLIDVPist2		34
 #define COLIDTeksti		35
 #define COLIDSynt		36
+#define COLIDEnnatys	37
+#define COLIDTavoite	38
 
 
 ColTp OoGridCols0[] = {
@@ -103,7 +106,9 @@ ColTp OoGridCols0[] = {
 	{L"VPist-1", 45, 0, N_PV, 0, false},
 	{L"VPist-2", 45, 0, N_PV, 0, false},
 	{L"Teksti", 80, 0, N_PV, 0, false},
-	{L"Synt", 40, 0, 1, 0, false}
+	{L"Synt", 40, 0, 1, 0, false},
+	{L"Ennätys", 60, 0, N_PV, 0, false},
+	{L"Tavoite", 60, 0, N_PV, 0, false}
 };
 
 ColTp OoGridCols[sizeof(OoGridCols0)/sizeof(ColTp)];
@@ -303,6 +308,14 @@ void __fastcall TFormOsanottajat::KilpKey(int d, char * key)
 			key[0] = (char) Sarjat[kilp->Sarja(Oo_Jrjpv)].lno[Oo_Jrjpv];
 			AIKATOSTRS(key+1, kilp->TLahto(Oo_Jrjpv), t0);
 			break;
+		case 17:
+			ennTavAvain(key, kilp->pv[Oo_Jrjpv].enn);
+			keyfromwname(key+ENNTAV_AVAIN, kilp->nimi(st, 60, false), 60, 0);
+			break;
+		case 18:
+			ennTavAvain(key, kilp->pv[Oo_Jrjpv].tav);
+			keyfromwname(key+ENNTAV_AVAIN, kilp->nimi(st, 60, false), 60, 0);
+			break;
 		}
 }
 //---------------------------------------------------------------------------
@@ -368,6 +381,8 @@ void __fastcall TFormOsanottajat::setOoGrid(void)
 	OoGridCols[COLIDVPist1].Visible = Vaihepist11->Checked;
 	OoGridCols[COLIDVPist2].Visible = Vaihepist21->Checked;
 	OoGridCols[COLIDSynt].Visible = Synt1->Checked;
+	OoGridCols[COLIDEnnatys].Visible = Ennatys1->Checked;
+	OoGridCols[COLIDTavoite].Visible = Tavoite1->Checked;
 	OoGrid->RowCount = 1;
 	OoGrid->DefaultRowHeight = 20 * Screen->PixelsPerInch / 96;
 	if (OoGrid->FixedCols > 5)
@@ -658,6 +673,20 @@ void __fastcall TFormOsanottajat::naytaTiedot(void)
 					case COLIDSynt:
 						OoGrid->Cells[col][k] = UnicodeString(Kilp->synt);
 						break;
+					case COLIDEnnatys:
+						for (int ipv = 0; ipv < npv; ipv++) {
+							ColIx[col+ipv] = i;
+							ColPv[col+ipv] = ipv;
+							OoGrid->Cells[col+ipv][k] = ennTavTeksti(line, Kilp->pv[epv+ipv].enn);
+							}
+						break;
+					case COLIDTavoite:
+						for (int ipv = 0; ipv < npv; ipv++) {
+							ColIx[col+ipv] = i;
+							ColPv[col+ipv] = ipv;
+							OoGrid->Cells[col+ipv][k] = ennTavTeksti(line, Kilp->pv[epv+ipv].tav);
+							}
+						break;
 					}
 				}
 			}
@@ -891,6 +920,18 @@ int __fastcall TFormOsanottajat::tallennaTiedot(void)
 						case COLIDTeksti:
 							for (int ipv = 0; ipv < npv; ipv++)
 								wcsncpy(Kilp.pv[epv+ipv].txt, OoGrid->Cells[col+ipv][k].c_str(), sizeof(Kilp.pv[epv+ipv].txt)/2-1);
+							break;
+						case COLIDEnnatys:
+							for (int ipv = 0; ipv < npv; ipv++) {
+								if (ennTavMuutettu(OoGrid->Cells[col+ipv][k].c_str(), Kilp.pv[epv+ipv].enn))
+									Kilp.pv[epv+ipv].enn = wstrtoaika_vap(OoGrid->Cells[col+ipv][k].c_str(), 0);
+								}
+							break;
+						case COLIDTavoite:
+							for (int ipv = 0; ipv < npv; ipv++) {
+								if (ennTavMuutettu(OoGrid->Cells[col+ipv][k].c_str(), Kilp.pv[epv+ipv].tav))
+									Kilp.pv[epv+ipv].tav = wstrtoaika_vap(OoGrid->Cells[col+ipv][k].c_str(), 0);
+								}
 							break;
 						}
 					}
@@ -1150,6 +1191,11 @@ int __fastcall TFormOsanottajat::paivitaMuutos(int col, int row)
 			break;
 		case COLIDTeksti:
 			OoGrid->Cells[col][k] = OoGrid->Cells[col][k].SubString(1, sizeof(Kilp.pv[0].txt)/2-1);
+			break;
+		case COLIDEnnatys:
+		case COLIDTavoite:
+			tl = wstrtoaika_vap(OoGrid->Cells[col][k].c_str(), 0);
+			OoGrid->Cells[col][k] = ennTavTeksti(line, tl);
 			break;
 		}
 	OoGrid->Refresh();
@@ -1450,6 +1496,12 @@ void __fastcall TFormOsanottajat::OoGridFixedCellClick(TObject *Sender, int ACol
 			case COLIDMaa:
 				CBJarjestys->ItemIndex = 15;
 				break;
+			case COLIDEnnatys:
+				CBJarjestys->ItemIndex = 17;
+				break;
+			case COLIDTavoite:
+				CBJarjestys->ItemIndex = 18;
+				break;
 			default:
 				return;
 			}
@@ -1638,6 +1690,8 @@ void __fastcall TFormOsanottajat::initOoGrid(void)
 	Vaihepist11->Checked = OoGridCols[COLIDVPist1].Visible;
 	Vaihepist21->Checked = OoGridCols[COLIDVPist2].Visible;
 	Synt1->Checked = OoGridCols[COLIDSynt].Visible;
+	Ennatys1->Checked = OoGridCols[COLIDEnnatys].Visible;
+	Tavoite1->Checked = OoGridCols[COLIDTavoite].Visible;
 }
 //---------------------------------------------------------------------------
 
@@ -1865,6 +1919,20 @@ void __fastcall TFormOsanottajat::Vaihepist11Click(TObject *Sender)
 void __fastcall TFormOsanottajat::Vaihepist21Click(TObject *Sender)
 {
 	Vaihepist21->Checked = !Vaihepist21->Checked;
+	naytaTiedot();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormOsanottajat::Ennatys1Click(TObject *Sender)
+{
+	Ennatys1->Checked = !Ennatys1->Checked;
+	naytaTiedot();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormOsanottajat::Tavoite1Click(TObject *Sender)
+{
+	Tavoite1->Checked = !Tavoite1->Checked;
 	naytaTiedot();
 }
 //---------------------------------------------------------------------------

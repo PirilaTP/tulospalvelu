@@ -1006,6 +1006,10 @@
         <CppCompile Include="..\Hk\HkIx.cpp">
             <BuildOrder>36</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\Hk\HkEnnTav.cpp">
+            <DependentOn>..\Hk\HkEnnTav.h</DependentOn>
+            <BuildOrder>149</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\Hk\HkMuotoilu.cpp">
             <DependentOn>..\Hk\HkMuotoilu.h</DependentOn>
             <BuildOrder>134</BuildOrder>

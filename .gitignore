@@ -14,3 +14,6 @@ obj
 TpTest
 TpTest.exe
 build-logs
+
+# Working document tracking changes to the GitHub issue (#97)
+doc/rest-api-issue.md

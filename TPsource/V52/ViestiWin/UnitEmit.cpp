@@ -351,6 +351,25 @@ void __fastcall TFormEmit::PeruutaMuutokset(void)
 	Tietue = Tietue_0;
 }
 //---------------------------------------------------------------------------
+// Rinnakkaisosuus, saanto "vain ensimmainen maaliin tullut ratkaisee":
+// kerrotaan vain, jos kilpailija on ensimmaisena maalissa ja tila on esitys (hylkays tai
+// keskeytys ratkaisee joukkueen osuuden).
+static void NaytaRinnakkaisInfo(TMemo *Memo, kilptietue &Kilp, int Osuus, bool esitys)
+{
+	UnicodeString Txt = L"";
+
+	if (Kilp.kilpno >= minkilpno && Osuus >= 0) {
+		int yos = Sarjat[Kilp.sarja].yosuus[Osuus];
+		if (Sarjat[Kilp.sarja].nosuus[yos] > 1 && Sarjat[Kilp.sarja].ekaMaaliRatkaisee[yos]) {
+			if (esitys && Kilp.ekaMaaliOsuus(yos, 0) == Osuus)
+				Txt = L"Ensimm\u00e4inen maalissa.  "
+					L"T\u00e4m\u00e4n henkil\u00f6n tulos ratkaiseva joukkueen tuloksessa.";
+			}
+		}
+	Memo->Text = Txt;
+	Memo->Parent->Visible = !Txt.IsEmpty();
+}
+//---------------------------------------------------------------------------
 void __fastcall TFormEmit::NaytaKilp(void)
 {
 	wchar_t st[60] = L"";
@@ -420,6 +439,7 @@ void __fastcall TFormEmit::NaytaKilp(void)
 			NollaaMessage();
 			}
 		}
+	NaytaRinnakkaisInfo(MemoMessage, Kilp, Osuus, TarkVal->ItemIndex == 2);
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormEmit::NaytaEmit(void)
@@ -1365,6 +1385,7 @@ void __fastcall TFormEmit::EdtRataChange(TObject *Sender)
 
 void __fastcall TFormEmit::TarkValChange(TObject *Sender)
 {
+	NaytaRinnakkaisInfo(MemoMessage, Kilp, Osuus, TarkVal->ItemIndex == 2);
 	OnkoMuutoksia();
 }
 //---------------------------------------------------------------------------

@@ -58,7 +58,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CONSOLE;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Tp;..\..\include;..\..\Tests;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Hk;..\..\Juk;..\..\Tp;..\..\include;..\..\Tests;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -75,7 +75,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CONSOLE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Tp;..\..\include;..\..\Tests;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Hk;..\..\Juk;..\..\Tp;..\..\include;..\..\Tests;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -94,6 +94,12 @@
     <ClCompile Include="..\..\Tp\SID3Punch.cpp" />
     <ClCompile Include="..\..\Tp\EmitBadge.cpp" />
     <ClCompile Include="..\..\tputilv2\T_time_l.cpp" />
+    <ClCompile Include="..\..\Tests\HkEnnTavTest.cpp" />
+    <ClCompile Include="..\..\Hk\HkEnnTav.cpp" />
+    <ClCompile Include="..\..\tputilv2\aikatowst_s.cpp" />
+    <ClCompile Include="..\..\tputilv2\putint_r.cpp" />
+    <ClCompile Include="..\..\Tests\VRinnakkaisOsuusTest.cpp" />
+    <ClCompile Include="..\..\Juk\VRinnakkaisOsuus.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\tptype.h" />
@@ -105,6 +111,8 @@
     <ClInclude Include="..\..\Tests\doctest.h" />
     <ClInclude Include="..\..\Tests\WideString.h" />
     <ClInclude Include="..\..\Tp\TpDef.h" />
+    <ClInclude Include="..\..\Juk\VRinnakkaisOsuus.h" />
+    <ClInclude Include="..\..\Hk\HkEnnTav.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

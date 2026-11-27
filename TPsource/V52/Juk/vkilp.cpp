@@ -19,6 +19,54 @@
 #else
 #include "VDeclare.h"
 #endif
+#include "VRinnakkaisOsuus.h"
+
+// Onko joukkueen paikalla os kilpailija (nimi, Emit-koodi tai aika), ks. PaikkaKaytossa
+static bool paikkaKaytossa(kilptietue *kilp, int os, int va)
+{
+	return(PaikkaKaytossa(kilp->ostiet[os].nimi,
+		kilp->ostiet[os].badge[0] != 0 || kilp->ostiet[os].badge[1] != 0,
+		kilp->Maali(os, va) != TMAALI0 || kilp->Maali(os, 0) != TMAALI0));
+}
+
+// Julkinen versio laskureita varten: tyhjat rinnakkaiset paikat (ei nimea, Emit-koodia
+// eika aikaa) eivat ole avoimia osanottajia
+bool onPaikkaKaytossa(kilptietue *kilp, int os)
+{
+	return(paikkaKaytossa(kilp, os, 0));
+}
+
+// Kerataan osuuden tosuus rinnakkaisten paikkojen tiedot ensimmainen maaliin
+// -paatoksia varten (ks. VRinnakkaisOsuus.h). tila saa paikkojen keskhyl-
+// merkinnat, jos se annetaan. Palauttaa paikkojen lukumaaran.
+static int keraaRinnakkaisTilat(kilptietue *kilp, int tosuus, int va, RinnakkaisTila *tilat, char *tila)
+{
+	int n = 0;
+	int alku = Sarjat[kilp->sarja].aosuus[tosuus] + 1;
+	int loppu = Sarjat[kilp->sarja].aosuus[tosuus+1];
+
+	for (int os = alku; os <= loppu && n < MAXOSUUSLUKU; os++, n++) {
+		tilat[n].onKilpailija = paikkaKaytossa(kilp, os, va);
+		tilat[n].onMaalissa = (kilp->Maali(os, va) != TMAALI0);
+		if (tilat[n].onMaalissa)
+			tilat[n].kulunutAika = (long)((kilp->Maali(os, va) - Sarjat[kilp->sarja].lahto + 48L*TUNTI) % (24L*TUNTI));
+		else
+			tilat[n].kulunutAika = 0;
+		if (tila)
+			tila[n] = kilp->ostiet[os].keskhyl;
+		}
+	return(n);
+}
+
+// Ensimmainen maaliin -saannon osuuden tila, ks. EkaMaaliOsuudenTila
+static char ekaMaaliTila(kilptietue *kilp, int tosuus)
+{
+	RinnakkaisTila tilat[MAXOSUUSLUKU];
+	char tila[MAXOSUUSLUKU];
+	int n = keraaRinnakkaisTilat(kilp, tosuus, 0, tilat, tila);
+
+	return(EkaMaaliOsuudenTila(tilat, tila, n));
+}
 
 void vatp::nollaa(void)
 {
@@ -312,9 +360,18 @@ INT32 kilptietue::Lahto(int osuus, int *laji /* = NULL */)
 		 etls < 50L * TUNTI)
 		 oslahto = Sarjat[sarja].lahto + etls - SakkoAika(yOsuus, true);
 #else // !SKMKV
-	   if (Sarjat[sarja].nosuus[yosuus] == 1 ||
-		  Sarjat[sarja].nosuus[yosuus-1] == 1) {
-		  if ((etls = tTulos(yosuus-1, 0, &puutelisa)) != 0 &&
+	   // Osuus lahtee edellisen rinnakkaisosuuden ensimmaisen maalista: kaikki paikat lahtevat
+	   // yhdessa, myos kun tama osuus on rinnakkainen
+	   if (LahtoEdellisenTuloksesta(Sarjat[sarja].nosuus[yosuus], Sarjat[sarja].nosuus[yosuus-1],
+		  Sarjat[sarja].lahtoEdEkaMaalista[yosuus])) {
+		  if (Sarjat[sarja].lahtoEdEkaMaalista[yosuus] && Sarjat[sarja].nosuus[yosuus-1] > 1 &&
+			  !Sarjat[sarja].ekaMaaliRatkaisee[yosuus-1]) {
+			  // joukkueen osuustulos ei ole ensimmaisen aika (kaikkien tulos tarvitaan),
+			  // mutta lahto tulee silti ensimmaisen maalista
+			  if ((etls = ekaMaaliTulos(yosuus-1, 0)) != 0)
+				  oslahto = Sarjat[sarja].lahto + etls;
+			  }
+		  else if ((etls = tTulos(yosuus-1, 0, &puutelisa)) != 0 &&
 			   puutelisa == 0)
 			   oslahto = Sarjat[sarja].lahto + etls;
 		  oslahto -= SakkoAika(yosuus, true);
@@ -354,7 +411,7 @@ INT32 kilptietue::Lahto(int osuus, int *laji /* = NULL */)
 INT32 kilptietue::tTulos(int tosuus, int va, __int64 *tlslisa /* = NULL */)
 {
    long tls, etulos = 0;
-   int os, yl1 = 0, yl = 0, n_osaika[MAXOSUUSLUKU];
+   int os, yl1 = 0, yl = 0, n_osaika[MAXOSUUSLUKU], n_reg[MAXOSUUSLUKU];
    __int64 lisa;
 
 	if (tosuus < 0 || tosuus >= Sarjat[sarja].ntosuus || va < 0 || va > Sarjat[sarja].valuku[tosuus])
@@ -367,6 +424,7 @@ INT32 kilptietue::tTulos(int tosuus, int va, __int64 *tlslisa /* = NULL */)
    if (tlslisa)
 	   *tlslisa = 0;
    memset(n_osaika, 0, sizeof(n_osaika));
+   memset(n_reg, 0, sizeof(n_reg));
    if (tosuus < 0)
 	   return(0);
 
@@ -376,12 +434,17 @@ INT32 kilptietue::tTulos(int tosuus, int va, __int64 *tlslisa /* = NULL */)
    // Käydään läpi tosuus ja aiemmat osuudet ja
    // - kasvatetaan muuttujaa tlslisa, jos aika puuttuu
    // - kasvatetaan laskuria n_os, jos aika on otettu ja tulos
+   // n_reg = niiden paikkojen lkm, joihin on ilmoitettu kilpailija -
+   // tyhjaa paikkaa ei odoteta eika lasketa puutteeksi
 
 
    for (int yos = 0; yos <= tosuus; yos++) {
 	  if (yos && ostiet[Sarjat[sarja].aosuus[yos+1]].ylahto != TMAALI0)
 		  yl1 = 1;
 	  for (os = Sarjat[sarja].aosuus[yos]+1; os <= Sarjat[sarja].aosuus[yos+1]; os++) {
+		  if (Sarjat[sarja].nosuus[yos] > 1 && !paikkaKaytossa(this, os, va))
+			 continue;
+		  n_reg[yos]++;
 		  if (Maali(os, va) != TMAALI0) {
 			 n_osaika[yos]++;
 			 }
@@ -389,13 +452,15 @@ INT32 kilptietue::tTulos(int tosuus, int va, __int64 *tlslisa /* = NULL */)
 			 *tlslisa += Sarjat[sarja].puutelisa[Sarjat[sarja].yosuus[os]];
 			 }
 		  }
-	   if (!yl1 && tlslisa && n_osaika[yos] == Sarjat[sarja].nosuus[yos])
+	   if (tlslisa && !yl1 &&
+		  PuutelisaNollataan(n_reg[yos], n_osaika[yos], Sarjat[sarja].ekaMaaliRatkaisee[yos]))
 		  *tlslisa = 0;
 	   }
    if (n_osaika[tosuus] == 0) {
 	   return(0);
 	  }
-   if (tlslisa == NULL && n_osaika[tosuus] < Sarjat[sarja].nosuus[tosuus]) {
+   if (tlslisa == NULL && n_osaika[tosuus] < n_reg[tosuus] &&
+	   !Sarjat[sarja].ekaMaaliRatkaisee[tosuus]) {
 	   return(SEK*n_osaika[tosuus]);
 	   }
    if (yl1) {
@@ -417,12 +482,49 @@ INT32 kilptietue::tTulos(int tosuus, int va, __int64 *tlslisa /* = NULL */)
    return(tls);
 }
 
+int kilptietue::ekaMaaliOsuus(int tosuus, int va)
+{
+	// Ohut adapteri: poimii tilan globaaleista (Sarjat[], ostiet[]) ja
+	// antaa paatoksen riippumattomalle VRinnakkaisOsuus.cpp:lle. Ks.
+	// Tests/VRinnakkaisOsuusTest.cpp.
+	RinnakkaisTila tilat[MAXOSUUSLUKU];
+	int n = keraaRinnakkaisTilat(this, tosuus, va, tilat, NULL);
+	int i = EkaMaaliIndeksi(tilat, n);
+	return(i < 0 ? -1 : Sarjat[sarja].aosuus[tosuus] + 1 + i);
+}
+
+// Ensimmaisena maaliin tulleen juoksijan aika rinnakkaisosuudella riippumatta siita,
+// ratkaiseeko han joukkueen osuustuloksen (osuuden lahto edellisen ensimmaisen maalista)
+INT32 kilptietue::ekaMaaliTulos(int tosuus, int va)
+{
+	int eos;
+	long tls1;
+
+	if (tosuus < 0 || tosuus >= Sarjat[sarja].ntosuus || va < 0 || va > Sarjat[sarja].valuku[tosuus])
+		return(0);
+	eos = ekaMaaliOsuus(tosuus, va);
+	if (eos < 0)
+		return(0);
+	tls1 = (Maali(eos, va) - Sarjat[sarja].lahto + 48L*TUNTI) % (24L*TUNTI);
+	tls1 += SakkoAika(tosuus, true);
+	return(tls1);
+}
+
 INT32 kilptietue::aTulos(int tosuus, int va)
 {
 	long tls = 0, tls1, os;
 
 	if (tosuus < 0 || tosuus >= Sarjat[sarja].ntosuus || va < 0 || va > Sarjat[sarja].valuku[tosuus])
 		return(0);
+
+	if (Sarjat[sarja].ekaMaaliRatkaisee[tosuus]) {
+		int eos = ekaMaaliOsuus(tosuus, va);
+		if (eos < 0)
+			return(0);
+		tls1 = (Maali(eos, va) - Sarjat[sarja].lahto + 48L*TUNTI) % (24L*TUNTI);
+		tls1 += SakkoAika(tosuus, true);
+		return(tls1);
+		}
 
 	for (os = Sarjat[sarja].aosuus[tosuus] + 1;
 		os <= Sarjat[sarja].aosuus[tosuus+1]; os++) {
@@ -968,6 +1070,13 @@ char kilptietue::tTark(int osuus)
 
 	if (tSulj(osuus))
 		return('S');
+
+	if (Sarjat[sarja].ekaMaaliRatkaisee[osuus]) {
+		// Ensimmaisena maaliin tullut ratkaisee statuksen (myos hylkayksen ja
+		// keskeytyksen) - ei enaa huonoin-voittaa -periaatetta
+		return(ekaMaaliTila(this, osuus));
+		}
+
 	for (int os = Sarjat[sarja].aosuus[osuus] + 1; os <= Sarjat[sarja].aosuus[osuus+1]; os++) {
 		char kh1 = ostiet[os].keskhyl;
 		if (kh1 == 'E')
@@ -1328,9 +1437,19 @@ bool kilptietue::tHyv(int osuus /* =-1 */)
 		osuus = Sarjat[sarja].osuusluku-1;
 	else
 		osuus = Sarjat[sarja].aosuus[osuus+1];
-	for (int os = 0; os <= osuus; os++)
+	for (int os = 0; os <= osuus; os++) {
+		int yos = Sarjat[sarja].yosuus[os];
+		if (Sarjat[sarja].nosuus[yos] > 1 && Sarjat[sarja].ekaMaaliRatkaisee[yos]) {
+			// Ensimmainen maaliin -saanto: vain ratkaisevan juoksijan tila merkitsee
+			if (os == Sarjat[sarja].aosuus[yos] + 1 && !TilaHyvaksytty(ekaMaaliTila(this, yos)))
+				return(false);
+			continue;
+			}
+		if (Sarjat[sarja].nosuus[yos] > 1 && !paikkaKaytossa(this, os, 0))
+			continue;
 		if (stschind(ostiet[os].keskhyl, "TI-") < 0)
 			return(false);
+		}
 	return(true);
 }
 
@@ -1338,9 +1457,19 @@ bool kilptietue::Hyv(int osuus /* =-1 */)
 {
 	if (osuus == -1)
 		osuus = Sarjat[sarja].osuusluku-1;
-	for (int os = 0; os <= osuus; os++)
+	for (int os = 0; os <= osuus; os++) {
+		int yos = Sarjat[sarja].yosuus[os];
+		if (Sarjat[sarja].nosuus[yos] > 1 && Sarjat[sarja].ekaMaaliRatkaisee[yos]) {
+			// Ensimmainen maaliin -saanto: vain ratkaisevan juoksijan tila merkitsee
+			if (os == Sarjat[sarja].aosuus[yos] + 1 && !TilaHyvaksytty(ekaMaaliTila(this, yos)))
+				return(false);
+			continue;
+			}
+		if (Sarjat[sarja].nosuus[yos] > 1 && !paikkaKaytossa(this, os, 0))
+			continue;
 		if (stschind(ostiet[os].keskhyl, "TI-") < 0)
 			return(false);
+		}
 	return(true);
 }
 
