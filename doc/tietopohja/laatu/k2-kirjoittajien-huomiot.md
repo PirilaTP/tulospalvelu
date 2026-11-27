@@ -145,3 +145,91 @@ KE-taulukkoon. Ohjelmatiedot, jotka kirjoittaja tarkisti, on tuotu `riskiarvio.c
   kiertyy negatiiviseksi ja 256 muuttuu maaliksi [päätelty]; ViestiWinin `Button2Click`
   (`ViestiWin/UnitAjanotto.cpp`) kuvaa A:n arvoon -1, vaikka näytön taulukossa A = -2, eikä L:lle ole
   haaraa (raportin N-1:ssä, ei H-111:n rivillä).
+
+## E10 (KK-C13-15, GUI: syöterajat ja pienet logiikkaviat, 14 korttia)
+
+- Ei yhtään vahvistettu-arvoa (kaikki luettu koodista tai päätelty). H-122, H-123, H-124, H-126, H-127
+  ilman riippumatonta tarkastusta (J7-5).
+- Kokoomarivit purettu: H-126 viisi kohtaa (riskiarvio ei nostanut yhtään), H-127 seitsemän (N-22
+  nostettu).
+- H-126, H-127: riskiarvio `ajanoton_jatkuvuus = ei`, mutta N-24 kuluttaa muistionumeron kirjaamatta
+  tai kirjoittaa ajan ilman vahvistusta → `ei_tiedossa`.
+- Ohjelmat kavennettu: H-120 vain HkKisaWin (`!_CONSOLE`-haara); H-175 GUI:t (valikko vain GUI:ssa).
+
+## E12 (KK-C13-16, -20, -21, -22, johdetut rakenteet ja arkkitehtuuri, 11 korttia)
+
+- H-066: riskiarvio `tulosten_oikeellisuus = suora`, aineisto osoittaa vain kaksoiskappaleen
+  seuraluetteloon → `ei_tiedossa`; viestin `TallennaSeura`lle ei löytynyt kutsujaa (vain HK).
+- T-039: rekisterin rajaus HK liian kapea (nimeää H-130:n ja H-140:n) → kaikki viisi.
+- T-001: GUI-otsikot vain ilman `_CONSOLE`ia → GUI:t; T-002: juurisyy JS-10 ei sovi
+  kehäriippuvuuksiin (juurisyyraportti listaa JS-10:lle vain T-003 ja T-033).
+- H-142: rekisterin kuvaus ja `globaali-tila.md`:n taulukko eroavat N-C7:n sijoituksesta; kortti
+  noudattaa rekisteriä. H-135: riskiarvio palautettavuus `kasin`, raportti uudelleenkäynnistys.
+- Kiertotapa `mahdollinen` (uudelleenkäynnistys perusteltu, testaamaton) H-130, H-135, H-139,
+  H-140, H-142.
+- Ehdokkaat (ei tarkistettu): `nvak` (H-139) käytössä myös `cbHk/UnitSarjatiedot.cpp`:n
+  lähtöaikojen ja numeroalueiden laskennassa; arvonnan `arvonumerot`: mahdollinen yhden alkion
+  virhe (`nn = nilm_pv - nvak - 1`); `nyilmt > 0` -ehto `cbHk/UnitKilpMaaritys.cpp`:ssä.
+- Sanasto: "Johdettu rakenne" puuttuu, vaikka kortit viittaavat siihen.
+
+## E11 (KK-C13-12, KK-C13-19, paikalliset tiedostot ja tuonti, 11 korttia)
+
+- Kortit kertovat laukaisevan tiedoston ja sen alkuperän (vanha ohjelmaversio, käsin tehty,
+  editorilla UTF-16:ksi tallennettu).
+- H-079: rekisterin konsolipolku (`HkConsole/HkCons3.cpp`) on lohkossa `SEURATUL`, joka ei käänny
+  mihinkään tuotteeseen (H-177); vain GUI-lomakkeet saavutettavia. Uudelleenkäynnistys ei poista
+  syytä, jos tiedosto pysyy UTF-16:na (riskiarvio palautettavuus `uudelleenkaynnistys`).
+- H-086: loki tyhjenee vain ohjelman ajon ensimmäisellä avauksella (`if (!KierrFile)`), ei joka
+  kerta kuten rekisteri sanoo.
+- H-074: rekisterin ehto `valuku ≤ 2` pätee vain HK:n lähdejonotiedostoon; lähdepistetiedostossa
+  ero syntyy pistenumerosta `valuku`+2 millä tahansa `valuku`-arvolla.
+- H-065: riskiarvio `ajanoton_jatkuvuus = ei`, roska-indeksi voisi kaataa käynnistyksessä →
+  `ei_tiedossa`.
+- Ohjelmat kavennettu: H-049, H-079, H-086, T-026 GUI:t; H-058, H-074 ei ViestiLuentaa; H-078 vain
+  MSVC-konsolit.
+- Ehdokas (havainnot.md:stä ei vastaavaa): `Juk/vSarjat.cpp` `luesarjat`: `strcpy(Sarjat[i].sarjanimi, s)`
+  kopioi enintään 79 merkkiä kenttään `sarjanimi[LSARJA+1]` (viestissä 11) rajaamatta; syöte vanhan
+  muodon `KILP.SRJ`.
+
+## E13 (KK-C10-1, KK-C9-1, SQL ja PRFILE, 13 korttia)
+
+- SQL-korteissa yhtenäinen kuvaus peilistä: valinnainen, vain GUI-ohjelmat, ei oletuksena,
+  asetukset `SQLHOST` ym., kirjastot eivät julkaisu-ZIPissä (H-165).
+- H-014: riskiarvio `ajanoton_jatkuvuus = hairitsee` ilman kuvattua mekanismia → `ei_tiedossa`;
+  H-014, H-160, H-161: tietoturva `ei` mutta laukaisija avoin (KE-2, Q105) → `ei_tiedossa`.
+- H-161: ajanotto `ei`, mutta virheellinen lause johtaa H-160:n mukaan ohjelman päättymiseen →
+  `ei_tiedossa`. H-163: tulokset `ei`, mutta emit-jälkikäsittelysäie jää käynnistämättä → `ei_tiedossa`.
+- H-162: rekisterin "emit-käsittely pysähtyy" ristiriidassa koodin kanssa (KE-13).
+- H-154: saavutettavuus `normaalikaytto`, mutta vaatii tulostinvirheen → `ei_tiedossa`.
+- Ohjelmat kavennettu: H-014 vain HkKisaWin; H-100, H-161, H-043 GUI:t; H-149 viestiohjelmat;
+  H-150, H-151 HK; H-152 HkKisaWin.
+- Ehdokkaat (ei tarkistettu): viennin valinta 3 pitää `tall`-lukkoa koko viennin ajan (T-032?);
+  `kirjSQLTh` käyttää VCL-komponentteja työsäikeestä; yhteyden avaus ilman aikakatkaisua
+  pääsäikeessä (osan B ehdokas D8).
+
+## E14 (KK-C9-2, KK-C9-3, tallennusvirheiden välitys, 12 korttia)
+
+- Systemaattinen ristiriita: H-015, H-044, H-053, H-054, H-146, H-148, H-156 – riskiarvion
+  saavutettavuus `normaalikaytto`, vaikka vika vaatii ympäristövirheen (levy täynnä, verkkolevyn
+  katko, I/O-virhe) → normaalikäyttö `ei_tiedossa`; sama asteikko-ongelma kuin KE-3.
+- Ohjelmat kavennettu: H-063, H-054, H-146, H-053 ei ViestiLuentaa (`#ifndef LUENTA` tai tiedosto
+  ei projektissa); H-148 vain viestin `addfrec` (ViestiWin, ViestiMaali).
+- H-044: riskiarvion peruste sanoo "ei jäsen" KK-C9-2:sta, mutta `korjauskokonaisuudet.csv` luettelee
+  sen jäseneksi; kortti seuraa jäsenyyttä.
+- H-156: ajanotto `ei`, mutta väärä vaihe käynnistyksessä voi vaikuttaa → `ei_tiedossa`; kohta N-B9
+  ansaitsisi riskiarvion mukaan oman rivin (ei tehty).
+- H-147: Q92 avoin `virheenkasittely.md`:ssä, ratkaistu staattisesti `seuranta.md`:ssä; kortti
+  seuraa `seuranta.md`:tä.
+- Ehdokas (ei tarkistettu): H-054:n väärä `_close(fl)` – MSVC:n virheellisen parametrin käsittely
+  voisi päättää ohjelman.
+
+## E17 (KK-C12-3, valitsinhygienia ja kuollut koodi, 15 korttia)
+
+- Ohjelmat kavennettu: T-028 vain HkMaali (`#ifdef CONSOLE` vs `_CONSOLE`); H-177 vain HkMaali;
+  T-015 viestiohjelmat; T-007, T-011 ei yhtään (yksikään projekti ei käännä tiedostoja).
+- T-008: rekisterin juurisyy JS-12, saman kokonaisuuden muilla JS-14 (kirjoitettu sellaisenaan).
+- T-007: `dbboxm/Dbbox.cpp` inventaarion orpolistalla, mutta T-018 viittaa siihen kuolleen
+  B-puukerroksen lähteenä.
+- T-029: `swprintf`-kutsu suoritetaan, kun kilpailijalla on tulos, joten kyse ei ole puhtaasti
+  kuolleesta koodista; objektivertailun hyväksymiskriteeri ei sellaisenaan päde.
+- Ehdokas (ei tarkistettu): `#ifdef CONSOLE` -sekaannus voi olla muissakin tiedostoissa.
