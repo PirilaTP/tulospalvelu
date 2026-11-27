@@ -236,19 +236,6 @@ object FormKilpMaaritys: TFormKilpMaaritys
     Font.Style = []
     ParentFont = False
   end
-  object Label7: TLabel
-    Left = 266
-    Top = 160
-    Width = 69
-    Height = 16
-    Caption = 'Kilpailuvuosi'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-  end
   object Label8: TLabel
     Left = 24
     Top = 54
@@ -525,20 +512,35 @@ object FormKilpMaaritys: TFormKilpMaaritys
     ParentFont = False
     TabOrder = 5
   end
-  object EditVuosi: TEdit
-    Left = 216
-    Top = 157
-    Width = 41
-    Height = 24
-    Alignment = taRightJustify
+  object LblPvm: TLabel
+    Left = 266
+    Top = 160
+    Width = 150
+    Height = 16
+    Caption = 'P'#228'iv'#228'm'#228#228'r'#228' (pp.kk.vvvv)'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+  end
+  object EdtPvm: TEdit
+    Left = 160
+    Top = 157
+    Width = 97
+    Height = 24
+    Hint = 'Kilpailun (1. vaiheen) p'#228'iv'#228'm'#228#228'r'#228', esim. 27.9.2026'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 6
-    Text = '1'
+    TextHint = 'pp.kk.vvvv'
   end
   object ButtonOK: TButton
     Left = 404

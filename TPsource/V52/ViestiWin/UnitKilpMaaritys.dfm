@@ -234,19 +234,6 @@ object FormKilpMaaritys: TFormKilpMaaritys
     Font.Style = []
     ParentFont = False
   end
-  object Label7: TLabel
-    Left = 266
-    Top = 172
-    Width = 69
-    Height = 16
-    Caption = 'Kilpailuvuosi'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-  end
   object Label8: TLabel
     Left = 24
     Top = 54
@@ -501,21 +488,6 @@ object FormKilpMaaritys: TFormKilpMaaritys
     Font.Style = []
     ParentFont = False
     TabOrder = 5
-  end
-  object EditVuosi: TEdit
-    Left = 216
-    Top = 169
-    Width = 41
-    Height = 24
-    Alignment = taRightJustify
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 6
-    Text = '1'
   end
   object ButtonOK: TButton
     Left = 404
@@ -998,8 +970,9 @@ object FormKilpMaaritys: TFormKilpMaaritys
     Height = 22
     EditLabel.Width = 145
     EditLabel.Height = 14
-    EditLabel.Caption = 'Kilpailun p'#228'iv'#228'ys (vvvv-kk-pp)'
+    EditLabel.Caption = 'Kilpailun p'#228'iv'#228'ys (pp.kk.vvvv)'
     TabOrder = 23
+    TextHint = 'pp.kk.vvvv'
   end
   object EdtMaxRinn: TEdit
     Left = 160

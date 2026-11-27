@@ -27,6 +27,13 @@ TFormVaiheMaar *FormVaiheMaar;
 static wchar_t *Pr[4] = {L"1", L"0,1", L"0,01", L"0,001"};
 extern int PyorIx(int pyor);
 
+// P‰iv‰m‰‰r‰ muodossa p.k.vvvv (ilman etunollia)
+static wchar_t *pvmTeksti(wchar_t *st, int pvm)
+{
+	swprintf(st, L"%d.%d.%d", dDateNo(pvm), mDateNo(pvm), yDateNo(pvm));
+	return(st);
+}
+
 //---------------------------------------------------------------------------
 __fastcall TFormVaiheMaar::TFormVaiheMaar(TComponent* Owner)
 	: TForm(Owner)
@@ -65,7 +72,12 @@ void TFormVaiheMaar::Paivita()
 		SG1->ColWidths[ipv+1] = 120 * Screen->PixelsPerInch / 96;
 		SG1->Cells[ipv+1][0] = UnicodeString(ipv+1) + L". vaihe";
 		SG1->Cells[ipv+1][1] = pvparam[ipv].RaceId;
-		SG1->Cells[ipv+1][2] = stDateNo(NULL, pvparam[ipv].Date);
+		if (pvparam[ipv].Date > 0) {
+			wchar_t st[16];
+			SG1->Cells[ipv+1][2] = pvmTeksti(st, pvparam[ipv].Date);
+			}
+		else
+			SG1->Cells[ipv+1][2] = L"";
 		SG1->Cells[ipv+1][3] = pvparam[ipv].Title;
 		SG1->Cells[ipv+1][4] = Pr[PyorIx(pvparam[ipv].pyor[2])];
 		SG1->Cells[ipv+1][5] = Pr[PyorIx(pvparam[ipv].pyor[3])];
@@ -98,9 +110,21 @@ static int pyorVal(wchar_t *st)
 
 void __fastcall TFormVaiheMaar::Button1Click(TObject *Sender)
 {
+	// Vaiheiden p‰iv‰m‰‰r‰t pakollisia ja tarkistettuja (mm. IOF XML -tiedostot)
+	for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
+		if (DateNoTarkka(SG1->Cells[ipv+1][2].c_str()) <= 0) {
+			wchar_t msg[200];
+			swprintf(msg, L"%d. vaiheen p‰iv‰m‰‰r‰ puuttuu tai on virheellinen."
+				L" Anna se muodossa pp.kk.vvvv tai vvvv-kk-pp.", ipv+1);
+			Application->MessageBoxW(msg, L"P‰iv‰m‰‰r‰", MB_OK);
+			return;
+			}
+		}
 	for (int ipv = 0; ipv < kilpparam.n_pv_akt; ipv++) {
 		wcsncpy(pvparam[ipv].RaceId, SG1->Cells[ipv+1][1].c_str(), sizeof(pvparam[ipv].RaceId)/2-1);
-		pvparam[ipv].Date = DateNoFromSt(SG1->Cells[ipv+1][2].c_str());
+		pvparam[ipv].Date = DateNoTarkka(SG1->Cells[ipv+1][2].c_str());
+		if (ipv == 0)
+			kilpparam.vuosi = yDateNo(pvparam[0].Date);	// kilpailuvuosi 1. vaiheen p‰iv‰m‰‰r‰st‰
 		wcsncpy(pvparam[ipv].Title, SG1->Cells[ipv+1][3].c_str(), sizeof(pvparam[ipv].Title)/2-1);
 		pvparam[ipv].pyor[2] = pyorVal(SG1->Cells[ipv+1][4].c_str());;
 		pvparam[ipv].pyor[3] = pyorVal(SG1->Cells[ipv+1][5].c_str());;
@@ -130,9 +154,15 @@ void TFormVaiheMaar::PaivitaCell(int row, int col)
 			case 3:
 				SG1->Cells[col][row] = SG1->Cells[col][row].Trim();
 				break;
-			case 2:
-				SG1->Cells[col][row] = stDateNo(NULL, DateNoFromSt(SG1->Cells[col][row].c_str()));
+			case 2: {
+				// kelvollinen p‰iv‰m‰‰r‰ muotoon p.k.vvvv; virheellinen j‰tet‰‰n
+				// ennalleen, jolloin OK-painike huomauttaa siit‰
+				wchar_t st[16];
+				int pvm = DateNoTarkka(SG1->Cells[col][row].Trim().c_str());
+				if (pvm > 0)
+					SG1->Cells[col][row] = pvmTeksti(st, pvm);
 				break;
+				}
 			case 4:
 			case 5:
 				SG1->Cells[col][row] = Pr[PyorIx(pyorVal(SG1->Cells[col][row].c_str()))];
