@@ -12,7 +12,7 @@ Usage (from the repository root):
     python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . tuo <csv> ...     import writer fragments (impacts,
                                                                            checked programs) into the registers
     python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . kooste            generated reading document of all
-                                                                           cards (doc/tietopohja/laatu/vikakorttipilotti.md)
+                                                                           cards (doc/tietopohja/vikakortisto.md)
 
 A card has three generated blocks (summary, impacts, technical data) between
 <!-- generoitu:NAME alku --> and <!-- generoitu:NAME loppu --> markers. They are
@@ -444,7 +444,7 @@ def cmd_tarkista(data):
     return 1 if errors else 0
 
 
-KOOSTE_HEAD = """# Vikakorttipilotti: lukudokumentti
+KOOSTE_HEAD = """# Vikakortisto: lukudokumentti
 
 > **Generoitu tarkastusaineisto - älä muokkaa käsin.** Tuotettu komennolla
 > `python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . kooste`. Sisältö on korttien
@@ -527,7 +527,7 @@ def git_out(root, *args):
     return p.stdout.decode("utf-8", "replace").strip() if p.returncode == 0 else "?"
 
 
-KOOSTE_PATH = os.path.join("doc", "tietopohja", "laatu", "vikakorttipilotti.md")
+KOOSTE_PATH = os.path.join("doc", "tietopohja", "vikakortisto.md")
 
 
 def build_kooste(data):
@@ -565,7 +565,7 @@ def build_kooste(data):
             TODENNUS.get(rk.get("todennus", ""), "-") if i.startswith("H") else "-"))
         body = re.sub(r"<!--.*?-->\n?", "", text, flags=re.S)
         body = re.sub(r"^(#+) ", lambda m: "#" + m.group(1) + " ", body, flags=re.M)
-        body = body.replace("](../../", "](../")
+        body = body.replace("](../../", "](")
         body = re.sub(r"\n{3,}", "\n\n", body).strip() + "\n"
         bodies.append('\n---\n\n<a id="%s"></a>\n\n%s' % (anchor, body))
     out.append("")

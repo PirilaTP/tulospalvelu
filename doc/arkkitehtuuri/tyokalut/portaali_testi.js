@@ -57,7 +57,7 @@ for (const r of routes) {
     listeners.hashchange();
     const html = els.sisalto.innerHTML;
     if (!html || html.length < 20) failures.push(r + ": empty view");
-    if (/undefined|\[object Object\]/.test(html.replace(/<code>[^<]*<\/code>/g, ""))) failures.push(r + ": 'undefined' or [object Object] in output");
+    if (/>undefined<|"undefined"|undefined<\/|\[object Object\]|NaN</.test(html)) failures.push(r + ": 'undefined' or [object Object] in output");
     n++;
   } catch (e) {
     failures.push(r + ": " + e.message);

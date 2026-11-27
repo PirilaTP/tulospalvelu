@@ -233,3 +233,41 @@ KE-taulukkoon. Ohjelmatiedot, jotka kirjoittaja tarkisti, on tuotu `riskiarvio.c
 - T-029: `swprintf`-kutsu suoritetaan, kun kilpailijalla on tulos, joten kyse ei ole puhtaasti
   kuolleesta koodista; objektivertailun hyväksymiskriteeri ei sellaisenaan päde.
 - Ehdokas (ei tarkistettu): `#ifdef CONSOLE` -sekaannus voi olla muissakin tiedostoissa.
+
+## E15 (KK-C10-2, KK-C10-3, laitteet ja jakelu, 15 korttia)
+
+- Mitään ei ajettu (C-10 staattinen); seuraukset enintään `mahdollinen`.
+- H-167: riskiarvio `normaalikaytto`, mutta jumi vaatii emiTag-noudon asetuksen ja epäonnistuneen
+  noudon sulkemishetkellä → `ei_perusteltu`; ohjelmat GUI:t.
+- H-166, H-170: riskiarvio `tietoturva = ei`; vastausta ei todenneta (T-043) / `sallisummavirhe`
+  ohittaa tarkistussumman → `ei_tiedossa`.
+- H-108: ohjelmat HK (viestin asetukset eivät salli toista Sirit-lukijaa, päätelty).
+- H-138: riippumaton tarkastus vahvisti osittain; laukaisu alkuperäistä kapeampi.
+
+## E16 (KK-C12-1, KK-C12-2, julkaisu-XML ja asetukset, 10 korttia)
+
+- H-036: rekisterin ja osaD:n raja "merkit `r` ja suuremmat" → laskennan mukaan `q` (113 − 49 = 64);
+  käytännössä ääkköset ja `{`–`~` (avain muutetaan isoiksi kirjaimiksi).
+- H-172: `xmlots`ia kutsuu vain `list` (`#ifndef _CONSOLE`), viestin `autofile`ssa kutsu
+  kommentoitu → konsoleissa tiedosto käytännössä tyhjä [päätelty]; ohjelmat ViestiMaali ja
+  ViestiLuenta (ei ViestiWin).
+- H-158: konsoleissa tiedosto tyhjä; `AUTOFILE.LST`:n kanssa XML-haara ei avaa tiedostoa; haara
+  palaa ennen TCP-lähetystä ja `KOMENTO=`-ajoa.
+- H-173: riskiarvio tulokset `ei`, mutta ViestiWinin `AIKAERO1=`/`AIKAERO2=` jäävät lukijalta
+  huomiotta, ja aikaero vaikuttaa aikaleimoihin → `ei_tiedossa`.
+- H-052, T-051: ilmoituspuskurin raja laskettuna 47 merkkiä (rekisteri noin 45); konsolin `CFG=`
+  katkaistaan 40 merkkiin → koskee käytännössä GUI:ta [päätelty].
+- H-176 kohta 6: viestin `TARKNO=EI` → 21, ei kytke tarkistusta pois [päätelty]; rekisteri mainitsee
+  vain `ON`. Viestin `htmlloppu` vastaava (myös ViestiLuenta).
+- T-014: koodin oletusportti 14770, käyttöohjeessa 14900.
+
+## E18 (KK-C13-17, KK-C13-18, merkistöt, kääntäjät, testaus; T-010, 12 korttia)
+
+- H-080: riskiarvio tulokset `suora`, mutta päivämäärän alkuperäiset käyttäjät kumottiin ja käyttö on
+  päätelty → `mahdollinen` (aikajonon järjestysavain); riskiarvio tarkistettava. Korjaussuunnitelma ei
+  kuvaa H-080:n korjausperiaatetta.
+- H-081: rekisteri liittää KK-C13-17:ään, vaikka kyse on konsoli- ja ikkunahaarojen erosta (Q60, OP-9).
+- Ohjelmat kavennettu: H-080, T-016, T-023 GUI:t (bcc32); T-025 HK.
+- T-010: korjattu commitissa `c273b9f` (2026-11-24); kortti kertoo korjatut kohdat.
+- Ehdokas (ei tarkistettu): H-004:n vahvistuskehotteen korvausmerkkiteksti käännetty HkMaaliin mutta
+  ei HkKisaWiniin (`kaantajaerot.md` taulukko).

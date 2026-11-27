@@ -20,10 +20,10 @@ korttia, ei tarkoita, että toiminto on virheetön.
 | `kirjoitusohje.md` | korttien ja vaikutusrivien kirjoitussäännöt / writing rules | K-0 |
 | `sanasto.md` | selkokielinen sanasto / glossary | runko (K-0), täydentyy |
 | `vikakortit/_malli-*.md` | korttipohjat: avoin H, kumottu H, T / templates | K-0 |
-| `vikakortit/H/`, `vikakortit/T/` | vikakortit / defect cards | pilotti: 10 H + 2 T |
+| `vikakortit/H/`, `vikakortit/T/` | vikakortit / defect cards | 177 H + 52 T (K-2) |
 | `laatu/kysymyspankki.md` | agentin testikysymykset / agent test questions | K-1 |
 | `laatu/tarkastukset/` | testiajot ja Opus-tarkastukset / test runs and reviews | K-1, K-2-pilotti |
-| `laatu/vikakorttipilotti.md` | pilottikorttien generoitu lukudokumentti (`tietopohja.py . kooste`) / generated reading document | K-2-pilotti |
+| `vikakortisto.md` | kaikkien 229 kortin generoitu lukudokumentti (`tietopohja.py . kooste`) / generated reading document | K-2 |
 | `kasikirja/`, `portaali/` | ei vielä / not yet (K-3, K-4) | – |
 
 ## Asiantuntija-agentti / Expert agent
@@ -64,7 +64,7 @@ python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . runko H-NNN      # uusi kor
 python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . lohkot           # generoidut lohkot uusiksi
 python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . kuittaa H-NNN    # teksti tarkistettu nykyistä riviä vasten
 python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . tarkista         # korttien koneellinen tarkistus
-python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . kooste           # lukudokumentti laatu/vikakorttipilotti.md
+python -I doc/arkkitehtuuri/tyokalut/tietopohja.py . kooste           # lukudokumentti vikakortisto.md
 python -I doc/arkkitehtuuri/tyokalut/synteesi.py . <tmp> --tarkista   # rekisterit, myös K-0-sarakkeet
 python -I doc/arkkitehtuuri/tyokalut/viitteet.py . [--raportti x.csv] # viitteet kiinnitettyä revisiota vasten
 ```
