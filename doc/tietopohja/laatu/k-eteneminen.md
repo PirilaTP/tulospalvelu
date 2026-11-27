@@ -9,9 +9,9 @@ E-1:tä eikä D-vaihetta; omistajan päätöksiä ei tehdä.
 
 | Osa | Tila |
 |---|---|
-| Emit-selvitys (K-3-aineisto) | `kasikirja/aineisto/emit-luenta.md` kirjoitettu (Opus); riippumaton tarkastus käynnissä |
+| Emit-selvitys (K-3-aineisto) | `kasikirja/aineisto/emit-luenta.md` kirjoitettu (Opus), riippumattomasti tarkastettu ja korjattu (`tarkastukset/emit/`); ehdokkaat KE-10–KE-13 |
 | Agentin kehitys | luku 3a (laajat ketjukysymykset), reittitaulukko erien raportteihin; `pirila-learn` suunniteltu (suunnitelma 5.7) |
-| K-2 kortit | erät `k2-erat.json` (E01–E18, 217 korttia) + 9 pilottikortin päivitys uuteen muotoon; valmiit: E01, E02 |
+| K-2 kortit | erät `k2-erat.json` (E01–E18, 217 korttia) + 9 pilottikortin päivitys uuteen muotoon; valmiit: E01–E04 |
 | K-3 käsikirja | pohja `kasikirja/_malli-luku.md`, ohje `k3-kirjoittajan-ohje.md`; ei aloitettu |
 | K-4 portaali | `portaali/index.html`, `app.js`, `tyyli.css`, generaattori `tyokalut/portaali.py`, savutesti `tyokalut/portaali_testi.js` |
 | K-5 | ei aloitettu |

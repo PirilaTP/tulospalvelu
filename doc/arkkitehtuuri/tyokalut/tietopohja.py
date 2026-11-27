@@ -406,7 +406,7 @@ def cmd_tarkista(data):
                 if "**%s:**" % lab not in s8:
                     errors.append("%s: section 8 lacks '%s'" % (i, lab))
             s9 = sec.get("Mitä käyttäjä voi tehdä riskin pienentämiseksi", "")
-            if not any(re.search(r"\[%s\.?\]" % re.escape(lab), s9) for lab in ADVICE_LABELS):
+            if not any(re.search(r"\[%s\.?\]" % r"\s+".join(map(re.escape, lab.split())), s9) for lab in ADVICE_LABELS):
                 errors.append("%s: section 9 has no advice level label" % i)
         if "<selkokielinen otsikko" in text or "<mitä alun perin" in text:
             errors.append("%s: title not written" % i)
@@ -415,7 +415,11 @@ def cmd_tarkista(data):
                 errors.append("%s: line reference in authored text: %s" % (i, line.strip()[:90]))
             if PRIO.search(line):
                 errors.append("%s: priority in authored text (only in the generated block): %s" % (i, line.strip()[:90]))
-            for w in FREQ_WORDS.findall(line):
+            if re.search(r"(ei kerro|ei tiedetä|ei tiedossa|ei ole tietoa|ei arvioi)[^.]*kuinka", line, re.I) or \n                    re.match(r"\s*-?\s*kuinka (usein|harvoin)", line, re.I):
+                freq_ok = True
+            else:
+                freq_ok = False
+            for w in ([] if freq_ok else FREQ_WORDS.findall(line)):
                 warnings.append("%s: frequency word '%s' - needs a source: %s" % (i, w, line.strip()[:80]))
             for x in ID_ANY.findall(line):
                 if x not in known:

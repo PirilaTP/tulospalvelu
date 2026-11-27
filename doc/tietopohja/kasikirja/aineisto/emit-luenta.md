@@ -1,6 +1,6 @@
 # Emit-kortin luenta: luennasta tallennukseen ja välitykseen
 
-**Tila: ALUSTAVA K-3-AINEISTO – ei riippumattomasti tarkastettu.**
+**Tila: K-3-aineisto, riippumattomasti tarkastettu 2026-11-27 (doc/tietopohja/laatu/tarkastukset/emit/tarkastus.md) ja korjattu; KE-10–KE-13 ehdokkaita, ei tarkastettu.**
 
 - Päiväys: 2026-11-27
 - Lähderevisio: TPsource-tuotantokoodi revisio `f7fe553`. `doc/arkkitehtuuri/CHECKPOINT.md`:n
@@ -70,7 +70,8 @@ päätyä eri asemilla eri tilaan (luku 8.6).
 
 **ViestiLuenta ei kuulu tähän ketjuun.** Se on sisäänluentaohjelma. Kortin luku antaa vain kortin
 koodin sisäänluentanäkymälle. Emit-tietuetta ei tallenneta, eikä EMITT-paketteja käsitellä
-(luku 7).
+(luku 7). Emit-kellon jäsennys ja lukija käännetään kuitenkin mukaan, joten Emit-kello on
+staattisesti mahdollinen myös ViestiLuennassa (ajossa todentamatta).
 
 ---
 
@@ -84,7 +85,7 @@ Vaiheet koskevat toimitettujen HK-ohjelmien käännettyjä haaroja (luku 6). Sä
 | # | Mitä tapahtuu | Missä | Säie / lukko | Lähde |
 |---|---|---|---|---|
 | A1 | Jokaiselle lukijalle käynnistetään oma `lue_regnlyThread`. Silmukan jakso on 20 ms. | `Tp/TpLaitteet.cpp:1747-1875` | lukijasäie, ei lukkoa | [AA: `saikeet-ja-lukot.md` luku 3; `todisteet/c10/raportit/osaD-laitteet.md` luku 2] |
-| A2 | Kehyksen tunnistus laitetyypin mukaan: Emit-kello ja RTR `lue_EmitKello` (`:856-939`), Emit-lukija `LUKIJA` (`:948-1122`, kaksi tarkistussummaa, XOR 0xDF), MTR (`:1126-1295`), emiTag (`:1299-1372`) | `Tp/TpLaitteet.cpp` | lukijasäie | [AA: osaD luvut 1–2; `riippuvuudet.md` luku 13] |
+| A2 | Kehyksen tunnistus laitetyypin mukaan: Emit-kello `lue_EmitKello` (`:856-939`; sama funktio lukee myös RTR- ja RTR2-kellot, mutta niiden kehykset menevät `tall_regnly`:lle eivätkä emit-ketjuun, ks. luku 2.4), Emit-lukija `LUKIJA` (`:948-1122`, kaksi tarkistussummaa, XOR 0xDF), MTR (`:1126-1295`), emiTag (`:1299-1372`) | `Tp/TpLaitteet.cpp` | lukijasäie | [AA: osaD luvut 1–2; `riippuvuudet.md` luku 13] |
 | A3 | Kaksoisluennan esto laitetasolla. LUKIJA: kortti hyväksytään vasta, kun puskurissa on `lukutoisto` (oletus 2) identtistä sanomaa. Sama koodi tunnistetaan `vahvistus`-arvosta ja 6 tikin portista. | `Tp/TpLaitteet.cpp:1054-1109` | lukijasäie | [AA: osaD luku 2 "LUKIJA"] |
 | A4 | `tall_emit(vastaus, vahvistus, r_no)` | Emit-kello `:911`, LUKIJA `:1098`, MTR `:1248`, emiTag `:1365`. Rivin `:1475` (SportIdent) haara on kuollutta koodia. | lukijasäie | [AA: osaD luku 4]; SportIdent kuollut [AA: `rekisteri/valitsimet.csv` `SPORTIDENT` dead-never-defined] |
 
@@ -110,15 +111,16 @@ versio on `TALLEMIT`-ehdon alla, eikä mikään ohjelma käännä sitä (luku 6)
 | C1 | `EnterCriticalSection(&emit_CriticalSection)` | `:1665` | [AA: `saikeet-ja-lukot.md` luku 4 (`emit`-lukko)] |
 | C2 | Jos `estaemittoisto` (oletus 1, `Hk/HkGlobals.cpp:523`), `on_emit` tarkistaa avaimen `4000*time + badge` ja lisää sen tauluun *ennen* kirjoitusta. Jos avain on jo taulussa, `res = 1` ja kortti hylätään. | `:1666-1667`; `on_emit` `:1627-1655` | [AA: H-145; `todisteet/c9/osaB-pysyva-data.md` 2.2 kohta 3]; oletusarvo [K-luettu] |
 | C3 | `putem(em, emithead, 1)` kirjoittaa tietueen tiedoston loppuun: `_lseek` ja `_write`, `inCrSe=1` (lukko on jo hallussa). Virheestä tulee `iowerr` eli modaali-ikkuna lukijasäikeessä `emit`-lukon alla. | `:1669`; `putem` `:1600-1625` | [AA: `virheenkasittely.md` luku 4 ja 12.2; `osaB` 2.2] |
-| C4 | Onnistuessa: `setEmitJarr` (vain jos `kilpno` ja `badge`), `emithead++`, `fflush(femitfile)`, kun `kirjheti & 4`. `femitfile` on puskuroimaton (`_IONBF`), eikä `_commit`ia ole, joten tieto on tämän jälkeen käyttöjärjestelmän välimuistissa (H-156). | `:1670-1677`; `:3057-3058` | [AA: `virheenkasittely.md` luku 4 "Kestävyys"; H-156]; `_IONBF` [K-luettu] |
-| C5 | Vain jos `kirjaus` on asetettu (tietue on jo käsitelty): `emithead2` siirtyy, `laheta_em`, `emit_rap` (kun `kielto`) ja `addemitanal`. **Lukijalta tullut raaka kortti ei täytä ehtoa**, koska `tall_emit` asettaa `kirjaus = TMAALI0/KSEK` (`Hk/HkIV.cpp:977`). Raakakorttia ei siis lähetetä muille asemille. | `:1678-1688` | [K-luettu] |
+| C4 | Onnistuessa: `setEmitJarr` (vain jos `kilpno` ja `badge`), `emithead++`, `fflush(femitfile)`, kun `!luesuoraan` ja `kirjheti & 4` (`:1674-1677`). `femitfile` on puskuroimaton (`_IONBF`), eikä `_commit`ia ole, joten tieto on tämän jälkeen käyttöjärjestelmän välimuistissa (H-156). | `:1670-1677`; `:3057-3058` | [AA: `virheenkasittely.md` luku 4 "Kestävyys"; H-156]; `_IONBF` [K-luettu] |
+| C5 | Vain jos tietue on jo käsitelty, eli `KSEK*em->kirjaus != TMAALI0` (`:1678`): `emithead2` siirtyy, jos `emithead2 == emithead-1` (`:1679-1680`); `laheta_em(em, 1, kielto)`; `emit_rap` vain, kun `kielto && comautorap && em->kilpno` ja `emittulparam && (autorap > 1 \|\| tarkista(em, 0, 0, 0))` (`:1682-1685`); `addemitanal`, kun `emitanal_fl` (`:1686-1687`). **Lukijalta tullut raaka kortti ei täytä ehtoa**, koska `tall_emit` asettaa `kirjaus = TMAALI0/KSEK` (`Hk/HkIV.cpp:977`). Raakakorttia ei siis lähetetä muille asemille. | `:1678-1688` | [K-luettu] |
 | C6 | `LeaveCriticalSection`; `return(res)`. Kirjoitusvirhe palauttaa 0 (H-145). | `:1691-1692` | [AA: H-145] |
 
 ### 2.4 Lukijan kuittaus
 
 | Lukija | Kuittaus | Lähde |
 |---|---|---|
-| Emit-kello, RTR, RTR2 (`EMITKELLO`, `REGNLY`) | `+\r`, kun `tall_emit` palauttaa 0, muuten `?\r` (uusintapyyntö enintään 200 ms välein). Kuittaus annetaan myös hylätylle kaksoiskappaleelle, epäonnistuneelle tallennukselle ja tunnistustilassa. | [AA: osaD luku 4; `riippuvuudet.md` luku 13 "Q86"; H-145, H-168] |
+| Emit-kello (`EMITKELLO`, `regnly > 10`) | `+\r`, kun `tall_emit` palauttaa 0, muuten `?\r` (uusintapyyntö enintään 200 ms välein). Kuittaus annetaan myös hylätylle kaksoiskappaleelle, epäonnistuneelle tallennukselle ja tunnistustilassa. | [AA: osaD luku 4; `riippuvuudet.md` luku 13 "Q86"; H-145, H-168]; `regnly > 10` [K-luettu] `Tp/TpLaitteet.cpp:910-913` |
+| RTR, RTR2 (`REGNLY`, `REGNLY2`) | Eivät kuulu emit-ketjuun: `lue_EmitKello` kutsuu `tall_emit`ia vain, kun `regnly[r_no] > 10`, muuten `tall_regnly`:ä. Kellon `+\r`/`?\r`-kuittaus tulee `tall_regnly`:n paluuarvosta. | [K-luettu] `Tp/TpLaitteet.cpp:910-913` |
 | Emit-lukija `LUKIJA` (sarja, TCP, UDP) | Kuittausta ei ole. Kaksoiskappaleet suodatetaan. TCP-yhteyden `/P` lähettää NAK-kyselyn. | [AA: osaD luku 2] |
 | MTR | Vetoprotokolla `/GB`. `pkg_alku` etenee `tall_emit`-kutsun jälkeen paluuarvosta riippumatta. | [AA: osaD luku 4 ja N-6; `virheenkasittely.md` 12.2] |
 | emiTag | Kuittausta ei ole. | [AA: `riippuvuudet.md` luku 13] |
@@ -133,7 +135,7 @@ tulkinta kuittauksesta on avoin (Q86, Q100, OP-13).
 | Ohjelma | Ketju | Ehdot | Lähde |
 |---|---|---|---|
 | HkMaali | Päävalikko `E` → `leimat()` (`HkConsole/HkMain.cpp:152-158`) → silmukassa `pros_emit(0, 0)`, kun näppäintä ei paineta (`Hk/HkEmit.cpp:3863-3874`) | Käsittely etenee vain Emit-näytössä. Silmukka päättyy, kun `!taustaon || vaiheenvaihto`. H-031: evätyn vaiheen vaihdon jälkeen lippu jää päälle, ja käsittely pysähtyy. | [K-luettu]; H-031 [AA: `tiedonsiirto.md` "Löydökset"] |
-| HkKisaWin | `ProsEmitThread` (`cbHk/WinHk.cpp:1611-1639`) → `FormEmit->HaeUusiTietue()` → `SendMessage(WM_MYMSGNEWCARD)` (`cbHk/UnitEmit.cpp:960-963`) → pääsäikeen `NewCardHandler` (`:880-957`) → `pros_emit(&EKilp, msgtxt)` (`:936`) | `FormEmit` on oltava luotu ja alustettu, valintojen `CBLue` tai `CBViim` päällä eikä vaiheen vaihtoa käynnissä (`WinHk.cpp:1616-1619`). Käsittely ei etene, jos lomakkeella on tallentamattomia muutoksia tai käyttäjä selaa vanhempaa tietuetta (`UnitEmit.cpp:895-932`). H-163: `SQLSTART`-virhe estää `ProsEmitThread`in käynnistyksen. | [AA: `saikeet-ja-lukot.md` luku 3 (säietaulukko)]; ehdot [K-luettu]; H-163 [AA: `havainnot.md`] |
+| HkKisaWin | `ProsEmitThread` (`cbHk/WinHk.cpp:1611-1639`) → `FormEmit->HaeUusiTietue()` → `SendMessage(WM_MYMSGNEWCARD)` (`cbHk/UnitEmit.cpp:960-963`) → pääsäikeen `NewCardHandler` (`:880-957`) → `pros_emit(&EKilp, msgtxt)` (`:936`) | `FormEmit` on oltava luotu ja alustettu (`Initialisoitu`), valintojen `CBLue` tai `CBViim` päällä eikä vaiheen vaihtoa käynnissä (`WinHk.cpp:1616-1617`). Lisäksi säie kutsuu `HaeUusiTietue`a vain, kun `FormEmit->Tietue < emithead-1` (`:1627-1630`); muuten se odottaa 200 ms. `SendMessage` on synkroninen: säie odottaa, kunnes pääsäie on käsitellyt viestin, joten pääsäikeen pysähtyminen (esimerkiksi modaali-ikkuna) pysäyttää myös ketjun [päätelty: `SendMessage`n semantiikka, `UnitEmit.cpp:960-963`]. `NewCardHandler` palaa heti, jos `KasittelyKesken` (`UnitEmit.cpp:885-886`). Käsittely ei etene, jos lomakkeella on tallentamattomia muutoksia tai käyttäjä selaa vanhempaa tietuetta (`UnitEmit.cpp:895-932`). H-163: `SQLSTART`-virhe estää `ProsEmitThread`in käynnistyksen. | [AA: `saikeet-ja-lukot.md` luku 3 (säietaulukko)]; ehdot [K-luettu]; H-163 [AA: `havainnot.md`] |
 
 Jos ehdot eivät täyty, kortit jäävät emit-tiedostoon käsittelemättöminä (`emithead2 < emithead`)
 [K-luettu].
@@ -143,7 +145,7 @@ Jos ehdot eivät täyty, kortit jäävät emit-tiedostoon käsittelemättöminä
 | # | Mitä tapahtuu | Rivit | Lukot | Lähde |
 |---|---|---|---|---|
 | D1 | Paluu heti, jos `in_pros_emit`, `emithead2 >= emithead` tai `!ProsEmitOn`. Muuten `lueem(&em, emithead2)`. | `:1184-1187` | `lueem` ottaa `emit`-lukon (`Hk/HkEmit.cpp:1572-1583`) | [AA: H-137, H-053]; [K-luettu] |
-| D2 | Jo käsitelty tietue (`kirjaus` asetettu, esim. toiselta asemalta saapunut) ohitetaan: `emithead2++`. | `:1188-1192` | `emithead2` ilman lukkoa (H-137) | [AA: H-137] |
+| D2 | Jo käsitelty tietue (`kirjaus` asetettu, esim. toiselta asemalta saapunut) ohitetaan: `emithead2++` ja paluuarvo 0. HkKisaWinissä `NewCardHandler` tulkitsee paluuarvon `bdg <= 0` virheeksi ja näyttää tyhjän "Virhe luennassa" -ikkunan (`msgtxt` on tyhjä; `cbHk/UnitEmit.cpp:935-939`); ks. luku 12.3, ehdokas KE-12. | `:1188-1192` | `emithead2` ilman lukkoa (H-137) | [AA: H-137]; tyhjä ikkuna [päätelty] |
 | D3 | `kirjaus` = nykyhetki. Jos `badge == 0`: `putem`, paluu. | `:1195-1203` | | [K-luettu] |
 | D4 | Kilpailijan haku: `bdg2kno` → `getpos` → `kilp.GETREC`. Konsolin (`:1204-1518`) ja GUI:n (`:1519-1623`) haarat eroavat, ks. luku 4. | `:1276-1283`, `:1540-1549` | `GETREC` `kilpdat`-lukon alla | [K-luettu] |
 | D5 | Leimantarkastus `tark_badge`. Jos rataa ei löydy tai kortin kello on nollautunut, tulee ilmoitus. | `:1632-1653` | | [K-luettu] |
@@ -163,7 +165,7 @@ Jos ehdot eivät täyty, kortit jäävät emit-tiedostoon käsittelemättöminä
 | E2 | `kilpcmp` vertaa vanhaan tietueeseen. Jos muutoksia ei ole, mitään ei kirjoiteta eikä lähetetä. | `:979` | [AA: `tiedonsiirto.md` "Reititys" (kumottu kiertoväite)] |
 | E3 | Jos emit-koodi muuttui: `rembadge` ja `addbadge`, `setEmitJarr`, sekä `putem(&em, ep, 1)` muihin emit-tietueisiin **ilman `emit`-lukkoa** (H-011). | `:1042-1189`; `:1114`, `:1146`, `:1169` | [AA: H-011, H-135] |
 | E4 | `PUTREC(d, 1)` → `kilparr[d]` päivitetään muistiin ensin → `write(d, 0)` → `putrec` `kilpdat`-lukon alla. Kun `datatallfl[1]` on päällä (GUI), myös `kirjKilpSQL` (MySQL-jono). | `:1211`; `:581-595`, `:609-624` | [AA: `virheenkasittely.md` luku 4; `tallenna-samanaikaisuus.md` "Mitä tallenna muokkaa"] |
-| E5 | `KILP.DAT` on avattu `FILE_FLAG_WRITE_THROUGH`-lipulla. Kirjoitusvirhe → modaali-ikkuna Kyllä/Ei `kilpdat`-lukon alla. Paluuarvo −1 ohitetaan, joten kutsuja ei tiedä virheestä. "Ei" lopettaa ohjelman (H-015, H-153). | `dbboxm/dbbox1.cpp:64-100`; `tputilv2/perr.cpp:28-60` | [AA: `virheenkasittely.md` 4 ja 12.7; `tiedostomuodot.md` "KILP.DAT"] |
+| E5 | `KILP.DAT` on avattu `FILE_FLAG_WRITE_THROUGH`-lipulla (`dbboxm/dbbox1.cpp:118`, `:180`). Kirjoitusvirhe → modaali-ikkuna Kyllä/Ei `kilpdat`-lukon alla. Paluuarvo −1 ohitetaan, joten kutsuja ei tiedä virheestä. "Ei" lopettaa ohjelman (H-015, H-153). | `dbboxm/dbbox1.cpp:64-100`; `tputilv2/perr.cpp:28-60` | [AA: `virheenkasittely.md` 4 ja 12.7; `tiedostomuodot.md` "KILP.DAT"] |
 | E6 | `laheta(...)`: perustiedot (KILPT), vaihe (KILPPVT) ja yksittäiset tuloskentät (VAIN_TULOST) jokaisen yhteyden lähtöjonoon. Lähetys tehdään myös, jos E5:n kirjoitus epäonnistui. | `:1257-1307` | [AA: `tiedonsiirto.md` "Sarjallistaminen"; `virheenkasittely.md` 12.7 ("lähetys muille tehty")] |
 | E7 | `lisaToimet` (esimerkiksi jatkuva sivutuloste, H-091) | `:1373-1374` | [AA: H-091] |
 
@@ -183,7 +185,7 @@ Jos ehdot eivät täyty, kortit jäävät emit-tiedostoon käsittelemättöminä
 |---|---|---|---|
 | G1 | `tarkcom` (oma säie, `Sleep(50)`) jakaa paketit luokan mukaan. | `Hk/HkCom32.cpp:875-964` | [AA: `saikeet-ja-lukot.md` luku 3; `tiedonsiirto.md` "Reititys"] |
 | G2 | KILPT, KILPPVT ja VAIN_TULOST → `tark_kilp`: tietue luetaan *ennen* `tall`-lukkoa (H-007), sitten `tallenna(d, kielto = cn+1)`. Tallennus kirjoittaa vastaanottajan `KILP.DAT`:iin (E4–E5) ja välittää tiedon kaikille muille yhteyksille paitsi lähteelle. HK ei tarkista kilpailijanumeroa KILPPVT- ja VAIN_TULOST-paketeista (H-022). Vaiheindeksi on tarkistamatta (H-033). | `Hk/HkCom32.cpp:260-332` | [AA: `tiedonsiirto.md` sekvenssikaavio, "Reititys"; H-007, H-022, H-033] |
-| G3 | EMITT → `tark_emit` (kun `com_emit` on 1 tai −1) → `addem(&em, cn+1)`. Tietue **lisätään vastaanottajan emit-tiedoston loppuun**, omalla `emithead`illä. Koska `kirjaus` on asetettu: `setEmitJarr`, `emithead2` siirtyy vain, jos käsittely oli ajan tasalla, `laheta_em` välittää muille ja `emit_rap`, kun `comautorap`. Kaksoiskappale (`on_emit`) hylätään hiljaa. | `Hk/HkCom32.cpp:790-798`, `:812-816`; `Hk/HkEmit.cpp:1665-1691` | [AA: H-137, H-092, H-034]; tiedoston loppuun lisäys ja `com_emit`-ehto [K-luettu] |
+| G3 | EMITT → `tark_emit` (kun `com_emit` on 1 tai −1) → `addem(&em, cn+1)`. Tietue **lisätään vastaanottajan emit-tiedoston loppuun**, omalla `emithead`illä. Koska `kirjaus` on asetettu: `setEmitJarr`, `emithead2` siirtyy vain, jos käsittely oli ajan tasalla, `laheta_em` välittää muille ja `emit_rap` ajetaan, kun `comautorap`, `kilpno` ja `emittulparam`-ehto täyttyvät (C5). Kaksoiskappale (`on_emit`) hylätään hiljaa. | `Hk/HkCom32.cpp:790-798`, `:812-816`; `Hk/HkEmit.cpp:1665-1691` | [AA: H-137, H-092, H-034]; tiedoston loppuun lisäys ja `com_emit`-ehto [K-luettu] |
 | G4 | Vastaanottaja ei tee emit-tietueelle uutta leimantarkastusta tai tuloslaskentaa. Tulos tulee G2:n kilpailijapaketeissa [K-luettu: `addem` ei kutsu `tallenna`a; HK:n `tark_emit` ei tee muuta kuin `addem`]. | | [K-luettu] |
 | G5 | Järjestys: lähettäjä laittaa kilpailijapaketit jonoon D8:ssa ennen EMITT-pakettia D10:ssä. Jono on yhteyskohtaisesti FIFO, joten vertainen saa kilpailijatiedot ensin [AA: `tallenna-samanaikaisuus.md` "Tallennus, SQL ja replikointi": FIFO; järjestys D8 → D10 [K-luettu]]. | | ks. sarakkeet |
 
@@ -192,7 +194,7 @@ Jos ehdot eivät täyty, kortit jäävät emit-tiedostoon käsittelemättöminä
 `lueemitfile` (`Hk/HkEmit.cpp:3029-3112`) lukee emit-tiedoston, rakentaa `emitjarr`-linkit
 uudelleen ja vertaa tietueiden `kilpno`a `KILP.DAT`:n koodeihin. Eroista kirjoitetaan ilmoitus
 `DATA_ERR.TXT`:hen. `emithead2` asetetaan heti *viimeisen* käsitellyn tietueen jälkeen
-(`:3103-3104`). `on_emit`-taulua ei rakenneta uudelleen (H-034). [AA: `tiedostomuodot.md` "Emit-tiedosto"
+(`:3103-3104`). `on_emit`-taulua ei rakenneta uudelleen (H-034). `lueemitfile` ajetaan käynnistyksen lisäksi myös istunnon aikana: `lueRatatiedotUudelleen` (`Hk/HkEmit.cpp:6412`, kun `emitanal_fl`), `uusiemitanalyysi` (`:6430`) ja vaiheen vaihto (`Hk/HkIx.cpp:1943`) [K-luettu]. [AA: `tiedostomuodot.md` "Emit-tiedosto"
 (otsakkeettomuus, keskeneräinen tietue); H-034]; `emithead2`:n palautus ja vertailu [K-luettu].
 
 ---
@@ -213,7 +215,7 @@ flowchart TD
   TB --> TL["tallenna tall-lukko<br/>Hk/HkDat.cpp"]
   TL --> KD[("KILP.DAT<br/>PUTREC → putrec")]
   TL --> Q1["laheta: KILPT / KILPPVT / VAIN_TULOST → lähtöjono"]
-  PE --> PU["putem(em, emithead2): kilpno, kirjaus"]
+  TL -->|"tallennuksen jälkeen"| PU["putem(em, emithead2): kilpno, kirjaus"]
   PU -->|"onnistui"| Q2["laheta_em: EMITT → lähtöjono"]
   Q1 --> CF[("COMFILE.DAT levyjono")]
   Q2 --> CF
@@ -239,7 +241,7 @@ pääjärjestystä (luku 7). ViestiLuenta ei kuulu kaavioon.
 | Tuntematon kortti | Konsoli: käyttäjä antaa numeron, hakee nimellä tai lisää kilpailijan (`:1340-1517`). GUI: kortti sijoitetaan seuraavalle vakanttipaikalle (`haeSeurVakantti`). Jos sellaista ei ole, lisätään uusi vakanttisarjan tietue (`addtall`). Ilmoitus "käsittele" (`:1577-1622`). Vakanttipaikan `tallenna` (`:1608`) on ilman lukkoa (H-010). Vakantti jää omistamaan kortin (H-120). | HKM / HKW | [K-luettu]; H-010, H-120 [AA] |
 | Koodi 200 (koodinsa menettänyt kortti) | Konsoli: kysely. GUI: uusi vapaa koodi, tai esiluennassa käyttö estetään. | HKM / HKW | [K-luettu] (`:1205-1274`, `:1523-1539`) |
 | Kuntosuunnistustila 1/2 | Vain GUI vaihtaa seuraavan vapaan koodin (`#if defined(_BORLAND_)`, `:1663-1673`). | HKW | [AA: H-081, `kaantajaerot.md`; Q60, OP-9] |
-| Esitarkastus, esiluenta (`ESITARK`, `ESILUENTA` HK:n asetuksina) | Emit-tiedostona `ESITARK.DAT` (`Hk/HkEmit.cpp:3037-3038`). Tulosta ei lasketa: haara `:1825-1833` tallentaa vain merkinnän `-`. | HKM, HKW | [K-luettu]; vaiheen vaihdon kahva H-105 [AA] |
+| Esitarkastus, esiluenta (`ESITARK`, `ESILUENTA` HK:n asetuksina) | Emit-tiedostona `ESITARK.DAT` (HK: `Hk/HkEmit.cpp:3037-3038`, ehto `esitark \|\| esiluenta == 1`; viesti: `Juk/VEmit.cpp:3597-3599`, ehto `esitark`). Tulosta ei lasketa: haara `:1825-1833` tallentaa vain merkinnän `-`. | HKM, HKW; viestissä (`Juk/VEmit.cpp`) `esitark`-tilassa; ohjelmakohtaista käännöstä ei tarkistettu | [K-luettu]; vaiheen vaihdon kahva H-105 [AA] |
 | Tunnistustila (`emitTunnistus`) | Kortti vain näytetään (`emitLuettu`). Ei tallennusta. Emit-kello saa kuittauksen. | HKW (koukku GUI:ssa) | [AA: osaD luku 4; H-107] |
 | GUI: laitteen muistin luenta tiedostoon (`emittallfile`) | Tietueet menevät käyttäjän valitsemaan tiedostoon, eivät emit-tiedostoon. | HKW, VW | [K-luettu] |
 | Testisyöte `EMITFILE` (portti > 900, `EMIT_IN.DAT`) | `file2emit` lukee tiedoston ja kutsuu `tall_emit`ia. Testityökalu, ei normaali käyttö. | HKM, HKW, VM | [AA: `ominaisuusvalitsimet.md` luku 3 ja T3]; `Hk/HkIV.cpp:877-937` [K-luettu] |
@@ -248,6 +250,7 @@ pääjärjestystä (luku 7). ViestiLuenta ei kuulu kaavioon.
 | Käyttäjä ohittaa kortin GUI:ssa (`BtnOhitaClick`) | `Em.kilpno = 0`, `Em.badge = 0`, `Em.put`, sekä pitkään pidetyn kilpailijakopion `tallenna`. | HKW | [AA: H-017 (`cbHk/UnitEmit.cpp:3483`)] |
 | "Lähetä näytetyt leimatiedot" (GUI-valikko) | `laheta_em(&Em, 0, 0)`. Ainoa polku, jolla tieto kulkee `LÄHEMITn=V`-yhteydelle. Vastaanottaja hylkää kortin, jos sen `on_emit` on jo nähnyt sen [päätelty: `addem` tarkistaa `on_emit`in, kun `estaemittoisto = 1`]. | HKW, VW | [K-luettu] `cbHk/UnitEmit.cpp:3533-3537`; käyttöohje `docs-site/docs/hkkisawin/hkliite1.md:177` |
 | Vaiheen vaihto kesken luennan | Lukijasäikeitä ei pysäytetä. Emit-tiedosto suljetaan ja avataan uudelleen kolmen lukon alla. Esitarkastus- tai esiluentatilassa uudelleenavaus ohitetaan (H-105). Kun `RADAT<n>.XML` puuttuu, `emitfl = 0` (H-134). | HKM, HKW | [AA: `saikeet-ja-lukot.md` luku 5; H-105, H-134, H-094] |
+| HkKisaWin: käsittelyjono kohtaa jo käsitellyn tietueen | `pros_emit` ohittaa tietueen ja palauttaa 0 (D2). `NewCardHandler` pitää paluuarvoa `bdg <= 0` virheenä ja näyttää tyhjän "Virhe luennassa" -ikkunan. Ehdokas KE-12. | HKW | [päätelty]: `Hk/HkIV.cpp:1188-1192`, `cbHk/UnitEmit.cpp:935-939` |
 | Konsoli vs GUI, yhteenveto | Konsolin `pros_emit` kysyy käyttäjältä ja odottaa vastausta. GUI:n haara päättää automaattisesti ja kirjoittaa viestin `msgtxt`iin. Konsolissa käsittely tehdään vain Emit-näytössä, GUI:ssa vain Emit-lomakkeen ollessa auki. | | [K-luettu] |
 
 ---
@@ -257,13 +260,13 @@ pääjärjestystä (luku 7). ViestiLuenta ei kuulu kaavioon.
 | Rakenne / tiedosto | Sisältö | Kirjoittajat ja lukko | Lähde |
 |---|---|---|---|
 | `emittp` (188 tavua) | `package` 0, `badge` 4, `year` 8, `week` 10, `maali` 12, `time` 16, `ctrlcode[50]` 20, `ctrltime[50]` 70, `sc`/`pc`/`lc`/`kilpno`/`osuus` 170–178, `badge0` 180, `kirjaus` 184 | | [AA: `tiedostomuodot.md` "Emit-tiedosto", kokotaulukko] |
-| `EMIT<n>.DAT` (HK), `EMIT.DAT` (viesti), `ESITARK.DAT` (HK:n esitarkastus) | `emittp`-taulukko ilman otsaketta; tietuenumero = indeksi; `emithead = filelength / 188`. Kesken jäänyt viimeinen tietue kirjoitetaan seuraavalla lisäyksellä yli. | `emit`-lukko; poikkeukset H-011 ja H-045 | [AA: `tiedostomuodot.md`]; `ESITARK.DAT` [K-luettu] |
+| `EMIT<n>.DAT` (HK), `EMIT.DAT` (viesti), `ESITARK.DAT` (esitarkastus, sekä HK että viesti: `Juk/VEmit.cpp:3599`) | `emittp`-taulukko ilman otsaketta; tietuenumero = indeksi; `emithead = filelength / 188`. Kesken jäänyt viimeinen tietue kirjoitetaan seuraavalla lisäyksellä yli. | `emit`-lukko; poikkeukset H-011 ja H-045 | [AA: `tiedostomuodot.md`]; `ESITARK.DAT` [K-luettu] |
 | `emithead`, `emithead2`, `emitptr` | Tiedoston pituus, automaattikäsittelyn kohdistin, selauskohdistin | `emithead` `emit`-lukon alla; `emithead2` myös ilman lukkoa (H-137) | [AA: `globaali-tila.md` luku 6] |
 | `ed_em[NREGNLY]` | Lukijakohtainen edellinen kortti (toistetarkistus) | lukijasäie | [AA: H-145] |
 | `on_emit::emitvaraus`, `nemitvar` | Kaksoiskappaletaulu, avain `4000*time + badge`. Ei talletu levylle, nollautuu käynnistyksessä. Vaiheen vaihto vapauttaa taulun, mutta laskuri jää ennalleen (H-141). | `emit`-lukko (`addem`) | [AA: H-034, H-141] |
 | `emitjarr`, `bdg_kno` | Kilpailija → emit-tietue ja koodi → numero | ylläpidetään käsin, ilman lukkoa `tallenna`ssa | [AA: `globaali-tila.md` luku 5; H-135, H-140; T-039] |
 | `bdg_t[8]` | Koodin havaintoaika (LUKIJA: `em.time`) | ilman lukkoa (H-136) | [AA: H-136] |
-| `KILP.DAT` | dbboxm-tietuetiedosto; `FILE_FLAG_WRITE_THROUGH` | `kilpdat`-lukko jokaisessa `putrec`issa; HK:n `tallenna` vaatii lisäksi `tall`-lukon kutsujalta | [AA: `tiedostomuodot.md`; `tallenna-samanaikaisuus.md`] |
+| `KILP.DAT` | dbboxm-tietuetiedosto; `FILE_FLAG_WRITE_THROUGH` (`dbboxm/dbbox1.cpp:118`, `:180`) | `kilpdat`-lukko jokaisessa `putrec`issa; HK:n `tallenna` vaatii lisäksi `tall`-lukon kutsujalta | [AA: `tiedostomuodot.md`; `tallenna-samanaikaisuus.md`] |
 | `COMFILE.DAT` | Levyjono: otsake ja paikat. Kuittaamattomat paketit säilyvät uudelleenkäynnistyksen yli, ja käynnistyksessä kysytään, säilytetäänkö ne. | `outb`-lukko | [AA: `tiedostomuodot.md`; `tiedonsiirto.md` "Jonot"; H-038, H-044] |
 | AJAT-jono (`AJATn.LST`) | Maaliaikarivit kortilta (D7) | `ajat`-lukko | [AA: `virheenkasittely.md` 12.3; H-146] |
 | `combufrec` EMITT | `pkgclass = EMITT`, `len = class_len[EMITT]` = 188, `d.em` = koko `emittp` | | [AA: `testaus.md` (luokkapituudet)]; [K-luettu] `Hk/HkCom32.cpp:777-779` |
@@ -278,13 +281,13 @@ Projektitiedostot (Release|Win32) [K-luettu]:
 - `VS/V/JukMaali520.vcxproj:135`: `_CONSOLE;EMIT;MAALI;EMITFILE;ESITARK;EMITAG;EMITHTTP;LAJUNEN;TCPLUKIJA;NREGNLY=8;…`
 - `VS/V/JukLuenta520.vcxproj:131`: `_CONSOLE;EMIT;MAALI;TCPLUKIJA;LUENTA;NREGNLY=8;…` (ei `VEmit.cpp`:tä käännösyksikkönä)
 - `RADStudio10/HkKisaWin.cbproj:180-181`: `BCC_Defines` `EMIT;MAALI;TCPLUKIJA;LAJUNEN;AUTOVA;…`, `Defines` `_BORLAND_;EMITHTTP;EMITFILE;…`, `:149` `VALUKIJA`
-- `RADStudio10/ViestiWin.cbproj:134`, `:195`: `EMIT;EMITHTTP;LAJUNEN;TCPLUKIJA;EMITAG;AUTOFILE;…`
+- `RADStudio10/ViestiWin.cbproj:134`, `:194-195`: `Defines` `EMIT;EMITHTTP;LAJUNEN;TCPLUKIJA;EMITAG;AUTOFILE;…`, `BCC_Defines` `MAALI;KONETUNN;JUKOLA;ISODATA` (`:194`; `MAALI` tulee siis `BCC_Defines`-kentästä, ei `Defines`-kentästä)
 
 | Valitsin / asetus | Ohjelmat | Vaikutus tähän ketjuun | Lähde |
 |---|---|---|---|
 | `EMIT` | kaikki viisi | Emit-koodi käännetään (`Hk/HkEmit.cpp:1549`). | [AA: `valitsimet.csv`]; projektit [K-luettu] |
 | `MAALI` | kaikki viisi (pakotettu) | Yhdessä `EMIT`in kanssa: EMITT-vastaanotto (`Hk/HkCom32.cpp:813`), `LÄHEMIT`-jäsennys (`Hk/HkInit.cpp:2711`), `EMITLEIMAT` | [AA: `valitsimet.csv`] |
-| `EMITLEIMAT` | kaikki viisi (johdettu) | Johdetaan valitsimista `(MAALI || AUTOVA) && EMIT && !EILEIMAT` (`Hk/HkDef.h:109-113`, `Juk/VDef.h:74-76`). Lukija-asetusten jäsennys ja `tall_emit` (`Hk/HkIV.cpp:730-1869`). | [AA: `valitsimet.csv`]; rivit [K-luettu] |
+| `EMITLEIMAT` | kaikki viisi (johdettu) | Johdetaan valitsimista. HK: `(MAALI || AUTOVA) && EMIT && !EILEIMAT` (`Hk/HkDef.h:109-113`). Viesti: `MAALI && EMIT && !EILEIMAT` (`Juk/VDef.h:74-76`, ei `AUTOVA`-vaihtoehtoa). Lukija-asetusten jäsennys ja `tall_emit` (`Hk/HkIV.cpp:730-1869`). | [AA: `valitsimet.csv`]; rivit [K-luettu] |
 | `EILEIMAT` | ei missään | opt-out, ei koskaan määritelty | [AA: `valitsimet.csv` opt-out-never-defined] |
 | `TALLEMIT` | ei missään | `Hk/HkEmit.cpp:1275-1377` (toinen `putem`/`on_emit`/`addem`/`lueemitfile`, jossa `res = putem`) on kuollutta koodia. **Käännetty `addem` on `:1657-1693`.** `TALLEMIT` esiintyy myös ehdoissa `MAALI || TALLEMIT`, jotka toteutuvat `MAALI`n kautta. | [AA: `valitsimet.csv` dead-never-defined; `virheenkasittely.md` luku 8] |
 | `EBA` | ei missään | `eba_ajat` (`Hk/HkEmit.cpp:1732-1779`) ja `Hk/HkIV.cpp:1701-1705` ovat kuollutta koodia. Käännetty on `#else`-haara. | [AA: `valitsimet.csv`] |
@@ -300,15 +303,15 @@ Projektitiedostot (Release|Win32) [K-luettu]:
 | `EMITHTTP` | kaikki paitsi VL | emiTag-väliajat palvelimelta | [AA: `riippuvuudet.md` luku 12] |
 | `NREGNLY` | HK 32, viestin konsoli 8, VW 32 | Lukijoiden enimmäismäärä | [AA: T-024] |
 | `LUKIJAn`, `MTRn`, `EMITKELLO`, `REGNLYn`, `EMITAGn`, `ETGPRS`/`ETSQL` | HK ja viesti | Lukijan tyyppi ja yhteys | [AA: osaD luku 1; `asetusavaimet.csv`] |
-| `LÄHEMITn[=I/O/V]` | HK ja viesti | Asettaa `emitfl = 1` ja `com_emit`: 1 = molemmat suunnat, `I` = −1 (vain vastaanotto), `O` = 2 (vain lähetys), `V` = 3 (vain erikseen pyydetty lähetys). Ilman tätä asetusta yhteys ei kuljeta EMITT-paketteja, mutta kilpailijapaketit kulkevat. | `Hk/HkInit.cpp:2711-2725`, `Juk/VInit.cpp:2003-2013` [K-luettu]; merkitys `docs-site/docs/hkkisawin/hkliite1.md:177` |
+| `LÄHEMITn[=I/O/V]` | HK ja viesti | Asettaa `emitfl = 1` ja `com_emit`: 1 = molemmat suunnat, `I` = −1 (vain vastaanotto), `O` = 2 (vain lähetys), `V` = 3 (vain erikseen pyydetty lähetys). EMITT-vastaanotto (`tark_emit`) tapahtuu vain, kun `com_emit` on 1 tai −1, joten `=O` ja `=V` estävät myös vastaanoton (`Hk/HkCom32.cpp:794`). Ilman tätä asetusta yhteys ei kuljeta EMITT-paketteja, mutta kilpailijapaketit kulkevat. | `Hk/HkInit.cpp:2711-2725`, `Juk/VInit.cpp:2003-2013` [K-luettu]; merkitys `docs-site/docs/hkkisawin/hkliite1.md:177` |
 | `ESTÄEMITTOISTO` / `SALLIEMITTOISTO` | HK ja viesti | `estaemittoisto` (oletus 1) eli `on_emit`-hylkäys | `Hk/HkInit.cpp:2596-2602`, `Hk/HkGlobals.cpp:523`, `Juk/VInit.cpp:1995-2000` [K-luettu]; [AA: `asetusavaimet.csv`] |
 | `LUKUTOISTO=0/1/E` | HK ja viesti | LUKIJAn vaatimat identtiset sanomat (oletus 2). GUI-valikon rasti ei vastaa muuttujaa (H-175). | [AA: osaD luku 2; H-175] |
-| `KIRJHETI` | HK | `& 4`: `fflush(femitfile)` emit-lisäyksen jälkeen (vaikutukseton, koska tiedosto on puskuroimaton). `& 2` ei vaikuta levyjonoon (H-044). | [AA: H-044; `virheenkasittely.md` luku 4]; `& 4` [K-luettu] `Hk/HkEmit.cpp:1675` |
+| `KIRJHETI` | HK | `& 4`: `fflush(femitfile)` emit-lisäyksen jälkeen, kun myös `!luesuoraan` (vaikutukseton, koska tiedosto on puskuroimaton). `& 2` ei vaikuta levyjonoon (H-044). | [AA: H-044; `virheenkasittely.md` luku 4]; `& 4` [K-luettu] `Hk/HkEmit.cpp:1675` |
 | `COMFILE=EI` | vain HK | Muistijono 50 pakettia (H-021). Viestissä levyjonoa ei voi kytkeä pois. | [AA: `tiedonsiirto.md` "Jonot"] |
 | `ESITARK`, `ESILUENTA` (HK:n asetuksina) | HKM, HKW | `ESITARK.DAT`; tulosta ei lasketa | [AA: `asetusavaimet.csv`]; [K-luettu] |
-| `SISÄÄNLUENTA[=M]`, `LUENTATESTI` | viesti | `sisaanluenta = 2` → `emitfl = 0` (`Juk/VInit.cpp:764-768`, `:2764-2765`). `tall_emit` ohjaa kortin sisäänluentaan (`Juk/VIv.cpp:1101-1104`). | [K-luettu] |
+| `SISÄÄNLUENTA[=M]`, `LUENTATESTI` | viesti | `SISÄÄNLUENTA` asettaa `sisaanluenta = 2`, `SISÄÄNLUENTA=M` asettaa `sisaanluenta = 1` (`Juk/VInit.cpp:764-768`). Vain arvolla 2 (`sisaanluenta > 1`) `emitfl` nollataan (`:2764-2765`); `=M`-arvolla `emitfl` säilyy. Kummallakin arvolla `tall_emit` ohjaa kortin sisäänluentaan (`addluenta`, ei `addem`ia; `Juk/VIv.cpp:1101-1104`). | [K-luettu] |
 | `AUTORAP`, `EMITANAL`, `LÄHEMVA`, `EMVALOKI` | HK ja viesti | Automaattinen rastiväliraportti, emit-analyysi, EMITVA-väliaikapaketit ja niiden loki (H-073) | [AA: `asetusavaimet.csv`; H-073, H-092] |
-| `UDPvarmistamaton` (yhteyskohtainen) | kaikki | Bitti 2 ohittaa UDP:n id-tarkistuksen ja kuittauksen (`Tp/TpComY.cpp:1008`, `:1038`) | [K-luettu]; asetusavainta ei jäljitetty |
+| `UDPvarmistamaton` (yhteyskohtainen) | kaikki | Bitti 2 (asetus `HYVKAIKKI<n>`; `Hk/HkInit.cpp:1094`, `Juk/VInit.cpp:1040`) ohittaa UDP:n id-tarkistuksen mutta kuittaa aina (`hyvp = TRUE`; `Tp/TpComY.cpp:1008`, `:1038-1039`). Bitti 1 (`COMn=BRO`; `Hk/HkInit.cpp:1113`, `Juk/VInit.cpp:1059`): lähettäjä kuittaa paketin itse eikä odota vastaanottajan kuittausta (`Tp/TpComY.cpp:1531-1535`). Tarkistus on pakettiluokasta riippumaton, joten se koskee myös EMITT-paketteja [päätelty]. | [K-luettu] |
 
 ---
 
@@ -327,7 +330,7 @@ Projektitiedostot (Release|Win32) [K-luettu]:
 | Vastaanoton lukitus (kilpailijapaketit) | luku ennen lukkoa (H-007) | sama | lukko ennen lukua | sama | sama |
 | Tuntematon pakettiluokka | ohitetaan | ohitetaan | vastaanotto pysähtyy (H-026) | sama | sama |
 | `NREGNLY` | 32 | 32 | 8 | 32 | 8 |
-| Emit-kello (`REGNLY`) | kyllä | kyllä | kyllä | kyllä | ei |
+| Emit-kello (`EMITKELLO`) | kyllä | kyllä | kyllä | kyllä | kyllä staattisesti: jäsennys (`Juk/VInit.cpp:1751-1767`, `NREGNLY=8`) ja lukija (`Tp/TpLaitteet.cpp`) käännetään mukaan; ajossa todentamatta [K-luettu] |
 
 Lähteet: viestin `tallenna` ja vastaanoton lukitus [AA: `tallenna-samanaikaisuus.md` "Viesti";
 `tiedonsiirto.md` "HK ja viesti"]; `addem`in paluuarvo [AA: `todisteet/c9/osaB-pysyva-data.md`
@@ -335,7 +338,7 @@ N-B1]; `NREGNLY` ja laitteet [AA: osaD luku 3]; muut [K-luettu].
 
 Viestin ketjussa on sama pääjärjestys kuin HK:ssa: ensin `tallenna`, sitten `putem` ja `laheta_em`
 vain onnistuneen `putem`in jälkeen. Konsolissa `Juk/VIv.cpp:1673-1679`, GUI:ssa
-`ViestiWin/UnitEmit.cpp:926-931` [K-luettu]. ViestiWin GUI kasvattaa `emithead2`:ta ennen
+`ViestiWin/UnitEmit.cpp:926-931` [K-luettu]. Ero: ViestiWin tekee `setEmitJarr`in jo ennen `tallenna`a ja `putem`ia (`ViestiWin/UnitEmit.cpp:923`), kun HK ja ViestiMaali tekevät sen vasta onnistuneen `putem`in jälkeen (`Hk/HkIV.cpp:1846-1848`, `Juk/VIv.cpp:1673-1677`) [K-luettu]. ViestiWin GUI kasvattaa `emithead2`:ta ennen
 käsittelyä (`:901`) [K-luettu]. Viestin `addem` (`Juk/VEmit.cpp:1505-1545`) lähettää vain
 käsitellyn tietueen, kuten HK:n [K-luettu]. Viestissä `tark_partio` voi kaataa konsoliohjelman
 kortin luennassa (H-064).
@@ -348,8 +351,8 @@ kortin luennassa (H-064).
 
 | Kohde | Kutsu | Mitä onnistuminen tarkoittaa | Mitä virheessä tapahtuu | Lähde |
 |---|---|---|---|---|
-| Emit-tiedosto, luenta (C3) | `addem` → `putem` | `_write` palautti 188. Tieto on käyttöjärjestelmän välimuistissa, ei pakotettu levylle (ei `_commit`ia, H-156). | Ilmoitus. `emithead` ei kasva. Kortti on jo välimuistissa `ed_em` ja taulussa `on_emit`. Kuittaus Emit-kellolle. Ei lähetystä. Uusi luku ei tallenna korttia saman istunnon aikana (H-145). | [AA: `virheenkasittely.md` 12.2, 12.7] |
-| Emit-tiedosto, käsittely (D9) | `putem(&em, emithead2, 0)` | sama | Kilpailijan tulos on jo tallennettu ja lähetetty (D8). Linkki `setEmitJarr` ja EMITT-lähetys jäävät tekemättä, ja `emithead2` etenee silti. Ks. luku 12, ehdokas KE-10. | [K-luettu] |
+| Emit-tiedosto, luenta (C3) | `addem` → `putem` | `_write` palautti 188. Tieto on käyttöjärjestelmän välimuistissa, ei pakotettu levylle (ei `_commit`ia, H-156). | Ilmoitus. `emithead` ei kasva. Kortti on jo välimuistissa `ed_em` ja taulussa `on_emit`. Kuittaus Emit-kellolle. Ei lähetystä. Uusi luku ei tallenna korttia saman istunnon aikana (H-145). Sama koskee vastaanottajan `addem`ia: `tark_emit` on jo kuitannut paketin (F4) ja sivuuttaa `addem`in paluuarvon, joten vastaanottaja voi menettää emit-tietueen ilman, että lähettäjä tietää siitä [päätelty: `Hk/HkCom32.cpp:796-797`, `Hk/HkEmit.cpp:1669`]. | [AA: `virheenkasittely.md` 12.2, 12.7] |
+| Emit-tiedosto, käsittely (D9) | `putem(&em, emithead2, 0)` | sama | Kilpailijan tulos on jo tallennettu ja lähetetty (D8). HK:ssa ja ViestiMaalissa linkki `setEmitJarr` ja EMITT-lähetys jäävät tekemättä, ja `emithead2` etenee silti. ViestiWinissä `setEmitJarr` tehdään ennen `putem`ia (`ViestiWin/UnitEmit.cpp:923`), joten paikallinen linkki säilyy; vain EMITT-lähetys jää tekemättä. Ks. luku 12, ehdokas KE-10. | [K-luettu] |
 | Emit-tiedosto, `tallenna`n koodinvaihto (E3) | `putem(..., 1)` ilman lukkoa | sama | sama ilmoitus; mahdollinen lomittuminen (H-011) | [AA: H-011] |
 | `KILP.DAT` (E4) | `PUTREC` → `putrec` | `WriteFile` onnistui; `FILE_FLAG_WRITE_THROUGH` | Ilmoitus Kyllä/Ei (lukon alla). Muisti on päivitetty, levy ei. Lähetys muille tehdään silti. Uudelleenkäynnistys lataa vanhan tietueen (H-015). | [AA: `virheenkasittely.md` 4, 12.7] |
 | AJAT (D7) | `tall_rivi` → `writeajat` | | Rivi merkitään kirjoitetuksi; aukko (H-146) | [AA: H-146] |
@@ -375,7 +378,11 @@ saa kuittauksen (Q86, Q100, OP-13 avoin).
 ### 8.4 Yhteyskatkot ja uudelleenlähetys
 
 - Levyjono säilyttää kuittaamattomat paketit katkon ja uudelleenkäynnistyksen yli. Uudelleenkäynnistyksessä
-  lähetetään vain kuittaamaton loppuosa alkuperäisessä järjestyksessä. Muistijonon paketit
+  lähetetään vain kuittaamaton loppuosa alkuperäisessä järjestyksessä. Jos jonossa on aukko
+  (esimerkiksi H-044:n kirjoitusvirheen jättämä tyhjä paikka), käynnistyksen jonon kärjen haku
+  pysähtyy aukkoon: se etenee vain yhtenäistä tietuejonoa (`Tp/TpComY.cpp:2316-2324`), joten
+  aukon jälkeiset paketit eivät välttämättä tule oikein tulkituiksi [AA: H-044 "uudelleenkäynnistys pysähtyy
+  aukkoon"; K-luettu; seuraus päätelty]. Muistijonon paketit
   katoavat. Jos käyttäjä vastaa käynnistyksessä "Ei", jonossa olevat paketit katoavat pysyvästi
   (H-038) [AA: `tiedonsiirto.md` "Jonot", "Kättely"].
 - Uudelleenyhteys alkaa `ALKUT`-paketilla, ja järjestysnumero nollautuu. Katkon aikana matkalla
@@ -404,15 +411,15 @@ Kyllä. Tunnetut tavat:
 
 | # | Tilanne | Seuraus | Lähde |
 |---|---|---|---|
-| 1 | Emit-kirjoitusvirhe lukuvaiheessa | Kortti puuttuu paikalliselta asemalta ja kaikilta vertaisilta. Kilpailijalla ei ole tulosta kortilta. | [AA: H-145] |
-| 2 | Kirjoitusvirhe käsittelyvaiheen `putem`issa (D9) | Vertaisilla on kilpailijan tulos mutta ei emit-tietuetta. Paikallisesti tulos on olemassa mutta linkki puuttuu. | [K-luettu]; ehdokas KE-10 |
+| 1 | Emit-kirjoitusvirhe lukuvaiheessa | Kortti puuttuu paikalliselta asemalta ja kaikilta vertaisilta. Kilpailijalla ei ole tulosta kortilta. Sama virhe vastaanottajan `addem`issa: vastaanottaja on jo kuitannut paketin eikä lähettäjä saa tietoa puuttuvasta emit-tietueesta [päätelty]. | [AA: H-145]; vastaanottaja [päätelty] |
+| 2 | Kirjoitusvirhe käsittelyvaiheen `putem`issa (D9) | Vertaisilla on kilpailijan tulos mutta ei emit-tietuetta. HK:ssa ja ViestiMaalissa paikallisesti tulos on olemassa mutta linkki puuttuu. ViestiWinissä paikallinen linkki säilyy, koska `setEmitJarr` tehdään ennen `putem`ia (`ViestiWin/UnitEmit.cpp:923`, `:930`). | [K-luettu]; ehdokas KE-10 |
 | 3 | `KILP.DAT`-kirjoitusvirhe | Vertaisilla on uusi tila, paikallisella levyllä vanha. Uudelleenkäynnistys palauttaa vanhan tilan vain tälle asemalle. | [AA: H-015; `virheenkasittely.md` 12.7] |
 | 4 | Yhteys ilman `LÄHEMIT`-asetusta tai yksisuuntainen `=I`/`=O` | Kilpailijan tulos kulkee, emit-tietue ei (tai vain toiseen suuntaan). Asetuksen mukainen, ei vika. | [K-luettu] |
 | 5 | Emit-tietueen järjestysnumero | Vastaanottaja lisää tietueen oman tiedostonsa loppuun, joten indeksit eroavat asemittain. Linkki kulkee `kilpno`n kautta. | [K-luettu] (G3) |
 | 6 | Samanaikaiset muutokset tai katko | Viimeksi saapunut voittaa. Muutokset voivat vaihtua ristiin (H-016). Vastaanoton menetetty päivitys (H-007). Vaihetieto väärälle kilpailijalle (H-022) tai väärään vaiheeseen (H-023). Silmukkatopologia (H-039). | [AA: `tiedonsiirto.md`] |
 | 7 | Jonon menetys | H-044 (levyjonon kirjoitus- tai lukuvirhe), H-021 (täysi muistijono), H-038 ("Ei" käynnistyksessä), H-026 (viestin vastaanotto pysähtyy) | [AA] |
 | 8 | Kaksoiskappale yhdellä asemalla | Uudelleenkäynnistyksen jälkeen tai `SALLIEMITTOISTO`-asetuksella emit-tietue voi olla tiedostossa kahdesti | [AA: H-034] |
-| 9 | Paikallinen kortti jää automaattikäsittelyttä | Kortti on tiedostossa mutta ei kilpailijalla, kunnes se käsitellään käsin (H-137). Uudelleenkäynnistyksen jälkeen sama voi koskea myöhemmin käsiteltyä tietuetta edeltäviä kortteja (ehdokas KE-11). | [AA: H-137]; KE-11 [päätelty] |
+| 9 | Paikallinen kortti jää automaattikäsittelyttä | Kortti on tiedostossa mutta ei kilpailijalla, kunnes se käsitellään käsin (H-137). Uudelleenkäynnistyksen jälkeen tai istunnon aikana emit-tiedoston uudelleenluvun (`lueemitfile`: ratatietojen uudelleenluku, emit-analyysi, vaiheen vaihto) jälkeen sama voi koskea myöhemmin käsiteltyä tietuetta edeltäviä kortteja (ehdokas KE-11). | [AA: H-137]; KE-11 [päätelty] |
 | 10 | Koodinvaihto `tallenna`ssa | Jokainen asema päivittää emit-tietueiden `kilpno`n itse saapuneen KILPT-paketin perusteella (E3). Lomittuminen on mahdollista (H-011). Kahden koodin epäsymmetria (H-135). | [AA: H-011, H-135]; [päätelty: vastaanottaja ajaa saman `tallenna`n] |
 | 11 | Korjattu emit-tietue lähetetään uudelleen | Vertainen, joka on jo nähnyt kortin, hylkää sen `on_emit`-tarkistuksessa | [päätelty]; Q-K3-3 |
 | 12 | Ei korjausta jälkikäteen | Ainoa keino on käsin kopioitava `KILP.DAT`. Emit-tiedostolle ei ole täsmäytystä asemien välillä. Käynnistyksessä tehdään vain paikallinen vertailu `KILP.DAT`:iin (2.10). | [AA: `tiedonsiirto.md` "Johtopäätös"]; vertailu [K-luettu] |
@@ -456,7 +463,7 @@ Kaikkien tila on `avoin`. Ohjelmat: `riskiarvio.csv`:n sarake `ohjelmat` (ylära
 | A lukija | H-136 `bdg_t` ilman lukkoa | P3 / KK-C13-6 | LUKIJAn `em.time`; vähintään kaksi lukijasäiettä | kaikki viisi |
 | A lukija | H-094 merkki katoaa vaiheen vaihdossa | P3 / KK-C13-8 | `bdg_t`-syöte (LUKIJA), vaiheen vaihto | kaikki viisi |
 | A/B `tall_emit` | H-168 `samatleimat` | P4 / KK-C10-2 | Aina | kaikki viisi |
-| A/B kuittaus | H-145 kirjoitusvirhe kuitataan | P3 / KK-C9-2 | Emit-tiedoston kirjoitusvirhe; kuittaus vain Emit-kellolle | kaikki viisi (VL: ei emit-tiedostoa, ks. 10.2) |
+| A/B kuittaus | H-145 kirjoitusvirhe kuitataan | P3 / KK-C9-2 | Emit-tiedoston kirjoitusvirhe; kuittaus vain Emit-kellolle. Koskee myös vastaanottajan `addem`ia (`tark_emit` kuittaa ennen tallennusta ja sivuuttaa paluuarvon) [päätelty] | kaikki viisi (VL: ei emit-tiedostoa, ks. 10.2) |
 | B tallennus | H-156 ei `_commit`ia, väärä virhekoodi | P5 / KK-C9-2 | Virtakatko; virheilmoitus | kaikki viisi |
 | B tallennus | H-053 lukuvirheitä ei huomata | P4 / KK-C9-2 | I/O-virhe `lueem`issa (D1) | HKW, HKM, VW, VM |
 | B tallennus | H-011 `tallenna` kirjoittaa emit-tiedostoon ilman lukkoa | P3 / KK-C13-6 | Koodinvaihto (E3) samaan aikaan lukijasäikeen `addem`in kanssa | HKW, HKM |
@@ -471,6 +478,7 @@ Kaikkien tila on `avoin`. Ohjelmat: `riskiarvio.csv`:n sarake `ohjelmat` (ylära
 | D käsittely | H-120 vakantti jää omistamaan kortin | P4 / KK-C13-15 | Tuntematon kortti, numero käsin | HKW, HKM |
 | D käsittely | H-119 väärä numero kopioi paikanpitäjän | P4 / KK-C13-15 | Käsin korjaus Emit-lomakkeella | HKW |
 | D käsittely | H-081 kuntosuunnistuksen koodinvaihto vain GUI:ssa | P5 / KK-C13-17 | `KUNTOSUUNN` | HKW, HKM |
+| D käsittely | H-112 `TallennaVaihto` tallentaa kortin pinon roskalla | P3 / KK-C13-14 | ViestiWinin Emit-lomakkeen Muutokset → Vaihda (`ViestiWin/UnitEmit.cpp:2284-2330`) | VW (riskiarvio: VW, VM, VL) |
 | D käsittely | H-017 pitkään pidetty kopio | P3 / KK-C13-14 | Emit-lomakkeen Muutokset ja Ohita | HKW, VW |
 | D käsittely | H-116 X = tuhoava valinta | P2 / KK-C13-14 | Emit-lomakkeen `select3` | HKW, VW |
 | D käsittely | H-175 valikon rastit vs muuttujat | P4 / KK-C13-15 | `VaadiToisto` / `lukutoisto` | HKW, HKM, VW |
@@ -481,6 +489,7 @@ Kaikkien tila on `avoin`. Ohjelmat: `riskiarvio.csv`:n sarake `ohjelmat` (ylära
 | D käsittely | H-140 `emitjarr` jää poistossa | P3 / KK-C13-16 | Poisto ja uusi lisäys samaan paikkaan | kaikki viisi |
 | D käsittely | H-135 `bdg_kno` epäsymmetria | P4 / KK-C13-16 | Kahden koodin kilpailijan numeronvaihto | HKW, HKM |
 | D käsittely | H-146 AJAT-aukko | P3 / KK-C9-2 | Maaliaika kortilta aikajonoon (D7), kirjoitusvirhe | HKW, HKM, VW, VM |
+| D käsittely (reunaehto) | H-090 `ajat`-lukko jää lukijasäikeelle | P2 / KK-C13-4 | Reunaehto: `TUNNJONO` ja `tall_regnly`-lukija (esimerkiksi kellosanoman tunnus 'G') jättää `ajat`-lukon pysyvästi; D7:n `tall_rivi` ei silloin pääse eteenpäin [päätelty: `tall_rivi` ottaa `ajat`-lukon]. Itse emit-lukija (`tall_emit`) ei ole H-090:n polulla | HKW, HKM |
 | D raportit | H-092 emit ↔ print -lukitus | P3 / KK-C13-5 | `comautorap` + samanaikainen väliaikatuloste | kaikki viisi |
 | D raportit | H-103 viestin rastiva ↔ emit | P3 / KK-C13-5 | Uudelleenanalyysi emit-liikenteen aikana | VW, VM, VL (riskiarvio) |
 | D raportit | H-087 `EmitHtmlOsuus` vuotaa lukot | P2 / KK-C13-4 | Viestin HTML-emit-tuloste; jäätyminen, kun emit-tietue saapuu | VW, VM, VL |
@@ -504,6 +513,8 @@ Kaikkien tila on `avoin`. Ohjelmat: `riskiarvio.csv`:n sarake `ohjelmat` (ylära
 | G vastaanotto | H-022 väärä kilpailija | P2 / KK-C13-10 | Samanaikaiset lisäykset | HKW, HKM |
 | G vastaanotto | H-023 väärä vaihe | P2 / KK-C13-10 | Monivaiheinen kilpailu | HKW, HKM |
 | G vastaanotto | H-033 vaiheindeksi tarkistamatta | P1 / KK-C13-1 | Vastaanotettu KILPPVT | HKW, HKM |
+| G vastaanotto | H-162 SQL-vienti jättää `tall`-lukon | P3 / KK-C10-1 | Vienti, valinta 3 (`sqltallennus` pois), SQL-poikkeus. Lukko on uudelleentuleva, joten pääsäie (mukaan lukien `pros_emit`) jatkaa, mutta `tark_kilp` (`Hk/HkCom32.cpp:297-332`) ja muut `tall`-lukkoa ottavat työsäikeet pysähtyvät: kilpailijapakettien vastaanotto pysähtyy. Ks. KE-13 (H-162:n kuvaus "emit-käsittely pysähtyy") | HKW, VW |
+| G vastaanotto | H-110 viestin `Lähtöajat`-painike jättää `tall`-lukon | P2 / KK-C13-4 | ViestiWinin `BtnLahtoajatClick` (`ViestiWin/UnitArvonta.cpp:544-576`): `continue` ohittaa `Leave`n, ja vastaanotto (`Juk/VCom.cpp:495`) ja muut työsäikeet pysähtyvät | VW (riskiarvio: VW, VM, VL) |
 | G vastaanotto | H-026 tuntematon luokka | P2 / KK-C13-1 | Viesti: yksi paketti pysäyttää vastaanoton | kaikki viisi (vika viestissä) |
 | G ristiriidat | H-016, H-039 | P3 / KK-C13-23 | Katko, ristiin menevät muutokset; silmukkatopologia | HKW, HKM |
 
@@ -541,15 +552,15 @@ kestävää kirjoitusta), T-048 (TCP-lukijoita ei valvota), T-052 (ViestiLuennan
 | `tall_emit`in paluuarvot | osaD luku 4 | kyllä |
 | H-145-mekanismi, välimuisti, `on_emit` | `virheenkasittely.md` 12.2 ja 12.7; `todisteet/c9/osaB-pysyva-data.md` 2.2 ja N-B1 (C-9) | kyllä |
 | `TALLEMIT`-haara kuollut, käännetty `addem` | `virheenkasittely.md` luku 8; `valitsimet.csv` | kyllä |
-| `addem` ei lähetä raakakorttia (`kirjaus`-ehto) | `Hk/HkEmit.cpp:1678-1688` | **ei, uusi koodista** |
+| `addem` ei lähetä raakakorttia (`kirjaus`-ehto) | `Hk/HkEmit.cpp:1678-1688` | osittain (C-8: `todisteet/c8/osaD-saikeet.md` N-D2 kuvaa `addem`in `emithead2`-siirron vain jo käsitellylle tietueelle; raakakortin lähetyksen puuttuminen uusi koodista) |
 | Käsittelyn käynnistysehdot GUI:ssa ja konsolissa | `cbHk/WinHk.cpp:1611-1639`; `cbHk/UnitEmit.cpp:880-957`; `HkConsole/HkMain.cpp:152-158` | osittain (säie tunnettu C-6:ssa; ehdot uusi) |
-| `pros_emit`in järjestys `tallenna` → `putem` → `laheta_em` | `Hk/HkIV.cpp:1820-1852`; viesti `Juk/VIv.cpp:1673-1679`, `ViestiWin/UnitEmit.cpp:926-931` | **ei, uusi koodista** |
+| `pros_emit`in järjestys `tallenna` → `putem` → `laheta_em` | `Hk/HkIV.cpp:1820-1852`; viesti `Juk/VIv.cpp:1673-1679`, `ViestiWin/UnitEmit.cpp:926-931` | osittain (C-7: `todisteet/c7/osaA-moduulikuvaukset.md` luettelee ViestiWinin `ProsEmit`in kutsut `tallenna` (:926), `putem` (:930), `laheta_em` (:931) tässä järjestyksessä; HK:n ja viestin konsolin järjestys uusi koodista) |
 | `tallenna`n lukitus ja rakenteet | `tallenna-samanaikaisuus.md` (C-1) | kyllä |
 | `KILP.DAT`-kirjoitusvirhe | `virheenkasittely.md` 4, 12.7; H-015 | kyllä |
 | Jonot, kehys, kuittaus, uudelleenyhteys | `tiedonsiirto.md` (C-2) | kyllä |
 | ACK ennen käsittelyä (F5) | `tiedonsiirto.md` sekvenssikaavio + päätelmä | osittain |
-| EMITT-reititys (`com_emit`, `LÄHEMIT=I/O/V`) | `Hk/HkCom32.cpp:766-798`; `Hk/HkInit.cpp:2711-2725`; käyttöohje | **ei, uusi koodista** (avain `asetusavaimet.csv`:ssä) |
-| Vastaanottaja lisää tiedoston loppuun, indeksit eroavat | `Hk/HkEmit.cpp:1669` + `Hk/HkCom32.cpp:796` | **ei, uusi koodista** |
+| EMITT-reititys (`com_emit`, `LÄHEMIT=I/O/V`) | `Hk/HkCom32.cpp:766-798`; `Hk/HkInit.cpp:2711-2725`; käyttöohje | osittain (C-8: `todisteet/c8/osaD-saikeet.md` N-D2 mainitsee `tark_emit`in ja ehdon `com_emit[cn]==1`; `I/O/V`-tulkinta uusi koodista; avain `asetusavaimet.csv`:ssä) |
+| Vastaanottaja lisää tiedoston loppuun, indeksit eroavat | `Hk/HkEmit.cpp:1669` + `Hk/HkCom32.cpp:796` | osittain (C-8: `todisteet/c8/osaD-saikeet.md` N-D2 kuvaa `tark_emit` → `addem` -polun vertaiselta tulevalle käsitellylle tietueelle; tiedoston loppuun lisäys ja indeksien ero uusi koodista) |
 | EMITT-pakettien järjestys kilpailijapakettien jälkeen | koodin järjestys + FIFO (`tallenna-samanaikaisuus.md`) | osittain |
 | Uudelleenkäynnistyksen `emithead2` ja `KILP.DAT`-vertailu | `Hk/HkEmit.cpp:3060-3112` | osittain (`tiedostomuodot.md`: `emithead`; H-034: `on_emit`) |
 | Emit-tiedoston rakenne | `tiedostomuodot.md` (C-3) | kyllä |
@@ -590,11 +601,11 @@ kestävää kirjoitusta), T-048 (TCP-lukijoita ei valvota), T-052 (ViestiLuennan
 | Q-K3-1 | Miten laitteet (Emit-kello, MTR) käyttäytyvät, kun kuittaus tulee ennen kuin kortti on yhdistetty kilpailijaan? Pitäisikö kuittauksen merkitä vain vaihetta A? (liittyy Q86:een) |
 | Q-K3-2 | Toteutuuko F5 käytännössä: katoaako paketti, jos vastaanottaja kaatuu tai suljetaan ACK:n jälkeen mutta ennen `tarkcom`-käsittelyä? (`inbuf` on muistissa) [päätelty] |
 | Q-K3-3 | Onko "Lähetä näytetyt leimatiedot" tarkoitettu vain yhteyksille, jotka eivät ole saaneet korttia? Vertainen hylkää sen `on_emit`-tarkistuksessa, jos sillä on sama lukuaika ja koodi [päätelty]. |
-| Q-K3-4 | Mikä asetus asettaa `UDPvarmistamaton`in, ja ohitetaanko sillä kuittaus myös emit-paketeilta? |
+| Q-K3-4 | **Ratkaistu** (riippumaton tarkastus 2026-11-27). Bitti 2 asetetaan asetuksella `HYVKAIKKI<n>` (`Hk/HkInit.cpp:1094`, `Juk/VInit.cpp:1040`) ja bitti 1 asetuksella `COMn=BRO` (`Hk/HkInit.cpp:1113`, `Juk/VInit.cpp:1059`). Bitti 2 ohittaa id-tarkistuksen mutta kuittaa aina (`Tp/TpComY.cpp:1008`, `:1038-1039`); bitti 1:llä lähettäjä kuittaa itse (`:1531-1535`). Tarkistus on pakettiluokasta riippumaton, joten sama koskee emit-paketteja. |
 | Q-K3-5 | Mitä `vaihda_badge` tekee GUI:n "luettu jo" -polulla (`Hk/HkIV.cpp:1578-1579`)? |
-| Q-K3-6 | ViestiWin kasvattaa `emithead2`:ta ennen käsittelyä (`ViestiWin/UnitEmit.cpp:901`). Mitä tapahtuu, kun `HaeKilpailija` tai `KysyKilpailija` palaa ilman tallennusta (`:907-912`): jääkö tietue levyllä käsittelemättömäksi mutta ohitetuksi? |
+| Q-K3-6 | ViestiWin kasvattaa `emithead2`:ta ennen käsittelyä (`ViestiWin/UnitEmit.cpp:901`). Mitä tapahtuu, kun `HaeKilpailija` tai `KysyKilpailija` palaa ilman tallennusta (`:907-912`): jääkö tietue levyllä käsittelemättömäksi mutta ohitetuksi? **Osittain vastattu** (`todisteet/c7/osaB2-taydennys.md` G3): `emithead2++` tehdään ennen käsittelyä, ja `KysyKilpailija` jättää tietueen levylle kirjoittamatta eli käsittelemättömäksi; C-7 pitää tätä suunnitteluratkaisuna. `HaeKilpailija`n paluun osalta ja käsittelemättömän tietueen myöhempi kohtalo ovat edelleen avoimia. |
 
-### 12.3 Ehdokkaat (ei tarkastettu; kirjattu `seuranta.md`:n KE-taulukkoon tunnuksilla KE-10 ja KE-11)
+### 12.3 Ehdokkaat (ei tarkastettu; kirjattu `seuranta.md`:n KE-taulukkoon tunnuksilla KE-10–KE-13)
 
 Haettu ennen kirjausta: `havainnot.md` ("pros_emit", "HkIV.cpp:184", "lueemitfile", "emithead2",
 "3103"), `riskiarvio.csv`, `seuranta.md`:n KE-taulukko ja `todisteet/c9/osaB-pysyva-data.md`.
@@ -604,18 +615,36 @@ Kumpaakaan ei löytynyt rekisteristä.
   `pros_emit` tallentaa kilpailijan ja laittaa kilpailijapaketit jonoon (`Hk/HkIV.cpp:1820-1822`)
   ennen kuin se kirjoittaa emit-tietueen uudelleen (`:1845`). Jos `putem` epäonnistuu,
   `setEmitJarr` ja `laheta_em` jäävät tekemättä (`:1846-1852`), mutta `emithead2` etenee
-  (`:1864`). Seuraus [päätelty]: vertaisilla on tulos ilman emit-tietuetta, ja paikallisella
-  asemalla on tulos ilman linkkiä. Levyllä on käsittelemätön raakatietue. Sama järjestys on
-  viestissä (`Juk/VIv.cpp:1673-1679`, `ViestiWin/UnitEmit.cpp:926-931`). Laukeaminen vaatii
+  (`:1864`). Seuraus [päätelty]: vertaisilla on tulos ilman emit-tietuetta, ja HK:ssa ja
+  ViestiMaalissa paikallisella asemalla on tulos ilman linkkiä. Levyllä on käsittelemätön
+  raakatietue. Sama järjestys on ViestiMaalissa (`Juk/VIv.cpp:1673-1679`). ViestiWinissä
+  `setEmitJarr` tehdään ennen `putem`ia (`ViestiWin/UnitEmit.cpp:923`, `:930`), joten siellä
+  paikallinen linkki säilyy ja vain EMITT-lähetys jää tekemättä (riippumaton tarkastus).
+  Laukeaminen vaatii
   ympäristövirheen kuten H-145. Liittyy H-145:een ja KK-C9-2:een, mutta H-145 koskee `addem`in
   kirjoitusta lukuvaiheessa.
-- **KE-11. Uudelleenkäynnistys ohittaa käsittelemättömät kortit, joita seuraa käsitelty tietue.**
+- **KE-11. Emit-tiedoston uudelleenluku ohittaa käsittelemättömät kortit, joita seuraa käsitelty tietue.**
   `lueemitfile` asettaa `emithead2`:n viimeisen käsitellyn tietueen jälkeen
   (`Hk/HkEmit.cpp:3103-3104`). Jos paikallinen raakakortti odottaa käsittelyä (esimerkiksi kun
   HkKisaWinin Emit-lomake ei ole auki) ja sen jälkeen saapuu vertaiselta käsitelty kortti, raakakortti
-  ei käynnistyksen jälkeen enää kuulu automaattikäsittelyyn [päätelty]. Kilpailun aikana `addem`
-  siirtää `emithead2`:ta vain, kun jonossa ei ole odottavia (`:1679-1680`), joten ilmiö on
-  käynnistyskohtainen. Lähisukuinen H-137:lle, joka koskee kilpailutilannetta istunnon aikana.
+  ei uudelleenluvun jälkeen enää kuulu automaattikäsittelyyn [päätelty]. Ilmiö ei ole vain
+  käynnistyskohtainen: `lueemitfile` ajetaan myös istunnon aikana `lueRatatiedotUudelleen`issa
+  (`Hk/HkEmit.cpp:6412`), `uusiemitanalyysi`ssa (`:6430`) ja vaiheen vaihdossa
+  (`Hk/HkIx.cpp:1943`) (riippumaton tarkastus). Kilpailun aikana normaalisti `addem` siirtää
+  `emithead2`:ta vain, kun käsittely on ajan tasalla (`:1679-1680`). Lähisukuinen H-137:lle,
+  joka koskee kilpailutilannetta ilman uudelleenlukua.
+- **KE-12. HkKisaWin näyttää tyhjän "Virhe luennassa" -ikkunan jo käsitellyn tietueen ohituksessa.**
+  Kun käsittelyjono kohtaa jo käsitellyn (esimerkiksi vertaiselta tulleen) emit-tietueen,
+  `pros_emit` ohittaa sen ja palauttaa 0 (`Hk/HkIV.cpp:1188-1192`). `NewCardHandler` tulkitsee
+  paluuarvon `bdg <= 0` virheeksi ja näyttää `MessageBoxW`-ikkunan, jonka teksti `msgtxt` on tyhjä
+  (`cbHk/UnitEmit.cpp:935-939`) [päätelty]. Ajoa ei ole tehty; vaatisi kahden aseman ajon.
+- **KE-13. H-162:n kuvauksen ja koodin ristiriita.** Rekisterin H-162 väittää, että SQL-viennin
+  jättämä `tall`-lukko pysäyttää emit-käsittelyn. Lukko on uudelleentuleva ja `pros_emit` ajetaan
+  pääsäikeessä, joten pääsäikeen käsittely jatkuu; pysähtyy vastaanotto (`tarkcom`, `tark_kilp`)
+  eikä emit-käsittely [päätelty]. Rekisteriä ei muutettu; tarkistus E-1:ssä.
+
+Tunnukset KE-10–KE-13 ovat ehdokkaita, joita ei ole tarkastettu. Täsmälliset kuvaukset ovat
+`doc/arkkitehtuuri/seuranta.md`:n KE-taulukossa.
 
 ---
 
