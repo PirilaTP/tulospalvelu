@@ -12,3 +12,6 @@ Debug_Build
 Release_Build
 obj
 build-logs
+# IDE-tilatiedostot (Visual Studio, C++Builder)
+.vs/
+*.local
