@@ -114,15 +114,19 @@ def main():
 
     lines = [HEADER, "nav:"]
     lines.append("  - Etusivu: index.md")
+    # All user manuals under one top-level tab, so that the tab bar holds four entries
+    # (Etusivu, Käyttöohjeet, Kehittäjille, Ohjelmiston laatu). Page URLs come from the
+    # file paths, not from the navigation, so grouping does not change any address.
+    lines.append("  - Käyttöohjeet:")
 
     for site in data:
         if not site["nav"]:
             continue
-        lines.append(f"  - \"{site['title']}\":")
-        lines.append(f"    - Yleiskatsaus: {site['slug']}/index.md")
-        lines.extend(emit_nav(site["nav"], indent=2))
+        lines.append(f"    - \"{site['title']}\":")
+        lines.append(f"      - Yleiskatsaus: {site['slug']}/index.md")
+        lines.extend(emit_nav(site["nav"], indent=3))
 
-    lines.append("  - PDF-manuaalit: pdf-manuaalit.md")
+    lines.append("    - PDF-manuaalit: pdf-manuaalit.md")
 
     # LF on every platform (the file is kept with LF line endings)
     with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
