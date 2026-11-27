@@ -108,7 +108,7 @@ SAAVUTETTAVUUS = {
 }
 FREQ_WORDS = re.compile(r"\b(usein|harvoin|todennäköisesti|epätodennäköi\w*|yleensä|tavallisesti|"
                         r"tyypillisesti|joskus|harvinai\w*|yleisi?n?ä?\b|lähes aina|melko varmasti)", re.I)
-LINE_REF = re.compile(r"(\.(?:cpp|h|c|hpp)\s*:\s*\d)|(`:\d)|(\brivi(?:llä|ltä|lle|t|n|ä)?\s+\d)", re.I)
+LINE_REF = re.compile(r"(\.(?:cpp|h|c|hpp)\s*:\s*\d)|(`:\d)|(\brivi(?:llä|ltä|lle|t|n|ä)?\s+\d+(?![\d ]*(?:merk|tavu|kent|sarak|kpl)))", re.I)
 PRIO = re.compile(r"\bP[1-5]\b")
 ID_ANY = re.compile(r"\b(H-\d{3}|T-\d{3}|KK-C\d+-\d+|JS-\d+|OP-\d+|Q\d+)\b")
 
@@ -415,8 +415,9 @@ def cmd_tarkista(data):
                 errors.append("%s: line reference in authored text: %s" % (i, line.strip()[:90]))
             if PRIO.search(line):
                 errors.append("%s: priority in authored text (only in the generated block): %s" % (i, line.strip()[:90]))
-            freq_ok = bool(re.search(r"(ei kerro|ei tiedetä|ei tiedossa|ei ole tietoa|ei arvioi)[^.]*\bkuinka", line, re.I)
-                           or re.match(r"\s*-?\s*kuinka (usein|harvoin)", line, re.I))
+            # "the material does not say how often ..." states the absence of a frequency, not one
+            freq_ok = bool(re.search(r"(ei kerro|ei tiedetä|ei tiedossa|ei ole tietoa|ei arvioi|kysytään)[^.]*\b(kuinka|miten)\b", line, re.I)
+                           or re.match(r"\s*-?\s*(kuinka|miten) (usein|harvoin|yleisi)", line, re.I))
             for w in ([] if freq_ok else FREQ_WORDS.findall(line)):
                 warnings.append("%s: frequency word '%s' - needs a source: %s" % (i, w, line.strip()[:80]))
             for x in ID_ANY.findall(line):
