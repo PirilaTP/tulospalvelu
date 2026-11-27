@@ -1,0 +1,185 @@
+=== Release | C9ProbeHk | tp_build_info | exit=0 (0x00000000) | 0.3 s
+TPINFO|program=C9ProbeHk
+TPINFO|msc_full_ver=195237029
+TPINFO|config=Release
+TPINFO|asan=0
+TPINFO|char_unsigned=1
+TPINFO|sizeof_void_ptr=4
+[doctest] test cases: 1 | 1 passed | 0 failed | 12 skipped
+[doctest] assertions: 1 | 1 passed | 0 failed |
+=== Release | C9ProbeJuk | tp_build_info | exit=0 (0x00000000) | 0.1 s
+TPINFO|program=C9ProbeJuk
+TPINFO|msc_full_ver=195237029
+TPINFO|config=Release
+TPINFO|asan=0
+TPINFO|char_unsigned=1
+TPINFO|MAXOSUUSLUKU=30
+TPINFO|VAIKALUKU=12
+TPINFO|MAXSARJALUKU=250
+TPINFO|sizeof_void_ptr=4
+[doctest] test cases: 1 | 1 passed | 0 failed | 7 skipped
+[doctest] assertions: 1 | 1 passed | 0 failed |
+=== Asan | C9ProbeJuk | C9 H-149 control: relay autofile list mode (ASan) | exit=0 (0x00000000) | 0.1 s
+TPARM|finding=H-149|mechanism=control-list-mode|source=asan
+TPDISARM|
+TPINFO|list mode: autofile -> 0, 0; lstf=00000000; messages=0
+TPRESULT|finding=H-149|mechanism=control-list-mode|observed=0|detail=no ASan report in list mode (two runs)
+[doctest] test cases: 1 | 1 passed | 0 failed | 5 skipped
+[doctest] assertions: 3 | 3 passed | 0 failed |
+=== Asan | C9ProbeJuk | C9 H-149a relay autofile single-file mode writes through the freed PRFILE (ASan) | exit=1 (0x00000001) | 0.1 s
+TPARM|finding=H-149|mechanism=single-file-use-after-free|source=asan
+==113408==ERROR: AddressSanitizer: heap-use-after-free on address 0x06203a00 at pc 0x00ff35cc bp 0x0195e9bc sp 0x0195e9b0
+SUMMARY: AddressSanitizer: heap-use-after-free C:\dev\tulospalvelu\TPsource\V52\Juk\VTulostus.cpp:1366 in tulostusparamtp::writehtml
+TPRESULT|finding=H-149|mechanism=single-file-use-after-free|observed=1|source=asan|detail=ASan report matched all expected strings; READ of size 4 at 0x06203a00 thread T0
+=== Asan | C9ProbeJuk | C9 H-149b relay autofile T mode frees the PRFILE twice (ASan) | exit=1 (0x00000001) | 0.1 s
+TPARM|finding=H-149|mechanism=t-mode-double-free|source=asan
+==67232==ERROR: AddressSanitizer: attempting double-free on 0x05703a00 in thread T0:
+SUMMARY: AddressSanitizer: double-free C:\dev\tulospalvelu\TPsource\V52\tputilv2\Wrttext.cpp:297 in closeprfile
+TPRESULT|finding=H-149|mechanism=t-mode-double-free|observed=1|source=asan|detail=ASan report matched all expected strings; 
+=== Asan | C9ProbeJuk | C9 H-149c relay autofile separate-files mode without a list deletes aflst twice (ASan) | exit=1 (0x00000001) | 0.1 s
+TPARM|finding=H-149|mechanism=no-list-double-delete|source=asan
+==116704==ERROR: AddressSanitizer: access-violation on unknown address 0x00000096 (pc 0x01024226 bp 0x00e6ee0c sp 0x00e6eddc T0)
+SUMMARY: AddressSanitizer: access-violation minkernel\crts\ucrt\src\appcrt\stdio\fclose.cpp:80 in _fclose_internal
+TPRESULT|finding=H-149|mechanism=no-list-double-delete|observed=1|source=asan|detail=ASan report matched all expected strings; 
+=== Asan | C9ProbeJuk | C9 H-149d relay autofile X mode leaves lstf dangling for the next run (ASan) | exit=1 (0x00000001) | 0.1 s
+TPINFO|X run 1 -> 0; lstf after run 1 = 05D03A00 (freed if non-null)
+TPARM|finding=H-149|mechanism=x-mode-dangling-guard|source=asan
+==68864==ERROR: AddressSanitizer: heap-use-after-free on address 0x05d03a00 at pc 0x01008605 bp 0x00bef038 sp 0x00bef038
+SUMMARY: AddressSanitizer: heap-use-after-free C:\dev\tulospalvelu\TPsource\V52\Juk\VTulostus.cpp:7150 in autofile
+TPRESULT|finding=H-149|mechanism=x-mode-dangling-guard|observed=1|source=asan|detail=ASan report matched all expected strings; READ of size 4 at 0x05d03a00 thread T0
+=== Release | C9ProbeJuk | C9 Q85 Release control: relay autofile list mode repeated | exit=0 (0x00000000) | 0.0 s
+TPINFO|list mode: 30 cycles, 0 with a heap check failure or non-zero return
+TPRESULT|finding=Q85|mechanism=release-control-list-mode|observed=0|detail=0 bad cycles of 30
+[doctest] test cases: 1 | 1 passed | 0 failed | 7 skipped
+[doctest] assertions: 3 | 3 passed | 0 failed |
+=== Release | C9ProbeJuk | C9 Q85 Release relay autofile single-file mode repeated | exit=3221226356 (0xC0000374) | 0.1 s
+TPINFO|cycle 1: calling autofile
+=== Release | C9ProbeJuk | C9 Q85 Release relay autofile T mode repeated | exit=3221226356 (0xC0000374) | 0.1 s
+TPINFO|cycle 1: calling autofile
+=== Release | C9ProbeJuk | C9 Q85 Release relay autofile single-file mode with a TCP file link configured | exit=0 (0x00000000) | 2.0 s
+TPINFO|cycle 1: calling autofile
+TPINFO|cycle 1: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 2: calling autofile
+TPINFO|cycle 2: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 3: calling autofile
+TPINFO|cycle 3: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 4: calling autofile
+TPINFO|cycle 4: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 5: calling autofile
+TPINFO|cycle 5: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 6: calling autofile
+TPINFO|cycle 6: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 7: calling autofile
+TPINFO|cycle 7: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 8: calling autofile
+TPINFO|cycle 8: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 9: calling autofile
+TPINFO|cycle 9: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 10: calling autofile
+TPINFO|cycle 10: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPRESULT|finding=Q85|mechanism=release-repeat-tcp-link|observed=0|detail=10 cycles, heap check failed after 0; published file 931 bytes, closing </HTML> present
+[doctest] test cases: 1 | 1 passed | 0 failed | 7 skipped
+[doctest] assertions: 3 | 3 passed | 0 failed |
+=== Release | C9ProbeJuk | C9 Q85 Release relay autofile separate-files mode without a list | exit=3221226356 (0xC0000374) | 0.1 s
+TPINFO|cycle 1: calling autofile
+=== Release | C9ProbeJuk | C9 Q85 Release relay autofile separate-files mode without a list, TCP link configured | exit=3221226356 (0xC0000374) | 0.1 s
+TPINFO|cycle 1: calling autofile
+=== Release | C9ProbeJuk | C9 N1 Release relay list mode after sendtcpfile closes lstf | exit=3221226356 (0xC0000374) | 0.1 s
+TPINFO|after sendtcpfile: aftulparam.lstf=017916E8 (freed, same as opened 017916E8)
+TPINFO|calling autofile in list mode (expect closeprfile on the freed PRFILE at :7262)
+=== Release | C9ProbeHk | C9 H-145 control: emit card is stored | exit=0 (0x00000000) | 0.0 s
+TPINFO|tall_emit=0 emithead=1 file=188 cards=1 msgs=
+[doctest] test cases:  1 |  1 passed | 0 failed | 12 skipped
+[doctest] assertions: 12 | 12 passed | 0 failed |
+=== Release | C9ProbeHk | C9 H-145 emit write failure with duplicate suppression (default) | exit=0 (0x00000000) | 0.0 s
+TPINFO|wperr: EMIT1.DAT line 0 iowerr error 3
+TPINFO|estaemittoisto=1
+TPINFO|failed write: tall_emit=0 emithead=0 new messages=1 ([-100] wperr: EMIT1.DAT line 0 iowerr error 3; )
+TPINFO|same card re-read: tall_emit=0 emithead=0 vahvistus=12345
+TPINFO|other card B: tall_emit=0 emithead=1
+TPINFO|card A after B: tall_emit=0 emithead=1
+TPINFO|file: 188 bytes, card A records=0, card B records=1
+TPRESULT|finding=H-145|mechanism=card-acked-cached-lost|observed=1|detail=failed write returned 0 (ACK value), head 0; re-read confirmation 12345, not stored; after another card A stored 0 time(s)
+[doctest] test cases:  1 |  1 passed | 0 failed | 12 skipped
+[doctest] assertions: 10 | 10 passed | 0 failed |
+=== Release | C9ProbeHk | C9 H-145 emit write failure without duplicate suppression | exit=0 (0x00000000) | 0.0 s
+TPINFO|wperr: EMIT1.DAT line 0 iowerr error 3
+TPINFO|estaemittoisto=0
+TPINFO|failed write: tall_emit=0 emithead=0 new messages=1 ([-100] wperr: EMIT1.DAT line 0 iowerr error 3; )
+TPINFO|same card re-read: tall_emit=0 emithead=0 vahvistus=12345
+TPINFO|other card B: tall_emit=0 emithead=1
+TPINFO|card A after B: tall_emit=0 emithead=2
+TPINFO|file: 376 bytes, card A records=1, card B records=1
+TPRESULT|finding=H-145|mechanism=card-acked-cached-reread-after-other-card|observed=1|detail=failed write returned 0 (ACK value), head 0; re-read confirmation 12345, not stored; after another card A stored 1 time(s)
+[doctest] test cases:  1 |  1 passed | 0 failed | 12 skipped
+[doctest] assertions: 12 | 12 passed | 0 failed |
+=== Release | C9ProbeHk | C9 H-146 control: AJAT rows are written and read back | exit=0 (0x00000000) | 0.1 s
+TPINFO|file: slot1:kno=101,t=3601000; slot2:kno=102,t=3602000; slot3:kno=103,t=3603000; slot4:kno=0,t=-864000000; 
+TPINFO|after restart: row0:kno=101,t=3601000; row1:kno=102,t=3602000; row2:kno=103,t=3603000; 
+[doctest] test cases: 1 | 1 passed | 0 failed | 12 skipped
+[doctest] assertions: 7 | 7 passed | 0 failed |
+=== Release | C9ProbeHk | C9 H-146 AJAT write failure leaves a hole that the restart reads | exit=0 (0x00000000) | 0.1 s
+TPINFO|wperr: AJAT1.LST line 66 iowerr error 2
+TPINFO|fp1 before failed row 2, after 3; messages: [-100] wperr: AJAT1.LST line 66 iowerr error 2; 
+TPINFO|memory before restart: row0:kno=101,t=3601000; row1:kno=102,t=3602000; row2:kno=103,t=3603000; row3:kno=104,t=3604000; 
+TPINFO|file before restart: slot1:kno=101,t=3601000; slot2:kno=0,t=-864000000; slot3:kno=103,t=3603000; slot4:kno=104,t=3604000; slot5:kno=0,t=-864000000; 
+TPINFO|after restart: rwtime=4 rtime=4: row0:kno=101,t=3601000; row1:kno=0,t=-864000000; row2:kno=103,t=3603000; row3:kno=104,t=3604000; 
+TPINFO|after restart + row 105 (10:00:25): row0:kno=101,t=3601000; row1:kno=0,t=-864000000; row2:kno=105,t=3602500; row3:kno=103,t=3603000; row4:kno=104,t=3604000; 
+TPRESULT|finding=H-146|mechanism=fp1-advanced-before-failed-write|observed=1|detail=fp1 2->3 on the failed row; slot 2 kno=0 t=-864000000; row 102 after restart missing
+[doctest] test cases:  1 |  1 passed | 0 failed | 12 skipped
+[doctest] assertions: 10 | 10 passed | 0 failed |
+=== Release | C9ProbeHk | C9 H-147 WriteLine return value on a failed flush vs WEOF | exit=0 (0x00000000) | 0.1 s
+TPINFO|type A: 100 WriteLine calls, 4 returned -1 or WEOF, min -1 (WEOF=65535); puts_f/writeline messages 0; file 0 bytes. type W: 100 WriteLine calls, 9 returned -1 or WEOF, min -1 (WEOF=65535); puts_f/writeline messages 0; file 0 bytes. type 8: 100 WriteLine calls, 4 returned -1 or WEOF, min -1 (WEOF=65535); puts_f/writeline messages 0; file 0 bytes. 
+TPRESULT|finding=H-147|mechanism=weof-check-misses-write-error|observed=1|detail=type A: 100 WriteLine calls, 4 returned -1 or WEOF, min -1 (WEOF=65535); puts_f/writeline messages 0; file 0 bytes. type W: 100 WriteLine calls, 9 returned -1 or WEOF, min -1 (WEOF=65535); puts_f/writeline messages 0; file 0 bytes. type 8: 100 WriteLine calls, 4 returned -1 or WEOF, min -1 (WEOF=65535); puts_f/writeline messages 0; file 0 bytes. 
+[doctest] test cases:  1 |  1 passed | 0 failed | 12 skipped
+[doctest] assertions: 13 | 13 passed | 0 failed |
+=== Release | C9ProbeHk | C9 H-147 control: autofile replaces the published file | exit=0 (0x00000000) | 0.0 s
+TPINFO|autofile=0 size 2600 -> 1381, starts '<!DOCTYPE html>', messages=0
+[doctest] test cases: 1 | 1 passed | 0 failed | 12 skipped
+[doctest] assertions: 4 | 4 passed | 0 failed |
+=== Release | C9ProbeHk | C9 H-147 autofile sequence truncates the published file and hides the failed flush | exit=0 (0x00000000) | 0.0 s
+TPINFO|old 2600 bytes; right after open 0; a reader opening during generation: error 32; after the writes and close 0 bytes; messages=0 ()
+TPRESULT|finding=H-147|mechanism=truncate-then-silent-flush-failure|observed=1|detail=old file 2600 bytes, 0 at open: yes, after failed writes 0 bytes, 0 messages
+[doctest] test cases: 1 | 1 passed | 0 failed | 12 skipped
+[doctest] assertions: 6 | 6 passed | 0 failed |
+=== Release | C9ProbeHk | C9 H-147 autofile with the published file locked whole | exit=0 (0x00000000) | 0.0 s
+TPINFO|writeerror_w: Tiedoston avaaminen ei onnisunut (kesto 0)
+TPINFO|writeerror_w: Virhe autotulostustiedostoa af_tulos.html avattaessa (kesto 2000)
+TPINFO|reader denies writers: autofile=1 size 2600 -> 2600, messages: [0] Tiedoston avaaminen ei onnisunut; [2000] Virhe autotulostustiedostoa af_tulos.html avattaessa; 
+TPRESULT|finding=H-147|mechanism=open-failure-reported-old-file-kept|observed=1|detail=return 1, size 2600 -> 2600, 2 messages
+[doctest] test cases: 1 | 1 passed | 0 failed | 12 skipped
+[doctest] assertions: 3 | 3 passed | 0 failed |
+=== Release | C9ProbeHk | C9 H-150 control: autofile XML stage 1 | exit=0 (0x00000000) | 0.1 s
+TPINFO|stage 1, 200 runs: streams +0, heap +0
+[doctest] test cases:   1 |   1 passed | 0 failed | 12 skipped
+[doctest] assertions: 203 | 203 passed | 0 failed |
+=== Release | C9ProbeHk | C9 H-150 autofile XML stage 2 with AUTOFILE.LST | exit=0 (0x00000000) | 0.2 s
+TPINFO|run 1: streams 4 (+1), handles 111 (+1), heap used 146703 (+86)
+TPINFO|run 100: streams 103 (+100), handles 210 (+100), heap used 155217 (+8600)
+TPINFO|run 200: streams 203 (+200), handles 310 (+200), heap used 163817 (+17200)
+TPINFO|run 300: streams 303 (+300), handles 410 (+300), heap used 172417 (+25800)
+TPINFO|run 400: streams 403 (+400), handles 510 (+400), heap used 181017 (+34400)
+TPINFO|run 500: streams 503 (+500), handles 610 (+500), heap used 189617 (+43000)
+TPINFO|run 600: streams 511 (+508), handles 618 (+508), heap used 198217 (+51600)
+TPINFO|run 700: streams 511 (+508), handles 618 (+508), heap used 206817 (+60200)
+TPRESULT|finding=H-150|mechanism=xml-stage2-leak-with-list|observed=1|detail=700 runs, first failing run 0, streams +508, handles +508, heap +60200 bytes (86.0 per run)
+[doctest] test cases: 1 | 1 passed | 0 failed | 12 skipped
+[doctest] assertions: 3 | 3 passed | 0 failed |
+=== Release | C9ProbeHk | C9 H-150 autofile XML stage 2 without AUTOFILE.LST | exit=0 (0x00000000) | 0.2 s
+TPINFO|run 1: streams 3 (+0), handles 110 (+0), heap used 146718 (+86)
+TPINFO|run 100: streams 3 (+0), handles 110 (+0), heap used 155232 (+8600)
+TPINFO|run 200: streams 3 (+0), handles 110 (+0), heap used 163832 (+17200)
+TPINFO|run 300: streams 3 (+0), handles 110 (+0), heap used 172432 (+25800)
+TPINFO|run 400: streams 3 (+0), handles 110 (+0), heap used 181032 (+34400)
+TPINFO|run 500: streams 3 (+0), handles 110 (+0), heap used 189632 (+43000)
+TPINFO|run 600: streams 3 (+0), handles 110 (+0), heap used 198232 (+51600)
+TPINFO|run 700: streams 3 (+0), handles 110 (+0), heap used 206832 (+60200)
+TPRESULT|finding=H-150|mechanism=xml-stage2-leak-without-list|observed=1|detail=700 runs, first failing run 0, streams +0, handles +0, heap +60200 bytes (86.0 per run)
+[doctest] test cases: 1 | 1 passed | 0 failed | 12 skipped
+[doctest] assertions: 2 | 2 passed | 0 failed |
+=== Asan | C9ProbeHk | C9 H-151 next autofile reads the PRFILE freed by sendtcpfile (ASan) | exit=1 (0x00000001) | 1.1 s
+TPINFO|after run 1: aftulparam.lstf=07A03780 (closed by the thread)
+TPARM|finding=H-151|mechanism=dangling-lstf-after-sendtcpfile|source=asan
+==116404==ERROR: AddressSanitizer: heap-use-after-free on address 0x07a03780 at pc 0x00baba85 bp 0x032fe238 sp 0x032fe238
+SUMMARY: AddressSanitizer: heap-use-after-free C:\dev\tulospalvelu\TPsource\V52\Hk\HkTulostus.cpp:7093 in autofile
+TPRESULT|finding=H-151|mechanism=dangling-lstf-after-sendtcpfile|observed=1|source=asan|detail=ASan report matched all expected strings; READ of size 4 at 0x07a03780 thread T0

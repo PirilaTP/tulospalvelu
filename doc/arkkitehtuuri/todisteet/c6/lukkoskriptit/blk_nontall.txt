@@ -1,0 +1,76 @@
+Hk/HkAjat.cpp:129-291 ajat 
+     {'wselectopt': [191], 'writeerror_w': [217, 234]}
+Hk/HkApu.cpp:666-704 seura 
+     {'TextFl': [669], 'Close': [697]}
+Hk/HkApu.cpp:713-744 seura 
+     {'TextFl': [715, 717], 'Close': [741]}
+Hk/HkCom32.cpp:1059-1075 outb 
+     {'Sleep': [1061]}
+Hk/HkEmit.cpp:1337-1353 emit 
+     {'fflush': [1344]}
+Hk/HkEmit.cpp:1665-1691 emit 
+     {'fflush': [1676]}
+Hk/HkEmit.cpp:5165-5255 print 
+     {'vidspwmsg': [5171, 5176, 5202, 5229, 5244], 'readkbd': [5205, 5245]}
+Hk/HkIV.cpp:2674-3028 ajat 
+     {'writeerror_w': [2779, 2781, 2856, 2917], 'vidspwmsg': [2853, 2914]}
+Hk/HkInit.cpp:3650-3668 inb 
+     {'writeerror_w': [3660]}
+Hk/HkIx.cpp:1898-1985 ajat 
+     {'vidspwmsg': [1933], 'writeerror_w': [1938, 1944]}
+Hk/HkIx.cpp:1899-1984 emit 
+     {'vidspwmsg': [1933], 'writeerror_w': [1938, 1944]}
+Hk/HkTulostus.cpp:985-1039 autotul 
+     {'wselectopt': [1029], 'readkbd': [1031]}
+Hk/HkTulostus.cpp:7106-7114 autotul 
+     {'writeerror_w': [7113]}
+Juk/VCom.cpp:258-296 outb 
+     {'readkbd': [274], 'Sleep': [275]}
+Juk/VCom.cpp:1186-1202 outb 
+     {'Sleep': [1189], 'writeerror_w': [1196]}
+Juk/VCom.cpp:1380-1386 outb 
+     {'writeerror_w': [1385]}
+Juk/VEmit.cpp:1458-1470 emit 
+     {'writeerror_w': [1460, 1465]}
+Juk/VEmit.cpp:1510-1542 emit 
+     {'fflush': [1518]}
+Juk/VEmit.cpp:5771-5900 print 
+     {'vidspwmsg': [5777, 5782, 5846, 5872, 5889]}
+Juk/VInit.cpp:2921-2928 inb 
+     {'Sleep': [2924]}
+Juk/VTulostus.cpp:704-752 autotul 
+     {'wselectopt': [742], 'readkbd': [744]}
+Juk/VTulostus.cpp:7154-7454 tcp NOLEAVE
+     {'TextFl': [7161, 7398], 'writeerror_w': [7174, 7401], 'Close': [7310], '_beginthread': [7314], 'wselectopt': [7371], 'vidspwmsg': [7377, 7421], 'readkbd': [7378]}
+Juk/VTulostus.cpp:7157-7176 autotul 
+     {'TextFl': [7161], 'writeerror_w': [7174]}
+Juk/VTulostus.cpp:7497-7571 print 
+     {'FormMsgs->Show': [7515, 7564]}
+Juk/vajat.cpp:116-257 ajat 
+     {'selectopt': [155], 'writeerror': [177, 191]}
+Tp/TpComY.cpp:1122-1166 outb 
+     {'Sleep': [1123], 'writeerror_w': [1133, 1154]}
+Tp/TpComY.cpp:1464-1488 outb 
+     {'writeerror_w': [1471, 1474, 1485]}
+Tp/TpComY.cpp:1582-1619 outb 
+     {'writeerror_w': [1602]}
+Tp/TpComY.cpp:2387-2425 outb 
+     {'fopen': [2392], '_beginthread': [2415], 'writeerror_w': [2422]}
+ViestiWin/UnitHylkRap.cpp:292-304 print 
+     {'Application->MessageBoxW': [295]}
+ViestiWin/UnitMySQL.cpp:609-640 SQL 
+     {'_wfopen': [610]}
+ViestiWin/UnitMySQL.cpp:655-660 SQL 
+     {'fflush': [659]}
+cbHk/UnitHylkRap.cpp:276-288 print 
+     {'Application->MessageBoxW': [279]}
+cbHk/UnitMySQL.cpp:662-693 SQL 
+     {'_wfopen': [663]}
+cbHk/UnitMySQL.cpp:712-717 SQL 
+     {'fflush': [716]}
+com/WinUDP.cpp:335-352 tcpip 
+     {'closesocket': [340, 342], 'Sleep': [343]}
+com/WinUDP.cpp:661-673 tcpip 
+     {'_beginthread': [662]}
+com/WinUDP.cpp:907-936 tcpip 
+     {'select': [911], 'send': [918]}

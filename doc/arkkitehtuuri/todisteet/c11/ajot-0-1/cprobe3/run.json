@@ -1,0 +1,75 @@
+{
+  "started": "2026-11-24T20:11:45",
+  "exe": "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\claude\\a25cf22582434270\\d69a576d-8644-421c-aa92-2fbac90dcaa8\\scratchpad\\bb\\console_probe.exe",
+  "exe_sha256": "041e09fb4eac727c657d57de18b231750ac5478d384cb511dd4f3619afef2a9b",
+  "probe_sha256": "62a9d122f11e15d509698757daa37bf7f7bccddb2a2cb3ba4f0dffb8dd9a6ee5",
+  "driver_sha256": "5d414b2f4d4edae28adfd2601355226bf302785ab565d5409dd0f5ed316542f8",
+  "script": {
+    "args": [],
+    "step_timeout": 30,
+    "total_timeout": 40,
+    "steps": [
+      {
+        "wait": "CONSOLE PROBE CLEARED",
+        "key": null
+      }
+    ]
+  },
+  "script_sha256": "f3ea4f6aec8bd203b55addc2f7795b39fb9af8a6ee1f2c78d78a45e0ecaee492",
+  "container": "tulospalvelu.c11.hkmaali",
+  "sandbox": "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\hkmaali_run_tqqjlhbz\\sandbox",
+  "container_sid": "S-1-15-2-2922332022-2558033516-663861361-3597953260-1082791518-394260634-937280999",
+  "data": [],
+  "exe_copy_sha256": "041e09fb4eac727c657d57de18b231750ac5478d384cb511dd4f3619afef2a9b",
+  "files_before": [
+    "console_probe.exe"
+  ],
+  "probe": {
+    "exit_code": 0,
+    "listener_accepts": 0,
+    "checks": {
+      "cwd": "isolated_or_ok|probe_result.txt created in the sandbox",
+      "console": "isolated_or_ok|key X received",
+      "outside": "isolated_or_ok|create refused, error 5",
+      "wsastartup": "isolated_or_ok|WSAStartup=0",
+      "loopback": "isolated_or_ok|connect 127.0.0.1:59866 -> failed, error 10060 after 3000 ms",
+      "external": "isolated_or_ok|connect 192.0.2.1:9 -> failed, error 10013 after 0 ms",
+      "done": "1"
+    },
+    "isolation_verified": true
+  },
+  "run": {
+    "status": "ok",
+    "exited_by_itself": true,
+    "exit_code": 0,
+    "windows": [],
+    "exit_code_hex": "0x00000000",
+    "steps": [
+      {
+        "wait": "CONSOLE PROBE CLEARED",
+        "seen": true,
+        "key": null,
+        "t": 0.21
+      }
+    ],
+    "sockets_seen": [],
+    "duration_s": 1.51
+  },
+  "result": "ok",
+  "outside_changes": [
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_1.etl",
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_2.etl"
+  ],
+  "sandbox_files": {
+    "console_probe.exe": {
+      "size": 126976,
+      "sha256": "041e09fb4eac727c657d57de18b231750ac5478d384cb511dd4f3619afef2a9b"
+    },
+    "console_probe.txt": {
+      "size": 514,
+      "sha256": "c4bdd8a340870940c4cd53b5eae06a9f805e2a4945e5dac7ca2a0ec15e03c8b3"
+    }
+  },
+  "git_status": "?? TPsource/V52/Tests/blackbox/\n!! TPexe/\n!! TPsource/V52/RADStudio10/Release_Build/\n!! TPsource/V52/RADStudio10/Win32/\n!! TPsource/V52/RADStudio10/build-logs/\n!! TPsource/V52/RADStudio10/obj/\n!! TPsource/V52/Tests/__pycache__/\n!! TPsource/V52/Tests/blackbox/__pycache__/\n!! TPsource/V52/VS/Libs/Release/\n!! TPsource/V52/VS/Libs/dbboxm/Release/\n!! TPsource/V52/VS/Tests/Asan/\n!! TPsource/V52/VS/Tests/Release/\n!! TPsource/V52/VS/Tests/TpCoreHk/\n!! TPsource/V52/VS/Tests/TpCoreJuk/\n!! TPsource/V52/VS/Tests/TpTest/\n!! TPsource/V52/VS/V/ViestiLuenta/\n!! TPsource/V52/VS/V/ViestiMaali/\n!! issue-drafts/\n!! vc10/\n",
+  "finished": "2026-11-24T20:11:51"
+}

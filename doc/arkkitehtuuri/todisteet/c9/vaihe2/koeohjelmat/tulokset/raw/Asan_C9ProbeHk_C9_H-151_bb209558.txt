@@ -1,0 +1,84 @@
+[doctest] run with "--help" for options
+TPINFO|after run 1: aftulparam.lstf=07A03780 (closed by the thread)
+TPARM|finding=H-151|mechanism=dangling-lstf-after-sendtcpfile|source=asan
+=================================================================
+==116404==ERROR: AddressSanitizer: heap-use-after-free on address 0x07a03780 at pc 0x00baba85 bp 0x032fe238 sp 0x032fe238
+READ of size 4 at 0x07a03780 thread T0
+    #0 0x00baba84 in autofile C:\dev\tulospalvelu\TPsource\V52\Hk\HkTulostus.cpp:7093
+    #1 0x00bffe1b in DOCTEST_ANON_FUNC_26 C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\c9_hk_probes.cpp:625
+    #2 0x00bcfc05 in doctest::Context::run C:\dev\tulospalvelu\TPsource\V52\Tests\doctest.h:7007
+    #3 0x00bd142c in main C:\dev\tulospalvelu\TPsource\V52\Tests\core\CoreMain.cpp:109
+    #4 0x00c0b6f1 in __scrt_common_main_seh F:\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #5 0x75435d48 in BaseThreadInitThunk+0x18 (C:\WINDOWS\System32\KERNEL32.DLL+0x10015d48)
+    #6 0x770cc75a in RtlInitializeExceptionChain+0x6a (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec75a)
+    #7 0x770cc6e0 in RtlGetAppContainerNamedObjectPath+0x230 (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec6e0)
+
+0x07a03780 is located 0 bytes inside of 476-byte region [0x07a03780,0x07a0395c)
+freed by thread T1 here:
+    #0 0x64d03eb7 in _asan_wrap_static_crt_free+0x77 (C:\temp\c9build\Asan\clang_rt.asan_dynamic-i386.dll+0x10043eb7)
+    #1 0x00c07079 in closeprfile C:\dev\tulospalvelu\TPsource\V52\tputilv2\Wrttext.cpp:297
+    #2 0x00bab8be in sendtcpfile C:\dev\tulospalvelu\TPsource\V52\Hk\HkTulostus.cpp:7060
+    #3 0x00c18fc6 in thread_start<void (__cdecl*)(void *),0> minkernel\crts\ucrt\src\appcrt\startup\thread.cpp:101
+    #4 0x64d22097 in ExitThread+0x1e27 (C:\temp\c9build\Asan\clang_rt.asan_dynamic-i386.dll+0x10062097)
+    #5 0x75435d48 in BaseThreadInitThunk+0x18 (C:\WINDOWS\System32\KERNEL32.DLL+0x10015d48)
+    #6 0x770cc75a in RtlInitializeExceptionChain+0x6a (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec75a)
+    #7 0x770cc6e0 in RtlGetAppContainerNamedObjectPath+0x230 (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec6e0)
+
+previously allocated by thread T0 here:
+    #0 0x64d032fd in _asan_wrap_malloc+0x1d (C:\temp\c9build\Asan\clang_rt.asan_dynamic-i386.dll+0x100432fd)
+    #1 0x00c07244 in openprfile C:\dev\tulospalvelu\TPsource\V52\tputilv2\Wrttext.cpp:163
+    #2 0x00babb22 in autofile C:\dev\tulospalvelu\TPsource\V52\Hk\HkTulostus.cpp:7108
+    #3 0x00bff629 in DOCTEST_ANON_FUNC_26 C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\c9_hk_probes.cpp:618
+    #4 0x00bcfc05 in doctest::Context::run C:\dev\tulospalvelu\TPsource\V52\Tests\doctest.h:7007
+    #5 0x00bd142c in main C:\dev\tulospalvelu\TPsource\V52\Tests\core\CoreMain.cpp:109
+    #6 0x00c0b6f1 in __scrt_common_main_seh F:\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #7 0x75435d48 in BaseThreadInitThunk+0x18 (C:\WINDOWS\System32\KERNEL32.DLL+0x10015d48)
+    #8 0x770cc75a in RtlInitializeExceptionChain+0x6a (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec75a)
+    #9 0x770cc6e0 in RtlGetAppContainerNamedObjectPath+0x230 (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec6e0)
+
+Thread T1 created by T0 here:
+    #0 0x64d201a1 in CreateThread+0x81 (C:\temp\c9build\Asan\clang_rt.asan_dynamic-i386.dll+0x100601a1)
+    #1 0x00c1919f in _beginthread minkernel\crts\ucrt\src\appcrt\startup\thread.cpp:162
+    #2 0x00bac495 in autofile C:\dev\tulospalvelu\TPsource\V52\Hk\HkTulostus.cpp:7331
+    #3 0x00bff629 in DOCTEST_ANON_FUNC_26 C:\dev\tulospalvelu\doc\arkkitehtuuri\todisteet\c9\vaihe2\koeohjelmat\c9_hk_probes.cpp:618
+    #4 0x00bcfc05 in doctest::Context::run C:\dev\tulospalvelu\TPsource\V52\Tests\doctest.h:7007
+    #5 0x00bd142c in main C:\dev\tulospalvelu\TPsource\V52\Tests\core\CoreMain.cpp:109
+    #6 0x00c0b6f1 in __scrt_common_main_seh F:\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #7 0x75435d48 in BaseThreadInitThunk+0x18 (C:\WINDOWS\System32\KERNEL32.DLL+0x10015d48)
+    #8 0x770cc75a in RtlInitializeExceptionChain+0x6a (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec75a)
+    #9 0x770cc6e0 in RtlGetAppContainerNamedObjectPath+0x230 (C:\WINDOWS\SYSTEM32\ntdll.dll+0x4b2ec6e0)
+
+SUMMARY: AddressSanitizer: heap-use-after-free C:\dev\tulospalvelu\TPsource\V52\Hk\HkTulostus.cpp:7093 in autofile
+Shadow bytes around the buggy address:
+  0x07a03500: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x07a03580: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x07a03600: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x07a03680: fd fd fd fd fd fd fd fd fd fd fd fd fa fa fa fa
+  0x07a03700: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+=>0x07a03780:[fd]fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x07a03800: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x07a03880: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
+  0x07a03900: fd fd fd fd fd fd fd fd fd fd fd fd fa fa fa fa
+  0x07a03980: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x07a03a00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+TPRESULT|finding=H-151|mechanism=dangling-lstf-after-sendtcpfile|observed=1|source=asan|detail=ASan report matched all expected strings; READ of size 4 at 0x07a03780 thread T0
+==116404==ABORTING

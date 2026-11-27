@@ -1,0 +1,78 @@
+Juk/vajat.cpp:116-257 ajat 
+   CALL 155 selectopt -> tall
+   CALL 247 laheta_aika -> outb
+Juk/vApu.cpp:94-123 loki 
+   CALL 119 wrt_st_TCP -> tcpip
+Juk/VCom.cpp:1186-1202 outb 
+   CALL 1193 T_TIME -> tall
+Juk/vdat.cpp:496-850 tall 
+   CALL 657 putem -> emit
+   CALL 775 laheta -> outb
+   CALL 813 laheta_emva -> outb
+Juk/vdat.cpp:867-904 tall 
+   CALL 894 addfrec -> kilpdat
+   CALL 902 laheta -> outb
+Juk/vdat.cpp:913-938 tall 
+   CALL 935 delfrec -> kilpdat
+   CALL 936 laheta -> outb
+Juk/VEmit.cpp:1510-1542 emit 
+   CALL 1524 addemitanal -> rastiva
+   CALL 1526 laheta_em -> outb
+   CALL 1536 emit_rap -> print
+Juk/VEmit.cpp:1554-1580 emit 
+   CALL 1560 lueem -> outb
+Juk/VEmit.cpp:4923-4965 emit 
+   DIRECT 4924 print
+Juk/VEmit.cpp:5018-5182 print 
+   DIRECT 5062 rastiva
+Juk/VEmit.cpp:5771-5900 print 
+   DIRECT 5832 tall
+   DIRECT 5850 tall
+Juk/VEmit.cpp:6128-6140 emit 
+   DIRECT 6129 rastiva
+Juk/VEmitHtml.cpp:208-608 print NOLEAVE
+   DIRECT 223 rastiva
+Juk/VIv.cpp:564-657 tall 
+   CALL 642 tall_rivi -> ajat
+Juk/VIv.cpp:2163-2205 tall 
+   CALL 2188 tall_rivi -> ajat
+Juk/VTulostus.cpp:704-752 autotul 
+   DIRECT 723 print
+   CALL 730 tulostasarja -> tall
+Juk/VTulostus.cpp:723-734 print 
+   CALL 730 tulostasarja -> tall
+Juk/VTulostus.cpp:5746-6325 tall 
+   CALL 6244 EmitHtmlOsuus -> print
+   CALL 6244 EmitHtmlOsuus -> rastiva
+Juk/VTulostus.cpp:7113-7132 tcp 
+   CALL 7117 wrt_st_TCP -> tcpip
+Juk/VTulostus.cpp:7154-7554 tcp NOLEAVE
+   DIRECT 7157 autotul
+   DIRECT 7455 tall
+   DIRECT 7497 print
+   CALL 7194 tulostasarja -> tall
+   CALL 7434 joukkuepisteet -> tall
+   CALL 7434 joukkuepisteet -> print
+ViestiWin/OsuusTiedot.cpp:279-288 tall 
+   CALL 286 naytaTiedot -> rastiva
+ViestiWin/OsuusTiedot.cpp:301-311 tall 
+   CALL 309 naytaTiedot -> rastiva
+ViestiWin/OsuusTiedot.cpp:324-334 tall 
+   CALL 332 naytaTiedot -> rastiva
+ViestiWin/OsuusTiedot.cpp:343-351 tall 
+   CALL 349 naytaTiedot -> rastiva
+ViestiWin/OsuusTiedot.cpp:363-371 tall 
+   CALL 369 naytaTiedot -> rastiva
+ViestiWin/OsuusTiedot.cpp:383-392 tall 
+   CALL 390 naytaTiedot -> rastiva
+ViestiWin/UnitEmit.cpp:2175-2236 tall 
+   CALL 2231 emit_rap -> print
+   CALL 2235 addemitanal -> rastiva
+ViestiWin/UnitExport.cpp:411-435 tall 
+   CALL 421 kirjKilpSQL -> SQL
+ViestiWin/UnitJoukkuetiedot.cpp:827-841 tall 
+   CALL 839 naytaTiedot -> rastiva
+ViestiWin/UnitJoukkuetiedot.cpp:871-908 tall 
+   CALL 906 naytaTiedot -> rastiva
+ViestiWin/UnitJoukkuetiedot.cpp:920-965 tall 
+   CALL 963 naytaTiedot -> rastiva

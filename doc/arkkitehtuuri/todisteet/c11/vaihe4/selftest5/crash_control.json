@@ -1,0 +1,1723 @@
+{
+  "probe_sha256": "b27fd06e90469f0598260a165ce42fd31cd182fb750fd2b0623a590bcfce33cf",
+  "crash_dir": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\crashctl",
+  "scenarios": {
+    "gs64_no_overflow": {
+      "status": "ok",
+      "exited_by_itself": true,
+      "exit_code": 0,
+      "windows": [],
+      "exit_code_hex": "0x00000000",
+      "pid": 59752,
+      "steps": [],
+      "sockets_seen": [],
+      "endpoint_polls": 0,
+      "duration_s": 0.02,
+      "kilp_dat_size": null,
+      "job": {
+        "TotalProcesses": 1,
+        "ActiveProcesses": 0,
+        "TotalTerminatedProcesses": 0,
+        "ActiveProcessLimit": 1
+      },
+      "debugger": {
+        "events": {
+          "create_process": 1,
+          "load_dll": 11,
+          "exception": 4,
+          "create_thread": 1,
+          "exit_thread": 1,
+          "exit_process": 1
+        },
+        "exceptions": [],
+        "fatal": null,
+        "breakpoints": [
+          {
+            "kind": "entry",
+            "addr": "0x00A11540",
+            "set": true,
+            "sym": "victim+0x0"
+          },
+          {
+            "kind": "return",
+            "addr": "0x00A1125C",
+            "set": true,
+            "sym": "main+0x6C"
+          },
+          {
+            "kind": "entry",
+            "addr": "0x00A11540",
+            "sym": "victim+0x0",
+            "t": 1795552414.3447413,
+            "thread": 67300,
+            "context": {
+              "Eip": "0x00A11541",
+              "Esp": "0x00BEF9CC",
+              "Ebp": "0x00BEFE9C",
+              "Eax": "0x00000040",
+              "Ebx": "0x00965000",
+              "Ecx": "0x00BEF9A0",
+              "Edx": "0x00000000",
+              "Esi": "0x00000003",
+              "Edi": "0x00DF7118",
+              "EFlags": "0x00000246"
+            },
+            "return_address": "0x00A1125C",
+            "return_sym": "main+0x6C",
+            "caller_ebp": "0x00BEFE9C",
+            "arg0": "0x00000040",
+            "frame_ebp": "0x00BEF9C8",
+            "cookie_addr": "0x00A75000",
+            "cookie": "0x07351B37",
+            "expected_cookie_slot": "0x078BE2FF"
+          },
+          {
+            "kind": "return",
+            "addr": "0x00A1125C",
+            "sym": "main+0x6C",
+            "t": 1795552414.3451722,
+            "thread": 67300,
+            "context": {
+              "Eip": "0x00A1125D",
+              "Esp": "0x00BEF9D0",
+              "Ebp": "0x00BEFE9C",
+              "Eax": "0x00000000",
+              "Ebx": "0x00965000",
+              "Ecx": "0x07351B37",
+              "Edx": "0x00000000",
+              "Esi": "0x00000003",
+              "Edi": "0x00DF7118",
+              "EFlags": "0x00000246"
+            },
+            "frame_ebp": "0x00BEF9C8",
+            "slots_hex": "ffe28b079cfebe005c12a100400000007e71df00f018a1002883df00005096000000df0050fabe004d5d1577",
+            "cookie_slot": "0x078BE2FF",
+            "expected_cookie_slot": "0x078BE2FF",
+            "cookie_intact": true,
+            "saved_ebp_slot": "0x00BEFE9C",
+            "saved_ebp_at_entry": "0x00BEFE9C",
+            "saved_ebp_intact": true,
+            "return_slot": "0x00A1125C",
+            "return_at_entry": "0x00A1125C",
+            "return_intact": true,
+            "return_slot_sym": "main+0x6C",
+            "arg0_slot": "0x00000040",
+            "arg0_at_entry": "0x00000040",
+            "arg0_intact": true,
+            "esp_after_return": "0x00BEF9D0"
+          }
+        ],
+        "exit_code": 0,
+        "dlls_loaded": 11,
+        "initial_breakpoints": 2,
+        "terminated_by_debugger": false,
+        "fatal_count": 0,
+        "unexpected_breakpoints": [],
+        "image_base": "0x00A10000",
+        "symbols": {
+          "sym_type": 3,
+          "loaded_pdb": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\crashctl\\crash_probe.pdb",
+          "pdb_guid": "{D85663A0-8C42-4533-851A-1C43D0161778}",
+          "pdb_age": 1,
+          "pdb_unmatched": false,
+          "image_size": 438272,
+          "pdb_ok": true,
+          "image_rsds": {
+            "guid": "{D85663A0-8C42-4533-851A-1C43D0161778}",
+            "age": 1,
+            "pdb_path": "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\claude_c11s4\\probes3\\crash_probe.pdb"
+          }
+        },
+        "watch": {
+          "name": "victim",
+          "addr": "0x00A11540",
+          "rva": "0x00001540"
+        },
+        "exit_code_hex": "0x00000000",
+        "loop_finished": true,
+        "error": null
+      },
+      "wer": {
+        "processes": {
+          "polls": 14,
+          "period_s": 0.1,
+          "names": [
+            "werfault.exe",
+            "werfaultsecure.exe",
+            "wermgr.exe"
+          ],
+          "parents": [
+            59752
+          ],
+          "found": []
+        },
+        "events_since_start": {
+          "query_since_utc": "2026-11-24T20:33:34.000Z",
+          "returncode": 0,
+          "stderr": "",
+          "count": 0,
+          "events": []
+        },
+        "events_matching": [],
+        "wersvc_before": "1  STOPPED",
+        "wersvc_after": "1  STOPPED"
+      },
+      "extra": {},
+      "problems": [],
+      "ok": true
+    },
+    "gs104_overflow": {
+      "status": "fatal exception 0xC0000409 at 0x00D91905 (__report_gsfailure+0x5), process terminated by the debugger",
+      "exited_by_itself": false,
+      "exit_code": 3735880713,
+      "windows": [],
+      "exit_code_hex": "0xDEAD0409",
+      "pid": 40160,
+      "steps": [],
+      "sockets_seen": [],
+      "endpoint_polls": 0,
+      "duration_s": 0.02,
+      "kilp_dat_size": null,
+      "job": {
+        "TotalProcesses": 1,
+        "ActiveProcesses": 0,
+        "TotalTerminatedProcesses": 0,
+        "ActiveProcessLimit": 1
+      },
+      "debugger": {
+        "events": {
+          "create_process": 1,
+          "load_dll": 9,
+          "exception": 4,
+          "exit_process": 1
+        },
+        "exceptions": [
+          {
+            "code": "0xC0000409",
+            "flags": "0x00000001",
+            "address": "0x00D91905",
+            "first_chance": false,
+            "params": [
+              "0x00000002"
+            ],
+            "thread": 111852,
+            "t": 1795552416.75316,
+            "sym": "__report_gsfailure+0x5",
+            "rva": "0x00001905",
+            "fatal": true,
+            "evidence": {
+              "context": {
+                "Eip": "0x00D91905",
+                "Esp": "0x00C4F764",
+                "Ebp": "0x00C4F7AC",
+                "Eax": "0x00000000",
+                "Ebx": "0x00F78000",
+                "Ecx": "0x00000002",
+                "Edx": "0x00000000",
+                "Esi": "0x00000003",
+                "Edi": "0x01067120",
+                "EFlags": "0x00000283"
+              },
+              "ebp_chain": [
+                {
+                  "ebp": "0x00C4F7AC",
+                  "next_ebp": "0x00000000",
+                  "ret": "0x00000000",
+                  "ret_sym": null
+                }
+              ],
+              "stack_scan_code_addresses": [
+                {
+                  "at": "0x00C4F764",
+                  "value": "0x00D91581",
+                  "sym": "victim+0x41"
+                }
+              ],
+              "ret_at_esp": {
+                "value": "0x00D91581",
+                "sym": "victim+0x41",
+                "rva": "0x00001581"
+              },
+              "watched_frame": {
+                "frame_ebp": "0x00C4F7AC",
+                "slots_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000038f8c400",
+                "cookie_slot": "0x00000000",
+                "expected_cookie_slot": "0x2EF7A8A9",
+                "cookie_intact": false,
+                "saved_ebp_slot": "0x00000000",
+                "saved_ebp_at_entry": "0x00C4FC80",
+                "saved_ebp_intact": false,
+                "return_slot": "0x00000000",
+                "return_at_entry": "0x00D9125C",
+                "return_intact": false,
+                "return_slot_sym": null,
+                "arg0_slot": "0x00000000",
+                "arg0_at_entry": "0x00000068",
+                "arg0_intact": false,
+                "entry_return_sym": "main+0x6C",
+                "entry_thread": 111852
+              },
+              "stack_scan_above_frame_heuristic": [
+                {
+                  "at": "0x00C4F9C4",
+                  "value": "0x00D92180",
+                  "sym": "__scrt_unhandled_exception_filter+0x0"
+                },
+                {
+                  "at": "0x00C4F9EC",
+                  "value": "0x00D92180",
+                  "sym": "__scrt_unhandled_exception_filter+0x0"
+                },
+                {
+                  "at": "0x00C4FA00",
+                  "value": "0x00D92180",
+                  "sym": "__scrt_unhandled_exception_filter+0x0"
+                },
+                {
+                  "at": "0x00C4FA04",
+                  "value": "0x00D92180",
+                  "sym": "__scrt_unhandled_exception_filter+0x0"
+                },
+                {
+                  "at": "0x00C4FA38",
+                  "value": "0x00D91660",
+                  "sym": "pre_cpp_initialization+0x0"
+                },
+                {
+                  "at": "0x00C4FA3C",
+                  "value": "0x00DEB16C",
+                  "sym": "pre_cpp_initializer+0x0"
+                },
+                {
+                  "at": "0x00C4FA48",
+                  "value": "0x00D90000",
+                  "sym": "__ImageBase+0x0"
+                }
+              ],
+              "module_rva_of_eip": "0x00001905"
+            }
+          }
+        ],
+        "fatal": {
+          "code": "0xC0000409",
+          "flags": "0x00000001",
+          "address": "0x00D91905",
+          "first_chance": false,
+          "params": [
+            "0x00000002"
+          ],
+          "thread": 111852,
+          "t": 1795552416.75316,
+          "sym": "__report_gsfailure+0x5",
+          "rva": "0x00001905",
+          "fatal": true,
+          "evidence": {
+            "context": {
+              "Eip": "0x00D91905",
+              "Esp": "0x00C4F764",
+              "Ebp": "0x00C4F7AC",
+              "Eax": "0x00000000",
+              "Ebx": "0x00F78000",
+              "Ecx": "0x00000002",
+              "Edx": "0x00000000",
+              "Esi": "0x00000003",
+              "Edi": "0x01067120",
+              "EFlags": "0x00000283"
+            },
+            "ebp_chain": [
+              {
+                "ebp": "0x00C4F7AC",
+                "next_ebp": "0x00000000",
+                "ret": "0x00000000",
+                "ret_sym": null
+              }
+            ],
+            "stack_scan_code_addresses": [
+              {
+                "at": "0x00C4F764",
+                "value": "0x00D91581",
+                "sym": "victim+0x41"
+              }
+            ],
+            "ret_at_esp": {
+              "value": "0x00D91581",
+              "sym": "victim+0x41",
+              "rva": "0x00001581"
+            },
+            "watched_frame": {
+              "frame_ebp": "0x00C4F7AC",
+              "slots_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000038f8c400",
+              "cookie_slot": "0x00000000",
+              "expected_cookie_slot": "0x2EF7A8A9",
+              "cookie_intact": false,
+              "saved_ebp_slot": "0x00000000",
+              "saved_ebp_at_entry": "0x00C4FC80",
+              "saved_ebp_intact": false,
+              "return_slot": "0x00000000",
+              "return_at_entry": "0x00D9125C",
+              "return_intact": false,
+              "return_slot_sym": null,
+              "arg0_slot": "0x00000000",
+              "arg0_at_entry": "0x00000068",
+              "arg0_intact": false,
+              "entry_return_sym": "main+0x6C",
+              "entry_thread": 111852
+            },
+            "stack_scan_above_frame_heuristic": [
+              {
+                "at": "0x00C4F9C4",
+                "value": "0x00D92180",
+                "sym": "__scrt_unhandled_exception_filter+0x0"
+              },
+              {
+                "at": "0x00C4F9EC",
+                "value": "0x00D92180",
+                "sym": "__scrt_unhandled_exception_filter+0x0"
+              },
+              {
+                "at": "0x00C4FA00",
+                "value": "0x00D92180",
+                "sym": "__scrt_unhandled_exception_filter+0x0"
+              },
+              {
+                "at": "0x00C4FA04",
+                "value": "0x00D92180",
+                "sym": "__scrt_unhandled_exception_filter+0x0"
+              },
+              {
+                "at": "0x00C4FA38",
+                "value": "0x00D91660",
+                "sym": "pre_cpp_initialization+0x0"
+              },
+              {
+                "at": "0x00C4FA3C",
+                "value": "0x00DEB16C",
+                "sym": "pre_cpp_initializer+0x0"
+              },
+              {
+                "at": "0x00C4FA48",
+                "value": "0x00D90000",
+                "sym": "__ImageBase+0x0"
+              }
+            ],
+            "module_rva_of_eip": "0x00001905"
+          }
+        },
+        "breakpoints": [
+          {
+            "kind": "entry",
+            "addr": "0x00D91540",
+            "set": true,
+            "sym": "victim+0x0"
+          },
+          {
+            "kind": "return",
+            "addr": "0x00D9125C",
+            "set": true,
+            "sym": "main+0x6C"
+          },
+          {
+            "kind": "entry",
+            "addr": "0x00D91540",
+            "sym": "victim+0x0",
+            "t": 1795552416.7528048,
+            "thread": 111852,
+            "context": {
+              "Eip": "0x00D91541",
+              "Esp": "0x00C4F7B0",
+              "Ebp": "0x00C4FC80",
+              "Eax": "0x00000068",
+              "Ebx": "0x00F78000",
+              "Ecx": "0x00C4F784",
+              "Edx": "0x00000000",
+              "Esi": "0x00000003",
+              "Edi": "0x01067120",
+              "EFlags": "0x00000246"
+            },
+            "return_address": "0x00D9125C",
+            "return_sym": "main+0x6C",
+            "caller_ebp": "0x00C4FC80",
+            "arg0": "0x00000068",
+            "frame_ebp": "0x00C4F7AC",
+            "cookie_addr": "0x00DF5000",
+            "cookie": "0x2E335F05",
+            "expected_cookie_slot": "0x2EF7A8A9"
+          }
+        ],
+        "exit_code": 3735880713,
+        "dlls_loaded": 9,
+        "initial_breakpoints": 2,
+        "terminated_by_debugger": true,
+        "fatal_count": 1,
+        "unexpected_breakpoints": [],
+        "image_base": "0x00D90000",
+        "symbols": {
+          "sym_type": 3,
+          "loaded_pdb": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\crashctl\\crash_probe.pdb",
+          "pdb_guid": "{D85663A0-8C42-4533-851A-1C43D0161778}",
+          "pdb_age": 1,
+          "pdb_unmatched": false,
+          "image_size": 438272,
+          "pdb_ok": true,
+          "image_rsds": {
+            "guid": "{D85663A0-8C42-4533-851A-1C43D0161778}",
+            "age": 1,
+            "pdb_path": "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\claude_c11s4\\probes3\\crash_probe.pdb"
+          }
+        },
+        "watch": {
+          "name": "victim",
+          "addr": "0x00D91540",
+          "rva": "0x00001540"
+        },
+        "exit_code_hex": "0xDEAD0409",
+        "loop_finished": true,
+        "error": null
+      },
+      "wer": {
+        "processes": {
+          "polls": 14,
+          "period_s": 0.1,
+          "names": [
+            "werfault.exe",
+            "werfaultsecure.exe",
+            "wermgr.exe"
+          ],
+          "parents": [
+            40160
+          ],
+          "found": []
+        },
+        "events_since_start": {
+          "query_since_utc": "2026-11-24T20:33:36.000Z",
+          "returncode": 0,
+          "stderr": "",
+          "count": 0,
+          "events": []
+        },
+        "events_matching": [],
+        "wersvc_before": "1  STOPPED",
+        "wersvc_after": "1  STOPPED"
+      },
+      "extra": {},
+      "problems": [],
+      "ok": true
+    },
+    "fastfail": {
+      "status": "fatal exception 0xC0000409 at 0x002C14DE (main+0x2EE), process terminated by the debugger",
+      "exited_by_itself": false,
+      "exit_code": 3735880713,
+      "windows": [],
+      "exit_code_hex": "0xDEAD0409",
+      "pid": 101080,
+      "steps": [],
+      "sockets_seen": [],
+      "endpoint_polls": 0,
+      "duration_s": 0.02,
+      "kilp_dat_size": null,
+      "job": {
+        "TotalProcesses": 1,
+        "ActiveProcesses": 0,
+        "TotalTerminatedProcesses": 0,
+        "ActiveProcessLimit": 1
+      },
+      "debugger": {
+        "events": {
+          "create_process": 1,
+          "load_dll": 9,
+          "exception": 3,
+          "exit_process": 1
+        },
+        "exceptions": [
+          {
+            "code": "0xC0000409",
+            "flags": "0x00000001",
+            "address": "0x002C14DE",
+            "first_chance": false,
+            "params": [
+              "0x00000002"
+            ],
+            "thread": 111940,
+            "t": 1795552419.1631072,
+            "sym": "main+0x2EE",
+            "rva": "0x000014DE",
+            "fatal": true,
+            "evidence": {
+              "context": {
+                "Eip": "0x002C14DE",
+                "Esp": "0x012FF72C",
+                "Ebp": "0x012FFBF0",
+                "Eax": "0x00000000",
+                "Ebx": "0x011DD000",
+                "Ecx": "0x00000002",
+                "Edx": "0x0031B218",
+                "Esi": "0x00000002",
+                "Edi": "0x015A7120",
+                "EFlags": "0x00000246"
+              },
+              "ebp_chain": [
+                {
+                  "ebp": "0x012FFBF0",
+                  "next_ebp": "0x012FFC38",
+                  "ret": "0x002C17D2",
+                  "ret_sym": "__scrt_common_main_seh+0x142"
+                },
+                {
+                  "ebp": "0x012FFC38",
+                  "next_ebp": "0x012FFC48",
+                  "ret": "0x75435D49",
+                  "ret_sym": null
+                },
+                {
+                  "ebp": "0x012FFC48",
+                  "next_ebp": "0x012FFCA0",
+                  "ret": "0x770CC75B",
+                  "ret_sym": null
+                },
+                {
+                  "ebp": "0x012FFCA0",
+                  "next_ebp": "0x012FFCB0",
+                  "ret": "0x770CC6E1",
+                  "ret_sym": null
+                },
+                {
+                  "ebp": "0x012FFCB0",
+                  "next_ebp": "0x00000000",
+                  "ret": "0x00000000",
+                  "ret_sym": null
+                }
+              ],
+              "stack_scan_code_addresses": [
+                {
+                  "at": "0x012FF72C",
+                  "value": "0x002C18F0",
+                  "sym": "mainCRTStartup+0x0"
+                }
+              ],
+              "ret_at_esp": {
+                "value": "0x002C18F0",
+                "sym": "mainCRTStartup+0x0",
+                "rva": "0x000018F0"
+              },
+              "module_rva_of_eip": "0x000014DE"
+            }
+          }
+        ],
+        "fatal": {
+          "code": "0xC0000409",
+          "flags": "0x00000001",
+          "address": "0x002C14DE",
+          "first_chance": false,
+          "params": [
+            "0x00000002"
+          ],
+          "thread": 111940,
+          "t": 1795552419.1631072,
+          "sym": "main+0x2EE",
+          "rva": "0x000014DE",
+          "fatal": true,
+          "evidence": {
+            "context": {
+              "Eip": "0x002C14DE",
+              "Esp": "0x012FF72C",
+              "Ebp": "0x012FFBF0",
+              "Eax": "0x00000000",
+              "Ebx": "0x011DD000",
+              "Ecx": "0x00000002",
+              "Edx": "0x0031B218",
+              "Esi": "0x00000002",
+              "Edi": "0x015A7120",
+              "EFlags": "0x00000246"
+            },
+            "ebp_chain": [
+              {
+                "ebp": "0x012FFBF0",
+                "next_ebp": "0x012FFC38",
+                "ret": "0x002C17D2",
+                "ret_sym": "__scrt_common_main_seh+0x142"
+              },
+              {
+                "ebp": "0x012FFC38",
+                "next_ebp": "0x012FFC48",
+                "ret": "0x75435D49",
+                "ret_sym": null
+              },
+              {
+                "ebp": "0x012FFC48",
+                "next_ebp": "0x012FFCA0",
+                "ret": "0x770CC75B",
+                "ret_sym": null
+              },
+              {
+                "ebp": "0x012FFCA0",
+                "next_ebp": "0x012FFCB0",
+                "ret": "0x770CC6E1",
+                "ret_sym": null
+              },
+              {
+                "ebp": "0x012FFCB0",
+                "next_ebp": "0x00000000",
+                "ret": "0x00000000",
+                "ret_sym": null
+              }
+            ],
+            "stack_scan_code_addresses": [
+              {
+                "at": "0x012FF72C",
+                "value": "0x002C18F0",
+                "sym": "mainCRTStartup+0x0"
+              }
+            ],
+            "ret_at_esp": {
+              "value": "0x002C18F0",
+              "sym": "mainCRTStartup+0x0",
+              "rva": "0x000018F0"
+            },
+            "module_rva_of_eip": "0x000014DE"
+          }
+        },
+        "breakpoints": [
+          {
+            "kind": "entry",
+            "addr": "0x002C1540",
+            "set": true,
+            "sym": "victim+0x0"
+          }
+        ],
+        "exit_code": 3735880713,
+        "dlls_loaded": 9,
+        "initial_breakpoints": 2,
+        "terminated_by_debugger": true,
+        "fatal_count": 1,
+        "unexpected_breakpoints": [],
+        "image_base": "0x002C0000",
+        "symbols": {
+          "sym_type": 3,
+          "loaded_pdb": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\crashctl\\crash_probe.pdb",
+          "pdb_guid": "{D85663A0-8C42-4533-851A-1C43D0161778}",
+          "pdb_age": 1,
+          "pdb_unmatched": false,
+          "image_size": 438272,
+          "pdb_ok": true,
+          "image_rsds": {
+            "guid": "{D85663A0-8C42-4533-851A-1C43D0161778}",
+            "age": 1,
+            "pdb_path": "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\claude_c11s4\\probes3\\crash_probe.pdb"
+          }
+        },
+        "watch": {
+          "name": "victim",
+          "addr": "0x002C1540",
+          "rva": "0x00001540"
+        },
+        "exit_code_hex": "0xDEAD0409",
+        "loop_finished": true,
+        "error": null
+      },
+      "wer": {
+        "processes": {
+          "polls": 14,
+          "period_s": 0.1,
+          "names": [
+            "werfault.exe",
+            "werfaultsecure.exe",
+            "wermgr.exe"
+          ],
+          "parents": [
+            101080
+          ],
+          "found": []
+        },
+        "events_since_start": {
+          "query_since_utc": "2026-11-24T20:33:39.000Z",
+          "returncode": 0,
+          "stderr": "",
+          "count": 0,
+          "events": []
+        },
+        "events_matching": [],
+        "wersvc_before": "1  STOPPED",
+        "wersvc_after": "1  STOPPED"
+      },
+      "extra": {},
+      "problems": [],
+      "ok": true
+    },
+    "access_violation": {
+      "status": "fatal exception 0xC0000005 at 0x009512DB (main+0xEB), process terminated by the debugger",
+      "exited_by_itself": false,
+      "exit_code": 3735880713,
+      "windows": [],
+      "exit_code_hex": "0xDEAD0409",
+      "pid": 110908,
+      "steps": [],
+      "sockets_seen": [],
+      "endpoint_polls": 0,
+      "duration_s": 0.02,
+      "kilp_dat_size": null,
+      "job": {
+        "TotalProcesses": 1,
+        "ActiveProcesses": 0,
+        "TotalTerminatedProcesses": 0,
+        "ActiveProcessLimit": 1
+      },
+      "debugger": {
+        "events": {
+          "create_process": 1,
+          "load_dll": 9,
+          "exception": 4,
+          "exit_process": 1
+        },
+        "exceptions": [
+          {
+            "code": "0xC0000005",
+            "flags": "0x00000000",
+            "address": "0x009512DB",
+            "first_chance": true,
+            "params": [
+              "0x00000001",
+              "0x00000000"
+            ],
+            "thread": 112236,
+            "t": 1795552421.614157,
+            "sym": "main+0xEB",
+            "rva": "0x000012DB"
+          },
+          {
+            "code": "0xC0000005",
+            "flags": "0x00000000",
+            "address": "0x009512DB",
+            "first_chance": false,
+            "params": [
+              "0x00000001",
+              "0x00000000"
+            ],
+            "thread": 112236,
+            "t": 1795552421.614268,
+            "sym": "main+0xEB",
+            "rva": "0x000012DB",
+            "fatal": true,
+            "evidence": {
+              "context": {
+                "Eip": "0x009512DB",
+                "Esp": "0x008FF9A8",
+                "Ebp": "0x008FFE64",
+                "Eax": "0x00000000",
+                "Ebx": "0x00745000",
+                "Ecx": "0x00CC716F",
+                "Edx": "0x009AB21E",
+                "Esi": "0x00CC8318",
+                "Edi": "0x009518F0",
+                "EFlags": "0x00010246"
+              },
+              "ebp_chain": [
+                {
+                  "ebp": "0x008FFE64",
+                  "next_ebp": "0x008FFEAC",
+                  "ret": "0x009517D2",
+                  "ret_sym": "__scrt_common_main_seh+0x142"
+                },
+                {
+                  "ebp": "0x008FFEAC",
+                  "next_ebp": "0x008FFEBC",
+                  "ret": "0x75435D49",
+                  "ret_sym": null
+                },
+                {
+                  "ebp": "0x008FFEBC",
+                  "next_ebp": "0x008FFF14",
+                  "ret": "0x770CC75B",
+                  "ret_sym": null
+                },
+                {
+                  "ebp": "0x008FFF14",
+                  "next_ebp": "0x008FFF24",
+                  "ret": "0x770CC6E1",
+                  "ret_sym": null
+                },
+                {
+                  "ebp": "0x008FFF24",
+                  "next_ebp": "0x00000000",
+                  "ret": "0x00000000",
+                  "ret_sym": null
+                }
+              ],
+              "stack_scan_code_addresses": [],
+              "ret_at_esp": {
+                "value": "0x00745000",
+                "sym": null,
+                "rva": null
+              },
+              "module_rva_of_eip": "0x000012DB"
+            }
+          }
+        ],
+        "fatal": {
+          "code": "0xC0000005",
+          "flags": "0x00000000",
+          "address": "0x009512DB",
+          "first_chance": false,
+          "params": [
+            "0x00000001",
+            "0x00000000"
+          ],
+          "thread": 112236,
+          "t": 1795552421.614268,
+          "sym": "main+0xEB",
+          "rva": "0x000012DB",
+          "fatal": true,
+          "evidence": {
+            "context": {
+              "Eip": "0x009512DB",
+              "Esp": "0x008FF9A8",
+              "Ebp": "0x008FFE64",
+              "Eax": "0x00000000",
+              "Ebx": "0x00745000",
+              "Ecx": "0x00CC716F",
+              "Edx": "0x009AB21E",
+              "Esi": "0x00CC8318",
+              "Edi": "0x009518F0",
+              "EFlags": "0x00010246"
+            },
+            "ebp_chain": [
+              {
+                "ebp": "0x008FFE64",
+                "next_ebp": "0x008FFEAC",
+                "ret": "0x009517D2",
+                "ret_sym": "__scrt_common_main_seh+0x142"
+              },
+              {
+                "ebp": "0x008FFEAC",
+                "next_ebp": "0x008FFEBC",
+                "ret": "0x75435D49",
+                "ret_sym": null
+              },
+              {
+                "ebp": "0x008FFEBC",
+                "next_ebp": "0x008FFF14",
+                "ret": "0x770CC75B",
+                "ret_sym": null
+              },
+              {
+                "ebp": "0x008FFF14",
+                "next_ebp": "0x008FFF24",
+                "ret": "0x770CC6E1",
+                "ret_sym": null
+              },
+              {
+                "ebp": "0x008FFF24",
+                "next_ebp": "0x00000000",
+                "ret": "0x00000000",
+                "ret_sym": null
+              }
+            ],
+            "stack_scan_code_addresses": [],
+            "ret_at_esp": {
+              "value": "0x00745000",
+              "sym": null,
+              "rva": null
+            },
+            "module_rva_of_eip": "0x000012DB"
+          }
+        },
+        "breakpoints": [
+          {
+            "kind": "entry",
+            "addr": "0x00951540",
+            "set": true,
+            "sym": "victim+0x0"
+          }
+        ],
+        "exit_code": 3735880713,
+        "dlls_loaded": 9,
+        "initial_breakpoints": 2,
+        "terminated_by_debugger": true,
+        "fatal_count": 1,
+        "unexpected_breakpoints": [],
+        "image_base": "0x00950000",
+        "symbols": {
+          "sym_type": 3,
+          "loaded_pdb": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\crashctl\\crash_probe.pdb",
+          "pdb_guid": "{D85663A0-8C42-4533-851A-1C43D0161778}",
+          "pdb_age": 1,
+          "pdb_unmatched": false,
+          "image_size": 438272,
+          "pdb_ok": true,
+          "image_rsds": {
+            "guid": "{D85663A0-8C42-4533-851A-1C43D0161778}",
+            "age": 1,
+            "pdb_path": "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\claude_c11s4\\probes3\\crash_probe.pdb"
+          }
+        },
+        "watch": {
+          "name": "victim",
+          "addr": "0x00951540",
+          "rva": "0x00001540"
+        },
+        "exit_code_hex": "0xDEAD0409",
+        "loop_finished": true,
+        "error": null
+      },
+      "wer": {
+        "processes": {
+          "polls": 14,
+          "period_s": 0.1,
+          "names": [
+            "werfault.exe",
+            "werfaultsecure.exe",
+            "wermgr.exe"
+          ],
+          "parents": [
+            110908
+          ],
+          "found": []
+        },
+        "events_since_start": {
+          "query_since_utc": "2026-11-24T20:33:41.000Z",
+          "returncode": 0,
+          "stderr": "",
+          "count": 0,
+          "events": []
+        },
+        "events_matching": [],
+        "wersvc_before": "1  STOPPED",
+        "wersvc_after": "1  STOPPED"
+      },
+      "extra": {},
+      "problems": [],
+      "ok": true
+    },
+    "child_refused_by_job": {
+      "status": "fatal exception 0xC0000409 at 0x00271905 (__report_gsfailure+0x5), process terminated by the debugger",
+      "exited_by_itself": false,
+      "exit_code": 3735880713,
+      "windows": [],
+      "exit_code_hex": "0xDEAD0409",
+      "pid": 108596,
+      "steps": [],
+      "sockets_seen": [],
+      "endpoint_polls": 0,
+      "duration_s": 0.02,
+      "kilp_dat_size": null,
+      "job": {
+        "TotalProcesses": 1,
+        "ActiveProcesses": 0,
+        "TotalTerminatedProcesses": 0,
+        "ActiveProcessLimit": 1
+      },
+      "debugger": {
+        "events": {
+          "create_process": 1,
+          "load_dll": 10,
+          "exception": 4,
+          "create_thread": 1,
+          "exit_thread": 1,
+          "exit_process": 1
+        },
+        "exceptions": [
+          {
+            "code": "0xC0000409",
+            "flags": "0x00000001",
+            "address": "0x00271905",
+            "first_chance": false,
+            "params": [
+              "0x00000002"
+            ],
+            "thread": 32528,
+            "t": 1795552424.0233338,
+            "sym": "__report_gsfailure+0x5",
+            "rva": "0x00001905",
+            "fatal": true,
+            "evidence": {
+              "context": {
+                "Eip": "0x00271905",
+                "Esp": "0x00D3F678",
+                "Ebp": "0x00D3F6C0",
+                "Eax": "0x00000000",
+                "Ebx": "0x00000000",
+                "Ecx": "0x00000002",
+                "Edx": "0x00000000",
+                "Esi": "0x00F38208",
+                "Edi": "0x00000718",
+                "EFlags": "0x00000293"
+              },
+              "ebp_chain": [
+                {
+                  "ebp": "0x00D3F6C0",
+                  "next_ebp": "0x00000000",
+                  "ret": "0x00000000",
+                  "ret_sym": null
+                }
+              ],
+              "stack_scan_code_addresses": [
+                {
+                  "at": "0x00D3F678",
+                  "value": "0x00271581",
+                  "sym": "victim+0x41"
+                }
+              ],
+              "ret_at_esp": {
+                "value": "0x00271581",
+                "sym": "victim+0x41",
+                "rva": "0x00001581"
+              },
+              "watched_frame": {
+                "frame_ebp": "0x00D3F6C0",
+                "slots_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                "cookie_slot": "0x00000000",
+                "expected_cookie_slot": "0x6D2AD3C4",
+                "cookie_intact": false,
+                "saved_ebp_slot": "0x00000000",
+                "saved_ebp_at_entry": "0x00D3FB90",
+                "saved_ebp_intact": false,
+                "return_slot": "0x00000000",
+                "return_at_entry": "0x00271450",
+                "return_intact": false,
+                "return_slot_sym": null,
+                "arg0_slot": "0x00000000",
+                "arg0_at_entry": "0x00000068",
+                "arg0_intact": false,
+                "entry_return_sym": "main+0x260",
+                "entry_thread": 32528
+              },
+              "stack_scan_above_frame_heuristic": [
+                {
+                  "at": "0x00D3F8D4",
+                  "value": "0x00272180",
+                  "sym": "__scrt_unhandled_exception_filter+0x0"
+                },
+                {
+                  "at": "0x00D3F8FC",
+                  "value": "0x00272180",
+                  "sym": "__scrt_unhandled_exception_filter+0x0"
+                },
+                {
+                  "at": "0x00D3F910",
+                  "value": "0x00272180",
+                  "sym": "__scrt_unhandled_exception_filter+0x0"
+                },
+                {
+                  "at": "0x00D3F914",
+                  "value": "0x00272180",
+                  "sym": "__scrt_unhandled_exception_filter+0x0"
+                },
+                {
+                  "at": "0x00D3F948",
+                  "value": "0x00271660",
+                  "sym": "pre_cpp_initialization+0x0"
+                },
+                {
+                  "at": "0x00D3F94C",
+                  "value": "0x002CB16C",
+                  "sym": "pre_cpp_initializer+0x0"
+                },
+                {
+                  "at": "0x00D3F958",
+                  "value": "0x00270000",
+                  "sym": "__ImageBase+0x0"
+                },
+                {
+                  "at": "0x00D3F99C",
+                  "value": "0x002D006F",
+                  "sym": "LcidToLocaleNameTable+0x69F"
+                },
+                {
+                  "at": "0x00D3F9EC",
+                  "value": "0x002D0075",
+                  "sym": "LcidToLocaleNameTable+0x6A5"
+                }
+              ],
+              "module_rva_of_eip": "0x00001905"
+            }
+          }
+        ],
+        "fatal": {
+          "code": "0xC0000409",
+          "flags": "0x00000001",
+          "address": "0x00271905",
+          "first_chance": false,
+          "params": [
+            "0x00000002"
+          ],
+          "thread": 32528,
+          "t": 1795552424.0233338,
+          "sym": "__report_gsfailure+0x5",
+          "rva": "0x00001905",
+          "fatal": true,
+          "evidence": {
+            "context": {
+              "Eip": "0x00271905",
+              "Esp": "0x00D3F678",
+              "Ebp": "0x00D3F6C0",
+              "Eax": "0x00000000",
+              "Ebx": "0x00000000",
+              "Ecx": "0x00000002",
+              "Edx": "0x00000000",
+              "Esi": "0x00F38208",
+              "Edi": "0x00000718",
+              "EFlags": "0x00000293"
+            },
+            "ebp_chain": [
+              {
+                "ebp": "0x00D3F6C0",
+                "next_ebp": "0x00000000",
+                "ret": "0x00000000",
+                "ret_sym": null
+              }
+            ],
+            "stack_scan_code_addresses": [
+              {
+                "at": "0x00D3F678",
+                "value": "0x00271581",
+                "sym": "victim+0x41"
+              }
+            ],
+            "ret_at_esp": {
+              "value": "0x00271581",
+              "sym": "victim+0x41",
+              "rva": "0x00001581"
+            },
+            "watched_frame": {
+              "frame_ebp": "0x00D3F6C0",
+              "slots_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+              "cookie_slot": "0x00000000",
+              "expected_cookie_slot": "0x6D2AD3C4",
+              "cookie_intact": false,
+              "saved_ebp_slot": "0x00000000",
+              "saved_ebp_at_entry": "0x00D3FB90",
+              "saved_ebp_intact": false,
+              "return_slot": "0x00000000",
+              "return_at_entry": "0x00271450",
+              "return_intact": false,
+              "return_slot_sym": null,
+              "arg0_slot": "0x00000000",
+              "arg0_at_entry": "0x00000068",
+              "arg0_intact": false,
+              "entry_return_sym": "main+0x260",
+              "entry_thread": 32528
+            },
+            "stack_scan_above_frame_heuristic": [
+              {
+                "at": "0x00D3F8D4",
+                "value": "0x00272180",
+                "sym": "__scrt_unhandled_exception_filter+0x0"
+              },
+              {
+                "at": "0x00D3F8FC",
+                "value": "0x00272180",
+                "sym": "__scrt_unhandled_exception_filter+0x0"
+              },
+              {
+                "at": "0x00D3F910",
+                "value": "0x00272180",
+                "sym": "__scrt_unhandled_exception_filter+0x0"
+              },
+              {
+                "at": "0x00D3F914",
+                "value": "0x00272180",
+                "sym": "__scrt_unhandled_exception_filter+0x0"
+              },
+              {
+                "at": "0x00D3F948",
+                "value": "0x00271660",
+                "sym": "pre_cpp_initialization+0x0"
+              },
+              {
+                "at": "0x00D3F94C",
+                "value": "0x002CB16C",
+                "sym": "pre_cpp_initializer+0x0"
+              },
+              {
+                "at": "0x00D3F958",
+                "value": "0x00270000",
+                "sym": "__ImageBase+0x0"
+              },
+              {
+                "at": "0x00D3F99C",
+                "value": "0x002D006F",
+                "sym": "LcidToLocaleNameTable+0x69F"
+              },
+              {
+                "at": "0x00D3F9EC",
+                "value": "0x002D0075",
+                "sym": "LcidToLocaleNameTable+0x6A5"
+              }
+            ],
+            "module_rva_of_eip": "0x00001905"
+          }
+        },
+        "breakpoints": [
+          {
+            "kind": "entry",
+            "addr": "0x00271540",
+            "set": true,
+            "sym": "victim+0x0"
+          },
+          {
+            "kind": "return",
+            "addr": "0x00271450",
+            "set": true,
+            "sym": "main+0x260"
+          },
+          {
+            "kind": "entry",
+            "addr": "0x00271540",
+            "sym": "victim+0x0",
+            "t": 1795552424.0229802,
+            "thread": 32528,
+            "context": {
+              "Eip": "0x00271541",
+              "Esp": "0x00D3F6C4",
+              "Ebp": "0x00D3FB90",
+              "Eax": "0x00000000",
+              "Ebx": "0x00000000",
+              "Ecx": "0x00D3F698",
+              "Edx": "0x00990000",
+              "Esi": "0x00F38208",
+              "Edi": "0x00000718",
+              "EFlags": "0x00000246"
+            },
+            "return_address": "0x00271450",
+            "return_sym": "main+0x260",
+            "caller_ebp": "0x00D3FB90",
+            "arg0": "0x00000068",
+            "frame_ebp": "0x00D3F6C0",
+            "cookie_addr": "0x002D5000",
+            "cookie": "0x6DF92504",
+            "expected_cookie_slot": "0x6D2AD3C4"
+          }
+        ],
+        "exit_code": 3735880713,
+        "dlls_loaded": 10,
+        "initial_breakpoints": 2,
+        "terminated_by_debugger": true,
+        "fatal_count": 1,
+        "unexpected_breakpoints": [],
+        "image_base": "0x00270000",
+        "symbols": {
+          "sym_type": 3,
+          "loaded_pdb": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\crashctl\\crash_probe.pdb",
+          "pdb_guid": "{D85663A0-8C42-4533-851A-1C43D0161778}",
+          "pdb_age": 1,
+          "pdb_unmatched": false,
+          "image_size": 438272,
+          "pdb_ok": true,
+          "image_rsds": {
+            "guid": "{D85663A0-8C42-4533-851A-1C43D0161778}",
+            "age": 1,
+            "pdb_path": "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\claude_c11s4\\probes3\\crash_probe.pdb"
+          }
+        },
+        "watch": {
+          "name": "victim",
+          "addr": "0x00271540",
+          "rva": "0x00001540"
+        },
+        "exit_code_hex": "0xDEAD0409",
+        "loop_finished": true,
+        "error": null
+      },
+      "wer": {
+        "processes": {
+          "polls": 14,
+          "period_s": 0.1,
+          "names": [
+            "werfault.exe",
+            "werfaultsecure.exe",
+            "wermgr.exe"
+          ],
+          "parents": [
+            108596
+          ],
+          "found": []
+        },
+        "events_since_start": {
+          "query_since_utc": "2026-11-24T20:33:43.000Z",
+          "returncode": 0,
+          "stderr": "",
+          "count": 0,
+          "events": []
+        },
+        "events_matching": [],
+        "wersvc_before": "1  STOPPED",
+        "wersvc_after": "1  STOPPED"
+      },
+      "extra": {
+        "child_txt": "failed error=1816"
+      },
+      "problems": [],
+      "ok": true
+    },
+    "child_killed_with_job": {
+      "status": "fatal exception 0xC0000409 at 0x00791905 (__report_gsfailure+0x5), process terminated by the debugger",
+      "exited_by_itself": false,
+      "exit_code": 3735880713,
+      "windows": [],
+      "exit_code_hex": "0xDEAD0409",
+      "pid": 52288,
+      "steps": [],
+      "sockets_seen": [],
+      "endpoint_polls": 0,
+      "duration_s": 0.02,
+      "kilp_dat_size": null,
+      "job": {
+        "TotalProcesses": 2,
+        "ActiveProcesses": 1,
+        "TotalTerminatedProcesses": 0,
+        "ActiveProcessLimit": null
+      },
+      "debugger": {
+        "events": {
+          "create_process": 1,
+          "load_dll": 10,
+          "exception": 4,
+          "create_thread": 1,
+          "exit_thread": 1,
+          "exit_process": 1
+        },
+        "exceptions": [
+          {
+            "code": "0xC0000409",
+            "flags": "0x00000001",
+            "address": "0x00791905",
+            "first_chance": false,
+            "params": [
+              "0x00000002"
+            ],
+            "thread": 112408,
+            "t": 1795552426.4369519,
+            "sym": "__report_gsfailure+0x5",
+            "rva": "0x00001905",
+            "fatal": true,
+            "evidence": {
+              "context": {
+                "Eip": "0x00791905",
+                "Esp": "0x004FF410",
+                "Ebp": "0x004FF458",
+                "Eax": "0x00000000",
+                "Ebx": "0x00000001",
+                "Ecx": "0x00000002",
+                "Edx": "0x00000000",
+                "Esi": "0x7543E7C0",
+                "Edi": "0x00000000",
+                "EFlags": "0x00000213"
+              },
+              "ebp_chain": [
+                {
+                  "ebp": "0x004FF458",
+                  "next_ebp": "0x00000000",
+                  "ret": "0x00000000",
+                  "ret_sym": null
+                }
+              ],
+              "stack_scan_code_addresses": [
+                {
+                  "at": "0x004FF410",
+                  "value": "0x00791581",
+                  "sym": "victim+0x41"
+                }
+              ],
+              "ret_at_esp": {
+                "value": "0x00791581",
+                "sym": "victim+0x41",
+                "rva": "0x00001581"
+              },
+              "watched_frame": {
+                "frame_ebp": "0x004FF458",
+                "slots_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                "cookie_slot": "0x00000000",
+                "expected_cookie_slot": "0xF34A2C91",
+                "cookie_intact": false,
+                "saved_ebp_slot": "0x00000000",
+                "saved_ebp_at_entry": "0x004FF928",
+                "saved_ebp_intact": false,
+                "return_slot": "0x00000000",
+                "return_at_entry": "0x00791450",
+                "return_intact": false,
+                "return_slot_sym": null,
+                "arg0_slot": "0x00000000",
+                "arg0_at_entry": "0x00000068",
+                "arg0_intact": false,
+                "entry_return_sym": "main+0x260",
+                "entry_thread": 112408
+              },
+              "stack_scan_above_frame_heuristic": [
+                {
+                  "at": "0x004FF66C",
+                  "value": "0x00792180",
+                  "sym": "__scrt_unhandled_exception_filter+0x0"
+                },
+                {
+                  "at": "0x004FF694",
+                  "value": "0x00792180",
+                  "sym": "__scrt_unhandled_exception_filter+0x0"
+                },
+                {
+                  "at": "0x004FF6A8",
+                  "value": "0x00792180",
+                  "sym": "__scrt_unhandled_exception_filter+0x0"
+                },
+                {
+                  "at": "0x004FF6AC",
+                  "value": "0x00792180",
+                  "sym": "__scrt_unhandled_exception_filter+0x0"
+                },
+                {
+                  "at": "0x004FF6E0",
+                  "value": "0x00791660",
+                  "sym": "pre_cpp_initialization+0x0"
+                },
+                {
+                  "at": "0x004FF6E4",
+                  "value": "0x007EB16C",
+                  "sym": "pre_cpp_initializer+0x0"
+                },
+                {
+                  "at": "0x004FF6F0",
+                  "value": "0x00790000",
+                  "sym": "__ImageBase+0x0"
+                }
+              ],
+              "module_rva_of_eip": "0x00001905"
+            }
+          }
+        ],
+        "fatal": {
+          "code": "0xC0000409",
+          "flags": "0x00000001",
+          "address": "0x00791905",
+          "first_chance": false,
+          "params": [
+            "0x00000002"
+          ],
+          "thread": 112408,
+          "t": 1795552426.4369519,
+          "sym": "__report_gsfailure+0x5",
+          "rva": "0x00001905",
+          "fatal": true,
+          "evidence": {
+            "context": {
+              "Eip": "0x00791905",
+              "Esp": "0x004FF410",
+              "Ebp": "0x004FF458",
+              "Eax": "0x00000000",
+              "Ebx": "0x00000001",
+              "Ecx": "0x00000002",
+              "Edx": "0x00000000",
+              "Esi": "0x7543E7C0",
+              "Edi": "0x00000000",
+              "EFlags": "0x00000213"
+            },
+            "ebp_chain": [
+              {
+                "ebp": "0x004FF458",
+                "next_ebp": "0x00000000",
+                "ret": "0x00000000",
+                "ret_sym": null
+              }
+            ],
+            "stack_scan_code_addresses": [
+              {
+                "at": "0x004FF410",
+                "value": "0x00791581",
+                "sym": "victim+0x41"
+              }
+            ],
+            "ret_at_esp": {
+              "value": "0x00791581",
+              "sym": "victim+0x41",
+              "rva": "0x00001581"
+            },
+            "watched_frame": {
+              "frame_ebp": "0x004FF458",
+              "slots_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+              "cookie_slot": "0x00000000",
+              "expected_cookie_slot": "0xF34A2C91",
+              "cookie_intact": false,
+              "saved_ebp_slot": "0x00000000",
+              "saved_ebp_at_entry": "0x004FF928",
+              "saved_ebp_intact": false,
+              "return_slot": "0x00000000",
+              "return_at_entry": "0x00791450",
+              "return_intact": false,
+              "return_slot_sym": null,
+              "arg0_slot": "0x00000000",
+              "arg0_at_entry": "0x00000068",
+              "arg0_intact": false,
+              "entry_return_sym": "main+0x260",
+              "entry_thread": 112408
+            },
+            "stack_scan_above_frame_heuristic": [
+              {
+                "at": "0x004FF66C",
+                "value": "0x00792180",
+                "sym": "__scrt_unhandled_exception_filter+0x0"
+              },
+              {
+                "at": "0x004FF694",
+                "value": "0x00792180",
+                "sym": "__scrt_unhandled_exception_filter+0x0"
+              },
+              {
+                "at": "0x004FF6A8",
+                "value": "0x00792180",
+                "sym": "__scrt_unhandled_exception_filter+0x0"
+              },
+              {
+                "at": "0x004FF6AC",
+                "value": "0x00792180",
+                "sym": "__scrt_unhandled_exception_filter+0x0"
+              },
+              {
+                "at": "0x004FF6E0",
+                "value": "0x00791660",
+                "sym": "pre_cpp_initialization+0x0"
+              },
+              {
+                "at": "0x004FF6E4",
+                "value": "0x007EB16C",
+                "sym": "pre_cpp_initializer+0x0"
+              },
+              {
+                "at": "0x004FF6F0",
+                "value": "0x00790000",
+                "sym": "__ImageBase+0x0"
+              }
+            ],
+            "module_rva_of_eip": "0x00001905"
+          }
+        },
+        "breakpoints": [
+          {
+            "kind": "entry",
+            "addr": "0x00791540",
+            "set": true,
+            "sym": "victim+0x0"
+          },
+          {
+            "kind": "return",
+            "addr": "0x00791450",
+            "set": true,
+            "sym": "main+0x260"
+          },
+          {
+            "kind": "entry",
+            "addr": "0x00791540",
+            "sym": "victim+0x0",
+            "t": 1795552426.4365451,
+            "thread": 112408,
+            "context": {
+              "Eip": "0x00791541",
+              "Esp": "0x004FF45C",
+              "Ebp": "0x004FF928",
+              "Eax": "0x00000001",
+              "Ebx": "0x00000001",
+              "Ecx": "0x77051F83",
+              "Edx": "0x00000000",
+              "Esi": "0x7543E7C0",
+              "Edi": "0x00000000",
+              "EFlags": "0x00000202"
+            },
+            "return_address": "0x00791450",
+            "return_sym": "main+0x260",
+            "caller_ebp": "0x004FF928",
+            "arg0": "0x00000068",
+            "frame_ebp": "0x004FF458",
+            "cookie_addr": "0x007F5000",
+            "cookie": "0xF305D8C9",
+            "expected_cookie_slot": "0xF34A2C91"
+          }
+        ],
+        "exit_code": 3735880713,
+        "dlls_loaded": 10,
+        "initial_breakpoints": 2,
+        "terminated_by_debugger": true,
+        "fatal_count": 1,
+        "unexpected_breakpoints": [],
+        "image_base": "0x00790000",
+        "symbols": {
+          "sym_type": 3,
+          "loaded_pdb": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\crashctl\\crash_probe.pdb",
+          "pdb_guid": "{D85663A0-8C42-4533-851A-1C43D0161778}",
+          "pdb_age": 1,
+          "pdb_unmatched": false,
+          "image_size": 438272,
+          "pdb_ok": true,
+          "image_rsds": {
+            "guid": "{D85663A0-8C42-4533-851A-1C43D0161778}",
+            "age": 1,
+            "pdb_path": "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\claude_c11s4\\probes3\\crash_probe.pdb"
+          }
+        },
+        "watch": {
+          "name": "victim",
+          "addr": "0x00791540",
+          "rva": "0x00001540"
+        },
+        "exit_code_hex": "0xDEAD0409",
+        "loop_finished": true,
+        "error": null
+      },
+      "wer": {
+        "processes": {
+          "polls": 14,
+          "period_s": 0.1,
+          "names": [
+            "werfault.exe",
+            "werfaultsecure.exe",
+            "wermgr.exe"
+          ],
+          "parents": [
+            52288
+          ],
+          "found": [
+            {
+              "pid": 74676,
+              "ppid": 52288,
+              "name": "crash_probe.exe",
+              "first_seen": 1795552426.4740534,
+              "why": [
+                "child of 52288"
+              ]
+            }
+          ]
+        },
+        "events_since_start": {
+          "query_since_utc": "2026-11-24T20:33:46.000Z",
+          "returncode": 0,
+          "stderr": "",
+          "count": 0,
+          "events": []
+        },
+        "events_matching": [],
+        "wersvc_before": "1  STOPPED",
+        "wersvc_after": "1  STOPPED"
+      },
+      "extra": {
+        "child_txt": "created pid=74676",
+        "child_pid": 74676,
+        "child_alive_after_job_close": false
+      },
+      "problems": [],
+      "ok": true
+    }
+  },
+  "wersvc_before": "1  STOPPED",
+  "outside_changes": [
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_0.etl",
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_1.etl",
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_2.etl",
+    "deleted: C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\e61840b8-2c1b-4c2c-a559-1c84a2c4bd83.tmp"
+  ],
+  "wer_events_since_start": {
+    "query_since_utc": "2026-11-24T20:33:33.000Z",
+    "returncode": 0,
+    "stderr": "",
+    "count": 0,
+    "events": []
+  },
+  "wer_events_matching": [],
+  "wersvc_after": "1  STOPPED",
+  "wer_dirs_changed": [],
+  "ok": true
+}

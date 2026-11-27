@@ -1,0 +1,5 @@
+C6ProbeHk build (rakenna.cmd, Release|Win32, outside the repository)
+Microsoft (R) C/C++ Optimizing Compiler Version 19.52.37029 for x86
+TPINFO|msc_full_ver=195237029
+probe source sha256: 58a8ddc0619e884984a63fba0ce5c9931c3adca002bb84c51370c3b98fceb37f
+built: 2026-11-25T19:46Z

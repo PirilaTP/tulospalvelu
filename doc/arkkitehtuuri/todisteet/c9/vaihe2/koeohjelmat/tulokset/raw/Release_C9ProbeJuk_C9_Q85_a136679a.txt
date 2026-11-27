@@ -1,0 +1,26 @@
+[doctest] run with "--help" for options
+TPINFO|cycle 1: calling autofile
+TPINFO|cycle 1: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 2: calling autofile
+TPINFO|cycle 2: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 3: calling autofile
+TPINFO|cycle 3: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 4: calling autofile
+TPINFO|cycle 4: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 5: calling autofile
+TPINFO|cycle 5: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 6: calling autofile
+TPINFO|cycle 6: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 7: calling autofile
+TPINFO|cycle 7: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 8: calling autofile
+TPINFO|cycle 8: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 9: calling autofile
+TPINFO|cycle 9: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPINFO|cycle 10: calling autofile
+TPINFO|cycle 10: autofile=0 heapchk=-2 size=931 ends '  </BODY>  </HTML>  '
+TPRESULT|finding=Q85|mechanism=release-repeat-tcp-link|observed=0|detail=10 cycles, heap check failed after 0; published file 931 bytes, closing </HTML> present
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 7 skipped
+[doctest] assertions: 3 | 3 passed | 0 failed |
+[doctest] Status: SUCCESS!

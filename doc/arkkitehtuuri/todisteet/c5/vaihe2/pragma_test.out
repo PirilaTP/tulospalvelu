@@ -1,0 +1,4 @@
+base vs base2: EQUAL
+base vs no_resource: ['COMENT_FB09']
+base vs no_smart_init: ['COMENT_FB0A', 'COMENT_FB0C']
+base vs add_link: ['COMENT_FB08']

@@ -1,0 +1,3 @@
+# Kehittämiseen osallistuminen
+
+<!-- tp:contributing -->

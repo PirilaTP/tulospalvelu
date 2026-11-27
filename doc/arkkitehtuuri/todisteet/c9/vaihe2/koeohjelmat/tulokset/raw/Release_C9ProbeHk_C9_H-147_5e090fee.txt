@@ -1,0 +1,7 @@
+[doctest] run with "--help" for options
+TPINFO|type A: 100 WriteLine calls, 4 returned -1 or WEOF, min -1 (WEOF=65535); puts_f/writeline messages 0; file 0 bytes. type W: 100 WriteLine calls, 9 returned -1 or WEOF, min -1 (WEOF=65535); puts_f/writeline messages 0; file 0 bytes. type 8: 100 WriteLine calls, 4 returned -1 or WEOF, min -1 (WEOF=65535); puts_f/writeline messages 0; file 0 bytes. 
+TPRESULT|finding=H-147|mechanism=weof-check-misses-write-error|observed=1|detail=type A: 100 WriteLine calls, 4 returned -1 or WEOF, min -1 (WEOF=65535); puts_f/writeline messages 0; file 0 bytes. type W: 100 WriteLine calls, 9 returned -1 or WEOF, min -1 (WEOF=65535); puts_f/writeline messages 0; file 0 bytes. type 8: 100 WriteLine calls, 4 returned -1 or WEOF, min -1 (WEOF=65535); puts_f/writeline messages 0; file 0 bytes. 
+===============================================================================
+[doctest] test cases:  1 |  1 passed | 0 failed | 12 skipped
+[doctest] assertions: 13 | 13 passed | 0 failed |
+[doctest] Status: SUCCESS!

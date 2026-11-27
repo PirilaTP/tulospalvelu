@@ -1,0 +1,10 @@
+dir	global	file-static	header-def	func-static
+Hk	790	94	8	126
+Juk	549	62	1	91
+Tp	65	17	1	103
+com	1	14	0	4
+cbTp	35	52	1	13
+tputilv2	39	22	0	33
+distinct global names	1200
+references	45544
+files scanned	610

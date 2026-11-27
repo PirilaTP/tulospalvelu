@@ -1,0 +1,34 @@
+# C-9 step 2 probe cases: build|program|test case|timeout s (aja.py)
+Release|C9ProbeHk|tp_build_info|30
+Release|C9ProbeJuk|tp_build_info|30
+# H-149 relay autofile (ASan evidence; Release behaviour for Q85)
+Asan|C9ProbeJuk|C9 H-149 control: relay autofile list mode (ASan)|60
+Asan|C9ProbeJuk|C9 H-149a relay autofile single-file mode writes through the freed PRFILE (ASan)|60
+Asan|C9ProbeJuk|C9 H-149b relay autofile T mode frees the PRFILE twice (ASan)|60
+Asan|C9ProbeJuk|C9 H-149c relay autofile separate-files mode without a list deletes aflst twice (ASan)|60
+Asan|C9ProbeJuk|C9 H-149d relay autofile X mode leaves lstf dangling for the next run (ASan)|60
+Release|C9ProbeJuk|C9 Q85 Release control: relay autofile list mode repeated|120
+Release|C9ProbeJuk|C9 Q85 Release relay autofile single-file mode repeated|120
+Release|C9ProbeJuk|C9 Q85 Release relay autofile T mode repeated|120
+Release|C9ProbeJuk|C9 Q85 Release relay autofile single-file mode with a TCP file link configured|120
+Release|C9ProbeJuk|C9 Q85 Release relay autofile separate-files mode without a list|120
+Release|C9ProbeJuk|C9 Q85 Release relay autofile separate-files mode without a list, TCP link configured|120
+Release|C9ProbeJuk|C9 N1 Release relay list mode after sendtcpfile closes lstf|120
+# H-145 emit
+Release|C9ProbeHk|C9 H-145 control: emit card is stored|60
+Release|C9ProbeHk|C9 H-145 emit write failure with duplicate suppression (default)|60
+Release|C9ProbeHk|C9 H-145 emit write failure without duplicate suppression|60
+# H-146 AJAT
+Release|C9ProbeHk|C9 H-146 control: AJAT rows are written and read back|60
+Release|C9ProbeHk|C9 H-146 AJAT write failure leaves a hole that the restart reads|60
+# H-147 result files
+Release|C9ProbeHk|C9 H-147 WriteLine return value on a failed flush vs WEOF|60
+Release|C9ProbeHk|C9 H-147 control: autofile replaces the published file|60
+Release|C9ProbeHk|C9 H-147 autofile sequence truncates the published file and hides the failed flush|60
+Release|C9ProbeHk|C9 H-147 autofile with the published file locked whole|60
+# H-150 leak (Release: heap walk and stream count)
+Release|C9ProbeHk|C9 H-150 control: autofile XML stage 1|120
+Release|C9ProbeHk|C9 H-150 autofile XML stage 2 with AUTOFILE.LST|300
+Release|C9ProbeHk|C9 H-150 autofile XML stage 2 without AUTOFILE.LST|300
+# H-151 (ASan)
+Asan|C9ProbeHk|C9 H-151 next autofile reads the PRFILE freed by sendtcpfile (ASan)|60

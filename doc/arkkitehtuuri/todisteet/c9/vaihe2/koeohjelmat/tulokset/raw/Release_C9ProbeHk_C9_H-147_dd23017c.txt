@@ -1,0 +1,6 @@
+[doctest] run with "--help" for options
+TPINFO|autofile=0 size 2600 -> 1381, starts '<!DOCTYPE html>', messages=0
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 12 skipped
+[doctest] assertions: 4 | 4 passed | 0 failed |
+[doctest] Status: SUCCESS!

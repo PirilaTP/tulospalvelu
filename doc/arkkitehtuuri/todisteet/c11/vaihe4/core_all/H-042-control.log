@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreJuk.exe "--test-case=H-042 control: in-limit KilpSrj.xml is read" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPINFO|luesarjat=0 n_os=30 valuku=12 n_os_akt=30 sarjaluku=0 ui=0
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 15 skipped
+[doctest] assertions: 7 | 7 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

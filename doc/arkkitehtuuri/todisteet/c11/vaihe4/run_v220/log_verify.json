@@ -1,0 +1,125 @@
+{
+  "run_json": "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\claude_c11s4\\run_v220\\run.json",
+  "fw_exe": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+  "log_copy": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall_copy.log",
+  "log_copy_sha256": "62c2779a2bd62a516a2b261a7e73e56723b79e37a74270438eeffaee4b264f1d",
+  "log_copy_mtime": "2026-11-24T22:42:13",
+  "drop_entries_total": 12,
+  "log_has_pid_field": true,
+  "rules": [
+    {
+      "Name": "TP C11 HkMaali block in",
+      "Enabled": "True",
+      "Action": "Block",
+      "Direction": "Inbound",
+      "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+      "Profile": "Any"
+    },
+    {
+      "Name": "TP C11 HkMaali block out",
+      "Enabled": "True",
+      "Action": "Block",
+      "Direction": "Outbound",
+      "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+      "Profile": "Any"
+    }
+  ],
+  "log": {
+    "expected": {
+      "TCP": {
+        "time_local": "2026-11-24T22:41:24+02:00",
+        "dst_port": "46773",
+        "src_port": "51269"
+      },
+      "UDP": {
+        "time_local": "2026-11-24T22:41:24+02:00",
+        "dst_port": "42660",
+        "src_port": "54031"
+      }
+    },
+    "log_fields": [
+      "date",
+      "time",
+      "action",
+      "protocol",
+      "src-ip",
+      "dst-ip",
+      "src-port",
+      "dst-port",
+      "size",
+      "tcpflags",
+      "tcpsyn",
+      "tcpack",
+      "tcpwin",
+      "icmptype",
+      "icmpcode",
+      "info",
+      "path",
+      "pid"
+    ],
+    "matched_lines": {
+      "TCP": "2026-11-24 22:41:24 DROP TCP 192.168.2.199 192.0.2.1 51269 46773 0 - 0 0 0 - - - SEND 106764",
+      "UDP": "2026-11-24 22:41:24 DROP UDP 192.168.2.199 192.0.2.1 54031 42660 0 - - - - - - - SEND 106764"
+    }
+  },
+  "ok": true,
+  "verified_epoch": 1795552942.189112,
+  "verified": "2026-11-24T22:42:22",
+  "program": {
+    "program_pid": 66180,
+    "program_pid_drops": [],
+    "window_epoch": [
+      1795552885.038096,
+      1795552898.710223
+    ],
+    "drops_in_window": [
+      "2026-11-24 22:41:24 DROP TCP 192.168.2.199 192.0.2.1 51269 46773 0 - 0 0 0 - - - SEND 106764",
+      "2026-11-24 22:41:24 DROP UDP 192.168.2.199 192.0.2.1 54031 42660 0 - - - - - - - SEND 106764",
+      "2026-11-24 22:41:38 DROP TCP 192.168.2.199 192.0.2.1 58467 41038 0 - 0 0 0 - - - SEND 26236",
+      "2026-11-24 22:41:38 DROP UDP 192.168.2.199 192.0.2.1 58735 42000 0 - - - - - - - SEND 26236"
+    ],
+    "drops_in_window_not_probe": [],
+    "send_drops_in_window_not_probe": []
+  },
+  "program_ok": true,
+  "post_probe_log": {
+    "expected": {
+      "TCP": {
+        "time_local": "2026-11-24T22:41:38+02:00",
+        "dst_port": "41038",
+        "src_port": "58467"
+      },
+      "UDP": {
+        "time_local": "2026-11-24T22:41:38+02:00",
+        "dst_port": "42000",
+        "src_port": "58735"
+      }
+    },
+    "log_fields": [
+      "date",
+      "time",
+      "action",
+      "protocol",
+      "src-ip",
+      "dst-ip",
+      "src-port",
+      "dst-port",
+      "size",
+      "tcpflags",
+      "tcpsyn",
+      "tcpack",
+      "tcpwin",
+      "icmptype",
+      "icmpcode",
+      "info",
+      "path",
+      "pid"
+    ],
+    "matched_lines": {
+      "TCP": "2026-11-24 22:41:38 DROP TCP 192.168.2.199 192.0.2.1 58467 41038 0 - 0 0 0 - - - SEND 26236",
+      "UDP": "2026-11-24 22:41:38 DROP UDP 192.168.2.199 192.0.2.1 58735 42000 0 - - - - - - - SEND 26236"
+    }
+  },
+  "post_probe_ok": true,
+  "covers_run": true
+}

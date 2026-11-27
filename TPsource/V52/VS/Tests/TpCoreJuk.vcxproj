@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  TpCoreJuk: core component tests (doc/arkkitehtuuri/testaus.md).
+  Production sources and compile settings copied from
+  VS/V/JukMaali520.vcxproj Release|Win32, minus JukConsole\laskenta.cpp (wmain), Juk\vdat.cpp (included by Tests\core\VAddfrecTests.cpp) and Juk\VTulostus.cpp (included by Tests\core\VTulostusTests.cpp).
+  Keep the define set, /J and the source list identical to that project.
+  Deliberate differences: Tests\fixtures\TpCore.cpp replaces the tputilv2
+  library members WRITEERR.obj (writeerror, writeerror_w, writeerrorOn) and
+  perr.obj (perr, wperr) with recording stubs, and main() comes from
+  Tests\core\CoreMain.cpp.
+  Needs tputilv2.lib and dbboxm.lib (VS/Libs/tputilv2.sln, Release) first.
+  Configuration Asan|Win32 = Release plus AddressSanitizer (EnableASAN), /Zi
+  for symbolised reports, and a post-build copy of the ASan runtime DLL
+  next to the exe; everything else is identical to Release.
+  Run the tests only through Tests/run_core_tests.py.
+-->
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Asan|Win32">
+      <Configuration>Asan</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{49CC9861-123E-4161-A8FB-A791E2A627E9}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>TpCoreJuk</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'" Label="Configuration">
+    <EnableASAN>true</EnableASAN>
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>.\$(Configuration)\</OutDir>
+    <IntDir>TpCoreJuk\$(Configuration)\</IntDir>
+    <TargetName>TpCoreJuk</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>.\$(Configuration)\</OutDir>
+    <IntDir>TpCoreJuk\$(Configuration)\</IntDir>
+    <TargetName>TpCoreJuk</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;_CONSOLE;BIT32;EMIT;MAXSARJALUKU=250;MAXOSUUSLUKU=30;HAJONTA=8;VAIKALUKU=12;MAX_LAHPORTTI=64;NREGNLY=8;MAALI;VALUKIJA;KONETUNN;EMITFILE;TESTIAJAT;TCPSIIRTO;AUTOFILE;ALGETAULU;DBGFILE;PROFILOI;ENNAKOI;LAJUNEN;SERVER;GAZ;PARTIO;TCPLUKIJA;EMITAG;EMITHTTP;ESITARK;NDEBUG;TP_CORE_NAME=TpCoreJuk;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\Juk;..\..\Tp;..\..\JukConsole;..\..\include;..\..\Tests;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/J %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <StackReserveSize>2000000</StackReserveSize>
+      <AdditionalDependencies>..\..\..\..\TPexe\lib\V52\VS\Release\tputilv2.lib;..\..\..\..\TPexe\lib\V52\VS\Release\dbboxm.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;winhttp.lib;commode.obj;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;_CONSOLE;BIT32;EMIT;MAXSARJALUKU=250;MAXOSUUSLUKU=30;HAJONTA=8;VAIKALUKU=12;MAX_LAHPORTTI=64;NREGNLY=8;MAALI;VALUKIJA;KONETUNN;EMITFILE;TESTIAJAT;TCPSIIRTO;AUTOFILE;ALGETAULU;DBGFILE;PROFILOI;ENNAKOI;LAJUNEN;SERVER;GAZ;PARTIO;TCPLUKIJA;EMITAG;EMITHTTP;ESITARK;NDEBUG;TP_CORE_NAME=TpCoreJuk;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\Juk;..\..\Tp;..\..\JukConsole;..\..\include;..\..\Tests;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/J %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <StackReserveSize>2000000</StackReserveSize>
+      <AdditionalDependencies>..\..\..\..\TPexe\lib\V52\VS\Release\tputilv2.lib;..\..\..\..\TPexe\lib\V52\VS\Release\dbboxm.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;winhttp.lib;commode.obj;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(VCToolsInstallDir)bin\Host$(PreferredToolArchitecture)\x86\clang_rt.asan_dynamic-i386.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\com\gethttp.cpp" />
+    <ClCompile Include="..\..\com\winCom.cpp" />
+    <ClCompile Include="..\..\com\WinUDP.cpp" />
+    <ClCompile Include="..\..\tputilv2\xmlparser.cpp" />
+    <ClCompile Include="..\..\Tp\TpApu.cpp" />
+    <ClCompile Include="..\..\Tp\TpComY.cpp" />
+    <ClCompile Include="..\..\Tp\TpLaitteet.cpp" />
+    <ClCompile Include="..\..\Tp\SiritReader.cpp" />
+    <ClCompile Include="..\..\Tp\ZebraReader.cpp" />
+    <ClCompile Include="..\..\JukConsole\laskent0.cpp" />
+    <ClCompile Include="..\..\JukConsole\laskhelp.cpp" />
+    <ClCompile Include="..\..\JukConsole\lasknum5.cpp" />
+    <ClCompile Include="..\..\JukConsole\lasktxt.cpp" />
+    <ClCompile Include="..\..\JukConsole\vcons2.cpp" />
+    <ClCompile Include="..\..\JukConsole\VConTul.cpp" />
+    <ClCompile Include="..\..\Juk\vajat.cpp" />
+    <ClCompile Include="..\..\Juk\vApu.cpp" />
+    <ClCompile Include="..\..\Juk\VCom.cpp" />
+    <ClCompile Include="..\..\Juk\VEmit.cpp" />
+    <ClCompile Include="..\..\Juk\VEmitHtml.cpp" />
+    <ClCompile Include="..\..\Juk\VGlobals.cpp" />
+    <ClCompile Include="..\..\Juk\VInit.cpp" />
+    <ClCompile Include="..\..\Juk\VIv.cpp" />
+    <ClCompile Include="..\..\Juk\VIx.cpp" />
+    <ClCompile Include="..\..\Juk\VRinnakkaisOsuus.cpp" />
+    <ClCompile Include="..\..\Juk\vkilp.cpp" />
+    <ClCompile Include="..\..\Juk\VMuotoilu.cpp" />
+    <ClCompile Include="..\..\Juk\vSarjat.cpp" />
+    <ClCompile Include="..\..\Juk\VXml.cpp" />
+    <ClCompile Include="..\..\Juk\VXml_IOF30.cpp" />
+    <ClCompile Include="..\..\Juk\XMLtulos.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Tests\core\CoreMain.cpp" />
+    <ClCompile Include="..\..\Tests\core\VCoreTests.cpp" />
+    <ClCompile Include="..\..\Tests\core\VAddfrecTests.cpp" />
+    <ClCompile Include="..\..\Tests\core\VComTests.cpp" />
+    <ClCompile Include="..\..\Tests\core\VRecvTests.cpp" />
+    <ClCompile Include="..\..\Tests\core\VTulostusTests.cpp" />
+    <ClCompile Include="..\..\Tests\core\VSrjTests.cpp" />
+    <ClCompile Include="..\..\Tests\fixtures\TpCore.cpp" />
+    <ClCompile Include="..\..\Tests\fixtures\TpCrash.cpp" />
+    <ClCompile Include="..\..\Tests\fixtures\TpNet.cpp" />
+    <ClCompile Include="..\..\Tests\fixtures\VFixture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Tests\fixtures\TpCore.h" />
+    <ClInclude Include="..\..\Tests\fixtures\VFixture.h" />
+    <ClInclude Include="..\..\Tests\doctest.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

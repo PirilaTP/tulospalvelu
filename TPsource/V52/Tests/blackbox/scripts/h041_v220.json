@@ -1,0 +1,74 @@
+{
+  "comment": "C-11 stage 4 control run (testaus.md section 19): data/hk/h041_v220.xml as KilpSrj.xml (n_pv 5, valuku 220, record 10000 bytes = KILPBUFSIZE). Main menu K, L (add), name TESTI, Tab to the class field, H21, + (accept: addtall -> addfrec writes record 1), then Esc, Esc, P, K. Expected: no exception, KILP.DAT 20000 bytes, exit by itself.",
+  "args": [
+    "BOOT"
+  ],
+  "total_timeout": 90,
+  "step_timeout": 15,
+  "steps": [
+    {
+      "wait": "KILP.DAT ei ole",
+      "key": "\r"
+    },
+    {
+      "wait": "P)oistu",
+      "key": "K"
+    },
+    {
+      "wait": [
+        "KORJAUKSET",
+        "L)is"
+      ],
+      "key": "L"
+    },
+    {
+      "wait": "+ : Hyv",
+      "cursor": [
+        7,
+        7
+      ],
+      "key": "TESTI",
+      "key_delay": 0.05
+    },
+    {
+      "nav": "\t",
+      "until_cursor": [
+        8,
+        2
+      ],
+      "max": 30
+    },
+    {
+      "wait": "+ : Hyv",
+      "cursor": [
+        8,
+        2
+      ],
+      "key": "H21+",
+      "key_delay": 0.05
+    },
+    {
+      "wait": "+ : Hyv",
+      "cursor": [
+        7,
+        7
+      ],
+      "key": "\u001b"
+    },
+    {
+      "wait": [
+        "KORJAUKSET",
+        "L)is"
+      ],
+      "key": "\u001b"
+    },
+    {
+      "wait": "P)oistu",
+      "key": "P"
+    },
+    {
+      "wait": "Haluatko varmasti poistua",
+      "key": "K"
+    }
+  ]
+}

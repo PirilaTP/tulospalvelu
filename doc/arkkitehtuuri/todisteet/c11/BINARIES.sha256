@@ -1,0 +1,7 @@
+# Binaries NOT archived (rebuildable with build_probes.cmd / the shipped build); SHA-256 at archive time 2026-11-24
+61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d  TPexe/Hk/V521/HkMaali.exe
+68ec2cd772e95e29cab5eece26c7f93533c6a15b28c372746fd5079d11306691  TPexe/Hk/V521/HkMaali.pdb
+ab593f6ea6d747fe9896be5ab7bd56026c79e9baad0650822ca4b79b64b5e9c5  isolation_probe.exe
+b27fd06e90469f0598260a165ce42fd31cd182fb750fd2b0623a590bcfce33cf  crash_probe.exe
+3df6eaad686b503afd144b7e7ee9549157a8061529d602f09c7a9120b3c093ac  crash_probe.pdb
+9d87d659cc94dbcb50be2984c94ddaa8f2c9939735a475be5782aa23bf2972da  console_probe.exe

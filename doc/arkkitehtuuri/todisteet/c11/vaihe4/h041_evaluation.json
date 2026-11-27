@@ -1,0 +1,157 @@
+{
+  "criteria": {
+    "1_isolation_and_provenance": {
+      "ok": true,
+      "detail": "probe before and after verified; exe and copy SHA-256 and PDB GUID equal the pinned values, both runs"
+    },
+    "2_control_pass": {
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "kilp_dat_size": 20000,
+        "fatal": null,
+        "return_bp": [
+          {
+            "kind": "return",
+            "addr": "0x006537BA",
+            "sym": "kilptietue::addtall+0x36A",
+            "t": 1795552892.5189621,
+            "thread": 63756,
+            "context": {
+              "Eip": "0x006537BB",
+              "Esp": "0x029DF360",
+              "Ebp": "0x029DF420",
+              "Eax": "0x00000000",
+              "Ebx": "0x029DF448",
+              "Ecx": "0xC253E384",
+              "Edx": "0x00560008",
+              "Esi": "0x029DF450",
+              "Edi": "0x00000001",
+              "EFlags": "0x00000246"
+            },
+            "frame_ebp": "0x029DF354",
+            "slots_hex": "d010cec020f49d02ba37650048f49d02000000000000000000000000000000000000000050f49d0248f49d02",
+            "cookie_slot": "0xC0CE10D0",
+            "expected_cookie_slot": "0xC0CE10D0",
+            "cookie_intact": true,
+            "saved_ebp_slot": "0x029DF420",
+            "saved_ebp_at_entry": "0x029DF420",
+            "saved_ebp_intact": true,
+            "return_slot": "0x006537BA",
+            "return_at_entry": "0x006537BA",
+            "return_intact": true,
+            "return_slot_sym": "kilptietue::addtall+0x36A",
+            "arg0_slot": "0x029DF448",
+            "arg0_at_entry": "0x029DF448",
+            "arg0_intact": true,
+            "esp_after_return": "0x029DF360"
+          }
+        ]
+      }
+    },
+    "3_overflow_ui_path": {
+      "ok": true,
+      "detail": {
+        "steps_seen": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    "4_exception": {
+      "ok": true,
+      "detail": {
+        "code": "0xC0000409",
+        "params": [
+          "0x00000002"
+        ],
+        "rva": "0x000A1295",
+        "sym": "__report_gsfailure+0x5",
+        "return_rvas": [
+          "0x00023237",
+          "0xFFAC0000"
+        ],
+        "ebp_is_watched_frame": true,
+        "fatal_count": 1,
+        "thread": 111932,
+        "entry_thread": 111932,
+        "caller_at_entry": "kilptietue::addtall+0x36A",
+        "exit_code": "0xDEAD0409"
+      }
+    },
+    "5_cookie_overwritten": {
+      "ok": true,
+      "detail": {
+        "cookie_slot": "0x00000000",
+        "expected_cookie_slot": "0xBE324C8D",
+        "return_slot": "0x00000000",
+        "return_at_entry": "0x005637BA",
+        "saved_ebp_slot": "0x00000000",
+        "saved_ebp_at_entry": "0x02AFF9B0"
+      }
+    },
+    "6_kilp_dat": {
+      "ok": true,
+      "detail": {
+        "kilp_dat_size": 20080,
+        "stack_vs_record": {
+          "compared_bytes": 40,
+          "stack_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "record_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "equal": true,
+          "record_all_zero": true
+        }
+      }
+    },
+    "7_clean_isolation_record": {
+      "ok": false,
+      "detail": {
+        "control": {
+          "outside_changes_not_noise": [],
+          "wer_processes": [],
+          "wer_events": [],
+          "wersvc_after": "1  STOPPED",
+          "sockets": [],
+          "job": {
+            "TotalProcesses": 1,
+            "ActiveProcesses": 0,
+            "TotalTerminatedProcesses": 0,
+            "ActiveProcessLimit": 1
+          },
+          "log": {
+            "ok": true,
+            "program_ok": true,
+            "post_probe_ok": true,
+            "covers_run": true
+          },
+          "ok": true
+        },
+        "overflow": {
+          "outside_changes_not_noise": [],
+          "wer_processes": [],
+          "wer_events": [],
+          "wersvc_after": "1  STOPPED",
+          "sockets": [],
+          "job": {
+            "TotalProcesses": 1,
+            "ActiveProcesses": 0,
+            "TotalTerminatedProcesses": 0,
+            "ActiveProcessLimit": 1
+          },
+          "log": {
+            "ok": true,
+            "program_ok": false,
+            "post_probe_ok": true,
+            "covers_run": true
+          },
+          "ok": false
+        }
+      }
+    }
+  },
+  "verdict": "not confirmed"
+}

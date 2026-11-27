@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreJuk.exe "--test-case=H-002b relay legacy 9-field line writes through paikat[0] value" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPRESULT|finding=H-002|mechanism=sscanf-9-fields-writes-to-paikat-value|observed=1|detail=parameter line '1 1 1 0 0 0 0 0 TPH002': luesarjat=0; bytes changed in the reserved page=7; at 0x30303030: "TPH002" (expected "TPH002"); the address is the int value 0x30303030 of paikat[0] after memset '0'
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 15 skipped
+[doctest] assertions: 7 | 7 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

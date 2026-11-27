@@ -1,0 +1,48 @@
+C-13 A0: synteesin koneellinen pohja / machine base
+H: 177, T: 52, Q: 112 (Q1-Q112)
+Q missing from the base: none
+
+H per batch: K1 6, C-1 15, C-2 18, C-3 15, C-4 23, C-5 9, C-6 22, C-7 19, C-8 17, C-9 14, C-10 12, C-12 7
+T per batch: C-1 10, C-2 4, C-3 5, C-4 3, C-5 7, C-6 4, C-7 4, C-8 2, C-9 3, C-10 7, C-12 3
+H severity (normalised): keskitaso 73, keskitaso-korkea 1, korkea 34, kumottu 1, matala 48, matala-keskitaso 20
+  of which conditional: 23
+T severity (normalised): keskitaso 24, korkea 1, matala 25, matala-keskitaso 2
+H review: ei 15, ei_ratkea_staattisesti 1, riippumaton 114, riippumaton_osittain 44, tarkastajan_loyto 3
+H experiment: ei 150, koe_tai_testikehys 26, toimitettu_ohjelma 1
+  koe_tai_testikehys: H-001 H-002 H-007 H-008 H-022 H-023 H-024 H-025 H-026 H-027 H-031 H-032 H-040 H-042 H-090 H-091 H-093 H-094 H-128 H-129 H-145 H-146 H-147 H-149 H-150 H-151
+  toimitettu_ohjelma: H-041
+  review=ei: H-001 H-002 H-003 H-006 H-019 H-039 H-108 H-122 H-123 H-124 H-126 H-127 H-142 H-143 H-144
+  review=tarkastajan_loyto: H-132 H-158 H-162
+  review=?: none
+H current priority: (ei asetettu) 62, P1 4, P2 18, P3 37, P4 37, P5 19
+  without a priority: H-004 H-005 H-006 H-007 H-008 H-009 H-010 H-011 H-012 H-013 H-014 H-015 H-016 H-017 H-018 H-019 H-020 H-021 H-022 H-023 H-024 H-025 H-026 H-027 H-028 H-029 H-030 H-031 H-033 H-034 H-035 H-036 H-037 H-038 H-039 H-040 H-043 H-044 H-045 H-046 H-047 H-048 H-050 H-051 H-053 H-054 H-099 H-128 H-130 H-131 H-132 H-133 H-135 H-136 H-137 H-138 H-139 H-140 H-141 H-142 H-143 H-144
+priority conflicts between sources: none
+
+Q status: ajonaikainen_todennus 3, avoin 69, omistajan_paatos 3, osittain 5, ratkaistu 32
+  avoin: Q6 Q9 Q10 Q11 Q12 Q19 Q20 Q21 Q22 Q23 Q25 Q27 Q28 Q29 Q31 Q32 Q33 Q34 Q35 Q36 Q37 Q38 Q39 Q40 Q41 Q42 Q43 Q44 Q45 Q46 Q47 Q48 Q49 Q50 Q51 Q52 Q54 Q55 Q56 Q63 Q64 Q68 Q73 Q75 Q76 Q77 Q78 Q79 Q80 Q81 Q82 Q87 Q89 Q90 Q93 Q94 Q95 Q96 Q97 Q98 Q99 Q100 Q102 Q103 Q104 Q105 Q106 Q109 Q112
+  osittain: Q14 Q15 Q67 Q86 Q91
+  omistajan_paatos: Q60 Q101 Q111
+  ajonaikainen_todennus: Q107 Q108 Q110
+
+earlier fix packages:
+  KK-C10-1: H-160 H-161 H-162 H-163 H-169 H-170* T-043*
+  KK-C10-2: H-159 H-164 H-166 H-167 H-170* T-048
+  KK-C10-3: H-165 T-005 T-044 T-046 T-049
+  KK-C10-4: H-161* H-166 T-043
+  KK-C12-1: H-149 H-150 H-172 H-176*
+  KK-C12-2: H-036 H-171 H-173 H-176* T-051
+  KK-C12-3: H-177 T-050 T-052
+  KK-C9-1: H-149 H-151 H-152 H-158 T-042
+  KK-C9-2: H-015 H-134 H-145 H-146 H-147 H-148 H-153 H-156 T-040 T-041
+  KK-C9-3: H-150 H-155
+  membership named by one source only:
+    KK-C10-1 T-043: riippuvuudet.md 19.4
+    KK-C10-2 H-170: riippuvuudet.md 19.4
+    KK-C9-2 H-134: havainnot.md rivi
+
+batch range vs source column: 
+  H-021: range says C-1 (tallenna-samanaikaisuus.md), source column says tiedonsiirto.md
+references to undefined H/T identifiers: none
+
+macro evaluator artefact: 238 non-literal macro definitions (176 distinct names), 22 distinct tested names; recorded values of these are NOT usable
+  relay MAX_PORTTI (Juk/VDef.h) in the artefact list: yes

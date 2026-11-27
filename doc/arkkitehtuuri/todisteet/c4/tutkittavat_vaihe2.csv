@@ -1,0 +1,34 @@
+file,line,code,category_step2,relation,severity,note
+Hk/HkEmit.cpp,723,C6385,LIKELY,new (haeXmlKuviot indices),low,Point[-1] when first control number is -1; Point[k] and tmpkdi[2000] unbounded; GUI callers only
+Hk/HkXmlTulokset.cpp,1211,C6001,INVESTIGATE_REMAINS,,low,sj1 uninitialised if first FIS competitor has time 0; compared only; FIS penalty value
+Hk/HkXmlTulokset.cpp,1480,C6001,FALSE_POSITIVE,,,tl set and used under the same hyv()
+HkConsole/HkCons2.cpp,418,C6001,FALSE_POSITIVE,,,all callers pass nimihaku=0
+HkConsole/HkCons2.cpp,2663,C6001,CONFIRMED,new (display),low,t[] unset for shorter queue; row colour only
+Juk/VEmit.cpp,3500,C6385,CONFIRMED,H-058,,count/fill mismatch
+Juk/VEmit.cpp,3553,C6386,CONFIRMED,H-058,,count/fill mismatch
+Juk/VIv.cpp,786,C6011,LIKELY,T-020,low,unchecked calloc
+Juk/VIv.cpp,1690,C6001,LIKELY,new (pros_emit),low,kilp unread in ESITARK=-1; autorapsrj[garbage]
+Juk/VIv.cpp,2226,C6001,INVESTIGATE_REMAINS,,low,bt unset for some reader types; display only
+Juk/VTulostus.cpp,1019,C6386,LIKELY,new (ossijat),medium,nt not reset with monios+H; kaikkisijat from XML path
+Juk/VTulostus.cpp,1021,C6386,LIKELY,new (ossijat),medium,same write
+Juk/VTulostus.cpp,1868,C6053,LIKELY,new (osuusnimist),low,unterminated wcsncpy; stack over-read in names
+Juk/VTulostus.cpp,3076,C6001,CONFIRMED,new (htmlkaikkitiivis),low,uninitialised st appended to HTML
+Juk/VTulostus.cpp,4501,C6385,FALSE_POSITIVE,,,seur_kno has no callers
+Juk/VTulostus.cpp,5927,C6001,FALSE_POSITIVE,,,n set on every reachable path
+Juk/XMLtulos.cpp,326,C6001,FALSE_POSITIVE,,,tl0 = TMAALI0
+Juk/XMLtulos.cpp,446,C6001,CONFIRMED,new (XML output value),low,uninitialised i written as tag_cn in emitva mode
+Juk/vApu.cpp,711,C6054,FALSE_POSITIVE,,,memset and bounded lengths
+JukConsole/vcons2.cpp,2064,C6001,CONFIRMED,new (display),low,sj unset when only nayta_ero
+JukConsole/vcons2.cpp,2200,C6001,CONFIRMED,new (tulostamaali font pointer),medium,uninitialised p dereferenced in initfont
+ViestiWin/TulostusUnit2.cpp,115,W8079,FALSE_POSITIVE,,,opaque byte buffer
+ViestiWin/TulostusUnit2.cpp,139,W8079,FALSE_POSITIVE,,,opaque byte buffer
+ViestiWin/UnitAjanotto.cpp,1096,W8013,CONFIRMED,new (same class as H-069),low,srj unassigned; time to wrong leg
+ViestiWin/UnitEmit.cpp,2900,W8079,FALSE_POSITIVE,,,char unsigned in ViestiWin
+ViestiWin/UnitGAZ.cpp,914,W8079,FALSE_POSITIVE,,,type mix only
+ViestiWin/UnitGAZ.cpp,918,W8079,FALSE_POSITIVE,,,lahCPpuskuri write in bounds for buf[400]
+ViestiWin/UnitGAZ.cpp,997,W8079,CONFIRMED,new (lahCPpuskuri),low,buf[100] overrun when nikk>=6 in serial mode
+ViestiWin/UnitGAZ.cpp,1026,W8079,FALSE_POSITIVE,,,in bounds
+ViestiWin/UnitGAZ.cpp,1030,W8079,FALSE_POSITIVE,,,in bounds
+ViestiWin/UnitGAZ.cpp,1047,W8079,CONFIRMED,new (lahCPpuskuri),low,buf[60] -> [71] in serial mode
+ViestiWin/UnitGAZ.cpp,1072,W8079,CONFIRMED,new (lahCPpuskuri),low,buf[30] -> [51] in serial mode
+ViestiWin/UnitGAZ.cpp,1130,W8079,FALSE_POSITIVE,,,buf[1000] in bounds

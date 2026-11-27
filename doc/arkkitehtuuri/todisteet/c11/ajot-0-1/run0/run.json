@@ -1,0 +1,87 @@
+{
+  "started": "2026-11-24T20:00:26",
+  "exe": "C:\\dev\\tulospalvelu\\TPexe\\Hk\\V521\\HkMaali.exe",
+  "exe_sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d",
+  "probe_sha256": "62a9d122f11e15d509698757daa37bf7f7bccddb2a2cb3ba4f0dffb8dd9a6ee5",
+  "driver_sha256": "2b7f3f245aa164bda4c19b39b001abcb8508d12e9e0ff59b6b77d5ac2b25c23c",
+  "script": {
+    "args": [
+      "BOOT"
+    ],
+    "step_timeout": 10,
+    "total_timeout": 60,
+    "steps": [
+      {
+        "wait": [
+          "KilpSrj.xml puuttuu",
+          "Paina Enter"
+        ],
+        "key": "\r"
+      },
+      {
+        "wait": [
+          "Sarjatietojen lukeminen ei onnistunut",
+          "Paina Enter"
+        ],
+        "key": "\r"
+      }
+    ]
+  },
+  "script_sha256": "f1123dc1eaa6e3567fa4e8439ba408132d2afb8125be3488eee3ae767be71826",
+  "container": "tulospalvelu.c11.hkmaali",
+  "sandbox": "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\hkmaali_run_4d2vl_x2\\sandbox",
+  "container_sid": "S-1-15-2-2922332022-2558033516-663861361-3597953260-1082791518-394260634-937280999",
+  "data": [],
+  "exe_copy_sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d",
+  "files_before": [
+    "HkMaali.exe"
+  ],
+  "probe": {
+    "exit_code": 0,
+    "listener_accepts": 0,
+    "checks": {
+      "cwd": "isolated_or_ok|probe_result.txt created in the sandbox",
+      "console": "isolated_or_ok|key X received",
+      "outside": "isolated_or_ok|create refused, error 5",
+      "wsastartup": "isolated_or_ok|WSAStartup=0",
+      "loopback": "isolated_or_ok|connect 127.0.0.1:52693 -> failed, error 10060 after 3000 ms",
+      "external": "isolated_or_ok|connect 192.0.2.1:9 -> failed, error 10013 after 0 ms",
+      "done": "1"
+    },
+    "isolation_verified": true
+  },
+  "run": {
+    "status": "prompt not seen: ['KilpSrj.xml puuttuu', 'Paina Enter']",
+    "exited_by_itself": false,
+    "exit_code": 3735879681,
+    "windows": [],
+    "exit_code_hex": "0xDEAD0001",
+    "steps": [
+      {
+        "wait": [
+          "KilpSrj.xml puuttuu",
+          "Paina Enter"
+        ],
+        "seen": false,
+        "key": "\r",
+        "t": 10.01
+      }
+    ],
+    "sockets_seen": [],
+    "duration_s": 10.07
+  },
+  "result": "prompt not seen: ['KilpSrj.xml puuttuu', 'Paina Enter']",
+  "outside_changes": [
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_0.etl",
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_1.etl",
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_2.etl"
+  ],
+  "sandbox_files": {
+    "HkMaali.exe": {
+      "size": 1156096,
+      "sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d"
+    }
+  },
+  "git_status": "?? TPsource/V52/Tests/blackbox/\n!! TPexe/\n!! TPsource/V52/RADStudio10/Release_Build/\n!! TPsource/V52/RADStudio10/Win32/\n!! TPsource/V52/RADStudio10/build-logs/\n!! TPsource/V52/RADStudio10/obj/\n!! TPsource/V52/Tests/__pycache__/\n!! TPsource/V52/Tests/blackbox/__pycache__/\n!! TPsource/V52/VS/Libs/Release/\n!! TPsource/V52/VS/Libs/dbboxm/Release/\n!! TPsource/V52/VS/Tests/Asan/\n!! TPsource/V52/VS/Tests/Release/\n!! TPsource/V52/VS/Tests/TpCoreHk/\n!! TPsource/V52/VS/Tests/TpCoreJuk/\n!! TPsource/V52/VS/Tests/TpTest/\n!! TPsource/V52/VS/V/ViestiLuenta/\n!! TPsource/V52/VS/V/ViestiMaali/\n!! issue-drafts/\n!! vc10/\n",
+  "finished": "2026-11-24T20:00:41"
+}

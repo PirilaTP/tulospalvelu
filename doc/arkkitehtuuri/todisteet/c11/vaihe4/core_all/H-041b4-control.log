@@ -1,0 +1,14 @@
+command: VS\Tests\Asan\TpCoreHk.exe "--test-case=H-041b4 control: HK addfrec at valuku 220 (ASan)" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPINFO|n_pv=5 valuku=220 kilprecsize0=360 kilppvtpsize0=152 vatpsize=8 kilppvtpsize=1928 kilprecsize=10000 KILPBUFSIZE=10000; maxrec=100
+TPINFO|d=1 numrec=2
+TPINFO|KILP.DAT size=20000
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 25 skipped
+[doctest] assertions: 9 | 9 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

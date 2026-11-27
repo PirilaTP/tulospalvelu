@@ -1,0 +1,164 @@
+{
+  "started": "2026-11-24T21:06:28",
+  "mode": "firewall",
+  "exe": "C:\\dev\\tulospalvelu\\TPexe\\Hk\\V521\\HkMaali.exe",
+  "exe_sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d",
+  "probe_sha256": "023463e57c31ef539f41e5aedcababef9e00e8f4d03aa39ee2c9a392b907d615",
+  "driver_sha256": "53063bdc10a299101e537aa16251d84ed0130c73c9abaf81d6c434ef5346d602",
+  "script": {
+    "args": [
+      "BOOT"
+    ],
+    "step_timeout": 10,
+    "total_timeout": 60,
+    "steps": [
+      {
+        "wait": [
+          "KilpSrj.xml puuttuu",
+          "Paina Enter"
+        ],
+        "key": "\r"
+      },
+      {
+        "wait": [
+          "Sarjatietojen lukeminen ei onnistunut",
+          "Paina Enter"
+        ],
+        "key": "\r"
+      }
+    ]
+  },
+  "script_sha256": "f1123dc1eaa6e3567fa4e8439ba408132d2afb8125be3488eee3ae767be71826",
+  "fw_exe": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+  "firewall_commands": [
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block out' -Direction Outbound -Program 'C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any",
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block in' -Direction Inbound -Program 'C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any"
+  ],
+  "firewall": {
+    "rules": [
+      {
+        "Name": "TP C11 HkMaali block in",
+        "Enabled": "True",
+        "Action": "Block",
+        "Direction": "Inbound",
+        "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+        "Profile": "Any"
+      },
+      {
+        "Name": "TP C11 HkMaali block out",
+        "Enabled": "True",
+        "Action": "Block",
+        "Direction": "Outbound",
+        "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+        "Profile": "Any"
+      }
+    ],
+    "profiles": [
+      {
+        "Name": "Domain",
+        "Enabled": "True"
+      },
+      {
+        "Name": "Private",
+        "Enabled": "True"
+      },
+      {
+        "Name": "Public",
+        "Enabled": "True"
+      }
+    ]
+  },
+  "firewall_ok": true,
+  "logging": [
+    {
+      "Name": "Domain",
+      "LogBlocked": "True",
+      "LogFileName": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+    },
+    {
+      "Name": "Private",
+      "LogBlocked": "True",
+      "LogFileName": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+    },
+    {
+      "Name": "Public",
+      "LogBlocked": "True",
+      "LogFileName": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+    }
+  ],
+  "logging_ok": true,
+  "logging_commands": {
+    "on": "Set-NetFirewallProfile -Profile Domain,Private,Public -LogBlocked True -LogFileName 'C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log'",
+    "restore": "Set-NetFirewallProfile -Profile Domain,Private,Public -LogBlocked False -LogFileName '%systemroot%\\system32\\LogFiles\\Firewall\\pfirewall.log'"
+  },
+  "probe_ports": {
+    "tcp": 46499,
+    "udp": 48541
+  },
+  "probe": {
+    "exit_code": 0,
+    "listener_accepts": 1,
+    "checks": {
+      "cwd": "isolated_or_ok|probe_result.txt created in the sandbox",
+      "token": "info|restricted=1 integrity_rid=0x2000 admin_member=0",
+      "console": "isolated_or_ok|key X received",
+      "outside": "isolated_or_ok|C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\Documents\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\AppData\\Local\\tp_c11_outside_probe.txt refused 5;",
+      "wsastartup": "isolated_or_ok|WSAStartup=0",
+      "loopback": "PROBLEM|connect 127.0.0.1:52838 -> CONNECTED, error 0 after 16 ms",
+      "tcp_sent": "2026-11-24T19:06:30.977Z|dst=192.0.2.1:46499|src_port=52840",
+      "external": "isolated_or_ok|connect 192.0.2.1:46499 -> failed, error 10013 after 0 ms",
+      "udp_sent": "2026-11-24T19:06:30.977Z|dst=192.0.2.1:48541|src_port=60933",
+      "udp_sendto_info": "isolated_or_ok|udp sendto 192.0.2.1:48541 returned success, error 0 (see firewall log)",
+      "done": "1"
+    },
+    "required_checks": [
+      "cwd",
+      "console",
+      "outside",
+      "external"
+    ],
+    "isolation_verified": false,
+    "firewall_log": {
+      "expected": {
+        "TCP": {
+          "time_local": "2026-11-24T21:06:30+02:00",
+          "dst_port": "46499",
+          "src_port": "52840"
+        },
+        "UDP": {
+          "time_local": "2026-11-24T21:06:30+02:00",
+          "dst_port": "48541",
+          "src_port": "60933"
+        }
+      },
+      "log_fields": "[Errno 13] Permission denied: 'C:\\\\Users\\\\kayttaja\\\\AppData\\\\Local\\\\tulospalvelu-c11\\\\fwlog\\\\pfirewall.log'",
+      "matched_lines": {}
+    },
+    "firewall_log_ok": false
+  },
+  "result": "NOT RUN: isolation not verified",
+  "outside_changes": [
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\5a7563f8-0f46-4324-bc63-f6de1e421551.tmp",
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\6d59c347-1b8e-4c6b-8823-8196cc77a6c7.tmp",
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\90cb6566-c5ff-4a7f-9ff3-eee4fe8e4789.tmp",
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_0.etl",
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_1.etl",
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\DiagOutputDir\\RdClientAutoTrace\\MSRDCEventProcessor_2.etl",
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\a5fe8fd5-f71f-4624-9f3f-9c9646bcf90f.tmp",
+    "deleted: C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\b8031d9a-a261-41ef-a7fd-7e04d3dc7f4b.tmp"
+  ],
+  "outside_probe_file_exists": false,
+  "sandbox": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw",
+  "sandbox_files": {
+    "HkMaali.exe": {
+      "size": 133120,
+      "sha256": "023463e57c31ef539f41e5aedcababef9e00e8f4d03aa39ee2c9a392b907d615"
+    },
+    "probe_result.txt": {
+      "size": 922,
+      "sha256": "1db046b8d22f2b0c77652707fda925080b7ff2c481743385635c93df0abde4cf"
+    }
+  },
+  "git_status": " M doc/arkkitehtuuri/CHECKPOINT.md\n M doc/arkkitehtuuri/seuranta.md\n M doc/arkkitehtuuri/testaus.md\n?? TPsource/V52/Tests/blackbox/\n!! TPexe/\n!! TPsource/V52/RADStudio10/Release_Build/\n!! TPsource/V52/RADStudio10/Win32/\n!! TPsource/V52/RADStudio10/build-logs/\n!! TPsource/V52/RADStudio10/obj/\n!! TPsource/V52/Tests/__pycache__/\n!! TPsource/V52/Tests/blackbox/__pycache__/\n!! TPsource/V52/VS/Libs/Release/\n!! TPsource/V52/VS/Libs/dbboxm/Release/\n!! TPsource/V52/VS/Tests/Asan/\n!! TPsource/V52/VS/Tests/Release/\n!! TPsource/V52/VS/Tests/TpCoreHk/\n!! TPsource/V52/VS/Tests/TpCoreJuk/\n!! TPsource/V52/VS/Tests/TpTest/\n!! TPsource/V52/VS/V/ViestiLuenta/\n!! TPsource/V52/VS/V/ViestiMaali/\n!! issue-drafts/\n!! vc10/\n",
+  "finished": "2026-11-24T21:08:32"
+}

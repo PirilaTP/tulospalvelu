@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreJuk.exe "--test-case=H-032a relay addseur copies an unchecked length past the receive block" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPRESULT|finding=H-032|mechanism=addseur-copies-past-receive-block|observed=1|detail=class 7 (class_len 0) len 1000 into slot 49 of 51 x 258 bytes: 498 bytes past the block overwritten (expected 498), all packet data=1; the UDP length check itself (:1001) is shown by class_len 0 only
+===============================================================================
+[doctest] test cases:  1 |  1 passed | 0 failed | 15 skipped
+[doctest] assertions: 14 | 14 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

@@ -1,0 +1,13 @@
+command: VS\Tests\Release\TpCoreHk.exe "--test-case=H-023b HK link accepted although the stage change was refused" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPINFO|writeerror_w: Avoimen yhteyden l?hett?m?tt? olevat sanomat est?v?t vaihdon (kesto 0)
+TPRESULT|finding=H-023|mechanism=link-accepted-after-refused-change|observed=1|detail=stage change to 2 refused (k_pv stays 0, message: Avoimen yhteyden l?hett?m?tt? olevat sanomat est?v?t vaihdon); tark_alku returned false (link accepted)
+===============================================================================
+[doctest] test cases:  1 |  1 passed | 0 failed | 22 skipped
+[doctest] assertions: 11 | 11 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

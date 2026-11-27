@@ -1,0 +1,13 @@
+[doctest] run with "--help" for options
+TPINFO|wperr: EMIT1.DAT line 0 iowerr error 3
+TPINFO|estaemittoisto=1
+TPINFO|failed write: tall_emit=0 emithead=0 new messages=1 ([-100] wperr: EMIT1.DAT line 0 iowerr error 3; )
+TPINFO|same card re-read: tall_emit=0 emithead=0 vahvistus=12345
+TPINFO|other card B: tall_emit=0 emithead=1
+TPINFO|card A after B: tall_emit=0 emithead=1
+TPINFO|file: 188 bytes, card A records=0, card B records=1
+TPRESULT|finding=H-145|mechanism=card-acked-cached-lost|observed=1|detail=failed write returned 0 (ACK value), head 0; re-read confirmation 12345, not stored; after another card A stored 0 time(s)
+===============================================================================
+[doctest] test cases:  1 |  1 passed | 0 failed | 12 skipped
+[doctest] assertions: 10 | 10 passed | 0 failed |
+[doctest] Status: SUCCESS!

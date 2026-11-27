@@ -1,0 +1,586 @@
+{
+  "comment": "Core component tests run by Tests/run_core_tests.py, one process per entry. kind: info = build facts, control = must PASS, defect = known finding (XFAIL when the mechanism is observed, XPASS when it is not). See doc/arkkitehtuuri/testaus.md.",
+  "programs": {
+    "TpCoreJuk": "VS/Tests/Release/TpCoreJuk.exe",
+    "TpCoreHk": "VS/Tests/Release/TpCoreHk.exe",
+    "TpCoreHkAsan": "VS/Tests/Asan/TpCoreHk.exe",
+    "TpCoreJukAsan": "VS/Tests/Asan/TpCoreJuk.exe"
+  },
+  "tests": [
+    {
+      "id": "juk-build-info",
+      "program": "TpCoreJuk",
+      "test_case": "tp_build_info",
+      "kind": "info",
+      "timeout": 30
+    },
+    {
+      "id": "hk-build-info",
+      "program": "TpCoreHk",
+      "test_case": "tp_build_info",
+      "kind": "info",
+      "timeout": 30
+    },
+    {
+      "id": "hk-smoke",
+      "program": "TpCoreHk",
+      "test_case": "TpCoreHk smoke: sandbox and build constants",
+      "kind": "control",
+      "expected": "PASS: HK core runs in the sandbox",
+      "timeout": 30
+    },
+    {
+      "id": "hk-asan-build-info",
+      "program": "TpCoreHkAsan",
+      "test_case": "tp_build_info",
+      "kind": "info",
+      "needs_asan_runtime": true,
+      "timeout": 30
+    },
+    {
+      "id": "juk-asan-build-info",
+      "program": "TpCoreJukAsan",
+      "test_case": "tp_build_info",
+      "kind": "info",
+      "needs_asan_runtime": true,
+      "timeout": 30
+    },
+    {
+      "id": "H-025a",
+      "program": "TpCoreJuk",
+      "test_case": "H-025a relay combufsize vs header plus largest class",
+      "kind": "defect",
+      "finding": "H-025",
+      "mechanism": "combufsize-excludes-header",
+      "expected": "Correct: combufsize >= 14 + class_len[i] for every class (as in HK). Defect: combufsize == max(class_len) < 14 + max(class_len), at n_os 4 and 30.",
+      "timeout": 30
+    },
+    {
+      "id": "H-025b",
+      "program": "TpCoreJuk",
+      "test_case": "H-025b relay disk queue stores whole packet",
+      "kind": "defect",
+      "finding": "H-025",
+      "mechanism": "disk-slot-truncates-packet",
+      "expected": "Correct: each disk-queue slot holds header + len bytes of the queued packet. Defect: slot stride is combufsize, the last 14 bytes of a largest-class packet are never stored and their file position is the start of the next slot. Checked at n_os 4 (EMITVA) and n_os 30 (YHTEISLAHTOT).",
+      "timeout": 30
+    },
+    {
+      "id": "H-040-control",
+      "program": "TpCoreJuk",
+      "test_case": "H-040 control: lock probe and balanced lock use",
+      "kind": "control",
+      "expected": "PASS: probe sees free/held/free; production delfrec leaves kilpdat_CriticalSection free (RecursionCount 0)",
+      "timeout": 30
+    },
+    {
+      "id": "H-040",
+      "program": "TpCoreJuk",
+      "test_case": "H-040 relay addfrec leaves kilpdat_CriticalSection held",
+      "kind": "defect",
+      "finding": "H-040",
+      "mechanism": "addfrec-lock-not-released",
+      "expected": "Correct: after addfrec returns, another thread can enter kilpdat_CriticalSection. Defect: another thread cannot; the caller still owns it.",
+      "timeout": 30
+    },
+    {
+      "id": "H-042-control",
+      "program": "TpCoreJuk",
+      "test_case": "H-042 control: in-limit KilpSrj.xml is read",
+      "kind": "control",
+      "expected": "PASS: luesarjat returns 0 with n_os = n_os_akt = MAXOSUUSLUKU, valuku = VAIKALUKU",
+      "data": [
+        {
+          "src": "data/juk/h042_in_limit.xml",
+          "dst": "KilpSrj.xml"
+        }
+      ],
+      "timeout": 30
+    },
+    {
+      "id": "H-042",
+      "program": "TpCoreJuk",
+      "test_case": "H-042 relay XML counts above compile-time limits",
+      "kind": "defect",
+      "finding": "H-042",
+      "mechanism": "xml-counts-not-clamped",
+      "expected": "Correct: file rejected or counts clamped to MAXOSUUSLUKU / VAIKALUKU. Defect: luesarjat returns 0 and kilpparam keeps n_os = n_os_akt = MAXOSUUSLUKU+1, valuku = VAIKALUKU+1.",
+      "data": [
+        {
+          "src": "data/juk/h042_over_limit.xml",
+          "dst": "KilpSrj.xml"
+        }
+      ],
+      "timeout": 30
+    },
+    {
+      "id": "H-041a",
+      "program": "TpCoreHk",
+      "test_case": "H-041a HK record size vs KILPBUFSIZE at shipped limits",
+      "kind": "defect",
+      "finding": "H-041",
+      "mechanism": "record-larger-than-kilpbufsize",
+      "expected": "Correct: with n_pv = N_PV (5) and valuku = VALUKU (250), which the only limit (Hk/HkSrj.cpp:158) accepts, kilprecsize <= KILPBUFSIZE (10000). Defect: kilprecsize > KILPBUFSIZE. Configuration fact computed by the production luekentat; the limit check itself is not exercised (setStages calls luekentat directly).",
+      "timeout": 30
+    },
+    {
+      "id": "H-041b3",
+      "program": "TpCoreHk",
+      "test_case": "H-041b3 HK pack writes past KILPBUFSIZE (heap guard)",
+      "kind": "defect",
+      "finding": "H-041",
+      "mechanism": "pack-writes-past-kilpbufsize",
+      "expected": "Proxy evidence: the production pack() writes exactly kilprecsize bytes, more than KILPBUFSIZE, the size of the stack buffer write/read/addfrec pass to it (that link is by reading the code; H-041b2 shows the actual overrun). Correct: pack writes at most KILPBUFSIZE bytes.",
+      "timeout": 30
+    },
+    {
+      "id": "H-041b2",
+      "program": "TpCoreHkAsan",
+      "test_case": "H-041b2 HK write overflows its stack buffer (ASan)",
+      "kind": "defect",
+      "finding": "H-041",
+      "mechanism": "write-stack-buffer-overflow",
+      "termination": "asan",
+      "expect_exit": [
+        "77"
+      ],
+      "needs_asan_runtime": true,
+      "env": {
+        "ASAN_OPTIONS": "exitcode=77:halt_on_error=1:print_scariness=0"
+      },
+      "evidence": {
+        "bug_type": "stack-buffer-overflow",
+        "access": "WRITE",
+        "frame": "kilptietue::write",
+        "variable": "buf",
+        "variable_size": 10000,
+        "stack_contains": [
+          "kilptietue::write"
+        ]
+      },
+      "expected": "Correct: kilptietue::write(1, 0) runs without an ASan report. Defect: ASan reports a stack-buffer-overflow WRITE on variable buf (10000 bytes) in frame kilptietue::write.",
+      "timeout": 60
+    },
+    {
+      "id": "H-041b4-control",
+      "program": "TpCoreHkAsan",
+      "test_case": "H-041b4 control: HK addfrec at valuku 220 (ASan)",
+      "kind": "control",
+      "needs_asan_runtime": true,
+      "env": {
+        "ASAN_OPTIONS": "exitcode=77:halt_on_error=1:print_scariness=0"
+      },
+      "expected": "PASS: with n_pv 5 / valuku 220 (kilprecsize 10000 = KILPBUFSIZE) the production kilptietue::addfrec runs without an ASan report; KILP.DAT holds the header and one record (20000 bytes).",
+      "timeout": 60
+    },
+    {
+      "id": "H-041b4",
+      "program": "TpCoreHkAsan",
+      "test_case": "H-041b4 HK addfrec overflows its stack buffer at valuku 221 (ASan)",
+      "kind": "defect",
+      "finding": "H-041",
+      "mechanism": "addfrec-stack-buffer-overflow",
+      "termination": "asan",
+      "expect_exit": [
+        "77"
+      ],
+      "needs_asan_runtime": true,
+      "env": {
+        "ASAN_OPTIONS": "exitcode=77:halt_on_error=1:print_scariness=0"
+      },
+      "evidence": {
+        "bug_type": "stack-buffer-overflow",
+        "access": "WRITE",
+        "frame": "kilptietue::addfrec",
+        "variable": "buf",
+        "variable_size": 10000,
+        "stack_contains": [
+          "kilptietue::addfrec"
+        ]
+      },
+      "expected": "Correct: kilptietue::addfrec runs without an ASan report at n_pv 5 / valuku 221 (or the configuration is refused). Defect: ASan reports a stack-buffer-overflow WRITE on variable buf (10000 bytes) in frame kilptietue::addfrec. Rebuilt ASan code, not the shipped program.",
+      "timeout": 60
+    },
+    {
+      "id": "H-031-control",
+      "program": "TpCoreHk",
+      "test_case": "H-031 control: allowed stage change proceeds",
+      "kind": "control",
+      "expected": "PASS: an allowed first stage change sets k_pv = 1, clears vaiheenvaihto and leaves tall/ajat/emit locks free",
+      "timeout": 60
+    },
+    {
+      "id": "H-031",
+      "program": "TpCoreHk",
+      "test_case": "H-031 refused stage change blocks a later allowed change",
+      "kind": "defect",
+      "finding": "H-031",
+      "mechanism": "refused-change-blocks-later-change",
+      "expected": "Correct: after a refused change, a later allowed change proceeds (k_pv = 1). Defect: vaiheenvaihto stays set, the later call returns 0 and does nothing.",
+      "timeout": 60
+    },
+    {
+      "id": "H-008-control",
+      "program": "TpCoreHk",
+      "test_case": "H-008 control: lock probe and early error path",
+      "kind": "control",
+      "expected": "PASS: probe sees free/held/free; an unknown bib returns before the lock and leaves tall_CriticalSection free",
+      "timeout": 30
+    },
+    {
+      "id": "H-008-control-valid",
+      "program": "TpCoreHk",
+      "test_case": "H-008 control: valid penalty message releases the lock",
+      "kind": "control",
+      "expected": "PASS: a valid penalty message takes and leaves tall_CriticalSection (lsak 3), stores the penalty, no message",
+      "timeout": 30
+    },
+    {
+      "id": "H-008",
+      "program": "TpCoreHk",
+      "test_case": "H-008 HK tall_sak error path leaves tall_CriticalSection held",
+      "kind": "defect",
+      "finding": "H-008",
+      "mechanism": "tall-sak-error-leaves-lock-held",
+      "expected": "Correct: after the -3 error path returns, another thread can take tall_CriticalSection. Defect: the lock stays owned by the (ended) worker thread.",
+      "timeout": 30
+    },
+    {
+      "id": "H-024-control",
+      "program": "TpCoreJuk",
+      "test_case": "H-024 control: mismatching TARKT packet releases the lock",
+      "kind": "control",
+      "expected": "PASS: a mismatching TARKT packet is consumed, two messages, tall_CriticalSection free",
+      "timeout": 30
+    },
+    {
+      "id": "H-024",
+      "program": "TpCoreJuk",
+      "test_case": "H-024 relay tark_trk announcer path leaves tall_CriticalSection held",
+      "kind": "defect",
+      "finding": "H-024",
+      "mechanism": "tark-trk-announcer-path-leaves-lock-held",
+      "expected": "Correct: after the TARKT packet is processed, another thread can take tall_CriticalSection. Defect: the lock stays owned by the ended tarkcom worker.",
+      "timeout": 30
+    },
+    {
+      "id": "H-027-control",
+      "program": "TpCoreHk",
+      "test_case": "H-027 control: attempt listener counts and rejects or accepts",
+      "kind": "control",
+      "expected": "PASS: the 127.0.0.1 listener counts one rejected and one accepted attempt",
+      "timeout": 30
+    },
+    {
+      "id": "H-027a",
+      "program": "TpCoreHk",
+      "test_case": "H-027a TCP client does not retry after a failed connect",
+      "kind": "defect",
+      "finding": "H-027",
+      "mechanism": "tcp-client-no-retry",
+      "expected": "Correct: after a failed first attempt the client thread keeps running and connects when the listener accepts (retry about every 4-6 s). Defect: one attempt that fails, the thread ends, no attempt in the next 15 s.",
+      "timeout": 60
+    },
+    {
+      "id": "H-027b",
+      "program": "TpCoreHk",
+      "test_case": "H-027b TCPXML client dereferences a freed connection",
+      "kind": "defect",
+      "finding": "H-027",
+      "mechanism": "tcpxml-reconnect-null-deref",
+      "termination": "exception",
+      "expect_exit": [
+        "0xC0000005"
+      ],
+      "evidence": {
+        "code": "0xC0000005",
+        "access": "read",
+        "target": "0x0000000C",
+        "thread": "tcp-client",
+        "symbol": "reconnectTCP"
+      },
+      "expected": "Correct: no crash; the client retries. Defect: read access violation at 0x0000000C (TCPyhteys[yhtno]->ipparam with NULL) in reconnectTCP on the client thread.",
+      "timeout": 60
+    },
+    {
+      "id": "H-032-control",
+      "program": "TpCoreJuk",
+      "test_case": "H-032 control: in-limit packet stays inside the receive block",
+      "kind": "control",
+      "expected": "PASS: an in-limit TARKT packet on the last slot leaves the guard after the receive block untouched",
+      "timeout": 30
+    },
+    {
+      "id": "H-032a",
+      "program": "TpCoreJuk",
+      "test_case": "H-032a relay addseur copies an unchecked length past the receive block",
+      "kind": "defect",
+      "finding": "H-032",
+      "mechanism": "addseur-copies-past-receive-block",
+      "expected": "Correct: a class-7 datagram of len 1000 is rejected or limited to the slot. Defect: addseur copies len+14 bytes into the last slot and overwrites exactly (INBUFL-1)*S+1014-(INBUFL+1)*S bytes after the production-sized block with packet data.",
+      "timeout": 30
+    },
+    {
+      "id": "H-032b",
+      "program": "TpCoreJukAsan",
+      "test_case": "H-032b relay addseur heap-buffer-overflow (ASan)",
+      "kind": "defect",
+      "finding": "H-032",
+      "mechanism": "addseur-heap-buffer-overflow",
+      "expected": "Correct: no ASan report. Defect: ASan heap-buffer-overflow WRITE of size 1014 in addseur on the calloc(INBUFL+1, sizeof(combufrec)) block.",
+      "timeout": 60,
+      "termination": "asan",
+      "expect_exit": [
+        "77"
+      ],
+      "needs_asan_runtime": true,
+      "env": {
+        "ASAN_OPTIONS": "exitcode=77:halt_on_error=1:print_scariness=0"
+      },
+      "evidence": {
+        "bug_type": "heap-buffer-overflow",
+        "access": "WRITE",
+        "size": 1014,
+        "summary_contains": "TpComY.cpp:654 in addseur",
+        "stack_contains": [
+          "addseur"
+        ]
+      }
+    },
+    {
+      "id": "H-026-control",
+      "program": "TpCoreJuk",
+      "test_case": "H-026 control: valid packets are consumed and the loop stops",
+      "kind": "control",
+      "expected": "PASS: two valid packets consumed, loop ends after comfl = 0",
+      "timeout": 30
+    },
+    {
+      "id": "H-026",
+      "program": "TpCoreJuk",
+      "test_case": "H-026 relay unknown packet class stops receiving permanently",
+      "kind": "defect",
+      "finding": "H-026",
+      "mechanism": "unknown-class-stops-receiving",
+      "expected": "Correct: the unknown class is skipped and the next packet processed. Defect: inbens stays at the unknown packet, the next valid packet is never processed and the loop keeps spinning after comfl = 0 (worker left running).",
+      "timeout": 30,
+      "blocked_threads": 1
+    },
+    {
+      "id": "H-022-control",
+      "program": "TpCoreHk",
+      "test_case": "H-022 control: stage packet for the right competitor is stored",
+      "kind": "control",
+      "expected": "PASS: VAIN_TULOST with the matching bib is stored on record 1, lock free",
+      "timeout": 30
+    },
+    {
+      "id": "H-022",
+      "program": "TpCoreHk",
+      "test_case": "H-022 HK stage packet applied to a different competitor",
+      "kind": "defect",
+      "finding": "H-022",
+      "mechanism": "stage-packet-no-bib-check",
+      "expected": "Correct: a stage packet whose bib does not match the record is rejected. Defect: it is stored on the record like the matching one.",
+      "timeout": 30
+    },
+    {
+      "id": "H-023a",
+      "program": "TpCoreHk",
+      "test_case": "H-023a HK stage result applied to the receiver's own stage",
+      "kind": "defect",
+      "finding": "H-023",
+      "mechanism": "vain-tulost-to-receiver-stage",
+      "expected": "Correct: a VAIN_TULOST for stage 2 is stored on stage 2 or rejected. Defect: it is stored on the receiver stage 1 (k_pv 0).",
+      "timeout": 30
+    },
+    {
+      "id": "H-023b-control-refused",
+      "program": "TpCoreHk",
+      "test_case": "H-023b control: other-stage link without change request is refused",
+      "kind": "control",
+      "expected": "PASS: link request from stage 2 without change flag is refused",
+      "timeout": 30
+    },
+    {
+      "id": "H-023b-control-allowed",
+      "program": "TpCoreHk",
+      "test_case": "H-023b control: allowed stage change request is carried out",
+      "kind": "control",
+      "expected": "PASS: with an empty queue the requested change is made and the link accepted",
+      "timeout": 60
+    },
+    {
+      "id": "H-023b",
+      "program": "TpCoreHk",
+      "test_case": "H-023b HK link accepted although the stage change was refused",
+      "kind": "defect",
+      "finding": "H-023",
+      "mechanism": "link-accepted-after-refused-change",
+      "expected": "Correct: if the requested stage change is refused, the link is refused. Defect: the change is refused (k_pv stays 0) but tark_alku accepts the link.",
+      "timeout": 30
+    },
+    {
+      "id": "H-007-control",
+      "program": "TpCoreHk",
+      "test_case": "H-007 control: waiter probe on a CRITICAL_SECTION",
+      "kind": "control",
+      "expected": "PASS: waiter count 0 when only held, 1 while another thread is blocked",
+      "timeout": 30
+    },
+    {
+      "id": "H-007",
+      "program": "TpCoreHk",
+      "test_case": "H-007 HK received packet overwrites a concurrent local change",
+      "kind": "defect",
+      "finding": "H-007",
+      "mechanism": "receive-read-before-lock-lost-update",
+      "expected": "Correct: a local change made while the receive thread waits for tall_CS survives. Defect: the receive thread saves the copy it read before the lock and the change is lost.",
+      "timeout": 60
+    },
+    {
+      "id": "H-001a",
+      "program": "TpCoreJukAsan",
+      "test_case": "H-001a relay textjtulos clears past stsk (ASan)",
+      "kind": "defect",
+      "finding": "H-001",
+      "mechanism": "textjtulos-memset-past-stsk",
+      "expected": "Correct: the memset stays inside stsk (40 bytes). Defect: ASan stack-buffer-overflow WRITE of size 160 (sizeof(st)) at Juk/VTulostus.cpp:2228 in a textjtulos stack frame.",
+      "timeout": 60,
+      "evidence": {
+        "bug_type": "stack-buffer-overflow",
+        "access": "WRITE",
+        "size": 160,
+        "frame": "textjtulos",
+        "summary_contains": "VTulostus.cpp:2228 in textjtulos",
+        "stack_contains": [
+          "textjtulos"
+        ]
+      },
+      "termination": "asan",
+      "expect_exit": [
+        "77"
+      ],
+      "needs_asan_runtime": true,
+      "env": {
+        "ASAN_OPTIONS": "exitcode=77:halt_on_error=1:print_scariness=0"
+      }
+    },
+    {
+      "id": "H-001b",
+      "program": "TpCoreJukAsan",
+      "test_case": "H-001b relay textosuus clears past stsk (ASan)",
+      "kind": "defect",
+      "finding": "H-001",
+      "mechanism": "textosuus-memset-past-stsk",
+      "expected": "Correct: the memset stays inside stsk (40 bytes). Defect: ASan stack-buffer-overflow WRITE of size 160 (sizeof(st)) at Juk/VTulostus.cpp:3981 in a textosuus stack frame.",
+      "timeout": 60,
+      "evidence": {
+        "bug_type": "stack-buffer-overflow",
+        "access": "WRITE",
+        "size": 160,
+        "frame": "textosuus",
+        "summary_contains": "VTulostus.cpp:3981 in textosuus",
+        "stack_contains": [
+          "textosuus"
+        ]
+      },
+      "termination": "asan",
+      "expect_exit": [
+        "77"
+      ],
+      "needs_asan_runtime": true,
+      "env": {
+        "ASAN_OPTIONS": "exitcode=77:halt_on_error=1:print_scariness=0"
+      }
+    },
+    {
+      "id": "H-002-control",
+      "program": "TpCoreJuk",
+      "test_case": "H-002 control: legacy line with 7 fields writes nothing to 0x30303030",
+      "kind": "control",
+      "expected": "PASS: the legacy file is parsed (class H21, 1 leg) and nothing is written to the reserved page",
+      "timeout": 30,
+      "data": [
+        {
+          "src": "data/juk/h002_seven_fields.srj",
+          "dst": "KILP.SRJ"
+        }
+      ]
+    },
+    {
+      "id": "H-002a",
+      "program": "TpCoreJuk",
+      "test_case": "H-002a relay legacy 6-field line writes through paikat[0] value",
+      "kind": "defect",
+      "finding": "H-002",
+      "mechanism": "sscanf-6-fields-writes-to-paikat-value",
+      "expected": "Correct: the 6th token is stored in Sarjat[0].paikat or rejected. Defect: \"4242\" is written to address 0x30303030 (the int value of paikat[0]).",
+      "timeout": 30,
+      "data": [
+        {
+          "src": "data/juk/h002_six_fields.srj",
+          "dst": "KILP.SRJ"
+        }
+      ]
+    },
+    {
+      "id": "H-002b",
+      "program": "TpCoreJuk",
+      "test_case": "H-002b relay legacy 9-field line writes through paikat[0] value",
+      "kind": "defect",
+      "finding": "H-002",
+      "mechanism": "sscanf-9-fields-writes-to-paikat-value",
+      "expected": "Correct: the 9th token is stored in Sarjat[0].paikat or rejected. Defect: \"TPH002\" is written to address 0x30303030.",
+      "timeout": 30,
+      "data": [
+        {
+          "src": "data/juk/h002_nine_fields.srj",
+          "dst": "KILP.SRJ"
+        }
+      ]
+    },
+    {
+      "id": "hk-data-run1-kilpsrj",
+      "program": "TpCoreHk",
+      "test_case": "HK synthetic KilpSrj.xml for black-box run 1 is read",
+      "kind": "control",
+      "expected": "PASS: the synthetic series file of black-box run 1 is read by the production luesarjat (0, no messages); n_pv 1, valuku 2, sarjaluku 1, kilprecsize 544",
+      "timeout": 30,
+      "data": [
+        {
+          "src": "data/hk/run1_kilpsrj.xml",
+          "dst": "KilpSrj.xml"
+        }
+      ]
+    },
+    {
+      "id": "hk-data-h041-v220",
+      "program": "TpCoreHk",
+      "test_case": "HK synthetic KilpSrj.xml for H-041 control (valuku 220) is read",
+      "kind": "control",
+      "expected": "PASS: data/hk/h041_v220.xml is read by the production luesarjat (0, no messages); n_pv 5, n_pv_akt 1, valuku 220, sarjaluku 1, kilprecsize 10000 (KILPBUFSIZE 10000)",
+      "timeout": 30,
+      "data": [
+        {
+          "src": "data/hk/h041_v220.xml",
+          "dst": "KilpSrj.xml"
+        }
+      ]
+    },
+    {
+      "id": "hk-data-h041-v221",
+      "program": "TpCoreHk",
+      "test_case": "HK synthetic KilpSrj.xml for H-041 boundary (valuku 221) is read",
+      "kind": "control",
+      "expected": "PASS: data/hk/h041_v221.xml is read by the production luesarjat (0, no messages); n_pv 5, n_pv_akt 1, valuku 221, sarjaluku 1, kilprecsize 10040 (KILPBUFSIZE 10000)",
+      "timeout": 30,
+      "data": [
+        {
+          "src": "data/hk/h041_v221.xml",
+          "dst": "KilpSrj.xml"
+        }
+      ]
+    }
+  ]
+}

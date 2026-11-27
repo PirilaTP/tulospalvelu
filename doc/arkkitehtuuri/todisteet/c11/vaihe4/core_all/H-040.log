@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreJuk.exe "--test-case=H-040 relay addfrec leaves kilpdat_CriticalSection held" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPRESULT|finding=H-040|mechanism=addfrec-lock-not-released|observed=1|detail=d=1 numrec=2 other_thread_got_lock=0 owner_is_caller=1 RecursionCount=2 (internal field; 2 = two Enter, no Leave)
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 15 skipped
+[doctest] assertions: 9 | 9 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

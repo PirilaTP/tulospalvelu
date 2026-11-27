@@ -1,0 +1,251 @@
+{
+  "started": "2026-11-24T22:40:09",
+  "mode": "firewall",
+  "started_epoch": 1795552809.5879662,
+  "exe": "C:\\dev\\tulospalvelu\\TPexe\\Hk\\V521\\HkMaali.exe",
+  "exe_sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d",
+  "provenance": {
+    "exe_sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d",
+    "pe": {
+      "image_base": 4194304,
+      "size_of_image": 36364288,
+      "machine": "0x0000014C",
+      "dll_characteristics": "0x00008140",
+      "rsds": {
+        "guid": "{B0500861-3E83-4118-B0DA-E8E331F12614}",
+        "age": 1,
+        "pdb_path": "C:\\dev\\tulospalvelu\\TPexe\\Hk\\V521\\HkMaali.pdb"
+      }
+    },
+    "pdb": "../../../../TPexe/Hk/V521/HkMaali.pdb",
+    "pdb_sha256": "68ec2cd772e95e29cab5eece26c7f93533c6a15b28c372746fd5079d11306691"
+  },
+  "debug": false,
+  "watch": null,
+  "probe_sha256": "ab593f6ea6d747fe9896be5ab7bd56026c79e9baad0650822ca4b79b64b5e9c5",
+  "driver_sha256": "46ef171d83b9fbaec9db1e845f92361dad86bfddd87f12d5590623b427b018f5",
+  "hkdebug_sha256": "d2e2a0c0d77b4f1d5182dd753445f54381a5e7dac7b69266be57540b93aec7ae",
+  "script": {
+    "comment": "C-11 stage 4 control run (testaus.md section 19): data/hk/h041_v220.xml as KilpSrj.xml (n_pv 5, valuku 220, record 10000 bytes = KILPBUFSIZE). Main menu K, L (add), name TESTI, Tab to the class field, H21, + (accept: addtall -> addfrec writes record 1), then Esc, Esc, P, K. Expected: no exception, KILP.DAT 20000 bytes, exit by itself.",
+    "args": [
+      "BOOT"
+    ],
+    "total_timeout": 90,
+    "step_timeout": 15,
+    "steps": [
+      {
+        "wait": "KILP.DAT ei ole",
+        "key": "\r"
+      },
+      {
+        "wait": "P)oistu",
+        "key": "K"
+      },
+      {
+        "wait": [
+          "KORJAUKSET",
+          "L)is"
+        ],
+        "key": "L"
+      },
+      {
+        "wait": "+ : Hyv",
+        "cursor": [
+          7,
+          7
+        ],
+        "key": "TESTI",
+        "key_delay": 0.05
+      },
+      {
+        "nav": "\t",
+        "until_cursor": [
+          8,
+          2
+        ],
+        "max": 30
+      },
+      {
+        "wait": "+ : Hyv",
+        "cursor": [
+          8,
+          2
+        ],
+        "key": "H21+",
+        "key_delay": 0.05
+      },
+      {
+        "wait": "+ : Hyv",
+        "cursor": [
+          7,
+          7
+        ],
+        "key": "\u001b"
+      },
+      {
+        "wait": [
+          "KORJAUKSET",
+          "L)is"
+        ],
+        "key": "\u001b"
+      },
+      {
+        "wait": "P)oistu",
+        "key": "P"
+      },
+      {
+        "wait": "Haluatko varmasti poistua",
+        "key": "K"
+      }
+    ]
+  },
+  "script_sha256": "2e7a94cfd64fbc04608f43784c783e4da2dafe1277901402193fc2fa2b2e54d9",
+  "fw_exe": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+  "firewall_commands": [
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block out' -Direction Outbound -Program 'C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any",
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block in' -Direction Inbound -Program 'C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any"
+  ],
+  "firewall": {
+    "rules": [
+      {
+        "Name": "TP C11 HkMaali block in",
+        "Enabled": "True",
+        "Action": "Block",
+        "Direction": "Inbound",
+        "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+        "Profile": "Any"
+      },
+      {
+        "Name": "TP C11 HkMaali block out",
+        "Enabled": "True",
+        "Action": "Block",
+        "Direction": "Outbound",
+        "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+        "Profile": "Any"
+      }
+    ],
+    "profiles": [
+      {
+        "Name": "Domain",
+        "Enabled": "True"
+      },
+      {
+        "Name": "Private",
+        "Enabled": "True"
+      },
+      {
+        "Name": "Public",
+        "Enabled": "True"
+      }
+    ]
+  },
+  "firewall_ok": true,
+  "logging": [
+    {
+      "Name": "Domain",
+      "LogBlocked": "True",
+      "LogFileName": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+    },
+    {
+      "Name": "Private",
+      "LogBlocked": "True",
+      "LogFileName": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+    },
+    {
+      "Name": "Public",
+      "LogBlocked": "True",
+      "LogFileName": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log"
+    }
+  ],
+  "logging_ok": true,
+  "logging_commands": {
+    "on": "Set-NetFirewallProfile -Profile Domain,Private,Public -LogBlocked True -LogFileName 'C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall.log'",
+    "restore": "Set-NetFirewallProfile -Profile Domain,Private,Public -LogBlocked False -LogFileName '%systemroot%\\system32\\LogFiles\\Firewall\\pfirewall.log'"
+  },
+  "outside_paths": [
+    "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt",
+    "C:\\Users\\kayttaja\\tp_c11_outside_probe.txt",
+    "C:\\Users\\kayttaja\\Documents\\tp_c11_outside_probe.txt",
+    "C:\\Users\\kayttaja\\AppData\\Local\\tp_c11_outside_probe.txt",
+    "D:\\tp_c11_outside_probe.txt",
+    "G:\\tp_c11_outside_probe.txt",
+    "G:\\Oma Drive\\tp_c11_outside_probe.txt"
+  ],
+  "drives": {
+    "D:\\": {
+      "present": true
+    },
+    "G:\\": {
+      "present": true,
+      "oma_drive": true
+    }
+  },
+  "probe_ports": {
+    "tcp": 45332,
+    "udp": 45592
+  },
+  "probe": {
+    "exit_code": 0,
+    "exit_code_hex": "0x00000000",
+    "pid": 110008,
+    "timed_out": false,
+    "duration_s": 0.3,
+    "listener_accepts": 1,
+    "checks": {
+      "cwd": "isolated_or_ok|probe_result.txt created in the sandbox",
+      "token": "info|restricted=1 integrity_rid=0x2000 admin_member=0",
+      "console": "isolated_or_ok|key X received",
+      "outside": "isolated_or_ok|C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\Documents\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\AppData\\Local\\tp_c11_outside_probe.txt refused 5; D:\\tp_c11_outside_probe.txt refused 5; G:\\tp_c11_outside_probe.txt refused 5; G:\\Oma Drive\\tp_c11_outside_probe.txt refused 5;",
+      "wsastartup": "isolated_or_ok|WSAStartup=0",
+      "loopback": "PROBLEM|connect 127.0.0.1:59325 -> CONNECTED, error 0 after 0 ms",
+      "tcp_sent": "2026-11-24T20:40:11.988Z|dst=192.0.2.1:45332|src_port=59327",
+      "external": "isolated_or_ok|connect 192.0.2.1:45332 -> failed, error 10013 after 0 ms",
+      "udp_sent": "2026-11-24T20:40:11.988Z|dst=192.0.2.1:45592|src_port=59024",
+      "udp_sendto_info": "isolated_or_ok|udp sendto 192.0.2.1:45592 returned success, error 0 (see firewall log)",
+      "external6_info": "isolated_or_ok|connect [2001:db8::1]:45332 -> error 10051",
+      "registry": "isolated_or_ok|RegCreateKeyEx HKCU\\Software\\tp_c11_outside_probe -> 5; RegOpenKeyEx HKCU\\Software KEY_SET_VALUE -> 5",
+      "done": "1"
+    },
+    "external_10013": true,
+    "registry_key_left": false,
+    "required_checks": [
+      "cwd",
+      "console",
+      "outside",
+      "external",
+      "registry"
+    ],
+    "isolation_verified": false,
+    "job": {
+      "TotalProcesses": 1,
+      "ActiveProcesses": 0,
+      "TotalTerminatedProcesses": 0,
+      "ActiveProcessLimit": 1
+    },
+    "udp_gate": "no --udp-verified file",
+    "firewall_log_check": "pending: match after the run from a new log copy (verify_log.py)"
+  },
+  "result": "NOT RUN: isolation not verified",
+  "outside_changes": [],
+  "outside_changes_not_noise": [],
+  "outside_probe_file_exists": false,
+  "registry_key_exists_after": false,
+  "sandbox": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw",
+  "sandbox_files": {
+    "HkMaali.exe": {
+      "size": 134144,
+      "sha256": "ab593f6ea6d747fe9896be5ab7bd56026c79e9baad0650822ca4b79b64b5e9c5"
+    },
+    "probe_result.txt": {
+      "size": 1249,
+      "sha256": "c02532f7c814d7b8c6f26acce014bff3be83f0ba9e6333f822f4939ae72a48e4"
+    }
+  },
+  "git_status": "!! .claude/scheduled_tasks.lock\n!! TPexe/\n!! TPsource/V52/RADStudio10/Release_Build/\n!! TPsource/V52/RADStudio10/Win32/\n!! TPsource/V52/RADStudio10/build-logs/\n!! TPsource/V52/RADStudio10/obj/\n!! TPsource/V52/Tests/__pycache__/\n!! TPsource/V52/Tests/blackbox/__pycache__/\n!! TPsource/V52/VS/Libs/Release/\n!! TPsource/V52/VS/Libs/dbboxm/Release/\n!! TPsource/V52/VS/Tests/Asan/\n!! TPsource/V52/VS/Tests/Release/\n!! TPsource/V52/VS/Tests/TpCoreHk/\n!! TPsource/V52/VS/Tests/TpCoreJuk/\n!! TPsource/V52/VS/Tests/TpTest/\n!! TPsource/V52/VS/V/ViestiLuenta/\n!! TPsource/V52/VS/V/ViestiMaali/\n!! issue-drafts/\n!! vc10/\n",
+  "finished": "2026-11-24T22:40:13",
+  "finished_epoch": 1795552813.4638689,
+  "program_window_epoch": [
+    null,
+    null
+  ]
+}

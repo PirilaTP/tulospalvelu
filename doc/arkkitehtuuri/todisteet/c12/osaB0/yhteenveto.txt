@@ -1,0 +1,21 @@
+C-12 part B0 parser comparisons (asetusavaimet.py)
+
+Hk/HkInit.cpp: 378 comparisons, distinct literals 304
+  by var: {'fldn': 327, 'fldn+pos+1': 11, 'p+1': 7, 'fldn+pos': 5, 'listfname': 4, 'srjnm': 3, 'p': 3, 'fldn+pos+4': 3, 'msg': 2, 'fldn + pos + 3': 2, 'p2+1': 2, 'tarfname': 2}
+  by function: {'lue_parametrit': 363, 'aloitus': 5, 'lueKorRajat': 3, 'ConsoleAloitus': 3, 'luevaihevalinta': 2, 'getipparam': 1, 'luetlskertoimet': 1}
+  n vs literal length: {'': 63, '=': 233, '<': 73, '>': 9}
+Juk/VInit.cpp: 245 comparisons, distinct literals 212
+  by var: {'fldn': 211, 'fldn+pos+1': 6, 'fldn + pos + 3': 4, 'fldn+pos': 3, 'srjnm': 3, 'listfname': 3, 'msg': 2, 'p+1': 2, 'fldn + pos + 4': 2, 'fldn + pos': 2, 'ipparam[ny].destaddr': 1, 'fldn+6': 1}
+  by function: {'lue_parametrit': 238, 'lueKorRajat': 3, 'aloitus': 3, 'getipparam': 1}
+  n vs literal length: {'': 27, '=': 165, '<': 52, '>': 1}
+cbHk/UnitCfg.cpp: 181 comparisons, distinct literals 142
+  by var: {'fldn': 154, 'p+1': 6, 'fldn+pos+1': 6, 'fld': 4, 'fldn+pos': 3, 'fldn + pos + 3': 2, 'p2+1': 2, 'fldn+6': 1, 'fldn + 4': 1, 'fldn+pos+4': 1, 'p': 1}
+  by function: {'TFormCfg::TulkitseTiedot': 179, 'TFormCfg::PaivitaIkkuna': 2}
+  n vs literal length: {'=': 121, '<': 31, '': 28, '>': 1}
+ViestiWin/UnitCfg.cpp: 153 comparisons, distinct literals 122
+  by var: {'fldn': 130, 'fldn+pos+1': 6, 'fld': 4, 'fldn+pos': 3, 'fldn + pos + 3': 2, 'p+1': 2, 'p2+1': 2, 'fldn+6': 1, 'fldn + 4': 1, 'fldn+pos+4': 1, 'p': 1}
+  by function: {'TFormCfg::TulkitseTiedot': 151, 'TFormCfg::PaivitaIkkuna': 2}
+  n vs literal length: {'=': 112, '<': 23, '': 16, '>': 2}
+
+prefix shadowing candidates: 239
+commented-out comparisons: {'Hk/HkInit.cpp': 11, 'Juk/VInit.cpp': 3, 'cbHk/UnitCfg.cpp': 150, 'ViestiWin/UnitCfg.cpp': 2}

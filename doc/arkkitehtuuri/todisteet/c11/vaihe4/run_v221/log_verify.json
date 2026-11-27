@@ -1,0 +1,133 @@
+{
+  "run_json": "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\claude_c11s4\\run_v221\\run.json",
+  "fw_exe": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+  "log_copy": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall_copy.log",
+  "log_copy_sha256": "a2a95c1987c6d8f1147db222af7d987463dc0e10c2991c20be5a082138f80ac6",
+  "log_copy_mtime": "2026-11-24T22:43:21",
+  "drop_entries_total": 16,
+  "log_has_pid_field": true,
+  "rules": [
+    {
+      "Name": "TP C11 HkMaali block in",
+      "Enabled": "True",
+      "Action": "Block",
+      "Direction": "Inbound",
+      "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+      "Profile": "Any"
+    },
+    {
+      "Name": "TP C11 HkMaali block out",
+      "Enabled": "True",
+      "Action": "Block",
+      "Direction": "Outbound",
+      "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+      "Profile": "Any"
+    }
+  ],
+  "log": {
+    "expected": {
+      "TCP": {
+        "time_local": "2026-11-24T22:42:30+02:00",
+        "dst_port": "45115",
+        "src_port": "55129"
+      },
+      "UDP": {
+        "time_local": "2026-11-24T22:42:30+02:00",
+        "dst_port": "41346",
+        "src_port": "58738"
+      }
+    },
+    "log_fields": [
+      "date",
+      "time",
+      "action",
+      "protocol",
+      "src-ip",
+      "dst-ip",
+      "src-port",
+      "dst-port",
+      "size",
+      "tcpflags",
+      "tcpsyn",
+      "tcpack",
+      "tcpwin",
+      "icmptype",
+      "icmpcode",
+      "info",
+      "path",
+      "pid"
+    ],
+    "matched_lines": {
+      "TCP": "2026-11-24 22:42:30 DROP TCP 192.168.2.199 192.0.2.1 55129 45115 0 - 0 0 0 - - - SEND 108320",
+      "UDP": "2026-11-24 22:42:30 DROP UDP 192.168.2.199 192.0.2.1 58738 41346 0 - - - - - - - SEND 108320"
+    }
+  },
+  "ok": true,
+  "verified_epoch": 1795553022.1102352,
+  "verified": "2026-11-24T22:43:42",
+  "program": {
+    "program_pid": 111916,
+    "program_pid_drops": [],
+    "window_epoch": [
+      1795552950.9803474,
+      1795552962.1752164
+    ],
+    "drops_in_window": [
+      "2026-11-24 22:41:38 DROP TCP 192.168.2.199 192.0.2.1 58467 41038 0 - 0 0 0 - - - SEND 26236",
+      "2026-11-24 22:41:38 DROP UDP 192.168.2.199 192.0.2.1 58735 42000 0 - - - - - - - SEND 26236",
+      "2026-11-24 22:42:30 DROP TCP 192.168.2.199 192.0.2.1 55129 45115 0 - 0 0 0 - - - SEND 108320",
+      "2026-11-24 22:42:30 DROP UDP 192.168.2.199 192.0.2.1 58738 41346 0 - - - - - - - SEND 108320",
+      "2026-11-24 22:42:41 DROP TCP 192.168.2.199 192.0.2.1 55135 48759 0 - 0 0 0 - - - SEND 106912",
+      "2026-11-24 22:42:41 DROP UDP 192.168.2.199 192.0.2.1 62861 41574 0 - - - - - - - SEND 106912"
+    ],
+    "drops_in_window_not_probe": [
+      "2026-11-24 22:41:38 DROP TCP 192.168.2.199 192.0.2.1 58467 41038 0 - 0 0 0 - - - SEND 26236",
+      "2026-11-24 22:41:38 DROP UDP 192.168.2.199 192.0.2.1 58735 42000 0 - - - - - - - SEND 26236"
+    ],
+    "send_drops_in_window_not_probe": [
+      "2026-11-24 22:41:38 DROP TCP 192.168.2.199 192.0.2.1 58467 41038 0 - 0 0 0 - - - SEND 26236",
+      "2026-11-24 22:41:38 DROP UDP 192.168.2.199 192.0.2.1 58735 42000 0 - - - - - - - SEND 26236"
+    ]
+  },
+  "program_ok": false,
+  "post_probe_log": {
+    "expected": {
+      "TCP": {
+        "time_local": "2026-11-24T22:42:41+02:00",
+        "dst_port": "48759",
+        "src_port": "55135"
+      },
+      "UDP": {
+        "time_local": "2026-11-24T22:42:41+02:00",
+        "dst_port": "41574",
+        "src_port": "62861"
+      }
+    },
+    "log_fields": [
+      "date",
+      "time",
+      "action",
+      "protocol",
+      "src-ip",
+      "dst-ip",
+      "src-port",
+      "dst-port",
+      "size",
+      "tcpflags",
+      "tcpsyn",
+      "tcpack",
+      "tcpwin",
+      "icmptype",
+      "icmpcode",
+      "info",
+      "path",
+      "pid"
+    ],
+    "matched_lines": {
+      "TCP": "2026-11-24 22:42:41 DROP TCP 192.168.2.199 192.0.2.1 55135 48759 0 - 0 0 0 - - - SEND 106912",
+      "UDP": "2026-11-24 22:42:41 DROP UDP 192.168.2.199 192.0.2.1 62861 41574 0 - - - - - - - SEND 106912"
+    }
+  },
+  "post_probe_ok": true,
+  "covers_run": true
+}

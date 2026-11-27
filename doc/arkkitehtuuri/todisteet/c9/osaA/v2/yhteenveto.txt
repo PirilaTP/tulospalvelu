@@ -1,0 +1,274 @@
+files scanned: 417 (Hk, Juk, Tp, com, cbTp, tputilv2, dbboxm, cbHk, ViestiWin, HkConsole, JukConsole)
+call sites: 3234 (definitions/prototypes skipped: 60)
+call sites in files not built by any product project: 230
+
+by group/kind:
+  dbbox    acquire              24
+  dbbox    release              21
+  dbbox    write                42
+  error    dialog               78
+  error    report              493
+  exit     exit                 29
+  exit     shell                 2
+  file     acquire             133
+  file     read                 60
+  file     release             120
+  file     seek                106
+  file     write               197
+  gdi      acquire               2
+  gdi      release               8
+  handle   release               7
+  mem      acquire             169
+  mem      acquire-new         540
+  mem      release             180
+  mem      release-delete      539
+  prfile   acquire              37
+  prfile   release              48
+  socket   acquire               7
+  socket   release               4
+  socket   write                 4
+  textfl   acquire-new         186
+  textfl   method-close         19
+  textfl   method-open           8
+  textfl   method-write        171
+
+return-value use by group/kind (rv-returning calls only):
+  dbbox    acquire        checked                   3
+  dbbox    acquire        ignored                  17
+  dbbox    write          ignored                  20
+  error    dialog         ignored                  78
+  exit     shell          ignored                   2
+  file     acquire        assigned-checked         44
+  file     acquire        assigned-unchecked       47
+  file     acquire        checked                  41
+  file     acquire        ignored                   1
+  file     read           assigned-checked          5
+  file     read           assigned-unchecked        4
+  file     read           checked                  37
+  file     read           ignored                  11
+  file     read           returned                  3
+  file     release        ignored                 120
+  file     seek           assigned-checked         20
+  file     seek           assigned-unchecked        9
+  file     seek           checked                  12
+  file     seek           ignored                  65
+  file     write          assigned-checked          7
+  file     write          assigned-unchecked       21
+  file     write          checked                  41
+  file     write          ignored                 125
+  file     write          returned                  3
+  gdi      acquire        assigned-checked          1
+  gdi      acquire        checked                   1
+  gdi      release        ignored                   8
+  handle   release        ignored                   7
+  mem      acquire        assigned-checked         41
+  mem      acquire        assigned-unchecked       81
+  mem      acquire        checked                  47
+  prfile   acquire        assigned-checked          5
+  prfile   acquire        assigned-unchecked        1
+  prfile   acquire        checked                  31
+  socket   acquire        assigned-checked          2
+  socket   acquire        assigned-unchecked        4
+  socket   acquire        checked                   1
+  socket   release        ignored                   4
+  socket   write          assigned-checked          4
+  textfl   method-open    ignored                   8
+  textfl   method-write   assigned-checked          1
+  textfl   method-write   checked                   4
+  textfl   method-write   ignored                 162
+  textfl   method-write   returned                  4
+
+by top directory and group/kind:
+  Hk          dbbox    acquire               4
+  Hk          dbbox    release               4
+  Hk          dbbox    write                 5
+  Hk          error    dialog               33
+  Hk          error    report              141
+  Hk          exit     exit                  8
+  Hk          exit     shell                 1
+  Hk          file     acquire              14
+  Hk          file     read                  9
+  Hk          file     release              11
+  Hk          file     seek                 19
+  Hk          file     write                24
+  Hk          mem      acquire              46
+  Hk          mem      acquire-new          58
+  Hk          mem      release              47
+  Hk          mem      release-delete      104
+  Hk          prfile   acquire               7
+  Hk          prfile   release              13
+  Hk          textfl   acquire-new          50
+  Hk          textfl   method-close          2
+  Hk          textfl   method-write         45
+  HkConsole   dbbox    acquire               1
+  HkConsole   error    report               41
+  HkConsole   exit     exit                  2
+  HkConsole   file     acquire               1
+  HkConsole   file     release               1
+  HkConsole   mem      acquire               4
+  HkConsole   mem      release               9
+  HkConsole   mem      release-delete        5
+  HkConsole   prfile   acquire               1
+  HkConsole   prfile   release               2
+  HkConsole   textfl   acquire-new           3
+  HkConsole   textfl   method-open           1
+  HkConsole   textfl   method-write          2
+  Juk         dbbox    acquire               4
+  Juk         dbbox    release               3
+  Juk         dbbox    write                 9
+  Juk         error    dialog               15
+  Juk         error    report              145
+  Juk         exit     exit                  5
+  Juk         file     acquire              20
+  Juk         file     read                  8
+  Juk         file     release              17
+  Juk         file     seek                 17
+  Juk         file     write                27
+  Juk         mem      acquire              48
+  Juk         mem      acquire-new          46
+  Juk         mem      release              38
+  Juk         mem      release-delete       78
+  Juk         prfile   acquire               7
+  Juk         prfile   release              17
+  Juk         textfl   acquire-new          34
+  Juk         textfl   method-close          3
+  Juk         textfl   method-open           1
+  Juk         textfl   method-write         25
+  JukConsole  error    report               50
+  JukConsole  exit     exit                  3
+  JukConsole  file     acquire              10
+  JukConsole  file     read                  1
+  JukConsole  file     release              13
+  JukConsole  file     seek                  1
+  JukConsole  file     write                 5
+  JukConsole  handle   release               2
+  JukConsole  mem      acquire               4
+  JukConsole  mem      release               7
+  JukConsole  prfile   acquire               1
+  JukConsole  prfile   release               3
+  Tp          error    dialog                9
+  Tp          error    report               62
+  Tp          file     acquire              22
+  Tp          file     read                  9
+  Tp          file     release              17
+  Tp          file     seek                 24
+  Tp          file     write                42
+  Tp          mem      acquire              11
+  Tp          mem      acquire-new           4
+  Tp          mem      release               2
+  Tp          mem      release-delete        4
+  Tp          textfl   acquire-new           2
+  ViestiWin   dbbox    acquire               1
+  ViestiWin   dbbox    release               1
+  ViestiWin   error    report                7
+  ViestiWin   exit     exit                  1
+  ViestiWin   file     acquire              15
+  ViestiWin   file     read                 12
+  ViestiWin   file     release              13
+  ViestiWin   file     seek                 15
+  ViestiWin   file     write                10
+  ViestiWin   mem      acquire              11
+  ViestiWin   mem      acquire-new         160
+  ViestiWin   mem      release              15
+  ViestiWin   mem      release-delete       92
+  ViestiWin   prfile   acquire               7
+  ViestiWin   prfile   release               4
+  ViestiWin   textfl   acquire-new          27
+  ViestiWin   textfl   method-close          4
+  ViestiWin   textfl   method-open           3
+  ViestiWin   textfl   method-write         29
+  cbHk        dbbox    acquire               2
+  cbHk        dbbox    release               2
+  cbHk        dbbox    write                 2
+  cbHk        error    report               19
+  cbHk        exit     exit                  1
+  cbHk        file     acquire              27
+  cbHk        file     read                 10
+  cbHk        file     release              28
+  cbHk        file     seek                 14
+  cbHk        file     write                28
+  cbHk        mem      acquire              22
+  cbHk        mem      acquire-new         204
+  cbHk        mem      release              34
+  cbHk        mem      release-delete      158
+  cbHk        prfile   acquire              11
+  cbHk        prfile   release               8
+  cbHk        textfl   acquire-new          42
+  cbHk        textfl   method-close          8
+  cbHk        textfl   method-open           3
+  cbHk        textfl   method-write         34
+  cbTp        error    report                6
+  cbTp        exit     exit                  2
+  cbTp        file     acquire               6
+  cbTp        file     read                  1
+  cbTp        file     release               5
+  cbTp        file     seek                  2
+  cbTp        file     write                 8
+  cbTp        mem      acquire               2
+  cbTp        mem      acquire-new          25
+  cbTp        mem      release               3
+  cbTp        mem      release-delete       53
+  cbTp        prfile   acquire               3
+  cbTp        prfile   release               1
+  cbTp        textfl   acquire-new          23
+  cbTp        textfl   method-close          2
+  cbTp        textfl   method-write         15
+  com         error    report                3
+  com         file     acquire               1
+  com         file     read                  2
+  com         file     write                 3
+  com         handle   release               1
+  com         mem      acquire               5
+  com         mem      release              10
+  com         socket   acquire               7
+  com         socket   release               4
+  com         socket   write                 4
+  dbboxm      dbbox    acquire              12
+  dbboxm      dbbox    release              11
+  dbboxm      dbbox    write                26
+  dbboxm      error    dialog               12
+  dbboxm      error    report                4
+  dbboxm      exit     exit                  4
+  dbboxm      file     acquire               4
+  dbboxm      file     read                  2
+  dbboxm      file     write                 2
+  dbboxm      handle   release               4
+  dbboxm      mem      acquire               8
+  dbboxm      mem      release               5
+  tputilv2    error    dialog                9
+  tputilv2    error    report               15
+  tputilv2    exit     exit                  3
+  tputilv2    exit     shell                 1
+  tputilv2    file     acquire              13
+  tputilv2    file     read                  6
+  tputilv2    file     release              15
+  tputilv2    file     seek                 14
+  tputilv2    file     write                48
+  tputilv2    gdi      acquire               2
+  tputilv2    gdi      release               8
+  tputilv2    mem      acquire               8
+  tputilv2    mem      acquire-new          43
+  tputilv2    mem      release              10
+  tputilv2    mem      release-delete       45
+  tputilv2    textfl   acquire-new           5
+  tputilv2    textfl   method-write         21
+
+writeerror follow-up (next statement):
+  stmt              175
+  return            154
+  }                 127
+  goto               37
+  break              27
+  continue           26
+  } else             25
+
+writeerror enclosing block:
+  if                476
+  function-body      32
+  else               32
+  switch             11
+  for                10
+  while               6
+  block               4
+
+fallback attribution (~): 354, file scope: 0

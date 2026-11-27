@@ -1,0 +1,1752 @@
+file,line,name,kind,declaration
+Hk/HkApuC.c,34,xSize,global,"INT16 xSize = 80 , ySize = 25"
+Hk/HkApuC.c,34,ySize,global,"INT16 xSize = 80 , ySize = 25"
+Hk/HkApuC.c,35,spoolfl,global,INT spoolfl = FALSE
+Hk/HkApuC.c,36,aani,global,INT aani = 1
+Hk/HkApuC.c,39,errMsgBox,global,INT16 errMsgBox = 0
+Hk/HkCom32.cpp,65,alkut,global,int alkut = ALKUT
+Hk/HkCom32.cpp,66,hComm,global,HANDLE hComm [ MAX_PORTTI ]
+Hk/HkCom32.cpp,67,ackreq,global,int ackreq [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,68,yhtfl,global,int yhtfl [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,69,keyclose,global,int keyclose [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,70,autoclose,global,int autoclose
+Hk/HkCom32.cpp,71,initid,global,int initid [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,75,inbuf,global,combufrec * inbuf
+Hk/HkCom32.cpp,76,outbuf,global,combufrec * outbuf [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,77,combufsize,global,int combufsize
+Hk/HkCom32.cpp,78,combuf,global,char * combuf [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,79,lahfl,global,int lahfl [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,80,vkesken,global,int vkesken [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,81,chcomkesto,global,int chcomkesto [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,82,hyvkesken,global,int hyvkesken [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,83,outpakid,global,char outpakid [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,84,vastcom0,global,int vastcom0 [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,85,lahcomserver,global,int lahcomserver [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,86,class_len,global,int class_len [ N_CLASS ]
+Hk/HkCom32.cpp,91,yhteysalku,global,INT yhteysalku = 0
+Hk/HkCom32.cpp,92,tcpautoalku,global,int tcpautoalku
+Hk/HkCom32.cpp,93,ts_close,global,INT ts_close [ MAX_LAHPORTTI ]
+Hk/HkCom32.cpp,94,acn,global,int acn [ MAX_PORTTI ]
+Hk/HkCom32.cpp,100,hPingThread,global,HTHREAD hPingThread
+Hk/HkCom32.cpp,105,comparam,global,comparamtp comparam [ MAX_PORTTI ]
+Hk/HkCom32.cpp,873,vlkm,static,static int vlkm
+Hk/HkCom32.cpp,970,vanhaXMLsan,global,bool vanhaXMLsan = false
+Hk/HkDeclare.h,60,getpos,header-def,"INT getpos ( INT kilpno , bool hyvseur = false )"
+Hk/HkDeclare.h,213,pyoristatls,header-def,"int pyoristatls ( int tls , int pyorista , int i_pv = - 1 )"
+Hk/HkDeclare.h,435,luesarja,header-def,"INT luesarja ( wchar_t * snimi , wchar_t * tc , bool salliyhd = false )"
+Hk/HkDef.h,493,maki,header-def,makitp maki
+Hk/HkEmit.cpp,68,kuvio,global,ekditp * kuvio
+Hk/HkEmit.cpp,69,nkuvio,global,INT nkuvio
+Hk/HkEmit.cpp,70,maxnkuvio,static,static INT maxnkuvio
+Hk/HkEmit.cpp,71,emitosa,static,"static INT emitosa , ajat_on_loc"
+Hk/HkEmit.cpp,71,ajat_on_loc,static,"static INT emitosa , ajat_on_loc"
+Hk/HkEmit.cpp,72,vakvapautus_bdg,static,"static int vakvapautus_bdg , emitptr_kno"
+Hk/HkEmit.cpp,72,emitptr_kno,static,"static int vakvapautus_bdg , emitptr_kno"
+Hk/HkEmit.cpp,74,vapautettu_bdg,static,static bdg_kno_tp vapautettu_bdg [ 5 ]
+Hk/HkEmit.cpp,76,rvalit,global,rvalitp * rvalit
+Hk/HkEmit.cpp,77,rvluku,global,int rvluku
+Hk/HkEmit.cpp,78,analvertosuus,global,int analvertosuus = 5
+Hk/HkEmit.cpp,79,analvertmax,global,int analvertmax = 10
+Hk/HkEmit.cpp,80,EmitErot,global,emiterotp * EmitErot
+Hk/HkEmit.cpp,81,nEmitErot,global,int nEmitErot
+Hk/HkEmit.cpp,82,rastiva,global,rastivatp * rastiva
+Hk/HkEmit.cpp,83,rastikoord,global,rastikoordtp rastikoord [ MAXNPISTE ]
+Hk/HkEmit.cpp,84,Map,global,maptp Map
+Hk/HkEmit.cpp,1379,emitkdit,static,static int emitkdit
+Hk/HkEmit.cpp,1381,lainaemit,static,static wchar_t * lainaemit
+Hk/HkEmit.cpp,1382,lainatied,global,INT lainatied
+Hk/HkEmit.cpp,1383,maxlaina,static,static INT32 maxlaina
+Hk/HkEmit.cpp,1399,lainafname,global,"wchar_t lainafname [ 200 ] = L "" """
+Hk/HkEmit.cpp,5502,vapg,static,static wchar_t * * vapg
+Hk/HkEmit.cpp,5503,valn,static,static INT valn
+Hk/HkGlobals.cpp,20,idindex_CriticalSection,global,CRITICAL_SECTION idindex_CriticalSection
+Hk/HkGlobals.cpp,21,tall_CriticalSection,global,CRITICAL_SECTION tall_CriticalSection
+Hk/HkGlobals.cpp,22,print_CriticalSection,global,CRITICAL_SECTION print_CriticalSection
+Hk/HkGlobals.cpp,23,autotul_CriticalSection,global,CRITICAL_SECTION autotul_CriticalSection
+Hk/HkGlobals.cpp,24,loki_CriticalSection,global,CRITICAL_SECTION loki_CriticalSection
+Hk/HkGlobals.cpp,25,inb_CriticalSection,global,CRITICAL_SECTION inb_CriticalSection
+Hk/HkGlobals.cpp,26,outb_CriticalSection,global,CRITICAL_SECTION outb_CriticalSection
+Hk/HkGlobals.cpp,27,kilpdat_CriticalSection,global,CRITICAL_SECTION kilpdat_CriticalSection
+Hk/HkGlobals.cpp,28,ajat_CriticalSection,global,CRITICAL_SECTION ajat_CriticalSection
+Hk/HkGlobals.cpp,29,emit_CriticalSection,global,CRITICAL_SECTION emit_CriticalSection
+Hk/HkGlobals.cpp,30,rastiva_CriticalSection,global,CRITICAL_SECTION rastiva_CriticalSection
+Hk/HkGlobals.cpp,31,tcpip_CriticalSection,global,CRITICAL_SECTION tcpip_CriticalSection
+Hk/HkGlobals.cpp,32,tcp_CriticalSection,global,CRITICAL_SECTION tcp_CriticalSection [ MAX_PORTTI ]
+Hk/HkGlobals.cpp,33,seura_CriticalSection,global,CRITICAL_SECTION seura_CriticalSection
+Hk/HkGlobals.cpp,34,seur_badge_CriticalSection,global,CRITICAL_SECTION seur_badge_CriticalSection
+Hk/HkGlobals.cpp,35,hTarkcomThread,global,"HTHREAD hTarkcomThread , hTsThread [ MAX_PORTTI ]"
+Hk/HkGlobals.cpp,35,hTsThread,global,"HTHREAD hTarkcomThread , hTsThread [ MAX_PORTTI ]"
+Hk/HkGlobals.cpp,36,hLuepakThread,global,HTHREAD hLuepakThread [ MAX_PORTTI ]
+Hk/HkGlobals.cpp,37,taustaThread,global,"HTHREAD taustaThread , hLkmThread"
+Hk/HkGlobals.cpp,37,hLkmThread,global,"HTHREAD taustaThread , hLkmThread"
+Hk/HkGlobals.cpp,38,hAikacomThread,global,HTHREAD hAikacomThread
+Hk/HkGlobals.cpp,39,httphakuThread,global,HTHREAD httphakuThread
+Hk/HkGlobals.cpp,40,hProsEmitThread,global,HTHREAD hProsEmitThread
+Hk/HkGlobals.cpp,43,taustaon,global,"int taustaon = 1 , taustasulj = 0 , inGDIdoc"
+Hk/HkGlobals.cpp,43,taustasulj,global,"int taustaon = 1 , taustasulj = 0 , inGDIdoc"
+Hk/HkGlobals.cpp,43,inGDIdoc,global,"int taustaon = 1 , taustasulj = 0 , inGDIdoc"
+Hk/HkGlobals.cpp,44,inLopetus,global,int inLopetus
+Hk/HkGlobals.cpp,45,katkaisuPyydetty,global,int katkaisuPyydetty
+Hk/HkGlobals.cpp,46,TestiToiminnot,global,bool TestiToiminnot = false
+Hk/HkGlobals.cpp,47,ok,global,int ok
+Hk/HkGlobals.cpp,48,exeName,global,wchar_t exeName [ 50 ]
+Hk/HkGlobals.cpp,50,hav_virheet,global,bool hav_virheet = true
+Hk/HkGlobals.cpp,69,autofileparam,global,struct { wchar_t afname [ 202 ] ; int autokomentolaji ; wchar_t autokomento [ 202 ] ; bool vainMuutt ; int afvali ; bool af_kaikki ; bool af_flag ; wchar_t af_x
+Hk/HkGlobals.cpp,70,WorkingDir,global,wchar_t WorkingDir [ 200 ]
+Hk/HkGlobals.cpp,71,nakviive,global,int nakviive = 1000
+Hk/HkGlobals.cpp,72,ohitavirheet,global,int ohitavirheet
+Hk/HkGlobals.cpp,73,maxemvalah,global,int maxemvalah = MAXEMVALAH
+Hk/HkGlobals.cpp,74,pros_emit_on,global,int pros_emit_on
+Hk/HkGlobals.cpp,75,emitluenta,global,bool emitluenta = false
+Hk/HkGlobals.cpp,76,emitTunnistus,global,int emitTunnistus = 0
+Hk/HkGlobals.cpp,77,hPros_EmitThread,global,HTHREAD hPros_EmitThread
+Hk/HkGlobals.cpp,78,suljesuoraan,global,bool suljesuoraan = false
+Hk/HkGlobals.cpp,79,siimport,global,int siimport = - 1
+Hk/HkGlobals.cpp,80,sulkusalasana,global,wchar_t sulkusalasana [ 12 ]
+Hk/HkGlobals.cpp,81,max_lahportti,global,"INT max_lahportti = MAX_LAHPORTTI , max_portti = MAX_PORTTI"
+Hk/HkGlobals.cpp,81,max_portti,global,"INT max_lahportti = MAX_LAHPORTTI , max_portti = MAX_PORTTI"
+Hk/HkGlobals.cpp,82,minvakanttiluku,global,int minvakanttiluku = 20
+Hk/HkGlobals.cpp,83,lisavakanttialku,global,int lisavakanttialku
+Hk/HkGlobals.cpp,84,sailTiedPos,global,bool sailTiedPos = false
+Hk/HkGlobals.cpp,87,ch_piste,global,"wchar_t ch_piste [ ] = L "" """
+Hk/HkGlobals.cpp,91,aika_jono,global,wchar_t aika_jono [ NREGNLY ] [ 16 ]
+Hk/HkGlobals.cpp,92,jonopiste,global,wchar_t jonopiste [ MAXJONO ]
+Hk/HkGlobals.cpp,93,maxjono,global,INT maxjono
+Hk/HkGlobals.cpp,94,tl_ylaraja,global,INT32 tl_ylaraja = 3 * SEK
+Hk/HkGlobals.cpp,95,tunn_srj,global,INT tunn_srj = - 1
+Hk/HkGlobals.cpp,96,tunn_raja,global,INT tunn_raja = 3 * SEK
+Hk/HkGlobals.cpp,97,tyhjarivi,global,"char tyhjarivi [ ] = "" "" "" """
+Hk/HkGlobals.cpp,99,dhigh,global,"char dhigh [ 10 ] = "" """
+Hk/HkGlobals.cpp,100,shigh,global,"char shigh [ 10 ] = "" """
+Hk/HkGlobals.cpp,101,ndhigh,global,INT ndhigh = 6
+Hk/HkGlobals.cpp,102,nshigh,global,INT nshigh = 6
+Hk/HkGlobals.cpp,104,kierrosva,global,INT kierrosva [ VALUKU + 3 ]
+Hk/HkGlobals.cpp,105,kierrosvafl,global,INT kierrosvafl
+Hk/HkGlobals.cpp,106,va_vuoro,global,INT va_vuoro
+Hk/HkGlobals.cpp,107,vavuoro_ala,global,INT vavuoro_ala = 1
+Hk/HkGlobals.cpp,108,vavuoro_yla,global,INT vavuoro_yla = VALUKU
+Hk/HkGlobals.cpp,110,JoKirjattuKesto,global,int JoKirjattuKesto = 0
+Hk/HkGlobals.cpp,111,nktarra,global,INT nktarra = 23
+Hk/HkGlobals.cpp,112,wtarra,global,INT wtarra = 40
+Hk/HkGlobals.cpp,113,nrtarra,global,INT nrtarra = 9
+Hk/HkGlobals.cpp,114,sgl,global,"char sgl [ ] = "" """
+Hk/HkGlobals.cpp,115,nchsgle,global,INT nchsgle = 1
+Hk/HkGlobals.cpp,116,dbl,global,"char dbl [ ] = "" """
+Hk/HkGlobals.cpp,117,nchdble,global,INT nchdble = 1
+Hk/HkGlobals.cpp,118,sgle,global,"char sgle [ 10 ] = "" """
+Hk/HkGlobals.cpp,119,dble,global,"char dble [ 10 ] = "" """
+Hk/HkGlobals.cpp,120,alkulayout,global,wchar_t alkulayout [ 200 ]
+Hk/HkGlobals.cpp,121,dataf2name,global,"wchar_t dataf2name [ 200 ] = L "" """
+Hk/HkGlobals.cpp,122,dataf3name,global,"wchar_t dataf3name [ 200 ] = L "" """
+Hk/HkGlobals.cpp,123,datafbname,global,"wchar_t datafbname [ 200 ] = L "" """
+Hk/HkGlobals.cpp,124,namefname,global,"wchar_t namefname [ 200 ] = L "" """
+Hk/HkGlobals.cpp,125,sarjafname,global,"wchar_t sarjafname [ 200 ] = L "" """
+Hk/HkGlobals.cpp,126,sarjaxmlfname,global,"wchar_t sarjaxmlfname [ 200 ] = L "" """
+Hk/HkGlobals.cpp,127,obfilename,global,"wchar_t obfilename [ 200 ] = L "" """
+Hk/HkGlobals.cpp,128,lokifname,global,"wchar_t lokifname [ 200 ] = L "" """
+Hk/HkGlobals.cpp,129,leimafname,global,"wchar_t leimafname [ 200 ] = L "" """
+Hk/HkGlobals.cpp,130,ratafname,global,"wchar_t ratafname [ 200 ] = L "" """
+Hk/HkGlobals.cpp,131,rataxmlfname,global,"wchar_t rataxmlfname [ 200 ] = L "" """
+Hk/HkGlobals.cpp,133,ratatiedot,global,int ratatiedot
+Hk/HkGlobals.cpp,135,luetfnm,global,"wchar_t luetfnm [ 40 ] = L "" """
+Hk/HkGlobals.cpp,136,ll_luetfnm,global,"wchar_t ll_luetfnm [ 40 ] = L "" """
+Hk/HkGlobals.cpp,189,ToimintaTila,global,int ToimintaTila = 2
+Hk/HkGlobals.cpp,193,EnvData,global,envdatatp EnvData
+Hk/HkGlobals.cpp,194,poistaSulje,global,bool poistaSulje = true
+Hk/HkGlobals.cpp,195,k_pv,global,"INT k_pv , arv_pv"
+Hk/HkGlobals.cpp,195,arv_pv,global,"INT k_pv , arv_pv"
+Hk/HkGlobals.cpp,196,vaihevalinta,global,int vaihevalinta
+Hk/HkGlobals.cpp,197,valparas,global,INT valparas
+Hk/HkGlobals.cpp,198,vaiheenvaihto,global,bool vaiheenvaihto
+Hk/HkGlobals.cpp,199,Sarjat,global,sarjatietue Sarjat [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,200,pkarki,global,INT32 pkarki [ MAXSARJALUKU + MAXYHD ] [ VALUKU + 2 ]
+Hk/HkGlobals.cpp,201,kilparr,global,kilptietue * kilparr
+Hk/HkGlobals.cpp,202,ilmkentat,global,INT ilmkentat
+Hk/HkGlobals.cpp,203,kuntosuunnmoodi,global,int kuntosuunnmoodi
+Hk/HkGlobals.cpp,204,vakanttialku,global,INT vakanttialku = 0
+Hk/HkGlobals.cpp,205,seurVapaaBadge,global,int seurVapaaBadge = 1
+Hk/HkGlobals.cpp,206,ProsEmitOn,global,bool ProsEmitOn = false
+Hk/HkGlobals.cpp,209,meri3,global,int meri3 = 0
+Hk/HkGlobals.cpp,210,m3vert,global,INT32 m3vert [ 5 ] [ MAXSARJALUKU ]
+Hk/HkGlobals.cpp,212,sotilas,global,int sotilas
+Hk/HkGlobals.cpp,213,timerfl,global,INT timerfl
+Hk/HkGlobals.cpp,214,selostaja,global,INT selostaja
+Hk/HkGlobals.cpp,215,bootfl,global,INT bootfl
+Hk/HkGlobals.cpp,216,kfirstfree,global,INT kfirstfree
+Hk/HkGlobals.cpp,217,nrec,global,INT nrec
+Hk/HkGlobals.cpp,218,maxrec,global,INT maxrec
+Hk/HkGlobals.cpp,219,datf2,global,"datafile datf2 , datf3"
+Hk/HkGlobals.cpp,219,datf3,global,"datafile datf2 , datf3"
+Hk/HkGlobals.cpp,221,jarjtulos,global,jarjtulostp * jarjtulos [ MAXYHD + 1 ] [ VALUKU + 4 ]
+Hk/HkGlobals.cpp,223,jrjseur,global,INT16 * jrjseur [ MAXYHD + 1 ]
+Hk/HkGlobals.cpp,224,xmlsarja,global,INT xmlsarja = - 1
+Hk/HkGlobals.cpp,225,tcptulos,global,wchar_t tcptulos = L ' '
+Hk/HkGlobals.cpp,226,server_on,global,INT server_on
+Hk/HkGlobals.cpp,228,vaintaulu,global,int vaintaulu
+Hk/HkGlobals.cpp,229,udptaulu,global,int udptaulu
+Hk/HkGlobals.cpp,231,ixarr,global,kilpindex ixarr [ NINDEX ]
+Hk/HkGlobals.cpp,232,ljarjindex,global,"kilpindex * ljarjindex , * sarjaindex"
+Hk/HkGlobals.cpp,232,sarjaindex,global,"kilpindex * ljarjindex , * sarjaindex"
+Hk/HkGlobals.cpp,233,srjaakindex,global,"kilpindex * srjaakindex , * seuraindex , * seuranoindex"
+Hk/HkGlobals.cpp,233,seuraindex,global,"kilpindex * srjaakindex , * seuraindex , * seuranoindex"
+Hk/HkGlobals.cpp,233,seuranoindex,global,"kilpindex * srjaakindex , * seuraindex , * seuranoindex"
+Hk/HkGlobals.cpp,234,lahtoindex,global,"kilpindex * lahtoindex , * aakkosindex"
+Hk/HkGlobals.cpp,234,aakkosindex,global,"kilpindex * lahtoindex , * aakkosindex"
+Hk/HkGlobals.cpp,235,nroindex,global,"kilpindex * nroindex , * srjnroindex , * idindex"
+Hk/HkGlobals.cpp,235,srjnroindex,global,"kilpindex * nroindex , * srjnroindex , * idindex"
+Hk/HkGlobals.cpp,235,idindex,global,"kilpindex * nroindex , * srjnroindex , * idindex"
+Hk/HkGlobals.cpp,236,rataindex,global,kilpindex * rataindex
+Hk/HkGlobals.cpp,237,nameindex,global,kilpindex nameindex
+Hk/HkGlobals.cpp,238,pstindex,global,kilpindex pstindex
+Hk/HkGlobals.cpp,239,vaihetlsindex,global,kilpindex vaihetlsindex
+Hk/HkGlobals.cpp,240,reindex,global,"int reindex , finfirst , lahtojarjfl , takaa_ajofl"
+Hk/HkGlobals.cpp,240,finfirst,global,"int reindex , finfirst , lahtojarjfl , takaa_ajofl"
+Hk/HkGlobals.cpp,240,lahtojarjfl,global,"int reindex , finfirst , lahtojarjfl , takaa_ajofl"
+Hk/HkGlobals.cpp,240,takaa_ajofl,global,"int reindex , finfirst , lahtojarjfl , takaa_ajofl"
+Hk/HkGlobals.cpp,241,keylen,global,INT keylen
+Hk/HkGlobals.cpp,243,kilpailu,global,wchar_t kilpailu [ 83 ]
+Hk/HkGlobals.cpp,244,lsttulparam,global,tulostusparamtp lsttulparam
+Hk/HkGlobals.cpp,245,tartulparam,global,tulostusparamtp tartulparam
+Hk/HkGlobals.cpp,246,lokitulparam,global,tulostusparamtp lokitulparam
+Hk/HkGlobals.cpp,247,aftulparam,global,tulostusparamtp aftulparam
+Hk/HkGlobals.cpp,248,emittulparam,global,tulostusparamtp * emittulparam
+Hk/HkGlobals.cpp,249,autotulostusparam,global,tulostusparamtp autotulostusparam
+Hk/HkGlobals.cpp,250,sivutulostusparam,global,tulostusparamtp sivutulostusparam
+Hk/HkGlobals.cpp,251,lisaToimetOn,global,bool lisaToimetOn
+Hk/HkGlobals.cpp,252,prblockbits,global,INT prblockbits
+Hk/HkGlobals.cpp,253,origverify,global,INT origverify
+Hk/HkGlobals.cpp,254,esta_tall,global,INT esta_tall
+Hk/HkGlobals.cpp,255,konetunn,global,char konetunn [ 3 ]
+Hk/HkGlobals.cpp,257,talltaul,global,INT talltaul = FALSE
+Hk/HkGlobals.cpp,258,iono,global,INT iono = 0
+Hk/HkGlobals.cpp,259,tarfl,global,INT tarfl
+Hk/HkGlobals.cpp,260,eiltarra,global,INT eiltarra = TRUE
+Hk/HkGlobals.cpp,261,lahtarfl,global,INT lahtarfl = FALSE
+Hk/HkGlobals.cpp,262,hptarra,global,"INT hptarra , ktarra , rtarra = 2 , ntarra = 16 , ftarra = 16"
+Hk/HkGlobals.cpp,262,ktarra,global,"INT hptarra , ktarra , rtarra = 2 , ntarra = 16 , ftarra = 16"
+Hk/HkGlobals.cpp,262,rtarra,global,"INT hptarra , ktarra , rtarra = 2 , ntarra = 16 , ftarra = 16"
+Hk/HkGlobals.cpp,262,ntarra,global,"INT hptarra , ktarra , rtarra = 2 , ntarra = 16 , ftarra = 16"
+Hk/HkGlobals.cpp,262,ftarra,global,"INT hptarra , ktarra , rtarra = 2 , ntarra = 16 , ftarra = 16"
+Hk/HkGlobals.cpp,263,listfl,global,INT listfl = FALSE
+Hk/HkGlobals.cpp,264,yvfl,global,INT yvfl = FALSE
+Hk/HkGlobals.cpp,265,lisaa_edelle,global,INT lisaa_edelle
+Hk/HkGlobals.cpp,270,dec_sep,global,char dec_sep = L ' '
+Hk/HkGlobals.cpp,271,wdec_sep,global,wchar_t wdec_sep = L ' '
+Hk/HkGlobals.cpp,272,tarknofl,global,INT tarknofl = 0
+Hk/HkGlobals.cpp,273,lajat_p,global,INT lajat_p
+Hk/HkGlobals.cpp,274,autofl,global,INT autofl = FALSE
+Hk/HkGlobals.cpp,275,pscr,global,INT pscr
+Hk/HkGlobals.cpp,276,psinit,global,wchar_t * psinit
+Hk/HkGlobals.cpp,277,innpfl,global,INT innpfl
+Hk/HkGlobals.cpp,278,kynnys,global,INT kynnys = 10
+Hk/HkGlobals.cpp,279,pfl,global,INT pfl = FALSE
+Hk/HkGlobals.cpp,280,stopprt,global,INT stopprt = FALSE
+Hk/HkGlobals.cpp,281,verify,global,INT verify = - 1
+Hk/HkGlobals.cpp,282,listfname,global,"wchar_t listfname [ 201 ] = L "" """
+Hk/HkGlobals.cpp,283,tarfname,global,"wchar_t tarfname [ 201 ] = L "" """
+Hk/HkGlobals.cpp,284,t0,global,INT t0 = 12
+Hk/HkGlobals.cpp,285,t0tics,global,INT32 t0tics = ( 12 * DAYTICKS ) / 24
+Hk/HkGlobals.cpp,286,t0_regnly,global,int t0_regnly = - 12 * TUNTI
+Hk/HkGlobals.cpp,287,t0_regn,global,int t0_regn [ NREGNLY ]
+Hk/HkGlobals.cpp,288,minkilpno,global,INT minkilpno = 1
+Hk/HkGlobals.cpp,289,maxkilpno,global,INT maxkilpno = MAXKILPNO
+Hk/HkGlobals.cpp,290,sarjaluku,global,INT sarjaluku
+Hk/HkGlobals.cpp,291,maxlsak,global,INT maxlsak [ N_PV ]
+Hk/HkGlobals.cpp,292,nsarjayhd,global,"INT nsarjayhd , nsarjayhd_tul , sarjayhdva [ MAXYHD ]"
+Hk/HkGlobals.cpp,292,nsarjayhd_tul,global,"INT nsarjayhd , nsarjayhd_tul , sarjayhdva [ MAXYHD ]"
+Hk/HkGlobals.cpp,292,sarjayhdva,global,"INT nsarjayhd , nsarjayhd_tul , sarjayhdva [ MAXYHD ]"
+Hk/HkGlobals.cpp,293,yhdsarjat,global,wchar_t yhdsarjat [ MAXYHD ] [ MAXSARJALUKU ]
+Hk/HkGlobals.cpp,295,vainalarajat,global,INT vainalarajat = - 1
+Hk/HkGlobals.cpp,296,vainvaliajat,global,INT vainvaliajat
+Hk/HkGlobals.cpp,297,pistefl,global,INT pistefl
+Hk/HkGlobals.cpp,298,ol_piste,global,INT ol_piste = - 2
+Hk/HkGlobals.cpp,299,header,global,"wchar_t * header = L "" """
+Hk/HkGlobals.cpp,300,kaynnistysvaihe,global,INT kaynnistysvaihe
+Hk/HkGlobals.cpp,301,nilmt,global,INT nilmt
+Hk/HkGlobals.cpp,302,ntulost,global,INT ntulost
+Hk/HkGlobals.cpp,303,nhylt,global,"INT nhylt , nkeskt"
+Hk/HkGlobals.cpp,303,nkeskt,global,"INT nhylt , nkeskt"
+Hk/HkGlobals.cpp,304,neilt,global,"INT neilt , nvakt"
+Hk/HkGlobals.cpp,304,nvakt,global,"INT neilt , nvakt"
+Hk/HkGlobals.cpp,305,nva,global,INT nva [ VALUKU ]
+Hk/HkGlobals.cpp,306,nilm,global,INT nilm [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,307,nyilm,global,INT nyilm [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,308,ntulos,global,INT ntulos [ MAXSARJALUKU + MAXYHD ] [ VALUKU + 2 ]
+Hk/HkGlobals.cpp,309,nhyl,global,INT nhyl [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,310,nkesk,global,INT nkesk [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,311,neil,global,INT neil [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,312,nvak,global,INT nvak [ N_PV ] [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,313,neilaika,global,INT neilaika [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,314,nilm_pv,global,int nilm_pv [ N_PV ] [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,315,yhdsija,global,INT16 * yhdsija [ MAXYHD ] [ VALUKU + 2 ]
+Hk/HkGlobals.cpp,316,backfl,global,INT backfl
+Hk/HkGlobals.cpp,317,nimiixfl,global,INT nimiixfl
+Hk/HkGlobals.cpp,318,korjfl,global,INT korjfl
+Hk/HkGlobals.cpp,319,initkehys,global,INT initkehys
+Hk/HkGlobals.cpp,320,initform,global,INT initform
+Hk/HkGlobals.cpp,321,fprior,global,INT fprior [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,322,prior,global,INT prior [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,323,prior0,global,INT prior0 [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,324,vaaditarkastus,global,bool vaaditarkastus
+Hk/HkGlobals.cpp,325,tauko,global,INT tauko
+Hk/HkGlobals.cpp,326,tofs,global,INT tofs
+Hk/HkGlobals.cpp,328,maxyhteys,global,int maxyhteys
+Hk/HkGlobals.cpp,329,portbase,global,int portbase = PORTBASE
+Hk/HkGlobals.cpp,330,portti,global,INT portti [ MAX_PORTTI ]
+Hk/HkGlobals.cpp,331,comtype,global,INT comtype [ MAX_PORTTI ]
+Hk/HkGlobals.cpp,332,ipparam,global,ipparamtp ipparam [ MAX_PORTTI + 1 ]
+Hk/HkGlobals.cpp,333,broadcasts,global,int broadcasts
+Hk/HkGlobals.cpp,335,fileyht,global,"INT fileyht = - 1 , tcpyhteys"
+Hk/HkGlobals.cpp,335,tcpyhteys,global,"INT fileyht = - 1 , tcpyhteys"
+Hk/HkGlobals.cpp,336,tcpkaynnistys,global,long tcpkaynnistys [ MAX_PORTTI + 1 ]
+Hk/HkGlobals.cpp,338,trlate,global,char trlate [ 256 ]
+Hk/HkGlobals.cpp,339,trlst,global,"INT trlst = 1 , trtar , trloki"
+Hk/HkGlobals.cpp,339,trtar,global,"INT trlst = 1 , trtar , trloki"
+Hk/HkGlobals.cpp,339,trloki,global,"INT trlst = 1 , trtar , trloki"
+Hk/HkGlobals.cpp,340,f_ansi,global,INT f_ansi = 1
+Hk/HkGlobals.cpp,341,iobufr,global,INT iobufr = 90
+Hk/HkGlobals.cpp,342,iobufmaxnr,global,INT iobufmaxnr = 9
+Hk/HkGlobals.cpp,343,kaksoistar,global,INT kaksoistar = TRUE
+Hk/HkGlobals.cpp,344,savebox,global,"char savebox [ 400 ] , errbox [ 400 ]"
+Hk/HkGlobals.cpp,344,errbox,global,"char savebox [ 400 ] , errbox [ 400 ]"
+Hk/HkGlobals.cpp,345,tulfl,global,INT tulfl = FALSE
+Hk/HkGlobals.cpp,346,comfl,global,INT comfl = FALSE
+Hk/HkGlobals.cpp,347,tcomfl,global,INT tcomfl = TRUE
+Hk/HkGlobals.cpp,348,estavalitys,global,INT estavalitys [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,349,immed,global,INT immed = TRUE
+Hk/HkGlobals.cpp,350,kirjheti,global,UINT32 kirjheti = 0xffffffffL
+Hk/HkGlobals.cpp,351,comopen,global,INT comopen [ MAX_PORTTI ]
+Hk/HkGlobals.cpp,352,comclose,global,int comclose [ MAX_PORTTI ]
+Hk/HkGlobals.cpp,353,lahec,global,INT lahec [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,354,lahkello,global,INT lahkello [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,355,lahkelloraja,global,INT lahkelloraja [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,356,lahkellovain,global,bool lahkellovain [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,361,comkesto,global,INT comkesto [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,362,nprtch,global,INT nprtch = 0
+Hk/HkGlobals.cpp,363,obfile,global,"INT obfile = - 1 , levypusk = 1"
+Hk/HkGlobals.cpp,363,levypusk,global,"INT obfile = - 1 , levypusk = 1"
+Hk/HkGlobals.cpp,364,fobfile,global,FILE * fobfile
+Hk/HkGlobals.cpp,365,inbens,global,INT inbens
+Hk/HkGlobals.cpp,366,inbseur,global,INT inbseur
+Hk/HkGlobals.cpp,367,cjens,global,INT32 cjens [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,368,cjseur,global,INT32 cjseur [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,369,lah_alku,global,INT lah_alku [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,370,lah_vaihto,global,INT lah_vaihto [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,372,lahcom,global,INT lahcom [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,373,vastcom,global,INT vastcom [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,374,yhteys_on,global,INT yhteys_on [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,375,lah_tiedostot,global,int lah_tiedostot [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,376,lahkaikkitied,global,bool lahkaikkitied
+Hk/HkGlobals.cpp,377,dcom,global,INT dcom = 0
+Hk/HkGlobals.cpp,378,jonokynnys,global,int jonokynnys = 5
+Hk/HkGlobals.cpp,379,monitoriLkm,global,int monitoriLkm
+Hk/HkGlobals.cpp,380,virhesanoma,global,virhesantp virhesanoma
+Hk/HkGlobals.cpp,381,taulu_com,global,"INT taulu_com , taulu_irq , taulu_addr , taulu_baud = 7"
+Hk/HkGlobals.cpp,381,taulu_irq,global,"INT taulu_com , taulu_irq , taulu_addr , taulu_baud = 7"
+Hk/HkGlobals.cpp,381,taulu_addr,global,"INT taulu_com , taulu_irq , taulu_addr , taulu_baud = 7"
+Hk/HkGlobals.cpp,381,taulu_baud,global,"INT taulu_com , taulu_irq , taulu_addr , taulu_baud = 7"
+Hk/HkGlobals.cpp,383,bytecount,global,"int bytecount , bytecountmax = 2000"
+Hk/HkGlobals.cpp,383,bytecountmax,global,"int bytecount , bytecountmax = 2000"
+Hk/HkGlobals.cpp,384,ennakoi,global,INT ennakoi
+Hk/HkGlobals.cpp,385,aikaero,global,int aikaero [ NREGNLY + 1 ]
+Hk/HkGlobals.cpp,386,aikajono,global,aikajonotp * aikajono [ MAXJONO ]
+Hk/HkGlobals.cpp,387,muut_time,global,int muut_time
+Hk/HkGlobals.cpp,388,od_fl,global,"INT od_fl , lajatfl , akttm , taustaaika , yhtjonot"
+Hk/HkGlobals.cpp,388,lajatfl,global,"INT od_fl , lajatfl , akttm , taustaaika , yhtjonot"
+Hk/HkGlobals.cpp,388,akttm,global,"INT od_fl , lajatfl , akttm , taustaaika , yhtjonot"
+Hk/HkGlobals.cpp,388,taustaaika,global,"INT od_fl , lajatfl , akttm , taustaaika , yhtjonot"
+Hk/HkGlobals.cpp,388,yhtjonot,global,"INT od_fl , lajatfl , akttm , taustaaika , yhtjonot"
+Hk/HkGlobals.cpp,389,odota,global,INT odota
+Hk/HkGlobals.cpp,390,od_aika,global,INT32 od_aika
+Hk/HkGlobals.cpp,391,modif,global,INT modif [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,392,tlsmuutos,global,char tlsmuutos [ MAXSARJALUKU ] [ VALUKU + 1 ]
+Hk/HkGlobals.cpp,393,timefl,global,INT timefl
+Hk/HkGlobals.cpp,394,n_lisaa,global,INT n_lisaa = 1000
+Hk/HkGlobals.cpp,395,kunto,global,"INT kunto , seurvapaa = 8000"
+Hk/HkGlobals.cpp,395,seurvapaa,global,"INT kunto , seurvapaa = 8000"
+Hk/HkGlobals.cpp,396,loki,global,"INT loki , lokiTCP"
+Hk/HkGlobals.cpp,396,lokiTCP,global,"INT loki , lokiTCP"
+Hk/HkGlobals.cpp,397,hLoki,global,HANDLE hLoki
+Hk/HkGlobals.cpp,398,com_ajat,global,INT com_ajat [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,399,rukkausvali,global,"INT32 rukkausvali , rukkaa"
+Hk/HkGlobals.cpp,399,rukkaa,global,"INT32 rukkausvali , rukkaa"
+Hk/HkGlobals.cpp,400,edista,global,INT edista
+Hk/HkGlobals.cpp,401,ajat_on,global,"INT ajat_on , status_on = 1"
+Hk/HkGlobals.cpp,401,status_on,global,"INT ajat_on , status_on = 1"
+Hk/HkGlobals.cpp,402,kuulpiste,global,INT kuulpiste
+Hk/HkGlobals.cpp,403,pakotalaika,global,INT pakotalaika
+Hk/HkGlobals.cpp,404,pakotalaikaraja,global,INT pakotalaikaraja
+Hk/HkGlobals.cpp,405,html_sail_nimi,global,INT html_sail_nimi
+Hk/HkGlobals.cpp,407,nyilmt,global,INT nyilmt
+Hk/HkGlobals.cpp,408,nytulost,global,INT nytulost
+Hk/HkGlobals.cpp,410,sjfl,global,INT sjfl [ MAXSARJALUKU + MAXYHD ]
+Hk/HkGlobals.cpp,411,jalku,global,INT jalku [ MAXSARJALUKU + MAXYHD ] [ 11 + VALUKU ]
+Hk/HkGlobals.cpp,412,va_kello,global,INT va_kello = 1
+Hk/HkGlobals.cpp,413,va_kuollut,global,INT va_kuollut = 5 * SEK
+Hk/HkGlobals.cpp,414,yhtlahto,global,INT yhtlahto
+Hk/HkGlobals.cpp,416,vaikavert,global,"INT vaikavert , ilmtunt = 1 , vaajat"
+Hk/HkGlobals.cpp,416,ilmtunt,global,"INT vaikavert , ilmtunt = 1 , vaajat"
+Hk/HkGlobals.cpp,416,vaajat,global,"INT vaikavert , ilmtunt = 1 , vaajat"
+Hk/HkGlobals.cpp,419,tv_fl,global,"INT tv_fl , tv_test"
+Hk/HkGlobals.cpp,419,tv_test,global,"INT tv_fl , tv_test"
+Hk/HkGlobals.cpp,420,tv_com,global,"INT tv_com , tv_baud = 5"
+Hk/HkGlobals.cpp,420,tv_baud,global,"INT tv_com , tv_baud = 5"
+Hk/HkGlobals.cpp,421,cn_tv,global,int cn_tv
+Hk/HkGlobals.cpp,423,lukum_fl,global,INT lukum_fl = 1
+Hk/HkGlobals.cpp,424,form,global,"char form [ 65 * ( MAXRIVI - 6 ) ] , kehys1 [ 15 * ( MAXRIVI - 3 ) ]"
+Hk/HkGlobals.cpp,424,kehys1,global,"char form [ 65 * ( MAXRIVI - 6 ) ] , kehys1 [ 15 * ( MAXRIVI - 3 ) ]"
+Hk/HkGlobals.cpp,425,aika_int_mask,global,char aika_int_mask = 17
+Hk/HkGlobals.cpp,426,aika_esto,global,INT aika_esto = 2
+Hk/HkGlobals.cpp,427,kello_esto,global,INT kello_esto = 0
+Hk/HkGlobals.cpp,428,vainoletus,global,INT vainoletus
+Hk/HkGlobals.cpp,429,maxntime,global,INT maxntime
+Hk/HkGlobals.cpp,430,mxtime,global,INT mxtime [ MAXJONO ]
+Hk/HkGlobals.cpp,431,ajanottofl,global,"INT ajanottofl = - 1 , sail_ajat"
+Hk/HkGlobals.cpp,431,sail_ajat,global,"INT ajanottofl = - 1 , sail_ajat"
+Hk/HkGlobals.cpp,433,syotto,global,INT syotto
+Hk/HkGlobals.cpp,435,aika_com,global,INT aika_com = 0
+Hk/HkGlobals.cpp,436,com_aika,global,INT com_aika
+Hk/HkGlobals.cpp,439,regnly,global,INT regnly [ NREGNLY ]
+Hk/HkGlobals.cpp,440,regnlyhetki,global,int regnlyhetki [ NREGNLY ]
+Hk/HkGlobals.cpp,441,zebraOffsetDs,global,int zebraOffsetDs [ NREGNLY ]
+Hk/HkGlobals.cpp,442,zebraOffsetState,global,int zebraOffsetState [ NREGNLY ]
+Hk/HkGlobals.cpp,443,gpoActive,global,int gpoActive [ NREGNLY ]
+Hk/HkGlobals.cpp,444,gpoOnMs,global,int gpoOnMs [ NREGNLY ]
+Hk/HkGlobals.cpp,445,port_regnly,global,INT port_regnly [ NREGNLY ]
+Hk/HkGlobals.cpp,446,regnly_open,global,int regnly_open [ NREGNLY ]
+Hk/HkGlobals.cpp,447,cn_regnly,global,INT cn_regnly [ 2 * NREGNLY ]
+Hk/HkGlobals.cpp,448,racpisteet,global,INT racpisteet
+Hk/HkGlobals.cpp,449,estaylim,global,"INT estaylim , ylimraja , estaneg , uusinaika , samapisteraja = 10 * SEK"
+Hk/HkGlobals.cpp,449,ylimraja,global,"INT estaylim , ylimraja , estaneg , uusinaika , samapisteraja = 10 * SEK"
+Hk/HkGlobals.cpp,449,estaneg,global,"INT estaylim , ylimraja , estaneg , uusinaika , samapisteraja = 10 * SEK"
+Hk/HkGlobals.cpp,449,uusinaika,global,"INT estaylim , ylimraja , estaneg , uusinaika , samapisteraja = 10 * SEK"
+Hk/HkGlobals.cpp,449,samapisteraja,global,"INT estaylim , ylimraja , estaneg , uusinaika , samapisteraja = 10 * SEK"
+Hk/HkGlobals.cpp,451,erataul,global,eratp * erataul
+Hk/HkGlobals.cpp,456,swimlaji,global,INT swimlaji = 0
+Hk/HkGlobals.cpp,457,aika_tunnus_lkm,global,INT aika_tunnus_lkm = sizeof ( aika_tunnus [ 0 ] ) / sizeof ( aika_tunnus [ 0 ] [ 0 ] )
+Hk/HkGlobals.cpp,458,lahdepisteet,global,lahdepsttp * lahdepisteet [ MAXSARJALUKU + 1 ]
+Hk/HkGlobals.cpp,459,lahdejonot,global,lahdepsttp * lahdejonot [ MAXSARJALUKU + 1 ]
+Hk/HkGlobals.cpp,460,kello_baud,global,"INT kello_baud , regnly_no [ NREGNLY ] , kello_bits = 8"
+Hk/HkGlobals.cpp,460,regnly_no,global,"INT kello_baud , regnly_no [ NREGNLY ] , kello_bits = 8"
+Hk/HkGlobals.cpp,460,kello_bits,global,"INT kello_baud , regnly_no [ NREGNLY ] , kello_bits = 8"
+Hk/HkGlobals.cpp,461,sak_com,global,"INT sak_com , sak_baud = 8 , sak_laji = 2"
+Hk/HkGlobals.cpp,461,sak_baud,global,"INT sak_com , sak_baud = 8 , sak_laji = 2"
+Hk/HkGlobals.cpp,461,sak_laji,global,"INT sak_com , sak_baud = 8 , sak_laji = 2"
+Hk/HkGlobals.cpp,462,od_regnly,global,INT od_regnly = 10
+Hk/HkGlobals.cpp,463,maxero,global,INT32 maxero = 1000000L
+Hk/HkGlobals.cpp,464,kerro_regnly,global,INT kerro_regnly
+Hk/HkGlobals.cpp,465,usb_regnly,global,int usb_regnly [ NREGNLY ]
+Hk/HkGlobals.cpp,466,pyyntoviive,global,INT pyyntoviive = 200
+Hk/HkGlobals.cpp,467,aikaTCPstatus,global,int aikaTCPstatus
+Hk/HkGlobals.cpp,471,tv_com,global,"int tv_com = 1 , tv_baud = 7"
+Hk/HkGlobals.cpp,471,tv_baud,global,"int tv_com = 1 , tv_baud = 7"
+Hk/HkGlobals.cpp,472,tv_pty,global,"int tv_pty = 2 , tv_bits = 2 , tv_fc = 1"
+Hk/HkGlobals.cpp,472,tv_bits,global,"int tv_pty = 2 , tv_bits = 2 , tv_fc = 1"
+Hk/HkGlobals.cpp,472,tv_fc,global,"int tv_pty = 2 , tv_bits = 2 , tv_fc = 1"
+Hk/HkGlobals.cpp,473,tv_open,global,"int tv_open , suoracom , tv_test"
+Hk/HkGlobals.cpp,473,suoracom,global,"int tv_open , suoracom , tv_test"
+Hk/HkGlobals.cpp,473,tv_test,global,"int tv_open , suoracom , tv_test"
+Hk/HkGlobals.cpp,476,kl_kaava,global,INT32 kl_kaava = 20000
+Hk/HkGlobals.cpp,477,kl_ohjeaika,global,INT32 kl_ohjeaika
+Hk/HkGlobals.cpp,478,kl_x,global,"INT kl_x [ KL_LUKU ] , kl_y [ KL_LUKU ]"
+Hk/HkGlobals.cpp,478,kl_y,global,"INT kl_x [ KL_LUKU ] , kl_y [ KL_LUKU ]"
+Hk/HkGlobals.cpp,479,osarja,global,INT osarja [ 4 ] [ MAXSARJALUKU ]
+Hk/HkGlobals.cpp,482,era_akt,global,INT16 era_akt
+Hk/HkGlobals.cpp,483,era_lahdot,global,INT era_lahdot
+Hk/HkGlobals.cpp,498,emitjono,global,int emitjono
+Hk/HkGlobals.cpp,499,elahtojono,global,int elahtojono = - 1
+Hk/HkGlobals.cpp,500,tunnjono,global,int tunnjono = - 1
+Hk/HkGlobals.cpp,502,bdg_kno,global,bdg_kno_tp * bdg_kno
+Hk/HkGlobals.cpp,503,emitfl,global,INT emitfl
+Hk/HkGlobals.cpp,504,nbadge,global,INT nbadge
+Hk/HkGlobals.cpp,505,emitloki,global,INT emitloki
+Hk/HkGlobals.cpp,506,emitjarr,global,INT * emitjarr [ 2 ]
+Hk/HkGlobals.cpp,507,emittime,global,INT emittime
+Hk/HkGlobals.cpp,508,pollaa,global,"int pollaa , TCPpoll [ NREGNLY + 1 ]"
+Hk/HkGlobals.cpp,508,TCPpoll,global,"int pollaa , TCPpoll [ NREGNLY + 1 ]"
+Hk/HkGlobals.cpp,509,ohitatoisto,global,INT ohitatoisto = - 1
+Hk/HkGlobals.cpp,510,siritreuna,global,INT siritreuna = 1
+Hk/HkGlobals.cpp,511,siritloki,global,bool siritloki = false
+Hk/HkGlobals.cpp,512,siritsync,global,bool siritsync = false
+Hk/HkGlobals.cpp,513,sirithead,global,"int sirithead , sirittail"
+Hk/HkGlobals.cpp,513,sirittail,global,"int sirithead , sirittail"
+Hk/HkGlobals.cpp,514,siritbuf,global,wchar_t siritbuf [ SIRITBUFLEN + 1 ]
+Hk/HkGlobals.cpp,515,muutoskysely,global,int muutoskysely = 1
+Hk/HkGlobals.cpp,516,valonaytto,global,int valonaytto
+Hk/HkGlobals.cpp,517,com_emit,global,INT com_emit [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,518,emitfile,global,int emitfile
+Hk/HkGlobals.cpp,519,emitfname,global,"wchar_t emitfname [ 13 ] = L "" """
+Hk/HkGlobals.cpp,520,emithead,global,"INT emithead , emithead2 , annaseur"
+Hk/HkGlobals.cpp,520,emithead2,global,"INT emithead , emithead2 , annaseur"
+Hk/HkGlobals.cpp,520,annaseur,global,"INT emithead , emithead2 , annaseur"
+Hk/HkGlobals.cpp,521,com_emitva,global,INT com_emitva [ MAX_LAHPORTTI ]
+Hk/HkGlobals.cpp,522,femitfile,global,FILE * femitfile
+Hk/HkGlobals.cpp,523,estaemittoisto,global,INT estaemittoisto = 1
+Hk/HkGlobals.cpp,524,sallisummavirhe,global,"int sallisummavirhe , lukutoisto = 2"
+Hk/HkGlobals.cpp,524,lukutoisto,global,"int sallisummavirhe , lukutoisto = 2"
+Hk/HkGlobals.cpp,525,emitajat,global,"int emitajat , lahtopoikk"
+Hk/HkGlobals.cpp,525,lahtopoikk,global,"int emitajat , lahtopoikk"
+Hk/HkGlobals.cpp,526,eNollausAjat,global,int eNollausAjat
+Hk/HkGlobals.cpp,527,emitaglisa,global,int emitaglisa = 1
+Hk/HkGlobals.cpp,528,emitvaloki,global,bool emitvaloki
+Hk/HkGlobals.cpp,529,CourseData,global,IOFCourseData CourseData
+Hk/HkGlobals.cpp,530,DeveloperMode,global,bool DeveloperMode = false
+Hk/HkGlobals.cpp,533,aktkilpailija,global,int aktkilpailija
+Hk/HkGlobals.cpp,534,kilpailijataulu,global,int kilpailijataulu = 1
+Hk/HkGlobals.cpp,535,tuomari_yht,global,int tuomari_yht
+Hk/HkGlobals.cpp,536,yhdistetty,global,int yhdistetty
+Hk/HkGlobals.cpp,537,aktkierros,global,int aktkierros
+Hk/HkGlobals.cpp,538,viimkierros,global,int viimkierros = 2
+Hk/HkGlobals.cpp,539,makipv,global,int makipv = - 1
+Hk/HkGlobals.cpp,540,nkierros,global,int nkierros [ MAXSARJALUKU ]
+Hk/HkGlobals.cpp,541,ptspermin,global,int ptspermin = 12
+Hk/HkGlobals.cpp,542,tuomariluku,global,int tuomariluku = 5
+Hk/HkGlobals.cpp,543,pituuskerroin,global,int pituuskerroin = 18
+Hk/HkGlobals.cpp,544,kpiste,global,int kpiste = 1200
+Hk/HkGlobals.cpp,545,pituuscomet,global,"int pituuscomet = 5 , nopeuscomet = 6"
+Hk/HkGlobals.cpp,545,nopeuscomet,global,"int pituuscomet = 5 , nopeuscomet = 6"
+Hk/HkGlobals.cpp,546,cometluku,global,int cometluku = 7
+Hk/HkGlobals.cpp,547,makiotsikko,global,wchar_t makiotsikko [ TAULU_RIVPIT + 1 ]
+Hk/HkGlobals.cpp,548,makihaku,global,int makihaku
+Hk/HkGlobals.cpp,549,autoselostaja,global,int autoselostaja
+Hk/HkGlobals.cpp,550,yhteispisteet,global,int yhteispisteet
+Hk/HkGlobals.cpp,551,yhdist_katto,global,int yhdist_katto = 4000
+Hk/HkGlobals.cpp,555,xSize,global,"INT16 xSize = 80 , ySize = 25"
+Hk/HkGlobals.cpp,555,ySize,global,"INT16 xSize = 80 , ySize = 25"
+Hk/HkGlobals.cpp,556,spoolfl,global,INT spoolfl = FALSE
+Hk/HkGlobals.cpp,557,aani,global,INT aani = 1
+Hk/HkGlobals.cpp,560,errMsgBox,global,INT16 errMsgBox = 0
+Hk/HkGlobals.cpp,565,tmaali,global,"int tmaali , maaliajat [ 10 ]"
+Hk/HkGlobals.cpp,565,maaliajat,global,"int tmaali , maaliajat [ 10 ]"
+Hk/HkGlobals.cpp,567,ajatfl,global,"INT ajatfl , ilmlainat , emitkd , relax"
+Hk/HkGlobals.cpp,567,ilmlainat,global,"INT ajatfl , ilmlainat , emitkd , relax"
+Hk/HkGlobals.cpp,567,emitkd,global,"INT ajatfl , ilmlainat , emitkd , relax"
+Hk/HkGlobals.cpp,567,relax,global,"INT ajatfl , ilmlainat , emitkd , relax"
+Hk/HkGlobals.cpp,568,monirata,global,int monirata = 2
+Hk/HkGlobals.cpp,569,emitsivu,global,int emitsivu
+Hk/HkGlobals.cpp,570,ohitaleimat,global,"INT ohitaleimat , eilavoin"
+Hk/HkGlobals.cpp,570,eilavoin,global,"INT ohitaleimat , eilavoin"
+Hk/HkGlobals.cpp,571,maalileimasin,global,int maalileimasin
+Hk/HkGlobals.cpp,572,rata,global,ratatp * rata
+Hk/HkGlobals.cpp,573,nrata,global,INT nrata
+Hk/HkGlobals.cpp,576,kaikki_ajat,global,int kaikki_ajat [ NREGNLY + 1 ]
+Hk/HkGlobals.cpp,577,vaadiaika,global,"int vaadiaika , esitark , esiluenta , vainpiste [ NREGNLY + 1 ] , luesuoraan"
+Hk/HkGlobals.cpp,577,esitark,global,"int vaadiaika , esitark , esiluenta , vainpiste [ NREGNLY + 1 ] , luesuoraan"
+Hk/HkGlobals.cpp,577,esiluenta,global,"int vaadiaika , esitark , esiluenta , vainpiste [ NREGNLY + 1 ] , luesuoraan"
+Hk/HkGlobals.cpp,577,vainpiste,global,"int vaadiaika , esitark , esiluenta , vainpiste [ NREGNLY + 1 ] , luesuoraan"
+Hk/HkGlobals.cpp,577,luesuoraan,global,"int vaadiaika , esitark , esiluenta , vainpiste [ NREGNLY + 1 ] , luesuoraan"
+Hk/HkGlobals.cpp,578,lukijalahde,global,int lukijalahde [ NREGNLY ]
+Hk/HkGlobals.cpp,579,luesuoraanviive,global,INT luesuoraanviive = 20
+Hk/HkGlobals.cpp,580,autosarja,global,"INT autosarja , autorata , nesitt , nesit [ MAXSARJALUKU + MAXYHD ]"
+Hk/HkGlobals.cpp,580,autorata,global,"INT autosarja , autorata , nesitt , nesit [ MAXSARJALUKU + MAXYHD ]"
+Hk/HkGlobals.cpp,580,nesitt,global,"INT autosarja , autorata , nesitt , nesit [ MAXSARJALUKU + MAXYHD ]"
+Hk/HkGlobals.cpp,580,nesit,global,"INT autosarja , autorata , nesitt , nesit [ MAXSARJALUKU + MAXYHD ]"
+Hk/HkGlobals.cpp,581,maalitp,global,wchar_t maalitp [ 10 ]
+Hk/HkGlobals.cpp,582,emitptr,global,INT emitptr = - 1
+Hk/HkGlobals.cpp,583,emitpos,global,UINT * emitpos
+Hk/HkGlobals.cpp,584,autorap,global,"INT autorap , comautorap"
+Hk/HkGlobals.cpp,584,comautorap,global,"INT autorap , comautorap"
+Hk/HkGlobals.cpp,585,autorapsrj,global,wchar_t autorapsrj [ MAXSARJALUKU ]
+Hk/HkGlobals.cpp,586,ennakko,global,INT ennakko
+Hk/HkGlobals.cpp,587,viimtark,global,wchar_t viimtark
+Hk/HkGlobals.cpp,588,autokilp,global,INT autokilp
+Hk/HkGlobals.cpp,589,seurkrivi,global,INT seurkrivi
+Hk/HkGlobals.cpp,590,selaus,global,INT selaus
+Hk/HkGlobals.cpp,591,lahdepistehaku,global,INT lahdepistehaku = 0
+Hk/HkGlobals.cpp,592,lkmThreadOn,global,int lkmThreadOn
+Hk/HkGlobals.cpp,594,kilpparam,global,kilpparamtp kilpparam
+Hk/HkGlobals.cpp,595,rataTunnistus,global,bool rataTunnistus = true
+Hk/HkGlobals.cpp,598,in_data,global,int in_data
+Hk/HkGlobals.cpp,602,fnameRacelist,global,"wchar_t fnameRacelist [ ] = L "" """
+Hk/HkGlobals.cpp,603,seuraTiedNm,global,"wchar_t seuraTiedNm [ 200 ] = L "" """
+Hk/HkGlobals.cpp,604,KuntoMaali,global,int KuntoMaali = 0
+Hk/HkGlobals.cpp,606,pvparam,global,pvparamtp pvparam [ N_PV ]
+Hk/HkGlobals.cpp,607,NimiHTHaku,global,int NimiHTHaku = - 1
+Hk/HkGlobals.cpp,608,seurahaku,global,int seurahaku = - 1
+Hk/HkGlobals.cpp,609,vahvistaaina,global,bool vahvistaaina = true
+Hk/HkGlobals.cpp,610,emitanal_fl,global,int emitanal_fl
+Hk/HkGlobals.cpp,611,origemvabadge,global,bool origemvabadge = false
+Hk/HkGlobals.cpp,612,korRaja,global,int ( * korRaja ) [ 2 ]
+Hk/HkGlobals.cpp,613,vipLaji,global,wchar_t * vipLaji
+Hk/HkGlobals.cpp,617,bibsiirtoalue,global,int bibsiirtoalue = 8000
+Hk/HkGlobals.cpp,619,inhttpHaku,global,int inhttpHaku
+Hk/HkGlobals.cpp,669,inkirjSQLThread,global,bool inkirjSQLThread = false
+Hk/HkGlobals.cpp,671,testi,global,int testi
+Hk/HkGlobals.cpp,674,dbgtofile,global,int dbgtofile
+Hk/HkIV.cpp,100,esto,static,static int esto = FALSE
+Hk/HkIV.cpp,101,htime,static,static int htime [ MAXJONO ]
+Hk/HkIV.cpp,102,siritopen,global,int siritopen [ NREGNLY ]
+Hk/HkIV.cpp,105,aika_head,global,"int aika_head , aika_tail"
+Hk/HkIV.cpp,105,aika_tail,global,"int aika_head , aika_tail"
+Hk/HkIV.cpp,106,int_aika,global,INT32 int_aika [ AIKA_LUKU ]
+Hk/HkIV.cpp,107,r_no_file,global,int r_no_file
+Hk/HkIV.cpp,116,aika_syy,global,int aika_syy [ AIKA_LUKU ]
+Hk/HkIV.cpp,120,nivkeys,global,int nivkeys = 1
+Hk/HkIV.cpp,142,bdg_t,static,static bdg_t_tp bdg_t [ N_BDG_T ]
+Hk/HkIV.cpp,143,pkg_alku,global,"UINT32 pkg_alku [ NREGNLY ] , pkg_loppu [ NREGNLY ]"
+Hk/HkIV.cpp,143,pkg_loppu,global,"UINT32 pkg_alku [ NREGNLY ] , pkg_loppu [ NREGNLY ]"
+Hk/HkIV.cpp,144,lue_rno,global,INT lue_rno
+Hk/HkIV.cpp,149,viim_regnly,global,INT32 viim_regnly
+Hk/HkIV.cpp,151,r_msg_len,global,INT r_msg_len [ NREGNLY ]
+Hk/HkIV.cpp,152,ratakno,static,static INT ratakno [ 8 ]
+Hk/HkIV.cpp,374,lahdejonohaku,global,INT lahdejonohaku = 0
+Hk/HkIV.cpp,741,etls,static,static e_tulostp * etls
+Hk/HkIV.cpp,742,etls_head,static,"static int etls_head , etls_tail"
+Hk/HkIV.cpp,742,etls_tail,static,"static int etls_head , etls_tail"
+Hk/HkIV.cpp,743,etls_CriticalSection,static,static CRITICAL_SECTION etls_CriticalSection
+Hk/HkIV.cpp,878,emitinfile,global,FILE * emitinfile
+Hk/HkIV.cpp,1155,in_pros_emit,static,static int in_pros_emit
+Hk/HkIV.cpp,1933,gates,global,gatetp gates [ 10 ]
+Hk/HkIV.cpp,3104,gaz_com,global,"INT gaz_com , gaz_irq , gaz_addr , gazvaihe"
+Hk/HkIV.cpp,3104,gaz_irq,global,"INT gaz_com , gaz_irq , gaz_addr , gazvaihe"
+Hk/HkIV.cpp,3104,gaz_addr,global,"INT gaz_com , gaz_irq , gaz_addr , gazvaihe"
+Hk/HkIV.cpp,3104,gazvaihe,global,"INT gaz_com , gaz_irq , gaz_addr , gazvaihe"
+Hk/HkIV.cpp,3105,gaz_kno,static,"static INT gaz_kno [ MAXGAZ ] , nayta_gaz = 1 , gaztapptr = 9 , gazviive = 100"
+Hk/HkIV.cpp,3105,nayta_gaz,static,"static INT gaz_kno [ MAXGAZ ] , nayta_gaz = 1 , gaztapptr = 9 , gazviive = 100"
+Hk/HkIV.cpp,3105,gaztapptr,static,"static INT gaz_kno [ MAXGAZ ] , nayta_gaz = 1 , gaztapptr = 9 , gazviive = 100"
+Hk/HkIV.cpp,3105,gazviive,static,"static INT gaz_kno [ MAXGAZ ] , nayta_gaz = 1 , gaztapptr = 9 , gazviive = 100"
+Hk/HkIV.cpp,3106,gaz_comopen,global,"int gaz_comopen , cn_gaz"
+Hk/HkIV.cpp,3106,cn_gaz,global,"int gaz_comopen , cn_gaz"
+Hk/HkIV.cpp,3107,gazline,static,"static char gazline [ MAXGAZ ] [ 26 ] , gazline0 [ MAXGAZ ] [ 26 ]"
+Hk/HkIV.cpp,3107,gazline0,static,"static char gazline [ MAXGAZ ] [ 26 ] , gazline0 [ MAXGAZ ] [ 26 ]"
+Hk/HkIV.cpp,3108,gazrata,global,"INT gazrata [ MAXGAZ ] , gazpiste [ MAXGAZ ] , gazluku = 1"
+Hk/HkIV.cpp,3108,gazpiste,global,"INT gazrata [ MAXGAZ ] , gazpiste [ MAXGAZ ] , gazluku = 1"
+Hk/HkIV.cpp,3108,gazluku,global,"INT gazrata [ MAXGAZ ] , gazpiste [ MAXGAZ ] , gazluku = 1"
+Hk/HkIV.cpp,3115,gaztap,static,static gaztaptp gaztap [ 10 ]
+Hk/HkIV.cpp,3196,hgazThread,static,static HTHREAD hgazThread
+Hk/HkIV.cpp,3197,gazline1,static,static char gazline1 [ 26 ]
+Hk/HkIV.cpp,3198,ingazThread,static,static int ingazThread
+Hk/HkIV.cpp,3374,varasti,global,int varasti [ MAXSARJALUKU ] [ VALUKU + 1 ]
+Hk/HkIV.cpp,3375,port_autova,global,"INT port_autova , autova_open"
+Hk/HkIV.cpp,3375,autova_open,global,"INT port_autova , autova_open"
+Hk/HkIV.cpp,3376,t0_autova,global,INT32 t0_autova
+Hk/HkInit.cpp,50,RaporttiHak,global,wchar_t RaporttiHak [ 202 ]
+Hk/HkInit.cpp,52,setySize,global,INT16 setySize = 50
+Hk/HkInit.cpp,53,sarjano,global,INT32 sarjano = 3100010L
+Hk/HkInit.cpp,54,snostr,static,static wchar_t snostr [ 16 ]
+Hk/HkInit.cpp,55,tarkkuusparam,global,INT tarkkuusparam
+Hk/HkInit.cpp,56,tarra1,static,"static INT tarra1 , muotoilufl , ll_muotoilufl , cfgparam"
+Hk/HkInit.cpp,56,muotoilufl,static,"static INT tarra1 , muotoilufl , ll_muotoilufl , cfgparam"
+Hk/HkInit.cpp,56,ll_muotoilufl,static,"static INT tarra1 , muotoilufl , ll_muotoilufl , cfgparam"
+Hk/HkInit.cpp,56,cfgparam,static,"static INT tarra1 , muotoilufl , ll_muotoilufl , cfgparam"
+Hk/HkInit.cpp,57,comdir,static,static wchar_t comdir [ MAX_PORTTI ]
+Hk/HkInit.cpp,58,merkit,global,wchar_t merkit = ' '
+Hk/HkInit.cpp,59,cfgfilename,static,"static wchar_t cfgfilename [ 201 ] = L "" "" , autostr [ 25 ] = L "" """
+Hk/HkInit.cpp,59,autostr,static,"static wchar_t cfgfilename [ 201 ] = L "" "" , autostr [ 25 ] = L "" """
+Hk/HkInit.cpp,61,korkeat,static,static INT korkeat = FALSE
+Hk/HkInit.cpp,62,star,static,static INT star = FALSE
+Hk/HkInit.cpp,64,portparam,global,int portparam [ MAX_PORTTI ]
+Hk/HkInit.cpp,65,aikakorjaus,global,int aikakorjaus [ MAXJONO ]
+Hk/HkInit.cpp,66,nopeuta,static,static INT nopeuta = 0
+Hk/HkInit.cpp,84,ikkunaots,global,wchar_t ikkunaots [ 61 ]
+Hk/HkInit.cpp,85,HenkTKantaNm,global,"wchar_t HenkTKantaNm [ 200 ] = L "" """
+Hk/HkInit.cpp,93,tunn_srj_nimi,static,static wchar_t tunn_srj_nimi [ 12 ]
+Hk/HkInit.cpp,550,aptr,global,wchar_t * aptr
+Hk/HkInitVanha.cpp,22,std,global,﻿ using namespace std
+Hk/HkInitVanha.cpp,142,kilpparam_v,global,kilpparamtp_v kilpparam_v
+Hk/HkInitVanha.cpp,143,lseuramax,global,int lseuramax = 0
+Hk/HkInitVanha.cpp,144,valuku_vanha,global,int valuku_vanha
+Hk/HkInitVanha.cpp,161,AnsiString,global,"map < AnsiString , cl_knt > kentat"
+Hk/HkInitVanha.cpp,161,kentat,global,"map < AnsiString , cl_knt > kentat"
+Hk/HkInitVanha.cpp,500,datf2v,static,static datafile datf2v
+Hk/HkIx.cpp,34,njarjpst,static,static int njarjpst
+Hk/HkMuotoilu.cpp,564,tulosmuot,global,tulosmuottp tulosmuot
+Hk/HkMuotoilu.cpp,565,filetulosmuot,global,tulosmuottp filetulosmuot
+Hk/HkMuotoilu.cpp,566,mobiltulosmuot,global,tulosmuottp mobiltulosmuot
+Hk/HkMuotoilu.cpp,568,init_fnt,global,wchar_t init_fnt [ PRKOODIPIT + 1 ]
+Hk/HkMuotoilu.cpp,569,pots_on,global,wchar_t pots_on [ PRKOODIPIT + 1 ]
+Hk/HkMuotoilu.cpp,570,pots_pois,global,wchar_t pots_pois [ PRKOODIPIT + 1 ]
+Hk/HkMuotoilu.cpp,571,aots_on,global,wchar_t aots_on [ PRKOODIPIT + 1 ]
+Hk/HkMuotoilu.cpp,572,aots_pois,global,wchar_t aots_pois [ PRKOODIPIT + 1 ]
+Hk/HkMuotoilu.cpp,573,n_prtflds,global,INT n_prtflds = sizeof ( prtflds ) / sizeof ( FldFrmtTp ) - 1
+Hk/HkMuotoilu.cpp,574,n_prtfldsm,global,INT n_prtfldsm = sizeof ( prtfldsm ) / sizeof ( FldFrmtTp ) - 1
+Hk/HkMuotoilu.cpp,575,n_prtflds1,global,INT n_prtflds1 = sizeof ( prtflds1 ) / sizeof ( FldFrmtTp ) - 1
+Hk/HkMuotoilu.cpp,576,n_dspflds,global,int n_dspflds = sizeof ( dspflds ) / sizeof ( FldFrmtTp ) - 1
+Hk/HkMuotoilu.cpp,577,n_fileflds,global,int n_fileflds = sizeof ( fileflds ) / sizeof ( FldFrmtTp ) - 1
+Hk/HkMuotoilu.cpp,578,n_mobilflds,global,int n_mobilflds = sizeof ( mobilflds ) / sizeof ( FldFrmtTp ) - 1
+Hk/HkMuotoilu.cpp,580,paaots,global,"wchar_t paaots [ 125 ] = L "" """
+Hk/HkMuotoilu.cpp,581,sarjaots,global,"wchar_t sarjaots [ 125 ] = L "" """
+Hk/HkMuotoilu.cpp,582,alaots,global,"wchar_t alaots [ 141 ] = L "" """
+Hk/HkMuotoilu.cpp,586,initfont_emrap,global,"wchar_t initfont_emrap [ PRKOODIPIT + 1 ] = L "" """
+Hk/HkMuotoilu.cpp,588,initfont_emva,global,"wchar_t initfont_emva [ PRKOODIPIT + 1 ] = L "" """
+Hk/HkMuotoilu.cpp,591,valinelendef,global,"INT valinelendef , vapagelendef , vapageskip , tarkrappageskip"
+Hk/HkMuotoilu.cpp,591,vapagelendef,global,"INT valinelendef , vapagelendef , vapageskip , tarkrappageskip"
+Hk/HkMuotoilu.cpp,591,vapageskip,global,"INT valinelendef , vapagelendef , vapageskip , tarkrappageskip"
+Hk/HkMuotoilu.cpp,591,tarkrappageskip,global,"INT valinelendef , vapagelendef , vapageskip , tarkrappageskip"
+Hk/HkMuotoilu.cpp,592,valinelen,global,"INT valinelen = 75 , vapagelen = 55"
+Hk/HkMuotoilu.cpp,592,vapagelen,global,"INT valinelen = 75 , vapagelen = 55"
+Hk/HkMuotoilu.cpp,698,cssstr,static,"static wchar_t cssstr [ ] = L "" """
+Hk/HkMuotoilu.cpp,2004,nFrmTags,static,static int nFrmTags = sizeof ( FrmTags ) / sizeof ( FrmTags [ 0 ] )
+Hk/HkSak.cpp,43,sak_msglen,static,"static INT sak_msglen = 9 , paikat [ MAXPAIKKA ]"
+Hk/HkSak.cpp,43,paikat,static,"static INT sak_msglen = 9 , paikat [ MAXPAIKKA ]"
+Hk/HkSak.cpp,46,cn_sakko,static,static int cn_sakko
+Hk/HkSak.cpp,47,err_kno,static,"static int err_kno , err_paikka"
+Hk/HkSak.cpp,47,err_paikka,static,"static int err_kno , err_paikka"
+Hk/HkSak.cpp,48,paikkafl,static,static FILE * paikkafl
+Hk/HkTV.cpp,40,tv_file,global,FILE * tv_file
+Hk/HkTV.cpp,41,tv_val,global,int tv_val [ MAXSARJALUKU ] [ VALUKU + 3 ]
+Hk/HkTV.cpp,103,rivi,parse-error,"if ( er ) { writeerror_w ( L "" "" , 0 ) ; tv_com = 0 ; } } static void near lah_tv ( kilptietue * kilp , INT piste , INT sj ) { char rivi [ 26 ] , ast [ 16 ] , t"
+Hk/HkTV.cpp,103,ast,parse-error,"if ( er ) { writeerror_w ( L "" "" , 0 ) ; tv_com = 0 ; } } static void near lah_tv ( kilptietue * kilp , INT piste , INT sj ) { char rivi [ 26 ] , ast [ 16 ] , t"
+Hk/HkTV.cpp,103,tulkp,parse-error,"if ( er ) { writeerror_w ( L "" "" , 0 ) ; tv_com = 0 ; } } static void near lah_tv ( kilptietue * kilp , INT piste , INT sj ) { char rivi [ 26 ] , ast [ 16 ] , t"
+Hk/HkTV.cpp,104,edkarki,static,static INT32 edkarki
+Hk/HkTV.cpp,105,n,global,"INT n , piste2"
+Hk/HkTV.cpp,105,piste2,global,"INT n , piste2"
+Hk/HkTV.cpp,107,edsrj,static,static INT edsrj = - 1
+Hk/HkTV.cpp,108,kilp0,global,kilptietue kilp0
+Hk/HkTV.cpp,113,piste2,global,piste2 = piste
+Hk/HkTV.cpp,116,piste2,parse-error,if ( piste > 0 ) piste2 = tv_val [ kilp -> Sarja ( ) ] [ piste + 1 ]
+Hk/HkTulostus.cpp,33,yhttl,global,int yhttl = 0
+Hk/HkTulostus.cpp,38,lisatxt,global,lisatxttp lisatxt [ 4 ]
+Hk/HkTulostus.cpp,72,PageFieldCount,global,UINT PageFieldCount = sizeof ( PageField ) / sizeof ( PageField [ 0 ] )
+Hk/HkTulostus.cpp,75,palk,global,wchar_t palk [ MAXSARJALUKU + MAXYHD ]
+Hk/HkTulostus.cpp,76,lastpos,static,static INT lastpos
+Hk/HkTulostus.cpp,77,TiedRivi,static,static int TiedRivi
+Hk/HkTulostus.cpp,78,wtitle,static,"static wchar_t wtitle [ 120 ] = L "" """
+Hk/HkTulostus.cpp,79,wheader,static,"static wchar_t wheader [ 120 ] = L "" """
+Hk/HkTulostus.cpp,81,ssltlsfl,global,int ssltlsfl = 1
+Hk/HkTulostus.cpp,82,lahetacr,global,INT lahetacr = 1
+Hk/HkTulostus.cpp,83,potsfl,global,INT potsfl = FALSE
+Hk/HkTulostus.cpp,84,htmlpitkat,global,INT htmlpitkat
+Hk/HkTulostus.cpp,85,tulera,global,int tulera
+Hk/HkTulostus.cpp,86,tul_tied_nimi,global,"wchar_t tul_tied_nimi [ 80 ] = L "" """
+Hk/HkTulostus.cpp,87,karkikierr,static,static int karkikierr = 0
+Hk/HkTulostus.cpp,88,TLpKarki,static,static int TLpKarki = 0
+Hk/HkTulostus.cpp,97,srix,static,static srixtype * srix
+Hk/HkTulostus.cpp,98,sr_nimet,static,static wchar_t * sr_nimet
+Hk/HkTulostus.cpp,100,seuranimi,global,wchar_t seuranimi [ SEURALISTA ] [ LSEURA + 1 ]
+Hk/HkTulostus.cpp,142,piiriluku,global,int piiriluku = sizeof ( piirinimi ) / sizeof ( piirinimi [ 0 ] )
+Hk/HkTulostus.cpp,144,piirifl,global,INT piirifl [ 200 ]
+Hk/HkTulostus.cpp,159,seurat,global,sraluettp * seurat
+Hk/HkTulostus.cpp,1084,sarjayhdfl,global,int sarjayhdfl
+Hk/HkTulostus.cpp,1085,yhdseur,global,INT * yhdseur [ VALUKU + 3 ]
+Hk/HkTulostus.cpp,4024,tauluval,static,static wchar_t tauluval = L ' '
+Hk/HkTulostus.cpp,6834,htmlalkufl,static,static int htmlalkufl
+Hk/HkTulostus.cpp,6835,htmlIndexName,static,static wchar_t htmlIndexName [ 200 ]
+Hk/HkTulostus.cpp,7354,afsrj,static,"static int afsrj , afva , afnparas = 30"
+Hk/HkTulostus.cpp,7354,afva,static,"static int afsrj , afva , afnparas = 30"
+Hk/HkTulostus.cpp,7354,afnparas,static,"static int afsrj , afva , afnparas = 30"
+Hk/HkTulostus.cpp,7613,sijaluvut,static,static int sijaluvut
+Hk/HkXml.cpp,44,kirjXMLkaikki,global,bool kirjXMLkaikki
+Hk/HkXml.cpp,46,Dis,static,"static wchar_t Dis [ 10 ] = L "" "" , * DisSt [ 9 ] = { L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" }"
+Hk/HkXml.cpp,46,DisSt,static,"static wchar_t Dis [ 10 ] = L "" "" , * DisSt [ 9 ] = { L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" }"
+Hk/HkXml.cpp,48,Sub,static,"static wchar_t Sub [ 18 ] = L "" """
+Hk/HkXml.cpp,52,Stat,static,"static wchar_t Stat [ 13 ] = L "" "" , * StatSt [ 12 ] = { L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" }"
+Hk/HkXml.cpp,52,StatSt,static,"static wchar_t Stat [ 13 ] = L "" "" , * StatSt [ 12 ] = { L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" }"
+Hk/HkXml.cpp,53,Bdg,static,"static wchar_t Bdg [ 5 ] = L "" "" , * BdgSt [ 4 ] = { L "" "" , L "" "" , L "" "" , L "" "" }"
+Hk/HkXml.cpp,53,BdgSt,static,"static wchar_t Bdg [ 5 ] = L "" "" , * BdgSt [ 4 ] = { L "" "" , L "" "" , L "" "" , L "" "" }"
+Hk/HkXml.cpp,54,YhtTls,static,"static wchar_t YhtTls [ 5 ] = L "" "" , * YhtTlsSt [ 4 ] = { L "" "" , L "" "" , L "" "" , L "" "" }"
+Hk/HkXml.cpp,54,YhtTlsSt,static,"static wchar_t YhtTls [ 5 ] = L "" "" , * YhtTlsSt [ 4 ] = { L "" "" , L "" "" , L "" "" , L "" "" }"
+Hk/HkXmlTulokset.cpp,25,flatxml,global,int flatxml = 1
+Hk/HkXmlTulokset.cpp,28,tag_event,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,29,tag_evnm,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,30,tag_evcode,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,31,tag_cl,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,32,tag_clnm,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,33,tag_clnml,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,34,tag_clsty,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,35,tag_cldst,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,36,tag_cmptor,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,37,tag_stnr,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,38,tag_order,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,39,tag_id,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,40,tag_nm,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,41,tag_fnm,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,42,tag_gnm,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,43,tag_clubid,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,44,tag_clubnm,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,45,tag_nat,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,46,tag_st,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,47,tag_stsecs,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,48,tag_res,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,49,tag_ressecs,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,50,tag_behind,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,51,tag_rank,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,52,tag_status,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,54,tag_splitts,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,55,tag_splitt,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,56,tag_splittpos,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,62,tag_ce,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,64,tag_ctl,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,65,tag_ctdst,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,66,tag_cn,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,67,tag_cr,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,68,tag_cc,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,69,tag_ct,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,71,tag_ctsecs,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,73,tag_update,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,74,tag_key,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,75,tag_msgno,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,76,tag_esplits,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,79,tag_cmptors,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,80,tag_pnts,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,81,tag_rounds,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,82,tag_round,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,83,tag_rndno,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,84,tag_rndrank,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,85,tag_rndpnts,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,86,tag_speed,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,87,tag_dist,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,88,tag_distpts,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,89,tag_jdga,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,90,tag_jdgb,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,91,tag_jdgc,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,92,tag_jdgd,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,93,tag_jdge,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,94,tag_jdg,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,95,tag_judges,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,96,tag_judge,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,97,tag_jdgpt,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,98,tag_pttype,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,99,tag_pt,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,101,tag_penal,global,"wchar_t tag_event [ ] = L "" "" , tag_evnm [ ] = L "" "" , tag_evcode [ ] = L "" "" , tag_cl [ ] = L "" "" , tag_clnm [ ] = L "" "" , tag_clnml [ ] = L "" "" , tag_clsty [ "
+Hk/HkXmlTulokset.cpp,103,xmlpiste,static,static wchar_t xmlpiste [ MAXNLEIMA + 1 ]
+Hk/HkXmlTulokset.cpp,104,xmlorder,static,static int xmlorder
+Hk/HkXmlTulokset.cpp,1062,tag_fisresults,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1063,tag_fisevent,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1064,tag_fisseason,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1065,tag_fisevcode,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1066,tag_fisdiscipline,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1067,tag_fiscategory,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1068,tag_fisraceinfo,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1069,tag_fisracedate,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1070,tag_fisday,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1071,tag_fismonth,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1072,tag_fisyear,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1073,tag_fisplace,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1074,tag_fisdelegate,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1075,tag_fistd,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1076,tag_fistdnumber,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1077,tag_fistdfnm,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1078,tag_fistdgnm,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1079,tag_fistdnat,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1080,tag_fislist,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1081,tag_fispenalty,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1082,tag_fiscalcpenalty,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1083,tag_fisfvalue,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1084,tag_fisclassified,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1085,tag_fisnotclassified,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1086,tag_fisranked,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1087,tag_fisnotranked,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1088,tag_fisevnm,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1089,tag_fiscl,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1090,tag_fisclnm,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1091,tag_fisclsty,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1092,tag_fiscldst,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1093,tag_fiscmptor,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1094,tag_fisstnr,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1095,tag_fisorder,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1096,tag_fisid,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1097,tag_fisnm,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1098,tag_fisfnm,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1099,tag_fisgnm,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1100,tag_fissex,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1101,tag_fisyearbirth,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1102,tag_fisclubid,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1103,tag_fisclubnm,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1104,tag_fisnat,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1105,tag_fisresult,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1106,tag_fistime,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1107,tag_fislevel,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1108,tag_fispoints,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1109,tag_fisrank,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1111,tag_fissplitts,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1112,tag_fissplitt,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1113,tag_fissplittpos,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1120,tag_fisupdate,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1121,tag_fiskey,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1122,tag_fismsgno,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1123,tag_fisesplits,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1126,tag_fiscmptors,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1127,tag_fispnts,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1128,tag_fisrounds,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1129,tag_fisround,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1130,tag_fisrndno,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1131,tag_fisrndrank,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1132,tag_fisrndpnts,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1133,tag_fisspeed,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1134,tag_fisdist,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1135,tag_fisdistpts,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1136,tag_fisjdga,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1137,tag_fisjdgb,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1138,tag_fisjdgc,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1139,tag_fisjdgd,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1140,tag_fisjdge,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1141,tag_fisjdg,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1142,tag_fisjudges,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1143,tag_fisjudge,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1144,tag_fisjdgpt,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1145,tag_fispttype,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1146,tag_fispt,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1148,tag_fispenal,global,"wchar_t tag_fisresults [ ] = L "" "" , tag_fisevent [ ] = L "" "" , tag_fisseason [ ] = L "" "" , tag_fisevcode [ ] = L "" "" , tag_fisdiscipline [ ] = L "" "" , tag_fisc"
+Hk/HkXmlTulokset.cpp,1150,xmlfisranked,static,"static int xmlfisranked , fvalue = 800 , minpenalty = 1500 , fispenalty = 1500 , fislist"
+Hk/HkXmlTulokset.cpp,1150,fvalue,static,"static int xmlfisranked , fvalue = 800 , minpenalty = 1500 , fispenalty = 1500 , fislist"
+Hk/HkXmlTulokset.cpp,1150,minpenalty,static,"static int xmlfisranked , fvalue = 800 , minpenalty = 1500 , fispenalty = 1500 , fislist"
+Hk/HkXmlTulokset.cpp,1150,fispenalty,static,"static int xmlfisranked , fvalue = 800 , minpenalty = 1500 , fispenalty = 1500 , fislist"
+Hk/HkXmlTulokset.cpp,1150,fislist,static,"static int xmlfisranked , fvalue = 800 , minpenalty = 1500 , fispenalty = 1500 , fislist"
+Hk/HkXmlTulokset.cpp,1151,fis_dec_sep,static,"static wchar_t fis_dec_sep = L ' ' , fisdiscipline [ 10 ] = L "" "" , fissex [ ] = L "" """
+Hk/HkXmlTulokset.cpp,1151,fisdiscipline,static,"static wchar_t fis_dec_sep = L ' ' , fisdiscipline [ 10 ] = L "" "" , fissex [ ] = L "" """
+Hk/HkXmlTulokset.cpp,1151,fissex,static,"static wchar_t fis_dec_sep = L ' ' , fisdiscipline [ 10 ] = L "" "" , fissex [ ] = L "" """
+Hk/HkXmlTulokset.cpp,1152,fislevel,static,"static wchar_t fislevel [ 21 ] = L "" "" , * fisvarlevels [ 4 ] = { L "" "" , L "" "" , L "" "" , L "" "" }"
+Hk/HkXmlTulokset.cpp,1152,fisvarlevels,static,"static wchar_t fislevel [ 21 ] = L "" "" , * fisvarlevels [ 4 ] = { L "" "" , L "" "" , L "" "" , L "" "" }"
+Hk/HkXmlTulokset.cpp,1153,fisvariablelevel,static,static int fisvariablelevel
+Hk/HkXmlTulokset.cpp,1663,nTulosTags,static,static int nTulosTags = sizeof ( TulosTags ) / sizeof ( TulosTags [ 0 ] )
+Hk/HkXml_IOF30.cpp,195,nIOF3Tags,static,static int nIOF3Tags = sizeof ( IOF3Tags ) / sizeof ( IOF3Tags [ 0 ] )
+Juk/VCom.cpp,84,alkut,global,int alkut = ALKUT
+Juk/VCom.cpp,85,hComm,global,HANDLE hComm [ MAX_PORTTI ]
+Juk/VCom.cpp,86,ackreq,global,int ackreq [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,87,yhtfl,global,int yhtfl [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,88,keyclose,global,int keyclose [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,89,autoclose,global,int autoclose
+Juk/VCom.cpp,90,initid,global,int initid [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,93,inbuf,global,combufrec * inbuf
+Juk/VCom.cpp,94,outbuf,global,combufrec * outbuf [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,95,combufsize,global,int combufsize
+Juk/VCom.cpp,96,combuf,global,char * combuf [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,97,lahfl,global,int lahfl [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,98,vkesken,global,int vkesken [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,99,chcomkesto,global,int chcomkesto [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,100,hyvkesken,global,int hyvkesken [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,101,outpakid,global,char outpakid [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,102,vastcom0,global,int vastcom0 [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,103,lahcomserver,global,int lahcomserver [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,104,in_tark_kello,global,int in_tark_kello [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,105,class_len,global,int class_len [ N_CLASS ]
+Juk/VCom.cpp,110,yhteysalku,global,INT yhteysalku = 0
+Juk/VCom.cpp,111,tcpautoalku,global,int tcpautoalku
+Juk/VCom.cpp,112,ts_close,global,INT ts_close [ MAX_LAHPORTTI ]
+Juk/VCom.cpp,113,acn,global,int acn [ MAX_PORTTI ]
+Juk/VCom.cpp,118,hPingThread,global,HTHREAD hPingThread
+Juk/VCom.cpp,123,comparam,global,comparamtp comparam [ MAX_PORTTI ]
+Juk/VCom.cpp,155,dfl,global,FILE * dfl
+Juk/VCom.cpp,156,dflb,global,char dflb [ 20000 ]
+Juk/VEmit.cpp,65,monirata,global,int monirata = 2
+Juk/VEmit.cpp,66,maalileimasin,global,int maalileimasin
+Juk/VEmit.cpp,70,CourseData,global,IOFCourseData CourseData
+Juk/VEmit.cpp,71,ratatiedot,global,int ratatiedot
+Juk/VEmit.cpp,73,rastiva,global,rastivatp * rastiva
+Juk/VEmit.cpp,75,rastikoord,global,rastikoordtp rastikoord [ MAXNPISTE ]
+Juk/VEmit.cpp,76,Map,global,maptp Map
+Juk/VEmit.cpp,94,vapaaemit,global,INT32 vapaaemit = 201
+Juk/VEmit.cpp,96,kuvio,global,ekditp * kuvio
+Juk/VEmit.cpp,97,nkuvio,global,INT nkuvio
+Juk/VEmit.cpp,98,maxnkuvio,static,static INT maxnkuvio
+Juk/VEmit.cpp,99,emitosa,static,"static INT emitosa , partiorap"
+Juk/VEmit.cpp,99,partiorap,static,"static INT emitosa , partiorap"
+Juk/VEmit.cpp,102,emitkdit,static,static int emitkdit
+Juk/VEmit.cpp,103,maxlaina,static,static INT32 maxlaina
+Juk/VEmit.cpp,104,lainatied,global,INT lainatied
+Juk/VEmit.cpp,105,lainaemit,static,static wchar_t * lainaemit
+Juk/VEmit.cpp,109,rvalit,global,rvalitp * rvalit
+Juk/VEmit.cpp,110,rvluku,global,int rvluku
+Juk/VEmit.cpp,111,analvertosuus,global,int analvertosuus = 5
+Juk/VEmit.cpp,112,analvertmax,global,int analvertmax = 10
+Juk/VEmit.cpp,114,EmitErot,global,emiterotp * EmitErot
+Juk/VEmit.cpp,115,nEmitErot,global,int nEmitErot
+Juk/VEmit.cpp,939,lainafname,parse-error,"void IOFPoint :: operator = ( IOFPoint & IP ) { memcpy ( & PointType , & IP . PointType , sizeof ( IOFPoint ) ) ; } IOFCourseControl :: IOFCourseControl ( void "
+Juk/VGlobals.cpp,20,tall_CriticalSection,global,CRITICAL_SECTION tall_CriticalSection
+Juk/VGlobals.cpp,21,loki_CriticalSection,global,CRITICAL_SECTION loki_CriticalSection
+Juk/VGlobals.cpp,22,print_CriticalSection,global,CRITICAL_SECTION print_CriticalSection
+Juk/VGlobals.cpp,23,autotul_CriticalSection,global,CRITICAL_SECTION autotul_CriticalSection
+Juk/VGlobals.cpp,24,inb_CriticalSection,global,CRITICAL_SECTION inb_CriticalSection
+Juk/VGlobals.cpp,25,outb_CriticalSection,global,CRITICAL_SECTION outb_CriticalSection
+Juk/VGlobals.cpp,26,kilpdat_CriticalSection,global,CRITICAL_SECTION kilpdat_CriticalSection
+Juk/VGlobals.cpp,27,ajat_CriticalSection,global,CRITICAL_SECTION ajat_CriticalSection
+Juk/VGlobals.cpp,28,emit_CriticalSection,global,CRITICAL_SECTION emit_CriticalSection
+Juk/VGlobals.cpp,29,rastiva_CriticalSection,global,CRITICAL_SECTION rastiva_CriticalSection
+Juk/VGlobals.cpp,30,tcp_CriticalSection,global,CRITICAL_SECTION tcp_CriticalSection [ MAX_PORTTI ]
+Juk/VGlobals.cpp,31,tcpip_CriticalSection,global,CRITICAL_SECTION tcpip_CriticalSection
+Juk/VGlobals.cpp,32,hTarkcomThread,global,"HTHREAD hTarkcomThread , hTsThread [ MAX_PORTTI ]"
+Juk/VGlobals.cpp,32,hTsThread,global,"HTHREAD hTarkcomThread , hTsThread [ MAX_PORTTI ]"
+Juk/VGlobals.cpp,33,hLuepakThread,global,HTHREAD hLuepakThread [ MAX_PORTTI ]
+Juk/VGlobals.cpp,34,taustaThread,global,"HTHREAD taustaThread , hLkmThread"
+Juk/VGlobals.cpp,34,hLkmThread,global,"HTHREAD taustaThread , hLkmThread"
+Juk/VGlobals.cpp,35,hAikacomThread,global,HTHREAD hAikacomThread
+Juk/VGlobals.cpp,36,hProsEmitThread,global,HTHREAD hProsEmitThread
+Juk/VGlobals.cpp,37,ToimintaTila,global,int ToimintaTila = 2
+Juk/VGlobals.cpp,38,EnvData,global,envdatatp EnvData
+Juk/VGlobals.cpp,39,exeName,global,wchar_t exeName [ 50 ]
+Juk/VGlobals.cpp,40,DeveloperMode,global,bool DeveloperMode
+Juk/VGlobals.cpp,41,WorkingDir,global,wchar_t WorkingDir [ 200 ]
+Juk/VGlobals.cpp,42,poistaSulje,global,bool poistaSulje = true
+Juk/VGlobals.cpp,43,inLopetus,global,int inLopetus
+Juk/VGlobals.cpp,44,katkaisuPyydetty,global,int katkaisuPyydetty
+Juk/VGlobals.cpp,45,sulkemassa,global,bool sulkemassa
+Juk/VGlobals.cpp,46,suljesuoraan,global,bool suljesuoraan
+Juk/VGlobals.cpp,47,tcpkaynnistys,global,long tcpkaynnistys [ MAX_PORTTI + 1 ]
+Juk/VGlobals.cpp,49,kuuluttaja,global,bool kuuluttaja
+Juk/VGlobals.cpp,50,naytavaroitukset,global,bool naytavaroitukset
+Juk/VGlobals.cpp,51,taustaon,global,int taustaon = 0
+Juk/VGlobals.cpp,52,inGDIdoc,global,int inGDIdoc
+Juk/VGlobals.cpp,53,lkmThreadOn,global,int lkmThreadOn
+Juk/VGlobals.cpp,54,autokomento,global,wchar_t * autokomento
+Juk/VGlobals.cpp,55,spoolfl,global,INT spoolfl = FALSE
+Juk/VGlobals.cpp,56,aani,global,INT aani = 1
+Juk/VGlobals.cpp,58,errMsgBox,global,INT16 errMsgBox = 0
+Juk/VGlobals.cpp,62,xSize,global,"INT16 xSize = 80 , ySize = 25"
+Juk/VGlobals.cpp,62,ySize,global,"INT16 xSize = 80 , ySize = 25"
+Juk/VGlobals.cpp,63,testi,global,int testi
+Juk/VGlobals.cpp,64,nakviive,global,int nakviive = 1000
+Juk/VGlobals.cpp,65,maxemvalah,global,int maxemvalah = MAXEMVALAH
+Juk/VGlobals.cpp,66,emitvafl,global,bool emitvafl
+Juk/VGlobals.cpp,67,emitvaloki,global,bool emitvaloki
+Juk/VGlobals.cpp,69,pros_emit_on,global,int pros_emit_on
+Juk/VGlobals.cpp,70,emitfiletest,global,int emitfiletest
+Juk/VGlobals.cpp,71,lahdepistehaku,global,int lahdepistehaku
+Juk/VGlobals.cpp,73,sisaanluenta,global,int sisaanluenta
+Juk/VGlobals.cpp,74,RastiVaTuloste,global,bool RastiVaTuloste
+Juk/VGlobals.cpp,75,analmaxosuuskesto,global,int analmaxosuuskesto = 10800
+Juk/VGlobals.cpp,76,kbdwait,global,int kbdwait
+Juk/VGlobals.cpp,77,osd,global,INT16 osd = OSD
+Juk/VGlobals.cpp,79,kilpparam,global,kilpparamtp kilpparam
+Juk/VGlobals.cpp,81,Sarjat,global,sarjatietue Sarjat [ MAXSARJALUKU + MAXYHD ]
+Juk/VGlobals.cpp,85,ProsEmitOn,global,bool ProsEmitOn
+Juk/VGlobals.cpp,86,sulkusalasana,global,wchar_t sulkusalasana [ 12 ]
+Juk/VGlobals.cpp,87,max_lahportti,global,"INT max_lahportti = MAX_LAHPORTTI , max_portti = MAX_PORTTI"
+Juk/VGlobals.cpp,87,max_portti,global,"INT max_lahportti = MAX_LAHPORTTI , max_portti = MAX_PORTTI"
+Juk/VGlobals.cpp,88,chkstk,global,int chkstk
+Juk/VGlobals.cpp,89,kone,global,unsigned kone
+Juk/VGlobals.cpp,90,lisaa_edelle,global,int lisaa_edelle
+Juk/VGlobals.cpp,92,dhigh,global,"char dhigh [ 10 ] = "" """
+Juk/VGlobals.cpp,93,shigh,global,"char shigh [ 10 ] = "" """
+Juk/VGlobals.cpp,94,ndhigh,global,int ndhigh = 6
+Juk/VGlobals.cpp,95,nshigh,global,int nshigh = 6
+Juk/VGlobals.cpp,96,sgl,global,"char sgl [ ] = "" """
+Juk/VGlobals.cpp,101,nchsgle,global,int nchsgle = 1
+Juk/VGlobals.cpp,102,dbl,global,"char dbl [ ] = "" """
+Juk/VGlobals.cpp,103,nchdble,global,int nchdble = 1
+Juk/VGlobals.cpp,104,sgle,global,"char sgle [ 10 ] = "" """
+Juk/VGlobals.cpp,105,dble,global,"char dble [ 10 ] = "" """
+Juk/VGlobals.cpp,107,alkulayout,global,wchar_t alkulayout [ 40 ]
+Juk/VGlobals.cpp,108,dataf2name,global,"char dataf2name [ ] = "" """
+Juk/VGlobals.cpp,109,dataf3name,global,"char dataf3name [ ] = "" """
+Juk/VGlobals.cpp,110,datafbname,global,"char datafbname [ ] = "" """
+Juk/VGlobals.cpp,111,namefname,global,"char namefname [ ] = "" """
+Juk/VGlobals.cpp,112,sarjafname,global,"char sarjafname [ ] = "" """
+Juk/VGlobals.cpp,113,sarjaxmlfname,global,"wchar_t sarjaxmlfname [ 200 ] = L "" """
+Juk/VGlobals.cpp,114,rataxmlfname,global,"wchar_t rataxmlfname [ 200 ] = L "" """
+Juk/VGlobals.cpp,115,leimafname,global,"wchar_t leimafname [ 200 ] = L "" """
+Juk/VGlobals.cpp,116,ratafname,global,"wchar_t ratafname [ 200 ] = L "" """
+Juk/VGlobals.cpp,117,obfilename,global,"wchar_t obfilename [ 40 ] = L "" """
+Juk/VGlobals.cpp,118,luetfnm,global,"wchar_t luetfnm [ 40 ] = L "" """
+Juk/VGlobals.cpp,119,lokifname,global,"wchar_t lokifname [ 62 ] = L "" """
+Juk/VGlobals.cpp,120,aikaflname,global,"wchar_t aikaflname [ 200 ] = L "" """
+Juk/VGlobals.cpp,121,emitfname,global,"wchar_t emitfname [ 13 ] = L "" """
+Juk/VGlobals.cpp,138,nktarra,global,int nktarra = 18
+Juk/VGlobals.cpp,143,iobufr,global,int iobufr = 90
+Juk/VGlobals.cpp,144,iobufmaxnr,global,int iobufmaxnr = 9
+Juk/VGlobals.cpp,145,kaksoistar,global,int kaksoistar = TRUE
+Juk/VGlobals.cpp,146,wtarra,global,int wtarra = 40
+Juk/VGlobals.cpp,147,nrtarra,global,int nrtarra = 9
+Juk/VGlobals.cpp,178,tyhjarivi,global,"char tyhjarivi [ 81 ] = "" "" "" """
+Juk/VGlobals.cpp,180,kilparr,global,char * kilparr
+Juk/VGlobals.cpp,181,maxrec,global,int maxrec = 3000
+Juk/VGlobals.cpp,182,njrec,global,int njrec
+Juk/VGlobals.cpp,183,kaynnistysvaihe,global,int kaynnistysvaihe
+Juk/VGlobals.cpp,184,datf2,global,datafile datf2
+Juk/VGlobals.cpp,185,fdatf2,global,FILE * fdatf2
+Juk/VGlobals.cpp,187,nameindex,global,kilpindex nameindex
+Juk/VGlobals.cpp,188,keylen,global,int keylen
+Juk/VGlobals.cpp,189,localparam,global,localparamtp localparam
+Juk/VGlobals.cpp,190,lsttulparam,global,tulostusparamtp lsttulparam
+Juk/VGlobals.cpp,191,filetulparam,global,tulostusparamtp filetulparam
+Juk/VGlobals.cpp,192,tartulparam,global,tulostusparamtp tartulparam
+Juk/VGlobals.cpp,193,lokitulparam,global,tulostusparamtp lokitulparam
+Juk/VGlobals.cpp,194,aftulparam,global,tulostusparamtp aftulparam
+Juk/VGlobals.cpp,195,emittulparam,global,tulostusparamtp * emittulparam
+Juk/VGlobals.cpp,196,kilpailu,global,wchar_t kilpailu [ 83 ]
+Juk/VGlobals.cpp,197,tcptulos,global,char tcptulos = ' '
+Juk/VGlobals.cpp,198,server_on,global,INT server_on
+Juk/VGlobals.cpp,199,lahhajonta,global,int lahhajonta
+Juk/VGlobals.cpp,200,prblockbits,global,int prblockbits = 12
+Juk/VGlobals.cpp,201,origverify,global,int origverify
+Juk/VGlobals.cpp,202,lataus,global,int lataus = 1
+Juk/VGlobals.cpp,203,bootfl,global,int bootfl
+Juk/VGlobals.cpp,204,esta_tall,global,int esta_tall
+Juk/VGlobals.cpp,205,konetunn,global,char konetunn [ 3 ]
+Juk/VGlobals.cpp,207,jjfl,global,int jjfl = FALSE
+Juk/VGlobals.cpp,208,talltaul,global,int talltaul = FALSE
+Juk/VGlobals.cpp,209,iono,global,int iono = 0
+Juk/VGlobals.cpp,210,tarkfl,global,int tarkfl = 0
+Juk/VGlobals.cpp,211,tarfl,global,int tarfl = 0
+Juk/VGlobals.cpp,212,eiltarra,global,int eiltarra = FALSE
+Juk/VGlobals.cpp,213,lahtarfl,global,int lahtarfl = FALSE
+Juk/VGlobals.cpp,214,listfl,global,int listfl
+Juk/VGlobals.cpp,215,autofl,global,int autofl = FALSE
+Juk/VGlobals.cpp,229,autofileparam,global,struct { wchar_t afname [ 202 ] ; int aflaji ; int autokomentolaji ; wchar_t autokomento [ 202 ] ; bool vainMuutt ; int afvali ; bool af_flag ; wchar_t aflstnm 
+Juk/VGlobals.cpp,230,pscr,global,int pscr
+Juk/VGlobals.cpp,231,psinit,global,wchar_t * psinit
+Juk/VGlobals.cpp,232,kynnys,global,int kynnys = 10
+Juk/VGlobals.cpp,233,pfl,global,int pfl = FALSE
+Juk/VGlobals.cpp,234,stopprt,global,int stopprt = FALSE
+Juk/VGlobals.cpp,235,listfname,global,"wchar_t listfname [ 81 ] = L "" """
+Juk/VGlobals.cpp,236,t0,global,int t0 = 12
+Juk/VGlobals.cpp,237,t0tics,global,long t0tics = ( 12L * DAYTICKS ) / 24L
+Juk/VGlobals.cpp,238,enslahto,global,TMAALI enslahto = TMAALI0
+Juk/VGlobals.cpp,239,tmaali,global,"TMAALI tmaali , maaliajat [ 10 ]"
+Juk/VGlobals.cpp,239,maaliajat,global,"TMAALI tmaali , maaliajat [ 10 ]"
+Juk/VGlobals.cpp,240,nilmt,global,int nilmt
+Juk/VGlobals.cpp,241,nilmtt,global,int nilmtt = 0
+Juk/VGlobals.cpp,242,minkilpno,global,int minkilpno = 1
+Juk/VGlobals.cpp,243,maxkilpno,global,int maxkilpno = MAXKILPNO
+Juk/VGlobals.cpp,244,maxosuusluku,global,int maxosuusluku
+Juk/VGlobals.cpp,245,sarjaluku,global,int sarjaluku
+Juk/VGlobals.cpp,246,nsarjayhd,global,"int nsarjayhd , nsarjayhd_tul , sarjayhdva [ MAXYHD ]"
+Juk/VGlobals.cpp,246,nsarjayhd_tul,global,"int nsarjayhd , nsarjayhd_tul , sarjayhdva [ MAXYHD ]"
+Juk/VGlobals.cpp,246,sarjayhdva,global,"int nsarjayhd , nsarjayhd_tul , sarjayhdva [ MAXYHD ]"
+Juk/VGlobals.cpp,247,yhdsarjat,global,wchar_t yhdsarjat [ MAXYHD ] [ MAXSARJALUKU ]
+Juk/VGlobals.cpp,249,osuus,global,int osuus [ MAXSARJALUKU + MAXYHD + 1 ]
+Juk/VGlobals.cpp,250,nilm,global,int nilm [ MAXSARJALUKU + MAXYHD + 1 ]
+Juk/VGlobals.cpp,251,varkynnys,global,int varkynnys [ MAXSARJALUKU + MAXYHD ] [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,252,lkm_srj,global,"int lkm_srj , lkm_os"
+Juk/VGlobals.cpp,252,lkm_os,global,"int lkm_srj , lkm_os"
+Juk/VGlobals.cpp,253,header,global,"wchar_t * header = L "" """
+Juk/VGlobals.cpp,254,ntulost,global,int ntulost [ MAXOSUUSLUKU + 1 ]
+Juk/VGlobals.cpp,255,nhylt,global,"int nhylt [ MAXOSUUSLUKU + 1 ] , nkeskt [ MAXOSUUSLUKU + 1 ]"
+Juk/VGlobals.cpp,255,nkeskt,global,"int nhylt [ MAXOSUUSLUKU + 1 ] , nkeskt [ MAXOSUUSLUKU + 1 ]"
+Juk/VGlobals.cpp,256,neilt,global,"int neilt [ MAXOSUUSLUKU + 1 ] , nost [ MAXOSUUSLUKU + 1 ]"
+Juk/VGlobals.cpp,256,nost,global,"int neilt [ MAXOSUUSLUKU + 1 ] , nost [ MAXOSUUSLUKU + 1 ]"
+Juk/VGlobals.cpp,257,navoint,global,int navoint [ MAXOSUUSLUKU + 1 ]
+Juk/VGlobals.cpp,258,ntulos,global,int ntulos [ MAXSARJALUKU + MAXYHD + 1 ] [ MAXOSUUSLUKU ] [ VAIKALUKU + 2 ]
+Juk/VGlobals.cpp,259,ntulosix,global,int ntulosix [ MAXSARJALUKU + MAXYHD + 1 ] [ MAXOSUUSLUKU ] [ VAIKALUKU + 2 ]
+Juk/VGlobals.cpp,260,tlsmuutos,global,int tlsmuutos [ MAXSARJALUKU + MAXYHD ] [ MAXOSUUSLUKU ] [ VAIKALUKU + 2 ]
+Juk/VGlobals.cpp,261,nekoodi,global,int nekoodi [ MAXSARJALUKU + MAXYHD ] [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,262,ntulos2,global,int ntulos2 [ MAXSARJALUKU + MAXYHD + 1 ] [ MAXOSUUSLUKU ] [ VAIKALUKU + 1 ]
+Juk/VGlobals.cpp,263,ylmyoh,global,int ylmyoh = 1
+Juk/VGlobals.cpp,264,njoukhyl,global,int njoukhyl [ MAXSARJALUKU + MAXYHD + 1 ]
+Juk/VGlobals.cpp,265,njoukkesk,global,int njoukkesk [ MAXSARJALUKU + MAXYHD + 1 ]
+Juk/VGlobals.cpp,266,nhyl,global,int nhyl [ MAXSARJALUKU + MAXYHD + 1 ] [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,267,nkesk,global,int nkesk [ MAXSARJALUKU + MAXYHD + 1 ] [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,268,neil,global,int neil [ MAXSARJALUKU + MAXYHD + 1 ] [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,269,navoin,global,int navoin [ MAXSARJALUKU + MAXYHD + 1 ] [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,270,nylahto,global,int nylahto [ MAXSARJALUKU + MAXYHD + 1 ] [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,271,sjfl,global,int sjfl [ MAXSARJALUKU + MAXYHD ]
+Juk/VGlobals.cpp,272,jalku,global,INT jalku [ MAXSARJALUKU + MAXYHD + 1 ] [ MAXOSUUSLUKU ] [ VAIKALUKU + 6 ]
+Juk/VGlobals.cpp,273,jarjtulos,global,__int64 * jarjtulos [ MAXYHD + 1 ] [ MAXOSUUSLUKU ] [ VAIKALUKU + 4 ]
+Juk/VGlobals.cpp,274,jrjseur,global,INT16 * jrjseur [ MAXYHD + 1 ]
+Juk/VGlobals.cpp,275,josalku,global,INT josalku [ MAXSARJALUKU + MAXYHD + 1 ] [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,276,jarjostulos,global,__int64 * jarjostulos [ MAXYHD + 1 ] [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,277,jrjosseur,global,INT16 * jrjosseur [ MAXYHD + 1 ]
+Juk/VGlobals.cpp,278,kilpnoix,global,int * kilpnoix
+Juk/VGlobals.cpp,279,nimiixfl,global,int nimiixfl
+Juk/VGlobals.cpp,280,korjfl,global,int korjfl
+Juk/VGlobals.cpp,281,initkehys,global,int initkehys
+Juk/VGlobals.cpp,282,initform,global,int initform
+Juk/VGlobals.cpp,283,enstls,global,int enstls [ MAXSARJALUKU + MAXYHD ] [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,285,fprior,global,int fprior [ MAXSARJALUKU + MAXYHD ] [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,286,prior,global,int prior [ MAXSARJALUKU + MAXYHD ] [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,287,prior0,global,int prior0 [ MAXSARJALUKU + MAXYHD ]
+Juk/VGlobals.cpp,288,tauko,global,int tauko
+Juk/VGlobals.cpp,289,laajuus,global,char laajuus
+Juk/VGlobals.cpp,290,nparas,global,int nparas
+Juk/VGlobals.cpp,291,tofs,global,int tofs
+Juk/VGlobals.cpp,292,wincom,global,int wincom
+Juk/VGlobals.cpp,293,maxyhteys,global,int maxyhteys
+Juk/VGlobals.cpp,294,portbase,global,int portbase = PORTBASE
+Juk/VGlobals.cpp,295,portti,global,int portti [ MAX_PORTTI ]
+Juk/VGlobals.cpp,296,ch_pty,global,"char ch_pty [ 6 ] = "" """
+Juk/VGlobals.cpp,297,maxnblock,global,int maxnblock
+Juk/VGlobals.cpp,298,nprch,global,char nprch
+Juk/VGlobals.cpp,299,trlate,global,char trlate [ 256 ]
+Juk/VGlobals.cpp,300,trlst,global,"int trlst , trtar , trloki"
+Juk/VGlobals.cpp,300,trtar,global,"int trlst , trtar , trloki"
+Juk/VGlobals.cpp,300,trloki,global,"int trlst , trtar , trloki"
+Juk/VGlobals.cpp,301,form,global,char form [ 65 * ( MAXRIVI - 5 ) ]
+Juk/VGlobals.cpp,302,kehys1,global,char kehys1 [ 5000 ]
+Juk/VGlobals.cpp,303,savebox,global,"char savebox [ 65 * ( MAXRIVI - 5 ) ] , errbox [ 400 ]"
+Juk/VGlobals.cpp,303,errbox,global,"char savebox [ 65 * ( MAXRIVI - 5 ) ] , errbox [ 400 ]"
+Juk/VGlobals.cpp,304,autotulostusparam,global,tulostusparamtp autotulostusparam
+Juk/VGlobals.cpp,305,tulfl,global,int tulfl = FALSE
+Juk/VGlobals.cpp,306,comfl,global,int comfl = FALSE
+Juk/VGlobals.cpp,307,tcomfl,global,int tcomfl = TRUE
+Juk/VGlobals.cpp,308,estavalitys,global,int estavalitys [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,309,immed,global,int immed = TRUE
+Juk/VGlobals.cpp,310,kirjheti,global,UINT32 kirjheti = 0xffffffff
+Juk/VGlobals.cpp,311,comopen,global,int comopen [ MAX_PORTTI ]
+Juk/VGlobals.cpp,312,comclose,global,int comclose [ MAX_PORTTI ]
+Juk/VGlobals.cpp,313,leimacomopen,global,int leimacomopen [ MAX_PORTTI ]
+Juk/VGlobals.cpp,314,leimacom,global,int leimacom = - 1
+Juk/VGlobals.cpp,315,lahec,global,INT lahec [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,316,lahkello,global,INT lahkello [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,317,lahkelloraja,global,INT lahkelloraja [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,318,lahkellovain,global,bool lahkellovain [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,319,katkkierto,global,int katkkierto [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,320,baud,global,int baud [ MAX_PORTTI ]
+Juk/VGlobals.cpp,324,comkesto,global,int comkesto [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,325,nprtch,global,int nprtch = 0
+Juk/VGlobals.cpp,326,inbens,global,INT inbens
+Juk/VGlobals.cpp,327,inbseur,global,INT inbseur
+Juk/VGlobals.cpp,328,cjens,global,long cjens [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,329,cjseur,global,long cjseur [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,330,obfile,global,"int obfile = - 1 , levypusk = 1"
+Juk/VGlobals.cpp,330,levypusk,global,"int obfile = - 1 , levypusk = 1"
+Juk/VGlobals.cpp,331,fobfile,global,FILE * fobfile
+Juk/VGlobals.cpp,332,lah_alku,global,int lah_alku [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,333,lah_vaihto,global,INT lah_vaihto [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,335,lahcom,global,int lahcom [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,336,vastcom,global,int vastcom [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,337,yhteys_on,global,INT yhteys_on [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,338,lah_tiedostot,global,int lah_tiedostot [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,339,lahkaikkitied,global,bool lahkaikkitied
+Juk/VGlobals.cpp,340,monitoriLkm,global,int monitoriLkm
+Juk/VGlobals.cpp,341,dcom,global,int dcom = 0
+Juk/VGlobals.cpp,342,jonokynnys,global,int jonokynnys = 5
+Juk/VGlobals.cpp,343,ennakoi,global,int ennakoi
+Juk/VGlobals.cpp,344,aikaero,global,int aikaero [ NREGNLY + 1 ]
+Juk/VGlobals.cpp,345,estaneg,global,"int estaneg , ylimraja , uusinaika , samapisteraja = 10 * SEK"
+Juk/VGlobals.cpp,345,ylimraja,global,"int estaneg , ylimraja , uusinaika , samapisteraja = 10 * SEK"
+Juk/VGlobals.cpp,345,uusinaika,global,"int estaneg , ylimraja , uusinaika , samapisteraja = 10 * SEK"
+Juk/VGlobals.cpp,345,samapisteraja,global,"int estaneg , ylimraja , uusinaika , samapisteraja = 10 * SEK"
+Juk/VGlobals.cpp,346,muutoskysely,global,int muutoskysely = 1
+Juk/VGlobals.cpp,347,maxjono,global,"int maxjono , yhtjonot , akttm"
+Juk/VGlobals.cpp,347,yhtjonot,global,"int maxjono , yhtjonot , akttm"
+Juk/VGlobals.cpp,347,akttm,global,"int maxjono , yhtjonot , akttm"
+Juk/VGlobals.cpp,348,lukijalahde,global,int lukijalahde [ NREGNLY ]
+Juk/VGlobals.cpp,349,aika_jono,global,"int aika_jono [ 1 ] [ 45 ] , emitjono"
+Juk/VGlobals.cpp,349,emitjono,global,"int aika_jono [ 1 ] [ 45 ] , emitjono"
+Juk/VGlobals.cpp,350,yhtaikajono,global,int yhtaikajono [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,351,aikajono,global,aikajonotp * aikajono [ MAXJONO ]
+Juk/VGlobals.cpp,360,viim_time,global,aikatp viim_time
+Juk/VGlobals.cpp,361,muut_time,global,int muut_time
+Juk/VGlobals.cpp,362,od_aika,global,TMAALI od_aika
+Juk/VGlobals.cpp,363,od_fl,global,int od_fl
+Juk/VGlobals.cpp,364,aikaTCPstatus,global,int aikaTCPstatus
+Juk/VGlobals.cpp,365,lahdepisteet,global,lahdepistetp * lahdepisteet [ MAXSARJALUKU + 1 ] [ MAXOSUUSLUKU + 1 ]
+Juk/VGlobals.cpp,366,lahdejonot,global,lahdepistetp * lahdejonot [ MAXSARJALUKU + 1 ] [ MAXOSUUSLUKU + 1 ]
+Juk/VGlobals.cpp,367,modif,global,int modif [ MAXSARJALUKU + MAXYHD ] [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,368,timefl,global,int timefl
+Juk/VGlobals.cpp,369,loki,global,"int loki , lokiTCP , mloki"
+Juk/VGlobals.cpp,369,lokiTCP,global,"int loki , lokiTCP , mloki"
+Juk/VGlobals.cpp,369,mloki,global,"int loki , lokiTCP , mloki"
+Juk/VGlobals.cpp,370,hLoki,global,HANDLE hLoki
+Juk/VGlobals.cpp,371,com_ajat,global,int com_ajat [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,372,rukkausvali,global,"long rukkausvali , rukkaa"
+Juk/VGlobals.cpp,372,rukkaa,global,"long rukkausvali , rukkaa"
+Juk/VGlobals.cpp,373,edista,global,int edista
+Juk/VGlobals.cpp,374,lah_kello,global,int lah_kello [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,375,lah_kello_nyt,global,int lah_kello_nyt [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,377,ajat_on,global,"int ajat_on , status_on = 1"
+Juk/VGlobals.cpp,377,status_on,global,"int ajat_on , status_on = 1"
+Juk/VGlobals.cpp,378,printer,global,int printer
+Juk/VGlobals.cpp,379,lokifile,global,PRFILE * lokifile
+Juk/VGlobals.cpp,380,tvalmis,global,TMAALI tvalmis = TMAALI0
+Juk/VGlobals.cpp,381,valiajat,global,int valiajat = - 1
+Juk/VGlobals.cpp,382,maxnvaika,global,int maxnvaika = MAXNVAIKA
+Juk/VGlobals.cpp,383,vainvaliajat,global,int vainvaliajat
+Juk/VGlobals.cpp,384,aika_int_mask,global,char aika_int_mask = 17
+Juk/VGlobals.cpp,385,aika_esto,global,int aika_esto = 2
+Juk/VGlobals.cpp,386,va_mpiste,global,int va_mpiste [ MAXJONO ]
+Juk/VGlobals.cpp,387,ol_osuus,global,"int ol_osuus , os_raja = MAXOSUUSLUKU"
+Juk/VGlobals.cpp,387,os_raja,global,"int ol_osuus , os_raja = MAXOSUUSLUKU"
+Juk/VGlobals.cpp,388,aika_com,global,int aika_com = 0
+Juk/VGlobals.cpp,389,com_aika,global,int com_aika
+Juk/VGlobals.cpp,390,regnly,global,int regnly [ NREGNLY ]
+Juk/VGlobals.cpp,392,od_regnly,global,int od_regnly = 10
+Juk/VGlobals.cpp,393,t0_regnly,global,int t0_regnly = - 12 * TUNTI
+Juk/VGlobals.cpp,394,t0_regn,global,int t0_regn [ NREGNLY ]
+Juk/VGlobals.cpp,395,port_regnly,global,int port_regnly [ NREGNLY ]
+Juk/VGlobals.cpp,396,regnlyhetki,global,int regnlyhetki [ NREGNLY ]
+Juk/VGlobals.cpp,397,zebraOffsetDs,global,int zebraOffsetDs [ NREGNLY ]
+Juk/VGlobals.cpp,398,zebraOffsetState,global,int zebraOffsetState [ NREGNLY ]
+Juk/VGlobals.cpp,399,gpoActive,global,int gpoActive [ NREGNLY ]
+Juk/VGlobals.cpp,400,gpoOnMs,global,int gpoOnMs [ NREGNLY ]
+Juk/VGlobals.cpp,401,regnly_open,global,int regnly_open [ NREGNLY ]
+Juk/VGlobals.cpp,402,cn_regnly,global,INT cn_regnly [ 2 * NREGNLY ]
+Juk/VGlobals.cpp,403,maxero,global,long maxero = 2000000L
+Juk/VGlobals.cpp,404,kerro_regnly,global,int kerro_regnly
+Juk/VGlobals.cpp,405,usb_regnly,global,int usb_regnly [ NREGNLY ]
+Juk/VGlobals.cpp,406,t0_autova,global,int t0_autova
+Juk/VGlobals.cpp,407,int_autova,global,int int_autova
+Juk/VGlobals.cpp,408,addr_autova,global,int addr_autova
+Juk/VGlobals.cpp,409,autova_open,global,int autova_open
+Juk/VGlobals.cpp,410,nbadge,global,INT nbadge [ 2 ]
+Juk/VGlobals.cpp,411,bdg_kno,global,bdg_kno_tp * bdg_kno [ 2 ]
+Juk/VGlobals.cpp,412,emittoisto,global,"INT emittoisto = 1 , vaikavert = 0 , ilmtunt = 1 , vaajat"
+Juk/VGlobals.cpp,412,vaikavert,global,"INT emittoisto = 1 , vaikavert = 0 , ilmtunt = 1 , vaajat"
+Juk/VGlobals.cpp,412,ilmtunt,global,"INT emittoisto = 1 , vaikavert = 0 , ilmtunt = 1 , vaajat"
+Juk/VGlobals.cpp,412,vaajat,global,"INT emittoisto = 1 , vaikavert = 0 , ilmtunt = 1 , vaajat"
+Juk/VGlobals.cpp,414,maxpaikat_t,global,int maxpaikat_t
+Juk/VGlobals.cpp,416,taulu_com,global,"int taulu_com , taulu_baud = 7 , udptaulu = 0"
+Juk/VGlobals.cpp,416,taulu_baud,global,"int taulu_com , taulu_baud = 7 , udptaulu = 0"
+Juk/VGlobals.cpp,416,udptaulu,global,"int taulu_com , taulu_baud = 7 , udptaulu = 0"
+Juk/VGlobals.cpp,417,sak_com,global,"INT sak_com , sak_baud = 8 , sak_laji = 2"
+Juk/VGlobals.cpp,417,sak_baud,global,"INT sak_com , sak_baud = 8 , sak_laji = 2"
+Juk/VGlobals.cpp,417,sak_laji,global,"INT sak_com , sak_baud = 8 , sak_laji = 2"
+Juk/VGlobals.cpp,418,ratavalpit,global,int ratavalpit = HAJONTA + 1
+Juk/VGlobals.cpp,419,ampusakot,global,int ampusakot = 0
+Juk/VGlobals.cpp,421,emitfl,global,int emitfl
+Juk/VGlobals.cpp,422,maxaika,global,"int maxaika [ MAXSARJALUKU ] , sakkoaskel [ MAXSARJALUKU ] , askelsakko [ MAXSARJALUKU ]"
+Juk/VGlobals.cpp,422,sakkoaskel,global,"int maxaika [ MAXSARJALUKU ] , sakkoaskel [ MAXSARJALUKU ] , askelsakko [ MAXSARJALUKU ]"
+Juk/VGlobals.cpp,422,askelsakko,global,"int maxaika [ MAXSARJALUKU ] , sakkoaskel [ MAXSARJALUKU ] , askelsakko [ MAXSARJALUKU ]"
+Juk/VGlobals.cpp,423,joustoviesti,global,"int joustoviesti , joustopakotavaihto"
+Juk/VGlobals.cpp,423,joustopakotavaihto,global,"int joustoviesti , joustopakotavaihto"
+Juk/VGlobals.cpp,424,esta_uusikaytto,global,bool esta_uusikaytto = true
+Juk/VGlobals.cpp,426,ajatfl,global,"INT ajatfl , ilmlainat , emitkd , relax , emitsivu"
+Juk/VGlobals.cpp,426,ilmlainat,global,"INT ajatfl , ilmlainat , emitkd , relax , emitsivu"
+Juk/VGlobals.cpp,426,emitkd,global,"INT ajatfl , ilmlainat , emitkd , relax , emitsivu"
+Juk/VGlobals.cpp,426,relax,global,"INT ajatfl , ilmlainat , emitkd , relax , emitsivu"
+Juk/VGlobals.cpp,426,emitsivu,global,"INT ajatfl , ilmlainat , emitkd , relax , emitsivu"
+Juk/VGlobals.cpp,427,ohitaleimat,global,INT ohitaleimat
+Juk/VGlobals.cpp,428,ohitatoisto,global,INT ohitatoisto
+Juk/VGlobals.cpp,429,siritreuna,global,INT siritreuna = 1
+Juk/VGlobals.cpp,430,siritloki,global,bool siritloki = false
+Juk/VGlobals.cpp,431,siritsync,global,bool siritsync = false
+Juk/VGlobals.cpp,432,sirithead,global,"int sirithead , sirittail"
+Juk/VGlobals.cpp,432,sirittail,global,"int sirithead , sirittail"
+Juk/VGlobals.cpp,433,siritbuf,global,wchar_t siritbuf [ SIRITBUFLEN + 1 ]
+Juk/VGlobals.cpp,434,jalkisyotto,global,INT jalkisyotto
+Juk/VGlobals.cpp,435,joukkueemit,global,INT joukkueemit
+Juk/VGlobals.cpp,436,salli_emit_ensin,global,INT salli_emit_ensin
+Juk/VGlobals.cpp,437,rata,global,ratatp * rata
+Juk/VGlobals.cpp,438,nrata,global,"INT nrata , kaikki_ajat [ NREGNLY + 1 ] , vaadiaika"
+Juk/VGlobals.cpp,438,kaikki_ajat,global,"INT nrata , kaikki_ajat [ NREGNLY + 1 ] , vaadiaika"
+Juk/VGlobals.cpp,438,vaadiaika,global,"INT nrata , kaikki_ajat [ NREGNLY + 1 ] , vaadiaika"
+Juk/VGlobals.cpp,440,ch_piste,global,"wchar_t ch_piste [ ] = L "" """
+Juk/VGlobals.cpp,442,aika_tunnus_lkm,global,INT aika_tunnus_lkm
+Juk/VGlobals.cpp,443,lahtoryhma,global,INT lahtoryhma
+Juk/VGlobals.cpp,444,nesitt,global,"INT nesitt , nesit [ MAXSARJALUKU + MAXYHD ]"
+Juk/VGlobals.cpp,444,nesit,global,"INT nesitt , nesit [ MAXSARJALUKU + MAXYHD ]"
+Juk/VGlobals.cpp,445,maalitp,global,char maalitp [ 10 ]
+Juk/VGlobals.cpp,446,kello_baud,global,"INT kello_baud , regnly_no [ NREGNLY ] , kello_bits = 8"
+Juk/VGlobals.cpp,446,regnly_no,global,"INT kello_baud , regnly_no [ NREGNLY ] , kello_bits = 8"
+Juk/VGlobals.cpp,446,kello_bits,global,"INT kello_baud , regnly_no [ NREGNLY ] , kello_bits = 8"
+Juk/VGlobals.cpp,448,bytecount,global,"int bytecount , bytecountmax = 2000"
+Juk/VGlobals.cpp,448,bytecountmax,global,"int bytecount , bytecountmax = 2000"
+Juk/VGlobals.cpp,449,com_emit,global,INT com_emit [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,450,emitjarr,global,INT * emitjarr [ MAXOSUUSLUKU ]
+Juk/VGlobals.cpp,451,emitfile,global,int emitfile
+Juk/VGlobals.cpp,452,com_emitva,global,INT com_emitva [ MAX_LAHPORTTI ]
+Juk/VGlobals.cpp,453,femitfile,global,FILE * femitfile
+Juk/VGlobals.cpp,454,emitptr,global,"INT emitptr = - 1 , emithead , emithead2"
+Juk/VGlobals.cpp,454,emithead,global,"INT emitptr = - 1 , emithead , emithead2"
+Juk/VGlobals.cpp,454,emithead2,global,"INT emitptr = - 1 , emithead , emithead2"
+Juk/VGlobals.cpp,455,emitpos,global,UINT * emitpos
+Juk/VGlobals.cpp,456,autorap,global,"INT autorap , comautorap"
+Juk/VGlobals.cpp,456,comautorap,global,"INT autorap , comautorap"
+Juk/VGlobals.cpp,457,autorapsrj,global,char autorapsrj [ MAXSARJALUKU + MAXYHD ]
+Juk/VGlobals.cpp,458,ennakko,global,INT ennakko
+Juk/VGlobals.cpp,459,viimtark,global,char viimtark
+Juk/VGlobals.cpp,460,huomaatark,global,INT huomaatark = 1
+Juk/VGlobals.cpp,461,emitaglisa,global,int emitaglisa = 1
+Juk/VGlobals.cpp,462,pollaa,global,"int pollaa , TCPpoll [ NREGNLY + 1 ]"
+Juk/VGlobals.cpp,462,TCPpoll,global,"int pollaa , TCPpoll [ NREGNLY + 1 ]"
+Juk/VGlobals.cpp,463,emitanal_fl,global,INT emitanal_fl
+Juk/VGlobals.cpp,464,esitark,global,INT esitark
+Juk/VGlobals.cpp,465,emitluenta,global,bool emitluenta
+Juk/VGlobals.cpp,466,maalirastipois,global,INT maalirastipois
+Juk/VGlobals.cpp,467,bdg_muutt,global,INT bdg_muutt
+Juk/VGlobals.cpp,468,autokilp,global,INT autokilp
+Juk/VGlobals.cpp,469,seurkrivi,global,int seurkrivi
+Juk/VGlobals.cpp,470,estaemittoisto,global,INT estaemittoisto = 1
+Juk/VGlobals.cpp,471,sallisummavirhe,global,"int sallisummavirhe , lukutoisto = 2"
+Juk/VGlobals.cpp,471,lukutoisto,global,"int sallisummavirhe , lukutoisto = 2"
+Juk/VGlobals.cpp,472,naytahajonta,global,int naytahajonta = 1
+Juk/VGlobals.cpp,473,valonaytto,global,INT valonaytto
+Juk/VGlobals.cpp,474,val_korkein,global,INT val_korkein
+Juk/VGlobals.cpp,475,profiloi,global,int profiloi
+Juk/VGlobals.cpp,476,comtype,global,INT comtype [ MAX_PORTTI ]
+Juk/VGlobals.cpp,477,fileyht,global,"INT fileyht = - 1 , tcpyhteys"
+Juk/VGlobals.cpp,477,tcpyhteys,global,"INT fileyht = - 1 , tcpyhteys"
+Juk/VGlobals.cpp,478,xmlsarja,global,INT xmlsarja = - 1
+Juk/VGlobals.cpp,479,XMLtietue,global,bool XMLtietue = true
+Juk/VGlobals.cpp,480,ajanottofl,global,"int ajanottofl = - 1 , sail_ajat"
+Juk/VGlobals.cpp,480,sail_ajat,global,"int ajanottofl = - 1 , sail_ajat"
+Juk/VGlobals.cpp,481,viim_regnly,global,INT32 viim_regnly
+Juk/VGlobals.cpp,482,ipparam,global,ipparamtp ipparam [ MAX_PORTTI + 1 ]
+Juk/VGlobals.cpp,483,timerfl,global,int timerfl = FALSE
+Juk/VGlobals.cpp,484,odota,global,int odota
+Juk/VGlobals.cpp,487,dbgtofile,global,int dbgtofile
+Juk/VGlobals.cpp,491,pkarki,global,int pkarki [ MAXSARJALUKU + MAXYHD ] [ MAXOSUUSLUKU ] [ VAIKALUKU + 2 ]
+Juk/VGlobals.cpp,492,tarktapahtumat,global,int tarktapahtumat
+Juk/VGlobals.cpp,493,vuorokaudet,global,"int vuorokaudet , kierrokset"
+Juk/VGlobals.cpp,493,kierrokset,global,"int vuorokaudet , kierrokset"
+Juk/VGlobals.cpp,494,korRaja,global,int ( * korRaja ) [ 2 ]
+Juk/VGlobals.cpp,495,vipLaji,global,wchar_t * vipLaji
+Juk/VGlobals.cpp,500,emittime,global,INT emittime
+Juk/VGlobals.cpp,501,inkirjSQLThread,global,bool inkirjSQLThread = false
+Juk/VGlobals.cpp,517,inhttpHaku,global,int inhttpHaku
+Juk/VGlobals.cpp,518,httphakuThread,global,HTHREAD httphakuThread
+Juk/VInit.cpp,48,cpower,global,int cpower
+Juk/VInit.cpp,49,RaporttiHak,global,wchar_t RaporttiHak [ 2 ] [ 202 ]
+Juk/VInit.cpp,56,setySize,global,INT16 setySize = 50
+Juk/VInit.cpp,57,afvali0,global,int afvali0
+Juk/VInit.cpp,58,ikkunaots,global,wchar_t ikkunaots [ 61 ]
+Juk/VInit.cpp,68,err_file,static,static FILE * err_file
+Juk/VInit.cpp,69,sarjano,global,long sarjano = 3100010L
+Juk/VInit.cpp,70,snostr,static,static char snostr [ 16 ]
+Juk/VInit.cpp,71,muotoilufl,static,"static int muotoilufl , cfgparam"
+Juk/VInit.cpp,71,cfgparam,static,"static int muotoilufl , cfgparam"
+Juk/VInit.cpp,72,merkit,global,char merkit = ' '
+Juk/VInit.cpp,73,comdir,static,static wchar_t comdir [ MAX_PORTTI ]
+Juk/VInit.cpp,74,cfgfilename,static,"static wchar_t cfgfilename [ 41 ] = L "" """
+Juk/VInit.cpp,75,autostr,static,"static wchar_t autostr [ 25 ] = L "" """
+Juk/VInit.cpp,76,korkeat,static,static int korkeat = FALSE
+Juk/VInit.cpp,77,star,static,static int star = FALSE
+Juk/VInit.cpp,79,portparam,static,static int portparam [ MAX_PORTTI ]
+Juk/VInit.cpp,80,nopeuta,static,static int nopeuta = 0
+Juk/VInit.cpp,81,oletuskieli,static,static wchar_t oletuskieli = L ' '
+Juk/VInit.cpp,82,pisteparam,static,static int pisteparam
+Juk/VInit.cpp,83,aikakorjaus,global,int aikakorjaus [ MAXJONO ]
+Juk/VInit.cpp,86,luentaloki,global,bool luentaloki
+Juk/VInit.cpp,91,tarkavoimet,global,"INT tarkavoimet , luentatesti"
+Juk/VInit.cpp,91,luentatesti,global,"INT tarkavoimet , luentatesti"
+Juk/VInit.cpp,94,tietofl,static,static tietofl
+Juk/VIv.cpp,98,esto,static,static int esto = FALSE
+Juk/VIv.cpp,99,htime,static,static int htime [ MAXJONO ]
+Juk/VIv.cpp,100,siritopen,global,int siritopen [ NREGNLY ]
+Juk/VIv.cpp,103,aika_head,global,"int aika_head , aika_tail"
+Juk/VIv.cpp,103,aika_tail,global,"int aika_head , aika_tail"
+Juk/VIv.cpp,104,int_aika,global,INT32 int_aika [ AIKA_LUKU ]
+Juk/VIv.cpp,113,aika_syy,global,int aika_syy [ AIKA_LUKU ]
+Juk/VIv.cpp,117,nivkeys,global,int nivkeys = 1
+Juk/VIv.cpp,123,uusi_emit,global,INT32 uusi_emit
+Juk/VIv.cpp,124,hylatty_emit,global,INT32 hylatty_emit
+Juk/VIv.cpp,144,bdg_t,static,static bdg_t_tp bdg_t [ N_BDG_T ]
+Juk/VIv.cpp,145,pkg_alku,global,"UINT32 pkg_alku [ NREGNLY ] , pkg_loppu [ NREGNLY ]"
+Juk/VIv.cpp,145,pkg_loppu,global,"UINT32 pkg_alku [ NREGNLY ] , pkg_loppu [ NREGNLY ]"
+Juk/VIv.cpp,146,lue_rno,global,INT lue_rno
+Juk/VIv.cpp,154,r_msg_len,global,INT r_msg_len [ NREGNLY ]
+Juk/VIv.cpp,373,lahdejonohaku,global,INT lahdejonohaku = 0
+Juk/VIv.cpp,680,etls,static,static e_tulostp * etls
+Juk/VIv.cpp,681,etls_head,static,"static int etls_head , etls_tail"
+Juk/VIv.cpp,681,etls_tail,static,"static int etls_head , etls_tail"
+Juk/VIv.cpp,682,etls_CriticalSection,static,static CRITICAL_SECTION etls_CriticalSection
+Juk/VIv.cpp,811,r_no_file,global,int r_no_file
+Juk/VIv.cpp,812,lukuvali,static,static int lukuvali = 0
+Juk/VIv.cpp,2252,varasti,global,INT16 varasti [ MAXSARJALUKU ] [ MAXOSUUSLUKU ] [ VAIKALUKU + 1 ]
+Juk/VIx.cpp,184,ixarr,global,kilpindex ixarr [ NINDEX ]
+Juk/VIx.cpp,185,srjaakindex,global,kilpindex * srjaakindex
+Juk/VIx.cpp,186,srjnroindex,global,kilpindex * srjnroindex
+Juk/VIx.cpp,187,ostlsindex,global,kilpindex * ostlsindex
+Juk/VIx.cpp,191,reindex,global,int reindex
+Juk/VMuotoilu.cpp,310,tulosmuot,global,tulosmuottp tulosmuot
+Juk/VMuotoilu.cpp,343,filetulosmuot,global,tulosmuottp filetulosmuot
+Juk/VMuotoilu.cpp,378,init_fnt,global,wchar_t init_fnt [ PRKOODIPIT + 1 ]
+Juk/VMuotoilu.cpp,379,pots_on,global,wchar_t pots_on [ PRKOODIPIT + 1 ]
+Juk/VMuotoilu.cpp,380,pots_pois,global,wchar_t pots_pois [ PRKOODIPIT + 1 ]
+Juk/VMuotoilu.cpp,381,aots_on,global,wchar_t aots_on [ PRKOODIPIT + 1 ]
+Juk/VMuotoilu.cpp,382,aots_pois,global,wchar_t aots_pois [ PRKOODIPIT + 1 ]
+Juk/VMuotoilu.cpp,383,lih_on,global,wchar_t lih_on [ PRKOODIPIT + 1 ]
+Juk/VMuotoilu.cpp,384,lih_pois,global,wchar_t lih_pois [ PRKOODIPIT + 1 ]
+Juk/VMuotoilu.cpp,385,pienet_on,global,wchar_t pienet_on [ PRKOODIPIT + 1 ]
+Juk/VMuotoilu.cpp,386,pienet_pois,global,wchar_t pienet_pois [ PRKOODIPIT + 1 ]
+Juk/VMuotoilu.cpp,388,n_prtflds,global,INT n_prtflds = sizeof ( prtflds ) / sizeof ( FldFrmtTp ) - 1
+Juk/VMuotoilu.cpp,389,n_prtfldsk,global,INT n_prtfldsk = sizeof ( prtfldsk ) / sizeof ( FldFrmtTp ) - 1
+Juk/VMuotoilu.cpp,390,n_dspflds,global,int n_dspflds = sizeof ( dspflds ) / sizeof ( FldFrmtTp ) - 1
+Juk/VMuotoilu.cpp,391,n_fileflds,global,int n_fileflds = sizeof ( fileflds ) / sizeof ( FldFrmtTp ) - 1
+Juk/VMuotoilu.cpp,392,n_filefldsk,global,int n_filefldsk = sizeof ( filefldsk ) / sizeof ( FldFrmtTp ) - 1
+Juk/VMuotoilu.cpp,394,paaots,global,"wchar_t paaots [ 125 ] = L "" """
+Juk/VMuotoilu.cpp,395,sarjaots,global,"wchar_t sarjaots [ 125 ] = L "" """
+Juk/VMuotoilu.cpp,396,alaots,global,"wchar_t alaots [ 141 ] = L "" """
+Juk/VMuotoilu.cpp,399,initfont_emrap,global,"wchar_t initfont_emrap [ PRKOODIPIT + 1 ] = L "" """
+Juk/VMuotoilu.cpp,401,initfont_emva,global,"wchar_t initfont_emva [ PRKOODIPIT + 1 ] = L "" """
+Juk/VMuotoilu.cpp,404,valinelendef,global,"INT valinelendef , vapagelendef , vapageskip , tarkrappageskip"
+Juk/VMuotoilu.cpp,404,vapagelendef,global,"INT valinelendef , vapagelendef , vapageskip , tarkrappageskip"
+Juk/VMuotoilu.cpp,404,vapageskip,global,"INT valinelendef , vapagelendef , vapageskip , tarkrappageskip"
+Juk/VMuotoilu.cpp,404,tarkrappageskip,global,"INT valinelendef , vapagelendef , vapageskip , tarkrappageskip"
+Juk/VMuotoilu.cpp,405,valinelen,global,"INT valinelen = 75 , vapagelen = 55"
+Juk/VMuotoilu.cpp,405,vapagelen,global,"INT valinelen = 75 , vapagelen = 55"
+Juk/VMuotoilu.cpp,1230,nFrmTags,static,static int nFrmTags = sizeof ( FrmTags ) / sizeof ( FrmTags [ 0 ] )
+Juk/VTulostus.cpp,45,yhttl,global,int yhttl = 0
+Juk/VTulostus.cpp,58,av,static,static char av = ' '
+Juk/VTulostus.cpp,76,lisatxt,global,lisatxttp lisatxt [ 4 ]
+Juk/VTulostus.cpp,79,palk,global,wchar_t palk [ MAXSARJALUKU + MAXYHD ]
+Juk/VTulostus.cpp,81,fldname,global,char * fldname [ 3 ]
+Juk/VTulostus.cpp,82,scale,global,"INT scale = 1 , n_fld [ 3 ]"
+Juk/VTulostus.cpp,82,n_fld,global,"INT scale = 1 , n_fld [ 3 ]"
+Juk/VTulostus.cpp,84,lastpos,static,static INT lastpos
+Juk/VTulostus.cpp,85,tul_val_prm,global,"tulostusparamtp tul_val_prm , af_prm"
+Juk/VTulostus.cpp,85,af_prm,global,"tulostusparamtp tul_val_prm , af_prm"
+Juk/VTulostus.cpp,87,seuranimi,static,static wchar_t seuranimi [ SEURALISTA ] [ LSEURA + 1 ]
+Juk/VTulostus.cpp,89,karkiaika,global,UINT32 karkiaika
+Juk/VTulostus.cpp,90,ssltlsfl,global,int ssltlsfl = 1
+Juk/VTulostus.cpp,91,piirisijat,global,INT piirisijat
+Juk/VTulostus.cpp,92,rivpit,global,UINT rivpit = 76
+Juk/VTulostus.cpp,93,lahetacr,global,INT lahetacr = 1
+Juk/VTulostus.cpp,94,potsfl,global,INT potsfl = FALSE
+Juk/VTulostus.cpp,95,tulera,global,int tulera
+Juk/VTulostus.cpp,96,cssstr,static,"static wchar_t cssstr [ ] = L "" """
+Juk/VTulostus.cpp,97,tsakfl2,static,static INT tsakfl2 = FALSE
+Juk/VTulostus.cpp,98,tsakfly,static,static INT tsakfly = FALSE
+Juk/VTulostus.cpp,99,tsakflm,static,static INT tsakflm
+Juk/VTulostus.cpp,100,pitkaseuram,global,INT pitkaseuram
+Juk/VTulostus.cpp,101,TiedRivi,static,static int TiedRivi
+Juk/VTulostus.cpp,102,tul_tied_nimi,global,"wchar_t tul_tied_nimi [ 80 ] = L "" """
+Juk/VTulostus.cpp,116,srix,static,static srixtype * srix
+Juk/VTulostus.cpp,117,sr_nimet,static,static wchar_t * sr_nimet
+Juk/VTulostus.cpp,161,piiriluku,global,int piiriluku = sizeof ( piirinimi ) / sizeof ( void_pointer )
+Juk/VTulostus.cpp,163,piirifl,global,INT piirifl [ 200 ]
+Juk/VTulostus.cpp,179,seurat,global,sraluettp * seurat
+Juk/VTulostus.cpp,778,rinnLuvut,static,"static struct { bool kelp ; int tulos , kesk , hyl , avoin ; } rinnLuvut"
+Juk/VTulostus.cpp,6971,htmlalkufl,static,static int htmlalkufl
+Juk/VTulostus.cpp,7339,afsrj,static,"static int afsrj , afva , afnparas = 30"
+Juk/VTulostus.cpp,7339,afva,static,"static int afsrj , afva , afnparas = 30"
+Juk/VTulostus.cpp,7339,afnparas,static,"static int afsrj , afva , afnparas = 30"
+Juk/VTulostus.cpp,7683,sijaluvut,static,static int sijaluvut
+Juk/VTulostus.cpp,8614,hajalku,static,static hajtp * hajalku [ MAXSARJALUKU ] [ MAXOSUUSLUKU ]
+Juk/VTulostus.cpp,8615,hajfname,static,"static char hajfname [ ] = "" """
+Juk/VTulostus.cpp,8616,hajfile,static,static FILE * hajfile
+Juk/VXml.cpp,48,kirjXMLkaikki,global,bool kirjXMLkaikki
+Juk/VXml.cpp,50,Dis,static,"static wchar_t Dis [ 5 ] = L "" "" , * DisSt [ 4 ] = { L "" "" , L "" "" , L "" "" , L "" "" }"
+Juk/VXml.cpp,50,DisSt,static,"static wchar_t Dis [ 5 ] = L "" "" , * DisSt [ 4 ] = { L "" "" , L "" "" , L "" "" , L "" "" }"
+Juk/VXml.cpp,51,Sub,static,"static wchar_t Sub [ 7 ] = L "" """
+Juk/VXml.cpp,53,Stat,static,"static wchar_t Stat [ 10 ] = L "" "" , * StatSt [ 9 ] = { L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" }"
+Juk/VXml.cpp,53,StatSt,static,"static wchar_t Stat [ 10 ] = L "" "" , * StatSt [ 9 ] = { L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" , L "" "" }"
+Juk/VXml.cpp,54,Bdg,static,"static wchar_t Bdg [ 5 ] = L "" "" , * BdgSt [ 4 ] = { L "" "" , L "" "" , L "" "" , L "" "" }"
+Juk/VXml.cpp,54,BdgSt,static,"static wchar_t Bdg [ 5 ] = L "" "" , * BdgSt [ 4 ] = { L "" "" , L "" "" , L "" "" , L "" "" }"
+Juk/VXml_IOF30.cpp,224,nIOF3Tags,static,static int nIOF3Tags = sizeof ( IOF3Tags ) / sizeof ( IOF3Tags [ 0 ] )
+Juk/XMLtulos.cpp,41,yhttl,global,int yhttl = 0
+Juk/XMLtulos.cpp,192,tag_a,static,static tagstp tag_a
+Juk/vApu.cpp,56,hav_virheet,global,bool hav_virheet = true
+Juk/vajat.cpp,364,yhtj,static,static struct { int cn ; int cnino ; int ino ; } yhtj [ 4 * MAXJONO ]
+Juk/vajat.cpp,366,nyhtjono,static,static int nyhtjono
+Juk/vdat.cpp,33,enst,static,"static int enst , innpfl [ MAXOSUUSLUKU ]"
+Juk/vdat.cpp,33,innpfl,static,"static int enst , innpfl [ MAXOSUUSLUKU ]"
+Juk/vdat.cpp,34,tls_muutos,static,static int tls_muutos [ MAXOSUUSLUKU ]
+Juk/vdat.cpp,39,sql,global,MYSQL * sql
+Tp/TpApu.cpp,785,yhtj,static,static struct { int cn ; int cnino ; int ino ; } yhtj [ 4 * MAXJONO ]
+Tp/TpApu.cpp,787,nyhtjono,static,static int nyhtjono
+Tp/TpApu.cpp,845,err_file,static,static FILE * err_file
+Tp/TpApu.cpp,846,n_err_file,static,static int n_err_file
+Tp/TpComY.cpp,63,UDPviive_lue,global,int UDPviive_lue = 20
+Tp/TpComY.cpp,64,UDPviive_lah,global,int UDPviive_lah = 10
+Tp/TpComY.cpp,65,UDPviive_ts,global,int UDPviive_ts = 20
+Tp/TpComY.cpp,66,UDPCliWait,global,int UDPCliWait
+Tp/TpComY.cpp,67,TCPviive_lah,global,int TCPviive_lah [ MAX_PORTTI ]
+Tp/TpComY.cpp,68,TCPviive_nak,global,int TCPviive_nak [ MAX_PORTTI ]
+Tp/TpComY.cpp,69,TCPviive_pak,global,int TCPviive_pak [ MAX_PORTTI ]
+Tp/TpComY.cpp,70,UDPvarmistamaton,global,int UDPvarmistamaton [ MAX_PORTTI ]
+Tp/TpComY.cpp,71,lah_tied_seur,static,static int lah_tied_seur [ MAX_LAHPORTTI ]
+Tp/TpComY.cpp,72,tiedostosanoma,static,static bool tiedostosanoma [ MAX_LAHPORTTI ]
+Tp/TpComY.cpp,73,com_keskeytt,static,static bool com_keskeytt [ MAX_PORTTI ]
+Tp/TpComY.cpp,78,sendtestparam,global,sendtestparamtp sendtestparam
+Tp/TpComY.cpp,81,hcMon,global,HANDLE hcMon [ MAXMONITORI ]
+Tp/TpComY.cpp,82,ipParamMon,global,ipparamtp ipParamMon [ MAXMONITORI ]
+Tp/TpComY.cpp,83,monitoriVali,global,int monitoriVali = 10000
+Tp/TpComY.cpp,84,monportbase,global,int monportbase = 14770
+Tp/TpComY.cpp,117,autoclose,static,static int autoclose
+Tp/TpComY.cpp,132,varaserver,global,int varaserver
+Tp/TpComY.cpp,138,TCP_on,global,unsigned int TCP_on [ 6 ]
+Tp/TpComY.cpp,140,luepaketteja,static,static INT luepaketteja = 1
+Tp/TpComY.cpp,147,hPingThread,global,HTHREAD hPingThread
+Tp/TpComY.cpp,178,dfl,global,FILE * dfl
+Tp/TpComY.cpp,179,dflb,global,char dflb [ 20000 ]
+Tp/TpComY.cpp,195,profarr,global,proftp * profarr
+Tp/TpComY.cpp,196,profptr,global,int profptr
+Tp/TpComY.cpp,197,proffile,global,FILE * proffile
+Tp/TpComY.cpp,198,prof_CriticalSection,global,CRITICAL_SECTION prof_CriticalSection
+Tp/TpComY32.cpp,68,UDPviive_lue,global,int UDPviive_lue = 20
+Tp/TpComY32.cpp,69,UDPviive_lah,global,int UDPviive_lah = 10
+Tp/TpComY32.cpp,70,UDPviive_ts,global,int UDPviive_ts = 20
+Tp/TpComY32.cpp,71,UDPCliWait,global,int UDPCliWait
+Tp/TpComY32.cpp,72,TCPviive_lah,global,int TCPviive_lah [ MAX_PORTTI ]
+Tp/TpComY32.cpp,73,TCPviive_nak,global,int TCPviive_nak [ MAX_PORTTI ]
+Tp/TpComY32.cpp,74,TCPviive_pak,global,int TCPviive_pak [ MAX_PORTTI ]
+Tp/TpComY32.cpp,75,UDPvarmistamaton,global,int UDPvarmistamaton [ MAX_PORTTI ]
+Tp/TpComY32.cpp,78,hcMon,global,HANDLE hcMon [ MAXMONITORI ]
+Tp/TpComY32.cpp,79,ipParamMon,global,ipparamtp ipParamMon [ MAXMONITORI ]
+Tp/TpComY32.cpp,80,monitoriVali,global,int monitoriVali = 10000
+Tp/TpComY32.cpp,81,monportbase,global,int monportbase = 14770
+Tp/TpComY32.cpp,110,autoclose,static,static int autoclose
+Tp/TpComY32.cpp,126,varaserver,global,int varaserver
+Tp/TpComY32.cpp,132,TCP_on,global,unsigned int TCP_on [ 6 ]
+Tp/TpComY32.cpp,134,luepaketteja,static,static INT luepaketteja = 1
+Tp/TpComY32.cpp,141,hPingThread,global,HTHREAD hPingThread
+Tp/TpComY32.cpp,186,dfl,global,FILE * dfl
+Tp/TpComY32.cpp,187,dflb,global,char dflb [ 20000 ]
+Tp/TpComY32.cpp,203,profarr,global,proftp * profarr
+Tp/TpComY32.cpp,204,profptr,global,int profptr
+Tp/TpComY32.cpp,205,proffile,global,FILE * proffile
+Tp/TpComY32.cpp,206,prof_CriticalSection,global,CRITICAL_SECTION prof_CriticalSection
+Tp/TpComY32.cpp,207,profiloi,global,int profiloi = 2
+Tp/TpDef.h,121,IV_KEY,header-def,"inputaika_t ( ( tm ) , ( t0 ) , ( l ) , ( x ) , ( y ) , ( term ) , ( tc ) ) typedef struct { char ch ; char keycode ; } IV_KEY"
+Tp/TpLaitteet.cpp,100,in_aseta_mtr,global,int in_aseta_mtr
+Tp/TpLaitteet.cpp,101,mtr_pyynto,global,INT32 mtr_pyynto [ NREGNLY ]
+Tp/TpLaitteet.cpp,102,mtr_yksi,global,INT mtr_yksi
+Tp/TpLaitteet.cpp,103,TauluParam,global,TauluParamTp TauluParam [ NREGNLY ]
+Tp/TpLaitteet.cpp,107,LatestSirit,global,int LatestSirit [ NREGNLY ]
+Tp/TpLaitteet.cpp,108,LatestSiritPoll,global,int LatestSiritPoll [ NREGNLY ]
+Tp/TpLaitteet.cpp,109,SiritEiVastaa,global,int SiritEiVastaa [ NREGNLY ]
+Tp/TpLaitteet.cpp,110,SiritPoll,global,int SiritPoll [ NREGNLY ]
+Tp/TpLaitteet.cpp,111,reconnectSirit,global,int reconnectSirit [ NREGNLY ]
+Tp/TpLaitteet.cpp,112,siritarrive,global,"char siritarrive [ 80 ] = "" """
+Tp/TpLaitteet.cpp,113,siritdepart,global,"char siritdepart [ 80 ] = "" """
+Tp/TpLaitteet.cpp,114,SiritMask,global,char SiritMask [ 31 ]
+Tp/TpLaitteet.cpp,116,viimrivi,global,int viimrivi
+Tp/TpLaitteet.cpp,117,pyyntoviive,static,static INT pyyntoviive = 200
+Tp/TpLaitteet.cpp,118,regnlystarted,static,static int regnlystarted [ NREGNLY ]
+Tp/TpLaitteet.cpp,121,ecdata,global,ecdatatp ecdata [ NREGNLY ]
+Tp/TpLaitteet.cpp,130,dbgfile,global,FILE * dbgfile [ NREGNLY ]
+Tp/TpLaitteet.cpp,499,valo_on,global,int valo_on
+Tp/ZebraReader.cpp,45,ZebraGpiPort,global,int ZebraGpiPort = 1
+Tp/ZebraReader.cpp,112,g_msgid,static,static unsigned long g_msgid = 1
+Tp/ZebraReader.cpp,468,ZebraDepart,global,int ZebraDepart = 700
+Tp/ZebraReader.cpp,478,ZebraDepartCleanup,global,int ZebraDepartCleanup = 0
+Tp/ZebraReader.cpp,523,g_active,static,static ActiveTag g_active [ NREGNLY ] [ ZEBRA_MAXACTIVE ]
+Tp/ZebraReader.cpp,826,g_rx,static,static unsigned char g_rx [ NREGNLY ] [ RXSZ ]
+Tp/ZebraReader.cpp,827,g_rxlen,static,static int g_rxlen [ NREGNLY ]
+Tp/mtrand.cpp,25,p,global,int MTRand_int32 :: p = 0
+Tp/mtrand.cpp,26,init,global,bool MTRand_int32 :: init = false
+cbTp/TpApu.cpp,311,yhtj,static,static struct { int cn ; int cnino ; int ino ; } yhtj [ 4 * MAXJONO ]
+cbTp/TpApu.cpp,313,nyhtjono,static,static int nyhtjono
+cbTp/TpApu.cpp,364,err_file,static,static FILE * err_file
+cbTp/TpApu.cpp,365,n_err_file,static,static int n_err_file
+cbTp/UnitAikakorjaus.cpp,26,FormAikakorjaus,global,TFormAikakorjaus * FormAikakorjaus
+cbTp/UnitAmpPaikat.cpp,26,FormAmpPaikat,global,TFormAmpPaikat * FormAmpPaikat
+cbTp/UnitAnnaAika.cpp,31,FormAnnaAika,global,TFormAnnaAika * FormAnnaAika
+cbTp/UnitAnnaArvo.cpp,27,FormAnnaArvo,global,TFormAnnaArvo * FormAnnaArvo
+cbTp/UnitAnnaTeksti.cpp,27,FormAnnaTeksti,global,TFormAnnaTeksti * FormAnnaTeksti
+cbTp/UnitBrowser.cpp,26,FormBrowser,global,TFormBrowser * FormBrowser
+cbTp/UnitEditDialog.cpp,26,EditDialog,global,TEditDialog * EditDialog
+cbTp/UnitEmiTag.cpp,29,FormEmiTag,global,TFormEmiTag * FormEmiTag
+cbTp/UnitEmiTag.cpp,30,emittallfile,global,FILE * emittallfile
+cbTp/UnitEmiTag.cpp,31,n_emittallfile,global,int n_emittallfile
+cbTp/UnitEmiTag.cpp,32,hPaivThread,static,"static HTHREAD hPaivThread , hTiedotThread"
+cbTp/UnitEmiTag.cpp,32,hTiedotThread,static,"static HTHREAD hPaivThread , hTiedotThread"
+cbTp/UnitEmiTag.cpp,33,PaivOn,static,static bool PaivOn
+cbTp/UnitEmitFile.cpp,32,FormEmitFile,global,TFormEmitFile * FormEmitFile
+cbTp/UnitEmitFile.cpp,33,emitinfile,static,static FILE * emitinfile
+cbTp/UnitEmitFile.cpp,34,nemit,static,static int nemit
+cbTp/UnitEmitFile.cpp,35,emarr,static,static emittp * emarr
+cbTp/UnitEmitSQL.cpp,27,FormEmitSQL,global,TFormEmitSQL * FormEmitSQL
+cbTp/UnitEmitSQL.cpp,30,vaiheenvaihto,static,static bool vaiheenvaihto = false
+cbTp/UnitEmitnouto.cpp,26,FormEmitNouto,global,TFormEmitNouto * FormEmitNouto
+cbTp/UnitFIS.cpp,26,FormFIS,global,TFormFIS * FormFIS
+cbTp/UnitHtmlEdit.cpp,32,FormHtmlEdit,global,TFormHtmlEdit * FormHtmlEdit
+cbTp/UnitHtmlEdit.cpp,34,temp_html_flnm,global,"wchar_t temp_html_flnm [ 80 ] = L "" """
+cbTp/UnitIlmoitus.cpp,26,FormIlmoitus,global,TFormIlmoitus * FormIlmoitus
+cbTp/UnitKartta.cpp,32,FormKartta,global,TFormKartta * FormKartta
+cbTp/UnitKartta.cpp,36,clRata,static,static TColor clRata = clFuchsia
+cbTp/UnitKartta.cpp,37,clVirhe,static,static TColor clVirhe = clRed
+cbTp/UnitKartta.cpp,38,wdthRata,static,static int wdthRata = 3
+cbTp/UnitKartta.cpp,39,rastiHalk,static,static int rastiHalk = 40
+cbTp/UnitKartta.cpp,40,fntSize,static,static int fntSize = 20
+cbTp/UnitKirjoitinVal.cpp,28,FormKirjVal,global,TFormKirjVal * FormKirjVal
+cbTp/UnitKohdistus.cpp,28,FormKohdistus,global,TFormKohdistus * FormKohdistus
+cbTp/UnitLisaTekstit.cpp,32,FormLisaTekstit,global,TFormLisaTekstit * FormLisaTekstit
+cbTp/UnitMTR.cpp,29,FormMTR,global,TFormMTR * FormMTR
+cbTp/UnitMTR.cpp,41,hPaivThread,static,static HTHREAD hPaivThread
+cbTp/UnitMTR.cpp,42,PaivOn,static,static bool PaivOn
+cbTp/UnitMaalikello.cpp,27,FormMaalikello,global,TFormMaalikello * FormMaalikello
+cbTp/UnitMaalikello.cpp,32,laiteLkm,static,static int laiteLkm = 2
+cbTp/UnitMessages.cpp,32,FormMessages,global,TFormMessages * FormMessages
+cbTp/UnitMsgs.cpp,26,FormMsgs,global,TFormMsgs * FormMsgs
+cbTp/UnitNappain.cpp,26,FormNappain,global,TFormNappain * FormNappain
+cbTp/UnitNaytaTulos.cpp,27,FormNaytaTulos,global,TFormNaytaTulos * FormNaytaTulos
+cbTp/UnitNaytaTulos.cpp,30,vaiheenvaihto,static,static bool vaiheenvaihto = false
+cbTp/UnitNaytaTulos.cpp,94,NaytaTulosTimerThreadOn,parse-error,"void NaytaTulosIkkParamClass :: operator = ( NaytaTulosIkkParamClass & ikkPar ) { memcpy ( this , & ikkPar , sizeof ( NaytaTulosIkkParamClass ) ) ; } void TForm"
+cbTp/UnitPiikit.cpp,28,FormPiikit,global,TFormPiikit * FormPiikit
+cbTp/UnitPiikit.cpp,64,hScale,static,"static int hScale = 20 , vScale = 20 , marg2 = 0"
+cbTp/UnitPiikit.cpp,64,vScale,static,"static int hScale = 20 , vScale = 20 , marg2 = 0"
+cbTp/UnitPiikit.cpp,64,marg2,static,"static int hScale = 20 , vScale = 20 , marg2 = 0"
+cbTp/UnitPiikit.cpp,65,BMtop,static,"static int BMtop = 0 , BMleft = 0"
+cbTp/UnitPiikit.cpp,65,BMleft,static,"static int BMtop = 0 , BMleft = 0"
+cbTp/UnitRadat.cpp,40,FormRadat,global,TFormRadat * FormRadat
+cbTp/UnitRadat.cpp,60,kilp,static,static kilptp kilp [ MAXNKILP ]
+cbTp/UnitRadat.cpp,94,vsc,static,"static INT32 vsc = 100 , psc = 100"
+cbTp/UnitRadat.cpp,94,psc,static,"static INT32 vsc = 100 , psc = 100"
+cbTp/UnitRadat.cpp,95,marg_re,static,"static INT32 marg_re = 240 , marg2 = 600 , top = 720 , step = 1300"
+cbTp/UnitRadat.cpp,95,marg2,static,"static INT32 marg_re = 240 , marg2 = 600 , top = 720 , step = 1300"
+cbTp/UnitRadat.cpp,95,top,static,"static INT32 marg_re = 240 , marg2 = 600 , top = 720 , step = 1300"
+cbTp/UnitRadat.cpp,95,step,static,"static INT32 marg_re = 240 , marg2 = 600 , top = 720 , step = 1300"
+cbTp/UnitRadat.cpp,96,ckdi,static,"static wchar_t ckdi [ ] = L "" """
+cbTp/UnitRadat.cpp,97,errfile,static,static FILE * errfile
+cbTp/UnitRadat.cpp,98,initialisoitu,static,static bool initialisoitu
+cbTp/UnitRadat.cpp,99,errcount,static,static INT errcount
+cbTp/UnitRadat.cpp,100,sallialle31,static,static INT sallialle31
+cbTp/UnitRadat.cpp,101,rrlisa,static,static INT rrlisa = - 1
+cbTp/UnitRadat.cpp,103,rataxmlname,static,"static wchar_t rataxmlname [ 200 ] = L "" """
+cbTp/UnitRadat.cpp,104,rataxmlname0,static,"static wchar_t rataxmlname0 [ ] = L "" """
+cbTp/UnitRadat.cpp,2031,Maalikoodi,static,"static int Maalikoodi , AjanottoTapa"
+cbTp/UnitRadat.cpp,2031,AjanottoTapa,static,"static int Maalikoodi , AjanottoTapa"
+cbTp/UnitRadat.cpp,2032,Ennakko,static,static int Ennakko = - 99
+cbTp/UnitSarjaVal.cpp,26,FormSarjaVal,global,TFormSarjaVal * FormSarjaVal
+cbTp/UnitSelect3.cpp,28,FormThis,static,static TFormSelect3 * FormThis
+cbTp/UnitSelect3.cpp,29,KestoAika,static,static int KestoAika
+cbTp/UnitSelect3.cpp,30,SelTimerThreadOn,static,static bool SelTimerThreadOn
+cbTp/UnitSivuTuloste.cpp,33,FormSivuTuloste,global,TFormSivuTuloste * FormSivuTuloste
+cbTp/UnitSivuTuloste.cpp,62,nFrmTags,static,static int nFrmTags = sizeof ( FrmTags ) / sizeof ( FrmTags [ 0 ] )
+cbTp/UnitTietoTulk.cpp,26,FormTietoTulk,global,TFormTietoTulk * FormTietoTulk
+cbTp/UnitTulkinta.cpp,31,FormTulkinta,global,TFormTulkinta * FormTulkinta
+cbTp/UnitUusinta.cpp,31,FormUusinta,global,TFormUusinta * FormUusinta
+cbTp/UnitYhteysStatus.cpp,26,FormYhteysStatus,global,TFormYhteysStatus * FormYhteysStatus
+cbTp/cbTpApu.cpp,364,perr_ots,static,static wchar_t perr_ots [ MAX_MSG_BUF_SIZE + 1 ]
+cbTp/cbTpApu.cpp,365,perr_msg,static,static wchar_t perr_msg [ MAX_MSG_BUF_SIZE + 1 ]
+cbTp/cbTpApu.cpp,394,perr_ots2,static,static wchar_t perr_ots2 [ MAX_MSG_BUF_SIZE + 1 ]
+cbTp/cbTpApu.cpp,395,perr_msg2,static,static wchar_t perr_msg2 [ MAX_MSG_BUF_SIZE + 1 ]
+cbTp/cbTpApu.cpp,399,FSwarning,static,static TFormIlmoitus * FSwarning
+com/WinUDP.cpp,54,TCPacceptThread,static,static HTHREAD TCPacceptThread [ MAX_PORTTI ]
+com/WinUDP.cpp,55,TCPrcvThread,static,static HTHREAD TCPrcvThread [ MAX_PORTTI ]
+com/WinUDP.cpp,56,UDPstreamThread,static,static HTHREAD UDPstreamThread [ MAX_PORTTI ]
+com/WinUDP.cpp,57,WSAstarted,static,"static int WSAstarted , UDPlukum , TCPlukum"
+com/WinUDP.cpp,57,UDPlukum,static,"static int WSAstarted , UDPlukum , TCPlukum"
+com/WinUDP.cpp,57,TCPlukum,static,"static int WSAstarted , UDPlukum , TCPlukum"
+com/WinUDP.cpp,58,WSAdata,static,static WSADATA WSAdata
+com/WinUDP.cpp,59,yhtnot,static,static int yhtnot [ MAX_PORTTI ]
+com/WinUDP.cpp,62,konetn,static,static char konetn [ 3 ]
+com/WinUDP.cpp,63,UDPcliWait,static,static int UDPcliWait = UDP_RD_TIMEOUT
+com/WinUDP.cpp,90,UDPyhteys,static,static UDPyhteystp * UDPyhteys [ MAX_PORTTI + 20 ]
+com/WinUDP.cpp,115,TCPyhteys,static,static TCPyhteystp * TCPyhteys [ MAX_PORTTI ]
+com/WinUDP.cpp,133,broadcastyhteys,static,static broadcasttp broadcastyhteys [ MAX_BROADCAST ]
+com/WinUDP.cpp,134,nBroadcast,static,static int nBroadcast = 0
+com/winCom.cpp,28,timeouts0,global,COMMTIMEOUTS timeouts0
+tputilv2/Inputstr.cpp,30,monirivi,global,int monirivi = FALSE
+tputilv2/Inputstr.cpp,31,iscurpos,global,unsigned iscurpos = 0
+tputilv2/Inputwstr.cpp,30,monirivi,static,static int monirivi = FALSE
+tputilv2/Inputwstr.cpp,31,iscurpos,static,static unsigned iscurpos = 0
+tputilv2/Pageedit.cpp,35,rivptr,global,char * rivptr [ NRMAX ]
+tputilv2/Pageedit.cpp,36,rm,static,"static int rm , rl , rluku , rofs , rofs0"
+tputilv2/Pageedit.cpp,36,rl,static,"static int rm , rl , rluku , rofs , rofs0"
+tputilv2/Pageedit.cpp,36,rluku,static,"static int rm , rl , rluku , rofs , rofs0"
+tputilv2/Pageedit.cpp,36,rofs,static,"static int rm , rl , rluku , rofs , rofs0"
+tputilv2/Pageedit.cpp,36,rofs0,static,"static int rm , rl , rluku , rofs , rofs0"
+tputilv2/Pageedit.cpp,37,rivi,static,"static int rivi , newline"
+tputilv2/Pageedit.cpp,37,newline,static,"static int rivi , newline"
+tputilv2/UnitTest.cpp,29,Form1,global,TForm1 * Form1
+tputilv2/Viwrrect.cpp,23,norm_fore,global,int norm_fore = 7
+tputilv2/Viwrrect.cpp,24,norm_back,global,int norm_back = 0
+tputilv2/Viwrrect.cpp,25,inv_back,global,int inv_back = 7
+tputilv2/Viwrrect.cpp,26,inv_fore,global,int inv_fore = 0
+tputilv2/Writeerr.cpp,30,writeerrorOn,global,int writeerrorOn
+tputilv2/Wrttext.cpp,98,prf,static,static PRFILE * prf [ PRLKM ]
+tputilv2/Wrttext.cpp,101,prblocksize,global,unsigned prblocksize = PRBLKSIZE
+tputilv2/Wrttext.cpp,102,tehotausta,global,int tehotausta
+tputilv2/Wrttext.cpp,103,naytajono,global,int naytajono = 1
+tputilv2/Wrttext.cpp,110,GDItopmarginDef,static,static int GDItopmarginDef = 36
+tputilv2/Wrttext.cpp,111,GDInormalWeightDef,static,static int GDInormalWeightDef = FW_MEDIUM
+tputilv2/Wrttext.cpp,112,GDIboldWeightDef,static,static int GDIboldWeightDef = FW_BOLD
+tputilv2/dbindex.cpp,32,__tputil__ok,static,static int __tputil__ok
+tputilv2/globals.cpp,21,aani,global,int aani = 2
+tputilv2/globals.cpp,22,sarjaluku,global,int sarjaluku = 10
+tputilv2/globals.cpp,23,sarjanimi,global,"UCHAR sarjanimi [ 10 ] , dr1"
+tputilv2/globals.cpp,23,dr1,global,"UCHAR sarjanimi [ 10 ] , dr1"
+tputilv2/globals.cpp,24,spoolfl,global,"int spoolfl , wait , listfl , status_on , maxnblock , trlate , tcomfl"
+tputilv2/globals.cpp,24,wait,global,"int spoolfl , wait , listfl , status_on , maxnblock , trlate , tcomfl"
+tputilv2/globals.cpp,24,listfl,global,"int spoolfl , wait , listfl , status_on , maxnblock , trlate , tcomfl"
+tputilv2/globals.cpp,24,status_on,global,"int spoolfl , wait , listfl , status_on , maxnblock , trlate , tcomfl"
+tputilv2/globals.cpp,24,maxnblock,global,"int spoolfl , wait , listfl , status_on , maxnblock , trlate , tcomfl"
+tputilv2/globals.cpp,24,trlate,global,"int spoolfl , wait , listfl , status_on , maxnblock , trlate , tcomfl"
+tputilv2/globals.cpp,24,tcomfl,global,"int spoolfl , wait , listfl , status_on , maxnblock , trlate , tcomfl"
+tputilv2/globals.cpp,25,t0tics,global,int t0tics = 360000L
+tputilv2/globals.cpp,26,ok,global,int ok
+tputilv2/globals.cpp,27,copybuf,global,UCHAR copybuf [ 8192 ]
+tputilv2/globals.cpp,28,iobufr,global,"int iobufr , nchdble , nchsgle"
+tputilv2/globals.cpp,28,nchdble,global,"int iobufr , nchdble , nchsgle"
+tputilv2/globals.cpp,28,nchsgle,global,"int iobufr , nchdble , nchsgle"
+tputilv2/globals.cpp,29,sgle,global,"UCHAR sgle [ 20 ] , dble [ 20 ]"
+tputilv2/globals.cpp,29,dble,global,"UCHAR sgle [ 20 ] , dble [ 20 ]"
+tputilv2/globals.cpp,30,savebox,global,UCHAR savebox [ 2000 ]
+tputilv2/initcon.cpp,25,hStdIn,global,"HANDLE hStdIn , hStdOut , hConIn , hConOut"
+tputilv2/initcon.cpp,25,hStdOut,global,"HANDLE hStdIn , hStdOut , hConIn , hConOut"
+tputilv2/initcon.cpp,25,hConIn,global,"HANDLE hStdIn , hStdOut , hConIn , hConOut"
+tputilv2/initcon.cpp,25,hConOut,global,"HANDLE hStdIn , hStdOut , hConIn , hConOut"
+tputilv2/mstimer.cpp,20,alkuaika,static,static time_t alkuaika
+tputilv2/scbox.cpp,99,boxchar,global,char boxchar
+tputilv2/scbox.cpp,100,attrib,global,int attrib
+tputilv2/wPageedit.cpp,35,wrivptr,global,wchar_t * wrivptr [ NRMAX ]
+tputilv2/wPageedit.cpp,36,rm,static,"static int rm , rl , rluku , rofs , rofs0"
+tputilv2/wPageedit.cpp,36,rl,static,"static int rm , rl , rluku , rofs , rofs0"
+tputilv2/wPageedit.cpp,36,rluku,static,"static int rm , rl , rluku , rofs , rofs0"
+tputilv2/wPageedit.cpp,36,rofs,static,"static int rm , rl , rluku , rofs , rofs0"
+tputilv2/wPageedit.cpp,36,rofs0,static,"static int rm , rl , rluku , rofs , rofs0"
+tputilv2/wPageedit.cpp,37,rivi,static,"static int rivi , newline"
+tputilv2/wPageedit.cpp,37,newline,static,"static int rivi , newline"

@@ -1,0 +1,113 @@
+id,era,tila,tilan_lahde,viittaa_H,viittaa_T,kuvaus
+Q1,K1,ratkaistu,seuranta.md,H-007 H-010,,Ratkaistu / resolved 2026-11-24: työsäie `tarkcom`; samanaikaisuus mahdollinen lukitsemattomien kutsujen kautta / worker thread `tarkcom`; concurrency possible via unlocked callers ...
+Q2,K1,ratkaistu,seuranta.md,,T-008,Ratkaistu / resolved 2026-11-26 (C-12): jokaisen testatun makron luokka ja ominaisuusvalitsimien merkitys `rekisteri/valitsimet.csv`:ssä ja `ominaisuusvalitsimet.md` luvut 3–4; konsolin ja GUI:n erot ...
+Q3,K1,ratkaistu,seuranta.md,,,"Ratkaistu / resolved (C-2, C-3; merkitty C-13:ssa): kehys, kuittaus ja yhteensopivuus kuvattu (C-2); tarkat koot mitattu C-3:ssa (Q18) / frame, ack and compatibility documented; exact sizes measured ..."
+Q4,K1,ratkaistu,seuranta.md,,,"Ratkaistu / resolved (C-3): muoto kuvattu tavutasolla; vanhaa muotoa ei tunnisteta automaattisesti, vain GUI-tuonti käyttäjän parametrein / layout documented; no automatic old-format detection, only ..."
+Q5,K1,ratkaistu,seuranta.md,,,"Ratkaistu / resolved (C-10): taulut `cbHk/kilpsql.txt` ja `ViestiWin/vkilpsql.txt`, valinnainen peili vain GUI:ssa, `KILP.DAT` ensisijainen; käyttöönotto `SQL*`-avaimilla tai valikosta / tables in ..."
+Q6,K1,avoin,seuranta.md,,,Ovatko kirjastoon käännetyt `main`-funktiot (`tputilv2/ctrlhndl.cpp` ym.) esikääntäjällä pois? / Are the `main` functions in the library excluded by the preprocessor? | `inventaario.md`
+Q7,K1,ratkaistu,seuranta.md,,,"Ratkaistu / resolved (C-5): kyllä, kapeat ja leveät merkkijonot sekä merkkivakiot oikein myös sisällytetyissä otsikoissa; BOMiton UTF-8 on väärin molemmilla kääntäjillä / yes; UTF-8 without BOM is ..."
+Q8,K1,ratkaistu,seuranta.md,,,"Ratkaistu / resolved (C-5 vaihe 2): bcc32-objektien OMF-vertailu `tyokalut/vertaa_omf.py` / OMF comparison of bcc32 objects | `kaantajaerot.md` luku 13.1, `merkistot.md`"
+Q9,K1,avoin,seuranta.md,,,Sallitaanko C++11 tuotantokoodissa? / Is C++11 allowed in production code? | `riippuvuudet.md`
+Q10,K1,avoin,seuranta.md,,,"Ovatko orvot tiedostot käytössä jossain (muut haarat, ulkoiset käännökset)? / Are orphan files used anywhere? | `inventaario.md`"
+Q11,K1,avoin,seuranta.md,,,"Mihin `Tp/TpComY32.cpp` (vanha kopio) ja `tputilv2/*-2.cpp`, `*-v.cpp` -versiot liittyvät? / What are the old copies for? | `inventaario.md`"
+Q12,C-1,avoin,seuranta.md,,,"Kumpi `add_sakko` linkitetään HkKisaWiniin? / Which `add_sakko` is linked? | `cbHk/UnitASakot.cpp:269`, `cbHk/UnitASuunn.cpp:289`"
+Q13,C-1,ratkaistu,seuranta.md,,,"Ratkaistu / resolved (C-2): kyllä, kaikki perustiedot paitsi koon 0 kentät; ei vaiheita / yes, all base fields except size-0 fields; no stages (`tiedonsiirto.md`) | –"
+Q14,C-1,osittain,seuranta.md,,,Kutsuuko `tulostasarja` lukon aikana `SendMessage`-polkua? Osittain ratkaistu (C-6): GUI-polulta ei löytynyt; konsolin kehotteet vapauttavat lukon / Does `tulostasarja` reach a `SendMessage` while ...
+Q15,C-1,osittain,seuranta.md,H-115 H-125,T-036,"Osittain ratkaistu / partly resolved: kyllä, lomakkeiden käsittelijöissä VCL-poikkeus `Enter`/`Leave`-parin välissä jättää `tall`in päälle (H-115, H-125, T-036); `tallenna`-polkua itseään ei tutkittu"
+Q16,C-2,ratkaistu,seuranta.md,H-024 H-025 H-026 H-007,,"Ratkaistu / resolved (C-2): viestin vastaanotto lukitsee ennen lukua, ei H-007:ää; omat viat H-024–H-026 / relay locks before reading, no H-007; own defects H-024–H-026 | –"
+Q17,C-3,ratkaistu,seuranta.md,,,Noudattaako klassinen bcc32 `#pragma option -K` -direktiiviä kesken käännösyksikön (HkKisaWinissa ei projektiasetusta)? Testi: käännösaikainen tarkistus `(char)-1 > 0` / Does bcc32 honour `-K` ...
+Q18,C-3,ratkaistu,seuranta.md,H-025 H-032,,`sizeof(combufrec)` ja suurin `class_len` kussakin käännöksessä (ratkaisee H-025:n ja H-032:n laajuuden) / per build
+Q19,C-2,avoin,tiedonsiirto.md,,T-014,"Sovelletaanko AIKAT-kaksoiskappale kahdesti (`tall_rivi`, `Hk/HkAjat.cpp:161-266`)? / Is a duplicate AIKAT applied twice?"
+Q20,C-2,avoin,tiedonsiirto.md,,T-014,"Sallivatko TCP-virtayhteydet useamman kuittaamattoman paketin (`kirjaahyvStream`, `Tp/TpComY.cpp:1318`, `:1359`)? / More than one unacked packet on TCP?"
+Q21,C-2,avoin,tiedonsiirto.md,,T-014,Asettuvatko ristikkäiset samanaikaiset muutokset 3–5 aseman renkaassa? / Do conflicting edits settle in a ring?
+Q22,C-2,avoin,tiedonsiirto.md,,T-014,"Kiertääkö viestin `tark_ylahto` muuttumatonta tietoa renkaassa, kun `katkkierto` ei ole päällä? / Does relay `tark_ylahto` circulate unchanged data?"
+Q23,C-2,avoin,tiedonsiirto.md,H-021,T-014,"Odottaako `Kysy(..., wait=0)` käyttäjää vai sulkeutuuko itsestään (H-021:n pysyvyys)? / Does it wait for the user?"
+Q24,C-2,ratkaistu,seuranta.md (alueen rivi),,T-014,Mistä bcc32 saa `ws2_32`:n ja `winhttp.lib`:n (`cbHk/winhttp.lib` puuttuu repossa)? / Where do bcc32 builds get these libraries?
+Q25,C-2,avoin,tiedonsiirto.md,,T-014,"MONITORI-portti: koodi 14770 (`Tp/TpComY.cpp:84`), käyttöohje 14900 (`docs-site/docs/hkkisawin/hkliite1.md:78`) / port mismatch (T-014)"
+Q26,C-3,ratkaistu,seuranta.md (alueen rivi),H-041,,Rajataanko HK:n XML:stä luetut `n_pv`/`valuku` (`Hk/HkXml.cpp:439-442`) myöhemmin ennen `luekentat`ia? / Are HK XML counts clamped later?
+Q27,C-3,avoin,tiedostomuodot.md,H-041,,"Voiko NTFS jättää kirjoitusläpäisevän lisäyksen jälkeen pituuden, joka ei ole tietuekoon monikerta (sähkökatko)? / Can NTFS leave a non-multiple length after a power cut?"
+Q28,C-3,avoin,tiedostomuodot.md,H-041,,Voiko dbboxm:n `initindex` voittaa linkityksessä `Hk/HkIx.cpp`:n tai `Juk/VIx.cpp`:n version? / Can dbboxm `initindex` win at link time?
+Q29,C-3,avoin,tiedostomuodot.md,H-046 H-041,,Mihin viestin viety `.dat` käytetään; avataanko se `KILP.DAT`:na (H-046 → tietojen menetys)? / How is the relay export used downstream?
+Q30,C-3,ratkaistu,seuranta.md (alueen rivi),H-094 H-102 H-041,,"Ratkaistu C-6:ssa / resolved in C-6 (`saikeet-ja-lukot.md` luku 5): `KILP.DAT`:ia ei suljeta; emit- ja aikatiedostot suljetaan kolmen lukon alla, lukijasäikeitä ei pysäytetä (H-094, H-102). ..."
+Q31,C-3,avoin,tiedostomuodot.md,H-041,,Onko ViestiWinin `MAXOSUUSLUKU` 250 -käännöksissä H-041:n kaltainen puskuriraja? / H-041 analogue in relay 250 builds?
+Q32,C-3,avoin,tiedostomuodot.md,H-041,,`t_time_l`-aikaleiman (`lahetetty`) yksikkö ja kierto / unit and wraparound
+Q33,C-3,avoin,tiedostomuodot.md,H-041,,"Miten `mbtowc` (`ansitowchar`) käsittelee tavuja > 127 ""C""-lokaalissa MSVC:llä ja bcc32:lla (ANSI/OEM-konfiguraatiot, vanhat tuonnit)? / `mbtowc` above 127 in the ""C"" locale?"
+Q34,C-3,avoin,tiedostomuodot.md,H-041,,Ajetaanko kilptietueen konstruktori (`new vatp[kilpparam.valuku+2]`) ennen kuin `valuku` on luettu (globaalit oliot) → kasan ylivuoto `unpack`issa? / Constructor before `valuku` is read?
+Q35,C-11,avoin,testaus.md,H-041 H-001,,"Kääntyykö TpTest (ja ydinprojektit) v143:lla, ja onko `windows-latest`-kuvassa ASan x86? / Do the projects build with v143, and does `windows-latest` have x86 ASan?"
+Q36,C-11,avoin,testaus.md,H-007 H-041 H-001,,"Pysyykö `LockCount`-koodaus samana CI-kuvassa (`WaiterProbe`, H-007)? / Is the `LockCount` encoding stable on the CI image?"
+Q37,C-11,avoin,testaus.md,H-041 H-001,,"Kutsuuko HK:n käynnistys `kilptietue::read`ia jokaiselle tietueelle, jolloin H-041 kaataa toimitetun ohjelman jo käynnistyksessä? / Does HK startup read every record (H-041 crash at startup)?"
+Q38,C-11,avoin,testaus.md,H-001 H-041,,Mikä julkinen funktio johtaa `textjtulos`/`textosuus`-kutsuun (H-001)? / Public entry to `textjtulos` (H-001)?
+Q39,C-11,avoin,testaus.md,H-041 H-001,,Muuttuuko `/we4789` virheeksi LTCG-linkityksessä (`/GL`)? / Does `/we4789` apply under LTCG?
+Q40,C-11,avoin,testaus.md,H-041 H-001,,Voiko itse ylläpidetty CI-kone ajaa konsoliohjelmia interaktiivisessa istunnossa (kerros d)? / Can the self-hosted runner run console programs interactively?
+Q41,C-11,avoin,testaus.md,H-040 H-041 H-001,,Mitkä ViestiWinin ja ViestiMaalin säikeet kutsuvat `addtall`/`deltall` (H-040:n todellinen jumiutuminen)? / Which relay threads call `addtall`/`deltall`?
+Q42,C-11,avoin,testaus.md,H-041 H-001,,Voivatko HK:n SEURAT- tai AIKAT-luokat ylittää `combufsize`n (HK lisää 14 vain neljälle luokalle)? / Can HK SEURAT/AIKAT exceed `combufsize`?
+Q43,C-4,avoin,muistiturvallisuus.md,H-061,,Säilyykö `luepaketti`n `pkglen` kutsujen välillä toimitetuissa käännöksissä? (H-061) / Does `pkglen` survive between calls? | disassembly
+Q44,C-4,avoin,muistiturvallisuus.md,H-056,,Voiko ARES-kehyksessä olla 0x00-tavuja; kuinka suureksi sarjajono kasvaa? (H-056) | protokollan kuvaus tai kaappaus / protocol or capture
+Q45,C-4,avoin,muistiturvallisuus.md,H-055,,Miten bcc32:n `atoi` käyttäytyy ylivuodossa? (H-055 GUI) | RTL-lähde / RTL source
+Q46,C-4,avoin,muistiturvallisuus.md,H-067,,Mikä globaali seuraa `mrivi`ä kussakin exessä? (H-067) | linkkerin kartta / linker map
+Q47,C-4,avoin,muistiturvallisuus.md,H-058,,Käytetäänkö kentällä käsin muokattuja `RADAT.LST`-tiedostoja tai yli 50 rastin ratoja? (H-058) | ylläpitäjät / maintainers
+Q48,C-4,avoin,muistiturvallisuus.md,,T-021,"Miten GUI-tiedostojen muotoilumerkkijonot tarkistetaan, kun bcc32 ei sitä tee? (T-021) | esim. MSVC-syntaksitarkistus GUI-ytimelle / e.g. MSVC syntax-only pass"
+Q49,C-4,avoin,muistiturvallisuus.md,H-055,,"Onko bcc32-GUI-ohjelmissa ASLR ja jokin pinosuoja? (H-055) / ASLR and stack protection in bcc32 GUI builds? | linkkerin asetukset, PE-otsake / linker settings, PE header"
+Q50,C-4,avoin,muistiturvallisuus.md,H-055,,"Voiko konsolin asetusavainsana asettaa emiTag-lukijan TCP-palvelimeksi? (H-055) / Can a console keyword make the emiTag reader a TCP server? | `Hk/HkInit.cpp`, `Juk/VInit.cpp`"
+Q51,C-4,avoin,muistiturvallisuus.md,H-070,,Tukeeko viesti FEIG-lukijaa TCP:n yli? (H-070) / FEIG over TCP in relay? | `Juk/VInit.cpp`
+Q52,C-4,avoin,muistiturvallisuus.md,H-076,,Voiko konsolin tai AutoFilen valikoista valita XML + `H` + kaikki osuudet? (H-076) / menu reachability | valikot / menus
+Q53,C-4,ratkaistu,seuranta.md (alueen rivi),H-073,,"Voiko `EMVALOKI`n asettaa GUI:sta? (H-073) / `EMVALOKI` from the GUI? | `cbHk/`, `ViestiWin/`"
+Q54,C-4,avoin,muistiturvallisuus.md,H-077,,"Mikä rajaa `len`in `lahriviCPower`issa? (H-077) / bound of `len` | `ViestiWin/UnitGAZ.cpp:918`, `cbHk/UnitTaulu.cpp:858`"
+Q55,C-4,avoin,muistiturvallisuus.md,,,"XML-tuonnin ""säilytä paikat"": `addtall`-silmukka `maxrec`-rajalla / keep-positions loop at `maxrec` | `cbHk/UnitImport.cpp:99-110`"
+Q56,C-4,avoin,muistiturvallisuus.md,H-055,,Voiko emiTag-kortin sisältö vaikuttaa `P`-indeksiin vai tuottaako sen vain lukijan laiteohjelmisto? (H-055) / can card contents influence the `P` index? | valmistajan protokolla / vendor protocol
+Q57,C-5,ratkaistu,seuranta.md (alueen rivi),,T-025,"Ratkaistu koeohjelmalla (vaihe 2) / resolved by probe: HkKisaWinin tavoin rakennetussa VCL-ohjelmassa ohjaussana on 0x037F (laajennettu tarkkuus; vaiheen 1 arvaus $1332 oli väärä), ja oikea ..."
+Q58,C-5,ratkaistu,seuranta.md (alueen rivi),,,"Ratkaistu / resolved (vaihe 2): kyllä, säiekohtainen myös dynaamisella RTL:llä (`cc32370mt.dll`) [mitattu] / yes, per thread"
+Q59,C-5,ratkaistu,seuranta.md (alueen rivi),,,"Ratkaistu / resolved (vaihe 2): kyllä, kun `TextFl::Open` on oma funktio (`tputilv2.lib`, HkMaali ja ViestiMaali): 0xC0000409 [mitattu]. ViestiLuennassa (`/GL`) ei ole saavutettavaa kutsujaa / yes; ..."
+Q60,C-5,omistajan_paatos,seuranta.md (alueen rivi),H-081,,Onko H-081:n ero (emit-koodin vaihto vain GUI:ssa) tarkoituksellinen? Omistajan päätös / owner decision
+Q61,C-5,ratkaistu,seuranta.md (alueen rivi),,,Ratkaistu / resolved (vaihe 2): vain instantioimattomat mallit puuttuvat; paikalliset ja käyttämättömät luokat raportoidaan [mitattu] / only never-instantiated templates are omitted
+Q62,C-5,ratkaistu,seuranta.md (alueen rivi),,T-023,"Ratkaistu pääosin / mostly resolved (vaihe 2): `-H` ei muuta `-K`/`-a1`-tilaa missään 258 GUI-yksikössä [mitattu]; HkKisaWinissä ei löytynyt etumerkistä riippuvaa inline-koodia, joka instantioituisi ..."
+Q63,C-5,avoin,seuranta.md (alueen rivi),H-085,,Heittääkö bcc32:n `new int[n]` poikkeuksen negatiivisella `n`:llä vai varaako se muistia (H-085)? / does bcc32 `new int[negative]` throw?
+Q64,C-5,avoin,seuranta.md (alueen rivi),H-082,,"Onko `wkello()`:n pituus sellainen, että `ViestiWin/UnitSakkoKierr.cpp`:n kumoamispolun sarakejäsennys (`SubString(15,2)`) on oikein (H-082)? / is the undo-path column parsing right?"
+Q65,C-6,ratkaistu,seuranta.md (alueen rivi),H-089 H-088,,"Mitä `LeaveCriticalSection` ei-omistajalta tekee kohdejärjestelmässä (H-089, H-088)? Application Verifier (Locks). / Effect of a non-owner Leave"
+Q66,C-6,ratkaistu,seuranta.md (alueen rivi),H-093,,"Pysyykö lokisoketin virhe (rajaton rekursio, H-093) vai muuttuuko se 10054:ksi tai aikakatkaisuksi? / Does the log-socket error persist?"
+Q67,C-6,osittain,seuranta.md (alueen rivi),,,"Voiko `aloitus` ajautua kahdesti samassa GUI-prosessissa (`cbHk/WinHk.cpp:252`, `:279-283`) ja alustaa elävät lukot uudelleen? / Can `aloitus` run twice?"
+Q68,C-6,avoin,seuranta.md (alueen rivi),,,"Onko tarkoituksellista, ettei `opencomfile(1)` avaa uuden vaiheen `COMFILE`a yhdellä yhteydellä (`Hk/HkIx.cpp:1974-1981`)? / Single-connection skip intended?"
+Q69,C-6,ratkaistu,seuranta.md (alueen rivi),H-102,,"Käyttävätkö lukijapolut `rata`a, `kuvio`ta tai `getpos`ia ilman lukkoa `vapautaemitmuisti`n aikana? / Reader use of emit memory during the free"
+Q70,C-6,ratkaistu,seuranta.md (alueen rivi),H-096,,Käyttääkö `TCPrcvTh` yhteysrakennetta accept-säikeen vapautuksen jälkeen (H-096)?
+Q71,C-6,ratkaistu,seuranta.md (alueen rivi),H-095,,Kaatuuko viestin `tark_aika` samoin sulkemisessa (H-095:n viestivastine)?
+Q72,C-6,ratkaistu,seuranta.md (alueen rivi),,,"Onko `LAJUNEN` määritelty HkKisaWinissä, HkMaalissa tai ViestiWinissä?"
+Q73,C-6,avoin,seuranta.md (alueen rivi),,,Konsolin `CTRL_CLOSE`-aikaraja kohdejärjestelmässä ja `maaliajat`-tavujen käyttö uudelleenkäynnistyksessä
+Q74,C-6,ratkaistu,seuranta.md (alueen rivi),H-103 H-091 H-092,,"Syvemmät kutsut `tall`in alla (`TarkKilpailijat`, `tark_partio` `Juk/VEmit.cpp:1532`): puuttuuko reunoja? / deeper callees"
+Q75,C-7,avoin,seuranta.md,H-119 H-120,,"`kuntosuunnmoodi`-arvojen 1, 2, 3, 98, 99 sekä `esiluenta`n ja `kuntoLahto`n merkitys; H-119, H-120 ja N-22 riippuvat niistä / semantics of the fitness modes"
+Q76,C-7,avoin,seuranta.md,,,"Päivittääkö viestin ydin joukkuetietueen, kun ajanoton paneelista tallennetaan vain jonorivi (`ViestiWin/UnitAjanotto.cpp:657`)? / Does the relay core update the team record after a queue-only save?"
+Q77,C-7,avoin,seuranta.md,,T-034,Kumpi HK/viesti-haara on uudempi kussakin yksipuolisessa korjauksessa (versiohistoria)? / Which fork is newer per one-sided fix?
+Q78,C-8,avoin,seuranta.md,H-129,,"Mikä `n_lisaa` asennuksissa on käytössä, ja vaihdetaanko vaihetta käynnissä olevassa prosessissa vai käynnistetäänkö uudelleen? / Real `n_lisaa` and stage-change practice | H-129"
+Q79,C-8,avoin,seuranta.md,H-128,,"`SeurPos` case 0 välittää tietuepaikan `getpos`ille, joka odottaa numeroa (`cbHk/UnitArvonta.cpp:221-223` vs `:421`) / record position passed as bib | H-128"
+Q80,C-8,avoin,seuranta.md,H-133,,"Kaatuuko saman kilpailun uusintayritys `KILP.DAT`:n jakorikkomukseen (GUI-koe)? / Sharing violation on same-process retry | H-133, Q67"
+Q81,C-8,avoin,seuranta.md,H-136 H-138,,"Ajetaanko tapahtumissa kahta tai useampaa lukijaa yhdellä HK-instanssilla, ja mikä Winsock-virhe sammutetusta TCP-lukijasta tulee? / Multiple readers in practice | H-136, H-138"
+Q82,C-8,avoin,seuranta.md,H-143,,Mihin `tmaali` kirjoitetaan? / Where is `tmaali` written? | H-143
+Q83,C-9,ratkaistu,seuranta.md,H-147,,Palauttavatko C++Builderin `fputs`/`fputws` virheessä `EOF`:n vai `WEOF`:n? / bcc32 RTL return on error | H-147
+Q84,C-9,ratkaistu,seuranta.md,H-150,,Rajoittaako bcc32-RTL avoimet virrat 50:een (`_NFILE_`)? / stream limit | H-150
+Q85,C-9,ratkaistu,seuranta.md,H-149,,Miten MSVC- ja bcc32-keko reagoivat viestin `autofile`:n kaksoisvapautukseen? / heap reaction | H-149
+Q86,C-9,osittain,seuranta.md,H-145,,"Pitääkö lukija kuittausta lopullisena, ja palauttaako kortin uusi luku menetetyn kortin? / reader ACK semantics | H-145"
+Q87,C-9,avoin,seuranta.md,H-146 H-015,,"Epäonnistuvatko verkkolevyn kahvan kirjoitukset pysyvästi katkon jälkeen vai yhdistääkö SMB uudelleen? / SMB handle after drop | H-146, H-015"
+Q88,C-9,ratkaistu,seuranta.md,H-147 H-149,,Missä säikeessä viestin GUI ajaa `autofile`:n (`ViestiWin/UnitMain.cpp:520`)? / relay GUI thread | H-147
+Q89,C-9,avoin,seuranta.md,H-157,,"Saako työsäikeen konsoli-ilmoitukselle tarkoitettu näppäin perille, vai kuluttaako päälooppi sen? / console key routing | H-157"
+Q90,C-9,avoin,seuranta.md,,,"Ajetaanko kilpailuja muistipuskurilla (`levypusk` pois), jolloin lähettämättömät sanomat katoavat joka lopetuksessa? / memory-only outbuf in practice | luku 6"
+Q91,C-9,osittain,seuranta.md,H-149,,"Miten ViestiWinin VCL-muistinhallinta reagoi H-149:n kaksoisvapautukseen? Osittain (C-10, staattisesti): C ja VCL jakavat `borlndmm.dll`:n; toinen vapautus hiljainen, jos lohkoa ei ole varattu ..."
+Q92,C-9,ratkaistu,seuranta.md,H-147,,"Ratkaistu staattisesti / resolved statically (C-10): kyllä, jakotila 0 kirjoitukselle, `FILE_SHARE_READ` lukemiselle (RTL `__open.c`), kuten MSVC / yes, exclusive for write, as in MSVC (H-147) | ..."
+Q93,C-9,avoin,seuranta.md,H-149 H-151,,"Rikkooko `sendtcpfile`n STX/tiedosto/ETX-virta vastapään jäsennyksen tavallisella tiedonsiirtoyhteydellä? / file stream on a peer data link (H-149, H-151) | `Juk/VTulostus.cpp:7116-7128`"
+Q94,C-9,avoin,seuranta.md,H-146,,Käytetäänkö AJAT-riviä tulosten uudelleenrakentamiseen? / are AJAT rows used to rebuild results (H-146) | `virheenkasittely.md` 12.3
+Q95,C-9,avoin,seuranta.md,H-150,,HkKisaWinin virtamäärä vakiotilassa ja NULL-`femitfile` vaiheen vaihdossa (H-150) / HkKisaWin streams at steady state | `Hk/HkEmit.cpp:3057-3058`
+Q96,C-10,avoin,seuranta.md,H-159,,Päättyykö Sirit/Zebra-lukijasäie uudelleenyhteyden jälkeen (H-159)? / Does the reader thread end after a reconnect? | ajokoe TCP-tynkää vasten / run against a TCP stub
+Q97,C-10,avoin,seuranta.md,H-160 H-162,,"Lopettaako SQL-virhe kirjoitussäikeessä ohjelman, ja jääkö `tall_CriticalSection` päälle viennissä (H-160, H-162)? / Does an SQL error end the program; does export keep the lock? | eristetty koe ..."
+Q98,C-10,avoin,seuranta.md,H-163 H-165,,"Käynnistyvätkö GUI-ohjelmat julkaisu-ZIP:stä puhtaalla koneella, ja mikä SQL-yhteydestä puuttuu (H-163, H-165)? / Clean-machine start from the release ZIP | puhdas virtuaalikone / clean VM"
+Q99,C-10,avoin,seuranta.md,H-166,,`get_stream.php`:n vastausmuoto ja palvelimen `195.159.103.189:1379` omistaja ja ylläpito (H-166) / server format and owner | Emit / omistaja / owner
+Q100,C-10,avoin,seuranta.md,,,"Emit-kellon ja -lukijan käytös ilman kuittausta, myöhästyneellä kuittauksella ja `-`-vastauksella; onko 462 tavun kehyksessä tarkistussummaa (Q86) / Emit clock behaviour | laitedokumentaatio / device ..."
+Q101,C-10,omistajan_paatos,seuranta.md,,T-047,Blaise Computing- ja Microsoft-esimerkkikoodin käyttöehdot (T-047) / terms of Blaise and Microsoft code | omistajan päätös / owner decision
+Q102,C-10,avoin,seuranta.md,,T-005 T-044,"Voiko `IndySystem`-paketin poistaa linkityksestä, ja mitä `Idwinsock2`-alustus tekee käynnistyksessä? / Can IndySystem be removed? | linkityskoe / link trial"
+Q103,C-10,avoin,seuranta.md,,T-044,"Tarjoaako `windows-latest` yhä `v143`:n, ja ovatko `upload/download-artifact@v7` olemassa? / CI image and action versions | verkkotarkistus erikseen / separate online check"
+Q104,C-10,avoin,seuranta.md,H-161,,Eroaako viestin `vert0` SQL-kierroksen jälkeen aina (H-161:n toistuvuus)? / relay `vert0` after an SQL round trip | ajokoe / run
+Q105,C-10,avoin,seuranta.md,H-161,,"H-161: voiko SQL-lauseisiin liitettävää merkkijonoa ohjata ulkopuolelta (operaattori, tuontitiedosto, työasemien sanomat), mitkä ovat MySQL-käyttäjän oikeudet, ja salliiko ajuri useita lauseita? ..."
+Q106,C-10,avoin,seuranta.md,H-169,,"H-169: leviävätkö `lue_SQL`:n korvaukset `tallenna`n kautta muille työasemille, ja miten tiedot palautetaan? / does the SQL import overwrite propagate to other workstations; recovery | ..."
+Q107,C-12,ajonaikainen_todennus,seuranta.md,H-171,,"Siirretty ajonaikaiseen todennukseen (C-12:n sulkeminen) / moved to run-time verification: H-171: mitä bcc32 sijoittaa ViestiWinissä `cfgfilename`n jälkeen, ja nollautuvatko `autostr`/`baudst` ..."
+Q108,C-12,ajonaikainen_todennus,seuranta.md,H-172,,"Siirretty ajonaikaiseen todennukseen (C-12:n sulkeminen) / moved to run-time verification: H-172: mitä viestin konsolin X)ML-tiedosto sisältää ajossa, myös aiemman autofile-XML-ajon jälkeen? / ..."
+Q109,C-12,avoin,seuranta.md,H-043,,"Tarkistaako `GETREC` rajat tiedoston lopun ylittävälle tietuenumerolle (`SQLjonoVarm.dat`, H-043)? / does GETREC bound-check | `ominaisuusvalitsimet.md` 11"
+Q110,C-12,ajonaikainen_todennus,seuranta.md,H-134,,Siirretty ajonaikaiseen todennukseen (C-12:n sulkeminen) / moved to run-time verification: H-134: mitä vaiheen vaihdon else-haara tekee vapautetulla ratamuistilla jäsennysvirheen jälkeen (ajo ...
+Q111,C-12,omistajan_paatos,seuranta.md,H-177,T-052 T-050,"Omistajan päätös, ei ratkaista oletuksilla / owner decision, not resolved by assumption. Omistajalle: onko `SEURATUL`/`ORAVA` (H-177) poistettu tarkoituksella, kuuluuko RFID (`LAJUNEN`) ..."
+Q112,C-12,avoin,seuranta.md,,,"Avoin (C-12:n sulkeminen): käyttöohjeet, esimerkit ja Git-historia eivät kerro yksikköä (`ominaisuusvalitsimet.md` 13.4) / open: no unambiguous unit found. `AIKAKORJAUSn`: HK kertoo `SEK / 100`, ..."

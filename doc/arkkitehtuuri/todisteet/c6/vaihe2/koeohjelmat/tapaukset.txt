@@ -1,0 +1,19 @@
+# C-6 step 2 probe cases: program|test case|timeout s (aja.py)
+C6ProbeHk|tp_build_info|30
+C6ProbeHk|C6 H-090 control: tunnjono off and same message leaves ajat free|30
+C6ProbeHk|C6 H-090 tall_regnly time queue not started returns at 2782 holding ajat|30
+C6ProbeHk|C6 H-090 tall_regnly clock difference over maxero returns at 2776 holding ajat|30
+C6ProbeHk|C6 H-090 tall_regnly KELLO_ESTO returns at 2771 holding ajat|30
+C6ProbeHk|C6 H-090 tall_regnly code G returns at 3074 holding ajat|30
+C6ProbeHk|C6 H-093 control: TCP log down without reconnect returns|30
+C6ProbeHk|C6 H-093 wkirjloki TCP log reconnect recursion overflows the stack|60
+C6ProbeHk|C6 H-093 control: send error with free locks returns|30
+C6ProbeHk|C6 H-093 edge loki to tcpip: wkirjloki holds loki and waits for tcpip|30
+C6ProbeHk|C6 H-093 edge tcpip to loki: send error holds tcpip and waits for loki|30
+C6ProbeHk|C6 H-093 two-thread deadlock loki and tcpip|30
+C6ProbeHk|C6 H-094 control: without vaiheenvaihto the badge reaches tall_bdg_t|30
+C6ProbeHk|C6 H-094 add_bdg_t during vaiheenvaihto: consumer exits and badge is never processed|30
+C6ProbeHk|C6 H-091 control: tall_elahto saves the start without page printing|30
+C6ProbeHk|C6 H-091 edge tall to print: tall_elahto holds tall and waits for print|30
+C6ProbeHk|C6 H-091 control: autotulostus prints a class with free locks|30
+C6ProbeHk|C6 H-091 edge print to tall: autotulostus holds print and waits for tall|30

@@ -1,0 +1,9 @@
+[doctest] run with "--help" for options
+TPINFO|writeerror_w: Tiedoston avaaminen ei onnisunut (kesto 0)
+TPINFO|writeerror_w: Virhe autotulostustiedostoa af_tulos.html avattaessa (kesto 2000)
+TPINFO|reader denies writers: autofile=1 size 2600 -> 2600, messages: [0] Tiedoston avaaminen ei onnisunut; [2000] Virhe autotulostustiedostoa af_tulos.html avattaessa; 
+TPRESULT|finding=H-147|mechanism=open-failure-reported-old-file-kept|observed=1|detail=return 1, size 2600 -> 2600, 2 messages
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 12 skipped
+[doctest] assertions: 3 | 3 passed | 0 failed |
+[doctest] Status: SUCCESS!

@@ -1,0 +1,110 @@
+{
+  "started": "2026-11-24T20:59:59",
+  "mode": "firewall",
+  "exe": "C:\\dev\\tulospalvelu\\TPexe\\Hk\\V521\\HkMaali.exe",
+  "exe_sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d",
+  "probe_sha256": "76b91f4a9728d8c214c55f8b2722cd1e0215b7d795c5774e5d05b9c9cb2604c4",
+  "driver_sha256": "6f0354775bcb811e9f73b86b1650a91964657932d0ca2c28a7db9d0e6299b193",
+  "script": {
+    "args": [
+      "BOOT"
+    ],
+    "step_timeout": 10,
+    "total_timeout": 60,
+    "steps": [
+      {
+        "wait": [
+          "KilpSrj.xml puuttuu",
+          "Paina Enter"
+        ],
+        "key": "\r"
+      },
+      {
+        "wait": [
+          "Sarjatietojen lukeminen ei onnistunut",
+          "Paina Enter"
+        ],
+        "key": "\r"
+      }
+    ]
+  },
+  "script_sha256": "f1123dc1eaa6e3567fa4e8439ba408132d2afb8125be3488eee3ae767be71826",
+  "fw_exe": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+  "firewall_commands": [
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block out' -Direction Outbound -Program 'C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any",
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block in' -Direction Inbound -Program 'C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any"
+  ],
+  "firewall": {
+    "rules": [
+      {
+        "Name": "TP C11 HkMaali block in",
+        "Enabled": "True",
+        "Action": "Block",
+        "Direction": "Inbound",
+        "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+        "Profile": "Any"
+      },
+      {
+        "Name": "TP C11 HkMaali block out",
+        "Enabled": "True",
+        "Action": "Block",
+        "Direction": "Outbound",
+        "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+        "Profile": "Any"
+      }
+    ],
+    "profiles": [
+      {
+        "Name": "Domain",
+        "Enabled": "True"
+      },
+      {
+        "Name": "Private",
+        "Enabled": "True"
+      },
+      {
+        "Name": "Public",
+        "Enabled": "True"
+      }
+    ]
+  },
+  "firewall_ok": true,
+  "probe": {
+    "exit_code": 0,
+    "listener_accepts": 1,
+    "checks": {
+      "cwd": "isolated_or_ok|probe_result.txt created in the sandbox",
+      "console": "isolated_or_ok|key X received",
+      "outside": "isolated_or_ok|C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\Documents\\tp_c11_outside_probe.txt refused 5; C:\\Users\\kayttaja\\AppData\\Local\\tp_c11_outside_probe.txt refused 5;",
+      "wsastartup": "isolated_or_ok|WSAStartup=0",
+      "loopback": "PROBLEM|connect 127.0.0.1:55105 -> CONNECTED, error 0 after 0 ms",
+      "external": "isolated_or_ok|connect 192.0.2.1:9 -> failed, error 10013 after 0 ms",
+      "udp_external": "PROBLEM|udp sendto 192.0.2.1:9 -> SENT, error 0",
+      "done": "1"
+    },
+    "required_checks": [
+      "cwd",
+      "console",
+      "outside",
+      "external",
+      "udp_external"
+    ],
+    "isolation_verified": false
+  },
+  "result": "NOT RUN: isolation not verified",
+  "outside_changes": [],
+  "outside_probe_file_exists": false,
+  "sandbox": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw",
+  "sandbox_files": {
+    "HkMaali.exe": {
+      "size": 132096,
+      "sha256": "76b91f4a9728d8c214c55f8b2722cd1e0215b7d795c5774e5d05b9c9cb2604c4"
+    },
+    "probe_result.txt": {
+      "size": 674,
+      "sha256": "1eb030c05309908d7466e9b4d31b252a251544388d06f595c19b14d071f3a1ef"
+    }
+  },
+  "git_status": " M doc/arkkitehtuuri/CHECKPOINT.md\n M doc/arkkitehtuuri/seuranta.md\n M doc/arkkitehtuuri/testaus.md\n?? TPsource/V52/Tests/blackbox/\n!! TPexe/\n!! TPsource/V52/RADStudio10/Release_Build/\n!! TPsource/V52/RADStudio10/Win32/\n!! TPsource/V52/RADStudio10/build-logs/\n!! TPsource/V52/RADStudio10/obj/\n!! TPsource/V52/Tests/__pycache__/\n!! TPsource/V52/Tests/blackbox/__pycache__/\n!! TPsource/V52/VS/Libs/Release/\n!! TPsource/V52/VS/Libs/dbboxm/Release/\n!! TPsource/V52/VS/Tests/Asan/\n!! TPsource/V52/VS/Tests/Release/\n!! TPsource/V52/VS/Tests/TpCoreHk/\n!! TPsource/V52/VS/Tests/TpCoreJuk/\n!! TPsource/V52/VS/Tests/TpTest/\n!! TPsource/V52/VS/V/ViestiLuenta/\n!! TPsource/V52/VS/V/ViestiMaali/\n!! issue-drafts/\n!! vc10/\n",
+  "finished": "2026-11-24T21:00:03"
+}

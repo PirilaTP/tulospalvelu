@@ -44,6 +44,28 @@ User guides are hosted at **https://pirilatp.github.io/tulospalvelu/**. The
 original archived documentation at https://www.tulospalvelu.fi/pirila/ohjeet/
 remains available during the transition period.
 
+## Kehittäjille / For developers
+
+Kehittäjän aloitusohje, arkkitehtuuri, toiminnallinen käsikirja ja ohjelmiston
+auditointi ovat samalla sivustolla:
+[Kehittäjille](https://pirilatp.github.io/tulospalvelu/kehittajat/) ja
+[Ohjelmiston laatu](https://pirilatp.github.io/tulospalvelu/laatu/).
+
+The developer guide, architecture, functional handbook and the code audit
+(defect cards, coverage, fix plan, interactive portal) are published on the same
+site. Their canonical sources are in this repository:
+
+| | |
+|---|---|
+| `CONTRIBUTING.md` | how to contribute, review and record fixes |
+| `AGENTS.md` | rules and knowledge-base map for AI coding agents (Claude Code, Codex, others) |
+| `doc/arkkitehtuuri/` | architecture and audit documents, registers (`rekisteri/`), tools (`tyokalut/`) |
+| `doc/tietopohja/` | defect cards, functional handbook, glossary, local portal |
+| `docs-site/` | the documentation site (MkDocs); see `docs-site/README.md` |
+
+The audit has not reviewed the whole code base; see the coverage page before
+relying on the absence of a finding.
+
 ## Downloads / releases
 
 Ready-built Windows binaries are published as

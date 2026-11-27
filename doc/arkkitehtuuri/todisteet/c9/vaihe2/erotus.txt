@@ -1,0 +1,51 @@
+v1 rows 3130, v2 rows 3234, common 3019, only v1 111, only v2 215
+
+only in v1, by call (removed: definitions/prototypes S6, VCL Open/Close S5):
+  Close               57
+  Open                25
+  writeerror_w         5
+  putrec               3
+  writeerror           2
+  makefile             2
+  openfile             2
+  closefile            2
+  addrec               2
+  deleterec            2
+  makeindex            2
+  closeindex           2
+  addkey               2
+  deletekey            2
+  openindex            1
+
+only in v2, by group/call (new names S2, S8; rows moved by S6 line fixes):
+  dbbox    addrec0              2
+  dbbox    putrec_i             5
+  error    iowerr              62
+  error    perr                14
+  error    wperr                2
+  exit     lopetus             18
+  exit     lopetus1             4
+  exit     system               2
+  file     CopyFile             3
+  file     _chsize              4
+  file     _fdopen              2
+  file     _wfdopen             4
+  file     _wfopen_s            7
+  file     _wrename             1
+  prfile   closeprfile         48
+  prfile   openprfile          37
+
+common rows whose use class changed (v1 -> v2):
+  checked              -> ignored                 67
+  checked              -> assigned-checked        18
+  nested               -> ignored                 18
+  checked              -> assigned-unchecked      18
+  void                 -> ignored                 17
+  void                 -> checked                  3
+  assigned-checked     -> assigned-unchecked       3
+  assigned-unchecked   -> assigned-checked         1
+
+v2-only rows in built core files, result not checked, not mentioned in any C-9 report or the register: 22 (erotus_uudet_K.csv)
+  dbbox    putrec_i             3
+  exit     lopetus              3
+  prfile   closeprfile         16

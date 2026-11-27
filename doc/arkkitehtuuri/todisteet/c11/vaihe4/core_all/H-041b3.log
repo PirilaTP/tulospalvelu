@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreHk.exe "--test-case=H-041b3 HK pack writes past KILPBUFSIZE (heap guard)" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPRESULT|finding=H-041|mechanism=pack-writes-past-kilpbufsize|observed=1|detail=n_pv=5 valuku=250 kilprecsize0=360 kilppvtpsize0=152 vatpsize=8 kilppvtpsize=2168 kilprecsize=11200 KILPBUFSIZE=10000; pack wrote bytes [0,11200), 1200 bytes at or after offset 10000
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 22 skipped
+[doctest] assertions: 9 | 9 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

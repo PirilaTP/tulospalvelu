@@ -1,0 +1,29 @@
+Q65 probe, Windows 6.2 build 9200 (manifest-less: may report 6.2)
+S1 non-owner Leave while held by thread A
+  A holds                            LockCount=-2 RecursionCount=1 OwningThread=8240
+  third thread TryEnter before bad Leave: refused
+  thread B Leave returned: yes
+  after B Leave                      LockCount=-1 RecursionCount=0 OwningThread=0
+  third thread TryEnter after bad Leave: GOT LOCK (exclusion broken)
+  third thread Enter after bad Leave: got lock
+  A ended (still holding per its view) LockCount=-1 RecursionCount=0 OwningThread=0
+  fourth thread Enter: got lock
+S2 owner Enter once, Leave twice
+  after first Leave                  LockCount=-1 RecursionCount=0 OwningThread=0
+  after second Leave                 LockCount=-1 RecursionCount=-1 OwningThread=0
+  other thread TryEnter: got lock
+  other thread Enter: got lock
+  owner thread Enter again: returned
+  owner after re-Enter               LockCount=-2 RecursionCount=1 OwningThread=108088
+  other thread Enter after owner Enter/Leave: got lock
+S3 Leave on a free lock
+  after stray Leave                  LockCount=-1 RecursionCount=-1 OwningThread=0
+  other thread Enter: got lock
+  other thread TryEnter: got lock
+S4 outer hold + inner Enter once, Leave twice
+  outer frame still 'holds'          LockCount=-1 RecursionCount=0 OwningThread=0
+  other thread TryEnter during outer hold: GOT LOCK (outer hold lost)
+  after outer Leave                  LockCount=-1 RecursionCount=-1 OwningThread=0
+  other thread Enter afterwards: got lock
+done
+Host: Microsoft Windows [Version 10.0.26100.9711]; compiler: MSVC 14.52.37025 x86, cl /O2

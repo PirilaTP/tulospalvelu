@@ -1,0 +1,1 @@
+cwd=isolated_or_ok|probe_result.txt created in the sandbox

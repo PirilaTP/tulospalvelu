@@ -1,2 +1,4 @@
-mkdocs>=1.6
-mkdocs-material>=9.5
+# Direct dependencies of the documentation site. MkDocs 2 is not compatible with
+# mkdocs-material; keep below 2. Exact, tested versions: requirements.lock (used by CI).
+mkdocs>=1.6,<2
+mkdocs-material>=9.5,<10

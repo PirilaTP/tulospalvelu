@@ -1,0 +1,66 @@
+C-10 part A dependency inventory (riippuvuudet.py)
+
+HkMaali [product, msvc] VS/Hk/HkMaali/HkMaali.vcxproj config=Release|Win32 sources=32 closure=54 missing=0
+ViestiMaali [product, msvc] VS/V/JukMaali520.vcxproj config=Release|Win32 sources=34 closure=56 missing=0
+ViestiLuenta [product, msvc] VS/V/JukLuenta520.vcxproj config=Release|Win32 sources=32 closure=54 missing=0
+HkKisaWin [product, bcc32] RADStudio10/HkKisaWin.cbproj config=Release sources=141 closure=269 missing=0
+ViestiWin [product, bcc32] RADStudio10/ViestiWin.cbproj config=Release Build sources=117 closure=224 missing=0
+tputilv2 [library, msvc] VS/Libs/tputilv2.vcxproj config=Release|Win32 sources=146 closure=158 missing=0
+dbboxm [library, msvc] VS/Libs/dbboxm/dbboxm.vcxproj config=Release|Win32 sources=7 closure=15 missing=0
+Tputil-XE [library, bcc32] RADStudio10/Tputil-XE.cbproj config=Release Build sources=139 closure=151 missing=0
+DBboxm-XE [library, bcc32] RADStudio10/DBboxm-XE.cbproj config=Release sources=8 closure=16 missing=0
+
+unresolved quoted includes (name: count): {}
+ambiguous includes resolved/unresolved: 0
+
+marker rows: 3779
+  browser            navigate         5
+  browser            vcl-browser      2
+  com                ole              12
+  database           dbx              8
+  database           dbx-call         60
+  database           mysql-c          8
+  device             LID              262
+  device             reader-class     35
+  file-api           CreateFile       6
+  http               winhttp          18
+  link               pragma-link      2
+  link               pragma-package   161
+  link               pragma-resource  161
+  multimedia         sound-timer      9
+  network-transport  comtp            29
+  printing           print-api        31
+  registry           reg-api          20
+  serial             comm-api         28
+  serial             comport-name     72
+  shell              process          3
+  shell              shell-folder     1
+  socket             winsock          73
+  sql-text           sql              33
+  sys-include        browser          3
+  sys-include        crt              703
+  sys-include        dbexpress        14
+  sys-include        other            35
+  sys-include        repo-angle       303
+  sys-include        vcl              1251
+  sys-include        windows          348
+  sys-include        winhttp          1
+  sys-include        winsock          3
+  thread-api         win-thread       64
+  time               time-api         2
+  url                ip-literal       8
+  url                url-literal      5
+
+per product, active rows by category (yes/unknown):
+  HkMaali: database/yes=2, device/unknown=3, device/yes=221, file-api/yes=3, http/yes=18, multimedia/yes=6, network-transport/yes=16, printing/yes=23, serial/unknown=1, serial/yes=37, shell/yes=2, socket/yes=67, sys-include/yes=718, thread-api/yes=21, time/yes=2, url/yes=5
+  ViestiMaali: database/yes=2, device/yes=143, file-api/yes=4, http/yes=18, multimedia/yes=6, network-transport/yes=16, printing/yes=23, serial/yes=37, shell/yes=2, socket/yes=67, sys-include/yes=732, thread-api/yes=21, time/yes=2, url/yes=4
+  ViestiLuenta: device/yes=108, file-api/yes=4, multimedia/yes=6, network-transport/yes=15, printing/yes=23, serial/yes=33, shell/yes=2, socket/yes=67, sys-include/yes=701, thread-api/yes=16, time/yes=1, url/yes=3
+  HkKisaWin: browser/yes=6, com/yes=12, database/yes=44, device/unknown=3, device/yes=249, file-api/yes=3, http/yes=18, link/yes=213, multimedia/yes=9, network-transport/yes=21, printing/unknown=5, printing/yes=22, registry/yes=20, serial/unknown=1, serial/yes=65, shell/yes=3, socket/yes=67, sql-text/yes=17, sys-include/yes=1581, thread-api/yes=38, time/yes=2, url/yes=8
+  ViestiWin: browser/yes=5, com/yes=12, database/yes=44, device/yes=161, file-api/yes=3, http/yes=18, link/yes=171, multimedia/yes=6, network-transport/yes=21, printing/unknown=5, printing/yes=22, registry/yes=20, serial/yes=64, shell/yes=3, socket/yes=67, sql-text/yes=17, sys-include/yes=1372, thread-api/unknown=1, thread-api/yes=33, time/yes=2, url/yes=5
+
+DFM files: 161 rows=6317 binary=0 []
+  HkMaali classes: 
+  ViestiMaali classes: 
+  ViestiLuenta classes: 
+  HkKisaWin classes: TAsetusForm=1, TBitBtn=63, TButton=442, TCheckBox=258, TColorBox=4, TColorDialog=1, TComboBox=225, TDrawGrid=10, TEdit=893, TEditDialog=1, TFormASakot=1, TFormASuunn=1, TFormAikaSiirto=1, TFormAikakorjaus=1, TFormAikavert=1, TFormAjanotto=1, TFormAmpPaikat=1, TFormAnnaAika=1, TFormAnnaArvo=1, TFormAnnaTeksti=1, TFormArvonta=1, TFormAutoFile=1, TFormAvausMaar=1, TFormBrowser=1, TFormCfg=1, TFormComfile=1, TFormEmiTag=1, TFormEmit=1, TFormEmitFile=1, TFormEmitKoodit=1, TFormEmitMuutokset=1, TFormEmitNouto=1, TFormEmitSQL=1, TFormEmit_VA=1, TFormEmithaku=1, TFormExport=1, TFormFIS=1, TFormHtmlEdit=1, TFormHylkRap=1, TFormIlm2=1, TFormIlmoitus=1, TFormImport=1, TFormJoukkueTilanne=1, TFormKaavaTaul=1, TFormKartta=1, TFormKilpMaaritys=1, TFormKilpSeurat=1, TFormKilpailijaEmit=1, TFormKilpailijaOnline=1, TFormKilpailijatiedot=1, TFormKirjVal=1, TFormKisaLuett=1, TFormKohdistus=1, TFormLahtoRistiriita=1, TFormLisaTekstit=1, TFormLisaTietue=1, TFormLisatiedot=1, TFormMTR=1, TFormMaalikello=1, TFormMaastossa=1, TFormMain=1, TFormMessages=1, TFormMsgs=1, TFormMuotoilu=1, TFormMySQL=1, TFormNappain=1, TFormNaytaTulos=1, TFormNollaus=1, TFormOhjtiedot=1, TFormOsanottajat=1, TFormPiikit=1, TFormPiiriVal=1, TFormPistelasku=1, TFormSHLtul=1, TFormSakkoKierr=1, TFormSarja=1, TFormSarjaVal=1, TFormSarjatiedot=1, TFormSelect3=1, TFormSeuraVal=1, TFormSeurat=1, TFormSeuratoimet=1, TFormSivuTuloste=1, TFormSprintSarja=1, TFormSprinthiihto=1, TFormStatus=1, TFormSuodatus=1, TFormTKanta=1, TFormTapahtSiirrot=1, TFormTarkMerk=1, TFormTaulu=1, TFormTietoTulk=1, TFormTulkinta=1, TFormTuloskaava=1, TFormUusinta=1, TFormVaGr=1, TFormVaPisteet=1, TFormVaToisto=1, TFormVaiheMaar=1, TFormVakLisays=1, TFormValSarjat=1, TFormValitse2=1, TFormValitseKilp=1, TFormYhdistetty=1, TFormYhteysStatus=1, TFormYhtveto=1, TGroupBox=88, TImage=2, TLabel=877, TLabeledEdit=44, TListBox=23, TLoppuKilpForm=1, TMainMenu=35, TMaskEdit=2, TMemo=33, TMenuItem=774, TOpenDialog=33, TOpenPictureDialog=1, TPageControl=13, TPanel=40, TPopupMenu=17, TPrinterSetupDialog=1, TProgressBar=1, TRadioButton=7, TRadioGroup=114, TSQLConnection=2, TSQLDataSet=2, TSaveDialog=27, TScrollBar=4, TStringGrid=52, TTabSheet=44, TTakaaAjoForm=1, TTapForm=1, TTilanneForm=1, TUpDown=9, TValitse=1, TVertAikaFrm=1, TWebBrowser=2
+  ViestiWin classes: TBitBtn=41, TButton=334, TCheckBox=144, TColorBox=2, TComboBox=136, TDrawGrid=10, TEdit=431, TEditDialog=1, TFormASakot=1, TFormAikakorjaus=1, TFormAikavert=1, TFormAjanotto=1, TFormAnnaAika=1, TFormAnnaArvo=1, TFormAnnaTeksti=1, TFormArvonta=1, TFormAutoFile=1, TFormAvausMaar=1, TFormBrowser=1, TFormCfg=1, TFormComfile=1, TFormEmiTag=1, TFormEmit=1, TFormEmitFile=1, TFormEmitMuutokset=1, TFormEmitSQL=1, TFormEmit_VA=1, TFormEmithaku=1, TFormExport=1, TFormFIS=1, TFormGAZ=1, TFormHenkHaku=1, TFormHtmlEdit=1, TFormHylkRap=1, TFormIlmoitus=1, TFormImport=1, TFormJjVaihdot=1, TFormJoukkueet=1, TFormJoukkuetiedot=1, TFormKartta=1, TFormKilpMaaritys=1, TFormKilpSeurat=1, TFormKirjVal=1, TFormKohdistus=1, TFormLahestyjat=1, TFormLisaTekstit=1, TFormLisatiedot=1, TFormLuenta=1, TFormMTR=1, TFormMaalikello=1, TFormMaastossa=1, TFormMain=1, TFormMerkKoodeja=1, TFormMessages=1, TFormMsgs=1, TFormMuotoilu=1, TFormMySQL=1, TFormNappain=1, TFormNaytaTulos=1, TFormNollaus=1, TFormOhjtiedot=1, TFormOsuus=1, TFormOsuuskopiointi=1, TFormPartio=1, TFormPiikit=1, TFormPiiriVal=1, TFormSHLtul=1, TFormSakkoKierr=1, TFormSarja=1, TFormSarjaVal=1, TFormSarjatiedot=1, TFormSelect3=1, TFormSeuraVal=1, TFormSeurat=1, TFormStatus=1, TFormSuodatus=1, TFormTulkinta=1, TFormUusinta=1, TFormVaGr=1, TFormVaTuloste=1, TFormValSarjat=1, TFormValitse2=1, TFormYLahdot=1, TFormYhteysStatus=1, TFormYhtveto=1, TGroupBox=59, TImage=2, TLabel=600, TLabeledEdit=34, TListBox=22, TMainMenu=31, TMemo=23, TMenuItem=552, TOpenDialog=25, TOpenPictureDialog=1, TPageControl=11, TPanel=34, TPopupMenu=16, TPrinterSetupDialog=1, TProgressBar=2, TRadioButton=7, TRadioGroup=84, TRichEdit=1, TSQLConnection=2, TSQLDataSet=2, TSaveDialog=21, TScrollBar=4, TSeurantaForm=1, TStringGrid=45, TTabSheet=34, TTapForm=1, TTilanneForm=1, TUpDown=9, TValitse=1, TVertAikaFrm=1, TWebBrowser=2

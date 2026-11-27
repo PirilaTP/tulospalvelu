@@ -1,0 +1,30 @@
+=== C8ProbeHk | tp_build_info | exit=0 | 0.2 s
+TPINFO|program=C8ProbeHk
+TPINFO|msc_full_ver=195237029
+TPINFO|config=Release
+TPINFO|asan=0
+TPINFO|char_unsigned=1
+TPINFO|sizeof_void_ptr=4
+[doctest] test cases: 1 | 1 passed | 0 failed | 5 skipped
+[doctest] assertions: 1 | 1 passed | 0 failed |
+=== C8ProbeHk | C8 H-128 control: walk by bib visits every live entry | exit=0 | 0.0 s
+TPINFO|walk from 104: 6 7 8 (stop -1); idindex nrec=3
+[doctest] test cases:  1 |  1 passed | 0 failed | 5 skipped
+[doctest] assertions: 12 | 12 passed | 0 failed |
+=== C8ProbeHk | C8 H-128a setpos to zero leaves a stale entry that stops the walk | exit=0 | 0.0 s
+TPRESULT|finding=H-128|mechanism=setpos-no-delete-walk-stops|observed=1|detail=after setpos(105,0): idindex nrec=4 (3 before; correct 2 or 3), getpos(105)=-1; walk from 104: 6 (stop 0) (control reaches 8)
+[doctest] test cases:  1 |  1 passed | 0 failed | 5 skipped
+[doctest] assertions: 12 | 12 passed | 0 failed |
+=== C8ProbeHk | C8 H-128b lowering a bib into a free number drops it from the index | exit=0 | 0.1 s
+TPRESULT|finding=H-128|mechanism=setpos-skips-add-same-record|observed=1|detail=getpos(60)=-1 (correct 7), getpos(61)=-1, idindex nrec 2 -> 2 after setpos(60,7) (no entry added) -> 3
+[doctest] test cases:  1 |  1 passed | 0 failed | 5 skipped
+[doctest] assertions: 12 | 12 passed | 0 failed |
+=== C8ProbeHk | C8 H-129 control: luo_posarr resets idindex->nrec | exit=0 | 0.0 s
+TPINFO|after luo_posarr: idindex nrec=0 nrec=1
+[doctest] test cases:  1 |  1 passed | 0 failed | 5 skipped
+[doctest] assertions: 14 | 14 passed | 0 failed |
+=== C8ProbeHk | C8 H-129 stage change keeps idindex->nrec | exit=0 | 0.5 s
+TPINFO|writeerror_w: Tiedosto KilpSrj.xml puuttuu (kesto 0)
+TPRESULT|finding=H-129|mechanism=stage-change-keeps-index-count|observed=1|detail=vaihdavaihe r=0 k_pv=1; idindex nrec after stage change=5 (correct 0, records in KILP.DAT 0); after one setpos=6; capacity maxrec+2=1002
+[doctest] test cases:  1 |  1 passed | 0 failed | 5 skipped
+[doctest] assertions: 17 | 17 passed | 0 failed |

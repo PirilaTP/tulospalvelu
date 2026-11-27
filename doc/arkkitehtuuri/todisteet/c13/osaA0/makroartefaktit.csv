@@ -1,0 +1,239 @@
+makro,tiedosto,rivi,lauseke,testattu
+AIKAJAK,Tp/TpDef.h,87,(10000L/SEK),no
+AUTOINTVAL,Hk/HkIV.cpp,53,18*60,no
+AUTOINTVAL,Juk/VIv.cpp,52,18*60,no
+BACKGROUND_CYAN,include/Console.h,13,(WORD) 0x0030,no
+BACKGROUND_WHITE,include/Console.h,12,(WORD) 0x00f0,no
+BLANK,tputilv2/scclrmsg.cpp,24,' ',no
+BLANK,tputilv2/STPCVT.cpp,58,' ',no
+BLANK,tputilv2/STPEXPAN.cpp,44,' ',no
+BLANK,tputilv2/STPTABFY.cpp,41,' ',no
+BLANK,tputilv2/STPXLATE.cpp,42,' ',no
+BUILD,Hk/BuildNo.h,18,"L""5.22.002/2026-07-31""",no
+BUILD,Juk/BuildNo.h,18,"L""5.20.044/2026-07-31""",no
+DAY,tputilv2/strtoai2.cpp,26,(24*36000L),no
+DOCTEST_APPROX_PREFIX,Tests/doctest.h,1261,"template <typename T> friend typename std::enable_if<std::is_constructible<double, T>::value, bool>::type",no
+DOCTEST_ASSERT_IMPLEMENT_2,Tests/doctest.h,2420,DOCTEST_ASSERT_IMPLEMENT_1,no
+DOCTEST_CDECL,Tests/doctest.h,3273,__cdecl,yes
+DOCTEST_CLANG,Tests/doctest.h,89,"DOCTEST_COMPILER(__clang_major__, __clang_minor__, __clang_patchlevel__)",yes
+DOCTEST_CLANG_SUPPRESS_WARNING_POP,Tests/doctest.h,119,"_Pragma(""clang diagnostic pop"")",no
+DOCTEST_CLANG_SUPPRESS_WARNING_PUSH,Tests/doctest.h,117,"_Pragma(""clang diagnostic push"")",no
+DOCTEST_COMPARISON_RETURN_TYPE,Tests/doctest.h,1455,bool,no
+DOCTEST_COMPARISON_RETURN_TYPE,Tests/doctest.h,1457,"typename types::enable_if<can_use_op<L>::value || can_use_op<R>::value, bool>::type",no
+DOCTEST_CONFIG_OPTIONS_PREFIX,Tests/doctest.h,3243,"""dt-""",yes
+DOCTEST_CONFIG_STRING_SIZE_TYPE,Tests/doctest.h,565,unsigned,yes
+DOCTEST_CONSTEXPR,Tests/doctest.h,387,const,yes
+DOCTEST_CONSTEXPR,Tests/doctest.h,390,constexpr,yes
+DOCTEST_CONSTEXPR_FUNC,Tests/doctest.h,388,inline,no
+DOCTEST_CONSTEXPR_FUNC,Tests/doctest.h,391,constexpr,no
+DOCTEST_CPLUSPLUS,Tests/doctest.h,72,_MSVC_LANG,yes
+DOCTEST_CPLUSPLUS,Tests/doctest.h,74,__cplusplus,yes
+DOCTEST_EXCEPTION_EMPTY_FUNC,Tests/doctest.h,2821,DOCTEST_FUNC_EMPTY,no
+DOCTEST_EXCEPTION_EMPTY_FUNC,Tests/doctest.h,2823,"[] { static_assert(false, ""Exceptions are disabled! ""      ""Use DOCTEST_CONFIG_NO_EXCEPTIONS_BUT_WITH_ALL_ASSERTS if you",no
+DOCTEST_FAST_CHECK_EQ,Tests/doctest.h,2891,DOCTEST_CHECK_EQ,no
+DOCTEST_FAST_CHECK_GE,Tests/doctest.h,2903,DOCTEST_CHECK_GE,no
+DOCTEST_FAST_CHECK_GT,Tests/doctest.h,2897,DOCTEST_CHECK_GT,no
+DOCTEST_FAST_CHECK_LE,Tests/doctest.h,2906,DOCTEST_CHECK_LE,no
+DOCTEST_FAST_CHECK_LT,Tests/doctest.h,2900,DOCTEST_CHECK_LT,no
+DOCTEST_FAST_CHECK_NE,Tests/doctest.h,2894,DOCTEST_CHECK_NE,no
+DOCTEST_FAST_CHECK_UNARY,Tests/doctest.h,2910,DOCTEST_CHECK_UNARY,no
+DOCTEST_FAST_CHECK_UNARY_FALSE,Tests/doctest.h,2913,DOCTEST_CHECK_UNARY_FALSE,no
+DOCTEST_FAST_REQUIRE_EQ,Tests/doctest.h,2892,DOCTEST_REQUIRE_EQ,no
+DOCTEST_FAST_REQUIRE_GE,Tests/doctest.h,2904,DOCTEST_REQUIRE_GE,no
+DOCTEST_FAST_REQUIRE_GT,Tests/doctest.h,2898,DOCTEST_REQUIRE_GT,no
+DOCTEST_FAST_REQUIRE_LE,Tests/doctest.h,2907,DOCTEST_REQUIRE_LE,no
+DOCTEST_FAST_REQUIRE_LT,Tests/doctest.h,2901,DOCTEST_REQUIRE_LT,no
+DOCTEST_FAST_REQUIRE_NE,Tests/doctest.h,2895,DOCTEST_REQUIRE_NE,no
+DOCTEST_FAST_REQUIRE_UNARY,Tests/doctest.h,2911,DOCTEST_REQUIRE_UNARY,no
+DOCTEST_FAST_REQUIRE_UNARY_FALSE,Tests/doctest.h,2914,DOCTEST_REQUIRE_UNARY_FALSE,no
+DOCTEST_FAST_WARN_EQ,Tests/doctest.h,2890,DOCTEST_WARN_EQ,no
+DOCTEST_FAST_WARN_GE,Tests/doctest.h,2902,DOCTEST_WARN_GE,no
+DOCTEST_FAST_WARN_GT,Tests/doctest.h,2896,DOCTEST_WARN_GT,no
+DOCTEST_FAST_WARN_LE,Tests/doctest.h,2905,DOCTEST_WARN_LE,no
+DOCTEST_FAST_WARN_LT,Tests/doctest.h,2899,DOCTEST_WARN_LT,no
+DOCTEST_FAST_WARN_NE,Tests/doctest.h,2893,DOCTEST_WARN_NE,no
+DOCTEST_FAST_WARN_UNARY,Tests/doctest.h,2909,DOCTEST_WARN_UNARY,no
+DOCTEST_FAST_WARN_UNARY_FALSE,Tests/doctest.h,2912,DOCTEST_WARN_UNARY_FALSE,no
+DOCTEST_FUNC_EMPTY,Tests/doctest.h,2117,[] { return false; }(),no
+DOCTEST_FUNC_EMPTY,Tests/doctest.h,2119,(void)0,no
+DOCTEST_FUNC_SCOPE_BEGIN,Tests/doctest.h,2126,[&],no
+DOCTEST_FUNC_SCOPE_BEGIN,Tests/doctest.h,2130,do,no
+DOCTEST_FUNC_SCOPE_END,Tests/doctest.h,2127,(),no
+DOCTEST_FUNC_SCOPE_END,Tests/doctest.h,2131,while(false),no
+DOCTEST_GCC,Tests/doctest.h,92,"DOCTEST_COMPILER(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__)",yes
+DOCTEST_GCC_SUPPRESS_WARNING_POP,Tests/doctest.h,133,"_Pragma(""GCC diagnostic pop"")",no
+DOCTEST_GCC_SUPPRESS_WARNING_PUSH,Tests/doctest.h,131,"_Pragma(""GCC diagnostic push"")",no
+DOCTEST_ICC,Tests/doctest.h,95,"DOCTEST_COMPILER(__INTEL_COMPILER / 100, __INTEL_COMPILER % 100, 0)",yes
+DOCTEST_INLINE_NOINLINE,Tests/doctest.h,364,inline,no
+DOCTEST_INLINE_NOINLINE,Tests/doctest.h,366,inline DOCTEST_NOINLINE,no
+DOCTEST_INTERFACE,Tests/doctest.h,329,DOCTEST_SYMBOL_EXPORT,no
+DOCTEST_INTERFACE,Tests/doctest.h,331,DOCTEST_SYMBOL_IMPORT,no
+DOCTEST_INTERFACE_DECL,Tests/doctest.h,343,DOCTEST_INTERFACE,no
+DOCTEST_INTERFACE_DEF,Tests/doctest.h,341,DOCTEST_INTERFACE,no
+DOCTEST_MAKE_STD_HEADERS_CLEAN_FROM_WARNINGS_ON_WALL_BEGIN,Tests/doctest.h,228,DOCTEST_MSVC_SUPPRESS_WARNING_PUSH                                                                  DOCTEST_MSVC_SUPPRES,no
+DOCTEST_MAKE_STD_HEADERS_CLEAN_FROM_WARNINGS_ON_WALL_END,Tests/doctest.h,249,DOCTEST_MSVC_SUPPRESS_WARNING_POP,no
+DOCTEST_MSVC,Tests/doctest.h,82,"DOCTEST_COMPILER(_MSC_VER / 100, _MSC_VER % 100, _MSC_FULL_VER % 10000)",yes
+DOCTEST_MSVC,Tests/doctest.h,84,"DOCTEST_COMPILER(_MSC_VER / 100, (_MSC_FULL_VER / 100000) % 100, _MSC_FULL_VER % 100000)",yes
+DOCTEST_MSVC_SUPPRESS_WARNING_POP,Tests/doctest.h,146,__pragma(warning(pop)),no
+DOCTEST_MSVC_SUPPRESS_WARNING_PUSH,Tests/doctest.h,144,__pragma(warning(push)),no
+DOCTEST_NO_SANITIZE_INTEGER,Tests/doctest.h,397,"__attribute__((no_sanitize(""integer"")))",yes
+DOCTEST_NOEXCEPT,Tests/doctest.h,381,noexcept,yes
+DOCTEST_NOINLINE,Tests/doctest.h,350,__declspec(noinline),no
+DOCTEST_NOINLINE,Tests/doctest.h,358,__attribute__((noinline)),no
+DOCTEST_NORETURN,Tests/doctest.h,373,[[noreturn]],yes
+DOCTEST_OPTIONS_PREFIX_DISPLAY,Tests/doctest.h,3263,DOCTEST_CONFIG_OPTIONS_PREFIX,no
+DOCTEST_OPTIONS_PREFIX_DISPLAY,Tests/doctest.h,3265,"""""",no
+DOCTEST_REQUIRE,Tests/doctest.h,2839,DOCTEST_EXCEPTION_EMPTY_FUNC,no
+DOCTEST_REQUIRE_EQ,Tests/doctest.h,2843,DOCTEST_EXCEPTION_EMPTY_FUNC,no
+DOCTEST_REQUIRE_FALSE,Tests/doctest.h,2840,DOCTEST_EXCEPTION_EMPTY_FUNC,no
+DOCTEST_REQUIRE_FALSE_MESSAGE,Tests/doctest.h,2842,DOCTEST_EXCEPTION_EMPTY_FUNC,no
+DOCTEST_REQUIRE_GE,Tests/doctest.h,2847,DOCTEST_EXCEPTION_EMPTY_FUNC,no
+DOCTEST_REQUIRE_GT,Tests/doctest.h,2845,DOCTEST_EXCEPTION_EMPTY_FUNC,no
+DOCTEST_REQUIRE_LE,Tests/doctest.h,2848,DOCTEST_EXCEPTION_EMPTY_FUNC,no
+DOCTEST_REQUIRE_LT,Tests/doctest.h,2846,DOCTEST_EXCEPTION_EMPTY_FUNC,no
+DOCTEST_REQUIRE_MESSAGE,Tests/doctest.h,2841,DOCTEST_EXCEPTION_EMPTY_FUNC,no
+DOCTEST_REQUIRE_NE,Tests/doctest.h,2844,DOCTEST_EXCEPTION_EMPTY_FUNC,no
+DOCTEST_REQUIRE_UNARY,Tests/doctest.h,2849,DOCTEST_EXCEPTION_EMPTY_FUNC,no
+DOCTEST_REQUIRE_UNARY_FALSE,Tests/doctest.h,2850,DOCTEST_EXCEPTION_EMPTY_FUNC,no
+DOCTEST_SUPPRESS_COMMON_WARNINGS_POP,Tests/doctest.h,209,DOCTEST_CLANG_SUPPRESS_WARNING_POP                                                                  DOCTEST_GCC_SUPPRESS,no
+DOCTEST_SUPPRESS_COMMON_WARNINGS_PUSH,Tests/doctest.h,162,DOCTEST_CLANG_SUPPRESS_WARNING_PUSH                                                                 DOCTEST_CLANG_SUPPRE,no
+DOCTEST_SYMBOL_EXPORT,Tests/doctest.h,316,__declspec(dllexport),no
+DOCTEST_SYMBOL_EXPORT,Tests/doctest.h,319,__attribute__((dllexport)),no
+DOCTEST_SYMBOL_EXPORT,Tests/doctest.h,323,"__attribute__((visibility(""default"")))",no
+DOCTEST_SYMBOL_IMPORT,Tests/doctest.h,317,__declspec(dllimport),no
+DOCTEST_SYMBOL_IMPORT,Tests/doctest.h,320,__attribute__((dllimport)),no
+DOCTEST_TEST_SUITE_END,Tests/doctest.h,2314,"DOCTEST_GLOBAL_NO_WARNINGS(DOCTEST_ANONYMOUS(DOCTEST_ANON_VAR_),                                            doctest::det",no
+DOCTEST_TEST_SUITE_END,Tests/doctest.h,2623,using DOCTEST_ANONYMOUS(DOCTEST_ANON_FOR_SEMICOLON_) = int,no
+DOCTEST_THREAD_LOCAL,Tests/doctest.h,3250,thread_local,yes
+DOCTEST_UNUSED,Tests/doctest.h,359,__attribute__((unused)),no
+DOCTEST_VERSION,Tests/doctest.h,62,(DOCTEST_VERSION_MAJOR * 10000 + DOCTEST_VERSION_MINOR * 100 + DOCTEST_VERSION_PATCH),no
+DOCTEST_VERSION_STR,Tests/doctest.h,57,"DOCTEST_TOSTR(DOCTEST_VERSION_MAJOR) "".""                                                            DOCTEST_TOSTR(DOCTES",no
+FARNIL,include/butil.h,48,((void far *) 0),no
+FOREGROUND_CYAN,include/Console.h,15,(WORD) 0x0003,no
+FOREGROUND_WHITE,include/Console.h,16,(WORD) 0x0007,no
+FOREGROUND_YELLOW,include/Console.h,14,(WORD) 0x0006,no
+GAZCOM,Hk/HkDef.h,93,TXTTVCOM,no
+GAZCOM,Juk/VDef.h,60,(MAX_LAHPORTTI+2*NREGNLY+2),no
+HAJONTA0,ViestiWin/ConvDat.cpp,42,HAJONTA,yes
+HANDLE,Tp/TpApuC.c,56,int,no
+HTHREAD,com/WinUDP.cpp,49,int,no
+HTHREAD,Hk/HkDef.h,76,int,no
+HTHREAD,Juk/VDef.h,47,int,no
+JTULOSASKEL,Juk/VDef.h,180,(I64MAXUINT*(I64MAXUINT/16)),no
+JUST_LEFT,include/bstrings.h,18,(-1),no
+KILPPVSIZE,Hk/HkDef.h,490,sizeof(kilppvtp),no
+KILPRECSIZE,Juk/VDef.h,837,sizeof(kilptietue),no
+KILPRECSIZE0,Juk/VDef.h,838,(KILPRECSIZE-MAXOSUUSLUKU*OSRECSIZE),no
+KILPRECSIZE_0,ViestiWin/ConvDat.cpp,81,sizeof(kilptietue0),no
+KILPRECSIZE_A,ViestiWin/ConvDat.cpp,113,sizeof(kilptietue_a),no
+KSEK,Tp/TpDef.h,81,(10L*CSEK),yes
+LANG,Tp/TpDef.h,70,SU,yes
+LAST_COL,include/bscreens.h,34,(PC_COLS - 1),no
+LAST_ROW,include/bscreens.h,33,(PC_ROWS - 1),no
+LENIMI,cbTp/UnitFIS.h,33,(OSNIMIL-5),yes
+LLF_AIKA2,Hk/HkMuotoilu.h,80,(LLF_LISTA+1),no
+LLF_EMIT,Hk/HkMuotoilu.h,74,(LLF_LISNO2+1),no
+LLF_EMIT2,Hk/HkMuotoilu.h,75,(LLF_EMIT+1),no
+LLF_LISNO,Hk/HkMuotoilu.h,72,(LLF_MAA+1),no
+LLF_LISNO2,Hk/HkMuotoilu.h,73,(LLF_LISNO+1),no
+LLF_LISTA,Hk/HkMuotoilu.h,79,(LLF_PISTE2+1),no
+LLF_MAA,Hk/HkMuotoilu.h,71,(LLF_SEURA+1),no
+LLF_MAKSU,Hk/HkMuotoilu.h,76,(LLF_EMIT2+1),no
+LLF_PISTE2,Hk/HkMuotoilu.h,78,(LLF_RANKI+1),no
+LLF_RANKI,Hk/HkMuotoilu.h,77,(LLF_MAKSU+1),no
+LSNIMI,cbTp/UnitFIS.h,32,(OSNIMIL-5),yes
+MAX_LAHPORTTIY,Tp/TpComY.cpp,106,MAX_LAHPORTTI,no
+MAX_LAHPORTTIY,Tp/TpComY32.cpp,99,MAX_LAHPORTTI,no
+MAX_PORTTI,Hk/HkDef.h,96,(MAX_LAHPORTTI+2*NREGNLY+NCOMEXTRA),no
+MAX_PORTTI,Juk/VDef.h,62,(MAX_LAHPORTTI+2*NREGNLY+NCOMEXTRA),no
+MAX_PORTTIY,Tp/TpComY.cpp,107,MAX_PORTTI,no
+MAX_PORTTIY,Tp/TpComY32.cpp,100,MAX_PORTTI,no
+MAXKILPRECSIZE,Juk/VDef.h,839,KILPRECSIZE,no
+MAXNRASTI,Hk/HkDef.h,136,(MAXNLEIMA-2),no
+MAXOSUUSLUKU0,ViestiWin/ConvDat.cpp,36,MAXOSUUSLUKU,yes
+MAXRATA,cbTp/UnitRadat.h,42,MAXNRATA,no
+MINUUTTI,Tp/TpDef.h,83,(600L*KSEK),no
+N_PV_VA,Hk/HkInitVanha.cpp,46,N_PV_V,no
+NEWLINE,tputilv2/STPEXPAN.cpp,45,'\n',no
+NEWLINE,tputilv2/STPTABFY.cpp,42,'\n',no
+NFLISA,Hk/HkMuotoilu.h,81,N_PV,no
+NIL,include/butil.h,44,((void *) 0),no
+NLLFIELDS,Hk/HkMuotoilu.h,82,LLF_AIKA2,no
+NUL,tputilv2/STPEXPAN.cpp,47,'\0',no
+NUL,tputilv2/STPXLATE.cpp,43,'\0',no
+OSRECSIZE,Juk/VDef.h,731,sizeof(osrec),no
+OSRECSIZE0,Juk/VDef.h,732,(OSRECSIZE-(VAIKALUKU+1)*VASIZE),no
+OSSIZE0,ViestiWin/ConvDat.cpp,65,sizeof(osrec0),no
+OSSIZEA,ViestiWin/ConvDat.cpp,96,sizeof(osrec_a),no
+PAGESIZE,include/box.h,19,2*ORDER,no
+PAGESIZE,include/boxf.h,21,2*ORDER,no
+PAGESIZE,include/boxm.h,21,2*ORDER,no
+RAJA,Hk/HkIx.cpp,748,12*TUNTI,no
+RAJA,Juk/VIx.cpp,661,12*TUNTI,no
+RAJA2,Hk/HkIx.cpp,749,12*TUNTI,no
+RAJA2,Juk/VIx.cpp,662,12*TUNTI,no
+SAINSIZE,com/WinUDP.cpp,52,sizeof(SAIN),no
+SEK,Tp/TpDef.h,82,(10L*KSEK),no
+SHORT,Tp/TpApuC.c,57,short,no
+STDOUT_FILENO,Tests/doctest.h,3228,fileno(stdout),yes
+TAB,tputilv2/STPEXPAN.cpp,46,'\t',no
+TAB,tputilv2/STPTABFY.cpp,43,'\t',no
+TARECLEN,include/boxf.h,24,(MAXKEYLEN+4)*PAGESIZE+4,no
+TAULDIM,ViestiWin/UnitSeurGr.h,27,(MAXOSUUSLUKU+1)*(VAIKALUKU+2),no
+TEST_SUITE_END,Tests/doctest.h,2948,DOCTEST_TEST_SUITE_END,no
+TMAALI0,Tp/TpDef.h,88,(-24*TUNTI),no
+TP_CORE_NAME,Tests/core/CoreMain.cpp,45,TpCore,yes
+TUNTI,Tp/TpDef.h,84,(36000L*KSEK),no
+TV1COM,Hk/HkDef.h,94,TXTTVCOM,no
+TXTTVCOM,Hk/HkDef.h,92,(MAX_LAHPORTTI+2*NREGNLY+3),no
+TXTTVCOM,Juk/VDef.h,59,(MAX_LAHPORTTI+2*NREGNLY+3),no
+UNDERSCORE,dbboxm/addkey.cpp,15,=  '_',no
+UNDERSCORE,dbboxm/Dbbox.cpp,14,=  '_',no
+UNDERSCORE,dbboxm/dbbox1.cpp,12,=  '_',no
+UNDERSCORE,dbboxm/dbbox2.cpp,15,=  '_',no
+UNDERSCORE,dbboxm/delkey.cpp,15,=  '_',no
+UNDERSCORE,dbboxm/findkey.cpp,15,=  '_',no
+UNDERSCORE,dbboxm/nextkey.cpp,15,=  '_',no
+UNDERSCORE,dbboxm/prevkey.cpp,15,=  '_',no
+UNDERSCORE,Tp/TpDef.h,75,=  '_',no
+utskip,include/butil.h,51,"printf(""\n"")",no
+VAIKALUKU0,ViestiWin/ConvDat.cpp,31,VAIKALUKU,yes
+VASIZE,Hk/HkDef.h,417,sizeof(vatp),no
+VASIZE,Juk/VDef.h,660,sizeof(vatp),no
+VAY,Hk/HkConsoleDef.h,130,TUY-2,no
+VERSIO,ViestiWin/valinnat.h,17,"""4.20""",no
+VERSIOKDI,Hk/BuildNo.h,17,"L""5.21""",no
+VERSIOKDI,Juk/BuildNo.h,17,"L""5.20""",no
+VRK,Tp/TpDef.h,85,(24*TUNTI),no
+WM_MYADDSAKKO,cbHk/HkWinDef.h,110,(WM_APP + 2209),no
+WM_MYADDSAKKO,ViestiWin/VWinDef.h,96,(WM_APP + 2209),no
+WM_MYDISPLTIMER,cbHk/HkWinDef.h,109,(WM_APP + 2207),no
+WM_MYDISPLTIMER,ViestiWin/VWinDef.h,95,(WM_APP + 2207),no
+WM_MYECODE,cbHk/HkWinDef.h,111,(WM_APP + 2210),no
+WM_MYECODE,ViestiWin/VWinDef.h,97,(WM_APP + 2210),no
+WM_MYHAEAVOIMET,cbHk/HkWinDef.h,116,(WM_APP + 2215),no
+WM_MYHAEAVOIMET,ViestiWin/VWinDef.h,101,(WM_APP + 2215),no
+WM_MYLUKUMAARAT,cbHk/HkWinDef.h,107,(WM_APP + 2205),no
+WM_MYLUKUMAARAT,ViestiWin/VWinDef.h,93,(WM_APP + 2205),no
+WM_MYMSGCLOSEAPPL,cbHk/HkWinDef.h,104,(WM_APP + 2202),no
+WM_MYMSGCLOSEAPPL,ViestiWin/VWinDef.h,90,(WM_APP + 2202),no
+WM_MYMSGDSPERRORMSG,cbHk/HkWinDef.h,106,(WM_APP + 2204),no
+WM_MYMSGDSPERRORMSG,ViestiWin/VWinDef.h,92,(WM_APP + 2204),no
+WM_MYMSGDSPMSG,cbHk/HkWinDef.h,105,(WM_APP + 2203),no
+WM_MYMSGDSPMSG,ViestiWin/VWinDef.h,91,(WM_APP + 2203),no
+WM_MYMSGDSPWARNMSG,cbHk/HkWinDef.h,118,(WM_APP + 2217),no
+WM_MYMSGDSPWARNMSG,ViestiWin/VWinDef.h,103,(WM_APP + 2217),no
+WM_MYMSGNEWCARD,cbHk/HkWinDef.h,103,(WM_APP + 2201),no
+WM_MYMSGNEWCARD,ViestiWin/VWinDef.h,89,(WM_APP + 2201),no
+WM_MYPAIVITA,cbHk/HkWinDef.h,115,(WM_APP + 2214),no
+WM_MYPAIVITA,ViestiWin/VWinDef.h,100,(WM_APP + 2214),no
+WM_MYSCROLL,cbHk/HkWinDef.h,112,(WM_APP + 2211),no
+WM_MYSCROLL,ViestiWin/VWinDef.h,98,(WM_APP + 2211),no
+WM_MYSELECTOPT,cbHk/HkWinDef.h,108,(WM_APP + 2206),no
+WM_MYSELECTOPT,ViestiWin/VWinDef.h,94,(WM_APP + 2206),no
+WM_MYSELTIMER,cbTp/UnitSelect3.h,27,(WM_APP + 2207),no
+WM_MYTIEDOT,cbHk/HkWinDef.h,117,(WM_APP + 2216),no
+WM_MYTIEDOT,ViestiWin/VWinDef.h,102,(WM_APP + 2216),no
+WM_MYUUSIAIKA,cbHk/HkWinDef.h,113,(WM_APP + 2212),no
+WM_MYUUSIAIKA,ViestiWin/VWinDef.h,99,(WM_APP + 2212),no
+WM_MYVAIHDAVAIHE,cbHk/HkWinDef.h,114,(WM_APP + 2213),no

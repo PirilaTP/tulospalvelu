@@ -1,0 +1,229 @@
+id,kk,kk_nimi
+H-001,KK-C13-13,Tulostuspolkujen muistiviat
+H-002,KK-C13-12,Paikallisten tiedostojen ja tuonnin jasentimet
+H-003,KK-C13-13,Tulostuspolkujen muistiviat
+H-004,KK-C13-17,Merkistot ja kaantajariippuvuudet
+H-005,KK-C13-17,Merkistot ja kaantajariippuvuudet
+H-006,KK-C13-18,Testaus- ja CI-perusta
+H-007,KK-C13-6,Tallennuksen ja jaetun tilan synkronointi
+H-008,KK-C13-4,Lukkojen vapautus virhe- ja paluupoluilla
+H-009,KK-C13-5,Lukitusjarjestys ja estavat kutsut lukon alla
+H-010,KK-C13-6,Tallennuksen ja jaetun tilan synkronointi
+H-011,KK-C13-6,Tallennuksen ja jaetun tilan synkronointi
+H-012,KK-C13-4,Lukkojen vapautus virhe- ja paluupoluilla
+H-013,KK-C13-16,Johdettujen rakenteiden eheys
+H-014,KK-C10-1,SQL-integraatio
+H-015,KK-C9-2,"Tallennusvirheiden valitys, kuittaus ja palautus"
+H-016,KK-C13-10,Replikoinnin johdonmukaisuus
+H-017,KK-C13-10,Replikoinnin johdonmukaisuus
+H-018,KK-C13-7,VCL-kaytto tyosaikeista
+H-019,KK-C13-6,Tallennuksen ja jaetun tilan synkronointi
+H-020,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-021,KK-C13-9,Tiedonsiirron yhteydet ja jonot
+H-022,KK-C13-10,Replikoinnin johdonmukaisuus
+H-023,KK-C13-10,Replikoinnin johdonmukaisuus
+H-024,KK-C13-4,Lukkojen vapautus virhe- ja paluupoluilla
+H-025,KK-C13-1,Tiedonsiirron vastaanoton muistiturvallisuus
+H-026,KK-C13-1,Tiedonsiirron vastaanoton muistiturvallisuus
+H-027,KK-C13-9,Tiedonsiirron yhteydet ja jonot
+H-028,KK-C13-9,Tiedonsiirron yhteydet ja jonot
+H-029,KK-C10-4,Ulkoisten yhteyksien turvallisuus
+H-030,KK-C13-10,Replikoinnin johdonmukaisuus
+H-031,KK-C13-3,Vaiheen vaihto ja kaynnistyksen tila
+H-032,KK-C13-1,Tiedonsiirron vastaanoton muistiturvallisuus
+H-033,KK-C13-1,Tiedonsiirron vastaanoton muistiturvallisuus
+H-034,KK-C13-9,Tiedonsiirron yhteydet ja jonot
+H-035,KK-C13-9,Tiedonsiirron yhteydet ja jonot
+H-036,KK-C12-2,Asetusten hallinta
+H-037,KK-C13-9,Tiedonsiirron yhteydet ja jonot
+H-038,KK-C13-8,Saikeiden elinkaari ja hallittu lopetus
+H-039,KK-C13-10,Replikoinnin johdonmukaisuus
+H-040,KK-C13-4,Lukkojen vapautus virhe- ja paluupoluilla
+H-041,KK-C13-11,Tietuemuoto ja kokorajat
+H-042,KK-C13-11,Tietuemuoto ja kokorajat
+H-043,KK-C10-1,SQL-integraatio
+H-044,KK-C9-2,"Tallennusvirheiden valitys, kuittaus ja palautus"
+H-045,KK-C13-6,Tallennuksen ja jaetun tilan synkronointi
+H-046,KK-C13-11,Tietuemuoto ja kokorajat
+H-047,KK-C13-6,Tallennuksen ja jaetun tilan synkronointi
+H-048,KK-C13-9,Tiedonsiirron yhteydet ja jonot
+H-049,KK-C13-12,Paikallisten tiedostojen ja tuonnin jasentimet
+H-050,KK-C13-12,Paikallisten tiedostojen ja tuonnin jasentimet
+H-051,KK-C13-6,Tallennuksen ja jaetun tilan synkronointi
+H-052,KK-C12-2,Asetusten hallinta
+H-053,KK-C9-2,"Tallennusvirheiden valitys, kuittaus ja palautus"
+H-054,KK-C9-2,"Tallennusvirheiden valitys, kuittaus ja palautus"
+H-055,KK-C13-2,Laitesyotteen jasentimet
+H-056,KK-C13-2,Laitesyotteen jasentimet
+H-057,KK-C13-12,Paikallisten tiedostojen ja tuonnin jasentimet
+H-058,KK-C13-12,Paikallisten tiedostojen ja tuonnin jasentimet
+H-059,KK-C13-13,Tulostuspolkujen muistiviat
+H-060,KK-C13-1,Tiedonsiirron vastaanoton muistiturvallisuus
+H-061,KK-C13-1,Tiedonsiirron vastaanoton muistiturvallisuus
+H-062,KK-C13-13,Tulostuspolkujen muistiviat
+H-063,KK-C9-3,Toistuvien toimintojen resurssit
+H-064,KK-C13-13,Tulostuspolkujen muistiviat
+H-065,KK-C13-12,Paikallisten tiedostojen ja tuonnin jasentimet
+H-066,KK-C13-16,Johdettujen rakenteiden eheys
+H-067,KK-C13-13,Tulostuspolkujen muistiviat
+H-068,KK-C13-13,Tulostuspolkujen muistiviat
+H-069,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-070,KK-C13-2,Laitesyotteen jasentimet
+H-071,KK-C13-1,Tiedonsiirron vastaanoton muistiturvallisuus
+H-072,KK-C13-1,Tiedonsiirron vastaanoton muistiturvallisuus
+H-073,KK-C13-1,Tiedonsiirron vastaanoton muistiturvallisuus
+H-074,KK-C13-12,Paikallisten tiedostojen ja tuonnin jasentimet
+H-075,KK-C13-13,Tulostuspolkujen muistiviat
+H-076,KK-C13-13,Tulostuspolkujen muistiviat
+H-077,KK-C13-2,Laitesyotteen jasentimet
+H-078,KK-C13-12,Paikallisten tiedostojen ja tuonnin jasentimet
+H-079,KK-C13-12,Paikallisten tiedostojen ja tuonnin jasentimet
+H-080,KK-C13-17,Merkistot ja kaantajariippuvuudet
+H-081,KK-C13-17,Merkistot ja kaantajariippuvuudet
+H-082,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-083,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-084,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-085,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-086,KK-C13-12,Paikallisten tiedostojen ja tuonnin jasentimet
+H-087,KK-C13-4,Lukkojen vapautus virhe- ja paluupoluilla
+H-088,KK-C13-4,Lukkojen vapautus virhe- ja paluupoluilla
+H-089,KK-C13-4,Lukkojen vapautus virhe- ja paluupoluilla
+H-090,KK-C13-4,Lukkojen vapautus virhe- ja paluupoluilla
+H-091,KK-C13-5,Lukitusjarjestys ja estavat kutsut lukon alla
+H-092,KK-C13-5,Lukitusjarjestys ja estavat kutsut lukon alla
+H-093,KK-C13-5,Lukitusjarjestys ja estavat kutsut lukon alla
+H-094,KK-C13-3,Vaiheen vaihto ja kaynnistyksen tila
+H-095,KK-C13-8,Saikeiden elinkaari ja hallittu lopetus
+H-096,KK-C13-8,Saikeiden elinkaari ja hallittu lopetus
+H-097,KK-C13-3,Vaiheen vaihto ja kaynnistyksen tila
+H-098,KK-C13-8,Saikeiden elinkaari ja hallittu lopetus
+H-100,KK-C10-1,SQL-integraatio
+H-101,KK-C13-6,Tallennuksen ja jaetun tilan synkronointi
+H-102,KK-C13-3,Vaiheen vaihto ja kaynnistyksen tila
+H-103,KK-C13-5,Lukitusjarjestys ja estavat kutsut lukon alla
+H-104,KK-C13-8,Saikeiden elinkaari ja hallittu lopetus
+H-105,KK-C13-3,Vaiheen vaihto ja kaynnistyksen tila
+H-106,KK-C13-7,VCL-kaytto tyosaikeista
+H-107,KK-C13-7,VCL-kaytto tyosaikeista
+H-108,KK-C10-2,Laiteyhteyksien hallinta
+H-109,KK-C13-14,GUI: dataa korruptoivat toiminnot
+H-110,KK-C13-4,Lukkojen vapautus virhe- ja paluupoluilla
+H-111,KK-C13-14,GUI: dataa korruptoivat toiminnot
+H-112,KK-C13-14,GUI: dataa korruptoivat toiminnot
+H-113,KK-C13-14,GUI: dataa korruptoivat toiminnot
+H-114,KK-C13-14,GUI: dataa korruptoivat toiminnot
+H-115,KK-C13-14,GUI: dataa korruptoivat toiminnot
+H-116,KK-C13-14,GUI: dataa korruptoivat toiminnot
+H-117,KK-C13-14,GUI: dataa korruptoivat toiminnot
+H-118,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-119,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-120,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-121,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-122,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-123,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-124,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-125,KK-C13-4,Lukkojen vapautus virhe- ja paluupoluilla
+H-126,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-127,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-128,KK-C13-16,Johdettujen rakenteiden eheys
+H-129,KK-C13-3,Vaiheen vaihto ja kaynnistyksen tila
+H-130,KK-C13-16,Johdettujen rakenteiden eheys
+H-131,KK-C13-3,Vaiheen vaihto ja kaynnistyksen tila
+H-132,KK-C13-3,Vaiheen vaihto ja kaynnistyksen tila
+H-133,KK-C13-3,Vaiheen vaihto ja kaynnistyksen tila
+H-134,KK-C13-3,Vaiheen vaihto ja kaynnistyksen tila
+H-135,KK-C13-16,Johdettujen rakenteiden eheys
+H-136,KK-C13-6,Tallennuksen ja jaetun tilan synkronointi
+H-137,KK-C13-6,Tallennuksen ja jaetun tilan synkronointi
+H-138,KK-C10-2,Laiteyhteyksien hallinta
+H-139,KK-C13-16,Johdettujen rakenteiden eheys
+H-140,KK-C13-16,Johdettujen rakenteiden eheys
+H-141,KK-C13-3,Vaiheen vaihto ja kaynnistyksen tila
+H-142,KK-C13-16,Johdettujen rakenteiden eheys
+H-143,KK-C13-3,Vaiheen vaihto ja kaynnistyksen tila
+H-144,KK-C13-6,Tallennuksen ja jaetun tilan synkronointi
+H-145,KK-C9-2,"Tallennusvirheiden valitys, kuittaus ja palautus"
+H-146,KK-C9-2,"Tallennusvirheiden valitys, kuittaus ja palautus"
+H-147,KK-C9-2,"Tallennusvirheiden valitys, kuittaus ja palautus"
+H-148,KK-C9-2,"Tallennusvirheiden valitys, kuittaus ja palautus"
+H-149,KK-C9-1,PRFILE-osoittimien elinkaari
+H-150,KK-C9-3,Toistuvien toimintojen resurssit
+H-151,KK-C9-1,PRFILE-osoittimien elinkaari
+H-152,KK-C9-1,PRFILE-osoittimien elinkaari
+H-153,KK-C9-2,"Tallennusvirheiden valitys, kuittaus ja palautus"
+H-154,KK-C9-1,PRFILE-osoittimien elinkaari
+H-155,KK-C9-3,Toistuvien toimintojen resurssit
+H-156,KK-C9-2,"Tallennusvirheiden valitys, kuittaus ja palautus"
+H-157,KK-C13-8,Saikeiden elinkaari ja hallittu lopetus
+H-158,KK-C12-1,"XML-, HTML- ja automaattiset julkaisutiedostot"
+H-159,KK-C10-2,Laiteyhteyksien hallinta
+H-160,KK-C10-1,SQL-integraatio
+H-161,KK-C10-1,SQL-integraatio
+H-162,KK-C10-1,SQL-integraatio
+H-163,KK-C10-1,SQL-integraatio
+H-164,KK-C10-2,Laiteyhteyksien hallinta
+H-165,KK-C10-3,Jakelu ja ulkoiset riippuvuudet
+H-166,KK-C10-2,Laiteyhteyksien hallinta
+H-167,KK-C10-2,Laiteyhteyksien hallinta
+H-168,KK-C10-2,Laiteyhteyksien hallinta
+H-169,KK-C10-1,SQL-integraatio
+H-170,KK-C10-2,Laiteyhteyksien hallinta
+H-171,KK-C12-2,Asetusten hallinta
+H-172,KK-C12-1,"XML-, HTML- ja automaattiset julkaisutiedostot"
+H-173,KK-C12-2,Asetusten hallinta
+H-174,KK-C13-12,Paikallisten tiedostojen ja tuonnin jasentimet
+H-175,KK-C13-15,GUI: syoterajat ja pienet logiikkaviat
+H-176,KK-C12-2,Asetusten hallinta
+H-177,KK-C12-3,Valitsinhygienia ja kuollut koodi
+T-001,KK-C13-21,"Ytimen ja kayttoliittyman erottaminen, globaali tila"
+T-002,KK-C13-21,"Ytimen ja kayttoliittyman erottaminen, globaali tila"
+T-003,KK-C13-21,"Ytimen ja kayttoliittyman erottaminen, globaali tila"
+T-004,KK-C13-17,Merkistot ja kaantajariippuvuudet
+T-005,KK-C10-3,Jakelu ja ulkoiset riippuvuudet
+T-006,KK-C10-3,Jakelu ja ulkoiset riippuvuudet
+T-007,KK-C12-3,Valitsinhygienia ja kuollut koodi
+T-008,KK-C12-3,Valitsinhygienia ja kuollut koodi
+T-009,KK-C12-3,Valitsinhygienia ja kuollut koodi
+T-010,ULKOPUOLELLA,Jo korjattu
+T-011,KK-C12-3,Valitsinhygienia ja kuollut koodi
+T-012,KK-C12-3,Valitsinhygienia ja kuollut koodi
+T-013,KK-C12-3,Valitsinhygienia ja kuollut koodi
+T-014,KK-C12-2,Asetusten hallinta
+T-015,KK-C12-3,Valitsinhygienia ja kuollut koodi
+T-016,KK-C13-17,Merkistot ja kaantajariippuvuudet
+T-017,KK-C10-3,Jakelu ja ulkoiset riippuvuudet
+T-018,KK-C12-3,Valitsinhygienia ja kuollut koodi
+T-019,KK-C13-11,Tietuemuoto ja kokorajat
+T-020,KK-C9-3,Toistuvien toimintojen resurssit
+T-021,KK-C13-17,Merkistot ja kaantajariippuvuudet
+T-022,KK-C13-19,Yhteiset turvalliset apukerrokset (syotteen validointi)
+T-023,KK-C13-17,Merkistot ja kaantajariippuvuudet
+T-024,KK-C12-2,Asetusten hallinta
+T-025,KK-C13-17,Merkistot ja kaantajariippuvuudet
+T-026,KK-C13-17,Merkistot ja kaantajariippuvuudet
+T-027,KK-C13-17,Merkistot ja kaantajariippuvuudet
+T-028,KK-C12-3,Valitsinhygienia ja kuollut koodi
+T-029,KK-C12-3,Valitsinhygienia ja kuollut koodi
+T-030,KK-C13-8,Saikeiden elinkaari ja hallittu lopetus
+T-031,KK-C13-5,Lukitusjarjestys ja estavat kutsut lukon alla
+T-032,KK-C13-5,Lukitusjarjestys ja estavat kutsut lukon alla
+T-033,KK-C13-7,VCL-kaytto tyosaikeista
+T-034,KK-C13-22,HK- ja viestihaarojen lahentaminen
+T-035,KK-C13-11,Tietuemuoto ja kokorajat
+T-036,KK-C13-4,Lukkojen vapautus virhe- ja paluupoluilla
+T-037,KK-C13-14,GUI: dataa korruptoivat toiminnot
+T-038,KK-C13-20,Vaihetilan keskitetty hallinta
+T-039,KK-C13-16,Johdettujen rakenteiden eheys
+T-040,KK-C9-2,"Tallennusvirheiden valitys, kuittaus ja palautus"
+T-041,KK-C9-2,"Tallennusvirheiden valitys, kuittaus ja palautus"
+T-042,KK-C9-1,PRFILE-osoittimien elinkaari
+T-043,KK-C10-4,Ulkoisten yhteyksien turvallisuus
+T-044,KK-C10-3,Jakelu ja ulkoiset riippuvuudet
+T-045,KK-C12-3,Valitsinhygienia ja kuollut koodi
+T-046,KK-C10-3,Jakelu ja ulkoiset riippuvuudet
+T-047,KK-C10-3,Jakelu ja ulkoiset riippuvuudet
+T-048,KK-C10-2,Laiteyhteyksien hallinta
+T-049,KK-C10-3,Jakelu ja ulkoiset riippuvuudet
+T-050,KK-C12-3,Valitsinhygienia ja kuollut koodi
+T-051,KK-C12-2,Asetusten hallinta
+T-052,KK-C12-3,Valitsinhygienia ja kuollut koodi

@@ -1,0 +1,12 @@
+command: VS\Tests\Release\TpCoreHk.exe "--test-case=H-027a TCP client does not retry after a failed connect" --no-colors=true --no-version=true   (cwd = sandbox)
+exit: 0x00000000 timed_out: False
+--- stdout ---
+[doctest] run with "--help" for options
+TPRESULT|finding=H-027|mechanism=tcp-client-no-retry|observed=1|detail=(i) SYNs seen while rejecting=5, comopen after failure=0, hComm0=1, TCP_on0=0x0100007F; (ii) client thread ended=1 after 2000 ms; attempts in the following 15 s while accepting=0; comopen at end=0
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 22 skipped
+[doctest] assertions: 6 | 6 passed | 0 failed |
+[doctest] Status: SUCCESS!
+
+--- stderr ---
+

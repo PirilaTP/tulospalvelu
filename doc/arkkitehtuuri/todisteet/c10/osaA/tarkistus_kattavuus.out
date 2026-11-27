@@ -1,0 +1,27 @@
+(a) key           raw  outside-comments  osumat.csv
+    WinHttpOpen             2      1      1
+    WinHttpSendRequest      1      1      1
+    WinHttpSetTimeouts      0      0      0
+    WinHttpSetOption        0      0      0
+    TSQLConnection          3      3      3
+    TWebBrowser             3      2      2
+    SetCommState            6      6      5  <-- DIFF
+    WSAStartup              4      4      4
+    RegOpenKeyEx            3      3      3
+    mysql_real_connect      1      1      1
+    LID_EMIT                0      0      0
+    ExecSQL                18     18     18
+    Navigate                5      5      5
+    CoInitialize            0      0      0
+    differences: 1
+(b) macros behind unknown conditions
+    HkMaali      [('MAKI', 4)]
+    ViestiMaali  []
+    ViestiLuenta []
+    HkKisaWin    [('MAKI', 4)]
+    ViestiWin    []
+(c) marker rows (non-include) in files no product compiles or includes
+    Tp/TpComY32.cpp                               10
+    dbboxm/Dbbox.cpp                              2
+    tputilv2/UnitTest.cpp                         2
+    dbboxm/BOXTEST_F.cpp                          1

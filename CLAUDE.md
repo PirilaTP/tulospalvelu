@@ -2,21 +2,29 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+Rules for all AI agents, the map of the knowledge base and the maintenance commands are in
+`AGENTS.md` (shared with Codex and other tools): @AGENTS.md
+
 ## What this project is
 
 Pekka Pirilä's sports timekeeping suite ("tulospalvelu"), originally developed around 1986, released under GPLv3. It handles competitor timing, split recording, results calculation and publishing — primarily for orienteering, with extensions for skiing, biathlon, and relay races. The UI and most variable names/comments are in Finnish.
 
 ## Build instructions
 
-### Console programs (Visual Studio 2022)
+### Console programs (MSVC)
+
+The projects use the `v145` toolset (Visual Studio 2026 / v18). With Visual Studio
+2022 pass `/p:PlatformToolset=v143`, as CI does.
 
 Build order matters — the utility library must be built first:
 
 1. Open `TPsource\V52\VS\Libs\tputilv2.sln` → F7 (creates `vc10/` and `TPexe/` directories)
 2. Open `TPsource\V52\VS\Hk\HkMaali520.sln` → F7 → produces `TPexe\Hk\V521\HkMaali.exe`
-3. For relay version: `TPsource\V52\VS\V\JukMaali520.sln` → F7 → produces `TPexe\V\JukMaali.exe`
+3. For relay version: `TPsource\V52\VS\V\JukMaali520.sln` → F7 → produces `TPexe\Juk\V52\ViestiMaali.exe` and `ViestiLuenta.exe`
 
-Language standard: C++03.
+Command line: `MSBuild.exe <sln> /p:Configuration=Release /p:Platform=Win32`.
+
+Language standard: C++03 (the doctest unit tests need C++11).
 
 ### Windows GUI programs (Embarcadero C++ Builder Community Edition)
 
@@ -41,9 +49,25 @@ console + GUI programs, collects the C++Builder runtime (BPL/DLL) files with
 GitHub Release. The GUI programs link to runtime packages (`UsePackages`,
 `DynamicRTL`), so they need those files next to the .exe.
 
+The GUI is compiled with the classic `bcc32` compiler. C++Builder 13 needs a Windows
+SDK version it recognises (up to 10.0.26100.6584; 10.0.26100.4188 works). A newer
+SDK, e.g. installed by a VS update, makes the build fail with "Error creating
+platform SDK".
+
 If linker heap errors occur: run `bcdedit /set IncreaseUserVa 3072` as Administrator and reboot.
 
-There are no automated tests.
+### Unit tests
+
+doctest tests in `TPsource\V52\Tests\`: build `TPsource\V52\VS\Tests\TpTest.sln` and
+run `TpTest.exe`. CI does not run them yet, and `Tests/run.sh` (g++) is currently broken.
+
+## Architecture documentation and editing rules
+
+Detailed, bilingual (Finnish/English) architecture docs are in `doc/arkkitehtuuri/`;
+start from its `README.md`. Before editing source files read
+`doc/arkkitehtuuri/merkistot.md`: files mix cp1252, UTF-8 and ASCII, and the two
+compilers read UTF-8 differently. Do not change a file's encoding, BOM or line
+endings; write new comments in English using ASCII only.
 
 ## Architecture
 
@@ -64,10 +88,10 @@ Both domains share the same utility and database layers, and compile to both a c
 **Utilities** (`TPsource/V52/tputilv2/`, `TPsource/V52/include/`):
 - `tputil.h` — master header: `TextFl` (file I/O), `PRFILE` (printer/GDI), time conversion (`aikatos`/`aikatostr`), string utilities, XML/HTML output
 - `tptype.h` — cross-platform type definitions
-- `TpDef.h` — global constants and keyboard codes
+- `TpDef.h` (in `TPsource/V52/Tp/`) — global constants and keyboard codes
 - `wincom.h` — network abstraction (RS-232, UDP, TCP, XML)
 
-**Database** (`TPsource/V52/dbboxm/`): Custom binary record files with fixed-size records, block compression, and in-memory indexing (`kilpindex`). No SQL — records accessed by numeric `DATAREF`.
+**Database** (`TPsource/V52/dbboxm/`): Custom binary record files with fixed-size records and no index files; indexes are built in memory at startup. File layouts: `doc/arkkitehtuuri/tiedostomuodot.md`. Records are accessed by numeric `DATAREF`. Competitor records can additionally be written to MySQL (optional, `kilptietue::write`).
 
 ### Key data structures
 

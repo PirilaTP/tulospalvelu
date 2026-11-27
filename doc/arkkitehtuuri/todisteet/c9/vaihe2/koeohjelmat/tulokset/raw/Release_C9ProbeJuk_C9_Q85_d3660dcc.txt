@@ -1,0 +1,2 @@
+[doctest] run with "--help" for options
+TPINFO|cycle 1: calling autofile

@@ -1,0 +1,58 @@
+{
+  "started": "2026-11-24T20:58:34",
+  "mode": "firewall",
+  "exe": "C:\\dev\\tulospalvelu\\TPexe\\Hk\\V521\\HkMaali.exe",
+  "exe_sha256": "61034e5dbb18817985d6fe64343b5d1ee2aa9fbab91495bd43549eaa0d7d297d",
+  "probe_sha256": "76b91f4a9728d8c214c55f8b2722cd1e0215b7d795c5774e5d05b9c9cb2604c4",
+  "driver_sha256": "6f0354775bcb811e9f73b86b1650a91964657932d0ca2c28a7db9d0e6299b193",
+  "script": {
+    "args": [
+      "BOOT"
+    ],
+    "step_timeout": 10,
+    "total_timeout": 60,
+    "steps": [
+      {
+        "wait": [
+          "KilpSrj.xml puuttuu",
+          "Paina Enter"
+        ],
+        "key": "\r"
+      },
+      {
+        "wait": [
+          "Sarjatietojen lukeminen ei onnistunut",
+          "Paina Enter"
+        ],
+        "key": "\r"
+      }
+    ]
+  },
+  "script_sha256": "f1123dc1eaa6e3567fa4e8439ba408132d2afb8125be3488eee3ae767be71826",
+  "fw_exe": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+  "firewall_commands": [
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block out' -Direction Outbound -Program 'C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any",
+    "New-NetFirewallRule -DisplayName 'TP C11 HkMaali block in' -Direction Inbound -Program 'C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe' -Action Block -Profile Any"
+  ],
+  "firewall": {
+    "rules": [],
+    "profiles": [
+      {
+        "Name": "Domain",
+        "Enabled": "True"
+      },
+      {
+        "Name": "Private",
+        "Enabled": "True"
+      },
+      {
+        "Name": "Public",
+        "Enabled": "True"
+      }
+    ]
+  },
+  "firewall_ok": false,
+  "result": "NOT RUN: firewall block rules for C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe missing, disabled or firewall off",
+  "git_status": " M doc/arkkitehtuuri/CHECKPOINT.md\n M doc/arkkitehtuuri/seuranta.md\n M doc/arkkitehtuuri/testaus.md\n?? TPsource/V52/Tests/blackbox/\n!! TPexe/\n!! TPsource/V52/RADStudio10/Release_Build/\n!! TPsource/V52/RADStudio10/Win32/\n!! TPsource/V52/RADStudio10/build-logs/\n!! TPsource/V52/RADStudio10/obj/\n!! TPsource/V52/Tests/__pycache__/\n!! TPsource/V52/Tests/blackbox/__pycache__/\n!! TPsource/V52/VS/Libs/Release/\n!! TPsource/V52/VS/Libs/dbboxm/Release/\n!! TPsource/V52/VS/Tests/Asan/\n!! TPsource/V52/VS/Tests/Release/\n!! TPsource/V52/VS/Tests/TpCoreHk/\n!! TPsource/V52/VS/Tests/TpCoreJuk/\n!! TPsource/V52/VS/Tests/TpTest/\n!! TPsource/V52/VS/V/ViestiLuenta/\n!! TPsource/V52/VS/V/ViestiMaali/\n!! issue-drafts/\n!! vc10/\n",
+  "finished": "2026-11-24T20:58:36"
+}

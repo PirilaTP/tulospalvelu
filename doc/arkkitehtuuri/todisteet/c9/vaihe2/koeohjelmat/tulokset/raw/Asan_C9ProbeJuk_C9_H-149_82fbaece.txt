@@ -1,0 +1,9 @@
+[doctest] run with "--help" for options
+TPARM|finding=H-149|mechanism=control-list-mode|source=asan
+TPDISARM|
+TPINFO|list mode: autofile -> 0, 0; lstf=00000000; messages=0
+TPRESULT|finding=H-149|mechanism=control-list-mode|observed=0|detail=no ASan report in list mode (two runs)
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 5 skipped
+[doctest] assertions: 3 | 3 passed | 0 failed |
+[doctest] Status: SUCCESS!

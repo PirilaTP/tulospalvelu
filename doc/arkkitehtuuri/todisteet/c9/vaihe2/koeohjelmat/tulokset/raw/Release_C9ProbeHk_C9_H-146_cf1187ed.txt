@@ -1,0 +1,7 @@
+[doctest] run with "--help" for options
+TPINFO|file: slot1:kno=101,t=3601000; slot2:kno=102,t=3602000; slot3:kno=103,t=3603000; slot4:kno=0,t=-864000000; 
+TPINFO|after restart: row0:kno=101,t=3601000; row1:kno=102,t=3602000; row2:kno=103,t=3603000; 
+===============================================================================
+[doctest] test cases: 1 | 1 passed | 0 failed | 12 skipped
+[doctest] assertions: 7 | 7 passed | 0 failed |
+[doctest] Status: SUCCESS!

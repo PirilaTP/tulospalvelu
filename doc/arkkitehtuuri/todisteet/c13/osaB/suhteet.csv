@@ -1,0 +1,222 @@
+id_a,id_b,suhde,naytto,varmuus
+H-061,H-032,sama_vika,"H-061 row: same defect class as H-032 on serial/binary TCP; Tp/TpComY.cpp:1001,:654 vs :750,:760",verified
+H-014,H-160,sama_vika,"H-160 row: extends H-014 ""no exception handling""; cbHk/UnitMySQL.cpp:637-760",verified
+H-014,H-097,sama_vika,"H-097 row: same stage-change thread stop, writer thread is H-014; cbTp/UnitEmitSQL.cpp:29-31",verified
+H-018,H-106,sama_vika,H-018 row lists ViestiWin worker-thread VCL sites; H-106 ViestiWin/UnitStatus.cpp:532-535 is a second site,verified
+H-018,H-101,sama_vika,"H-101 row: BtnLahValClick VCL handler on worker thread, see H-018; cbHk/UnitComfile.cpp:1047-1066",verified
+H-019,H-144,sama_vika,H-144 row: writeerror_w family shares one global swap struct perr_ptrs2; H-019 cbTp/cbTpApu.cpp:470-489,inferred
+H-071,H-156,sama_vika,"H-156 row item N-B7 = FILESEND partial file forwarded, also in H-071 row (N-B7)",verified
+H-069,H-112,sama_vika,H-069 row: TallennaVaihto uninitialised kno moved to H-112,verified
+H-058,H-074,sama_vika,same count-pass vs fill-pass mismatch in another loader: Hk/HkEmit.cpp:2896-2937 vs Hk/HkIV.cpp:231-310,inferred
+H-129,H-133,sama_vika,H-133 row: initindex does not reset idindex->nrec (H-129 pattern); Hk/HkIx.cpp:101-107 vs :1573-1610,verified
+H-149,H-151,hk_viesti_vastine,"dangling PRFILE after closeprfile in relay autofile (Juk/VTulostus.cpp:7036-7043) vs HK autofile (Hk/HkTulostus.cpp:7060,:7171-7174); both KK-C9-1",inferred
+T-019,T-041,sama_vika,"both rows state KILP.DAT has no checksum (dbboxm/dbbox1.cpp:104-211, :227-251)",verified
+T-012,T-049,sama_vika,T-049 row lists SIIMPORT dead code also described by T-012 (Tp/TpComY.cpp:1932-2076),verified
+H-176,T-052,sama_vika,T-052 row: RFID keys silently become ALGE timing = H-176 item,verified
+H-170,H-164,sama_vika,H-170 item N-11 comajanotto spins when port vanishes vs H-164 vanished serial reader never reopened,inferred
+H-032,H-071,sama_koodikohta,both cite Tp/TpComY.cpp:1001 and :2399 (packet length vs class_len),verified
+H-032,H-026,sama_koodikohta,both cite Tp/TpComY.cpp:1001 (receive class handling),verified
+H-026,H-071,sama_koodikohta,both cite Tp/TpComY.cpp:1001 and relay Juk/VCom.cpp:968-981,verified
+H-025,H-021,sama_koodikohta,Tp/TpComY.cpp:529-530 (H-025) inside :519-545 (H-021) memory queue,verified
+H-025,H-030,sama_koodikohta,both cite Tp/TpComY.cpp:509 and :1467-1470,verified
+H-025,H-044,sama_koodikohta,Tp/TpComY.cpp:509 and :1465-1513 in both,verified
+H-030,H-044,sama_koodikohta,Tp/TpComY.cpp:1467-1470 in :1465-1513,verified
+H-007,H-033,sama_koodikohta,"both in HK tark_kilp: Hk/HkCom32.cpp:260,:326-332 and :274-279",verified
+H-007,H-022,sama_koodikohta,HK tark_kilp neighbours: Hk/HkCom32.cpp:326-332 vs :324-325,inferred
+H-016,H-022,sama_koodikohta,"Hk/HkCom32.cpp:204-208,:220-222 inside H-016 :195-233",verified
+H-022,H-023,sama_koodikohta,"Hk/HkCom32.cpp:296-305 vs :283-293, same receive handler; Hk/HkDef.h:1254-1261",inferred
+H-008,H-060,sama_koodikohta,same call site Hk/HkCom32.cpp:647 and Tp/TpLaitteet.cpp:1670; Hk/HkSak.cpp,verified
+H-040,H-148,sama_koodikohta,relay addfrec Juk/vdat.cpp:178-192 vs :178-191,verified
+H-040,H-047,sama_koodikohta,Juk/vdat.cpp:185-189 inside addfrec :178-192,verified
+H-047,H-148,sama_koodikohta,Juk/vdat.cpp:185-189 vs :178-191,verified
+H-015,H-047,sama_koodikohta,dbboxm/dbbox1.cpp:84-100 inside :64-100 (file open/close layer),verified
+H-011,H-045,sama_koodikohta,Hk/HkEmit.cpp:1600-1623 in both (emit file without emit_CS),verified
+H-053,H-105,sama_koodikohta,Hk/HkEmit.cpp:1581 (lueem) inside H-105 :1573-1583,verified
+H-034,H-141,sama_koodikohta,Hk/HkEmit.cpp:1627-1638 inside :1627-1666 duplicate-card prevention,verified
+H-102,H-129,sama_koodikohta,same line Hk/HkIx.cpp:1610 teejarj(true); H-129 row says different defect,verified
+H-132,H-133,sama_koodikohta,Hk/HkInit.cpp:3357-3360 wmemmove of file names in both,verified
+H-131,H-132,sama_koodikohta,aikaflname handling Hk/HkInit.cpp:3357-3364 adjacent,inferred
+H-105,H-134,sama_koodikohta,"Hk/HkIx.cpp:1907-1941 contains :1909-1912,:1936-1946",verified
+H-134,H-174,sama_koodikohta,XML parse error treated as missing/success: Hk/HkXml.cpp:1824-1826 vs :1832-1837,inferred
+H-031,H-094,sama_koodikohta,both cite Hk/HkIV.cpp:796,verified
+H-094,H-136,sama_koodikohta,"pros_bdg_t Hk/HkIV.cpp:790-851 vs :796-808,:753-781",verified
+H-038,H-095,sama_koodikohta,Hk/HkInit.cpp:3778-3790 inside :3749-3790 shutdown,verified
+H-038,H-167,sama_koodikohta,Hk/HkInit.cpp:3781-3804 overlaps :3778-3790,verified
+H-104,H-095,sama_koodikohta,lopetus path Hk/HkInit.cpp:3739-3742 vs :3749-3790,inferred
+H-009,H-019,sama_koodikohta,cbTp/cbTpApu.cpp:467-490 and :470-489 writeerror_w,verified
+H-019,H-021,sama_koodikohta,cbTp/cbTpApu.cpp:470-489 and :480-490,verified
+H-021,T-026,sama_koodikohta,cbTp/cbTpApu.cpp:480-489/490 in both,verified
+H-019,T-026,sama_koodikohta,cbTp/cbTpApu.cpp:480-489 in both,verified
+H-028,H-096,sama_koodikohta,com/WinUDP.cpp:656-667 and :655-659,verified
+H-027,H-037,sama_koodikohta,com/WinUDP.cpp:845-847 and Tp/TpComY.cpp:1297-1301 TCP open,verified
+H-030,H-037,sama_koodikohta,Hk/HkCom32.cpp:986-988 and :986-987,verified
+T-031,H-096,sama_koodikohta,com/WinUDP.cpp:343 in both (tcpip_CS held in close),verified
+T-031,H-093,sama_koodikohta,com/WinUDP.cpp:911 inside H-093 :907-936 (tcpip_CS),verified
+H-078,H-079,sama_koodikohta,tputilv2/TextFileClass.cpp:357-359 and :347-359 (TextFl::Open),verified
+H-079,H-086,sama_koodikohta,tputilv2/TextFileClass.cpp:347-359 inside :322-359,verified
+H-078,H-086,sama_koodikohta,tputilv2/TextFileClass.cpp:357-359 inside :322-359,verified
+H-059,H-068,sama_koodikohta,HkConsole/HkCons2.cpp:1263 inside :1244-1317,verified
+H-059,H-075,sama_koodikohta,"relay console tulostamaali JukConsole/vcons2.cpp:2165-2178 and :2140,:2196-2200",verified
+H-111,H-117,sama_koodikohta,"cbHk/UnitAjanotto.cpp:659,:672 inside :657-674",verified
+H-109,H-115,sama_koodikohta,cbHk/UnitKilpailijatiedot.cpp:1157-1176 inside :1157-1211,verified
+H-069,H-123,sama_koodikohta,"ViestiWin/UnitArvonta.cpp:418,:464 inside :404-460/:353",verified
+H-118,H-123,sama_koodikohta,ViestiWin/UnitArvonta.cpp:442-455 inside :404-460,verified
+H-110,H-113,sama_koodikohta,ViestiWin/UnitArvonta.cpp:548-553 inside :544-576 handler,inferred
+H-119,H-120,sama_koodikohta,"both in HK lueKilp3 + tallennaKilpailija: cbHk/UnitEmit.cpp:1663-1745 and :1615,:693-727",inferred
+H-087,H-092,sama_koodikohta,"Juk/VEmit.cpp:1510,:1409 and print_CS/emit path in both",verified
+H-087,H-103,sama_koodikohta,"Juk/VEmit.cpp:1409,:1510,:1524 in both",verified
+H-092,H-103,sama_koodikohta,"Juk/VEmit.cpp:1409,:1510,:1524 and Juk/VCom.cpp:828 in both",verified
+H-014,H-100,sama_koodikohta,"cbHk/UnitMySQL.cpp:699-701,:748-752 inside H-100 :697-701,:739-752",verified
+H-100,H-162,sama_koodikohta,cbHk/UnitExport.cpp:436 inside :420-450,verified
+H-043,H-160,sama_koodikohta,cbHk/UnitMySQL.cpp:703-719 inside :690-760,verified
+H-056,H-070,sama_koodikohta,"Tp/TpLaitteet.cpp:1547,:1706-1711 in both (reader thread loop)",verified
+H-150,H-151,sama_koodikohta,both in HK autofile Hk/HkTulostus.cpp:7060-7340,inferred
+H-149,H-158,sama_koodikohta,relay autofile Juk/VTulostus.cpp:7036-7186; H-158 row cites H-149 d,verified
+H-036,H-176,sama_koodikohta,Juk/VInit.cpp:1139 vs :1168-1171 same relay parameter parser,inferred
+H-025,H-048,sama_koodikohta,"combufsize vs disk-queue stride: Tp/TpComY.cpp:495,:509; Juk/VCom.cpp:1376-1384",inferred
+T-034,H-017,hk_viesti_vastine,T-034 row: check inside lock only in relay; viittaukset T-034->H-017,verified
+T-034,H-117,hk_viesti_vastine,T-034 row: range guard only in relay; HK defect cbHk/UnitAjanotto.cpp:657-674,verified
+T-034,H-069,hk_viesti_vastine,T-034 row: relay-only defect (ViestiWin/UnitArvonta.cpp:373),verified
+T-034,H-121,hk_viesti_vastine,T-034 row: relay-only argument shift; ViestiWin/UnitAjanotto.cpp:1221 vs cbHk/UnitAjanotto.cpp:1226,verified
+H-117,H-121,hk_viesti_vastine,"opposite one-sided fixes in the same timing form tall_rivi call: cbHk/UnitAjanotto.cpp:1226,:1234-1250 vs ViestiWin/UnitAjanotto.cpp:1170,:1221",verified
+H-126,H-127,hk_viesti_vastine,"both roll-ups carry the N-24 naytaRivi defect, relay ViestiWin/UnitAjanotto.cpp:291-332 and HK cbHk/UnitEmit.cpp",verified
+H-123,H-124,hk_viesti_vastine,"renumber checks: relay ViestiWin/UnitArvonta.cpp:81,:353,:404-460 vs HK cbHk/UnitArvonta.cpp:575,:677-716",inferred
+H-130,H-139,hk_viesti_vastine,"relay series-change counts (Juk/vdat.cpp:738-743) vs HK counters (Hk/HkIx.cpp:47-51,:822-823); both under T-039",inferred
+H-041,H-042,hk_viesti_vastine,"HK KILPBUFSIZE 10000 (Hk/HkDef.h:45-58) vs relay KILPRECSIZE buffer (Juk/vdat.cpp:145,:153,:181); Q31 asks for 250-build analogue",inferred
+H-106,H-018,hk_viesti_vastine,"H-106 row: HK writes only flags, ViestiWin writes TEdit from threads (cbHk/UnitStatus.cpp:586-596 vs ViestiWin/UnitStatus.cpp:532-535)",verified
+H-161,H-160,seuraus,H-160 row lists H-161 invalid statements as trigger of SQL exception termination; riippuvuudet.md 19.3.1,verified
+H-161,H-169,seuraus,riippuvuudet.md 19.3.2: stale mirror after H-160/H-161 makes lue_SQL import destructive,verified
+H-160,H-169,seuraus,riippuvuudet.md 19.3.2: mirror incomplete after writer crash makes import destructive,verified
+H-165,H-163,seuraus,riippuvuudet.md 19.3: missing DLLs in release ZIP make H-163 start-up failure likely,verified
+H-031,H-094,seuraus,H-031 row C-6: every badge creates/destroys etls queue and exposes H-094 race; Hk/HkIV.cpp:796,verified
+H-128,H-129,seuraus,H-129 row: deletions and renumbers (H-128) lower the overflow threshold,verified
+H-134,H-105,seuraus,H-105 row: cards written to closed handle after the H-134 branch; Hk/HkIx.cpp:1907-1941,verified
+H-016,H-039,seuraus,no version/origin lets old state win via another route (H-039 Hk/HkCom32.cpp:186-189),inferred
+H-016,H-030,seuraus,no version lets resend of old snapshots undo newer changes (Tp/TpComY.cpp:1111-1167),inferred
+H-016,H-007,seuraus,H-007 row: local change reverted and propagated to peers; no versioning in Hk/HkCom32.cpp:195-233,inferred
+H-018,H-107,seuraus,viittaukset H-018->H-107; H-107 GUI hooks run on reader/pros_bdg_t threads (cbHk/UnitEmit.cpp:966-970),verified
+H-050,H-025,seuraus,viewer sets global combufsize (cbHk/UnitComfile.cpp:145-176) used by queue code (Tp/TpComY.cpp:509),inferred
+H-155,H-027,seuraus,viittaukset H-155->H-027; both openportTCP failure paths com/WinUDP.cpp:266-293 vs :812-817,inferred
+H-029,H-071,seuraus,no authentication lets any datagram reach the unvalidated handler (muistiturvallisuus.md luku 15),inferred
+H-029,H-072,seuraus,no authentication lets any datagram reach EXTRA handler (muistiturvallisuus.md luku 15),inferred
+T-020,H-063,seuraus,fclose(NULL) aborts because no invalid-parameter handler; C-12 C3 = H-063 (ominaisuusvalitsimet.md:485),verified
+T-020,H-078,seuraus,H-078 row: abort because _set_invalid_parameter_handler absent; tputilv2/TextFileClass.cpp:166,verified
+T-020,H-105,seuraus,H-105 row: MSVC invalid-parameter abort on stale handle,verified
+T-020,H-059,seuraus,H-059 row: fclose(NULL) ends MSVC program; Hk/HkAjat.cpp:463-471,verified
+T-001,T-002,seuraus,core includes GUI headers (Hk/HkDeclare.h:23-28) create the cycles of T-002,inferred
+T-050,H-172,seuraus,"viittaukset T-050->H-172; undefined XML macro, JukConsole/VConTul.cpp:1283-1324",verified
+T-050,H-177,seuraus,"viittaukset T-050->H-177; SEURATUL local define, HkConsole/HkCons3.cpp:40-42",verified
+T-008,H-081,seuraus,H-081 is an instance of console vs GUI switch difference (_BORLAND_ block Hk/HkIV.cpp:1663-1673),inferred
+T-021,H-003,seuraus,"T-021: bcc32 does not check format strings, so GUI-file printf errors stay unseen (same class as H-003)",inferred
+T-019,H-148,seuraus,no header length/checksum lets N+1 header vs N length mismatch pass undetected (Juk/vdat.cpp:178-191),inferred
+T-003,H-144,seuraus,"global state without common lock (about 850 externs, Hk/HkDeclare.h) underlies static buffers of H-144",inferred
+T-003,H-051,seuraus,shared static tarecbuf is one of the globals of T-003 (dbboxm/dbbox1.cpp:20),inferred
+T-022,H-032,korjaus_ratkaisee,T-022 row: common root cause listing H-032,verified
+T-022,H-055,korjaus_ratkaisee,T-022 row: common root cause listing H-055,verified
+T-022,H-060,korjaus_ratkaisee,T-022 row: common root cause listing H-060,verified
+T-022,H-061,korjaus_ratkaisee,T-022 row: common root cause listing H-061,verified
+T-022,H-070,korjaus_ratkaisee,T-022 row: common root cause listing H-070,verified
+T-022,H-071,korjaus_ratkaisee,T-022 row: common root cause listing H-071,verified
+T-022,H-072,korjaus_ratkaisee,T-022 row: common root cause listing H-072,verified
+T-022,H-029,korjaus_ratkaisee,"T-022 row: no authentication / keyed integrity (H-029); fix is a protocol decision, see owner list",verified
+T-038,H-131,korjaus_ratkaisee,T-038 row lists H-131,verified
+T-038,H-132,korjaus_ratkaisee,T-038 row lists H-132,verified
+T-038,H-133,korjaus_ratkaisee,T-038 row lists H-133,verified
+T-038,H-141,korjaus_ratkaisee,T-038 row lists H-141,verified
+T-038,H-143,korjaus_ratkaisee,T-038 row lists H-143,verified
+T-038,H-134,korjaus_ratkaisee,H-134 row links T-038 (stage-change state),verified
+T-039,H-128,korjaus_ratkaisee,T-039 row lists H-128,verified
+T-039,H-130,korjaus_ratkaisee,T-039 row lists H-130,verified
+T-039,H-135,korjaus_ratkaisee,T-039 row lists H-135,verified
+T-039,H-139,korjaus_ratkaisee,T-039 row lists H-139,verified
+T-039,H-140,korjaus_ratkaisee,T-039 row lists H-140,verified
+T-039,H-129,korjaus_ratkaisee,idindex nrec not reset is a derived-structure invariant (Hk/HkIx.cpp:1573-1610); H-129 row refs T-039 via H-134,inferred
+T-039,H-142,korjaus_ratkaisee,"H-142 roll-up of derived-structure defects (nameindex, ntulosix)",inferred
+T-040,H-015,korjaus_ratkaisee,T-040 row lists H-015; KK-C9-2,verified
+T-040,H-145,korjaus_ratkaisee,T-040 row lists H-145; KK-C9-2,verified
+T-040,H-146,korjaus_ratkaisee,T-040 row lists H-146; KK-C9-2,verified
+T-040,H-153,korjaus_ratkaisee,T-040 row lists H-153; KK-C9-2,verified
+T-040,H-147,korjaus_ratkaisee,viittaukset H-147->T-040; KK-C9-2,verified
+T-040,H-148,korjaus_ratkaisee,viittaukset H-148->T-040; KK-C9-2,verified
+T-040,H-156,korjaus_ratkaisee,viittaukset H-156->T-040; KK-C9-2,verified
+T-041,H-147,korjaus_ratkaisee,T-041 row lists H-147,verified
+T-041,H-156,korjaus_ratkaisee,T-041 row lists H-156,verified
+T-041,H-015,korjaus_ratkaisee,T-041 row lists H-015,verified
+T-041,H-146,korjaus_ratkaisee,viittaukset H-146->T-041,verified
+T-042,H-149,korjaus_ratkaisee,T-042 row lists H-149; KK-C9-1,verified
+T-042,H-151,korjaus_ratkaisee,T-042 row lists H-151; KK-C9-1,verified
+T-042,H-152,korjaus_ratkaisee,T-042 row lists H-152; KK-C9-1,verified
+T-042,H-158,korjaus_ratkaisee,H-158 row: KK-C9-1 root cause T-042 (lstf dangling part),verified
+T-035,H-109,korjaus_ratkaisee,T-035 row lists H-109 (relay record without constructor),verified
+T-035,H-112,korjaus_ratkaisee,T-035 row lists H-112,verified
+T-036,H-115,korjaus_ratkaisee,T-036 row lists H-115,verified
+T-036,H-125,korjaus_ratkaisee,T-036 row lists H-125,verified
+T-037,H-113,korjaus_ratkaisee,T-037 row lists H-113,verified
+T-037,H-114,korjaus_ratkaisee,T-037 row lists H-114,verified
+T-030,H-038,korjaus_ratkaisee,H-038 row refs T-030; T-030 row refs H-038,verified
+T-030,H-095,korjaus_ratkaisee,"H-038 row: remaining writer is comajanotto (H-095, T-030)",verified
+T-030,H-104,korjaus_ratkaisee,flag-plus-sleep shutdown lifecycle; Hk/HkInit.cpp:3720-3742,inferred
+T-030,H-167,korjaus_ratkaisee,shutdown waits by flag and Sleep (Hk/HkInit.cpp:3781-3804),inferred
+T-032,H-009,korjaus_ratkaisee,T-032 row: H-009 pattern; H-009 row cbTp/cbTpApu.cpp:467-490,verified
+T-032,H-153,korjaus_ratkaisee,viittaukset H-153->T-032,verified
+T-032,H-162,korjaus_ratkaisee,T-032 cbHk/UnitExport.cpp:426-450 inside H-162 :420-450,verified
+T-032,H-021,korjaus_ratkaisee,"queue-full dialog under outb/tall locks (Tp/TpComY.cpp:519-545; T-032 :1133,:1471)",inferred
+T-033,H-018,korjaus_ratkaisee,viittaukset H-018->T-033,verified
+T-033,H-101,korjaus_ratkaisee,H-101 VCL handler on worker thread (H-018 family),inferred
+T-044,T-005,korjaus_ratkaisee,viittaukset T-044->T-005; KK-C10-3,verified
+T-044,H-165,korjaus_ratkaisee,collector/packaging not verified (T-044) is the cause of H-165; KK-C10-3,verified
+T-048,H-164,korjaus_ratkaisee,viittaukset T-048->H-164; KK-C10-2,verified
+T-048,H-170,korjaus_ratkaisee,H-170 item N-11 comajanotto spins if port lost = liveness gap,inferred
+T-051,H-173,korjaus_ratkaisee,viittaukset T-051->H-173; KK-C12-2,verified
+T-051,H-176,korjaus_ratkaisee,H-176 settings parts in KK-C12-2 with T-051,verified
+T-052,H-176,korjaus_ratkaisee,viittaukset T-052->H-176; ViestiLuenta key selects ALGE,verified
+T-027,H-005,korjaus_ratkaisee,BOM-less files read with host ANSI code page (T-027) is the mechanism of H-005; Tp/TpLaitteet.cpp:1548,inferred
+T-016,T-023,sama_koodikohta,both cite include/tputil.h:27-29 (-K -a1 without restore); viittaukset T-023->T-016,verified
+T-043,H-166,korjattava_yhdessa,both in KK-C10-4 (riippuvuudet.md 19.4),verified
+T-043,H-161,korjattava_yhdessa,KK-C10-4 includes H-161 injection risk (Q105); KK-C10-1 includes T-043 identifiers,verified
+T-011,T-049,korjattava_yhdessa,"T-049 row: relates to T-011; same dead-code owner decision (Q11, Q111)",verified
+T-011,T-012,korjattava_yhdessa,T-012 dead SIIMPORT code lives in Tp/TpComY.cpp; T-011 is the old copy Tp/TpComY32.cpp (Q11),inferred
+T-017,T-051,sama_vika,T-051 row lists ViestiLuenta same-name configurations with shipped sizes = T-017 identical defines (VS/V/JukLuenta520.vcxproj:95-152),inferred
+H-129,H-134,korjattava_yhdessa,"H-134 row and ominaisuusvalitsimet.md 13.3: fixed in the stage-change whole together with H-129; Hk/HkIx.cpp:1600-1610,:1907-1941",verified
+H-129,H-102,korjattava_yhdessa,same line Hk/HkIx.cpp:1610; one teejarj(true) change touches both,verified
+H-129,H-128,korjattava_yhdessa,dbindex.cpp:51-135 setpos fix and nrec reset change the same index rows (H-129 row),verified
+H-129,H-133,korjattava_yhdessa,"initindex/teejarj nrec reset pattern in both (Hk/HkIx.cpp:101-107,:1573-1610)",verified
+H-134,H-131,korjattava_yhdessa,H-134 row links H-131..H-133 in one stage-change package,verified
+H-134,H-132,korjattava_yhdessa,H-134 row links H-132 (aikaflname) with H-133,verified
+H-134,H-133,korjattava_yhdessa,H-134 row links H-133,verified
+H-091,H-092,korjattava_yhdessa,H-092 row: tall->emit third edge closes chain print->tall->emit->print with H-091; one lock hierarchy,verified
+H-092,H-103,korjattava_yhdessa,"both are emit-lock ordering in relay (Juk/VEmit.cpp:1409,:1510,:1524)",inferred
+H-093,H-091,korjattava_yhdessa,"same lock-ordering policy (loki, tcpip, print, tall)",inferred
+H-160,H-161,korjattava_yhdessa,riippuvuudet.md 19.3: H-161 fixed with H-160 (KK-C10-1),verified
+H-160,H-162,korjattava_yhdessa,"KK-C10-1: exceptions caught in writer thread and export, lock released on all paths",verified
+H-160,H-163,korjattava_yhdessa,KK-C10-1,verified
+H-160,H-169,korjattava_yhdessa,KK-C10-1,verified
+H-160,H-014,korjattava_yhdessa,KK-C10-1 dependency H-014 (riippuvuudet.md 19.4),verified
+H-160,H-043,korjattava_yhdessa,KK-C10-1 dependency H-043; cbHk/UnitMySQL.cpp:663-719,verified
+H-160,H-100,korjattava_yhdessa,KK-C10-1 dependency H-100; cbHk/UnitMySQL.cpp:739-752,verified
+H-159,H-164,korjattava_yhdessa,KK-C10-2 device connection layer,verified
+H-164,T-048,korjattava_yhdessa,KK-C10-2,verified
+H-138,H-108,korjattava_yhdessa,H-138 row: compare H-108 (shared static thread argument/counter); KK-C10-2 reader threads,verified
+H-159,H-138,korjattava_yhdessa,reconnect logic Tp/TpLaitteet.cpp:1785-1847 and :2155-2188 (reader reopen),inferred
+H-149,H-150,korjattava_yhdessa,ominaisuusvalitsimet.md 13.3 KK-C12-1 groups both; also KK-C9-1/-3,verified
+H-149,H-172,korjattava_yhdessa,KK-C12-1 XML/HTML/auto files package,verified
+H-034,H-168,korjattava_yhdessa,duplicate-card prevention (Hk/HkEmit.cpp:1627-1666 vs Hk/HkIV.cpp:940-952),inferred
+H-141,H-168,korjattava_yhdessa,"duplicate-card prevention state (nemitvar, samatleimat)",inferred
+H-025,H-050,korjattava_yhdessa,combufsize stride/header: Tp/TpComY.cpp:509 and cbHk/UnitComfile.cpp:145-176,inferred
+H-011,H-137,korjattava_yhdessa,"emit-file/index lock policy (emit_CS) in Hk/HkEmit.cpp:1579,:1600-1688",inferred
+H-078,H-079,korjattava_yhdessa,one TextFl::Open mode-string change (tputilv2/TextFileClass.cpp:347-359),verified
+H-036,H-171,korjattava_yhdessa,"KK-C12-2 settings parsers (Juk/VInit.cpp:1139,:74-78,:652)",verified
+H-171,H-173,korjattava_yhdessa,KK-C12-2,verified
+H-065,H-002,korjattava_yhdessa,both parse relay class files Juk/vSarjat.cpp:247-285 and :377-400,inferred
+H-008,H-110,ristiriita,"same mechanism (lock left held blocks worker threads): H-110 korkea P2, H-008 korkea reproduced in harness but no priority",verified
+H-024,H-110,ristiriita,"same mechanism, H-024 korkea reproduced, no priority; H-110 P2",verified
+H-040,H-087,ristiriita,"relay lock never released: H-087 korkea P2, H-040 korkea reproduced, no priority",verified
+H-014,H-160,ristiriita,"SQL writer failure: H-160 korkea P2, H-014 korkea (SQL use) no priority",verified
+H-015,H-145,ristiriita,"write error ignored: H-145 P3, H-015 (KK-C9-2) no priority",verified
+H-044,H-145,ristiriita,"ack/advance before persistence: H-145 P3, H-044 no priority and not a KK-C9-2 member (only ""liittyy"")",verified
+H-061,H-032,ristiriita,"same mechanism: H-032 korkea P1, H-061 keskitaso P1; severity text vs priority",verified
+H-029,H-071,ristiriita,"no-authentication root (T-022) with network reach: H-071 P1, H-029 keskitaso no priority",inferred
+H-055,H-032,ristiriita,"""urgent fix"" list names H-055/H-070 (P2) but not H-032/H-061 (P1); two axes disagree (muistiturvallisuus.md luku 15)",verified
+H-134,H-129,ristiriita,"""fix together"" yet H-134 P3 (C-12) vs H-129 P2 (provisional, C-8)",verified
+H-170,H-164,ristiriita,"same item (vanished port): H-164 P3, inside roll-up H-170 P5",inferred
+H-156,H-071,ristiriita,"same FILESEND partial-file item: H-071 P1, inside roll-up H-156 P5",verified

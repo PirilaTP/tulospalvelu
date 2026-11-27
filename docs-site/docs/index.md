@@ -33,6 +33,20 @@ Jos olet uusi käyttäjä:
 4. **[PDF-manuaalit](pdf-manuaalit.md)** — HkMaali, Emit-leimantarkastus ja
    TCP-tuki erillisinä PDF-tiedostoina
 
+## Kehittäjille ja ohjelmiston laatu
+
+- **[Kehittäjille](kehittajat/index.md)** — aloitusohje, kehitysympäristö,
+  arkkitehtuuri, toiminnallinen käsikirja, tiedostomuodot, tiedonsiirto,
+  laitteet, asetukset ja tekoälyavusteinen kehitys
+- **[Ohjelmiston laatu](laatu/index.md)** — ohjelmiston auditointi: tunnetut
+  ongelmat, vikakortit, kattavuus, juurisyyt, korjaussuunnitelma ja
+  [interaktiivinen tietopohjaportaali](laatu/portaali.md)
+
+Nämä osiot kuvaavat ohjelmaa sen lähdekoodin perusteella. Ne eivät muuta
+alla olevia käyttöohjeita; joillakin käyttöohjesivuilla on lopussa erikseen
+merkitty tietolaatikko, joka linkittää aiheen tekniseen kuvaukseen ja tunnettuihin
+ongelmiin.
+
 ## Huomioita dokumentaatiosta
 
 - Ohjeet on tuotu automaattisella muunnoksella alkuperäiseltä HTML-sivustolta.

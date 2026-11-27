@@ -1,0 +1,66 @@
+{
+  "run_json": "C:\\Users\\KAYTTA~1\\AppData\\Local\\Temp\\claude\\a25cf22582434270\\d69a576d-8644-421c-aa92-2fbac90dcaa8\\scratchpad\\bb\\fwrun0\\run.json",
+  "fw_exe": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+  "log_copy": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\fwlog\\pfirewall_copy.log",
+  "log_copy_sha256": "d6c358cf0c46ae7cd5d97f9efbbcd2dcf27ffba0ef6a13ed94b5d5caf6b85976",
+  "drop_entries_total": 6,
+  "rules": [
+    {
+      "Name": "TP C11 HkMaali block in",
+      "Enabled": "True",
+      "Action": "Block",
+      "Direction": "Inbound",
+      "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+      "Profile": "Any"
+    },
+    {
+      "Name": "TP C11 HkMaali block out",
+      "Enabled": "True",
+      "Action": "Block",
+      "Direction": "Outbound",
+      "Program": "C:\\Users\\kayttaja\\AppData\\Local\\tulospalvelu-c11\\hkmaali-fw\\HkMaali.exe",
+      "Profile": "Any"
+    }
+  ],
+  "log": {
+    "expected": {
+      "TCP": {
+        "time_local": "2026-11-24T21:10:30+02:00",
+        "dst_port": "43519",
+        "src_port": "57086"
+      },
+      "UDP": {
+        "time_local": "2026-11-24T21:10:30+02:00",
+        "dst_port": "48663",
+        "src_port": "52597"
+      }
+    },
+    "log_fields": [
+      "date",
+      "time",
+      "action",
+      "protocol",
+      "src-ip",
+      "dst-ip",
+      "src-port",
+      "dst-port",
+      "size",
+      "tcpflags",
+      "tcpsyn",
+      "tcpack",
+      "tcpwin",
+      "icmptype",
+      "icmpcode",
+      "info",
+      "path",
+      "pid"
+    ],
+    "matched_lines": {
+      "TCP": "2026-11-24 21:10:30 DROP TCP 192.168.2.199 192.0.2.1 57086 43519 0 - 0 0 0 - - - SEND 70264",
+      "UDP": "2026-11-24 21:10:30 DROP UDP 192.168.2.199 192.0.2.1 52597 48663 0 - - - - - - - SEND 70264"
+    }
+  },
+  "ok": true,
+  "verified_epoch": 1795547572.1928363,
+  "verified": "2026-11-24T21:12:52"
+}
