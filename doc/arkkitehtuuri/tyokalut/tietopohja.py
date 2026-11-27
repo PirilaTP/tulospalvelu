@@ -415,10 +415,8 @@ def cmd_tarkista(data):
                 errors.append("%s: line reference in authored text: %s" % (i, line.strip()[:90]))
             if PRIO.search(line):
                 errors.append("%s: priority in authored text (only in the generated block): %s" % (i, line.strip()[:90]))
-            if re.search(r"(ei kerro|ei tiedetä|ei tiedossa|ei ole tietoa|ei arvioi)[^.]*kuinka", line, re.I) or \n                    re.match(r"\s*-?\s*kuinka (usein|harvoin)", line, re.I):
-                freq_ok = True
-            else:
-                freq_ok = False
+            freq_ok = bool(re.search(r"(ei kerro|ei tiedetä|ei tiedossa|ei ole tietoa|ei arvioi)[^.]*\bkuinka", line, re.I)
+                           or re.match(r"\s*-?\s*kuinka (usein|harvoin)", line, re.I))
             for w in ([] if freq_ok else FREQ_WORDS.findall(line)):
                 warnings.append("%s: frequency word '%s' - needs a source: %s" % (i, w, line.strip()[:80]))
             for x in ID_ANY.findall(line):
