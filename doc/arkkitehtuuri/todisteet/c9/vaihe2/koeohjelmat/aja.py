@@ -9,6 +9,7 @@ exit code, duration and the TP lines, and (optionally) the full output of
 each case, including ASan reports. A timeout or a crash is recorded, never
 interpreted.
 """
+import hashlib
 import os
 import re
 import secrets
@@ -17,6 +18,18 @@ import subprocess
 import sys
 import tempfile
 import time
+
+
+RAW_ID = re.compile(r'^(.*?_C9_(?:H-\d{3}[a-z]?|Q\d+|N\d+|T-\d{3}))_')
+
+
+def raw_name(long_name):
+    """Short raw file name: prefix up to the finding id + 8 hex chars of sha1 of the long
+    name (renamed 2026-11-27: the long names exceeded Windows MAX_PATH on the CI runner;
+    the mapping is in raw/NIMET.csv)."""
+    m = RAW_ID.match(long_name[:-4])
+    pre = m.group(1) if m else long_name[:-4][:40]
+    return '%s_%s.txt' % (pre, hashlib.sha1(long_name.encode()).hexdigest()[:8])
 
 
 def load_cases(here):
@@ -64,9 +77,11 @@ def main():
                  or 'ERROR' in l or 'FAILED' in l or l.startswith('SUMMARY: AddressSanitizer')]
         out.append('=== %s | %s | %s | %s | %.1f s\n%s\n' % (bld, prog, case, status, dt, '\n'.join(lines)))
         if rawdir:
-            fn = re.sub(r'[^A-Za-z0-9_-]+', '_', '%s_%s_%s' % (bld, prog, case))[:120] + '.txt'
+            fn = raw_name(re.sub(r'[^A-Za-z0-9_-]+', '_', '%s_%s_%s' % (bld, prog, case))[:120] + '.txt')
             with open(os.path.join(rawdir, fn), 'w', encoding='utf-8', newline='\n') as f:
                 f.write(text)
+            with open(os.path.join(rawdir, 'NIMET.csv'), 'a', encoding='utf-8', newline='\n') as f:
+                f.write('%s,%s\n' % (fn, '%s_%s_%s' % (bld, prog, case)))
         shutil.rmtree(sandbox, ignore_errors=True)
         print(out[-1], flush=True)
     with open(outfile, 'w', encoding='utf-8', newline='\n') as f:

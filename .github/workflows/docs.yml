@@ -58,6 +58,12 @@ jobs:
           cache-dependency-path: docs-site/requirements.lock
       - name: Install MkDocs
         run: pip install -r docs-site/requirements.lock
+      - name: Repository paths fit Windows MAX_PATH on the self-hosted runner
+        # the GUI build job extracts the repository under a ~120-character directory;
+        # a longer repository path makes actions/checkout fail there
+        run: |
+          long=$(git ls-files | awk 'length($0) > 135')
+          if [ -n "$long" ]; then echo "paths longer than 135 characters:"; echo "$long"; exit 1; fi
       - name: Validate the canonical knowledge base
         run: |
           python -I doc/arkkitehtuuri/tyokalut/tarkista_auditointi.py .
