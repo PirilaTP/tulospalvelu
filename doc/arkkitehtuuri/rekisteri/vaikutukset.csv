@@ -8,7 +8,7 @@ H-001,lukkiutuminen,ei_tiedossa,Aineisto ei kerro lukkiutumisesta tässä poluss
 H-001,hiljainen_hairio,mahdollinen,"Ilman ASania ylikirjoitus voi tapahtua ilman ilmoitusta; kääntäjä varoittaa vain käännösvaiheessa, ja bcc32:ssa ei ole pinosuojaa (päätelty).",muistiturvallisuus.md luku 6; testaus.md luku 15.3
 H-001,tiedonsiirto,ei_tiedossa,Aineisto ei kerro vaikutusta tiedonsiirtoon tai muihin työasemiin.,
 H-001,laitteet,ei_tiedossa,Tulostuskohde voi olla tulostin; aineisto ei arvioi vaikutusta tulostimen toimintaan.,
-H-001,julkaisu,ei_tiedossa,"Aineisto ei kerro, miten nollaus vaikuttaa tulosteen sisältöön.",
+H-001,julkaisu,ei_tiedossa,"Ohjelma kokoaa ampumasakot apumuuttujaan, mutta nykyinen rivi ei tulosta niitä [luettu koodista]; tulosteen sisältö voi muuttua vain viereisen muistin vioittuessa. Siirretty H-001-kortin editorille (Q3 kohta 3).",Juk/VTulostus.cpp:2233; Juk/VTulostus.cpp:3987-3995
 H-001,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole; kirjoitettava sisältö on nollatavuja ja laukaisija on tulostusasetus.,riskiarvio.csv H-001
 H-001,normaalikaytto,ei_perusteltu,Vaatii ampumahiihtoviestin asetuksen (osuudella ampumapaikkoja); riskiarvio: asetus.,riskiarvio.csv H-001; havainnot.md H-001
 H-001,poikkeustilanne,mahdollinen,"Vaatii erityisasetuksen (ampumapaikat osuudella); testikehys toisti ylikirjoituksen suoralla funktiokutsulla, julkinen polku on avoin (Q38).",testaus.md luku 15.3; havainnot.md H-001
@@ -122,8 +122,8 @@ H-008,tiedonsiirto,mahdollinen,Laukaisija voi olla toiselta asemalta tuleva ohja
 H-008,laitteet,mahdollinen,"Laukaisija on ampumalaitteen virheellinen sanoma, ja lukko estää työsäikeet, joihin laitteiden käsittely kuuluu (riskiarvio); laitteen oman toiminnan häiriötä ei ole osoitettu.",riskiarvio.csv H-008; Tp/TpLaitteet.cpp:1670
 H-008,julkaisu,ei_tiedossa,"Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai julkaisuun.",
 H-008,tietoturva,mahdollinen,"Riskiarvio: tietoturva verkko. Verkossa oleva laite voi lähettää ohjaussanoman, joka päätyy samaan käsittelyyn, kun asetus on käytössä.",riskiarvio.csv H-008
-H-008,normaalikaytto,ei_perusteltu,"Käsittely suoritetaan vain, kun ampumalaitteen asetus on 0 (oletus 2), ja vika vaatii lisäksi virheellisen sanoman tai sarjan ilman ampumapaikkoja.",riskiarvio.csv H-008; Hk/HkGlobals.cpp:461
-H-008,poikkeustilanne,vahvistettu,"Testikehyksessä virheellinen sanoma sarjalle, jonka paikkamäärä on 0, jätti lukon päälle.",testaus.md luku 14 (H-008)
+H-008,normaalikaytto,ei_perusteltu,"Laitepolku: sanoma tyyppiä 5 kutsuu tall_sak-funktiota myös oletusasetuksella (sak_laji = 2), kun r_no != 999; verkkopolku laukaisee vian vain asetuksella 0. Vika vaatii silti ampumapaikalle merkityn kilpailijan sarjasta, jolla ei ole ampumapaikkoja (väärän sarjan syöte); riskiarvion saavutettavuus ja peruste tarkistetaan (seuranta.md KE-taulukko).",Hk/HkSak.cpp:59-106; Hk/HkSak.cpp:153-196; tallenna-samanaikaisuus.md:185; Tp/TpLaitteet.cpp:1669-1670
+H-008,poikkeustilanne,vahvistettu,"Testikehyksessä virheellinen sanoma sarjalle, jonka paikkamäärä on 0, jätti lukon päälle; testi kutsui käsittelijää suoraan asetuksella 0, laitepolkua oletusasetuksella ei ajettu.",testaus.md luku 14 (H-008); Tests/core/HkLockTests.cpp:17-41
 H-008,havaittavuus,mahdollinen,Kokeessa virhe annettiin ilmoituksena; ilmoituksen näkymistä oikeassa ohjelmassa ei ole osoitettu.,testaus.md luku 14 (H-008)
 H-008,kiertotapa,mahdollinen,"Luvun 15 suositukset (suljettu ajanottoverkko, palomuurin sallittujen lista) on kirjattu havainnoille H-032, H-061 ja H-072; testaamattomia eivätkä ne koske laitteen omaa virheellistä sanomaa.",muistiturvallisuus.md luku 15
 H-008,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; keinoa ei ole kokeiltu.,riskiarvio.csv H-008
@@ -202,13 +202,13 @@ H-013,tiedonsiirto,ei_tiedossa,"Korjaussuunnitelma toteaa, että korjattu silmuk
 H-013,laitteet,ei_tiedossa,"Aineisto ei käsittele vaikutusta lukijoihin, kelloihin, tauluihin tai tulostimiin.",H-013
 H-013,julkaisu,ei_tiedossa,"Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai tulospalveluun.",H-013
 H-013,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole; vika on silmukan rakenne eikä käsittele ulkopuolista syötettä.,H-013; riskiarvio.csv (tietoturva: ei)
-H-013,normaalikaytto,ei_perusteltu,Vika vaatii pistelaskenta-asetuksen (yhteispisteet tai vaiheen pistekaava); ilman sitä silmukkaa ei ajeta.,H-013; riskiarvio.csv (saavutettavuus: asetus); Hk/HkIx.cpp:1822-1838
-H-013,poikkeustilanne,ei_tiedossa,"Vika vaatii asetuksen eikä virhettä; aineisto ei kerro, onko pistelaskenta-asetus harvinainen.",H-013; riskiarvio.csv (saavutettavuus: asetus)
+H-013,normaalikaytto,ei_tiedossa,"Vika vaatii pistelaskenta-asetuksen (yhteispisteet tai vaiheen pistekaava); aineisto ei kerro, onko pistelaskenta erityisasetus vai tavallinen kilpailuasetus. Tallennus tehdään vain, jos tietue 1 on voimassa ja sen sarjassa on pistelaskenta.",H-013; riskiarvio.csv (saavutettavuus: asetus); Hk/HkIx.cpp:1822-1840
+H-013,poikkeustilanne,mahdollinen,"Pistelaskenta-asetus on harvinaisena asetuksena poikkeustilanne, jos se ei ole tavallinen; silmukka ajetaan myös käynnistyksessä (teejarj(false)) [luettu koodista]. Ei ajettu.",H-013; riskiarvio.csv (saavutettavuus: asetus); Hk/HkIx.cpp:1825-1840; Hk/HkInit.cpp:3582
 H-013,havaittavuus,ei_tiedossa,Aineisto ei kuvaa näkyvää oiretta.,H-013
 H-013,kiertotapa,ei_tiedossa,"Aineistossa ei ole kirjattua keinoa; OP-6:n uudelleenkäynnistysvaihtoehto on avoin päätös, ei keino.",H-013; omistajan-paatokset.md OP-6
 H-013,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi käsin; keinon sisältöä ei ole kuvattu eikä kokeiltu.,H-013; riskiarvio.csv (palautettavuus: kasin)
 H-014,tulokset,mahdollinen,"Riskiarvio: epäsuora. Peilin varassa oleva ulkopuolinen käyttäjä, kuten tulosnäyttö, saisi vanhentunutta tietoa; ohjelman omat tulokset (KILP.DAT) eivät muutu. Päätelty koodista, ei ajettu.",riskiarvio.csv H-014; riippuvuudet.md 19.3.1
-H-014,ajanotto,ei_tiedossa,"Riskiarvio kirjaa ajanoton jatkuvuudeksi häiritsee, mutta aineisto ei kuvaa, miten peilin kirjoitussäikeen pysähtyminen häiritsisi ajanottoa; peili on KILP.DAT:n rinnalla oleva kopio.",riskiarvio.csv H-014 (ajanoton_jatkuvuus: hairitsee)
+H-014,ajanotto,ei_tiedossa,"Riskiarvio kirjaa ajanoton jatkuvuudeksi häiritsee, mutta aineisto ei kuvaa, miten peilin kirjoitussäikeen pysähtyminen häiritsisi ajanottoa; peili on KILP.DAT:n rinnalla oleva kopio. Mahdollinen häiriö tulisi H-160:n (kirjoitussäikeen päättyminen tietokantavirheeseen) kautta, ei tämän vian omasta mekanismista.",riskiarvio.csv H-014 (ajanoton_jatkuvuus: hairitsee); kortti H-160
 H-014,leimaukset,ei_perusteltu,Vika koskee vain SQL-peilin kirjoitusta; KILP.DAT:n tallennus ja leimausten vastaanotto eivät kulje peilin kautta (riskiarvion peruste: master data stay intact).,riskiarvio.csv H-014 (peruste); riippuvuudet.md luku 11
 H-014,tietojen_sailyminen,mahdollinen,"Peiliin eivät päädy vaiheen vaihdon jälkeiset muutokset eikä poistot; täysi jono ylikirjoittaa vanhimman. KILP.DAT säilyy ehjänä. Luettu koodista, ei ajettu.",tallenna-samanaikaisuus.md (H-014); riskiarvio.csv H-014
 H-014,kaatuminen,mahdollinen,"Kirjoituskutsuilla ei ole poikkeuskäsittelyä, ja poikkeus kirjoitussäikeessä lopettaa ohjelman (H-160; RTL-lähteestä luettu, ei ajettu).",havainnot.md H-014; H-160
@@ -222,7 +222,7 @@ H-014,normaalikaytto,ei_tiedossa,"Riskiarvio: asetus. Vika edellyttää valinnai
 H-014,poikkeustilanne,mahdollinen,Laukeaa valinnaisella asetuksella ja vaiheen vaihdolla; vaiheen vaihdon tuettu käyttö on avoin (OP-6). Luettu koodista.,havainnot.md H-014; omistajan-paatokset.md OP-6
 H-014,havaittavuus,ei_tiedossa,Ohjelma ei ilmoita pysähtymisestä (luettu koodista); käyttäjä voisi huomata sen vain tarkastamalla tietokannan tai jonon pituuskentän. Aineisto ei ratkaise.,havainnot.md H-014
 H-014,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: jatkuvan kirjoituksen jättäminen pois, koska säie käynnistyy vain siitä (luettu koodista); tehoa ei ole kokeiltu.",havainnot.md H-014; kortti H-014 luku 9
-H-014,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi käsin; ohjelman uudelleenkäynnistys käynnistää säikeen uudelleen (päätelty) ja vienti valinta 3 kirjoittaa kilpailijat uudelleen; keinoja ei ole kokeiltu.,riskiarvio.csv H-014 (palautettavuus: kasin); kortti H-014 luku 8
+H-014,palautuminen,mahdollinen,"Riskiarvio kirjaa palautettavuudeksi käsin; ohjelman uudelleenkäynnistys käynnistää säikeen uudelleen (päätelty), ja vienti (valinta 3) kirjoittaa kilpailijat uudelleen vasta uudelleenkäynnistyksen jälkeen tai kun jatkuva kirjoitus on pois päältä, koska jatkuvan kirjoituksen ollessa päällä vienti vain lisää jonoon eikä kirjoitussäie ole käynnissä (päätelty); keinoja ei ole kokeiltu.",riskiarvio.csv H-014 (palautettavuus: kasin); kortti H-014 luku 8; cbHk/UnitExport.cpp:435-440; cbHk/UnitMySQL.cpp:751
 H-015,tulokset,mahdollinen,"Riskiarvio: epäsuora. Uudelleenkäynnistyksen jälkeen aseman levyltä ladataan vanha tietue, joten viimeisin muutos voi puuttua; muisti ja muut asemat ovat ajan tasalla. Luettu koodista, ei ajettu.",riskiarvio.csv H-015; todisteet/c9/osaB-pysyva-data.md 2.1
 H-015,ajanotto,mahdollinen,"Riskiarvio: häiritsee. Kysymysikkuna pysäyttää kirjoittavan säikeen kilpailutietolukon alla, jolloin lukkoa tarvitsevat työt voivat odottaa (päätelty); maaliaikojen kirjauksen pysähtymistä ei ole osoitettu.",riskiarvio.csv H-015; todisteet/c9/osaB-pysyva-data.md 2.1 kohta 2
 H-015,leimaukset,ei_tiedossa,Aineisto ei kuvaa leimausten vastaanoton epäonnistumista tämän vian seurauksena.,
@@ -249,7 +249,7 @@ H-016,hiljainen_hairio,mahdollinen,"Ohjelma ei ilmoita ristiinmenosta; tietuemä
 H-016,tiedonsiirto,mahdollinen,"Asemien tiedot eriytyvät, ja väärä tila voi levitä välityksen kautta kolmannelle asemalle (päätelty); Q21 avoin.",H-016; tiedonsiirto.md Reititys ja välitys
 H-016,laitteet,ei_sovellu,Vika koskee asemien välistä tietuereplikointia eikä laitteita.,H-016
 H-016,julkaisu,ei_tiedossa,"Aineisto ei käsittele, päätyykö väärä tila tulosteisiin tai julkaisuun.",H-016
-H-016,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole.,H-016; riskiarvio.csv (tietoturva: ei)
+H-016,tietoturva,ei_tiedossa,"Riskiarvio sanoo tietoturvasta ei, mutta perustetta ei ole kirjattu; vika koskee tietueiden replikointia asemien välillä, eikä protokollassa ole todennusta (H-029), joten aineisto ei sulje pois virheellisen sanoman vaikutusta.",H-016; riskiarvio.csv (tietoturva: ei); H-029
 H-016,normaalikaytto,ei_tiedossa,"Vika vaatii yhteyskatkon ja ristiin menevät muutokset, mutta riskiarvion saavutettavuus on normaalikaytto; ristiriita jää avoimeksi (kortin luku 12).",H-016; riskiarvio.csv (saavutettavuus: normaalikaytto)
 H-016,poikkeustilanne,mahdollinen,"Edellytyksenä on yhteyskatko, jonka aikana molemmat asemat muuttavat samaa sanomatyyppiä; luettu koodista, ei ajettu.",H-016; riskiarvio.csv (peruste); tiedonsiirto.md Löydökset
 H-016,havaittavuus,ei_tiedossa,"Ohjelma ei ilmoita ristiinmenosta; aineisto ei kerro, miten käyttäjä sen huomaa muutoin kuin asemien tietoja vertaamalla.",H-016; tiedonsiirto.md Johtopäätös
@@ -269,7 +269,7 @@ H-017,tietoturva,ei_perusteltu,"Riskiarvion mukaan tietoturvavaikutusta ei ole; 
 H-017,normaalikaytto,mahdollinen,"Ikkunan avaaminen ja tallennus ovat emit-lomakkeen tavallista käyttöä; vika vaatii, että ikkuna on auki, kun tietue muuttuu muualla. Ei ajettu.",riskiarvio.csv H-017 (saavutettavuus: operaattori); gui-liiketoimintalogiikka.md luku 6
 H-017,poikkeustilanne,ei_perusteltu,"Laukeaa ilman poikkeustilannetta: tavallinen toimenpide (ikkuna auki, tietue muuttuu) riittää, virhettä tai erityisasetusta ei tarvita.",H-017; gui-liiketoimintalogiikka.md luku 6
 H-017,havaittavuus,ei_tiedossa,Aineisto ei kuvaa ilmoitusta kumoamisesta; riskiarvion mukaan se tapahtuu hiljaa.,
-H-017,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: pidä Emit-muutokset-ikkuna auki vain korjauksen ajan; lyhentää kopion vanhenemisaikaa mutta ei poista riskiä. Varmuuskopiosuositus on kirjattu havainnolle H-071 (luku 15). Tehoa ei ole kokeiltu.",H-017 kortti luvut 3 ja 9; muistiturvallisuus.md luku 15
+H-017,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: pidä Emit-muutokset-ikkuna auki vain korjauksen ajan; lyhentää ikkunan aukioloaikaa mutta ei rajaa koko vanhenemisaikaa, koska kopio otetaan lomakkeen jo aiemmin lukemasta tietueesta ja voi olla vanha jo avattaessa [päätelty]; ei poista riskiä. Varmuuskopiosuositus on kirjattu havainnolle H-071 (luku 15). Tehoa ei ole kokeiltu.",H-017 kortti luvut 3 ja 9; cbHk/UnitEmit.cpp:2469; muistiturvallisuus.md luku 15
 H-017,palautuminen,mahdollinen,"Riskiarvion palautettavuus on ei_palautettavissa (ohjelman oma kyky); etukäteen otettu varmuuskopio (muistiturvallisuus.md luku 15, kirjattu havainnolle H-071) on kirjattu palautumiskeino, jonka tehoa tähän vikaan ei ole arvioitu.",riskiarvio.csv H-017; muistiturvallisuus.md luku 15
 H-018,tulokset,mahdollinen,Riskiarvion mukaan vaikutus tuloksiin on epäsuora; polkua ei ole osoitettu.,H-018; riskiarvio.csv (tulosten_oikeellisuus: epasuora)
 H-018,ajanotto,mahdollinen,"Riskiarvion mukaan ajanotto häiriintyy (ei pysähdy); päätelty, ei ajettu.",H-018; riskiarvio.csv (ajanoton_jatkuvuus: hairitsee)
@@ -315,7 +315,7 @@ H-020,laitteet,ei_sovellu,"Vika ei liity lukijoihin, kelloihin, tauluihin tai tu
 H-020,julkaisu,ei_sovellu,Funktio päivittää ikkunan ruudukkoa; ei tulosteita eikä tiedostoja.,cbHk/UnitASakot.cpp:255-273
 H-020,tietoturva,ei_perusteltu,Riskiarvio: tietoturva ei.,riskiarvio.csv H-020
 H-020,normaalikaytto,ei_tiedossa,"Riskiarvio: saavutettavuus tietyllä asetuksella tai kokoonpanolla; kumpi toteutus linkitetään ja ilmeneekö ero tavallisessa käytössä, ei ratkaistu (Q12).",riskiarvio.csv H-020; seuranta.md Q12
-H-020,poikkeustilanne,mahdollinen,"Riskiarvio: saavutettavuus asetus; kutsu tapahtuu vain, kun ampumasakkotieto muuttuu. Tarkempaa asetusta aineisto ei nimeä.",riskiarvio.csv H-020; Hk/HkDat.cpp:1250
+H-020,poikkeustilanne,mahdollinen,"Vika edellyttää ammuntaa sisältävää kilpailua (ampumasakkotiedon muutosta), joka on erityisasetus eikä oletus; lisäksi toisen ikkunan versio on jäätävä linkittämättä (Q12). Asetuksen yleisyyttä aineisto ei kerro.",riskiarvio.csv H-020; Hk/HkDat.cpp:1250; seuranta.md Q12
 H-020,havaittavuus,ei_tiedossa,"Aineisto ei kerro, huomaako käyttäjä päivittymättömän sakkoikkunan.",riskiarvio.csv H-020
 H-020,kiertotapa,ei_tiedossa,Ei tunnettua turvallista toimintaohjetta; aineisto ei kirjaa keinoa valita linkitettävää versiota.,riskiarvio.csv H-020
 H-020,palautuminen,ei_sovellu,"Riskiarvio: palautettavuus ei sovellu; tietoja ei menetetä, vain näyttö voi jäädä päivittämättä.",riskiarvio.csv H-020
@@ -362,7 +362,7 @@ H-023,tiedonsiirto,vahvistettu,"Testikehyksessä vaiheen vaihto evättiin, mutta
 H-023,laitteet,ei_sovellu,"Vika koskee asemien välistä tiedonsiirtoa, ei laitteita.",H-023
 H-023,julkaisu,ei_tiedossa,"Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin.",H-023
 H-023,tietoturva,ei_tiedossa,"Riskiarvio sanoo tietoturvasta ei, mutta perustetta ei ole kirjattu; verkosta tullut paketti sovelletaan vastaanottajan vaiheeseen, eikä protokollassa ole todennusta (H-029), joten aineisto ei sulje pois virheellisen sanoman vaikutusta.",H-023; riskiarvio.csv (tietoturva: ei); tiedonsiirto.md (H-029)
-H-023,normaalikaytto,ei_perusteltu,"Riskiarvion saavutettavuus on asetus: ilmenee vain monivaiheisessa kilpailussa, kun asemat ovat eri vaiheissa.",H-023; riskiarvio.csv (saavutettavuus: asetus; huomio)
+H-023,normaalikaytto,ei_tiedossa,"Riskiarvion saavutettavuus on asetus (monivaiheinen kilpailu, asemat eri vaiheissa), mutta kortin luvun 4 mukaan aineisto ei kerro, kuinka usein vaiheiden epäsynkronia syntyy; aineisto ei siis osoita, ettei vika voi ilmetä tavallisessa käytössä.",H-023; riskiarvio.csv (saavutettavuus: asetus; huomio)
 H-023,poikkeustilanne,vahvistettu,"Testikehyksessä vika toistui tilanteessa, jossa lähettäjän vaihe poikkesi vastaanottajan vaiheesta ja vaiheen vaihto evättiin; GUI-polkua ei ajettu.","H-023; testaus.md luku 15 (H-023a, H-023b)"
 H-023,havaittavuus,mahdollinen,"Vaiheen vaihdon epääminen tuotti viestin testikehyksessä, mutta väärään vaiheeseen tallentumisesta ei kirjattu viestiä.",H-023; testaus.md luku 15
 H-023,kiertotapa,ei_tiedossa,Aineistossa ei ole kirjattua keinoa vian välttämiseksi.,H-023
@@ -379,12 +379,12 @@ H-024,laitteet,ei_tiedossa,"Aineisto ei käsittele vaikutusta lukijoihin, kelloi
 H-024,julkaisu,ei_tiedossa,"Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai tulospalveluun.",
 H-024,tietoturva,mahdollinen,"Riskiarvion tietoturva-arvo on verkko: verkossa oleva laite voi lähettää sanoman, jonka käsittely jättää lukon päälle; sanoman rakennetta ei kuvata. Verkkoprotokollassa ei ole todennusta (H-029).",riskiarvio.csv H-024; muistiturvallisuus.md luku 15
 H-024,normaalikaytto,ei_perusteltu,"Vika vaatii kuuluttajatilan, joka otetaan käyttöön asetuksella tai valikosta, ja verkkoyhteyden toiseen asemaan; ei ilmene ilman erityisasetusta.",Juk/VInit.cpp:693-705; ViestiWin/VertAikaUnit.cpp:68
-H-024,poikkeustilanne,vahvistettu,"Lukon jääminen toistettiin testikehyksessä kuuluttajatilassa; oikeaa verkkoyhteyttä ei käytetty, paketti syötettiin jonoon.",testaus.md luku 14
+H-024,poikkeustilanne,mahdollinen,"Lukon jääminen toistettiin testikehyksessä kuuluttajatilassa, mutta kehys ohitti verkkovastaanoton ja syötti paketin suoraan jonoon; laukaisupolkua verkon kautta ei ajettu.",testaus.md luku 14
 H-024,havaittavuus,ei_tiedossa,"Aineisto ei kerro, mitä käyttäjä näkee ennen jumiutumista.",
 H-024,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: kuuluttajatilan jättäminen pois poistaa laukaisuehdon (luettu koodista); tehoa ei ole kokeiltu, eikä aineisto kerro, voiko kilpailu toimia ilman kuuluttajatilaa.",Juk/VCom.cpp:699-701
 H-024,palautuminen,mahdollinen,"Riskiarvion palautettavuus on uudelleenkäynnistys; lukon omistaa ohjelman oma säie, joten ohjelman sulkeminen vapauttaa sen (päätelty); tehoa ei ole kokeiltu. Varmuuskopio on kirjattu palautumiskeino (muistiturvallisuus.md luku 15).",riskiarvio.csv H-024; muistiturvallisuus.md luku 15
 H-025,tulokset,mahdollinen,"Vastaanottaja voi hyväksyä sanoman, jonka loppuosa on muuta tietoa; mitkä kentät kuuluvat hännän alueelle, ei ole osoitettu.",H-025; riskiarvio.csv (tulosten_oikeellisuus: suora); testaus.md luku 13.4
-H-025,ajanotto,ei_perusteltu,Riskiarvion mukaan ajanotto ei pysähdy.,H-025; riskiarvio.csv (ajanoton_jatkuvuus: ei)
+H-025,ajanotto,ei_tiedossa,"Riskiarvion mukaan ajanotto ei pysähdy, mutta aineisto ei ratkaise, voiko uudelleenlähetysjonosta puuttuva sanoman loppuosa vaikuttaa välillisesti ajanottoon.",H-025; riskiarvio.csv (ajanoton_jatkuvuus: ei)
 H-025,leimaukset,mahdollinen,"EMITVA-sanoma (emit-väliaikatieto, asetus LÄHEMVA) kuuluu pisimpiin luokkiin ja voi kärsiä viasta; lähetystä ei toistettu.",H-025; testaus.md luku 13.4
 H-025,tietojen_sailyminen,vahvistettu,"Testikehyksessä (TpCoreJuk, MSVC) jonotiedoston paikan pituus oli 204 tai 244 tavua, ja pisimmän sanoman 14 viimeistä tavua jäi jokaisessa paikassa tallentamatta (H-025a, H-025b).","H-025; testaus.md luku 13 (H-025a, H-025b)"
 H-025,kaatuminen,ei_perusteltu,"Muistijonon ylivuoto ei ole viestissä saavutettavissa, koska viestin jono on aina levyllä.",H-025; testaus.md luku 13.4
@@ -413,7 +413,7 @@ H-026,tietoturva,mahdollinen,"Riskiarvio: tietoturva verkko. Verkossa oleva lait
 H-026,normaalikaytto,ei_tiedossa,"Vika vaatii viestille tuntemattoman lajin paketin. Aineiston mukaan henkilökilpailun aseman seuramuutos on sellainen, mutta sekakokoonpanon käyttöä ei ole jäljitetty.",todisteet/c13/raportit/osaD-yhteensopivuuskysymykset.md Q-C; riskiarvio.csv H-026
 H-026,poikkeustilanne,vahvistettu,Testikehyksessä tuntemattoman lajin paketti (virheellinen syöte) pysäytti jonon.,testaus.md luku 15 (H-026)
 H-026,havaittavuus,mahdollinen,Ohjelma kutsuu virheilmoitusta tuntemattomasta sanomalajista (testissä kuusi kutsua 300 ms:ssa); ilmoituksen näkymistä käyttäjälle ei ole osoitettu.,testaus.md luku 15 (H-026)
-H-026,kiertotapa,mahdollinen,"Luvun 15 suositukset (suljettu ajanottoverkko, palomuurin sallittujen lista) on kirjattu havainnoille H-032 ja H-061; testaamattomia, tehoa tähän vikaan ei ole arvioitu eivätkä ne rajaa tunnetun aseman lähettämää pakettia.",muistiturvallisuus.md luku 15
+H-026,kiertotapa,mahdollinen,"Luvun 15 suositukset (suljettu ajanottoverkko, palomuurin sallittujen lista) on kirjattu verkkovastaanoton havainnoille H-071, H-072, H-032 ja H-061; testaamattomia, tehoa tähän vikaan ei ole arvioitu eivätkä ne rajaa tunnetun aseman lähettämää pakettia.",muistiturvallisuus.md luku 15
 H-026,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; keinoa ei ole kokeiltu.,riskiarvio.csv H-026
 H-027,tulokset,mahdollinen,"Riskiarvio: epäsuora vaikutus. Tietojen kopiointi muille työasemille ei jatku, joten niiden tiedot voivat olla vanhentuneita; ei osoitettu.",riskiarvio.csv H-027
 H-027,ajanotto,mahdollinen,"Riskiarvio: pysäyttää. Yhteyssäie päättyy (vahvistettu kokeessa); koko kilpailun ajanoton pysähtymistä ei ole osoitettu, eikä aineisto kerro paikallisen ajanoton pysähtymisestä.",riskiarvio.csv H-027; testaus.md luku 14.3
@@ -432,11 +432,11 @@ H-027,havaittavuus,mahdollinen,"Konsolissa epäonnistuminen näytetään viestin
 H-027,kiertotapa,ei_tiedossa,Aineistossa ei ole kirjattua keinoa vian välttämiseksi.,
 H-027,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; tehoa ei ole kokeiltu.,riskiarvio.csv H-027
 H-028,tulokset,mahdollinen,Riskiarvio: epäsuora vaikutus. Sekoittunut vastaanottopuskuri voisi tuoda vääriä tietoja; ei osoitettu.,riskiarvio.csv H-028
-H-028,ajanotto,mahdollinen,"Riskiarvio: pysäyttää. Pidetty tcpip_CS jättäisi tämän ohjelman TCP-lähetykset odottamaan (päätelty, ei toistettu); koko kilpailun ajanoton pysähtymistä ei ole osoitettu.",riskiarvio.csv H-028
+H-028,ajanotto,mahdollinen,"Riskiarvio: pysäyttää. Jäänyt tcpip_CS on kaikkien TCP-yhteyksien yhteinen lukko (lähetys, vastaanotto, luku, avaus ja sulkeminen), joten tämän ohjelman kaikki TCP-yhteydet voivat pysähtyä (luettu koodista, ei ajettu); koko kilpailun ajanoton pysähtymistä ei ole osoitettu.",riskiarvio.csv H-028; com/WinUDP.cpp:335-352; :466-528; :587-597; :661-669; :714-820; :907-936
 H-028,leimaukset,ei_tiedossa,Aineisto ei kerro vaikutusta leimausten vastaanottoon.,
 H-028,tietojen_sailyminen,mahdollinen,Kaksi lukusäiettä kirjoittaa samaan vastaanottopuskuriin (luettu koodista); tiedon sekoittuminen on päätelty.,havainnot.md H-028
 H-028,kaatuminen,ei_tiedossa,Aineisto ei kirjaa kaatumista tämän vian seurauksena.,
-H-028,lukkiutuminen,mahdollinen,"Poistumispolku jättää tcpip_CS-lukon päälle (luettu koodista); vaikutus on päätelty, ei toistettu.",riskiarvio.csv H-028; havainnot.md H-028
+H-028,lukkiutuminen,mahdollinen,"Poistumispolku jättää tcpip_CS-lukon päälle (luettu koodista); lukko on kaikkien TCP-yhteyksien yhteinen, joten vastaanotto, lähetys ja uudelleenavaus voivat pysähtyä; vaikutus on päätelty, ei toistettu.",riskiarvio.csv H-028; havainnot.md H-028; com/WinUDP.cpp:661-669
 H-028,hiljainen_hairio,mahdollinen,Sekoittunut vastaanottopuskuri ei tuota ilmoitusta (päätelty koodista).,havainnot.md H-028
 H-028,tiedonsiirto,mahdollinen,"Toinen yhteys korvaa elävän yhteyden sulkematta sitä, ja ensimmäisen yhteyden vertaisasema menettää yhteyden; luettu koodista.",havainnot.md H-028; tiedonsiirto.md
 H-028,laitteet,ei_tiedossa,"Aineisto ei käsittele vaikutusta lukijoihin, kelloihin, tauluihin tai tulostimiin.",
@@ -473,7 +473,7 @@ H-030,hiljainen_hairio,mahdollinen,Riskiarvion mukaan vanhat tilannekuvat kumoav
 H-030,tiedonsiirto,mahdollinen,"Uudelleenlähetys lähettää jonon vanhat kopiot vastaanottajille, ja vanha tila voi levitä edelleen muille asemille (päätelty); luettu koodista, ei ajettu.",H-030; tiedonsiirto.md Jonot ja levypuskuri
 H-030,laitteet,ei_sovellu,Vika koskee jonon uudelleenlähetystä eikä laitteita.,H-030
 H-030,julkaisu,ei_tiedossa,"Aineisto ei käsittele, mitä XML-TCP-yhteyden ulkoinen palvelu vastaanottaa uudelleenlähetyksessä; koodin lukeminen viittaa siihen, että sanoma muodostetaan nykytilasta (kortin luku 12).",H-030
-H-030,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole.,H-030; riskiarvio.csv (tietoturva: ei)
+H-030,tietoturva,ei_tiedossa,"Riskiarvio sanoo tietoturvasta ei, mutta perustetta ei ole kirjattu; vika koskee uudelleenlähetettävien tietueiden välitystä asemien välillä, eikä protokollassa ole todennusta (H-029), joten aineisto ei sulje pois virheellisen sanoman vaikutusta.",H-030; riskiarvio.csv (tietoturva: ei); H-029
 H-030,normaalikaytto,ei_perusteltu,Vika vaatii uudelleenlähetyksen: käyttäjän käynnistämän työkalun tai XML-TCP-yhteyden (riskiarvion saavutettavuus: asetus).,H-030; riskiarvio.csv (saavutettavuus: asetus)
 H-030,poikkeustilanne,mahdollinen,"Laukaisu vaatii erityisasetuksen tai käyttäjän käynnistämän uudelleenlähetyksen; luettu koodista, ei ajettu.",H-030; riskiarvio.csv (saavutettavuus: asetus)
 H-030,havaittavuus,ei_tiedossa,Ohjelma ei ilmoita korvatusta uudemmasta muutoksesta; aineisto ei kuvaa muuta oiretta.,H-030
@@ -506,8 +506,8 @@ H-032,tiedonsiirto,mahdollinen,"Ylikirjoitus tapahtuu vastaanottojonossa, joten 
 H-032,laitteet,ei_sovellu,"Vika koskee työasemien välisen paketin vastaanottoa, ei lukijoita, kelloja, tauluja tai tulostimia.",riskiarvio.csv H-032
 H-032,julkaisu,ei_tiedossa,"Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai julkaisuun.",
 H-032,tietoturva,mahdollinen,"Riskiarvio: tietoturva verkko. Väärennetty UDP-paketti voisi kirjoittaa vastaanottolohkon yli, koska lähettäjää ei todenneta; UDP-tarkistuksen ohitusta ei ole ajettu.",riskiarvio.csv H-032; muistiturvallisuus.md luku 15
-H-032,normaalikaytto,ei_perusteltu,Aineiston mukaan yksikään laillinen laji ei ole pituudeltaan määrittelemätön vastaanottavassa ohjelmassa ja suurin laillinen paketti mahtuu paikkaan; vika vaatii virheellisen paketin.,todisteet/c13/raportit/osaD-yhteensopivuuskysymykset.md Q-C
-H-032,poikkeustilanne,vahvistettu,"Testikehyksessä virheellinen paketti (pituudeltaan määrittelemätön laji, noin tuhat tavua) kirjoitti vastaanottolohkon yli; UDP-tarkistusta itseään ei ajettu.","testaus.md luku 15 (H-032a, H-032b)"
+H-032,normaalikaytto,ei_perusteltu,"Aineiston mukaan yksikään laillinen paketti ei kuulu tyyppiin, jonka pituutta ei tarkisteta vastaanottavassa ohjelmassa, ja suurin laillinen paketti mahtuu paikkaan; vika vaatii virheellisen paketin.",todisteet/c13/raportit/osaD-yhteensopivuuskysymykset.md Q-C
+H-032,poikkeustilanne,mahdollinen,"Ylikirjoitus näytettiin testikehyksessä vastaanottojonon kopiossa (virheellinen noin tuhannen tavun paketti kirjoitti vastaanottolohkon yli); UDP-vastaanoton pituustarkistuksen ohitusta, joka on vian laukaisuehto, ei ajettu.",testaus.md luku 15 (H-032a
 H-032,havaittavuus,ei_tiedossa,"Koodissa ei ole ilmoitusta ylikirjoituksesta; aineisto ei kuvaa, mitä käyttäjä näkee.",testaus.md luku 15
 H-032,kiertotapa,mahdollinen,"Luvun 15 suositukset (suljettu ajanottoverkko, palomuurin sallittujen lista) on kirjattu tälle havainnolle; testaamattomia.",muistiturvallisuus.md luku 15 kohdat 1 ja 2
 H-032,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; keinoa ei ole kokeiltu.,riskiarvio.csv H-032
@@ -617,7 +617,7 @@ H-039,hiljainen_hairio,mahdollinen,Ohjelma ei ilmoita vanhan tilan voimaan jää
 H-039,tiedonsiirto,mahdollinen,Silmukassa sama tieto kulkee eri reittejä ja asemien tiedot voivat eriytyä; päätelty; Q21 avoin.,H-039; tiedonsiirto.md Reititys ja välitys
 H-039,laitteet,ei_sovellu,Vika koskee asemien välistä välitystä eikä laitteita.,H-039
 H-039,julkaisu,ei_tiedossa,Aineisto ei käsittele välityksen vaikutusta tulosteisiin tai julkaisuun.,H-039
-H-039,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole.,H-039; riskiarvio.csv (tietoturva: ei)
+H-039,tietoturva,ei_tiedossa,"Riskiarvio sanoo tietoturvasta ei, mutta perustetta ei ole kirjattu; vika koskee tietueiden välitystä asemien välillä, eikä protokollassa ole todennusta (H-029), joten aineisto ei sulje pois virheellisen sanoman vaikutusta.",H-039; riskiarvio.csv (tietoturva: ei); H-029
 H-039,normaalikaytto,ei_perusteltu,Vika vaatii silmukkatopologian (riskiarvion saavutettavuus: asetus); aineiston mukaan ketjut ja tähdet toimivat.,H-039; riskiarvio.csv (saavutettavuus: asetus); tiedonsiirto.md Reititys ja välitys
 H-039,poikkeustilanne,mahdollinen,"Silmukkatopologia on kokoonpano, joka poikkeaa ketjusta tai tähdestä; päätelty, ei ajettu.",H-039; riskiarvio.csv (peruste: needs a loop in the topology)
 H-039,havaittavuus,ei_tiedossa,Ohjelma ei ilmoita vanhan tilan voimaan jäämisestä; aineisto ei kuvaa muuta oiretta.,H-039
@@ -683,10 +683,10 @@ H-043,laitteet,ei_sovellu,"Vika ei liity lukijoihin, kelloihin, tauluihin tai tu
 H-043,julkaisu,mahdollinen,"SQL-peili voi jäädä vajaaksi tai saada vääriä päivityksiä; tulosteita, HTML- tai XML-tiedostoja vika ei koske.",havainnot.md H-043
 H-043,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole; vika syntyy ohjelman omasta tiedostonkäsittelystä ilman ulkoista syötettä.,riskiarvio.csv H-043 (tietoturva: ei)
 H-043,normaalikaytto,ei_tiedossa,"Riskiarvio: asetus. Vika edellyttää SQL-peilin jatkuvaa kirjoitusta; varmistusvalinta on lomakkeella oletuksena valittu, mutta aineisto ei kerro, onko peilin käyttö tavallista.",riskiarvio.csv H-043 (saavutettavuus: asetus); UnitMySQL.dfm
-H-043,poikkeustilanne,ei_perusteltu,Laukeaa ilman poikkeustilannetta: tiedosto kasvaa jo pelkällä jatkuvalla kirjoituksella ja oletusvalinnalla; virhettä tai katkoa ei tarvita.,havainnot.md H-043; kortti H-043 luku 4
+H-043,poikkeustilanne,mahdollinen,"SQL-peilin jatkuva kirjoitus on valinnainen, oletuksena käyttämätön asetus (harvinainen asetus); kun se on päällä ja varmistusvalinta on oletuksena valittu, tiedosto kasvaa ilman virhettä tai katkoa; asetuksen yleisyys on tuntematon.",havainnot.md H-043; kortti H-043 luku 4
 H-043,havaittavuus,ei_tiedossa,Ohjelma ei ilmoita tiedoston kasvusta tai väärästä toistosta; käyttäjä voisi huomata vain tiedoston koosta tai peilin sisällöstä. Aineisto ei ratkaise.,havainnot.md H-043
 H-043,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: varmistusvalinnan poisto, koska tiedostoa käytetään vain valinnan ollessa päällä (luettu koodista); tehoa ei ole kokeiltu.",kortti H-043 luku 9
-H-043,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi käsin; peilin voi päätellen kirjoittaa uudelleen viennillä (valinta 3); keinoa ei ole kokeiltu.,riskiarvio.csv H-043 (palautettavuus: kasin); kortti H-043 luku 8
+H-043,palautuminen,mahdollinen,"Riskiarvio kirjaa palautettavuudeksi käsin; peilin voi päätellen kirjoittaa uudelleen viennillä (valinta 3) vasta uudelleenkäynnistyksen jälkeen tai kun jatkuva kirjoitus on pois päältä, koska jatkuvan kirjoituksen ollessa päällä vienti vain lisää jonoon; keinoa ei ole kokeiltu.",riskiarvio.csv H-043 (palautettavuus: kasin); kortti H-043 luku 8; cbHk/UnitExport.cpp:435-440
 H-044,tulokset,mahdollinen,"Riskiarvio: suora. Vastaanottavalta asemalta voi puuttua päivitys tai sen tulos voi olla vanha, vaikka lähettäjä pitää sen lähetettynä; lähettäjän oma tulos säilyy. Luettu koodista, ei ajettu.",riskiarvio.csv H-044; todisteet/c9/osaB-pysyva-data.md 2.4
 H-044,ajanotto,ei_perusteltu,Riskiarvion mukaan ajanoton jatkuvuus ei vaarannu; vika koskee vain lähtöjonon replikointia muille asemille.,riskiarvio.csv H-044 (ajanoton_jatkuvuus: ei)
 H-044,leimaukset,ei_tiedossa,Aineisto ei kuvaa leimausten vastaanoton epäonnistumista tämän vian seurauksena.,
@@ -752,7 +752,7 @@ H-047,havaittavuus,ei_tiedossa,Aineisto ei kuvaa oireita; ohjelma ei ilmoita pä
 H-047,kiertotapa,ei_tiedossa,Aineistossa ei ole kirjattua keinoa vian välttämiseksi.,H-047
 H-047,palautuminen,mahdollinen,"Riskiarvion palautettavuus on käsin; keinoa ei ole kuvattu tarkemmin eikä kokeiltu. Varmuuskopio (muistiturvallisuus.md luku 15) on kirjattu havainnolle H-071, tehoa ei ole arvioitu.",H-047; riskiarvio.csv (palautettavuus: kasin); muistiturvallisuus.md luku 15
 H-048,tulokset,mahdollinen,"Aiottujen kilpailijoiden tietoja ei lähetetä uudelleen, ja vastaanottajan tieto voi jäädä puutteelliseksi; päätelty koodista, ei ajettu.",H-048; riskiarvio.csv (tulosten_oikeellisuus: suora); tiedostomuodot.md H-048
-H-048,ajanotto,ei_perusteltu,Riskiarvion mukaan ajanotto ei pysähdy.,H-048; riskiarvio.csv (ajanoton_jatkuvuus: ei)
+H-048,ajanotto,ei_tiedossa,"Riskiarvion mukaan ajanotto ei pysähdy, mutta aineisto ei ratkaise, voiko väärin lähetetty uudelleenlähetyspaketti vaikuttaa välillisesti vastaanottavan aseman ajanottoon.",H-048; riskiarvio.csv (ajanoton_jatkuvuus: ei)
 H-048,leimaukset,ei_sovellu,"Työkalu uudelleenlähettää vain kilpailijatietoja (KILPT, VAIN_TULOST), ei leimauksia.",H-048
 H-048,tietojen_sailyminen,ei_perusteltu,Työkalu lukee jonotiedostoa ja panee kilpailijan nykyiset tiedot uudelleen jonoon; se ei muuta tallennettua tietoa (luettu koodista).,H-048; Hk/HkCom32.cpp lahetanumerotTCP
 H-048,kaatuminen,ei_tiedossa,"Aineisto ei kerro, mitä tapahtuu, jos väärästä kohdasta luettu viite osoittaa tietueen ulkopuolelle.",H-048
@@ -971,7 +971,7 @@ H-061,laitteet,ei_sovellu,"Vika koskee työasemien välisen paketin vastaanottoa
 H-061,julkaisu,ei_tiedossa,"Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai julkaisuun.",
 H-061,tietoturva,mahdollinen,Riskiarvio: tietoturva verkko. Paketin lajinumero ja ilmoitettu pituus ovat yhteyden toisen pään määräämiä; verkossa oleva laite voisi laukaista vian.,riskiarvio.csv H-061
 H-061,normaalikaytto,ei_tiedossa,"Alustamaton pituus tulee käyttöön, kun paketti saapuu useassa osassa; vaikutus riippuu arvosta, joka on tuntematon (Q43).",muistiturvallisuus.md Q43
-H-061,poikkeustilanne,mahdollinen,"Lajinumero 15 tai suurempi (virheellinen syöte) lukee pituustaulukon ulkopuolelta; luettu koodista, ei ajettu.",Tp/TpComY.cpp:750; Tp/TpComY.cpp:760
+H-061,poikkeustilanne,mahdollinen,"Virheellinen lajitieto (virheellinen syöte) lukee pituustaulukon ulkopuolelta; luettu koodista, ei ajettu.",Tp/TpComY.cpp:750; Tp/TpComY.cpp:760
 H-061,havaittavuus,ei_tiedossa,Aineisto ei kuvaa näkyvää oiretta.,riskiarvio.csv H-061
 H-061,kiertotapa,mahdollinen,"Luvun 15 suositukset (suljettu ajanottoverkko, palomuurin sallittujen lista) on kirjattu tälle havainnolle; testaamattomia.",muistiturvallisuus.md luku 15 kohdat 1 ja 2
 H-061,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; keinoa ei ole kokeiltu.,riskiarvio.csv H-061
@@ -986,7 +986,7 @@ H-062,tiedonsiirto,ei_tiedossa,Aineisto ei kerro vaikutusta tiedonsiirtoon tai m
 H-062,laitteet,mahdollinen,"Kirjoittimelle tarkoitettu lista kirjoittuu, kun kirjoitinta ei saada auki, roskana tiedostoon eikä tulostu (luettu koodista).",tputilv2/Wrttext.cpp:215-262
 H-062,julkaisu,mahdollinen,"Tulostettu lista tai listatiedosto sisältää roskaa tekstin sijaan (luettu koodista, ei ajettu).",havainnot.md H-062
 H-062,tietoturva,ei_tiedossa,Riskiarvio: ei vaikutusta. Tiedostoon voi päätyä pinomuistin aiempaa sisältöä; aineisto ei arvioi tietojen paljastumista; riskiarvio tarkistettava.,
-H-062,normaalikaytto,ei_tiedossa,"Haara vaatii, ettei annettua nimeä saada auki kirjoittimena; aineisto ei kerro, kulkeeko tavallinen tulostus tiedostoon haaran kautta.",
+H-062,normaalikaytto,ei_perusteltu,"Tavallinen tulostus tiedostoon ei kulje haaran kautta: tiedostoon tulostavat kutsut antavat openprfile-funktiolle tiedostotilan (GDIkirjoitin = -1), joka avaa TextFl-tiedoston ja kirjoittaa oikean rivin. Vika vaatii kirjoitinta pyytävän kutsun, jonka kirjoittimen avaus epäonnistuu (luettu koodista K-vaiheessa, ei tarkastettu).",tputilv2/Wrttext.cpp:165-179; Hk/HkTulostus.cpp:7108; HkConsole/HkCons3.cpp:161; JukConsole/VConTul.cpp:341
 H-062,poikkeustilanne,mahdollinen,Kirjoittimen avauksen epäonnistuminen ohjaa tulostuksen tiedostohaaraan (luettu koodista).,tputilv2/Wrttext.cpp:215-262
 H-062,havaittavuus,ei_tiedossa,"Ohjelma ei ilmoita; aineisto ei kerro, huomaako käyttäjä roskan tiedostossa.",
 H-062,kiertotapa,ei_tiedossa,Aineistossa ei ole kirjattua keinoa vian välttämiseksi.,
@@ -1042,14 +1042,14 @@ H-065,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi käsin; kein
 H-066,tulokset,ei_tiedossa,"Riskiarvio pitää vaikutusta tuloksiin suorana (näkyvä väärä arvo), mutta aineisto osoittaa vain kaksoiskappaleen syntymisen seuraluetteloon eikä sitä, että aika, tulos tai sijoitus olisi väärä. Riskiarvion tarkistus on avoin.",
 H-066,ajanotto,ei_perusteltu,Riskiarvio: ajanotto ei pysähdy; vika on seuraluettelon haussa eikä vaikuta maali- tai väliaikojen kirjaukseen.,riskiarvio.csv H-066 (ajanoton_jatkuvuus: ei)
 H-066,leimaukset,ei_sovellu,Vika koskee seuraluettelon hakua eikä kortin tai leimausten lukua.,
-H-066,tietojen_sailyminen,mahdollinen,"Kaksoiskappale tallentuu luetteloon ja luettelotiedostoon roska-avaimella (rekisterin kuvaus; kirjoitus tiedostoon päätelty koodista). Luettu koodista ja tarkastettu riippumattomasti, ei ajettu.",H-066; muistiturvallisuus.md luku 15; Hk/HkApu.cpp TallennaSeura
+H-066,tietojen_sailyminen,mahdollinen,"Kaksoiskappale tallentuu luettelotiedostoon samannimisenä rivinä [luettu koodista]; roska-avain on vain muistissa, ja seuraava käynnistys laskee molemmille rivin nimestä saman oikean avaimen. Ei ajettu.",H-066; Hk/HkApu.cpp:733-737
 H-066,kaatuminen,ei_tiedossa,Yliluku koskee pinossa avaimen jälkeistä aluetta; aineisto ei kirjaa kaatumista tämän vian seurauksena.,
 H-066,lukkiutuminen,ei_tiedossa,Aineisto ei käsittele jumiutumista tämän vian osalta.,
 H-066,hiljainen_hairio,mahdollinen,"Ohjelma ei ilmoita epäonnistuneesta hausta; kaksoiskappale näkyy vasta seuraluettelossa. Päätelty koodista, ei ajettu.",H-066; riskiarvio.csv H-066
-H-066,tiedonsiirto,ei_tiedossa,Aineisto ei kerro välittyykö seuraluettelo työasemien välillä.,
+H-066,tiedonsiirto,mahdollinen,"TallennaSeura kutsuu aina lah_seura-funktiota (valitsin SEURAVAL on HK-tuotteissa), ja vastaanottava asema kutsuu samaa tallennusta, joten sama virheellinen haku ajetaan myös vastaanottavilla työasemilla [päätelty koodista]. Ei ajettu.",Hk/HkApu.cpp:780; Hk/HkCom32.cpp:491; cbHk/HkWinApu.cpp:72-76; HkConsole/HkKilp.cpp:65-67; valitsimet.csv SEURAVAL
 H-066,laitteet,ei_sovellu,"Vika koskee seuraluettelon hakua, ei lukijoita, kelloja, näyttötauluja tai tulostimia.",
 H-066,julkaisu,ei_tiedossa,"Aineisto ei kerro, näkyykö kaksoiskappale tulosteissa tai julkaisuissa.",
-H-066,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole; aineisto ei kirjaa verkkopolkua seuran tallennukseen.,riskiarvio.csv H-066 (tietoturva: ei)
+H-066,tietoturva,ei_tiedossa,"Riskiarvio sanoo tietoturvavaikutuksen ei-arvon, mutta seuran tallennus vastaanotetaan myös toiselta työasemalta (lah_seura -> tall_seura -> TallennaSeura), joten verkosta saapuva seuranimi kulkee virheellisen haun kautta; aineisto ei arvioi hyödynnettävyyttä. Riskiarvio tarkistetaan (seuranta.md KE-taulukko).",riskiarvio.csv H-066; Hk/HkCom32.cpp:485-491
 H-066,normaalikaytto,mahdollinen,Seuran kirjaaminen kilpailijalle on tavallista käyttöä; riskiarvion saavutettavuus on normaalikäyttö. Haun epäonnistuminen riippuu muistin sisällöstä. Ei ajettu.,riskiarvio.csv H-066 (saavutettavuus: normaalikaytto); Hk/HkApu.cpp TallennaSeura
 H-066,poikkeustilanne,ei_perusteltu,"Laukeaa ilman poikkeustilannetta: tavallinen seuran tallennus riittää, virhettä tai erikoisasetusta ei tarvita.",H-066; riskiarvio.csv H-066
 H-066,havaittavuus,mahdollinen,Riskiarvion mukaan väärä arvo on näkyvä: kaksoiskappale näkyy seuraluettelossa. Ohjelma ei ilmoita virheestä.,riskiarvio.csv H-066 (peruste: visible wrong value)
@@ -1126,7 +1126,7 @@ H-071,tietojen_sailyminen,mahdollinen,Verkosta voi luoda tai korvata minkä taha
 H-071,kaatuminen,mahdollinen,Pituuden ylilukeminen puskurin ohi voi kaataa ohjelman; ei ajettu.,havainnot.md H-071
 H-071,lukkiutuminen,ei_tiedossa,Aineisto ei kerro jumiutumisesta.,havainnot.md H-071
 H-071,hiljainen_hairio,mahdollinen,Epäonnistunut tai epäjärjestyksessä tullut pala sulkee tiedoston ilmoittamatta ja vajaa tiedosto välitetään.,havainnot.md H-071 (C-9)
-H-071,tiedonsiirto,mahdollinen,Loppusanoma levittää tiedoston muille vertaisille; vajaa tiedosto voi levitä.,havainnot.md H-071
+H-071,tiedonsiirto,mahdollinen,"Loppusanoma välittää tiedoston edelleen niille UDP-yhteyksillä oleville työasemille, joille tiedostojen lähetys on asetettu (LÄHTIEDOSTOT); vajaa tiedosto voi levitä vain niille.",havainnot.md H-071; Hk/HkInit.cpp:1515-1534; Juk/VInit.cpp:1289-1292; Tp/TpComY.cpp:2978-2981
 H-071,laitteet,ei_tiedossa,Aineisto ei kerro vaikutusta laitteisiin.,havainnot.md H-071
 H-071,julkaisu,mahdollinen,"Mikä tahansa kirjoitettavissa oleva tiedosto voi korvautua, myös tuotetut tulostiedostot; ei osoitettu.",havainnot.md H-071
 H-071,tietoturva,mahdollinen,"Verkosta tavoitettavissa oletusasetuksin ilman lähettäjän tunnistusta; laukeaminen päätelty, ei ajettu.",riskiarvio.csv H-071; muistiturvallisuus.md luku 15
@@ -1163,7 +1163,7 @@ H-073,laitteet,ei_tiedossa,Aineisto ei kerro vaikutusta lukijoihin tai tulostimi
 H-073,julkaisu,ei_tiedossa,Aineisto ei kerro vaikutusta tulosteisiin; vika on lokirivin muodostuksessa.,
 H-073,tietoturva,mahdollinen,Riskiarvio: verkko. Saapuvan paketin arvot määräävät rivin pituuden; hyödynnettävyyttä ei ole tutkittu.,riskiarvio.csv H-073; muistiturvallisuus.md luku 15
 H-073,normaalikaytto,ei_perusteltu,"Vaatii asetuksen EMVALOKI, joka ei ole oletus.",riskiarvio.csv H-073; havainnot.md H-073
-H-073,poikkeustilanne,mahdollinen,"Asetus EMVALOKI päällä ja saapuva paketti, jossa on paljon rasteja; 50 rastia × 9 merkkiä ylittää 400 merkin puskurin.",riskiarvio.csv H-073; Hk/HkEmit.cpp:6168-6185
+H-073,poikkeustilanne,mahdollinen,"Asetus EMVALOKI päällä ja saapuva paketti, jossa on vähintään noin 34 rastia (äärimmäiset arvot) tai noin 45 rastia (tavalliset rastikoodit ja ajat); rastipari on enintään 12 merkkiä, joten 33 rastia ei ylitä 400 merkin puskuria [päätelty laskemalla]. Riskiarvion peruste (ordinary use) tarkistetaan.",riskiarvio.csv H-073; Hk/HkEmit.cpp:6180; Juk/VEmit.cpp:6077
 H-073,havaittavuus,ei_tiedossa,"Aineisto ei kerro, mitä käyttäjä näkee.",
 H-073,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: pidä EMVALOKI pois päältä; kirjattu luvussa 15 kohta 6; tehoa ei ole kokeiltu.",muistiturvallisuus.md luku 15
 H-073,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; keinoa ei ole kokeiltu.,riskiarvio.csv H-073
@@ -1279,7 +1279,7 @@ H-080,poikkeustilanne,mahdollinen,"Vuoden 2038 jälkeinen päivämäärä aikati
 H-080,havaittavuus,mahdollinen,"Lomake näyttää päivämäärän päinvastaisella muunnoksella, joten nolla näkyy muodossa 1970-01-01 [päätelty]; tekstituonnissa korvaus tapahtuu ilman ilmoitusta.",Tp/TpApu.cpp:85-96; cbHk/UnitAjanotto.cpp:523
 H-080,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: vältä vuoden 2038 jälkeisen päivämäärän kirjoittamista ikkunaohjelman aikatietueeseen; funktion tulos on koeohjelmalla osoitettu, lomaketta ei ole kokeiltu.",kaantajaerot.md luku 7
 H-080,palautuminen,mahdollinen,"Riskiarvio: palautettavuus käsin. Aineisto ei kuvaa keinoa tarkemmin; päivämäärän uudelleensyöttö kelvollisena on päätelty, ei kokeiltu.",riskiarvio.csv H-080
-H-081,tulokset,ei_perusteltu,Riskiarvio: tulokset ei. Ero koskee kuntosuunnistustilan emit-koodin vaihtoa; tarkoituksellisuus on omistajan päätös (Q60).,riskiarvio.csv H-081; kaantajaerot.md luku 8
+H-081,tulokset,ei_tiedossa,"Riskiarvio: tulokset ei. Aineisto ei osoita, ettei koodin vaihto (em.badge, badge[1], laina[1]) vaikuta myöhempään kortin ja kilpailijan yhdistämiseen; riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko).",riskiarvio.csv H-081; Hk/HkIV.cpp:1663-1671; kaantajaerot.md luku 8
 H-081,ajanotto,ei_perusteltu,"Riskiarvio: ajanotto ei. Ero koskee kortin koodin vaihtoa, ei kirjauksen jatkuvuutta.",riskiarvio.csv H-081
 H-081,leimaukset,mahdollinen,"HkKisaWin vaihtaa luetun kortin koodin seuraavaan vapaaseen ja tallentaa tietueen kuntosuunnistustilassa 1 tai 2; HkMaali käsittelee saman leimauksen ilman vaihtoa. Luettu koodista, ei ajettu.",Hk/HkIV.cpp:1663-1673; kaantajaerot.md luku 8
 H-081,tietojen_sailyminen,ei_tiedossa,"GUI päivittää tietueen emit-koodikentät ja lainamerkinnän; onko se virhe vai tarkoitettu toiminta, on omistajan päätös (Q60, OP-9).",Hk/HkIV.cpp:1663-1673; omistajan-paatokset.md OP-9
@@ -1312,7 +1312,7 @@ H-082,havaittavuus,ei_tiedossa,Aineisto ei kuvaa näkyvää oiretta; seuran nime
 H-082,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: täytä osuus aina kelvollisella numerolla (kortin luku 9); johdettu laukaisuehdosta, ei kokeiltu.",H-082; kortin luku 9
 H-082,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi käsin; keinoa ei ole kuvattu eikä kokeiltu.,H-082; riskiarvio.csv (palautettavuus: kasin)
 H-083,tulokset,mahdollinen,"Ylikirjoitettavien globaalien joukossa on aikaero ja ajan tunniste, joten vaikutus tuloksiin on epäsuora; riskiarvio: epäsuora; vaikutusta ei ole jäljitetty. Ei ajettu.",H-083; riskiarvio.csv (tulosten_oikeellisuus: epasuora); kaantajaerot.md luku 13.5
-H-083,ajanotto,ei_perusteltu,Riskiarvion mukaan ajanoton jatkuvuus ei vaarannu.,H-083; riskiarvio.csv (ajanoton_jatkuvuus: ei)
+H-083,ajanotto,ei_tiedossa,"Riskiarvio: ajanoton jatkuvuus ei vaarannu. Kortti pitää ohjelman kaatumista mahdollisena (päätelty koodista), jolloin yhden aseman ajanotto voisi pysähtyä; riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko).",H-083; riskiarvio.csv (ajanoton_jatkuvuus: ei)
 H-083,leimaukset,ei_tiedossa,Aineisto ei käsittele leimausten vastaanottoa tämän vian osalta.,H-083
 H-083,tietojen_sailyminen,ei_tiedossa,"Ylikirjoitus koskee ohjelman laiteasetuksia, ei tallennettuja kilpailutietoja; aineisto ei ratkaise, tallentuuko virheellinen arvo.",H-083
 H-083,kaatuminen,mahdollinen,"Kirjoitus taulukoiden ja globaalien yli voi kaataa ohjelman; päätelty koodista, ei ajettu.",H-083; kaantajaerot.md luku 13.5
@@ -1328,7 +1328,7 @@ H-083,havaittavuus,ei_tiedossa,Aineisto ei kuvaa näkyvää oiretta eikä ilmoit
 H-083,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: käytä kelvollista laitenumeroa ja lyhyttä IP-osoitetta (kortin luku 9); johdettu laukaisuehdosta, ei kokeiltu.",H-083; kortin luku 9
 H-083,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; keinoa ei ole kokeiltu.,H-083; riskiarvio.csv (palautettavuus: uudelleenkaynnistys)
 H-084,tulokset,mahdollinen,"Vaikutus tuloksiin on riskiarvion mukaan epäsuora; väärä indeksi voi vääristää näyttötaulun asetuksia. Vaikutusta ei ole jäljitetty, ei ajettu.",H-084; riskiarvio.csv (tulosten_oikeellisuus: epasuora)
-H-084,ajanotto,ei_perusteltu,Riskiarvion mukaan ajanoton jatkuvuus ei vaarannu.,H-084; riskiarvio.csv (ajanoton_jatkuvuus: ei)
+H-084,ajanotto,ei_tiedossa,"Riskiarvio: ajanoton jatkuvuus ei vaarannu. Kortti pitää muistin ylikirjoitusta ja ohjelman häiriötä mahdollisena (päätelty koodista), jolloin yhden aseman ajanotto voisi häiriintyä; riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko).",H-084; riskiarvio.csv (ajanoton_jatkuvuus: ei)
 H-084,leimaukset,ei_sovellu,"Vika koskee näyttötaulujen asetuslomakkeita, ei leimausten vastaanottoa.",H-084
 H-084,tietojen_sailyminen,ei_tiedossa,"Aineisto ei ratkaise, lukeeko vai kirjoittaako jokainen kohta taulukon ulkopuolelle.",H-084; kaantajaerot.md luku 13.5
 H-084,kaatuminen,ei_tiedossa,"Aineisto ei kerro, aiheuttaako taulukon ulkopuolinen indeksi kaatumisen.",H-084
@@ -1424,13 +1424,13 @@ H-089,havaittavuus,ei_tiedossa,"Aineisto ei kerro, voiko käyttäjä huomata poi
 H-089,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: älä keskeytä sivutettua luetteloa ESC:llä vaan selaa se loppuun (laukaisuehdosta); tehoa ei ole kokeiltu.",Hk/HkEmit.cpp:5191-5241
 H-089,palautuminen,mahdollinen,"Riskiarvion palautettavuus on käsin; aineisto ei kuvaa, mitä käsin tehdään. Kokeessa seuraava lukon otto toimi ylimääräisen vapautuksen jälkeenkin.",riskiarvio.csv H-089; saikeet-ja-lukot.md luku 13.5 (Q65)
 H-090,tulokset,mahdollinen,Riskiarvio: epäsuora vaikutus. Aikajonon lukon jäädessä päälle käsin kirjattavat ajat ja verkosta tulevat aikapaketit estyvät (luettu koodista); tulosten väärentymistä ei ole osoitettu.,riskiarvio.csv H-090; saikeet-ja-lukot.md luku 13.4
-H-090,ajanotto,mahdollinen,"Riskiarvio: ajanotto pysähtyy. Käsiajanotto, verkon aikapaketit ja vaiheen vaihto estyvät, ja vaiheen vaihdon kautta lukijasäie voi itsekin jäädä odottamaan (luettu koodista); ei ajettu. Koskee tätä työasemaa, ei koko kilpailun ajanottoa.",saikeet-ja-lukot.md luku 13.4
+H-090,ajanotto,mahdollinen,"Riskiarvio: ajanotto pysähtyy. Käsiajanotto ja vaiheen vaihto estyvät, ja ensimmäinen verkosta tuleva aikapaketti pysäyttää tämän aseman koko vastaanoton käsittelyn, koska tarkcom käsittelee kaikki sanomat yhdessä silmukassa (luettu koodista, ei ajettu). Koskee tätä työasemaa, ei koko kilpailun ajanottoa.",saikeet-ja-lukot.md luku 13.4; Hk/HkCom32.cpp:875-905; Hk/HkAjat.cpp:129
 H-090,leimaukset,ei_tiedossa,"Aineisto ei kerro, vaikuttaako vika emit-leimausten lukuun.",
 H-090,tietojen_sailyminen,ei_tiedossa,"Aineisto ei kerro, katoaako kellon sanomia tai aikoja lukon jäädessä päälle.",
 H-090,kaatuminen,ei_tiedossa,Aineisto ei käsittele kaatumista; vika on lukon jääminen päälle.,
 H-090,lukkiutuminen,mahdollinen,Lukon jääminen päälle toistettiin koeohjelmassa neljällä paluupolulla: lukko jäi päättyneen lukijasäikeen omistukseen ja toinen säie ei saanut sitä. Odottavien toimintojen jumiutumista ja oikeaa ohjelmaa ei ajettu.,saikeet-ja-lukot.md luku 13.3; todisteet/c6/vaihe2/
 H-090,hiljainen_hairio,ei_tiedossa,"Aineisto ei kerro, näkyykö lukon jääminen ennen estymisiä.",
-H-090,tiedonsiirto,mahdollinen,Verkosta tulevat aikapaketit estyisivät tässä asemassa (luettu koodista); vaikutus muihin työasemiin: aineisto ei kerro.,saikeet-ja-lukot.md luku 13.4; Hk/HkCom32.cpp:446
+H-090,tiedonsiirto,mahdollinen,"Ensimmäinen verkosta tuleva aikapaketti pysäyttää tämän aseman koko vastaanoton käsittelyn, myös kilpailija- ja emit-sanomat (luettu koodista, ei ajettu); vaikutus muihin työasemiin: aineisto ei kerro.",saikeet-ja-lukot.md luku 13.4; Hk/HkCom32.cpp:875-905
 H-090,laitteet,mahdollinen,"Lukijasäie voi jäädä odottamaan vaiheen vaihdon kautta, jolloin kellon sanomat eivät enää etene (luettu koodista); oikeaa laitetta ei ajettu.",saikeet-ja-lukot.md luku 13.4
 H-090,julkaisu,ei_tiedossa,"Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai tulospalveluun.",
 H-090,tietoturva,ei_tiedossa,"Riskiarvio sanoo tietoturvasta ei, mutta perustetta ei ole kirjattu; laukaisevan sanoman lähde on lukijalaite, eikä aineisto erittele, voiko verkossa oleva laite lähettää sellaisen.",
@@ -1472,7 +1472,7 @@ H-092,havaittavuus,mahdollinen,"Jumiutuminen on näkyvä; aineisto ei kuvaa, mit
 H-092,kiertotapa,ei_tiedossa,Aineistossa ei ole kirjattua keinoa; muistiturvallisuus.md luku 15 ei koske havaintoa.,H-092; muistiturvallisuus.md luku 15
 H-092,palautuminen,mahdollinen,Riskiarvion palautettavuus on uudelleenkäynnistys; tehoa ei ole kokeiltu.,H-092; riskiarvio.csv (palautettavuus: uudelleenkaynnistys)
 H-093,tulokset,mahdollinen,Riskiarvion mukaan vaikutus tuloksiin on epäsuora: kaatuva tai jumiutuva ohjelma ei kirjaa; tarkkaa polkua ei ole osoitettu.,H-093; riskiarvio.csv (tulosten_oikeellisuus: epasuora)
-H-093,ajanotto,mahdollinen,"Kaatuminen ja kahden säikeen lukkiutuminen on osoitettu koeohjelmassa, mutta ajanoton pysähtymistä ei ole osoitettu toimitetussa ohjelmassa.",H-093; saikeet-ja-lukot.md luku 13.3; riskiarvio.csv (ajanoton_jatkuvuus: pysayttaa)
+H-093,ajanotto,mahdollinen,Pinon ylivuoto (siepattu) ja kahden säikeen lukkiutuminen on osoitettu koeohjelmassa; prosessin kaatumista ja ajanoton pysähtymistä ei ole ajettu toimitetussa ohjelmassa.,H-093; saikeet-ja-lukot.md luku 13.3; riskiarvio.csv (ajanoton_jatkuvuus: pysayttaa)
 H-093,leimaukset,ei_tiedossa,"Aineisto ei kerro, vaikuttaako kaatuminen tai jumiutuminen leimausten lukuun.",H-093; saikeet-ja-lukot.md luku 13
 H-093,tietojen_sailyminen,ei_tiedossa,"Aineisto ei kerro, katoaako tietoa kaatumisessa.",H-093; saikeet-ja-lukot.md luku 13
 H-093,kaatuminen,mahdollinen,"Koeohjelma sieppasi pinon ylivuodon rekursiossa, mutta prosessin kaatumista ei ajettu; GUI-ohjelmassa seuraus voi olla virheikkuna (päätelty).",H-093; saikeet-ja-lukot.md luku 13.3 (koe P2); todisteet/c6/vaihe2/
@@ -1483,17 +1483,17 @@ H-093,laitteet,ei_tiedossa,"Aineisto ei käsittele vaikutusta lukijoihin, kelloi
 H-093,julkaisu,ei_tiedossa,"Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai tulospalveluun.",H-093; saikeet-ja-lukot.md luku 13
 H-093,tietoturva,ei_tiedossa,"Riskiarvio sanoo tietoturvasta ei, mutta perustetta ei ole kirjattu; aineisto ei erittele, voiko verkon puoli aiheuttaa lokiyhteyden katkon.",H-093; riskiarvio.csv (tietoturva: ei)
 H-093,normaalikaytto,ei_perusteltu,"Vika edellyttää TCPL-asetusta ja toista tiedonsiirtoyhteyttä, joten se ei ilmene ilman erityisasetusta.",H-093; saikeet-ja-lukot.md luku 13.4
-H-093,poikkeustilanne,vahvistettu,"Rekursio käynnistyy, kun lokiyhteys on poikki ja asetukset ovat edellä mainitut; osoitettu koeohjelmassa tilan asettamisella käsin.",H-093; saikeet-ja-lukot.md luku 13.3 (koe P2); todisteet/c6/vaihe2/
+H-093,poikkeustilanne,mahdollinen,"Rekursio käynnistyy, kun lokiyhteys on poikki ja asetukset ovat edellä mainitut; koeohjelmassa yhteyden tila asetettiin käsin, joten todellista yhteyden katkeamista ei ajettu ja laukaisupolku ohitettiin.",H-093; saikeet-ja-lukot.md luku 13.3 (koe P2); todisteet/c6/vaihe2/
 H-093,havaittavuus,mahdollinen,"Kaatuminen tai jumiutuminen seuraa koodista ja on käyttäjälle näkyvä; aineisto ei kerro, mitä ruudulla näkyy.",H-093; saikeet-ja-lukot.md luku 13.3
 H-093,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: älä ota TCP-lokia käyttöön ilman tarvetta (lokin TCP-lähetys kulkee vain sen kautta) [päätelty]; tehoa ei ole kokeiltu.",H-093; saikeet-ja-lukot.md luku 13
 H-093,palautuminen,mahdollinen,"Riskiarvion palautettavuus on uudelleenkäynnistys; tehoa ei ole kokeiltu eikä kerrota, toimiiko ohjelma poikki olevan lokiyhteyden kanssa.",H-093; riskiarvio.csv (palautettavuus: uudelleenkaynnistys)
 H-094,tulokset,mahdollinen,Riskiarvio: suora vaikutus. Käsittelemättä jäänyt merkki voi jättää kilpailijan lukeman tai tuloksen syntymättä; tulokseen asti ei ole osoitettu.,riskiarvio.csv H-094
-H-094,ajanotto,ei_perusteltu,Riskiarvion mukaan vika ei vaikuta ajanottoon.,riskiarvio.csv H-094
+H-094,ajanotto,ei_tiedossa,"Riskiarvio: vika ei vaikuta ajanottoon. Vaiheen vaihdon aikana saapunut lukijan merkki menetetään (koeohjelmassa vahvistettu), joten menetetty leimaus voisi välillisesti jättää ajan kirjaamatta; aineisto ei arvioi tätä. Riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko).",riskiarvio.csv H-094; saikeet-ja-lukot.md luku 13.2
 H-094,leimaukset,vahvistettu,Koeohjelmassa vaiheen vaihdon aikana saapunut merkki jäi käsittelemättä.,saikeet-ja-lukot.md luku 13.2; todisteet/c6/vaihe2/
 H-094,tietojen_sailyminen,vahvistettu,Koeohjelmassa lukijalta vastaanotettu merkki katosi tuhottavan jonon mukana ilman käsittelyä.,saikeet-ja-lukot.md luku 13.2; todisteet/c6/vaihe2/
 H-094,kaatuminen,mahdollinen,Vapautetun muistin tai poistetun lukon käyttö on ajoituksesta riippuva; sitä ei yritetty.,saikeet-ja-lukot.md luku 13.2; havainnot.md H-094
 H-094,lukkiutuminen,ei_tiedossa,Aineisto ei kerro lukkiutumisesta tässä polussa.,
-H-094,hiljainen_hairio,vahvistettu,Merkki menetetään ilman ilmoitusta (riskiarvio: hiljainen menetys; toistettu koeohjelmassa).,riskiarvio.csv H-094; saikeet-ja-lukot.md luku 13.2
+H-094,hiljainen_hairio,vahvistettu,"Merkki menetetään ilman ilmoitusta (riskiarvio: hiljainen menetys; menetys toistettu koeohjelmassa; ilmoituksen puuttuminen luettu koodista, käyttöliittymää ei ajettu).",riskiarvio.csv H-094; saikeet-ja-lukot.md luku 13.2
 H-094,tiedonsiirto,ei_tiedossa,Aineisto ei kerro vaikutusta tiedonsiirtoon tai muihin työasemiin.,
 H-094,laitteet,ei_tiedossa,Aineisto ei kerro vaikutusta lukijoiden toimintaan; lukijan syöttämä merkki menetetään ohjelmassa.,
 H-094,julkaisu,ei_tiedossa,Aineisto ei käsittele vaikutusta tulosteisiin tai julkaisuun.,
@@ -1551,7 +1551,7 @@ H-097,poikkeustilanne,mahdollinen,Ilmenee vaiheen vaihdossa SQL-emit-asetuksella
 H-097,havaittavuus,mahdollinen,"Vierityksen valintamerkki jää päälle, vaikka vieritys on lakannut; haun pysähtymisestä ei ilmoiteta (luettu koodista).",havainnot.md H-097
 H-097,kiertotapa,ei_tiedossa,Aineistossa ei ole kirjattua keinoa vian välttämiseksi.,
 H-097,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; tehoa ei ole kokeiltu.,riskiarvio.csv H-097
-H-098,tulokset,ei_perusteltu,Riskiarvion mukaan tuloksiin ei ole vaikutusta.,riskiarvio.csv H-098
+H-098,tulokset,ei_tiedossa,"Riskiarvio: tuloksiin ei vaikutusta. Toinen tiedostoon-luenta jäisi tekemättä (päätelty), joten lukemattomat kortit voisivat välillisesti jäädä pois tuloksista; aineisto ei arvioi tätä. Riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko).",riskiarvio.csv H-098
 H-098,ajanotto,mahdollinen,Riskiarvio: häiritsee. MTR-lukijan luenta tiedostoon pysähtyy toisella käyttökerralla (päätelty); koskee tämän työaseman lukijaluentaa.,riskiarvio.csv H-098; havainnot.md H-098
 H-098,leimaukset,mahdollinen,"Toinen MTR-lukijan luenta tiedostoon pysähtyy, kunnes lomake suljetaan (rekisteri; päätelty).",havainnot.md H-098; saikeet-ja-lukot.md luku 4.3
 H-098,tietojen_sailyminen,ei_tiedossa,Aineisto ei kerro tiedon katoamisesta.,
@@ -1582,7 +1582,7 @@ H-100,normaalikaytto,ei_tiedossa,"Riskiarvio: asetus. Vika edellyttää SQL-peil
 H-100,poikkeustilanne,ei_perusteltu,Laukeaa ilman poikkeustilannetta: jatkuva kirjoitus ja samanaikainen tallennus riittävät; virhettä tai katkoa ei tarvita.,havainnot.md H-100; kortti H-100 luku 4
 H-100,havaittavuus,ei_tiedossa,Ohjelma ei ilmoita jonon ohituksesta tai kaksoiskirjoituksesta; käyttäjä voisi huomata vain vertaamalla tietokantaa. Aineisto ei ratkaise.,havainnot.md H-100
 H-100,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: jatkuvan kirjoituksen jättäminen pois, koska jonoa ja kirjoitussäiettä käytetään vain siinä (luettu koodista); tehoa ei ole kokeiltu.",kortti H-100 luku 9
-H-100,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi käsin; peilin voi päätellen kirjoittaa uudelleen viennillä (valinta 3); keinoa ei ole kokeiltu.,riskiarvio.csv H-100 (palautettavuus: kasin); kortti H-100 luku 8
+H-100,palautuminen,mahdollinen,"Riskiarvio kirjaa palautettavuudeksi käsin; peilin voi päätellen kirjoittaa uudelleen viennillä (valinta 3) vasta uudelleenkäynnistyksen jälkeen tai kun jatkuva kirjoitus on pois päältä, koska jatkuvan kirjoituksen ollessa päällä vienti vain lisää jonoon; keinoa ei ole kokeiltu.",riskiarvio.csv H-100 (palautettavuus: kasin); kortti H-100 luku 8; cbHk/UnitExport.cpp:435-440
 H-101,tulokset,mahdollinen,Riskiarvion mukaan vaikutus tuloksiin on epäsuora; polkua ei ole osoitettu.,H-101; riskiarvio.csv (tulosten_oikeellisuus: epasuora)
 H-101,ajanotto,mahdollinen,"Riskiarvion mukaan ajanotto häiriintyy (ei pysähdy); päätelty, ei ajettu.",H-101; riskiarvio.csv (ajanoton_jatkuvuus: hairitsee)
 H-101,leimaukset,ei_tiedossa,Aineisto ei käsittele vaikutusta leimausten lukuun.,H-101
@@ -1638,7 +1638,7 @@ H-104,tietojen_sailyminen,ei_tiedossa,HkKisaWinissä emit-tiedoston ja KILP.DAT:
 H-104,kaatuminen,ei_tiedossa,"Aineisto ei kirjaa kaatumista; HkKisaWinin lomake sulkeutuu, mutta prosessin tilasta aineisto ei kerro.",
 H-104,lukkiutuminen,ei_tiedossa,Aineisto ei kerro lukkiutumisesta tässä polussa.,
 H-104,hiljainen_hairio,mahdollinen,HkMaali jatkaa epäjohdonmukaisella indeksillä keskeytysilmoituksen jälkeen (päätelty).,havainnot.md H-104
-H-104,tiedonsiirto,mahdollinen,Tiedonsiirtoyhteyksien sulkeminen (closecom) ohitetaan (luettu koodista).,havainnot.md H-104
+H-104,tiedonsiirto,mahdollinen,"Tiedonsiirtoyhteyksien sulkeminen (closecom) ohitetaan HkKisaWinissä, ja HkMaalissa myös TCP-tiedonsiirtosäie ja monitorilähetys poistuvat silmukastaan, kun inLopetus on asetettu (luettu koodista).",havainnot.md H-104; Tp/TpComY.cpp:457; :1277
 H-104,laitteet,mahdollinen,"HkMaalissa lukijasäikeet ovat pysähtyneet, kun ohjelma jatkaa (päätelty).",havainnot.md H-104
 H-104,julkaisu,ei_tiedossa,Aineisto ei käsittele vaikutusta tulosteisiin tai julkaisuun.,
 H-104,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole; laukaisu on virhepolku tai käyttäjän ESC.,riskiarvio.csv H-104
@@ -1722,8 +1722,8 @@ H-109,tiedonsiirto,ei_tiedossa,"Poisto lähetetään koodin mukaan muille työas
 H-109,laitteet,ei_sovellu,"Vika ei liity lukijoihin, kelloihin, näyttötauluihin tai tulostimiin.",
 H-109,julkaisu,ei_tiedossa,Aineisto ei käsittele vaikutusta tulosteisiin tai julkaisuun.,
 H-109,tietoturva,ei_perusteltu,"Riskiarvion mukaan tietoturvavaikutusta ei ole; vika laukeaa käyttäjän toimenpiteestä lomakkeessa, ei verkosta.",riskiarvio.csv H-109; gui-liiketoimintalogiikka.md luku 11
-H-109,normaalikaytto,mahdollinen,"Laukeaa lomakkeen valikkotoiminnosta ilman erityisasetusta, mutta vaatii käyttäjän virheellisen toimenpiteen (poisto ilman valintaa tai lisäyksen perumisen jälkeen). Ei ajettu.",gui-liiketoimintalogiikka.md luku 5.1
-H-109,poikkeustilanne,mahdollinen,"Laukaisijana on käyttäjän virheellinen toimenpide lomakkeessa, ei ympäristövirhe. Ei ajettu.",gui-liiketoimintalogiikka.md luku 5.1
+H-109,normaalikaytto,ei_perusteltu,"Vika laukeaa vain virheellisestä toimenpiteestä lomakkeessa (poisto ilman valintaa, lisäyksen perumisen jälkeen tai toistettu poisto); tavallinen yhden kilpailijan poisto valitusta kilpailijasta ei sitä laukaise. Ei ajettu.",gui-liiketoimintalogiikka.md luku 5.1; Juk/vdat.cpp:164-176
+H-109,poikkeustilanne,mahdollinen,"Laukaisijana on käyttäjän virheellinen toimenpide lomakkeessa, ei ympäristövirhe; HK:ssa tietuenumero -1 kirjoittaa taulukon alkua edeltävään muistiin, viestissä rajatarkistus (d >= 0) estää sen mutta vapaiden paikkojen luettelo voi silti sotkeutua. Ei ajettu.",gui-liiketoimintalogiikka.md luku 5.1; Juk/vdat.cpp:164-176; dbboxm/dbbox1.cpp:260-268
 H-109,havaittavuus,ei_tiedossa,Aineisto ei kuvaa näkyvää oiretta; vika voi näkyä vasta myöhemmin.,
 H-109,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: älä poista ilman valittua kilpailijaa tai heti lisäyksen perumisen jälkeen; tehoa ei ole kokeiltu.",H-109; gui-liiketoimintalogiikka.md
 H-109,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi käsin; keinoa ei ole kuvattu eikä kokeiltu.,riskiarvio.csv H-109
@@ -1872,7 +1872,7 @@ H-118,havaittavuus,ei_tiedossa,Aineisto ei kuvaa näkyvää oiretta; käyttäjä
 H-118,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: tarkista numerot toiminnon jälkeen (kortin luku 9); turvallista tapaa käyttää toimintoa valmisteluvaiheessa ei tunneta. Ei kokeiltu.",H-118; kortin luku 9
 H-118,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi käsin; keinoa ei ole kuvattu eikä kokeiltu.,H-118; riskiarvio.csv (palautettavuus: kasin)
 H-119,tulokset,mahdollinen,"Väärin kirjoitettu numero ylikirjoittaa toisen kilpailijan tilan, tuloksen ja lähtöajan; merkitsevä lähtötietokonetilassa. Ei ajettu.",H-119; riskiarvio.csv (tulosten_oikeellisuus: suora); todisteet/c7/osaD2-tarkastus.md N-16
-H-119,ajanotto,ei_perusteltu,Riskiarvion mukaan ajanoton jatkuvuus ei vaarannu.,H-119; riskiarvio.csv (ajanoton_jatkuvuus: ei)
+H-119,ajanotto,ei_tiedossa,"Riskiarvio: ajanoton jatkuvuus ei vaarannu. Seuraava luenta kirjautuu paikanpitäjälle, kun kortti ei ole oikealla kilpailijalla (päätelty), joten välillinen vaikutus ajanottoon on mahdollinen; aineisto ei arvioi sitä. Riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko).",H-119; riskiarvio.csv (ajanoton_jatkuvuus: ei)
 H-119,leimaukset,mahdollinen,"Kortti kopioituu väärälle kilpailijalle, kun numero kirjoitetaan väärin; päätelty koodista, ei ajettu.",H-119; todisteet/c7/osaB2-taydennys.md N-16
 H-119,tietojen_sailyminen,mahdollinen,"Olemassa olevan kilpailijan tulos, tila ja lähtöaika korvautuvat paikanpitäjän tiedoilla ja tallentuvat heti. Ei ajettu.",H-119; todisteet/c7/osaB2-taydennys.md N-16
 H-119,kaatuminen,ei_tiedossa,Aineisto ei kirjaa kaatumista tämän vian seurauksena.,H-119
@@ -1888,7 +1888,7 @@ H-119,havaittavuus,ei_tiedossa,Aineisto ei kuvaa ilmoitusta; käyttäjä huomaa 
 H-119,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: tarkista numero ennen Enteriä lähtötietokonetilassa (kortin luku 9); ei kokeiltu.",H-119; kortin luku 9
 H-119,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi käsin; keinoa ei ole kuvattu eikä kokeiltu.,H-119; riskiarvio.csv (palautettavuus: kasin)
 H-120,tulokset,mahdollinen,"Kortin seuraava luenta osuu paikanpitäjään eikä oikealle kilpailijalle, joten tulos voi kirjautua väärin; päätelty, vaatii ajon.",H-120; riskiarvio.csv (tulosten_oikeellisuus: suora); todisteet/c7/osaB2-taydennys.md N-17
-H-120,ajanotto,ei_perusteltu,Riskiarvion mukaan ajanoton jatkuvuus ei vaarannu.,H-120; riskiarvio.csv (ajanoton_jatkuvuus: ei)
+H-120,ajanotto,ei_tiedossa,"Riskiarvio: ajanoton jatkuvuus ei vaarannu. Seuraava luenta kirjautuu paikanpitäjälle, kun kortti ei ole oikealla kilpailijalla (päätelty), joten välillinen vaikutus ajanottoon on mahdollinen; aineisto ei arvioi sitä. Riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko).",H-120; riskiarvio.csv (ajanoton_jatkuvuus: ei)
 H-120,leimaukset,mahdollinen,"Oikea kilpailija tallentuu ilman korttia ja kortti jää paikanpitäjälle, joten luenta kohdistuu väärin; päätelty, vaatii ajon.",H-120; todisteet/c7/osaB2-taydennys.md N-17; todisteet/c7/osaD2-tarkastus.md N-17
 H-120,tietojen_sailyminen,mahdollinen,"Oikea kilpailija tallennetaan ilman korttia, ja paikanpitäjä pitää kortin; päätelty, vaatii ajon.",H-120; todisteet/c7/osaB2-taydennys.md N-17
 H-120,kaatuminen,ei_tiedossa,Aineisto ei kirjaa kaatumista tämän vian seurauksena.,H-120
@@ -2091,12 +2091,12 @@ H-132,laitteet,ei_tiedossa,"Aineisto ei käsittele vaikutusta lukijoihin, kelloi
 H-132,julkaisu,ei_tiedossa,"Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai tulospalveluun.",H-132
 H-132,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole.,H-132; riskiarvio.csv (tietoturva: ei)
 H-132,normaalikaytto,ei_perusteltu,"Vika vaatii AJAT=- tai LAJAT=-asetuksella annetun vapaan nimen yksivaiheisessa kilpailussa; oletusnimen merkin poisto antaa nimen AJAT.LST, ja onko se tarkoitus, kysytään OP-6:ssa.",H-132; Hk/HkInit.cpp:3357-3360; docs-site/docs/hkkisawin/hkliite1.md; omistajan-paatokset.md OP-6
-H-132,poikkeustilanne,ei_tiedossa,"Vika vaatii asetuksen eikä virhettä; aineisto ei kerro, onko vapaa ajanottotiedoston nimi harvinainen asetus.",H-132; riskiarvio.csv (saavutettavuus: asetus)
+H-132,poikkeustilanne,mahdollinen,"Vika vaatii asetuksen (vapaa nimi AJAT=- tai LAJAT=-asetuksella yksivaiheisessa kilpailussa); asetuksen yleisyys ei ole tiedossa, ja harvinainen asetus on poikkeustilanne.",H-132; riskiarvio.csv (saavutettavuus: asetus)
 H-132,havaittavuus,mahdollinen,"Käyttäjä voi huomata, ettei tiedostoa löydy antamallaan nimellä; ilmoitusta ei kuvata; päätelty.",H-132; todisteet/c8/osaE-tarkastus.md N-B1
 H-132,kiertotapa,ei_tiedossa,Aineistossa ei ole kirjattua keinoa; korjaussuunnitelman mukaan nimeämistä ei muuteta ilman tietoa käytännöstä.,H-132; omistajan-paatokset.md OP-6
 H-132,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi käsin; ajat ovat johdonmukaisesti odottamattomalla nimellä olevassa tiedostossa (päätelty); siirtomenettelyä ei kuvata eikä ole kokeiltu.,H-132; riskiarvio.csv (palautettavuus: kasin)
 H-133,tulokset,mahdollinen,"Riskiarvion mukaan vaikutus on epäsuora: laskurit voivat kaksinkertaistua ja ohjelma voi avata tyhjän aikahistoriatiedoston; päätelty, ei ajettu.",H-133; riskiarvio.csv (tulosten_oikeellisuus: epasuora); todisteet/c8/osaB-elinkaari.md B4
-H-133,ajanotto,ei_perusteltu,Riskiarvion mukaan ajanotto ei pysähdy.,H-133; riskiarvio.csv (ajanoton_jatkuvuus: ei)
+H-133,ajanotto,ei_tiedossa,"Riskiarvio sanoo, ettei ajanotto pysähdy, mutta kortti ei erittele välillistä vaikutusta: käynnistyksen uusinta voi vioittaa tiedostonimiä ja avata tyhjiä tiedostoja, jolloin ajanoton kirjausten kohde muuttuu; aineisto ei ratkaise.",riskiarvio.csv H-133 (ajanoton_jatkuvuus: ei)
 H-133,leimaukset,ei_tiedossa,Aineisto ei käsittele vaikutusta leimausten lukuun.,H-133
 H-133,tietojen_sailyminen,mahdollinen,"Vioittuneilla nimillä avataan uudet tyhjät tiedostot, eikä vanhaa historiaa löydy; päätelty, ei ajettu.",H-133; todisteet/c8/osaE-tarkastus.md N-B1
 H-133,kaatuminen,mahdollinen,"Uudelleenajo ei nollaa numerohakemiston rivilaskuria (H-129:n kuvio), joten ison kilpailun kanssa ylivuoto on mahdollinen; päätelty, ei ajettu.",H-133; todisteet/c8/osaE-tarkastus.md N-B2; Hk/HkIx.cpp:101-107
@@ -2224,7 +2224,7 @@ H-140,havaittavuus,mahdollinen,"Uusi kilpailija näyttää jo lukeneen kortin, m
 H-140,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: uudelleenkäynnistys poiston ja uuden lisäyksen jälkeen ennen kortin lukua linkittää emit-tietueet uudelleen (raportti: korjautuu uudelleenkäynnistyksellä). Tehoa ei ole kokeiltu.",H-140 kortti luku 9; todisteet/c8/osaC-eheys.md luku 7
 H-140,palautuminen,mahdollinen,Riskiarvion palautettavuus on käsin; raportti kirjaa uudelleenkäynnistyksen palautumiskeinona (lueemitfile linkittää uudelleen). Ei kokeiltu.,riskiarvio.csv H-140 (palautettavuus: kasin); todisteet/c8/osaC-eheys.md N-C8
 H-141,tulokset,mahdollinen,Riskiarvion mukaan vaikutus on epäsuora: vanha erälähdön alkuaika voi vaikuttaa uuden vaiheen lähtöaikoihin ja kaksoiskorttien esto voi lakata; päätelty.,"H-141; riskiarvio.csv (tulosten_oikeellisuus: epasuora); todisteet/c8/osaB-elinkaari.md N-B4, N-B11"
-H-141,ajanotto,ei_perusteltu,Riskiarvion mukaan ajanotto ei pysähdy.,H-141; riskiarvio.csv (ajanoton_jatkuvuus: ei)
+H-141,ajanotto,ei_tiedossa,"Riskiarvio sanoo, ettei ajanotto pysähdy; vanha erälähtö voi vaikuttaa uuden vaiheen lähtö- ja kirjausaikoihin (luku 7, päätelty), eikä aineisto ratkaise välillistä vaikutusta ajanottoon.",riskiarvio.csv H-141 (ajanoton_jatkuvuus: ei)
 H-141,leimaukset,mahdollinen,"Kun kaksoiskorttien esto lakkaa, saman kortin toinen luku käsitellään; päätelty raportin laskuesimerkistä, ei ajettu.",H-141; todisteet/c8/osaE-tarkastus.md N-B11
 H-141,tietojen_sailyminen,ei_tiedossa,"Aineisto ei kerro, vaikuttaako vanha erälähtö tallennettuihin tietoihin.",H-141; todisteet/c8/osaE-tarkastus.md N-B4
 H-141,kaatuminen,ei_tiedossa,Aineisto ei kirjaa kaatumista tämän vian seurauksena.,H-141
@@ -2238,7 +2238,7 @@ H-141,normaalikaytto,ei_tiedossa,"Kaksoiskorttien eston osa laukeaa oletusasetuk
 H-141,poikkeustilanne,ei_perusteltu,Laukeaa ilman poikkeustilannetta: tavallinen vaiheen vaihto riittää.,H-141; todisteet/c8/osaB-elinkaari.md N-B11
 H-141,havaittavuus,ei_tiedossa,Aineisto ei kuvaa näkyvää oiretta.,H-141
 H-141,kiertotapa,ei_tiedossa,"Aineistossa ei ole kirjattua keinoa; OP-6:n uudelleenkäynnistysvaihtoehto on avoin päätös, ei keino.",H-141; omistajan-paatokset.md OP-6
-H-141,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi käsin; uudelleenkäynnistys rakentaa tilan uudelleen (päätelty); ei kokeiltu.,H-141; riskiarvio.csv (palautettavuus: kasin)
+H-141,palautuminen,mahdollinen,"Riskiarvio kirjaa palautettavuudeksi käsin; uudelleenkäynnistys nollaa laskurin ja aloittaa tyhjällä taululla (luettu koodista, ei kokeiltu); ennen käynnistystä luettuja kortteja esto ei tunne.",H-141; riskiarvio.csv (palautettavuus: kasin); Hk/HkEmit.cpp:3029
 H-142,tulokset,mahdollinen,"Riskiarvion mukaan vaikutus tuloksiin on välillinen: väliaikasijoituksista voi puuttua kilpailija tai listalla voi olla siirtynyt joukkue. Kokoomarivi, luettu koodista, ei tarkastettu eikä ajettu.","riskiarvio.csv H-142; todisteet/c8/osaC-eheys.md N-C11, N-C13"
 H-142,ajanotto,ei_perusteltu,Riskiarvio: ajanotto ei pysähdy; viat ovat johdettujen rakenteiden ylläpidossa.,riskiarvio.csv H-142 (ajanoton_jatkuvuus: ei)
 H-142,leimaukset,ei_sovellu,"Kokoomarivin kohdat koskevat nimihakemistoa, sijoitusketjuja ja laskureita eivätkä kortin tai leimausten lukua.",
@@ -2256,7 +2256,7 @@ H-142,havaittavuus,mahdollinen,"Kaksoisrivi tai väärä luku voi näkyä luette
 H-142,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: uudelleenkäynnistys sarjan vaihdon tai tuonnin jälkeen ennen luetteloiden tulostusta (raportti: jokainen kohta korjautuu uudelleenkäynnistyksellä). Tehoa ei ole kokeiltu.",H-142 kortti luku 9; todisteet/c8/osaC-eheys.md luku 7
 H-142,palautuminen,mahdollinen,Riskiarvion palautettavuus on käsin; raportti kirjaa uudelleenkäynnistyksen palautumiskeinona. Ei kokeiltu; jo tulostettu luettelo jää väärin sisältäväksi.,riskiarvio.csv H-142 (palautettavuus: kasin); todisteet/c8/osaC-eheys.md luku 7
 H-143,tulokset,mahdollinen,"Riskiarvion mukaan vaikutus on epäsuora: vaiheen 2 ennakoitu aika, lähtöpisteet ja korostukset voivat perustua edellisen vaiheen tietoihin; päätelty.","H-143; riskiarvio.csv (tulosten_oikeellisuus: epasuora); todisteet/c8/osaB-elinkaari.md N-B5, N-B9, N-B10"
-H-143,ajanotto,ei_perusteltu,Riskiarvion mukaan ajanotto ei pysähdy.,H-143; riskiarvio.csv (ajanoton_jatkuvuus: ei)
+H-143,ajanotto,ei_tiedossa,"Riskiarvio sanoo, ettei ajanotto pysähdy; kortin kohta N-B6 mainitsee, että ajanottojonon koko voi jäädä ensimmäisen jonon luontihetken mukaiseksi, eikä aineisto ratkaise vaikutusta ajanottoon.",riskiarvio.csv H-143 (ajanoton_jatkuvuus: ei); H-143 luku 3
 H-143,leimaukset,mahdollinen,N-B8: toisen emit-koodin tiedot voivat jäädä edelliseltä vaiheelta; N-B14: tyhjennetty emit-koodi osoittaa vanhaan kilpailijaan; päätelty.,"H-143; todisteet/c8/osaB-elinkaari.md N-B8, N-B14"
 H-143,tietojen_sailyminen,mahdollinen,"N-B7: käsin muokattu XML voi viedä maaliajan kirjoituksen taulukon ulkopuolelle; päätelty, ei ajettu.",H-143; todisteet/c8/osaB-elinkaari.md N-B7; Hk/HkDat.cpp:1320
 H-143,kaatuminen,mahdollinen,N-B7: taulukon ulkopuolinen kirjoitus; seuraus (väärä arvo vai kaatuminen) ei ole tiedossa; päätelty.,H-143; Hk/HkDat.cpp:1320; Hk/HkGlobals.cpp:565
@@ -2362,7 +2362,7 @@ H-149,tiedonsiirto,mahdollinen,Yhden tiedoston tilassa TCP-yhteydellä tiedostoa
 H-149,laitteet,ei_tiedossa,Aineisto ei kuvaa laitteiden reaktiota ohjelman päättymiseen.,
 H-149,julkaisu,mahdollinen,Automaattinen HTML-tuloste päättyy virheeseen ensimmäisellä kierroksella; tiedoston sisältöä virhehetkellä ei ole tarkistettu.,virheenkasittely.md 12.1
 H-149,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole; laukaisijana on ohjelman oma automaattitulostus.,riskiarvio.csv H-149 (tietoturva: ei)
-H-149,normaalikaytto,vahvistettu,"Testikehyksessä oletuskokoonpano (erilliset tiedostot, ei AUTOFILE.LST) kaatui ilman virhettä tai erikoisasetusta; automaattitulostus on silti kytkettävä päälle.",virheenkasittely.md 12.1 (Saavutettavuus)
+H-149,normaalikaytto,mahdollinen,"Kun automaattitulostus on päällä, oletuskokoonpano (erilliset tiedostot, ei AUTOFILE.LST) kaatuu testikehyksessä; automaattitulostuksen yleisyys asennuksissa ei ole tiedossa, joten arvoa ei voi pitää vahvistettuna tavallisena käyttönä.",virheenkasittely.md 12.1 (Saavutettavuus); H-149 luku 4
 H-149,poikkeustilanne,ei_perusteltu,Laukeaa ilman poikkeustilannetta: vika ilmenee automaattisen tulostuksen ensimmäisellä kierroksella ilman virhettä tai katkoa.,virheenkasittely.md 12.1
 H-149,havaittavuus,mahdollinen,Konsoliohjelman äkillinen päättyminen näkyy käyttäjälle; ilmoituksesta aineisto ei kerro.,virheenkasittely.md 12.1
 H-149,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: automaattitulostuksen jättäminen pois käytöstä, koska kaatuminen tapahtuu siinä; toimitetussa ohjelmassa ei kokeiltu. Turvallista tapaa käyttää automaattitulostusta ei ole.",kortti H-149 luku 9
@@ -2372,14 +2372,14 @@ H-150,ajanotto,mahdollinen,"Riskiarvio: pysäyttää. Virtojen loppuessa emit-ti
 H-150,leimaukset,mahdollinen,"Emit-tiedoston uudelleenavauksen epäonnistuminen voi estää korttien tallennuksen; päätelty, ei ajettu (Q95).",todisteet/c9/vaihe2/tarkastus.md kohta 5
 H-150,tietojen_sailyminen,ei_tiedossa,"KILP.DAT ei ole vian kohde (C-9 osa C), mutta emit- ja AJAT-tiedostojen avausten epäonnistumisen seuraus on päätelty eikä todennettu.",todisteet/c9/osaC-elinkaari.md N-C1
 H-150,kaatuminen,mahdollinen,"Virran NULL-arvon käyttö emit-tiedoston uudelleenavauksessa voi kaataa ohjelman; päätelty koodista, ei ajettu.",todisteet/c9/vaihe2/tarkastus.md kohta 5
-H-150,lukkiutuminen,mahdollinen,"Avausvirheen ilmoitus annetaan automaattitulostuksen lukon alla ja voi pysäyttää taustasäikeen; päätelty samasta ilmoituspolusta kuin H-147:n kokeessa, ei ajettu.",virheenkasittely.md 12.4 (lukija pitää tiedostoa auki)
+H-150,lukkiutuminen,ei_tiedossa,Avausvirheen ilmoitus (Hk/HkTulostus.cpp:7110-7114) annetaan kestolla 2000: konsolissa writeerror_w odottaa vain 2 sekuntia eikä taustasäie jää pysyvästi; GUI:n TFormSelect3::Kysy-polun aikaraja on tarkistamatta (Q6-raportin avoin kysymys). Aiempi lähde (lukija pitää tiedostoa auki) ei koske tätä polkua.,Hk/HkTulostus.cpp:7110-7114; tputilv2/Writeerr.cpp:85-86
 H-150,hiljainen_hairio,mahdollinen,Vuoto on näkymätön virtojen loppumiseen asti (mitattu testikehyksessä); sen jälkeen ilmoitukset tulevat.,virheenkasittely.md 12.5
 H-150,tiedonsiirto,ei_tiedossa,Aineisto ei kerro vaikutusta työasemien väliseen tiedonsiirtoon.,
 H-150,laitteet,ei_tiedossa,"Aineisto ei kerro vaikutusta lukijoihin, kelloihin, tauluihin tai tulostimiin.",
 H-150,julkaisu,mahdollinen,"Virtojen loputtua automaattinen XML-vienti epäonnistuu ilmoituksella; MSVC-kokeessa vienti jatkoi virtojen täyttyessä, bcc32-seurauksia ei mitattu.",virheenkasittely.md 12.5; todisteet/c9/osaC-elinkaari.md N-C1
 H-150,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole; laukaisijana on ohjelman oma ajastettu vienti.,riskiarvio.csv H-150 (tietoturva: ei)
 H-150,normaalikaytto,ei_tiedossa,"Riskiarvio: asetus. Vika edellyttää XML-automaattivientiä ja vaihetta 2 tai myöhempää, ja virtavuoto lisäksi AUTOFILE.LST-tiedostoa; aineisto ei kerro, onko se tavallista.",riskiarvio.csv H-150 (saavutettavuus: asetus)
-H-150,poikkeustilanne,mahdollinen,"Ilmenee harvinaisella asetusyhdistelmällä (XML-vienti, vaihe 2 tai myöhempi, AUTOFILE.LST); luettu koodista ja toistettu testikehyksessä.",virheenkasittely.md 12.5
+H-150,poikkeustilanne,mahdollinen,"Ilmenee asetusyhdistelmällä (XML-vienti, vaihe 2 tai myöhempi, AUTOFILE.LST), jonka yleisyys ei ole tiedossa; jos se on harvinainen asetus, kyse on poikkeustilanteesta. Luettu koodista ja toistettu testikehyksessä.",virheenkasittely.md 12.5
 H-150,havaittavuus,mahdollinen,Vuoto ei näy; virtojen loputtua ilmoitukset tulevat joka kierroksella (päätelty).,todisteet/c9/osaC-elinkaari.md N-C1
 H-150,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: ohjelman uudelleenkäynnistys ennen virtojen täyttymistä, koska uudelleenkäynnistys nollaa vuodon (päätelty); tehoa ei ole kokeiltu.",kortti H-150 luku 9
 H-150,palautuminen,mahdollinen,"Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; vuoto alkaa alusta, tehoa ei ole kokeiltu.",riskiarvio.csv H-150 (palautettavuus: uudelleenkaynnistys)
@@ -2395,7 +2395,7 @@ H-151,laitteet,ei_tiedossa,"Aineisto ei kerro vaikutusta lukijoihin, kelloihin, 
 H-151,julkaisu,mahdollinen,"Automaattitulostuksen HTML- ja XML-tiedostot voivat lakata päivittymästä; luettu koodista, vapautetun muistin luku toistettu ASanilla.",havainnot.md H-151
 H-151,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole; laukaisijana on ohjelman oma automaattitulostus.,riskiarvio.csv H-151 (tietoturva: ei)
 H-151,normaalikaytto,ei_tiedossa,"Riskiarvio: asetus. Vika edellyttää TCP-yhteyttä ja sarjakohtaista automaattitulostusta; aineisto ei kerro, onko se tavallista.",riskiarvio.csv H-151 (saavutettavuus: asetus)
-H-151,poikkeustilanne,ei_perusteltu,Laukeaa ilman poikkeustilannetta: ensimmäinen TCP-lähetys riittää; lähetyssäikeen käynnistyksen epäonnistuminen on lisäilmentymä.,virheenkasittely.md 12.5
+H-151,poikkeustilanne,mahdollinen,"Asetusyhdistelmä TCP-yhteys ja sarjakohtainen automaattitulostus, jonka yleisyys ei ole tiedossa; jos se on harvinainen asetus, kyse on poikkeustilanteesta. Lähetyssäikeen käynnistyksen epäonnistuminen on lisäilmentymä.",virheenkasittely.md 12.5; H-151 luku 4
 H-151,havaittavuus,ei_tiedossa,Ohjelma ei ilmoita vapautetun muistin käytöstä; käyttäjä huomaa vain mahdollisen päättymisen. Aineisto ei ratkaise.,havainnot.md H-151
 H-151,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: automaattitulostuksen käyttö ilman TCP-lähetystä, koska vika vaatii TCP-lähetyksen; tehoa ei ole kokeiltu.",kortti H-151 luku 9
 H-151,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; vika uusiutuu ensimmäisen TCP-lähetyksen jälkeen; tehoa ei ole kokeiltu.,riskiarvio.csv H-151 (palautettavuus: uudelleenkaynnistys)
@@ -2447,7 +2447,7 @@ H-154,poikkeustilanne,mahdollinen,Edellytyksenä on tulostimen virhe sivun tai a
 H-154,havaittavuus,ei_perusteltu,"Tarkastajan mukaan myöhemmistä tulostuksista ei anneta ilmoitusta, ja ensimmäinenkin päättämisvirhe on hiljainen; vain aloituksen virheestä ilmoitetaan.",todisteet/c9/osaE-tarkastus.md kohta 12
 H-154,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: ohjelman uudelleenkäynnistys tulosteiden lakattua, koska tulostin avataan käynnistyksessä; tehoa ei ole kokeiltu.",kortti H-154 luku 9
 H-154,palautuminen,mahdollinen,"Riskiarvio kirjaa palautettavuudeksi käsin; uudelleenkäynnistys avaa tulostimen (päätelty), valikon Tuloskirjoitin laukaisee H-152:n; tehoa ei ole kokeiltu.",riskiarvio.csv H-154 (palautettavuus: kasin); kortti H-154 luku 8
-H-155,tulokset,ei_perusteltu,Riskiarvion mukaan tuloksiin ei ole vaikutusta.,riskiarvio.csv H-155
+H-155,tulokset,ei_tiedossa,"Riskiarvio sanoo, ettei tuloksiin ole vaikutusta; pistokkeiden loppuessa lähtevät TCP-yhteydet epäonnistuvat (tiedonsiirtorivi), mikä voi välillisesti vanhentaa muille asemille tai julkaisuun menevät tulokset; aineisto ei ratkaise.",riskiarvio.csv H-155; todisteet/c9/osaC-elinkaari.md N-C3
 H-155,ajanotto,mahdollinen,"Riskiarvio: häiritsee. Pistokkeiden loppuessa uudet lähtevät yhteydet epäonnistuisivat, myös toimivien linkkien uudelleenyhteydet (raportin päätelmä; vuotonopeus päätelty).",riskiarvio.csv H-155; todisteet/c9/osaC-elinkaari.md N-C3
 H-155,leimaukset,ei_tiedossa,Aineisto ei kerro vaikutusta leimausten vastaanottoon.,
 H-155,tietojen_sailyminen,ei_tiedossa,Aineisto ei kerro tiedon katoamisesta.,
@@ -2502,12 +2502,12 @@ H-158,tietojen_sailyminen,ei_tiedossa,Aineisto ei kerro vaikutusta tallennettuun
 H-158,kaatuminen,mahdollinen,"Kanavan osoitin jää vapautettuun rakenteeseen, ja seuraava automaattitulostuskierros lukee sitä ja voi sulkea sen uudelleen. Sama mekanismi on toistettu eristetyllä kokeella havainnolle H-149 (kohta d); XML=-polun oma seuraus on mittaamatta.",H-149; Juk/VTulostus.cpp:7150-7186
 H-158,lukkiutuminen,ei_tiedossa,Aineisto ei kerro lukkiutumisesta tässä polussa.,
 H-158,hiljainen_hairio,mahdollinen,"XML-tiedosto jää ilman tuloksia, eikä ohjelma ilmoita siitä: kierros päättyy onnistuneena. Luettu koodista, ei ajettu.",Juk/VTulostus.cpp:7179-7186
-H-158,tiedonsiirto,ei_tiedossa,"XML-haara palaa ennen TCP-tiedostonsiirtoa, joten tiedostoa ei lähetetä toiselle työasemalle; aineisto ei kerro muuta vaikutusta tiedonsiirtoon tai muihin työasemiin.",
+H-158,tiedonsiirto,ei_tiedossa,"Kun AUTOFILE.LST puuttuu, XML-haara palaa ennen TCP-tiedostonsiirtoa ja KOMENTO=-ajoa, joten tiedostoa ei lähetetä toiselle työasemalle; kun AUTOFILE.LST on olemassa, paluuta ei tehdä eikä seurausta ole selvitetty. Aineisto ei kerro muuta vaikutusta tiedonsiirtoon tai muihin työasemiin.",Juk/VTulostus.cpp:7179-7186; Juk/VTulostus.cpp:7290-7330
 H-158,laitteet,ei_sovellu,"Havainto koskee tiedostotulostetta, ei laitteita.",
 H-158,julkaisu,mahdollinen,"XML=-asetuksella tuotettu julkaisutiedosto ei sisällä koodin mukaan tuloksia: se on tyhjä tai siinä on enintään sulkeva tunniste. Haara ei myöskään aja tiedoston jälkeen asetettua komentoa. Luettu koodista, ei ajettu.",Juk/VTulostus.cpp:7179-7186; Juk/XMLtulos.cpp:229-237
 H-158,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole.,riskiarvio.csv H-158
 H-158,normaalikaytto,ei_perusteltu,Vika vaatii XML=-asetuksen tai konsolin automaattitulostusvalikon X-valinnan; riskiarvio: saavutettavuus asetus. Ilman niitä vikaa ei synny.,riskiarvio.csv H-158; Juk/VInit.cpp:905-915
-H-158,poikkeustilanne,ei_perusteltu,"Laukeaa ilman poikkeustilannetta: vika ilmenee jokaisella automaattitulostuskierroksella heti, kun XML-muoto on valittu; virhettä tai katkoa ei tarvita. Aineisto ei kerro asetuksen yleisyyttä.",Juk/VTulostus.cpp:7179-7186
+H-158,poikkeustilanne,mahdollinen,"XML= on erityisasetus (ei oletus), joten vika kuuluu harvinaisen asetuksen poikkeustilanteeseen; virhettä tai katkoa ei tarvita, ja asetuksen yleisyys on tuntematon.",Juk/VTulostus.cpp:7179-7186; kortti H-158 luku 4
 H-158,havaittavuus,mahdollinen,Tyhjän tai vajaan tiedoston voi huomata katsomalla tiedostoa tai julkaisua; ohjelma ei ilmoita siitä. Osoittimen oireesta aineisto ei kerro.,Juk/VTulostus.cpp:7179-7186
 H-158,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: tarkista tiedoston sisältö ennen julkaisua. Suositus ei korjaa vikaa eikä sen tehoa ole kokeiltu. Turvallista tapaa saada XML=-julkaisu toimimaan ei ole kirjattu.",kortti H-158 luku 9
 H-158,palautuminen,mahdollinen,"Riskiarvio kirjaa palautettavuudeksi käsin: XML=-rivin poistaminen asetuksista ja uudelleenkäynnistys lopettaisi tyhjän tiedoston kirjoituksen [päätelty], mutta XML-julkaisu ei palaudu. Tehoa ei ole kokeiltu.",riskiarvio.csv H-158
@@ -2542,7 +2542,7 @@ H-160,normaalikaytto,ei_tiedossa,"Riskiarvio: asetus. Peili on valinnainen; H-16
 H-160,poikkeustilanne,mahdollinen,"Palvelinyhteyden katko laukaisee vian; lisäksi heittomerkki nimessä ja H-161:n lauseet. Luettu koodista, ei ajettu.",havainnot.md H-160; riippuvuudet.md 19.3
 H-160,havaittavuus,mahdollinen,"Ohjelman äkillinen sulkeutuminen näkyy käyttäjälle; ilmoituksesta tai virheikkunasta aineisto ei kerro, koska ajoa ei ole tehty.",havainnot.md H-160
 H-160,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: SQL-peilin jättäminen pois käytöstä, koska kirjoitussäie käynnistyy vain peilin käytöstä; tehoa ei ole kokeiltu. Heittomerkin tai virheellisen lauseen laukaisun estämiseksi ei ole kirjattua keinoa.",kortti H-160 luku 9; riippuvuudet.md luku 11
-H-160,palautuminen,mahdollinen,"Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; tehoa ei ole kokeiltu, ja vika uusiutuu, jos laukaisija on edelleen olemassa.",riskiarvio.csv H-160 (palautettavuus: uudelleenkaynnistys); kortti H-160 luku 8
+H-160,palautuminen,mahdollinen,"Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; tehoa ei ole kokeiltu, ja vika uusiutuu, jos laukaisija on edelleen olemassa. Vienti (valinta 3) ei kirjoita peiliin, kun jatkuva kirjoitus on päällä ja kirjoitussäie on päättynyt, vaan vasta uudelleenkäynnistyksen jälkeen tai kun jatkuva kirjoitus on pois päältä (päätelty).",riskiarvio.csv H-160 (palautettavuus: uudelleenkaynnistys); kortti H-160 luku 8; cbHk/UnitExport.cpp:435-440; cbHk/UnitMySQL.cpp:751
 H-161,tulokset,mahdollinen,"Riskiarvio: epäsuora. Peilin rivit voivat jäädä vanhoiksi tai saada väärän kentän arvon, joten peilin varassa oleva lukija (esimerkiksi tulosnäyttö) saisi väärää tietoa; ohjelman omat tulokset (KILP.DAT) eivät muutu. Luettu koodista, ei ajettu.",riskiarvio.csv H-161; riippuvuudet.md 19.3.1
 H-161,ajanotto,ei_tiedossa,"Riskiarvio: ei. Virheellinen lause johtaa H-160:n mukaan koko ohjelman päättymiseen, ja H-160:n riskiarvio kirjaa ajanoton pysähtyvän; ristiriita jää avoimeksi (riskiarvio tarkistettava).",riskiarvio.csv H-161 ja H-160; riippuvuudet.md 19.3
 H-161,leimaukset,mahdollinen,"Jos virheellinen lause johtaa H-160:n mukaiseen päättymiseen, lukijoiden leimaustietojen vastaanotto pysähtyy tältä työasemalta; luettu koodista, ei ajettu.",havainnot.md H-161; H-160
@@ -2555,7 +2555,7 @@ H-161,laitteet,ei_tiedossa,"Aineisto ei käsittele vaikutusta lukijoihin, kelloi
 H-161,julkaisu,mahdollinen,"SQL-peili saa vanhentunutta tai väärää tietoa; tulosteita, HTML- tai XML-tiedostoja vika ei koske.",havainnot.md H-161; riippuvuudet.md 19.3.1
 H-161,tietoturva,ei_tiedossa,"Riskiarvio: ei. Merkkijonoja ei suojata, ja injektio on päätelty mahdolliseksi mutta ei vahvistetuksi (Q105); riskiarvio tarkistettava.",riskiarvio.csv H-161; riippuvuudet.md 19.3.1; Q105
 H-161,normaalikaytto,ei_tiedossa,"Riskiarvio: asetus. Lauseet ovat virheellisiä tavallisella datalla, mutta vika edellyttää valinnaista SQL-peiliä; aineisto ei kerro, onko peilin käyttö tavallista.",riskiarvio.csv H-161 (saavutettavuus: asetus); riippuvuudet.md 19.3.1
-H-161,poikkeustilanne,ei_perusteltu,"Laukeaa ilman poikkeustilannetta: lauseet ovat virheellisiä tavallisella datalla, eikä virhettä, katkoa tai virheellistä syötettä tarvita.",riippuvuudet.md 19.3.1; kortti H-161 luku 4
+H-161,poikkeustilanne,mahdollinen,"Vika vaatii valinnaisen SQL-peilin asetuksen, jonka yleisyys ei ole tiedossa; jos peili on harvinainen asetus, kyse on poikkeustilanteesta. Lauseet ovat virheellisiä tavallisella datalla.",riskiarvio.csv H-161 (saavutettavuus: asetus); riippuvuudet.md 19.3.1
 H-161,havaittavuus,ei_tiedossa,"Ohjelma ei ilmoita peilin virheistä; jos ohjelma ei sulkeudu, käyttäjä huomaa asian vain vertaamalla peilin sisältöä. Aineisto ei ratkaise.",havainnot.md H-161
 H-161,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: SQL-peilin jättäminen pois käytöstä, koska virheelliset lauseet ajetaan vain peilin käytössä; tehoa ei ole kokeiltu. Peilin käyttöön ei ole kirjattua turvallista keinoa.",kortti H-161 luku 9
 H-161,palautuminen,mahdollinen,"Riskiarvio kirjaa palautettavuudeksi käsin; ohjelman uudelleenkäynnistys palauttaa ohjelman, mutta peilin korjaus vientitoiminnolla käyttää samoja lauseita; keinoja ei ole kokeiltu.",riskiarvio.csv H-161 (palautettavuus: kasin); kortti H-161 luku 8
@@ -2566,7 +2566,7 @@ H-162,tietojen_sailyminen,mahdollinen,"Verkosta saapuvat tietueet eivät tallenn
 H-162,kaatuminen,ei_tiedossa,Aineisto ei kirjaa kaatumista tämän vian seurauksena.,
 H-162,lukkiutuminen,mahdollinen,"Lukko jää päälle ja tietoja tallentavat säikeet jäävät odottamaan; lukon kulku on luettu koodista ja pääistunto todensi sen, ajoa ei ole tehty (Q97).",havainnot.md H-162; todisteet/c10/raportit/osaF-tarkastus.md E1
 H-162,hiljainen_hairio,mahdollinen,"Käyttöliittymä näyttää toimivan, koska lukko on uudelleentuleva, vaikka tietoja tallentavat säikeet ovat pysähtyneet (luettu koodista).",havainnot.md H-162
-H-162,tiedonsiirto,mahdollinen,"Muilta työasemilta tulevien tietueiden vastaanotto ja tallennus voi pysähtyä tällä työasemalla; muiden työasemien reaktiota aineisto ei kuvaa. Luettu koodista, ei ajettu.",havainnot.md H-162; seuranta.md KE-13
+H-162,tiedonsiirto,mahdollinen,"Muilta työasemilta tulevien tietueiden vastaanotto ja tallennus voi pysähtyä tällä työasemalla; jos pysähtyvä säie on tarkcom, joka käsittelee kaikki saapuvat sanomat yhdessä silmukassa, kaikkien sanomaluokkien käsittely pysähtyisi tällä työasemalla (päätelty, luettu koodista K-vaiheessa, ei tarkastettu); muiden työasemien reaktiota aineisto ei kuvaa.",havainnot.md H-162; seuranta.md KE-13; Hk/HkCom32.cpp:875-905
 H-162,laitteet,ei_tiedossa,"Aineisto ei ratkaise, pysähtyykö lukijoiden tietojen käsittely (KE-13).",seuranta.md KE-13
 H-162,julkaisu,mahdollinen,"Peilin jatkuva kirjoitus pysähtyy, koska laskuri inSQLquery jää arvoon 1 [päätelty]; tulosteita ja HTML- tai XML-tiedostoja vika ei suoraan koske.",todisteet/c10/raportit/osaB-tietokanta.md D5; osaF E1
 H-162,tietoturva,ei_perusteltu,Riskiarvion mukaan tietoturvavaikutusta ei ole; vika edellyttää käyttäjän käynnistämää SQL-vientiä.,riskiarvio.csv H-162 (tietoturva: ei)
@@ -2607,7 +2607,7 @@ H-164,poikkeustilanne,mahdollinen,USB-sovittimen irrotus tai ajurin kaatuminen l
 H-164,havaittavuus,mahdollinen,GUI:ssa edistymispalkki pysähtyy; konsolissa ei ilmaisinta; ei ajettu.,havainnot.md H-164
 H-164,kiertotapa,mahdollinen,muistiturvallisuus.md luvun 15 suositus 5 (seurataan ajanottosyötteen etenemistä) on kirjattu havainnoille H-056 ja H-070; sen tehoa tähän vikaan ei ole arvioitu.,muistiturvallisuus.md luku 15 (suositus 5)
 H-164,palautuminen,mahdollinen,Riskiarvion mukaan palautus tapahtuu uudelleenkäynnistyksellä ja Emit-kortit voi lukea uudelleen; keinoa ei ole kokeiltu.,riskiarvio.csv H-164
-H-165,tulokset,ei_perusteltu,MySQL on valinnainen peili ja KILP.DAT ensisijainen tietolähde; riskiarvion mukaan tulokset eivät vaikuta.,riippuvuudet.md luku 11
+H-165,tulokset,ei_tiedossa,"Suoraan tuloksiin ei ole vaikutusta (MySQL on valinnainen peili, KILP.DAT ensisijainen), mutta välillistä vaikutusta H-163:n kautta (SQLSTART-virhe ohittaa osan alustuksesta) ei ole ratkaistu; riskiarvio sanoo tuloksista ei ilman omaa perustetta välilliselle ketjulle (seuranta.md KE-taulukko).",riippuvuudet.md luku 11; kortti H-165 luku 1
 H-165,ajanotto,mahdollinen,"Riskiarvion mukaan häiritsee; välillisesti H-163:n kautta (SQLSTART-virhe ohittaa osan alustuksesta, mukaan lukien emit-jälkikäsittelyn); ei ajettu.",todisteet/c10/raportit/osaF-tarkastus.md E2
 H-165,leimaukset,mahdollinen,"Välillisesti H-163:n kautta emit-jälkikäsittelysäie voi jäädä käynnistämättä, kun SQL-ajuri puuttuu ja SQLSTART on päällä; ei ajettu.",todisteet/c10/raportit/osaF-tarkastus.md E2
 H-165,tietojen_sailyminen,ei_perusteltu,Puute on paketissa eikä vaikuta tallennettuun tietoon; riippuvuudet.md luvun 19.3 mukaan ei tietovaikutusta.,riippuvuudet.md luku 19.3
@@ -2752,7 +2752,7 @@ H-173,havaittavuus,mahdollinen,"Ohjelma ilmoittaa käynnistyksessä Tuntematon p
 H-173,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: tarkista editorilla tallennetun tiedoston aikalähderivi ja korjaa AIKACOM= muotoon AIKA_COM= käsin; seuraava tallennus editorilla toistaa vian. Ei kokeiltu.",kortti H-173 luku 9
 H-173,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi käsin: rivin nimi korjataan tiedostoon käsin [päätelty]. Luvun 15 varmuuskopiosuositus on kirjattu havainnolle H-071; sen tehoa tähän vikaan ei ole arvioitu.,riskiarvio.csv H-173; muistiturvallisuus.md luku 15
 H-174,tulokset,mahdollinen,"Riskiarvion mukaan vaikutus on suora: sarjatiedot ovat vanhat; päätelty, ei ajettu.",H-174; riskiarvio.csv (tulosten_oikeellisuus: suora); Hk/HkSrj.cpp:72-83
-H-174,ajanotto,ei_perusteltu,Riskiarvion mukaan ajanotto ei pysähdy.,H-174; riskiarvio.csv (ajanoton_jatkuvuus: ei)
+H-174,ajanotto,ei_tiedossa,"Riskiarvio sanoo, ettei ajanotto pysähdy; vanhat sarjatiedot jäävät voimaan ilman huomautusta, eikä aineisto ratkaise välillistä vaikutusta ajanottoon.",riskiarvio.csv H-174 (ajanoton_jatkuvuus: ei)
 H-174,leimaukset,ei_tiedossa,Aineisto ei käsittele vaikutusta leimausten lukuun.,H-174
 H-174,tietojen_sailyminen,ei_tiedossa,"Aineisto ei kerro, tallentuuko jotain pysyvästi vanhoilla sarjatiedoilla.",H-174
 H-174,kaatuminen,ei_tiedossa,Aineisto ei kirjaa kaatumista tämän vian seurauksena.,H-174
@@ -2783,7 +2783,7 @@ H-175,poikkeustilanne,ei_perusteltu,Vika laukeaa ilman poikkeustilannetta: talle
 H-175,havaittavuus,ei_tiedossa,"Aineisto ei kuvaa ilmoitusta; käyttäjä näkee vain valikon rastin, joka ei vastaa toimintaa.",H-175
 H-175,kiertotapa,mahdollinen,"Perusteltu, testaamaton suositus: napsauta valikkokohtia käynnistyksen jälkeen niin, että muuttuja päivittyy (napsautuskäsittelijä asettaa sen); ei kokeiltu.",H-175; kortin luku 10
 H-175,palautuminen,mahdollinen,Riskiarvio kirjaa palautettavuudeksi itsestään; keinoa ei ole kokeiltu.,H-175; riskiarvio.csv (palautettavuus: itsestaan)
-H-176,tulokset,ei_perusteltu,Riskiarvion mukaan tuloksiin ei ole vaikutusta.,riskiarvio.csv H-176
+H-176,tulokset,ei_tiedossa,"Riskiarvio sanoo, ettei tuloksiin ole vaikutusta; kortti kuvaa asetusavaimia, jotka voivat jäädä oletusarvoon tai tulla tulkituiksi väärin, eikä aineisto ratkaise välillistä vaikutusta tuloksiin.",riskiarvio.csv H-176
 H-176,ajanotto,mahdollinen,"Riskiarvio: häiritsee. ViestiLuennassa RFID-lukijan avain valitsee ALGE-ajanoton portissa 1, ja HK:n TDC-ajanottolaitetta ei voi ottaa käyttöön asetuksista. Luettu koodista, ei ajettu.",Juk/VInit.cpp:1593-1634; Hk/HkInit.cpp:1799-1837
 H-176,leimaukset,mahdollinen,"ViestiLuennassa RFID-lukijan avain ei ota RFID-lukijaa käyttöön, joten RFID-leimausten luku ei toimi asetuksella; onko tämä tarkoituksellista, on omistajan päätös (Q111). Luettu koodista, ei ajettu.",Juk/VInit.cpp:1593-1634
 H-176,tietojen_sailyminen,ei_tiedossa,Aineisto ei kerro vaikutusta tallennettuun tietoon.,

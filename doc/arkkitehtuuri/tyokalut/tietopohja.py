@@ -428,6 +428,32 @@ def cmd_tarkista(data):
         for x in set(re.findall(r"\bJS-\d+\b", body)):
             if x not in own:
                 warnings.append("%s: mentions %s, which is not its root cause in the register" % (i, x))
+    # K-5 coverage: a card for every register id, all impact dimensions for every open H,
+    # and every relative Markdown link in cards and chapters resolves to a file
+    missing_cards = sorted(set(data.reg) - set(ids))
+    if missing_cards:
+        errors.append("no card for %d register ids: %s" % (len(missing_cards), " ".join(missing_cards[:20])))
+    dims = [d["ulottuvuus"] for d in data.dims]
+    for i, r in data.risk.items():
+        if r.get("tila") == "avoin":
+            lack = [d for d in dims if d not in data.imp.get(i, {})]
+            if lack:
+                errors.append("%s: impact dimensions not assessed: %s" % (i, " ".join(lack)))
+    link_files = [data.path(i) for i in ids] + [os.path.join(handbook_dir(data), c + ".md") for c in chapters(data)]
+    aineisto = os.path.join(handbook_dir(data), "aineisto")
+    if os.path.isdir(aineisto):
+        link_files += [os.path.join(aineisto, f) for f in os.listdir(aineisto) if f.endswith(".md")]
+    nlinks = 0
+    for f in link_files:
+        for target in re.findall(r"\]\(([^)#\s]+)(?:#[^)]*)?\)", read_text(f)):
+            if re.match(r"[a-z]+:", target):
+                continue
+            nlinks += 1
+            if not os.path.exists(os.path.normpath(os.path.join(os.path.dirname(f), target))):
+                errors.append("%s: broken link %s" % (os.path.relpath(f, data.root).replace(os.sep, "/"), target))
+    print("coverage: %d register ids, %d cards, %d open H with all %d impact dimensions, %d links checked"
+          % (len(data.reg), len(ids), sum(1 for i, r in data.risk.items() if r.get("tila") == "avoin"
+                                         and all(d in data.imp.get(i, {}) for d in dims)), len(dims), nlinks))
     check_handbook(data, errors, warnings)
     kp = os.path.join(data.root, KOOSTE_PATH)
     if os.path.exists(kp):

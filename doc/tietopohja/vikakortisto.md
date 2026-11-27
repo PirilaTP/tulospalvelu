@@ -87,7 +87,7 @@
 | [H-070](#h-070) | FEIG-lukijan vastauksen ilmoittama pituus voi ylittää ohjelman puskurit ja kirjoittaa muistin yli | avoin | P2 | korkea | luettu koodista ja riippumattomasti tarkastettu |
 | [H-071](#h-071) | Verkosta tullut tiedostonsiirtosanoma voi kaataa ohjelman sekä luoda tai korvata tiedostoja ilman tarkistusta | avoin | P1 | korkea | luettu koodista ja riippumattomasti tarkastettu |
 | [H-072](#h-072) | Verkosta tuleva ohjaussanoma voi kirjoittaa ohjelman muistiin taulukon ulkopuolelle ja välittää arvon muille asemille | avoin | P1 | korkea | luettu koodista ja riippumattomasti tarkastettu |
-| [H-073](#h-073) | Emit-välilokin rivi ylittää muistialueen, kun EMVALOKI on päällä ja saapuvassa emit-paketissa on paljon rastejä | avoin | P2 | keskitaso | luettu koodista ja riippumattomasti tarkastettu |
+| [H-073](#h-073) | Emit-välilokin rivi ylittää muistialueen, kun EMVALOKI on päällä ja saapuvassa emit-paketissa on paljon rasteja | avoin | P2 | keskitaso | luettu koodista ja riippumattomasti tarkastettu |
 | [H-074](#h-074) | Lähdepiste- ja lähdejonotiedostot (LAHDEPISTEET, LAHDEJONOT, BOXOHJE) voivat ylittää taulukon tai jättää viestiohjelman silmukkaan | avoin | P4 | keskitaso | luettu koodista; riippumaton tarkastus vahvisti osittain |
 | [H-075](#h-075) | Viestin konsolin aikajonon tulostus lukee alustamattoman kirjasinosoittimen, kun kirjoitin on muu kuin LJETII tai GDI-kirjoitin | avoin | P4 | keskitaso | luettu koodista ja riippumattomasti tarkastettu |
 | [H-076](#h-076) | Viestin osuussijoitusten laskenta ylittää varaamansa muistin XML-tulosteessa, kun joukkueilla on väliaikoja | avoin | P3 | keskitaso | luettu koodista ja riippumattomasti tarkastettu |
@@ -163,8 +163,8 @@
 | [H-146](#h-146) | Jos aikajonon (AJAT) rivin kirjoitus levylle epäonnistuu, rivi merkitään silti kirjoitetuksi ja levylle jää tyhjä aukko | avoin | P3 | keskitaso | toistettu eristetyllä kokeella tai testikehyksessä |
 | [H-147](#h-147) | Tulos- ja automaattitiedoston kirjoitusvirhettä ei huomata, ja julkaistava tiedosto tyhjennetään ennen kirjoitusta, joten se voi jäädä tyhjäksi tai vajaaksi ilman ilmoitusta | avoin | P3 | keskitaso | toistettu eristetyllä kokeella tai testikehyksessä |
 | [H-148](#h-148) | Viestissä uuden joukkueen lisäys voi levyn täyttyessä jättää joukkueen pois muistista ja tehdä KILP.DAT:sta käyttökelvottoman istunnon ajaksi | avoin | P4 | keskitaso | luettu koodista; riippumaton tarkastus vahvisti osittain |
-| [H-149](#h-149) | Viestiohjelman automaattinen HTML-tuloste kaataa konsoliohjelman jo ensimmäisellä kierroksella tavallisessa kokoonpanossa | avoin | P2 | korkea | toistettu eristetyllä kokeella tai testikehyksessä |
-| [H-150](#h-150) | HK:n automaattinen XML-vienti vuotaa tiedostovirran joka kierroksella, ja virtojen loppuessa tiedostojen avaukset epäonnistuvat | avoin | P2 | keskitaso | toistettu eristetyllä kokeella tai testikehyksessä |
+| [H-149](#h-149) | Viestiohjelman automaattinen HTML-tuloste kaataa konsoliohjelman jo ensimmäisellä kierroksella, kun automaattitulostus on päällä | avoin | P2 | korkea | toistettu eristetyllä kokeella tai testikehyksessä |
+| [H-150](#h-150) | HK:n automaattinen XML-vienti vuotaa tiedostovirran joka kierroksella, ja virtojen loppuessa C-kirjaston tiedostoavaukset epäonnistuvat | avoin | P2 | keskitaso | toistettu eristetyllä kokeella tai testikehyksessä |
 | [H-151](#h-151) | HK:n tiedostonsiirtosäie sulkee tulostekanavan jättäen osoitteen, ja seuraava automaattitulostus käyttää suljettua kanavaa | avoin | P2 | keskitaso | toistettu eristetyllä kokeella tai testikehyksessä |
 | [H-152](#h-152) | Tuloskirjoittimen vaihto valikosta jättää automaattitulostuksen käyttämään suljettua tulostekanavaa | avoin | P3 | keskitaso | luettu koodista ja riippumattomasti tarkastettu |
 | [H-153](#h-153) | Jos virheilmoituksen antanut työsäie pitää lukkoa, ilmoituksen valinta "Poistu ohjelmasta" jättää ohjelman jumiin eikä sulje sitä | avoin | P3 | keskitaso | luettu koodista ja riippumattomasti tarkastettu |
@@ -211,7 +211,7 @@
 | [T-017](#t-017) | ViestiLuennan projektin neljällä kokoonpanolla on samat koot, vaikka kokoonpanojen nimet lupaavat muuta | avoin | - | matala | - |
 | [T-018](#t-018) | Tietokantakirjaston indeksikerros on kuollutta koodia, ja sen funktion nimi on määritelty neljässä tiedostossa | avoin | - | matala | - |
 | [T-019](#t-019) | Tiedostoissa ei ole tunnistetta, versiota eikä tarkistussummaa, eikä niiden tarkistamiseen tai korjaamiseen ole työkalua | avoin | - | keskitaso | - |
-| [T-020](#t-020) | Muistinvarauksen ja tiedoston avauksen tulosta ei tarkisteta, ja avaamatta jäänyt tiedosto suljetaan, mikä päättää MSVC-konsoliohjelman | avoin | - | matala | - |
+| [T-020](#t-020) | Muistinvarauksen ja tiedoston avauksen tulosta ei tarkisteta, ja avaamatta jäänyt tiedosto suljetaan, mikä voi päättää MSVC-konsoliohjelman | avoin | - | matala | - |
 | [T-021](#t-021) | Kääntäjän varoitukset on säädetty matalalle, eikä ikkunaohjelmien muotoilumerkkijonoja tarkisteta | avoin | - | keskitaso | - |
 | [T-022](#t-022) | Ulkoisen syötteen tarkistus puuttuu yhteisenä käytäntönä: jokainen lukija tarkistaa pituudet ja indeksit itse tai jättää tarkistamatta | avoin | - | korkea | - |
 | [T-023](#t-023) | Sama tyyppi käännetään ikkunaohjelmissa eri yksiköissä eri kokoisena ja eri kohtiin sijoitettuna | avoin | - | matala | - |
@@ -310,8 +310,8 @@ toimitettua ohjelmaa. Kortin puuttuminen ei tarkoita, että toiminto on virheet�
 ### Lähderevisio
 
 - Korttien lähdeviitteet (rivinumerot) on kirjattu revisioihin: `4b48749`, `7aaca40`, `ab10f88`, `c273b9f`, `f7fe553`. Tuotantokoodi `TPsource/` ei ole muuttunut revision `f7fe553` jälkeen (`doc/arkkitehtuuri/CHECKPOINT.md`).
-- Kortit ja rekisterit luettiin työpuusta, jonka viimeisin commit oli `170f298`.
-- Rekisteritiedostojen tiivisteet tuottohetkellä (SHA-256, 12 merkkiä): `havainnot.md` cb94426a9dd9; `riskiarvio.csv` 2d4aa424d209; `tekninen-velka.csv` 2c2e74f31f23; `vaikutukset.csv` 3753b0b553ff; `korjauskokonaisuudet.csv` 5c19cce94bf2.
+- Kortit ja rekisterit luettiin työpuusta, jonka viimeisin commit oli `3e654bf`.
+- Rekisteritiedostojen tiivisteet tuottohetkellä (SHA-256, 12 merkkiä): `havainnot.md` cb94426a9dd9; `riskiarvio.csv` ce2bb33511ab; `tekninen-velka.csv` 2c2e74f31f23; `vaikutukset.csv` 474b97661aec; `korjauskokonaisuudet.csv` 5c19cce94bf2.
 - Jokaisen kortin teksti on tarkistettu sen omien rekisteririvien tilaa vastaan; tiiviste on kortin teknisissä tiedoissa ("Rekisteririvien tiiviste nyt").
 
 
@@ -337,7 +337,7 @@ Kun viestin tekstimuotoinen tulosteen rivi muodostetaan osuudelle, jolle on mä�
 
 ### 2. Mitä ohjelma yrittää tehdä
 
-Ohjelma muodostaa viestikilpailun tuloksista tekstimuotoisia rivejä: joukkueen tulosrivin ja osuuden tulosrivin. Jos osuudella on ampumapaikkoja, riville liitetään ampumasakot sulkeisiin. Ampumasakot kootaan ensin apumuuttujaan, jonka ohjelma tyhjentää ennen täyttöä.
+Ohjelma muodostaa viestikilpailun tuloksista tekstimuotoisia rivejä: joukkueen tulosrivin ja osuuden tulosrivin. Jos osuudella on ampumapaikkoja, ohjelma kokoaa ampumasakot apumuuttujaan, mutta kummankaan funktion rivin muodostus ei tulosta niitä, joten sakot eivät näy tulosteen rivillä [luettu koodista]. Apumuuttuja tyhjennetään ennen täyttöä.
 
 ### 3. Mikä menee vikaan
 
@@ -345,7 +345,7 @@ Tyhjennyskäskyn kokona on käytetty toisen muuttujan koko: apumuuttujan oma kok
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- **Ohjelmat:** viestin ohjelmat, joiden käännökseen kuuluu tulostustiedosto: ViestiWin, ViestiMaali ja ViestiLuenta. Mikä julkinen toiminto johtaa kyseisiin funktioihin, on avoin (Q38); testikehyksessä funktioita kutsuttiin suoraan.
+- **Ohjelmat:** viestin ohjelmat, joiden käännökseen kuuluu tulostustiedosto: ViestiWin, ViestiMaali ja ViestiLuenta. Julkinen polku on luettu koodista: joukkueen rivin funktio kutsutaan tekstitulostuksen rivifunktiosta, kun tulostuskohde on E, ja osuuden rivin funktio tulostuskohteilla I, R ja E [luettu koodista]. Q38 on siten osittain vastattu; käyttäjälle näkyvät valikkonimet, joilla nämä kohteet valitaan, puuttuvat edelleen. Testikehyksessä funktioita kutsuttiin suoraan.
 - **Asetus:** osuudella on ampumapaikkoja (ampumahiihtoviestin asetukset). Joukkueen tulosrivin funktio ei tee mitään, kun kilpailussa on rinnakkaisia osuuksia; se käsittelee vain rivit ilman rinnakkaisia juoksijoita.
 - **Toimenpide:** tekstimuotoisen tuloksen tulostus tai vienti.
 - **Normaalikäyttö vai poikkeustilanne:** vika laukeaa jokaisella tulosrivillä, jolla ampumapaikkoja on (riskiarvio), eikä virhettä tarvita. Se vaatii kuitenkin ampumahiihtoviestin asetuksen. Ampumahiihtoviestien yleisyys kilpailuissa on omistajalta kysyttävä asia (OP-14).
@@ -367,7 +367,7 @@ Aineisto ei kerro näkyvistä oireista Release-ohjelmassa, koska sitä ei ole aj
 | Vaikutus: Voiko jokin mennä väärin ilman ilmoitusta tai näkyvää oiretta? | Mahdollinen | Ilman ASania ylikirjoitus voi tapahtua ilman ilmoitusta; kääntäjä varoittaa vain käännösvaiheessa, ja bcc32:ssa ei ole pinosuojaa (päätelty). |
 | Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Ei tiedossa | Aineisto ei kerro vaikutusta tiedonsiirtoon tai muihin työasemiin. |
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei tiedossa | Tulostuskohde voi olla tulostin; aineisto ei arvioi vaikutusta tulostimen toimintaan. |
-| Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei kerro, miten nollaus vaikuttaa tulosteen sisältöön. |
+| Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Ohjelma kokoaa ampumasakot apumuuttujaan, mutta nykyinen rivi ei tulosta niitä [luettu koodista]; tulosteen sisältö voi muuttua vain viereisen muistin vioittuessa. Siirretty H-001-kortin editorille (Q3 kohta 3). |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole; kirjoitettava sisältö on nollatavuja ja laukaisija on tulostusasetus. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Vaatii ampumahiihtoviestin asetuksen (osuudella ampumapaikkoja); riskiarvio: asetus. |
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Vaatii erityisasetuksen (ampumapaikat osuudella); testikehys toisti ylikirjoituksen suoralla funktiokutsulla, julkinen polku on avoin (Q38). |
@@ -412,7 +412,7 @@ Funktioissa `textjtulos` ja `textosuus` (`Juk/VTulostus.cpp`) on rivi `memset(st
 
 ### 12. Mitä ei vielä tiedetä
 
-- Mikä julkinen toiminto johtaa funktioihin ja miten ne näkyvät käyttäjälle (Q38).
+- Mitkä valikkovalinnat tai toiminnot johtavat tulostuskohteisiin E, I ja R ja miten ne näkyvät käyttäjälle (Q38; koodipolku luettu, valikkonimet puuttuvat).
 - Estääkö `/we4789`-käännösvalitsin vian tai muuttuuko varoitus virheeksi linkitysvaiheessa (Q39).
 - Mitä ylikirjoitus tekee Release-ohjelmassa (MSVC) ja bcc32-ohjelmassa: pysähtyykö ohjelma, vai nollautuuko viereinen muuttuja hiljaa.
 - Käytetäänkö ampumahiihtoviestiasetusta todellisissa kilpailuissa (OP-14: ampumahiihtoviestien yleisyys).
@@ -445,7 +445,7 @@ Korjaussuunnitelman kokonaisuus KK-C13-13 (Kiinteät puskurit muotoilussa ja tul
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Juk/VTulostus.cpp:2228`, `:3981`; MSVC C4789 |
 
-Rekisteririvien tiiviste nyt: `5957ca09dba9`.
+Rekisteririvien tiiviste nyt: `1d9e0aef10dc`.
 
 
 ---
@@ -1424,7 +1424,7 @@ yhteyksille paitsi lähteelle. Viestin vastaava polku lukee lukon sisällä. Juu
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: riippumaton lähdetarkastus vahvisti mekanismin ja laajensi ikkunan
+(a) Ohjelmointivirhe: mekanismi on luettu koodista ja riippumattomasti tarkastettu, ja tarkastus laajensi ikkunan
 koskemaan kaikkia kilpailevan lukon pitoaikoja. Toistettu testikehyksessä (C-11, `TpCoreHk`):
 järjestys pakotettiin niin, että vastaanottosäie odotti `tall_CS`:ää, välissä tallennettiin
 paikallinen muutos, ja paketin jälkeen arvo oli vanha. Odottajan havaitsemiseksi käytettiin
@@ -1439,6 +1439,8 @@ muille asemille ja ikkunan osuvuutta oikeassa ajossa ei ajettu.
   ikkunat).
 - Leviääkö kumoutunut tieto muille asemille käytännössä (kahden prosessin testi koukulla on
   suunniteltu, ei ajettu).
+- Q36 (avoin): pysyykö lukkolaskurin koodaus (`LockCount`), jonka perusteella testikehys havaitsi
+  odottajan, samana CI-kuvassa (`testaus.md`). Koodaus ei ole dokumentoitu rajapinta.
 - Q16 (viestin vastaanoton lukitus) on ratkaistu: viesti ei kärsi viasta. Q21: asettuvatko
   ristikkäiset muutokset 3-5 aseman renkaassa, on avoin.
 
@@ -1497,8 +1499,12 @@ odottamaan.
 
 Vahvistettu (testikehyksessä): virheellisen sanoman jälkeen lukko jää päättyneen työsäikeen
 omistukseen, eikä toinen säie saa sitä. Mahdollinen (luettu koodista, ei ajettu): tallennukset
-lomakkeelta ja muut työsäikeet jäävät odottamaan pysyvästi ja asema jumiutuu. Vika vaatii
-asetuksen: Kurvinen-protokolla on käytössä vain, kun ampumalaitteen asetus on 0 (oletus on 2).
+lomakkeelta ja muut työsäikeet jäävät odottamaan pysyvästi ja asema jumiutuu. Kun sanoma
+tulee ampumalaitteelta, vika ei vaadi erityistä protokolla-asetusta: myös oletusasetuksella (2)
+laitteelta tuleva päättävä sanoma käsitellään samalla funktiolla [luettu koodista]. Verkon kautta
+toiselta asemalta tuleva sanoma laukaisee vian vain, kun ampumalaitteen asetus on 0 (Kurvinen-
+protokolla; oletus on 2). Molemmissa tapauksissa tarvitaan sanoma, joka osoittaa sarjaan ilman
+ampumapaikkoja tai sallitun alueen ulkopuolelle.
 
 ### 2. Mitä ohjelma yrittää tehdä
 
@@ -1522,12 +1528,19 @@ vapauttaa lukon oikein.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- Edellytys on Kurvinen-protokollan asetus (ampumalaitteen tyyppi 0; oletus on 2) ja sanoma, jonka
-  paikka ei sovi sarjan ampumapaikkoihin, esimerkiksi sarja, jolla ei ole ampumapaikkoja.
-- Sanoma voi tulla ampumalaitteelta tai verkon kautta toiselta työasemalta. Verkon kautta se kulkee
-  ohjaussanomana, joka päätyy samaan käsittelyyn ilman omaa porttia. Siksi verkossa oleva laite voi
-  laukaista vian, kun asetus on päällä (riskiarvion saavutettavuus: verkosta, kun asetus on käytössä).
-- Kyse on poikkeustilanteesta (virheellinen sanoma tai väärä asetus sarjalle).
+- Edellytys on sanoma, jonka paikka ei sovi sarjan ampumapaikkoihin, esimerkiksi sarja, jolla ei
+  ole ampumapaikkoja. Polkuja on kaksi.
+- Laitepolku: sanoma tulee ampumalaitteelta. Se laukaisee vian myös oletusasetuksella (2), kun
+  ampumalaite on käytössä ja ampumapaikalle on merkitty kilpailija sarjasta, jolla ei ole
+  ampumapaikkoja; päättävä sanoma käsitellään silloin samalla funktiolla [luettu koodista K-vaiheessa,
+  ei tarkastettu]. Voiko ampumalaite käytännössä merkitä tällaisen kilpailijan paikalle, ei ole
+  ratkaistu.
+- Verkkopolku: sanoma tulee verkon kautta toiselta työasemalta ohjaussanomana, joka päätyy samaan
+  käsittelyyn ilman omaa porttia. Tämä polku laukaisee vian vain, kun ampumalaitteen asetus on 0
+  (Kurvinen-protokolla; oletus on 2). Siksi verkossa oleva laite voi laukaista vian, kun tämä
+  asetus on päällä. Riskiarvion saavutettavuus (verkosta, kun asetus on käytössä) kuvaa vain
+  verkkopolun; laitepolun saavutettavuuden arvo tarkistetaan (`seuranta.md` KE-taulukko).
+- Kyse on poikkeustilanteesta (virheellinen sanoma tai sarjan asetus, jolla ampumapaikkoja ei ole).
 - Ohjelmat: henkilökilpailun ohjelmat (HkKisaWin, HkMaali). Viestin ohjelmissa vastaava käsittely
   on tyhjä, joten vika ei koske niitä.
 
@@ -1554,8 +1567,8 @@ vapauttaa lukon oikein.
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Mahdollinen | Laukaisija on ampumalaitteen virheellinen sanoma, ja lukko estää työsäikeet, joihin laitteiden käsittely kuuluu (riskiarvio); laitteen oman toiminnan häiriötä ei ole osoitettu. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai julkaisuun. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Mahdollinen | Riskiarvio: tietoturva verkko. Verkossa oleva laite voi lähettää ohjaussanoman, joka päätyy samaan käsittelyyn, kun asetus on käytössä. |
-| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Käsittely suoritetaan vain, kun ampumalaitteen asetus on 0 (oletus 2), ja vika vaatii lisäksi virheellisen sanoman tai sarjan ilman ampumapaikkoja. |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | **Vahvistettu** | Testikehyksessä virheellinen sanoma sarjalle, jonka paikkamäärä on 0, jätti lukon päälle. |
+| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Laitepolku: sanoma tyyppiä 5 kutsuu tall_sak-funktiota myös oletusasetuksella (sak_laji = 2), kun r_no != 999; verkkopolku laukaisee vian vain asetuksella 0. Vika vaatii silti ampumapaikalle merkityn kilpailijan sarjasta, jolla ei ole ampumapaikkoja (väärän sarjan syöte); riskiarvion saavutettavuus ja peruste tarkistetaan (seuranta.md KE-taulukko). |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | **Vahvistettu** | Testikehyksessä virheellinen sanoma sarjalle, jonka paikkamäärä on 0, jätti lukon päälle; testi kutsui käsittelijää suoraan asetuksella 0, laitepolkua oletusasetuksella ei ajettu. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Mahdollinen | Kokeessa virhe annettiin ilmoituksena; ilmoituksen näkymistä oikeassa ohjelmassa ei ole osoitettu. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Luvun 15 suositukset (suljettu ajanottoverkko, palomuurin sallittujen lista) on kirjattu havainnoille H-032, H-061 ja H-072; testaamattomia eivätkä ne koske laitteen omaa virheellistä sanomaa. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; keinoa ei ole kokeiltu. |
@@ -1564,8 +1577,8 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 
 ### 7. Mitä kilpailun aikana voi tapahtua
 
-Vahvistetun ja mahdollisen erottelu on luvussa 11. Kun asetus on päällä ja asemalle tulee
-virheellinen ampumasakkosanoma:
+Vahvistetun ja mahdollisen erottelu on luvussa 11. Kun asemalle tulee virheellinen
+ampumasakkosanoma (laitteelta, tai verkon kautta asetuksella 0):
 
 - Vahvistettu testikehyksessä: tallennuslukko jää päälle, ja toinen säie ei saa sitä.
 - Mahdollinen: seuraava lomakkeelta tehtävä tallennus tai muu samaa lukkoa tarvitseva työsäie jää
@@ -1585,9 +1598,10 @@ virheellinen ampumasakkosanoma:
   kirjaamatta [päätelty]. Aineisto ei kuvaa tiedon palautusta.
 - **Uusiutuminen:** vika laukeaa uudelleen, kun seuraava virheellinen sanoma saapuu tai
   sarja, jolla ei ole ampumapaikkoja, saa sakon. Uudelleenkäynnistys ei estä sitä.
-- **Muut työasemat:** vika on vastaanottavassa asemassa. Jos virheellinen sanoma on kulkenut
-  verkon kautta, aineisto ei kerro, välittyykö se muille asemille ennen lukkoon jäämistä
-  [ei tiedossa].
+- **Muut työasemat:** vika on vastaanottavassa asemassa. Sanoma välitetään muille asemille
+  [luettu koodista K-vaiheessa, ei tarkastettu]: laitepolulla ohjelma välittää sanoman ennen
+  tallennuksen käsittelyä, ja verkkopolulla välitys tehdään käsittelyn jälkeen. Siksi asetuksella 0
+  myös vastaanottava asema voi jäädä samaan tilaan [päätelty].
 
 ### 9. Mitä käyttäjä voi tehdä riskin pienentämiseksi
 
@@ -1606,8 +1620,12 @@ laskee sakon paikan. Jos paikka on sarjan `lsak`-arvon ulkopuolella (esimerkiksi
 funktio palauttaa `-3` ilman `LeaveCriticalSection`-kutsua. Aiemmat virhepolut (`-2`, `-4`) palaavat
 ennen lukkoa. Kutsuja `tall_ampsakko` ei vapauta lukkoa. Laitepolku kutsuu `tall_ampsakko`a
 laitteen lukijasäikeestä (`Tp/TpLaitteet.cpp`); verkkopolulla ohjaussanoman käsittely
-(`Hk/HkCom32.cpp`) kutsuu `tulkKurvinen`-funktiota ilman porttia. `tall_sak` suoritetaan vain,
-kun `sak_laji` on 0 (oletus 2).
+(`Hk/HkCom32.cpp`) kutsuu `tulkKurvinen`-funktiota ilman porttia. `tall_sak`in `sak_laji`-haara
+(oletus 2) laskee paikan silmukassa, joka ei aja, kun `lsak` on 0; paikka jää arvoon 0, ehto
+`paikka >= lsak` toteutuu ja funktio palaa `-3` lukko päällä. Laitepolulla `tall_ampsakko` kutsuu
+`tall_sak`ia sanomatyypillä 5 myös oletusasetuksella, kun `r_no != 999`. Verkkopolulla
+(`tulkKurvinen`, `r_no == 999`) `tall_sak` suoritetaan vain, kun `sak_laji` on 0. `tall_ampsakko`
+välittää sanoman (`lahetaKurvinen`) ennen `tall_sak`ia.
 
 Juurisyy JS-2 (lukkoparit ilman vartijaa, ei poikkeusrajaa); pahentava syy JS-1 (sanoman paikkaa ei
 validoida ennen lukon ottamista). Sama kutsupaikka kuin H-060:ssä, ja ne korjataan yhdessä.
@@ -1621,18 +1639,21 @@ lukon. Riippumaton tarkastus ei löytänyt estäviä ongelmia.
 
 (b) Käytännön seuraus: jumiutumista seuraavassa tallennuksessa ei ole osoitettu. Laitteen sanoman
 tai verkkopaketin reittiä ei ajettu; koe asetti tilan käsin ja syötti sanoman suoraan funktiolle.
-Riskiarvion peruste: verkkoreitti (ohjaussanoma ilman porttia) ja oletuksen 2 ero on luettu koodista.
+Testi kutsui käsittelijää suoraan asetuksella 0; laitepolkua oletusasetuksella ei ajettu.
+Riskiarvion peruste: verkkoreitti (ohjaussanoma ilman porttia) ja oletuksen 2 ero on luettu koodista;
+riskiarvio kattaa verkkopolun, ei laitepolkua oletusasetuksella.
 
 ### 12. Mitä ei vielä tiedetä
 
 - Jumiutuuko oikea ohjelma seuraavassa tallennuksessa; testi osoitti vain lukon jäämisen.
-- Välittyykö virheellinen verkkosanoma muille asemille ennen lukkoon jäämistä.
+- Voiko ampumalaite käytännössä merkitä paikalle kilpailijan sarjasta, jolla ei ole ampumapaikkoja
+  (ratkeaisi laitetestillä tai testillä, jossa asetus on 2 ja sanomat tyyppiä 2 ja 5).
 - Mitkä muut säikeet tarvitsevat samaa lukkoa ajanotossa (riskiarvio sanoo kaikki työsäikeet;
   tarkkaa joukkoa ei ole selvitetty).
 - Rekisterin ja `tallenna-samanaikaisuus.md`:n kuvauksessa lukko-vika kuvataan laukeavaksi myös
-  oletusasetuksella sarjassa, jossa `lsak` on 0; riskiarvion lähdelukemisen mukaan käsittely
-  suoritetaan vain, kun `sak_laji` on 0. Kortti seuraa riskiarviota; ristiriita on kirjattu
-  avoimeksi kysymykseksi.
+  oletusasetuksella sarjassa, jossa `lsak` on 0. Koodi tukee tätä laitepolulla (luku 4), joten
+  kortti seuraa koodia. Riskiarvion saavutettavuus (verkosta, kun asetus on käytössä) ja sen
+  peruste kattavat vain verkkopolun; arvo tarkistetaan (`seuranta.md` KE-taulukko).
 - OP-13 (laitteiden ja laitedokumentaation saatavuus): oikea Kurvinen-laite ja sen sanomat
   testaamatta.
 
@@ -1672,7 +1693,7 @@ liikenne). Kokonaisuus voi osin kuulua myös KK-C13-4:ään (lukkovartija).
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkSak.cpp:89`, `:99`; `Tp/TpLaitteet.cpp:1670`; `Hk/HkCom32.cpp:647` |
 
-Rekisteririvien tiiviste nyt: `e850f5acd63a`.
+Rekisteririvien tiiviste nyt: `ece7dea5c122`.
 
 
 ---
@@ -1843,7 +1864,7 @@ sekä velalle T-032 (juurisyyraportti, N2).
 ### 11. Mitä on todennettu
 
 (a) Ohjelmointivirhe: luettu koodista ja riippumattomasti tarkastettu (`tallenna-samanaikaisuus.md`,
-tarkastus "vahvistettu" mekanismin osalta). Koeohjelmaa ei ole ajettu, eikä lukkiutumista ole
+riippumaton tarkastus piti mekanismin paikkansa). Koeohjelmaa ei ole ajettu, eikä lukkiutumista ole
 toistettu.
 
 (b) Käytännön seuraus: ei osoitettu. Lukkiutuminen on päätelty. Raportti ehdottaa ajonaikaista
@@ -1858,8 +1879,9 @@ jumiutuessa); sitä ei ole ajettu.
 - Mitä käyttäjä näkee jumiutuessa.
 - Riskiarvion tietoturva-arvo "ei": perustetta ei ole kirjattu, ja tallennuksen voi käynnistää
   toiselta työasemalta tuleva muutos. Vaikutusrivi on siksi ei tiedossa; riskiarvio tarkistetaan.
-- Onko ViestiWinissä vastaava polku sakkolomakkeelle: ei tarkistettu. Rekisterin ohjelmayläraja
-  (HkKisaWin, HkMaali, ViestiWin) on tälle viralle liian leveä.
+- ViestiWinillä on oma `add_sakko`-funktio (määritelmä `ViestiWin/UnitASakot.cpp`), mutta sillä
+  ei ole kutsujia: ainoa kutsu on `Hk/HkDat.cpp`:ssä [luettu koodista]. Sakkopolku ei siis koske
+  ViestiWiniä.
 
 ### 13. Miten vika on tarkoitus korjata
 
@@ -1921,7 +1943,7 @@ järjestys- ja nimihakemistoa, emit-kytkentöjä ja laskureita. Jos lukitsematon
 noudattava säie (ks. sanasto: Säie) toimivat yhtä aikaa, nämä rakenteet voivat jäädä keskenään
 ristiriitaisiksi.
 
-Todennettu koodista (riippumaton tarkastus, osittain; ohjelmaa ei ajettu): lukitsemattomat
+Luettu koodista ja riippumattomasti tarkastettu osittain (ohjelmaa ei ajettu): lukitsemattomat
 kutsupaikat ja lukottomat rakenteet ovat olemassa. Mahdollinen (päätelty): päällekkäisyys tuottaa
 kadonneen päivityksen tai väärän järjestyksen tai laskurin. Yksittäinen tietue ei tallennu
 puoliksi. Konkreettiset seuraukset on kirjattu muille havainnoille (luku 12). Viestiohjelmia vika
@@ -2036,7 +2058,7 @@ kokonaisuutena lukon alla. Juurisyy JS-10 (jaettu tila ja VCL ilman omistajaa).
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: riippumaton lähdetarkastus vahvisti lukkotilan osittain; yksi alaväite
+(a) Ohjelmointivirhe: lukkotila on luettu koodista ja tarkastettu riippumattomasti osittain; yksi alaväite
 (`LukumaaratTh` -> `sijat2`) kumottiin. Ohjelmaa ei ajettu, eikä yksikään testi kata `tallenna`a.
 Lukittu `GETREC`/`PUTREC` tekee tietueen kopioinnin kokonaisena (tarkastettu).
 
@@ -2107,7 +2129,7 @@ päivittää myös emit-tiedostossa olevan kortin tietueen. Se tekee sen ilman e
 (ks. sanasto: Lukko), vaikka lukija voi samaan aikaan kirjoittaa samaan tiedostoon toisessa säikeessä
 (ks. sanasto: Säie).
 
-Todennettu koodista (riippumaton tarkastus; ohjelmaa ei ajettu): lukko puuttuu. Mahdollinen
+Luettu koodista ja riippumattomasti tarkastettu (ohjelmaa ei ajettu): lukko puuttuu. Mahdollinen
 (päätelty): kahden säikeen kirjoitukset lomittuvat ja tietue päätyy tiedostossa väärään kohtaan tai
 kortin tiedot sekoittuvat. Vaikutus on asemakohtainen. Viestiohjelmia vika ei koske.
 
@@ -2207,7 +2229,7 @@ Juurisyy JS-10. Korjataan yhdessä H-137:n kanssa (emit-lukituksen periaate).
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: riippumaton lähdetarkastus vahvisti, että kolme kutsupaikkaa kirjoittaa ilman
+(a) Ohjelmointivirhe: luettu koodista ja riippumattomasti tarkastettu: kolme kutsupaikkaa kirjoittaa ilman
 `emit_CS`:ää. Ohjelmaa ei ajettu.
 
 (b) Käytännön seuraus: ei osoitettu. Kilpailutilanteen seuraus on päätelty koodista.
@@ -2272,7 +2294,7 @@ HkMaalissa emit-kortin tiedot voi siirtää toiselle kilpailijalle. Jos kilpaili
 tiedot siirretään, on merkitty poissaolevaksi, ohjelma ilmoittaa, ettei muuta mitään, mutta jättää
 kilpailijatietojen lukon (ks. sanasto: Lukko) päälle.
 
-- **Vahvistettu (luettu koodista ja tarkastettu riippumattomasti, ei ajettu):** lukko jää päälle
+- **Luettu koodista ja tarkastettu riippumattomasti (ei ajettu):** lukko jää päälle
   tässä yhdessä poistumispolussa. Toiminnon kaksi muuta poistumispolkua vapauttavat sen oikein.
 - **Mahdollinen (seuraa koodista, ei osoitettu):** muut säikeet (ks. sanasto: Säie), jotka
   tarvitsevat samaa lukkoa, jäävät odottamaan, ja tämän työaseman ajanotto pysähtyy. Pysähtyminen
@@ -2353,7 +2375,7 @@ Kilpailussa, jossa HkMaalia käytetään maalissa:
 
 - Jos maalissa luetaan emit-kortti ja sen tiedot yritetään siirtää kilpailijalta, joka on
   merkitty poissaolevaksi, siirto jää tekemättä ja kilpailijatietojen lukko jää päälle
-  [vahvistettu: luettu koodista].
+  [luettu koodista ja riippumattomasti tarkastettu].
 - Ohjelman suora seuraus: säikeet, jotka tarvitsevat lukkoa, jäisivät odottamaan [mahdollinen,
   päätelty]. Säiekartan mukaan HkMaalissa lukkoa käyttävät muun muassa verkosta tulevia sanomia
   käsittelevä säie, lukijalaitetta lukeva säie, kellon ajan kirjaava säie ja automaattitulostuksen
@@ -2484,10 +2506,11 @@ Rekisteririvien tiiviste nyt: `306ba51d9f26`.
 
 Kun HK-ohjelma rakentaa kilpailijajärjestyksen uudelleen ja kilpailussa on pistelaskentaa, sen
 pitäisi tallentaa jokainen pistelaskentaan kuuluva kilpailija uudelleen, jotta pisteet lasketaan
-uusilla tiedoilla. Tämän päivityksen silmukka on kirjoitettu niin, että se tallentaa yhä uudelleen
-saman kilpailijan (tietueen 1) eikä etene muihin.
+uusilla tiedoilla. Tämän päivityksen silmukka on kirjoitettu niin, että se käsittelee vain
+kilpailijaa, jonka tietue on numero 1, eikä etene muihin. Tietue 1 tallennetaan uudelleen vain, jos
+se on voimassa ja sen sarjassa on pistelaskenta; muuten silmukka ei tallenna mitään.
 
-Vahvistettu (luettu koodista ja tarkastettu riippumattomasti, ohjelmaa ei ajettu): silmukan
+Luettu koodista ja tarkastettu riippumattomasti (ohjelmaa ei ajettu): silmukan
 rakenne on virheellinen. Mahdollinen (päätelty, ei ajettu): muiden kilpailijoiden pistelaskennasta
 riippuvat tiedot jäävät päivittämättä. Aineisto ei kerro, korjaako jokin myöhempi tallennus pisteet.
 
@@ -2517,7 +2540,7 @@ montako kertaa tietue 1 tallennetaan tai ajetaanko silmukkaa lainkaan.
   yhteispisteiden laskenta tai vaiheen pistekaava. Riskiarvio pitää saavutettavuutena asetusta
   (pistelaskenta).
 - **Toimenpide:** vaiheen vaihto käynnissä olevassa ohjelmassa. Sama silmukka on koodissa funktion
-  lopussa, jota ajetaan myös käynnistyksessä [päätelty koodista]. Rekisteri ja riskiarvio kuvaavat
+  lopussa, jota ajetaan myös käynnistyksessä [luettu koodista]. Rekisteri ja riskiarvio kuvaavat
   vain vaiheen vaihdon; aineisto ei kerro, onko käynnistyspolku arvioitu.
 - **Normaalikäyttö vai poikkeus:** vika ei vaadi virhettä, mutta vaatii pistelaskenta-asetuksen.
   Aineisto ei kerro, ajetaanko vaihe oikeissa asennuksissa vaihtamalla käynnissä olevassa ohjelmassa
@@ -2544,8 +2567,8 @@ aineisto ei kuvaa, miltä se näyttää tuloksissa.
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei tiedossa | Aineisto ei käsittele vaikutusta lukijoihin, kelloihin, tauluihin tai tulostimiin. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai tulospalveluun. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole; vika on silmukan rakenne eikä käsittele ulkopuolista syötettä. |
-| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Vika vaatii pistelaskenta-asetuksen (yhteispisteet tai vaiheen pistekaava); ilman sitä silmukkaa ei ajeta. |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Ei tiedossa | Vika vaatii asetuksen eikä virhettä; aineisto ei kerro, onko pistelaskenta-asetus harvinainen. |
+| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei tiedossa | Vika vaatii pistelaskenta-asetuksen (yhteispisteet tai vaiheen pistekaava); aineisto ei kerro, onko pistelaskenta erityisasetus vai tavallinen kilpailuasetus. Tallennus tehdään vain, jos tietue 1 on voimassa ja sen sarjassa on pistelaskenta. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Pistelaskenta-asetus on harvinaisena asetuksena poikkeustilanne, jos se ei ole tavallinen; silmukka ajetaan myös käynnistyksessä (teejarj(false)) [luettu koodista]. Ei ajettu. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Aineisto ei kuvaa näkyvää oiretta. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Ei tiedossa | Aineistossa ei ole kirjattua keinoa; OP-6:n uudelleenkäynnistysvaihtoehto on avoin päätös, ei keino. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi käsin; keinon sisältöä ei ole kuvattu eikä kokeiltu. |
@@ -2557,11 +2580,12 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Monivaiheisessa kilpailussa, jossa on pistelaskentaa, vaihe vaihdetaan käynnissä olevassa
 ohjelmassa. Vahvistetun ja mahdollisen erottelu on luvussa 11. Tilanne:
 
-- Ohjelma rakentaa järjestykset uudelleen ja ajaa lopuksi päivityssilmukan. Vahvistettu (luettu
-  koodista): silmukka ei käy läpi muita kilpailijoita kuin tietueen 1.
+- Ohjelma rakentaa järjestykset uudelleen ja ajaa lopuksi päivityssilmukan. Luettu
+  koodista ja riippumattomasti tarkastettu: silmukka ei käy läpi muita kilpailijoita kuin tietueen 1.
 - Mahdollinen (päätelty, ei ajettu): muiden kilpailijoiden pistelaskennasta riippuvat tiedot
   jäävät uuden vaiheen osalta päivittämättä. Riskiarvion mukaan vaikutus tuloksiin on suora.
-- Aineisto ei kerro, mitä tietueen 1 toistuva tallennus aiheuttaa (esimerkiksi lähetetäänkö se
+- Tietue 1 tallennetaan vain, jos se on voimassa ja sen sarjassa on pistelaskenta. Aineisto ei
+  kerro, mitä tietueen 1 toistuva tallennus aiheuttaa silloin (esimerkiksi lähetetäänkö se
   muille työasemille), eikä sitä, korjaako myöhempi tallennus pisteet.
 
 ### 8. Palautuminen ja uudelleenkäynnistys
@@ -2590,7 +2614,10 @@ keino: päätös on avoin, eikä sen tehoa tähän vikaan ole arvioitu. Luvun 15
 Funktio `teejarj` (`Hk/HkIx.cpp`) päättyy lohkoon, joka ajetaan, kun ohjelma on kilpailutilassa ja
 jollakin sarjalla on pistelaskenta. Silmukan otsikossa `d` asetetaan arvoon 1, mutta ehto ja
 kasvatus koskevat muuttujaa `i`. Siksi `d` pysyy arvossa 1, ja tallennus kohdistuu aina tietueeseen
-1. Silmukka ei ole ehdollinen sille, onko kyse käynnistyksestä vai vaiheen vaihdosta.
+1, kun tietue on voimassa (`kilpstatus == 0`) ja sen oman sarjan `YhtpistOn()` tai
+`pistekaava[k_pv].vaiheon` on tosi; muuten `tallenna`-kutsua ei tehdä. Silmukka ei ole ehdollinen
+sille, onko kyse käynnistyksestä vai vaiheen vaihdosta: `teejarj(false)` kutsutaan käynnistyksessä
+(`Hk/HkInit.cpp`), ja lohko `ToimintaTila == 2` ei riipu `uusinta`-parametrista [luettu koodista].
 
 Rekisterin mukaan kyse on yksittäisestä viasta, jolla ei ole yhteistä juurisyytä. Pahentava tekijä
 on JS-6 (muistitila rakennetaan vain käynnistyksessä), koska vaiheen vaihdon jälkeinen
@@ -2598,7 +2625,7 @@ pistelaskenta nojaa tähän silmukkaan.
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista, ja riippumaton lähdetarkastus on vahvistanut sen
+(a) Ohjelmointivirhe: luettu koodista, ja se on tarkastettu riippumattomasti
 (`tallenna-samanaikaisuus.md`). Ajoa tai testikehyskoetta ei ole.
 
 (b) Käytännön seuraus: ei osoitettu. Rekisteri toteaa, ettei ole jäljitetty, korjaavatko myöhemmät
@@ -2647,7 +2674,7 @@ huomio, koodi luettu). Päätöstä odottavaa osaa ei ole kirjattu tälle havain
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkIx.cpp:1834` |
 
-Rekisteririvien tiiviste nyt: `62004ea90a9e`.
+Rekisteririvien tiiviste nyt: `80851ccc7521`.
 
 
 ---
@@ -2668,7 +2695,7 @@ myös MySQL-tietokantaan. Kun vaihetta vaihdetaan kesken ajon, peilin kirjoituss
 lopettaa työnsä eikä käynnisty uudelleen ennen ohjelman uudelleenkäynnistystä. Ohjelma ei ilmoita
 asiasta. Lisäksi peiliin ei koskaan viedä kilpailijan poistoa.
 
-Vahvistettu: mekanismi on luettu koodista ja riippumattomasti tarkastettu. Mikään seuraus ei ole
+Mekanismi on luettu koodista ja riippumattomasti tarkastettu (ei vahvistettu ajamalla). Mikään seuraus ei ole
 osoitettu ajamalla. Mahdollinen: tietokannan tiedot vanhenevat ja jäävät vajaiksi, joten tietokannan
 varassa oleva ulkopuolinen käyttäjä (esimerkiksi tulosnäyttö) saa vanhaa tietoa. `KILP.DAT` ja
 ohjelman oma tulosten laskenta eivät muutu.
@@ -2712,8 +2739,8 @@ yksikin tietokantavirhe kirjoitussäikeessä lopettaa koko ohjelman (H-160).
 ### 4. Missä tilanteessa vika voi ilmetä
 
 - Ohjelma: HkKisaWin. Vaiheen vaihto on vain HK-ohjelmissa, ja ViestiWinin kirjoitussäie ei testaa
-  vaiheen vaihtoa lainkaan. Rekisterin ohjelmaluettelo sisältää HkMaalin, koska lähdetiedosto
-  käännetään sinne, mutta HkMaalissa ei ole SQL-peiliä.
+  vaiheen vaihtoa lainkaan. Lähdetiedosto käännetään myös HkMaaliin, mutta HkMaalissa ei ole
+  SQL-peiliä.
 - Asetus: SQL-peili on käytössä, yhteys on auki ja jatkuva kirjoitus on päällä.
 - Toimenpide: vaihe vaihdetaan käynnissä olevassa ohjelmassa. Onko tämä tuettu käyttötapa, on
   avoin omistajan päätös (OP-6). Seurannan KE-2 mukaan toisen työaseman pyyntö voi käynnistää vaiheen
@@ -2736,7 +2763,7 @@ yksikin tietokantavirhe kirjoitussäikeessä lopettaa koko ohjelman (H-160).
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Riskiarvio: epäsuora. Peilin varassa oleva ulkopuolinen käyttäjä, kuten tulosnäyttö, saisi vanhentunutta tietoa; ohjelman omat tulokset (KILP.DAT) eivät muutu. Päätelty koodista, ei ajettu. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei tiedossa | Riskiarvio kirjaa ajanoton jatkuvuudeksi häiritsee, mutta aineisto ei kuvaa, miten peilin kirjoitussäikeen pysähtyminen häiritsisi ajanottoa; peili on KILP.DAT:n rinnalla oleva kopio. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei tiedossa | Riskiarvio kirjaa ajanoton jatkuvuudeksi häiritsee, mutta aineisto ei kuvaa, miten peilin kirjoitussäikeen pysähtyminen häiritsisi ajanottoa; peili on KILP.DAT:n rinnalla oleva kopio. Mahdollinen häiriö tulisi H-160:n (kirjoitussäikeen päättyminen tietokantavirheeseen) kautta, ei tämän vian omasta mekanismista. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Ei vaikutusta (perusteltu) | Vika koskee vain SQL-peilin kirjoitusta; KILP.DAT:n tallennus ja leimausten vastaanotto eivät kulje peilin kautta (riskiarvion peruste: master data stay intact). |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Mahdollinen | Peiliin eivät päädy vaiheen vaihdon jälkeiset muutokset eikä poistot; täysi jono ylikirjoittaa vanhimman. KILP.DAT säilyy ehjänä. Luettu koodista, ei ajettu. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Mahdollinen | Kirjoituskutsuilla ei ole poikkeuskäsittelyä, ja poikkeus kirjoitussäikeessä lopettaa ohjelman (H-160; RTL-lähteestä luettu, ei ajettu). |
@@ -2750,7 +2777,7 @@ yksikin tietokantavirhe kirjoitussäikeessä lopettaa koko ohjelman (H-160).
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Laukeaa valinnaisella asetuksella ja vaiheen vaihdolla; vaiheen vaihdon tuettu käyttö on avoin (OP-6). Luettu koodista. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Ohjelma ei ilmoita pysähtymisestä (luettu koodista); käyttäjä voisi huomata sen vain tarkastamalla tietokannan tai jonon pituuskentän. Aineisto ei ratkaise. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: jatkuvan kirjoituksen jättäminen pois, koska säie käynnistyy vain siitä (luettu koodista); tehoa ei ole kokeiltu. |
-| Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi käsin; ohjelman uudelleenkäynnistys käynnistää säikeen uudelleen (päätelty) ja vienti valinta 3 kirjoittaa kilpailijat uudelleen; keinoja ei ole kokeiltu. |
+| Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi käsin; ohjelman uudelleenkäynnistys käynnistää säikeen uudelleen (päätelty), ja vienti (valinta 3) kirjoittaa kilpailijat uudelleen vasta uudelleenkäynnistyksen jälkeen tai kun jatkuva kirjoitus on pois päältä, koska jatkuvan kirjoituksen ollessa päällä vienti vain lisää jonoon eikä kirjoitussäie ole käynnissä (päätelty); keinoja ei ole kokeiltu. |
 
 Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohjelmaa ajamalla; Mahdollinen = seuraa koodista, mutta seurausta ei ole osoitettu; Ei vaikutusta (perusteltu) = aineisto osoittaa, ettei seurausta synny; Ei tiedossa = aineisto ei ratkaise; _Ei arvioitu_ = riviä ei ole vielä arvioitu. Tiedon puute ei tarkoita, ettei vaikutusta ole. Lähteet: `doc/arkkitehtuuri/rekisteri/vaikutukset.csv`.
 
@@ -2763,7 +2790,7 @@ lopettaa. Siitä hetkestä alkaen uudet tulokset ja muutokset eivät päädy tie
 tulosnäyttö näyttää vaiheen vaihdon aikaista tilaa. Ohjelman omissa ikkunoissa kaikki näyttää
 normaalilta.
 
-- Vahvistettu (luettu koodista, riippumattomasti tarkastettu): säiettä ei käynnistetä uudelleen
+- Luettu koodista ja riippumattomasti tarkastettu: säiettä ei käynnistetä uudelleen
   vaiheen vaihdon jälkeen, eikä poistoja viedä peiliin.
 - Mahdollinen: tulosnäytön tai muun peilin lukijan tiedot vanhenevat. Aineisto ei kerro, kuka peiliä
   käytännössä lukee.
@@ -2778,7 +2805,10 @@ normaalilta.
   ole keskeytynyt.
 - **Tietojen palauttaminen:** `KILP.DAT`:ssa ei ole menetystä. Peilistä puuttuvat muutokset voi
   mahdollisesti kirjoittaa uudelleen viennillä, jonka valinta 3 kirjoittaa kaikki kilpailijat
-  tietokantaan [päätelty koodista; ei kokeiltu; ks. myös H-161 ja H-162]. Peilissä oleviin
+  tietokantaan [päätelty koodista; ei kokeiltu; ks. myös H-161 ja H-162]. Ehto: kun jatkuva
+  kirjoitus on päällä, vienti vain lisää kilpailijat jonoon, ja jonoa käsittelevä kirjoitussäie on jo
+  päättynyt, joten vienti kirjoittaa tietokantaan vasta uudelleenkäynnistyksen jälkeen tai kun
+  jatkuva kirjoitus on pois päältä [päätelty koodista; ei kokeiltu]. Peilissä oleviin
   poistettuihin kilpailijoihin tämä ei vaikuta, koska poistettua kilpailijaa ei viedä. Riskiarvio
   kirjaa palautettavuudeksi käsin. Muistissa oleva jono menetetään, kun ohjelma suljetaan;
   varmistustiedoston tarkoitus on säilyttää se (ks. H-043).
@@ -2872,7 +2902,7 @@ lopetusta ja uudelleenkäynnistystä) ja OP-7 (peilin asema). Testi: paikallinen
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `cbHk/UnitMySQL.cpp:637`, `:651-654`, `:699-701`, `:748-751`; `Hk/HkInit.cpp:3740` |
 
-Rekisteririvien tiiviste nyt: `8bf7aa172f21`.
+Rekisteririvien tiiviste nyt: `6697678288a1`.
 
 
 ---
@@ -2894,8 +2924,8 @@ välity sille ohjelman osalle, joka tallennuksen pyysi. Ohjelma jatkaa muistissa
 jo päivitetyillä tiedoilla, ja levylle jää vanha tieto. Uudelleenkäynnistyksessä ohjelma lataa
 levyn vanhan tilan.
 
-Vahvistettu: ei mitään ajamalla. Vika on luettu koodista ja riippumaton tarkastaja on vahvistanut
-koodiluennan; C-9:n koeohjelmat eivät kattaneet tätä havaintoa. Mahdollinen (koodista): kilpailijan
+Vahvistettu: ei mitään ajamalla. Vika on luettu koodista ja koodiluenta on tarkastettu
+riippumattomasti; C-9:n koeohjelmat eivät kattaneet tätä havaintoa. Mahdollinen (koodista): kilpailijan
 viimeisin muutos puuttuu uudelleenkäynnistyksen jälkeen siltä asemalta, jonka levy ei saanut sitä.
 Jos virhe sattuu uuden kilpailijan lisäyksessä, tiedoston otsikko ja pituus voivat jäädä
 ristiriitaan, jolloin seuraava käynnistys estyy eikä ohjelmassa ole korjaustyökalua.
@@ -2930,7 +2960,9 @@ Havainnon laajennus (C-3): kun uusi tietue lisätään, ohjelma kasvattaa tiedos
 tietuemäärää ennen tietueen kirjoitusta. Jos tietueen kirjoitus epäonnistuu mutta otsakkeen
 päivitys onnistuu, otsake väittää tiedostossa olevan yhden tietueen enemmän kuin siinä on, ja
 seuraava käynnistys hylkää tiedoston. Jos tietueen lukeminen epäonnistuu, HK purkaa tietueen
-alustamattomasta muistialueesta. Myöhempi lisäys voi jättää tiedostoon nollatietueen, joka
+alustamattomasta muistialueesta vain, jos alustamattoman puskurin alku sattuu näyttämään
+voimassa olevalta tietueelta (`Hk/HkDat.cpp`, `kilptietue::read` tarkistaa puskurin alun
+ennen purkua) [luettu koodista]. Myöhempi lisäys voi jättää tiedostoon nollatietueen, joka
 ladataan aktiivisena kilpailijana. Nämä on luettu koodista (tiedostomuodot.md); niitä ei ole ajettu.
 
 ### 4. Missä tilanteessa vika voi ilmetä
@@ -3063,7 +3095,8 @@ ole ajettu.
   päivitys) on oletus (päätelty), ei ajettu.
 - Riskiarvion saavutettavuus on normaalikaytto, vaikka vika vaatii kirjoitusvirheen. Riskiarvion
   sarakkeessa ei ole arvoa ympäristövirheelle; vaikutusrivi normaalikäyttö on siksi ei tiedossa,
-  ja riskiarvio tarkistetaan.
+  ja riskiarvion saavutettavuus (`normaalikaytto` vs "environment fault") tarkistetaan
+  (`seuranta.md` KE-16).
 - Kuinka kauan lukkoa pitävä ikkuna voi estää muita töitä, ei ole mitattu.
 - ViestiLuentan kirjoituspolkua ei ole jäljitetty.
 
@@ -3111,7 +3144,7 @@ Rekisteririvien tiiviste nyt: `5b35b0116175`.
 
 > **H-016** · tila: **avoin** · prioriteetti: **P3** · tekninen vakavuus: keskitaso
 > Ohjelmointivirheen todennus: luettu koodista ja riippumattomasti tarkastettu. Riskiarvion saavutettavuus: tavallisessa käytössä (tarkemmin luvussa 4).
-> Ohjelmat: HkKisaWin, HkMaali (tarkistettu kortin kirjoituksen yhteydessä).
+> Ohjelmat: HkKisaWin, HkMaali, ViestiWin, ViestiMaali, ViestiLuenta (tarkistettu kortin kirjoituksen yhteydessä).
 > Korjauskokonaisuus: KK-C13-23 Replikoinnin ja tiedostomuotojen versiointi (aalto 5).
 
 ### 1. Lyhyesti
@@ -3156,8 +3189,11 @@ koska tietueiden määrä ei muutu.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- Ohjelmat: HkKisaWin ja HkMaali. Koodi on luettu HK:n sanomapolulta. Viestiohjelmien polkua ei
-  ole tarkistettu tätä korttia varten.
+- Ohjelmat: HkKisaWin ja HkMaali (HK:n sanomapolku), sekä viestiohjelmat. Viestin vastaanotto
+  korvaa saman tavoin koko tietueen saapuneella kopiolla, ja yhteyden avautuessa tietueiden
+  lukumäärän ero vain varoittaa [luettu koodista K-vaiheessa, ei tarkastettu]. Viestin
+  vastaanottokoodi käännetään ViestiWiniin, ViestiMaaliin ja ViestiLuentaan; ohjelmakohtaista
+  kutsupolkua ei ole jäljitetty.
 - Edellytykset: asemien välinen yhteys on poikki, ja molemmilla asemilla muutetaan katkon aikana
   samaa tietuetta samassa sanomatyypissä. Sanomatyyppejä ovat esimerkiksi kilpailijan
   perustiedot ja vaiheen tiedot. Sen jälkeen yhteys palaa.
@@ -3190,7 +3226,7 @@ koska tietueiden määrä ei muutu.
 | Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Mahdollinen | Asemien tiedot eriytyvät, ja väärä tila voi levitä välityksen kautta kolmannelle asemalle (päätelty); Q21 avoin. |
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei sovellu | Vika koskee asemien välistä tietuereplikointia eikä laitteita. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele, päätyykö väärä tila tulosteisiin tai julkaisuun. |
-| Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole. |
+| Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei tiedossa | Riskiarvio sanoo tietoturvasta ei, mutta perustetta ei ole kirjattu; vika koskee tietueiden replikointia asemien välillä, eikä protokollassa ole todennusta (H-029), joten aineisto ei sulje pois virheellisen sanoman vaikutusta. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei tiedossa | Vika vaatii yhteyskatkon ja ristiin menevät muutokset, mutta riskiarvion saavutettavuus on normaalikaytto; ristiriita jää avoimeksi (kortin luku 12). |
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Edellytyksenä on yhteyskatko, jonka aikana molemmat asemat muuttavat samaa sanomatyyppiä; luettu koodista, ei ajettu. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Ohjelma ei ilmoita ristiinmenosta; aineisto ei kerro, miten käyttäjä sen huomaa muutoin kuin asemien tietoja vertaamalla. |
@@ -3262,9 +3298,10 @@ ole ajettu.
 ### 12. Mitä ei vielä tiedetä
 
 - Q21: asettuvatko ristikkäiset samanaikaiset muutokset 3–5 aseman renkaassa.
-- Koskeeko vika viestiohjelmia. `osaB-juurisyyt.md` luettelee H-016:n kohdalle molemmat
-  ohjelmaryhmät, mutta rekisterin viitatut lähdetiedostot ovat HK:n. Viestin polkua ei ole
-  tarkistettu tässä.
+- Viestin vastaanotto on samaa mallia [luettu koodista, ei tarkastettu]. `osaB-juurisyyt.md`
+  luettelee H-016:n kohdalle molemmat ohjelmaryhmät, vaikka rekisterin viitatut lähdetiedostot
+  ovat HK:n. Viestiohjelmakohtaista kutsupolkua ja ristiinmenon ilmenemistä viestissä ei ole
+  ajettu.
 - Riskiarvion saavutettavuus on tavallinen käyttö, vaikka vika vaatii yhteyskatkon (poikkeustilanne).
   Vaikutusrivi normaalikäytöstä on siksi ei tiedossa, ja riskiarvio tarkistetaan.
 - Riskiarvion palautettavuus on ei palautettavissa. Se kuvaa ohjelman omaa kykyä palautua, kun taas
@@ -3301,14 +3338,14 @@ ja sanomien muotoa muuttaa. Omistajan päätöksissä esitetty suositus ei ole v
 | Lähde (raportti) | `../tallenna-samanaikaisuus.md`, `../tiedonsiirto.md` |
 | Näytön laji | staattinen, lähdekoodi / static, source |
 | Juurisyy | JS-5 Koko tietue, viimeisin voittaa |
-| Ohjelmat | HkKisaWin HkMaali (peruste: tarkistettu) |
+| Ohjelmat | HkKisaWin HkMaali ViestiWin ViestiMaali ViestiLuenta (peruste: tarkistettu) |
 | Korjauskokonaisuus | KK-C13-23 Replikoinnin ja tiedostomuotojen versiointi; vaihe 4, aalto 5; haara `rakenne/kk-c13-23-versiointi` |
 | Omistajan päätökset, joissa havainto mainitaan | OP-4 Yhteensopivuuspolitiikka (avoin) |
 | Kysymykset | - |
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkDef.h:1235-1313`; `Hk/HkCom32.cpp:195-233`, `:830-842` |
 
-Rekisteririvien tiiviste nyt: `6035cd97f8b0`.
+Rekisteririvien tiiviste nyt: `a72ff7fe4735`.
 
 
 ---
@@ -3324,9 +3361,11 @@ Rekisteririvien tiiviste nyt: `6035cd97f8b0`.
 
 ### 1. Lyhyesti
 
-Kun käyttäjä avaa emit-lomakkeen Emit-muutokset-ikkunan, ohjelma ottaa kilpailijan (viestissä
-joukkueen) tiedoista kopion ja kirjoittaa sen koko tietueena takaisin, kun käyttäjä tallentaa
-muutoksen. Ikkuna voi olla auki pitkään. Jos kilpailijan tietoihin tulee sillä aikaa muutoksia
+Kun käyttäjä avaa emit-lomakkeen Emit-muutokset-ikkunan, ohjelma ottaa kopion emit-lomakkeen
+omasta kilpailijan (viestissä joukkueen) tietueesta ja kirjoittaa sen koko tietueena takaisin,
+kun käyttäjä tallentaa muutoksen. Lomakkeen oma tietue on voitu lukea jo kortin tai kilpailijan
+näyttämisen yhteydessä, joten kopio voi olla vanha jo ikkunaa avattaessa [päätelty]. Ikkuna voi
+olla auki pitkään. Jos kilpailijan tietoihin tulee sillä aikaa muutoksia
 muualta, esimerkiksi tulos tai tarkastustieto, tallennus kumoaa ne ilman ilmoitusta.
 
 Vahvistettu: ei mitään seurausta; vika on luettu koodista ja tarkastettu riippumattomasti,
@@ -3352,7 +3391,9 @@ jatkua vasta, kun kaavake Emit-muutokset on suljettu").
 ### 3. Mikä menee vikaan
 
 Kun ikkuna avataan, ohjelma ottaa muistiin kopion koko kilpailijatietueesta ja pitää sitä
-ikkunan ajan. Tallennuksessa ohjelma muokkaa kopiota (esimerkiksi poistaa kortin kilpailijalta
+ikkunan ajan. Kopio otetaan emit-lomakkeen omasta tietueesta eikä tiedostosta luettuna
+avaushetkellä; lomake on lukenut tietueen jo kortin tai kilpailijan näyttämisen yhteydessä, joten
+kopio voi olla vanha jo ikkunan avautuessa [päätelty]. Tallennuksessa ohjelma muokkaa kopiota (esimerkiksi poistaa kortin kilpailijalta
 tai merkitsee kortin ohitetuksi) ja kirjoittaa koko kopion tiedostoon. Ohjelma ei tarkista, onko
 tietue tiedostossa muuttunut sen jälkeen, kun kopio otettiin. Jos kilpailijalle on tullut sillä
 välin tulos tai tarkastustieto, vanha kopio kirjoittuu niiden päälle. Vertaus: kaksi kirjuria
@@ -3412,7 +3453,7 @@ kokonaan huomaamatta, jos kukaan ei tarkista kyseistä kilpailijaa.
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Mahdollinen | Ikkunan avaaminen ja tallennus ovat emit-lomakkeen tavallista käyttöä; vika vaatii, että ikkuna on auki, kun tietue muuttuu muualla. Ei ajettu. |
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Ei vaikutusta (perusteltu) | Laukeaa ilman poikkeustilannetta: tavallinen toimenpide (ikkuna auki, tietue muuttuu) riittää, virhettä tai erityisasetusta ei tarvita. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Aineisto ei kuvaa ilmoitusta kumoamisesta; riskiarvion mukaan se tapahtuu hiljaa. |
-| Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: pidä Emit-muutokset-ikkuna auki vain korjauksen ajan; lyhentää kopion vanhenemisaikaa mutta ei poista riskiä. Varmuuskopiosuositus on kirjattu havainnolle H-071 (luku 15). Tehoa ei ole kokeiltu. |
+| Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: pidä Emit-muutokset-ikkuna auki vain korjauksen ajan; lyhentää ikkunan aukioloaikaa mutta ei rajaa koko vanhenemisaikaa, koska kopio otetaan lomakkeen jo aiemmin lukemasta tietueesta ja voi olla vanha jo avattaessa [päätelty]; ei poista riskiä. Varmuuskopiosuositus on kirjattu havainnolle H-071 (luku 15). Tehoa ei ole kokeiltu. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvion palautettavuus on ei_palautettavissa (ohjelman oma kyky); etukäteen otettu varmuuskopio (muistiturvallisuus.md luku 15, kirjattu havainnolle H-071) on kirjattu palautumiskeino, jonka tehoa tähän vikaan ei ole arvioitu. |
 
 Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohjelmaa ajamalla; Mahdollinen = seuraa koodista, mutta seurausta ei ole osoitettu; Ei vaikutusta (perusteltu) = aineisto osoittaa, ettei seurausta synny; Ei tiedossa = aineisto ei ratkaise; _Ei arvioitu_ = riviä ei ole vielä arvioitu. Tiedon puute ei tarkoita, ettei vaikutusta ole. Lähteet: `doc/arkkitehtuuri/rekisteri/vaikutukset.csv`.
@@ -3454,8 +3495,9 @@ Aineisto ei kerro, mitkä tietueen kentät ehtivät käytännössä muuttua ikku
 - [Perusteltu, testaamaton suositus] Pidä Emit-muutokset-ikkuna auki vain sen aikaa, kun korjaus
   tehdään, ja tallenna ("Tallenna kilpailijan valinta") tai peruuta ("Peruuta tallentamaton
   siirto") heti. Peruste: vika vaatii, että ikkunan avauksessa otettu kopio ehtii vanhentua
-  (luvut 3 ja 10). Suositus lyhentää aikaa, jona kopio voi vanhentua, mutta ei poista riskiä.
-  Tehoa ei ole kokeiltu.
+  (luvut 3 ja 10). Suositus lyhentää ikkunan aukioloaikaa, mutta ei rajaa koko vanhenemisaikaa:
+  kopio voi olla vanha jo ikkunaa avattaessa, koska se otetaan lomakkeen jo aiemmin lukemasta
+  tietueesta [päätelty]. Suositus ei poista riskiä. Tehoa ei ole kokeiltu.
 - [Perusteltu, testaamaton suositus] Varmuuskopiot kilpailutiedostoista erilliseen paikkaan
   (`muistiturvallisuus.md` luku 15). Suositus on kirjattu havainnolle H-071; sen tehoa tähän
   vikaan ei ole arvioitu.
@@ -3463,7 +3505,10 @@ Aineisto ei kerro, mitkä tietueen kentät ehtivät käytännössä muuttua ikku
 
 ### 10. Tekninen juurisyy
 
-`BtnMuutoksetClick` (`cbHk/UnitEmit.cpp`) tallentaa kopiot `Kilp_0` (kilpailijatietue), `DKilp_0`
+`BtnMuutoksetClick` (`cbHk/UnitEmit.cpp`) tallentaa kopiot `Kilp_0` (sijoitus `Kilp_0 = Kilp`
+kopioi lomakkeen oman `Kilp`-tietueen, jonka lomake on lukenut aiemmin, esimerkiksi `GETREC`-kutsulla
+kortin tai kilpailijan näytön yhteydessä; ei lueta uudelleen tiedostosta avaushetkellä, joten kopio
+voi olla vanha jo avattaessa [päätelty]), `DKilp_0`
 (tietueen paikka) ja `Em_0` (emit-tietue) ja jättää ei-modaalisen `FormEmitMuutokset`-lomakkeen
 auki. `TallennaMuutokset`, `MerkitseOhitetuksi` ja `TallennaVaihto` muokkaavat `Kilp_0`:aa ja
 kirjoittavat sen `tallenna`-kutsulla kokonaisena. Ydin vertaa kirjoituksessa levyllä olevaan
@@ -3498,8 +3543,9 @@ tarkastustieto kumoutuu) on päätelty koodista; esiintymistiheys on päätelty.
 - Välittyykö kumoava tallennus muille työasemille.
 - Kuinka "Ohita kortti" -polun kopio vanhenee käytännössä; polku on päätelty koodista.
 - Kuntosuunnistustilojen ja esiluennan merkitys (Q75).
-- Ohjelmia HkMaali, ViestiMaali ja ViestiLuenta ei ole tarkistettu; viitatut lähdetiedostot ovat
-  GUI-lomakkeita.
+- Ohjelmat HkMaali, ViestiMaali ja ViestiLuenta: viitatut lähdetiedostot ovat GUI-lomakkeita,
+  eikä konsoliohjelmien Visual Studio -projekteissa (`VS/`) ole niitä [luettu projektitiedostoista
+  K-vaiheessa, ei tarkastettu].
 - Ajonaikaista koetta ei ole.
 
 ### 13. Miten vika on tarkoitus korjata
@@ -3536,7 +3582,7 @@ päätöspyyntö OP-14 (kentän käyttötavat) koskee muita kokonaisuuden havain
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `cbHk/UnitEmit.cpp:3483`; C-7: emit-lomakkeen ei-modaalinen Muutokset-dialogi pitää `Kilp_0`-kopion ja kirjoittaa sen kokonaisena / C-7: the modeless Emit Muutokset dialog holds and rewrites `Kilp_0`: `cbHk/UnitEmit.cpp:2469`, `:2694`, `:2722-2736`, `:2791`; `ViestiWin/UnitEmit.cpp:2209`, `:2269`. C-7 kavensi: `cbHk/UnitKilpailijatiedot.cpp:613-626` tarkistaa muuttuneen tietueen (vain lyhyt ikkuna lukon ulkopuolella, matala; viesti lukon sisällä `ViestiWin/UnitJoukkuetiedot.cpp:518-528`) / narrowed: the competitor form has a conflict check, small window only |
 
-Rekisteririvien tiiviste nyt: `2430ef25efde`.
+Rekisteririvien tiiviste nyt: `c414b770989e`.
 
 
 ---
@@ -3672,7 +3718,7 @@ Juurisyy JS-10 (jaettu tila ja VCL ilman omistajaa). Rakenteena T-033; lisäkohd
 ### 11. Mitä on todennettu
 
 (a) Ohjelmointivirhe: luettu koodista ja riippumattomasti tarkastettu; C-6 vaihe 2:n VCL-kartoitus
-(`saikeet-ja-lukot.md` luku 13.7) lisäsi kohtia ja vahvisti, että ainoa siirto on `SendMessage`.
+(`saikeet-ja-lukot.md` luku 13.7) lisäsi kohtia ja tarkasti, että ainoa siirto on `SendMessage`.
 Koeohjelmaa ei ole ajettu, eikä bcc32-käännöstä.
 
 (b) Käytännön seuraus: ei osoitettu. Seuraus on päätelty.
@@ -3924,7 +3970,9 @@ kuuluu Ampumasakkojen syöttö -ikkunaan ja toinen Ampumasuunnistus-ikkunaan.
 
 Todettu koodista ja projektitiedostosta (ohjelmaa ei ajettu): molemmat tiedostot ovat HkKisaWinin
 projektissa. Mahdollinen seuraus: vain toinen versio on käytössä, ja toinen ikkuna ei saa uusia
-sakkorivejä. Aineisto ei kerro, kumpi versio linkitetään tai tuleeko käännöksessä virhe (Q12).
+sakkorivejä. Aineisto ei kerro, kumpi versio linkitetään (Q12). Linkkeri ei hylkää kaksoismääritystä:
+HkKisaWin käännetään ja julkaistaan sellaisenaan (`build.yml`, `release.yml`) [luettu koodista
+K-vaiheessa ja riippumattomasti tarkastettu, ei ajettu].
 Riskiarvion mukaan vaikutus on näyttökoukun väärä kohde, eikä tuloksiin tai ajanottoon ole
 vaikutusta.
 
@@ -3942,9 +3990,10 @@ Ampumasakkojen syöttö -ikkunalle ja toinen vain Ampumasuunnistus-ikkunalle. Ku
 sanoma lähetetään vain, jos kyseinen ikkuna on olemassa.
 
 Samannimisiä määrityksiä ei saa olla kahta samassa ohjelmassa. Linkkeri (ohjelman osat yhteen
-liittävä työkalu) voi joko ilmoittaa virheen tai ottaa toisen versioista. Aineisto ei ratkaise,
-kumpi tapahtuu HkKisaWinin C++Builder-käännöksessä, koska linkityskarttaa ei ole. Jos linkitys
-onnistuu, toisen ikkunan rivipäivitys ei koskaan lähde liikkeelle [päätelty].
+liittävä työkalu) ei hylkää kaksoismääritystä HkKisaWinin C++Builder-käännöksessä: ohjelma linkittyy
+onnistuneesti ja siinä on jompikumpi versio. Aineisto ei ratkaise, kumpi versio linkittyy, koska
+käytettävissä oleva linkityskartta sisältää vain segmentit. Jos linkitetään vain toinen versio,
+toisen ikkunan rivipäivitys ei koskaan lähde liikkeelle [päätelty].
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
@@ -3957,8 +4006,8 @@ Tarkempaa asetusta aineisto ei nimeä.
 
 Mahdollinen oire on, että toisen sakkoikkunan taulukkoon ei tule uutta riviä, kun sakkotieto
 muuttuu. Aineisto ei kerro, huomaako käyttäjä tämän, eikä sitä, näkyykö tilanne jollakin
-ilmoituksella. Jos linkkeri hylkää kaksoismäärityksen, vika näkyy käännöksessä eikä
-toimitetussa ohjelmassa.
+ilmoituksella. Kaksoismääritys ei näy käännöksessä virheenä, joten vika voi olla toimitetussa
+ohjelmassa.
 
 ### 6. Vaikutukset kilpailuun
 
@@ -3976,7 +4025,7 @@ toimitetussa ohjelmassa.
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei sovellu | Funktio päivittää ikkunan ruudukkoa; ei tulosteita eikä tiedostoja. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvio: tietoturva ei. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei tiedossa | Riskiarvio: saavutettavuus tietyllä asetuksella tai kokoonpanolla; kumpi toteutus linkitetään ja ilmeneekö ero tavallisessa käytössä, ei ratkaistu (Q12). |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Riskiarvio: saavutettavuus asetus; kutsu tapahtuu vain, kun ampumasakkotieto muuttuu. Tarkempaa asetusta aineisto ei nimeä. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Vika edellyttää ammuntaa sisältävää kilpailua (ampumasakkotiedon muutosta), joka on erityisasetus eikä oletus; lisäksi toisen ikkunan versio on jäätävä linkittämättä (Q12). Asetuksen yleisyyttä aineisto ei kerro. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Aineisto ei kerro, huomaako käyttäjä päivittymättömän sakkoikkunan. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Ei tiedossa | Ei tunnettua turvallista toimintaohjetta; aineisto ei kirjaa keinoa valita linkitettävää versiota. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Ei sovellu | Riskiarvio: palautettavuus ei sovellu; tietoja ei menetetä, vain näyttö voi jäädä päivittämättä. |
@@ -4020,14 +4069,18 @@ mekanismia tarkemmin. Rekisterin mukaan juurisyy on yksittäinen vika.
 ### 11. Mitä on todennettu
 
 (a) Ohjelmointivirhe: kaksoismääritys on luettu koodista ja projektitiedostosta; molemmat tiedostot
-ovat HkKisaWinin projektissa. Rekisterin mukaan vika ei ole todennettavissa staattisesti, koska
-linkittämisen tulosta ei tiedetä. Linkitystä ei ole kokeiltu.
+ovat HkKisaWinin projektissa. Käännös- ja julkaisuajo linkittää ohjelman onnistuneesti, joten
+linkkeri ei hylkää kaksoismääritystä; kumpi versio linkittyy, on ratkaisematta, koska linkitystulos
+ei ole kokonaan tiedossa. Linkitystä ei ole tutkittu tarkemmin.
 
 (b) Käytännön seuraus: ei osoitettu.
 
 ### 12. Mitä ei vielä tiedetä
 
-- Q12: kumpi `add_sakko` linkitetään HkKisaWiniin, vai hylkääkö linkkeri kaksoismäärityksen.
+- Q12: kumpi `add_sakko` linkitetään HkKisaWiniin. Linkkeri ei hylkää kaksoismääritystä (käännös
+  onnistuu), joten kysymys on enää versiosta. Ratkaisutapa: yksityiskohtainen linkityskartta
+  (nykyinen kartta sisältää vain segmentit) tai debuggerin keskeytyskohta funktiossa `add_sakko`.
+  Rekisterin H-020-riviltä puuttuu viittaus Q12:een; rekisteriä ei muuteta tässä vaiheessa.
 - Näkyykö ero käyttäjälle, ja päivittyykö toinen sakkoikkuna silloin ollenkaan.
 - Onko kaksoismääritys ollut mukana julkaistussa HkKisaWinissä. Aineisto ei kerro.
 
@@ -4063,7 +4116,7 @@ koskevat kokonaisuutta. Mitään ei poisteta ilman OP-10:tä.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `cbHk/UnitASakot.cpp:269`, `cbHk/UnitASuunn.cpp:289` |
 
-Rekisteririvien tiiviste nyt: `ee8ecb343eed`.
+Rekisteririvien tiiviste nyt: `509c61c7562e`.
 
 
 ---
@@ -4208,10 +4261,10 @@ lukkojen alla); pahentava syy JS-11 (virheet ikkunoina, ei paluuarvoina).
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista. Riippumaton tarkastus vahvisti osittain (laukaisin on
+(a) Ohjelmointivirhe: luettu koodista. Riippumattomasti tarkastettu osittain (laukaisin on
 laajempi kuin pelkkä täysi jono: varoitus annetaan jo 25 ja 38 kohdalla). Ohjelmaa ei ole ajettu.
 
-(b) Käytännön seuraus: ei osoitettu. Pudotus on todennettu koodista; lukkiutuminen on päätelty.
+(b) Käytännön seuraus: ei osoitettu. Pudotus on luettu koodista; lukkiutuminen on päätelty.
 
 ### 12. Mitä ei vielä tiedetä
 
@@ -4383,7 +4436,7 @@ sovelletaan paketin tietuenumeron osoittamalle tietueelle ilman numeron vertailu
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: riippumaton lähdetarkastus vahvisti koodin. Toistettu testikehyksessä
+(a) Ohjelmointivirhe: koodi on luettu ja tarkastettu riippumattomasti. Toistettu testikehyksessä
 (C-11, `TpCoreHk`): kontrolli (oikea numero 12) tallentuu tietueelle 1, ja numeron 13 paketti
 tallentuu tietueelle 1 samalla tavalla, ilman viestejä.
 
@@ -4474,8 +4527,8 @@ Yhteyden alussa vaihtopyyntö kulkee mukana lipulla.
 ### 4. Missä tilanteessa vika voi ilmetä
 
 - Kilpailussa on useita vaiheita ja kaksi asemaa on eri vaiheessa tai vaiheen vaihto on evätty.
-- Ohjelmat: HkKisaWin ja HkMaali. Viesti hylkää vaiheen, joka ei ole nolla, eli viestissä ei ole
-  vaiheita. HK- ja viestiasema eivät voi olla yhteydessä toisiinsa.
+- Ohjelmat: HkKisaWin ja HkMaali. Viestiasema ei hyväksy HK-aseman yhteydenavausta eikä lähetä
+  sille, mutta ottaa sen paketit edelleen vastaan (ks. H-026). Viestissä ei ole vaiheita.
 - Riskiarvion mukaan vian saavuttaminen vaatii asetuksen eli monivaiheisen kilpailun; yksivaiheisessa
   vika ei ilmene. Aineisto ei kerro, kuinka usein vaiheiden välinen epäsynkronia syntyy.
 
@@ -4501,7 +4554,7 @@ Yhteyden alussa vaihtopyyntö kulkee mukana lipulla.
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei sovellu | Vika koskee asemien välistä tiedonsiirtoa, ei laitteita. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei tiedossa | Riskiarvio sanoo tietoturvasta ei, mutta perustetta ei ole kirjattu; verkosta tullut paketti sovelletaan vastaanottajan vaiheeseen, eikä protokollassa ole todennusta (H-029), joten aineisto ei sulje pois virheellisen sanoman vaikutusta. |
-| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Riskiarvion saavutettavuus on asetus: ilmenee vain monivaiheisessa kilpailussa, kun asemat ovat eri vaiheissa. |
+| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei tiedossa | Riskiarvion saavutettavuus on asetus (monivaiheinen kilpailu, asemat eri vaiheissa), mutta kortin luvun 4 mukaan aineisto ei kerro, kuinka usein vaiheiden epäsynkronia syntyy; aineisto ei siis osoita, ettei vika voi ilmetä tavallisessa käytössä. |
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | **Vahvistettu** | Testikehyksessä vika toistui tilanteessa, jossa lähettäjän vaihe poikkesi vastaanottajan vaiheesta ja vaiheen vaihto evättiin; GUI-polkua ei ajettu. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Mahdollinen | Vaiheen vaihdon epääminen tuotti viestin testikehyksessä, mutta väärään vaiheeseen tallentumisesta ei kirjattu viestiä. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Ei tiedossa | Aineistossa ei ole kirjattua keinoa vian välttämiseksi. |
@@ -4515,8 +4568,10 @@ Vahvistetun ja mahdollisen erottelu on luvussa 11. Tiedonsiirto-raportin koesuun
 tilanne: kaksivaiheisessa kilpailussa A:lla on lähettämätön jono kolmanteen asemaan, vaihe
 vaihdetaan B:llä, A evää vaihdon ja B kirjaa maaliajan:
 
-- **Oma työasema (vastaanottaja A):** vahvistettu testikehyksessä: tulos tallentuu A:n omaan
-  vaiheeseen 1, vaikka lähettäjän vaihe on 2. Yhteys on hyväksytty vaihdon eväämisestä huolimatta.
+- **Oma työasema (vastaanottaja A):** osat (a) ja (b) on vahvistettu testikehyksessä erikseen
+  funktiotasolla: tulos tallentuu vastaanottajan omaan vaiheeseen 1, vaikka paketin vaihe on 2, ja
+  yhteys hyväksytään vaihdon eväämisestä huolimatta. Kuvattua ketjua (B pyytää vaihtoa, A evää, B
+  lähettää maaliajan, A tallentaa) ei ole ajettu.
 - **Kilpailu:** väärän vaiheen tulos voi olla kilpailijan tuloksena väärässä vaiheessa. Riskiarvion
   mukaan ajanotto ei pysähdy, ja tulosvaikutus on suora. Aineisto ei kerro, miten vaiheet
   yhdistetään kokonaistulokseksi.
@@ -4555,7 +4610,7 @@ ja vaiheen vaihto).
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: riippumaton lähdetarkastus vahvisti. Toistettu testikehyksessä (C-11,
+(a) Ohjelmointivirhe: luettu koodista ja riippumattomasti tarkastettu. Toistettu testikehyksessä (C-11,
 `TpCoreHk`): (a) vaiheen 2 paketti (vaiheindeksi 1), vastaanottajan `k_pv` 0: tulos tallentuu
 vaiheelle 1 ja vaihe 2 jää koskematta; (b) vaihto evätään (ohjelman viesti kertoo eväämisestä),
 mutta `tark_alku` hyväksyy yhteyden. Kontrollit läpäistiin: vaihtopyynnöttä toisen vaiheen yhteys
@@ -4568,6 +4623,11 @@ hyväksyntä. Kahden aseman jatkosarjoja ja GUI-polkua ei ajettu.
 
 - Seuraavien pakettien soveltaminen väärin kahden aseman välillä.
 - GUI-polku (`cbHk/WinHk.cpp`), jota ei ajettu.
+- Estääkö lähettäjä B oman lähetyksensä, kun se saa A:n avaussanoman eri vaiheesta ilman
+  vaihtolippua. HK:n `tark_alku` asettaa eri vaiheen avaussanomalle vain lähetyksen eston;
+  vastaanotto jatkuu, joten B:n paketit voisivat tallentua A:n omaan vaiheeseen myös ilman
+  vaihtolippua [päätelty, luettu koodista K-vaiheessa, ei tarkastettu]. Ratkaisisi kahden prosessin
+  loopback-testi.
 - Q-kysymyksiä ei ole kirjattu.
 
 ### 13. Miten vika on tarkoitus korjata
@@ -4602,7 +4662,7 @@ lokissa. Testit: nykyinen kehystesti H-023 ja loopback-testi kahdella asemalla.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkCom32.cpp:283-293`, `:843-849`, `:870`; `Hk/HkTls.cpp:850`; `cbHk/WinHk.cpp:2154-2162` |
 
-Rekisteririvien tiiviste nyt: `34fd1ef6ded8`.
+Rekisteririvien tiiviste nyt: `b1989471a15a`.
 
 
 ---
@@ -4686,7 +4746,7 @@ tarvitaan seuraavan kerran (ei ajettu). Voiko vika jäädä huomaamatta ennen si
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai tulospalveluun. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Mahdollinen | Riskiarvion tietoturva-arvo on verkko: verkossa oleva laite voi lähettää sanoman, jonka käsittely jättää lukon päälle; sanoman rakennetta ei kuvata. Verkkoprotokollassa ei ole todennusta (H-029). |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Vika vaatii kuuluttajatilan, joka otetaan käyttöön asetuksella tai valikosta, ja verkkoyhteyden toiseen asemaan; ei ilmene ilman erityisasetusta. |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | **Vahvistettu** | Lukon jääminen toistettiin testikehyksessä kuuluttajatilassa; oikeaa verkkoyhteyttä ei käytetty, paketti syötettiin jonoon. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Lukon jääminen toistettiin testikehyksessä kuuluttajatilassa, mutta kehys ohitti verkkovastaanoton ja syötti paketin suoraan jonoon; laukaisupolkua verkon kautta ei ajettu. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Aineisto ei kerro, mitä käyttäjä näkee ennen jumiutumista. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: kuuluttajatilan jättäminen pois poistaa laukaisuehdon (luettu koodista); tehoa ei ole kokeiltu, eikä aineisto kerro, voiko kilpailu toimia ilman kuuluttajatilaa. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvion palautettavuus on uudelleenkäynnistys; lukon omistaa ohjelman oma säie, joten ohjelman sulkeminen vapauttaa sen (päätelty); tehoa ei ole kokeiltu. Varmuuskopio on kirjattu palautumiskeino (muistiturvallisuus.md luku 15). |
@@ -4809,7 +4869,7 @@ vaikuttaa vain vartijan toteutustapaan.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Juk/VCom.cpp:690`, `:699-701`, `:706`; `Juk/VInit.cpp:701-702` |
 
-Rekisteririvien tiiviste nyt: `353eb6d22846`.
+Rekisteririvien tiiviste nyt: `d68004635633`.
 
 
 ---
@@ -4869,9 +4929,11 @@ viestin jono on aina levyllä. Todellinen polku on levyjono.
   lähettääkö se suurimman luokan sanomia. HK ei ole vioittunut, koska se lisää otsakkeen; HK:n
   kahden sanomaluokan (SEURAT, AIKAT) mahdollinen ylitys on avoin kysymys (Q42).
 - Laukaisu: viesti lähettää sanoman, jonka pituus ylittää paikan pituuden vähennettynä otsakkeella.
-  Aineiston mukaan sellaisia ovat emit-väliaikatieto (EMITVA), jota lähetetään vain asetuksella
-  `LÄHEMVA`, ja yhteislähtöaikojen sanoma (YHTEISLAHTOT), kun osuuksia on 24 tai enemmän. Toimitetun
-  Release-käännöksen osuuksien enimmäismäärä on 30.
+  Aineiston mukaan sellaisia ovat yhteislähtöaikojen sanoma (YHTEISLAHTOT), kun osuuksia on 24 tai enemmän, ja
+  emit-väliaikatieto (EMITVA, lähetetään vain asetuksella `LÄHEMVA`) vain, kun osuuksia on vähän ja
+  se on suurin sanomaluokka. Luokkapituudet riippuvat kilpailun osuusmäärästä: 30 osuudella EMITVA
+  (204 tavua) mahtuu paikkaan, eikä vika koske sitä, mutta YHTEISLAHTOT (244 tavua) ei mahdu
+  (`testaus.md` luku 13.4 aineisto). Toimitetun Release-käännöksen osuuksien enimmäismäärä on 30.
 - Riskiarvion mukaan vika ilmenee tavallisessa verkotetussa viestikäytössä. Testikehys osoitti
   mitoituksen ja tallennuksen, mutta ei sitä, milloin ohjelma lähettää suurimman luokan sanoman.
   Yhteislähtöaikojen siirto on osuuksiltaan suurissa kilpailuissa mahdollinen laukaisu [päätelty];
@@ -4892,7 +4954,7 @@ viestin jono on aina levyllä. Todellinen polku on levyjono.
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Vastaanottaja voi hyväksyä sanoman, jonka loppuosa on muuta tietoa; mitkä kentät kuuluvat hännän alueelle, ei ole osoitettu. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan ajanotto ei pysähdy. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei tiedossa | Riskiarvion mukaan ajanotto ei pysähdy, mutta aineisto ei ratkaise, voiko uudelleenlähetysjonosta puuttuva sanoman loppuosa vaikuttaa välillisesti ajanottoon. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Mahdollinen | EMITVA-sanoma (emit-väliaikatieto, asetus LÄHEMVA) kuuluu pisimpiin luokkiin ja voi kärsiä viasta; lähetystä ei toistettu. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | **Vahvistettu** | Testikehyksessä (TpCoreJuk, MSVC) jonotiedoston paikan pituus oli 204 tai 244 tavua, ja pisimmän sanoman 14 viimeistä tavua jäi jokaisessa paikassa tallentamatta (H-025a, H-025b). |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Ei vaikutusta (perusteltu) | Muistijonon ylivuoto ei ole viestissä saavutettavissa, koska viestin jono on aina levyllä. |
@@ -5021,7 +5083,7 @@ jossa päivitys tehdään kilpailujen välissä. Se ei ole vielä päätös.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Juk/VCom.cpp:1228`, `:1236-1240`; `Tp/TpComY.cpp:509`, `:529-530`, `:1470`, `:1494-1495`, `:1507-1508`, `:2409` |
 
-Rekisteririvien tiiviste nyt: `bbe9c619df43`.
+Rekisteririvien tiiviste nyt: `67454ba3267a`.
 
 
 ---
@@ -5077,9 +5139,11 @@ vastaava haara ohittaa paketin ja siirtyy eteenpäin, joten vika on vain viestis
 - Vika vaatii paketin, jonka lajia viestiohjelma ei tunne. Viestille tuntemattomia ovat lajit, joita
   käyttää vain henkilökilpailun ohjelma (esimerkiksi seuran tiedon lähetys), ja käyttämättömät
   lajinumerot.
-- Reitti jonoon: UDP-yhteydellä pituustarkistus ohitetaan lajeille, joiden pituus on taulukossa 0
-  (ks. H-032), joten tuntematon laji pääsee jonoon. Sarja- ja binääri-TCP-yhteydellä pituustarkistus
-  hylkää lajin ennen jonoa; mitä virta sen jälkeen tekee, ei ole jäljitetty. UDP-reitti on luettu
+- Reitti jonoon: UDP-yhteydellä pituustarkistus ohitetaan tietyntyyppisiltä paketeilta (ks. H-032),
+  joten tuntematon laji pääsee jonoon. Sarja- ja binääri-TCP-yhteydellä pituustarkistus hylkää
+  useimmat tällaiset paketit ennen jonoa; aineisto ei ole osoittanut, että kaikki hylätään, sillä
+  tarkistus vertaa taulukon pituutta ilmoitettuun pituuteen yhtäsuuruudella [luettu koodista
+  K-vaiheessa, ei ajettu]. Mitä virta sen jälkeen tekee, ei ole jäljitetty. UDP-reitti on luettu
   koodista, ei ajettu.
 - Paketin voi lähettää verkossa oleva laite (väärennetty tai virheellinen paketti), toinen
   ohjelmaversio tai henkilökilpailun asema, jos se on kytketty viestiasemaan. Aineisto kuvaa
@@ -5116,7 +5180,7 @@ vastaava haara ohittaa paketin ja siirtyy eteenpäin, joten vika on vain viestis
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei tiedossa | Vika vaatii viestille tuntemattoman lajin paketin. Aineiston mukaan henkilökilpailun aseman seuramuutos on sellainen, mutta sekakokoonpanon käyttöä ei ole jäljitetty. |
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | **Vahvistettu** | Testikehyksessä tuntemattoman lajin paketti (virheellinen syöte) pysäytti jonon. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Mahdollinen | Ohjelma kutsuu virheilmoitusta tuntemattomasta sanomalajista (testissä kuusi kutsua 300 ms:ssa); ilmoituksen näkymistä käyttäjälle ei ole osoitettu. |
-| Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Luvun 15 suositukset (suljettu ajanottoverkko, palomuurin sallittujen lista) on kirjattu havainnoille H-032 ja H-061; testaamattomia, tehoa tähän vikaan ei ole arvioitu eivätkä ne rajaa tunnetun aseman lähettämää pakettia. |
+| Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Luvun 15 suositukset (suljettu ajanottoverkko, palomuurin sallittujen lista) on kirjattu verkkovastaanoton havainnoille H-071, H-072, H-032 ja H-061; testaamattomia, tehoa tähän vikaan ei ole arvioitu eivätkä ne rajaa tunnetun aseman lähettämää pakettia. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; keinoa ei ole kokeiltu. |
 
 Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohjelmaa ajamalla; Mahdollinen = seuraa koodista, mutta seurausta ei ole osoitettu; Ei vaikutusta (perusteltu) = aineisto osoittaa, ettei seurausta synny; Ei tiedossa = aineisto ei ratkaise; _Ei arvioitu_ = riviä ei ole vielä arvioitu. Tiedon puute ei tarkoita, ettei vaikutusta ole. Lähteet: `doc/arkkitehtuuri/rekisteri/vaikutukset.csv`.
@@ -5156,7 +5220,7 @@ paketti kilpailun aikana:
 ### 9. Mitä käyttäjä voi tehdä riskin pienentämiseksi
 
 - Ajanottoverkon rajaus omaksi suljetuksi verkoksi ja palomuurin sallittujen lista tunnetuille
-  asemille: [Perusteltu, testaamaton suositus]. Suositus on kirjattu havainnoille H-032 ja H-061
+  asemille: [Perusteltu, testaamaton suositus]. Suositus on kirjattu verkkovastaanoton havainnoille H-071, H-072, H-032 ja H-061
   (sama vastaanottopolku; `muistiturvallisuus.md` luku 15); sen tehoa tähän vikaan ei ole arvioitu.
   Rajaus estäisi vieraan laitteen paketit, mutta ei tunnetun aseman, esimerkiksi henkilökilpailun
   aseman, lähettämää tuntematonta lajia.
@@ -5238,7 +5302,7 @@ OP-5) koskee H-071:ää, ei tätä korjausta.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Juk/VCom.cpp:971-974`, `:981`; `Tp/TpComY.cpp:649-650`, `:1001` |
 
-Rekisteririvien tiiviste nyt: `caf897611f71`.
+Rekisteririvien tiiviste nyt: `694b2b364542`.
 
 
 ---
@@ -5265,15 +5329,20 @@ tyhjää osoitetta ja kaataa ohjelman.
   poikkeuskoodilla 0xC0000005 (muistin suojausvirhe).
 - **Mahdollinen (ei kokeiltu):** palvelinpuolen avausvirhe ohitetaan vanhentuneella kahvalla.
   Riskiarvion mukaan tavallinen yhteyden katkeaminen päättää työasemien välisen tietojen
-  kopioinnin (replikoinnin) uudelleenkäynnistykseen asti.
+  kopioinnin (replikoinnin) uudelleenkäynnistykseen asti. Koodin mukaan jo muodostetulla
+  asiakasyhteydellä on uudelleenyhteyspolku (`Tp/TpComY.cpp`, `com/WinUDP.cpp`), joten pysyvä
+  katko syntyy koodin perusteella siitä, että ensimmäinen avaus epäonnistuu; uudelleenyhteyspolun
+  toimivuutta ei ole kokeiltu [luettu koodista, ei ajettu]. Riskiarvion perusteen tarkistus on
+  avoin (luku 12).
 - Vahvistetun ja mahdollisen erottelu on luvussa 11.
 
 ### 2. Mitä ohjelma yrittää tehdä
 
 Kun työasema on asetettu TCP-yhteyteen toisen työaseman tai ulkoisen palvelun kanssa
 (`YHTEYS`-asetus, tyyppi TCP tai TCPXML), asiakaspuoli avaa yhteyden vastapäähän. Jos
-yhteys ei onnistu tai katkeaa, ohjelman pitäisi yrittää uudelleen noin kuuden sekunnin välein,
-kunnes vastapää vastaa. Yhteyden avulla työasemat vaihtavat tietoja (ks. sanasto: Sanoma, paketti).
+yhteys ei onnistu tai katkeaa, ohjelman pitäisi yrittää uudelleen, kunnes vastapää vastaa. Yritysväli on koodin mukaan
+konsoliohjelmassa noin kuusi sekuntia (virheilmoitus 2 s ja odotus 4 s) ja GUI-ohjelmassa 4
+sekuntia [luettu koodista]. Yhteyden avulla työasemat vaihtavat tietoja (ks. sanasto: Sanoma, paketti).
 
 ### 3. Mikä menee vikaan
 
@@ -5389,7 +5458,11 @@ käytössä, muut TCP-tyypit kuin `comtpTCP` ja `comtpTCPXML`.
 
 - Palvelinpuolen avausvirheen ohitus vanhentuneella kahvalla (ei testattu).
 - Mitä tapahtuu, kun jo muodostettu `comtpTCP`-yhteys katkeaa; kokeet kattoivat vain avauksen
-  epäonnistumisen.
+  epäonnistumisen. Koodissa on tälle uudelleenyhteyspolku (`Tp/TpComY.cpp`,
+  `com/WinUDP.cpp`), jonka toimivuutta ei ole kokeiltu.
+- Riskiarvion peruste, jonka mukaan tavallinen yhteyden katkeaminen päättää replikoinnin
+  uudelleenkäynnistykseen asti, ei ole yhdenmukainen koodin kanssa: pysyvä katko syntyy, kun
+  ensimmäinen avaus epäonnistuu. Riskiarvion peruste tarkistetaan (`seuranta.md` KE-19).
 - Toimitettujen ohjelmien (HkMaali, HkKisaWin, viestiohjelmat) käytös oikeassa kilpailussa.
 - Kuinka moni asennus käyttää TCP-asiakasyhteyttä.
 
@@ -5443,13 +5516,13 @@ Rekisteririvien tiiviste nyt: `377a7d823fbd`.
 
 Kun ohjelma toimii TCP-palvelimena, jokainen uusi yhteydenotto palvelimen porttiin korvaa jo
 elävän yhteyden. Ohjelma ei sulje vanhaa yhteyttä, ja se käynnistää uuden lukusäikeen, joka
-lukee samaan vastaanottopuskuriin kuin vanha. Lisäksi yksi poistumispolku voi jättää TCP-lähetysten
-lukon päälle.
+lukee samaan vastaanottopuskuriin kuin vanha. Lisäksi yksi poistumispolku voi jättää päälle
+ohjelman yhteisen TCP/IP-lukon, joka suojaa kaikkea ohjelman TCP-liikennettä.
 
-- **Vahvistettu:** ei vahvistettua kokeella. Mekanismi on luettu koodista ja tarkastettu
+- **Luettu koodista:** ei vahvistettua kokeella. Mekanismi on luettu koodista ja tarkastettu
   riippumattomasti; vaikutus ei ole toistettu.
-- **Mahdollinen (päätelty):** vastaanotettu tieto sekoittuu, ja TCP-lähetykset jäävät
-  odottamaan lukkoa, joka ei vapaudu.
+- **Mahdollinen (päätelty):** vastaanotettu tieto sekoittuu, ja ohjelman TCP-yhteyksien toiminnot
+  (avaus, sulkeminen, lukeminen, kirjoittaminen) jäävät odottamaan lukkoa, joka ei vapaudu.
 - Riskiarvio kirjaa, että vian voi laukaista verkosta, kun TCP-palvelinasetus on käytössä.
   Vahvistetun ja mahdollisen erottelu on luvussa 11.
 
@@ -5471,9 +5544,12 @@ Palvelimen kuunteluvaihe ei tarkista, onko samalla portilla jo elävä yhteys.
   käynnissä. Molemmat lukevat nyt samasta (uudesta) pistokkeesta ja kirjoittavat samaan
   vastaanottopuskuriin, joten saapuva tieto voi mennä niiden kesken sekaisin.
 - **Lukko voi jäädä päälle.** Kuunteluvaiheen silmukassa on poistumispolku, joka ottaa
-  TCP-lähetysten lukon (ks. sanasto: Lukko) ja lähtee silmukasta vapauttamatta sitä. Polku
+  ohjelman yhteisen TCP/IP-lukon (ks. sanasto: Lukko) ja lähtee silmukasta vapauttamatta sitä.
+  Sama lukko suojaa koodissa TCP-yhteyden avausta, sulkemista, lukemista, kirjoittamista ja
+  vastaanottosäiettä sekä UDP-portin avausta [luettu koodista K-vaiheessa, ei tarkastettu]. Polku
   toteutuu, jos yhteyden tiedot ovat ehtineet poistua kesken kaiken (päätelty). Jos lukko jää,
-  muut tämän ohjelman TCP-lähetykset jäävät odottamaan; sitä ei ole toistettu.
+  muut tämän ohjelman TCP-yhteyksien toiminnot jäävät odottamaan, ei vain lähetykset; sitä ei ole
+  toistettu. Saman lukon laajasta käytöstä ks. H-096 ja T-031.
 
 Vertaus: vastaanottovirkailija ottaa uuden asiakkaan luukulle ja jättää edellisen asiakkaan
 luukulle seisomaan, jolloin kaksi virkailijaa vastaa samoihin kirjeisiin.
@@ -5491,18 +5567,18 @@ luukulle seisomaan, jolloin kaksi virkailijaa vastaa samoihin kirjeisiin.
 ### 5. Mitä käyttäjä voi huomata
 
 Aineisto ei kuvaa näkyvää oiretta. Mahdollisia oireita ovat vastaanotettujen sanomien
-sekoittuminen tai TCP-lähetysten pysähtyminen; kumpaakaan ei ole osoitettu.
+sekoittuminen tai ohjelman TCP-liikenteen pysähtyminen; kumpaakaan ei ole osoitettu.
 
 ### 6. Vaikutukset kilpailuun
 
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Riskiarvio: epäsuora vaikutus. Sekoittunut vastaanottopuskuri voisi tuoda vääriä tietoja; ei osoitettu. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Mahdollinen | Riskiarvio: pysäyttää. Pidetty tcpip_CS jättäisi tämän ohjelman TCP-lähetykset odottamaan (päätelty, ei toistettu); koko kilpailun ajanoton pysähtymistä ei ole osoitettu. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Mahdollinen | Riskiarvio: pysäyttää. Jäänyt tcpip_CS on kaikkien TCP-yhteyksien yhteinen lukko (lähetys, vastaanotto, luku, avaus ja sulkeminen), joten tämän ohjelman kaikki TCP-yhteydet voivat pysähtyä (luettu koodista, ei ajettu); koko kilpailun ajanoton pysähtymistä ei ole osoitettu. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Ei tiedossa | Aineisto ei kerro vaikutusta leimausten vastaanottoon. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Mahdollinen | Kaksi lukusäiettä kirjoittaa samaan vastaanottopuskuriin (luettu koodista); tiedon sekoittuminen on päätelty. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Ei tiedossa | Aineisto ei kirjaa kaatumista tämän vian seurauksena. |
-| Vaikutus: Voiko ohjelma tai yksittäinen toiminto jäädä jumiin? | Mahdollinen | Poistumispolku jättää tcpip_CS-lukon päälle (luettu koodista); vaikutus on päätelty, ei toistettu. |
+| Vaikutus: Voiko ohjelma tai yksittäinen toiminto jäädä jumiin? | Mahdollinen | Poistumispolku jättää tcpip_CS-lukon päälle (luettu koodista); lukko on kaikkien TCP-yhteyksien yhteinen, joten vastaanotto, lähetys ja uudelleenavaus voivat pysähtyä; vaikutus on päätelty, ei toistettu. |
 | Vaikutus: Voiko jokin mennä väärin ilman ilmoitusta tai näkyvää oiretta? | Mahdollinen | Sekoittunut vastaanottopuskuri ei tuota ilmoitusta (päätelty koodista). |
 | Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Mahdollinen | Toinen yhteys korvaa elävän yhteyden sulkematta sitä, ja ensimmäisen yhteyden vertaisasema menettää yhteyden; luettu koodista. |
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei tiedossa | Aineisto ei käsittele vaikutusta lukijoihin, kelloihin, tauluihin tai tulostimiin. |
@@ -5525,7 +5601,7 @@ yhteyden katkenneen):
 - Ensimmäinen yhteys korvautuu, ja kaksi säiettä lukee samaa puskuria (luettu koodista).
 - Vastaanotetut sanomat voivat sekoittua [päätelty]. Aineisto ei kerro, miten vastaanottokerros
   käsittelee sekoittuneen sanoman.
-- Jos lukko jää päälle, ohjelman muut TCP-lähetykset odottavat. Riskiarvion mukaan ajanotto
+- Jos lukko jää päälle, ohjelman muut TCP-yhteyksien toiminnot (myös vastaanotto) odottavat. Riskiarvion mukaan ajanotto
   pysähtyy; tämä koskee tämän työaseman ohjelmaa eikä sitä ole osoitettu.
 
 ### 8. Palautuminen ja uudelleenkäynnistys
@@ -5553,7 +5629,7 @@ Juurisyy JS-8 (kahvoilla ja osoittimilla ei omistajaa).
 `TCPyhteys[yhtno]->sockdata`-kenttään sulkematta aiemmin siinä ollutta pistoketta, ja
 käynnistää uuden `TCPrcvTh`-säikeen (`_beginthread`) tallettamatta tai tarkistamatta edellisen
 säikeen tilaa. Molemmat `TCPrcvTh`-säikeet kirjoittavat samaan `rcvbuf`-puskuriin. Silmukassa
-on `break`, joka suoritetaan `tcpip_CS`-lukon ollessa varattuna (tarkistus `!TCPyhteys[yhtno]`
+on `break`, joka suoritetaan yhteisen TCP/IP-lukon (`tcpip_CriticalSection`) ollessa varattuna (tarkistus `!TCPyhteys[yhtno]`
 lukon oton jälkeen) ja joka ei vapauta lukkoa.
 
 ### 11. Mitä on todennettu
@@ -5562,13 +5638,16 @@ lukon oton jälkeen) ja joka ei vapauta lukkoa.
 kokeella.
 
 **(b) Käytännön seuraus.** Ei osoitettu. Riskiarvio toteaa itse, että pidetyn lukon vaikutus
-(TCP-lähetykset jäävät odottamaan) on päätelty, ei toistettu.
+(TCP-yhteyksien toiminnot jäävät odottamaan) on päätelty, ei toistettu.
 
 ### 12. Mitä ei vielä tiedetä
 
 - Vaikuttaako sekoittunut puskuri käytännössä (miten vastaanottokerros käsittelee sen).
 - Pääsevätkö `break`-polun ehdot toteutumaan oikeassa käytössä.
 - Kuinka moni asennus käyttää TCP-palvelintilaa.
+- Rekisterin ja riskiarvion kuvaus lukon vaikutuksesta ("TCP sends stall", lähetyslukko) on
+  kapeampi kuin koodi: lukko on kaikkien TCP-yhteyksien yhteinen. Rekisterin rivi tarkistetaan
+  (`seuranta.md` KE-18).
 - Riskiarvio kirjaa tietoturvaksi "verkko": toisen yhteyden ottajalta ei vaadita todennusta (H-029).
 
 ### 13. Miten vika on tarkoitus korjata
@@ -5603,7 +5682,7 @@ PR kerrallaan. Omistajan päätöstä ei ole.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `com/WinUDP.cpp:569`, `:656-667` |
 
-Rekisteririvien tiiviste nyt: `760411eefbd6`.
+Rekisteririvien tiiviste nyt: `671d23d77cb3`.
 
 
 ---
@@ -5800,7 +5879,7 @@ uudelleen. Sanomat ovat sellaisina kuin ne jonoon laitettaessa tallennettiin, el
 tilannekuvia. Vastaanottaja korvaa tietueensa saapuneella kopiolla (viimeksi saapunut voittaa), joten
 vanha kopio voi kumota sen jälkeen tehdyn uudemman muutoksen.
 
-Koodista luettu; riippumaton tarkastus vahvisti uudelleenlähetyksen mekanismin mutta vaikutus
+Koodista luettu; uudelleenlähetyksen mekanismi on tarkastettu riippumattomasti, mutta vaikutus
 on päätelty. Mahdollinen (ei ajettu): vastaanottajan uudemmat muutokset katoavat ilman ilmoitusta.
 Riskiarvion mukaan uudelleenlähetys on automaattinen vain XML-TCP-yhteyksillä ja muuten
 käyttäjän käynnistämä. Aineisto ei kerro, miten yleisiä XML-TCP-yhteydet ovat (luku 12).
@@ -5868,7 +5947,7 @@ sanomat uudelleen. Tämä vika koskee siis uudelleenlähetystyökalua, ei käynn
 | Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Mahdollinen | Uudelleenlähetys lähettää jonon vanhat kopiot vastaanottajille, ja vanha tila voi levitä edelleen muille asemille (päätelty); luettu koodista, ei ajettu. |
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei sovellu | Vika koskee jonon uudelleenlähetystä eikä laitteita. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele, mitä XML-TCP-yhteyden ulkoinen palvelu vastaanottaa uudelleenlähetyksessä; koodin lukeminen viittaa siihen, että sanoma muodostetaan nykytilasta (kortin luku 12). |
-| Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole. |
+| Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei tiedossa | Riskiarvio sanoo tietoturvasta ei, mutta perustetta ei ole kirjattu; vika koskee uudelleenlähetettävien tietueiden välitystä asemien välillä, eikä protokollassa ole todennusta (H-029), joten aineisto ei sulje pois virheellisen sanoman vaikutusta. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Vika vaatii uudelleenlähetyksen: käyttäjän käynnistämän työkalun tai XML-TCP-yhteyden (riskiarvion saavutettavuus: asetus). |
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Laukaisu vaatii erityisasetuksen tai käyttäjän käynnistämän uudelleenlähetyksen; luettu koodista, ei ajettu. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Ohjelma ei ilmoita korvatusta uudemmasta muutoksesta; aineisto ei kuvaa muuta oiretta. |
@@ -5928,8 +6007,8 @@ ole versiota. Rekisteri nimeää pahentavaksi syyksi myös JS-3:n; aineisto ei s
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: uudelleenlähetyksen mekanismi on luettu koodista ja vahvistettu riippumattomalla
-lähdetarkastuksella osittain. Ohjelmaa ei ole ajettu.
+(a) Ohjelmointivirhe: uudelleenlähetyksen mekanismi on luettu koodista ja tarkastettu riippumattomasti
+osittain. Ohjelmaa ei ole ajettu.
 
 (b) Käytännön seuraus: vaikutus (uudemman muutoksen kumoutuminen) on päätelty, ei osoitettu.
 Tarkastaja kumosi väitteen, että käynnistys lähettäisi kuitatut sanomat uudelleen.
@@ -5981,7 +6060,7 @@ mukaan lukien XML-TCP-yhteyksien yleisyys).
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Tp/TpComY.cpp:509`, `:1111-1167`, `:1467-1470`; `cbTp/UnitUusinta.cpp:82-92`; `Hk/HkCom32.cpp:986-987` |
 
-Rekisteririvien tiiviste nyt: `07efe6151421`.
+Rekisteririvien tiiviste nyt: `1332b816e8ef`.
 
 
 ---
@@ -6215,20 +6294,20 @@ kiinteän kokoiseen paikkaan ja käsittelee jonon paketit yksi kerrallaan.
 ### 3. Mikä menee vikaan
 
 Jokaisella paketin lajilla on ohjelmassa taulukossa sovittu pituus, ja vastaanottaja hyväksyy
-paketin vain, jos pituus täsmää. UDP-yhteydellä tämä tarkistus ohitetaan lajeille, joiden pituus on
-taulukossa 0. Tällainen laji on esimerkiksi laji, jota ohjelma ei käytä. Paketin ilmoittama pituus
+paketin vain, jos pituus täsmää. UDP-yhteydellä tämä tarkistus ohitetaan tietyntyyppisiltä
+paketeilta, joille taulukossa ei ole sovittua pituutta. Paketin ilmoittama pituus
 kelpaa silloin sellaisenaan, ja ohjelma kopioi paketin jonon paikkaan sen pituisena. Jonon paikka
 on kiinteän kokoinen (ks. sanasto: Muistialue, puskuri), joten liian pitkä paketti kirjoittuu
 paikan yli (ks. sanasto: Puskuriylitys, ylikirjoitus).
 
-Lisäksi ohjelma ei rajaa paketin lajinumeroa taulukon kokoon, joten taulukon pituustieto voidaan
-lukea taulukon ulkopuolelta, kun lajinumero on taulukkoa suurempi. Tämä osa on luettu koodista eikä
+Lisäksi ohjelma ei rajaa paketin lajitietoa taulukon kokoon, joten taulukon pituustieto voidaan
+lukea taulukon ulkopuolelta, kun lajitieto on virheellinen. Tämä osa on luettu koodista eikä
 sitä ole ajettu.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- Edellytys on UDP-yhteys ja paketti, jonka laji on pituudeltaan määrittelemätön tai jonka
-  lajinumero ylittää taulukon. Vastaanoton pitää olla käytössä. Asetusta tai erityistä toimenpidettä
+- Edellytys on UDP-yhteys ja paketti, jonka tyypille ei tarkisteta pituutta tai jonka lajitieto
+  on virheellinen. Vastaanoton pitää olla käytössä. Asetusta tai erityistä toimenpidettä
   ei tarvita (riskiarvion saavutettavuus: verkosta oletusasetuksin).
 - Kaikissa käännöksissä paketti voi ylittää oman paikkansa. Viestiohjelmassa toimitetulla
   oletuksella (`MAXOSUUSLUKU` 30; ei kilpailun oletusasetus vaan käännöksen enimmäismäärä) kirjoitus
@@ -6236,7 +6315,7 @@ sitä ole ajettu.
   matalana; aineisto ei erittele lohkon ylitystä siellä.
 - Paketin voi lähettää verkossa oleva laite, koska ohjelmassa ei ole lähettäjän todennusta (ks.
   H-029). Kyse on poikkeustilanteesta (virheellinen paketti). Aineiston mukaan yksikään laillinen
-  laji ei ole pituudeltaan määrittelemätön vastaanottavassa ohjelmassa, ja suurin laillinen paketti
+  paketti ei kuulu tyyppiin, jonka pituutta ei tarkisteta vastaanottavassa ohjelmassa, ja suurin laillinen paketti
   mahtuu paikkaan [päätelty]. Tavallinen kilpailukäyttö ei siis laukaise vikaa.
 
 ### 5. Mitä käyttäjä voi huomata
@@ -6262,8 +6341,8 @@ sitä ole ajettu.
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei sovellu | Vika koskee työasemien välisen paketin vastaanottoa, ei lukijoita, kelloja, tauluja tai tulostimia. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai julkaisuun. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Mahdollinen | Riskiarvio: tietoturva verkko. Väärennetty UDP-paketti voisi kirjoittaa vastaanottolohkon yli, koska lähettäjää ei todenneta; UDP-tarkistuksen ohitusta ei ole ajettu. |
-| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Aineiston mukaan yksikään laillinen laji ei ole pituudeltaan määrittelemätön vastaanottavassa ohjelmassa ja suurin laillinen paketti mahtuu paikkaan; vika vaatii virheellisen paketin. |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | **Vahvistettu** | Testikehyksessä virheellinen paketti (pituudeltaan määrittelemätön laji, noin tuhat tavua) kirjoitti vastaanottolohkon yli; UDP-tarkistusta itseään ei ajettu. |
+| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Aineiston mukaan yksikään laillinen paketti ei kuulu tyyppiin, jonka pituutta ei tarkisteta vastaanottavassa ohjelmassa, ja suurin laillinen paketti mahtuu paikkaan; vika vaatii virheellisen paketin. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Ylikirjoitus näytettiin testikehyksessä vastaanottojonon kopiossa (virheellinen noin tuhannen tavun paketti kirjoitti vastaanottolohkon yli); UDP-vastaanoton pituustarkistuksen ohitusta, joka on vian laukaisuehto, ei ajettu. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Koodissa ei ole ilmoitusta ylikirjoituksesta; aineisto ei kuvaa, mitä käyttäjä näkee. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Luvun 15 suositukset (suljettu ajanottoverkko, palomuurin sallittujen lista) on kirjattu tälle havainnolle; testaamattomia. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; keinoa ei ole kokeiltu. |
@@ -6314,7 +6393,9 @@ UDP-vastaanotto (`luepakettiUDP`, `Tp/TpComY.cpp`) vertaa paketin ilmoittamaa pi
 pituutta verrata vastaanottopaikan kokoon. Funktio `addseur` kopioi paketin otsikon kanssa
 (`len + 14` tavua) jonon paikkaan, jonka koko on `sizeof(combufrec)`. Lajinumero
 (`pkgclass`) toimii `class_len`-taulukon indeksinä ilman rajaa. Kiinteän `N_CLASS`-kokoisen
-taulukon ulkopuolelta luetaan, kun lajinumero on 15 tai suurempi.
+taulukon ulkopuolelta luetaan, kun lajinumero on taulukon ulkopuolella (viestin UDP-polulla 15-255;
+HK:ssa kenttä `pkgclass` on etumerkillinen `char`, joten myös negatiivinen arvo indeksoi taulukon
+ulkopuolelle).
 
 Juurisyy JS-1: paketin pituus- ja lajikenttiä käytetään tarkistamatta rajalla. Aineisto
 erottaa tämän JS-3:sta (kapasiteetti ei seuraa kokoa): puskurin koko tunnetaan, mutta syötteen
@@ -6327,7 +6408,7 @@ Kokeessa pituudeltaan määrittelemätön laji ja noin tuhannen tavun paketti ki
 vastaanottolohkon yli 498 tavua (suojakuvio lohkon jälkeen muuttui). ASan raportoi
 kasapuskurin ylityksen: kirjoitus 1014 tavua funktiossa `addseur`, lohkon (51 paikkaa
 × 258 tavua) jälkeen. Kontrollitesti, jossa paketti oli rajoissa, jätti suojakuvion koskemattomaksi.
-Riippumaton lähdetarkastus vahvisti puuttuvat tarkistukset osittain; koon vaikutus on päätelty.
+Puuttuvat tarkistukset on luettu koodista ja tarkastettu riippumattomasti osittain; koon vaikutus on päätelty.
 
 (b) Käytännön seuraus: osoitettu vain muistialueen ylikirjoitus testikehyksessä, joka kutsui
 `addseur`ia suoraan. Itse UDP-tarkistuksen ohitusta, lajinumeron rajan ylitystä taulukon
@@ -6381,7 +6462,7 @@ Päätöstä odottaa OP-1 (auditointitulosten julkaisu ja suojausohjeet). Kokona
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Tp/TpComY.cpp:1001`, `:654`, `:930`, `:2399` |
 
-Rekisteririvien tiiviste nyt: `38ca9fadc587`.
+Rekisteririvien tiiviste nyt: `4c94e7252541`.
 
 
 ---
@@ -6490,7 +6571,7 @@ Juurisyy on JS-1: ulkoista syötettä ei validoida rajalla.
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Koodi on luettu. C-13:n riippumaton kokonaistarkastus (K1) ja pääistunto lukivat saman kohdan ja vahvistivat vian. Todennuksen laji on staattinen, lähdekoodi. Erän C-2 alkuperäinen arvio oli vakavuus "matala"; sitä ei ole perusteltu, ja C-13:n riskiarvio pitää vakavuutta korkeana.
+**(a) Ohjelmointivirhe.** Koodi on luettu. C-13:n riippumaton kokonaistarkastus (K1) ja pääistunto lukivat saman kohdan ja päätyivät samaan tulkintaan viasta (luettu koodista ja riippumattomasti tarkastettu). Todennuksen laji on staattinen, lähdekoodi. Erän C-2 alkuperäinen arvio oli vakavuus "matala"; sitä ei ole perusteltu, ja C-13:n riskiarvio pitää vakavuutta korkeana.
 
 **(b) Käytännön seuraus.** Mitään seurausta ei ole osoitettu. Ajonaikaista vaikutusta ei ole toistettu eikä testikehyksessä ajettu. Korjaussuunnitelma sanoo, ettei toistavaa testiä ole nyt olemassa.
 
@@ -6554,7 +6635,7 @@ katkon aikana matkalla ollutta sanomaa kaksoiskappaleeksi, ja sama sanoma käsit
 kertaan. Lisäksi emit-korttien kaksoiskappaleiden esto on vain ohjelman muistissa, ja se
 nollautuu ohjelman käynnistyessä.
 
-Koodista luettu; riippumaton tarkastus vahvisti mekanismin osittain. Mahdollinen (ei ajettu):
+Koodista luettu; mekanismi on tarkastettu riippumattomasti osittain. Mahdollinen (ei ajettu):
 sama emit-kortti tallentuu vastaanottajan emit-tiedostoon kahdesti. Rekisterin mukaan
 kilpailijatietueiden tilannekuvat ovat enimmäkseen sellaisia, että kahdesti käsittely ei muuta
 tulosta. Aikatietojen (AIKAT) kaksoiskäsittelyn vaikutus on tuntematon.
@@ -6681,7 +6762,7 @@ elävyysvalvontaa).
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista. Riippumaton tarkastus vahvisti mekanismin osittain. Ohjelmaa
+(a) Ohjelmointivirhe: luettu koodista ja mekanismi on tarkastettu riippumattomasti osittain. Ohjelmaa
 ei ole ajettu.
 
 (b) Käytännön seuraus: ei osoitettu. Rekisteri merkitsee aikatietojen vaikutuksen tuntemattomaksi.
@@ -6752,7 +6833,7 @@ käynnistynyt, ohjelma panee sanomat väliaikaispuskuriin odottamaan. Puskuriin 
 myöhempi luku käyttävät eri kohtaa: ero on 6 tavua. Siksi puskurista luettu aikatieto ei vastaa
 sitä, mitä siihen kopioitiin.
 
-Koodista luettu; riippumaton tarkastus vahvisti osittain. Rekisterin mukaan polku on käytännössä
+Koodista luettu ja tarkastettu riippumattomasti osittain. Rekisterin mukaan polku on käytännössä
 kuollut eli sitä ei suoriteta toimitetussa ohjelmassa [päätelty]; aineisto ei kirjaa sen
 perustetta tarkemmin. Mahdollinen (päätelty, ei ajettu), jos polku suoritetaan: väärä aika voi
 päätyä vastaanottavan aseman aikatietoihin. Riskiarvion mukaan vaikutus tuloksiin on epäsuora.
@@ -6852,7 +6933,7 @@ asettelu ei vastaa sanoman rakennetta.
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista, ja riippumaton tarkastus vahvisti sen osittain. Tavoittamattomuus
+(a) Ohjelmointivirhe: luettu koodista, ja se on tarkastettu riippumattomasti osittain. Tavoittamattomuus
 [päätelty]. Ohjelmaa ei ole ajettu.
 
 (b) Käytännön seuraus: ei osoitettu.
@@ -7008,7 +7089,7 @@ Juurisyy on JS-1: syötteen raja tarkistamatta; pahentajana JS-14 (avain, jota e
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Riippumaton lähdetarkastus (C-12, osa D) vahvisti laskennan, aina tosi olevan ehdon ja taulukon koon (64). Todennus on staattinen. Regressiotestisuunnitelman rivi T18 (`KATKKIER0`, testikehys ja ASan) on suunniteltu mutta ajamatta.
+**(a) Ohjelmointivirhe.** Laskenta, aina tosi oleva ehto ja taulukon koko (64) on luettu koodista ja tarkastettu riippumattomasti (C-12, osa D). Todennus on staattinen. Regressiotestisuunnitelman rivi T18 (`KATKKIER0`, testikehys ja ASan) on suunniteltu mutta ajamatta.
 
 **(b) Käytännön seuraus.** Ei osoitettu.
 
@@ -7226,7 +7307,7 @@ kilpailijatiedoston `KILP.DAT`. Jos vastaanottosäie kirjoittaa vielä samaan ai
 sulkea sen alta. Lisäksi käynnistyksessä esitettävä kysymys COMFILE-tiedoston lähettämättömien
 tietojen säilyttämisestä hävittää ne, jos vastaus on Ei.
 
-- **Vahvistettu:** lopetuksessa ei ole koodissa yhtään säikeen odotusta; asia on luettu koodista ja
+- **Luettu koodista (ei vahvistettu ajamalla):** lopetuksessa ei ole koodissa yhtään säikeen odotusta; asia on luettu koodista ja
   tarkastettu riippumattomasti osittain.
 - **Mahdollinen (päätelty, ei ajettu):** tiedosto suljetaan kirjoittajan alta ja kirjoitus
   epäonnistuu tai jää kesken. Vastauksella Ei hävitetyt lähettämättömät tiedot eivät välity
@@ -7343,7 +7424,7 @@ saman rakenteen konkreettinen polku (aikajonot).
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Luettu koodista; riippumaton tarkastus vahvisti osittain
+**(a) Ohjelmointivirhe.** Luettu koodista ja tarkastettu riippumattomasti osittain
 (odotuksen puuttuminen ja sulkemisjärjestys; `saikeet-ja-lukot.md` luku 4). Ei toistettu
 kokeella.
 
@@ -7477,7 +7558,7 @@ silmukkaa ikuisesti, mutta aineisto ei kerro, mihin tilaan se asettuu (Q21).
 | Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Mahdollinen | Silmukassa sama tieto kulkee eri reittejä ja asemien tiedot voivat eriytyä; päätelty; Q21 avoin. |
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei sovellu | Vika koskee asemien välistä välitystä eikä laitteita. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele välityksen vaikutusta tulosteisiin tai julkaisuun. |
-| Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole. |
+| Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei tiedossa | Riskiarvio sanoo tietoturvasta ei, mutta perustetta ei ole kirjattu; vika koskee tietueiden välitystä asemien välillä, eikä protokollassa ole todennusta (H-029), joten aineisto ei sulje pois virheellisen sanoman vaikutusta. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Vika vaatii silmukkatopologian (riskiarvion saavutettavuus: asetus); aineiston mukaan ketjut ja tähdet toimivat. |
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Silmukkatopologia on kokoonpano, joka poikkeaa ketjusta tai tähdestä; päätelty, ei ajettu. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Ohjelma ei ilmoita vanhan tilan voimaan jäämisestä; aineisto ei kuvaa muuta oiretta. |
@@ -7576,7 +7657,7 @@ koska versiointi muuttaisi sen merkityksen (`osaB-juurisyyt.md`).
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkCom32.cpp:186-189`; `Hk/HkInit.cpp:1179-1182` |
 
-Rekisteririvien tiiviste nyt: `c1a1cd6dcdf0`.
+Rekisteririvien tiiviste nyt: `f92bb894838f`.
 
 
 ---
@@ -7595,7 +7676,7 @@ Rekisteririvien tiiviste nyt: `c1a1cd6dcdf0`.
 Kun viestiohjelmaan lisätään joukkue, lisäystoiminto ottaa kilpailijatiedoston lukon (ks. sanasto:
 Lukko) kahdesti eikä vapauta kumpaakaan. Lukko jää lisäyksen tehneen säikeen (ks. sanasto: Säie)
 haltuun. Jos toinen säie yrittää myöhemmin lisätä tai poistaa joukkueen, se jää odottamaan ja
-pitää samalla toista lukkoa, jolloin ohjelma jumiutuu.
+pitää samalla toista lukkoa, jolloin ohjelma voisi jumiutua [päätelty; jumiutumista ei ole toistettu].
 
 - **Vahvistettu (testikehys):** lukko jää lisäyksen jälkeen kutsujan haltuun (lukon laskuri on 2),
   eikä toinen säie saa sitä.
@@ -7633,7 +7714,10 @@ Lukkiutuminen).
   Esimerkiksi yksi lisäys tehdään käyttöliittymästä ja toinen lisäys tai poisto sanomana toiselta
   asemalta (verkotettu viesti). Ilman verkkoa kaikki lisäykset tehdään pääsäikeessä eikä mikään
   jumiudu, vaan lukon laskuri vain kasvaa (luettu koodista).
-- **Avoin:** mitkä konsoliohjelmien säikeet kutsuvat lisäystä ja poistoa (Q41).
+- **Konsoliohjelmat:** Q41 ratkeaa konsolin osalta. Konsolin valikon lisäys ja poisto
+  (`JukConsole/vcons2.cpp`) sekä sanomien vastaanoton `tarkcom` (`Juk/VCom.cpp`) kutsuvat
+  lisäystä ja poistoa, ja ne tuottavat saman kahden säikeen tilanteen kuin ViestiWinissä [luettu
+  koodista, ei ajettu].
 - Riskiarvion saavutettavuus on normaalikäyttö.
 
 ### 5. Mitä käyttäjä voi huomata
@@ -7703,8 +7787,8 @@ tulos voisi mennä väärin.
 ### 9. Mitä käyttäjä voi tehdä riskin pienentämiseksi
 
 - [Ei tunnettua turvallista toimintaohjetta] Aineistossa ei ole kirjattua keinoa välttää vikaa.
-  Aineisto ei kerro, mitkä konsoliohjelmien säikeet kutsuvat lisäystä ja poistoa (Q41), joten
-  laukaisua ei voi rajata käyttäjän toimenpiteeseen.
+  Laukaisua ei voi rajata käyttäjän toimenpiteeseen, koska sanomien vastaanotto tuottaa
+  lisäyksen tai poiston omasta säikeestään (luku 4).
 - [Perusteltu, testaamaton suositus] Seuraa, että ajanottosyöte etenee, ja käynnistä ohjelma
   uudelleen, jos syöte pysähtyy. Suositus on kirjattu havainnoille H-056 ja H-070
   (`muistiturvallisuus.md` luku 15); sen tehoa tähän vikaan ei ole arvioitu.
@@ -7739,10 +7823,9 @@ kahdesta eri säikeestä (pääsäie ja `tarkcom`).
 
 ### 12. Mitä ei vielä tiedetä
 
-- Q41: mitkä viestiohjelmien säikeet kutsuvat joukkueen lisäystä ja poistoa (H-040:n todellinen
-  jumiutuminen).
-- Voiko konsoliohjelmassa (ViestiMaali, ViestiLuenta) toinen säie lisätä tai poistaa joukkueen
-  ilman käyttöliittymää: avoin (Q41).
+- Q41 on konsolin osalta ratkaistu koodiluennalla (luku 4): valikon lisäys ja poisto sekä
+  `tarkcom` kutsuvat lisäystä ja poistoa eri säikeistä. Jumiutumista ei ole ajettu kummassakaan
+  ympäristössä.
 - Mitä käyttäjä näkee ennen jumiutumista: aineisto ei kerro.
 - Riskiarvion tietoturva-arvo "ei": perustetta ei ole kirjattu, eikä aineisto erittele, voiko
   verkon puoli laukaista toisen säikeen lisäyksen. Vaikutusrivi on siksi ei tiedossa.
@@ -7812,7 +7895,7 @@ Kun HK-ohjelma lukee kilpailijan tiedostosta (`KILP.DAT`), kirjoittaa kilpailija
 
 Muistialueen koko on kiinteä käännösaikainen luku, mutta tietueen koko määräytyy vasta ajonaikaisista asetuksista. Kun vaiheita on viisi, tietue mahtuu muistialueeseen juuri ja juuri 220 väliaikapisteellä mutta ei enää 221 pisteellä. Enimmäismäärillä (viisi vaihetta, 250 pistettä) tietue on selvästi muistialuetta suurempi. Tarkat koot ovat luvussa 11. Vain viiden vaiheen kokoonpano voi ylittää rajan.
 
-Ohjelma kirjoittaa ylimenevät tavut muistialueen viereiseen muistiin pinossa (ks. sanasto: Puskuriylitys, ylikirjoitus; Pino). Pinossa on myös funktion paluuosoite ja kääntäjän asettama suoja-arvo, jonka muuttuminen saa Windowsin lopettamaan ohjelman. Samanlaisia pinopuskureita on viisi, myös HkKisaWinin vientitoiminnossa.
+Ohjelma kirjoittaa ylimenevät tavut muistialueen viereiseen muistiin pinossa (ks. sanasto: Puskuriylitys, ylikirjoitus; Pino). Pinossa on myös funktion paluuosoite. HkMaalissa (MSVC) pinossa on lisäksi kääntäjän asettama suoja-arvo (`/GS`), jonka muuttuminen saa Windowsin lopettamaan ohjelman. HkKisaWinissä (bcc32) vastaavaa suojaa ei ole, eikä sen käyttäytymistä ole ajettu; ilman suojaa ylitys voisi jatkua huomaamatta [päätelty]. Samanlaisia pinopuskureita on viisi, myös HkKisaWinin vientitoiminnossa.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
@@ -8014,7 +8097,7 @@ Vahvistetun ja mahdollisen erottelu on luvussa 11. Tilanne kilpailussa:
 
 ### 9. Mitä käyttäjä voi tehdä riskin pienentämiseksi
 
-- **[Perusteltu, testaamaton suositus]** Pidä XML-tiedoston osuus-, aktiivisten osuuksien ja väliaikapisteiden määrät käytetyn käännöksen rajojen sisällä (toimitetuissa käännöksissä 30 osuutta ja 12 väliaikapistettä). Peruste: testikehyksen kontrolli, jossa täsmälleen rajoissa oleva tiedosto luettiin sellaisenaan, ja rajat ylittävä tiedosto laukaisi virheen (`testaus.md` luku 13). Tehoa ei ole kokeiltu ohjelmassa, eikä yksittäisen kokeen tulosta pidä yleistää turvalliseksi rajaksi muille käännöksille tai kokoonpanoille.
+- **[Perusteltu, testaamaton suositus]** Pidä XML-tiedoston osuus-, aktiivisten osuuksien ja väliaikapisteiden määrät käytetyn käännöksen rajojen sisällä (toimitetuissa käännöksissä 30 osuutta ja 12 väliaikapistettä). Peruste: testikehyksen kontrolli, jossa täsmälleen rajoissa oleva tiedosto luettiin sellaisenaan, ja rajat ylittävä tiedosto hyväksyttiin ilman virheilmoitusta, ja tietueen laskettu koko ylitti muistialueen (`testaus.md` luku 13). Tehoa ei ole kokeiltu ohjelmassa, eikä yksittäisen kokeen tulosta pidä yleistää turvalliseksi rajaksi muille käännöksille tai kokoonpanoille.
 - Luvun 15 suositus ”käytetään ohjelman itse tuottamia tai tarkistettuja tiedostoja” sopii tähän, koska laukaisija on tiedosto. Suositus on kirjattu havainnoille H-057, H-058, H-065 ja H-074; sen tehoa tähän vikaan ei ole arvioitu.
 
 ### 10. Tekninen juurisyy
@@ -8088,10 +8171,12 @@ Rekisteririvien tiiviste nyt: `d36544ac16bf`.
 Kun valinnaisen SQL-peilin jatkuva kirjoitus on päällä, ohjelma pitää peilin jonosta varmistuskopiota
 tiedostossa `SQLjonoVarm.dat`. Ohjelma yrittää päivittää tiedoston lopussa olevaa laskuria paikallaan,
 mutta tiedosto on avattu tavalla, joka lisää kaiken loppuun. Tiedosto kasvaa siksi joka päivityksellä
-ja sen rakenne sekoittuu. Uudelleenkäynnistyksessä ohjelma lukee varmistuksen väärin: peiliin lähtee
-vääriä kilpailijoita, ja odottaneet oikeat jäävät lähtemättä.
+ja sen rakenne sekoittuu. Uudelleenkäynnistyksessä ohjelma voi lukea varmistuksen väärin [päätelty
+koodista: luku alkaa tiedoston lopusta ja vain, jos viimeinen laskuri on kelvollinen, ja
+laskurin päivitys tehdään kirjoitussäikeen joutokierroksella]: peiliin voi silloin lähteä vääriä
+kilpailijoita, ja odottaneet oikeat voivat jäädä lähtemättä.
 
-Vahvistettu: mekanismi on luettu koodista ja tarkastettu riippumattomasti. Mitään seurausta ei ole
+Mekanismi on luettu koodista ja tarkastettu riippumattomasti (ei vahvistettu ajamalla). Mitään seurausta ei ole
 osoitettu ajamalla; tiedoston kasvun osoittava yksikkötesti on suunniteltu mutta ei ajettu. Mahdollinen:
 peili jää vajaaksi uudelleenkäynnistyksen jälkeen. `KILP.DAT` ei muutu.
 
@@ -8161,10 +8246,10 @@ Seuraukset ovat kaksi.
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Mahdollinen | SQL-peili voi jäädä vajaaksi tai saada vääriä päivityksiä; tulosteita, HTML- tai XML-tiedostoja vika ei koske. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole; vika syntyy ohjelman omasta tiedostonkäsittelystä ilman ulkoista syötettä. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei tiedossa | Riskiarvio: asetus. Vika edellyttää SQL-peilin jatkuvaa kirjoitusta; varmistusvalinta on lomakkeella oletuksena valittu, mutta aineisto ei kerro, onko peilin käyttö tavallista. |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Ei vaikutusta (perusteltu) | Laukeaa ilman poikkeustilannetta: tiedosto kasvaa jo pelkällä jatkuvalla kirjoituksella ja oletusvalinnalla; virhettä tai katkoa ei tarvita. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | SQL-peilin jatkuva kirjoitus on valinnainen, oletuksena käyttämätön asetus (harvinainen asetus); kun se on päällä ja varmistusvalinta on oletuksena valittu, tiedosto kasvaa ilman virhettä tai katkoa; asetuksen yleisyys on tuntematon. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Ohjelma ei ilmoita tiedoston kasvusta tai väärästä toistosta; käyttäjä voisi huomata vain tiedoston koosta tai peilin sisällöstä. Aineisto ei ratkaise. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: varmistusvalinnan poisto, koska tiedostoa käytetään vain valinnan ollessa päällä (luettu koodista); tehoa ei ole kokeiltu. |
-| Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi käsin; peilin voi päätellen kirjoittaa uudelleen viennillä (valinta 3); keinoa ei ole kokeiltu. |
+| Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi käsin; peilin voi päätellen kirjoittaa uudelleen viennillä (valinta 3) vasta uudelleenkäynnistyksen jälkeen tai kun jatkuva kirjoitus on pois päältä, koska jatkuvan kirjoituksen ollessa päällä vienti vain lisää jonoon; keinoa ei ole kokeiltu. |
 
 Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohjelmaa ajamalla; Mahdollinen = seuraa koodista, mutta seurausta ei ole osoitettu; Ei vaikutusta (perusteltu) = aineisto osoittaa, ettei seurausta synny; Ei tiedossa = aineisto ei ratkaise; _Ei arvioitu_ = riviä ei ole vielä arvioitu. Tiedon puute ei tarkoita, ettei vaikutusta ole. Lähteet: `doc/arkkitehtuuri/rekisteri/vaikutukset.csv`.
 
@@ -8177,7 +8262,7 @@ Käynnistyksessä ohjelma lukee varmistustiedoston lopun väärin ja kirjoittaa 
 kilpailijoita uudelleen. Ne rivit, jotka olivat jonossa ennen sulkemista, eivät välttämättä lähde
 lainkaan.
 
-- Vahvistettu (luettu koodista, tarkastettu riippumattomasti): tiedoston kirjoitustapa lisää tiedoston
+- Luettu koodista ja tarkastettu riippumattomasti: tiedoston kirjoitustapa lisää tiedoston
   loppuun neljä tavua jokaisella päivityksellä.
 - Mahdollinen: väärä jonon toisto käynnistyksessä. Väärin luettu numero osoittaa joko toiseen
   kilpailijaan, jonka rivi kirjoitetaan peiliin ajantasaisena, tai olemattomaan kilpailijaan (Q109).
@@ -8190,8 +8275,10 @@ lainkaan.
   jatkuu uudelleenkäynnistyksen jälkeen, mutta jonon toisto voi olla väärä.
 - **Tietojen palauttaminen:** `KILP.DAT`:ssa ei ole menetystä. Peilistä puuttuvat rivit voi
   mahdollisesti kirjoittaa uudelleen viennillä, jonka valinta 3 kirjoittaa kaikki kilpailijat
-  tietokantaan [päätelty koodista; ei kokeiltu; ks. H-161 ja H-162]. Riskiarvio kirjaa palautettavuudeksi
-  käsin.
+  tietokantaan [päätelty koodista; ei kokeiltu; ks. H-161 ja H-162]. Ehto: kun jatkuva kirjoitus on
+  päällä, vienti vain lisää kilpailijat jonoon, joten vienti kirjoittaa suoraan tietokantaan vasta
+  uudelleenkäynnistyksen jälkeen tai kun jatkuva kirjoitus on pois päältä [päätelty koodista; ei
+  kokeiltu]. Riskiarvio kirjaa palautettavuudeksi käsin.
 - **Uusiutuminen:** vika uusiutuu, koska ohjelma jatkaa saman sekavan tiedoston käyttöä
   uudelleenkäynnistyksen jälkeen, kunhan varmistusvalinta on päällä [päätelty]. Tiedosto kasvaa
   uudelleen heti, kun jono on tyhjä.
@@ -8262,7 +8349,7 @@ odottaa OP-7 (peilin asema), joka koskee koko kokonaisuutta. Testi: paikallinen 
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `cbHk/UnitMySQL.cpp:663`, `:665-681`, `:703-719`; `ViestiWin/UnitMySQL.cpp:610`, `:657-658` |
 
-Rekisteririvien tiiviste nyt: `07276b48dfcf`.
+Rekisteririvien tiiviste nyt: `968dd971a2fb`.
 
 
 ---
@@ -8488,7 +8575,7 @@ emit-tiedoston uudelleen muistiin ja rakentaa sen hakemiston uudestaan. Se tekee
 emit-tiedoston lukkoa (ks. sanasto: Lukko), vaikka lukija tai toiselta asemalta välitetty kortti voi
 samaan aikaan kirjoittaa samaan tiedostoon toisessa säikeessä (ks. sanasto: Säie).
 
-Todennettu koodista (riippumaton tarkastus; mekanismi): lukko puuttuu. Mahdollinen (päätelty):
+Mekanismi luettu koodista ja riippumattomasti tarkastettu: lukko puuttuu. Mahdollinen (päätelty):
 uudelleenluku ja kirjoitus lomittuvat, jolloin kortti kirjoittuu väärään kohtaan tai hakemisto
 jää vajaaksi. Vaikutus on asemakohtainen.
 
@@ -8588,7 +8675,7 @@ uudelleen. `emit_CS` jää ottamatta, vaikka `addem` ja `putem` käyttävät sit
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: riippumaton lähdetarkastus vahvisti mekanismin (lukko puuttuu). Ohjelmaa ei
+(a) Ohjelmointivirhe: mekanismi (lukko puuttuu) on luettu koodista ja tarkastettu riippumattomasti. Ohjelmaa ei
 ajettu.
 
 (b) Käytännön seuraus: ei osoitettu. Kilpailutilanne on päätelty koodista.
@@ -8721,7 +8808,7 @@ Rekisteri luokittelee viasta yksittäisen; HK:n ja viestin koodin eriytyminen (J
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Todennettu lukemalla koodia ja riippumattomalla lähdetarkastuksella. Testi on suunniteltu (`tiedostomuodot.md` Testattavuus: vie synteettinen joukkue, jolla `valuku` 1 ja kaksi osuutta, lue `getrec_i`:llä ja vertaa), mutta sitä ei ole ajettu.
+**(a) Ohjelmointivirhe.** Luettu koodista ja tarkastettu riippumattomasti. Testi on suunniteltu (`tiedostomuodot.md` Testattavuus: vie synteettinen joukkue, jolla `valuku` 1 ja kaksi osuutta, lue `getrec_i`:llä ja vertaa), mutta sitä ei ole ajettu.
 
 **(b) Käytännön seuraus.** Ei osoitettu. Vientiä ei ole ajettu, eikä väärien tietojen näkymistä käyttäjälle ole tutkittu.
 
@@ -8783,7 +8870,7 @@ sulkee ja avaa käynnissä olevan tiedoston uudelleen, ja viestin joukkueen lis�
 tiedoston lisäyksen jälkeen. Samaan aikaan toinen säie (ks. sanasto: Säie) voi kirjoittaa samaan
 tiedostoon.
 
-Todennettu koodista (riippumaton tarkastus, osittain; ohjelmaa ei ajettu): lukko puuttuu kaikista
+Luettu koodista ja riippumattomasti tarkastettu osittain (ohjelmaa ei ajettu): lukko puuttuu kaikista
 kolmesta. Mahdollinen (päätelty): rekisterin mukaan todennäköisin seuraus on menetetty päivitys,
 koska toisen säikeen kirjoitus kumoutuu tai osuu suljettuun tiedostoon. Vaikutus on asemakohtainen.
 
@@ -8888,7 +8975,7 @@ Samassa funktiossa oleva lukon vapautuksen puute on havainto H-040, joka on korj
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: riippumaton lähdetarkastus vahvisti osan väitteistä; yksi tarkastuksen
+(a) Ohjelmointivirhe: osa väitteistä on luettu koodista ja tarkastettu riippumattomasti; yksi tarkastuksen
 tulos on kirjattu rekisteriin vain osittaisena. Ohjelmaa ei ajettu.
 
 (b) Käytännön seuraus: ei osoitettu. Kilpailutilanne on päätelty koodista, ja todennäköisin
@@ -9012,7 +9099,7 @@ sellaisenaan [päätelty].
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Aiottujen kilpailijoiden tietoja ei lähetetä uudelleen, ja vastaanottajan tieto voi jäädä puutteelliseksi; päätelty koodista, ei ajettu. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan ajanotto ei pysähdy. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei tiedossa | Riskiarvion mukaan ajanotto ei pysähdy, mutta aineisto ei ratkaise, voiko väärin lähetetty uudelleenlähetyspaketti vaikuttaa välillisesti vastaanottavan aseman ajanottoon. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Ei sovellu | Työkalu uudelleenlähettää vain kilpailijatietoja (KILPT, VAIN_TULOST), ei leimauksia. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Ei vaikutusta (perusteltu) | Työkalu lukee jonotiedostoa ja panee kilpailijan nykyiset tiedot uudelleen jonoon; se ei muuta tallennettua tietoa (luettu koodista). |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Ei tiedossa | Aineisto ei kerro, mitä tapahtuu, jos väärästä kohdasta luettu viite osoittaa tietueen ulkopuolelle. |
@@ -9120,7 +9207,7 @@ Päätöstä odottaa OP-4 (yhteensopivuuspolitiikka).
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkCom32.cpp:1202-1205`; `Juk/VCom.cpp:1376-1384`; `Tp/TpComY.cpp:495`, `:2429-2860` |
 
-Rekisteririvien tiiviste nyt: `288c1f660635`.
+Rekisteririvien tiiviste nyt: `e4aee3104f95`.
 
 
 ---
@@ -9142,7 +9229,7 @@ päivää tai osuutta ja väliaikaa tiedostossa on. Ohjelma ei rajaa näitä luk
 tietueen luku. Jos luvut eivät vastaa tiedostoa tai ylittävät ohjelman kiinteät rajat, luku
 kirjoittaa varatun muistialueen yli.
 
-Vahvistettu: ei mitään kokeella. Vika on luettu koodista, ja riippumaton tarkastus vahvisti sen
+Vahvistettu: ei mitään kokeella. Vika on luettu koodista, ja se on tarkastettu riippumattomasti
 osittain. Mahdollinen (ei ajettu): tuonti kaatuu kesken, tai tuonti päättyy onnistuneena mutta
 tietueet ovat väärin tulkittuja, eikä ohjelma ilmoita virheestä.
 
@@ -9279,7 +9366,7 @@ sellaisinaan.
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista; riippumaton lähdetarkastus vahvisti osittain (C-3). Rivit
+(a) Ohjelmointivirhe: luettu koodista; tarkastettu riippumattomasti osittain (C-3). Rivit
 tarkennettiin tarkastuksessa. Kynnystä, jolla ylivuoto alkaa, ei ole mitattu; se on päätelty.
 
 (b) Käytännön seuraus: ei osoitettu. Tuontia ei ole ajettu, eikä vikaa ole toistettu
@@ -9542,7 +9629,7 @@ Jos kilpailijatiedoston vienti kirjoittaa väliaikaistiedostoa pääsäikeessä 
 säie (ks. sanasto: Säie) kirjoittaa kilpailijatiedostoa `KILP.DAT`, väliaikaistiedoston otsake voi
 päätyä `KILP.DAT`:iin.
 
-Todennettu koodista (riippumaton tarkastus, osittain; ohjelmaa ei ajettu): puskuri on yhteinen ja
+Luettu koodista ja riippumattomasti tarkastettu osittain (ohjelmaa ei ajettu): puskuri on yhteinen ja
 lukitsematon. Mahdollinen (päätelty): kilpailutilanne sotkee otsakkeen, ja seuraava käynnistys
 epäonnistuu. Tiedostomuotoraportin mukaan ikkuna on mikrosekunteja. Vaikutus on asemakohtainen.
 
@@ -9642,7 +9729,7 @@ suojaa. Vienti (`cbHk/UnitExport.cpp`, `kirjKilpDat`) luo väliaikaistiedoston (
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: riippumaton lähdetarkastus vahvisti jaetun puskurin; kilpailutilanne on
+(a) Ohjelmointivirhe: jaettu puskuri on luettu koodista ja tarkastettu riippumattomasti; kilpailutilanne on
 päätelty. Ohjelmaa ei ajettu.
 
 (b) Käytännön seuraus: ei osoitettu. Seuraava käynnistys epäonnistuu -kohta on luettu koodista.
@@ -9791,7 +9878,7 @@ Juurisyy on JS-1: syötteen rajat tarkistamatta.
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Riippumaton lähdetarkastus (C-3) vahvisti kopioinnit osittain; C-13:n laajennuksen löysi tarkastaja (K14) ja pääistunto vahvisti koodista. Todennus on staattinen; laukeaminen on päätelty eikä ajettu.
+**(a) Ohjelmointivirhe.** Kopioinnit on luettu koodista ja tarkastettu riippumattomasti osittain (C-3); C-13:n laajennuksen löysi tarkastaja (K14) ja pääistunto tarkisti sen koodista. Todennus on staattinen; laukeaminen on päätelty eikä ajettu.
 
 **(b) Käytännön seuraus.** Ei osoitettu. Mitään seurausta ei ole toistettu ajamalla. `muistiturvallisuus.md`:n luvun 15 mukaan ainoa ajossa vahvistettu muistivika on H-041.
 
@@ -9855,8 +9942,8 @@ tiedostokahva), ohjelma ei huomaa virhettä: HK ei tarkista lukutulosta lainkaan
 tarkistus on kirjoitettu niin, että virhearvo ei koskaan täytä sen ehtoa. Ohjelma jatkaa sillä
 sisällöllä, joka puskurissa jo oli.
 
-Vahvistettu: ei mitään ajamalla; vika on luettu koodista ja riippumaton tarkastaja on vahvistanut
-koodiluennan. Mahdollinen (koodista): kortin käsittely käyttää vanhaa tai alustamatonta tietuetta,
+Vahvistettu: ei mitään ajamalla; vika on luettu koodista ja koodiluenta on tarkastettu
+riippumattomasti. Mahdollinen (koodista): kortin käsittely käyttää vanhaa tai alustamatonta tietuetta,
 joten kortti voi jäädä käsittelemättä tai käsittely voi tuottaa väärän tuloksen. Vaikutus tuloksiin
 on välillinen, ja riskiarvio pitää vakavuutta matalana.
 
@@ -10187,7 +10274,7 @@ Rekisteririvien tiiviste nyt: `5bad82124007`.
 ### 1. Lyhyesti
 
 Kun ohjelma lukee emiTag-lukijan sanomaa, se ottaa sanomasta leimapaikan numeron ja kirjoittaa
-leimauksen tiedot 500 paikan taulukkoon tarkistamatta, mahtuuko numero taulukkoon. Liian suuri
+leimauksen tiedot kiinteän kokoiseen taulukkoon tarkistamatta, mahtuuko numero taulukkoon. Liian suuri
 numero kirjoittaa muistia taulukon ulkopuolelle, ja kirjoitus voi osua ohjelman pinomuistissa muiden
 tietojen päälle. Sama sanoma voi tulla lukijalta, GUI-ohjelman verkkopalvelimelta (TCP) tai
 salaamattomalta HTTP-yhteydeltä.
@@ -10199,19 +10286,18 @@ suoritusta spekulatiivisena ja se ei ole aineiston osoittama seuraus.
 ### 2. Mitä ohjelma yrittää tehdä
 
 emiTag-lukija lähettää väliaikatiedon: kilpailijan kortin leimaukset rasteilta. Ohjelma purkaa
-sanoman, tallentaa leimaukset 500 paikan taulukkoon ja välittää ne emit-käsittelyyn
+sanoman, tallentaa leimaukset kiinteän kokoiseen taulukkoon ja välittää ne emit-käsittelyyn
 (ks. sanasto: Leimaus, emit-kortti).
 
 ### 3. Mikä menee vikaan
 
 Sanomassa on kenttä, joka kertoo leimapaikan numeron. Ohjelma muuntaa numeron kokonaisluvuksi ja
-käyttää sitä taulukon indeksinä (ks. sanasto: Indeksi). Numeroa ei rajata: aiempi raja
-(255) on kommentoitu pois. Numero 500 tai suurempi kirjoittaa 2 + 4 tavua taulukon jälkeen
-pinomuistiin (ks. sanasto: Pino, Puskuriylitys, ylikirjoitus), ja kirjoituksen kohde voi olla
+käyttää sitä taulukon indeksinä (ks. sanasto: Indeksi). Numeroa ei rajata. Sanoma, jonka leimapaikan numero on taulukon ylärajan ulkopuolella, kirjoittaa
+muutaman tavun taulukon jälkeen pinomuistiin (ks. sanasto: Pino, Puskuriylitys, ylikirjoitus), ja kirjoituksen kohde voi olla
 ohjelman omia tietoja tai paluuosoitteita. Lisäksi leimojen lukumäärä asetetaan numeron mukaan,
 joten sen jälkeinen käsittely lukee ja kirjoittaa taulukon ulkopuolelle.
 
-Samalla taulukolla on myös lukuvirhe: jo laillinen numero 499 saa ohjelman lukemaan taulukon
+Samalla taulukolla on myös lukuvirhe: jo taulukon viimeinen sallittu paikka saa ohjelman lukemaan taulukon
 päätä seuraavan alkion. Lisäksi sama jäsennin lukee toisen kentän indeksillä aikatunnusten
 taulukon yli.
 
@@ -10269,7 +10355,7 @@ sanoman kilpailun aikana:
   (yhden aseman pysähtyminen ei ole koko kilpailun ajanoton pysähtyminen).
 - Koodin suoritus on mahdollisuus, jota aineisto ei perustele: se vaatisi kehyksen asettelun
   tuntemista ja suojausten ohittamista.
-- Lukuvirhe laillisella numerolla 499 voi tuottaa väärän leimatiedon.
+- Lukuvirhe taulukon viimeisellä laillisella numerolla voi tuottaa väärän leimatiedon.
 
 ### 8. Palautuminen ja uudelleenkäynnistys
 
@@ -10297,8 +10383,9 @@ sanoman kilpailun aikana:
 ### 10. Tekninen juurisyy
 
 Funktio `tulk_emiTag` (`Tp/TpLaitteet.cpp`) lukee `P`-kentästä indeksin `i = atoi(...)` ja kirjoittaa
-`controls[i]` pinomuuttujaan `controltp controls[500]`. Indeksiä ei rajata (aiempi `j > 255`
--tarkistus on kommentoitu pois). `i` ≥ 500 kirjoittaa 2 + 4 tavua taulukon ulkopuolelle ja
+`controls[i]` pinomuuttujaan `controltp controls[500]`. Indeksiä `i` ei rajata. Viereinen
+pois kommentoitu tarkistus (`j > 255`) koski leimakoodia `j`, ei indeksiä; indeksillä ei ole rajaa
+nykykoodissa [luettu koodista]. `i` ≥ 500 kirjoittaa 2 + 4 tavua taulukon ulkopuolelle ja
 `nctrl = i + 1` ohjaa myöhempiä silmukoita. `controls[nctrl]` luetaan rajan yli jo laillisella
 `i = 499`. 32-bittisessä aritmetiikassa `i` ≥ 2^29 kiertää osoitteen, jolloin kirjoitus voi osua
 myös taulukon alapuolelle. Sama jäsennin lukee `F`-kentän indeksillä `aika_tunnus`-taulukon yli.
@@ -10572,8 +10659,8 @@ sulkeva tagi `</>`, vähintään 32 merkin pituinen sulkevan tagin nimi ja yli 2
 sisäkkäisyys. Jokainen niistä voi kaataa lukijan tai kirjoittaa muistia taulukon rajojen
 ulkopuolelle.
 
-Vahvistettu: ei mitään kokeella. Vika on luettu koodista ja varoituksista, ja riippumaton tarkastus
-vahvisti sen osittain. Mahdollinen (ei ajettu): ohjelma kaatuu tiedostoa luettaessa, tai muistiin
+Vahvistettu: ei mitään kokeella. Vika on luettu koodista ja varoituksista, ja se on tarkastettu
+riippumattomasti osittain. Mahdollinen (ei ajettu): ohjelma kaatuu tiedostoa luettaessa, tai muistiin
 kirjoittuu väärä arvo ilman ilmoitusta.
 
 ### 2. Mitä ohjelma yrittää tehdä
@@ -10710,8 +10797,8 @@ sellaisenaan.
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista ja varoituksista (/analyze C6385, 10 kohtaa). Riippumaton
-lähdetarkastus vahvisti osittain: `txtbuf[-1]`-kirjoitus on käytännössä saavuttamaton, ja
+(a) Ohjelmointivirhe: luettu koodista ja varoituksista (/analyze C6385, 10 kohtaa). Tarkastettu
+riippumattomasti osittain: `txtbuf[-1]`-kirjoitus on käytännössä saavuttamaton, ja
 `loadbranch`-syvyyden puuttumisen löysi tarkastaja, minkä pääistunto tarkisti koodista. Ei toistettu
 testikehyksessä eikä ajettu.
 
@@ -10782,7 +10869,7 @@ taulukon. Kierrokset tulkitsevat lyhyen rivin eri tavoin, joten täyttökierros 
 ratoja kuin taulukkoon mahtuu ja kirjoittaa varatun alueen yli. Viestissä myös yli 50 rastin rata
 kirjoittaa rastitaulukon yli.
 
-Vahvistettu: ei mitään kokeella. Vika on luettu koodista, ja riippumaton tarkastus vahvisti sen.
+Vahvistettu: ei mitään kokeella. Vika on luettu koodista, ja se on tarkastettu riippumattomasti.
 Mahdollinen (ei ajettu): ohjelma kaatuu radan luvussa, tai ratatiedot vioittuvat ja emit-leimojen
 tarkistus antaa väärän tuloksen.
 
@@ -10912,8 +10999,8 @@ ei tarkisteta, ja kaksi lukukierrosta tulkitsevat syötteen eri tavoin.
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista ja varoituksista (/analyze C6385 ja C6386); riippumaton
-lähdetarkastus vahvisti mekanismin. Viestin yli 50 rastin ylivuodon löysi tarkastaja, ja pääistunto
+(a) Ohjelmointivirhe: luettu koodista ja varoituksista (/analyze C6385 ja C6386); mekanismi on
+tarkastettu riippumattomasti. Viestin yli 50 rastin ylivuodon löysi tarkastaja, ja pääistunto
 tarkisti sen koodista. Ei toistettu testikehyksessä eikä ajettu.
 
 (b) Käytännön seuraus: ei osoitettu. Kaatumista tai ratatietojen vioittumista ei ole havaittu.
@@ -10975,9 +11062,9 @@ Rekisteririvien tiiviste nyt: `586451fafc72`.
 
 ### 1. Lyhyesti
 
-Kun käyttäjä vie aikajonon (ajanottopisteiden kirjauslistan) tekstitiedostoon, ohjelma kokoaa jokaisen rivin 120 merkin mittaiseen apumuistiin. Rivillä on aikaleiman lisäksi kilpailijan nimi, seura ja sarja. Rekisterin mukaan 30 merkin nimi ja 31 merkin seura riittävät noin 130 merkin riviin, ja pahin mahdollinen rivi on 154 merkkiä, joten rivi ylittää apumuistin pitkillä nimillä. Lisäksi, jos ohjelma ei saa tiedostoa auki, se yrittää sulkea tiedoston, jota ei ole: MSVC:llä käännetty konsoliohjelma päättyy silloin heti.
+Kun käyttäjä vie aikajonon (ajanottopisteiden kirjauslistan) tekstitiedostoon, ohjelma kokoaa jokaisen rivin 120 merkin mittaiseen apumuistiin. Rivillä on aikaleiman lisäksi kilpailijan nimi, seura ja sarja. Rekisterin mukaan 30 merkin nimi ja 31 merkin seura riittävät noin 130 merkin riviin, ja pahin mahdollinen rivi on 154 merkkiä, joten rivi ylittää apumuistin pitkillä nimillä. Lisäksi, jos ohjelma ei saa tiedostoa auki, se yrittää sulkea tiedoston, jota ei ole: MSVC:llä käännetty konsoliohjelma voisi päättyä silloin heti [päätelty].
 
-**Todennettu lukemalla koodia ja riippumattomalla tarkastuksella; ei ajettu.** Mahdollisia seurauksia ovat ohjelman pysähtyminen (pitkä rivi tai tiedoston avauksen epäonnistuminen) ja, bcc32:lla käännetyssä HkKisaWinissä, hiljainen muistin vioittuminen. Seuraukset ovat koodista johdettuja, ei osoitettuja.
+**Luettu koodista ja tarkastettu riippumattomasti; ei ajettu.** Mahdollisia seurauksia ovat ohjelman pysähtyminen (pitkä rivi tai tiedoston avauksen epäonnistuminen) ja, bcc32:lla käännetyssä HkKisaWinissä, hiljainen muistin vioittuminen. Seuraukset ovat koodista johdettuja, ei osoitettuja.
 
 ### 2. Mitä ohjelma yrittää tehdä
 
@@ -11025,7 +11112,7 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Vahvistettua, ajamalla osoitettua seurausta ei ole. Koodista johdettu tilanne:
 
 - Käyttäjä vie aikajonon tiedostoon, ja jonossa on kirjaus, jonka kilpailijan nimi ja seura ovat riittävän pitkiä. Ohjelma voi pysähtyä tai ylikirjoittaa muistia kesken viennin [mahdollinen]. Riskiarvio pitää seurausta epäsuorana tuloksiin: vienti ei muuta kilpailun tietoja, mutta ohjelman pysähtyminen kesken kilpailun voi jättää tallentamatta jotakin.
-- Jos tiedoston avaus epäonnistuu, MSVC:llä käännetty konsoliohjelma päättyy [mahdollinen; koodista ja kirjaston lähteestä todennettu mekanismi, ei ajettu].
+- Jos tiedoston avaus epäonnistuu, MSVC:llä käännetty konsoliohjelma voisi päättyä [mahdollinen; mekanismi luettu koodista ja kirjaston lähteestä, ei ajettu].
 - Ohjelman pysähtyminen pysäyttää kyseisen työaseman ajanoton (riskiarvio: pysäyttää). Se ei ole koko kilpailun ajanoton pysähtyminen.
 
 ### 8. Palautuminen ja uudelleenkäynnistys
@@ -11046,7 +11133,7 @@ HK:ssa vienti on funktio `AjatTiedostoon` (`Hk/HkAjat.cpp`): paikallinen `wchar_
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Todennettu lukemalla koodia ja riippumattomalla lähdetarkastuksella sekä MSVC:n analyysivaroituksilla (C6387, C6001; ylivuotoa ei liputettu). `fclose(NULL)`:n päättävä vaikutus MSVC:llä on todennettu koodista ja kirjaston lähteestä (`muistiturvallisuus.md` luku 6). Testikehyksessä kumpaakaan ei ole toistettu.
+**(a) Ohjelmointivirhe.** Luettu koodista ja tarkastettu riippumattomasti sekä MSVC:n analyysivaroituksilla (C6387, C6001; ylivuotoa ei liputettu). `fclose(NULL)`:n päättävä vaikutus MSVC:llä on todennettu koodista ja kirjaston lähteestä (`muistiturvallisuus.md` luku 6). Testikehyksessä kumpaakaan ei ole toistettu.
 
 **(b) Käytännön seuraus.** Ei osoitettu. Pitkää riviä ei ajettu, ja avausvirheen jälkeistä sulkemista ei ajettu.
 
@@ -11108,9 +11195,10 @@ tarkistamatta, onko numero taulukon sisällä. Virheellinen numero nollaa neljä
 muistissa taulukon ulkopuolella.
 
 Vahvistettu: ei mitään ajamalla. Mahdollinen (luettu koodista, riippumattomasti tarkastettu osittain):
-neljän tavun nollakirjoitus muistiin, noin 7,7 kilotavua taulukon alapuolelle tai 3,5 kilotavua
-sen yläpuolelle. Kirjoitettava arvo on aina nolla ja kirjoituksen etäisyys rajattu, minkä vuoksi
-riskiarvio pitää vakavuutta keskitasoisena.
+neljän tavun nollakirjoitus taulukon ulkopuoliseen muistiin; kirjoituksen etäisyys on rajattu
+(luku 10). Taulukkoon kirjoitettava arvo on aina nolla, minkä vuoksi riskiarvio pitää vakavuutta
+keskitasoisena. Paikkanäytön kirjoitus ei ole nollia vaan olioita (luku 3), joten tämä peruste ei
+päde siihen sellaisenaan; riskiarvion vakavuus tarkistetaan (`seuranta.md` KE-taulukko).
 
 ### 2. Mitä ohjelma yrittää tehdä
 
@@ -11125,8 +11213,10 @@ paikan, jonka numero on luvun ja yhden erotus. Tarkistusta ei ole. Saman sanoman
 (paikan asettaminen) tarkistaa numeron, joten tämä on toisen haaran puuttuva tarkistus. Taulukossa on
 99 paikkaa, mutta merkit voivat antaa hyvin eri numeron: muistista nollataan neljä tavua laskettuun
 paikkaan (ks. sanasto: Indeksi, Puskuriylitys, ylikirjoitus). Lisäksi ohjelman paikkanäyttö
-(HkKisaWin) käyttää samaa numeroa oman taulukkonsa indeksinä; numero voi olla jopa 99, ja taulukon
-mitat ovat pienemmät.
+(HkKisaWin) käyttää samaa rajaamatonta numeroa oman näyttötaulukkonsa indeksinä. Näyttötaulukko on
+pienempi kuin sallittujen paikkojen määrä, ja siihen kirjoitetaan merkkijono-olioita, ei nollia
+[luettu koodista, ei tarkastettu]. Tämä on kasan tai staattisen muistin ylikirjoitus, kun
+paikkanäyttö on auki, ja sen vakavuus voi olla suurempi kuin nollakirjoituksen.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
@@ -11208,7 +11298,10 @@ Funktion `tall_ampsakko` (`Hk/HkSak.cpp`) haara `'1'` laskee `k = 10*(sakbuf[1]-
 ja kirjoittaa `paikat[k-1] = 0` ilman rajatarkistusta (haara `'2'` tarkistaa `k > 0 && k <= MAXPAIKKA`).
 `paikat` on staattinen 99 alkion kokonaislukutaulukko; etumerkillisen merkin arvoalueella `k` on
 noin −1900…+870, joten kirjoitus osuu noin −7,7…+3,5 kt:n alueelle taulukosta. Funktio kutsuu
-lisäksi `ampPaikka(k)`: GUI:n `ampPaikka` indeksoi `Cells[12][31]`-taulukkoa arvolla `k` (≤ 99).
+lisäksi `ampPaikka(k)`. GUI:n `ampPaikka` kutsuu `pohjustaTaulu(k)`:ta, joka kirjoittaa
+`UnicodeString`-olioita `Cells[c][k]`:hon (`Cells[12][31]`, `cbTp/UnitAmpPaikat.h`); haarassa `'1'`
+indeksiä `k` ei rajata (raja 99 pätee vain haaran `'2'` kutsuun `ampujaPaikalle`, jossa se on
+silti yli taulukon 31 rivin) [luettu koodista, ei tarkastettu].
 Verkkopolku: `tark_extra` kutsuu ohjaussanomasta `tulkKurvinen`-funktiota ja välittää sanoman
 (`lahetaKurvinen`).
 
@@ -11217,7 +11310,7 @@ tarkistuksen.
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista, riippumaton tarkastus vahvisti vian osittain (kirjoituksen
+(a) Ohjelmointivirhe: luettu koodista, vika on tarkastettu riippumattomasti osittain (kirjoituksen
 laajuus tarkennettiin). Kääntäjä ei varoittanut (ei varoitusta). Ei ajettu.
 
 (b) Käytännön seuraus: ei osoitettu. Mitä kohdetta kirjoitus oikeassa ohjelmassa vioittaa, ei ole
@@ -11309,18 +11402,18 @@ puskuri). Ohjelma käyttää arvoa odotukseen, lukemansa tavumäärän laskemise
 laskentaan. Luettu data menee kiinteän kokoiseen puskuriin, joten liian suuri arvo voisi kirjoittaa
 sen yli.
 
-Toinen osa on lajinumero: ohjelma katsoo paketin lajin pituuden taulukosta lajinumerolla. Taulukossa
-on 15 paikkaa, mutta lajinumeroa ei rajata, joten suurempi numero lukee taulukon ulkopuolelta ja
-vertaa pakettia väärään pituuteen.
+Toinen osa on paketin lajitieto: ohjelma katsoo paketin lajin pituuden taulukosta lajitiedon
+perusteella. Taulukko on kiinteän kokoinen, mutta lajitietoa ei rajata, joten virheellinen lajitieto
+lukee taulukon ulkopuolelta ja vertaa pakettia väärään pituuteen.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
 - Alustamattoman pituuden polku käytetään aina, kun paketti saapuu useassa osassa sarja- tai
   binääri-TCP-yhteydellä. Henkilökilpailun ja viestin ohjelmat käyttävät samaa vastaanottokoodia.
   UDP-yhteys ei käytä tätä polkua.
-- Lajinumeron raja koskee paketteja, joiden lajinumero on 15 tai suurempi. Sellaisen voi lähettää
-  yhteyden toinen pää (väärennetty tai virheellinen paketti). Aineiston mukaan kaikki laillisten
-  pakettien lajinumerot ovat alle 15.
+- Lajitiedon raja koskee paketteja, joiden lajitieto on virheellinen. Sellaisen voi lähettää
+  yhteyden toinen pää (väärennetty tai virheellinen paketti). Aineiston mukaan laillisten pakettien
+  lajitieto on aina taulukon sisällä.
 - Vika ei vaadi erityisasetusta (riskiarvion saavutettavuus: verkosta oletusasetuksin). Osissa
   saapuvan paketin käsittely ei vaadi virhettä; lajinumeron osa on poikkeustilanne (virheellinen
   syöte).
@@ -11349,7 +11442,7 @@ vertaa pakettia väärään pituuteen.
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai julkaisuun. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Mahdollinen | Riskiarvio: tietoturva verkko. Paketin lajinumero ja ilmoitettu pituus ovat yhteyden toisen pään määräämiä; verkossa oleva laite voisi laukaista vian. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei tiedossa | Alustamaton pituus tulee käyttöön, kun paketti saapuu useassa osassa; vaikutus riippuu arvosta, joka on tuntematon (Q43). |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Lajinumero 15 tai suurempi (virheellinen syöte) lukee pituustaulukon ulkopuolelta; luettu koodista, ei ajettu. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Virheellinen lajitieto (virheellinen syöte) lukee pituustaulukon ulkopuolelta; luettu koodista, ei ajettu. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Aineisto ei kuvaa näkyvää oiretta. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Luvun 15 suositukset (suljettu ajanottoverkko, palomuurin sallittujen lista) on kirjattu tälle havainnolle; testaamattomia. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; keinoa ei ole kokeiltu. |
@@ -11366,7 +11459,7 @@ tilanteita sarja- tai TCP-yhteydellä:
   häiritä saman yhteyden tiedonsiirtoa (riskiarvio: häiritsee ajanottoa) [päätelty].
 - Alustamaton pituus ylittää kiinteän puskurin koon: ohjelma voisi kirjoittaa puskurin yli ja
   vioittaa muistia tai kaatua [päätelty; edellyttää, että arvo ylittää puskurin koon].
-- Lajinumero on 15 tai suurempi: ohjelma lukee pituustaulukon ulkopuolelta ja tekee päätöksen väärällä
+- Lajitieto on virheellinen: ohjelma lukee pituustaulukon ulkopuolelta ja tekee päätöksen väärällä
   arvolla [päätelty].
 
 ### 8. Palautuminen ja uudelleenkäynnistys
@@ -11399,7 +11492,8 @@ palaa (`vkesken`-tila) ja jatkaa seuraavalla kutsulla loppuosan lukemisesta, jol
 alustamaton (muut tilamuuttujat, esimerkiksi `pkgclass`, ovat staattisia, `pkglen` ei ole).
 `pkglen` ohjaa odotussilmukkaa, `read_st_x`-kutsun pituutta staattiseen taulukkoon
 `id1[cn][LUEBUF+6]` ja `chksum`-laskentaa. Lisäksi `class_len[id[cn][3]]` luetaan indeksillä, jota ei
-verrata kokoon `N_CLASS` (15).
+verrata kokoon `N_CLASS`: indeksi voi olla taulukon ulkopuolella (viestin UDP-polulla 15-255, HK:ssa ja
+sarja- ja TCP-polulla myös negatiivinen, koska `pkgclass` on HK:ssa etumerkillinen `char`).
 
 Juurisyy JS-1. Sama vikaluokka kuin H-032, eri kohta (sarja ja binääri-TCP).
 
@@ -11426,7 +11520,7 @@ käännöksissä on tuntematon (Q43).
 `korjaussuunnitelma.md`, kokonaisuus KK-C13-1 (aalto 1), ensimmäinen osa yhdessä H-032:n ja H-026:n
 kanssa: pituus säilytetään yhteyskohtaisesti kuten `pkgclass` ja lajinumero tarkistetaan
 `N_CLASS`-rajaa vasten ennen taulukon käyttöä. Sanomamuoto ei muutu; aineiston mukaan korjaus ei
-hylkää laillisia paketteja, koska kaikki lajit ovat alle 15.
+hylkää laillisia paketteja, koska laillisten pakettien lajitieto on aina taulukon sisällä.
 
 Päätöstä ei odota mikään tämän vian osa. Kokonaisuuden FILESEND-osa (OP-5) koskee H-071:ää.
 
@@ -11455,7 +11549,7 @@ Päätöstä ei odota mikään tämän vian osa. Kokonaisuuden FILESEND-osa (OP-
 | Liittyvät havainnot | H-032 |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Tp/TpComY.cpp:61`, `:704`, `:708`, `:734-799`, `:805-818`, `:823-837`, `:750`, `:760`, `:1322-1324` |
 
-Rekisteririvien tiiviste nyt: `e42b5d92a2fc`.
+Rekisteririvien tiiviste nyt: `9174e0a3c33f`.
 
 
 ---
@@ -11485,10 +11579,10 @@ Tulostusrutiini valmistelee rivin kirjoittimelle apumuistiin (ks. sanasto: Muist
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- **Ohjelmat:** tulostusrutiini on yhteisessä apukirjastossa (`tputilv2` ja sen C++Builder-vastine), joka on kaikkien viiden ohjelman yhteinen (`CLAUDE.md`). Haaran tuottamista tulosteista ei ole ajettu yhtäkään.
+- **Ohjelmat:** tulostusrutiini on yhteisessä apukirjastossa (`tputilv2` ja sen C++Builder-vastine), joka käännetään kaikkiin viiteen ohjelmaan; kirjoittimen avaava `openprfile`-funktio on kaikkien ohjelmien tulostuspolun käytössä (luettu koodista K-vaiheessa, ei tarkastettu). Haaran tuottamista tulosteista ei ole ajettu yhtäkään.
 - **Asetus ja laite:** tulostuskohteeksi on annettu nimi, jota ei saada avattua kirjoittimena (kirjoitinta ei ole, nimi on tiedoston nimi tai kirjoittimen avaus epäonnistuu). Riskiarvio kirjaa saavutettavuudeksi asetuksen.
 - **Toimenpide:** listan tulostus.
-- **Normaalikäyttö vai poikkeustilanne:** kirjoittimen avauksen epäonnistuminen on poikkeustilanne. Aineisto ei kerro, kulkeeko tavallinen ”tulosta tiedostoon” -valinta tämän haaran kautta (jos kulkisi, vika näkyisi tavallisessa käytössä); koodin mukaan nimi, jota ei saada avattua kirjoittimena, avataan tiedostona.
+- **Normaalikäyttö vai poikkeustilanne:** kirjoittimen avauksen epäonnistuminen on poikkeustilanne. Tavallinen ”tulosta tiedostoon” -valinta ei kulje tämän haaran kautta: tiedostoon tulostavat kutsut antavat `openprfile`lle tiedostotilan, joka avaa tekstitiedoston ja kirjoittaa oikean rivin (esimerkkejä kutsuista HK:n tulostuksessa ja molemmissa konsoliohjelmissa) [luettu koodista K-vaiheessa, ei tarkastettu]. Vika vaatii kutsun, joka pyytää kirjoitinta ja jonka kirjoittimen avaus epäonnistuu; konsoliohjelmissa tällainen on listakirjoitin merkistötilassa G [luettu koodista K-vaiheessa, ei tarkastettu].
 
 ### 5. Mitä käyttäjä voi huomata
 
@@ -11509,7 +11603,7 @@ Listatiedoston sisältö on roskaa tai tyhjä tarkoitetun tekstin sijaan. Ohjelm
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Mahdollinen | Kirjoittimelle tarkoitettu lista kirjoittuu, kun kirjoitinta ei saada auki, roskana tiedostoon eikä tulostu (luettu koodista). |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Mahdollinen | Tulostettu lista tai listatiedosto sisältää roskaa tekstin sijaan (luettu koodista, ei ajettu). |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei tiedossa | Riskiarvio: ei vaikutusta. Tiedostoon voi päätyä pinomuistin aiempaa sisältöä; aineisto ei arvioi tietojen paljastumista; riskiarvio tarkistettava. |
-| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei tiedossa | Haara vaatii, ettei annettua nimeä saada auki kirjoittimena; aineisto ei kerro, kulkeeko tavallinen tulostus tiedostoon haaran kautta. |
+| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Tavallinen tulostus tiedostoon ei kulje haaran kautta: tiedostoon tulostavat kutsut antavat openprfile-funktiolle tiedostotilan (GDIkirjoitin = -1), joka avaa TextFl-tiedoston ja kirjoittaa oikean rivin. Vika vaatii kirjoitinta pyytävän kutsun, jonka kirjoittimen avaus epäonnistuu (luettu koodista K-vaiheessa, ei tarkastettu). |
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Kirjoittimen avauksen epäonnistuminen ohjaa tulostuksen tiedostohaaraan (luettu koodista). |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Ohjelma ei ilmoita; aineisto ei kerro, huomaako käyttäjä roskan tiedostossa. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Ei tiedossa | Aineistossa ei ole kirjattua keinoa vian välttämiseksi. |
@@ -11552,7 +11646,7 @@ Kääntäjien ero: alustamattoman pinon sisältö riippuu kääntäjästä, opti
 ### 12. Mitä ei vielä tiedetä
 
 - Mitä tiedostoon kirjoittuu käytännössä kummallakin kääntäjällä ja voiko lukeminen ylittää apumuistin.
-- Kulkeeko tavallinen ”tulosta tiedostoon” -toiminto tämän haaran kautta. Jos kulkee, vika ei vaadi kirjoittimen virhettä. Aineisto ei kerro.
+- Mitkä käyttäjän valikkokohdat ja asetukset pyytävät kirjoitinta niin, että sen avaus voi epäonnistua; tavallinen tiedostotulostus ei kulje haaran kautta (luku 4).
 - Riskiarvion rivi sanoo, ettei vika vaikuta ajanottoon eikä tietoturvaan. Lukemisen ylitys apumuistin lopun ohi ja arvaamattoman pinosisällön kirjoittaminen tiedostoon eivät ole poissuljettuja; riskiarvio on tarkistettava.
 
 ### 13. Miten vika on tarkoitus korjata
@@ -11583,7 +11677,7 @@ Korjaussuunnitelman kokonaisuus KK-C13-13 (Kiinteät puskurit muotoilussa ja tul
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `tputilv2/Wrttext.cpp:200`, `:210`, `:242`, `:370`, `:378-381`, `:386` |
 
-Rekisteririvien tiiviste nyt: `a3806ec4078c`.
+Rekisteririvien tiiviste nyt: `d8593618813a`.
 
 
 ---
@@ -11601,8 +11695,8 @@ Rekisteririvien tiiviste nyt: `a3806ec4078c`.
 
 Kun viestiohjelmassa tulostetaan kurssihajontatuloksia, ohjelma yrittää ensin avata valinnaisen
 tiedoston `HAJONNAT.LST`. Jos tiedostoa ei ole, ohjelma kuitenkin sulkee "avatun" tiedoston.
-MSVC:llä käännetty konsoliohjelma ViestiMaali päättyy tähän ilman varoitusta; GUI-ohjelma
-ViestiWin ei kaadu.
+MSVC:llä käännetty konsoliohjelma ViestiMaali päättyy MSVC:n oletuskäsittelijän mukaan [päätelty,
+ei ajettu]; GUI-ohjelma ViestiWin ei kaadu [päätelty].
 
 Vahvistettu: ei mitään ajamalla; vika on luettu koodista ja tarkastettu riippumattomasti osittain.
 Koodin virhe on varma. Mahdollinen: ViestiMaali päättyy MSVC:n oletuskäsittelijän takia (päätelty;
@@ -11759,7 +11853,7 @@ Rekisteririvien tiiviste nyt: `a2d2cbe49e03`.
 
 ### 1. Lyhyesti
 
-Kun viestin konsoliohjelmassa (ViestiMaali) luetaan emit-kortti partiokilpailussa ja automaattinen raportti on päällä, ohjelma tarkistaa, onko tulostusasetus olemassa, väärin muotoillulla ehdolla. Ehto päästää läpi tilanteen, jossa listakirjoitinta ei ole määritelty, ja ohjelma yrittää lukea asetuksen kirjoitinkenttää olemattomasta asetuksesta. Seurauksena ohjelma kaatuu.
+Kun viestin konsoliohjelmassa (ViestiMaali) luetaan emit-kortti partiokilpailussa ja automaattinen raportti on päällä, ohjelma tarkistaa, onko tulostusasetus olemassa, väärin muotoillulla ehdolla. Ehto päästää läpi tilanteen, jossa listakirjoitinta ei ole määritelty, ja ohjelma yrittää lukea asetuksen kirjoitinkenttää olemattomasta asetuksesta. Seurauksena ohjelma kaatuisi [päätelty; ei ajettu].
 
 **Todennettu lukemalla koodia ja riippumattomalla tarkastuksella:** ehdon virhe on todellinen ja johtaa tyhjän osoittimen käyttöön. **Mahdollinen (ei ajettu):** kaatuminen jokaisessa kortin luennassa, kun asetus on tämä. ViestiWinissä (GUI) vika on kumottu.
 
@@ -12015,7 +12109,7 @@ sellaisenaan. Kääntäjä varoitti alustamattomasta muuttujasta (C6001).
 ### 11. Mitä on todennettu
 
 (a) Ohjelmointivirhe: luettu koodista ja varoituksesta (/analyze C6001). Riippumaton lähdetarkastus
-vahvisti alustamattoman indeksin; `MAXYHD`-ylitys vahvistettiin vain erikoistapauksissa. Ei
+tarkasti alustamattoman indeksin; `MAXYHD`-ylitys tarkastettiin vain erikoistapauksissa. Ei
 toistettu testikehyksessä eikä ajettu.
 
 (b) Käytännön seuraus: ei osoitettu. Väärän sarjan tietojen kopioitumista tai kaatumista ei ole
@@ -12083,7 +12177,7 @@ Kun ohjelma hakee seuraa seuraluettelosta, se vertaa hakuavainta pidemmältä al
 on varattu tilaa. Vertailuun tulee mukaan avaimen ulkopuolista, määrittelemätöntä tietoa
 (ks. sanasto: Puskuriylitys, ylikirjoitus; tässä kyse on lukemisesta, ei kirjoittamisesta).
 
-- **Vahvistettu (koodin luku ja riippumaton lähdetarkastus, ei ajoa):** hakuavaimelle varattu tila on
+- **Luettu koodista ja riippumattomasti tarkastettu (ei ajoa):** hakuavaimelle varattu tila on
   lyhyempi kuin vertailun ja kopioinnin pituus.
 - **Mahdollinen (päätelty, ei ajettu):** haku ei löydä seuraa, vaikka se on luettelossa, ja sama
   seura tallentuu luetteloon uudelleen kaksoiskappaleena, jonka hakuavain on satunnaista tietoa.
@@ -12111,13 +12205,17 @@ tavut uuden rivin avaimeksi. Uuden rivin avain on silloin osaksi satunnaista tie
 - **Ohjelmat:** HkKisaWin ja HkMaali. Seuran tallennusta kutsutaan HK:n ilmoittautumis- ja
   emit-lomakkeilta sekä HkMaalin kilpailijakäsittelystä [päätelty koodista]. Viestiohjelmien
   lähteissä sama toiminto on olemassa, mutta kortin kirjoituksessa ei löytynyt sille kutsujaa
-  (ainoa kutsu on kommentoitu) [päätelty hakemalla]; aineisto ei kerro, onko viestiohjelmissa
-  muuta polkua.
+  (ainoa kutsu on kommentoitu) [päätelty hakemalla]; kutsujahaku `Juk`-, `ViestiWin`- ja
+  `JukConsole`-hakemistoista ei löytänyt muita kutsuja kuin määrittelyt [luettu koodista K-vaiheessa, ei tarkastettu].
 - **Toimenpide:** kilpailijalle kirjataan seura, ja seuraluettelo on käytössä.
 - **Normaalikäyttö vai poikkeus:** riskiarvio pitää saavutettavuutta tavallisena käyttönä.
   Seuran kirjaaminen on tavallista toimintaa, eikä virhettä tai erikoisasetusta tarvita.
-- **Milloin haku epäonnistuu:** riippuu siitä, mitä muistissa on vertailun hetkellä.
-  Aineisto ei kerro.
+- **Milloin haku epäonnistuu:** luettelon avain lasketaan 30 tavun pituisena, mutta haun avain on 22 tavua.
+  Jos nimen merkitsevä osa on yli 22 tavua (noin yli 33 merkin nimi), tallennetun avaimen tavut 22-29
+  eivät ole nollia, ja haku epäonnistuu muistin sisällöstä riippumatta [päätelty].
+  Lyhyemmillä nimillä tulos riippuu pinon sisällöstä, joka on eri HkKisaWinissä (bcc32) ja
+  HkMaalissa (MSVC) [päätelty]. Pitkän nimen tapaus olettaa, ettei nimen lyhennys pienennä nimeä alle
+  34 merkkiin; kehystesti ratkaisisi asian.
 
 ### 5. Mitä käyttäjä voi huomata
 
@@ -12131,14 +12229,14 @@ ilmoita virheestä. Aineisto ei kerro, voiko yliluku aiheuttaa muuta näkyvää 
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Ei tiedossa | Riskiarvio pitää vaikutusta tuloksiin suorana (näkyvä väärä arvo), mutta aineisto osoittaa vain kaksoiskappaleen syntymisen seuraluetteloon eikä sitä, että aika, tulos tai sijoitus olisi väärä. Riskiarvion tarkistus on avoin. |
 | Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei vaikutusta (perusteltu) | Riskiarvio: ajanotto ei pysähdy; vika on seuraluettelon haussa eikä vaikuta maali- tai väliaikojen kirjaukseen. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Ei sovellu | Vika koskee seuraluettelon hakua eikä kortin tai leimausten lukua. |
-| Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Mahdollinen | Kaksoiskappale tallentuu luetteloon ja luettelotiedostoon roska-avaimella (rekisterin kuvaus; kirjoitus tiedostoon päätelty koodista). Luettu koodista ja tarkastettu riippumattomasti, ei ajettu. |
+| Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Mahdollinen | Kaksoiskappale tallentuu luettelotiedostoon samannimisenä rivinä [luettu koodista]; roska-avain on vain muistissa, ja seuraava käynnistys laskee molemmille rivin nimestä saman oikean avaimen. Ei ajettu. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Ei tiedossa | Yliluku koskee pinossa avaimen jälkeistä aluetta; aineisto ei kirjaa kaatumista tämän vian seurauksena. |
 | Vaikutus: Voiko ohjelma tai yksittäinen toiminto jäädä jumiin? | Ei tiedossa | Aineisto ei käsittele jumiutumista tämän vian osalta. |
 | Vaikutus: Voiko jokin mennä väärin ilman ilmoitusta tai näkyvää oiretta? | Mahdollinen | Ohjelma ei ilmoita epäonnistuneesta hausta; kaksoiskappale näkyy vasta seuraluettelossa. Päätelty koodista, ei ajettu. |
-| Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Ei tiedossa | Aineisto ei kerro välittyykö seuraluettelo työasemien välillä. |
+| Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Mahdollinen | TallennaSeura kutsuu aina lah_seura-funktiota (valitsin SEURAVAL on HK-tuotteissa), ja vastaanottava asema kutsuu samaa tallennusta, joten sama virheellinen haku ajetaan myös vastaanottavilla työasemilla [päätelty koodista]. Ei ajettu. |
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei sovellu | Vika koskee seuraluettelon hakua, ei lukijoita, kelloja, näyttötauluja tai tulostimia. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei kerro, näkyykö kaksoiskappale tulosteissa tai julkaisuissa. |
-| Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole; aineisto ei kirjaa verkkopolkua seuran tallennukseen. |
+| Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei tiedossa | Riskiarvio sanoo tietoturvavaikutuksen ei-arvon, mutta seuran tallennus vastaanotetaan myös toiselta työasemalta (lah_seura -> tall_seura -> TallennaSeura), joten verkosta saapuva seuranimi kulkee virheellisen haun kautta; aineisto ei arvioi hyödynnettävyyttä. Riskiarvio tarkistetaan (seuranta.md KE-taulukko). |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Mahdollinen | Seuran kirjaaminen kilpailijalle on tavallista käyttöä; riskiarvion saavutettavuus on normaalikäyttö. Haun epäonnistuminen riippuu muistin sisällöstä. Ei ajettu. |
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Ei vaikutusta (perusteltu) | Laukeaa ilman poikkeustilannetta: tavallinen seuran tallennus riittää, virhettä tai erikoisasetusta ei tarvita. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Mahdollinen | Riskiarvion mukaan väärä arvo on näkyvä: kaksoiskappale näkyy seuraluettelossa. Ohjelma ei ilmoita virheestä. |
@@ -12169,7 +12267,7 @@ Vahvistetun ja mahdollisen erottelu on luvussa 11. Kun HK-ohjelmassa kirjataan k
   käsin tehtävää keinoa.
 - **Uusiutuminen:** vika on koodissa, joten seuraava seuran kirjaus voi tuottaa uuden
   kaksoiskappaleen. Uudelleenkäynnistys ei poista syytä.
-- **Muut työasemat:** aineisto ei kerro, välittyykö seuraluettelo työasemien välillä.
+- **Muut työasemat:** seuran tallennus lähettää seuran tiedot muille työasemille avoimia yhteyksiä pitkin, ja vastaanottava työasema kutsuu samaa tallennusta; sama virheellinen haku ajetaan siis myös vastaanottavilla työasemilla [päätelty koodista]. Kaksoiskappale voi siten syntyä niihinkin.
 
 ### 9. Mitä käyttäjä voi tehdä riskin pienentämiseksi
 
@@ -12197,7 +12295,7 @@ Juurisyy on JS-3 (kapasiteetti ei seuraa ajonaikaista kokoa).
 ### 11. Mitä on todennettu
 
 **(a) Ohjelmointivirhe.** Riippumaton lähdetarkastus (C-4) ja kääntäjän koodianalyysin varoitus
-vahvistavat, että varattu tila on lyhyempi kuin vertailun ja kopioinnin pituus. Ohjelmaa ei ole
+osoittavat, että varattu tila on lyhyempi kuin vertailun ja kopioinnin pituus. Ohjelmaa ei ole
 ajettu, eikä virhettä ole toistettu koeohjelmalla.
 
 **(b) Käytännön seuraus.** Ei ole osoitettu. Kaksoiskappaleen syntyminen on päätelty koodista, eikä
@@ -12247,7 +12345,7 @@ kriteeriä. Päätöstä odottavia osia ei ole.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkApu.cpp:752-764`; `Hk/HkDef.h:880`; `Juk/vApu.cpp:882-891`, `:915-918`; `Juk/VDef.h:433` |
 
-Rekisteririvien tiiviste nyt: `7ea604acac13`.
+Rekisteririvien tiiviste nyt: `cd0ed7d7887d`.
 
 
 ---
@@ -12403,7 +12501,7 @@ Tekstin kokoamiseen käytetään osoitinta, joka asetetaan osoittamaan apumuisti
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- **Ohjelma:** HkMaali (konsoli). Rekisteri ei kata viestin konsolin vastaavaa tulostusta tässä havainnossa.
+- **Ohjelma:** HkMaali (konsoli). Viestin konsolin vastaava tulostus (`tulostamaali`, `JukConsole/vcons2.cpp`) ei ole altis: se asettaa `ss = L""` jokaisella rivillä ennen käyttöä eikä kirjoita osoittimen kautta [luettu koodista K-vaiheessa, ei tarkastettu].
 - **Toimenpide:** käyttäjä tulostaa aikajonon listakirjoittimelle.
 - **Aineisto:** aikajonon ensimmäisellä käsiteltävällä rivillä ei ole kellonaikaa, ja rivillä on tunnettu kilpailijanumero.
 - **Normaalikäyttö vai poikkeustilanne:** aineisto ei kerro, milloin kirjauksella ei ole aikaa. Kirjauksen kellonajan puuttuminen on poikkeus tavallisesta kirjauksesta.
@@ -12457,7 +12555,7 @@ Vahvistettua, ajamalla osoitettua seurausta ei ole. Koodista johdettu tilanne:
 
 ### 10. Tekninen juurisyy
 
-HkMaalin konsolin `tulostamaali` (`HkConsole/HkCons2.cpp`) määrittelee paikallisen osoittimen `ss`, joka asetetaan vasta `ss = AIKATOWSTRS(...)`-kutsulla, kun kirjauksessa on aika. Jos aikaa ei ole, silmukan ensimmäisellä kierroksella suoritetaan kuitenkin `ss[0] = 0` ja sen jälkeen ehdollisesti `swprintf(ss, ...)`. Rekisteri luokittelee vian yksittäiseksi koodausvirheeksi (alustamaton paikallinen osoitin); pahentava tekijä on JS-13 (todentamisen puute).
+HkMaalin konsolin `tulostamaali` (`HkConsole/HkCons2.cpp`) määrittelee paikallisen osoittimen `ss`, joka asetetaan vasta `ss = AIKATOWSTRS(...)`-kutsulla, kun kirjauksessa on aika. Jos aikaa ei ole, silmukan ensimmäisellä kierroksella suoritetaan kuitenkin `ss[0] = 0` ja sen jälkeen ehdollisesti `swprintf(ss, ...)`. Myös rivin muodostava `swprintf` lukee alustamatonta `ss`-osoitinta `%s`-muotoilulla, joten myös lukeminen tapahtuu satunnaisesta osoitteesta [luettu koodista K-vaiheessa, ei tarkastettu]. Rekisteri luokittelee vian yksittäiseksi koodausvirheeksi (alustamaton paikallinen osoitin); pahentava tekijä on JS-13 (todentamisen puute).
 
 ### 11. Mitä on todennettu
 
@@ -12471,7 +12569,7 @@ Kääntäjien ero: vika on vain HkMaalissa (MSVC). Alustamattoman paikallisen os
 
 - Mitä osoitin sisältää Release-käännöksessä ja mihin kirjoitus osuu.
 - Voiko aikajonon ensimmäisellä rivillä olla aika puuttumatta tavallisessa kilpailussa; aineisto ei kerro.
-- Esiintyykö sama kuvio viestin konsolin vastaavassa tulostuksessa; rekisteri ei kata sitä.
+- Viestin konsolin vastaava tulostus on luettu: `ss` asetetaan rivin alussa, joten sama kuvio ei esiinny [luettu koodista K-vaiheessa, ei tarkastettu].
 
 ### 13. Miten vika on tarkoitus korjata
 
@@ -12524,7 +12622,7 @@ päättää, luetaanko "L"-merkintä lainakortiksi, ja ajanoton ruudukossa se vo
 kirjoitetun osuuskoodin väärään sarjaan, jolloin aika voi päätyä väärälle osuudelle.
 
 Vahvistettu: ei mitään seurausta. Kääntäjän varoitus ja lähdekoodin luku osoittavat, että arvoja
-ei aseteta ennen käyttöä, ja riippumaton tarkastaja on vahvistanut koodiluennan. Ohjelmaa ei ole
+ei aseteta ennen käyttöä, ja riippumaton tarkastaja on tarkastanut koodiluennan. Ohjelmaa ei ole
 ajettu tämän vian osalta. Mahdollinen: väärälle osuudelle kirjautuva aika (ajanoton ruudukko) sekä
 väärä numerointitapa ja väärin tulkittu lainamerkintä. Ajanoton ruudukon kohdan vaikutusta ei ole
 jäljitetty loppuun asti.
@@ -12733,8 +12831,8 @@ löydetyn tunnisteen kopiointiin toiseen puskuriin. Pituuden ei tarkisteta mahtu
 puskuriin, joten virheellinen pituus voi lukea ja kirjoittaa ohjelman muistia puskurien ulkopuolelta.
 
 Vahvistettu: ei mitään ajamalla. Mahdollinen (luettu koodista ja riippumattomasti tarkastettu):
-kasamuistin ylikirjoitus ja ohjelman kaatuminen; negatiivinen pituus voi aiheuttaa noin neljän
-gigatavun kopioinnin, mikä kaataisi ohjelman [päätelty]. Riskiarvio pitää vaikutusta
+kasamuistin ylikirjoitus ja ohjelman kaatuminen; negatiivinen pituus voi aiheuttaa hyvin suuren
+kopioinnin, mikä kaataisi ohjelman [päätelty]. Riskiarvio pitää vaikutusta
 vakavana FEIG-lukijaa käytettäessä.
 
 ### 2. Mitä ohjelma yrittää tehdä
@@ -12746,14 +12844,13 @@ ja Sanoma, paketti).
 
 ### 3. Mikä menee vikaan
 
-Vastauksen alussa on pituus, jonka ohjelma laskee kahdesta tavusta etumerkillisinä lukuina; sen
-arvo voi olla −32 896…32 639. Ohjelma lukee vastauksen 200 tavun pinopuskuriin, mutta tarkistaa
-tarkistussumman pituuden mukaan, joten puskurin ulkopuolta luetaan, myös puskurin edestä, kun
-pituus on negatiivinen (ks. sanasto: Pino, Puskuriylitys, ylikirjoitus). Sen jälkeen ohjelma
-kopioi jokaisen tunnisteen tiedot, tunnisteen oman pituuden mukaan, 15 001 tavun kasapuskuriin.
-Pituus 15 002…32 639 ylittää kasalohkon, ja negatiivinen pituus tulkitaan neljän gigatavun
-kopioinniksi. Tarkistussumma ei estä tätä, koska sen laskee lähettäjä, joka voi laskea myös
-virheellisen kehyksen summan.
+Vastauksen alussa on pituuskenttä, jonka ohjelma muuntaa etumerkilliseksi luvuksi. Ohjelma lukee
+vastauksen 200 tavun pinopuskuriin, mutta tarkistaa tarkistussumman kentän ilmoittaman pituuden
+mukaan, joten puskurin ulkopuolta luetaan, myös puskurin edestä, kun pituus on negatiivinen
+(ks. sanasto: Pino, Puskuriylitys, ylikirjoitus). Sen jälkeen ohjelma kopioi jokaisen tunnisteen
+tiedot kasapuskuriin. Sanoma, jonka pituuskenttä on rajojen ulkopuolella, ylittää kasalohkon, ja
+negatiivinen pituus tulkitaan suureksi kopioinniksi. Tarkistussumma ei estä tätä, koska sen
+laskee lähettäjä.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
@@ -12832,13 +12929,12 @@ kilpailun aikana:
 
 ### 10. Tekninen juurisyy
 
-`lue_FEIG` (`Tp/TpLaitteet.cpp`) laskee kehyksen pituuden `l = 256*FEIGbuf[1] + FEIGbuf[2]`, missä
-`FEIGbuf` on etumerkillinen `char`-taulukko (`FEIGbuf[200]`), joten `l` voi olla −32 896…32 639.
-`crc(FEIGbuf, l-2)` ja luku `*(UINT16 *)(FEIGbuf+l-2)` käyttävät `l`-arvoa rajaamatta, myös
-puskurin alapuolella. Sisemmän tietueen pituus (`l = 256*FGp[0] + FGp[1]`) menee
-`memcpy(vastaus, FGp, l)`-kutsuun, ja `vastaus` osoittaa 15 001 tavun kasalohkoon (`san_type`). Sen
-yli kirjoitetaan 15 002…32 639 tavua; negatiivinen pituus tulkitaan etumerkittömänä, jolloin kopio
-on noin 4 Gt. CRC-16 on lähettäjän laskettavissa.
+`lue_FEIG` (`Tp/TpLaitteet.cpp`) laskee kehyksen pituuden `l` kahdesta etumerkillisen `char`-taulukon (`FEIGbuf[200]`)
+tavusta, joten `l` voi olla negatiivinen. `crc(FEIGbuf, l-2)` ja tarkistussumman luku käyttävät
+`l`-arvoa rajaamatta, myös puskurin alapuolella. Sisemmän tietueen pituus menee
+`memcpy(vastaus, FGp, l)`-kutsuun, ja `vastaus` osoittaa 15 001 tavun kasalohkoon (`san_type`).
+Pituus, joka ylittää kasalohkon, kirjoittaa sen yli; negatiivinen pituus tulkitaan etumerkittömänä,
+jolloin kopio on suuri. Tarkistussumman laskee lähettäjä.
 
 Juurisyy JS-1: laitteen ilmoittamaa pituutta ei verrata puskurin kokoon.
 
@@ -12912,7 +13008,7 @@ Kun ohjelma ottaa vastaan tiedoston toiselta työasemalta (FILESEND-toiminto), s
 
 **Luettu koodista ja riippumattomasti tarkastettu:** molemmat puutteet. Laukeaminen on päätelty, ei ajettu.
 **Vahvistettu käytännön seuraus:** ei yhtään. Mikään C-4:n uusista havainnoista ei ole vahvistettu ajamalla.
-**Mahdollinen:** ohjelman kaatuminen tai muistin sisällön päätyminen tiedostoon; mikä tahansa ohjelman kirjoitettavissa oleva tiedosto voidaan luoda tai korvata; vajaa tiedosto välitetään muille työasemille.
+**Mahdollinen:** ohjelman kaatuminen tai muistin sisällön päätyminen tiedostoon; mikä tahansa ohjelman kirjoitettavissa oleva tiedosto voidaan luoda tai korvata; vajaa tiedosto välitetään edelleen niille työasemille, joille tiedostojen lähetys on asetettu.
 
 ### 2. Mitä ohjelma yrittää tehdä
 
@@ -12925,7 +13021,7 @@ Vastaanottaja luottaa sanomaan kahdessa kohdassa.
 1. **Pituus.** Jokainen tiedostopala kertoo oman pituutensa. Ohjelma ei vertaa pituutta siihen, kuinka paljon tietoa vastaanottopuskuriin (ks. sanasto: Muistialue, puskuri) on oikeasti tullut. Jos ilmoitettu pituus on liian suuri, ohjelma lukee puskurin loppuun asti ja sen ohi. Seurauksena voi olla ohjelman kaatuminen tai se, että muistissa oleva muu tieto kirjoitetaan tiedostoon; kumpaakaan ei ole ajettu.
 2. **Tiedoston nimi ja polku.** Ohjelma avaa sanomassa nimetyn tiedoston kirjoitettavaksi tarkistamatta polkua. Jos tiedosto on olemassa, sen sisältö korvataan. Verkosta voi siis luoda tai korvata minkä tahansa tiedoston, jonka ohjelma saa kirjoittaa.
 
-Lisäksi C-9:n tarkastuksessa kirjattiin kolmas puute: jos jokin tiedostopala epäonnistuu tai tulee väärässä järjestyksessä, ohjelma sulkee tiedoston ilmoittamatta. Kun siirron loppusanoma tulee, ohjelma välittää vajaan tiedoston muille työasemille.
+Lisäksi C-9:n tarkastuksessa kirjattiin kolmas puute: jos jokin tiedostopala epäonnistuu tai tulee väärässä järjestyksessä, ohjelma sulkee tiedoston ilmoittamatta. Kun siirron loppusanoma tulee, ohjelma välittää vajaan tiedoston edelleen niille työasemille, joille tiedostojen lähetys on asetettu (`LÄHTIEDOSTOT`) ja joihin on UDP-yhteys.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
@@ -12940,7 +13036,7 @@ Aineisto ei kerro varmasti, koska vikaa ei ole ajettu. Koodin perusteella mahdol
 
 - ohjelma kaatuu (liian suuri pituus);
 - tiedosto muuttuu tai ilmestyy ohjelman kirjoittamaan paikkaan, vaikka käyttäjä ei ole sitä pyytänyt;
-- toiselle työasemalle välittyy vajaa tiedosto.
+- toiselle työasemalle, jolle tiedostojen lähetys on asetettu, välittyy vajaa tiedosto.
 
 Vika voi jäädä kokonaan huomaamatta, jos tiedosto korvataan tai vajaa tiedosto välitetään, koska ohjelma ei anna tästä ilmoitusta (ks. sanasto: Hiljainen virhe).
 
@@ -12955,7 +13051,7 @@ Vika voi jäädä kokonaan huomaamatta, jos tiedosto korvataan tai vajaa tiedost
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Mahdollinen | Pituuden ylilukeminen puskurin ohi voi kaataa ohjelman; ei ajettu. |
 | Vaikutus: Voiko ohjelma tai yksittäinen toiminto jäädä jumiin? | Ei tiedossa | Aineisto ei kerro jumiutumisesta. |
 | Vaikutus: Voiko jokin mennä väärin ilman ilmoitusta tai näkyvää oiretta? | Mahdollinen | Epäonnistunut tai epäjärjestyksessä tullut pala sulkee tiedoston ilmoittamatta ja vajaa tiedosto välitetään. |
-| Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Mahdollinen | Loppusanoma levittää tiedoston muille vertaisille; vajaa tiedosto voi levitä. |
+| Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Mahdollinen | Loppusanoma välittää tiedoston edelleen niille UDP-yhteyksillä oleville työasemille, joille tiedostojen lähetys on asetettu (LÄHTIEDOSTOT); vajaa tiedosto voi levitä vain niille. |
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei tiedossa | Aineisto ei kerro vaikutusta laitteisiin. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Mahdollinen | Mikä tahansa kirjoitettavissa oleva tiedosto voi korvautua, myös tuotetut tulostiedostot; ei osoitettu. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Mahdollinen | Verkosta tavoitettavissa oletusasetuksin ilman lähettäjän tunnistusta; laukeaminen päätelty, ei ajettu. |
@@ -12973,12 +13069,12 @@ Vahvistetun ja mahdollisen erottelu on luvussa 11. Mikään alla oleva ei ole va
 
 - **Oma työasema (vastaanottaja).** Ohjelma voi kaatua, jos sanoman ilmoittama pituus on liian suuri. Muistin sisältöä voi päätyä tiedostoon. Mikä tahansa tiedosto, jonka ohjelma saa kirjoittaa, voidaan luoda tai korvata, eikä ohjelma ilmoita siitä.
 - **Kilpailu.** Riskiarvion mukaan kaatuminen pysäyttäisi sen työaseman ajanoton ja vaikutus tuloksiin olisi välillinen. Yhden työaseman pysähtyminen ei ole koko kilpailun ajanoton pysähtyminen. Jos korvattava tiedosto olisi kilpailun tiedosto, seurauksena voisivat olla väärät tai puuttuvat tiedot kyseisellä työasemalla [päätelty]; aineisto ei kerro, mikä tiedosto käytännössä korvautuisi.
-- **Muut työasemat.** Vika koskee jokaista työasemaa, joka vastaanottaa sanomia, ja sanoman voi lähettää mikä tahansa verkossa oleva laite (H-029). Lisäksi vastaanotettu vajaa tiedosto välitetään loppusanomassa edelleen muille työasemille.
+- **Muut työasemat.** Vika koskee jokaista työasemaa, joka vastaanottaa sanomia, ja sanoman voi lähettää mikä tahansa verkossa oleva laite (H-029). Lisäksi vastaanotettu vajaa tiedosto välitetään loppusanomassa edelleen niille työasemille, joille tiedostojen lähetys on asetettu.
 
 Esimerkit toimintapoluista:
 
 - Todellinen toimintapolku: työasema lähettää tiedoston toiselle työasemalle LÄHTIEDOSTOT-ominaisuudella. Lähettäjä lähettää tiedoston nimen ja sisällön paloina, ja vastaanottaja kirjoittaa palat nimettyyn tiedostoon ja välittää tiedoston tarvittaessa edelleen.
-- Jos siirto katkeaisi kesken tai tiedostopala tulisi väärässä järjestyksessä, vastaanottaja sulkisi tiedoston ilmoittamatta ja välittäisi loppusanoman saatuaan vajaan tiedoston muille työasemille (kirjattu C-9:n tarkastuksessa; ei ajettu).
+- Jos siirto katkeaisi kesken tai tiedostopala tulisi väärässä järjestyksessä, vastaanottaja sulkisi tiedoston ilmoittamatta ja välittäisi loppusanoman saatuaan vajaan tiedoston edelleen niille työasemille, joille tiedostojen lähetys on asetettu (kirjattu C-9:n tarkastuksessa; ei ajettu).
 - Jos verkossa oleva laite lähettäisi sanoman, jonka tiedoston nimi osoittaa toiseen tiedostoon, ohjelma avaisi sen kirjoitettavaksi ja korvaisi sisällön (luettu koodista; ei ajettu).
 
 ### 8. Palautuminen ja uudelleenkäynnistys
@@ -12987,7 +13083,7 @@ Esimerkit toimintapoluista:
 - **Normaalin toiminnan palauttaminen:** Aineisto ei kerro, auttaako ohjelman uudelleenkäynnistys kaatumisen jälkeen. Jos ohjelman tarvitsema tiedosto on korvattu, uudelleenkäynnistys ei palauta sitä [päätelty].
 - **Tietojen palauttaminen:** Riskiarvio luokittelee palautettavuuden muotoon "ei palautettavissa". Aineistossa ei ole kirjattua keinoa palauttaa korvattu tiedosto ohjelman omin keinoin. Ainoa kirjattu liittyvä keino on etukäteen tehty varmuuskopio kilpailutiedostoista erilliseen paikkaan (luku 9); sen tehoa ei ole kokeiltu.
 - **Uusiutuminen:** Vastaanotossa ei ole asetusta, jolla sen voisi kytkeä pois, joten uudelleenkäynnistys ei poista syytä. Sama sanoma täyttäisi laukaisuehdon uudelleen [päätelty koodista]. Toistumista ei ole ajettu.
-- **Muut työasemat:** Vika koskee jokaista työasemaa, joka vastaanottaa sanomia, kaikissa viidessä ohjelmassa (luku 4). Vajaa tiedosto voi levitä muille työasemille. Yhden työaseman kaatuminen ei ole koko kilpailun ajanoton pysähtyminen.
+- **Muut työasemat:** Vika koskee jokaista työasemaa, joka vastaanottaa sanomia, kaikissa viidessä ohjelmassa (luku 4). Vajaa tiedosto voi levitä niille työasemille, joille tiedostojen lähetys on asetettu. Yhden työaseman kaatuminen ei ole koko kilpailun ajanoton pysähtyminen.
 
 ### 9. Mitä käyttäjä voi tehdä riskin pienentämiseksi
 
@@ -13008,7 +13104,7 @@ Juurisyy on JS-1: ulkoista syötettä ei validoida rajalla. Vika löytyi C4389-v
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Koodi on luettu ja riippumaton tarkastus (C-4 vaihe 2) on vahvistanut sen. Todennuksen laji on staattinen. Rekisterin varmuusmerkintä: koodi [todennettu], laukeaminen [päätelty].
+**(a) Ohjelmointivirhe.** Koodi on luettu ja riippumaton tarkastus (C-4 vaihe 2) on tarkastanut sen. Todennuksen laji on staattinen. Rekisterin varmuusmerkintä: koodi [todennettu], laukeaminen [päätelty].
 
 **(b) Käytännön seuraus.** Mitään seurausta ei ole osoitettu ajamalla tai testikehyksessä. `muistiturvallisuus.md` luvun 15 mukaan ainoa ajossa vahvistettu muistivika on H-041.
 
@@ -13049,7 +13145,7 @@ Päätöstä odottavat osat: OP-5 (FILESEND-tiedostonsiirron rajaus, avoin; vaih
 | Liittyvät havainnot | H-029 H-156 |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Tp/TpComY.cpp:1001`, `:2399`, `:3004-3037`; `Hk/HkCom32.cpp:939-940`, `:1105`; `Juk/VCom.cpp:968`, `:1240`; `Hk/HkDef.h:1301-1307`; `Juk/VDef.h:1247-1253` |
 
-Rekisteririvien tiiviste nyt: `f2d646adedca`.
+Rekisteririvien tiiviste nyt: `a081e898a1fd`.
 
 
 ---
@@ -13088,7 +13184,7 @@ Henkilökilpailun ohjelmassa erän lähtöajat ovat taulukossa, jossa on 200 pai
 erän numeron ja lähtöajan, ja ohjelma kirjoittaa ajan taulukon paikkaan, jonka numero tulee
 sanomasta. Numeroa ei verrata taulukon kokoon, joten suuri tai negatiivinen numero kirjoittaa neljä
 tavua taulukon ulkopuolelle, ohjelman muistissa muiden tietojen päälle (ks. sanasto: Indeksi,
-Puskuriylitys, ylikirjoitus). Ohjelma tallentaa saman sanoman erän numeron myös "aktiivinen erä"
+Puskuriylitys, ylikirjoitus). Ohjelma tallentaa tietyissä sanomissa erän numeron myös "aktiivinen erä"
 -muuttujaan, joka on pienempi kuin sanoman kenttä, ja käyttää sitä myöhemmin taulukon indeksinä
 (ks. sanasto: Indeksi). Sen jälkeen ohjelma välittää arvon edelleen muille asemille.
 
@@ -13175,14 +13271,14 @@ ei ajettu), jos kilpailun aikana verkossa oleva laite lähettää virheellisen o
 
 ### 10. Tekninen juurisyy
 
-Henkilökilpailussa `tark_extra` (`Hk/HkCom32.cpp`) kirjoittaa `d1 = 5`-sanomasta
-`eralahto[d2] = d3` ilman rajatarkistusta (`d2` on 32-bittinen sanoman kenttä, taulukko
-`eralahto[MAXERA]` on 200 paikkaa), tallentaa `era_akt`-muuttujaan (16-bittinen) arvon, jota käytetään
+Henkilökilpailussa `tark_extra` (`Hk/HkCom32.cpp`) kirjoittaa erän lähtöajan sanomassa indeksin ja
+arvon sanomasta taulukkoon `eralahto[MAXERA]` (200 paikkaa) tarkistamatta indeksiä (indeksi on
+32-bittinen sanoman kenttä), tallentaa `era_akt`-muuttujaan (16-bittinen) arvon, jota käytetään
 myöhemmin indeksinä (kavennus näkyy kääntäjän C4244-varoituksessa) ja välittää arvon
 `lahetaeralahto`-funktiolla muille asemille. Välitys lukee `eralahto[era]`-arvon samalla
-rajaamattomalla indeksillä. Viestissä `d1 = 3` kirjoittaa `Sarjat[sarja].knosiirto`-kentän
-rajaamatta `sarja`-arvoa (`tallKnoSiirto`, `Juk/vdat.cpp`) ja välittää sen
-(`lahetaKnoSiirto`). Muutkin `d1`-arvot käydään läpi korjauksessa.
+rajaamattomalla indeksillä. Viestissä kilpailunumeroiden siirtosanoma kirjoittaa
+`Sarjat[sarja].knosiirto`-kentän rajaamatta sarjatietoa (`tallKnoSiirto`, `Juk/vdat.cpp`) ja
+välittää sen (`lahetaKnoSiirto`). Muutkin sanomatyypit käydään läpi korjauksessa.
 
 Juurisyy JS-1: sanoman indeksiä ei tarkisteta rajalla. Taulukon koko on tiedossa, mutta syötteen
 arvoa ei verrata siihen (ei JS-3). Vika sallii kirjoituksen mihin tahansa paikkaan globaalin
@@ -13204,14 +13300,14 @@ tekemättä.
   käännöksittäin (MSVC ja bcc32).
 - Käytetäänkö taulukon viereisiä tietoja tavalla, joka näkyy käyttäjälle; vaikutus tulosten
   laskentaan on päätelty, ei osoitettu.
-- Kaikkia `d1`-tapauksia ei ole vielä käyty läpi (korjaussuunnitelma ottaa ne mukaan).
+- Kaikkia ohjaussanoman tyyppejä ei ole vielä käyty läpi (korjaussuunnitelma ottaa ne mukaan).
 - Havainnon julkaisu on omistajan päätettävänä (OP-1), koska aineisto kuvaa vian riittävän
   tarkasti hyödynnettäväksi.
 
 ### 13. Miten vika on tarkoitus korjata
 
 `korjaussuunnitelma.md`, kokonaisuus KK-C13-1 (aalto 1), oma osa: sanoman indeksit rajataan
-taulukon kokoon, hylättyä arvoa ei välitetä edelleen, ja kaikki `d1`-tapaukset käydään läpi samalla.
+taulukon kokoon, hylättyä arvoa ei välitetä edelleen, ja kaikki sanomatyypit käydään läpi samalla.
 Sanomamuoto ei muutu. Aineiston mukaan lailliset lähettäjät käyttävät omaa taulukkoaan, joten rajaus
 ei hylkää laillisia sanomia.
 
@@ -13250,7 +13346,7 @@ Rekisteririvien tiiviste nyt: `5b0c1cb03f60`.
 
 <a id="h-073"></a>
 
-## H-073 – Emit-välilokin rivi ylittää muistialueen, kun EMVALOKI on päällä ja saapuvassa emit-paketissa on paljon rastejä
+## H-073 – Emit-välilokin rivi ylittää muistialueen, kun EMVALOKI on päällä ja saapuvassa emit-paketissa on paljon rasteja
 
 > **H-073** · tila: **avoin** · prioriteetti: **P2** · tekninen vakavuus: keskitaso
 > Ohjelmointivirheen todennus: luettu koodista ja riippumattomasti tarkastettu. Riskiarvion saavutettavuus: verkosta, kun tietty asetus on käytössä (tarkemmin luvussa 4).
@@ -13259,7 +13355,7 @@ Rekisteririvien tiiviste nyt: `5b0c1cb03f60`.
 
 ### 1. Lyhyesti
 
-Kun asetustiedostossa on avain EMVALOKI, ohjelma kirjoittaa jokaisesta toiselta työasemalta saapuvasta emit-väliaikapaketista lokiin yhden rivin, jossa on kaikki kortin rastit. Rivi kootaan 400 merkin muistialueeseen eikä pituutta tarkisteta. Rekisterin laskelman mukaan kaikilla 50 rastilla rivi on noin 450 merkkiä, joten muistialue ylittyy.
+Kun asetustiedostossa on avain EMVALOKI, ohjelma kirjoittaa jokaisesta toiselta työasemalta saapuvasta emit-väliaikapaketista lokiin yhden rivin, jossa on kaikki kortin rastit. Rivi kootaan 400 merkin muistialueeseen eikä pituutta tarkisteta. Rekisterin laskelman mukaan kaikilla 50 rastilla rivi on noin 450 merkkiä, joten muistialue ylittyy; ylitys vaatii vähintään noin 34 rastin radan (äärimmäiset arvot) tai noin 45 rastin radan (tavalliset rastikoodit ja ajat) [päätelty laskemalla].
 
 **Todennettu lukemalla koodia ja riippumattomalla tarkastuksella:** puskuri on kiinteä ja pituus rajaamaton. **Mahdollinen (ei ajettu):** pinon ylikirjoitus ja sen seuraukset, esimerkiksi ohjelman pysähtyminen. HK:ssa lisäksi luetaan yksi rivi taulukon ohi ja tulostetaan merkkijono, jolta puuttuu päättävä nollamerkki.
 
@@ -13269,14 +13365,14 @@ Emit-kortin (ks. sanasto: Leimaus, emit-kortti) tiedot voidaan lähettää maali
 
 ### 3. Mikä menee vikaan
 
-Rastit kootaan yhdelle riville 400 merkin muistialueeseen (ks. sanasto: Muistialue, puskuri) lisäämällä jokaisesta rastista kaksi lukua ja välilyönnit. Merkkien määrä kasvaa rastien mukana, ja ohjelma ei vertaa sitä muistialueen kokoon. Kun rasteja on paljon, rivi ylittää muistialueen ja kirjoittaa viereisen pinomuistin päälle (ks. sanasto: Puskuriylitys, ylikirjoitus; Pino). Riskiarvion mukaan jo 50 rastin tavallinen data riittää ylitykseen, kun parin pituus on 9 merkkiä. HK:ssa on lisäksi kaksi pienempää vikaa: silmukka voi lukea 50. rastin 49-rivisen taulukon ohi, ja rata-kenttä tulostetaan ilman päättävää nollamerkkiä. Viestissä rata-kenttä luetaan 8 merkin kenttänä pidemmälle.
+Rastit kootaan yhdelle riville 400 merkin muistialueeseen (ks. sanasto: Muistialue, puskuri) lisäämällä jokaisesta rastista kaksi lukua ja välilyönnit. Merkkien määrä kasvaa rastien mukana, ja ohjelma ei vertaa sitä muistialueen kokoon. Kun rasteja on paljon, rivi ylittää muistialueen ja kirjoittaa viereisen pinomuistin päälle (ks. sanasto: Puskuriylitys, ylikirjoitus; Pino). Rastirivin silmukka kulkee paketin ilmoittamaan rastilukuun asti. Rastin koodi ja aika ovat 16-bittisiä lukuja, joten yksi pari on enintään 12 merkkiä; 33 rastia ei siksi voi ylittää 400 merkkiä millään arvoilla. Ylitys vaatii radan, jossa on vähintään noin 34 rastia (äärimmäiset arvot) tai noin 45 rastia (kolminumeroiset rastikoodit ja alle 10 000 sekunnin ajat, jolloin pari on 9 merkkiä) [päätelty laskemalla]. Tavallinen rastimäärä ei siis riitä: tarvitaan poikkeuksellisen pitkä rata tai poikkeava paketti. Riskiarvion peruste ("ordinary use") ja prioriteetti tarkistetaan (`seuranta.md` KE-taulukko). HK:ssa on lisäksi kaksi pienempää vikaa: silmukka voi lukea 50. rastin 49-rivisen taulukon ohi, ja rata-kenttä tulostetaan ilman päättävää nollamerkkiä. Viestissä rata-kenttä luetaan 8 merkin kenttänä pidemmälle.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- **Ohjelmat:** HkMaali, HkKisaWin, ViestiMaali ja ViestiWin. ViestiLuennan projektissa ei ole lokirivin funktion sisältävää lähdetiedostoa; ViestiLuennan osalta aineisto ei ratkaise [päätelty].
+- **Ohjelmat:** HkMaali, HkKisaWin, ViestiMaali ja ViestiWin. ViestiLuenta ei kuulu vian piiriin: lokirivin funktion sisältävä `VEmit.cpp` puuttuu sen projektista, ja `tark_emitva`-kutsu on ehdon `EMITLEIMAT && MAALI && !LUENTA` takana [luettu koodista K-vaiheessa, ei tarkastettu].
 - **Asetus:** asetustiedoston avain EMVALOKI. Q53 on ratkaistu: avain luetaan vain asetustiedostosta, eikä asetusten muokkausruuduissa ole sitä.
 - **Laite tai verkko:** toiselta työasemalta saapuva emit-väliaikapaketti (EMITVA). Rastien määrä ja luvut tulevat paketista.
-- **Normaalikäyttö vai poikkeustilanne:** vaatii asetuksen EMVALOKI; aineisto ei kerro, kuinka moni käyttäjä pitää sen päällä. Kun asetus on päällä, tavallinen rastimäärä riittää (riskiarvio); virhettä ei tarvita.
+- **Normaalikäyttö vai poikkeustilanne:** vaatii asetuksen EMVALOKI; aineisto ei kerro, kuinka moni käyttäjä pitää sen päällä. Kun asetus on päällä, vika vaatii poikkeuksellisen pitkän radan (vähintään noin 34-45 rastia, ks. luku 3) tai poikkeavan paketin; muuta virhetilannetta ei tarvita.
 
 ### 5. Mitä käyttäjä voi huomata
 
@@ -13298,7 +13394,7 @@ Ohjelma voi pysähtyä saapuvan paketin käsittelyssä. Aineisto ei kerro, mitä
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei kerro vaikutusta tulosteisiin; vika on lokirivin muodostuksessa. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Mahdollinen | Riskiarvio: verkko. Saapuvan paketin arvot määräävät rivin pituuden; hyödynnettävyyttä ei ole tutkittu. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Vaatii asetuksen EMVALOKI, joka ei ole oletus. |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Asetus EMVALOKI päällä ja saapuva paketti, jossa on paljon rasteja; 50 rastia × 9 merkkiä ylittää 400 merkin puskurin. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Asetus EMVALOKI päällä ja saapuva paketti, jossa on vähintään noin 34 rastia (äärimmäiset arvot) tai noin 45 rastia (tavalliset rastikoodit ja ajat); rastipari on enintään 12 merkkiä, joten 33 rastia ei ylitä 400 merkin puskuria [päätelty laskemalla]. Riskiarvion peruste (ordinary use) tarkistetaan. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Aineisto ei kerro, mitä käyttäjä näkee. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: pidä EMVALOKI pois päältä; kirjattu luvussa 15 kohta 6; tehoa ei ole kokeiltu. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; keinoa ei ole kokeiltu. |
@@ -13343,7 +13439,7 @@ Kääntäjien ero: MSVC:llä käännetyissä konsoliohjelmissa (HkMaali, ViestiM
 - Mitä ylitys tekee toimitetuissa ohjelmissa (kummallakin kääntäjällä) ja miltä se näyttää käyttäjälle.
 - Kuinka moni käyttäjä pitää EMVALOKIn päällä; aineisto ei kerro.
 - Voiko verkossa oleva laite käyttää vikaa hyväkseen; hyödynnettävyyttä ei ole tutkittu (riskiarvio kirjaa vian verkkosaavutettavaksi).
-- Onko ViestiLuenta vian piirissä; sen projektiin ei kuulu lokirivin funktion sisältävää tiedostoa [päätelty].
+- Rastimäärän alaraja (noin 34-45) on laskettu koodista, ei mitattu ajamalla; testikehyksen pinoasettelu voi siirtää rajaa. Riskiarvion peruste ("ordinary use") ja prioriteetti tarkistetaan (`seuranta.md` KE-taulukko).
 
 ### 13. Miten vika on tarkoitus korjata
 
@@ -13374,7 +13470,7 @@ Korjaussuunnitelman kokonaisuus KK-C13-13 (Kiinteät puskurit muotoilussa ja tul
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkEmit.cpp:6165-6185`; `Hk/HkDef.h:1225`; `Juk/VEmit.cpp:6062-6080`; `Hk/HkInit.cpp:2732-2733`; `Juk/VInit.cpp:2024`; `Hk/HkCom32.cpp:800-808`; `Juk/VCom.cpp:830-838` |
 
-Rekisteririvien tiiviste nyt: `7c70b6fd1843`.
+Rekisteririvien tiiviste nyt: `9b95949331b6`.
 
 
 ---
@@ -13398,7 +13494,7 @@ tavoin, joten täyttö voi kirjoittaa varaamattomaan tai liian pieneen alueeseen
 osuusnumeron tarkistus on vain ylhäältä, ja rivin KAIKKI käsittely sekä koodialue 32767 voivat
 johtaa muistin ylitykseen, valtavaan muistinvaraukseen tai päättymättömään silmukkaan.
 
-Vahvistettu: ei mitään kokeella. Vika on luettu koodista, ja riippumaton tarkastus vahvisti sen
+Vahvistettu: ei mitään kokeella. Vika on luettu koodista, ja riippumaton tarkastus tarkasti sen
 osittain; HK:n KAIKKI-väite on kumottu. Mahdollinen (ei ajettu): ohjelma kaatuu käynnistyksessä tai
 jää silmukkaan, tai lukijan koodi liitetään väärään pisteeseen tai jonoon.
 
@@ -13998,7 +14094,7 @@ Rekisteririvien tiiviste nyt: `d1efe0961e21`.
 Ohjelma tunnistaa tekstitiedoston merkistön tiedoston ensimmäisistä tavuista. Jos tiedosto alkaa
 tavuilla FE FF, eli se on tallennettu UTF-16 big endian -muotoon, ohjelma avaa sen tilalla, jota
 Microsoftin ajonaikainen kirjasto ei hyväksy. Konsoliohjelma (HkMaali, ViestiMaali, ViestiLuenta)
-päättyy heti ilman erillistä virheilmoitusta, koska ohjelma ei käsittele virhettä. Sama koskee mitä
+päättyisi heti ilman erillistä virheilmoitusta, koska ohjelma ei käsittele virhettä [päätelty koeohjelman perusteella; toimitettuja ohjelmia ei ajettu]. Sama koskee mitä
 tahansa tekstitiedostoa, jonka ohjelma lukee, myös käynnistyksessä luettavaa asetustiedostoa.
 
 Vahvistettu (koeohjelma, ei toimitettu ohjelma): MSVC-käännös päättyi virhekoodiin 0xC0000409,
@@ -14559,7 +14655,7 @@ emit-kortin eri tavalla kuin HkMaali. HkKisaWin antaa kilpailijalle luetun korti
 seuraavan vapaan emit-koodin ja tallentaa tietueen. HkMaali asettaa saman tilan samalla
 asetuksella, mutta ei tee tätä vaihtoa.
 
-Vahvistettu (luettu koodista ja käännöslokeista; ohjelmia ei ajettu): ero on koodissa ja
+Todennettu koodista (luettu koodista ja käännöslokeista; ohjelmia ei ajettu): ero on koodissa ja
 projektiasetuksissa. Mahdollinen: sama kortinluku johtaa eri tuloksiin sen mukaan, kumpi ohjelma
 sen käsittelee. Tuntematon: onko ero tarkoituksellinen. Se on omistajan päätös (Q60, OP-9).
 Riskiarvion mukaan vika on matala eikä vaikuta tuloksiin tai ajanottoon.
@@ -14602,7 +14698,7 @@ huomaamatta, jos kortteja luetaan vain yhdellä ohjelmalla.
 
 | Kysymys | Arvio | Peruste |
 |---|---|---|
-| Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Ei vaikutusta (perusteltu) | Riskiarvio: tulokset ei. Ero koskee kuntosuunnistustilan emit-koodin vaihtoa; tarkoituksellisuus on omistajan päätös (Q60). |
+| Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Ei tiedossa | Riskiarvio: tulokset ei. Aineisto ei osoita, ettei koodin vaihto (em.badge, badge[1], laina[1]) vaikuta myöhempään kortin ja kilpailijan yhdistämiseen; riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko). |
 | Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei vaikutusta (perusteltu) | Riskiarvio: ajanotto ei. Ero koskee kortin koodin vaihtoa, ei kirjauksen jatkuvuutta. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Mahdollinen | HkKisaWin vaihtaa luetun kortin koodin seuraavaan vapaaseen ja tallentaa tietueen kuntosuunnistustilassa 1 tai 2; HkMaali käsittelee saman leimauksen ilman vaihtoa. Luettu koodista, ei ajettu. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Ei tiedossa | GUI päivittää tietueen emit-koodikentät ja lainamerkinnän; onko se virhe vai tarkoitettu toiminta, on omistajan päätös (Q60, OP-9). |
@@ -14669,6 +14765,7 @@ väite, että lohko on konsolissa saavuttamaton, kumottiin: tila asetetaan konso
 - Q75: kuntosuunnistustilojen (arvot 1, 2, 3, 98, 99) merkitys; kuuluu OP-9:n kohtaan 2.
 - Kuinka tietueen toinen emit-koodikenttä ja lainamerkintä ovat käytössä muualla ohjelmassa.
 - Välittyykö vaihdettu koodi muille työasemille: aineisto ei kerro.
+- Vaikuttaako koodin vaihto (`badge[1]`, `laina[1]`) myöhempään kortin ja kilpailijan yhdistämiseen; aineisto ei osoita, ettei vaikuta. Riskiarvion "ei tuloksiin" -arvo tarkistetaan (`seuranta.md` KE-taulukko).
 
 ### 13. Miten vika on tarkoitus korjata
 
@@ -14702,7 +14799,7 @@ OP-9 (1) odotetaan päätöstä ennen kuin korjaustapa voidaan valita.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkIV.cpp:1663-1673`; `Hk/HkInit.cpp:796-803`; `RADStudio10/HkKisaWin.cbproj:181` |
 
-Rekisteririvien tiiviste nyt: `2d7c85f8e33a`.
+Rekisteririvien tiiviste nyt: `3b66865c1bf4`.
 
 
 ---
@@ -14725,7 +14822,7 @@ joukkueen seuran nimen tietoon, suurella numerolla joukkuetietueen ohi ohjelman 
 jälkeen ohjelma tallentaa tietueen ja lähettää sen muille työasemille.
 
 Vahvistettu: ei mitään seurausta. Vika on luettu koodista ja riippumaton tarkastaja on
-vahvistanut sen, mutta ohjelmaa ei ole ajettu. Mahdollinen: tietueen vioittuminen, vioittuneen
+tarkastanut sen, mutta ohjelmaa ei ole ajettu. Mahdollinen: tietueen vioittuminen, vioittuneen
 tietueen tallennus ja lähetys sekä ohjelman häiriö suurella numerolla. Tavujen tarkkoja siirtymiä
 ei ole varmistettu (avoin kysymys Q64).
 
@@ -14922,7 +15019,7 @@ yli. Lisäksi IP-osoitteen teksti kopioidaan kiinteän kokoiseen kenttään pitu
 tämä koskee molempia GUI-ohjelmia.
 
 Vahvistettu: ei mitään seurausta. Vika on luettu koodista ja riippumaton tarkastaja on
-vahvistanut sen, mutta ohjelmaa ei ole ajettu. Mahdollinen: laitteiden asetusten
+tarkastanut sen, mutta ohjelmaa ei ole ajettu. Mahdollinen: laitteiden asetusten
 vioittuminen ja ohjelman kaatuminen. Riskiarvion mukaan seuraus tuloksiin on epäsuora ja
 ajanoton jatkuvuuteen ei ole.
 
@@ -14973,7 +15070,7 @@ Aineisto ei kuvaa, mitä käyttäjä ensimmäisenä näkee. Koodista seuraa:
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Ylikirjoitettavien globaalien joukossa on aikaero ja ajan tunniste, joten vaikutus tuloksiin on epäsuora; riskiarvio: epäsuora; vaikutusta ei ole jäljitetty. Ei ajettu. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan ajanoton jatkuvuus ei vaarannu. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei tiedossa | Riskiarvio: ajanoton jatkuvuus ei vaarannu. Kortti pitää ohjelman kaatumista mahdollisena (päätelty koodista), jolloin yhden aseman ajanotto voisi pysähtyä; riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko). |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Ei tiedossa | Aineisto ei käsittele leimausten vastaanottoa tämän vian osalta. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Ei tiedossa | Ylikirjoitus koskee ohjelman laiteasetuksia, ei tallennettuja kilpailutietoja; aineisto ei ratkaise, tallentuuko virheellinen arvo. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Mahdollinen | Kirjoitus taulukoiden ja globaalien yli voi kaataa ohjelman; päätelty koodista, ei ajettu. |
@@ -15088,7 +15185,7 @@ kuntosuunnistustiloja (sarja c).
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `cbTp/UnitMaalikello.cpp:252`, `:271-290`, `:327-353`, `:485-506`; `include/wincom.h:44` |
 
-Rekisteririvien tiiviste nyt: `ec69830230ca`.
+Rekisteririvien tiiviste nyt: `90417c285371`.
 
 
 ---
@@ -15109,7 +15206,7 @@ tai rivin numeron. Ohjelma käyttää numeroa sellaisenaan taulukon paikkana eik
 alarajaa. Liian suuri, nolla tai negatiivinen numero osoittaa taulukon ulkopuolelle.
 
 Vahvistettu: ei mitään seurausta. Vika on luettu koodista ja riippumaton tarkastaja on
-vahvistanut sen, mutta ohjelmaa ei ole ajettu. Mahdollinen: muistin ylikirjoitus tai luku
+tarkastanut sen, mutta ohjelmaa ei ole ajettu. Mahdollinen: muistin ylikirjoitus tai luku
 taulukon ulkopuolelta, josta seuraa väärä asetus tai ohjelman häiriö. Riskiarvion mukaan seuraus
 tuloksiin on epäsuora ja ajanoton jatkuvuuteen ei ole.
 
@@ -15154,7 +15251,7 @@ Aineisto ei kerro, mitkä kohdista lukevat ja mitkä kirjoittavat taulukon ulkop
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Vaikutus tuloksiin on riskiarvion mukaan epäsuora; väärä indeksi voi vääristää näyttötaulun asetuksia. Vaikutusta ei ole jäljitetty, ei ajettu. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan ajanoton jatkuvuus ei vaarannu. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei tiedossa | Riskiarvio: ajanoton jatkuvuus ei vaarannu. Kortti pitää muistin ylikirjoitusta ja ohjelman häiriötä mahdollisena (päätelty koodista), jolloin yhden aseman ajanotto voisi häiriintyä; riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko). |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Ei sovellu | Vika koskee näyttötaulujen asetuslomakkeita, ei leimausten vastaanottoa. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Ei tiedossa | Aineisto ei ratkaise, lukeeko vai kirjoittaako jokainen kohta taulukon ulkopuolelle. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Ei tiedossa | Aineisto ei kerro, aiheuttaako taulukon ulkopuolinen indeksi kaatumisen. |
@@ -15266,7 +15363,7 @@ kuntosuunnistustiloja (sarja c).
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `cbHk/UnitTaulu.cpp:316`, `:495`, `:766`; `ViestiWin/UnitGAZ.cpp:515` |
 
-Rekisteririvien tiiviste nyt: `1b11489714e4`.
+Rekisteririvien tiiviste nyt: `d68daa19dbb0`.
 
 
 ---
@@ -15291,7 +15388,7 @@ ylivuotaa ohjelman kiinteät taulukot, ja jakotavassa "P" tyhjä tai virheelline
 rivillä johtaa alustamattomaan arvoon.
 
 Vahvistettu: ei mitään seurausta. Vika on luettu koodista ja riippumaton tarkastaja on
-vahvistanut sen osittain (tarkastaja tarkensi, että −1 syntyy laskennasta eikä käyttäjän
+tarkastanut sen osittain (tarkastaja tarkensi, että −1 syntyy laskennasta eikä käyttäjän
 syötteestä). Mahdollinen: muistin vioittuminen ja ohjelman kaatuminen. Se, mitä negatiivinen
 varaus tekee bcc32-kääntäjän ohjelmassa, on avoin kysymys (Q63).
 
@@ -15662,7 +15759,7 @@ ViestiWinissä emit-tietojen tulostus HTML-tiedostoon jättää kaksi lukkoa (ks
 päälle, yhden tasan jokaisesta tulostetusta joukkueesta. Sen jälkeen automaattitulostus loppuu, ja
 kun seuraava emit-tieto saapuu, käyttöliittymä jäätyy.
 
-- **Vahvistettu (luettu koodista ja tarkastettu riippumattomasti; ei ajettu):** lukot jäävät
+- **Luettu koodista ja riippumattomasti tarkastettu (ei ajettu):** lukot jäävät
   päälle. Käyttöliittymäkoodia ei voi linkittää koeohjelmaan, joten polkua ei ole ajettu.
 - **Mahdollinen (seuraa koodista):** saapuvan liikenteen käsittelyn pysähtyminen ja käyttöliittymän
   jäätyminen; jäätymisen ajoitus on päätelty. Pysähtyminen koskee yhtä ViestiWin-asemaa. Se ei ole
@@ -15694,8 +15791,9 @@ Muut säikeet jäävät odottamaan (ks. sanasto: Lukkiutuminen):
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- **Ohjelma:** ViestiWin. Vuotava koodi on vain käyttöliittymäkäännöksessä; konsoliohjelmissa
-  toiminnon runko on tyhjä.
+- **Ohjelma:** ViestiWin. Lähdetiedosto käännetään myös konsoliohjelmiin, mutta vuotava koodi on ehdon
+  `#ifndef _CONSOLE` takana ja kääntyy vain käyttöliittymäohjelmaan; konsoliohjelmissa
+  toiminnon runko on tyhjä [luettu koodista K-vaiheessa, ei tarkastettu].
 - **Toimenpide:** tulostuslomakkeella valitaan kohteeksi tiedosto, muodoksi HTML, sisällöksi
   emit-tiedot ja rajaukseksi R (rekisterin mukaan hajontatulokset). Väliaika-analyysi otetaan
   tällä polulla käyttöön automaattisesti.
@@ -15740,7 +15838,7 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Kilpailussa, jossa ViestiWinillä tulostetaan emit-tietoja HTML-tiedostoon:
 
 - Jokainen tulostettu joukkue jättää tulostuslukon ja väliaikalukon yhden ottokerran päälle
-  [vahvistettu: luettu koodista ja tarkastettu riippumattomasti].
+  [luettu koodista ja riippumattomasti tarkastettu].
 - Ohjelman suora seuraus [mahdollinen, luettu koodista, ei ajettu]: automaattitulostus loppuu;
   tämän aseman saapuvan liikenteen käsittely pysähtyy; seuraava emit-tiedon luku jäädyttää
   käyttöliittymän. Esimerkki konditionaalissa: jos maalissa tulostetaan emit-tiedot HTML-tiedostoon
@@ -15797,7 +15895,7 @@ Juurisyy on JS-2 (lukkoparit ilman vartijaa, ei poikkeusrajaa).
 ### 11. Mitä on todennettu
 
 **(a) Ohjelmointivirhe.** Luettu koodista ja tarkastettu riippumattomasti (C-6 vaihe 1). Vaiheessa
-2 polku vahvistettiin lähdekoodista uudelleen. Käyttöliittymäkoodia ei voi linkittää
+2 polku tarkastettiin lähdekoodista uudelleen. Käyttöliittymäkoodia ei voi linkittää
 koeohjelmaan, joten polkua ei ole ajettu. Rekisterin varmuus: vuoto ja polku [todennettu],
 jäätymisen ajoitus [päätelty].
 
@@ -15872,8 +15970,8 @@ Lukko) ennen tulostimen avaamista. Jos tulostimen avaus epäonnistuu, ohjelma n�
 mutta ei vapauta lukkoa. Lisäksi on toinen polku, jossa lukko vapautetaan, vaikka sitä ei ole
 otettu.
 
-- **Vahvistettu (luettu koodista ja tarkastettu riippumattomasti; ei ajettu):** lukko jää päälle
-  avausvirheen jälkeen, ja toisessa polussa tehdään vapautus ilman ottoa. Vapautuksen vaikutus
+- **Luettu koodista ja riippumattomasti tarkastettu (ei ajettu):** lukko jää päälle
+  avausvirheen jälkeen, ja toisessa polussa tehdään vapautus ilman ottoa. **Vahvistettu kokeella:** vapautuksen vaikutus
   on osoitettu erillisellä Win32-kokeella (Q65), ei tässä ohjelmassa.
 - **Mahdollinen (seuraa koodista):** muut tulostusta tarvitsevat säikeet (ks. sanasto: Säie)
   jäävät odottamaan. Riskiarvion mukaan ajanotto pysähtyy; sitä ei ole osoitettu. Pysähtyminen
@@ -15947,7 +16045,7 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Kilpailussa, jossa hylkäysraportti tulostetaan HkKisaWinillä tai ViestiWinillä:
 
 - Jos kirjoittimen avaus epäonnistuu, ohjelma ilmoittaa asiasta ja tulostuslukko jää päälle
-  [vahvistettu: luettu koodista ja tarkastettu riippumattomasti].
+  [luettu koodista ja riippumattomasti tarkastettu].
 - Ohjelman suora seuraus: muut tulostuslukkoa tarvitsevat säikeet, esimerkiksi automaattitulostus,
   jäävät odottamaan [mahdollinen, luettu koodista].
 - Välillinen vaikutus kilpailuun: riskiarvion mukaan ajanotto pysähtyy. Sitä ei ole osoitettu.
@@ -16073,7 +16171,7 @@ HkMaalissa hylättyjen tai hylkäysesitysten luettelo näytetään ruudulla sivu
 käyttäjä painaa sivutuskehotteessa ESC:iä, ohjelma vapauttaa kilpailijatietojen lukon (ks.
 sanasto: Lukko) toisen kerran, vaikka se on jo vapauttanut sen kehotteen ajaksi.
 
-- **Vahvistettu (luettu koodista; vaikutus erillisellä kokeella):** ylimääräinen vapautus tehdään
+- **Luettu koodista; vaikutus vahvistettu erillisellä kokeella:** ylimääräinen vapautus tehdään
   säikeeltä, joka ei pidä lukkoa. Erillinen Win32-koe (Q65) osoitti, että tällainen vapautus ei
   jumita lukkoa vaan rikkoo lukon suojan. Tätä ohjelmaa ei ajettu.
 - **Mahdollinen (seuraa koodista):** toisen säikeen (ks. sanasto: Säie) lukon suoja voi hetkeksi
@@ -16144,7 +16242,7 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Kilpailussa, jossa HkMaalilla näytetään hylättyjen tai hylkäysesitysten luettelo ruudulla:
 
 - Jos käyttäjä keskeyttää usean sivun luettelon ESC:llä sivutuskehotteessa, ylimääräinen vapautus
-  tehdään [vahvistettu: luettu koodista].
+  tehdään [luettu koodista].
 - Ohjelman suora seuraus [vahvistettu erillisellä Win32-kokeella (Q65), ei tässä ohjelmassa]: jumia
   ei synny. Lukon suoja purkautuu hetkeksi, jos toinen säie pitää lukkoa juuri sillä hetkellä, tai
   jos ulompi kutsu pitää lukkoa.
@@ -16302,6 +16400,12 @@ ensin kilpailijatietojen lukon ja jää sitten odottamaan aikajonon lukkoa. Kun 
 seuraavaksi ottaa kilpailijatietojen lukon, kumpikin odottaa toista (ks. sanasto: Ristikkäinen
 lukkiutuminen) [luettu koodista, ei ajettu].
 
+Verkosta tulevien aikapakettien osalta vaikutus on laajempi kuin yksi sanomatyyppi: aseman
+vastaanottosäie `tarkcom` on yksi silmukka, joka käsittelee kaikkien sanomaluokkien paketit
+(kilpailijatiedot, ajat, emit-sanomat ym.) peräkkäin. Kun ensimmäinen verkosta tuleva aikapaketti
+jää odottamaan lukkoa, koko aseman vastaanoton käsittely pysähtyy, ei vain aikapakettien
+[luettu koodista, ei ajettu].
+
 ### 4. Missä tilanteessa vika voi ilmetä
 
 - **Ohjelmat:** HkKisaWin ja HkMaali.
@@ -16325,13 +16429,13 @@ ajanottosyötteen etenemistä sopii oireeseen (luku 9).
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Riskiarvio: epäsuora vaikutus. Aikajonon lukon jäädessä päälle käsin kirjattavat ajat ja verkosta tulevat aikapaketit estyvät (luettu koodista); tulosten väärentymistä ei ole osoitettu. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Mahdollinen | Riskiarvio: ajanotto pysähtyy. Käsiajanotto, verkon aikapaketit ja vaiheen vaihto estyvät, ja vaiheen vaihdon kautta lukijasäie voi itsekin jäädä odottamaan (luettu koodista); ei ajettu. Koskee tätä työasemaa, ei koko kilpailun ajanottoa. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Mahdollinen | Riskiarvio: ajanotto pysähtyy. Käsiajanotto ja vaiheen vaihto estyvät, ja ensimmäinen verkosta tuleva aikapaketti pysäyttää tämän aseman koko vastaanoton käsittelyn, koska tarkcom käsittelee kaikki sanomat yhdessä silmukassa (luettu koodista, ei ajettu). Koskee tätä työasemaa, ei koko kilpailun ajanottoa. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Ei tiedossa | Aineisto ei kerro, vaikuttaako vika emit-leimausten lukuun. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Ei tiedossa | Aineisto ei kerro, katoaako kellon sanomia tai aikoja lukon jäädessä päälle. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Ei tiedossa | Aineisto ei käsittele kaatumista; vika on lukon jääminen päälle. |
 | Vaikutus: Voiko ohjelma tai yksittäinen toiminto jäädä jumiin? | Mahdollinen | Lukon jääminen päälle toistettiin koeohjelmassa neljällä paluupolulla: lukko jäi päättyneen lukijasäikeen omistukseen ja toinen säie ei saanut sitä. Odottavien toimintojen jumiutumista ja oikeaa ohjelmaa ei ajettu. |
 | Vaikutus: Voiko jokin mennä väärin ilman ilmoitusta tai näkyvää oiretta? | Ei tiedossa | Aineisto ei kerro, näkyykö lukon jääminen ennen estymisiä. |
-| Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Mahdollinen | Verkosta tulevat aikapaketit estyisivät tässä asemassa (luettu koodista); vaikutus muihin työasemiin: aineisto ei kerro. |
+| Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Mahdollinen | Ensimmäinen verkosta tuleva aikapaketti pysäyttää tämän aseman koko vastaanoton käsittelyn, myös kilpailija- ja emit-sanomat (luettu koodista, ei ajettu); vaikutus muihin työasemiin: aineisto ei kerro. |
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Mahdollinen | Lukijasäie voi jäädä odottamaan vaiheen vaihdon kautta, jolloin kellon sanomat eivät enää etene (luettu koodista); oikeaa laitetta ei ajettu. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai tulospalveluun. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei tiedossa | Riskiarvio sanoo tietoturvasta ei, mutta perustetta ei ole kirjattu; laukaisevan sanoman lähde on lukijalaite, eikä aineisto erittele, voiko verkossa oleva laite lähettää sellaisen. |
@@ -16356,8 +16460,10 @@ Kilpailussa, jossa HK-ohjelmalla on käytössä asetus TUNNJONO:
   jäädä odottamaan vaiheen vaihdon kautta (luku 3).
 - Välillinen vaikutus kilpailuun: riskiarvion mukaan aseman ajanotto pysähtyy [mahdollinen]. Tämä
   ei ole koko kilpailun ajanoton pysähtyminen.
-- Muut työasemat: tähän asemaan tulevat aikapaketit estyvät [mahdollinen, luettu koodista]. Muiden
-  asemien tilasta aineisto ei kerro.
+- Muut työasemat: tähän asemaan tulevan ensimmäisen aikapaketin käsittely jää odottamaan lukkoa,
+  ja koska vastaanottosilmukka on yksi, myös muut tähän asemaan verkosta tulevat sanomat
+  (esimerkiksi kilpailijatiedot) jäävät käsittelemättä [mahdollinen, luettu koodista, ei ajettu].
+  Muiden asemien tilasta aineisto ei kerro.
 
 Riskiarvion mukaan tuloksiin kohdistuva vaikutus on epäsuora. Aineisto ei kuvaa tarkemmin, miten
 tulos voisi mennä väärin.
@@ -16397,9 +16503,14 @@ Juurisyy on JS-2 (lukkoparit ilman vartijaa, ei poikkeusrajaa).
   jono != tunnjono && piste == 0`. Vapautus on vasta tunnusten A–F käsittelyn lopussa.
 - Vapauttamattomat paluut: `KELLO_ESTO` (liian nopea toinen sanoma), kelloero yli sallitun
   (`maxero`), "ajanottoa ei käynnistetty" tai aikataulukko täynnä, mikä tahansa A–F:n ulkopuolinen
-  tunnus (esimerkiksi kellosanoma G) sekä lisäpolku `goto loppu` (ei ajettu).
+  tunnus (esimerkiksi kellosanoma G) sekä lisäpolku `goto loppu` (ei ajettu). `goto loppu` jättää
+  lukon päälle vain, kun `lahdejonohaku` vaihtaa jonon: lukko otetaan alussa, kun jono ei ole
+  `tunnjono`, mutta vapautus ohitetaan, jos jonoksi tulee haun jälkeen `tunnjono` ja polku
+  poistuu `goto loppu` -hyppyyn [luettu koodista, ei ajettu].
 - Vaikutukset: `tall_rivi` (käsiajanotto, `Hk/HkAjat.cpp`), `tarkcom`in aikapaketit
-  (`Hk/HkCom32.cpp`) ja `vaihdavaihe` (`Hk/HkIx.cpp`) estyvät. Vaiheen vaihto pitää `tall`ia ja
+  (`Hk/HkCom32.cpp`) ja `vaihdavaihe` (`Hk/HkIx.cpp`) estyvät. `tarkcom` on yksi silmukka, joka
+  käsittelee kaikki saapuvat sanomaluokat; ensimmäinen odottamaan jäävä aikapaketti (`tark_aika`)
+  pysäyttää siksi koko aseman vastaanoton käsittelyn. Vaiheen vaihto pitää `tall`ia ja
   odottaa `ajat`ia; lukijasäikeen seuraava `Enter(tall)` sulkee syklin.
 - Asetus `TUNNJONO` luetaan `Hk/HkInit.cpp`:ssä. Lukijasäie pääsee itse lukkoon rekursion ansiosta.
 
@@ -16460,7 +16571,7 @@ tuotantokoodissa) vaikuttaa vain vartijan toteutustapaan.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkIV.cpp:2673-2675`, `:2771`, `:2776`, `:2782`, `:2773`, `:3027-3028`; `Hk/HkInit.cpp:2007-2010`; `Hk/HkAjat.cpp:128-129`; `Hk/HkIV.cpp:2825-2832`, `:3058`, `:3074` |
 
-Rekisteririvien tiiviste nyt: `ec92da58a1ba`.
+Rekisteririvien tiiviste nyt: `4b050f52b712`.
 
 
 ---
@@ -16876,10 +16987,11 @@ on poikki, jokaisen lokirivin kirjoitus epäonnistuu, ja virheen kirjaaminen yri
 uuden lokirivin samaan poikki olevaan yhteyteen. Tämä toistuu itsestään, kunnes ohjelman
 käyttämä muistialue (pino) loppuu. Lisäksi kaksi säiettä voi jäädä odottamaan toisiaan ikuisesti.
 
-- **Vahvistettu (eristetty koeohjelma):** rekursio päättyi pinon ylivuotoon, ja kahden säikeen
-  keskinäinen lukkiutuminen toistui.
+- **Vahvistettu (eristetty koeohjelma):** rekursio päättyi pinon ylivuotoon (koeohjelma sieppasi
+  ylivuodon), ja kahden säikeen keskinäinen lukkiutuminen toistui.
 - **Mahdollinen (seuraa koodista, ei osoitettu toimitetussa ohjelmassa):** ohjelma kaatuu tai
-  jäätyy kesken kilpailun, jolloin ajanotto pysähtyy. Prosessin kaatumista ei ajettu.
+  jäätyy kesken kilpailun, jolloin ajanotto pysähtyy. Prosessin kaatumista ja ajanoton
+  pysähtymistä ei ajettu.
 - Vika koskee vain HK:ta ja vain, kun lokiyhteys on otettu käyttöön asetuksella ja ohjelmalla on
   lisäksi toinen tiedonsiirtoyhteys. Viesti ei koske (luku 4).
 - Vahvistetun ja mahdollisen tarkka erottelu on luvussa 11.
@@ -16944,7 +17056,7 @@ voivat odottaa lukkoa, jota ei vapauteta. Se, voiko vika jäädä huomaamatta, e
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Riskiarvion mukaan vaikutus tuloksiin on epäsuora: kaatuva tai jumiutuva ohjelma ei kirjaa; tarkkaa polkua ei ole osoitettu. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Mahdollinen | Kaatuminen ja kahden säikeen lukkiutuminen on osoitettu koeohjelmassa, mutta ajanoton pysähtymistä ei ole osoitettu toimitetussa ohjelmassa. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Mahdollinen | Pinon ylivuoto (siepattu) ja kahden säikeen lukkiutuminen on osoitettu koeohjelmassa; prosessin kaatumista ja ajanoton pysähtymistä ei ole ajettu toimitetussa ohjelmassa. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Ei tiedossa | Aineisto ei kerro, vaikuttaako kaatuminen tai jumiutuminen leimausten lukuun. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Ei tiedossa | Aineisto ei kerro, katoaako tietoa kaatumisessa. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Mahdollinen | Koeohjelma sieppasi pinon ylivuodon rekursiossa, mutta prosessin kaatumista ei ajettu; GUI-ohjelmassa seuraus voi olla virheikkuna (päätelty). |
@@ -16955,7 +17067,7 @@ voivat odottaa lukkoa, jota ei vapauteta. Se, voiko vika jäädä huomaamatta, e
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai tulospalveluun. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei tiedossa | Riskiarvio sanoo tietoturvasta ei, mutta perustetta ei ole kirjattu; aineisto ei erittele, voiko verkon puoli aiheuttaa lokiyhteyden katkon. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Vika edellyttää TCPL-asetusta ja toista tiedonsiirtoyhteyttä, joten se ei ilmene ilman erityisasetusta. |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | **Vahvistettu** | Rekursio käynnistyy, kun lokiyhteys on poikki ja asetukset ovat edellä mainitut; osoitettu koeohjelmassa tilan asettamisella käsin. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Rekursio käynnistyy, kun lokiyhteys on poikki ja asetukset ovat edellä mainitut; koeohjelmassa yhteyden tila asetettiin käsin, joten todellista yhteyden katkeamista ei ajettu ja laukaisupolku ohitettiin. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Mahdollinen | Kaatuminen tai jumiutuminen seuraa koodista ja on käyttäjälle näkyvä; aineisto ei kerro, mitä ruudulla näkyy. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: älä ota TCP-lokia käyttöön ilman tarvetta (lokin TCP-lähetys kulkee vain sen kautta) [päätelty]; tehoa ei ole kokeiltu. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvion palautettavuus on uudelleenkäynnistys; tehoa ei ole kokeiltu eikä kerrota, toimiiko ohjelma poikki olevan lokiyhteyden kanssa. |
@@ -16976,8 +17088,9 @@ mahdollisen erottelu on luvussa 11. Oma työasema, kilpailu ja muut työasemat e
 - **Kilpailu.** Riskiarvion mukaan kaatuminen tai jumiutuminen pysäyttäisi tämän työaseman
   ajanoton, ja vaikutus tuloksiin olisi epäsuora. Yhden työaseman ajanoton pysähtyminen ei ole koko
   kilpailun ajanoton pysähtyminen. Aineisto ei kuvaa, miten tulos voisi mennä väärin.
-- **Muut työasemat.** Samaa lähetyslukkoa käyttävät muutkin tiedonsiirtolähetykset samassa
-  ohjelmassa voisivat odottaa pysyvästi, jos lukkiutuminen pitää lähetyslukkoa; silloin muut
+- **Muut työasemat.** TCP-yhteyksien yhteinen lukko suojaa kaikkea ohjelman TCP-liikennettä
+  (yhteyksien avausta, sulkemista ja lähetystä), joten muutkin TCP-yhteydet samassa
+  ohjelmassa voisivat odottaa pysyvästi, jos lukkiutuminen pitää tätä lukkoa; silloin muut
   työasemat eivät saisi tämän työaseman lähetyksiä [päätelty lukkojen rakenteesta, ei kokeiltu].
   Muuta vaikutusta muihin työasemiin aineisto ei kerro.
 
@@ -17108,7 +17221,7 @@ kohtaan ja että muutos todennetaan GUI-ajolla ennen julkaisua. Rakenteellinen o
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkApu.cpp:560`, `:576`, `:583`; `com/WinUDP.cpp:907-936`, `:915`, `:923`, `:175-183`; `Juk/vApu.cpp:94-119`; `Tp/TpComY.cpp:2254`; `com/WinUDP.cpp:938-943`, `:931-932`, `:603`; `Tp/TpComY.cpp:2204`, `:2238`; `Hk/HkInit.cpp:1133-1137` |
 
-Rekisteririvien tiiviste nyt: `be2710a71ec1`.
+Rekisteririvien tiiviste nyt: `2e2fcc6c4c31`.
 
 
 ---
@@ -17151,8 +17264,11 @@ lukon ilman, että lukijasäie olisi pysähtynyt. Lukijasäie ei pysähdy vaihdo
 
 - **Merkki katoaa.** Vaihdon ajan jokainen saapuva merkki luo uuden jonon ja uuden
   käsittelysäikeen, joka poistuu heti, koska vaihdon merkki on päällä. Merkki menee jonoon, joka
-  tuhotaan käsittelemättä. Asia tapahtuu joka kerta, kun merkki saapuu vaihdon aikana; se on
-  deterministinen.
+  tuhotaan käsittelemättä. Merkki jää käsittelemättä joka kerta, kun se saapuu vaihdon aikana
+  sen jälkeen, kun edellinen käsittelysäie on jo poistunut. Jos käsittelysäie on vielä
+  jonon tyhjennyssilmukassa, se käsittelee jonoon jo ehtineet merkit, koska silmukka ei
+  tarkista vaiheen vaihdon merkkiä (`Hk/HkIV.cpp`) [luettu koodista, ei ajettu]; merkki
+  käsitellään siis vain, jos säie ehtii.
 - **Muistin käyttö vapautuksen jälkeen.** Lukijasäie testaa, onko jono olemassa, ennen kuin
   ottaa sen lukon, eikä lukko suojaa testiä. Jos jono vapautetaan testin ja lukon oton välissä,
   lukijasäie kirjoittaisi vapautettuun muistiin. Tämä riippuu ajoituksesta, eikä sitä ole yritetty
@@ -17181,12 +17297,12 @@ seuraus voisi olla virheellinen toiminta tai kaatuminen; aineisto ei kuvaa sitä
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Riskiarvio: suora vaikutus. Käsittelemättä jäänyt merkki voi jättää kilpailijan lukeman tai tuloksen syntymättä; tulokseen asti ei ole osoitettu. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan vika ei vaikuta ajanottoon. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei tiedossa | Riskiarvio: vika ei vaikuta ajanottoon. Vaiheen vaihdon aikana saapunut lukijan merkki menetetään (koeohjelmassa vahvistettu), joten menetetty leimaus voisi välillisesti jättää ajan kirjaamatta; aineisto ei arvioi tätä. Riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko). |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | **Vahvistettu** | Koeohjelmassa vaiheen vaihdon aikana saapunut merkki jäi käsittelemättä. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | **Vahvistettu** | Koeohjelmassa lukijalta vastaanotettu merkki katosi tuhottavan jonon mukana ilman käsittelyä. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Mahdollinen | Vapautetun muistin tai poistetun lukon käyttö on ajoituksesta riippuva; sitä ei yritetty. |
 | Vaikutus: Voiko ohjelma tai yksittäinen toiminto jäädä jumiin? | Ei tiedossa | Aineisto ei kerro lukkiutumisesta tässä polussa. |
-| Vaikutus: Voiko jokin mennä väärin ilman ilmoitusta tai näkyvää oiretta? | **Vahvistettu** | Merkki menetetään ilman ilmoitusta (riskiarvio: hiljainen menetys; toistettu koeohjelmassa). |
+| Vaikutus: Voiko jokin mennä väärin ilman ilmoitusta tai näkyvää oiretta? | **Vahvistettu** | Merkki menetetään ilman ilmoitusta (riskiarvio: hiljainen menetys; menetys toistettu koeohjelmassa; ilmoituksen puuttuminen luettu koodista, käyttöliittymää ei ajettu). |
 | Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Ei tiedossa | Aineisto ei kerro vaikutusta tiedonsiirtoon tai muihin työasemiin. |
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei tiedossa | Aineisto ei kerro vaikutusta lukijoiden toimintaan; lukijan syöttämä merkki menetetään ohjelmassa. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele vaikutusta tulosteisiin tai julkaisuun. |
@@ -17203,8 +17319,10 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 
 Jos HK-ohjelmassa vaihdetaan vaihetta samalla, kun lukija syöttää merkkejä:
 
-- Vaihdon aikana lukijalta tullut merkki käsitellään vain, jos käsittelysäie ehtii. Muussa
-  tapauksessa merkki jää käsittelemättä ilman ilmoitusta (vahvistettu koeohjelmassa).
+- Vaihdon aikana lukijalta tullut merkki käsitellään vain, jos käsittelysäie ehtii (säie
+  käsittelee jonoon jo ehtineet merkit, koska sen sisäsilmukka ei tarkista vaiheen vaihdon
+  merkkiä). Muussa tapauksessa merkki jää käsittelemättä ilman ilmoitusta (vahvistettu
+  koeohjelmassa).
 - HkMaalissa, jossa vaihto on ensin evätty (H-031), jokainen merkki menetetään, kunnes ohjelma
   käynnistetään uudelleen.
 - Ohjelman kaatuminen tai virheellinen kirjoitus on mahdollinen mutta ei osoitettu.
@@ -17238,7 +17356,10 @@ ei omistajaa).
 päättyy, se kutsuu `close_bdg_t`:tä, joka poistaa jonon lukon ja vapauttaa jonon (`etls`)
 nollaamatta sitä ennen. Lukijasäikeen `add_bdg_t` testaa jonon olemassaolon ennen
 `EnterCriticalSection`ia, joten testi ja lukon otto eivät ole yhtä suojattu kokonaisuutta. Jonon
-luo uudelleen `add_bdg_t` laiskasti, ja se käynnistää uuden käsittelysäikeen. Tuottaja on
+luo uudelleen `add_bdg_t` laiskasti, ja se käynnistää uuden käsittelysäikeen. Ehdokas
+NULL-kirjoituksen ikkunaksi: `add_bdg_t` testaa `etls == NULL` (`Hk/HkIV.cpp`) ennen kuin
+se kirjoittaa jonoon; jos `close_bdg_t` ehtii nollata jonon (`etls`) välissä,
+kirjoitus kohdistuu NULL-osoittimeen [päätelty, ei ajettu]. Tuottaja on
 lukijasäie (`Tp/TpLaitteet.cpp`). Lippu `vaiheenvaihto` on käsittelysäikeelle poistumisehto,
 mutta lukijasäikeelle ei (JS-7: merkin kaksi merkitystä).
 
@@ -17297,7 +17418,7 @@ tehdään yhtenä sarjana.
 | Liittyvät havainnot | H-031 |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkIV.cpp:745-751`, `:790-851`, `:796`, `:812`, `:826-832`, `:844`; `Tp/TpLaitteet.cpp:494`, `:1055`, `:1803`; `cbHk/WinHk.cpp:2080`; `Juk/VIv.cpp:684-792` (viesti vain lopetuksessa / relay at shutdown only) |
 
-Rekisteririvien tiiviste nyt: `cf071360dacb`.
+Rekisteririvien tiiviste nyt: `00390f4523c4`.
 
 
 ---
@@ -17486,7 +17607,7 @@ silmukkaa koskien yhteyden tietoihin ilman lukkoa. Hetkeksi yhteyden tiedot ehti
 vapautettuina mutta ei vielä merkittyinä poistetuiksi.
 
 - **Vahvistettu:** ei vahvistettua kokeella. Mekanismi on luettu koodista; riippumaton tarkastus
-  vahvisti osittain, ja Q70 (ratkaistu) paljasti kapean ikkunan, jossa lukusäie käyttää yhteyden
+  tarkasti osittain, ja Q70 (ratkaistu) paljasti kapean ikkunan, jossa lukusäie käyttää yhteyden
   tietoja samalla, kun kuuntelusäie vapauttaa ne.
 - **Mahdollinen (päätelty):** vapautetun muistin käyttö lyhyessä ikkunassa. Kaksoisvapautus
   arvioitiin tarkastuksessa epätodennäköiseksi.
@@ -17501,7 +17622,7 @@ suljetaan.
 
 ### 3. Mikä menee vikaan
 
-Sulkemisen alussa pääpistoke suljetaan ja lähetysten lukko otetaan, ja ohjelma odottaa sekunnin.
+Sulkemisen alussa pääpistoke suljetaan ja TCP-yhteyksien yhteinen lukko otetaan (lukko suojaa kaikkea ohjelman TCP-liikennettä: yhteyksien avausta, sulkemista ja lähetystä [luettu koodista K-vaiheessa, ei tarkastettu]), ja ohjelma odottaa sekunnin.
 Kuuntelusäie ei vielä lopeta: sen vastaanottokutsu epäonnistuu heti, ja silmukka pyörii
 uudelleen ilman välitaukoa. Silmukka lukee ja kirjoittaa yhteyden tietoja eikä ota lukkoa.
 Kun sulkeva säie vapauttaa yhteyden tiedot ja merkitsee ne poistetuiksi, välissä on hetki,
@@ -17817,8 +17938,8 @@ Rekisteririvien tiiviste nyt: `2236e700bd51`.
 
 MTR-lukijan lomakkeella on päivityssäie, joka päivittää näyttöä luennan aikana. Säie päättää itsensä
 komennolla, joka ei palaa, ennen kuin se ehtii tehdä viimeiset siivoustoimensa. Siksi toinen
-"tiedostoon"-luenta samassa istunnossa ei käynnisty normaalisti, ja luenta pysähtyy, kunnes
-lomake suljetaan.
+"tiedostoon"-luenta samassa istunnossa ei käynnisty normaalisti, ja luenta pysähtyisi, kunnes
+lomake suljetaan [päätelty].
 
 - **Vahvistettu:** ei vahvistettua kokeella; koodi on luettu ja tarkastettu riippumattomasti.
   Toiminnallinen vaikutus (luenta pysähtyy) on päätelty.
@@ -17862,7 +17983,7 @@ kerralla luenta ei etene, eikä aineisto kuvaa siitä näkyvää ilmoitusta.
 
 | Kysymys | Arvio | Peruste |
 |---|---|---|
-| Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tuloksiin ei ole vaikutusta. |
+| Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Ei tiedossa | Riskiarvio: tuloksiin ei vaikutusta. Toinen tiedostoon-luenta jäisi tekemättä (päätelty), joten lukemattomat kortit voisivat välillisesti jäädä pois tuloksista; aineisto ei arvioi tätä. Riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko). |
 | Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Mahdollinen | Riskiarvio: häiritsee. MTR-lukijan luenta tiedostoon pysähtyy toisella käyttökerralla (päätelty); koskee tämän työaseman lukijaluentaa. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Mahdollinen | Toinen MTR-lukijan luenta tiedostoon pysähtyy, kunnes lomake suljetaan (rekisteri; päätelty). |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Ei tiedossa | Aineisto ei kerro tiedon katoamisesta. |
@@ -17959,7 +18080,7 @@ omistajan päätöstä.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `cbTp/UnitMTR.cpp:41`, `:260`, `:398-407`; `cbTp/UnitEmiTag.cpp:219-220`; `Tp/TpLaitteet.cpp:1552` |
 
-Rekisteririvien tiiviste nyt: `2fad5daab2d2`.
+Rekisteririvien tiiviste nyt: `5873d65870f1`.
 
 
 ---
@@ -18053,11 +18174,11 @@ Rekisteririvien tiiviste nyt: `a0817f66a2b2`.
 ### 1. Lyhyesti
 
 SQL-peilin jonoa päivittävät sekä tallennusta kutsuvat säikeet (ks. sanasto: Säie) että peilin
-kirjoitussäie, eikä jonon osoittimia suojaa lukko. Lisäksi kirjoitussäikeen käynnistystarkistus voi
+kirjoitussäie, eikä jonon osoittimia suojaa yhteinen lukko. Lisäksi kirjoitussäikeen käynnistystarkistus voi
 käynnistää kaksi kirjoitussäiettä. Mahdollinen seuraus on, että jonosta ohitetaan tai kirjoitetaan
 kahdesti jokin kilpailija ja että kaksi säiettä käyttää samaa tietokantayhteyttä yhtä aikaa.
 
-Vahvistettu: mekanismi on luettu koodista, ja riippumaton tarkastus vahvisti sen osittain. Tarkastus
+Vahvistettu: mekanismi on luettu koodista, ja riippumaton tarkastus tarkasti sen osittain. Tarkastus
 heikensi väitettä, jonka mukaan lukon uudelleenalustus rikkoisi toimivan lukon. Mikään seuraus ei ole
 osoitettu ajamalla. Mahdollinen: peilistä puuttuu rivejä tai rivi kirjoitetaan kahdesti. Vika koskee
 vain valinnaista peiliä; `KILP.DAT` ei muutu.
@@ -18080,8 +18201,10 @@ paikkaa. Erillinen kirjoitussäie ottaa jonosta kilpailijoita ja kirjoittaa ne t
 Jonolla on pää, johon kilpailijoita lisätään, ja häntä, josta niitä otetaan. Kaksi asiaa menee väärin.
 
 1. Lisääjät (tallennusta kutsuvat säikeet ja vienti) siirtävät päätä, ja kun jono täyttyy, myös häntää.
-   Kirjoitussäie siirtää häntää jokaisen kirjoituksen jälkeen. Kumpikaan ei käytä lukkoa. Lukko suojaa
-   vain varmistustiedostoa. Jos hännän siirrot osuvat päällekkäin, alkio voi jäädä väliin tai toistua
+   Kirjoitussäie siirtää häntää jokaisen kirjoituksen jälkeen. Kirjoitussäie ei ota lukkoa jonon
+   osoittimia siirtäessään, eikä lisääjillä ole yhteistä lukkoa, joka suojaisi osoittimia: tallennus
+   ja vienti pitävät kukin omaa, muuta tietoa suojaavaa lukkoaan, ei jonon lukkoa. Jonon oma lukko
+   suojaa vain varmistustiedostoa. Jos hännän siirrot osuvat päällekkäin, alkio voi jäädä väliin tai toistua
    [päätelty].
 2. Uusi kirjoitussäie käynnistetään, kun merkintä "säie on käynnissä" ei ole päällä. Merkinnän asettaa
    vasta käynnistyvä säie. Jos kaksi tallennusta tapahtuu ennen kuin ensimmäinen säie ehtii asettaa
@@ -18090,8 +18213,8 @@ Jonolla on pää, johon kilpailijoita lisätään, ja häntä, josta niitä otet
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- Ohjelmat: HkKisaWin ja ViestiWin. Rekisterin ohjelmaluettelo sisältää HkMaalin, koska jonon
-  lisäyskutsu on jaetussa lähdetiedostossa, mutta HkMaalissa kutsun kohde on tyhjä tynkä eikä peiliä ole.
+- Ohjelmat: HkKisaWin ja ViestiWin. Jonon lisäyskutsu on jaetussa lähdetiedostossa, joka käännetään
+  myös HkMaaliin, mutta HkMaalissa kutsun kohde on tyhjä tynkä eikä peiliä ole.
 - Asetus: SQL-peili on käytössä ja jatkuva kirjoitus on päällä.
 - Vika vaatii, että tallennukset osuvat samaan hetkeen kirjoitussäikeen kanssa tai kahden peräkkäisen
   tallennuksen väliin säikeen käynnistyksessä. Aineisto ei kerro, onko näin käytännössä tapahtunut.
@@ -18122,7 +18245,7 @@ Jonolla on pää, johon kilpailijoita lisätään, ja häntä, josta niitä otet
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Ei vaikutusta (perusteltu) | Laukeaa ilman poikkeustilannetta: jatkuva kirjoitus ja samanaikainen tallennus riittävät; virhettä tai katkoa ei tarvita. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Ohjelma ei ilmoita jonon ohituksesta tai kaksoiskirjoituksesta; käyttäjä voisi huomata vain vertaamalla tietokantaa. Aineisto ei ratkaise. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: jatkuvan kirjoituksen jättäminen pois, koska jonoa ja kirjoitussäiettä käytetään vain siinä (luettu koodista); tehoa ei ole kokeiltu. |
-| Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi käsin; peilin voi päätellen kirjoittaa uudelleen viennillä (valinta 3); keinoa ei ole kokeiltu. |
+| Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi käsin; peilin voi päätellen kirjoittaa uudelleen viennillä (valinta 3) vasta uudelleenkäynnistyksen jälkeen tai kun jatkuva kirjoitus on pois päältä, koska jatkuvan kirjoituksen ollessa päällä vienti vain lisää jonoon; keinoa ei ole kokeiltu. |
 
 Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohjelmaa ajamalla; Mahdollinen = seuraa koodista, mutta seurausta ei ole osoitettu; Ei vaikutusta (perusteltu) = aineisto osoittaa, ettei seurausta synny; Ei tiedossa = aineisto ei ratkaise; _Ei arvioitu_ = riviä ei ole vielä arvioitu. Tiedon puute ei tarkoita, ettei vaikutusta ole. Lähteet: `doc/arkkitehtuuri/rekisteri/vaikutukset.csv`.
 
@@ -18134,7 +18257,7 @@ jonon häntää. Jonon alkio voi jäädä väliin tai toistua. Peilistä puuttuu
 päivitys, tai sama päivitys kirjoitetaan kahdesti. Jälkimmäinen on harmiton, koska kirjoitus käyttää
 kilpailijan senhetkistä tietoa.
 
-- Vahvistettu (luettu koodista, tarkastettu osittain riippumattomasti): jonon osoittimia päivitetään
+- Luettu koodista ja tarkastettu osittain riippumattomasti: jonon osoittimia päivitetään
   ilman lukkoa, ja säikeen käynnistystarkistus ei ole atominen.
 - Mahdollinen: ohitus, kaksoiskirjoitus ja kahden säikeen samanaikainen tietokantakäyttö. Aineisto ei
   kerro, kestääkö tietokantayhteys samanaikaisen käytön.
@@ -18147,8 +18270,10 @@ kilpailijan senhetkistä tietoa.
   aloittaa jonon alusta.
 - **Tietojen palauttaminen:** `KILP.DAT`:ssa ei ole menetystä. Peilistä puuttuvat rivit voi
   mahdollisesti kirjoittaa uudelleen viennillä, jonka valinta 3 kirjoittaa kaikki kilpailijat
-  tietokantaan [päätelty koodista; ei kokeiltu; ks. H-161 ja H-162]. Riskiarvio kirjaa palautettavuudeksi
-  käsin.
+  tietokantaan [päätelty koodista; ei kokeiltu; ks. H-161 ja H-162]. Ehto: kun jatkuva kirjoitus on
+  päällä, vienti vain lisää kilpailijat jonoon, joten vienti kirjoittaa suoraan tietokantaan vasta
+  uudelleenkäynnistyksen jälkeen tai kun jatkuva kirjoitus on pois päältä [päätelty koodista; ei
+  kokeiltu]. Riskiarvio kirjaa palautettavuudeksi käsin.
 - **Uusiutuminen:** edellytykset ovat samat uudelleenkäynnistyksen jälkeen; vika ei laukea heti vaan
   vasta, kun säikeet osuvat päällekkäin.
 - **Muut työasemat:** vika koskee vain sitä työasemaa, jolla peili on käytössä.
@@ -18165,7 +18290,10 @@ kilpailijan senhetkistä tietoa.
 
 `kirjKilpSQL` (`cbHk/UnitMySQL.cpp`, viestissä `ViestiWin/UnitMySQL.cpp`) kirjoittaa `headSQLjono`n ja
 täyden jonon yhteydessä `tailSQLjono`n; `kirjSQLTh` kirjoittaa `tailSQLjono`n kirjoituksen jälkeen.
-Kumpaakaan ei suojaa lukko. `SQL_CriticalSection` suojaa vain varmistustiedostoa. Tarkistus
+Osoittimia ei suojaa yhteinen lukko: kirjoitussäie ei ota lukkoa osoittimia siirtäessään, ja
+lisääjät pitävät toisia lukkoja (`kilpdat_CriticalSection` tallennuksessa, `tall_CriticalSection`
+viennissä), jotka eivät suojaa jonoa
+[luettu koodista K-vaiheessa, ei tarkastettu]. `SQL_CriticalSection` suojaa vain varmistustiedostoa. Tarkistus
 `if (!inkirjSQLThread)` ja `_beginthread` eivät ole atominen pari, koska `inkirjSQLThread` asetetaan
 vasta säikeessä. Lisäksi `kirjSQLTh` käyttää VCL-komponentteja työsäikeestä (valintaruutu ja
 jonon pituuskenttä). Tämä kuuluu C-6:n alueeseen.
@@ -18220,7 +18348,7 @@ kokonaisuudelle: palvelimen katko tai virheellinen lause ei lopeta ohjelmaa eik�
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `cbHk/UnitMySQL.cpp:638`, `:697-701`, `:739-752`; `Hk/HkDat.cpp:592`; `cbHk/UnitExport.cpp:436`; `ViestiWin/UnitMySQL.cpp:608` |
 
-Rekisteririvien tiiviste nyt: `d4bdc41545de`.
+Rekisteririvien tiiviste nyt: `aab119dcfa79`.
 
 
 ---
@@ -18243,7 +18371,7 @@ ei estetä, kun lähetys on jo käynnissä, joten toinen käynnistys voi luoda t
 tiedostokahvaa. Windows-ohjelmissa käynnistys ja lopetus lisäksi koskevat lomakkeen painikkeita ja
 kenttiä työsäikeestä (ks. H-018).
 
-Vahvistettu (kokeella tai ajamalla): ei mitään. Luettu koodista, ja riippumaton tarkastus vahvisti
+Vahvistettu (kokeella tai ajamalla): ei mitään. Luettu koodista, ja riippumaton tarkastus tarkasti
 havainnon osittain. Mahdollinen (päätelty): sanomat lähtevät kahteen kertaan tai sekaisin, ja
 lomakkeen käsittely työsäikeestä häiritsee ohjelmaa. Riskiarvion mukaan ajanotto häiriintyy
 mutta ei pysähdy.
@@ -18434,7 +18562,7 @@ vaikka ajanoton kilpailijahaku käyttää hakemistoa. Jos haku osuu tyhjennyksen
 ajanottoon voi tulla väärä tai puuttuva kilpailija. HkMaalissa vaiheen vaihto voi lisäksi vapauttaa
 rata- ja emit-muistin samalla, kun lukijan käsittely lukee niitä.
 
-Vahvistettua kokeella ei ole. Vika on luettu koodista, ja riippumaton lähdetarkastus on vahvistanut
+Vahvistettua kokeella ei ole. Vika on luettu koodista, ja riippumaton lähdetarkastus on tarkastanut
 sen osittain. Mahdollinen (päätelty): väärä tai puuttuva kilpailija ajanottoon ja HkMaalissa
 kapea vapautetun muistin käytön ikkuna. Vika vaatii, että haku ja vaiheen vaihto tapahtuvat
 samanaikaisesti.
@@ -18557,7 +18685,7 @@ ja VCL ilman omistajaa). Sama rivi kuin H-129:ssä, mutta eri vika: H-129 koskee
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista; riippumaton lähdetarkastus on vahvistanut sen osittain
+(a) Ohjelmointivirhe: luettu koodista; riippumaton lähdetarkastus on tarkastanut sen osittain
 (C-6, vaihe 2). Ajoa tai testikehyskoetta ei ole.
 
 (b) Käytännön seuraus: ei osoitettu. Ajoitus on päätelty, ja vapautettua muistia ei hakemiston
@@ -18817,7 +18945,8 @@ mitään.
 - **Vahvistettu:** ei vahvistettua kokeella; paluu on luettu koodista ja tarkastettu riippumattomasti
   (C-6 vaihe 2).
 - **Mahdollinen (päätelty):** HkMaali ei pysähdy vaan jatkaa epäjohdonmukaisella indeksillä
-  lukijasäikeiden jo pysähdyttyä. HkKisaWinissä lomake sulkeutuu, mutta tiedonsiirron, ajanottojonojen,
+  lukijasäikeiden jo pysähdyttyä. Samaan merkkiin sidotut TCP-tiedonsiirtosäie ja
+  monitorilähetys pysähtyvät myös, vaikka itse lopetus jää tekemättä [luettu koodista, ei ajettu]. HkKisaWinissä lomake sulkeutuu, mutta tiedonsiirron, ajanottojonojen,
   emit-tiedoston ja `KILP.DAT`:n sulkeminen ohitetaan.
 - Vika koskee HK-ohjelmia (HkKisaWin, HkMaali). Vahvistetun ja mahdollisen erottelu on luvussa 11.
 
@@ -18831,6 +18960,11 @@ sanasto: Säie). Merkki "lopetus käynnissä" estää lopetuksen ajamisen kahdes
 
 Kaksi virhepolkua asettaa "lopetus käynnissä" -merkin itse ennen kuin ne kutsuvat lopetustoimintoa.
 Lopetustoiminto näkee merkin päällä ja olettaa, että lopetus on jo kesken, joten se palaa heti.
+Polut ovat erilliset: indeksointivirheen polku (tiedoston tallennuksen virhehaara, kun
+indeksointivirhe on toistunut) ja ESC-polku (aikatiedostokehote). Kumpikin asettaa merkin ja
+kutsuu sitten lopetusta. Merkki pysäyttää myös ne säikeet, jotka tarkistavat sitä
+silmukkaehdossaan, esimerkiksi TCP-tiedonsiirron ja monitorilähetyksen säikeet
+[luettu koodista, ei ajettu].
 Vertaus: kuka tahansa kirjaa "toimisto suljettu" taululle ennen kuin siivous on tehty, ja siivooja
 pitää työnsä jo tehtynä.
 
@@ -18866,7 +19000,7 @@ pitää työnsä jo tehtynä.
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Ei tiedossa | Aineisto ei kirjaa kaatumista; HkKisaWinin lomake sulkeutuu, mutta prosessin tilasta aineisto ei kerro. |
 | Vaikutus: Voiko ohjelma tai yksittäinen toiminto jäädä jumiin? | Ei tiedossa | Aineisto ei kerro lukkiutumisesta tässä polussa. |
 | Vaikutus: Voiko jokin mennä väärin ilman ilmoitusta tai näkyvää oiretta? | Mahdollinen | HkMaali jatkaa epäjohdonmukaisella indeksillä keskeytysilmoituksen jälkeen (päätelty). |
-| Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Mahdollinen | Tiedonsiirtoyhteyksien sulkeminen (closecom) ohitetaan (luettu koodista). |
+| Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Mahdollinen | Tiedonsiirtoyhteyksien sulkeminen (closecom) ohitetaan HkKisaWinissä, ja HkMaalissa myös TCP-tiedonsiirtosäie ja monitorilähetys poistuvat silmukastaan, kun inLopetus on asetettu (luettu koodista). |
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Mahdollinen | HkMaalissa lukijasäikeet ovat pysähtyneet, kun ohjelma jatkaa (päätelty). |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele vaikutusta tulosteisiin tai julkaisuun. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole; laukaisu on virhepolku tai käyttäjän ESC. |
@@ -18883,8 +19017,9 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Jos HK-ohjelman indeksointi epäonnistuu tai käyttäjä painaa ESC:tä aikatiedostokehotteessa:
 
 - HkMaali ei lopeta, vaan jatkaa epäjohdonmukaisella indeksillä lukijasäikeiden pysähdyttyä.
-  Riskiarvion mukaan ajanotto tällä työasemalla pysähtyy [päätelty]. Aineisto ei kerro
-  vaikutusta muiden työasemien ajanottoon.
+  Riskiarvion mukaan ajanotto tällä työasemalla pysähtyy [päätelty]. Myös TCP-tiedonsiirto ja
+  monitorilähetys pysähtyvät, koska niiden silmukat päättyvät lopetusmerkkiin [luettu koodista,
+  ei ajettu]. Aineisto ei kerro vaikutusta muiden työasemien ajanottoon.
 - HkKisaWin sulkeutuu ilman, että tiedonsiirto ja tiedostot suljetaan järjestyksessä. Aineisto ei
   kerro, mitä se tekee tiedostojen sisällölle.
 - Mikään tästä ei ole ajettu.
@@ -18962,7 +19097,7 @@ lopetus ei käytä vapautettuja rakenteita (ASan). Havaintoon ei liity omistajan
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkInit.cpp:3720-3723`, `:3739-3742`; `Hk/HkDat.cpp:1376-1379`; `Hk/HkIV.cpp:4073-4074`; `cbHk/WinHk.cpp:1749-1750`, `:1781-1787`, `:802` |
 
-Rekisteririvien tiiviste nyt: `d528af6bb408`.
+Rekisteririvien tiiviste nyt: `3106fd0882d1`.
 
 
 ---
@@ -19103,7 +19238,7 @@ rakennetaan vain käynnistyksessä).
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista; riippumaton lähdetarkastus on vahvistanut polun (C-6,
+(a) Ohjelmointivirhe: luettu koodista; riippumaton lähdetarkastus on tarkastanut polun (C-6,
 vaihe 2). Kahvan uudelleenkäyttö on päätelty. Ajoa tai testikehyskoetta ei ole.
 
 (b) Käytännön seuraus: ei osoitettu.
@@ -19357,8 +19492,8 @@ käyttäjän toimesta.
   konsoliin. Viestin vastaavalla koukulla ei ole kutsujia.
 - **Emit-polku:** asetus RASTIVATULOSTE päällä, lukija lukee kortin, eikä emit-lomaketta ole avattu
   (tai vaiheen vaihto on poistanut sen).
-- **Osanottajapolku:** ohjelma on valmistelutilassa, lukija lukee kortin, eikä osanottajalomaketta
-  ole avattu.
+- **Osanottajapolku:** ohjelma on valmistelutilassa, kun ajanotto on käynnissä ja kortin tunnus
+  tulee tunnistinlukijalta, eikä osanottajalomaketta ole avattu [luettu koodista, ei ajettu].
 - Tilanne on asetukseen tai toimintatilaan sidottu; se ei ilmene ilman niitä. Riskiarvion
   saavutettavuus: asetus. Aineisto ei kerro, kuinka moni asennus käyttää näitä yhdistelmiä
   [päätelty: asetusyhdistelmän käyttö].
@@ -19402,7 +19537,8 @@ RASTIVATULOSTE päällä ja kilpailija lukee emit-kortin maalissa ennen kuin emi
   työasemalla. Se ei ole koko kilpailun ajanoton pysähtyminen.
 - Mahdollinen: sama toistuu jokaisen uudelleenkäynnistyksen jälkeen, kunnes lomake avataan
   (riskiarvion peruste).
-- Samoin valmistelutilassa, kun osanottajalomaketta ei ole avattu ja lukija lukee kortin.
+- Samoin valmistelutilassa, kun ajanotto on käynnissä ja kortin tunnus tulee tunnistinlukijalta
+  eikä osanottajalomaketta ole avattu.
 
 ### 8. Palautuminen ja uudelleenkäynnistys
 
@@ -19644,7 +19780,7 @@ tietueen, jota ei ole. Tämä voi hävittää tiedoston vapaiden paikkojen luett
 niin, että seuraavaksi lisättävä kilpailija katoaa tai kaksi kilpailijaa saa saman tietueen.
 
 Vahvistettu: ei mitään seurausta. Vika on luettu lähdekoodista ja riippumaton tarkastaja on
-vahvistanut koodiluennan, mutta ohjelmaa ei ole ajettu tämän vian osalta. Kaikki tässä kuvatut
+tarkastanut koodiluennan, mutta ohjelmaa ei ole ajettu tämän vian osalta. Kaikki tässä kuvatut
 seuraukset ovat siis mahdollisia: ne seuraavat koodista, mutta niitä ei ole nähty ajossa.
 
 ### 2. Mitä ohjelma yrittää tehdä
@@ -19674,8 +19810,14 @@ Aineisto kuvaa kolme tilannetta (ks. sanasto: Indeksi, Tietue).
    linkittää tietueen itseensä vapaiden luettelossa. Tämän jälkeen kaksi seuraavaa lisättyä
    kilpailijaa saa saman tietueen, ja kolmas saa päätellysti otsaketietueen [päätelty].
 
-ViestiWinissä (joukkuelomake) vastaava poisto toimii samalla tavalla. Siellä poistossa käytettävä
-paikallinen tietue on lisäksi alustamaton (T-035), joten luku voi jättää siihen satunnaista tietoa.
+ViestiWinissä (joukkuelomake) poisto toimii osittain eri tavalla. Viestin tietueen luku ja kirjoitus
+tarkistavat, ettei tietuenumero ole negatiivinen, joten ViestiWin ei kirjoita taulukon alkua
+edeltävään muistiin; kaatuminen taulukon alun edestä koskee vain HK:ta (`Juk/vdat.cpp`).
+Vapaiden paikkojen luettelon menetys ja otsaketietueen joutuminen luetteloon koskevat myös viestiä
+[luettu koodista K-vaiheessa, ei tarkastettu]. Tilanteessa 1 ohjelma yrittää myös kirjoittaa tietueen -1 tiedostoon;
+kirjoitus epäonnistuu, kun tiedostokerros saa negatiivisen siirtymän, ja siitä tulee virheilmoitus [päätelty].
+Siellä poistossa käytettävä paikallinen tietue on lisäksi alustamaton (T-035): luku jää tekemättä, joten tietue
+jää täyttämättä ja sarjataulukko indeksoidaan satunnaisella arvolla [päätelty]. Se on T-035:n konkreettinen seuraus.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
@@ -19720,8 +19862,8 @@ Aineisto ei kuvaa, mitä käyttäjä ensimmäisenä näkee. Koodista seuraa:
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei sovellu | Vika ei liity lukijoihin, kelloihin, näyttötauluihin tai tulostimiin. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele vaikutusta tulosteisiin tai julkaisuun. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole; vika laukeaa käyttäjän toimenpiteestä lomakkeessa, ei verkosta. |
-| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Mahdollinen | Laukeaa lomakkeen valikkotoiminnosta ilman erityisasetusta, mutta vaatii käyttäjän virheellisen toimenpiteen (poisto ilman valintaa tai lisäyksen perumisen jälkeen). Ei ajettu. |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Laukaisijana on käyttäjän virheellinen toimenpide lomakkeessa, ei ympäristövirhe. Ei ajettu. |
+| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Vika laukeaa vain virheellisestä toimenpiteestä lomakkeessa (poisto ilman valintaa, lisäyksen perumisen jälkeen tai toistettu poisto); tavallinen yhden kilpailijan poisto valitusta kilpailijasta ei sitä laukaise. Ei ajettu. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Laukaisijana on käyttäjän virheellinen toimenpide lomakkeessa, ei ympäristövirhe; HK:ssa tietuenumero -1 kirjoittaa taulukon alkua edeltävään muistiin, viestissä rajatarkistus (d >= 0) estää sen mutta vapaiden paikkojen luettelo voi silti sotkeutua. Ei ajettu. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Aineisto ei kuvaa näkyvää oiretta; vika voi näkyä vasta myöhemmin. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: älä poista ilman valittua kilpailijaa tai heti lisäyksen perumisen jälkeen; tehoa ei ole kokeiltu. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi käsin; keinoa ei ole kuvattu eikä kokeiltu. |
@@ -19736,7 +19878,8 @@ työasema, kilpailu ja muut työasemat erotetaan.
 - **Oma työasema.** HkKisaWinissä poisto ilman valittua kilpailijaa voi kirjoittaa muistiin väärään
   paikkaan ja hävittää vapaiden paikkojen luettelon; ohjelma voi kaatua [päätelty]. Lisäyksen
   perumisen jälkeinen tai toistettu poisto sotkee vapaiden paikkojen luettelon. ViestiWinissä
-  vastaava poisto toimii samalla tavalla, ja lisäksi poistossa käytettävä paikallinen tietue on
+  vapaiden paikkojen luettelon sotkeutuminen on mahdollista samoin, mutta taulukon alkua edeltävään
+  muistiin ei kirjoiteta (luku 3); lisäksi poistossa käytettävä paikallinen tietue on
   alustamaton (T-035).
 - **Kilpailu.** Riskiarvio kirjaa ajanoton jatkuvuudelle seuraukseksi "häiritsee", ei pysäytä, ja
   tulosten oikeellisuudelle seuraukseksi "suora". Jos kaksi kilpailijaa jakaisi saman tietueen,
@@ -19832,7 +19975,7 @@ jatkotyöjonoon (J7-4 `gui-liiketoimintalogiikka.md`:ssä, vaatii erillisen luva
 - Mitä viestin alustamaton paikallinen tietue aiheuttaa ajossa (T-035; liittyvä Q76 koskee
   viestin joukkuetietuetta).
 - Vaikuttavatko seuraukset muihin työasemiin.
-- Onko ViestiLuenta, HkMaali tai ViestiMaali altis tälle vialle: ei tarkistettu.
+- ViestiLuenta, HkMaali ja ViestiMaali: poisto laukeaa GUI-lomakkeen valikosta, ja konsoliprojektien (`VS/`-hakemiston `.vcxproj`-tiedostot) lähdeluettelot eivät sisällä lomaketiedostoja [luettu koodista K-vaiheessa, ei tarkastettu]. Poistofunktion muita kutsupaikkoja ei ole tutkittu.
 - OP-9 kohta 8: saako tuloksen saaneen kilpailijan poistaa (omistajan päätös, avoin).
 
 ### 13. Miten vika on tarkoitus korjata
@@ -19872,7 +20015,7 @@ ja H-140 (KK-C13-16).
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `cbHk/UnitKilpailijatiedot.cpp:1746-1752`, `:1518`, `:1157-1176`; `ViestiWin/UnitJoukkuetiedot.cpp:1365-1371`; `Hk/HkDat.cpp:597-621`, `:741-766`; `dbboxm/dbbox1.cpp:227-270`; `Juk/vdat.cpp:907-939` |
 
-Rekisteririvien tiiviste nyt: `4f30dc0bdb25`.
+Rekisteririvien tiiviste nyt: `8d3bdb04d92e`.
 
 
 ---
@@ -19893,7 +20036,7 @@ ViestiWinin Lähtöajat-painike (lähtöaikojen asetus tai siirto) jättää kil
 normaalisti, mutta vastaanotto- ja lukijasäikeet (ks. sanasto: Säie) pysähtyvät ohjelman
 loppuun asti.
 
-- **Vahvistettu (luettu koodista ja tarkastettu riippumattomasti; ei ajettu):** lukko jää päälle
+- **Luettu koodista ja riippumattomasti tarkastettu (ei ajettu):** lukko jää päälle
   jokaisesta poistetusta tietueesta ja jokaisesta sellaisen sarjan tietueesta, jota ei ole
   valittu.
 - **Mahdollinen (seuraa koodista):** työsäikeiden pysähtyminen ja aseman ajanotto pysähtyy; GUI:n
@@ -19962,8 +20105,8 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Kilpailussa, jossa ViestiWinillä asetetaan tai siirretään lähtöaikoja:
 
 - Kun käyttäjä painaa Lähtöajat-painiketta ja joukossa on poistettu tietue tai valitsemattoman
-  sarjan tietue, jokainen ohitettu tietue jättää lukon ottokerran vapauttamatta [vahvistettu:
-  luettu koodista ja tarkastettu riippumattomasti].
+  sarjan tietue, jokainen ohitettu tietue jättää lukon ottokerran vapauttamatta [luettu koodista
+  ja riippumattomasti tarkastettu].
 - Ohjelman suora seuraus [mahdollinen, luettu koodista, ei ajettu]: vastaanotto-, emit- ja
   aikalukijasäikeet pysähtyvät ohjelman loppuun asti. Käyttöliittymän jäätyminen myöhemmin on
   päätelty [päätelty]. Esimerkki konditionaalissa: jos kilpailupäivänä lähtöaikoja siirretään
@@ -20019,7 +20162,7 @@ Juurisyy on JS-2 (lukkoparit ilman vartijaa, ei poikkeusrajaa).
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Luettu koodista ja vahvistettu riippumattomassa tarkastuksessa (C-7).
+**(a) Ohjelmointivirhe.** Luettu koodista ja riippumattomasti tarkastettu (C-7).
 Ohjelmaa ei ole ajettu. Ajonaikainen vahvistus (työsäikeiden pysähtyminen painalluksen jälkeen) on
 jatkotyöjonossa.
 
@@ -20086,8 +20229,10 @@ Rekisteririvien tiiviste nyt: `10b9b3dc7a1a`.
 
 Ajanotto-lomakkeen muokkauspaneelin painike "Tallenna muutos" käsittelee lähtörivin (Piste-kentässä
 L) ja automaattipisteen rivin (A) kuin maalirivin. HkKisaWinissä tämä tyhjentää L-rivin
-kilpailijan lähtöajan ja kirjoittaa lähtökellon ajan kilpailijan maaliajaksi. ViestiWinissä
-muutos jää aikajonon riviin, eikä joukkueen tietuetta muuteta.
+kilpailijan lähtöajan, jos kilpailijan tallennettu aika vastaa rivin aikaa kahden pyöristysyksikön
+tarkkuudella, ja kirjoittaa lähtökellon ajan kilpailijan maaliajaksi aina, kun numero löytyy.
+ViestiWinin lomake kirjoittaa vain jonorivin, ja myös siellä L-rivi muuttuu maaliriviksi, koska
+L:lle ei ole haaraa; päivittääkö ydin sen jälkeen joukkuetietueen, on avoin (Q76).
 
 Vahvistettu: ei mitään seurausta; vika on luettu koodista ja tarkastettu riippumattomasti,
 tarkastaja korjasi vaikutusta (luku 11). Mahdollinen (koodista luettu): HK:ssa L-rivin tallennus
@@ -20112,7 +20257,8 @@ heti perään se käsittelee kentän vielä kerran lukuna. Kirjaimesta tulee luk
 maalia. A- tai L-rivi muuttuu siis maaliriviksi, vaikka käyttäjä ei koskenut Piste-kenttään.
 
 HK:ssa L-rivi on lähtökirjaus (kilpailijan numero ja lähtökellon aika). Tallennus tyhjentää
-kilpailijan lähtöajan ja kirjoittaa lähtökellon ajan kilpailijan maaliajaksi. Varoitus tulee
+kilpailijan lähtöajan vain, jos kilpailijan tallennettu aika vastaa rivin aikaa kahden
+pyöristysyksikön tarkkuudella; maaliajan kirjoitus tehdään ehdotta, kun numero löytyy. Varoitus tulee
 vain, jos kilpailijalla on jo maaliaika ("Kilpailijalla jo aika, tallennetaanko muutos?");
 muuten ohjelma kysyy vain yleisen vahvistuksen "Vahvista tallennus", joka ei kerro, että rivin
 tyyppi muuttuu.
@@ -20123,7 +20269,7 @@ tällaisen jonotallennuksen jälkeen.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- Ohjelmat: HkKisaWin (vaikutus kilpailijan tietueeseen) ja ViestiWin (vain jonorivi).
+- Ohjelmat: HkKisaWin (vaikutus kilpailijan tietueeseen) ja ViestiWin (jonorivi; joukkuetietueen päivitys on avoin, Q76).
   HkMaalissa ei ole tätä paneelia.
 - Laukaisija on käyttäjän toimenpide: A- tai L-rivin valinta ajanoton paneeliin ja painike
   "Tallenna muutos". Se on ajanoton tavallista rivien korjausta, joten vika ei vaadi virhettä
@@ -20169,12 +20315,13 @@ Kaikki alla oleva on mahdollista, ei vahvistettua (koodista luettu, ei ajettu; k
 
 - HK-tapahtumassa, jossa lähtö kirjataan ajanottoon (esimerkiksi hiihdon lähtökirjaus tai
   aaltolähdöt), operaattori korjaa L-rivin esimerkiksi kilpailijan numeroa ja painaa "Tallenna
-  muutos". Rivi muuttuu maaliriviksi, kilpailijan lähtöaika tyhjenee ja lähtökellon aika
+  muutos". Rivi muuttuu maaliriviksi, kilpailijan lähtöaika tyhjenee (jos tallennettu aika vastaa
+  rivin aikaa kahden pyöristysyksikön tarkkuudella) ja lähtökellon aika
   kirjoittuu kilpailijan maaliajaksi. Jos kilpailijalla ei ollut maaliaikaa, varoitusta ei tule.
 - Sama painallus A-rivillä muuttaa rivin maaliriviksi; riskiarvion ja raportin mukaan haitta on
   vähäinen, koska ruudukon oletus tuottaa saman tuloksen.
-- ViestiWinissä rivi muuttuu maaliriviksi aikajonossa, mutta joukkueen tietuetta ei muuteta
-  (haitta matala; Q76 on avoin).
+- ViestiWinissä A- ja L-rivi muuttuvat maaliriviksi aikajonossa; lomake kirjoittaa vain jonorivin,
+  ja se, päivittääkö ydin joukkuetietueen, on avoin (haitta matala; Q76).
 
 ### 8. Palautuminen ja uudelleenkäynnistys
 
@@ -20231,8 +20378,9 @@ koodista. Ajonaikainen vahvistus on kirjattu jatkotyöjonoon (J7-4, erillinen lu
   vaikuttaa vain korjausjärjestykseen.
 - Mitä käyttäjä näkee tallennuksen jälkeen, kun varoitusta ei tule: aineisto ei kuvaa.
 - Miten muutettu rivi ja kilpailijan tiedot välittyvät muille työasemille.
-- Onko ViestiMaali tai ViestiLuenta altis: paneeli on GUI-lomakkeessa, joten ei tarkistettu
-  erikseen.
+- ViestiMaali ja ViestiLuenta: paneeli on GUI-lomakkeessa, ja konsoliprojektien (`VS/`-hakemiston
+  `.vcxproj`-tiedostot) lähdeluettelot eivät sisällä `cbHk`- tai `ViestiWin`-lomaketiedostoja
+  [luettu koodista K-vaiheessa, ei tarkastettu].
 
 ### 13. Miten vika on tarkoitus korjata
 
@@ -20683,7 +20831,7 @@ Ajonaikainen vahvistus on kirjattu jatkotyöjonoon (J7-4).
 - Käyttääkö kilpailussa kukaan valikon osuusvalintaa, ja onko nimiöiden siirtymä huomattu: aineisto
   ei kerro.
 - Mitä HK:n numerointi tekee täsmälleen vaiheella -1.
-- ViestiMaali ja ViestiLuenta: lomakkeita ei ole niissä, joten ei tarkistettu erikseen.
+- ViestiMaali ja ViestiLuenta: konsoliprojektien (`VS/`-hakemiston `.vcxproj`-tiedostot) lähdeluettelot eivät sisällä `cbHk`- tai `ViestiWin`-lomaketiedostoja, joten lomakevika ei kuulu niihin [luettu koodista K-vaiheessa, ei tarkastettu].
 
 ### 13. Miten vika on tarkoitus korjata
 
@@ -20942,7 +21090,7 @@ HkKisaWinin kilpailijalomakkeessa selaus seuraavaan tai edelliseen kilpailijaan 
 kärkeen) voi jättää kilpailijatietojen lukon (ks. sanasto: Lukko) päälle monipäiväisessä
 kilpailussa, jos sarja ei ole mukana kaikkina päivinä.
 
-- **Vahvistettu (luettu koodista ja tarkastettu riippumattomasti; ei ajettu):** lomakkeen
+- **Luettu koodista ja riippumattomasti tarkastettu (ei ajettu):** lomakkeen
   päiväruudukon rivin asetus menee tietyssä tilanteessa alueen ulkopuolelle, ja lukko on otettu
   ennen sitä ilman suojaa, joka vapauttaisi sen virhetilanteessakin.
 - **Mahdollinen (päätelty, ei ajettu):** rivin asetus nostaa VCL-poikkeuksen (ohjelman virheilmoitus,
@@ -20962,8 +21110,11 @@ hakee kilpailijan ja päivittää lomakkeen.
 
 Lukko on vuoronumeron kaltainen järjestely, ja sen ottaneen säikeen pitää vapauttaa se. Lomake
 valitsee ruudukosta rivin, joka vastaa nykyistä vaihetta eli päivää. Rivin numero lasketaan nykyisestä
-päivästä ja sarjan ensimmäisestä päivästä. Jos sarja ei ole mukana nykyisenä päivänä, laskettu rivi
-on ruudukon alueen ulkopuolella [päätelty: ruudukko nostaa poikkeuksen]. Poikkeus keskeyttää
+päivästä ja sarjan ensimmäisestä päivästä. Rivi menee ruudukon ulkopuolelle vain, kun nykyinen
+vaihe on sarjan viimeisen vaiheen jälkeen tai yli yhden vaiheen ennen sarjan ensimmäistä; yhden
+vaiheen ennen ensimmäistä tuottama ruudukon ensimmäinen rivi korvataan toisella rivillä koodin omalla suojalla
+[luettu koodista]. Silloin laskettu rivi on ruudukon alueen ulkopuolella [päätelty: ruudukko
+nostaa poikkeuksen]. Poikkeus keskeyttää
 käsittelijän kesken kaiken, joten lukon vapautus jää tekemättä. Käsittelijöissä ei ole suojausta,
 joka vapauttaisi lukon virheestäkin (sama rakenne kuin T-036). Muut säikeet jäävät silloin
 odottamaan (ks. sanasto: Lukkiutuminen). Vertaus: työntekijä lukitsee huoneen oven, ja kesken
@@ -20973,7 +21124,9 @@ työn hänet kutsutaan ulos hätäpuhelun takia ilman, että hän ehtii avata ov
 
 - **Ohjelma:** HkKisaWin. Lomake kuuluu vain käyttöliittymäohjelmaan.
 - **Asetus:** kilpailu on monipäiväinen, ja sarja on mukana vain osalla päivistä. Lomake käyttää
-  sarjan omaa päiväväliä, ellei sarja vaihtele päivittäin.
+  sarjan omaa päiväväliä, ellei sarja vaihtele päivittäin. Rivi menee ruudukon ulkopuolelle
+  vain, kun nykyinen vaihe on sarjan viimeisen vaiheen jälkeen tai yli yhden vaiheen ennen
+  ensimmäistä (luku 3).
 - **Toimenpide:** käyttäjä selaa kilpailijoita lomakkeella.
 - Vika ei ilmene ilman edellä mainittua asetusta. Poikkeus on päätelty, ei ajettu.
 
@@ -21011,8 +21164,8 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Monipäiväisessä kilpailussa, jossa sarja on mukana vain osalla päivistä:
 
 - Kun käyttäjä selaa kilpailijoita lomakkeella ja nykyinen päivä ei kuulu sarjan päiväväliin,
-  päiväruudukon rivin asetus menee alueen ulkopuolelle [vahvistettu: luettu koodista ja
-  tarkastettu riippumattomasti].
+  päiväruudukon rivin asetus menee alueen ulkopuolelle [luettu koodista ja
+  riippumattomasti tarkastettu].
 - Ohjelman suora seuraus [mahdollinen, päätelty, ei ajettu]: ruudukko nostaa VCL-poikkeuksen
   lukon sisällä, lukon vapautus jää tekemättä ja muut säikeet jäävät odottamaan. Riskiarvion
   huomion mukaan seuraus vastaisi H-110:tä.
@@ -21050,7 +21203,9 @@ tulos voisi mennä väärin.
 Juurisyy on JS-2 (lukkoparit ilman vartijaa, ei poikkeusrajaa). Toissijainen juurisyy JS-1
 (indeksiä ei tarkisteta): ruudukon rivi lasketaan tarkistamatta, onko se ruudukon alueella.
 
-- Funktio `naytaTiedot` (`cbHk/UnitKilpailijatiedot.cpp`) asettaa `PvGrid->Row = k_pv - epv + 1`.
+- Funktio `naytaTiedot` (`cbHk/UnitKilpailijatiedot.cpp`) asettaa `PvGrid->Row = k_pv - epv + 1`;
+  vain tulos 0 korvataan arvolla 1, joten suoja ei kata arvoja yli ruudukon (`k_pv > vpv`) eikä
+  alle nollan (`k_pv < epv - 1`).
   Arvot `epv` ja `vpv` ovat sarjan ensimmäinen ja viimeinen päivä (`enspv`, `viimpv`), ellei kyse
   ole lisäyksestä tai sarjat vaihtele päivittäin.
 - Käsittelijät `SeurBtnClick`, `EdBtnClick` ja `SrjKarkiBtn` ottavat `tall_CriticalSection`in,
@@ -21060,7 +21215,7 @@ Juurisyy on JS-2 (lukkoparit ilman vartijaa, ei poikkeusrajaa). Toissijainen juu
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Luettu koodista ja vahvistettu riippumattomassa tarkastuksessa (C-7).
+**(a) Ohjelmointivirhe.** Luettu koodista ja riippumattomasti tarkastettu (C-7).
 Ohjelmaa ei ole ajettu. Ajonaikainen vahvistus (VCL-poikkeus ja lukon laskuri) on
 jatkotyöjonossa.
 
@@ -21313,7 +21468,7 @@ alemmaksi, jos GUI-ajo osoittaa, ettei X palauta 2:ta.
 - Tallentuvatko tiedot normaalisti, kun ohjelma sulkeutuu virheikkunan X:n seurauksena.
 - Välittyvätkö tuhoavien valintojen seuraukset muille työasemille.
 - Kuntosuunnistustilojen merkitys (Q75).
-- ViestiMaali, ViestiLuenta ja HkMaali: valintaikkunat kuuluvat GUI:hin; ei tarkistettu.
+- ViestiMaali, ViestiLuenta ja HkMaali: valintaikkunat kuuluvat GUI:hin; konsoliprojektien (`VS/`-hakemiston `.vcxproj`-tiedostot) lähdeluettelot eivät sisällä `cbHk`- tai `ViestiWin`-lomaketiedostoja [luettu koodista K-vaiheessa, ei tarkastettu].
 
 ### 13. Miten vika on tarkoitus korjata
 
@@ -21510,7 +21665,7 @@ koodista. H-117 ei ole jatkotyöjonon (J7-4) ajonaikaisten vahvistusten luettelo
 - Voiko `tall_rivi` palauttaa 1 käytännössä, eli löytyykö muokattava rivi aina (vaatii
   samanaikaisen jonomuutoksen [päätelty]).
 - Miten väärä rivi ja tyhjennetty tulos välittyvät muille työasemille.
-- HkMaali: ajanoton lomake on GUI:ssa, joten ei tarkistettu.
+- HkMaali: ajanoton lomake on GUI:ssa; konsoliprojektien (`VS/`-hakemiston `.vcxproj`-tiedostot) lähdeluettelot eivät sisällä `cbHk`- tai `ViestiWin`-lomaketiedostoja [luettu koodista K-vaiheessa, ei tarkastettu].
 
 ### 13. Miten vika on tarkoitus korjata
 
@@ -21566,7 +21721,7 @@ seuraavaa käsiteltävää joukkuetta joukkueen numeron perusteella eikä tietue
 perusteella. Siksi osa joukkueista jää käsittelemättä tai joku joukkue saa siirron kahdesti.
 
 Vahvistettu: ei mitään seurausta. Ristiriita on luettu koodista ja riippumaton tarkastaja on
-vahvistanut sen: ohjelma käyttää numeroa paikassa, jossa odotetaan tietueen järjestysnumeroa.
+tarkastanut sen: ohjelma käyttää numeroa paikassa, jossa odotetaan tietueen järjestysnumeroa.
 Ohjelmaa ei ole ajettu, joten sitä, mitä numeroinnille käytännössä käy, ei ole nähty.
 Mahdollinen: väärin numeroidut joukkueet.
 
@@ -21744,7 +21899,7 @@ kuuluu toiselle kilpailijalle, jolla on jo tulos tai tila, ohjelma ylikirjoittaa
 vahvistusta. Ainoa suoja koskee tilaa "P".
 
 Vahvistettu: ei mitään seurausta. Vika on luettu koodista ja riippumaton tarkastaja on
-vahvistanut sen osittain: tarkastaja korjasi vaikutusta, koska esiluennan tallennus nollaa
+tarkastanut sen osittain: tarkastaja korjasi vaikutusta, koska esiluennan tallennus nollaa
 kentät suunnitellusti, joten vika on merkitsevä vain lähtötietokonetilassa. Mahdollinen: olemassa
 olevan kilpailijan tuloksen tai tilan ylikirjoitus lähtötietokonetilassa. Ohjelmaa ei ole ajettu.
 
@@ -21790,7 +21945,7 @@ tallentuvat kilpailijalle (ks. sanasto: Tietue).
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Väärin kirjoitettu numero ylikirjoittaa toisen kilpailijan tilan, tuloksen ja lähtöajan; merkitsevä lähtötietokonetilassa. Ei ajettu. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan ajanoton jatkuvuus ei vaarannu. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei tiedossa | Riskiarvio: ajanoton jatkuvuus ei vaarannu. Seuraava luenta kirjautuu paikanpitäjälle, kun kortti ei ole oikealla kilpailijalla (päätelty), joten välillinen vaikutus ajanottoon on mahdollinen; aineisto ei arvioi sitä. Riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko). |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Mahdollinen | Kortti kopioituu väärälle kilpailijalle, kun numero kirjoitetaan väärin; päätelty koodista, ei ajettu. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Mahdollinen | Olemassa olevan kilpailijan tulos, tila ja lähtöaika korvautuvat paikanpitäjän tiedoilla ja tallentuvat heti. Ei ajettu. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Ei tiedossa | Aineisto ei kirjaa kaatumista tämän vian seurauksena. |
@@ -21897,7 +22052,7 @@ GUI-testejä.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `cbHk/UnitEmit.cpp:1663-1681`, `:1698-1745`, `:203-206`, `:1592-1598` |
 
-Rekisteririvien tiiviste nyt: `88f4595e6078`.
+Rekisteririvien tiiviste nyt: `945602bd2d64`.
 
 
 ---
@@ -21920,7 +22075,7 @@ tietueelle ja näyttää virheilmoituksen, mutta oikea kilpailija tallennetaan s
 Paikanpitäjä jää omistamaan kortin, joten kortin seuraava luenta osuu paikanpitäjään.
 
 Vahvistettu: ei mitään seurausta. Vika on päätelty koodista [päätelty] ja riippumaton tarkastaja
-on vahvistanut sen osittain (tarkastaja rajasi vaikutuksen tiloihin 0 ja 1). Mahdollinen: kortti
+on tarkastanut sen osittain (tarkastaja rajasi vaikutuksen tiloihin 0 ja 1). Mahdollinen: kortti
 ei ole oikealla kilpailijalla ja seuraava luenta kirjautuu paikanpitäjälle. Vaatii ajon.
 
 ### 2. Mitä ohjelma yrittää tehdä
@@ -21969,7 +22124,7 @@ vapautetaan.
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Kortin seuraava luenta osuu paikanpitäjään eikä oikealle kilpailijalle, joten tulos voi kirjautua väärin; päätelty, vaatii ajon. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan ajanoton jatkuvuus ei vaarannu. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei tiedossa | Riskiarvio: ajanoton jatkuvuus ei vaarannu. Seuraava luenta kirjautuu paikanpitäjälle, kun kortti ei ole oikealla kilpailijalla (päätelty), joten välillinen vaikutus ajanottoon on mahdollinen; aineisto ei arvioi sitä. Riskiarvion ei-arvo tarkistetaan (seuranta.md KE-taulukko). |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Mahdollinen | Oikea kilpailija tallentuu ilman korttia ja kortti jää paikanpitäjälle, joten luenta kohdistuu väärin; päätelty, vaatii ajon. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Mahdollinen | Oikea kilpailija tallennetaan ilman korttia, ja paikanpitäjä pitää kortin; päätelty, vaatii ajon. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Ei tiedossa | Aineisto ei kirjaa kaatumista tämän vian seurauksena. |
@@ -22078,7 +22233,7 @@ GUI-testejä.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `cbHk/UnitEmit.cpp:1615`, `:693-703`, `:722-727`; `Hk/HkIV.cpp:1577-1622`; `Hk/HkDat.cpp:950`, `:1055-1064` |
 
-Rekisteririvien tiiviste nyt: `867e16a30d99`.
+Rekisteririvien tiiviste nyt: `f15fb4578a39`.
 
 
 ---
@@ -22218,7 +22373,10 @@ oikeellisuuden vaikutukseksi "epäsuora" ja ajanotolle "häiritsee".
 - Mitä toisella työasemalla näkyy, kun rivi ei välity, ja huomaako käyttäjä sen.
 - Mitä asetus `estavalitys` tarkoittaa käytännössä ja kuinka sitä käytetään.
 - Kuinka tavallista Ctrl+Enter-lähetys on kilpailussa: aineisto ei kerro.
-- ViestiMaali ja ViestiLuenta: kutsu on GUI-lomakkeessa; ei tarkistettu erikseen.
+- ViestiMaali ja ViestiLuenta: kutsu on GUI-lomakkeessa (`ViestiWin/UnitAjanotto.cpp`). Konsolien ja
+  yhteisen koodin (`Juk/`, `JukConsole/`) `tall_rivi`-kutsuissa ei ole `pakLah`-argumenttia väärässä
+  paikassa; `Juk/VCom.cpp`:n kutsu antaa argumentit oikeassa järjestyksessä [luettu koodista K-vaiheessa,
+  ei tarkastettu].
 
 ### 13. Miten vika on tarkoitus korjata
 
@@ -22773,7 +22931,7 @@ HkKisaWinin lähtöaikojen asetus jakaa laskennassa sarjan lähtöryhmän koolla
 jako nollalla keskeyttää toiminnon kesken ja jättää kilpailijatietojen lukon (ks. sanasto: Lukko)
 päälle.
 
-- **Vahvistettu (luettu koodista ja tarkastettu osittain riippumattomasti; ei ajettu):** jako
+- **Luettu koodista ja osittain riippumattomasti tarkastettu (ei ajettu):** jako
   tehdään lukon sisällä ilman nollatarkistusta.
 - **Mahdollinen (päätelty):** nollalla jako nostaa poikkeuksen, joka ohittaa vapautuksen, ja muut
   säikeet (ks. sanasto: Säie) jäävät odottamaan. Osa lähtöajoista on silloin jo asetettu.
@@ -22843,8 +23001,8 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Kilpailussa, jossa lähtöajat asetetaan HkKisaWinillä:
 
 - Jos sarjan lähtöryhmän koko on nolla (TakaaAjo-lomakkeesta, CSV-tuonnista tai vanhasta
-  tekstitiedostosta), laskenta jakaa nollalla lukon sisällä [vahvistettu: luettu koodista ja
-  tarkastettu osittain riippumattomasti].
+  tekstitiedostosta), laskenta jakaa nollalla lukon sisällä [luettu koodista ja
+  osittain riippumattomasti tarkastettu].
 - Ohjelman suora seuraus [mahdollinen, päätelty, ei ajettu]: poikkeus ohittaa lukon vapautuksen,
   ja muut säikeet jäävät odottamaan. Koska tietueet tallennetaan yksi kerrallaan, osa
   kilpailijoista on ehtinyt saada uuden lähtöajan ja loput eivät. Esimerkki konditionaalissa:
@@ -23517,7 +23675,7 @@ Juurisyy JS-6 (muistitila rakennetaan vain käynnistyksessä).
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista ja vahvistettu riippumattomassa tarkastuksessa (C-8).
+(a) Ohjelmointivirhe: luettu koodista ja riippumattomasti tarkastettu (C-8).
 Lisäksi mekanismi on toistettu eristetyllä koeohjelmalla (C-8:n sulkeminen, kaksi ajoa, tuotannon
 funktiot): `setpos(105, 0)` lisäsi rivin poiston sijaan ja läpikäynti pysähtyi, jolloin numero 106
 jäi pois; numeron 61 vaihdon jälkeen haku numerolla 60 antoi tuloksen −1.
@@ -23620,7 +23778,9 @@ mahdu vihkoon.
 ### 4. Missä tilanteessa vika voi ilmetä
 
 - **Ohjelmat:** HK, eli HkKisaWin ja HkMaali. Vaiheen vaihtoa ei ole viestiohjelmissa
-  (raportin mukaan; vaiheen vaihdon funktiota kutsutaan vain HK:n lähteistä).
+  (raportin mukaan; vaiheen vaihdon funktiota kutsutaan vain HK:n lähteistä). Viestissä
+  hakemisto rakennetaan (`teejarj`) vain käynnistyksessä (`Juk/VInit.cpp`) [luettu koodista
+  K-vaiheessa, ei tarkastettu].
 - **Toimenpide:** vaiheen vaihto käynnissä olevassa ohjelmassa. Se voidaan laukaista GUI:n
   vaiheenvaihtotoiminnolla, konsoliohjelman valikosta tai toisen työaseman vaihtopyynnöllä.
   Vaihtopyyntö käynnistää vaihdon vastaanottavassa ohjelmassa ilman vahvistuskysymystä. Jos
@@ -23712,7 +23872,8 @@ Esimerkit toimintapoluista:
 - **Tietojen palauttaminen:** Hakemisto on johdettu tieto, ja se rakennetaan käynnistyksessä
   uudelleen. Aineisto ei kerro, mitä muuta muistissa ylivuoto ehtisi vioittaa, eikä sitä, mitä
   tallentamattomalle tiedolle käy.
-- **Uusiutuminen:** Uudelleenkäynnistys nollaa laskurin (kontrollikoe), mutta seuraava vaiheen
+- **Uusiutuminen:** Uudelleenkäynnistys aloittaa laskurin nollasta [luettu koodista]; kontrollikoe
+  ajoi vain `luo_posarr`in, ei uudelleenkäynnistystä. Seuraava vaiheen
   vaihto käynnissä olevassa ohjelmassa jättää laskurin taas vanhaan arvoon (vahvistettu
   koeohjelmassa). Vika ei siis uusiudu käynnistyksessä, vaan jokaisessa vaiheen vaihdossa
   käynnissä olevassa ohjelmassa. Ylivuoto vaatii lisäksi, että rivien määrä ylittää tilan
@@ -23747,8 +23908,9 @@ Juurisyy on JS-6 (muistitila rakennetaan vain käynnistyksessä); pahentava teki
   kilpailutilassa (`ToimintaTila == 2`) `KILP.DAT`:n koko plus `n_lisaa`, muussa tilassa
   `maxkilpno`; vähintään 3000, enintään `MAXKILPNO` (`Hk/HkIx.cpp`).
 - Vaihtopyyntö: `Hk/HkCom32.cpp` kutsuu `pyyda_vaihdavaihe`a ilman vahvistusta, ja sama
-  vaihe ajetaan uudelleen yli 5 s välein; GUI:n käsittelijä (`cbHk/WinHk.cpp`) tarkistaa vain,
-  ettei lähettämättömiä sanomia ole.
+  vaihe ajetaan uudelleen yli 5 s välein; GUI:n käsittelijä (`cbHk/WinHk.cpp`) tarkistaa vain
+  esteet (vaihto käynnissä, lähettämättömiä sanomia) eikä kysy vahvistusta. Konsolissa
+  `pyyda_vaihdavaihe` ajaa vaihdon suoraan vastaanottosäikeessä (`HkConsole/HkCons0.cpp`).
 - Ylivuoto syntyy, kun `nrec` ennen vaihtoa ja kilpailijoiden määrä ylittävät yhdessä
   `maxrec + 2`. Rajat on tarkistettu riippumattomassa lähdetarkastuksessa (C-8).
 - Sama rivi kuin H-102:ssa (puuttuva lukko); H-102 on eri vika.
@@ -23836,9 +23998,9 @@ Kun viestin joukkue siirretään toiseen sarjaan, ohjelman pitäisi päivittää
 joukkuemäärä. Päivityksen tekevä koodi ei koskaan suoritu, joten vanhan sarjan luku jää liian
 suureksi ja uuden sarjan liian pieneksi, kunnes ohjelma käynnistetään uudelleen.
 
-- **Vahvistettu (riippumaton lähdetarkastus, ei ajoa):** päivityskoodi on kuollutta koodia (ks.
+- **Luettu koodista ja riippumattomasti tarkastettu (ei ajoa):** päivityskoodi on kuollutta koodia (ks.
   sanasto: Kuollut koodi), eikä muuta päivittäjää ole.
-- **Mahdollinen (päätelty, tarkastus vahvisti vain osittain):** tulosluettelon työmuisti varataan
+- **Mahdollinen (päätelty, riippumaton tarkastus tuki vain osittain):** tulosluettelon työmuisti varataan
   joukkuemäärän mukaan. Jos uuteen sarjaan on siirretty vähintään kaksi joukkuetta, jotka ovat
   saaneet osuustuloksen, muistialue ylittyy (ks. sanasto: Puskuriylitys, ylikirjoitus).
 
@@ -23863,7 +24025,9 @@ joka korjaisi luvut kesken ajon, ei ole. Luvut rakennetaan uudelleen vasta käyn
 
 - **Ohjelmat:** ViestiWin, ViestiMaali ja ViestiLuenta sisältävät kuolleen haaran, koska
   tallennuskoodi on yhteistä. Sarjan vaihto joukkuetietojen lomakkeella on ViestiWinin toiminto.
-  Aineisto ei kerro, voiko sarja vaihtua konsoliohjelmissa jotain muuta kautta.
+  Konsoliohjelmien kilpailijaeditori (`inputkilp`, `JukConsole/vcons2.cpp`) sallii sarjan vaihdon, ja
+  muutos tallennetaan samalla yhteisellä tallennuskoodilla (`Juk/vdat.cpp`) [luettu koodista K-vaiheessa,
+  ei tarkastettu].
 - **Toimenpide:** olemassa olevan joukkueen sarjan vaihto. Raportin mukaan myös havainnossa H-114
   kuvattu hiljainen sarjan nollaus voi laukaista saman polun.
 - **Normaalikäyttö vai poikkeus:** riskiarvion mukaan sarjan vaihto on tavallinen muokkaus
@@ -23910,7 +24074,7 @@ Vahvistetun ja mahdollisen erottelu on luvussa 11. Viestikilpailussa, jossa jouk
 vaihdetaan:
 
 - Sarjan vaihdon jälkeen vanhan sarjan joukkuemäärä on yhden liian suuri ja uuden yhden liian
-  pieni (vahvistettu kuolleena koodina; seuraus luettu koodista).
+  pieni (kuollut koodi, luettu koodista ja riippumattomasti tarkastettu; seuraus luettu koodista).
 - Liian suuri luku jättää vanhan sarjan yhteislähtöjen merkinnän työtaulukossa osan alkioista
   alustamatta, jolloin ohjelma voi hakea joukkueen tietoja roskaindeksillä; raportti arvioi tämän
   vähäiseksi [päätelty].
@@ -23963,8 +24127,8 @@ Juurisyy on JS-6 (muistitila rakennetaan vain käynnistyksessä).
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Kuollut haara on vahvistettu riippumattomassa lähdetarkastuksessa
-(C-8). Muistialueen ylitys on vahvistettu vain osittain ja kapeammalla ehdolla kuin alun perin
+**(a) Ohjelmointivirhe.** Kuollut haara on luettu koodista ja riippumattomasti tarkastettu
+(C-8). Muistialueen ylitys on riippumattomasti tarkastettu vain osittain ja kapeammalla ehdolla kuin alun perin
 esitettiin. Ohjelmaa ei ole ajettu eikä ylitystä ole toistettu.
 
 **(b) Käytännön seuraus.** Ei ole osoitettu. Väärien lukujen näkyminen otsikoissa on päätelty
@@ -24035,7 +24199,7 @@ vaiheen vaihdon jälkeen (esimerkiksi ajanottolomakkeella tai lukijasta), se saa
 vaiheen tiedostonimen. Uuden vaiheen ajat kirjoitetaan silloin edellisen vaiheen tiedostoon, jossa
 ovat jo edellisen vaiheen ajat.
 
-Vahvistettu (luettu koodista ja riippumattomasti tarkastettu, ei ajettu): nimipohjaa ei päivitetä
+Luettu koodista ja riippumattomasti tarkastettu (ei ajettu): nimipohjaa ei päivitetä
 vaiheen vaihdossa ja uusi jono käyttää pohjaa. Mahdollinen (päätelty): ajat sekoittuvat eri
 vaiheiden välillä, ja uuden vaiheen omasta tiedostosta ne puuttuvat.
 
@@ -24058,7 +24222,9 @@ vaiheeseen. Jo olemassa olevat jonot säilyvät vaiheen vaihdossa ja käyttävä
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- **Ohjelmat:** HkKisaWin ja HkMaali. Viestiohjelmissa ei ole vaiheen vaihtoa.
+- **Ohjelmat:** HkKisaWin ja HkMaali. Viestiohjelmissa ei ole vaiheen vaihtoa: `vaihdavaihe`-funktiota
+  ei ole viestin lähteissä (`Juk/`, `JukConsole/`, `ViestiWin/`) [luettu koodista K-vaiheessa, ei
+  tarkastettu].
 - **Edellytys:** monivaiheinen kilpailu ja vaiheen vaihto käynnissä olevassa ohjelmassa niin, että
   aikajonoa ei ole vielä avattu vaiheen vaihdon hetkellä. Jono avataan vasta sen jälkeen. Jonon
   luovat GUI:n ajanottolomake, emiTag-lomake ja tulostaulu.
@@ -24102,7 +24268,7 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Monivaiheisessa HK-kilpailussa vaihe vaihdetaan käynnissä olevassa ohjelmassa ennen kuin
 aikajono on avattu. Vahvistetun ja mahdollisen erottelu on luvussa 11. Tilanne:
 
-- Vahvistettu (luettu koodista): vaiheen vaihto jättää nimipohjan vanhaksi, ja uusi jono avaa
+- Luettu koodista ja riippumattomasti tarkastettu (ei ajettu): vaiheen vaihto jättää nimipohjan vanhaksi, ja uusi jono avaa
   edellisen vaiheen tiedoston.
 - Mahdollinen (päätelty): vaiheen n+1 ajat tallentuvat vaiheen n tiedostoon, joka sisältää jo
   vaiheen n ajat. Kun vaiheeseen n palataan tai tiedosto luetaan, eri vaiheiden ajat sekoittuvat,
@@ -24138,7 +24304,7 @@ käynnistyksessä). Kuuluu tekniseen velkaan T-038 (vaihetilan nollaus tapauskoh
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista, ja riippumaton tarkastus (C-8, Opus) on vahvistanut
+(a) Ohjelmointivirhe: luettu koodista, ja riippumaton tarkastus (C-8, Opus) on tarkastanut
 polun. Ajoa tai testikehyskoetta ei ole.
 
 (b) Käytännön seuraus: ei osoitettu. Laukaisuehto (jono luodaan vasta vaiheen vaihdon jälkeen)
@@ -24204,7 +24370,7 @@ kohdistuu myös käyttäjän `AJAT=`-parametrilla antamaan vapaaseen nimeen: `AJ
 muotoon `AJATLST`, ja `C:\data\ajat.lst` muotoon `C:\dta\ajjat.lst`. Ajat tallentuvat silloin eri
 tiedostoon kuin käyttäjä on määrittänyt.
 
-Vahvistettu (luettu koodista, pääistunto on todentanut tarkastajan vihjeen; ajoa ei ole):
+Luettu koodista, pääistunto on tarkistanut tarkastajan vihjeen koodia vasten (ajoa ei ole):
 poisto tehdään ehdoitta yksivaiheisessa kilpailussa. Mahdollinen (päätelty): ajat kirjoittuvat
 odottamattomalla nimellä olevaan tiedostoon. Ajoa, joka osoittaisi lopputuloksen, ei ole tehty.
 
@@ -24256,7 +24422,7 @@ kirjoittuvat johdonmukaisesti samaan tiedostoon, joten ne eivät häviä [päät
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Ei tiedossa | Aineisto ei käsittele vaikutusta tulosteisiin, HTML- tai XML-tiedostoihin tai tulospalveluun. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Vika vaatii AJAT=- tai LAJAT=-asetuksella annetun vapaan nimen yksivaiheisessa kilpailussa; oletusnimen merkin poisto antaa nimen AJAT.LST, ja onko se tarkoitus, kysytään OP-6:ssa. |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Ei tiedossa | Vika vaatii asetuksen eikä virhettä; aineisto ei kerro, onko vapaa ajanottotiedoston nimi harvinainen asetus. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Vika vaatii asetuksen (vapaa nimi AJAT=- tai LAJAT=-asetuksella yksivaiheisessa kilpailussa); asetuksen yleisyys ei ole tiedossa, ja harvinainen asetus on poikkeustilanne. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Mahdollinen | Käyttäjä voi huomata, ettei tiedostoa löydy antamallaan nimellä; ilmoitusta ei kuvata; päätelty. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Ei tiedossa | Aineistossa ei ole kirjattua keinoa; korjaussuunnitelman mukaan nimeämistä ei muuteta ilman tietoa käytännöstä. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi käsin; ajat ovat johdonmukaisesti odottamattomalla nimellä olevassa tiedostossa (päätelty); siirtomenettelyä ei kuvata eikä ole kokeiltu. |
@@ -24346,7 +24512,7 @@ nimeäminen, avoin); oletuskorjausta ei tehdä ennen päätöstä.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkInit.cpp:3357-3360`, `:1418`; `Hk/HkGlobals.cpp:132`; `docs-site/docs/hkkisawin/hkliite1.md` |
 
-Rekisteririvien tiiviste nyt: `81b114f36994`.
+Rekisteririvien tiiviste nyt: `2feb9300a8f8`.
 
 
 ---
@@ -24368,7 +24534,7 @@ epäonnistuu ja käyttäjä yrittää uudelleen ilman ohjelman sulkemista, tiedo
 muokattu, laskureita ei ole nollattu, aiemmat muistivaraukset vuotavat ja kilpailutiedosto
 avataan uudelleen.
 
-Vahvistettu (luettu koodista, riippumaton tarkastus osittain): käynnistys ei ole idempotentti.
+Luettu koodista ja osittain riippumattomasti tarkastettu (ei ajettu): käynnistys ei ole idempotentti.
 Mahdollinen (päätelty): tiedostonimet vioittuvat ja laskurit kaksinkertaistuvat. Tarkastus kumosi
 saman kilpailun uusintayrityksen laskuriosan: sellainen kaatuu raportin mukaan jo kilpailutiedoston
 avaukseen. Seuraus vaatii siis aiemman, varhaisen virheen tai eri kilpailun valinnan.
@@ -24424,7 +24590,7 @@ käynnistyksen virheilmoitus näkyy, mutta aineisto ei kuvaa ilmoitusta uusintay
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Riskiarvion mukaan vaikutus on epäsuora: laskurit voivat kaksinkertaistua ja ohjelma voi avata tyhjän aikahistoriatiedoston; päätelty, ei ajettu. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan ajanotto ei pysähdy. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei tiedossa | Riskiarvio sanoo, ettei ajanotto pysähdy, mutta kortti ei erittele välillistä vaikutusta: käynnistyksen uusinta voi vioittaa tiedostonimiä ja avata tyhjiä tiedostoja, jolloin ajanoton kirjausten kohde muuttuu; aineisto ei ratkaise. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Ei tiedossa | Aineisto ei käsittele vaikutusta leimausten lukuun. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Mahdollinen | Vioittuneilla nimillä avataan uudet tyhjät tiedostot, eikä vanhaa historiaa löydy; päätelty, ei ajettu. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Mahdollinen | Uudelleenajo ei nollaa numerohakemiston rivilaskuria (H-129:n kuvio), joten ison kilpailun kanssa ylivuoto on mahdollinen; päätelty, ei ajettu. |
@@ -24448,7 +24614,7 @@ Käynnistys epäonnistuu esimerkiksi siksi, että kilpailutiedosto on toisen ohj
 lukitsema, ja käyttäjä yrittää GUI:ssa uudelleen sulkematta ohjelmaa. Vahvistetun ja mahdollisen
 erottelu on luvussa 11. Tilanne:
 
-- Vahvistettu (luettu koodista): tiedostonimien muokkaus ei toistu turvallisesti.
+- Luettu koodista ja osittain riippumattomasti tarkastettu (ei ajettu): tiedostonimien muokkaus ei toistu turvallisesti.
 - Mahdollinen (päätelty): onnistuneessa uusintayrityksessä ohjelma käyttää vioittuneita
   tiedostonimiä ja avaa uudet, tyhjät tiedostot, jolloin vanhaa viestijonoa ja aikahistoriaa ei
   löydy. Laskurit voivat kaksinkertaistua; riskiarvion mukaan vaikutus tuloksiin on epäsuora.
@@ -24535,7 +24701,7 @@ Jos uudelleenkäynnistys on ohjeena, `aloitus`in uudelleenajettavuus voi jääd�
 | Liittyvät havainnot | H-129 |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkInit.cpp:3357-3360`, `:3371-3372`, `:3486-3491`; `Hk/HkIx.cpp:101-107`, `:1568-1602`; `cbHk/WinHk.cpp:279-283`, `:1176-1262`; `dbboxm/dbbox1.cpp:176-178` |
 
-Rekisteririvien tiiviste nyt: `11f86f494da9`.
+Rekisteririvien tiiviste nyt: `c6543b8df92b`.
 
 
 ---
@@ -24558,7 +24724,7 @@ yritä tekstimuotoisia rata- ja leimaustiedostoja, vaikka käynnistys yrittää.
 mutta se ei jäsenny, ohjelma käsittelee tilannetta kuin luku olisi onnistunut ja koskee jo
 vapautettuun ratamuistiin.
 
-Vahvistettu (luettu koodista, riippumaton tarkastus vahvisti): puuttuvan tiedoston haara poistaa
+Luettu koodista ja riippumattomasti tarkastettu (ei ajettu): puuttuvan tiedoston haara poistaa
 emit-tarkastuksen ilman tekstivarapolkua, ja jäsennysvirhe kulkee onnistumisen haaraan. Mahdollinen
 (päätelty, ei ajettu): jäsennysvirheen haara käyttää vapautettua muistia. Haaran ajo on avoin
 (Q110).
@@ -24588,7 +24754,10 @@ huone olisi kalustettu.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- **Ohjelmat:** HkKisaWin ja HkMaali. Viestiohjelmissa ei ole vaiheen vaihtoa.
+- **Ohjelmat:** HkKisaWin ja HkMaali. Viestiohjelmissa ei ole vaiheen vaihtoa (`vaihdavaihe`-funktiota
+  ei ole viestin lähteissä). Viestin radan uudelleenluku (`lueRatatiedotUudelleen`, `Juk/VEmit.cpp`)
+  on erillinen toiminto: se jättää `lue_radat_xml`:n paluuarvon käyttämättä eikä nollaa emit-lippua
+  [luettu koodista K-vaiheessa, ei tarkastettu].
 - **Edellytys:** vaiheen vaihto käynnissä olevassa ohjelmassa, ja uuden vaiheen rata-XML puuttuu
   tai ei jäsenny. Raportin mukaan puuttuminen on mahdollista asennuksessa, jossa käytetään vanhoja
   tekstimuotoisia ratatiedostoja tai yhtä rata-XML:ää kaikille vaiheille.
@@ -24679,7 +24848,7 @@ T-039:ään sekä KK-C9-2:n virheenvälitykseen.
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista ja vahvistettu riippumattomassa tarkastuksessa (C-8, Opus).
+(a) Ohjelmointivirhe: luettu koodista ja riippumattomasti tarkastettu (C-8, Opus).
 C-12 tarkensi, että jäsennysvirhe kulkee onnistumisen haaraan ja koskee vapautettua muistia.
 Ajoa ei ole.
 
@@ -24748,7 +24917,7 @@ HK-ohjelma pitää muistissa taulukkoa, josta se löytää emit-kortin koodin pe
 kilpailunumeron. Kilpailijan tallennuksessa taulukon päivitys on epäsymmetrinen kolmessa
 tilanteessa, ja koodi voi jäädä väärälle numerolle.
 
-- **Vahvistettu (riippumaton lähdetarkastus, ei ajoa):** kun kilpailijalla on kaksi koodia ja
+- **Luettu koodista ja riippumattomasti tarkastettu (ei ajoa):** kun kilpailijalla on kaksi koodia ja
   hänen numeronsa vaihtuu, toinen koodi jää vanhalle numerolle.
 - **Mahdollinen (päätelty, ei tarkastettu):** kun asetus sallii kaksi koodia ja kilpailijan toinen
   koodi vaihtuu tai tyhjennetään, vanha koodi jää taulukkoon. Kun kilpailijan tilaksi muutetaan P,
@@ -24830,7 +24999,7 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Vahvistetun ja mahdollisen erottelu on luvussa 11. HK-kilpailussa, jossa emit-kortit ovat käytössä:
 
 - Kahden koodin kilpailijan numeron vaihdon jälkeen toinen koodi osoittaa vanhaa numeroa
-  (vahvistettu mekanismina). Kun kortti luetaan, koodi tunnistetaan numerolle, jota
+  (luettu koodista ja riippumattomasti tarkastettu mekanismina). Kun kortti luetaan, koodi tunnistetaan numerolle, jota
   hakemisto ei enää tunne, tai numerolle, joka on annettu uudelleen (mahdollinen).
 - Asetuksen arvolla 1 vaihdetun tai tyhjennetyn toisen koodin vanha merkintä jää taulukkoon
   (mahdollinen, ei tarkastettu).
@@ -24881,8 +25050,8 @@ Juurisyy on JS-6 (muistitila rakennetaan vain käynnistyksessä); johdettua rake
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** N-C6 (kaksi koodia ja numeronvaihto) on vahvistettu riippumattomassa
-lähdetarkastuksessa (C-8); tarkastus laski vakavuuden hieman. N-C7 ja N-C15 on luettu koodista,
+**(a) Ohjelmointivirhe.** N-C6 (kaksi koodia ja numeronvaihto) on luettu koodista ja riippumattomasti
+tarkastettu (C-8); tarkastus laski vakavuuden hieman. N-C7 ja N-C15 on luettu koodista,
 mutta niitä ei ole tarkastettu riippumattomasti. Mitään ei ole ajettu.
 
 **(b) Käytännön seuraus.** Ei ole osoitettu. Kortin luvun yhdistyminen väärään numeroon on
@@ -25067,8 +25236,8 @@ heti, jos `timerfl` ei ole päällä. Juurisyy JS-10. Käyttää samaa koodia ku
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: riippumaton lähdetarkastus (C-8, osittain) vahvisti lukon puutteen ja
-kaksi säiettä. Ohjelmaa ei ajettu.
+(a) Ohjelmointivirhe: riippumaton lähdetarkastus (C-8, osittain) tarkasti lukon puutteen ja
+kaksi säiettä koodista. Ohjelmaa ei ajettu.
 
 (b) Käytännön seuraus: ei osoitettu. Seuraus (väärä aika, todennäköisimmin menetetty rivi) on
 päätelty koodista.
@@ -25240,7 +25409,7 @@ tiedoston tyhjennys (`fflush`) on ikkuna, jossa kuluttaja ehtii väliin. Kun `em
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: riippumaton lähdetarkastus (C-8) vahvisti mekanismin. Ohjelmaa ei ajettu.
+(a) Ohjelmointivirhe: mekanismi on luettu koodista ja riippumattomasti tarkastettu (C-8). Ohjelmaa ei ajettu.
 
 (b) Käytännön seuraus: ei osoitettu. Todennäköisyys on päätelty; rekisterin mukaan yksi kortti
 jää pois automaattikäsittelystä, ja se on käsin käsiteltävissä.
@@ -25303,7 +25472,7 @@ Rekisteririvien tiiviste nyt: `b46861ccb76e`.
 
 Kun ohjelma avaa verkkoyhteyttä lukijalaitteeseen ja yhteys torjutaan tai kone ei vastaa, ohjelma yrittää uudelleen ja pidentää odotusta yritys yritykseltä. Laskuri, joka määrää odotuksen pituuden, on kaikkien TCP-lukijoiden yhteinen. Siksi yhden lukijan toistuvat epäonnistumiset pidentävät myös toisen lukijan odotusta: toisen lukijan ensimmäinen epäonnistuminen voi odottaa 5 + 55 + 180 sekuntia, vaikka se itse ei ole yrittänyt aiemmin.
 
-Vahvistettu: laskurin jakaminen on luettu koodista ja riippumaton lähdetarkastus on vahvistanut sen, mutta laukaisun todettiin olevan alkuperäistä kuvausta kapeampi. Mahdollinen (päätelty): toinen lukija pysyy ilman yhteyttä enintään noin neljä minuuttia. Vika koskee yhteyden avaamista, ei jo avoimen yhteyden lukemista.
+Luettu koodista ja riippumattomasti tarkastettu (ei ajettu): laskurin jakaminen, mutta laukaisun todettiin olevan alkuperäistä kuvausta kapeampi. Mahdollinen (päätelty): toinen lukija pysyy ilman yhteyttä enintään noin neljä minuuttia. Vika koskee yhteyden avaamista, ei jo avoimen yhteyden lukemista.
 
 ### 2. Mitä ohjelma yrittää tehdä
 
@@ -25378,7 +25547,7 @@ Juurisyy JS-10 (jaettu tila ja VCL ilman omistajaa); pahentavana JS-9 (laiteyhte
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: staattisen laskurin jakaminen on luettu koodista. Riippumaton lähdetarkastus (C-8, Opus) vahvisti jakamisen ja totesi laukaisun alkuperäistä kuvausta kapeammaksi. Ajoa ei ole.
+(a) Ohjelmointivirhe: staattisen laskurin jakaminen on luettu koodista. Riippumaton lähdetarkastus (C-8, Opus) tarkasti jakamisen koodista ja totesi laukaisun alkuperäistä kuvausta kapeammaksi. Ajoa ei ole.
 
 (b) Käytännön seuraus: ei osoitettu. Skenaario (toisen lukijan pidentynyt odotus) on päätelty koodista.
 
@@ -25438,7 +25607,7 @@ HK-ohjelma pitää sarjoittain laskureita siitä, kuinka monta kilpailijaa on mu
 heistä on vakantteja. Kaksi asiaa voi mennä väärin: vakanttien laskuri kasvaa kahdella
 tilalla mutta vähenee vain yhdellä, ja kaksi yhteissummaa ei nollaudu koskaan.
 
-- **Vahvistettu (riippumaton lähdetarkastus, ei ajoa):** vakanttilaskurin epäsymmetria
+- **Todennettu koodista (riippumaton lähdetarkastus, ei ajoa):** vakanttilaskurin epäsymmetria
   (kasvaa tiloilla V ja P, vähenee vain tilalla V).
 - **Mahdollinen (luettu koodista, ei tarkastettu):** yhteissummat (ilmoittautuneet ja
   yhteistulokset) eivät nollaudu vaiheen vaihdossa eikä sarjamuutosten jälkeen, joten ne
@@ -25521,7 +25690,7 @@ Vahvistetun ja mahdollisen erottelu on luvussa 11. HK-kilpailussa:
 
 - Kun P-kilpailija, joka lasketaan mukaan, poistetaan tai vaihdetaan, vakanttilaskuri jää liian
   suureksi. Sarjan "mukana miinus vakantit" -luku on liian pieni, ja sarja voi pudota luetteloista
-  tai arvonnan kilpailijamäärä on väärä (vahvistettu epäsymmetriana; seuraus luettu koodista).
+  tai arvonnan kilpailijamäärä on väärä (epäsymmetria luettu koodista ja riippumattomasti tarkastettu; seuraus luettu koodista).
 - Vaiheen vaihdon jälkeen ilmoittautuneiden ja yhteistulosten summat ovat vanhan ja
   uuden vaiheen summa (mahdollinen, ei tarkastettu). Sarjamuokkauksen jälkeen ilmoittautuneiden
   summa kaksinkertaistuu (raportti).
@@ -25575,8 +25744,8 @@ ylläpidetään käsin pareittain (T-039).
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Vakanttilaskurin epäsymmetria (N-C4) on vahvistettu riippumattomassa
-lähdetarkastuksessa (C-8). Summien nollaamattomuus (N-C5) on luettu koodista, mutta sitä ei ole
+**(a) Ohjelmointivirhe.** Vakanttilaskurin epäsymmetria (N-C4) on luettu koodista ja riippumattomasti
+tarkastettu (C-8). Summien nollaamattomuus (N-C5) on luettu koodista, mutta sitä ei ole
 tarkastettu riippumattomasti. Mitään ei ole ajettu; raportti ehdottaa yksikkötestiä (lisää
 P-kilpailija, poista, tarkista että laskuri on nolla).
 
@@ -25649,7 +25818,7 @@ Ohjelma muistaa taulukossa, mikä luettu emit-kortti kuuluu minkäkin kilpailija
 Kun kilpailija poistetaan, tämä linkki jää paikalleen. Jos vapautunut paikka annetaan myöhemmin
 uudelle kilpailijalle, uusi kilpailija perii vanhan linkin ja näyttää jo luetulta.
 
-- **Vahvistettu (riippumaton lähdetarkastus, ei ajoa):** poisto ei tyhjennä linkkiä, eikä haku
+- **Luettu koodista ja riippumattomasti tarkastettu (ei ajoa):** poisto ei tyhjennä linkkiä, eikä haku
   tarkista, että linkitetty emit-tietue kuuluu haettavalle kilpailijanumerolle.
 - **Mahdollinen (päätelty):** vapautettu paikka otetaan uudelleen käyttöön, jolloin periytyminen
   tapahtuu. Paikan uudelleenkäyttöä ei ole tarkastettu.
@@ -25714,8 +25883,8 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 
 Vahvistetun ja mahdollisen erottelu on luvussa 11. Kilpailussa, jossa emit-kortteja luetaan:
 
-- Kilpailija, jolla on luettu emit-kortti, poistetaan. Linkki jää tietuepaikalle (vahvistettu
-  koodista).
+- Kilpailija, jolla on luettu emit-kortti, poistetaan. Linkki jää tietuepaikalle (luettu
+  koodista ja riippumattomasti tarkastettu).
 - Jos seuraava lisätty kilpailija saa saman paikan, hän näyttää lukeneen kortin, vaikka hänen
   korttiaan ei ole luettu (mahdollinen; paikan uudelleenkäyttö päätelty).
 - Ajanotto ei pysähdy (riskiarvio). Riskiarvion mukaan vaikutus tuloksiin on suora. Aineisto ei
@@ -25755,8 +25924,8 @@ ylläpidetty johdettu rakenne (T-039).
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Puuttuva tyhjennys ja puuttuva tarkistus on vahvistettu
-riippumattomassa lähdetarkastuksessa (C-8). Tarkastus ei kattanut paikanantoa (`newrec`).
+**(a) Ohjelmointivirhe.** Puuttuva tyhjennys ja puuttuva tarkistus on luettu koodista ja
+riippumattomasti tarkastettu (C-8). Tarkastus ei kattanut paikanantoa (`newrec`).
 Mitään ei ole ajettu.
 
 **(b) Käytännön seuraus.** Ei ole osoitettu. Periytyminen edellyttää, että vapautettu paikka
@@ -25826,7 +25995,7 @@ alkuaikaa ja emit-korttien kaksoiskappaleiden eston muistitaulun täyttölaskuri
 erälähtö voi jäädä voimaan seuraavassa vaiheessa. Kaksoiskorttien esto voi lakata toimimasta
 muutaman vaiheen vaihdon jälkeen ilman ilmoitusta.
 
-Vahvistettu (luettu koodista ja riippumaton tarkastus): kaksoiskorttien eston laskuria ei nollata.
+Luettu koodista ja riippumattomasti tarkastettu (ei ajettu): kaksoiskorttien eston laskuria ei nollata.
 Tarkastus vahvisti erälähdön osittain: nollaus puuttuu, mutta vaikutus rajautuu polkuihin, jotka
 tallentavat arvon vain, kun se on vielä oletusarvossa. Mahdollinen (päätelty): vanha erälähtö
 vaikuttaa uuden vaiheen kirjauksiin, ja kaksoiskorttien esto lakkaa raportin laskuesimerkin
@@ -25858,7 +26027,11 @@ emit-kortin toinen luku: ohjelma pitää muistissa taulua jo luetuista korteista
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- **Ohjelmat:** HkKisaWin ja HkMaali. Viestiohjelmissa ei ole vaiheen vaihtoa.
+- **Ohjelmat:** HkKisaWin ja HkMaali. Viestiohjelmissa ei ole vaiheen vaihtoa, mutta
+  kaksoiskorttien eston laskurimekanismi on viestissä sama: viestin emit-taulun tyhjennys
+  jättää täyttölaskurin entiseen arvoonsa radan uudelleenluvussa ja GUI:n emit-analyysin
+  uusinnassa [luettu koodista K-vaiheessa, ei tarkastettu]. Havainto (vaiheen vaihto) on
+  rekisterissä vain HK:lle; viestin osuus on vikaehdokas tarkastajan raportissa, ei rekisterissä.
 - **Edellytys, erälähtö:** monivaiheinen kilpailu, jossa lajit N, P tai U käyttävät erälähtöä
   tai lähtö kirjataan ARES-lukijalla, ja vaihe vaihdetaan käynnissä olevassa ohjelmassa
   (raportti; lajikirjainten tarkka merkitys ei ole tässä aineistossa).
@@ -25887,7 +26060,7 @@ lähtöaikoina; aineisto ei kuvaa tarkemmin.
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Riskiarvion mukaan vaikutus on epäsuora: vanha erälähdön alkuaika voi vaikuttaa uuden vaiheen lähtöaikoihin ja kaksoiskorttien esto voi lakata; päätelty. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan ajanotto ei pysähdy. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei tiedossa | Riskiarvio sanoo, ettei ajanotto pysähdy; vanha erälähtö voi vaikuttaa uuden vaiheen lähtö- ja kirjausaikoihin (luku 7, päätelty), eikä aineisto ratkaise välillistä vaikutusta ajanottoon. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Mahdollinen | Kun kaksoiskorttien esto lakkaa, saman kortin toinen luku käsitellään; päätelty raportin laskuesimerkistä, ei ajettu. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Ei tiedossa | Aineisto ei kerro, vaikuttaako vanha erälähtö tallennettuihin tietoihin. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Ei tiedossa | Aineisto ei kirjaa kaatumista tämän vian seurauksena. |
@@ -25901,7 +26074,7 @@ lähtöaikoina; aineisto ei kuvaa tarkemmin.
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Ei vaikutusta (perusteltu) | Laukeaa ilman poikkeustilannetta: tavallinen vaiheen vaihto riittää. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Aineisto ei kuvaa näkyvää oiretta. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Ei tiedossa | Aineistossa ei ole kirjattua keinoa; OP-6:n uudelleenkäynnistysvaihtoehto on avoin päätös, ei keino. |
-| Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi käsin; uudelleenkäynnistys rakentaa tilan uudelleen (päätelty); ei kokeiltu. |
+| Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi käsin; uudelleenkäynnistys nollaa laskurin ja aloittaa tyhjällä taululla (luettu koodista, ei kokeiltu); ennen käynnistystä luettuja kortteja esto ei tunne. |
 
 Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohjelmaa ajamalla; Mahdollinen = seuraa koodista, mutta seurausta ei ole osoitettu; Ei vaikutusta (perusteltu) = aineisto osoittaa, ettei seurausta synny; Ei tiedossa = aineisto ei ratkaise; _Ei arvioitu_ = riviä ei ole vielä arvioitu. Tiedon puute ei tarkoita, ettei vaikutusta ole. Lähteet: `doc/arkkitehtuuri/rekisteri/vaikutukset.csv`.
 
@@ -25910,7 +26083,8 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Monivaiheisessa HK-kilpailussa vaihe vaihdetaan käynnissä olevassa ohjelmassa, ja emit-kortteja
 luetaan joka vaiheessa. Vahvistetun ja mahdollisen erottelu on luvussa 11. Tilanne:
 
-- Vahvistettu (luettu koodista): vaiheen vaihto ei nollaa kaksoiskorttien eston laskuria.
+- Luettu koodista ja riippumattomasti tarkastettu (ei ajettu): vaiheen vaihto ei nollaa
+  kaksoiskorttien eston laskuria.
 - Mahdollinen (päätelty): taulun kapasiteetti kuluu, ja muutaman vaiheen vaihdon jälkeen saman
   kortin toinen luku ei enää hylkäydy kaksoiskappaleena. Mahdollinen: edellisen vaiheen erälähdön
   alkuaika säilyy uudessa vaiheessa niissä poluissa, jotka tallentavat alkuajan vain
@@ -25920,9 +26094,9 @@ luetaan joka vaiheessa. Vahvistetun ja mahdollisen erottelu on luvussa 11. Tilan
 
 ### 8. Palautuminen ja uudelleenkäynnistys
 
-- **Virhetilan poistaminen:** tila on vain muistissa. Ohjelman uudelleenkäynnistys rakentaa sen
-  uudelleen käynnistyksessä [päätelty koodista]; ei kokeiltu. Riskiarvio kirjaa palautettavuudeksi
-  "käsin".
+- **Virhetilan poistaminen:** tila on vain muistissa. Ohjelman uudelleenkäynnistys nollaa
+  laskurin ja aloittaa tyhjällä taululla [luettu koodista]; ennen käynnistystä luettuja kortteja
+  esto ei tunne. Ei kokeiltu. Riskiarvio kirjaa palautettavuudeksi "käsin".
 - **Normaalin toiminnan palauttaminen:** uudelleenkäynnistys, kuten edellä; aineisto ei kuvaa
   muuta menettelyä.
 - **Tietojen palauttaminen:** aineisto ei kerro, voiko kaksoiskorttien eston lakattua luetut
@@ -25950,7 +26124,7 @@ vain käynnistyksessä); kuuluu tekniseen velkaan T-038.
 ### 11. Mitä on todennettu
 
 (a) Ohjelmointivirhe: luettu koodista ja tarkastettu riippumattomasti (C-8, Opus). N-B11
-(kaksoiskorttien laskuri) vahvistettiin. N-B4 (erälähtö) vahvistettiin osittain: nollauksen
+(kaksoiskorttien laskuri) tarkastettiin koodista ja todettiin oikeaksi. N-B4 (erälähtö) todettiin osittain oikeaksi: nollauksen
 puute on totta, mutta vaikutus rajautuu vain polkuihin, jotka tallentavat alkuajan arvon ollessa
 oletusarvossa. Ajoa ei ole.
 
@@ -25998,7 +26172,7 @@ päättää OP-6 (avoin).
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `Hk/HkIV.cpp:2407-2411`; `Hk/HkDat.cpp:1254-1257`; `Hk/HkEmit.cpp:1303-1314`, `:1627-1638`, `:6367` |
 
-Rekisteririvien tiiviste nyt: `bead75f49b21`.
+Rekisteririvien tiiviste nyt: `89bb2aed4e9c`.
 
 
 ---
@@ -26307,7 +26481,8 @@ Kohdat tässä järjestyksessä:
 ### 4. Missä tilanteessa vika voi ilmetä
 
 - **Ohjelmat:** HkKisaWin ja HkMaali. Kohdat N-B6, N-B10 ja N-B14 koskevat GUI:ta (HkKisaWin).
-  Viestiohjelmissa ei ole vaiheen vaihtoa.
+  Viestiohjelmissa ei ole vaiheen vaihtoa: `vaihdavaihe`-funktiota ei ole viestin lähteissä (`Juk/`,
+  `JukConsole/`, `ViestiWin/`) [luettu koodista K-vaiheessa, ei tarkastettu].
 - **Laukaisut kohdittain:** N-B5: listojen tulostus vaiheessa 2 ennen ensimmäistä maaliintuloa
   kyseisellä maalilla. N-B6: vaiheet, joissa on eri määrä väliaikoja tai sakkoja. N-B7: käsin
   muokattu XML. N-B8: vaiheen vaihto kilpailussa, jossa emit-koodeja on kaksi. N-B9: lähtöpistehaku
@@ -26330,7 +26505,7 @@ seuraus (väärä arvo vai kaatuminen) ei ole tiedossa.
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Riskiarvion mukaan vaikutus on epäsuora: vaiheen 2 ennakoitu aika, lähtöpisteet ja korostukset voivat perustua edellisen vaiheen tietoihin; päätelty. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan ajanotto ei pysähdy. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei tiedossa | Riskiarvio sanoo, ettei ajanotto pysähdy; kortin kohta N-B6 mainitsee, että ajanottojonon koko voi jäädä ensimmäisen jonon luontihetken mukaiseksi, eikä aineisto ratkaise vaikutusta ajanottoon. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Mahdollinen | N-B8: toisen emit-koodin tiedot voivat jäädä edelliseltä vaiheelta; N-B14: tyhjennetty emit-koodi osoittaa vanhaan kilpailijaan; päätelty. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Mahdollinen | N-B7: käsin muokattu XML voi viedä maaliajan kirjoituksen taulukon ulkopuolelle; päätelty, ei ajettu. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Mahdollinen | N-B7: taulukon ulkopuolinen kirjoitus; seuraus (väärä arvo vai kaatuminen) ei ole tiedossa; päätelty. |
@@ -26460,7 +26635,7 @@ OP-6 (avoin).
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio f7fe553, polut `TPsource/V52/`-hakemistosta) | `../todisteet/c8/osaB-elinkaari.md` N-B5–N-B14; `Hk/HkInit.cpp:217-266`, `:3211`, `:3324-3392`; `Hk/HkIV.cpp:204-210`; `cbHk/UnitNollaus.cpp:106-111` |
 
-Rekisteririvien tiiviste nyt: `b5da23041abd`.
+Rekisteririvien tiiviste nyt: `39972ceb5e26`.
 
 
 ---
@@ -27224,7 +27399,7 @@ palauttaa 8-bittisillä tyypeillä `fputs`:n `EOF`:n (−1) ja `fputws` palautta
 
 (a) Ohjelmointivirhe: toistettu eristetyllä kokeella (C-9 vaihe 2; MSVC-koeohjelma, kirjoitusvirhe
 tuotettu vaihtamalla virran kahva vain luku -kopioon) ja C++Builderin RTL-kokeella (`fputws`
-palauttaa −1); riippumaton tarkastus vahvisti WEOF-osan molemmille kääntäjille.
+palauttaa −1); riippumaton tarkastus tarkasti WEOF-osan koodista molemmille kääntäjille.
 (b) Käytännön seuraus: osoitettu kokeessa (MSVC): epäonnistunut huuhtelu palauttaa −1, tarkistus
 ei laukea, tiedosto 0 tavua avauksen jälkeen ja tyhjä tai osittainen kirjoitusvirheen jälkeen,
 lukijan jakorikkomus generoinnin aikana, lukijan estämä avaus tuottaa kaksi ilmoitusta ja
@@ -27461,7 +27636,7 @@ Rekisteririvien tiiviste nyt: `49f1072576d3`.
 
 <a id="h-149"></a>
 
-## H-149 – Viestiohjelman automaattinen HTML-tuloste kaataa konsoliohjelman jo ensimmäisellä kierroksella tavallisessa kokoonpanossa
+## H-149 – Viestiohjelman automaattinen HTML-tuloste kaataa konsoliohjelman jo ensimmäisellä kierroksella, kun automaattitulostus on päällä
 
 > **H-149** · tila: **avoin** · prioriteetti: **P2** · tekninen vakavuus: korkea
 > Ohjelmointivirheen todennus: toistettu eristetyllä kokeella tai testikehyksessä. Riskiarvion saavutettavuus: tavallisessa käytössä (tarkemmin luvussa 4).
@@ -27473,8 +27648,10 @@ Rekisteririvien tiiviste nyt: `49f1072576d3`.
 Kun viestiohjelmassa on automaattinen HTML-tulostus päällä, ohjelma sulkee tulostiedoston kanavan
 (`PRFILE`, ks. T-042) mutta jättää muistiinsa osoitteen suljettuun kanavaan. Sen jälkeen se joko
 käyttää suljettua kanavaa tai sulkee sen toisen kerran, ja lisäksi se poistaa listatiedoston lukuolion
-kahdesti. Tavallisessa kokoonpanossa konsoliohjelmat ViestiMaali ja ViestiLuenta päättyvät
-ensimmäisellä automaattisella tulosteella.
+kahdesti. Oletuskokoonpanossa (erilliset tiedostot, ei listatiedostoa) konsoliohjelma ViestiMaali päättyy
+ensimmäisellä automaattisella tulosteella (testikehys). ViestiLuenta käännetään samalla koodilla, ja sen
+kellosilmukka kutsuu `autofile`a (`Juk/VIv.cpp`; `AUTOFILE` määritelty `JukLuenta520.vcxproj`:ssä),
+mutta ajoa ei ole tehty [luettu koodista K-vaiheessa, ei tarkastettu].
 
 Vahvistettu (toistettu eristetyssä testikehyksessä tuotantokoodilla, MSVC Release): ohjelmaprosessi
 päättyy ensimmäisellä kierroksella virhekoodiin, kun käytössä ovat erilliset sarjatiedostot eikä
@@ -27510,9 +27687,8 @@ vapautettu muistipaikka ehditty antaa muuhun käyttöön.
 ### 4. Missä tilanteessa vika voi ilmetä
 
 - Ohjelmat: ViestiMaali ja ViestiLuenta (MSVC) ja ViestiWin (bcc32). Koodi on viestiohjelmien yhteistä
-  (`Juk/`); HK-ohjelmilla on oma, erillinen autofile-koodi (H-150, H-151). Rekisterin ohjelmaluettelo
-  sisältää myös HK-ohjelmat, koska kanavan sulkeva funktio on jaetussa kirjastossa.
-- Asetus: automaattinen tulostus on päällä. Tavallisimmat kokoonpanot ovat konsolin `HTML=nimi` ja GUI:n
+  (`Juk/`); HK-ohjelmilla on oma, erillinen autofile-koodi (H-150, H-151).
+- Asetus: automaattinen tulostus on päällä. Kokoonpanoja, joissa vika laukeaa, ovat konsolin `HTML=nimi` ja GUI:n
   automaattitiedostodialogin oletusvalinta "erilliset tiedostot" ilman `AUTOFILE.LST`-tiedostoa. Silloin
   ohjelma päätyy tilaan, jossa kaksoisvapautus tapahtuu riippumatta TCP-yhteydestä.
 - Yhden tiedoston tila syntyy konsolin valikosta, `FILETCP`-asetuksesta tai GUI:n valinnasta
@@ -27545,7 +27721,7 @@ vapautettu muistipaikka ehditty antaa muuhun käyttöön.
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei tiedossa | Aineisto ei kuvaa laitteiden reaktiota ohjelman päättymiseen. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Mahdollinen | Automaattinen HTML-tuloste päättyy virheeseen ensimmäisellä kierroksella; tiedoston sisältöä virhehetkellä ei ole tarkistettu. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole; laukaisijana on ohjelman oma automaattitulostus. |
-| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | **Vahvistettu** | Testikehyksessä oletuskokoonpano (erilliset tiedostot, ei AUTOFILE.LST) kaatui ilman virhettä tai erikoisasetusta; automaattitulostus on silti kytkettävä päälle. |
+| Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Mahdollinen | Kun automaattitulostus on päällä, oletuskokoonpano (erilliset tiedostot, ei AUTOFILE.LST) kaatuu testikehyksessä; automaattitulostuksen yleisyys asennuksissa ei ole tiedossa, joten arvoa ei voi pitää vahvistettuna tavallisena käyttönä. |
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Ei vaikutusta (perusteltu) | Laukeaa ilman poikkeustilannetta: vika ilmenee automaattisen tulostuksen ensimmäisellä kierroksella ilman virhettä tai katkoa. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Mahdollinen | Konsoliohjelman äkillinen päättyminen näkyy käyttäjälle; ilmoituksesta aineisto ei kerro. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: automaattitulostuksen jättäminen pois käytöstä, koska kaatuminen tapahtuu siinä; toimitetussa ohjelmassa ei kokeiltu. Turvallista tapaa käyttää automaattitulostusta ei ole. |
@@ -27602,7 +27778,7 @@ Juurisyy JS-8 (kahvoilla ja osoittimilla ei omistajaa); tekninen velka T-042.
 
 (a) Ohjelmointivirhe: toistettu C-9 vaiheen 2 koeohjelmalla (`todisteet/c9/vaihe2/`, ASan): vapautetun
 muistin käyttö (a, d), kaksoisvapautus (b) ja käyttöoikeusvirhe `fclose`ssa (c, todiste yhdessä koodin
-kanssa). Riippumaton tarkastus vahvisti ja korjasi saavutettavuuden: oletuskokoonpano on polku (c).
+kanssa). Riippumaton tarkastus tarkasti koodin ja korjasi saavutettavuuden: oletuskokoonpano on polku (c).
 
 (b) Käytännön seuraus: MSVC Release -koeohjelma päättyi virhekoodiin ensimmäisellä kierroksella (c) ja N1
 toisella; se kirjataan seurauksena, ei mekanismin todisteena. Toimitettua ohjelmaa ei ajettu. bcc32-RTL:n
@@ -27614,7 +27790,7 @@ erillisessä konsolikokeessa toinen vapautus palasi hiljaa; ViestiWinin VCL-muis
 - Q93 (avoin): rikkooko `sendtcpfile`n tiedostovirta vastapään jäsennyksen tavallisella
   tiedonsiirtoyhteydellä.
 - Polku (c) ajettiin vain ilman TCP-yhteyttä; (c) TCP-yhteydellä on päätelty.
-- ViestiLuennan saavutettavuutta ei tarkistettu (koodi käännetään, `AUTOFILE` määritelty).
+- ViestiLuenta: kellosilmukka kutsuu `autofile`a [luettu koodista K-vaiheessa, ei tarkastettu]; ajoa ei ole tehty.
 - Mitä käyttäjä näkee konsolissa kaatumisen hetkellä. Viestin XML-tiedoston vajaa sisältö on H-158.
 
 ### 13. Miten vika on tarkoitus korjata
@@ -27652,14 +27828,14 @@ päätöksiä ei ole.
 | Liittyvät havainnot | T-042 H-151 H-152 H-158 |
 | Lähdeviitteet (revisio 7aaca40, polut `TPsource/V52/`-hakemistosta) | `../todisteet/c9/osaE-tarkastus.md` uusi 1; `Juk/VTulostus.cpp:7036-7043`, `:7141-7164`, `:7200`, `:7295-7321`, `:7131`; `tputilv2/Wrttext.cpp:279-300`; `RADStudio10/ViestiWin.cbproj:134`; `Juk/VTulostus.cpp:7104-7133`, `:7260-7262`; `Juk/VInit.cpp:919-929`; `Tp/TpComY.cpp:1221-1222`; `../virheenkasittely.md` luku 12.1; `../todisteet/c9/vaihe2/tarkastus.md` |
 
-Rekisteririvien tiiviste nyt: `b4f0c89168f8`.
+Rekisteririvien tiiviste nyt: `9691cf4eddd2`.
 
 
 ---
 
 <a id="h-150"></a>
 
-## H-150 – HK:n automaattinen XML-vienti vuotaa tiedostovirran joka kierroksella, ja virtojen loppuessa tiedostojen avaukset epäonnistuvat
+## H-150 – HK:n automaattinen XML-vienti vuotaa tiedostovirran joka kierroksella, ja virtojen loppuessa C-kirjaston tiedostoavaukset epäonnistuvat
 
 > **H-150** · tila: **avoin** · prioriteetti: **P2** · tekninen vakavuus: keskitaso
 > Ohjelmointivirheen todennus: toistettu eristetyllä kokeella tai testikehyksessä. Riskiarvion saavutettavuus: tietyllä asetuksella tai kokoonpanolla (tarkemmin luvussa 4).
@@ -27671,7 +27847,8 @@ Rekisteririvien tiiviste nyt: `b4f0c89168f8`.
 HK-ohjelmien automaattinen XML-vienti luo vaiheessa 2 tai myöhemmässä joka kierroksella listatiedoston
 lukuolion kahdesti mutta poistaa vain viimeisen. Joka kierroksella vuotaa pieni olio (86 tavua) ja, jos
 työhakemistossa on `AUTOFILE.LST`, yksi tiedostovirta ja kahva. Kun käyttöjärjestelmän tai ajonaikaisen
-kirjaston virtaraja täyttyy, kaikki tiedostojen avaukset epäonnistuvat.
+kirjaston virtaraja täyttyy, kaikki C-kirjaston kautta avattavat tiedostot (esim. tulosteet, lokit ja
+emit-tiedosto) epäonnistuvat; kilpailijatiedosto `KILP.DAT` avataan toisella tavalla [luettu koodista].
 
 Vahvistettu (toistettu testikehyksessä): vuoto sekä MSVC:n virtaraja (511/512 virtaa noin 508 kierroksessa)
 ja bcc32-kirjaston raja 50 virtaa erillisessä konsolikokeessa. Mahdollinen (päätelty, ei GUI-ajoa, Q95):
@@ -27690,7 +27867,8 @@ Joka kierroksella ohjelma avaa listatiedoston (`AUTOFILE.LST`) lukua varten mutt
 sitä. Vienti käy silmukan kahdesti, ja jokaisella kerralla luodaan uusi olio, mutta vain viimeinen poistetaan.
 Edellinen jää muistiin, ja jos listatiedosto on olemassa, myös sen virta ja kahva jäävät auki. Vuoto kasvaa
 jokaisella kierroksella. Kun virrat loppuvat, tiedostojen avaus epäonnistuu: automaattivienti ei jatku, ja
-muut tiedostoihin kirjoittavat toiminnot saavat virheilmoituksia.
+muut C-kirjaston kautta tiedostoja avaavat toiminnot saavat virheilmoituksia. `KILP.DAT` avataan
+Win32-kutsulla (`dbboxm`), joten sen kirjoitus ei kuulu virtarajan piiriin [luettu koodista].
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
@@ -27704,8 +27882,8 @@ muut tiedostoihin kirjoittavat toiminnot saavat virheilmoituksia.
 ### 5. Mitä käyttäjä voi huomata
 
 - Vuoto ei näy mitenkään ennen virtojen loppumista.
-- Virtojen loputtua automaattivienti epäonnistuu ja ilmoitus tulee joka kierroksella; myös muut tiedostoja
-  avaavat toiminnot (viennit, lokit) epäonnistuvat ilmoituksella [päätelty].
+- Virtojen loputtua automaattivienti epäonnistuu ja ilmoitus tulee joka kierroksella; myös muut C-kirjaston kautta
+  tiedostoja avaavat toiminnot (viennit, lokit) epäonnistuvat ilmoituksella [päätelty].
 - Vika voi jäädä huomaamatta virtojen loppumiseen asti.
 
 ### 6. Vaikutukset kilpailuun
@@ -27717,14 +27895,14 @@ muut tiedostoihin kirjoittavat toiminnot saavat virheilmoituksia.
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Mahdollinen | Emit-tiedoston uudelleenavauksen epäonnistuminen voi estää korttien tallennuksen; päätelty, ei ajettu (Q95). |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Ei tiedossa | KILP.DAT ei ole vian kohde (C-9 osa C), mutta emit- ja AJAT-tiedostojen avausten epäonnistumisen seuraus on päätelty eikä todennettu. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Mahdollinen | Virran NULL-arvon käyttö emit-tiedoston uudelleenavauksessa voi kaataa ohjelman; päätelty koodista, ei ajettu. |
-| Vaikutus: Voiko ohjelma tai yksittäinen toiminto jäädä jumiin? | Mahdollinen | Avausvirheen ilmoitus annetaan automaattitulostuksen lukon alla ja voi pysäyttää taustasäikeen; päätelty samasta ilmoituspolusta kuin H-147:n kokeessa, ei ajettu. |
+| Vaikutus: Voiko ohjelma tai yksittäinen toiminto jäädä jumiin? | Ei tiedossa | Avausvirheen ilmoitus (Hk/HkTulostus.cpp:7110-7114) annetaan kestolla 2000: konsolissa writeerror_w odottaa vain 2 sekuntia eikä taustasäie jää pysyvästi; GUI:n TFormSelect3::Kysy-polun aikaraja on tarkistamatta (Q6-raportin avoin kysymys). Aiempi lähde (lukija pitää tiedostoa auki) ei koske tätä polkua. |
 | Vaikutus: Voiko jokin mennä väärin ilman ilmoitusta tai näkyvää oiretta? | Mahdollinen | Vuoto on näkymätön virtojen loppumiseen asti (mitattu testikehyksessä); sen jälkeen ilmoitukset tulevat. |
 | Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Ei tiedossa | Aineisto ei kerro vaikutusta työasemien väliseen tiedonsiirtoon. |
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei tiedossa | Aineisto ei kerro vaikutusta lukijoihin, kelloihin, tauluihin tai tulostimiin. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Mahdollinen | Virtojen loputtua automaattinen XML-vienti epäonnistuu ilmoituksella; MSVC-kokeessa vienti jatkoi virtojen täyttyessä, bcc32-seurauksia ei mitattu. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole; laukaisijana on ohjelman oma ajastettu vienti. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei tiedossa | Riskiarvio: asetus. Vika edellyttää XML-automaattivientiä ja vaihetta 2 tai myöhempää, ja virtavuoto lisäksi AUTOFILE.LST-tiedostoa; aineisto ei kerro, onko se tavallista. |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Ilmenee harvinaisella asetusyhdistelmällä (XML-vienti, vaihe 2 tai myöhempi, AUTOFILE.LST); luettu koodista ja toistettu testikehyksessä. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Ilmenee asetusyhdistelmällä (XML-vienti, vaihe 2 tai myöhempi, AUTOFILE.LST), jonka yleisyys ei ole tiedossa; jos se on harvinainen asetus, kyse on poikkeustilanteesta. Luettu koodista ja toistettu testikehyksessä. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Mahdollinen | Vuoto ei näy; virtojen loputtua ilmoitukset tulevat joka kierroksella (päätelty). |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: ohjelman uudelleenkäynnistys ennen virtojen täyttymistä, koska uudelleenkäynnistys nollaa vuodon (päätelty); tehoa ei ole kokeiltu. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; vuoto alkaa alusta, tehoa ei ole kokeiltu. |
@@ -27771,7 +27949,7 @@ omistajaa). Kokonaisuus on KK-C9-1, toissijaisesti KK-C9-3.
 ### 11. Mitä on todennettu
 
 (a) Ohjelmointivirhe: toistettu testikehyksessä (C-9 vaihe 2): 86 tavua keosta kierrosta kohti; riippumaton
-tarkastus vahvisti vuodon.
+tarkastus tarkasti vuodon koodista ja kokeen.
 
 (b) Käytännön seuraus: MSVC-virtaraja mitattu (511/512 noin 508 kierroksessa); bcc32-raja mitattu
 erillisessä konsoliohjelmassa (50 virtaa). Seurauksia HkKisaWinissä ei ole ajettu.
@@ -27815,7 +27993,7 @@ HkKisaWinin GUI-testi (Q95). Omistajan päätöksiä ei ole.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio 7aaca40, polut `TPsource/V52/`-hakemistosta) | `../todisteet/c9/osaC-elinkaari.md` N-C1; `Hk/HkTulostus.cpp:7120-7147`, `:7314-7316`; `Hk/HkDef.h:53-55`; `../virheenkasittely.md` luku 12.5 |
 
-Rekisteririvien tiiviste nyt: `fe247143864d`.
+Rekisteririvien tiiviste nyt: `2de49139f1d9`.
 
 
 ---
@@ -27887,7 +28065,7 @@ tarkistus palauttaa jatkossa hiljaa 1, joten automaattitulostus lakkaa.
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Mahdollinen | Automaattitulostuksen HTML- ja XML-tiedostot voivat lakata päivittymästä; luettu koodista, vapautetun muistin luku toistettu ASanilla. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole; laukaisijana on ohjelman oma automaattitulostus. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei tiedossa | Riskiarvio: asetus. Vika edellyttää TCP-yhteyttä ja sarjakohtaista automaattitulostusta; aineisto ei kerro, onko se tavallista. |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Ei vaikutusta (perusteltu) | Laukeaa ilman poikkeustilannetta: ensimmäinen TCP-lähetys riittää; lähetyssäikeen käynnistyksen epäonnistuminen on lisäilmentymä. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Asetusyhdistelmä TCP-yhteys ja sarjakohtainen automaattitulostus, jonka yleisyys ei ole tiedossa; jos se on harvinainen asetus, kyse on poikkeustilanteesta. Lähetyssäikeen käynnistyksen epäonnistuminen on lisäilmentymä. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Ohjelma ei ilmoita vapautetun muistin käytöstä; käyttäjä huomaa vain mahdollisen päättymisen. Aineisto ei ratkaise. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: automaattitulostuksen käyttö ilman TCP-lähetystä, koska vika vaatii TCP-lähetyksen; tehoa ei ole kokeiltu. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; vika uusiutuu ensimmäisen TCP-lähetyksen jälkeen; tehoa ei ole kokeiltu. |
@@ -27931,7 +28109,7 @@ avoimeksi ja tarkistus palauttaa 1. Juurisyy JS-8 (T-042).
 ### 11. Mitä on todennettu
 
 (a) Ohjelmointivirhe: toistettu ASanilla ilman verkkoa (`hComm` 0; vapautus tapahtuu lähetyksen tuloksesta
-riippumatta). Kaksoisvapautus sarjatilassa on vain koodista luettu. Riippumaton tarkastus vahvisti.
+riippumatta). Kaksoisvapautus sarjatilassa on vain koodista luettu. Riippumaton tarkastus tarkasti koodin.
 
 (b) Käytännön seuraus: ei mitattu Release-ohjelmassa eikä GUI:ssa.
 
@@ -27972,7 +28150,7 @@ Testit: C-9:n koeohjelmat. Omistajan päätöksiä ei ole.
 | Liittyvät havainnot | T-042 H-149 H-152 H-158 |
 | Lähdeviitteet (revisio 7aaca40, polut `TPsource/V52/`-hakemistosta) | `../todisteet/c9/osaC-elinkaari.md` N-C2; `Hk/HkTulostus.cpp:7060`, `:7093`, `:7171-7174`, `:7272-7275`, `:7317-7340`; `../virheenkasittely.md` luku 12.5 |
 
-Rekisteririvien tiiviste nyt: `d33cc18fc10d`.
+Rekisteririvien tiiviste nyt: `81fbb5609400`.
 
 
 ---
@@ -27992,8 +28170,7 @@ Kun HkKisaWinissä vaihdetaan tuloskirjoitin valikosta, ohjelma sulkee vanhan tu
 ks. T-042) ja avaa uuden, mutta automaattitulostuksen oma kopio vanhasta osoitteesta jää päivittämättä.
 Automaattitulostus käyttää sen jälkeen vapautettua muistia joka tulostuksella.
 
-Vahvistettu: osoitteen kopiointi ja valikon käsittelijä on luettu koodista ja tarkastettu
-riippumattomasti. Vikaa ei ole toistettu (vaatii GUI-käsittelijän ja tulostettavia tuloksia). Mahdollinen:
+Luettu koodista ja riippumattomasti tarkastettu: osoitteen kopiointi ja valikon käsittelijä. Vikaa ei ole toistettu (vaatii GUI-käsittelijän ja tulostettavia tuloksia). Mahdollinen:
 vapautetun muistin käyttö joka automaattitulostuksella; seuraus (hiljainen toimivuus tai päättyminen)
 riippuu muistin käytöstä eikä ole mitattu.
 
@@ -28013,8 +28190,8 @@ automaattitulostus kopioi vanhan osoitteen ja tulostaa vapautetun muistin kautta
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- Ohjelma: HkKisaWin (valikko on GUI:ssa). HkMaalissa ei ole tätä valikkoa. Rekisterin ohjelmaluettelo
-  sisältää HkMaalin, koska kopiointi tehdään jaetussa käynnistyskoodissa.
+- Ohjelma: HkKisaWin (valikko on GUI:ssa). HkMaalissa ei ole tätä valikkoa. Kopiointi tehdään jaetussa
+  käynnistyskoodissa, joka käännetään myös HkMaaliin, mutta valikkoa ei kutsuta siellä.
 - Toimenpide: käyttäjä vaihtaa tuloskirjoittimen valikosta Tuloskirjoitin käynnistyksen jälkeen, ja
   automaattitulostus on käytössä. Käyttäjän tavallinen valikkotoimenpide, ei virhe tai asetus.
 - Aineisto ei kerro, kuinka tavallista tuloskirjoittimen vaihto kesken kilpailun on.
@@ -28055,7 +28232,7 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Kuvitteellinen tilanne: kesken kilpailun tulostin hajoaa, ja käyttäjä vaihtaa tuloskirjoittimen
 valikosta toiseen. Seuraava automaattitulostus käyttää vanhaa, jo vapautettua kanavaa.
 
-- Vahvistettu (luettu koodista, tarkastettu riippumattomasti): kopio jää osoittamaan vapautettuun.
+- Luettu koodista ja riippumattomasti tarkastettu (ei ajettu): kopio jää osoittamaan vapautettuun.
 - Mahdollinen: tulostus epäonnistuu tai ohjelma päättyy; ei toistettu.
 
 ### 8. Palautuminen ja uudelleenkäynnistys
@@ -28094,7 +28271,8 @@ GUI-käsittelijän ja tulostettavia tuloksia, ja se siirrettiin myöhempään te
 
 - Näkyykö vapautetun muistin käyttö käytännössä (tarkastajan mukaan sulkemis- ja avauspari voi käyttää
   samaa lohkoa).
-- Onko HkMaalissa vastaava valikko; ei tarkistettu.
+- HkMaalissa ei ole vastaavaa valikkoa: `Tuloskirjoitin1Click` on vain HkKisaWinin lomakkeessa
+  (`cbHk/UnitStatus.cpp`) [luettu koodista K-vaiheessa, ei tarkastettu].
 - Aineisto ei kerro Q-kysymystä tälle viralle.
 
 ### 13. Miten vika on tarkoitus korjata
@@ -28351,7 +28529,7 @@ ohjelma poistaa tulostimen yhteyden, mutta jättää tulostekanavan (`PRFILE`, k
 Myöhemmät tulostukset palaavat hiljaa, eikä mikään avaa tulostinta uudelleen. Automaattiset tulostukset ja
 emit-korttikohtaiset tulosteet lakkaavat siis yhden virheen jälkeen.
 
-Vahvistettu: tila ja sen jääminen voimaan on luettu koodista ja tarkastettu riippumattomasti. Ajoa ei ole
+Luettu koodista ja riippumattomasti tarkastettu: tila ja sen jääminen voimaan. Ajoa ei ole
 tehty. Mahdollinen: tulosteet jäävät tulostumatta huomaamatta. Aineisto ei kerro, milloin EndDoc-kutsu
 käytännössä epäonnistuu.
 
@@ -28413,7 +28591,7 @@ Kuvitteellinen tilanne: maalin tulostin ilmoittaa virheen kesken tulostuksen (tu
 asiakirjan päättäminen epäonnistuu. Tulostin korjataan, mutta sen jälkeen automaattiset tulokset ja
 emit-kortin tulosteet eivät tulostu, eikä ohjelma kerro syytä.
 
-- Vahvistettu (luettu koodista, tarkastettu riippumattomasti): tila jää voimaan, ja myöhemmät kutsut
+- Luettu koodista ja riippumattomasti tarkastettu (ei ajettu): tila jää voimaan, ja myöhemmät kutsut
   palaavat hiljaa.
 - Mahdollinen: tulosteiden puuttuminen huomataan myöhään.
 
@@ -28509,7 +28687,7 @@ avaus epäonnistuu, kun UDP-yhteys suljetaan, kun UDP-yhteyden sidonta epäonnis
 on hyväksynyt yhteyden, jonka vastapää sitten katkaisee. Vuotavat pistokkeet kertyvät, kunnes
 Windowsin pistokkeiden numerot (noin 16 000 lyhytaikaista porttia) loppuvat.
 
-- **Vahvistettu:** ei vahvistettua kokeella; mekanismit on luettu koodista ja tarkastettu
+- **Vahvistettu (kokeella tai ajamalla):** ei mitään; mekanismit on luettu koodista ja tarkastettu
   riippumattomasti. Vuotonopeus ja raja on päätelty.
 - **Mahdollinen (päätelty):** kun pistokkeet loppuvat, uudet lähtevät yhteydet epäonnistuvat,
   myös toimivien linkkien uudelleenyhteydet. Pahin arvioitu vuotonopeus on noin 1 400
@@ -28562,7 +28740,7 @@ oiretta.
 
 | Kysymys | Arvio | Peruste |
 |---|---|---|
-| Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tuloksiin ei ole vaikutusta. |
+| Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Ei tiedossa | Riskiarvio sanoo, ettei tuloksiin ole vaikutusta; pistokkeiden loppuessa lähtevät TCP-yhteydet epäonnistuvat (tiedonsiirtorivi), mikä voi välillisesti vanhentaa muille asemille tai julkaisuun menevät tulokset; aineisto ei ratkaise. |
 | Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Mahdollinen | Riskiarvio: häiritsee. Pistokkeiden loppuessa uudet lähtevät yhteydet epäonnistuisivat, myös toimivien linkkien uudelleenyhteydet (raportin päätelmä; vuotonopeus päätelty). |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Ei tiedossa | Aineisto ei kerro vaikutusta leimausten vastaanottoon. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Ei tiedossa | Aineisto ei kerro tiedon katoamisesta. |
@@ -28623,8 +28801,8 @@ resurssi ei omista pistokettaan (ks. JS-8). Havainto laajentaa H-027:ää (sama 
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Luettu koodista; riippumaton tarkastus vahvisti mekanismit
-(C-9; vuotonopeus päätelty). Ei toistettu kokeella. Raportti ehdottaa kokeeksi `openportTCP`:n
+**(a) Ohjelmointivirhe.** Luettu koodista; riippumaton tarkastus tarkasti mekanismit
+koodista (C-9; vuotonopeus päätelty). Ei toistettu kokeella. Raportti ehdottaa kokeeksi `openportTCP`:n
 silmukkaa suljettua paikallista porttia vasten.
 
 **(b) Käytännön seuraus.** Ei osoitettu. Vuotonopeudet ja portin loppuminen on laskettu.
@@ -28668,7 +28846,7 @@ ole.
 | Liittyvät havainnot | H-027 |
 | Lähdeviitteet (revisio 7aaca40, polut `TPsource/V52/`-hakemistosta) | `../todisteet/c9/osaC-elinkaari.md` N-C3; `com/WinUDP.cpp:191-205`, `:266-293`, `:546-631`, `:659`, `:760`, `:789`, `:812-817` |
 
-Rekisteririvien tiiviste nyt: `5cf94366891b`.
+Rekisteririvien tiiviste nyt: `c39adce5a2c1`.
 
 
 ---
@@ -28908,7 +29086,9 @@ Kohdat (kunkin lähde on raportin tunnus):
 1. **HTTP-haun virheilmoitus (N-C4).** `vahaku` hakee järjestelmän virheviestin muistia
    varaamalla eikä koskaan vapauta sitä. Jos järjestelmällä ei ole viestiä WinHTTP-virhekoodille,
    osoitin jää asettamatta ja ilmoitus lukee sen kautta. Tässä jälkimmäisessä tapauksessa ohjelma
-   voisi kaatua. Koskee HkMaalia (HTTP-haku on käännetty vain siihen).
+   voisi kaatua. Koskee HK-ohjelmia: HK:n HTTP-haku käännetään sekä HkMaaliin että HkKisaWiniin (`EMITHTTP`), ja
+   hakua kutsutaan molemmista [luettu koodista K-vaiheessa, ei tarkastettu]. Viestillä on oma `vahaku`
+   (`Juk/VIv.cpp`), jota tämä kohta ei kata.
 2. **Viestin emit-väliaikojen vuoto (N-C7).** Viestin HTML-raportti ei vapauta
    `laskeemitvaliajat`-tuloksia; virhepolussa vuotaa lisäksi yksi muistialue. Raportin mukaan
    vuoto on alle 2 Mt 1 500 joukkueen osuudella.
@@ -28940,7 +29120,7 @@ jakoa ei ole kirjattu.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- **Ohjelmat:** kohta 1 vain HkMaali; kohta 2 viesti; kohta 4 HkMaali. Muut kohdat koskevat
+- **Ohjelmat:** kohta 1 HK-ohjelmat (HkKisaWin ja HkMaali); kohta 2 viesti; kohta 4 HkMaali. Muut kohdat koskevat
   yhteistä koodia; ohjelmakohtaista tarkistusta ei ole tehty.
 - **Laukaisu:** jokaisella kohdalla jokin virhe tai harvinainen asetus: HTTP-palvelin
   tavoittamattomissa (1), HTML-raportin ajo viestissä (2), tiedoston avausvirhe (3, 6), HkMaalin
@@ -29038,7 +29218,8 @@ on arvioitu raporteissa.
 - Tapahtuuko kohdan 1 virheellinen osoitinluku käytännössä: raportti ei tiedä, jääkö
   järjestelmän viesti WinHTTP-virhekoodeilla puuttumaan.
 - Kuinka suuri osa kohdista toteutuu todellisessa kilpailussa.
-- Koskeeko kohta 1 GUI-ohjelmaa (aineiston mukaan HTTP-haku on käännetty vain HkMaaliin).
+- Kohdan 1 `vahaku` käännetään ja sitä kutsutaan myös HkKisaWinissä (`etHaku`, `cbHk/WinHk.cpp`);
+  GUI:n WinHTTP-virhekoodien käyttäytymistä ei ole ajettu.
 - Kohtien vaikutusta tuloksiin ei ole arvioitu muita kuin kohdan 10 osalta.
 
 ### 13. Miten vika on tarkoitus korjata
@@ -29091,7 +29272,7 @@ Rekisteririvien tiiviste nyt: `b2ff39f7a15c`.
 
 Kun viestiohjelman asetuksissa on rivi `XML=`, ohjelman pitäisi kirjoittaa tulokset automaattisesti XML-tiedostoon. Koodin mukaan tuloksia ei kirjoiteta: tuloksia kirjoittava kutsu on kommentoitu pois, joten tiedosto jää tyhjäksi tai siihen tulee enintään sulkeva loppuosa. Lisäksi ohjelma jättää automaattitulostuksen tulostekanavan osoitteen muistiinsa, vaikka kanava on jo suljettu.
 
-**Luettu koodista, pääistunto vahvisti:** tulosten puuttuminen tiedostosta. Tiedoston sisältöä ei ole tarkistettu ajamalla.
+**Luettu koodista ja pääistunnon tarkastama (ei ajettu):** tulosten puuttuminen tiedostosta. Tiedoston sisältöä ei ole tarkistettu ajamalla.
 **Vahvistettu käytännön seuraus:** ei yhtään tälle havainnolle. Osoittimen jäämisestä vapautettuun muistiin on toistettu eristetyllä kokeella saman polun tapaus havainnolle H-149.
 **Mahdollinen:** seuraava automaattitulostuskierros lukee vapautettua muistia ja voi sulkea sen toisen kerran. Tämän seurausta `XML=`-polulla ei ole mitattu.
 
@@ -29110,7 +29291,7 @@ Vikoja on kaksi.
 
 - **Ohjelmat:** ViestiWin, ViestiMaali ja ViestiLuenta. Asetuksen `XML=` lukee viestiohjelmien yhteinen asetusten lukija, ja automaattitulostus on käännetty kaikkiin kolmeen. HK-ohjelmilla on oma, erillinen automaattitulostuskoodi (H-150, H-151). ViestiWinin automaattitulostusikkuna tarjoaa vain HTML-muodon, joten ViestiWinissä XML valitaan asetuksella.
 - **Asetus ja toimenpide:** rivi `XML=` asetustiedostossa tai komentorivillä (komentorivi vain konsoliohjelmissa), tai konsoliohjelmien automaattitulostusvalikon valinta X)ML. Ilman näitä vika ei ilmene.
-- **Normaalikäyttö vai poikkeustilanne:** virhettä tai katkosta ei tarvita. Vika ilmenee jokaisella automaattitulostuskierroksella, kun XML-muoto on valittu. Aineisto ei kerro, kuinka moni asennus käyttää `XML=`-asetusta.
+- **Normaalikäyttö vai poikkeustilanne:** virhettä tai katkosta ei tarvita. Vika ilmenee jokaisella automaattitulostuskierroksella, kun XML-muoto on valittu. Aineisto ei kerro, kuinka moni asennus käyttää `XML=`-asetusta. Asetus ei ole oletus, joten ilmenemisriveillä vika on poikkeustilanne (harvinainen asetus) eikä tavallinen käyttö, vaikka asetuksen yleisyyttä ei tunneta.
 
 ### 5. Mitä käyttäjä voi huomata
 
@@ -29131,12 +29312,12 @@ Vika voi jäädä kokonaan huomaamatta, jos tiedoston sisältöä ei katsota.
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Mahdollinen | Kanavan osoitin jää vapautettuun rakenteeseen, ja seuraava automaattitulostuskierros lukee sitä ja voi sulkea sen uudelleen. Sama mekanismi on toistettu eristetyllä kokeella havainnolle H-149 (kohta d); XML=-polun oma seuraus on mittaamatta. |
 | Vaikutus: Voiko ohjelma tai yksittäinen toiminto jäädä jumiin? | Ei tiedossa | Aineisto ei kerro lukkiutumisesta tässä polussa. |
 | Vaikutus: Voiko jokin mennä väärin ilman ilmoitusta tai näkyvää oiretta? | Mahdollinen | XML-tiedosto jää ilman tuloksia, eikä ohjelma ilmoita siitä: kierros päättyy onnistuneena. Luettu koodista, ei ajettu. |
-| Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Ei tiedossa | XML-haara palaa ennen TCP-tiedostonsiirtoa, joten tiedostoa ei lähetetä toiselle työasemalle; aineisto ei kerro muuta vaikutusta tiedonsiirtoon tai muihin työasemiin. |
+| Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Ei tiedossa | Kun AUTOFILE.LST puuttuu, XML-haara palaa ennen TCP-tiedostonsiirtoa ja KOMENTO=-ajoa, joten tiedostoa ei lähetetä toiselle työasemalle; kun AUTOFILE.LST on olemassa, paluuta ei tehdä eikä seurausta ole selvitetty. Aineisto ei kerro muuta vaikutusta tiedonsiirtoon tai muihin työasemiin. |
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei sovellu | Havainto koskee tiedostotulostetta, ei laitteita. |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Mahdollinen | XML=-asetuksella tuotettu julkaisutiedosto ei sisällä koodin mukaan tuloksia: se on tyhjä tai siinä on enintään sulkeva tunniste. Haara ei myöskään aja tiedoston jälkeen asetettua komentoa. Luettu koodista, ei ajettu. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei vaikutusta (perusteltu) | Vika vaatii XML=-asetuksen tai konsolin automaattitulostusvalikon X-valinnan; riskiarvio: saavutettavuus asetus. Ilman niitä vikaa ei synny. |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Ei vaikutusta (perusteltu) | Laukeaa ilman poikkeustilannetta: vika ilmenee jokaisella automaattitulostuskierroksella heti, kun XML-muoto on valittu; virhettä tai katkoa ei tarvita. Aineisto ei kerro asetuksen yleisyyttä. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | XML= on erityisasetus (ei oletus), joten vika kuuluu harvinaisen asetuksen poikkeustilanteeseen; virhettä tai katkoa ei tarvita, ja asetuksen yleisyys on tuntematon. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Mahdollinen | Tyhjän tai vajaan tiedoston voi huomata katsomalla tiedostoa tai julkaisua; ohjelma ei ilmoita siitä. Osoittimen oireesta aineisto ei kerro. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: tarkista tiedoston sisältö ennen julkaisua. Suositus ei korjaa vikaa eikä sen tehoa ole kokeiltu. Turvallista tapaa saada XML=-julkaisu toimimaan ei ole kirjattu. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi käsin: XML=-rivin poistaminen asetuksista ja uudelleenkäynnistys lopettaisi tyhjän tiedoston kirjoituksen [päätelty], mutta XML-julkaisu ei palaudu. Tehoa ei ole kokeiltu. |
@@ -29148,7 +29329,7 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Vahvistetun ja mahdollisen erottelu on luvussa 11.
 
 - Jos tulosten julkaisu on tarkoitus hoitaa `XML=`-asetuksella, julkaisuun menevä tiedosto ei sisällä tuloksia, vaikka ohjelma näyttää toimivan [luettu koodista, ei ajettu].
-- Ohjelma ei myöskään aja tiedoston jälkeen asetettua komentoa (`KOMENTO=`) eikä lähetä XML-tiedostoa TCP-tiedostonsiirtona toiselle työasemalle, koska XML-haara palaa ennen niitä [luettu koodista].
+- Kun automaattitulostuksen luettelotiedosto `AUTOFILE.LST` puuttuu, ohjelma ei myöskään aja tiedoston jälkeen asetettua komentoa (`KOMENTO=`) eikä lähetä XML-tiedostoa TCP-tiedostonsiirtona toiselle työasemalle, koska XML-haara palaa ennen niitä. Kun `AUTOFILE.LST` on olemassa, tätä paluuta ei tehdä; mitä tiedostoon silloin kirjoitetaan, ei ole selvitetty [luettu koodista K-vaiheessa, ei tarkastettu].
 - Riskiarvio pitää vaikutusta tuloksiin olemattomana, koska laskennan tulokset eivät kulje tämän tiedoston kautta, ja ajanoton jatkuvuutta häiriintyvänä. Aineisto ei kerro, miten ajanotto häiriintyisi muuten kuin vapautetun muistin käytön kautta, jota `XML=`-polulla ei ole mitattu.
 
 ### 8. Palautuminen ja uudelleenkäynnistys
@@ -29157,7 +29338,7 @@ Vahvistetun ja mahdollisen erottelu on luvussa 11.
 - **Normaalin toiminnan palauttaminen:** aineisto ei kerro keinoa, jolla XML-julkaisu saataisiin toimimaan. Rivin `XML=` poistaminen asetuksista lopettaisi tyhjän tiedoston kirjoittamisen mutta ei tuottaisi XML-tulostetta [päätelty].
 - **Tietojen palauttaminen:** laskennan tulokset eivät ole menettäneet mitään (riskiarvio: ei vaikutusta tuloksiin). Tiedostoon ei kirjoiteta tuloksia, joten palautettavaa ei ole. Aineisto ei kerro muuta tapaa tuottaa XML-tulosteet automaattisesti.
 - **Uusiutuminen:** vika toistuu jokaisella automaattitulostuskierroksella ja jokaisen käynnistyksen jälkeen, koska `XML=` luetaan asetuksista joka käynnistyksessä [päätelty].
-- **Muut työasemat:** vika koskee yhden työaseman omaa tiedostoa. XML-tiedostoa ei lähetetä TCP-siirrolla toiselle työasemalle, koska haara palaa ennen lähetystä. Aineisto ei kerro muuta vaikutusta muihin työasemiin.
+- **Muut työasemat:** vika koskee yhden työaseman omaa tiedostoa. Kun `AUTOFILE.LST` puuttuu, XML-tiedostoa ei lähetetä TCP-siirrolla toiselle työasemalle, koska haara palaa ennen lähetystä. Aineisto ei kerro muuta vaikutusta muihin työasemiin.
 
 ### 9. Mitä käyttäjä voi tehdä riskin pienentämiseksi
 
@@ -29167,7 +29348,7 @@ Vahvistetun ja mahdollisen erottelu on luvussa 11.
 
 ### 10. Tekninen juurisyy
 
-Funktio `autofile` (`Juk/VTulostus.cpp`) käsittelee XML-tilan (`aftulparam.kohde = L'X'`, jonka asettaa avain `XML=` funktiossa `lue_parametrit`, `Juk/VInit.cpp`, `#ifdef AUTOFILE`) kutsumalla `openprfile` ja sitten `xmlloppu`. Tuloksia kirjoittava kutsu `writexml` on kommentoitu pois. Funktio `xmlloppu` (`Juk/XMLtulos.cpp`) kirjoittaa sulkevan tunnisteen nimellä `tag_a.tag_event`. Rakenne `tag_a` on tiedoston staattinen muuttuja, jonka täyttää vain `xmlots`, ja `xmlots`ia kutsuu ainoastaan funktio `list` (`Juk/VTulostus.cpp`, `#ifndef _CONSOLE`). Konsoliohjelmissa `tag_a` on siis nolla, ja `put_wantitag` (`tputilv2/TextFileClass.cpp`) ohittaa tyhjän tunnisteen [päätelty]. Haara palaa lauseella `return(0)` ennen TCP-lähetystä (`sendtcpfile`) ja ennen `KOMENTO=`-komennon ajoa. Kun `AUTOFILE.LST` aukeaa, `openprfile`a ei kutsuta lainkaan, ja haaran silmukka lukee alustamatonta muuttujaa `nt` mutta ei tee XML-tilassa mitään.
+Funktio `autofile` (`Juk/VTulostus.cpp`) käsittelee XML-tilan (`aftulparam.kohde = L'X'`, jonka asettaa avain `XML=` funktiossa `lue_parametrit`, `Juk/VInit.cpp`, `#ifdef AUTOFILE`) kutsumalla `openprfile` ja sitten `xmlloppu`. Tuloksia kirjoittava kutsu `writexml` on kommentoitu pois. Funktio `xmlloppu` (`Juk/XMLtulos.cpp`) kirjoittaa sulkevan tunnisteen nimellä `tag_a.tag_event`. Rakenne `tag_a` on tiedoston staattinen muuttuja, jonka täyttää vain `xmlots`, ja `xmlots`ia kutsuu ainoastaan funktio `list` (`Juk/VTulostus.cpp`, `#ifndef _CONSOLE`). Konsoliohjelmissa `tag_a` on siis nolla, ja `put_wantitag` (`tputilv2/TextFileClass.cpp`) ohittaa tyhjän tunnisteen [päätelty]. Kun `AUTOFILE.LST` puuttuu, haara palaa lauseella `return(0)` ennen TCP-lähetystä (`sendtcpfile`) ja ennen `KOMENTO=`-komennon ajoa. Kun `AUTOFILE.LST` aukeaa, `openprfile`a ei kutsuta lainkaan, ja haaran silmukka lukee alustamatonta muuttujaa `nt` mutta ei tee XML-tilassa mitään.
 
 Osoittimen osassa `closeprfile(aftulparam.lstf)` (`tputilv2/Wrttext.cpp`) saa osoittimen arvona eikä voi nollata `lstf`-kenttää. Seuraavan `autofile`-kutsun ensimmäinen ehto (`aftulparam.lstf && aftulparam.lstf->prno == -2 && ...`) lukee vapautettua rakennetta ja kutsuu tarvittaessa `closeprfile`a uudelleen.
 
@@ -29217,7 +29398,7 @@ Päätöstä odottava osa: OP-9, kohta 5.
 | Liittyvät havainnot | H-149 T-042 H-151 H-152 |
 | Lähdeviitteet (revisio 7aaca40, polut `TPsource/V52/`-hakemistosta) | `Juk/VTulostus.cpp:7179-7186`; `Juk/VInit.cpp:905-915` (`XML=`) |
 
-Rekisteririvien tiiviste nyt: `15d0bda0c788`.
+Rekisteririvien tiiviste nyt: `01d23b9c63a0`.
 
 
 ---
@@ -29238,8 +29419,8 @@ ohjelma tulkitsee uudelleenyhteyden tuloksen väärinpäin. Seurauksena lukijaa 
 eikä ohjelma enää lue lukijaa ennen kuin ohjelma käynnistetään uudelleen. Käyttäjä saa
 ilmoituksen "Häiriö. Ajanoton/leimantarkastuksen jatko vaatii uudelleenkäynnistyksen".
 
-Vahvistettu: ei mitään seurausta ajamalla. Vika on luettu koodista ja riippumaton tarkastaja on
-vahvistanut koodiluennan. Mahdollinen (koodista, ei ajettu): RFID-leimaukset eivät tule ohjelmaan
+Vahvistettu: ei mitään seurausta ajamalla. Vika on luettu koodista ja riippumattomasti
+tarkastettu. Mahdollinen (koodista, ei ajettu): RFID-leimaukset eivät tule ohjelmaan
 uudelleenyhteyden jälkeen, ja ajanotto lukijan osalta pysähtyy kilpailun ajaksi tai kunnes ohjelma
 on käynnistetty uudelleen.
 
@@ -29248,8 +29429,9 @@ on käynnistetty uudelleen.
 Ohjelma lukee RFID-lukijalta (Sirit tai Zebra FX9600) leimauksia verkkoyhteyden kautta.
 Lukemista varten ohjelmassa on yksi säie lukijaa kohti: säie on ohjelman sisällä rinnakkain toimiva
 työ (ks. sanasto: Säie). Jos yhteys katkeaa, säie odottaa noin viisi sekuntia ja yrittää
-avata yhteyden uudelleen. Sama uudelleenyhteys tehdään, kun käyttäjä pyytää sitä käsin ajanoton
-lomakkeelta.
+avata yhteyden uudelleen. Sama uudelleenyhteys tehdään, kun käyttäjä pyytää sitä käsin: HkKisaWinissä
+ajanoton lomakkeelta ja HkMaalissa ja ViestiMaalissa konsolin valikosta [luettu koodista
+K-vaiheessa, ei tarkastettu]. ViestiWinissä käsin pyydettävää uudelleenyhteyttä ei ole.
 
 ### 3. Mikä menee vikaan
 
@@ -29274,8 +29456,10 @@ tarkastus, koodista).
   Zebra (asetukset `SIRITn=` / `ZEBRAn=`). Koodi on mukana vain, kun käännöksessä on `LAJUNEN`-
   valitsin, eikä sitä ole ViestiLuennassa.
 - Laukaisu on verkkoyhteyden katkeaminen (lukijan virrankatko, kaapelin irrotus, lukijan
-  uudelleenkäynnistys) tai käyttäjän pyytämä käsin tehtävä uudelleenyhteys. Käsin tehtävä
-  uudelleenyhteys (Sirit) ei vaadi vikatilannetta.
+  uudelleenkäynnistys) tai käyttäjän pyytämä käsin tehtävä uudelleenyhteys (Sirit). Käsin pyydetty
+  uudelleenyhteys ei vaadi vikatilannetta. Se on pyydettävissä HkKisaWinin ajanoton lomakkeelta
+  sekä HkMaalin ja ViestiMaalin konsolivalikosta; ViestiWinissä käsin pyydettävää uudelleenyhteyttä
+  ei ole [luettu koodista K-vaiheessa, ei tarkastettu].
 - Rekisterin mukaan vika on alkuperäisessä, vuoden 2015 koodissa.
 - Yleisyydestä aineisto ei kerro mitään.
 
@@ -29380,15 +29564,17 @@ Zebra-toteutus (`Tp/ZebraReader.cpp`) palauttaa 0 onnistuneesta ja 1 epäonnistu
 Zebra-haarassa ehto on sama, mutta Zebran avaus palauttaa 0 vasta onnistuessaan, joten säie
 päättyy vasta ensimmäiseen onnistuneeseen uudelleenyhteyteen.
 
-Käyttäjän pyytämä uudelleenyhteys Sirit-lukijalle (`reconnectSirit`, `cbHk/UnitAjanotto.cpp`)
-käyttää samaa haaraa.
+Käyttäjän pyytämä uudelleenyhteys Sirit-lukijalle (`reconnectSirit`) käyttää samaa haaraa. Sen voi
+pyytää HkKisaWinin ajanoton lomakkeelta (`cbHk/UnitAjanotto.cpp`) sekä HkMaalin
+(`HkConsole/HkCons0.cpp`) ja ViestiMaalin (`JukConsole/laskent0.cpp`) konsolivalikosta, joissa
+valikko on mukana `LAJUNEN`-käännöksessä. ViestiWinissä pyyntöä ei ole.
 
 Juurisyy JS-9 (laiteyhteydet käsin, ei elävyysvalvontaa). Kokonaisuuden juurisyy T-048.
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: koodipolku luettu pääistunnossa ja vahvistettu riippumattomassa
-lähdetarkastuksessa (C-10 osa F, K1): paluuarvojen merkitys, silmukan päättyminen ja
+(a) Ohjelmointivirhe: koodipolku luettu pääistunnossa ja riippumattomasti
+tarkastettu (C-10 osa F, K1): paluuarvojen merkitys, silmukan päättyminen ja
 ohjelman käynnistysfunktion estävä ehto. Ajoa tai koeohjelmaa ei ole.
 
 (b) Käytännön seuraus: ei osoitettu. C-10:ssä ei ajettu mitään, joten ajonaikainen vaikutus
@@ -29459,8 +29645,8 @@ katkeaminen, heittomerkki nimessä tai virheellinen SQL-lause (H-161). Kirjoitus
 kiinni, ja säikeen ylin käsittelijä päättää koko prosessin. Tiedot, jotka ovat vielä ohjelman
 tiedostopuskureissa (esimerkiksi emit-tiedoston puskurissa), jäävät kirjoittamatta.
 
-Vahvistettu: mekanismi on luettu koodista ja C++Builderin ajonaikaisen kirjaston lähteistä, ja
-riippumaton tarkastus vahvisti sen. Ajonaikaista koetta ei ole tehty (Q97). Mahdollinen: ohjelman
+Luettu koodista ja C++Builderin ajonaikaisen kirjaston lähteistä ja
+riippumattomasti tarkastettu: mekanismi. Ajonaikaista koetta ei ole tehty (Q97). Mahdollinen: ohjelman
 päättyessä sen työaseman ajanotto ja lukijoiden vastaanotto pysähtyvät kesken kilpailun.
 
 ### 2. Mitä ohjelma yrittää tehdä
@@ -29527,7 +29713,7 @@ Peilin valinnainen virhe lopettaa siis pakollisen tulospalvelun.
 | Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Palvelinyhteyden katko laukaisee vian; lisäksi heittomerkki nimessä ja H-161:n lauseet. Luettu koodista, ei ajettu. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Mahdollinen | Ohjelman äkillinen sulkeutuminen näkyy käyttäjälle; ilmoituksesta tai virheikkunasta aineisto ei kerro, koska ajoa ei ole tehty. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: SQL-peilin jättäminen pois käytöstä, koska kirjoitussäie käynnistyy vain peilin käytöstä; tehoa ei ole kokeiltu. Heittomerkin tai virheellisen lauseen laukaisun estämiseksi ei ole kirjattua keinoa. |
-| Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; tehoa ei ole kokeiltu, ja vika uusiutuu, jos laukaisija on edelleen olemassa. |
+| Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi uudelleenkäynnistyksen; tehoa ei ole kokeiltu, ja vika uusiutuu, jos laukaisija on edelleen olemassa. Vienti (valinta 3) ei kirjoita peiliin, kun jatkuva kirjoitus on päällä ja kirjoitussäie on päättynyt, vaan vasta uudelleenkäynnistyksen jälkeen tai kun jatkuva kirjoitus on pois päältä (päätelty). |
 
 Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohjelmaa ajamalla; Mahdollinen = seuraa koodista, mutta seurausta ei ole osoitettu; Ei vaikutusta (perusteltu) = aineisto osoittaa, ettei seurausta synny; Ei tiedossa = aineisto ei ratkaise; _Ei arvioitu_ = riviä ei ole vielä arvioitu. Tiedon puute ei tarkoita, ettei vaikutusta ole. Lähteet: `doc/arkkitehtuuri/rekisteri/vaikutukset.csv`.
 
@@ -29539,7 +29725,7 @@ kilpailijan nimessä on heittomerkki. Seuraavalla kirjoituskerralla ohjelma sulk
 tiedot ohjelma vastaanotti, jää ilman vastaanottajaa, ja maalin työasemalla ajanotto pysähtyy, kunnes
 ohjelma käynnistetään uudelleen.
 
-- Vahvistettu (luettu koodista ja RTL-lähteestä, tarkastettu riippumattomasti): poikkeus
+- Luettu koodista ja RTL-lähteestä, tarkastettu riippumattomasti (ei ajettu): poikkeus
   kirjoitussäikeessä johtaa ohjelman päättämiseen, ja tiedostopuskureiden tyhjennys jää tekemättä.
 - Mahdollinen: ajanotto ja lukijoiden vastaanotto pysähtyvät tällä työasemalla; muut työasemat
   jatkavat. Yhden ajanottotyöaseman pysähtyminen ei ole koko kilpailun ajanoton pysähtyminen.
@@ -29556,6 +29742,9 @@ ohjelma käynnistetään uudelleen.
 - **Tietojen palauttaminen:** `KILP.DAT`:iin jo tallennetut tiedot säilyvät [päätelty]. Puskuriin jäänyt
   tieto voi jäädä kirjoittamatta; aineisto ei kerro, voiko sen palauttaa. Peilistä puuttuvat rivit voi
   mahdollisesti kirjoittaa uudelleen viennillä (valinta 3) [päätelty; ei kokeiltu; ks. H-161 ja H-162].
+  Ehto: kun jatkuva kirjoitus on päällä, vienti vain lisää kilpailijat jonoon, ja kirjoitussäie on jo
+  päättynyt, joten vienti kirjoittaa tietokantaan vasta uudelleenkäynnistyksen jälkeen tai kun
+  jatkuva kirjoitus on pois päältä [päätelty koodista; ei kokeiltu].
 - **Uusiutuminen:** vika uusiutuu, jos laukaisija on edelleen olemassa. Heittomerkillinen nimi tai
   virheellinen lause aiheuttaa saman päättymisen heti, kun kyseinen kilpailija kirjoitetaan peiliin
   uudelleen. Jos jonon varmistustiedosto (H-043) on käytössä, käynnistyksessä toistettu jono voi sisältää
@@ -29590,7 +29779,7 @@ Juurisyy JS-2 (lukkoparit ilman vartijaa, ei poikkeusrajaa). Ydinkoodissa (`Hk/`
 ### 11. Mitä on todennettu
 
 (a) Ohjelmointivirhe: luettu koodista ja asennetun C++Builder 13:n RTL- ja dbExpress-lähteistä;
-riippumaton tarkastus (C-10 osa F, K6) vahvisti ja korjasi alkuperäisen väitteen: ohjelma päättyy eikä
+riippumaton tarkastus (C-10 osa F, K6) tarkasti koodin ja korjasi alkuperäisen väitteen: ohjelma päättyy eikä
 vain peilaus pysähdy. Ajonaikaista koetta ei ole tehty.
 
 (b) Käytännön seuraus: ei osoitettu ajamalla. Päättymisen mekanismi on RTL-lähteestä luettu; kysymys
@@ -29640,7 +29829,7 @@ suositus on hyväksyä periaate ja korjata H-160, H-162 ja H-163 joka tapauksess
 | Liittyvät havainnot | H-161 H-014 |
 | Lähdeviitteet (revisio 4b48749, polut `TPsource/V52/`-hakemistosta) | `cbHk/UnitMySQL.cpp:463-476`, `:690-760`; `ViestiWin/UnitMySQL.cpp:403-420`, `:590-610`; RTL-lähteet / RTL sources `Data.DBXDynalink.pas:1110-1113`, `Data.DBXCommon.pas:11062-11074`, C++Builder-asennuksen / C++Builder install: source/cpprtl/Source/threads/thread.c:97-105, source/cpprtl/Source/except/except.c:113-126; `../todisteet/c10/raportit/osaF-tarkastus.md` K6 |
 
-Rekisteririvien tiiviste nyt: `06b5a7ee2550`.
+Rekisteririvien tiiviste nyt: `63de978a900d`.
 
 
 ---
@@ -29663,7 +29852,7 @@ suojata, joten esimerkiksi heittomerkki nimessä rikkoo lauseen. Virheellinen la
 mukaan koko ohjelman päättymiseen tai siihen, että peili jää vanhaksi tai vääräksi. Poistettuja
 kilpailijoita ei poisteta peilistä lainkaan.
 
-Vahvistettu: lauseiden virheet on luettu koodista ja tarkastettu riippumattomasti. Ohjelmaa ei ole
+Luettu koodista ja riippumattomasti tarkastettu: lauseiden virheet. Ohjelmaa ei ole
 ajettu. Mahdollinen: SQL-injektio, eli se, että ulkopuolinen syöte muuttaisi lauseen merkitystä.
 Heittomerkin aiheuttama lauseen rikkoutuminen on todettu, mutta sitä, voiko ulkopuolinen hallita
 kentän sisältöä, ei tiedetä (Q105), joten injektiota ei väitetä vahvistetuksi.
@@ -29701,8 +29890,8 @@ jotka ohjelma rakentaa tekstinä liittämällä kentät lauseeseen.
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- Ohjelmat: HkKisaWin ja ViestiWin. Rekisterin ohjelmaluettelo sisältää myös ViestiMaalin ja
-  ViestiLuennan, koska otsikon vertailufunktio on jaetussa lähdetiedostossa, mutta konsoliohjelmissa ei
+- Ohjelmat: HkKisaWin ja ViestiWin. Otsikon vertailufunktio on jaetussa
+  lähdetiedostossa, joka käännetään myös ViestiMaaliin ja ViestiLuentaan, mutta konsoliohjelmissa ei
   ole SQL-koodia.
 - Asetus: SQL-peili on käytössä joko jatkuvalla kirjoituksella (`SQLTALLENNUS`) tai viennin valinnalla 3.
 - Vika ei edellytä virhettä, katkosta eikä vihamielistä syötettä, koska lauseet ovat virheellisiä tavallisella
@@ -29734,7 +29923,7 @@ jotka ohjelma rakentaa tekstinä liittämällä kentät lauseeseen.
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Mahdollinen | SQL-peili saa vanhentunutta tai väärää tietoa; tulosteita, HTML- tai XML-tiedostoja vika ei koske. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei tiedossa | Riskiarvio: ei. Merkkijonoja ei suojata, ja injektio on päätelty mahdolliseksi mutta ei vahvistetuksi (Q105); riskiarvio tarkistettava. |
 | Ilmeneminen: Voiko vika ilmetä tavallisessa kilpailukäytössä ilman erityisasetusta tai virhettä? | Ei tiedossa | Riskiarvio: asetus. Lauseet ovat virheellisiä tavallisella datalla, mutta vika edellyttää valinnaista SQL-peiliä; aineisto ei kerro, onko peilin käyttö tavallista. |
-| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Ei vaikutusta (perusteltu) | Laukeaa ilman poikkeustilannetta: lauseet ovat virheellisiä tavallisella datalla, eikä virhettä, katkoa tai virheellistä syötettä tarvita. |
+| Ilmeneminen: Voiko vika ilmetä poikkeustilanteessa (virhe, katkos, virheellinen syöte, harvinainen asetus)? | Mahdollinen | Vika vaatii valinnaisen SQL-peilin asetuksen, jonka yleisyys ei ole tiedossa; jos peili on harvinainen asetus, kyse on poikkeustilanteesta. Lauseet ovat virheellisiä tavallisella datalla. |
 | Ilmeneminen: Voiko käyttäjä huomata vian sen ilmetessä? | Ei tiedossa | Ohjelma ei ilmoita peilin virheistä; jos ohjelma ei sulkeudu, käyttäjä huomaa asian vain vertaamalla peilin sisältöä. Aineisto ei ratkaise. |
 | Hallinta: Onko aineistossa kirjattu keino välttää vika tai pienentää sen riskiä? | Mahdollinen | Perusteltu, testaamaton suositus: SQL-peilin jättäminen pois käytöstä, koska virheelliset lauseet ajetaan vain peilin käytössä; tehoa ei ole kokeiltu. Peilin käyttöön ei ole kirjattua turvallista keinoa. |
 | Hallinta: Onko aineistossa kirjattu keino palautua vian seurauksista kilpailun aikana? | Mahdollinen | Riskiarvio kirjaa palautettavuudeksi käsin; ohjelman uudelleenkäynnistys palauttaa ohjelman, mutta peilin korjaus vientitoiminnolla käyttää samoja lauseita; keinoja ei ole kokeiltu. |
@@ -29749,7 +29938,7 @@ epäonnistuu syntaksivirheeseen. Joko kirjoitussäikeen virhe lopettaa koko ohje
 joukkuerivi jää vanhaksi. Toisessa tilanteessa kilpailijan nimessä on heittomerkki (esimerkiksi
 O'Brien), ja lause katkeaa jo ensimmäisellä kirjoituksella.
 
-- Vahvistettu (luettu koodista, tarkastettu riippumattomasti): lauseet ovat virheellisiä tavallisella
+- Luettu koodista ja riippumattomasti tarkastettu (ei ajettu): lauseet ovat virheellisiä tavallisella
   datalla, ja merkkijonoja ei suojata.
 - Mahdollinen: seuraus H-160 tai vanhentunut peili, ja peilin varassa olevan lukijan väärä tieto.
 - Mahdollinen, ei vahvistettu: SQL-injektio (Q105).
@@ -29795,8 +29984,8 @@ Injektion kannalta liittyy T-043 (suojaamattomat yhteydet) ja kokonaisuus KK-C10
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista ja tarkastettu riippumattomasti (C-10 osa F, K5: vahvistettu;
-pääistunto todensi mekanismin). Lauseiden tekstit ja virheet on luettu koodista; ajoa ei ole.
+(a) Ohjelmointivirhe: luettu koodista ja tarkastettu riippumattomasti (C-10 osa F, K5: tarkastus todensi
+koodista; pääistunto luki mekanismin). Lauseiden tekstit ja virheet on luettu koodista; ajoa ei ole.
 
 (b) Käytännön seuraus: ei osoitettu ajamalla. Virheet ovat lauseiden tekstissä; sen, mitä tietokanta
 tekee lauseelle, esimerkiksi kokonaislukusarakkeeseen kirjoitettavalle nimelle, aineisto ei kerro.
@@ -29847,7 +30036,7 @@ on toissijainen. Testi: paikallinen MySQL.
 | Liittyvät havainnot | H-160 |
 | Lähdeviitteet (revisio 4b48749, polut `TPsource/V52/`-hakemistosta) | `ViestiWin/UnitMySQL.cpp:484`, `:501`, `:529-545`; `cbHk/UnitMySQL.cpp:417-424`, `:456-457`, `:544-545`, `:593`, `:596`; `Juk/vkilp.cpp:215-220`; `cbHk/kilpsql.txt`; `../todisteet/c10/raportit/osaB-tietokanta.md` D1-D4, D7, `osaF-tarkastus.md` K5 |
 
-Rekisteririvien tiiviste nyt: `a4567261c5d4`.
+Rekisteririvien tiiviste nyt: `61de31e23f01`.
 
 
 ---
@@ -29869,7 +30058,7 @@ keskeyttää viennin, lukko jää päälle. Säikeet (ks. sanasto: Säie), jotka
 tallentaessaan tietoja, jäävät odottamaan pysyvästi. Käyttöliittymä näyttää toimivan, koska
 ikkunoita ajava pääsäie voi ottaa saman lukon uudelleen.
 
-Vahvistettu: lukon kulku on luettu koodista; tarkastaja löysi vian ja pääistunto todensi sen. Ajoa ei
+Luettu koodista (lukon kulku); tarkastaja löysi vian ja pääistunto luki sen koodista. Ajoa ei
 ole tehty (Q97). Mahdollinen: mitkä säikeet käytännössä pysähtyvät (ks. luku 3).
 
 ### 2. Mitä ohjelma yrittää tehdä
@@ -29896,7 +30085,10 @@ kirjoitus pysähtyy [päätelty].
 Säikeet, jotka tallentavat tietoja ja tarvitsevat samaa lukkoa, jäävät odottamaan. Rekisteri mainitsee
 verkosta tulevat tietueet ja emit-käsittelyn. Seurannassa (KE-13) on kirjattu, että emit-käsittely
 ajetaan pääsäikeessä, joka voi ottaa lukon uudelleen, joten pysähtyvä osa olisi verkosta tulevien
-tietojen vastaanotto eikä emit-käsittely [päätelty]. Aineisto ei ratkaise, kumpi kuvaus pitää paikkansa.
+tietojen vastaanotto eikä emit-käsittely [päätelty]. Aineisto ei ratkaise, kumpi kuvaus pitää paikkansa. Jos pysähtyvä säie on vastaanottosäie `tarkcom`,
+se käsittelee kaikki saapuvat sanomat yhdessä silmukassa (ks. H-090), joten jäänyt lukko pysäyttäisi
+kaikkien sanomaluokkien käsittelyn tällä työasemalla eikä vain tietueiden [päätelty; luettu koodista
+K-vaiheessa, ei tarkastettu].
 
 Pääsäie ei jää odottamaan, koska lukko on uudelleentuleva eli sama säie voi ottaa sen uudelleen. Siksi
 ohjelma näyttää toimivan, vaikka osa sen työstä on pysähtynyt.
@@ -29931,7 +30123,7 @@ ohjelma näyttää toimivan, vaikka osa sen työstä on pysähtynyt.
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Ei tiedossa | Aineisto ei kirjaa kaatumista tämän vian seurauksena. |
 | Vaikutus: Voiko ohjelma tai yksittäinen toiminto jäädä jumiin? | Mahdollinen | Lukko jää päälle ja tietoja tallentavat säikeet jäävät odottamaan; lukon kulku on luettu koodista ja pääistunto todensi sen, ajoa ei ole tehty (Q97). |
 | Vaikutus: Voiko jokin mennä väärin ilman ilmoitusta tai näkyvää oiretta? | Mahdollinen | Käyttöliittymä näyttää toimivan, koska lukko on uudelleentuleva, vaikka tietoja tallentavat säikeet ovat pysähtyneet (luettu koodista). |
-| Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Mahdollinen | Muilta työasemilta tulevien tietueiden vastaanotto ja tallennus voi pysähtyä tällä työasemalla; muiden työasemien reaktiota aineisto ei kuvaa. Luettu koodista, ei ajettu. |
+| Vaikutus: Voiko vika vaikuttaa tiedonsiirtoon tai muihin työasemiin? | Mahdollinen | Muilta työasemilta tulevien tietueiden vastaanotto ja tallennus voi pysähtyä tällä työasemalla; jos pysähtyvä säie on tarkcom, joka käsittelee kaikki saapuvat sanomat yhdessä silmukassa, kaikkien sanomaluokkien käsittely pysähtyisi tällä työasemalla (päätelty, luettu koodista K-vaiheessa, ei tarkastettu); muiden työasemien reaktiota aineisto ei kuvaa. |
 | Vaikutus: Voiko vika vaikuttaa lukijoihin, kelloihin, näyttötauluihin tai tulostimiin? | Ei tiedossa | Aineisto ei ratkaise, pysähtyykö lukijoiden tietojen käsittely (KE-13). |
 | Vaikutus: Voiko vika vaikuttaa tulosteisiin, HTML- tai XML-tiedostoihin, tulospalveluun tai SQL-peiliin? | Mahdollinen | Peilin jatkuva kirjoitus pysähtyy, koska laskuri inSQLquery jää arvoon 1 [päätelty]; tulosteita ja HTML- tai XML-tiedostoja vika ei suoraan koske. |
 | Vaikutus: Voiko ulkopuolinen tai verkossa oleva laite käyttää vikaa hyväkseen? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tietoturvavaikutusta ei ole; vika edellyttää käyttäjän käynnistämää SQL-vientiä. |
@@ -29951,7 +30143,7 @@ keskeytyy virheilmoitukseen. Ohjelman ikkunat toimivat, mutta toiselta työasema
 kilpailijatietojen tallennus ei etene, ja peilin jatkuva kirjoitus on pysähtynyt, kunnes ohjelma
 käynnistetään uudelleen.
 
-- Vahvistettu (luettu koodista, tarkastajan löytö todennettu pääistunnossa): virhe jättää lukon päälle,
+- Luettu koodista (tarkastajan löytö luettu koodista pääistunnossa; ei ajettu): virhe jättää lukon päälle,
   ja laskuri jää arvoon 1.
 - Mahdollinen: tietoja tallentavat säikeet pysähtyvät. Mitkä säikeet, jää avoimeksi (KE-13).
 
@@ -30036,7 +30228,7 @@ päätösten suositus on korjata H-160, H-162 ja H-163 joka tapauksessa. Testi: 
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio 4b48749, polut `TPsource/V52/`-hakemistosta) | `cbHk/UnitExport.cpp:420-450`; `ViestiWin/UnitExport.cpp:411-430`; `cbHk/UnitMySQL.cpp:463-476`; `../todisteet/c10/raportit/osaF-tarkastus.md` E1 |
 
-Rekisteririvien tiiviste nyt: `217acea1de1e`.
+Rekisteririvien tiiviste nyt: `87fe4376c645`.
 
 
 ---
@@ -30058,7 +30250,7 @@ tekemättä. Niiden joukossa on emit-tietojen jälkikäsittelysäikeen käynnist
 lomakkeen alustus käyttää peilin lomaketta, ennen kuin se on olemassa, ja asetuksilla `SQLSTART` ja
 `SQLTALLENNUS` ohjelma viittaa tyhjään osoitteeseen, vaikka yhteys onnistuisi.
 
-Vahvistettu: koodipolku on luettu ja tarkastettu riippumattomasti. Mitään seurausta ei ole osoitettu
+Luettu koodista ja riippumattomasti tarkastettu: koodipolku. Mitään seurausta ei ole osoitettu
 ajamalla. Mahdollinen: ohjelma näyttää käynnistyneen, mutta emit-kortit eivät käsittele automaattisesti.
 Vika koskee vain valinnaista peiliä, mutta sen seuraus ulottuu peilin ulkopuolelle.
 
@@ -30138,7 +30330,7 @@ Käynnistyksessä näkyy virheilmoitus. Ohjelma avautuu ja näyttää toimivan, 
 jälkikäsittelysäie ei ole käynnistynyt, ja maalissa luetut kortit eivät etene automaattisesti
 kilpailijoille.
 
-- Vahvistettu (luettu koodista, tarkastettu riippumattomasti): poikkeus keskeyttää käynnistysfunktion ja
+- Luettu koodista ja riippumattomasti tarkastettu (ei ajettu): poikkeus keskeyttää käynnistysfunktion ja
   ohittaa sen loppuosan.
 - Mahdollinen: emit-käsittelyn puuttuminen ja se, että se huomataan myöhään. Aineisto ei tarkenna, mitä
   käsittelysäie tarkalleen tekee.
@@ -30248,7 +30440,7 @@ Rekisteririvien tiiviste nyt: `c5d2ae8692b2`.
 
 Jos sarjaportin kautta ohjelmaan kytketty laite katoaa kesken ajon, esimerkiksi USB-sarjasovitin irrotetaan tai sen ajuri kaatuu, ohjelma ei avaa porttia uudelleen eikä ilmoita asiasta. Lukusäie jatkaa pyörimistä ja tyhjentää puskuria, mutta leimauksia ei enää tule. Konsolissa sarjaportin tilasta ei ole ilmaisinta. Windows-ohjelmassa vain edistymispalkki pysähtyy.
 
-Vahvistettu: ei mitään ajamalla. Mekanismi on luettu koodista ja riippumaton lähdetarkastus on vahvistanut sen. Mahdollinen (päätelty koodista): laitteen syöte pysähtyy hiljaa kunnes ohjelma käynnistetään uudelleen. Emit-kortit voi lukea uudelleen uudelleenkäynnistyksen jälkeen, mutta muiden sarjalaitteiden katkon aikana lähettämät ajat voivat jäädä saamatta (riskiarvion perustelu).
+Vahvistettu: ei mitään ajamalla. Mekanismi on luettu koodista ja riippumattomasti tarkastettu. Mahdollinen (päätelty koodista): laitteen syöte pysähtyy hiljaa kunnes ohjelma käynnistetään uudelleen. Emit-kortit voi lukea uudelleen uudelleenkäynnistyksen jälkeen, mutta muiden sarjalaitteiden katkon aikana lähettämät ajat voivat jäädä saamatta (riskiarvion perustelu).
 
 ### 2. Mitä ohjelma yrittää tehdä
 
@@ -30325,7 +30517,7 @@ Juurisyy JS-9 (laiteyhteydet käsin, ei elävyysvalvontaa). Kuuluu yhteen havain
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: mekanismi on luettu koodista pääistunnossa ja vahvistettu riippumattomassa lähdetarkastuksessa (C-10 osa F, K2). Ajoa tai koeohjelmaa ei ole.
+(a) Ohjelmointivirhe: mekanismi on luettu koodista pääistunnossa ja riippumattomasti tarkastettu (C-10 osa F, K2). Ajoa tai koeohjelmaa ei ole.
 
 (b) Käytännön seuraus: ei osoitettu. C-10:ssä ei ajettu mitään, joten seuraus on päätelty koodista. Riippumaton tarkastus alensi vakavuuden keskitasoksi, koska Emit-kortit voi lukea uudelleen.
 
@@ -30382,9 +30574,9 @@ Rekisteririvien tiiviste nyt: `fda26a39a4cc`.
 
 ### 1. Lyhyesti
 
-GitHubin julkaisu-ZIP (Windows-ohjelmien jakelupaketti) ei sisällä tiedostoja, joita Windows-ohjelmien MySQL-peili ja F1-ohje tarvitsevat: dbExpress-ajuri `dbxmys.dll`, MySQL-asiakaskirjasto `libmysql.dll`, taulujen luontitiedostot `kilpsql.txt` ja `vkilpsql.txt` sekä ohjetiedostot `.chm`. Käyttöohje sanoo, että ne tulevat toimituksen mukana. Vika koskee vain Windows-ohjelmia HkKisaWin ja ViestiWin.
+GitHubin julkaisu-ZIP (Windows-ohjelmien jakelupaketti) ei sisällä tiedostoja, joita Windows-ohjelmien MySQL-peili ja F1-ohje tarvitsevat: dbExpress-ajuri `dbxmys.dll`, MySQL-asiakaskirjasto `libmysql.dll`, taulujen luontitiedostot `kilpsql.txt` ja `vkilpsql.txt` (jotka ovat repositoriossa mutta joita julkaisu ei kopioi pakettiin) sekä ohjetiedostot `.chm` (jotka puuttuvat myös repositoriosta). Käyttöohje sanoo, että ne tulevat toimituksen mukana. Vika koskee vain Windows-ohjelmia HkKisaWin ja ViestiWin.
 
-Vahvistettu: tiedostojen puuttuminen repositoriosta ja pakkaajan toimintatapa on luettu koodista ja riippumaton lähdetarkastus on vahvistanut sen. Mahdollinen (päätelty, ei ajettu): MySQL-peili ei toimi pakettiin asennetulla koneella, ja F1-ohje ei avaudu. Ei vaikutusta tuloksiin: MySQL on valinnainen peili, ja `KILP.DAT` on ensisijainen tietolähde.
+Luettu koodista ja riippumattomasti tarkastettu: tiedostojen puuttuminen repositoriosta ja pakkaajan toimintatapa. Mahdollinen (päätelty, ei ajettu): MySQL-peili ei toimi pakettiin asennetulla koneella, ja F1-ohje ei avaudu. Suoraan tuloksiin ei ole vaikutusta: MySQL on valinnainen peili, ja `KILP.DAT` on ensisijainen tietolähde. Välillistä vaikutusta H-163:n kautta ei ole ratkaistu (aineisto ei kerro).
 
 ### 2. Mitä ohjelma yrittää tehdä
 
@@ -30392,7 +30584,7 @@ Julkaisu-ZIP kokoaa ohjelmatiedostot ja C++Builderin ajonaikaiset kirjastot yhte
 
 ### 3. Mikä menee vikaan
 
-Kerääjä näkee vain kirjastot, jotka ohjelma tuo suoraan käynnistyksessä. dbExpress lataa MySQL-ajurin `dbxmys.dll` vasta ajon aikana omalla latauskutsullaan, ja ajuri lataa vuorostaan `libmysql.dll`:n. Sen vuoksi kumpikaan ei tule pakettiin. `libmysql.dll` on kolmannen osapuolen tiedosto, eikä se kuulu C++Builderin asennukseen eikä repositorioon. Taulujen luontitiedostot ja ohjetiedostot eivät ole repositoriossa, eikä julkaisun työnkulku kopioi niitä.
+Kerääjä näkee vain kirjastot, jotka ohjelma tuo suoraan käynnistyksessä. dbExpress lataa MySQL-ajurin `dbxmys.dll` vasta ajon aikana omalla latauskutsullaan, ja ajuri lataa vuorostaan `libmysql.dll`:n. Sen vuoksi kumpikaan ei tule pakettiin. `libmysql.dll` on kolmannen osapuolen tiedosto, eikä se kuulu C++Builderin asennukseen eikä repositorioon. Taulujen luontitiedostot `kilpsql.txt` (`cbHk/`) ja `vkilpsql.txt` (`ViestiWin/`) ovat repositoriossa, mutta julkaisun työnkulku (`release.yml`) ei kopioi niitä pakettiin. Ohjetiedostot (`.chm`) eivät ole repositoriossa, eikä julkaisun työnkulku kopioi niitä.
 
 Puutetta ei havaita, koska CI ei aja paketoitua ohjelmaa (T-044).
 
@@ -30412,7 +30604,7 @@ SQL-yhteyden avaus epäonnistuu tai ohjelma ei löydä ajuria. Aineisto ei kuvaa
 
 | Kysymys | Arvio | Peruste |
 |---|---|---|
-| Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Ei vaikutusta (perusteltu) | MySQL on valinnainen peili ja KILP.DAT ensisijainen tietolähde; riskiarvion mukaan tulokset eivät vaikuta. |
+| Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Ei tiedossa | Suoraan tuloksiin ei ole vaikutusta (MySQL on valinnainen peili, KILP.DAT ensisijainen), mutta välillistä vaikutusta H-163:n kautta (SQLSTART-virhe ohittaa osan alustuksesta) ei ole ratkaistu; riskiarvio sanoo tuloksista ei ilman omaa perustetta välilliselle ketjulle (seuranta.md KE-taulukko). |
 | Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Mahdollinen | Riskiarvion mukaan häiritsee; välillisesti H-163:n kautta (SQLSTART-virhe ohittaa osan alustuksesta, mukaan lukien emit-jälkikäsittelyn); ei ajettu. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Mahdollinen | Välillisesti H-163:n kautta emit-jälkikäsittelysäie voi jäädä käynnistämättä, kun SQL-ajuri puuttuu ja SQLSTART on päällä; ei ajettu. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Ei vaikutusta (perusteltu) | Puute on paketissa eikä vaikuta tallennettuun tietoon; riippuvuudet.md luvun 19.3 mukaan ei tietovaikutusta. |
@@ -30458,7 +30650,7 @@ Juurisyy JS-13 (todennuksen puute): julkaisupakettia ei käynnistetä missään 
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: kerääjän toimintatapa, ajurin lataustapa Delphi-lähteissä ja tiedostojen puuttuminen repositoriosta (`git ls-files`) on luettu. Riippumaton lähdetarkastus (C-10 F, K8) vahvisti. Ajoa ei ole. Käyttöohjeen lupaus (tiedostot tulevat toimituksen mukana, `kilpsql.txt` jakelussa) on luettu käyttöohjeesta.
+(a) Ohjelmointivirhe: kerääjän toimintatapa, ajurin lataustapa Delphi-lähteissä ja tiedostojen puuttuminen paketista on luettu: `.chm`-tiedostot ja ajurikirjastot puuttuvat repositoriosta (`git ls-files`), `kilpsql.txt` ja `vkilpsql.txt` ovat repositoriossa mutta `release.yml` ei kopioi niitä pakettiin. Riippumaton lähdetarkastus (C-10 F, K8) tarkasti nämä koodista ja tiedostoluettelosta. Ajoa ei ole. Käyttöohjeen lupaus (tiedostot tulevat toimituksen mukana, `kilpsql.txt` jakelussa) on luettu käyttöohjeesta.
 
 (b) Käytännön seuraus: ei osoitettu. Puhdasta konetta ei ole ajettu; seuraus on päätelty.
 
@@ -30499,7 +30691,7 @@ Päätöstä odottavat: OP-7 (MySQL-peilin asema ja jakelu, kohta 4: jaetaanko `
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio 4b48749, polut `TPsource/V52/`-hakemistosta) | `../../../TPsource/V52/RADStudio10/collect-gui-runtime.ps1`; `../../../.github/workflows/release.yml`; `cbHk/WinHk.cpp:188`; `ViestiWin/UnitMain.cpp:167`; `../../../docs-site/docs/hkkisawin/hkluku12.md`; `../todisteet/c10/raportit/osaE-paketit-jakelu.md` N-1-N-5, `osaF-tarkastus.md` K8 |
 
-Rekisteririvien tiiviste nyt: `19bb16e34660`.
+Rekisteririvien tiiviste nyt: `b11110150ee5`.
 
 
 ---
@@ -30517,7 +30709,7 @@ Rekisteririvien tiiviste nyt: `19bb16e34660`.
 
 Kun ohjelma hakee emiTag-laitteiden väliaikoja Emitin palvelimelta HTTP:llä, nouto ei tarkista palvelimen vastauksen tilaa, ei aseta aikakatkaisuja ja käsittelee suuren vastauksen virheellisesti. Seurauksena virhesivu voidaan jäsentää väliaikoina, osa vastauksesta voi pudota pois ja kaksi eri sanomaa voidaan liittää yhdeksi riviksi, tai nouto voi pysähtyä pysyvästi lyhyeen riviin.
 
-Vahvistettu: mekanismit on luettu koodista ja riippumaton lähdetarkastus on vahvistanut ne. Mahdollinen (päätelty, ei ajettu): väärä väliaika kilpailijalle liitetyn rivin vuoksi, väliaikojen puuttuminen ja noudon pysähtyminen. Palvelimen vastauksen rivimuoto on tuntematon (Q99), joten osa mekanismeista riippuu siitä, millaisia rivejä palvelin lähettää.
+Luettu koodista ja riippumattomasti tarkastettu: mekanismit. Mahdollinen (päätelty, ei ajettu): väärä väliaika kilpailijalle liitetyn rivin vuoksi, väliaikojen puuttuminen ja noudon pysähtyminen. Palvelimen vastauksen rivimuoto on tuntematon (Q99), joten osa mekanismeista riippuu siitä, millaisia rivejä palvelin lähettää.
 
 ### 2. Mitä ohjelma yrittää tehdä
 
@@ -30527,10 +30719,10 @@ emiTag on Emitin järjestelmä, jonka ETS1-laitteiden väliaikoja (leimauksia) t
 
 Hakufunktio käsittelee palvelimen vastauksen seuraavasti, ja jokainen kohta on oma ongelmansa:
 
-- **Tilaa ei tarkisteta.** Jos välityspalvelin tai palvelin palauttaa virhesivun (404, 500, 407), sivun teksti jäsennetään väliaikasanomina. Sivun `M`-kirjain voi nollata sanomanumeron, jolloin seuraava pyyntö hakee kaiken alusta.
+- **Tilaa ei tarkisteta.** Jos välityspalvelin tai palvelin palauttaa virhesivun (404, 500, 407), sivun teksti jäsennetään väliaikasanomina. Sivun sisältö voi nollata sanomanumeron, jolloin seuraava pyyntö hakee kaiken alusta.
 - **Aikakatkaisuja ei aseteta.** Ohjelma käyttää järjestelmän oletuksia (yhteyden luonti 60 s, lähetys ja vastaanotto 30 s). Noutosäie voi olla kiinni kymmeniä sekunteja, jolloin uusia hakuja ei tehdä.
 - **Suuri vastaus.** Vastaus kerätään 100 000 tavun puskuriin. Jos tulossa oleva lohko ei mahdu puskuriin, se ohitetaan hiljaa, ja seuraava pienempi lohko liitetään jo kerättyyn. Rivi voi siis koostua kahdesta eri sanomasta (esimerkiksi toisen kilpailijan leimakoodi ja toisen aika). Virheilmoitusta tästä ei anneta.
-- **Lyhyt rivi.** Rivi, joka on enintään 30 merkkiä pitkä, tai viimeinen rivi ilman päätemerkkiä, katkaisee käsittelyn. Loput vastauksesta pudotetaan, sanomanumero ei etene ja sama pyyntö toistuu. Rekisterin mukaan tämä pysäyttää noudon pysyvästi. Osan C raportti rajaa tilanteen siihen, että lyhyt rivi on johdonmukaisesti vastauksen alussa, ja palvelimen todellinen käytös on tuntematon.
+- **Lyhyt rivi.** Rivi, joka on ohjelman jäsennyksen vähimmäispituutta lyhyempi (raja luvussa 11), tai viimeinen rivi ilman päätemerkkiä, katkaisee käsittelyn. Loput vastauksesta pudotetaan, sanomanumero ei etene ja sama pyyntö toistuu. Rekisterin mukaan tämä pysäyttää noudon pysyvästi. Osan C raportti rajaa tilanteen siihen, että lyhyt rivi on johdonmukaisesti vastauksen alussa, ja palvelimen todellinen käytös on tuntematon.
 - **Virheilmoitus joka kierroksella.** Windows-ohjelmassa jokainen epäonnistunut kierros avaa modaalin virheikkunan, joka sulkeutuu itsestään kahdessa sekunnissa. Viestissä näytetään vain virhenumero.
 
 Vertaus: postinjakaja, joka vie jokaisen kirjekuoren perille katsomatta, onko se oikeaa postia, ja jos pussi on liian täysi, jättää osan jakamatta ja teippaa seuraavan kirjeen osoitteen edellisen kirjeen sisältöön.
@@ -30604,7 +30796,7 @@ Juurisyy JS-9 (laiteyhteydet käsin, ei elävyysvalvontaa); pahentavana JS-1 (ul
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: mekanismit on luettu koodista. Riippumaton lähdetarkastus (C-10 F, K14) vahvisti ne tarkennuksin: liitoksen vaatima koko ja sen, että mikä tahansa ≤ 30 merkin rivi pysäyttää haun. Ajoa ei ole.
+(a) Ohjelmointivirhe: mekanismit on luettu koodista. Riippumaton lähdetarkastus (C-10 F, K14) tarkasti ne koodista ja tarkensi: liitoksen vaatima koko ja sen, että mikä tahansa ≤ 30 merkin rivi pysäyttää haun. Ajoa ei ole.
 
 (b) Käytännön seuraus: ei osoitettu. Palvelimen rivimuoto on tuntematon, joten väärän väliajan syntymistä ei ole osoitettu ajamalla.
 
@@ -30664,7 +30856,7 @@ Rekisteririvien tiiviste nyt: `c31a77daaf90`.
 
 Kun Windows-ohjelma suljetaan, se sulkee ensin kilpailutiedostot ja jää sitten odottamaan, että emiTag-väliaikojen noutosäie (ks. sanasto: Säie) päättää työnsä. Jos nouto epäonnistuu juuri tuolloin, noutosäie yrittää näyttää virheilmoituksen pääikkunassa, mutta pääikkuna ei voi käsitellä viestiä, koska se odottaa itse noutosäiettä. Kumpikaan ei etene, ja ohjelma jää jumiin.
 
-Vahvistettu: ei mitään ajamalla. Mekanismi on luettu koodista ja riippumaton lähdetarkastus on vahvistanut sen. Mahdollinen (päätelty): ohjelman ikkuna ei sulkeudu. Tiedostot on suljettu jo ennen odotusta, joten tietoja ei menetetä (riskiarvion perustelu).
+Vahvistettu: ei mitään ajamalla. Mekanismi on luettu koodista ja riippumattomasti tarkastettu. Mahdollinen (päätelty): ohjelman ikkuna ei sulkeudu. Tiedostot on suljettu jo ennen odotusta, joten tietoja ei menetetä (riskiarvion perustelu).
 
 ### 2. Mitä ohjelma yrittää tehdä
 
@@ -30736,7 +30928,7 @@ Juurisyy JS-4 (sivuvaikutukset globaalien lukkojen alla); pahentavana JS-7 (säi
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: odotussilmukka, viestin lähetys ja järjestys, jossa tiedostot on suljettu ennen odotusta, on luettu koodista ja vahvistettu riippumattomassa lähdetarkastuksessa (C-10 F, K9). Ajoa ei ole.
+(a) Ohjelmointivirhe: odotussilmukka, viestin lähetys ja järjestys, jossa tiedostot on suljettu ennen odotusta, on luettu koodista ja riippumattomasti tarkastettu (C-10 F, K9). Ajoa ei ole.
 
 (b) Käytännön seuraus: ei osoitettu. Jumiutuminen on päätelty koodista.
 
@@ -30796,7 +30988,7 @@ Rekisteririvien tiiviste nyt: `a2988c3d26dd`.
 
 Ohjelma yrittää estää saman Emit-kortin tallentumisen kahdesti vertaamalla uutta lukua lukijan edelliseen korttiin. Vertailu on kirjoitettu niin, että se vertaa leimausaikoja itseensä, joten ajat eivät koskaan eroa. Vain kortin numero ja rastikoodit ratkaisevat. Aito toinen luenta, jossa kortti on samalla lukijalla, samat rastikoodit ja välissä ei ole luettu toista korttia, jää tallentamatta, eikä käyttäjälle ilmoiteta.
 
-Vahvistettu: vertailun virhe on luettu koodista ja riippumaton lähdetarkastus on vahvistanut sen. Ajoa ei ole. Mahdollinen (päätelty): toisen luennan tulos puuttuu, ja Emit-kello saa kuittauksen, ikään kuin kortti olisi tallennettu. Laitteen reaktio kuittaukseen on avoin (Q86, Q100). Riskiarvion perusteen mukaan tilanne on harvinainen.
+Luettu koodista ja riippumattomasti tarkastettu: vertailun virhe. Ajoa ei ole. Mahdollinen (päätelty): toisen luennan tulos puuttuu, ja Emit-kello saa kuittauksen, ikään kuin kortti olisi tallennettu. Laitteen reaktio kuittaukseen on avoin (Q86, Q100). Riskiarvion perusteen mukaan tilanne on harvinainen.
 
 ### 2. Mitä ohjelma yrittää tehdä
 
@@ -30855,7 +31047,7 @@ Jos toinen luenta samalla kortilla samoin rastikoodein hylätään, kilpailijall
 - **Virhetilan poistaminen:** vika ei jätä ohjelmaan tilaa, joka pitäisi poistaa; se on tapahtumakohtainen.
 - **Normaalin toiminnan palauttaminen:** ohjelma toimii normaalisti seuraavalla luennalla. Emit-luenta-aineiston mukaan palautus on luku jonkin toisen kortin jälkeen tai käsin syöttö. Riskiarvio kirjaa palautettavuudeksi "käsin". Keinoja ei ole kokeiltu.
 - **Tietojen palauttaminen:** hylätyn luennan tietoa ei ole tallennettu. Aineisto ei kerro, voiko sen hakea uudelleen laitteelta.
-- **Uusiutuminen:** sama tilanne toistuu, jos sama kortti luetaan samalla lukijalla uudelleen samoin koodein. Uudelleenkäynnistys nollaa lukijakohtaisen edellisen kortin muistin [päätelty], jolloin ensimmäinen luenta uudelleenkäynnistyksen jälkeen tallentuu.
+- **Uusiutuminen:** sama tilanne toistuu, jos sama kortti luetaan samalla lukijalla uudelleen samoin koodein. Uudelleenkäynnistys poistaa lukijakohtaisen edellisen kortin muistin käytöstä: muisti varataan käynnistyksen jälkeen ensimmäisen luennan yhteydessä alustamattomana, eikä sitä nollata [päätelty koodista], joten edellisestä ajosta ei jää tietoa; alustamattoman sisällön vaikutusta ensimmäisen luennan vertailuun ei ole selvitetty. Ensimmäinen luenta uudelleenkäynnistyksen jälkeen tallentunee [päätelty].
 - **Muut työasemat:** vika koskee yhtä lukijaa. Hylättyä luentaa ei tallenneta eikä lähetetä muille työasemille.
 
 ### 9. Mitä käyttäjä voi tehdä riskin pienentämiseksi
@@ -30871,7 +31063,7 @@ Juurisyy: yksittäinen vika, ei yhteistä juurisyytä; pahentavana JS-5 (koko ti
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: itsevertailu ja palautushaara on luettu koodista ja vahvistettu riippumattomassa lähdetarkastuksessa (C-10 F, K4); viestin versio on samanlainen. Ajoa ei ole.
+(a) Ohjelmointivirhe: itsevertailu ja palautushaara on luettu koodista ja riippumattomasti tarkastettu (C-10 F, K4); viestin versio on samanlainen. Ajoa ei ole.
 
 (b) Käytännön seuraus: ei osoitettu. Toisen luennan hylkääminen on päätelty koodista; laitteen reaktio kuittaukseen on tuntematon.
 
@@ -30933,7 +31125,7 @@ ja kirjoittaa ne suoraan omaan kilpailijatiedostoonsa `KILP.DAT`. Jokainen ohjel
 peilissä ei ole riviä, korvataan poistetulla tietueella. Muut korvataan peilin kentillä, joten tiedot,
 joita peili ei sisällä, nollautuvat. Ohjelma ei tee varmuuskopiota eikä kysy vahvistusta.
 
-Vahvistettu: koodipolku on luettu ja tarkastettu riippumattomasti. Ajoa ei ole tehty. Mahdollinen: jos
+Luettu koodista ja riippumattomasti tarkastettu: koodipolku. Ajoa ei ole tehty. Mahdollinen: jos
 peili on vajaa tai vanhentunut, tuonti tuhoaa oikeita kilpailijatietoja, ja ne saa takaisin vain ohjelman
 ulkopuolisesta kopiosta. Monistuuko vahinko muille työasemille, on avoin (Q106).
 
@@ -31016,7 +31208,7 @@ yrittää ladata tiedot toiselle koneelle peilistä ja valitsee tuonnin valinnan
 poistetun tietueen jokaisen kilpailijan päälle, jota peilissä ei ole. Käyttäjä saa ilmoituksen
 "Tiedot luettu", ja vahinko huomataan vasta, kun kilpailijalista tarkistetaan.
 
-- Vahvistettu (luettu koodista, tarkastettu riippumattomasti): tuonti kirjoittaa poistetun tietueen
+- Luettu koodista ja riippumattomasti tarkastettu (ei ajettu): tuonti kirjoittaa poistetun tietueen
   jokaisen tietueen päälle, jolle peilissä ei ole riviä, eikä tee varmuuskopiota.
 - Mahdollinen: oikeiden kilpailijoiden menetys, jos peili on vajaa; nollautuvat peilaamattomat kentät;
   vahingon leviäminen toisille työasemille (Q106).
@@ -31120,7 +31312,7 @@ Rekisteririvien tiiviste nyt: `d18048095afb`.
 
 Tämä kortti kokoaa C-10-selvityksen pienet viat, jotka eivät ansainneet omaa korttia. Ne koskevat Emit-lukijoita ja muita ajanottolaitteita, emiTag-noutoa, selainta, tulostauluja ja SQL-sarakkeita. Kohdat ovat toisistaan riippumattomia, ja kunkin vakavuus, ohjelmat ja laukaisu ovat erilaiset (luvut 3 ja 4). Riskiarvio on nostanut kaksi kohtaa esiin, koska niille olisi syytä tehdä oma rivi: `comajanotto`-silmukan pyöriminen portin kadotessa (N-11, kuuluu H-164:n kanssa) ja `sallisummavirhe`-asetuksen vaikutus kaikkiin lukijoihin (N-13).
 
-Vahvistettu: kohdat on luettu koodista; osa on vahvistettu riippumattomassa lähdetarkastuksessa osittain (K3, K15), osa kuvataan päätellyksi. Ajamalla mitään ei ole osoitettu. Mahdollinen (päätelty): väärä päivämäärä emiTag-leimassa, rikkinäisen lukijakehyksen hyväksyminen, ajanottosäikeen pysähtyminen laitteen tulviessa ja tulostaulun jääminen tyhjäksi.
+Luettu koodista: kohdat; osa on tarkastettu riippumattomasti osittain (K3, K15), osa kuvataan päätellyksi. Ajamalla mitään ei ole osoitettu. Mahdollinen (päätelty): väärä päivämäärä emiTag-leimassa, rikkinäisen lukijakehyksen hyväksyminen, ajanottosäikeen pysähtyminen laitteen tulviessa ja tulostaulun jääminen tyhjäksi.
 
 ### 2. Mitä ohjelma yrittää tehdä
 
@@ -31208,7 +31400,7 @@ Juurisyy JS-9 (laiteyhteydet käsin, ei elävyysvalvontaa) kokonaisuutena.
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: kohdat luettiin koodista C-10:n osissa B–D ja F. Riippumaton lähdetarkastus (C-10 F) vahvisti osittain kohdat 1 (K3) ja 2 (K15). Muut kohdat on merkitty rekisterissä [todennettu] tai [päätelty] riveittäin; D9, T10 ja T12 ovat päätellyt.
+(a) Ohjelmointivirhe: kohdat luettiin koodista C-10:n osissa B–D ja F. Riippumaton lähdetarkastus (C-10 F) tarkasti osittain kohdat 1 (K3) ja 2 (K15). Muut kohdat on merkitty rekisterissä [todennettu] tai [päätelty] riveittäin; D9, T10 ja T12 ovat päätellyt.
 
 (b) Käytännön seuraus: ei osoitettu. C-10:ssä ei ajettu mitään.
 
@@ -31285,7 +31477,7 @@ Mitä muistialueen viereen osuu, riippuu kääntäjän sijoittelusta. Rekisterin
 
 ### 4. Missä tilanteessa vika voi ilmetä
 
-- **Ohjelmat:** vain ViestiWin. Perusteena on, että avauskutsu tehdään ViestiWinin lomakkeen koodista ja tiedoston nimi annetaan aina. Konsoliohjelmat kutsuvat polkua ilman nimeä, joten niissä kirjoitus ei tapahdu (raportin mukaan). HK:ssa vastaava muistialue on selvästi suurempi.
+- **Ohjelmat:** vain ViestiWin. Perusteena on, että avauskutsu tehdään ViestiWinin lomakkeen koodista ja tiedoston nimi annetaan aina. Konsoliohjelmat kutsuvat polkua ilman nimeä, joten niissä kirjoitus ei tapahdu (raportin mukaan; `JukConsole/laskenta.cpp` antaa `aloitus`-kutsulle nimeksi 0 [luettu koodista K-vaiheessa, ei tarkastettu]). HK:ssa vastaava muistialue on selvästi suurempi.
 - **Asetus ja toimenpide:** ei erityisasetusta. Ylitys tapahtuu joka kerta, kun ViestiWin avaa kilpailun, myös uudelleenavauksessa. Nimi on aina ei-tyhjä täysi polku.
 - **Normaalikäyttö vai poikkeustilanne:** normaalikäyttö; virhettä, katkosta tai harvinaista asetusta ei tarvita. Ylikirjoitus on deterministinen. Se, mitä se rikkoo, riippuu kääntäjän sijoittelusta ja voi muuttua, kun tiedostoon lisätään muuttujia.
 
@@ -31352,13 +31544,13 @@ Esimerkit toimintapoluista:
 
 Nimelle varattu alue on 41 merkkiä eli 82 tavua (`wchar_t` on 2 tavua), ja kopiointi pyytää 120 merkkiä. Koska `wcsncpy` täyttää kohteen nollilla pyydettyyn pituuteen asti, jokainen ei-tyhjä nimi kirjoittaa 240 tavua, joista 158 tavua (79 merkkiä) menee puskurin ohi. Nimen merkkejä valuu ohi jo 42. merkistä alkaen; ne osuvat ensin `autostr`-taulukon alkuun (siirtymä 0x5C). Raja 65 koskee vain kenttää `autostr[24]`: nimen 66. merkki (indeksi 65) päätyy siihen, ja arvo `'1'` ohjaa listauksen tulostimelle (`Juk/VInit.cpp`, `ominaisuusvalitsimet.md` luku 13). Kentän tarkka siirtymä on varmistamatta (`.map`, Q107). Yli 119 merkin nimi jää päättämättä.
 
-Funktio `lue_parametrit` (`Juk/VInit.cpp`) kopioi asetustiedoston nimen kutsulla `wcsncpy(cfgfilename, cfgflname, 120)` staattiseen muuttujaan `wchar_t cfgfilename[41]`. Funktio `wcsncpy` täyttää kohteen nollilla pyydettyyn pituuteen asti, joten kopio kirjoittaa 120 merkkiä aina. Funktiota kutsutaan polusta `Initialisoi` (`ViestiWin/UnitMain.cpp`) → `aloitus` → `lue_parametrit`. Sijoittelu on luettu bcc32-objektista (`RADStudio10/Release_Build/obj/VInit.obj`), ei ajosta: puskuri on `_DATA`-osassa siirtymässä 0xA, ja ylikirjoitettava alue peittää siirtymät 0xA–0xF9. Kutsu tehdään avaimella `BAUDn` asetettavaan `baudst`-taulukkoon, joka koskee tiedonsiirtoyhteyttä n (työasemien sarjayhteydet 1–3; `Juk/VInit.cpp`, `Tp/TpComY.cpp`). Sarjaporttitaulukko `baudst` on `MAX_PORTTI` × 20 merkkiä, ja `MAX_PORTTI` on 132 (`Juk/VDef.h`). Puskurikoko `wchar_t cfgfilename[201]` on HK:ssa (`Hk/HkInit.cpp`).
+Funktio `lue_parametrit` (`Juk/VInit.cpp`) kopioi asetustiedoston nimen kutsulla `wcsncpy(cfgfilename, cfgflname, 120)` staattiseen muuttujaan `wchar_t cfgfilename[41]`. Funktio `wcsncpy` täyttää kohteen nollilla pyydettyyn pituuteen asti, joten kopio kirjoittaa 120 merkkiä aina. Funktiota kutsutaan polusta `Initialisoi` (`ViestiWin/UnitMain.cpp`) → `aloitus` → `lue_parametrit`. Sijoittelu on luettu bcc32-objektista (`RADStudio10/Release_Build/obj/VInit.obj`), ei ajosta: puskuri on `_DATA`-osassa siirtymässä 0xA, ja ylikirjoitettava alue peittää siirtymät 0xA–0xF9. Taulukko `baudst`, jonka avain `BAUDn` asettaa, koskee tiedonsiirtoyhteyttä n (työasemien sarjayhteydet 1–3; `Juk/VInit.cpp`, `Tp/TpComY.cpp`). Sarjaporttitaulukko `baudst` on `MAX_PORTTI` × 20 merkkiä, ja `MAX_PORTTI` on 132 (`Juk/VDef.h`). Puskurikoko `wchar_t cfgfilename[201]` on HK:ssa (`Hk/HkInit.cpp`).
 
 Juurisyy on JS-3: kapasiteetti ei seuraa ajonaikaista kokoa.
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Ylitys, sen koko ja polku on todennettu lähdekoodista. C-12:n riippumaton lähdetarkastus ja pääistunto ovat vahvistaneet sen. Sijoittelu on todennettu olemassa olevan bcc32-objektin alkuarvoista (ei ajonaikaisesti).
+**(a) Ohjelmointivirhe.** Ylitys, sen koko ja polku on todennettu lähdekoodista. C-12:n riippumaton lähdetarkastus ja pääistunto ovat tarkastaneet sen koodista. Sijoittelu on todennettu olemassa olevan bcc32-objektin alkuarvoista (ei ajonaikaisesti).
 
 **(b) Käytännön seuraus.** Ei osoitettu. Ajonaikaisia seurauksia ei ole tutkittu (Q107). Kaatumista ei ole oletettu eikä väitetty.
 
@@ -31498,7 +31690,7 @@ Juurisyy on JS-14: valitsin, jota ei määritellä missään, ja vanhentunut loh
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Riippumaton lähdetarkastus (C-12, osa D) vahvisti makron `XML` määrittelemättömyyden, kaksiargumenttisen kutsun ja sen, että sarjakohtainen osa kulkee muuta polkua. Todennus on staattinen; ohjelmaa ei ole ajettu.
+**(a) Ohjelmointivirhe.** Riippumaton lähdetarkastus (C-12, osa D) tarkasti koodista makron `XML` määrittelemättömyyden, kaksiargumenttisen kutsun ja sen, että sarjakohtainen osa kulkee muuta polkua. Todennus on staattinen; ohjelmaa ei ole ajettu.
 
 **(b) Käytännön seuraus.** Ei osoitettu. Tiedoston sisältöä ajossa ei ole tarkistettu (Q108). Tarkastus ei havainnut kaatumista.
 
@@ -31637,7 +31829,7 @@ Juurisyy on JS-14: neljä jäsennintä ja kaksi editoria ovat ajautuneet erillee
 
 ### 11. Mitä on todennettu
 
-**(a) Ohjelmointivirhe.** Riippumaton lähdetarkastus (C-12, osa D) vahvisti editorien kirjoitukset (`cbHk/UnitCfg.cpp` ja `ViestiWin/UnitCfg.cpp`), lukijoiden puuttuvat käsittelijät ja `AIKA_COM=`:n edestakaisen muutoksen. Kumottu: `TAKAA-AJO` ja `NOLLAKÄRKI`, jotka HK hyväksyy. Todennus on staattinen.
+**(a) Ohjelmointivirhe.** Riippumaton lähdetarkastus (C-12, osa D) tarkasti koodista editorien kirjoitukset (`cbHk/UnitCfg.cpp` ja `ViestiWin/UnitCfg.cpp`), lukijoiden puuttuvat käsittelijät ja `AIKA_COM=`:n edestakaisen muutoksen. Kumottu: `TAKAA-AJO` ja `NOLLAKÄRKI`, jotka HK hyväksyy. Todennus on staattinen.
 
 **(b) Käytännön seuraus.** Ei osoitettu. Editoria tai käynnistysilmoitusta ei ole ajettu.
 
@@ -31701,7 +31893,7 @@ tekstimuotoisen sarjatiedoston (`KILP.SRJ`). Jäsennysvirheestä näytetään il
 vanhoihin sarjatietoihin tapahtuu ilman erillistä ilmoitusta. Sarjatiedot voivat siksi olla
 vanhat.
 
-Vahvistettu (luettu koodista, riippumaton tarkastus osittain): kaikki nollasta poikkeavat
+Luettu koodista ja osittain riippumattomasti tarkastettu (ei ajettu): kaikki nollasta poikkeavat
 tulokset käsitellään samalla tavalla kuin puuttuva tiedosto. Mahdollinen (päätelty, ei ajettu):
 sarjojen asetukset ovat vanhat ja käyttäjä ei huomaa sitä. Lisäksi ilmoitusten tekstit ovat osin
 väärät.
@@ -31752,7 +31944,7 @@ jää huomaamatta tai suljetaan, vika voi jäädä kokonaan huomaamatta [pääte
 | Kysymys | Arvio | Peruste |
 |---|---|---|
 | Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Mahdollinen | Riskiarvion mukaan vaikutus on suora: sarjatiedot ovat vanhat; päätelty, ei ajettu. |
-| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan ajanotto ei pysähdy. |
+| Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Ei tiedossa | Riskiarvio sanoo, ettei ajanotto pysähdy; vanhat sarjatiedot jäävät voimaan ilman huomautusta, eikä aineisto ratkaise välillistä vaikutusta ajanottoon. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Ei tiedossa | Aineisto ei käsittele vaikutusta leimausten lukuun. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Ei tiedossa | Aineisto ei kerro, tallentuuko jotain pysyvästi vanhoilla sarjatiedoilla. |
 | Vaikutus: Voiko ohjelma kaatua tai sulkeutua odottamatta? | Ei tiedossa | Aineisto ei kirjaa kaatumista tämän vian seurauksena. |
@@ -31775,7 +31967,7 @@ Arvot: **Vahvistettu** = seuraus on osoitettu kokeella, testikehyksessä tai ohj
 Käyttäjä on muokannut sarja-XML:ää, ja tiedosto sisältää virheen, tai tiedosto on kesken
 kirjoituksen. Vahvistetun ja mahdollisen erottelu on luvussa 11. Tilanne:
 
-- Vahvistettu (luettu koodista): jäsennysvirhe näytetään ilmoituksena, ja ohjelma lukee sen
+- Luettu koodista ja osittain riippumattomasti tarkastettu (ei ajettu): jäsennysvirhe näytetään ilmoituksena, ja ohjelma lukee sen
   jälkeen vanhan `KILP.SRJ`:n kuin XML-tiedostoa ei olisi.
 - Mahdollinen (päätelty, ei ajettu): ohjelma jatkaa vanhoilla sarjatiedoilla. Riskiarvion mukaan
   vaikutus tuloksiin on suora, koska sarjatiedot muuttuvat; ajanotto ei pysähdy. Sarjojen
@@ -31815,7 +32007,7 @@ rakennetaan vain käynnistyksessä), koska vaiheen vaihto lukee sarjatiedot uude
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista, ja riippumaton lähdetarkastus (C-12 D, Opus) on vahvistanut
+(a) Ohjelmointivirhe: luettu koodista, ja riippumaton lähdetarkastus (C-12 D, Opus) on tarkastanut
 sen osittain. Ajoa ei ole. Viestin vastaava luku on luettu kortin kirjoituksen yhteydessä ja
 noudattaa samaa kuviota.
 
@@ -31860,7 +32052,7 @@ kirjattu tälle havainnolle.
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio ab10f88, polut `TPsource/V52/`-hakemistosta) | `Hk/HkSrj.cpp:72-83`; `Juk/vSarjat.cpp:315-318`; `Hk/HkXml.cpp:1832-1837` |
 
-Rekisteririvien tiiviste nyt: `4a91d014acaa`.
+Rekisteririvien tiiviste nyt: `0247a2d9b21e`.
 
 
 ---
@@ -31883,8 +32075,8 @@ kaksoisluennan rasti näkyy aina rastittuna, kun asetus on 1 tai 2, vaikka vain 
 kaksoisluennan vaatimista. Valikko voi siis näyttää eri tilan kuin se, jonka mukaan ohjelma
 toimii.
 
-Vahvistettu: ei mitään seurausta. Ristiriita on luettu koodista ja riippumaton tarkastaja
-(C-12 D) on vahvistanut sen. Ohjelmaa ei ole ajettu. Mahdollinen: lukijan kortin lukeminen
+Vahvistettu (kokeella tai ajamalla): ei mitään seurausta. Ristiriita on luettu koodista ja
+riippumattomasti tarkastettu (C-12 D). Ohjelmaa ei ole ajettu. Mahdollinen: lukijan kortin lukeminen
 toimii eri tavalla kuin käyttäjä valikosta päättelee.
 
 ### 2. Mitä ohjelma yrittää tehdä
@@ -32060,7 +32252,7 @@ Rekisteririvien tiiviste nyt: `249ae747481c`.
 
 Tämä on kokoomarivi: kymmenen pientä asetusten ja esikääntäjän valitsinten vikaa, jotka kaikki liittyvät siihen, että asetusten lukijat ja kokoonpanot ovat ajautuneet erilleen. Jokaisella kohdalla on oma asetusavain tai valitsin, ja kohdat koskevat eri ohjelmia (luku 3). Riskiarvio on nostanut esiin yhden kohdan: ViestiLuennan lukija-avaimen, joka valitsee RFID-lukijan sijasta ALGE-ajanoton (kohta 2).
 
-**Luettu koodista ja osittain riippumattomasti tarkastettu:** kaikkien kohtien mekanismi. Rekisterin mukaan `UDPVIIVEET`, ViestiLuenta sekä `TDC`, `S3` ja `S4` on vahvistanut riippumaton tarkastus.
+**Luettu koodista ja osittain riippumattomasti tarkastettu:** kaikkien kohtien mekanismi. Rekisterin mukaan `UDPVIIVEET`, ViestiLuenta sekä `TDC`, `S3` ja `S4` on tarkastanut riippumaton tarkastus koodista.
 **Vahvistettu käytännön seuraus:** ei yhtään.
 **Mahdollinen:** kohtien seuraukset kuvataan luvussa 7; mikään ei ole ajettu.
 
@@ -32102,7 +32294,7 @@ Koska kohdat ovat toisistaan riippumattomia, jokainen voi ilmetä erikseen.
 
 | Kysymys | Arvio | Peruste |
 |---|---|---|
-| Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Ei vaikutusta (perusteltu) | Riskiarvion mukaan tuloksiin ei ole vaikutusta. |
+| Vaikutus: Voiko aika, tulos, sijoitus, pisteet tai hylkäys olla väärä? | Ei tiedossa | Riskiarvio sanoo, ettei tuloksiin ole vaikutusta; kortti kuvaa asetusavaimia, jotka voivat jäädä oletusarvoon tai tulla tulkituiksi väärin, eikä aineisto ratkaise välillistä vaikutusta tuloksiin. |
 | Vaikutus: Voiko maali- tai väliaikojen kirjaus pysähtyä tai katketa? | Mahdollinen | Riskiarvio: häiritsee. ViestiLuennassa RFID-lukijan avain valitsee ALGE-ajanoton portissa 1, ja HK:n TDC-ajanottolaitetta ei voi ottaa käyttöön asetuksista. Luettu koodista, ei ajettu. |
 | Vaikutus: Voiko leimaus- tai kortintiedon luku jäädä tekemättä tai mennä väärin? | Mahdollinen | ViestiLuennassa RFID-lukijan avain ei ota RFID-lukijaa käyttöön, joten RFID-leimausten luku ei toimi asetuksella; onko tämä tarkoituksellista, on omistajan päätös (Q111). Luettu koodista, ei ajettu. |
 | Vaikutus: Voiko tallennettu tai vastaanotettu tieto kadota tai vioittua? | Ei tiedossa | Aineisto ei kerro vaikutusta tallennettuun tietoon. |
@@ -32208,7 +32400,7 @@ Päätöstä odottavat osat: OP-11 (kohta 3, `UDPVIIVEET=`) ja kysymys Q111 (koh
 | Liittyvät havainnot | - |
 | Lähdeviitteet (revisio ab10f88, polut `TPsource/V52/`-hakemistosta) | `Juk/VInit.cpp:1168-1171`; `Juk/VInit.cpp:1593-1634`; `Hk/HkInit.cpp:1799-1837`; `Hk/HkInit.cpp:2027`; `Juk/VInit.cpp:673-710`; `Juk/VInit.cpp:791`; `Hk/HkInit.cpp:566-568`; `Juk/VDef.h:49-61` |
 
-Rekisteririvien tiiviste nyt: `067981abfd1d`.
+Rekisteririvien tiiviste nyt: `17cbac36fe9f`.
 
 
 ---
@@ -32324,8 +32516,8 @@ makrosta, eikä lohkoa ole käännetty, joten kirjoitusvirhe `wchar _t` ei ole t
 
 ### 11. Mitä on todennettu
 
-(a) Ohjelmointivirhe: luettu koodista, ja riippumaton tarkastaja (Opus) vahvisti väitteen
-korjauksin: poiskäännetty koodi on noin 325 riviä (ei noin 393). Ohjelmaa ei ole käännetty tai ajettu
+(a) Ohjelmointivirhe: luettu koodista, ja riippumaton tarkastaja (Opus) tarkasti väitteen
+koodista ja korjasi: poiskäännetty koodi on noin 325 riviä (ei noin 393). Ohjelmaa ei ole käännetty tai ajettu
 tätä varten. Projektitiedostojen perusteella `ORAVA` on määritelty HkMaalin projektissa mutta sillä
 ei ole vaikutusta.
 
@@ -33026,7 +33218,7 @@ Rekisteririvien tiiviste nyt: `b5ce4d4a3cec`.
 ### 1. Mistä on kyse
 
 HK:n tietorakenteiden otsikkotiedostossa (`Hk/HkDef.h`) on rivi `makitp maki;`, joka on
-kilpailijan vaihetietojen rakenteen (`kilppvtp`) jälkeen ja kilpailijatietueen luokan alla,
+kilpailijan vaihetietojen rakenteen (`kilppvtp`) jälkeen ja ennen kilpailijatietueen luokkaa,
 eli luokan ulkopuolella. Se on esikääntäjän ehdon `MAKI` sisällä. `MAKI` on nimen mukaan
 mäki- tai hyppymuunnelma, ja sitä ei määritellä missään ohjelmassa, joten rivi ei ole mukana
 käännöksessä. Vertaus: lisäosan kiinnitysruuvi on lattialla eikä koneessa.
@@ -33034,7 +33226,7 @@ käännöksessä. Vertaus: lisäosan kiinnitysruuvi on lattialla eikä koneessa.
 ### 2. Mitä haittaa siitä on nykyisin
 
 Aineisto ei kirjaa kilpailussa havaittavaa haittaa, koska rivi ei käänny. Ylläpidolle haitta
-on [päätelty]: jos joku kytkee `MAKI`-muunnelman päälle, rivi ilmoittaisi yleisen muuttujan eikä
+on [päätelty]: otsikkotiedosto kumoaa `MAKI`-määrityksen pakolla (`#undef`, ks. `ominaisuusvalitsimet.md`), joten päälle kytkeminen vaatisi myös tämän kumoamisrivin poistamisen; jos joku kytkee `MAKI`-muunnelman päälle, rivi ilmoittaisi yleisen muuttujan eikä
 kenttää kilpailijan tietueeseen. Aineisto ei sano, mihin se on tarkoitettu.
 `MAKI`:n alla on lisäksi 1 232 riviä muuta kuollutta koodia, joten pelkän yhden rivin
 korjaaminen ei tekisi muunnelmasta toimivaa.
@@ -33107,7 +33299,7 @@ korjaavasta commitista `c273b9f` (git-diff ja viesti).
 ### 3. Mihin vikoihin se liittyy
 
 Rekisteri ei liitä T-010:tä mihinkään havaintoon; se on yksittäinen tekninen velka ilman yhteistä
-juurisyytä. Päivitetty teksti mainitsee, että `Tests/run.sh` on rikki ja ettei CI ajaa testejä; ne
+juurisyytä. Päivitetty teksti mainitsee, että `Tests/run.sh` on rikki ja ettei CI aja testejä; ne
 ovat H-006:n aihe.
 
 ### 4. Mitä hyötyä sen vähentämisestä olisi
@@ -33850,7 +34042,7 @@ Rekisteririvien tiiviste nyt: `0bb215e830be`.
 
 <a id="t-020"></a>
 
-## T-020 – Muistinvarauksen ja tiedoston avauksen tulosta ei tarkisteta, ja avaamatta jäänyt tiedosto suljetaan, mikä päättää MSVC-konsoliohjelman
+## T-020 – Muistinvarauksen ja tiedoston avauksen tulosta ei tarkisteta, ja avaamatta jäänyt tiedosto suljetaan, mikä voi päättää MSVC-konsoliohjelman
 
 > **T-020** · tila: **avoin** · vakavuus: matala
 > Ohjelmat: HkKisaWin, HkMaali, ViestiWin, ViestiMaali, ViestiLuenta (tarkistettu kortin kirjoituksen yhteydessä).
@@ -33865,9 +34057,10 @@ sulkukutsu saa tyhjän tiedostokahvan. Vertaus: avain käännetään lukossa, va
 auki. Kutsu on ohjelman kannalta sama kuin onnistunut toimenpide: ohjelma erottaa avauspyynnön ja
 onnistuneen avauksen toisistaan vain tarkistuksella, jota ei ole.
 
-Seuraus riippuu kääntäjästä. MSVC:llä käännetty konsoliohjelma päättyy, koska ajonaikainen kirjasto
-kutsuu virheellisen parametrin käsittelijää, eikä lähdepuussa ole omaa käsittelijää
-(`_set_invalid_parameter_handler`). C++Builderilla käännetty GUI-ohjelma saa paluuarvon EOF eikä
+Seuraus riippuu kääntäjästä. MSVC:llä käännetty konsoliohjelma päättyy MSVC:n dokumentoidun käytöksen mukaan, koska ajonaikainen
+kirjasto kutsuu virheellisen parametrin käsittelijää [päätelty MSVC:n dokumentoidusta käytöksestä, ei
+ajettu]. Lähdepuussa ei ole omaa käsittelijää (`_set_invalid_parameter_handler`; haku palautti vain
+testien `_CrtSetReportMode`-kutsut). C++Builderilla käännetty GUI-ohjelma saa paluuarvon EOF eikä
 pääty.
 
 ### 2. Mitä haittaa siitä on nykyisin
@@ -33879,14 +34072,15 @@ loppuminen kilpailutietokoneella on.
 
 ### 3. Mihin vikoihin se liittyy
 
-- H-063: `fclose(NULL)` hajontatulosteessa (ainoa havainto, joka toteutuu varmasti, kun tiedosto
-  puuttuu).
+- H-063: `fclose(NULL)` hajontatulosteessa (havainto, jossa `fclose(NULL)`-kutsu toteutuu aina, kun
+  tiedosto puuttuu; päättyminen on päätelty, ks. luku 1).
 - Sama kuvio ja saman puuttuvan käsittelijän seuraus kytkee tämän H-059:ään (`fclose(NULL)` HK:n
   aikajonossa), H-078:aan (`TextFl`-tila) ja H-105:een (vanhentunut tiedostokahva); niissä
   virheellisen parametrin käsittelijän lisäys muuttaisi käytöstä.
 - Samaa mallia on `Tp/TpApu.cpp`:n varmuuskopiotoiminnossa, jossa `fclose(NULL)` kutsutaan juuri
-  silloin, kun tiedostoa ei ole; se on käännetty vain C++Builderin GUI-ohjelmiin, jossa se palauttaa
-  EOF:n (H-156, kohta 6).
+  silloin, kun tiedostoa ei ole; tiedosto käännetään myös konsoliprojekteihin
+  (`HkMaali`, `JukMaali520`, `JukLuenta520`), mutta `teeBackupkopio` kutsutaan vain HkKisaWinin
+  lomakkeesta, jossa C++Builderin kirjasto palauttaa EOF:n (H-156, kohta 6).
 
 ### 4. Mitä hyötyä sen vähentämisestä olisi
 
@@ -34248,7 +34442,7 @@ Rekisteririvien tiiviste nyt: `0a8be7c7e67e`.
 
 Viestiohjelmat kuvaavat lukijalaitteet (emit-lukijat, RFID-lukijat ym.) lukijakanavina, ja kanavien enimmäismäärän kertoo käännösvalitsin `NREGNLY`. ViestiMaalin ja ViestiLuennan projektitiedostot asettavat arvoksi 8. ViestiWinin projekti ei aseta arvoa, jolloin ViestiWin käyttää otsikkotiedoston oletusta 32. Sama asetustiedosto voi siis nimetä laitenumeroita, jotka mahtuvat ViestiWiniin mutta eivät konsoliohjelmiin.
 
-Asetustiedoston avaimet `LUKIJAn`, `MTRn`, `EMITAGn` ja `ETGPRSn` (n on laitteen numero; `EMITAGn` ja `ETGPRSn` luetaan vain ViestiMaalissa ja ViestiWinissä) rajataan viestin asetusten lukijassa arvoon `NREGNLY`−1. Konsoliohjelmissa `LUKIJA9`–`LUKIJA32` kuvautuvat siksi laitteeksi 8, joka voi olla jo toisen laitteen käytössä. Muissa avaimissa numeron kelpoisuusehto vertaa merkkiin `'0'+NREGNLY`, joten ViestiWinissä ehto hyväksyy laitenumeroksi myös merkit `:`–`P` (numeroita suuremmat merkit).
+Asetustiedoston avaimet `LUKIJAn`, `MTRn`, `EMITAGn` ja `ETGPRSn` (n on laitteen numero; `EMITAGn` ja `ETGPRSn` luetaan vain ViestiMaalissa ja ViestiWinissä) tulkitaan viestin asetusten lukijassa kahdella eri tavalla. Avaimessa `LUKIJAn` numero luetaan yhteysnumeron lukufunktiolla, ja numero, joka ylittää enimmäismäärän (tai puuttuu), rajataan arvoon `NREGNLY`−1. Konsoliohjelmissa `LUKIJA9`–`LUKIJA32` kuvautuvat siksi laitteeksi 8, joka voi olla jo toisen laitteen käytössä. Avaimissa `MTRn`, `EMITAGn` ja `ETGPRSn` laitenumeroksi luetaan avaimen nimen jälkeen vain yksi merkki, ja sen kelpoisuusehto vertaa merkkiin `'0'+NREGNLY`; ehdon täyttämätön merkki antaa laitteen `NREGNLY`−1. ViestiWinissä ehto hyväksyy laitenumeroksi myös merkit `:`–`P` (numeroita suuremmat merkit), ja esimerkiksi `MTR12` luetaan laitteeksi 1 [luettu koodista K-vaiheessa, ei tarkastettu].
 
 Lisäksi laitenumero tallennetaan ja välitetään kentässä `kanava`, ja sen arvo riippuu samasta rajauksesta. Tiedostojen ja sanomien binäärirakenteet eivät riipu `NREGNLY`:stä.
 
@@ -35495,7 +35689,9 @@ Vertaus: käynnistys on kuin uusi aloitus puhtaalta pöydältä, kun taas vaihee
 siivoamista muistin varassa ilman luetteloa siitä, mitä kaikkea pöydällä on. Jokainen uusi
 vaiheesta riippuva muuttuja on unohtumisvaarassa, ellei joku muista lisätä sitä siivouskohtaan.
 
-Rakenne koskee HkKisaWinia ja HkMaalia. Viestiohjelmissa ei ole vaiheen vaihtoa.
+Rakenne koskee HkKisaWinia ja HkMaalia. Viestiohjelmissa ei ole vaiheen vaihtoa: `vaihdavaihe`-funktiota ei ole viestin lähteissä [luettu
+koodista K-vaiheessa, ei tarkastettu]; H-141:n viestivastine (emit-taulun tyhjennys radan
+uudelleenluvussa) on vikaehdokas, ei rekisterissä.
 
 ### 2. Mitä haittaa siitä on nykyisin
 
@@ -35690,7 +35886,9 @@ Rekisteririvien tiiviste nyt: `2cbf1a0d06f0`.
 ### 1. Mistä on kyse
 
 Kun ohjelman tallennus tai muu tiedostotoimenpide epäonnistuu, ohjelma kertoo siitä käyttäjälle
-ikkunalla suoraan siitä työstä (säikeestä, ks. sanasto: Säie), joka tallennusta yritti. Tieto
+ikkunalla joko suoraan siitä työstä (säikeestä, ks. sanasto: Säie), joka tallennusta yritti, tai
+pääsäikeen kautta (GUI:n `writeerror_w` lähettää ikkunan pääsäikeeseen ja odottaa vastausta); kummassakin
+tapauksessa kutsuva säie odottaa [luettu koodista, ei ajettu]. Tieto
 epäonnistumisesta ei palaa funktion paluuarvona sille ohjelman osalle, joka tallennusta pyysi.
 Tallennusfunktioita on joko `void`-muotoisia, tai kutsujat ohittavat niiden virhearvon, ja
 kilpailijatietueen yleinen tallennusfunktio palauttaa aina onnistumisarvon. Vertaus:
@@ -35699,7 +35897,8 @@ olisi tehty.
 
 Rakenne tarkoittaa, että ohjelma erottaa kirjoituskutsun ja onnistuneen tallennuksen toisistaan
 vain ikkunan avulla, ei ohjelmallisesti. Lisäksi ikkuna pysäyttää kutsuvan säikeen, usein lukon
-(ks. sanasto: Lukko) ollessa varattuna, konsoliohjelmassa Enteriä odottaen. Ikkunat tarjoavat
+(ks. sanasto: Lukko) ollessa varattuna, konsoliohjelmassa Enteriä odottaen silloin, kun odotuksen kesto on 0 eikä
+virheikkunatilaa ole asetettu (muuten konsoli odottaa asetetun ajan). Ikkunat tarjoavat
 myös ohjelman lopettamista kesken kirjoituksen. Uudelleenyritystä ja yhteistä virhekäytäntöä
 ei ole.
 
