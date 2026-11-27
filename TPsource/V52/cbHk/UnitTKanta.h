@@ -80,6 +80,8 @@ __published:	// IDE-managed Components
 	TMenuItem *Otsikkorivinmukaan1;
 	TMenuItem *Nytlisvalinnat1;
 	TMenuItem *Lisatieto1;
+	TMenuItem *Yhdistys1;
+	TMenuItem *Liskaikkikilpailijat1;
 	void __fastcall Luetiedot1Click(TObject *Sender);
 	void __fastcall IRMAtiedosto1Click(TObject *Sender);
 	void __fastcall FormResize(TObject *Sender);
@@ -124,10 +126,13 @@ __published:	// IDE-managed Components
 	void __fastcall Otsikkorivinmukaan1Click(TObject *Sender);
 	void __fastcall Nytlisvalinnat1Click(TObject *Sender);
 	void __fastcall Lisatieto1Click(TObject *Sender);
+	void __fastcall Yhdistys1Click(TObject *Sender);
+	void __fastcall Liskaikkikilpailijat1Click(TObject *Sender);
 private:	// User declarations
 	void  laadiRivi(wchar_t *iBuf, int len, int r, bool kokonimi);
 	void  kirjoitaTiedostoon(int aiempaan);
 	void  paivitaHenkilot(void);
+	void  lisaaKilpailijat(bool kaikki);
 public:		// User declarations
 	__fastcall TFormTKanta(TComponent* Owner);
 	__fastcall ~TFormTKanta();
@@ -137,7 +142,7 @@ public:		// User declarations
 	int __fastcall NaytaHenkilot(wchar_t *ala, wchar_t *yla, wchar_t *etuala, wchar_t *etuyla, int badge);
 	int __fastcall THenktiedot(int KHenk, wchar_t *snimi, wchar_t *enimi,
 		wchar_t *seura, wchar_t *maa, wchar_t *sarja, wchar_t *joukkue, int *id, int *intid,
-		int *badge, int *bib, wchar_t *sukup, int *ika, int *synt);
+		int *badge, int *bib, wchar_t *sukup, int *ika, int *synt, wchar_t *yhdistys = NULL);
 	bool __fastcall HenkiloHakuOn(void);
 	int TallennaMuutokset(void);
 
