@@ -282,15 +282,16 @@ def in_func_any(scopes):
 # ---------------------------------------------------------------- references
 
 PATH = r"(?:TPsource/V52/)?((?:[A-Za-z0-9_]+/)*[A-Za-z0-9_]+\.(?:cpp|c|hpp|h|H))"
-REF = re.compile(PATH + r"\s*:\s*(\d+(?:\s*[-–]\s*\d+)?(?:\s*,\s*:?\d+(?:\s*[-–]\s*\d+)?)*)")
-BARE = re.compile(r"`:(\d+(?:\s*[-–]\s*\d+)?)`")
+DASH = "[-\u2013]"  # hyphen or en dash between the ends of a line range
+REF = re.compile(PATH + r"\s*:\s*(\d+(?:\s*" + DASH + r"\s*\d+)?(?:\s*,\s*:?\d+(?:\s*" + DASH + r"\s*\d+)?)*)")
+BARE = re.compile(r"`:(\d+(?:\s*" + DASH + r"\s*\d+)?)`")
 
 
 def parse_spans(spec):
     out = []
     for part in re.split(r"\s*,\s*", spec):
         part = part.lstrip(":")
-        m = re.match(r"(\d+)(?:\s*[-–]\s*(\d+))?$", part.strip())
+        m = re.match(r"(\d+)(?:\s*" + DASH + r"\s*(\d+))?$", part.strip())
         if m:
             a = int(m.group(1))
             b = int(m.group(2)) if m.group(2) else a
