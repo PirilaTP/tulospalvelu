@@ -77,6 +77,8 @@ int kbflush(void) {	return(0);}
 
 int vidspwmsg(int row, int col, int fg, int bg, const wchar_t *txt)
    {
+	if (FormMain == NULL)
+		return(0);
 	FormMain->dspMsg((wchar_t *)txt);
 	return(wcslen(txt));
    }

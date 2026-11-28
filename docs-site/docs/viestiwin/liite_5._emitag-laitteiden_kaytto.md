@@ -66,6 +66,35 @@ ECAIKA
 kertoo, että tapahtuman ajaksi kirjataan ECB1-, ETS1-,
 ECU1-tai MTR5-laitteen ilmoittama aika eikä tietokoneen aikaa.
 
+SETECUCODE=n
+SETECUCODEy=n
+
+asettaa emiTag-aseman (ECU) lukukoodin automaattisesti ohjelman käynnistyessä.
+Ilman y:tä koodi asetetaan kaikille emiTag-lukijoille, y:n kanssa vain
+yhteydelle y. Kun sarjaportti on avattu (ja TCP-yhteyden uudelleenyhdistämisen
+jälkeen) ohjelma kysyy aseman tilan. Jos asemalla on jo oikea koodi, mitään ei
+lähetetä. Muuten ohjelma asettaa koodin ja tarkistaa, että asema vahvistaa sen.
+Kun koodi on asemalla oikein (joko jo ennestään tai asetuksen jälkeen), ohjelma
+asettaa asemalle myös tietokoneen kellonajan ja tarkistaa aseman seuraavasta
+tilasanomasta, että aseman kello on enintään 3 sekuntia tietokoneen kellosta.
+Kelloa ei aseteta, jos asema ei vastaa tai koodin asetus epäonnistuu.
+Kello asetetaan joka kerta, kun koodin tarkistus onnistuu: myös ohjelman uudelleenkäynnistyksen ja TCP-yhteyden uudelleenyhdistämisen yhteydessä kesken kilpailun. Koodilla 248 (maalin ajanotto ECB1:llä) aseman kello antaa maaliajat, joten kellon asettaminen kesken kilpailun voi siirtää myöhempiä aikoja: /SC:n tarkkuus on sekunti ja tarkistus hyväksyy enintään 3 sekunnin eron. Kellon asettamista ei voi kytkeä erikseen pois.
+Tulos näkyy pääikkunan viestikentässä (konsolissa alarivillä), eikä virhe
+pysäytä lukijaa. Esimerkkejä viesteistä:
+
+```
+Lukija 1: aseman koodi muutettu 251 -> 253 (vahvistettu). Kello asetettu 12.00.00,000 (vahvistettu).
+Lukija 1: aseman koodi 253 oikein. Kello asetettu 12.00.00,000 (vahvistettu).
+Lukija 1: aseman koodi 253 oikein. Kellon asetus: asema ei vastannut.
+```
+
+Käynnistyksessä hyväksytään vain lukukoodit 240, 243, 244, 248 ja 250–253.
+Tavallisesti käytetään koodia 250:
+
+```
+SETECUCODE=250
+```
+
 #### A5.3 EmiTag laitteiden ohjaus ja muistitietojen siirto
 
 Leimantarkastusnäytön valinnassa *Toiminnot /
@@ -76,11 +105,22 @@ kelloon. Useimmat laitteet on synkronoitava aina uuden käynnistyksen jälkeen.
 
 Näytöllä voidaan asettaa laitteen toimintamoodi,
 jonka on aina oltava 0 sekä koodi, mikä voi olla tarpeen
-väliaikapisteen tunnistamiseksi, jolloin käytetään koodia väliltä 65-239. Koodit
-240, 243, 250 ja 253 pyytävät laitteen toimimaan leimantarkastusmoodissa. Koodit
-240 ja 243 tuovat koneelle 5 viimeisen päivän tiedot eli usein turhaakin tietoa.
-Koodit 250 ja 253 tuovat vain viimeisen kilpailun ja ovat siten yleensä
-paremmat. Koodi 248 on käytössä maalin ajanotossa ECB1-laitteen avulla.
+väliaikapisteen tunnistamiseksi, jolloin käytetään koodia väliltä 65-239. Koodit 240-253 pyytävät laitetta toimimaan leimantarkastusmoodissa tai muussa
+erikoismoodissa.
+
+Koodit ja niiden merkitykset:
+
+| Koodi | Merkitys |
+|---|---|
+| 0–64 | Estää tiedonsiirron tai nollaa aseman. Vain erityiskäyttöön. |
+| 65–239 | Väliaikapiste: koodi on rastin numero. |
+| 240, 243 | Leimantarkastusmoodi, tuo 5 viimeisen päivän tiedot eli usein turhaakin tietoa. |
+| 244 | Hyväksytty koodi, jonka merkitystä ei ole kuvattu tässä ohjeessa. |
+| 248 | Maalin ajanotto ECB1-laitteen avulla. |
+| 250, 251, 252, 253 | Leimantarkastusmoodi, tuo vain viimeisen kilpailun tiedot. Yleensä paras valinta. |
+
+Koodit 0–239 voi asettaa vain käsin tällä näytöllä tai konsolissa. Parametri
+SETECUCODE ei hyväksy niitä.
 
 Vastaavat toiminnot ovat suurelta osin käytettävissä
 ohjelman *HkMaali*  päävalikon valinnasta
